@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 438BEA803E7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:04:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49B19A8026A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BF0B464CDB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 653131898513
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16387267F57;
-	Tue,  8 Apr 2025 11:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B24B4264A76;
+	Tue,  8 Apr 2025 11:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OEC/3V90"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pf/CVdto"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71402641CC;
-	Tue,  8 Apr 2025 11:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE602288CB;
+	Tue,  8 Apr 2025 11:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113297; cv=none; b=FGi8/wtYLcaeBmd0uUaAKsOYUVIRGmEZCMx3Xmy7VxFzsnHbOe0mjZJNS8wxlzlJPj/uiKHHcL87svVUhFaNPLZFXNT2KP39oDm9kT3rqZQ5Bhg59Pxn+Twufii0SWic8xLrN5445sTOLnn5HGqV2xTXDuXgLtcyqAEAI/quUH8=
+	t=1744112610; cv=none; b=cJEnQyOxa6GkF2W2b26gY8dyqCR0mhkA54O624egSj5QfBGeSKaIqzY1yhPJhl0w8tCTiB7xIJ6pyRKfd4ESw2mLhLf9z+sacu/nB1E50A/JbUUmebQcZWBYEuCx/ZaR/D823ty08BUBEABCvM00e+wMUNGWaOfpoQLr8qptTNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113297; c=relaxed/simple;
-	bh=TsPl/zdeJQxGgpmhiFYjnKbNtOdm6nZvyle0jbI3g0g=;
+	s=arc-20240116; t=1744112610; c=relaxed/simple;
+	bh=RQ/2qePzQFZAWic8KcynjN6m6n9F5UMMwUbqPUh86Q4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQpZB1F8GYv9tmkf7NXdyYdYI90W+bn7iOyn/hmjCkG+YJDw9FIxoZI2IGGKbpF/aRTZX9G+n9wOyBYk6QZoOw8UJgd6/Y4Cw5jKBb36WUT0E7l04cadDGDYsSTRL7QqjXlz1NIwgyXkmhBYxYeYia3YoLoX3IFTv/C9SExC5+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OEC/3V90; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E21C4CEE5;
-	Tue,  8 Apr 2025 11:54:57 +0000 (UTC)
+	 MIME-Version; b=MiQRXqeExhtm/bXp/9TBIIRRnUxEZzgR6CaNJ1/s5UuKKBTsOGy2Lznj+1NcrkvKil3+CiADuCP9vBOm0AUOpyrTdV9GqPOoCaHwaDW/CK4yMjtIjAJWyLCyIOn9gno8hHt3olf+DmD6GASSwwJgPrOvqnere6l9DyXVrF8yijg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pf/CVdto; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2039C4CEE5;
+	Tue,  8 Apr 2025 11:43:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113297;
-	bh=TsPl/zdeJQxGgpmhiFYjnKbNtOdm6nZvyle0jbI3g0g=;
+	s=korg; t=1744112610;
+	bh=RQ/2qePzQFZAWic8KcynjN6m6n9F5UMMwUbqPUh86Q4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OEC/3V90/EhuDAnzMXulQbE2P/P9x/HlucXoIQyS2H9G/J7pcbT32dY2NymiI2U0r
-	 6GpukHX7qaENcoc+KZzcYMr21+L/k3Wmfqtvz8P/2J8ciWM4e0zM3Wtp/clPB57psS
-	 q6nVqes4QgsDjdWlp/jgmy+/2KMXAok2djU5i5Eo=
+	b=Pf/CVdtowQfYd5jEWG00x3+HL3LIa0mLCnXgqj76wHrH55LDKngy7tQCbSYphCnUX
+	 Aet4VBmbd+zOT0Zgtppm+XFzn9OISbXujX3hYn1L+ocN/aBCE9qeKsbIcyCYcOhZaW
+	 6qe0XzhMVyy95NqurX/VMZ/r2MC36rt2mX2UTfEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 105/268] soundwire: slave: fix an OF node reference leak in soundwire slave device
+Subject: [PATCH 5.15 133/279] x86/platform: Only allow CONFIG_EISA for 32-bit
 Date: Tue,  8 Apr 2025 12:48:36 +0200
-Message-ID: <20250408104831.326664432@linuxfoundation.org>
+Message-ID: <20250408104829.931494641@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit aac2f8363f773ae1f65aab140e06e2084ac6b787 ]
+[ Upstream commit 976ba8da2f3c2f1e997f4f620da83ae65c0e3728 ]
 
-When initializing a soundwire slave device, an OF node is stored to the
-device with refcount incremented. However, the refcount is not
-decremented in .release(), thus call of_node_put() in
-sdw_slave_release().
+The CONFIG_EISA menu was cleaned up in 2018, but this inadvertently
+brought the option back on 64-bit machines: ISA remains guarded by
+a CONFIG_X86_32 check, but EISA no longer depends on ISA.
 
-Fixes: a2e484585ad3 ("soundwire: core: add device tree support for slave devices")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20241205034844.2784964-1-joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+The last Intel machines ith EISA support used a 82375EB PCI/EISA bridge
+from 1993 that could be paired with the 440FX chipset on early Pentium-II
+CPUs, long before the first x86-64 products.
+
+Fixes: 6630a8e50105 ("eisa: consolidate EISA Kconfig entry in drivers/eisa")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250226213714.4040853-11-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/slave.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soundwire/slave.c b/drivers/soundwire/slave.c
-index 060c2982e26b0..0aadfc2010287 100644
---- a/drivers/soundwire/slave.c
-+++ b/drivers/soundwire/slave.c
-@@ -12,6 +12,7 @@ static void sdw_slave_release(struct device *dev)
- {
- 	struct sdw_slave *slave = dev_to_sdw_dev(dev);
- 
-+	of_node_put(slave->dev.of_node);
- 	mutex_destroy(&slave->sdw_dev_lock);
- 	kfree(slave);
- }
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 90ac8d84389cf..de6a66ad3fa62 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -194,7 +194,7 @@ config X86
+ 	select HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
+ 	select HAVE_EBPF_JIT
+ 	select HAVE_EFFICIENT_UNALIGNED_ACCESS
+-	select HAVE_EISA
++	select HAVE_EISA			if X86_32
+ 	select HAVE_EXIT_THREAD
+ 	select HAVE_FAST_GUP
+ 	select HAVE_FENTRY			if X86_64 || DYNAMIC_FTRACE
 -- 
 2.39.5
 
