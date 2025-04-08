@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-130365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0E6EA803E0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:04:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1221DA80188
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:40:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4055819E7B28
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:59:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28AA61894BB2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:36:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA38126988A;
-	Tue,  8 Apr 2025 11:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41BA268FED;
+	Tue,  8 Apr 2025 11:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lD8uIykK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+cpH+/B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B37264FA0;
-	Tue,  8 Apr 2025 11:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FFD5268FD8;
+	Tue,  8 Apr 2025 11:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113524; cv=none; b=dkhZLUjaB54GrudXNDXjRyQ4j8NT9EgUOdYJLkQU/aBKeCMsl6HTxvZzzisiRPOCLkO1LD9IGxW+FypSYv4tMvPqvEtn6twgGaeowJXXrd7BZiEBDBbzVKZoyl1H0f2p7IWbiDITwTqlBb/3aI5o5jlkJ45UWFF8wd1BabaVu1Q=
+	t=1744112174; cv=none; b=V/kQpI/pIiSqnmo8Gskn3SpurvJBnbBq9VRxG4pXEuk1TzG6YJr1x+Ewtq0/1UePgvfKD1Sd0YMzIbTNcs+ihM+8xhe56nfGgkVDR1C7lI5WHuxWgfKfvWyvEftPtYcFf2d5GYV62sQZbsZdX1zR301KQMvaY8jdOU+wQvKUSOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113524; c=relaxed/simple;
-	bh=/gQQtQIxD5oeh32tOl/DPiV5LbBe9UrcO2XjsMIaIsY=;
+	s=arc-20240116; t=1744112174; c=relaxed/simple;
+	bh=+rbDFR+fIPx7Rdb4qN/Uia6+k4YuYg3seW/mKbGGP2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TbuAqTHN9bv8kcLd/sjt/YvoprZBUi2P9NYdHWJexOVHOXXpXT0jILF6XweCuus/Cu63uPtQvtmiLmqRY6MuUjwxziRDQaRDzoO0ZiYFGWFQHhHv9y7PoaFQR2dIFkrNsLFoZULX6cvL0Xy++TBFQsTJR9LE9WvSesB0PK5bAo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lD8uIykK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA462C4CEE5;
-	Tue,  8 Apr 2025 11:58:43 +0000 (UTC)
+	 MIME-Version; b=QStReOMm9Twk9nvwMhyFpvokpPXymqzg2AADlK9vyTbqhk9/plMIV19jAGd6xOgAV7zfXJYVGOq31kbmoX4VkCrL1qP5sumOLBit/nqE+BG0D0F5loR5Ik0ADyl6ew5Gixhf9wYEMGmAFbZYkhaoyQKtUTiVkLCZnqQu4E48S7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+cpH+/B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6DA9C4CEE5;
+	Tue,  8 Apr 2025 11:36:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113524;
-	bh=/gQQtQIxD5oeh32tOl/DPiV5LbBe9UrcO2XjsMIaIsY=;
+	s=korg; t=1744112174;
+	bh=+rbDFR+fIPx7Rdb4qN/Uia6+k4YuYg3seW/mKbGGP2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lD8uIykKI88/IqmoIqX90Ps1WCzNl+8s7b88fnwLfBBu+YDDFj3XyGoxX0Gdyq5UP
-	 KOx2WNKfBbqSZmxdo90RmY0ysMc4Pdgk/khvpj1r9qFam4lYryvkny5ZvAslnSFyhK
-	 lFUPfuIwQHy7k74HmR50hPhbzDQOhjtmqYUSsiRs=
+	b=r+cpH+/Bmjrh8XrDA008UFbGeFWq8ILrdUldX9E2EPcEyOyRfZhMsWgRI8TUXEquh
+	 iRQGkSfVkURtnxnlrvTM7/AzAeBOUJgMTUx3uK5oWPZS6Q3CtMCzSEULMc1ciFg9o6
+	 qKtPWK/z5EW35uVCdwBPLN0elj+4xLpm7HTYNJbk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Roger Quadros <rogerq@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 189/268] memory: omap-gpmc: drop no compatible check
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.14 703/731] ksmbd: validate zero num_subauth before sub_auth is accessed
 Date: Tue,  8 Apr 2025 12:50:00 +0200
-Message-ID: <20250408104833.653044806@linuxfoundation.org>
+Message-ID: <20250408104930.619533926@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roger Quadros <rogerq@kernel.org>
+From: Norbert Szetei <norbert@doyensec.com>
 
-[ Upstream commit edcccc6892f65eff5fd3027a13976131dc7fd733 ]
+commit bf21e29d78cd2c2371023953d9c82dfef82ebb36 upstream.
 
-We are no longer depending on legacy device trees so
-drop the no compatible check for NAND and OneNAND
-nodes.
+Access psid->sub_auth[psid->num_subauth - 1] without checking
+if num_subauth is non-zero leads to an out-of-bounds read.
+This patch adds a validation step to ensure num_subauth != 0
+before sub_auth is accessed.
 
-Suggested-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-Link: https://lore.kernel.org/r/20250114-omap-gpmc-drop-no-compatible-check-v1-1-262c8d549732@kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Norbert Szetei <norbert@doyensec.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/memory/omap-gpmc.c | 20 --------------------
- 1 file changed, 20 deletions(-)
+ fs/smb/server/smbacl.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
-index d78f73db37c88..ab0985bb5789a 100644
---- a/drivers/memory/omap-gpmc.c
-+++ b/drivers/memory/omap-gpmc.c
-@@ -2247,26 +2247,6 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
- 		goto err;
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -270,6 +270,11 @@ static int sid_to_id(struct mnt_idmap *i
+ 		return -EIO;
  	}
  
--	if (of_node_name_eq(child, "nand")) {
--		/* Warn about older DT blobs with no compatible property */
--		if (!of_property_read_bool(child, "compatible")) {
--			dev_warn(&pdev->dev,
--				 "Incompatible NAND node: missing compatible");
--			ret = -EINVAL;
--			goto err;
--		}
--	}
--
--	if (of_node_name_eq(child, "onenand")) {
--		/* Warn about older DT blobs with no compatible property */
--		if (!of_property_read_bool(child, "compatible")) {
--			dev_warn(&pdev->dev,
--				 "Incompatible OneNAND node: missing compatible");
--			ret = -EINVAL;
--			goto err;
--		}
--	}
--
- 	if (of_match_node(omap_nand_ids, child)) {
- 		/* NAND specific setup */
- 		val = 8;
--- 
-2.39.5
-
++	if (psid->num_subauth == 0) {
++		pr_err("%s: zero subauthorities!\n", __func__);
++		return -EIO;
++	}
++
+ 	if (sidtype == SIDOWNER) {
+ 		kuid_t uid;
+ 		uid_t id;
 
 
 
