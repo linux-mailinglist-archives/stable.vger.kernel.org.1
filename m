@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-130129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37CA5A80315
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:53:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8894FA8022D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:45:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F5A14469B9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:48:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C21843B1A15
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:37:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D440F267F6C;
-	Tue,  8 Apr 2025 11:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A10219AD5C;
+	Tue,  8 Apr 2025 11:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bB67JuDc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jS0ZhLH0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF2E267B89;
-	Tue,  8 Apr 2025 11:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB61C227BB6;
+	Tue,  8 Apr 2025 11:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112894; cv=none; b=eeSCzqQbCPD8uqOy7QHfiHxXYjeNpTJ5diw9hQaOvqW5qA3H3KIQ3OqthD9jUmaheYPqlQn+TwATqpu3VQ/KGYaRIz0RtURSyO/Nu50leS1sQ1JeGORSMNS5nxT4HkUDBf4GbdnA57UI5EQ4j1WfgPjEutiuMzs3M0c1hvbsY4o=
+	t=1744112256; cv=none; b=p4wCpq1fuA34kRucXqRGuDCSWtkkTs6Dh9CmaW40v6WczaSwZ0cK+Dp/WyYAKH52p5s0nrVJdWuAXxVk6NVHKts1mZ0Xss08GzZCWPC9lvYKx7cB+vN8fDUDAnfJHDhcPAU2rvKAhIJ7/95Yq2PAyyu7+r+T28xAg6opya1you0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112894; c=relaxed/simple;
-	bh=ky8MpmGoim+BG7ELKlMA+tWdF91mRs4n5aAs9WwIyBE=;
+	s=arc-20240116; t=1744112256; c=relaxed/simple;
+	bh=7fT2PmCX3MIEjDvYDIl6/8vVgzIlBWivuEamtsT3RRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dsgWqp/nPnErrGfrsWk2Z4JGRGyf1t8hr+wy9/G7CW/erOnXpwaAljTlKfILKPW7Z5HfvSxQS7VomHzVwANR1Ip5TNWGYvKXipPewcHgbA3VgkZ9izF5xEY0nEDTaKVL04O11xg5KSXVRRIbtwnU754/KL+W38Octexg2BsgXpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bB67JuDc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF5EC4CEE7;
-	Tue,  8 Apr 2025 11:48:13 +0000 (UTC)
+	 MIME-Version; b=NOhDOK5ZSmQVcbh7x7kgGGf3Yc6/fcthIiTDiC9JJw9o4iPCNAmFgzbtNn9AagXQ4XdKXDEeAiR6lWx83IA3Ar4M4nlV7czSX6oI4aum3hH/fvwkMRo3eW1wrmVzoMEyKL2zhjZDWEqPtWQ4wZh1w/YeMRN7s0B928B5QWjK8YA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jS0ZhLH0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC3E8C4CEE5;
+	Tue,  8 Apr 2025 11:37:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112894;
-	bh=ky8MpmGoim+BG7ELKlMA+tWdF91mRs4n5aAs9WwIyBE=;
+	s=korg; t=1744112256;
+	bh=7fT2PmCX3MIEjDvYDIl6/8vVgzIlBWivuEamtsT3RRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bB67JuDcbsQbvQltA5BYd11mgX5H4MhfNgmeFkMLoZg8jFsg4MRTwRandPZJUxvN2
-	 M/zcFJdSt6pbgav+RdHhPzAk8c98Q87zeAVuMUIgH99Fds6zBh67EMCMd6vuTw65Bo
-	 JSjA+rI9ZXSq292aTDq3rurzvbwc+p9jZESr5yDk=
+	b=jS0ZhLH0qOuNseZtB+ew9ugOPKd29I34OIyWYNzGtjCz6Z9Ml0qpCUjgXYREszuVB
+	 BWh9SPM4aBwce3rSLF0fzAi06nHcGZt8Sv+0Cj5g218dvOaZKiXHY2sm0FVr8S8Ful
+	 MWAcKgd9dcuWzrgpEX59b8k5SYX5+eUdQ4X+9Y4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 236/279] spufs: fix a leak in spufs_create_context()
-Date: Tue,  8 Apr 2025 12:50:19 +0200
-Message-ID: <20250408104832.753547482@linuxfoundation.org>
+	syzbot+34008406ee9a31b13c73@syzkaller.appspotmail.com,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.14 723/731] media: streamzap: fix race between device disconnection and urb callback
+Date: Tue,  8 Apr 2025 12:50:20 +0200
+Message-ID: <20250408104931.090899793@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit 0f5cce3fc55b08ee4da3372baccf4bcd36a98396 ]
+commit f656cfbc7a293a039d6a0c7100e1c846845148c1 upstream.
 
-Leak fixes back in 2008 missed one case - if we are trying to set affinity
-and spufs_mkdir() fails, we need to drop the reference to neighbor.
+Syzkaller has reported a general protection fault at function
+ir_raw_event_store_with_filter(). This crash is caused by a NULL pointer
+dereference of dev->raw pointer, even though it is checked for NULL in
+the same function, which means there is a race condition. It occurs due
+to the incorrect order of actions in the streamzap_disconnect() function:
+rc_unregister_device() is called before usb_kill_urb(). The dev->raw
+pointer is freed and set to NULL in rc_unregister_device(), and only
+after that usb_kill_urb() waits for in-progress requests to finish.
 
-Fixes: 58119068cb27 "[POWERPC] spufs: Fix memory leak on SPU affinity"
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If rc_unregister_device() is called while streamzap_callback() handler is
+not finished, this can lead to accessing freed resources. Thus
+rc_unregister_device() should be called after usb_kill_urb().
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 8e9e60640067 ("V4L/DVB: staging/lirc: port lirc_streamzap to ir-core")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+34008406ee9a31b13c73@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=34008406ee9a31b13c73
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/cell/spufs/inode.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/media/rc/streamzap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
-index 1095be5186ebf..ea3082f2f9d1d 100644
---- a/arch/powerpc/platforms/cell/spufs/inode.c
-+++ b/arch/powerpc/platforms/cell/spufs/inode.c
-@@ -436,8 +436,11 @@ spufs_create_context(struct inode *inode, struct dentry *dentry,
- 	}
+--- a/drivers/media/rc/streamzap.c
++++ b/drivers/media/rc/streamzap.c
+@@ -385,8 +385,8 @@ static void streamzap_disconnect(struct
+ 	if (!sz)
+ 		return;
  
- 	ret = spufs_mkdir(inode, dentry, flags, mode & 0777);
--	if (ret)
-+	if (ret) {
-+		if (neighbor)
-+			put_spu_context(neighbor);
- 		goto out_aff_unlock;
-+	}
+-	rc_unregister_device(sz->rdev);
+ 	usb_kill_urb(sz->urb_in);
++	rc_unregister_device(sz->rdev);
+ 	usb_free_urb(sz->urb_in);
+ 	usb_free_coherent(usbdev, sz->buf_in_len, sz->buf_in, sz->dma_in);
  
- 	if (affinity) {
- 		spufs_set_affinity(flags, SPUFS_I(d_inode(dentry))->i_ctx,
--- 
-2.39.5
-
 
 
 
