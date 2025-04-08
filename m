@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-130932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1702A80690
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:29:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C94EA807B4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 453E87B0616
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:25:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B73A11B812DB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:35:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5DB2268FD0;
-	Tue,  8 Apr 2025 12:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551FD269D01;
+	Tue,  8 Apr 2025 12:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcUvMb0X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPNUbrtg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638D2224AEB;
-	Tue,  8 Apr 2025 12:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09720269AF8;
+	Tue,  8 Apr 2025 12:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115046; cv=none; b=AcxGSt2+h+K7Mx22oH7G+QaXY4QTw6ea533NZ4eJeUkt4NilvERJmlY7LUELJsjxczJil967+vi826bcWme+TL7K+TzaAXbN1K6Omst2id5jtl/dFMWLuRXOPHSOn8ByH/V17EdN5eeVarNfzD51HqW+ZWPp0c7rfyou4ERX4pQ=
+	t=1744115531; cv=none; b=HUkn0QyUpf0xNqyBBvJcRMsaWoYwmqVdFFgSv4F4kbzF7NLshh1zlC9makwTOqYMixq7MPONnard3vgT7b2lx9h19KZBplIWUFm0FU3zdOO0zljX3g8nKn6HBU5MgkhGh2iN/r6SMX/AOFmj2R6wRh/AlqeCzV2ptvBB9tdeJ50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115046; c=relaxed/simple;
-	bh=tKexmxyCpdimMuWGl6bVju0uq8dzi1zAFL7yIMAJ/J4=;
+	s=arc-20240116; t=1744115531; c=relaxed/simple;
+	bh=lgWD/X6g+N6Bisvf4ZeaWhb/5vdUfy8KcP+qjmwiJg0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K55vlVPeidozcazQoiFhyMNZQIZhM8yvzR9anJ/rzrSmamIFEPMaKrt31bbRiyAKwnkpH7F1qLmBHxeMi4oDiiOj17K9T3/3RXpZtsYUkcFuBc5SPlAKQ35sBw+xAsBdNGag/D7snc81DHyhQYySZKcmd9CbAJ9eqOzQhwH7rnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcUvMb0X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC4ACC4CEEA;
-	Tue,  8 Apr 2025 12:24:05 +0000 (UTC)
+	 MIME-Version; b=q2HkKoi/frbHAzg0pSw73PPS9uclf0d+XVzIOGfxcUns/LHVbr3HNJdPiqKp2sCpvwArr3CVUkW4pIHsuf4z69oOSBSrZB+pxnd3WR9KEhITlO9+T9JvH5H7MXSBznVmRb0ZJw9nUD+zCni7Vi67VfZLQbAs8oy2kNqz1Q1Qe/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPNUbrtg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 679DAC4CEE5;
+	Tue,  8 Apr 2025 12:32:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115046;
-	bh=tKexmxyCpdimMuWGl6bVju0uq8dzi1zAFL7yIMAJ/J4=;
+	s=korg; t=1744115530;
+	bh=lgWD/X6g+N6Bisvf4ZeaWhb/5vdUfy8KcP+qjmwiJg0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hcUvMb0XiWo/ZKAV2SysFfo1EJx8lClPUAMw6GQdaKKn1wcccXhhS8vp/0BI6CQvX
-	 3xRYJKDcn639hWDL/Tn7+N4MrLGK9LXzUFVvleIs0gNqP2EuqXAxqgSCmOF/+El2/L
-	 wrkqdd81a+x1Zw6AekBCdFIZHFqReVsp3dTbvbrM=
+	b=CPNUbrtgGOljJqqS1mXEQdEwuf/tOVRktpsHGgksBK1GyxnWkzF5B5BOhKtGUdtU8
+	 h+gX4KUvJDRebgJptwDdJnixw5lqP2fsHS10xigf+iUsKKHpEvXzZfbKwuYUUQSmoF
+	 ft0wdOSuWv+olAzEYbAkm8V8v9H+sA79JTeXMRKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 328/499] ALSA: hda/realtek: Add support for ASUS B5405 and B5605 Laptops using CS35L41 HDA
+Subject: [PATCH 6.1 010/204] lockdep/mm: Fix might_fault() lockdep check of current->mm->mmap_lock
 Date: Tue,  8 Apr 2025 12:49:00 +0200
-Message-ID: <20250408104859.404473795@linuxfoundation.org>
+Message-ID: <20250408104820.605280663@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit c86dd79a7c338fff9bebb9503857e07db9845eca ]
+[ Upstream commit a1b65f3f7c6f7f0a08a7dba8be458c6415236487 ]
 
-Add support for ASUS B5605CCA and B5405CCA.
+Turns out that this commit, about 10 years ago:
 
-Laptops use 2 CS35L41 Amps with HDA, using Internal boost, with SPI
+  9ec23531fd48 ("sched/preempt, mm/fault: Trigger might_sleep() in might_fault() with disabled pagefaults")
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250305170714.755794-7-sbinding@opensource.cirrus.com
+... accidentally (and unnessecarily) put the lockdep part of
+__might_fault() under CONFIG_DEBUG_ATOMIC_SLEEP=y.
+
+This is potentially notable because large distributions such as
+Ubuntu are running with !CONFIG_DEBUG_ATOMIC_SLEEP.
+
+Restore the debug check.
+
+[ mingo: Update changelog. ]
+
+Fixes: 9ec23531fd48 ("sched/preempt, mm/fault: Trigger might_sleep() in might_fault() with disabled pagefaults")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/r/20241104135517.536628371@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ mm/memory.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index b0a001c34603b..248e30c3a22d0 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10760,8 +10760,12 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x3011, "ASUS B5605CVA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
- 	SND_PCI_QUIRK(0x1043, 0x3061, "ASUS B3405CCA", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x3071, "ASUS B5405CCA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x30c1, "ASUS B3605CCA / P3605CCA", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x30d1, "ASUS B5405CCA", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x30e1, "ASUS B5605CCA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x31d0, "ASUS Zen AIO 27 Z272SD_A272SD", ALC274_FIXUP_ASUS_ZEN_AIO_27),
-+	SND_PCI_QUIRK(0x1043, 0x31e1, "ASUS B5605CCA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x31f1, "ASUS B3605CCA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
- 	SND_PCI_QUIRK(0x1043, 0x3a30, "ASUS G814JVR/JIR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+diff --git a/mm/memory.c b/mm/memory.c
+index fd874df17b365..2e776ea38348a 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5848,10 +5848,8 @@ void __might_fault(const char *file, int line)
+ 	if (pagefault_disabled())
+ 		return;
+ 	__might_sleep(file, line);
+-#if defined(CONFIG_DEBUG_ATOMIC_SLEEP)
+ 	if (current->mm)
+ 		might_lock_read(&current->mm->mmap_lock);
+-#endif
+ }
+ EXPORT_SYMBOL(__might_fault);
+ #endif
 -- 
 2.39.5
 
