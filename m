@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BC3DA807CF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39D92A80693
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:29:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39DDF1884FF6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:35:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0A0A7A9A6E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:25:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A138726A088;
-	Tue,  8 Apr 2025 12:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82D5269CF7;
+	Tue,  8 Apr 2025 12:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ji/nn9WJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LFAHMzqt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6007B20330;
-	Tue,  8 Apr 2025 12:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C7B2638B8;
+	Tue,  8 Apr 2025 12:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115536; cv=none; b=llo3PwI/jSh9gxr6HhsRgsx7lvjJa7NT2xwH3NFfNbK8rBZzZqR+QxKpcFVL7Bmz+QB/B7gcNEAxmYmSQkTK7WMppAI7d9UgTa1WugKMkFnv2eYZsyzI7QColcDjn0tIAb8c5zVNwWsaO9we3gtPju/Ol78qz+1tIm3rdanhN4M=
+	t=1744115051; cv=none; b=YCEOG2K9Rk8omsqBjbj7vq0mq/N122zdrH3NL2YnJvskI4Y6i1ez8Z6f+oQ/W/uETlWGqPVjMs/AHutyxZLNdqk3ZLAX/AJmhisMewF1cFzjzkmN3jdOmNSI1Sb4YWTyfFd+w+FFnN8uJiqKTRsQ6FVZ4hBlq9mTRz0iNXBFe+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115536; c=relaxed/simple;
-	bh=nA5Ra0ryhmC1iKIWNInvb4ARH1aVwoskg6m/jQJv+iI=;
+	s=arc-20240116; t=1744115051; c=relaxed/simple;
+	bh=SdUReQwx8uwbLB8QEJUlCD93XGD1XpAZPTbIldlsq+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F9OJrGA0CeY0Ov7ipPL5rIlyAnF1pi4DSp4M9Rc0HVHI0rSJLwNh+8g1mASvCZx7zt4Ybu5Lz9mQugJhxSg0FiuxhD8MPlzQenIutElXqbLer9BFVIEAJTwF/rhuZtFbEP9QzEx2C6YXU5Rje+AZ9qzC8kVMe5+caWf/ZE8gBdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ji/nn9WJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C77C4CEE5;
-	Tue,  8 Apr 2025 12:32:15 +0000 (UTC)
+	 MIME-Version; b=bC7WOgcCh7ZfFjh/Il2d0l8OINg0UCEfYwg/iUJq+2IblJNyczIHoaTbkfiqFIoN7YXsS6BNig0w7StA7Siynp99xtgg0qjCN6/4iVuWWpwa8VifreGVDwgi6rCHReiSKION7sc0Xdj9ZFFLgU9NwIhv4QyXk/Zafs7P5CFh+1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LFAHMzqt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E4AC4CEE5;
+	Tue,  8 Apr 2025 12:24:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115536;
-	bh=nA5Ra0ryhmC1iKIWNInvb4ARH1aVwoskg6m/jQJv+iI=;
+	s=korg; t=1744115051;
+	bh=SdUReQwx8uwbLB8QEJUlCD93XGD1XpAZPTbIldlsq+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ji/nn9WJrhg5U+GHmT2hrCH8IujJ9tZw+vccv4vBTGlTvCwcmtoPxJQZoOxmLavA3
-	 l4pmtPbsIxpgFFasVDmP91lIjsTKVeg0JorDdidSNoeb/1Qc1RkV9FuxPorrZwv0J+
-	 9j4WEz+u6BPXqMkMBZULrOaROYh08tn0GkLZ0z+E=
+	b=LFAHMzqtfTXRVVFBVBWAULYEbGBkirezybBO3uVnR+Dl+1kISyRO3co415nDblHMF
+	 u0tZkFgWwlM7d77s1I3+vWp3U4ou5Xo+8hueNUQwbAjrG/372FmyOrgU0YS+icmefG
+	 FgvHaRUu0DyCk1sqK+lQflBD7d5MDTWomptvb0F4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Schumacher <tim.schumacher1@huawei.com>,
-	Paul Moore <paul@paul-moore.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 012/204] selinux: Chain up tool resolving errors in install_policy.sh
+Subject: [PATCH 6.13 330/499] sched/deadline: Use online cpus for validating runtime
 Date: Tue,  8 Apr 2025 12:49:02 +0200
-Message-ID: <20250408104820.668601143@linuxfoundation.org>
+Message-ID: <20250408104859.456009663@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Schumacher <tim.schumacher1@huawei.com>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
 
-[ Upstream commit 6ae0042f4d3f331e841495eb0a3d51598e593ec2 ]
+[ Upstream commit 14672f059d83f591afb2ee1fff56858efe055e5a ]
 
-Subshell evaluations are not exempt from errexit, so if a command is
-not available, `which` will fail and exit the script as a whole.
-This causes the helpful error messages to not be printed if they are
-tacked on using a `$?` comparison.
+The ftrace selftest reported a failure because writing -1 to
+sched_rt_runtime_us returns -EBUSY. This happens when the possible
+CPUs are different from active CPUs.
 
-Resolve the issue by using chains of logical operators, which are not
-subject to the effects of errexit.
+Active CPUs are part of one root domain, while remaining CPUs are part
+of def_root_domain. Since active cpumask is being used, this results in
+cpus=0 when a non active CPUs is used in the loop.
 
-Fixes: e37c1877ba5b1 ("scripts/selinux: modernize mdp")
-Signed-off-by: Tim Schumacher <tim.schumacher1@huawei.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Fix it by looping over the online CPUs instead for validating the
+bandwidth calculations.
+
+Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Juri Lelli <juri.lelli@redhat.com>
+Link: https://lore.kernel.org/r/20250306052954.452005-2-sshegde@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/selinux/install_policy.sh | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ kernel/sched/deadline.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/selinux/install_policy.sh b/scripts/selinux/install_policy.sh
-index 24086793b0d8d..db40237e60ce7 100755
---- a/scripts/selinux/install_policy.sh
-+++ b/scripts/selinux/install_policy.sh
-@@ -6,27 +6,24 @@ if [ `id -u` -ne 0 ]; then
- 	exit 1
- fi
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index d94f2ed6d1f46..cae0df561aea8 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -3168,7 +3168,7 @@ int sched_dl_global_validate(void)
+ 	 * value smaller than the currently allocated bandwidth in
+ 	 * any of the root_domains.
+ 	 */
+-	for_each_possible_cpu(cpu) {
++	for_each_online_cpu(cpu) {
+ 		rcu_read_lock_sched();
  
--SF=`which setfiles`
--if [ $? -eq 1 ]; then
-+SF=`which setfiles` || {
- 	echo "Could not find setfiles"
- 	echo "Do you have policycoreutils installed?"
- 	exit 1
--fi
-+}
- 
--CP=`which checkpolicy`
--if [ $? -eq 1 ]; then
-+CP=`which checkpolicy` || {
- 	echo "Could not find checkpolicy"
- 	echo "Do you have checkpolicy installed?"
- 	exit 1
--fi
-+}
- VERS=`$CP -V | awk '{print $1}'`
- 
--ENABLED=`which selinuxenabled`
--if [ $? -eq 1 ]; then
-+ENABLED=`which selinuxenabled` || {
- 	echo "Could not find selinuxenabled"
- 	echo "Do you have libselinux-utils installed?"
- 	exit 1
--fi
-+}
- 
- if selinuxenabled; then
-     echo "SELinux is already enabled"
+ 		if (dl_bw_visited(cpu, gen))
 -- 
 2.39.5
 
