@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-131181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B208A8090B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:50:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15B0CA80488
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:09:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5760A4A7C0A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AC2F3BDB0A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6CA268685;
-	Tue,  8 Apr 2025 12:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87D8269AE4;
+	Tue,  8 Apr 2025 11:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="otSpE+wD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cgCENoVj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FE822488E;
-	Tue,  8 Apr 2025 12:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A746426869D;
+	Tue,  8 Apr 2025 11:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115707; cv=none; b=e2iWGqXKmxx0s9Y8LwyUr7YwZzJgCkoCAPCkkJYqt93zghZ1eD3smpTU+3e8OSp2eLM/KG/8yVInsN8DDma8wW67OCRtfqOJircL3B228+HTT1z+zj0zUvczZWgQnJ6j89QNQFKkoY/JLh8c4G+asZ+qreGfN16A0OBgX/iAXNc=
+	t=1744113532; cv=none; b=AUOm06NFj6KZedFrcTECT/B76ncDCggvc21FzU8X1FalW5vm0BzzhUpFYY7jGq+YZAxhkoJvJmcf1VDT4W55EU1Mi4FVVFyLjD1TEtpvIu0n+NT0uI3bioao6Wl9u75KYQZbq0izAwuZkWeKCQ++GvpnALzhqY4O612YuemARzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115707; c=relaxed/simple;
-	bh=dtO7xHLCsM52V7ny7hfYHJB4fYF0aT2NI2z0PhrsqpQ=;
+	s=arc-20240116; t=1744113532; c=relaxed/simple;
+	bh=tC0U0yFGfX11gMaWihfxP+yfhaFTy3Ur7u1rc3L2ah0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TyNyigPkKlzwRTFfKmXM4qYNj7ffKoexKn4ElJi7Nd7MsBKrMWjApThyzCdaxBUiLzYQNa9WR+svgerF0IEMY7bMXmIh9EL4I3MAZalUev3cC8xXPhgb/AtXzG7sNySX0bvuWm77mLjX6XCCbiiRdkWRZ0+NyIcAdNVvNEQ3SaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=otSpE+wD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEEA2C4CEE5;
-	Tue,  8 Apr 2025 12:35:06 +0000 (UTC)
+	 MIME-Version; b=sswkJGuF5+v86gO0xVImQ2uA9GP8jfsYQdbzuzvtYOoN96iUMDIV7GnoTQzB6/SvGTSkpct8ZmKUpwKXWeVDesHNY+7S1OrAFKzu+sAxeG75BhubOT+O9x92YQhR6uTygO/uKEJcll0gK18fiH2dH0SC1YW5n8gLKx0aSUnwkP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cgCENoVj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AEE5C4CEE5;
+	Tue,  8 Apr 2025 11:58:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115707;
-	bh=dtO7xHLCsM52V7ny7hfYHJB4fYF0aT2NI2z0PhrsqpQ=;
+	s=korg; t=1744113532;
+	bh=tC0U0yFGfX11gMaWihfxP+yfhaFTy3Ur7u1rc3L2ah0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=otSpE+wDEcu5V/9fAusgUi63DWABVd+g5guK27NQDDJ3t59KLYUSku4seG7eFE2YP
-	 N602S7iHoLEN26TRWmWrweIGYtMlYMAN1ckt7iQrfwpaYb//EAjX98fiXf2mRziA/w
-	 4KOvtNM8bzV8MB3hZkppAFnjXgnHHhucK0+lmrCk=
+	b=cgCENoVjOAL1+it28wgUeengWFOrg1g9Fj4Xiv4EhoVzPJ/dl7zmHxQI8/fVH0jCZ
+	 DobsLrIS4+ilJN/5U0THq+9IdaV75ZWFBjhW4DJ9DtCuYy2jOneFCUJ3Y8fq7kL/kC
+	 61F4HFOr4AqYY/vxeQzFOVllBlamiDHa0O3IosnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Stodden <dns@arista.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	Winston Wen <wentao@uniontech.com>,
+	Wentao Guan <guanwentao@uniontech.com>,
+	Yuli Wang <wangyuli@uniontech.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 035/204] PCI/ASPM: Fix link state exit during switch upstream function removal
+Subject: [PATCH 6.6 154/268] LoongArch: Rework the arch_kgdb_breakpoint() implementation
 Date: Tue,  8 Apr 2025 12:49:25 +0200
-Message-ID: <20250408104821.369522142@linuxfoundation.org>
+Message-ID: <20250408104832.693098894@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +63,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Stodden <daniel.stodden@gmail.com>
+From: Yuli Wang <wangyuli@uniontech.com>
 
-[ Upstream commit cbf937dcadfd571a434f8074d057b32cd14fbea5 ]
+[ Upstream commit 29c92a41c6d2879c1f62220fe4758dce191bb38f ]
 
-Before 456d8aa37d0f ("PCI/ASPM: Disable ASPM on MFD function removal to
-avoid use-after-free"), we would free the ASPM link only after the last
-function on the bus pertaining to the given link was removed.
+The arch_kgdb_breakpoint() function defines the kgdb_breakinst symbol
+using inline assembly.
 
-That was too late. If function 0 is removed before sibling function,
-link->downstream would point to free'd memory after.
+1. There's a potential issue where the compiler might inline
+arch_kgdb_breakpoint(), which would then define the kgdb_breakinst
+symbol multiple times, leading to a linker error.
 
-After above change, we freed the ASPM parent link state upon any function
-removal on the bus pertaining to a given link.
+To prevent this, declare arch_kgdb_breakpoint() as noinline.
 
-That is too early. If the link is to a PCIe switch with MFD on the upstream
-port, then removing functions other than 0 first would free a link which
-still remains parent_link to the remaining downstream ports.
+Fix follow error with LLVM-19 *only* when LTO_CLANG_FULL:
+    LD      vmlinux.o
+  ld.lld-19: error: ld-temp.o <inline asm>:3:1: symbol 'kgdb_breakinst' is already defined
+  kgdb_breakinst: break 2
+  ^
 
-The resulting GPFs are especially frequent during hot-unplug, because
-pciehp removes devices on the link bus in reverse order.
+2. Remove "nop" in the inline assembly because it's meaningless for
+LoongArch here.
 
-On that switch, function 0 is the virtual P2P bridge to the internal bus.
-Free exactly when function 0 is removed -- before the parent link is
-obsolete, but after all subordinate links are gone.
+3. Add "STACK_FRAME_NON_STANDARD" for arch_kgdb_breakpoint() to avoid
+the objtool warning.
 
-Link: https://lore.kernel.org/r/e12898835f25234561c9d7de4435590d957b85d9.1734924854.git.dns@arista.com
-Fixes: 456d8aa37d0f ("PCI/ASPM: Disable ASPM on MFD function removal to avoid use-after-free")
-Signed-off-by: Daniel Stodden <dns@arista.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Fixes: e14dd076964e ("LoongArch: Add basic KGDB & KDB support")
+Tested-by: Binbin Zhou <zhoubinbin@loongson.cn>
+Co-developed-by: Winston Wen <wentao@uniontech.com>
+Signed-off-by: Winston Wen <wentao@uniontech.com>
+Co-developed-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: Yuli Wang <wangyuli@uniontech.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/aspm.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ arch/loongarch/kernel/kgdb.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-index cf4acea6610d5..20ec2a4aae65f 100644
---- a/drivers/pci/pcie/aspm.c
-+++ b/drivers/pci/pcie/aspm.c
-@@ -1031,16 +1031,16 @@ void pcie_aspm_exit_link_state(struct pci_dev *pdev)
- 	parent_link = link->parent;
- 
- 	/*
--	 * link->downstream is a pointer to the pci_dev of function 0.  If
--	 * we remove that function, the pci_dev is about to be deallocated,
--	 * so we can't use link->downstream again.  Free the link state to
--	 * avoid this.
-+	 * Free the parent link state, no later than function 0 (i.e.
-+	 * link->downstream) being removed.
- 	 *
--	 * If we're removing a non-0 function, it's possible we could
--	 * retain the link state, but PCIe r6.0, sec 7.5.3.7, recommends
--	 * programming the same ASPM Control value for all functions of
--	 * multi-function devices, so disable ASPM for all of them.
-+	 * Do not free the link state any earlier. If function 0 is a
-+	 * switch upstream port, this link state is parent_link to all
-+	 * subordinate ones.
- 	 */
-+	if (pdev != link->downstream)
-+		goto out;
-+
- 	pcie_config_aspm_link(link, 0);
- 	list_del(&link->sibling);
- 	free_link_state(link);
-@@ -1051,6 +1051,7 @@ void pcie_aspm_exit_link_state(struct pci_dev *pdev)
- 		pcie_config_aspm_path(parent_link);
- 	}
- 
-+ out:
- 	mutex_unlock(&aspm_lock);
- 	up_read(&pci_bus_sem);
+diff --git a/arch/loongarch/kernel/kgdb.c b/arch/loongarch/kernel/kgdb.c
+index 445c452d72a79..7be5b4c0c9002 100644
+--- a/arch/loongarch/kernel/kgdb.c
++++ b/arch/loongarch/kernel/kgdb.c
+@@ -8,6 +8,7 @@
+ #include <linux/hw_breakpoint.h>
+ #include <linux/kdebug.h>
+ #include <linux/kgdb.h>
++#include <linux/objtool.h>
+ #include <linux/processor.h>
+ #include <linux/ptrace.h>
+ #include <linux/sched.h>
+@@ -224,13 +225,13 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
+ 	regs->csr_era = pc;
  }
+ 
+-void arch_kgdb_breakpoint(void)
++noinline void arch_kgdb_breakpoint(void)
+ {
+ 	__asm__ __volatile__ (			\
+ 		".globl kgdb_breakinst\n\t"	\
+-		"nop\n"				\
+ 		"kgdb_breakinst:\tbreak 2\n\t"); /* BRK_KDB = 2 */
+ }
++STACK_FRAME_NON_STANDARD(arch_kgdb_breakpoint);
+ 
+ /*
+  * Calls linux_debug_hook before the kernel dies. If KGDB is enabled,
 -- 
 2.39.5
 
