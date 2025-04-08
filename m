@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-130974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 326ADA8070A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4324DA80443
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:07:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D91A1B85E27
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:28:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3ABE1447DF2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784C6268FED;
-	Tue,  8 Apr 2025 12:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC0B269CF0;
+	Tue,  8 Apr 2025 11:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zr/bdEQu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMq6PfmY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341262686A5;
-	Tue,  8 Apr 2025 12:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDBB269885;
+	Tue,  8 Apr 2025 11:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115153; cv=none; b=Z0i1ryvV7oibyCPMAD/86mgk4e4hwI5pSbjpbYM3ZLx7mSgk5mpQje4J/gB/jPUyOpriTuVhY4IF9g7g/KQgLSow1kNmBJksb7lH09tJHi2BbCUtI1YY+xmXWO69yTMNyj/59T03PT2MXDurbZDGW04JIFiRrkhdz79/JJBXtMI=
+	t=1744113465; cv=none; b=TAyU+8lckwmNGG3bOaLfTy/l7CmehhUO8kGcDHRWRPEZizCJA0q0xSO/7TwhcqBj6RZhS7wx/OCT/CcT50n2cSaw3j7m2sbYeO71cE9DEKBdubnnyTVtyi141coj/Ue1SlBUXA/SgzrCMLz3Siil3qLcxnHmYpIPs8lLClAJf2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115153; c=relaxed/simple;
-	bh=fG4yCUOj1y+8gGsb/0YVQhqDufgmPr+DA2KGnQJNBWo=;
+	s=arc-20240116; t=1744113465; c=relaxed/simple;
+	bh=L1Dyfz1Qm2UDpH5avrfAe/6WxUzmp3Yg7Mjgc/+bhTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q4io2tdRanJeS6pytFg5E9C+x81tQSmxMJ4KqHdgq7Zbu5MMAPsf+cngHAqwNquGCxIJUksY7dmPcyBR2xkruF5TyfmOYFiVDoF52phiIWGGGYim5Jh00/eUgpUoApx6pBhjjiVe8UpeGqKW9Aj20hj6rx5kji/y4iCKT9CmAwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zr/bdEQu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8CFEC4CEE7;
-	Tue,  8 Apr 2025 12:25:52 +0000 (UTC)
+	 MIME-Version; b=Ij7KGOkc7HIZqWOdxCwcKe+k8GSQUhoW/+nZfiHyn9JcAvWfN+JZDP0k4nNAlVjhaTC6D6dhuFSopqRhcriKOBR69IoS6q7MXVKbjrWBQP48GvsmKcMrgpfxcEHlkdnE7UkdRGTp7COeGiSjCOKUWvYhOC+uu6fIyclhWmGNbV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UMq6PfmY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF16BC4CEE5;
+	Tue,  8 Apr 2025 11:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115153;
-	bh=fG4yCUOj1y+8gGsb/0YVQhqDufgmPr+DA2KGnQJNBWo=;
+	s=korg; t=1744113465;
+	bh=L1Dyfz1Qm2UDpH5avrfAe/6WxUzmp3Yg7Mjgc/+bhTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zr/bdEQuyrwdN3vf/dQfoQd7fKrJwEN2yFaps1SZZHB2oJvufMbWbaFRMwb59QBy/
-	 GExuuojSp7D6cb0CtY2jQ46m+p3xkNOK3P4zcNjlBTgV1TEuzF84PI+E+uu28O6qED
-	 c+pAU1/Q1pFhxHsf41m2KbLffYe5ZRh0mFlNPwFI=
+	b=UMq6PfmY4ZHhJZngOL3B6OZyTHZkRIZ1KOHySfNXohiDRzWE7zn+vmgRu2AIAOe4k
+	 XQtdm9MG8TJYSHNtp3HuvJkPs4tqoIdqsQF/BoakydP79HA0bdVQ7kaoCOkC0d9v4q
+	 ifqD/4jXtRCqONoRA86ckHymNDn2aS6Z22rMizJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Simon Tatham <anakin@pobox.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 368/499] RISC-V: errata: Use medany for relocatable builds
+Subject: [PATCH 6.6 169/268] affs: dont write overlarge OFS data block size fields
 Date: Tue,  8 Apr 2025 12:49:40 +0200
-Message-ID: <20250408104900.406272696@linuxfoundation.org>
+Message-ID: <20250408104833.107555670@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Palmer Dabbelt <palmer@rivosinc.com>
+From: Simon Tatham <anakin@pobox.com>
 
-[ Upstream commit bb58e1579f431d42469b6aed0f03eff383ba6db5 ]
+[ Upstream commit 011ea742a25a77bac3d995f457886a67d178c6f0 ]
 
-We're trying to mix non-PIC/PIE objects into the otherwise-PIE
-relocatable kernels, to avoid GOT/PLT references during early boot
-alternative resolution (which happens before the GOT/PLT are set up).
+If a data sector on an OFS floppy contains a value > 0x1e8 (the
+largest amount of data that fits in the sector after its header), then
+an Amiga reading the file can return corrupt data, by taking the
+overlarge size at its word and reading past the end of the buffer it
+read the disk sector into!
 
-riscv64-unknown-linux-gnu-ld: arch/riscv/errata/sifive/errata.o: relocation R_RISCV_HI20 against `tlb_flush_all_threshold' can not be used when making a shared object; recompile with -fPIC
-riscv64-unknown-linux-gnu-ld: arch/riscv/errata/thead/errata.o: relocation R_RISCV_HI20 against `riscv_cbom_block_size' can not be used when making a shared object; recompile with -fPIC
+The cause: when affs_write_end_ofs() writes data to an OFS filesystem,
+the new size field for a data block was computed by adding the amount
+of data currently being written (into the block) to the existing value
+of the size field. This is correct if you're extending the file at the
+end, but if you seek backwards in the file and overwrite _existing_
+data, it can lead to the size field being larger than the maximum
+legal value.
 
-Fixes: 8dc2a7e8027f ("riscv: Fix relocatable kernels with early alternatives using -fno-pie")
-Link: https://lore.kernel.org/r/20250326224506.27165-2-palmer@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+This commit changes the calculation so that it sets the size field to
+the max of its previous size and the position within the block that we
+just wrote up to.
+
+Signed-off-by: Simon Tatham <anakin@pobox.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/errata/Makefile | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/affs/file.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/errata/Makefile b/arch/riscv/errata/Makefile
-index f0da9d7b39c37..bc6c77ba837d2 100644
---- a/arch/riscv/errata/Makefile
-+++ b/arch/riscv/errata/Makefile
-@@ -1,5 +1,9 @@
- ifdef CONFIG_RELOCATABLE
--KBUILD_CFLAGS += -fno-pie
-+# We can't use PIC/PIE when handling early-boot errata parsing, as the kernel
-+# doesn't have a GOT setup at that point.  So instead just use medany: it's
-+# usually position-independent, so it should be good enough for the errata
-+# handling.
-+KBUILD_CFLAGS += -fno-pie -mcmodel=medany
- endif
- 
- ifdef CONFIG_RISCV_ALTERNATIVE_EARLY
+diff --git a/fs/affs/file.c b/fs/affs/file.c
+index 8fd1a7c5958a8..93b319917c9a9 100644
+--- a/fs/affs/file.c
++++ b/fs/affs/file.c
+@@ -726,7 +726,8 @@ static int affs_write_end_ofs(struct file *file, struct address_space *mapping,
+ 		tmp = min(bsize - boff, to - from);
+ 		BUG_ON(boff + tmp > bsize || tmp > bsize);
+ 		memcpy(AFFS_DATA(bh) + boff, data + from, tmp);
+-		be32_add_cpu(&AFFS_DATA_HEAD(bh)->size, tmp);
++		AFFS_DATA_HEAD(bh)->size = cpu_to_be32(
++			max(boff + tmp, be32_to_cpu(AFFS_DATA_HEAD(bh)->size)));
+ 		affs_fix_checksum(sb, bh);
+ 		mark_buffer_dirty_inode(bh, inode);
+ 		written += tmp;
 -- 
 2.39.5
 
