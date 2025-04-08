@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-131633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99716A80B62
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:15:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77FDCA80482
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:09:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59BA84E7C61
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF8611B63915
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E2F27BF67;
-	Tue,  8 Apr 2025 12:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F5E26A0ED;
+	Tue,  8 Apr 2025 12:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmZ68Tuc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ok6wLYUA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C4826A0CF;
-	Tue,  8 Apr 2025 12:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820D126A0EA;
+	Tue,  8 Apr 2025 12:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116924; cv=none; b=FQvI/MMacp9M4i9uNW1Z7pzH1wDzqd3PLBJWfE0P7cHFaOYgjfMDWjA1N0t9umqH18ygXFtQAT7RonuB42wPnSlvEZ1T4DhHJ8pIJzaZT3HUOx0rRe61KaImeuzh7SAdlzloOn8nrs6hfeqJ+3a2aBb+l4XSOf53bvFFgaioqRI=
+	t=1744113690; cv=none; b=mM6yLsSw0JJFCWJqejAuKL4mdcL2FAfKXpf5bSuuW7CME3VdmjVUQ/d1XGacfgkfMlf/uUOBpIWZ+sn89lEd6ZDhY6y039MpMlIGMm7hoSnFPCoAQBr5VVUIh87DLuVsOCLhJOjIBxf/KQLgIsqxkHJp/qhvzHBQQTZ6MrDyzlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116924; c=relaxed/simple;
-	bh=u8HnEp3o0zgGxRV1mKO/3ECqOVeA6/zZhXoO0cCtQtE=;
+	s=arc-20240116; t=1744113690; c=relaxed/simple;
+	bh=TACpO9qeZTnGK2Oe8POEFrFi7e4ftCWCKR2iRfysiLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NEST4GvwYKDz5Bh9u3HWmXIJAU6xvB/gzjWos6mZP097W2MoWGBHTRWZ4gL9iWZMCMzIxn+CmyOcVMNlerlsjwNEXwG7xnjcPVHsk1u9ZvvjmxNHJs2NaB/5HXJErhRFrsW/2tq1/NUxGFjzvI7ou2ojvJN/IRagn35dJD/dFsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmZ68Tuc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7624C4CEE7;
-	Tue,  8 Apr 2025 12:55:23 +0000 (UTC)
+	 MIME-Version; b=mI+/X/pemn9MPCeVLSC+c9SExu4CDNxb6mRQPY+dgvs4acXrTiibMLnxCKDYrFTfAL4tyFEE+uQJsq0fOC5JG7qvZUBiO7P1BxmSe+ZCYhAmBMNQ+85bv7zwQXu8+at+2JCtOpGs2c9G3LpTXPnL/127FmM4M9IfYInJ7glRE2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ok6wLYUA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A91C4CEE5;
+	Tue,  8 Apr 2025 12:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116924;
-	bh=u8HnEp3o0zgGxRV1mKO/3ECqOVeA6/zZhXoO0cCtQtE=;
+	s=korg; t=1744113690;
+	bh=TACpO9qeZTnGK2Oe8POEFrFi7e4ftCWCKR2iRfysiLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dmZ68Tuc+epgnXEdADhP1GPdyGNweNqmAI9wfDtiYrxzzL8vdIO3MPzg+54bLpKFK
-	 nVbtz0YD/GXHimcX8D4mXt5EtbeKuq9IpM03hWjq7KjB1FxeVwgRLduDrO91sg+0yP
-	 OZ9TpeBgknaSaaIHTdsUJFu1Lubjtt/ud4hsVoFM=
+	b=ok6wLYUA9wxe0XfcEL5RFp3J1dkQEBMuDC4gQrwtTXHkaQT3avn3wT3wslJ4QSz1p
+	 3y9sXwVnDWG4RNU3PalLL1n8uajWuAHR7/zu5zZDwjysigoCfoL/4cf+jCiGmiuPl4
+	 OmtcP2K1PwEJ4goJ3osBimYaZXvgZumSeCLbnXdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 320/423] ASoC: imx-card: Add NULL check in imx_card_probe()
-Date: Tue,  8 Apr 2025 12:50:46 +0200
-Message-ID: <20250408104853.267812985@linuxfoundation.org>
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 236/268] x86/microcode/AMD: Fix __apply_microcode_amd()s return value
+Date: Tue,  8 Apr 2025 12:50:47 +0200
+Message-ID: <20250408104834.953239608@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Boris Ostrovsky <boris.ostrovsky@oracle.com>
 
-[ Upstream commit 93d34608fd162f725172e780b1c60cc93a920719 ]
+commit 31ab12df723543047c3fc19cb8f8c4498ec6267f upstream.
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-imx_card_probe() does not check for this case, which results in a NULL
-pointer dereference.
+When verify_sha256_digest() fails, __apply_microcode_amd() should propagate
+the failure by returning false (and not -1 which is promoted to true).
 
-Add NULL check after devm_kasprintf() to prevent this issue.
-
-Fixes: aa736700f42f ("ASoC: imx-card: Add imx-card machine driver")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250401142510.29900-1-bsdhenrymartin@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 50cef76d5cb0 ("x86/microcode/AMD: Load only SHA256-checksummed patches")
+Signed-off-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250327230503.1850368-2-boris.ostrovsky@oracle.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/imx-card.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/kernel/cpu/microcode/amd.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
-index a7215bad64845..93dbe40008c00 100644
---- a/sound/soc/fsl/imx-card.c
-+++ b/sound/soc/fsl/imx-card.c
-@@ -738,6 +738,8 @@ static int imx_card_probe(struct platform_device *pdev)
- 				data->dapm_routes[i].sink =
- 					devm_kasprintf(&pdev->dev, GFP_KERNEL, "%d %s",
- 						       i + 1, "Playback");
-+				if (!data->dapm_routes[i].sink)
-+					return -ENOMEM;
- 				data->dapm_routes[i].source = "CPU-Playback";
- 			}
- 		}
-@@ -755,6 +757,8 @@ static int imx_card_probe(struct platform_device *pdev)
- 				data->dapm_routes[i].source =
- 					devm_kasprintf(&pdev->dev, GFP_KERNEL, "%d %s",
- 						       i + 1, "Capture");
-+				if (!data->dapm_routes[i].source)
-+					return -ENOMEM;
- 				data->dapm_routes[i].sink = "CPU-Capture";
- 			}
- 		}
--- 
-2.39.5
-
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -603,7 +603,7 @@ static bool __apply_microcode_amd(struct
+ 	unsigned long p_addr = (unsigned long)&mc->hdr.data_code;
+ 
+ 	if (!verify_sha256_digest(mc->hdr.patch_id, *cur_rev, (const u8 *)p_addr, psize))
+-		return -1;
++		return false;
+ 
+ 	native_wrmsrl(MSR_AMD64_PATCH_LOADER, p_addr);
+ 
 
 
 
