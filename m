@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-131319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFC6CA80A15
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:00:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63000A80BF4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:23:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C86A08A4033
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:47:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17B0F50513E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:11:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E21E926B08B;
-	Tue,  8 Apr 2025 12:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79F627F4DE;
+	Tue,  8 Apr 2025 12:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2TYwmS0F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxvhBJ+l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9B226A0EB;
-	Tue,  8 Apr 2025 12:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFA927E1CA;
+	Tue,  8 Apr 2025 12:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116075; cv=none; b=WxkFE4yL2vPADhRn563IU5CqC1PpwOHk7MvARN1wkOwt9faOu9ctzIpijoXd9E1W1WKJ+ioOEcZ4vwa47OPKM8kAyy8g9Vhud0yadkZ+mRn2sSqSdhrrvQS9B4MBUAFzj50LEgx0lB6+odPH1T1hqgUpgvZmJk9fl/5vgpjlbD4=
+	t=1744117168; cv=none; b=cX8qEiIa+4REeIl5188I+f29tJN/gJwxfjSqwUwNYnuUjJxXav4k1zbl67qEeorxOmtU0HehDiOaZJv1opaIKqMZ41vQ879k8af+N2dGwDLohhQCtR98WBNgrf/8460khhoZR4HgI2H4zYheHPVVgZv8s0XMEGNexXjr8tV5V54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116075; c=relaxed/simple;
-	bh=emIuhWo0JPBqAxFU2ktvjSuOfMJrWIDFc6I3BkVUq+M=;
+	s=arc-20240116; t=1744117168; c=relaxed/simple;
+	bh=p4wtcDGc/FDxKh6MQLVsmb+16HkqGwCqueR1meKr9uc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AeBfJDucbSSWvSW9IBZOS1OBAaziCh8dpdebHOMZ87Ykm4gSnc/EuNNI/ltrPA2Po4UJ7w76YItvAGeIzAI6FMyn10Hk564Dlk9W9yOwrkD+uWU2iB+hNIdQsQH06UMwUfvMm7fu0VsVrK1gmL5xnCoJ2nmDqbjtUHJkIBHmOo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2TYwmS0F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F7A7C4CEE7;
-	Tue,  8 Apr 2025 12:41:14 +0000 (UTC)
+	 MIME-Version; b=iBQ5fFwKfG0qrvHkidt/9UL7WZVlrlx/dj2BGnRDmwBlZB62F4CERMr01To0UDe2dg5BvBA7XezqtT3LcZEIk+syANwzZOIp1gzo6LShkfyXH7K3cUcs2aw0CT905XvAuT/L+K9MfSg37exe9Upr8Hr4zleQsvJUsP776xE8kdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxvhBJ+l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F357CC4CEE7;
+	Tue,  8 Apr 2025 12:59:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116075;
-	bh=emIuhWo0JPBqAxFU2ktvjSuOfMJrWIDFc6I3BkVUq+M=;
+	s=korg; t=1744117168;
+	bh=p4wtcDGc/FDxKh6MQLVsmb+16HkqGwCqueR1meKr9uc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2TYwmS0FyPpQZOnynQgb1uVWX2VTnJACMAdGmAzvLRSziaqkrzyeF8DnKE/mHxsrz
-	 Rc0uEB+xAD0Uw4Tv5L+pOgjvEdTjlB0JVxuUaeH2HOP7YN0MMjd2gmnGgL8ZJJPN9/
-	 0TSm4oUOou/pXlSgRGvLHDilz5uaMB7ExOr3HN2w=
+	b=DxvhBJ+luwrB2OQEqTIGVUq0xmtdyR76sdavMYJ8+rF2WQpCmWNWBefyXAxm9GQp6
+	 2LmJHy+COrpu0oWFdkXbfYzMPhTl14p92poANVFS97QdsX6bk3dxeCWHbtVtJ+2v/f
+	 A5BD7bDuPdmuDlyO7CP6eAZr3zgOBm3yUO+e6JO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 204/204] NFSD: Skip sending CB_RECALL_ANY when the backchannel isnt up
-Date: Tue,  8 Apr 2025 12:52:14 +0200
-Message-ID: <20250408104826.312392909@linuxfoundation.org>
+	Nick Morrow <usbwifi2024@gmail.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Salah Coronya <salah.coronya@gmail.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.12 409/423] wifi: mt76: mt7921: fix kernel panic due to null pointer dereference
+Date: Tue,  8 Apr 2025 12:52:15 +0200
+Message-ID: <20250408104855.440792117@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-commit 8a388c1fabeb6606e16467b23242416c0dbeffad upstream.
+commit adc3fd2a2277b7cc0b61692463771bf9bd298036 upstream.
 
-NFSD sends CB_RECALL_ANY to clients when the server is low on
-memory or that client has a large number of delegations outstanding.
+Address a kernel panic caused by a null pointer dereference in the
+`mt792x_rx_get_wcid` function. The issue arises because the `deflink` structure
+is not properly initialized with the `sta` context. This patch ensures that the
+`deflink` structure is correctly linked to the `sta` context, preventing the
+null pointer dereference.
 
-We've seen cases where NFSD attempts to send CB_RECALL_ANY requests
-to disconnected clients, and gets confused. These calls never go
-anywhere if a backchannel transport to the target client isn't
-available. Before the server can send any backchannel operation, the
-client has to connect first and then do a BIND_CONN_TO_SESSION.
+ BUG: kernel NULL pointer dereference, address: 0000000000000400
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 0 P4D 0
+ Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
+ CPU: 0 UID: 0 PID: 470 Comm: mt76-usb-rx phy Not tainted 6.12.13-gentoo-dist #1
+ Hardware name:  /AMD HUDSON-M1, BIOS 4.6.4 11/15/2011
+ RIP: 0010:mt792x_rx_get_wcid+0x48/0x140 [mt792x_lib]
+ RSP: 0018:ffffa147c055fd98 EFLAGS: 00010202
+ RAX: 0000000000000000 RBX: ffff8e9ecb652000 RCX: 0000000000000000
+ RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff8e9ecb652000
+ RBP: 0000000000000685 R08: ffff8e9ec6570000 R09: 0000000000000000
+ R10: ffff8e9ecd2ca000 R11: ffff8e9f22a217c0 R12: 0000000038010119
+ R13: 0000000080843801 R14: ffff8e9ec6570000 R15: ffff8e9ecb652000
+ FS:  0000000000000000(0000) GS:ffff8e9f22a00000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000000000400 CR3: 000000000d2ea000 CR4: 00000000000006f0
+ Call Trace:
+  <TASK>
+  ? __die_body.cold+0x19/0x27
+  ? page_fault_oops+0x15a/0x2f0
+  ? search_module_extables+0x19/0x60
+  ? search_bpf_extables+0x5f/0x80
+  ? exc_page_fault+0x7e/0x180
+  ? asm_exc_page_fault+0x26/0x30
+  ? mt792x_rx_get_wcid+0x48/0x140 [mt792x_lib]
+  mt7921_queue_rx_skb+0x1c6/0xaa0 [mt7921_common]
+  mt76u_alloc_queues+0x784/0x810 [mt76_usb]
+  ? __pfx___mt76_worker_fn+0x10/0x10 [mt76]
+  __mt76_worker_fn+0x4f/0x80 [mt76]
+  kthread+0xd2/0x100
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork+0x34/0x50
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
+ ---[ end trace 0000000000000000 ]---
 
-This patch doesn't address the root cause of the confusion, but
-there's no need to queue up these optional operations if they can't
-go anywhere.
-
-Fixes: 44df6f439a17 ("NFSD: add delegation reaper to react to low memory condition")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reported-by: Nick Morrow <usbwifi2024@gmail.com>
+Closes: https://github.com/morrownr/USB-WiFi/issues/577
 Cc: stable@vger.kernel.org
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 90c10286b176 ("wifi: mt76: mt7925: Update mt792x_rx_get_wcid for per-link STA")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Tested-by: Salah Coronya <salah.coronya@gmail.com>
+Link: https://patch.msgid.link/20250218033343.1999648-1-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c |   19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -6247,14 +6247,19 @@ deleg_reaper(struct nfsd_net *nn)
- 	spin_lock(&nn->client_lock);
- 	list_for_each_safe(pos, next, &nn->client_lru) {
- 		clp = list_entry(pos, struct nfs4_client, cl_lru);
--		if (clp->cl_state != NFSD4_ACTIVE ||
--			list_empty(&clp->cl_delegations) ||
--			atomic_read(&clp->cl_delegs_in_recall) ||
--			test_bit(NFSD4_CLIENT_CB_RECALL_ANY, &clp->cl_flags) ||
--			(ktime_get_boottime_seconds() -
--				clp->cl_ra_time < 5)) {
-+
-+		if (clp->cl_state != NFSD4_ACTIVE)
-+			continue;
-+		if (list_empty(&clp->cl_delegations))
-+			continue;
-+		if (atomic_read(&clp->cl_delegs_in_recall))
-+			continue;
-+		if (test_bit(NFSD4_CLIENT_CB_RECALL_ANY, &clp->cl_flags))
-+			continue;
-+		if (ktime_get_boottime_seconds() - clp->cl_ra_time < 5)
-+			continue;
-+		if (clp->cl_cb_state != NFSD4_CB_UP)
- 			continue;
--		}
- 		list_add(&clp->cl_ra_cblist, &cblist);
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -805,6 +805,7 @@ int mt7921_mac_sta_add(struct mt76_dev *
+ 	msta->deflink.wcid.phy_idx = mvif->bss_conf.mt76.band_idx;
+ 	msta->deflink.wcid.tx_info |= MT_WCID_TX_INFO_SET;
+ 	msta->deflink.last_txs = jiffies;
++	msta->deflink.sta = msta;
  
- 		/* release in nfsd4_cb_recall_any_release */
+ 	ret = mt76_connac_pm_wake(&dev->mphy, &dev->pm);
+ 	if (ret)
 
 
 
