@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-131341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB87A809F0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:59:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71CC4A805EF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:22:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D0434C57E2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43EC51B837B6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:17:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ECCF26B96F;
-	Tue,  8 Apr 2025 12:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA51826A1C5;
+	Tue,  8 Apr 2025 12:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HbhHDxos"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vt1i3C0Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3F32236FC;
-	Tue,  8 Apr 2025 12:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684B726A08F;
+	Tue,  8 Apr 2025 12:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116135; cv=none; b=ryY91vLtvN620vSdJJr1VvTLkzjBipzA+VC8G8DF40ARWfRmUdDy1yVceTunlO1niPmQaSFMPTkLGkYyLYMJLo2w/KXSNKjyD4TmkSpSRN8Q/m6WqTSUvsTeZL/mztA19bl6NmuoCHIK0Oup3R02I0Obie61Og6Xuzs/WFjL37s=
+	t=1744114533; cv=none; b=EE7wKO6tgBWg7MBe/Ze4p0pNk3i/VGY7vS3DxH3cVVrhXQI1YlIY47u8uWyIx5l+iJwP78DzuYJdblq2VYxZllwgfLsFiRHapm6/GpqLaj6thvUiYQ3yaeBgVG9GR4rDPL9WdV7GHvqkJBS+/0lm6roMSl6I13GoKNKxdCEPpmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116135; c=relaxed/simple;
-	bh=04ElTJrxENLrbJO1zWJMlsxjHyQfWftvtAi86Q+rlAE=;
+	s=arc-20240116; t=1744114533; c=relaxed/simple;
+	bh=fzqdE+PYgISeJqq5FKWji1uAj24op+ahM6TTudPBfwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J9wCKuCOUX+r6pZc6QdmtVhBMrUxYrTbFPxVDRyNKiRr8JZMN/hZkO0tE9qc+yginH1PSmA53rmEFIAZ/+cyp37LE9FiCWM1DuuwRkK5a3w0z793McH/fKGcpuioS8g2FBxooRBhy07IWTc1MfGkMKycOwj61p9W5x1GWrmjUMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HbhHDxos; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84F64C4CEE7;
-	Tue,  8 Apr 2025 12:42:14 +0000 (UTC)
+	 MIME-Version; b=ichrPSaIexxcY5l2ym3MI3Nf4NIZOx35a3nsMgzAqPce9ZgwDxuVEVERWU/1F35F1CM3nocXmRl8XXl7z/FojApctDv/5KOhukCzLm3VWm47nPXnp/G8+kEiwYD7E/kTMPFFmZCSQkptRLneShBnVReIiO+Ykoijal1Uv2jjcqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vt1i3C0Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F092CC4CEE5;
+	Tue,  8 Apr 2025 12:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116134;
-	bh=04ElTJrxENLrbJO1zWJMlsxjHyQfWftvtAi86Q+rlAE=;
+	s=korg; t=1744114533;
+	bh=fzqdE+PYgISeJqq5FKWji1uAj24op+ahM6TTudPBfwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HbhHDxosbVxblNNmkZ3cnCHW3V00dNp+gEIESOphtoNxicjTP4ldVGkPVx4yYur/I
-	 q2Uh4oEOtbS4EyLjpBjauBij7KVWUmmWDPZ5EiaG+VEcSgSCYLYxXmmAPgt02lAKgz
-	 AGQ1Yu7+QyOQhrMe/abpeNM8pW+ogtCqCClKpR34=
+	b=vt1i3C0QgwLgCmTvtl1qhUPzj6gZTrtssLOZh7IheNFcEoJHiQFzWMcrNwBY2g7g3
+	 bC7FbR8LxWtlNA+vd+k042G2Tn4wFgPwt94BW+UvdvQQ4Y5JOD11XhU5fD1QmBKMxd
+	 DEi1TeAjHL1lsK/qDxoMIvs/TnuncE2UIkRACr+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Chen <chen.dylane@linux.dev>,
-	Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Will McVicker <willmcvicker@google.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 028/423] perf/ring_buffer: Allow the EPOLLRDNORM flag for poll
-Date: Tue,  8 Apr 2025 12:45:54 +0200
-Message-ID: <20250408104846.404668411@linuxfoundation.org>
+Subject: [PATCH 6.13 143/499] clk: samsung: Fix UBSAN panic in samsung_clk_init()
+Date: Tue,  8 Apr 2025 12:45:55 +0200
+Message-ID: <20250408104854.755291598@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,45 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Chen <chen.dylane@linux.dev>
+From: Will McVicker <willmcvicker@google.com>
 
-[ Upstream commit c96fff391c095c11dc87dab35be72dee7d217cde ]
+[ Upstream commit d19d7345a7bcdb083b65568a11b11adffe0687af ]
 
-The poll man page says POLLRDNORM is equivalent to POLLIN. For poll(),
-it seems that if user sets pollfd with POLLRDNORM in userspace, perf_poll
-will not return until timeout even if perf_output_wakeup called,
-whereas POLLIN returns.
+With UBSAN_ARRAY_BOUNDS=y, I'm hitting the below panic due to
+dereferencing `ctx->clk_data.hws` before setting
+`ctx->clk_data.num = nr_clks`. Move that up to fix the crash.
 
-Fixes: 76369139ceb9 ("perf: Split up buffer handling from core code")
-Signed-off-by: Tao Chen <chen.dylane@linux.dev>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250314030036.2543180-1-chen.dylane@linux.dev
+  UBSAN: array index out of bounds: 00000000f2005512 [#1] PREEMPT SMP
+  <snip>
+  Call trace:
+   samsung_clk_init+0x110/0x124 (P)
+   samsung_clk_init+0x48/0x124 (L)
+   samsung_cmu_register_one+0x3c/0xa0
+   exynos_arm64_register_cmu+0x54/0x64
+   __gs101_cmu_top_of_clk_init_declare+0x28/0x60
+   ...
+
+Fixes: e620a1e061c4 ("drivers/clk: convert VL struct to struct_size")
+Signed-off-by: Will McVicker <willmcvicker@google.com>
+Link: https://lore.kernel.org/r/20250212183253.509771-1-willmcvicker@google.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/ring_buffer.c | 2 +-
+ drivers/clk/samsung/clk.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
-index 4f46f688d0d49..bbfa22c0a1597 100644
---- a/kernel/events/ring_buffer.c
-+++ b/kernel/events/ring_buffer.c
-@@ -19,7 +19,7 @@
+diff --git a/drivers/clk/samsung/clk.c b/drivers/clk/samsung/clk.c
+index 283c523763e6b..8d440cf56bd45 100644
+--- a/drivers/clk/samsung/clk.c
++++ b/drivers/clk/samsung/clk.c
+@@ -74,12 +74,12 @@ struct samsung_clk_provider * __init samsung_clk_init(struct device *dev,
+ 	if (!ctx)
+ 		panic("could not allocate clock provider context.\n");
  
- static void perf_output_wakeup(struct perf_output_handle *handle)
- {
--	atomic_set(&handle->rb->poll, EPOLLIN);
-+	atomic_set(&handle->rb->poll, EPOLLIN | EPOLLRDNORM);
++	ctx->clk_data.num = nr_clks;
+ 	for (i = 0; i < nr_clks; ++i)
+ 		ctx->clk_data.hws[i] = ERR_PTR(-ENOENT);
  
- 	handle->event->pending_wakeup = 1;
+ 	ctx->dev = dev;
+ 	ctx->reg_base = base;
+-	ctx->clk_data.num = nr_clks;
+ 	spin_lock_init(&ctx->lock);
  
+ 	return ctx;
 -- 
 2.39.5
 
