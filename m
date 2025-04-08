@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-131014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25923A80746
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:36:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA0C4A8042E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:06:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22F971B87548
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:30:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FFF17AA06A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5339426AAB6;
-	Tue,  8 Apr 2025 12:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809AF26A0FD;
+	Tue,  8 Apr 2025 12:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zeep78/u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZuG4xQt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD5426B09D;
-	Tue,  8 Apr 2025 12:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C69926A0ED;
+	Tue,  8 Apr 2025 12:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115261; cv=none; b=Lxq6FEudX+cvlaChAlVoxAR9OhZFUStx7UNiTXwdJ3Z/n8TWCQ//yog6GKndECQz7FQoAq61V3qRGCBr8FV1kqcpSZhdaGi0k/IRjvYY6HAYEez2AAbmJfGc+0PwRNeikUmIZGDS/Be6UtomZENVLu86X5XQujgfNQg1pJUWugg=
+	t=1744113874; cv=none; b=m/ZzfHkfLnUniPcI+VLpprWh97fRQn4xfDsPEl+RMZ5mzOztzpyGh7GabUoNz8cef+zotsogJ5naejG5kmsSHhwSNKE4w4NAIujav4qVSyzr/HecUNOPG5om0cLTWco8EvlZEriGIwCtCkSjO+gzw3OiE2bdYol7XKO+cDbKLvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115261; c=relaxed/simple;
-	bh=+fOl7IpqREaV8sYU7k/g5RXupJP9015rqO1rrCcGloQ=;
+	s=arc-20240116; t=1744113874; c=relaxed/simple;
+	bh=/xTn4Yye94NlzzK/7QRB4BgexxXbLu1u7bmDCTVLmNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KGU56J4LqzcZoA9/kUcGSUCBKFbnx/zWmlCfkLm1gmJEWDGFXivFQLu/XVYZVhZgdqVPdyH2USKHKucy2Oy8lXTPyTagNSlmlNw4QcsLuI1vqv3FUfuWoECgjNpMiha8Yy/mSMMtoj1FTAZRzwcKbT+H7LDE59HZ/76TXoNnRaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zeep78/u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CAB2C4CEE5;
-	Tue,  8 Apr 2025 12:27:40 +0000 (UTC)
+	 MIME-Version; b=Exd51cOZHnI0Ss8m68Gk98r0UKCBzNwlniiri7sJmOYWf/3qX1vNR4N6E74hcqmT2kZYoX5fLnfUDGCz0TbEBvuzn/JijRHab/ELJ8wPbWVxFAGCxL0M8MN5z8IrKSwEkuRY0wgy/g2yprS2ARlWoUIltWEOSez8uzgz47uxqBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZuG4xQt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1168C4CEE5;
+	Tue,  8 Apr 2025 12:04:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115260;
-	bh=+fOl7IpqREaV8sYU7k/g5RXupJP9015rqO1rrCcGloQ=;
+	s=korg; t=1744113874;
+	bh=/xTn4Yye94NlzzK/7QRB4BgexxXbLu1u7bmDCTVLmNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zeep78/uF/YDaA/k3/AawTNxouuyC7hD48MJpTHwXe12A0ggcSvyfcC3rXo63EZLW
-	 sd2mUXfGMnKbTHYHPbrLBNQNzqNNu5J2h8ye8EybqmAb02VWRMvC/LNEHmEriMbBBs
-	 PcE9SzId5TSXA14VxC2bKjEqA+1ZyKOiFb5FStYE=
+	b=eZuG4xQt82tT1lCWCuXxJhzB++oP6u8XwKPbd1Z23v822KUCIpoWMU70j6OzI0Q4E
+	 b2zIPv2lk+3bs33nRK5OSffdQ7iETp+AXn/6cFvdbfxp/cfPbeCKZWRiAwN6152qoX
+	 VvzYHlzgwdrnF1W8YZe6Yk0UswVSBbkS+E3j8K/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Yael Chemla <ychemla@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 381/499] ALSA: hda/realtek: Fix built-in mic on another ASUS VivoBook model
+Subject: [PATCH 5.4 052/154] xfrm_output: Force software GSO only in tunnel mode
 Date: Tue,  8 Apr 2025 12:49:53 +0200
-Message-ID: <20250408104900.734460848@linuxfoundation.org>
+Message-ID: <20250408104816.948078657@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +65,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-[ Upstream commit 8983dc1b66c0e1928a263b8af0bb06f6cb9229c4 ]
+[ Upstream commit 0aae2867aa6067f73d066bc98385e23c8454a1d7 ]
 
-There is another VivoBook model which built-in mic got broken recently
-by the fix of the pin sort.  Apply the correct quirk
-ALC256_FIXUP_ASUS_MIC_NO_PRESENCE to this model for addressing the
-regression, too.
+The cited commit fixed a software GSO bug with VXLAN + IPSec in tunnel
+mode. Unfortunately, it is slightly broader than necessary, as it also
+severely affects performance for Geneve + IPSec transport mode over a
+device capable of both HW GSO and IPSec crypto offload. In this case,
+xfrm_output unnecessarily triggers software GSO instead of letting the
+HW do it. In simple iperf3 tests over Geneve + IPSec transport mode over
+a back-2-back pair of NICs with MTU 1500, the performance was observed
+to be up to 6x worse when doing software GSO compared to leaving it to
+the hardware.
 
-Fixes: 3b4309546b48 ("ALSA: hda: Fix headset detection failure due to unstable sort")
-Closes: https://lore.kernel.org/Z95s5T6OXFPjRnKf@eldamar.lan
-Link: https://patch.msgid.link/20250402074208.7347-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+This commit makes xfrm_output only trigger software GSO in crypto
+offload cases for already encapsulated packets in tunnel mode, as not
+doing so would then cause the inner tunnel skb->inner_networking_header
+to be overwritten and break software GSO for that packet later if the
+device turns out to not be capable of HW GSO.
+
+Taking a closer look at the conditions for the original bug, to better
+understand the reasons for this change:
+- vxlan_build_skb -> iptunnel_handle_offloads sets inner_protocol and
+  inner network header.
+- then, udp_tunnel_xmit_skb -> ip_tunnel_xmit adds outer transport and
+  network headers.
+- later in the xmit path, xfrm_output -> xfrm_outer_mode_output ->
+  xfrm4_prepare_output -> xfrm4_tunnel_encap_add overwrites the inner
+  network header with the one set in ip_tunnel_xmit before adding the
+  second outer header.
+- __dev_queue_xmit -> validate_xmit_skb checks whether GSO segmentation
+  needs to happen based on dev features. In the original bug, the hw
+  couldn't segment the packets, so skb_gso_segment was invoked.
+- deep in the .gso_segment callback machinery, __skb_udp_tunnel_segment
+  tries to use the wrong inner network header, expecting the one set in
+  iptunnel_handle_offloads but getting the one set by xfrm instead.
+- a bit later, ipv6_gso_segment accesses the wrong memory based on that
+  wrong inner network header.
+
+With the new change, the original bug (or similar ones) cannot happen
+again, as xfrm will now trigger software GSO before applying a tunnel.
+This concern doesn't exist in packet offload mode, when the HW adds
+encapsulation headers. For the non-offloaded packets (crypto in SW),
+software GSO is still done unconditionally in the else branch.
+
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Yael Chemla <ychemla@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Fixes: a204aef9fd77 ("xfrm: call xfrm_output_gso when inner_protocol is set in xfrm_output")
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/xfrm/xfrm_output.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 834f3bba21181..d38d5b173cbf0 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10747,6 +10747,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1c43, "ASUS UX8406MA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1c62, "ASUS GU603", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1c63, "ASUS GU605M", ALC285_FIXUP_ASUS_GU605_SPI_SPEAKER2_TO_DAC1),
-+	SND_PCI_QUIRK(0x1043, 0x1c80, "ASUS VivoBook TP401", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1c92, "ASUS ROG Strix G15", ALC285_FIXUP_ASUS_G533Z_PINS),
- 	SND_PCI_QUIRK(0x1043, 0x1c9f, "ASUS G614JU/JV/JI", ALC285_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1caf, "ASUS G634JY/JZ/JI/JG", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
+index 9a6a8c4008ab8..4499ff95e0e8c 100644
+--- a/net/xfrm/xfrm_output.c
++++ b/net/xfrm/xfrm_output.c
+@@ -586,7 +586,7 @@ int xfrm_output(struct sock *sk, struct sk_buff *skb)
+ 		xfrm_state_hold(x);
+ 
+ 		if (skb_is_gso(skb)) {
+-			if (skb->inner_protocol)
++			if (skb->inner_protocol && x->props.mode == XFRM_MODE_TUNNEL)
+ 				return xfrm_output_gso(net, sk, skb);
+ 
+ 			skb_shinfo(skb)->gso_type |= SKB_GSO_ESP;
 -- 
 2.39.5
 
