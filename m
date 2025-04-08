@@ -1,84 +1,147 @@
-Return-Path: <stable+bounces-128893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3465A7FAF5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C538A7FB3B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:11:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 590FF7A5493
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:05:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F3883A6614
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A80C3C0C;
-	Tue,  8 Apr 2025 10:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D1A227EBD;
+	Tue,  8 Apr 2025 10:07:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PFjGeYK3"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D4026560E
-	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 10:04:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F80215066
+	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 10:07:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744106698; cv=none; b=fJsHPDgzHknduELlvhoA9TjfiWZhzCneXTJRED+rAIpdhbE66RZgPrd0nfLrSJvA/CcHNXrWETX0A+yM0CFT0/1GrOEe8KHorZCejrCKZTUJz5a8uv8zwOwMfPOIRO/2krIQd5NFj4nTInLvwSDBG4GkowefOshwG3gtaVo90qk=
+	t=1744106867; cv=none; b=VCrqs/6px6TTwYHrmDuJcwmvGUqyMgAordKCJuVoMIiKLWmi2VxbKtx44vg4/nSO+b6hsVuRE56Kx8UCKfyE77+KkrHeZ7XGkLXm8McAUNGvW58XFfhqi0wNPa87NxLOXBIAPacoqwoUzx4lsYpceIhyh2nx3ZIC7t4/H2SHP9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744106698; c=relaxed/simple;
-	bh=Rgb+ILyCXg4BqxhBeMZW7W7cKibIWp0/boT9eSrPUvs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=taznbmPeQLwTMXM3iBCIxFJgN3C27NRwDRoWxkUE7nXsGpnyPC3yhPrReZA72JT+lmUPrijn2P6ORBzVKRWWgM0EbPMEoH3TWoT+yWjWemYq+8M9nCAPXYGBTxwieG5/r84sLwqjNVnkjcaWxlRZ1rg70GGDkQMeg81V8naGPmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C2D951688;
-	Tue,  8 Apr 2025 03:04:57 -0700 (PDT)
-Received: from [10.163.48.241] (unknown [10.163.48.241])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D005C3F6A8;
-	Tue,  8 Apr 2025 03:04:54 -0700 (PDT)
-Message-ID: <d3a5589f-a231-4d60-9d70-5e0f01dff125@arm.com>
-Date: Tue, 8 Apr 2025 15:34:51 +0530
+	s=arc-20240116; t=1744106867; c=relaxed/simple;
+	bh=IwMVA+T9Am/LpA2VGdRj2jid3Oz38BMhdQZLc2isa+c=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=m7GA5inDLzbtem6V4ZSQ0S7pD6yPz/ewqAr/n0pAECRDvBnY+6xM4dAZ+1uwxRQazYp6AD6eZ4vy07+MCZlnm2ZvzHtcxLnbsMrFeasEGgbkFyVHHfklGWT4nDxfI4JAiZ2GhD7yzZ1RPva7E37x7x2QdtLoxp33AvR5w24mJtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PFjGeYK3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5176EC4CEE5;
+	Tue,  8 Apr 2025 10:07:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1744106864;
+	bh=IwMVA+T9Am/LpA2VGdRj2jid3Oz38BMhdQZLc2isa+c=;
+	h=Subject:To:Cc:From:Date:From;
+	b=PFjGeYK34Cd0hSAh/1ZvoDBIEfGWfZ6Plh9rV3JDle5lsCG7KxwnvvHy2Ii4ygwxb
+	 BMb/v9xLkduFvJiNQt2FKmanERBIO7zjwt+zp4XaZK7k2Cj91ftm7K+9dHZCkSueVJ
+	 kv4KofjbwkdjqgDWB+lAbpCwBs+AiJ8rq9Pkmmjg=
+Subject: FAILED: patch "[PATCH] media: vimc: skip .s_stream() for stopped entities" failed to apply to 5.4-stable tree
+To: n.zhandarovich@fintech.ru,hverkuil@xs4all.nl
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 08 Apr 2025 12:06:11 +0200
+Message-ID: <2025040811-juniper-devoutly-0800@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.13.y 0/7] arm64/boot: Enable EL2 requirements for
- FEAT_PMUv3p9
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, catalin.marinas@arm.com, will@kernel.org,
- robh@kernel.org, mark.rutland@arm.com
-References: <20250408093859.1205615-1-anshuman.khandual@arm.com>
- <2025040816-frequent-unbundle-7415@gregkh>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <2025040816-frequent-unbundle-7415@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+
+
+The patch below does not apply to the 5.4-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git checkout FETCH_HEAD
+git cherry-pick -x 36cef585e2a31e4ddf33a004b0584a7a572246de
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025040811-juniper-devoutly-0800@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+
+Possible dependencies:
 
 
 
-On 4/8/25 15:23, Greg KH wrote:
-> On Tue, Apr 08, 2025 at 03:08:52PM +0530, Anshuman Khandual wrote:
->> This series adds fine grained trap control in EL2 required for FEAT_PMUv3p9
->> registers like PMICNTR_EL0, PMICFILTR_EL0, and PMUACR_EL1 which are already
->> being used in the kernel. This is required to prevent their EL1 access trap
->> into EL2.
->>
->> The following commits that enabled access into FEAT_PMUv3p9 registers have
->> already been merged upstream from 6.13 onwards.
->>
->> d8226d8cfbaf ("perf: arm_pmuv3: Add support for Armv9.4 PMU instruction counter")
->> 0bbff9ed8165 ("perf/arm_pmuv3: Add PMUv3.9 per counter EL0 access control")
->>
->> The sysreg patches in this series are required for the final patch which
->> fixes the actual problem.
-> 
-> But you aren't going to fix the 6.14.y tree?  We can't take patches that
-> skip newer stable releases for obvious reasons.
-> 
-> And 6.13.y is only going to be alive for a few more days, is there some
-> specific reason this is needed now for 6.13.y?
+thanks,
 
-I have also sent same series for 6.14 stable version as well. It will be
-great to have these patches applied both on 6.13 as well 6.14. Thank you.
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 36cef585e2a31e4ddf33a004b0584a7a572246de Mon Sep 17 00:00:00 2001
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Date: Sun, 2 Mar 2025 17:58:25 +0300
+Subject: [PATCH] media: vimc: skip .s_stream() for stopped entities
+
+Syzbot reported [1] a warning prompted by a check in call_s_stream()
+that checks whether .s_stream() operation is warranted for unstarted
+or stopped subdevs.
+
+Add a simple fix in vimc_streamer_pipeline_terminate() ensuring that
+entities skip a call to .s_stream() unless they have been previously
+properly started.
+
+[1] Syzbot report:
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 5933 at drivers/media/v4l2-core/v4l2-subdev.c:460 call_s_stream+0x2df/0x350 drivers/media/v4l2-core/v4l2-subdev.c:460
+Modules linked in:
+CPU: 0 UID: 0 PID: 5933 Comm: syz-executor330 Not tainted 6.13.0-rc2-syzkaller-00362-g2d8308bf5b67 #0
+...
+Call Trace:
+ <TASK>
+ vimc_streamer_pipeline_terminate+0x218/0x320 drivers/media/test-drivers/vimc/vimc-streamer.c:62
+ vimc_streamer_pipeline_init drivers/media/test-drivers/vimc/vimc-streamer.c:101 [inline]
+ vimc_streamer_s_stream+0x650/0x9a0 drivers/media/test-drivers/vimc/vimc-streamer.c:203
+ vimc_capture_start_streaming+0xa1/0x130 drivers/media/test-drivers/vimc/vimc-capture.c:256
+ vb2_start_streaming+0x15f/0x5a0 drivers/media/common/videobuf2/videobuf2-core.c:1789
+ vb2_core_streamon+0x2a7/0x450 drivers/media/common/videobuf2/videobuf2-core.c:2348
+ vb2_streamon drivers/media/common/videobuf2/videobuf2-v4l2.c:875 [inline]
+ vb2_ioctl_streamon+0xf4/0x170 drivers/media/common/videobuf2/videobuf2-v4l2.c:1118
+ __video_do_ioctl+0xaf0/0xf00 drivers/media/v4l2-core/v4l2-ioctl.c:3122
+ video_usercopy+0x4d2/0x1620 drivers/media/v4l2-core/v4l2-ioctl.c:3463
+ v4l2_ioctl+0x1ba/0x250 drivers/media/v4l2-core/v4l2-dev.c:366
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:906 [inline]
+ __se_sys_ioctl fs/ioctl.c:892 [inline]
+ __x64_sys_ioctl+0x190/0x200 fs/ioctl.c:892
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f2b85c01b19
+...
+
+Reported-by: syzbot+5bcd7c809d365e14c4df@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5bcd7c809d365e14c4df
+Fixes: adc589d2a208 ("media: vimc: Add vimc-streamer for stream control")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+
+diff --git a/drivers/media/test-drivers/vimc/vimc-streamer.c b/drivers/media/test-drivers/vimc/vimc-streamer.c
+index 807551a5143b..15d863f97cbf 100644
+--- a/drivers/media/test-drivers/vimc/vimc-streamer.c
++++ b/drivers/media/test-drivers/vimc/vimc-streamer.c
+@@ -59,6 +59,12 @@ static void vimc_streamer_pipeline_terminate(struct vimc_stream *stream)
+ 			continue;
+ 
+ 		sd = media_entity_to_v4l2_subdev(ved->ent);
++		/*
++		 * Do not call .s_stream() to stop an already
++		 * stopped/unstarted subdev.
++		 */
++		if (!v4l2_subdev_is_streaming(sd))
++			continue;
+ 		v4l2_subdev_call(sd, video, s_stream, 0);
+ 	}
+ }
+
 
