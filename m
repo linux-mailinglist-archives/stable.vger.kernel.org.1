@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-130003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73CF7A8029B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:49:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B391A80124
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:38:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74A0F3B6CF4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:42:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99302188BD3A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:34:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C2E2676DE;
-	Tue,  8 Apr 2025 11:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB4DD35973;
+	Tue,  8 Apr 2025 11:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Azoq1NWM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNwhCTSm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A696B266EEA;
-	Tue,  8 Apr 2025 11:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B02266583;
+	Tue,  8 Apr 2025 11:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112556; cv=none; b=QuoMJnfhC2AG87Jrb6AJW2HnqRwORgWws4w9e0RT+CIHJTNgC+lTsMEyeanFoAjoMCL+vp/lMOTGCN0TeiO3ltqqcH7NfNGfRgR56dSlsoxMoPJXpFXuWIjkRVDih5c5ceaSg8Z0GoVbmNhMB2SQqy4yXIYoeZ78wTwqD9YNEvA=
+	t=1744111994; cv=none; b=NJgzv1TsCFV+WhNDdscg5Psy5GmVAUNE5OBhJ2SBj5QYCpauerYIZbEFMOhOCoU7kIN8AYjB3YCs272UrpgozkEYkyuN4yPHE5iUi+SBO4AG79SDjTo5XhaMTSvOFpwG+NxflkIbMEPRP9irydR1S5opZZcvzmYoaXyAm9ebOlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112556; c=relaxed/simple;
-	bh=8heN6C2v4cBMOi2zGBZAqaz9+cxBmn7d1WhUpRXhKf0=;
+	s=arc-20240116; t=1744111994; c=relaxed/simple;
+	bh=0zCU8MDJYeqi6iNkWF6TI/EpIBszjXx6VpBrJXRLgNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l1KjhO1d0y8Y0+9EydB7Y7cHMpAOu73bjdq9RHv/zPa53casKAuraHzBgGqhWB9lSaQqbfubJvfJrQJgjiZ+NzDKD8NqvzcskfSdI1isgqGOCH7z8850h7VTf9vuwOzWAAlwGMvSZgpelyRh+FZ+lzCLB0jHkPnAGBkaModpouQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Azoq1NWM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35E57C4CEE5;
-	Tue,  8 Apr 2025 11:42:36 +0000 (UTC)
+	 MIME-Version; b=Xbv5ijypvSv6ULncJ6iMkCgRtggMuAH00/UoubNInMQV2cn2FCYzXPWiQmaQO4T1qxDN4+YhkYTKyuhc8t/zvS11Bx9z28m70CWz6wfSdMhTh3xUq8QnzYvZER62ITbkN7e9Lk7PwRIlNycz0yMuT6Lu1/L3Qyrl126yVj6vozE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNwhCTSm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB07DC4CEE5;
+	Tue,  8 Apr 2025 11:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112556;
-	bh=8heN6C2v4cBMOi2zGBZAqaz9+cxBmn7d1WhUpRXhKf0=;
+	s=korg; t=1744111994;
+	bh=0zCU8MDJYeqi6iNkWF6TI/EpIBszjXx6VpBrJXRLgNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Azoq1NWMdKWK8/Q6NH6hhqF+VgqUwbAgMYYODXkrGzjVHvpZ9bvqfD8sWH3UkSzXk
-	 p0N+6Or6AfoOYNEedCOigoJYQ7/irKZsGOkjZ04XmMUisVWsBNdkp5ZtobsHKLxt0F
-	 0AiTf0WRM3DKaNWq/kP3M9rj+CGsbZfuXRsvmmBI=
+	b=rNwhCTSmpolWA+WQTw7/pG4zZHHRct6IeBLZ3nDkRyfi2ClEyvoRFejoOvp6H0/+i
+	 DE+H9qdDPD0bfBuQcANa9Bu2qv68hwx6+PazM4r9Xe49s6jG7Z91h2W4B3vrgqcX0J
+	 yDijJwmPlXdkmshwD+AY2JmHFPw/Sf282DNVPKdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Terry Junge <linuxhid@cosmicgizmosystems.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 5.15 111/279] HID: hid-plantronics: Add mic mute mapping and generalize quirks
+	Ondrej Lichtner <olichtne@redhat.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Herton R. Krzesinski" <herton@redhat.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 597/731] x86/uaccess: Improve performance by aligning writes to 8 bytes in copy_user_generic(), on non-FSRM/ERMS CPUs
 Date: Tue,  8 Apr 2025 12:48:14 +0200
-Message-ID: <20250408104829.342436652@linuxfoundation.org>
+Message-ID: <20250408104928.160669954@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,286 +64,194 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Terry Junge <linuxhid@cosmicgizmosystems.com>
+From: Herton R. Krzesinski <herton@redhat.com>
 
-commit 9821709af892be9fbf4ee9a50b2f3e0604295ce0 upstream.
+[ Upstream commit b5322b6ec06a6c58650f52abcd2492000396363b ]
 
-Add mapping for headset mute key events.
+History of the performance regression:
+======================================
 
-Remove PLT_QUIRK_DOUBLE_VOLUME_KEYS quirk and made it generic.
-The quirk logic did not keep track of the actual previous key
-so any key event occurring in less than or equal to 5ms was ignored.
+Since the following series of user copy updates were merged upstream
+~2 years ago via:
 
-Remove PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS quirk.
-It had the same logic issue as the double key quirk and was actually
-masking the as designed behavior of most of the headsets.
-It's occurrence should be minimized with the ALSA control naming
-quirk that is part of the patch set.
+  a5624566431d ("Merge branch 'x86-rep-insns': x86 user copy clarifications")
 
-Signed-off-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+.. copy_user_generic() on x86_64 stopped doing alignment of the
+writes to the destination to a 8 byte boundary for the non FSRM case.
+
+Previously, this was done through the ALIGN_DESTINATION macro that
+was used in the now removed copy_user_generic_unrolled function.
+
+Turns out this change causes some loss of performance/throughput on
+some use cases and specific CPU/platforms without FSRM and ERMS.
+
+Lately I got two reports of performance/throughput issues after a
+RHEL 9 kernel pulled the same upstream series with updates to user
+copy functions. Both reports consisted of running specific
+networking/TCP related testing using iperf3.
+
+Partial upstream fix
+====================
+
+The first report was related to a Linux Bridge testing using VMs on a
+specific machine with an AMD CPU (EPYC 7402), and after a brief
+investigation it turned out that the later change via:
+
+  ca96b162bfd2 ("x86: bring back rep movsq for user access on CPUs without ERMS")
+
+... helped/fixed the performance issue.
+
+However, after the later commit/fix was applied, then I got another
+regression reported in a multistream TCP test on a 100Gbit mlx5 nic, also
+running on an AMD based platform (AMD EPYC 7302 CPU), again that was using
+iperf3 to run the test. That regression was after applying the later
+fix/commit, but only this didn't help in telling the whole history.
+
+Testing performed to pinpoint residual regression
+=================================================
+
+So I narrowed down the second regression use case, but running it
+without traffic through a NIC, on localhost, in trying to narrow down
+CPU usage and not being limited by other factor like network bandwidth.
+I used another system also with an AMD CPU (AMD EPYC 7742). Basically,
+I run iperf3 in server and client mode in the same system, for example:
+
+ - Start the server binding it to CPU core/thread 19:
+   $ taskset -c 19 iperf3 -D -s -B 127.0.0.1 -p 12000
+
+ - Start the client always binding/running on CPU core/thread 17, using
+   perf to get statistics:
+   $ perf stat -o stat.txt taskset -c 17 iperf3 -c 127.0.0.1 -b 0/1000 -V \
+       -n 50G --repeating-payload -l 16384 -p 12000 --cport 12001 2>&1 \
+       > stat-19.txt
+
+For the client, always running/pinned to CPU 17. But for the iperf3 in
+server mode, I did test runs using CPUs 19, 21, 23 or not pinned to any
+specific CPU. So it basically consisted with four runs of the same
+commands, just changing the CPU which the server is pinned, or without
+pinning by removing the taskset call before the server command. The CPUs
+were chosen based on NUMA node they were on, this is the relevant output
+of lscpu on the system:
+
+  $ lscpu
+  ...
+    Model name:             AMD EPYC 7742 64-Core Processor
+  ...
+  Caches (sum of all):
+    L1d:                    2 MiB (64 instances)
+    L1i:                    2 MiB (64 instances)
+    L2:                     32 MiB (64 instances)
+    L3:                     256 MiB (16 instances)
+  NUMA:
+    NUMA node(s):           4
+    NUMA node0 CPU(s):      0,1,8,9,16,17,24,25,32,33,40,41,48,49,56,57,64,65,72,73,80,81,88,89,96,97,104,105,112,113,120,121
+    NUMA node1 CPU(s):      2,3,10,11,18,19,26,27,34,35,42,43,50,51,58,59,66,67,74,75,82,83,90,91,98,99,106,107,114,115,122,123
+    NUMA node2 CPU(s):      4,5,12,13,20,21,28,29,36,37,44,45,52,53,60,61,68,69,76,77,84,85,92,93,100,101,108,109,116,117,124,125
+    NUMA node3 CPU(s):      6,7,14,15,22,23,30,31,38,39,46,47,54,55,62,63,70,71,78,79,86,87,94,95,102,103,110,111,118,119,126,127
+  ...
+
+So for the server run, when picking a CPU, I chose CPUs to be not on the same
+node. The reason is with that I was able to get/measure relevant
+performance differences when changing the alignment of the writes to the
+destination in copy_user_generic.
+
+Testing shows up to +81% performance improvement under iperf3
+=============================================================
+
+Here's a summary of the iperf3 runs:
+
+  # Vanilla upstream alignment:
+
+		     CPU      RATE          SYS          TIME     sender-receiver
+	Server bind   19: 13.0Gbits/sec 28.371851000 33.233499566 86.9%-70.8%
+	Server bind   21: 12.9Gbits/sec 28.283381000 33.586486621 85.8%-69.9%
+	Server bind   23: 11.1Gbits/sec 33.660190000 39.012243176 87.7%-64.5%
+	Server bind none: 18.9Gbits/sec 19.215339000 22.875117865 86.0%-80.5%
+
+  # With the attached patch (aligning writes in non ERMS/FSRM case):
+
+		     CPU      RATE          SYS          TIME     sender-receiver
+	Server bind   19: 20.8Gbits/sec 14.897284000 20.811101382 75.7%-89.0%
+	Server bind   21: 20.4Gbits/sec 15.205055000 21.263165909 75.4%-89.7%
+	Server bind   23: 20.2Gbits/sec 15.433801000 21.456175000 75.5%-89.8%
+	Server bind none: 26.1Gbits/sec 12.534022000 16.632447315 79.8%-89.6%
+
+So I consistently got better results when aligning the write. The
+results above were run on 6.14.0-rc6/rc7 based kernels. The sys is sys
+time and then the total time to run/transfer 50G of data. The last
+field is the CPU usage of sender/receiver iperf3 process. It's also
+worth to note that each pair of iperf3 runs may get slightly different
+results on each run, but I always got consistent higher results with
+the write alignment for this specific test of running the processes
+on CPUs in different NUMA nodes.
+
+Linus Torvalds helped/provided this version of the patch. Initially I
+proposed a version which aligned writes for all cases in
+rep_movs_alternative, however it used two extra registers and thus
+Linus provided an enhanced version that only aligns the write on the
+large_movsq case, which is sufficient since the problem happens only
+on those AMD CPUs like ones mentioned above without ERMS/FSRM, and
+also doesn't require using extra registers. Also, I validated that
+aligning only on large_movsq case is really enough for getting the
+performance back.
+
+I also tested this patch on an old Intel based non-ERMS/FRMS system
+(with Xeon E5-2667 - Sandy Bridge based) and didn't get any problems:
+no performance enhancement but also no regression either, using the
+same iperf3 based benchmark. Also newer Intel processors after
+Sandy Bridge usually have ERMS and should not be affected by this change.
+
+[ mingo: Updated the changelog. ]
+
+Fixes: ca96b162bfd2 ("x86: bring back rep movsq for user access on CPUs without ERMS")
+Fixes: 034ff37d3407 ("x86: rewrite '__copy_user_nocache' function")
+Reported-by: Ondrej Lichtner <olichtne@redhat.com>
+Co-developed-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Herton R. Krzesinski <herton@redhat.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20250320142213.2623518-1-herton@redhat.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-plantronics.c |  148 +++++++++++++++++++-----------------------
- 1 file changed, 69 insertions(+), 79 deletions(-)
+ arch/x86/lib/copy_user_64.S | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
---- a/drivers/hid/hid-plantronics.c
-+++ b/drivers/hid/hid-plantronics.c
-@@ -6,9 +6,6 @@
-  *  Copyright (c) 2015-2018 Terry Junge <terry.junge@plantronics.com>
-  */
+diff --git a/arch/x86/lib/copy_user_64.S b/arch/x86/lib/copy_user_64.S
+index fc9fb5d061744..b8f74d80f35c6 100644
+--- a/arch/x86/lib/copy_user_64.S
++++ b/arch/x86/lib/copy_user_64.S
+@@ -74,6 +74,24 @@ SYM_FUNC_START(rep_movs_alternative)
+ 	_ASM_EXTABLE_UA( 0b, 1b)
  
--/*
-- */
--
- #include "hid-ids.h"
- 
- #include <linux/hid.h>
-@@ -23,30 +20,28 @@
- 
- #define PLT_VOL_UP		0x00b1
- #define PLT_VOL_DOWN		0x00b2
-+#define PLT_MIC_MUTE		0x00b5
- 
- #define PLT1_VOL_UP		(PLT_HID_1_0_PAGE | PLT_VOL_UP)
- #define PLT1_VOL_DOWN		(PLT_HID_1_0_PAGE | PLT_VOL_DOWN)
-+#define PLT1_MIC_MUTE		(PLT_HID_1_0_PAGE | PLT_MIC_MUTE)
- #define PLT2_VOL_UP		(PLT_HID_2_0_PAGE | PLT_VOL_UP)
- #define PLT2_VOL_DOWN		(PLT_HID_2_0_PAGE | PLT_VOL_DOWN)
-+#define PLT2_MIC_MUTE		(PLT_HID_2_0_PAGE | PLT_MIC_MUTE)
-+#define HID_TELEPHONY_MUTE	(HID_UP_TELEPHONY | 0x2f)
-+#define HID_CONSUMER_MUTE	(HID_UP_CONSUMER | 0xe2)
- 
- #define PLT_DA60		0xda60
- #define PLT_BT300_MIN		0x0413
- #define PLT_BT300_MAX		0x0418
- 
--
--#define PLT_ALLOW_CONSUMER (field->application == HID_CP_CONSUMERCONTROL && \
--			    (usage->hid & HID_USAGE_PAGE) == HID_UP_CONSUMER)
--
--#define PLT_QUIRK_DOUBLE_VOLUME_KEYS BIT(0)
--#define PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS BIT(1)
--
- #define PLT_DOUBLE_KEY_TIMEOUT 5 /* ms */
--#define PLT_FOLLOWED_OPPOSITE_KEY_TIMEOUT 220 /* ms */
- 
- struct plt_drv_data {
- 	unsigned long device_type;
--	unsigned long last_volume_key_ts;
--	u32 quirks;
-+	unsigned long last_key_ts;
-+	unsigned long double_key_to;
-+	__u16 last_key;
- };
- 
- static int plantronics_input_mapping(struct hid_device *hdev,
-@@ -58,34 +53,43 @@ static int plantronics_input_mapping(str
- 	unsigned short mapped_key;
- 	struct plt_drv_data *drv_data = hid_get_drvdata(hdev);
- 	unsigned long plt_type = drv_data->device_type;
-+	int allow_mute = usage->hid == HID_TELEPHONY_MUTE;
-+	int allow_consumer = field->application == HID_CP_CONSUMERCONTROL &&
-+			(usage->hid & HID_USAGE_PAGE) == HID_UP_CONSUMER &&
-+			usage->hid != HID_CONSUMER_MUTE;
- 
- 	/* special case for PTT products */
- 	if (field->application == HID_GD_JOYSTICK)
- 		goto defaulted;
- 
--	/* handle volume up/down mapping */
- 	/* non-standard types or multi-HID interfaces - plt_type is PID */
- 	if (!(plt_type & HID_USAGE_PAGE)) {
- 		switch (plt_type) {
- 		case PLT_DA60:
--			if (PLT_ALLOW_CONSUMER)
-+			if (allow_consumer)
- 				goto defaulted;
--			goto ignored;
-+			if (usage->hid == HID_CONSUMER_MUTE) {
-+				mapped_key = KEY_MICMUTE;
-+				goto mapped;
-+			}
-+			break;
- 		default:
--			if (PLT_ALLOW_CONSUMER)
-+			if (allow_consumer || allow_mute)
- 				goto defaulted;
- 		}
-+		goto ignored;
- 	}
--	/* handle standard types - plt_type is 0xffa0uuuu or 0xffa2uuuu */
--	/* 'basic telephony compliant' - allow default consumer page map */
--	else if ((plt_type & HID_USAGE) >= PLT_BASIC_TELEPHONY &&
--		 (plt_type & HID_USAGE) != PLT_BASIC_EXCEPTION) {
--		if (PLT_ALLOW_CONSUMER)
--			goto defaulted;
--	}
--	/* not 'basic telephony' - apply legacy mapping */
--	/* only map if the field is in the device's primary vendor page */
--	else if (!((field->application ^ plt_type) & HID_USAGE_PAGE)) {
+ .Llarge_movsq:
++	/* Do the first possibly unaligned word */
++0:	movq (%rsi),%rax
++1:	movq %rax,(%rdi)
 +
-+	/* handle standard consumer control mapping */
-+	/* and standard telephony mic mute mapping */
-+	if (allow_consumer || allow_mute)
-+		goto defaulted;
++	_ASM_EXTABLE_UA( 0b, .Lcopy_user_tail)
++	_ASM_EXTABLE_UA( 1b, .Lcopy_user_tail)
 +
-+	/* handle vendor unique types - plt_type is 0xffa0uuuu or 0xffa2uuuu */
-+	/* if not 'basic telephony compliant' - map vendor unique controls */
-+	if (!((plt_type & HID_USAGE) >= PLT_BASIC_TELEPHONY &&
-+	      (plt_type & HID_USAGE) != PLT_BASIC_EXCEPTION) &&
-+	      !((field->application ^ plt_type) & HID_USAGE_PAGE))
- 		switch (usage->hid) {
- 		case PLT1_VOL_UP:
- 		case PLT2_VOL_UP:
-@@ -95,8 +99,11 @@ static int plantronics_input_mapping(str
- 		case PLT2_VOL_DOWN:
- 			mapped_key = KEY_VOLUMEDOWN;
- 			goto mapped;
-+		case PLT1_MIC_MUTE:
-+		case PLT2_MIC_MUTE:
-+			mapped_key = KEY_MICMUTE;
-+			goto mapped;
- 		}
--	}
- 
- /*
-  * Future mapping of call control or other usages,
-@@ -105,6 +112,8 @@ static int plantronics_input_mapping(str
-  */
- 
- ignored:
-+	hid_dbg(hdev, "usage: %08x (appl: %08x) - ignored\n",
-+		usage->hid, field->application);
- 	return -1;
- 
- defaulted:
-@@ -123,38 +132,26 @@ static int plantronics_event(struct hid_
- 			     struct hid_usage *usage, __s32 value)
- {
- 	struct plt_drv_data *drv_data = hid_get_drvdata(hdev);
-+	unsigned long prev_tsto, cur_ts;
-+	__u16 prev_key, cur_key;
- 
--	if (drv_data->quirks & PLT_QUIRK_DOUBLE_VOLUME_KEYS) {
--		unsigned long prev_ts, cur_ts;
--
--		/* Usages are filtered in plantronics_usages. */
--
--		if (!value) /* Handle key presses only. */
--			return 0;
--
--		prev_ts = drv_data->last_volume_key_ts;
--		cur_ts = jiffies;
--		if (jiffies_to_msecs(cur_ts - prev_ts) <= PLT_DOUBLE_KEY_TIMEOUT)
--			return 1; /* Ignore the repeated key. */
--
--		drv_data->last_volume_key_ts = cur_ts;
--	}
--	if (drv_data->quirks & PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS) {
--		unsigned long prev_ts, cur_ts;
--
--		/* Usages are filtered in plantronics_usages. */
--
--		if (!value) /* Handle key presses only. */
--			return 0;
-+	/* Usages are filtered in plantronics_usages. */
- 
--		prev_ts = drv_data->last_volume_key_ts;
--		cur_ts = jiffies;
--		if (jiffies_to_msecs(cur_ts - prev_ts) <= PLT_FOLLOWED_OPPOSITE_KEY_TIMEOUT)
--			return 1; /* Ignore the followed opposite volume key. */
--
--		drv_data->last_volume_key_ts = cur_ts;
-+	/* HZ too low for ms resolution - double key detection disabled */
-+	/* or it is a key release - handle key presses only. */
-+	if (!drv_data->double_key_to || !value)
-+		return 0;
++	/* What would be the offset to the aligned destination? */
++	leaq 8(%rdi),%rax
++	andq $-8,%rax
++	subq %rdi,%rax
 +
-+	prev_tsto = drv_data->last_key_ts + drv_data->double_key_to;
-+	cur_ts = drv_data->last_key_ts = jiffies;
-+	prev_key = drv_data->last_key;
-+	cur_key = drv_data->last_key = usage->code;
++	/* .. and update pointers and count to match */
++	addq %rax,%rdi
++	addq %rax,%rsi
++	subq %rax,%rcx
 +
-+	/* If the same key occurs in <= double_key_to -- ignore it */
-+	if (prev_key == cur_key && time_before_eq(cur_ts, prev_tsto)) {
-+		hid_dbg(hdev, "double key %d ignored\n", cur_key);
-+		return 1; /* Ignore the repeated key. */
- 	}
--
- 	return 0;
- }
- 
-@@ -196,12 +193,16 @@ static int plantronics_probe(struct hid_
- 	ret = hid_parse(hdev);
- 	if (ret) {
- 		hid_err(hdev, "parse failed\n");
--		goto err;
-+		return ret;
- 	}
- 
- 	drv_data->device_type = plantronics_device_type(hdev);
--	drv_data->quirks = id->driver_data;
--	drv_data->last_volume_key_ts = jiffies - msecs_to_jiffies(PLT_DOUBLE_KEY_TIMEOUT);
-+	drv_data->double_key_to = msecs_to_jiffies(PLT_DOUBLE_KEY_TIMEOUT);
-+	drv_data->last_key_ts = jiffies - drv_data->double_key_to;
-+
-+	/* if HZ does not allow ms resolution - disable double key detection */
-+	if (drv_data->double_key_to < PLT_DOUBLE_KEY_TIMEOUT)
-+		drv_data->double_key_to = 0;
- 
- 	hid_set_drvdata(hdev, drv_data);
- 
-@@ -210,29 +211,10 @@ static int plantronics_probe(struct hid_
- 	if (ret)
- 		hid_err(hdev, "hw start failed\n");
- 
--err:
- 	return ret;
- }
- 
- static const struct hid_device_id plantronics_devices[] = {
--	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
--					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3210_SERIES),
--		.driver_data = PLT_QUIRK_DOUBLE_VOLUME_KEYS },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
--					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3220_SERIES),
--		.driver_data = PLT_QUIRK_DOUBLE_VOLUME_KEYS },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
--					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3215_SERIES),
--		.driver_data = PLT_QUIRK_DOUBLE_VOLUME_KEYS },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
--					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3225_SERIES),
--		.driver_data = PLT_QUIRK_DOUBLE_VOLUME_KEYS },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
--					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3325_SERIES),
--		.driver_data = PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
--					 USB_DEVICE_ID_PLANTRONICS_ENCOREPRO_500_SERIES),
--		.driver_data = PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS, HID_ANY_ID) },
- 	{ }
- };
-@@ -241,6 +223,14 @@ MODULE_DEVICE_TABLE(hid, plantronics_dev
- static const struct hid_usage_id plantronics_usages[] = {
- 	{ HID_CP_VOLUMEUP, EV_KEY, HID_ANY_ID },
- 	{ HID_CP_VOLUMEDOWN, EV_KEY, HID_ANY_ID },
-+	{ HID_TELEPHONY_MUTE, EV_KEY, HID_ANY_ID },
-+	{ HID_CONSUMER_MUTE, EV_KEY, HID_ANY_ID },
-+	{ PLT2_VOL_UP, EV_KEY, HID_ANY_ID },
-+	{ PLT2_VOL_DOWN, EV_KEY, HID_ANY_ID },
-+	{ PLT2_MIC_MUTE, EV_KEY, HID_ANY_ID },
-+	{ PLT1_VOL_UP, EV_KEY, HID_ANY_ID },
-+	{ PLT1_VOL_DOWN, EV_KEY, HID_ANY_ID },
-+	{ PLT1_MIC_MUTE, EV_KEY, HID_ANY_ID },
- 	{ HID_TERMINATOR, HID_TERMINATOR, HID_TERMINATOR }
- };
- 
++	/* make %rcx contain the number of words, %rax the remainder */
+ 	movq %rcx,%rax
+ 	shrq $3,%rcx
+ 	andl $7,%eax
+-- 
+2.39.5
+
 
 
 
