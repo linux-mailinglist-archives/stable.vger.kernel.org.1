@@ -1,290 +1,222 @@
-Return-Path: <stable+bounces-131759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 635AEA80C79
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:35:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2567FA80C9F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:41:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 908F7503BB7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:30:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D45B8C54B9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:35:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DCCB3D3B8;
-	Tue,  8 Apr 2025 13:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE5BA15574E;
+	Tue,  8 Apr 2025 13:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aEHaLOXt"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="XHY6dr4a";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="st3JVpsq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4B513AD38
-	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 13:29:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744118984; cv=none; b=C78wn50vqZNhhsbfzqWEHpekZ5AyhFOpXUY4M3BMRJbfWWdCTpMsq1UZgCYSL4kVjne+XUvMU9AP+53IvLPzKt15CAFecNtEJ/DDVP17eQwmM3ytnoJxGUlhAQScc51uTmq5rRAAFvF9Y9pDj9iSKIU4din9YZuSNgLfDnyRNjQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744118984; c=relaxed/simple;
-	bh=hhEKPU7mTPKBKR4dmByEVH/KtxVoZtJXz9E+Ash91rA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=s/vJm4huGZWCUFZlxJtffkP7Xlakq6xVGjjeHHbzIhaGSgqCdPEPHonS+dCptZWihiU7+hgZ4RxEjZAlnb9KjwMenHOy3BHfLgr2eCARaX59r50p5GvitlNtxZKc6VqRAKFSLrrwZpRg4Bwdz/L3wWdf7gx/FYY2G7Cyfm4EK1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--vannapurve.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aEHaLOXt; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--vannapurve.bounces.google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2ff581215f7so4543590a91.3
-        for <stable@vger.kernel.org>; Tue, 08 Apr 2025 06:29:41 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2142486358;
+	Tue,  8 Apr 2025 13:35:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744119323; cv=fail; b=ddIdZ/WFQoQdF3KKiMV8Ji1SzFBi3Qe2hEJDQ3PNitykuVrn8pIS8w4Q8v5lKLUxZZ1ASfgBTmbqLJF+G3xBzK3Hig0OVKxsclUvSiUmCU0+CVlgYcoXT4b2mVJwUckz7Mi8nk+e7XKNwyc+BA8KGalIHUyQVv829dH5cmCizbg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744119323; c=relaxed/simple;
+	bh=wQfVidREmcgLjmY70GhWs9tAIxW0512AzCCmdbKW6mo=;
+	h=Message-ID:Date:To:Cc:From:Subject:Content-Type:MIME-Version; b=MtDk1WFrxKAypSeMM62NfLGHNV4ZiZBlO5sOmGppU/phE7e+dwj7K7tslGf592CDj31ptXTVymEYg7fnAn/uSfnBUGC+cnhrefGoKVunTpXimJiF4GjMOpKDguJ3nFC3WDJHPHUECMMBdnV7X87SryBVBq9Xc6r24891djlXi7M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=XHY6dr4a; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=st3JVpsq; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 538C6hMO029669;
+	Tue, 8 Apr 2025 13:35:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=corp-2023-11-20; bh=rtMmgNrkN69Qr/US
+	E8uDYdII2EHJ5H3EmCnBtGHjZ5A=; b=XHY6dr4a4xcLvf+1CB41YUqojWvRR10X
+	UsElulA4QvMErxnb4ggw+01L/ewljlTGy1QhN2ilBwhpOBqMpx8j6wvT2RrKcgtY
+	q4+YAY+gitZ46Fhoh89kvDuX5Dt1kwJUnCFhr6+lQyy3IDdmdpO19QvL6fqriz4c
+	cYLvCAS2e+VB4fskbIxGV90NV7X+oVAPCWKfIxPCragJ2vdQ6NcMB89o+orRKuqU
+	kVkZAQMqmaVGsxfXwrBRXti2nLZ7G2XtJGKb5zUHZY2lH/LWOpDcQJ+avkGNeO9O
+	febUXjlbdRCkQXtN75syeBqxTWSGKwf0zAxCau+NSCw5fudglYGmxw==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 45tu41ctf7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 08 Apr 2025 13:35:20 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 538ClUCt016239;
+	Tue, 8 Apr 2025 13:35:19 GMT
+Received: from dm5pr21cu001.outbound.protection.outlook.com (mail-centralusazlp17011028.outbound.protection.outlook.com [40.93.13.28])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 45tty99dgk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 08 Apr 2025 13:35:19 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hCMJ6JjIyZuDIcU1jS0+KXYPdKeC+dfQXy/P8+zEwgfviiTkhJ47aVME+Z7wS2dn2PbDtYx9ZcZdT128PCT3g8Ztj66tnvhLPXGxsLUHAUfiLMlsEMm45Uy46SC/tZpU/0BcAv1BRq1+7X7UO+1Xl6sQcYthrcS6HXHOccM0mGye8rWJ/BFD+LhvnuVg00Fg4WPqvDtAv4Z5dAaAMCYzEA2Ufdp3QLhX5ljSkOGExC0X5ryzyUCADbTgBuuA9qbPCQeFRKCJXmUGWzYGIPK1fWzrmDDs5+dwFPFYD1BPbDpJhrnn/iKxYu8J27aKCfqwvFY5h4xrqxBAzqabx/LjdA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rtMmgNrkN69Qr/USE8uDYdII2EHJ5H3EmCnBtGHjZ5A=;
+ b=riNAaaGr2SMFi3xsSSYHw+/KHUWJ8LSXEO8csW8UXSZBvqqH7yQJ8YujCVCYf8/sA9PJjmV1BprRrG6unaH3y0k9QnGnMkZsNEmyRCNHfYXqnm9c2jjXYgHjU9SsKjoAn8d6i1+3oFCinC3WJpsvEaeewqQ2TkMyKmNsuTbzoAZk2A8FbWqwyPtXyGYs47bHWzWVFIUSoIFa7MQB7Vrc+OUPSdcPvG+JqDQoJOWbQGdODbMLiMBMJKoVGMGUNNdMJ7aaIVshxws10zEpLEXTAs4OvdCdWlmX9SjUcoIfk5LErwOh8L6dJbmlgjDdeB3s0LxdKzi9Ype7OVB/+Yypyw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1744118981; x=1744723781; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=l7FZGgTZSqkXDWv/nNI1z47hyF9ml1UBTANecRqbq3w=;
-        b=aEHaLOXtzNzkZHrLL3MWxt7t2XXpAfYuMG5fREAg4/ZuPkUnDX7cJga06dy6wg5l1e
-         QhWuBguDyu4xQaBSQymisDII5wllJDTrg55LMvCr8u8PqQauFJ1CQAy5ypbUOjW7OTK3
-         9DuFm/EoYStL8h42PrSiQ7Lbu3M09dOe6S+CAf15HWNbGlRlvuPnx+VZcRwD2hNrtysM
-         rESfZmX9FUjWd92eINULhD7QLlufMcw7dY7DuhLY+63hgXnOpYc0tf3cz5d69AkerLYz
-         hHPcM+XoG9IjLfPVIXI8lsTnevCdiWd4m/FPn5lDeTrL1VJG+4jldPSG6AwfebhLx0kW
-         W1aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744118981; x=1744723781;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=l7FZGgTZSqkXDWv/nNI1z47hyF9ml1UBTANecRqbq3w=;
-        b=Q0gBjj0dD1+zWE3jiGTKAssil46aCzgUlau+AkJAT1MwM/7rmC1nQfOGigXHiHNApF
-         KB4DLpMPHM/0HRa/J9xuKGD/fVqPO2986j6qNKEVO7TXaGFGH1A+iKejd08mFaM3xYeX
-         nL1LcwasO/+09c8+TCFZ8B14EuruQ6cmHCN7c5AD0u8MOeRKzjZoIMLM8fvdPuQHy4Dr
-         8+nGI73/T8/Lob4WH2eJJc69G1vyU+xUPHVPjF/NUGh+4/xZ+nzX6HqpwkbK0Ne0/5tX
-         7y6Pqi4Nvzf1TdXi+KX7zvwQJ1o5GWxFkTGY/Mr6NrNuWOcQV+Il064B4xbYRtx43gFg
-         TnnQ==
-X-Gm-Message-State: AOJu0YzOvsIRgv0GWur08A9ZqFdtTitQKcbIFCs023wdP57zn7hmCp58
-	Scql4lBFziTockaDgIyEV7iOTaB+lRZ8hKMqNDrA9vcg5M6P50HVGVzYgKo8C9ujpvDtBNS4AyL
-	WkEwBoFXKRm+fvzsO6TYDWrDyRfbOnsQOW/cvGvZQyEN0fG+9DS7mwLPUfj4aMegipNNewvE+Jl
-	C416WsnOVVj7FaA6NeTfDeZ/u54FKL/mk504oCM2VP2RBvI+stzAlAjg==
-X-Google-Smtp-Source: AGHT+IFlHLD8Gw5Upyusq/0geqIe2SvJdKsNEmSorPboHbRXJOwpCUIprUIAHDg46xxxJ/mreiqR+kVYALFAAa1d
-X-Received: from pjur6.prod.google.com ([2002:a17:90a:d406:b0:2fc:ccfe:368])
- (user=vannapurve job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:3bcf:b0:2f8:b2c:5ef3 with SMTP id 98e67ed59e1d1-306a612def7mr24573922a91.14.1744118980570;
- Tue, 08 Apr 2025 06:29:40 -0700 (PDT)
-Date: Tue,  8 Apr 2025 13:29:37 +0000
-In-Reply-To: <2025040827-discern-goldmine-da71@gregkh>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rtMmgNrkN69Qr/USE8uDYdII2EHJ5H3EmCnBtGHjZ5A=;
+ b=st3JVpsq/l3J+9hp02T8gCP80vnkCQoxQO9yzhK4L2j7EaqsCHmOnhz+zs9Dk8kTAPZoNvv1k37EEjhCgu4/bWdsTiV1WvTtqXnJ69QEXPplwSOtR/rsPonXsAX32p3+u+iVTUzWtj+WPJ9cNmi2zTcgiffULM7ydw/7alNV+iY=
+Received: from BN0PR10MB5128.namprd10.prod.outlook.com (2603:10b6:408:117::24)
+ by IA4PR10MB8566.namprd10.prod.outlook.com (2603:10b6:208:568::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.32; Tue, 8 Apr
+ 2025 13:35:17 +0000
+Received: from BN0PR10MB5128.namprd10.prod.outlook.com
+ ([fe80::743a:3154:40da:cf90]) by BN0PR10MB5128.namprd10.prod.outlook.com
+ ([fe80::743a:3154:40da:cf90%7]) with mapi id 15.20.8632.017; Tue, 8 Apr 2025
+ 13:35:17 +0000
+Message-ID: <5ea93daf-5419-4396-96fe-91249ece26b6@oracle.com>
+Date: Tue, 8 Apr 2025 09:35:15 -0400
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Cc: Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
+        Rik Theys <rik.theys@gmail.com>
+From: Chuck Lever <chuck.lever@oracle.com>
+Subject: Two NFSD commits for recent LTS kernels
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH2PR07CA0056.namprd07.prod.outlook.com
+ (2603:10b6:610:5b::30) To BN0PR10MB5128.namprd10.prod.outlook.com
+ (2603:10b6:408:117::24)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <2025040827-discern-goldmine-da71@gregkh>
-X-Mailer: git-send-email 2.49.0.504.g3bcea36a83-goog
-Message-ID: <20250408132937.4178015-1-vannapurve@google.com>
-Subject: [PATCH 6.6.y] x86/paravirt: Move halt paravirt calls under CONFIG_PARAVIRT
-From: Vishal Annapurve <vannapurve@google.com>
-To: stable@vger.kernel.org
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Ingo Molnar <mingo@kernel.org>, 
-	Andi Kleen <ak@linux.intel.com>, Tony Luck <tony.luck@intel.com>, 
-	Juergen Gross <jgross@suse.com>, Ryan Afranji <afranji@google.com>, Andy Lutomirski <luto@kernel.org>, 
-	Brian Gerst <brgerst@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Josh Poimboeuf <jpoimboe@redhat.com>, stable@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN0PR10MB5128:EE_|IA4PR10MB8566:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5ad4bf67-5bbe-4370-07a7-08dd76a23357
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?aDV1OEIyRUtudk9IN1RRL0tNSC9CajdRNlBkV0l3cVVNbWZFSmtuTGNhei9I?=
+ =?utf-8?B?TmNFQS8yZW05WHRJTFJkUVJHTElJTTVvaXJEUTROM1hZVDFmNkJISGc3M1B5?=
+ =?utf-8?B?L09LY1M3QmwvYlY0R3BmaXBHUUZUWlpyeTQrYUZBOUhFVVZTWkNUZGZuaDJp?=
+ =?utf-8?B?YXNTL011OWxNRXN3OUM0eUloSGZKd3VqWnEzNmx3d25INHlXWi9sVDdoWHBH?=
+ =?utf-8?B?dkw2VzJaR1N1Q05uN1FRNTRaOFFGYTBPTTV1dXVjN0xkQmkrMEpvemFQTWp3?=
+ =?utf-8?B?QnNwcm1YTzM0am45M1BFM0xxalJwUDlYR21aRFlIRnpQQW03YVNQdFVqbEJS?=
+ =?utf-8?B?M1JxcVRFMGNJeGRSeW51QVdsUmV6c0I4QTE0eHZlVXpkZFE4Mm5WcWlWR2No?=
+ =?utf-8?B?a29WOTdRRkNQUFNDRjFSbm0yMHdVQUd4OTV3b0xEOFlQc1ZtME5VcDVldk1w?=
+ =?utf-8?B?b1R0cGwyeS9jRTR5ZWdTRkxNbFRKVm1LTFlPSDNEblQzVTVBTytISFlheEs5?=
+ =?utf-8?B?dHlRVjllRGMwbWFCRUtlODVNRXJSM25Eck5VY2NjOE8rY2NKV2Y2VU0xcG1Z?=
+ =?utf-8?B?S2YzcVlzNCs1NkVxSGFZWkE0dU5hU0JON29EM0FxeTdROFFteWVGWWg3UDFy?=
+ =?utf-8?B?UDQ5VUgyZVl3NlQrTFR6d25Ha3IvdVplaFhzSlYraVUzNDc4RTk1eFo1NlF5?=
+ =?utf-8?B?aWhpTWdxY216VjI5TTNNbGliNnlvNUd6YXdPZzZVakQ2cEFIMkxNeTdmbVoz?=
+ =?utf-8?B?L0tRcDhtL1orZkxwWUdiM3FBc0JqYW5kQngwN3VxVDdpWXhTUXNSNFRScGtN?=
+ =?utf-8?B?cklFM2VkYy9VRzBNQU8vUW5kb1laMXZKTGpoUWJhOHVRTWFhUWF2bCtBTFp6?=
+ =?utf-8?B?YWRyTUEwcmlwMi85T1RxVHBKNk1PWGVuMXJyK0ovckt3YTR4WndHY09qSERZ?=
+ =?utf-8?B?NXdFb1JUMjdCbDB1N0NLTU5PYmpnSnB1emt4MHlXSnU5akFSWVo3RmhRWWhy?=
+ =?utf-8?B?NWNaUHJrZHdsaUtveWZIVTNwKzRxY014SityV0F4cjE5L2dTalJSN0lkMTc0?=
+ =?utf-8?B?QmFJdnRtbGpnV05GSHZDTjJTcG5tbGZtREpjVnRPQnplYVdiSjljMElBWnVH?=
+ =?utf-8?B?T3JjbXVySHdnUnM5UHg3QjZjRHhLZ1RLUWdJVkdWSjRGMU9QWkswSVNoVSsy?=
+ =?utf-8?B?ZGdVZzlBaDhRQVFtNUZFb2Q5VzB5dDB5c2taWnkwQUg3UHFVZ3RKRGd3S3Vq?=
+ =?utf-8?B?Nkh0NWN4aHdwZisycjRvOEVhdlVlWURuSDF2WXI0RGYwYW5pTSs5RFhvb0Nz?=
+ =?utf-8?B?bnRXNGYzQUJwSXVxUU1vbkVOMU5weFJPWDlBc1pJbENKYXI3N3RZVDlYNWJj?=
+ =?utf-8?B?U1huRURla3RJbDFQcE4xTXAzbVdGQ3FZbjB0czVjSmpzemllNWdyTlZjMERU?=
+ =?utf-8?B?OHNoeDZUYWJHTXV2ZFNLcHZlZmFUSG5wWjBTbHhCUG1nb3NFczd5TW85K2xm?=
+ =?utf-8?B?aElsVGkrY0dKMCtyUTNYOTNXalUrUmxoZVo0cVR5OElhZlprYUQrTi93cERT?=
+ =?utf-8?B?eHdhT3h4ODk4YTZVb0FPQjY5eXFPK3ZWOXdMMm1BQ3JFek5FZ0lxdkhWUm5s?=
+ =?utf-8?B?ZlFPWUZVMjJ0UWdDUGtSdWRZdGRmVnZUQjB6MTI5bFhlWEQvM3VMSmJvNExE?=
+ =?utf-8?B?NmpsOENyQkNLaU0xVXNiNi9ib3hPNVVJdkRlRUtiVmxXcTBuaXlYUkU1eFVV?=
+ =?utf-8?B?QmVOZzdVZ1RSdFdSZitvUUlEbGE5RXFsaU1aVElVM0txM1Z3aDhISlhlNVZj?=
+ =?utf-8?B?T29lUzNGQUJjUnBTVnZJVWp5WGRkbHVSVHllYUJaTUJKME5xOFRUYjFXcW9O?=
+ =?utf-8?B?MnVSRjhPd2o4MWFvaEg3eHZ5RHZIZ0hsL0hhUjNrN2hNWFZxNjc5ZWFKU3hP?=
+ =?utf-8?Q?iBpd4r/flQg=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN0PR10MB5128.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SFpJRUh2OGpTS2VFSXBpMXpjcU4vNUVzT0k0QUFnYU5lM1FQQjhHNnpuanZa?=
+ =?utf-8?B?TVcyUmlsbVlFYkhCQ1J1QlBNWDZZWWNTaDI1dGhDMzZOK3k4bUFKUlNmdTRO?=
+ =?utf-8?B?aTRiVkdDTHR5SzREckJKWXlDVFpmbUM3N3RWSEU2SnkwSUtocDgwZzA1a2Zh?=
+ =?utf-8?B?U2RqWjkrZ3hadEptdDNIKzZhc2NFQ2pMZ1YzOUFDM3VJeTVzUUpENG1OekNp?=
+ =?utf-8?B?WVZoTEtpVURSZ2I0MldqZWxpTGpwOGxxeVJmVUJhcGdSQWI0akZIS1F3ZU5Z?=
+ =?utf-8?B?SDJlTXRja2xianB2N1hOd05tZHhNUXRtd0lPMXVuY0tGZXRrVUxWRnpTdTQ1?=
+ =?utf-8?B?K25YY0RvMjMrbmJ0b2JyWkUwWldtN2xqNytXcjdBdUIxUHlMcUNCNFhvbGJM?=
+ =?utf-8?B?YTBld3VZRjlLZTlCSHYzUi85MTdxQ0tPSFhCSVREUzNTeDlDZUpScEFkd0dy?=
+ =?utf-8?B?ZEd6SERQMkljK3NYMm1rQkMyVXlCMzBFSHRUOS90WkRkcmxvcUR5aE1hL3l6?=
+ =?utf-8?B?UTFxT200MG1QOWNjSVVxRzc0TVBBaldOOU5QQ0Y3SHFaeTBpYVc0QVJmNnF3?=
+ =?utf-8?B?RER2UXdFMU5yd3lkeVZuTVJEUnkwTmVuL21OajlJM2JFV01SSzMxNElMK2lj?=
+ =?utf-8?B?WEhQam9DRnJ6K3QxbmZjK25zUGlOMlM3dWNBd3N2VGF2bWlpb2xIQ25GYlNm?=
+ =?utf-8?B?WEx2OUJNSCtIc3RhcXVwK1hobEpRVjIrYmR0Q3ZIZmdXVGdWRzZHb2p4RG0x?=
+ =?utf-8?B?TW5SY0g2Y1FjREJMQWxoN2V3WXlMNHZ0MEM1WHB4R2ZUei8rRmFmZjBVN0ZQ?=
+ =?utf-8?B?c2VlTWZsTlYrNXFycFl4QTRDaFJOT0F0dlhpZDdET3RmSGRma0kzOUk3b0x1?=
+ =?utf-8?B?d0JYV1dLYU1rR090QktLenhrbXVOMER4VnlrTXRNa1p6SVdUMitQRU8xYkkv?=
+ =?utf-8?B?MmZDb1VFcktxSEwxalBLZnlSc2RaNUpyT1U2MjhhdGxFR0g3L21WN0lwWjRL?=
+ =?utf-8?B?SitxaHhkc1lKaGw1TDVkdEFsUU5QTnRXMmF5Mjc1cURTSGxybWcwVjlTK1g0?=
+ =?utf-8?B?UlhBS3Z6cmlTMmVHSEdabldEcTBkay9DU1dRYkh0cmo5SnU0b3lCTXJDZE9u?=
+ =?utf-8?B?K3pVMk5MT1JyTUFjK2dHbmF6enVSUUNLL1k3NUhlbWQ3U0Y1N0g2Wm4xUSt5?=
+ =?utf-8?B?dXpjemN0V1FaSnZROUlrYjZCTGRVNHNHOHdTbFIxMUdjenc5OXBVZFpOdWQr?=
+ =?utf-8?B?TGpJeEt6NFNrNHM0SVE4Umpnd05wQlB5UzZDS1FCUXd2UlZKU2QrWEhIaTRm?=
+ =?utf-8?B?YWF3c0ZzK1RMeUU5QnMxMitRbUdjWGRKVk00cXpER0RqSnNZb003ZndUaDRw?=
+ =?utf-8?B?R2hhaS9hRVhMUHVPc3QwaGYxakY2U2xha3JpOXZIYS9la2NGbU1saVgyN1Aw?=
+ =?utf-8?B?YUlIOW96SWdMMXduV010MU9YMGdFY1JDME4zd2tkdWx5Qm5BZDNUdk9PanYy?=
+ =?utf-8?B?d0VFMEVLdHJHTjd4a2E0c3FRaDl2TEx5alpHdWVuK2d5KzdOUjlnUm14WWRY?=
+ =?utf-8?B?RVpmdDFwbDJleFpsNGNiZ0p0TFZENWpqQ0dOSkFGcVlXZmFDUVZtWnNlbGFx?=
+ =?utf-8?B?enhnWW5JUkwzancvcldkRGZwbkw1RVptQVhBbE02ekJkQUJrK2h3eGprLzJq?=
+ =?utf-8?B?MEhOR2R0ODVSbEpud0cyQXRzaVBHdkRrVjFFQitxK0wxNk0zaUo5aTZWTmZt?=
+ =?utf-8?B?MEZla1VrbUh6SjNLYW9qWldsaWcvZitUZitVanZBWUFWeEgzR0xSY1FYTDNo?=
+ =?utf-8?B?US9PcUhQdUY0M1JadDdRc1ZycE9TWXlUK2NKWEtUeWdjSlc0cE13M1ZZeG8v?=
+ =?utf-8?B?aXVlc2MxWXgxRTZFVmphb2hjcFpUeDZzNlZWdzFPZnU0MTllbThiRDhDNEcv?=
+ =?utf-8?B?WG9MVHRZQUc0VlVDVWRkOTViS2xRamMxQjFlbUlzZlZOVE52MjZCY3JKM1oz?=
+ =?utf-8?B?dFg1UUw5WGdzd2o4WjR5cnhkanlhNnpMVWF0UG5uekVTVlErSW00V25WNXN4?=
+ =?utf-8?B?TkJuTjdUTjVhMENZT2lpUEFqZXB6T3Z3aEdjL3YyZ0ZHUWtkVldXekhpcnZt?=
+ =?utf-8?B?WWlJZ3cyOXpqUCszdFVVRXFBQm1Ya1FIT3VFdjh6dXBVaEFqbDNEL1AxNVZI?=
+ =?utf-8?B?MVE9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	6Axm6aPFhYTIj6SAg6iPvZFRusZl0cFffuyp/JsJfeiWy03h4FhRUIeu1/CLZLmxYtrwKu/3Lm5jaaY0ZnkyaLhQsAVciyUxeDKzDaMWEoRcUAy9mkCZ0c7hoMJ7YvfhcbU8kmzbWJ/VdVh8tWB+AVW1YYxENR8D5AhHj8GgvFxBGPIgoSxOPZr2Z9IcOG7Y3Vaf7zWSixVgDx7KuvzG2aFzGH80lDhqvM8o27PBTOnrh4t+lcPNCbU+rjpsCX8QA4lLGt4VtvTkGCcliFkqeLO0jiuZDZuxNKMhHgIky8M4dSOeyJdFdXLUdPOKOq0A/guDFhj/hFc7C+iUHFnojdj9+HkGQs1Lv0jVTpVSjgf0kDd/DJOfBntPXjP/YEFCXps5/Uq97sOZVguNBN5F7uBj7oUmPwFuY/5nAMMf7LuAh08tH0jpW7kH2To2cP1d5g39TlokC2qirGUkpT90bSiu5cJhZyVojGU8U4klEt5bmJCvD+wxs4WTL3aAP21sakDXpZ8sC/q/UPKiUxZzpsfrAP9QFdyDKJzU18rtCpOhoSqYfF5cy0UD+3IqUQyPjZuGSPB38Adgmtb0psH4RriUprwW0BHHIOhGHI4gSS0=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5ad4bf67-5bbe-4370-07a7-08dd76a23357
+X-MS-Exchange-CrossTenant-AuthSource: BN0PR10MB5128.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2025 13:35:17.5924
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pXQT26VmBCs/g2mKdyvDQeWv+tqcJ2UFkeDCyCSCPWjx9pquj9bGnkNF6DYBZEIBvJcE3gsqAasZ/GfzixZpSQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR10MB8566
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-08_05,2025-04-08_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 suspectscore=0
+ bulkscore=0 adultscore=0 malwarescore=0 phishscore=0 mlxlogscore=684
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2502280000
+ definitions=main-2504080095
+X-Proofpoint-ORIG-GUID: cCf8hFFFOFX7btT0X-mESOAuabarjM5q
+X-Proofpoint-GUID: cCf8hFFFOFX7btT0X-mESOAuabarjM5q
 
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Hi-
 
-CONFIG_PARAVIRT_XXL is mainly defined/used by XEN PV guests. For
-other VM guest types, features supported under CONFIG_PARAVIRT
-are self sufficient. CONFIG_PARAVIRT mainly provides support for
-TLB flush operations and time related operations.
+These two upstream commits have Fixes: tags, but should have also been
+marked "Cc: stable" :
 
-For TDX guest as well, paravirt calls under CONFIG_PARVIRT meets
-most of its requirement except the need of HLT and SAFE_HLT
-paravirt calls, which is currently defined under
-CONFIG_PARAVIRT_XXL.
+  1b3e26a5ccbf ("NFSD: fix decoding in nfs4_xdr_dec_cb_getattr")
+  4990d098433d ("NFSD: Fix CB_GETATTR status fix")
 
-Since enabling CONFIG_PARAVIRT_XXL is too bloated for TDX guest
-like platforms, move HLT and SAFE_HLT paravirt calls under
-CONFIG_PARAVIRT.
+As far as I can tell, they can be applied to both origin/linux-6.12.y
+and origin/linux-6.13.y.
 
-Moving HLT and SAFE_HLT paravirt calls are not fatal and should not
-break any functionality for current users of CONFIG_PARAVIRT.
+Thanks!
 
-Fixes: bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
-Co-developed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Andi Kleen <ak@linux.intel.com>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Tested-by: Ryan Afranji <afranji@google.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Brian Gerst <brgerst@gmail.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20250228014416.3925664-2-vannapurve@google.com
-(cherry picked from commit 22cc5ca5de52bbfc36a7d4a55323f91fb4492264)
----
- arch/x86/include/asm/irqflags.h       | 40 +++++++++++++++------------
- arch/x86/include/asm/paravirt.h       | 20 +++++++-------
- arch/x86/include/asm/paravirt_types.h |  3 +-
- arch/x86/kernel/paravirt.c            | 14 ++++++----
- 4 files changed, 41 insertions(+), 36 deletions(-)
-
-diff --git a/arch/x86/include/asm/irqflags.h b/arch/x86/include/asm/irqflags.h
-index 8c5ae649d2df..9acfe2bcf1fd 100644
---- a/arch/x86/include/asm/irqflags.h
-+++ b/arch/x86/include/asm/irqflags.h
-@@ -56,6 +56,28 @@ static __always_inline void native_halt(void)
- 
- #endif
- 
-+#ifndef CONFIG_PARAVIRT
-+#ifndef __ASSEMBLY__
-+/*
-+ * Used in the idle loop; sti takes one instruction cycle
-+ * to complete:
-+ */
-+static __always_inline void arch_safe_halt(void)
-+{
-+	native_safe_halt();
-+}
-+
-+/*
-+ * Used when interrupts are already enabled or to
-+ * shutdown the processor:
-+ */
-+static __always_inline void halt(void)
-+{
-+	native_halt();
-+}
-+#endif /* __ASSEMBLY__ */
-+#endif /* CONFIG_PARAVIRT */
-+
- #ifdef CONFIG_PARAVIRT_XXL
- #include <asm/paravirt.h>
- #else
-@@ -77,24 +99,6 @@ static __always_inline void arch_local_irq_enable(void)
- 	native_irq_enable();
- }
- 
--/*
-- * Used in the idle loop; sti takes one instruction cycle
-- * to complete:
-- */
--static __always_inline void arch_safe_halt(void)
--{
--	native_safe_halt();
--}
--
--/*
-- * Used when interrupts are already enabled or to
-- * shutdown the processor:
-- */
--static __always_inline void halt(void)
--{
--	native_halt();
--}
--
- /*
-  * For spinlocks, etc:
-  */
-diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
-index 6c8ff12140ae..d8537e30cee1 100644
---- a/arch/x86/include/asm/paravirt.h
-+++ b/arch/x86/include/asm/paravirt.h
-@@ -103,6 +103,16 @@ static inline void notify_page_enc_status_changed(unsigned long pfn,
- 	PVOP_VCALL3(mmu.notify_page_enc_status_changed, pfn, npages, enc);
- }
- 
-+static __always_inline void arch_safe_halt(void)
-+{
-+	PVOP_VCALL0(irq.safe_halt);
-+}
-+
-+static inline void halt(void)
-+{
-+	PVOP_VCALL0(irq.halt);
-+}
-+
- #ifdef CONFIG_PARAVIRT_XXL
- static inline void load_sp0(unsigned long sp0)
- {
-@@ -168,16 +178,6 @@ static inline void __write_cr4(unsigned long x)
- 	PVOP_VCALL1(cpu.write_cr4, x);
- }
- 
--static __always_inline void arch_safe_halt(void)
--{
--	PVOP_VCALL0(irq.safe_halt);
--}
--
--static inline void halt(void)
--{
--	PVOP_VCALL0(irq.halt);
--}
--
- extern noinstr void pv_native_wbinvd(void);
- 
- static __always_inline void wbinvd(void)
-diff --git a/arch/x86/include/asm/paravirt_types.h b/arch/x86/include/asm/paravirt_types.h
-index 772d03487520..4149df559aae 100644
---- a/arch/x86/include/asm/paravirt_types.h
-+++ b/arch/x86/include/asm/paravirt_types.h
-@@ -130,10 +130,9 @@ struct pv_irq_ops {
- 	struct paravirt_callee_save save_fl;
- 	struct paravirt_callee_save irq_disable;
- 	struct paravirt_callee_save irq_enable;
--
-+#endif
- 	void (*safe_halt)(void);
- 	void (*halt)(void);
--#endif
- } __no_randomize_layout;
- 
- struct pv_mmu_ops {
-diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
-index 8d51c86caa41..234851fe0ef8 100644
---- a/arch/x86/kernel/paravirt.c
-+++ b/arch/x86/kernel/paravirt.c
-@@ -142,6 +142,11 @@ int paravirt_disable_iospace(void)
- 	return request_resource(&ioport_resource, &reserve_ioports);
- }
- 
-+static noinstr void pv_native_safe_halt(void)
-+{
-+	native_safe_halt();
-+}
-+
- #ifdef CONFIG_PARAVIRT_XXL
- static noinstr void pv_native_write_cr2(unsigned long val)
- {
-@@ -162,11 +167,6 @@ noinstr void pv_native_wbinvd(void)
- {
- 	native_wbinvd();
- }
--
--static noinstr void pv_native_safe_halt(void)
--{
--	native_safe_halt();
--}
- #endif
- 
- struct pv_info pv_info = {
-@@ -224,9 +224,11 @@ struct paravirt_patch_template pv_ops = {
- 	.irq.save_fl		= __PV_IS_CALLEE_SAVE(pv_native_save_fl),
- 	.irq.irq_disable	= __PV_IS_CALLEE_SAVE(pv_native_irq_disable),
- 	.irq.irq_enable		= __PV_IS_CALLEE_SAVE(pv_native_irq_enable),
-+#endif /* CONFIG_PARAVIRT_XXL */
-+
-+	/* Irq HLT ops. */
- 	.irq.safe_halt		= pv_native_safe_halt,
- 	.irq.halt		= native_halt,
--#endif /* CONFIG_PARAVIRT_XXL */
- 
- 	/* Mmu ops. */
- 	.mmu.flush_tlb_user	= native_flush_tlb_local,
 -- 
-2.49.0.504.g3bcea36a83-goog
+Chuck Lever
 
 
