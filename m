@@ -1,55 +1,64 @@
-Return-Path: <stable+bounces-130012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69AB7A80297
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28C0AA803D6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:03:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 870483A66E1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:42:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E87A16AA4B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 646AE264A76;
-	Tue,  8 Apr 2025 11:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F134726A0FE;
+	Tue,  8 Apr 2025 11:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cq63Cet2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lx580II6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229BE266EEA;
-	Tue,  8 Apr 2025 11:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D51026988A;
+	Tue,  8 Apr 2025 11:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112581; cv=none; b=fi859wD7Z+iA6d3L7Hz9l0kSb85oxm+FGWkVn0fS7MUTwZ25BVghT2q0SrccFsqtEjbUEZBVie1+PeQJxrPdxlOXuSPsU1Z3iYbg9nfTzo76xCtQ3Qelp7/l4mQozMiSf+0E+rgPIY7pBykzZIeggeQf+qPYpO9y73fNjyk9NoQ=
+	t=1744113257; cv=none; b=mfdd4Pa2dx4qweu/Ll/Lu/hfD0uzf0Dtf8q/wKQPgTNqAAMagVRRAJCHf5lwfRZgs8lWqk5NEA4mDZGgDM3df6eF8cJrhEoiFCTt5wcXCA8rL0AWAQzf6Ec3qqWLX+Yd0QchpB+6FkpSLJBHZ1I/MQHk89NnySRWuzAacuEIOes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112581; c=relaxed/simple;
-	bh=cBk7P/pinbzlvibvpiFv5lsB43XiWywcUrEbJ72a8mM=;
+	s=arc-20240116; t=1744113257; c=relaxed/simple;
+	bh=aO6vZw2fOsptjJ34RmUrnosp4RgaLQKfylQDwyPtJNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FmjGq+yx+NtjsGTU/tOFh2Kmx1zfi5fz2Kg7m71CKSi6gGC8fs1gjIM31FAtQbHGl80EzCCkIPOeQUqbe1LBIXAW7NL0ifmeo50cx8gSHGqHbbXzSJg8bL6FkTuWnwj6aG5ySrbZWrz1sQ3joJaBSHN+Uv0Ufnq8WuNAJYvGlXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cq63Cet2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78EB5C4CEE7;
-	Tue,  8 Apr 2025 11:43:00 +0000 (UTC)
+	 MIME-Version; b=PJQKW4uohG69HYffeHYHRFAPcbKJ++Srv2Rj7tDFRHy/3TX6fJuZopUGVsQhzaDv/nYkRznLxF18hUDe0SUbg5TmAiBgGHz5rC15TgIorMofsdgijPIaviV3zG2ymyQQD9YDpMdmHdJS3x3NfDaOFSranv4kfFMTNRfGWYqFMwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lx580II6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 066CBC4CEE5;
+	Tue,  8 Apr 2025 11:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112581;
-	bh=cBk7P/pinbzlvibvpiFv5lsB43XiWywcUrEbJ72a8mM=;
+	s=korg; t=1744113257;
+	bh=aO6vZw2fOsptjJ34RmUrnosp4RgaLQKfylQDwyPtJNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cq63Cet2Gq8QaQTOXPeh5YYk42NFDfJNHqm5kSNFKgXgykq/Wna9+8Wp17glA2q1o
-	 YHP2p/OsjI7fQ86wch1aSMusyLRALEDvrVv/na/Ybt4oEGuHo7Jry3V9pglDYvnvrT
-	 etC56MPFBq+/ZufclG1xLEdXIG+npiv7zWPFzxIw=
+	b=lx580II6IOgFdVE5E6oJBvrZpZ+ZAIKYc9rBn810iRLvzec1CRhHuldenmXaXnCFV
+	 vhSWbrqebN/V0SbCbxIfsg8gN/XV+PIT4i4KaHR7rVAu97PuXR+WOlnYAgvHfCI6gg
+	 2PwDQk1rKXRz+II80DmYF7RnlL4VsICWUkIWNIqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>,
-	William Breathitt Gray <wbg@kernel.org>
-Subject: [PATCH 5.15 119/279] counter: microchip-tcb-capture: Fix undefined counter channel state on probe
-Date: Tue,  8 Apr 2025 12:48:22 +0200
-Message-ID: <20250408104829.557270600@linuxfoundation.org>
+	Jann Horn <jannh@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Juergen Gross <jgross@suse.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Kees Cook <keescook@chromium.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 092/268] x86/entry: Fix ORC unwinder for PUSH_REGS with save_ret=1
+Date: Tue,  8 Apr 2025 12:48:23 +0200
+Message-ID: <20250408104830.974623948@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,60 +68,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Breathitt Gray <wbg@kernel.org>
+From: Jann Horn <jannh@google.com>
 
-commit c0c9c73434666dc99ee156b25e7e722150bee001 upstream.
+[ Upstream commit 57e2428f8df8263275344566e02c277648a4b7f1 ]
 
-Hardware initialize of the timer counter channel does not occur on probe
-thus leaving the Count in an undefined state until the first
-function_write() callback is executed. Fix this by performing the proper
-hardware initialization during probe.
+PUSH_REGS with save_ret=1 is used by interrupt entry helper functions that
+initially start with a UNWIND_HINT_FUNC ORC state.
 
-Fixes: 106b104137fd ("counter: Add microchip TCB capture counter")
-Reported-by: Csókás Bence <csokas.bence@prolan.hu>
-Closes: https://lore.kernel.org/all/bfa70e78-3cc3-4295-820b-3925c26135cb@prolan.hu/
-Link: https://lore.kernel.org/r/20250305-preset-capture-mode-microchip-tcb-capture-v1-1-632c95c6421e@kernel.org
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, save_ret=1 means that we clobber the helper function's return
+address (and then later restore the return address further down on the
+stack); after that point, the only thing on the stack we can unwind through
+is the IRET frame, so use UNWIND_HINT_IRET_REGS until we have a full
+pt_regs frame.
+
+( An alternate approach would be to move the pt_regs->di overwrite down
+  such that it is the final step of pt_regs setup; but I don't want to
+  rearrange entry code just to make unwinding a tiny bit more elegant. )
+
+Fixes: 9e809d15d6b6 ("x86/entry: Reduce the code footprint of the 'idtentry' macro")
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/r/20250325-2025-03-unwind-fixes-v1-1-acd774364768@google.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/counter/microchip-tcb-capture.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ arch/x86/entry/calling.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/counter/microchip-tcb-capture.c
-+++ b/drivers/counter/microchip-tcb-capture.c
-@@ -370,6 +370,25 @@ static int mchp_tc_probe(struct platform
- 			channel);
- 	}
- 
-+	/* Disable Quadrature Decoder and position measure */
-+	ret = regmap_update_bits(regmap, ATMEL_TC_BMR, ATMEL_TC_QDEN | ATMEL_TC_POSEN, 0);
-+	if (ret)
-+		return ret;
-+
-+	/* Setup the period capture mode */
-+	ret = regmap_update_bits(regmap, ATMEL_TC_REG(priv->channel[0], CMR),
-+				 ATMEL_TC_WAVE | ATMEL_TC_ABETRG | ATMEL_TC_CMR_MASK |
-+				 ATMEL_TC_TCCLKS,
-+				 ATMEL_TC_CMR_MASK);
-+	if (ret)
-+		return ret;
-+
-+	/* Enable clock and trigger counter */
-+	ret = regmap_write(regmap, ATMEL_TC_REG(priv->channel[0], CCR),
-+			   ATMEL_TC_CLKEN | ATMEL_TC_SWTRG);
-+	if (ret)
-+		return ret;
-+
- 	priv->tc_cfg = tcb_config;
- 	priv->regmap = regmap;
- 	priv->counter.name = dev_name(&pdev->dev);
+diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
+index f6907627172ba..01e9593e2bd95 100644
+--- a/arch/x86/entry/calling.h
++++ b/arch/x86/entry/calling.h
+@@ -70,6 +70,8 @@ For 32-bit we have the following conventions - kernel is built with
+ 	pushq	%rsi		/* pt_regs->si */
+ 	movq	8(%rsp), %rsi	/* temporarily store the return address in %rsi */
+ 	movq	%rdi, 8(%rsp)	/* pt_regs->di (overwriting original return address) */
++	/* We just clobbered the return address - use the IRET frame for unwinding: */
++	UNWIND_HINT_IRET_REGS offset=3*8
+ 	.else
+ 	pushq   %rdi		/* pt_regs->di */
+ 	pushq   %rsi		/* pt_regs->si */
+-- 
+2.39.5
+
 
 
 
