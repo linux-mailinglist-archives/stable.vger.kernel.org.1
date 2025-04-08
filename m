@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-131299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4664A8091C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:51:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C629A80BA7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:19:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9453B1B67CCF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:45:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50FE9505C9C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE989269CF7;
-	Tue,  8 Apr 2025 12:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6B278F49;
+	Tue,  8 Apr 2025 13:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JhYoT8j7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pjDC7KpX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D91BB663;
-	Tue,  8 Apr 2025 12:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746E08836;
+	Tue,  8 Apr 2025 13:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116021; cv=none; b=QkVNTsdFU0yZt3vPZgfS44kGDFKj1ke+jvGUZ0+jAiYlElH1CgnK1vhPUN9XfBqDPbxsBtU29L0cbgHuJ0rDqUZddz5tFAwfD5Rx5fG7kRaNmArfp3IFWhcIdB2mwd6VQ3dsY81eNboNpEOi/63kBs0/ECxiT5XjI5obIOK9Rw8=
+	t=1744117224; cv=none; b=eTSh3biMLU3/QG4OLKQ5bSaZnKmP2xDEN7ATHF90m3biGR8J1IwnTlCwCyiEvESiPh2N2TKykoafvOTy21gcqKXYFok152ladVddnJzUkF1tycDqwETdd3MLVL1nxnYaowXbjX6aQXG7/GUCNn+J8jLmW5/FzfwkpoAMpMzLWhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116021; c=relaxed/simple;
-	bh=zrq5A9UeTf2nA/K+RjawC9RucAvkIYREm+ArNm1cVx4=;
+	s=arc-20240116; t=1744117224; c=relaxed/simple;
+	bh=FuQmSCGltt75TeCxPrqeHSvOFXRfcdSONWQ4BQbbzrk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jfpKsezrrns7d3t0oerRLTpHp0OhmCpb7b2qL1qmbxs7eBqxRbNBn8WRyq2MSTJJ+TELN+Io/Z3aUarptHB/iRl3v8kF67RNIs6sRYUkiCX7pO7+u+dRi/mhkQXZLykoCvqPs4TsZ327+YU6K/TZs9hyVRz0MX4rpUsPWToOCic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JhYoT8j7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC6DC4CEE5;
-	Tue,  8 Apr 2025 12:40:20 +0000 (UTC)
+	 MIME-Version; b=T11h7pN6T1gV9laNt3RQOeEbRJ4R1GdgnvnOPAP/lO5mR64zepkG2lQZJf20vyiQAQAHLTuZv8NNwZreBYgMjStbnDUoshu4Z/lHz8U2hYps+RtCi9TBQRy/JcvZCcGzpooZvwf/CAYEkH9SRSBn3+MCzcCwmsxgl/Tu+POGxp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pjDC7KpX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05617C4CEE5;
+	Tue,  8 Apr 2025 13:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116021;
-	bh=zrq5A9UeTf2nA/K+RjawC9RucAvkIYREm+ArNm1cVx4=;
+	s=korg; t=1744117224;
+	bh=FuQmSCGltt75TeCxPrqeHSvOFXRfcdSONWQ4BQbbzrk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JhYoT8j7466nvc3J4PjGOckyF36KpYAqa9Sh0rG3btp5bMNwbzw+cAuMqEvuW1kHn
-	 EHcecPb8YMDC4QDWzVx27p5yo13Oz2RPAUOsMcqPu8tJpjsMTqjqhvXC4Qvd8632xy
-	 W4rHSkNC5wpW8dx/4Doo9GwNGRKTNx4rUI3Ql3uo=
+	b=pjDC7KpXK5nm74kCUbwaAwxbmW71/IBr+foV6CxiRHoSfBSkmlMlziRh+dhi+P6w7
+	 htPUXLzdyRo2SfpqYiWjRBjh1llKAqLsMaTbVKsDSIfTuadbsVlo4X19DP0DWXX/xH
+	 rJiOPUg65OmQ4Hghf/3gSxkGs9iWg0Y1LO7kTTmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Norbert Szetei <norbert@doyensec.com>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 190/204] ksmbd: fix use-after-free in ksmbd_sessions_deregister()
-Date: Tue,  8 Apr 2025 12:52:00 +0200
-Message-ID: <20250408104825.888920471@linuxfoundation.org>
+Subject: [PATCH 6.12 395/423] ksmbd: add bounds check for create lease context
+Date: Tue,  8 Apr 2025 12:52:01 +0200
+Message-ID: <20250408104855.097466303@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Norbert Szetei <norbert@doyensec.com>
 
-commit 15a9605f8d69dc85005b1a00c31a050b8625e1aa upstream.
+commit bab703ed8472aa9d109c5f8c1863921533363dae upstream.
 
-In multichannel mode, UAF issue can occur in session_deregister
-when the second channel sets up a session through the connection of
-the first channel. session that is freed through the global session
-table can be accessed again through ->sessions of connection.
+Add missing bounds check for create lease context.
 
 Cc: stable@vger.kernel.org
 Reported-by: Norbert Szetei <norbert@doyensec.com>
 Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Norbert Szetei <norbert@doyensec.com>
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/mgmt/user_session.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/smb/server/oplock.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -229,6 +229,9 @@ void ksmbd_sessions_deregister(struct ks
- 			if (!ksmbd_chann_del(conn, sess) &&
- 			    xa_empty(&sess->ksmbd_chann_list)) {
- 				hash_del(&sess->hlist);
-+				down_write(&conn->session_lock);
-+				xa_erase(&conn->sessions, sess->id);
-+				up_write(&conn->session_lock);
- 				ksmbd_session_destroy(sess);
- 			}
- 		}
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -1505,6 +1505,10 @@ struct lease_ctx_info *parse_lease_state
+ 	if (sizeof(struct lease_context_v2) == le32_to_cpu(cc->DataLength)) {
+ 		struct create_lease_v2 *lc = (struct create_lease_v2 *)cc;
+ 
++		if (le16_to_cpu(cc->DataOffset) + le32_to_cpu(cc->DataLength) <
++		    sizeof(struct create_lease_v2) - 4)
++			return NULL;
++
+ 		memcpy(lreq->lease_key, lc->lcontext.LeaseKey, SMB2_LEASE_KEY_SIZE);
+ 		lreq->req_state = lc->lcontext.LeaseState;
+ 		lreq->flags = lc->lcontext.LeaseFlags;
+@@ -1517,6 +1521,10 @@ struct lease_ctx_info *parse_lease_state
+ 	} else {
+ 		struct create_lease *lc = (struct create_lease *)cc;
+ 
++		if (le16_to_cpu(cc->DataOffset) + le32_to_cpu(cc->DataLength) <
++		    sizeof(struct create_lease))
++			return NULL;
++
+ 		memcpy(lreq->lease_key, lc->lcontext.LeaseKey, SMB2_LEASE_KEY_SIZE);
+ 		lreq->req_state = lc->lcontext.LeaseState;
+ 		lreq->flags = lc->lcontext.LeaseFlags;
 
 
 
