@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-131595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5FB3A80BC5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:20:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6779A8089E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C97E73A6F4E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 156E21B86A84
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D1DF26B975;
-	Tue,  8 Apr 2025 12:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECA7C26B0B3;
+	Tue,  8 Apr 2025 12:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xP6d1U1U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2CrZ65Zb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2138126B2A4;
-	Tue,  8 Apr 2025 12:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99522686AA;
+	Tue,  8 Apr 2025 12:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116822; cv=none; b=XeVnXxtxJ64CFysCPo2wub/fHqxnM8W9dXZuhxOeUpjBaoNiSBxA6sRLNS2cxR9dYNF3+JXDT9OVZUKj8t8D2qSq2csNOThH9tvlnndap2+ZZsg6ROwvhNQ7i+eHHmPm1D397zll4RX+GhuHtrozS9okfkKK5NL2ct42CUTP5dw=
+	t=1744115821; cv=none; b=sK+snPD9XWGzMvyzZg1RKik9Zce9veJ/vEFj7f1aFtNlk7DIlZtA77Qg4oTPPiNiA+GcDWqeuiMmAVTmuSOyiSIdjFajlKubLLVHCvmeAEu1iFb6CDHhVeYqGBSD0XgEhWG/kbNNb6Dt2XYPxqprhy75Eoc0vRiQa6H+VxF9AdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116822; c=relaxed/simple;
-	bh=hi5348hIuZhGiyoqI4eCpt/wEuveDTOEiJRcUW2HjbY=;
+	s=arc-20240116; t=1744115821; c=relaxed/simple;
+	bh=cP7WNSRK7LbILkQSB4VTIe/P0Wl2xy+8/X5UE3IPtzk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EJ+Q5OAYOKCaX7vTvYF9wPBwtz2HbuKVjIBS77NLGfEgUUOipLzN9lQVY4oRVjIJPF0LJDmpuYCdrQ1qPNnZSUiZqbR+fQZMgBHBiiRi2fG4DI0JosaEFmsuKAWtfH8k03n1rgAoQ5xNlkrA8Kq33diSSR0QoXEIOxx3yjsQXuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xP6d1U1U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A11EDC4CEE5;
-	Tue,  8 Apr 2025 12:53:41 +0000 (UTC)
+	 MIME-Version; b=ScWjVNr+Qrsd7DoNO3dEIBZYJ5ya+ZfGCt6o58Cxyf7z1/yvLEjS5Q9rYzNJWZhiVnoqGxOYYt3Lj/i36f8x+Jc1/XLP7eHuwvu8WwGbgi366KI+q4Grt79aEpn0SckDU9ouzSmswm+ziYrtvXmeKAAoOcI/q05j+YaEF9zG2a0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2CrZ65Zb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10381C4CEE5;
+	Tue,  8 Apr 2025 12:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116822;
-	bh=hi5348hIuZhGiyoqI4eCpt/wEuveDTOEiJRcUW2HjbY=;
+	s=korg; t=1744115821;
+	bh=cP7WNSRK7LbILkQSB4VTIe/P0Wl2xy+8/X5UE3IPtzk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xP6d1U1ULxQP/5ytpI8kGBM3rGpvbdSVDF38En6iGUmprXAjigYg6EydaFFBeYbO2
-	 4IsocoBDqbmrHCqDNa29/XlimnBisvbEB4v0EVGyReJHQoPkT/Ouh7s3BC5N0sbkTi
-	 uS4w/kGTIRnW0nJGJmWdxIiDdtBz4WvA8utw3vlQ=
+	b=2CrZ65ZbvputyXWogK6cMyS5wkGh7LWIwVHPXxKD/4u+iYzvJbR7xaJ1MlL4BGkFt
+	 uCgxL8+X3jlzSfEI8uWoGDuTwZEu+X5GeFkHedonfKLxTNT0wgdyBZ+9kfYN4AkdXL
+	 HQnFSmMjkuW/s8k9mnzEk1jtMlYwGtke7pXlfKeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Jann Horn <jannh@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Juergen Gross <jgross@suse.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Kees Cook <keescook@chromium.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 281/423] ALSA: hda/realtek: Add support for ASUS B5405 and B5605 Laptops using CS35L41 HDA
+Subject: [PATCH 6.1 077/204] x86/entry: Fix ORC unwinder for PUSH_REGS with save_ret=1
 Date: Tue,  8 Apr 2025 12:50:07 +0200
-Message-ID: <20250408104852.319849605@linuxfoundation.org>
+Message-ID: <20250408104822.620167614@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +70,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit c86dd79a7c338fff9bebb9503857e07db9845eca ]
+[ Upstream commit 57e2428f8df8263275344566e02c277648a4b7f1 ]
 
-Add support for ASUS B5605CCA and B5405CCA.
+PUSH_REGS with save_ret=1 is used by interrupt entry helper functions that
+initially start with a UNWIND_HINT_FUNC ORC state.
 
-Laptops use 2 CS35L41 Amps with HDA, using Internal boost, with SPI
+However, save_ret=1 means that we clobber the helper function's return
+address (and then later restore the return address further down on the
+stack); after that point, the only thing on the stack we can unwind through
+is the IRET frame, so use UNWIND_HINT_IRET_REGS until we have a full
+pt_regs frame.
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250305170714.755794-7-sbinding@opensource.cirrus.com
+( An alternate approach would be to move the pt_regs->di overwrite down
+  such that it is the final step of pt_regs setup; but I don't want to
+  rearrange entry code just to make unwinding a tiny bit more elegant. )
+
+Fixes: 9e809d15d6b6 ("x86/entry: Reduce the code footprint of the 'idtentry' macro")
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/r/20250325-2025-03-unwind-fixes-v1-1-acd774364768@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/entry/calling.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 5c43f9d2ead1a..4ff531b4f50ed 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10727,8 +10727,12 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x3011, "ASUS B5605CVA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
- 	SND_PCI_QUIRK(0x1043, 0x3061, "ASUS B3405CCA", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x3071, "ASUS B5405CCA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x30c1, "ASUS B3605CCA / P3605CCA", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x30d1, "ASUS B5405CCA", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x30e1, "ASUS B5605CCA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x31d0, "ASUS Zen AIO 27 Z272SD_A272SD", ALC274_FIXUP_ASUS_ZEN_AIO_27),
-+	SND_PCI_QUIRK(0x1043, 0x31e1, "ASUS B5605CCA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x31f1, "ASUS B3605CCA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
- 	SND_PCI_QUIRK(0x1043, 0x3a30, "ASUS G814JVR/JIR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
+index f6907627172ba..01e9593e2bd95 100644
+--- a/arch/x86/entry/calling.h
++++ b/arch/x86/entry/calling.h
+@@ -70,6 +70,8 @@ For 32-bit we have the following conventions - kernel is built with
+ 	pushq	%rsi		/* pt_regs->si */
+ 	movq	8(%rsp), %rsi	/* temporarily store the return address in %rsi */
+ 	movq	%rdi, 8(%rsp)	/* pt_regs->di (overwriting original return address) */
++	/* We just clobbered the return address - use the IRET frame for unwinding: */
++	UNWIND_HINT_IRET_REGS offset=3*8
+ 	.else
+ 	pushq   %rdi		/* pt_regs->di */
+ 	pushq   %rsi		/* pt_regs->si */
 -- 
 2.39.5
 
