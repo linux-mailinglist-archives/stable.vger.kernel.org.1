@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 066E6A802A8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:49:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2ADDA7FE40
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:11:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C1BF19E3E30
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:45:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E913189CAFD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:04:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A1D268C79;
-	Tue,  8 Apr 2025 11:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7617A26A0BD;
+	Tue,  8 Apr 2025 11:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QqZ4Ju9J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCDqZI0U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BA2267F4F;
-	Tue,  8 Apr 2025 11:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B3B267B77;
+	Tue,  8 Apr 2025 11:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112718; cv=none; b=dOlzk6dC7ZiyIUGAnprOEK89F1tzMYzDG841n2xjUQwg25LWm5ARAFM99VVk4mCd9j5HeDWVo960wm2jMG7li3A62T05N//D9dqgoJVrI4iTWj72qWU3YB1h8ki3UGJXlSZRnbB8tvFnoNrRdRG6+4poXuDMORvyJ0CMvwKlgQo=
+	t=1744110129; cv=none; b=JxWeKKgC2AI+RNs2fBYoAwozX/tevPCichFJAl/KqBM4vPfMPFf2wP6XN7ZhROgC+UNa6FM1rtm7pUr/mMuOaqumJXKSwUdFH8CJmIcQVlxpNV63xFdmBBhQ2nz1LBqT/Obe/H2yqt0dkKxIGKBfDQEb8lv/TM0JkA+A84hVX+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112718; c=relaxed/simple;
-	bh=YNZG5YmoEHQd6XSwRuaQK+uGbrk80HnU7IOojfKevek=;
+	s=arc-20240116; t=1744110129; c=relaxed/simple;
+	bh=THGL5TH1+0l0u+zn7OBkVawpB7KIOyZ3HS4SL065FP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NqNm21KAUbazO4+hCqdISWifB0+UPYx5xaKu+sg/X+uDCrTQ5ymOK1iYiX7JS3NKCD4CQDshJJW32iIF8fjA2IzAGbUcOGPGhQ/FD4SqFPuk+Zz91T4AtG6IzZw0wrTkD9qS6j6T/gNjjtXlM5fqWO/pTEYjgkMlU1lwqjMntxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QqZ4Ju9J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65DB5C4CEE5;
-	Tue,  8 Apr 2025 11:45:18 +0000 (UTC)
+	 MIME-Version; b=g46KecmU4FeP5SgdAbERIyebyCZRgTPlbFvTA+WYTrV8ynRXOVk01l6aFDVaKZwOpx96M3b29VsWns5Gz3DGVCFkILMWUbokoqPgCRXJxn9LzM9uiDvszYTmxWK4VJuw59O++uX4FHJoMznoCN07pXll2WyeEOcCnHTXVznFFMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCDqZI0U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B725FC4CEEA;
+	Tue,  8 Apr 2025 11:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112718;
-	bh=YNZG5YmoEHQd6XSwRuaQK+uGbrk80HnU7IOojfKevek=;
+	s=korg; t=1744110129;
+	bh=THGL5TH1+0l0u+zn7OBkVawpB7KIOyZ3HS4SL065FP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QqZ4Ju9JyBGmrE122vMHqkLMBwrGJFN9I+cZzZ4iMOQZ820I41z4G15rE3u5XG/8f
-	 A3VTABExiMtoqVouLOVn8WTeqq9koUA2yw2s6sj2l4EZQFBQKHw/R4wuE03BI4RepD
-	 xaV6dWvjeVcVTv6bwiYM6I8a/qVBexmx/YidlFh4=
+	b=dCDqZI0UFIFL4jJrcCoax3kqEHR1kMHzC2kXaDbz9c5X7LL+2Hrgyc0vn5B2doGBb
+	 YBywWXwZqRT+z2HNI1IZ4kWgYEvHtV1zY4Zt/YodfGMw/ASmQrA5OHS5REaz7Nv9an
+	 7R3qNixwXfHXu+Kd3XvYemN7B/yBvYQguIJWtYNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Lypak <vladimir.lypak@gmail.com>,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 173/279] clk: qcom: gcc-msm8953: fix stuck venus0_core0 clock
-Date: Tue,  8 Apr 2025 12:49:16 +0200
-Message-ID: <20250408104831.003384064@linuxfoundation.org>
+Subject: [PATCH 5.10 179/227] octeontx2-af: Fix mbox INTR handler when num VFs > 64
+Date: Tue,  8 Apr 2025 12:49:17 +0200
+Message-ID: <20250408104825.684154129@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Lypak <vladimir.lypak@gmail.com>
+From: Geetha sowjanya <gakula@marvell.com>
 
-[ Upstream commit cdc59600bccf2cb4c483645438a97d4ec55f326b ]
+[ Upstream commit 0fdba88a211508984eb5df62008c29688692b134 ]
 
-This clock can't be enable with VENUS_CORE0 GDSC turned off. But that
-GDSC is under HW control so it can be turned off at any moment.
-Instead of checking the dependent clock we can just vote for it to
-enable later when GDSC gets turned on.
+When number of RVU VFs > 64, the vfs value passed to "rvu_queue_work"
+function is incorrect. Due to which mbox workqueue entries for
+VFs 0 to 63 never gets added to workqueue.
 
-Fixes: 9bb6cfc3c77e6 ("clk: qcom: Add Global Clock Controller driver for MSM8953")
-Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Link: https://lore.kernel.org/r/20250315-clock-fix-v1-2-2efdc4920dda@mainlining.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 9bdc47a6e328 ("octeontx2-af: Mbox communication support btw AF and it's VFs")
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250327091441.1284-1-gakula@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-msm8953.c | 2 +-
+ drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gcc-msm8953.c b/drivers/clk/qcom/gcc-msm8953.c
-index 49513f1366ffd..9d11f993843db 100644
---- a/drivers/clk/qcom/gcc-msm8953.c
-+++ b/drivers/clk/qcom/gcc-msm8953.c
-@@ -3771,7 +3771,7 @@ static struct clk_branch gcc_venus0_axi_clk = {
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+index 78309821ce298..f8e86f2535635 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+@@ -2056,7 +2056,7 @@ static irqreturn_t rvu_mbox_intr_handler(int irq, void *rvu_irq)
+ 		rvupf_write64(rvu, RVU_PF_VFPF_MBOX_INTX(1), intr);
  
- static struct clk_branch gcc_venus0_core0_vcodec0_clk = {
- 	.halt_reg = 0x4c02c,
--	.halt_check = BRANCH_HALT,
-+	.halt_check = BRANCH_HALT_SKIP,
- 	.clkr = {
- 		.enable_reg = 0x4c02c,
- 		.enable_mask = BIT(0),
+ 		rvu_queue_work(&rvu->afvf_wq_info, 64, vfs, intr);
+-		vfs -= 64;
++		vfs = 64;
+ 	}
+ 
+ 	intr = rvupf_read64(rvu, RVU_PF_VFPF_MBOX_INTX(0));
 -- 
 2.39.5
 
