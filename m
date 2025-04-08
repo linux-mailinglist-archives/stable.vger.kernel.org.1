@@ -1,98 +1,96 @@
-Return-Path: <stable+bounces-131868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1343A81952
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 01:26:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64DEEA81967
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 01:33:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEA594408FC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 23:24:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2C2A7AD274
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 23:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465D82566E3;
-	Tue,  8 Apr 2025 23:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 047E42566EC;
+	Tue,  8 Apr 2025 23:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I+kaFXg2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ULrhmzZ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77F325291E;
-	Tue,  8 Apr 2025 23:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3C123FC4B;
+	Tue,  8 Apr 2025 23:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744154647; cv=none; b=ad4EjgeGfLAY5Oj1USVE9RE6eyqK7MJq3QCDgHCAnk0VlHsZ2EdRl/8fL6uRcq/0Uq+M87nF77+BiYjZYc5ld0kHMuu2gISQrNU0Z7Sro770ROfwtDL4PkqT09QG+5xEB+no4qjw/4WvRuhueYVdhb2CBsxzJAfGGJyxc6nMP4k=
+	t=1744155225; cv=none; b=jWVoE+AeIKwg/NG7NZPMmfHVrIgYUGHXxOHRyBlNM1X1tnKiCz73PQG9TgtHTAvDqYyhXf6SZfOj3W9ewQO4EjVPvLUQLjfqBCISnG2qMWfHPeaKZYWN0SFe86Uxh+ghg6gk79/+VuN7VzkIytIa8c1+BEqlEYdA+zimkvtOez8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744154647; c=relaxed/simple;
-	bh=U9/4pX8gjaVefgBjkJMyyJo+1elvwruooJ7f0S6DECU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=kJlx65CKCarrTtd0Udt+lsPK+LrLez+Lu29bjQ/jaOEglSLLYSHWNJn9IBCKXOJS9U4d3mRQXjEFwgo0Il4Pb4kiHxp5k2URJFc3EX0Khi/h5qBNvqFJcpFMsqAW6kvN0h82PCkJD4vDcWWpWGsIwpEBxoK/iwqVjarfFxdXx/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I+kaFXg2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA15C4CEE5;
-	Tue,  8 Apr 2025 23:24:06 +0000 (UTC)
+	s=arc-20240116; t=1744155225; c=relaxed/simple;
+	bh=/ch1wD6o2Vl0FXPYL+F9372/FrXWZmbfesdlSP688wE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XjGjvG/zf1BnGTuFlSntdRIfPDYN3Ggg7rehXmzcLQ73ot9U0W05Yk1Dpsurx1ckNFGOeRYSS3+iFK0cBqHIBTrrVJp0YI3gP3E3Ln1DVEIfDxtW/w5gymD8daBrAEOiTytjHGSwo7ocOsNnrfuETrROqBpuCtGaQtPitRpAtQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ULrhmzZ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B5C6C4CEE5;
+	Tue,  8 Apr 2025 23:33:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744154646;
-	bh=U9/4pX8gjaVefgBjkJMyyJo+1elvwruooJ7f0S6DECU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=I+kaFXg2zedpmDg6A/e085iRbxoT84isQv/DiEfTWSeZaqdhCCSxthTiOZMq4hOJD
-	 tM8Nyl/5XQ/q32nsgpw3DAn2lysOscHu/6u7KygV13Itl0DUXIp8UqssOyu8pwKvDX
-	 zN/ntxawR642mex45T8JwC/YvMHAKnreeL+w6EGQBDpX7L/Q6296FDsMOk0wnRXdKW
-	 1ud7craxXJBZuGLKL/cRKR3HK2n1/TLM8v1oAF4MEVgSQhKTD/t3xtD0i73w+f5+0i
-	 HVtt7Z9wrf6uqtVA5I+vwls15cL6jRtb/XNYKgxEXOWaMG+BBdcU2kbYNUKcr8WkI8
-	 HYC/NLpHfDR0g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB34B38111D4;
-	Tue,  8 Apr 2025 23:24:44 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1744155225;
+	bh=/ch1wD6o2Vl0FXPYL+F9372/FrXWZmbfesdlSP688wE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ULrhmzZ8tFu65Uf/S9eYFLeouWcrXOr3pHX1lkdpfLcET3XCdrIBqGXcPDGkIKD8A
+	 rUpKpnf/RCcHKUk1thFwNtW/ZamTngoGZZjAWyTX0kEmib2nhT1zwLco+tskHfAVBo
+	 /0QcGtrXTFeoJyqYFAx87uH5XGcsfs4ov9E+BU5bRJ8de0LnGazmHZ58VFXYaLFOom
+	 Kc3tE/6xRPg4aHPc4OrJ68KMkjC/Fo3BTYqcPEf81GDPryt0Z+vquFjb3Wki/OvHUY
+	 RHN2erKiiiyBwZiUhW5BzrfZQUzIzsIUYbv9ty6D71AkfIRs9dRueP6KI2hGYA/eC5
+	 3htlonFoMaG2w==
+Date: Tue, 8 Apr 2025 16:33:42 -0700
+From: Kees Cook <kees@kernel.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] kbuild: Add '-fno-builtin-wcslen'
+Message-ID: <202504081632.00837E7921@keescook>
+References: <20250407-fno-builtin-wcslen-v1-1-6775ce759b15@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/2] mptcp: only inc MPJoinAckHMacFailure for HMAC
- failures
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174415468377.2216423.2812266376332216363.git-patchwork-notify@kernel.org>
-Date: Tue, 08 Apr 2025 23:24:43 +0000
-References: <20250407-net-mptcp-hmac-failure-mib-v1-0-3c9ecd0a3a50@kernel.org>
-In-Reply-To: <20250407-net-mptcp-hmac-failure-mib-v1-0-3c9ecd0a3a50@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, shuah@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- stable@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250407-fno-builtin-wcslen-v1-1-6775ce759b15@kernel.org>
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 07 Apr 2025 20:26:31 +0200 you wrote:
-> Recently, during a debugging session using local MPTCP connections, I
-> noticed MPJoinAckHMacFailure was strangely not zero on the server side.
+On Mon, Apr 07, 2025 at 04:22:12PM -0700, Nathan Chancellor wrote:
+> A recent optimization change in LLVM [1] aims to transform certain loop
+> idioms into calls to strlen() or wcslen(). This change transforms the
+> first while loop in UniStrcat() into a call to wcslen(), breaking the
+> build when UniStrcat() gets inlined into alloc_path_with_tree_prefix():
 > 
-> The first patch fixes this issue -- present since v5.9 -- and the second
-> one validates it in the selftests.
+>   ld.lld: error: undefined symbol: wcslen
+>   >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
+>   >>>               vmlinux.o:(alloc_path_with_tree_prefix)
+>   >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
+>   >>>               vmlinux.o:(alloc_path_with_tree_prefix)
 > 
-> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> Disable this optimization with '-fno-builtin-wcslen', which prevents the
+> compiler from assuming that wcslen() is available in the kernel's C
+> library
 > 
-> [...]
+> Cc: stable@vger.kernel.org
+> Link: https://github.com/llvm/llvm-project/commit/9694844d7e36fd5e01011ab56b64f27b867aa72d [1]
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 
-Here is the summary with links:
-  - [net,1/2] mptcp: only inc MPJoinAckHMacFailure for HMAC failures
-    https://git.kernel.org/netdev/net/c/21c02e8272bc
-  - [net,2/2] selftests: mptcp: validate MPJoin HMacFailure counters
-    https://git.kernel.org/netdev/net/c/6767698cf9c1
+Thanks for chasing this down. :)
 
-You are awesome, thank you!
+Reviewed-by: Kees Cook <kees@kernel.org>
+
+Since I have stuff queued for -rc2, do you want me to snag this too?
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Kees Cook
 
