@@ -1,58 +1,72 @@
-Return-Path: <stable+bounces-131445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF40A80A47
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:03:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 921ECA80685
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:28:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2E6A8C8085
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:51:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 152E61B8548A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:23:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EFC926AA93;
-	Tue,  8 Apr 2025 12:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A81A263F4D;
+	Tue,  8 Apr 2025 12:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m6sEGkl5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bc5d4c8P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7702698AE;
-	Tue,  8 Apr 2025 12:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCF3F268FE4;
+	Tue,  8 Apr 2025 12:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116416; cv=none; b=DUf5577mftsEEbKZyl+oP0XqG6qPb0xnibcW3YY0VycjYf8e5AFgO2EsdA6Ip59cNkL9DG4NrrRPrHPaTudsSv3LRaexn7llhb9e4X7/ryVtpIs834NDVLn6XhBG5SAYrjxDb+lHazqmQSzRsvtCVVbThKf+b5BP1efHb/D5/wo=
+	t=1744114815; cv=none; b=NmetxCjAYyTymlJm+AZoP3sV+MIhJBUgy8z3uBg524pF86PIUapxFuf/OArCLdnWcDvLZ+kEurjrrh431woGmm7/f0iLuMA8n91c+Nb5EukQTJKkaH5T4OcounnIslnOg2785a2wWw7AH9d7Dx8E8tCO7UWD7mReFjNu+7pbB3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116416; c=relaxed/simple;
-	bh=XVI8VKqPIWihtMq42yFwym6ZeDJlyF7erPzz4iTB3eQ=;
+	s=arc-20240116; t=1744114815; c=relaxed/simple;
+	bh=8ReOyN9TO7o7BRDtwtdU8SNaeqWvyJbcXTTjNtr+hCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h55o3h90WCBbsakacj30r7w5Uvisqq/xPVEBWqU8C4LQk/4seBMxzk/Ktd2bDHfaFdDwiU+rlUdVLeBT8g1JxfyllE0Bc2nlhju72JYZgprcBIyG+V+gI1qcsagxx7lFCr/GhgB0BP1EgQGjBFKN62cL76jbN8CNEGnuD9sASbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6sEGkl5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E7CC4CEE5;
-	Tue,  8 Apr 2025 12:46:55 +0000 (UTC)
+	 MIME-Version; b=BKi0Hg7CN8JivJnfUOza2O81UFlY5VjLZjv2Fz57KE69PI/VRmAwrVXHj/H5f2/YMriweuoDjAhVuukKGdh3j6dASwpF7ibp+6FB+A8wvt28kvKnqhNqFq8UqmxVeVTSrU0+FOSLeItcINhc2uEJ20FfSmm0NwXzNb/W2tIwDU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bc5d4c8P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 419EFC4CEE5;
+	Tue,  8 Apr 2025 12:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116415;
-	bh=XVI8VKqPIWihtMq42yFwym6ZeDJlyF7erPzz4iTB3eQ=;
+	s=korg; t=1744114815;
+	bh=8ReOyN9TO7o7BRDtwtdU8SNaeqWvyJbcXTTjNtr+hCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m6sEGkl5mF1HRzT/T04ylW104O4Bj7M8NqTD05U7B22t6qxwSOB5JYVH4ksB5xj/l
-	 Dr0ktPEEMeiiDPCOAF16NfYyfOAIscptReMVgf7qXuM3Ude+bPebwzwpWvaM8prftX
-	 vA+AuasQdtgljFvy96iuk5M8qumwY+OgF2vvTkfY=
+	b=Bc5d4c8PijHrA8H7UnzudUXpFLBSO1KMH3EjRy+SnTnEBemcpC20mAEInx0i0/Qvm
+	 vDyySxzgJyiFOVXLJrMPuAkciV5gx73efZBdVqVtr6ay1Ydclzq62QEugp0fAxMlvi
+	 f1owr/U0uobrcRNkywlFdioNzvxOxUPP6/QKOWTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tengda Wu <wutengda@huaweicloud.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Leon Hwang <leon.hwang@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Marc Zyngier <maz@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Steven Price <steven.price@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 130/423] selftests/bpf: Fix freplace_link segfault in tailcalls prog test
+Subject: [PATCH 6.13 244/499] arch/powerpc: drop GENERIC_PTDUMP from mpc885_ads_defconfig
 Date: Tue,  8 Apr 2025 12:47:36 +0200
-Message-ID: <20250408104848.751817440@linuxfoundation.org>
+Message-ID: <20250408104857.300931462@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +78,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tengda Wu <wutengda@huaweicloud.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
 
-[ Upstream commit a63a631c9b5cb25a1c17dd2cb18c63df91e978b1 ]
+[ Upstream commit 2c5e6ac2db64ace51f66a9f3b3b3ab9553d748e8 ]
 
-There are two bpf_link__destroy(freplace_link) calls in
-test_tailcall_bpf2bpf_freplace(). After the first bpf_link__destroy()
-is called, if the following bpf_map_{update,delete}_elem() throws an
-exception, it will jump to the "out" label and call bpf_link__destroy()
-again, causing double free and eventually leading to a segfault.
+GENERIC_PTDUMP gets selected on powerpc explicitly and hence can be
+dropped off from mpc885_ads_defconfig.  Replace with CONFIG_PTDUMP_DEBUGFS
+instead.
 
-Fix it by directly resetting freplace_link to NULL after the first
-bpf_link__destroy() call.
-
-Fixes: 021611d33e78 ("selftests/bpf: Add test to verify tailcall and freplace restrictions")
-Signed-off-by: Tengda Wu <wutengda@huaweicloud.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Leon Hwang <leon.hwang@linux.dev>
-Link: https://lore.kernel.org/bpf/20250122022838.1079157-1-wutengda@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Link: https://lkml.kernel.org/r/20250226122404.1927473-3-anshuman.khandual@arm.com
+Fixes: e084728393a5 ("powerpc/ptdump: Convert powerpc to GENERIC_PTDUMP")
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/tailcalls.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/configs/mpc885_ads_defconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/tailcalls.c b/tools/testing/selftests/bpf/prog_tests/tailcalls.c
-index 40f22454cf05b..1f0977742741f 100644
---- a/tools/testing/selftests/bpf/prog_tests/tailcalls.c
-+++ b/tools/testing/selftests/bpf/prog_tests/tailcalls.c
-@@ -1599,6 +1599,7 @@ static void test_tailcall_bpf2bpf_freplace(void)
- 		goto out;
- 
- 	err = bpf_link__destroy(freplace_link);
-+	freplace_link = NULL;
- 	if (!ASSERT_OK(err, "destroy link"))
- 		goto out;
- 
+diff --git a/arch/powerpc/configs/mpc885_ads_defconfig b/arch/powerpc/configs/mpc885_ads_defconfig
+index 77306be62e9ee..129355f87f80f 100644
+--- a/arch/powerpc/configs/mpc885_ads_defconfig
++++ b/arch/powerpc/configs/mpc885_ads_defconfig
+@@ -78,4 +78,4 @@ CONFIG_DEBUG_VM_PGTABLE=y
+ CONFIG_DETECT_HUNG_TASK=y
+ CONFIG_BDI_SWITCH=y
+ CONFIG_PPC_EARLY_DEBUG=y
+-CONFIG_GENERIC_PTDUMP=y
++CONFIG_PTDUMP_DEBUGFS=y
 -- 
 2.39.5
 
