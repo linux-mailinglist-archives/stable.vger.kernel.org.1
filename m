@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E4CA8093C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:52:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A2B6A80827
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:42:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01FDC4E4419
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:44:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 887954C7E93
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF41276034;
-	Tue,  8 Apr 2025 12:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C81426B0BE;
+	Tue,  8 Apr 2025 12:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vzSjz1XD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mMi2+q9A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D27926F462;
-	Tue,  8 Apr 2025 12:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49DAE2236FC;
+	Tue,  8 Apr 2025 12:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115957; cv=none; b=R+TaxruVjYhdr4Zt+pYCOjzNycqM4JnELB2FhJt/ck0huM6xEjzk9DksacIFj3k+ZpKGKIjunkeZBUvW1CfHrnwNCTEPb0ZjHnQ/qRbzgI/ai5bQf2TUugXlaqYBC1kHM3lg5xXDUb7ieb+kSRHbQcl9kBiHGxIdXe25HwOziJw=
+	t=1744115469; cv=none; b=ShaTUEhYqjuy50+163A+CriidUKvLQsoAkRAiSMF6kv3p9NtPA0lehtfUVpXJMOmkQc9CBM06OpUrmTKqEhZoV2GXgDj2AGsc4c06j9Eh+tz9Z+NREl3ZD+7LoIqTF4W+iWLQgrZ6S8v4H9YncImsw+Mu0819F1GxoBrdkTt0NI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115957; c=relaxed/simple;
-	bh=ySRgWHIr3sxVjIO3q0OAU6JxP3/FgheSgnsm4TyN3DI=;
+	s=arc-20240116; t=1744115469; c=relaxed/simple;
+	bh=5EZ8wbNzX3XOXK8cVgy/SxGoMET74PewXvDT9LQ/Z7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o1Edtxd345Vqin5bAS+TN25ERh1AQ/OiWsEerFvR1aIBF2NjmhuKJpr5df6Fm+6GoaiPxMwSkPWWeRz8NRXHrrmfZZ68Zp1pnnUJuKbOxJsV8ZhZJlG6OUSk3bnn5GMJPYbp63+p+kIH0hw7cPsjrH+BOwW2Zu/4Ssq2bN20Xtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vzSjz1XD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2AF2C4CEE5;
-	Tue,  8 Apr 2025 12:39:16 +0000 (UTC)
+	 MIME-Version; b=T0Fndv9HQ8uLsMt51a8JcIC958AiaroWY4Vk133lbjwejx8Ikh7MGq2yTIMrFJfM3S5Nf9d80ywlLVytCkk8WMa2uk/iBpRMpwL7+rQhM/H1s3q7NBcy6GdcHq3tPbNnOul5XViqV2kKqKA5NVXz0b/U2QsPh0TJzwM96+B2/0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mMi2+q9A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFEBBC4CEE5;
+	Tue,  8 Apr 2025 12:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115957;
-	bh=ySRgWHIr3sxVjIO3q0OAU6JxP3/FgheSgnsm4TyN3DI=;
+	s=korg; t=1744115469;
+	bh=5EZ8wbNzX3XOXK8cVgy/SxGoMET74PewXvDT9LQ/Z7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vzSjz1XD2M4TDUBWN/vAX7EloZyFq5k5qwi6DZ6SylkXCNpa46WI9wGZvZxAZeWEl
-	 Q4jbCTUwlz70St9uzyeFxCT0cgvaopuVczRvgKuKAIjN3wQQzlthiUpiirfas0QbSN
-	 fXaVl392E6GXHwNlpJhIm5eRIqFOaMEsPC2Xga9g=
+	b=mMi2+q9AZ5q/kEIYa6kD76VjKGUxbPTaDOCGa4dkEpIWMrW8Opt8P+nOOvzs/tPHv
+	 p+Hl9bDBkw3UIJv0yId8uJPv+SmiBJj1wImumhKtErBgPYXJSlLln5/7kGdC1zX8Gl
+	 9pMvrQVh5NWoIac7pqx/ZlpirE4+aHWMqXgQQrgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 168/204] arcnet: Add NULL check in com20020pci_probe()
+	syzbot <syzbot+4e6e7e4279d046613bc5@syzkaller.appspotmail.com>,
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>
+Subject: [PATCH 6.13 486/499] jfs: fix slab-out-of-bounds read in ea_get()
 Date: Tue,  8 Apr 2025 12:51:38 +0200
-Message-ID: <20250408104825.252451825@linuxfoundation.org>
+Message-ID: <20250408104903.479382835@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-[ Upstream commit fda8c491db2a90ff3e6fbbae58e495b4ddddeca3 ]
+commit fdf480da5837c23b146c4743c18de97202fcab37 upstream.
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-com20020pci_probe() does not check for this case, which results in a
-NULL pointer dereference.
+During the "size_check" label in ea_get(), the code checks if the extended
+attribute list (xattr) size matches ea_size. If not, it logs
+"ea_get: invalid extended attribute" and calls print_hex_dump().
 
-Add NULL check after devm_kasprintf() to prevent this issue and ensure
-no resources are left allocated.
+Here, EALIST_SIZE(ea_buf->xattr) returns 4110417968, which exceeds
+INT_MAX (2,147,483,647). Then ea_size is clamped:
 
-Fixes: 6b17a597fc2f ("arcnet: restoring support for multiple Sohard Arcnet cards")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Link: https://patch.msgid.link/20250402135036.44697-1-bsdhenrymartin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	int size = clamp_t(int, ea_size, 0, EALIST_SIZE(ea_buf->xattr));
+
+Although clamp_t aims to bound ea_size between 0 and 4110417968, the upper
+limit is treated as an int, causing an overflow above 2^31 - 1. This leads
+"size" to wrap around and become negative (-184549328).
+
+The "size" is then passed to print_hex_dump() (called "len" in
+print_hex_dump()), it is passed as type size_t (an unsigned
+type), this is then stored inside a variable called
+"int remaining", which is then assigned to "int linelen" which
+is then passed to hex_dump_to_buffer(). In print_hex_dump()
+the for loop, iterates through 0 to len-1, where len is
+18446744073525002176, calling hex_dump_to_buffer()
+on each iteration:
+
+	for (i = 0; i < len; i += rowsize) {
+		linelen = min(remaining, rowsize);
+		remaining -= rowsize;
+
+		hex_dump_to_buffer(ptr + i, linelen, rowsize, groupsize,
+				   linebuf, sizeof(linebuf), ascii);
+
+		...
+	}
+
+The expected stopping condition (i < len) is effectively broken
+since len is corrupted and very large. This eventually leads to
+the "ptr+i" being passed to hex_dump_to_buffer() to get closer
+to the end of the actual bounds of "ptr", eventually an out of
+bounds access is done in hex_dump_to_buffer() in the following
+for loop:
+
+	for (j = 0; j < len; j++) {
+			if (linebuflen < lx + 2)
+				goto overflow2;
+			ch = ptr[j];
+		...
+	}
+
+To fix this we should validate "EALIST_SIZE(ea_buf->xattr)"
+before it is utilised.
+
+Reported-by: syzbot <syzbot+4e6e7e4279d046613bc5@syzkaller.appspotmail.com>
+Tested-by: syzbot <syzbot+4e6e7e4279d046613bc5@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=4e6e7e4279d046613bc5
+Fixes: d9f9d96136cb ("jfs: xattr: check invalid xattr size more strictly")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/arcnet/com20020-pci.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ fs/jfs/xattr.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/arcnet/com20020-pci.c b/drivers/net/arcnet/com20020-pci.c
-index 7b5c8bb02f119..e7db6a4e4dc9d 100644
---- a/drivers/net/arcnet/com20020-pci.c
-+++ b/drivers/net/arcnet/com20020-pci.c
-@@ -250,18 +250,33 @@ static int com20020pci_probe(struct pci_dev *pdev,
- 			card->tx_led.default_trigger = devm_kasprintf(&pdev->dev,
- 							GFP_KERNEL, "arc%d-%d-tx",
- 							dev->dev_id, i);
-+			if (!card->tx_led.default_trigger) {
-+				ret = -ENOMEM;
-+				goto err_free_arcdev;
-+			}
- 			card->tx_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
- 							"pci:green:tx:%d-%d",
- 							dev->dev_id, i);
--
-+			if (!card->tx_led.name) {
-+				ret = -ENOMEM;
-+				goto err_free_arcdev;
-+			}
- 			card->tx_led.dev = &dev->dev;
- 			card->recon_led.brightness_set = led_recon_set;
- 			card->recon_led.default_trigger = devm_kasprintf(&pdev->dev,
- 							GFP_KERNEL, "arc%d-%d-recon",
- 							dev->dev_id, i);
-+			if (!card->recon_led.default_trigger) {
-+				ret = -ENOMEM;
-+				goto err_free_arcdev;
-+			}
- 			card->recon_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
- 							"pci:red:recon:%d-%d",
- 							dev->dev_id, i);
-+			if (!card->recon_led.name) {
-+				ret = -ENOMEM;
-+				goto err_free_arcdev;
-+			}
- 			card->recon_led.dev = &dev->dev;
+--- a/fs/jfs/xattr.c
++++ b/fs/jfs/xattr.c
+@@ -559,11 +559,16 @@ static int ea_get(struct inode *inode, s
  
- 			ret = devm_led_classdev_register(&pdev->dev, &card->tx_led);
--- 
-2.39.5
-
+       size_check:
+ 	if (EALIST_SIZE(ea_buf->xattr) != ea_size) {
+-		int size = clamp_t(int, ea_size, 0, EALIST_SIZE(ea_buf->xattr));
++		if (unlikely(EALIST_SIZE(ea_buf->xattr) > INT_MAX)) {
++			printk(KERN_ERR "ea_get: extended attribute size too large: %u > INT_MAX\n",
++			       EALIST_SIZE(ea_buf->xattr));
++		} else {
++			int size = clamp_t(int, ea_size, 0, EALIST_SIZE(ea_buf->xattr));
+ 
+-		printk(KERN_ERR "ea_get: invalid extended attribute\n");
+-		print_hex_dump(KERN_ERR, "", DUMP_PREFIX_ADDRESS, 16, 1,
+-				     ea_buf->xattr, size, 1);
++			printk(KERN_ERR "ea_get: invalid extended attribute\n");
++			print_hex_dump(KERN_ERR, "", DUMP_PREFIX_ADDRESS, 16, 1,
++				       ea_buf->xattr, size, 1);
++		}
+ 		ea_release(inode, ea_buf);
+ 		rc = -EIO;
+ 		goto clean_up;
 
 
 
