@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-130023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C399DA802A7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:49:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 438BEA803E7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:04:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 403B13B9F9E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BF0B464CDB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C25266EEA;
-	Tue,  8 Apr 2025 11:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16387267F57;
+	Tue,  8 Apr 2025 11:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gHxq8f7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OEC/3V90"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30FF2288CB;
-	Tue,  8 Apr 2025 11:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71402641CC;
+	Tue,  8 Apr 2025 11:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112607; cv=none; b=lIfaeyk9PVt5IMWnlHQU9ysBva0bw/SyaUujrJO87y8O3YL67Q5DxBwOLhtQfMf/tCF8Q5ue3cPbGlOVp61ES7h4dfwjd3jt75GePPBBwIHHqaImhSFUUUgkJfFNyJLgKDQ2E6MB4Mn5pIRCFeLn+bwmazCEDRvZz7hKYJje9Kc=
+	t=1744113297; cv=none; b=FGi8/wtYLcaeBmd0uUaAKsOYUVIRGmEZCMx3Xmy7VxFzsnHbOe0mjZJNS8wxlzlJPj/uiKHHcL87svVUhFaNPLZFXNT2KP39oDm9kT3rqZQ5Bhg59Pxn+Twufii0SWic8xLrN5445sTOLnn5HGqV2xTXDuXgLtcyqAEAI/quUH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112607; c=relaxed/simple;
-	bh=Inlbhi8zwSm8FKjo3+xj7tlh8IGbgYizVwlpEvi8hQQ=;
+	s=arc-20240116; t=1744113297; c=relaxed/simple;
+	bh=TsPl/zdeJQxGgpmhiFYjnKbNtOdm6nZvyle0jbI3g0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GBqWGXk/pAdezymcbyHhPnH6epPlHsDKnZ0iTXspahNDUWgsh+w1dk/FYsZYYvWB1wbbrwW9kUqwHSznoK69wqwgITBY0sBhs2+tME6KzYI2tMi+veyBmKaqknn83OLqOvn74pWGzLFska2NeoF74Y/edcGNXuYcblKCXxxTdLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gHxq8f7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F8BC4CEE5;
-	Tue,  8 Apr 2025 11:43:27 +0000 (UTC)
+	 MIME-Version; b=LQpZB1F8GYv9tmkf7NXdyYdYI90W+bn7iOyn/hmjCkG+YJDw9FIxoZI2IGGKbpF/aRTZX9G+n9wOyBYk6QZoOw8UJgd6/Y4Cw5jKBb36WUT0E7l04cadDGDYsSTRL7QqjXlz1NIwgyXkmhBYxYeYia3YoLoX3IFTv/C9SExC5+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OEC/3V90; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E21C4CEE5;
+	Tue,  8 Apr 2025 11:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112607;
-	bh=Inlbhi8zwSm8FKjo3+xj7tlh8IGbgYizVwlpEvi8hQQ=;
+	s=korg; t=1744113297;
+	bh=TsPl/zdeJQxGgpmhiFYjnKbNtOdm6nZvyle0jbI3g0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0gHxq8f7iOGIpK44c96kSjjDTiyakl6MdKxPg9CmHisaGtEjWF1bn92sckBKgYgV/
-	 16ZcEpoCDD5OOsXpgy96UzJW8PTM/83YtIyo1ewHiMk7UldWmqzHXNdFSxuLlY4HEd
-	 trJP05QjkOKLI+mj9pVSxr0Maj3Q0K7mEUEg3jig=
+	b=OEC/3V90/EhuDAnzMXulQbE2P/P9x/HlucXoIQyS2H9G/J7pcbT32dY2NymiI2U0r
+	 6GpukHX7qaENcoc+KZzcYMr21+L/k3Wmfqtvz8P/2J8ciWM4e0zM3Wtp/clPB57psS
+	 q6nVqes4QgsDjdWlp/jgmy+/2KMXAok2djU5i5Eo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Oleg Nesterov <oleg@redhat.com>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 132/279] x86/fpu: Avoid copying dynamic FP state from init_task in arch_dup_task_struct()
-Date: Tue,  8 Apr 2025 12:48:35 +0200
-Message-ID: <20250408104829.904216192@linuxfoundation.org>
+Subject: [PATCH 6.6 105/268] soundwire: slave: fix an OF node reference leak in soundwire slave device
+Date: Tue,  8 Apr 2025 12:48:36 +0200
+Message-ID: <20250408104831.326664432@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 5d3b81d4d8520efe888536b6906dc10fd1a228a8 ]
+[ Upstream commit aac2f8363f773ae1f65aab140e06e2084ac6b787 ]
 
-The init_task instance of struct task_struct is statically allocated and
-may not contain the full FP state for userspace. As such, limit the copy
-to the valid area of both init_task and 'dst' and ensure all memory is
-initialized.
+When initializing a soundwire slave device, an OF node is stored to the
+device with refcount incremented. However, the refcount is not
+decremented in .release(), thus call of_node_put() in
+sdw_slave_release().
 
-Note that the FP state is only needed for userspace, and as such it is
-entirely reasonable for init_task to not contain parts of it.
-
-Fixes: 5aaeb5c01c5b ("x86/fpu, sched: Introduce CONFIG_ARCH_WANTS_DYNAMIC_TASK_STRUCT and use it on x86")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/r/20250226133136.816901-1-benjamin@sipsolutions.net
-----
-
-v2:
-- Fix code if arch_task_struct_size < sizeof(init_task) by using
-  memcpy_and_pad.
-
+Fixes: a2e484585ad3 ("soundwire: core: add device tree support for slave devices")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20241205034844.2784964-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/process.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/soundwire/slave.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index 720d99520316a..72eb0df1a1a5f 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -83,7 +83,12 @@ EXPORT_PER_CPU_SYMBOL_GPL(__tss_limit_invalid);
-  */
- int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)
+diff --git a/drivers/soundwire/slave.c b/drivers/soundwire/slave.c
+index 060c2982e26b0..0aadfc2010287 100644
+--- a/drivers/soundwire/slave.c
++++ b/drivers/soundwire/slave.c
+@@ -12,6 +12,7 @@ static void sdw_slave_release(struct device *dev)
  {
--	memcpy(dst, src, arch_task_struct_size);
-+	/* init_task is not dynamically sized (incomplete FPU state) */
-+	if (unlikely(src == &init_task))
-+		memcpy_and_pad(dst, arch_task_struct_size, src, sizeof(init_task), 0);
-+	else
-+		memcpy(dst, src, arch_task_struct_size);
-+
- #ifdef CONFIG_VM86
- 	dst->thread.vm86 = NULL;
- #endif
+ 	struct sdw_slave *slave = dev_to_sdw_dev(dev);
+ 
++	of_node_put(slave->dev.of_node);
+ 	mutex_destroy(&slave->sdw_dev_lock);
+ 	kfree(slave);
+ }
 -- 
 2.39.5
 
