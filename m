@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-131095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 191E8A808A5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:47:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BA57A80B6B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:16:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06DE68A7E13
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:33:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09C961BC2E33
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C374B2698BE;
-	Tue,  8 Apr 2025 12:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71BA227C876;
+	Tue,  8 Apr 2025 12:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tCjG96w/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUC3Ahnc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E8B268C72;
-	Tue,  8 Apr 2025 12:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B52F26F478;
+	Tue,  8 Apr 2025 12:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115474; cv=none; b=WJvnfj1kPSYQBjYwicE5XlxsU7lhYVltniKNy5QKXwDTWIXzIpXDp36y/lXJvxEEgiGiFh8QlCoFnxKXXaPLKmS8nH710wY2/UsXMbLh1jyaiE9GRJ/MwY/iQSs/cWCsRTsau767m3IXp+ZliW3kb6aBAuZgw5Eu10grneaqwRo=
+	t=1744117075; cv=none; b=VdiCyCVwfTdaVm+VxL52x7OqG6HYw4pppOkws43WvCXL9ZmhPelVE8AtYgC5N10Plrl0bSc9JcOxZx82c3jJoWjRgOgTY633znI2Icf/o/23EQpQt9FZKoiMdV1qSPcrwRPWbV+c5FyC3SPUvlVF4b21K5rv/wHBy84Kk3VEs6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115474; c=relaxed/simple;
-	bh=oDIRxtXTOAwd03ADdirHXm8X7WTHBS/xzBgKZXbecYw=;
+	s=arc-20240116; t=1744117075; c=relaxed/simple;
+	bh=EBXshOUZGGscoNQX4fR/TMp34rvcEz3UrlJWnwxXzDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M85VqKYmy1AQV861K2WfVDuxC6iHa3GAIQMM0iY+wAVNtJMJyuPUTzVEzioxk+4O0O40pJda4mI3ZUtWfkWyYwObVUTjEZQz56BEIOjOZBjPxrgsktF836gKAJhsVRg3t4YEs9/SvUSbtHL+0I6cdZDlXCiM8+xvTDagksitrww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tCjG96w/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0EAAC4CEE5;
-	Tue,  8 Apr 2025 12:31:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qmhd1o5WhD5mbxaKY2FOte82fS5b/k9yjwYvgxvhn0axCY+hJrvtSxsQVexNZIKV4jfLnepdbib+PTKToTBvCFhHvza2TDKmkRSYLynYn20sTmaDAGMJzL8a3vBt6ayBvodboRWp1vuQ8wJyeKehGhyqBlHLhi2wrF/aAn+K9zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUC3Ahnc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B3F9C4CEE5;
+	Tue,  8 Apr 2025 12:57:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115474;
-	bh=oDIRxtXTOAwd03ADdirHXm8X7WTHBS/xzBgKZXbecYw=;
+	s=korg; t=1744117074;
+	bh=EBXshOUZGGscoNQX4fR/TMp34rvcEz3UrlJWnwxXzDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tCjG96w/jv0fI+7/oyKnWTW/XXxj3LnsAVMheQDYY4AXqkVKovh1FTps4VywacImK
-	 CtnOBjP1iqjcEYJbySBcz5xhPSVnVJmO/7VWtTxR/gpL6ULzhouJqt2gJCHuJ7dLAk
-	 wjEEdlCn/vDoiJgKKf5Lopqw7UpdK1V/6GJmQH0Q=
+	b=RUC3AhnchrbPr4/Zxo8flY+Ypl7lxYYh0wWW2m7baQ/9KIKye6+SL49/LDotQTFHM
+	 9Wn/y0uVttsdiz8GuwZQr3VS4yPynR9emfim9CSZy+Uskmh34pwubHpLgIO0OYtQeb
+	 jle0GcIV7plqj+3E+ZXyjcDs7PnDmG/VfdwJU510=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	syzbot+1a517ccfcbc6a7ab0f82@syzkaller.appspotmail.com,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Nhat Pham <nphamcs@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Chris Murphy <lists@colorremedies.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.13 488/499] mm: zswap: fix crypto_free_acomp() deadlock in zswap_cpu_comp_dead()
+	Vlastimil Holer <vlastimil.holer@gmail.com>,
+	Alireza Elikahi <scr0lll0ck1s4b0v3h0m3k3y@gmail.com>,
+	Kurt Borja <kuurtb@gmail.com>,
+	Eduard Christian Dumitrescu <eduard.c.dumitrescu@gmail.com>,
+	Seyediman Seyedarab <ImanDevel@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.12 374/423] platform/x86: thinkpad_acpi: disable ACPI fan access for T495* and E560
 Date: Tue,  8 Apr 2025 12:51:40 +0200
-Message-ID: <20250408104903.529819461@linuxfoundation.org>
+Message-ID: <20250408104854.582676323@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,124 +63,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
+From: Eduard Christian Dumitrescu <eduard.c.dumitrescu@gmail.com>
 
-commit c11bcbc0a517acf69282c8225059b2a8ac5fe628 upstream.
+commit 2b9f84e7dc863afd63357b867cea246aeedda036 upstream.
 
-Currently, zswap_cpu_comp_dead() calls crypto_free_acomp() while holding
-the per-CPU acomp_ctx mutex.  crypto_free_acomp() then holds scomp_lock
-(through crypto_exit_scomp_ops_async()).
+T495, T495s, and E560 laptops have the FANG+FANW ACPI methods
+(therefore fang_handle and fanw_handle are not NULL) but they do not
+actually work, which results in a "No such device or address" error.
+The DSDT table code for the FANG+FANW methods doesn't seem to do
+anything special regarding the fan being secondary. The bug was
+introduced in commit 57d0557dfa49 ("platform/x86: thinkpad_acpi: Add
+Thinkpad Edge E531 fan support"), which added a new fan control method
+via the FANG+FANW ACPI methods.
 
-On the other hand, crypto_alloc_acomp_node() holds the scomp_lock (through
-crypto_scomp_init_tfm()), and then allocates memory.  If the allocation
-results in reclaim, we may attempt to hold the per-CPU acomp_ctx mutex.
+Add a quirk for T495, T495s, and E560 to avoid the FANG+FANW methods.
+Fan access and control is restored after forcing the legacy non-ACPI
+fan control method by setting both fang_handle and fanw_handle to NULL.
 
-The above dependencies can cause an ABBA deadlock.  For example in the
-following scenario:
-
-(1) Task A running on CPU #1:
-    crypto_alloc_acomp_node()
-      Holds scomp_lock
-      Enters reclaim
-      Reads per_cpu_ptr(pool->acomp_ctx, 1)
-
-(2) Task A is descheduled
-
-(3) CPU #1 goes offline
-    zswap_cpu_comp_dead(CPU #1)
-      Holds per_cpu_ptr(pool->acomp_ctx, 1))
-      Calls crypto_free_acomp()
-      Waits for scomp_lock
-
-(4) Task A running on CPU #2:
-      Waits for per_cpu_ptr(pool->acomp_ctx, 1) // Read on CPU #1
-      DEADLOCK
-
-Since there is no requirement to call crypto_free_acomp() with the per-CPU
-acomp_ctx mutex held in zswap_cpu_comp_dead(), move it after the mutex is
-unlocked.  Also move the acomp_request_free() and kfree() calls for
-consistency and to avoid any potential sublte locking dependencies in the
-future.
-
-With this, only setting acomp_ctx fields to NULL occurs with the mutex
-held.  This is similar to how zswap_cpu_comp_prepare() only initializes
-acomp_ctx fields with the mutex held, after performing all allocations
-before holding the mutex.
-
-Opportunistically, move the NULL check on acomp_ctx so that it takes place
-before the mutex dereference.
-
-Link: https://lkml.kernel.org/r/20250226185625.2672936-1-yosry.ahmed@linux.dev
-Fixes: 12dcb0ef5406 ("mm: zswap: properly synchronize freeing resources during CPU hotunplug")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Co-developed-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Reported-by: syzbot+1a517ccfcbc6a7ab0f82@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67bcea51.050a0220.bbfd1.0096.GAE@google.com/
-Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
-Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-Tested-by: Nhat Pham <nphamcs@gmail.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Eric Biggers <ebiggers@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Chris Murphy <lists@colorremedies.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: Vlastimil Holer <vlastimil.holer@gmail.com>
+Fixes: 57d0557dfa49 ("platform/x86: thinkpad_acpi: Add Thinkpad Edge E531 fan support")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219643
+Cc: stable@vger.kernel.org
+Tested-by: Alireza Elikahi <scr0lll0ck1s4b0v3h0m3k3y@gmail.com>
+Reviewed-by: Kurt Borja <kuurtb@gmail.com>
+Signed-off-by: Eduard Christian Dumitrescu <eduard.c.dumitrescu@gmail.com>
+Co-developed-by: Seyediman Seyedarab <ImanDevel@gmail.com>
+Signed-off-by: Seyediman Seyedarab <ImanDevel@gmail.com>
+Link: https://lore.kernel.org/r/20250324152442.106113-1-ImanDevel@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/zswap.c |   30 ++++++++++++++++++++++--------
- 1 file changed, 22 insertions(+), 8 deletions(-)
+ drivers/platform/x86/thinkpad_acpi.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -881,18 +881,32 @@ static int zswap_cpu_comp_dead(unsigned
- {
- 	struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
- 	struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool->acomp_ctx, cpu);
-+	struct acomp_req *req;
-+	struct crypto_acomp *acomp;
-+	u8 *buffer;
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -8795,6 +8795,7 @@ static const struct attribute_group fan_
+ #define TPACPI_FAN_NS		0x0010		/* For EC with non-Standard register addresses */
+ #define TPACPI_FAN_DECRPM	0x0020		/* For ECFW's with RPM in register as decimal */
+ #define TPACPI_FAN_TPR		0x0040		/* Fan speed is in Ticks Per Revolution */
++#define TPACPI_FAN_NOACPI	0x0080		/* Don't use ACPI methods even if detected */
+ 
+ static const struct tpacpi_quirk fan_quirk_table[] __initconst = {
+ 	TPACPI_QEC_IBM('1', 'Y', TPACPI_FAN_Q1),
+@@ -8825,6 +8826,9 @@ static const struct tpacpi_quirk fan_qui
+ 	TPACPI_Q_LNV3('N', '1', 'O', TPACPI_FAN_NOFAN),	/* X1 Tablet (2nd gen) */
+ 	TPACPI_Q_LNV3('R', '0', 'Q', TPACPI_FAN_DECRPM),/* L480 */
+ 	TPACPI_Q_LNV('8', 'F', TPACPI_FAN_TPR),		/* ThinkPad x120e */
++	TPACPI_Q_LNV3('R', '0', '0', TPACPI_FAN_NOACPI),/* E560 */
++	TPACPI_Q_LNV3('R', '1', '2', TPACPI_FAN_NOACPI),/* T495 */
++	TPACPI_Q_LNV3('R', '1', '3', TPACPI_FAN_NOACPI),/* T495s */
+ };
+ 
+ static int __init fan_init(struct ibm_init_struct *iibm)
+@@ -8876,6 +8880,13 @@ static int __init fan_init(struct ibm_in
+ 		tp_features.fan_ctrl_status_undef = 1;
+ 	}
+ 
++	if (quirks & TPACPI_FAN_NOACPI) {
++		/* E560, T495, T495s */
++		pr_info("Ignoring buggy ACPI fan access method\n");
++		fang_handle = NULL;
++		fanw_handle = NULL;
++	}
 +
-+	if (IS_ERR_OR_NULL(acomp_ctx))
-+		return 0;
- 
- 	mutex_lock(&acomp_ctx->mutex);
--	if (!IS_ERR_OR_NULL(acomp_ctx)) {
--		if (!IS_ERR_OR_NULL(acomp_ctx->req))
--			acomp_request_free(acomp_ctx->req);
--		acomp_ctx->req = NULL;
--		if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
--			crypto_free_acomp(acomp_ctx->acomp);
--		kfree(acomp_ctx->buffer);
--	}
-+	req = acomp_ctx->req;
-+	acomp = acomp_ctx->acomp;
-+	buffer = acomp_ctx->buffer;
-+	acomp_ctx->req = NULL;
-+	acomp_ctx->acomp = NULL;
-+	acomp_ctx->buffer = NULL;
- 	mutex_unlock(&acomp_ctx->mutex);
- 
-+	/*
-+	 * Do the actual freeing after releasing the mutex to avoid subtle
-+	 * locking dependencies causing deadlocks.
-+	 */
-+	if (!IS_ERR_OR_NULL(req))
-+		acomp_request_free(req);
-+	if (!IS_ERR_OR_NULL(acomp))
-+		crypto_free_acomp(acomp);
-+	kfree(buffer);
-+
- 	return 0;
- }
- 
+ 	if (gfan_handle) {
+ 		/* 570, 600e/x, 770e, 770x */
+ 		fan_status_access_mode = TPACPI_FAN_RD_ACPI_GFAN;
 
 
 
