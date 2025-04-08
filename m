@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-129970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 628E3A80260
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F16DA80269
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E18EA3AF0F9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:40:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE1091897D62
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C208F264A76;
-	Tue,  8 Apr 2025 11:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E876125FA13;
+	Tue,  8 Apr 2025 11:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njVgJa90"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aMSPH5pi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D44F19AD5C;
-	Tue,  8 Apr 2025 11:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C31227EBD;
+	Tue,  8 Apr 2025 11:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112466; cv=none; b=t0v/qHOz2g0JkIKbCuhwLuUEP8j/oeUBwKyFLilnKg7YoOKGKPHTDYfIQ6f41/yD1imHqAcNBgOpLhCBPN3nTIXJtcugxHldESNjOJlqMEnkbaMfi61PNiDK1ZfGx9Q8hgQXo53F/Cj4NxXyt+cXbNCv6DAVzODJ2nB84V3sKOA=
+	t=1744112599; cv=none; b=LVFDF3qE40oT1Zl17RVlqci94gKNbGBDo4tXvKS097sByp1X26sQsG+brnKAJ6DhJIU0v4R72JuFokVuaTROZZFbuKbDndhpbNZIEe8WH3No9QlC3Hr9q1wU4vXJyMbimMar5mxse6hFgzG6IFR0veUdrGQrsS0poSzsQR8Sqe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112466; c=relaxed/simple;
-	bh=YJExC8rur4smSnTmJcXRjlwp6mSYn1d1yAyqs/+6wrM=;
+	s=arc-20240116; t=1744112599; c=relaxed/simple;
+	bh=fV6UWKzzGdoVFCaDMgR58Gu7znpgKAq9YiZrCJik7QI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W9jSxTlDndKMYI4PrdABWIZAUlZQWd3DEfv/JGsd0cBfMJf1zGluAjuZdzcPUHDH6lRWd0ER7BV7r5DI54RO7Gn57MzM0WJwKNFtrZQjfSFrLz9GHpf1AG4eLweTE1XmpAxjmm37ygIOli+HFDB6a9KGP9op2jn/ECEGM7yFlZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njVgJa90; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB9DC4CEE5;
-	Tue,  8 Apr 2025 11:41:05 +0000 (UTC)
+	 MIME-Version; b=R/MjITlkwQRb9gCG6pCK5Se3CTLzPUBVU3cWej3oFTCb12N/nxDsJh0rksUQRwAckgW0uTWrFEgKF4l9CnjLfN6UXl0vIeBowx9YzPcbxEcGAcRcEOtP/v7skQR1dXwoXS3cy3U63W+J69yZ3D7tobf77qldOgMj4BjpldKhP2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aMSPH5pi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D12C4CEE5;
+	Tue,  8 Apr 2025 11:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112466;
-	bh=YJExC8rur4smSnTmJcXRjlwp6mSYn1d1yAyqs/+6wrM=;
+	s=korg; t=1744112599;
+	bh=fV6UWKzzGdoVFCaDMgR58Gu7znpgKAq9YiZrCJik7QI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=njVgJa90fIU3HFrC6w95V6V2h/S33hIUXKHsFHHyN3fSDdIOUDsJu2Y13dWwVt3gu
-	 b8a+biHe+KVBdpzACc+GQdWYYXZlBxUBfpiIqPLkMEUdoM1ArQJmtjsjGErp8+YrYW
-	 DyPkcnquwseTlAJ28rN3RDd5dzcXdJg4kBBsdVR0=
+	b=aMSPH5piUnj0QFqaZcxMQxdbFZSESsX7AavYeb4akWgIYKIi4hwmAoQrbTCnfW5Kl
+	 v/oqGuyEK+9V6dbBl3GhTJkJnPama2ud2lYW33O/1NTbOkdt9uTOJ95jlMj+lSMTOn
+	 17vIBdx1fl91YtpCbMXi+IPoMOP0ifOfthAX0sRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Enzo Matsumiya <ematsumiya@suse.de>,
-	Henrique Carvalho <henrique.carvalho@suse.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15 077/279] smb: client: Fix match_session bug preventing session reuse
-Date: Tue,  8 Apr 2025 12:47:40 +0200
-Message-ID: <20250408104828.425071529@linuxfoundation.org>
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Jianqi Ren <jianqi.ren.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.15 078/279] smb: client: fix potential UAF in cifs_debug_files_proc_show()
+Date: Tue,  8 Apr 2025 12:47:41 +0200
+Message-ID: <20250408104828.451307532@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
 References: <20250408104826.319283234@linuxfoundation.org>
@@ -66,67 +67,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Henrique Carvalho <henrique.carvalho@suse.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit 605b249ea96770ac4fac4b8510a99e0f8442be5e upstream.
+commit ca545b7f0823f19db0f1148d59bc5e1a56634502 upstream.
 
-Fix a bug in match_session() that can causes the session to not be
-reused in some cases.
-
-Reproduction steps:
-
-mount.cifs //server/share /mnt/a -o credentials=creds
-mount.cifs //server/share /mnt/b -o credentials=creds,sec=ntlmssp
-cat /proc/fs/cifs/DebugData | grep SessionId | wc -l
-
-mount.cifs //server/share /mnt/b -o credentials=creds,sec=ntlmssp
-mount.cifs //server/share /mnt/a -o credentials=creds
-cat /proc/fs/cifs/DebugData | grep SessionId | wc -l
+Skip sessions that are being teared down (status == SES_EXITING) to
+avoid UAF.
 
 Cc: stable@vger.kernel.org
-Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
-Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
+[ This patch removes lock/unlock operation in routine cifs_ses_exiting()
+  for ses_lock is not present in v5.15 and not ported yet. ses->status
+  is protected by a global lock, cifs_tcp_ses_lock, in v5.15. ]
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/connect.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ fs/cifs/cifs_debug.c |    2 ++
+ fs/cifs/cifsglob.h   |    8 ++++++++
+ 2 files changed, 10 insertions(+)
 
---- a/fs/cifs/connect.c
-+++ b/fs/cifs/connect.c
-@@ -1582,9 +1582,8 @@ out_err:
+--- a/fs/cifs/cifs_debug.c
++++ b/fs/cifs/cifs_debug.c
+@@ -183,6 +183,8 @@ static int cifs_debug_files_proc_show(st
+ 	list_for_each_entry(server, &cifs_tcp_ses_list, tcp_ses_list) {
+ 		list_for_each(tmp, &server->smb_ses_list) {
+ 			ses = list_entry(tmp, struct cifs_ses, smb_ses_list);
++			if (cifs_ses_exiting(ses))
++				continue;
+ 			list_for_each(tmp1, &ses->tcon_list) {
+ 				tcon = list_entry(tmp1, struct cifs_tcon, tcon_list);
+ 				spin_lock(&tcon->open_file_lock);
+--- a/fs/cifs/cifsglob.h
++++ b/fs/cifs/cifsglob.h
+@@ -2041,4 +2041,12 @@ static inline struct scatterlist *cifs_s
+ 	return sg;
+ }
  
- static int match_session(struct cifs_ses *ses, struct smb3_fs_context *ctx)
- {
--	if (ctx->sectype != Unspecified &&
--	    ctx->sectype != ses->sectype)
--		return 0;
-+	struct TCP_Server_Info *server = ses->server;
-+	enum securityEnum ctx_sec, ses_sec;
- 
- 	/*
- 	 * If an existing session is limited to less channels than
-@@ -1597,11 +1596,19 @@ static int match_session(struct cifs_ses
- 	}
- 	spin_unlock(&ses->chan_lock);
- 
--	switch (ses->sectype) {
-+	ctx_sec = server->ops->select_sectype(server, ctx->sectype);
-+	ses_sec = server->ops->select_sectype(server, ses->sectype);
++static inline bool cifs_ses_exiting(struct cifs_ses *ses)
++{
++	bool ret;
 +
-+	if (ctx_sec != ses_sec)
-+		return 0;
++	ret = ses->status == CifsExiting;
++	return ret;
++}
 +
-+	switch (ctx_sec) {
- 	case Kerberos:
- 		if (!uid_eq(ctx->cred_uid, ses->cred_uid))
- 			return 0;
- 		break;
-+	case NTLMv2:
-+	case RawNTLMSSP:
- 	default:
- 		/* NULL username means anonymous session */
- 		if (ses->user_name == NULL) {
+ #endif	/* _CIFS_GLOB_H */
 
 
 
