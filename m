@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-131705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B6CBA80B55
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:15:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A48A80932
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:51:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83ED84C810D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA4E54E3F1F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:43:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6891727CB28;
-	Tue,  8 Apr 2025 12:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39A7D26FDB0;
+	Tue,  8 Apr 2025 12:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p1NMOavV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OBUtEb+p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251F227CB27;
-	Tue,  8 Apr 2025 12:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA85F26FDB1;
+	Tue,  8 Apr 2025 12:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117114; cv=none; b=SMfWk9DBHxfbztaULs9RwXMZajXd84gjsCsGV6Mo5Bvlc+FA8i0CR+Jor7msGlbwAKR77Cl4ltlMPmxMxMvm3i05v7GH7rupH2QV7IxXdnDwc7x4RG3CMjr48xDDZJRe2ONlvSvhYBENa7QC3ydErb47ZEyxVY+5rODknmI2Tqs=
+	t=1744115904; cv=none; b=OGvo+5V5o8IOP0KlrTsJq/PyqPnbfTgfWp7knRaTmRi+ZsRFydQ7yfJJSJAoyc9VlatP41DC76CnTbULIxSkUIsoV/Xp9QQO1rLMc5LJHMLWNvLnbhKQfze5mQXy5XYM6Z25OGE7a1OoQiHQCwXVFXcddwS5h3TZ3a5uY6qF+z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117114; c=relaxed/simple;
-	bh=FFX11LoRt7nBeliucvYMzZ4Hh/TVHBpN5R1JVusrar0=;
+	s=arc-20240116; t=1744115904; c=relaxed/simple;
+	bh=0PXDuKNZTCUPhLJphMAKFQswaaeKkYWOMeBR3CvtCzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GUhsC/beQOzY6+R6orHHPT5qRLIdgnL/UsI9/2WRTHepdtlDQDFuJQhmGhkH4/elM8Rzi2C8Bd+qIqqiNmZTGG1iPwoi8Vl2xIk3rd5S5ppnvd1UTr4r3cFJF9FhBD4W8VD0i435/pnQ8nw0o75de8fFiGTUPnUpLpWl7mfSztQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p1NMOavV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5865C4CEE5;
-	Tue,  8 Apr 2025 12:58:33 +0000 (UTC)
+	 MIME-Version; b=X0EGR74pqEGeFdnRkataLbyrwZvtNfQl+tKDV1FgqxOwoc4z86Dxsun1wCzmDBa5PGKLVQi1aWsX4eIuscotFV1oTwWNw+eM6OE1sY+pmdgh7AFFMW4kMQSQAnN3Xmvi2qI9Q1Ikk81mehjuaNzSDzVLKnCbZx99F+02clWIMgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OBUtEb+p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4497C4CEE5;
+	Tue,  8 Apr 2025 12:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117114;
-	bh=FFX11LoRt7nBeliucvYMzZ4Hh/TVHBpN5R1JVusrar0=;
+	s=korg; t=1744115903;
+	bh=0PXDuKNZTCUPhLJphMAKFQswaaeKkYWOMeBR3CvtCzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p1NMOavVBvZi218dRyVtth34lUyLTU+R7HyrgdVLkXGfkLx7LHpe6E0+dkk38lPlu
-	 ez8qCwxzYD0siGYeJCgFYxSuH97GBFJpNOBuZs7Dydjymb3zb+0Wqh5H/70XWaLB9v
-	 8IhavLKZdJbS0IQYmMfC5vcJ8bJXBUXCqWxCUa38=
+	b=OBUtEb+p9GVsgxA6ICoa7W3RkyaSpC3m0MQ045u7/hw3Sq5P4L0LaltlGQKo3zzC6
+	 COSpgUzj0LTz/PfKLqussHwVMNX0kKY3sYF/T8seDFksohiVHhtUmgkJktYEWpxdLz
+	 /189keN3dRyKpwdSoaxFbSWyL4Z6DvKx6z483LGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Roger Quadros <rogerq@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 350/423] tracing: Switch trace_events_hist.c code over to use guard()
+Subject: [PATCH 6.1 146/204] memory: omap-gpmc: drop no compatible check
 Date: Tue,  8 Apr 2025 12:51:16 +0200
-Message-ID: <20250408104853.996257190@linuxfoundation.org>
+Message-ID: <20250408104824.577998581@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,101 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Roger Quadros <rogerq@kernel.org>
 
-[ Upstream commit 2b36a97aeeb71b1e4a48bfedc7f21f44aeb1e6fb ]
+[ Upstream commit edcccc6892f65eff5fd3027a13976131dc7fd733 ]
 
-There are a couple functions in trace_events_hist.c that have "goto out" or
-equivalent on error in order to release locks that were taken. This can be
-error prone or just simply make the code more complex.
+We are no longer depending on legacy device trees so
+drop the no compatible check for NAND and OneNAND
+nodes.
 
-Switch every location that ends with unlocking a mutex on error over to
-using the guard(mutex)() infrastructure to let the compiler worry about
-releasing locks. This makes the code easier to read and understand.
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/20241219201345.694601480@goodmis.org
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Stable-dep-of: 0b4ffbe4888a ("tracing: Correct the refcount if the hist/hist_debug file fails to open")
+Suggested-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Link: https://lore.kernel.org/r/20250114-omap-gpmc-drop-no-compatible-check-v1-1-262c8d549732@kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_hist.c | 32 ++++++++++----------------------
- 1 file changed, 10 insertions(+), 22 deletions(-)
+ drivers/memory/omap-gpmc.c | 20 --------------------
+ 1 file changed, 20 deletions(-)
 
-diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index 31f5ad322fab0..5d344bc690d99 100644
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -5597,25 +5597,19 @@ static int hist_show(struct seq_file *m, void *v)
- {
- 	struct event_trigger_data *data;
- 	struct trace_event_file *event_file;
--	int n = 0, ret = 0;
-+	int n = 0;
- 
--	mutex_lock(&event_mutex);
-+	guard(mutex)(&event_mutex);
- 
- 	event_file = event_file_file(m->private);
--	if (unlikely(!event_file)) {
--		ret = -ENODEV;
--		goto out_unlock;
--	}
-+	if (unlikely(!event_file))
-+		return -ENODEV;
- 
- 	list_for_each_entry(data, &event_file->triggers, list) {
- 		if (data->cmd_ops->trigger_type == ETT_EVENT_HIST)
- 			hist_trigger_show(m, data, n++);
+diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
+index 2351f2708da23..f30b1c0093d3f 100644
+--- a/drivers/memory/omap-gpmc.c
++++ b/drivers/memory/omap-gpmc.c
+@@ -2154,26 +2154,6 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
+ 		goto err;
  	}
--
-- out_unlock:
--	mutex_unlock(&event_mutex);
--
--	return ret;
-+	return 0;
- }
  
- static int event_hist_open(struct inode *inode, struct file *file)
-@@ -5876,25 +5870,19 @@ static int hist_debug_show(struct seq_file *m, void *v)
- {
- 	struct event_trigger_data *data;
- 	struct trace_event_file *event_file;
--	int n = 0, ret = 0;
-+	int n = 0;
- 
--	mutex_lock(&event_mutex);
-+	guard(mutex)(&event_mutex);
- 
- 	event_file = event_file_file(m->private);
--	if (unlikely(!event_file)) {
--		ret = -ENODEV;
--		goto out_unlock;
+-	if (of_node_name_eq(child, "nand")) {
+-		/* Warn about older DT blobs with no compatible property */
+-		if (!of_property_read_bool(child, "compatible")) {
+-			dev_warn(&pdev->dev,
+-				 "Incompatible NAND node: missing compatible");
+-			ret = -EINVAL;
+-			goto err;
+-		}
 -	}
-+	if (unlikely(!event_file))
-+		return -ENODEV;
- 
- 	list_for_each_entry(data, &event_file->triggers, list) {
- 		if (data->cmd_ops->trigger_type == ETT_EVENT_HIST)
- 			hist_trigger_debug_show(m, data, n++);
- 	}
 -
-- out_unlock:
--	mutex_unlock(&event_mutex);
+-	if (of_node_name_eq(child, "onenand")) {
+-		/* Warn about older DT blobs with no compatible property */
+-		if (!of_property_read_bool(child, "compatible")) {
+-			dev_warn(&pdev->dev,
+-				 "Incompatible OneNAND node: missing compatible");
+-			ret = -EINVAL;
+-			goto err;
+-		}
+-	}
 -
--	return ret;
-+	return 0;
- }
- 
- static int event_hist_debug_open(struct inode *inode, struct file *file)
+ 	if (of_match_node(omap_nand_ids, child)) {
+ 		/* NAND specific setup */
+ 		val = 8;
 -- 
 2.39.5
 
