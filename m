@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-129730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98FFEA800EA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:36:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96D52A7FD4E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:00:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7100118943E5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:32:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4BE2B7A57CF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D056224239;
-	Tue,  8 Apr 2025 11:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B53267B15;
+	Tue,  8 Apr 2025 10:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MYdnQVD1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VDc0pl67"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460E0264A76;
-	Tue,  8 Apr 2025 11:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71652266EEA;
+	Tue,  8 Apr 2025 10:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111826; cv=none; b=SUWm209fzdOUkkgxyW9g6B21+RFdW9wk6EQ5CjqPaPtJMsSCXAiz4PCJq37JUafs0f9bC9HT/W07+l9L8vDr4+WDa3KM25KZp4WPrkLNAOtG0sxdVBgkRQY8BmCE/WQuAQYg3Meb3uVnzoIWBHsqHgR0R/XiuuCMc15q4szXfIM=
+	t=1744109894; cv=none; b=FvoiN1RvYMKJi8FK13ce+MFGE8c+bhWtZXhJMLU3Z0oOimaKvvxcfNth7r8U3JjxxNEJTEoEm0IGSLCCoksX/oIKYqkl0c8B3CE7fm9sA9WO5ZwMA31N69j3dbeR1OSY6w0UO+ORJdd05oDLJ+FNiDOYBwhDZxrIvLm3rG54ybg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111826; c=relaxed/simple;
-	bh=OZIUCiWbAiqBOaagHTBu3qgnWLN0HW8iD/CiCl+yUvM=;
+	s=arc-20240116; t=1744109894; c=relaxed/simple;
+	bh=yE0kPWhGnfXbEj8gXXQ+JbgQruNN6pj4gLYcMtI+L/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F5aFVNtewxvZ+KQ6N+Zqes3lpbgQXiG5RRqetC0K7GhJYbTVRCM+Ka9user7ADxqhWKjP97dSE7S+0S7rFo+nWeA8vdZUN0EOny456Um8R945aUMRxeKRYg5LNHEHchAZ/xnl4qJMNPDQcUv/LUA6pue6ssvwifKSJE6WIc7Y9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MYdnQVD1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC28EC4CEE5;
-	Tue,  8 Apr 2025 11:30:25 +0000 (UTC)
+	 MIME-Version; b=l96PhK3L+L4wPE5Wp7qzOPNBpIZnGgb4o6894HDEa40r9ma+Xb1zxVvrlvWTnoF0oXtwKL90pGeObepkK60wTcom/FxsI2bTcxRClTpJz2gcxlxeIHhhMAiwlDII6CVm1q9Ri4EVoPSBYH8fOh5tr5Xf84yqQuEf2X1R/IcOExQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VDc0pl67; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01B0FC4CEE5;
+	Tue,  8 Apr 2025 10:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111826;
-	bh=OZIUCiWbAiqBOaagHTBu3qgnWLN0HW8iD/CiCl+yUvM=;
+	s=korg; t=1744109894;
+	bh=yE0kPWhGnfXbEj8gXXQ+JbgQruNN6pj4gLYcMtI+L/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MYdnQVD1cjuHSWr+VzVSEg9tEtxBZWWRySD45pu0rT+fhYfeOpUVquhJUjioM+vOQ
-	 nU4KCpaE1/oXNlcUZJQ/bV9vfh+4Gsuu44O/ppE2vmU8W3V+z43+dBMScdOycHUYu0
-	 3aw6B1vToxbFEaGlwMoGMk5ikF0aQig6VdrlpJv8=
+	b=VDc0pl67RQVrnwCHnl6czshbzgXFMqyHu4D2TQJfKIoCfALVMw2dqLukex+vS5Xj+
+	 8YGVfc5jd99yBeZ6bYWQ5H0ItjfmOGIx5Vt4E7Z+kkr5EvZVPunGVXgjc1+Q2OZ0Ve
+	 OPPikKNsJGDpxx+OZjd0Q5YgeWNZFLhgeJFMLG98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 574/731] objtool/loongarch: Add unwind hints in prepare_frametrace()
+	Terry Junge <linuxhid@cosmicgizmosystems.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 5.10 093/227] ALSA: usb-audio: Add quirk for Plantronics headsets to fix control names
 Date: Tue,  8 Apr 2025 12:47:51 +0200
-Message-ID: <20250408104927.625268312@linuxfoundation.org>
+Message-ID: <20250408104823.160506474@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,91 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Terry Junge <linuxhid@cosmicgizmosystems.com>
 
-[ Upstream commit 7c977393b8277ed319e92e4b598b26598c9d30c0 ]
+commit 486f6205c233da1baa309bde5f634eb1f8319a33 upstream.
 
-If 'regs' points to a local stack variable, prepare_frametrace() stores
-all registers to the stack.  This confuses objtool as it expects them to
-be restored from the stack later.
+Many Poly/Plantronics headset families name the feature, input,
+and/or output units in a such a way to produce control names
+that are not recognized by user space. As such, the volume and
+mute events do not get routed to the headset's audio controls.
 
-The stores don't affect stack tracing, so use unwind hints to hide them
-from objtool.
+As an example from a product family:
 
-Fixes the following warnings:
+The microphone mute control is named
+Headset Microphone Capture Switch
+and the headset volume control is named
+Headset Earphone Playback Volume
 
-  arch/loongarch/kernel/traps.o: warning: objtool: show_stack+0xe0: stack state mismatch: reg1[22]=-1+0 reg2[22]=-2-160
-  arch/loongarch/kernel/traps.o: warning: objtool: show_stack+0xe0: stack state mismatch: reg1[23]=-1+0 reg2[23]=-2-152
+The quirk fixes these to become
+Headset Capture Switch
+Headset Playback Volume
 
-Fixes: cb8a2ef0848c ("LoongArch: Add ORC stack unwinder support")
-Reported-by: kernel test robot <lkp@intel.com>
-Tested-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/270cadd8040dda74db2307f23497bb68e65db98d.1743481539.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/oe-kbuild-all/202503280703.OARM8SrY-lkp@intel.com/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/stacktrace.h   |  3 +++
- arch/loongarch/include/asm/unwind_hints.h | 10 +++++++++-
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ sound/usb/mixer_quirks.c |   51 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
-diff --git a/arch/loongarch/include/asm/stacktrace.h b/arch/loongarch/include/asm/stacktrace.h
-index f23adb15f418f..fc8b64773794a 100644
---- a/arch/loongarch/include/asm/stacktrace.h
-+++ b/arch/loongarch/include/asm/stacktrace.h
-@@ -8,6 +8,7 @@
- #include <asm/asm.h>
- #include <asm/ptrace.h>
- #include <asm/loongarch.h>
-+#include <asm/unwind_hints.h>
- #include <linux/stringify.h>
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -3296,6 +3296,52 @@ static void snd_dragonfly_quirk_db_scale
+ 	}
+ }
  
- enum stack_type {
-@@ -43,6 +44,7 @@ int get_stack_info(unsigned long stack, struct task_struct *task, struct stack_i
- static __always_inline void prepare_frametrace(struct pt_regs *regs)
- {
- 	__asm__ __volatile__(
-+		UNWIND_HINT_SAVE
- 		/* Save $ra */
- 		STORE_ONE_REG(1)
- 		/* Use $ra to save PC */
-@@ -80,6 +82,7 @@ static __always_inline void prepare_frametrace(struct pt_regs *regs)
- 		STORE_ONE_REG(29)
- 		STORE_ONE_REG(30)
- 		STORE_ONE_REG(31)
-+		UNWIND_HINT_RESTORE
- 		: "=m" (regs->csr_era)
- 		: "r" (regs->regs)
- 		: "memory");
-diff --git a/arch/loongarch/include/asm/unwind_hints.h b/arch/loongarch/include/asm/unwind_hints.h
-index a01086ad9ddea..2c68bc72736c9 100644
---- a/arch/loongarch/include/asm/unwind_hints.h
-+++ b/arch/loongarch/include/asm/unwind_hints.h
-@@ -23,6 +23,14 @@
- 	UNWIND_HINT sp_reg=ORC_REG_SP type=UNWIND_HINT_TYPE_CALL
- .endm
++/*
++ * Some Plantronics headsets have control names that don't meet ALSA naming
++ * standards. This function fixes nonstandard source names. By the time
++ * this function is called the control name should look like one of these:
++ * "source names Playback Volume"
++ * "source names Playback Switch"
++ * "source names Capture Volume"
++ * "source names Capture Switch"
++ * If any of the trigger words are found in the name then the name will
++ * be changed to:
++ * "Headset Playback Volume"
++ * "Headset Playback Switch"
++ * "Headset Capture Volume"
++ * "Headset Capture Switch"
++ * depending on the current suffix.
++ */
++static void snd_fix_plt_name(struct snd_usb_audio *chip,
++			     struct snd_ctl_elem_id *id)
++{
++	/* no variant of "Sidetone" should be added to this list */
++	static const char * const trigger[] = {
++		"Earphone", "Microphone", "Receive", "Transmit"
++	};
++	static const char * const suffix[] = {
++		" Playback Volume", " Playback Switch",
++		" Capture Volume", " Capture Switch"
++	};
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(trigger); i++)
++		if (strstr(id->name, trigger[i]))
++			goto triggered;
++	usb_audio_dbg(chip, "no change in %s\n", id->name);
++	return;
++
++triggered:
++	for (i = 0; i < ARRAY_SIZE(suffix); i++)
++		if (strstr(id->name, suffix[i])) {
++			usb_audio_dbg(chip, "fixing kctl name %s\n", id->name);
++			snprintf(id->name, sizeof(id->name), "Headset%s",
++				 suffix[i]);
++			return;
++		}
++	usb_audio_dbg(chip, "something wrong in kctl name %s\n", id->name);
++}
++
+ void snd_usb_mixer_fu_apply_quirk(struct usb_mixer_interface *mixer,
+ 				  struct usb_mixer_elem_info *cval, int unitid,
+ 				  struct snd_kcontrol *kctl)
+@@ -3313,5 +3359,10 @@ void snd_usb_mixer_fu_apply_quirk(struct
+ 			cval->min_mute = 1;
+ 		break;
+ 	}
++
++	/* ALSA-ify some Plantronics headset control names */
++	if (USB_ID_VENDOR(mixer->chip->usb_id) == 0x047f &&
++	    (cval->control == UAC_FU_MUTE || cval->control == UAC_FU_VOLUME))
++		snd_fix_plt_name(mixer->chip, &kctl->id);
+ }
  
--#endif /* __ASSEMBLY__ */
-+#else /* !__ASSEMBLY__ */
-+
-+#define UNWIND_HINT_SAVE \
-+	UNWIND_HINT(UNWIND_HINT_TYPE_SAVE, 0, 0, 0)
-+
-+#define UNWIND_HINT_RESTORE \
-+	UNWIND_HINT(UNWIND_HINT_TYPE_RESTORE, 0, 0, 0)
-+
-+#endif /* !__ASSEMBLY__ */
- 
- #endif /* _ASM_LOONGARCH_UNWIND_HINTS_H */
--- 
-2.39.5
-
 
 
 
