@@ -1,290 +1,132 @@
-Return-Path: <stable+bounces-131674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 096D8A80B69
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:16:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48D3BA80B74
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:17:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDC8F4E6487
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AA811BC3301
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E94D27C84B;
-	Tue,  8 Apr 2025 12:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8402D27D762;
+	Tue,  8 Apr 2025 12:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PFkg2FMK"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="2lSHB/GB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CA726A0CF
-	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 12:57:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4582127CCF2
+	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 12:59:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117029; cv=none; b=co90VPk5RDCBtAW9bIdCNu4WCqkuWVoionagaA+uBIzCP8Vp/3y8iLlanRIsdjU81w2eQLgf/SBsM78XN/cxeJp14dUdszutRqjWneaeUW57OAOkVpz9jacPW+8lHYDcoo3boqtyYVOr2kV1CgczdJprjlz9N1N8dIkyGxH4GWg=
+	t=1744117149; cv=none; b=ala7bjIs3STjtYXbK53kMCQUaq1Gujitg3MTV4VSj/YmgLoBbAzDpJNkPHgOmVFpG40JXenJczWq/JPhAo5e68mdoAR6mT/eQi14PmAANRaRuhCRdt4DgA0Mb2NUGs1zHX0A8xwjkKzT3VPAWhMk2bZArTLmlI5Bzxb+pslZ+cI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117029; c=relaxed/simple;
-	bh=HS32FDHnwO9D5q/PDNWKE+t0rkIVsBEs3AaieanNPIw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=JNTHRNyEnXoez2zSJXynFtT1LJjCoWQ/HnkwW0bhSlpZpeZFzVAczDt+w4yrSvd5s1oJWx5gR7YFh3Fk7YnmnmE2/BJQMU/n9+RUKavVisbyaonR6Imaij/Pv82IL6VnjR7+P62huYhQINDosKuKtUBpX2lNboTf+TbBp5CtRd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--vannapurve.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PFkg2FMK; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--vannapurve.bounces.google.com
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-7375e2642b4so4080134b3a.2
-        for <stable@vger.kernel.org>; Tue, 08 Apr 2025 05:57:07 -0700 (PDT)
+	s=arc-20240116; t=1744117149; c=relaxed/simple;
+	bh=4SLJzvzR0S1SahpzMZww36hf4yU3Wn0X6J07EZsTNOI=;
+	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=G7fi3KL9PfAkAB1Vuy9YLssGA1aaJ99ld+eBGWy2vvEed1rzg9W4y7QZfZGfWaCC+LM2+c5OxNdOSMpoGhD02Br7QOJzsWTniL9QUa5bjfbgkESLK9/82Myuf6+dLFUx5GRL4vhRGnn2rXXG3URgENfym7c9032DoxTAdyaGfpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=2lSHB/GB; arc=none smtp.client-ip=209.85.128.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-6f74b78df93so67252327b3.0
+        for <stable@vger.kernel.org>; Tue, 08 Apr 2025 05:59:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1744117027; x=1744721827; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LnqhIMCQHB6CFvqY2YZ8tKwcu01Xt5J4P8tYyUgFo8w=;
-        b=PFkg2FMK/DnIuA1JB3KaLvuH58oKog2B3Tf74lJvDPyQDvuNJlUMCCrVpJjkEMhPre
-         +LvDun+o4rXL6BKX3QcWFaKQecvUHLw5BrV9yFRLD1sX6Vp2ATL0P1iJmD5bgml94LBq
-         7tIXIErFPeswuviuMZEz5Mjv2ZrVXMELvmKZEctHAoZRE5fomLkjBZQD+p4VWq9NDy/W
-         AOacYgoZU6hJ/y5amrgnoW0kvIrNJl/bBnZ0s6v5S00YPviym1nOlNunOYi23mUy8QR7
-         63rbGGWVUGRappEM6z0UoxJTIrvCVPDgT5emTeoTzym59XKhnPtulpIW3/nlnPq77F2O
-         mXfQ==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1744117146; x=1744721946; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:reply-to:from:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=er1cvijfk/qtqrLJvq3BaG+utlwHxxJl8y/1dc1tZz4=;
+        b=2lSHB/GBdyuG8f7y97mPmZEPmLVfqHMUU4d//xSXSXWQlDC/AlgdQoNr4bU6lBtju6
+         1cpgM0EwgxB/xVxV1bW9LM5D0jg2o2DTAIfaFN2ZTYHueG2FcDNS/KxtWOQHJSDK14jS
+         1/6IDTl71fO7+3c6BRvdWgIwLGR/ImG10uCUY+ENrQsYb1osHBE+GPa49bVwVVo4/M6L
+         xqSqChYQKkWiq5WIGJGCTOq0TBiMqy8lbHSXTexMJijDKaw4ZYcc3hLbWufRnSrXZUSj
+         KAWE0kN9Dw08/GHg8bucWk9yxfC5++r4o3UJ2J6Co9/Gjs7z33O5GCbGVpDE5MaGGMyg
+         nPwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744117027; x=1744721827;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LnqhIMCQHB6CFvqY2YZ8tKwcu01Xt5J4P8tYyUgFo8w=;
-        b=fl+dV2/GJLoYAa+K4JXd28FlJoZv/Vq+UT73ZyOxrfCEH2N4iFm15KSODRHLcksr4m
-         VDxOl8oMaIWnvAQOnQiof0vbW6tyOYzjH2ZkDzVkjjUdk55vEsulZMQLZGFgkX3c5Hew
-         +IEmmaLlFETO4fUx3j1PbTp0ozQZSBYvvhdCPFq7c322yKzDycEyjDljwO/k/iZt4TRD
-         RVnhUTRkRXjbmjlzlgtS6hqtFrgGIZRiij1WwyFXc7yeaLr1M7hvlsIAC2W7blw3b190
-         7c2aEKIWC7XBcIbrDiUkOUukIm41v3aLitkA1yFd/vvfllq7jkeFVQzovRWfvzFiITiI
-         +VHA==
-X-Gm-Message-State: AOJu0YwJf5AqsoXCzsnpzi6P2we93pfNsmS57K8dMav2KjsKb4nivtYm
-	vapWZGzbdkKOgG8qw3hco/zN+mx/kCQ3hs+Lxi0XF2iKJft6rFTi/EsQ4IoORkbqjDx0R2rCeXq
-	IWpNvabQ/Jt8xWxwsbltr0iOcUGKRZvDK4eZO3cOd0mW5awqmEhFDz9XcH4lZmqPYNkI4ILGrO3
-	O1rDl+OFNmZnvIO85KYekUaKC0q43EMhFv75PNWt5tYD6Dwu8xvccNqQ==
-X-Google-Smtp-Source: AGHT+IHFN2cs9watR/VB5JqI0en/LGjMbOB5njRDmiUDs62Z2vOTRzqr7Qg3/cMhYistuaxoSnFb4tfp5h+dySvz
-X-Received: from pgbi18.prod.google.com ([2002:a63:5412:0:b0:b01:96fa:516f])
- (user=vannapurve job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:6f8b:b0:1ee:c8e7:203c with SMTP id adf61e73a8af0-2010462b41bmr24370778637.24.1744117026915;
- Tue, 08 Apr 2025 05:57:06 -0700 (PDT)
-Date: Tue,  8 Apr 2025 12:56:45 +0000
-In-Reply-To: <2025040826-tracing-shanty-607f@gregkh>
+        d=1e100.net; s=20230601; t=1744117146; x=1744721946;
+        h=cc:to:subject:message-id:date:reply-to:from:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=er1cvijfk/qtqrLJvq3BaG+utlwHxxJl8y/1dc1tZz4=;
+        b=HybMAXZsogWEzLRyjgdXbK2yaJCBg6TyNONTmu6pfMt7Erdaw4oROgctRN0/X1UExf
+         Mcrn6f0d3S2sh4Zp/WB6vVv20tPL0hfNAF4TEDGW+L0loCFRHMJUBQlXNodPfRDH9ppW
+         GWaTB3jixaGoCCbmVi1i+vaymlLH8xtii7LY784CatG/drgJ9aGMkrTTeVdaIFOulMnh
+         Hv14hg193Uz9ImywnvzCjMsDBlsCdS2p5ad/HS85YzekNI3CzrUxZD1bVPnFU9+cjm03
+         d76qE4Kb5Ps0EDIz3h+vrvdiMNXfc2zK1bZDMou4GXba3HIZrlhgk2XZ1aqpM0vs8DfI
+         sBlg==
+X-Forwarded-Encrypted: i=1; AJvYcCUh9CYGa6HUYGWJE1v4NiCCvYOhn+pFcVHJR38PxPmYk32XmCzV1V0MGRKsG2E8uY3NgneSmkY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZfb7Ls3Q60bNJsS3RtmkO/s/qJZYwtSRMOqJJQwIVBp4ZYyvo
+	9HnwYBTNQ+/Vat7Dm7bs8EgIQXm/DVlbgLK/iTXL/4JFqGiBc7H/9jJnd8NOEWLJ4RIVyVG6puQ
+	Wr1zeXqxJ5WdR9re3LTW6WgrzljbNyhDbRE7m7w==
+X-Gm-Gg: ASbGnct8KWBMYClltYWmCEGT+MvxYdNC632KHu38Bx94VxI5+MD8lddT1hNJR5LqhoF
+	UBdrmxLUdTGk37b62T/ViYYEu8/zaCt8iVbBaTeiKqz8obUFRHuvOZ27gqeEzybm3NoASwBrVFn
+	3U7LatqvF6Yo0tg/RBMhDs2jZt
+X-Google-Smtp-Source: AGHT+IFanpD6FOT92A3dLfQR+GVg62agTZeT+RLaYT6aC8H5CQvzH4yJq+NxSUNyDwB4s4r7FjYCvO+H00wpJQIoTjY=
+X-Received: by 2002:a05:690c:6c0f:b0:6fd:3743:1e31 with SMTP id
+ 00721157ae682-703e3194239mr298568527b3.18.1744117146264; Tue, 08 Apr 2025
+ 05:59:06 -0700 (PDT)
+Received: from 415818378487 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 8 Apr 2025 05:59:04 -0700
+Received: from 415818378487 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 8 Apr 2025 05:59:04 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <2025040826-tracing-shanty-607f@gregkh>
-X-Mailer: git-send-email 2.49.0.504.g3bcea36a83-goog
-Message-ID: <20250408125645.3856166-1-vannapurve@google.com>
-Subject: [PATCH 6.13.y] x86/paravirt: Move halt paravirt calls under CONFIG_PARAVIRT
-From: Vishal Annapurve <vannapurve@google.com>
-To: stable@vger.kernel.org
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Ingo Molnar <mingo@kernel.org>, 
-	Andi Kleen <ak@linux.intel.com>, Tony Luck <tony.luck@intel.com>, 
-	Juergen Gross <jgross@suse.com>, Ryan Afranji <afranji@google.com>, Andy Lutomirski <luto@kernel.org>, 
-	Brian Gerst <brgerst@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Josh Poimboeuf <jpoimboe@redhat.com>, stable@kernel.org
+MIME-Version: 1.0
+from: KernelCI bot <bot@kernelci.org>
+Reply-To: kernelci@lists.linux.dev
+Date: Tue, 8 Apr 2025 05:59:04 -0700
+X-Gm-Features: ATxdqUGLxr6_qMw156Ncv0-n3ZHJzqAzfZDawWRdKop26E2uF452ixbYMPvX8K4
+Message-ID: <CACo-S-2-nFk8WzfByez7nZd668z-p0rSnEU+3XqZCL-Dc3g8ig@mail.gmail.com>
+Subject: [REGRESSION] stable-rc/linux-6.12.y: (build) in vmlinux (vmlinux.lds) [logspec:kbuild,kbuild.compiler]
+To: kernelci-results@groups.io
+Cc: gus@collabora.com, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Hello,
 
-CONFIG_PARAVIRT_XXL is mainly defined/used by XEN PV guests. For
-other VM guest types, features supported under CONFIG_PARAVIRT
-are self sufficient. CONFIG_PARAVIRT mainly provides support for
-TLB flush operations and time related operations.
+New build issue found on stable-rc/linux-6.12.y:
 
-For TDX guest as well, paravirt calls under CONFIG_PARVIRT meets
-most of its requirement except the need of HLT and SAFE_HLT
-paravirt calls, which is currently defined under
-CONFIG_PARAVIRT_XXL.
-
-Since enabling CONFIG_PARAVIRT_XXL is too bloated for TDX guest
-like platforms, move HLT and SAFE_HLT paravirt calls under
-CONFIG_PARAVIRT.
-
-Moving HLT and SAFE_HLT paravirt calls are not fatal and should not
-break any functionality for current users of CONFIG_PARAVIRT.
-
-Fixes: bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
-Co-developed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Andi Kleen <ak@linux.intel.com>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Tested-by: Ryan Afranji <afranji@google.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Brian Gerst <brgerst@gmail.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20250228014416.3925664-2-vannapurve@google.com
-(cherry picked from commit 22cc5ca5de52bbfc36a7d4a55323f91fb4492264)
 ---
- arch/x86/include/asm/irqflags.h       | 40 +++++++++++++++------------
- arch/x86/include/asm/paravirt.h       | 20 +++++++-------
- arch/x86/include/asm/paravirt_types.h |  3 +-
- arch/x86/kernel/paravirt.c            | 14 ++++++----
- 4 files changed, 41 insertions(+), 36 deletions(-)
+ in vmlinux (vmlinux.lds) [logspec:kbuild,kbuild.compiler]
+---
 
-diff --git a/arch/x86/include/asm/irqflags.h b/arch/x86/include/asm/irqflags.h
-index cf7fc2b8e3ce..1c2db11a2c3c 100644
---- a/arch/x86/include/asm/irqflags.h
-+++ b/arch/x86/include/asm/irqflags.h
-@@ -76,6 +76,28 @@ static __always_inline void native_local_irq_restore(unsigned long flags)
- 
- #endif
- 
-+#ifndef CONFIG_PARAVIRT
-+#ifndef __ASSEMBLY__
-+/*
-+ * Used in the idle loop; sti takes one instruction cycle
-+ * to complete:
-+ */
-+static __always_inline void arch_safe_halt(void)
-+{
-+	native_safe_halt();
-+}
-+
-+/*
-+ * Used when interrupts are already enabled or to
-+ * shutdown the processor:
-+ */
-+static __always_inline void halt(void)
-+{
-+	native_halt();
-+}
-+#endif /* __ASSEMBLY__ */
-+#endif /* CONFIG_PARAVIRT */
-+
- #ifdef CONFIG_PARAVIRT_XXL
- #include <asm/paravirt.h>
- #else
-@@ -97,24 +119,6 @@ static __always_inline void arch_local_irq_enable(void)
- 	native_irq_enable();
- }
- 
--/*
-- * Used in the idle loop; sti takes one instruction cycle
-- * to complete:
-- */
--static __always_inline void arch_safe_halt(void)
--{
--	native_safe_halt();
--}
--
--/*
-- * Used when interrupts are already enabled or to
-- * shutdown the processor:
-- */
--static __always_inline void halt(void)
--{
--	native_halt();
--}
--
- /*
-  * For spinlocks, etc:
-  */
-diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
-index d4eb9e1d61b8..75d4c994f5e2 100644
---- a/arch/x86/include/asm/paravirt.h
-+++ b/arch/x86/include/asm/paravirt.h
-@@ -107,6 +107,16 @@ static inline void notify_page_enc_status_changed(unsigned long pfn,
- 	PVOP_VCALL3(mmu.notify_page_enc_status_changed, pfn, npages, enc);
- }
- 
-+static __always_inline void arch_safe_halt(void)
-+{
-+	PVOP_VCALL0(irq.safe_halt);
-+}
-+
-+static inline void halt(void)
-+{
-+	PVOP_VCALL0(irq.halt);
-+}
-+
- #ifdef CONFIG_PARAVIRT_XXL
- static inline void load_sp0(unsigned long sp0)
- {
-@@ -170,16 +180,6 @@ static inline void __write_cr4(unsigned long x)
- 	PVOP_VCALL1(cpu.write_cr4, x);
- }
- 
--static __always_inline void arch_safe_halt(void)
--{
--	PVOP_VCALL0(irq.safe_halt);
--}
--
--static inline void halt(void)
--{
--	PVOP_VCALL0(irq.halt);
--}
--
- extern noinstr void pv_native_wbinvd(void);
- 
- static __always_inline void wbinvd(void)
-diff --git a/arch/x86/include/asm/paravirt_types.h b/arch/x86/include/asm/paravirt_types.h
-index 8d4fbe1be489..9334fdd1f635 100644
---- a/arch/x86/include/asm/paravirt_types.h
-+++ b/arch/x86/include/asm/paravirt_types.h
-@@ -122,10 +122,9 @@ struct pv_irq_ops {
- 	struct paravirt_callee_save save_fl;
- 	struct paravirt_callee_save irq_disable;
- 	struct paravirt_callee_save irq_enable;
--
-+#endif
- 	void (*safe_halt)(void);
- 	void (*halt)(void);
--#endif
- } __no_randomize_layout;
- 
- struct pv_mmu_ops {
-diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
-index fec381533555..edaa74c311c8 100644
---- a/arch/x86/kernel/paravirt.c
-+++ b/arch/x86/kernel/paravirt.c
-@@ -100,6 +100,11 @@ int paravirt_disable_iospace(void)
- 	return request_resource(&ioport_resource, &reserve_ioports);
- }
- 
-+static noinstr void pv_native_safe_halt(void)
-+{
-+	native_safe_halt();
-+}
-+
- #ifdef CONFIG_PARAVIRT_XXL
- static noinstr void pv_native_write_cr2(unsigned long val)
- {
-@@ -120,11 +125,6 @@ noinstr void pv_native_wbinvd(void)
- {
- 	native_wbinvd();
- }
--
--static noinstr void pv_native_safe_halt(void)
--{
--	native_safe_halt();
--}
- #endif
- 
- struct pv_info pv_info = {
-@@ -182,9 +182,11 @@ struct paravirt_patch_template pv_ops = {
- 	.irq.save_fl		= __PV_IS_CALLEE_SAVE(pv_native_save_fl),
- 	.irq.irq_disable	= __PV_IS_CALLEE_SAVE(pv_native_irq_disable),
- 	.irq.irq_enable		= __PV_IS_CALLEE_SAVE(pv_native_irq_enable),
-+#endif /* CONFIG_PARAVIRT_XXL */
-+
-+	/* Irq HLT ops. */
- 	.irq.safe_halt		= pv_native_safe_halt,
- 	.irq.halt		= native_halt,
--#endif /* CONFIG_PARAVIRT_XXL */
- 
- 	/* Mmu ops. */
- 	.mmu.flush_tlb_user	= native_flush_tlb_local,
--- 
-2.49.0.504.g3bcea36a83-goog
+- dashboard: https://d.kernelci.org/i/maestro:d8582423f1574ae10cdbf6f1574cd2d49264d0a7
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+- commit HEAD:  8e9508dd93587658f8f8116bc709aeb272144427
 
+
+Log excerpt:
+=====================================================
+arm-linux-gnueabihf-ld:./arch/arm/kernel/vmlinux.lds:31: syntax error
+
+=====================================================
+
+
+# Builds where the incident occurred:
+
+## multi_v7_defconfig on (arm):
+- compiler: gcc-12
+- dashboard: https://d.kernelci.org/build/maestro:67f50ceb6fa43d168f278da2
+
+## omap2plus_defconfig on (arm):
+- compiler: gcc-12
+- dashboard: https://d.kernelci.org/build/maestro:67f50c246fa43d168f278cf0
+
+## vexpress_defconfig on (arm):
+- compiler: gcc-12
+- dashboard: https://d.kernelci.org/build/maestro:67f50c296fa43d168f278cf3
+
+
+#kernelci issue maestro:d8582423f1574ae10cdbf6f1574cd2d49264d0a7
+
+Reported-by: kernelci.org bot <bot@kernelci.org>
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
