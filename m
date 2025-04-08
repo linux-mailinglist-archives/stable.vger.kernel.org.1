@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58F1EA8070C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1B76A809F3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:59:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FBD44C4305
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:24:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B45871B87170
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B22626B091;
-	Tue,  8 Apr 2025 12:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744F326E168;
+	Tue,  8 Apr 2025 12:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kNXLD4j2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c3kH5iAf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39391B87CF;
-	Tue,  8 Apr 2025 12:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313B52236FC;
+	Tue,  8 Apr 2025 12:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114902; cv=none; b=CPzd1Vpz9EU7dyC1RigunOui58wt1yr6tGj928AWyVBoeVG4bpNQIydOqBXiLN2hZIEdD0jlNll2mnbAfwjLmiy1jC6ngDk1W1jFQGkZUCrqwW48Ik19a8YLv/47/o+q3YvVaY/99dFzNGDag9bizgqv+eVdSFne19HgH2HMonY=
+	t=1744116508; cv=none; b=CWVYXLjP+ufbXU1F3HUgSptPdArDQmMB5hdDzUbtObQUR0V9PphrHuTLMawrsMofVYA8kCjDn6ir81ScgnwMY/nxN3M1U9BFO2+RlY0voO0azYpbkUTU0qprd5O56KqwJum5iHthZyMnvIsFBFIJVRiKpT3tweTJqYGu9IbNgos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114902; c=relaxed/simple;
-	bh=Sql4/UO2k6+cdqvpTXKa4s+PiAgE5WWj33+a3bcc7ws=;
+	s=arc-20240116; t=1744116508; c=relaxed/simple;
+	bh=Mm2gBzuYpkVA3qcg5xFkvYPdLddrsT9kcspdwZvbRRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HLUk4PFxGZVdoj2XpCQ/84ArDFe0rWc008xOVC7YUm3iJn+FzoxPaeReQsVkQbyyKYENUP0TnyjUQXUsQ7wHlmd+kzKuIeaJ3pnU/45QkwwVzAaLucRxj7GHV3EJbrQHc/oMxK+cI7OGwFRK8dNNUn/JXN9JJUFlGXcxB4w7VeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kNXLD4j2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63ED2C4CEE5;
-	Tue,  8 Apr 2025 12:21:41 +0000 (UTC)
+	 MIME-Version; b=a2HY7Pb/AWTVqRLT8lBlN9/XWeNRGR/pde7TthmH1CDiFBlCaVwAUUZHVNIFMp4U6pi8ztNjfSFDndXP8qstSI/++VfBmLfADQFnZhYE6ME8VUnleynkQaC4NtdKR2Ne5Ja137X7VbYJxtoZh1GTNgljy5W2oIhjfCXlxwCqe/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c3kH5iAf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B25C4CEE5;
+	Tue,  8 Apr 2025 12:48:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114901;
-	bh=Sql4/UO2k6+cdqvpTXKa4s+PiAgE5WWj33+a3bcc7ws=;
+	s=korg; t=1744116508;
+	bh=Mm2gBzuYpkVA3qcg5xFkvYPdLddrsT9kcspdwZvbRRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kNXLD4j2Qw6Ws7pJtPbSbKd8Wm4+21vJmPGmv+DUajRHsBumc1ngzHR8qhzzBF8Sq
-	 XeBIldOJS/+6Q/JIrhxgPFXY039H+QOzhqZ5sesD5eXC+BKz6PP22PpqmCEdaju1rn
-	 /kgCt/iH5dyhpKW/h1lVidMsdvQeqPW80MkgMglc=
+	b=c3kH5iAfrgKFJF0nAOf7AV8c5ZO46ybXqaNNcTZcilBPLlsj1U5W0tzSLpTJFdDy3
+	 jzbaXxw+uZLv2pZIb5+Obz6TBsn3T3sQexKZAUkav7JhQ2EwvpTel3t7uWkjgUqXxw
+	 brSMEJk6OtpH7y+OkAcbSFqtQJg0jTJe85JAyMVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f7d147e6db52b1e09dba@syzkaller.appspotmail.com,
-	Yuezhang Mo <Yuezhang.Mo@sony.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Christoph Winklhofer <cj.winklhofer@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 277/499] exfat: fix the infinite loop in exfat_find_last_cluster()
-Date: Tue,  8 Apr 2025 12:48:09 +0200
-Message-ID: <20250408104858.126396477@linuxfoundation.org>
+Subject: [PATCH 6.12 164/423] w1: fix NULL pointer dereference in probe
+Date: Tue,  8 Apr 2025 12:48:10 +0200
+Message-ID: <20250408104849.558008440@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuezhang Mo <Yuezhang.Mo@sony.com>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit b0522303f67255926b946aa66885a0104d1b2980 ]
+[ Upstream commit 0dd6770a72f138dabea9eae87f3da6ffa68f0d06 ]
 
-In exfat_find_last_cluster(), the cluster chain is traversed until
-the EOF cluster. If the cluster chain includes a loop due to file
-system corruption, the EOF cluster cannot be traversed, resulting
-in an infinite loop.
+The w1_uart_probe() function calls w1_uart_serdev_open() (which includes
+devm_serdev_device_open()) before setting the client ops via
+serdev_device_set_client_ops(). This ordering can trigger a NULL pointer
+dereference in the serdev controller's receive_buf handler, as it assumes
+serdev->ops is valid when SERPORT_ACTIVE is set.
 
-If the number of clusters indicated by the file size is inconsistent
-with the cluster chain length, exfat_find_last_cluster() will return
-an error, so if this inconsistency is found, the traversal can be
-aborted without traversing to the EOF cluster.
+This is similar to the issue fixed in commit 5e700b384ec1
+("platform/chrome: cros_ec_uart: properly fix race condition") where
+devm_serdev_device_open() was called before fully initializing the
+device.
 
-Reported-by: syzbot+f7d147e6db52b1e09dba@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f7d147e6db52b1e09dba
-Tested-by: syzbot+f7d147e6db52b1e09dba@syzkaller.appspotmail.com
-Fixes: 31023864e67a ("exfat: add fat entry operations")
-Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Fix the race by ensuring client ops are set before enabling the port via
+w1_uart_serdev_open().
+
+Fixes: a3c08804364e ("w1: add UART w1 bus driver")
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Acked-by: Christoph Winklhofer <cj.winklhofer@gmail.com>
+Link: https://lore.kernel.org/r/20250111181803.2283611-1-chenyuan0y@gmail.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exfat/fatent.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/w1/masters/w1-uart.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/exfat/fatent.c b/fs/exfat/fatent.c
-index 6f3651c6ca91e..8df5ad6ebb10c 100644
---- a/fs/exfat/fatent.c
-+++ b/fs/exfat/fatent.c
-@@ -265,7 +265,7 @@ int exfat_find_last_cluster(struct super_block *sb, struct exfat_chain *p_chain,
- 		clu = next;
- 		if (exfat_ent_get(sb, clu, &next))
- 			return -EIO;
--	} while (next != EXFAT_EOF_CLUSTER);
-+	} while (next != EXFAT_EOF_CLUSTER && count <= p_chain->size);
+diff --git a/drivers/w1/masters/w1-uart.c b/drivers/w1/masters/w1-uart.c
+index a31782e56ba75..c87eea3478067 100644
+--- a/drivers/w1/masters/w1-uart.c
++++ b/drivers/w1/masters/w1-uart.c
+@@ -372,11 +372,11 @@ static int w1_uart_probe(struct serdev_device *serdev)
+ 	init_completion(&w1dev->rx_byte_received);
+ 	mutex_init(&w1dev->rx_mutex);
  
- 	if (p_chain->size != count) {
- 		exfat_fs_error(sb,
++	serdev_device_set_drvdata(serdev, w1dev);
++	serdev_device_set_client_ops(serdev, &w1_uart_serdev_ops);
+ 	ret = w1_uart_serdev_open(w1dev);
+ 	if (ret < 0)
+ 		return ret;
+-	serdev_device_set_drvdata(serdev, w1dev);
+-	serdev_device_set_client_ops(serdev, &w1_uart_serdev_ops);
+ 
+ 	return w1_add_master_device(&w1dev->bus);
+ }
 -- 
 2.39.5
 
