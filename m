@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-130462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE4FEA80551
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:16:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BCFBA80424
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:06:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2072D426F78
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F4EA466176
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6935B26983B;
-	Tue,  8 Apr 2025 12:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27BE0268FDB;
+	Tue,  8 Apr 2025 11:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Trgoi/X0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ufoHgesK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BEA26981A;
-	Tue,  8 Apr 2025 12:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D872B267F6E;
+	Tue,  8 Apr 2025 11:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113775; cv=none; b=GIyxKhrgWifO1g4TwG9lh8A27YJiI+OpCNubhWcAnZcKGpFexc4IL7bF7VHp0aR2s5rBi1MOptkxGBmdtgi1iedAbJ7Q5QrvF9nsn7b+4swuS+15YVsOZbKYlCvlNH7EETew6RpbO/3nOcuVvgZ1ZZlPzDhEVfQ0vjDGZgVbnIU=
+	t=1744113404; cv=none; b=s+xwYIV4xy78oK+CAo60wtTJg2ieoWcKq9nCmnZ0x3j98f4i14IrlZp9zvUgVg/TNHkq4oy/KK4tUVbcFuq5mtuccfTPFxWrMlLekBua77IBh8MRQw8NVCkn5PB0YYnQ0X7MY+jgcjdZEZVLHWyTUPYRtD02nxBMTkQ/zEeRJsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113775; c=relaxed/simple;
-	bh=1KcQ/sOMlDTQ5X0usfbpSxi9bYBtzb4Rhn/Zgkgpw8Q=;
+	s=arc-20240116; t=1744113404; c=relaxed/simple;
+	bh=nh+qVWbdCmVkP/HZwM5y2w86G1g9ucZvUHTQPc7e8OQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PCMfB3yO/qQAiDyvm9QgXSP5yD8/gd6fKuvgsjzXlK4FxsYWrgYHxeHN+gktiBrRArlfvxQ4ySZdc+sIeAcpo2w0fn2lJLXJgt/gwP3UJZxjkjk0o7l0lrIkNkIobU4pR83AXMvG3SzXNCrACQXur0r0iQH81cmLADMwTHQlXFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Trgoi/X0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E265C4CEE5;
-	Tue,  8 Apr 2025 12:02:54 +0000 (UTC)
+	 MIME-Version; b=ilWPikvVgMwTeHf2abO3yB7UYw3EvJQH7uoH0PzKYf4b0XGYtKqrzBTpt7shwpH4wNInZnP8Zl69M/WaPRvnvW6tOWv3iGZK+p7xW7CMAyDBR+O0oYUyfDLrnlML7NxPLJdmgMwNaexGA7mWb/X1DbWnTc9U38tjZuH/a4CpsTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ufoHgesK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48691C4CEE5;
+	Tue,  8 Apr 2025 11:56:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113775;
-	bh=1KcQ/sOMlDTQ5X0usfbpSxi9bYBtzb4Rhn/Zgkgpw8Q=;
+	s=korg; t=1744113404;
+	bh=nh+qVWbdCmVkP/HZwM5y2w86G1g9ucZvUHTQPc7e8OQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Trgoi/X0iNE7R7tYMCmAZQPnuDj2F6FR1AqnnqMnnXEuCPj6e9ydZWrjAsqBebTt9
-	 7JtWfpZH+QL/mClIppeaVkBnjP3SpmW1HK/8XzcAxeJTnIkdvXLfWwEE1naO9NT2Dx
-	 AyhIGSq0UbDfVD7biKxKIyGm7OJSzaECoXk1snic=
+	b=ufoHgesKKYasJqyiwTL3JqXoip4/qF+yA+0rswmmiQ/x02kwnb0N5UHNNHXbLk6cE
+	 MbGZRqSrdFJKvkQJMrT63LiGIem9t0gST4ebn/HG8xdlRN7giK3e4Po98Q5DHU8tsy
+	 uAZIgCiBRdPZ6Jlgmn88cvkIQSP/InMbmz+Tk+VA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+83fed965338b573115f7@syzkaller.appspotmail.com,
-	Kohei Enju <enjuk@amazon.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Lubomir Rintel <lkundrak@v3.sk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 016/154] netfilter: nf_conncount: Fully initialize struct nf_conncount_tuple in insert_tree()
+Subject: [PATCH 6.6 146/268] rndis_host: Flag RNDIS modems as WWAN devices
 Date: Tue,  8 Apr 2025 12:49:17 +0200
-Message-ID: <20250408104815.804260413@linuxfoundation.org>
+Message-ID: <20250408104832.470117194@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,130 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <enjuk@amazon.com>
+From: Lubomir Rintel <lkundrak@v3.sk>
 
-[ Upstream commit d653bfeb07ebb3499c403404c21ac58a16531607 ]
+[ Upstream commit 67d1a8956d2d62fe6b4c13ebabb57806098511d8 ]
 
-Since commit b36e4523d4d5 ("netfilter: nf_conncount: fix garbage
-collection confirm race"), `cpu` and `jiffies32` were introduced to
-the struct nf_conncount_tuple.
+Set FLAG_WWAN instead of FLAG_ETHERNET for RNDIS interfaces on Mobile
+Broadband Modems, as opposed to regular Ethernet adapters.
 
-The commit made nf_conncount_add() initialize `conn->cpu` and
-`conn->jiffies32` when allocating the struct.
-In contrast, count_tree() was not changed to initialize them.
+Otherwise NetworkManager gets confused, misjudges the device type,
+and wouldn't know it should connect a modem to get the device to work.
+What would be the result depends on ModemManager version -- older
+ModemManager would end up disconnecting a device after an unsuccessful
+probe attempt (if it connected without needing to unlock a SIM), while
+a newer one might spawn a separate PPP connection over a tty interface
+instead, resulting in a general confusion and no end of chaos.
 
-By commit 34848d5c896e ("netfilter: nf_conncount: Split insert and
-traversal"), count_tree() was split and the relevant allocation
-code now resides in insert_tree().
-Initialize `conn->cpu` and `conn->jiffies32` in insert_tree().
+The only way to get this work reliably is to fix the device type
+and have good enough version ModemManager (or equivalent).
 
-BUG: KMSAN: uninit-value in find_or_evict net/netfilter/nf_conncount.c:117 [inline]
-BUG: KMSAN: uninit-value in __nf_conncount_add+0xd9c/0x2850 net/netfilter/nf_conncount.c:143
- find_or_evict net/netfilter/nf_conncount.c:117 [inline]
- __nf_conncount_add+0xd9c/0x2850 net/netfilter/nf_conncount.c:143
- count_tree net/netfilter/nf_conncount.c:438 [inline]
- nf_conncount_count+0x82f/0x1e80 net/netfilter/nf_conncount.c:521
- connlimit_mt+0x7f6/0xbd0 net/netfilter/xt_connlimit.c:72
- __nft_match_eval net/netfilter/nft_compat.c:403 [inline]
- nft_match_eval+0x1a5/0x300 net/netfilter/nft_compat.c:433
- expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
- nft_do_chain+0x426/0x2290 net/netfilter/nf_tables_core.c:288
- nft_do_chain_ipv4+0x1a5/0x230 net/netfilter/nft_chain_filter.c:23
- nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
- nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
- nf_hook_slow_list+0x24d/0x860 net/netfilter/core.c:663
- NF_HOOK_LIST include/linux/netfilter.h:350 [inline]
- ip_sublist_rcv+0x17b7/0x17f0 net/ipv4/ip_input.c:633
- ip_list_rcv+0x9ef/0xa40 net/ipv4/ip_input.c:669
- __netif_receive_skb_list_ptype net/core/dev.c:5936 [inline]
- __netif_receive_skb_list_core+0x15c5/0x1670 net/core/dev.c:5983
- __netif_receive_skb_list net/core/dev.c:6035 [inline]
- netif_receive_skb_list_internal+0x1085/0x1700 net/core/dev.c:6126
- netif_receive_skb_list+0x5a/0x460 net/core/dev.c:6178
- xdp_recv_frames net/bpf/test_run.c:280 [inline]
- xdp_test_run_batch net/bpf/test_run.c:361 [inline]
- bpf_test_run_xdp_live+0x2e86/0x3480 net/bpf/test_run.c:390
- bpf_prog_test_run_xdp+0xf1d/0x1ae0 net/bpf/test_run.c:1316
- bpf_prog_test_run+0x5e5/0xa30 kernel/bpf/syscall.c:4407
- __sys_bpf+0x6aa/0xd90 kernel/bpf/syscall.c:5813
- __do_sys_bpf kernel/bpf/syscall.c:5902 [inline]
- __se_sys_bpf kernel/bpf/syscall.c:5900 [inline]
- __ia32_sys_bpf+0xa0/0xe0 kernel/bpf/syscall.c:5900
- ia32_sys_call+0x394d/0x4180 arch/x86/include/generated/asm/syscalls_32.h:358
- do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
- __do_fast_syscall_32+0xb0/0x110 arch/x86/entry/common.c:387
- do_fast_syscall_32+0x38/0x80 arch/x86/entry/common.c:412
- do_SYSENTER_32+0x1f/0x30 arch/x86/entry/common.c:450
- entry_SYSENTER_compat_after_hwframe+0x84/0x8e
-
-Uninit was created at:
- slab_post_alloc_hook mm/slub.c:4121 [inline]
- slab_alloc_node mm/slub.c:4164 [inline]
- kmem_cache_alloc_noprof+0x915/0xe10 mm/slub.c:4171
- insert_tree net/netfilter/nf_conncount.c:372 [inline]
- count_tree net/netfilter/nf_conncount.c:450 [inline]
- nf_conncount_count+0x1415/0x1e80 net/netfilter/nf_conncount.c:521
- connlimit_mt+0x7f6/0xbd0 net/netfilter/xt_connlimit.c:72
- __nft_match_eval net/netfilter/nft_compat.c:403 [inline]
- nft_match_eval+0x1a5/0x300 net/netfilter/nft_compat.c:433
- expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
- nft_do_chain+0x426/0x2290 net/netfilter/nf_tables_core.c:288
- nft_do_chain_ipv4+0x1a5/0x230 net/netfilter/nft_chain_filter.c:23
- nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
- nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
- nf_hook_slow_list+0x24d/0x860 net/netfilter/core.c:663
- NF_HOOK_LIST include/linux/netfilter.h:350 [inline]
- ip_sublist_rcv+0x17b7/0x17f0 net/ipv4/ip_input.c:633
- ip_list_rcv+0x9ef/0xa40 net/ipv4/ip_input.c:669
- __netif_receive_skb_list_ptype net/core/dev.c:5936 [inline]
- __netif_receive_skb_list_core+0x15c5/0x1670 net/core/dev.c:5983
- __netif_receive_skb_list net/core/dev.c:6035 [inline]
- netif_receive_skb_list_internal+0x1085/0x1700 net/core/dev.c:6126
- netif_receive_skb_list+0x5a/0x460 net/core/dev.c:6178
- xdp_recv_frames net/bpf/test_run.c:280 [inline]
- xdp_test_run_batch net/bpf/test_run.c:361 [inline]
- bpf_test_run_xdp_live+0x2e86/0x3480 net/bpf/test_run.c:390
- bpf_prog_test_run_xdp+0xf1d/0x1ae0 net/bpf/test_run.c:1316
- bpf_prog_test_run+0x5e5/0xa30 kernel/bpf/syscall.c:4407
- __sys_bpf+0x6aa/0xd90 kernel/bpf/syscall.c:5813
- __do_sys_bpf kernel/bpf/syscall.c:5902 [inline]
- __se_sys_bpf kernel/bpf/syscall.c:5900 [inline]
- __ia32_sys_bpf+0xa0/0xe0 kernel/bpf/syscall.c:5900
- ia32_sys_call+0x394d/0x4180 arch/x86/include/generated/asm/syscalls_32.h:358
- do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
- __do_fast_syscall_32+0xb0/0x110 arch/x86/entry/common.c:387
- do_fast_syscall_32+0x38/0x80 arch/x86/entry/common.c:412
- do_SYSENTER_32+0x1f/0x30 arch/x86/entry/common.c:450
- entry_SYSENTER_compat_after_hwframe+0x84/0x8e
-
-Reported-by: syzbot+83fed965338b573115f7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=83fed965338b573115f7
-Fixes: b36e4523d4d5 ("netfilter: nf_conncount: fix garbage collection confirm race")
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 63ba395cd7a5 ("rndis_host: support Novatel Verizon USB730L")
+Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+Link: https://patch.msgid.link/20250325095842.1567999-1-lkundrak@v3.sk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conncount.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/usb/rndis_host.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
-index 0ce12a33ffda4..a66a27fe7f458 100644
---- a/net/netfilter/nf_conncount.c
-+++ b/net/netfilter/nf_conncount.c
-@@ -366,6 +366,8 @@ insert_tree(struct net *net,
+diff --git a/drivers/net/usb/rndis_host.c b/drivers/net/usb/rndis_host.c
+index 7b3739b29c8f7..bb0bf14158727 100644
+--- a/drivers/net/usb/rndis_host.c
++++ b/drivers/net/usb/rndis_host.c
+@@ -630,6 +630,16 @@ static const struct driver_info	zte_rndis_info = {
+ 	.tx_fixup =	rndis_tx_fixup,
+ };
  
- 	conn->tuple = *tuple;
- 	conn->zone = *zone;
-+	conn->cpu = raw_smp_processor_id();
-+	conn->jiffies32 = (u32)jiffies;
- 	memcpy(rbconn->key, key, sizeof(u32) * data->keylen);
++static const struct driver_info	wwan_rndis_info = {
++	.description =	"Mobile Broadband RNDIS device",
++	.flags =	FLAG_WWAN | FLAG_POINTTOPOINT | FLAG_FRAMING_RN | FLAG_NO_SETINT,
++	.bind =		rndis_bind,
++	.unbind =	rndis_unbind,
++	.status =	rndis_status,
++	.rx_fixup =	rndis_rx_fixup,
++	.tx_fixup =	rndis_tx_fixup,
++};
++
+ /*-------------------------------------------------------------------------*/
  
- 	nf_conncount_list_init(&rbconn->list);
+ static const struct usb_device_id	products [] = {
+@@ -666,9 +676,11 @@ static const struct usb_device_id	products [] = {
+ 	USB_INTERFACE_INFO(USB_CLASS_WIRELESS_CONTROLLER, 1, 3),
+ 	.driver_info = (unsigned long) &rndis_info,
+ }, {
+-	/* Novatel Verizon USB730L */
++	/* Mobile Broadband Modem, seen in Novatel Verizon USB730L and
++	 * Telit FN990A (RNDIS)
++	 */
+ 	USB_INTERFACE_INFO(USB_CLASS_MISC, 4, 1),
+-	.driver_info = (unsigned long) &rndis_info,
++	.driver_info = (unsigned long)&wwan_rndis_info,
+ },
+ 	{ },		// END
+ };
 -- 
 2.39.5
 
