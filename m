@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-130992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F136AA8079D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:39:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C5B5A809AC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:56:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA9C44C5FA6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:29:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13F703A75FB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:39:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8661266F17;
-	Tue,  8 Apr 2025 12:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4383E269892;
+	Tue,  8 Apr 2025 12:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/BAjVmj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V2CeADot"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757E2268C66;
-	Tue,  8 Apr 2025 12:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F318A266EEA;
+	Tue,  8 Apr 2025 12:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115201; cv=none; b=gKjmsxC/ADoesZYSPJbVpXweC7ShUC72A6MJDMQHllpL0TKq7SxHPIlMlQxDr0mc8ZPrHr5cZFkkTeodua4z65nS43g7hc6pyUJswIFuiIg/naWQaUD4yvDcEsacJdwruV/e3g+kH6Stz4pTb7iuKLg+cHDIyKD+OaAMBH+Cjko=
+	t=1744115705; cv=none; b=aAnAu5n66Ged/0qg+6EQFUXBNUxTMAoA7at8EcLjFHBPz1vVU0EucoY+hyOjy2VPfXmzXFC4lKUAB49q7Hoxd52QcYtrrf73oAjOQS1iC9nfeBxy5A7733vaVFXus/1gXIQAY//4SL77/+qFiDM5xscBBvkdhPUiLkJvIV+1/q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115201; c=relaxed/simple;
-	bh=uiu0nbp35unrB0Rd/R+ZVEUVoDPzar/Qi6jqX830a58=;
+	s=arc-20240116; t=1744115705; c=relaxed/simple;
+	bh=9WaffGS/U2qsNpUv+ODt8LfXPGe4dNsrJPahNklXeXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jR+sluxz/ovdEdJluGhWDV2KCJ7WWunkGvYQLoERR4D8Pz3OzK/rdf68ePAazw4vMcTBa8nuaDamQB4vLLMkJ0jJilTf8nmoJ7PUL2qdMUHazBgnGQ0YO3DLBr5BsoT8PPYF0ou4uLZP1mO1RkvR839ehd+Ppru5vpCqHaHisnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/BAjVmj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C73C4CEE5;
-	Tue,  8 Apr 2025 12:26:40 +0000 (UTC)
+	 MIME-Version; b=sQVcxqjvd3HASXiUn8bc5juk0jassznaSpQ0boV+InAS/a/wRB0Ezb9/VwCemHGIZ+3Jnn1pXNt6dTtBlFPM1/fnWa7Gb+iCu+5VpVFqGIvczlTxCQdNkpzeDzCPKu9TsBNdjCU0IwW6V0Ko+JymNN+lm9Py6043flTi0p4Prow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V2CeADot; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A891C4CEE5;
+	Tue,  8 Apr 2025 12:35:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115201;
-	bh=uiu0nbp35unrB0Rd/R+ZVEUVoDPzar/Qi6jqX830a58=;
+	s=korg; t=1744115704;
+	bh=9WaffGS/U2qsNpUv+ODt8LfXPGe4dNsrJPahNklXeXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L/BAjVmjvf4ZDZlNt8DIORCKbJXaI7fUcQmvkcKhCylizil1kNpgvSWgJ3NYmsfOh
-	 /L2KU6QPw+MJvYOE45apOwG0UqUoUoPVFCqiC4y4RzWJHXPms3dTOkNpJNHab09kBG
-	 yNxKsDtnTY+XvX19pmjYxx5ZX4y/oogdnOTAN5Vw=
+	b=V2CeADotNBsnYgo9Osr9kvHoxCFPA2+Zgh9osKcFrP3/hMU2ut6Af+P8s7IoAj/XS
+	 RacoA6AOa8U8SvSLuHe8P/Ojmy9Lw2nZtTQhEYXfKOV/hVoeIe45uJoHEkI08jKIGN
+	 TuoZ1RInw5OeMS7QX9ozFCMRvI+BKSwVdpR9xvgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a3422a19b05ea96bee18@syzkaller.appspotmail.com,
-	Nishanth Devarajan <ndev2021@gmail.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Prathamesh Shete <pshete@nvidia.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 388/499] net_sched: skbprio: Remove overly strict queue assertions
-Date: Tue,  8 Apr 2025 12:50:00 +0200
-Message-ID: <20250408104900.905441411@linuxfoundation.org>
+Subject: [PATCH 6.1 071/204] pinctrl: tegra: Set SFIO mode to Mux Register
+Date: Tue,  8 Apr 2025 12:50:01 +0200
+Message-ID: <20250408104822.442705751@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,62 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Prathamesh Shete <pshete@nvidia.com>
 
-[ Upstream commit ce8fe975fd99b49c29c42e50f2441ba53112b2e8 ]
+[ Upstream commit 17013f0acb322e5052ff9b9d0fab0ab5a4bfd828 ]
 
-In the current implementation, skbprio enqueue/dequeue contains an assertion
-that fails under certain conditions when SKBPRIO is used as a child qdisc under
-TBF with specific parameters. The failure occurs because TBF sometimes peeks at
-packets in the child qdisc without actually dequeuing them when tokens are
-unavailable.
+Tegra devices have an 'sfsel' bit field that determines whether a pin
+operates in SFIO (Special Function I/O) or GPIO mode. Currently,
+tegra_pinctrl_gpio_disable_free() sets this bit when releasing a GPIO.
 
-This peek operation creates a discrepancy between the parent and child qdisc
-queue length counters. When TBF later receives a high-priority packet,
-SKBPRIO's queue length may show a different value than what's reflected in its
-internal priority queue tracking, triggering the assertion.
+However, tegra_pinctrl_set_mux() can be called independently in certain
+code paths where gpio_disable_free() is not invoked. In such cases, failing
+to set the SFIO mode could lead to incorrect pin configurations, resulting
+in functional issues for peripherals relying on SFIO.
 
-The fix removes this overly strict assertions in SKBPRIO, they are not
-necessary at all.
+This patch ensures that whenever set_mux() is called, the SFIO mode is
+correctly set in the Mux Register if the 'sfsel' bit is present. This
+prevents situations where the pin remains in GPIO mode despite being
+configured for SFIO use.
 
-Reported-by: syzbot+a3422a19b05ea96bee18@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a3422a19b05ea96bee18
-Fixes: aea5f654e6b7 ("net/sched: add skbprio scheduler")
-Cc: Nishanth Devarajan <ndev2021@gmail.com>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://patch.msgid.link/20250329222536.696204-2-xiyou.wangcong@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 971dac7123c7 ("pinctrl: add a driver for NVIDIA Tegra")
+Signed-off-by: Prathamesh Shete <pshete@nvidia.com>
+Link: https://lore.kernel.org/20250306050542.16335-1-pshete@nvidia.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_skbprio.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/pinctrl/tegra/pinctrl-tegra.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/sched/sch_skbprio.c b/net/sched/sch_skbprio.c
-index 20ff7386b74bd..f485f62ab721a 100644
---- a/net/sched/sch_skbprio.c
-+++ b/net/sched/sch_skbprio.c
-@@ -123,8 +123,6 @@ static int skbprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	/* Check to update highest and lowest priorities. */
- 	if (skb_queue_empty(lp_qdisc)) {
- 		if (q->lowest_prio == q->highest_prio) {
--			/* The incoming packet is the only packet in queue. */
--			BUG_ON(sch->q.qlen != 1);
- 			q->lowest_prio = prio;
- 			q->highest_prio = prio;
- 		} else {
-@@ -156,7 +154,6 @@ static struct sk_buff *skbprio_dequeue(struct Qdisc *sch)
- 	/* Update highest priority field. */
- 	if (skb_queue_empty(hpq)) {
- 		if (q->lowest_prio == q->highest_prio) {
--			BUG_ON(sch->q.qlen);
- 			q->highest_prio = 0;
- 			q->lowest_prio = SKBPRIO_MAX_PRIORITY - 1;
- 		} else {
+diff --git a/drivers/pinctrl/tegra/pinctrl-tegra.c b/drivers/pinctrl/tegra/pinctrl-tegra.c
+index 50bd26a30ac0a..30341c43da59a 100644
+--- a/drivers/pinctrl/tegra/pinctrl-tegra.c
++++ b/drivers/pinctrl/tegra/pinctrl-tegra.c
+@@ -270,6 +270,9 @@ static int tegra_pinctrl_set_mux(struct pinctrl_dev *pctldev,
+ 	val = pmx_readl(pmx, g->mux_bank, g->mux_reg);
+ 	val &= ~(0x3 << g->mux_bit);
+ 	val |= i << g->mux_bit;
++	/* Set the SFIO/GPIO selection to SFIO when under pinmux control*/
++	if (pmx->soc->sfsel_in_mux)
++		val |= (1 << g->sfsel_bit);
+ 	pmx_writel(pmx, val, g->mux_bank, g->mux_reg);
+ 
+ 	return 0;
 -- 
 2.39.5
 
