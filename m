@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61296A806A9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:29:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B49BDA80961
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:54:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8DF14C2F7B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:22:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A4F77B2DCD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:50:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95E126E147;
-	Tue,  8 Apr 2025 12:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F99C27604F;
+	Tue,  8 Apr 2025 12:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7K+3yDn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CIhsg249"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E7B269808;
-	Tue,  8 Apr 2025 12:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D26F20A5C3;
+	Tue,  8 Apr 2025 12:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114786; cv=none; b=tFm40ghO7nho+kPDf6TbQ/K/vS4dkxjsrdObqOnse7rFt3mqNdfxgrePKDEMs3m1c004vNCBlljcwUzf16KvYBy/vIZCc16MhC7AwyEk3YUKvdoGatwcx8aMc+BCHaOQd6KG3rboC6J/kg1i+RMjW1QGNHYXHDxLGCo2ERXZ9W0=
+	t=1744116386; cv=none; b=i+ixF1W5Uwvhxk0uFhgGmo3uRqkASkhbTx+YJAlhAN7QWQbaRNlzxioV5i5lbu1vFV89RRVYVOsQ1Xm+SQ7H0RjOvDr17Ts2pHRqesEaBjyJcK9D95HMuODoAZMzEATrN+TbyhIXwcTq3KOkmrCaJQZJL2Fbc2KS+gos6VIlXBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114786; c=relaxed/simple;
-	bh=d02v8P02q50v2ZtMZLNFxhMXR8WvXBf5rJELNJEj4Sk=;
+	s=arc-20240116; t=1744116386; c=relaxed/simple;
+	bh=Pyyw5+xBfNvtArdWOqoNLZzQ2OfC3Lw1U45UH3NDn94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DfCIgug43l7vf+UevPtmlM7lMjaxkFikBFevPhsUEsG3d2tN+kQHi3nRTI3gmNomZNCQ/BuhiwojGLr6/tikDTY2NN4qEZIqfE2Riw6Zcf0ZoCJrsZ2EY5LCLIW6rfl+cOz9G1EZjheHbK8e3iFbBx2lSCR0Qs047v1SwFOjHmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7K+3yDn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955E9C4CEE5;
-	Tue,  8 Apr 2025 12:19:45 +0000 (UTC)
+	 MIME-Version; b=hlUn4KA2DGZTZ0JKMDiN07zEJb7wrA2QuV2qbJqXwdwHHZjhdwnq1skxAxNJcSr1+TFKI/fbeviG17osjuyA7fbAx2Y6r2u4SoTIkABNpYtE6DmJpHdRWtPVhT7lRfSNgSSzItAZ2a613XOlMS0DicMHzQSWTeRlvB9skTo0rWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CIhsg249; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27C9C4CEE5;
+	Tue,  8 Apr 2025 12:46:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114785;
-	bh=d02v8P02q50v2ZtMZLNFxhMXR8WvXBf5rJELNJEj4Sk=;
+	s=korg; t=1744116386;
+	bh=Pyyw5+xBfNvtArdWOqoNLZzQ2OfC3Lw1U45UH3NDn94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b7K+3yDnhE48dbvU6Jt1wUpb4HGDJyd7R/sgmh2hYpGpK3JKKLPurv5KdPi7ad3EY
-	 MxZqROANnUjrjpAvRKKOlb81G7Qt6lyxg5cP2BL6v4nf4fetX0InWs34GT+ZS+z6Tp
-	 V3feOZy8/dkGn90wg2v4iqKyPuT+qCrgXGwth0IA=
+	b=CIhsg249yTF7jm65IZ3j31mx2HaHsZC/YKYv8eyQoy0QoF548ltC8eBF12y/aw9Nb
+	 MML4d2ZDE7uHZzq7mxzXUzIPfLT3lju9AY+R8um3KflL/GnZUT1maqFwETimRPdLTF
+	 8tN/FhSiy/liOxwmgX9ManqJwNgx+By//f/71Nus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Santos <Jonathan.Santos@analog.com>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 234/499] iio: adc: ad7768-1: set MOSI idle state to prevent accidental reset
+Subject: [PATCH 6.12 120/423] s390: Remove ioremap_wt() and pgprot_writethrough()
 Date: Tue,  8 Apr 2025 12:47:26 +0200
-Message-ID: <20250408104857.050037770@linuxfoundation.org>
+Message-ID: <20250408104848.522798929@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Santos <Jonathan.Santos@analog.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit 2416cec859299be04d021b4cf98eff814f345af7 ]
+[ Upstream commit c94bff63e49302d4ce36502a85a2710a67332a4f ]
 
-Datasheet recommends Setting the MOSI idle state to high in order to
-prevent accidental reset of the device when SCLK is free running.
-This happens when the controller clocks out a 1 followed by 63 zeros
-while the CS is held low.
+It turns out that while s390 architecture calls its memory-I/O mapping
+variants write-through and write-back the implementation of ioremap_wt()
+and pgprot_writethrough() does not match Linux notion of ioremap_wt().
 
-Check if SPI controller supports SPI_MOSI_IDLE_HIGH flag and set it.
+In particular Linux expects ioremap_wt() to be weaker still than
+ioremap_wc(), allowing not just gathering and re-ordering but also reads
+to be served from cache. Instead s390's implementation is equivalent to
+normal ioremap() while its ioremap_wc() allows re-ordering.
 
-Fixes: a5f8c7da3dbe ("iio: adc: Add AD7768-1 ADC basic support")
-Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Link: https://patch.msgid.link/c2a2b0f3d54829079763a5511359a1fa80516cfb.1741268122.git.Jonathan.Santos@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Note that there are no known users of ioremap_wt() on s390 and the
+resulting behavior is in line with asm-generic defining ioremap_wt() as
+ioremap(), if undefined, so no breakage is expected.
+
+As s390 does not have a mapping type matching the Linux notion of
+ioremap_wt() and pgprot_writethrough(), simply drop them and rely on the
+asm-generic fallbacks instead.
+
+Fixes: b02002cc4c0f ("s390/pci: Implement ioremap_wc/prot() with MIO")
+Fixes: b43b3fff042d ("s390: mm: convert to GENERIC_IOREMAP")
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7768-1.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ arch/s390/include/asm/io.h      |  2 --
+ arch/s390/include/asm/pgtable.h |  3 ---
+ arch/s390/mm/pgtable.c          | 10 ----------
+ 3 files changed, 15 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-index 113703fb72454..6f8816483f1a0 100644
---- a/drivers/iio/adc/ad7768-1.c
-+++ b/drivers/iio/adc/ad7768-1.c
-@@ -574,6 +574,21 @@ static int ad7768_probe(struct spi_device *spi)
- 		return -ENOMEM;
+diff --git a/arch/s390/include/asm/io.h b/arch/s390/include/asm/io.h
+index fc9933a743d69..251e0372ccbd0 100644
+--- a/arch/s390/include/asm/io.h
++++ b/arch/s390/include/asm/io.h
+@@ -34,8 +34,6 @@ void unxlate_dev_mem_ptr(phys_addr_t phys, void *addr);
  
- 	st = iio_priv(indio_dev);
-+	/*
-+	 * Datasheet recommends SDI line to be kept high when data is not being
-+	 * clocked out of the controller and the spi clock is free running,
-+	 * to prevent accidental reset.
-+	 * Since many controllers do not support the SPI_MOSI_IDLE_HIGH flag
-+	 * yet, only request the MOSI idle state to enable if the controller
-+	 * supports it.
-+	 */
-+	if (spi->controller->mode_bits & SPI_MOSI_IDLE_HIGH) {
-+		spi->mode |= SPI_MOSI_IDLE_HIGH;
-+		ret = spi_setup(spi);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
- 	st->spi = spi;
+ #define ioremap_wc(addr, size)  \
+ 	ioremap_prot((addr), (size), pgprot_val(pgprot_writecombine(PAGE_KERNEL)))
+-#define ioremap_wt(addr, size)  \
+-	ioremap_prot((addr), (size), pgprot_val(pgprot_writethrough(PAGE_KERNEL)))
  
- 	st->vref = devm_regulator_get(&spi->dev, "vref");
+ static inline void __iomem *ioport_map(unsigned long port, unsigned int nr)
+ {
+diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
+index 0ffbaf7419558..5ee73f245a0c0 100644
+--- a/arch/s390/include/asm/pgtable.h
++++ b/arch/s390/include/asm/pgtable.h
+@@ -1365,9 +1365,6 @@ void gmap_pmdp_idte_global(struct mm_struct *mm, unsigned long vmaddr);
+ #define pgprot_writecombine	pgprot_writecombine
+ pgprot_t pgprot_writecombine(pgprot_t prot);
+ 
+-#define pgprot_writethrough	pgprot_writethrough
+-pgprot_t pgprot_writethrough(pgprot_t prot);
+-
+ #define PFN_PTE_SHIFT		PAGE_SHIFT
+ 
+ /*
+diff --git a/arch/s390/mm/pgtable.c b/arch/s390/mm/pgtable.c
+index 2c944bafb0309..b03c665d72426 100644
+--- a/arch/s390/mm/pgtable.c
++++ b/arch/s390/mm/pgtable.c
+@@ -34,16 +34,6 @@ pgprot_t pgprot_writecombine(pgprot_t prot)
+ }
+ EXPORT_SYMBOL_GPL(pgprot_writecombine);
+ 
+-pgprot_t pgprot_writethrough(pgprot_t prot)
+-{
+-	/*
+-	 * mio_wb_bit_mask may be set on a different CPU, but it is only set
+-	 * once at init and only read afterwards.
+-	 */
+-	return __pgprot(pgprot_val(prot) & ~mio_wb_bit_mask);
+-}
+-EXPORT_SYMBOL_GPL(pgprot_writethrough);
+-
+ static inline void ptep_ipte_local(struct mm_struct *mm, unsigned long addr,
+ 				   pte_t *ptep, int nodat)
+ {
 -- 
 2.39.5
 
