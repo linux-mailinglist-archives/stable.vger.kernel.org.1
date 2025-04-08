@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-130408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8919DA80457
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:07:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF425A808B7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:47:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19AFB19E655A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:02:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EEA74C5363
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E88269CF0;
-	Tue,  8 Apr 2025 12:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09EBF26B0A5;
+	Tue,  8 Apr 2025 12:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kcRBwjrN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sqt8NH20"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A993AC1C;
-	Tue,  8 Apr 2025 12:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C0E1B87CF;
+	Tue,  8 Apr 2025 12:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113633; cv=none; b=lDXFx3ih26dDqlbRrDflsYO+fTcYQVZ6Egkqhg3piQpHAAPQrMiNKSlSV7HlRJ3Bau0WSrxI8gOs+lnAul38gOtf5BgPTrGvrpQaRWqm6n22KEBf9zUWfcTn6NuT2ZrTuXcNRwmTsH66J11aXohfatQQUE+bPQiBTTDiHnel4L0=
+	t=1744115813; cv=none; b=RZRzGBQsPCpBxh8aNUID8XPL1Dok6OgcBs2MMj3Tgmms2/TLMMuZhGwgnhbrd9LfjsHt/NhbY1iISUb7HgRKOBGZD7+QcmC0GD9gY5/w6HKLikcXvOROb31/mSiK+K6ZuwUxA/woAhgffaAe0CEO/55y8cd9vNHwW2ZcaG+4XzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113633; c=relaxed/simple;
-	bh=xGKJg5PBjC9PqskNXrohoEjWiG60MyHBHmCF123Dxf4=;
+	s=arc-20240116; t=1744115813; c=relaxed/simple;
+	bh=lKCGyz0qFXj5oP/D6TtJ4gP7ji717g6QB4jiWe/WxHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m2LVQ+Iij/1VAOnGr5wonETbTQ3V1wmPaWzsgHuDJMDbuJjvw7m5NcIVjUYl0KmASYwhL61rOR7ooCssCGPxM81vcellak0GqnSei4wswdOPE/NtmEBRSRT4gzTMyoiw/0iq+Gr6nBOwdYSqsR5It8d6XciP/exZj9ADFwydP+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kcRBwjrN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62C4CC4CEE5;
-	Tue,  8 Apr 2025 12:00:33 +0000 (UTC)
+	 MIME-Version; b=u5zmSBh8UHp5mbAeNw42GtV5bmMNmQzeBjIilG52mu61PCMmQRyZWlDv237ALwz+ap+kbw4P+GX/4CuD4OaFkH2/e8mywOW+jFJKoyIrd4BxePMfh5fQgryyQ15iuxgI2j6vegNhmKQ9rPtdVzODi85JMLAE6ywlTdQe36eGYHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sqt8NH20; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36C89C4CEE7;
+	Tue,  8 Apr 2025 12:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113633;
-	bh=xGKJg5PBjC9PqskNXrohoEjWiG60MyHBHmCF123Dxf4=;
+	s=korg; t=1744115813;
+	bh=lKCGyz0qFXj5oP/D6TtJ4gP7ji717g6QB4jiWe/WxHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kcRBwjrNhmdBggZ0u7Tht3agFUE3Xn+23xl1c6ycsNXOsSYwKDxU09f2zr4DLjsJ5
-	 OBIeD9tBI+25rfmMoOqA61agfaHF7djFvC0R1YUHs+ZsvFs4ZQ3QKc3ZqxC99+cB0l
-	 NAIKsozgbctk+7SET+j0YFjca1GvONo97kTOr22w=
+	b=Sqt8NH20aK4mjLuSoCxSOahBul0ZDq3Hh3UOgAAEIVFuA+NRTKbrCGwquBMY7kjbB
+	 /Gu6KuvCimFaG/FObzB+GFpHTrMlmJp/ARN/g4aY6IPCxfpKoN+GQvawCwil/On5S5
+	 +WfGsI+fTT7jBY0ZUBX+5+ec/WeerhSwOOOM56PM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 231/268] LoongArch: Increase ARCH_DMA_MINALIGN up to 16
+	syzbot+f7d147e6db52b1e09dba@syzkaller.appspotmail.com,
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 112/204] exfat: fix the infinite loop in exfat_find_last_cluster()
 Date: Tue,  8 Apr 2025 12:50:42 +0200
-Message-ID: <20250408104834.817017018@linuxfoundation.org>
+Message-ID: <20250408104823.613849122@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Yuezhang Mo <Yuezhang.Mo@sony.com>
 
-commit 4103cfe9dcb88010ae4911d3ff417457d1b6a720 upstream.
+[ Upstream commit b0522303f67255926b946aa66885a0104d1b2980 ]
 
-ARCH_DMA_MINALIGN is 1 by default, but some LoongArch-specific devices
-(such as APBDMA) require 16 bytes alignment. When the data buffer length
-is too small, the hardware may make an error writing cacheline. Thus, it
-is dangerous to allocate a small memory buffer for DMA. It's always safe
-to define ARCH_DMA_MINALIGN as L1_CACHE_BYTES but unnecessary (kmalloc()
-need small memory objects). Therefore, just increase it to 16.
+In exfat_find_last_cluster(), the cluster chain is traversed until
+the EOF cluster. If the cluster chain includes a loop due to file
+system corruption, the EOF cluster cannot be traversed, resulting
+in an infinite loop.
 
-Cc: stable@vger.kernel.org
-Tested-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If the number of clusters indicated by the file size is inconsistent
+with the cluster chain length, exfat_find_last_cluster() will return
+an error, so if this inconsistency is found, the traversal can be
+aborted without traversing to the EOF cluster.
+
+Reported-by: syzbot+f7d147e6db52b1e09dba@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f7d147e6db52b1e09dba
+Tested-by: syzbot+f7d147e6db52b1e09dba@syzkaller.appspotmail.com
+Fixes: 31023864e67a ("exfat: add fat entry operations")
+Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/cache.h |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/exfat/fatent.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/loongarch/include/asm/cache.h
-+++ b/arch/loongarch/include/asm/cache.h
-@@ -8,6 +8,8 @@
- #define L1_CACHE_SHIFT		CONFIG_L1_CACHE_SHIFT
- #define L1_CACHE_BYTES		(1 << L1_CACHE_SHIFT)
+diff --git a/fs/exfat/fatent.c b/fs/exfat/fatent.c
+index 220ab671a8156..9fa4cffabfb67 100644
+--- a/fs/exfat/fatent.c
++++ b/fs/exfat/fatent.c
+@@ -265,7 +265,7 @@ int exfat_find_last_cluster(struct super_block *sb, struct exfat_chain *p_chain,
+ 		clu = next;
+ 		if (exfat_ent_get(sb, clu, &next))
+ 			return -EIO;
+-	} while (next != EXFAT_EOF_CLUSTER);
++	} while (next != EXFAT_EOF_CLUSTER && count <= p_chain->size);
  
-+#define ARCH_DMA_MINALIGN	(16)
-+
- #define __read_mostly __section(".data..read_mostly")
- 
- #endif /* _ASM_CACHE_H */
+ 	if (p_chain->size != count) {
+ 		exfat_fs_error(sb,
+-- 
+2.39.5
+
 
 
 
