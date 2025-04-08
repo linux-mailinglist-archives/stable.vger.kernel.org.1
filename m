@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A130BA80450
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:07:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29567A80BBB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:20:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED85E42779A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 827744C5E88
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3FFB269AF5;
-	Tue,  8 Apr 2025 11:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FEAB278165;
+	Tue,  8 Apr 2025 12:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ImwiMlhN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHNAk/9m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A276920CCD8;
-	Tue,  8 Apr 2025 11:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC1C26A1A7;
+	Tue,  8 Apr 2025 12:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113478; cv=none; b=PFAgG/4SdbW3iPZn064MdkrQ4PcA/vV9cD62oZAZRgMa1W3rzguAuNs7vdNRc+mSPhzb7yK5yMurgpUZlXyPNSujnhbf6ddTUDv+MKnZ5Q7xJimnpPw/tfcSSe+R718IrFTQjSoQQVPq5ls0GCfQzOr9NZRIkadp8G+yISatEQ8=
+	t=1744116894; cv=none; b=EBj1FSqV1NYVgEKOEuH4MVTQZpRqIDFE2Ms470yDwUPW2tprPr+Coq5hgfKaoQRZKAV1enVTZANGNZIQvMf86pWWafDVYMgj3Hv1LGvJRP2Fcn2NR3i287VbYbd/VVw67Xwc03sWlccY29iklLf1585904Awh9cCBCiyl9kNhCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113478; c=relaxed/simple;
-	bh=bVdaACvswvl79y3Fucc6F2te0r6zki4uMzeQ3s3HtfI=;
+	s=arc-20240116; t=1744116894; c=relaxed/simple;
+	bh=3UHvLcCWImW5DOlQU1lql1gTwZKTxVQoxS4UtahUO/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JxcLBEu2vxiDu9rmyZAYyevo7+MrAKZAYUvhaY70yOgdt5PdKnjdI8/qXm0ClHzd3IDBsx77J62HZERi4jadpB3Jd2m1JNa5vNJucoHtupBe56pIP4dgEAwRbp+SkZnB4HssxCh2GCpADOgStSrGiK8CKjr55bKdHpRzu3jCUvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ImwiMlhN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C60C4CEEB;
-	Tue,  8 Apr 2025 11:57:57 +0000 (UTC)
+	 MIME-Version; b=Cz0qHp4PW6wKNt2230Sb7CM74KXNOIwDPrfyrm9OfCeToa20+gu13oAT6aanP5RT6I5uzD/g93dX9kLLqhvjKTpQUPMV8T4I6tcfLjFB/ci9KuO0SA4fiRdBZ7Wc5a0ac78IB+lNau/8K4YcgfANtnziJemb2iCXQkQZ8h4X/LE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHNAk/9m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F30C4CEE5;
+	Tue,  8 Apr 2025 12:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113478;
-	bh=bVdaACvswvl79y3Fucc6F2te0r6zki4uMzeQ3s3HtfI=;
+	s=korg; t=1744116894;
+	bh=3UHvLcCWImW5DOlQU1lql1gTwZKTxVQoxS4UtahUO/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ImwiMlhN36d16Lmcbq8glvMbN1pk1XBkLqmSe9znemRLlFr/FYFE25M5lqBgVOl0v
-	 KbdyjZZi/84IVjpvqmnXI44iRn3TluQBBcUyG48bGp1jaYpAvyaXcSAZ7TSSTuH1hs
-	 4K/bys01PIiOvRMHUVftuoiHNLdRH+gXKs9ICQYU=
+	b=OHNAk/9mskz7QmNrrpt6vpzBiqd5DaR/yI7ecBUzDZG71f6Bs+uyw0ORKs2f0U02Q
+	 E4ZDcDqxdkj0zOSDPx6LSpVeINkszSWg2H/YHjS5fGSUIeiuTyZLpYdYCUN8QS86VW
+	 A0ZNthQ8rRkrytT6+U7a3igLnF84YfNErRYMFenU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Panchenko <dmitry@d-systems.ee>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Icenowy Zheng <uwu@icenowy.me>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 174/268] platform/x86: intel-hid: fix volume buttons on Microsoft Surface Go 4 tablet
+Subject: [PATCH 6.12 259/423] nvme-pci: clean up CMBMSC when registering CMB fails
 Date: Tue,  8 Apr 2025 12:49:45 +0200
-Message-ID: <20250408104833.236542591@linuxfoundation.org>
+Message-ID: <20250408104851.777688883@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Panchenko <dmitry@d-systems.ee>
+From: Icenowy Zheng <uwu@icenowy.me>
 
-[ Upstream commit 2738d06fb4f01145b24c542fb06de538ffc56430 ]
+[ Upstream commit 6a3572e10f740acd48e2713ef37e92186a3ce5e8 ]
 
-Volume buttons on Microsoft Surface Go 4 tablet didn't send any events.
-Add Surface Go 4 DMI match to button_array_table to fix this.
+CMB decoding should get disabled when the CMB block isn't successfully
+registered to P2P DMA subsystem.
 
-Signed-off-by: Dmitry Panchenko <dmitry@d-systems.ee>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20250220154016.3620917-1-dmitry@d-systems.ee
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Clean up the CMBMSC register in this error handling codepath to disable
+CMB decoding (and CMBLOC/CMBSZ registers).
+
+Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/hid.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/nvme/host/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
-index 7457ca2b27a60..36209997ba988 100644
---- a/drivers/platform/x86/intel/hid.c
-+++ b/drivers/platform/x86/intel/hid.c
-@@ -128,6 +128,13 @@ static const struct dmi_system_id button_array_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Surface Go 3"),
- 		},
- 	},
-+	{
-+		.ident = "Microsoft Surface Go 4",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Surface Go 4"),
-+		},
-+	},
- 	{ }
- };
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 1d3205f08af84..84c0611697a9b 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2005,6 +2005,7 @@ static void nvme_map_cmb(struct nvme_dev *dev)
+ 	if (pci_p2pdma_add_resource(pdev, bar, size, offset)) {
+ 		dev_warn(dev->ctrl.device,
+ 			 "failed to register the CMB\n");
++		hi_lo_writeq(0, dev->bar + NVME_REG_CMBMSC);
+ 		return;
+ 	}
  
 -- 
 2.39.5
