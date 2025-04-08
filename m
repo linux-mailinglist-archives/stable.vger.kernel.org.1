@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-129851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 278C5A80248
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:46:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18097A7FE77
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:13:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B141442114
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:36:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75B49189511F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:06:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8827268C66;
-	Tue,  8 Apr 2025 11:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2167F26A091;
+	Tue,  8 Apr 2025 11:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/1nZXcg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DLwWQPqA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F072192F2;
-	Tue,  8 Apr 2025 11:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24CD2135CD;
+	Tue,  8 Apr 2025 11:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112147; cv=none; b=bpF+AomDT5d/YGPKIDNF6/aY/ojwyX3XnTXxxc8hVluAgKhutHGG9SpHTKVJWB8vCDEYf87Gu8oNiVonmxFwwywwRQK3OqilHqQLfwew4WQeYhoj1qlqvxelnZ72OkgP2Va9hKInb6apY0O2x1Ti9/Za+r+qX8r/aIpmAPJSCgc=
+	t=1744110264; cv=none; b=YDMC+nKqEH6JIcmkPiZhbXFiRoE4LwwbMbqbm5NtSscxauh99eYXw4qOIqD61/78iDszwPw9Jd3NyUpjnrb00f2jGFCaoONG09Xt/PA0YMCMZzntRee9neyNZa13+w5LehvUpMObIW4o6+cNehA4sVuK6r4EFOLEU5lt1XA/9PU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112147; c=relaxed/simple;
-	bh=2XUHbKdoQxPmhn/S3Z2Zilmk0Whe7tNjGXWtoK+Azf8=;
+	s=arc-20240116; t=1744110264; c=relaxed/simple;
+	bh=J4J6M4l/LcdJ3pncMNtbtwSaYHG58sZKdFmqXZ2jq1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NmfbNvCKCPSy9t+as+lcMzcPCQgAlmKp5mMQpDSTUuYes5DpNqrl51RmJCvlVOjI0WZrx+w45XB4/k/BsyBXZrzb6Zu8TN46NHbnIKZUpayLjBqvAlGeezQpNtNBTjOGsXYEQwxWFmT/TY4AQ07ArjHSKzTY93oDHIVAH2GMgIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/1nZXcg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E23C4CEE5;
-	Tue,  8 Apr 2025 11:35:46 +0000 (UTC)
+	 MIME-Version; b=bxoaq1Tcf7BEUtgdGqJyZ+Qc6f5eve4NtkFB0H/mSzv9sHB5afN6mw+iCEsx26QylKDwB/wjuWwHs6kanqFYgUN4ankJ1aFWWyqXIDTKoKd+v+aN9DDdzjQORpMNZ8rnz3A8qttIvXldDnzOnfW9hPwxqSuChdNJ3cokdlHHTI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DLwWQPqA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C60C4CEE5;
+	Tue,  8 Apr 2025 11:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112147;
-	bh=2XUHbKdoQxPmhn/S3Z2Zilmk0Whe7tNjGXWtoK+Azf8=;
+	s=korg; t=1744110264;
+	bh=J4J6M4l/LcdJ3pncMNtbtwSaYHG58sZKdFmqXZ2jq1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m/1nZXcgk6orffjBoI7KOVkQuanNoTGjtjVJn+/yABxjA7PxxmLxpGgROP+iOL1Tq
-	 /P7anbZBGHurKh3OH9CDH3gUEZeRXLRqXU2LNkwMhpTfELB8FdJsDbQtv9JlEh5AgB
-	 jW6fVhnu+nHulm09G/CJzfbH3HCnWPOQ2MCsZwlg=
+	b=DLwWQPqAGaZIdCw0i33H4dfn4BKCKNpSPb71jLC+YPvcnx6XhOJJ2Y+rSEi5CrOI/
+	 YGrkQn2Av6U7qGwwd8ypFDeZlZ87Z88UVJTIiz++76+OnZ/kRzK6Jy740iDqIB1ztg
+	 l7Q46R0R+Du5yT9A92Yg0afQYnE+KR0VOHXpx7J0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.14 694/731] mmc: omap: Fix memory leak in mmc_omap_new_slot
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 5.10 213/227] x86/tsc: Always save/restore TSC sched_clock() on suspend/resume
 Date: Tue,  8 Apr 2025 12:49:51 +0200
-Message-ID: <20250408104930.410129926@linuxfoundation.org>
+Message-ID: <20250408104826.701581199@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Guilherme G. Piccoli <gpiccoli@igalia.com>
 
-commit 3834a759afb817e23a7a2f09c2c9911b0ce5c588 upstream.
+commit d90c9de9de2f1712df56de6e4f7d6982d358cabe upstream.
 
-Add err_free_host label to properly pair mmc_alloc_host() with
-mmc_free_host() in GPIO error paths. The allocated host memory was
-leaked when GPIO lookups failed.
+TSC could be reset in deep ACPI sleep states, even with invariant TSC.
 
-Fixes: e519f0bb64ef ("ARM/mmc: Convert old mmci-omap to GPIO descriptors")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+That's the reason we have sched_clock() save/restore functions, to deal
+with this situation. But what happens is that such functions are guarded
+with a check for the stability of sched_clock - if not considered stable,
+the save/restore routines aren't executed.
+
+On top of that, we have a clear comment in native_sched_clock() saying
+that *even* with TSC unstable, we continue using TSC for sched_clock due
+to its speed.
+
+In other words, if we have a situation of TSC getting detected as unstable,
+it marks the sched_clock as unstable as well, so subsequent S3 sleep cycles
+could bring bogus sched_clock values due to the lack of the save/restore
+mechanism, causing warnings like this:
+
+  [22.954918] ------------[ cut here ]------------
+  [22.954923] Delta way too big! 18446743750843854390 ts=18446744072977390405 before=322133536015 after=322133536015 write stamp=18446744072977390405
+  [22.954923] If you just came from a suspend/resume,
+  [22.954923] please switch to the trace global clock:
+  [22.954923]   echo global > /sys/kernel/tracing/trace_clock
+  [22.954923] or add trace_clock=global to the kernel command line
+  [22.954937] WARNING: CPU: 2 PID: 5728 at kernel/trace/ring_buffer.c:2890 rb_add_timestamp+0x193/0x1c0
+
+Notice that the above was reproduced even with "trace_clock=global".
+
+The fix for that is to _always_ save/restore the sched_clock on suspend
+cycle _if TSC is used_ as sched_clock - only if we fallback to jiffies
+the sched_clock_stable() check becomes relevant to save/restore the
+sched_clock.
+
+Debugged-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250318140226.19650-1-linmq006@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250215210314.351480-1-gpiccoli@igalia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/omap.c |   19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ arch/x86/kernel/tsc.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/host/omap.c
-+++ b/drivers/mmc/host/omap.c
-@@ -1272,19 +1272,25 @@ static int mmc_omap_new_slot(struct mmc_
- 	/* Check for some optional GPIO controls */
- 	slot->vsd = devm_gpiod_get_index_optional(host->dev, "vsd",
- 						  id, GPIOD_OUT_LOW);
--	if (IS_ERR(slot->vsd))
--		return dev_err_probe(host->dev, PTR_ERR(slot->vsd),
-+	if (IS_ERR(slot->vsd)) {
-+		r = dev_err_probe(host->dev, PTR_ERR(slot->vsd),
- 				     "error looking up VSD GPIO\n");
-+		goto err_free_host;
-+	}
- 	slot->vio = devm_gpiod_get_index_optional(host->dev, "vio",
- 						  id, GPIOD_OUT_LOW);
--	if (IS_ERR(slot->vio))
--		return dev_err_probe(host->dev, PTR_ERR(slot->vio),
-+	if (IS_ERR(slot->vio)) {
-+		r = dev_err_probe(host->dev, PTR_ERR(slot->vio),
- 				     "error looking up VIO GPIO\n");
-+		goto err_free_host;
-+	}
- 	slot->cover = devm_gpiod_get_index_optional(host->dev, "cover",
- 						    id, GPIOD_IN);
--	if (IS_ERR(slot->cover))
--		return dev_err_probe(host->dev, PTR_ERR(slot->cover),
-+	if (IS_ERR(slot->cover)) {
-+		r = dev_err_probe(host->dev, PTR_ERR(slot->cover),
- 				     "error looking up cover switch GPIO\n");
-+		goto err_free_host;
-+	}
+--- a/arch/x86/kernel/tsc.c
++++ b/arch/x86/kernel/tsc.c
+@@ -919,7 +919,7 @@ static unsigned long long cyc2ns_suspend
  
- 	host->slots[id] = slot;
+ void tsc_save_sched_clock_state(void)
+ {
+-	if (!sched_clock_stable())
++	if (!static_branch_likely(&__use_tsc) && !sched_clock_stable())
+ 		return;
  
-@@ -1344,6 +1350,7 @@ err_remove_slot_name:
- 		device_remove_file(&mmc->class_dev, &dev_attr_slot_name);
- err_remove_host:
- 	mmc_remove_host(mmc);
-+err_free_host:
- 	mmc_free_host(mmc);
- 	return r;
- }
+ 	cyc2ns_suspend = sched_clock();
+@@ -939,7 +939,7 @@ void tsc_restore_sched_clock_state(void)
+ 	unsigned long flags;
+ 	int cpu;
+ 
+-	if (!sched_clock_stable())
++	if (!static_branch_likely(&__use_tsc) && !sched_clock_stable())
+ 		return;
+ 
+ 	local_irq_save(flags);
 
 
 
