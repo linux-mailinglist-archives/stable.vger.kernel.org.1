@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-130523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 482D8A80554
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:16:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D798A80B0B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:12:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C500466B94
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 109F81BC21B8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D34D326988E;
-	Tue,  8 Apr 2025 12:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F363D28150C;
+	Tue,  8 Apr 2025 12:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKGAXtDT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q2Hc39Wj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F3F264627;
-	Tue,  8 Apr 2025 12:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABDCD26E160;
+	Tue,  8 Apr 2025 12:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113937; cv=none; b=buUU8fbSvq5upOX+uJlCKd5FyyF4kVKIF149ZrWeiRJfhSo8XStTOQ0GPDIykQ6ibYl/FQsS/R1aBBSHhndnpL4Sw3krHvDVyWDqCidEBVCeJ5yGtiPJM6IVHUZfShm/fQY2dSPJrUELHUK7fCCGmpRLQT0tWirFVlHaVizLk0k=
+	t=1744116830; cv=none; b=EbRr/5731sz1Yv6O7qfL5JK7H/CSzW7fILzA2ac8DYQ5RgAJbD+hXki+4Luu8QxqXJRStd48ORSEFSd2cwQYDz+2DiAQqpxNjeSZhhQRrUh4otUVlMoVFahox1slBFE4+Rb/N/R7AGFKueNWa5Y7ugmweV/v3ln/XQ0B7OGZua0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113937; c=relaxed/simple;
-	bh=ySCqwnznISe2IutyBngFhcxFXg3KoGZE6AOnIww5khU=;
+	s=arc-20240116; t=1744116830; c=relaxed/simple;
+	bh=NAliwBkWI5spjA9y5Aym/m/RkmpOF0EFi5Q3feHsxHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KgwXfXucY4hhB+D5pQB5skuWuTtGWg4be6Qd9Aw7Tg+CndbxE5xO79WKmnSn8B0Njx0i2Su7v902qG5FZDVaF1H9AamhfTiTyZTpMqBKQX8RiRx2J6rewPcLqb6yBwx+NsVGppzq6bl4ObrzOo/1F/FyY6hOUHCppoCe6/JVmvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKGAXtDT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21089C4CEE5;
-	Tue,  8 Apr 2025 12:05:36 +0000 (UTC)
+	 MIME-Version; b=RQkaBfqWpg0HCsGgw7MGzJZ/ikGaK2NPzf2Ep8IKYG77Fev3H/ziWnJ+jSe5fddUYm9a0/5VKk3J2NuzhaZ3d3e7aA7GnepLHmPKAOsrjNHfTbRKKhJq2CwwSy66a1sWNvW1O8Bbmqph4r7aP+efhsGx+O5rdiQk6HYlf0Mw4sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q2Hc39Wj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB11C4CEE5;
+	Tue,  8 Apr 2025 12:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113937;
-	bh=ySCqwnznISe2IutyBngFhcxFXg3KoGZE6AOnIww5khU=;
+	s=korg; t=1744116830;
+	bh=NAliwBkWI5spjA9y5Aym/m/RkmpOF0EFi5Q3feHsxHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MKGAXtDTDXrrPdl5X13mEeGZ4MSUJCn5phtvD4Bo25uygbwc0eKyhFX+GNzHEUo7U
-	 dnp/kXiNwGKezCOso+PLEHz+axNidOHtbnVBWB+/sOJoYGNJ0hraqU2kwH6z/RZ63t
-	 zwNcVU63sjDKBAa3e4J48/gwg4V5SjIs2QjzBZ3Y=
+	b=q2Hc39WjutLAUNdwF2aVqaloGlA6J9Vx4kkhKJLy4fAb0KPUukkXsv7oe9nFD/0j3
+	 cUrrXw2+/kskR/ZfK2+jeIKssnMOr032ePNxhE0CgVf+NYzHuhx9pDWxa+vNvHIrdE
+	 T4buO1LD1ockp5r6St4WTH62PLYU9TG+o6oh2ROQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Wang Kefeng <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ben Hutchings <ben@decadent.org.uk>,
-	linux-arm-kernel@lists.infradead.org,
-	Kees Cook <keescook@chromium.org>
-Subject: [PATCH 5.4 069/154] ARM: 9350/1: fault: Implement copy_from_kernel_nofault_allowed()
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Naman Jain <namjain@linux.microsoft.com>,
+	Roman Kisel <romank@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 284/423] x86/hyperv/vtl: Stop kernel from probing VTL0 low memory
 Date: Tue,  8 Apr 2025 12:50:10 +0200
-Message-ID: <20250408104817.512995785@linuxfoundation.org>
+Message-ID: <20250408104852.391381085@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,54 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Naman Jain <namjain@linux.microsoft.com>
 
-commit 169f9102f9198b04afffa6164372a4ba4070f412 upstream.
+[ Upstream commit 59115e2e25f42924181055ed7cc1d123af7598b7 ]
 
-Under PAN emulation when dumping backtraces from things like the
-LKDTM EXEC_USERSPACE test[1], a double fault (which would hang a CPU)
-would happen because of dump_instr() attempting to read a userspace
-address. Make sure copy_from_kernel_nofault() does not attempt this
-any more.
+For Linux, running in Hyper-V VTL (Virtual Trust Level), kernel in VTL2
+tries to access VTL0 low memory in probe_roms. This memory is not
+described in the e820 map. Initialize probe_roms call to no-ops
+during boot for VTL2 kernel to avoid this. The issue got identified
+in OpenVMM which detects invalid accesses initiated from kernel running
+in VTL2.
 
-Closes: https://lava.sirena.org.uk/scheduler/job/497571
-Link: https://lore.kernel.org/all/202401181125.D48DCB4C@keescook/ [1]
-
-Reported-by: Mark Brown <broonie@kernel.org>
-Suggested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Tested-by: Mark Brown <broonie@kernel.org>
-Cc: Wang Kefeng <wangkefeng.wang@huawei.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Ben Hutchings <ben@decadent.org.uk>
-Cc: linux-arm-kernel@lists.infradead.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Co-developed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Tested-by: Roman Kisel <romank@linux.microsoft.com>
+Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20250116061224.1701-1-namjain@linux.microsoft.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20250116061224.1701-1-namjain@linux.microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mm/fault.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/hyperv/hv_vtl.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm/mm/fault.c
-+++ b/arch/arm/mm/fault.c
-@@ -25,6 +25,13 @@
+diff --git a/arch/x86/hyperv/hv_vtl.c b/arch/x86/hyperv/hv_vtl.c
+index 04775346369c5..d04ccd4b3b4af 100644
+--- a/arch/x86/hyperv/hv_vtl.c
++++ b/arch/x86/hyperv/hv_vtl.c
+@@ -30,6 +30,7 @@ void __init hv_vtl_init_platform(void)
+ 	x86_platform.realmode_init = x86_init_noop;
+ 	x86_init.irqs.pre_vector_init = x86_init_noop;
+ 	x86_init.timers.timer_init = x86_init_noop;
++	x86_init.resources.probe_roms = x86_init_noop;
  
- #include "fault.h"
- 
-+bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
-+{
-+	unsigned long addr = (unsigned long)unsafe_src;
-+
-+	return addr >= TASK_SIZE && ULONG_MAX - addr >= size;
-+}
-+
- #ifdef CONFIG_MMU
- 
- /*
+ 	/* Avoid searching for BIOS MP tables */
+ 	x86_init.mpparse.find_mptable = x86_init_noop;
+-- 
+2.39.5
+
 
 
 
