@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-131484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0169A809F1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:59:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9130A8065F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:27:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1D187B44D1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:54:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D0067AF92D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:23:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC05027BF81;
-	Tue,  8 Apr 2025 12:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F4AB26A1AF;
+	Tue,  8 Apr 2025 12:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AxoZmXHR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K15xlpZS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8749B26988C;
-	Tue,  8 Apr 2025 12:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9723268FDE;
+	Tue,  8 Apr 2025 12:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116524; cv=none; b=OdPyRjMjwUfktK74fXiEtTp4tDODHlU446rfJpI0+wSO2/pU+/r98sR4QlMYPrbTW3YH/WWkWwHuBe7hidUoZmciQUDXsqdQQKTEekLkg1Wz64YSPz31lX+Q7z0PRePezWiGEl/BKjIyc0ZbwVpXqWDvZHomkuzH/2Hm4hPjdfQ=
+	t=1744114924; cv=none; b=GsnTooqPY6Fdx2nRgTomwvF14K3qS2Ew3cwTmtFbYz/P0fspw/nrpXXpBItNrEQlMhIhxDjZNNEG3gq3ofmBDdLFpPCDo/vSgLjQwfYnAPEqVugNBPoGdK2n06YInspu4L4wXkO8pzTdq9+92qH2QsggBKGesIAiLz6XzllqZe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116524; c=relaxed/simple;
-	bh=UThp65c8j7q+5Fr7+08K75EF94vE+J7THC7/3Zuj30E=;
+	s=arc-20240116; t=1744114924; c=relaxed/simple;
+	bh=Ub7TTDTsvYoYXQJOwoW9WMSpjwqwugUhpo10M2XgS7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UZlDcCvKZB573jOqJwzyTEO2oefcGXmySuIIzsIxSRAlwlJVLnE6f0JF6D5xB2zWi1zeWzuTt08kVH2G609Xu0JRZMsMLsdYfWWMBxcDQwL4GPnqZo048nlfkiGaPi9MmX3iQIf6NF3H0BceYdtKffSEtoclccokj+TX2/3jSEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AxoZmXHR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1700EC4AF09;
-	Tue,  8 Apr 2025 12:48:43 +0000 (UTC)
+	 MIME-Version; b=atpHNdTFsOTVtd/BsDTV28KJRyxXD81J41+hu2lI9/tTAgQbL1SNFNnhY1628HctCZIhyV3vFJ4WyMHCLLJOpQcqSJnH6mYqy+xRb68jCt/O7t5e5rZgdy6fP6eTay4tDzUP1DUW8rBzaSU+8PH0IWyoMYXCj665xej9MVneuks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K15xlpZS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10D05C4CEE5;
+	Tue,  8 Apr 2025 12:22:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116524;
-	bh=UThp65c8j7q+5Fr7+08K75EF94vE+J7THC7/3Zuj30E=;
+	s=korg; t=1744114923;
+	bh=Ub7TTDTsvYoYXQJOwoW9WMSpjwqwugUhpo10M2XgS7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AxoZmXHR2qMuHb6PaBK6A/oRp9hh7OrIb+Sw3Hb0jM0SFxghVDbYHIGhzXaK7nCop
-	 sq65WwAOK3IZ6+4r2GIjV+Tp0HZ5ZT2Crw94Cuyr+80pb6S6dgdadjVcYv80SgktEA
-	 3xcjZ92t9HsHYvPw6cn1XrgC2PjEIZLyNFwqLtRo=
+	b=K15xlpZS8YQsrGOs/Y81h1LWJIxYVLdE2Rl962wwLlXTG9lWBN7gPnlhTNgd5g9B9
+	 2Q7Iir/Ws1keW1+lODwnpCy0miIxQvsOLlgEmOLoYRPQzCixGQiHm40cbrhDCn8ffV
+	 UYtoNbSBtrjBwjBm/xKJt6Aa914w5TZEatFHpI9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Ayush Singh <ayush@beagleboard.org>,
+	Lama Kayal <lkayal@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 170/423] greybus: gb-beagleplay: Add error handling for gb_greybus_init
+Subject: [PATCH 6.13 284/499] net/mlx5e: SHAMPO, Make reserved size independent of page size
 Date: Tue,  8 Apr 2025 12:48:16 +0200
-Message-ID: <20250408104849.702531656@linuxfoundation.org>
+Message-ID: <20250408104858.299106258@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Lama Kayal <lkayal@nvidia.com>
 
-[ Upstream commit be382372d55d65b5c7e5a523793ca5e403f8c595 ]
+[ Upstream commit fab05835688526f9de123d1e98e4d1f838da4e22 ]
 
-Add error handling for the gb_greybus_init(bg) function call
-during the firmware reflash process to maintain consistency
-in error handling throughout the codebase. If initialization
-fails, log an error and return FW_UPLOAD_ERR_RW_ERROR.
+When hw-gro is enabled, the maximum number of header entries that are
+needed per wqe (hd_per_wqe) is calculated based on the size of the
+reservations among other parameters.
 
-Fixes: 0cf7befa3ea2 ("greybus: gb-beagleplay: Add firmware upload API")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Reviewed-by: Ayush Singh <ayush@beagleboard.org>
-Link: https://lore.kernel.org/r/20250120140547.1460-1-vulab@iscas.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Miscalculation of the size of reservations leads to incorrect
+calculation of hd_per_wqe as 0, particularly in the case of large page
+size like in aarch64, this prevents the SHAMPO header from being
+correctly initialized in the device, ultimately causing the following
+cqe err that indicates a violation of PD.
+
+ mlx5_core 0000:00:08.0 eth2: ERR CQE on RQ: 0x1180
+ mlx5_core 0000:00:08.0 eth2: Error cqe on cqn 0x510, ci 0x0, qn 0x1180, opcode 0xe, syndrome  0x4, vendor syndrome 0x32
+ 00000000: 00 00 00 00 04 4a 00 00 00 00 00 00 20 00 93 32
+ 00000010: 55 00 00 00 fb cc 00 00 00 00 00 00 07 18 00 00
+ 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 4a
+ 00000030: 00 00 00 9a 93 00 32 04 00 00 00 00 00 00 da e1
+
+Use the correct formula for calculating the size of reservations,
+precisely it shouldn't be dependent on page size, instead use the
+correct multiply of MLX5E_SHAMPO_WQ_BASE_RESRV_SIZE.
+
+Fixes: e5ca8fb08ab2 ("net/mlx5e: Add control path for SHAMPO feature")
+Signed-off-by: Lama Kayal <lkayal@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1742732906-166564-1-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/greybus/gb-beagleplay.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/params.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/greybus/gb-beagleplay.c b/drivers/greybus/gb-beagleplay.c
-index 473ac3f2d3821..da31f1131afca 100644
---- a/drivers/greybus/gb-beagleplay.c
-+++ b/drivers/greybus/gb-beagleplay.c
-@@ -912,7 +912,9 @@ static enum fw_upload_err cc1352_prepare(struct fw_upload *fw_upload,
- 		cc1352_bootloader_reset(bg);
- 		WRITE_ONCE(bg->flashing_mode, false);
- 		msleep(200);
--		gb_greybus_init(bg);
-+		if (gb_greybus_init(bg) < 0)
-+			return dev_err_probe(&bg->sd->dev, FW_UPLOAD_ERR_RW_ERROR,
-+					     "Failed to initialize greybus");
- 		gb_beagleplay_start_svc(bg);
- 		return FW_UPLOAD_ERR_FW_INVALID;
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
+index 64b62ed17b07a..31eb99f09c63c 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
+@@ -423,7 +423,7 @@ u8 mlx5e_shampo_get_log_pkt_per_rsrv(struct mlx5_core_dev *mdev,
+ 				     struct mlx5e_params *params)
+ {
+ 	u32 resrv_size = BIT(mlx5e_shampo_get_log_rsrv_size(mdev, params)) *
+-			 PAGE_SIZE;
++			 MLX5E_SHAMPO_WQ_BASE_RESRV_SIZE;
+ 
+ 	return order_base_2(DIV_ROUND_UP(resrv_size, params->sw_mtu));
+ }
+@@ -827,7 +827,8 @@ static u32 mlx5e_shampo_get_log_cq_size(struct mlx5_core_dev *mdev,
+ 					struct mlx5e_params *params,
+ 					struct mlx5e_xsk_param *xsk)
+ {
+-	int rsrv_size = BIT(mlx5e_shampo_get_log_rsrv_size(mdev, params)) * PAGE_SIZE;
++	int rsrv_size = BIT(mlx5e_shampo_get_log_rsrv_size(mdev, params)) *
++		MLX5E_SHAMPO_WQ_BASE_RESRV_SIZE;
+ 	u16 num_strides = BIT(mlx5e_mpwqe_get_log_num_strides(mdev, params, xsk));
+ 	int pkt_per_rsrv = BIT(mlx5e_shampo_get_log_pkt_per_rsrv(mdev, params));
+ 	u8 log_stride_sz = mlx5e_mpwqe_get_log_stride_size(mdev, params, xsk);
+@@ -1036,7 +1037,8 @@ u32 mlx5e_shampo_hd_per_wqe(struct mlx5_core_dev *mdev,
+ 			    struct mlx5e_params *params,
+ 			    struct mlx5e_rq_param *rq_param)
+ {
+-	int resv_size = BIT(mlx5e_shampo_get_log_rsrv_size(mdev, params)) * PAGE_SIZE;
++	int resv_size = BIT(mlx5e_shampo_get_log_rsrv_size(mdev, params)) *
++		MLX5E_SHAMPO_WQ_BASE_RESRV_SIZE;
+ 	u16 num_strides = BIT(mlx5e_mpwqe_get_log_num_strides(mdev, params, NULL));
+ 	int pkt_per_resv = BIT(mlx5e_shampo_get_log_pkt_per_rsrv(mdev, params));
+ 	u8 log_stride_sz = mlx5e_mpwqe_get_log_stride_size(mdev, params, NULL);
 -- 
 2.39.5
 
