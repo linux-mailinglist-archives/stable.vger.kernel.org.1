@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7852AA804F0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:13:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FBE4A808E1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:49:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA0B2464E07
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DD231BA4DCD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 815AF26A1BD;
-	Tue,  8 Apr 2025 12:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E33D26FDB7;
+	Tue,  8 Apr 2025 12:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SLYdJxTx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IX5MdONP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE832698AE;
-	Tue,  8 Apr 2025 12:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCBF26FDB1;
+	Tue,  8 Apr 2025 12:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113729; cv=none; b=RByCs3J3Hp83G4jQxgZ8mERTX3cPVR3g99yEDQolgmKru621RMj7VvHZMYWNpIQV1tKYpj2o8ULPSFwH/BGi9acHJJ+JjU08mRASFdwyanL1QClmMYc3W7/rqa3gduKL2c5pn9v3ZqY5bvU0hXrra90VisiGEOAQWo0Cf/X8VHQ=
+	t=1744115906; cv=none; b=lRd93srBy1pho+3d5L9aiYvfA/j4YeKXiVyvaveKiM2yu9DkAuD4oh/cbU8Ivtu7HzNZgkaaDT04R65IRkZDpOteh11TZPTYpkqu271Zmlcf4nANe6e9vJWCjkKHgEPji80epnHay2zkSwfjSmFgkUMkSie8TtyQrOyXqvXqetA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113729; c=relaxed/simple;
-	bh=4uqSQ0NOsZSFNqOoEr9TMmm55V0cXPM2fQL+puxih30=;
+	s=arc-20240116; t=1744115906; c=relaxed/simple;
+	bh=Ksw5/5IKNfT9ia67zdYdl1SGams14Q9h9W4s4w3hIFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DCRv9MRuZ+YptdLSH91TjxRF0mfnwMZ5HdWc0YOxiysMbiezmBPTJZJNddJ7503MYm+BCf8HR2Y9lFbshqCS5LnBjD1UijsefzXOzGk1OvUMG7NCgI0w9lyhzf796mGvsxhsXYJENQjTxaemJKtKbFtfMc1hjYNbzp6t1dMioWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SLYdJxTx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA889C4CEE5;
-	Tue,  8 Apr 2025 12:02:08 +0000 (UTC)
+	 MIME-Version; b=Au6bV3kt9eOqYMsm+cRW0usYFZTQGz3F0wzb7sEQd/UPeOzSJX+AecHTEEsA6gYgN4vdaPaelMIN15+CWy8zVEx8uUE3u4LxomNMDH/bxlysohQ81iQsYVkAAiG/c0Rn5d/ztITcJDnwaUytLotaPSHILGDB47P1PmcXR6k0etM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IX5MdONP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC63BC4CEE5;
+	Tue,  8 Apr 2025 12:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113729;
-	bh=4uqSQ0NOsZSFNqOoEr9TMmm55V0cXPM2fQL+puxih30=;
+	s=korg; t=1744115906;
+	bh=Ksw5/5IKNfT9ia67zdYdl1SGams14Q9h9W4s4w3hIFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SLYdJxTxgDrOSAE7eyA4rtEnvcgnnamS3pMvg1ea7o+qJOoGwUT6jMGRoWQnlmUa1
-	 vc649kzZZOiuLZU9cOHwceQeefZhei6s7ycMMmvmrwuVReYJU7VjuRvUzcP2dIwjtY
-	 o87toTruAsWpgV3dT2XtlcZ41u/AaDtJMD4Z/hdA=
+	b=IX5MdONPnzMK25YhZixyilqpqhN9MnHDnN1bUX3pF0R2tvqRgoJF0CJ6DPUXlPvCf
+	 KaZtezZYtIeV8S9H3a/FxKOYKBo8+9RUb89192L+B50bnuVtu3e09XBhuHGonyxXd+
+	 QqejQMktitNi2kJY6w7KTcsFyPQnpe+5yxsh03ZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+34008406ee9a31b13c73@syzkaller.appspotmail.com,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 266/268] media: streamzap: fix race between device disconnection and urb callback
+	Tasos Sahanidis <tasos@tasossah.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 147/204] hwmon: (nct6775-core) Fix out of bounds access for NCT679{8,9}
 Date: Tue,  8 Apr 2025 12:51:17 +0200
-Message-ID: <20250408104835.750026099@linuxfoundation.org>
+Message-ID: <20250408104824.607179222@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Tasos Sahanidis <tasos@tasossah.com>
 
-commit f656cfbc7a293a039d6a0c7100e1c846845148c1 upstream.
+[ Upstream commit 815f80ad20b63830949a77c816e35395d5d55144 ]
 
-Syzkaller has reported a general protection fault at function
-ir_raw_event_store_with_filter(). This crash is caused by a NULL pointer
-dereference of dev->raw pointer, even though it is checked for NULL in
-the same function, which means there is a race condition. It occurs due
-to the incorrect order of actions in the streamzap_disconnect() function:
-rc_unregister_device() is called before usb_kill_urb(). The dev->raw
-pointer is freed and set to NULL in rc_unregister_device(), and only
-after that usb_kill_urb() waits for in-progress requests to finish.
+pwm_num is set to 7 for these chips, but NCT6776_REG_PWM_MODE and
+NCT6776_PWM_MODE_MASK only contain 6 values.
 
-If rc_unregister_device() is called while streamzap_callback() handler is
-not finished, this can lead to accessing freed resources. Thus
-rc_unregister_device() should be called after usb_kill_urb().
+Fix this by adding another 0 to the end of each array.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 8e9e60640067 ("V4L/DVB: staging/lirc: port lirc_streamzap to ir-core")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+34008406ee9a31b13c73@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=34008406ee9a31b13c73
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tasos Sahanidis <tasos@tasossah.com>
+Link: https://lore.kernel.org/r/20250312030832.106475-1-tasos@tasossah.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/rc/streamzap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/nct6775-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/rc/streamzap.c
-+++ b/drivers/media/rc/streamzap.c
-@@ -385,8 +385,8 @@ static void streamzap_disconnect(struct
- 	if (!sz)
- 		return;
+diff --git a/drivers/hwmon/nct6775-core.c b/drivers/hwmon/nct6775-core.c
+index 9de3ad2713f1d..ec3ff4e9a9abd 100644
+--- a/drivers/hwmon/nct6775-core.c
++++ b/drivers/hwmon/nct6775-core.c
+@@ -276,8 +276,8 @@ static const s8 NCT6776_BEEP_BITS[] = {
+ static const u16 NCT6776_REG_TOLERANCE_H[] = {
+ 	0x10c, 0x20c, 0x30c, 0x80c, 0x90c, 0xa0c, 0xb0c };
  
--	rc_unregister_device(sz->rdev);
- 	usb_kill_urb(sz->urb_in);
-+	rc_unregister_device(sz->rdev);
- 	usb_free_urb(sz->urb_in);
- 	usb_free_coherent(usbdev, sz->buf_in_len, sz->buf_in, sz->dma_in);
+-static const u8 NCT6776_REG_PWM_MODE[] = { 0x04, 0, 0, 0, 0, 0 };
+-static const u8 NCT6776_PWM_MODE_MASK[] = { 0x01, 0, 0, 0, 0, 0 };
++static const u8 NCT6776_REG_PWM_MODE[] = { 0x04, 0, 0, 0, 0, 0, 0 };
++static const u8 NCT6776_PWM_MODE_MASK[] = { 0x01, 0, 0, 0, 0, 0, 0 };
  
+ static const u16 NCT6776_REG_FAN_MIN[] = {
+ 	0x63a, 0x63c, 0x63e, 0x640, 0x642, 0x64a, 0x64c };
+-- 
+2.39.5
+
 
 
 
