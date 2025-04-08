@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C376A803B0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:01:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B304FA800C5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:34:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6926B420179
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C18E87A94FE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75078268FD8;
-	Tue,  8 Apr 2025 11:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF23C268FEB;
+	Tue,  8 Apr 2025 11:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FffC0C5G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gWVZIMyJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319C1A94A;
-	Tue,  8 Apr 2025 11:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FA8263C90;
+	Tue,  8 Apr 2025 11:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113183; cv=none; b=VjtadIfaYMhwHDncVZS96yX+/hf98pFVNMxONSlN3pAsqarHCGmjPKiVc9PMINS35SxDLDWaBC9y2BS8ZSDDSaokf5zEMZvd/mfZnS/uXddDQqB4SXSPxXzXTgkjwJu9i2IUuejT84w7/9DMou6oNUTMck3fb0e4pCRadlN6Tt0=
+	t=1744111831; cv=none; b=UXbFUxBYoQDA2kvoaKLun+uTV9hJU9hcAB0UnkoUDMyzvmqdaQ0laWoy6AeTOWHYWN8UkYyMgzRfQ7FMk/xz0boWrvORsA87E1vD99XJa5yqQ+cAo4ftNtMBxq7EcXXjWje03UXKSrgpZD/dAZTXRRZlpq0uDk6N7ssWrkskWvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113183; c=relaxed/simple;
-	bh=SOexQzTcDn3ZxNfb91pA0gSBFBujpl3wEJqwkSTTXWA=;
+	s=arc-20240116; t=1744111831; c=relaxed/simple;
+	bh=pUaFfS5kGNLcISyTbT72MQvSbGm2xhYJSs8ripTlkIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NwCje6k4prKNRlNv8N2CqMOq0/eX+oN1/9DN2Pywgx3gXeB3jX7OpiEBoNyGR1VyCcT6Tm/LdV4sjELsoaGbZlohFJnxZfh6S4EdXXOU6ZBMXVzjkvwsutKpBa4mdwB4x9VfTR0QeuwZ1Bhdm28VvsfGGbYPGyE8g2AixHoGclw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FffC0C5G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7BA7C4CEE5;
-	Tue,  8 Apr 2025 11:53:02 +0000 (UTC)
+	 MIME-Version; b=VD7TjWAVkfcFoxva5XGf8GVTjpj5xbXz/ePA0n8cruCkkJBeA7/kYK9CEJVhtjAmiYWJGWUGsU4VzNsuQ37HJSxX3ga2WQeSW6MSoKVKiUpjgw+O2r2KiOz02UjtIJUqH5iSCHjoPscMaAOXdwhsg/kFaOSayuPJhc3xEzV0EiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gWVZIMyJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CABCC4CEE5;
+	Tue,  8 Apr 2025 11:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113183;
-	bh=SOexQzTcDn3ZxNfb91pA0gSBFBujpl3wEJqwkSTTXWA=;
+	s=korg; t=1744111831;
+	bh=pUaFfS5kGNLcISyTbT72MQvSbGm2xhYJSs8ripTlkIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FffC0C5GZqH59w6Qi89+zc3h/di+D3bIaOb2Qj3v03yieU48eH6KTciHQY0YnSIEU
-	 H6BSSK9nzqY5wQMxvDm1YUjrTZxl0tx1JAQIxw5ffqu/jngUOAfs9I1cDvs1U52TBK
-	 14ep1Pw8054EczxU4x158ZPqtIuMpVPU3HDUrrwA=
+	b=gWVZIMyJBH1SFnKYQiXTtKiu7PsfKo0UesEPNb7r5kK1OpELOWdMG+CVjyD/XwcMH
+	 1JCfWc9PioQrKBmJxXWv8vRXNc0x0/GxoTSj8UVhC8qVtyTzyBcHg3c+7J25YUDz9s
+	 rlyU2t3o6URspsPZx6BXEox0g4yhP8dvfabs6Zuw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jerome Brunet <jbrunet@baylibre.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 062/268] clk: amlogic: gxbb: drop incorrect flag on 32k clock
+Subject: [PATCH 6.14 576/731] rtc: renesas-rtca3: Disable interrupts only if the RTC is enabled
 Date: Tue,  8 Apr 2025 12:47:53 +0200
-Message-ID: <20250408104830.171827927@linuxfoundation.org>
+Message-ID: <20250408104927.673177278@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit f38f7fe4830c5cb4eac138249225f119e7939965 ]
+[ Upstream commit 27b2fcbd6b98204b0dce62e9aa9540ca0a2b70f1 ]
 
-gxbb_32k_clk_div sets CLK_DIVIDER_ROUND_CLOSEST in the init_data flag which
-is incorrect. This is field is not where the divider flags belong.
+If the RTC is not enabled and the code attempts to disable the interrupt,
+the readb_poll_timeout_atomic() function in the
+rtca3_alarm_irq_set_helper() may timeout, leading to probe failures.
+This issue is reproducible on some devices because the initial values of
+the PIE and AIE bits in the RCR1 register are undefined.
 
-Thankfully, CLK_DIVIDER_ROUND_CLOSEST maps to bit 4 which is an unused
-clock flag, so there is no unintended consequence to this error.
+To prevent probe failures in this scenario, disable RTC interrupts only
+when the RTC is actually enabled.
 
-Effectively, the clock has been used without CLK_DIVIDER_ROUND_CLOSEST
-so far, so just drop it.
-
-Fixes: 14c735c8e308 ("clk: meson-gxbb: Add EE 32K Clock for CEC")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241220-amlogic-clk-gxbb-32k-fixes-v1-1-baca56ecf2db@baylibre.com
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Fixes: d4488377609e ("rtc: renesas-rtca3: Add driver for RTCA-3 available on Renesas RZ/G3S SoC")
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250205095519.2031742-1-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/meson/gxbb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/rtc/rtc-renesas-rtca3.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/clk/meson/gxbb.c b/drivers/clk/meson/gxbb.c
-index 1b1279d94781e..ef89285a86fc0 100644
---- a/drivers/clk/meson/gxbb.c
-+++ b/drivers/clk/meson/gxbb.c
-@@ -1312,7 +1312,7 @@ static struct clk_regmap gxbb_32k_clk_div = {
- 			&gxbb_32k_clk_sel.hw
- 		},
- 		.num_parents = 1,
--		.flags = CLK_SET_RATE_PARENT | CLK_DIVIDER_ROUND_CLOSEST,
-+		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
+diff --git a/drivers/rtc/rtc-renesas-rtca3.c b/drivers/rtc/rtc-renesas-rtca3.c
+index a056291d38876..ab816bdf0d776 100644
+--- a/drivers/rtc/rtc-renesas-rtca3.c
++++ b/drivers/rtc/rtc-renesas-rtca3.c
+@@ -586,17 +586,14 @@ static int rtca3_initial_setup(struct clk *clk, struct rtca3_priv *priv)
+ 	 */
+ 	usleep_range(sleep_us, sleep_us + 10);
  
+-	/* Disable all interrupts. */
+-	mask = RTCA3_RCR1_AIE | RTCA3_RCR1_CIE | RTCA3_RCR1_PIE;
+-	ret = rtca3_alarm_irq_set_helper(priv, mask, 0);
+-	if (ret)
+-		return ret;
+-
+ 	mask = RTCA3_RCR2_START | RTCA3_RCR2_HR24;
+ 	val = readb(priv->base + RTCA3_RCR2);
+-	/* Nothing to do if already started in 24 hours and calendar count mode. */
+-	if ((val & mask) == mask)
+-		return 0;
++	/* Only disable the interrupts if already started in 24 hours and calendar count mode. */
++	if ((val & mask) == mask) {
++		/* Disable all interrupts. */
++		mask = RTCA3_RCR1_AIE | RTCA3_RCR1_CIE | RTCA3_RCR1_PIE;
++		return rtca3_alarm_irq_set_helper(priv, mask, 0);
++	}
+ 
+ 	/* Reconfigure the RTC in 24 hours and calendar count mode. */
+ 	mask = RTCA3_RCR2_START | RTCA3_RCR2_CNTMD;
 -- 
 2.39.5
 
