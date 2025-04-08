@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE72A80397
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:00:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F755A80184
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:40:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09CA87A614F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B84F44662E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:34:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E372698A0;
-	Tue,  8 Apr 2025 11:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC1C526988A;
+	Tue,  8 Apr 2025 11:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DHNmb+w5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sfa79Qpz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2D9269892;
-	Tue,  8 Apr 2025 11:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994DF269833;
+	Tue,  8 Apr 2025 11:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113364; cv=none; b=t7Fsq+hDGKY1IFatee/C9npbcd8Wg4VQmYYluzb5qIhv+a/5ZJZ6PeK1QqQRjRmFnA7Io2hHdp0NmjbhCg0YP/SwgtmgQ1I3kVmmdRlTQpPWVq7UJ7ZGJ3CjpgiIOoJZNHr1EbYxVGyuME9HZ5pAwE+Pjz6aKCMfhKgJLf+Weik=
+	t=1744112018; cv=none; b=IGhGnyi+FGyO3k4nAZjnT6v79Am7fHfbzjoZR8yYXnb+rMhcHJXlscPfsQmyPlqJbWnR0K6lxS+2JbpEW7YItv8dvxcLqA4loeWdnuZSqFsZ5pfDpV0MUMyZfAOrcbcsJMYnk1ucjFK1tVsE6wSB77baPLLaFPKhkZTEvN4ermY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113364; c=relaxed/simple;
-	bh=DivnzFOKAd7ppnWTuhe0JY2uE65zzwpvAK59xr3SspM=;
+	s=arc-20240116; t=1744112018; c=relaxed/simple;
+	bh=6xwyiRaKdG33ACMs7BJlhMKGAAK+uyVPlor3Jdom710=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jqhlivJSO+ZTnukGQmLzt71LRHpIvrkZLKsI7FzcylumApAcDnXUcJhR5OIVfINs23G0AWW8g80vLAAniiM4zmGQUJ5zShk+7pG0TcqqZKc/x4svFSjavEsu5k1kzzTJvumjnN906ndQi+USZ5Pzq6wFfTxypICEUoJ+x2ooQMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DHNmb+w5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4464CC4CEE5;
-	Tue,  8 Apr 2025 11:56:04 +0000 (UTC)
+	 MIME-Version; b=gvhY1s726IGn0+JgZK0MCrD/cI85Ms6d9VzAjHRXldDnqsxdRGfozvjwrvo1CPuGnG7F5aV0XskGL8uJKmYO5Sm89JI9BXYrPbrRr7g2+gnTWArug9BteUH+OU2bZ+Nkby8MOXCATOYS5ilxHPpF3aaBl0jsGLqCGH6l59j43Ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sfa79Qpz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D0E0C4CEE5;
+	Tue,  8 Apr 2025 11:33:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113364;
-	bh=DivnzFOKAd7ppnWTuhe0JY2uE65zzwpvAK59xr3SspM=;
+	s=korg; t=1744112018;
+	bh=6xwyiRaKdG33ACMs7BJlhMKGAAK+uyVPlor3Jdom710=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DHNmb+w5VBaODCsZPdHYteu63PMFJlDZzSV0R+uTkDMln7NVEsV+uCz5HVBfoCr5V
-	 C0QaljTOSre5XC67eB/0hAKxG+wDYRFk4/QZK4LTnJHnhy6KvyD+QcZiXDVwJvPWRO
-	 pLPJVlRkm+D0GPzvaSSjd+MrFIU1ljr/TjvCsnFo=
+	b=sfa79QpzkNnmSBUDCHnF/h563qX7xpF3T4QCkzV65tchj1px1uwsKvNH00aEOsfDd
+	 fxj4lO84qGa5bm0Z1sNouPbnvhtIGUEwbcK2DeDeDrlKuXkdk8gzeQr9dAvVbObq3+
+	 CVYlmYnYZEkaUX78gEYTOt2XWWYk/35J9NIYm8vg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanley Chu <yschu@nuvoton.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Yue Haibing <yuehaibing@huawei.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 132/268] i3c: master: svc: Fix missing the IBI rules
+Subject: [PATCH 6.14 646/731] drm/xe: Fix unmet direct dependencies warning
 Date: Tue,  8 Apr 2025 12:49:03 +0200
-Message-ID: <20250408104832.069601977@linuxfoundation.org>
+Message-ID: <20250408104929.290969308@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanley Chu <yschu@nuvoton.com>
+From: Yue Haibing <yuehaibing@huawei.com>
 
-[ Upstream commit 9cecad134d84d14dc72a0eea7a107691c3e5a837 ]
+[ Upstream commit 5e66cf6edddb5f6237e3afb07475ace57ecb56bc ]
 
-The code does not add IBI rules for devices with controller capability.
-However, the secondary controller has the controller capability and works
-at target mode when the device is probed. Therefore, add IBI rules for
-such devices.
+WARNING: unmet direct dependencies detected for FB_IOMEM_HELPERS
+  Depends on [n]: HAS_IOMEM [=y] && FB_CORE [=n]
+  Selected by [m]:
+  - DRM_XE_DISPLAY [=y] && HAS_IOMEM [=y] && DRM [=m] && DRM_XE [=m] && DRM_XE [=m]=m [=m] && HAS_IOPORT [=y]
 
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-Signed-off-by: Stanley Chu <yschu@nuvoton.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250318053606.3087121-2-yschu@nuvoton.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+DRM_XE_DISPLAY requires FB_IOMEM_HELPERS, but the dependency FB_CORE is
+missing, selecting FB_IOMEM_HELPERS if DRM_FBDEV_EMULATION is set as
+other drm drivers.
+
+Fixes: 44e694958b95 ("drm/xe/display: Implement display support")
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250323114103.1960511-1-yuehaibing@huawei.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit 689582882802cd64986c1eb584c9f5184d67f0cf)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/svc-i3c-master.c | 2 +-
+ drivers/gpu/drm/xe/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index c5ab39f1e755c..652a666909a55 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -951,7 +951,7 @@ static int svc_i3c_update_ibirules(struct svc_i3c_master *master)
- 
- 	/* Create the IBIRULES register for both cases */
- 	i3c_bus_for_each_i3cdev(&master->base.bus, dev) {
--		if (I3C_BCR_DEVICE_ROLE(dev->info.bcr) == I3C_BCR_I3C_MASTER)
-+		if (!(dev->info.bcr & I3C_BCR_IBI_REQ_CAP))
- 			continue;
- 
- 		if (dev->info.bcr & I3C_BCR_IBI_PAYLOAD) {
+diff --git a/drivers/gpu/drm/xe/Kconfig b/drivers/gpu/drm/xe/Kconfig
+index b51a2bde73e29..dcf6583a4c522 100644
+--- a/drivers/gpu/drm/xe/Kconfig
++++ b/drivers/gpu/drm/xe/Kconfig
+@@ -52,7 +52,7 @@ config DRM_XE
+ config DRM_XE_DISPLAY
+ 	bool "Enable display support"
+ 	depends on DRM_XE && DRM_XE=m && HAS_IOPORT
+-	select FB_IOMEM_HELPERS
++	select FB_IOMEM_HELPERS if DRM_FBDEV_EMULATION
+ 	select I2C
+ 	select I2C_ALGOBIT
+ 	default y
 -- 
 2.39.5
 
