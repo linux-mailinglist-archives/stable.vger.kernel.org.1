@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20968A8078B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58706A8082E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:42:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 207338A16D3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:28:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDC181B83E11
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41196267393;
-	Tue,  8 Apr 2025 12:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22CC326E17B;
+	Tue,  8 Apr 2025 12:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iAjDIUS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2wjyXu0b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F282B2063FD;
-	Tue,  8 Apr 2025 12:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D502F26E166;
+	Tue,  8 Apr 2025 12:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115164; cv=none; b=qbPhyI6OK5tY31zM1AldGG8wyOiQBm1RPqQNDcYHWKO1/iito+21xzdTAcMf/esmTdH+fUDuJ/8YR38qij+OLHko88a8EKAu7ny7Zz69J112s8pCWRZ/CdHnwNCbPu737I6j2plocBOjPPUsVT9GhFAGxht3bpvQOSSqSj+04Fc=
+	t=1744115653; cv=none; b=KKIiftyhPkDa8WtVqm4DLJwh+88uzdfHdah1He3z5+P5c0DEYUlCK0awepj6t2IlYZ5UR5Yj1RJFAAcm1ajm7HdhF4zYAEUIqqqNMmjb6AX4Y+AFYq+70rstMI13DqV6OGL/rvDyOW319868BHSWc5ASKhtASp0RbdSuRGJYN9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115164; c=relaxed/simple;
-	bh=8Poe/GG3oeAn0WqG2TvCIbOK9FcB1GpLsGIqMkg4QBE=;
+	s=arc-20240116; t=1744115653; c=relaxed/simple;
+	bh=gnwzZlkNf+vFm9bZt7jqzhQPbJQcllNnoWDlZhGQdpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GF1ljdDJrItQ1iaK1zR5GIEg7nU04UQ2Q5+YPbyII+b3+IGLSAS4bdDvPzsF0ZeWZ910KXaqaH9sIhF6Adnly8n1CxqvWsej6T++uv01/K9A3lfU+RnZ4ojGUuBhzeklPlELYmyqzs+YCJiY9Q/UP1SjL6KICtJzvbqQ8USyJ5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iAjDIUS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83469C4CEE5;
-	Tue,  8 Apr 2025 12:26:03 +0000 (UTC)
+	 MIME-Version; b=ZSeJEwuWyooJ9oPW4snO+GKwWHCYaCJQF16rRDhUe/eE2NizGnsDGCGVdo8HSm4WVnfz4zOLxRgQX0hEDM6Wb/HrCAfPQ1cfBH3j6mfZC6ZcBn2T05w7xQ+p9d82jq3CfqzsPsWYHcgnqsYcGtTMfqEPruqT3+EvsWIRwvjkGSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2wjyXu0b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 699C3C4CEE5;
+	Tue,  8 Apr 2025 12:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115163;
-	bh=8Poe/GG3oeAn0WqG2TvCIbOK9FcB1GpLsGIqMkg4QBE=;
+	s=korg; t=1744115653;
+	bh=gnwzZlkNf+vFm9bZt7jqzhQPbJQcllNnoWDlZhGQdpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2iAjDIUSnWykRaXj3PAQilwh0esLILYVScDWjKicgoQnv77hjLNHHznFg+u+/CMtJ
-	 lP+bYystI16rXb5Enf3Z8Kaixa5kmrpCMIyH+DbMuYlGi/k8+keynAa2yGOLeHByvT
-	 aRsRZMPaLxFNsbqhu+TT5DwS6sNyBeZ2dvrp4a+c=
+	b=2wjyXu0bC0d3Uzc6OONNqqXICJtxkOzW1b5GCV/tZ/h5sT0Wyu5A6rOkaI6yqgS8F
+	 QjI/+xsVnUF/jp6pNSLNaJZOQMNWowkoW/0w3mh7Z/horFvkB2pgtA6e3v5S38Lgwg
+	 /EuT60GIY4knljjwjkP1LB6kdcyZLZBGYkrEOV4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Mark Brown <broonie@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 372/499] ASoC: codecs: rt5665: Fix some error handling paths in rt5665_probe()
+Subject: [PATCH 6.1 054/204] remoteproc: core: Clear table_sz when rproc_shutdown
 Date: Tue,  8 Apr 2025 12:49:44 +0200
-Message-ID: <20250408104900.507658595@linuxfoundation.org>
+Message-ID: <20250408104821.929836177@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 1ebd4944266e86a7ce274f197847f5a6399651e8 ]
+[ Upstream commit efdde3d73ab25cef4ff2d06783b0aad8b093c0e4 ]
 
-Should an error occur after a successful regulator_bulk_enable() call,
-regulator_bulk_disable() should be called, as already done in the remove
-function.
+There is case as below could trigger kernel dump:
+Use U-Boot to start remote processor(rproc) with resource table
+published to a fixed address by rproc. After Kernel boots up,
+stop the rproc, load a new firmware which doesn't have resource table
+,and start rproc.
 
-Instead of adding an error handling path in the probe, switch from
-devm_regulator_bulk_get() to devm_regulator_bulk_get_enable() and
-simplify the remove function and some other places accordingly.
+When starting rproc with a firmware not have resource table,
+`memcpy(loaded_table, rproc->cached_table, rproc->table_sz)` will
+trigger dump, because rproc->cache_table is set to NULL during the last
+stop operation, but rproc->table_sz is still valid.
 
-Finally, add a missing const when defining rt5665_supply_names to please
-checkpatch and constify a few bytes.
+This issue is found on i.MX8MP and i.MX9.
 
-Fixes: 33ada14a26c8 ("ASoC: add rt5665 codec driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://patch.msgid.link/e3c2aa1b2fdfa646752d94f4af968630c0d58248.1742629525.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Dump as below:
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+Mem abort info:
+  ESR = 0x0000000096000004
+  EC = 0x25: DABT (current EL), IL = 32 bits
+  SET = 0, FnV = 0
+  EA = 0, S1PTW = 0
+  FSC = 0x04: level 0 translation fault
+Data abort info:
+  ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+  CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+  GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+user pgtable: 4k pages, 48-bit VAs, pgdp=000000010af63000
+[0000000000000000] pgd=0000000000000000, p4d=0000000000000000
+Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+Modules linked in:
+CPU: 2 UID: 0 PID: 1060 Comm: sh Not tainted 6.14.0-rc7-next-20250317-dirty #38
+Hardware name: NXP i.MX8MPlus EVK board (DT)
+pstate: a0000005 (NzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : __pi_memcpy_generic+0x110/0x22c
+lr : rproc_start+0x88/0x1e0
+Call trace:
+ __pi_memcpy_generic+0x110/0x22c (P)
+ rproc_boot+0x198/0x57c
+ state_store+0x40/0x104
+ dev_attr_store+0x18/0x2c
+ sysfs_kf_write+0x7c/0x94
+ kernfs_fop_write_iter+0x120/0x1cc
+ vfs_write+0x240/0x378
+ ksys_write+0x70/0x108
+ __arm64_sys_write+0x1c/0x28
+ invoke_syscall+0x48/0x10c
+ el0_svc_common.constprop.0+0xc0/0xe0
+ do_el0_svc+0x1c/0x28
+ el0_svc+0x30/0xcc
+ el0t_64_sync_handler+0x10c/0x138
+ el0t_64_sync+0x198/0x19c
+
+Clear rproc->table_sz to address the issue.
+
+Fixes: 9dc9507f1880 ("remoteproc: Properly deal with the resource table when detaching")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/r/20250319100106.3622619-1-peng.fan@oss.nxp.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5665.c | 24 ++++--------------------
- 1 file changed, 4 insertions(+), 20 deletions(-)
+ drivers/remoteproc/remoteproc_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/codecs/rt5665.c b/sound/soc/codecs/rt5665.c
-index 47df14ba52784..4f0236b34a2d9 100644
---- a/sound/soc/codecs/rt5665.c
-+++ b/sound/soc/codecs/rt5665.c
-@@ -31,9 +31,7 @@
- #include "rl6231.h"
- #include "rt5665.h"
- 
--#define RT5665_NUM_SUPPLIES 3
--
--static const char *rt5665_supply_names[RT5665_NUM_SUPPLIES] = {
-+static const char * const rt5665_supply_names[] = {
- 	"AVDD",
- 	"MICVDD",
- 	"VBAT",
-@@ -46,7 +44,6 @@ struct rt5665_priv {
- 	struct gpio_desc *gpiod_ldo1_en;
- 	struct gpio_desc *gpiod_reset;
- 	struct snd_soc_jack *hs_jack;
--	struct regulator_bulk_data supplies[RT5665_NUM_SUPPLIES];
- 	struct delayed_work jack_detect_work;
- 	struct delayed_work calibrate_work;
- 	struct delayed_work jd_check_work;
-@@ -4471,8 +4468,6 @@ static void rt5665_remove(struct snd_soc_component *component)
- 	struct rt5665_priv *rt5665 = snd_soc_component_get_drvdata(component);
- 
- 	regmap_write(rt5665->regmap, RT5665_RESET, 0);
--
--	regulator_bulk_disable(ARRAY_SIZE(rt5665->supplies), rt5665->supplies);
- }
- 
- #ifdef CONFIG_PM
-@@ -4758,7 +4753,7 @@ static int rt5665_i2c_probe(struct i2c_client *i2c)
- {
- 	struct rt5665_platform_data *pdata = dev_get_platdata(&i2c->dev);
- 	struct rt5665_priv *rt5665;
--	int i, ret;
-+	int ret;
- 	unsigned int val;
- 
- 	rt5665 = devm_kzalloc(&i2c->dev, sizeof(struct rt5665_priv),
-@@ -4774,24 +4769,13 @@ static int rt5665_i2c_probe(struct i2c_client *i2c)
- 	else
- 		rt5665_parse_dt(rt5665, &i2c->dev);
- 
--	for (i = 0; i < ARRAY_SIZE(rt5665->supplies); i++)
--		rt5665->supplies[i].supply = rt5665_supply_names[i];
--
--	ret = devm_regulator_bulk_get(&i2c->dev, ARRAY_SIZE(rt5665->supplies),
--				      rt5665->supplies);
-+	ret = devm_regulator_bulk_get_enable(&i2c->dev, ARRAY_SIZE(rt5665_supply_names),
-+					     rt5665_supply_names);
- 	if (ret != 0) {
- 		dev_err(&i2c->dev, "Failed to request supplies: %d\n", ret);
- 		return ret;
- 	}
- 
--	ret = regulator_bulk_enable(ARRAY_SIZE(rt5665->supplies),
--				    rt5665->supplies);
--	if (ret != 0) {
--		dev_err(&i2c->dev, "Failed to enable supplies: %d\n", ret);
--		return ret;
--	}
--
--
- 	rt5665->gpiod_ldo1_en = devm_gpiod_get_optional(&i2c->dev,
- 							"realtek,ldo1-en",
- 							GPIOD_OUT_HIGH);
+diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
+index 341787909bd2a..beae269e80b3c 100644
+--- a/drivers/remoteproc/remoteproc_core.c
++++ b/drivers/remoteproc/remoteproc_core.c
+@@ -2023,6 +2023,7 @@ int rproc_shutdown(struct rproc *rproc)
+ 	kfree(rproc->cached_table);
+ 	rproc->cached_table = NULL;
+ 	rproc->table_ptr = NULL;
++	rproc->table_sz = 0;
+ out:
+ 	mutex_unlock(&rproc->lock);
+ 	return ret;
 -- 
 2.39.5
 
