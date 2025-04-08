@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-129977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FB37A80275
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A71EA7FDA8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86F6E8807B3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:41:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22DB719E26C7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D129219301;
-	Tue,  8 Apr 2025 11:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE9EA268C62;
+	Tue,  8 Apr 2025 10:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ft3kzF/P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSefLeN/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C6E267AF2;
-	Tue,  8 Apr 2025 11:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5BB268C60;
+	Tue,  8 Apr 2025 10:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112486; cv=none; b=kncBkmle7bIBPfGzoUXywoZBMhnFmpCBb2B0XsVAFbI4Re8260EQBXGAgPb5PuVxsHZ2CQySuzt0ZDVyiwRVDFtEqfH0pmzvvbBFZZZ6p3d/0Ue7BIG1KJfN+yPALv51rC+z2SMX6WmCcswvken1N4CPERSUpst0SWLoL8e6GP8=
+	t=1744109918; cv=none; b=DV64UWs0LRP5pDCVvVy0Y0smCJU1bFAalh4mnj4/eKEPVQHliFnP1WCqO4PHHCSSd2LYYF1EbxrrEnxWXP/SAZN2TsZIfqimu51sS5p3rkOYibXc/AhulEoDxC30dgXm3pAngV8VFNmAVETyIx7Ah69ydOZxL7FjKhhN/aCMt+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112486; c=relaxed/simple;
-	bh=M6NRKdE2dqTP5mnqkXS//O2iUGb8amp+7UCn7cGUWws=;
+	s=arc-20240116; t=1744109918; c=relaxed/simple;
+	bh=tq5KdWgvX8XhpSnvIxGFVyxIghqWNv110NosiXvs75I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=snSBK9zh9JNDvs0mrEfcpjd8jf57LvpUa0tlK1agLmWyil8gT+hoOVmNrOoknbjHRJ2CZaOeCMinIFTYXixUfb6q/3YAjsXJsRCNifeIsQ9WN1D9WJw7MZpwqWp4jSawYq5E1BTjLATm9Ytbk4iyQRw7y9XWqOZ7vtJ/37XJNVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ft3kzF/P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F62C4CEE5;
-	Tue,  8 Apr 2025 11:41:25 +0000 (UTC)
+	 MIME-Version; b=R+9gP5AF8SVehBdq6PYze7FK3f+8HalWGe8N3yBg62ZG7Kvx4CLuhhCK4iZEaPx3E8Cn+jtHSI1I0qR1uQQ8T8l1uY5ode/eNfefGICUL72+9EInDjzCM0+xmCf9Q7bbrYsVh4cBverUvCAtg4I4Vu6YpMUubA5FgZPoYV6/ZO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSefLeN/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D1AFC4CEE5;
+	Tue,  8 Apr 2025 10:58:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112486;
-	bh=M6NRKdE2dqTP5mnqkXS//O2iUGb8amp+7UCn7cGUWws=;
+	s=korg; t=1744109918;
+	bh=tq5KdWgvX8XhpSnvIxGFVyxIghqWNv110NosiXvs75I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ft3kzF/Pw9woF4Joe1D3bSbO+aOOaw/lAfbjKhX11q6nLdgYc9lGPBND9USqvBDG1
-	 txwXrHR5eBbzHRvPCCRnLKwPfrvCPF4dFBmY/MZkwcpjpXcTVEsgHQpWc18Aqbe/PI
-	 4XpegXFVVEGWVyejF8yJcwhSJghvPBBkE/J5FeCA=
+	b=rSefLeN/npbKGqnFeLVOB7GzGELkcW/t+1EM4Qo2Lcqgy7RbEq6E0gSuDn54r3HND
+	 lVpPNUD0w+qgHdwUl1/E7bSpKq0rUfWcypnusYdzv2QMNDwE/xxzMVTxB3a4Rb4CZw
+	 VRWn/VP10iRet4lOFXphjpurN9VCAZGT8TXzG6jw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 079/279] firmware: imx-scu: fix OF node leak in .probe()
+	Gu Bowen <gubowen5@huawei.com>,
+	Aubin Constans <aubin.constans@microchip.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.10 084/227] mmc: atmel-mci: Add missing clk_disable_unprepare()
 Date: Tue,  8 Apr 2025 12:47:42 +0200
-Message-ID: <20250408104828.476962791@linuxfoundation.org>
+Message-ID: <20250408104822.904315051@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Gu Bowen <gubowen5@huawei.com>
 
-[ Upstream commit fbf10b86f6057cf79300720da4ea4b77e6708b0d ]
+commit e51a349d2dcf1df8422dabb90b2f691dc7df6f92 upstream.
 
-imx_scu_probe() calls of_parse_phandle_with_args(), but does not
-release the OF node reference obtained by it. Add a of_node_put() call
-after done with the node.
+The error path when atmci_configure_dma() set dma fails in atmci driver
+does not correctly disable the clock.
+Add the missing clk_disable_unprepare() to the error path for pair with
+clk_prepare_enable().
 
-Fixes: f25a066d1a07 ("firmware: imx-scu: Support one TX and one RX")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 467e081d23e6 ("mmc: atmel-mci: use probe deferring if dma controller is not ready yet")
+Signed-off-by: Gu Bowen <gubowen5@huawei.com>
+Acked-by: Aubin Constans <aubin.constans@microchip.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250225022856.3452240-1-gubowen5@huawei.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/imx/imx-scu.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/host/atmel-mci.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/imx/imx-scu.c b/drivers/firmware/imx/imx-scu.c
-index dca79caccd01c..fa25c082109ac 100644
---- a/drivers/firmware/imx/imx-scu.c
-+++ b/drivers/firmware/imx/imx-scu.c
-@@ -279,6 +279,7 @@ static int imx_scu_probe(struct platform_device *pdev)
- 		return ret;
- 
- 	sc_ipc->fast_ipc = of_device_is_compatible(args.np, "fsl,imx8-mu-scu");
-+	of_node_put(args.np);
- 
- 	num_channel = sc_ipc->fast_ipc ? 2 : SCU_MU_CHAN_NUM;
- 	for (i = 0; i < num_channel; i++) {
--- 
-2.39.5
-
+--- a/drivers/mmc/host/atmel-mci.c
++++ b/drivers/mmc/host/atmel-mci.c
+@@ -2507,8 +2507,10 @@ static int atmci_probe(struct platform_d
+ 	/* Get MCI capabilities and set operations according to it */
+ 	atmci_get_cap(host);
+ 	ret = atmci_configure_dma(host);
+-	if (ret == -EPROBE_DEFER)
++	if (ret == -EPROBE_DEFER) {
++		clk_disable_unprepare(host->mck);
+ 		goto err_dma_probe_defer;
++	}
+ 	if (ret == 0) {
+ 		host->prepare_data = &atmci_prepare_data_dma;
+ 		host->submit_data = &atmci_submit_data_dma;
 
 
 
