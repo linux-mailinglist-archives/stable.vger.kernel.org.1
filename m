@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-131676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2B47A80AC8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:09:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EAC7A8059A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:19:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23C107B46CE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF29A4A5E76
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0F826A1AF;
-	Tue,  8 Apr 2025 12:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E90D26A0E2;
+	Tue,  8 Apr 2025 12:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/Kfbk/U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rABjxn/F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8929726B2D2;
-	Tue,  8 Apr 2025 12:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED0D269825;
+	Tue,  8 Apr 2025 12:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117034; cv=none; b=HdIyLGQ5Hp3kQrfeLGpdp473KAeo6WEtfDmZXypZOR44w0mwQQUc5e5rLYMz+JWh3en4uF51HcwekhEUxunZNQMnAT4c93AgC1NDyNnLQpOGYgR/AoXPA4wbZkjwRu8sa6dlhbMkNxVX69PgCV8rJTR3Oq98C01cBzxA/yXfehQ=
+	t=1744114129; cv=none; b=ThGSU+REsKVUXTpSgmRebpqTz33tV6sgw46kMeXMQKI+k8GsJONXhCwVCnYUEVRLuuajIof6eSHEEyz3hxCQ9T1uRK6q6rUvodRxLreZa2sg0mBC9z3rFNNMtX/q34+LHroYGh5Sacc0v+O+MlQbBSoxB9LT4PFC3qKKmZzBn14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117034; c=relaxed/simple;
-	bh=CFket+5C6wB/CJILRu41X2cjEGUmSj8bnMiiKuxWz7w=;
+	s=arc-20240116; t=1744114129; c=relaxed/simple;
+	bh=tGkxa3+NQj/ry5jqjVPXvKaJPzd429rcgR8Yk42sJzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E1f17CNOT6I0GW/LJfPjU/AL86NddDrafshDYpfchHWx/S0V7dT6nqpUFvF+aa3vr/kJYmb/PAamgtI+mBCsKfSoz6z+2iruJn8jaiuPgENvlEHg8bwE7oLf6cHzIxdpZ+PT3+ICjOw3+y1chlP7/8lm6JwuIWc2xQ/D9IFsb54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/Kfbk/U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19D59C4CEE5;
-	Tue,  8 Apr 2025 12:57:13 +0000 (UTC)
+	 MIME-Version; b=p2f7dJic5IftYtll8GmxMVGy/tauSwm+NZs6aVf7sFFjJT+Fz1mfRm3si7W9Ia9gh/xTUUXTmiyaesoKEyo6Va6W2FD8AvrHvkpU4aVstWipbk6OGt9AO/TJknN6DaOoDyY/lK5OGhwv/h1MNkD37bVfkEtsUin5AiZQY+eGQHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rABjxn/F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28969C4CEE5;
+	Tue,  8 Apr 2025 12:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117034;
-	bh=CFket+5C6wB/CJILRu41X2cjEGUmSj8bnMiiKuxWz7w=;
+	s=korg; t=1744114129;
+	bh=tGkxa3+NQj/ry5jqjVPXvKaJPzd429rcgR8Yk42sJzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T/Kfbk/U9ThFmSsqGhvWFTPFmtTj59tO1ZAM3UXjCvjvr0Q5ZXZZHk5zaSN/Gp6v+
-	 wx+TtXBcw3TT08gVmsDx1mheMRFXeCntgYtkR42jU6JC3pXJ/h6klyJUZDUN45jHQ4
-	 jVkQ3QhZ4UEVQw6G+vCyVaa6klVq6pC2oesrHoV8=
+	b=rABjxn/FQFasHuL6A1nd2I/TbWmCIo7YxuyKo23Wpj+1cK8UarFQLWzoKRqCvaeTi
+	 9q4pwj7Dy3y3x3m27RxHeQNmhVpxQOqz/TZIJyoOYCXyRvlpNZ3dsX0wD7oYN8kvS4
+	 8pUJWkqMSbEDe9AGbtPQQ/yiJiyRROdqcvIvxllg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ying Lu <luying1@xiaomi.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 361/423] usbnet:fix NPE during rx_complete
+	Haibo Chen <haibo.chen@nxp.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 146/154] can: flexcan: only change CAN state when link up in system PM
 Date: Tue,  8 Apr 2025 12:51:27 +0200
-Message-ID: <20250408104854.268104092@linuxfoundation.org>
+Message-ID: <20250408104819.982947308@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +60,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ying Lu <luying1@xiaomi.com>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-commit 51de3600093429e3b712e5f091d767babc5dd6df upstream.
+[ Upstream commit fd99d6ed20234b83d65b9c5417794343577cf3e5 ]
 
-Missing usbnet_going_away Check in Critical Path.
-The usb_submit_urb function lacks a usbnet_going_away
-validation, whereas __usbnet_queue_skb includes this check.
+After a suspend/resume cycle on a down interface, it will come up as
+ERROR-ACTIVE.
 
-This inconsistency creates a race condition where:
-A URB request may succeed, but the corresponding SKB data
-fails to be queued.
+$ ip -details -s -s a s dev flexcan0
+3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
+    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
+    can state STOPPED (berr-counter tx 0 rx 0) restart-ms 1000
 
-Subsequent processes:
-(e.g., rx_complete → defer_bh → __skb_unlink(skb, list))
-attempt to access skb->next, triggering a NULL pointer
-dereference (Kernel Panic).
+$ sudo systemctl suspend
 
-Fixes: 04e906839a05 ("usbnet: fix cyclical race on disconnect with work queue")
+$ ip -details -s -s a s dev flexcan0
+3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
+    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
+    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 1000
+
+And only set CAN state to CAN_STATE_ERROR_ACTIVE when resume process
+has no issue, otherwise keep in CAN_STATE_SLEEPING as suspend did.
+
+Fixes: 4de349e786a3 ("can: flexcan: fix resume function")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ying Lu <luying1@xiaomi.com>
-Link: https://patch.msgid.link/4c9ef2efaa07eb7f9a5042b74348a67e5a3a7aea.1743584159.git.luying1@xiaomi.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Link: https://patch.msgid.link/20250314110145.899179-1-haibo.chen@nxp.com
+Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Closes: https://lore.kernel.org/all/20250314-married-polar-elephant-b15594-mkl@pengutronix.de
+[mkl: add newlines]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/usbnet.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/can/flexcan.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -530,7 +530,8 @@ static int rx_submit (struct usbnet *dev
- 	    netif_device_present (dev->net) &&
- 	    test_bit(EVENT_DEV_OPEN, &dev->flags) &&
- 	    !test_bit (EVENT_RX_HALT, &dev->flags) &&
--	    !test_bit (EVENT_DEV_ASLEEP, &dev->flags)) {
-+	    !test_bit (EVENT_DEV_ASLEEP, &dev->flags) &&
-+	    !usbnet_going_away(dev)) {
- 		switch (retval = usb_submit_urb (urb, GFP_ATOMIC)) {
- 		case -EPIPE:
- 			usbnet_defer_kevent (dev, EVENT_RX_HALT);
-@@ -551,8 +552,7 @@ static int rx_submit (struct usbnet *dev
- 			tasklet_schedule (&dev->bh);
- 			break;
- 		case 0:
--			if (!usbnet_going_away(dev))
--				__usbnet_queue_skb(&dev->rxq, skb, rx_start);
-+			__usbnet_queue_skb(&dev->rxq, skb, rx_start);
+diff --git a/drivers/net/can/flexcan.c b/drivers/net/can/flexcan.c
+index 7ec15cb356c01..69b4318b1a77e 100644
+--- a/drivers/net/can/flexcan.c
++++ b/drivers/net/can/flexcan.c
+@@ -1723,8 +1723,9 @@ static int __maybe_unused flexcan_suspend(struct device *device)
  		}
- 	} else {
- 		netif_dbg(dev, ifdown, dev->net, "rx: stopped\n");
+ 		netif_stop_queue(dev);
+ 		netif_device_detach(dev);
++
++		priv->can.state = CAN_STATE_SLEEPING;
+ 	}
+-	priv->can.state = CAN_STATE_SLEEPING;
+ 
+ 	return err;
+ }
+@@ -1735,7 +1736,6 @@ static int __maybe_unused flexcan_resume(struct device *device)
+ 	struct flexcan_priv *priv = netdev_priv(dev);
+ 	int err = 0;
+ 
+-	priv->can.state = CAN_STATE_ERROR_ACTIVE;
+ 	if (netif_running(dev)) {
+ 		netif_device_attach(dev);
+ 		netif_start_queue(dev);
+@@ -1747,6 +1747,8 @@ static int __maybe_unused flexcan_resume(struct device *device)
+ 		} else {
+ 			err = flexcan_chip_enable(priv);
+ 		}
++
++		priv->can.state = CAN_STATE_ERROR_ACTIVE;
+ 	}
+ 
+ 	return err;
+-- 
+2.39.5
+
 
 
 
