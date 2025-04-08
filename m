@@ -1,56 +1,68 @@
-Return-Path: <stable+bounces-130746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBAD7A8062A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:25:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A657A809D3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:58:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CD4F8A0FCE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:17:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1A5A4E2B2D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D82D26A1CC;
-	Tue,  8 Apr 2025 12:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E2F326B976;
+	Tue,  8 Apr 2025 12:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ccNS4GFb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSKwDWTJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8F2269AE4;
-	Tue,  8 Apr 2025 12:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2B926B96C;
+	Tue,  8 Apr 2025 12:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114538; cv=none; b=YY+17CFkEh/kz5Zcr0grAs5xTHiENCuWQztmrUMhM24/mPts6/cok5uUXxiGVHPGWzRgJysMF1thvJ13+sUNl54QQiPhLKgmDkKTmXVqN/ZXFw7l9DZfSrtuAsa/HrzPfN2vNjgeQNkTUX97HIHA18X9zZhsB2OkvdKrX5Wxpqg=
+	t=1744116140; cv=none; b=qvv+FAJb2IHeXOak0oVZ/S//fVU6wgVP/O7gH8YmQ/7c3ewaY+pNd+uAtdRPVyPI4ySAMu7fUAHRUG48oBAqL5BkE0ZkTbQEcwEAZobr2REan3MLrcklAs+q212w1+g918mFHK939ahEg8coHKzX+NM5naKpHZfO+yAnvDR7Fzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114538; c=relaxed/simple;
-	bh=FxEf+1oJzVIBbWKzjEDiSc/vttc9ls7ry4n03PK3GNk=;
+	s=arc-20240116; t=1744116140; c=relaxed/simple;
+	bh=N0UxZEgRuTCJjL2GHV/fOFGzlrQcvA953hmsFhkobE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fQ/qjWDQ0f1GzmrA13seRyBeh0eGVa+Ego12L1Q+yNSTB4uVLIm9EHBtMyK5QvzTkhOcCvMDisZKx/pWAlZuOVwYiB7FdJItpclMRoEodsDdJuAc4fvHIghzwM39jc2CVuQYbyLUmHV6TCyCV8U15QR7b/OSHLiIOx0cIRI8Tvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ccNS4GFb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C3B0C4CEE5;
-	Tue,  8 Apr 2025 12:15:38 +0000 (UTC)
+	 MIME-Version; b=PHVLxw26sThgobwXpGAbBsTTQlDfbuoocfJ6EDxTr+2UX5R9FRQ5bmK4SGMuu89oAyKdBmPsxqu3AqDoKuUmROuOkOugWR9GljZx0uWtT3bS3tpe6wQmvgrgICb/4krTV+mUQGkZHU8SXXe7d0vlUGQnj9DZ5gBTEkgS+EeS8UE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSKwDWTJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9677BC4CEE5;
+	Tue,  8 Apr 2025 12:42:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114538;
-	bh=FxEf+1oJzVIBbWKzjEDiSc/vttc9ls7ry4n03PK3GNk=;
+	s=korg; t=1744116140;
+	bh=N0UxZEgRuTCJjL2GHV/fOFGzlrQcvA953hmsFhkobE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ccNS4GFbIDqjCRAyJXfNB8XVni76rV1qQlRqzUhDlaYu0xOLLJrUDyRb+LMwsaGCK
-	 48SSsoL9UVxHobJzbn9SHbx/CqD2AekPbsYBuVtB2KqWANQ2FHXET5Z+dg0YTnoXrQ
-	 2kfUyWNCfCOTWYMvmPBKt+S/Yv+W/Aj2HiCRsC2Q=
+	b=zSKwDWTJbCA988caWTjXFTUV9nv3HoF/6GlnqG9A6IaLalwb+TUgtMwX6T/VgWJUN
+	 wwZB1GNDlpGE0DI3wyV3eRDvywArB0Apmhuy9TReIfVU8ociCB6RbZAtDmXSHB7RbZ
+	 yWHLRbB5J62Ab0teFn6ApzXndp0tYZey4YLUgVlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	"Chang S. Bae" <chang.seok.bae@intel.com>,
+	Chao Gao <chao.gao@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	David Woodhouse <dwmw2@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 144/499] pinctrl: nuvoton: npcm8xx: Fix error handling in npcm8xx_gpio_fw()
+Subject: [PATCH 6.12 030/423] x86/fpu/xstate: Fix inconsistencies in guest FPU xfeatures
 Date: Tue,  8 Apr 2025 12:45:56 +0200
-Message-ID: <20250408104854.780219709@linuxfoundation.org>
+Message-ID: <20250408104846.450174431@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +74,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Chao Gao <chao.gao@intel.com>
 
-[ Upstream commit d6c6fd77e5816e3f6689a2767cdd777797506f24 ]
+[ Upstream commit dda366083e5ff307a4a728757db874bbfe7550be ]
 
-fwnode_irq_get() was changed to not return 0, fix this by checking
-for negative error, also update the error log.
+Guest FPUs manage vCPU FPU states. They are allocated via
+fpu_alloc_guest_fpstate() and are resized in fpstate_realloc() when XFD
+features are enabled.
 
-Fixes: acf4884a5717 ("pinctrl: nuvoton: add NPCM8XX pinctrl and GPIO driver")
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Link: https://lore.kernel.org/20250118031334.243324-1-yuehaibing@huawei.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Since the introduction of guest FPUs, there have been inconsistencies in
+the kernel buffer size and xfeatures:
+
+ 1. fpu_alloc_guest_fpstate() uses fpu_user_cfg since its introduction. See:
+
+    69f6ed1d14c6 ("x86/fpu: Provide infrastructure for KVM FPU cleanup")
+    36487e6228c4 ("x86/fpu: Prepare guest FPU for dynamically enabled FPU features")
+
+ 2. __fpstate_reset() references fpu_kernel_cfg to set storage attributes.
+
+ 3. fpu->guest_perm uses fpu_kernel_cfg, affecting fpstate_realloc().
+
+A recent commit in the tip:x86/fpu tree partially addressed the inconsistency
+between (1) and (3) by using fpu_kernel_cfg for size calculation in (1),
+but left fpu_guest->xfeatures and fpu_guest->perm still referencing
+fpu_user_cfg:
+
+  https://lore.kernel.org/all/20250218141045.85201-1-stanspas@amazon.de/
+
+  1937e18cc3cf ("x86/fpu: Fix guest FPU state buffer allocation size")
+
+The inconsistencies within fpu_alloc_guest_fpstate() and across the
+mentioned functions cause confusion.
+
+Fix them by using fpu_kernel_cfg consistently in fpu_alloc_guest_fpstate(),
+except for fields related to the UABI buffer. Referencing fpu_kernel_cfg
+won't impact functionalities, as:
+
+ 1. fpu_guest->perm is overwritten shortly in fpu_init_guest_permissions()
+    with fpstate->guest_perm, which already uses fpu_kernel_cfg.
+
+ 2. fpu_guest->xfeatures is solely used to check if XFD features are enabled.
+    Including supervisor xfeatures doesn't affect the check.
+
+Fixes: 36487e6228c4 ("x86/fpu: Prepare guest FPU for dynamically enabled FPU features")
+Suggested-by: Chang S. Bae <chang.seok.bae@intel.com>
+Signed-off-by: Chao Gao <chao.gao@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: Stefano Stabellini <sstabellini@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>
+Link: https://lore.kernel.org/r/20250317140613.1761633-1-chao.gao@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c | 4 ++--
+ arch/x86/kernel/fpu/core.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c b/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c
-index d09a5e9b2eca5..17825bbe14213 100644
---- a/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c
-+++ b/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c
-@@ -2361,8 +2361,8 @@ static int npcm8xx_gpio_fw(struct npcm8xx_pinctrl *pctrl)
- 			return dev_err_probe(dev, ret, "gpio-ranges fail for GPIO bank %u\n", id);
+diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+index 36df548acc403..dcac3c058fb76 100644
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -232,8 +232,8 @@ bool fpu_alloc_guest_fpstate(struct fpu_guest *gfpu)
+ 	fpstate->is_guest	= true;
  
- 		ret = fwnode_irq_get(child, 0);
--		if (!ret)
--			return dev_err_probe(dev, ret, "No IRQ for GPIO bank %u\n", id);
-+		if (ret < 0)
-+			return dev_err_probe(dev, ret, "Failed to retrieve IRQ for bank %u\n", id);
+ 	gfpu->fpstate		= fpstate;
+-	gfpu->xfeatures		= fpu_user_cfg.default_features;
+-	gfpu->perm		= fpu_user_cfg.default_features;
++	gfpu->xfeatures		= fpu_kernel_cfg.default_features;
++	gfpu->perm		= fpu_kernel_cfg.default_features;
  
- 		pctrl->gpio_bank[id].irq = ret;
- 		pctrl->gpio_bank[id].irq_chip = npcmgpio_irqchip;
+ 	/*
+ 	 * KVM sets the FP+SSE bits in the XSAVE header when copying FPU state
 -- 
 2.39.5
 
