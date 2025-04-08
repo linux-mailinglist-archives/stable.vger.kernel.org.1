@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-129022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C601EA7FDBD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 029A0A8015F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:39:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E63C42186C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20BBE3B2A9B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF0B1FBCB2;
-	Tue,  8 Apr 2025 10:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69D22690CC;
+	Tue,  8 Apr 2025 11:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fwxLCLPL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r3sLi1H4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFAA22171A;
-	Tue,  8 Apr 2025 10:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621722690C0;
+	Tue,  8 Apr 2025 11:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109907; cv=none; b=pjHNGyFcwe0Va1OyY8EHEM2rhlEaPVSWW6hHcxXSrK/A+7j5NkiX67/2xBVetuD/eTl1DFskbQZE7+9A+8WVKgXgQjlIwJkyT0ZxLOMSIzltxx2sjStTh9cISOTDpaPt6ZIHVb+Y086DLcxZDuWE3NEadghxjrquyAudZYAHcAQ=
+	t=1744111842; cv=none; b=uYlfKaXo2mq5pFsuDmPW1PGS8tqlRZYytjtqo2K4MsYFglRkaG8NGg8sJTaAN2VdHuVNjw50qRfZm0RtYa4s0ZXH3yTTbw0McMhkw9/KED2djbm4n9MHBKcIjV2Eu9z1SBz/4O5z7HixvsO59no3P6DC4/a3xy2S1dpCQuRGk5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109907; c=relaxed/simple;
-	bh=VWYbfDHKlbUFiIOsM2u1VVEnh9YxJr0PLrekLUTMq6g=;
+	s=arc-20240116; t=1744111842; c=relaxed/simple;
+	bh=6nMAZlCS1kNXGpWUqtvEj4ZFKHoav+m6Gw5zg5SOI/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jpOe26SQPGrBxbVm7KBPfQzrUTrwsS2qsxenlqcu9hGSBY5vbOPnPofHJIBTW+/DudHUJKPKvii9jK6tI6+tCH5jcFtXbYFQJzUnCdWnmI6hzLpjPGIEQ/K+zeHe0c/I9O8KhqlZpLgV7mMJXmogo7n8r5kU7+RQq+KIk1h2kWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fwxLCLPL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F923C4CEE5;
-	Tue,  8 Apr 2025 10:58:27 +0000 (UTC)
+	 MIME-Version; b=G7IKEdpJ7aOH1oRDsxMY+3j0Ab+VPtdpN+piIZfiTrPGARKzZneAPpaqrPCWsPQD+ll1nHAME1dUW3NBmTjn/sd4PpRW8mYuptMCznvKX/84HDYAxijJi7rxi84UfcGz21YgP1CNvxn6BXtaKgQYHPjFN/LMRc5HHM1KsWROzEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r3sLi1H4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6CF2C4CEEA;
+	Tue,  8 Apr 2025 11:30:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109907;
-	bh=VWYbfDHKlbUFiIOsM2u1VVEnh9YxJr0PLrekLUTMq6g=;
+	s=korg; t=1744111842;
+	bh=6nMAZlCS1kNXGpWUqtvEj4ZFKHoav+m6Gw5zg5SOI/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fwxLCLPLJ+/z2TwbCEhW4iUXsbJmYiDvP1lPK5kkboWUds9zFk9X2kO43dAr49if2
-	 KCOOGW6IdzYS3ymDYzoxISHaSBce/2Njc9eBJQCfGRspXXn1HMqg43r6mDOdmxUlAH
-	 2XIZN7W36HVoXlSxYsdgPtCmao67YSDOLb/sI2Gk=
+	b=r3sLi1H4QpNNf0ZSVFE2XbJBRBMlW15FMBxhNYBs+8mvdJ55K1MOl2qKDMvcOLnlN
+	 tu84FMN0DIiVm7jWoFjV48LsKTYZl4JsLADcfLI2Mkn+hB0aARjZjVvMHO0eGMxs4z
+	 LIRNu3WWHBw3S9DU7n1MQtsiBvzRYKuTCXElobjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yanjun Yang <yangyj.ee@gmail.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Kees Cook <kees@kernel.org>
-Subject: [PATCH 5.10 098/227] ARM: Remove address checking for MMUless devices
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 579/731] spufs: fix a leak in spufs_create_context()
 Date: Tue,  8 Apr 2025 12:47:56 +0200
-Message-ID: <20250408104823.304445009@linuxfoundation.org>
+Message-ID: <20250408104927.741678742@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yanjun Yang <yangyj.ee@gmail.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit 3ccea4784fddd96fbd6c4497eb28b45dab638c2a upstream.
+[ Upstream commit 0f5cce3fc55b08ee4da3372baccf4bcd36a98396 ]
 
-Commit 169f9102f9198b ("ARM: 9350/1: fault: Implement
-copy_from_kernel_nofault_allowed()") added the function to check address
-before use. However, for devices without MMU, addr > TASK_SIZE will
-always fail.  This patch move this function after the #ifdef CONFIG_MMU
-statement.
+Leak fixes back in 2008 missed one case - if we are trying to set affinity
+and spufs_mkdir() fails, we need to drop the reference to neighbor.
 
-Signed-off-by: Yanjun Yang <yangyj.ee@gmail.com>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218953
-Fixes: 169f9102f9198b ("ARM: 9350/1: fault: Implement copy_from_kernel_nofault_allowed()")
-Link: https://lore.kernel.org/r/20240611100947.32241-1-yangyj.ee@gmail.com
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 58119068cb27 "[POWERPC] spufs: Fix memory leak on SPU affinity"
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mm/fault.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/platforms/cell/spufs/inode.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/arm/mm/fault.c
-+++ b/arch/arm/mm/fault.c
-@@ -24,6 +24,8 @@
+diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
+index c566e7997f2c1..9f9e4b8716278 100644
+--- a/arch/powerpc/platforms/cell/spufs/inode.c
++++ b/arch/powerpc/platforms/cell/spufs/inode.c
+@@ -460,8 +460,11 @@ spufs_create_context(struct inode *inode, struct dentry *dentry,
+ 	}
  
- #include "fault.h"
+ 	ret = spufs_mkdir(inode, dentry, flags, mode & 0777);
+-	if (ret)
++	if (ret) {
++		if (neighbor)
++			put_spu_context(neighbor);
+ 		goto out_aff_unlock;
++	}
  
-+#ifdef CONFIG_MMU
-+
- bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
- {
- 	unsigned long addr = (unsigned long)unsafe_src;
-@@ -31,8 +33,6 @@ bool copy_from_kernel_nofault_allowed(co
- 	return addr >= TASK_SIZE && ULONG_MAX - addr >= size;
- }
- 
--#ifdef CONFIG_MMU
--
- /*
-  * This is useful to dump out the page tables associated with
-  * 'addr' in mm 'mm'.
+ 	if (affinity) {
+ 		spufs_set_affinity(flags, SPUFS_I(d_inode(dentry))->i_ctx,
+-- 
+2.39.5
+
 
 
 
