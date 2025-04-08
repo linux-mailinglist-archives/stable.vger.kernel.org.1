@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-129768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99E8FA800EF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:36:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78376A7FDB9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3E487A7D4A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:32:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A2871734EE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D8826A0C5;
-	Tue,  8 Apr 2025 11:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75362686A2;
+	Tue,  8 Apr 2025 10:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wETSAIyQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2cnJ2MjV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF34227BB6;
-	Tue,  8 Apr 2025 11:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E721DDA0C;
+	Tue,  8 Apr 2025 10:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111927; cv=none; b=N90hpI0IdDkrcUpHYD2OMvaYrHAuCDC/RBK1hp+XHOVHdZ3vG/SWalUiO2BaXxPU5XsCeftiwuxMbMZ+Vvh//r1lRVRtX9uVoukTjjc3LbPC0A2dEgXvHqSyNkQMlh2A8zBmOXjoIbdbyo8ZN6Z6weFHeFIyVs/n/17IYls2Z/8=
+	t=1744109953; cv=none; b=GfQ5JIY8KcVMQZjv3Fkk9Jj20kzINg/inBQFt6QSqNlLwVNrXaRoRROY+qPy/B/sGkvOslJCkWYaChTsBUzf3zZ1JJzEh2mhIO7uTrABhABvBPMM0DOvOkS0j3CY+qsUe//4dRjA187xl/zWPUFLmC/v5XcvfrnrPW/gCQ6xwW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111927; c=relaxed/simple;
-	bh=yNkf9Y+Ss9Wf5UPT+o4HdxcZIeulAb78Hb7nF50jlCw=;
+	s=arc-20240116; t=1744109953; c=relaxed/simple;
+	bh=Y4yEZmkQagMz0rq+mZrsGxmXv4Nv7zZPzgeldQbDBMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LXiA8Nlda+1/0mzg9vMCG8LOg1gYFiTVW9716a4PTmuQKj2T1nXHpKrdS2bfs2fyg7GGfC//iDdyA5LQfiOKcucbsNxuUfBv6eAHUiEJo6HYG5vRzaZ7wooa669Jq8nDwmSLRfMMloF/AQz9mXvUeBar8etIaY/fig+tYceAnFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wETSAIyQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBE82C4CEE5;
-	Tue,  8 Apr 2025 11:32:06 +0000 (UTC)
+	 MIME-Version; b=SjC8e6Hgs4M45i7wkEii8YqgS3icXQCEoubOujOGZWKWbv659m7clhKOK1f0fXhZndLOF8BE1AKF+xEXAXzWfnWloeN+SvI/98rgBPzEr1zjbFUJJT3aEDSusfnkhCFf32drhph416Ti4MZVa4AOKLu8f+Z7J9vfFQp5nUikuUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2cnJ2MjV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 272C3C4CEE5;
+	Tue,  8 Apr 2025 10:59:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111927;
-	bh=yNkf9Y+Ss9Wf5UPT+o4HdxcZIeulAb78Hb7nF50jlCw=;
+	s=korg; t=1744109953;
+	bh=Y4yEZmkQagMz0rq+mZrsGxmXv4Nv7zZPzgeldQbDBMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wETSAIyQGqzg5XPjMuMr4PPFDygf0A14g1IiulIYpllAad27knDungSEUS3FZTyiQ
-	 Gg7saB3zkBENEo3VPKF5OxrfqWeMVA7exTu9eC6hrHBjJFMIWbkc0qKz6ycTAUqvCQ
-	 89W8mBBjK1f2K0HN/hur3Vv7TR722xOAMBir6U7k=
+	b=2cnJ2MjVwNjMl6sDI+/tH01BVqBTeKOjx0qXPmJGoOie06W1FLIH8vksCWA1qXWW7
+	 gkfmgz2sTZATsWW7CsSGF3wbb59rtlBv+rYA9PfACDmga5z5+n9cgWoPiQjuXYW1Up
+	 ofYkzqg7ImVLKHqe0B9wjNU0ctlZHtKwoA/Uo/68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	zuoqian <zuoqian113@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 594/731] firmware: cs_dsp: Ensure cs_dsp_load[_coeff]() returns 0 on success
+Subject: [PATCH 5.10 113/227] cpufreq: scpi: compare kHz instead of Hz
 Date: Tue,  8 Apr 2025 12:48:11 +0200
-Message-ID: <20250408104928.091872999@linuxfoundation.org>
+Message-ID: <20250408104823.736290842@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: zuoqian <zuoqian113@gmail.com>
 
-[ Upstream commit 2593f7e0dc93a898a84220b3fb180d86f1ca8c60 ]
+[ Upstream commit 4742da9774a416908ef8e3916164192c15c0e2d1 ]
 
-Set ret = 0 on successful completion of the processing loop in
-cs_dsp_load() and cs_dsp_load_coeff() to ensure that the function
-returns 0 on success.
+The CPU rate from clk_get_rate() may not be divisible by 1000
+(e.g., 133333333). But the rate calculated from frequency(kHz) is
+always divisible by 1000 (e.g., 133333000).
+Comparing the rate causes a warning during CPU scaling:
+"cpufreq: __target_index: Failed to change cpu frequency: -5".
+When we choose to compare kHz here, the issue does not occur.
 
-All normal firmware files will have at least one data block, and
-processing this block will set ret == 0, from the result of either
-regmap_raw_write() or cs_dsp_parse_coeff().
-
-The kunit tests create a dummy firmware file that contains only the
-header, without any data blocks. This gives cs_dsp a file to "load"
-that will not cause any side-effects. As there aren't any data blocks,
-the processing loop will not set ret == 0.
-
-Originally there was a line after the processing loop:
-
-    ret = regmap_async_complete(regmap);
-
-which would set ret == 0 before the function returned.
-
-Commit fe08b7d5085a ("firmware: cs_dsp: Remove async regmap writes")
-changed the regmap write to a normal sync write, so the call to
-regmap_async_complete() wasn't necessary and was removed. It was
-overlooked that the ret here wasn't only to check the result of
-regmap_async_complete(), it also set the final return value of the
-function.
-
-Fixes: fe08b7d5085a ("firmware: cs_dsp: Remove async regmap writes")
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250323170529.197205-1-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 343a8d17fa8d ("cpufreq: scpi: remove arm_big_little dependency")
+Signed-off-by: zuoqian <zuoqian113@gmail.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/cirrus/cs_dsp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/cpufreq/scpi-cpufreq.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
-index 42433c19eb308..560724ce21aa3 100644
---- a/drivers/firmware/cirrus/cs_dsp.c
-+++ b/drivers/firmware/cirrus/cs_dsp.c
-@@ -1631,6 +1631,7 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
+diff --git a/drivers/cpufreq/scpi-cpufreq.c b/drivers/cpufreq/scpi-cpufreq.c
+index e5140ad63db83..c79cdf1be7803 100644
+--- a/drivers/cpufreq/scpi-cpufreq.c
++++ b/drivers/cpufreq/scpi-cpufreq.c
+@@ -47,8 +47,9 @@ static unsigned int scpi_cpufreq_get_rate(unsigned int cpu)
+ static int
+ scpi_cpufreq_set_target(struct cpufreq_policy *policy, unsigned int index)
+ {
+-	u64 rate = policy->freq_table[index].frequency * 1000;
++	unsigned long freq_khz = policy->freq_table[index].frequency;
+ 	struct scpi_data *priv = policy->driver_data;
++	unsigned long rate = freq_khz * 1000;
+ 	int ret;
  
- 	cs_dsp_debugfs_save_wmfwname(dsp, file);
+ 	ret = clk_set_rate(priv->clk, rate);
+@@ -56,7 +57,7 @@ scpi_cpufreq_set_target(struct cpufreq_policy *policy, unsigned int index)
+ 	if (ret)
+ 		return ret;
  
-+	ret = 0;
- out_fw:
- 	cs_dsp_buf_free(&buf_list);
+-	if (clk_get_rate(priv->clk) != rate)
++	if (clk_get_rate(priv->clk) / 1000 != freq_khz)
+ 		return -EIO;
  
-@@ -2338,6 +2339,7 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
- 
- 	cs_dsp_debugfs_save_binname(dsp, file);
- 
-+	ret = 0;
- out_fw:
- 	cs_dsp_buf_free(&buf_list);
- 
+ 	return 0;
 -- 
 2.39.5
 
