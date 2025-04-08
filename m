@@ -1,98 +1,133 @@
-Return-Path: <stable+bounces-128816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0412A7F3D1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 06:54:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97FC7A7F3C4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 06:42:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1B0B167336
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 04:54:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A1381897231
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 04:42:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4621CAA89;
-	Tue,  8 Apr 2025 04:54:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b="aKN+zk1N"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB635206F31;
+	Tue,  8 Apr 2025 04:42:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out187-1.us.a.mail.aliyun.com (out187-1.us.a.mail.aliyun.com [47.90.187.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B96B23AD;
-	Tue,  8 Apr 2025 04:54:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.187.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA93B1CAA7D;
+	Tue,  8 Apr 2025 04:42:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744088050; cv=none; b=Jlx3h5F6Enu1kB4g4Pk4iBAYSUurwFk23L3FSxi+AacjnaCmx5NKXo5rTciSdvmn3PZD3/zooDx9pyZyoGst/3u1f0cwI8i+SU81/h5o5R1j4aZbZsy0vDlbvb39PwRApVHOEpdT+o1mL8+O4uRKDpiVTPYRap4YR2RtxTo9Wew=
+	t=1744087349; cv=none; b=hzIMGchEqe/Ey+TvlyFNx2VJKiZhBv9aaEaeFzEMSxZWK2dBam7Izo96tVB57CvXZ+1maQ4ROJ5x9VQKdgvNJRoYBYr1gpEcKh4ZbS1meG38B370jqAKKtubCv7AOgJTr5Cc+InUcfv2k5oWVOtupdWz6YvzGmSQGTY052NSfz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744088050; c=relaxed/simple;
-	bh=THts4x8lAg2CXDirVmNIxj8FwPRaS1SHPGFkz2avijk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l99hEVpZL2y4NHRVCZLENYH7by0WUTFq6FlFiLSZDPvI9PxxyBAcCs0wy2KZjCfPu1u9k4BboUGHcXSjFRiUktp33TuCme0dXH2zYoDdLybBSUIVFyrWNsTXTc5l8pz7spdjfDdToQikXzBnzQRVkNvbGwml9jfQT68FMvvN93Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com; spf=pass smtp.mailfrom=antgroup.com; dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b=aKN+zk1N; arc=none smtp.client-ip=47.90.187.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antgroup.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=antgroup.com; s=default;
-	t=1744088033; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=xc3RQHbbWhjaENeV54tCo3uz4MbXYhwQLPGC2Mc716Q=;
-	b=aKN+zk1NYCD9hjqg8NZg8UBPEH2BFHOYt1yq8g1110dyxzriOgELfxseNJHJ+LeKRMwf0WpOvIVyH3FDPpoE+QahzuhlOjFRftSBB7qPX2e0ESG1fs07pDwO2rzYxlYjL+1zjxoH9TkJskbl1kHEldLj8fCA6fYbB3LstUlGC+M=
-Received: from 30.174.97.68(mailfrom:tiwei.btw@antgroup.com fp:SMTPD_---.cGd.uV9_1744087093 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Tue, 08 Apr 2025 12:38:13 +0800
-Message-ID: <621e867f-5427-4062-8783-e474e3dcdb3f@antgroup.com>
-Date: Tue, 08 Apr 2025 12:38:12 +0800
+	s=arc-20240116; t=1744087349; c=relaxed/simple;
+	bh=D31vUVu32ORyo4H6+P+jGQhtvqYv+1sDFDa93HUVz9M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ET37hgwKVtLPl//E/vfJI7Y+VBENHNfOuE88ft9nLlz6y0HWzjY/KmCr3g7f0r1GyTwT+hfNkF9dFSQ5doyonGv+/7SeVyld24wk2Krtr0nWKTzA1W35BuxxfPRw+32RYoKrmH/sFcFT2pT9vL+GTknTer9wgXscsabTbOMaFqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.245])
+	by APP-01 (Coremail) with SMTP id qwCowADHbf4sqfRnikMWBw--.31690S2;
+	Tue, 08 Apr 2025 12:42:21 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: gregkh@linuxfoundation.org
+Cc: philipp.g.hortmann@gmail.com,
+	linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v7] staging: rtl8723bs: Add error handling for sd_read()
+Date: Tue,  8 Apr 2025 12:41:52 +0800
+Message-ID: <20250408044152.3009-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH AUTOSEL 6.13 23/28] um: Rewrite the sigio workaround based
- on epoll and tgkill
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>, richard@nod.at,
- anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
- benjamin.berg@intel.com, linux-um@lists.infradead.org
-References: <20250407181224.3180941-1-sashal@kernel.org>
- <20250407181224.3180941-23-sashal@kernel.org>
-Content-Language: en-US
-From: "Tiwei Bie" <tiwei.btw@antgroup.com>
-In-Reply-To: <20250407181224.3180941-23-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowADHbf4sqfRnikMWBw--.31690S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7CryUuFW8JF4xur15Jr1UZFb_yoW8Kw18pF
+	4kKa4DArZ8Wa95ZFn2qas3Ca4rAryrGFW5WrW0kw4Svw15uwsavrWrKa42gr18Gr4qkw4Y
+	qF1v93Z8uw1DAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvl14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
+	1j6rxdM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+	6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr
+	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v2
+	6r126r1DMxkIecxEwVAFwVW8XwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJV
+	W8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF
+	1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6x
+	IIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvE
+	x4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvj
+	DU0xZFpf9x0JUbzVUUUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgsGA2f0dv3HmQAAsO
 
-On 2025/4/8 02:12, Sasha Levin wrote:
-> From: Tiwei Bie <tiwei.btw@antgroup.com>
-> 
-> [ Upstream commit 33c9da5dfb18c2ff5a88d01aca2cf253cd0ac3bc ]
-> 
-> The existing sigio workaround implementation removes FDs from the
-> poll when events are triggered, requiring users to re-add them via
-> add_sigio_fd() after processing. This introduces a potential race
-> condition between FD removal in write_sigio_thread() and next_poll
-> update in __add_sigio_fd(), and is inefficient due to frequent FD
-> removal and re-addition. Rewrite the implementation based on epoll
-> and tgkill for improved efficiency and reliability.
-> 
-> Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-> Link: https://patch.msgid.link/20250315161910.4082396-2-tiwei.btw@antgroup.com
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  arch/um/drivers/random.c       |   2 +-
->  arch/um/drivers/rtc_user.c     |   2 +-
->  arch/um/include/shared/os.h    |   2 +-
->  arch/um/include/shared/sigio.h |   1 -
->  arch/um/kernel/sigio.c         |  26 ---
->  arch/um/os-Linux/sigio.c       | 330 +++++----------------------------
->  6 files changed, 47 insertions(+), 316 deletions(-)
+The sdio_read32() calls sd_read(), but does not handle the error if
+sd_read() fails. This could lead to subsequent operations processing
+invalid data. A proper implementation can be found in sdio_readN(),
+which has an error handling for the sd_read().
 
-Please drop this patch. Thanks! Details can be found here: 
+Add error handling for the sd_read() to free tmpbuf and return error
+code if sd_read() fails. This ensure that the memcpy() is only performed
+when the read operation is successful.
 
-https://lore.kernel.org/linux-um/ffa0b6af-523d-4e3e-9952-92f5b04b82b3@antgroup.com/
+Since none of the callers check for the errors, there is no need to
+return the error code propagated from sd_read(). Returning SDIO_ERR_VAL32
+might be a better choice, which is a specialized error code for SDIO.
 
-Regards,
-Tiwei
+Another problem of returning propagated error code is that the error
+code is a s32 type value, which is not fit with the u32 type return value
+of the sdio_read32().
+
+An practical option would be to go through all the callers and add error
+handling, which need to pass a pointer to u32 *val and return zero on
+success or negative on failure. It is not a better choice since will cost
+unnecessary effort on the error code.
+
+The other opion is to replace sd_read() by sd_read32(), which return an
+u32 type error code that can be directly used as the return value of
+sdio_read32(). But, it is also a bad choice to use sd_read32() in a
+alignment failed branch.
+
+Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
+Cc: stable@vger.kernel.org # v4.12+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+v7: Fix error code and add patch explanation
+v6: Fix improper code to propagate error code
+v5: Fix error code
+v4: Add change log and fix error code
+v3: Add Cc flag
+v2: Change code to initialize val
+
+ drivers/staging/rtl8723bs/hal/sdio_ops.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/staging/rtl8723bs/hal/sdio_ops.c b/drivers/staging/rtl8723bs/hal/sdio_ops.c
+index 21e9f1858745..d79d41727042 100644
+--- a/drivers/staging/rtl8723bs/hal/sdio_ops.c
++++ b/drivers/staging/rtl8723bs/hal/sdio_ops.c
+@@ -185,7 +185,12 @@ static u32 sdio_read32(struct intf_hdl *intfhdl, u32 addr)
+ 			return SDIO_ERR_VAL32;
+ 
+ 		ftaddr &= ~(u16)0x3;
+-		sd_read(intfhdl, ftaddr, 8, tmpbuf);
++		err = sd_read(intfhdl, ftaddr, 8, tmpbuf);
++		if (err) {
++			kfree(tmpbuf);
++			return SDIO_ERR_VAL32;
++		}
++
+ 		memcpy(&le_tmp, tmpbuf + shift, 4);
+ 		val = le32_to_cpu(le_tmp);
+ 
+-- 
+2.42.0.windows.2
+
 
