@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-129149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 712C8A7FE85
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:14:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 283FFA8018C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:40:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D26A3BD514
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5AA61883536
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B580269B02;
-	Tue,  8 Apr 2025 11:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADB2E266EFE;
+	Tue,  8 Apr 2025 11:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0V8oZQk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCIZnf1I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D8326868F;
-	Tue,  8 Apr 2025 11:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6340819AD5C;
+	Tue,  8 Apr 2025 11:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110249; cv=none; b=XsnPwvJc6GjgWvnjq6JMrcEvvKLgyYayi6aViPDyLJw5pde/tysgZ9G0MM4uGmQi64mlmKVbNQhvUhkI6BRwHTgXe6S6n6gOLNs9xXk6DWGP2edtnVQ7bfZGMcFs1Uk06DJ8U5cPnaNnkPQ++7LOfKfsGg/+XMB5ud0x8faAyZ8=
+	t=1744112177; cv=none; b=axPkRmrRC125r+hXhzTylZ6gwhSTco+4nOogaUYK2SyHD8TtsbmjQ2qyiZ6izqTus4HVQsKjwyFSaGuWhypz8z4yUBFPasw/ghbu1sn/HXXoUnon5biQgipXe6FjgaY3O/mZizbR4xn+S5PdCfhFHTc5+GjGRYdvsnKq8vu5iaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110249; c=relaxed/simple;
-	bh=9Mnz0mMom+7muvLPvR+BC1S0vzcYvqsxFmTKIW04b1I=;
+	s=arc-20240116; t=1744112177; c=relaxed/simple;
+	bh=jT6dq7RYd+yJ0Vhdeg7w3+DxCtAN2GrM84Zi4BFGa7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qtvP2s4og8uYQEVCLDIEADxMojjfa1X0J+O1vwi7B9fSK2rsN0jpmR/etY/bgH9Od5HHEps3/v80J+LIDXsfsQP4DGsLVASa7hGDqR1A/7ISli+9L0T2WanN8tABsj9vLXGecDHRDBtG3BgD+s4cJPzHOOACRmdbFfqEi9I7ZBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0V8oZQk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8E3C4CEE5;
-	Tue,  8 Apr 2025 11:04:08 +0000 (UTC)
+	 MIME-Version; b=V5JDKI+jsD6sVkpG/De0GdrmVzZu3BXcDjmfMNDHTmd4qq7wiUwOY9/LJSorP6yjKpYz5MC3laT3xFHdQ9h4jx7/BI0RhKfj2Z23Ls+ikFvlAR3FFaaIc9c578Qs6CYELUfrrdtslYh1AXhGmZ6+lQP4p2Ue8fB5tgwttSsyG+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCIZnf1I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC218C4CEE5;
+	Tue,  8 Apr 2025 11:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110248;
-	bh=9Mnz0mMom+7muvLPvR+BC1S0vzcYvqsxFmTKIW04b1I=;
+	s=korg; t=1744112177;
+	bh=jT6dq7RYd+yJ0Vhdeg7w3+DxCtAN2GrM84Zi4BFGa7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T0V8oZQkuVch/oPhh7sKmIV1kyuR9EPJCv/yanjhTC6C4yH/w3js0WZLdlKWmYLM+
-	 9EQa6gZPIGr0l46YraKYs5La9VpMy93z5y2Y4EYyDIx8GCipDxzSu08Fw4I5gKLnmP
-	 Blh1q+51wfie2+XBkJEc1wbUHILVYrHqrr9t2oI4=
+	b=mCIZnf1I7R2HQFRXqcDKIVZI2e45ryb0ZOVy4oNdT+YzOf0XodicU7YAF0kXOQ6Gc
+	 xmQM0LD7QgQpUroRogusYEC8UD85i9nD5NT6CjbxEAXC9JvTgSyh4FUDivO9ioOmC5
+	 PJGP9vxiwuZ4IInwyfUIYn3TsEq7ucl0/prXfnQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+9120834fc227768625ba@syzkaller.appspotmail.com>,
-	Roman Smirnov <r.smirnov@omp.ru>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>
-Subject: [PATCH 5.10 223/227] jfs: add index corruption check to DT_GETPAGE()
+	Steve French <stfrench@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	zdi-disclosures@trendmicro.com
+Subject: [PATCH 6.14 704/731] ksmbd: fix null pointer dereference in alloc_preauth_hash()
 Date: Tue,  8 Apr 2025 12:50:01 +0200
-Message-ID: <20250408104826.979101804@linuxfoundation.org>
+Message-ID: <20250408104930.643459435@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Smirnov <r.smirnov@omp.ru>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit a8dfb2168906944ea61acfc87846b816eeab882d upstream.
+commit c8b5b7c5da7d0c31c9b7190b4a7bba5281fc4780 upstream.
 
-If the file system is corrupted, the header.stblindex variable
-may become greater than 127. Because of this, an array access out
-of bounds may occur:
+The Client send malformed smb2 negotiate request. ksmbd return error
+response. Subsequently, the client can send smb2 session setup even
+thought conn->preauth_info is not allocated.
+This patch add KSMBD_SESS_NEED_SETUP status of connection to ignore
+session setup request if smb2 negotiate phase is not complete.
 
-------------[ cut here ]------------
-UBSAN: array-index-out-of-bounds in fs/jfs/jfs_dtree.c:3096:10
-index 237 is out of range for type 'struct dtslot[128]'
-CPU: 0 UID: 0 PID: 5822 Comm: syz-executor740 Not tainted 6.13.0-rc4-syzkaller-00110-g4099a71718b0 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- ubsan_epilogue lib/ubsan.c:231 [inline]
- __ubsan_handle_out_of_bounds+0x121/0x150 lib/ubsan.c:429
- dtReadFirst+0x622/0xc50 fs/jfs/jfs_dtree.c:3096
- dtReadNext fs/jfs/jfs_dtree.c:3147 [inline]
- jfs_readdir+0x9aa/0x3c50 fs/jfs/jfs_dtree.c:2862
- wrap_directory_iterator+0x91/0xd0 fs/readdir.c:65
- iterate_dir+0x571/0x800 fs/readdir.c:108
- __do_sys_getdents64 fs/readdir.c:403 [inline]
- __se_sys_getdents64+0x1e2/0x4b0 fs/readdir.c:389
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
----[ end trace ]---
-
-Add a stblindex check for corruption.
-
-Reported-by: syzbot <syzbot+9120834fc227768625ba@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=9120834fc227768625ba
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Tested-by: Steve French <stfrench@microsoft.com>
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-26505
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dtree.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/server/connection.h        |   11 +++++++++++
+ fs/smb/server/mgmt/user_session.c |    4 ++--
+ fs/smb/server/smb2pdu.c           |   14 +++++++++++---
+ 3 files changed, 24 insertions(+), 5 deletions(-)
 
---- a/fs/jfs/jfs_dtree.c
-+++ b/fs/jfs/jfs_dtree.c
-@@ -117,7 +117,8 @@ do {									\
- 	if (!(RC)) {							\
- 		if (((P)->header.nextindex >				\
- 		     (((BN) == 0) ? DTROOTMAXSLOT : (P)->header.maxslot)) || \
--		    ((BN) && ((P)->header.maxslot > DTPAGEMAXSLOT))) {	\
-+		    ((BN) && (((P)->header.maxslot > DTPAGEMAXSLOT) ||	\
-+		    ((P)->header.stblindex >= DTPAGEMAXSLOT)))) {	\
- 			BT_PUTPAGE(MP);					\
- 			jfs_error((IP)->i_sb,				\
- 				  "DT_GETPAGE: dtree page corrupt\n");	\
+--- a/fs/smb/server/connection.h
++++ b/fs/smb/server/connection.h
+@@ -27,6 +27,7 @@ enum {
+ 	KSMBD_SESS_EXITING,
+ 	KSMBD_SESS_NEED_RECONNECT,
+ 	KSMBD_SESS_NEED_NEGOTIATE,
++	KSMBD_SESS_NEED_SETUP,
+ 	KSMBD_SESS_RELEASING
+ };
+ 
+@@ -187,6 +188,11 @@ static inline bool ksmbd_conn_need_negot
+ 	return READ_ONCE(conn->status) == KSMBD_SESS_NEED_NEGOTIATE;
+ }
+ 
++static inline bool ksmbd_conn_need_setup(struct ksmbd_conn *conn)
++{
++	return READ_ONCE(conn->status) == KSMBD_SESS_NEED_SETUP;
++}
++
+ static inline bool ksmbd_conn_need_reconnect(struct ksmbd_conn *conn)
+ {
+ 	return READ_ONCE(conn->status) == KSMBD_SESS_NEED_RECONNECT;
+@@ -217,6 +223,11 @@ static inline void ksmbd_conn_set_need_n
+ 	WRITE_ONCE(conn->status, KSMBD_SESS_NEED_NEGOTIATE);
+ }
+ 
++static inline void ksmbd_conn_set_need_setup(struct ksmbd_conn *conn)
++{
++	WRITE_ONCE(conn->status, KSMBD_SESS_NEED_SETUP);
++}
++
+ static inline void ksmbd_conn_set_need_reconnect(struct ksmbd_conn *conn)
+ {
+ 	WRITE_ONCE(conn->status, KSMBD_SESS_NEED_RECONNECT);
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -374,13 +374,13 @@ void destroy_previous_session(struct ksm
+ 	ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_RECONNECT);
+ 	err = ksmbd_conn_wait_idle_sess_id(conn, id);
+ 	if (err) {
+-		ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_NEGOTIATE);
++		ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_SETUP);
+ 		goto out;
+ 	}
+ 
+ 	ksmbd_destroy_file_table(&prev_sess->file_table);
+ 	prev_sess->state = SMB2_SESSION_EXPIRED;
+-	ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_NEGOTIATE);
++	ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_SETUP);
+ 	ksmbd_launch_ksmbd_durable_scavenger();
+ out:
+ 	up_write(&conn->session_lock);
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1249,7 +1249,7 @@ int smb2_handle_negotiate(struct ksmbd_w
+ 	}
+ 
+ 	conn->srv_sec_mode = le16_to_cpu(rsp->SecurityMode);
+-	ksmbd_conn_set_need_negotiate(conn);
++	ksmbd_conn_set_need_setup(conn);
+ 
+ err_out:
+ 	ksmbd_conn_unlock(conn);
+@@ -1271,6 +1271,9 @@ static int alloc_preauth_hash(struct ksm
+ 	if (sess->Preauth_HashValue)
+ 		return 0;
+ 
++	if (!conn->preauth_info)
++		return -ENOMEM;
++
+ 	sess->Preauth_HashValue = kmemdup(conn->preauth_info->Preauth_HashValue,
+ 					  PREAUTH_HASHVALUE_SIZE, KSMBD_DEFAULT_GFP);
+ 	if (!sess->Preauth_HashValue)
+@@ -1674,6 +1677,11 @@ int smb2_sess_setup(struct ksmbd_work *w
+ 
+ 	ksmbd_debug(SMB, "Received smb2 session setup request\n");
+ 
++	if (!ksmbd_conn_need_setup(conn) && !ksmbd_conn_good(conn)) {
++		work->send_no_response = 1;
++		return rc;
++	}
++
+ 	WORK_BUFFERS(work, req, rsp);
+ 
+ 	rsp->StructureSize = cpu_to_le16(9);
+@@ -1909,7 +1917,7 @@ out_err:
+ 			if (try_delay) {
+ 				ksmbd_conn_set_need_reconnect(conn);
+ 				ssleep(5);
+-				ksmbd_conn_set_need_negotiate(conn);
++				ksmbd_conn_set_need_setup(conn);
+ 			}
+ 		}
+ 		smb2_set_err_rsp(work);
+@@ -2243,7 +2251,7 @@ int smb2_session_logoff(struct ksmbd_wor
+ 		ksmbd_free_user(sess->user);
+ 		sess->user = NULL;
+ 	}
+-	ksmbd_all_conn_set_status(sess_id, KSMBD_SESS_NEED_NEGOTIATE);
++	ksmbd_all_conn_set_status(sess_id, KSMBD_SESS_NEED_SETUP);
+ 
+ 	rsp->StructureSize = cpu_to_le16(4);
+ 	err = ksmbd_iov_pin_rsp(work, rsp, sizeof(struct smb2_logoff_rsp));
 
 
 
