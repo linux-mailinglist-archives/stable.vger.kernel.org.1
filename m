@@ -1,56 +1,72 @@
-Return-Path: <stable+bounces-131140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F54CA807D2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DE4DA80405
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:05:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 583E81B86EE7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:35:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5846426992
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5D426AA88;
-	Tue,  8 Apr 2025 12:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20BAF265626;
+	Tue,  8 Apr 2025 11:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TApcQ5mY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LbrfUVqu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED062698AE;
-	Tue,  8 Apr 2025 12:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22042690F9;
+	Tue,  8 Apr 2025 11:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115597; cv=none; b=ltCbcVg4dEPSeqRfs3CPAxkmOK6YANlUjjepQ9aomziWSkMeN7i0e2CFzJblxvlWwgB9EXkE4SeoCQ7UldqCp40vpw38YdzGwzgGnrgJIyf5MpOQOChEo6v6UdKqiX1RvzozwaOB66GC0bsDOv6gofe8Nk4GNYaUWYF6HeLV0XQ=
+	t=1744113345; cv=none; b=beQ/sbmT3gLKsVwZRQzKV7ZF6DbEU/P6fHiIzZgM9blrgGGLpXRyXxoYXjiJzMfd6sE++gQ0Sap6Wlkeq4ljjka9E0iFCuK4cFeSjdIa0cblRMPLzX+9rkY9zt37qRBUBrjwR9q+Lrayc9PNCuVa9OSOrNIOv3coQR0AXvpvI74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115597; c=relaxed/simple;
-	bh=6TKCyjYMbtH8v55URAKgdggVWb9HMu5p6QdKa0umPJ8=;
+	s=arc-20240116; t=1744113345; c=relaxed/simple;
+	bh=EXUnH54XpLyIGGk3zo5tRirKN/OuY0C7+87KdQUmNa8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jWJI9nsFtWiO54s0dLio9vyoKXMgPlo16Jc8Q2YBM2efFvRBH76LSxT+S+OhdNvjFqJzBfwriQajSK+CZTGlvEhndg+T21Kz3pvV2Ud7ywtCoyjLh5bkrnzOZEHd+TAwxwDBzk7f/Dns/wKh+qzJWOD1FzXt8klnNTsuMSbZKFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TApcQ5mY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E5BC4CEEA;
-	Tue,  8 Apr 2025 12:33:16 +0000 (UTC)
+	 MIME-Version; b=P637GOsewXnlELMHs3m8VLtYwU7jNA80WM1oRtPhJTknnjzLZoc3YRpqEaYVL0fgE4d+Lewkn35cSww7QhsfFmVocW3iqNSr6ppCRPRICOuMTUcybR01Ybdk1+5PES6ym6eE6lU8xgQluuy/j63O0yRb2u6O5P/FONc4YYGYlao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LbrfUVqu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37722C4CEE5;
+	Tue,  8 Apr 2025 11:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115597;
-	bh=6TKCyjYMbtH8v55URAKgdggVWb9HMu5p6QdKa0umPJ8=;
+	s=korg; t=1744113345;
+	bh=EXUnH54XpLyIGGk3zo5tRirKN/OuY0C7+87KdQUmNa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TApcQ5mY9GxkMJ/SPEzEAfNsGoxK0I8zPOWpTt8SCTu85e8CjJ+BJnlKLRo1NBwjA
-	 HZPA6Cr45FZmgiiHceAd5cND6VEIxNMlhOS2vObVfwysff4b3LtxO5IfLWEsGaW3gn
-	 scEvKB+DR45TucVUUSbgT5lGEdP/1AnKPHuJh02k=
+	b=LbrfUVquMwEEBJxy46tQ8VTqFYa4q+lfTlth+Y+CdnYrCw+UlIlRZb8h9iU45q3Z4
+	 /dVBl9dsXRk8BpMHre7wW44m/UL55yf1xJD//WK7lNuCTzRy3zZOshcXquc8Lae7Gs
+	 dHqt7S09S36QHtDFnKP5H/aRRRddJX9T7j1JP/lY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanislav Spassov <stanspas@amazon.de>,
-	Ingo Molnar <mingo@kernel.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Marc Zyngier <maz@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Steven Price <steven.price@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 006/204] x86/fpu: Fix guest FPU state buffer allocation size
-Date: Tue,  8 Apr 2025 12:48:56 +0200
-Message-ID: <20250408104820.478987021@linuxfoundation.org>
+Subject: [PATCH 6.6 126/268] arch/powerpc: drop GENERIC_PTDUMP from mpc885_ads_defconfig
+Date: Tue,  8 Apr 2025 12:48:57 +0200
+Message-ID: <20250408104831.901193105@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +78,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Spassov <stanspas@amazon.de>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
 
-[ Upstream commit 1937e18cc3cf27e2b3ef70e8c161437051ab7608 ]
+[ Upstream commit 2c5e6ac2db64ace51f66a9f3b3b3ab9553d748e8 ]
 
-Ongoing work on an optimization to batch-preallocate vCPU state buffers
-for KVM revealed a mismatch between the allocation sizes used in
-fpu_alloc_guest_fpstate() and fpstate_realloc(). While the former
-allocates a buffer sized to fit the default set of XSAVE features
-in UABI form (as per fpu_user_cfg), the latter uses its ksize argument
-derived (for the requested set of features) in the same way as the sizes
-found in fpu_kernel_cfg, i.e. using the compacted in-kernel
-representation.
+GENERIC_PTDUMP gets selected on powerpc explicitly and hence can be
+dropped off from mpc885_ads_defconfig.  Replace with CONFIG_PTDUMP_DEBUGFS
+instead.
 
-The correct size to use for guest FPU state should indeed be the
-kernel one as seen in fpstate_realloc(). The original issue likely
-went unnoticed through a combination of UABI size typically being
-larger than or equal to kernel size, and/or both amounting to the
-same number of allocated 4K pages.
-
-Fixes: 69f6ed1d14c6 ("x86/fpu: Provide infrastructure for KVM FPU cleanup")
-Signed-off-by: Stanislav Spassov <stanspas@amazon.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250218141045.85201-1-stanspas@amazon.de
+Link: https://lkml.kernel.org/r/20250226122404.1927473-3-anshuman.khandual@arm.com
+Fixes: e084728393a5 ("powerpc/ptdump: Convert powerpc to GENERIC_PTDUMP")
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/fpu/core.c | 2 +-
+ arch/powerpc/configs/mpc885_ads_defconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
-index f1446f532b17b..cbaa3afdd223f 100644
---- a/arch/x86/kernel/fpu/core.c
-+++ b/arch/x86/kernel/fpu/core.c
-@@ -220,7 +220,7 @@ bool fpu_alloc_guest_fpstate(struct fpu_guest *gfpu)
- 	struct fpstate *fpstate;
- 	unsigned int size;
- 
--	size = fpu_user_cfg.default_size + ALIGN(offsetof(struct fpstate, regs), 64);
-+	size = fpu_kernel_cfg.default_size + ALIGN(offsetof(struct fpstate, regs), 64);
- 	fpstate = vzalloc(size);
- 	if (!fpstate)
- 		return false;
+diff --git a/arch/powerpc/configs/mpc885_ads_defconfig b/arch/powerpc/configs/mpc885_ads_defconfig
+index 56b876e418e91..6b998cb572553 100644
+--- a/arch/powerpc/configs/mpc885_ads_defconfig
++++ b/arch/powerpc/configs/mpc885_ads_defconfig
+@@ -78,4 +78,4 @@ CONFIG_DEBUG_VM_PGTABLE=y
+ CONFIG_DETECT_HUNG_TASK=y
+ CONFIG_BDI_SWITCH=y
+ CONFIG_PPC_EARLY_DEBUG=y
+-CONFIG_GENERIC_PTDUMP=y
++CONFIG_PTDUMP_DEBUGFS=y
 -- 
 2.39.5
 
