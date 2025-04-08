@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-129026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A71EA7FDA8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC33A80123
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:38:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22DB719E26C7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63BFD3B8D8F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:32:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE9EA268C62;
-	Tue,  8 Apr 2025 10:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C49269AE8;
+	Tue,  8 Apr 2025 11:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSefLeN/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="skHHcRV8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5BB268C60;
-	Tue,  8 Apr 2025 10:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 762C9268FD5;
+	Tue,  8 Apr 2025 11:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109918; cv=none; b=DV64UWs0LRP5pDCVvVy0Y0smCJU1bFAalh4mnj4/eKEPVQHliFnP1WCqO4PHHCSSd2LYYF1EbxrrEnxWXP/SAZN2TsZIfqimu51sS5p3rkOYibXc/AhulEoDxC30dgXm3pAngV8VFNmAVETyIx7Ah69ydOZxL7FjKhhN/aCMt+U=
+	t=1744111799; cv=none; b=G9r0e4jl5/gnT2Is766aDo2sEWDTelZpMpG6af3z9ylaT6xFn8AZZyNWBbwDjiqO0E1Q+JaxOdq+wb3Fb4cIyfi33I1E+t+7kdyNs/V9xQnYTxACRgUO1dW1Uq8CRtUFzA8ki2ZV3gxVSVzqxjW5VtGxWwrLXCdY6jmW0Gq8ldA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109918; c=relaxed/simple;
-	bh=tq5KdWgvX8XhpSnvIxGFVyxIghqWNv110NosiXvs75I=;
+	s=arc-20240116; t=1744111799; c=relaxed/simple;
+	bh=Mtpk+iFJg/lIGQuPpKshNzQrCgT6UAwGUtwHMGsDd3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R+9gP5AF8SVehBdq6PYze7FK3f+8HalWGe8N3yBg62ZG7Kvx4CLuhhCK4iZEaPx3E8Cn+jtHSI1I0qR1uQQ8T8l1uY5ode/eNfefGICUL72+9EInDjzCM0+xmCf9Q7bbrYsVh4cBverUvCAtg4I4Vu6YpMUubA5FgZPoYV6/ZO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSefLeN/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D1AFC4CEE5;
-	Tue,  8 Apr 2025 10:58:37 +0000 (UTC)
+	 MIME-Version; b=e1snr8wDegkE94oodpjK3nmVeCA0bkZ2VPR6wb5Tfhyks+d3c5uTWmklzrJoioeSxnQ9IJR8npRQHFBK1p7H3bImeyV6YoNwDS68uAPx8fI07YH2ZoSSA042mGsSgTFv81Y0+FJzqL9eo/fJiXUcY1u0kdxCCqm7Gk5tHBuDgzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=skHHcRV8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097C6C4CEE5;
+	Tue,  8 Apr 2025 11:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109918;
-	bh=tq5KdWgvX8XhpSnvIxGFVyxIghqWNv110NosiXvs75I=;
+	s=korg; t=1744111799;
+	bh=Mtpk+iFJg/lIGQuPpKshNzQrCgT6UAwGUtwHMGsDd3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rSefLeN/npbKGqnFeLVOB7GzGELkcW/t+1EM4Qo2Lcqgy7RbEq6E0gSuDn54r3HND
-	 lVpPNUD0w+qgHdwUl1/E7bSpKq0rUfWcypnusYdzv2QMNDwE/xxzMVTxB3a4Rb4CZw
-	 VRWn/VP10iRet4lOFXphjpurN9VCAZGT8TXzG6jw=
+	b=skHHcRV8BRM4Q5VMgDyuL5O9p2/x4+E9U2mSv7pxRXo4UpKpYN6iuSpccyFpacxzA
+	 l8Uyrdfy4gxCs5UiF0kmOYliR/+KDyFMtuYtkj7kYObgWo+vSLIN1gOOyaXU8J5UH7
+	 Zh+aHb8kMz+0IoHe/xALNeMvoPuSJ3hFqAjOBKxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gu Bowen <gubowen5@huawei.com>,
-	Aubin Constans <aubin.constans@microchip.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 084/227] mmc: atmel-mci: Add missing clk_disable_unprepare()
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	Winston Wen <wentao@uniontech.com>,
+	Wentao Guan <guanwentao@uniontech.com>,
+	Yuli Wang <wangyuli@uniontech.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 565/731] LoongArch: Rework the arch_kgdb_breakpoint() implementation
 Date: Tue,  8 Apr 2025 12:47:42 +0200
-Message-ID: <20250408104822.904315051@linuxfoundation.org>
+Message-ID: <20250408104927.415987562@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +65,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gu Bowen <gubowen5@huawei.com>
+From: Yuli Wang <wangyuli@uniontech.com>
 
-commit e51a349d2dcf1df8422dabb90b2f691dc7df6f92 upstream.
+[ Upstream commit 29c92a41c6d2879c1f62220fe4758dce191bb38f ]
 
-The error path when atmci_configure_dma() set dma fails in atmci driver
-does not correctly disable the clock.
-Add the missing clk_disable_unprepare() to the error path for pair with
-clk_prepare_enable().
+The arch_kgdb_breakpoint() function defines the kgdb_breakinst symbol
+using inline assembly.
 
-Fixes: 467e081d23e6 ("mmc: atmel-mci: use probe deferring if dma controller is not ready yet")
-Signed-off-by: Gu Bowen <gubowen5@huawei.com>
-Acked-by: Aubin Constans <aubin.constans@microchip.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250225022856.3452240-1-gubowen5@huawei.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+1. There's a potential issue where the compiler might inline
+arch_kgdb_breakpoint(), which would then define the kgdb_breakinst
+symbol multiple times, leading to a linker error.
+
+To prevent this, declare arch_kgdb_breakpoint() as noinline.
+
+Fix follow error with LLVM-19 *only* when LTO_CLANG_FULL:
+    LD      vmlinux.o
+  ld.lld-19: error: ld-temp.o <inline asm>:3:1: symbol 'kgdb_breakinst' is already defined
+  kgdb_breakinst: break 2
+  ^
+
+2. Remove "nop" in the inline assembly because it's meaningless for
+LoongArch here.
+
+3. Add "STACK_FRAME_NON_STANDARD" for arch_kgdb_breakpoint() to avoid
+the objtool warning.
+
+Fixes: e14dd076964e ("LoongArch: Add basic KGDB & KDB support")
+Tested-by: Binbin Zhou <zhoubinbin@loongson.cn>
+Co-developed-by: Winston Wen <wentao@uniontech.com>
+Signed-off-by: Winston Wen <wentao@uniontech.com>
+Co-developed-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: Yuli Wang <wangyuli@uniontech.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/atmel-mci.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/loongarch/kernel/kgdb.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/host/atmel-mci.c
-+++ b/drivers/mmc/host/atmel-mci.c
-@@ -2507,8 +2507,10 @@ static int atmci_probe(struct platform_d
- 	/* Get MCI capabilities and set operations according to it */
- 	atmci_get_cap(host);
- 	ret = atmci_configure_dma(host);
--	if (ret == -EPROBE_DEFER)
-+	if (ret == -EPROBE_DEFER) {
-+		clk_disable_unprepare(host->mck);
- 		goto err_dma_probe_defer;
-+	}
- 	if (ret == 0) {
- 		host->prepare_data = &atmci_prepare_data_dma;
- 		host->submit_data = &atmci_submit_data_dma;
+diff --git a/arch/loongarch/kernel/kgdb.c b/arch/loongarch/kernel/kgdb.c
+index 445c452d72a79..7be5b4c0c9002 100644
+--- a/arch/loongarch/kernel/kgdb.c
++++ b/arch/loongarch/kernel/kgdb.c
+@@ -8,6 +8,7 @@
+ #include <linux/hw_breakpoint.h>
+ #include <linux/kdebug.h>
+ #include <linux/kgdb.h>
++#include <linux/objtool.h>
+ #include <linux/processor.h>
+ #include <linux/ptrace.h>
+ #include <linux/sched.h>
+@@ -224,13 +225,13 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
+ 	regs->csr_era = pc;
+ }
+ 
+-void arch_kgdb_breakpoint(void)
++noinline void arch_kgdb_breakpoint(void)
+ {
+ 	__asm__ __volatile__ (			\
+ 		".globl kgdb_breakinst\n\t"	\
+-		"nop\n"				\
+ 		"kgdb_breakinst:\tbreak 2\n\t"); /* BRK_KDB = 2 */
+ }
++STACK_FRAME_NON_STANDARD(arch_kgdb_breakpoint);
+ 
+ /*
+  * Calls linux_debug_hook before the kernel dies. If KGDB is enabled,
+-- 
+2.39.5
+
 
 
 
