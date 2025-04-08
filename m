@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-130091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A3ABA802E2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:51:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1052EA7FE4D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D3601892B94
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:47:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84B2F19E176F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2588A268C6B;
-	Tue,  8 Apr 2025 11:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B8DE2690CC;
+	Tue,  8 Apr 2025 11:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m16aaScy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bRg3/wR3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A0E2686AD;
-	Tue,  8 Apr 2025 11:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD45A268FD0;
+	Tue,  8 Apr 2025 11:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112791; cv=none; b=mkmmmGBOxjYi8D8jtqYkxDPpxhq37RmyHZciVfxIT+FzuleNAa7m3dYix9HwBXFhD1EPwmJByWmk0kEZFVxF8IOnuNYIR+VUsA6OlgTQij5ym8GI6HngGaQv5pFbVrUsz2Bg5ibuP1l6FmYEX5pbAT/75ZSyobBn6C8FUdkSRjE=
+	t=1744110201; cv=none; b=otBcs56E9TiAmpc133vKSAwRJyxdd2v8fAuS1yawQril1fJXCX/4lLL9iSo8pXs3kpFBKwQUsF5vCugo/fsU3dd54AHKGowdVtfRqmnz9Tg3R53XsSkfg4ZV4VPLI4vWDsJMBdhyCDZu1Tag0gSXB3efhKvoxGu0dJqDnpXH9II=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112791; c=relaxed/simple;
-	bh=yKxIKjciCCJdBFwgKG4MPkfv1N5PDtm5Tr39zr8282M=;
+	s=arc-20240116; t=1744110201; c=relaxed/simple;
+	bh=vEnlpNnC9GAHffHuYrT48AS4ZhWjpf7NORSqZybXX2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=REWh64lRYirlJoGrzQmJH3uqpHlIvHE+RsGNgTNSWP24Ipit/R4PefRDC/1jrx6tKPrP7c2XFRThj0OcQN6ZSCKC5xvMH8YX2OXe9jKl3K9rBLu5FxK4X5CYFhF8dRS7dktwqteqwS/Wa0YxwIQGAoJvTQxk1eAG0GrrDVfdG+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m16aaScy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58816C4CEE5;
-	Tue,  8 Apr 2025 11:46:31 +0000 (UTC)
+	 MIME-Version; b=e2GaSkP0mr6JbgrP0bLDjqDtie8+LPJkYX4cWxPaPOqfoDwAyJdJtjhbbUWErLMdhr+oIqFgrqGRt0V8CtMmxYKiiHlt3ex4K1h18iiCyytsMyxMRlcJBDXvPaUsS37KVgznS6XPclMUdGjMkHPVORQINWiyDD/AgMS9wBKQj6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bRg3/wR3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5442BC4CEE5;
+	Tue,  8 Apr 2025 11:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112791;
-	bh=yKxIKjciCCJdBFwgKG4MPkfv1N5PDtm5Tr39zr8282M=;
+	s=korg; t=1744110201;
+	bh=vEnlpNnC9GAHffHuYrT48AS4ZhWjpf7NORSqZybXX2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m16aaScySTPajd4336MGGaXjdu7isBoB7gKE+GV5263kYc1KWeevQcVGHWV34CUfi
-	 nMFadxRqNAckF8S+XDwiZTRADK8AvRHiWw8RURGnpHpNqAaSXfujGOb95B/58a7iV/
-	 GJnFVxPK23TQkhtn+AQz4eDhtRfXSGot6JX0LjAs=
+	b=bRg3/wR3MzOoe8ONx5uqqGq+J2lr7+U2QOZO3syEW+2EKOJ4Nqz9D5KqfM4Ani0B0
+	 7hHUA7OIGvr8llaAgjwZPVfzay/To85ZDcUgGCFeRGqkDHOMNm9TZkp9aKOqqEjM/U
+	 fFQ3wBQ1XFRW6Sn1GBQMIFR/338Aj/gZzhCeMmlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Lin Ma <linma@zju.edu.cn>,
+	Xin Long <lucien.xin@gmail.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 198/279] fs/ntfs3: Fix a couple integer overflows on 32bit systems
-Date: Tue,  8 Apr 2025 12:49:41 +0200
-Message-ID: <20250408104831.682691780@linuxfoundation.org>
+Subject: [PATCH 5.10 204/227] net: fix geneve_opt length integer overflow
+Date: Tue,  8 Apr 2025 12:49:42 +0200
+Message-ID: <20250408104826.430728874@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 5ad414f4df2294b28836b5b7b69787659d6aa708 ]
+[ Upstream commit b27055a08ad4b415dcf15b63034f9cb236f7fb40 ]
 
-On 32bit systems the "off + sizeof(struct NTFS_DE)" addition can
-have an integer wrapping issue.  Fix it by using size_add().
+struct geneve_opt uses 5 bit length for each single option, which
+means every vary size option should be smaller than 128 bytes.
 
-Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+However, all current related Netlink policies cannot promise this
+length condition and the attacker can exploit a exact 128-byte size
+option to *fake* a zero length option and confuse the parsing logic,
+further achieve heap out-of-bounds read.
+
+One example crash log is like below:
+
+[    3.905425] ==================================================================
+[    3.905925] BUG: KASAN: slab-out-of-bounds in nla_put+0xa9/0xe0
+[    3.906255] Read of size 124 at addr ffff888005f291cc by task poc/177
+[    3.906646]
+[    3.906775] CPU: 0 PID: 177 Comm: poc-oob-read Not tainted 6.1.132 #1
+[    3.907131] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+[    3.907784] Call Trace:
+[    3.907925]  <TASK>
+[    3.908048]  dump_stack_lvl+0x44/0x5c
+[    3.908258]  print_report+0x184/0x4be
+[    3.909151]  kasan_report+0xc5/0x100
+[    3.909539]  kasan_check_range+0xf3/0x1a0
+[    3.909794]  memcpy+0x1f/0x60
+[    3.909968]  nla_put+0xa9/0xe0
+[    3.910147]  tunnel_key_dump+0x945/0xba0
+[    3.911536]  tcf_action_dump_1+0x1c1/0x340
+[    3.912436]  tcf_action_dump+0x101/0x180
+[    3.912689]  tcf_exts_dump+0x164/0x1e0
+[    3.912905]  fw_dump+0x18b/0x2d0
+[    3.913483]  tcf_fill_node+0x2ee/0x460
+[    3.914778]  tfilter_notify+0xf4/0x180
+[    3.915208]  tc_new_tfilter+0xd51/0x10d0
+[    3.918615]  rtnetlink_rcv_msg+0x4a2/0x560
+[    3.919118]  netlink_rcv_skb+0xcd/0x200
+[    3.919787]  netlink_unicast+0x395/0x530
+[    3.921032]  netlink_sendmsg+0x3d0/0x6d0
+[    3.921987]  __sock_sendmsg+0x99/0xa0
+[    3.922220]  __sys_sendto+0x1b7/0x240
+[    3.922682]  __x64_sys_sendto+0x72/0x90
+[    3.922906]  do_syscall_64+0x5e/0x90
+[    3.923814]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+[    3.924122] RIP: 0033:0x7e83eab84407
+[    3.924331] Code: 48 89 fa 4c 89 df e8 38 aa 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 faf
+[    3.925330] RSP: 002b:00007ffff505e370 EFLAGS: 00000202 ORIG_RAX: 000000000000002c
+[    3.925752] RAX: ffffffffffffffda RBX: 00007e83eaafa740 RCX: 00007e83eab84407
+[    3.926173] RDX: 00000000000001a8 RSI: 00007ffff505e3c0 RDI: 0000000000000003
+[    3.926587] RBP: 00007ffff505f460 R08: 00007e83eace1000 R09: 000000000000000c
+[    3.926977] R10: 0000000000000000 R11: 0000000000000202 R12: 00007ffff505f3c0
+[    3.927367] R13: 00007ffff505f5c8 R14: 00007e83ead1b000 R15: 00005d4fbbe6dcb8
+
+Fix these issues by enforing correct length condition in related
+policies.
+
+Fixes: 925d844696d9 ("netfilter: nft_tunnel: add support for geneve opts")
+Fixes: 4ece47787077 ("lwtunnel: add options setting and dumping for geneve")
+Fixes: 0ed5269f9e41 ("net/sched: add tunnel option support to act_tunnel_key")
+Fixes: 0a6e77784f49 ("net/sched: allow flower to match tunnel options")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Reviewed-by: Xin Long <lucien.xin@gmail.com>
+Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
+Link: https://patch.msgid.link/20250402165632.6958-1-linma@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/index.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/ip_tunnel_core.c  | 2 +-
+ net/netfilter/nft_tunnel.c | 2 +-
+ net/sched/act_tunnel_key.c | 2 +-
+ net/sched/cls_flower.c     | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
-index 9cffd59e9735b..cc2d29261859a 100644
---- a/fs/ntfs3/index.c
-+++ b/fs/ntfs3/index.c
-@@ -617,7 +617,7 @@ static bool index_hdr_check(const struct INDEX_HDR *hdr, u32 bytes)
- 	u32 off = le32_to_cpu(hdr->de_off);
+diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
+index dad9d7db5bf6c..01d362b5b8826 100644
+--- a/net/ipv4/ip_tunnel_core.c
++++ b/net/ipv4/ip_tunnel_core.c
+@@ -459,7 +459,7 @@ static const struct nla_policy
+ geneve_opt_policy[LWTUNNEL_IP_OPT_GENEVE_MAX + 1] = {
+ 	[LWTUNNEL_IP_OPT_GENEVE_CLASS]	= { .type = NLA_U16 },
+ 	[LWTUNNEL_IP_OPT_GENEVE_TYPE]	= { .type = NLA_U8 },
+-	[LWTUNNEL_IP_OPT_GENEVE_DATA]	= { .type = NLA_BINARY, .len = 128 },
++	[LWTUNNEL_IP_OPT_GENEVE_DATA]	= { .type = NLA_BINARY, .len = 127 },
+ };
  
- 	if (!IS_ALIGNED(off, 8) || tot > bytes || end > tot ||
--	    off + sizeof(struct NTFS_DE) > end) {
-+	    size_add(off, sizeof(struct NTFS_DE)) > end) {
- 		/* incorrect index buffer. */
- 		return false;
- 	}
-@@ -736,7 +736,7 @@ static struct NTFS_DE *hdr_find_e(const struct ntfs_index *indx,
- 	if (end > total)
- 		return NULL;
+ static const struct nla_policy
+diff --git a/net/netfilter/nft_tunnel.c b/net/netfilter/nft_tunnel.c
+index 1b05b70497283..cfe6cf1be4217 100644
+--- a/net/netfilter/nft_tunnel.c
++++ b/net/netfilter/nft_tunnel.c
+@@ -305,7 +305,7 @@ static int nft_tunnel_obj_erspan_init(const struct nlattr *attr,
+ static const struct nla_policy nft_tunnel_opts_geneve_policy[NFTA_TUNNEL_KEY_GENEVE_MAX + 1] = {
+ 	[NFTA_TUNNEL_KEY_GENEVE_CLASS]	= { .type = NLA_U16 },
+ 	[NFTA_TUNNEL_KEY_GENEVE_TYPE]	= { .type = NLA_U8 },
+-	[NFTA_TUNNEL_KEY_GENEVE_DATA]	= { .type = NLA_BINARY, .len = 128 },
++	[NFTA_TUNNEL_KEY_GENEVE_DATA]	= { .type = NLA_BINARY, .len = 127 },
+ };
  
--	if (off + sizeof(struct NTFS_DE) > end)
-+	if (size_add(off, sizeof(struct NTFS_DE)) > end)
- 		return NULL;
+ static int nft_tunnel_obj_geneve_init(const struct nlattr *attr,
+diff --git a/net/sched/act_tunnel_key.c b/net/sched/act_tunnel_key.c
+index 85c0d0d5b9da5..0d90349636f0e 100644
+--- a/net/sched/act_tunnel_key.c
++++ b/net/sched/act_tunnel_key.c
+@@ -67,7 +67,7 @@ geneve_opt_policy[TCA_TUNNEL_KEY_ENC_OPT_GENEVE_MAX + 1] = {
+ 	[TCA_TUNNEL_KEY_ENC_OPT_GENEVE_CLASS]	   = { .type = NLA_U16 },
+ 	[TCA_TUNNEL_KEY_ENC_OPT_GENEVE_TYPE]	   = { .type = NLA_U8 },
+ 	[TCA_TUNNEL_KEY_ENC_OPT_GENEVE_DATA]	   = { .type = NLA_BINARY,
+-						       .len = 128 },
++						       .len = 127 },
+ };
  
- 	e = Add2Ptr(hdr, off);
+ static const struct nla_policy
+diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
+index 98f333aa0aac9..9f6f8430d0378 100644
+--- a/net/sched/cls_flower.c
++++ b/net/sched/cls_flower.c
+@@ -717,7 +717,7 @@ geneve_opt_policy[TCA_FLOWER_KEY_ENC_OPT_GENEVE_MAX + 1] = {
+ 	[TCA_FLOWER_KEY_ENC_OPT_GENEVE_CLASS]      = { .type = NLA_U16 },
+ 	[TCA_FLOWER_KEY_ENC_OPT_GENEVE_TYPE]       = { .type = NLA_U8 },
+ 	[TCA_FLOWER_KEY_ENC_OPT_GENEVE_DATA]       = { .type = NLA_BINARY,
+-						       .len = 128 },
++						       .len = 127 },
+ };
+ 
+ static const struct nla_policy
 -- 
 2.39.5
 
