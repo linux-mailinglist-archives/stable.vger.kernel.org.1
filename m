@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E611AA80356
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:56:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5F63A8020D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 033FF19E07D6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:52:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 657B41891048
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1343C267F6E;
-	Tue,  8 Apr 2025 11:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8110C25FA13;
+	Tue,  8 Apr 2025 11:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="05siE8yC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrDcgAh5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01F5A94A;
-	Tue,  8 Apr 2025 11:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FFE8219301;
+	Tue,  8 Apr 2025 11:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113112; cv=none; b=QSHNjM950jpif8IQ6p+pwrpeI81ROpghuN/mAD4kBUm6rvTUmGXtC3p75pxM/cvIsoqejwz7E654Lx9q17a8F8me90LqROrsBwanlyWX/KJjPLIw9NJ/e7+2ekvn1lkqgpxqtn1LLo3gXnpCwwMknVt1QGnZn0+CZNk1IvEpI5w=
+	t=1744112439; cv=none; b=YM0nIlnh1B4ysu+VG0H1bCOVKAjt8ge/vGODvAUT/Qsrj2fFPJ1b8hGHkd+mIGdeHrMDrpWQBwLC4ERmolGCSNNXl2Ypt139NohDTdjKx24mDffk3ZCWNjEolo7x8gcTdvD+55FAbNdEv8gVyRpkKper0GoDypIX5UVuVWI3O50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113112; c=relaxed/simple;
-	bh=ncfnItyOS8xg/NJzW17r1PYnkkHhbvXVAL1Crmq4vWg=;
+	s=arc-20240116; t=1744112439; c=relaxed/simple;
+	bh=LjK27GKHtyQCL6Gfv5Kx5AuZs2L/CKjQHiZTUVqqw7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p2S79xL+cSTP1QtAyRFmZ+TSLwH8nI+HdIOYP2q4eLrK/JFuUuqzqj/9vr/5AyZJM8296JAz/rxD8jp3v/fzP2nB071vqIopF+qRz1mqBNh0fOGejvEWsrxsi4HdwALgJxQfqwW6Zrnz9jU8pbNGKWSXszqlz/3aZa6M+kYPMeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=05siE8yC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE6CC4CEE5;
-	Tue,  8 Apr 2025 11:51:52 +0000 (UTC)
+	 MIME-Version; b=PBqxxFdx2D/85IFFymRqIiiol71dx5A3/KWIgAFedeMtVu7d+F+e4A7BUAa5frWp5MUaH7hoCG5kJOOvQdS+J02t2SI3uwCulJR0UBjeBPSa/p+FqJfujYjzTaGa0SO1yL8tyS3wPq/70iCJwpYqPwgZ2CSCXb0U6SP0dm3TlMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UrDcgAh5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47E5C4CEE5;
+	Tue,  8 Apr 2025 11:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113112;
-	bh=ncfnItyOS8xg/NJzW17r1PYnkkHhbvXVAL1Crmq4vWg=;
+	s=korg; t=1744112439;
+	bh=LjK27GKHtyQCL6Gfv5Kx5AuZs2L/CKjQHiZTUVqqw7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=05siE8yCa7YqPSnMf8v+XBdcvnLpyo4jQ1kRlgXVLp+ydSF9so0rzaOFcJUxyGMai
-	 qoTis27pssQNNK0/ynLvCCbkDa1GBTFK86ya1uGtcTT7gqv/tG4r1Ob8KvOUGTFNy3
-	 RMvtSun6OewUib2HZBEEQkyrk2tIPpclzAejVBt8=
+	b=UrDcgAh5dosp7cQAEs48rz5lKOLjE3XBftVE28whCjvlqZQHZk5NvLg0gNZCGdo/F
+	 LUUn7sxPVEeEAFwToa+0XBoioFXKH491X5iTRKXyjrNxWEP+bSEm8y1Bj5zKLVJTiC
+	 qTrc4MmQddh2sN+sNXZrMTM49bRlouDf5FzqI+gA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/268] drm/mediatek: mtk_hdmi: Fix typo for aud_sampe_size member
-Date: Tue,  8 Apr 2025 12:47:30 +0200
-Message-ID: <20250408104829.556732646@linuxfoundation.org>
+Subject: [PATCH 5.15 068/279] cifs: Fix integer overflow while processing acregmax mount option
+Date: Tue,  8 Apr 2025 12:47:31 +0200
+Message-ID: <20250408104828.178707294@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit 72fcb88e7bbc053ed4fc74cebb0315b98a0f20c3 ]
+[ Upstream commit 7489161b1852390b4413d57f2457cd40b34da6cc ]
 
-Rename member aud_sampe_size of struct hdmi_audio_param to
-aud_sample_size to fix a typo and enhance readability.
+User-provided mount parameter acregmax of type u32 is intended to have
+an upper limit, but before it is validated, the value is converted from
+seconds to jiffies which can lead to an integer overflow.
 
-This commit brings no functional changes.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 8f83f26891e1 ("drm/mediatek: Add HDMI support")
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20250217154836.108895-20-angelogioacchino.delregno@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: 5780464614f6 ("cifs: Add new parameter "acregmax" for distinct file and directory metadata timeout")
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_hdmi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/cifs/fs_context.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_hdmi.c b/drivers/gpu/drm/mediatek/mtk_hdmi.c
-index cff5ed3802413..68d0b65ef783a 100644
---- a/drivers/gpu/drm/mediatek/mtk_hdmi.c
-+++ b/drivers/gpu/drm/mediatek/mtk_hdmi.c
-@@ -137,7 +137,7 @@ enum hdmi_aud_channel_swap_type {
- 
- struct hdmi_audio_param {
- 	enum hdmi_audio_coding_type aud_codec;
--	enum hdmi_audio_sample_size aud_sampe_size;
-+	enum hdmi_audio_sample_size aud_sample_size;
- 	enum hdmi_aud_input_type aud_input_type;
- 	enum hdmi_aud_i2s_fmt aud_i2s_fmt;
- 	enum hdmi_aud_mclk aud_mclk;
-@@ -1075,7 +1075,7 @@ static int mtk_hdmi_output_init(struct mtk_hdmi *hdmi)
- 
- 	hdmi->csp = HDMI_COLORSPACE_RGB;
- 	aud_param->aud_codec = HDMI_AUDIO_CODING_TYPE_PCM;
--	aud_param->aud_sampe_size = HDMI_AUDIO_SAMPLE_SIZE_16;
-+	aud_param->aud_sample_size = HDMI_AUDIO_SAMPLE_SIZE_16;
- 	aud_param->aud_input_type = HDMI_AUD_INPUT_I2S;
- 	aud_param->aud_i2s_fmt = HDMI_I2S_MODE_I2S_24BIT;
- 	aud_param->aud_mclk = HDMI_AUD_MCLK_128FS;
-@@ -1576,14 +1576,14 @@ static int mtk_hdmi_audio_hw_params(struct device *dev, void *data,
- 	switch (daifmt->fmt) {
- 	case HDMI_I2S:
- 		hdmi_params.aud_codec = HDMI_AUDIO_CODING_TYPE_PCM;
--		hdmi_params.aud_sampe_size = HDMI_AUDIO_SAMPLE_SIZE_16;
-+		hdmi_params.aud_sample_size = HDMI_AUDIO_SAMPLE_SIZE_16;
- 		hdmi_params.aud_input_type = HDMI_AUD_INPUT_I2S;
- 		hdmi_params.aud_i2s_fmt = HDMI_I2S_MODE_I2S_24BIT;
- 		hdmi_params.aud_mclk = HDMI_AUD_MCLK_128FS;
+diff --git a/fs/cifs/fs_context.c b/fs/cifs/fs_context.c
+index fb3651513f83a..d86cbed997fdd 100644
+--- a/fs/cifs/fs_context.c
++++ b/fs/cifs/fs_context.c
+@@ -1055,11 +1055,11 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
+ 		ctx->got_wsize = true;
  		break;
- 	case HDMI_SPDIF:
- 		hdmi_params.aud_codec = HDMI_AUDIO_CODING_TYPE_PCM;
--		hdmi_params.aud_sampe_size = HDMI_AUDIO_SAMPLE_SIZE_16;
-+		hdmi_params.aud_sample_size = HDMI_AUDIO_SAMPLE_SIZE_16;
- 		hdmi_params.aud_input_type = HDMI_AUD_INPUT_SPDIF;
+ 	case Opt_acregmax:
+-		ctx->acregmax = HZ * result.uint_32;
+-		if (ctx->acregmax > CIFS_MAX_ACTIMEO) {
++		if (result.uint_32 > CIFS_MAX_ACTIMEO / HZ) {
+ 			cifs_errorf(fc, "acregmax too large\n");
+ 			goto cifs_parse_mount_err;
+ 		}
++		ctx->acregmax = HZ * result.uint_32;
  		break;
- 	default:
+ 	case Opt_acdirmax:
+ 		ctx->acdirmax = HZ * result.uint_32;
 -- 
 2.39.5
 
