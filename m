@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-130213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC77CA8035B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:57:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CFCDA800A6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:33:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3314188D76C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 893D77A7AA5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335852690D6;
-	Tue,  8 Apr 2025 11:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1688526AA90;
+	Tue,  8 Apr 2025 11:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDehPF8p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ezj2g/J1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5ED2A94A;
-	Tue,  8 Apr 2025 11:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C658826AAB6;
+	Tue,  8 Apr 2025 11:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113121; cv=none; b=GWZhdOX13Qc8LcgroiyazekZAu3Y0LgQ6nXBuUujvp+5fxh2VT2Z9dGCbRUzuu6AdndkTv2sPU6m0oxjs3MwAZVlNaLGgm62SzlPLEnLdyoRmUooveIuHc+qKNdKltSRqNsY4ioGsKek6UD+IBohQBjMfKaaFyJF2bdA69lTbuk=
+	t=1744111735; cv=none; b=G63ga63zJJYw6tbtlq6XrV1/SALFuQcyw2NnqulQOl42yNplmK23hN470pkBUoQEFcmOtv8cQILYvoOkZw/4A5eIgw8+hno0yD+ey1BdjXOrFdPM1mc32baRoiyZskg8hLU1A2SEl10DWcVIWBV4FTZbI2rmCWFMDU4sklq9fTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113121; c=relaxed/simple;
-	bh=zNM2MYYF86yrlPO02v4HuWdh0f+06DlMVOY2e/aXwSI=;
+	s=arc-20240116; t=1744111735; c=relaxed/simple;
+	bh=WA06bfI5ncP3p+QieHI0/+qufJiyGdVP3DLipoVc3QI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pwo+boPSyyDf2Pdl7n3p0ertVCKOpKlqP6n+RF1FzY/UH5W953IwDZoRUYOnIPg8ZGO+1vFS+2t4Er0MUG3NNfStXZQriTxcQMV1JvyMSbEI7tVJXQZtgq4aUNkhBJ63izoYULEg0+4SkDbTk9oTmn36K+/JbPh2L2IVQBYi9+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDehPF8p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7643BC4CEE5;
-	Tue,  8 Apr 2025 11:52:00 +0000 (UTC)
+	 MIME-Version; b=RPdfr31L7+GJCYZbp7nuiB3yqU7Pa5Ub1luJcHhooR7M/4mEd6KvYGwcxEezqVW7uUOSIIXrkteA/7U0jszUXFiTmV0J3De/UeASf467jutOMFwhzKvLCqwj5wy9YN/CfTeIHPYdWaMlk0OrXnFlxchzM/00X8WHHwXFxcmJ+yQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ezj2g/J1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE22AC4CEE5;
+	Tue,  8 Apr 2025 11:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113120;
-	bh=zNM2MYYF86yrlPO02v4HuWdh0f+06DlMVOY2e/aXwSI=;
+	s=korg; t=1744111735;
+	bh=WA06bfI5ncP3p+QieHI0/+qufJiyGdVP3DLipoVc3QI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sDehPF8pEAFFJ4Qx/loz6P4rySXRDgjiDZdv4gqcoE3IC/VVDsooLBLm2qkSY/zBa
-	 V7tQkh2AFrLLvI56CIoY+Y3bkAToOJZ1qRC9Lbs71wtQaMaJeAWk8olCLvXLZ5F2nB
-	 VpEqZSdZ/T8WI5jnJbTxyhz3GHxMZXFC/V8nTmM8=
+	b=Ezj2g/J1WtTK0w/WJoAlnksPHi4Ad1i5qF4BGRkjgaMdw+p+4JY+IjGhv2fnY7Fto
+	 4wWs+TmztO6q0Z1TDMVKsajdeAr+JHDz9P5JhQq5haCEiVF9YCuXHiil5huwTgjcJf
+	 63Q/bnEzYRdiAg+NrTrnCVozePXz02CIOebB/6AU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Kees Cook <kees@kernel.org>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/268] media: verisilicon: HEVC: Initialize start_bit field
-Date: Tue,  8 Apr 2025 12:47:15 +0200
-Message-ID: <20250408104829.160227846@linuxfoundation.org>
+Subject: [PATCH 6.14 539/731] fs/procfs: fix the comment above proc_pid_wchan()
+Date: Tue,  8 Apr 2025 12:47:16 +0200
+Message-ID: <20250408104926.814078509@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +65,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 7fcb42b3835e90ef18d68555934cf72adaf58402 ]
+[ Upstream commit 6287fbad1cd91f0c25cdc3a580499060828a8f30 ]
 
-The HEVC driver needs to set the start_bit field explicitly to avoid
-causing corrupted frames when the VP9 decoder is used in parallel. The
-reason for this problem is that the VP9 and the HEVC decoder share this
-register.
+proc_pid_wchan() used to report kernel addresses to user space but that is
+no longer the case today.  Bring the comment above proc_pid_wchan() in
+sync with the implementation.
 
-Fixes: cb5dd5a0fa51 ("media: hantro: Introduce G2/HEVC decoder")
-Signed-off-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Tested-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Link: https://lkml.kernel.org/r/20250319210222.1518771-1-bvanassche@acm.org
+Fixes: b2f73922d119 ("fs/proc, core/debug: Don't expose absolute kernel addresses via wchan")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/proc/base.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c b/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
-index a9d4ac84a8d8d..d1971af5f7fa6 100644
---- a/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
-+++ b/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
-@@ -517,6 +517,7 @@ static void set_buffers(struct hantro_ctx *ctx)
- 	hantro_reg_write(vpu, &g2_stream_len, src_len);
- 	hantro_reg_write(vpu, &g2_strm_buffer_len, src_buf_len);
- 	hantro_reg_write(vpu, &g2_strm_start_offset, 0);
-+	hantro_reg_write(vpu, &g2_start_bit, 0);
- 	hantro_reg_write(vpu, &g2_write_mvs_e, 1);
- 
- 	hantro_write_addr(vpu, G2_TILE_SIZES_ADDR, ctx->hevc_dec.tile_sizes.dma);
+diff --git a/fs/proc/base.c b/fs/proc/base.c
+index cd89e956c3224..7feb8f41aa253 100644
+--- a/fs/proc/base.c
++++ b/fs/proc/base.c
+@@ -416,7 +416,7 @@ static const struct file_operations proc_pid_cmdline_ops = {
+ #ifdef CONFIG_KALLSYMS
+ /*
+  * Provides a wchan file via kallsyms in a proper one-value-per-file format.
+- * Returns the resolved symbol.  If that fails, simply return the address.
++ * Returns the resolved symbol to user space.
+  */
+ static int proc_pid_wchan(struct seq_file *m, struct pid_namespace *ns,
+ 			  struct pid *pid, struct task_struct *task)
 -- 
 2.39.5
 
