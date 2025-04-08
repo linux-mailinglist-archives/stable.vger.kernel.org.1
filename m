@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-131613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C759FA80B0A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:12:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BA19A80409
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:05:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BE8F1BC054C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA69C1B60F93
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:00:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 889A4278141;
-	Tue,  8 Apr 2025 12:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F67F2698A0;
+	Tue,  8 Apr 2025 11:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cc2G/ALW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2Jyh8jd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4556327781F;
-	Tue,  8 Apr 2025 12:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD86267F67;
+	Tue,  8 Apr 2025 11:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116870; cv=none; b=qUqlDTo+NzIgAvtrFcxwL9kqz9m231f18hZSKDNQBbKRp1Y8x++nP4guqXlBNRUcmLMzb5BIXg8OO1IrGk6m6R7/rnt0t+oUSMKkcRGTfhxmGZlIYyvVFdj3rtufvAGA+T32GOUrOUxvn772VK9C6vxAePwlyoYttbxlp+8zP3Y=
+	t=1744113583; cv=none; b=SIsaqvRYsdyGWCTnJflBh8EOJEAjORt97y+nHp4XzKLGlIuM8vkHttQWFeNQ9OE/9mVL5/oF0tRwZuFUGBwo8KRGrrkjd25CoxOjG/h8m90/Ld85TWycD5YAqvyholOYVi21c5MgelPFtkg32pfZJG1Uqr26W3U3HugW+l6Pj2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116870; c=relaxed/simple;
-	bh=gWqKD8MOgjmwMy0IzsARSE1MbJ5chrOZctWUBvZ4ssQ=;
+	s=arc-20240116; t=1744113583; c=relaxed/simple;
+	bh=H5XtKZkpaeuzDGsoiF/37pGDpodIg7UJOF/tnw042fY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m4l5fydZU5XyNa+038lY2BRYeya/kOWYfD6kQH6yQPE76jzHXPWJFTyOPKSMVmpbuXuQxK9qkKH1y04EuuGdoomkr41gGhl2IxG4DycX3YRc04/Np4rvSC01LzacUGMv72MolR+BkhBYK0xl2Eh8/pCsOj+anomIKXhnrC8GpiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cc2G/ALW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBBE3C4CEE5;
-	Tue,  8 Apr 2025 12:54:29 +0000 (UTC)
+	 MIME-Version; b=ey9PDLozzTZh9N8HXj9bxWYJ9kdA+c04luhweZXQeodOJt+1gneNoC/JMhosZGXKv4/sSn17QM4c8WiVCAZJ/jJYRPaInssOdH0CJPmP/X8B5HWSNkKP/c85wmWz5U2mxLHbH84lCz1UpWzUOa5oUDrs+mmLIyxY92EC79b0fCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2Jyh8jd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0663C4CEE5;
+	Tue,  8 Apr 2025 11:59:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116870;
-	bh=gWqKD8MOgjmwMy0IzsARSE1MbJ5chrOZctWUBvZ4ssQ=;
+	s=korg; t=1744113583;
+	bh=H5XtKZkpaeuzDGsoiF/37pGDpodIg7UJOF/tnw042fY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cc2G/ALWM2E3+Y+1ZVyaeUwHEXtx+XQTm5zz1mzEFb0w/fhhZefyPvc790X1DcD3U
-	 6+sdtrLKipaovzVv+J6Xy66aDg6oHSgKzJpjdg7dkDXSqGPP4Isi55LOAYewfmWl8f
-	 hs85VhyFC+Rg9tw/YbeBAWyDi2YjvhFFts/7SYT8=
+	b=u2Jyh8jdkLp3vz00Cv6UGxaeo1P1GVqYc39lr9NdgLXvTaYkcXxstyAo7SjXcNdeg
+	 JDBtg77CXwrqPe1LKSa+05i9zmv2EqQjuDDt0SBJshQEg1FSw10y7zl8VYAbzbjoK7
+	 ZwR1yJUvzrVxsSCopxlMQC6Xug2XOV5K3UbgwsGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Roger Quadros <rogerq@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Antoine Tenart <atenart@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 298/423] memory: omap-gpmc: drop no compatible check
+Subject: [PATCH 6.6 213/268] net: decrease cached dst counters in dst_release
 Date: Tue,  8 Apr 2025 12:50:24 +0200
-Message-ID: <20250408104852.731121355@linuxfoundation.org>
+Message-ID: <20250408104834.326650047@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roger Quadros <rogerq@kernel.org>
+From: Antoine Tenart <atenart@kernel.org>
 
-[ Upstream commit edcccc6892f65eff5fd3027a13976131dc7fd733 ]
+[ Upstream commit 3a0a3ff6593d670af2451ec363ccb7b18aec0c0a ]
 
-We are no longer depending on legacy device trees so
-drop the no compatible check for NAND and OneNAND
-nodes.
+Upstream fix ac888d58869b ("net: do not delay dst_entries_add() in
+dst_release()") moved decrementing the dst count from dst_destroy to
+dst_release to avoid accessing already freed data in case of netns
+dismantle. However in case CONFIG_DST_CACHE is enabled and OvS+tunnels
+are used, this fix is incomplete as the same issue will be seen for
+cached dsts:
 
-Suggested-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-Link: https://lore.kernel.org/r/20250114-omap-gpmc-drop-no-compatible-check-v1-1-262c8d549732@kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+  Unable to handle kernel paging request at virtual address ffff5aabf6b5c000
+  Call trace:
+   percpu_counter_add_batch+0x3c/0x160 (P)
+   dst_release+0xec/0x108
+   dst_cache_destroy+0x68/0xd8
+   dst_destroy+0x13c/0x168
+   dst_destroy_rcu+0x1c/0xb0
+   rcu_do_batch+0x18c/0x7d0
+   rcu_core+0x174/0x378
+   rcu_core_si+0x18/0x30
+
+Fix this by invalidating the cache, and thus decrementing cached dst
+counters, in dst_release too.
+
+Fixes: d71785ffc7e7 ("net: add dst_cache to ovs vxlan lwtunnel")
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Link: https://patch.msgid.link/20250326173634.31096-1-atenart@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memory/omap-gpmc.c | 20 --------------------
- 1 file changed, 20 deletions(-)
+ net/core/dst.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
-index c8a0d82f9c27d..719225c09a4d6 100644
---- a/drivers/memory/omap-gpmc.c
-+++ b/drivers/memory/omap-gpmc.c
-@@ -2245,26 +2245,6 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
- 		goto err;
+diff --git a/net/core/dst.c b/net/core/dst.c
+index 137b8d1c72203..aad197e761cb4 100644
+--- a/net/core/dst.c
++++ b/net/core/dst.c
+@@ -167,6 +167,14 @@ static void dst_count_dec(struct dst_entry *dst)
+ void dst_release(struct dst_entry *dst)
+ {
+ 	if (dst && rcuref_put(&dst->__rcuref)) {
++#ifdef CONFIG_DST_CACHE
++		if (dst->flags & DST_METADATA) {
++			struct metadata_dst *md_dst = (struct metadata_dst *)dst;
++
++			if (md_dst->type == METADATA_IP_TUNNEL)
++				dst_cache_reset_now(&md_dst->u.tun_info.dst_cache);
++		}
++#endif
+ 		dst_count_dec(dst);
+ 		call_rcu_hurry(&dst->rcu_head, dst_destroy_rcu);
  	}
- 
--	if (of_node_name_eq(child, "nand")) {
--		/* Warn about older DT blobs with no compatible property */
--		if (!of_property_read_bool(child, "compatible")) {
--			dev_warn(&pdev->dev,
--				 "Incompatible NAND node: missing compatible");
--			ret = -EINVAL;
--			goto err;
--		}
--	}
--
--	if (of_node_name_eq(child, "onenand")) {
--		/* Warn about older DT blobs with no compatible property */
--		if (!of_property_read_bool(child, "compatible")) {
--			dev_warn(&pdev->dev,
--				 "Incompatible OneNAND node: missing compatible");
--			ret = -EINVAL;
--			goto err;
--		}
--	}
--
- 	if (of_match_node(omap_nand_ids, child)) {
- 		/* NAND specific setup */
- 		val = 8;
 -- 
 2.39.5
 
