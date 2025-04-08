@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-130454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7E50A80535
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B2FCA80A9C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:07:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D7273A3F2C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B4057B1CB3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9AEE26AAB9;
-	Tue,  8 Apr 2025 12:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5468227BF63;
+	Tue,  8 Apr 2025 12:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gzi/IdhU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8xcnVTM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B7B265CDF;
-	Tue,  8 Apr 2025 12:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1203D279352;
+	Tue,  8 Apr 2025 12:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113753; cv=none; b=HFQ9ZmkCfwD+KIvDPhvGocq1mrRwuTZBfzLjxruYSlyRhhSl3sN23/iGfOW6sI1H7mySx32yTqImIFo+zJB+od4FgDqx8gDC5l2vqx98u91TOi59VgTZU8gh8trV6LuTRl0c3shxG1kRjc6KEbIFv03wHlIPJCR1uYbrcclllpo=
+	t=1744116921; cv=none; b=uvnEcL0d+grfK7y7c44n+jBtn4MVebRfcSSXEjOyVU6du3/x4BcoPmQcHWRX6x7Xv7wpMpZzhYIXNFtynx7//vWvgNVCl2puSK417GqbaGOK1mIINg31upZXBbm2XHrfqblgajcKFZWrbqRybwj7XpDylcqtlRSNKm7OLDPuNwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113753; c=relaxed/simple;
-	bh=E7a6Ky19GGFEATI/fkVYrs+RxgN6wsm/FsSZwgLst7o=;
+	s=arc-20240116; t=1744116921; c=relaxed/simple;
+	bh=T1zb3Kt5ZYiBzymyZNaakm/nFntKIUkUuf2hOAuQbuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FzgPsoOA1FYw+BjLblmRy3z2cmM3LfRcCCC1aPyBkzdqkz1Zc6eudB77HjFRqcSl6ELphg9EMAl2bx2oIN5pMeE9lUp6m8YnaovEj6fhYGB0xAK0LWTlYiwCgh48StJT61ufEjeX7ztM9nOkvdvDnB7ubgasnyT+MDxgGXw8jvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gzi/IdhU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DB5C4CEE5;
-	Tue,  8 Apr 2025 12:02:32 +0000 (UTC)
+	 MIME-Version; b=gHAGJYYiIdlJkyDzDzIZb8VfppC8gym66dBnFebBR/mCHIkIPSf60axqCVNsPHxULwgm/XaOcLA2nrRU/f5iBGA/p2xVHka1B5iQsKjRHPblNwX4mH1bcuitpVceX6x12mbQb7MKS+s6uNMeatwqyH2q9HudvTqlme0vHeHJ+vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8xcnVTM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FAE5C4CEE5;
+	Tue,  8 Apr 2025 12:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113753;
-	bh=E7a6Ky19GGFEATI/fkVYrs+RxgN6wsm/FsSZwgLst7o=;
+	s=korg; t=1744116920;
+	bh=T1zb3Kt5ZYiBzymyZNaakm/nFntKIUkUuf2hOAuQbuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gzi/IdhU1JbHvIifcN8+b81YGzo+XfRb3lUsdWMjCwH6F8Wve/l6efp9x0xkTTwy0
-	 QiLBvY7tMX21RuzgUv7JJhAFCNSQUOF85xJjAyMYuYpKNBucQ+GphhzE+X7KXX01oZ
-	 wRhvofi6HrRqgldjGmWaTkILHiuI90E1xcCTnalA=
+	b=y8xcnVTMBBC6wEzCY2TFegEsZU74Lrc0gAWjJYJ3gAuAhiJfHFakiJcSk7jM00kvT
+	 X5zWTZ7nNQyVF35bE2xTJsPnMbMuaQLD/BNNlNLEZuqGEHjEK9Y4D5dKnS2d71fE1c
+	 Lml9qgBbSVuuQMlsknV/xJDA3Xjeh4saURmywMCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Li <vincent.mc.li@gmail.com>,
-	Hengqi Chen <hengqi.chen@gmail.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 234/268] LoongArch: BPF: Use move_addr() for BPF_PSEUDO_FUNC
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 319/423] nvme/ioctl: dont warn on vectorized uring_cmd with fixed buffer
 Date: Tue,  8 Apr 2025 12:50:45 +0200
-Message-ID: <20250408104834.901790612@linuxfoundation.org>
+Message-ID: <20250408104853.244333228@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hengqi Chen <hengqi.chen@gmail.com>
+From: Caleb Sander Mateos <csander@purestorage.com>
 
-commit 52266f1015a8b5aabec7d127f83d105f702b388e upstream.
+[ Upstream commit eada75467fca0b016b9b22212637c07216135c20 ]
 
-Vincent reported that running XDP synproxy program on LoongArch results
-in the following error:
+The vectorized io_uring NVMe passthru opcodes don't yet support fixed
+buffers. But since userspace can trigger this condition based on the
+io_uring SQE parameters, it shouldn't cause a kernel warning.
 
-    JIT doesn't support bpf-to-bpf calls
-
-With dmesg:
-
-    multi-func JIT bug 1391 != 1390
-
-The root cause is that verifier will refill the imm with the correct
-addresses of bpf_calls for BPF_PSEUDO_FUNC instructions and then run
-the last pass of JIT. So we generate different JIT code for the same
-instruction in two passes (one for placeholder and the other for the
-real address). Let's use move_addr() instead.
-
-See commit 64f50f6575721ef0 ("LoongArch, bpf: Use 4 instructions for
-function address in JIT") for a similar fix.
-
-Cc: stable@vger.kernel.org
-Fixes: 69c087ba6225 ("bpf: Add bpf_for_each_map_elem() helper")
-Fixes: bb035ef0cc91 ("LoongArch: BPF: Support mixing bpf2bpf and tailcalls")
-Reported-by: Vincent Li <vincent.mc.li@gmail.com>
-Tested-by: Vincent Li <vincent.mc.li@gmail.com>
-Closes: https://lore.kernel.org/loongarch/CAK3+h2yfM9FTNiXvEQBkvtuoJrvzmN4c_NZsFXqEk4Cj1tsBNA@mail.gmail.com/T/#u
-Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Fixes: 23fd22e55b76 ("nvme: wire up fixed buffer support for nvme passthrough")
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/net/bpf_jit.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/nvme/host/ioctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/loongarch/net/bpf_jit.c
-+++ b/arch/loongarch/net/bpf_jit.c
-@@ -872,7 +872,10 @@ static int build_insn(const struct bpf_i
- 	{
- 		const u64 imm64 = (u64)(insn + 1)->imm << 32 | (u32)insn->imm;
+diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
+index e4daac9c24401..a1b3c538a4bd2 100644
+--- a/drivers/nvme/host/ioctl.c
++++ b/drivers/nvme/host/ioctl.c
+@@ -141,7 +141,7 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
+ 		struct iov_iter iter;
  
--		move_imm(ctx, dst, imm64, is32);
-+		if (bpf_pseudo_func(insn))
-+			move_addr(ctx, dst, imm64);
-+		else
-+			move_imm(ctx, dst, imm64, is32);
- 		return 1;
- 	}
- 
+ 		/* fixedbufs is only for non-vectored io */
+-		if (WARN_ON_ONCE(flags & NVME_IOCTL_VEC)) {
++		if (flags & NVME_IOCTL_VEC) {
+ 			ret = -EINVAL;
+ 			goto out;
+ 		}
+-- 
+2.39.5
+
 
 
 
