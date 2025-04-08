@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-130853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05678A8063F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:25:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23F6EA809E7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:58:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5A8F7AB881
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:22:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 410C37B53F0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFC626AA91;
-	Tue,  8 Apr 2025 12:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A75E27C161;
+	Tue,  8 Apr 2025 12:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o5Hqb14E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xoDuZ3W4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1A026A0A2;
-	Tue,  8 Apr 2025 12:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32DC127C158;
+	Tue,  8 Apr 2025 12:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114829; cv=none; b=JiV3iD4Gyjt1Kg/rhhqgeAHhCLpX2FYwqHGyRqqN4XPZE2J9c/PdNV6ytDm6bY/uz40nvU65kk3LJ8v/Z8NCBkqly/q6Vhbi22XuCEyOCWATEGw3JPmHAie047RKoSVGEYajVLlDn8AO8cq9pzzscY6DwdKrN8K2NUEYw1JVO4U=
+	t=1744116527; cv=none; b=K3dx9IZQzKL4ktdMuwnCJDRiV+wQg7lU3zjdORBGZVgX0wugom6bkWfMUuYaLvcSokqHUzh9XeLtwHbvuTY5ytWc/xnk92UF6pRoWpvvfjKeCem34CezxH8u2gNdGax7+82QhO+N8PsdN1yQ84upOvPX5o3ArtrE44saVoKys08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114829; c=relaxed/simple;
-	bh=W2LS047pHvlD9sye3q+2AqNDLQOCWPAYcNroar0q/MM=;
+	s=arc-20240116; t=1744116527; c=relaxed/simple;
+	bh=n7o+zVknzt3bjgJRu4SFXVM1iJ7cB2Qo1UhAE+bu9nI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EhhxZ/JEL8s94Hnb3EzPArx+gQUScv/9O4vLEfQD2FOJiA11A/gV4J0PluqhJJdtGNUTCsqWr9VpMWJUdmB7d/xJ9AIwyf9r7yJyL4O6XhDtHeJZGqkx7pALT+gslHHnLkHkikfbu7Oi7d+F+w5bDGhwgeIk/AC5rq4dQRHBA6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o5Hqb14E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F02CDC4CEE5;
-	Tue,  8 Apr 2025 12:20:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CO129e3AjFF1HLU5nU5NYdBmIzS6wLfFWQjvK4T74QOarWEAfdnlgu3LHIxpeAXquL8MUJ+1h3fWOfSazVlHaEf3qR/4pIMq1emccuT9tXgSxPQMf7D/IKV7eJCOXWEJeEk6LeikMpxKFkXQBDmncoMJ7dIigECmO77Z7kiXY0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xoDuZ3W4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D2DC4CEEB;
+	Tue,  8 Apr 2025 12:48:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114829;
-	bh=W2LS047pHvlD9sye3q+2AqNDLQOCWPAYcNroar0q/MM=;
+	s=korg; t=1744116527;
+	bh=n7o+zVknzt3bjgJRu4SFXVM1iJ7cB2Qo1UhAE+bu9nI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o5Hqb14EB34VItkIM5G14H3ZOYPNgJtRuOaKtW19U6xDHG4s9ity6i2N/hXSrwHNo
-	 YfJZiZ4WwWy5adj53KLM3KsG2mor9Ybo+CBH2AkvVJoNjteQKTMr1W3iAPs+Stuq9U
-	 dCmpqiDKqppuHxNfbjxzFW/hi0DcTmg42Lr8EF6I=
+	b=xoDuZ3W4LjYwvny7jLsCQo2AOqY6qKDgFDEevHUKmLUAT7IU/WQsNZrbsSQgcCdea
+	 ACeNnHqlrab2kMOqFKL3h2rEO9j2E4j1i/6yigxzLxtwerWRB+62gCPgn2Qspe0voh
+	 d3nf26L914hibqu3vH3wMhMn31RKOO8ASPBYPi04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	=?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Luca Weiss <luca@lucaweiss.eu>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 248/499] NFSv4: Avoid unnecessary scans of filesystems for delayed delegations
-Date: Tue,  8 Apr 2025 12:47:40 +0200
-Message-ID: <20250408104857.398103213@linuxfoundation.org>
+Subject: [PATCH 6.12 135/423] remoteproc: qcom_q6v5_mss: Handle platforms with one power domain
+Date: Tue,  8 Apr 2025 12:47:41 +0200
+Message-ID: <20250408104848.873527334@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,106 +62,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Luca Weiss <luca@lucaweiss.eu>
 
-[ Upstream commit e767b59e29b8327d25edde65efc743f479f30d0a ]
+[ Upstream commit 4641840341f37dc8231e0840ec1514b4061b4322 ]
 
-The amount of looping through the list of delegations is occasionally
-leading to soft lockups. If the state manager was asked to manage the
-delayed return of delegations, then only scan those filesystems
-containing delegations that were marked as being delayed.
+For example MSM8974 has mx voltage rail exposed as regulator and only cx
+voltage rail is exposed as power domain. This power domain (cx) is
+attached internally in power domain and cannot be attached in this driver.
 
-Fixes: be20037725d1 ("NFSv4: Fix delegation return in cases where we have to retry")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: 8750cf392394 ("remoteproc: qcom_q6v5_mss: Allow replacing regulators with power domains")
+Co-developed-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+Link: https://lore.kernel.org/r/20250217-msm8226-modem-v5-4-2bc74b80e0ae@lucaweiss.eu
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/delegation.c       | 18 ++++++++++++------
- include/linux/nfs_fs_sb.h |  1 +
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/remoteproc/qcom_q6v5_mss.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
-index abd952cc47e4b..325ba0663a6de 100644
---- a/fs/nfs/delegation.c
-+++ b/fs/nfs/delegation.c
-@@ -331,14 +331,16 @@ nfs_start_delegation_return(struct nfs_inode *nfsi)
- }
+diff --git a/drivers/remoteproc/qcom_q6v5_mss.c b/drivers/remoteproc/qcom_q6v5_mss.c
+index 32c3531b20c70..e19081d530226 100644
+--- a/drivers/remoteproc/qcom_q6v5_mss.c
++++ b/drivers/remoteproc/qcom_q6v5_mss.c
+@@ -1839,6 +1839,13 @@ static int q6v5_pds_attach(struct device *dev, struct device **devs,
+ 	while (pd_names[num_pds])
+ 		num_pds++;
  
- static void nfs_abort_delegation_return(struct nfs_delegation *delegation,
--					struct nfs_client *clp, int err)
-+					struct nfs_server *server, int err)
++	/* Handle single power domain */
++	if (num_pds == 1 && dev->pm_domain) {
++		devs[0] = dev;
++		pm_runtime_enable(dev);
++		return 1;
++	}
++
+ 	for (i = 0; i < num_pds; i++) {
+ 		devs[i] = dev_pm_domain_attach_by_name(dev, pd_names[i]);
+ 		if (IS_ERR_OR_NULL(devs[i])) {
+@@ -1859,8 +1866,15 @@ static int q6v5_pds_attach(struct device *dev, struct device **devs,
+ static void q6v5_pds_detach(struct q6v5 *qproc, struct device **pds,
+ 			    size_t pd_count)
  {
--
- 	spin_lock(&delegation->lock);
- 	clear_bit(NFS_DELEGATION_RETURNING, &delegation->flags);
- 	if (err == -EAGAIN) {
- 		set_bit(NFS_DELEGATION_RETURN_DELAYED, &delegation->flags);
--		set_bit(NFS4CLNT_DELEGRETURN_DELAYED, &clp->cl_state);
-+		set_bit(NFS4SERV_DELEGRETURN_DELAYED,
-+			&server->delegation_flags);
-+		set_bit(NFS4CLNT_DELEGRETURN_DELAYED,
-+			&server->nfs_client->cl_state);
- 	}
- 	spin_unlock(&delegation->lock);
++	struct device *dev = qproc->dev;
+ 	int i;
+ 
++	/* Handle single power domain */
++	if (pd_count == 1 && dev->pm_domain) {
++		pm_runtime_disable(dev);
++		return;
++	}
++
+ 	for (i = 0; i < pd_count; i++)
+ 		dev_pm_domain_detach(pds[i], false);
  }
-@@ -548,7 +550,7 @@ int nfs_inode_set_delegation(struct inode *inode, const struct cred *cred,
-  */
- static int nfs_end_delegation_return(struct inode *inode, struct nfs_delegation *delegation, int issync)
- {
--	struct nfs_client *clp = NFS_SERVER(inode)->nfs_client;
-+	struct nfs_server *server = NFS_SERVER(inode);
- 	unsigned int mode = O_WRONLY | O_RDWR;
- 	int err = 0;
- 
-@@ -570,11 +572,11 @@ static int nfs_end_delegation_return(struct inode *inode, struct nfs_delegation
- 		/*
- 		 * Guard against state recovery
- 		 */
--		err = nfs4_wait_clnt_recover(clp);
-+		err = nfs4_wait_clnt_recover(server->nfs_client);
- 	}
- 
- 	if (err) {
--		nfs_abort_delegation_return(delegation, clp, err);
-+		nfs_abort_delegation_return(delegation, server, err);
- 		goto out;
- 	}
- 
-@@ -678,6 +680,9 @@ static bool nfs_server_clear_delayed_delegations(struct nfs_server *server)
- 	struct nfs_delegation *d;
- 	bool ret = false;
- 
-+	if (!test_and_clear_bit(NFS4SERV_DELEGRETURN_DELAYED,
-+				&server->delegation_flags))
-+		goto out;
- 	list_for_each_entry_rcu (d, &server->delegations, super_list) {
- 		if (!test_bit(NFS_DELEGATION_RETURN_DELAYED, &d->flags))
- 			continue;
-@@ -685,6 +690,7 @@ static bool nfs_server_clear_delayed_delegations(struct nfs_server *server)
- 		clear_bit(NFS_DELEGATION_RETURN_DELAYED, &d->flags);
- 		ret = true;
- 	}
-+out:
- 	return ret;
- }
- 
-diff --git a/include/linux/nfs_fs_sb.h b/include/linux/nfs_fs_sb.h
-index f4cb1f4850a0c..81ab18658d72d 100644
---- a/include/linux/nfs_fs_sb.h
-+++ b/include/linux/nfs_fs_sb.h
-@@ -254,6 +254,7 @@ struct nfs_server {
- 	unsigned long		delegation_flags;
- #define NFS4SERV_DELEGRETURN		(1)
- #define NFS4SERV_DELEGATION_EXPIRED	(2)
-+#define NFS4SERV_DELEGRETURN_DELAYED	(3)
- 	unsigned long		delegation_gen;
- 	unsigned long		mig_gen;
- 	unsigned long		mig_status;
+@@ -2469,13 +2483,13 @@ static const struct rproc_hexagon_res msm8974_mss = {
+ 			.supply = "pll",
+ 			.uA = 100000,
+ 		},
+-		{}
+-	},
+-	.fallback_proxy_supply = (struct qcom_mss_reg_res[]) {
+ 		{
+ 			.supply = "mx",
+ 			.uV = 1050000,
+ 		},
++		{}
++	},
++	.fallback_proxy_supply = (struct qcom_mss_reg_res[]) {
+ 		{
+ 			.supply = "cx",
+ 			.uA = 100000,
+@@ -2501,7 +2515,6 @@ static const struct rproc_hexagon_res msm8974_mss = {
+ 		NULL
+ 	},
+ 	.proxy_pd_names = (char*[]){
+-		"mx",
+ 		"cx",
+ 		NULL
+ 	},
 -- 
 2.39.5
 
