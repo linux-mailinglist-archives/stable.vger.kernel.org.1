@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-130374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99187A803E8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:04:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B4CA7FE58
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF887189E3A6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:59:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CB1617B4EC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:06:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85845263F3B;
-	Tue,  8 Apr 2025 11:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E3C92698A0;
+	Tue,  8 Apr 2025 11:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sCu/CXUa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2IhZCG3S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401C1267F6E;
-	Tue,  8 Apr 2025 11:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0AF2135CD;
+	Tue,  8 Apr 2025 11:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113548; cv=none; b=JqyXQYlq6ukJfTjkWuKOusuG1jiBd0YQ2VjIQ9b0SndYaMiUAe+OTcnAYzQWpc/T/OdrG0g/4SBuAYEsBH6SNZfXrFqb1nbKtgfD2IUmqDt/p6ffsW2KZz8h6XfupgSIJLhn8Hu8UTlG2BtWQSgkYsNV76WkapvqlfBMWypQc5U=
+	t=1744110261; cv=none; b=mrV7cetohohYIoJxjX9556F8Ik1CrOVC0+UA2mpchvOTkQEfUoOK4e1NYyyZGIXzFhILyTbQFyIxoXP3oPUoB5N2KxrxCu5Kj8oxVyHXIYYAZzHuUgZBL7htahwNgUyz70ZnZgTx7F8XhH4E9kdwKoLOXYGoWQsJ3wVLDyN0kJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113548; c=relaxed/simple;
-	bh=r69GEiJZHxXjeNY90hUv7aE7fsQcqdjFH/MX9Jbnams=;
+	s=arc-20240116; t=1744110261; c=relaxed/simple;
+	bh=mCCqlhv0Yv/fua2W1DhTUxAILhWNeedyYA9rUx9bpU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kARUyANNkjcw1ZQFNWE2xuLNXBR8+retz/lwY3FKNoTeowL0DCY6AfXCTL6/8++7rp7y/hSrGyOrKDWgGaGmUIlWFHz4ztTpI8ubQ9Wfy4Bm1jGNfI4ub9BpIvBC2naANyesbnEJm+pP5pjq47AHGAtYvpw7EMqE5ydlXMyt5c0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sCu/CXUa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2FF8C4CEE7;
-	Tue,  8 Apr 2025 11:59:07 +0000 (UTC)
+	 MIME-Version; b=Q92ZsjL/pgj1UwR+JMYKY/n1jEwQYMjHFlj0CxjWKTYDWmkZJctPtnIEA/PPeR/o4m2N7tORYlWYOdRfte5Uq/UbPtWG65xnXoBvRav6i79Gm8UNJgUzySXC7er9UkRo6SLIgfMMtJIw5d9T6Kxiq2p/yiovcVyYjnbBZbseLKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2IhZCG3S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F9FC4CEE5;
+	Tue,  8 Apr 2025 11:04:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113548;
-	bh=r69GEiJZHxXjeNY90hUv7aE7fsQcqdjFH/MX9Jbnams=;
+	s=korg; t=1744110259;
+	bh=mCCqlhv0Yv/fua2W1DhTUxAILhWNeedyYA9rUx9bpU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sCu/CXUaqSgIzo7QczjRLFpk3TXI8sj2cX9fjjPKmXykPcdfim1i8K9ltidF/AAgA
-	 3mMP5yVTTgjbDeb6ZAQr5KmwXkHCtKX6V6fxlLVtQUsCcXzejrgPDbgs9U5Kh0c3jQ
-	 X0pE54mvVRg/ZH5oLBGJ1eKA+MPxp+CPrcfG8hQw=
+	b=2IhZCG3Sj2Skrm7cRC5ieL6q0/sK3mxf087QikCR+lojw5HSAK4bLwO2eEJnx4Fbx
+	 bSOJLRbDjISChriUq29EqDGN6YjZw03MWh8cp5LXqoU8vCkQh15wPpGNso3YJbLeuy
+	 tAqXSXbys05Oj0q4abQd8bkQKkT5bde7FGaHKnO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 193/268] spufs: fix a leak in spufs_create_context()
-Date: Tue,  8 Apr 2025 12:50:04 +0200
-Message-ID: <20250408104833.762376891@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Baoquan He <bhe@redhat.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	stable@kernel.org
+Subject: [PATCH 5.10 227/227] x86/kexec: Fix double-free of elf header buffer
+Date: Tue,  8 Apr 2025 12:50:05 +0200
+Message-ID: <20250408104827.083970034@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 0f5cce3fc55b08ee4da3372baccf4bcd36a98396 ]
+commit d00dd2f2645dca04cf399d8fc692f3f69b6dd996 upstream.
 
-Leak fixes back in 2008 missed one case - if we are trying to set affinity
-and spufs_mkdir() fails, we need to drop the reference to neighbor.
+After
 
-Fixes: 58119068cb27 "[POWERPC] spufs: Fix memory leak on SPU affinity"
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  b3e34a47f989 ("x86/kexec: fix memory leak of elf header buffer"),
+
+freeing image->elf_headers in the error path of crash_load_segments()
+is not needed because kimage_file_post_load_cleanup() will take
+care of that later. And not clearing it could result in a double-free.
+
+Drop the superfluous vfree() call at the error path of
+crash_load_segments().
+
+Fixes: b3e34a47f989 ("x86/kexec: fix memory leak of elf header buffer")
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Baoquan He <bhe@redhat.com>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/20221122115122.13937-1-tiwai@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/cell/spufs/inode.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/x86/kernel/crash.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
-index a0f297581a66c..3216245a648ae 100644
---- a/arch/powerpc/platforms/cell/spufs/inode.c
-+++ b/arch/powerpc/platforms/cell/spufs/inode.c
-@@ -459,8 +459,11 @@ spufs_create_context(struct inode *inode, struct dentry *dentry,
- 	}
- 
- 	ret = spufs_mkdir(inode, dentry, flags, mode & 0777);
--	if (ret)
-+	if (ret) {
-+		if (neighbor)
-+			put_spu_context(neighbor);
- 		goto out_aff_unlock;
-+	}
- 
- 	if (affinity) {
- 		spufs_set_affinity(flags, SPUFS_I(d_inode(dentry))->i_ctx,
--- 
-2.39.5
-
+--- a/arch/x86/kernel/crash.c
++++ b/arch/x86/kernel/crash.c
+@@ -399,10 +399,8 @@ int crash_load_segments(struct kimage *i
+ 	kbuf.buf_align = ELF_CORE_HEADER_ALIGN;
+ 	kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
+ 	ret = kexec_add_buffer(&kbuf);
+-	if (ret) {
+-		vfree((void *)image->arch.elf_headers);
++	if (ret)
+ 		return ret;
+-	}
+ 	image->arch.elf_load_addr = kbuf.mem;
+ 	pr_debug("Loaded ELF headers at 0x%lx bufsz=0x%lx memsz=0x%lx\n",
+ 		 image->arch.elf_load_addr, kbuf.bufsz, kbuf.bufsz);
 
 
 
