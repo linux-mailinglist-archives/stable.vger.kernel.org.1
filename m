@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-130170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67AFBA80338
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:55:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8502EA80375
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:58:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 961171786E2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:51:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D1873B9B31
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F39B269D0C;
-	Tue,  8 Apr 2025 11:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525E32690C0;
+	Tue,  8 Apr 2025 11:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frKpW6ra"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hfj4/BDZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2B82698BE;
-	Tue,  8 Apr 2025 11:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB2122257E;
+	Tue,  8 Apr 2025 11:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113004; cv=none; b=tAa1EQp/gtRKQ9s0gfEJOaZnBB8hOsP3MdUmBGIRgv1BnsGymWi7ZXzENSsMETyMOJb7YCKvPTCW6lmgadRfWEajDjsF5n/UsJwuicc99nFtflEN3tXMf+TXHwAXRwPG76j4TmJuppOGVxcjaqeNObyCl5BehJhi/13DpgsVejg=
+	t=1744113012; cv=none; b=BW7h4v4eszStuSCwxT9lWN+9NImQoM66xf6JW735HznxqrZL5ZXnf0aF/4QmD0FYXoGcPvdnBbJO6jSkjmhDUUQxAkc74B7vaeimMwhqetRIfJKYYDc/HdzDbLT+qZ8nDQ/pBnU87GLs9fBi/leHMt1okAtNIHyFyKO29ZNu0IE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113004; c=relaxed/simple;
-	bh=i7X7SAhBOmEPFI6jPCFWP2tRuq4aHzMwl5QlRSWiIqA=;
+	s=arc-20240116; t=1744113012; c=relaxed/simple;
+	bh=o0wPio6sIWQqyjrfyhd3Jb2wDTWLIXIMsXq6VBnQTZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GgOrIiGbrALKuOmoR73ynOUG4IVNTIQHuDRXqR49MpbsesYFGLc9F0QvKo30S1DQZJnUtp8OCMyBfp3KqynVKNB/dP93HNKb4WCRbWr9K8k+7S3gRyrtOYr0bxibKXgc/eyzBrvwC3L8Fkkhhf0xLc/F5pWQi8AUpQyC+5i2Blc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frKpW6ra; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D006C4CEEB;
-	Tue,  8 Apr 2025 11:50:03 +0000 (UTC)
+	 MIME-Version; b=hh016JxM9GH57QnAtlu7gvIsfp7udCeh6qN9SQ7S6b76E31mDoergVMLWV9OYFCdAGD9wPt3GC3Iill1ALPZRQTRFBQ/K19nT7J7ZxxFcEA8EBbiufAYlRSk0gvCdJy7AoLrT5JZyUV/Z7q/OxaDGqHiDG/WFtTp2696izMVT0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hfj4/BDZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F50C4CEE5;
+	Tue,  8 Apr 2025 11:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113004;
-	bh=i7X7SAhBOmEPFI6jPCFWP2tRuq4aHzMwl5QlRSWiIqA=;
+	s=korg; t=1744113011;
+	bh=o0wPio6sIWQqyjrfyhd3Jb2wDTWLIXIMsXq6VBnQTZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=frKpW6raBIHEseIbrrNL+XWye+U1pUQa0Yanj7FTikB3Sx3+iV8Hs4YPryapTp4WG
-	 fW6IhWhbd02pNhmErGc/rH53lfsXIC1mojYveII6pMuXjjMRnRUijDnFtHPc0/2BPT
-	 rtWileIzaCfT9lKEVVUsOiKn0A4/SvWd7HPS6u/w=
+	b=hfj4/BDZFmfXBp46BHueSbEbT57DfF0cHJSuTRyu9XhSXFuD4xCVIUQiCWM1WWHTq
+	 kcW6Tuxm6jQODT3Cor9DaZh0Nw4B1MbKXqHoznoOSwwpGpX5i7pETKaFlAgAwq4uzS
+	 pdIL8Iudp4rH73f1K8uOu+hHXEgU0O6AB66shwWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Frank Li <frank.li@nxp.com>,
 	Haibo Chen <haibo.chen@nxp.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 251/279] can: flexcan: only change CAN state when link up in system PM
-Date: Tue,  8 Apr 2025 12:50:34 +0200
-Message-ID: <20250408104833.158236833@linuxfoundation.org>
+Subject: [PATCH 5.15 252/279] can: flexcan: disable transceiver during system PM
+Date: Tue,  8 Apr 2025 12:50:35 +0200
+Message-ID: <20250408104833.182927932@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
 References: <20250408104826.319283234@linuxfoundation.org>
@@ -68,71 +69,56 @@ Content-Transfer-Encoding: 8bit
 
 From: Haibo Chen <haibo.chen@nxp.com>
 
-[ Upstream commit fd99d6ed20234b83d65b9c5417794343577cf3e5 ]
+[ Upstream commit 5a19143124be42900b3fbc9ada3c919632eb45eb ]
 
-After a suspend/resume cycle on a down interface, it will come up as
-ERROR-ACTIVE.
-
-$ ip -details -s -s a s dev flexcan0
-3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
-    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
-    can state STOPPED (berr-counter tx 0 rx 0) restart-ms 1000
-
-$ sudo systemctl suspend
-
-$ ip -details -s -s a s dev flexcan0
-3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
-    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
-    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 1000
-
-And only set CAN state to CAN_STATE_ERROR_ACTIVE when resume process
-has no issue, otherwise keep in CAN_STATE_SLEEPING as suspend did.
+During system PM, if no wakeup requirement, disable transceiver to
+save power.
 
 Fixes: 4de349e786a3 ("can: flexcan: fix resume function")
 Cc: stable@vger.kernel.org
+Reviewed-by: Frank Li <frank.li@nxp.com>
 Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Link: https://patch.msgid.link/20250314110145.899179-1-haibo.chen@nxp.com
-Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Closes: https://lore.kernel.org/all/20250314-married-polar-elephant-b15594-mkl@pengutronix.de
+Link: https://patch.msgid.link/20250314110145.899179-2-haibo.chen@nxp.com
 [mkl: add newlines]
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/flexcan.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/can/flexcan.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/can/flexcan.c b/drivers/net/can/flexcan.c
-index 837bca7347594..fc9cfe434ce4f 100644
+index fc9cfe434ce4f..6f4e3e0330a45 100644
 --- a/drivers/net/can/flexcan.c
 +++ b/drivers/net/can/flexcan.c
-@@ -2343,8 +2343,9 @@ static int __maybe_unused flexcan_suspend(struct device *device)
- 		}
- 		netif_stop_queue(dev);
- 		netif_device_detach(dev);
+@@ -2337,6 +2337,10 @@ static int __maybe_unused flexcan_suspend(struct device *device)
+ 
+ 			flexcan_chip_interrupts_disable(dev);
+ 
++			err = flexcan_transceiver_disable(priv);
++			if (err)
++				return err;
 +
-+		priv->can.state = CAN_STATE_SLEEPING;
- 	}
--	priv->can.state = CAN_STATE_SLEEPING;
+ 			err = pinctrl_pm_select_sleep_state(device);
+ 			if (err)
+ 				return err;
+@@ -2369,10 +2373,16 @@ static int __maybe_unused flexcan_resume(struct device *device)
+ 			if (err)
+ 				return err;
  
- 	return 0;
- }
-@@ -2355,7 +2356,6 @@ static int __maybe_unused flexcan_resume(struct device *device)
- 	struct flexcan_priv *priv = netdev_priv(dev);
- 	int err;
+-			err = flexcan_chip_start(dev);
++			err = flexcan_transceiver_enable(priv);
+ 			if (err)
+ 				return err;
  
--	priv->can.state = CAN_STATE_ERROR_ACTIVE;
- 	if (netif_running(dev)) {
- 		netif_device_attach(dev);
- 		netif_start_queue(dev);
-@@ -2375,6 +2375,8 @@ static int __maybe_unused flexcan_resume(struct device *device)
- 
++			err = flexcan_chip_start(dev);
++			if (err) {
++				flexcan_transceiver_disable(priv);
++				return err;
++			}
++
  			flexcan_chip_interrupts_enable(dev);
  		}
-+
-+		priv->can.state = CAN_STATE_ERROR_ACTIVE;
- 	}
  
- 	return 0;
 -- 
 2.39.5
 
