@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-130540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28CA9A80560
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:17:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66892A80498
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:10:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD07D427F59
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 484EF4250AB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404C826AAAA;
-	Tue,  8 Apr 2025 12:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C0826B0A9;
+	Tue,  8 Apr 2025 12:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4cVFmpY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G+BKKXR0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B7E26A0B3;
-	Tue,  8 Apr 2025 12:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCF426B08E;
+	Tue,  8 Apr 2025 12:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113983; cv=none; b=nZJKJ2Zj4en827SYOZDJmuNN6OUe1TQJEil8hwFm+WFcJE97e4EdLAMEPp3NkyIiTvAAvtA5mGlUxgg4pN/VqHRW3su9PkOLuIm0eBTIQFg+BGdOgOL406ibaJVgF1vCKjKXKpSBd+pm3pRcT1tgL0AkyicYexEl1g461Hu/xFg=
+	t=1744113612; cv=none; b=m9Sal7/RhzXxWb92ZdHrSnpiQbNaowobQ/jlWBGNYbc8CXjlODIzsGTb/BBnCoKBhyPfCSXWTPt3oJDRUoE1zr4K1uO3dfBNfjA7Aen4W6N/c6zKjpBGHiNPBEu2NHbsKIdygnx/YiSBRaJEyhmqEGlafQ5rOa0ubo6Opj6r7N4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113983; c=relaxed/simple;
-	bh=S4c/hpPMj8kPH1ciZMyQr+wI1dRZ+JzBg+YKsXmV0EQ=;
+	s=arc-20240116; t=1744113612; c=relaxed/simple;
+	bh=/EtZdqdFzOaX5Mpyo5GuALnvHIqbjSZrjNCHvVn4Jkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l3+55DFy+/Du3hKqWjqOvf37LkXofrUCkbhhRqtOYBGr7IaoI3W3YuWDW9cUOpFw/kUIW1B2cW6H+nv041LJz15iPA6V3qTAZ/A+yEFKGRvBlh4upiyRivlZcinmlqn1t9sKeRA17fY9qUbQGzShxfhOI/VHpua+upMER2O9Sr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4cVFmpY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83DD0C4CEE5;
-	Tue,  8 Apr 2025 12:06:22 +0000 (UTC)
+	 MIME-Version; b=kooODhw7d+1FGIEWxm593TPa4hF/hz4W1vhW9HDG45FMB8ydkO8fuX1kfyOWoFRnAP1/lITNhlQ+sDoyTsXhf+CWnYdF6DtkHOSaVQpDboSs3RqPXO/dcI+j3PuoojnVVuV2uRslppUNT/h+bm9KuKVTzQhBGoWdVrfb96be89Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G+BKKXR0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B6FC4CEEB;
+	Tue,  8 Apr 2025 12:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113982;
-	bh=S4c/hpPMj8kPH1ciZMyQr+wI1dRZ+JzBg+YKsXmV0EQ=;
+	s=korg; t=1744113612;
+	bh=/EtZdqdFzOaX5Mpyo5GuALnvHIqbjSZrjNCHvVn4Jkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y4cVFmpY1Rzo3ovA2e5nc6gnCwXNjBs6/BPW0iwcnMQvyCgQ82h30WkeEd8MsVQZj
-	 e3aozDpSRyqGn3DGJ7aJ3bdhHGrTyo7YbnIQs6DBHI+kn/kEMzmk0toVHTWWCfZseL
-	 dwNIktKY0tZMOv9HbWRmUCAbXeTfuo5VkXo+F+Lg=
+	b=G+BKKXR0GpJPFC9SusoMewNmv+6YntJYBawMTikLb3qt9GCLbXoVteQMgOhqv+gOE
+	 f8Ti8X8ROb9KDWxgR1j/RdmeUFGleSYAkMNGYW2KVBeljEArV8GJAwblE0GeDq94fc
+	 ghaHrtjqZDNe2MbOK/L6V2PacNO2cGQTeUEIapvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Leo Yan <leo.yan@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 093/154] drm/mediatek: mtk_hdmi: Fix typo for aud_sampe_size member
+Subject: [PATCH 6.6 223/268] perf/core: Fix child_total_time_enabled accounting bug at task exit
 Date: Tue,  8 Apr 2025 12:50:34 +0200
-Message-ID: <20250408104818.306600616@linuxfoundation.org>
+Message-ID: <20250408104834.598569784@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +64,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Yeoreum Yun <yeoreum.yun@arm.com>
 
-[ Upstream commit 72fcb88e7bbc053ed4fc74cebb0315b98a0f20c3 ]
+[ Upstream commit a3c3c66670cee11eb13aa43905904bf29cb92d32 ]
 
-Rename member aud_sampe_size of struct hdmi_audio_param to
-aud_sample_size to fix a typo and enhance readability.
+The perf events code fails to account for total_time_enabled of
+inactive events.
 
-This commit brings no functional changes.
+Here is a failure case for accounting total_time_enabled for
+CPU PMU events:
 
-Fixes: 8f83f26891e1 ("drm/mediatek: Add HDMI support")
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20250217154836.108895-20-angelogioacchino.delregno@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+  sudo ./perf stat -vvv -e armv8_pmuv3_0/event=0x08/ -e armv8_pmuv3_1/event=0x08/ -- stress-ng --pthread=2 -t 2s
+  ...
+
+  armv8_pmuv3_0/event=0x08/: 1138698008 2289429840 2174835740
+  armv8_pmuv3_1/event=0x08/: 1826791390 1950025700 847648440
+                             `          `          `
+                             `          `          > total_time_running with child
+                             `          > total_time_enabled with child
+                             > count with child
+
+  Performance counter stats for 'stress-ng --pthread=2 -t 2s':
+
+       1,138,698,008      armv8_pmuv3_0/event=0x08/                                               (94.99%)
+       1,826,791,390      armv8_pmuv3_1/event=0x08/                                               (43.47%)
+
+The two events above are opened on two different CPU PMUs, for example,
+each event is opened for a cluster in an Arm big.LITTLE system, they
+will never run on the same CPU.  In theory, the total enabled time should
+be same for both events, as two events are opened and closed together.
+
+As the result show, the two events' total enabled time including
+child event is different (2289429840 vs 1950025700).
+
+This is because child events are not accounted properly
+if a event is INACTIVE state when the task exits:
+
+  perf_event_exit_event()
+   `> perf_remove_from_context()
+     `> __perf_remove_from_context()
+       `> perf_child_detach()   -> Accumulate child_total_time_enabled
+         `> list_del_event()    -> Update child event's time
+
+The problem is the time accumulation happens prior to child event's
+time updating. Thus, it misses to account the last period's time when
+the event exits.
+
+The perf core layer follows the rule that timekeeping is tied to state
+change. To address the issue, make __perf_remove_from_context()
+handle the task exit case by passing 'DETACH_EXIT' to it and
+invoke perf_event_state() for state alongside with accounting the time.
+
+Then, perf_child_detach() populates the time into the parent's time metrics.
+
+After this patch, the bug is fixed:
+
+  sudo ./perf stat -vvv -e armv8_pmuv3_0/event=0x08/ -e armv8_pmuv3_1/event=0x08/ -- stress-ng --pthread=2 -t 10s
+  ...
+  armv8_pmuv3_0/event=0x08/: 15396770398 32157963940 21898169000
+  armv8_pmuv3_1/event=0x08/: 22428964974 32157963940 10259794940
+
+   Performance counter stats for 'stress-ng --pthread=2 -t 10s':
+
+      15,396,770,398      armv8_pmuv3_0/event=0x08/                                               (68.10%)
+      22,428,964,974      armv8_pmuv3_1/event=0x08/                                               (31.90%)
+
+[ mingo: Clarified the changelog. ]
+
+Fixes: ef54c1a476aef ("perf: Rework perf_event_exit_event()")
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Leo Yan <leo.yan@arm.com>
+Link: https://lore.kernel.org/r/20250326082003.1630986-1-yeoreum.yun@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_hdmi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/events/core.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_hdmi.c b/drivers/gpu/drm/mediatek/mtk_hdmi.c
-index 74a54a9e35339..afc0de27c976c 100644
---- a/drivers/gpu/drm/mediatek/mtk_hdmi.c
-+++ b/drivers/gpu/drm/mediatek/mtk_hdmi.c
-@@ -135,7 +135,7 @@ enum hdmi_aud_channel_swap_type {
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index a524329149a71..b710976fb01b1 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -2333,6 +2333,7 @@ group_sched_out(struct perf_event *group_event, struct perf_event_context *ctx)
+ #define DETACH_GROUP	0x01UL
+ #define DETACH_CHILD	0x02UL
+ #define DETACH_DEAD	0x04UL
++#define DETACH_EXIT	0x08UL
  
- struct hdmi_audio_param {
- 	enum hdmi_audio_coding_type aud_codec;
--	enum hdmi_audio_sample_size aud_sampe_size;
-+	enum hdmi_audio_sample_size aud_sample_size;
- 	enum hdmi_aud_input_type aud_input_type;
- 	enum hdmi_aud_i2s_fmt aud_i2s_fmt;
- 	enum hdmi_aud_mclk aud_mclk;
-@@ -1085,7 +1085,7 @@ static int mtk_hdmi_output_init(struct mtk_hdmi *hdmi)
+ /*
+  * Cross CPU call to remove a performance event
+@@ -2347,6 +2348,7 @@ __perf_remove_from_context(struct perf_event *event,
+ 			   void *info)
+ {
+ 	struct perf_event_pmu_context *pmu_ctx = event->pmu_ctx;
++	enum perf_event_state state = PERF_EVENT_STATE_OFF;
+ 	unsigned long flags = (unsigned long)info;
  
- 	hdmi->csp = HDMI_COLORSPACE_RGB;
- 	aud_param->aud_codec = HDMI_AUDIO_CODING_TYPE_PCM;
--	aud_param->aud_sampe_size = HDMI_AUDIO_SAMPLE_SIZE_16;
-+	aud_param->aud_sample_size = HDMI_AUDIO_SAMPLE_SIZE_16;
- 	aud_param->aud_input_type = HDMI_AUD_INPUT_I2S;
- 	aud_param->aud_i2s_fmt = HDMI_I2S_MODE_I2S_24BIT;
- 	aud_param->aud_mclk = HDMI_AUD_MCLK_128FS;
-@@ -1589,14 +1589,14 @@ static int mtk_hdmi_audio_hw_params(struct device *dev, void *data,
- 	switch (daifmt->fmt) {
- 	case HDMI_I2S:
- 		hdmi_params.aud_codec = HDMI_AUDIO_CODING_TYPE_PCM;
--		hdmi_params.aud_sampe_size = HDMI_AUDIO_SAMPLE_SIZE_16;
-+		hdmi_params.aud_sample_size = HDMI_AUDIO_SAMPLE_SIZE_16;
- 		hdmi_params.aud_input_type = HDMI_AUD_INPUT_I2S;
- 		hdmi_params.aud_i2s_fmt = HDMI_I2S_MODE_I2S_24BIT;
- 		hdmi_params.aud_mclk = HDMI_AUD_MCLK_128FS;
- 		break;
- 	case HDMI_SPDIF:
- 		hdmi_params.aud_codec = HDMI_AUDIO_CODING_TYPE_PCM;
--		hdmi_params.aud_sampe_size = HDMI_AUDIO_SAMPLE_SIZE_16;
-+		hdmi_params.aud_sample_size = HDMI_AUDIO_SAMPLE_SIZE_16;
- 		hdmi_params.aud_input_type = HDMI_AUD_INPUT_SPDIF;
- 		break;
- 	default:
+ 	if (ctx->is_active & EVENT_TIME) {
+@@ -2358,16 +2360,19 @@ __perf_remove_from_context(struct perf_event *event,
+ 	 * Ensure event_sched_out() switches to OFF, at the very least
+ 	 * this avoids raising perf_pending_task() at this time.
+ 	 */
+-	if (flags & DETACH_DEAD)
++	if (flags & DETACH_EXIT)
++		state = PERF_EVENT_STATE_EXIT;
++	if (flags & DETACH_DEAD) {
+ 		event->pending_disable = 1;
++		state = PERF_EVENT_STATE_DEAD;
++	}
+ 	event_sched_out(event, ctx);
++	perf_event_set_state(event, min(event->state, state));
+ 	if (flags & DETACH_GROUP)
+ 		perf_group_detach(event);
+ 	if (flags & DETACH_CHILD)
+ 		perf_child_detach(event);
+ 	list_del_event(event, ctx);
+-	if (flags & DETACH_DEAD)
+-		event->state = PERF_EVENT_STATE_DEAD;
+ 
+ 	if (!pmu_ctx->nr_events) {
+ 		pmu_ctx->rotate_necessary = 0;
+@@ -13140,12 +13145,7 @@ perf_event_exit_event(struct perf_event *event, struct perf_event_context *ctx)
+ 		mutex_lock(&parent_event->child_mutex);
+ 	}
+ 
+-	perf_remove_from_context(event, detach_flags);
+-
+-	raw_spin_lock_irq(&ctx->lock);
+-	if (event->state > PERF_EVENT_STATE_EXIT)
+-		perf_event_set_state(event, PERF_EVENT_STATE_EXIT);
+-	raw_spin_unlock_irq(&ctx->lock);
++	perf_remove_from_context(event, detach_flags | DETACH_EXIT);
+ 
+ 	/*
+ 	 * Child events can be freed.
 -- 
 2.39.5
 
