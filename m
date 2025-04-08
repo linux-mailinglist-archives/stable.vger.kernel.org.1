@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-129083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A403EA7FDFD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14BCBA80117
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2658F4456F8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:03:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B0B87A6502
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F602269801;
-	Tue,  8 Apr 2025 11:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88515207E14;
+	Tue,  8 Apr 2025 11:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aw36KHDc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrZb3BBq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A05D2690FA;
-	Tue,  8 Apr 2025 11:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4687A216E30;
+	Tue,  8 Apr 2025 11:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110068; cv=none; b=Hmr1ybQypKJQ7OBP3lxPmuQhtdBGSVdzJ2E2ELLJSTRFj17Rx77OAA7F8z/XiGfuXx1RAbu4dyViqi2ztU+HZ5FhRwI9r3cLZTxrqnqdfDGQLUI2e1KsoXsjQen0+TCN9N1hQ7k3wBej93oYGbaTGJWRx1px3uqbz6vOHftj2ho=
+	t=1744112040; cv=none; b=kDFsDJmkvLtPl7MucVuZ2KBZEm9J5Rn05y+KFnOG8VGUI1tsIDvuixf1XBkAazb7AkOO+Exn1pWlV+ziOVSoRw5l2maoNabBtCwwJyDlVNIBRaHxXsDkri/LGa+57TJgMEIrmiE2JGBrPZC4KFSaTgTiWy64jWUV2dRpIFVhLoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110068; c=relaxed/simple;
-	bh=dlfVboFDPzpWtf7J7jeUJ2SEK8NEeZ6rG71C7S7sPi4=;
+	s=arc-20240116; t=1744112040; c=relaxed/simple;
+	bh=ee5knDAH3jdtSiMHZJqKu7E1Nca1wenGGM9ldTdJeTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qhQ6ht59sJXoFyK6U8mzKN/5vs+/jEw1fitUZvXzki+/U95HtPKUSRJeIgz0MLDH2C7N+f9e6mvoTBWSPpisnAa2aBkW3e/gAEJSrV+MnypScQpdq52y2kSRckCAueTibxUSe98+KWeAnymv39zX6u/jZMndqeAtEd5+d6POJt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aw36KHDc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD164C4CEE5;
-	Tue,  8 Apr 2025 11:01:07 +0000 (UTC)
+	 MIME-Version; b=ei7TCFAgm83veMX/fXut85q5O/HhhZAVudc9e7zmRp5kI4Yso9gJewWl/WEVU4diqLnxOPf5Wo75c5VDHDyR9u49K3DG6mYSXp6kTN/o49F8GFqHvoX1+BP68p3jkPpMGXoTv0hq23+GrDcShQRb6IujmQeyuzkgt4E353FN9u8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UrZb3BBq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8DB4C4CEE5;
+	Tue,  8 Apr 2025 11:33:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110068;
-	bh=dlfVboFDPzpWtf7J7jeUJ2SEK8NEeZ6rG71C7S7sPi4=;
+	s=korg; t=1744112040;
+	bh=ee5knDAH3jdtSiMHZJqKu7E1Nca1wenGGM9ldTdJeTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aw36KHDcrzOrUpNnePVurfl22ZJdsbijvRcuR971hTlYsNNccIQRHWaOlmhZi8VJE
-	 jkIzffW+GnklGGweAhxhnV3MNv3+/6QRySOiTpR3aHz2gbUGE0tZP8DPqwsAYE0iIT
-	 brJTELFGJltZ8Eu/Pm0ouxhom42AUDtWp/RytIUs=
+	b=UrZb3BBqbyWvxBb2sxyNvwSLZqSZ7qoggo0aIXSDFw/OFEKKxXNTh/DfCqz5p7T5f
+	 UgOYf3cYkUgnfmb6QNEJmaZlu8q4OPli14o8UNr6SREe6lOkX+ph0gzkoS+xfcNWCz
+	 mvaXQoY6tJkTpqujLZHEiehp3W0JGuEMXeRFbHjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jerome Brunet <jbrunet@baylibre.com>,
+	Fernando Fernandez Mancera <ffmancera@riseup.net>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 155/227] clk: amlogic: g12a: fix mmc A peripheral clock
+Subject: [PATCH 6.14 636/731] ipv6: fix omitted netlink attributes when using RTEXT_FILTER_SKIP_STATS
 Date: Tue,  8 Apr 2025 12:48:53 +0200
-Message-ID: <20250408104824.965847381@linuxfoundation.org>
+Message-ID: <20250408104929.064156475@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Fernando Fernandez Mancera <ffmancera@riseup.net>
 
-[ Upstream commit 0079e77c08de692cb20b38e408365c830a44b1ef ]
+[ Upstream commit 7ac6ea4a3e0898db76aecccd68fb2c403eb7d24e ]
 
-The bit index of the peripheral clock for mmc A is wrong
-This was probably not a problem for mmc A as the peripheral is likely left
-enabled by the bootloader.
+Using RTEXT_FILTER_SKIP_STATS is incorrectly skipping non-stats IPv6
+netlink attributes on link dump. This causes issues on userspace tools,
+e.g iproute2 is not rendering address generation mode as it should due
+to missing netlink attribute.
 
-No issues has been reported so far but it could be a problem, most likely
-some form of conflict between the ethernet and mmc A clock, breaking
-ethernet on init.
+Move the filling of IFLA_INET6_STATS and IFLA_INET6_ICMP6STATS to a
+helper function guarded by a flag check to avoid hitting the same
+situation in the future.
 
-Use the value provided by the documentation for mmc A before this
-becomes an actual problem.
-
-Fixes: 085a4ea93d54 ("clk: meson: g12a: add peripheral clock controller")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241213-amlogic-clk-g12a-mmca-fix-v1-1-5af421f58b64@baylibre.com
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Fixes: d5566fd72ec1 ("rtnetlink: RTEXT_FILTER_SKIP_STATS support to avoid dumping inet/inet6 stats")
+Signed-off-by: Fernando Fernandez Mancera <ffmancera@riseup.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250402121751.3108-1-ffmancera@riseup.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/meson/g12a.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/addrconf.c | 37 +++++++++++++++++++++++++------------
+ 1 file changed, 25 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/clk/meson/g12a.c b/drivers/clk/meson/g12a.c
-index 870cac6dd0453..3280b7410a13f 100644
---- a/drivers/clk/meson/g12a.c
-+++ b/drivers/clk/meson/g12a.c
-@@ -4136,7 +4136,7 @@ static MESON_GATE(g12a_spicc_1,			HHI_GCLK_MPEG0,	14);
- static MESON_GATE(g12a_hiu_reg,			HHI_GCLK_MPEG0,	19);
- static MESON_GATE(g12a_mipi_dsi_phy,		HHI_GCLK_MPEG0,	20);
- static MESON_GATE(g12a_assist_misc,		HHI_GCLK_MPEG0,	23);
--static MESON_GATE(g12a_emmc_a,			HHI_GCLK_MPEG0,	4);
-+static MESON_GATE(g12a_emmc_a,			HHI_GCLK_MPEG0,	24);
- static MESON_GATE(g12a_emmc_b,			HHI_GCLK_MPEG0,	25);
- static MESON_GATE(g12a_emmc_c,			HHI_GCLK_MPEG0,	26);
- static MESON_GATE(g12a_audio_codec,		HHI_GCLK_MPEG0,	28);
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index ac8cc10765360..54a8ea004da28 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -5784,6 +5784,27 @@ static void snmp6_fill_stats(u64 *stats, struct inet6_dev *idev, int attrtype,
+ 	}
+ }
+ 
++static int inet6_fill_ifla6_stats_attrs(struct sk_buff *skb,
++					struct inet6_dev *idev)
++{
++	struct nlattr *nla;
++
++	nla = nla_reserve(skb, IFLA_INET6_STATS, IPSTATS_MIB_MAX * sizeof(u64));
++	if (!nla)
++		goto nla_put_failure;
++	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_STATS, nla_len(nla));
++
++	nla = nla_reserve(skb, IFLA_INET6_ICMP6STATS, ICMP6_MIB_MAX * sizeof(u64));
++	if (!nla)
++		goto nla_put_failure;
++	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_ICMP6STATS, nla_len(nla));
++
++	return 0;
++
++nla_put_failure:
++	return -EMSGSIZE;
++}
++
+ static int inet6_fill_ifla6_attrs(struct sk_buff *skb, struct inet6_dev *idev,
+ 				  u32 ext_filter_mask)
+ {
+@@ -5806,18 +5827,10 @@ static int inet6_fill_ifla6_attrs(struct sk_buff *skb, struct inet6_dev *idev,
+ 
+ 	/* XXX - MC not implemented */
+ 
+-	if (ext_filter_mask & RTEXT_FILTER_SKIP_STATS)
+-		return 0;
+-
+-	nla = nla_reserve(skb, IFLA_INET6_STATS, IPSTATS_MIB_MAX * sizeof(u64));
+-	if (!nla)
+-		goto nla_put_failure;
+-	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_STATS, nla_len(nla));
+-
+-	nla = nla_reserve(skb, IFLA_INET6_ICMP6STATS, ICMP6_MIB_MAX * sizeof(u64));
+-	if (!nla)
+-		goto nla_put_failure;
+-	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_ICMP6STATS, nla_len(nla));
++	if (!(ext_filter_mask & RTEXT_FILTER_SKIP_STATS)) {
++		if (inet6_fill_ifla6_stats_attrs(skb, idev) < 0)
++			goto nla_put_failure;
++	}
+ 
+ 	nla = nla_reserve(skb, IFLA_INET6_TOKEN, sizeof(struct in6_addr));
+ 	if (!nla)
 -- 
 2.39.5
 
