@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-129710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93A3BA80105
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15E32A801A4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:41:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C18B88176E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:31:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AB3B7A6BE7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:37:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1EF0269833;
-	Tue,  8 Apr 2025 11:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0BC266583;
+	Tue,  8 Apr 2025 11:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FI1nJ/9D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FNtNZM4o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D20268C5D;
-	Tue,  8 Apr 2025 11:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37737264A76;
+	Tue,  8 Apr 2025 11:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111772; cv=none; b=bbS6XdnwHD/TG7ojCf2esdxVuBG3zCmUaVujXhSW0FnSbTVKpx+//bQG15+HKrJJUVW+rS9nrc61YOYXSciLWuXvEglq8kmtt0CYgjEVeVQX8wiF10m6ftDroXTNJ97lgQ8R/KBilRPDdKsDE2XbBINO1RoQAT0clpUPSsO0ook=
+	t=1744112337; cv=none; b=DQYl7jS4pCJvgXm46ePyG6s8U6edazdcOaPkrqliQqv5kCj5IgGfhg8wvpOfTBOTbBUvjWNtVg2wfhJ3vZoxsOmc2kGN21EYzrHu7EXAoXX53OwJ4jKwUfudlf5D6Oz0unVdEPYlj6LWnSTGlj3dL363OhSfbQNi3IXL1yHBcfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111772; c=relaxed/simple;
-	bh=m86NnHeyUYP0lQLbNx2aC4p+WhURhEGQvsAPhX0s/uQ=;
+	s=arc-20240116; t=1744112337; c=relaxed/simple;
+	bh=1i2Rpqjvma6ZxN+3K3wTUpWGlAtF0Lec8s0U0QsNa6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UNBnR8cE6fjO/M05KxjvNYtsz2GqMeLOQsrHbzBUMjNtwtYIzvMwxSyAFKE90dNmtbuQQEuQib/t/Hb73O5eP9QuPrKgHGDw7pYFWjaIeZ492dXPudmmAZSBin5GRrWcfRXI8s4NwBpfCijJg3mzLkm+WWYEd3YmKHzt73e/IJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FI1nJ/9D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA74C4CEE5;
-	Tue,  8 Apr 2025 11:29:32 +0000 (UTC)
+	 MIME-Version; b=mBtc/KLM8UdxGsY7ZycsjLYs0uTHvH3e1+1/AmgTucK4CGSWWRBVNXUUFB2XliCtmA8vxEB4/hvhUrlQ/guG+B4wf2DNUftjbpHUCS1tTxaihSIc5Jys448Pq9Y3PAhcHN6plI+t9hmIo/osYnUS78GoxHTNNsC1AKZGtevoQDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FNtNZM4o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95023C4CEE5;
+	Tue,  8 Apr 2025 11:38:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111772;
-	bh=m86NnHeyUYP0lQLbNx2aC4p+WhURhEGQvsAPhX0s/uQ=;
+	s=korg; t=1744112337;
+	bh=1i2Rpqjvma6ZxN+3K3wTUpWGlAtF0Lec8s0U0QsNa6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FI1nJ/9DNRtZL2QVPDKdhAskQXPxv3y6eUswfcxrAano717DRbKf7or/cl6pwNk3+
-	 7Rb5uWe/mWvPVLdjYEib2JoAvNS1IAGb9HTzNPNmyRqcHrGvpGFIlpYzqC+NK3ZQ+K
-	 6hOkHrbSeqwSq7tfouPedG5ttyYefENPrOAs/bx8=
+	b=FNtNZM4oXwRQvVRWvRjzQtdOBnvaGfd8eJWe4yEJzbfGi7rqQKa4NWqOzhTESV3Ti
+	 i0tDAchRgF50ptzDSZgGymFirAeY5hKIuWB7v2HD/pnX/wyw0PJJcG3jhlDaxhCdQZ
+	 g9iDH07mfdLrWiM+s89PUdHzyOOlvq4iXC7xewp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Gannon Kolding <gannon.kolding@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 515/731] NFSv4: Dont trigger uneccessary scans for return-on-close delegations
-Date: Tue,  8 Apr 2025 12:46:52 +0200
-Message-ID: <20250408104926.253382482@linuxfoundation.org>
+Subject: [PATCH 5.15 030/279] ACPI: resource: IRQ override for Eluktronics MECH-17
+Date: Tue,  8 Apr 2025 12:46:53 +0200
+Message-ID: <20250408104827.196679003@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Gannon Kolding <gannon.kolding@gmail.com>
 
-[ Upstream commit 47acca884f714f41d95dc654f802845544554784 ]
+[ Upstream commit 607ab6f85f4194b644ea95ac5fe660ef575db3b4 ]
 
-The amount of looping through the list of delegations is occasionally
-leading to soft lockups. Avoid at least some loops by not requiring the
-NFSv4 state manager to scan for delegations that are marked for
-return-on-close. Instead, either mark them for immediate return (if
-possible) or else leave it up to nfs4_inode_return_delegation_on_close()
-to return them once the file is closed by the application.
+The Eluktronics MECH-17 (GM7RG7N) needs IRQ overriding for the
+keyboard to work.
 
-Fixes: b757144fd77c ("NFSv4: Be less aggressive about returning delegations for open files")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Adding a DMI_MATCH entry for this laptop model makes the internal
+keyboard function normally.
+
+Signed-off-by: Gannon Kolding <gannon.kolding@gmail.com>
+Link: https://patch.msgid.link/20250127093902.328361-1-gannon.kolding@gmail.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/delegation.c | 33 ++++++++++++++++++---------------
- 1 file changed, 18 insertions(+), 15 deletions(-)
+ drivers/acpi/resource.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
-index 4db912f562305..df77d68d9ff99 100644
---- a/fs/nfs/delegation.c
-+++ b/fs/nfs/delegation.c
-@@ -590,17 +590,6 @@ static bool nfs_delegation_need_return(struct nfs_delegation *delegation)
- 
- 	if (test_and_clear_bit(NFS_DELEGATION_RETURN, &delegation->flags))
- 		ret = true;
--	else if (test_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags)) {
--		struct inode *inode;
--
--		spin_lock(&delegation->lock);
--		inode = delegation->inode;
--		if (inode && list_empty(&NFS_I(inode)->open_files))
--			ret = true;
--		spin_unlock(&delegation->lock);
--	}
--	if (ret)
--		clear_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
- 	if (test_bit(NFS_DELEGATION_RETURNING, &delegation->flags) ||
- 	    test_bit(NFS_DELEGATION_RETURN_DELAYED, &delegation->flags) ||
- 	    test_bit(NFS_DELEGATION_REVOKED, &delegation->flags))
-@@ -878,11 +867,25 @@ int nfs4_inode_make_writeable(struct inode *inode)
- 	return nfs4_inode_return_delegation(inode);
- }
- 
--static void nfs_mark_return_if_closed_delegation(struct nfs_server *server,
--		struct nfs_delegation *delegation)
-+static void
-+nfs_mark_return_if_closed_delegation(struct nfs_server *server,
-+				     struct nfs_delegation *delegation)
- {
--	set_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
--	set_bit(NFS4CLNT_DELEGRETURN, &server->nfs_client->cl_state);
-+	struct inode *inode;
-+
-+	if (test_bit(NFS_DELEGATION_RETURN, &delegation->flags) ||
-+	    test_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags))
-+		return;
-+	spin_lock(&delegation->lock);
-+	inode = delegation->inode;
-+	if (!inode)
-+		goto out;
-+	if (list_empty(&NFS_I(inode)->open_files))
-+		nfs_mark_return_delegation(server, delegation);
-+	else
-+		set_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
-+out:
-+	spin_unlock(&delegation->lock);
- }
- 
- static bool nfs_server_mark_return_all_delegations(struct nfs_server *server)
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 56bbdd2f9a40d..0735ad7f01e22 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -556,6 +556,12 @@ static const struct dmi_system_id maingear_laptop[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "RP-15"),
+ 		},
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Eluktronics Inc."),
++			DMI_MATCH(DMI_BOARD_NAME, "MECH-17"),
++		},
++	},
+ 	{
+ 		/* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
+ 		.matches = {
 -- 
 2.39.5
 
