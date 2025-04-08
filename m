@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-129996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B2FA802A3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:49:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3051AA800F9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4FA3444FF9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:42:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECF90188CD06
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43FC9227EBD;
-	Tue,  8 Apr 2025 11:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F725266583;
+	Tue,  8 Apr 2025 11:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEv71WRc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sciEBaMb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023152288CB;
-	Tue,  8 Apr 2025 11:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC32267F4F;
+	Tue,  8 Apr 2025 11:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112538; cv=none; b=lQyb9qPp5nBvYHVLpyJ1Kt44K7HzDJQptGLCA7MjjfIhTqNttrmqg7C9RmPI2TzGcKEKsl5Ry8M5yqvLFWl9pyL0Uym6z8WFqXeLxnO9YgZGLyurtb9GJtCbE5RQVPFFBF6BrgE4mCayFAacNKZ1P4jcc8ln6AV77B2TJQUqvjs=
+	t=1744111879; cv=none; b=fesZnougahh6jKxsYPTZEm1np4Hv6+BwXPAx61veMDuGwACyHV1ISV6rl+jEg9UyHYgQ7Iv9ojMj01FmF/PsI0eEL5rKWyOXASYtbURNAPwk++o96GoRFHBzJKEY2QGqXQwaJHYV3sISEYwmLYVxeosDObGOjsFAhrT2/jIj+Ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112538; c=relaxed/simple;
-	bh=k5kpvqZxlVGsdp0oCjvwVXRzlxpjpCDJlNxKDDJuwMY=;
+	s=arc-20240116; t=1744111879; c=relaxed/simple;
+	bh=tOQDrMJABZnEoYeNCGhPB0HWx76PKhPJX0yltLpgDow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b9cx+4h+6qxY38t0H0BWVEq7hzZa1hw9l296ONAfmvI+4O4ECyWVq0PZ9vkAbLrV0Z0krZHHZMkS+7p/PQJbU4DmXfsqXPZImOI5rxQrM7RihRg8ptV1G5AJlM2TXk/hCLYlUI9iS0eKGbR8Z5tJX2VQB0GqBGUecb30gLAdgxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEv71WRc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8467CC4CEE5;
-	Tue,  8 Apr 2025 11:42:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hPqrBSg32knLuc3M7+ku0loDOli0vLKEmpGmXJmmkiBTPyhEiDIk2DXH5P4cfp73PlAoOgeRzr0NrgOQAH/v2aVVVHo2O8rRSfNldWYQ22sip72IgGRHybvwwMN6+LxO4D7A5zBRxLX6rjIDzFl0wtz9V4aO3D6+tQGhTYMPs68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sciEBaMb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5212EC4CEE5;
+	Tue,  8 Apr 2025 11:31:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112537;
-	bh=k5kpvqZxlVGsdp0oCjvwVXRzlxpjpCDJlNxKDDJuwMY=;
+	s=korg; t=1744111878;
+	bh=tOQDrMJABZnEoYeNCGhPB0HWx76PKhPJX0yltLpgDow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NEv71WRcAapJHZm5H4V5mv2zQsk3eVJmNPLPPAtweXkTOBCSaRrme3yhCpO4nJqSZ
-	 uEBjYrbgzjadQcJhIV0WpryZRbNkf1+srgOO9FEQCiBm38z1rN9dfohmen8qAx9CBo
-	 G4Cauu0DevDstnElt+rWddyYGWfs7CLBF1uR/cSE=
+	b=sciEBaMbB3wUqzCjozR44vtyap1KQMfwvs+fdS0MukrZoMedR5ITaxZYDasNIP6TL
+	 g4ADYVkA188ErzBU9KaJR4t6eavUdlnSgeQ2GHHzZzuq8TZ6W/y6bpRku6cacILTen
+	 lwv+SDRqrBDONSfN5L0b3EgmMq07PFicHd6lwnGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Rosca <david.rosca@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Ruijing Dong <ruijing.dong@amd.com>
-Subject: [PATCH 5.15 105/279] drm/amdgpu: Fix JPEG video caps max size for navi1x and raven
+	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 591/731] riscv: Change check_unaligned_access_speed_all_cpus to void
 Date: Tue,  8 Apr 2025 12:48:08 +0200
-Message-ID: <20250408104829.180664070@linuxfoundation.org>
+Message-ID: <20250408104928.021306701@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Rosca <david.rosca@amd.com>
+From: Andrew Jones <ajones@ventanamicro.com>
 
-commit ec33964d9d88488fa954a03d476a8b811efc6e85 upstream.
+[ Upstream commit 813d39baee3229d31420af61460b97f4fafdd352 ]
 
-8192x8192 is the maximum supported resolution.
+The return value of check_unaligned_access_speed_all_cpus() is always
+zero, so make the function void so we don't need to concern ourselves
+with it. The change also allows us to tidy up
+check_unaligned_access_all_cpus() a bit.
 
-Signed-off-by: David Rosca <david.rosca@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 6e0d2fde3ae8fdb5b47e10389f23ed2cb4daec5d)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Clément Léger <cleger@rivosinc.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20250304120014.143628-14-ajones@ventanamicro.com
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Stable-dep-of: 05ee21f0fcb8 ("riscv: Fix set up of cpu hotplug callbacks")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/nv.c    |    2 +-
- drivers/gpu/drm/amd/amdgpu/soc15.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/riscv/kernel/unaligned_access_speed.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/nv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/nv.c
-@@ -87,7 +87,7 @@ static const struct amdgpu_video_codec_i
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4906, 52)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 4096, 4906, 4)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 8192, 4352, 186)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 4096, 4096, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 8192, 8192, 0)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VP9, 8192, 4352, 0)},
- };
+diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
+index 78ab4cb2ab050..bca798153e37d 100644
+--- a/arch/riscv/kernel/unaligned_access_speed.c
++++ b/arch/riscv/kernel/unaligned_access_speed.c
+@@ -218,7 +218,7 @@ static int riscv_offline_cpu(unsigned int cpu)
+ }
  
---- a/drivers/gpu/drm/amd/amdgpu/soc15.c
-+++ b/drivers/gpu/drm/amd/amdgpu/soc15.c
-@@ -123,7 +123,7 @@ static const struct amdgpu_video_codec_i
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4906, 52)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 4096, 4906, 4)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 4096, 4096, 186)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 4096, 4096, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 8192, 8192, 0)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VP9, 4096, 4096, 0)},
- };
+ /* Measure unaligned access speed on all CPUs present at boot in parallel. */
+-static int __init check_unaligned_access_speed_all_cpus(void)
++static void __init check_unaligned_access_speed_all_cpus(void)
+ {
+ 	unsigned int cpu;
+ 	unsigned int cpu_count = num_possible_cpus();
+@@ -226,7 +226,7 @@ static int __init check_unaligned_access_speed_all_cpus(void)
  
+ 	if (!bufs) {
+ 		pr_warn("Allocation failure, not measuring misaligned performance\n");
+-		return 0;
++		return;
+ 	}
+ 
+ 	/*
+@@ -261,12 +261,10 @@ static int __init check_unaligned_access_speed_all_cpus(void)
+ 	}
+ 
+ 	kfree(bufs);
+-	return 0;
+ }
+ #else /* CONFIG_RISCV_PROBE_UNALIGNED_ACCESS */
+-static int __init check_unaligned_access_speed_all_cpus(void)
++static void __init check_unaligned_access_speed_all_cpus(void)
+ {
+-	return 0;
+ }
+ #endif
+ 
+@@ -406,10 +404,10 @@ static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __alway
+ 
+ static int __init check_unaligned_access_all_cpus(void)
+ {
+-	bool all_cpus_emulated;
+ 	int cpu;
+ 
+-	all_cpus_emulated = check_unaligned_access_emulated_all_cpus();
++	if (!check_unaligned_access_emulated_all_cpus())
++		check_unaligned_access_speed_all_cpus();
+ 
+ 	if (!has_vector()) {
+ 		for_each_online_cpu(cpu)
+@@ -420,9 +418,6 @@ static int __init check_unaligned_access_all_cpus(void)
+ 			    NULL, "vec_check_unaligned_access_speed_all_cpus");
+ 	}
+ 
+-	if (!all_cpus_emulated)
+-		return check_unaligned_access_speed_all_cpus();
+-
+ 	return 0;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
