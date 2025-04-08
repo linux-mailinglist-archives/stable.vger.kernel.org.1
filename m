@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9DA4A80755
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:36:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6A38A80873
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:45:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9B184C6610
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:30:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF8C91BA36D9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D992B26AABF;
-	Tue,  8 Apr 2025 12:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB630269D17;
+	Tue,  8 Apr 2025 12:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddgPrRWu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDoQhtnW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97007267F5B;
-	Tue,  8 Apr 2025 12:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A887B269D15;
+	Tue,  8 Apr 2025 12:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115245; cv=none; b=F3arnlZTKUldVn9ZUdo6F3AsXX6x1b4DG9i5B9zDZhTU0yYNj/ZwDKEoPPvAO7/LTVpTwnFKFsoD8zez5sxWAUwR0fnozri/5+NlDUGDgRRWeEZezuNRN6ViP2DBYwtSgei93ZhNAshM8fS725jMp7byx6gUkOTTaig06ujTs4U=
+	t=1744115733; cv=none; b=V1cIq5a6JeLaTemc+7EPNsNrKlxIcQOiE2mF+Z2h/xHHy4TvI150n6d4p2UkWnMXUxY7oMp7hYIxD8bRTVkoOvDciylY69tdL176gE2J3iGSEnTLq0PRJ13a7GtwbNoR1I4bnV658qLgwkPRiST3YSZq62XFusHtLzV4hbKZM/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115245; c=relaxed/simple;
-	bh=UwC5q7rhiCOW5Ce3+vOo6PZZrxCouDt1ShYuPs5scUc=;
+	s=arc-20240116; t=1744115733; c=relaxed/simple;
+	bh=rlTTTY02Ig6LLu6+Lsgpwgu6DvUzcRcq+3kn010W1XU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oq3JGJA6VcZPFNfqrnxfLA+cnfR35enE3IJStyxSDkpBUm3OpdVTqvtt7+dZkxDLZx4GYFxpO2jx7JnK8dJQcwDHtzo3l4c46rbEVcvJ3CwYNkLTt4xsdXsHt4Arq7l1pP7BvZereNQiWiDPb3KTXDrV56ipGZJyneKjVl0XryE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddgPrRWu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289A6C4CEE5;
-	Tue,  8 Apr 2025 12:27:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oghmCF7BBZL0MMFuOTXAePJd5LGNK6Nxk8LfuUNGEp/Jqdk+5vI0imWR8oaecD2bAt7yE/qU/Rp6wpcAtLhNQ8ixhmYcdzbMV8tEdyYmw/WTmaEAtDmx459MHIhzmEZvznqJLJjrLva10atdUGZxXF5+mSlHRl49G2BzwS4/nZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LDoQhtnW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3335AC4CEEA;
+	Tue,  8 Apr 2025 12:35:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115245;
-	bh=UwC5q7rhiCOW5Ce3+vOo6PZZrxCouDt1ShYuPs5scUc=;
+	s=korg; t=1744115733;
+	bh=rlTTTY02Ig6LLu6+Lsgpwgu6DvUzcRcq+3kn010W1XU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ddgPrRWuqAfUh/JxeIhKUexd2NHE+daijz2GG+8JeKx4Az73XvMICfku918NGSjfN
-	 mBwkvfuWku8lzgxxydRUljtHtNhLMuDruxSHzf76mL6N/62Tdj6xq6sPx9wFLklx0K
-	 OUsMqWm56GK9aKILclq3zhhJTEiHEov4I0e0epiE=
+	b=LDoQhtnWDt5ZObBgnzeA2w5Ja6txT39Bo7Hzrzhv+b6tD7bA2yc6ULGaUMD7HJvKU
+	 3IIIC/eqWWKmujGmqtygV0x3KsVtnMNMT7iSNWvMLgHGXCzpboFVj+4tMStc4DC5uU
+	 KegeB7uqKxhAQ5G11d5hpHUO+UBoEr3r6g8hpHdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 403/499] ipv6: Do not consider link down nexthops in path selection
+Subject: [PATCH 6.1 085/204] clk: qcom: mmcc-sdm660: fix stuck video_subcore0 clock
 Date: Tue,  8 Apr 2025 12:50:15 +0200
-Message-ID: <20250408104901.274855592@linuxfoundation.org>
+Message-ID: <20250408104822.851905422@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-[ Upstream commit 8b8e0dd357165e0258d9f9cdab5366720ed2f619 ]
+[ Upstream commit 000cbe3896c56bf5c625e286ff096533a6b27657 ]
 
-Nexthops whose link is down are not supposed to be considered during
-path selection when the "ignore_routes_with_linkdown" sysctl is set.
-This is done by assigning them a negative region boundary.
+This clock can't be enable with VENUS_CORE0 GDSC turned off. But that
+GDSC is under HW control so it can be turned off at any moment.
+Instead of checking the dependent clock we can just vote for it to
+enable later when GDSC gets turned on.
 
-However, when comparing the computed hash (unsigned) with the region
-boundary (signed), the negative region boundary is treated as unsigned,
-resulting in incorrect nexthop selection.
-
-Fix by treating the computed hash as signed. Note that the computed hash
-is always in range of [0, 2^31 - 1].
-
-Fixes: 3d709f69a3e7 ("ipv6: Use hash-threshold instead of modulo-N")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250402114224.293392-3-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5db3ae8b33de6 ("clk: qcom: Add SDM660 Multimedia Clock Controller (MMCC) driver")
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Link: https://lore.kernel.org/r/20250315-clock-fix-v1-1-2efdc4920dda@mainlining.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/route.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/mmcc-sdm660.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 2656356c980ca..1114480b3755c 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -442,6 +442,7 @@ void fib6_select_path(const struct net *net, struct fib6_result *res,
- {
- 	struct fib6_info *first, *match = res->f6i;
- 	struct fib6_info *sibling;
-+	int hash;
+diff --git a/drivers/clk/qcom/mmcc-sdm660.c b/drivers/clk/qcom/mmcc-sdm660.c
+index bc19a23e13f8a..4d187d6aba734 100644
+--- a/drivers/clk/qcom/mmcc-sdm660.c
++++ b/drivers/clk/qcom/mmcc-sdm660.c
+@@ -2544,7 +2544,7 @@ static struct clk_branch video_core_clk = {
  
- 	if (!match->nh && (!match->fib6_nsiblings || have_oif_match))
- 		goto out;
-@@ -468,7 +469,8 @@ void fib6_select_path(const struct net *net, struct fib6_result *res,
- 	if (!first)
- 		goto out;
- 
--	if (fl6->mp_hash <= atomic_read(&first->fib6_nh->fib_nh_upper_bound) &&
-+	hash = fl6->mp_hash;
-+	if (hash <= atomic_read(&first->fib6_nh->fib_nh_upper_bound) &&
- 	    rt6_score_route(first->fib6_nh, first->fib6_flags, oif,
- 			    strict) >= 0) {
- 		match = first;
-@@ -481,7 +483,7 @@ void fib6_select_path(const struct net *net, struct fib6_result *res,
- 		int nh_upper_bound;
- 
- 		nh_upper_bound = atomic_read(&nh->fib_nh_upper_bound);
--		if (fl6->mp_hash > nh_upper_bound)
-+		if (hash > nh_upper_bound)
- 			continue;
- 		if (rt6_score_route(nh, sibling->fib6_flags, oif, strict) < 0)
- 			break;
+ static struct clk_branch video_subcore0_clk = {
+ 	.halt_reg = 0x1048,
+-	.halt_check = BRANCH_HALT,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x1048,
+ 		.enable_mask = BIT(0),
 -- 
 2.39.5
 
