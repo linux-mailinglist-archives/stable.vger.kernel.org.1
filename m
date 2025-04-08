@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BFD7A80B10
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:12:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4283BA8044D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:07:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F33CD1BA6343
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE5097A93D4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:06:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0E7277816;
-	Tue,  8 Apr 2025 12:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485ED2698A2;
+	Tue,  8 Apr 2025 12:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ATTQ3EBJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="voLBa3XX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD107277811;
-	Tue,  8 Apr 2025 12:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064CB26773A;
+	Tue,  8 Apr 2025 12:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116863; cv=none; b=s2IdIYjBh9Enlt4ED5xkjYVJNsxnInEzXbBI4F51BoBp/FmMuu90pm6UHwKR5HAjWxpzPW+D6nMeYY4qlY/FCWz7LoWZfOwrcuEoCHCNgfmGJfpWBnrbpE7qv7mfk6R7/BbYBW2JiRTXAV3toDlXEb/lg9MZgov4wldVkc89URM=
+	t=1744113946; cv=none; b=bG52kok1rXa5+cb10gh9wekGY2eqNgionjYmq2zo8eowJUXRY8q17D5NWkrnw01azI3EtfG4zzzUErvLXHUel6MPsKQPmgcb4VrcayYWDxD7hkBQFFldh0HiO/jygwVremoVuMMmlPtWMDtLA5+iDezOzQVfC101yhlluYfptes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116863; c=relaxed/simple;
-	bh=KgDoIgwA20ge0xDo+3MHfDKLdCarOCGcCUZQTeP/GWY=;
+	s=arc-20240116; t=1744113946; c=relaxed/simple;
+	bh=MxGPAQIT00sRKkkkt8ZQquf+0CwJ62Fkj1l/xelua/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QLmPPZ07CRMmzNSbQf6rQLSGlKnhNi/9SVc5D3l1r5ICLhBl51LUjV/3uKs6UUY6YJYg2PLVOzmhRpnWvdA9BAuQeGGN19Gu1kL9w6trvB8meJ4CFD7fvSQ9ks808naHU9X8R+GYAE9zZtJp7P2FpwhmK/jacZOAgKOsE7E7WvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATTQ3EBJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C0DC4CEE5;
-	Tue,  8 Apr 2025 12:54:21 +0000 (UTC)
+	 MIME-Version; b=o1NBSaSGz70AQjP4gLsN4+XzitdPSy8Z/MiJncWFveiMlTZQEz5dNzkpcLnamk9iX8q7x4LlBh2uy1t9WBHHax0mC8X1Gh7/axlFCn6g6zoBPrjqIQjWCCW13KKJG80AnpCa7IHIzfFkoIVsgY1zRLzy77na7tROzGYkHpU2bXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=voLBa3XX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24AE2C4CEE5;
+	Tue,  8 Apr 2025 12:05:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116862;
-	bh=KgDoIgwA20ge0xDo+3MHfDKLdCarOCGcCUZQTeP/GWY=;
+	s=korg; t=1744113945;
+	bh=MxGPAQIT00sRKkkkt8ZQquf+0CwJ62Fkj1l/xelua/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ATTQ3EBJnRJsv4Sh7beOC3mU5bYGiCVx9uYidbYfLs8K2hOhXmGZx+B2vlzUieA85
-	 5RD8vIthuETIdNIllcvAep+OL0mfJj3lnRj8LpTNs86ScBGoTTAgNlOYx/5rNeQ3p3
-	 8DGZyYQCwDUFs8SF4zhBFAwRv54m5RFouJgEzD/g=
+	b=voLBa3XXODT0tetuH3fWS1xkB+ATEeTOGMYtwQXwwN8AqHqKmk+wY5RI9XCUyFXI4
+	 fqPiiuIhgfbdVTcQcct/CyZaGsreFNT8FN4QyIXCnoHfddQLQa6tY6O3cjzQXtbEps
+	 0qkkLVW/PrQrsY5TsutTAKDanww4JqqYV8aDYNT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 295/423] selftests: netfilter: skip br_netfilter queue tests if kernel is tainted
+Subject: [PATCH 5.4 080/154] x86/mm/pat: cpa-test: fix length for CPA_ARRAY test
 Date: Tue,  8 Apr 2025 12:50:21 +0200
-Message-ID: <20250408104852.659725137@linuxfoundation.org>
+Message-ID: <20250408104817.875373890@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-[ Upstream commit c21b02fd9cbf15aed6e32c89e0fd70070281e3d1 ]
+[ Upstream commit 33ea120582a638b2f2e380a50686c2b1d7cce795 ]
 
-These scripts fail if the kernel is tainted which leads to wrong test
-failure reports in CI environments when an unrelated test triggers some
-splat.
+The CPA_ARRAY test always uses len[1] as numpages argument to
+change_page_attr_set() although the addresses array is different each
+iteration of the test loop.
 
-Check taint state at start of script and SKIP if its already dodgy.
+Replace len[1] with len[i] to have numpages matching the addresses array.
 
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: ecc729f1f471 ("x86/mm/cpa: Add ARRAY and PAGES_ARRAY selftests")
+Signed-off-by: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250126074733.1384926-2-rppt@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/netfilter/br_netfilter.sh      | 7 +++++++
- .../testing/selftests/net/netfilter/br_netfilter_queue.sh  | 7 +++++++
- tools/testing/selftests/net/netfilter/nft_queue.sh         | 1 +
- 3 files changed, 15 insertions(+)
+ arch/x86/mm/pageattr-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/netfilter/br_netfilter.sh b/tools/testing/selftests/net/netfilter/br_netfilter.sh
-index c28379a965d83..1559ba275105e 100755
---- a/tools/testing/selftests/net/netfilter/br_netfilter.sh
-+++ b/tools/testing/selftests/net/netfilter/br_netfilter.sh
-@@ -13,6 +13,12 @@ source lib.sh
+diff --git a/arch/x86/mm/pageattr-test.c b/arch/x86/mm/pageattr-test.c
+index facce271e8b93..0d24ab91cce34 100644
+--- a/arch/x86/mm/pageattr-test.c
++++ b/arch/x86/mm/pageattr-test.c
+@@ -184,7 +184,7 @@ static int pageattr_test(void)
+ 			break;
  
- checktool "nft --version" "run test without nft tool"
+ 		case 1:
+-			err = change_page_attr_set(addrs, len[1], PAGE_CPA_TEST, 1);
++			err = change_page_attr_set(addrs, len[i], PAGE_CPA_TEST, 1);
+ 			break;
  
-+read t < /proc/sys/kernel/tainted
-+if [ "$t" -ne 0 ];then
-+	echo SKIP: kernel is tainted
-+	exit $ksft_skip
-+fi
-+
- cleanup() {
- 	cleanup_all_ns
- }
-@@ -165,6 +171,7 @@ if [ "$t" -eq 0 ];then
- 	echo PASS: kernel not tainted
- else
- 	echo ERROR: kernel is tainted
-+	dmesg
- 	ret=1
- fi
- 
-diff --git a/tools/testing/selftests/net/netfilter/br_netfilter_queue.sh b/tools/testing/selftests/net/netfilter/br_netfilter_queue.sh
-index 6a764d70ab06f..4788641717d93 100755
---- a/tools/testing/selftests/net/netfilter/br_netfilter_queue.sh
-+++ b/tools/testing/selftests/net/netfilter/br_netfilter_queue.sh
-@@ -4,6 +4,12 @@ source lib.sh
- 
- checktool "nft --version" "run test without nft tool"
- 
-+read t < /proc/sys/kernel/tainted
-+if [ "$t" -ne 0 ];then
-+	echo SKIP: kernel is tainted
-+	exit $ksft_skip
-+fi
-+
- cleanup() {
- 	cleanup_all_ns
- }
-@@ -72,6 +78,7 @@ if [ "$t" -eq 0 ];then
- 	echo PASS: kernel not tainted
- else
- 	echo ERROR: kernel is tainted
-+	dmesg
- 	exit 1
- fi
- 
-diff --git a/tools/testing/selftests/net/netfilter/nft_queue.sh b/tools/testing/selftests/net/netfilter/nft_queue.sh
-index a9d109fcc15c2..00fe1a6c1f30c 100755
---- a/tools/testing/selftests/net/netfilter/nft_queue.sh
-+++ b/tools/testing/selftests/net/netfilter/nft_queue.sh
-@@ -593,6 +593,7 @@ EOF
- 		echo "PASS: queue program exiting while packets queued"
- 	else
- 		echo "TAINT: queue program exiting while packets queued"
-+		dmesg
- 		ret=1
- 	fi
- }
+ 		case 2:
 -- 
 2.39.5
 
