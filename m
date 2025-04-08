@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-130090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22477A8028C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA22DA80264
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B41F07A8FC1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:45:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DA8416C97D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D548C267F5B;
-	Tue,  8 Apr 2025 11:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EACF7263C8A;
+	Tue,  8 Apr 2025 11:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arFU2NU6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ohZK/cXi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F6B267B89;
-	Tue,  8 Apr 2025 11:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A731019AD5C;
+	Tue,  8 Apr 2025 11:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112788; cv=none; b=gt8NqPIhJttWRHdF6gJdvAD4EOxPTYVbCjgS0aw3ilkPIpl0UL3vMFhHMSQzcGB8Lb4tdGOaeRFh1+NAZMZ0NGreQ8BbCiMIx6k+Lv4QxqMeJfjaFKeseFDLDTlwjfKj+4NMj01BQYF+vnVsoORalo+fkdY570grsMMSiNtjoeQ=
+	t=1744112229; cv=none; b=Y/3A03wdmoTdlzP2u6Vu/G2R+vpwWVnE1MrM0TqBZAxLkF/JJnbMOzGiojk5gtZ38DyPET2fOsSazMuvVC8JSZZhXolvlV0hbwtrm40JoRvVhVMBZ33kg3kzYu3Y5oZqM7XXV1AeDa/biF1KE0KAcmhdxI4+49pHBIwn++xatwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112788; c=relaxed/simple;
-	bh=V+OAk3Lcj2Kxx5iLiqIgaxEddkLU062JaW9NoXyb35A=;
+	s=arc-20240116; t=1744112229; c=relaxed/simple;
+	bh=Cs1jexvI6lcOlCSQET2+O6xwZQuIUZ4vWAzcrP2E02A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FzUOmBrZqkmdOjkbV/USGcHX/uVEnHCUZQ67Oa0Mew49+qz7bIaZXNhAZ+f06MjQNJ2OHmAkz5RX3HRMpHT99azDk7B2gEGxa3S+SLRAtkpUZz7kLEDXQiIvnxKDu/vvfWESmoFx0J5DNcVDWXDbdacjTShnjV/M5LqKCWhaIdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arFU2NU6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA4CCC4CEE5;
-	Tue,  8 Apr 2025 11:46:27 +0000 (UTC)
+	 MIME-Version; b=f4LZRT+TUsUkFrOVPKGTqilv59CPbZXJbXuihWKhOPfPHt3imOctiHscwJ8C+JhF15eAcDKmzt+LNRzvZ4fit5GuwYv9gWQcGgkGlkus2t7K8ntvl+vEhbAezR5iKK1k/2VtU6oqj2Uam9tMhuGpehBb8XtvBegIwTDOQ9LQMuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ohZK/cXi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35907C4CEE5;
+	Tue,  8 Apr 2025 11:37:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112788;
-	bh=V+OAk3Lcj2Kxx5iLiqIgaxEddkLU062JaW9NoXyb35A=;
+	s=korg; t=1744112229;
+	bh=Cs1jexvI6lcOlCSQET2+O6xwZQuIUZ4vWAzcrP2E02A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=arFU2NU60gpG4JxTTJTdpyLBg1uTg+n8adlcj9oc1knfaL8aYMXR1OY6yI58287ow
-	 /hd/DSUFc1vJZunvPgPw6VzT/JPkIQSwe+9FwqByF6Ob3WTY40qxije13Wy3Le+gdQ
-	 ovzSGpdianSNjaVBRSlm4u0GumhfBedDRY33wHB4=
+	b=ohZK/cXiRbIiZLztVG92umSEhj2waLPKRZv/rdGUEiaQFdc7sbzYMS8je8X81hAhu
+	 aL1XDqB+KPhoHoCT/ue2cDY94jqIGHcA2mjDcWgAWKwsRQ3qZVPD6TulxPoxf9qzio
+	 7rxgIko0EzfYfLp68ufVcIUSs980l2a2sA9sIb3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 197/279] iio: accel: mma8452: Ensure error return on failure to matching oversampling ratio
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 6.14 683/731] x86/tsc: Always save/restore TSC sched_clock() on suspend/resume
 Date: Tue,  8 Apr 2025 12:49:40 +0200
-Message-ID: <20250408104831.655720454@linuxfoundation.org>
+Message-ID: <20250408104930.154393673@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Guilherme G. Piccoli <gpiccoli@igalia.com>
 
-[ Upstream commit df330c808182a8beab5d0f84a6cbc9cff76c61fc ]
+commit d90c9de9de2f1712df56de6e4f7d6982d358cabe upstream.
 
-If a match was not found, then the write_raw() callback would return
-the odr index, not an error. Return -EINVAL if this occurs.
-To avoid similar issues in future, introduce j, a new indexing variable
-rather than using ret for this purpose.
+TSC could be reset in deep ACPI sleep states, even with invariant TSC.
 
-Fixes: 79de2ee469aa ("iio: accel: mma8452: claim direct mode during write raw")
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250217140135.896574-2-jic23@kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That's the reason we have sched_clock() save/restore functions, to deal
+with this situation. But what happens is that such functions are guarded
+with a check for the stability of sched_clock - if not considered stable,
+the save/restore routines aren't executed.
+
+On top of that, we have a clear comment in native_sched_clock() saying
+that *even* with TSC unstable, we continue using TSC for sched_clock due
+to its speed.
+
+In other words, if we have a situation of TSC getting detected as unstable,
+it marks the sched_clock as unstable as well, so subsequent S3 sleep cycles
+could bring bogus sched_clock values due to the lack of the save/restore
+mechanism, causing warnings like this:
+
+  [22.954918] ------------[ cut here ]------------
+  [22.954923] Delta way too big! 18446743750843854390 ts=18446744072977390405 before=322133536015 after=322133536015 write stamp=18446744072977390405
+  [22.954923] If you just came from a suspend/resume,
+  [22.954923] please switch to the trace global clock:
+  [22.954923]   echo global > /sys/kernel/tracing/trace_clock
+  [22.954923] or add trace_clock=global to the kernel command line
+  [22.954937] WARNING: CPU: 2 PID: 5728 at kernel/trace/ring_buffer.c:2890 rb_add_timestamp+0x193/0x1c0
+
+Notice that the above was reproduced even with "trace_clock=global".
+
+The fix for that is to _always_ save/restore the sched_clock on suspend
+cycle _if TSC is used_ as sched_clock - only if we fallback to jiffies
+the sched_clock_stable() check becomes relevant to save/restore the
+sched_clock.
+
+Debugged-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250215210314.351480-1-gpiccoli@igalia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/mma8452.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/x86/kernel/tsc.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
-index 1f46a73aafeac..a7168803408f6 100644
---- a/drivers/iio/accel/mma8452.c
-+++ b/drivers/iio/accel/mma8452.c
-@@ -709,7 +709,7 @@ static int mma8452_write_raw(struct iio_dev *indio_dev,
- 			     int val, int val2, long mask)
+--- a/arch/x86/kernel/tsc.c
++++ b/arch/x86/kernel/tsc.c
+@@ -959,7 +959,7 @@ static unsigned long long cyc2ns_suspend
+ 
+ void tsc_save_sched_clock_state(void)
  {
- 	struct mma8452_data *data = iio_priv(indio_dev);
--	int i, ret;
-+	int i, j, ret;
+-	if (!sched_clock_stable())
++	if (!static_branch_likely(&__use_tsc) && !sched_clock_stable())
+ 		return;
  
- 	ret = iio_device_claim_direct_mode(indio_dev);
- 	if (ret)
-@@ -769,14 +769,18 @@ static int mma8452_write_raw(struct iio_dev *indio_dev,
- 		break;
+ 	cyc2ns_suspend = sched_clock();
+@@ -979,7 +979,7 @@ void tsc_restore_sched_clock_state(void)
+ 	unsigned long flags;
+ 	int cpu;
  
- 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
--		ret = mma8452_get_odr_index(data);
-+		j = mma8452_get_odr_index(data);
+-	if (!sched_clock_stable())
++	if (!static_branch_likely(&__use_tsc) && !sched_clock_stable())
+ 		return;
  
- 		for (i = 0; i < ARRAY_SIZE(mma8452_os_ratio); i++) {
--			if (mma8452_os_ratio[i][ret] == val) {
-+			if (mma8452_os_ratio[i][j] == val) {
- 				ret = mma8452_set_power_mode(data, i);
- 				break;
- 			}
- 		}
-+		if (i == ARRAY_SIZE(mma8452_os_ratio)) {
-+			ret = -EINVAL;
-+			break;
-+		}
- 		break;
- 	default:
- 		ret = -EINVAL;
--- 
-2.39.5
-
+ 	local_irq_save(flags);
 
 
 
