@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-130451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70F69A804ED
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:13:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF9C9A80BCF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:21:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3CCE882AA0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 086FB886C15
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9268F265626;
-	Tue,  8 Apr 2025 12:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC72B27BF9A;
+	Tue,  8 Apr 2025 12:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KvJq8Y52"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glJdQzYS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5068B265CDF;
-	Tue,  8 Apr 2025 12:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B10127BF90;
+	Tue,  8 Apr 2025 12:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113745; cv=none; b=HU8Q/TU+VkZ9ALQpUsCm6AvwRzKBAjwCGxXAk0M0Kg80wr+DHpitH7I5QYnRQnIeCFz8Ha9NNBcURHyrdN/kDDKaHInPMjVP/zGDLRaZYS2abhq2k3hJxmDL4Jsx4RlKQukEhP13N9TUvFoS8argjeuwv9tuakU4VdkBegObk/Y=
+	t=1744116945; cv=none; b=FAhvzxkhx81qERq33gxf9xs+0vgAIrCjhO/xIzGYdoIvET3Pl8XFYBZgBaLVoSdZp/g+RVzHZLF/KE57lrKSGNxCsBwlLZDP7ti6nAYMLNBmO3515w8y3fhfuX5Ol8zj3bu/0daRspr8wSEMm40G4C0B/zpmF2x1GFz2kOCJkBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113745; c=relaxed/simple;
-	bh=thtcaGhXTW3/Zx1DXXm7yf5BNDkCNvtEpIbmWZtUIks=;
+	s=arc-20240116; t=1744116945; c=relaxed/simple;
+	bh=6NRIF0bqW2Xwly1+JkbDb/l0MXSAqqwt9omBJ1IJGRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iatpmX+zUvk8O6BAMkrQ678ZHqvQl0FK+NZekQx46ti7gPVwHCtE8ynBPeRT/0B5SsK68sL0561AlKR2utEnzBLCZwubSUsQ7V5gR2I00ZiPHTx+27oWmDlvyFwzlOPfATwzPd2/q8IBpYC6t7qFf9ODhElRJSBLPWiqM4efkGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KvJq8Y52; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6432C4CEE5;
-	Tue,  8 Apr 2025 12:02:24 +0000 (UTC)
+	 MIME-Version; b=CIaZ3E6X6LAjpb89YjM15vWejyPcpnj9uGAZjrM+fCiAnFd/wVN6kwJ8mKrpEBPGQ5Frv04Y7bPrJKm7NVXrSueFsgMS9HJk6q7smUeSBO0WzRwsdO1DrUwFOXU7yyO0LDe/n+Vxz2uaErEIwXtoS9YwR0ju1Ayl0EJw7eWNcZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=glJdQzYS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE0F6C4CEEB;
+	Tue,  8 Apr 2025 12:55:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113745;
-	bh=thtcaGhXTW3/Zx1DXXm7yf5BNDkCNvtEpIbmWZtUIks=;
+	s=korg; t=1744116945;
+	bh=6NRIF0bqW2Xwly1+JkbDb/l0MXSAqqwt9omBJ1IJGRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KvJq8Y52qcKTSPErQKQDyaqQWnYV4MHJCao3BdxUjkk5SiaYlhHvsEvrO4OObRZ0D
-	 59eT9XdZa09VYEbm0ydszcy38RnyiS/KRFzimNvIAfL0IQs8gEZvSnNSaL0RM0MODv
-	 LEvLM2iq94qqeichWs+PZvhjh3DHqv69SjyhrbDg=
+	b=glJdQzYSiEWOEf9JEmyzbY2JHma0mBUw/wxohYgC3FSKK/TOb61Q5pbZos0oV2S5Y
+	 0SQBDYfst77cAxgKeR0j3xNP95qXoOQSuV8xB2pgnPUZCqlXM3TEyOaISj1gHajH5n
+	 J/ILaq4jG7LXdoUNn/JZ4oenIKO4eJOl7AJN9ZBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Kan Liang <kan.liang@linux.intel.com>
-Subject: [PATCH 6.6 241/268] perf/x86/intel: Avoid disable PMU if !cpuc->enabled in sample read
-Date: Tue,  8 Apr 2025 12:50:52 +0200
-Message-ID: <20250408104835.088676731@linuxfoundation.org>
+	syzbot+53ed3a6440173ddbf499@syzkaller.appspotmail.com,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 327/423] netfilter: nf_tables: dont unregister hook when table is dormant
+Date: Tue,  8 Apr 2025 12:50:53 +0200
+Message-ID: <20250408104853.437804532@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,133 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit f9bdf1f953392c9edd69a7f884f78c0390127029 upstream.
+[ Upstream commit 688c15017d5cd5aac882400782e7213d40dc3556 ]
 
-The WARN_ON(this_cpu_read(cpu_hw_events.enabled)) in the
-intel_pmu_save_and_restart_reload() is triggered, when sampling read
-topdown events.
+When nf_tables_updchain encounters an error, hook registration needs to
+be rolled back.
 
-In a NMI handler, the cpu_hw_events.enabled is set and used to indicate
-the status of core PMU. The generic pmu->pmu_disable_count, updated in
-the perf_pmu_disable/enable pair, is not touched.
-However, the perf_pmu_disable/enable pair is invoked when sampling read
-in a NMI handler. The cpuc->enabled is mistakenly set by the
-perf_pmu_enable().
+This should only be done if the hook has been registered, which won't
+happen when the table is flagged as dormant (inactive).
 
-Avoid disabling PMU if the core PMU is already disabled.
-Merge the logic together.
+Just move the assignment into the registration block.
 
-Fixes: 7b2c05a15d29 ("perf/x86/intel: Generic support for hardware TopDown metrics")
-Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20250121152303.3128733-2-kan.liang@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+53ed3a6440173ddbf499@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=53ed3a6440173ddbf499
+Fixes: b9703ed44ffb ("netfilter: nf_tables: support for adding new devices to an existing netdev chain")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/core.c |   41 +++++++++++++++++++++++------------------
- arch/x86/events/intel/ds.c   |   11 +----------
- arch/x86/events/perf_event.h |    2 +-
- 3 files changed, 25 insertions(+), 29 deletions(-)
+ net/netfilter/nf_tables_api.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -2720,28 +2720,33 @@ static u64 adl_update_topdown_event(stru
- 
- DEFINE_STATIC_CALL(intel_pmu_update_topdown_event, x86_perf_event_update);
- 
--static void intel_pmu_read_topdown_event(struct perf_event *event)
-+static void intel_pmu_read_event(struct perf_event *event)
- {
--	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-+	if (event->hw.flags & (PERF_X86_EVENT_AUTO_RELOAD | PERF_X86_EVENT_TOPDOWN)) {
-+		struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-+		bool pmu_enabled = cpuc->enabled;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index eb3a6f96b094d..bdee187bc5dd4 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -2732,11 +2732,11 @@ static int nf_tables_updchain(struct nft_ctx *ctx, u8 genmask, u8 policy,
+ 			err = nft_netdev_register_hooks(ctx->net, &hook.list);
+ 			if (err < 0)
+ 				goto err_hooks;
 +
-+		/* Only need to call update_topdown_event() once for group read. */
-+		if (is_metric_event(event) && (cpuc->txn_flags & PERF_PMU_TXN_READ))
-+			return;
-+
-+		cpuc->enabled = 0;
-+		if (pmu_enabled)
-+			intel_pmu_disable_all();
-+
-+		if (is_topdown_event(event))
-+			static_call(intel_pmu_update_topdown_event)(event);
-+		else
-+			intel_pmu_drain_pebs_buffer();
-+
-+		cpuc->enabled = pmu_enabled;
-+		if (pmu_enabled)
-+			intel_pmu_enable_all(0);
++			unregister = true;
+ 		}
+ 	}
  
--	/* Only need to call update_topdown_event() once for group read. */
--	if ((cpuc->txn_flags & PERF_PMU_TXN_READ) &&
--	    !is_slots_event(event))
- 		return;
-+	}
- 
--	perf_pmu_disable(event->pmu);
--	static_call(intel_pmu_update_topdown_event)(event);
--	perf_pmu_enable(event->pmu);
--}
+-	unregister = true;
 -
--static void intel_pmu_read_event(struct perf_event *event)
--{
--	if (event->hw.flags & PERF_X86_EVENT_AUTO_RELOAD)
--		intel_pmu_auto_reload_read(event);
--	else if (is_topdown_count(event))
--		intel_pmu_read_topdown_event(event);
--	else
--		x86_perf_event_update(event);
-+	x86_perf_event_update(event);
- }
- 
- static void intel_pmu_enable_fixed(struct perf_event *event)
---- a/arch/x86/events/intel/ds.c
-+++ b/arch/x86/events/intel/ds.c
-@@ -843,7 +843,7 @@ unlock:
- 	return 1;
- }
- 
--static inline void intel_pmu_drain_pebs_buffer(void)
-+void intel_pmu_drain_pebs_buffer(void)
- {
- 	struct perf_sample_data data;
- 
-@@ -1965,15 +1965,6 @@ get_next_pebs_record_by_bit(void *base,
- 	return NULL;
- }
- 
--void intel_pmu_auto_reload_read(struct perf_event *event)
--{
--	WARN_ON(!(event->hw.flags & PERF_X86_EVENT_AUTO_RELOAD));
--
--	perf_pmu_disable(event->pmu);
--	intel_pmu_drain_pebs_buffer();
--	perf_pmu_enable(event->pmu);
--}
--
- /*
-  * Special variant of intel_pmu_save_and_restart() for auto-reload.
-  */
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -1540,7 +1540,7 @@ void intel_pmu_pebs_disable_all(void);
- 
- void intel_pmu_pebs_sched_task(struct perf_event_pmu_context *pmu_ctx, bool sched_in);
- 
--void intel_pmu_auto_reload_read(struct perf_event *event);
-+void intel_pmu_drain_pebs_buffer(void);
- 
- void intel_pmu_store_pebs_lbrs(struct lbr_entry *lbr);
- 
+ 	if (nla[NFTA_CHAIN_COUNTERS]) {
+ 		if (!nft_is_base_chain(chain)) {
+ 			err = -EOPNOTSUPP;
+-- 
+2.39.5
+
 
 
 
