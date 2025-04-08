@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E73DBA80982
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:55:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E872DA8062E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:25:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0CB34E2128
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD8274A6320
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:17:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E4C269826;
-	Tue,  8 Apr 2025 12:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6366B26AAA3;
+	Tue,  8 Apr 2025 12:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmgHZXE+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOGD69s5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70CF52236FC;
-	Tue,  8 Apr 2025 12:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E5126AA8F;
+	Tue,  8 Apr 2025 12:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116164; cv=none; b=mz3b+WjTFHdzQZ10vtcVQj0wN5JRWaUY7qANOi+BBpiTW0NPTFD1l9eQFwYHT/8PUTpDInMiDx8xLi+/egSxWojTGb0W/BGD/KcN4ISQ3N5u6MTJmMHw0O+5Lyd/8kpKHPcGggWwoRyVXJrdrw2xKScPXd+E+ZygPWT9w5mCA0w=
+	t=1744114562; cv=none; b=bDFTk+OrjDT6PYWoE53FWq7bMBnjhfEqk5k50R5fChV/G29Clm2K/iTQ1fQrLnd/6T885K3ei73DtPkYIpi/q0XCmEQc8k+3ZABaylMkBH9qON+Gzi0eSjhzcVaeGOGG+hAG+/24s5rAlTuaYmb049P+vsdJhDXYHbxKwvNYQYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116164; c=relaxed/simple;
-	bh=zUv/OUhsGlzXoUywdTqu3ekuMe6HgRZ6r6KIYhPUXZw=;
+	s=arc-20240116; t=1744114562; c=relaxed/simple;
+	bh=oSCHF7j9d5ayyGOBzJMr5jxzHMNHSYyUfDuGtjNeF+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KC4jeQs3PqOZUqMUcfMRijv8Hsh6vXeCOU15qkxMjKHCS+Im+/HUkS4C8M5RqzM4niextlecMmL2Y1lEi5T1jLxnY54xcshbUmTYn5L7j2sr7QLSvd1jzsE8KGGZsVV2Li99xGzwlHGchAw5uF+0vok1en43kuqVX07NB49NXLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmgHZXE+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F25C4CEE5;
-	Tue,  8 Apr 2025 12:42:43 +0000 (UTC)
+	 MIME-Version; b=BKEPQxNCyEf+GyIQVY2XgKVVnBb/Z57w7CV4dVWOWIGHZq6NP9/f7OYBEIxr7kqvjEBiyHio9K96JyJn6NMz42PvoZAPB8OS0K189fRbMqe6GRWGieppioGyPtUHokUdmaJCp9SfzgZf7D+omsmSik1G52inXSJI0LGPIB+MV+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YOGD69s5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7931C4CEE5;
+	Tue,  8 Apr 2025 12:16:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116164;
-	bh=zUv/OUhsGlzXoUywdTqu3ekuMe6HgRZ6r6KIYhPUXZw=;
+	s=korg; t=1744114562;
+	bh=oSCHF7j9d5ayyGOBzJMr5jxzHMNHSYyUfDuGtjNeF+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nmgHZXE+xShKkK7dqvsaG8n8PRoydqXV6FDG7PyaP9ftz9MQkYuXq+nUEdy+7TGQ/
-	 zx5TzX2Hx3DB5vDuovMMKGsi/J8USJIONGTnOUJiyb6u3/SmFBW5R99IiNbn9+ItCe
-	 3WXNGZgyIsuhKf8t3MuPg8OFNq0Md8zSIKr+p7D4=
+	b=YOGD69s5sUQiVvlICqvL/6HwojYVeQPiXegZ243eq3nvJK/2JKb1K0jLe8tiPhgOB
+	 DOqe5dG4TjYcW8Tthagn++Aq+UK8LvkG7Es5gOlcI9js4mRn5tses4wOtvNYL5iELA
+	 ftlE0vEV9aa0IFSS7pKqMxdtUNNWRpDeev2so28o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <maroi.limonciello@amd.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 038/423] platform/x86: dell-uart-backlight: Make dell_uart_bl_serdev_driver static
+Subject: [PATCH 6.13 152/499] clk: qcom: gcc-x1e80100: Unregister GCC_GPU_CFG_AHB_CLK/GCC_DISP_XO_CLK
 Date: Tue,  8 Apr 2025 12:46:04 +0200
-Message-ID: <20250408104846.637667463@linuxfoundation.org>
+Message-ID: <20250408104854.977010911@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +60,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit 4878e0b14c3e31a87ab147bd2dae443394cb5a2c ]
+[ Upstream commit b60521eff227ef459e03879cbea2b2bd85a8d7af ]
 
-Sparse reports:
+The GPU clock is required for CPU access to GPUSS registers. It was
+previously decided (on this and many more platforms) that the added
+overhead/hassle introduced by keeping track of it would not bring much
+measurable improvement in the power department.
 
-dell-uart-backlight.c:328:29: warning: symbol
-'dell_uart_bl_serdev_driver' was not declared. Should it be static?
+The display clock is basically the same story over again.
 
-Fix it by making the symbol static.
+Now, we're past that discussion and this commit is not trying to change
+that. Instead, the clocks are both force-enabled in .probe *and*
+registered with the common clock framework, resulting in them being
+toggled off after ignore_unused.
 
-Fixes: 484bae9e4d6ac ("platform/x86: Add new Dell UART backlight driver")
-Reviewed-by: Mario Limonciello <maroi.limonciello@amd.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20250304160639.4295-2-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Unregister said clocks to fix breakage when clk_ignore_unused is absent
+(as it should be).
+
+Fixes: 161b7c401f4b ("clk: qcom: Add Global Clock controller (GCC) driver for X1E80100")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250111-topic-x1e_fixups-v1-1-77dc39237c12@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell/dell-uart-backlight.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-x1e80100.c | 30 ------------------------------
+ 1 file changed, 30 deletions(-)
 
-diff --git a/drivers/platform/x86/dell/dell-uart-backlight.c b/drivers/platform/x86/dell/dell-uart-backlight.c
-index c45bc332af7a0..e4868584cde2d 100644
---- a/drivers/platform/x86/dell/dell-uart-backlight.c
-+++ b/drivers/platform/x86/dell/dell-uart-backlight.c
-@@ -325,7 +325,7 @@ static int dell_uart_bl_serdev_probe(struct serdev_device *serdev)
- 	return PTR_ERR_OR_ZERO(dell_bl->bl);
- }
+diff --git a/drivers/clk/qcom/gcc-x1e80100.c b/drivers/clk/qcom/gcc-x1e80100.c
+index 7288af845434d..009f39139b644 100644
+--- a/drivers/clk/qcom/gcc-x1e80100.c
++++ b/drivers/clk/qcom/gcc-x1e80100.c
+@@ -2564,19 +2564,6 @@ static struct clk_branch gcc_disp_hf_axi_clk = {
+ 	},
+ };
  
--struct serdev_device_driver dell_uart_bl_serdev_driver = {
-+static struct serdev_device_driver dell_uart_bl_serdev_driver = {
- 	.probe = dell_uart_bl_serdev_probe,
- 	.driver = {
- 		.name = KBUILD_MODNAME,
+-static struct clk_branch gcc_disp_xo_clk = {
+-	.halt_reg = 0x27018,
+-	.halt_check = BRANCH_HALT,
+-	.clkr = {
+-		.enable_reg = 0x27018,
+-		.enable_mask = BIT(0),
+-		.hw.init = &(const struct clk_init_data) {
+-			.name = "gcc_disp_xo_clk",
+-			.ops = &clk_branch2_ops,
+-		},
+-	},
+-};
+-
+ static struct clk_branch gcc_gp1_clk = {
+ 	.halt_reg = 0x64000,
+ 	.halt_check = BRANCH_HALT,
+@@ -2631,21 +2618,6 @@ static struct clk_branch gcc_gp3_clk = {
+ 	},
+ };
+ 
+-static struct clk_branch gcc_gpu_cfg_ahb_clk = {
+-	.halt_reg = 0x71004,
+-	.halt_check = BRANCH_HALT_VOTED,
+-	.hwcg_reg = 0x71004,
+-	.hwcg_bit = 1,
+-	.clkr = {
+-		.enable_reg = 0x71004,
+-		.enable_mask = BIT(0),
+-		.hw.init = &(const struct clk_init_data) {
+-			.name = "gcc_gpu_cfg_ahb_clk",
+-			.ops = &clk_branch2_ops,
+-		},
+-	},
+-};
+-
+ static struct clk_branch gcc_gpu_gpll0_cph_clk_src = {
+ 	.halt_check = BRANCH_HALT_DELAY,
+ 	.clkr = {
+@@ -6268,7 +6240,6 @@ static struct clk_regmap *gcc_x1e80100_clocks[] = {
+ 	[GCC_CNOC_PCIE_TUNNEL_CLK] = &gcc_cnoc_pcie_tunnel_clk.clkr,
+ 	[GCC_DDRSS_GPU_AXI_CLK] = &gcc_ddrss_gpu_axi_clk.clkr,
+ 	[GCC_DISP_HF_AXI_CLK] = &gcc_disp_hf_axi_clk.clkr,
+-	[GCC_DISP_XO_CLK] = &gcc_disp_xo_clk.clkr,
+ 	[GCC_GP1_CLK] = &gcc_gp1_clk.clkr,
+ 	[GCC_GP1_CLK_SRC] = &gcc_gp1_clk_src.clkr,
+ 	[GCC_GP2_CLK] = &gcc_gp2_clk.clkr,
+@@ -6281,7 +6252,6 @@ static struct clk_regmap *gcc_x1e80100_clocks[] = {
+ 	[GCC_GPLL7] = &gcc_gpll7.clkr,
+ 	[GCC_GPLL8] = &gcc_gpll8.clkr,
+ 	[GCC_GPLL9] = &gcc_gpll9.clkr,
+-	[GCC_GPU_CFG_AHB_CLK] = &gcc_gpu_cfg_ahb_clk.clkr,
+ 	[GCC_GPU_GPLL0_CPH_CLK_SRC] = &gcc_gpu_gpll0_cph_clk_src.clkr,
+ 	[GCC_GPU_GPLL0_DIV_CPH_CLK_SRC] = &gcc_gpu_gpll0_div_cph_clk_src.clkr,
+ 	[GCC_GPU_MEMNOC_GFX_CLK] = &gcc_gpu_memnoc_gfx_clk.clkr,
 -- 
 2.39.5
 
