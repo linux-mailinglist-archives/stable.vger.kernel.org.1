@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCA43A80B44
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:14:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06177A809FB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:59:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95F99501D0B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95A498C413A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8B126F451;
-	Tue,  8 Apr 2025 12:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C251426E14C;
+	Tue,  8 Apr 2025 12:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AxT8luyQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S3JLsZwr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A85269823;
-	Tue,  8 Apr 2025 12:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B26926E145;
+	Tue,  8 Apr 2025 12:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116975; cv=none; b=UZui+gsgymdHXwP3V2i+NY2EVKs0iNJu8usj2kSfTs1Wme7++Tt2bH0qAP7c/QHcVn+Nr3KY07yIfDQb5df0jZ00kpKgCPf8CF375EuJme2E1AHcL9NFnYhGClxJQQ/1vxkgcgGmTjhdPgqeUTIJZgAKc2b9Lxg0uljtqrBPES0=
+	t=1744115862; cv=none; b=fuLEO8t9YQ8JC6LxDpcnBK1q1T0c9sQhQpagiRfC2q2nIUhz+3CnWeD32H5Vewkwj3iTWQXmMoTt4TDf+t9mnoQezdJhsxnc6dbH1APyrp6nX2LAWS/cd8lKPuraiP6xtjmDVnR0hO/wC2qIq/QeJgtZQtqeU3p+uLKYM0Ex/9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116975; c=relaxed/simple;
-	bh=ikLHNDsz3NUQz+zb76U/Fv6ImxGCrdQvyrJNTwGqErM=;
+	s=arc-20240116; t=1744115862; c=relaxed/simple;
+	bh=zzXCVHfEtTfbe7oex4QxNJJ3ZAbAxXHGjvO78mnxU8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qtPWeeRULGwRYiV4djWq1ZcH2QX/YDyel7qpXc+xpOCn7PlXXLqpCZpJ5K3BNFm5bBLyRQN20KTFtXX5koxqrTM6QX6OHuOdw63l38hGFLXUJ4KQX2Qqis+vVDsHIyZeQyDi6jMCn5Uidd8JgnYQVN9ADFlCcXZpvKAIQOC1kdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AxT8luyQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B611C4CEE5;
-	Tue,  8 Apr 2025 12:56:15 +0000 (UTC)
+	 MIME-Version; b=LupjxiGNtPrcjULJpPy1cukKP8x1yoeVX00iim/wJRL228uRMkMotCw+gHyv6NEpbgjZHnTY4gmnFl9jGSSaG6g3ganIOlbl+ScHZANAtBGj1tXSbfPMTa2navDu8JrtOjNmjiiXJSozWVsUDpYXvUdlAcIZJYiK0IuYLg7hTbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S3JLsZwr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D029C4CEE5;
+	Tue,  8 Apr 2025 12:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116975;
-	bh=ikLHNDsz3NUQz+zb76U/Fv6ImxGCrdQvyrJNTwGqErM=;
+	s=korg; t=1744115862;
+	bh=zzXCVHfEtTfbe7oex4QxNJJ3ZAbAxXHGjvO78mnxU8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AxT8luyQ6pEpBtrHEJX9RhDKUvhRaYjB3fS0jiUaN5WXKC/MSD/ZyTpiuRdidsNs2
-	 yPMUFw/IKwZ8u4MHhJfcib7P9Au/QwPQaembD8Yu+hjof19/e0h4Izw3xwQ20RtRNz
-	 h6wkhxYp/TXxPA5F19UN5lggCPPzL6s2AoELR4sw=
+	b=S3JLsZwr1F5eDAI9Ekns02IpDc3BzHuMdQy1bTo6g3vmB1FZEUhb2JlTW4+MAa5cC
+	 ylaLkjVOSsCiNzWHMpwmAKyQ4Fj/6RxQLsj0nk3xGDV2Ls5maRJnuMiNRBb04+BAGl
+	 4Ub7a2GA3nWLrX5sNdxXv5nSKQ0h0ZZWiW31RHbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Ma <linma@zju.edu.cn>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Simon Tatham <anakin@pobox.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 337/423] netfilter: nft_tunnel: fix geneve_opt type confusion addition
+Subject: [PATCH 6.1 133/204] affs: dont write overlarge OFS data block size fields
 Date: Tue,  8 Apr 2025 12:51:03 +0200
-Message-ID: <20250408104853.683854150@linuxfoundation.org>
+Message-ID: <20250408104824.202833423@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Simon Tatham <anakin@pobox.com>
 
-[ Upstream commit 1b755d8eb1ace3870789d48fbd94f386ad6e30be ]
+[ Upstream commit 011ea742a25a77bac3d995f457886a67d178c6f0 ]
 
-When handling multiple NFTA_TUNNEL_KEY_OPTS_GENEVE attributes, the
-parsing logic should place every geneve_opt structure one by one
-compactly. Hence, when deciding the next geneve_opt position, the
-pointer addition should be in units of char *.
+If a data sector on an OFS floppy contains a value > 0x1e8 (the
+largest amount of data that fits in the sector after its header), then
+an Amiga reading the file can return corrupt data, by taking the
+overlarge size at its word and reading past the end of the buffer it
+read the disk sector into!
 
-However, the current implementation erroneously does type conversion
-before the addition, which will lead to heap out-of-bounds write.
+The cause: when affs_write_end_ofs() writes data to an OFS filesystem,
+the new size field for a data block was computed by adding the amount
+of data currently being written (into the block) to the existing value
+of the size field. This is correct if you're extending the file at the
+end, but if you seek backwards in the file and overwrite _existing_
+data, it can lead to the size field being larger than the maximum
+legal value.
 
-[    6.989857] ==================================================================
-[    6.990293] BUG: KASAN: slab-out-of-bounds in nft_tunnel_obj_init+0x977/0xa70
-[    6.990725] Write of size 124 at addr ffff888005f18974 by task poc/178
-[    6.991162]
-[    6.991259] CPU: 0 PID: 178 Comm: poc-oob-write Not tainted 6.1.132 #1
-[    6.991655] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-[    6.992281] Call Trace:
-[    6.992423]  <TASK>
-[    6.992586]  dump_stack_lvl+0x44/0x5c
-[    6.992801]  print_report+0x184/0x4be
-[    6.993790]  kasan_report+0xc5/0x100
-[    6.994252]  kasan_check_range+0xf3/0x1a0
-[    6.994486]  memcpy+0x38/0x60
-[    6.994692]  nft_tunnel_obj_init+0x977/0xa70
-[    6.995677]  nft_obj_init+0x10c/0x1b0
-[    6.995891]  nf_tables_newobj+0x585/0x950
-[    6.996922]  nfnetlink_rcv_batch+0xdf9/0x1020
-[    6.998997]  nfnetlink_rcv+0x1df/0x220
-[    6.999537]  netlink_unicast+0x395/0x530
-[    7.000771]  netlink_sendmsg+0x3d0/0x6d0
-[    7.001462]  __sock_sendmsg+0x99/0xa0
-[    7.001707]  ____sys_sendmsg+0x409/0x450
-[    7.002391]  ___sys_sendmsg+0xfd/0x170
-[    7.003145]  __sys_sendmsg+0xea/0x170
-[    7.004359]  do_syscall_64+0x5e/0x90
-[    7.005817]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-[    7.006127] RIP: 0033:0x7ec756d4e407
-[    7.006339] Code: 48 89 fa 4c 89 df e8 38 aa 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 faf
-[    7.007364] RSP: 002b:00007ffed5d46760 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
-[    7.007827] RAX: ffffffffffffffda RBX: 00007ec756cc4740 RCX: 00007ec756d4e407
-[    7.008223] RDX: 0000000000000000 RSI: 00007ffed5d467f0 RDI: 0000000000000003
-[    7.008620] RBP: 00007ffed5d468a0 R08: 0000000000000000 R09: 0000000000000000
-[    7.009039] R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
-[    7.009429] R13: 00007ffed5d478b0 R14: 00007ec756ee5000 R15: 00005cbd4e655cb8
+This commit changes the calculation so that it sets the size field to
+the max of its previous size and the position within the block that we
+just wrote up to.
 
-Fix this bug with correct pointer addition and conversion in parse
-and dump code.
-
-Fixes: 925d844696d9 ("netfilter: nft_tunnel: add support for geneve opts")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Simon Tatham <anakin@pobox.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_tunnel.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/affs/file.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_tunnel.c b/net/netfilter/nft_tunnel.c
-index 5c6ed68cc6e05..52d76b8d15db2 100644
---- a/net/netfilter/nft_tunnel.c
-+++ b/net/netfilter/nft_tunnel.c
-@@ -341,7 +341,7 @@ static const struct nla_policy nft_tunnel_opts_geneve_policy[NFTA_TUNNEL_KEY_GEN
- static int nft_tunnel_obj_geneve_init(const struct nlattr *attr,
- 				      struct nft_tunnel_opts *opts)
- {
--	struct geneve_opt *opt = (struct geneve_opt *)opts->u.data + opts->len;
-+	struct geneve_opt *opt = (struct geneve_opt *)(opts->u.data + opts->len);
- 	struct nlattr *tb[NFTA_TUNNEL_KEY_GENEVE_MAX + 1];
- 	int err, data_len;
- 
-@@ -628,7 +628,7 @@ static int nft_tunnel_opts_dump(struct sk_buff *skb,
- 		if (!inner)
- 			goto failure;
- 		while (opts->len > offset) {
--			opt = (struct geneve_opt *)opts->u.data + offset;
-+			opt = (struct geneve_opt *)(opts->u.data + offset);
- 			if (nla_put_be16(skb, NFTA_TUNNEL_KEY_GENEVE_CLASS,
- 					 opt->opt_class) ||
- 			    nla_put_u8(skb, NFTA_TUNNEL_KEY_GENEVE_TYPE,
+diff --git a/fs/affs/file.c b/fs/affs/file.c
+index a7c9538214878..52d11931025cf 100644
+--- a/fs/affs/file.c
++++ b/fs/affs/file.c
+@@ -724,7 +724,8 @@ static int affs_write_end_ofs(struct file *file, struct address_space *mapping,
+ 		tmp = min(bsize - boff, to - from);
+ 		BUG_ON(boff + tmp > bsize || tmp > bsize);
+ 		memcpy(AFFS_DATA(bh) + boff, data + from, tmp);
+-		be32_add_cpu(&AFFS_DATA_HEAD(bh)->size, tmp);
++		AFFS_DATA_HEAD(bh)->size = cpu_to_be32(
++			max(boff + tmp, be32_to_cpu(AFFS_DATA_HEAD(bh)->size)));
+ 		affs_fix_checksum(sb, bh);
+ 		mark_buffer_dirty_inode(bh, inode);
+ 		written += tmp;
 -- 
 2.39.5
 
