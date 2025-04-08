@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4263EA803C6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:02:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8684A801B2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46BB37A9853
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:00:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A646918854EB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:37:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8AC26A0F3;
-	Tue,  8 Apr 2025 11:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20F322257E;
+	Tue,  8 Apr 2025 11:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0JeL793L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FYMCDvPD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C6226A1A3;
-	Tue,  8 Apr 2025 11:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCF51DF27F;
+	Tue,  8 Apr 2025 11:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113591; cv=none; b=Ao01YHWXPlyuH8/8aJXLBJWGSnqbSqgY1x8MT9L4MgwB5EEvb/yQDp4X9J2u/QvUpHthHe156CJpx8816Fe6AZbIEi41sIX3VMmdRkRqwKNDNMtXFfv41k4A4IeVRHi0BtDsqseTzRcp2TDRtU3pj7UWD3D0ikXtqnJjpOUQBQg=
+	t=1744112245; cv=none; b=Qmm42oImlDrIBQZrRp289YdDr3p5BRh43G9vvkIAmTh+VlCCMBotYleS6WVvSHdcNvflfqRY5vN0BhCHD0+d1BkTLgl3QBCWbiUTcq+HQl87CzTwTWFx8vUJ6Z8H0Zy/80x5nBUCVxklqc23cD1gRQeWnq9nMc+Dn56JqjJIyeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113591; c=relaxed/simple;
-	bh=c1r5R1pTSTpfvaYLqpEArqnSbkx7DCCNhsKvLKbOorQ=;
+	s=arc-20240116; t=1744112245; c=relaxed/simple;
+	bh=6qBXL6ZPuR/q4rPJF3HOYnpIte2hrBzlyocsBdvcIZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VWPKUVWnF/bQ3n5e/RPbj5pxMffO7botVO6S+nO5gd0M+T5l9wztGXXBCXKHqdDWb3b4Nk6iHMAD77QH/iMd3AXdRXSZle8Sao1aMyCd+UiL7mRaQdJqWTvUyYXyGCyISWdHZ5lYamprNBNElkQ5X9uHCci+uHYTJC0zp/HRORU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0JeL793L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FAD2C4CEE5;
-	Tue,  8 Apr 2025 11:59:50 +0000 (UTC)
+	 MIME-Version; b=fpCLzAYXGdegd9Avs875eqQmEGFllU1RlUT3/YHEFxeQ9rw6LnnPjzqDxn1rbfK0GNV4J66yhyr6Mj6HLWMR5oubXaDGHg7ycJQnsFQrswi6TCj/VdCdeYrvV04jqbNINjvmG1woUJYV/UWPPiTGR5HpzcnymXTyC3Fj8aNjM64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FYMCDvPD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 359ABC4CEE5;
+	Tue,  8 Apr 2025 11:37:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113591;
-	bh=c1r5R1pTSTpfvaYLqpEArqnSbkx7DCCNhsKvLKbOorQ=;
+	s=korg; t=1744112245;
+	bh=6qBXL6ZPuR/q4rPJF3HOYnpIte2hrBzlyocsBdvcIZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0JeL793LqeHTR0KMlWFJgrgEsgOA9yXb4Skph8V07yebU2lUzMgw7M+SGbfnWdCOt
-	 7pHSkD+2zStur6dZcQTX8sVq8shH4RflJa6R75Fx2GwyNoMY5hmmVv87rsg7B5WX4Z
-	 LwkdG8WQE+GBTuGDri4co5mbCjWdYezNMJZQrNFg=
+	b=FYMCDvPD5T7f1XB0q4Llc6C3v7dISjg+iXBShnB4YEtv6Ivin6ilyAVG2pIFRzKh1
+	 k0+icO3jboIpzcBjOpUYAN+6BLwPiAtWndCn3+RS/ADLJ8lQRe4NSWuvrT76Q+qCAX
+	 6NiqFOF/ZbfbUZjDOZy7CrXpWA17bC4523x+KcBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Oberhollenzer <david.oberhollenzer@sigma-star.at>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 216/268] net: dsa: mv88e6xxx: propperly shutdown PPU re-enable timer on destroy
+	Trond Myklebust <trondmy@hammerspace.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.14 730/731] NFSD: Never return NFS4ERR_FILE_OPEN when removing a directory
 Date: Tue,  8 Apr 2025 12:50:27 +0200
-Message-ID: <20250408104834.407410577@linuxfoundation.org>
+Message-ID: <20250408104931.253045151@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,130 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit a58d882841a0750da3c482cd3d82432b1c7edb77 ]
+commit 370345b4bd184a49ac68d6591801e5e3605b355a upstream.
 
-The mv88e6xxx has an internal PPU that polls PHY state. If we want to
-access the internal PHYs, we need to disable the PPU first. Because
-that is a slow operation, a 10ms timer is used to re-enable it,
-canceled with every access, so bulk operations effectively only
-disable it once and re-enable it some 10ms after the last access.
+RFC 8881 Section 18.25.4 paragraph 5 tells us that the server
+should return NFS4ERR_FILE_OPEN only if the target object is an
+opened file. This suggests that returning this status when removing
+a directory will confuse NFS clients.
 
-If a PHY is accessed and then the mv88e6xxx module is removed before
-the 10ms are up, the PPU re-enable ends up accessing a dangling pointer.
+This is a version-specific issue; nfsd_proc_remove/rmdir() and
+nfsd3_proc_remove/rmdir() already return nfserr_access as
+appropriate.
 
-This especially affects probing during bootup. The MDIO bus and PHY
-registration may succeed, but registration with the DSA framework
-may fail later on (e.g. because the CPU port depends on another,
-very slow device that isn't done probing yet, returning -EPROBE_DEFER).
-In this case, probe() fails, but the MDIO subsystem may already have
-accessed the MIDO bus or PHYs, arming the timer.
+Unfortunately there is no quick way for nfsd4_remove() to determine
+whether the target object is a file or not, so the check is done in
+in nfsd_unlink() for now.
 
-This is fixed as follows:
- - If probe fails after mv88e6xxx_phy_init(), make sure we also call
-   mv88e6xxx_phy_destroy() before returning
- - In mv88e6xxx_remove(), make sure we do the teardown in the correct
-   order, calling mv88e6xxx_phy_destroy() after unregistering the
-   switch device.
- - In mv88e6xxx_phy_destroy(), destroy both the timer and the work item
-   that the timer might schedule, synchronously waiting in case one of
-   the callbacks already fired and destroying the timer first, before
-   waiting for the work item.
- - Access to the PPU is guarded by a mutex, the worker acquires it
-   with a mutex_trylock(), not proceeding with the expensive shutdown
-   if that fails. We grab the mutex in mv88e6xxx_phy_destroy() to make
-   sure the slow PPU shutdown is already done or won't even enter, when
-   we wait for the work item.
-
-Fixes: 2e5f032095ff ("dsa: add support for the Marvell 88E6131 switch chip")
-Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://patch.msgid.link/20250401135705.92760-1-david.oberhollenzer@sigma-star.at
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Trond Myklebust <trondmy@hammerspace.com>
+Fixes: 466e16f0920f ("nfsd: check for EBUSY from vfs_rmdir/vfs_unink.")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 11 +++++++----
- drivers/net/dsa/mv88e6xxx/phy.c  |  3 +++
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ fs/nfsd/vfs.c |   24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index a39b33353ca6c..8b01ee3e684a3 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -7156,13 +7156,13 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
- 	err = mv88e6xxx_switch_reset(chip);
- 	mv88e6xxx_reg_unlock(chip);
- 	if (err)
--		goto out;
-+		goto out_phy;
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -1931,9 +1931,17 @@ out:
+ 	return err;
+ }
  
- 	if (np) {
- 		chip->irq = of_irq_get(np, 0);
- 		if (chip->irq == -EPROBE_DEFER) {
- 			err = chip->irq;
--			goto out;
-+			goto out_phy;
- 		}
+-/*
+- * Unlink a file or directory
+- * N.B. After this call fhp needs an fh_put
++/**
++ * nfsd_unlink - remove a directory entry
++ * @rqstp: RPC transaction context
++ * @fhp: the file handle of the parent directory to be modified
++ * @type: enforced file type of the object to be removed
++ * @fname: the name of directory entry to be removed
++ * @flen: length of @fname in octets
++ *
++ * After this call fhp needs an fh_put.
++ *
++ * Returns a generic NFS status code in network byte-order.
+  */
+ __be32
+ nfsd_unlink(struct svc_rqst *rqstp, struct svc_fh *fhp, int type,
+@@ -2007,10 +2015,14 @@ out_drop_write:
+ 	fh_drop_write(fhp);
+ out_nfserr:
+ 	if (host_err == -EBUSY) {
+-		/* name is mounted-on. There is no perfect
+-		 * error status.
++		/*
++		 * See RFC 8881 Section 18.25.4 para 4: NFSv4 REMOVE
++		 * wants a status unique to the object type.
+ 		 */
+-		err = nfserr_file_open;
++		if (type != S_IFDIR)
++			err = nfserr_file_open;
++		else
++			err = nfserr_acces;
  	}
- 
-@@ -7181,7 +7181,7 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
- 	mv88e6xxx_reg_unlock(chip);
- 
- 	if (err)
--		goto out;
-+		goto out_phy;
- 
- 	if (chip->info->g2_irqs > 0) {
- 		err = mv88e6xxx_g2_irq_setup(chip);
-@@ -7215,6 +7215,8 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
- 		mv88e6xxx_g1_irq_free(chip);
- 	else
- 		mv88e6xxx_irq_poll_free(chip);
-+out_phy:
-+	mv88e6xxx_phy_destroy(chip);
  out:
- 	if (pdata)
- 		dev_put(pdata->netdev);
-@@ -7237,7 +7239,6 @@ static void mv88e6xxx_remove(struct mdio_device *mdiodev)
- 		mv88e6xxx_ptp_free(chip);
- 	}
- 
--	mv88e6xxx_phy_destroy(chip);
- 	mv88e6xxx_unregister_switch(chip);
- 
- 	mv88e6xxx_g1_vtu_prob_irq_free(chip);
-@@ -7250,6 +7251,8 @@ static void mv88e6xxx_remove(struct mdio_device *mdiodev)
- 		mv88e6xxx_g1_irq_free(chip);
- 	else
- 		mv88e6xxx_irq_poll_free(chip);
-+
-+	mv88e6xxx_phy_destroy(chip);
- }
- 
- static void mv88e6xxx_shutdown(struct mdio_device *mdiodev)
-diff --git a/drivers/net/dsa/mv88e6xxx/phy.c b/drivers/net/dsa/mv88e6xxx/phy.c
-index 8bb88b3d900db..ee9e5d7e52770 100644
---- a/drivers/net/dsa/mv88e6xxx/phy.c
-+++ b/drivers/net/dsa/mv88e6xxx/phy.c
-@@ -229,7 +229,10 @@ static void mv88e6xxx_phy_ppu_state_init(struct mv88e6xxx_chip *chip)
- 
- static void mv88e6xxx_phy_ppu_state_destroy(struct mv88e6xxx_chip *chip)
- {
-+	mutex_lock(&chip->ppu_mutex);
- 	del_timer_sync(&chip->ppu_timer);
-+	cancel_work_sync(&chip->ppu_work);
-+	mutex_unlock(&chip->ppu_mutex);
- }
- 
- int mv88e6185_phy_ppu_read(struct mv88e6xxx_chip *chip, struct mii_bus *bus,
--- 
-2.39.5
-
+ 	return err != nfs_ok ? err : nfserrno(host_err);
 
 
 
