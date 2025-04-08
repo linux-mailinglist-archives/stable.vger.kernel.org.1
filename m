@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-131061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85166A80885
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:46:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAA2DA80508
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:14:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED3CA8A294F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F310E4A2CF7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12295267F57;
-	Tue,  8 Apr 2025 12:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C1AA26A0CF;
+	Tue,  8 Apr 2025 12:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbL8pKTf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJOlTP1a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B272063FD;
-	Tue,  8 Apr 2025 12:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2956326773A;
+	Tue,  8 Apr 2025 12:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115383; cv=none; b=eWXIKmdLqbBkVgBIoapvlNDP0U30A49C+154hgg00ViqDEFOnZBEbV8PVe5rGe8dVt/OjJ5y/quYGTCYypDsFpev4Bq0fWFwwdZT959e2HkZpWR99JVN1xzPiewQ/Ts3/KRDZkWrFHpDJFk60dkImvMXtKb/MRR7CsF73js5Xqs=
+	t=1744113693; cv=none; b=YLe3XvzieGwgM/W48sSbhtnMYc/VO30fo9ljZoJB44Kp4XSE2VN0O5ZZOmvXmIoVCtfoa05l6f5QKS7jguEDFcLMKtytujdN/tZ/kn3aY4lsbHIDso57ZMNIhORjIfhDx0E4OpZ4at6O5dLwNCop7t4TB4a+UVnLqmKdJoxxDOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115383; c=relaxed/simple;
-	bh=yYiA6ulvCMoUOJ0z08ALK4CD845YEodEWYj47XY3FRw=;
+	s=arc-20240116; t=1744113693; c=relaxed/simple;
+	bh=aLGcn5ndAKtdagkDqU2NGsmgW0sZcKon07MlDd4gpnY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qk5amk1VyQwSkxJC45qOlW7+6jQAvV4cdIhGx7BJXbsr0BPEhKHpyGjfAybT1vLK3oiW8SC7dk9oFpnRLTmsTywSm/0RdvtSGYwRH0SeshAuNj1Y+0Nn9xlXq9M8eZth0Oz2y6hOrfHlj78LENLzlUzmWRJ509h/D8+oLCDuh34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbL8pKTf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40DC9C4CEE7;
-	Tue,  8 Apr 2025 12:29:43 +0000 (UTC)
+	 MIME-Version; b=nlmwNa/ReWmbbSEohKsB5XbTGO68hl5X5dzspPxlswcYR3tzjj4cVgeZzj6Iv2qYKcsE2Dt8y2n/ucHv4cBPFITu72fogpNR1dqagf8C4sxY/wKaRpreiLhyV1mUpe1+sArQP+RSGCUrB6mDoXCmQ9bSvCT2tZesy4SCqWYmWfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJOlTP1a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC948C4CEE5;
+	Tue,  8 Apr 2025 12:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115383;
-	bh=yYiA6ulvCMoUOJ0z08ALK4CD845YEodEWYj47XY3FRw=;
+	s=korg; t=1744113693;
+	bh=aLGcn5ndAKtdagkDqU2NGsmgW0sZcKon07MlDd4gpnY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BbL8pKTf2La2ncY1xUS8Z7u3Y02c3shPTkX93Mvjea8Ak2tCe4zwoY/XFqXgQa+B6
-	 d42PwdU5conPrnTSVL0U8tjgcioHR/akHTBk00JwJi8HtkOQvAvTPF0nAQvICnsYs+
-	 QP2j5i3z8GtN3xdJF1fwDmTmBHEXmQFJ9sxcMSdE=
+	b=dJOlTP1al1YxmkG6iGRpuNziTzxPAm2rhoRuj1WrAqDTW1t45z9ih8dS7+hIlG9IJ
+	 dwOIzNcD11K9V9XrlwJjj3nd6K5LCLCtUl3YbERBRX7PAbDvIpuMQL7PjnnmvcnwbC
+	 xqmUVyfXIF0Pg4d/mBuZEi8iXaupczyt4TJOjFEg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 6.13 453/499] x86/tsc: Always save/restore TSC sched_clock() on suspend/resume
+	Sean Heelan <seanheelan@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 254/268] ksmbd: fix session use-after-free in multichannel connection
 Date: Tue,  8 Apr 2025 12:51:05 +0200
-Message-ID: <20250408104902.530925031@linuxfoundation.org>
+Message-ID: <20250408104835.433856907@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +62,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guilherme G. Piccoli <gpiccoli@igalia.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit d90c9de9de2f1712df56de6e4f7d6982d358cabe upstream.
+commit fa4cdb8cbca7d6cb6aa13e4d8d83d1103f6345db upstream.
 
-TSC could be reset in deep ACPI sleep states, even with invariant TSC.
+There is a race condition between session setup and
+ksmbd_sessions_deregister. The session can be freed before the connection
+is added to channel list of session.
+This patch check reference count of session before freeing it.
 
-That's the reason we have sched_clock() save/restore functions, to deal
-with this situation. But what happens is that such functions are guarded
-with a check for the stability of sched_clock - if not considered stable,
-the save/restore routines aren't executed.
-
-On top of that, we have a clear comment in native_sched_clock() saying
-that *even* with TSC unstable, we continue using TSC for sched_clock due
-to its speed.
-
-In other words, if we have a situation of TSC getting detected as unstable,
-it marks the sched_clock as unstable as well, so subsequent S3 sleep cycles
-could bring bogus sched_clock values due to the lack of the save/restore
-mechanism, causing warnings like this:
-
-  [22.954918] ------------[ cut here ]------------
-  [22.954923] Delta way too big! 18446743750843854390 ts=18446744072977390405 before=322133536015 after=322133536015 write stamp=18446744072977390405
-  [22.954923] If you just came from a suspend/resume,
-  [22.954923] please switch to the trace global clock:
-  [22.954923]   echo global > /sys/kernel/tracing/trace_clock
-  [22.954923] or add trace_clock=global to the kernel command line
-  [22.954937] WARNING: CPU: 2 PID: 5728 at kernel/trace/ring_buffer.c:2890 rb_add_timestamp+0x193/0x1c0
-
-Notice that the above was reproduced even with "trace_clock=global".
-
-The fix for that is to _always_ save/restore the sched_clock on suspend
-cycle _if TSC is used_ as sched_clock - only if we fallback to jiffies
-the sched_clock_stable() check becomes relevant to save/restore the
-sched_clock.
-
-Debugged-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Cc: stable@vger.kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250215210314.351480-1-gpiccoli@igalia.com
+Reported-by: Sean Heelan <seanheelan@gmail.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/tsc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/server/auth.c              |    4 ++--
+ fs/smb/server/mgmt/user_session.c |   14 ++++++++------
+ fs/smb/server/smb2pdu.c           |    7 ++++---
+ 3 files changed, 14 insertions(+), 11 deletions(-)
 
---- a/arch/x86/kernel/tsc.c
-+++ b/arch/x86/kernel/tsc.c
-@@ -957,7 +957,7 @@ static unsigned long long cyc2ns_suspend
+--- a/fs/smb/server/auth.c
++++ b/fs/smb/server/auth.c
+@@ -1012,9 +1012,9 @@ static int ksmbd_get_encryption_key(stru
  
- void tsc_save_sched_clock_state(void)
- {
--	if (!sched_clock_stable())
-+	if (!static_branch_likely(&__use_tsc) && !sched_clock_stable())
- 		return;
+ 	ses_enc_key = enc ? sess->smb3encryptionkey :
+ 		sess->smb3decryptionkey;
+-	if (enc)
+-		ksmbd_user_session_get(sess);
+ 	memcpy(key, ses_enc_key, SMB3_ENC_DEC_KEY_SIZE);
++	if (!enc)
++		ksmbd_user_session_put(sess);
  
- 	cyc2ns_suspend = sched_clock();
-@@ -977,7 +977,7 @@ void tsc_restore_sched_clock_state(void)
- 	unsigned long flags;
- 	int cpu;
+ 	return 0;
+ }
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -180,7 +180,7 @@ static void ksmbd_expire_session(struct
+ 	down_write(&sessions_table_lock);
+ 	down_write(&conn->session_lock);
+ 	xa_for_each(&conn->sessions, id, sess) {
+-		if (atomic_read(&sess->refcnt) == 0 &&
++		if (atomic_read(&sess->refcnt) <= 1 &&
+ 		    (sess->state != SMB2_SESSION_VALID ||
+ 		     time_after(jiffies,
+ 			       sess->last_active + SMB2_SESSION_TIMEOUT))) {
+@@ -232,7 +232,8 @@ void ksmbd_sessions_deregister(struct ks
+ 				down_write(&conn->session_lock);
+ 				xa_erase(&conn->sessions, sess->id);
+ 				up_write(&conn->session_lock);
+-				ksmbd_session_destroy(sess);
++				if (atomic_dec_and_test(&sess->refcnt))
++					ksmbd_session_destroy(sess);
+ 			}
+ 		}
+ 	}
+@@ -251,7 +252,8 @@ void ksmbd_sessions_deregister(struct ks
+ 		if (xa_empty(&sess->ksmbd_chann_list)) {
+ 			xa_erase(&conn->sessions, sess->id);
+ 			hash_del(&sess->hlist);
+-			ksmbd_session_destroy(sess);
++			if (atomic_dec_and_test(&sess->refcnt))
++				ksmbd_session_destroy(sess);
+ 		}
+ 	}
+ 	up_write(&conn->session_lock);
+@@ -327,8 +329,8 @@ void ksmbd_user_session_put(struct ksmbd
  
--	if (!sched_clock_stable())
-+	if (!static_branch_likely(&__use_tsc) && !sched_clock_stable())
- 		return;
+ 	if (atomic_read(&sess->refcnt) <= 0)
+ 		WARN_ON(1);
+-	else
+-		atomic_dec(&sess->refcnt);
++	else if (atomic_dec_and_test(&sess->refcnt))
++		ksmbd_session_destroy(sess);
+ }
  
- 	local_irq_save(flags);
+ struct preauth_session *ksmbd_preauth_session_alloc(struct ksmbd_conn *conn,
+@@ -433,7 +435,7 @@ static struct ksmbd_session *__session_c
+ 	xa_init(&sess->rpc_handle_list);
+ 	sess->sequence_number = 1;
+ 	rwlock_init(&sess->tree_conns_lock);
+-	atomic_set(&sess->refcnt, 1);
++	atomic_set(&sess->refcnt, 2);
+ 
+ 	ret = __init_smb2_session(sess);
+ 	if (ret)
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2231,13 +2231,14 @@ int smb2_session_logoff(struct ksmbd_wor
+ 		return -ENOENT;
+ 	}
+ 
+-	ksmbd_destroy_file_table(&sess->file_table);
+ 	down_write(&conn->session_lock);
+ 	sess->state = SMB2_SESSION_EXPIRED;
+ 	up_write(&conn->session_lock);
+ 
+-	ksmbd_free_user(sess->user);
+-	sess->user = NULL;
++	if (sess->user) {
++		ksmbd_free_user(sess->user);
++		sess->user = NULL;
++	}
+ 	ksmbd_all_conn_set_status(sess_id, KSMBD_SESS_NEED_NEGOTIATE);
+ 
+ 	rsp->StructureSize = cpu_to_le16(4);
 
 
 
