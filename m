@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-129708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC9BA800D7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:35:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F2F0A80232
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:45:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5EDD1889CEA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:32:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78CB23BF13B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC48A269882;
-	Tue,  8 Apr 2025 11:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B581DF27F;
+	Tue,  8 Apr 2025 11:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eEhKaoC8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xd2/sZRa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5E8268C5D;
-	Tue,  8 Apr 2025 11:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219CD35973;
+	Tue,  8 Apr 2025 11:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111767; cv=none; b=H1DpCiB6YSmwXHsxkglsbhBso43nzjTd2I+oy9XfKF4OoShQsmNK0gEtEyhfhrDQ8zGXaBKgsBxbZpI1o78C+O4YlfNsXmaRLYB+TqFQXlnAYBaR23jqONYqBIuUc/6vWxb35YpdHsddoVZuuMl4BgRKbWWpBNchcVjX1M2dMOw=
+	t=1744112326; cv=none; b=YwEbGB5uiBD+eE3fM0Rle44QZ6gfQ2KkQ7KQNUFj4gSrCCns6wJFbAFCDg9NCffwIkrOTB6ugVfqO1FqdF5TucQbja+Ougv0u5pH7m1AB2NnpSD+GMUMvP8BjocHhSivm0ryA0Ae2zrIKlXCqOeZbZgoxlRS434CJxA+GE4EFCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111767; c=relaxed/simple;
-	bh=/Fb8PK4IfEccC+wldkRQ6HQoZBnqHXfxq+t+5ujSLPM=;
+	s=arc-20240116; t=1744112326; c=relaxed/simple;
+	bh=40QpU26GkonI0QKE7sdlQkYMWPxUQ9v1wP5yEIiOh+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R4EP2U00t3yttCxYLhJYEzKHwYvIZP37CIhvB1u4MxUUovh3cPVW2jWBpm+jG2HCfi5hzseh9oO5u3M7dK40lTRCnnKqmY0P5Fs5/jmTSSqyoG1u8tIT80c7UF07ssXKRKd2l0vwqHYmQw8gTmlIJjYpIcAZhxpbTgnikiPfTgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eEhKaoC8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED926C4CEE5;
-	Tue,  8 Apr 2025 11:29:26 +0000 (UTC)
+	 MIME-Version; b=UH3cia9/Us2SRjyKuFizcUtqQg/8uIK5HQnpRYRfVbSlaRoxOMsee1doMGtAjs5FCGPGLaE/ZqT7Y1Z4m3V1pMWVQZAnT45uV/xcdJacorCzmoJU5XY1SrWe1f1CyIrBMoVvtk2YHk5AM9uvT7/P3EVLmWWqaDvEqBH2NwwkfNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xd2/sZRa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5CA8C4CEE5;
+	Tue,  8 Apr 2025 11:38:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111767;
-	bh=/Fb8PK4IfEccC+wldkRQ6HQoZBnqHXfxq+t+5ujSLPM=;
+	s=korg; t=1744112326;
+	bh=40QpU26GkonI0QKE7sdlQkYMWPxUQ9v1wP5yEIiOh+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eEhKaoC8anX9Mgpmn3qRtWaUqgHU58LThxstwpP9aBLdhjqYBRTRUlz9cFPE6elre
-	 bBuKhax79vaEcBpOGwNh0uhT5AdRjJ02QF5k9gc9u5cBCAjmOOwEX77JhElld6Zbt2
-	 Lq92ZRTbnmqeaS4gcqqx+Bcdv5kdKIGQEPa/czzU=
+	b=xd2/sZRadrIRsPIMEVClcibhlR2CSkaB66KecsuFYMW63m7geCIj99Iwfthy4fjyV
+	 fdUeHTfObTDSUBBI+oTiqHeuAj0C8THRJl2a2s6/ByWq/IE5KfgtfWmQSHaF5xnMgB
+	 AbnCZxT1L5M3LpQwqj95nU8OpLKok0JaN50BDrfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tang Yizhou <yizhou.tang@shopee.com>,
-	Tejun Heo <tj@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Chengen Du <chengen.du@canonical.com>,
+	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 513/731] writeback: fix calculations in trace_balance_dirty_pages() for cgwb
+Subject: [PATCH 5.15 027/279] iscsi_ibft: Fix UBSAN shift-out-of-bounds warning in ibft_attr_show_nic()
 Date: Tue,  8 Apr 2025 12:46:50 +0200
-Message-ID: <20250408104926.207678232@linuxfoundation.org>
+Message-ID: <20250408104827.115441993@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,90 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tang Yizhou <yizhou.tang@shopee.com>
+From: Chengen Du <chengen.du@canonical.com>
 
-[ Upstream commit 6cc4c3aa714bc58ec5d20f3054ca5f23534984d1 ]
+[ Upstream commit 07e0d99a2f701123ad3104c0f1a1e66bce74d6e5 ]
 
-In the commit dcc25ae76eb7 ("writeback: move global_dirty_limit into
-wb_domain") of the cgroup writeback backpressure propagation patchset,
-Tejun made some adaptations to trace_balance_dirty_pages() for cgroup
-writeback.  However, this adaptation was incomplete and Tejun missed
-further adaptation in the subsequent patches.
+When performing an iSCSI boot using IPv6, iscsistart still reads the
+/sys/firmware/ibft/ethernetX/subnet-mask entry. Since the IPv6 prefix
+length is 64, this causes the shift exponent to become negative,
+triggering a UBSAN warning. As the concept of a subnet mask does not
+apply to IPv6, the value is set to ~0 to suppress the warning message.
 
-In the cgroup writeback scenario, if sdtc in balance_dirty_pages() is
-assigned to mdtc, then upon entering trace_balance_dirty_pages(),
-__entry->limit should be assigned based on the dirty_limit of the
-corresponding memcg's wb_domain, rather than global_wb_domain.
-
-To address this issue and simplify the implementation, introduce a 'limit'
-field in struct dirty_throttle_control to store the hard_limit value
-computed in wb_position_ratio() by calling hard_dirty_limit().  This field
-will then be used in trace_balance_dirty_pages() to assign the value to
-__entry->limit.
-
-Link: https://lkml.kernel.org/r/20250304110318.159567-4-yizhou.tang@shopee.com
-Fixes: dcc25ae76eb7 ("writeback: move global_dirty_limit into wb_domain")
-Signed-off-by: Tang Yizhou <yizhou.tang@shopee.com>
-Acked-by: Tejun Heo <tj@kernel.org>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>
-Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Chengen Du <chengen.du@canonical.com>
+Signed-off-by: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/writeback.h        | 1 +
- include/trace/events/writeback.h | 5 ++---
- mm/page-writeback.c              | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/firmware/iscsi_ibft.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/writeback.h b/include/linux/writeback.h
-index 32095928365ce..58bda33479146 100644
---- a/include/linux/writeback.h
-+++ b/include/linux/writeback.h
-@@ -326,6 +326,7 @@ struct dirty_throttle_control {
- 	unsigned long		dirty;		/* file_dirty + write + nfs */
- 	unsigned long		thresh;		/* dirty threshold */
- 	unsigned long		bg_thresh;	/* dirty background threshold */
-+	unsigned long		limit;		/* hard dirty limit */
- 
- 	unsigned long		wb_dirty;	/* per-wb counterparts */
- 	unsigned long		wb_thresh;
-diff --git a/include/trace/events/writeback.h b/include/trace/events/writeback.h
-index 3213b90237944..5755c2a569e16 100644
---- a/include/trace/events/writeback.h
-+++ b/include/trace/events/writeback.h
-@@ -663,9 +663,8 @@ TRACE_EVENT(balance_dirty_pages,
- 		unsigned long freerun = (dtc->thresh + dtc->bg_thresh) / 2;
- 		strscpy_pad(__entry->bdi, bdi_dev_name(wb->bdi), 32);
- 
--		__entry->limit		= global_wb_domain.dirty_limit;
--		__entry->setpoint	= (global_wb_domain.dirty_limit +
--						freerun) / 2;
-+		__entry->limit		= dtc->limit;
-+		__entry->setpoint	= (dtc->limit + freerun) / 2;
- 		__entry->dirty		= dtc->dirty;
- 		__entry->bdi_setpoint	= __entry->setpoint *
- 						dtc->wb_thresh / (dtc->thresh + 1);
-diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-index e980b2aec3529..3147119a9a042 100644
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -1072,7 +1072,7 @@ static void wb_position_ratio(struct dirty_throttle_control *dtc)
- 	struct bdi_writeback *wb = dtc->wb;
- 	unsigned long write_bw = READ_ONCE(wb->avg_write_bandwidth);
- 	unsigned long freerun = dirty_freerun_ceiling(dtc->thresh, dtc->bg_thresh);
--	unsigned long limit = hard_dirty_limit(dtc_dom(dtc), dtc->thresh);
-+	unsigned long limit = dtc->limit = hard_dirty_limit(dtc_dom(dtc), dtc->thresh);
- 	unsigned long wb_thresh = dtc->wb_thresh;
- 	unsigned long x_intercept;
- 	unsigned long setpoint;		/* dirty pages' target balance point */
+diff --git a/drivers/firmware/iscsi_ibft.c b/drivers/firmware/iscsi_ibft.c
+index 6e9788324fea5..371f24569b3b2 100644
+--- a/drivers/firmware/iscsi_ibft.c
++++ b/drivers/firmware/iscsi_ibft.c
+@@ -310,7 +310,10 @@ static ssize_t ibft_attr_show_nic(void *data, int type, char *buf)
+ 		str += sprintf_ipaddr(str, nic->ip_addr);
+ 		break;
+ 	case ISCSI_BOOT_ETH_SUBNET_MASK:
+-		val = cpu_to_be32(~((1 << (32-nic->subnet_mask_prefix))-1));
++		if (nic->subnet_mask_prefix > 32)
++			val = cpu_to_be32(~0);
++		else
++			val = cpu_to_be32(~((1 << (32-nic->subnet_mask_prefix))-1));
+ 		str += sprintf(str, "%pI4", &val);
+ 		break;
+ 	case ISCSI_BOOT_ETH_PREFIX_LEN:
 -- 
 2.39.5
 
