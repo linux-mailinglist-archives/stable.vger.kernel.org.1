@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-131179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D230A80870
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:45:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97338A80B2F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:13:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DBA71BA34A6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A4AF500E6F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3354C268C4F;
-	Tue,  8 Apr 2025 12:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D45121B9CE;
+	Tue,  8 Apr 2025 12:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N7fMpVi2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSd6+TaR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E326820CCD8;
-	Tue,  8 Apr 2025 12:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF10B26B950;
+	Tue,  8 Apr 2025 12:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115702; cv=none; b=tgJXfnEQ1nHB7TjcQhLmjbc/DL96Bz/5UyWo5BfUfT1ob1xI26exI8bhhSVK0L3/VTmk/thbAFjT7rudfq8q6tOvgrjk9l0O6Vs3IgJr+eTwHcSfcOBA6j9omETXCbXaGwzheOUQZUImbs/8oPQJrQym+yLeHb4tw60yxh1wqjY=
+	t=1744116801; cv=none; b=fjKv1cvUb2183HvAj81Vc1/riWlZYRTAJ3oN+XE8XNydhg9RuBEKiY299Zat1xk1Gfn4jr8c19eY04ILLPDp6tNpdCq6CLq0Rmd+RJl1lvuCVOK42wzvWnsWA4u9lk4jLKyHz0kvGHMyzjbQbVopiAxlZsxofot7jAs6lHB7dT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115702; c=relaxed/simple;
-	bh=3mkA/6cfw/dp4oWbndiRwpkavpCs09Odo3XEriFx7IA=;
+	s=arc-20240116; t=1744116801; c=relaxed/simple;
+	bh=/o1qEpzo2FlFjKWRYP0RYPq9NwFEn++TEDBGZolSIAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M0WjGk+OkZc6gDiKC6p+LJQjd6WslSQgkzPvWEVKqueBiUWKrYzjyvQkNRvnEVf2C0hvOas/JOL7vtQ5EMoyT29OkSWtvhAiu56o5lRz/v7h1HkJT2irzKPBxQAyyhy1D8LHaPoAIqj/ayZcrh82Mpl24ayZKUHStnC84CiXwcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7fMpVi2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FFBEC4CEE5;
-	Tue,  8 Apr 2025 12:35:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RFeENWGrNTiqu4wds6VKRcQJoFB9iRZANPuGSsOIPoSCcFkAfmdLM1/QNqPatOLxZjS7DvZBdp+Q9NpqNJc7kO6CsMKxolr6f5roJLFqfzjsFolB0xhvcLWJciSlek1apLpTXNlfojiCbkBr9n7PddUhgQFQuOJoCe3BsrpLtSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSd6+TaR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BEFCC4CEE5;
+	Tue,  8 Apr 2025 12:53:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115701;
-	bh=3mkA/6cfw/dp4oWbndiRwpkavpCs09Odo3XEriFx7IA=;
+	s=korg; t=1744116800;
+	bh=/o1qEpzo2FlFjKWRYP0RYPq9NwFEn++TEDBGZolSIAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N7fMpVi2QEpqNq+2QGeO8FnHpZmdu9Ljrcb/VQsRkgfXJFNAuK6Ny7xLtygTyVrlV
-	 I5C5w8TL82cw9oLmTDe0gEQBvuWYHJqBLM38rRZZMbBv1WM1QXpZNVPSO2JGS23Ayg
-	 DW/qYSGXiYuwGI1qUZQvXxIVnKC3POg0/469Rbgo=
+	b=vSd6+TaRI+FLSo+vGyVn/aXmlPJANLdgVkLLjNwBcNBS4Py1ZYGzk5XDuQGVEihDb
+	 Scl3+IzqN7gJFcJ5QXF5wwVbpWDq/Kte7zuTuZ/r80ugLkHBl4L1pyiDLF+aqMrZHG
+	 q2RM9ymOSIVyV57qwb1l/a6H6/weASlYqTKBc/2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Patil Rajesh Reddy <Patil.Reddy@amd.com>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 070/204] IB/mad: Check available slots before posting receive WRs
+Subject: [PATCH 6.12 274/423] platform/x86/amd/pmf: Update PMF Driver for Compatibility with new PMF-TA
 Date: Tue,  8 Apr 2025 12:50:00 +0200
-Message-ID: <20250408104822.414293675@linuxfoundation.org>
+Message-ID: <20250408104852.147409757@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,132 +65,175 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maher Sanalla <msanalla@nvidia.com>
+From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
 
-[ Upstream commit 37826f0a8c2f6b6add5179003b8597e32a445362 ]
+[ Upstream commit 376a8c2a144397d9cf2a67d403dd64f4a7ff9104 ]
 
-The ib_post_receive_mads() function handles posting receive work
-requests (WRs) to MAD QPs and is called in two cases:
-1) When a MAD port is opened.
-2) When a receive WQE is consumed upon receiving a new MAD.
+The PMF driver allocates a shared memory buffer using
+tee_shm_alloc_kernel_buf() for communication with the PMF-TA.
 
-Whereas, if MADs arrive during the port open phase, a race condition
-might cause an extra WR to be posted, exceeding the QP’s capacity.
-This leads to failures such as:
-infiniband mlx5_0: ib_post_recv failed: -12
-infiniband mlx5_0: Couldn't post receive WRs
-infiniband mlx5_0: Couldn't start port
-infiniband mlx5_0: Couldn't open port 1
+The latest PMF-TA version introduces new structures with OEM debug
+information and additional policy input conditions for evaluating the
+policy binary. Consequently, the shared memory size must be increased to
+ensure compatibility between the PMF driver and the updated PMF-TA.
 
-Fix this by checking the current receive count before posting a new WR.
-If the QP’s receive queue is full, do not post additional WRs.
+To do so, introduce the new PMF-TA UUID and update the PMF shared memory
+configuration to ensure compatibility with the latest PMF-TA version.
+Additionally, export the TA UUID.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
-Link: https://patch.msgid.link/c4984ba3c3a98a5711a558bccefcad789587ecf1.1741875592.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+These updates will result in modifications to the prototypes of
+amd_pmf_tee_init() and amd_pmf_ta_open_session().
+
+Link: https://lore.kernel.org/all/55ac865f-b1c7-fa81-51c4-d211c7963e7e@linux.intel.com/
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Co-developed-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
+Signed-off-by: Patil Rajesh Reddy <Patil.Reddy@amd.com>
+Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Link: https://lore.kernel.org/r/20250305045842.4117767-2-Shyam-sundar.S-k@amd.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/mad.c | 38 ++++++++++++++++++-----------------
- 1 file changed, 20 insertions(+), 18 deletions(-)
+ drivers/platform/x86/amd/pmf/pmf.h    |  5 ++-
+ drivers/platform/x86/amd/pmf/tee-if.c | 50 +++++++++++++++++++--------
+ 2 files changed, 40 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/infiniband/core/mad.c b/drivers/infiniband/core/mad.c
-index 58befbaaf0ad5..242434c09e8d8 100644
---- a/drivers/infiniband/core/mad.c
-+++ b/drivers/infiniband/core/mad.c
-@@ -2671,11 +2671,11 @@ static int ib_mad_post_receive_mads(struct ib_mad_qp_info *qp_info,
- 				    struct ib_mad_private *mad)
- {
- 	unsigned long flags;
--	int post, ret;
- 	struct ib_mad_private *mad_priv;
- 	struct ib_sge sg_list;
- 	struct ib_recv_wr recv_wr;
- 	struct ib_mad_queue *recv_queue = &qp_info->recv_queue;
-+	int ret = 0;
+diff --git a/drivers/platform/x86/amd/pmf/pmf.h b/drivers/platform/x86/amd/pmf/pmf.h
+index 8ce8816da9c16..43ba1b9aa1811 100644
+--- a/drivers/platform/x86/amd/pmf/pmf.h
++++ b/drivers/platform/x86/amd/pmf/pmf.h
+@@ -105,9 +105,12 @@ struct cookie_header {
+ #define PMF_TA_IF_VERSION_MAJOR				1
+ #define TA_PMF_ACTION_MAX					32
+ #define TA_PMF_UNDO_MAX						8
+-#define TA_OUTPUT_RESERVED_MEM				906
++#define TA_OUTPUT_RESERVED_MEM				922
+ #define MAX_OPERATION_PARAMS					4
  
- 	/* Initialize common scatter list fields */
- 	sg_list.lkey = qp_info->port_priv->pd->local_dma_lkey;
-@@ -2685,7 +2685,7 @@ static int ib_mad_post_receive_mads(struct ib_mad_qp_info *qp_info,
- 	recv_wr.sg_list = &sg_list;
- 	recv_wr.num_sge = 1;
- 
--	do {
-+	while (true) {
- 		/* Allocate and map receive buffer */
- 		if (mad) {
- 			mad_priv = mad;
-@@ -2693,10 +2693,8 @@ static int ib_mad_post_receive_mads(struct ib_mad_qp_info *qp_info,
- 		} else {
- 			mad_priv = alloc_mad_private(port_mad_size(qp_info->port_priv),
- 						     GFP_ATOMIC);
--			if (!mad_priv) {
--				ret = -ENOMEM;
--				break;
--			}
-+			if (!mad_priv)
-+				return -ENOMEM;
- 		}
- 		sg_list.length = mad_priv_dma_size(mad_priv);
- 		sg_list.addr = ib_dma_map_single(qp_info->port_priv->device,
-@@ -2705,37 +2703,41 @@ static int ib_mad_post_receive_mads(struct ib_mad_qp_info *qp_info,
- 						 DMA_FROM_DEVICE);
- 		if (unlikely(ib_dma_mapping_error(qp_info->port_priv->device,
- 						  sg_list.addr))) {
--			kfree(mad_priv);
- 			ret = -ENOMEM;
--			break;
-+			goto free_mad_priv;
- 		}
- 		mad_priv->header.mapping = sg_list.addr;
- 		mad_priv->header.mad_list.mad_queue = recv_queue;
- 		mad_priv->header.mad_list.cqe.done = ib_mad_recv_done;
- 		recv_wr.wr_cqe = &mad_priv->header.mad_list.cqe;
--
--		/* Post receive WR */
- 		spin_lock_irqsave(&recv_queue->lock, flags);
--		post = (++recv_queue->count < recv_queue->max_active);
--		list_add_tail(&mad_priv->header.mad_list.list, &recv_queue->list);
-+		if (recv_queue->count >= recv_queue->max_active) {
-+			/* Fully populated the receive queue */
-+			spin_unlock_irqrestore(&recv_queue->lock, flags);
-+			break;
-+		}
-+		recv_queue->count++;
-+		list_add_tail(&mad_priv->header.mad_list.list,
-+			      &recv_queue->list);
- 		spin_unlock_irqrestore(&recv_queue->lock, flags);
++#define TA_ERROR_CRYPTO_INVALID_PARAM				0x20002
++#define TA_ERROR_CRYPTO_BIN_TOO_LARGE				0x2000d
 +
- 		ret = ib_post_recv(qp_info->qp, &recv_wr, NULL);
- 		if (ret) {
- 			spin_lock_irqsave(&recv_queue->lock, flags);
- 			list_del(&mad_priv->header.mad_list.list);
- 			recv_queue->count--;
- 			spin_unlock_irqrestore(&recv_queue->lock, flags);
--			ib_dma_unmap_single(qp_info->port_priv->device,
--					    mad_priv->header.mapping,
--					    mad_priv_dma_size(mad_priv),
--					    DMA_FROM_DEVICE);
--			kfree(mad_priv);
- 			dev_err(&qp_info->port_priv->device->dev,
- 				"ib_post_recv failed: %d\n", ret);
- 			break;
- 		}
--	} while (post);
-+	}
+ #define PMF_IF_V1		1
+ #define PMF_IF_V2		2
  
-+	ib_dma_unmap_single(qp_info->port_priv->device,
-+			    mad_priv->header.mapping,
-+			    mad_priv_dma_size(mad_priv), DMA_FROM_DEVICE);
-+free_mad_priv:
-+	kfree(mad_priv);
- 	return ret;
+diff --git a/drivers/platform/x86/amd/pmf/tee-if.c b/drivers/platform/x86/amd/pmf/tee-if.c
+index 0ad571783d126..35495ef2c87df 100644
+--- a/drivers/platform/x86/amd/pmf/tee-if.c
++++ b/drivers/platform/x86/amd/pmf/tee-if.c
+@@ -27,8 +27,11 @@ module_param(pb_side_load, bool, 0444);
+ MODULE_PARM_DESC(pb_side_load, "Sideload policy binaries debug policy failures");
+ #endif
+ 
+-static const uuid_t amd_pmf_ta_uuid = UUID_INIT(0x6fd93b77, 0x3fb8, 0x524d,
+-						0xb1, 0x2d, 0xc5, 0x29, 0xb1, 0x3d, 0x85, 0x43);
++static const uuid_t amd_pmf_ta_uuid[] = { UUID_INIT(0xd9b39bf2, 0x66bd, 0x4154, 0xaf, 0xb8, 0x8a,
++						    0xcc, 0x2b, 0x2b, 0x60, 0xd6),
++					  UUID_INIT(0x6fd93b77, 0x3fb8, 0x524d, 0xb1, 0x2d, 0xc5,
++						    0x29, 0xb1, 0x3d, 0x85, 0x43),
++					};
+ 
+ static const char *amd_pmf_uevent_as_str(unsigned int state)
+ {
+@@ -321,7 +324,7 @@ static int amd_pmf_start_policy_engine(struct amd_pmf_dev *dev)
+ 		 */
+ 		schedule_delayed_work(&dev->pb_work, msecs_to_jiffies(pb_actions_ms * 3));
+ 	} else {
+-		dev_err(dev->dev, "ta invoke cmd init failed err: %x\n", res);
++		dev_dbg(dev->dev, "ta invoke cmd init failed err: %x\n", res);
+ 		dev->smart_pc_enabled = false;
+ 		return res;
+ 	}
+@@ -390,12 +393,12 @@ static int amd_pmf_amdtee_ta_match(struct tee_ioctl_version_data *ver, const voi
+ 	return ver->impl_id == TEE_IMPL_ID_AMDTEE;
  }
  
+-static int amd_pmf_ta_open_session(struct tee_context *ctx, u32 *id)
++static int amd_pmf_ta_open_session(struct tee_context *ctx, u32 *id, const uuid_t *uuid)
+ {
+ 	struct tee_ioctl_open_session_arg sess_arg = {};
+ 	int rc;
+ 
+-	export_uuid(sess_arg.uuid, &amd_pmf_ta_uuid);
++	export_uuid(sess_arg.uuid, uuid);
+ 	sess_arg.clnt_login = TEE_IOCTL_LOGIN_PUBLIC;
+ 	sess_arg.num_params = 0;
+ 
+@@ -434,7 +437,7 @@ static int amd_pmf_register_input_device(struct amd_pmf_dev *dev)
+ 	return 0;
+ }
+ 
+-static int amd_pmf_tee_init(struct amd_pmf_dev *dev)
++static int amd_pmf_tee_init(struct amd_pmf_dev *dev, const uuid_t *uuid)
+ {
+ 	u32 size;
+ 	int ret;
+@@ -445,7 +448,7 @@ static int amd_pmf_tee_init(struct amd_pmf_dev *dev)
+ 		return PTR_ERR(dev->tee_ctx);
+ 	}
+ 
+-	ret = amd_pmf_ta_open_session(dev->tee_ctx, &dev->session_id);
++	ret = amd_pmf_ta_open_session(dev->tee_ctx, &dev->session_id, uuid);
+ 	if (ret) {
+ 		dev_err(dev->dev, "Failed to open TA session (%d)\n", ret);
+ 		ret = -EINVAL;
+@@ -489,7 +492,8 @@ static void amd_pmf_tee_deinit(struct amd_pmf_dev *dev)
+ 
+ int amd_pmf_init_smart_pc(struct amd_pmf_dev *dev)
+ {
+-	int ret;
++	bool status;
++	int ret, i;
+ 
+ 	ret = apmf_check_smart_pc(dev);
+ 	if (ret) {
+@@ -502,10 +506,6 @@ int amd_pmf_init_smart_pc(struct amd_pmf_dev *dev)
+ 		return -ENODEV;
+ 	}
+ 
+-	ret = amd_pmf_tee_init(dev);
+-	if (ret)
+-		return ret;
+-
+ 	INIT_DELAYED_WORK(&dev->pb_work, amd_pmf_invoke_cmd);
+ 
+ 	ret = amd_pmf_set_dram_addr(dev, true);
+@@ -534,8 +534,30 @@ int amd_pmf_init_smart_pc(struct amd_pmf_dev *dev)
+ 		goto error;
+ 	}
+ 
+-	ret = amd_pmf_start_policy_engine(dev);
+-	if (ret)
++	for (i = 0; i < ARRAY_SIZE(amd_pmf_ta_uuid); i++) {
++		ret = amd_pmf_tee_init(dev, &amd_pmf_ta_uuid[i]);
++		if (ret)
++			return ret;
++
++		ret = amd_pmf_start_policy_engine(dev);
++		switch (ret) {
++		case TA_PMF_TYPE_SUCCESS:
++			status = true;
++			break;
++		case TA_ERROR_CRYPTO_INVALID_PARAM:
++		case TA_ERROR_CRYPTO_BIN_TOO_LARGE:
++			amd_pmf_tee_deinit(dev);
++			status = false;
++			break;
++		default:
++			goto error;
++		}
++
++		if (status)
++			break;
++	}
++
++	if (!status && !pb_side_load)
+ 		goto error;
+ 
+ 	if (pb_side_load)
 -- 
 2.39.5
 
