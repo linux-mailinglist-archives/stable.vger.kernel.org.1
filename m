@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-129913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C1BAA801CD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:43:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E377A7FD77
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3E9C189B342
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:38:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16E7D425051
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC3B22257E;
-	Tue,  8 Apr 2025 11:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C89B1268FE4;
+	Tue,  8 Apr 2025 10:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JhGQq/vv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AEHKnamG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FA02192F2;
-	Tue,  8 Apr 2025 11:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8471E268682;
+	Tue,  8 Apr 2025 10:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112312; cv=none; b=Ovx/8dMypc5m0Iv2ZNGBHQFsEEF8aP5KPkrnbJYubeUTjs2u7ZpWmV4JGv1eh4LWg43wWXft32JDy1KKJBEre7onERpdvLyt2J3PEgWMSpxNmiks5/hUvlYs4XL3zgzcqkU1x0Hhz/LtdaOTYUJcY3LhwLL7d7s4RN2qoluJKc0=
+	t=1744109718; cv=none; b=CHW/hogSw7VHWzbDfU1TJnPQcY7wLkC1WWJDB3A1IF8LZwSsy8weAUOrUr2AB7ksAccex2Ul52/5N2plfrWhUOy0xoxE8iMN7bT+rckP9y8my2V3qpUeS/MzlALob2a5c3p2u/lTNQspyDK3soPTodM8DytRRf4H2WcgDbcxxH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112312; c=relaxed/simple;
-	bh=8CB4BG72J7f19BHU4f2gp8d+VdTjZEMx4Iu7uFEPSvU=;
+	s=arc-20240116; t=1744109718; c=relaxed/simple;
+	bh=RQBcZx4BGDOHLZXHSVmJtoNRORIb94f+MwVWz6NmQWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gEkva5qHTL8hwG41Q0FyGVmODsxUs63MkYE8J5BJVE23K7Ra9g9EMa8uu+R5DNoPwdryOIOjVjYCap/6uCj1Gw78fbF/w+DIdsQfeaMKN2Npy97ecOtL5Jp0MyAPB381yHjf9/bIgdBm4GnsyhdKea3aFdsNbSpN9Xx6WphXZYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JhGQq/vv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C973C4CEE5;
-	Tue,  8 Apr 2025 11:38:32 +0000 (UTC)
+	 MIME-Version; b=Yht2m/p1viS40kU76Q8fUrZRgGO9C4v9uBGoi84kgjXcLXl+LBJrvvVL6E+0Lj+fo5kqwQeAgFn+rGnUbivErvU/wfDcX+Dmog13zS/dQjvSW5vLBn1uHomqepEeKwrP59tPJplKZCfnPzlCiQT7ALImxygHWqHaoFSPVlXGFK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AEHKnamG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868DBC4CEE5;
+	Tue,  8 Apr 2025 10:55:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112312;
-	bh=8CB4BG72J7f19BHU4f2gp8d+VdTjZEMx4Iu7uFEPSvU=;
+	s=korg; t=1744109718;
+	bh=RQBcZx4BGDOHLZXHSVmJtoNRORIb94f+MwVWz6NmQWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JhGQq/vvyhlC/+7vP2RswrNxs5+Rr51W45oNrROWWsQeCyF7PYwWsLDCAC6YpPB45
-	 VlAQITlmYrDAvFi3ATqzqwX1zvaE9+PlOniXx8QPbjYscxgspX+aD8FYLD7CVjymtY
-	 EGMeSVglTWjMjfzULXDDtb/fEiVde+66J2kL2pOg=
+	b=AEHKnamGO0DzrDXXR8W4X4bsoe7B6iwmx5LBFlnOzb9zG8efrqsThibmrXEING/kZ
+	 okVSThFzAlp7qax7BACYJ6xo5R3yRg/7yigAovL1jWpQ3BuSHGylNsxvjF5WBzgA0T
+	 eOtOINW96CBvtxxmSiN57sp1P5m3sZobsEUabwzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Vlad Buslov <vladbu@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 022/279] net/mlx5: Bridge, fix the crash caused by LAG state check
+Subject: [PATCH 5.10 027/227] alpha/elf: Fix misc/setarch test of util-linux by removing 32bit support
 Date: Tue,  8 Apr 2025 12:46:45 +0200
-Message-ID: <20250408104826.982467007@linuxfoundation.org>
+Message-ID: <20250408104821.213355267@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,131 +65,153 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Eric W. Biederman <ebiederm@xmission.com>
 
-[ Upstream commit 4b8eeed4fb105770ce6dc84a2c6ef953c7b71cbb ]
+[ Upstream commit b029628be267cba3c7684ec684749fe3e4372398 ]
 
-When removing LAG device from bridge, NETDEV_CHANGEUPPER event is
-triggered. Driver finds the lower devices (PFs) to flush all the
-offloaded entries. And mlx5_lag_is_shared_fdb is checked, it returns
-false if one of PF is unloaded. In such case,
-mlx5_esw_bridge_lag_rep_get() and its caller return NULL, instead of
-the alive PF, and the flush is skipped.
+Richard Henderson <richard.henderson@linaro.org> writes[1]:
 
-Besides, the bridge fdb entry's lastuse is updated in mlx5 bridge
-event handler. But this SWITCHDEV_FDB_ADD_TO_BRIDGE event can be
-ignored in this case because the upper interface for bond is deleted,
-and the entry will never be aged because lastuse is never updated.
+> There was a Spec benchmark (I forget which) which was memory bound and ran
+> twice as fast with 32-bit pointers.
+>
+> I copied the idea from DEC to the ELF abi, but never did all the other work
+> to allow the toolchain to take advantage.
+>
+> Amusingly, a later Spec changed the benchmark data sets to not fit into a
+> 32-bit address space, specifically because of this.
+>
+> I expect one could delete the ELF bit and personality and no one would
+> notice. Not even the 10 remaining Alpha users.
 
-To make things worse, as the entry is alive, mlx5 bridge workqueue
-keeps sending that event, which is then handled by kernel bridge
-notifier. It causes the following crash when accessing the passed bond
-netdev which is already destroyed.
+In [2] it was pointed out that parts of setarch weren't working
+properly on alpha because it has it's own SET_PERSONALITY
+implementation.  In the discussion that followed Richard Henderson
+pointed out that the 32bit pointer support for alpha was never
+completed.
 
-To fix this issue, remove such checks. LAG state is already checked in
-commit 15f8f168952f ("net/mlx5: Bridge, verify LAG state when adding
-bond to bridge"), driver still need to skip offload if LAG becomes
-invalid state after initialization.
+Fix this by removing alpha's 32bit pointer support.
 
- Oops: stack segment: 0000 [#1] SMP
- CPU: 3 UID: 0 PID: 23695 Comm: kworker/u40:3 Tainted: G           OE      6.11.0_mlnx #1
- Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
- Workqueue: mlx5_bridge_wq mlx5_esw_bridge_update_work [mlx5_core]
- RIP: 0010:br_switchdev_event+0x2c/0x110 [bridge]
- Code: 44 00 00 48 8b 02 48 f7 00 00 02 00 00 74 69 41 54 55 53 48 83 ec 08 48 8b a8 08 01 00 00 48 85 ed 74 4a 48 83 fe 02 48 89 d3 <4c> 8b 65 00 74 23 76 49 48 83 fe 05 74 7e 48 83 fe 06 75 2f 0f b7
- RSP: 0018:ffffc900092cfda0 EFLAGS: 00010297
- RAX: ffff888123bfe000 RBX: ffffc900092cfe08 RCX: 00000000ffffffff
- RDX: ffffc900092cfe08 RSI: 0000000000000001 RDI: ffffffffa0c585f0
- RBP: 6669746f6e690a30 R08: 0000000000000000 R09: ffff888123ae92c8
- R10: 0000000000000000 R11: fefefefefefefeff R12: ffff888123ae9c60
- R13: 0000000000000001 R14: ffffc900092cfe08 R15: 0000000000000000
- FS:  0000000000000000(0000) GS:ffff88852c980000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007f15914c8734 CR3: 0000000002830005 CR4: 0000000000770ef0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  ? __die_body+0x1a/0x60
-  ? die+0x38/0x60
-  ? do_trap+0x10b/0x120
-  ? do_error_trap+0x64/0xa0
-  ? exc_stack_segment+0x33/0x50
-  ? asm_exc_stack_segment+0x22/0x30
-  ? br_switchdev_event+0x2c/0x110 [bridge]
-  ? sched_balance_newidle.isra.149+0x248/0x390
-  notifier_call_chain+0x4b/0xa0
-  atomic_notifier_call_chain+0x16/0x20
-  mlx5_esw_bridge_update+0xec/0x170 [mlx5_core]
-  mlx5_esw_bridge_update_work+0x19/0x40 [mlx5_core]
-  process_scheduled_works+0x81/0x390
-  worker_thread+0x106/0x250
-  ? bh_worker+0x110/0x110
-  kthread+0xb7/0xe0
-  ? kthread_park+0x80/0x80
-  ret_from_fork+0x2d/0x50
-  ? kthread_park+0x80/0x80
-  ret_from_fork_asm+0x11/0x20
-  </TASK>
+As a bit of paranoia refuse to execute any alpha binaries that have
+the EF_ALPHA_32BIT flag set.  Just in case someone somewhere has
+binaries that try to use alpha's 32bit pointer support.
 
-Fixes: ff9b7521468b ("net/mlx5: Bridge, support LAG")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/1741644104-97767-6-git-send-email-tariqt@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lkml.kernel.org/r/CAFXwXrkgu=4Qn-v1PjnOR4SG0oUb9LSa0g6QXpBq4ttm52pJOQ@mail.gmail.com [1]
+Link: https://lkml.kernel.org/r/20250103140148.370368-1-glaubitz@physik.fu-berlin.de [2]
+Signed-off-by: Eric W. Biederman <ebiederm@xmission.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Link: https://lore.kernel.org/r/87y0zfs26i.fsf_-_@email.froward.int.ebiederm.org
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en/rep/bridge.c  | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ arch/alpha/include/asm/elf.h       |  6 +-----
+ arch/alpha/include/asm/pgtable.h   |  2 +-
+ arch/alpha/include/asm/processor.h |  8 ++------
+ arch/alpha/kernel/osf_sys.c        | 11 ++---------
+ 4 files changed, 6 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/rep/bridge.c b/drivers/net/ethernet/mellanox/mlx5/core/en/rep/bridge.c
-index 291bd59639044..28c3667e323f5 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/rep/bridge.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/rep/bridge.c
-@@ -48,15 +48,10 @@ mlx5_esw_bridge_lag_rep_get(struct net_device *dev, struct mlx5_eswitch *esw)
- 	struct list_head *iter;
+diff --git a/arch/alpha/include/asm/elf.h b/arch/alpha/include/asm/elf.h
+index 8049997fa372a..2039a8c8d5473 100644
+--- a/arch/alpha/include/asm/elf.h
++++ b/arch/alpha/include/asm/elf.h
+@@ -74,7 +74,7 @@ typedef elf_fpreg_t elf_fpregset_t[ELF_NFPREG];
+ /*
+  * This is used to ensure we don't load something for the wrong architecture.
+  */
+-#define elf_check_arch(x) ((x)->e_machine == EM_ALPHA)
++#define elf_check_arch(x) (((x)->e_machine == EM_ALPHA) && !((x)->e_flags & EF_ALPHA_32BIT))
  
- 	netdev_for_each_lower_dev(dev, lower, iter) {
--		struct mlx5_core_dev *mdev;
--		struct mlx5e_priv *priv;
+ /*
+  * These are used to set parameters in the core dumps.
+@@ -145,10 +145,6 @@ extern int dump_elf_task_fp(elf_fpreg_t *dest, struct task_struct *task);
+ 	: amask (AMASK_CIX) ? "ev6" : "ev67");	\
+ })
+ 
+-#define SET_PERSONALITY(EX)					\
+-	set_personality(((EX).e_flags & EF_ALPHA_32BIT)		\
+-	   ? PER_LINUX_32BIT : PER_LINUX)
 -
- 		if (!mlx5e_eswitch_rep(lower))
- 			continue;
+ extern int alpha_l1i_cacheshape;
+ extern int alpha_l1d_cacheshape;
+ extern int alpha_l2_cacheshape;
+diff --git a/arch/alpha/include/asm/pgtable.h b/arch/alpha/include/asm/pgtable.h
+index 12c120e436a24..1cffeda415a44 100644
+--- a/arch/alpha/include/asm/pgtable.h
++++ b/arch/alpha/include/asm/pgtable.h
+@@ -347,7 +347,7 @@ extern inline pte_t mk_swap_pte(unsigned long type, unsigned long offset)
  
--		priv = netdev_priv(lower);
--		mdev = priv->mdev;
--		if (mlx5_lag_is_shared_fdb(mdev) && mlx5_esw_bridge_dev_same_esw(lower, esw))
-+		if (mlx5_esw_bridge_dev_same_esw(lower, esw))
- 			return lower;
- 	}
+ extern void paging_init(void);
  
-@@ -121,7 +116,7 @@ static bool mlx5_esw_bridge_is_local(struct net_device *dev, struct net_device *
- 	priv = netdev_priv(rep);
- 	mdev = priv->mdev;
- 	if (netif_is_lag_master(dev))
--		return mlx5_lag_is_shared_fdb(mdev) && mlx5_lag_is_master(mdev);
-+		return mlx5_lag_is_master(mdev);
- 	return true;
+-/* We have our own get_unmapped_area to cope with ADDR_LIMIT_32BIT.  */
++/* We have our own get_unmapped_area */
+ #define HAVE_ARCH_UNMAPPED_AREA
+ 
+ #endif /* _ALPHA_PGTABLE_H */
+diff --git a/arch/alpha/include/asm/processor.h b/arch/alpha/include/asm/processor.h
+index 6100431da07a3..d27db62c3247d 100644
+--- a/arch/alpha/include/asm/processor.h
++++ b/arch/alpha/include/asm/processor.h
+@@ -8,23 +8,19 @@
+ #ifndef __ASM_ALPHA_PROCESSOR_H
+ #define __ASM_ALPHA_PROCESSOR_H
+ 
+-#include <linux/personality.h>	/* for ADDR_LIMIT_32BIT */
+-
+ /*
+  * We have a 42-bit user address space: 4TB user VM...
+  */
+ #define TASK_SIZE (0x40000000000UL)
+ 
+-#define STACK_TOP \
+-  (current->personality & ADDR_LIMIT_32BIT ? 0x80000000 : 0x00120000000UL)
++#define STACK_TOP (0x00120000000UL)
+ 
+ #define STACK_TOP_MAX	0x00120000000UL
+ 
+ /* This decides where the kernel will search for a free chunk of vm
+  * space during mmap's.
+  */
+-#define TASK_UNMAPPED_BASE \
+-  ((current->personality & ADDR_LIMIT_32BIT) ? 0x40000000 : TASK_SIZE / 2)
++#define TASK_UNMAPPED_BASE (TASK_SIZE / 2)
+ 
+ typedef struct {
+ 	unsigned long seg;
+diff --git a/arch/alpha/kernel/osf_sys.c b/arch/alpha/kernel/osf_sys.c
+index d5367a1c6300c..6f53eecbb5755 100644
+--- a/arch/alpha/kernel/osf_sys.c
++++ b/arch/alpha/kernel/osf_sys.c
+@@ -1212,8 +1212,7 @@ SYSCALL_DEFINE1(old_adjtimex, struct timex32 __user *, txc_p)
+ 	return ret;
  }
  
-@@ -430,6 +425,9 @@ static int mlx5_esw_bridge_switchdev_event(struct notifier_block *nb,
- 	if (!rep)
- 		return NOTIFY_DONE;
+-/* Get an address range which is currently unmapped.  Similar to the
+-   generic version except that we know how to honor ADDR_LIMIT_32BIT.  */
++/* Get an address range which is currently unmapped. */
  
-+	if (netif_is_lag_master(dev) && !mlx5_lag_is_shared_fdb(esw->dev))
-+		return NOTIFY_DONE;
-+
- 	switch (event) {
- 	case SWITCHDEV_FDB_ADD_TO_BRIDGE:
- 		fdb_info = container_of(info,
+ static unsigned long
+ arch_get_unmapped_area_1(unsigned long addr, unsigned long len,
+@@ -1235,13 +1234,7 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
+ 		       unsigned long len, unsigned long pgoff,
+ 		       unsigned long flags)
+ {
+-	unsigned long limit;
+-
+-	/* "32 bit" actually means 31 bit, since pointers sign extend.  */
+-	if (current->personality & ADDR_LIMIT_32BIT)
+-		limit = 0x80000000;
+-	else
+-		limit = TASK_SIZE;
++	unsigned long limit = TASK_SIZE;
+ 
+ 	if (len > limit)
+ 		return -ENOMEM;
 -- 
 2.39.5
 
