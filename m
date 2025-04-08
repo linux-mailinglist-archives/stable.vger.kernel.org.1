@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-130935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42FF1A80718
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59D49A80AD2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:10:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AA6C4C51A5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12F6E4C7E37
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE5A6265CD3;
-	Tue,  8 Apr 2025 12:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9FCA26A1CD;
+	Tue,  8 Apr 2025 12:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLT8eVr9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NePTFsfw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A70126A0A7;
-	Tue,  8 Apr 2025 12:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855DD1EA65;
+	Tue,  8 Apr 2025 12:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115054; cv=none; b=PdW/bc74eTpaekJtBsPbtpzd5rYyFgzClBGtEiPmpet50bnwbIZTA8HV535iI80/0C+hAp8+wyL+0aEuq95CoVNwwiomJ2ZEZFLpdDrxiU/RpU+k5oupPICVZXKwPrO77mkX8xVTic1AJXfteieJz9+tYTt4cu5kWRLFeidp88U=
+	t=1744116666; cv=none; b=U2cJEouRh+PxsP/A81ypBcBv89YfaZhLLNxiDenBCcBQRyhk1i5w2KaCof9PSWJTZicGjRbtCdCTFmwd3n2sq7WpsuXP3HCTVewLawLBtqEFJ8nPIxocmNwWAjblva/PvSz0rXyDz9i1gK7c2l6qMGk4QXLYsmZvNBM/BL7nk/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115054; c=relaxed/simple;
-	bh=g+fiB9nnpM1Xl0QJJ7Q/eoLvhCRStzWTgbxqGl0Sj2U=;
+	s=arc-20240116; t=1744116666; c=relaxed/simple;
+	bh=io9k1Q+AqgEW8fNA6inDVKurYr1efrLCbbnnTvjB/uI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tfTqChV97eZ7zHU4O2QyBeRh5zl3Zmdz/CMS8VcBtuwJ17P2LTjjr6pVo9MnHSUtokyTtB2a+LoKwspFXAQVKwWoOOM0j4oF/B1BcOooEs2eBcW42E9l30Un4HKoAoSy656x/eBBMUR7NcCk3aWE2ZmLv4t0vz/vdj+7lhQHP58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLT8eVr9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4E09C4CEE5;
-	Tue,  8 Apr 2025 12:24:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eip5akTchqVMmzx9qDSBmJk7gldzRmLAMed7fmT6hO+W4gX3wGshFV72Q2vgh8JAPTOHiHrWhaZ7x/JX2mIuZDp92vGEwmtyI3e1lGNAWG0NZZSugewd23BqYLmTrVa1j9uT+AarqmGDDri1/8Sive4wKIL1twctgRY+s3KqZ78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NePTFsfw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06561C4CEE5;
+	Tue,  8 Apr 2025 12:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115054;
-	bh=g+fiB9nnpM1Xl0QJJ7Q/eoLvhCRStzWTgbxqGl0Sj2U=;
+	s=korg; t=1744116666;
+	bh=io9k1Q+AqgEW8fNA6inDVKurYr1efrLCbbnnTvjB/uI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CLT8eVr98Sxl99mUwLYlB0IlhabCU/WK4r6oxjo4Wxa6oq5SeENj0cqdNVklz2YsE
-	 Icb6imc28GCm1uYI3hRsWM+rPDNDycpPxFYbJ7fr+062BniYfwSPckVbzGlhALL3p3
-	 28O6DIx6NWjEA9EEMAG3oKpWGLlGBTGXTu4PnhOc=
+	b=NePTFsfwCRUY/3po6HZGWbUYGUe3345htk90sfcCd1xrHq8f4eQnBRfeiSOzIfzjj
+	 8teAvJI7Ia0OO0Cg07IYChnQrgLTUF7MuEjykjYfT2hdvcywqUQ5c0Riw4+JwgWNJo
+	 YuK37TTDsgJOPW9co0G+1jW635IoWdqd7/VxLPr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Naman Jain <namjain@linux.microsoft.com>,
-	Roman Kisel <romank@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	=?UTF-8?q?=E8=B0=A2=E8=87=B4=E9=82=A6=20 ?= <Yeking@Red54.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 331/499] x86/hyperv/vtl: Stop kernel from probing VTL0 low memory
+Subject: [PATCH 6.12 217/423] staging: rtl8723bs: select CONFIG_CRYPTO_LIB_AES
 Date: Tue,  8 Apr 2025 12:49:03 +0200
-Message-ID: <20250408104859.481244546@linuxfoundation.org>
+Message-ID: <20250408104850.784959143@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naman Jain <namjain@linux.microsoft.com>
+From: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
 
-[ Upstream commit 59115e2e25f42924181055ed7cc1d123af7598b7 ]
+[ Upstream commit b2a9a6a26b7e954297e51822e396572026480bad ]
 
-For Linux, running in Hyper-V VTL (Virtual Trust Level), kernel in VTL2
-tries to access VTL0 low memory in probe_roms. This memory is not
-described in the e820 map. Initialize probe_roms call to no-ops
-during boot for VTL2 kernel to avoid this. The issue got identified
-in OpenVMM which detects invalid accesses initiated from kernel running
-in VTL2.
+This fixes the following issue:
+ERROR: modpost: "aes_expandkey" [drivers/staging/rtl8723bs/r8723bs.ko]
+undefined!
+ERROR: modpost: "aes_encrypt" [drivers/staging/rtl8723bs/r8723bs.ko]
+undefined!
 
-Co-developed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
-Tested-by: Roman Kisel <romank@linux.microsoft.com>
-Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250116061224.1701-1-namjain@linux.microsoft.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20250116061224.1701-1-namjain@linux.microsoft.com>
+Fixes: 7d40753d8820 ("staging: rtl8723bs: use in-kernel aes encryption in OMAC1 routines")
+Fixes: 3d3a170f6d80 ("staging: rtl8723bs: use in-kernel aes encryption")
+Signed-off-by: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/tencent_0BDDF3A721708D16A2E7C3DAFF0FEC79A105@qq.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/hyperv/hv_vtl.c | 1 +
+ drivers/staging/rtl8723bs/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/hyperv/hv_vtl.c b/arch/x86/hyperv/hv_vtl.c
-index 04775346369c5..d04ccd4b3b4af 100644
---- a/arch/x86/hyperv/hv_vtl.c
-+++ b/arch/x86/hyperv/hv_vtl.c
-@@ -30,6 +30,7 @@ void __init hv_vtl_init_platform(void)
- 	x86_platform.realmode_init = x86_init_noop;
- 	x86_init.irqs.pre_vector_init = x86_init_noop;
- 	x86_init.timers.timer_init = x86_init_noop;
-+	x86_init.resources.probe_roms = x86_init_noop;
- 
- 	/* Avoid searching for BIOS MP tables */
- 	x86_init.mpparse.find_mptable = x86_init_noop;
+diff --git a/drivers/staging/rtl8723bs/Kconfig b/drivers/staging/rtl8723bs/Kconfig
+index 8d48c61961a6b..353e6ee2c1450 100644
+--- a/drivers/staging/rtl8723bs/Kconfig
++++ b/drivers/staging/rtl8723bs/Kconfig
+@@ -4,6 +4,7 @@ config RTL8723BS
+ 	depends on WLAN && MMC && CFG80211
+ 	depends on m
+ 	select CRYPTO
++	select CRYPTO_LIB_AES
+ 	select CRYPTO_LIB_ARC4
+ 	help
+ 	This option enables support for RTL8723BS SDIO drivers, such as
 -- 
 2.39.5
 
