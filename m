@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-129686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D51AAA80134
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:38:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43299A7FDD8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8397E461C6D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:31:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BA544252FF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F096D26981F;
-	Tue,  8 Apr 2025 11:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25C7269891;
+	Tue,  8 Apr 2025 10:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OUfSjd98"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k5B5eZuX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE095224234;
-	Tue,  8 Apr 2025 11:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F26C26982F;
+	Tue,  8 Apr 2025 10:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111708; cv=none; b=mmBrc4VNZLbnm7jfpYVjgDD9Joz5zPcfpZBNMGG7i9CLF+x8JDlhAl5X7/9wKdEEH0Ua1UlGXHXbPSPtWQcMWLFNgJhRPIoWZpWSEO0lDjxfEf8PDL8wpiAFPVAcxxxO1/A/80wQ2lZIh8POPLC/OHtHgnYIUWnBeqwA27CngUk=
+	t=1744109883; cv=none; b=tMFu5PApILl4dZn7F8a4W/KwMWSMC8cUqBoaF0Z+Dlfs35Oe6kL1VOFqnlNITXClddp/dzyW4iYf6/nSPUgSyj9iZJoS6jknySiB7od06X3nExglPU9ubrSyFs+V0n1DKRaCdv8N9MPQmNQ3Ogfe+saf1uXzttzVL6VfvHh7Tws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111708; c=relaxed/simple;
-	bh=8tnKVohkxmh3GUriLwZqUTjPpVLK/9SH5to918iVVQc=;
+	s=arc-20240116; t=1744109883; c=relaxed/simple;
+	bh=UoMsObgifuUX4LG627CJ1ASFPT6oUdAZLVCiVnUVKys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UK+98BI76cGUHaGvNvkHp6TEyvrSdM4sSQCYANg/Uam2blU6yh3dMUkiWaXkCWZ5sfpZrsDaG8LlT6ZUvFuxw0kaE7Dxdf3IGJp9IKfN+OS1sJf/Ufvcp931onH6lYLRg2eZWkOh+IdEJbHlZPuKT+4/SQnlszp/s1B6nAB+fJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OUfSjd98; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EEFEC4CEE5;
-	Tue,  8 Apr 2025 11:28:28 +0000 (UTC)
+	 MIME-Version; b=VIscYC6ho+vXtfSe2PzhN+yACkKkn79ZBlf1clMXQBFV+f+G5Uj58TaaqRx0I0B5z/GLGvQBR05mW1YfNW+4DwGJ+WSJTffQ2NIad1dt/aZ6jSovq6ISrk4nuGtzL2IiDv5Tlul6sdI47nQYlWyuXNgeOdNUZ/cH7VTEBjM1EC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k5B5eZuX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE20C4CEE5;
+	Tue,  8 Apr 2025 10:58:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111708;
-	bh=8tnKVohkxmh3GUriLwZqUTjPpVLK/9SH5to918iVVQc=;
+	s=korg; t=1744109883;
+	bh=UoMsObgifuUX4LG627CJ1ASFPT6oUdAZLVCiVnUVKys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OUfSjd984oQ77VZ+u04Q8brnhz3FqiddsllXR4mAzwKtA72JPF9q1oqbnR9nmPeXM
-	 CUq5yhswWwUz+WKYWDEGBTjKNkUSi3sNVIuO01C8gR2+ycZ3ZEMuNkASTB7ckNQkZ9
-	 rZhJX2SL8Lp2Yc8pGgsrpi2meECuuLN2eE2TWbZI=
+	b=k5B5eZuXNzL0TdR2VE8FYI5n9q4TAskfGora7agHkqWVYiR794mVk/lkrciD5ZCcJ
+	 pHORFxo0JoOiTx+x6P3zABBjQ/VZVw12p+TI+4PlQ+ImerNt2aPhi92zumh/KOt+QZ
+	 0ap7K7wIM9WWjss4PwEFdBF0gDQTPCZG6PxeF8Do=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Brennan <stephen.s.brennan@oracle.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 530/731] perf dso: fix dso__is_kallsyms() check
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 049/227] USB: serial: option: fix Telit Cinterion FE990A name
 Date: Tue,  8 Apr 2025 12:47:07 +0200
-Message-ID: <20250408104926.602706735@linuxfoundation.org>
+Message-ID: <20250408104821.869208954@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Brennan <stephen.s.brennan@oracle.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-[ Upstream commit ebf0b332732dcc64239119e554faa946562b0b93 ]
+commit 6232f0d8e100a26275bbd773fc56a60af2c95322 upstream.
 
-Kernel modules for which we cannot find a file on-disk will have a
-dso->long_name that looks like "[module_name]". Prior to the commit
-listed in the fixes, the dso->kernel field would be zero (for user
-space), so dso__is_kallsyms() would return false. After the commit,
-kernel module DSOs are correctly labeled, but the result is that
-dso__is_kallsyms() erroneously returns true for those modules without a
-filesystem path.
+The correct name for FE990 is FE990A so use it in order to avoid
+confusion with FE990B.
 
-Later, build_id_cache__add() consults this value of is_kallsyms, and
-when true, it copies /proc/kallsyms into the cache. Users with many
-kernel modules without a filesystem path (e.g. ksplice or possibly
-kernel live patch modules) have reported excessive disk space usage in
-the build ID cache directory due to this behavior.
-
-To reproduce the issue, it's enough to build a trivial out-of-tree hello
-world kernel module, load it using insmod, and then use:
-
-   perf record -ag -- sleep 1
-
-In the build ID directory, there will be a directory for your module
-name containing a kallsyms file.
-
-Fix this up by changing dso__is_kallsyms() to consult the
-dso_binary_type enumeration, which is also symmetric to the above checks
-for dso__is_vmlinux() and dso__is_kcore(). With this change, kallsyms is
-not cached in the build-id cache for out-of-tree modules.
-
-Fixes: 02213cec64bbe ("perf maps: Mark module DSOs with kernel type")
-Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
-Link: https://lore.kernel.org/r/20250318230012.2038790-1-stephen.s.brennan@oracle.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/dso.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/util/dso.h b/tools/perf/util/dso.h
-index bb8e8f444054d..c0472a41147c3 100644
---- a/tools/perf/util/dso.h
-+++ b/tools/perf/util/dso.h
-@@ -808,7 +808,9 @@ static inline bool dso__is_kcore(const struct dso *dso)
- 
- static inline bool dso__is_kallsyms(const struct dso *dso)
- {
--	return RC_CHK_ACCESS(dso)->kernel && RC_CHK_ACCESS(dso)->long_name[0] != '/';
-+	enum dso_binary_type bt = dso__binary_type(dso);
-+
-+	return bt == DSO_BINARY_TYPE__KALLSYMS || bt == DSO_BINARY_TYPE__GUEST_KALLSYMS;
- }
- 
- bool dso__is_object_file(const struct dso *dso);
--- 
-2.39.5
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1368,13 +1368,13 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(0) | RSVD(1) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1075, 0xff),	/* Telit FN990A (PCIe) */
+ 	  .driver_info = RSVD(0) },
+-	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1080, 0xff),	/* Telit FE990 (rmnet) */
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1080, 0xff),	/* Telit FE990A (rmnet) */
+ 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(2) },
+-	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1081, 0xff),	/* Telit FE990 (MBIM) */
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1081, 0xff),	/* Telit FE990A (MBIM) */
+ 	  .driver_info = NCTRL(0) | RSVD(1) },
+-	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1082, 0xff),	/* Telit FE990 (RNDIS) */
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1082, 0xff),	/* Telit FE990A (RNDIS) */
+ 	  .driver_info = NCTRL(2) | RSVD(3) },
+-	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1083, 0xff),	/* Telit FE990 (ECM) */
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1083, 0xff),	/* Telit FE990A (ECM) */
+ 	  .driver_info = NCTRL(0) | RSVD(1) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a0, 0xff),	/* Telit FN20C04 (rmnet) */
+ 	  .driver_info = RSVD(0) | NCTRL(3) },
 
 
 
