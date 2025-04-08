@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-131575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 105D8A80A5A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:04:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94312A804B1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:11:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00BCD7AEB09
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DF781B6108A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95A372777E2;
-	Tue,  8 Apr 2025 12:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9C8268685;
+	Tue,  8 Apr 2025 12:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XVjG6LBZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zsClVpCQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C1A277030;
-	Tue,  8 Apr 2025 12:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6623026A086;
+	Tue,  8 Apr 2025 12:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116766; cv=none; b=fxdfe+3FePZHux0cQM2LAmrGvm0DDEWXzTtaRzFfxlwHlqzel7MpvvRF0cMuvEnx5wWucdndP5QZ36gzyW8MI6+YGgsafHlyjRHBmx6tcB1TdkXBPb9eEV3lk4h0M8fVStxj4NLs3/Hly688LITDtgQGgWF1SdVNk23vCHyuycM=
+	t=1744113812; cv=none; b=TmOy+y66rOOF4u3kNxqZXmVukzCUjxe2+P37t1Dk4vPVsGUp+QbQCWY2p3jTwbWU512QvdqGI/RCng6300Vz8R4Bek6/1c43cSMR/45mYutZgpXHpkfURV3kLkf1TkYTj/lz/fcbtIZCCuSnFHWD0mpVuoNS8ApIi8yMMxHU/yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116766; c=relaxed/simple;
-	bh=hdLYdwq0n64KY39FqnU2BL4GI9SH5edKJe6tCtmYtzg=;
+	s=arc-20240116; t=1744113812; c=relaxed/simple;
+	bh=AVxkrwkHL5lUg31Gwfm5H8RybsTzZpoeo+3+40Mj9Xo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QVc0/agcBJ3zqSzXTWnk2NjaVSv2AjlyR/pKJcPRSD6ymKvysFTPG5GZq6l/Fl8YXouQw2riSz0/jkI3ncF8ytLzPOxpwepzvA2iDsIhuytWSci8PqCkiLRWLszpGMQhIhYcAybq9D/dFtyqDLJn9h7Tx0YetN1iBdFVyIpC2qU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XVjG6LBZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D67D6C4CEE5;
-	Tue,  8 Apr 2025 12:52:45 +0000 (UTC)
+	 MIME-Version; b=pmWqFv4Kynw0gZzrBRZR4H31IAQY7HLitMFINU7wFztQ1nt25AM2uqvLYDu8nvsg78dwgGwDFok0EN7zbft5j/BizYjKw4xrmttq52530C/4rZvF7L2t2UCwqv4fw5fKia7HHVkOC7/ggW3Pr5NpAbtzuPAV2PAJqSx02oTcTeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zsClVpCQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6EDFC4CEE7;
+	Tue,  8 Apr 2025 12:03:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116766;
-	bh=hdLYdwq0n64KY39FqnU2BL4GI9SH5edKJe6tCtmYtzg=;
+	s=korg; t=1744113812;
+	bh=AVxkrwkHL5lUg31Gwfm5H8RybsTzZpoeo+3+40Mj9Xo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XVjG6LBZ8Io79dGxBQPkPg8PfY57WqZxsDINAZtaOM5TD+r0cyooLnMkTnutEiyL4
-	 4BxG7SpytOUkcnffh4odaKjdUHJd8eLx15Rn7ybAL2z0a9z5o43JaN8FB5hq9VyfQt
-	 iyfBdqq/EHhMTxmd+KRKHiNj18l8mf5cZWmxX2pY=
+	b=zsClVpCQXCJ5r/SGaSR0WBam2lkurUPoCqTHCHe4XeK6QySRJSNSja16pzf++3hKh
+	 YOVgUlSfXMrWZ4hl2VUnQQOgMVTmZAHLTrRF6fo0mg+PmunV5Lp6B5jeL439ygv6E+
+	 V1pfOsTRgaWrdiDp5nuFdoQN8AFvwns1hPlcKH+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
-	James Clark <james.clark@linaro.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 221/423] perf vendor events arm64 AmpereOneX: Fix frontend_bound calculation
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Magali Lemes <magali.lemes@canonical.com>
+Subject: [PATCH 5.4 006/154] sctp: sysctl: cookie_hmac_alg: avoid using current->nsproxy
 Date: Tue,  8 Apr 2025 12:49:07 +0200
-Message-ID: <20250408104850.876362755@linuxfoundation.org>
+Message-ID: <20250408104815.498867069@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 182f12f3193341c3400ae719a34c00a8a1204cff ]
+commit ea62dd1383913b5999f3d16ae99d411f41b528d4 upstream.
 
-frontend_bound metrics was miscalculated due to different scaling in
-a couple of metrics it depends on. Change the scaling to match with
-AmpereOne.
+As mentioned in a previous commit of this series, using the 'net'
+structure via 'current' is not recommended for different reasons:
 
-Fixes: 16438b652b46 ("perf vendor events arm64 AmpereOneX: Add core PMU events and metrics")
-Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Reviewed-by: James Clark <james.clark@linaro.org>
-Link: https://lore.kernel.org/r/20250313201559.11332-3-ilkka@os.amperecomputing.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+- Inconsistency: getting info from the reader's/writer's netns vs only
+  from the opener's netns.
+
+- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
+  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
+  syzbot [1] using acct(2).
+
+The 'net' structure can be obtained from the table->data using
+container_of().
+
+Note that table->data could also be used directly, as this is the only
+member needed from the 'net' structure, but that would increase the size
+of this fix, to use '*data' everywhere 'net->sctp.sctp_hmac_alg' is
+used.
+
+Fixes: 3c68198e7511 ("sctp: Make hmac algorithm selection for cookie generation dynamic")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-4-5df34b2083e8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Magali Lemes <magali.lemes@canonical.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../arch/arm64/ampere/ampereonex/metrics.json          | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/sctp/sysctl.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/pmu-events/arch/arm64/ampere/ampereonex/metrics.json b/tools/perf/pmu-events/arch/arm64/ampere/ampereonex/metrics.json
-index c5d1d22bd034b..5228f94a793f9 100644
---- a/tools/perf/pmu-events/arch/arm64/ampere/ampereonex/metrics.json
-+++ b/tools/perf/pmu-events/arch/arm64/ampere/ampereonex/metrics.json
-@@ -229,19 +229,19 @@
-     },
-     {
-         "MetricName": "slots_lost_misspeculation_fraction",
--        "MetricExpr": "(OP_SPEC - OP_RETIRED) / (CPU_CYCLES * #slots)",
-+        "MetricExpr": "100 * (OP_SPEC - OP_RETIRED) / (CPU_CYCLES * #slots)",
-         "BriefDescription": "Fraction of slots lost due to misspeculation",
-         "DefaultMetricgroupName": "TopdownL1",
-         "MetricGroup": "Default;TopdownL1",
--        "ScaleUnit": "100percent of slots"
-+        "ScaleUnit": "1percent of slots"
-     },
-     {
-         "MetricName": "retired_fraction",
--        "MetricExpr": "OP_RETIRED / (CPU_CYCLES * #slots)",
-+        "MetricExpr": "100 * OP_RETIRED / (CPU_CYCLES * #slots)",
-         "BriefDescription": "Fraction of slots retiring, useful work",
-         "DefaultMetricgroupName": "TopdownL1",
-         "MetricGroup": "Default;TopdownL1",
--        "ScaleUnit": "100percent of slots"
-+        "ScaleUnit": "1percent of slots"
-     },
-     {
-         "MetricName": "backend_core",
-@@ -266,7 +266,7 @@
-     },
-     {
-         "MetricName": "frontend_bandwidth",
--        "MetricExpr": "frontend_bound - frontend_latency",
-+        "MetricExpr": "frontend_bound - 100 * frontend_latency",
-         "BriefDescription": "Fraction of slots the CPU did not dispatch at full bandwidth - able to dispatch partial slots only (1, 2, or 3 uops)",
-         "MetricGroup": "TopdownL2",
-         "ScaleUnit": "1percent of slots"
--- 
-2.39.5
-
+--- a/net/sctp/sysctl.c
++++ b/net/sctp/sysctl.c
+@@ -326,7 +326,8 @@ static int proc_sctp_do_hmac_alg(struct
+ 				void __user *buffer, size_t *lenp,
+ 				loff_t *ppos)
+ {
+-	struct net *net = current->nsproxy->net_ns;
++	struct net *net = container_of(ctl->data, struct net,
++				       sctp.sctp_hmac_alg);
+ 	struct ctl_table tbl;
+ 	bool changed = false;
+ 	char *none = "none";
 
 
 
