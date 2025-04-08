@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 431C1A80381
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:59:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 995FAA8028D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F5277AB8B2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DC413AA8C9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:42:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8BC26A083;
-	Tue,  8 Apr 2025 11:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 973FA2288CB;
+	Tue,  8 Apr 2025 11:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NWWOv1p5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="04tx01zl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A763269D09;
-	Tue,  8 Apr 2025 11:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543A6265602;
+	Tue,  8 Apr 2025 11:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113221; cv=none; b=m/1sKBfhY4USVO38cPKFxyKw/Z/W9oQNVjSnf9d9Hr98umBGnNqAbJbrWrGGXRYHSmmNKTlu1w2k+kSUOsJytRClyruozZU35TDuiCYQ3c9TxDnujtIWu3mknHed9QyocP/hYQ8iw0AUsmHtYk+HODikU+v2TTlGP9E0R7h2zqw=
+	t=1744112543; cv=none; b=Na8oH4Aa5mEUoE5aXucrBP/UgDuiF5amFzeaVoUvSRtTiXTsj7YATMcy8FFOpuolYcUSf5IjeY+YnlBddH1yL1n5Sp3Gmcn8HLS0CvWKDvdzrKDHUvqr5XESx76bU7r0D2vVL7ascVD1+dOC+0f0rE4iBI3ozaiCAzDg/j9f6LQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113221; c=relaxed/simple;
-	bh=SDDstXG72UeDgilM4vDjEHsuNrbJfwQ8nLQjERtUa/c=;
+	s=arc-20240116; t=1744112543; c=relaxed/simple;
+	bh=XbS8tdEbhm08vNwYVjNGzTEpXeF56wr27FRZCW3XbcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B4VxKdXe8QgRIKsSYvg1lE0lQVfMDrKR9lxY2l9Gte23gZdV9ZLewcObEid3UlxgwUD7BeMpjPi9Y0HVwW9AKyaQRtOIZhQsfEFzF1qLoE9GHZvbpiTahvSqSJ1PXqm4gTC72zkVulU9w6DpTl0gU/5M13gTklfGx6dW8GwPpkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NWWOv1p5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35574C4CEEB;
-	Tue,  8 Apr 2025 11:53:40 +0000 (UTC)
+	 MIME-Version; b=oSgS+xblyVLB1g5nSTHABlUG5WV34gf658ycH9WiVt4w7AxjEx8xBmFuU6TcIBZ4L70qQB3o63gz0kdZqvgP3iVbcRlK/5lMg4G+KcyGGhsvLIbQTDBkhmzBp5Ibry12+/Ole4c4czW+llXlluod7UFRf7c7C1e/O2uV+EZ7Fag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=04tx01zl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D666DC4CEE5;
+	Tue,  8 Apr 2025 11:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113220;
-	bh=SDDstXG72UeDgilM4vDjEHsuNrbJfwQ8nLQjERtUa/c=;
+	s=korg; t=1744112543;
+	bh=XbS8tdEbhm08vNwYVjNGzTEpXeF56wr27FRZCW3XbcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NWWOv1p5R+HusDzvTzlSoAoOqp6030bzIaSGGviYBIWq3yRpZfjJGsrxo529vjdS6
-	 LK7yvcCPKoctZqAQd+wjRQorH22dS8mm3aQK/9U32xX9yihM2Q60/G0eIcF9aWBQm/
-	 tE4FgRbXRZhY0y6hyzL07WWzN5Q6me8+tMzEebNU=
+	b=04tx01zlD+FEbpHYnDTAUa3+64Nt1Si2IhQzNv8ya2l4GnSdR93I0bvh+b2CdYnDY
+	 10uTmzWuD1rhkswMpRwot6KaugOFfstyRicm5SbzvP+DlEuiO05vWBGQ+wa54qbC2x
+	 3wEV4+4KxXAj/VFUZq+fqvFAqhXUGhF1k1gmJJjo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Geis <pgwipeout@gmail.com>,
+	Justin Klaassen <justin@tidylabs.net>,
 	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 079/268] clk: rockchip: rk3328: fix wrong clk_ref_usb3otg parent
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 5.15 107/279] arm64: dts: rockchip: fix u2phy1_host status for NanoPi R4S
 Date: Tue,  8 Apr 2025 12:48:10 +0200
-Message-ID: <20250408104830.626645978@linuxfoundation.org>
+Message-ID: <20250408104829.232928339@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Geis <pgwipeout@gmail.com>
+From: Justin Klaassen <justin@tidylabs.net>
 
-[ Upstream commit a9e60f1ffe1ca57d6af6a2573e2f950e76efbf5b ]
+commit 38f4aa34a5f737ea8588dac320d884cc2e762c03 upstream.
 
-Correct the clk_ref_usb3otg parent to fix clock control for the usb3
-controller on rk3328. Verified against the rk3328 trm, the rk3228h trm,
-and the rk3328 usb3 phy clock map.
+The u2phy1_host should always have the same status as usb_host1_ehci
+and usb_host1_ohci, otherwise the EHCI and OHCI drivers may be
+initialized for a disabled usb port.
 
-Fixes: fe3511ad8a1c ("clk: rockchip: add clock controller for rk3328")
-Signed-off-by: Peter Geis <pgwipeout@gmail.com>
+Per the NanoPi R4S schematic, the phy-supply for u2phy1_host is set to
+the vdd_5v regulator.
+
+Fixes: db792e9adbf8 ("rockchip: rk3399: Add support for FriendlyARM NanoPi R4S")
+Cc: stable@vger.kernel.org
+Signed-off-by: Justin Klaassen <justin@tidylabs.net>
 Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://lore.kernel.org/r/20250115012628.1035928-2-pgwipeout@gmail.com
+Link: https://lore.kernel.org/r/20250225170420.3898-1-justin@tidylabs.net
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/rockchip/clk-rk3328.c | 2 +-
+ arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dts |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/rockchip/clk-rk3328.c b/drivers/clk/rockchip/clk-rk3328.c
-index 267ab54937d3d..a3587c500de28 100644
---- a/drivers/clk/rockchip/clk-rk3328.c
-+++ b/drivers/clk/rockchip/clk-rk3328.c
-@@ -201,7 +201,7 @@ PNAME(mux_aclk_peri_pre_p)	= { "cpll_peri",
- 				    "gpll_peri",
- 				    "hdmiphy_peri" };
- PNAME(mux_ref_usb3otg_src_p)	= { "xin24m",
--				    "clk_usb3otg_ref" };
-+				    "clk_ref_usb3otg_src" };
- PNAME(mux_xin24m_32k_p)		= { "xin24m",
- 				    "clk_rtc32k" };
- PNAME(mux_mac2io_src_p)		= { "clk_mac2io_src",
--- 
-2.39.5
-
+--- a/arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dts
+@@ -117,7 +117,7 @@
+ };
+ 
+ &u2phy1_host {
+-	status = "disabled";
++	phy-supply = <&vdd_5v>;
+ };
+ 
+ &uart0 {
 
 
 
