@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-131076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75ED5A807B9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A74A808AB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:47:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E3514C1378
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:33:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17C4517A145
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C85F26B08E;
-	Tue,  8 Apr 2025 12:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F073826AAAA;
+	Tue,  8 Apr 2025 12:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x4So9aRY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eoTPRmyn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9A4267B6B;
-	Tue,  8 Apr 2025 12:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0431AAA32;
+	Tue,  8 Apr 2025 12:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115423; cv=none; b=Bb/JxVXkKzlS6rfD9Hmp3wZee39QgqX/pQWKBbsbZSnIcqE4x0QxjCRblzVEM8qxXXlFKj6c3bEbDiuTjL3gl3JtYHI8Z0bMBfWOqZnCUgPikdWZCX0g4SBTSgYg7Dyx2wA5SrH2G4/5pku6frbDrFwbKojEhGxUDj0UFzMM3YA=
+	t=1744115784; cv=none; b=ft5AZEXFDHDgkdlEKxOC07lupBI1od9DyZJ+SfMQlAtAX0CShA1N8Nrl2UK/OWCNlAiyNTekB8r001MXGTs3xDB26Qqo61+C0zAUMYoMMxr4LG0cKseim8LTGfKUvs6hLmlXmCXcBwVBHi2washn7IplHVVtectyd1miV2NcbFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115423; c=relaxed/simple;
-	bh=kMEISixNm0286pbIXoA2IEYeFM8F9LHBtkGPtHGwYz8=;
+	s=arc-20240116; t=1744115784; c=relaxed/simple;
+	bh=oJOXSHINKtsnV/dGtJwDee0RnO+7Dd9YZ9q4iQz5bKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KpxKKTpyHTJZ3eXP9YY1xfy2X/IhBJwf5EP+5F3ZulH7NR21fRrgKp1mODpd/l4d2x+B9Ubys5ffUtEiztUIIzJ9baPrLcawdA68TqMza/sAC4xzCg9NYA8VlbEokH5RmbOUfTPxd2jXP7UmwBJ1vRgSvjKhw984VOgLioazAyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x4So9aRY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF11C4CEE5;
-	Tue,  8 Apr 2025 12:30:23 +0000 (UTC)
+	 MIME-Version; b=c65pH+gbQHLyiZXNqkRy5ewzVbZ5N1V5g+tqfOAwwlbaV9tWQY0S+881cmmchYeLQjHkKs2QE3AL5Y40JvqzXLpbeR1XpAmo20f/+Ety73nMDwfYixw4CGXGsZqIU1pTSAV3g/ZTN3Ou/FsDMJ4vVInvHSd/cD1uMHt9I/8lFmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eoTPRmyn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E176C4CEE5;
+	Tue,  8 Apr 2025 12:36:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115423;
-	bh=kMEISixNm0286pbIXoA2IEYeFM8F9LHBtkGPtHGwYz8=;
+	s=korg; t=1744115784;
+	bh=oJOXSHINKtsnV/dGtJwDee0RnO+7Dd9YZ9q4iQz5bKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x4So9aRYUixrQ2AVdoXg9NoRPaLPVBRghlfQngvKzHjOEdIFcuSYJ66U3A1adwIha
-	 59jUUvBPJ3sCrJuLFYlGKcsLwIFP585SDm9pQmwADRenvU2MOlSl8U9EunaoBrXYfl
-	 boO+4HIVWW5+7sSO32st5WwzK89mLOJPJycSKAJc=
+	b=eoTPRmyn/zDcMuNWmQvTrAAoE9UW9tduIGdXdNWHexHDQQ7U1CzS0Ol2P2JMbzVlA
+	 UWso2Qw11WSd620q1zi/pXdMZaUKmrP2BDzHLxVmOcV0aqf2+rg4wKJwy87N556nfd
+	 wvZ9zoTt6vINX4MCb/cXefLiRAr7eCI+QvHhSNmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nihar Chaithanya <niharchaithanya@gmail.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 420/499] staging: gpib: ni_usb: Handle gpib_register_driver() errors
+Subject: [PATCH 6.1 102/204] um: remove copy_from_kernel_nofault_allowed
 Date: Tue,  8 Apr 2025 12:50:32 +0200
-Message-ID: <20250408104901.700934408@linuxfoundation.org>
+Message-ID: <20250408104823.331009756@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +62,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nihar Chaithanya <niharchaithanya@gmail.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit 635ddb8ccdbde0d917b0a7448b0fd9d6cc27a2a9 ]
+[ Upstream commit 84a6fc378471fbeaf48f8604566a5a33a3d63c18 ]
 
-The usb_register() function can fail and returns an error value which
-is not returned. The function gpib_register_driver() can also fail
-which can result in semi-registered module.
+There is no need to override the default version of this function
+anymore as UML now has proper _nofault memory access functions.
 
-In case gpib_register_driver() fails unregister the previous usb driver
-registering function. Return the error value if gpib_register_driver()
-or usb_register() functions fail. Add pr_err() statements indicating the
-fail and error value.
+Doing this also fixes the fact that the implementation was incorrect as
+using mincore() will incorrectly flag pages as inaccessible if they were
+swapped out by the host.
 
-Signed-off-by: Nihar Chaithanya <niharchaithanya@gmail.com>
-Link: https://lore.kernel.org/r/20241230185633.175690-14-niharchaithanya@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: a239c6e91b66 ("staging: gpib: Fix Oops after disconnect in ni_usb")
+Fixes: f75b1b1bedfb ("um: Implement probe_kernel_read()")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Link: https://patch.msgid.link/20250210160926.420133-3-benjamin@sipsolutions.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/gpib/ni_usb/ni_usb_gpib.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ arch/um/include/shared/os.h |  1 -
+ arch/um/kernel/Makefile     |  2 +-
+ arch/um/kernel/maccess.c    | 19 --------------
+ arch/um/os-Linux/process.c  | 51 -------------------------------------
+ 4 files changed, 1 insertion(+), 72 deletions(-)
+ delete mode 100644 arch/um/kernel/maccess.c
 
-diff --git a/drivers/staging/gpib/ni_usb/ni_usb_gpib.c b/drivers/staging/gpib/ni_usb/ni_usb_gpib.c
-index 70b8b305e13b6..3c4132fd6de95 100644
---- a/drivers/staging/gpib/ni_usb/ni_usb_gpib.c
-+++ b/drivers/staging/gpib/ni_usb/ni_usb_gpib.c
-@@ -2619,12 +2619,23 @@ static struct usb_driver ni_usb_bus_driver = {
- static int __init ni_usb_init_module(void)
- {
- 	int i;
-+	int ret;
+diff --git a/arch/um/include/shared/os.h b/arch/um/include/shared/os.h
+index 0df646c6651ea..3b382da2996f0 100644
+--- a/arch/um/include/shared/os.h
++++ b/arch/um/include/shared/os.h
+@@ -211,7 +211,6 @@ extern int os_protect_memory(void *addr, unsigned long len,
+ extern int os_unmap_memory(void *addr, int len);
+ extern int os_drop_memory(void *addr, int length);
+ extern int can_drop_memory(void);
+-extern int os_mincore(void *addr, unsigned long len);
  
- 	pr_info("ni_usb_gpib driver loading\n");
- 	for (i = 0; i < MAX_NUM_NI_USB_INTERFACES; i++)
- 		ni_usb_driver_interfaces[i] = NULL;
--	usb_register(&ni_usb_bus_driver);
--	gpib_register_driver(&ni_usb_gpib_interface, THIS_MODULE);
-+
-+	ret = usb_register(&ni_usb_bus_driver);
-+	if (ret) {
-+		pr_err("ni_usb_gpib: usb_register failed: error = %d\n", ret);
-+		return ret;
-+	}
-+
-+	ret = gpib_register_driver(&ni_usb_gpib_interface, THIS_MODULE);
-+	if (ret) {
-+		pr_err("ni_usb_gpib: gpib_register_driver failed: error = %d\n", ret);
-+		return ret;
-+	}
+ /* execvp.c */
+ extern int execvp_noalloc(char *buf, const char *file, char *const argv[]);
+diff --git a/arch/um/kernel/Makefile b/arch/um/kernel/Makefile
+index 1c2d4b29a3d46..6407fc911007b 100644
+--- a/arch/um/kernel/Makefile
++++ b/arch/um/kernel/Makefile
+@@ -17,7 +17,7 @@ extra-y := vmlinux.lds
+ obj-y = config.o exec.o exitcode.o irq.o ksyms.o mem.o \
+ 	physmem.o process.o ptrace.o reboot.o sigio.o \
+ 	signal.o sysrq.o time.o tlb.o trap.o \
+-	um_arch.o umid.o maccess.o kmsg_dump.o capflags.o skas/
++	um_arch.o umid.o kmsg_dump.o capflags.o skas/
+ obj-y += load_file.o
  
- 	return 0;
+ obj-$(CONFIG_BLK_DEV_INITRD) += initrd.o
+diff --git a/arch/um/kernel/maccess.c b/arch/um/kernel/maccess.c
+deleted file mode 100644
+index 8ccd56813f684..0000000000000
+--- a/arch/um/kernel/maccess.c
++++ /dev/null
+@@ -1,19 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * Copyright (C) 2013 Richard Weinberger <richrd@nod.at>
+- */
+-
+-#include <linux/uaccess.h>
+-#include <linux/kernel.h>
+-#include <os.h>
+-
+-bool copy_from_kernel_nofault_allowed(const void *src, size_t size)
+-{
+-	void *psrc = (void *)rounddown((unsigned long)src, PAGE_SIZE);
+-
+-	if ((unsigned long)src < PAGE_SIZE || size <= 0)
+-		return false;
+-	if (os_mincore(psrc, size + src - psrc) <= 0)
+-		return false;
+-	return true;
+-}
+diff --git a/arch/um/os-Linux/process.c b/arch/um/os-Linux/process.c
+index e52dd37ddadcc..2686120ab2325 100644
+--- a/arch/um/os-Linux/process.c
++++ b/arch/um/os-Linux/process.c
+@@ -223,57 +223,6 @@ int __init can_drop_memory(void)
+ 	return ok;
  }
+ 
+-static int os_page_mincore(void *addr)
+-{
+-	char vec[2];
+-	int ret;
+-
+-	ret = mincore(addr, UM_KERN_PAGE_SIZE, vec);
+-	if (ret < 0) {
+-		if (errno == ENOMEM || errno == EINVAL)
+-			return 0;
+-		else
+-			return -errno;
+-	}
+-
+-	return vec[0] & 1;
+-}
+-
+-int os_mincore(void *addr, unsigned long len)
+-{
+-	char *vec;
+-	int ret, i;
+-
+-	if (len <= UM_KERN_PAGE_SIZE)
+-		return os_page_mincore(addr);
+-
+-	vec = calloc(1, (len + UM_KERN_PAGE_SIZE - 1) / UM_KERN_PAGE_SIZE);
+-	if (!vec)
+-		return -ENOMEM;
+-
+-	ret = mincore(addr, UM_KERN_PAGE_SIZE, vec);
+-	if (ret < 0) {
+-		if (errno == ENOMEM || errno == EINVAL)
+-			ret = 0;
+-		else
+-			ret = -errno;
+-
+-		goto out;
+-	}
+-
+-	for (i = 0; i < ((len + UM_KERN_PAGE_SIZE - 1) / UM_KERN_PAGE_SIZE); i++) {
+-		if (!(vec[i] & 1)) {
+-			ret = 0;
+-			goto out;
+-		}
+-	}
+-
+-	ret = 1;
+-out:
+-	free(vec);
+-	return ret;
+-}
+-
+ void init_new_thread_signals(void)
+ {
+ 	set_handler(SIGSEGV);
 -- 
 2.39.5
 
