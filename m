@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BED8A80B32
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:13:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A20C1A809BD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:57:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F5EF7B57CC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:11:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BF334E0801
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACEB326FA55;
-	Tue,  8 Apr 2025 12:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4BA02673B7;
+	Tue,  8 Apr 2025 12:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wBRxp6TG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPlB1F2j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B18626FA54;
-	Tue,  8 Apr 2025 12:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6363E269892;
+	Tue,  8 Apr 2025 12:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117187; cv=none; b=g6McIac0qEBEcihWD+CaVsBJprSvDgOLpmZ8faOVvSaaNuLsSpu0bd4D6mOXCcT4/hSCqUtbCYaU4kk7v8E6jmOqnL4dO1NtFbYNtR369weYinY98IOhhRrzTwUm3wJvQvEwKzvDxd3ikspCyzaIaRk4C0FMPfFvXyFxEUeZcCs=
+	t=1744116005; cv=none; b=M34ZeYQbvlaocJGnCmZwEg398y/exVJ+nI0q9YcvXSv3tVl7SRi4y3nAWrgyh+jmzlJJmvXtbm+I/Bf05o4UTS1M7VqgiK5x6AMchk8tV2zjPRB+7ozhkcyX3Eq7dADpoe281qRLpywb1I6o3Z1p2+vg1waMRuBsbgGIup+8EU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117187; c=relaxed/simple;
-	bh=1OMiMBfaaV4tc7Fu9pQljQdppz+9jX8GU7xhEy/o3BI=;
+	s=arc-20240116; t=1744116005; c=relaxed/simple;
+	bh=+C9ke1oh3OnV8th4ULVVpIxtbmFlmdHT7qqIpy0muA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pp+b3XAwzCiJZ65yNKsruXuRXkYSiH4pVHBDouv9iQoHLms3bD50rZz2Q7GM/7nJi3F3JojjIldsUbIzpKl7YcZjfv7LaZGQZPrf/QFDGMFjVktpsuzhQsSmHOWj1ui4IYJGn22dTO/Pv82mjqHA6FKtNCQESv3wi8mLUOtWh8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wBRxp6TG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85DBAC4CEE5;
-	Tue,  8 Apr 2025 12:59:46 +0000 (UTC)
+	 MIME-Version; b=BbvhjnNSdRtu34mQIVsxKU16legMa/koFXJ8BSmfkhAWR53eEK9gN5xJq3sjCbmMaIsBTDdPzx7/CR0Ykswc2OWFmluGCK591EN/U3KYMhqILRyn0Tve9ZQ/hMCbYfLEce0OiQXWWJFZfA2T/9X+c1FWY0aLcF7DMC7mxNVjSaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPlB1F2j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9655C4CEE5;
+	Tue,  8 Apr 2025 12:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117186;
-	bh=1OMiMBfaaV4tc7Fu9pQljQdppz+9jX8GU7xhEy/o3BI=;
+	s=korg; t=1744116005;
+	bh=+C9ke1oh3OnV8th4ULVVpIxtbmFlmdHT7qqIpy0muA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wBRxp6TGekBULsOfGqiiYB2zE6F1OMiN8HqD3cPL+VykB3SbrLGy6XkkEFXk0cs+6
-	 xSupgzgnM4ArWw0avU8Cd95edwayuyzZBAF+E+NxRkzDAM8PWfjPE3MI1pNu0KhBlM
-	 uQeDX0yKecz+yM5muO1WvO4dE3y1CkECD39/50rM=
+	b=XPlB1F2jJzrASQUw113Urwcm8KSE7T13clHoKyK/Rxk5fLDrElw7s37QRpYV9Qd2u
+	 XLew27opGjV5Qu3OagUb0ya6gyIYOE8AyfVT8SyQ6FXAaRPp4T0gKtXC7Cr5mfRkEw
+	 7+nbL4SHBWPTfzmEg1C+OuWlZajAU1D7mBRvPKWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Candice Li <candice.li@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 389/423] Remove unnecessary firmware version check for gc v9_4_2
+	syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Ira Weiny <ira.weiny@intel.com>
+Subject: [PATCH 6.1 185/204] acpi: nfit: fix narrowing conversion in acpi_nfit_ctl
 Date: Tue,  8 Apr 2025 12:51:55 +0200
-Message-ID: <20250408104854.951571445@linuxfoundation.org>
+Message-ID: <20250408104825.746145969@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Candice Li <candice.li@amd.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-commit 5b3c08ae9ed324743f5f7286940d45caeb656e6e upstream.
+commit 2ff0e408db36c21ed3fa5e3c1e0e687c82cf132f upstream.
 
-GC v9_4_2 uses a new versioning scheme for CP firmware, making
-the warning ("CP firmware version too old, please update!") irrelevant.
+Syzkaller has reported a warning in to_nfit_bus_uuid(): "only secondary
+bus families can be translated". This warning is emited if the argument
+is equal to NVDIMM_BUS_FAMILY_NFIT == 0. Function acpi_nfit_ctl() first
+verifies that a user-provided value call_pkg->nd_family of type u64 is
+not equal to 0. Then the value is converted to int, and only after that
+is compared to NVDIMM_BUS_FAMILY_MAX. This can lead to passing an invalid
+argument to acpi_nfit_ctl(), if call_pkg->nd_family is non-zero, while
+the lower 32 bits are zero.
 
-Signed-off-by: Candice Li <candice.li@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Furthermore, it is best to return EINVAL immediately upon seeing the
+invalid user input.  The WARNING is insufficient to prevent further
+undefined behavior based on other invalid user input.
+
+All checks of the input value should be applied to the original variable
+call_pkg->nd_family.
+
+[iweiny: update commit message]
+
+Fixes: 6450ddbd5d8e ("ACPI: NFIT: Define runtime firmware activation commands")
 Cc: stable@vger.kernel.org
+Reported-by: syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c80d8dc0d9fa81a3cd8c
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Link: https://patch.msgid.link/20250123163945.251-1-m.masimov@mt-integration.ru
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/nfit/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-@@ -1269,6 +1269,7 @@ static void gfx_v9_0_check_fw_write_wait
- 	adev->gfx.mec_fw_write_wait = false;
- 
- 	if ((amdgpu_ip_version(adev, GC_HWIP, 0) != IP_VERSION(9, 4, 1)) &&
-+	    (amdgpu_ip_version(adev, GC_HWIP, 0) != IP_VERSION(9, 4, 2)) &&
- 	    ((adev->gfx.mec_fw_version < 0x000001a5) ||
- 	     (adev->gfx.mec_feature_version < 46) ||
- 	     (adev->gfx.pfp_fw_version < 0x000000b7) ||
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -485,7 +485,7 @@ int acpi_nfit_ctl(struct nvdimm_bus_desc
+ 		cmd_mask = nd_desc->cmd_mask;
+ 		if (cmd == ND_CMD_CALL && call_pkg->nd_family) {
+ 			family = call_pkg->nd_family;
+-			if (family > NVDIMM_BUS_FAMILY_MAX ||
++			if (call_pkg->nd_family > NVDIMM_BUS_FAMILY_MAX ||
+ 			    !test_bit(family, &nd_desc->bus_family_mask))
+ 				return -EINVAL;
+ 			family = array_index_nospec(family,
 
 
 
