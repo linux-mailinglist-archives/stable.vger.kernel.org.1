@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-128985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A6AA7FD85
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE884A800D0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:35:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 271F8189759B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 446AE18885B2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A60C2698BE;
-	Tue,  8 Apr 2025 10:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774D226AABF;
+	Tue,  8 Apr 2025 11:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SU/qcB/2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="seZ1vtJ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02AA2269839;
-	Tue,  8 Apr 2025 10:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34379268C5D;
+	Tue,  8 Apr 2025 11:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109808; cv=none; b=hx3ocwaBs3xrEYvILmPHT7Gw7D54oyaX6Ap5lJXgrMNN4A7Vd3a+gpFD6sevDsVkSSSpzd3S2Sh7WZZsbRR3NoJK7UaN25ZZgrSIM41Sm8pkPAPP5OL+UDo4MbnRjXJ9cvkeIfl7YU9FYibN42gfW/efWnvM62z+7SJ3DcyDIuw=
+	t=1744111741; cv=none; b=ulqIWR0VJLcjABuU4Sp+JEUqryF6Zr7l7jJ8wEOD5F1/p4/DgHATIPbJfIPR/PlekHjSU3kJLnWrA+PFhZlzfZUF0rB5tiQtQNvVdx4FLrf3tTxR1EsApacPLbd7vdK8UO1fA7X5hxvScvAOnLa335hR5vIWH0hjYg8uO80OjVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109808; c=relaxed/simple;
-	bh=NZIhC/6fMcwXemsRn0/sLNImuCfzZxicQJFgjsi89mg=;
+	s=arc-20240116; t=1744111741; c=relaxed/simple;
+	bh=SvvV0POcN/aBW8iCiM/w7QFQrct58pSKYrWD5sEuu3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=naB0IvFRWZurQvRkeFQidsHKh56F93MZZVEMBq4DLNfF5mCks+oqZUA8JDs7SLYmRxjcjJvq2jTo2UgVjLB0dCP42Ak6tXCS4JdehWlJRUzIu8sldhpYBn6ArH1t5y5RDSaNj1SkJUkQT+FUWeUeKRqclQ48vmW6ZVyOVUjuZvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SU/qcB/2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B1AC4CEE5;
-	Tue,  8 Apr 2025 10:56:47 +0000 (UTC)
+	 MIME-Version; b=AGAOwkU05vRFWW5nA+srv06IPPYATC0cJMNpMLpI7MAtA/8RjZjBHUaWQrdusjj9NfYXH8hNx7NJm8M+kiANmeTWqUZYcPw3pxdxp5uXx/5xN7H1YAQNSOY3EjN3RLJbFK6+JE/mEYc16YOk7p3VZxr1gV20glXJieelDQltuxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=seZ1vtJ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C361C4CEE5;
+	Tue,  8 Apr 2025 11:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109807;
-	bh=NZIhC/6fMcwXemsRn0/sLNImuCfzZxicQJFgjsi89mg=;
+	s=korg; t=1744111740;
+	bh=SvvV0POcN/aBW8iCiM/w7QFQrct58pSKYrWD5sEuu3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SU/qcB/2SyCNyYXtD7T2pEEf2xR1KyazCCaYw433hqCOra3n2iIxVfZy4o1HGOsTW
-	 d/ue9hIt7qUpPk7V8yYHGayQv88ia9mIWHJEr9bEWeCwIenoftr5ShFleRrC/+hhGZ
-	 nkg8EvxRgl4WGoD1XHTVRJ1Nc8h2KvcZp0+Qq/o8=
+	b=seZ1vtJ4owe1z9/YLkTTYBmbkQo1i/0xKrinJFxPSMOMSJm45uYjhZlCnZI+RkCS2
+	 /w25Hep2Y1g9kM30mXDzqSqajPo6TCX6d2zbY10HET7GmdqQfD69BTc1tDOidITQHe
+	 uY2ESXvQ2Yv6tNsXkQnG3lDfTqX7/TmKqSeQWQg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Marcus Meissner <meissner@suse.de>,
+	Leo Yan <leo.yan@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 060/227] i2c: sis630: Fix an error handling path in sis630_probe()
+Subject: [PATCH 6.14 541/731] perf tools: annotate asm_pure_loop.S
 Date: Tue,  8 Apr 2025 12:47:18 +0200
-Message-ID: <20250408104822.205801046@linuxfoundation.org>
+Message-ID: <20250408104926.860268957@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Marcus Meissner <meissner@suse.de>
 
-[ Upstream commit 2b22459792fcb4def9f0936d64575ac11a95a58d ]
+[ Upstream commit 9a352a90e88a041f4b26d359493e12a7f5ae1a6a ]
 
-If i2c_add_adapter() fails, the request_region() call in sis630_setup()
-must be undone by a corresponding release_region() call, as done in the
-remove function.
+Annotate so it is built with non-executable stack.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/3d607601f2c38e896b10207963c6ab499ca5c307.1741033587.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Fixes: 8b97519711c3 ("perf test: Add asm pureloop test tool")
+Signed-off-by: Marcus Meissner <meissner@suse.de>
+Reviewed-by: Leo Yan <leo.yan@arm.com>
+Link: https://lore.kernel.org/r/20250323085410.23751-1-meissner@suse.de
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-sis630.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ tools/perf/tests/shell/coresight/asm_pure_loop/asm_pure_loop.S | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-sis630.c b/drivers/i2c/busses/i2c-sis630.c
-index cfb8e04a2a831..6befa6ff83f26 100644
---- a/drivers/i2c/busses/i2c-sis630.c
-+++ b/drivers/i2c/busses/i2c-sis630.c
-@@ -509,6 +509,8 @@ MODULE_DEVICE_TABLE(pci, sis630_ids);
- 
- static int sis630_probe(struct pci_dev *dev, const struct pci_device_id *id)
- {
-+	int ret;
+diff --git a/tools/perf/tests/shell/coresight/asm_pure_loop/asm_pure_loop.S b/tools/perf/tests/shell/coresight/asm_pure_loop/asm_pure_loop.S
+index 75cf084a927d3..5777600467723 100644
+--- a/tools/perf/tests/shell/coresight/asm_pure_loop/asm_pure_loop.S
++++ b/tools/perf/tests/shell/coresight/asm_pure_loop/asm_pure_loop.S
+@@ -26,3 +26,5 @@ skip:
+ 	mov	x0, #0
+ 	mov	x8, #93 // __NR_exit syscall
+ 	svc	#0
 +
- 	if (sis630_setup(dev)) {
- 		dev_err(&dev->dev,
- 			"SIS630 compatible bus not detected, "
-@@ -522,7 +524,15 @@ static int sis630_probe(struct pci_dev *dev, const struct pci_device_id *id)
- 	snprintf(sis630_adapter.name, sizeof(sis630_adapter.name),
- 		 "SMBus SIS630 adapter at %04x", smbus_base + SMB_STS);
- 
--	return i2c_add_adapter(&sis630_adapter);
-+	ret = i2c_add_adapter(&sis630_adapter);
-+	if (ret)
-+		goto release_region;
-+
-+	return 0;
-+
-+release_region:
-+	release_region(smbus_base + SMB_STS, SIS630_SMB_IOREGION);
-+	return ret;
- }
- 
- static void sis630_remove(struct pci_dev *dev)
++.section .note.GNU-stack, "", @progbits
 -- 
 2.39.5
 
