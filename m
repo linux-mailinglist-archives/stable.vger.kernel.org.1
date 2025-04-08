@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-130439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DB9CA8048F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:10:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEB5FA80BC7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:20:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83BC21B63F8F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A28F4C5273
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E0626AA8D;
-	Tue,  8 Apr 2025 12:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A976427CB1F;
+	Tue,  8 Apr 2025 12:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G284HUEh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yXXIQWTt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C826926AA89;
-	Tue,  8 Apr 2025 12:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E4A26A0FF;
+	Tue,  8 Apr 2025 12:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113718; cv=none; b=tmTsO9VMx+7sU19eiNlICMe3q07B7QLbXkMuj7vJBtM1MD2WlViG9QjC3dLPS6j1KHInrRa5hcupRGchuvvdAuxsQILgNMZ0RWFvUiT/FjVg6hu+vNgX6iBc7gvXgfgk6gcXiX4W8GfHbCkywVzXgL5/jJ4jEM+AU0H0VHsYFxE=
+	t=1744117103; cv=none; b=Q1eZxFTcJAHt1SMq1LQpgr/1qMfkXQbd7bcY5Ac8+YOL9dNks5bLbFfglgue5hJu8KL8yBG39YkqPM+4eFlzqTa20bKJrv8P2ndRXrrngOuvyIzKRW8PiQhy3GNJ+FeEajJmiQ8hkNPhPftTYRebgUPc3cby7/kOWxLK2D34meU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113718; c=relaxed/simple;
-	bh=NLgMSnytSY0FxD4LaD4rpPhBwHw6+veAztXv/bMkcwI=;
+	s=arc-20240116; t=1744117103; c=relaxed/simple;
+	bh=EzhjkN8k6SBVS9njw0bb32spitwfDVbF5LaqhTdatfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QSHxuS5oGYL0dorSsJjh1t3Q08AcewoviwMW1XtueDZjPsNzRfGNmXX8wi7KJ+W8KRKmdrgxNbd2JHs8Tp8g5eHzcjtmW1wdRSrzgoXfbNKe+4Sc+vnnaOo5gfC67nJEzLbP+OTjQeB51wktcJ9r9CGj2mkObZq5HUJBR/TUXsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G284HUEh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5054DC4CEE5;
-	Tue,  8 Apr 2025 12:01:58 +0000 (UTC)
+	 MIME-Version; b=YLcKkohyIGx/1jOKnDdVmWDxwZRi4s4jVQcAgsjmEGCGDNR1Nr0g1HTPUEd3c+R6Js2MKxpjVthltiMh0yUbULYAXuld/pUSJXeABbEAoRzAYTfe8InMkC2o9hqe1W8MS1xKzOQ6Txo0qHxmc12s1C4QrkN0ENpLeSLPNL/t2uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yXXIQWTt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC1EFC4CEE5;
+	Tue,  8 Apr 2025 12:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113718;
-	bh=NLgMSnytSY0FxD4LaD4rpPhBwHw6+veAztXv/bMkcwI=;
+	s=korg; t=1744117103;
+	bh=EzhjkN8k6SBVS9njw0bb32spitwfDVbF5LaqhTdatfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G284HUEhSFJjvpbjy/DsK7/zEhK8qbVgy14tsv0K6SwMB/tGk5XdE3VWE5XeRCDNP
-	 DOOdRbfvRxCDQi3GrrtwclSx3c0ylI9Yq9BL8+ugkthhvNMgFfbA4AhPhMnefRsOl7
-	 QmpwsYVKdbK6frzz3g2ECDdKCZA4YTC0y+/Le5Rc=
+	b=yXXIQWTt36EP0kXH6BGpqMnCPZbgNsxIGDCjvJn5yTPFKf+NLJx1ANfPw5bMQ/NOE
+	 PKJXxRiqo8uSoddq1Hy4vFcYpMlTDoUk17VlGCvVLV51sQPxpc1LpJeAk1P5OOYR90
+	 9H9x8mNz+uL1+I3f6LSHriufZUGbc2l23+cNYeHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+4e6e7e4279d046613bc5@syzkaller.appspotmail.com>,
-	Qasim Ijaz <qasdev00@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>
-Subject: [PATCH 6.6 263/268] jfs: fix slab-out-of-bounds read in ea_get()
+	Peter Zijlstra <peterz@infradead.org>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 348/423] perf/core: Fix child_total_time_enabled accounting bug at task exit
 Date: Tue,  8 Apr 2025 12:51:14 +0200
-Message-ID: <20250408104835.672322325@linuxfoundation.org>
+Message-ID: <20250408104853.947712477@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +64,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qasim Ijaz <qasdev00@gmail.com>
+From: Yeoreum Yun <yeoreum.yun@arm.com>
 
-commit fdf480da5837c23b146c4743c18de97202fcab37 upstream.
+[ Upstream commit a3c3c66670cee11eb13aa43905904bf29cb92d32 ]
 
-During the "size_check" label in ea_get(), the code checks if the extended
-attribute list (xattr) size matches ea_size. If not, it logs
-"ea_get: invalid extended attribute" and calls print_hex_dump().
+The perf events code fails to account for total_time_enabled of
+inactive events.
 
-Here, EALIST_SIZE(ea_buf->xattr) returns 4110417968, which exceeds
-INT_MAX (2,147,483,647). Then ea_size is clamped:
+Here is a failure case for accounting total_time_enabled for
+CPU PMU events:
 
-	int size = clamp_t(int, ea_size, 0, EALIST_SIZE(ea_buf->xattr));
+  sudo ./perf stat -vvv -e armv8_pmuv3_0/event=0x08/ -e armv8_pmuv3_1/event=0x08/ -- stress-ng --pthread=2 -t 2s
+  ...
 
-Although clamp_t aims to bound ea_size between 0 and 4110417968, the upper
-limit is treated as an int, causing an overflow above 2^31 - 1. This leads
-"size" to wrap around and become negative (-184549328).
+  armv8_pmuv3_0/event=0x08/: 1138698008 2289429840 2174835740
+  armv8_pmuv3_1/event=0x08/: 1826791390 1950025700 847648440
+                             `          `          `
+                             `          `          > total_time_running with child
+                             `          > total_time_enabled with child
+                             > count with child
 
-The "size" is then passed to print_hex_dump() (called "len" in
-print_hex_dump()), it is passed as type size_t (an unsigned
-type), this is then stored inside a variable called
-"int remaining", which is then assigned to "int linelen" which
-is then passed to hex_dump_to_buffer(). In print_hex_dump()
-the for loop, iterates through 0 to len-1, where len is
-18446744073525002176, calling hex_dump_to_buffer()
-on each iteration:
+  Performance counter stats for 'stress-ng --pthread=2 -t 2s':
 
-	for (i = 0; i < len; i += rowsize) {
-		linelen = min(remaining, rowsize);
-		remaining -= rowsize;
+       1,138,698,008      armv8_pmuv3_0/event=0x08/                                               (94.99%)
+       1,826,791,390      armv8_pmuv3_1/event=0x08/                                               (43.47%)
 
-		hex_dump_to_buffer(ptr + i, linelen, rowsize, groupsize,
-				   linebuf, sizeof(linebuf), ascii);
+The two events above are opened on two different CPU PMUs, for example,
+each event is opened for a cluster in an Arm big.LITTLE system, they
+will never run on the same CPU.  In theory, the total enabled time should
+be same for both events, as two events are opened and closed together.
 
-		...
-	}
+As the result show, the two events' total enabled time including
+child event is different (2289429840 vs 1950025700).
 
-The expected stopping condition (i < len) is effectively broken
-since len is corrupted and very large. This eventually leads to
-the "ptr+i" being passed to hex_dump_to_buffer() to get closer
-to the end of the actual bounds of "ptr", eventually an out of
-bounds access is done in hex_dump_to_buffer() in the following
-for loop:
+This is because child events are not accounted properly
+if a event is INACTIVE state when the task exits:
 
-	for (j = 0; j < len; j++) {
-			if (linebuflen < lx + 2)
-				goto overflow2;
-			ch = ptr[j];
-		...
-	}
+  perf_event_exit_event()
+   `> perf_remove_from_context()
+     `> __perf_remove_from_context()
+       `> perf_child_detach()   -> Accumulate child_total_time_enabled
+         `> list_del_event()    -> Update child event's time
 
-To fix this we should validate "EALIST_SIZE(ea_buf->xattr)"
-before it is utilised.
+The problem is the time accumulation happens prior to child event's
+time updating. Thus, it misses to account the last period's time when
+the event exits.
 
-Reported-by: syzbot <syzbot+4e6e7e4279d046613bc5@syzkaller.appspotmail.com>
-Tested-by: syzbot <syzbot+4e6e7e4279d046613bc5@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=4e6e7e4279d046613bc5
-Fixes: d9f9d96136cb ("jfs: xattr: check invalid xattr size more strictly")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The perf core layer follows the rule that timekeeping is tied to state
+change. To address the issue, make __perf_remove_from_context()
+handle the task exit case by passing 'DETACH_EXIT' to it and
+invoke perf_event_state() for state alongside with accounting the time.
+
+Then, perf_child_detach() populates the time into the parent's time metrics.
+
+After this patch, the bug is fixed:
+
+  sudo ./perf stat -vvv -e armv8_pmuv3_0/event=0x08/ -e armv8_pmuv3_1/event=0x08/ -- stress-ng --pthread=2 -t 10s
+  ...
+  armv8_pmuv3_0/event=0x08/: 15396770398 32157963940 21898169000
+  armv8_pmuv3_1/event=0x08/: 22428964974 32157963940 10259794940
+
+   Performance counter stats for 'stress-ng --pthread=2 -t 10s':
+
+      15,396,770,398      armv8_pmuv3_0/event=0x08/                                               (68.10%)
+      22,428,964,974      armv8_pmuv3_1/event=0x08/                                               (31.90%)
+
+[ mingo: Clarified the changelog. ]
+
+Fixes: ef54c1a476aef ("perf: Rework perf_event_exit_event()")
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Leo Yan <leo.yan@arm.com>
+Link: https://lore.kernel.org/r/20250326082003.1630986-1-yeoreum.yun@arm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/xattr.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ kernel/events/core.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/fs/jfs/xattr.c
-+++ b/fs/jfs/xattr.c
-@@ -559,11 +559,16 @@ static int ea_get(struct inode *inode, s
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index cf2ec0a1582fd..b5ccf52bb71ba 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -2407,6 +2407,7 @@ ctx_time_update_event(struct perf_event_context *ctx, struct perf_event *event)
+ #define DETACH_GROUP	0x01UL
+ #define DETACH_CHILD	0x02UL
+ #define DETACH_DEAD	0x04UL
++#define DETACH_EXIT	0x08UL
  
-       size_check:
- 	if (EALIST_SIZE(ea_buf->xattr) != ea_size) {
--		int size = clamp_t(int, ea_size, 0, EALIST_SIZE(ea_buf->xattr));
-+		if (unlikely(EALIST_SIZE(ea_buf->xattr) > INT_MAX)) {
-+			printk(KERN_ERR "ea_get: extended attribute size too large: %u > INT_MAX\n",
-+			       EALIST_SIZE(ea_buf->xattr));
-+		} else {
-+			int size = clamp_t(int, ea_size, 0, EALIST_SIZE(ea_buf->xattr));
+ /*
+  * Cross CPU call to remove a performance event
+@@ -2421,6 +2422,7 @@ __perf_remove_from_context(struct perf_event *event,
+ 			   void *info)
+ {
+ 	struct perf_event_pmu_context *pmu_ctx = event->pmu_ctx;
++	enum perf_event_state state = PERF_EVENT_STATE_OFF;
+ 	unsigned long flags = (unsigned long)info;
  
--		printk(KERN_ERR "ea_get: invalid extended attribute\n");
--		print_hex_dump(KERN_ERR, "", DUMP_PREFIX_ADDRESS, 16, 1,
--				     ea_buf->xattr, size, 1);
-+			printk(KERN_ERR "ea_get: invalid extended attribute\n");
-+			print_hex_dump(KERN_ERR, "", DUMP_PREFIX_ADDRESS, 16, 1,
-+				       ea_buf->xattr, size, 1);
-+		}
- 		ea_release(inode, ea_buf);
- 		rc = -EIO;
- 		goto clean_up;
+ 	ctx_time_update(cpuctx, ctx);
+@@ -2429,16 +2431,19 @@ __perf_remove_from_context(struct perf_event *event,
+ 	 * Ensure event_sched_out() switches to OFF, at the very least
+ 	 * this avoids raising perf_pending_task() at this time.
+ 	 */
+-	if (flags & DETACH_DEAD)
++	if (flags & DETACH_EXIT)
++		state = PERF_EVENT_STATE_EXIT;
++	if (flags & DETACH_DEAD) {
+ 		event->pending_disable = 1;
++		state = PERF_EVENT_STATE_DEAD;
++	}
+ 	event_sched_out(event, ctx);
++	perf_event_set_state(event, min(event->state, state));
+ 	if (flags & DETACH_GROUP)
+ 		perf_group_detach(event);
+ 	if (flags & DETACH_CHILD)
+ 		perf_child_detach(event);
+ 	list_del_event(event, ctx);
+-	if (flags & DETACH_DEAD)
+-		event->state = PERF_EVENT_STATE_DEAD;
+ 
+ 	if (!pmu_ctx->nr_events) {
+ 		pmu_ctx->rotate_necessary = 0;
+@@ -13343,12 +13348,7 @@ perf_event_exit_event(struct perf_event *event, struct perf_event_context *ctx)
+ 		mutex_lock(&parent_event->child_mutex);
+ 	}
+ 
+-	perf_remove_from_context(event, detach_flags);
+-
+-	raw_spin_lock_irq(&ctx->lock);
+-	if (event->state > PERF_EVENT_STATE_EXIT)
+-		perf_event_set_state(event, PERF_EVENT_STATE_EXIT);
+-	raw_spin_unlock_irq(&ctx->lock);
++	perf_remove_from_context(event, detach_flags | DETACH_EXIT);
+ 
+ 	/*
+ 	 * Child events can be freed.
+-- 
+2.39.5
+
 
 
 
