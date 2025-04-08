@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-129773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57FDA8010D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9205A8029D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:49:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3663218943E3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADA8319E30EF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5852E268C5D;
-	Tue,  8 Apr 2025 11:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF1D268C72;
+	Tue,  8 Apr 2025 11:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dAeu5Tme"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1sXE7JQv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15668263C78;
-	Tue,  8 Apr 2025 11:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF1AA268685;
+	Tue,  8 Apr 2025 11:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111941; cv=none; b=UTRe3ULNmocUnUyL3v4vRE+j6uzUdUHQVi59F5w1cDfA3gB2YKy4f/sSXpypvjDdugEWYzGrMC9sMPOtMyB5u2yryGZsspQLPOdmh5SA0HWqMUxPjUkXrtB38L2WrVUzYohum/Cfjn4bbhF164jCk5b4zyPkuUFfgrZKZWbgKG4=
+	t=1744112711; cv=none; b=IW11s7qcVeAELADVpuUl6v3/f7o5q7l+gKXtMjJi3pbTpFd3jqcDfVVPzozYN/7UTT68xGqSQxEdamg5X2D2NvU94C+dw45I27on5+Qol9Z4KpCkhOK9vv2UCICRaYE2LvFtURkAOxGTHFZhz36GZzdidsJRWrcfaXVCGxj6T9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111941; c=relaxed/simple;
-	bh=XNTUzK/n3suvwTI2yZE18LYd4Rk9K4j4Zsklff404sI=;
+	s=arc-20240116; t=1744112711; c=relaxed/simple;
+	bh=tJBui0EFcxjuWZvq19v84UK2+peoa5bSAL0dRKU/iqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h7E2Exa2iqpzYWouoNUDffwQ84vBW1nZ0yaxLTaJvMRsMnXcIupna5JOlRDoqorHCs+6o5ysih8JoK2DE8+8okTQyLJ8TSo7DEX7pZUZoXPiPMLrXDWQnHHENxaJv4YbRXODmefwJWLGZQAh6s2wdthKEym5rB0vIFyo5o7bEYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dAeu5Tme; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF3AC4CEE5;
-	Tue,  8 Apr 2025 11:32:20 +0000 (UTC)
+	 MIME-Version; b=d73KNbhxqtaQeuFnHZ6RfIve7/Fxq4J4h2XmhOyYI0zMfIaEhbGEwYHLZLuy8WmJMG3E/WHQJgjtTd7ifxpdWmtzzjQV3euJnnDaL61bVYNYh2ymColI4ZdfPTplMhFoIsBYT4BxixAB4rC2b1fMCn5n6rEgjceC7xJcLxde4j0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1sXE7JQv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72029C4AF09;
+	Tue,  8 Apr 2025 11:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111940;
-	bh=XNTUzK/n3suvwTI2yZE18LYd4Rk9K4j4Zsklff404sI=;
+	s=korg; t=1744112710;
+	bh=tJBui0EFcxjuWZvq19v84UK2+peoa5bSAL0dRKU/iqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dAeu5TmeFXG/FEto5YxtH1DBdqCkxSMN9FmGt0HUJ5ZR0E7/VRf+Yocy4kyPV+ctO
-	 Rt777pxfW0SEwz2rE/s5sk8byi0yaKBtZbeNFpzvZ0UxIjO+yqLoVGXRtNX2Kmbjig
-	 2iyHkiCA8alaDYpSgaKCbf/cVC0HbL9dDLVFiRhY=
+	b=1sXE7JQvRvntI5v6opssTB4h6HLPUgq5Iu5B7EA+7nVC7EfNdwNeI1JTt+Wm2Edpa
+	 ap16nFB7Zw5OZ85HU4GcPF6Kip8imGvRD4pfRUpdfDys7inTfzSCS7JwOiq73+6in1
+	 Obc6tKZJuHJuwm1ELw05NUAfeMzhQTUG+3TDEaBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Bharath R <bharath.r@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	zuoqian <zuoqian113@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 616/731] ixgbe: fix media type detection for E610 device
+Subject: [PATCH 5.15 130/279] cpufreq: scpi: compare kHz instead of Hz
 Date: Tue,  8 Apr 2025 12:48:33 +0200
-Message-ID: <20250408104928.599651428@linuxfoundation.org>
+Message-ID: <20250408104829.850109234@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,60 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+From: zuoqian <zuoqian113@gmail.com>
 
-[ Upstream commit 40206599beec98cfeb01913ee417f015e3f6190c ]
+[ Upstream commit 4742da9774a416908ef8e3916164192c15c0e2d1 ]
 
-The commit 23c0e5a16bcc ("ixgbe: Add link management support for E610
-device") introduced incorrect media type detection for E610 device. It
-reproduces when advertised speed is modified after driver reload. Clear
-the previous outdated PHY type high value.
+The CPU rate from clk_get_rate() may not be divisible by 1000
+(e.g., 133333333). But the rate calculated from frequency(kHz) is
+always divisible by 1000 (e.g., 133333000).
+Comparing the rate causes a warning during CPU scaling:
+"cpufreq: __target_index: Failed to change cpu frequency: -5".
+When we choose to compare kHz here, the issue does not occur.
 
-Reproduction steps:
-modprobe ixgbe
-ethtool -s eth0 advertise 0x1000000000000
-modprobe -r ixgbe
-modprobe ixgbe
-ethtool -s eth0 advertise 0x1000000000000
-Result before the fix:
-netlink error: link settings update failed
-netlink error: Invalid argument
-Result after the fix:
-No output error
-
-Fixes: 23c0e5a16bcc ("ixgbe: Add link management support for E610 device")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Bharath R <bharath.r@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 343a8d17fa8d ("cpufreq: scpi: remove arm_big_little dependency")
+Signed-off-by: zuoqian <zuoqian113@gmail.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/cpufreq/scpi-cpufreq.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-index cb07ecd8937d3..00935747c8c55 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-@@ -1453,9 +1453,11 @@ enum ixgbe_media_type ixgbe_get_media_type_e610(struct ixgbe_hw *hw)
- 			hw->link.link_info.phy_type_low = 0;
- 		} else {
- 			highest_bit = fls64(le64_to_cpu(pcaps.phy_type_low));
--			if (highest_bit)
-+			if (highest_bit) {
- 				hw->link.link_info.phy_type_low =
- 					BIT_ULL(highest_bit - 1);
-+				hw->link.link_info.phy_type_high = 0;
-+			}
- 		}
- 	}
+diff --git a/drivers/cpufreq/scpi-cpufreq.c b/drivers/cpufreq/scpi-cpufreq.c
+index 763692e327b18..35b20c74dbfc7 100644
+--- a/drivers/cpufreq/scpi-cpufreq.c
++++ b/drivers/cpufreq/scpi-cpufreq.c
+@@ -47,8 +47,9 @@ static unsigned int scpi_cpufreq_get_rate(unsigned int cpu)
+ static int
+ scpi_cpufreq_set_target(struct cpufreq_policy *policy, unsigned int index)
+ {
+-	u64 rate = policy->freq_table[index].frequency * 1000;
++	unsigned long freq_khz = policy->freq_table[index].frequency;
+ 	struct scpi_data *priv = policy->driver_data;
++	unsigned long rate = freq_khz * 1000;
+ 	int ret;
  
+ 	ret = clk_set_rate(priv->clk, rate);
+@@ -56,7 +57,7 @@ scpi_cpufreq_set_target(struct cpufreq_policy *policy, unsigned int index)
+ 	if (ret)
+ 		return ret;
+ 
+-	if (clk_get_rate(priv->clk) != rate)
++	if (clk_get_rate(priv->clk) / 1000 != freq_khz)
+ 		return -EIO;
+ 
+ 	return 0;
 -- 
 2.39.5
 
