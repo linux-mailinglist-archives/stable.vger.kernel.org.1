@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-131647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B865A80AAB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:08:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CE71A8047D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:09:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B1E67AC62A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5270C189FBD3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6BA527C143;
-	Tue,  8 Apr 2025 12:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1887D26A0DC;
+	Tue,  8 Apr 2025 12:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Un5u5FcE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWLPsbwd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6375227C149;
-	Tue,  8 Apr 2025 12:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F22265CAF;
+	Tue,  8 Apr 2025 12:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116962; cv=none; b=j8h6KStQYmSJ/NOGBihVdWNTq7So5ZP3iIPCoJyCO6cknI62n7Yd7F4LBw3ILiNgqM0BEQGTCYvbzvTskuLWUSjINvotyKvbmO+Ja2UzoUsRNA6+Wtnpr1+v1dbcz0lNZgHw6S1bldrQuGCQpEAAiTWdBs1+xszMcI4asRJQui0=
+	t=1744113671; cv=none; b=CR0k5vC29BtSo8mXVcNFd85a3My7CphARul7Gmltio1eIRAyvCrZ0zcT8HOZVc6INht4DiMTHpgQu0UCcVS3qw9UFa7dY9bFNpZGCJ0vCZS68MBwPvR3TS7NrnRI1Z2cKxbtFaZcLqNE5uncSe4WpurWWMH9phDxf7SdxHpvBho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116962; c=relaxed/simple;
-	bh=4WXPYN6O5JpqWP9hGOl7W39oj5ed8EBsixsMEcNzpqM=;
+	s=arc-20240116; t=1744113671; c=relaxed/simple;
+	bh=SjO06+4dUpBtKNS9AYndfM/GZ8pHWPiyk0EH00Wo6U0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m+Qow9+NvGQFkby4qGn67jfSHHwsvnRRkv2yKz6j3aGJVQtMwpkYvqZS0cz34CkbQSZ41tGXdDbGnmnlGOpARyCx4czhcpkQV6N+z3C6JWALcQFIAMQfmszcK5Oi5WAgqw6ZV/uMqxry2v2ij29fTpK3aaTSwRpoUHzDCFSm1Cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Un5u5FcE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B440EC4CEEE;
-	Tue,  8 Apr 2025 12:56:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qKRcO/jC4CHJ7IdqRpuR4nvUhinric020PIfN7vXyfn7U/NHGQiINWWQq3cytFlrzQ7jmTfx9uOYAA/9RFpX9b9ywDRoMi3gNcLZxvawHZEACcQhBOWJJTtrRntIxNiyxFqpiU0axfNk5QEOybkN6opqnQPbOPIqi2WMVuO62zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWLPsbwd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59BF8C4CEE5;
+	Tue,  8 Apr 2025 12:01:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116962;
-	bh=4WXPYN6O5JpqWP9hGOl7W39oj5ed8EBsixsMEcNzpqM=;
+	s=korg; t=1744113671;
+	bh=SjO06+4dUpBtKNS9AYndfM/GZ8pHWPiyk0EH00Wo6U0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Un5u5FcEbEvbgoqP0rdPRPPslzdpaeggddWgBQLuvvVeuoqyDgUcp+OehE06rGm4P
-	 t+RUpLAxnk+8cFT2rFbGMFhNhkuzleGB/qRrR1zLf8+w1Ytc3u2SofrFXbU6oNttAa
-	 hbpoG6JqgsbTBabY7IVAsYukwCta93+0BPDc+mNU=
+	b=jWLPsbwdPy6z4sF1I4ShMBQ6yKET7Ydsh2PjYJC07VhVHDOfkyPNtN4xcEGD/FaCi
+	 tiUV2FCOPaY4Wapo1cXV7NlxHZSr5kEOlyjfik3M8Bj0aOhppmK1o0dXIWEHI04A52
+	 kl/V8M7XjPXyLjRrGYnN4Q7liBvXhmNZ4d1m3ubU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 332/423] udp: Fix multiple wraparounds of sk->sk_rmem_alloc.
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Anton Shyndin <mrcold.il@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 247/268] ACPI: resource: Skip IRQ override on ASUS Vivobook 14 X1404VAP
 Date: Tue,  8 Apr 2025 12:50:58 +0200
-Message-ID: <20250408104853.564360654@linuxfoundation.org>
+Message-ID: <20250408104835.249088251@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,145 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
 
-[ Upstream commit 5a465a0da13ee9fbd7d3cd0b2893309b0fe4b7e3 ]
+commit 2da31ea2a085cd189857f2db0f7b78d0162db87a upstream.
 
-__udp_enqueue_schedule_skb() has the following condition:
+Like the ASUS Vivobook X1504VAP and Vivobook X1704VAP, the ASUS Vivobook 14
+X1404VAP has its keyboard IRQ (1) described as ActiveLow in the DSDT, which
+the kernel overrides to EdgeHigh breaking the keyboard.
 
-  if (atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf)
-          goto drop;
+    $ sudo dmidecode
+    […]
+    System Information
+            Manufacturer: ASUSTeK COMPUTER INC.
+            Product Name: ASUS Vivobook 14 X1404VAP_X1404VA
+    […]
+    $ grep -A 30 PS2K dsdt.dsl | grep IRQ -A 1
+                 IRQ (Level, ActiveLow, Exclusive, )
+                     {1}
 
-sk->sk_rcvbuf is initialised by net.core.rmem_default and later can
-be configured by SO_RCVBUF, which is limited by net.core.rmem_max,
-or SO_RCVBUFFORCE.
+Add the X1404VAP to the irq1_level_low_skip_override[] quirk table to fix
+this.
 
-If we set INT_MAX to sk->sk_rcvbuf, the condition is always false
-as sk->sk_rmem_alloc is also signed int.
-
-Then, the size of the incoming skb is added to sk->sk_rmem_alloc
-unconditionally.
-
-This results in integer overflow (possibly multiple times) on
-sk->sk_rmem_alloc and allows a single socket to have skb up to
-net.core.udp_mem[1].
-
-For example, if we set a large value to udp_mem[1] and INT_MAX to
-sk->sk_rcvbuf and flood packets to the socket, we can see multiple
-overflows:
-
-  # cat /proc/net/sockstat | grep UDP:
-  UDP: inuse 3 mem 7956736  <-- (7956736 << 12) bytes > INT_MAX * 15
-                                             ^- PAGE_SHIFT
-  # ss -uam
-  State  Recv-Q      ...
-  UNCONN -1757018048 ...    <-- flipping the sign repeatedly
-         skmem:(r2537949248,rb2147483646,t0,tb212992,f1984,w0,o0,bl0,d0)
-
-Previously, we had a boundary check for INT_MAX, which was removed by
-commit 6a1f12dd85a8 ("udp: relax atomic operation on sk->sk_rmem_alloc").
-
-A complete fix would be to revert it and cap the right operand by
-INT_MAX:
-
-  rmem = atomic_add_return(size, &sk->sk_rmem_alloc);
-  if (rmem > min(size + (unsigned int)sk->sk_rcvbuf, INT_MAX))
-          goto uncharge_drop;
-
-but we do not want to add the expensive atomic_add_return() back just
-for the corner case.
-
-Casting rmem to unsigned int prevents multiple wraparounds, but we still
-allow a single wraparound.
-
-  # cat /proc/net/sockstat | grep UDP:
-  UDP: inuse 3 mem 524288  <-- (INT_MAX + 1) >> 12
-
-  # ss -uam
-  State  Recv-Q      ...
-  UNCONN -2147482816 ...   <-- INT_MAX + 831 bytes
-         skmem:(r2147484480,rb2147483646,t0,tb212992,f3264,w0,o0,bl0,d14468947)
-
-So, let's define rmem and rcvbuf as unsigned int and check skb->truesize
-only when rcvbuf is large enough to lower the overflow possibility.
-
-Note that we still have a small chance to see overflow if multiple skbs
-to the same socket are processed on different core at the same time and
-each size does not exceed the limit but the total size does.
-
-Note also that we must ignore skb->truesize for a small buffer as
-explained in commit 363dc73acacb ("udp: be less conservative with
-sock rmem accounting").
-
-Fixes: 6a1f12dd85a8 ("udp: relax atomic operation on sk->sk_rmem_alloc")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250401184501.67377-2-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219224
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Tested-by: Anton Shyndin <mrcold.il@gmail.com>
+Link: https://patch.msgid.link/20250318160903.77107-1-pmenzel@molgen.mpg.de
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/udp.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ drivers/acpi/resource.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index 8da74dc63061c..4f52d220f4d0c 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -1570,17 +1570,25 @@ static int udp_rmem_schedule(struct sock *sk, int size)
- int __udp_enqueue_schedule_skb(struct sock *sk, struct sk_buff *skb)
- {
- 	struct sk_buff_head *list = &sk->sk_receive_queue;
--	int rmem, err = -ENOMEM;
-+	unsigned int rmem, rcvbuf;
- 	spinlock_t *busy = NULL;
--	int size, rcvbuf;
-+	int size, err = -ENOMEM;
- 
--	/* Immediately drop when the receive queue is full.
--	 * Always allow at least one packet.
--	 */
- 	rmem = atomic_read(&sk->sk_rmem_alloc);
- 	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
--	if (rmem > rcvbuf)
--		goto drop;
-+	size = skb->truesize;
-+
-+	/* Immediately drop when the receive queue is full.
-+	 * Cast to unsigned int performs the boundary check for INT_MAX.
-+	 */
-+	if (rmem + size > rcvbuf) {
-+		if (rcvbuf > INT_MAX >> 1)
-+			goto drop;
-+
-+		/* Always allow at least one packet for small buffer. */
-+		if (rmem > rcvbuf)
-+			goto drop;
-+	}
- 
- 	/* Under mem pressure, it might be helpful to help udp_recvmsg()
- 	 * having linear skbs :
-@@ -1590,10 +1598,10 @@ int __udp_enqueue_schedule_skb(struct sock *sk, struct sk_buff *skb)
- 	 */
- 	if (rmem > (rcvbuf >> 1)) {
- 		skb_condense(skb);
--
-+		size = skb->truesize;
- 		busy = busylock_acquire(sk);
- 	}
--	size = skb->truesize;
-+
- 	udp_set_dev_scratch(skb);
- 
- 	atomic_add(size, &sk->sk_rmem_alloc);
--- 
-2.39.5
-
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -440,6 +440,13 @@ static const struct dmi_system_id asus_l
+ 		},
+ 	},
+ 	{
++		/* Asus Vivobook X1404VAP */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "X1404VAP"),
++		},
++	},
++	{
+ 		/* Asus Vivobook X1504VAP */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
 
 
 
