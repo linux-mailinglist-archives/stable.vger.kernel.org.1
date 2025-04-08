@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5A9BA80391
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:59:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 035BDA7FE06
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A27DB18942AA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA0EF1891E50
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D2826A1AB;
-	Tue,  8 Apr 2025 11:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E8B267F61;
+	Tue,  8 Apr 2025 11:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SV0/+Htg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yqx8WWhd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4574426A1A7;
-	Tue,  8 Apr 2025 11:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE2821ADAE;
+	Tue,  8 Apr 2025 11:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113260; cv=none; b=TVuncUWBtkB5P4RzEsEoPSPi9JAnbwE0KpElYqZ6lslqhif7ZCl/Hpi7niEKpC3V2pQrHS98xC4yWxduz+fpYvaMBab11phaTNe6EIHf9wm8YDYW8LP+FsIM/B4E3W/d9BnsFjaX6qTAzd+/YztynjqKTXSjTtaFf6sIiqmNqA0=
+	t=1744110033; cv=none; b=TF7HZjVzDvMmHa9hb2HbN7DM8DAADCe6dD4xHRDzdawPcZtmL8uVXtFZ1g2huYqTDtcBvZ5wZh/zQeeakmFpskpwNHOGCQ+qThrmkMwe/P6B2XnbJRTHOvRxeO/vfSltgliNmWfhgauZeZreM4xGl8X97tEF8qDR4Gtwj4TQWyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113260; c=relaxed/simple;
-	bh=y8j7m0CbHeQNospuvm8OP7Z4zCj42cvvwyIE+lzfyR0=;
+	s=arc-20240116; t=1744110033; c=relaxed/simple;
+	bh=qu0H1gOUad224dsafihHX5lMGSpDJOy+hploelsQibk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fe4HAj6APUC1lURbfP2+8c2GXLNfqdAsJAB4khZFiHatF1hd91tJCeRp6Pu1h/OJvvyJVYlBKDJ3Mg38F5yrAOfaydjd587fvRfW5ZJel23vHS9Scr/KsD1H0XEpDF6H74l2ctCgqNnZu3hLygrOKQs8PiG1RLXi8FhLy/2WuO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SV0/+Htg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9265C4CEEF;
-	Tue,  8 Apr 2025 11:54:19 +0000 (UTC)
+	 MIME-Version; b=eG9uYY1QTpaWvinEgq7QYjf4CMuVtnIfL93s9A5k7uIUoHK7dueia7jyldHZT2dMLMLTU9OxiZ8bZhd+lGU8AzaEaluIw6bF5xfKpnS5EVioPf4p86sx6MfTrnnFFNPJV8B2guOGKEhAL5huQ7aMRQAFxUGEuJwnUakhT+VN/zE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yqx8WWhd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 926F5C4CEE5;
+	Tue,  8 Apr 2025 11:00:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113260;
-	bh=y8j7m0CbHeQNospuvm8OP7Z4zCj42cvvwyIE+lzfyR0=;
+	s=korg; t=1744110033;
+	bh=qu0H1gOUad224dsafihHX5lMGSpDJOy+hploelsQibk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SV0/+Htg+h9mc1g/Gg6C7WRsZXr7hAg8oFJYykNz2QtHaxDPI1WUcEgK1lSTXTTja
-	 kFIxF/KwkgbSezgpMSnR9uWNCtTBuANPVCL62cL9v3T6wm7/dS2CDU17VWovyyMrx+
-	 7THnDAXbnlG1JgCg8v/R9uRrzbpmfMMXE1R93Iks=
+	b=Yqx8WWhdVPOtJLoOPpn7ptj6QnUGDGUE7cnK+YWO81HxQXd0PdGuPq927NuKPQAol
+	 qpDgWuUXSFP1X0eSiC+Lv0AG7X1oU3Zv0aBuyRLD1jJMg4zK0wwjC/Pqy/jKfq58gB
+	 tYMY5i/D2t7xPzDt7M5hgXIEODCLgfn/XVJaMJbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artur Weber <aweber.kernel@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 093/268] power: supply: max77693: Fix wrong conversion of charge input threshold value
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>,
+	Oleg Gorobets <oleg.goro@gmail.com>
+Subject: [PATCH 5.10 126/227] ALSA: hda/realtek: Always honor no_shutup_pins
 Date: Tue,  8 Apr 2025 12:48:24 +0200
-Message-ID: <20250408104831.005426136@linuxfoundation.org>
+Message-ID: <20250408104824.111819459@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artur Weber <aweber.kernel@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 30cc7b0d0e9341d419eb7da15fb5c22406dbe499 ]
+[ Upstream commit 5a0c72c1da3cbc0cd4940a95d1be2830104c6edf ]
 
-The charge input threshold voltage register on the MAX77693 PMIC accepts
-four values: 0x0 for 4.3v, 0x1 for 4.7v, 0x2 for 4.8v and 0x3 for 4.9v.
-Due to an oversight, the driver calculated the values for 4.7v and above
-starting from 0x0, rather than from 0x1 ([(4700000 - 4700000) / 100000]
-gives 0).
+The workaround for Dell machines to skip the pin-shutup for mic pins
+introduced alc_headset_mic_no_shutup() that is replaced from the
+generic snd_hda_shutup_pins() for certain codecs.  The problem is that
+the call is done unconditionally even if spec->no_shutup_pins is set.
+This seems causing problems on other platforms like Lenovo.
 
-Add 1 to the calculation to ensure that 4.7v is converted to a register
-value of 0x1 and that the other two voltages are converted correctly as
-well.
+This patch corrects the behavior and the driver honors always
+spec->no_shutup_pins flag and skips alc_headset_mic_no_shutup() if
+it's set.
 
-Fixes: 87c2d9067893 ("power: max77693: Add charger driver for Maxim 77693")
-Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250316-max77693-charger-input-threshold-fix-v1-1-2b037d0ac722@gmail.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: dad3197da7a3 ("ALSA: hda/realtek - Fixup headphone noise via runtime suspend")
+Reported-and-tested-by: Oleg Gorobets <oleg.goro@gmail.com>
+Link: https://patch.msgid.link/20250315143020.27184-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/max77693_charger.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/power/supply/max77693_charger.c b/drivers/power/supply/max77693_charger.c
-index 794c8c054450e..0e7b3277d481a 100644
---- a/drivers/power/supply/max77693_charger.c
-+++ b/drivers/power/supply/max77693_charger.c
-@@ -556,7 +556,7 @@ static int max77693_set_charge_input_threshold_volt(struct max77693_charger *chg
- 	case 4700000:
- 	case 4800000:
- 	case 4900000:
--		data = (uvolt - 4700000) / 100000;
-+		data = ((uvolt - 4700000) / 100000) + 1;
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 494a34af46b03..f3cb24ed3a78a 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -577,6 +577,9 @@ static void alc_shutup_pins(struct hda_codec *codec)
+ {
+ 	struct alc_spec *spec = codec->spec;
+ 
++	if (spec->no_shutup_pins)
++		return;
++
+ 	switch (codec->core.vendor_id) {
+ 	case 0x10ec0236:
+ 	case 0x10ec0256:
+@@ -592,8 +595,7 @@ static void alc_shutup_pins(struct hda_codec *codec)
+ 		alc_headset_mic_no_shutup(codec);
  		break;
  	default:
- 		dev_err(chg->dev, "Wrong value for charge input voltage regulation threshold\n");
+-		if (!spec->no_shutup_pins)
+-			snd_hda_shutup_pins(codec);
++		snd_hda_shutup_pins(codec);
+ 		break;
+ 	}
+ }
 -- 
 2.39.5
 
