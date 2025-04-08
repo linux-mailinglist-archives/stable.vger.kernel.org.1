@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-129266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F278DA7FF12
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:18:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3742DA7FE25
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:10:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78C6E189360C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:10:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5EC27A6026
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:09:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F989268FE7;
-	Tue,  8 Apr 2025 11:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9722269820;
+	Tue,  8 Apr 2025 11:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mDYhMa3K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jI4Gs1y1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D91F268FD5;
-	Tue,  8 Apr 2025 11:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F98B26981F;
+	Tue,  8 Apr 2025 11:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110565; cv=none; b=nY/GkYQtT59O1WelEtqA1ZZqwXtQI2v/HlQf4ZE0kre/MDNHkrK1qIjH/FOugEhoThaHLYEDOFBo3F3oSD8kNS0sQe4sycYcbeZXBDI03635X3XuK3Inp5QRTdOiUAOjK4iqO55jOO6x+DboR2ME0lk+QVStWM/mmjMDc8xiHsg=
+	t=1744110570; cv=none; b=tcP6rQkGEozLUk2f5N2boXSXLsEFnxpKfmiIfBsgqRcjA7UcKhhm/WRB150Ucfo9oU1pAQRDUIUfmpUOA3fz9sxk+e9qjhH6WM8g8tWZZCA7OOrTsYQ5IFkLjBkLifD/Znm/GZW3QYN9PVvHpBo/vX1dG4kAznvVmYtLYb+rLIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110565; c=relaxed/simple;
-	bh=/b0x0iVTnB2pInj3feWzGfylNQ9gxdDlH9EkG3fEzHo=;
+	s=arc-20240116; t=1744110570; c=relaxed/simple;
+	bh=YTX6afzpAhFJTZE2o6YZP19Np1CisDSL6M6nX/bVDsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UEwv8PdipZZI+3u2XrXikYSLURx5MOQK+BoMfPcvuF8Z4+3dbxx2Tsz/6W/GsYUi7WaNg1x8+/CXrZMIjQBSphtgp+PZ9RrkSxpuhOHZ/v02cM7sjMSXZZOfrtlQoCBHPOruBvFi70TmpNaUJjvcQuylsz5r37UOx5RiifEULrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mDYhMa3K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2106C4CEE5;
-	Tue,  8 Apr 2025 11:09:24 +0000 (UTC)
+	 MIME-Version; b=IZEqVN3Pcxawd9c5Z/urM88Vk7sIgEWkPub/9T6gBzyBqC26VM1kMAugJ5pc7cGRW1jPu2xK3LWR9/OAu268R3eyZCfKaIGz22a/Gf+ow+TJYgipyEnmp6dkKz9nI+TJTG1gTykFbhTXLjLn7k6CsWkf3+kuofGemG0cM1wZIPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jI4Gs1y1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2106CC4CEE5;
+	Tue,  8 Apr 2025 11:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110565;
-	bh=/b0x0iVTnB2pInj3feWzGfylNQ9gxdDlH9EkG3fEzHo=;
+	s=korg; t=1744110570;
+	bh=YTX6afzpAhFJTZE2o6YZP19Np1CisDSL6M6nX/bVDsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mDYhMa3KkYLNorwsClLHP4o0mUPEKBSw3K6u9IFluOUqxDaODEqa3fiDvbgokhdjO
-	 DoY7KX3MR6I1WkMlpVnpSKBTEqY05nS8sDczvt57Gtk63HZv+kBlqYfoobvLUy7Ndc
-	 T2PID+PR7OP1JB0KbZEb6oc4oVuXKKeNq2HEM9i8=
+	b=jI4Gs1y1lN5v8bIr0mzX4ntCK4M615Q4MZ9fPPDZAXwlP5jZFfElc4PylC3thcmcE
+	 iWYG8szBSXbif+CtSD6B+ep8p0/ld1tOvueA1/beEnnSJvq2U0UM6rNpCw405wCapW
+	 4kdihFZTIyDlfAhZAC/hIulk5N3YDGKGuc81NAXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 111/731] wifi: rtw89: rtw8852b{t}: fix TSSI debug timestamps
-Date: Tue,  8 Apr 2025 12:40:08 +0200
-Message-ID: <20250408104916.858551445@linuxfoundation.org>
+Subject: [PATCH 6.14 112/731] xfrm: delay initialization of offload path till its actually requested
+Date: Tue,  8 Apr 2025 12:40:09 +0200
+Message-ID: <20250408104916.882607608@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -66,123 +66,202 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit bfc8e71ef6b7913f0129aff47951cab73a175259 ]
+[ Upstream commit 585b64f5a62089ef42889b106b063d089feb6599 ]
 
-Since the vendor driver is claimed to measure 'tssi_alimk_time' of
-'struct rtw89_tssi_info' in microseconds, adjust rtw8852b{t}-specific
-'_tssi_alimentk()' to not mess the former with nanoseconds and print
-both per-call and accumulated times. Compile tested only.
+XFRM offload path is probed even if offload isn't needed at all. Let's
+make sure that x->type_offload pointer stays NULL for such path to
+reduce ambiguity.
 
-Fixes: 7f18a70d7b4d ("wifi: rtw89: 8852b: rfk: add TSSI")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250213095006.1308810-1-dmantipov@yandex.ru
+Fixes: 9d389d7f84bb ("xfrm: Add a xfrm type offload.")
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/core.h          |  2 +-
- drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c  | 13 +++++++------
- drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c | 13 +++++++------
- 3 files changed, 15 insertions(+), 13 deletions(-)
+ include/net/xfrm.h     | 11 ++++++++++-
+ net/xfrm/xfrm_device.c | 13 ++++++++-----
+ net/xfrm/xfrm_state.c  | 32 ++++++++++++++------------------
+ net/xfrm/xfrm_user.c   |  2 +-
+ 4 files changed, 33 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index ff4894c7fa8a5..93e41def81b40 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -5135,7 +5135,7 @@ struct rtw89_tssi_info {
- 	u32 alignment_backup_by_ch[RF_PATH_MAX][TSSI_MAX_CH_NUM][TSSI_ALIMK_VALUE_NUM];
- 	u32 alignment_value[RF_PATH_MAX][TSSI_ALIMK_MAX][TSSI_ALIMK_VALUE_NUM];
- 	bool alignment_done[RF_PATH_MAX][TSSI_ALIMK_MAX];
--	u32 tssi_alimk_time;
-+	u64 tssi_alimk_time;
- };
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index ed4b83696c77f..e1eed5d47d072 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -464,6 +464,15 @@ struct xfrm_type_offload {
  
- struct rtw89_power_trim_info {
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
-index ef47a5facc836..fbf82d42687ba 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
-@@ -3585,9 +3585,10 @@ static void _tssi_alimentk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
- 	u8 ch_idx = _tssi_ch_to_idx(rtwdev, channel);
- 	struct rtw8852bx_bb_tssi_bak tssi_bak;
- 	s32 aliment_diff, tssi_cw_default;
--	u32 start_time, finish_time;
- 	u32 bb_reg_backup[8] = {0};
-+	ktime_t start_time;
- 	const s16 *power;
-+	s64 this_time;
- 	u8 band;
- 	bool ok;
- 	u32 tmp;
-@@ -3613,7 +3614,7 @@ static void _tssi_alimentk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
- 		return;
+ int xfrm_register_type_offload(const struct xfrm_type_offload *type, unsigned short family);
+ void xfrm_unregister_type_offload(const struct xfrm_type_offload *type, unsigned short family);
++void xfrm_set_type_offload(struct xfrm_state *x);
++static inline void xfrm_unset_type_offload(struct xfrm_state *x)
++{
++	if (!x->type_offload)
++		return;
++
++	module_put(x->type_offload->owner);
++	x->type_offload = NULL;
++}
+ 
+ /**
+  * struct xfrm_mode_cbs - XFRM mode callbacks
+@@ -1760,7 +1769,7 @@ void xfrm_spd_getinfo(struct net *net, struct xfrmk_spdinfo *si);
+ u32 xfrm_replay_seqhi(struct xfrm_state *x, __be32 net_seq);
+ int xfrm_init_replay(struct xfrm_state *x, struct netlink_ext_ack *extack);
+ u32 xfrm_state_mtu(struct xfrm_state *x, int mtu);
+-int __xfrm_init_state(struct xfrm_state *x, bool init_replay, bool offload,
++int __xfrm_init_state(struct xfrm_state *x, bool init_replay,
+ 		      struct netlink_ext_ack *extack);
+ int xfrm_init_state(struct xfrm_state *x);
+ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type);
+diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
+index d1fa94e52ceae..97c8030cc4173 100644
+--- a/net/xfrm/xfrm_device.c
++++ b/net/xfrm/xfrm_device.c
+@@ -244,11 +244,6 @@ int xfrm_dev_state_add(struct net *net, struct xfrm_state *x,
+ 	xfrm_address_t *daddr;
+ 	bool is_packet_offload;
+ 
+-	if (!x->type_offload) {
+-		NL_SET_ERR_MSG(extack, "Type doesn't support offload");
+-		return -EINVAL;
+-	}
+-
+ 	if (xuo->flags &
+ 	    ~(XFRM_OFFLOAD_IPV6 | XFRM_OFFLOAD_INBOUND | XFRM_OFFLOAD_PACKET)) {
+ 		NL_SET_ERR_MSG(extack, "Unrecognized flags in offload request");
+@@ -310,6 +305,13 @@ int xfrm_dev_state_add(struct net *net, struct xfrm_state *x,
+ 		return -EINVAL;
  	}
  
--	start_time = ktime_get_ns();
-+	start_time = ktime_get();
++	xfrm_set_type_offload(x);
++	if (!x->type_offload) {
++		NL_SET_ERR_MSG(extack, "Type doesn't support offload");
++		dev_put(dev);
++		return -EINVAL;
++	}
++
+ 	xso->dev = dev;
+ 	netdev_tracker_alloc(dev, &xso->dev_tracker, GFP_ATOMIC);
+ 	xso->real_dev = dev;
+@@ -332,6 +334,7 @@ int xfrm_dev_state_add(struct net *net, struct xfrm_state *x,
+ 		netdev_put(dev, &xso->dev_tracker);
+ 		xso->type = XFRM_DEV_OFFLOAD_UNSPECIFIED;
  
- 	if (chan->band_type == RTW89_BAND_2G)
- 		power = power_2g;
-@@ -3738,12 +3739,12 @@ static void _tssi_alimentk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
- 	rtw8852bx_bb_restore_tssi(rtwdev, phy, &tssi_bak);
- 	rtw8852bx_bb_tx_mode_switch(rtwdev, phy, 0);
- 
--	finish_time = ktime_get_ns();
--	tssi_info->tssi_alimk_time += finish_time - start_time;
-+	this_time = ktime_us_delta(ktime_get(), start_time);
-+	tssi_info->tssi_alimk_time += this_time;
- 
- 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
--		    "[TSSI PA K] %s processing time = %d ms\n", __func__,
--		    tssi_info->tssi_alimk_time);
-+		    "[TSSI PA K] %s processing time = %lld us (acc = %llu us)\n",
-+		    __func__, this_time, tssi_info->tssi_alimk_time);
++		xfrm_unset_type_offload(x);
+ 		/* User explicitly requested packet offload mode and configured
+ 		 * policy in addition to the XFRM state. So be civil to users,
+ 		 * and return an error instead of taking fallback path.
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index ad2202fa82f34..69af5964c886c 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -424,18 +424,18 @@ void xfrm_unregister_type_offload(const struct xfrm_type_offload *type,
  }
+ EXPORT_SYMBOL(xfrm_unregister_type_offload);
  
- void rtw8852b_dpk_init(struct rtw89_dev *rtwdev)
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c
-index 336a83e1d46be..6e6889eea9a0d 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c
-@@ -3663,9 +3663,10 @@ static void _tssi_alimentk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
- 	u8 ch_idx = _tssi_ch_to_idx(rtwdev, channel);
- 	struct rtw8852bx_bb_tssi_bak tssi_bak;
- 	s32 aliment_diff, tssi_cw_default;
--	u32 start_time, finish_time;
- 	u32 bb_reg_backup[8] = {};
-+	ktime_t start_time;
- 	const s16 *power;
-+	s64 this_time;
- 	u8 band;
- 	bool ok;
- 	u32 tmp;
-@@ -3675,7 +3676,7 @@ static void _tssi_alimentk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
- 		    "======> %s   channel=%d   path=%d\n", __func__, channel,
- 		    path);
+-static const struct xfrm_type_offload *
+-xfrm_get_type_offload(u8 proto, unsigned short family, bool try_load)
++void xfrm_set_type_offload(struct xfrm_state *x)
+ {
+ 	const struct xfrm_type_offload *type = NULL;
+ 	struct xfrm_state_afinfo *afinfo;
++	bool try_load = true;
  
--	start_time = ktime_get_ns();
-+	start_time = ktime_get();
+ retry:
+-	afinfo = xfrm_state_get_afinfo(family);
++	afinfo = xfrm_state_get_afinfo(x->props.family);
+ 	if (unlikely(afinfo == NULL))
+-		return NULL;
++		goto out;
  
- 	if (chan->band_type == RTW89_BAND_2G)
- 		power = power_2g;
-@@ -3802,12 +3803,12 @@ static void _tssi_alimentk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
- 	rtw8852bx_bb_restore_tssi(rtwdev, phy, &tssi_bak);
- 	rtw8852bx_bb_tx_mode_switch(rtwdev, phy, 0);
+-	switch (proto) {
++	switch (x->id.proto) {
+ 	case IPPROTO_ESP:
+ 		type = afinfo->type_offload_esp;
+ 		break;
+@@ -449,18 +449,16 @@ xfrm_get_type_offload(u8 proto, unsigned short family, bool try_load)
+ 	rcu_read_unlock();
  
--	finish_time = ktime_get_ns();
--	tssi_info->tssi_alimk_time += finish_time - start_time;
-+	this_time = ktime_us_delta(ktime_get(), start_time);
-+	tssi_info->tssi_alimk_time += this_time;
+ 	if (!type && try_load) {
+-		request_module("xfrm-offload-%d-%d", family, proto);
++		request_module("xfrm-offload-%d-%d", x->props.family,
++			       x->id.proto);
+ 		try_load = false;
+ 		goto retry;
+ 	}
  
- 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
--		    "[TSSI PA K] %s processing time = %d ms\n", __func__,
--		    tssi_info->tssi_alimk_time);
-+		    "[TSSI PA K] %s processing time = %lld us (acc = %llu us)\n",
-+		    __func__, this_time, tssi_info->tssi_alimk_time);
+-	return type;
+-}
+-
+-static void xfrm_put_type_offload(const struct xfrm_type_offload *type)
+-{
+-	module_put(type->owner);
++out:
++	x->type_offload = type;
  }
++EXPORT_SYMBOL(xfrm_set_type_offload);
  
- void rtw8852bt_dpk_init(struct rtw89_dev *rtwdev)
+ static const struct xfrm_mode xfrm4_mode_map[XFRM_MODE_MAX] = {
+ 	[XFRM_MODE_BEET] = {
+@@ -609,8 +607,6 @@ static void ___xfrm_state_destroy(struct xfrm_state *x)
+ 	kfree(x->coaddr);
+ 	kfree(x->replay_esn);
+ 	kfree(x->preplay_esn);
+-	if (x->type_offload)
+-		xfrm_put_type_offload(x->type_offload);
+ 	if (x->type) {
+ 		x->type->destructor(x);
+ 		xfrm_put_type(x->type);
+@@ -784,6 +780,8 @@ void xfrm_dev_state_free(struct xfrm_state *x)
+ 	struct xfrm_dev_offload *xso = &x->xso;
+ 	struct net_device *dev = READ_ONCE(xso->dev);
+ 
++	xfrm_unset_type_offload(x);
++
+ 	if (dev && dev->xfrmdev_ops) {
+ 		spin_lock_bh(&xfrm_state_dev_gc_lock);
+ 		if (!hlist_unhashed(&x->dev_gclist))
+@@ -3122,7 +3120,7 @@ u32 xfrm_state_mtu(struct xfrm_state *x, int mtu)
+ }
+ EXPORT_SYMBOL_GPL(xfrm_state_mtu);
+ 
+-int __xfrm_init_state(struct xfrm_state *x, bool init_replay, bool offload,
++int __xfrm_init_state(struct xfrm_state *x, bool init_replay,
+ 		      struct netlink_ext_ack *extack)
+ {
+ 	const struct xfrm_mode *inner_mode;
+@@ -3178,8 +3176,6 @@ int __xfrm_init_state(struct xfrm_state *x, bool init_replay, bool offload,
+ 		goto error;
+ 	}
+ 
+-	x->type_offload = xfrm_get_type_offload(x->id.proto, family, offload);
+-
+ 	err = x->type->init_state(x, extack);
+ 	if (err)
+ 		goto error;
+@@ -3229,7 +3225,7 @@ int xfrm_init_state(struct xfrm_state *x)
+ {
+ 	int err;
+ 
+-	err = __xfrm_init_state(x, true, false, NULL);
++	err = __xfrm_init_state(x, true, NULL);
+ 	if (!err)
+ 		x->km.state = XFRM_STATE_VALID;
+ 
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 08c6d6f0179fb..82a768500999b 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -907,7 +907,7 @@ static struct xfrm_state *xfrm_state_construct(struct net *net,
+ 			goto error;
+ 	}
+ 
+-	err = __xfrm_init_state(x, false, attrs[XFRMA_OFFLOAD_DEV], extack);
++	err = __xfrm_init_state(x, false, extack);
+ 	if (err)
+ 		goto error;
+ 
 -- 
 2.39.5
 
