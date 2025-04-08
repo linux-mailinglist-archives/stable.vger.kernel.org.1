@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29742A80741
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:35:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 111D1A8085C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:44:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5A5F1B87188
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:30:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FFF21BA29C2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4D326B08E;
-	Tue,  8 Apr 2025 12:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6FDD270ECC;
+	Tue,  8 Apr 2025 12:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVmaVJI7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QR+7jdxd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A0F26B971;
-	Tue,  8 Apr 2025 12:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E2926B2D1;
+	Tue,  8 Apr 2025 12:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115229; cv=none; b=tgM+4VsijcTHE+hbiSpRnw9Bb6C90Sh1pYvGN9D+fDXKi39dyXjNPlaTlZbKCXulSrA/OF4aRnrl+IoH5gBC83e8Gq2SBop/1zCH8uO78ieJd/gAnnmmiRxe1eTa/kLU7fgTdlOLRUh2G4UwDhRylzwppKXwyJlWWwJH5KVGLNs=
+	t=1744115680; cv=none; b=HT51qNddeEzatz7ByBEG4hUqwPIAI7SNgo8EAh0lXh3cUHF2yfudSzqYWhvzOr1yvkNOUPP2hU/O7UL83pICDBoo9Am2XyxzVYhLVAicXoaTuZqEdEfWPuIPKcAMZgwW8DiZtXryTVcoF4PVfwrlRcnscHlK1Qfsx3fVanWikFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115229; c=relaxed/simple;
-	bh=v8q7UCv1ki7A9NYKOj5elKREF5YLrkrw4oX2fO8SBLU=;
+	s=arc-20240116; t=1744115680; c=relaxed/simple;
+	bh=0gAjv5MJC2QvVlSR83h5xCPKlqsWIrcrPSrIR2wmp30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t9tmrMfNXk0PVu8dKvHjiql6sLkKWxwHcX4UlW2nx9FHBPWnrFm/uRGvpwQpeQs6y1RnBoyPZNc6HHNyXOn3V2jwOv09Cinf6NLIXZ2N/9141Cp1/VI3SQKvsNDb1u+uxQunGMEbN6mJmGn9wxmApvvgaP3n/S7NHcizI2ovqpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVmaVJI7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C9DC4CEE7;
-	Tue,  8 Apr 2025 12:27:08 +0000 (UTC)
+	 MIME-Version; b=joh/WpPuWEPip3UDK7zYCujSKgZ3q7q9dF2cM7pAsK1V0IsuXbLrxijFAnFRYgPICOQEYC+a2MsksdFxzFQcKcNJLGagCEu7xRK0lxRji+pTVLGL5Eh03jUHHqJXow93w6Ng6v/dVdooER8n1ACq1v20fs1O2b7Lo20aLrxYrCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QR+7jdxd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 157A2C4CEE5;
+	Tue,  8 Apr 2025 12:34:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115229;
-	bh=v8q7UCv1ki7A9NYKOj5elKREF5YLrkrw4oX2fO8SBLU=;
+	s=korg; t=1744115680;
+	bh=0gAjv5MJC2QvVlSR83h5xCPKlqsWIrcrPSrIR2wmp30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aVmaVJI7n++3sxqxLryjZYFQG9zp8xiKgtTyjbmEabsQkGiVKZiK+DEJNDo6eIl/J
-	 fKTJjKzbYZqXAN+WemPENl3vwr9bgckuOVtSrcgaZQ0W7Xo7Ox5F/OKOEqagHRbn82
-	 U35XBp6BWOWwOKu9fCwn63LCrpqTkqlskLUxqc50=
+	b=QR+7jdxdPFnh7FaNX0wTRlteUrSMVoscAGWJ2AcaTC2+z93USvitrYLs7gqhTNU+T
+	 TG8rE3OGgUDOwu3xn9YCfujWlOkDuAi6BDJbH6WNceB/7YdXdZnU/rEv+U+1iXLvhY
+	 S9ame7NqVJUwY+I9DT/RFrWn+rI+w2uhmPd9eTmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Mark Brown <broonie@kernel.org>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 380/499] spi: bcm2835: Do not call gpiod_put() on invalid descriptor
-Date: Tue,  8 Apr 2025 12:49:52 +0200
-Message-ID: <20250408104900.709769770@linuxfoundation.org>
+Subject: [PATCH 6.1 063/204] pinctrl: renesas: rza2: Fix missing of_node_put() call
+Date: Tue,  8 Apr 2025 12:49:53 +0200
+Message-ID: <20250408104822.206969248@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fainelli <florian.fainelli@broadcom.com>
+From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
 
-[ Upstream commit d6691010523fe1016f482a1e1defcc6289eeea48 ]
+[ Upstream commit abcdeb4e299a11ecb5a3ea0cce00e68e8f540375 ]
 
-If we are unable to lookup the chip-select GPIO, the error path will
-call bcm2835_spi_cleanup() which unconditionally calls gpiod_put() on
-the cs->gpio variable which we just determined was invalid.
+of_parse_phandle_with_fixed_args() requires its caller to
+call into of_node_put() on the node pointer from the output
+structure, but such a call is currently missing.
 
-Fixes: 21f252cd29f0 ("spi: bcm2835: reduce the abuse of the GPIO API")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250401224238.2854256-1-florian.fainelli@broadcom.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Call into of_node_put() to rectify that.
+
+Fixes: b59d0e782706 ("pinctrl: Add RZ/A2 pin and gpio controller")
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/20250305163753.34913-5-fabrizio.castro.jz@renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-bcm2835.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pinctrl/renesas/pinctrl-rza2.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index 0d1aa65924846..06a81727d74dd 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -1162,7 +1162,8 @@ static void bcm2835_spi_cleanup(struct spi_device *spi)
- 				 sizeof(u32),
- 				 DMA_TO_DEVICE);
+diff --git a/drivers/pinctrl/renesas/pinctrl-rza2.c b/drivers/pinctrl/renesas/pinctrl-rza2.c
+index 12126e30dc20f..2d6072e9f5a87 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rza2.c
++++ b/drivers/pinctrl/renesas/pinctrl-rza2.c
+@@ -252,6 +252,8 @@ static int rza2_gpio_register(struct rza2_pinctrl_priv *priv)
+ 		return ret;
+ 	}
  
--	gpiod_put(bs->cs_gpio);
-+	if (!IS_ERR(bs->cs_gpio))
-+		gpiod_put(bs->cs_gpio);
- 	spi_set_csgpiod(spi, 0, NULL);
- 
- 	kfree(target);
++	of_node_put(of_args.np);
++
+ 	if ((of_args.args[0] != 0) ||
+ 	    (of_args.args[1] != 0) ||
+ 	    (of_args.args[2] != priv->npins)) {
 -- 
 2.39.5
 
