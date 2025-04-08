@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-131641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9C9A80BCF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:21:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2429FA80745
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:36:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 086FB886C15
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 856987B0EB0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:31:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC72B27BF9A;
-	Tue,  8 Apr 2025 12:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BFDA26A1B6;
+	Tue,  8 Apr 2025 12:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glJdQzYS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lX3w+iJy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B10127BF90;
-	Tue,  8 Apr 2025 12:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0852E2063FD;
+	Tue,  8 Apr 2025 12:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116945; cv=none; b=FAhvzxkhx81qERq33gxf9xs+0vgAIrCjhO/xIzGYdoIvET3Pl8XFYBZgBaLVoSdZp/g+RVzHZLF/KE57lrKSGNxCsBwlLZDP7ti6nAYMLNBmO3515w8y3fhfuX5Ol8zj3bu/0daRspr8wSEMm40G4C0B/zpmF2x1GFz2kOCJkBI=
+	t=1744115349; cv=none; b=tsym3Jr1HethMIUV7lKx5wXn8SuHoiyiarcTE07dF9o0XfEprt2B7RxnyNpgrug1DWVZarmjJMHbbSiDICcJPGC3IEKVivzs3B1+T0UOkU9zq5V+Drw7nUACoWjtwxxerw/Vk04z4Ra2ES77IunB06qlp9Cb0lYk/camWMEe8eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116945; c=relaxed/simple;
-	bh=6NRIF0bqW2Xwly1+JkbDb/l0MXSAqqwt9omBJ1IJGRI=;
+	s=arc-20240116; t=1744115349; c=relaxed/simple;
+	bh=3nZE6NyblFjYWe1hIQ0gsKQrtJu0mtk5GgHyWL1ecZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CIaZ3E6X6LAjpb89YjM15vWejyPcpnj9uGAZjrM+fCiAnFd/wVN6kwJ8mKrpEBPGQ5Frv04Y7bPrJKm7NVXrSueFsgMS9HJk6q7smUeSBO0WzRwsdO1DrUwFOXU7yyO0LDe/n+Vxz2uaErEIwXtoS9YwR0ju1Ayl0EJw7eWNcZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=glJdQzYS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE0F6C4CEEB;
-	Tue,  8 Apr 2025 12:55:44 +0000 (UTC)
+	 MIME-Version; b=U4rXIjTQRaooTcYlM86qkL8Ltx1Uno9OpAJCXw4zt2+dPpBgP8gSun63HaPclkUEquk4W9zhLjBRK4sjmuMGSK1K/WkpUoMLCVcEiPaF6V15KIiNRP37icRLGlJe/euMYu2NbsBoE3pJwVL3xCf5QSxpQrFVxcYVcmuCu2eEDng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lX3w+iJy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 858BAC4CEE5;
+	Tue,  8 Apr 2025 12:29:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116945;
-	bh=6NRIF0bqW2Xwly1+JkbDb/l0MXSAqqwt9omBJ1IJGRI=;
+	s=korg; t=1744115348;
+	bh=3nZE6NyblFjYWe1hIQ0gsKQrtJu0mtk5GgHyWL1ecZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=glJdQzYSiEWOEf9JEmyzbY2JHma0mBUw/wxohYgC3FSKK/TOb61Q5pbZos0oV2S5Y
-	 0SQBDYfst77cAxgKeR0j3xNP95qXoOQSuV8xB2pgnPUZCqlXM3TEyOaISj1gHajH5n
-	 J/ILaq4jG7LXdoUNn/JZ4oenIKO4eJOl7AJN9ZBI=
+	b=lX3w+iJyIh3C0ElkA4JRSBtB7uUx2DSd/cVE3YplV9Qy4dNPT6oVLhyR4ATl4QH37
+	 2P/bQFy8rN+uIyoC2AmpR7SJ47wha2xZNHD/vgio4docfKwyj1MeZfO3toULZyQaB7
+	 LclRfXy+jnAupxwi1uzx9Tf8mFPMB6ZKCO1sXiwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+53ed3a6440173ddbf499@syzkaller.appspotmail.com,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 327/423] netfilter: nf_tables: dont unregister hook when table is dormant
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>
+Subject: [PATCH 6.13 441/499] KVM: x86: block KVM_CAP_SYNC_REGS if guest state is protected
 Date: Tue,  8 Apr 2025 12:50:53 +0200
-Message-ID: <20250408104853.437804532@linuxfoundation.org>
+Message-ID: <20250408104902.226403506@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-[ Upstream commit 688c15017d5cd5aac882400782e7213d40dc3556 ]
+commit 74c1807f6c4feddb3c3cb1056c54531d4adbaea6 upstream.
 
-When nf_tables_updchain encounters an error, hook registration needs to
-be rolled back.
+KVM_CAP_SYNC_REGS does not make sense for VMs with protected guest state,
+since the register values cannot actually be written.  Return 0
+when using the VM-level KVM_CHECK_EXTENSION ioctl, and accordingly
+return -EINVAL from KVM_RUN if the valid/dirty fields are nonzero.
 
-This should only be done if the hook has been registered, which won't
-happen when the table is flagged as dormant (inactive).
+However, on exit from KVM_RUN userspace could have placed a nonzero
+value into kvm_run->kvm_valid_regs, so check guest_state_protected
+again and skip store_regs() in that case.
 
-Just move the assignment into the registration block.
-
-Reported-by: syzbot+53ed3a6440173ddbf499@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=53ed3a6440173ddbf499
-Fixes: b9703ed44ffb ("netfilter: nf_tables: support for adding new devices to an existing netdev chain")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 517987e3fb19 ("KVM: x86: add fields to struct kvm_arch for CoCo features")
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <20250306202923.646075-1-pbonzini@redhat.com>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kvm/x86.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index eb3a6f96b094d..bdee187bc5dd4 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -2732,11 +2732,11 @@ static int nf_tables_updchain(struct nft_ctx *ctx, u8 genmask, u8 policy,
- 			err = nft_netdev_register_hooks(ctx->net, &hook.list);
- 			if (err < 0)
- 				goto err_hooks;
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -4573,6 +4573,11 @@ static bool kvm_is_vm_type_supported(uns
+ 	return type < 32 && (kvm_caps.supported_vm_types & BIT(type));
+ }
+ 
++static inline u32 kvm_sync_valid_fields(struct kvm *kvm)
++{
++	return kvm && kvm->arch.has_protected_state ? 0 : KVM_SYNC_X86_VALID_FIELDS;
++}
 +
-+			unregister = true;
- 		}
+ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+ {
+ 	int r = 0;
+@@ -4681,7 +4686,7 @@ int kvm_vm_ioctl_check_extension(struct
+ 		break;
+ #endif
+ 	case KVM_CAP_SYNC_REGS:
+-		r = KVM_SYNC_X86_VALID_FIELDS;
++		r = kvm_sync_valid_fields(kvm);
+ 		break;
+ 	case KVM_CAP_ADJUST_CLOCK:
+ 		r = KVM_CLOCK_VALID_FLAGS;
+@@ -11466,6 +11471,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_v
+ {
+ 	struct kvm_queued_exception *ex = &vcpu->arch.exception;
+ 	struct kvm_run *kvm_run = vcpu->run;
++	u32 sync_valid_fields;
+ 	int r;
+ 
+ 	r = kvm_mmu_post_init_vm(vcpu->kvm);
+@@ -11511,8 +11517,9 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_v
+ 		goto out;
  	}
  
--	unregister = true;
--
- 	if (nla[NFTA_CHAIN_COUNTERS]) {
- 		if (!nft_is_base_chain(chain)) {
- 			err = -EOPNOTSUPP;
--- 
-2.39.5
-
+-	if ((kvm_run->kvm_valid_regs & ~KVM_SYNC_X86_VALID_FIELDS) ||
+-	    (kvm_run->kvm_dirty_regs & ~KVM_SYNC_X86_VALID_FIELDS)) {
++	sync_valid_fields = kvm_sync_valid_fields(vcpu->kvm);
++	if ((kvm_run->kvm_valid_regs & ~sync_valid_fields) ||
++	    (kvm_run->kvm_dirty_regs & ~sync_valid_fields)) {
+ 		r = -EINVAL;
+ 		goto out;
+ 	}
+@@ -11570,7 +11577,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_v
+ 
+ out:
+ 	kvm_put_guest_fpu(vcpu);
+-	if (kvm_run->kvm_valid_regs)
++	if (kvm_run->kvm_valid_regs && likely(!vcpu->arch.guest_state_protected))
+ 		store_regs(vcpu);
+ 	post_kvm_run_save(vcpu);
+ 	kvm_vcpu_srcu_read_unlock(vcpu);
 
 
 
