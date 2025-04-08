@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-131568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C68A9A80AF2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:11:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E79AA80711
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D41E4E7C21
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E25884C212E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:28:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D412C276057;
-	Tue,  8 Apr 2025 12:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DA026988C;
+	Tue,  8 Apr 2025 12:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQpzvq/+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wg17awPP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9251B26A0E0;
-	Tue,  8 Apr 2025 12:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2834207E14;
+	Tue,  8 Apr 2025 12:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116747; cv=none; b=lIrVHPI7jt6FFsclQ6lO2i4YQV3GaibL7xew12UoL9y6p1g8LUbluSO+YNbQJ6x2aUudP33ZjMQGg8KeC+c9JwMcAjPrCxUItuaxk+I6chxJKrQnY7pRIzz1dKtBgKWvYdFFRupQCzz7Wl3k4/tReJA3mrV9MMkcoO2wx7WXqs8=
+	t=1744115151; cv=none; b=u+VehJQs8yaVXWN5/IKOaQPwVWqwb4ytkiJ6CIOFMrQ/CF/X/NJ3/7Jb1LmsOe6PWj3l+hgVd50KzutiZ8ekMlhX4Cpi0C1CvylVtVIxf8PAmf0E1B+v8gsbJmmxwM20ro4udlkNrEAxbvdZ9Va2xIlksrtFk60UcYafRorwLGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116747; c=relaxed/simple;
-	bh=bhaUW8cI5SeeAj1+cXU8wsquJjbkcR854bzMCqnYqNk=;
+	s=arc-20240116; t=1744115151; c=relaxed/simple;
+	bh=BVwLT77x7m0uGLpZANJtCtM1ztOc9wyyMrKppp21euU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N39uOelow1nkT928BZFRpm93I3gTIcbfewpNxACSkAqMvK7sj8p7WO1nxHTDP8lr1KoE9v4sUFobWZNFw44X1DpYfAQA87W55mudVh3vrjsPALrsrDnAHnHZPmd8R8szWWjZ+LqiNPN852LNk8iBX1ZQLxhcwa/8Ow6t2GOgrNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQpzvq/+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F48C4CEEA;
-	Tue,  8 Apr 2025 12:52:26 +0000 (UTC)
+	 MIME-Version; b=ShJ8UwNVozJwLui+J566PoHiURsrV/J3ZlNdBl0oK/0m+8R2OIUrukJ/L0CkPOAgtjsFupDVN3Kiux1N4mCQqm36LqMqYkRjcx6IF6Ee76UxpxYTG2ND/Gdo7fBOz2QNVcVmVQ1ZW7Zc6ZHyd1v7uBnrhmW8Tc+mbqv4cCshkiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wg17awPP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A385C4CEE5;
+	Tue,  8 Apr 2025 12:25:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116747;
-	bh=bhaUW8cI5SeeAj1+cXU8wsquJjbkcR854bzMCqnYqNk=;
+	s=korg; t=1744115150;
+	bh=BVwLT77x7m0uGLpZANJtCtM1ztOc9wyyMrKppp21euU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NQpzvq/+ZEwrK5AhSI34qqgByfvbg5VPdPoBTHxLRbi9dbcPHcPZYf69HxHSyStjP
-	 K+mR5QuDJEcCE+Fz2cmVcaGadt0Cz19w2qMYyVYoDfZ9cUK78iLeoOc0Q8SWexBELg
-	 52yCP4CcR7ZFXS83LiTNMTMtaBLBn8FEcaEgXywI=
+	b=wg17awPP2lyLiJCZQV4Oxt8o2SzFWXz6i4k8b7BlknHHEgwPm/P3H8DoxNa+weabF
+	 +VUGNB58MCvG6UPwQQKkgL8Q6+afM+EOZ80wtHBL8gWKuU8FwY1i/ZCIXDWG2d8U4/
+	 /Z5F+fLCyHA46ForYOTcAY5Stxyxwe4zonXTAShw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Wetzel <Alexander@wetzel-home.de>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 253/423] wifi: mac80211: Cleanup sta TXQs on flush
+Subject: [PATCH 6.13 367/499] ALSA: hda/realtek: Fix built-in mic breakage on ASUS VivoBook X515JA
 Date: Tue,  8 Apr 2025 12:49:39 +0200
-Message-ID: <20250408104851.633930334@linuxfoundation.org>
+Message-ID: <20250408104900.382217575@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Wetzel <Alexander@wetzel-home.de>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 5b999006e35ea9c11116ddff7e375b256421d0af ]
+[ Upstream commit 84c3c08f5a6c2e2209428b76156bcaf349c3a62d ]
 
-Drop the sta TXQs on flush when the drivers is not supporting
-flush.
+ASUS VivoBook X515JA with PCI SSID 1043:14f2 also hits the same issue
+as other VivoBook model about the mic pin assignment, and the same
+workaround is required to apply ALC256_FIXUP_ASUS_MIC_NO_PRESENCE
+quirk.
 
-ieee80211_set_disassoc() tries to clean up everything for the sta.
-But it ignored queued frames in the sta TX queues when the driver
-isn't supporting the flush driver ops.
-
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
-Link: https://patch.msgid.link/20250204123129.9162-1-Alexander@wetzel-home.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 3b4309546b48 ("ALSA: hda: Fix headset detection failure due to unstable sort")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219902
+Link: https://patch.msgid.link/20250326152205.26733-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/util.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 2b6e8e7307ee5..a98ae563613c0 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -685,7 +685,7 @@ void __ieee80211_flush_queues(struct ieee80211_local *local,
- 			      struct ieee80211_sub_if_data *sdata,
- 			      unsigned int queues, bool drop)
- {
--	if (!local->ops->flush)
-+	if (!local->ops->flush && !drop)
- 		return;
- 
- 	/*
-@@ -712,7 +712,8 @@ void __ieee80211_flush_queues(struct ieee80211_local *local,
- 		}
- 	}
- 
--	drv_flush(local, sdata, queues, drop);
-+	if (local->ops->flush)
-+		drv_flush(local, sdata, queues, drop);
- 
- 	ieee80211_wake_queues_by_reason(&local->hw, queues,
- 					IEEE80211_QUEUE_STOP_REASON_FLUSH,
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 17bdacf222441..834f3bba21181 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10707,6 +10707,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1493, "ASUS GV601VV/VU/VJ/VQ/VI", ALC285_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x14d3, "ASUS G614JY/JZ/JG", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x14e3, "ASUS G513PI/PU/PV", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x1043, 0x14f2, "ASUS VivoBook X515JA", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x1503, "ASUS G733PY/PZ/PZV/PYV", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1517, "Asus Zenbook UX31A", ALC269VB_FIXUP_ASUS_ZENBOOK_UX31A),
+ 	SND_PCI_QUIRK(0x1043, 0x1533, "ASUS GV302XA/XJ/XQ/XU/XV/XI", ALC287_FIXUP_CS35L41_I2C_2),
 -- 
 2.39.5
 
