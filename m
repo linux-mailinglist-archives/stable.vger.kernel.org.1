@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-131560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3270FA80ABB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:09:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7671A808C6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:48:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0E941BC1223
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DA608A3569
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 418B226B080;
-	Tue,  8 Apr 2025 12:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02F726A08C;
+	Tue,  8 Apr 2025 12:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDtx0oW0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2ximI9Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37E7269D03;
-	Tue,  8 Apr 2025 12:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E77267F4F;
+	Tue,  8 Apr 2025 12:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116726; cv=none; b=jqJNh7H9F45cxjj3Dyp8cdkVRXc8VlpfGC3Kb6V31zT/uxGrFPKKwRoG4k1jSkf0dkLCKVLJ2Q5g9nAXGHNVJMxyVzA+89d6MNpCMKbEZTtoCM0FLX8fISkUlenLyz0/zmIm/dAGu9aEV1SiHyw1RlF16zEq4dV2BMNdDx7Kt18=
+	t=1744115544; cv=none; b=OzKicHBpcjDu1qF6A1wYDxe7Y5xxJKRVGL7/VnlYdSDxbnOuzs2Tfyblv2zrHXzilkyo3Vt76zhrd+W9GSNfHbUOS3IMZRZc6fMm//wH/fm3i0PXiurOOeAb/4oqPjp7pi4e9CDXStD5jfwwMiTue1KWXUO8Zb2Tqnj0pBT3nAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116726; c=relaxed/simple;
-	bh=Jz0fnuvDcRGHFDLuSi55+3d9gS+Mw1ousAjTxKrjMaM=;
+	s=arc-20240116; t=1744115544; c=relaxed/simple;
+	bh=+qg2zHkyX5NUE+z1H9K0e5T0E5cADtAOuuKe3gtLbuA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EYT7m054fmgEgV5XLBuTe+BtndH/VtDSFVd9VPKK52SRwYrwScq7ZVR+UjXyus9bBDVeNxPyCV2GCKhSRroiLwbHjZL1PXt4dsKaCMStgIHnJsnO0Qnn/rzphX0wvDAO73L44JP7QjfILFHzci2pZk5CbSBL+ZGSbyraa5N8xAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LDtx0oW0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8496BC4CEE5;
-	Tue,  8 Apr 2025 12:52:05 +0000 (UTC)
+	 MIME-Version; b=U4m1fhwTbXM8Ikhaqr2Kcmt8Y+AGizONTOLc/woa/D/wSwZkzv4yfc7JUqpANxk17FEOiF02tcmR+vdyw+wfDNCf48DGG7Dza650mPNv52VVPGnyOYCai7jaSX0nWIlQF0ZZuSZXClKnqqHNcBJQfe06XIsHbrXNIwmGKrL8ubA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2ximI9Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1BE9C4CEE5;
+	Tue,  8 Apr 2025 12:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116725;
-	bh=Jz0fnuvDcRGHFDLuSi55+3d9gS+Mw1ousAjTxKrjMaM=;
+	s=korg; t=1744115544;
+	bh=+qg2zHkyX5NUE+z1H9K0e5T0E5cADtAOuuKe3gtLbuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LDtx0oW0Ir4Pb8JsT0GmDEH7kRrempFyS41QdZNlB2OLfItJprYaAeUQJfnjtoNu4
-	 QX5h7JFFFrKmDTPEt9ylOO+dtsxSSy4FRudvneSRdTl4SSxxGw4B/ptHBhpQazKnGJ
-	 I+mr/MHb6UNmW4yqvEnQDzG+GfbhQ7iPs0pOEKGU=
+	b=c2ximI9QGFq7FdRVIO3SilUppW3iR4c6+M3kAcKhA+/+5ma/JrVCQfxLPadGx5hgl
+	 998gdaM8pfJ4sXkTfKGUNZVaxG36I/5L7nhDfj1RiFHqUmkDJKepXpLGBpR1VsF1rT
+	 3kYb2kaiLGvNnvKCGu1DUvI1F01789UEOmazOGCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Gary Wang <gary.c.wang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 219/423] staging: vchiq_arm: Fix possible NPR of keep-alive thread
+Subject: [PATCH 6.1 015/204] EDAC/ie31200: Fix the error path order of ie31200_init()
 Date: Tue,  8 Apr 2025 12:49:05 +0200
-Message-ID: <20250408104850.829380038@linuxfoundation.org>
+Message-ID: <20250408104820.764539221@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-[ Upstream commit 3db89bc6d973e2bcaa852f6409c98c228f39a926 ]
+[ Upstream commit 231e341036d9988447e3b3345cf741a98139199e ]
 
-In case vchiq_platform_conn_state_changed() is never called or fails before
-driver removal, ka_thread won't be a valid pointer to a task_struct. So
-do the necessary checks before calling kthread_stop to avoid a crash.
+The error path order of ie31200_init() is incorrect, fix it.
 
-Fixes: 863a756aaf49 ("staging: vc04_services: vchiq_core: Stop kthreads on vchiq module unload")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20250309125014.37166-3-wahrenst@gmx.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 709ed1bcef12 ("EDAC/ie31200: Fallback if host bridge device is already initialized")
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Tested-by: Gary Wang <gary.c.wang@intel.com>
+Link: https://lore.kernel.org/r/20250310011411.31685-4-qiuxu.zhuo@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/edac/ie31200_edac.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-index ecf6e9635a10b..97787002080a1 100644
---- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-+++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-@@ -1786,7 +1786,8 @@ static void vchiq_remove(struct platform_device *pdev)
- 	kthread_stop(mgmt->state.slot_handler_thread);
+diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
+index 92714dd88b3f6..56be8ef40f376 100644
+--- a/drivers/edac/ie31200_edac.c
++++ b/drivers/edac/ie31200_edac.c
+@@ -617,7 +617,7 @@ static int __init ie31200_init(void)
  
- 	arm_state = vchiq_platform_get_arm_state(&mgmt->state);
--	kthread_stop(arm_state->ka_thread);
-+	if (!IS_ERR_OR_NULL(arm_state->ka_thread))
-+		kthread_stop(arm_state->ka_thread);
+ 	pci_rc = pci_register_driver(&ie31200_driver);
+ 	if (pci_rc < 0)
+-		goto fail0;
++		return pci_rc;
+ 
+ 	if (!mci_pdev) {
+ 		ie31200_registered = 0;
+@@ -628,11 +628,13 @@ static int __init ie31200_init(void)
+ 			if (mci_pdev)
+ 				break;
+ 		}
++
+ 		if (!mci_pdev) {
+ 			edac_dbg(0, "ie31200 pci_get_device fail\n");
+ 			pci_rc = -ENODEV;
+-			goto fail1;
++			goto fail0;
+ 		}
++
+ 		pci_rc = ie31200_init_one(mci_pdev, &ie31200_pci_tbl[i]);
+ 		if (pci_rc < 0) {
+ 			edac_dbg(0, "ie31200 init fail\n");
+@@ -640,12 +642,12 @@ static int __init ie31200_init(void)
+ 			goto fail1;
+ 		}
+ 	}
+-	return 0;
+ 
++	return 0;
+ fail1:
+-	pci_unregister_driver(&ie31200_driver);
+-fail0:
+ 	pci_dev_put(mci_pdev);
++fail0:
++	pci_unregister_driver(&ie31200_driver);
+ 
+ 	return pci_rc;
  }
- 
- static struct platform_driver vchiq_driver = {
 -- 
 2.39.5
 
