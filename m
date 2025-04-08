@@ -1,55 +1,68 @@
-Return-Path: <stable+bounces-129694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 658D8A800F8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3916EA8038F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:59:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA58A3B5A21
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:31:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE04B3B6398
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75AAB2690D0;
-	Tue,  8 Apr 2025 11:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A8126983B;
+	Tue,  8 Apr 2025 11:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tqF8rE/T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xenm+82u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3138226A1DD;
-	Tue,  8 Apr 2025 11:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662462698BE;
+	Tue,  8 Apr 2025 11:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111730; cv=none; b=MlNKjidRjZC+GCB5xS9Fm1YRRmaO7oF73a9+RfrWEyDuCB4Dv4zozEJIzsquoshZL73SQ7V7Nn3CHokVWJClCnQ6F1cz/9yDdzkP+ownSnRkmUZfAGdUY2BJ/6p6O5lZGPJjTY0s88H0hZNezxiydqQxNgl6Dvy1JTHyuqnPQgY=
+	t=1744113090; cv=none; b=mLHlSjdxESw2awuDkIP7/6u6BqfQxJ4mKRGYxMP7eVfIHMq9hnnwIrcaT/7j20jSrlrPy48MeptLP7yNM4RbXyhj5S+pqfxKmDPVkr0j8VLcgxxsCetuqgICeH2qRvI/CYe7xxIHSHbciXbZhADEYfNXziWrh92+PNpvAWPIvbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111730; c=relaxed/simple;
-	bh=QzrBVofYWspYZapMDqBCV58nUj9DZpemexFm5MDawCo=;
+	s=arc-20240116; t=1744113090; c=relaxed/simple;
+	bh=yO5PRmpTHrPnPF7Eaps0Prm2n15iHpSmiKIhZXiPiZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jEQ0x7Ddr/HJUH4Q4xDZTRMN6LuKjAIA8tEtUdSl/xuGnTckX/akq1dy+a99FDBD+KTldAqYYhUa3jy0vFM/f3cQ4iImFmxuT/bUbrBvZn7alsUK2ekouCGgTpOWVcZjiWB8rnyzhn+u87J0EU7z2z5Il5CncU9ZEvnhQFVtZZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tqF8rE/T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E45FC4CEE5;
-	Tue,  8 Apr 2025 11:28:49 +0000 (UTC)
+	 MIME-Version; b=BZ6OZ4VE01rrnWT21iiJKZaylhfw9FDWSZk8+TeBMFL76MqNxeypvnP6nINsf8DkKOEz460fQcN4h5fCGB5QfvMSiMs4FlEKbcEGD+XRzJydS7/wPLBy/UcN602ZgIyGxxcYGT+4FFZLjZWkDI5a5CwbEJlS1orv41l8ERVo+80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xenm+82u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64592C4CEE5;
+	Tue,  8 Apr 2025 11:51:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111730;
-	bh=QzrBVofYWspYZapMDqBCV58nUj9DZpemexFm5MDawCo=;
+	s=korg; t=1744113089;
+	bh=yO5PRmpTHrPnPF7Eaps0Prm2n15iHpSmiKIhZXiPiZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tqF8rE/TwIx9FF5zWoED9FurI0lQ+8lg0YIa6B3cWik2uRQ5oOtPtw73v7mMakCyb
-	 sni3tM/hcEppkJxFA6otu5hWWXmpEISu03aHRUJyPLn6aHLRtleL9U0G7bbwLjXQGg
-	 5/zXseJQ0He6fvJ6ows+jhG0h25QPKaQuqmmNT5g=
+	b=xenm+82uo4wO7ct5rvmgtudMXl6QpoNLeTSkf+Pc3p5wSOptSPElt0TrqyVPHQUdO
+	 /HtCV+jNqsFXz5+Xvq9QSDDzm5h2O1z0u0yYkB5xJ+bmwhZXfr+qqI9dgWZcCBNaQE
+	 ox7T58/cZfU861eM3F+t1Oo1neW6ruV9/OS3Xe5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	"Chang S. Bae" <chang.seok.bae@intel.com>,
+	Chao Gao <chao.gao@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	David Woodhouse <dwmw2@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 537/731] tty: n_tty: use uint for space returned by tty_write_room()
+Subject: [PATCH 6.6 023/268] x86/fpu/xstate: Fix inconsistencies in guest FPU xfeatures
 Date: Tue,  8 Apr 2025 12:47:14 +0200
-Message-ID: <20250408104926.767420578@linuxfoundation.org>
+Message-ID: <20250408104829.132596608@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +74,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Chao Gao <chao.gao@intel.com>
 
-[ Upstream commit d97aa066678bd1e2951ee93db9690835dfe57ab6 ]
+[ Upstream commit dda366083e5ff307a4a728757db874bbfe7550be ]
 
-tty_write_room() returns an "unsigned int". So in case some insane
-driver (like my tty test driver) returns (legitimate) UINT_MAX from its
-tty_operations::write_room(), n_tty is confused on several places.
+Guest FPUs manage vCPU FPU states. They are allocated via
+fpu_alloc_guest_fpstate() and are resized in fpstate_realloc() when XFD
+features are enabled.
 
-For example, in process_output_block(), the result of tty_write_room()
-is stored into (signed) "int". So this UINT_MAX suddenly becomes -1. And
-that is extended to ssize_t and returned from process_output_block().
-This causes a write() to such a node to receive -EPERM (which is -1).
+Since the introduction of guest FPUs, there have been inconsistencies in
+the kernel buffer size and xfeatures:
 
-Fix that by using proper "unsigned int" and proper "== 0" test. And
-return 0 constant directly in that "if", so that it is immediately clear
-what is returned ("space" equals to 0 at that point).
+ 1. fpu_alloc_guest_fpstate() uses fpu_user_cfg since its introduction. See:
 
-Similarly for process_output() and __process_echoes().
+    69f6ed1d14c6 ("x86/fpu: Provide infrastructure for KVM FPU cleanup")
+    36487e6228c4 ("x86/fpu: Prepare guest FPU for dynamically enabled FPU features")
 
-Note this does not fix any in-tree driver as of now.
+ 2. __fpstate_reset() references fpu_kernel_cfg to set storage attributes.
 
-If you want "Fixes: something", it would be commit 03b3b1a2405c ("tty:
-make tty_operations::write_room return uint"). I intentionally do not
-mark this patch by a real tag below.
+ 3. fpu->guest_perm uses fpu_kernel_cfg, affecting fpstate_realloc().
 
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20250317070046.24386-6-jirislaby@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+A recent commit in the tip:x86/fpu tree partially addressed the inconsistency
+between (1) and (3) by using fpu_kernel_cfg for size calculation in (1),
+but left fpu_guest->xfeatures and fpu_guest->perm still referencing
+fpu_user_cfg:
+
+  https://lore.kernel.org/all/20250218141045.85201-1-stanspas@amazon.de/
+
+  1937e18cc3cf ("x86/fpu: Fix guest FPU state buffer allocation size")
+
+The inconsistencies within fpu_alloc_guest_fpstate() and across the
+mentioned functions cause confusion.
+
+Fix them by using fpu_kernel_cfg consistently in fpu_alloc_guest_fpstate(),
+except for fields related to the UABI buffer. Referencing fpu_kernel_cfg
+won't impact functionalities, as:
+
+ 1. fpu_guest->perm is overwritten shortly in fpu_init_guest_permissions()
+    with fpstate->guest_perm, which already uses fpu_kernel_cfg.
+
+ 2. fpu_guest->xfeatures is solely used to check if XFD features are enabled.
+    Including supervisor xfeatures doesn't affect the check.
+
+Fixes: 36487e6228c4 ("x86/fpu: Prepare guest FPU for dynamically enabled FPU features")
+Suggested-by: Chang S. Bae <chang.seok.bae@intel.com>
+Signed-off-by: Chao Gao <chao.gao@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: Stefano Stabellini <sstabellini@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>
+Link: https://lore.kernel.org/r/20250317140613.1761633-1-chao.gao@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/n_tty.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ arch/x86/kernel/fpu/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/n_tty.c b/drivers/tty/n_tty.c
-index 5e9ca4376d686..94fa981081fdb 100644
---- a/drivers/tty/n_tty.c
-+++ b/drivers/tty/n_tty.c
-@@ -486,7 +486,8 @@ static int do_output_char(u8 c, struct tty_struct *tty, int space)
- static int process_output(u8 c, struct tty_struct *tty)
- {
- 	struct n_tty_data *ldata = tty->disc_data;
--	int	space, retval;
-+	unsigned int space;
-+	int retval;
+diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+index db200990b5569..aaed20f46be4c 100644
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -232,8 +232,8 @@ bool fpu_alloc_guest_fpstate(struct fpu_guest *gfpu)
+ 	fpstate->is_guest	= true;
  
- 	mutex_lock(&ldata->output_lock);
+ 	gfpu->fpstate		= fpstate;
+-	gfpu->xfeatures		= fpu_user_cfg.default_features;
+-	gfpu->perm		= fpu_user_cfg.default_features;
++	gfpu->xfeatures		= fpu_kernel_cfg.default_features;
++	gfpu->perm		= fpu_kernel_cfg.default_features;
  
-@@ -522,16 +523,16 @@ static ssize_t process_output_block(struct tty_struct *tty,
- 				    const u8 *buf, unsigned int nr)
- {
- 	struct n_tty_data *ldata = tty->disc_data;
--	int	space;
--	int	i;
-+	unsigned int space;
-+	int i;
- 	const u8 *cp;
- 
- 	mutex_lock(&ldata->output_lock);
- 
- 	space = tty_write_room(tty);
--	if (space <= 0) {
-+	if (space == 0) {
- 		mutex_unlock(&ldata->output_lock);
--		return space;
-+		return 0;
- 	}
- 	if (nr > space)
- 		nr = space;
-@@ -696,7 +697,7 @@ static int n_tty_process_echo_ops(struct tty_struct *tty, size_t *tail,
- static size_t __process_echoes(struct tty_struct *tty)
- {
- 	struct n_tty_data *ldata = tty->disc_data;
--	int	space, old_space;
-+	unsigned int space, old_space;
- 	size_t tail;
- 	u8 c;
- 
+ 	/*
+ 	 * KVM sets the FP+SSE bits in the XSAVE header when copying FPU state
 -- 
 2.39.5
 
