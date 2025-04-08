@@ -1,211 +1,286 @@
-Return-Path: <stable+bounces-129889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DBB5A80200
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8D40A8025F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1707B3B8948
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:37:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8C9C1896102
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B3B267B10;
-	Tue,  8 Apr 2025 11:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49C16267AF2;
+	Tue,  8 Apr 2025 11:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="4VqMUEGC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jO6EZrV4"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2071.outbound.protection.outlook.com [40.107.92.71])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9467D2676DE;
-	Tue,  8 Apr 2025 11:37:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112249; cv=fail; b=jvhV1L2X48NypJLvB8j4WH1GjWXmR1bcWehmg+Q2CPeOBnJCVGP9APFZT2iDoeEIkRTI0KFHVHY4M3Knw+lXR1hMSHKxQ5mHcK1lFTc4cxPAfIl9JvzsJ2UQsMetdLR3JcSVv1yO0nLzgP7Oen0+8PnjvMb/sN1SWoFX673wvyU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112249; c=relaxed/simple;
-	bh=87V7v/HcQcoI0/CklgVIMwPoJmAio6fFjpRphA28C0c=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=VDuZ2VjiDgiAzarSJU5m0Jk9F+R0wWTeKZqCiomGKZYXOpJVfEvCNGLE1i0698TEkeVjrGQ9NcS1Z+NXjrhdzhQfV3kVVNOcaGEpnt63yDMGjWSqQmIh0E7/VfkSXc1FOd22UE673mCdxZ3uuJf8Ur6L1gURoHHI0KcQZIOeJhU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=4VqMUEGC; arc=fail smtp.client-ip=40.107.92.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lUeGnlEWtam+JQNh8J0/nnHc4a0HEkN9XhvuttCcKM+pozU40DDWi9ylcS1/0eSVz96c0lpIpvTL6IOiTCNjGVolsKx0EoZK2Xpt/aeupfbKl7E1gfhvlqn0ApWxH4+Oz3GG9pU5AE9szJzkBjc4LPKgmHJH72ian1XRAw0BprTuyz7WO5ylcPXpTkpVDcnG8zv2iuCX4h+rsr2dlNTUj15nUoyLgD250jl6aI3QJ0x9wUn1rNgz1soNOOX2NJ04jRmN+MV1bCfy01TfBAkbssuHFdd5rBO0lsnzHU+1N/4L0dlj/1pQxq/O3Qw6p3yCh7xdNl+f27UfdrOnd/4Dmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2SR5LUd9wmw9minZVXH7D3MxjwGyk+Xhr57j+7ZwOuY=;
- b=Z30hiu2msp6nnzLTA+ZQWTXYeTtfCPy3P9gkjmi8WEaAbOZgzrYj3RqbLJzktWJ/ydJN3WZp7mIuDO14dyRWJvomfh5pv2+n1PjJ3Rt9D0DOIkyAAdsO8hveD+PcHA7blxEyQMyyi0NadEqtXsyyh7DMNK9/pSFEqvgF3FFOQMmG8suNdsR1HUQSMrMjt65nLW1X5/Y8jR21h8sgFFHqZRIMLgT+a6vSKufpx60Yo0rG2DIv+SZ5dtpKeGWJo1r9LXeeXi2HR3P1Amv/Qu6m+Aq6L3XWCHxdvXyph8cKi0O8a7FJjnp6u/Rj9iKGrbVystMg3H8JYwQwbGhMw/8Pig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2SR5LUd9wmw9minZVXH7D3MxjwGyk+Xhr57j+7ZwOuY=;
- b=4VqMUEGC0BUAN+tXtxz6hKdJTCqG0wEP5TQbX38YNw1CEWocec63XNQ0KEfhCWEuNhqkPWhwCTHyZAIAlDJnBzIUiK1n/QpdzWlTw4GHyYxVRk2s0MGBh11guAX7n8EkJe3080+Fo+ydHhh4W7s1DkmZxEk0GRM/iEYeeRtnyow=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by SJ1PR12MB6074.namprd12.prod.outlook.com (2603:10b6:a03:45f::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.34; Tue, 8 Apr
- 2025 11:37:24 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5%5]) with mapi id 15.20.8583.045; Tue, 8 Apr 2025
- 11:37:23 +0000
-Message-ID: <f8810b13-01d1-4615-b6e2-2e791c48b466@amd.com>
-Date: Tue, 8 Apr 2025 13:37:17 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [lvc-project] [PATCH] drm/amdgpu: check a user-provided number of
- BOs in list
-To: Fedor Pchelkin <pchelkin@ispras.ru>
-Cc: Denis Arefev <arefev@swemel.ru>, Alex Deucher
- <alexander.deucher@amd.com>, Simona Vetter <simona@ffwll.ch>,
- Andrey Grodzovsky <andrey.grodzovsky@amd.com>, lvc-project@linuxtesting.org,
- Chunming Zhou <david1.zhou@amd.com>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
- stable@vger.kernel.org, David Airlie <airlied@gmail.com>
-References: <20250408091755.10074-1-arefev@swemel.ru>
- <e6ccef21-3ca5-4b5a-b18a-3ba45859569c@amd.com>
- <bmdour3gw4tuwqgvvw764p4ot3nnltqm4e7n3edlbtpfazvp5c@cqe5dwgc66uy>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <bmdour3gw4tuwqgvvw764p4ot3nnltqm4e7n3edlbtpfazvp5c@cqe5dwgc66uy>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR0P281CA0166.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:b4::18) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311B2265CDF;
+	Tue,  8 Apr 2025 11:42:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744112582; cv=none; b=YUM/yS/QfQDcF2w7StlKAHZ6gz2oYRfdVI+ET410rkX4mT4U66oe0kZFbNSF5lWjJkSXMd4uC47kldrNd8RmzdVx5xaZ6uAIWqY2KMqwaAEcv7i0/16zjswnpcfkPVdo7OCa03YnfPXzAbDtOjjNe1rwI2fEZFohmb8GVDVpI4k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744112582; c=relaxed/simple;
+	bh=WmUuqs6CdHU6MXg0AnTGNtUxrHetnU+H455jvl6ZtX4=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=cA9ZGqb+syegHvpWOp2rOh11briASgWWCZytIerNIr1+kPPHonPmhs0twvAcYVO7muexqFFlECkmOiFFMSg+DbFID6XT6d7R91T2nckhQZRr9kVv0QenaBtwJyouGpFDsGZlHrhAqwzzy+lGhb+PoweHngQQhhHNW+ZbZGJO3CU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jO6EZrV4; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744112580; x=1775648580;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=WmUuqs6CdHU6MXg0AnTGNtUxrHetnU+H455jvl6ZtX4=;
+  b=jO6EZrV4aMOhdxczwbY7ktDxVNxZc5awWTlBUNtD/bi929TCSTjboOIf
+   6GIV8MJGuKT9sk3F55GsCwhdIZ8qoIo0MIoe7CfzhNK5hmPw5Y9ANme0O
+   EeFBYHo0NA1AhGT3X4g7AsaWYuF14MbcSTfut/VmLQBJ0xzAjfxXSvYwE
+   daIAxwg1nXyfPiQo8LqZGA/BsPTj4/3K9XXZsX6nS15S1FlxgGngSqBWz
+   j8owiHjp1SRG4T+zslACeP60HSfCsiWkP9p3A7fI8lPl7nEmODwgPNTLj
+   1u5nkNvgMNb+RJobXobcggPIUS3dPQmEhcnyraU+MogWMWVkjcVwWpKi5
+   Q==;
+X-CSE-ConnectionGUID: eLbSPKHtSRqj4Xfy6lig6w==
+X-CSE-MsgGUID: ye75B30QTuqm3C0+x12TFQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="49336257"
+X-IronPort-AV: E=Sophos;i="6.15,198,1739865600"; 
+   d="scan'208";a="49336257"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2025 04:42:59 -0700
+X-CSE-ConnectionGUID: 8nKxi5wEQeqiVFGQp4ldlw==
+X-CSE-MsgGUID: A44sj+qEQPivZUYrdKaH2w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,198,1739865600"; 
+   d="scan'208";a="128754099"
+Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.244.125])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2025 04:42:56 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Tue, 8 Apr 2025 14:42:53 +0300 (EEST)
+To: Mario Limonciello <superm1@kernel.org>
+cc: mario.limonciello@amd.com, Shyam-sundar.S-k@amd.com, 
+    Hans de Goede <hdegoede@redhat.com>, Yijun Shen <Yijun.Shen@dell.com>, 
+    stable@vger.kernel.org, Yijun Shen <Yijun_Shen@Dell.com>, 
+    platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH v3] platform/x86: amd: pmf: Fix STT limits
+In-Reply-To: <20250407181915.1482450-1-superm1@kernel.org>
+Message-ID: <18b0780e-15bd-d186-d14b-74638e298055@linux.intel.com>
+References: <20250407181915.1482450-1-superm1@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|SJ1PR12MB6074:EE_
-X-MS-Office365-Filtering-Correlation-Id: cabfcbfe-f86f-43e8-6e52-08dd7691ba7f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?eDBsRlI5ZXcxSGNwR2F3V04zU3BYNHRENzZKV0hnb21hSzRHcWlEbUhUV1Bk?=
- =?utf-8?B?UlI1cWtlN2NpRnBKWWIzVjVvMjhJbHJYMlVNa1ROcklSSjhWSlFRdHJKbHc1?=
- =?utf-8?B?V2ZlbDB0YUxsMzVqektPb0NQZ3RxaDlRZHp1NkVLRzlXZk9jMWhTUlZNdmYz?=
- =?utf-8?B?d2FHTnN0bmk5d0FwdzV4YkhGTkVsUitJRmhOTUFoN244ak5rMllnUUx0MUxF?=
- =?utf-8?B?WWZlcDdvQy8yWnRZTUZtMGVkNmViVi9JQjBxTHdxM3VkL0xGNkxWd3ZDMkpk?=
- =?utf-8?B?RC9jUlZKaWJVVnNSU1owSU50c0J6aUhrbndOWVI4eCtCU1Z6UGgrMTREYjNp?=
- =?utf-8?B?Ui9QU1I2Q05MZXp1eWppbTRMMXFlR2VSY0lnRW5jL0VJUVovVVgvSmNIV3JX?=
- =?utf-8?B?QzZxOVFjN1RGQ0FrclNDQTJhK2d3dDN2SVNsNGlwWHB5WWpJVXF3aGR2dStI?=
- =?utf-8?B?UkVSYVRQZ1VLMGl5UFdySzlkUGc0WFRvdDdaMlFVd01qVGpXMWcrMElobVVM?=
- =?utf-8?B?NnNBd0VneDNpZGJ0QXYvSW1ueFg1NzdYd210STVPb0F0eHgxc0pxUXVyZk5a?=
- =?utf-8?B?ZGVGbExMZlpuZW1pUUJ2eVB0VFMrejlZM0JlV09FN2dhZ0ZVMnp1Q2lsTHZo?=
- =?utf-8?B?Tmo0dk1wbWhkTzhWUWYzYXc0aStKTXhSTm94MmgzOGYyZWtCT2k2NHpHMS9r?=
- =?utf-8?B?Mk42RDdBT2ZaejBpMUswNjlrVGkycStFcGR4WHBXMmJJZ09vamZBYmtKOGRH?=
- =?utf-8?B?dEpuZXpqMzhUUE1vemd1OHNFR2thU2V1VGFRV3JjWStJQmJqTEF1WFJlMVND?=
- =?utf-8?B?dXBwc3E4Ym03UEYyYjIwN1B4UzJPTjdDOTNLVUJPRTY1anBQU2R0eERFYUht?=
- =?utf-8?B?WjFYME1pMG1Tc3hTdEJ3L2t2dzhEWDE3RDF3ZkR1YVlKVThpQlRCbCtkWnFi?=
- =?utf-8?B?ckN2VTJJUmJZWjdDS1VoTzdhQjVQeUlWdG90SW1VTm54OVJpQWFuK1R1TkQv?=
- =?utf-8?B?ZkZKM25aOXdpZ01jTVc3YjJLL1QvREtoRXNPNHd5c0JJMEVMQUhpaXJZMXNL?=
- =?utf-8?B?VG1wM0w2WVE3NTIvRGJmVk5LdUdMU0x0emFRWEdBUGxEdzZNVDlBVisvbW43?=
- =?utf-8?B?eUhRWU0wNmYzaGhITERsL3N1YkZBYTFabzRVOWErYkJhSW9HcVBjdjBXTjJ2?=
- =?utf-8?B?R3JZSDRxWHluTGwvczM4VzN5a29ZUzNXTWk1SkJjS2lkcTQ5SXJlRHdkTkVI?=
- =?utf-8?B?dXl0RnBrREd6dC9Dem9ZQTFQd1FGVWwrS2V2STRhU3h2N3BqUFhEV2gwU1l6?=
- =?utf-8?B?K2w5UWx6UE9iQUFVQXlnWDIrVkR2azVKVXlkVTdlUlVzQVpPc0UydVdPL1Fp?=
- =?utf-8?B?dWtvQ2RqbzlxZFRkc3FOM0ZLaHhMV1FMdlFpZERHN05uR0J1TGtVT3FzQVVa?=
- =?utf-8?B?K00vMlpmdXFuazZ3MkMwclZGSnp3Sm4wVC9uQUlra2plVmNWMExIWU54ZjV0?=
- =?utf-8?B?SGNEcHhHVGtJRk1TWkJGdTlqcUNUaHpYSG05b3BqcHBqUndXQ1JFdm9CM1JO?=
- =?utf-8?B?dlo2Zldwenl6UUtVYjB4OGtBbXlPSC91OFhTMDJMZlJIdWU5VjRKNWZhTXNL?=
- =?utf-8?B?RlM0L1Z1U0doeFBuOWlJakg2Y3plRXlacGZqWktEelpkMXV0QklGb2ROQXRj?=
- =?utf-8?B?OFBsSms2ZXIvcDAyTk1hTFhmMC9lRUp6MlBPdzczS1VxNnQvQi81UGFOdlpO?=
- =?utf-8?B?TjF2VmlaVkFTVmFkNnRFUWZJc2diSTdDMnJDd1ZvOW5kTnN5TzhMWklKU1li?=
- =?utf-8?B?Tk9aZCtacWh2T09pRDVtNkRPRFR0R0RuMWxjSnpwblkvbHRoRjBSU3Y0eWhk?=
- =?utf-8?Q?n/td4oZir6bKq?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ck92U3hrUFBoQW9wNnZKSzFnTHVXNmRQU1JoMmlhVlRGR2k2LzVNSnBJUHRs?=
- =?utf-8?B?L1cxTmdINzNub2Myc3BCbm5UV0REaEs2S3V3R2RXRkRhMzhkclVISm85NmhF?=
- =?utf-8?B?aDJqUCt3WmdEK2N5SlcrWkkwTmdtUURGZEFtZ2kvWkNRU1JiZU9nM1k4eHla?=
- =?utf-8?B?R2tuMTNkQzcwZ0JkTm5ncHpQbjNZQ3Y5RzhNVGtmemt2ZkhodjlSQWlMQkJH?=
- =?utf-8?B?R2N5T1R4MVZ0YzhjVTJNWWo2Zkd6ZkU1bXRVSElXUUhHaVlOcHpsZEtlUkJV?=
- =?utf-8?B?azVxMjlzQjhkRHVuaW9hUjJpWTRKSXRza2FGdU42WnBxSXM4YmY3c2p0UEtO?=
- =?utf-8?B?dnRoaktCVHJuTHBTYWhpQ0tUS0VsT3RrY3ZpMmRpNnRpK3Fzam5hbml3M1cv?=
- =?utf-8?B?T1c3OWZXd0tkWTdaWldaeGEzWGZRL21aemc2dVBPVHpoaDZlZmphSElkVWJQ?=
- =?utf-8?B?bHZvaDMxcWJZK2ZwcjFvU0dpdXgxRDlHUHdIOVo1VWR1YTBlOFJWbjVqU3VI?=
- =?utf-8?B?aDJqTXEzMEhGbzdmRmU5TElvcVRKOFMxRmxIeW9CNHJDWEUyeERuY05IWmpX?=
- =?utf-8?B?dUpKS2lmM0xhOWZIeWVYWHR6cUFiT2NzVWdCWk9PVXVEWWlxekVwUnA0SGxt?=
- =?utf-8?B?cjczSllMb1p4SXVucFZyUnhXNkF5V3dmVXE3YWhJOEV0dlBOT2JjVTZyWm5U?=
- =?utf-8?B?eVpNZ2VPTGpIMDJBK0Rra1huZW51ZFRpMVRzT0RRb1kxZEZSZEdDdEhDT0Rk?=
- =?utf-8?B?U2dCOTZ6YUtGRHA5SS9hTmwwSDhpSW1IZUU1WkNTeUg5NlRsOWNNbklHZC9V?=
- =?utf-8?B?Wko5RExUeTRua0U2NExTdDFwUWcvd1ZieXVJZ3J4TjltR2l1VEdYZ09KK1RP?=
- =?utf-8?B?VXBLb0ZaZkJvaUFoWUtveEZHTkhaSTJ1UjBkSDZHRnNaWHZvVyt0SXdvNXdE?=
- =?utf-8?B?MkFBOUtCNkdFQnNpeC9VQlcwdnMxV1V0NWZaSlNiZmZ3NWRNYWRaNURSaUV1?=
- =?utf-8?B?UVdyZGV1VVVTNldJZHZ0VTdsMHhicm9TcXZ4VTRoWTRkNlNvT29Db1Q3SXNJ?=
- =?utf-8?B?UEpNL3djd2RjWDUwNTlqMCs0eDIwQXhKU2RtMjQ2S09aS1hkOEU1c2REWGZ6?=
- =?utf-8?B?VEtwZ0dOc3pVMzdWS05mNVl4eFZrSVcwTlhwTkUya2RqWTFpNzlyUlVmejVT?=
- =?utf-8?B?dzNQb05YdlBmOEtpMnFkM01NNldaemNCaGhsenF1M1UwVGFhT0c4blB3ZU1D?=
- =?utf-8?B?L1puajM5NEVoQnNjWnNQWnhORVJqODVkUFlYVytLM0NydGovK0JZSXJuQUQ5?=
- =?utf-8?B?VzYyM0Y4YmJHY1c0aEFaaFVHUlBpODFEVE8vOEw1V1gwaW52K2tTRWJFcEpW?=
- =?utf-8?B?elJWSWV2T0gycWxlcTJBU0Nld3B2cFc4TDhGa2lMZ09MU0dDZWNQLzduMkQx?=
- =?utf-8?B?S1FYSmxqVnI2ZHVHOHRvY3NJRkREZ2JSaW9OaTBiZHBCTUcrN0lud1U5bmxi?=
- =?utf-8?B?YkRDMnA0VjZnQXRJVGF4cFc5S3czczExMDFCOFljK29iMG5FZkVySnNnQXh6?=
- =?utf-8?B?YVBCQlRnRTE1UmJMand5QWZTL3ErcVhBWTFodkxsdFVaNFIwMEd3NjBEZzV6?=
- =?utf-8?B?RDVYaml0Zng0bCtaek10ZDJGeWpaQWFETEh4dTU3Y1M5NHFHSWppMDNJc1Ba?=
- =?utf-8?B?N2ZwYXRrY2t3dVpZM0wyL1ZyUDhUMTQ1MVRRd1Q5NFoyUGhhQU5Qa2ZFbmhQ?=
- =?utf-8?B?N0VXaDhkakpGU1lzUzdPQ0xWQnNkNEpvaW4ralNhdlZGVmNybVlNTU9BWVZn?=
- =?utf-8?B?ZEc3U3NlNFVXVDBLbHc2Zmk2SG1wSUdSWjVRN211dEltRVZ6NmtiWWY0bEMy?=
- =?utf-8?B?a1ZNd2xxZnVHeWoyTWlhTy9Ma3dPOVlYVlY0WWNHYUIyZjh5WEY2NWZwN0hw?=
- =?utf-8?B?dDRxS0h1Qm1xMjVNS2JrSDFhTUdpV1BJRDdNK2xNNml5eVpJWjd3ZHRURTdV?=
- =?utf-8?B?NGh4WTV2QkY0ZmYyYkhrcGhWME53dTA4amxPN05wQU9GOHQybmxZMXQrM0Iv?=
- =?utf-8?B?MFZ2ZWh0SFB4bHBRWFBLVVlQMCtTT1FWLzVBVjQvQnFMbWRjWXo5NS9JNnh3?=
- =?utf-8?Q?g4cDRBTuBeF4G8O88UAOf5pDg?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cabfcbfe-f86f-43e8-6e52-08dd7691ba7f
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2025 11:37:23.0792
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WyDnuBSVs3beNWpOXtn3djvJj1XPxSG5uQ55mE3OR+JOFIKDeM/4tJSHZGaxujer
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6074
+Content-Type: multipart/mixed; boundary="8323328-253956325-1744112573=:930"
 
-Am 08.04.25 um 11:39 schrieb Fedor Pchelkin:
-> On Tue, 08. Apr 11:26, Christian König wrote:
->> Am 08.04.25 um 11:17 schrieb Denis Arefev:
->>> The user can set any value to the variable ‘bo_number’, via the ioctl
->>> command DRM_IOCTL_AMDGPU_BO_LIST. This will affect the arithmetic
->>> expression ‘in->bo_number * in->bo_info_size’, which is prone to
->>> overflow. Add a valid value check.
->> As far as I can see that is already checked by kvmalloc_array().
->>
->> So adding this additional check manually is completely superfluous.
-> Note that in->bo_number is of type 'u32' while kvmalloc_array() checks for
-> an overflow in 'size_t', usually 64-bit.
->
-> So it looks possible to pass some large 32-bit number, then multiply it by
-> (comparatively small) in->bo_info_size and still remain in 64-bit bounds.
->
-> And later that would likely result in a WARNING in
->
-> void *__kvmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), gfp_t flags, int node)
-> {
-> ...
-> 	/* Don't even allow crazy sizes */
-> 	if (unlikely(size > INT_MAX)) {
-> 		WARN_ON_ONCE(!(flags & __GFP_NOWARN));
-> 		return NULL;
-> 	}
->
-> But the commit description lacks such details, I admit.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Yeah, so what? I'm perfectly aware that this can result in a warning, but that is just not something worth fixing.
+--8323328-253956325-1744112573=:930
+Content-Type: text/plain; charset=ISO-8859-15
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-Christian.
+On Mon, 7 Apr 2025, Mario Limonciello wrote:
+
+> From: Mario Limonciello <mario.limonciello@amd.com>
+>=20
+> On some platforms it has been observed that STT limits are not being
+> applied properly causing poor performance as power limits are set too low=
+=2E
+>=20
+> STT limits that are sent to the platform are supposed to be in Q8.8
+> format.  Convert them before sending.
+>=20
+> Reported-by: Yijun Shen <Yijun.Shen@dell.com>
+> Fixes: 7c45534afa443 ("platform/x86/amd/pmf: Add support for PMF Policy B=
+inary")
+> Cc: stable@vger.kernel.org
+> Tested-by: Yijun Shen <Yijun_Shen@Dell.com>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+
+Reviewed-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
+
+--
+ i.
+
+> ---
+> v3:
+>  * Add a helper with a generic name (so it can be easily be moved to libr=
+ary
+>    code in the future)
+> ---
+>  drivers/platform/x86/amd/pmf/auto-mode.c |  4 ++--
+>  drivers/platform/x86/amd/pmf/cnqf.c      |  8 ++++----
+>  drivers/platform/x86/amd/pmf/core.c      | 14 ++++++++++++++
+>  drivers/platform/x86/amd/pmf/pmf.h       |  1 +
+>  drivers/platform/x86/amd/pmf/sps.c       | 12 ++++++++----
+>  drivers/platform/x86/amd/pmf/tee-if.c    |  6 ++++--
+>  6 files changed, 33 insertions(+), 12 deletions(-)
+>=20
+> diff --git a/drivers/platform/x86/amd/pmf/auto-mode.c b/drivers/platform/=
+x86/amd/pmf/auto-mode.c
+> index 02ff68be10d01..1400ac70c52d1 100644
+> --- a/drivers/platform/x86/amd/pmf/auto-mode.c
+> +++ b/drivers/platform/x86/amd/pmf/auto-mode.c
+> @@ -120,9 +120,9 @@ static void amd_pmf_set_automode(struct amd_pmf_dev *=
+dev, int idx,
+>  =09amd_pmf_send_cmd(dev, SET_SPPT_APU_ONLY, false, pwr_ctrl->sppt_apu_on=
+ly, NULL);
+>  =09amd_pmf_send_cmd(dev, SET_STT_MIN_LIMIT, false, pwr_ctrl->stt_min, NU=
+LL);
+>  =09amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false,
+> -=09=09=09 pwr_ctrl->stt_skin_temp[STT_TEMP_APU], NULL);
+> +=09=09=09 fixp_q88_from_integer(pwr_ctrl->stt_skin_temp[STT_TEMP_APU]), =
+NULL);
+>  =09amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false,
+> -=09=09=09 pwr_ctrl->stt_skin_temp[STT_TEMP_HS2], NULL);
+> +=09=09=09 fixp_q88_from_integer(pwr_ctrl->stt_skin_temp[STT_TEMP_HS2]), =
+NULL);
+> =20
+>  =09if (is_apmf_func_supported(dev, APMF_FUNC_SET_FAN_IDX))
+>  =09=09apmf_update_fan_idx(dev, config_store.mode_set[idx].fan_control.ma=
+nual,
+> diff --git a/drivers/platform/x86/amd/pmf/cnqf.c b/drivers/platform/x86/a=
+md/pmf/cnqf.c
+> index bc8899e15c914..3cde8a5de64a9 100644
+> --- a/drivers/platform/x86/amd/pmf/cnqf.c
+> +++ b/drivers/platform/x86/amd/pmf/cnqf.c
+> @@ -81,10 +81,10 @@ static int amd_pmf_set_cnqf(struct amd_pmf_dev *dev, =
+int src, int idx,
+>  =09amd_pmf_send_cmd(dev, SET_SPPT, false, pc->sppt, NULL);
+>  =09amd_pmf_send_cmd(dev, SET_SPPT_APU_ONLY, false, pc->sppt_apu_only, NU=
+LL);
+>  =09amd_pmf_send_cmd(dev, SET_STT_MIN_LIMIT, false, pc->stt_min, NULL);
+> -=09amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false, pc->stt_skin_temp[STT=
+_TEMP_APU],
+> -=09=09=09 NULL);
+> -=09amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false, pc->stt_skin_temp[STT=
+_TEMP_HS2],
+> -=09=09=09 NULL);
+> +=09amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false,
+> +=09=09=09 fixp_q88_from_integer(pc->stt_skin_temp[STT_TEMP_APU]), NULL);
+> +=09amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false,
+> +=09=09=09 fixp_q88_from_integer(pc->stt_skin_temp[STT_TEMP_HS2]), NULL);
+> =20
+>  =09if (is_apmf_func_supported(dev, APMF_FUNC_SET_FAN_IDX))
+>  =09=09apmf_update_fan_idx(dev,
+> diff --git a/drivers/platform/x86/amd/pmf/core.c b/drivers/platform/x86/a=
+md/pmf/core.c
+> index a2cb2d5544f5b..5209996eba674 100644
+> --- a/drivers/platform/x86/amd/pmf/core.c
+> +++ b/drivers/platform/x86/amd/pmf/core.c
+> @@ -176,6 +176,20 @@ static void __maybe_unused amd_pmf_dump_registers(st=
+ruct amd_pmf_dev *dev)
+>  =09dev_dbg(dev->dev, "AMD_PMF_REGISTER_MESSAGE:%x\n", value);
+>  }
+> =20
+> +/**
+> + * fixp_q88_from_integer: Convert integer to Q8.8
+> + * @val: input value
+> + *
+> + * Converts an integer into binary fixed point format where 8 bits
+> + * are used for integer and 8 bits are used for the decimal.
+> + *
+> + * Return: unsigned integer converted to Q8.8 format
+> + */
+> +u32 fixp_q88_from_integer(u32 val)
+> +{
+> +=09return val << 8;
+> +}
+> +
+>  int amd_pmf_send_cmd(struct amd_pmf_dev *dev, u8 message, bool get, u32 =
+arg, u32 *data)
+>  {
+>  =09int rc;
+> diff --git a/drivers/platform/x86/amd/pmf/pmf.h b/drivers/platform/x86/am=
+d/pmf/pmf.h
+> index e6bdee68ccf34..2865e0a70b43d 100644
+> --- a/drivers/platform/x86/amd/pmf/pmf.h
+> +++ b/drivers/platform/x86/amd/pmf/pmf.h
+> @@ -777,6 +777,7 @@ int apmf_install_handler(struct amd_pmf_dev *pmf_dev)=
+;
+>  int apmf_os_power_slider_update(struct amd_pmf_dev *dev, u8 flag);
+>  int amd_pmf_set_dram_addr(struct amd_pmf_dev *dev, bool alloc_buffer);
+>  int amd_pmf_notify_sbios_heartbeat_event_v2(struct amd_pmf_dev *dev, u8 =
+flag);
+> +u32 fixp_q88_from_integer(u32 val);
+> =20
+>  /* SPS Layer */
+>  int amd_pmf_get_pprof_modes(struct amd_pmf_dev *pmf);
+> diff --git a/drivers/platform/x86/amd/pmf/sps.c b/drivers/platform/x86/am=
+d/pmf/sps.c
+> index d3083383f11fb..dfc5285b681f7 100644
+> --- a/drivers/platform/x86/amd/pmf/sps.c
+> +++ b/drivers/platform/x86/amd/pmf/sps.c
+> @@ -198,9 +198,11 @@ static void amd_pmf_update_slider_v2(struct amd_pmf_=
+dev *dev, int idx)
+>  =09amd_pmf_send_cmd(dev, SET_STT_MIN_LIMIT, false,
+>  =09=09=09 apts_config_store.val[idx].stt_min_limit, NULL);
+>  =09amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false,
+> -=09=09=09 apts_config_store.val[idx].stt_skin_temp_limit_apu, NULL);
+> +=09=09=09 fixp_q88_from_integer(apts_config_store.val[idx].stt_skin_temp=
+_limit_apu),
+> +=09=09=09 NULL);
+>  =09amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false,
+> -=09=09=09 apts_config_store.val[idx].stt_skin_temp_limit_hs2, NULL);
+> +=09=09=09 fixp_q88_from_integer(apts_config_store.val[idx].stt_skin_temp=
+_limit_hs2),
+> +=09=09=09 NULL);
+>  }
+> =20
+>  void amd_pmf_update_slider(struct amd_pmf_dev *dev, bool op, int idx,
+> @@ -217,9 +219,11 @@ void amd_pmf_update_slider(struct amd_pmf_dev *dev, =
+bool op, int idx,
+>  =09=09amd_pmf_send_cmd(dev, SET_STT_MIN_LIMIT, false,
+>  =09=09=09=09 config_store.prop[src][idx].stt_min, NULL);
+>  =09=09amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false,
+> -=09=09=09=09 config_store.prop[src][idx].stt_skin_temp[STT_TEMP_APU], NU=
+LL);
+> +=09=09=09=09 fixp_q88_from_integer(config_store.prop[src][idx].stt_skin_=
+temp[STT_TEMP_APU]),
+> +=09=09=09=09 NULL);
+>  =09=09amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false,
+> -=09=09=09=09 config_store.prop[src][idx].stt_skin_temp[STT_TEMP_HS2], NU=
+LL);
+> +=09=09=09=09 fixp_q88_from_integer(config_store.prop[src][idx].stt_skin_=
+temp[STT_TEMP_HS2]),
+> +=09=09=09=09 NULL);
+>  =09} else if (op =3D=3D SLIDER_OP_GET) {
+>  =09=09amd_pmf_send_cmd(dev, GET_SPL, true, ARG_NONE, &table->prop[src][i=
+dx].spl);
+>  =09=09amd_pmf_send_cmd(dev, GET_FPPT, true, ARG_NONE, &table->prop[src][=
+idx].fppt);
+> diff --git a/drivers/platform/x86/amd/pmf/tee-if.c b/drivers/platform/x86=
+/amd/pmf/tee-if.c
+> index a1e43873a07b0..22d48048f9d01 100644
+> --- a/drivers/platform/x86/amd/pmf/tee-if.c
+> +++ b/drivers/platform/x86/amd/pmf/tee-if.c
+> @@ -123,7 +123,8 @@ static void amd_pmf_apply_policies(struct amd_pmf_dev=
+ *dev, struct ta_pmf_enact_
+> =20
+>  =09=09case PMF_POLICY_STT_SKINTEMP_APU:
+>  =09=09=09if (dev->prev_data->stt_skintemp_apu !=3D val) {
+> -=09=09=09=09amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false, val, NULL);
+> +=09=09=09=09amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false,
+> +=09=09=09=09=09=09 fixp_q88_from_integer(val), NULL);
+>  =09=09=09=09dev_dbg(dev->dev, "update STT_SKINTEMP_APU: %u\n", val);
+>  =09=09=09=09dev->prev_data->stt_skintemp_apu =3D val;
+>  =09=09=09}
+> @@ -131,7 +132,8 @@ static void amd_pmf_apply_policies(struct amd_pmf_dev=
+ *dev, struct ta_pmf_enact_
+> =20
+>  =09=09case PMF_POLICY_STT_SKINTEMP_HS2:
+>  =09=09=09if (dev->prev_data->stt_skintemp_hs2 !=3D val) {
+> -=09=09=09=09amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false, val, NULL);
+> +=09=09=09=09amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false,
+> +=09=09=09=09=09=09 fixp_q88_from_integer(val), NULL);
+>  =09=09=09=09dev_dbg(dev->dev, "update STT_SKINTEMP_HS2: %u\n", val);
+>  =09=09=09=09dev->prev_data->stt_skintemp_hs2 =3D val;
+>  =09=09=09}
+>=20
+--8323328-253956325-1744112573=:930--
 
