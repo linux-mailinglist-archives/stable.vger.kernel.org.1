@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-130378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B57ADA80454
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:07:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D60AA80B70
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:16:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AFD6427ED2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:59:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FB714C3971
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C618268FD9;
-	Tue,  8 Apr 2025 11:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2834277809;
+	Tue,  8 Apr 2025 12:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V95DVnB/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wTdRvqTu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C41265626;
-	Tue,  8 Apr 2025 11:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0602690D6;
+	Tue,  8 Apr 2025 12:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113556; cv=none; b=KPEXKYiPq9jbQtDtO5nBUJ3YsVdE/SaccAA9ewuk0Db5Vd6/3HRu0sEmx6gezmC6kekS+Zh0+kxTmTp/toAy1ayor95EBEWSbh5vTqSAYDUcTw5yoSP4+cd5CQqJaSWNwzIJRYZ8CdGl6grNvj1yROYlOrdQL4vDoguc4BuEfP8=
+	t=1744116846; cv=none; b=EBLeszeAQKEdL282g2vg/uyolWzVOVPVH1i1Uk2UZ32745s2/F2g93jwwlDywd+0bbzAm2xPbpmQ/TulZWvSlgbXTKJTJ6JTMKccdXhEOAHQUBFgf5y7C5+gG3+W/GaYbbJ0lnA2U4iW8Ou+exCxsgvHeHlmiqZ08yql1/tZpNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113556; c=relaxed/simple;
-	bh=nMhwyCU0G5cimVctgpyy83IAxZfZ57FaVFJ++vNLY1U=;
+	s=arc-20240116; t=1744116846; c=relaxed/simple;
+	bh=uSw4JlOC/IaR2FoF71jTdYeNSjMJU9hygp0Q+l+qVuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TF4Ctoo1MBcilcphMXqA7GCiftnSarzoJUo/i689kag8nVFpPhflGZ3oDbWT4qK734IMD2NTKbfftLdagYyeDKXNBatCRSpIRtEeGK7IncmkQnPzlVQNOn2horlgEdAMPkwb4yMfzUZnYYeXjtEOv4DfHrjGA6w/XS5lTz8o/D0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V95DVnB/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBDB5C4CEE5;
-	Tue,  8 Apr 2025 11:59:15 +0000 (UTC)
+	 MIME-Version; b=hrorKPQYmlbRynD60Cwcj2jhsjGY2QzSSHrF1xey7x3OIGmWUO/zjXKlCw/42TpN8purJZB0HR06x8yHW8ItSgrU+3WbopO8JxSAK6GMOZ18BGijtycMq8i9JmNV4HhEcRPmquBE08TE+CVvnYUVwSZUuRgvS3I8XPYIKHJhmvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wTdRvqTu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEDEFC4CEE5;
+	Tue,  8 Apr 2025 12:54:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113556;
-	bh=nMhwyCU0G5cimVctgpyy83IAxZfZ57FaVFJ++vNLY1U=;
+	s=korg; t=1744116846;
+	bh=uSw4JlOC/IaR2FoF71jTdYeNSjMJU9hygp0Q+l+qVuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V95DVnB/Wh9jPumfHkGDuOJYGfWdPnZw2vchq2oiSW7i5quUfCxHnO9MXm4vR6GpI
-	 XxGzqto+dRF/6g2+vgC8lQ7aRg8q9akRO5sf35G/QXjtHgrfXjJ56ga9KICmfFNiVG
-	 rm3cGMULZ3V3h+v/9fh1JlZtXRID8oQTDkfx27XY=
+	b=wTdRvqTusO+MV5uNn60JjRniNd93WeUbDkmL5hCIQuV4hk8IUQ1HzqH3C6WnSIO3Y
+	 dJkR7DNIKK5b5g03AG44kPKPywqb0UI/Fltoplo4h9oMsgXm5ej7ePAflQ0cZFaV64
+	 FySysDqnGJpHsTMCMfWB6pcHp08Ig+LTrpyg00FM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Avigail Dahan <avigailx.dahan@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	yzbot+ed801a886dfdbfe7136d@syzkaller.appspotmail.com,
+	Waiman Long <longman@redhat.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 204/268] e1000e: change k1 configuration on MTP and later platforms
+Subject: [PATCH 6.12 289/423] locking/semaphore: Use wake_q to wake up processes outside lock critical section
 Date: Tue,  8 Apr 2025 12:50:15 +0200
-Message-ID: <20250408104834.068852635@linuxfoundation.org>
+Message-ID: <20250408104852.511324541@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,180 +65,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit efaaf344bc2917cbfa5997633bc18a05d3aed27f ]
+[ Upstream commit 85b2b9c16d053364e2004883140538e73b333cdb ]
 
-Starting from Meteor Lake, the Kumeran interface between the integrated
-MAC and the I219 PHY works at a different frequency. This causes sporadic
-MDI errors when accessing the PHY, and in rare circumstances could lead
-to packet corruption.
+A circular lock dependency splat has been seen involving down_trylock():
 
-To overcome this, introduce minor changes to the Kumeran idle
-state (K1) parameters during device initialization. Hardware reset
-reverts this configuration, therefore it needs to be applied in a few
-places.
+  ======================================================
+  WARNING: possible circular locking dependency detected
+  6.12.0-41.el10.s390x+debug
+  ------------------------------------------------------
+  dd/32479 is trying to acquire lock:
+  0015a20accd0d4f8 ((console_sem).lock){-.-.}-{2:2}, at: down_trylock+0x26/0x90
 
-Fixes: cc23f4f0b6b9 ("e1000e: Add support for Meteor Lake")
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+  but task is already holding lock:
+  000000017e461698 (&zone->lock){-.-.}-{2:2}, at: rmqueue_bulk+0xac/0x8f0
+
+  the existing dependency chain (in reverse order) is:
+  -> #4 (&zone->lock){-.-.}-{2:2}:
+  -> #3 (hrtimer_bases.lock){-.-.}-{2:2}:
+  -> #2 (&rq->__lock){-.-.}-{2:2}:
+  -> #1 (&p->pi_lock){-.-.}-{2:2}:
+  -> #0 ((console_sem).lock){-.-.}-{2:2}:
+
+The console_sem -> pi_lock dependency is due to calling try_to_wake_up()
+while holding the console_sem raw_spinlock. This dependency can be broken
+by using wake_q to do the wakeup instead of calling try_to_wake_up()
+under the console_sem lock. This will also make the semaphore's
+raw_spinlock become a terminal lock without taking any further locks
+underneath it.
+
+The hrtimer_bases.lock is a raw_spinlock while zone->lock is a
+spinlock. The hrtimer_bases.lock -> zone->lock dependency happens via
+the debug_objects_fill_pool() helper function in the debugobjects code.
+
+  -> #4 (&zone->lock){-.-.}-{2:2}:
+         __lock_acquire+0xe86/0x1cc0
+         lock_acquire.part.0+0x258/0x630
+         lock_acquire+0xb8/0xe0
+         _raw_spin_lock_irqsave+0xb4/0x120
+         rmqueue_bulk+0xac/0x8f0
+         __rmqueue_pcplist+0x580/0x830
+         rmqueue_pcplist+0xfc/0x470
+         rmqueue.isra.0+0xdec/0x11b0
+         get_page_from_freelist+0x2ee/0xeb0
+         __alloc_pages_noprof+0x2c2/0x520
+         alloc_pages_mpol_noprof+0x1fc/0x4d0
+         alloc_pages_noprof+0x8c/0xe0
+         allocate_slab+0x320/0x460
+         ___slab_alloc+0xa58/0x12b0
+         __slab_alloc.isra.0+0x42/0x60
+         kmem_cache_alloc_noprof+0x304/0x350
+         fill_pool+0xf6/0x450
+         debug_object_activate+0xfe/0x360
+         enqueue_hrtimer+0x34/0x190
+         __run_hrtimer+0x3c8/0x4c0
+         __hrtimer_run_queues+0x1b2/0x260
+         hrtimer_interrupt+0x316/0x760
+         do_IRQ+0x9a/0xe0
+         do_irq_async+0xf6/0x160
+
+Normally a raw_spinlock to spinlock dependency is not legitimate
+and will be warned if CONFIG_PROVE_RAW_LOCK_NESTING is enabled,
+but debug_objects_fill_pool() is an exception as it explicitly
+allows this dependency for non-PREEMPT_RT kernel without causing
+PROVE_RAW_LOCK_NESTING lockdep splat. As a result, this dependency is
+legitimate and not a bug.
+
+Anyway, semaphore is the only locking primitive left that is still
+using try_to_wake_up() to do wakeup inside critical section, all the
+other locking primitives had been migrated to use wake_q to do wakeup
+outside of the critical section. It is also possible that there are
+other circular locking dependencies involving printk/console_sem or
+other existing/new semaphores lurking somewhere which may show up in
+the future. Let just do the migration now to wake_q to avoid headache
+like this.
+
+Reported-by: yzbot+ed801a886dfdbfe7136d@syzkaller.appspotmail.com
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250307232717.1759087-3-boqun.feng@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/defines.h |  3 +
- drivers/net/ethernet/intel/e1000e/ich8lan.c | 80 +++++++++++++++++++--
- drivers/net/ethernet/intel/e1000e/ich8lan.h |  4 ++
- 3 files changed, 82 insertions(+), 5 deletions(-)
+ kernel/locking/semaphore.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/defines.h b/drivers/net/ethernet/intel/e1000e/defines.h
-index 63c3c79380a1b..0a35d36c2c857 100644
---- a/drivers/net/ethernet/intel/e1000e/defines.h
-+++ b/drivers/net/ethernet/intel/e1000e/defines.h
-@@ -808,4 +808,7 @@
- /* SerDes Control */
- #define E1000_GEN_POLL_TIMEOUT          640
+diff --git a/kernel/locking/semaphore.c b/kernel/locking/semaphore.c
+index 34bfae72f2952..de9117c0e671e 100644
+--- a/kernel/locking/semaphore.c
++++ b/kernel/locking/semaphore.c
+@@ -29,6 +29,7 @@
+ #include <linux/export.h>
+ #include <linux/sched.h>
+ #include <linux/sched/debug.h>
++#include <linux/sched/wake_q.h>
+ #include <linux/semaphore.h>
+ #include <linux/spinlock.h>
+ #include <linux/ftrace.h>
+@@ -38,7 +39,7 @@ static noinline void __down(struct semaphore *sem);
+ static noinline int __down_interruptible(struct semaphore *sem);
+ static noinline int __down_killable(struct semaphore *sem);
+ static noinline int __down_timeout(struct semaphore *sem, long timeout);
+-static noinline void __up(struct semaphore *sem);
++static noinline void __up(struct semaphore *sem, struct wake_q_head *wake_q);
  
-+#define E1000_FEXTNVM12_PHYPD_CTRL_MASK	0x00C00000
-+#define E1000_FEXTNVM12_PHYPD_CTRL_P1	0x00800000
-+
- #endif /* _E1000_DEFINES_H_ */
-diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-index 2f9655cf5dd9e..364378133526a 100644
---- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
-+++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-@@ -285,6 +285,45 @@ static void e1000_toggle_lanphypc_pch_lpt(struct e1000_hw *hw)
- 	}
+ /**
+  * down - acquire the semaphore
+@@ -183,13 +184,16 @@ EXPORT_SYMBOL(down_timeout);
+ void __sched up(struct semaphore *sem)
+ {
+ 	unsigned long flags;
++	DEFINE_WAKE_Q(wake_q);
+ 
+ 	raw_spin_lock_irqsave(&sem->lock, flags);
+ 	if (likely(list_empty(&sem->wait_list)))
+ 		sem->count++;
+ 	else
+-		__up(sem);
++		__up(sem, &wake_q);
+ 	raw_spin_unlock_irqrestore(&sem->lock, flags);
++	if (!wake_q_empty(&wake_q))
++		wake_up_q(&wake_q);
+ }
+ EXPORT_SYMBOL(up);
+ 
+@@ -269,11 +273,12 @@ static noinline int __sched __down_timeout(struct semaphore *sem, long timeout)
+ 	return __down_common(sem, TASK_UNINTERRUPTIBLE, timeout);
  }
  
-+/**
-+ * e1000_reconfigure_k1_exit_timeout - reconfigure K1 exit timeout to
-+ * align to MTP and later platform requirements.
-+ * @hw: pointer to the HW structure
-+ *
-+ * Context: PHY semaphore must be held by caller.
-+ * Return: 0 on success, negative on failure
-+ */
-+static s32 e1000_reconfigure_k1_exit_timeout(struct e1000_hw *hw)
-+{
-+	u16 phy_timeout;
-+	u32 fextnvm12;
-+	s32 ret_val;
-+
-+	if (hw->mac.type < e1000_pch_mtp)
-+		return 0;
-+
-+	/* Change Kumeran K1 power down state from P0s to P1 */
-+	fextnvm12 = er32(FEXTNVM12);
-+	fextnvm12 &= ~E1000_FEXTNVM12_PHYPD_CTRL_MASK;
-+	fextnvm12 |= E1000_FEXTNVM12_PHYPD_CTRL_P1;
-+	ew32(FEXTNVM12, fextnvm12);
-+
-+	/* Wait for the interface the settle */
-+	usleep_range(1000, 1100);
-+
-+	/* Change K1 exit timeout */
-+	ret_val = e1e_rphy_locked(hw, I217_PHY_TIMEOUTS_REG,
-+				  &phy_timeout);
-+	if (ret_val)
-+		return ret_val;
-+
-+	phy_timeout &= ~I217_PHY_TIMEOUTS_K1_EXIT_TO_MASK;
-+	phy_timeout |= 0xF00;
-+
-+	return e1e_wphy_locked(hw, I217_PHY_TIMEOUTS_REG,
-+				  phy_timeout);
-+}
-+
- /**
-  *  e1000_init_phy_workarounds_pchlan - PHY initialization workarounds
-  *  @hw: pointer to the HW structure
-@@ -327,15 +366,22 @@ static s32 e1000_init_phy_workarounds_pchlan(struct e1000_hw *hw)
- 	 * LANPHYPC Value bit to force the interconnect to PCIe mode.
- 	 */
- 	switch (hw->mac.type) {
-+	case e1000_pch_mtp:
-+	case e1000_pch_lnp:
-+	case e1000_pch_ptp:
-+	case e1000_pch_nvp:
-+		/* At this point the PHY might be inaccessible so don't
-+		 * propagate the failure
-+		 */
-+		if (e1000_reconfigure_k1_exit_timeout(hw))
-+			e_dbg("Failed to reconfigure K1 exit timeout\n");
-+
-+		fallthrough;
- 	case e1000_pch_lpt:
- 	case e1000_pch_spt:
- 	case e1000_pch_cnp:
- 	case e1000_pch_tgp:
- 	case e1000_pch_adp:
--	case e1000_pch_mtp:
--	case e1000_pch_lnp:
--	case e1000_pch_ptp:
--	case e1000_pch_nvp:
- 		if (e1000_phy_is_accessible_pchlan(hw))
- 			break;
- 
-@@ -419,8 +465,20 @@ static s32 e1000_init_phy_workarounds_pchlan(struct e1000_hw *hw)
- 		 *  the PHY is in.
- 		 */
- 		ret_val = hw->phy.ops.check_reset_block(hw);
--		if (ret_val)
-+		if (ret_val) {
- 			e_err("ME blocked access to PHY after reset\n");
-+			goto out;
-+		}
-+
-+		if (hw->mac.type >= e1000_pch_mtp) {
-+			ret_val = hw->phy.ops.acquire(hw);
-+			if (ret_val) {
-+				e_err("Failed to reconfigure K1 exit timeout\n");
-+				goto out;
-+			}
-+			ret_val = e1000_reconfigure_k1_exit_timeout(hw);
-+			hw->phy.ops.release(hw);
-+		}
- 	}
- 
- out:
-@@ -4888,6 +4946,18 @@ static s32 e1000_init_hw_ich8lan(struct e1000_hw *hw)
- 	u16 i;
- 
- 	e1000_initialize_hw_bits_ich8lan(hw);
-+	if (hw->mac.type >= e1000_pch_mtp) {
-+		ret_val = hw->phy.ops.acquire(hw);
-+		if (ret_val)
-+			return ret_val;
-+
-+		ret_val = e1000_reconfigure_k1_exit_timeout(hw);
-+		hw->phy.ops.release(hw);
-+		if (ret_val) {
-+			e_dbg("Error failed to reconfigure K1 exit timeout\n");
-+			return ret_val;
-+		}
-+	}
- 
- 	/* Initialize identification LED */
- 	ret_val = mac->ops.id_led_init(hw);
-diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.h b/drivers/net/ethernet/intel/e1000e/ich8lan.h
-index 2504b11c3169f..5feb589a9b5ff 100644
---- a/drivers/net/ethernet/intel/e1000e/ich8lan.h
-+++ b/drivers/net/ethernet/intel/e1000e/ich8lan.h
-@@ -219,6 +219,10 @@
- #define I217_PLL_CLOCK_GATE_REG	PHY_REG(772, 28)
- #define I217_PLL_CLOCK_GATE_MASK	0x07FF
- 
-+/* PHY Timeouts */
-+#define I217_PHY_TIMEOUTS_REG                   PHY_REG(770, 21)
-+#define I217_PHY_TIMEOUTS_K1_EXIT_TO_MASK       0x0FC0
-+
- #define SW_FLAG_TIMEOUT		1000	/* SW Semaphore flag timeout in ms */
- 
- /* Inband Control */
+-static noinline void __sched __up(struct semaphore *sem)
++static noinline void __sched __up(struct semaphore *sem,
++				  struct wake_q_head *wake_q)
+ {
+ 	struct semaphore_waiter *waiter = list_first_entry(&sem->wait_list,
+ 						struct semaphore_waiter, list);
+ 	list_del(&waiter->list);
+ 	waiter->up = true;
+-	wake_up_process(waiter->task);
++	wake_q_add(wake_q, waiter->task);
+ }
 -- 
 2.39.5
 
