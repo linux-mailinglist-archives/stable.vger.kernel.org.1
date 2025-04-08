@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3996A8032F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:54:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C866A7FDF9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0A0D7A9D7E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:50:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D01B3BB66E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC782269880;
-	Tue,  8 Apr 2025 11:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF1EA26A1A7;
+	Tue,  8 Apr 2025 10:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwPxVfaO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iv/boYTS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 887C0268C66;
-	Tue,  8 Apr 2025 11:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814D626773A;
+	Tue,  8 Apr 2025 10:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113041; cv=none; b=VYp0R2vOz+n8h/WADRfNLTZXf4zC8dUu3Cbi8z37+n9dwgYPUjX/CnuC2G0eAG2+QrqduWwaFAu2YUM8OWywIbFe6czTvGRkM9lM+RVjYVsgnODQPWJ7ZzlyqvdQVy3nKubMiBCNK6zcz+g/BqolZYq6OwcWihDlNl5/fY0h5RA=
+	t=1744109875; cv=none; b=rC7J81+kk+OVr1IsQzknTizRlN9G2TsHge/0y22lA+UhqklbI/ZfnMSCIueNQmP+zCzOmlpIhU8Q7sqCwb1PEUeDrcWEDnAzD+O22p8YzPpZ6TUnRdEKqXTNf3UHebFVAEplGhvGeM+y10qnD4zfOJkTPlw5YJbmwoNhetkQ+qA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113041; c=relaxed/simple;
-	bh=F/kMBogxKCQE/kWV+R5w6FzMyhzpcVpvp3k96avBRJs=;
+	s=arc-20240116; t=1744109875; c=relaxed/simple;
+	bh=5sFWeDxAsa5vI1stIb5T501yDYGhf6eviZz9tGO04XA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BrpKCZObZWztqjLZzq8sqVqhLBzBK1cHYmOOnC+wZd+6Utie2nIrhJBOqAn72W4xsM2ouPzOl0S+Rht+v5pPe1nGhmWZ7IG8rGrbYNGo5RnSE/8ihuJHqKabrLJjgj3XUeXLiYP46ykDhs13QIqPx4qo7BfXauB8g9jeDfwYBEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwPxVfaO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1993EC4CEE5;
-	Tue,  8 Apr 2025 11:50:40 +0000 (UTC)
+	 MIME-Version; b=LjOe2UQpG1E0pDJgf/FJ9up5gbuvnfSH6ms/Wg3Xp5Ze8IPdpKoT3gSEXZWixpziAN9OcO2wfI/d7qgmn6NjNEEQ01i2kTD39NhSoIv3A7yT5ogd22TzmsZ+Zpf5U2K0KltSu0yFJy8fLimsfzkd0/Fkkh4UAGAGGWZq6PABMUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iv/boYTS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12384C4CEE5;
+	Tue,  8 Apr 2025 10:57:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113041;
-	bh=F/kMBogxKCQE/kWV+R5w6FzMyhzpcVpvp3k96avBRJs=;
+	s=korg; t=1744109875;
+	bh=5sFWeDxAsa5vI1stIb5T501yDYGhf6eviZz9tGO04XA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kwPxVfaOJVvQm030i56OV/Lxd+NiE3RiFz+eVb9iLXu+8OQxXM9ZcqPLBHtQNQBAW
-	 MVzXhw4jAWJxRafoFnN8hTH8lliFw/2BK5BlTF3Z8mUuNdk0N/rw/dCkfVcK34//8Z
-	 hTU1eiw/KszyQHNkjCrC6ArtPmV9im9WbL7dgTqA=
+	b=iv/boYTSF2EUkVom9y22bKe3kqRI+9HMbl6iswpGn9aY7dhgyuUbmqOOe8mSxg1B1
+	 8WaoQKSQAV9cXypM2UmPl230BQ6uHeQY3tN9q+H+kKTFEa9up2jj9OEJBgvai4/x4+
+	 4tiI2/nxnGq5ruOmfzFyVIV5d8FyGzQ2ckAEKDns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Atish Patra <atishp@rivosinc.com>,
-	Anup Patel <anup@brainfault.org>,
+	Guangwu Zhang <guazhang@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 013/268] RISC-V: KVM: Disable the kernel perf counter during configure
+Subject: [PATCH 5.10 046/227] block: fix kmem_cache of name bio-108 already exists
 Date: Tue,  8 Apr 2025 12:47:04 +0200
-Message-ID: <20250408104828.869865155@linuxfoundation.org>
+Message-ID: <20250408104821.783288860@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Atish Patra <atishp@rivosinc.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit bbb622488749478955485765ddff9d56be4a7e4b ]
+[ Upstream commit b654f7a51ffb386131de42aa98ed831f8c126546 ]
 
-The perf event should be marked disabled during the creation as
-it is not ready to be scheduled until there is SBI PMU start call
-or config matching is called with auto start. Otherwise, event add/start
-gets called during perf_event_create_kernel_counter function.
-It will be enabled and scheduled to run via perf_event_enable during
-either the above mentioned scenario.
+Device mapper bioset often has big bio_slab size, which can be more than
+1000, then 8byte can't hold the slab name any more, cause the kmem_cache
+allocation warning of 'kmem_cache of name 'bio-108' already exists'.
 
-Fixes: 0cb74b65d2e5 ("RISC-V: KVM: Implement perf support without sampling")
+Fix the warning by extending bio_slab->name to 12 bytes, but fix output
+of /proc/slabinfo
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Signed-off-by: Atish Patra <atishp@rivosinc.com>
-Link: https://lore.kernel.org/r/20250303-kvm_pmu_improve-v2-1-41d177e45929@rivosinc.com
-Signed-off-by: Anup Patel <anup@brainfault.org>
+Reported-by: Guangwu Zhang <guazhang@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20250228132656.2838008-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kvm/vcpu_pmu.c | 1 +
- 1 file changed, 1 insertion(+)
+ block/bio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
-index cee1b9ca4ec48..e2e2a115afb5c 100644
---- a/arch/riscv/kvm/vcpu_pmu.c
-+++ b/arch/riscv/kvm/vcpu_pmu.c
-@@ -468,6 +468,7 @@ int kvm_riscv_vcpu_pmu_ctr_cfg_match(struct kvm_vcpu *vcpu, unsigned long ctr_ba
- 		.type = etype,
- 		.size = sizeof(struct perf_event_attr),
- 		.pinned = true,
-+		.disabled = true,
- 		/*
- 		 * It should never reach here if the platform doesn't support the sscofpmf
- 		 * extension as mode filtering won't work without it.
+diff --git a/block/bio.c b/block/bio.c
+index 6f7a1aa9ea225..88a09c31095fb 100644
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -55,7 +55,7 @@ struct bio_slab {
+ 	struct kmem_cache *slab;
+ 	unsigned int slab_ref;
+ 	unsigned int slab_size;
+-	char name[8];
++	char name[12];
+ };
+ static DEFINE_MUTEX(bio_slab_lock);
+ static struct bio_slab *bio_slabs;
 -- 
 2.39.5
 
