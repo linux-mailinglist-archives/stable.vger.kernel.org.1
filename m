@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-128936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF85CA7FD66
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42719A8027E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCCE518963A2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4C2C4612EF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E877B267B93;
-	Tue,  8 Apr 2025 10:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 241E725FA13;
+	Tue,  8 Apr 2025 11:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fUwODF24"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7lDN6jO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A681E267F5F;
-	Tue,  8 Apr 2025 10:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35252192F2;
+	Tue,  8 Apr 2025 11:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109675; cv=none; b=UkMdkVoqhmMB1ljMBvPu7f2e9vV1dh1BJU0W7Gi8Gp/xoeSzqwF9HyENb6oQKz51dPdwXp9f+IiLgBzqlJBWHqMeviKYDp8mpm6dWzjozPLDluIzaDmdde4d0/w19bwEcMcRi0cLpfz89Q50HEZjC1MvD11hTk3c3IQNPyd3hJs=
+	t=1744112361; cv=none; b=PUWlbYGMt7VOMRqBt39G+nsUvJjvscjW3/xoQDyp84qI8IAUBMTIYkvI16zimUM2SvUEBJBXoJhS+khjYSmgCs3wilmPu9MJv9aW1NHiIq41fe9fcXNfjVQ8BiMPg8d/q6FgPRiRGEA/PAN8cyplyT0IlWrjE3LCzjVbs3fd4QE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109675; c=relaxed/simple;
-	bh=PcZPyL9FXf60qILZUZht0d0BU56nyr0s7zRoRIopcLs=;
+	s=arc-20240116; t=1744112361; c=relaxed/simple;
+	bh=nRsw594Jnj8aWvQKvjluYBOfoWKSyPdvbewOGc/ULls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gk7dRZ+8aLSCOcmQiZ5n2QNX0RjRA1BjarBL/boJBkbiiWikLrnHozb0kb7+6NES3dZL/bAOVt1aJ6x/1a3RurXhhHZg4MBYfmEY4sFmMc1bHsJ31GEeIH9Dx/XAJbS16oEMq3Gmbh5TwBCBHG3yYBrw7kQnidIdPAECdmfE8Fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fUwODF24; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2086C4CEE5;
-	Tue,  8 Apr 2025 10:54:33 +0000 (UTC)
+	 MIME-Version; b=aqS6fXc1cYYeM/oNa/lNRvZLqNGtG5FH0ikvsYLfNpO614bJ4Pq/wQfc/ycMK31jiXfZadgqFe2tyAkiI9j+Degs75+NSboFys47ndueSTutqKyv7RN/MgPFZ2NE0X0dLdUw+Cj3tSVF8zZk1wDAR9YMtPf0WICwzBCwphgEjQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7lDN6jO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6614CC4CEE5;
+	Tue,  8 Apr 2025 11:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109674;
-	bh=PcZPyL9FXf60qILZUZht0d0BU56nyr0s7zRoRIopcLs=;
+	s=korg; t=1744112361;
+	bh=nRsw594Jnj8aWvQKvjluYBOfoWKSyPdvbewOGc/ULls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fUwODF24rxLCDWk1oA8Dwn3IAel7omRCk1N6qKy6/pu23JdEQsI5g7LXiwRZlG6pP
-	 2x87fQRZxRhlkx0ylUmv7qsiPz5uN7HbEtyWn5btjMkHhsAqxnAub5Lgs2169RyL8w
-	 FSSh8NcpDG6V3fXCCRD0vzyEFpkRUAjdZSLOvNwA=
+	b=E7lDN6jOUxdHCP9k9ZmX4Me7OX7csw0XuUBBW3JFOyAF9Tozlp6XUbPzVUBAg5M/d
+	 vqDb89xYxS1iGxuG9s5mnXDC9wQk8yHFR5Ct06XjywJ/gHEuEMF0i07yT2K9kLFgWS
+	 yZsyp/Ijxns7/VIlc0KNvLS+I7kakgUj4kGQddxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 5.10 012/227] ice: fix memory leak in aRFS after reset
-Date: Tue,  8 Apr 2025 12:46:30 +0200
-Message-ID: <20250408104820.760724910@linuxfoundation.org>
+Subject: [PATCH 5.15 008/279] ice: fix memory leak in aRFS after reset
+Date: Tue,  8 Apr 2025 12:46:31 +0200
+Message-ID: <20250408104826.587685625@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -117,7 +117,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/intel/ice/ice_arfs.c b/drivers/net/ethernet/intel/ice/ice_arfs.c
-index 6560acd76c949..632f16ffee401 100644
+index 88d98c9e5f914..9cebae92364eb 100644
 --- a/drivers/net/ethernet/intel/ice/ice_arfs.c
 +++ b/drivers/net/ethernet/intel/ice/ice_arfs.c
 @@ -510,7 +510,7 @@ void ice_init_arfs(struct ice_vsi *vsi)
