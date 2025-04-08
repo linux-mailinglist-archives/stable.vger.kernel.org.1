@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-128978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BC73A7FD80
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B33FDA801F3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8210189492D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7ABF019E1D46
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:40:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20440269CF5;
-	Tue,  8 Apr 2025 10:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 882042192F2;
+	Tue,  8 Apr 2025 11:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dk8G5l2A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eBxFlUyz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27EF268691;
-	Tue,  8 Apr 2025 10:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461BC224AEB;
+	Tue,  8 Apr 2025 11:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109789; cv=none; b=MBt7z3kGalYmwtm5bMD2OmpKKOVBn/brlAb4BD02IM7vpEW/4+Hf1K3aocGXIDUa3V+3gghKFRgKfbkbcv4/iyusJpqxwUZ8/YEIgrrtaa8CC2jjDSxXcLp8tQJ2lnuaKTzuR5tPxXYCED/f4LT1aRFXq6xDE/PRfOnnulOvvi0=
+	t=1744112383; cv=none; b=jaApVg9r/5l3gBjy/eFBPf5cWce4g8ocGs2MVa9ht0O+8W0rtYYVgu5ShrXm13akQsg0mEahSYYBfh3XeD4ZElY9GnUsGKxyKiVETmbrl0BtPA5PPgOYVA8yurT4wXN+dmTDUGQYylmm8cWxiEfh8NRMiU3Olwf7SnJas9Llqdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109789; c=relaxed/simple;
-	bh=4r0NStNDllZgh7OulDlJjE6bXtfA5oXFzwY3HLoJyMI=;
+	s=arc-20240116; t=1744112383; c=relaxed/simple;
+	bh=tisXp+DnFJ4+0eBiTRLzZW6o7/qUnrrr0KbC0jnzeh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RgvnN2aCrfODzIN5nSN1npdhcQIm5+HigWCDZcEFrH6gdvZQAKYsmQCI0qoIce5DmN5fVKerof1WyRuDYLTL/a19784OvgYosO3/1ubxR7JyYeA33z6+JOnf9uP3yh2a3b27N9sdCRG5XFVd8B6rzVPqE89p1+bRgxp0TJ3+LtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dk8G5l2A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A82C4CEE5;
-	Tue,  8 Apr 2025 10:56:28 +0000 (UTC)
+	 MIME-Version; b=fZRBa+gqJVI+XGIvJCM3ExNzzBhyx5yN/fvWsDDopHWPFm6EvI8KbO6AY4JWV2kn2KNWaZRNT4dTZz+1xv17kJA7GbZC23D50RO4aeg0tBWCNK/U6jSd0XdqAhCRjuW7Q3PS9pW2m215EeJsuMeYz8Ytjba8nLKR6dsrHXaLwxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eBxFlUyz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA2C1C4CEE5;
+	Tue,  8 Apr 2025 11:39:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109789;
-	bh=4r0NStNDllZgh7OulDlJjE6bXtfA5oXFzwY3HLoJyMI=;
+	s=korg; t=1744112383;
+	bh=tisXp+DnFJ4+0eBiTRLzZW6o7/qUnrrr0KbC0jnzeh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dk8G5l2A6Q9JN9dMTBnta3oT2M2Xtc+MrOwp/4UZDOzPP8Uq8M7U/YZkEVuTgcQp7
-	 bJwfFoIXXRQuLiTqSem38VajmjOq/PqB5MRcuncKsCriTgEsY4rgwmFUO1xwhXUi60
-	 WPGI78wYMJ3U1mOlnQFzNranvKzxm5xB/kuOgClU=
+	b=eBxFlUyzxK8YVvtzoPJkHgoTijXzMvkyiglQ+JCD4phoYG+/xgylrN0ZplxKuv5wj
+	 X8sQz+0/eQ3PbPf6O48x/j0IjQjgOR4/hHhDMZfG3s/wMp2TLrmwpve2HzIsstHJqP
+	 X2zg2Z8iCrq0sRpgbPUYtCNdgpQAk3tpKRBzul6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 5.10 054/227] drm/amd/display: Fix slab-use-after-free on hdcp_work
+	Arnd Bergmann <arnd@arndb.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 049/279] x86/irq: Define trace events conditionally
 Date: Tue,  8 Apr 2025 12:47:12 +0200
-Message-ID: <20250408104822.020298390@linuxfoundation.org>
+Message-ID: <20250408104827.694738177@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit e65e7bea220c3ce8c4c793b4ba35557f4994ab2b upstream.
+[ Upstream commit 9de7695925d5d2d2085681ba935857246eb2817d ]
 
-[Why]
-A slab-use-after-free is reported when HDCP is destroyed but the
-property_validate_dwork queue is still running.
+When both of X86_LOCAL_APIC and X86_THERMAL_VECTOR are disabled,
+the irq tracing produces a W=1 build warning for the tracing
+definitions:
 
-[How]
-Cancel the delayed work when destroying workqueue.
+  In file included from include/trace/trace_events.h:27,
+                 from include/trace/define_trace.h:113,
+                 from arch/x86/include/asm/trace/irq_vectors.h:383,
+                 from arch/x86/kernel/irq.c:29:
+  include/trace/stages/init.h:2:23: error: 'str__irq_vectors__trace_system_name' defined but not used [-Werror=unused-const-variable=]
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4006
-Fixes: da3fd7ac0bcf ("drm/amd/display: Update CP property based on HW query")
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 725a04ba5a95e89c89633d4322430cfbca7ce128)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Make the tracepoints conditional on the same symbosl that guard
+their usage.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20250225213236.3141752-1-arnd@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/irq.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
-@@ -383,6 +383,7 @@ void hdcp_destroy(struct kobject *kobj,
- 	for (i = 0; i < hdcp_work->max_link; i++) {
- 		cancel_delayed_work_sync(&hdcp_work[i].callback_dwork);
- 		cancel_delayed_work_sync(&hdcp_work[i].watchdog_timer_dwork);
-+		cancel_delayed_work_sync(&hdcp_work[i].property_validate_dwork);
- 	}
+diff --git a/arch/x86/kernel/irq.c b/arch/x86/kernel/irq.c
+index 766ffe3ba3137..439fdb3f5fdf1 100644
+--- a/arch/x86/kernel/irq.c
++++ b/arch/x86/kernel/irq.c
+@@ -23,8 +23,10 @@
+ #include <asm/traps.h>
+ #include <asm/thermal.h>
  
- 	sysfs_remove_bin_file(kobj, &hdcp_work[0].attr);
++#if defined(CONFIG_X86_LOCAL_APIC) || defined(CONFIG_X86_THERMAL_VECTOR)
+ #define CREATE_TRACE_POINTS
+ #include <asm/trace/irq_vectors.h>
++#endif
+ 
+ DEFINE_PER_CPU_SHARED_ALIGNED(irq_cpustat_t, irq_stat);
+ EXPORT_PER_CPU_SYMBOL(irq_stat);
+-- 
+2.39.5
+
 
 
 
