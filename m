@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-129692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF50AA801AC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:41:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EABB3A7FD82
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD8E216682E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:31:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C91116B5B0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8FE926A1D5;
-	Tue,  8 Apr 2025 11:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E87726869D;
+	Tue,  8 Apr 2025 10:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XoR9UmLU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSOFcZfD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F0D26A1DD;
-	Tue,  8 Apr 2025 11:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C11C267B65;
+	Tue,  8 Apr 2025 10:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111724; cv=none; b=C1jPyNzaRjxkzciyL0FyflELnukZ7afFG0InmpGzXUfYIXfVvFre8X7K+tqZQcYrhV9DsZ9nGhGViMx0qJQfRzgqmn1+pOc4VyYWlp7bXNL4AHEIcsHnprEA+xtXUFR23E9qj/mr8RyF4jahzbKCKBvE7K+QXu+DT/4UQ3842oA=
+	t=1744109792; cv=none; b=achq9HHIYV6IEbM7RFy/8Rvc5ivUFk8BjpYcxDDoPxPsNKdm8kQX1zxDX4lmYY9EiJKBIuUU4w/L8S6VlLZlxdHmi13mAC/l4KiMw450dT9cXqhS0cQCCTrM76TxTKCxYWdLnkm6uQjZiBWv6PBmO1MUDpXvICIAm87PKoWuKys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111724; c=relaxed/simple;
-	bh=GRIW9e4kYbJ6ZPWh/EJWmi4JRULK98vN2MM0Rvr2pco=;
+	s=arc-20240116; t=1744109792; c=relaxed/simple;
+	bh=9db7fO95SEh3uSRtuyNF3MOIt0acmXRSKspCCWI3gzo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XQMHw+97uiXw0m4hpfvDctNsfOpzbMsNNPeg6wCk3vQvRAiNbkuLlDy9+W7XPB/GUtzqyg91sZDFe8kFUxkuJI2rkClKTM5b5vt+bhtExS4AzaHwyzyMo7rt7RDZkbtEgMuso3Eb9NjnmINs61kFjR33sxFnKNtw4n+amgM+dyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XoR9UmLU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 370DAC4CEE5;
-	Tue,  8 Apr 2025 11:28:44 +0000 (UTC)
+	 MIME-Version; b=iWB9EelJFwEze139w3wrwt3KOlNWmTTADnMD5oz8KJprrzIJw1DFWlhgvQVPbcNPFI/Yl7YruHzdC2fhLLbE2ZM+WdLrMf7UHroxQgU8Z+GYuwcibewGlMfkFlvlFoW0QCgvVe3Mq3xeTkSaejPoCu64Sd3piogUY692MexX1jM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSOFcZfD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD592C4CEE5;
+	Tue,  8 Apr 2025 10:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111724;
-	bh=GRIW9e4kYbJ6ZPWh/EJWmi4JRULK98vN2MM0Rvr2pco=;
+	s=korg; t=1744109792;
+	bh=9db7fO95SEh3uSRtuyNF3MOIt0acmXRSKspCCWI3gzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XoR9UmLUrJK6sCUiUEUlVobolCKNWnFto1YcCxGB//LsC887/2Pi+IpLn0E0zna5X
-	 x/AzIThKC7OczgIyuuFa56aOwkZZlWS8P8Rbkeg8aHBSXzbIi4Ah2dx3bgYt2WiY8v
-	 FoZfAe60/5aAb8U+MPvl0PzBN2K/e7duJppWaU64=
+	b=MSOFcZfD3eP0pK44g1QmDb3XiAcRdrqw/+41y1kCnZ53Eksxeq6Iji4fueS98U8mZ
+	 20wIa7+I9LVtKKkfEvsKaZZHnKQ+kuS/y7CRfCwitCcSXRM+v64ba6n1nNlvdS4Z7/
+	 rok0aulRMfM4i0F83QtzFU/xMGfLCPkD28hKtjek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 536/731] staging: vchiq_arm: Stop kthreads if vchiq cdev register fails
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.10 055/227] qlcnic: fix memory leak issues in qlcnic_sriov_common.c
 Date: Tue,  8 Apr 2025 12:47:13 +0200
-Message-ID: <20250408104926.744452967@linuxfoundation.org>
+Message-ID: <20250408104822.051137978@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit cfb320d990919836b49bd090c6c232c6c4d90b41 ]
+commit d2b9d97e89c79c95f8b517e4fa43fd100f936acc upstream.
 
-In case the vchiq character device cannot be registered during probe,
-all kthreads needs to be stopped to avoid resource leaks.
+Add qlcnic_sriov_free_vlans() in qlcnic_sriov_alloc_vlans() if
+any sriov_vlans fails to be allocated.
+Add qlcnic_sriov_free_vlans() to free the memory allocated by
+qlcnic_sriov_alloc_vlans() if "sriov->allowed_vlans" fails to
+be allocated.
 
-Fixes: 863a756aaf49 ("staging: vc04_services: vchiq_core: Stop kthreads on vchiq module unload")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20250309125014.37166-4-wahrenst@gmx.net
+Fixes: 91b7282b613d ("qlcnic: Support VLAN id config.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Link: https://patch.msgid.link/20250307094952.14874-1-haoxiang_li2024@163.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../interface/vchiq_arm/vchiq_arm.c           | 25 ++++++++++++-------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-index d3b7d1227d7d6..0c7ea2d0ee85e 100644
---- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-+++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
-@@ -308,6 +308,20 @@ static struct vchiq_arm_state *vchiq_platform_get_arm_state(struct vchiq_state *
- 	return (struct vchiq_arm_state *)state->platform_state;
- }
+--- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
++++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
+@@ -454,8 +454,10 @@ static int qlcnic_sriov_set_guest_vlan_m
  
-+static void
-+vchiq_platform_uninit(struct vchiq_drv_mgmt *mgmt)
-+{
-+	struct vchiq_arm_state *arm_state;
-+
-+	kthread_stop(mgmt->state.sync_thread);
-+	kthread_stop(mgmt->state.recycle_thread);
-+	kthread_stop(mgmt->state.slot_handler_thread);
-+
-+	arm_state = vchiq_platform_get_arm_state(&mgmt->state);
-+	if (!IS_ERR_OR_NULL(arm_state->ka_thread))
-+		kthread_stop(arm_state->ka_thread);
-+}
-+
- void vchiq_dump_platform_state(struct seq_file *f)
- {
- 	seq_puts(f, "  Platform: 2835 (VC master)\n");
-@@ -1396,6 +1410,7 @@ static int vchiq_probe(struct platform_device *pdev)
- 	ret = vchiq_register_chrdev(&pdev->dev);
- 	if (ret) {
- 		dev_err(&pdev->dev, "arm: Failed to initialize vchiq cdev\n");
-+		vchiq_platform_uninit(mgmt);
- 		return ret;
+ 	num_vlans = sriov->num_allowed_vlans;
+ 	sriov->allowed_vlans = kcalloc(num_vlans, sizeof(u16), GFP_KERNEL);
+-	if (!sriov->allowed_vlans)
++	if (!sriov->allowed_vlans) {
++		qlcnic_sriov_free_vlans(adapter);
+ 		return -ENOMEM;
++	}
+ 
+ 	vlans = (u16 *)&cmd->rsp.arg[3];
+ 	for (i = 0; i < num_vlans; i++)
+@@ -2173,8 +2175,10 @@ int qlcnic_sriov_alloc_vlans(struct qlcn
+ 		vf = &sriov->vf_info[i];
+ 		vf->sriov_vlans = kcalloc(sriov->num_allowed_vlans,
+ 					  sizeof(*vf->sriov_vlans), GFP_KERNEL);
+-		if (!vf->sriov_vlans)
++		if (!vf->sriov_vlans) {
++			qlcnic_sriov_free_vlans(adapter);
+ 			return -ENOMEM;
++		}
  	}
  
-@@ -1410,20 +1425,12 @@ static int vchiq_probe(struct platform_device *pdev)
- static void vchiq_remove(struct platform_device *pdev)
- {
- 	struct vchiq_drv_mgmt *mgmt = dev_get_drvdata(&pdev->dev);
--	struct vchiq_arm_state *arm_state;
- 
- 	vchiq_device_unregister(bcm2835_audio);
- 	vchiq_device_unregister(bcm2835_camera);
- 	vchiq_debugfs_deinit();
- 	vchiq_deregister_chrdev();
--
--	kthread_stop(mgmt->state.sync_thread);
--	kthread_stop(mgmt->state.recycle_thread);
--	kthread_stop(mgmt->state.slot_handler_thread);
--
--	arm_state = vchiq_platform_get_arm_state(&mgmt->state);
--	if (!IS_ERR_OR_NULL(arm_state->ka_thread))
--		kthread_stop(arm_state->ka_thread);
-+	vchiq_platform_uninit(mgmt);
- }
- 
- static struct platform_driver vchiq_driver = {
--- 
-2.39.5
-
+ 	return 0;
 
 
 
