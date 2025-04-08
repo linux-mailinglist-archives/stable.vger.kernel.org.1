@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-130359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3DADA803D8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:03:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73270A7FE5E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 975D01889E78
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:59:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5699B446A30
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2FAF268FED;
-	Tue,  8 Apr 2025 11:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3E72135CD;
+	Tue,  8 Apr 2025 11:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jpvtLxC/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EpxYGUaR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06A2267F4F;
-	Tue,  8 Apr 2025 11:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83400374C4;
+	Tue,  8 Apr 2025 11:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113508; cv=none; b=DU6pZ+UHbilPEa5qa315j6Pp7l5fAvc599nY9zfGIeYIQtgRFPsaRS5u8+syPgjcm6XKvNPUP/OhToITOW9v1f6G0tLfw4dOxD7DKAjNcPnhCjTPtOu4YbjxDK+s7EpaG1kZ1SmjEVqLKSbhAZIDDKneqDJFkciQ3fNg4NBmmPQ=
+	t=1744110275; cv=none; b=EEV0rcqqlzH7bspqOcVCXnwgHvwpqYskOLA5QwnF6mpDgeh4q89YILtdJcbh7SY0s8yutuM6XO5ctWjOHfmnf6u7Q2W1Kc0AJJJX9BOvYW4MnOd+nL8fDwRiw149Eo3AnrjzX4mqQlymwI9CXyCcR0Q1fSSbAvfAmtDIjxlDhss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113508; c=relaxed/simple;
-	bh=3rABR4KOYZaOKYROdZkObOIcJfX9uuwhCj+Togf2y7Y=;
+	s=arc-20240116; t=1744110275; c=relaxed/simple;
+	bh=ifj8bTnv15hLf4ePdCNOsb8GZgzyqRt/hqVd8HD0q0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gswFiQ5JlQMSsV3azc3DJWUxrkSEz3fx3mCsBKXcCN1wC88Q4pkjC6Z6oGnjYsSVF2boC0j9O2cWiBoCiF25uZUMshEUBafs6dUocx3NWHK6D+LA4L9XEmsYHSHqUKAOQ1LldgmSr/Fvy3FWZgY/H5YtA24aS/8o+jMCUXmScPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jpvtLxC/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8371C4CEE5;
-	Tue,  8 Apr 2025 11:58:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JjwREEKtOkTCioo6KrtTMoGVBsM6sturu5ZRgD0fMUaDIxaYPpkL82ldmJ+F81V0psfzCx4H3Z+tDrNU2n6h1K9fdck6kTwyVfPQe1cZzS7Uwc2bHrtVpebOwnEx8UCl0m+QKtgng/xKZjlm1CYPjuZzAWEvnzN+iSEbz3hRs6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EpxYGUaR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1256DC4CEE5;
+	Tue,  8 Apr 2025 11:04:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113508;
-	bh=3rABR4KOYZaOKYROdZkObOIcJfX9uuwhCj+Togf2y7Y=;
+	s=korg; t=1744110275;
+	bh=ifj8bTnv15hLf4ePdCNOsb8GZgzyqRt/hqVd8HD0q0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jpvtLxC/XJ0jCabozzdcWHniaxYX9jrGJWFxfU0BRRe6l4rwIwcn3UVFs2WD2zyXB
-	 jVNiIrepcv5Fum5QB2pNKA2mfJ0eqEcJdCApHAx7vlMMBpz3KpxcV/i4xg035sBaUX
-	 Zmy6hcVYoT61mjqlD+/HDA/jEvmoFmLN/pO/n2iQ=
+	b=EpxYGUaRTWFipvBjWyOqfavEBT20nzSIqjXDNhcPqjU+CXHyelSndpL87uv5ixSEU
+	 UVwWYJ0k6gfHKUebLl0eyJGyfqzIWMhtNl/ArfMjTGNRxNfS7V9qNBTAi9DbI7aS4Z
+	 dMRdqxDdAlGFTjspM7LW5enqQPcL3a90QUm9l0wQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladis Dronov <vdronov@redhat.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kai Huang <kai.huang@intel.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Sean Christopherson <sean.j.christopherson@intel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 184/268] x86/sgx: Warn explicitly if X86_FEATURE_SGX_LC is not enabled
+	Karel Balej <balejk@matfyz.cz>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	=?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.10 217/227] mmc: sdhci-pxav3: set NEED_RSP_BUSY capability
 Date: Tue,  8 Apr 2025 12:49:55 +0200
-Message-ID: <20250408104833.512716462@linuxfoundation.org>
+Message-ID: <20250408104826.816063880@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,94 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladis Dronov <vdronov@redhat.com>
+From: Karel Balej <balejk@matfyz.cz>
 
-[ Upstream commit 65be5c95d08eedda570a6c888a12384c77fe7614 ]
+commit a41fcca4b342811b473bbaa4b44f1d34d87fcce6 upstream.
 
-The kernel requires X86_FEATURE_SGX_LC to be able to create SGX enclaves,
-not just X86_FEATURE_SGX.
+Set the MMC_CAP_NEED_RSP_BUSY capability for the sdhci-pxav3 host to
+prevent conversion of R1B responses to R1. Without this, the eMMC card
+in the samsung,coreprimevelte smartphone using the Marvell PXA1908 SoC
+with this mmc host doesn't probe with the ETIMEDOUT error originating in
+__mmc_poll_for_busy.
 
-There is quite a number of hardware which has X86_FEATURE_SGX but not
-X86_FEATURE_SGX_LC. A kernel running on such hardware does not create
-the /dev/sgx_enclave file and does so silently.
+Note that the other issues reported for this phone and host, namely
+floods of "Tuning failed, falling back to fixed sampling clock" dmesg
+messages for the eMMC and unstable SDIO are not mitigated by this
+change.
 
-Explicitly warn if X86_FEATURE_SGX_LC is not enabled to properly notify
-users that the kernel disabled the SGX driver.
-
-The X86_FEATURE_SGX_LC, a.k.a. SGX Launch Control, is a CPU feature
-that enables LE (Launch Enclave) hash MSRs to be writable (with
-additional opt-in required in the 'feature control' MSR) when running
-enclaves, i.e. using a custom root key rather than the Intel proprietary
-key for enclave signing.
-
-I've hit this issue myself and have spent some time researching where
-my /dev/sgx_enclave file went on SGX-enabled hardware.
-
-Related links:
-
-  https://github.com/intel/linux-sgx/issues/837
-  https://patchwork.kernel.org/project/platform-driver-x86/patch/20180827185507.17087-3-jarkko.sakkinen@linux.intel.com/
-
-[ mingo: Made the error message a bit more verbose, and added other cases
-         where the kernel fails to create the /dev/sgx_enclave device node. ]
-
-Signed-off-by: Vladis Dronov <vdronov@redhat.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Kai Huang <kai.huang@intel.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Sean Christopherson <sean.j.christopherson@intel.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250309172215.21777-2-vdronov@redhat.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20200310153340.5593-1-ulf.hansson@linaro.org/
+Link: https://lore.kernel.org/r/D7204PWIGQGI.1FRFQPPIEE2P9@matfyz.cz/
+Link: https://lore.kernel.org/r/20250115-pxa1908-lkml-v14-0-847d24f3665a@skole.hr/
+Cc: stable@vger.kernel.org
+Signed-off-by: Karel Balej <balejk@matfyz.cz>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Tested-by: Duje Mihanović <duje.mihanovic@skole.hr>
+Link: https://lore.kernel.org/r/20250310140707.23459-1-balejk@matfyz.cz
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/sgx/driver.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/mmc/host/sdhci-pxav3.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/cpu/sgx/driver.c b/arch/x86/kernel/cpu/sgx/driver.c
-index 262f5fb18d74d..c453953d5a33f 100644
---- a/arch/x86/kernel/cpu/sgx/driver.c
-+++ b/arch/x86/kernel/cpu/sgx/driver.c
-@@ -150,13 +150,15 @@ int __init sgx_drv_init(void)
- 	u64 xfrm_mask;
- 	int ret;
+--- a/drivers/mmc/host/sdhci-pxav3.c
++++ b/drivers/mmc/host/sdhci-pxav3.c
+@@ -401,6 +401,7 @@ static int sdhci_pxav3_probe(struct plat
+ 	if (!IS_ERR(pxa->clk_core))
+ 		clk_prepare_enable(pxa->clk_core);
  
--	if (!cpu_feature_enabled(X86_FEATURE_SGX_LC))
-+	if (!cpu_feature_enabled(X86_FEATURE_SGX_LC)) {
-+		pr_info("SGX disabled: SGX launch control CPU feature is not available, /dev/sgx_enclave disabled.\n");
- 		return -ENODEV;
-+	}
++	host->mmc->caps |= MMC_CAP_NEED_RSP_BUSY;
+ 	/* enable 1/8V DDR capable */
+ 	host->mmc->caps |= MMC_CAP_1_8V_DDR;
  
- 	cpuid_count(SGX_CPUID, 0, &eax, &ebx, &ecx, &edx);
- 
- 	if (!(eax & 1))  {
--		pr_err("SGX disabled: SGX1 instruction support not available.\n");
-+		pr_info("SGX disabled: SGX1 instruction support not available, /dev/sgx_enclave disabled.\n");
- 		return -ENODEV;
- 	}
- 
-@@ -173,8 +175,10 @@ int __init sgx_drv_init(void)
- 	}
- 
- 	ret = misc_register(&sgx_dev_enclave);
--	if (ret)
-+	if (ret) {
-+		pr_info("SGX disabled: Unable to register the /dev/sgx_enclave driver (%d).\n", ret);
- 		return ret;
-+	}
- 
- 	return 0;
- }
--- 
-2.39.5
-
 
 
 
