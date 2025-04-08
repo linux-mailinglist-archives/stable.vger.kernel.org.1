@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-131220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48FEFA809D2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:58:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E83C2A8080E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:41:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFE388C3BF4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5AA8426C47
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:29:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F7E26B098;
-	Tue,  8 Apr 2025 12:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E83026A0B3;
+	Tue,  8 Apr 2025 12:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvDBNbe5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lP9ZgVNw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0551F26A0E8;
-	Tue,  8 Apr 2025 12:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C124426A0AF;
+	Tue,  8 Apr 2025 12:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115811; cv=none; b=gEWxaAZY7PFJVJ75OD9Tj3wdltiGAsGsWgsl7NgcwlXPXgUo1IGc7ZFzgcsVa03f+gzR77BLVjmiuv//bwPlZjIzJ+93rwjW2EvL+c/5jYzA6jAuxAo4jWUvGOmo2gScnTW2niOyfpXlpdtvXe8hBE/jEY19gLR9j5/a5WwkmJg=
+	t=1744115217; cv=none; b=BI1STmvLf9kjIST+vPlT4Jz8/cj7W1uAz0XQ1c+OUvVizR/6oUNhDhLwrIVg2JnPwVF9cEPASOL9THsL9Ghcjf5kTVLBa6aHkTKgdImBRbj/zLAKuc67TR9f4HSeoEXuThG9zvUx4UKzlgMLR0KVBDGzk9ctyTG+A3ZXQOtwQPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115811; c=relaxed/simple;
-	bh=o2KFXRyp6QxpVeNq6VUn1HunwPCH+wRDtnFfutmC5+g=;
+	s=arc-20240116; t=1744115217; c=relaxed/simple;
+	bh=ruGCkA/C2pKT+5S2GpiFVK4CP7VyLZVPKFnH+w9xtF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V8a0VwNgEYrSnMmKn1OCJIhS8s3QFlQoR4i78oZ3kqdVcHZklyHApsjkOlY2ZMZ8nsZge3L+bQHXCKqMYWv3hhlCMBhd+hqryHJvX98/uYuXpLSZOxQOHHa3m9Xshs2VTQDI0b8dc+QPSMnhrqEoQRFJLe/x1emBU/n4YAfj9iM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvDBNbe5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 889CDC4CEE5;
-	Tue,  8 Apr 2025 12:36:50 +0000 (UTC)
+	 MIME-Version; b=ntvXB8TDX/EX/LdMhieUjBY5FJEyEzyN+JhvDAojR9cA8VQToX9j2ADKsxtc85V7oTDb+SwJg2Sfrtdo2V6AA5GU6pgp8MzYXrbRNVvavxCdRKuFLvOQ0qlxBHAvUQexS1oa1WlXwL5tY/XxnOZP1M6qWHi76txh960PZFneIhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lP9ZgVNw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E06FBC4CEEC;
+	Tue,  8 Apr 2025 12:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115810;
-	bh=o2KFXRyp6QxpVeNq6VUn1HunwPCH+wRDtnFfutmC5+g=;
+	s=korg; t=1744115217;
+	bh=ruGCkA/C2pKT+5S2GpiFVK4CP7VyLZVPKFnH+w9xtF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dvDBNbe5cj7xqmRna6shve1QWp+uyY0sqJgU29CVUhZnc+m3TH/XxOc+3MjPLgS+8
-	 uyxRRczAYYE+vCUuePn/x3QnItq7vAOfLlJFdHeSUYOES0kV26YRpftCeb2UPrCLrx
-	 KRoalOY0X9L/nUHfBpJnmWlOW5NKpdt2XkHjlIE8=
+	b=lP9ZgVNwk2ExHni6QVjmv/tCr4B0wWMvkfg3xJyMFdQ2JkH10rTTMgCGFvtYFDCXq
+	 vE30LlA6ESrF1ukHi63ZuEnaiAbHXaK4G3x4ZB/F2WCNPpExKMhRnwm/aWX+kIzO6/
+	 A63NyD1Eqwd48mqlYftuPFui1XS/K+jVb8DNCYbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jerome Brunet <jbrunet@baylibre.com>,
+	Luigi Leonardi <leonardi@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 076/204] clk: amlogic: g12a: fix mmc A peripheral clock
+Subject: [PATCH 6.13 394/499] vsock: avoid timeout during connect() if the socket is closing
 Date: Tue,  8 Apr 2025 12:50:06 +0200
-Message-ID: <20250408104822.591556868@linuxfoundation.org>
+Message-ID: <20250408104901.055440632@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-[ Upstream commit 0079e77c08de692cb20b38e408365c830a44b1ef ]
+[ Upstream commit fccd2b711d9628c7ce0111d5e4938652101ee30a ]
 
-The bit index of the peripheral clock for mmc A is wrong
-This was probably not a problem for mmc A as the peripheral is likely left
-enabled by the bootloader.
+When a peer attempts to establish a connection, vsock_connect() contains
+a loop that waits for the state to be TCP_ESTABLISHED. However, the
+other peer can be fast enough to accept the connection and close it
+immediately, thus moving the state to TCP_CLOSING.
 
-No issues has been reported so far but it could be a problem, most likely
-some form of conflict between the ethernet and mmc A clock, breaking
-ethernet on init.
+When this happens, the peer in the vsock_connect() is properly woken up,
+but since the state is not TCP_ESTABLISHED, it goes back to sleep
+until the timeout expires, returning -ETIMEDOUT.
 
-Use the value provided by the documentation for mmc A before this
-becomes an actual problem.
+If the socket state is TCP_CLOSING, waiting for the timeout is pointless.
+vsock_connect() can return immediately without errors or delay since the
+connection actually happened. The socket will be in a closing state,
+but this is not an issue, and subsequent calls will fail as expected.
 
-Fixes: 085a4ea93d54 ("clk: meson: g12a: add peripheral clock controller")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241213-amlogic-clk-g12a-mmca-fix-v1-1-5af421f58b64@baylibre.com
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+We discovered this issue while developing a test that accepts and
+immediately closes connections to stress the transport switch between
+two connect() calls, where the first one was interrupted by a signal
+(see Closes link).
+
+Reported-by: Luigi Leonardi <leonardi@redhat.com>
+Closes: https://lore.kernel.org/virtualization/bq6hxrolno2vmtqwcvb5bljfpb7mvwb3kohrvaed6auz5vxrfv@ijmd2f3grobn/
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Tested-by: Luigi Leonardi <leonardi@redhat.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Link: https://patch.msgid.link/20250328141528.420719-1-sgarzare@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/meson/g12a.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/vmw_vsock/af_vsock.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/meson/g12a.c b/drivers/clk/meson/g12a.c
-index a623596c1e490..d13a60fefc1b8 100644
---- a/drivers/clk/meson/g12a.c
-+++ b/drivers/clk/meson/g12a.c
-@@ -4199,7 +4199,7 @@ static MESON_GATE(g12a_spicc_1,			HHI_GCLK_MPEG0,	14);
- static MESON_GATE(g12a_hiu_reg,			HHI_GCLK_MPEG0,	19);
- static MESON_GATE(g12a_mipi_dsi_phy,		HHI_GCLK_MPEG0,	20);
- static MESON_GATE(g12a_assist_misc,		HHI_GCLK_MPEG0,	23);
--static MESON_GATE(g12a_emmc_a,			HHI_GCLK_MPEG0,	4);
-+static MESON_GATE(g12a_emmc_a,			HHI_GCLK_MPEG0,	24);
- static MESON_GATE(g12a_emmc_b,			HHI_GCLK_MPEG0,	25);
- static MESON_GATE(g12a_emmc_c,			HHI_GCLK_MPEG0,	26);
- static MESON_GATE(g12a_audio_codec,		HHI_GCLK_MPEG0,	28);
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 7e3db87ae4333..fc6afbc8d6806 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -1551,7 +1551,11 @@ static int vsock_connect(struct socket *sock, struct sockaddr *addr,
+ 	timeout = vsk->connect_timeout;
+ 	prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
+ 
+-	while (sk->sk_state != TCP_ESTABLISHED && sk->sk_err == 0) {
++	/* If the socket is already closing or it is in an error state, there
++	 * is no point in waiting.
++	 */
++	while (sk->sk_state != TCP_ESTABLISHED &&
++	       sk->sk_state != TCP_CLOSING && sk->sk_err == 0) {
+ 		if (flags & O_NONBLOCK) {
+ 			/* If we're not going to block, we schedule a timeout
+ 			 * function to generate a timeout on the connection
 -- 
 2.39.5
 
