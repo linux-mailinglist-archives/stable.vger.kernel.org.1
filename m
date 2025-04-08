@@ -1,193 +1,174 @@
-Return-Path: <stable+bounces-131789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF901A80FFD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 17:30:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D25BA80FE5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 17:27:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C5313AB7C4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:23:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FEE87BD518
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:22:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1DD229B21;
-	Tue,  8 Apr 2025 15:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE1E22B5B1;
+	Tue,  8 Apr 2025 15:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SlBgCIex"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cV/gJPHw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0600D22B8A1
-	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 15:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701842253B2
+	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 15:23:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744125779; cv=none; b=VaJYCGi0UNhYoQRvhDK3LQhx3oXdx3uaOOXBrviMvT38PA87djlzicHKDP4SvxIhQ5KjNGNok3PB4h5gRBROIhuHdyimJnCbOLGj9919j4pw6rWndhsnnAq5c1rba4sD271lot3G2NL/c6C794X0KIrI7G/OsOqKEZLGUCxAxUs=
+	t=1744125784; cv=none; b=XflX5INoSsHCuJwjqtkN2BBha+rbm7jhCLFAWariANGSWoXojEBAcP9Hwt2fmYctXP1KCHQO6xBLxEoVrZ4ptMrpNRbIyunmENFMyyIzEUamuHlc0XPtmCUPfk8QvkCt0p1S75UwXipPt1PRXrdco3Y2c27aoljEl8UguainxoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744125779; c=relaxed/simple;
-	bh=3lpzITRPn00lYD/ndslRx6AUWRX254zjphl4pSWfNo8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hyinWcaAZEIo/mw43J9msGh0a+hWIFjUlZN98NiX/8BEvApoLAi/cRCi5XI5SppFZeh2PW7M5SSuTt0ekYuZvsOJxwBjQlFO9Ewkd1I2QfjaO3GhieWcLF7iHwSOhYX08dJZX/4dMFX/yoStklwFwVW1njetrdabWzpLuYbmSa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SlBgCIex; arc=none smtp.client-ip=209.85.222.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-86d377306ddso2457418241.2
-        for <stable@vger.kernel.org>; Tue, 08 Apr 2025 08:22:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744125776; x=1744730576; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Cxg9LKA6+kQvyEUrjxprc+UTcXgCvZJ1Wa5TchzdHtU=;
-        b=SlBgCIexBNg9JgdgukxvMc1NlzxmsmSjw6EvTBALeRrNjiCk3Mxi4hkMsJe9a5qHOF
-         kbjl1k7uapT68wIzrr8tsbYsbkVa50oO78+I89U/675QSAYWqCuWqwBBJr8sVcd2quoZ
-         5s/ajZc6KiJdtb1VSyLeoa4nB2vOAmc5Ohh1RlqF8MeRGVI9WiHvZmgCTsXTDFhdtdzK
-         XAOr7FvO7ga1JEPnKcP79qQ0FI3LNWBisPb3iCy22tsBCEOXT1U26YrZ40ZKCpVk8jez
-         dmQByVz3nHS1xozJQjOzplaxUYj8A2B7XiyQnXMUrrEC3EFmCQ+lSgv7mPSsiWZl1BE/
-         4wRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744125776; x=1744730576;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Cxg9LKA6+kQvyEUrjxprc+UTcXgCvZJ1Wa5TchzdHtU=;
-        b=pB9JrDE9DuHojukBWom+QuxA9ZC/u/38O7XMiWKRztF2wNzcPnHgbfvmpDIP8fMXlm
-         /u2wfwQGl90sUToUv8b0SyJRrUvDP9XQ/knlP4qK9BTAoNdwXzoseZTgr4LpWS/HBKRX
-         GpYyw1KsFQXY7r/8j9Vocy4smThP+Rig7+XOwGQODfFYLC4Qs5ZXPX9PEd5b2LfiQoVO
-         VQCm2nQxNU5aTvyrQMrOUhiqK1RTfiQEBgOECke5Zn5pIh6LoyUb7Y1MT3sUeAK4bjev
-         KJo56urrrxkO6nBeHz/K/NkvY3m//0ljzniLTaehUxaOmCWsOFAkjDi1XlCh+lZE9dOm
-         S2Cw==
-X-Gm-Message-State: AOJu0Yx55mkYyqvMWG38NCNHAM8nIwACcmyFKozcqJvbWlFFlCPn2SQs
-	PsdVzr3yRRsnpk9/mkgcvoCS0XZazgBvNcUYWcc4rwqOEkNc+VpKU2IKfR2t6WYivK+u95oOuX1
-	0sAki4+RqubO5S7cI4l3F8F97lCooWWc04oSp9g==
-X-Gm-Gg: ASbGncv0xYx0QW39FLPFzX+sPiqewrwTSq0RQ9sOfLjdYYpXLPFQfHLbCN7ZZz6RMgZ
-	Kx4zxZYayHf55EyZgFkJDtO0gnZ0IJAmyO5qmBZtNqRvLNXqPpTiiVStpwv/jcHN5jFCg83v5Pp
-	Ecl5+LNkpOdBLMveja2g2QmLIbPliK60jk+5zSPWNagVArCpKo0l/keLwn23UGwLLcHjM=
-X-Google-Smtp-Source: AGHT+IEtePmmvCUqzXP4fQmhOiQg0gVcd3/T0A8xgplxbFp6FtfV9GDDW+Rjpln3N7ol4Kj4hD73PnpvQwrVCf9mnBM=
-X-Received: by 2002:a05:6122:1d0a:b0:520:4996:7d2a with SMTP id
- 71dfb90a1353d-527730f997amr9204517e0c.10.1744125775647; Tue, 08 Apr 2025
- 08:22:55 -0700 (PDT)
+	s=arc-20240116; t=1744125784; c=relaxed/simple;
+	bh=wkTvchI3bib9Pnh+lS+4WUTTsHXvYi0sHRdAAg/S9s8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KP4bi2Wc3PaCsJtS2cbIMlg0H/yUUeeUqeqsbWqE1DbCd8E28vajpV4qeqEQ5XHdvVp8qYuqBKSvOCqaS1zQrN5pFeNHtO3L9befnyKmYliJT0m06gXQj48fcuJcNILqz+HUSeFfSEjxhqr9eT7GXsAiogmjQXkmOHjH50i5tJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cV/gJPHw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5E03C4CEE9;
+	Tue,  8 Apr 2025 15:23:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744125783;
+	bh=wkTvchI3bib9Pnh+lS+4WUTTsHXvYi0sHRdAAg/S9s8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cV/gJPHwptycSvQ+eTpJJt7XJybZeJH5QG3zTOaVfWEdMe/gEXKzxSFguE6loV9vC
+	 HyHT7qY9fv3gYHM93L7VgY7bYOB5+1PYOpLscyHdyukbtMbbJtmnqZBq2U/46f+RL2
+	 uJYUR7Xxu4E8mWf05S/+qdEUHYCpHj8xRfaA+8GKYjeFj+tviCzu7Ga04sgW0HHRDJ
+	 BCyqCMjSfPTnvui6mqEw3lOgFqCGN3HXWldcpolyOHVGhGngQfLMCn7RIoSgXoCKb4
+	 AxmJQ3Plsc+eB3bbaVA/UF+e3cg6Lf1HKSdvC//VCTHkbSGydtUyO2dVO0dwhZX+rC
+	 G45lX1c4GxlPg==
+Date: Tue, 8 Apr 2025 08:23:00 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: linus.walleij@linaro.org, rmk+kernel@armlinux.org.uk,
+	stable@vger.kernel.org, broonie@kernel.org
+Subject: Re: FAILED: patch "[PATCH] ARM: 9443/1: Require linker to support
+ KEEP within OVERLAY" failed to apply to 6.13-stable tree
+Message-ID: <20250408152300.GA3301081@ax162>
+References: <2025040805-boaster-hazing-36c3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250408104914.247897328@linuxfoundation.org>
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 8 Apr 2025 20:52:44 +0530
-X-Gm-Features: ATxdqUEXqLGH0AeyqvbH4fTDpyq3lu_NpjMbeRtitNjowMQG1rjdctxiPvSjWaY
-Message-ID: <CA+G9fYu_OLOYK_+X6urte_9VA4jye7_GcTbDd1GzjnBB1VYtKg@mail.gmail.com>
-Subject: Re: [PATCH 6.14 000/731] 6.14.2-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-
-On Tue, 8 Apr 2025 at 16:36, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.14.2 release.
-> There are 731 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 10 Apr 2025 10:47:53 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.14.2-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.14.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
-
-1)
-Regressions on arm64, 390 tinyconfig, allnoconfig builds with clang-20
-and gcc-13 on the stable-rc 6.14.
-
-2)
-Regressions on arm, arm64 rustclang-lkftconfig-kselftest builds with
-clang-20 and gcc-13 on the stable-rc 6.14.
-
-First seen on the 6.14.2-rc1
-Bad: v6.14.1-732-gabe68470bb82
-Good: v6.14.1
-
-* arm64 and s390, build
- - build/gcc-13-tinyconfig
- - build/clang-20-tinyconfig
-
-* arm and arm64, build
- -  build/rustclang-lkftconfig-kselftest
-
-Regression Analysis:
-- New regression? Yes
-- Reproducibility? Yes
-
-Build regression: arm64 s390 tinyconfig undefined reference to
-`dl_rebuild_rd_accounting'
-Build regression: arm64 arm rust pci.rs cannot find type `Core` in
-module `device`
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-1)
-## Build log
-aarch64-linux-gnu-ld: kernel/sched/build_utility.o: in function
-`partition_sched_domains_locked':
-build_utility.c:(.text+0x3668): undefined reference to
-`dl_rebuild_rd_accounting'
-build_utility.c:(.text+0x3668): relocation truncated to fit:
-R_AARCH64_CALL26 against undefined symbol `dl_rebuild_rd_accounting
-
-2)
-## Build log rust
-error[E0412]: cannot find type `Core` in module `device`
-  --> /builds/linux/rust/kernel/pci.rs:69:58
-   |
-69 |         let pdev = unsafe { &*pdev.cast::<Device<device::Core>>() };
-   |                                                          ^^^^ not
-found in `device`
+Content-Type: multipart/mixed; boundary="x8E+sD+dvmdZGvqM"
+Content-Disposition: inline
+In-Reply-To: <2025040805-boaster-hazing-36c3@gregkh>
 
 
-## Source
-* Kernel version: 6.14.2-rc1
-* Git tree: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-* Git sha: abe68470bb82714d059d1df4a32cb6fd5466dc0e
-* Git describe: v6.14.1-732-gabe68470bb82
-* Project details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.14.y/build/v6.14.1-732-gabe68470bb82/
+--x8E+sD+dvmdZGvqM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-## Test
-* Build log: https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.14.y/build/v6.14.1-732-gabe68470bb82/testrun/27939968/suite/build/test/gcc-13-tinyconfig/log
-* Build details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.14.y/build/v6.14.1-732-gabe68470bb82/testrun/27939968/suite/build/test/gcc-13-tinyconfig/details/
-* Build history:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.14.y/build/v6.14.1-732-gabe68470bb82/testrun/27939968/suite/build/test/gcc-13-tinyconfig/history/
-* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/2vReGJ6wjd1n99Nsg9WaH58qupU/
-* Kernel config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2vReGJ6wjd1n99Nsg9WaH58qupU/config
-* Build rust history:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.14.y/build/v6.14.1-732-gabe68470bb82/testrun/27940128/suite/build/test/rustclang-lkftconfig-kselftest/history/
-* Build rust details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.14.y/build/v6.14.1-732-gabe68470bb82/testrun/27940128/suite/build/test/rustclang-lkftconfig-kselftest/details/
-* Build rust log:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.14.y/build/v6.14.1-732-gabe68470bb82/testrun/27940128/suite/build/test/rustclang-lkftconfig-kselftest/log
+On Tue, Apr 08, 2025 at 11:15:05AM +0200, gregkh@linuxfoundation.org wrote:
+...
+> ------------------ original commit in Linus's tree ------------------
+> 
+> From e7607f7d6d81af71dcc5171278aadccc94d277cd Mon Sep 17 00:00:00 2001
+> From: Nathan Chancellor <nathan@kernel.org>
+> Date: Thu, 20 Mar 2025 22:33:49 +0100
+> Subject: [PATCH] ARM: 9443/1: Require linker to support KEEP within OVERLAY
+>  for DCE
 
-## Steps to reproduce
- - tuxmake --runtime podman --target-arch arm64 --toolchain gcc-13
---kconfig tinyconfig
+Attached is a backport for 6.12 and 6.13. This change is necessary for
+"ARM: 9444/1: add KEEP() keyword to ARM_VECTORS", as pointed out at
+https://lore.kernel.org/71339b92-5292-48b7-8a45-addbac43ee32@sirena.org.uk/.
 
---
-Linaro LKFT
-https://lkft.linaro.org
+Cheers,
+Nathan
+
+--x8E+sD+dvmdZGvqM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment;
+	filename=0001-ARM-9443-1-Require-linker-to-support-KEEP-within-OVE.patch
+
+From 4800091d0ce47de62d584cda0c4c4eb2eedbe794 Mon Sep 17 00:00:00 2001
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Thu, 20 Mar 2025 22:33:49 +0100
+Subject: [PATCH 6.12 and 6.13] ARM: 9443/1: Require linker to support KEEP
+ within OVERLAY for DCE
+
+commit e7607f7d6d81af71dcc5171278aadccc94d277cd upstream.
+
+ld.lld prior to 21.0.0 does not support using the KEEP keyword within an
+overlay description, which may be needed to avoid discarding necessary
+sections within an overlay with '--gc-sections', which can be enabled
+for the kernel via CONFIG_LD_DEAD_CODE_DATA_ELIMINATION.
+
+Disallow CONFIG_LD_DEAD_CODE_DATA_ELIMINATION without support for KEEP
+within OVERLAY and introduce a macro, OVERLAY_KEEP, that can be used to
+conditionally add KEEP when it is properly supported to avoid breaking
+old versions of ld.lld.
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/llvm/llvm-project/commit/381599f1fe973afad3094e55ec99b1620dba7d8c
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+[nathan: Fix conflict in init/Kconfig due to lack of RUSTC symbols]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ arch/arm/Kconfig                   | 2 +-
+ arch/arm/include/asm/vmlinux.lds.h | 6 ++++++
+ init/Kconfig                       | 5 +++++
+ 3 files changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 202397be76d8..d0040fb67c36 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -118,7 +118,7 @@ config ARM
+ 	select HAVE_KERNEL_XZ
+ 	select HAVE_KPROBES if !XIP_KERNEL && !CPU_ENDIAN_BE32 && !CPU_V7M
+ 	select HAVE_KRETPROBES if HAVE_KPROBES
+-	select HAVE_LD_DEAD_CODE_DATA_ELIMINATION if (LD_VERSION >= 23600 || LD_IS_LLD)
++	select HAVE_LD_DEAD_CODE_DATA_ELIMINATION if (LD_VERSION >= 23600 || LD_CAN_USE_KEEP_IN_OVERLAY)
+ 	select HAVE_MOD_ARCH_SPECIFIC
+ 	select HAVE_NMI
+ 	select HAVE_OPTPROBES if !THUMB2_KERNEL
+diff --git a/arch/arm/include/asm/vmlinux.lds.h b/arch/arm/include/asm/vmlinux.lds.h
+index d60f6e83a9f7..0f8ef1ed725e 100644
+--- a/arch/arm/include/asm/vmlinux.lds.h
++++ b/arch/arm/include/asm/vmlinux.lds.h
+@@ -34,6 +34,12 @@
+ #define NOCROSSREFS
+ #endif
+ 
++#ifdef CONFIG_LD_CAN_USE_KEEP_IN_OVERLAY
++#define OVERLAY_KEEP(x)		KEEP(x)
++#else
++#define OVERLAY_KEEP(x)		x
++#endif
++
+ /* Set start/end symbol names to the LMA for the section */
+ #define ARM_LMA(sym, section)						\
+ 	sym##_start = LOADADDR(section);				\
+diff --git a/init/Kconfig b/init/Kconfig
+index 4c88cb58c261..f3dbdec0a04e 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -129,6 +129,11 @@ config CC_HAS_COUNTED_BY
+ 	# https://github.com/llvm/llvm-project/pull/112636
+ 	depends on !(CC_IS_CLANG && CLANG_VERSION < 190103)
+ 
++config LD_CAN_USE_KEEP_IN_OVERLAY
++	# ld.lld prior to 21.0.0 did not support KEEP within an overlay description
++	# https://github.com/llvm/llvm-project/pull/130661
++	def_bool LD_IS_BFD || LLD_VERSION >= 210000
++
+ config PAHOLE_VERSION
+ 	int
+ 	default $(shell,$(srctree)/scripts/pahole-version.sh $(PAHOLE))
+
+base-commit: 1edf71b4b7d9f599843d2c5280537d10be495ebc
+-- 
+2.49.0
+
+
+--x8E+sD+dvmdZGvqM--
 
