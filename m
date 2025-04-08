@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-129131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B817A7FE32
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:11:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3394A801D2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:43:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E467E170500
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BACAD461F44
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB67B268FF1;
-	Tue,  8 Apr 2025 11:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96AEC268FCF;
+	Tue,  8 Apr 2025 11:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPRfKM0O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lu7OWWN4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79690268FEB;
-	Tue,  8 Apr 2025 11:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55810219301;
+	Tue,  8 Apr 2025 11:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110200; cv=none; b=Gp8UXUG1WhJO757T0U4DO3PWiWWYXf3aS/LSnGLj+HGdi5X07z46Heg3sJxKUSAlfGd3++JscFUcsyLJvd966XL9WACga8/Hdn/CReOONIrAFXrEj9uiF5Emg5isea0gB1VvTkpUWF4MsxYE/XYTPisDH+nfRQAecvYEoNix2hc=
+	t=1744112232; cv=none; b=EscYaEYSTzqBVvTtzG3sGahM16JpXnoiAnIc1MIIuN9W5yctOqcT6hd6EfXgVTIcwpbmw3j1ca+3x1Hd8IWfrplRjis5OH5z4656123UDJRlfImCm247sUTVRFuMIGDaRmL/eJufKl9FmZS+TNEnyXDEHNrCav78T56FA7NF0N0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110200; c=relaxed/simple;
-	bh=TdC25k21kxpeT2O2t/YU5KX91aLSaFGws0N0sqOW8gQ=;
+	s=arc-20240116; t=1744112232; c=relaxed/simple;
+	bh=zjiKeN/oon2UXHrjqhYGUt4vQXGSduRgg2yWLRkOQww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mq68DnDgumNmBgJtrbxSThvLOYTjhdm0Cfx1CVyjGWuFv12lxaj9e+4rDXrUlmh9PXSBxq9PJVpnAb/ceqBK5uLbEdzZMzqB4Es1crcGor98Wfv21adWEnc5I3fvp85z0xss5cEzHMpHNP0tTsRpWmrm9Bu8VMi8mnK15zF8cwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iPRfKM0O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A32A2C4CEE5;
-	Tue,  8 Apr 2025 11:03:18 +0000 (UTC)
+	 MIME-Version; b=b25Cyhtm2l4OBarwyHPJa269URX86Q2UY7TOCgplUUn3apIon/cGLDq3caOmFt7oRggX1/dOo9sTg5D78qL04qvobfWJK85jcsu7h8khrvUPhhbF4i6Ps/0t3VEk53I/u3C4Y+y39yZzlvQo1lpQAEbiPSLUhnqIWn3M7rcf64Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lu7OWWN4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B88C4CEE5;
+	Tue,  8 Apr 2025 11:37:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110199;
-	bh=TdC25k21kxpeT2O2t/YU5KX91aLSaFGws0N0sqOW8gQ=;
+	s=korg; t=1744112232;
+	bh=zjiKeN/oon2UXHrjqhYGUt4vQXGSduRgg2yWLRkOQww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iPRfKM0OX3lw+vDMx9tCnlWr5MbZX7Wcyt6MblmzbeIpJppG6Hb9nLfl6Cg2xooSv
-	 ZUAUBklM5MrmAF8sWZWO25q20cHpcsQFRXr8mCj5qxCKxKW+4wpBK4dydF5fdMERO+
-	 Vax5iwl+19ozAtlUu+QlYp5ULQnP1RHK9gBTcdEU=
+	b=lu7OWWN4NkgRooWzdULSmGV51AV5cyVj7x1/ee5DG43cww3cIAk0OtXhR0JK4IzHq
+	 aLo2PaNk8jZg9futJEONdW0tcnHwKBwYkOeflEHDKADMJmAg82QteTDAVzosCSw0r1
+	 EZKEmQ5IpbKtAFpgLk10uWJPrFESNSLNAYbJC5y8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Oberhollenzer <david.oberhollenzer@sigma-star.at>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 203/227] net: dsa: mv88e6xxx: propperly shutdown PPU re-enable timer on destroy
+	Jann Horn <jannh@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.14 684/731] x86/mm: Fix flush_tlb_range() when used for zapping normal PMDs
 Date: Tue,  8 Apr 2025 12:49:41 +0200
-Message-ID: <20250408104826.392458513@linuxfoundation.org>
+Message-ID: <20250408104930.177751523@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,130 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit a58d882841a0750da3c482cd3d82432b1c7edb77 ]
+commit 3ef938c3503563bfc2ac15083557f880d29c2e64 upstream.
 
-The mv88e6xxx has an internal PPU that polls PHY state. If we want to
-access the internal PHYs, we need to disable the PPU first. Because
-that is a slow operation, a 10ms timer is used to re-enable it,
-canceled with every access, so bulk operations effectively only
-disable it once and re-enable it some 10ms after the last access.
+On the following path, flush_tlb_range() can be used for zapping normal
+PMD entries (PMD entries that point to page tables) together with the PTE
+entries in the pointed-to page table:
 
-If a PHY is accessed and then the mv88e6xxx module is removed before
-the 10ms are up, the PPU re-enable ends up accessing a dangling pointer.
+    collapse_pte_mapped_thp
+      pmdp_collapse_flush
+        flush_tlb_range
 
-This especially affects probing during bootup. The MDIO bus and PHY
-registration may succeed, but registration with the DSA framework
-may fail later on (e.g. because the CPU port depends on another,
-very slow device that isn't done probing yet, returning -EPROBE_DEFER).
-In this case, probe() fails, but the MDIO subsystem may already have
-accessed the MIDO bus or PHYs, arming the timer.
+The arm64 version of flush_tlb_range() has a comment describing that it can
+be used for page table removal, and does not use any last-level
+invalidation optimizations. Fix the X86 version by making it behave the
+same way.
 
-This is fixed as follows:
- - If probe fails after mv88e6xxx_phy_init(), make sure we also call
-   mv88e6xxx_phy_destroy() before returning
- - In mv88e6xxx_remove(), make sure we do the teardown in the correct
-   order, calling mv88e6xxx_phy_destroy() after unregistering the
-   switch device.
- - In mv88e6xxx_phy_destroy(), destroy both the timer and the work item
-   that the timer might schedule, synchronously waiting in case one of
-   the callbacks already fired and destroying the timer first, before
-   waiting for the work item.
- - Access to the PPU is guarded by a mutex, the worker acquires it
-   with a mutex_trylock(), not proceeding with the expensive shutdown
-   if that fails. We grab the mutex in mv88e6xxx_phy_destroy() to make
-   sure the slow PPU shutdown is already done or won't even enter, when
-   we wait for the work item.
+Currently, X86 only uses this information for the following two purposes,
+which I think means the issue doesn't have much impact:
 
-Fixes: 2e5f032095ff ("dsa: add support for the Marvell 88E6131 switch chip")
-Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://patch.msgid.link/20250401135705.92760-1-david.oberhollenzer@sigma-star.at
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ - In native_flush_tlb_multi() for checking if lazy TLB CPUs need to be
+   IPI'd to avoid issues with speculative page table walks.
+ - In Hyper-V TLB paravirtualization, again for lazy TLB stuff.
+
+The patch "x86/mm: only invalidate final translations with INVLPGB" which
+is currently under review (see
+<https://lore.kernel.org/all/20241230175550.4046587-13-riel@surriel.com/>)
+would probably be making the impact of this a lot worse.
+
+Fixes: 016c4d92cd16 ("x86/mm/tlb: Add freed_tables argument to flush_tlb_mm_range")
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20250103-x86-collapse-flush-fix-v1-1-3c521856cfa6@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 11 +++++++----
- drivers/net/dsa/mv88e6xxx/phy.c  |  3 +++
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/tlbflush.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index c7f93329ae753..4cc60135589d1 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -5578,13 +5578,13 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
- 	err = mv88e6xxx_switch_reset(chip);
- 	mv88e6xxx_reg_unlock(chip);
- 	if (err)
--		goto out;
-+		goto out_phy;
+--- a/arch/x86/include/asm/tlbflush.h
++++ b/arch/x86/include/asm/tlbflush.h
+@@ -242,7 +242,7 @@ void flush_tlb_multi(const struct cpumas
+ 	flush_tlb_mm_range((vma)->vm_mm, start, end,			\
+ 			   ((vma)->vm_flags & VM_HUGETLB)		\
+ 				? huge_page_shift(hstate_vma(vma))	\
+-				: PAGE_SHIFT, false)
++				: PAGE_SHIFT, true)
  
- 	if (np) {
- 		chip->irq = of_irq_get(np, 0);
- 		if (chip->irq == -EPROBE_DEFER) {
- 			err = chip->irq;
--			goto out;
-+			goto out_phy;
- 		}
- 	}
- 
-@@ -5603,7 +5603,7 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
- 	mv88e6xxx_reg_unlock(chip);
- 
- 	if (err)
--		goto out;
-+		goto out_phy;
- 
- 	if (chip->info->g2_irqs > 0) {
- 		err = mv88e6xxx_g2_irq_setup(chip);
-@@ -5643,6 +5643,8 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
- 		mv88e6xxx_g1_irq_free(chip);
- 	else
- 		mv88e6xxx_irq_poll_free(chip);
-+out_phy:
-+	mv88e6xxx_phy_destroy(chip);
- out:
- 	if (pdata)
- 		dev_put(pdata->netdev);
-@@ -5660,7 +5662,6 @@ static void mv88e6xxx_remove(struct mdio_device *mdiodev)
- 		mv88e6xxx_ptp_free(chip);
- 	}
- 
--	mv88e6xxx_phy_destroy(chip);
- 	mv88e6xxx_unregister_switch(chip);
- 	mv88e6xxx_mdios_unregister(chip);
- 
-@@ -5674,6 +5675,8 @@ static void mv88e6xxx_remove(struct mdio_device *mdiodev)
- 		mv88e6xxx_g1_irq_free(chip);
- 	else
- 		mv88e6xxx_irq_poll_free(chip);
-+
-+	mv88e6xxx_phy_destroy(chip);
- }
- 
- static const struct of_device_id mv88e6xxx_of_match[] = {
-diff --git a/drivers/net/dsa/mv88e6xxx/phy.c b/drivers/net/dsa/mv88e6xxx/phy.c
-index 252b5b3a3efef..d2104bd346ea2 100644
---- a/drivers/net/dsa/mv88e6xxx/phy.c
-+++ b/drivers/net/dsa/mv88e6xxx/phy.c
-@@ -197,7 +197,10 @@ static void mv88e6xxx_phy_ppu_state_init(struct mv88e6xxx_chip *chip)
- 
- static void mv88e6xxx_phy_ppu_state_destroy(struct mv88e6xxx_chip *chip)
- {
-+	mutex_lock(&chip->ppu_mutex);
- 	del_timer_sync(&chip->ppu_timer);
-+	cancel_work_sync(&chip->ppu_work);
-+	mutex_unlock(&chip->ppu_mutex);
- }
- 
- int mv88e6185_phy_ppu_read(struct mv88e6xxx_chip *chip, struct mii_bus *bus,
--- 
-2.39.5
-
+ extern void flush_tlb_all(void);
+ extern void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
 
 
 
