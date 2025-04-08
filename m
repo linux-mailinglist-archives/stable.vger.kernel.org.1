@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A90B6A80A48
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:03:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D201A8065E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:27:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16FCA8C6C4B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 597804C08DD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEF9E26B2A4;
-	Tue,  8 Apr 2025 12:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A14268C51;
+	Tue,  8 Apr 2025 12:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DwQCvKmJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eiaL5Wbs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9022236FC;
-	Tue,  8 Apr 2025 12:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E262638B8;
+	Tue,  8 Apr 2025 12:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116174; cv=none; b=ppcjZ2Hx+29+7UvLWytC5WY24BmSPKcAwdyNd9cKA2YumGwLlJVSMcmxJqVrtv5e6sFgSFzPoZAdaZsa32uD22ab8eWZ+9pYSVLG45iMdqM2kdgcvSLZOxZGIjpiAipE5Lw1VJh1PacNd92UpHqHHt9mcNkLFZ/IOOduGwDh1j8=
+	t=1744114575; cv=none; b=upu6s+8W4VjveVxnQrjAllBnr8XMkkCXHmeImEjDPGC+Ds9YMn4mvRHnN7flylMEEkIODHOh5Fp4fOY9XqbNjC56gjT3ZZopSxXzICfdUtF5tufgsoR4QAlgZ14b5fn3RZvvA/fxBbZCzBU+TNglVqtyhntCKCITGrBf15/Mc0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116174; c=relaxed/simple;
-	bh=xO7UrZu+ULa78evZpHu/MFRPccfMHavfBHDIyPdr+1c=;
+	s=arc-20240116; t=1744114575; c=relaxed/simple;
+	bh=Sndn6OozdCfL9kf7firR4BZOC0Z7XJ7mzRUKMqKnC6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SRKIaw63dw4ENkgPfYArdh6RMrBM5oFgimMZzchdx5AOqJz5IKr9OflCrKhE4lSXLwh4Vl/X7ChLb6j8Y8t1uXzLsINdTVnHYydLPc6Lc49ubR3J6oLx0wBvF2p0t8HCNTaJFnq/ZpOamYcTKPiLH+IMzn5vvfXkUrrdbt+WehA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DwQCvKmJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C92C4CEE5;
-	Tue,  8 Apr 2025 12:42:53 +0000 (UTC)
+	 MIME-Version; b=YRfjymvoq+mtRRWklEfkPYoN3JR39kMKx26TlO4J/42RE2K7glSvU908gKiiAKovqAHmcqn24yGw8R68zZUmr/afK1cIjfpEo8O5RLW0DO+Q4eD/g7mwxrvKmAI0hwkBlAn3z+tbNRZXaF7ce9gBsHwI46SqahocctEjFgUUtIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eiaL5Wbs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21315C4CEE5;
+	Tue,  8 Apr 2025 12:16:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116174;
-	bh=xO7UrZu+ULa78evZpHu/MFRPccfMHavfBHDIyPdr+1c=;
+	s=korg; t=1744114575;
+	bh=Sndn6OozdCfL9kf7firR4BZOC0Z7XJ7mzRUKMqKnC6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DwQCvKmJNaroavTDPSn/SklHtSyp6KgUOWRicDYmitMFI8QOubj9/euIBfu2d6D4S
-	 ZIalVUabn40dge8Jq0mFozq5BV4OWaxkgqBnmkzXILFWUwjeqj4YcV/hijclf53Vvw
-	 dPkO6/xJr3dKeKaYWkHq75t3DVw6EdVw8OdlgHAU=
+	b=eiaL5WbslFFi3vRbja7YidwEdMxcyq4gGSbNMZT4Py02ZkLku1YyIOZqEIC4WOB7e
+	 Lap9d66FYCXsYnPlKw4l9ZIAb4Cy0tZprhw2ocA5qSnbJYN/K+pesndXZv7SUaAyav
+	 j9m7Lr8NSGXbNRPdA2eYErgUPdsk94XupkGy64CY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
-	Mark Brown <broonie@kernel.org>,
+	Tanya Agarwal <tanyaagarwal25699@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 041/423] ASoC: amd: acp: Fix for enabling DMIC on acp platforms via _DSD entry
-Date: Tue,  8 Apr 2025 12:46:07 +0200
-Message-ID: <20250408104846.707251789@linuxfoundation.org>
+Subject: [PATCH 6.13 156/499] lib: 842: Improve error handling in sw842_compress()
+Date: Tue,  8 Apr 2025 12:46:08 +0200
+Message-ID: <20250408104855.074240971@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+From: Tanya Agarwal <tanyaagarwal25699@gmail.com>
 
-[ Upstream commit 02e1cf7a352a3ba5f768849f2b4fcaaaa19f89e3 ]
+[ Upstream commit af324dc0e2b558678aec42260cce38be16cc77ca ]
 
-Add condition check to register ACP PDM sound card by reading
-_WOV acpi entry.
+The static code analysis tool "Coverity Scan" pointed the following
+implementation details out for further development considerations:
+CID 1309755: Unused value
+In sw842_compress: A value assigned to a variable is never used. (CWE-563)
+returned_value: Assigning value from add_repeat_template(p, repeat_count)
+to ret here, but that stored value is overwritten before it can be used.
 
-Fixes: 09068d624c49 ("ASoC: amd: acp: fix for acp platform device creation failure")
+Conclusion:
+Add error handling for the return value from an add_repeat_template()
+call.
 
-Signed-off-by: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
-Link: https://patch.msgid.link/20250310183201.11979-15-venkataprasad.potturu@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 2da572c959dd ("lib: add software 842 compression/decompression")
+Signed-off-by: Tanya Agarwal <tanyaagarwal25699@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/acp/acp-legacy-common.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ lib/842/842_compress.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/amd/acp/acp-legacy-common.c b/sound/soc/amd/acp/acp-legacy-common.c
-index be01b178172e8..e4af2640feeb1 100644
---- a/sound/soc/amd/acp/acp-legacy-common.c
-+++ b/sound/soc/amd/acp/acp-legacy-common.c
-@@ -13,6 +13,7 @@
-  */
- 
- #include "amd.h"
-+#include <linux/acpi.h>
- #include <linux/pci.h>
- #include <linux/export.h>
- 
-@@ -445,7 +446,9 @@ void check_acp_config(struct pci_dev *pci, struct acp_chip_info *chip)
- {
- 	struct acpi_device *pdm_dev;
- 	const union acpi_object *obj;
--	u32 pdm_addr;
-+	acpi_handle handle;
-+	acpi_integer dmic_status;
-+	u32 pdm_addr, ret;
- 
- 	switch (chip->acp_rev) {
- 	case ACP3X_DEV:
-@@ -477,6 +480,11 @@ void check_acp_config(struct pci_dev *pci, struct acp_chip_info *chip)
- 						   obj->integer.value == pdm_addr)
- 				chip->is_pdm_dev = true;
+diff --git a/lib/842/842_compress.c b/lib/842/842_compress.c
+index c02baa4168e16..055356508d97c 100644
+--- a/lib/842/842_compress.c
++++ b/lib/842/842_compress.c
+@@ -532,6 +532,8 @@ int sw842_compress(const u8 *in, unsigned int ilen,
  		}
-+
-+		handle = ACPI_HANDLE(&pci->dev);
-+		ret = acpi_evaluate_integer(handle, "_WOV", NULL, &dmic_status);
-+		if (!ACPI_FAILURE(ret))
-+			chip->is_pdm_dev = dmic_status;
- 	}
- }
- EXPORT_SYMBOL_NS_GPL(check_acp_config, SND_SOC_ACP_COMMON);
+ 		if (repeat_count) {
+ 			ret = add_repeat_template(p, repeat_count);
++			if (ret)
++				return ret;
+ 			repeat_count = 0;
+ 			if (next == last) /* reached max repeat bits */
+ 				goto repeat;
 -- 
 2.39.5
 
