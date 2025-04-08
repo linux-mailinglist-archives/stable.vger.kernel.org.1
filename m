@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-130432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D443A804B3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:11:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12F3FA80B59
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:15:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DC80423AEF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BF134E47A5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A24826A0F5;
-	Tue,  8 Apr 2025 12:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB07426F456;
+	Tue,  8 Apr 2025 12:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OyrOt6MG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rkyCF8Vn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3972676E1;
-	Tue,  8 Apr 2025 12:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58DE27C163;
+	Tue,  8 Apr 2025 12:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113698; cv=none; b=H3VGJUSbkIEy3ICjunmcJGg3gqTmDR+QFj+zcYMKl0TEelpd09PoDkX8HB9MBYk37J/h1briV7atYvC9C/mvGL4QqlWBxTy2hMt1/VvyMd68ldY0L+TcuTINbr5xZjYgw6K/P5G/2fiUAWOfiAcGZcyNx28tpxc5a36+FPIPdgo=
+	t=1744116989; cv=none; b=r3rDqPinBuZ1CBTF0eH4pfpgKWt8Zk5oc+B/SLAPU0gIfcpEX5vopk312dIqe+LVqX/3Vt0/lGi34VyPEGozPqPtb+dlDrI4VM+V7+Y7XbIMuklp20QWUiRN/+u4P6sRkqEa2iTWrrF+p/AAo/aeOki836vMteoXmW1+GDJzunA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113698; c=relaxed/simple;
-	bh=FvZzaR0Zsz5AL5Sp1xgHzg/tyK5b4D7NXqsuEK5DsZM=;
+	s=arc-20240116; t=1744116989; c=relaxed/simple;
+	bh=d1u7E6BDk0v7gKFv2r+IahjM5ePFekXoupHNaFfzCYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X8uwHWwV423SHkqijEmYT/dWdXE+1SbvNz+9kAn5h0gw2N3M9E3sLUHjTUI2VAuhPgJ85dH/nq+8RRlIt9Yj0T6ww7LEAVlff+aA714c4MIubjvVNY3TA9/Sw4F4YLKG0rtKWMToCUkA+snfmUMpt6aWB3tUqf2S92a8BxHtq2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OyrOt6MG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E768DC4CEE5;
-	Tue,  8 Apr 2025 12:01:37 +0000 (UTC)
+	 MIME-Version; b=Mke5YlqLoNA8K2YNNl7dKVPvBmYi5aaBqgBjLrxUPG9otaLgHfnrVDgKZNGa18axj2JIa2S3mYqVPCKmYJvQ9DERVUzDNsQFizi6ZKUDL/3WKE2tnq12B2HAeN9AofwtCSFbQkfRobNrJNQhXYurAwxP0PHm40lYdS912hU+aHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rkyCF8Vn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8866FC4CEE5;
+	Tue,  8 Apr 2025 12:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113698;
-	bh=FvZzaR0Zsz5AL5Sp1xgHzg/tyK5b4D7NXqsuEK5DsZM=;
+	s=korg; t=1744116988;
+	bh=d1u7E6BDk0v7gKFv2r+IahjM5ePFekXoupHNaFfzCYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OyrOt6MGaor26Pa0RswZot32NAFGC26Lj3EYbEr4mFEQ1mTYe8C40Y9fzRngdEbch
-	 49M2N2C7tTZB7ec4jBaHHIjrrke/YT5v8hpCHWu5Du33FGwvVwmngFSOwJuJjxIRRm
-	 gEBw3QA+AThd7pZV/TaisDUsldsa1lOtSIMwYEAw=
+	b=rkyCF8Vnb3d+zGkLHvgEL30Kkzx7ieJeCypZ8Q2Ik7KKARR1tkWG9NEPiHeVPljC2
+	 KfHQJF+i/O/yWGZChFIG7UsGSS6TDrcWgOhflCc8zYqnEzWNk5agAKXa2EhbFlrP/h
+	 5FP/NEbsOF+5RQpMFfh7p6WhonrTqcqvlsoiw+Yc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Kairui Song <kasong@tencent.com>,
-	Tengda Wu <wutengda@huaweicloud.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 256/268] tracing: Fix use-after-free in print_graph_function_flags during tracer switching
+	Stanislav Fomichev <stfomichev@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 341/423] ipv6: Start path selection from the first nexthop
 Date: Tue,  8 Apr 2025 12:51:07 +0200
-Message-ID: <20250408104835.486982423@linuxfoundation.org>
+Message-ID: <20250408104853.780426762@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,98 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tengda Wu <wutengda@huaweicloud.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 7f81f27b1093e4895e87b74143c59c055c3b1906 upstream.
+[ Upstream commit 4d0ab3a6885e3e9040310a8d8f54503366083626 ]
 
-Kairui reported a UAF issue in print_graph_function_flags() during
-ftrace stress testing [1]. This issue can be reproduced if puting a
-'mdelay(10)' after 'mutex_unlock(&trace_types_lock)' in s_start(),
-and executing the following script:
+Cited commit transitioned IPv6 path selection to use hash-threshold
+instead of modulo-N. With hash-threshold, each nexthop is assigned a
+region boundary in the multipath hash function's output space and a
+nexthop is chosen if the calculated hash is smaller than the nexthop's
+region boundary.
 
-  $ echo function_graph > current_tracer
-  $ cat trace > /dev/null &
-  $ sleep 5  # Ensure the 'cat' reaches the 'mdelay(10)' point
-  $ echo timerlat > current_tracer
+Hash-threshold does not work correctly if path selection does not start
+with the first nexthop. For example, if fib6_select_path() is always
+passed the last nexthop in the group, then it will always be chosen
+because its region boundary covers the entire hash function's output
+space.
 
-The root cause lies in the two calls to print_graph_function_flags
-within print_trace_line during each s_show():
+Fix this by starting the selection process from the first nexthop and do
+not consider nexthops for which rt6_score_route() provided a negative
+score.
 
-  * One through 'iter->trace->print_line()';
-  * Another through 'event->funcs->trace()', which is hidden in
-    print_trace_fmt() before print_trace_line returns.
-
-Tracer switching only updates the former, while the latter continues
-to use the print_line function of the old tracer, which in the script
-above is print_graph_function_flags.
-
-Moreover, when switching from the 'function_graph' tracer to the
-'timerlat' tracer, s_start only calls graph_trace_close of the
-'function_graph' tracer to free 'iter->private', but does not set
-it to NULL. This provides an opportunity for 'event->funcs->trace()'
-to use an invalid 'iter->private'.
-
-To fix this issue, set 'iter->private' to NULL immediately after
-freeing it in graph_trace_close(), ensuring that an invalid pointer
-is not passed to other tracers. Additionally, clean up the unnecessary
-'iter->private = NULL' during each 'cat trace' when using wakeup and
-irqsoff tracers.
-
- [1] https://lore.kernel.org/all/20231112150030.84609-1-ryncsn@gmail.com/
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Link: https://lore.kernel.org/20250320122137.23635-1-wutengda@huaweicloud.com
-Fixes: eecb91b9f98d ("tracing: Fix memleak due to race between current_tracer and trace")
-Closes: https://lore.kernel.org/all/CAMgjq7BW79KDSCyp+tZHjShSzHsScSiJxn5ffskp-QzVM06fxw@mail.gmail.com/
-Reported-by: Kairui Song <kasong@tencent.com>
-Signed-off-by: Tengda Wu <wutengda@huaweicloud.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3d709f69a3e7 ("ipv6: Use hash-threshold instead of modulo-N")
+Reported-by: Stanislav Fomichev <stfomichev@gmail.com>
+Closes: https://lore.kernel.org/netdev/Z9RIyKZDNoka53EO@mini-arch/
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250402114224.293392-2-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_functions_graph.c |    1 +
- kernel/trace/trace_irqsoff.c         |    2 --
- kernel/trace/trace_sched_wakeup.c    |    2 --
- 3 files changed, 1 insertion(+), 4 deletions(-)
+ net/ipv6/route.c | 38 +++++++++++++++++++++++++++++++++++---
+ 1 file changed, 35 insertions(+), 3 deletions(-)
 
---- a/kernel/trace/trace_functions_graph.c
-+++ b/kernel/trace/trace_functions_graph.c
-@@ -1317,6 +1317,7 @@ void graph_trace_close(struct trace_iter
- 	if (data) {
- 		free_percpu(data->cpu_data);
- 		kfree(data);
-+		iter->private = NULL;
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index b393c37d24245..54ce948835a09 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -412,11 +412,35 @@ static bool rt6_check_expired(const struct rt6_info *rt)
+ 	return false;
+ }
+ 
++static struct fib6_info *
++rt6_multipath_first_sibling_rcu(const struct fib6_info *rt)
++{
++	struct fib6_info *iter;
++	struct fib6_node *fn;
++
++	fn = rcu_dereference(rt->fib6_node);
++	if (!fn)
++		goto out;
++	iter = rcu_dereference(fn->leaf);
++	if (!iter)
++		goto out;
++
++	while (iter) {
++		if (iter->fib6_metric == rt->fib6_metric &&
++		    rt6_qualify_for_ecmp(iter))
++			return iter;
++		iter = rcu_dereference(iter->fib6_next);
++	}
++
++out:
++	return NULL;
++}
++
+ void fib6_select_path(const struct net *net, struct fib6_result *res,
+ 		      struct flowi6 *fl6, int oif, bool have_oif_match,
+ 		      const struct sk_buff *skb, int strict)
+ {
+-	struct fib6_info *match = res->f6i;
++	struct fib6_info *first, *match = res->f6i;
+ 	struct fib6_info *sibling;
+ 
+ 	if (!match->nh && (!match->fib6_nsiblings || have_oif_match))
+@@ -440,10 +464,18 @@ void fib6_select_path(const struct net *net, struct fib6_result *res,
+ 		return;
  	}
- }
  
---- a/kernel/trace/trace_irqsoff.c
-+++ b/kernel/trace/trace_irqsoff.c
-@@ -231,8 +231,6 @@ static void irqsoff_trace_open(struct tr
- {
- 	if (is_graph(iter->tr))
- 		graph_trace_open(iter);
--	else
--		iter->private = NULL;
- }
+-	if (fl6->mp_hash <= atomic_read(&match->fib6_nh->fib_nh_upper_bound))
++	first = rt6_multipath_first_sibling_rcu(match);
++	if (!first)
+ 		goto out;
  
- static void irqsoff_trace_close(struct trace_iterator *iter)
---- a/kernel/trace/trace_sched_wakeup.c
-+++ b/kernel/trace/trace_sched_wakeup.c
-@@ -168,8 +168,6 @@ static void wakeup_trace_open(struct tra
- {
- 	if (is_graph(iter->tr))
- 		graph_trace_open(iter);
--	else
--		iter->private = NULL;
- }
- 
- static void wakeup_trace_close(struct trace_iterator *iter)
+-	list_for_each_entry_rcu(sibling, &match->fib6_siblings,
++	if (fl6->mp_hash <= atomic_read(&first->fib6_nh->fib_nh_upper_bound) &&
++	    rt6_score_route(first->fib6_nh, first->fib6_flags, oif,
++			    strict) >= 0) {
++		match = first;
++		goto out;
++	}
++
++	list_for_each_entry_rcu(sibling, &first->fib6_siblings,
+ 				fib6_siblings) {
+ 		const struct fib6_nh *nh = sibling->fib6_nh;
+ 		int nh_upper_bound;
+-- 
+2.39.5
+
 
 
 
