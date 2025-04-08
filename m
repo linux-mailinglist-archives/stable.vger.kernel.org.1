@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-130513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1EDCA80541
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:16:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48FEFA809D2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:58:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4204A161F7C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFE388C3BF4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 880AE2698BE;
-	Tue,  8 Apr 2025 12:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F7E26B098;
+	Tue,  8 Apr 2025 12:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7yxq+Nh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvDBNbe5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B0C267B15;
-	Tue,  8 Apr 2025 12:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0551F26A0E8;
+	Tue,  8 Apr 2025 12:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113911; cv=none; b=h2AwSMG8jAgwx1SueuhFift/nLreFbXYsYgpgpBA+wZw+yF2LJHaAzOguQfE1zHqqvRDedZcXqSJYKev1xAyBWHZOO3tj7C06/P9bdSCdQHOzJVXjRfoO5HnGHw1NoX5Crq826vRmbwI8x8O6vwPTVdBgduskrb1ngCFZyjD92E=
+	t=1744115811; cv=none; b=gEWxaAZY7PFJVJ75OD9Tj3wdltiGAsGsWgsl7NgcwlXPXgUo1IGc7ZFzgcsVa03f+gzR77BLVjmiuv//bwPlZjIzJ+93rwjW2EvL+c/5jYzA6jAuxAo4jWUvGOmo2gScnTW2niOyfpXlpdtvXe8hBE/jEY19gLR9j5/a5WwkmJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113911; c=relaxed/simple;
-	bh=ZufdNMqAB0bhcbhG53W4ZAidWXnEWo1nsa89515mUoo=;
+	s=arc-20240116; t=1744115811; c=relaxed/simple;
+	bh=o2KFXRyp6QxpVeNq6VUn1HunwPCH+wRDtnFfutmC5+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vl7XFikTCtF5TNmdRN5WHPJarA7RALMfTjgLFFTcSozDj+6iY3UAhXhqA7xO/lBDMy7JiQG9d7lA7kuNGxfRUmVMVGgXPg6X6axS0mzfKUhk52ENP1HpsbKXBWHn4s8XubQ9e+zCW2bUc99dq0xwf/tMDqul8QmLCPgHBO1JeIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7yxq+Nh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB7AAC4CEE5;
-	Tue,  8 Apr 2025 12:05:10 +0000 (UTC)
+	 MIME-Version; b=V8a0VwNgEYrSnMmKn1OCJIhS8s3QFlQoR4i78oZ3kqdVcHZklyHApsjkOlY2ZMZ8nsZge3L+bQHXCKqMYWv3hhlCMBhd+hqryHJvX98/uYuXpLSZOxQOHHa3m9Xshs2VTQDI0b8dc+QPSMnhrqEoQRFJLe/x1emBU/n4YAfj9iM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvDBNbe5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 889CDC4CEE5;
+	Tue,  8 Apr 2025 12:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113911;
-	bh=ZufdNMqAB0bhcbhG53W4ZAidWXnEWo1nsa89515mUoo=;
+	s=korg; t=1744115810;
+	bh=o2KFXRyp6QxpVeNq6VUn1HunwPCH+wRDtnFfutmC5+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m7yxq+NhMVrnoj2qDvbvP4zybjgGNCGOlFMjjaQlJEOMb+8hhHqfnAm2uGPq0bey+
-	 lupuo7gG3aBJJI4qoB+c8h3mIbDNW50KC1F9ikYpRxGHdlraRVrFAjdkNG0+DKhESf
-	 QoWkbpWp0SAEZY3y+2jKSSwZi8JAcXK/VrWXxOmY=
+	b=dvDBNbe5cj7xqmRna6shve1QWp+uyY0sqJgU29CVUhZnc+m3TH/XxOc+3MjPLgS+8
+	 uyxRRczAYYE+vCUuePn/x3QnItq7vAOfLlJFdHeSUYOES0kV26YRpftCeb2UPrCLrx
+	 KRoalOY0X9L/nUHfBpJnmWlOW5NKpdt2XkHjlIE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.4 065/154] drm/radeon: fix uninitialized size issue in radeon_vce_cs_parse()
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 076/204] clk: amlogic: g12a: fix mmc A peripheral clock
 Date: Tue,  8 Apr 2025 12:50:06 +0200
-Message-ID: <20250408104817.379426289@linuxfoundation.org>
+Message-ID: <20250408104822.591556868@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-commit dd8689b52a24807c2d5ce0a17cb26dc87f75235c upstream.
+[ Upstream commit 0079e77c08de692cb20b38e408365c830a44b1ef ]
 
-On the off chance that command stream passed from userspace via
-ioctl() call to radeon_vce_cs_parse() is weirdly crafted and
-first command to execute is to encode (case 0x03000001), the function
-in question will attempt to call radeon_vce_cs_reloc() with size
-argument that has not been properly initialized. Specifically, 'size'
-will point to 'tmp' variable before the latter had a chance to be
-assigned any value.
+The bit index of the peripheral clock for mmc A is wrong
+This was probably not a problem for mmc A as the peripheral is likely left
+enabled by the bootloader.
 
-Play it safe and init 'tmp' with 0, thus ensuring that
-radeon_vce_cs_reloc() will catch an early error in cases like these.
+No issues has been reported so far but it could be a problem, most likely
+some form of conflict between the ethernet and mmc A clock, breaking
+ethernet on init.
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
+Use the value provided by the documentation for mmc A before this
+becomes an actual problem.
 
-Fixes: 2fc5703abda2 ("drm/radeon: check VCE relocation buffer range v3")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 2d52de55f9ee7aaee0e09ac443f77855989c6b68)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 085a4ea93d54 ("clk: meson: g12a: add peripheral clock controller")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241213-amlogic-clk-g12a-mmca-fix-v1-1-5af421f58b64@baylibre.com
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/radeon_vce.c |    2 +-
+ drivers/clk/meson/g12a.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/radeon/radeon_vce.c
-+++ b/drivers/gpu/drm/radeon/radeon_vce.c
-@@ -558,7 +558,7 @@ int radeon_vce_cs_parse(struct radeon_cs
- {
- 	int session_idx = -1;
- 	bool destroyed = false, created = false, allocated = false;
--	uint32_t tmp, handle = 0;
-+	uint32_t tmp = 0, handle = 0;
- 	uint32_t *size = &tmp;
- 	int i, r = 0;
- 
+diff --git a/drivers/clk/meson/g12a.c b/drivers/clk/meson/g12a.c
+index a623596c1e490..d13a60fefc1b8 100644
+--- a/drivers/clk/meson/g12a.c
++++ b/drivers/clk/meson/g12a.c
+@@ -4199,7 +4199,7 @@ static MESON_GATE(g12a_spicc_1,			HHI_GCLK_MPEG0,	14);
+ static MESON_GATE(g12a_hiu_reg,			HHI_GCLK_MPEG0,	19);
+ static MESON_GATE(g12a_mipi_dsi_phy,		HHI_GCLK_MPEG0,	20);
+ static MESON_GATE(g12a_assist_misc,		HHI_GCLK_MPEG0,	23);
+-static MESON_GATE(g12a_emmc_a,			HHI_GCLK_MPEG0,	4);
++static MESON_GATE(g12a_emmc_a,			HHI_GCLK_MPEG0,	24);
+ static MESON_GATE(g12a_emmc_b,			HHI_GCLK_MPEG0,	25);
+ static MESON_GATE(g12a_emmc_c,			HHI_GCLK_MPEG0,	26);
+ static MESON_GATE(g12a_audio_codec,		HHI_GCLK_MPEG0,	28);
+-- 
+2.39.5
+
 
 
 
