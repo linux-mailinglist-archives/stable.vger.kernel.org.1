@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8E61A8091F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:51:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64BB9A80515
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:14:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A33A8C389A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC09E88442E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5514326AA92;
-	Tue,  8 Apr 2025 12:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 682F426A08B;
+	Tue,  8 Apr 2025 12:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+G4WMDu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nogn9s4Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1132E26461E;
-	Tue,  8 Apr 2025 12:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B26526A085;
+	Tue,  8 Apr 2025 12:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115766; cv=none; b=h+Swt5eOb6MngVjkVouUmVVTr3c9si7Wd6bS3YAL13MM/f3blPiOYaFY50hRK8aaS594nchJTqhssShRhm5do549LELET1KFxisTybJHU8PIljnXNH0Kc3/+vvsy0rc33TCh0JzZPRJOkjWdI6ezqajWaOV6/aAFCqzBtNOUcWc=
+	t=1744113959; cv=none; b=kgaC2AhjAbqBSO+5xMfYE11BWxHfvMQ3/gzZyRh5dHvb4UkFNz74IrjM9xuvDZi/L5SOJEgFfpIuWJwKhUzpM2frfyhMOqtQDxFsJt7eTaZfQaiZqtRDzHZUkAYJpCc7PRifgmeW3GmxbTGZ4ulxVaZLw++qY0wSpLutv10vR98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115766; c=relaxed/simple;
-	bh=h/xIPYwSnT0WNfcHNNtvCu5r5Rt9pWThbYPvIqDhtTE=;
+	s=arc-20240116; t=1744113959; c=relaxed/simple;
+	bh=cYDVFdfcf+X1IQAZrsYk+KmaIkmDPiy3Nya6R0Tohiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B/c5j4ooVCBohPVPH/z4p/3eGG8+7o11JtlxQdiJYLB1eHNKrCHwlAdf9udoKzzEwiQSPEmpJ/Z2Dj26BA2XZ9AL2WqmbPic1RiV3q13jh+6IbIpz8ZPOKVRl/ygpKZ7n7bm3Ec8UXzjomY1fSexroQ/RQuahDTxqyH2ibUdAqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+G4WMDu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9341BC4CEE7;
-	Tue,  8 Apr 2025 12:36:05 +0000 (UTC)
+	 MIME-Version; b=B/WXX67wLvI0nd+kTbCR7fAETZZfmBDYXjw7vXgJKb+O8Fx5yoWpv7Cpw0OD3Tr6JCACSyvxWTJv8XZfKK4Cp4i4AQ3QyhZeelfHUTpat1tomzijgQR9bEFsUUgglcbtrk4uWojUHzFBR4bh9JXlZ1RxzNVJyrxbTPnxzOqrf8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nogn9s4Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE31C4CEE5;
+	Tue,  8 Apr 2025 12:05:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115765;
-	bh=h/xIPYwSnT0WNfcHNNtvCu5r5Rt9pWThbYPvIqDhtTE=;
+	s=korg; t=1744113959;
+	bh=cYDVFdfcf+X1IQAZrsYk+KmaIkmDPiy3Nya6R0Tohiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i+G4WMDuQfHK3s8fpjz8FSZWfxL9sgK4uK7S9aIKGPdKy6+vxPrpWPbI6vjiIO1BH
-	 CWXdfyJquxGQ0YaUZtmYyiRh9jSMbB6yWeIj4JdLY42WlqQOPAj6rlSfDmDyFNMUNL
-	 t9U6HNlxRPOnI8wIOtnbiCMyi/odrKjzimx7GjlQ=
+	b=Nogn9s4QlDDtiCKdgcVA86HS0MdDlTJ1thwLRfiRaLM6dS87cuaRAOKtuQM9/JjHn
+	 RilbZdAyOljDBnNQ55QEOgAywfOk62uyrHIO0HroUpqpf9HODB7I9Dj0rdyaNjeQ85
+	 OYVORyQWH5hr9S2Cg/ZdX1pi9ZynI+IWHkzZjRL8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Gary Wang <gary.c.wang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 096/204] perf units: Fix insufficient array space
+Subject: [PATCH 5.4 085/154] EDAC/ie31200: Fix the size of EDAC_MC_LAYER_CHIP_SELECT layer
 Date: Tue,  8 Apr 2025 12:50:26 +0200
-Message-ID: <20250408104823.159558564@linuxfoundation.org>
+Message-ID: <20250408104818.038640461@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-[ Upstream commit cf67629f7f637fb988228abdb3aae46d0c1748fe ]
+[ Upstream commit d59d844e319d97682c8de29b88d2d60922a683b3 ]
 
-No need to specify the array size, let the compiler figure that out.
+The EDAC_MC_LAYER_CHIP_SELECT layer pertains to the rank, not the DIMM.
+Fix its size to reflect the number of ranks instead of the number of DIMMs.
+Also delete the unused macros IE31200_{DIMMS,RANKS}.
 
-This addresses this compiler warning that was noticed while build
-testing on fedora rawhide:
-
-  31    15.81 fedora:rawhide                : FAIL gcc version 15.0.1 20250225 (Red Hat 15.0.1-0) (GCC)
-    util/units.c: In function 'unit_number__scnprintf':
-    util/units.c:67:24: error: initializer-string for array of 'char' is too long [-Werror=unterminated-string-initialization]
-       67 |         char unit[4] = "BKMG";
-          |                        ^~~~~~
-    cc1: all warnings being treated as errors
-
-Fixes: 9808143ba2e54818 ("perf tools: Add unit_number__scnprintf function")
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Link: https://lore.kernel.org/r/20250310194534.265487-3-acme@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 7ee40b897d18 ("ie31200_edac: Introduce the driver")
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Tested-by: Gary Wang <gary.c.wang@intel.com>
+Link: https://lore.kernel.org/r/20250310011411.31685-2-qiuxu.zhuo@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/units.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/edac/ie31200_edac.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/tools/perf/util/units.c b/tools/perf/util/units.c
-index 32c39cfe209b3..4c6a86e1cb54b 100644
---- a/tools/perf/util/units.c
-+++ b/tools/perf/util/units.c
-@@ -64,7 +64,7 @@ unsigned long convert_unit(unsigned long value, char *unit)
+diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
+index 9be43b4f9c506..c11a46fdf3862 100644
+--- a/drivers/edac/ie31200_edac.c
++++ b/drivers/edac/ie31200_edac.c
+@@ -83,8 +83,6 @@
+ 	 (((did) & PCI_DEVICE_ID_INTEL_IE31200_HB_CFL_MASK) ==                 \
+ 	  PCI_DEVICE_ID_INTEL_IE31200_HB_CFL_MASK))
  
- int unit_number__scnprintf(char *buf, size_t size, u64 n)
- {
--	char unit[4] = "BKMG";
-+	char unit[] = "BKMG";
- 	int i = 0;
+-#define IE31200_DIMMS			4
+-#define IE31200_RANKS			8
+ #define IE31200_RANKS_PER_CHANNEL	4
+ #define IE31200_DIMMS_PER_CHANNEL	2
+ #define IE31200_CHANNELS		2
+@@ -419,7 +417,7 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
  
- 	while (((n / 1024) > 1) && (i < 3)) {
+ 	nr_channels = how_many_channels(pdev);
+ 	layers[0].type = EDAC_MC_LAYER_CHIP_SELECT;
+-	layers[0].size = IE31200_DIMMS;
++	layers[0].size = IE31200_RANKS_PER_CHANNEL;
+ 	layers[0].is_virt_csrow = true;
+ 	layers[1].type = EDAC_MC_LAYER_CHANNEL;
+ 	layers[1].size = nr_channels;
 -- 
 2.39.5
 
