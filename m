@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-129807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E63DCA8019C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:41:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02999A803BB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:02:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6997344795B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:34:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B321B19E186A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD343AC1C;
-	Tue,  8 Apr 2025 11:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 489C2269B0B;
+	Tue,  8 Apr 2025 11:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rHL4TSsQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SwPJtwz3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1644F224AEB;
-	Tue,  8 Apr 2025 11:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04802266EEA;
+	Tue,  8 Apr 2025 11:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112032; cv=none; b=Bfb0LJui6+ceA6D2jb6qXXhO7nwXSM0xkyooCm3/XwwM++Pc/hbPn6Tsrp0lVy9RQy2uwBboGz6o6970dNcAizsFPdCDm0Qa4thgH+Mz2Nhou2hvc98BcjzU/0LzAmcfTh33fujxlrkJKhM3mC+W8FW5m+wUcrEtEIT9TgY4IG4=
+	t=1744113381; cv=none; b=hLkiqSMsQQgVukMt6tLC8GgAXj3fbrxkSunYh5tkd8rEys1sm3+1cGVDRdRinkH0ykgZJUK1gUBogdvB9XoH6p/V/nqfpvHfCXPGkQ/hla6cbtryKecyouw7ah9pgPzDuEt/NBkQzfqcYUlfKOrMJUDqrHs6zqg/GL5VjATGjMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112032; c=relaxed/simple;
-	bh=1fG0NUBLkygwLyfAlPI2KvmyA6PyYmveTCV/oS5ZsRs=;
+	s=arc-20240116; t=1744113381; c=relaxed/simple;
+	bh=yhTzE4eaP1MplLHivECrcIyAXcQiJAulBCavnLQkVyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mdco2NJht/zaJv/Y/k5OUYMzPk+H9hUpzdQrdCCo0+w5S604T67zY+0vXfzuGn4urt39uK9bpdkyZc+WEDHe75SHZkW8dWWR/z3ICn9/+yaPQKq6zW5MUK0xgvjBYeJ8dtmhvTizwBIXqbpCw9lMyZIbUHvj8is0GHZIQNoNQFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rHL4TSsQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7511FC4CEE5;
-	Tue,  8 Apr 2025 11:33:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WtO2U6h/WxG++PsYvP+HaHG14edQd/rKd43L5+hdqYZH9Wi5+Ih7wgsF41BHBlZ7w7X0BLimugAtJGctSmAfWRr1vOZrdNZw5YsSKypPr2EnBEyOFcNGps3wDdsSpZlMgpQY9BovzgA5+CrsHD8JRbWWkjBUYlXu+/E1FqX2j3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SwPJtwz3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DC6C4CEE5;
+	Tue,  8 Apr 2025 11:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112032;
-	bh=1fG0NUBLkygwLyfAlPI2KvmyA6PyYmveTCV/oS5ZsRs=;
+	s=korg; t=1744113380;
+	bh=yhTzE4eaP1MplLHivECrcIyAXcQiJAulBCavnLQkVyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rHL4TSsQoJGRrRjM5dpeXq5I+VVa3bAeeNfCnZtw/5moMbjJIfaSz8tWH8e6wRA7n
-	 ehMRK/ZYCUCCyiaMh5ziPOtcKK8ypD2nBhe8tHLmX79mcPKedH+4Nj6yTOM2TULM21
-	 ZgMT2UOkAUKKEJpZlWfNTExcOj/tN70mPWRoviCo=
+	b=SwPJtwz3zwZBXMibRTPGcMOGG/tz3I7F/y2nW227Uu1WmqCKjXWFGt8tKKhFmjpmB
+	 3CGpDH80dBGpjN0EWdFVCU7UeGBW7SbXk3DAoRHkH69OxT2MOMJEH7234lVyGwUWeq
+	 4hwCrdDz0CjIr/OM6RwQtnMjKlEmWAvB9sOJJlZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Rui <rui.zhang@intel.com>,
-	Len Brown <len.brown@intel.com>,
+	=?UTF-8?q?=E8=B0=A2=E8=87=B4=E9=82=A6=20 ?= <Yeking@Red54.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 651/731] tools/power turbostat: Restore GFX sysfs fflush() call
+Subject: [PATCH 6.6 137/268] staging: rtl8723bs: select CONFIG_CRYPTO_LIB_AES
 Date: Tue,  8 Apr 2025 12:49:08 +0200
-Message-ID: <20250408104929.407252240@linuxfoundation.org>
+Message-ID: <20250408104832.215783019@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
 
-[ Upstream commit f8b136ef2605c1bf62020462d10e35228760aa19 ]
+[ Upstream commit b2a9a6a26b7e954297e51822e396572026480bad ]
 
-Do fflush() to discard the buffered data, before each read of the
-graphics sysfs knobs.
+This fixes the following issue:
+ERROR: modpost: "aes_expandkey" [drivers/staging/rtl8723bs/r8723bs.ko]
+undefined!
+ERROR: modpost: "aes_encrypt" [drivers/staging/rtl8723bs/r8723bs.ko]
+undefined!
 
-Fixes: ba99a4fc8c24 ("tools/power turbostat: Remove unnecessary fflush() call")
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Signed-off-by: Len Brown <len.brown@intel.com>
+Fixes: 7d40753d8820 ("staging: rtl8723bs: use in-kernel aes encryption in OMAC1 routines")
+Fixes: 3d3a170f6d80 ("staging: rtl8723bs: use in-kernel aes encryption")
+Signed-off-by: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/tencent_0BDDF3A721708D16A2E7C3DAFF0FEC79A105@qq.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 1 +
+ drivers/staging/rtl8723bs/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 5b36f1fd885c9..4155d9bfcfc6d 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -6039,6 +6039,7 @@ int snapshot_graphics(int idx)
- 	int retval;
- 
- 	rewind(gfx_info[idx].fp);
-+	fflush(gfx_info[idx].fp);
- 
- 	switch (idx) {
- 	case GFX_rc6:
+diff --git a/drivers/staging/rtl8723bs/Kconfig b/drivers/staging/rtl8723bs/Kconfig
+index f23e29b679fb5..14afcbbd61045 100644
+--- a/drivers/staging/rtl8723bs/Kconfig
++++ b/drivers/staging/rtl8723bs/Kconfig
+@@ -5,6 +5,7 @@ config RTL8723BS
+ 	depends on m
+ 	select CFG80211_WEXT
+ 	select CRYPTO
++	select CRYPTO_LIB_AES
+ 	select CRYPTO_LIB_ARC4
+ 	help
+ 	This option enables support for RTL8723BS SDIO drivers, such as
 -- 
 2.39.5
 
