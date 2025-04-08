@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7423CA802DA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:51:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B64AA80108
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DECB64606EA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:44:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EE0618970F8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 924CF268683;
-	Tue,  8 Apr 2025 11:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 399BE26A0C1;
+	Tue,  8 Apr 2025 11:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7+4AJFH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OiW0AJ36"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D24B267AF2;
-	Tue,  8 Apr 2025 11:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E936C227BB6;
+	Tue,  8 Apr 2025 11:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112662; cv=none; b=gOD6b7h5y8tYc31fGjFP8rBhrroqurDIVFt9PWUQx+p/4KQxaDQdiTNXQsLzXBV5u6xRxnYTH0xxldJJbO7U1MaT637ve1GwBNwrVfme5D2mOL+RRuKHKA7SFE1wjqxsmXplRQdI81HwtjYtOu8i+OLWrwZKFV4fV1tQ/OpdTpM=
+	t=1744111922; cv=none; b=ll6U8g3nauj5eUpIFBDsM+NiCTeiVZGCCBhavxasfP3TR7bNzE13Rc36GlUMXPQEKST74OQYs9GkjYGSEy2G1NuzgSd02DGh/wS0Phmp2pyvZUFapB1a5pn6pds39t6nFAhJ/M3JFUB8Q0W0l8QM3wA/QOEmMQBeC5d8AIXXGCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112662; c=relaxed/simple;
-	bh=TovIekLT7SNjCqDog/UkNVUlCy1Ag5aR+yIp3wEtmJk=;
+	s=arc-20240116; t=1744111922; c=relaxed/simple;
+	bh=Fsv/c2E5sKHeoGWB3ODgvJfIiBO30FGTNHvb8o0Pyk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X7tKpth97lYoHAhnG64NjbUoLTuICPknmwUOpr1VM6ineaxYkIOs2z8EPPyxKa22lzreJICqAP7lRpGevpVyZ6zoLPJVa8Fc9b5q881tRESciyQLJJnw1eHRCjMNjwaG21huZPDEcBL1Ol+BVN/cM7SxH3+5zZMTnspm2c1SEJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7+4AJFH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E9D1C4CEEC;
-	Tue,  8 Apr 2025 11:44:21 +0000 (UTC)
+	 MIME-Version; b=EopHiO+c7GEP5s/9kzjPB28SRkqn1DJZUEVQJZxi9BCLYFfryv7d59KuV33q/aHuzCg2WBaTeIK/6igji3GB+ITMWBBy+MTd2arepE5nmBUAkKrdWGfkbciVWfraUKCbCtDH5eSeNJfNlNCon4bzsCDQatc/yYMdwwYGHXAKvmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OiW0AJ36; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 739F4C4CEEA;
+	Tue,  8 Apr 2025 11:32:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112661;
-	bh=TovIekLT7SNjCqDog/UkNVUlCy1Ag5aR+yIp3wEtmJk=;
+	s=korg; t=1744111921;
+	bh=Fsv/c2E5sKHeoGWB3ODgvJfIiBO30FGTNHvb8o0Pyk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t7+4AJFHwVafuDurAueo8fDyvmZR1mv3kL3CLrAyL3MKOdxTcB/9wnsVOgKl3wgMf
-	 RS6dy8cVlrWz6jFsHwzGHGv/IrMdmN6EUWgOI/PD7HFou0HxbD6i1/L6a4CEOuNsS+
-	 MIE2CdxGy9/qwCrhE1GOwM0SDENRVscPrtCZVsYQ=
+	b=OiW0AJ36mQi03NcmgmweihK612aWG9pnzIuIcYm9uWuCvu/HUT7uD3cL5+RpaVpGr
+	 Q9apU7ZxZ4Kr0KJhM05IYmxbSwb8EnjqBOfmO8J6EEBF6GqFnaAlGesghuFSRuwjRP
+	 M38ikrqsGDAhMPKnVJQ70C+ijebQ6B/AbFbRQWm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ahmed Naseef <naseefkm@gmail.com>,
-	Dominique Martinet <dominique.martinet@atmark-techno.com>,
-	Oliver Neukum <oneukum@suse.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 124/279] net: usb: usbnet: restore usb%d name exception for local mac addresses
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 610/731] spi: bcm2835: Restore native CS probing when pinctrl-bcm2835 is absent
 Date: Tue,  8 Apr 2025 12:48:27 +0200
-Message-ID: <20250408104829.693020517@linuxfoundation.org>
+Message-ID: <20250408104928.460520880@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dominique Martinet <dominique.martinet@atmark-techno.com>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-commit 2ea396448f26d0d7d66224cb56500a6789c7ed07 upstream.
+[ Upstream commit e19c1272c80a5ecce387c1b0c3b995f4edf9c525 ]
 
-commit 8a7d12d674ac ("net: usb: usbnet: fix name regression") assumed
-that local addresses always came from the kernel, but some devices hand
-out local mac addresses so we ended up with point-to-point devices with
-a mac set by the driver, renaming to eth%d when they used to be named
-usb%d.
+The lookup table forces the use of the "pinctrl-bcm2835" GPIO chip
+provider and essentially assumes that there is going to be such a
+provider, and if not, we will fail to set-up the SPI device.
 
-Userspace should not rely on device name, but for the sake of stability
-restore the local mac address check portion of the naming exception:
-point to point devices which either have no mac set by the driver or
-have a local mac handed out by the driver will keep the usb%d name.
+While this is true on Raspberry Pi based systems (2835/36/37, 2711,
+2712), this is not true on 7712/77122 Broadcom STB systems which use the
+SPI driver, but not the GPIO driver.
 
-(some USB LTE modems are known to hand out a stable mac from the locally
-administered range; that mac appears to be random (different for
-mulitple devices) and can be reset with device-specific commands, so
-while such devices would benefit from getting a OUI reserved, we have
-to deal with these and might as well preserve the existing behavior
-to avoid breaking fragile openwrt configurations and such on upgrade.)
+There used to be an early check:
 
-Link: https://lkml.kernel.org/r/20241203130457.904325-1-asmadeus@codewreck.org
-Fixes: 8a7d12d674ac ("net: usb: usbnet: fix name regression")
-Cc: stable@vger.kernel.org
-Tested-by: Ahmed Naseef <naseefkm@gmail.com>
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Acked-by: Oliver Neukum <oneukum@suse.com>
-Link: https://patch.msgid.link/20250326-usbnet_rename-v2-1-57eb21fcff26@atmark-techno.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+       chip = gpiochip_find("pinctrl-bcm2835", chip_match_name);
+       if (!chip)
+               return 0;
+
+which would accomplish that nicely, bring something similar back by
+checking for the compatible strings matched by the pinctrl-bcm2835.c
+driver, if there is no Device Tree node matching those compatible
+strings, then we won't find any GPIO provider registered by the
+"pinctrl-bcm2835" driver.
+
+Fixes: 21f252cd29f0 ("spi: bcm2835: reduce the abuse of the GPIO API")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20250401233603.2938955-1-florian.fainelli@broadcom.com
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/usbnet.c |   21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/spi/spi-bcm2835.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -181,6 +181,17 @@ int usbnet_get_ethernet_addr(struct usbn
- }
- EXPORT_SYMBOL_GPL(usbnet_get_ethernet_addr);
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index 06a81727d74dd..77de5a07639af 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -1226,7 +1226,12 @@ static int bcm2835_spi_setup(struct spi_device *spi)
+ 	struct bcm2835_spi *bs = spi_controller_get_devdata(ctlr);
+ 	struct bcm2835_spidev *target = spi_get_ctldata(spi);
+ 	struct gpiod_lookup_table *lookup __free(kfree) = NULL;
+-	int ret;
++	const char *pinctrl_compats[] = {
++		"brcm,bcm2835-gpio",
++		"brcm,bcm2711-gpio",
++		"brcm,bcm7211-gpio",
++	};
++	int ret, i;
+ 	u32 cs;
  
-+static bool usbnet_needs_usb_name_format(struct usbnet *dev, struct net_device *net)
-+{
-+	/* Point to point devices which don't have a real MAC address
-+	 * (or report a fake local one) have historically used the usb%d
-+	 * naming. Preserve this..
-+	 */
-+	return (dev->driver_info->flags & FLAG_POINTTOPOINT) != 0 &&
-+		(is_zero_ether_addr(net->dev_addr) ||
-+		 is_local_ether_addr(net->dev_addr));
-+}
+ 	if (!target) {
+@@ -1291,6 +1296,14 @@ static int bcm2835_spi_setup(struct spi_device *spi)
+ 		goto err_cleanup;
+ 	}
+ 
++	for (i = 0; i < ARRAY_SIZE(pinctrl_compats); i++) {
++		if (of_find_compatible_node(NULL, NULL, pinctrl_compats[i]))
++			break;
++	}
 +
- static void intr_complete (struct urb *urb)
- {
- 	struct usbnet	*dev = urb->context;
-@@ -1764,13 +1775,11 @@ usbnet_probe (struct usb_interface *udev
- 		if (status < 0)
- 			goto out1;
- 
--		// heuristic:  "usb%d" for links we know are two-host,
--		// else "eth%d" when there's reasonable doubt.  userspace
--		// can rename the link if it knows better.
-+		/* heuristic: rename to "eth%d" if we are not sure this link
-+		 * is two-host (these links keep "usb%d")
-+		 */
- 		if ((dev->driver_info->flags & FLAG_ETHER) != 0 &&
--		    ((dev->driver_info->flags & FLAG_POINTTOPOINT) == 0 ||
--		     /* somebody touched it*/
--		     !is_zero_ether_addr(net->dev_addr)))
-+		    !usbnet_needs_usb_name_format(dev, net))
- 			strscpy(net->name, "eth%d", sizeof(net->name));
- 		/* WLAN devices should always be named "wlan%d" */
- 		if ((dev->driver_info->flags & FLAG_WLAN) != 0)
++	if (i == ARRAY_SIZE(pinctrl_compats))
++		return 0;
++
+ 	/*
+ 	 * TODO: The code below is a slightly better alternative to the utter
+ 	 * abuse of the GPIO API that I found here before. It creates a
+-- 
+2.39.5
+
 
 
 
