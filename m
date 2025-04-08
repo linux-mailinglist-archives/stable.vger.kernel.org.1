@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-131228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A38E6A80895
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:47:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B692A80769
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:37:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0F121B86B28
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADD8716C8C7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:30:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C3726A0FE;
-	Tue,  8 Apr 2025 12:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81E6269899;
+	Tue,  8 Apr 2025 12:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJ0w+3Bt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V7zNvKaQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51A626461E;
-	Tue,  8 Apr 2025 12:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB9126A0BA;
+	Tue,  8 Apr 2025 12:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115832; cv=none; b=moypGCUb2u/bZcg32L3gZ1mYtnjQZWQMENEEE7Ofc50Fm76AeMz+A6DjOL9u5bYeA/rb1LGQv5YH5o05lZJoUF33jb7zCqSevgglCDAEBVJoCunCAW5C45b3wjFRLxNgoBmcwTfYZxDj8Ys4RvIM6SmlLI/t7b8559XePv7Q2w8=
+	t=1744115235; cv=none; b=fbgGPOVJSZ2PgHwJEUzCIRVYwhu8hnwMxYN9aWjp4PKJL18scyg7NgJwEt3CHmca2/CxMXO5RNwHOw7avBJC7YavGV/GCYFAApQOYQzeU7Wx8YJ5xlq3KnexbhFlQTw7vUE3O4MZzv2QTdpm25aCmqP+915Ym62NJHxK3WLUARA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115832; c=relaxed/simple;
-	bh=YrD3qbEMaUtGXYo7p0W0nYIcUS2szkeez08+leVlECw=;
+	s=arc-20240116; t=1744115235; c=relaxed/simple;
+	bh=oCeT45n6PW4fCGlYl720bhqnI4ssVQxCsKMUO7wRNw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OWzlRO+PWg5jjTLKGB1EyiLeHKaVoTSFW2CDfLiM8CqBn8ZWgtqwnrnZqEakmQ9LiHAj9h7DusDP50b3kLkmfjx9RaecJd71AaTKHlXD8YE2EKq70+asud9o+XHH6li+X3AhnZhwyk2v+AM1SDeCSrkwYxy6dmVVwKGqVFw1csA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJ0w+3Bt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C58C4CEE5;
-	Tue,  8 Apr 2025 12:37:11 +0000 (UTC)
+	 MIME-Version; b=jDbdw4Sw9+YQbPaHDm+r0/4vr7+aieOGl14XEKffr5bvs4B85O3hjplQSLp6Zf1aNLi9u+e/gM/Iq7RuhbZ/Fw/YzEF1Mz0hEz7Dzlyxas1RVEWvb4nJYX/X5kjwSVwIRnwKmWtlPGMzVsCcN0EzAJaGBYEifdyHcImr6wq17KU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V7zNvKaQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D79C4CEE5;
+	Tue,  8 Apr 2025 12:27:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115832;
-	bh=YrD3qbEMaUtGXYo7p0W0nYIcUS2szkeez08+leVlECw=;
+	s=korg; t=1744115234;
+	bh=oCeT45n6PW4fCGlYl720bhqnI4ssVQxCsKMUO7wRNw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DJ0w+3BtcVrNYjUednJo+v3fp026firXRKUeHCIh94P7iMWJHSKAkfZVA25Zks8uG
-	 32q8Ylil9dxBsfL9V7/6nxXj69tiXVSA2dNNKX86g+gl1ewwzveITYjn/Cugea22aB
-	 1rYEZsBp7VydTgT7SeApkI7bvGmJNKdxJPWkHv28=
+	b=V7zNvKaQXzx0I7TG9SkmXhDTO2XnhG4YqLonkf2dvHlTtXo6FFryoiriP2Ykr1fiJ
+	 aPNyypYDChorSPN0kQjB1IgXd22umpLKtG2VxVWoJygAlO9pv9Pku5li2dRO+Eq7Hs
+	 kAm8rld66ZUwMIS8lo20RBVBHaLPZr3O8657qACU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Fernando Fernandez Mancera <ffmancera@riseup.net>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 081/204] pinctrl: renesas: rzv2m: Fix missing of_node_put() call
+Subject: [PATCH 6.13 399/499] ipv6: fix omitted netlink attributes when using RTEXT_FILTER_SKIP_STATS
 Date: Tue,  8 Apr 2025 12:50:11 +0200
-Message-ID: <20250408104822.735621549@linuxfoundation.org>
+Message-ID: <20250408104901.176013333@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+From: Fernando Fernandez Mancera <ffmancera@riseup.net>
 
-[ Upstream commit 5a550b00704d3a2cd9d766a9427b0f8166da37df ]
+[ Upstream commit 7ac6ea4a3e0898db76aecccd68fb2c403eb7d24e ]
 
-of_parse_phandle_with_fixed_args() requires its caller to
-call into of_node_put() on the node pointer from the output
-structure, but such a call is currently missing.
+Using RTEXT_FILTER_SKIP_STATS is incorrectly skipping non-stats IPv6
+netlink attributes on link dump. This causes issues on userspace tools,
+e.g iproute2 is not rendering address generation mode as it should due
+to missing netlink attribute.
 
-Call into of_node_put() to rectify that.
+Move the filling of IFLA_INET6_STATS and IFLA_INET6_ICMP6STATS to a
+helper function guarded by a flag check to avoid hitting the same
+situation in the future.
 
-Fixes: 92a9b8252576 ("pinctrl: renesas: Add RZ/V2M pin and gpio controller driver")
-Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20250305163753.34913-4-fabrizio.castro.jz@renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: d5566fd72ec1 ("rtnetlink: RTEXT_FILTER_SKIP_STATS support to avoid dumping inet/inet6 stats")
+Signed-off-by: Fernando Fernandez Mancera <ffmancera@riseup.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250402121751.3108-1-ffmancera@riseup.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/pinctrl-rzv2m.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv6/addrconf.c | 37 +++++++++++++++++++++++++------------
+ 1 file changed, 25 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/pinctrl/renesas/pinctrl-rzv2m.c b/drivers/pinctrl/renesas/pinctrl-rzv2m.c
-index 2858800288bb7..dc4299c03b990 100644
---- a/drivers/pinctrl/renesas/pinctrl-rzv2m.c
-+++ b/drivers/pinctrl/renesas/pinctrl-rzv2m.c
-@@ -943,6 +943,8 @@ static int rzv2m_gpio_register(struct rzv2m_pinctrl *pctrl)
- 		return ret;
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index 0e765466d7f79..dfbbab4386f61 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -5804,6 +5804,27 @@ static void snmp6_fill_stats(u64 *stats, struct inet6_dev *idev, int attrtype,
  	}
+ }
  
-+	of_node_put(of_args.np);
++static int inet6_fill_ifla6_stats_attrs(struct sk_buff *skb,
++					struct inet6_dev *idev)
++{
++	struct nlattr *nla;
 +
- 	if (of_args.args[0] != 0 || of_args.args[1] != 0 ||
- 	    of_args.args[2] != pctrl->data->n_port_pins) {
- 		dev_err(pctrl->dev, "gpio-ranges does not match selected SOC\n");
++	nla = nla_reserve(skb, IFLA_INET6_STATS, IPSTATS_MIB_MAX * sizeof(u64));
++	if (!nla)
++		goto nla_put_failure;
++	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_STATS, nla_len(nla));
++
++	nla = nla_reserve(skb, IFLA_INET6_ICMP6STATS, ICMP6_MIB_MAX * sizeof(u64));
++	if (!nla)
++		goto nla_put_failure;
++	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_ICMP6STATS, nla_len(nla));
++
++	return 0;
++
++nla_put_failure:
++	return -EMSGSIZE;
++}
++
+ static int inet6_fill_ifla6_attrs(struct sk_buff *skb, struct inet6_dev *idev,
+ 				  u32 ext_filter_mask)
+ {
+@@ -5826,18 +5847,10 @@ static int inet6_fill_ifla6_attrs(struct sk_buff *skb, struct inet6_dev *idev,
+ 
+ 	/* XXX - MC not implemented */
+ 
+-	if (ext_filter_mask & RTEXT_FILTER_SKIP_STATS)
+-		return 0;
+-
+-	nla = nla_reserve(skb, IFLA_INET6_STATS, IPSTATS_MIB_MAX * sizeof(u64));
+-	if (!nla)
+-		goto nla_put_failure;
+-	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_STATS, nla_len(nla));
+-
+-	nla = nla_reserve(skb, IFLA_INET6_ICMP6STATS, ICMP6_MIB_MAX * sizeof(u64));
+-	if (!nla)
+-		goto nla_put_failure;
+-	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_ICMP6STATS, nla_len(nla));
++	if (!(ext_filter_mask & RTEXT_FILTER_SKIP_STATS)) {
++		if (inet6_fill_ifla6_stats_attrs(skb, idev) < 0)
++			goto nla_put_failure;
++	}
+ 
+ 	nla = nla_reserve(skb, IFLA_INET6_TOKEN, sizeof(struct in6_addr));
+ 	if (!nla)
 -- 
 2.39.5
 
