@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED3CDA80531
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2786DA80A88
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:07:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88371467FDD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:08:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B72947B4732
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4DC2686B9;
-	Tue,  8 Apr 2025 12:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B1426B2C6;
+	Tue,  8 Apr 2025 12:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sonZqHBO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cgMusYhw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC52264FB6;
-	Tue,  8 Apr 2025 12:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49DAA279323;
+	Tue,  8 Apr 2025 12:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113994; cv=none; b=SoFo68olGXsXpKttOII6eREmLGQUIBTw1hrJRD+cYnhBroz/aGhiS2mfJYJT9rLmK425YqlqeVdNvvVomI0FaoY6BnzC//dtCmWU4qqsRSp26M2iUNflF/WlWprLrgvSllxZ1+5dmDDygQyr+FDich/PJXV9BBy3FggpNe9/qfc=
+	t=1744116902; cv=none; b=YxWYzJLSK/jE4PP5b+0MMVhHsTX1p9ocro0F5Z9HXMFibCemXTeoOjlQoOTXg+oFSHArQkaUMM4NeZmYpLMtqYzlmFjwJbF5x6nInbdHg0w84S/N+gstxBi/RdkAJhSYgHHEnf9tEGFoD+oP1BgfpgiEpon5n+3z7CKx8YbxpCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113994; c=relaxed/simple;
-	bh=6FgvZ+Rv57akdE7GQmLh51zcsamnDKMG4gWHG6+EZ28=;
+	s=arc-20240116; t=1744116902; c=relaxed/simple;
+	bh=ZATwbg86x0XOYw3ZJiMOKIUvAz05daeYqVFr8zHG5C4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aUKLx+ZHXmis9J6q9tZ7fdBlaoIEduCRTD/33ooMm2sFzSL7W+C34/WOb/faJL0Mzjqr9GMl+FRVXePoq3BzQY0+6gtaqn8Xutunvb1AP3e0lNIjrfncV1fKFHtzV8M/sbGKA8RQ0wT2CkGWHH/b2VMum3AB2HGxg01s1VMtifo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sonZqHBO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 739E2C4CEE5;
-	Tue,  8 Apr 2025 12:06:33 +0000 (UTC)
+	 MIME-Version; b=pjAmzkx3MKt+Y3ruQ2RIJmglqKpQ+FZ8QIFQPRAqmEr3AfoV63acpf5eAE9i2UiUuyEQ7HRnRM7gj68Pzl2f4DKBxtcQeGS0Dv30wN5y+IMSxbrp6B2Zwy3WmNMiHLR5VOapu+P/7rYmoIV4WjZJd04uJEdqUlzduKJwy/53ttM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cgMusYhw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC9CFC4CEEA;
+	Tue,  8 Apr 2025 12:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113993;
-	bh=6FgvZ+Rv57akdE7GQmLh51zcsamnDKMG4gWHG6+EZ28=;
+	s=korg; t=1744116902;
+	bh=ZATwbg86x0XOYw3ZJiMOKIUvAz05daeYqVFr8zHG5C4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sonZqHBOAr83tqtFhpviynUfSjJQast+7eB159h1yS8ezUe44E/kyKx8RuEmOZqYY
-	 SmzItxKiFsRiIHM6EiFRrIEcEiREWCK7CT1ZzThrMHbWb2d2PFs6RZabjo18l74p+g
-	 +uHlYJ8LI0bi7H9p+UFRN0CKX8zFTT9nQ/0OJkSU=
+	b=cgMusYhwJSbWHlAb1qARRuDjgMp/KlqbUtcLy/CBff2r6RClGsF7QVy00KrfXsL4B
+	 SqL89Ac9sUHXD5sLKuRpbFvRj62EuoxfQeeMV7Imfz2BgoQ8DHEn4ka7nFnPfxLQIP
+	 Cq8cQbfWBO3+qREdiT67URVO8Wc3ypWz0bWGummc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lukas Wunner <lukas@wunner.de>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 097/154] PCI: pciehp: Dont enable HPIE when resuming in poll mode
+Subject: [PATCH 6.12 312/423] ublk: make sure ubq->canceling is set when queue is frozen
 Date: Tue,  8 Apr 2025 12:50:38 +0200
-Message-ID: <20250408104818.433972692@linuxfoundation.org>
+Message-ID: <20250408104853.070758963@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +60,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 527664f738afb6f2c58022cd35e63801e5dc7aec ]
+[ Upstream commit 8741d0737921ec1c03cf59aebf4d01400c2b461a ]
 
-PCIe hotplug can operate in poll mode without interrupt handlers using a
-polling kthread only.  eb34da60edee ("PCI: pciehp: Disable hotplug
-interrupt during suspend") failed to consider that and enables HPIE
-(Hot-Plug Interrupt Enable) unconditionally when resuming the Port.
+Now ublk driver depends on `ubq->canceling` for deciding if the request
+can be dispatched via uring_cmd & io_uring_cmd_complete_in_task().
 
-Only set HPIE if non-poll mode is in use. This makes
-pcie_enable_interrupt() match how pcie_enable_notification() already
-handles HPIE.
+Once ubq->canceling is set, the uring_cmd can be done via ublk_cancel_cmd()
+and io_uring_cmd_done().
 
-Link: https://lore.kernel.org/r/20250321162114.3939-1-ilpo.jarvinen@linux.intel.com
-Fixes: eb34da60edee ("PCI: pciehp: Disable hotplug interrupt during suspend")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
+So set ubq->canceling when queue is frozen, this way makes sure that the
+flag can be observed from ublk_queue_rq() reliably, and avoids
+use-after-free on uring_cmd.
+
+Fixes: 216c8f5ef0f2 ("ublk: replace monitor with cancelable uring_cmd")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20250327095123.179113-2-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/hotplug/pciehp_hpc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/block/ublk_drv.c | 39 +++++++++++++++++++++++++++++----------
+ 1 file changed, 29 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/pci/hotplug/pciehp_hpc.c b/drivers/pci/hotplug/pciehp_hpc.c
-index bdbe01d4d9e90..c3512a0e5b14c 100644
---- a/drivers/pci/hotplug/pciehp_hpc.c
-+++ b/drivers/pci/hotplug/pciehp_hpc.c
-@@ -765,7 +765,9 @@ void pcie_enable_interrupt(struct controller *ctrl)
- {
- 	u16 mask;
- 
--	mask = PCI_EXP_SLTCTL_HPIE | PCI_EXP_SLTCTL_DLLSCE;
-+	mask = PCI_EXP_SLTCTL_DLLSCE;
-+	if (!pciehp_poll_mode)
-+		mask |= PCI_EXP_SLTCTL_HPIE;
- 	pcie_write_cmd(ctrl, mask, mask);
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index c7d728d686e5a..79b7bd8bfd458 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -1416,17 +1416,27 @@ static void ublk_abort_queue(struct ublk_device *ub, struct ublk_queue *ubq)
+ 	}
  }
  
++/* Must be called when queue is frozen */
++static bool ublk_mark_queue_canceling(struct ublk_queue *ubq)
++{
++	bool canceled;
++
++	spin_lock(&ubq->cancel_lock);
++	canceled = ubq->canceling;
++	if (!canceled)
++		ubq->canceling = true;
++	spin_unlock(&ubq->cancel_lock);
++
++	return canceled;
++}
++
+ static bool ublk_abort_requests(struct ublk_device *ub, struct ublk_queue *ubq)
+ {
++	bool was_canceled = ubq->canceling;
+ 	struct gendisk *disk;
+ 
+-	spin_lock(&ubq->cancel_lock);
+-	if (ubq->canceling) {
+-		spin_unlock(&ubq->cancel_lock);
++	if (was_canceled)
+ 		return false;
+-	}
+-	ubq->canceling = true;
+-	spin_unlock(&ubq->cancel_lock);
+ 
+ 	spin_lock(&ub->lock);
+ 	disk = ub->ub_disk;
+@@ -1438,14 +1448,23 @@ static bool ublk_abort_requests(struct ublk_device *ub, struct ublk_queue *ubq)
+ 	if (!disk)
+ 		return false;
+ 
+-	/* Now we are serialized with ublk_queue_rq() */
++	/*
++	 * Now we are serialized with ublk_queue_rq()
++	 *
++	 * Make sure that ubq->canceling is set when queue is frozen,
++	 * because ublk_queue_rq() has to rely on this flag for avoiding to
++	 * touch completed uring_cmd
++	 */
+ 	blk_mq_quiesce_queue(disk->queue);
+-	/* abort queue is for making forward progress */
+-	ublk_abort_queue(ub, ubq);
++	was_canceled = ublk_mark_queue_canceling(ubq);
++	if (!was_canceled) {
++		/* abort queue is for making forward progress */
++		ublk_abort_queue(ub, ubq);
++	}
+ 	blk_mq_unquiesce_queue(disk->queue);
+ 	put_device(disk_to_dev(disk));
+ 
+-	return true;
++	return !was_canceled;
+ }
+ 
+ static void ublk_cancel_cmd(struct ublk_queue *ubq, struct ublk_io *io,
 -- 
 2.39.5
 
