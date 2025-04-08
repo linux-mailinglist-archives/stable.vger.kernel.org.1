@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-131058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5012FA807B7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 247C6A8047F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:09:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C48EE4C73C6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD6DC19E7B26
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C836726A1C9;
-	Tue,  8 Apr 2025 12:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB89026A0BA;
+	Tue,  8 Apr 2025 12:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkQgbnE4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ary48HMB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84258263F4D;
-	Tue,  8 Apr 2025 12:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982B1A94A;
+	Tue,  8 Apr 2025 12:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115375; cv=none; b=NwNuWBksKc2u0IPACYA1CjtYvSQNpiSj5KJ+BFrdAmNPXcWusBHE+9rQkp0bNsf1nPByL4pBy+Tja2RZApYVwTQdH67Zj5VwSs/KU7Pb/jv56kmlpwknmJBs7pxg4UvSceqB2zMGGK/9Rk5QEt0Ztlgqw5e6zH5cZO8GbKXr+VM=
+	t=1744113682; cv=none; b=CvXQ3R+h0UJlEL8OATcR/PaWIGYxQz5WP4rlVBouRF5gPcsSl3xTBmBvx3gTT+IZGz6nzwVUx+w0e+UUtcIgQ1xpVaPeqLG9F/H5cKTgUvC0GZP9ZkVHe77YwwUjvzKd+Kb/7QHlVwRE9FMm8lwo8Kg/UmIUhhmpauS7UJNmfiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115375; c=relaxed/simple;
-	bh=Cp7BIJypO95cW/jsfzrkRCOaZEnVAhML+KtgG9OcSF8=;
+	s=arc-20240116; t=1744113682; c=relaxed/simple;
+	bh=YdbB0wZjf6CJk4NojXGlHtDPiRt/vpE8afQZQnblEuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q08pBCABsWUBVKqZCTXyunuuqCHHdP1fNrYivptv8W2w+zowQvM1LH2h7bvVANmnMgl+afNGYwmSbPJ+1mFB/j1xgC1n7eblaiPpBx4uYyM5SNxiEDTNzIqqS9cMFSnP0FYN/L6rRyDIDE66iyMblNv+Hr4oYY8MWBjW6v4xa2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkQgbnE4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1684BC4CEE5;
-	Tue,  8 Apr 2025 12:29:34 +0000 (UTC)
+	 MIME-Version; b=PrZeb19uuesO8AOiGEfGbsYURWQBKufgmkqHfgdgGIzM8+UIfeJchyrWjR9wBvEJiAKEntbLZb8C/nJ8Cc0tWTVfC/8QMwS2UUsjF357zN1az+ek+IFhMcQmx08ZmCFJBPyrjCBkJWP8TiNrALmmLq5k0iO6ufdn5jX9q2kBCZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ary48HMB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008B4C4CEE5;
+	Tue,  8 Apr 2025 12:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115375;
-	bh=Cp7BIJypO95cW/jsfzrkRCOaZEnVAhML+KtgG9OcSF8=;
+	s=korg; t=1744113682;
+	bh=YdbB0wZjf6CJk4NojXGlHtDPiRt/vpE8afQZQnblEuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hkQgbnE4rYcRug26ORUiO9f4DSkgOTDW5bCjurFONQo65xlHnNFXz6Cb2ri4WJ1/c
-	 GT1As7PvWMYGdH6ZVL/1qywf1OIQAS8JZJgstMkUGXvWJhqQZN4dMHsjYg9rw0dktU
-	 DHLuvqwS80/OZx6umStOF7EiyuDZ3dGFgRT8RVeU=
+	b=Ary48HMBrpBC3cxgMPOpCiBuHysblwCY5uk8TjXM9VrkoOGIFQt7/PIW2n0ppzpmL
+	 jTZEenHYb5SlKXb3FIxZMObyE029ezRYxUavVPhV+kaQdFOs9kZUD077Q1BbCJQhmb
+	 kULqgUiDzkLIrC9Zt/4VA9T83wrInGbeV6c2UraE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Kan Liang <kan.liang@linux.intel.com>
-Subject: [PATCH 6.13 450/499] perf/x86/intel: Avoid disable PMU if !cpuc->enabled in sample read
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 251/268] ksmbd: add bounds check for durable handle context
 Date: Tue,  8 Apr 2025 12:51:02 +0200
-Message-ID: <20250408104902.454823138@linuxfoundation.org>
+Message-ID: <20250408104835.354461585@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,133 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit f9bdf1f953392c9edd69a7f884f78c0390127029 upstream.
+commit 542027e123fc0bfd61dd59e21ae0ee4ef2101b29 upstream.
 
-The WARN_ON(this_cpu_read(cpu_hw_events.enabled)) in the
-intel_pmu_save_and_restart_reload() is triggered, when sampling read
-topdown events.
+Add missing bounds check for durable handle context.
 
-In a NMI handler, the cpu_hw_events.enabled is set and used to indicate
-the status of core PMU. The generic pmu->pmu_disable_count, updated in
-the perf_pmu_disable/enable pair, is not touched.
-However, the perf_pmu_disable/enable pair is invoked when sampling read
-in a NMI handler. The cpuc->enabled is mistakenly set by the
-perf_pmu_enable().
-
-Avoid disabling PMU if the core PMU is already disabled.
-Merge the logic together.
-
-Fixes: 7b2c05a15d29 ("perf/x86/intel: Generic support for hardware TopDown metrics")
-Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20250121152303.3128733-2-kan.liang@linux.intel.com
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/core.c |   41 +++++++++++++++++++++++------------------
- arch/x86/events/intel/ds.c   |   11 +----------
- arch/x86/events/perf_event.h |    2 +-
- 3 files changed, 25 insertions(+), 29 deletions(-)
+ fs/smb/server/smb2pdu.c |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -2779,28 +2779,33 @@ static u64 icl_update_topdown_event(stru
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2700,6 +2700,13 @@ static int parse_durable_handle_context(
+ 				goto out;
+ 			}
  
- DEFINE_STATIC_CALL(intel_pmu_update_topdown_event, x86_perf_event_update);
- 
--static void intel_pmu_read_topdown_event(struct perf_event *event)
-+static void intel_pmu_read_event(struct perf_event *event)
- {
--	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-+	if (event->hw.flags & (PERF_X86_EVENT_AUTO_RELOAD | PERF_X86_EVENT_TOPDOWN)) {
-+		struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-+		bool pmu_enabled = cpuc->enabled;
++			if (le16_to_cpu(context->DataOffset) +
++				le32_to_cpu(context->DataLength) <
++			    sizeof(struct create_durable_reconn_v2_req)) {
++				err = -EINVAL;
++				goto out;
++			}
 +
-+		/* Only need to call update_topdown_event() once for group read. */
-+		if (is_metric_event(event) && (cpuc->txn_flags & PERF_PMU_TXN_READ))
-+			return;
+ 			recon_v2 = (struct create_durable_reconn_v2_req *)context;
+ 			persistent_id = recon_v2->Fid.PersistentFileId;
+ 			dh_info->fp = ksmbd_lookup_durable_fd(persistent_id);
+@@ -2733,6 +2740,13 @@ static int parse_durable_handle_context(
+ 				goto out;
+ 			}
+ 
++			if (le16_to_cpu(context->DataOffset) +
++				le32_to_cpu(context->DataLength) <
++			    sizeof(struct create_durable_reconn_req)) {
++				err = -EINVAL;
++				goto out;
++			}
 +
-+		cpuc->enabled = 0;
-+		if (pmu_enabled)
-+			intel_pmu_disable_all();
+ 			recon = (struct create_durable_reconn_req *)context;
+ 			persistent_id = recon->Data.Fid.PersistentFileId;
+ 			dh_info->fp = ksmbd_lookup_durable_fd(persistent_id);
+@@ -2757,6 +2771,13 @@ static int parse_durable_handle_context(
+ 				err = -EINVAL;
+ 				goto out;
+ 			}
 +
-+		if (is_topdown_event(event))
-+			static_call(intel_pmu_update_topdown_event)(event);
-+		else
-+			intel_pmu_drain_pebs_buffer();
-+
-+		cpuc->enabled = pmu_enabled;
-+		if (pmu_enabled)
-+			intel_pmu_enable_all(0);
++			if (le16_to_cpu(context->DataOffset) +
++				le32_to_cpu(context->DataLength) <
++			    sizeof(struct create_durable_req_v2)) {
++				err = -EINVAL;
++				goto out;
++			}
  
--	/* Only need to call update_topdown_event() once for group read. */
--	if ((cpuc->txn_flags & PERF_PMU_TXN_READ) &&
--	    !is_slots_event(event))
- 		return;
-+	}
- 
--	perf_pmu_disable(event->pmu);
--	static_call(intel_pmu_update_topdown_event)(event);
--	perf_pmu_enable(event->pmu);
--}
--
--static void intel_pmu_read_event(struct perf_event *event)
--{
--	if (event->hw.flags & PERF_X86_EVENT_AUTO_RELOAD)
--		intel_pmu_auto_reload_read(event);
--	else if (is_topdown_count(event))
--		intel_pmu_read_topdown_event(event);
--	else
--		x86_perf_event_update(event);
-+	x86_perf_event_update(event);
- }
- 
- static void intel_pmu_enable_fixed(struct perf_event *event)
---- a/arch/x86/events/intel/ds.c
-+++ b/arch/x86/events/intel/ds.c
-@@ -953,7 +953,7 @@ unlock:
- 	return 1;
- }
- 
--static inline void intel_pmu_drain_pebs_buffer(void)
-+void intel_pmu_drain_pebs_buffer(void)
- {
- 	struct perf_sample_data data;
- 
-@@ -2100,15 +2100,6 @@ get_next_pebs_record_by_bit(void *base,
- 	return NULL;
- }
- 
--void intel_pmu_auto_reload_read(struct perf_event *event)
--{
--	WARN_ON(!(event->hw.flags & PERF_X86_EVENT_AUTO_RELOAD));
--
--	perf_pmu_disable(event->pmu);
--	intel_pmu_drain_pebs_buffer();
--	perf_pmu_enable(event->pmu);
--}
--
- /*
-  * Special variant of intel_pmu_save_and_restart() for auto-reload.
-  */
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -1643,7 +1643,7 @@ void intel_pmu_pebs_disable_all(void);
- 
- void intel_pmu_pebs_sched_task(struct perf_event_pmu_context *pmu_ctx, bool sched_in);
- 
--void intel_pmu_auto_reload_read(struct perf_event *event);
-+void intel_pmu_drain_pebs_buffer(void);
- 
- void intel_pmu_store_pebs_lbrs(struct lbr_entry *lbr);
- 
+ 			durable_v2_blob =
+ 				(struct create_durable_req_v2 *)context;
 
 
 
