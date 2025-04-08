@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-131165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83C5DA808FF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:50:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C328A80540
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:16:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 188ED8A638C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:37:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C342D46621B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:06:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52930269819;
-	Tue,  8 Apr 2025 12:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E955268681;
+	Tue,  8 Apr 2025 12:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S680vD1P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n8xBIsyJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 109F62690D6;
-	Tue,  8 Apr 2025 12:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00E8A94A;
+	Tue,  8 Apr 2025 12:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115665; cv=none; b=M34PgrZ3cTLKvhST/tTvV6sfuM8VeccVed93Nj5ngOxfOmBS/CvqpG7TypscCKyxkmUhI8Lw6TKx1kRKX+ljTBpqxcY4cfp78kLIxY8MoirztI6XtrfvwLvK83bau3t50aSrhC2vJCX9QsXsNQX+K3acGPVkYYR6s3kv/oBKjR0=
+	t=1744113861; cv=none; b=UChXXjLBtomRmpShwdZOpUQFd+BjZ8gHYGhkQjkmFLBMftCa5dd/ceUL8W9DtiQNAFyV83YXlOLRUtMyaSdog/cd3ohyL14QFDymTl/zzgDtCR8RvAQIcQdU2LLIkegG5zESXMzA2e4vd0phUN/i84fReRaXUjzxfKmXyzhMlCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115665; c=relaxed/simple;
-	bh=O7iCenGcirn5VttB0ydhIJuAb/SqUmptQgKkpBo7XO8=;
+	s=arc-20240116; t=1744113861; c=relaxed/simple;
+	bh=PqOaQ74/hLUVzvLFfg0PHb+P7PiIcvf6aXquz/ovKpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OYxVYIVRBfkrLAOQ7YRkRi3cqYtY+qSYwZ7/GCFPGKflyBVdEojSwbZm90xhKBxOEKzHV6ZPMdW07LshPn4Vy3rbmbpLMuSRvQ5wePVmZBJPRy27kwGifQy9DaiZnT9KpXqk5HwzT5Z5ji8QIrAoq2cgeClLaKI6A86GuMB+21Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S680vD1P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 361BEC4CEE7;
-	Tue,  8 Apr 2025 12:34:24 +0000 (UTC)
+	 MIME-Version; b=DGOWGBXhukCzxkDNj0N8Fa3+YcYDLqb4Czf0uCaxDQpOlQ4aLIwkYM7pqSghQd9SezOK4IQiokKpQsYluYHhoiii8NOvkjM3UF4GdYh2S+Pych6Dpls35caz4WLgkeOuU37+Hh3LI3YfuQA87hzmls0tt9dp4GNqWdBUaAz3Gog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n8xBIsyJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58BC4C4CEE5;
+	Tue,  8 Apr 2025 12:04:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115664;
-	bh=O7iCenGcirn5VttB0ydhIJuAb/SqUmptQgKkpBo7XO8=;
+	s=korg; t=1744113860;
+	bh=PqOaQ74/hLUVzvLFfg0PHb+P7PiIcvf6aXquz/ovKpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S680vD1PlUyVR481QkxKXMxQXRnD+8LEjgucULYeI2tyypD4LBsTsP7f/B9tZTz4T
-	 D1kpK95HYhWjuqNB6CARZHqkUJ1rTC4TO8AI/8DGhRNttH7wKniBmz0Ds+qegPB/+H
-	 u1mJTkbSfabaqihPq7M6YajMaqNO/vZtwD9XgYps=
+	b=n8xBIsyJdoN/32bPOv4Qruu81sPcWC9F9N/DbAtBIGuR7CIINmRYSfLVe0cKAXsOx
+	 bD8mGIDnkm/PW8HvJ0f7Rvc6shWYZeFp7UUcACANgJccUO04iya+Yoh2fHnXT20rlH
+	 0ceCYOyIxvyW+5BuXBBd2YsS5baSS5ufJPVptZP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Viktor Malik <vmalik@redhat.com>,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/204] selftests/bpf: Fix string read in strncmp benchmark
+Subject: [PATCH 5.4 047/154] ASoC: codecs: wm0010: Fix error handling path in wm0010_spi_probe()
 Date: Tue,  8 Apr 2025 12:49:48 +0200
-Message-ID: <20250408104822.051182622@linuxfoundation.org>
+Message-ID: <20250408104816.784047158@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viktor Malik <vmalik@redhat.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit de07b182899227d5fd1ca7a1a7d495ecd453d49c ]
+[ Upstream commit ed92bc5264c4357d4fca292c769ea9967cd3d3b6 ]
 
-The strncmp benchmark uses the bpf_strncmp helper and a hand-written
-loop to compare two strings. The values of the strings are filled from
-userspace. One of the strings is non-const (in .bss) while the other is
-const (in .rodata) since that is the requirement of bpf_strncmp.
+Free some resources in the error handling path of the probe, as already
+done in the remove function.
 
-The problem is that in the hand-written loop, Clang optimizes the reads
-from the const string to always return 0 which breaks the benchmark.
-
-Use barrier_var to prevent the optimization.
-
-The effect can be seen on the strncmp-no-helper variant.
-
-Before this change:
-
-    # ./bench strncmp-no-helper
-    Setting up benchmark 'strncmp-no-helper'...
-    Benchmark 'strncmp-no-helper' started.
-    Iter   0 (112.309us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   1 (-23.238us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   2 ( 58.994us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   3 (-30.466us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   4 ( 29.996us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   5 ( 16.949us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   6 (-60.035us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Summary: hits    0.000 ± 0.000M/s (  0.000M/prod), drops    0.000 ± 0.000M/s, total operations    0.000 ± 0.000M/s
-
-After this change:
-
-    # ./bench strncmp-no-helper
-    Setting up benchmark 'strncmp-no-helper'...
-    Benchmark 'strncmp-no-helper' started.
-    Iter   0 ( 77.711us): hits    5.534M/s (  5.534M/prod), drops    0.000M/s, total operations    5.534M/s
-    Iter   1 ( 11.215us): hits    6.006M/s (  6.006M/prod), drops    0.000M/s, total operations    6.006M/s
-    Iter   2 (-14.253us): hits    5.931M/s (  5.931M/prod), drops    0.000M/s, total operations    5.931M/s
-    Iter   3 ( 59.087us): hits    6.005M/s (  6.005M/prod), drops    0.000M/s, total operations    6.005M/s
-    Iter   4 (-21.379us): hits    6.010M/s (  6.010M/prod), drops    0.000M/s, total operations    6.010M/s
-    Iter   5 (-20.310us): hits    5.861M/s (  5.861M/prod), drops    0.000M/s, total operations    5.861M/s
-    Iter   6 ( 53.937us): hits    6.004M/s (  6.004M/prod), drops    0.000M/s, total operations    6.004M/s
-    Summary: hits    5.969 ± 0.061M/s (  5.969M/prod), drops    0.000 ± 0.000M/s, total operations    5.969 ± 0.061M/s
-
-Fixes: 9c42652f8be3 ("selftests/bpf: Add benchmark for bpf_strncmp() helper")
-Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Viktor Malik <vmalik@redhat.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/bpf/20250313122852.1365202-1-vmalik@redhat.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: e3523e01869d ("ASoC: wm0010: Add initial wm0010 DSP driver")
+Fixes: fd8b96574456 ("ASoC: wm0010: Clear IRQ as wake source and include missing header")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/5139ba1ab8c4c157ce04e56096a0f54a1683195c.1741549792.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/strncmp_bench.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/soc/codecs/wm0010.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/strncmp_bench.c b/tools/testing/selftests/bpf/progs/strncmp_bench.c
-index 18373a7df76e6..f47bf88f8d2a7 100644
---- a/tools/testing/selftests/bpf/progs/strncmp_bench.c
-+++ b/tools/testing/selftests/bpf/progs/strncmp_bench.c
-@@ -35,7 +35,10 @@ static __always_inline int local_strncmp(const char *s1, unsigned int sz,
- SEC("tp/syscalls/sys_enter_getpgid")
- int strncmp_no_helper(void *ctx)
- {
--	if (local_strncmp(str, cmp_str_len + 1, target) < 0)
-+	const char *target_str = target;
-+
-+	barrier_var(target_str);
-+	if (local_strncmp(str, cmp_str_len + 1, target_str) < 0)
- 		__sync_add_and_fetch(&hits, 1);
+diff --git a/sound/soc/codecs/wm0010.c b/sound/soc/codecs/wm0010.c
+index 727d6703c905a..ff4bd7d5c59e5 100644
+--- a/sound/soc/codecs/wm0010.c
++++ b/sound/soc/codecs/wm0010.c
+@@ -955,7 +955,7 @@ static int wm0010_spi_probe(struct spi_device *spi)
+ 	if (ret) {
+ 		dev_err(wm0010->dev, "Failed to set IRQ %d as wake source: %d\n",
+ 			irq, ret);
+-		return ret;
++		goto free_irq;
+ 	}
+ 
+ 	if (spi->max_speed_hz)
+@@ -967,9 +967,18 @@ static int wm0010_spi_probe(struct spi_device *spi)
+ 				     &soc_component_dev_wm0010, wm0010_dai,
+ 				     ARRAY_SIZE(wm0010_dai));
+ 	if (ret < 0)
+-		return ret;
++		goto disable_irq_wake;
+ 
  	return 0;
++
++disable_irq_wake:
++	irq_set_irq_wake(wm0010->irq, 0);
++
++free_irq:
++	if (wm0010->irq)
++		free_irq(wm0010->irq, wm0010);
++
++	return ret;
  }
+ 
+ static int wm0010_spi_remove(struct spi_device *spi)
 -- 
 2.39.5
 
