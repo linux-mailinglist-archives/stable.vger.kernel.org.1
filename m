@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-131564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 251C7A80B1E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:13:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACCA8A8071F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D12C8A59A2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 660084C5964
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25ED2276054;
-	Tue,  8 Apr 2025 12:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8731526B2DF;
+	Tue,  8 Apr 2025 12:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kHz2DJia"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvawNcsn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D769C26B08E;
-	Tue,  8 Apr 2025 12:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446902676FA;
+	Tue,  8 Apr 2025 12:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116736; cv=none; b=mdFNLfwK4E/dzb3+UMD2DJBRJDnsbEo6Ev1cBZRx6pymZilCIZwA01q1CXjIffRdeMm8455MIesKyqX3PREluTS87lMMFb260nnyAHTN5QRaHXvmiFKqnBrXqt6g9uLmuEpoYQO8HPK0BnAgqZ2hjU2FGZUvFLYnX3DbHkOPC4k=
+	t=1744115137; cv=none; b=FUKLA+yt8gC9Qny/wY1ajInPZ0W8wlxM6FQNewuAdPFTyq9PFl9eCiZi27qMyimccUnDqDXJlry8/maN6lrzGIr0C8GCgYrOO49jbkxQwkDx1vV1JscsTAtf6dTjNxACGlolO2rKdq6zp62rX0M75nbtThidAeCcwUbkZJXrQso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116736; c=relaxed/simple;
-	bh=A3dcYTDtbG1CdR8kRRaw4LB/Al1u0r7wGHqnxUA/F8c=;
+	s=arc-20240116; t=1744115137; c=relaxed/simple;
+	bh=jmPmncjA5nbcUHyKC+tvhL+lBo95VQcShCyz8qZBB3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vzla3LFI3/LWddtqklqhzmL/vWvq8yQkyM8iZAyJlf7CyyPqtegu49mmzfh5rMLC7LRZsVXa1LjYMUj/g9RK7AWrkWbeSvE2jaoK7npglGW37fP/oANlY/lw1YSciYCAnmxYn2or0nYAuf89btCbxQEKUASYaN3turXVG+XsK08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kHz2DJia; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67076C4CEE5;
-	Tue,  8 Apr 2025 12:52:16 +0000 (UTC)
+	 MIME-Version; b=OCobPssmCl857CMT9fAVSvW32vghUYEEfZZV0rw2LPY1sppwxQKBeMIyP0hBucROKhyNFPrIoBFUBF8q3fF5GAevT4vM+mScqG92fX3iwSZ+VQcB2uWJCdfYU7QNM/Rt68PRmhlzZRDZWSnHkb0InC97XbqwFkKWSJy21zQuhX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvawNcsn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE98C4CEEA;
+	Tue,  8 Apr 2025 12:25:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116736;
-	bh=A3dcYTDtbG1CdR8kRRaw4LB/Al1u0r7wGHqnxUA/F8c=;
+	s=korg; t=1744115137;
+	bh=jmPmncjA5nbcUHyKC+tvhL+lBo95VQcShCyz8qZBB3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kHz2DJiabyEol0HUYYSL9dfUfyuSrkwhgU1o7QKZYdaBYF/1JMfhL+2QVOb0xDRt+
-	 90S50q3eBoIeA++6h4DnNXShDYcOHmx+Kd3MjKHI/oMtQPtIIKGkH0pg+h/5YMYpr4
-	 ZnhpQj6E74UBev7uyeg/3VbFJo6bPPgvOQk31anA=
+	b=zvawNcsnf/RWEx8gemYDy/MpGHuEjRPJE/wKBwQQS4F96yrE33VSE7v2ullCgBNUI
+	 s2PSsFjFHu4GqaP8Gky6XNeLDlAKGrAprsnr2HhkzS/TCqWI8oYUn38jDWfVZYD/fs
+	 FhW8lEyCgGzdyvyI+cZoU/Svf6zNa9Au3NndnTOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 249/423] context_tracking: Always inline ct_{nmi,irq}_{enter,exit}()
+Subject: [PATCH 6.13 363/499] riscv: Annotate unaligned access init functions
 Date: Tue,  8 Apr 2025 12:49:35 +0200
-Message-ID: <20250408104851.534421460@linuxfoundation.org>
+Message-ID: <20250408104900.283805058@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,59 +62,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Andrew Jones <ajones@ventanamicro.com>
 
-[ Upstream commit 9ac50f7311dc8b39e355582f14c1e82da47a8196 ]
+[ Upstream commit a00e022be5315c5a1f47521a1cc6d3b71c8e9c44 ]
 
-Thanks to CONFIG_DEBUG_SECTION_MISMATCH, empty functions can be
-generated out of line.  These can be called from noinstr code, so make
-sure they're always inlined.
+Several functions used in unaligned access probing are only run at
+init time. Annotate them appropriately.
 
-Fixes the following warnings:
-
-  vmlinux.o: warning: objtool: irqentry_nmi_enter+0xa2: call to ct_nmi_enter() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: irqentry_nmi_exit+0x16: call to ct_nmi_exit() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: irqentry_exit+0x78: call to ct_irq_exit() leaves .noinstr.text section
-
-Fixes: 6f0e6c1598b1 ("context_tracking: Take IRQ eqs entrypoints over RCU")
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Frederic Weisbecker <frederic@kernel.org>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/8509bce3f536bcd4ae7af3a2cf6930d48c5e631a.1743481539.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/d1eca076-fdde-484a-b33e-70e0d167c36d@infradead.org
+Fixes: f413aae96cda ("riscv: Set unaligned access speed at compile time")
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20250304120014.143628-11-ajones@ventanamicro.com
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/context_tracking_irq.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/riscv/include/asm/cpufeature.h        |  4 ++--
+ arch/riscv/kernel/traps_misaligned.c       |  8 ++++----
+ arch/riscv/kernel/unaligned_access_speed.c | 14 +++++++-------
+ 3 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/include/linux/context_tracking_irq.h b/include/linux/context_tracking_irq.h
-index c50b5670c4a52..197916ee91a4b 100644
---- a/include/linux/context_tracking_irq.h
-+++ b/include/linux/context_tracking_irq.h
-@@ -10,12 +10,12 @@ void ct_irq_exit_irqson(void);
- void ct_nmi_enter(void);
- void ct_nmi_exit(void);
- #else
--static inline void ct_irq_enter(void) { }
--static inline void ct_irq_exit(void) { }
-+static __always_inline void ct_irq_enter(void) { }
-+static __always_inline void ct_irq_exit(void) { }
- static inline void ct_irq_enter_irqson(void) { }
- static inline void ct_irq_exit_irqson(void) { }
--static inline void ct_nmi_enter(void) { }
--static inline void ct_nmi_exit(void) { }
-+static __always_inline void ct_nmi_enter(void) { }
-+static __always_inline void ct_nmi_exit(void) { }
+diff --git a/arch/riscv/include/asm/cpufeature.h b/arch/riscv/include/asm/cpufeature.h
+index 4bd054c54c21a..d207baaf8317a 100644
+--- a/arch/riscv/include/asm/cpufeature.h
++++ b/arch/riscv/include/asm/cpufeature.h
+@@ -61,7 +61,7 @@ void __init riscv_user_isa_enable(void);
+ #define __RISCV_ISA_EXT_SUPERSET_VALIDATE(_name, _id, _sub_exts, _validate) \
+ 	_RISCV_ISA_EXT_DATA(_name, _id, _sub_exts, ARRAY_SIZE(_sub_exts), _validate)
+ 
+-bool check_unaligned_access_emulated_all_cpus(void);
++bool __init check_unaligned_access_emulated_all_cpus(void);
+ #if defined(CONFIG_RISCV_SCALAR_MISALIGNED)
+ void check_unaligned_access_emulated(struct work_struct *work __always_unused);
+ void unaligned_emulation_finish(void);
+@@ -74,7 +74,7 @@ static inline bool unaligned_ctl_available(void)
+ }
  #endif
  
+-bool check_vector_unaligned_access_emulated_all_cpus(void);
++bool __init check_vector_unaligned_access_emulated_all_cpus(void);
+ #if defined(CONFIG_RISCV_VECTOR_MISALIGNED)
+ void check_vector_unaligned_access_emulated(struct work_struct *work __always_unused);
+ DECLARE_PER_CPU(long, vector_misaligned_access);
+diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
+index 7cc108aed74e8..aacbd9d7196e7 100644
+--- a/arch/riscv/kernel/traps_misaligned.c
++++ b/arch/riscv/kernel/traps_misaligned.c
+@@ -605,7 +605,7 @@ void check_vector_unaligned_access_emulated(struct work_struct *work __always_un
+ 	kernel_vector_end();
+ }
+ 
+-bool check_vector_unaligned_access_emulated_all_cpus(void)
++bool __init check_vector_unaligned_access_emulated_all_cpus(void)
+ {
+ 	int cpu;
+ 
+@@ -625,7 +625,7 @@ bool check_vector_unaligned_access_emulated_all_cpus(void)
+ 	return true;
+ }
+ #else
+-bool check_vector_unaligned_access_emulated_all_cpus(void)
++bool __init check_vector_unaligned_access_emulated_all_cpus(void)
+ {
+ 	return false;
+ }
+@@ -659,7 +659,7 @@ void check_unaligned_access_emulated(struct work_struct *work __always_unused)
+ 	}
+ }
+ 
+-bool check_unaligned_access_emulated_all_cpus(void)
++bool __init check_unaligned_access_emulated_all_cpus(void)
+ {
+ 	int cpu;
+ 
+@@ -684,7 +684,7 @@ bool unaligned_ctl_available(void)
+ 	return unaligned_ctl;
+ }
+ #else
+-bool check_unaligned_access_emulated_all_cpus(void)
++bool __init check_unaligned_access_emulated_all_cpus(void)
+ {
+ 	return false;
+ }
+diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
+index 074ac4abd023e..85c868a8cee63 100644
+--- a/arch/riscv/kernel/unaligned_access_speed.c
++++ b/arch/riscv/kernel/unaligned_access_speed.c
+@@ -121,7 +121,7 @@ static int check_unaligned_access(void *param)
+ 	return 0;
+ }
+ 
+-static void check_unaligned_access_nonboot_cpu(void *param)
++static void __init check_unaligned_access_nonboot_cpu(void *param)
+ {
+ 	unsigned int cpu = smp_processor_id();
+ 	struct page **pages = param;
+@@ -175,7 +175,7 @@ static void set_unaligned_access_static_branches(void)
+ 	modify_unaligned_access_branches(&fast_and_online, num_online_cpus());
+ }
+ 
+-static int lock_and_set_unaligned_access_static_branch(void)
++static int __init lock_and_set_unaligned_access_static_branch(void)
+ {
+ 	cpus_read_lock();
+ 	set_unaligned_access_static_branches();
+@@ -218,7 +218,7 @@ static int riscv_offline_cpu(unsigned int cpu)
+ }
+ 
+ /* Measure unaligned access speed on all CPUs present at boot in parallel. */
+-static int check_unaligned_access_speed_all_cpus(void)
++static int __init check_unaligned_access_speed_all_cpus(void)
+ {
+ 	unsigned int cpu;
+ 	unsigned int cpu_count = num_possible_cpus();
+@@ -264,7 +264,7 @@ static int check_unaligned_access_speed_all_cpus(void)
+ 	return 0;
+ }
+ #else /* CONFIG_RISCV_PROBE_UNALIGNED_ACCESS */
+-static int check_unaligned_access_speed_all_cpus(void)
++static int __init check_unaligned_access_speed_all_cpus(void)
+ {
+ 	return 0;
+ }
+@@ -382,7 +382,7 @@ static int riscv_online_cpu_vec(unsigned int cpu)
+ }
+ 
+ /* Measure unaligned access speed on all CPUs present at boot in parallel. */
+-static int vec_check_unaligned_access_speed_all_cpus(void *unused __always_unused)
++static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __always_unused)
+ {
+ 	schedule_on_each_cpu(check_vector_unaligned_access);
+ 
+@@ -396,13 +396,13 @@ static int vec_check_unaligned_access_speed_all_cpus(void *unused __always_unuse
+ 	return 0;
+ }
+ #else /* CONFIG_RISCV_PROBE_VECTOR_UNALIGNED_ACCESS */
+-static int vec_check_unaligned_access_speed_all_cpus(void *unused __always_unused)
++static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __always_unused)
+ {
+ 	return 0;
+ }
  #endif
+ 
+-static int check_unaligned_access_all_cpus(void)
++static int __init check_unaligned_access_all_cpus(void)
+ {
+ 	bool all_cpus_emulated, all_cpus_vec_unsupported;
+ 
 -- 
 2.39.5
 
