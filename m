@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-131539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C85F6A80B7A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:17:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A06A807D3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E1FB4C849E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10494885C1B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:28:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98AF526F45A;
-	Tue,  8 Apr 2025 12:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B50E26A1B7;
+	Tue,  8 Apr 2025 12:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LUdoahua"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOGDfSBG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C6126B08C;
-	Tue,  8 Apr 2025 12:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9BF26A1B2;
+	Tue,  8 Apr 2025 12:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116669; cv=none; b=HupDWTxT/idW5rgwQbPsZrQt3mSZWqqJ26zgAUQP0uuzkay0TWYXk6PoKfuFur6uEOq2PVgR65OG8LfQ9umOUGQ6hXJDyOM/vnVL7kg8EcnU1CWv/tNrNW0qi5Jf0Ik4KybsRYVHXtzu26zLjJ18lTa78sqiEH7ibl2iwqEsvDc=
+	t=1744115174; cv=none; b=mFo0bMs5pj4iVUJyk3iH+dHEOdGBMFG91eWb1do3p/t3K0nRBBSDIALYe22MCfZQ8ckvErCf9gp+IEshXLN1I8X1DWpI3E7Q0RkEKREHX9kBumOoT3E1M1tEUAf0gAkNs/hy5h+2W8nluDSCNbQ7tRRs6buQW1gGWFiskvpBjYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116669; c=relaxed/simple;
-	bh=GhQP/FHjNVIrP1dJ9Iyqt4OCrJ2/TZeNSyikYK7V574=;
+	s=arc-20240116; t=1744115174; c=relaxed/simple;
+	bh=0m81tj4MJpTy2wBfEmnSmqSKeG7f8jULPgtRjLer/pE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MMmuLB5ouRoOAfxUOb9nm+LLy/y8Y+FxGmDa6vJOxWrz/AmMovbVWhNmGEoKT4MnSEZ0ISgYHX2ILn64VhbbY7sV3Cnh1Mx+DwgLKueqbF9m3a3j10MeIhruaQs3gOyoyjF1CKfBFjoIcZ9N3t4sSYyud1svnd/Co58sIlIZSlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LUdoahua; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A87EAC4CEE5;
-	Tue,  8 Apr 2025 12:51:08 +0000 (UTC)
+	 MIME-Version; b=aTL4xu2IuaZvbS5IV2DhOZT0TGIda5zzBlj+Mh6XqwEI2pzEMuhcqh/c9sSgJPr35FsYd30NwchH9PnfWa3DLSqpWvR9seGz+b94nn/HVkXCRQM4stlV5y/7Jb9Q1r+av0+2yDOuUaVMOe/4Ek/FfCuUYGC7OnC0woHbWoqCoiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOGDfSBG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49349C4CEED;
+	Tue,  8 Apr 2025 12:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116669;
-	bh=GhQP/FHjNVIrP1dJ9Iyqt4OCrJ2/TZeNSyikYK7V574=;
+	s=korg; t=1744115174;
+	bh=0m81tj4MJpTy2wBfEmnSmqSKeG7f8jULPgtRjLer/pE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LUdoahuajZLJmf5cqCBxj9AZHberS/KhzkwuFft/U8mV6uapbqTlJjCGewvE/FkZo
-	 Dpoc2r5eO6u7U5sD5pPA1GPkUjTb86c/87QkOjTql8jv+LPYNZH7rBY+F/b1KjfG7v
-	 tuDZO6uMgJPB40VMTYl7YocV3PibhJFXLa5aC7Zg=
+	b=zOGDfSBGJb5PN6QPSYg1vp2/s4dsccj6WaG+sCX72WVhbggAF7eDw3oD3nXowRzok
+	 vNDNHwMquEK0swiGGMv7Z6xrRImb0esYHqN9ylXlnN4o1XngvQ2XErqQfofFjxk3gj
+	 DSHMEZ8Y62ryHfI7rDeScsFH0I5WbWKjPr4hFzqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	John Harrison <John.C.Harrison@Intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 226/423] objtool, nvmet: Fix out-of-bounds stack access in nvmet_ctrl_state_show()
+Subject: [PATCH 6.13 340/499] drm/xe/guc_pc: Retry and wait longer for GuC PC start
 Date: Tue,  8 Apr 2025 12:49:12 +0200
-Message-ID: <20250408104850.989716999@linuxfoundation.org>
+Message-ID: <20250408104859.702438268@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,50 +64,185 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-[ Upstream commit 107a23185d990e3df6638d9a84c835f963fe30a6 ]
+[ Upstream commit c605acb53f449f6289f042790307d7dc9e62d03d ]
 
-The csts_state_names[] array only has six sparse entries, but the
-iteration code in nvmet_ctrl_state_show() iterates seven, resulting in a
-potential out-of-bounds stack read.  Fix that.
+In a rare situation of thermal limit during resume, GuC can
+be slow and run into delays like this:
 
-Fixes the following warning with an UBSAN kernel:
+xe 0000:00:02.0: [drm] GT1: excessive init time: 667ms! \
+   		 [status = 0x8002F034, timeouts = 0]
+xe 0000:00:02.0: [drm] GT1: excessive init time: \
+   		 [freq = 100MHz (req = 800MHz), before = 100MHz, \
+   		 perf_limit_reasons = 0x1C001000]
+xe 0000:00:02.0: [drm] *ERROR* GT1: GuC PC Start failed
+------------[ cut here ]------------
+xe 0000:00:02.0: [drm] GT1: Failed to start GuC PC: -EIO
 
-  vmlinux.o: warning: objtool: .text.nvmet_ctrl_state_show: unexpected end of section
+When this happens, it will block entirely the GPU to be used.
+So, let's try and with a huge timeout in the hope it comes back.
 
-Fixes: 649fd41420a8 ("nvmet: add debugfs support")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Sagi Grimberg <sagi@grimberg.me>
-Cc: Chaitanya Kulkarni <kch@nvidia.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/f1f60858ee7a941863dc7f5506c540cb9f97b5f6.1742852847.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/oe-kbuild-all/202503171547.LlCTJLQL-lkp@intel.com/
+Also, let's collect some information on how long it is usually
+taking on situations like this, so perhaps the time can be tuned
+later.
+
+Cc: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Cc: John Harrison <John.C.Harrison@Intel.com>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250307160307.1093391-1-rodrigo.vivi@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit b4b05e53b550a886b4754b87fd0dd2b304579e85)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_guc_pc.c | 53 +++++++++++++++++++++++++---------
+ 1 file changed, 40 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/nvme/target/debugfs.c b/drivers/nvme/target/debugfs.c
-index 220c7391fc19a..c6571fbd35e30 100644
---- a/drivers/nvme/target/debugfs.c
-+++ b/drivers/nvme/target/debugfs.c
-@@ -78,7 +78,7 @@ static int nvmet_ctrl_state_show(struct seq_file *m, void *p)
- 	bool sep = false;
- 	int i;
+diff --git a/drivers/gpu/drm/xe/xe_guc_pc.c b/drivers/gpu/drm/xe/xe_guc_pc.c
+index e8b9faeaef645..467d8a2879ecb 100644
+--- a/drivers/gpu/drm/xe/xe_guc_pc.c
++++ b/drivers/gpu/drm/xe/xe_guc_pc.c
+@@ -6,6 +6,7 @@
+ #include "xe_guc_pc.h"
  
--	for (i = 0; i < 7; i++) {
-+	for (i = 0; i < ARRAY_SIZE(csts_state_names); i++) {
- 		int state = BIT(i);
+ #include <linux/delay.h>
++#include <linux/ktime.h>
  
- 		if (!(ctrl->csts & state))
+ #include <drm/drm_managed.h>
+ #include <generated/xe_wa_oob.h>
+@@ -19,6 +20,7 @@
+ #include "xe_gt.h"
+ #include "xe_gt_idle.h"
+ #include "xe_gt_printk.h"
++#include "xe_gt_throttle.h"
+ #include "xe_gt_types.h"
+ #include "xe_guc.h"
+ #include "xe_guc_ct.h"
+@@ -48,6 +50,9 @@
+ #define LNL_MERT_FREQ_CAP	800
+ #define BMG_MERT_FREQ_CAP	2133
+ 
++#define SLPC_RESET_TIMEOUT_MS 5 /* roughly 5ms, but no need for precision */
++#define SLPC_RESET_EXTENDED_TIMEOUT_MS 1000 /* To be used only at pc_start */
++
+ /**
+  * DOC: GuC Power Conservation (PC)
+  *
+@@ -112,9 +117,10 @@ static struct iosys_map *pc_to_maps(struct xe_guc_pc *pc)
+ 	 FIELD_PREP(HOST2GUC_PC_SLPC_REQUEST_MSG_1_EVENT_ARGC, count))
+ 
+ static int wait_for_pc_state(struct xe_guc_pc *pc,
+-			     enum slpc_global_state state)
++			     enum slpc_global_state state,
++			     int timeout_ms)
+ {
+-	int timeout_us = 5000; /* rought 5ms, but no need for precision */
++	int timeout_us = 1000 * timeout_ms;
+ 	int slept, wait = 10;
+ 
+ 	xe_device_assert_mem_access(pc_to_xe(pc));
+@@ -163,7 +169,8 @@ static int pc_action_query_task_state(struct xe_guc_pc *pc)
+ 	};
+ 	int ret;
+ 
+-	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING))
++	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING,
++			      SLPC_RESET_TIMEOUT_MS))
+ 		return -EAGAIN;
+ 
+ 	/* Blocking here to ensure the results are ready before reading them */
+@@ -186,7 +193,8 @@ static int pc_action_set_param(struct xe_guc_pc *pc, u8 id, u32 value)
+ 	};
+ 	int ret;
+ 
+-	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING))
++	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING,
++			      SLPC_RESET_TIMEOUT_MS))
+ 		return -EAGAIN;
+ 
+ 	ret = xe_guc_ct_send(ct, action, ARRAY_SIZE(action), 0, 0);
+@@ -207,7 +215,8 @@ static int pc_action_unset_param(struct xe_guc_pc *pc, u8 id)
+ 	struct xe_guc_ct *ct = &pc_to_guc(pc)->ct;
+ 	int ret;
+ 
+-	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING))
++	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING,
++			      SLPC_RESET_TIMEOUT_MS))
+ 		return -EAGAIN;
+ 
+ 	ret = xe_guc_ct_send(ct, action, ARRAY_SIZE(action), 0, 0);
+@@ -404,6 +413,15 @@ u32 xe_guc_pc_get_act_freq(struct xe_guc_pc *pc)
+ 	return freq;
+ }
+ 
++static u32 get_cur_freq(struct xe_gt *gt)
++{
++	u32 freq;
++
++	freq = xe_mmio_read32(&gt->mmio, RPNSWREQ);
++	freq = REG_FIELD_GET(REQ_RATIO_MASK, freq);
++	return decode_freq(freq);
++}
++
+ /**
+  * xe_guc_pc_get_cur_freq - Get Current requested frequency
+  * @pc: The GuC PC
+@@ -427,10 +445,7 @@ int xe_guc_pc_get_cur_freq(struct xe_guc_pc *pc, u32 *freq)
+ 		return -ETIMEDOUT;
+ 	}
+ 
+-	*freq = xe_mmio_read32(&gt->mmio, RPNSWREQ);
+-
+-	*freq = REG_FIELD_GET(REQ_RATIO_MASK, *freq);
+-	*freq = decode_freq(*freq);
++	*freq = get_cur_freq(gt);
+ 
+ 	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+ 	return 0;
+@@ -965,6 +980,7 @@ int xe_guc_pc_start(struct xe_guc_pc *pc)
+ 	struct xe_gt *gt = pc_to_gt(pc);
+ 	u32 size = PAGE_ALIGN(sizeof(struct slpc_shared_data));
+ 	unsigned int fw_ref;
++	ktime_t earlier;
+ 	int ret;
+ 
+ 	xe_gt_assert(gt, xe_device_uc_enabled(xe));
+@@ -989,14 +1005,25 @@ int xe_guc_pc_start(struct xe_guc_pc *pc)
+ 	memset(pc->bo->vmap.vaddr, 0, size);
+ 	slpc_shared_data_write(pc, header.size, size);
+ 
++	earlier = ktime_get();
+ 	ret = pc_action_reset(pc);
+ 	if (ret)
+ 		goto out;
+ 
+-	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING)) {
+-		xe_gt_err(gt, "GuC PC Start failed\n");
+-		ret = -EIO;
+-		goto out;
++	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING,
++			      SLPC_RESET_TIMEOUT_MS)) {
++		xe_gt_warn(gt, "GuC PC start taking longer than normal [freq = %dMHz (req = %dMHz), perf_limit_reasons = 0x%08X]\n",
++			   xe_guc_pc_get_act_freq(pc), get_cur_freq(gt),
++			   xe_gt_throttle_get_limit_reasons(gt));
++
++		if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING,
++				      SLPC_RESET_EXTENDED_TIMEOUT_MS)) {
++			xe_gt_err(gt, "GuC PC Start failed: Dynamic GT frequency control and GT sleep states are now disabled.\n");
++			goto out;
++		}
++
++		xe_gt_warn(gt, "GuC PC excessive start time: %lldms",
++			   ktime_ms_delta(ktime_get(), earlier));
+ 	}
+ 
+ 	ret = pc_init_freqs(pc);
 -- 
 2.39.5
 
