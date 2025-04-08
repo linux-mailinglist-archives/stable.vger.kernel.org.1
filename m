@@ -1,53 +1,58 @@
-Return-Path: <stable+bounces-131791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98378A81032
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 17:37:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31C24A81041
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 17:39:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59D718C1851
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:29:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D530B4E5313
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEC411A8407;
-	Tue,  8 Apr 2025 15:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5360C1F4199;
+	Tue,  8 Apr 2025 15:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SWGfbROS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSEiTJaR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FBBC1ADC7D
-	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 15:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE17D3FB1B;
+	Tue,  8 Apr 2025 15:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744126141; cv=none; b=SanIF1gSIMewGi/oCu8X5uQWXqTKxzzWTbWzkkuSCpiK9P1LqiOSa98RQBRhmjK4OnZlb904XWDEwFCdk935scwQbVFFFVa1oLqHUsSP9EYIpYFgO3egML7bpEKCbGC6OlJ8T268n0kw9GxFhkXKaNo5RqKe2+1AiycB2s7LNd0=
+	t=1744126343; cv=none; b=GC6+8C2ucS65K9Zpu0QfppPeP10MkdO4QBCr/FnbSW9EXeGkru5sRc+LILpu+Isi44RP2h/YY94O8/b1jEoXaWWbFyRI3Ab/azdaPJubkaYVvygHUBfNLLG7RnvZ5fDBiv8dKPTjwAnD1t2zjBeKYmDtbF+BProvzAoMh+/VjuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744126141; c=relaxed/simple;
-	bh=DIUQbobSpYypAGmF0gksQ5mhkcSDjD9ojMpOY42cBsU=;
+	s=arc-20240116; t=1744126343; c=relaxed/simple;
+	bh=u741l1VQEn0lP1ypM4etmFVddvE3nno24ukni4RpKpE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hIyaQU+i5aFUyvjaVaRUf3kHFP9FtOGhydwCdN2WaUMSjGiGUWzMeXcap83OmQODm71qF9bdi870HhS+6GwjeVEOV+C1eSnp0wz1IvHhyO5DnUxRFQ2LceDEmUVoRanYnAjleP0BpEHqEwM9vPkJuOEtKu182znFH0wUNcxrakE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SWGfbROS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66EE9C4CEE5;
-	Tue,  8 Apr 2025 15:29:00 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=JjISLvHBB8x3OyTTdFaL/o2QKW5YZAnaKIeke5VYF91xqPOBhaCN/FpjnbMXXJjpHocbBuCa701V7Lt5SGLqeArbFrUAA8YMwyCt5lk8YtyEWLaQoU2tRjsHuDoNYoiyUpIY1UJ+kFP1u49V+TFEH8GAptyatoZsJ8cpyMRAm0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iSEiTJaR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7136C4CEE5;
+	Tue,  8 Apr 2025 15:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744126141;
-	bh=DIUQbobSpYypAGmF0gksQ5mhkcSDjD9ojMpOY42cBsU=;
+	s=korg; t=1744126342;
+	bh=u741l1VQEn0lP1ypM4etmFVddvE3nno24ukni4RpKpE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SWGfbROSsh/1wUq6JsrNFfywmzvZFpEdRRyQmSjqxKjztJ67x66UO9Q2pkir5p6YV
-	 vCF2sJYMxC63yu11i6zRAQgJll6pk009kx3I6KqWn1ryUjjSdLv5223mIN3eF8urCE
-	 nN40NJ4KBAKW54RG5qBlAVCl1I1/zwfj9IE/9XpM=
-Date: Tue, 8 Apr 2025 17:27:26 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: linus.walleij@linaro.org, rmk+kernel@armlinux.org.uk,
-	stable@vger.kernel.org, broonie@kernel.org
-Subject: Re: FAILED: patch "[PATCH] ARM: 9443/1: Require linker to support
- KEEP within OVERLAY" failed to apply to 6.13-stable tree
-Message-ID: <2025040818-false-refill-e37b@gregkh>
-References: <2025040805-boaster-hazing-36c3@gregkh>
- <20250408152300.GA3301081@ax162>
+	b=iSEiTJaRlriF1D01gegE+wTgUM9zgHAgqr44r3f9wT/oZizQaIbm0yUQQTnNwBBw+
+	 6BVlWv5R62TNZ9Dnr+J+FirqY5QhiS0P6V6FJ3a+nHB93yX2ZbJYrDXoW0xhrZg3fX
+	 j3l9Su9ccA4KsCG7QQuSPZqAydu2amtkAGgd+RQY=
+Date: Tue, 8 Apr 2025 17:30:46 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com
+Subject: Re: [PATCH 6.13 000/499] 6.13.11-rc1 review
+Message-ID: <2025040840-severity-pointy-e3a7@gregkh>
+References: <20250408104851.256868745@linuxfoundation.org>
+ <71339b92-5292-48b7-8a45-addbac43ee32@sirena.org.uk>
+ <2025040810-unpledged-bunkbed-1e2f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,24 +61,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250408152300.GA3301081@ax162>
+In-Reply-To: <2025040810-unpledged-bunkbed-1e2f@gregkh>
 
-On Tue, Apr 08, 2025 at 08:23:00AM -0700, Nathan Chancellor wrote:
-> On Tue, Apr 08, 2025 at 11:15:05AM +0200, gregkh@linuxfoundation.org wrote:
-> ...
-> > ------------------ original commit in Linus's tree ------------------
+On Tue, Apr 08, 2025 at 05:18:31PM +0200, Greg Kroah-Hartman wrote:
+> On Tue, Apr 08, 2025 at 04:01:05PM +0100, Mark Brown wrote:
+> > On Tue, Apr 08, 2025 at 12:43:32PM +0200, Greg Kroah-Hartman wrote:
+> > > This is the start of the stable review cycle for the 6.13.11 release.
+> > > There are 499 patches in this series, all will be posted as a response
+> > > to this one.  If anyone has any issues with these being applied, please
+> > > let me know.
 > > 
-> > From e7607f7d6d81af71dcc5171278aadccc94d277cd Mon Sep 17 00:00:00 2001
-> > From: Nathan Chancellor <nathan@kernel.org>
-> > Date: Thu, 20 Mar 2025 22:33:49 +0100
-> > Subject: [PATCH] ARM: 9443/1: Require linker to support KEEP within OVERLAY
-> >  for DCE
+> > This fails to build an arm multi_v7_defconfig for me:
+> > 
+> > arm-linux-gnueabihf-ld:./arch/arm/kernel/vmlinux.lds:31: syntax error
+> > 
+> > and multi_v5_defconfig gives:
+> > 
+> > arm-linux-gnueabi-ld:./arch/arm/kernel/vmlinux.lds:30: syntax error
+> > 
+> > (presumably the same error)
 > 
-> Attached is a backport for 6.12 and 6.13. This change is necessary for
-> "ARM: 9444/1: add KEEP() keyword to ARM_VECTORS", as pointed out at
-> https://lore.kernel.org/71339b92-5292-48b7-8a45-addbac43ee32@sirena.org.uk/.
+> What is the error?  "syntax error" feels odd.  Any more hints?  Any
+> chance to bisect?
 
-Thanks, now queued up.
-
-greg k-h
+Nevermind, got the fix now.
 
