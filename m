@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-130277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 401AFA8039B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:00:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1478FA8029A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE20D1884992
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3ECF16AF84
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE06E269B0E;
-	Tue,  8 Apr 2025 11:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57EAF263C6D;
+	Tue,  8 Apr 2025 11:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yeMiso2t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5iSfF4N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B69622257E;
-	Tue,  8 Apr 2025 11:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D0425FA13;
+	Tue,  8 Apr 2025 11:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113289; cv=none; b=F2bmvtd3Hxv/m5nTaldQYge1DBat2Vqs/csoeEHJ2WiYEBy58DmpbLr+L5UxokiSOFYet8XAlD7wFjn4coQ8b2iW97sNU8C99vtVEDrrbvuGjDt9RBHgJqszvCk7ud4wnd5T1BMjVl56X2gBTH1notI3eapT5hpUb9C8nOwczCM=
+	t=1744112605; cv=none; b=tNSXuN6MjTeieYnfXGP1VECup4+yV74sj81UBWyqn/Fh0hQKZ6zK1Bxpag69RJYnkWGbs6/6hzBoRzW8GFHjNzz5L/98W1O7GYGqvBx6wFcG7V87/bLCaNqOHYgUHX2WgS5JYM/u9tLAhXZG7opRZZUUr11JEbAMkBdZIEGvkdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113289; c=relaxed/simple;
-	bh=bmABz+QCx6vIzpL/nvanaIFQjd/WxTBrbpZxbJKANk8=;
+	s=arc-20240116; t=1744112605; c=relaxed/simple;
+	bh=EUn3Q+LcK6Q/mDg2n2gqoog/YCRav3sTYV4/THZjMrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=djGKSVp7zrNmA9o7GM45vZ2bBR0Lq3zrPt+7ORCKDe7XT+y5qWayFDgiVZOBasWaaBhwARU3Er4CzOlCz/3NMBPR86j4uQ90NIyX+0TaPm2WE+224WHkwCWB6QoHShE2UUzHNnFGxjgNrM0fwXeC80mX9Tq1BHBh+4Q8iXtXNeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yeMiso2t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CDABC4CEE5;
-	Tue,  8 Apr 2025 11:54:49 +0000 (UTC)
+	 MIME-Version; b=hAY28umsTL15zJYmDhWig6372tp+0aK/YAAaeuTbM9xlCXZxrnc+2GCbbyeOsKOHZSd+GDrEPPLLYITKb78QSlOIdrDzvZby12IPx4XKtZxYwQwmJvqHTMzdegsu2fRgz/BemBZh0r0mZxTfP9DM3G7AyqLxa5Rme35O9tdvnhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5iSfF4N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99276C4CEE5;
+	Tue,  8 Apr 2025 11:43:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113289;
-	bh=bmABz+QCx6vIzpL/nvanaIFQjd/WxTBrbpZxbJKANk8=;
+	s=korg; t=1744112605;
+	bh=EUn3Q+LcK6Q/mDg2n2gqoog/YCRav3sTYV4/THZjMrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yeMiso2tdCfVufjjmm5vWXZMXRRRUxproXbR10oKl0KU0PJJ0gqciym3fP9MNiQOX
-	 Z0/FbhpbxGLy+co5LQiEDSbj98DECnLfHFhuc6aHF2TOIRWxPvAABbzekxsVqR6gOU
-	 vm/HbMEpNhPAQIcDDnVgVTYztxkalVLrU8bq6ofw=
+	b=w5iSfF4NE5CBGgsst9VOJX+dUPa8t1Rt0pqbZOk8n5EZE3mWQVRQ+UqBm1T+QU4Pv
+	 Io/AbVMBdH0cuUXZZJdwBYavFpoO3R56bluT6D5lM6SyN4WkH9iku2WheFeDtjsQGX
+	 X78S/luXGe01OqPVBgz/A87v+QyaorZtrAHBkD0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Atish Patra <atishp@rivosinc.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Jie Zhan <zhanjie9@hisilicon.com>,
+	Chen Yu <yu.c.chen@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 103/268] perf stat: Fix find_stat for mixed legacy/non-legacy events
+Subject: [PATCH 5.15 131/279] cpufreq: governor: Fix negative idle_time handling in dbs_update()
 Date: Tue,  8 Apr 2025 12:48:34 +0200
-Message-ID: <20250408104831.272567172@linuxfoundation.org>
+Message-ID: <20250408104829.877316590@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,109 +63,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Jie Zhan <zhanjie9@hisilicon.com>
 
-[ Upstream commit 8ce0d2da14d3fb62844dd0e95982c194326b1a5f ]
+[ Upstream commit 3698dd6b139dc37b35a9ad83d9330c1f99666c02 ]
 
-Legacy events typically don't have a PMU when added leading to
-mismatched legacy/non-legacy cases in find_stat. Use evsel__find_pmu
-to make sure the evsel PMU is looked up. Update the evsel__find_pmu
-code to look for the PMU using the extended config type or, for legacy
-hardware/hw_cache events on non-hybrid systems, just use the core PMU.
+We observed an issue that the CPU frequency can't raise up with a 100% CPU
+load when NOHZ is off and the 'conservative' governor is selected.
 
-Before:
-```
-$ perf stat -e cycles,cpu/instructions/ -a sleep 1
- Performance counter stats for 'system wide':
+'idle_time' can be negative if it's obtained from get_cpu_idle_time_jiffy()
+when NOHZ is off.  This was found and explained in commit 9485e4ca0b48
+("cpufreq: governor: Fix handling of special cases in dbs_update()").
 
-       215,309,764      cycles
-        44,326,491      cpu/instructions/
+However, commit 7592019634f8 ("cpufreq: governors: Fix long idle detection
+logic in load calculation") introduced a comparison between 'idle_time' and
+'samling_rate' to detect a long idle interval.  While 'idle_time' is
+converted to int before comparison, it's actually promoted to unsigned
+again when compared with an unsigned 'sampling_rate'.  Hence, this leads to
+wrong idle interval detection when it's in fact 100% busy and sets
+policy_dbs->idle_periods to a very large value.  'conservative' adjusts the
+frequency to minimum because of the large 'idle_periods', such that the
+frequency can't raise up.  'Ondemand' doesn't use policy_dbs->idle_periods
+so it fortunately avoids the issue.
 
-       1.002555314 seconds time elapsed
-```
-After:
-```
-$ perf stat -e cycles,cpu/instructions/ -a sleep 1
+Correct negative 'idle_time' to 0 before any use of it in dbs_update().
 
- Performance counter stats for 'system wide':
-
-       990,676,332      cycles
-     1,235,762,487      cpu/instructions/                #    1.25  insn per cycle
-
-       1.002667198 seconds time elapsed
-```
-
-Fixes: 3612ca8e2935 ("perf stat: Fix the hard-coded metrics calculation on the hybrid")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Tested-by: James Clark <james.clark@linaro.org>
-Tested-by: Leo Yan <leo.yan@arm.com>
-Tested-by: Atish Patra <atishp@rivosinc.com>
-Link: https://lore.kernel.org/r/20250109222109.567031-3-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 7592019634f8 ("cpufreq: governors: Fix long idle detection logic in load calculation")
+Signed-off-by: Jie Zhan <zhanjie9@hisilicon.com>
+Reviewed-by: Chen Yu <yu.c.chen@intel.com>
+Link: https://patch.msgid.link/20250213035510.2402076-1-zhanjie9@hisilicon.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/pmus.c        | 20 +++++++++++++++++---
- tools/perf/util/stat-shadow.c |  3 ++-
- 2 files changed, 19 insertions(+), 4 deletions(-)
+ drivers/cpufreq/cpufreq_governor.c | 45 +++++++++++++++---------------
+ 1 file changed, 23 insertions(+), 22 deletions(-)
 
-diff --git a/tools/perf/util/pmus.c b/tools/perf/util/pmus.c
-index f0577aa7eca88..dda5ba9c73fd9 100644
---- a/tools/perf/util/pmus.c
-+++ b/tools/perf/util/pmus.c
-@@ -587,11 +587,25 @@ char *perf_pmus__default_pmu_name(void)
- struct perf_pmu *evsel__find_pmu(const struct evsel *evsel)
- {
- 	struct perf_pmu *pmu = evsel->pmu;
-+	bool legacy_core_type;
+diff --git a/drivers/cpufreq/cpufreq_governor.c b/drivers/cpufreq/cpufreq_governor.c
+index 55c80319d2684..5981e3ef9ce0e 100644
+--- a/drivers/cpufreq/cpufreq_governor.c
++++ b/drivers/cpufreq/cpufreq_governor.c
+@@ -145,7 +145,23 @@ unsigned int dbs_update(struct cpufreq_policy *policy)
+ 		time_elapsed = update_time - j_cdbs->prev_update_time;
+ 		j_cdbs->prev_update_time = update_time;
  
--	if (!pmu) {
--		pmu = perf_pmus__find_by_type(evsel->core.attr.type);
--		((struct evsel *)evsel)->pmu = pmu;
-+	if (pmu)
-+		return pmu;
+-		idle_time = cur_idle_time - j_cdbs->prev_cpu_idle;
++		/*
++		 * cur_idle_time could be smaller than j_cdbs->prev_cpu_idle if
++		 * it's obtained from get_cpu_idle_time_jiffy() when NOHZ is
++		 * off, where idle_time is calculated by the difference between
++		 * time elapsed in jiffies and "busy time" obtained from CPU
++		 * statistics.  If a CPU is 100% busy, the time elapsed and busy
++		 * time should grow with the same amount in two consecutive
++		 * samples, but in practice there could be a tiny difference,
++		 * making the accumulated idle time decrease sometimes.  Hence,
++		 * in this case, idle_time should be regarded as 0 in order to
++		 * make the further process correct.
++		 */
++		if (cur_idle_time > j_cdbs->prev_cpu_idle)
++			idle_time = cur_idle_time - j_cdbs->prev_cpu_idle;
++		else
++			idle_time = 0;
 +
-+	pmu = perf_pmus__find_by_type(evsel->core.attr.type);
-+	legacy_core_type =
-+		evsel->core.attr.type == PERF_TYPE_HARDWARE ||
-+		evsel->core.attr.type == PERF_TYPE_HW_CACHE;
-+	if (!pmu && legacy_core_type) {
-+		if (perf_pmus__supports_extended_type()) {
-+			u32 type = evsel->core.attr.config >> PERF_PMU_TYPE_SHIFT;
+ 		j_cdbs->prev_cpu_idle = cur_idle_time;
+ 
+ 		if (ignore_nice) {
+@@ -162,7 +178,7 @@ unsigned int dbs_update(struct cpufreq_policy *policy)
+ 			 * calls, so the previous load value can be used then.
+ 			 */
+ 			load = j_cdbs->prev_load;
+-		} else if (unlikely((int)idle_time > 2 * sampling_rate &&
++		} else if (unlikely(idle_time > 2 * sampling_rate &&
+ 				    j_cdbs->prev_load)) {
+ 			/*
+ 			 * If the CPU had gone completely idle and a task has
+@@ -189,30 +205,15 @@ unsigned int dbs_update(struct cpufreq_policy *policy)
+ 			load = j_cdbs->prev_load;
+ 			j_cdbs->prev_load = 0;
+ 		} else {
+-			if (time_elapsed >= idle_time) {
++			if (time_elapsed > idle_time)
+ 				load = 100 * (time_elapsed - idle_time) / time_elapsed;
+-			} else {
+-				/*
+-				 * That can happen if idle_time is returned by
+-				 * get_cpu_idle_time_jiffy().  In that case
+-				 * idle_time is roughly equal to the difference
+-				 * between time_elapsed and "busy time" obtained
+-				 * from CPU statistics.  Then, the "busy time"
+-				 * can end up being greater than time_elapsed
+-				 * (for example, if jiffies_64 and the CPU
+-				 * statistics are updated by different CPUs),
+-				 * so idle_time may in fact be negative.  That
+-				 * means, though, that the CPU was busy all
+-				 * the time (on the rough average) during the
+-				 * last sampling interval and 100 can be
+-				 * returned as the load.
+-				 */
+-				load = (int)idle_time < 0 ? 100 : 0;
+-			}
++			else
++				load = 0;
 +
-+			pmu = perf_pmus__find_by_type(type);
-+		} else {
-+			pmu = perf_pmus__find_core_pmu();
-+		}
- 	}
-+	((struct evsel *)evsel)->pmu = pmu;
- 	return pmu;
- }
+ 			j_cdbs->prev_load = load;
+ 		}
  
-diff --git a/tools/perf/util/stat-shadow.c b/tools/perf/util/stat-shadow.c
-index 2affa4d45aa21..56b186d307453 100644
---- a/tools/perf/util/stat-shadow.c
-+++ b/tools/perf/util/stat-shadow.c
-@@ -154,6 +154,7 @@ static double find_stat(const struct evsel *evsel, int aggr_idx, enum stat_type
- {
- 	const struct evsel *cur;
- 	int evsel_ctx = evsel_context(evsel);
-+	struct perf_pmu *evsel_pmu = evsel__find_pmu(evsel);
+-		if (unlikely((int)idle_time > 2 * sampling_rate)) {
++		if (unlikely(idle_time > 2 * sampling_rate)) {
+ 			unsigned int periods = idle_time / sampling_rate;
  
- 	evlist__for_each_entry(evsel->evlist, cur) {
- 		struct perf_stat_aggr *aggr;
-@@ -180,7 +181,7 @@ static double find_stat(const struct evsel *evsel, int aggr_idx, enum stat_type
- 		 * Except the SW CLOCK events,
- 		 * ignore if not the PMU we're looking for.
- 		 */
--		if ((type != STAT_NSECS) && (evsel->pmu != cur->pmu))
-+		if ((type != STAT_NSECS) && (evsel_pmu != evsel__find_pmu(cur)))
- 			continue;
- 
- 		aggr = &cur->stats->aggr[aggr_idx];
+ 			if (periods < idle_periods)
 -- 
 2.39.5
 
