@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-129844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 722FDA801C7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB5AA7FE52
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CBDD880ED8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 946663BD378
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5E7268FEF;
-	Tue,  8 Apr 2025 11:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C04622690D5;
+	Tue,  8 Apr 2025 11:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnBgF5My"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ovsSBkPH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4C6268FDE;
-	Tue,  8 Apr 2025 11:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EEFD268C72;
+	Tue,  8 Apr 2025 11:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112129; cv=none; b=gVeI3DESJo+DraqctldeELaJJ1LmNAxDTTiV1x4Ai/zpGEYTQvTQBAYYok6F0LrI9cMK+p2WObgVDXDd1dOQpgR3Qlce2Inx2g4KKsQcfK5B8gumIsDhGBoFRouvibUQkqFGL+5zDHn7ZnGTDgHZoaOmkcKfPgnGr+/cXKij3Cw=
+	t=1744110212; cv=none; b=QgcPW9gdQaDVdsaTXHbBGYQxjBCUz9KbnFkd/dpGUQZnAzirj3pFHspv7xs7hGAXcRUSafdLR2sapSZsmNyLva7NAfgea5rxh37auNcjOxdv5nl6fddTPoj7ETcvMZi5aDW+0DKadq4tsgOc/sYm9K/VYaF0J6A/UOx4QQG/kGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112129; c=relaxed/simple;
-	bh=oWjYnZCZlf1fCIaiN4sz+LZA6/lM1A1Ct3vEL6ZLyIA=;
+	s=arc-20240116; t=1744110212; c=relaxed/simple;
+	bh=eEfLdzG+5LDA3GvoCmQcnL8GEBuFJ2lYa+UrKFwOBrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WZ1cexTxNWWbukUa4z7wCLRHx33qdrIxAwAfrMft5Ncso1fmu1WDfWU5f0gDH8EmhpjT4hpUmJYWrchFuKoaTEk7xOM+FEBCyNKTgEmPW2AAXmPo2I5K4H2GVb7/O86wfWDeZn+saSxZJYsAN16os1257o3HeCytFyMbXsIkq8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnBgF5My; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14387C4CEE5;
-	Tue,  8 Apr 2025 11:35:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=blkrABEvvl6YQSMF6zrtWf56FhtEHh7vZBUj964jeXuwR7GPimd4k4M5WDwvKK8ZV3SLPMiqgeQCpMCkYfjuNPEIcGAeBJuNlnQ3MpXCAcyLGjHyPYXifocK4PG58CZAQKBAhfH7u3Fzab4TYUCraB7Y3iew5YqBCor94S8qNAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ovsSBkPH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DEDCC4CEE5;
+	Tue,  8 Apr 2025 11:03:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112128;
-	bh=oWjYnZCZlf1fCIaiN4sz+LZA6/lM1A1Ct3vEL6ZLyIA=;
+	s=korg; t=1744110212;
+	bh=eEfLdzG+5LDA3GvoCmQcnL8GEBuFJ2lYa+UrKFwOBrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wnBgF5MyxJEDNy75wK5CXqm0mp5n3p69ClQiEAWY0CLFCTCsft8Dr9Mw0mkRIQFdK
-	 gnPQ3/jxGnBIkHCrdv4EkiFRwDjnIUKokl31Y69gF76l+2LAfn2bQ9pS9p6KuU3qqx
-	 I24yfzkYfraSZI/pYjhTzaGzzl3S5pIQO0BTLh2s=
+	b=ovsSBkPHutdx4pyyHp8JVyEiT0YXjPGbZNWEjJcKHiEkj9ZXcnvmcouioY8G2HAox
+	 G2E5ZQpBogLmcEqKda3Z/Azg/FvI1/vCkgm9EUvbDaOU3WA1g4IlwyKOWg77nSPuIy
+	 ZlMEdRwzTfscUqrlxERn/YLufQwDHiX38MaDzcOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Ira Weiny <ira.weiny@intel.com>
-Subject: [PATCH 6.14 687/731] acpi: nfit: fix narrowing conversion in acpi_nfit_ctl
-Date: Tue,  8 Apr 2025 12:49:44 +0200
-Message-ID: <20250408104930.247285594@linuxfoundation.org>
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sherry Sun <sherry.sun@nxp.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 207/227] tty: serial: fsl_lpuart: use UARTMODIR register bits for lpuart32 platform
+Date: Tue,  8 Apr 2025 12:49:45 +0200
+Message-ID: <20250408104826.523472417@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +60,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Sherry Sun <sherry.sun@nxp.com>
 
-commit 2ff0e408db36c21ed3fa5e3c1e0e687c82cf132f upstream.
+[ Upstream commit d57d56e4dddfb5c92cd81abf8922055bf0fb85a4 ]
 
-Syzkaller has reported a warning in to_nfit_bus_uuid(): "only secondary
-bus families can be translated". This warning is emited if the argument
-is equal to NVDIMM_BUS_FAMILY_NFIT == 0. Function acpi_nfit_ctl() first
-verifies that a user-provided value call_pkg->nd_family of type u64 is
-not equal to 0. Then the value is converted to int, and only after that
-is compared to NVDIMM_BUS_FAMILY_MAX. This can lead to passing an invalid
-argument to acpi_nfit_ctl(), if call_pkg->nd_family is non-zero, while
-the lower 32 bits are zero.
+For lpuart32 platforms, UARTMODIR register is used instead of UARTMODEM.
+So here should configure the corresponding UARTMODIR register bits to
+avoid confusion.
 
-Furthermore, it is best to return EINVAL immediately upon seeing the
-invalid user input.  The WARNING is insufficient to prevent further
-undefined behavior based on other invalid user input.
-
-All checks of the input value should be applied to the original variable
-call_pkg->nd_family.
-
-[iweiny: update commit message]
-
-Fixes: 6450ddbd5d8e ("ACPI: NFIT: Define runtime firmware activation commands")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c80d8dc0d9fa81a3cd8c
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Link: https://patch.msgid.link/20250123163945.251-1-m.masimov@mt-integration.ru
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+Link: https://lore.kernel.org/r/20230414022111.20896-1-sherry.sun@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: f5cb528d6441 ("tty: serial: fsl_lpuart: disable transmitter before changing RS485 related registers")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/nfit/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/fsl_lpuart.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -485,7 +485,7 @@ int acpi_nfit_ctl(struct nvdimm_bus_desc
- 		cmd_mask = nd_desc->cmd_mask;
- 		if (cmd == ND_CMD_CALL && call_pkg->nd_family) {
- 			family = call_pkg->nd_family;
--			if (family > NVDIMM_BUS_FAMILY_MAX ||
-+			if (call_pkg->nd_family > NVDIMM_BUS_FAMILY_MAX ||
- 			    !test_bit(family, &nd_desc->bus_family_mask))
- 				return -EINVAL;
- 			family = array_index_nospec(family,
+diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
+index b16ad6db1ef8e..5135cdc0b6644 100644
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -1351,7 +1351,7 @@ static int lpuart32_config_rs485(struct uart_port *port,
+ 			struct lpuart_port, port);
+ 
+ 	unsigned long modem = lpuart32_read(&sport->port, UARTMODIR)
+-				& ~(UARTMODEM_TXRTSPOL | UARTMODEM_TXRTSE);
++				& ~(UARTMODIR_TXRTSPOL | UARTMODIR_TXRTSE);
+ 	lpuart32_write(&sport->port, modem, UARTMODIR);
+ 
+ 	/* clear unsupported configurations */
+@@ -1361,7 +1361,7 @@ static int lpuart32_config_rs485(struct uart_port *port,
+ 
+ 	if (rs485->flags & SER_RS485_ENABLED) {
+ 		/* Enable auto RS-485 RTS mode */
+-		modem |= UARTMODEM_TXRTSE;
++		modem |= UARTMODIR_TXRTSE;
+ 
+ 		/*
+ 		 * RTS needs to be logic HIGH either during transfer _or_ after
+@@ -1383,9 +1383,9 @@ static int lpuart32_config_rs485(struct uart_port *port,
+ 		 * Note: UART is assumed to be active high.
+ 		 */
+ 		if (rs485->flags & SER_RS485_RTS_ON_SEND)
+-			modem |= UARTMODEM_TXRTSPOL;
++			modem |= UARTMODIR_TXRTSPOL;
+ 		else if (rs485->flags & SER_RS485_RTS_AFTER_SEND)
+-			modem &= ~UARTMODEM_TXRTSPOL;
++			modem &= ~UARTMODIR_TXRTSPOL;
+ 	}
+ 
+ 	/* Store the new configuration */
+-- 
+2.39.5
+
 
 
 
