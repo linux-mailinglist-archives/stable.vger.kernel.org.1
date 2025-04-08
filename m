@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-129948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 285FAA801FA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF354A7FD8A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95DF619E1E27
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:40:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70EF11899510
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AFD3263C78;
-	Tue,  8 Apr 2025 11:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF6A269AF4;
+	Tue,  8 Apr 2025 10:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JB82TKxq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g2xlgDkG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D772192F2;
-	Tue,  8 Apr 2025 11:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63BF269AF3;
+	Tue,  8 Apr 2025 10:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112407; cv=none; b=W5b8e7S6t4Y2wEVWMBQz91hn9B8SMNpi0y6TN1jTrZGDw+7BjwHWRzj5NczCxTsDusWNuTJtGJEIGhwBb5MRKKMUKxn2ucxZnyxMeYsC4mrejiL2GfWqFrP+HrypmloZ8eXtD7FunE3FNkPrDSZB/ayas2HpCenVuHZptkXJWzQ=
+	t=1744109813; cv=none; b=Jg2ZytLYQvbwz++IDl3Ow3L/XMpiTNS/lhFyozaUkRbMNlqCHVfJSHMlsQOCz2iBYBqKnFdiiR3d4m3Yowqwy03rCLpnEEiMciVhZFU2Hd4EH/AMCzUE+MF2fhwC6BNrpcjkR8MsLA7bxy3EmfWtQ7LMNnLxl5vSNkD1tDhLRKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112407; c=relaxed/simple;
-	bh=4z7I+tDEnAQP+1hoWg475y7VeX/qYDOAtrL0vr7E0zc=;
+	s=arc-20240116; t=1744109813; c=relaxed/simple;
+	bh=SulBvQ4epalG51tE7QUhvSfdtr/57Adw814kw0BYwis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Av/epaK2mdWPH/7T08kwliIBUBjeNyNZuRd9iKhZ1pbkJd78mUyz80588yoi2WG9cGEUANoljfmsQdi8RYweJqmh13Xs4J8dsjajIBNb3TjsG9PRQSogrX1+q69V75BCpeHB7qWQMP/XVyKEkoysG170qS5pRkvPEjt3Umz18Hc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JB82TKxq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA9CAC4CEE5;
-	Tue,  8 Apr 2025 11:40:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rSg45NrUm78Uiika3HFp5X0DbCvZWA2qII1pE4PXLz32Msx5YvImwmOt6W67q1dzm0eexKhqLXozJRsxTFGphWAiO/N9UjwKD90ynZYUK9FQS0J9VnyF//Qx6CwuWnJqqSO5oNnvU6pPfV6rB34F6h0oWHxfP8aaAdBw9nx7vCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g2xlgDkG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0DFDC4CEE5;
+	Tue,  8 Apr 2025 10:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112407;
-	bh=4z7I+tDEnAQP+1hoWg475y7VeX/qYDOAtrL0vr7E0zc=;
+	s=korg; t=1744109813;
+	bh=SulBvQ4epalG51tE7QUhvSfdtr/57Adw814kw0BYwis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JB82TKxqjXp64vMRXpan5VwVclgwb9nWwyIPWhI0hVbDHDKm8ON5VeD4zfAlIjId7
-	 thd5hGTMFvGqhMSynSexcVg1kLAUWccq8qHcR+zJ4dfb2faDtPbjVob3D5d1nWQgTV
-	 qW5kqVVg4xHCrnpSEt0h7H/VD5dj6xjw+/cP7PAQ=
+	b=g2xlgDkGfpWvOHx+3Z4Pkv5iKZ+QPbg+gU4PCCy8N9ckfwoco6RyjGJ2oENYeUGKl
+	 DrqQoIlrSmiJ6sT0t1Zw8xzn1dZHbZsU0+IHt3LLkqM3s5R5PuT3ZrCEtNs37rAnkd
+	 fhwrYnv6+k/HNwLrB1TTqR9eNcAebHzd6a5H7IHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florent Revest <revest@chromium.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 5.15 057/279] x86/microcode/AMD: Fix out-of-bounds on systems with CPU-less NUMA nodes
+	Harry Wentland <harry.wentland@amd.com>,
+	Leo Li <sunpeng.li@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	David Airlie <airlied@linux.ie>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	Lee Jones <lee.jones@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 062/227] drm/amd/display/dc/core/dc_resource: Staticify local functions
 Date: Tue,  8 Apr 2025 12:47:20 +0200
-Message-ID: <20250408104827.895636727@linuxfoundation.org>
+Message-ID: <20250408104822.267936264@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,81 +67,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florent Revest <revest@chromium.org>
+From: Lee Jones <lee.jones@linaro.org>
 
-commit e3e89178a9f4a80092578af3ff3c8478f9187d59 upstream.
+[ Upstream commit c88855f3a50903721c4e1dda16cb42b5f5432b5c ]
 
-Currently, load_microcode_amd() iterates over all NUMA nodes, retrieves their
-CPU masks and unconditionally accesses per-CPU data for the first CPU of each
-mask.
+Fixes the following W=1 kernel build warning(s):
 
-According to Documentation/admin-guide/mm/numaperf.rst:
+ drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc_resource.c:1120:5: warning: no previous prototype for ‘shift_border_left_to_dst’ [-Wmissing-prototypes]
+ drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc_resource.c:1131:6: warning: no previous prototype for ‘restore_border_left_from_dst’ [-Wmissing-prototypes]
 
-  "Some memory may share the same node as a CPU, and others are provided as
-  memory only nodes."
-
-Therefore, some node CPU masks may be empty and wouldn't have a "first CPU".
-
-On a machine with far memory (and therefore CPU-less NUMA nodes):
-- cpumask_of_node(nid) is 0
-- cpumask_first(0) is CONFIG_NR_CPUS
-- cpu_data(CONFIG_NR_CPUS) accesses the cpu_info per-CPU array at an
-  index that is 1 out of bounds
-
-This does not have any security implications since flashing microcode is
-a privileged operation but I believe this has reliability implications by
-potentially corrupting memory while flashing a microcode update.
-
-When booting with CONFIG_UBSAN_BOUNDS=y on an AMD machine that flashes
-a microcode update. I get the following splat:
-
-  UBSAN: array-index-out-of-bounds in arch/x86/kernel/cpu/microcode/amd.c:X:Y
-  index 512 is out of range for type 'unsigned long[512]'
-  [...]
-  Call Trace:
-   dump_stack
-   __ubsan_handle_out_of_bounds
-   load_microcode_amd
-   request_microcode_amd
-   reload_store
-   kernfs_fop_write_iter
-   vfs_write
-   ksys_write
-   do_syscall_64
-   entry_SYSCALL_64_after_hwframe
-
-Change the loop to go over only NUMA nodes which have CPUs before determining
-whether the first CPU on the respective node needs microcode update.
-
-  [ bp: Massage commit message, fix typo. ]
-
-Fixes: 7ff6edf4fef3 ("x86/microcode/AMD: Fix mixed steppings support")
-Signed-off-by: Florent Revest <revest@chromium.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250310144243.861978-1-revest@chromium.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Leo Li <sunpeng.li@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: "Christian König" <christian.koenig@amd.com>
+Cc: David Airlie <airlied@linux.ie>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: amd-gfx@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 374c9faac5a7 ("drm/amd/display: Fix null check for pipe_ctx->plane_state in resource_build_scaling_params")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/microcode/amd.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -861,7 +861,7 @@ static enum ucode_state load_microcode_a
- 		return ret;
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index b619ebd452ad4..5dc6840cea248 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -1108,7 +1108,7 @@ static void calculate_inits_and_adj_vp(struct pipe_ctx *pipe_ctx)
+  * We also need to make sure pipe_ctx->plane_res.scl_data.h_active uses the
+  * original h_border_left value in its calculation.
+  */
+-int shift_border_left_to_dst(struct pipe_ctx *pipe_ctx)
++static int shift_border_left_to_dst(struct pipe_ctx *pipe_ctx)
+ {
+ 	int store_h_border_left = pipe_ctx->stream->timing.h_border_left;
  
--	for_each_node(nid) {
-+	for_each_node_with_cpus(nid) {
- 		cpu = cpumask_first(cpumask_of_node(nid));
- 		c = &cpu_data(cpu);
+@@ -1119,8 +1119,8 @@ int shift_border_left_to_dst(struct pipe_ctx *pipe_ctx)
+ 	return store_h_border_left;
+ }
  
+-void restore_border_left_from_dst(struct pipe_ctx *pipe_ctx,
+-                                  int store_h_border_left)
++static void restore_border_left_from_dst(struct pipe_ctx *pipe_ctx,
++					 int store_h_border_left)
+ {
+ 	pipe_ctx->stream->dst.x -= store_h_border_left;
+ 	pipe_ctx->stream->timing.h_border_left = store_h_border_left;
+-- 
+2.39.5
+
 
 
 
