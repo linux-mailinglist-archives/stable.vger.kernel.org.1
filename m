@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB7BAA80304
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:52:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99C44A7FEB6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:15:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12396422E69
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:46:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DAE3425ACF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC162A94A;
-	Tue,  8 Apr 2025 11:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B4D268FFA;
+	Tue,  8 Apr 2025 11:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HX34O+VQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOclaPZe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BA3268688;
-	Tue,  8 Apr 2025 11:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DAB268694;
+	Tue,  8 Apr 2025 11:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112798; cv=none; b=DviA4yzGYmek3ylqs5zY8BGe8Mawpn4okHNYCyDeqK4EMikf6x3OlDzAS/DqgpEm6zlyD9m1aogJmhPHWPP1g6LiVXjY4s8BLb7i6xdW9ZOjlyVAJnSzmKDuz3J2DNUpghfjo/ilyheKRuF0tGzcpfjzLFcf9kB8jnW8ckg7Yac=
+	t=1744110204; cv=none; b=GxBIpkuQxMOaPfR7d3sbI2hXAS71QMwSuuZv+AVOXJixXy7L9ctwVw6CS2KA7wTzlVlKCHGBNsKow8epgE2uJdRwRJMehp+L3IW1LSi9vcim8Vx4wHBNkDYZuhoSZwlvbeIFt6y9Jy2+/xvL0VaD8dU7NGrAfN+2XKdzWqoE3k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112798; c=relaxed/simple;
-	bh=izesR2EV1SBKhjp9gGA9QBoaP0+QQ+IPWEnzzK0Iz1Q=;
+	s=arc-20240116; t=1744110204; c=relaxed/simple;
+	bh=3Fkc1dhDYyIdeFycN1NQHC45Nvr9yzijMVlGHan1NXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DM+Rb/7+VS623naQ6OPxQF01XcG6HbZodfLBiXmpPSwvwvGRqAkWjumz8spWINglerUgfuiqM+Gich0uD6giTYRb9r8HTLFQ8LXrYNJpp2lCUA0T9g9WnmOKZO3BmdYLuA4PHa3Wm92IhOqqjI3Vs67ra7u9MzzYcL9zyEXlg3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HX34O+VQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8C4C4CEE5;
-	Tue,  8 Apr 2025 11:46:37 +0000 (UTC)
+	 MIME-Version; b=WM7pGjttkybe1Kx9rV1vAh3Xy3Viu6TS1kvqK3YIN5CzgGKU7PJhav9PryaXA2+gcdzsEnV2bsfTzz8yKdrJogbWEu1YlWc7UzD0a9XPLrcP+d3yB7jjEBOvAS2AGtnYSCg9wvzoA5N54UqE9MVREfsexzASsRTwSmBhFU/YPR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOclaPZe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03894C4CEE5;
+	Tue,  8 Apr 2025 11:03:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112798;
-	bh=izesR2EV1SBKhjp9gGA9QBoaP0+QQ+IPWEnzzK0Iz1Q=;
+	s=korg; t=1744110204;
+	bh=3Fkc1dhDYyIdeFycN1NQHC45Nvr9yzijMVlGHan1NXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HX34O+VQ7NdM7RcqwcMVqrh+BwfTjM8MFETcI7Z7g+JpJuo+fzyhcpIXc+h08JzPc
-	 tgcvpd7numQWIfbxjDLe7PCozNsCBBXFr8pMEdKXAIxfiZMK/P6X5zAOatE64kqFhY
-	 YypCarJj32XuRlZIc91pETpsjNLK8G9EbgycNxw8=
+	b=kOclaPZeS9FZU3QCUaqPPFiebhs1bmyDSZbz/r3ixEaTqeBK1hcVo0NwEoOHauvw9
+	 nDwJND6VnT30F8aPxS0TS3SE8Pc4aBrJNLC9J5qmXrMCuJN/bkSFJ+cqqI12xmpgVU
+	 OTl4/dlv/Bf2Pv9cm4jusszomQGQsvSsM2lac384=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 200/279] perf units: Fix insufficient array space
+Subject: [PATCH 5.10 205/227] arcnet: Add NULL check in com20020pci_probe()
 Date: Tue,  8 Apr 2025 12:49:43 +0200
-Message-ID: <20250408104831.735113733@linuxfoundation.org>
+Message-ID: <20250408104826.462731283@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit cf67629f7f637fb988228abdb3aae46d0c1748fe ]
+[ Upstream commit fda8c491db2a90ff3e6fbbae58e495b4ddddeca3 ]
 
-No need to specify the array size, let the compiler figure that out.
+devm_kasprintf() returns NULL when memory allocation fails. Currently,
+com20020pci_probe() does not check for this case, which results in a
+NULL pointer dereference.
 
-This addresses this compiler warning that was noticed while build
-testing on fedora rawhide:
+Add NULL check after devm_kasprintf() to prevent this issue and ensure
+no resources are left allocated.
 
-  31    15.81 fedora:rawhide                : FAIL gcc version 15.0.1 20250225 (Red Hat 15.0.1-0) (GCC)
-    util/units.c: In function 'unit_number__scnprintf':
-    util/units.c:67:24: error: initializer-string for array of 'char' is too long [-Werror=unterminated-string-initialization]
-       67 |         char unit[4] = "BKMG";
-          |                        ^~~~~~
-    cc1: all warnings being treated as errors
-
-Fixes: 9808143ba2e54818 ("perf tools: Add unit_number__scnprintf function")
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Link: https://lore.kernel.org/r/20250310194534.265487-3-acme@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 6b17a597fc2f ("arcnet: restoring support for multiple Sohard Arcnet cards")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Link: https://patch.msgid.link/20250402135036.44697-1-bsdhenrymartin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/units.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/arcnet/com20020-pci.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/units.c b/tools/perf/util/units.c
-index 32c39cfe209b3..4c6a86e1cb54b 100644
---- a/tools/perf/util/units.c
-+++ b/tools/perf/util/units.c
-@@ -64,7 +64,7 @@ unsigned long convert_unit(unsigned long value, char *unit)
+diff --git a/drivers/net/arcnet/com20020-pci.c b/drivers/net/arcnet/com20020-pci.c
+index 9d9e4200064f9..00a80f0adece4 100644
+--- a/drivers/net/arcnet/com20020-pci.c
++++ b/drivers/net/arcnet/com20020-pci.c
+@@ -250,18 +250,33 @@ static int com20020pci_probe(struct pci_dev *pdev,
+ 			card->tx_led.default_trigger = devm_kasprintf(&pdev->dev,
+ 							GFP_KERNEL, "arc%d-%d-tx",
+ 							dev->dev_id, i);
++			if (!card->tx_led.default_trigger) {
++				ret = -ENOMEM;
++				goto err_free_arcdev;
++			}
+ 			card->tx_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+ 							"pci:green:tx:%d-%d",
+ 							dev->dev_id, i);
+-
++			if (!card->tx_led.name) {
++				ret = -ENOMEM;
++				goto err_free_arcdev;
++			}
+ 			card->tx_led.dev = &dev->dev;
+ 			card->recon_led.brightness_set = led_recon_set;
+ 			card->recon_led.default_trigger = devm_kasprintf(&pdev->dev,
+ 							GFP_KERNEL, "arc%d-%d-recon",
+ 							dev->dev_id, i);
++			if (!card->recon_led.default_trigger) {
++				ret = -ENOMEM;
++				goto err_free_arcdev;
++			}
+ 			card->recon_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+ 							"pci:red:recon:%d-%d",
+ 							dev->dev_id, i);
++			if (!card->recon_led.name) {
++				ret = -ENOMEM;
++				goto err_free_arcdev;
++			}
+ 			card->recon_led.dev = &dev->dev;
  
- int unit_number__scnprintf(char *buf, size_t size, u64 n)
- {
--	char unit[4] = "BKMG";
-+	char unit[] = "BKMG";
- 	int i = 0;
- 
- 	while (((n / 1024) > 1) && (i < 3)) {
+ 			ret = devm_led_classdev_register(&pdev->dev, &card->tx_led);
 -- 
 2.39.5
 
