@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-129936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B79AA801F0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:43:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31BA2A8037F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:59:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 970D719E11E7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:39:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6E863AB7AE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D2F267F65;
-	Tue,  8 Apr 2025 11:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 095202698AE;
+	Tue,  8 Apr 2025 11:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BdCQobYe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xeiz0Cfz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5101E267F5F;
-	Tue,  8 Apr 2025 11:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA480267B89;
+	Tue,  8 Apr 2025 11:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112375; cv=none; b=GNIqRKmY+Ooqf5a9PELx8EOKR4fYrJvgxtpWyi88o1W192ElEvP7sHSH9ae9DVan9OAoExXpySIJdlBU1axrx7hHpfBDMOh6FH9xdxeyYahk7bk+PmOPfrRPwCkaPBzo7HsBVAoB7H5Tgq9edlf7+oXWfuGeSZmK/gDThSxY6Jk=
+	t=1744113057; cv=none; b=PLwvTm76FWJ1fhH2uBTiruqteYCJ0ADaMyfMBf9iNmDMZeIebM5ID7tmD34d347hYuVf4gmUs4AGsEwmZDw7Mg1LM//xmO5bKdTgOHYxoNC7b12E7bEE5PAJZV3ITew1EKs15ZBoG3Sxg8AL7X4F96PeXkGNqCdJ9Ye96aG96g4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112375; c=relaxed/simple;
-	bh=jQs1Hu4+IVARjzYPbWLhbFtAM5GIjI7gnsqVHiqy3Co=;
+	s=arc-20240116; t=1744113057; c=relaxed/simple;
+	bh=3YHc8IVkKfJcoaAQcJMjFyiZ8O9WTjcdREUriTxineA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uuzwaYXj1gGnbwOdw7VNtt2hn/4TP4ufjUgGiO3/V7ZHCT9Aqe4PPmJ8XOp3JB0gK2wmmhrtaxkhHKNC83Z+Yz6GN5sJH2Cl4iA9wOQGQA7XKADCfQV6yW4+XacDN64LVTzpvkh2VfzJQSbjpQW3Ztlu3Ba1J7Iuln1X2jS21Ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BdCQobYe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E42C4CEE5;
-	Tue,  8 Apr 2025 11:39:34 +0000 (UTC)
+	 MIME-Version; b=Z97YH3HL8S2G4g0IAxB2DGBVUd1PqwwlI7z6ob7VerehwWu9KiXWizzdciIJdZb7vHoNI++6doZzYxgaBds0nX3yXznUU9P5ET0HMimOVdTZUVe95TEzacS60a0AH3LYmg3fyeP6IX3fGiQk3dcgV3D/5Tipkl43HTACVwqI7J8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xeiz0Cfz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48FF6C4CEE5;
+	Tue,  8 Apr 2025 11:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112375;
-	bh=jQs1Hu4+IVARjzYPbWLhbFtAM5GIjI7gnsqVHiqy3Co=;
+	s=korg; t=1744113057;
+	bh=3YHc8IVkKfJcoaAQcJMjFyiZ8O9WTjcdREUriTxineA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BdCQobYedDvchDlSAaFUnLF/F9ohjGmNxyj45dKNZ9km3cqS8NfQTXOdXrNozS/s/
-	 gYo7pbUDDWGz7BRfLwNzq6uFfOIc/s0Loe3PLHcubUaDFqdK19bi5zSsFk4AZjRHAb
-	 9Q6Gns1YkxGG/lOURoTyv2Tmat/5QiI8N+bv1Dag=
+	b=xeiz0CfzM6ktNzc5oH72nnwdDQDzYh4Y1z6gxmtjHxhaHLsoVjOCxJjqLGiAh6PUi
+	 xLciL7fadIx1wJZnwRMLvq8K+aCUHFB9NcrpR1QzVzYj652MNJPx1zuV+EilCkXg/w
+	 KylEZpRc/LPBXcaqrH0yX/Mdht/D2w/jGjk/zJcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Gompa <neal@gompa.dev>,
-	Hector Martin <marcan@marcan.st>,
-	James Calligeros <jcalligeros99@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 046/279] ASoC: tas2764: Fix power control mask
-Date: Tue,  8 Apr 2025 12:47:09 +0200
-Message-ID: <20250408104827.619823310@linuxfoundation.org>
+Subject: [PATCH 6.6 019/268] PM: sleep: Fix handling devices with direct_complete set on errors
+Date: Tue,  8 Apr 2025 12:47:10 +0200
+Message-ID: <20250408104829.028267835@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,37 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hector Martin <marcan@marcan.st>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit a3f172359e22b2c11b750d23560481a55bf86af1 ]
+[ Upstream commit 03f1444016b71feffa1dfb8a51f15ba592f94b13 ]
 
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
-Link: https://patch.msgid.link/20250218-apple-codec-changes-v2-1-932760fd7e07@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+When dpm_suspend() fails, some devices with power.direct_complete set
+may not have been handled by device_suspend() yet, so runtime PM has
+not been disabled for them yet even though power.direct_complete is set.
+
+Since device_resume() expects that runtime PM has been disabled for all
+devices with power.direct_complete set, it will attempt to reenable
+runtime PM for the devices that have not been processed by device_suspend()
+which does not make sense.  Had those devices had runtime PM disabled
+before device_suspend() had run, device_resume() would have inadvertently
+enable runtime PM for them, but this is not expected to happen because
+it would require ->prepare() callbacks to return positive values for
+devices with runtime PM disabled, which would be invalid.
+
+In practice, this issue is most likely benign because pm_runtime_enable()
+will not allow the "disable depth" counter to underflow, but it causes a
+warning message to be printed for each affected device.
+
+To allow device_resume() to distinguish the "direct complete" devices
+that have been processed by device_suspend() from those which have not
+been handled by it, make device_suspend() set power.is_suspended for
+"direct complete" devices.
+
+Next, move the power.is_suspended check in device_resume() before the
+power.direct_complete check in it to make it skip the "direct complete"
+devices that have not been handled by device_suspend().
+
+This change is based on a preliminary patch from Saravana Kannan.
+
+Fixes: aae4518b3124 ("PM / sleep: Mechanism to avoid resuming runtime-suspended devices unnecessarily")
+Link: https://lore.kernel.org/linux-pm/20241114220921.2529905-2-saravanak@google.com/
+Reported-by: Saravana Kannan <saravanak@google.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Saravana Kannan <saravanak@google.com>
+Link: https://patch.msgid.link/12627587.O9o76ZdvQC@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2764.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/power/main.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/codecs/tas2764.h b/sound/soc/codecs/tas2764.h
-index f015f22a083b5..b18a637bd9fa3 100644
---- a/sound/soc/codecs/tas2764.h
-+++ b/sound/soc/codecs/tas2764.h
-@@ -25,7 +25,7 @@
+diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
+index 49728cb628c19..343d3c966e7a7 100644
+--- a/drivers/base/power/main.c
++++ b/drivers/base/power/main.c
+@@ -894,6 +894,9 @@ static void __device_resume(struct device *dev, pm_message_t state, bool async)
+ 	if (dev->power.syscore)
+ 		goto Complete;
  
- /* Power Control */
- #define TAS2764_PWR_CTRL		TAS2764_REG(0X0, 0x02)
--#define TAS2764_PWR_CTRL_MASK		GENMASK(1, 0)
-+#define TAS2764_PWR_CTRL_MASK		GENMASK(2, 0)
- #define TAS2764_PWR_CTRL_ACTIVE		0x0
- #define TAS2764_PWR_CTRL_MUTE		BIT(0)
- #define TAS2764_PWR_CTRL_SHUTDOWN	BIT(1)
++	if (!dev->power.is_suspended)
++		goto Complete;
++
+ 	if (dev->power.direct_complete) {
+ 		/* Match the pm_runtime_disable() in __device_suspend(). */
+ 		pm_runtime_enable(dev);
+@@ -912,9 +915,6 @@ static void __device_resume(struct device *dev, pm_message_t state, bool async)
+ 	 */
+ 	dev->power.is_prepared = false;
+ 
+-	if (!dev->power.is_suspended)
+-		goto Unlock;
+-
+ 	if (dev->pm_domain) {
+ 		info = "power domain ";
+ 		callback = pm_op(&dev->pm_domain->ops, state);
+@@ -954,7 +954,6 @@ static void __device_resume(struct device *dev, pm_message_t state, bool async)
+ 	error = dpm_run_callback(callback, dev, state, info);
+ 	dev->power.is_suspended = false;
+ 
+- Unlock:
+ 	device_unlock(dev);
+ 	dpm_watchdog_clear(&wd);
+ 
+@@ -1638,6 +1637,7 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
+ 			pm_runtime_disable(dev);
+ 			if (pm_runtime_status_suspended(dev)) {
+ 				pm_dev_dbg(dev, state, "direct-complete ");
++				dev->power.is_suspended = true;
+ 				goto Complete;
+ 			}
+ 
 -- 
 2.39.5
 
