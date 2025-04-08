@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60DB2A80330
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:54:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 054A7A80243
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:46:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 773F67AC406
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:50:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBD4C8822E8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C508269892;
-	Tue,  8 Apr 2025 11:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E737525FA13;
+	Tue,  8 Apr 2025 11:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cT90D2gt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOM6pbzB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD55B267B89;
-	Tue,  8 Apr 2025 11:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1785263C90;
+	Tue,  8 Apr 2025 11:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113049; cv=none; b=omtII0Q1cmQsiqx5gX0rIFSwLqXljefoj8beNLmlYp8goeWrnHCKOcFJzi0O7YO5rHhD58bG9etrNbjygxWrIssUpD0jZ0gRCrk0nx/r484ZCPnG4nEf3ewxh7+4bg0vlvZ9ngHhrYjzoWycmsQQp6AManG0R98s9oSWCNUV6Lg=
+	t=1744112372; cv=none; b=mFJMHYVq3hEcdEZOLbB218cVMmR3IENkh4y49xcFd8nDxb+zr568MZRSmUpG4oeBAoHhNM1xnBkGJKpKQDU3vn08UBCJDWup2+wfE1fdm0tMFcqsDv/h5kpaMQ+85XBWXgdNNq50y5LywxR1qvAIstiloa5NjYhcpwbghqtS3R8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113049; c=relaxed/simple;
-	bh=FJFx7XarX2M6pytNrHzaNCMWjFiPhIAl+pKK3EmkGbE=;
+	s=arc-20240116; t=1744112372; c=relaxed/simple;
+	bh=UlnIQwW2S9684xdzxB8CkwDJCcVVngZ3qXm287ONmR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d7Tgx8BiahpHuE8VO1AOdrXbZupQ7z64qwzbhvdwtEdJN0pxbss6/C0BZiSuASabpBEFvTxnL04dXs2vh/zrCX2EkdzyGazuvNcLyo9mqWpM1Y1RfhTrliN/rEYbIuBMxwdScJaRXfANLPVjr1WY675Z9wd3la+Dz7Qib0LSDVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cT90D2gt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC77C4CEE5;
-	Tue,  8 Apr 2025 11:50:49 +0000 (UTC)
+	 MIME-Version; b=LjlTwLSz/N1a4rvKC+tvQzoR9DOfPXMWWIM2DX82AY0I4ZVRivSoOEOL2tstq+F2shVzYuGCynOmTTWSwa/EP7WdPvRLzQ4ZUPdicX+lU+RZixYmDn3gtylLtPtuVA1TCTEryxckP2P4Hv3okB0NvNOh5iJBRLNbE3drCinsFe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOM6pbzB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F02C4CEE5;
+	Tue,  8 Apr 2025 11:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113049;
-	bh=FJFx7XarX2M6pytNrHzaNCMWjFiPhIAl+pKK3EmkGbE=;
+	s=korg; t=1744112372;
+	bh=UlnIQwW2S9684xdzxB8CkwDJCcVVngZ3qXm287ONmR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cT90D2gtOX5G2ySrID7gdYMnFZjYUdIICEbSxmlbUe1p1NYubNFllqP9an/tm0dkH
-	 mXHAqfUQ8eY/+5ts5VOSgIK0xItep4VzgtW6JGtZtcFFiOH8pD8FleLuBE7QP5yeDD
-	 WzO8TPRK6vhlhQ6cvsUrxhSJ+mQJdqHAZG66JHFA=
+	b=nOM6pbzBUutYBpCii0mqRcvKSESv2mXX24mCIvByJrKecTRopfda6Do4oRqizVZxw
+	 YROyMCnTpCBwTjFD2gWcmNsbSTRJI85746VESEguSUmK1BqKnlxsvNxBFqYtgEy9xx
+	 bz3Z1CV+0sx4lOEe87aDIY+WyVBkoQm1ub9CBDOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Gary Wang <gary.c.wang@intel.com>,
+	Hector Martin <marcan@marcan.st>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 016/268] EDAC/ie31200: Fix the DIMM size mask for several SoCs
-Date: Tue,  8 Apr 2025 12:47:07 +0200
-Message-ID: <20250408104828.948905304@linuxfoundation.org>
+Subject: [PATCH 5.15 045/279] ASoC: tas2770: Fix volume scale
+Date: Tue,  8 Apr 2025 12:47:08 +0200
+Message-ID: <20250408104827.595121701@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Hector Martin <marcan@marcan.st>
 
-[ Upstream commit 3427befbbca6b19fe0e37f91d66ce5221de70bf1 ]
+[ Upstream commit 579cd64b9df8a60284ec3422be919c362de40e41 ]
 
-The DIMM size mask for {Sky, Kaby, Coffee} Lake is not bits{7:0},
-but bits{5:0}. Fix it.
+The scale starts at -100dB, not -128dB.
 
-Fixes: 953dee9bbd24 ("EDAC, ie31200_edac: Add Skylake support")
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Tested-by: Gary Wang <gary.c.wang@intel.com>
-Link: https://lore.kernel.org/r/20250310011411.31685-3-qiuxu.zhuo@intel.com
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20250208-asoc-tas2770-v1-1-cf50ff1d59a3@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/ie31200_edac.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/codecs/tas2770.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
-index 98d74c604d726..92714dd88b3f6 100644
---- a/drivers/edac/ie31200_edac.c
-+++ b/drivers/edac/ie31200_edac.c
-@@ -162,6 +162,7 @@
- #define IE31200_MAD_DIMM_0_OFFSET		0x5004
- #define IE31200_MAD_DIMM_0_OFFSET_SKL		0x500C
- #define IE31200_MAD_DIMM_SIZE			GENMASK_ULL(7, 0)
-+#define IE31200_MAD_DIMM_SIZE_SKL		GENMASK_ULL(5, 0)
- #define IE31200_MAD_DIMM_A_RANK			BIT(17)
- #define IE31200_MAD_DIMM_A_RANK_SHIFT		17
- #define IE31200_MAD_DIMM_A_RANK_SKL		BIT(10)
-@@ -375,7 +376,7 @@ static void __iomem *ie31200_map_mchbar(struct pci_dev *pdev)
- static void __skl_populate_dimm_info(struct dimm_data *dd, u32 addr_decode,
- 				     int chan)
- {
--	dd->size = (addr_decode >> (chan << 4)) & IE31200_MAD_DIMM_SIZE;
-+	dd->size = (addr_decode >> (chan << 4)) & IE31200_MAD_DIMM_SIZE_SKL;
- 	dd->dual_rank = (addr_decode & (IE31200_MAD_DIMM_A_RANK_SKL << (chan << 4))) ? 1 : 0;
- 	dd->x16_width = ((addr_decode & (IE31200_MAD_DIMM_A_WIDTH_SKL << (chan << 4))) >>
- 				(IE31200_MAD_DIMM_A_WIDTH_SKL_SHIFT + (chan << 4)));
+diff --git a/sound/soc/codecs/tas2770.c b/sound/soc/codecs/tas2770.c
+index ec0df3b1ef615..4e71dc1cf588f 100644
+--- a/sound/soc/codecs/tas2770.c
++++ b/sound/soc/codecs/tas2770.c
+@@ -508,7 +508,7 @@ static int tas2770_codec_probe(struct snd_soc_component *component)
+ }
+ 
+ static DECLARE_TLV_DB_SCALE(tas2770_digital_tlv, 1100, 50, 0);
+-static DECLARE_TLV_DB_SCALE(tas2770_playback_volume, -12750, 50, 0);
++static DECLARE_TLV_DB_SCALE(tas2770_playback_volume, -10050, 50, 0);
+ 
+ static const struct snd_kcontrol_new tas2770_snd_controls[] = {
+ 	SOC_SINGLE_TLV("Speaker Playback Volume", TAS2770_PLAY_CFG_REG2,
 -- 
 2.39.5
 
