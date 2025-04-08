@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-129838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13AB4A801BD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F6C9A7FE02
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 216E43A621F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7E35445B1A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:03:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C032676DE;
-	Tue,  8 Apr 2025 11:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D8B269AFB;
+	Tue,  8 Apr 2025 11:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F6etUpR1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0Y+GWSm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70ED4207E14;
-	Tue,  8 Apr 2025 11:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCC8269AF4;
+	Tue,  8 Apr 2025 11:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112112; cv=none; b=c8vRlTgZ9CliMBayawdm4840m/oXthF0+ctzgSbC7zCqwV6QJkLLGNQmOdP6+ZsRhIES9+pMQOIdOBEOpT1zkFNRc9c1rSZIr2nv+06XvFlw1JwW0PBboVO6Nt4gs5wixpX0CCAZ8B9PPMp3JlhhZ9SgecExA0YHljoBpmXdBnE=
+	t=1744110082; cv=none; b=O4Fo5GFWVM83d3jp33j5FU7M0N/wpO/K4a7xPDtFp1wW+kkfuER0S8HlvPxA7nPfW8ewx/pAs/ArYnqTOAFBhMYzhZb3A0KvWZattbVQ1LGG5hPyvi9JXnhqu8o/MtRLyKcl7cS/xB4T6/dqwwdOz5YVq/uoulKByjYR+9PeyfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112112; c=relaxed/simple;
-	bh=3Bx+dEttfrq31VRjkgdE/6xPmiWkJOmzzraUE+pCPSE=;
+	s=arc-20240116; t=1744110082; c=relaxed/simple;
+	bh=T3/ao8NjAmbCabzCNvBT/dsJtlMhbBvVcuvihNvrN3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ef1WW4/5oBzZUn8GfKGyWBi3eyB0017cgAq65tvK7qHmMlHqM1IwWbsaBQ/eYlB5UvFl2gbErlfdwSc11sx/79IhZFWbSjlh54NQA3FGV2US7UOsl/RhaeP5DjMMsAmnpjmF02vMtss34NZppOY4lXviBUWd3zvfwuzA+BXcWF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6etUpR1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A8AC4CEE5;
-	Tue,  8 Apr 2025 11:35:11 +0000 (UTC)
+	 MIME-Version; b=sgpils//MdZuP/M7mFUNhbzlmmMgCkJNtU/MpjJzFk2MCyHHQgIbCg0LQ++gI3e+x/mX71eV6N7OVkbcFVYEYpcK7hBCuaYX6J1RzaDVm1f3wEIhG8476rxY1YAXO901Gv1x8DQ9gKAOhyRZGb5MsWeAzJUagFyqw4j/VbIDeVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0Y+GWSm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F9AAC4CEE7;
+	Tue,  8 Apr 2025 11:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112112;
-	bh=3Bx+dEttfrq31VRjkgdE/6xPmiWkJOmzzraUE+pCPSE=;
+	s=korg; t=1744110081;
+	bh=T3/ao8NjAmbCabzCNvBT/dsJtlMhbBvVcuvihNvrN3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F6etUpR1qQ9d3znUm/6bjBZSQiBXEMCCPIk8d6aYeg77PQ6gEmqYzkGlm0rZC4XyB
-	 5YeWHfK5eI7kLfdlG1TB8zPYAvY7enCxJ/dsBSW9fAYT136eyLa/R2E2Xo0fDTQeNZ
-	 jv5LOxwQ9tZJWvCNv6kTDkXmsOKQrWDsAUSc3vyg=
+	b=q0Y+GWSmHY6RvVBxzcdP829fySNLTbKFGe4ELAJKi/LB1ZJ9+l6EULEiMweJObDH8
+	 dYUcs9eMo8/RLEF8+d1ePvJGp96R3EiIi84m9yzAmoRlVgEl0pbHvGoU35qL5ev3zS
+	 1UmlT9rF9C9KA1ayl8t5HB+7lOUSRutUci0saB9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 641/731] arcnet: Add NULL check in com20020pci_probe()
+Subject: [PATCH 5.10 160/227] x86/dumpstack: Fix inaccurate unwinding from exception stacks due to misplaced assignment
 Date: Tue,  8 Apr 2025 12:48:58 +0200
-Message-ID: <20250408104929.178028055@linuxfoundation.org>
+Message-ID: <20250408104825.115120956@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit fda8c491db2a90ff3e6fbbae58e495b4ddddeca3 ]
+[ Upstream commit 2c118f50d7fd4d9aefc4533a26f83338b2906b7a ]
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-com20020pci_probe() does not check for this case, which results in a
-NULL pointer dereference.
+Commit:
 
-Add NULL check after devm_kasprintf() to prevent this issue and ensure
-no resources are left allocated.
+  2e4be0d011f2 ("x86/show_trace_log_lvl: Ensure stack pointer is aligned, again")
 
-Fixes: 6b17a597fc2f ("arcnet: restoring support for multiple Sohard Arcnet cards")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Link: https://patch.msgid.link/20250402135036.44697-1-bsdhenrymartin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+was intended to ensure alignment of the stack pointer; but it also moved
+the initialization of the "stack" variable down into the loop header.
+
+This was likely intended as a no-op cleanup, since the commit
+message does not mention it; however, this caused a behavioral change
+because the value of "regs" is different between the two places.
+
+Originally, get_stack_pointer() used the regs provided by the caller; after
+that commit, get_stack_pointer() instead uses the regs at the top of the
+stack frame the unwinder is looking at. Often, there are no such regs at
+all, and "regs" is NULL, causing get_stack_pointer() to fall back to the
+task's current stack pointer, which is not what we want here, but probably
+happens to mostly work. Other times, the original regs will point to
+another regs frame - in that case, the linear guess unwind logic in
+show_trace_log_lvl() will start unwinding too far up the stack, causing the
+first frame found by the proper unwinder to never be visited, resulting in
+a stack trace consisting purely of guess lines.
+
+Fix it by moving the "stack = " assignment back where it belongs.
+
+Fixes: 2e4be0d011f2 ("x86/show_trace_log_lvl: Ensure stack pointer is aligned, again")
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20250325-2025-03-unwind-fixes-v1-2-acd774364768@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/arcnet/com20020-pci.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ arch/x86/kernel/dumpstack.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/arcnet/com20020-pci.c b/drivers/net/arcnet/com20020-pci.c
-index c5e571ec94c99..0472bcdff1307 100644
---- a/drivers/net/arcnet/com20020-pci.c
-+++ b/drivers/net/arcnet/com20020-pci.c
-@@ -251,18 +251,33 @@ static int com20020pci_probe(struct pci_dev *pdev,
- 			card->tx_led.default_trigger = devm_kasprintf(&pdev->dev,
- 							GFP_KERNEL, "arc%d-%d-tx",
- 							dev->dev_id, i);
-+			if (!card->tx_led.default_trigger) {
-+				ret = -ENOMEM;
-+				goto err_free_arcdev;
-+			}
- 			card->tx_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
- 							"pci:green:tx:%d-%d",
- 							dev->dev_id, i);
--
-+			if (!card->tx_led.name) {
-+				ret = -ENOMEM;
-+				goto err_free_arcdev;
-+			}
- 			card->tx_led.dev = &dev->dev;
- 			card->recon_led.brightness_set = led_recon_set;
- 			card->recon_led.default_trigger = devm_kasprintf(&pdev->dev,
- 							GFP_KERNEL, "arc%d-%d-recon",
- 							dev->dev_id, i);
-+			if (!card->recon_led.default_trigger) {
-+				ret = -ENOMEM;
-+				goto err_free_arcdev;
-+			}
- 			card->recon_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
- 							"pci:red:recon:%d-%d",
- 							dev->dev_id, i);
-+			if (!card->recon_led.name) {
-+				ret = -ENOMEM;
-+				goto err_free_arcdev;
-+			}
- 			card->recon_led.dev = &dev->dev;
+diff --git a/arch/x86/kernel/dumpstack.c b/arch/x86/kernel/dumpstack.c
+index b9736aac20eef..cf92191de2b2a 100644
+--- a/arch/x86/kernel/dumpstack.c
++++ b/arch/x86/kernel/dumpstack.c
+@@ -195,6 +195,7 @@ void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
+ 	printk("%sCall Trace:\n", log_lvl);
  
- 			ret = devm_led_classdev_register(&pdev->dev, &card->tx_led);
+ 	unwind_start(&state, task, regs, stack);
++	stack = stack ?: get_stack_pointer(task, regs);
+ 	regs = unwind_get_entry_regs(&state, &partial);
+ 
+ 	/*
+@@ -213,9 +214,7 @@ void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
+ 	 * - hardirq stack
+ 	 * - entry stack
+ 	 */
+-	for (stack = stack ?: get_stack_pointer(task, regs);
+-	     stack;
+-	     stack = stack_info.next_sp) {
++	for (; stack; stack = stack_info.next_sp) {
+ 		const char *stack_name;
+ 
+ 		stack = PTR_ALIGN(stack, sizeof(long));
 -- 
 2.39.5
 
