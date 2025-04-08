@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-131463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD280A809DA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:58:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F8CA809AF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:56:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5796D1BA5820
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:53:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A1187B46CB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:52:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62F026B0AD;
-	Tue,  8 Apr 2025 12:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CEEC26E14C;
+	Tue,  8 Apr 2025 12:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ATkFRXho"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbYQinKf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8342326B0B6;
-	Tue,  8 Apr 2025 12:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5D826B94E;
+	Tue,  8 Apr 2025 12:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116465; cv=none; b=goHe06pe49L4UnyTReEFH1cZON6DJZqyoG/c2Kzs1F2MdzsLQ530D2iFdu7focwINFJJI4QXsvzWLpgQKli0OHjJW2vo9ZzKYfa7D+NCZhnvH3SFfpSuQVUDsIFeMXgwFOZ/B0vWI6zynVnACvQNuHynLCMaKpIAdSXniIcI7KA=
+	t=1744116497; cv=none; b=ORGQ0MLQ0fiEWAGBymNKRlrH4/QYUq73wKhkZE3HADhzbA0YtpHA8oKdkZpFGXSih8eSDKkcCXci9MOZO4zgn1rxgo2mxeZcybXvF1APlcEtL/1jM4VMjIF24trSOXE0SmFuEQ/d+hrgUkJhjVnCK8Ar+uEPRBy0Yi9FeSbpO1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116465; c=relaxed/simple;
-	bh=cd8JW0ew1/nWwhZzby8YYQftE5kiH/mmQtseAzxUyik=;
+	s=arc-20240116; t=1744116497; c=relaxed/simple;
+	bh=pzpqRieyeepJW/Nd+1aJxG6XzlMM/2JMX/C8A/mbEJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N5Vo3cu0xMxgOPMk9+xORewHVSQ/8QtBwTnSkQJuMSjM2Sh6+X/JqHqjqlTKATeAL6EljiQgVdDNAXvbnJogRVNW6lIs9L95qr5lpl+pjmRTPfxBP70AIV/hRNL1tLABY8bPerssQjwfjnI/xFvdv3aA/bL5LZZEek8Tre+D2aY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATkFRXho; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3633C4CEE5;
-	Tue,  8 Apr 2025 12:47:44 +0000 (UTC)
+	 MIME-Version; b=PpOgy2iu8+gOTdsTG29AjLY1+3958g3FhwGaNKB45U5Smg+g4SCayDzS6KMlYwTBNKorEWkxuC3kNkj6uV42UrZZRgrN4xi0UkeQKkNxJcaWB0eWJ+FhB8/5NXRw31lpDlKAb8jrwNAXNMOk6aMvFxnXxauYaVujrnYc22Pk2kA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbYQinKf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C03EFC4CEE5;
+	Tue,  8 Apr 2025 12:48:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116465;
-	bh=cd8JW0ew1/nWwhZzby8YYQftE5kiH/mmQtseAzxUyik=;
+	s=korg; t=1744116497;
+	bh=pzpqRieyeepJW/Nd+1aJxG6XzlMM/2JMX/C8A/mbEJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ATkFRXhoC1328GIbem2NRtzaURGsGjoI7zJBlmaAAdD2M+hgtP564o/rDGwcEJDZd
-	 cnDG6wt7iurCgDXKkvJ4qp6hM2w0pBWyZXrMYoDhShAXAjfjjoS1z3gqYxpPySBHX/
-	 3IRX2obIjNQPgM6m5BKXVm8tfD2It7BJ7bmKNQJo=
+	b=gbYQinKfdu8GjTX74Vr/7rOs7ZNMF0tRkhBbrIZnFjw5TxFfS3qtTh7xMZ2f4IlpY
+	 X7kb3EVKSeNBhbuCdeC9XAo/8wCt4+yU1VZ/jlKojYfCUh0s4ADHTWYuVSee4a9RBz
+	 5BKfko8nIEsbPW9VDrLClh17oK9k5NG8s2V3kz4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chiara Meiohas <cmeiohas@nvidia.com>,
-	Michael Guralnik <michaelgur@nvidia.com>,
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Cheng Xu <chengyou@linux.alibaba.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 133/423] RDMA/mlx5: Fix calculation of total invalidated pages
-Date: Tue,  8 Apr 2025 12:47:39 +0200
-Message-ID: <20250408104848.824975397@linuxfoundation.org>
+Subject: [PATCH 6.12 134/423] RDMA/erdma: Prevent use-after-free in erdma_accept_newconn()
+Date: Tue,  8 Apr 2025 12:47:40 +0200
+Message-ID: <20250408104848.849211987@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
 References: <20250408104845.675475678@linuxfoundation.org>
@@ -67,63 +67,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chiara Meiohas <cmeiohas@nvidia.com>
+From: Cheng Xu <chengyou@linux.alibaba.com>
 
-[ Upstream commit 79195147644653ebffadece31a42181e4c48c07d ]
+[ Upstream commit 83437689249e6a17b25e27712fbee292e42e7855 ]
 
-When invalidating an address range in mlx5, there is an optimization to
-do UMR operations in chunks.
-Previously, the invalidation counter was incorrectly updated for the
-same indexes within a chunk. Now, the invalidation counter is updated
-only when a chunk is complete and mlx5r_umr_update_xlt() is called.
-This ensures that the counter accurately represents the number of pages
-invalidated using UMR.
+After the erdma_cep_put(new_cep) being called, new_cep will be freed,
+and the following dereference will cause a UAF problem. Fix this issue.
 
-Fixes: a3de94e3d61e ("IB/mlx5: Introduce ODP diagnostic counters")
-Signed-off-by: Chiara Meiohas <cmeiohas@nvidia.com>
-Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
-Link: https://patch.msgid.link/560deb2433318e5947282b070c915f3c81fef77f.1741875692.git.leon@kernel.org
+Fixes: 920d93eac8b9 ("RDMA/erdma: Add connection management (CM) support")
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Cheng Xu <chengyou@linux.alibaba.com>
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/odp.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/infiniband/hw/erdma/erdma_cm.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
-index b4e2a6f9cb9c3..e158d5b1ab17b 100644
---- a/drivers/infiniband/hw/mlx5/odp.c
-+++ b/drivers/infiniband/hw/mlx5/odp.c
-@@ -309,9 +309,6 @@ static bool mlx5_ib_invalidate_range(struct mmu_interval_notifier *mni,
- 				blk_start_idx = idx;
- 				in_block = 1;
- 			}
--
--			/* Count page invalidations */
--			invalidations += idx - blk_start_idx + 1;
- 		} else {
- 			u64 umr_offset = idx & umr_block_mask;
+diff --git a/drivers/infiniband/hw/erdma/erdma_cm.c b/drivers/infiniband/hw/erdma/erdma_cm.c
+index 771059a8eb7d7..e349e8d2fb50a 100644
+--- a/drivers/infiniband/hw/erdma/erdma_cm.c
++++ b/drivers/infiniband/hw/erdma/erdma_cm.c
+@@ -705,7 +705,6 @@ static void erdma_accept_newconn(struct erdma_cep *cep)
+ 		erdma_cancel_mpatimer(new_cep);
  
-@@ -321,14 +318,19 @@ static bool mlx5_ib_invalidate_range(struct mmu_interval_notifier *mni,
- 						     MLX5_IB_UPD_XLT_ZAP |
- 						     MLX5_IB_UPD_XLT_ATOMIC);
- 				in_block = 0;
-+				/* Count page invalidations */
-+				invalidations += idx - blk_start_idx + 1;
- 			}
- 		}
+ 		erdma_cep_put(new_cep);
+-		new_cep->sock = NULL;
  	}
--	if (in_block)
-+	if (in_block) {
- 		mlx5r_umr_update_xlt(mr, blk_start_idx,
- 				     idx - blk_start_idx + 1, 0,
- 				     MLX5_IB_UPD_XLT_ZAP |
- 				     MLX5_IB_UPD_XLT_ATOMIC);
-+		/* Count page invalidations */
-+		invalidations += idx - blk_start_idx + 1;
-+	}
  
- 	mlx5_update_odp_stats(mr, invalidations, invalidations);
- 
+ 	if (new_s) {
 -- 
 2.39.5
 
