@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EACC6A80768
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:37:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63DDEA804E4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:13:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AEB31B8800B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D9238838D0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:06:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEDEB26F47F;
-	Tue,  8 Apr 2025 12:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A34A94A;
+	Tue,  8 Apr 2025 12:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZdY7lvT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+jmw+lC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4F220CCD8;
-	Tue,  8 Apr 2025 12:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D4C1AAA0F;
+	Tue,  8 Apr 2025 12:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115311; cv=none; b=MjZ6QMo3kA0wNdWruTl6idEJU1Ybmbnl3ptBP4PIz0BHk39mCGZB2Z9eTeivFn/JN9uY7cml7T08xVnFU88ellDrkIQlGM7A4+YjJsy0vzhGpamkRJmAHQe/dtTsHjcxFJTkwsHdX3rxs1kZBysXWEqx3Ijvzsu3yxNp/7qZ4Z0=
+	t=1744113866; cv=none; b=KR+QUtEvbeOlWBr6p/nftC2n7HFuMY/tTcgJnsf3XUYyDR/7h1rTUWsUr1av4Iaxhp/wZaaZdQnfOehahd8nAR6GqYxjyYEoa/d6DXL9DrPBQ6NwjoAhgSmccc7IkMadSnESnqlsd/LhXQkxxjzB7RoZVzQRkmJGwkQMyM0C024=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115311; c=relaxed/simple;
-	bh=KB1b5zYMoUA04Uznv6r9FAA9ssPEgVDLOtmwMZVcWoQ=;
+	s=arc-20240116; t=1744113866; c=relaxed/simple;
+	bh=DersNETUqWWFN4AlNDYhuoQhcWFqR7nsFkPJeCgvR6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UvgqlBneMpsALq+0nRqGhMd8+/N2fnf4VOBRhv94zch3xj2SvKAn9i8LJLqmvgegzuZ4WTcwj+IOERqKWXI8XNAoZ9dE3KtpRrxof9Wi3JPgIsJlyu37rOnQuN70+ozvzfMQNPAE+EST4+tl4tT6hNVk8A5eYT4a3nfB9vDWeNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZdY7lvT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3FD3C4CEE7;
-	Tue,  8 Apr 2025 12:28:30 +0000 (UTC)
+	 MIME-Version; b=RYSxX5r5jQcJX5fxszz4usEUFv8xks45IjpRuj1aMS1RQF4s3TUCFJqGvtRkg3MJp3jY7c2hpbvKcHQLNNRpG2sxOVSQYVUbDizTgU5sI7j3Y6V+maYYkrKYJP+f0YPN2wOF2fDiGxy35dXMztUAbAKGkRF5VrNGN839s9h+VC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+jmw+lC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B22C4CEE5;
+	Tue,  8 Apr 2025 12:04:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115311;
-	bh=KB1b5zYMoUA04Uznv6r9FAA9ssPEgVDLOtmwMZVcWoQ=;
+	s=korg; t=1744113866;
+	bh=DersNETUqWWFN4AlNDYhuoQhcWFqR7nsFkPJeCgvR6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SZdY7lvTTmDxU9nqoI20Ai17mKk1hs4IBjafI3A1b2TQGyyzX47yRqW1yQfztXYPP
-	 dbAD9huBRhJNXygwpSoDd7OFBJC+hAfxDfwAr8BGJ25JF0bpZEL20/3ffwgwrbL7e9
-	 GNy6cyWLCuYXH3SqX6BXJvuofhn11Azt0z0H/CRk=
+	b=U+jmw+lCo5Bd1kyshxXNEC/N63mFRisKc0Xtr+8QmAJMS+RVsI+BwkkdsuXtg6W00
+	 qX2+yN2viQ2hg3+E5jgf71EGbT+nGUciVrIK3fHcuz17xJ++0D2b+ZsGIZU5mGP7lM
+	 3yTzxCdXFO5/X4aHqLiZ51qCw8LRP02gfwXgeqyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 378/499] nvme-pci: skip nvme_write_sq_db on empty rqlist
+Subject: [PATCH 5.4 049/154] i2c: ali15x3: Fix an error handling path in ali15x3_probe()
 Date: Tue,  8 Apr 2025 12:49:50 +0200
-Message-ID: <20250408104900.659375523@linuxfoundation.org>
+Message-ID: <20250408104816.845877737@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 288ff0d10beb069355036355d5f7612579dc869c ]
+[ Upstream commit 6e55caaf30c88209d097e575a169b1dface1ab69 ]
 
-nvme_submit_cmds() should check the rqlist before calling
-nvme_write_sq_db(); if the list is empty, it must return immediately.
+If i2c_add_adapter() fails, the request_region() call in ali15x3_setup()
+must be undone by a corresponding release_region() call, as done in the
+remove function.
 
-Fixes: beadf0088501 ("nvme-pci: reverse request order in nvme_queue_rqs")
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/9b2090cbcc02659f425188ea05f2e02745c4e67b.1741031878.git.christophe.jaillet@wanadoo.fr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/i2c/busses/i2c-ali15x3.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 99022be16d2a9..e6c27175880bb 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -990,6 +990,9 @@ static void nvme_submit_cmds(struct nvme_queue *nvmeq, struct rq_list *rqlist)
- {
- 	struct request *req;
+diff --git a/drivers/i2c/busses/i2c-ali15x3.c b/drivers/i2c/busses/i2c-ali15x3.c
+index 02185a1cfa775..0cb78c47d800e 100644
+--- a/drivers/i2c/busses/i2c-ali15x3.c
++++ b/drivers/i2c/busses/i2c-ali15x3.c
+@@ -473,6 +473,8 @@ MODULE_DEVICE_TABLE (pci, ali15x3_ids);
  
-+	if (rq_list_empty(rqlist))
-+		return;
+ static int ali15x3_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ {
++	int ret;
 +
- 	spin_lock(&nvmeq->sq_lock);
- 	while ((req = rq_list_pop(rqlist))) {
- 		struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
+ 	if (ali15x3_setup(dev)) {
+ 		dev_err(&dev->dev,
+ 			"ALI15X3 not detected, module not inserted.\n");
+@@ -484,7 +486,15 @@ static int ali15x3_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ 
+ 	snprintf(ali15x3_adapter.name, sizeof(ali15x3_adapter.name),
+ 		"SMBus ALI15X3 adapter at %04x", ali15x3_smba);
+-	return i2c_add_adapter(&ali15x3_adapter);
++	ret = i2c_add_adapter(&ali15x3_adapter);
++	if (ret)
++		goto release_region;
++
++	return 0;
++
++release_region:
++	release_region(ali15x3_smba, ALI15X3_SMB_IOSIZE);
++	return ret;
+ }
+ 
+ static void ali15x3_remove(struct pci_dev *dev)
 -- 
 2.39.5
 
