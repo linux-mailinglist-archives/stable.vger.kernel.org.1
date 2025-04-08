@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-131129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DE5DA807D7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C85F6A80B7A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:17:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AF3C1BA14D0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:35:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E1FB4C849E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D715226A0A7;
-	Tue,  8 Apr 2025 12:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98AF526F45A;
+	Tue,  8 Apr 2025 12:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qUZVQy0c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LUdoahua"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93CC3224239;
-	Tue,  8 Apr 2025 12:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C6126B08C;
+	Tue,  8 Apr 2025 12:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115567; cv=none; b=RDCP8S31Z0f32zMvCQr8LBqpqZU1q252J4HOO69rxr+WrfcpTMvyfBYMJ4wJO/XVaa2Zk7/3uskssN5bY5DhclmvhMl9UOGezredIfkUbLNpZvYj2VjQUm514O1FaZX+BuZJG4eOTN/OIfyEroHRaYo+AibHEEQ/BXd0bLubSeo=
+	t=1744116669; cv=none; b=HupDWTxT/idW5rgwQbPsZrQt3mSZWqqJ26zgAUQP0uuzkay0TWYXk6PoKfuFur6uEOq2PVgR65OG8LfQ9umOUGQ6hXJDyOM/vnVL7kg8EcnU1CWv/tNrNW0qi5Jf0Ik4KybsRYVHXtzu26zLjJ18lTa78sqiEH7ibl2iwqEsvDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115567; c=relaxed/simple;
-	bh=1e0w9ext9BaGL9qpZstPfCxdaca1fsWv6v+4ODWrJs0=;
+	s=arc-20240116; t=1744116669; c=relaxed/simple;
+	bh=GhQP/FHjNVIrP1dJ9Iyqt4OCrJ2/TZeNSyikYK7V574=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pgy8ASlhjCMoTEXMkC2ddB25Pwmy+JGMdD44hJq1iSLLav1Ac90VzSaW+AGdrkyjgHDshCu1mKIo8hKLd4w3lLBSm0DeZaEpvGsKOwTR5RtLY2yvsJ/YpK1AeZ55wGBXFfDJcYT5u4Q32wiSpV9xJtTRL+lmzcAfL3p27M+zeRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qUZVQy0c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2F3DC4CEE5;
-	Tue,  8 Apr 2025 12:32:46 +0000 (UTC)
+	 MIME-Version; b=MMmuLB5ouRoOAfxUOb9nm+LLy/y8Y+FxGmDa6vJOxWrz/AmMovbVWhNmGEoKT4MnSEZ0ISgYHX2ILn64VhbbY7sV3Cnh1Mx+DwgLKueqbF9m3a3j10MeIhruaQs3gOyoyjF1CKfBFjoIcZ9N3t4sSYyud1svnd/Co58sIlIZSlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LUdoahua; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A87EAC4CEE5;
+	Tue,  8 Apr 2025 12:51:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115567;
-	bh=1e0w9ext9BaGL9qpZstPfCxdaca1fsWv6v+4ODWrJs0=;
+	s=korg; t=1744116669;
+	bh=GhQP/FHjNVIrP1dJ9Iyqt4OCrJ2/TZeNSyikYK7V574=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qUZVQy0cTfq477+wK0jFQAVb1FfekwTHevA50ZWDsFGSGImigrGSmG7CBtUDtb4XU
-	 2YBtwRmI5ngXE3gfgBBGnQO8fOlKJzXjO/ggzr65hlXPlQMLMAfhTToAFgu5Cqp7kn
-	 tSzodJQ/sGmj6CYcMOxNT/ATI46fO8fGat9eyIis=
+	b=LUdoahuajZLJmf5cqCBxj9AZHberS/KhzkwuFft/U8mV6uapbqTlJjCGewvE/FkZo
+	 Dpoc2r5eO6u7U5sD5pPA1GPkUjTb86c/87QkOjTql8jv+LPYNZH7rBY+F/b1KjfG7v
+	 tuDZO6uMgJPB40VMTYl7YocV3PibhJFXLa5aC7Zg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Michael Tretter <m.tretter@pengutronix.de>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	kernel test robot <lkp@intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 022/204] media: platform: allgro-dvt: unregister v4l2_device on the error path
+Subject: [PATCH 6.12 226/423] objtool, nvmet: Fix out-of-bounds stack access in nvmet_ctrl_state_show()
 Date: Tue,  8 Apr 2025 12:49:12 +0200
-Message-ID: <20250408104820.971558529@linuxfoundation.org>
+Message-ID: <20250408104850.989716999@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +67,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit c2b96a6818159fba8a3bcc38262da9e77f9b3ec7 ]
+[ Upstream commit 107a23185d990e3df6638d9a84c835f963fe30a6 ]
 
-In allegro_probe(), the v4l2 device is not unregistered in the error
-path, which results in a memory leak. Fix it by calling
-v4l2_device_unregister() before returning error.
+The csts_state_names[] array only has six sparse entries, but the
+iteration code in nvmet_ctrl_state_show() iterates seven, resulting in a
+potential out-of-bounds stack read.  Fix that.
 
-Fixes: d74d4e2359ec ("media: allegro: move driver out of staging")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Reviewed-by: Michael Tretter <m.tretter@pengutronix.de>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes the following warning with an UBSAN kernel:
+
+  vmlinux.o: warning: objtool: .text.nvmet_ctrl_state_show: unexpected end of section
+
+Fixes: 649fd41420a8 ("nvmet: add debugfs support")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Sagi Grimberg <sagi@grimberg.me>
+Cc: Chaitanya Kulkarni <kch@nvidia.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/f1f60858ee7a941863dc7f5506c540cb9f97b5f6.1742852847.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/oe-kbuild-all/202503171547.LlCTJLQL-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/allegro-dvt/allegro-core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/nvme/target/debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/allegro-dvt/allegro-core.c b/drivers/media/platform/allegro-dvt/allegro-core.c
-index 3cb4618d23375..1a556e381eac8 100644
---- a/drivers/media/platform/allegro-dvt/allegro-core.c
-+++ b/drivers/media/platform/allegro-dvt/allegro-core.c
-@@ -3915,6 +3915,7 @@ static int allegro_probe(struct platform_device *pdev)
- 	if (ret < 0) {
- 		v4l2_err(&dev->v4l2_dev,
- 			 "failed to request firmware: %d\n", ret);
-+		v4l2_device_unregister(&dev->v4l2_dev);
- 		return ret;
- 	}
+diff --git a/drivers/nvme/target/debugfs.c b/drivers/nvme/target/debugfs.c
+index 220c7391fc19a..c6571fbd35e30 100644
+--- a/drivers/nvme/target/debugfs.c
++++ b/drivers/nvme/target/debugfs.c
+@@ -78,7 +78,7 @@ static int nvmet_ctrl_state_show(struct seq_file *m, void *p)
+ 	bool sep = false;
+ 	int i;
  
+-	for (i = 0; i < 7; i++) {
++	for (i = 0; i < ARRAY_SIZE(csts_state_names); i++) {
+ 		int state = BIT(i);
+ 
+ 		if (!(ctrl->csts & state))
 -- 
 2.39.5
 
