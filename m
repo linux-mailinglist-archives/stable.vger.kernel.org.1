@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 770ABA80251
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:46:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09352A80354
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:56:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FE0588271A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:40:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39D2019E02DE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00092676CF;
-	Tue,  8 Apr 2025 11:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73BD9268C43;
+	Tue,  8 Apr 2025 11:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yquhnb9O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpKyYTLV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA2A19AD5C;
-	Tue,  8 Apr 2025 11:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D39267F68;
+	Tue,  8 Apr 2025 11:51:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112426; cv=none; b=odQXRT8nKKUldajaSRHHQCrcyWYz+/s4Dm6wBfGg2yQdEMZ3D6h6bo7H2/vZYDqOlcGSa35qVXzIT6dJHa5uvirnBq7Q6L9ErVTnbZ/Akl0gXn7WMBT97i5PQRuKfzMVMr1dg0Pd5I8yUY8mA60/XjlmYG90lruhMsZVC98TawM=
+	t=1744113105; cv=none; b=QPIjz9R1ogHxc3QYG+XyOeWMAttu9FqPsZBgwjGCNrLoyizqTNlHa7GlCCX7i47WBeZaBmg7cp7Qgtdn8i67c/mIjTkO9h0IRXxDu/enSl3qhxwOnn+IOp9wbTh2GXlK/ronhDXoR8llManWENWDvygmhGjxjN/fO7cUvz0fdb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112426; c=relaxed/simple;
-	bh=lR63EVLo9gXJjLM3dyuJUMyG8OHkXzvPFPws0LaB/Wk=;
+	s=arc-20240116; t=1744113105; c=relaxed/simple;
+	bh=psMwmmG7prNurx5+P2JzdIpchLZCqg3pYS0otxdMnLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HfyJZt025xX1o5tQI3Zcbt8GzskjHWB8faHTP68slhBLOu3ks6B6983VaI2JVBwX/7gCbctOseoXkDLHq6dT1cso5RgDqBA79IOnsLQAVKw41C2w0/aZF/8sfaoH6kDbKEj8jmd3sVr7mkXRDHNoFVNLcytfX3Qqi92Sz3FIm84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yquhnb9O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF81C4CEE5;
-	Tue,  8 Apr 2025 11:40:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZI853YgzhN0cYj14UIgUfLlSJwYGQnG99l0QIjarriLZ9uQRaSTLXkHz88gFF3XWlxaVij3css1VDmqptnC4Hh0QlRfIowczpSjlw87EH+pPWvLLbhu+f/Nzo0bBUmSdNc5EcX+BUANvxQOuNqs47hVDzccN5a65Xog04CbmIVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpKyYTLV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60931C4CEE5;
+	Tue,  8 Apr 2025 11:51:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112425;
-	bh=lR63EVLo9gXJjLM3dyuJUMyG8OHkXzvPFPws0LaB/Wk=;
+	s=korg; t=1744113104;
+	bh=psMwmmG7prNurx5+P2JzdIpchLZCqg3pYS0otxdMnLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yquhnb9O8COmVbbOcQFIRxMbvuayWz6v7MaJEkNPrbBko1zBijl8NNaY3bTU4abUm
-	 u6ak+qRaXTqe8aoylLguZF43QJG7uvODaOk8NdoM9VL/0RfvdY9lb+m4/O2Sq2w7V/
-	 gFYdgSIMHGNqJ4eGkHvn3I5YiteNz2SAcLbvjgxI=
+	b=zpKyYTLV9bVI93XsuFqS2gVIXIIgXXp0+i/B9jVssrFqmHOjMbLUl00VF5yaGrF1x
+	 Afs7fZOZj2gPfi5dwXVofgdJvocuQm4gFmGg4D2FJVYBKr+xoHMOqbAQcfH1p95dEk
+	 Q4BMNlyEnKsYtoRzvP4Btw/t4nxPMMtjqXhblQbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Youngmin Nam <youngmin.nam@samsung.com>
-Subject: [PATCH 5.15 064/279] tcp: fix races in tcp_abort()
+	Louis Chauvet <louis.chauvet@bootlin.com>,
+	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
+	Thomas Zimmermann <tzimmremann@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 036/268] drm/vkms: Fix use after free and double free on init error
 Date: Tue,  8 Apr 2025 12:47:27 +0200
-Message-ID: <20250408104828.071772244@linuxfoundation.org>
+Message-ID: <20250408104829.473896269@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: José Expósito <jose.exposito89@gmail.com>
 
-commit 5ce4645c23cf5f048eb8e9ce49e514bababdee85 upstream.
+[ Upstream commit ed15511a773df86205bda66c37193569575ae828 ]
 
-tcp_abort() has the same issue than the one fixed in the prior patch
-in tcp_write_err().
+If the driver initialization fails, the vkms_exit() function might
+access an uninitialized or freed default_config pointer and it might
+double free it.
 
-In order to get consistent results from tcp_poll(), we must call
-sk_error_report() after tcp_done().
+Fix both possible errors by initializing default_config only when the
+driver initialization succeeded.
 
-We can use tcp_done_with_error() to centralize this logic.
-
-Fixes: c1e64e298b8c ("net: diag: Support destroying TCP sockets.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Link: https://lore.kernel.org/r/20240528125253.1966136-4-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[youngmin: Resolved minor conflict in net/ipv4/tcp.c]
-Signed-off-by: Youngmin Nam <youngmin.nam@samsung.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Closes: https://lore.kernel.org/all/Z5uDHcCmAwiTsGte@louis-chauvet-laptop/
+Fixes: 2df7af93fdad ("drm/vkms: Add vkms_config type")
+Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+Reviewed-by: Thomas Zimmermann <tzimmremann@suse.de>
+Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250212084912.3196-1-jose.exposito89@gmail.com
+Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/gpu/drm/vkms/vkms_drv.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -4514,13 +4514,9 @@ int tcp_abort(struct sock *sk, int err)
- 	bh_lock_sock(sk);
+diff --git a/drivers/gpu/drm/vkms/vkms_drv.c b/drivers/gpu/drm/vkms/vkms_drv.c
+index dd0af086e7fa9..25db36ec06d49 100644
+--- a/drivers/gpu/drm/vkms/vkms_drv.c
++++ b/drivers/gpu/drm/vkms/vkms_drv.c
+@@ -243,17 +243,19 @@ static int __init vkms_init(void)
+ 	if (!config)
+ 		return -ENOMEM;
  
- 	if (!sock_flag(sk, SOCK_DEAD)) {
--		WRITE_ONCE(sk->sk_err, err);
--		/* This barrier is coupled with smp_rmb() in tcp_poll() */
--		smp_wmb();
--		sk_error_report(sk);
- 		if (tcp_need_reset(sk->sk_state))
- 			tcp_send_active_reset(sk, GFP_ATOMIC);
--		tcp_done(sk);
-+		tcp_done_with_error(sk, err);
- 	}
+-	default_config = config;
+-
+ 	config->cursor = enable_cursor;
+ 	config->writeback = enable_writeback;
+ 	config->overlay = enable_overlay;
  
- 	bh_unlock_sock(sk);
+ 	ret = vkms_create(config);
+-	if (ret)
++	if (ret) {
+ 		kfree(config);
++		return ret;
++	}
+ 
+-	return ret;
++	default_config = config;
++
++	return 0;
+ }
+ 
+ static void vkms_destroy(struct vkms_config *config)
+@@ -277,9 +279,10 @@ static void vkms_destroy(struct vkms_config *config)
+ 
+ static void __exit vkms_exit(void)
+ {
+-	if (default_config->dev)
+-		vkms_destroy(default_config);
++	if (!default_config)
++		return;
+ 
++	vkms_destroy(default_config);
+ 	kfree(default_config);
+ }
+ 
+-- 
+2.39.5
+
 
 
 
