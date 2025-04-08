@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-129880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 627CBA80238
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:46:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1B06A7FE33
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:11:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6538D460340
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:37:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C406C16ED50
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E171268C61;
-	Tue,  8 Apr 2025 11:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72B4224F6;
+	Tue,  8 Apr 2025 11:03:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yeZ60iNW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xc1HtOLO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F017B268685;
-	Tue,  8 Apr 2025 11:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4851268FD8;
+	Tue,  8 Apr 2025 11:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112227; cv=none; b=CHvsGCyr2fNLRoZ6YxmMTW/draRS50zIPlhO955aEF4NBAkDsQpUUm28VXPd4onaZUKmPy4PidrF3dWc3QVpbqqMm1ie5hLHqVRG08erujZO0BG2QjhZFPqIfVvtV9chFz21qMsL31+R7mPieQ0UKcltxrBXktn1lTFwABXuLXU=
+	t=1744110197; cv=none; b=Fta4G2Xb0E9G4PaiIksKdCyGwIkNhwVhyMF+qgmWugHkX40Y6xikJcGrhtkcoOxTAHh8jYenq0SzXP1ThOjKCYy1jhZmJELdXQwKRKNsn3wonDorbX36KOEJf4cbd4pXfsvm7pkUh5+2mAz6/LJS6ZFwM+3oklEm8pznBhzhyWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112227; c=relaxed/simple;
-	bh=o69UIHJQeyi7N7vm1sPEYwcvPRHftdZ8zzfHiRys8J4=;
+	s=arc-20240116; t=1744110197; c=relaxed/simple;
+	bh=rUy32XfrGSz6vP4H4aJQiA21IbjuVnRuc5GJhw64NE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G1/6IcMAbQwWC130Ml3sng+XRErH8inGmmItouRDoMzf4Tp+XTxiGYCILp+zc6aIcXZ4RLTYMZMfO8wFF6+m9hDzmYLgBhW6hh55BN2qEOlFsRBTFQcmMDIqJR4ohcanB00gUMDdh2Mas5xruKt/nf8H/jscr2XmtznkHhYjLi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yeZ60iNW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE89C4CEE7;
-	Tue,  8 Apr 2025 11:37:06 +0000 (UTC)
+	 MIME-Version; b=BT5FSGk6bYbKjV/oflJ+F4znbTVJXNpBB8i6zrTZSkLX+PxvBfn4/tL/S47TvQd2hYXwcEFGP6m8ergqiyogjmmB3fe7erm4ES1AqrtJawxX/3BOPhOMERPp6VCYVEcGcuyUH1KZx8Oymv9oqwyo9vFbbXt/V1GpG/U13XIdg+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xc1HtOLO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06739C4CEFD;
+	Tue,  8 Apr 2025 11:03:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112226;
-	bh=o69UIHJQeyi7N7vm1sPEYwcvPRHftdZ8zzfHiRys8J4=;
+	s=korg; t=1744110196;
+	bh=rUy32XfrGSz6vP4H4aJQiA21IbjuVnRuc5GJhw64NE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yeZ60iNWtlW1bWeHS+CsJ/i2gPjalk2oDv5vRlF60kye7Yo7sk1BaV2wkoZcYbhgz
-	 nraTsJuWHUnZoAmUoiBu6bVfkYcoMgeWbRAsyka0S/6SZ1Syskst8EWcFRoXV2/UdN
-	 d4WjEPkhCK8JIT4DcaBSzeYxQgJj0t1YkfsLDHhw=
+	b=Xc1HtOLOFr1qirTqskc6FO1JMR9qRfq+ntfpggzmx+uRkJ0mV4kGDxueWQdi2R28w
+	 RhDQTDm6izOdH/zN74Yty6550fhelyoM78Jn3vrn/MFiD2R94VT1HbHc6FSQ+cGSoi
+	 sSM+kPkwCTLmiZjl0gfjhJiO04d+pRM1AyMrEYJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.14 682/731] x86/Kconfig: Add cmpxchg8b support back to Geode CPUs
-Date: Tue,  8 Apr 2025 12:49:39 +0200
-Message-ID: <20250408104930.131777538@linuxfoundation.org>
+	Fernando Fernandez Mancera <ffmancera@riseup.net>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 202/227] ipv6: fix omitted netlink attributes when using RTEXT_FILTER_SKIP_STATS
+Date: Tue,  8 Apr 2025 12:49:40 +0200
+Message-ID: <20250408104826.362288214@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Fernando Fernandez Mancera <ffmancera@riseup.net>
 
-commit 6ac43f2be982ea54b75206dccd33f4cf81bfdc39 upstream.
+[ Upstream commit 7ac6ea4a3e0898db76aecccd68fb2c403eb7d24e ]
 
-An older cleanup of mine inadvertently removed geode-gx1 and geode-lx
-from the list of CPUs that are known to support a working cmpxchg8b.
+Using RTEXT_FILTER_SKIP_STATS is incorrectly skipping non-stats IPv6
+netlink attributes on link dump. This causes issues on userspace tools,
+e.g iproute2 is not rendering address generation mode as it should due
+to missing netlink attribute.
 
-Fixes: 88a2b4edda3d ("x86/Kconfig: Rework CONFIG_X86_PAE dependency")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250226213714.4040853-2-arnd@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Move the filling of IFLA_INET6_STATS and IFLA_INET6_ICMP6STATS to a
+helper function guarded by a flag check to avoid hitting the same
+situation in the future.
+
+Fixes: d5566fd72ec1 ("rtnetlink: RTEXT_FILTER_SKIP_STATS support to avoid dumping inet/inet6 stats")
+Signed-off-by: Fernando Fernandez Mancera <ffmancera@riseup.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250402121751.3108-1-ffmancera@riseup.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/Kconfig.cpu |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/addrconf.c | 37 +++++++++++++++++++++++++------------
+ 1 file changed, 25 insertions(+), 12 deletions(-)
 
---- a/arch/x86/Kconfig.cpu
-+++ b/arch/x86/Kconfig.cpu
-@@ -368,7 +368,7 @@ config X86_HAVE_PAE
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index 455bb4668407f..d38d15ccc7501 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -5658,6 +5658,27 @@ static void snmp6_fill_stats(u64 *stats, struct inet6_dev *idev, int attrtype,
+ 	}
+ }
  
- config X86_CMPXCHG64
- 	def_bool y
--	depends on X86_HAVE_PAE || M586TSC || M586MMX || MK6 || MK7
-+	depends on X86_HAVE_PAE || M586TSC || M586MMX || MK6 || MK7 || MGEODEGX1 || MGEODE_LX
++static int inet6_fill_ifla6_stats_attrs(struct sk_buff *skb,
++					struct inet6_dev *idev)
++{
++	struct nlattr *nla;
++
++	nla = nla_reserve(skb, IFLA_INET6_STATS, IPSTATS_MIB_MAX * sizeof(u64));
++	if (!nla)
++		goto nla_put_failure;
++	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_STATS, nla_len(nla));
++
++	nla = nla_reserve(skb, IFLA_INET6_ICMP6STATS, ICMP6_MIB_MAX * sizeof(u64));
++	if (!nla)
++		goto nla_put_failure;
++	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_ICMP6STATS, nla_len(nla));
++
++	return 0;
++
++nla_put_failure:
++	return -EMSGSIZE;
++}
++
+ static int inet6_fill_ifla6_attrs(struct sk_buff *skb, struct inet6_dev *idev,
+ 				  u32 ext_filter_mask)
+ {
+@@ -5679,18 +5700,10 @@ static int inet6_fill_ifla6_attrs(struct sk_buff *skb, struct inet6_dev *idev,
  
- # this should be set for all -march=.. options where the compiler
- # generates cmov.
+ 	/* XXX - MC not implemented */
+ 
+-	if (ext_filter_mask & RTEXT_FILTER_SKIP_STATS)
+-		return 0;
+-
+-	nla = nla_reserve(skb, IFLA_INET6_STATS, IPSTATS_MIB_MAX * sizeof(u64));
+-	if (!nla)
+-		goto nla_put_failure;
+-	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_STATS, nla_len(nla));
+-
+-	nla = nla_reserve(skb, IFLA_INET6_ICMP6STATS, ICMP6_MIB_MAX * sizeof(u64));
+-	if (!nla)
+-		goto nla_put_failure;
+-	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_ICMP6STATS, nla_len(nla));
++	if (!(ext_filter_mask & RTEXT_FILTER_SKIP_STATS)) {
++		if (inet6_fill_ifla6_stats_attrs(skb, idev) < 0)
++			goto nla_put_failure;
++	}
+ 
+ 	nla = nla_reserve(skb, IFLA_INET6_TOKEN, sizeof(struct in6_addr));
+ 	if (!nla)
+-- 
+2.39.5
+
 
 
 
