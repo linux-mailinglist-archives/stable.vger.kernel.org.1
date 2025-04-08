@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-131090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ADF5A80794
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E39EA80568
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:17:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A623C1B85BED
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:33:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45AE11B80607
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:11:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132C226B0A7;
-	Tue,  8 Apr 2025 12:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC44326AAB2;
+	Tue,  8 Apr 2025 12:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npZY4gvD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MHYhIbqT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AEC26A0EE;
-	Tue,  8 Apr 2025 12:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693FA26AA9B;
+	Tue,  8 Apr 2025 12:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115461; cv=none; b=SD4wCE3DoWtXG9QyZmvI7LL0nxPUCfGaKmwX0e0b0P+9ttOQEftQlNu11v5TrFM5ZMUUbONbAxg0NhlJ5nhkaaR4nvL5qZknA8YaMHR2cq8uYk3VeBhkT8GVZXS3sV62VcBja7LWOpYKHDAUIaAMpoEoekzTnnuQ3OnFDxe5FHk=
+	t=1744114167; cv=none; b=oNUyBDyyXnYZbza4e4KHo3e56XZ1XKEX81RcSyXEdPhndHqhQYvKN1wqn4tGRRt2VqT2qmVBcc4a3e6iFQ996MOrrzJhl7tVX0NMniod4dASW0afu8/gOlfIxEsKFxiLXj0sFQCFvSNUgImvHsNmxhHEUUpLFsM04+BeU0unXA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115461; c=relaxed/simple;
-	bh=VRyl7IOGBvuaoAw3A7p4iBb8cLssemkLTg1aLxHrQpU=;
+	s=arc-20240116; t=1744114167; c=relaxed/simple;
+	bh=K3b8s1FfJXOWPpIaBU64PETL9rveaAZXSQHVearwoRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K4yv9R7QA3wKveFY2i1CQ5P2H7+xeSKtMr3zToceTZln0NrsVmAe+y5AcYKwUDVDDwKc+nzAiRbkeUuEqAF83ZwAt1UxtQGZYXDQLmtiHVEUSS9nUoMDeOghoQ7Gb8ryip84hmC7rSF1SdUrTPHLKmQQ6PM60P3gVKqhHm59OAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=npZY4gvD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3876C4CEE5;
-	Tue,  8 Apr 2025 12:31:00 +0000 (UTC)
+	 MIME-Version; b=efkxHe9aitoVKXCro9416Icl52UelWVtQzko9llZZhiIX6rmMUiSsFp/ihCIEbaOYgfim3Ws0Q6md1dYBtg05LaTkm9ZxlwkFYhjVUgYg3o0LoB5LrmjDOJFdW3zpqe4LqRdea6y5bh3OEfPJa3YXlWmr0k0NEtlVa0afWFZsRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MHYhIbqT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0160C4CEE5;
+	Tue,  8 Apr 2025 12:09:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115461;
-	bh=VRyl7IOGBvuaoAw3A7p4iBb8cLssemkLTg1aLxHrQpU=;
+	s=korg; t=1744114167;
+	bh=K3b8s1FfJXOWPpIaBU64PETL9rveaAZXSQHVearwoRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=npZY4gvDIsigjSv6qKzSKqbrjUwbKaa8Uxvcg5dkbxMXO81qJAxCaNq9UU0HshbI8
-	 /0ohKfpnJGBs7ZGk91JIqAD47eM/iyGqWL4WBQQ2eqOnA7SgPWFmvRFj0wKXNE0Jd0
-	 L4lGqQVwWCQgc6rxy/zdWizCnS7Mo+xeHeiKhy0E=
+	b=MHYhIbqT7yvE6vH3IbSwu2LsIP7mb5qZ7J8FRrnHvuI+hSHkRZKrvxTqG/iYA5aFA
+	 7RrwEidOUgwg82+romc8MRdnCIa+dtMCMLj2gjmHE0ycR9sJySkJc7W1EC8dpvd8mY
+	 yUD51PqKQwtJ1JUJ2xlUnlRCBYz7R4RM55dTEWEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Theodore Tso <tytso@mit.edu>,
-	"Darrick J. Wong" <djwong@kernel.org>
-Subject: [PATCH 6.13 483/499] ext4: dont over-report free space or inodes in statvfs
+	syzbot <syzbot+9120834fc227768625ba@syzkaller.appspotmail.com>,
+	Roman Smirnov <r.smirnov@omp.ru>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>
+Subject: [PATCH 5.4 154/154] jfs: add index corruption check to DT_GETPAGE()
 Date: Tue,  8 Apr 2025 12:51:35 +0200
-Message-ID: <20250408104903.401561882@linuxfoundation.org>
+Message-ID: <20250408104820.223637841@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-commit f87d3af7419307ae26e705a2b2db36140db367a2 upstream.
+commit a8dfb2168906944ea61acfc87846b816eeab882d upstream.
 
-This fixes an analogus bug that was fixed in xfs in commit
-4b8d867ca6e2 ("xfs: don't over-report free space or inodes in
-statvfs") where statfs can report misleading / incorrect information
-where project quota is enabled, and the free space is less than the
-remaining quota.
+If the file system is corrupted, the header.stblindex variable
+may become greater than 127. Because of this, an array access out
+of bounds may occur:
 
-This commit will resolve a test failure in generic/762 which tests for
-this bug.
+------------[ cut here ]------------
+UBSAN: array-index-out-of-bounds in fs/jfs/jfs_dtree.c:3096:10
+index 237 is out of range for type 'struct dtslot[128]'
+CPU: 0 UID: 0 PID: 5822 Comm: syz-executor740 Not tainted 6.13.0-rc4-syzkaller-00110-g4099a71718b0 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ ubsan_epilogue lib/ubsan.c:231 [inline]
+ __ubsan_handle_out_of_bounds+0x121/0x150 lib/ubsan.c:429
+ dtReadFirst+0x622/0xc50 fs/jfs/jfs_dtree.c:3096
+ dtReadNext fs/jfs/jfs_dtree.c:3147 [inline]
+ jfs_readdir+0x9aa/0x3c50 fs/jfs/jfs_dtree.c:2862
+ wrap_directory_iterator+0x91/0xd0 fs/readdir.c:65
+ iterate_dir+0x571/0x800 fs/readdir.c:108
+ __do_sys_getdents64 fs/readdir.c:403 [inline]
+ __se_sys_getdents64+0x1e2/0x4b0 fs/readdir.c:389
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
+---[ end trace ]---
 
-Cc: stable@kernel.org
-Fixes: 689c958cbe6b ("ext4: add project quota support")
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Add a stblindex check for corruption.
+
+Reported-by: syzbot <syzbot+9120834fc227768625ba@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=9120834fc227768625ba
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/super.c |   27 +++++++++++++++++----------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ fs/jfs/jfs_dtree.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -6828,22 +6828,29 @@ static int ext4_statfs_project(struct su
- 			     dquot->dq_dqb.dqb_bhardlimit);
- 	limit >>= sb->s_blocksize_bits;
- 
--	if (limit && buf->f_blocks > limit) {
-+	if (limit) {
-+		uint64_t	remaining = 0;
-+
- 		curblock = (dquot->dq_dqb.dqb_curspace +
- 			    dquot->dq_dqb.dqb_rsvspace) >> sb->s_blocksize_bits;
--		buf->f_blocks = limit;
--		buf->f_bfree = buf->f_bavail =
--			(buf->f_blocks > curblock) ?
--			 (buf->f_blocks - curblock) : 0;
-+		if (limit > curblock)
-+			remaining = limit - curblock;
-+
-+		buf->f_blocks = min(buf->f_blocks, limit);
-+		buf->f_bfree = min(buf->f_bfree, remaining);
-+		buf->f_bavail = min(buf->f_bavail, remaining);
- 	}
- 
- 	limit = min_not_zero(dquot->dq_dqb.dqb_isoftlimit,
- 			     dquot->dq_dqb.dqb_ihardlimit);
--	if (limit && buf->f_files > limit) {
--		buf->f_files = limit;
--		buf->f_ffree =
--			(buf->f_files > dquot->dq_dqb.dqb_curinodes) ?
--			 (buf->f_files - dquot->dq_dqb.dqb_curinodes) : 0;
-+	if (limit) {
-+		uint64_t	remaining = 0;
-+
-+		if (limit > dquot->dq_dqb.dqb_curinodes)
-+			remaining = limit - dquot->dq_dqb.dqb_curinodes;
-+
-+		buf->f_files = min(buf->f_files, limit);
-+		buf->f_ffree = min(buf->f_ffree, remaining);
- 	}
- 
- 	spin_unlock(&dquot->dq_dqb_lock);
+--- a/fs/jfs/jfs_dtree.c
++++ b/fs/jfs/jfs_dtree.c
+@@ -117,7 +117,8 @@ do {									\
+ 	if (!(RC)) {							\
+ 		if (((P)->header.nextindex >				\
+ 		     (((BN) == 0) ? DTROOTMAXSLOT : (P)->header.maxslot)) || \
+-		    ((BN) && ((P)->header.maxslot > DTPAGEMAXSLOT))) {	\
++		    ((BN) && (((P)->header.maxslot > DTPAGEMAXSLOT) ||	\
++		    ((P)->header.stblindex >= DTPAGEMAXSLOT)))) {	\
+ 			BT_PUTPAGE(MP);					\
+ 			jfs_error((IP)->i_sb,				\
+ 				  "DT_GETPAGE: dtree page corrupt\n");	\
 
 
 
