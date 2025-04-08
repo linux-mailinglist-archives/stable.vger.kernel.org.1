@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-129978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2061BA802BC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 681AAA803A9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:00:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09ACF447B01
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:41:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AFDA3BFF8A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB59267F4F;
-	Tue,  8 Apr 2025 11:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38EAD268FED;
+	Tue,  8 Apr 2025 11:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MRNctEx7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gsJ8s3cS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C13F263C90;
-	Tue,  8 Apr 2025 11:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B7E267B89;
+	Tue,  8 Apr 2025 11:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112489; cv=none; b=P+Uk8e9cE+DN4XM3poYildH4/SWh6WVPhdWcdC1eK/3lnNMqmx/bTjwm+GerI5TOpm8B4cXggviCMKoFcKej2VEsHPcobI6T6Yy8FZ40pk1qfmWBiZYkh47g0uPz7y+Sr38JQZLSKeEFslnrtAZhyeN1e5lItA817ky7X6TQsGM=
+	t=1744113178; cv=none; b=AqRioOBCby6bl2KLNbOZQt+U3eVussLAsmQX0llj9/BnRKBSkC72lieYnegNpahksKSTUh31Hiuz1mKit0E3uryii67JLYFWmp9Hzcs016oPPocMd4f/oSZiGfpD4XeNGysqDXhgff7NSmaaO6cXXvT3L8NHh3TDC0q9V5tZcY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112489; c=relaxed/simple;
-	bh=5zdKLb4EUL4cIupZQy/WUXGaSULw/Uqqqxmjao66mXE=;
+	s=arc-20240116; t=1744113178; c=relaxed/simple;
+	bh=wOAbG6Te056qmI3mC6xym5eV527q4+sm/6WjbkQVOs4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AM9xoW68eaxSMIyCU7aVsX2lcVBXOe9dp1m0COdAFbrDJLWxJwPKvYb2VAHRDNMib825neHMg6f+vGUFE+7olgCnWRDmgm1Pn06Ith/mKIe6qmX+4lL1YYOTXgxu2c+geJAQfu0dc9xvYU6TpH9Lp5TggFLR+pM4pv9eIT+CiaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MRNctEx7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C764C4CEE5;
-	Tue,  8 Apr 2025 11:41:29 +0000 (UTC)
+	 MIME-Version; b=JiYNI2C6YqQE4dGe5GfdGZYMo7Ico1zYe8b8zkNXb67knj6RjzA7IPRIRoPSP7hmEq63tgNOEAu9z530Sa3N7bA0UxQfOEHrCbjcVuQiNTk2f7LkocJhwRJ065qHazYT0hRfpXuXWw3kE0d3jygBna+geXwM4tckxw9+dkES2Jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gsJ8s3cS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77922C4CEE5;
+	Tue,  8 Apr 2025 11:52:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112489;
-	bh=5zdKLb4EUL4cIupZQy/WUXGaSULw/Uqqqxmjao66mXE=;
+	s=korg; t=1744113177;
+	bh=wOAbG6Te056qmI3mC6xym5eV527q4+sm/6WjbkQVOs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MRNctEx75jneBzPKh6mvY1dw+tx7ix3AP/gzZOeUuXfLpaLl6c7EAV0kpBc3FuInr
-	 BKvnwUz0q001m6GOBMzKcZDiOGo/pZUWESDzyu70fPjyzjchc/67oMlsqgtMPX9siM
-	 EQ8dfMENlAEHfVVB7dAKzSirbaeAt8ACAGhlrrdc=
+	b=gsJ8s3cSiXu6OJITw0SF6hvgCB/dwzzS7RrYo1J+9NjynkEE3PtGnfnBOjZ2oI7gA
+	 LLNSkw0YK89m87BmUw9ptflVeOjJ2qdfBJYOzGqVYtqseoQ28Y5PKSY0mZRA6cmPJ9
+	 I+hgPZ0niO4Ko+1fvAxgALWMY0bkkaeHKzZfe2cA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Danila Chernetsov <listdansp@mail.ru>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 088/279] RDMA/hns: Fix a missing rollback in error path of hns_roce_create_qp_common()
-Date: Tue,  8 Apr 2025 12:47:51 +0200
-Message-ID: <20250408104828.723286461@linuxfoundation.org>
+Subject: [PATCH 6.6 061/268] fbdev: sm501fb: Add some geometry checks.
+Date: Tue,  8 Apr 2025 12:47:52 +0200
+Message-ID: <20250408104830.144525483@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Danila Chernetsov <listdansp@mail.ru>
 
-[ Upstream commit 444907dd45cbe62fd69398805b6e2c626fab5b3a ]
+[ Upstream commit aee50bd88ea5fde1ff4cc021385598f81a65830c ]
 
-When ib_copy_to_udata() fails in hns_roce_create_qp_common(),
-hns_roce_qp_remove() should be called in the error path to
-clean up resources in hns_roce_qp_store().
+Added checks for xoffset, yoffset settings.
+Incorrect settings of these parameters can lead to errors
+in sm501fb_pan_ functions.
 
-Fixes: 0f00571f9433 ("RDMA/hns: Use new SQ doorbell register for HIP09")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20250311084857.3803665-6-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 5fc404e47bdf ("[PATCH] fb: SM501 framebuffer driver")
+Signed-off-by: Danila Chernetsov <listdansp@mail.ru>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_qp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/sm501fb.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
-index d7f620eb4f21d..3875563abf374 100644
---- a/drivers/infiniband/hw/hns/hns_roce_qp.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
-@@ -1117,7 +1117,7 @@ static int hns_roce_create_qp_common(struct hns_roce_dev *hr_dev,
- 				       min(udata->outlen, sizeof(resp)));
- 		if (ret) {
- 			ibdev_err(ibdev, "copy qp resp failed!\n");
--			goto err_store;
-+			goto err_flow_ctrl;
- 		}
- 	}
+diff --git a/drivers/video/fbdev/sm501fb.c b/drivers/video/fbdev/sm501fb.c
+index 65c799ac5604f..b9d72f368c6c6 100644
+--- a/drivers/video/fbdev/sm501fb.c
++++ b/drivers/video/fbdev/sm501fb.c
+@@ -326,6 +326,13 @@ static int sm501fb_check_var(struct fb_var_screeninfo *var,
+ 	if (var->xres_virtual > 4096 || var->yres_virtual > 2048)
+ 		return -EINVAL;
  
++	/* geometry sanity checks */
++	if (var->xres + var->xoffset > var->xres_virtual)
++		return -EINVAL;
++
++	if (var->yres + var->yoffset > var->yres_virtual)
++		return -EINVAL;
++
+ 	/* can cope with 8,16 or 32bpp */
+ 
+ 	if (var->bits_per_pixel <= 8)
 -- 
 2.39.5
 
