@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-130112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25FD0A802A6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:49:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40178A801EB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:43:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7FC07A75A6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:46:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31B83880ED9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:36:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D63267B89;
-	Tue,  8 Apr 2025 11:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907B0224239;
+	Tue,  8 Apr 2025 11:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1oTlI69F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Di2DiQ9t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65A52641CC;
-	Tue,  8 Apr 2025 11:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B26E35973;
+	Tue,  8 Apr 2025 11:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112849; cv=none; b=II0zuht2Nowj6ARd4wIFIoCUtOdYTyrvdzRZOf+gp+6AfSZG2LXurPvvY/yQOQNSAqJoR3GUsrFXsaSucpvXqkQx3cIsPqEKgrKhHemY/bEGQvinDfzMVHeHIv9gZQ7rqH42vxr7bYeHoJXNYzxeWdQYvdMXDYolrCwbzK+tuu4=
+	t=1744112189; cv=none; b=h7lEKYfDfZekCaj/G4keSE0bZT4plr8hRoQahJZbxpqgMUtpHyHA1lXkquYNC07xwnuDePB7XZsiBztm+gXL8w4LFAuZS1MGcZWyHKIx1DzZPMDzbVM/AN/2z9OPt8rKghKXwfgeDNaGnI0uylc32OS0apEgOPK4AGvLWf317JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112849; c=relaxed/simple;
-	bh=bFn/hvg9daGidePT2NQ6/4uxEs3Kr3cyKOGcK1SeZ5c=;
+	s=arc-20240116; t=1744112189; c=relaxed/simple;
+	bh=b7TvbJ0tgGZktPXBZIGLi5qa24GG1Vr6IITaXL0Yv+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JAoeiVCl6Q/X0xkk1oJFtfRtJ4lEK3TwTBnzVwRm+LeX3cFXxvNCMPN/OT30ncPq0iJO1IsUclxq1j+dMLoz44Q6HMElL6SR+SW7cNKArjWVGyswZVhbKL2cc7pbIdBgpPFCjMHmbbgF8WG90VxHX2Hq2ox0IjROlEs+xmewJdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1oTlI69F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76D04C4CEE5;
-	Tue,  8 Apr 2025 11:47:28 +0000 (UTC)
+	 MIME-Version; b=bSvAMkogZYpURq/+5ScyAU5f7nK+0VhG4MJPEJISRNE904hVrqJlvn9UnSO88lwfCsLB8JEVkBAldfH7vfc36iDHipCrHhzYkVImeNqFqwAMJHfXkZenKYctEG40kJDkjyzu2lDtOf9u21l/8QxboDwRr0Yz6G9XEfY5Kdrgtgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Di2DiQ9t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0177C4CEE5;
+	Tue,  8 Apr 2025 11:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112848;
-	bh=bFn/hvg9daGidePT2NQ6/4uxEs3Kr3cyKOGcK1SeZ5c=;
+	s=korg; t=1744112189;
+	bh=b7TvbJ0tgGZktPXBZIGLi5qa24GG1Vr6IITaXL0Yv+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1oTlI69FrhB8li/jK1aUtuDNXZmuJ/J7/3DUT6tEerYnGdeGvuzuGHWAaqxT7JYRm
-	 gKmC8DM965WmTK+XMJ7RL9GhdTo0S1U1/4CBCvEOolYcoNK2T/GEjDDbeg+oc878qY
-	 4vnJCjTMQT/BqvLcnpgLNekWq0eqkHHaB/huA+CY=
+	b=Di2DiQ9tCdDhLn2CpyjPpivbsTxPrs9iC6bT5MhgjH7sZinaFpFkNlZzU3o18uFF7
+	 kUPbQRHVQ8pEq92RRw+LSky8+Txd/rxYdWJhxD5JBWqKewc70HD2mcwPDfxpAH86JG
+	 A49P1PfvkOkDovTLjuTzy2vUCKH9oDygyWN8iPBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 221/279] wifi: iwlwifi: fw: allocate chained SG tables for dump
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Zheng Yejian <zhengyejian1@huawei.com>,
+	Kairui Song <kasong@tencent.com>,
+	Tengda Wu <wutengda@huaweicloud.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.14 707/731] tracing: Fix use-after-free in print_graph_function_flags during tracer switching
 Date: Tue,  8 Apr 2025 12:50:04 +0200
-Message-ID: <20250408104832.329395725@linuxfoundation.org>
+Message-ID: <20250408104930.716655083@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,145 +65,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Tengda Wu <wutengda@huaweicloud.com>
 
-[ Upstream commit 7774e3920029398ad49dc848b23840593f14d515 ]
+commit 7f81f27b1093e4895e87b74143c59c055c3b1906 upstream.
 
-The firmware dumps can be pretty big, and since we use single
-pages for each SG table entry, even the table itself may end
-up being an order-5 allocation. Build chained tables so that
-we need not allocate a higher-order table here.
+Kairui reported a UAF issue in print_graph_function_flags() during
+ftrace stress testing [1]. This issue can be reproduced if puting a
+'mdelay(10)' after 'mutex_unlock(&trace_types_lock)' in s_start(),
+and executing the following script:
 
-This could be improved and cleaned up, e.g. by using the SG
-pool code or simply kvmalloc(), but all of that would require
-also updating the devcoredump first since that frees it all,
-so we need to be more careful. SG pool might also run against
-the CONFIG_ARCH_NO_SG_CHAIN limitation, which is irrelevant
-here.
+  $ echo function_graph > current_tracer
+  $ cat trace > /dev/null &
+  $ sleep 5  # Ensure the 'cat' reaches the 'mdelay(10)' point
+  $ echo timerlat > current_tracer
 
-Also use _devcd_free_sgtable() for the error paths now, much
-simpler especially since it's in two places now.
+The root cause lies in the two calls to print_graph_function_flags
+within print_trace_line during each s_show():
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250209143303.697c7a465ac9.Iea982df46b5c075bfb77ade36f187d99a70c63db@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  * One through 'iter->trace->print_line()';
+  * Another through 'event->funcs->trace()', which is hidden in
+    print_trace_fmt() before print_trace_line returns.
+
+Tracer switching only updates the former, while the latter continues
+to use the print_line function of the old tracer, which in the script
+above is print_graph_function_flags.
+
+Moreover, when switching from the 'function_graph' tracer to the
+'timerlat' tracer, s_start only calls graph_trace_close of the
+'function_graph' tracer to free 'iter->private', but does not set
+it to NULL. This provides an opportunity for 'event->funcs->trace()'
+to use an invalid 'iter->private'.
+
+To fix this issue, set 'iter->private' to NULL immediately after
+freeing it in graph_trace_close(), ensuring that an invalid pointer
+is not passed to other tracers. Additionally, clean up the unnecessary
+'iter->private = NULL' during each 'cat trace' when using wakeup and
+irqsoff tracers.
+
+ [1] https://lore.kernel.org/all/20231112150030.84609-1-ryncsn@gmail.com/
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Link: https://lore.kernel.org/20250320122137.23635-1-wutengda@huaweicloud.com
+Fixes: eecb91b9f98d ("tracing: Fix memleak due to race between current_tracer and trace")
+Closes: https://lore.kernel.org/all/CAMgjq7BW79KDSCyp+tZHjShSzHsScSiJxn5ffskp-QzVM06fxw@mail.gmail.com/
+Reported-by: Kairui Song <kasong@tencent.com>
+Signed-off-by: Tengda Wu <wutengda@huaweicloud.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 86 ++++++++++++++-------
- 1 file changed, 58 insertions(+), 28 deletions(-)
+ kernel/trace/trace_functions_graph.c |    1 +
+ kernel/trace/trace_irqsoff.c         |    2 --
+ kernel/trace/trace_sched_wakeup.c    |    2 --
+ 3 files changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index fc630a0d9c83c..f1d07ddb3f831 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -558,41 +558,71 @@ static void iwl_dump_prph(struct iwl_fw_runtime *fwrt,
- }
- 
- /*
-- * alloc_sgtable - allocates scallerlist table in the given size,
-- * fills it with pages and returns it
-+ * alloc_sgtable - allocates (chained) scatterlist in the given size,
-+ *	fills it with pages and returns it
-  * @size: the size (in bytes) of the table
--*/
--static struct scatterlist *alloc_sgtable(int size)
-+ */
-+static struct scatterlist *alloc_sgtable(ssize_t size)
- {
--	int alloc_size, nents, i;
--	struct page *new_page;
--	struct scatterlist *iter;
--	struct scatterlist *table;
-+	struct scatterlist *result = NULL, *prev;
-+	int nents, i, n_prev;
- 
- 	nents = DIV_ROUND_UP(size, PAGE_SIZE);
--	table = kcalloc(nents, sizeof(*table), GFP_KERNEL);
--	if (!table)
--		return NULL;
--	sg_init_table(table, nents);
--	iter = table;
--	for_each_sg(table, iter, sg_nents(table), i) {
--		new_page = alloc_page(GFP_KERNEL);
--		if (!new_page) {
--			/* release all previous allocated pages in the table */
--			iter = table;
--			for_each_sg(table, iter, sg_nents(table), i) {
--				new_page = sg_page(iter);
--				if (new_page)
--					__free_page(new_page);
--			}
--			kfree(table);
-+
-+#define N_ENTRIES_PER_PAGE (PAGE_SIZE / sizeof(*result))
-+	/*
-+	 * We need an additional entry for table chaining,
-+	 * this ensures the loop can finish i.e. we can
-+	 * fit at least two entries per page (obviously,
-+	 * many more really fit.)
-+	 */
-+	BUILD_BUG_ON(N_ENTRIES_PER_PAGE < 2);
-+
-+	while (nents > 0) {
-+		struct scatterlist *new, *iter;
-+		int n_fill, n_alloc;
-+
-+		if (nents <= N_ENTRIES_PER_PAGE) {
-+			/* last needed table */
-+			n_fill = nents;
-+			n_alloc = nents;
-+			nents = 0;
-+		} else {
-+			/* fill a page with entries */
-+			n_alloc = N_ENTRIES_PER_PAGE;
-+			/* reserve one for chaining */
-+			n_fill = n_alloc - 1;
-+			nents -= n_fill;
-+		}
-+
-+		new = kcalloc(n_alloc, sizeof(*new), GFP_KERNEL);
-+		if (!new) {
-+			if (result)
-+				_devcd_free_sgtable(result);
- 			return NULL;
- 		}
--		alloc_size = min_t(int, size, PAGE_SIZE);
--		size -= PAGE_SIZE;
--		sg_set_page(iter, new_page, alloc_size, 0);
-+		sg_init_table(new, n_alloc);
-+
-+		if (!result)
-+			result = new;
-+		else
-+			sg_chain(prev, n_prev, new);
-+		prev = new;
-+		n_prev = n_alloc;
-+
-+		for_each_sg(new, iter, n_fill, i) {
-+			struct page *new_page = alloc_page(GFP_KERNEL);
-+
-+			if (!new_page) {
-+				_devcd_free_sgtable(result);
-+				return NULL;
-+			}
-+
-+			sg_set_page(iter, new_page, PAGE_SIZE, 0);
-+		}
+--- a/kernel/trace/trace_functions_graph.c
++++ b/kernel/trace/trace_functions_graph.c
+@@ -1511,6 +1511,7 @@ void graph_trace_close(struct trace_iter
+ 	if (data) {
+ 		free_percpu(data->cpu_data);
+ 		kfree(data);
++		iter->private = NULL;
  	}
--	return table;
-+
-+	return result;
  }
  
- static void iwl_fw_get_prph_len(struct iwl_fw_runtime *fwrt,
--- 
-2.39.5
-
+--- a/kernel/trace/trace_irqsoff.c
++++ b/kernel/trace/trace_irqsoff.c
+@@ -250,8 +250,6 @@ static void irqsoff_trace_open(struct tr
+ {
+ 	if (is_graph(iter->tr))
+ 		graph_trace_open(iter);
+-	else
+-		iter->private = NULL;
+ }
+ 
+ static void irqsoff_trace_close(struct trace_iterator *iter)
+--- a/kernel/trace/trace_sched_wakeup.c
++++ b/kernel/trace/trace_sched_wakeup.c
+@@ -188,8 +188,6 @@ static void wakeup_trace_open(struct tra
+ {
+ 	if (is_graph(iter->tr))
+ 		graph_trace_open(iter);
+-	else
+-		iter->private = NULL;
+ }
+ 
+ static void wakeup_trace_close(struct trace_iterator *iter)
 
 
 
