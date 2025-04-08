@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-131346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92562A80971
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:54:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4ED0A808EF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:49:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD7EF1896111
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01E377B23EA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:47:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369AC26B975;
-	Tue,  8 Apr 2025 12:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBF5226E161;
+	Tue,  8 Apr 2025 12:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dFTxp2RJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDYCehKs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64992236FC;
-	Tue,  8 Apr 2025 12:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FE5269882;
+	Tue,  8 Apr 2025 12:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116149; cv=none; b=Gg+P8Gyng6kT3Zl5BErh2npYXdsPX/J5xT4arY6kDN886diGAxlidXWw8k31hkEjLclDNMLmUZOQeckl7mRarnE6EFcbDsw0Yb4ih7mCRAEifnZx1KuOltV9OB9aZom5UNAfRaG8sejC+ioqliAXtVIvoCr58ZLKyMp/GZzDNRE=
+	t=1744116179; cv=none; b=BNi9nWd7/ydoipEj/2lN08zT642nW5FmsHoSsYIXTBVQ1CogE9PNy2rrtiuscBg3dnregKknbS3HIyGCTcM5oQ1j4rhr+KL9y0tyoNscMkSkBV73x3HsdfrDUmC5jAkq7Y4+uF7sPNXosr856CluDO7mAcRF/uh+P6Vm8JPp+Bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116149; c=relaxed/simple;
-	bh=GTtcUhVPldRYLB8Lli2R4lgh06dzKHPGqA5B/sADH+Y=;
+	s=arc-20240116; t=1744116179; c=relaxed/simple;
+	bh=i/UHO8LsKhhUqshojVi+0XPb38g2CT55h3p0UpAuFN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EmLeoK8LR2lRgw5M2f+MhSWM0PmoCvErYi/5iDWx6q46aRwg+zF9uffisM3R0uN26xp3bMzWS1pmxcGH9BwMitBdzt5BhwQjK+WhIBadV9nwcYwdFLFnxA6zpgik45qPVMnfbtUiB7Ygj7SvMV7iNRwrs+6k1tSTM9vRTcLzwQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dFTxp2RJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C29BBC4CEED;
-	Tue,  8 Apr 2025 12:42:27 +0000 (UTC)
+	 MIME-Version; b=oTlC/6xi0aAwgMEk3iKMxw18gjyJWE2TOKyieqe+I8FCFJF3nwulDgHyl/LRafrBoo/kUmrQOMhqELMBxbeL6FePSOgRvRwNgEypEkKkkYGrpLvIz09bFRK/oiXWsLc6EK474kTljNI/dX92zsqmVrdlxgHGI8LHNMCJKGCatfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uDYCehKs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9C7C4CEE5;
+	Tue,  8 Apr 2025 12:42:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116148;
-	bh=GTtcUhVPldRYLB8Lli2R4lgh06dzKHPGqA5B/sADH+Y=;
+	s=korg; t=1744116179;
+	bh=i/UHO8LsKhhUqshojVi+0XPb38g2CT55h3p0UpAuFN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dFTxp2RJ7+px+3QwrtjpbbjRtlabOkhg++bLkkpEDFt5N1PAg004EOAR/OuMY7G9b
-	 F8soc0anZvjxfGzunUUE6bVmFy0iQLb2faWYv/gCj533xpvDmapnezbHMkTne7EsCF
-	 lD4QMu90ZeJmiDLzH55UXbkuXDJ/S7g5a2OPWHBo=
+	b=uDYCehKs6QN+b0sX9BNXwd3pB7IsQYl41Gael8xttxvC4be00aJx9mlNp4K9EDJal
+	 uBqkpihepeNoF0Vp5iKnt5D7oXp/e/bLPaxm9xz81WHZHwY/aPwdp9E8vz6nPfRScm
+	 srVHMIfqU9U2kZsyhcZcN+L3DdAMRcdNRC1T76Gc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zihan zhou <15645113830zzh@gmail.com>,
+	Tianchen Ding <dtcccc@linux.alibaba.com>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 006/423] sched: Cancel the slice protection of the idle entity
-Date: Tue,  8 Apr 2025 12:45:32 +0200
-Message-ID: <20250408104845.851359546@linuxfoundation.org>
+Subject: [PATCH 6.12 007/423] sched/eevdf: Force propagating min_slice of cfs_rq when {en,de}queue tasks
+Date: Tue,  8 Apr 2025 12:45:33 +0200
+Message-ID: <20250408104845.878619541@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
 References: <20250408104845.675475678@linuxfoundation.org>
@@ -67,120 +66,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: zihan zhou <15645113830zzh@gmail.com>
+From: Tianchen Ding <dtcccc@linux.alibaba.com>
 
-[ Upstream commit f553741ac8c0e467a3b873e305f34b902e50b86d ]
+[ Upstream commit 563bc2161b94571ea425bbe2cf69fd38e24cdedf ]
 
-A wakeup non-idle entity should preempt idle entity at any time,
-but because of the slice protection of the idle entity, the non-idle
-entity has to wait, so just cancel it.
+When a task is enqueued and its parent cgroup se is already on_rq, this
+parent cgroup se will not be enqueued again, and hence the root->min_slice
+leaves unchanged. The same issue happens when a task is dequeued and its
+parent cgroup se has other runnable entities, and the parent cgroup se
+will not be dequeued.
 
-This patch is aimed at minimizing the impact of SCHED_IDLE on
-SCHED_NORMAL. For example, a task with SCHED_IDLE policy that sleeps for
-1s and then runs for 3 ms, running cyclictest on the same cpu, has a
-maximum latency of 3 ms, which is caused by the slice protection of the
-idle entity. It is unreasonable. With this patch, the cyclictest latency
-under the same conditions is basically the same on the cpu with idle
-processes and on empty cpu.
+Force propagating min_slice when se doesn't need to be enqueued or
+dequeued. Ensure the se hierarchy always get the latest min_slice.
 
-[peterz: add helpers]
-Fixes: 63304558ba5d ("sched/eevdf: Curb wakeup-preemption")
-Signed-off-by: zihan zhou <15645113830zzh@gmail.com>
+Fixes: aef6987d8954 ("sched/eevdf: Propagate min_slice up the cgroup hierarchy")
+Signed-off-by: Tianchen Ding <dtcccc@linux.alibaba.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Tested-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lkml.kernel.org/r/20250208080850.16300-1-15645113830zzh@gmail.com
+Link: https://lkml.kernel.org/r/20250211063659.7180-1-dtcccc@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 46 ++++++++++++++++++++++++++++++++-------------
- 1 file changed, 33 insertions(+), 13 deletions(-)
+ kernel/sched/fair.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 58ba14ed8fbcb..49e340f9fa71b 100644
+index 49e340f9fa71b..ceb023629d48d 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -885,6 +885,26 @@ struct sched_entity *__pick_first_entity(struct cfs_rq *cfs_rq)
- 	return __node_2_se(left);
- }
+@@ -7103,6 +7103,8 @@ enqueue_task_fair(struct rq *rq, struct task_struct *p, int flags)
+ 		update_cfs_group(se);
  
-+/*
-+ * HACK, stash a copy of deadline at the point of pick in vlag,
-+ * which isn't used until dequeue.
-+ */
-+static inline void set_protect_slice(struct sched_entity *se)
-+{
-+	se->vlag = se->deadline;
-+}
-+
-+static inline bool protect_slice(struct sched_entity *se)
-+{
-+	return se->vlag == se->deadline;
-+}
-+
-+static inline void cancel_protect_slice(struct sched_entity *se)
-+{
-+	if (protect_slice(se))
-+		se->vlag = se->deadline + 1;
-+}
-+
- /*
-  * Earliest Eligible Virtual Deadline First
-  *
-@@ -921,11 +941,7 @@ static struct sched_entity *pick_eevdf(struct cfs_rq *cfs_rq)
- 	if (curr && (!curr->on_rq || !entity_eligible(cfs_rq, curr)))
- 		curr = NULL;
+ 		se->slice = slice;
++		if (se != cfs_rq->curr)
++			min_vruntime_cb_propagate(&se->run_node, NULL);
+ 		slice = cfs_rq_min_slice(cfs_rq);
  
--	/*
--	 * Once selected, run a task until it either becomes non-eligible or
--	 * until it gets a new slice. See the HACK in set_next_entity().
--	 */
--	if (sched_feat(RUN_TO_PARITY) && curr && curr->vlag == curr->deadline)
-+	if (sched_feat(RUN_TO_PARITY) && curr && protect_slice(curr))
- 		return curr;
+ 		cfs_rq->h_nr_running++;
+@@ -7232,6 +7234,8 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
+ 		update_cfs_group(se);
  
- 	/* Pick the leftmost entity if it's eligible */
-@@ -5626,11 +5642,8 @@ set_next_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)
- 		update_stats_wait_end_fair(cfs_rq, se);
- 		__dequeue_entity(cfs_rq, se);
- 		update_load_avg(cfs_rq, se, UPDATE_TG);
--		/*
--		 * HACK, stash a copy of deadline at the point of pick in vlag,
--		 * which isn't used until dequeue.
--		 */
--		se->vlag = se->deadline;
-+
-+		set_protect_slice(se);
- 	}
+ 		se->slice = slice;
++		if (se != cfs_rq->curr)
++			min_vruntime_cb_propagate(&se->run_node, NULL);
+ 		slice = cfs_rq_min_slice(cfs_rq);
  
- 	update_stats_curr_start(cfs_rq, se);
-@@ -8882,8 +8895,15 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int
- 	 * Preempt an idle entity in favor of a non-idle entity (and don't preempt
- 	 * in the inverse case).
- 	 */
--	if (cse_is_idle && !pse_is_idle)
-+	if (cse_is_idle && !pse_is_idle) {
-+		/*
-+		 * When non-idle entity preempt an idle entity,
-+		 * don't give idle entity slice protection.
-+		 */
-+		cancel_protect_slice(se);
- 		goto preempt;
-+	}
-+
- 	if (cse_is_idle != pse_is_idle)
- 		return;
- 
-@@ -8902,8 +8922,8 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int
- 	 * Note that even if @p does not turn out to be the most eligible
- 	 * task at this moment, current's slice protection will be lost.
- 	 */
--	if (do_preempt_short(cfs_rq, pse, se) && se->vlag == se->deadline)
--		se->vlag = se->deadline + 1;
-+	if (do_preempt_short(cfs_rq, pse, se))
-+		cancel_protect_slice(se);
- 
- 	/*
- 	 * If @p has become the most eligible task, force preemption.
+ 		cfs_rq->h_nr_running -= h_nr_running;
 -- 
 2.39.5
 
