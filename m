@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7578DA80266
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7FE3A803AC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:00:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A455188A988
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0C883BFEA0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0B6266EFB;
-	Tue,  8 Apr 2025 11:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D5E9267F6E;
+	Tue,  8 Apr 2025 11:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgKByXoo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SVAJ6EWk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0503E263C6D;
-	Tue,  8 Apr 2025 11:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BAC4266F17;
+	Tue,  8 Apr 2025 11:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112597; cv=none; b=a/87bRRSvrcQmkS3fRxMF7HGI9WVEcYn7cnyerxk4h0aZSGVBoPZSWyuUZchcSTlOlVoCZl+nzKl0culpcf6wzCXxvtsY/PI9F27PSJQiBaZ2T//zls270cPCY2K3k6RLm++k5Hg72BtPNj6ysdr2cxIg6FpqITfz8t+0qHgU10=
+	t=1744113175; cv=none; b=es3Ga9V2GCmvXkhNiEAN8IGh8ofJyieWvkTrG0RpYCM4AevfIa7ywmzkcGdMp2VrkaS7TZPUjTAvAAqqILUBnuZ3EtjU3NJdETOudYEMF6f/14T+D54eWLgtQnQ1sxBOMWeCXhl0OXfeooEMmmEJqQU8qSLdgT3/Wim0tMjSA00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112597; c=relaxed/simple;
-	bh=moJzFv9xhMnZ+Oot/Gvmczgonsc43d8FqM9ccveTgfw=;
+	s=arc-20240116; t=1744113175; c=relaxed/simple;
+	bh=XOHk9FSFdUMZfWBkaPK5cRT7MZ0A4O+NIIZ25VYfPOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OUedL7ZhdzzDjjKcD5w8NmT1xg1Cw/zFj+qNisGbLZ1NrYDFX912P5+pAdF3Yp0Ez20zw0Am4mviou2GHEikSpAzoF8qP/yLuZiMq/Tk7QOTfkJl+xlPNmtQhx4TdM1V07FtLzQRTs6N08cHJRcGZ2LKQ3DI64znXajieljdSa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VgKByXoo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88EBCC4CEE5;
-	Tue,  8 Apr 2025 11:43:16 +0000 (UTC)
+	 MIME-Version; b=MzJF8tSSOowBpfBDtpjs+eSbAFNsxzPpNj9Yw1jpAE16GRHgX+POpGvTZRVHdtoGiWHPuGdQQyiT65rtWWA003O4cCq6W+jRFMxPlgGBBzYIUOGWMlv7wlpplKXGnhg/l9aeGAuyXKWJ6d0nYjq+2+9dt5xQfPgYpEDRxnL1vDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVAJ6EWk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDDC7C4CEE5;
+	Tue,  8 Apr 2025 11:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112596;
-	bh=moJzFv9xhMnZ+Oot/Gvmczgonsc43d8FqM9ccveTgfw=;
+	s=korg; t=1744113175;
+	bh=XOHk9FSFdUMZfWBkaPK5cRT7MZ0A4O+NIIZ25VYfPOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VgKByXooelFRtdAxNNWKWxdnebyBpmfIj3lwmDKVO3gvB6eek0xoW+pSaXhItAp6H
-	 D641I3tn8D3sINrDBcVyoG1mWG3EDhx1ttyLXI8QPDuTTfY1msUWYa2IY3nxJAOgnJ
-	 rogsdndfs8S20NcbQsNIa4gr/VuP00MUcQTsnUm4=
+	b=SVAJ6EWkBeH8zY8fjjgMJJsCwu3sbSpOalLHm630iyl9N1WDAtoD1PHxnFf9grQ6/
+	 XpC3U3JMNTZfCyH1a88kD/jB6J6oJ7bjaUbobk2IzS4m+pKsg+VHBXodWSCUDBns98
+	 obkjljpGtfoNPEeQu2d8T+m0Ger/K+jtDZN69yGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 087/279] RDMA/hns: Fix unmatched condition in error path of alloc_user_qp_db()
-Date: Tue,  8 Apr 2025 12:47:50 +0200
-Message-ID: <20250408104828.694446065@linuxfoundation.org>
+Subject: [PATCH 6.6 060/268] mdacon: rework dependency list
+Date: Tue,  8 Apr 2025 12:47:51 +0200
+Message-ID: <20250408104830.119996036@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit b9f59a24ba35a7d955a9f8e148dd9f85b7b40a01 ]
+[ Upstream commit 5bbcc7645f4b244ffb5ac6563fbe9d3d42194447 ]
 
-Currently the condition of unmapping sdb in error path is not exactly
-the same as the condition of mapping in alloc_user_qp_db(). This may
-cause a problem of unmapping an unmapped db in some case, such as
-when the QP is XRC TGT. Unified the two conditions.
+mdacon has roughly the same dependencies as vgacon but expresses them
+as a negative list instead of a positive list, with the only practical
+difference being PowerPC/CHRP, which uses vga16fb instead of vgacon.
 
-Fixes: 90ae0b57e4a5 ("RDMA/hns: Combine enable flags of qp")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20250311084857.3803665-4-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+The CONFIG_MDA_CONSOLE description advises to only turn it on when vgacon
+is also used because MDA/Hercules-only systems should be using vgacon
+instead, so just change the list to enforce that directly for simplicity.
+
+The probing was broken from 2002 to 2008, this improves on the fix
+that was added then: If vgacon is a loadable module, then mdacon
+cannot be built-in now, and the list of systems that support vgacon
+is carried over.
+
+Fixes: 0b9cf3aa6b1e ("mdacon messing up default vc's - set default to vc13-16 again")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_qp.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/video/console/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
-index ff019e32c4552..d7f620eb4f21d 100644
---- a/drivers/infiniband/hw/hns/hns_roce_qp.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
-@@ -842,12 +842,14 @@ static int alloc_user_qp_db(struct hns_roce_dev *hr_dev,
- 			    struct hns_roce_ib_create_qp *ucmd,
- 			    struct hns_roce_ib_create_qp_resp *resp)
- {
-+	bool has_sdb = user_qp_has_sdb(hr_dev, init_attr, udata, resp, ucmd);
- 	struct hns_roce_ucontext *uctx = rdma_udata_to_drv_context(udata,
- 		struct hns_roce_ucontext, ibucontext);
-+	bool has_rdb = user_qp_has_rdb(hr_dev, init_attr, udata, resp);
- 	struct ib_device *ibdev = &hr_dev->ib_dev;
- 	int ret;
+diff --git a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
+index 30577b1d3de59..cdbcb86ff3944 100644
+--- a/drivers/video/console/Kconfig
++++ b/drivers/video/console/Kconfig
+@@ -24,7 +24,7 @@ config VGA_CONSOLE
+ 	  Say Y.
  
--	if (user_qp_has_sdb(hr_dev, init_attr, udata, resp, ucmd)) {
-+	if (has_sdb) {
- 		ret = hns_roce_db_map_user(uctx, ucmd->sdb_addr, &hr_qp->sdb);
- 		if (ret) {
- 			ibdev_err(ibdev,
-@@ -858,7 +860,7 @@ static int alloc_user_qp_db(struct hns_roce_dev *hr_dev,
- 		hr_qp->en_flags |= HNS_ROCE_QP_CAP_SQ_RECORD_DB;
- 	}
- 
--	if (user_qp_has_rdb(hr_dev, init_attr, udata, resp)) {
-+	if (has_rdb) {
- 		ret = hns_roce_db_map_user(uctx, ucmd->db_addr, &hr_qp->rdb);
- 		if (ret) {
- 			ibdev_err(ibdev,
-@@ -872,7 +874,7 @@ static int alloc_user_qp_db(struct hns_roce_dev *hr_dev,
- 	return 0;
- 
- err_sdb:
--	if (hr_qp->en_flags & HNS_ROCE_QP_CAP_SQ_RECORD_DB)
-+	if (has_sdb)
- 		hns_roce_db_unmap_user(uctx, &hr_qp->sdb);
- err_out:
- 	return ret;
+ config MDA_CONSOLE
+-	depends on !M68K && !PARISC && ISA
++	depends on VGA_CONSOLE && ISA
+ 	tristate "MDA text console (dual-headed)"
+ 	help
+ 	  Say Y here if you have an old MDA or monochrome Hercules graphics
 -- 
 2.39.5
 
