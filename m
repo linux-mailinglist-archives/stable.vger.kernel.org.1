@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-130621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08848A80583
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:18:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C31BDA804F8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:13:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB3E41B80DCC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:12:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D80EB7A7058
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7697926B2DE;
-	Tue,  8 Apr 2025 12:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E17026B2DB;
+	Tue,  8 Apr 2025 12:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0yqmLn7L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORi/ILi6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325C426B09F;
-	Tue,  8 Apr 2025 12:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCBB2638B8;
+	Tue,  8 Apr 2025 12:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114202; cv=none; b=o/7jKY/B3v4TnOBB2l257DJ1axEE9H4rNQQ7tnp5u7wa3HlQx6OA63nt8xJB1uH8JGNsib12Vw+HG1GVYVDBGzbRX4HAYqpi3S8MStTwldwIr+BCRAYdLQ39fHEKWVC7FlT3JCTfXrhDYvgv2LLDkESUpwDRLCodztZNSgxSJTE=
+	t=1744114231; cv=none; b=k5oNOQ0bJKtNNi7BdV6tKI8xhgpRSz6atWeLrXXTU0rbivbExzCSv4l0kmch6n/ypvkQ3ASwJjtqkoPA+K0znYqyQQKCEeOzxJQx/oxclYoUzgRLZVEef0Dc19TyATFWx0Hl7X0SV8DspxuaG3XSYcj/iAfkZ1942VpPCrJVcS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114202; c=relaxed/simple;
-	bh=miTpQxUGFMZ1wqmVpFHy22Lt0M93iUszNG3euVMUKyE=;
+	s=arc-20240116; t=1744114231; c=relaxed/simple;
+	bh=cDYVNok0fL2upGIc9CgQCOvKWqmVxATfp5L8Lurzc7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hDd4sBijwGX3XO/tqp9CP4vbp+YEsjolmGJSIw6FCoYTtC9VqZM5xkgHtnAuNedqBkaxDyvDXEe/BmxCIOVjvjaLK4xjGFu9V9OcVgwqapi6c6ArdR8EOWew7FDhl3xFbsZjHNclw9nC/RIKwom5A/3FuHtXGZDKXfs5Lwe3mvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0yqmLn7L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B454FC4CEE5;
-	Tue,  8 Apr 2025 12:10:01 +0000 (UTC)
+	 MIME-Version; b=ZmIqGeQtBQWDKYYERHRsfjsH4OZbnLn1kW+ZS8EGZix9GHXKmuVjRJEBLh9YTWc8/uH3c0kJ6WFzY3snNu68UBELeCnTu90PFj5pCYMcDm4q4LRXl3JIiGTY5Q2Y4WVww3u85O+lIT5otVKflyBW+2ttoJKhLjdUo4+p8z4Ivxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORi/ILi6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BBCDC4CEE5;
+	Tue,  8 Apr 2025 12:10:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114202;
-	bh=miTpQxUGFMZ1wqmVpFHy22Lt0M93iUszNG3euVMUKyE=;
+	s=korg; t=1744114231;
+	bh=cDYVNok0fL2upGIc9CgQCOvKWqmVxATfp5L8Lurzc7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0yqmLn7L307l+MM8pKgEkETnGGXkuvoFcWi2xAmIpHs0S1Pz5EgZjzmod6P0vl6om
-	 bzLCMOKucAf0AKjsEHd5fOLK9lSmudaU9YW72/8SAwEMmzKfgpu5WmtAbPIfMaIE57
-	 Eso2olHenalEIrUR/DfKujW3rlr0PhBgagquKhks=
+	b=ORi/ILi6Cn+a7+9KLooHZsiypFh9T7d6s5c/J8MZ1hhIU9cVy4gV02im4KsBRzywz
+	 hSDVrla3mWFeT9Z54o1FZuZDjGiNlD71mImXfDxJHognYHeclYmBvfo3Zej8XAxMss
+	 EfqnDbdAU40+gVZXDtkOx46rhqrJaU7ntX1l472w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Sandeen <sandeen@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 002/499] watch_queue: fix pipe accounting mismatch
-Date: Tue,  8 Apr 2025 12:43:34 +0200
-Message-ID: <20250408104851.318592464@linuxfoundation.org>
+Subject: [PATCH 6.13 003/499] x86/mm/pat: cpa-test: fix length for CPA_ARRAY test
+Date: Tue,  8 Apr 2025 12:43:35 +0200
+Message-ID: <20250408104851.341653760@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
 References: <20250408104851.256868745@linuxfoundation.org>
@@ -66,53 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Sandeen <sandeen@redhat.com>
+From: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-[ Upstream commit f13abc1e8e1a3b7455511c4e122750127f6bc9b0 ]
+[ Upstream commit 33ea120582a638b2f2e380a50686c2b1d7cce795 ]
 
-Currently, watch_queue_set_size() modifies the pipe buffers charged to
-user->pipe_bufs without updating the pipe->nr_accounted on the pipe
-itself, due to the if (!pipe_has_watch_queue()) test in
-pipe_resize_ring(). This means that when the pipe is ultimately freed,
-we decrement user->pipe_bufs by something other than what than we had
-charged to it, potentially leading to an underflow. This in turn can
-cause subsequent too_many_pipe_buffers_soft() tests to fail with -EPERM.
+The CPA_ARRAY test always uses len[1] as numpages argument to
+change_page_attr_set() although the addresses array is different each
+iteration of the test loop.
 
-To remedy this, explicitly account for the pipe usage in
-watch_queue_set_size() to match the number set via account_pipe_buffers()
+Replace len[1] with len[i] to have numpages matching the addresses array.
 
-(It's unclear why watch_queue_set_size() does not update nr_accounted;
-it may be due to intentional overprovisioning in watch_queue_set_size()?)
-
-Fixes: e95aada4cb93d ("pipe: wakeup wr_wait after setting max_usage")
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Link: https://lore.kernel.org/r/206682a8-0604-49e5-8224-fdbe0c12b460@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: ecc729f1f471 ("x86/mm/cpa: Add ARRAY and PAGES_ARRAY selftests")
+Signed-off-by: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250126074733.1384926-2-rppt@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/watch_queue.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/x86/mm/pat/cpa-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/watch_queue.c b/kernel/watch_queue.c
-index 1895fbc32bcb9..6d1936fb8ff02 100644
---- a/kernel/watch_queue.c
-+++ b/kernel/watch_queue.c
-@@ -269,6 +269,15 @@ long watch_queue_set_size(struct pipe_inode_info *pipe, unsigned int nr_notes)
- 	if (ret < 0)
- 		goto error;
+diff --git a/arch/x86/mm/pat/cpa-test.c b/arch/x86/mm/pat/cpa-test.c
+index 3d2f7f0a6ed14..ad3c1feec990d 100644
+--- a/arch/x86/mm/pat/cpa-test.c
++++ b/arch/x86/mm/pat/cpa-test.c
+@@ -183,7 +183,7 @@ static int pageattr_test(void)
+ 			break;
  
-+	/*
-+	 * pipe_resize_ring() does not update nr_accounted for watch_queue
-+	 * pipes, because the above vastly overprovisions. Set nr_accounted on
-+	 * and max_usage this pipe to the number that was actually charged to
-+	 * the user above via account_pipe_buffers.
-+	 */
-+	pipe->max_usage = nr_pages;
-+	pipe->nr_accounted = nr_pages;
-+
- 	ret = -ENOMEM;
- 	pages = kcalloc(nr_pages, sizeof(struct page *), GFP_KERNEL);
- 	if (!pages)
+ 		case 1:
+-			err = change_page_attr_set(addrs, len[1], PAGE_CPA_TEST, 1);
++			err = change_page_attr_set(addrs, len[i], PAGE_CPA_TEST, 1);
+ 			break;
+ 
+ 		case 2:
 -- 
 2.39.5
 
