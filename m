@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-129688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 479B9A8010F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F7E5A8037E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:59:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 930623B9446
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:31:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C81E3BC426
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:51:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F37266583;
-	Tue,  8 Apr 2025 11:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56016268FE4;
+	Tue,  8 Apr 2025 11:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qLH8l9r5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IOQA2fsv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83210267B10;
-	Tue,  8 Apr 2025 11:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126A4267B89;
+	Tue,  8 Apr 2025 11:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111714; cv=none; b=KROHX26nNirlk0viJs1CFXVbeV4hXwXyPIwwTpwwtKb5CKPhR+XxuTLUOLh6PQ3/Wz9XOor+gu4/URxVoYJq8vpJ7Ts/N9xWRoWCnksaYYEpBuTv3SDKYageMhtO7/N03frnPkQoFNJn0+gTJ1yLu7P/88VS/gZ2EjUx0UQcdis=
+	t=1744113055; cv=none; b=oCnP/gT/6aVVCG0gMOTCY/ZN7TeTwkqMWmfEkhPu95/g/0aTPFWuCoMQcZqas1/kRgaOflIf2JZcKEGvEoAgZ8qqpf5UjHBhxPvDNKLU+TCNVliFo7r4jPzLC/egKaTBli165PtY+bb4xHkUPLq7X/IIXr+hQKShmdEiVASd9sQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111714; c=relaxed/simple;
-	bh=pqkPk6WPkV5CdDFgT/Z/dwAIFBXb+qq0Ub/X3W7Sch8=;
+	s=arc-20240116; t=1744113055; c=relaxed/simple;
+	bh=fpRuSIjcwLc2Gt0xzJ/I5rbitP5dxJgoRRG8Qchko2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lTyU29t54bMjPPeMqTo2GXVKSNyyB3NkxLGNyyaJ7NctmYdYmnMJli/axZ+46NHD7JA6La9TlB7motM/ERsQNukbCwdG2Hi83PLAUj6X+wJBmjn3NQeifH3ABmD1S8LE1c/ql8jpRcAJJQfEnxn0zgMbNV3PbH3LowZya7EQj50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qLH8l9r5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D8EC4CEE5;
-	Tue,  8 Apr 2025 11:28:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DJ4EBX8z37qyxU8hybvHxt0hMQtnEnvBbgeiTkOF7eVeV2fWiRaTom2rGj88NVRp+whNgMFRS5Umj5yiN1VbdoVV08l5Uz7F6AINgrs4eB3gUIyKng5IXfqXZDnqbDk4Cr33KzsUo1BhejaYRyvX2dnn7c06kGf2ELINYaP9Zw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IOQA2fsv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96493C4CEE5;
+	Tue,  8 Apr 2025 11:50:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111714;
-	bh=pqkPk6WPkV5CdDFgT/Z/dwAIFBXb+qq0Ub/X3W7Sch8=;
+	s=korg; t=1744113054;
+	bh=fpRuSIjcwLc2Gt0xzJ/I5rbitP5dxJgoRRG8Qchko2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qLH8l9r5zj6U1ktE1qWdE+TMmeJvhmVtpv/+arzMc09PtTTBfD8W61gvP+FWbSvOf
-	 W7oB0m6Ssf3ReyIBeNQwHaZHyAMcn/8fLwRmHNlYyAwey4e8cv4t/s9jzRf9g/RQfY
-	 BTZJ3m0yyHaypjmMmQc1Y5TJ/sYkf60TS7+wbRdw=
+	b=IOQA2fsvA+Wj2Q341DfoBP+XvJStciDtokNbTPsIUMlqG0XZ02Naq2rbc6ZXFP9YF
+	 cIsmHgtwxCPJ9LjOmzaUPIwhkT7njYJDTRmTgve9F4kGaiVMcRvakHxwIVDf+Lrm37
+	 c+/kmF6g3kJ7JewOY77SIwO39Z+Zp9cFz29bpnI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	James Clark <james.clark@linaro.org>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 532/731] perf pmu: Handle memory failure in tool_pmu__new()
+Subject: [PATCH 6.6 018/268] thermal: int340x: Add NULL check for adev
 Date: Tue,  8 Apr 2025 12:47:09 +0200
-Message-ID: <20250408104926.649538270@linuxfoundation.org>
+Message-ID: <20250408104829.001683902@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit 431db90a7303cb394c5a881b4479946f64052727 ]
+[ Upstream commit 2542a3f70e563a9e70e7ded314286535a3321bdb ]
 
-On linux-next
-commit 72c6f57a4193 ("perf pmu: Dynamically allocate tool PMU")
-allocated PMU named "tool" dynamicly. However that allocation
-can fail and a NULL pointer is returned. That case is currently
-not handled and would result in an invalid address reference.
-Add a check for NULL pointer.
+Not all devices have an ACPI companion fwnode, so adev might be NULL.
+This is similar to the commit cd2fd6eab480
+("platform/x86: int3472: Check for adev == NULL").
 
-Fixes: 72c6f57a4193 ("perf pmu: Dynamically allocate tool PMU")
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Reviewed-by: James Clark <james.clark@linaro.org>
-Link: https://lore.kernel.org/r/20250319122820.2898333-1-tmricht@linux.ibm.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Add a check for adev not being set and return -ENODEV in that case to
+avoid a possible NULL pointer deref in int3402_thermal_probe().
+
+Note, under the same directory, int3400_thermal_probe() has such a
+check.
+
+Fixes: 77e337c6e23e ("Thermal: introduce INT3402 thermal driver")
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Acked-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://patch.msgid.link/20250313043611.1212116-1-chenyuan0y@gmail.com
+[ rjw: Subject edit, added Fixes: ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/pmus.c     | 3 ++-
- tools/perf/util/tool_pmu.c | 8 ++++++++
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ drivers/thermal/intel/int340x_thermal/int3402_thermal.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/perf/util/pmus.c b/tools/perf/util/pmus.c
-index 6498021acef01..7959af59908c2 100644
---- a/tools/perf/util/pmus.c
-+++ b/tools/perf/util/pmus.c
-@@ -269,7 +269,8 @@ static void pmu_read_sysfs(unsigned int to_read_types)
- 	if ((to_read_types & PERF_TOOL_PMU_TYPE_TOOL_MASK) != 0 &&
- 	    (read_pmu_types & PERF_TOOL_PMU_TYPE_TOOL_MASK) == 0) {
- 		tool_pmu = tool_pmu__new();
--		list_add_tail(&tool_pmu->list, &other_pmus);
-+		if (tool_pmu)
-+			list_add_tail(&tool_pmu->list, &other_pmus);
- 	}
- 	if ((to_read_types & PERF_TOOL_PMU_TYPE_HWMON_MASK) != 0 &&
- 	    (read_pmu_types & PERF_TOOL_PMU_TYPE_HWMON_MASK) == 0)
-diff --git a/tools/perf/util/tool_pmu.c b/tools/perf/util/tool_pmu.c
-index 9156745ea180d..d43d6cf6e4a20 100644
---- a/tools/perf/util/tool_pmu.c
-+++ b/tools/perf/util/tool_pmu.c
-@@ -494,12 +494,20 @@ struct perf_pmu *tool_pmu__new(void)
- {
- 	struct perf_pmu *tool = zalloc(sizeof(struct perf_pmu));
+diff --git a/drivers/thermal/intel/int340x_thermal/int3402_thermal.c b/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
+index 43fa351e2b9ec..b7fdf25bfd237 100644
+--- a/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
++++ b/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
+@@ -45,6 +45,9 @@ static int int3402_thermal_probe(struct platform_device *pdev)
+ 	struct int3402_thermal_data *d;
+ 	int ret;
  
-+	if (!tool)
-+		goto out;
- 	tool->name = strdup("tool");
-+	if (!tool->name) {
-+		zfree(&tool);
-+		goto out;
-+	}
++	if (!adev)
++		return -ENODEV;
 +
- 	tool->type = PERF_PMU_TYPE_TOOL;
- 	INIT_LIST_HEAD(&tool->aliases);
- 	INIT_LIST_HEAD(&tool->caps);
- 	INIT_LIST_HEAD(&tool->format);
- 	tool->events_table = find_core_events_table("common", "common");
+ 	if (!acpi_has_method(adev->handle, "_TMP"))
+ 		return -ENODEV;
  
-+out:
- 	return tool;
- }
 -- 
 2.39.5
 
