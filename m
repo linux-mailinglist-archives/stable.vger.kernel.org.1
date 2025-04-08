@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-129618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AF03A8010E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C92DA800A4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:33:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 818204601A3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:27:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5666B3BBC51
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC7C1268C55;
-	Tue,  8 Apr 2025 11:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DAD92690F9;
+	Tue,  8 Apr 2025 11:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vmbxCXs7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tvb2XXhZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BAE268FE5;
-	Tue,  8 Apr 2025 11:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BFB026A1D4;
+	Tue,  8 Apr 2025 11:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111523; cv=none; b=VmR88Kk3YTG7i7yv3Q9co67PPJWV8sJZa2pHrkMHlcohXPmH4H9kdPkObzF8fqLUF46kWzd0tJRqkdA1fWFJwDS/HvvRqqHEA9gNau1/DApR16GE/5ztOu0BEuXALt88KHtjgtBouBiyjpPeYLsPxEOrR7JjmhvJZ4bYrPMatR4=
+	t=1744111530; cv=none; b=CH/XdTzD8NV2671qpla0sizxs5X6qY3eXOkwRLOuKGNH+qsOeIFlOgfun3VbMlEqCq9PmGYLKW+g8nYGhqXblyqxqUKt5TcgRd/tZwcOxWEC4FwR85zkKMKy6T3N7RssnF+FXzeKRFjpuDcowMjkwxpZDHuEHUclTm8Roa9sC+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111523; c=relaxed/simple;
-	bh=gRKXz2/gcATILpZDcgivqQJig0txYvAfkLkPjtIt8Vw=;
+	s=arc-20240116; t=1744111530; c=relaxed/simple;
+	bh=JLOwGtoBcqS7SOjpZLAJvqqdHx/ZXzFDLoPosS5xWPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WWVQkkBxgi5uBbPvPDOmbfrHcJ1G0BpbDjECDRT6NUDQyIiMYMVwBSNPdcuWfan7LW4KLKiYLBBSdptR24KwlfTPMTFjyZXMR7E/g6KRltq95fa7hMuul+3LquNx1ZyxWbrZkdZGVbhTtx8wjzqoHCoJ3l7PwiCc/i6pag9Q+dA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vmbxCXs7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09290C4CEE5;
-	Tue,  8 Apr 2025 11:25:22 +0000 (UTC)
+	 MIME-Version; b=nliY4hOcZTpBghwJMjeh1jlQipeAcxe5antEPpq7WOc8AkKSpbB4nE0mOiwsEIxsmpzYEVMC9EKREyH486ACkeLly+jZ2DUM4CA5tgeln+kB0vdG8lmBzF49kY11b9JJ4w63+qDsN6i1ORC57hT6TKrvmaFmtgS4mzJ4sZOUs6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tvb2XXhZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE10DC4CEEA;
+	Tue,  8 Apr 2025 11:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111523;
-	bh=gRKXz2/gcATILpZDcgivqQJig0txYvAfkLkPjtIt8Vw=;
+	s=korg; t=1744111530;
+	bh=JLOwGtoBcqS7SOjpZLAJvqqdHx/ZXzFDLoPosS5xWPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vmbxCXs74hmm+pw20N1EQhTCMBsoKvi6eeuoDCqY4DdaQ735LnLXZMpZo7sqf0F0x
-	 16vZ1+99Cb5orqkaxu13Y72Wtt6utAqGOs1zCO9X5+CMRWR/4XZ45loFHFpe8pt5ky
-	 tgPSEtTdOymcuqKUOOWpwu6aCEkH17jBTRr1A6PQ=
+	b=tvb2XXhZfzWxVpoPJsB9MlupE3SE2trJ7piyuxOAfHsQq6wpfdJwFAo8/7sL6ZCVU
+	 OLT7ZYATrfuIN7HPLhzyhFYwJTYUizZx7kzten9SAZPDL3oSBbSro0ZLYLxwRlmA8e
+	 SrSiRWyQt3iSXE1H3ZDqI0oiUikFoPoutRY3hqE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Ayush Singh <ayush@beagleboard.org>,
+	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 461/731] greybus: gb-beagleplay: Add error handling for gb_greybus_init
-Date: Tue,  8 Apr 2025 12:45:58 +0200
-Message-ID: <20250408104925.002856212@linuxfoundation.org>
+Subject: [PATCH 6.14 462/731] coresight: catu: Fix number of pages while using 64k pages
+Date: Tue,  8 Apr 2025 12:45:59 +0200
+Message-ID: <20250408104925.025981428@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -66,40 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Ilkka Koskinen <ilkka@os.amperecomputing.com>
 
-[ Upstream commit be382372d55d65b5c7e5a523793ca5e403f8c595 ]
+[ Upstream commit 0e14e062f5ff98aa15264dfa87c5f5e924028561 ]
 
-Add error handling for the gb_greybus_init(bg) function call
-during the firmware reflash process to maintain consistency
-in error handling throughout the codebase. If initialization
-fails, log an error and return FW_UPLOAD_ERR_RW_ERROR.
+Trying to record a trace on kernel with 64k pages resulted in -ENOMEM.
+This happens due to a bug in calculating the number of table pages, which
+returns zero. Fix the issue by rounding up.
 
-Fixes: 0cf7befa3ea2 ("greybus: gb-beagleplay: Add firmware upload API")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Reviewed-by: Ayush Singh <ayush@beagleboard.org>
-Link: https://lore.kernel.org/r/20250120140547.1460-1-vulab@iscas.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+$ perf record --kcore -e cs_etm/@tmc_etr55,cycacc,branch_broadcast/k --per-thread taskset --cpu-list 1 dd if=/dev/zero of=/dev/null
+failed to mmap with 12 (Cannot allocate memory)
+
+Fixes: 8ed536b1e283 ("coresight: catu: Add support for scatter gather tables")
+Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250109215348.5483-1-ilkka@os.amperecomputing.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/greybus/gb-beagleplay.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/hwtracing/coresight/coresight-catu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/greybus/gb-beagleplay.c b/drivers/greybus/gb-beagleplay.c
-index 473ac3f2d3821..da31f1131afca 100644
---- a/drivers/greybus/gb-beagleplay.c
-+++ b/drivers/greybus/gb-beagleplay.c
-@@ -912,7 +912,9 @@ static enum fw_upload_err cc1352_prepare(struct fw_upload *fw_upload,
- 		cc1352_bootloader_reset(bg);
- 		WRITE_ONCE(bg->flashing_mode, false);
- 		msleep(200);
--		gb_greybus_init(bg);
-+		if (gb_greybus_init(bg) < 0)
-+			return dev_err_probe(&bg->sd->dev, FW_UPLOAD_ERR_RW_ERROR,
-+					     "Failed to initialize greybus");
- 		gb_beagleplay_start_svc(bg);
- 		return FW_UPLOAD_ERR_FW_INVALID;
- 	}
+diff --git a/drivers/hwtracing/coresight/coresight-catu.c b/drivers/hwtracing/coresight/coresight-catu.c
+index 275cc0d9f505f..3378bb77e6b41 100644
+--- a/drivers/hwtracing/coresight/coresight-catu.c
++++ b/drivers/hwtracing/coresight/coresight-catu.c
+@@ -269,7 +269,7 @@ catu_init_sg_table(struct device *catu_dev, int node,
+ 	 * Each table can address upto 1MB and we can have
+ 	 * CATU_PAGES_PER_SYSPAGE tables in a system page.
+ 	 */
+-	nr_tpages = DIV_ROUND_UP(size, SZ_1M) / CATU_PAGES_PER_SYSPAGE;
++	nr_tpages = DIV_ROUND_UP(size, CATU_PAGES_PER_SYSPAGE * SZ_1M);
+ 	catu_table = tmc_alloc_sg_table(catu_dev, node, nr_tpages,
+ 					size >> PAGE_SHIFT, pages);
+ 	if (IS_ERR(catu_table))
 -- 
 2.39.5
 
