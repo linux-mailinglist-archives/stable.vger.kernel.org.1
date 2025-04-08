@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-131345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B85BA80998
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:55:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B51A6A8096D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:54:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 630BA4E3233
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 163761BA45C7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D79CB26E142;
-	Tue,  8 Apr 2025 12:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8916F26E147;
+	Tue,  8 Apr 2025 12:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E08LUBWA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Np7KOun/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B9F26B954;
-	Tue,  8 Apr 2025 12:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46EF02236FC;
+	Tue,  8 Apr 2025 12:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116145; cv=none; b=jzPjr9y4K9szAX2hiuvU4Q4vf7q6ftovWXSDwRPBCntmb66PyJdqHuhfz5sjoLWeUl0aNlkA2MspHyqx7KerJB8t/iT90VthXCsY+zsCrj/emfd415H66lec8cVk3mRg8a9EsBiOc3ouAn4Jp1Qzh+ZGIm8mMsXCa0rdRCXQzZg=
+	t=1744116151; cv=none; b=srPasUp9bFhiPMehE9iapZ1I8NjsyMAycf8kjgz9FrIElcpmggtSiFNR49RD6B/N9KklCgYJwN1EIjq/apspWiO475mhZWpn4m4tQl8Epzk5sdyNWZ78xC/ENq1pNk99FY1AbMJBBomyv9N6ptyobyHHyFB3+xp4MDNPE81kIvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116145; c=relaxed/simple;
-	bh=3HHxb+nOgh8mim0l7VaIG8ToclPn2rcB1ZaRIliV5ho=;
+	s=arc-20240116; t=1744116151; c=relaxed/simple;
+	bh=v4eK6BH4o5RINZcRN+in9c25OTMllQe+CUcYJgBAzIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WKEG3CIIVx1vVsOzk12ELr1FxQs0215lm0b1Doqf5axQb3tdQDMy62i1IDwWH4tTVC4dS27kxtOotoW/jE3zOR6DCQr0d63mYzBT73fBmE2dV38KFvqWPW0s1HC+LdPu2mrbZq718w1NxOzGyZT4ujqShdBMPCGZLDbbvyXiNRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E08LUBWA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B209C4CEE5;
-	Tue,  8 Apr 2025 12:42:24 +0000 (UTC)
+	 MIME-Version; b=LAOx51ETnsGN9yg1bCGSsjLBQvr0UzdsHpUJLsC9ZmGEvFOrl4ewteYLSzSBQ7JNQ1mJvxEdTfT9fq2VXYNh78C4dBNIDJBT0NJy9GnGoVf0uucGEXYAqYDoTCS0/4qtz+8VIRVaTHGw9WTa+sOFfr3bHwOwZMOVoosc0QxlBuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Np7KOun/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A240CC4CEE5;
+	Tue,  8 Apr 2025 12:42:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116145;
-	bh=3HHxb+nOgh8mim0l7VaIG8ToclPn2rcB1ZaRIliV5ho=;
+	s=korg; t=1744116151;
+	bh=v4eK6BH4o5RINZcRN+in9c25OTMllQe+CUcYJgBAzIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E08LUBWAycTh9KuTXkIMixEIYZtVlCerD2jKg6W3WYgrLDvqi8/2lBy5TewJ+LmBQ
-	 OMcEa2ho0s+4wRHB3gQavTiaLOaVGiEXuz8xnH40R8LLQO3Womp0ywpYthUngYYIIi
-	 zvS2mFHueBgfTZ4GGIa5UaFu8epEacDweHOPRnJU=
+	b=Np7KOun/XHoqAFt/RKitBOS4CCyzwYEhDMqThNE2+myY4Cv/PfcYrc7u0dh4oSE75
+	 WwrHVUxzhCYiWRqc8yQoRVVOMlC+O4mUYeErLoz19aKvU+VVpvWjj0BeuppTrxes/Y
+	 XExAlpNNt/bskc6vxE1dQB+guhMDujqpvJ2RdPyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Marek Vasut <marex@denx.de>,
-	Mark Brown <broonie@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 032/423] regulator: pca9450: Fix enable register for LDO5
-Date: Tue,  8 Apr 2025 12:45:58 +0200
-Message-ID: <20250408104846.495162384@linuxfoundation.org>
+Subject: [PATCH 6.12 033/423] auxdisplay: MAX6959 should select BITREVERSE
+Date: Tue,  8 Apr 2025 12:45:59 +0200
+Message-ID: <20250408104846.518344987@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
 References: <20250408104845.675475678@linuxfoundation.org>
@@ -67,54 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Frieder Schrempf <frieder.schrempf@kontron.de>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 
-[ Upstream commit f5aab0438ef17f01c5ecd25e61ae6a03f82a4586 ]
+[ Upstream commit fce85f3da08b76c1b052f53a9f6f9c40a8a10660 ]
 
-The LDO5 regulator has two configuration registers, but only
-LDO5CTRL_L contains the bits for enabling/disabling the regulator.
+If CONFIG_BITREVERSE is not enabled:
 
-Fixes: 0935ff5f1f0a ("regulator: pca9450: add pca9450 pmic driver")
-Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Reviewed-by: Marek Vasut <marex@denx.de>
-Link: https://patch.msgid.link/20241218152842.97483-6-frieder@fris.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+    max6959.c:(.text+0x92): undefined reference to `byte_rev_table'
+
+Fixes: a9bcd02fa42217c7 ("auxdisplay: Add driver for MAX695x 7-segment LED controllers")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/202502161703.3Vr4M7qg-lkp@intel.com/
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/pca9450-regulator.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/auxdisplay/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/regulator/pca9450-regulator.c b/drivers/regulator/pca9450-regulator.c
-index 9714afe347dcc..1ffa145319f23 100644
---- a/drivers/regulator/pca9450-regulator.c
-+++ b/drivers/regulator/pca9450-regulator.c
-@@ -454,7 +454,7 @@ static const struct pca9450_regulator_desc pca9450a_regulators[] = {
- 			.n_linear_ranges = ARRAY_SIZE(pca9450_ldo5_volts),
- 			.vsel_reg = PCA9450_REG_LDO5CTRL_H,
- 			.vsel_mask = LDO5HOUT_MASK,
--			.enable_reg = PCA9450_REG_LDO5CTRL_H,
-+			.enable_reg = PCA9450_REG_LDO5CTRL_L,
- 			.enable_mask = LDO5H_EN_MASK,
- 			.owner = THIS_MODULE,
- 		},
-@@ -663,7 +663,7 @@ static const struct pca9450_regulator_desc pca9450bc_regulators[] = {
- 			.n_linear_ranges = ARRAY_SIZE(pca9450_ldo5_volts),
- 			.vsel_reg = PCA9450_REG_LDO5CTRL_H,
- 			.vsel_mask = LDO5HOUT_MASK,
--			.enable_reg = PCA9450_REG_LDO5CTRL_H,
-+			.enable_reg = PCA9450_REG_LDO5CTRL_L,
- 			.enable_mask = LDO5H_EN_MASK,
- 			.owner = THIS_MODULE,
- 		},
-@@ -835,7 +835,7 @@ static const struct pca9450_regulator_desc pca9451a_regulators[] = {
- 			.n_linear_ranges = ARRAY_SIZE(pca9450_ldo5_volts),
- 			.vsel_reg = PCA9450_REG_LDO5CTRL_H,
- 			.vsel_mask = LDO5HOUT_MASK,
--			.enable_reg = PCA9450_REG_LDO5CTRL_H,
-+			.enable_reg = PCA9450_REG_LDO5CTRL_L,
- 			.enable_mask = LDO5H_EN_MASK,
- 			.owner = THIS_MODULE,
- 		},
+diff --git a/drivers/auxdisplay/Kconfig b/drivers/auxdisplay/Kconfig
+index 21545ffba0658..2a9bb31633a71 100644
+--- a/drivers/auxdisplay/Kconfig
++++ b/drivers/auxdisplay/Kconfig
+@@ -503,6 +503,7 @@ config HT16K33
+ config MAX6959
+ 	tristate "Maxim MAX6958/6959 7-segment LED controller"
+ 	depends on I2C
++	select BITREVERSE
+ 	select REGMAP_I2C
+ 	select LINEDISP
+ 	help
 -- 
 2.39.5
 
