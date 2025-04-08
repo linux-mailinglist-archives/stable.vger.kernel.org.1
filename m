@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-128980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6F36A7FD81
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B787DA802B0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:49:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3E491894B8E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BDA717F364
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:39:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 185702686AA;
-	Tue,  8 Apr 2025 10:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49B21266583;
+	Tue,  8 Apr 2025 11:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcA2A8ZD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSWgkKw3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D74269885;
-	Tue,  8 Apr 2025 10:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03BE6263C78;
+	Tue,  8 Apr 2025 11:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109794; cv=none; b=YorF0n4etG2wngW7Q+IpcSoiYLiw7U12gYTIhXFv1cmYb9HKD3Ln/TUGWAWQ04SnjQQdZ1r/fPrrXEW5E357FzSxLCkt6Fdlwk3nquTEtvwOf/VNmWZB7jZCPfRZT30h/ByhdneDZFtRV5ekjh56I71+TQ4088m0GIPb5ayazxQ=
+	t=1744112389; cv=none; b=U7ttcY0YfCTM1ws5afI+1P1pnSIYqIiSh2Dexq/1JGMLIWZD0zpCrututLBzunJfb/QEYW4QoyMtGfD9M8UxzvHvWi9pIdoiLZ42rNrXGwVmWyK4L4r6ee5pY26QkmQStuDDJzKoK5k6BeUZeyU3PDE2gki1FTKlu5pZhUjXbRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109794; c=relaxed/simple;
-	bh=6Fwk28RjB/yU0mBGufh/h30w1A6owN4T/0ki/OEq/gE=;
+	s=arc-20240116; t=1744112389; c=relaxed/simple;
+	bh=NcNV2gO4GxJlFKR9vFrWdLQEGZQDg1A16Sb7y7QomRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kj+yUTz+HmfHafMvjQdqwdQRYVQ6+oDNCE+0s8KdpsOAUbeNlu8dcYEdhWTqbW1uVqQcgsTHPgL7cqxzCX0no2cOS48EHx7UjoPSvKB1K5vLpkqdJZ/DsQD/28OjJNizt4ZZVZaGPxiKWDw9c7bnK7a2aB3yUV6I8LsmGhTQY3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CcA2A8ZD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B57FC4CEEB;
-	Tue,  8 Apr 2025 10:56:34 +0000 (UTC)
+	 MIME-Version; b=lZlROyZkgtElE+v3WimE0n9HcbqyRs3JYQgDjHChadsnSgW4jsHHqXgkrE/yp0OPOz6Ti0jg8hU4u+HrIrLDR8MeARSjo8LeQdhj+gRQrRInNuYcI8dPKBFPUyYhRKHsv/q0PjB6zoOZ57FEOsAmx7oVT467b5PV2nkMbfpy18Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JSWgkKw3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 281F1C4CEE5;
+	Tue,  8 Apr 2025 11:39:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109794;
-	bh=6Fwk28RjB/yU0mBGufh/h30w1A6owN4T/0ki/OEq/gE=;
+	s=korg; t=1744112388;
+	bh=NcNV2gO4GxJlFKR9vFrWdLQEGZQDg1A16Sb7y7QomRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CcA2A8ZD4CV0JRMmxB2lbKhUvEqdMBkJQ1TUsgnc+UB2toAThkSPN1G1nqmgOSoo2
-	 CZnxF4cEapvrKBdF3g3mZHx/d+Da7wmBkNyupv8gVJ79Un4oLHpUooepOWKXs+zflg
-	 J2O4yMUtPFKmasOTHmDr0xqa7jOOMU9al3+179Kw=
+	b=JSWgkKw3SQWwgLzYj15Ze39Hn/2BY86O6y5N+xEFaQYuF7fmwNJS4oe2wxzQAS0je
+	 GZCfarcuNJYz4NQeMtVDaJGyr0bfMk35WGuDaO+TXkpUjtopeN9e1Rc2G5GDtch34v
+	 oupC8obNBt7v7ZJNh0MRzWm3BaUol4Mabi+1e4ZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Abramov <i.abramov@mt-integration.ru>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Lyude Paul <lyude@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 056/227] drm/gma500: Add NULL check for pci_gfx_root in mid_get_vbt_data()
+Subject: [PATCH 5.15 051/279] drm/nouveau: Do not override forced connector status
 Date: Tue,  8 Apr 2025 12:47:14 +0200
-Message-ID: <20250408104822.079697760@linuxfoundation.org>
+Message-ID: <20250408104827.743225183@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Abramov <i.abramov@mt-integration.ru>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 9af152dcf1a06f589f44a74da4ad67e365d4db9a ]
+[ Upstream commit 01f1d77a2630e774ce33233c4e6723bca3ae9daa ]
 
-Since pci_get_domain_bus_and_slot() can return NULL, add NULL check for
-pci_gfx_root in the mid_get_vbt_data().
+Keep user-forced connector status even if it cannot be programmed. Same
+behavior as for the rest of the drivers.
 
-This change is similar to the checks implemented in mid_get_fuse_settings()
-and mid_get_pci_revID(), which were introduced by commit 0cecdd818cd7
-("gma500: Final enables for Oaktrail") as "additional minor
-bulletproofing".
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: f910b411053f ("gma500: Add the glue to the various BIOS and firmware interfaces")
-Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
-Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250306112046.17144-1-i.abramov@mt-integration.ru
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250114100214.195386-1-tzimmermann@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/gma500/mid_bios.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/nouveau/nouveau_connector.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/gma500/mid_bios.c b/drivers/gpu/drm/gma500/mid_bios.c
-index 8ab44fec4bfa4..b76b86278e0e3 100644
---- a/drivers/gpu/drm/gma500/mid_bios.c
-+++ b/drivers/gpu/drm/gma500/mid_bios.c
-@@ -277,6 +277,11 @@ static void mid_get_vbt_data(struct drm_psb_private *dev_priv)
- 					    0, PCI_DEVFN(2, 0));
- 	int ret = -1;
+diff --git a/drivers/gpu/drm/nouveau/nouveau_connector.c b/drivers/gpu/drm/nouveau/nouveau_connector.c
+index ac9eb92059bc3..30f871be52cb3 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_connector.c
++++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
+@@ -754,7 +754,6 @@ nouveau_connector_force(struct drm_connector *connector)
+ 	if (!nv_encoder) {
+ 		NV_ERROR(drm, "can't find encoder to force %s on!\n",
+ 			 connector->name);
+-		connector->status = connector_status_disconnected;
+ 		return;
+ 	}
  
-+	if (pci_gfx_root == NULL) {
-+		WARN_ON(1);
-+		return;
-+	}
-+
- 	/* Get the address of the platform config vbt */
- 	pci_read_config_dword(pci_gfx_root, 0xFC, &addr);
- 	pci_dev_put(pci_gfx_root);
 -- 
 2.39.5
 
