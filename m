@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE794A8067C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:28:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26112A80972
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:54:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D66E3BD7A0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:16:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC06E4E59F5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468E4269D17;
-	Tue,  8 Apr 2025 12:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAAB626B953;
+	Tue,  8 Apr 2025 12:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zse7D89X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qHsodikV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010B8267B96;
-	Tue,  8 Apr 2025 12:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671F926982F;
+	Tue,  8 Apr 2025 12:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114512; cv=none; b=EH4ZErntKRJyQsKkCiCj9GwNu9VKY+j6UfaOvy+Cj+C/oK/u7BAVTCmCBTSLPjNsSmC/fGjmoDYAz0YeuJGRdYvo/Gi0KPslDdFuh+g9jHkVhjcjb3+4NLetY9mdekD2bYbsPrxFx15hjJ1gQS1WmrITkft0H2ih8G3bey+OXYQ=
+	t=1744116116; cv=none; b=QXwnM2ZfcD6e/HDL9vCfWKs744S+y9iFTi3J3oSVWmZMNRx6bDwOCz0FqhFO4wDa37ToysPm0Zg83DyFS8GBC1ZEJv+ekGFiKWRX0qpZ+zOLQMQ82eQpY611ORh2OP/FhHgld7OwM16lGqWD5yI5ZSfXsYL5Lw+Imk6okMQKNf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114512; c=relaxed/simple;
-	bh=g+tAUg1dtx0s3b6ffK98VJuRPHJ/Dc2I7QkCAh+5Y9U=;
+	s=arc-20240116; t=1744116116; c=relaxed/simple;
+	bh=H2cRW+Fr3AdRWMyrbInn9FA1wiAxqdx+E8C6PuWfvVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uzlJJfQOW9UnT2Q0+LxiZbl8qxXmehexhWFXATFuVHLe9Rr8HmqFtziMhAaqlWRkPIDB5SYSPJdjgbBypqEp4W8L/AXOfCcwAJJPcuGWhVfBsf+zzEJiKf9c3efsckFChK9PvVxX7FDdYjcAlX8rtV0kqlv8fLV8DX5FLFqEV1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zse7D89X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783C9C4CEE5;
-	Tue,  8 Apr 2025 12:15:11 +0000 (UTC)
+	 MIME-Version; b=t29lR6E2vC1sy55CR+HdmwkMJemJ1Ha2asr+DVJjTzy9O8ETRpYb4vuEW1rcq+yGCOmpWC2oCFVPqAEF+EPzgSU+Xnkhy2DXmTILwkW+bbrAc5mb1vIxA4zOFDfRznOCwtlpiehhQ5I74hK00UZ2VV8gsjkfHi2BOeAAAR5uhIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qHsodikV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED9C3C4CEE5;
+	Tue,  8 Apr 2025 12:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114511;
-	bh=g+tAUg1dtx0s3b6ffK98VJuRPHJ/Dc2I7QkCAh+5Y9U=;
+	s=korg; t=1744116116;
+	bh=H2cRW+Fr3AdRWMyrbInn9FA1wiAxqdx+E8C6PuWfvVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zse7D89XvI1Qmzf2zUPXivwtz0woNqvcJmAPXAQbFCv9c5TTxTyQcL7m31nUoGIgg
-	 svikohJwZVzQPDjohPJukkghOEHjP4m21JL0/IM8AFZ0o0XZSwQjvVuT8htUzPk0LN
-	 KmWE7zAudro2wH2fBH53M3Xh3c/dNs8mwo02XfGg=
+	b=qHsodikVFjCbzx7ib6Abuv8H/IljO+vM7kTMR9b2kkNeTAf+AYZIJMxB4yJ3gKK0y
+	 +5fMv5mNJkHeP1rhr80Jxj1tY6uu/kfBKys2V+zJf1caQEtbA5Vsb+jeqeIv4m+oS0
+	 FXb1jDIOM9/HVEXKKeiG8mYlH6PgOOVr9TvPVwRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Gary Wang <gary.c.wang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 135/499] pinctrl: renesas: rzg2l: Suppress binding attributes
-Date: Tue,  8 Apr 2025 12:45:47 +0200
-Message-ID: <20250408104854.558301415@linuxfoundation.org>
+Subject: [PATCH 6.12 022/423] EDAC/ie31200: Fix the DIMM size mask for several SoCs
+Date: Tue,  8 Apr 2025 12:45:48 +0200
+Message-ID: <20250408104846.261128800@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-[ Upstream commit ea4065345643f3163e812e58ed8add2c75c3ee46 ]
+[ Upstream commit 3427befbbca6b19fe0e37f91d66ce5221de70bf1 ]
 
-Suppress binding attributes for the rzg2l pinctrl driver, as it is an
-essential block for Renesas SoCs.  Unbinding the driver leads to
-warnings from __device_links_no_driver() and can eventually render the
-system inaccessible.
+The DIMM size mask for {Sky, Kaby, Coffee} Lake is not bits{7:0},
+but bits{5:0}. Fix it.
 
-Fixes: c4c4637eb57f ("pinctrl: renesas: Add RZ/G2L pin and gpio controller driver")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20250215131235.228274-1-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: 953dee9bbd24 ("EDAC, ie31200_edac: Add Skylake support")
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Tested-by: Gary Wang <gary.c.wang@intel.com>
+Link: https://lore.kernel.org/r/20250310011411.31685-3-qiuxu.zhuo@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/pinctrl-rzg2l.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/edac/ie31200_edac.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-index 515c38de445a9..3501535f5818f 100644
---- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-+++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-@@ -3210,6 +3210,7 @@ static struct platform_driver rzg2l_pinctrl_driver = {
- 		.name = DRV_NAME,
- 		.of_match_table = of_match_ptr(rzg2l_pinctrl_of_table),
- 		.pm = pm_sleep_ptr(&rzg2l_pinctrl_pm_ops),
-+		.suppress_bind_attrs = true,
- 	},
- 	.probe = rzg2l_pinctrl_probe,
- };
+diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
+index 98d74c604d726..92714dd88b3f6 100644
+--- a/drivers/edac/ie31200_edac.c
++++ b/drivers/edac/ie31200_edac.c
+@@ -162,6 +162,7 @@
+ #define IE31200_MAD_DIMM_0_OFFSET		0x5004
+ #define IE31200_MAD_DIMM_0_OFFSET_SKL		0x500C
+ #define IE31200_MAD_DIMM_SIZE			GENMASK_ULL(7, 0)
++#define IE31200_MAD_DIMM_SIZE_SKL		GENMASK_ULL(5, 0)
+ #define IE31200_MAD_DIMM_A_RANK			BIT(17)
+ #define IE31200_MAD_DIMM_A_RANK_SHIFT		17
+ #define IE31200_MAD_DIMM_A_RANK_SKL		BIT(10)
+@@ -375,7 +376,7 @@ static void __iomem *ie31200_map_mchbar(struct pci_dev *pdev)
+ static void __skl_populate_dimm_info(struct dimm_data *dd, u32 addr_decode,
+ 				     int chan)
+ {
+-	dd->size = (addr_decode >> (chan << 4)) & IE31200_MAD_DIMM_SIZE;
++	dd->size = (addr_decode >> (chan << 4)) & IE31200_MAD_DIMM_SIZE_SKL;
+ 	dd->dual_rank = (addr_decode & (IE31200_MAD_DIMM_A_RANK_SKL << (chan << 4))) ? 1 : 0;
+ 	dd->x16_width = ((addr_decode & (IE31200_MAD_DIMM_A_WIDTH_SKL << (chan << 4))) >>
+ 				(IE31200_MAD_DIMM_A_WIDTH_SKL_SHIFT + (chan << 4)));
 -- 
 2.39.5
 
