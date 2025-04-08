@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52119A8080F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:41:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6219EA80B4A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:15:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3E988A2B4B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74E1C501451
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AD7026A0C8;
-	Tue,  8 Apr 2025 12:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CA2626F472;
+	Tue,  8 Apr 2025 12:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMaifllR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TRlAOp7I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D51227BA4;
-	Tue,  8 Apr 2025 12:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A95C27C851;
+	Tue,  8 Apr 2025 12:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115400; cv=none; b=dfhmMT9gyzQZwu11sP4ZDcDsq/Leyrf9t17gRwYK90zzy+24zYff29JRSPVguu1CQAjAA3OYBTpFwd9q/qKJp0QR+yJ001Dvd46T5brDw69ZU3Fld0N7/bvIH8Ws7kB1U2/T2+YU+cmnb+81O3JboBOkGzbL3a42iI3jcLce9Es=
+	t=1744117043; cv=none; b=tcgFj0eY/2nx3/bTL0mNroSU4mFhieDZNh/zJFDqvfSxcUYA/GQo0SCQGRM1xe+w4hkyt7YB51yZKCCv+1isdIHlzVBGSk/kBJaqb1+b4+pCVBM5iVwDC7MvZD7RP8K+3S37O8WvV1s4x+x8F9UawgaRVwn1N8RCTFuzS/NdD9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115400; c=relaxed/simple;
-	bh=jBQ9hzWy5YFx2WKqHNQcsvufsyRg8bpgBiiudWgvKhE=;
+	s=arc-20240116; t=1744117043; c=relaxed/simple;
+	bh=Uxd6mR3tNP+UrtOwwFqp/53TsP1dWpGoeXMbOYeqAB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hTvRq1gzDbg/KMER+n86jYScN9nmZb+Vc5opgLCj3EvZEh6JJ3cc8OonbcV1yPkgKW0mXhgQMDBkc8agYs2LL5RwxfLQGtCZOZ5IY3UWN7p8AifE1sXXOIrT9BWRe9aTNI72RV+F6UYd8lbKsUPFvQlKBoLX6H37LlCA+xiaaAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMaifllR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D957C4CEE5;
-	Tue,  8 Apr 2025 12:29:59 +0000 (UTC)
+	 MIME-Version; b=vA5yE6Z2DKU6750OtPaYO5ulXsBS09e4+9NdZ0owRzkQ8oQyqwNc1JkFOwvtA9MgMuYxflDGfRMDXLnInxs+ryEg93oHuNk7oxZ73Hl1csHPFI4YV7W+aeQlLtFGxE0akyIfv/wrKusutH11bpGCmfS5NcEGed3y1wJTcm3F9GU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TRlAOp7I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26511C4CEE5;
+	Tue,  8 Apr 2025 12:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115399;
-	bh=jBQ9hzWy5YFx2WKqHNQcsvufsyRg8bpgBiiudWgvKhE=;
+	s=korg; t=1744117042;
+	bh=Uxd6mR3tNP+UrtOwwFqp/53TsP1dWpGoeXMbOYeqAB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PMaifllR8PSRB2/HKB62FJH4eoy8w4ThIvudLuqTglC76pOXCqw8Qq5oScycjuTDQ
-	 INAZ+gipOLKFRdO4Gp2C5HdD4VplKuj1iKQ7n0mbzwZFZxi8921jG5SlvdW5jYSdig
-	 CFbIX/Yf6ttvUqMXRDLMS4nyxk2U449pC73gzx7A=
+	b=TRlAOp7IE/y4X98+hFd+rMOQEzHwJpY7wsR8R600vXWywscyebM36bnAJ7k1Rr8vh
+	 mJv3EomLVXBPXvcNOFrKW3Ya6R/0OelxMCZSnA+Oe/zHDdL6JOefGM0bmKxiFG+s2M
+	 OwvVmKPYhug1za9+EPz13yj65kYgWFA3LJ/X5WKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Subject: [PATCH 6.13 459/499] ARM: 9444/1: add KEEP() keyword to ARM_VECTORS
-Date: Tue,  8 Apr 2025 12:51:11 +0200
-Message-ID: <20250408104902.681842827@linuxfoundation.org>
+	Sunil Khatri <sunil.khatri@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 346/423] drm/amdgpu/gfx11: fix num_mec
+Date: Tue,  8 Apr 2025 12:51:12 +0200
+Message-ID: <20250408104853.899493081@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Eggers <ceggers@arri.de>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit c3d944a367c0d9e4e125c7006e52f352e75776dc upstream.
+[ Upstream commit 4161050d47e1b083a7e1b0b875c9907e1a6f1f1f ]
 
-Without this, the vectors are removed if LD_DEAD_CODE_DATA_ELIMINATION
-is enabled.  At startup, the CPU (silently) hangs in the undefined
-instruction exception as soon as the first timer interrupt arrives.
+GC11 only has 1 mec.
 
-On my setup, the system also boots fine without the 2nd and 3rd KEEP()
-statements, so I cannot tell whether these are actually required.
-
-[nathan: Use OVERLAY_KEEP() to avoid breaking old ld.lld versions]
-
-Cc: stable@vger.kernel.org
-Fixes: ed0f94102251 ("ARM: 9404/1: arm32: enable HAVE_LD_DEAD_CODE_DATA_ELIMINATION")
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3d879e81f0f9 ("drm/amdgpu: add init support for GFX11 (v2)")
+Reviewed-by: Sunil Khatri <sunil.khatri@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/include/asm/vmlinux.lds.h |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm/include/asm/vmlinux.lds.h
-+++ b/arch/arm/include/asm/vmlinux.lds.h
-@@ -125,13 +125,13 @@
- 	__vectors_lma = .;						\
- 	OVERLAY 0xffff0000 : NOCROSSREFS AT(__vectors_lma) {		\
- 		.vectors {						\
--			*(.vectors)					\
-+			OVERLAY_KEEP(*(.vectors))			\
- 		}							\
- 		.vectors.bhb.loop8 {					\
--			*(.vectors.bhb.loop8)				\
-+			OVERLAY_KEEP(*(.vectors.bhb.loop8))		\
- 		}							\
- 		.vectors.bhb.bpiall {					\
--			*(.vectors.bhb.bpiall)				\
-+			OVERLAY_KEEP(*(.vectors.bhb.bpiall))		\
- 		}							\
- 	}								\
- 	ARM_LMA(__vectors, .vectors);					\
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+index d3e8be82a1727..84cf5fd297b7f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+@@ -1549,7 +1549,7 @@ static int gfx_v11_0_sw_init(void *handle)
+ 		adev->gfx.me.num_me = 1;
+ 		adev->gfx.me.num_pipe_per_me = 1;
+ 		adev->gfx.me.num_queue_per_pipe = 1;
+-		adev->gfx.mec.num_mec = 2;
++		adev->gfx.mec.num_mec = 1;
+ 		adev->gfx.mec.num_pipe_per_mec = 4;
+ 		adev->gfx.mec.num_queue_per_pipe = 4;
+ 		break;
+-- 
+2.39.5
+
 
 
 
