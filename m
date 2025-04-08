@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D201A8065E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:27:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98D67A80968
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:54:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 597804C08DD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:17:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D64591B87C4C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A14268C51;
-	Tue,  8 Apr 2025 12:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D0892236FC;
+	Tue,  8 Apr 2025 12:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eiaL5Wbs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EpCZnrUc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E262638B8;
-	Tue,  8 Apr 2025 12:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC61126E15F;
+	Tue,  8 Apr 2025 12:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114575; cv=none; b=upu6s+8W4VjveVxnQrjAllBnr8XMkkCXHmeImEjDPGC+Ds9YMn4mvRHnN7flylMEEkIODHOh5Fp4fOY9XqbNjC56gjT3ZZopSxXzICfdUtF5tufgsoR4QAlgZ14b5fn3RZvvA/fxBbZCzBU+TNglVqtyhntCKCITGrBf15/Mc0k=
+	t=1744116177; cv=none; b=V1QumqJAjOkmp41si7eij+hHxbNopEJ6JSn7BPGfaY5EJaTRZVZIUjUUa+P4YDL8/X6a47eO3W+zHyRwc6vJWejL0U4dKnZox1aPhOJGnzaswLL8zqXTzJQx5d8VrXTfXa51LXN455BmlvVLui7fLwYLUax68E7HwD2xWzCO1ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114575; c=relaxed/simple;
-	bh=Sndn6OozdCfL9kf7firR4BZOC0Z7XJ7mzRUKMqKnC6o=;
+	s=arc-20240116; t=1744116177; c=relaxed/simple;
+	bh=8/K527tOIoM8hXTJYpWkA9BUB2TYxwwfAU1fvIUyWNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YRfjymvoq+mtRRWklEfkPYoN3JR39kMKx26TlO4J/42RE2K7glSvU908gKiiAKovqAHmcqn24yGw8R68zZUmr/afK1cIjfpEo8O5RLW0DO+Q4eD/g7mwxrvKmAI0hwkBlAn3z+tbNRZXaF7ce9gBsHwI46SqahocctEjFgUUtIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eiaL5Wbs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21315C4CEE5;
-	Tue,  8 Apr 2025 12:16:14 +0000 (UTC)
+	 MIME-Version; b=TaQe+aTBEfiaaYrFdieyXB7uSv6ZGrc6OFzNmmN4OmbcFqQxy8m8kvrIdDWxqV+5Wzyd8cFF0wq8BzELLsM6PxAdmRzjHOGZmRJ0ORKaXBONi8oIB0aSgqJj+J8pxiXafZc/H7i04a+8+IeCQzI7drSCrzys6h2Eq2LWef1eMw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EpCZnrUc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C903C4CEE5;
+	Tue,  8 Apr 2025 12:42:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114575;
-	bh=Sndn6OozdCfL9kf7firR4BZOC0Z7XJ7mzRUKMqKnC6o=;
+	s=korg; t=1744116176;
+	bh=8/K527tOIoM8hXTJYpWkA9BUB2TYxwwfAU1fvIUyWNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eiaL5WbslFFi3vRbja7YidwEdMxcyq4gGSbNMZT4Py02ZkLku1YyIOZqEIC4WOB7e
-	 Lap9d66FYCXsYnPlKw4l9ZIAb4Cy0tZprhw2ocA5qSnbJYN/K+pesndXZv7SUaAyav
-	 j9m7Lr8NSGXbNRPdA2eYErgUPdsk94XupkGy64CY=
+	b=EpCZnrUcB5tFRwZ1xavO/JZKW5Z99LuPd/ncYV6LQykolkqX3kE3ZW1cJCWYOK9Xp
+	 BYJrC3lFIVoUuPfjkve3q+DtMQyvepSO/YNda2uIJr2sJn+NbzOjc9DiLExs376Gtp
+	 e8w9PaevnPgGF7N2ObHPu8egJNVnDsGFNQ+zX73I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tanya Agarwal <tanyaagarwal25699@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 156/499] lib: 842: Improve error handling in sw842_compress()
+Subject: [PATCH 6.12 042/423] HID: remove superfluous (and wrong) Makefile entry for CONFIG_INTEL_ISH_FIRMWARE_DOWNLOADER
 Date: Tue,  8 Apr 2025 12:46:08 +0200
-Message-ID: <20250408104855.074240971@linuxfoundation.org>
+Message-ID: <20250408104846.729669332@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tanya Agarwal <tanyaagarwal25699@gmail.com>
+From: Jiri Kosina <jkosina@suse.com>
 
-[ Upstream commit af324dc0e2b558678aec42260cce38be16cc77ca ]
+[ Upstream commit fe0fb58325e519008e2606a5aa2cff7ad23e212d ]
 
-The static code analysis tool "Coverity Scan" pointed the following
-implementation details out for further development considerations:
-CID 1309755: Unused value
-In sw842_compress: A value assigned to a variable is never used. (CWE-563)
-returned_value: Assigning value from add_repeat_template(p, repeat_count)
-to ret here, but that stored value is overwritten before it can be used.
+The line
 
-Conclusion:
-Add error handling for the return value from an add_repeat_template()
-call.
+	obj-$(INTEL_ISH_FIRMWARE_DOWNLOADER)   += intel-ish-hid/
 
-Fixes: 2da572c959dd ("lib: add software 842 compression/decompression")
-Signed-off-by: Tanya Agarwal <tanyaagarwal25699@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+in top-level HID Makefile is both superfluous (as CONFIG_INTEL_ISH_FIRMWARE_DOWNLOADER
+depends on CONFIG_INTEL_ISH_HID, which contains intel-ish-hid/ already) and wrong (as it's
+missing the CONFIG_ prefix).
+
+Just remove it.
+
+Fixes: 91b228107da3e ("HID: intel-ish-hid: ISH firmware loader client driver")
+Reported-by: Jiri Slaby <jirislaby@kernel.org>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/842/842_compress.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hid/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/lib/842/842_compress.c b/lib/842/842_compress.c
-index c02baa4168e16..055356508d97c 100644
---- a/lib/842/842_compress.c
-+++ b/lib/842/842_compress.c
-@@ -532,6 +532,8 @@ int sw842_compress(const u8 *in, unsigned int ilen,
- 		}
- 		if (repeat_count) {
- 			ret = add_repeat_template(p, repeat_count);
-+			if (ret)
-+				return ret;
- 			repeat_count = 0;
- 			if (next == last) /* reached max repeat bits */
- 				goto repeat;
+diff --git a/drivers/hid/Makefile b/drivers/hid/Makefile
+index 496dab54c73a8..f2900ee2ef858 100644
+--- a/drivers/hid/Makefile
++++ b/drivers/hid/Makefile
+@@ -165,7 +165,6 @@ obj-$(CONFIG_USB_KBD)		+= usbhid/
+ obj-$(CONFIG_I2C_HID_CORE)	+= i2c-hid/
+ 
+ obj-$(CONFIG_INTEL_ISH_HID)	+= intel-ish-hid/
+-obj-$(INTEL_ISH_FIRMWARE_DOWNLOADER)	+= intel-ish-hid/
+ 
+ obj-$(CONFIG_AMD_SFH_HID)       += amd-sfh-hid/
+ 
 -- 
 2.39.5
 
