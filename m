@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-129743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E4CBA801DA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:43:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6EF2A7FDB0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59566445C16
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B1E819E2AC5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47B826A087;
-	Tue,  8 Apr 2025 11:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72A21268682;
+	Tue,  8 Apr 2025 10:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aorsj0ef"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C39mkFCc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61EFC267F6C;
-	Tue,  8 Apr 2025 11:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305FD1DDA0C;
+	Tue,  8 Apr 2025 10:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111858; cv=none; b=ZtO74v5skXTuQn1HlLloz5hviPs2vj286r4leb+CPlXi4kN7YXVTD2oCx6Auio2WHMzt9pa33VMWrttc+jaBa9OIorWJtVlY5Y6xRJsRys4NHKKz8lCXQiLWjq2AUFzRFrut0wkqSccbDfYAUd62S73UN5BV1qi1XYmwgJ2br/4=
+	t=1744109929; cv=none; b=O0u9f0cU1+b0dNlYItXih7d3RcrmnqPs0wsj9T+UiIhp84tbgbWbQE5BUoB+Hf73Ve4Bp0ll5WM8hqqiEHfc4DUbkrCX4EqJrCVo8RFEnsFqC1OHV2Q0YD77S4hqSISQBcf+6k8w1aYjR4WjrRAzmggLJ7lK4hixjj1shcrruhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111858; c=relaxed/simple;
-	bh=Tr0IzYeWHDqxlIjsrVLZrT467gNEkf4/kNZRL7b2ptY=;
+	s=arc-20240116; t=1744109929; c=relaxed/simple;
+	bh=MZXBBNvmjKYOz2oj+/ySLHT3jBk45LQrUWdL2pmyCOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rFPfArtongR/M15YEFCOGDn7hIN3hkEiNvvIQE1je1c6+ahfrMaxqbiguPRWuyqi5TdEcxJD2Pd/0dodqyvTDxpKKeUfs9NZ6bWNiGp8xtq+9rOeg2JQGD+OfP85MS0zdNf7qOCHPpcDuPdxZfTdpEuXXqDvQd8Cc+K4qtRk7AY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aorsj0ef; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5CB7C4CEE5;
-	Tue,  8 Apr 2025 11:30:57 +0000 (UTC)
+	 MIME-Version; b=u77iyOxC/uxqfjuotRVEpNa/4F+kjJsWvS+WRDk6M4F+bnft5Efo3DYNhT873dWT/LFwAqLxChMGdVVHzIFgUkgmgXy0jY4FNHeQjgzkPVbG7s8L+JpswTB6FwUOufDByjANyS1DOx2YeDh99nwqyjJMvV/AARc1FpRq7DSiFWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C39mkFCc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7016C4CEE5;
+	Tue,  8 Apr 2025 10:58:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111858;
-	bh=Tr0IzYeWHDqxlIjsrVLZrT467gNEkf4/kNZRL7b2ptY=;
+	s=korg; t=1744109929;
+	bh=MZXBBNvmjKYOz2oj+/ySLHT3jBk45LQrUWdL2pmyCOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aorsj0efPnh9tJkKEQKu8wgI8WKSYCR3vSEgRwhMAnfSpy5/xM/xU2LzRlaTP66gi
-	 kEWdEUxchBuJsV5ojbBRcy96xjb2DtjC9h6vIZ8VkBIcpX1sMn1lrNy6ZP1KFldEwG
-	 phkPSZCav1CvxStBdyVxo0/z0bs5Q+7DZdQ72k3o=
+	b=C39mkFCc6gn7joR1pGPHiRgcOFAUeWTwlJWJG4hUwvqvdVNAOIOSDuB/RJ/gvFi6C
+	 FgxVOiMif1Tth3eQ8Z+WewydDHgpKX5BKlQ4L/nWWD7hfW99BXVb6SqSCqyEF1KQyU
+	 Rz7bD1KzNo2MHaF77hRBJz3GQXP4yqSmQtzODCjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yajun Deng <yajun.deng@linux.dev>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Jon Mason <jdmason@kudzu.us>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 585/731] ntb_hw_switchtec: Fix shift-out-of-bounds in switchtec_ntb_mw_set_trans
-Date: Tue,  8 Apr 2025 12:48:02 +0200
-Message-ID: <20250408104927.880430884@linuxfoundation.org>
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 105/227] net: usb: qmi_wwan: add Telit Cinterion FE990B composition
+Date: Tue,  8 Apr 2025 12:48:03 +0200
+Message-ID: <20250408104823.507886407@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yajun Deng <yajun.deng@linux.dev>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-[ Upstream commit de203da734fae00e75be50220ba5391e7beecdf9 ]
+commit e8cdd91926aac2c53a23925c538ad4c44be4201f upstream.
 
-There is a kernel API ntb_mw_clear_trans() would pass 0 to both addr and
-size. This would make xlate_pos negative.
+Add the following Telit Cinterion FE990B composition:
+0x10b0: rmnet + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+        tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
 
-[   23.734156] switchtec switchtec0: MW 0: part 0 addr 0x0000000000000000 size 0x0000000000000000
-[   23.734158] ================================================================================
-[   23.734172] UBSAN: shift-out-of-bounds in drivers/ntb/hw/mscc/ntb_hw_switchtec.c:293:7
-[   23.734418] shift exponent -1 is negative
+usb-devices:
+T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  7 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10b0 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FE990
+S:  SerialNumber=28c2595e
+C:  #Ifs= 9 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Ensuring xlate_pos is a positive or zero before BIT.
-
-Fixes: 1e2fd202f859 ("ntb_hw_switchtec: Check for alignment of the buffer in mw_set_trans()")
-Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Link: https://patch.msgid.link/20250227112441.3653819-2-fabio.porcedda@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ntb/hw/mscc/ntb_hw_switchtec.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/qmi_wwan.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
-index ad1786be2554b..f851397b65d6e 100644
---- a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
-+++ b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
-@@ -288,7 +288,7 @@ static int switchtec_ntb_mw_set_trans(struct ntb_dev *ntb, int pidx, int widx,
- 	if (size != 0 && xlate_pos < 12)
- 		return -EINVAL;
- 
--	if (!IS_ALIGNED(addr, BIT_ULL(xlate_pos))) {
-+	if (xlate_pos >= 0 && !IS_ALIGNED(addr, BIT_ULL(xlate_pos))) {
- 		/*
- 		 * In certain circumstances we can get a buffer that is
- 		 * not aligned to its size. (Most of the time
--- 
-2.39.5
-
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1306,6 +1306,7 @@ static const struct usb_device_id produc
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a0, 0)}, /* Telit FN920C04 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a4, 0)}, /* Telit FN920C04 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a9, 0)}, /* Telit FN920C04 */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10b0, 0)}, /* Telit FE990B */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c0, 0)}, /* Telit FE910C04 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c4, 0)}, /* Telit FE910C04 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c8, 0)}, /* Telit FE910C04 */
 
 
 
