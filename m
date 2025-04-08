@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-131052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A61D0A80810
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:41:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E798A80988
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:55:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 716BE166AE0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60A338C3E16
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1CDC26B953;
-	Tue,  8 Apr 2025 12:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2FF026B944;
+	Tue,  8 Apr 2025 12:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GFynBYCW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EZ+3ku3A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2BE26A08F;
-	Tue,  8 Apr 2025 12:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B0826461E;
+	Tue,  8 Apr 2025 12:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115359; cv=none; b=DRNZ4qI3SRUTUG0c94OPMu8pujJrn+WFR6WGyyUzpl7O2KoyDuWYmQG5PtoBJ5KDiKaekgMphPb8W+Ieq/1FcbOhDY5GronE28vi8nR4rWeb0sU8uCNCEcK478BfYKucoAHnicPEcE4sOr2j17Ekoo+MmMVco49POQmvW1mmbdk=
+	t=1744115845; cv=none; b=isKNBQOWoyneLIrRJol4pu9qDfztta9+ZQlBNoLpV2SdJtp/g1J1SqbOM8eRD9Ay6nP0WR2LARY7XZmIXk9AsdI0K76q23qh5vBaQB/chcnKheMb/4JcjUDKxo/VaAYmt6jc0ON5eJPLJ3kZWDi5MIGBL1ewD1jnN1xjK1zyKZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115359; c=relaxed/simple;
-	bh=BA/1JyeKTVAFozFPIccFyU8kAeGr2iNlTr3+VmQuXmw=;
+	s=arc-20240116; t=1744115845; c=relaxed/simple;
+	bh=MzQ8qzoHAXByLMg6nJkBOm/FSicGgGJDHBGchc1/Hx4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QGTJbNGLNTv2EsC85j684eD/s/fShB2zYyjhNwun8Dfz+GpZSAw9ALadss9wxkSmkPmffD/B0jh6gwOo6tVwZjipupO00JBY47B+5umPJ0VQ0/2WXqjwrk1T3dlNm06mewmrj2+nC/Vh9zkb+UeDazw77Ev5KLI39BfV4UqDHRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GFynBYCW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A78C4CEE5;
-	Tue,  8 Apr 2025 12:29:18 +0000 (UTC)
+	 MIME-Version; b=D3nF0S5w/N+ryo0bsvMUKsjLwAUy7vxbuAInVqIksfTDzajmNKqyQhornyolmZWOu534NrrRxSVqYLDxN2FFoMuSY9OUqP5aZbxjdtHoR85X0YV5VVgDco4OmHSLlnX5/equKFt+LQ9FSuBbjTAqfDhMXVJMemjbfMI8mK3iEkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EZ+3ku3A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A0AC4CEE5;
+	Tue,  8 Apr 2025 12:37:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115359;
-	bh=BA/1JyeKTVAFozFPIccFyU8kAeGr2iNlTr3+VmQuXmw=;
+	s=korg; t=1744115845;
+	bh=MzQ8qzoHAXByLMg6nJkBOm/FSicGgGJDHBGchc1/Hx4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GFynBYCWzwW+vDnKZX1hRXN2+boeKKwHkdtQOXvB/wYyTJJwFgqv+rwDvR6JafrIJ
-	 A2Jf/FJqWQFWFAPheLDGjldnotgo/tCmA1yzl6pRzXKQUJondcRF/b8FDdRgCaJ6my
-	 lK/4jM7JUinIlimjnkEbwcu5hkSlfgNuLwxGNb7I=
+	b=EZ+3ku3AJLqylD6exN9cE2+8CejAj320JmWm1Y3GlYhVF3oHQp7/9C9pVda+l0Kir
+	 hhhovm/ulHVJEQPr2BOsa9b+xZTy1VMjt9akn/ShGCAbDz/+v7TQejAI5d6xjt3f/R
+	 cXU92wZCQpK/W1Cweq4QPPuG3MzDOJU1G1vwsNqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Agoston Lorincz <pipacsba@gmail.com>,
-	All applicable <stable@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.13 445/499] ACPI: x86: Extend Lenovo Yoga Tab 3 quirk with skip GPIO event-handlers
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 127/204] wifi: iwlwifi: mvm: use the right version of the rate API
 Date: Tue,  8 Apr 2025 12:50:57 +0200
-Message-ID: <20250408104902.326612176@linuxfoundation.org>
+Message-ID: <20250408104824.032147450@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-commit 2fa87c71d2adb4b82c105f9191e6120340feff00 upstream.
+[ Upstream commit a03e2082e678ea10d0d8bdf3ed933eb05a8ddbb0 ]
 
-Depending on the secureboot signature on EFI\BOOT\BOOTX86.EFI the
-Lenovo Yoga Tab 3 UEFI will switch its OSID ACPI variable between
-1 (Windows) and 4 (Android(GMIN)).
+The firmware uses the newer version of the API in recent devices. For
+older devices, we translate the rate to the new format.
+Don't parse the rate with old parsing macros.
 
-In Windows mode a GPIO event handler gets installed for GPO1 pin 5,
-causing Linux' x86-android-tables code which deals with the general
-brokenness of this device's ACPI tables to fail to probe with:
-
-[   17.853705] x86_android_tablets: error -16 getting GPIO INT33FF:01 5
-[   17.859623] x86_android_tablets x86_android_tablets: probe with driver
-
-which renders sound, the touchscreen, charging-management,
-battery-monitoring and more non functional.
-
-Add ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS to the existing quirks for this
-device to fix this.
-
-Reported-by: Agoston Lorincz <pipacsba@gmail.com>
-Closes: https://lore.kernel.org/platform-driver-x86/CAMEzqD+DNXrAvUOHviB2O2bjtcbmo3xH=kunKr4nubuMLbb_0A@mail.gmail.com/
-Cc: All applicable <stable@kernel.org>
-Fixes: fe820db35275 ("ACPI: x86: Add skip i2c clients quirk for Lenovo Yoga Tab 3 Pro (YT3-X90F)")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20250325210450.358506-1-hdegoede@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250209143303.13d70cdcbb4e.Ic92193bce4013b70a823cfef250ee79c16cf7c17@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/x86/utils.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -374,7 +374,8 @@ static const struct dmi_system_id acpi_q
- 			DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
- 		},
- 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
--					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
-+					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
-+					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
- 	},
- 	{
- 		/* Medion Lifetab S10346 */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index 105f283b777d2..fce8950007bbb 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -1272,7 +1272,7 @@ iwl_mvm_decode_he_phy_ru_alloc(struct iwl_mvm_rx_phy_data *phy_data,
+ 	 */
+ 	u8 ru = le32_get_bits(phy_data->d1, IWL_RX_PHY_DATA1_HE_RU_ALLOC_MASK);
+ 	u32 rate_n_flags = phy_data->rate_n_flags;
+-	u32 he_type = rate_n_flags & RATE_MCS_HE_TYPE_MSK_V1;
++	u32 he_type = rate_n_flags & RATE_MCS_HE_TYPE_MSK;
+ 	u8 offs = 0;
+ 
+ 	rx_status->bw = RATE_INFO_BW_HE_RU;
+@@ -1327,13 +1327,13 @@ iwl_mvm_decode_he_phy_ru_alloc(struct iwl_mvm_rx_phy_data *phy_data,
+ 
+ 	if (he_mu)
+ 		he_mu->flags2 |=
+-			le16_encode_bits(FIELD_GET(RATE_MCS_CHAN_WIDTH_MSK_V1,
++			le16_encode_bits(FIELD_GET(RATE_MCS_CHAN_WIDTH_MSK,
+ 						   rate_n_flags),
+ 					 IEEE80211_RADIOTAP_HE_MU_FLAGS2_BW_FROM_SIG_A_BW);
+-	else if (he_type == RATE_MCS_HE_TYPE_TRIG_V1)
++	else if (he_type == RATE_MCS_HE_TYPE_TRIG)
+ 		he->data6 |=
+ 			cpu_to_le16(IEEE80211_RADIOTAP_HE_DATA6_TB_PPDU_BW_KNOWN) |
+-			le16_encode_bits(FIELD_GET(RATE_MCS_CHAN_WIDTH_MSK_V1,
++			le16_encode_bits(FIELD_GET(RATE_MCS_CHAN_WIDTH_MSK,
+ 						   rate_n_flags),
+ 					 IEEE80211_RADIOTAP_HE_DATA6_TB_PPDU_BW);
+ }
+-- 
+2.39.5
+
 
 
 
