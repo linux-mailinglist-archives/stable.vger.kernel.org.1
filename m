@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-128983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A30F0A7FD84
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B55DA803AD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:00:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2EB216CDA8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECEAD420032
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61696269882;
-	Tue,  8 Apr 2025 10:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6FD4268FF0;
+	Tue,  8 Apr 2025 11:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k0CzDYdA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o05+QEYx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA37267B65;
-	Tue,  8 Apr 2025 10:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90DEE268FD8;
+	Tue,  8 Apr 2025 11:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109803; cv=none; b=acOQkN6p3dBgRCP38F30QnDWn4RgyLxKAdEYn4UI0/al3A7OcMgkRp5Ss2RGkO+qlVLer4RM4NQvK+RQsrbgq1dBpv07An1VZolnbclztGQPQFyutgLV/kLIooDq+4tOyshAWiKvnaZwQwhJ0J2obUQunh42Q3wyvIPhrziyJOM=
+	t=1744113180; cv=none; b=Juq3wffaDd0qBTJum019UOfpQ5ImNrn8reXNegb9FQyLVvL8RRKovkbTQUzHQW4SWhVuuaNEU1cICGyoobHUz8T5F8+pnlxV8G/g13tS5pvqtr/a/C7oXeCsFRTbKzwQEI3lSH+poFiMU53AJWHj6VSkcrlmoa1K6SnUX/GP2CU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109803; c=relaxed/simple;
-	bh=ZB9dEB0q5AMXZG84Zkq3jdQt6ZUs+IrzxyMRDbY3lQY=;
+	s=arc-20240116; t=1744113180; c=relaxed/simple;
+	bh=7PB9y9INk7Kvk5F/daMzTAGISrEy4td+QTm2m58s894=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nev3pQLyJPAu515VlfQ3Sc9nqe3SWMXjiy1qbhiPg1vdtesqy9kznfUQC6mcv5S+yXkNGoh7/l+re5SfgJ5rek9kBMyFVSmlDVQvdQ5okMvCoCgLJvZfPiikJfJ6cJizS/HWekXpsrrzGamB6vHk31aUSBTLzkWFxgIaEjDPD8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k0CzDYdA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42638C4CEE5;
-	Tue,  8 Apr 2025 10:56:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EafdyC5ic/ogoOf6ufj7aKehMwu91s8hrLIUgHA4KVzOFTNu4EzCBKF6wKntcEz5+uKroSAf1sVNqGTaeHhmpT50Eg4wpBQW2ahzMAeg3SwaSuT6SgJMtqGvESTlWEF1IZQwTYEeA2BUeBFvJfL53/8G1rOvBJR9s9LtdBTgzYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o05+QEYx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED86C4CEE5;
+	Tue,  8 Apr 2025 11:52:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109802;
-	bh=ZB9dEB0q5AMXZG84Zkq3jdQt6ZUs+IrzxyMRDbY3lQY=;
+	s=korg; t=1744113180;
+	bh=7PB9y9INk7Kvk5F/daMzTAGISrEy4td+QTm2m58s894=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k0CzDYdAFraPBk+bCsls07Grk54DhLTJ5Shn7f9H843bFVkhOrCqBeLWvfkBvJiBP
-	 uzh0Wb6j3/85ssfB7iJI9sQMIKxjSNQdmdQ4RbPRcfAyVMArEkPZLrrmCA0puPpwHN
-	 qPmY3SN+nS2xOuu7ybylI+8oUa4CIsLU4yQ5Bvg8=
+	b=o05+QEYxaAWub55eLTF4T8Mr2FjltYgp/qpUmHFe4153xUDuHqgNURiJgB8eGK4ZU
+	 peGpMiMllKCp4CpaVjcbOi49NL2uzpdnqU9ZWcM3oLiPgkkIh0V+t2STEJtuKFQ5oD
+	 0Ir/9GZtgjwSn/Ts8oSZp4SDQwLORIoaCz8cbWUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 059/227] i2c: ali15x3: Fix an error handling path in ali15x3_probe()
+Subject: [PATCH 6.6 026/268] platform/x86: dell-ddv: Fix temperature calculation
 Date: Tue,  8 Apr 2025 12:47:17 +0200
-Message-ID: <20250408104822.174799196@linuxfoundation.org>
+Message-ID: <20250408104829.210865788@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 6e55caaf30c88209d097e575a169b1dface1ab69 ]
+[ Upstream commit 7a248294a3145bc65eb0d8980a0a8edbb1b92db4 ]
 
-If i2c_add_adapter() fails, the request_region() call in ali15x3_setup()
-must be undone by a corresponding release_region() call, as done in the
-remove function.
+On the Dell Inspiron 3505 the battery temperature is always
+0.1 degrees larger than the temperature show inside the OEM
+application.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/9b2090cbcc02659f425188ea05f2e02745c4e67b.1741031878.git.christophe.jaillet@wanadoo.fr
+Emulate this behaviour to avoid showing strange looking values
+like 29.1 degrees.
+
+Fixes: 0331b1b0ba653 ("platform/x86: dell-ddv: Fix temperature scaling")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Link: https://lore.kernel.org/r/20250305053009.378609-2-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-ali15x3.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/platform/x86/dell/dell-wmi-ddv.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-ali15x3.c b/drivers/i2c/busses/i2c-ali15x3.c
-index cc58feacd0821..28a57cb6efb99 100644
---- a/drivers/i2c/busses/i2c-ali15x3.c
-+++ b/drivers/i2c/busses/i2c-ali15x3.c
-@@ -473,6 +473,8 @@ MODULE_DEVICE_TABLE (pci, ali15x3_ids);
+diff --git a/drivers/platform/x86/dell/dell-wmi-ddv.c b/drivers/platform/x86/dell/dell-wmi-ddv.c
+index db1e9240dd02c..8fb434b6ab4b9 100644
+--- a/drivers/platform/x86/dell/dell-wmi-ddv.c
++++ b/drivers/platform/x86/dell/dell-wmi-ddv.c
+@@ -665,8 +665,10 @@ static ssize_t temp_show(struct device *dev, struct device_attribute *attr, char
+ 	if (ret < 0)
+ 		return ret;
  
- static int ali15x3_probe(struct pci_dev *dev, const struct pci_device_id *id)
- {
-+	int ret;
-+
- 	if (ali15x3_setup(dev)) {
- 		dev_err(&dev->dev,
- 			"ALI15X3 not detected, module not inserted.\n");
-@@ -484,7 +486,15 @@ static int ali15x3_probe(struct pci_dev *dev, const struct pci_device_id *id)
- 
- 	snprintf(ali15x3_adapter.name, sizeof(ali15x3_adapter.name),
- 		"SMBus ALI15X3 adapter at %04x", ali15x3_smba);
--	return i2c_add_adapter(&ali15x3_adapter);
-+	ret = i2c_add_adapter(&ali15x3_adapter);
-+	if (ret)
-+		goto release_region;
-+
-+	return 0;
-+
-+release_region:
-+	release_region(ali15x3_smba, ALI15X3_SMB_IOSIZE);
-+	return ret;
+-	/* Use 2731 instead of 2731.5 to avoid unnecessary rounding */
+-	return sysfs_emit(buf, "%d\n", value - 2731);
++	/* Use 2732 instead of 2731.5 to avoid unnecessary rounding and to emulate
++	 * the behaviour of the OEM application which seems to round down the result.
++	 */
++	return sysfs_emit(buf, "%d\n", value - 2732);
  }
  
- static void ali15x3_remove(struct pci_dev *dev)
+ static ssize_t eppid_show(struct device *dev, struct device_attribute *attr, char *buf)
 -- 
 2.39.5
 
