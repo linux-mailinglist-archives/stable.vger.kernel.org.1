@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-131021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E85DA8076C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:37:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D958A8047E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:09:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C86DD4C69E4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:31:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DC27442BF1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:00:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3842F26B0BE;
-	Tue,  8 Apr 2025 12:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13BB0267B9C;
+	Tue,  8 Apr 2025 11:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XT/5zuKj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1MmEfmX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8EC526A0E7;
-	Tue,  8 Apr 2025 12:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A4E22257E;
+	Tue,  8 Apr 2025 11:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115277; cv=none; b=OIMw541U5tqqMGHshbfPfTozS0zmGmF816RMbP8S9Jk2p93yEr+tsym3hSljwzzL4Vi8RB1rARQ7iwsWoyIGBaZtSCy0LejmEJKg6vEb4FOphRVxHoWbPadb/pl3MIoGBNwFOa1Sg6nq/LO8dRN12fDC7g/VnY1GB6sro5bWXy8=
+	t=1744113585; cv=none; b=Y/HqMNJXE0edJCfXtjgOh3QO+GochRHhQF38UI6LvSRq9yhuJcSc93cfMcExhk5crHsI3dyymA4taPZD5uKkmFsuMsiQNxzGNzFb53AdmrZJ+jNME5dkVt1x2WnGdVR+5SVY5lg+Kp9IDvYhXns7FLHdHCIaZk/4NQG/5TwRUS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115277; c=relaxed/simple;
-	bh=0cpMFj1USyUsDy1FDy/EP7swNVeaNBjUIIlK6tl6VI4=;
+	s=arc-20240116; t=1744113585; c=relaxed/simple;
+	bh=m+OmsdV4H7nGiqgsg+HNq6JHHXQF/lSUOIAT/RxgUVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RpWUZI1dw/lpRwQAOH2b73a0nktFrigJXxvfyu4pC02wHrtvPwmgGQnBtvxQda/7YPMnGS8Rr6e7Le6k4+HyYkxMIdlHdQScwyQ/Q4oUJFewVuduYRqD6DEipJfC5edvsz4fSjcrKWh/vxRp8R/G1YbSI7E6nffXbNaMy/Xs00w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XT/5zuKj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 302DDC4CEE5;
-	Tue,  8 Apr 2025 12:27:56 +0000 (UTC)
+	 MIME-Version; b=p6QG6UwkQREJZ1JFfuQ579iJHgpzkjiebMX1guGk6K+Cj2puT+qhdxDDYlhniTudZHQ7yEjBmZrzARl//tKotcoTZPulVwFJYTz/i2XvB2mum98j/Ho9cBt0luD/Ix59Zkd8fEYAzPLI5ZdP9pnPhBf29F09dEZl3GZA6qdHLds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1MmEfmX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54BA5C4CEE7;
+	Tue,  8 Apr 2025 11:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115276;
-	bh=0cpMFj1USyUsDy1FDy/EP7swNVeaNBjUIIlK6tl6VI4=;
+	s=korg; t=1744113585;
+	bh=m+OmsdV4H7nGiqgsg+HNq6JHHXQF/lSUOIAT/RxgUVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XT/5zuKj0uz5Rl+Y86IFQ89/ztWZaanIwjjTvtw7uvijJ2/4aZ5kthHWvpBs32FxP
-	 tg+90vsLcDLnb4tDQ3PzS6zYK/7qsiVIFVUVarXkVD2OM8Fdw6fTyCaHJINeqdohjd
-	 9PKUvDXmm3GIGydcAlovTgIbejScKsoB5EvlPVU4=
+	b=M1MmEfmXsTtZcZPwg2Lah0Q/9gl12JQagdzw3UyyzcP5+noGW8z8Se/kwReLlgkbW
+	 QWIVge2qoxrji2rHqKOazZLke4ZmlDy/21OrFZvTy9lxtTQsFnWmu1LwFWpVJkF2Cp
+	 wYu/atANzxDWmhlv4Xym49CG+n1IcJDuG6Qxdzm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Lin Ma <linma@zju.edu.cn>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 413/499] tracing: Switch trace_events_hist.c code over to use guard()
+Subject: [PATCH 6.6 214/268] netfilter: nft_tunnel: fix geneve_opt type confusion addition
 Date: Tue,  8 Apr 2025 12:50:25 +0200
-Message-ID: <20250408104901.524681942@linuxfoundation.org>
+Message-ID: <20250408104834.353735435@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,101 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 2b36a97aeeb71b1e4a48bfedc7f21f44aeb1e6fb ]
+[ Upstream commit 1b755d8eb1ace3870789d48fbd94f386ad6e30be ]
 
-There are a couple functions in trace_events_hist.c that have "goto out" or
-equivalent on error in order to release locks that were taken. This can be
-error prone or just simply make the code more complex.
+When handling multiple NFTA_TUNNEL_KEY_OPTS_GENEVE attributes, the
+parsing logic should place every geneve_opt structure one by one
+compactly. Hence, when deciding the next geneve_opt position, the
+pointer addition should be in units of char *.
 
-Switch every location that ends with unlocking a mutex on error over to
-using the guard(mutex)() infrastructure to let the compiler worry about
-releasing locks. This makes the code easier to read and understand.
+However, the current implementation erroneously does type conversion
+before the addition, which will lead to heap out-of-bounds write.
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/20241219201345.694601480@goodmis.org
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Stable-dep-of: 0b4ffbe4888a ("tracing: Correct the refcount if the hist/hist_debug file fails to open")
+[    6.989857] ==================================================================
+[    6.990293] BUG: KASAN: slab-out-of-bounds in nft_tunnel_obj_init+0x977/0xa70
+[    6.990725] Write of size 124 at addr ffff888005f18974 by task poc/178
+[    6.991162]
+[    6.991259] CPU: 0 PID: 178 Comm: poc-oob-write Not tainted 6.1.132 #1
+[    6.991655] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+[    6.992281] Call Trace:
+[    6.992423]  <TASK>
+[    6.992586]  dump_stack_lvl+0x44/0x5c
+[    6.992801]  print_report+0x184/0x4be
+[    6.993790]  kasan_report+0xc5/0x100
+[    6.994252]  kasan_check_range+0xf3/0x1a0
+[    6.994486]  memcpy+0x38/0x60
+[    6.994692]  nft_tunnel_obj_init+0x977/0xa70
+[    6.995677]  nft_obj_init+0x10c/0x1b0
+[    6.995891]  nf_tables_newobj+0x585/0x950
+[    6.996922]  nfnetlink_rcv_batch+0xdf9/0x1020
+[    6.998997]  nfnetlink_rcv+0x1df/0x220
+[    6.999537]  netlink_unicast+0x395/0x530
+[    7.000771]  netlink_sendmsg+0x3d0/0x6d0
+[    7.001462]  __sock_sendmsg+0x99/0xa0
+[    7.001707]  ____sys_sendmsg+0x409/0x450
+[    7.002391]  ___sys_sendmsg+0xfd/0x170
+[    7.003145]  __sys_sendmsg+0xea/0x170
+[    7.004359]  do_syscall_64+0x5e/0x90
+[    7.005817]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+[    7.006127] RIP: 0033:0x7ec756d4e407
+[    7.006339] Code: 48 89 fa 4c 89 df e8 38 aa 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 faf
+[    7.007364] RSP: 002b:00007ffed5d46760 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+[    7.007827] RAX: ffffffffffffffda RBX: 00007ec756cc4740 RCX: 00007ec756d4e407
+[    7.008223] RDX: 0000000000000000 RSI: 00007ffed5d467f0 RDI: 0000000000000003
+[    7.008620] RBP: 00007ffed5d468a0 R08: 0000000000000000 R09: 0000000000000000
+[    7.009039] R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
+[    7.009429] R13: 00007ffed5d478b0 R14: 00007ec756ee5000 R15: 00005cbd4e655cb8
+
+Fix this bug with correct pointer addition and conversion in parse
+and dump code.
+
+Fixes: 925d844696d9 ("netfilter: nft_tunnel: add support for geneve opts")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_hist.c | 32 ++++++++++----------------------
- 1 file changed, 10 insertions(+), 22 deletions(-)
+ net/netfilter/nft_tunnel.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index 89e5bcb915628..dfd568054f41e 100644
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -5594,25 +5594,19 @@ static int hist_show(struct seq_file *m, void *v)
+diff --git a/net/netfilter/nft_tunnel.c b/net/netfilter/nft_tunnel.c
+index f735d79d8be57..e3f5731ebaacf 100644
+--- a/net/netfilter/nft_tunnel.c
++++ b/net/netfilter/nft_tunnel.c
+@@ -339,7 +339,7 @@ static const struct nla_policy nft_tunnel_opts_geneve_policy[NFTA_TUNNEL_KEY_GEN
+ static int nft_tunnel_obj_geneve_init(const struct nlattr *attr,
+ 				      struct nft_tunnel_opts *opts)
  {
- 	struct event_trigger_data *data;
- 	struct trace_event_file *event_file;
--	int n = 0, ret = 0;
-+	int n = 0;
+-	struct geneve_opt *opt = (struct geneve_opt *)opts->u.data + opts->len;
++	struct geneve_opt *opt = (struct geneve_opt *)(opts->u.data + opts->len);
+ 	struct nlattr *tb[NFTA_TUNNEL_KEY_GENEVE_MAX + 1];
+ 	int err, data_len;
  
--	mutex_lock(&event_mutex);
-+	guard(mutex)(&event_mutex);
- 
- 	event_file = event_file_file(m->private);
--	if (unlikely(!event_file)) {
--		ret = -ENODEV;
--		goto out_unlock;
--	}
-+	if (unlikely(!event_file))
-+		return -ENODEV;
- 
- 	list_for_each_entry(data, &event_file->triggers, list) {
- 		if (data->cmd_ops->trigger_type == ETT_EVENT_HIST)
- 			hist_trigger_show(m, data, n++);
- 	}
--
-- out_unlock:
--	mutex_unlock(&event_mutex);
--
--	return ret;
-+	return 0;
- }
- 
- static int event_hist_open(struct inode *inode, struct file *file)
-@@ -5873,25 +5867,19 @@ static int hist_debug_show(struct seq_file *m, void *v)
- {
- 	struct event_trigger_data *data;
- 	struct trace_event_file *event_file;
--	int n = 0, ret = 0;
-+	int n = 0;
- 
--	mutex_lock(&event_mutex);
-+	guard(mutex)(&event_mutex);
- 
- 	event_file = event_file_file(m->private);
--	if (unlikely(!event_file)) {
--		ret = -ENODEV;
--		goto out_unlock;
--	}
-+	if (unlikely(!event_file))
-+		return -ENODEV;
- 
- 	list_for_each_entry(data, &event_file->triggers, list) {
- 		if (data->cmd_ops->trigger_type == ETT_EVENT_HIST)
- 			hist_trigger_debug_show(m, data, n++);
- 	}
--
-- out_unlock:
--	mutex_unlock(&event_mutex);
--
--	return ret;
-+	return 0;
- }
- 
- static int event_hist_debug_open(struct inode *inode, struct file *file)
+@@ -621,7 +621,7 @@ static int nft_tunnel_opts_dump(struct sk_buff *skb,
+ 		if (!inner)
+ 			goto failure;
+ 		while (opts->len > offset) {
+-			opt = (struct geneve_opt *)opts->u.data + offset;
++			opt = (struct geneve_opt *)(opts->u.data + offset);
+ 			if (nla_put_be16(skb, NFTA_TUNNEL_KEY_GENEVE_CLASS,
+ 					 opt->opt_class) ||
+ 			    nla_put_u8(skb, NFTA_TUNNEL_KEY_GENEVE_TYPE,
 -- 
 2.39.5
 
