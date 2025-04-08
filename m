@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-130457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD26DA804A5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:10:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E9EEA8041B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:06:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBF221884B9A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E326C465FB9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 263C4269CEB;
-	Tue,  8 Apr 2025 12:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F372686AD;
+	Tue,  8 Apr 2025 11:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BvWfxv8j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q/mJ42Oz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7836269B12;
-	Tue,  8 Apr 2025 12:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F327266EEA;
+	Tue,  8 Apr 2025 11:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113761; cv=none; b=F1E0TM6GxnxEjapMOTiXJQXDauUCHeMv3lWEdh26+PER/DV4qgKc0ZKuXrQW+yYV+SyqPNIGn5KeV5r+MRcLkxsyONk7TRfDnASTftMHq/IThNNo/ViVjbfASkUb8yPejS90Mn0rnylLY7DQu9w3y4KfyLPV+/bRXSpfVBXatj0=
+	t=1744113391; cv=none; b=XZdxNU4PFOxQbeTfhDqdzsmWV3R5sc59tz5epgaM3qTLXZXshj4r5PJLcFSJ8Jj8t0CDsbfR8P8kUddTMiqMtNpXfHiokembQVrIYMPQRww+2khJdqpYasWUZrJ6jwPmXNjrLEr2PDNh09HKVmIEasRf6UZ/iufXjebl8eqwJ8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113761; c=relaxed/simple;
-	bh=Yxby4OngIaRfNtiDO+r7WJlGLM+IXp2MygFTb4oS2HA=;
+	s=arc-20240116; t=1744113391; c=relaxed/simple;
+	bh=RTL9jgRLpJ4emNbfFKxFN4TJm0a4rGpTi9+5v7wCHKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bu3aNbMjTZVmqabmKQIfFQauwpj8K3HcTieR8/gFmxm2jqjoXf8ptyAru2NOwC12azAjmI0hgBG9drLDkM3w6tRhi+F34UuNxXBbs9WtkCJHkd5XnftXDK+Ilp1E4uemkatj6CyZuxp7jUQPBJLJLsdfAXkA5R3tbV8rG1QHXfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BvWfxv8j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3433C4CEE5;
-	Tue,  8 Apr 2025 12:02:40 +0000 (UTC)
+	 MIME-Version; b=PVRM4TqqqmfI9JxYG9pYpqWsAuokUBfWkfpYvU4UG1e3+OZz0eYJiGHIWxXE3ceZUGtfwZ4HWiPtv460AMKHSekx2NDvlWzjursbmmHniLgsfQMQat66PqtGKITNXkgqEPPAHHzorOaHiXz0w1SukBfM+Ce7fU03S46mEpaeW+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q/mJ42Oz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F24C4CEE5;
+	Tue,  8 Apr 2025 11:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113761;
-	bh=Yxby4OngIaRfNtiDO+r7WJlGLM+IXp2MygFTb4oS2HA=;
+	s=korg; t=1744113391;
+	bh=RTL9jgRLpJ4emNbfFKxFN4TJm0a4rGpTi9+5v7wCHKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BvWfxv8jxJ59nD8syk67SqH7Vg0U9/rdN+xHbxFhe/f5K0Bd/3ysEkRIufcV5+zsp
-	 4R/ZNzxnTw9XqjiwNhpRl56gKfkC0KYKGNYmpoE8/GT7FVg1yEwIl+WhJBHHNw5fOY
-	 t2DJpHA0EHqjAbgwVBzbLP44yZ2D27GSztNckJ1A=
+	b=Q/mJ42Oz2w+mRCzfR49l7wQHPQfRg7G4fNMwmHACSLdx/Yh1Pf4DlbCNVFe04jFiJ
+	 BjaOPDfV0D5AHu3R+cZapEVMfOy6oRB1B0EzHBb5y+WTNZ1ON4NWhpiqOO1nwaK02u
+	 FG0kU0PTvnuCci7xNBIXP3GD1dsYKfaQcD4vB/fY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	kernel test robot <lkp@intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 011/154] netpoll: move netpoll_send_skb() out of line
+Subject: [PATCH 6.6 141/268] objtool, media: dib8000: Prevent divide-by-zero in dib8000_set_dds()
 Date: Tue,  8 Apr 2025 12:49:12 +0200
-Message-ID: <20250408104815.649819770@linuxfoundation.org>
+Message-ID: <20250408104832.327420768@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit fb1eee476b0d3be3e58dac1a3a96f726c6278bed ]
+[ Upstream commit e63d465f59011dede0a0f1d21718b59a64c3ff5c ]
 
-There is no need to inline this helper, as we intend to add more
-code in this function.
+If dib8000_set_dds()'s call to dib8000_read32() returns zero, the result
+is a divide-by-zero.  Prevent that from happening.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 505ead7ab77f ("netpoll: hold rcu read lock in __netpoll_send_skb()")
+Fixes the following warning with an UBSAN kernel:
+
+  drivers/media/dvb-frontends/dib8000.o: warning: objtool: dib8000_tune() falls through to next function dib8096p_cfg_DibRx()
+
+Fixes: 173a64cb3fcf ("[media] dib8000: enhancement")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/bd1d504d930ae3f073b1e071bcf62cae7708773c.1742852847.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/r/202503210602.fvH5DO1i-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/netpoll.h |  9 +--------
- net/core/netpoll.c      | 13 +++++++++++--
- 2 files changed, 12 insertions(+), 10 deletions(-)
+ drivers/media/dvb-frontends/dib8000.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
-index f5202a59c0274..2db513437d2c0 100644
---- a/include/linux/netpoll.h
-+++ b/include/linux/netpoll.h
-@@ -63,14 +63,7 @@ int netpoll_setup(struct netpoll *np);
- void __netpoll_cleanup(struct netpoll *np);
- void __netpoll_free(struct netpoll *np);
- void netpoll_cleanup(struct netpoll *np);
--void __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb);
--static inline void netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
--{
--	unsigned long flags;
--	local_irq_save(flags);
--	__netpoll_send_skb(np, skb);
--	local_irq_restore(flags);
--}
-+void netpoll_send_skb(struct netpoll *np, struct sk_buff *skb);
+diff --git a/drivers/media/dvb-frontends/dib8000.c b/drivers/media/dvb-frontends/dib8000.c
+index 2f5165918163d..cfe59c3255f70 100644
+--- a/drivers/media/dvb-frontends/dib8000.c
++++ b/drivers/media/dvb-frontends/dib8000.c
+@@ -2701,8 +2701,11 @@ static void dib8000_set_dds(struct dib8000_state *state, s32 offset_khz)
+ 	u8 ratio;
  
- #ifdef CONFIG_NETPOLL
- static inline void *netpoll_poll_lock(struct napi_struct *napi)
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 69f80b531a1c3..5eefbb2e145a4 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -323,7 +323,7 @@ static int netpoll_owner_active(struct net_device *dev)
- }
- 
- /* call with IRQ disabled */
--void __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
-+static void __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
- {
- 	netdev_tx_t status = NETDEV_TX_BUSY;
- 	struct net_device *dev;
-@@ -378,7 +378,16 @@ void __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
- 		schedule_delayed_work(&npinfo->tx_work,0);
- 	}
- }
--EXPORT_SYMBOL(__netpoll_send_skb);
+ 	if (state->revision == 0x8090) {
++		u32 internal = dib8000_read32(state, 23) / 1000;
 +
-+void netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
-+{
-+	unsigned long flags;
+ 		ratio = 4;
+-		unit_khz_dds_val = (1<<26) / (dib8000_read32(state, 23) / 1000);
 +
-+	local_irq_save(flags);
-+	__netpoll_send_skb(np, skb);
-+	local_irq_restore(flags);
-+}
-+EXPORT_SYMBOL(netpoll_send_skb);
- 
- void netpoll_send_udp(struct netpoll *np, const char *msg, int len)
- {
++		unit_khz_dds_val = (1<<26) / (internal ?: 1);
+ 		if (offset_khz < 0)
+ 			dds = (1 << 26) - (abs_offset_khz * unit_khz_dds_val);
+ 		else
 -- 
 2.39.5
 
