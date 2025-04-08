@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-129078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB482A7FDFA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0373A802BA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:49:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F21DF44502C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:03:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A5EA3A7991
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E751268FE4;
-	Tue,  8 Apr 2025 11:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97A22267AF2;
+	Tue,  8 Apr 2025 11:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GfwMSf07"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6mLuR51"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED68268FDB;
-	Tue,  8 Apr 2025 11:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500A0265602;
+	Tue,  8 Apr 2025 11:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110055; cv=none; b=R2wYNTgf5DBdPJNIKLrizeB5mvyM3kiF+7NrG3UwyNpiXeN1NgmBFqJAgtjSg6ofuB2wmus1yfiotOf/Wencxg99QyMJbTEhFrqw88ZCngcOrAw32q6BKuCOvHVbO+1ouHQoxFVQ7KJTbSXri0AfGCxrEruFUThaL193UWHbBsw=
+	t=1744112648; cv=none; b=E5jEJNKV3/VsuhE1xW52WjNXyQsL1bkJNF32+8k71o+J/0gcDgBGtKx1MuGAWrlkjZgFYOnIWYYWGcvDy3BmEuSVSuC4jSf8Zhj48ESq/iflXhBQOKbDHh0yXw4S79iVZ4/kLG4SDz8X2E9u0BV0+Ticu/L2kqc7PtPs94XnYNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110055; c=relaxed/simple;
-	bh=P/tpRw2tIUTjXfpVrf3kZPMIIbo2N4+yDjGU1u4H3qk=;
+	s=arc-20240116; t=1744112648; c=relaxed/simple;
+	bh=ziD3inXXdU/eJhLjqnvjAWiFmCK+jMW1r7GG9VMasQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ytg5T/03Hvl8kHbNAydIPxT3tgE6T3bANjvJtroPQKp+YZNakYgusHSHX1DRmzoq+F0ccxEUO+WnItWE+FBJjAoleBeM4fdbOZU+NHhlNWF0C5Qa3atPZbXbo6UN37Ab0rk2rJ9pH/mEpsYHffFpPOQ206S1X2jxrUjUCQ70KRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GfwMSf07; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68CF3C4CEE5;
-	Tue,  8 Apr 2025 11:00:54 +0000 (UTC)
+	 MIME-Version; b=XIaABPZ5E1sSV5nv77UCDxA1FCR/MyoZXro2ezyKwzln7l/s40qn8jOEiKVnO0SI9mRoowlEKAR4xxn7eEmykja3DRpzfsgKd58hGPEpG6O83HWGCH+b1DyU17lm6B9Ll3tAlRdyN6gHfE4kIie82pc6kxDpf1PGVZsblDdd1jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6mLuR51; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D14E4C4CEE5;
+	Tue,  8 Apr 2025 11:44:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110054;
-	bh=P/tpRw2tIUTjXfpVrf3kZPMIIbo2N4+yDjGU1u4H3qk=;
+	s=korg; t=1744112648;
+	bh=ziD3inXXdU/eJhLjqnvjAWiFmCK+jMW1r7GG9VMasQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GfwMSf07GkQY7yrdUi2wmleMahYols1GxpfjFc874KItoHzeSgu1wbLcz7F6HncVy
-	 pmZeXbJB9ZZ0XGH7ca2p3BncQ/HGbrqXCH/AWp+EO5TPD6ECxux8KLpd63b6L3VAr8
-	 R5t7quufv44w9pFqFxbec6Ty/bciW11UyHfMItB8=
+	b=B6mLuR51dxpav9AwLEqLDty8iSCSHlzFkL986TwtR2sPQ8CKstgZlqlJ8NRjAegDw
+	 2CuvKf0/ntap4zTAsjPA5nT9yBuObiymbS4LdajlAPf/V3LLHn6IISTaizVRX81qcW
+	 od6FPtZG5TwfUmVAtRMzRehxQt7wfnmDNSB5FfJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Jayesh Choudhary <j-choudhary@ti.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 151/227] IB/mad: Check available slots before posting receive WRs
+Subject: [PATCH 5.15 146/279] ASoC: ti: j721e-evm: Fix clock configuration for ti,j7200-cpb-audio compatible
 Date: Tue,  8 Apr 2025 12:48:49 +0200
-Message-ID: <20250408104824.843956228@linuxfoundation.org>
+Message-ID: <20250408104830.278812438@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,134 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maher Sanalla <msanalla@nvidia.com>
+From: Jayesh Choudhary <j-choudhary@ti.com>
 
-[ Upstream commit 37826f0a8c2f6b6add5179003b8597e32a445362 ]
+[ Upstream commit 45ff65e30deb919604e68faed156ad96ce7474d9 ]
 
-The ib_post_receive_mads() function handles posting receive work
-requests (WRs) to MAD QPs and is called in two cases:
-1) When a MAD port is opened.
-2) When a receive WQE is consumed upon receiving a new MAD.
+For 'ti,j7200-cpb-audio' compatible, there is support for only one PLL for
+48k. For 11025, 22050, 44100 and 88200 sampling rates, due to absence of
+J721E_CLK_PARENT_44100, we get EINVAL while running any audio application.
+Add support for these rates by using the 48k parent clock and adjusting
+the clock for these rates later in j721e_configure_refclk.
 
-Whereas, if MADs arrive during the port open phase, a race condition
-might cause an extra WR to be posted, exceeding the QP’s capacity.
-This leads to failures such as:
-infiniband mlx5_0: ib_post_recv failed: -12
-infiniband mlx5_0: Couldn't post receive WRs
-infiniband mlx5_0: Couldn't start port
-infiniband mlx5_0: Couldn't open port 1
-
-Fix this by checking the current receive count before posting a new WR.
-If the QP’s receive queue is full, do not post additional WRs.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
-Link: https://patch.msgid.link/c4984ba3c3a98a5711a558bccefcad789587ecf1.1741875592.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 6748d0559059 ("ASoC: ti: Add custom machine driver for j721e EVM (CPB and IVI)")
+Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
+Link: https://patch.msgid.link/20250318113524.57100-1-j-choudhary@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/mad.c | 38 ++++++++++++++++++-----------------
- 1 file changed, 20 insertions(+), 18 deletions(-)
+ sound/soc/ti/j721e-evm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/core/mad.c b/drivers/infiniband/core/mad.c
-index 521c3d050be2d..19540a13cb84d 100644
---- a/drivers/infiniband/core/mad.c
-+++ b/drivers/infiniband/core/mad.c
-@@ -2686,11 +2686,11 @@ static int ib_mad_post_receive_mads(struct ib_mad_qp_info *qp_info,
- 				    struct ib_mad_private *mad)
- {
- 	unsigned long flags;
--	int post, ret;
- 	struct ib_mad_private *mad_priv;
- 	struct ib_sge sg_list;
- 	struct ib_recv_wr recv_wr;
- 	struct ib_mad_queue *recv_queue = &qp_info->recv_queue;
-+	int ret = 0;
- 
- 	/* Initialize common scatter list fields */
- 	sg_list.lkey = qp_info->port_priv->pd->local_dma_lkey;
-@@ -2700,7 +2700,7 @@ static int ib_mad_post_receive_mads(struct ib_mad_qp_info *qp_info,
- 	recv_wr.sg_list = &sg_list;
- 	recv_wr.num_sge = 1;
- 
--	do {
-+	while (true) {
- 		/* Allocate and map receive buffer */
- 		if (mad) {
- 			mad_priv = mad;
-@@ -2708,10 +2708,8 @@ static int ib_mad_post_receive_mads(struct ib_mad_qp_info *qp_info,
- 		} else {
- 			mad_priv = alloc_mad_private(port_mad_size(qp_info->port_priv),
- 						     GFP_ATOMIC);
--			if (!mad_priv) {
--				ret = -ENOMEM;
--				break;
--			}
-+			if (!mad_priv)
-+				return -ENOMEM;
- 		}
- 		sg_list.length = mad_priv_dma_size(mad_priv);
- 		sg_list.addr = ib_dma_map_single(qp_info->port_priv->device,
-@@ -2720,37 +2718,41 @@ static int ib_mad_post_receive_mads(struct ib_mad_qp_info *qp_info,
- 						 DMA_FROM_DEVICE);
- 		if (unlikely(ib_dma_mapping_error(qp_info->port_priv->device,
- 						  sg_list.addr))) {
--			kfree(mad_priv);
- 			ret = -ENOMEM;
--			break;
-+			goto free_mad_priv;
- 		}
- 		mad_priv->header.mapping = sg_list.addr;
- 		mad_priv->header.mad_list.mad_queue = recv_queue;
- 		mad_priv->header.mad_list.cqe.done = ib_mad_recv_done;
- 		recv_wr.wr_cqe = &mad_priv->header.mad_list.cqe;
--
--		/* Post receive WR */
- 		spin_lock_irqsave(&recv_queue->lock, flags);
--		post = (++recv_queue->count < recv_queue->max_active);
--		list_add_tail(&mad_priv->header.mad_list.list, &recv_queue->list);
-+		if (recv_queue->count >= recv_queue->max_active) {
-+			/* Fully populated the receive queue */
-+			spin_unlock_irqrestore(&recv_queue->lock, flags);
-+			break;
-+		}
-+		recv_queue->count++;
-+		list_add_tail(&mad_priv->header.mad_list.list,
-+			      &recv_queue->list);
- 		spin_unlock_irqrestore(&recv_queue->lock, flags);
-+
- 		ret = ib_post_recv(qp_info->qp, &recv_wr, NULL);
- 		if (ret) {
- 			spin_lock_irqsave(&recv_queue->lock, flags);
- 			list_del(&mad_priv->header.mad_list.list);
- 			recv_queue->count--;
- 			spin_unlock_irqrestore(&recv_queue->lock, flags);
--			ib_dma_unmap_single(qp_info->port_priv->device,
--					    mad_priv->header.mapping,
--					    mad_priv_dma_size(mad_priv),
--					    DMA_FROM_DEVICE);
--			kfree(mad_priv);
- 			dev_err(&qp_info->port_priv->device->dev,
- 				"ib_post_recv failed: %d\n", ret);
- 			break;
- 		}
--	} while (post);
-+	}
- 
-+	ib_dma_unmap_single(qp_info->port_priv->device,
-+			    mad_priv->header.mapping,
-+			    mad_priv_dma_size(mad_priv), DMA_FROM_DEVICE);
-+free_mad_priv:
-+	kfree(mad_priv);
- 	return ret;
- }
+diff --git a/sound/soc/ti/j721e-evm.c b/sound/soc/ti/j721e-evm.c
+index 149f4e2ce9998..7f2734318452f 100644
+--- a/sound/soc/ti/j721e-evm.c
++++ b/sound/soc/ti/j721e-evm.c
+@@ -182,6 +182,8 @@ static int j721e_configure_refclk(struct j721e_priv *priv,
+ 		clk_id = J721E_CLK_PARENT_48000;
+ 	else if (!(rate % 11025) && priv->pll_rates[J721E_CLK_PARENT_44100])
+ 		clk_id = J721E_CLK_PARENT_44100;
++	else if (!(rate % 11025) && priv->pll_rates[J721E_CLK_PARENT_48000])
++		clk_id = J721E_CLK_PARENT_48000;
+ 	else
+ 		return ret;
  
 -- 
 2.39.5
