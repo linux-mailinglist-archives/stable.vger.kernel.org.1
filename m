@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 851D1A8075F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:37:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FFD9A80B2B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:13:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8786A1B66873
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:32:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA3F91BA711C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC3A269CE8;
-	Tue,  8 Apr 2025 12:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A8227935D;
+	Tue,  8 Apr 2025 12:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JS3x6cC/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kA+yF7AB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1B022488E;
-	Tue,  8 Apr 2025 12:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B42279356;
+	Tue,  8 Apr 2025 12:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115319; cv=none; b=Ktw7tC+b6eIpZMdob9w8V7G5NuVZHVt/yuxOGPgIo45fMC1+/aB6HbjV3DbWra648UzMJdgWehDygGPjsqPIyklEAAzwxFv9UezTVTIRgQK64LBxPnkDmvIe/t6qwr2Vy306afVeDNhfvsdQknguhZ1WBIG4z9yqqpeb7LgZMUs=
+	t=1744116915; cv=none; b=KU8bpOBmiwNUbGYwgAaocClkAKucWebgxXIMHYP+iCYM05Rm9RJbxs45g93IF7N0ZrsjGrxyyf9bDp0PzjI1J5iY6iCyv23Dw61zIxA5lbP6hPtu02vg8SNrQySg8sY5zVnQG3eU5V5dNXa0Nt1he/RwFpSx1h+tLt0q0PAtx3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115319; c=relaxed/simple;
-	bh=SD6Six/t8viTd3pVD1u/q2rbMNrFrfBT8J4b1eIUBh0=;
+	s=arc-20240116; t=1744116915; c=relaxed/simple;
+	bh=QEGKwgqabZuwLPaoUdY0CluOt7keY+evG7kcNHiznDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YO1M+mA80inVYhg0EO29PZRxOhmyHuEo+BgpWfatnfGFDBoLLgh6JIz5S00YudRMuZGWLcQKlQrRkUuwY+Kxm7yAxM6HyZVGSp1gdfDbnVJT1A1qWDQuCu5VjGbVCzNj3KuRoML60QYF4fz5DWDe8bVt0lXehLoFXWcsBamoqhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JS3x6cC/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFA94C4CEE5;
-	Tue,  8 Apr 2025 12:28:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UJv/loYfSgcrD8DycxmDNSAY2k67RfQe1IXC72kmCBiWimZby3uAvsu/2eILdEWZ3P+3hQdROIm9w2EJZMK9xyqRpZvLECl/qrzSiMhrXpYlbtbJPCEe7ITUGdFe94/A0oCK8fduea3bpDhWNC799mBe1yMiCaldOoF/cI9X500=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kA+yF7AB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32EC8C4CEE5;
+	Tue,  8 Apr 2025 12:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115319;
-	bh=SD6Six/t8viTd3pVD1u/q2rbMNrFrfBT8J4b1eIUBh0=;
+	s=korg; t=1744116915;
+	bh=QEGKwgqabZuwLPaoUdY0CluOt7keY+evG7kcNHiznDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JS3x6cC/onfmRB9UqhxMVbCDs92HaMBVkumrrlmI3Fsg7gxwjH+z4anwJ8pW2Oycq
-	 Uvo08eHX/Aun2wHbcL7Um9r8ZNn8lfxMjsowYBzJkRdcR46wdh+wjF9syYqpoayzFA
-	 5SqmsbDzf+cben1o91kunzW3hnmeSlE6anb9f3jI=
+	b=kA+yF7AB/gCBdmrRctuSOgtBlgVOYp/oQCekObbK2EIfzpkSAvpQZmAkliOm2Jo2/
+	 BlNARBEdAFvHY+CYe+vzLvvAEfnPlF482W+sYq8L9sH809QPKNfM5PcMt6kBP39qQa
+	 nwyKcVAIyKFGf1JZL2wRnqVGdOW2EW2nZG4ozBUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Sherry Sun <sherry.sun@nxp.com>,
+	Yao Zi <ziyao@disroot.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 431/499] tty: serial: lpuart: only disable CTS instead of overwriting the whole UARTMODIR register
+Subject: [PATCH 6.12 317/423] riscv/kexec_file: Handle R_RISCV_64 in purgatory relocator
 Date: Tue,  8 Apr 2025 12:50:43 +0200
-Message-ID: <20250408104901.978199796@linuxfoundation.org>
+Message-ID: <20250408104853.196575323@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,68 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sherry Sun <sherry.sun@nxp.com>
+From: Yao Zi <ziyao@disroot.org>
 
-[ Upstream commit e98ab45ec5182605d2e00114cba3bbf46b0ea27f ]
+[ Upstream commit 28093cfef5dd62f4cbd537f2bdf6f0bf85309c45 ]
 
-No need to overwrite the whole UARTMODIR register before waiting the
-transmit engine complete, actually our target here is only to disable
-CTS flow control to avoid the dirty data in TX FIFO may block the
-transmit engine complete.
-Also delete the following duplicate CTS disable configuration.
+Commit 58ff537109ac ("riscv: Omit optimized string routines when
+using KASAN") introduced calls to EXPORT_SYMBOL() in assembly string
+routines, which result in R_RISCV_64 relocations against
+.export_symbol section. As these rountines are reused by RISC-V
+purgatory and our relocator doesn't recognize these relocations, this
+fails kexec-file-load with dmesg like
 
-Fixes: d5a2e0834364 ("tty: serial: lpuart: disable flow control while waiting for the transmit engine to complete")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-Link: https://lore.kernel.org/r/20250307065446.1122482-1-sherry.sun@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	[   11.344251] kexec_image: Unknown rela relocation: 2
+	[   11.345972] kexec_image: Error loading purgatory ret=-8
+
+Let's support R_RISCV_64 relocation to fix kexec on 64-bit RISC-V.
+32-bit variant isn't covered since KEXEC_FILE and KEXEC_PURGATORY isn't
+available.
+
+Fixes: 58ff537109ac ("riscv: Omit optimized string routines when using KASAN")
+Signed-off-by: Yao Zi <ziyao@disroot.org>
+Tested-by: Björn Töpel <bjorn@rivosinc.com>
+Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
+Link: https://lore.kernel.org/r/20250326051445.55131-2-ziyao@disroot.org
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/fsl_lpuart.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ arch/riscv/kernel/elf_kexec.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
-index 2971de64f6a3d..ca5beb0831153 100644
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -2341,15 +2341,19 @@ lpuart32_set_termios(struct uart_port *port, struct ktermios *termios,
- 	/* update the per-port timeout */
- 	uart_update_timeout(port, termios->c_cflag, baud);
- 
-+	/*
-+	 * disable CTS to ensure the transmit engine is not blocked by the flow
-+	 * control when there is dirty data in TX FIFO
-+	 */
-+	lpuart32_write(port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
-+
- 	/*
- 	 * LPUART Transmission Complete Flag may never be set while queuing a break
- 	 * character, so skip waiting for transmission complete when UARTCTRL_SBK is
- 	 * asserted.
- 	 */
--	if (!(old_ctrl & UARTCTRL_SBK)) {
--		lpuart32_write(port, 0, UARTMODIR);
-+	if (!(old_ctrl & UARTCTRL_SBK))
- 		lpuart32_wait_bit_set(port, UARTSTAT, UARTSTAT_TC);
--	}
- 
- 	/* disable transmit and receive */
- 	lpuart32_write(port, old_ctrl & ~(UARTCTRL_TE | UARTCTRL_RE),
-@@ -2357,8 +2361,6 @@ lpuart32_set_termios(struct uart_port *port, struct ktermios *termios,
- 
- 	lpuart32_write(port, bd, UARTBAUD);
- 	lpuart32_serial_setbrg(sport, baud);
--	/* disable CTS before enabling UARTCTRL_TE to avoid pending idle preamble */
--	lpuart32_write(port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
- 	/* restore control register */
- 	lpuart32_write(port, ctrl, UARTCTRL);
- 	/* re-enable the CTS if needed */
+diff --git a/arch/riscv/kernel/elf_kexec.c b/arch/riscv/kernel/elf_kexec.c
+index 3c37661801f95..e783a72d051f4 100644
+--- a/arch/riscv/kernel/elf_kexec.c
++++ b/arch/riscv/kernel/elf_kexec.c
+@@ -468,6 +468,9 @@ int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
+ 		case R_RISCV_ALIGN:
+ 		case R_RISCV_RELAX:
+ 			break;
++		case R_RISCV_64:
++			*(u64 *)loc = val;
++			break;
+ 		default:
+ 			pr_err("Unknown rela relocation: %d\n", r_type);
+ 			return -ENOEXEC;
 -- 
 2.39.5
 
