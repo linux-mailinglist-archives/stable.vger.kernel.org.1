@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-130973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E79AA80711
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D1F4A8051F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E25884C212E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:28:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48BFA4A42C7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:06:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DA026988C;
-	Tue,  8 Apr 2025 12:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6005426B2B0;
+	Tue,  8 Apr 2025 12:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wg17awPP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AevkUq5s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2834207E14;
-	Tue,  8 Apr 2025 12:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD5826B2A6;
+	Tue,  8 Apr 2025 12:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115151; cv=none; b=u+VehJQs8yaVXWN5/IKOaQPwVWqwb4ytkiJ6CIOFMrQ/CF/X/NJ3/7Jb1LmsOe6PWj3l+hgVd50KzutiZ8ekMlhX4Cpi0C1CvylVtVIxf8PAmf0E1B+v8gsbJmmxwM20ro4udlkNrEAxbvdZ9Va2xIlksrtFk60UcYafRorwLGA=
+	t=1744113834; cv=none; b=VP5prZRUIVTBE9yDRiCofJGYHBVvoyWQO/7qFwxlt/UXc21grlr8SQMClRIYeVsakUqYp+nXGAHZJaIsLhHJmUZtRX6P7KRcNCRbzpn7+8Vjx4a4fOA1voJ1NQ1lHnKyMUb5QoCvxHDROs49pTC1vamePMA2D5dY7bLvm/MgK90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115151; c=relaxed/simple;
-	bh=BVwLT77x7m0uGLpZANJtCtM1ztOc9wyyMrKppp21euU=;
+	s=arc-20240116; t=1744113834; c=relaxed/simple;
+	bh=C8n1fuCAMblDiSkRIINJdCus45A/vx9H0zff0T0Z578=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ShJ8UwNVozJwLui+J566PoHiURsrV/J3ZlNdBl0oK/0m+8R2OIUrukJ/L0CkPOAgtjsFupDVN3Kiux1N4mCQqm36LqMqYkRjcx6IF6Ee76UxpxYTG2ND/Gdo7fBOz2QNVcVmVQ1ZW7Zc6ZHyd1v7uBnrhmW8Tc+mbqv4cCshkiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wg17awPP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A385C4CEE5;
-	Tue,  8 Apr 2025 12:25:49 +0000 (UTC)
+	 MIME-Version; b=uJuKFLRSU6U5lSD9QEHQWeUq9Bd0KuhQXAaiCe5+mwq6oigpIe3nLP7uKs8o97TSDmviU0UDIIwmG+HTftleyl20qEJ8NwfZoz/CcYEQOhkTCpm1mvXicAfw5fgNgpQoYQTfCaMAMx9MmcdSAtRdeZK9qM1aFiUs7aQwvubPd8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AevkUq5s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43D2C4CEE5;
+	Tue,  8 Apr 2025 12:03:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115150;
-	bh=BVwLT77x7m0uGLpZANJtCtM1ztOc9wyyMrKppp21euU=;
+	s=korg; t=1744113834;
+	bh=C8n1fuCAMblDiSkRIINJdCus45A/vx9H0zff0T0Z578=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wg17awPP2lyLiJCZQV4Oxt8o2SzFWXz6i4k8b7BlknHHEgwPm/P3H8DoxNa+weabF
-	 +VUGNB58MCvG6UPwQQKkgL8Q6+afM+EOZ80wtHBL8gWKuU8FwY1i/ZCIXDWG2d8U4/
-	 /Z5F+fLCyHA46ForYOTcAY5Stxyxwe4zonXTAShw=
+	b=AevkUq5sa1hP3+YOKRO74WpKf4T2Q3CStSBv7zluf3m2JiouPXt6AiA7bTAxpDEfN
+	 IXQ7g7U2RhZV/YUzcBjccOQq1pFqv5/cBd2qQ554kyT+fZqOu1jVm590otdVQ1rtY+
+	 /TgIiinvyLRGl21SZWjV7LillKzxFJKwD2dQ2ESg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 367/499] ALSA: hda/realtek: Fix built-in mic breakage on ASUS VivoBook X515JA
+	Boon Khai Ng <boon.khai.ng@intel.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.4 038/154] USB: serial: ftdi_sio: add support for Altera USB Blaster 3
 Date: Tue,  8 Apr 2025 12:49:39 +0200
-Message-ID: <20250408104900.382217575@linuxfoundation.org>
+Message-ID: <20250408104816.483464095@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Boon Khai Ng <boon.khai.ng@intel.com>
 
-[ Upstream commit 84c3c08f5a6c2e2209428b76156bcaf349c3a62d ]
+commit 18e0885bd2ca738407036434418a26a58394a60e upstream.
 
-ASUS VivoBook X515JA with PCI SSID 1043:14f2 also hits the same issue
-as other VivoBook model about the mic pin assignment, and the same
-workaround is required to apply ALC256_FIXUP_ASUS_MIC_NO_PRESENCE
-quirk.
+The Altera USB Blaster 3, available as both a cable and an on-board
+solution, is primarily used for programming and debugging FPGAs.
 
-Fixes: 3b4309546b48 ("ALSA: hda: Fix headset detection failure due to unstable sort")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219902
-Link: https://patch.msgid.link/20250326152205.26733-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It interfaces with host software such as Quartus Programmer,
+System Console, SignalTap, and Nios Debugger. The device utilizes
+either an FT2232 or FT4232 chip.
+
+Enabling the support for various configurations of the on-board
+USB Blaster 3 by including the appropriate VID/PID pairs,
+allowing it to function as a serial device via ftdi_sio.
+
+Note that this check-in does not include support for the
+cable solution, as it does not support UART functionality.
+The supported configurations are determined by the
+hardware design and include:
+
+1) PID 0x6022, FT2232, 1 JTAG port (Port A) + Port B as UART
+2) PID 0x6025, FT4232, 1 JTAG port (Port A) + Port C as UART
+3) PID 0x6026, FT4232, 1 JTAG port (Port A) + Port C, D as UART
+4) PID 0x6029, FT4232, 1 JTAG port (Port B) + Port C as UART
+5) PID 0x602a, FT4232, 1 JTAG port (Port B) + Port C, D as UART
+6) PID 0x602c, FT4232, 1 JTAG port (Port A) + Port B as UART
+7) PID 0x602d, FT4232, 1 JTAG port (Port A) + Port B, C as UART
+8) PID 0x602e, FT4232, 1 JTAG port (Port A) + Port B, C, D as UART
+
+These configurations allow for flexibility in how the USB Blaster 3 is
+used, depending on the specific needs of the hardware design.
+
+Signed-off-by: Boon Khai Ng <boon.khai.ng@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/serial/ftdi_sio.c     |   14 ++++++++++++++
+ drivers/usb/serial/ftdi_sio_ids.h |   13 +++++++++++++
+ 2 files changed, 27 insertions(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 17bdacf222441..834f3bba21181 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10707,6 +10707,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1493, "ASUS GV601VV/VU/VJ/VQ/VI", ALC285_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x14d3, "ASUS G614JY/JZ/JG", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x14e3, "ASUS G513PI/PU/PV", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x1043, 0x14f2, "ASUS VivoBook X515JA", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1503, "ASUS G733PY/PZ/PZV/PYV", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1517, "Asus Zenbook UX31A", ALC269VB_FIXUP_ASUS_ZENBOOK_UX31A),
- 	SND_PCI_QUIRK(0x1043, 0x1533, "ASUS GV302XA/XJ/XQ/XU/XV/XI", ALC287_FIXUP_CS35L41_I2C_2),
--- 
-2.39.5
-
+--- a/drivers/usb/serial/ftdi_sio.c
++++ b/drivers/usb/serial/ftdi_sio.c
+@@ -1057,6 +1057,20 @@ static const struct usb_device_id id_tab
+ 		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+ 	/* GMC devices */
+ 	{ USB_DEVICE(GMC_VID, GMC_Z216C_PID) },
++	/* Altera USB Blaster 3 */
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_6022_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_6025_PID, 2) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_6026_PID, 2) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_6026_PID, 3) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_6029_PID, 2) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602A_PID, 2) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602A_PID, 3) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602C_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602D_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602D_PID, 2) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602E_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602E_PID, 2) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602E_PID, 3) },
+ 	{ }					/* Terminating entry */
+ };
+ 
+--- a/drivers/usb/serial/ftdi_sio_ids.h
++++ b/drivers/usb/serial/ftdi_sio_ids.h
+@@ -1605,3 +1605,16 @@
+  */
+ #define GMC_VID				0x1cd7
+ #define GMC_Z216C_PID			0x0217 /* GMC Z216C Adapter IR-USB */
++
++/*
++ *  Altera USB Blaster 3 (http://www.altera.com).
++ */
++#define ALTERA_VID			0x09fb
++#define ALTERA_UB3_6022_PID		0x6022
++#define ALTERA_UB3_6025_PID		0x6025
++#define ALTERA_UB3_6026_PID		0x6026
++#define ALTERA_UB3_6029_PID		0x6029
++#define ALTERA_UB3_602A_PID		0x602a
++#define ALTERA_UB3_602C_PID		0x602c
++#define ALTERA_UB3_602D_PID		0x602d
++#define ALTERA_UB3_602E_PID		0x602e
 
 
 
