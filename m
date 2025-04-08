@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-131421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23465A80A4E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:03:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC57DA80714
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B378B4E728E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:51:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6ED2A424735
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:21:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35AB927602F;
-	Tue,  8 Apr 2025 12:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70C0726B2A8;
+	Tue,  8 Apr 2025 12:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSkcvy4h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dP/RRvCd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7401268FE7;
-	Tue,  8 Apr 2025 12:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5E826A0E0;
+	Tue,  8 Apr 2025 12:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116351; cv=none; b=JlXFpcGjKeetAdJjIKMoIavEAcb99RL/KyzFXtqt5d3vTOB7zhNL9IhgzCSF5KpGpOPlRgypmWVlfKj8RaANnP9umD/eqqlUKhgA1V1LTw9AX91hmWyfNSqURb0eV2n0DgHPIhOtUhPvkSPu0XJTdq/oTvKTOQpLsOF6SkHYSZQ=
+	t=1744114709; cv=none; b=Qwe5GVgD+TtGJqz1Nqu/8wsN5HustqxrvYsKjcPzgQdzHeFH4HupoWZYtb+WXvLzbpW2anM3Xi14E61iZq+HtkEPgFnEKeQ7wegSSBlX8TLPJBzvCLUH36L5IlwATuMdMBgO2DnPoCMH3zXgv5sOi+oPmzDu2x6egxyBMA7Ww38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116351; c=relaxed/simple;
-	bh=l6vfa9ZDGnjo9DHEgeszZRWCT7s+FvsmVBchf8z2C4s=;
+	s=arc-20240116; t=1744114709; c=relaxed/simple;
+	bh=kToPqLyL8Pym2IajDhDK7eE8Tz7VZBQiFzGVRGf1A3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rq1KC1Fk3MGpdMdFI4m7Ju/fX4zeOCzHjz2NtB5kmpmW0ovUqoBiM16GcQKTmiACExwOH3yQidXGcYf6V1AT9AvqcT60MecEeqBC3TYm+28uphQ7KKD6kSe6Cfxw4IVi+Gp8GiLEJezOZsjdy5RCk5e2USjwzsYm0cXkm0Bs3Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSkcvy4h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C94C4CEE5;
-	Tue,  8 Apr 2025 12:45:50 +0000 (UTC)
+	 MIME-Version; b=dEfHmgxoQcZr6ocQQrvlF7eSlIUH7ETnD7xe02YdgY7l4xzlcu5HOxnnQYTywNnOceqFxfiaN1UHdtwo4gWxDD7Dfnkb5DZvs49QX34E8EF6VTGWxMd0mvY/RQ4ihVPrjVVF09llpqMi3YR9QAYOXUpQy7rwWT6Qo3mlE++qnn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dP/RRvCd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487FFC4CEE5;
+	Tue,  8 Apr 2025 12:18:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116350;
-	bh=l6vfa9ZDGnjo9DHEgeszZRWCT7s+FvsmVBchf8z2C4s=;
+	s=korg; t=1744114708;
+	bh=kToPqLyL8Pym2IajDhDK7eE8Tz7VZBQiFzGVRGf1A3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZSkcvy4hncZeezLVtcnSFH1A7fqWKnRNeDVul9Mjy3fOKkD2yL852GQM4fha1/59j
-	 zaE1bS4qoqmbWwQKeuzem8NNjzZuB/g0b3hwWxdG8KuW4ABWEffuROTTuSzQMtzH6Q
-	 Z61LUaKeDCiNvu5CAUZzURSqPLazdZlulVUpVyNk=
+	b=dP/RRvCd89S1AuSWOlY+wcMKV5nP1uluegSjv3AVKsPREndxNo6c71GjD1urJVTWE
+	 6ion0pp29urF7kg+fFw2TfpPiRGsiAW+bM8FDG1MJ8xHr2sbMTCoA962RfZ7bwotAH
+	 UoHKLE1x2LDQsh58ykFXA4mRh/QKdB/OAIM3lQjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 091/423] PCI: Fix BAR resizing when VF BARs are assigned
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Kun Hu <huk23@m.fudan.edu.cn>
+Subject: [PATCH 6.13 205/499] fs/ntfs3: Update inode->i_mapping->a_ops on compression state
 Date: Tue,  8 Apr 2025 12:46:57 +0200
-Message-ID: <20250408104847.861058561@linuxfoundation.org>
+Message-ID: <20250408104856.315228411@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +60,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 9ec19bfa78bd788945e2445b09de7b4482dee432 ]
+[ Upstream commit b432163ebd15a0fb74051949cb61456d6c55ccbd ]
 
-__resource_resize_store() attempts to release all resources of the device
-before attempting the resize. The loop, however, only covers standard BARs
-(< PCI_STD_NUM_BARS). If a device has VF BARs that are assigned,
-pci_reassign_bridge_resources() finds the bridge window still has some
-assigned child resources and returns -NOENT which makes
-pci_resize_resource() to detect an error and abort the resize.
+Update inode->i_mapping->a_ops when the compression state changes to
+ensure correct address space operations.
+Clear ATTR_FLAG_SPARSED/FILE_ATTRIBUTE_SPARSE_FILE when enabling
+compression to prevent flag conflicts.
 
-Change the release loop to cover all resources up to VF BARs which allows
-the resize operation to release the bridge windows and attempt to assigned
-them again with the different size.
+v2:
+Additionally, ensure that all dirty pages are flushed and concurrent access
+to the page cache is blocked.
 
-If SR-IOV is enabled, disallow resize as it requires releasing also IOV
-resources.
-
-Link: https://lore.kernel.org/r/20250320142837.8027-1-ilpo.jarvinen@linux.intel.com
-Fixes: 91fa127794ac ("PCI: Expose PCIe Resizable BAR support via sysfs")
-Reported-by: Michał Winiarski <michal.winiarski@intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
+Fixes: 6b39bfaeec44 ("fs/ntfs3: Add support for the compression attribute")
+Reported-by: Kun Hu <huk23@m.fudan.edu.cn>, Jiaji Qin <jjtan24@m.fudan.edu.cn>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci-sysfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ntfs3/attrib.c  |  3 ++-
+ fs/ntfs3/file.c    | 22 ++++++++++++++++++++--
+ fs/ntfs3/frecord.c |  6 ++++--
+ 3 files changed, 26 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
-index 3e5a117f5b5d6..5af4a804a4f89 100644
---- a/drivers/pci/pci-sysfs.c
-+++ b/drivers/pci/pci-sysfs.c
-@@ -1444,7 +1444,7 @@ static ssize_t __resource_resize_store(struct device *dev, int n,
- 		return -EINVAL;
- 
- 	device_lock(dev);
--	if (dev->driver) {
-+	if (dev->driver || pci_num_vf(pdev)) {
- 		ret = -EBUSY;
- 		goto unlock;
+diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
+index af94e3737470d..e946f75eb5406 100644
+--- a/fs/ntfs3/attrib.c
++++ b/fs/ntfs3/attrib.c
+@@ -2664,8 +2664,9 @@ int attr_set_compress(struct ntfs_inode *ni, bool compr)
+ 		attr->nres.run_off = cpu_to_le16(run_off);
  	}
-@@ -1466,7 +1466,7 @@ static ssize_t __resource_resize_store(struct device *dev, int n,
  
- 	pci_remove_resource_files(pdev);
+-	/* Update data attribute flags. */
++	/* Update attribute flags. */
+ 	if (compr) {
++		attr->flags &= ~ATTR_FLAG_SPARSED;
+ 		attr->flags |= ATTR_FLAG_COMPRESSED;
+ 		attr->nres.c_unit = NTFS_LZNT_CUNIT;
+ 	} else {
+diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
+index 3f96a11804c90..e9f701f884e72 100644
+--- a/fs/ntfs3/file.c
++++ b/fs/ntfs3/file.c
+@@ -101,8 +101,26 @@ int ntfs_fileattr_set(struct mnt_idmap *idmap, struct dentry *dentry,
+ 	/* Allowed to change compression for empty files and for directories only. */
+ 	if (!is_dedup(ni) && !is_encrypted(ni) &&
+ 	    (S_ISREG(inode->i_mode) || S_ISDIR(inode->i_mode))) {
+-		/* Change compress state. */
+-		int err = ni_set_compress(inode, flags & FS_COMPR_FL);
++		int err = 0;
++		struct address_space *mapping = inode->i_mapping;
++
++		/* write out all data and wait. */
++		filemap_invalidate_lock(mapping);
++		err = filemap_write_and_wait(mapping);
++
++		if (err >= 0) {
++			/* Change compress state. */
++			bool compr = flags & FS_COMPR_FL;
++			err = ni_set_compress(inode, compr);
++
++			/* For files change a_ops too. */
++			if (!err)
++				mapping->a_ops = compr ? &ntfs_aops_cmpr :
++							 &ntfs_aops;
++		}
++
++		filemap_invalidate_unlock(mapping);
++
+ 		if (err)
+ 			return err;
+ 	}
+diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
+index f66186dbeda9d..b95d85432493c 100644
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -3433,10 +3433,12 @@ int ni_set_compress(struct inode *inode, bool compr)
+ 	}
  
--	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
-+	for (i = 0; i < PCI_BRIDGE_RESOURCES; i++) {
- 		if (pci_resource_len(pdev, i) &&
- 		    pci_resource_flags(pdev, i) == flags)
- 			pci_release_resource(pdev, i);
+ 	ni->std_fa = std->fa;
+-	if (compr)
++	if (compr) {
++		std->fa &= ~FILE_ATTRIBUTE_SPARSE_FILE;
+ 		std->fa |= FILE_ATTRIBUTE_COMPRESSED;
+-	else
++	} else {
+ 		std->fa &= ~FILE_ATTRIBUTE_COMPRESSED;
++	}
+ 
+ 	if (ni->std_fa != std->fa) {
+ 		ni->std_fa = std->fa;
 -- 
 2.39.5
 
