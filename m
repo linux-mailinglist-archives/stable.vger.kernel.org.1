@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-129727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49715A800E7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:36:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81CE1A803A3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:00:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D20A118820E6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:32:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D88E33BFBCE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68539268683;
-	Tue,  8 Apr 2025 11:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 848B9268FEB;
+	Tue,  8 Apr 2025 11:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uAmwpuez"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+lo9P5H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A212288CB;
-	Tue,  8 Apr 2025 11:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA3C267F68;
+	Tue,  8 Apr 2025 11:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111818; cv=none; b=JlI78Mek1WZrajiNXMlXh/afIYg0g8QEer4k5XDHalE7XK0E5317pmJXBdLSWRIeaep6tyjOiMwetpGQIZf7qLkIHV35/SCEk0FyXocZf69JLSVIBs2cVmrj9CU0TSCkkjvSHHmwhA0zgeQA+b+AELS5/qLRFxHRMTR8zwK2MwM=
+	t=1744113167; cv=none; b=geazSCSHsjJSD4Zc58wMFpOAsAAAJIINMzHuYI/8TESxkbG+EwA5x1EPqxRx3jy5H0Y9kPSr5HfXaAXdowzK2pRq5KzNW2W59awgiloXurbKTHuxP6PAuO/mjC4cxUacc3Pc/t8UxueEcbIvSVag0/jv2FZZf9wVu2q+zrNsD9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111818; c=relaxed/simple;
-	bh=eOssochFnRDAAS6a2lisg66NhYKkVa+QDctpauke+18=;
+	s=arc-20240116; t=1744113167; c=relaxed/simple;
+	bh=/ihRBV87h8X8px/c++8OeRtarBM7J+XcvfQnl2IhnFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pcpbgx+eFiDtTb2aFk8s6vjVRR7RPn2EhS3CwuCCoeGs+lNx4rjgFC3mEy5I/psSfcgbpKU9XauVXz0SFg/hHiHn7cKMOvzdolp0viMeL/rXJeFWw3J8o5OVLF1SHyreIkkFZzmg/pkE8MJDhJuI3HCnjHfM8F3pTVGorpzogn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uAmwpuez; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD1BCC4CEE5;
-	Tue,  8 Apr 2025 11:30:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VnqsrL+6X2fPUT6T9gg7Wa8CWm6ux/GjbXRZw8r6lb+Lmmlg5JDnT4Zpe4HaDIuBoUXUq587kHrN20uFuOT/1jMTX05K1ov7pR083DnC0ymYbuaeeh/TTDRNCIfBwnSMvXJn0IHdH7OVItL8ieS3wwfisO2X9kpFHukoEjdaK+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+lo9P5H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96524C4CEE5;
+	Tue,  8 Apr 2025 11:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111818;
-	bh=eOssochFnRDAAS6a2lisg66NhYKkVa+QDctpauke+18=;
+	s=korg; t=1744113167;
+	bh=/ihRBV87h8X8px/c++8OeRtarBM7J+XcvfQnl2IhnFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uAmwpuez6pIGnCOV/gaD4cPsGYtLQZ7fZj5PP28N2vfeKITAMm7T8eHB68MPsH7qv
-	 2rl0DYZYIt+iaewGI2Y1p/jsJSLfsK2Cjc5bEkiLZTunRtdFjHqVDqNFtkfS1UpNCl
-	 lfUgWOo8gLqnSjwJp5WCvEcSa4Zx9THVzdOSR5r4=
+	b=t+lo9P5HAJgVLfcjZz3xKggqzQpJVp0GwYoCDFzTfHPtys8AFVzgkZu4XVAeFRLdW
+	 YJ8tNTWcdARvvPaUOpF/C5QY+IVEM9d+RBsMil4p/wZ4stn6h48ZgxaMR1aUjqMX5/
+	 t0Z+JxQjtk76MIYFuNzazD6mU7EdmkepiN6G3Nxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 571/731] sched/smt: Always inline sched_smt_active()
+Subject: [PATCH 6.6 057/268] PCI: histb: Fix an error handling path in histb_pcie_probe()
 Date: Tue,  8 Apr 2025 12:47:48 +0200
-Message-ID: <20250408104927.555428099@linuxfoundation.org>
+Message-ID: <20250408104830.039543701@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +60,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 09f37f2d7b21ff35b8b533f9ab8cfad2fe8f72f6 ]
+[ Upstream commit b36fb50701619efca5f5450b355d42575cf532ed ]
 
-sched_smt_active() can be called from noinstr code, so it should always
-be inlined.  The CONFIG_SCHED_SMT version already has __always_inline.
-Do the same for its !CONFIG_SCHED_SMT counterpart.
+If an error occurs after a successful phy_init() call, then phy_exit()
+should be called.
 
-Fixes the following warning:
+Add the missing call, as already done in the remove function.
 
-  vmlinux.o: error: objtool: intel_idle_ibrs+0x13: call to sched_smt_active() leaves .noinstr.text section
-
-Fixes: 321a874a7ef8 ("sched/smt: Expose sched_smt_present static key")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/1d03907b0a247cf7fb5c1d518de378864f603060.1743481539.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/r/202503311434.lyw2Tveh-lkp@intel.com/
+Fixes: bbd11bddb398 ("PCI: hisi: Add HiSilicon STB SoC PCIe controller driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+[kwilczynski: remove unnecessary hipcie->phy NULL check from
+histb_pcie_probe() and squash a patch that removes similar NULL
+check for hipcie-phy from histb_pcie_remove() from
+https://lore.kernel.org/linux-pci/c369b5d25e17a44984ae5a889ccc28a59a0737f7.1742058005.git.christophe.jaillet@wanadoo.fr]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Link: https://lore.kernel.org/r/8301fc15cdea5d2dac21f57613e8e6922fb1ad95.1740854531.git.christophe.jaillet@wanadoo.fr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sched/smt.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-histb.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/sched/smt.h b/include/linux/sched/smt.h
-index fb1e295e7e63e..166b19af956f8 100644
---- a/include/linux/sched/smt.h
-+++ b/include/linux/sched/smt.h
-@@ -12,7 +12,7 @@ static __always_inline bool sched_smt_active(void)
- 	return static_branch_likely(&sched_smt_present);
- }
- #else
--static inline bool sched_smt_active(void) { return false; }
-+static __always_inline bool sched_smt_active(void) { return false; }
- #endif
+diff --git a/drivers/pci/controller/dwc/pcie-histb.c b/drivers/pci/controller/dwc/pcie-histb.c
+index fd484cc7c481d..335b26635ee99 100644
+--- a/drivers/pci/controller/dwc/pcie-histb.c
++++ b/drivers/pci/controller/dwc/pcie-histb.c
+@@ -409,16 +409,21 @@ static int histb_pcie_probe(struct platform_device *pdev)
+ 	ret = histb_pcie_host_enable(pp);
+ 	if (ret) {
+ 		dev_err(dev, "failed to enable host\n");
+-		return ret;
++		goto err_exit_phy;
+ 	}
  
- void arch_smt_update(void);
+ 	ret = dw_pcie_host_init(pp);
+ 	if (ret) {
+ 		dev_err(dev, "failed to initialize host\n");
+-		return ret;
++		goto err_exit_phy;
+ 	}
+ 
+ 	return 0;
++
++err_exit_phy:
++	phy_exit(hipcie->phy);
++
++	return ret;
+ }
+ 
+ static void histb_pcie_remove(struct platform_device *pdev)
+@@ -427,8 +432,7 @@ static void histb_pcie_remove(struct platform_device *pdev)
+ 
+ 	histb_pcie_host_disable(hipcie);
+ 
+-	if (hipcie->phy)
+-		phy_exit(hipcie->phy);
++	phy_exit(hipcie->phy);
+ }
+ 
+ static const struct of_device_id histb_pcie_of_match[] = {
 -- 
 2.39.5
 
