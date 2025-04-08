@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-129130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1B06A7FE33
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:11:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22477A8028C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C406C16ED50
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B41F07A8FC1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:45:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72B4224F6;
-	Tue,  8 Apr 2025 11:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D548C267F5B;
+	Tue,  8 Apr 2025 11:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xc1HtOLO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arFU2NU6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4851268FD8;
-	Tue,  8 Apr 2025 11:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F6B267B89;
+	Tue,  8 Apr 2025 11:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110197; cv=none; b=Fta4G2Xb0E9G4PaiIksKdCyGwIkNhwVhyMF+qgmWugHkX40Y6xikJcGrhtkcoOxTAHh8jYenq0SzXP1ThOjKCYy1jhZmJELdXQwKRKNsn3wonDorbX36KOEJf4cbd4pXfsvm7pkUh5+2mAz6/LJS6ZFwM+3oklEm8pznBhzhyWA=
+	t=1744112788; cv=none; b=gt8NqPIhJttWRHdF6gJdvAD4EOxPTYVbCjgS0aw3ilkPIpl0UL3vMFhHMSQzcGB8Lb4tdGOaeRFh1+NAZMZ0NGreQ8BbCiMIx6k+Lv4QxqMeJfjaFKeseFDLDTlwjfKj+4NMj01BQYF+vnVsoORalo+fkdY570grsMMSiNtjoeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110197; c=relaxed/simple;
-	bh=rUy32XfrGSz6vP4H4aJQiA21IbjuVnRuc5GJhw64NE4=;
+	s=arc-20240116; t=1744112788; c=relaxed/simple;
+	bh=V+OAk3Lcj2Kxx5iLiqIgaxEddkLU062JaW9NoXyb35A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BT5FSGk6bYbKjV/oflJ+F4znbTVJXNpBB8i6zrTZSkLX+PxvBfn4/tL/S47TvQd2hYXwcEFGP6m8ergqiyogjmmB3fe7erm4ES1AqrtJawxX/3BOPhOMERPp6VCYVEcGcuyUH1KZx8Oymv9oqwyo9vFbbXt/V1GpG/U13XIdg+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xc1HtOLO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06739C4CEFD;
-	Tue,  8 Apr 2025 11:03:15 +0000 (UTC)
+	 MIME-Version; b=FzUOmBrZqkmdOjkbV/USGcHX/uVEnHCUZQ67Oa0Mew49+qz7bIaZXNhAZ+f06MjQNJ2OHmAkz5RX3HRMpHT99azDk7B2gEGxa3S+SLRAtkpUZz7kLEDXQiIvnxKDu/vvfWESmoFx0J5DNcVDWXDbdacjTShnjV/M5LqKCWhaIdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arFU2NU6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA4CCC4CEE5;
+	Tue,  8 Apr 2025 11:46:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110196;
-	bh=rUy32XfrGSz6vP4H4aJQiA21IbjuVnRuc5GJhw64NE4=;
+	s=korg; t=1744112788;
+	bh=V+OAk3Lcj2Kxx5iLiqIgaxEddkLU062JaW9NoXyb35A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xc1HtOLOFr1qirTqskc6FO1JMR9qRfq+ntfpggzmx+uRkJ0mV4kGDxueWQdi2R28w
-	 RhDQTDm6izOdH/zN74Yty6550fhelyoM78Jn3vrn/MFiD2R94VT1HbHc6FSQ+cGSoi
-	 sSM+kPkwCTLmiZjl0gfjhJiO04d+pRM1AyMrEYJ0=
+	b=arFU2NU60gpG4JxTTJTdpyLBg1uTg+n8adlcj9oc1knfaL8aYMXR1OY6yI58287ow
+	 /hd/DSUFc1vJZunvPgPw6VzT/JPkIQSwe+9FwqByF6Ob3WTY40qxije13Wy3Le+gdQ
+	 ovzSGpdianSNjaVBRSlm4u0GumhfBedDRY33wHB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <ffmancera@riseup.net>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 202/227] ipv6: fix omitted netlink attributes when using RTEXT_FILTER_SKIP_STATS
+Subject: [PATCH 5.15 197/279] iio: accel: mma8452: Ensure error return on failure to matching oversampling ratio
 Date: Tue,  8 Apr 2025 12:49:40 +0200
-Message-ID: <20250408104826.362288214@linuxfoundation.org>
+Message-ID: <20250408104831.655720454@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <ffmancera@riseup.net>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit 7ac6ea4a3e0898db76aecccd68fb2c403eb7d24e ]
+[ Upstream commit df330c808182a8beab5d0f84a6cbc9cff76c61fc ]
 
-Using RTEXT_FILTER_SKIP_STATS is incorrectly skipping non-stats IPv6
-netlink attributes on link dump. This causes issues on userspace tools,
-e.g iproute2 is not rendering address generation mode as it should due
-to missing netlink attribute.
+If a match was not found, then the write_raw() callback would return
+the odr index, not an error. Return -EINVAL if this occurs.
+To avoid similar issues in future, introduce j, a new indexing variable
+rather than using ret for this purpose.
 
-Move the filling of IFLA_INET6_STATS and IFLA_INET6_ICMP6STATS to a
-helper function guarded by a flag check to avoid hitting the same
-situation in the future.
-
-Fixes: d5566fd72ec1 ("rtnetlink: RTEXT_FILTER_SKIP_STATS support to avoid dumping inet/inet6 stats")
-Signed-off-by: Fernando Fernandez Mancera <ffmancera@riseup.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250402121751.3108-1-ffmancera@riseup.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 79de2ee469aa ("iio: accel: mma8452: claim direct mode during write raw")
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250217140135.896574-2-jic23@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf.c | 37 +++++++++++++++++++++++++------------
- 1 file changed, 25 insertions(+), 12 deletions(-)
+ drivers/iio/accel/mma8452.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 455bb4668407f..d38d15ccc7501 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -5658,6 +5658,27 @@ static void snmp6_fill_stats(u64 *stats, struct inet6_dev *idev, int attrtype,
- 	}
- }
- 
-+static int inet6_fill_ifla6_stats_attrs(struct sk_buff *skb,
-+					struct inet6_dev *idev)
-+{
-+	struct nlattr *nla;
-+
-+	nla = nla_reserve(skb, IFLA_INET6_STATS, IPSTATS_MIB_MAX * sizeof(u64));
-+	if (!nla)
-+		goto nla_put_failure;
-+	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_STATS, nla_len(nla));
-+
-+	nla = nla_reserve(skb, IFLA_INET6_ICMP6STATS, ICMP6_MIB_MAX * sizeof(u64));
-+	if (!nla)
-+		goto nla_put_failure;
-+	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_ICMP6STATS, nla_len(nla));
-+
-+	return 0;
-+
-+nla_put_failure:
-+	return -EMSGSIZE;
-+}
-+
- static int inet6_fill_ifla6_attrs(struct sk_buff *skb, struct inet6_dev *idev,
- 				  u32 ext_filter_mask)
+diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
+index 1f46a73aafeac..a7168803408f6 100644
+--- a/drivers/iio/accel/mma8452.c
++++ b/drivers/iio/accel/mma8452.c
+@@ -709,7 +709,7 @@ static int mma8452_write_raw(struct iio_dev *indio_dev,
+ 			     int val, int val2, long mask)
  {
-@@ -5679,18 +5700,10 @@ static int inet6_fill_ifla6_attrs(struct sk_buff *skb, struct inet6_dev *idev,
+ 	struct mma8452_data *data = iio_priv(indio_dev);
+-	int i, ret;
++	int i, j, ret;
  
- 	/* XXX - MC not implemented */
+ 	ret = iio_device_claim_direct_mode(indio_dev);
+ 	if (ret)
+@@ -769,14 +769,18 @@ static int mma8452_write_raw(struct iio_dev *indio_dev,
+ 		break;
  
--	if (ext_filter_mask & RTEXT_FILTER_SKIP_STATS)
--		return 0;
--
--	nla = nla_reserve(skb, IFLA_INET6_STATS, IPSTATS_MIB_MAX * sizeof(u64));
--	if (!nla)
--		goto nla_put_failure;
--	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_STATS, nla_len(nla));
--
--	nla = nla_reserve(skb, IFLA_INET6_ICMP6STATS, ICMP6_MIB_MAX * sizeof(u64));
--	if (!nla)
--		goto nla_put_failure;
--	snmp6_fill_stats(nla_data(nla), idev, IFLA_INET6_ICMP6STATS, nla_len(nla));
-+	if (!(ext_filter_mask & RTEXT_FILTER_SKIP_STATS)) {
-+		if (inet6_fill_ifla6_stats_attrs(skb, idev) < 0)
-+			goto nla_put_failure;
-+	}
+ 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+-		ret = mma8452_get_odr_index(data);
++		j = mma8452_get_odr_index(data);
  
- 	nla = nla_reserve(skb, IFLA_INET6_TOKEN, sizeof(struct in6_addr));
- 	if (!nla)
+ 		for (i = 0; i < ARRAY_SIZE(mma8452_os_ratio); i++) {
+-			if (mma8452_os_ratio[i][ret] == val) {
++			if (mma8452_os_ratio[i][j] == val) {
+ 				ret = mma8452_set_power_mode(data, i);
+ 				break;
+ 			}
+ 		}
++		if (i == ARRAY_SIZE(mma8452_os_ratio)) {
++			ret = -EINVAL;
++			break;
++		}
+ 		break;
+ 	default:
+ 		ret = -EINVAL;
 -- 
 2.39.5
 
