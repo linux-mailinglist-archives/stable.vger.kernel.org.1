@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-129981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8049A8023C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:46:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2413BA800C9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:34:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32B74188AE50
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:41:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFB137A8358
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:31:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88F6263C6D;
-	Tue,  8 Apr 2025 11:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B4D26561C;
+	Tue,  8 Apr 2025 11:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNcbEnIG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DtW5Puwb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F04219301;
-	Tue,  8 Apr 2025 11:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364A4227EBD;
+	Tue,  8 Apr 2025 11:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112497; cv=none; b=pSdft0L31VtdqAP2ySAj5nYdE0z0l8io7IMGLdSbS7oPLv15aNIZZJZnmgz9F3y2k0RLwqYOf3YwwnHl495236q15QqTX3auEuwSDbiitUU+hYAPz5LKq49fI4xQFMJ7v2zopsNmjSN0mW1iFqQeYCoq5IVYARaECGaz4fRyZ2I=
+	t=1744111834; cv=none; b=AZel5zuXM4RnQj93jNdpcOsObs98tNtsrCjTaHXqM7Jikixi/TF1ENzH/n+JyHqsPN/J491X+KlZIBjqb9jxZ79wsMLyvGCN8Dx6Hg9kVHPcTSb9IWgLqSdX9xZ3jIhQTJZcMm2s/af5AFa4qqdtj/PMw5x14sGWKJnzeakKUEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112497; c=relaxed/simple;
-	bh=zq8zLonBs5xmFpoO/Zxo9LBUvNcmQcmB6dQ7oXACbZU=;
+	s=arc-20240116; t=1744111834; c=relaxed/simple;
+	bh=jVjegiv0izC+WPfh/jeszQlyn3uJ2yR9qsb1t8UC60o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C6fxAZVZCYjbdx2Zi30zJadkZto8sBpqKxHhc4gddklirJINH0VMBQUdpuHMXmxSDA5IdjohO2G6wNcJZ2+aTk1FI4Rzq7Qw02o9grS0q+HActgMtm34VfHLMxHDEQGU2ywiQf3IX6FK/kNgiVCQeyGyhAozJ1hDfp17zNzvY+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNcbEnIG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37B13C4CEE5;
-	Tue,  8 Apr 2025 11:41:37 +0000 (UTC)
+	 MIME-Version; b=gSVMMk0GvZK/ZQSRAp3P4CnoMzWaUAmnnXhUM0+Q4uvUGCYeDHyPKU3F7LtfaMOwZydUUc7Cu6EwbNEf14xXW6UnOq8EOvV1QskHdxOyvtxtG5iAtiKMbnLSYCZqZWJSCaQCTmIbFQOKVDHs+CEC2iYBp+DgvLiYjoc2ZxXHKIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DtW5Puwb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B44C4CEE5;
+	Tue,  8 Apr 2025 11:30:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112497;
-	bh=zq8zLonBs5xmFpoO/Zxo9LBUvNcmQcmB6dQ7oXACbZU=;
+	s=korg; t=1744111834;
+	bh=jVjegiv0izC+WPfh/jeszQlyn3uJ2yR9qsb1t8UC60o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SNcbEnIGGoH0XHq5JtfApQwXiCcK1BsBg02xSsDB4zzLB8urgAdo8qs0v8b2n/1zB
-	 osl1+U5JQiPItAlV3P/q6tFj+q6FYYkN6lOoH3TU8ral83XLjyLdDMuCsVljpXtXxs
-	 P2d4JqGCj1zO5ndawK1+yAdroFVGzunobswBsF3I=
+	b=DtW5PuwbxV7xCTzrn3/y0iIHpcPsRZi3sI4cTT96VrfpjutqG1M9MriRSB3kMUNIc
+	 WgBVOth9pRtoerwzn3AU91WFAWHYVJG4X69qqeq2FT4UlGHoXjDAuq/ER1TBp2QHYx
+	 Owjoye7oSVlBQxyvd331ISqsi2/dkhwca3ePGoRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 091/279] ipv6: Fix memleak of nhc_pcpu_rth_output in fib_check_nh_v6_gw().
+Subject: [PATCH 6.14 577/731] spufs: fix a leak on spufs_new_file() failure
 Date: Tue,  8 Apr 2025 12:47:54 +0200
-Message-ID: <20250408104828.807637585@linuxfoundation.org>
+Message-ID: <20250408104927.695858475@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 9740890ee20e01f99ff1dde84c63dcf089fabb98 ]
+[ Upstream commit d1ca8698ca1332625d83ea0d753747be66f9906d ]
 
-fib_check_nh_v6_gw() expects that fib6_nh_init() cleans up everything
-when it fails.
+It's called from spufs_fill_dir(), and caller of that will do
+spufs_rmdir() in case of failure.  That does remove everything
+we'd managed to create, but... the problem dentry is still
+negative.  IOW, it needs to be explicitly dropped.
 
-Commit 7dd73168e273 ("ipv6: Always allocate pcpu memory in a fib6_nh")
-moved fib_nh_common_init() before alloc_percpu_gfp() within fib6_nh_init()
-but forgot to add cleanup for fib6_nh->nh_common.nhc_pcpu_rth_output in
-case it fails to allocate fib6_nh->rt6i_pcpu, resulting in memleak.
-
-Let's call fib_nh_common_release() and clear nhc_pcpu_rth_output in the
-error path.
-
-Note that we can remove the fib6_nh_release() call in nh_create_ipv6()
-later in net-next.git.
-
-Fixes: 7dd73168e273 ("ipv6: Always allocate pcpu memory in a fib6_nh")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250312010333.56001-1-kuniyu@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 3f51dd91c807 "[PATCH] spufs: fix spufs_fill_dir error path"
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/route.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/powerpc/platforms/cell/spufs/inode.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 94526436b91e8..875cab88f3891 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -3630,7 +3630,8 @@ int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
- 		in6_dev_put(idev);
- 
- 	if (err) {
--		lwtstate_put(fib6_nh->fib_nh_lws);
-+		fib_nh_common_release(&fib6_nh->nh_common);
-+		fib6_nh->nh_common.nhc_pcpu_rth_output = NULL;
- 		fib6_nh->fib_nh_lws = NULL;
- 		dev_put(dev);
+diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
+index 70236d1df3d3e..793c005607cf0 100644
+--- a/arch/powerpc/platforms/cell/spufs/inode.c
++++ b/arch/powerpc/platforms/cell/spufs/inode.c
+@@ -192,8 +192,10 @@ static int spufs_fill_dir(struct dentry *dir,
+ 			return -ENOMEM;
+ 		ret = spufs_new_file(dir->d_sb, dentry, files->ops,
+ 					files->mode & mode, files->size, ctx);
+-		if (ret)
++		if (ret) {
++			dput(dentry);
+ 			return ret;
++		}
+ 		files++;
  	}
+ 	return 0;
 -- 
 2.39.5
 
