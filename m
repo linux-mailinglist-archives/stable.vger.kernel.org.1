@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E11CA80565
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:17:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A576A80AC2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:09:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DD7642486F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:10:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B81147B22EC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64962676CA;
-	Tue,  8 Apr 2025 12:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A30B227C179;
+	Tue,  8 Apr 2025 12:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BO5KA2gY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zhs1qemE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7271626A08E;
-	Tue,  8 Apr 2025 12:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5483326988C;
+	Tue,  8 Apr 2025 12:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114081; cv=none; b=aqYuDym0o93Di7SRs8MYp1FDFqTudscv/245002VkDqXWTJokzkggixkvIAB7wHZ+UWytWuLVDTQoZRNyZlP/ujSm91AvFN+l2TUj9jlhenqn1lQTbwwKwq34JFVd6cdF1qS6aIdMAuvN5AezUBtNibpX5LoQvs/xIZGKCx6aDQ=
+	t=1744117013; cv=none; b=RWqoYS+4CSWK8rlRY+S8WB3qElKXbsEjETP+1/1db2jGTFg+yWp1BQcyWAmZnyVMz58fOKj8FmyvzabedMOFbx94K5QP0EhPI49uyGx9/tVisPOKmj1bEFHufFJutINEpMO3w29R+DvK6rGfelWOG7Px3iA113aNNWDu4ysvRQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114081; c=relaxed/simple;
-	bh=eHqw4k0GrRlpPmRnKX5S8X6k62K0/g/2JAgKK07DFQ0=;
+	s=arc-20240116; t=1744117013; c=relaxed/simple;
+	bh=kkkBArFyb9SqS37KeyaL9JmGYFbA0vXoP4U7E/tO66g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CRdR1VYcsIwlrxs81svHNHXf9iwVVJeOEdb/lJROMTqVARt4xlU2kxVpevzP9R9Zad2NkID671UmX7nsPn5zu86IEi8CcwU+QNo6eDU/h6pTfciC4q2oZPmkNXibnSr+CsAfg5eUC9gyLZmZwuWRI9wnhiVvnLPJGWTOMbWpsEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BO5KA2gY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0000BC4CEE5;
-	Tue,  8 Apr 2025 12:08:00 +0000 (UTC)
+	 MIME-Version; b=h3QAwpLqUXykmpHyi84qJ2YcmCvZqXenv5yx1SRfuCE+KT9UaqBNShyFDb2+YaS4ho3zsi08/oEOsRWaG1BaC2970kp1umQ7HR3kph/U/Rr4djZ+1cAgwbR2XJf/q+VGxsvNr3onlAO+BVbXUeLddK9mmqR7Ly6RJGZHIWwzvuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zhs1qemE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68C5FC4CEE5;
+	Tue,  8 Apr 2025 12:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114081;
-	bh=eHqw4k0GrRlpPmRnKX5S8X6k62K0/g/2JAgKK07DFQ0=;
+	s=korg; t=1744117012;
+	bh=kkkBArFyb9SqS37KeyaL9JmGYFbA0vXoP4U7E/tO66g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BO5KA2gYtDmZEvxO5l4DUlPRT1JT55V7adnG+5lmSuSkuZ6BL4a0/t/X33fouZ01b
-	 GNVrIie+AtxCBBqiniiuJPVXzudq6IRmG7pogG4WYYpZLfnPoGlTL1CcHwR5pw8FtX
-	 yD5WoRFCIaDUEM1orX5HjZS2eIseyTe97bM7PE/U=
+	b=zhs1qemExCeqXXl37wcK0zLSfBbKTwKAt5nkx+WEcDiZ2z75LjM5eQ2ldDAbfJ2o7
+	 pVoZp1dm5Co9HIAMJuo5yUTdhn8TktgllyWZvUBhIDQgvLgSu8Git3RyJCePlPhscW
+	 KYzx93PYkE1fWL7PVPQLFv9sNOX0R+Db0lu6xOjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Tatham <anakin@pobox.com>,
-	David Sterba <dsterba@suse.com>,
+	Alexandru Gagniuc <alexandru.gagniuc@hp.com>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 130/154] affs: generate OFS sequence numbers starting at 1
+Subject: [PATCH 6.12 345/423] kbuild: deb-pkg: dont set KBUILD_BUILD_VERSION unconditionally
 Date: Tue,  8 Apr 2025 12:51:11 +0200
-Message-ID: <20250408104819.478105893@linuxfoundation.org>
+Message-ID: <20250408104853.875995761@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Tatham <anakin@pobox.com>
+From: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
 
-[ Upstream commit e4cf8ec4de4e13f156c1d61977d282d90c221085 ]
+[ Upstream commit 62604063621fb075c7966286bdddcb057d883fa8 ]
 
-If I write a file to an OFS floppy image, and try to read it back on
-an emulated Amiga running Workbench 1.3, the Amiga reports a disk
-error trying to read the file. (That is, it's unable to read it _at
-all_, even to copy it to the NIL: device. It isn't a matter of getting
-the wrong data and being unable to parse the file format.)
+In ThinPro, we use the convention <upstream_ver>+hp<patchlevel> for
+the kernel package. This does not have a dash in the name or version.
+This is built by editing ".version" before a build, and setting
+EXTRAVERSION="+hp" and KDEB_PKGVERSION make variables:
 
-This is because the 'sequence number' field in the OFS data block
-header is supposed to be based at 1, but affs writes it based at 0.
-All three locations changed by this patch were setting the sequence
-number to a variable 'bidx' which was previously obtained by dividing
-a file position by bsize, so bidx will naturally use 0 for the first
-block. Therefore all three should add 1 to that value before writing
-it into the sequence number field.
+    echo 68 > .version
+    make -j<n> EXTRAVERSION="+hp" bindeb-pkg KDEB_PKGVERSION=6.12.2+hp69
 
-With this change, the Amiga successfully reads the file.
+    .deb name: linux-image-6.12.2+hp_6.12.2+hp69_amd64.deb
 
-For data block reference: https://wiki.osdev.org/FFS_(Amiga)
+Since commit 7d4f07d5cb71 ("kbuild: deb-pkg: squash
+scripts/package/deb-build-option to debian/rules"), this no longer
+works. The deb build logic changed, even though, the commit message
+implies that the logic should be unmodified.
 
-Signed-off-by: Simon Tatham <anakin@pobox.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Before, KBUILD_BUILD_VERSION was not set if the KDEB_PKGVERSION did
+not contain a dash. After the change KBUILD_BUILD_VERSION is always
+set to KDEB_PKGVERSION. Since this determines UTS_VERSION, the uname
+output to look off:
+
+    (now)      uname -a: version 6.12.2+hp ... #6.12.2+hp69
+    (expected) uname -a: version 6.12.2+hp ... #69
+
+Update the debian/rules logic to restore the original behavior.
+
+Fixes: 7d4f07d5cb71 ("kbuild: deb-pkg: squash scripts/package/deb-build-option to debian/rules")
+Signed-off-by: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
+Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/affs/file.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ scripts/package/debian/rules | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/affs/file.c b/fs/affs/file.c
-index 82bb38370aa9a..6dae4ca09be5f 100644
---- a/fs/affs/file.c
-+++ b/fs/affs/file.c
-@@ -596,7 +596,7 @@ affs_extent_file_ofs(struct inode *inode, u32 newsize)
- 		BUG_ON(tmp > bsize);
- 		AFFS_DATA_HEAD(bh)->ptype = cpu_to_be32(T_DATA);
- 		AFFS_DATA_HEAD(bh)->key = cpu_to_be32(inode->i_ino);
--		AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx);
-+		AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx + 1);
- 		AFFS_DATA_HEAD(bh)->size = cpu_to_be32(tmp);
- 		affs_fix_checksum(sb, bh);
- 		bh->b_state &= ~(1UL << BH_New);
-@@ -746,7 +746,7 @@ static int affs_write_end_ofs(struct file *file, struct address_space *mapping,
- 		if (buffer_new(bh)) {
- 			AFFS_DATA_HEAD(bh)->ptype = cpu_to_be32(T_DATA);
- 			AFFS_DATA_HEAD(bh)->key = cpu_to_be32(inode->i_ino);
--			AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx);
-+			AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx + 1);
- 			AFFS_DATA_HEAD(bh)->size = cpu_to_be32(bsize);
- 			AFFS_DATA_HEAD(bh)->next = 0;
- 			bh->b_state &= ~(1UL << BH_New);
-@@ -780,7 +780,7 @@ static int affs_write_end_ofs(struct file *file, struct address_space *mapping,
- 		if (buffer_new(bh)) {
- 			AFFS_DATA_HEAD(bh)->ptype = cpu_to_be32(T_DATA);
- 			AFFS_DATA_HEAD(bh)->key = cpu_to_be32(inode->i_ino);
--			AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx);
-+			AFFS_DATA_HEAD(bh)->sequence = cpu_to_be32(bidx + 1);
- 			AFFS_DATA_HEAD(bh)->size = cpu_to_be32(tmp);
- 			AFFS_DATA_HEAD(bh)->next = 0;
- 			bh->b_state &= ~(1UL << BH_New);
+diff --git a/scripts/package/debian/rules b/scripts/package/debian/rules
+index ca07243bd5cdf..2b3f9a0bd6c40 100755
+--- a/scripts/package/debian/rules
++++ b/scripts/package/debian/rules
+@@ -21,9 +21,11 @@ ifeq ($(origin KBUILD_VERBOSE),undefined)
+     endif
+ endif
+ 
+-revision = $(lastword $(subst -, ,$(shell dpkg-parsechangelog -S Version)))
++revision = $(shell dpkg-parsechangelog -S Version | sed -n 's/.*-//p')
+ CROSS_COMPILE ?= $(filter-out $(DEB_BUILD_GNU_TYPE)-, $(DEB_HOST_GNU_TYPE)-)
+-make-opts = ARCH=$(ARCH) KERNELRELEASE=$(KERNELRELEASE) KBUILD_BUILD_VERSION=$(revision) $(addprefix CROSS_COMPILE=,$(CROSS_COMPILE))
++make-opts = ARCH=$(ARCH) KERNELRELEASE=$(KERNELRELEASE) \
++    $(addprefix KBUILD_BUILD_VERSION=,$(revision)) \
++    $(addprefix CROSS_COMPILE=,$(CROSS_COMPILE))
+ 
+ binary-targets := $(addprefix binary-, image image-dbg headers libc-dev)
+ 
 -- 
 2.39.5
 
