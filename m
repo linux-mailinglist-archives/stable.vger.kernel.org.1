@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-129972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6510A8021B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:44:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FD8EA800E8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:36:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16E70188CBEF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:41:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 991533AEB06
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 506BD263C6D;
-	Tue,  8 Apr 2025 11:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8D7F26A1BC;
+	Tue,  8 Apr 2025 11:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bkmy7FVB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sh8awW0t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE4F207E14;
-	Tue,  8 Apr 2025 11:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76210267F4F;
+	Tue,  8 Apr 2025 11:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112472; cv=none; b=Bhmi6+e4aCAyvBJJwU/v4R7BWiv4HtNQ7GyqGk/vQUpkQuoPRR+CLolBFmwrmfSiQX00t244uw7AXhinyLR7vFRi/OExL+S3z2OnRXRS6rEn7tntMF2MMwNEZjsVB7V+us7ZCXA7QWlIweVYuYa2ybXkCVJlSIIlWekTPQzhjUo=
+	t=1744111700; cv=none; b=ki6lp+dsiYpuuXJ5/+3DSk66pqleUPuN2bGFppe2BtRL2SNIObSy5iJuVnlq48WsyU0OdLGSBW1SzjzSnx5LKt9eM2asxcNavk2+KEgVPpE8bPDZ/RZD2gUE1pBV/AsNjC44iKLMohMk+YYW9OjfQSGixb0lRcJAjhs2zf8nmYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112472; c=relaxed/simple;
-	bh=LL/mL+z9PfeVTGi4C+sc8uuqhdos4ZgkD//439AXrY0=;
+	s=arc-20240116; t=1744111700; c=relaxed/simple;
+	bh=qibAHURy7fwYi2MNonSv7E+A4cVKl1yTXQ9Ez6ZhHTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I5b+8BgC4k4OD9WLZsdeCDURtA5A8NVh00ulJ02h2TUs7UVMqvRcRsjyRMWq6wHQdDSM/bwIE+hf6/bY003MahkL6nEuq2F8lnmHC3gtV9QACKHTD125ohk4v+STGSOt9DWUwDgGovehPT7xBVnFXm55b59r5etJjcc7l3vWCaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bkmy7FVB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BAFC4CEE5;
-	Tue,  8 Apr 2025 11:41:11 +0000 (UTC)
+	 MIME-Version; b=uaDZViwhGPJskg8/mDZsoTRiH3x2+sSa9O3NEM62jCFOfP2QVa+JUj970qWO354Ci01ooeb9zSLSI53CZ7I6U1Q2Fs8YvKQ8VxLTWXwZ9O5SCBBiG8eP3w/5VqghEyjrT6+ByCmGoB6HNULxbULXI3Vq6jWa5UAcZhdSUEP5eVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sh8awW0t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03AEFC4CEE5;
+	Tue,  8 Apr 2025 11:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112471;
-	bh=LL/mL+z9PfeVTGi4C+sc8uuqhdos4ZgkD//439AXrY0=;
+	s=korg; t=1744111700;
+	bh=qibAHURy7fwYi2MNonSv7E+A4cVKl1yTXQ9Ez6ZhHTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bkmy7FVBAv103lXm2rgW2r0pFZWHqHp/cs9fWxQ1HmYsQYtdm+07wBXnwureFGJF3
-	 w1rKbS8ZULqoxE+kL/rwHo1WQ+iTHm6wHcVygBuVnkQwQc1VatnfKLPUfOEK3lexdb
-	 nq7ce80RBSuJOlOCxiFkM8lybIj8TK1EeqD7rDkE=
+	b=sh8awW0t+yayUNR5LHWdOHt3YgiJTsV+zEFzqIW07ShtJg3aIrNcKejDammJK5bFF
+	 Vw2cxAEBXd7AMWqBZz+/+DSRpBzvgjkTeEHfZkHhRHH6HAD5infT/DdpJRPRb0VjM7
+	 k0nyz6o3kRtkMopOfdzDO67braTzAs26nsBar3zo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Loic Poulain <loic.poulain@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 041/279] net: wwan: mhi_wwan_mbim: Silence sequence number glitch errors
+Subject: [PATCH 6.14 527/731] perf python: Decrement the refcount of just created event on failure
 Date: Tue,  8 Apr 2025 12:47:04 +0200
-Message-ID: <20250408104827.488540323@linuxfoundation.org>
+Message-ID: <20250408104926.530802369@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 0d1fac6d26aff5df21bb4ec980d9b7a11c410b96 ]
+[ Upstream commit 3de5a2bf5b4847f7a59a184568f969f8fe05d57f ]
 
-When using the Qualcomm X55 modem on the ThinkPad X13s, the kernel log is
-constantly being filled with errors related to a "sequence number glitch",
-e.g.:
+To avoid a leak if we have the python object but then something happens
+and we need to return the operation, decrement the offset of the newly
+created object.
 
-	[ 1903.284538] sequence number glitch prev=16 curr=0
-	[ 1913.812205] sequence number glitch prev=50 curr=0
-	[ 1923.698219] sequence number glitch prev=142 curr=0
-	[ 2029.248276] sequence number glitch prev=1555 curr=0
-	[ 2046.333059] sequence number glitch prev=70 curr=0
-	[ 2076.520067] sequence number glitch prev=272 curr=0
-	[ 2158.704202] sequence number glitch prev=2655 curr=0
-	[ 2218.530776] sequence number glitch prev=2349 curr=0
-	[ 2225.579092] sequence number glitch prev=6 curr=0
-
-Internet connectivity is working fine, so this error seems harmless. It
-looks like modem does not preserve the sequence number when entering low
-power state; the amount of errors depends on how actively the modem is
-being used.
-
-A similar issue has also been seen on USB-based MBIM modems [1]. However,
-in cdc_ncm.c the "sequence number glitch" message is a debug message
-instead of an error. Apply the same to the mhi_wwan_mbim.c driver to
-silence these errors when using the modem.
-
-[1]: https://lists.freedesktop.org/archives/libmbim-devel/2016-November/000781.html
-
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
-Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://patch.msgid.link/20250212-mhi-wwan-mbim-sequence-glitch-v1-1-503735977cbd@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 377f698db12150a1 ("perf python: Add struct evsel into struct pyrf_event")
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250312203141.285263-5-acme@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wwan/mhi_wwan_mbim.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/python.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wwan/mhi_wwan_mbim.c b/drivers/net/wwan/mhi_wwan_mbim.c
-index ef70bb7c88ad6..43c20deab3189 100644
---- a/drivers/net/wwan/mhi_wwan_mbim.c
-+++ b/drivers/net/wwan/mhi_wwan_mbim.c
-@@ -209,7 +209,7 @@ static int mbim_rx_verify_nth16(struct mhi_mbim_context *mbim, struct sk_buff *s
- 	if (mbim->rx_seq + 1 != le16_to_cpu(nth16->wSequence) &&
- 	    (mbim->rx_seq || le16_to_cpu(nth16->wSequence)) &&
- 	    !(mbim->rx_seq == 0xffff && !le16_to_cpu(nth16->wSequence))) {
--		net_err_ratelimited("sequence number glitch prev=%d curr=%d\n",
-+		net_dbg_ratelimited("sequence number glitch prev=%d curr=%d\n",
- 				    mbim->rx_seq, le16_to_cpu(nth16->wSequence));
+diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
+index ae6bcd39a2001..5370fff2525f5 100644
+--- a/tools/perf/util/python.c
++++ b/tools/perf/util/python.c
+@@ -984,6 +984,7 @@ static PyObject *pyrf_evlist__read_on_cpu(struct pyrf_evlist *pevlist,
+ 
+ 		evsel = evlist__event2evsel(evlist, event);
+ 		if (!evsel) {
++			Py_DECREF(pyevent);
+ 			Py_INCREF(Py_None);
+ 			return Py_None;
+ 		}
+@@ -995,9 +996,12 @@ static PyObject *pyrf_evlist__read_on_cpu(struct pyrf_evlist *pevlist,
+ 		/* Consume the even only after we parsed it out. */
+ 		perf_mmap__consume(&md->core);
+ 
+-		if (err)
++		if (err) {
++			Py_DECREF(pyevent);
+ 			return PyErr_Format(PyExc_OSError,
+ 					    "perf: can't parse sample, err=%d", err);
++		}
++
+ 		return pyevent;
  	}
- 	mbim->rx_seq = le16_to_cpu(nth16->wSequence);
+ end:
 -- 
 2.39.5
 
