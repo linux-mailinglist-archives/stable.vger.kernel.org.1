@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-131579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B830DA80ADE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:10:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A442A807C2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DB8D1BC1A4F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D593A188AB6B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB9DD281350;
-	Tue,  8 Apr 2025 12:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BC0126A09F;
+	Tue,  8 Apr 2025 12:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TaT3Ntk+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8ShThud"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884A226A0E3;
-	Tue,  8 Apr 2025 12:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3677A26A090;
+	Tue,  8 Apr 2025 12:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116777; cv=none; b=OzkSPOcNbFDHzxjooZIOZ8+BLeu1/RdUWpfIesT99iW9QboN80eqNADgle0wRxOP/yQ1ALfTdpHiMG+cF+h6ApH+/lk7Idsw6ZbphdIge94mifr32NwSJTyCtY93GsU7Ccfh0eaQrMlYcUDw6t0DYYDryeZsk0x99INq/knV4FI=
+	t=1744115565; cv=none; b=QoWQMZYkLDJdqiE9Q7aVnGAubWKrcmvFiHrDdw/YdLYweljpurKYRlLz/wA2V5T7zRSc8crTlaVomb6Bhht5ZD37+9li0NiUQFFe6boGaJZu3FkVg/PutGnMQ9NWgQY7sSlIHGPM1A0PRgE1T3YFZnXFOuspR0jY7FfBlPv65og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116777; c=relaxed/simple;
-	bh=SIIvROhcrXFbnPvat55SNav/pODBWVx5/01AVrUgths=;
+	s=arc-20240116; t=1744115565; c=relaxed/simple;
+	bh=iMdA1poTvw6SYRVBMjSJcGjhbCSp+Mc+kvaKCVdyLng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CtoRsLj0/Pmmsz2M9WpoQFlndt3sxaq9n6QRwMrwPznq+QR8YiraGhBGtlRzDz4MPVSTIhiPxGWEuWS4Y8/kDKCaYxvb/p/voAGdW+k1F1bIRdl3rN2xr6gzoOsR3OuOMffYkGeKHr0FQMKHASAHG1z56kwkA4imga5L/flPjMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TaT3Ntk+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3652C4CEE5;
-	Tue,  8 Apr 2025 12:52:56 +0000 (UTC)
+	 MIME-Version; b=BR8RAOwoBaVr46eZIyfQksyiAhpgYqm9XaUBp4wGNkNRzIFzoDK6qSv2UDAAYCFg3nOb83Oav0Wmrx7ONDOho4P/arWopGLAS6QZCnVwROzYHcCb0rpOtypJ8U+xdy0oRHHpbUz4voZhyoXHbpFG+GBg1b3AnUxD0tb2+wTp+YM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8ShThud; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6F7C4CEE5;
+	Tue,  8 Apr 2025 12:32:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116777;
-	bh=SIIvROhcrXFbnPvat55SNav/pODBWVx5/01AVrUgths=;
+	s=korg; t=1744115564;
+	bh=iMdA1poTvw6SYRVBMjSJcGjhbCSp+Mc+kvaKCVdyLng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TaT3Ntk+PFPVP4MiEcVncJNkVA10VOet9BGqjZIVZaykbv2SeUOMNVkDuM8jmULtQ
-	 TGWHTixz+iOwEnhFPWsW+nq24q8FlagNWKXDeWcV4gXFUDVFNW2Sq0jgrQqqbO/3pw
-	 V4NRmh7jh/IAWWKibVaz2IHXM5MW0B982C/YFiTQ=
+	b=c8ShThud3iX/CQt7RWuFxGal5jjutwTT/8K9jP8OTegmAKyMSoRaIyBbAE2mTu9Di
+	 Ykj5jlHUBhb43Pr14YDa6kYpJ2H5kKW4oB8l+mPNE74/e03CoBpjZgAaWpwnsd7kUS
+	 Hqj8GaDBj+O59DKt9EGLat9bFfQK6ckF9UyeQjyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xueqin Luo <luoxueqin@kylinos.cn>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 225/423] thermal: core: Remove duplicate struct declaration
+Subject: [PATCH 6.1 021/204] media: verisilicon: HEVC: Initialize start_bit field
 Date: Tue,  8 Apr 2025 12:49:11 +0200
-Message-ID: <20250408104850.965184446@linuxfoundation.org>
+Message-ID: <20250408104820.941605476@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: xueqin Luo <luoxueqin@kylinos.cn>
+From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
 
-[ Upstream commit 9e6ec8cf64e2973f0ec74f09023988cabd218426 ]
+[ Upstream commit 7fcb42b3835e90ef18d68555934cf72adaf58402 ]
 
-The struct thermal_zone_device is already declared on line 32, so the
-duplicate declaration has been removed.
+The HEVC driver needs to set the start_bit field explicitly to avoid
+causing corrupted frames when the VP9 decoder is used in parallel. The
+reason for this problem is that the VP9 and the HEVC decoder share this
+register.
 
-Fixes: b1ae92dcfa8e ("thermal: core: Make struct thermal_zone_device definition internal")
-Signed-off-by: xueqin Luo <luoxueqin@kylinos.cn>
-Link: https://lore.kernel.org/r/20250206081436.51785-1-luoxueqin@kylinos.cn
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Fixes: cb5dd5a0fa51 ("media: hantro: Introduce G2/HEVC decoder")
+Signed-off-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Tested-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/thermal.h | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/thermal.h b/include/linux/thermal.h
-index 25ea8fe2313e6..0da2c257e32cf 100644
---- a/include/linux/thermal.h
-+++ b/include/linux/thermal.h
-@@ -83,8 +83,6 @@ struct thermal_trip {
- #define THERMAL_TRIP_PRIV_TO_INT(_val_)	(uintptr_t)(_val_)
- #define THERMAL_INT_TO_TRIP_PRIV(_val_)	(void *)(uintptr_t)(_val_)
+diff --git a/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c b/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
+index a9d4ac84a8d8d..d1971af5f7fa6 100644
+--- a/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
++++ b/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
+@@ -517,6 +517,7 @@ static void set_buffers(struct hantro_ctx *ctx)
+ 	hantro_reg_write(vpu, &g2_stream_len, src_len);
+ 	hantro_reg_write(vpu, &g2_strm_buffer_len, src_buf_len);
+ 	hantro_reg_write(vpu, &g2_strm_start_offset, 0);
++	hantro_reg_write(vpu, &g2_start_bit, 0);
+ 	hantro_reg_write(vpu, &g2_write_mvs_e, 1);
  
--struct thermal_zone_device;
--
- struct cooling_spec {
- 	unsigned long upper;	/* Highest cooling state  */
- 	unsigned long lower;	/* Lowest cooling state  */
+ 	hantro_write_addr(vpu, G2_TILE_SIZES_ADDR, ctx->hevc_dec.tile_sizes.dma);
 -- 
 2.39.5
 
