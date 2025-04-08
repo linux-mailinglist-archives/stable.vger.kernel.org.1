@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-128981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BFCAA7FD3A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:59:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC77CA8035B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:57:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1F6F7A3BF3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3314188D76C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B26B2698AE;
-	Tue,  8 Apr 2025 10:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335852690D6;
+	Tue,  8 Apr 2025 11:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K9gaPUAv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDehPF8p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED82B267B65;
-	Tue,  8 Apr 2025 10:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5ED2A94A;
+	Tue,  8 Apr 2025 11:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109798; cv=none; b=Mqqczlyd8SCt487NQoAuCcJTl8TawcYiqXdvyQVtk9isUQV6k9rd6DJSBks+b1mLyHDUw9LSBqfhIkVfXGmKGaSg8bFOVYnm6t1IxjpOdktmIWAYPAxr6Pvnbx/4WMwejGq0skxO4molYDlEpfL81/rViHqg4hBFCHcqJwybGrM=
+	t=1744113121; cv=none; b=GWZhdOX13Qc8LcgroiyazekZAu3Y0LgQ6nXBuUujvp+5fxh2VT2Z9dGCbRUzuu6AdndkTv2sPU6m0oxjs3MwAZVlNaLGgm62SzlPLEnLdyoRmUooveIuHc+qKNdKltSRqNsY4ioGsKek6UD+IBohQBjMfKaaFyJF2bdA69lTbuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109798; c=relaxed/simple;
-	bh=/E2Z01D+DUWhsl5XFzEAPEsrL7cKyrbygSWiFXtprvw=;
+	s=arc-20240116; t=1744113121; c=relaxed/simple;
+	bh=zNM2MYYF86yrlPO02v4HuWdh0f+06DlMVOY2e/aXwSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fMstfplw/B9+rNB9Vcd2VE2UyraJy1H0POj40MBN2vBCzPK+lHDaqyduijhllFaVy4Qdqq3cqZXbSINnvAc2QyllbjcM9PDkax0yXIO42KbrbV4y//aQyJJWgWv0t8CM8z7rbB2x2fLItb3nG7o/O0kAKw2so+UtlxMuOx+92sE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K9gaPUAv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC88C4CEE5;
-	Tue,  8 Apr 2025 10:56:36 +0000 (UTC)
+	 MIME-Version; b=pwo+boPSyyDf2Pdl7n3p0ertVCKOpKlqP6n+RF1FzY/UH5W953IwDZoRUYOnIPg8ZGO+1vFS+2t4Er0MUG3NNfStXZQriTxcQMV1JvyMSbEI7tVJXQZtgq4aUNkhBJ63izoYULEg0+4SkDbTk9oTmn36K+/JbPh2L2IVQBYi9+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDehPF8p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7643BC4CEE5;
+	Tue,  8 Apr 2025 11:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109797;
-	bh=/E2Z01D+DUWhsl5XFzEAPEsrL7cKyrbygSWiFXtprvw=;
+	s=korg; t=1744113120;
+	bh=zNM2MYYF86yrlPO02v4HuWdh0f+06DlMVOY2e/aXwSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K9gaPUAvAM8JTAfF+mFohAjwkIjEGW7vlfTtb+7h1dA3J/ZMPgLOsq3+PkxoVZLwM
-	 VXhe7Nekpru87qPRiDxMmZ3pq/p82oaqYi//AJwFdLu92UjYrHiaw6pXk/kuQYQiOr
-	 0E8+Rzlq29dID5/rXJ4v1UTMLs5DehNEBUh7sCP8=
+	b=sDehPF8pEAFFJ4Qx/loz6P4rySXRDgjiDZdv4gqcoE3IC/VVDsooLBLm2qkSY/zBa
+	 V7tQkh2AFrLLvI56CIoY+Y3bkAToOJZ1qRC9Lbs71wtQaMaJeAWk8olCLvXLZ5F2nB
+	 VpEqZSdZ/T8WI5jnJbTxyhz3GHxMZXFC/V8nTmM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 057/227] ASoC: codecs: wm0010: Fix error handling path in wm0010_spi_probe()
+Subject: [PATCH 6.6 024/268] media: verisilicon: HEVC: Initialize start_bit field
 Date: Tue,  8 Apr 2025 12:47:15 +0200
-Message-ID: <20250408104822.110993970@linuxfoundation.org>
+Message-ID: <20250408104829.160227846@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
 
-[ Upstream commit ed92bc5264c4357d4fca292c769ea9967cd3d3b6 ]
+[ Upstream commit 7fcb42b3835e90ef18d68555934cf72adaf58402 ]
 
-Free some resources in the error handling path of the probe, as already
-done in the remove function.
+The HEVC driver needs to set the start_bit field explicitly to avoid
+causing corrupted frames when the VP9 decoder is used in parallel. The
+reason for this problem is that the VP9 and the HEVC decoder share this
+register.
 
-Fixes: e3523e01869d ("ASoC: wm0010: Add initial wm0010 DSP driver")
-Fixes: fd8b96574456 ("ASoC: wm0010: Clear IRQ as wake source and include missing header")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/5139ba1ab8c4c157ce04e56096a0f54a1683195c.1741549792.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: cb5dd5a0fa51 ("media: hantro: Introduce G2/HEVC decoder")
+Signed-off-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Tested-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wm0010.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/codecs/wm0010.c b/sound/soc/codecs/wm0010.c
-index 28b4656c4e149..b2f87af1bfc87 100644
---- a/sound/soc/codecs/wm0010.c
-+++ b/sound/soc/codecs/wm0010.c
-@@ -952,7 +952,7 @@ static int wm0010_spi_probe(struct spi_device *spi)
- 	if (ret) {
- 		dev_err(wm0010->dev, "Failed to set IRQ %d as wake source: %d\n",
- 			irq, ret);
--		return ret;
-+		goto free_irq;
- 	}
+diff --git a/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c b/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
+index a9d4ac84a8d8d..d1971af5f7fa6 100644
+--- a/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
++++ b/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
+@@ -517,6 +517,7 @@ static void set_buffers(struct hantro_ctx *ctx)
+ 	hantro_reg_write(vpu, &g2_stream_len, src_len);
+ 	hantro_reg_write(vpu, &g2_strm_buffer_len, src_buf_len);
+ 	hantro_reg_write(vpu, &g2_strm_start_offset, 0);
++	hantro_reg_write(vpu, &g2_start_bit, 0);
+ 	hantro_reg_write(vpu, &g2_write_mvs_e, 1);
  
- 	if (spi->max_speed_hz)
-@@ -964,9 +964,18 @@ static int wm0010_spi_probe(struct spi_device *spi)
- 				     &soc_component_dev_wm0010, wm0010_dai,
- 				     ARRAY_SIZE(wm0010_dai));
- 	if (ret < 0)
--		return ret;
-+		goto disable_irq_wake;
- 
- 	return 0;
-+
-+disable_irq_wake:
-+	irq_set_irq_wake(wm0010->irq, 0);
-+
-+free_irq:
-+	if (wm0010->irq)
-+		free_irq(wm0010->irq, wm0010);
-+
-+	return ret;
- }
- 
- static int wm0010_spi_remove(struct spi_device *spi)
+ 	hantro_write_addr(vpu, G2_TILE_SIZES_ADDR, ctx->hevc_dec.tile_sizes.dma);
 -- 
 2.39.5
 
