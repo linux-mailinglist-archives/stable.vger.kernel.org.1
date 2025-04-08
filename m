@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-130233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7FE3A803AC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:00:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98FFEA800EA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:36:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0C883BFEA0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7100118943E5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D5E9267F6E;
-	Tue,  8 Apr 2025 11:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D056224239;
+	Tue,  8 Apr 2025 11:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SVAJ6EWk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MYdnQVD1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BAC4266F17;
-	Tue,  8 Apr 2025 11:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460E0264A76;
+	Tue,  8 Apr 2025 11:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113175; cv=none; b=es3Ga9V2GCmvXkhNiEAN8IGh8ofJyieWvkTrG0RpYCM4AevfIa7ywmzkcGdMp2VrkaS7TZPUjTAvAAqqILUBnuZ3EtjU3NJdETOudYEMF6f/14T+D54eWLgtQnQ1sxBOMWeCXhl0OXfeooEMmmEJqQU8qSLdgT3/Wim0tMjSA00=
+	t=1744111826; cv=none; b=SUWm209fzdOUkkgxyW9g6B21+RFdW9wk6EQ5CjqPaPtJMsSCXAiz4PCJq37JUafs0f9bC9HT/W07+l9L8vDr4+WDa3KM25KZp4WPrkLNAOtG0sxdVBgkRQY8BmCE/WQuAQYg3Meb3uVnzoIWBHsqHgR0R/XiuuCMc15q4szXfIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113175; c=relaxed/simple;
-	bh=XOHk9FSFdUMZfWBkaPK5cRT7MZ0A4O+NIIZ25VYfPOo=;
+	s=arc-20240116; t=1744111826; c=relaxed/simple;
+	bh=OZIUCiWbAiqBOaagHTBu3qgnWLN0HW8iD/CiCl+yUvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MzJF8tSSOowBpfBDtpjs+eSbAFNsxzPpNj9Yw1jpAE16GRHgX+POpGvTZRVHdtoGiWHPuGdQQyiT65rtWWA003O4cCq6W+jRFMxPlgGBBzYIUOGWMlv7wlpplKXGnhg/l9aeGAuyXKWJ6d0nYjq+2+9dt5xQfPgYpEDRxnL1vDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVAJ6EWk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDDC7C4CEE5;
-	Tue,  8 Apr 2025 11:52:54 +0000 (UTC)
+	 MIME-Version; b=F5aFVNtewxvZ+KQ6N+Zqes3lpbgQXiG5RRqetC0K7GhJYbTVRCM+Ka9user7ADxqhWKjP97dSE7S+0S7rFo+nWeA8vdZUN0EOny456Um8R945aUMRxeKRYg5LNHEHchAZ/xnl4qJMNPDQcUv/LUA6pue6ssvwifKSJE6WIc7Y9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MYdnQVD1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC28EC4CEE5;
+	Tue,  8 Apr 2025 11:30:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113175;
-	bh=XOHk9FSFdUMZfWBkaPK5cRT7MZ0A4O+NIIZ25VYfPOo=;
+	s=korg; t=1744111826;
+	bh=OZIUCiWbAiqBOaagHTBu3qgnWLN0HW8iD/CiCl+yUvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SVAJ6EWkBeH8zY8fjjgMJJsCwu3sbSpOalLHm630iyl9N1WDAtoD1PHxnFf9grQ6/
-	 XpC3U3JMNTZfCyH1a88kD/jB6J6oJ7bjaUbobk2IzS4m+pKsg+VHBXodWSCUDBns98
-	 obkjljpGtfoNPEeQu2d8T+m0Ger/K+jtDZN69yGE=
+	b=MYdnQVD1cjuHSWr+VzVSEg9tEtxBZWWRySD45pu0rT+fhYfeOpUVquhJUjioM+vOQ
+	 nU4KCpaE1/oXNlcUZJQ/bV9vfh+4Gsuu44O/ppE2vmU8W3V+z43+dBMScdOycHUYu0
+	 3aw6B1vToxbFEaGlwMoGMk5ikF0aQig6VdrlpJv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Helge Deller <deller@gmx.de>,
+	kernel test robot <lkp@intel.com>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 060/268] mdacon: rework dependency list
+Subject: [PATCH 6.14 574/731] objtool/loongarch: Add unwind hints in prepare_frametrace()
 Date: Tue,  8 Apr 2025 12:47:51 +0200
-Message-ID: <20250408104830.119996036@linuxfoundation.org>
+Message-ID: <20250408104927.625268312@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +65,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 5bbcc7645f4b244ffb5ac6563fbe9d3d42194447 ]
+[ Upstream commit 7c977393b8277ed319e92e4b598b26598c9d30c0 ]
 
-mdacon has roughly the same dependencies as vgacon but expresses them
-as a negative list instead of a positive list, with the only practical
-difference being PowerPC/CHRP, which uses vga16fb instead of vgacon.
+If 'regs' points to a local stack variable, prepare_frametrace() stores
+all registers to the stack.  This confuses objtool as it expects them to
+be restored from the stack later.
 
-The CONFIG_MDA_CONSOLE description advises to only turn it on when vgacon
-is also used because MDA/Hercules-only systems should be using vgacon
-instead, so just change the list to enforce that directly for simplicity.
+The stores don't affect stack tracing, so use unwind hints to hide them
+from objtool.
 
-The probing was broken from 2002 to 2008, this improves on the fix
-that was added then: If vgacon is a loadable module, then mdacon
-cannot be built-in now, and the list of systems that support vgacon
-is carried over.
+Fixes the following warnings:
 
-Fixes: 0b9cf3aa6b1e ("mdacon messing up default vc's - set default to vc13-16 again")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
+  arch/loongarch/kernel/traps.o: warning: objtool: show_stack+0xe0: stack state mismatch: reg1[22]=-1+0 reg2[22]=-2-160
+  arch/loongarch/kernel/traps.o: warning: objtool: show_stack+0xe0: stack state mismatch: reg1[23]=-1+0 reg2[23]=-2-152
+
+Fixes: cb8a2ef0848c ("LoongArch: Add ORC stack unwinder support")
+Reported-by: kernel test robot <lkp@intel.com>
+Tested-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/270cadd8040dda74db2307f23497bb68e65db98d.1743481539.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/oe-kbuild-all/202503280703.OARM8SrY-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/console/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/include/asm/stacktrace.h   |  3 +++
+ arch/loongarch/include/asm/unwind_hints.h | 10 +++++++++-
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
-index 30577b1d3de59..cdbcb86ff3944 100644
---- a/drivers/video/console/Kconfig
-+++ b/drivers/video/console/Kconfig
-@@ -24,7 +24,7 @@ config VGA_CONSOLE
- 	  Say Y.
+diff --git a/arch/loongarch/include/asm/stacktrace.h b/arch/loongarch/include/asm/stacktrace.h
+index f23adb15f418f..fc8b64773794a 100644
+--- a/arch/loongarch/include/asm/stacktrace.h
++++ b/arch/loongarch/include/asm/stacktrace.h
+@@ -8,6 +8,7 @@
+ #include <asm/asm.h>
+ #include <asm/ptrace.h>
+ #include <asm/loongarch.h>
++#include <asm/unwind_hints.h>
+ #include <linux/stringify.h>
  
- config MDA_CONSOLE
--	depends on !M68K && !PARISC && ISA
-+	depends on VGA_CONSOLE && ISA
- 	tristate "MDA text console (dual-headed)"
- 	help
- 	  Say Y here if you have an old MDA or monochrome Hercules graphics
+ enum stack_type {
+@@ -43,6 +44,7 @@ int get_stack_info(unsigned long stack, struct task_struct *task, struct stack_i
+ static __always_inline void prepare_frametrace(struct pt_regs *regs)
+ {
+ 	__asm__ __volatile__(
++		UNWIND_HINT_SAVE
+ 		/* Save $ra */
+ 		STORE_ONE_REG(1)
+ 		/* Use $ra to save PC */
+@@ -80,6 +82,7 @@ static __always_inline void prepare_frametrace(struct pt_regs *regs)
+ 		STORE_ONE_REG(29)
+ 		STORE_ONE_REG(30)
+ 		STORE_ONE_REG(31)
++		UNWIND_HINT_RESTORE
+ 		: "=m" (regs->csr_era)
+ 		: "r" (regs->regs)
+ 		: "memory");
+diff --git a/arch/loongarch/include/asm/unwind_hints.h b/arch/loongarch/include/asm/unwind_hints.h
+index a01086ad9ddea..2c68bc72736c9 100644
+--- a/arch/loongarch/include/asm/unwind_hints.h
++++ b/arch/loongarch/include/asm/unwind_hints.h
+@@ -23,6 +23,14 @@
+ 	UNWIND_HINT sp_reg=ORC_REG_SP type=UNWIND_HINT_TYPE_CALL
+ .endm
+ 
+-#endif /* __ASSEMBLY__ */
++#else /* !__ASSEMBLY__ */
++
++#define UNWIND_HINT_SAVE \
++	UNWIND_HINT(UNWIND_HINT_TYPE_SAVE, 0, 0, 0)
++
++#define UNWIND_HINT_RESTORE \
++	UNWIND_HINT(UNWIND_HINT_TYPE_RESTORE, 0, 0, 0)
++
++#endif /* !__ASSEMBLY__ */
+ 
+ #endif /* _ASM_LOONGARCH_UNWIND_HINTS_H */
 -- 
 2.39.5
 
