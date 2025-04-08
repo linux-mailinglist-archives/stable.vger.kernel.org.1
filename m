@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-129118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83DD3A7FE1C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:10:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FA4FA802F6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:52:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F8D816E1D3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:04:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77E78422554
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:46:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56AE1269894;
-	Tue,  8 Apr 2025 11:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD20E268685;
+	Tue,  8 Apr 2025 11:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lw404wuS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BfRZ3+ea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1269526A1A4;
-	Tue,  8 Apr 2025 11:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69021266EEA;
+	Tue,  8 Apr 2025 11:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110164; cv=none; b=NjvXbbhqPLMpOKY9qm1SDaVFCG2LLRi1askqO4b0bhs+VLp3mD30b2sMNhZlOdr+NfOiHeB5QP6x18sG+qaHTu6OIKuhDVMGVWbJUmT1fa3BMbI4ekf80ZlVtSjycm3hmZLVUAYhabwOLfUzvJJCfwPDqA9z0H0Ve/RmoVibNbU=
+	t=1744112756; cv=none; b=Oyg9DuFaQE5+Dgq6G8l9UrZzeFrsKtkYxkFcZGd1XhP52PjSFymwilPdu6Vm1IsApcb3/CMgfn8aQFWxYMUVGjo/414k/QGdVUs1kSkUYkgAuAe31NcYtXECU3LP2VTtfk6orb3Ho7jpT3ADIuRfMK/hfsgIBxnVPfTDY82utW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110164; c=relaxed/simple;
-	bh=f+RaNdzhuN7OLPbLrUQCTAwWi49LergHis3WzJJlqBM=;
+	s=arc-20240116; t=1744112756; c=relaxed/simple;
+	bh=gS3u/LbQXSOYkfmzAIgjGa0glgOQu/FDQOgOOD6l4nE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jk/6ONcoRwKG8XuBwsO46UIBaaMj6irhJRKCBE7ZIhcXfDOlb/a8M5rwhdJmtYadDrtv3iuhkXOR0+nE8XGnJskDPK8qrWLIMp5yqGkCShxgaRrq/UldZ1wPWNY5NPbHsaUJPwjQYslqlMJ+WZOqFpnjB/b4YkVTX2JS8cKakg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lw404wuS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B20CC4CEE7;
-	Tue,  8 Apr 2025 11:02:43 +0000 (UTC)
+	 MIME-Version; b=Hxky06w8k+xvDtjVY/3uRLqi7iWjJZkVEp6HwcjhJ+9fq5Jbx/bXoT00CsbBwXc+zaxFLEWE3ELlsCKSZyn+jmvBFTT9vpjuC1iXOQ9y/nJgQaLhlgHGGLSU8ioXwqc67JwDkLaZ3UaxsWRlAwxoR6kMFx6afiazBr5wbE3+Ego=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BfRZ3+ea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B91AFC4CEE5;
+	Tue,  8 Apr 2025 11:45:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110163;
-	bh=f+RaNdzhuN7OLPbLrUQCTAwWi49LergHis3WzJJlqBM=;
+	s=korg; t=1744112756;
+	bh=gS3u/LbQXSOYkfmzAIgjGa0glgOQu/FDQOgOOD6l4nE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lw404wuSmqu/4dqXd+L+rdv5+yZe/TbDGgwukIWiPXxHpYSOYH7nXZELSg7y31Gkd
-	 Cop7eWxAJ8zq474NE0e0NOmvW6kfeUZ72UzdVzOvCtJcUXtQPROcjIAXKPItHY2Fh5
-	 IFNWW2DNYtkh70Mqt5OdhSp9zuCg7AyWKhWB6/oI=
+	b=BfRZ3+eaIXPp1K5hemuKFKsAKdaW8+yORznyLw++wq6ECqyAWmCnvoz76QVvi21Df
+	 0BW46ynrC1dFvO5B3j4J2IqKMqEyXlQ7MVLdXSvjkOnnQDg7Z39jKauJtUOr0Ue37S
+	 YGt9sTDuIU9uoWDtcaRYtJNKOJTtKMsvoQfWNPYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+78ce4489b812515d5e4d@syzkaller.appspotmail.com,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Jann Horn <jannh@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Juergen Gross <jgross@suse.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Kees Cook <keescook@chromium.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 191/227] can: statistics: use atomic access in hot path
+Subject: [PATCH 5.15 186/279] x86/entry: Fix ORC unwinder for PUSH_REGS with save_ret=1
 Date: Tue,  8 Apr 2025 12:49:29 +0200
-Message-ID: <20250408104826.028688049@linuxfoundation.org>
+Message-ID: <20250408104831.353428070@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,196 +70,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 80b5f90158d1364cbd80ad82852a757fc0692bf2 ]
+[ Upstream commit 57e2428f8df8263275344566e02c277648a4b7f1 ]
 
-In can_send() and can_receive() CAN messages and CAN filter matches are
-counted to be visible in the CAN procfs files.
+PUSH_REGS with save_ret=1 is used by interrupt entry helper functions that
+initially start with a UNWIND_HINT_FUNC ORC state.
 
-KCSAN detected a data race within can_send() when two CAN frames have
-been generated by a timer event writing to the same CAN netdevice at the
-same time. Use atomic operations to access the statistics in the hot path
-to fix the KCSAN complaint.
+However, save_ret=1 means that we clobber the helper function's return
+address (and then later restore the return address further down on the
+stack); after that point, the only thing on the stack we can unwind through
+is the IRET frame, so use UNWIND_HINT_IRET_REGS until we have a full
+pt_regs frame.
 
-Reported-by: syzbot+78ce4489b812515d5e4d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67cd717d.050a0220.e1a89.0006.GAE@google.com
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250310143353.3242-1-socketcan@hartkopp.net
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+( An alternate approach would be to move the pt_regs->di overwrite down
+  such that it is the final step of pt_regs setup; but I don't want to
+  rearrange entry code just to make unwinding a tiny bit more elegant. )
+
+Fixes: 9e809d15d6b6 ("x86/entry: Reduce the code footprint of the 'idtentry' macro")
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/r/20250325-2025-03-unwind-fixes-v1-1-acd774364768@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/af_can.c | 12 ++++++------
- net/can/af_can.h | 12 ++++++------
- net/can/proc.c   | 46 +++++++++++++++++++++++++++-------------------
- 3 files changed, 39 insertions(+), 31 deletions(-)
+ arch/x86/entry/calling.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/can/af_can.c b/net/can/af_can.c
-index de47c16b134bf..3e77a52709aaa 100644
---- a/net/can/af_can.c
-+++ b/net/can/af_can.c
-@@ -288,8 +288,8 @@ int can_send(struct sk_buff *skb, int loop)
- 		netif_rx_ni(newskb);
- 
- 	/* update statistics */
--	pkg_stats->tx_frames++;
--	pkg_stats->tx_frames_delta++;
-+	atomic_long_inc(&pkg_stats->tx_frames);
-+	atomic_long_inc(&pkg_stats->tx_frames_delta);
- 
- 	return 0;
- 
-@@ -649,8 +649,8 @@ static void can_receive(struct sk_buff *skb, struct net_device *dev)
- 	int matches;
- 
- 	/* update statistics */
--	pkg_stats->rx_frames++;
--	pkg_stats->rx_frames_delta++;
-+	atomic_long_inc(&pkg_stats->rx_frames);
-+	atomic_long_inc(&pkg_stats->rx_frames_delta);
- 
- 	/* create non-zero unique skb identifier together with *skb */
- 	while (!(can_skb_prv(skb)->skbcnt))
-@@ -671,8 +671,8 @@ static void can_receive(struct sk_buff *skb, struct net_device *dev)
- 	consume_skb(skb);
- 
- 	if (matches > 0) {
--		pkg_stats->matches++;
--		pkg_stats->matches_delta++;
-+		atomic_long_inc(&pkg_stats->matches);
-+		atomic_long_inc(&pkg_stats->matches_delta);
- 	}
- }
- 
-diff --git a/net/can/af_can.h b/net/can/af_can.h
-index 7c2d9161e2245..22f3352c77fec 100644
---- a/net/can/af_can.h
-+++ b/net/can/af_can.h
-@@ -66,9 +66,9 @@ struct receiver {
- struct can_pkg_stats {
- 	unsigned long jiffies_init;
- 
--	unsigned long rx_frames;
--	unsigned long tx_frames;
--	unsigned long matches;
-+	atomic_long_t rx_frames;
-+	atomic_long_t tx_frames;
-+	atomic_long_t matches;
- 
- 	unsigned long total_rx_rate;
- 	unsigned long total_tx_rate;
-@@ -82,9 +82,9 @@ struct can_pkg_stats {
- 	unsigned long max_tx_rate;
- 	unsigned long max_rx_match_ratio;
- 
--	unsigned long rx_frames_delta;
--	unsigned long tx_frames_delta;
--	unsigned long matches_delta;
-+	atomic_long_t rx_frames_delta;
-+	atomic_long_t tx_frames_delta;
-+	atomic_long_t matches_delta;
- };
- 
- /* persistent statistics */
-diff --git a/net/can/proc.c b/net/can/proc.c
-index b15760b5c1cce..2be4a239f31e4 100644
---- a/net/can/proc.c
-+++ b/net/can/proc.c
-@@ -122,6 +122,13 @@ void can_stat_update(struct timer_list *t)
- 	struct can_pkg_stats *pkg_stats = net->can.pkg_stats;
- 	unsigned long j = jiffies; /* snapshot */
- 
-+	long rx_frames = atomic_long_read(&pkg_stats->rx_frames);
-+	long tx_frames = atomic_long_read(&pkg_stats->tx_frames);
-+	long matches = atomic_long_read(&pkg_stats->matches);
-+	long rx_frames_delta = atomic_long_read(&pkg_stats->rx_frames_delta);
-+	long tx_frames_delta = atomic_long_read(&pkg_stats->tx_frames_delta);
-+	long matches_delta = atomic_long_read(&pkg_stats->matches_delta);
-+
- 	/* restart counting in timer context on user request */
- 	if (user_reset)
- 		can_init_stats(net);
-@@ -131,35 +138,33 @@ void can_stat_update(struct timer_list *t)
- 		can_init_stats(net);
- 
- 	/* prevent overflow in calc_rate() */
--	if (pkg_stats->rx_frames > (ULONG_MAX / HZ))
-+	if (rx_frames > (LONG_MAX / HZ))
- 		can_init_stats(net);
- 
- 	/* prevent overflow in calc_rate() */
--	if (pkg_stats->tx_frames > (ULONG_MAX / HZ))
-+	if (tx_frames > (LONG_MAX / HZ))
- 		can_init_stats(net);
- 
- 	/* matches overflow - very improbable */
--	if (pkg_stats->matches > (ULONG_MAX / 100))
-+	if (matches > (LONG_MAX / 100))
- 		can_init_stats(net);
- 
- 	/* calc total values */
--	if (pkg_stats->rx_frames)
--		pkg_stats->total_rx_match_ratio = (pkg_stats->matches * 100) /
--			pkg_stats->rx_frames;
-+	if (rx_frames)
-+		pkg_stats->total_rx_match_ratio = (matches * 100) / rx_frames;
- 
- 	pkg_stats->total_tx_rate = calc_rate(pkg_stats->jiffies_init, j,
--					    pkg_stats->tx_frames);
-+					    tx_frames);
- 	pkg_stats->total_rx_rate = calc_rate(pkg_stats->jiffies_init, j,
--					    pkg_stats->rx_frames);
-+					    rx_frames);
- 
- 	/* calc current values */
--	if (pkg_stats->rx_frames_delta)
-+	if (rx_frames_delta)
- 		pkg_stats->current_rx_match_ratio =
--			(pkg_stats->matches_delta * 100) /
--			pkg_stats->rx_frames_delta;
-+			(matches_delta * 100) /	rx_frames_delta;
- 
--	pkg_stats->current_tx_rate = calc_rate(0, HZ, pkg_stats->tx_frames_delta);
--	pkg_stats->current_rx_rate = calc_rate(0, HZ, pkg_stats->rx_frames_delta);
-+	pkg_stats->current_tx_rate = calc_rate(0, HZ, tx_frames_delta);
-+	pkg_stats->current_rx_rate = calc_rate(0, HZ, rx_frames_delta);
- 
- 	/* check / update maximum values */
- 	if (pkg_stats->max_tx_rate < pkg_stats->current_tx_rate)
-@@ -172,9 +177,9 @@ void can_stat_update(struct timer_list *t)
- 		pkg_stats->max_rx_match_ratio = pkg_stats->current_rx_match_ratio;
- 
- 	/* clear values for 'current rate' calculation */
--	pkg_stats->tx_frames_delta = 0;
--	pkg_stats->rx_frames_delta = 0;
--	pkg_stats->matches_delta   = 0;
-+	atomic_long_set(&pkg_stats->tx_frames_delta, 0);
-+	atomic_long_set(&pkg_stats->rx_frames_delta, 0);
-+	atomic_long_set(&pkg_stats->matches_delta, 0);
- 
- 	/* restart timer (one second) */
- 	mod_timer(&net->can.stattimer, round_jiffies(jiffies + HZ));
-@@ -216,9 +221,12 @@ static int can_stats_proc_show(struct seq_file *m, void *v)
- 	struct can_rcv_lists_stats *rcv_lists_stats = net->can.rcv_lists_stats;
- 
- 	seq_putc(m, '\n');
--	seq_printf(m, " %8ld transmitted frames (TXF)\n", pkg_stats->tx_frames);
--	seq_printf(m, " %8ld received frames (RXF)\n", pkg_stats->rx_frames);
--	seq_printf(m, " %8ld matched frames (RXMF)\n", pkg_stats->matches);
-+	seq_printf(m, " %8ld transmitted frames (TXF)\n",
-+		   atomic_long_read(&pkg_stats->tx_frames));
-+	seq_printf(m, " %8ld received frames (RXF)\n",
-+		   atomic_long_read(&pkg_stats->rx_frames));
-+	seq_printf(m, " %8ld matched frames (RXMF)\n",
-+		   atomic_long_read(&pkg_stats->matches));
- 
- 	seq_putc(m, '\n');
- 
+diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
+index b00a3a95fbfab..16e12b45b151a 100644
+--- a/arch/x86/entry/calling.h
++++ b/arch/x86/entry/calling.h
+@@ -70,6 +70,8 @@ For 32-bit we have the following conventions - kernel is built with
+ 	pushq	%rsi		/* pt_regs->si */
+ 	movq	8(%rsp), %rsi	/* temporarily store the return address in %rsi */
+ 	movq	%rdi, 8(%rsp)	/* pt_regs->di (overwriting original return address) */
++	/* We just clobbered the return address - use the IRET frame for unwinding: */
++	UNWIND_HINT_IRET_REGS offset=3*8
+ 	.else
+ 	pushq   %rdi		/* pt_regs->di */
+ 	pushq   %rsi		/* pt_regs->si */
 -- 
 2.39.5
 
