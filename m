@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-131358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A9F1A809F7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:59:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C7EFA80627
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:24:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 179944E5CB3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C9883BD601
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9038D26E169;
-	Tue,  8 Apr 2025 12:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D4B268688;
+	Tue,  8 Apr 2025 12:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xCe1r5dX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n7kTeSyf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E40E26E15A;
-	Tue,  8 Apr 2025 12:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443CF227BA4;
+	Tue,  8 Apr 2025 12:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116182; cv=none; b=eru6NQZRdElndXNystU4bj5DiFtA8tgx73v6VxSSa/DqCeyN49TzkWvos+Ovb1j0kyWJLIXgilBHhn8DLXoKMX/9DVKQBBfzwYWJw9NuPbSREvrD14X2L9NjdQkfq/xmsuJAsB4jr+zCs2D73I1OrwsSlJzViPiKrNvOR9KrVuc=
+	t=1744114578; cv=none; b=FBqWvdzOQ8DUrzjHRtBTaqP5+c7QyKZaLQAJoudmfgCn6+/502mjp/o/4/XVBZFzs77sYAnAx7NHSRLiUb33eOntt7aIjNNLoeiMPpVhiut/jt+5TEHZI+KaJ2FiVW4KapjS/QsTbon4lQKPAFThrVhG7PXJUb2SEUKKqGieFpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116182; c=relaxed/simple;
-	bh=GOBgzOv45ptNLDLgbKf1eWjGneoBRM/6PgvuF1BvunM=;
+	s=arc-20240116; t=1744114578; c=relaxed/simple;
+	bh=2TLCz+X38qIqxhQzgUeIsosZSyxn7io+Oe9Yko7CxPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oUpU7WumyLLZoqRseciqEgl4xiQzTXtslArOL9DJwZy2r9X3CUG/3P3jFELc/r4t/AVYbrmgljUBtPG/UniY69CaJEH0QOhpAQKnja0dEzXFCPNdztyceZ1afyU9No0CrWiZxmJBAbP+eTbgDAupQeW5E5W0kCjBJena5s20Rkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xCe1r5dX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A4CC4CEE5;
-	Tue,  8 Apr 2025 12:43:01 +0000 (UTC)
+	 MIME-Version; b=O0RwFOv/Uwm8O39UaOP5BB4Ro9RdHSE4P4ry3auZQGVtQbg4vLflmYULyYQOuCKwUg+uMX1+Kt9M8xdwCOgV+vY5qM8jyRCNQwGYVv0GEPjlFRwH5SYiY2V0NXXrgpJ0mCIliVO1l8nHRIKP6Moupzgn9ZmsdkqBD4VuRmIk5Lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n7kTeSyf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6FAFC4CEE5;
+	Tue,  8 Apr 2025 12:16:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116182;
-	bh=GOBgzOv45ptNLDLgbKf1eWjGneoBRM/6PgvuF1BvunM=;
+	s=korg; t=1744114578;
+	bh=2TLCz+X38qIqxhQzgUeIsosZSyxn7io+Oe9Yko7CxPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xCe1r5dXXxd6YUrfdIA9Hlkl04gk4GH0dLsSGt7XJ6u4jKuqzS9mgPWsdMPPDbfRW
-	 otMU6Tgs8fenipKwSRNQ9dpY89efnNVDABIihJTSwTFMn2brQ6HrZ9BS1EU9lXOZ76
-	 dOOxf5HaAhggTzRnQ7gTNU9FTedXSpVqKf6fohnc=
+	b=n7kTeSyfPijxxf8OjOLw0ghx41zuD0+6ZeJje+oFkE5G4S8AgccBti5S6zfgTSRzd
+	 2MOTyB5b/A3RQqLtlDMqfs8HS6dUMfOSYT3lSeSdkLX7NWe9beVryuGZDuPNmAoRjJ
+	 fYBx4NbByemc2BOfAgR4aCXdwHQwOCuBxmTRhipU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Maud Spierings <maudspierings@gocontroll.com>,
-	Mark Brown <broonie@kernel.org>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 043/423] dt-bindings: vendor-prefixes: add GOcontroll
+Subject: [PATCH 6.13 157/499] pinctrl: renesas: rza2: Fix missing of_node_put() call
 Date: Tue,  8 Apr 2025 12:46:09 +0200
-Message-ID: <20250408104846.752910895@linuxfoundation.org>
+Message-ID: <20250408104855.097881037@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maud Spierings <maudspierings@gocontroll.com>
+From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
 
-[ Upstream commit 5f0d2de417166698c8eba433b696037ce04730da ]
+[ Upstream commit abcdeb4e299a11ecb5a3ea0cce00e68e8f540375 ]
 
-GOcontroll produces embedded linux systems and IO modules to use in
-these systems, add its prefix.
+of_parse_phandle_with_fixed_args() requires its caller to
+call into of_node_put() on the node pointer from the output
+structure, but such a call is currently missing.
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
-Link: https://patch.msgid.link/20250226-initial_display-v2-2-23fafa130817@gocontroll.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Call into of_node_put() to rectify that.
+
+Fixes: b59d0e782706 ("pinctrl: Add RZ/A2 pin and gpio controller")
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/20250305163753.34913-5-fabrizio.castro.jz@renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ drivers/pinctrl/renesas/pinctrl-rza2.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-index fbfce9b4ae6b8..71a1a399e1e1f 100644
---- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-+++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-@@ -581,6 +581,8 @@ patternProperties:
-     description: GlobalTop Technology, Inc.
-   "^gmt,.*":
-     description: Global Mixed-mode Technology, Inc.
-+  "^gocontroll,.*":
-+    description: GOcontroll Modular Embedded Electronics B.V.
-   "^goldelico,.*":
-     description: Golden Delicious Computers GmbH & Co. KG
-   "^goodix,.*":
+diff --git a/drivers/pinctrl/renesas/pinctrl-rza2.c b/drivers/pinctrl/renesas/pinctrl-rza2.c
+index dd1f8c29d3e75..8b36161c7c502 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rza2.c
++++ b/drivers/pinctrl/renesas/pinctrl-rza2.c
+@@ -256,6 +256,8 @@ static int rza2_gpio_register(struct rza2_pinctrl_priv *priv)
+ 		return ret;
+ 	}
+ 
++	of_node_put(of_args.np);
++
+ 	if ((of_args.args[0] != 0) ||
+ 	    (of_args.args[1] != 0) ||
+ 	    (of_args.args[2] != priv->npins)) {
 -- 
 2.39.5
 
