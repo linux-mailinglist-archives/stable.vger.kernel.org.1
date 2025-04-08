@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F88EA806B9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:30:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D028FA80408
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:05:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 567347AA3F3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B2B17AC005
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A78626B2AC;
-	Tue,  8 Apr 2025 12:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5280B269D04;
+	Tue,  8 Apr 2025 12:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnqA3BN0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TN+XdIXy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA91D26B2A3;
-	Tue,  8 Apr 2025 12:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0F5268C4F;
+	Tue,  8 Apr 2025 12:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115107; cv=none; b=ZX4U/mjWhYq+RT2MnvBiDNNlVb2Wjqy6J4mqRdE6xKDat7+W9GLEz/w5gxU5+uZlotTqspkMB7+y3w1OBzRCnQ7b++gdUxFU6yV02KZ1ZshPFyML+1F7pvF4B5Dk213oQcefJzU7Y/aNj5uNDweHgtAteGCkNpQN1j7oDOCoSU0=
+	t=1744113799; cv=none; b=M/YwgkU/u5MDxqFqtirFl2QoaKcTTHdsYoHQzkdsbjjjTNw5GCsm5iP8VNSAurNEIJb81Wh+2czNt0IjO/D7no/ZSbhgIwJGecBJ02tyqFUFJMhJDehxoTS+N+I8wEuWfLQ0LbwaECFOmC0FrtUFrs8dGqla5sqo+/wSMlBwTU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115107; c=relaxed/simple;
-	bh=OX6hgk58lEqsi4MlrwInEWktx+hKSh83bpyVIypg1dI=;
+	s=arc-20240116; t=1744113799; c=relaxed/simple;
+	bh=IMY7WoyGjvLecLHQ6xxcD5iUvGYS9RtZCJpZFaRIOcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ULMUr9SvxIUyX4x39ErfczdBhfAzVdf5JPQHP/y4x6IsIy3W9DxLO8zF7dWGI1126N+U9gxjynYXKiAdgwx45B7Yj4R5FqPKduo9rHo57kjoYWzOomOXIvVSo6zRBmbEsvdG/OUNPgl2xRxQxpVgUB2E8KRFnivu6x48RoeTm1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnqA3BN0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB5DC4CEE5;
-	Tue,  8 Apr 2025 12:25:07 +0000 (UTC)
+	 MIME-Version; b=JVXLnRoQ7atzyRXZ6M+aZB/GqYKA4IyCfdEcyijMpi13IxXVwMIJUJ8l5VL77YPvNoU6jnrW2a/sEpPqw7Jr1VXRf5Ot2YtWFsRE4A/vCWUzztSKokt59T3wgVD6ZKUQPtIMIadpiNDq7bmN+ky6jmcZZGiITTJ/8Z8pxTDII4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TN+XdIXy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 952C4C4CEE5;
+	Tue,  8 Apr 2025 12:03:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115107;
-	bh=OX6hgk58lEqsi4MlrwInEWktx+hKSh83bpyVIypg1dI=;
+	s=korg; t=1744113798;
+	bh=IMY7WoyGjvLecLHQ6xxcD5iUvGYS9RtZCJpZFaRIOcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wnqA3BN0L0VDGEx9zi0ezPCyH3JgZ9DUAl1jzRWIGZhJ2+iMAD8R9C6ebujblzsdN
-	 Uu3sYNfGxCm4qbn8BX/lZcw9DXbtaNwyYbKwbZmBThBPXwr4uq7xEMK5P4MNF0V315
-	 njtzuV72mG/21u+LJYmc77JArtZ/kHGuvdi5qeZw=
+	b=TN+XdIXy6KVDl493yWSfD+NZVXfl/t8RXOjI3Cjw5AtgqKUCX9n3oAldBw8KjGipi
+	 PSDV/8W3gJUSoip1MC/d7a23wElMNL4q70f9zmSJ1KKyyOgYkgdga9QyCw4VeewyNf
+	 cbHmIG1p0Ks8f9CDscJqTRb6N01+Ii5bcWboy5Vk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Chengen Du <chengen.du@canonical.com>,
+	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 353/499] rtc: renesas-rtca3: Disable interrupts only if the RTC is enabled
+Subject: [PATCH 5.4 024/154] iscsi_ibft: Fix UBSAN shift-out-of-bounds warning in ibft_attr_show_nic()
 Date: Tue,  8 Apr 2025 12:49:25 +0200
-Message-ID: <20250408104900.033826995@linuxfoundation.org>
+Message-ID: <20250408104816.046656530@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Chengen Du <chengen.du@canonical.com>
 
-[ Upstream commit 27b2fcbd6b98204b0dce62e9aa9540ca0a2b70f1 ]
+[ Upstream commit 07e0d99a2f701123ad3104c0f1a1e66bce74d6e5 ]
 
-If the RTC is not enabled and the code attempts to disable the interrupt,
-the readb_poll_timeout_atomic() function in the
-rtca3_alarm_irq_set_helper() may timeout, leading to probe failures.
-This issue is reproducible on some devices because the initial values of
-the PIE and AIE bits in the RCR1 register are undefined.
+When performing an iSCSI boot using IPv6, iscsistart still reads the
+/sys/firmware/ibft/ethernetX/subnet-mask entry. Since the IPv6 prefix
+length is 64, this causes the shift exponent to become negative,
+triggering a UBSAN warning. As the concept of a subnet mask does not
+apply to IPv6, the value is set to ~0 to suppress the warning message.
 
-To prevent probe failures in this scenario, disable RTC interrupts only
-when the RTC is actually enabled.
-
-Fixes: d4488377609e ("rtc: renesas-rtca3: Add driver for RTCA-3 available on Renesas RZ/G3S SoC")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250205095519.2031742-1-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Chengen Du <chengen.du@canonical.com>
+Signed-off-by: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-renesas-rtca3.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ drivers/firmware/iscsi_ibft.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-renesas-rtca3.c b/drivers/rtc/rtc-renesas-rtca3.c
-index d127933bfc8ad..598bf943cc5b6 100644
---- a/drivers/rtc/rtc-renesas-rtca3.c
-+++ b/drivers/rtc/rtc-renesas-rtca3.c
-@@ -586,17 +586,14 @@ static int rtca3_initial_setup(struct clk *clk, struct rtca3_priv *priv)
- 	 */
- 	usleep_range(sleep_us, sleep_us + 10);
- 
--	/* Disable all interrupts. */
--	mask = RTCA3_RCR1_AIE | RTCA3_RCR1_CIE | RTCA3_RCR1_PIE;
--	ret = rtca3_alarm_irq_set_helper(priv, mask, 0);
--	if (ret)
--		return ret;
--
- 	mask = RTCA3_RCR2_START | RTCA3_RCR2_HR24;
- 	val = readb(priv->base + RTCA3_RCR2);
--	/* Nothing to do if already started in 24 hours and calendar count mode. */
--	if ((val & mask) == mask)
--		return 0;
-+	/* Only disable the interrupts if already started in 24 hours and calendar count mode. */
-+	if ((val & mask) == mask) {
-+		/* Disable all interrupts. */
-+		mask = RTCA3_RCR1_AIE | RTCA3_RCR1_CIE | RTCA3_RCR1_PIE;
-+		return rtca3_alarm_irq_set_helper(priv, mask, 0);
-+	}
- 
- 	/* Reconfigure the RTC in 24 hours and calendar count mode. */
- 	mask = RTCA3_RCR2_START | RTCA3_RCR2_CNTMD;
+diff --git a/drivers/firmware/iscsi_ibft.c b/drivers/firmware/iscsi_ibft.c
+index 7e12cbdf957cc..daf42b5319e89 100644
+--- a/drivers/firmware/iscsi_ibft.c
++++ b/drivers/firmware/iscsi_ibft.c
+@@ -311,7 +311,10 @@ static ssize_t ibft_attr_show_nic(void *data, int type, char *buf)
+ 		str += sprintf_ipaddr(str, nic->ip_addr);
+ 		break;
+ 	case ISCSI_BOOT_ETH_SUBNET_MASK:
+-		val = cpu_to_be32(~((1 << (32-nic->subnet_mask_prefix))-1));
++		if (nic->subnet_mask_prefix > 32)
++			val = cpu_to_be32(~0);
++		else
++			val = cpu_to_be32(~((1 << (32-nic->subnet_mask_prefix))-1));
+ 		str += sprintf(str, "%pI4", &val);
+ 		break;
+ 	case ISCSI_BOOT_ETH_PREFIX_LEN:
 -- 
 2.39.5
 
