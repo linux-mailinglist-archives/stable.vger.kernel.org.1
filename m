@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-129863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDEAAA80157
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:39:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE7B5A803E2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:04:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BD727A112D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34C2F19E7C27
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534A1224AEB;
-	Tue,  8 Apr 2025 11:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1362698A2;
+	Tue,  8 Apr 2025 11:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GMr2FDhM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JfjfQLkG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FCCB216E30;
-	Tue,  8 Apr 2025 11:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D6C26982A;
+	Tue,  8 Apr 2025 11:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112181; cv=none; b=AcpCq+0bwdEyM2ClnhTqAWEwnsJgiVpWT1PqTn0tghpgbN00V3OsWi8npKa7uhQsM9g/qOXeebKy21Rc6WoqCuhvW0/kvdIbLyqkZDuNPkYrRfqJxvaIrTpbJ28rvT1CtOzShkZYO+bC7mHin2Ky/RHN/sQ+KzBzrELcGnFlzTY=
+	t=1744113529; cv=none; b=QKBrzfqcJBxvcI7gwb8aOv1CV+pkFY0mYeggtVID3S5k7n87ksfvCoeBNCkwY7KyItypZPK4g+4Mq+OvmFbT4f7CSigmz1gQZvT4DAabTgojckaMqg9RPhAgP9zgsROyRpfRThAH8Fr2W8G1WYrUMIxNgcCCBFn40fm0LDqy0WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112181; c=relaxed/simple;
-	bh=qfv9TNc9hA884Ysvb91gS3Y2iBBRZWU6osxU/Byb0j8=;
+	s=arc-20240116; t=1744113529; c=relaxed/simple;
+	bh=QxJyNm79F2Djf++QI1sHarLO3Vo38FX77GIqpALGO7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D5Uh4uRACCWfJ7Y2ea1toJ1ffFQgOmMUKwdH2x5vE4wAfv0F7ScI79UlqcRCCHwYrGsBoQYc1F3Rz9YsnsVy0Zb36hjjb7md0sPyOjja9n8kgjWEZ/uF1JUGEAifOGRsDDzRqq1ohduLb7ybmDh+ZOeVlBrErZOrz4uH6If9RpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GMr2FDhM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D5F1C4CEE5;
-	Tue,  8 Apr 2025 11:36:20 +0000 (UTC)
+	 MIME-Version; b=Mhm1+2iN19976PyYtdj86zJo6tVIBfMlNJpXmFE1Xyru79zv52PSyUXB055Y7l3Y9mVxWcC+Z4z0dlaxav3DIQ8/OYpwouCGNVHY4nlYQLhBeqUxO0BpME9sd9VO5a6p5q8RCWfKcYizZCwt/7EAeP1kNHw0oCbFK1sRwmXaK2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JfjfQLkG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDBDEC4CEE5;
+	Tue,  8 Apr 2025 11:58:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112180;
-	bh=qfv9TNc9hA884Ysvb91gS3Y2iBBRZWU6osxU/Byb0j8=;
+	s=korg; t=1744113529;
+	bh=QxJyNm79F2Djf++QI1sHarLO3Vo38FX77GIqpALGO7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GMr2FDhMXPgwqjjzo1o0nNNAKQXHak5pzqMxBrpVwPxtl5xrXc3HViEQNzw6pNXu5
-	 9ZtpX3jHyAahJ9GqSZ30d2wTv8T5Lm3Pyhc1uW++PPZcEYV3zMdjPXeSz4Gqoh/k0Y
-	 RSLwK502z09A+O8XaV7ODIHg3dnG19vtmY/kuaAc=
+	b=JfjfQLkGXm6ch/DiUl8f1Xl/Z6V8WZQRM9iutgSVcf4KFqmR/diQCeRWQ4C2nSVlA
+	 oPnvAUxHXOo4eqWci/rs1fPT2KoGoEsMS8nXmMj3TvpTonFu1xtJl3NQPNsUz4kQyv
+	 A7Jz3Cz8XvVCa3NDYBfohYjlmbgA37KqiZjmD3Mk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yeongjin Gil <youngjin.gil@samsung.com>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Yuezhang Mo <Yuezhang.Mo@sony.com>,
-	Namjae Jeon <linkinjeon@kernel.org>
-Subject: [PATCH 6.14 705/731] exfat: fix random stack corruption after get_block
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 191/268] spufs: fix a leak on spufs_new_file() failure
 Date: Tue,  8 Apr 2025 12:50:02 +0200
-Message-ID: <20250408104930.669025237@linuxfoundation.org>
+Message-ID: <20250408104833.709301989@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,132 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sungjong Seo <sj1557.seo@samsung.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit 1bb7ff4204b6d4927e982cd256286c09ed4fd8ca upstream.
+[ Upstream commit d1ca8698ca1332625d83ea0d753747be66f9906d ]
 
-When get_block is called with a buffer_head allocated on the stack, such
-as do_mpage_readpage, stack corruption due to buffer_head UAF may occur in
-the following race condition situation.
+It's called from spufs_fill_dir(), and caller of that will do
+spufs_rmdir() in case of failure.  That does remove everything
+we'd managed to create, but... the problem dentry is still
+negative.  IOW, it needs to be explicitly dropped.
 
-     <CPU 0>                      <CPU 1>
-mpage_read_folio
-  <<bh on stack>>
-  do_mpage_readpage
-    exfat_get_block
-      bh_read
-        __bh_read
-	  get_bh(bh)
-          submit_bh
-          wait_on_buffer
-                              ...
-                              end_buffer_read_sync
-                                __end_buffer_read_notouch
-                                   unlock_buffer
-          <<keep going>>
-        ...
-      ...
-    ...
-  ...
-<<bh is not valid out of mpage_read_folio>>
-   .
-   .
-another_function
-  <<variable A on stack>>
-                                   put_bh(bh)
-                                     atomic_dec(bh->b_count)
-  * stack corruption here *
-
-This patch returns -EAGAIN if a folio does not have buffers when bh_read
-needs to be called. By doing this, the caller can fallback to functions
-like block_read_full_folio(), create a buffer_head in the folio, and then
-call get_block again.
-
-Let's do not call bh_read() with on-stack buffer_head.
-
-Fixes: 11a347fb6cef ("exfat: change to get file size from DataLength")
-Cc: stable@vger.kernel.org
-Tested-by: Yeongjin Gil <youngjin.gil@samsung.com>
-Signed-off-by: Sungjong Seo <sj1557.seo@samsung.com>
-Reviewed-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3f51dd91c807 "[PATCH] spufs: fix spufs_fill_dir error path"
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exfat/inode.c |   39 +++++++++++++++++++++++++++++++++------
- 1 file changed, 33 insertions(+), 6 deletions(-)
+ arch/powerpc/platforms/cell/spufs/inode.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/exfat/inode.c
-+++ b/fs/exfat/inode.c
-@@ -344,7 +344,8 @@ static int exfat_get_block(struct inode
- 			 * The block has been partially written,
- 			 * zero the unwritten part and map the block.
- 			 */
--			loff_t size, off, pos;
-+			loff_t size, pos;
-+			void *addr;
- 
- 			max_blocks = 1;
- 
-@@ -355,17 +356,41 @@ static int exfat_get_block(struct inode
- 			if (!bh_result->b_folio)
- 				goto done;
- 
-+			/*
-+			 * No buffer_head is allocated.
-+			 * (1) bmap: It's enough to fill bh_result without I/O.
-+			 * (2) read: The unwritten part should be filled with 0
-+			 *           If a folio does not have any buffers,
-+			 *           let's returns -EAGAIN to fallback to
-+			 *           per-bh IO like block_read_full_folio().
-+			 */
-+			if (!folio_buffers(bh_result->b_folio)) {
-+				err = -EAGAIN;
-+				goto done;
-+			}
-+
- 			pos = EXFAT_BLK_TO_B(iblock, sb);
- 			size = ei->valid_size - pos;
--			off = pos & (PAGE_SIZE - 1);
-+			addr = folio_address(bh_result->b_folio) +
-+			       offset_in_folio(bh_result->b_folio, pos);
- 
--			folio_set_bh(bh_result, bh_result->b_folio, off);
-+			/* Check if bh->b_data points to proper addr in folio */
-+			if (bh_result->b_data != addr) {
-+				exfat_fs_error_ratelimit(sb,
-+					"b_data(%p) != folio_addr(%p)",
-+					bh_result->b_data, addr);
-+				err = -EINVAL;
-+				goto done;
-+			}
-+
-+			/* Read a block */
- 			err = bh_read(bh_result, 0);
- 			if (err < 0)
--				goto unlock_ret;
-+				goto done;
- 
--			folio_zero_segment(bh_result->b_folio, off + size,
--					off + sb->s_blocksize);
-+			/* Zero unwritten part of a block */
-+			memset(bh_result->b_data + size, 0,
-+			       bh_result->b_size - size);
- 		} else {
- 			/*
- 			 * The range has not been written, clear the mapped flag
-@@ -376,6 +401,8 @@ static int exfat_get_block(struct inode
+diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
+index 38c5be34c8951..8acefe5f654c9 100644
+--- a/arch/powerpc/platforms/cell/spufs/inode.c
++++ b/arch/powerpc/platforms/cell/spufs/inode.c
+@@ -191,8 +191,10 @@ static int spufs_fill_dir(struct dentry *dir,
+ 			return -ENOMEM;
+ 		ret = spufs_new_file(dir->d_sb, dentry, files->ops,
+ 					files->mode & mode, files->size, ctx);
+-		if (ret)
++		if (ret) {
++			dput(dentry);
+ 			return ret;
++		}
+ 		files++;
  	}
- done:
- 	bh_result->b_size = EXFAT_BLK_TO_B(max_blocks, sb);
-+	if (err < 0)
-+		clear_buffer_mapped(bh_result);
- unlock_ret:
- 	mutex_unlock(&sbi->s_lock);
- 	return err;
+ 	return 0;
+-- 
+2.39.5
+
 
 
 
