@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6DFAA80522
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A5CA804BE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:11:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91B32883F72
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 829734A1D13
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:02:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EAD6268FF0;
-	Tue,  8 Apr 2025 12:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C42269CF1;
+	Tue,  8 Apr 2025 12:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJjOmE1h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvsN07Wm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD98265626;
-	Tue,  8 Apr 2025 12:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8064A269AE3;
+	Tue,  8 Apr 2025 12:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113917; cv=none; b=pNlhu7roSWlKh5VRrPPUjNMMNGiJftfpfJWeBYlJyS33LUaNP8uOMWXpqMZFsJ2NO6qIWZxzHhup8LRjllWXLvYu/KwkQrXeFGu32KNNYkRCtxJ9SddQq8qV5opt7QBUPsF0Yj99jIo7GGrAXXvavfXIGtHETozpOEqDQqvfxfk=
+	t=1744113644; cv=none; b=RZ1EdjN3LQ9PUfrqkiZMuYX5q/bQmizfbYmeY/UaG3w3stsd0ucTJYPtSs3lIXi/OJAoz0aQlrdxX9mcs0lvWTOfLMTwGGD8balsCNuj2MPi+JlW7IDyxqE6C3DkmDgd9UmqnxcbrC5xSZ8tns6FVjyfvXhWuEeukaJNpTO7RlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113917; c=relaxed/simple;
-	bh=NLWUNH7jFTHbAjnbehFVIik2FxEQkf0aVnxoPWySAVA=;
+	s=arc-20240116; t=1744113644; c=relaxed/simple;
+	bh=foR/lLRUlcw7KXYTnMHcLPPiVvFlJqKUvlPLPfzYzQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F15XdJTXYKs5GfEfNvT5VrIJg5cY3vJxI9ijmmUUUDKr5P2cqjVFNDfDIVQc/+VOS/r0I+ApjIRCKwXe0D8r103vfcLzwhXTRWfi+IveFAGvecs4Ze4h+07s1zyk823773EQ3XBD+LslttXYjRsdREpYHqdlfCJhnG2uNUr9jN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJjOmE1h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 202BDC4CEE5;
-	Tue,  8 Apr 2025 12:05:15 +0000 (UTC)
+	 MIME-Version; b=c+SIFpTHLFQPvVRqoE2WamrAR8fC5qGUh9OoxmckGi60qAFhpHTnYHNczLGWomqM3zB2fgi4GpRxzw40CcfLSdKkJ/q0cpChCoV7/tCMF9uLQK0rVVOMwJZphbBEPrXAef5H+lLn8kUn/HqNW1Cvq1XtFZLquMRWwO7L3EoIxbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvsN07Wm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10809C4CEE5;
+	Tue,  8 Apr 2025 12:00:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113916;
-	bh=NLWUNH7jFTHbAjnbehFVIik2FxEQkf0aVnxoPWySAVA=;
+	s=korg; t=1744113644;
+	bh=foR/lLRUlcw7KXYTnMHcLPPiVvFlJqKUvlPLPfzYzQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vJjOmE1hxmXGj5aAxLVzAlmDqMqpJwiGFWsju3f3yibPEY9AUiP3nJu+V4nrfyKRV
-	 uLHo/csV/wVDEa3sqT6/dGXwnrlQ+syKpdntHma0YxCDvdim/uy+MqCp6UZjr0Mtd9
-	 CDGGNuv/fAS2vQTkYJwObCE4UfghMtbkhnD+Chvs=
+	b=gvsN07Wmb+NyKodaufrU8HYH5RiJ0bqrViDxGJVV3ZGB0I9SoSnDa9Z7yPyRh0axT
+	 Zo2iWGi4Vs0aoRGyym+kd0i97V+VXuw5F+HfTcP4KcLlbz4P6I49m2YibUSk0BMmvU
+	 bQdYxhJsBbHqV86QrgDzQyw/RFpFpXUZ5fUYNu40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Terry Junge <linuxhid@cosmicgizmosystems.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 5.4 066/154] ALSA: usb-audio: Add quirk for Plantronics headsets to fix control names
-Date: Tue,  8 Apr 2025 12:50:07 +0200
-Message-ID: <20250408104817.410986382@linuxfoundation.org>
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 197/268] firmware: cs_dsp: Ensure cs_dsp_load[_coeff]() returns 0 on success
+Date: Tue,  8 Apr 2025 12:50:08 +0200
+Message-ID: <20250408104833.868315901@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Terry Junge <linuxhid@cosmicgizmosystems.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-commit 486f6205c233da1baa309bde5f634eb1f8319a33 upstream.
+[ Upstream commit 2593f7e0dc93a898a84220b3fb180d86f1ca8c60 ]
 
-Many Poly/Plantronics headset families name the feature, input,
-and/or output units in a such a way to produce control names
-that are not recognized by user space. As such, the volume and
-mute events do not get routed to the headset's audio controls.
+Set ret = 0 on successful completion of the processing loop in
+cs_dsp_load() and cs_dsp_load_coeff() to ensure that the function
+returns 0 on success.
 
-As an example from a product family:
+All normal firmware files will have at least one data block, and
+processing this block will set ret == 0, from the result of either
+regmap_raw_write() or cs_dsp_parse_coeff().
 
-The microphone mute control is named
-Headset Microphone Capture Switch
-and the headset volume control is named
-Headset Earphone Playback Volume
+The kunit tests create a dummy firmware file that contains only the
+header, without any data blocks. This gives cs_dsp a file to "load"
+that will not cause any side-effects. As there aren't any data blocks,
+the processing loop will not set ret == 0.
 
-The quirk fixes these to become
-Headset Capture Switch
-Headset Playback Volume
+Originally there was a line after the processing loop:
 
-Signed-off-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    ret = regmap_async_complete(regmap);
+
+which would set ret == 0 before the function returned.
+
+Commit fe08b7d5085a ("firmware: cs_dsp: Remove async regmap writes")
+changed the regmap write to a normal sync write, so the call to
+regmap_async_complete() wasn't necessary and was removed. It was
+overlooked that the ret here wasn't only to check the result of
+regmap_async_complete(), it also set the final return value of the
+function.
+
+Fixes: fe08b7d5085a ("firmware: cs_dsp: Remove async regmap writes")
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250323170529.197205-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c |   51 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ drivers/firmware/cirrus/cs_dsp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -2531,6 +2531,52 @@ static void snd_dragonfly_quirk_db_scale
- 	}
- }
+diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
+index 4ce5681be18f0..c015d2b4c5cf9 100644
+--- a/drivers/firmware/cirrus/cs_dsp.c
++++ b/drivers/firmware/cirrus/cs_dsp.c
+@@ -1584,6 +1584,7 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
  
-+/*
-+ * Some Plantronics headsets have control names that don't meet ALSA naming
-+ * standards. This function fixes nonstandard source names. By the time
-+ * this function is called the control name should look like one of these:
-+ * "source names Playback Volume"
-+ * "source names Playback Switch"
-+ * "source names Capture Volume"
-+ * "source names Capture Switch"
-+ * If any of the trigger words are found in the name then the name will
-+ * be changed to:
-+ * "Headset Playback Volume"
-+ * "Headset Playback Switch"
-+ * "Headset Capture Volume"
-+ * "Headset Capture Switch"
-+ * depending on the current suffix.
-+ */
-+static void snd_fix_plt_name(struct snd_usb_audio *chip,
-+			     struct snd_ctl_elem_id *id)
-+{
-+	/* no variant of "Sidetone" should be added to this list */
-+	static const char * const trigger[] = {
-+		"Earphone", "Microphone", "Receive", "Transmit"
-+	};
-+	static const char * const suffix[] = {
-+		" Playback Volume", " Playback Switch",
-+		" Capture Volume", " Capture Switch"
-+	};
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(trigger); i++)
-+		if (strstr(id->name, trigger[i]))
-+			goto triggered;
-+	usb_audio_dbg(chip, "no change in %s\n", id->name);
-+	return;
-+
-+triggered:
-+	for (i = 0; i < ARRAY_SIZE(suffix); i++)
-+		if (strstr(id->name, suffix[i])) {
-+			usb_audio_dbg(chip, "fixing kctl name %s\n", id->name);
-+			snprintf(id->name, sizeof(id->name), "Headset%s",
-+				 suffix[i]);
-+			return;
-+		}
-+	usb_audio_dbg(chip, "something wrong in kctl name %s\n", id->name);
-+}
-+
- void snd_usb_mixer_fu_apply_quirk(struct usb_mixer_interface *mixer,
- 				  struct usb_mixer_elem_info *cval, int unitid,
- 				  struct snd_kcontrol *kctl)
-@@ -2548,5 +2594,10 @@ void snd_usb_mixer_fu_apply_quirk(struct
- 			cval->min_mute = 1;
- 		break;
- 	}
-+
-+	/* ALSA-ify some Plantronics headset control names */
-+	if (USB_ID_VENDOR(mixer->chip->usb_id) == 0x047f &&
-+	    (cval->control == UAC_FU_MUTE || cval->control == UAC_FU_VOLUME))
-+		snd_fix_plt_name(mixer->chip, &kctl->id);
- }
+ 	cs_dsp_debugfs_save_wmfwname(dsp, file);
  
++	ret = 0;
+ out_fw:
+ 	cs_dsp_buf_free(&buf_list);
+ 	kfree(text);
+@@ -2299,6 +2300,7 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
+ 
+ 	cs_dsp_debugfs_save_binname(dsp, file);
+ 
++	ret = 0;
+ out_fw:
+ 	cs_dsp_buf_free(&buf_list);
+ 	kfree(text);
+-- 
+2.39.5
+
 
 
 
