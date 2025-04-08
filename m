@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D5BBA802C7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E31FBA7FE48
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96FF916D48B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:44:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BDEE423558
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:03:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C122676DE;
-	Tue,  8 Apr 2025 11:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA70269813;
+	Tue,  8 Apr 2025 11:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cV6sPUgM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+UZbUqp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8970265602;
-	Tue,  8 Apr 2025 11:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C7E2690F9;
+	Tue,  8 Apr 2025 11:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112667; cv=none; b=Am2sPnftSeU/JhxckXkmfjnEuQhNDZ7u+5Mh3NdY3Jo00stOmIzn4XKOQli6uWxPhxi1TrC2oXmLXKgw8UR4ZSwevvceqwFRKYLfhHDr/XWgTpgBCQQ3VNpEMgMyhb1oL6l7kyJCuY5RQEy98PikRLlJu7t1tupFRkfGufdQhxI=
+	t=1744110073; cv=none; b=RDOZxoTbM713tuqcFL8oFUmZdPJD5RPPbwdgUoTMpQfscTfAl6nOSst3Y3TojkDGkeV3xxMDeOcPI+o2sB3YSJufap8z+Z/iV0MPQ41meTwzF1gKOWns1qBlakvhsaSGRKvKxE3fq9fjMcBT+zil97OMa+AbyOARyWThrfPC9T8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112667; c=relaxed/simple;
-	bh=e9i9gld3iOKozArSjdlXxYJkAa9PF8zT6V06odpdias=;
+	s=arc-20240116; t=1744110073; c=relaxed/simple;
+	bh=2o4AMGaGPIrqyTf3NHU0VUNBaAduYW9UwZ/cnj3Ldxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ekOo9SL4ZdsBlqVBw9jR3Hpvbi9NcBPK76oTDrPUMLA1oQ5TGn+0LSyPJXV45wOD2tFh20T20TPKbNkvh1VSo6LbcGM4NtojAliHp6t8G4r13p5gSg++S9ROgO5rvbZj5a9AZqHfosDA2Is/a2TfrhP4rrGRDBgtqxUt+1lCoF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cV6sPUgM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D8CC4CEE5;
-	Tue,  8 Apr 2025 11:44:26 +0000 (UTC)
+	 MIME-Version; b=Gp13wfNfxxJUq8H3cjYFlWRD3UrQtBAyYMcr3SPwXkiIrrBx8N1RM3L45DxrkvDgDnu3mjQSP8qs1es2oY5+B5XuFqSzOt2vbWNXwygM83ixG8ETweLczULIRHtLD15HETgtrtXrGihhU61GTAAHGMB/DFUartnEpLCX7Q7d8y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+UZbUqp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22396C4CEE5;
+	Tue,  8 Apr 2025 11:01:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112667;
-	bh=e9i9gld3iOKozArSjdlXxYJkAa9PF8zT6V06odpdias=;
+	s=korg; t=1744110073;
+	bh=2o4AMGaGPIrqyTf3NHU0VUNBaAduYW9UwZ/cnj3Ldxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cV6sPUgMbT/KXU1cvkXjXE2iJA7IwtfTIr9ypC06oKNZNVxKBteINnQlvfisQZ4Vw
-	 E28b47hn++leWGrPVM+eGJibUc34+9wF7W+8rm9gR3EixbSrmVV57sa54ZD7azcGYY
-	 e02yfPELTCUq3iSmiVLpLN+t/TZPIWwxDudR+oSY=
+	b=z+UZbUqplrpLJCuLwq2RZ33nDcXI4NilafcEcmHFb3c6gI6va70fJwFVvFP9QRdSL
+	 mPg+PDw9x9Zv8JeIPYHeihbXA4mSfoaBQQon95SQua9++T/hNDbanPjmEkVN9NYyUl
+	 oOil3yUh6M2Aeq/6CNv+215GtqEIGbwsWrzYYRbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Artur Weber <aweber.kernel@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 152/279] drm/mediatek: mtk_hdmi: Fix typo for aud_sampe_size member
+Subject: [PATCH 5.10 157/227] power: supply: max77693: Fix wrong conversion of charge input threshold value
 Date: Tue,  8 Apr 2025 12:48:55 +0200
-Message-ID: <20250408104830.438692557@linuxfoundation.org>
+Message-ID: <20250408104825.025135482@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Artur Weber <aweber.kernel@gmail.com>
 
-[ Upstream commit 72fcb88e7bbc053ed4fc74cebb0315b98a0f20c3 ]
+[ Upstream commit 30cc7b0d0e9341d419eb7da15fb5c22406dbe499 ]
 
-Rename member aud_sampe_size of struct hdmi_audio_param to
-aud_sample_size to fix a typo and enhance readability.
+The charge input threshold voltage register on the MAX77693 PMIC accepts
+four values: 0x0 for 4.3v, 0x1 for 4.7v, 0x2 for 4.8v and 0x3 for 4.9v.
+Due to an oversight, the driver calculated the values for 4.7v and above
+starting from 0x0, rather than from 0x1 ([(4700000 - 4700000) / 100000]
+gives 0).
 
-This commit brings no functional changes.
+Add 1 to the calculation to ensure that 4.7v is converted to a register
+value of 0x1 and that the other two voltages are converted correctly as
+well.
 
-Fixes: 8f83f26891e1 ("drm/mediatek: Add HDMI support")
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20250217154836.108895-20-angelogioacchino.delregno@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: 87c2d9067893 ("power: max77693: Add charger driver for Maxim 77693")
+Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250316-max77693-charger-input-threshold-fix-v1-1-2b037d0ac722@gmail.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_hdmi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/power/supply/max77693_charger.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_hdmi.c b/drivers/gpu/drm/mediatek/mtk_hdmi.c
-index 047ed79dce3ff..67ab6579daf72 100644
---- a/drivers/gpu/drm/mediatek/mtk_hdmi.c
-+++ b/drivers/gpu/drm/mediatek/mtk_hdmi.c
-@@ -138,7 +138,7 @@ enum hdmi_aud_channel_swap_type {
- 
- struct hdmi_audio_param {
- 	enum hdmi_audio_coding_type aud_codec;
--	enum hdmi_audio_sample_size aud_sampe_size;
-+	enum hdmi_audio_sample_size aud_sample_size;
- 	enum hdmi_aud_input_type aud_input_type;
- 	enum hdmi_aud_i2s_fmt aud_i2s_fmt;
- 	enum hdmi_aud_mclk aud_mclk;
-@@ -1076,7 +1076,7 @@ static int mtk_hdmi_output_init(struct mtk_hdmi *hdmi)
- 
- 	hdmi->csp = HDMI_COLORSPACE_RGB;
- 	aud_param->aud_codec = HDMI_AUDIO_CODING_TYPE_PCM;
--	aud_param->aud_sampe_size = HDMI_AUDIO_SAMPLE_SIZE_16;
-+	aud_param->aud_sample_size = HDMI_AUDIO_SAMPLE_SIZE_16;
- 	aud_param->aud_input_type = HDMI_AUD_INPUT_I2S;
- 	aud_param->aud_i2s_fmt = HDMI_I2S_MODE_I2S_24BIT;
- 	aud_param->aud_mclk = HDMI_AUD_MCLK_128FS;
-@@ -1577,14 +1577,14 @@ static int mtk_hdmi_audio_hw_params(struct device *dev, void *data,
- 	switch (daifmt->fmt) {
- 	case HDMI_I2S:
- 		hdmi_params.aud_codec = HDMI_AUDIO_CODING_TYPE_PCM;
--		hdmi_params.aud_sampe_size = HDMI_AUDIO_SAMPLE_SIZE_16;
-+		hdmi_params.aud_sample_size = HDMI_AUDIO_SAMPLE_SIZE_16;
- 		hdmi_params.aud_input_type = HDMI_AUD_INPUT_I2S;
- 		hdmi_params.aud_i2s_fmt = HDMI_I2S_MODE_I2S_24BIT;
- 		hdmi_params.aud_mclk = HDMI_AUD_MCLK_128FS;
- 		break;
- 	case HDMI_SPDIF:
- 		hdmi_params.aud_codec = HDMI_AUDIO_CODING_TYPE_PCM;
--		hdmi_params.aud_sampe_size = HDMI_AUDIO_SAMPLE_SIZE_16;
-+		hdmi_params.aud_sample_size = HDMI_AUDIO_SAMPLE_SIZE_16;
- 		hdmi_params.aud_input_type = HDMI_AUD_INPUT_SPDIF;
+diff --git a/drivers/power/supply/max77693_charger.c b/drivers/power/supply/max77693_charger.c
+index a2c5c9858639f..ef3482fa4023e 100644
+--- a/drivers/power/supply/max77693_charger.c
++++ b/drivers/power/supply/max77693_charger.c
+@@ -556,7 +556,7 @@ static int max77693_set_charge_input_threshold_volt(struct max77693_charger *chg
+ 	case 4700000:
+ 	case 4800000:
+ 	case 4900000:
+-		data = (uvolt - 4700000) / 100000;
++		data = ((uvolt - 4700000) / 100000) + 1;
  		break;
  	default:
+ 		dev_err(chg->dev, "Wrong value for charge input voltage regulation threshold\n");
 -- 
 2.39.5
 
