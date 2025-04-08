@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-129968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1145A80255
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A035A80353
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:56:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6810D3B3C51
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:40:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B10F77A1A14
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6010F264A70;
-	Tue,  8 Apr 2025 11:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C082698BC;
+	Tue,  8 Apr 2025 11:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+Fa4gtJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1JJKHM3c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5862192F2;
-	Tue,  8 Apr 2025 11:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F925269817;
+	Tue,  8 Apr 2025 11:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112461; cv=none; b=JRIWgNaJ+VQlUrP0fDFEmATdezEvBIP0xgxuo6Vkf4bMOlCkx92prTemI8svlzqijBe+COA05ugWPr2AKmZN7s5S8Q3WMjqSA3cs4k5XplyQ+hRPt/ImK271qX1Jcbu61FGBuLZVQGgNxJubRxHrkoLa6ootmFZX2+Wdyn1bAqU=
+	t=1744113137; cv=none; b=AG0cY0tgROBVIBU0TrgUUiSQIoBh4MVLIpJSBkB3+ezTnib2wvSwdlgUZCf9HfTUiv8ixPaB1ivIN22GBDznJTzy+jDahjqx/uUlz8Cd3w1+QPOKt6hHM3iadIraBdGDEY5DMyl1qrS9fit9WRbJ3W/Xe0vZ8Icm2EJO5URE3EM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112461; c=relaxed/simple;
-	bh=Tf1AWkaTLcCwjnnUUfBywIqOZrMdEZdLmmfrK9VBtGo=;
+	s=arc-20240116; t=1744113137; c=relaxed/simple;
+	bh=1z0rZhnSs3bx2v4vF+f3sePbCay9IYdYY7Fl08Dip4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q3+h5k3bFuD6erGeZO+7C9I2d3CQxka3rGifmBayFHNKoeOBptXt5iULdPrM/iBFj/2R6UdUXFnKLezmkhUZKPNhJ2ZocaE8KOsmxpBzi1vKl/RwFbZUox05lRVWDpXgQe40HBukuWhBfMMKMgAA9RQuvBK8JVAkDgi9xKm9ilA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+Fa4gtJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F6A9C4CEEA;
-	Tue,  8 Apr 2025 11:41:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PECM4Jrm3CyO5Dvq9V52Xx6x4phTDQKLjLgKGvDF6qe4ypmCtsPsIVX7Z0hRPBeUbXuRZ8AOKmtfWzAw2bBLoYIpyn8kKE4S6vzvbPK3uvSwkgFzs12bNb9WvryCpwlcgJF1Jv5wh0TvPdKI/7Zk0ZwXvpGXy5a8pAl+ak/qaBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1JJKHM3c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A479EC4CEE5;
+	Tue,  8 Apr 2025 11:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112461;
-	bh=Tf1AWkaTLcCwjnnUUfBywIqOZrMdEZdLmmfrK9VBtGo=;
+	s=korg; t=1744113137;
+	bh=1z0rZhnSs3bx2v4vF+f3sePbCay9IYdYY7Fl08Dip4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A+Fa4gtJVtZ3rDzVzpz+dYo7etZlPOsoHaLTO0zWVxwIigq+t5Whaul9rD+gdClf/
-	 LYaKQ6JsYoQMoKMN7yzldnmbUb//mzzNi4Uic24hfqqA3ud7ryVsOM6E2uTtIKyyqi
-	 Jz1QJJyatUtNDzeknmIsVJF+ubMmEgdr9/iBdzso=
+	b=1JJKHM3cYzmDXFDtXq71cTa+4JymzJFkxx/Bw5I7A12tRlqTOVtx5fZ7h1vViGJYb
+	 q1qrVg/raoZYz0Lv5qQDVx2NQp6C5VcNmQgvL/lZWTAmBXZmDQ83q7dB2gV8ZmMmEI
+	 SFPc/EweyH0cYTZ1JRwTxe5kWQ1CO24k7+jNLI2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Charlene Liu <Charlene.Liu@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Michael Strauss <michael.strauss@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Jim Quinlan <james.quinlan@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 075/279] drm/amd/display: Check for invalid input params when building scaling params
+Subject: [PATCH 6.6 047/268] PCI: brcmstb: Fix error path after a call to regulator_bulk_get()
 Date: Tue,  8 Apr 2025 12:47:38 +0200
-Message-ID: <20250408104828.370358399@linuxfoundation.org>
+Message-ID: <20250408104829.771191033@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Strauss <michael.strauss@amd.com>
+From: Jim Quinlan <james.quinlan@broadcom.com>
 
-[ Upstream commit 73b1da69f5314d96e1f963468863eaa884ee1030 ]
+[ Upstream commit 3651ad5249c51cf7eee078e12612557040a6bdb4 ]
 
-[WHY]
-Function to calculate scaling ratios can be called with invalid plane
-src/dest, causing a divide by zero.
+If the regulator_bulk_get() returns an error and no regulators
+are created, we need to set their number to zero.
 
-[HOW]
-Fail building scaling params if plane state src/dest rects are
-unpopulated
+If we don't do this and the PCIe link up fails, a call to the
+regulator_bulk_free() will result in a kernel panic.
 
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Reviewed-by: Charlene Liu <Charlene.Liu@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Michael Strauss <michael.strauss@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 374c9faac5a7 ("drm/amd/display: Fix null check for pipe_ctx->plane_state in resource_build_scaling_params")
+While at it, print the error value, as we cannot return an error
+upwards as the kernel will WARN() on an error from add_bus().
+
+Fixes: 9e6be018b263 ("PCI: brcmstb: Enable child bus device regulators from DT")
+Signed-off-by: Jim Quinlan <james.quinlan@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20250214173944.47506-5-james.quinlan@broadcom.com
+[kwilczynski: commit log, use comma in the message to match style with
+other similar messages]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/pci/controller/pcie-brcmstb.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-index f29299fb25c4d..de5192ee2b022 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-@@ -1025,6 +1025,15 @@ bool resource_build_scaling_params(struct pipe_ctx *pipe_ctx)
- 	bool res = false;
- 	DC_LOGGER_INIT(pipe_ctx->stream->ctx->logger);
+diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
+index 54c440f09a7ab..e39c61e17d86c 100644
+--- a/drivers/pci/controller/pcie-brcmstb.c
++++ b/drivers/pci/controller/pcie-brcmstb.c
+@@ -1132,7 +1132,8 @@ static int brcm_pcie_add_bus(struct pci_bus *bus)
  
-+	/* Invalid input */
-+	if (!plane_state->dst_rect.width ||
-+			!plane_state->dst_rect.height ||
-+			!plane_state->src_rect.width ||
-+			!plane_state->src_rect.height) {
-+		ASSERT(0);
-+		return false;
-+	}
-+
- 	pipe_ctx->plane_res.scl_data.format = convert_pixel_format_to_dalsurface(
- 			pipe_ctx->plane_state->format);
+ 		ret = regulator_bulk_get(dev, sr->num_supplies, sr->supplies);
+ 		if (ret) {
+-			dev_info(dev, "No regulators for downstream device\n");
++			dev_info(dev, "Did not get regulators, err=%d\n", ret);
++			pcie->sr = NULL;
+ 			goto no_regulators;
+ 		}
  
 -- 
 2.39.5
