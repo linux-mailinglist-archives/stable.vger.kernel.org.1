@@ -1,64 +1,63 @@
-Return-Path: <stable+bounces-130078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FA4FA802F6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:52:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE619A80166
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:39:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77E78422554
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:46:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3ADD519E18E7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD20E268685;
-	Tue,  8 Apr 2025 11:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7F026561C;
+	Tue,  8 Apr 2025 11:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BfRZ3+ea"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KFrJv/z/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69021266EEA;
-	Tue,  8 Apr 2025 11:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26DBC224AEF;
+	Tue,  8 Apr 2025 11:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112756; cv=none; b=Oyg9DuFaQE5+Dgq6G8l9UrZzeFrsKtkYxkFcZGd1XhP52PjSFymwilPdu6Vm1IsApcb3/CMgfn8aQFWxYMUVGjo/414k/QGdVUs1kSkUYkgAuAe31NcYtXECU3LP2VTtfk6orb3Ho7jpT3ADIuRfMK/hfsgIBxnVPfTDY82utW4=
+	t=1744112096; cv=none; b=N5da7/nVyUyMpNGODE9MnGhdbWQkVBRis36QZCbAq7rw+tcuwefUF4AutF+h9sB3HkMPU8kYP26J+zAwcp659IxSClzsNymyy7U1S1R2HYV5BquLVcw71d/uzfWpdOWNMgxW9waGP08dPAjC/0nMIntXJOocqeFvqOp97HyAb8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112756; c=relaxed/simple;
-	bh=gS3u/LbQXSOYkfmzAIgjGa0glgOQu/FDQOgOOD6l4nE=;
+	s=arc-20240116; t=1744112096; c=relaxed/simple;
+	bh=GmUl6XpMlQ3KkHNsWWcOWcSfcmoyKivibZ3e6FRtnJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hxky06w8k+xvDtjVY/3uRLqi7iWjJZkVEp6HwcjhJ+9fq5Jbx/bXoT00CsbBwXc+zaxFLEWE3ELlsCKSZyn+jmvBFTT9vpjuC1iXOQ9y/nJgQaLhlgHGGLSU8ioXwqc67JwDkLaZ3UaxsWRlAwxoR6kMFx6afiazBr5wbE3+Ego=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BfRZ3+ea; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B91AFC4CEE5;
-	Tue,  8 Apr 2025 11:45:55 +0000 (UTC)
+	 MIME-Version; b=u8jkQrigwiyTLI8P4VT1oJoIOTx8A/muoVE55qHO2TQl8grTa1ex1ZcSP++7Kq9WaaTgoCaxPg6Qt2uadZn4drqTZ7vFpeVmLPvHnL5tcFmQnY/W8IqGIFdgJszXBTOZuUW4R/W9YRzSFkF8yhAC+fQooBCwEZdgeVqf3/BGdAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KFrJv/z/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E2CC4CEE5;
+	Tue,  8 Apr 2025 11:34:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112756;
-	bh=gS3u/LbQXSOYkfmzAIgjGa0glgOQu/FDQOgOOD6l4nE=;
+	s=korg; t=1744112096;
+	bh=GmUl6XpMlQ3KkHNsWWcOWcSfcmoyKivibZ3e6FRtnJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BfRZ3+eaIXPp1K5hemuKFKsAKdaW8+yORznyLw++wq6ECqyAWmCnvoz76QVvi21Df
-	 0BW46ynrC1dFvO5B3j4J2IqKMqEyXlQ7MVLdXSvjkOnnQDg7Z39jKauJtUOr0Ue37S
-	 YGt9sTDuIU9uoWDtcaRYtJNKOJTtKMsvoQfWNPYc=
+	b=KFrJv/z/ME0Nkck+t0FATPH2Peq17qSU5pUbXpwENBYz7s3rTPgX8Iz1LGgtYg1rW
+	 ETdwWzpOhzwvdisAzVhY/4RBDozHq1+wETWVX9rHNp81hRv9S+CsMf3u80WY87d46z
+	 sfpN1B39agUivTPgLTslj0FY5ufEkP2hDenm+n0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
+	Vishal Annapurve <vannapurve@google.com>,
 	Ingo Molnar <mingo@kernel.org>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Ryan Afranji <afranji@google.com>,
 	Andy Lutomirski <luto@kernel.org>,
 	Brian Gerst <brgerst@gmail.com>,
 	Juergen Gross <jgross@suse.com>,
 	"H. Peter Anvin" <hpa@zytor.com>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
-	Kees Cook <keescook@chromium.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 186/279] x86/entry: Fix ORC unwinder for PUSH_REGS with save_ret=1
-Date: Tue,  8 Apr 2025 12:49:29 +0200
-Message-ID: <20250408104831.353428070@linuxfoundation.org>
+	Josh Poimboeuf <jpoimboe@redhat.com>
+Subject: [PATCH 6.14 673/731] x86/tdx: Fix arch_safe_halt() execution for TDX VMs
+Date: Tue,  8 Apr 2025 12:49:30 +0200
+Message-ID: <20250408104929.922128461@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,60 +69,164 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Vishal Annapurve <vannapurve@google.com>
 
-[ Upstream commit 57e2428f8df8263275344566e02c277648a4b7f1 ]
+commit 9f98a4f4e7216dbe366010b4cdcab6b220f229c4 upstream.
 
-PUSH_REGS with save_ret=1 is used by interrupt entry helper functions that
-initially start with a UNWIND_HINT_FUNC ORC state.
+Direct HLT instruction execution causes #VEs for TDX VMs which is routed
+to hypervisor via TDCALL. If HLT is executed in STI-shadow, resulting #VE
+handler will enable interrupts before TDCALL is routed to hypervisor
+leading to missed wakeup events, as current TDX spec doesn't expose
+interruptibility state information to allow #VE handler to selectively
+enable interrupts.
 
-However, save_ret=1 means that we clobber the helper function's return
-address (and then later restore the return address further down on the
-stack); after that point, the only thing on the stack we can unwind through
-is the IRET frame, so use UNWIND_HINT_IRET_REGS until we have a full
-pt_regs frame.
+Commit bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
+prevented the idle routines from executing HLT instruction in STI-shadow.
+But it missed the paravirt routine which can be reached via this path
+as an example:
 
-( An alternate approach would be to move the pt_regs->di overwrite down
-  such that it is the final step of pt_regs setup; but I don't want to
-  rearrange entry code just to make unwinding a tiny bit more elegant. )
+	kvm_wait()       =>
+        safe_halt()      =>
+        raw_safe_halt()  =>
+        arch_safe_halt() =>
+        irq.safe_halt()  =>
+        pv_native_safe_halt()
 
-Fixes: 9e809d15d6b6 ("x86/entry: Reduce the code footprint of the 'idtentry' macro")
-Signed-off-by: Jann Horn <jannh@google.com>
+To reliably handle arch_safe_halt() for TDX VMs, introduce explicit
+dependency on CONFIG_PARAVIRT and override paravirt halt()/safe_halt()
+routines with TDX-safe versions that execute direct TDCALL and needed
+interrupt flag updates. Executing direct TDCALL brings in additional
+benefit of avoiding HLT related #VEs altogether.
+
+As tested by Ryan Afranji:
+
+  "Tested with the specjbb2015 benchmark. It has heavy lock contention which leads
+   to many halt calls. TDX VMs suffered a poor score before this patchset.
+
+   Verified the major performance improvement with this patchset applied."
+
+Fixes: bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
+Signed-off-by: Vishal Annapurve <vannapurve@google.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Tested-by: Ryan Afranji <afranji@google.com>
 Cc: Andy Lutomirski <luto@kernel.org>
 Cc: Brian Gerst <brgerst@gmail.com>
 Cc: Juergen Gross <jgross@suse.com>
 Cc: H. Peter Anvin <hpa@zytor.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/r/20250325-2025-03-unwind-fixes-v1-1-acd774364768@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250228014416.3925664-3-vannapurve@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/entry/calling.h | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/Kconfig           |    1 +
+ arch/x86/coco/tdx/tdx.c    |   26 +++++++++++++++++++++++++-
+ arch/x86/include/asm/tdx.h |    4 ++--
+ arch/x86/kernel/process.c  |    2 +-
+ 4 files changed, 29 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
-index b00a3a95fbfab..16e12b45b151a 100644
---- a/arch/x86/entry/calling.h
-+++ b/arch/x86/entry/calling.h
-@@ -70,6 +70,8 @@ For 32-bit we have the following conventions - kernel is built with
- 	pushq	%rsi		/* pt_regs->si */
- 	movq	8(%rsp), %rsi	/* temporarily store the return address in %rsi */
- 	movq	%rdi, 8(%rsp)	/* pt_regs->di (overwriting original return address) */
-+	/* We just clobbered the return address - use the IRET frame for unwinding: */
-+	UNWIND_HINT_IRET_REGS offset=3*8
- 	.else
- 	pushq   %rdi		/* pt_regs->di */
- 	pushq   %rsi		/* pt_regs->si */
--- 
-2.39.5
-
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -902,6 +902,7 @@ config INTEL_TDX_GUEST
+ 	depends on X86_64 && CPU_SUP_INTEL
+ 	depends on X86_X2APIC
+ 	depends on EFI_STUB
++	depends on PARAVIRT
+ 	select ARCH_HAS_CC_PLATFORM
+ 	select X86_MEM_ENCRYPT
+ 	select X86_MCE
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -14,6 +14,7 @@
+ #include <asm/ia32.h>
+ #include <asm/insn.h>
+ #include <asm/insn-eval.h>
++#include <asm/paravirt_types.h>
+ #include <asm/pgtable.h>
+ #include <asm/set_memory.h>
+ #include <asm/traps.h>
+@@ -398,7 +399,7 @@ static int handle_halt(struct ve_info *v
+ 	return ve_instr_len(ve);
+ }
+ 
+-void __cpuidle tdx_safe_halt(void)
++void __cpuidle tdx_halt(void)
+ {
+ 	const bool irq_disabled = false;
+ 
+@@ -409,6 +410,16 @@ void __cpuidle tdx_safe_halt(void)
+ 		WARN_ONCE(1, "HLT instruction emulation failed\n");
+ }
+ 
++static void __cpuidle tdx_safe_halt(void)
++{
++	tdx_halt();
++	/*
++	 * "__cpuidle" section doesn't support instrumentation, so stick
++	 * with raw_* variant that avoids tracing hooks.
++	 */
++	raw_local_irq_enable();
++}
++
+ static int read_msr(struct pt_regs *regs, struct ve_info *ve)
+ {
+ 	struct tdx_module_args args = {
+@@ -1110,6 +1121,19 @@ void __init tdx_early_init(void)
+ 	x86_platform.guest.enc_kexec_finish	     = tdx_kexec_finish;
+ 
+ 	/*
++	 * Avoid "sti;hlt" execution in TDX guests as HLT induces a #VE that
++	 * will enable interrupts before HLT TDCALL invocation if executed
++	 * in STI-shadow, possibly resulting in missed wakeup events.
++	 *
++	 * Modify all possible HLT execution paths to use TDX specific routines
++	 * that directly execute TDCALL and toggle the interrupt state as
++	 * needed after TDCALL completion. This also reduces HLT related #VEs
++	 * in addition to having a reliable halt logic execution.
++	 */
++	pv_ops.irq.safe_halt = tdx_safe_halt;
++	pv_ops.irq.halt = tdx_halt;
++
++	/*
+ 	 * TDX intercepts the RDMSR to read the X2APIC ID in the parallel
+ 	 * bringup low level code. That raises #VE which cannot be handled
+ 	 * there.
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -58,7 +58,7 @@ void tdx_get_ve_info(struct ve_info *ve)
+ 
+ bool tdx_handle_virt_exception(struct pt_regs *regs, struct ve_info *ve);
+ 
+-void tdx_safe_halt(void);
++void tdx_halt(void);
+ 
+ bool tdx_early_handle_ve(struct pt_regs *regs);
+ 
+@@ -72,7 +72,7 @@ void __init tdx_dump_td_ctls(u64 td_ctls
+ #else
+ 
+ static inline void tdx_early_init(void) { };
+-static inline void tdx_safe_halt(void) { };
++static inline void tdx_halt(void) { };
+ 
+ static inline bool tdx_early_handle_ve(struct pt_regs *regs) { return false; }
+ 
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -939,7 +939,7 @@ void __init select_idle_routine(void)
+ 		static_call_update(x86_idle, mwait_idle);
+ 	} else if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
+ 		pr_info("using TDX aware idle routine\n");
+-		static_call_update(x86_idle, tdx_safe_halt);
++		static_call_update(x86_idle, tdx_halt);
+ 	} else {
+ 		static_call_update(x86_idle, default_idle);
+ 	}
 
 
 
