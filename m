@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-130952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42CA8A806FB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:33:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B55BA80953
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:53:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9F861B85980
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:27:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 281858C31CF
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:39:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36DC526B0A2;
-	Tue,  8 Apr 2025 12:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2341269AF8;
+	Tue,  8 Apr 2025 12:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L1xtqWxG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SWbuVCp/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7EE72686AA;
-	Tue,  8 Apr 2025 12:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7F6224AEB;
+	Tue,  8 Apr 2025 12:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115095; cv=none; b=j6y4sq5LIeI/YMpUDOvPUTGXAh5xsXgUak1NVgYPwDFsDk3HLwzr71Fxmeu67xG9tEpx2dIwjXPAmc9Q0a1jqeL83mbkQCx8HrkrOwj7fQPjSv40Y77xYgwR2RcaZc80Qh4zZTAYZ2sDhBB0tDHglPS6oEUdc4SWqqI5joLxWFU=
+	t=1744115720; cv=none; b=NxNYiV8z30asolI5ypuw6YBGACZbhnteip8zeEwlB6ZBi+xLVZOuWYHIV/5rftqnDRwGL3n81yN1fZTtW7jnRvk0tRCcnmLlsd5IWnjT/f571SkItWp8k8nbZUsb5DvMQKv98OTy5EyVS+K6ZnafYVerfj9UXbdD/2QU3PQXy9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115095; c=relaxed/simple;
-	bh=dB8l8yxtH9IhEb/278Nr6V6OTtXmGQG5f0ZRm8qYy/I=;
+	s=arc-20240116; t=1744115720; c=relaxed/simple;
+	bh=hDqjKlV7X1YJbp2gFiDVmDPs8n7MKiYUBYkFnqgx1/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NBHo1h4TKZWU41ob4SCJCXvnaMx0ZFppAEjtMaop015Pd4rKFWAdvLsn0jEGE73qMahFokpb9DZoGyJM2yR8Of5LiITeaIX5wNdGoZcx9t7tsJZHD0oLBCBwcSFTwExIdab9+oZCEuLqwiQb8F16sBYhHPjYLA8UkP4XL6r/3Ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L1xtqWxG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FAB9C4CEE7;
-	Tue,  8 Apr 2025 12:24:53 +0000 (UTC)
+	 MIME-Version; b=gtkklpONif+gi9rcDVzTzEAeOUJhYfDtuPA30sHREailCPn33q5Gu3qHFXbam6KxVyIJIXRNPIazacuBSNPPhh168sKdI4PCOdZDwjhdNXzOHB2m77VRtMb48upgD+QpStIvhIl7rHiIIr4kxYn4a5FcYbx1zm68ow/BjWcdeUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SWbuVCp/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18CEC4CEE5;
+	Tue,  8 Apr 2025 12:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115094;
-	bh=dB8l8yxtH9IhEb/278Nr6V6OTtXmGQG5f0ZRm8qYy/I=;
+	s=korg; t=1744115720;
+	bh=hDqjKlV7X1YJbp2gFiDVmDPs8n7MKiYUBYkFnqgx1/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L1xtqWxGTeZBGM3NckorxLd/LIeU5U/wUqCOe2gB7HsQ10qwHT7DJOjFPJBI+TsM8
-	 IarO+4W5oU1q/1fQij3idE/SUQorxIcwVstfBYbjud43C64T+cdg7OptaQPLqBa06Z
-	 hb7wrJrdt+EPpl4I8C/S/DSK9iVLXk5frOFugIcA=
+	b=SWbuVCp/D0arJJ7zo55TINZxXorH/CR5UutjgnpBxdOZ6RLouHiYbwTeCjDyVst0/
+	 GtzhiPFAgbnUhDiQUMboUo2oRrXK4/gpAMJ8khP4wp0gdGJFpzTnL8ZY7ta1CgpcQk
+	 Lrjzrqs2OpJo38ToKwNhtLCHdNYBJj6B/t5VkUNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Roger Quadros <rogerq@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 348/499] memory: omap-gpmc: drop no compatible check
+Subject: [PATCH 6.1 030/204] drm: xlnx: zynqmp: Fix max dma segment size
 Date: Tue,  8 Apr 2025 12:49:20 +0200
-Message-ID: <20250408104859.904528964@linuxfoundation.org>
+Message-ID: <20250408104821.213640108@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roger Quadros <rogerq@kernel.org>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit edcccc6892f65eff5fd3027a13976131dc7fd733 ]
+[ Upstream commit 28b529a98525123acd37372a04d21e87ec2edcf7 ]
 
-We are no longer depending on legacy device trees so
-drop the no compatible check for NAND and OneNAND
-nodes.
+Fix "mapping sg segment longer than device claims to support" warning by
+setting the max segment size.
 
-Suggested-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-Link: https://lore.kernel.org/r/20250114-omap-gpmc-drop-no-compatible-check-v1-1-262c8d549732@kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: d76271d22694 ("drm: xlnx: DRM/KMS driver for Xilinx ZynqMP DisplayPort Subsystem")
+Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
+Tested-by: Sean Anderson <sean.anderson@linux.dev>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250115-xilinx-formats-v2-10-160327ca652a@ideasonboard.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memory/omap-gpmc.c | 20 --------------------
- 1 file changed, 20 deletions(-)
+ drivers/gpu/drm/xlnx/zynqmp_dpsub.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
-index 50eb9f49512b4..368b0848b64df 100644
---- a/drivers/memory/omap-gpmc.c
-+++ b/drivers/memory/omap-gpmc.c
-@@ -2245,26 +2245,6 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
- 		goto err;
- 	}
+diff --git a/drivers/gpu/drm/xlnx/zynqmp_dpsub.c b/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
+index fcaa958d841c9..f34d4ec1d92f3 100644
+--- a/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
++++ b/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
+@@ -205,6 +205,8 @@ static int zynqmp_dpsub_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
  
--	if (of_node_name_eq(child, "nand")) {
--		/* Warn about older DT blobs with no compatible property */
--		if (!of_property_read_bool(child, "compatible")) {
--			dev_warn(&pdev->dev,
--				 "Incompatible NAND node: missing compatible");
--			ret = -EINVAL;
--			goto err;
--		}
--	}
--
--	if (of_node_name_eq(child, "onenand")) {
--		/* Warn about older DT blobs with no compatible property */
--		if (!of_property_read_bool(child, "compatible")) {
--			dev_warn(&pdev->dev,
--				 "Incompatible OneNAND node: missing compatible");
--			ret = -EINVAL;
--			goto err;
--		}
--	}
--
- 	if (of_match_node(omap_nand_ids, child)) {
- 		/* NAND specific setup */
- 		val = 8;
++	dma_set_max_seg_size(&pdev->dev, DMA_BIT_MASK(32));
++
+ 	/* Try the reserved memory. Proceed if there's none. */
+ 	of_reserved_mem_device_init(&pdev->dev);
+ 
 -- 
 2.39.5
 
