@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-129827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3680A801AB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:41:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8F84A7FE1A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:10:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BE8A3B81C7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54E9416A85B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:04:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5BDB269836;
-	Tue,  8 Apr 2025 11:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42FC926A0FD;
+	Tue,  8 Apr 2025 11:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9k3hwtb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c67XSLP9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7331926982A;
-	Tue,  8 Apr 2025 11:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0131B26A0FC;
+	Tue,  8 Apr 2025 11:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112085; cv=none; b=gQD3NoP2g1fM5dGeuVJnz5yw7ikmdSlIuJc7i4avDG40P5tKL3qpbwog1ncXznApIRrTjv3qVRtWna0n93BRqnRw5WhdnfYga1CSz3pH3mql2O19l08LBT8TOj99Ns0X4oyLm++gNRfu4R71FIUEXzabAMOaP52TwgQ3Ombzuf0=
+	t=1744110156; cv=none; b=SuVl2FgfDhZ77Z+7mSjDrjFvas1GwgXAYV1hfUzbJ+jOeD8DG0SXIWonH2foT4YxHhw5R8tERztLJd1lJFCsjmpIW0b4xo2xpSWSc27cY85sH6pszdrzPuMypQ+oS5E/XpL82kodPRyXow092qyFOeRauTjgEVTxeCJQY2Xd/dY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112085; c=relaxed/simple;
-	bh=y0qEaZIsmadFfVJayRUl6zzPVf0k/YUoG7020iMCH/0=;
+	s=arc-20240116; t=1744110156; c=relaxed/simple;
+	bh=MRUfpW10ffd5CfsNGE4SwQIYJ16i9EN2VK+2Pqjpf5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fJXrZ+RkeQdIwNEZm/9FfpU9SadHR+5KCzd6HslQgXtBYchKofsZWqmxSXEpH37izCKSS+gblWTRmQevYFHsgZVMpZ8y0yAfABD/C727uR0r9pOTSTvPnCDN+DhHukPiTODPC/QwCR5vacBE8EXKrgl9ae9IEQM6MxVYlqE9nds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9k3hwtb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B51C4CEEF;
-	Tue,  8 Apr 2025 11:34:44 +0000 (UTC)
+	 MIME-Version; b=kokv7svtiiOagGmaE9uByR0FO7IfzYFo7QsPTGqQA4shBfvMx5dqwGiqU+pPf+G0GJOVxcpOFPBsFC5sS62AcyyjUubXFWuIQJF+0mpPEIR3tgonse1hcPZ2p+WkI6U4MosUOKt2BcbtrIee39h+C3WAoziNnWJ9Vb6KB3N0lBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c67XSLP9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 858D1C4CEE5;
+	Tue,  8 Apr 2025 11:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112085;
-	bh=y0qEaZIsmadFfVJayRUl6zzPVf0k/YUoG7020iMCH/0=;
+	s=korg; t=1744110155;
+	bh=MRUfpW10ffd5CfsNGE4SwQIYJ16i9EN2VK+2Pqjpf5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e9k3hwtbE9HCPuvXuN+XPO5P6fRaxDq3vkOKsan7SyG5CuTXo4QDVgA4Xuo31sKAM
-	 wf3XaBJDR198HG2Q+Uk2nXoYGm4/iaVUXWsxQkgCPIeHpmSHO2OGiBaJ7/G/+x+Poy
-	 fZrCxZuV//Qr0GDOurc3mqaDXq8MMAhIzvOdEmJg=
+	b=c67XSLP99w45WGng0FcXOn6GxqQxc97k4ERt23Idqv5NJSWCjp4nYsClVhteIE8Og
+	 tY5FIxVg26sLNnQHUoLnQnWjsKzJ2Avv8/Vgaifz0A2gho16rik/Jm+Uq8BPa66Yd6
+	 r1ZwgzQYokHREnsCGJL7uCGyiT3Bn1ZFgc2F6YQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>
-Subject: [PATCH 6.14 669/731] KVM: x86: block KVM_CAP_SYNC_REGS if guest state is protected
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 188/227] sched/deadline: Use online cpus for validating runtime
 Date: Tue,  8 Apr 2025 12:49:26 +0200
-Message-ID: <20250408104929.827098218@linuxfoundation.org>
+Message-ID: <20250408104825.943002322@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
 
-commit 74c1807f6c4feddb3c3cb1056c54531d4adbaea6 upstream.
+[ Upstream commit 14672f059d83f591afb2ee1fff56858efe055e5a ]
 
-KVM_CAP_SYNC_REGS does not make sense for VMs with protected guest state,
-since the register values cannot actually be written.  Return 0
-when using the VM-level KVM_CHECK_EXTENSION ioctl, and accordingly
-return -EINVAL from KVM_RUN if the valid/dirty fields are nonzero.
+The ftrace selftest reported a failure because writing -1 to
+sched_rt_runtime_us returns -EBUSY. This happens when the possible
+CPUs are different from active CPUs.
 
-However, on exit from KVM_RUN userspace could have placed a nonzero
-value into kvm_run->kvm_valid_regs, so check guest_state_protected
-again and skip store_regs() in that case.
+Active CPUs are part of one root domain, while remaining CPUs are part
+of def_root_domain. Since active cpumask is being used, this results in
+cpus=0 when a non active CPUs is used in the loop.
 
-Cc: stable@vger.kernel.org
-Fixes: 517987e3fb19 ("KVM: x86: add fields to struct kvm_arch for CoCo features")
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <20250306202923.646075-1-pbonzini@redhat.com>
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix it by looping over the online CPUs instead for validating the
+bandwidth calculations.
+
+Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Juri Lelli <juri.lelli@redhat.com>
+Link: https://lore.kernel.org/r/20250306052954.452005-2-sshegde@linux.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/x86.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ kernel/sched/deadline.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -4573,6 +4573,11 @@ static bool kvm_is_vm_type_supported(uns
- 	return type < 32 && (kvm_caps.supported_vm_types & BIT(type));
- }
- 
-+static inline u32 kvm_sync_valid_fields(struct kvm *kvm)
-+{
-+	return kvm && kvm->arch.has_protected_state ? 0 : KVM_SYNC_X86_VALID_FIELDS;
-+}
-+
- int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- {
- 	int r = 0;
-@@ -4681,7 +4686,7 @@ int kvm_vm_ioctl_check_extension(struct
- 		break;
- #endif
- 	case KVM_CAP_SYNC_REGS:
--		r = KVM_SYNC_X86_VALID_FIELDS;
-+		r = kvm_sync_valid_fields(kvm);
- 		break;
- 	case KVM_CAP_ADJUST_CLOCK:
- 		r = KVM_CLOCK_VALID_FLAGS;
-@@ -11474,6 +11479,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_v
- {
- 	struct kvm_queued_exception *ex = &vcpu->arch.exception;
- 	struct kvm_run *kvm_run = vcpu->run;
-+	u32 sync_valid_fields;
- 	int r;
- 
- 	r = kvm_mmu_post_init_vm(vcpu->kvm);
-@@ -11519,8 +11525,9 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_v
- 		goto out;
- 	}
- 
--	if ((kvm_run->kvm_valid_regs & ~KVM_SYNC_X86_VALID_FIELDS) ||
--	    (kvm_run->kvm_dirty_regs & ~KVM_SYNC_X86_VALID_FIELDS)) {
-+	sync_valid_fields = kvm_sync_valid_fields(vcpu->kvm);
-+	if ((kvm_run->kvm_valid_regs & ~sync_valid_fields) ||
-+	    (kvm_run->kvm_dirty_regs & ~sync_valid_fields)) {
- 		r = -EINVAL;
- 		goto out;
- 	}
-@@ -11578,7 +11585,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_v
- 
- out:
- 	kvm_put_guest_fpu(vcpu);
--	if (kvm_run->kvm_valid_regs)
-+	if (kvm_run->kvm_valid_regs && likely(!vcpu->arch.guest_state_protected))
- 		store_regs(vcpu);
- 	post_kvm_run_save(vcpu);
- 	kvm_vcpu_srcu_read_unlock(vcpu);
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index d91295d3059f7..6548bd90c5c3a 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -2577,7 +2577,7 @@ int sched_dl_global_validate(void)
+ 	 * cycling on root_domains... Discussion on different/better
+ 	 * solutions is welcome!
+ 	 */
+-	for_each_possible_cpu(cpu) {
++	for_each_online_cpu(cpu) {
+ 		rcu_read_lock_sched();
+ 		dl_b = dl_bw_of(cpu);
+ 		cpus = dl_bw_cpus(cpu);
+-- 
+2.39.5
+
 
 
 
