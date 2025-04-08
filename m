@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-131425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36C66A809CC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:57:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F49EA806A6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:29:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46A868A4E1C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:51:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 933234C2A38
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:22:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECDD1276033;
-	Tue,  8 Apr 2025 12:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE22C269811;
+	Tue,  8 Apr 2025 12:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7zmg4TB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iquyKcD7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9BF3265CD3;
-	Tue,  8 Apr 2025 12:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA9C26656B;
+	Tue,  8 Apr 2025 12:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116361; cv=none; b=kOpGlwA7xdKOiPH+XtaM79N+Htwv1Ym1WET4TIABCltEWweSFkWAjisKrDDInHpKjP/kKp9QtKjWQBOT4vd8NKhHW0fwcrKipXZ2v5v5j7g0lPKlXunz7j1CK+YrXbE/2lH5mRXVNWjyqUwNFPmUNcimUi4J5iLMydsG0T0yeJM=
+	t=1744114760; cv=none; b=kzk/IVP9LEWK9d4ewgRrNPkxEXvqkeRjNrfbQ7cJg2PraNKre+MWjC7r8K/LnlJJ4AHBDVxSFfHKMdHB8JuPwzANa5jHb2N42dof3IW+Ll6K0chy5R4rE1K+jsowJsDxky3fYPe3iijfVJKIvYlQxN/kGt1IrxkjoMu7H1bDpLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116361; c=relaxed/simple;
-	bh=C4LQuJGnVU4TSEMH8ccBSTAH5x/uwF7xKwTi05tD8Og=;
+	s=arc-20240116; t=1744114760; c=relaxed/simple;
+	bh=bW2OneRt9YfBZ58y0qqY5PfDkmUMMSjE1/cOonYsUoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g4dq6k9DbqTOzFbU/YzVeAOSlKFGNwE67ZzoYOAS5KMZygUwqnv1ymallmHT8a8V+nTIspiS4cU3R7pVOGZDciavzbsRCLqt2WASPGUNTc7a4rxQDSOowvE04KwAWNlPTD9BHRxnKv/3zzV2Efur2CfB+OxAGlY+AuQUzze2gGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j7zmg4TB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13584C4CEE5;
-	Tue,  8 Apr 2025 12:46:00 +0000 (UTC)
+	 MIME-Version; b=DPl33xJnfowXvgRoqDIOf3BOMa99JjKq4IGmhW7gvreufrjlvRIQPFO5+yjMHMoi1h51mr5uVSss45t5N/IZZxP2QtTioJH7ucksI3AanBo+4M86GEiFB7iMEhvkI3oGnoXDrfAjcGP0ipNm+Hnn6N0yeJF+vGDpnjZx0ihfy9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iquyKcD7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CA0DC4CEE5;
+	Tue,  8 Apr 2025 12:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116361;
-	bh=C4LQuJGnVU4TSEMH8ccBSTAH5x/uwF7xKwTi05tD8Og=;
+	s=korg; t=1744114759;
+	bh=bW2OneRt9YfBZ58y0qqY5PfDkmUMMSjE1/cOonYsUoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j7zmg4TBGrFJPvITR32yWnK4rq2zOyDMI/W34vQYv9ZyU7sVNQam7w2LX+mDpf3uW
-	 6NJaQK1W/TGJrJYRKagQLoA6Kd/2gqhqwu8aopWQhpgVxcuC0Hsa1tPYDUKWiTVSEQ
-	 0EmZReHnfnUQ2Ym0fXZ3r0YB2o0ZTw5sW8sw7BDc=
+	b=iquyKcD7tB9tlnQleeFD++t1MH9O+KSMc259bHyRiB3UJ/OoIokfxjNQmgtenYceU
+	 0BrGyB3uR8gNRrFcy/QXvX70VjdYKfKH+xASpFEp/01qZqzfnd2OO2pPZY6wrPE98G
+	 q2aa0VK/JF8tzBOpxY20gr7Xg2mdwRBGIAqh+Ax4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Viktor Malik <vmalik@redhat.com>,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Niklas Neronin <niklas.neronin@linux.intel.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 112/423] selftests/bpf: Fix string read in strncmp benchmark
+Subject: [PATCH 6.13 226/499] usb: xhci: correct debug message page size calculation
 Date: Tue,  8 Apr 2025 12:47:18 +0200
-Message-ID: <20250408104848.340875666@linuxfoundation.org>
+Message-ID: <20250408104856.848166013@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viktor Malik <vmalik@redhat.com>
+From: Niklas Neronin <niklas.neronin@linux.intel.com>
 
-[ Upstream commit de07b182899227d5fd1ca7a1a7d495ecd453d49c ]
+[ Upstream commit 55741c723318905e6d5161bf1e12749020b161e3 ]
 
-The strncmp benchmark uses the bpf_strncmp helper and a hand-written
-loop to compare two strings. The values of the strings are filled from
-userspace. One of the strings is non-const (in .bss) while the other is
-const (in .rodata) since that is the requirement of bpf_strncmp.
+The ffs() function returns the index of the first set bit, starting from 1.
+If no bits are set, it returns zero. This behavior causes an off-by-one
+page size in the debug message, as the page size calculation [1]
+is zero-based, while ffs() is one-based.
 
-The problem is that in the hand-written loop, Clang optimizes the reads
-from the const string to always return 0 which breaks the benchmark.
+Fix this by subtracting one from the result of ffs(). Note that since
+variable 'val' is unsigned, subtracting one from zero will result in the
+maximum unsigned integer value. Consequently, the condition 'if (val < 16)'
+will still function correctly.
 
-Use barrier_var to prevent the optimization.
+[1], Page size: (2^(n+12)), where 'n' is the set page size bit.
 
-The effect can be seen on the strncmp-no-helper variant.
-
-Before this change:
-
-    # ./bench strncmp-no-helper
-    Setting up benchmark 'strncmp-no-helper'...
-    Benchmark 'strncmp-no-helper' started.
-    Iter   0 (112.309us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   1 (-23.238us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   2 ( 58.994us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   3 (-30.466us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   4 ( 29.996us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   5 ( 16.949us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Iter   6 (-60.035us): hits    0.000M/s (  0.000M/prod), drops    0.000M/s, total operations    0.000M/s
-    Summary: hits    0.000 ± 0.000M/s (  0.000M/prod), drops    0.000 ± 0.000M/s, total operations    0.000 ± 0.000M/s
-
-After this change:
-
-    # ./bench strncmp-no-helper
-    Setting up benchmark 'strncmp-no-helper'...
-    Benchmark 'strncmp-no-helper' started.
-    Iter   0 ( 77.711us): hits    5.534M/s (  5.534M/prod), drops    0.000M/s, total operations    5.534M/s
-    Iter   1 ( 11.215us): hits    6.006M/s (  6.006M/prod), drops    0.000M/s, total operations    6.006M/s
-    Iter   2 (-14.253us): hits    5.931M/s (  5.931M/prod), drops    0.000M/s, total operations    5.931M/s
-    Iter   3 ( 59.087us): hits    6.005M/s (  6.005M/prod), drops    0.000M/s, total operations    6.005M/s
-    Iter   4 (-21.379us): hits    6.010M/s (  6.010M/prod), drops    0.000M/s, total operations    6.010M/s
-    Iter   5 (-20.310us): hits    5.861M/s (  5.861M/prod), drops    0.000M/s, total operations    5.861M/s
-    Iter   6 ( 53.937us): hits    6.004M/s (  6.004M/prod), drops    0.000M/s, total operations    6.004M/s
-    Summary: hits    5.969 ± 0.061M/s (  5.969M/prod), drops    0.000 ± 0.000M/s, total operations    5.969 ± 0.061M/s
-
-Fixes: 9c42652f8be3 ("selftests/bpf: Add benchmark for bpf_strncmp() helper")
-Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Viktor Malik <vmalik@redhat.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/bpf/20250313122852.1365202-1-vmalik@redhat.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 81720ec5320c ("usb: host: xhci: use ffs() in xhci_mem_init()")
+Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250306144954.3507700-9-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/strncmp_bench.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-mem.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/strncmp_bench.c b/tools/testing/selftests/bpf/progs/strncmp_bench.c
-index 18373a7df76e6..f47bf88f8d2a7 100644
---- a/tools/testing/selftests/bpf/progs/strncmp_bench.c
-+++ b/tools/testing/selftests/bpf/progs/strncmp_bench.c
-@@ -35,7 +35,10 @@ static __always_inline int local_strncmp(const char *s1, unsigned int sz,
- SEC("tp/syscalls/sys_enter_getpgid")
- int strncmp_no_helper(void *ctx)
- {
--	if (local_strncmp(str, cmp_str_len + 1, target) < 0)
-+	const char *target_str = target;
-+
-+	barrier_var(target_str);
-+	if (local_strncmp(str, cmp_str_len + 1, target_str) < 0)
- 		__sync_add_and_fetch(&hits, 1);
- 	return 0;
- }
+diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
+index fdf0c1008225a..9aa7e2a876ec1 100644
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -2391,10 +2391,10 @@ int xhci_mem_init(struct xhci_hcd *xhci, gfp_t flags)
+ 	page_size = readl(&xhci->op_regs->page_size);
+ 	xhci_dbg_trace(xhci, trace_xhci_dbg_init,
+ 			"Supported page size register = 0x%x", page_size);
+-	i = ffs(page_size);
+-	if (i < 16)
++	val = ffs(page_size) - 1;
++	if (val < 16)
+ 		xhci_dbg_trace(xhci, trace_xhci_dbg_init,
+-			"Supported page size of %iK", (1 << (i+12)) / 1024);
++			"Supported page size of %iK", (1 << (val + 12)) / 1024);
+ 	else
+ 		xhci_warn(xhci, "WARN: no supported page size\n");
+ 	/* Use 4K pages, since that's common and the minimum the HC supports */
 -- 
 2.39.5
 
