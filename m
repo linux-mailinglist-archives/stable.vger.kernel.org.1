@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-129100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B5FA7FE37
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:11:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3267A802DE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:51:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80285189750A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:04:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1607462886
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:45:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFB0D26A096;
-	Tue,  8 Apr 2025 11:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB896268681;
+	Tue,  8 Apr 2025 11:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Urp1UskX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmSSalty"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC402698AE;
-	Tue,  8 Apr 2025 11:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8406267B8C;
+	Tue,  8 Apr 2025 11:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110115; cv=none; b=rnDs+NteDOV2wzVFLzUyZD0fSoCB1cxv3KwBeqe48XEJCQYnxsFPBewpEOABsNDq44bwqQkNzHZgCd1nQDwd/2j9imerHLWtyKeRXyi3oFmAseT176kc72Tw0QCpI/+W1MJXLVn6Lpp/SpmNO5nGpo5FjihzYwsHpKANqclAhCQ=
+	t=1744112705; cv=none; b=I8c685H8/SORJ/PhHFJlilq2b3JBY+BZqYjBOmCp1J3tx4iEhYvLmbN5bHkl2w+uCy5B4CC8bbDU4vY9icSiwBj9r9pR54NvBMjZTaJ2vyoPBqixRkMcOfTJbYuS2oiZZVfLnqu32F84GU/WH0Lmby2Vb8bBPD0QCvJXJ9glcNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110115; c=relaxed/simple;
-	bh=E7Wwo1lmUH1uVa1rXcmUfJ8WhnM8wI6vjmXHPJ7Vhi4=;
+	s=arc-20240116; t=1744112705; c=relaxed/simple;
+	bh=X0XZHSMT4B6zfS/LiZ8W/zZhFPEBWz9es78udZUxWss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jgyTxLCfscJzPvaqsvHpBr8VxP0HL76QFJJARHqV7N8HLA1bbuyLBo5x1cPJjJS0NJgwKGAhVMGtbGCh0a/EGNSP5umLIGVh11Ob6zRabaELGg5aq1zZwfUyC4LYaR77KpabgMl4eoAPE3M+cpX28Dq93Qi7kUQL+fNm968AB8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Urp1UskX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 391A6C4CEE5;
-	Tue,  8 Apr 2025 11:01:55 +0000 (UTC)
+	 MIME-Version; b=eIhCuAI38wlpyNOhq12YKwYibT/kzr2ogSlZdFpdnvcTeutO7WmdJCa7dEl/c65r/wgIcS8LeLZzUk2aAxC3cwTGudhmTlDv+yJU9fRB/Gl/UYL1imrHDaV4f8zb8qLVbREmJqsZqRrF6VOwY+8D6sY2uMymv7LcuRD4X8jHLq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmSSalty; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 048EFC4CEE5;
+	Tue,  8 Apr 2025 11:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110115;
-	bh=E7Wwo1lmUH1uVa1rXcmUfJ8WhnM8wI6vjmXHPJ7Vhi4=;
+	s=korg; t=1744112705;
+	bh=X0XZHSMT4B6zfS/LiZ8W/zZhFPEBWz9es78udZUxWss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Urp1UskXQu48ffSsZF2+h88xwiqI/y+RyZe7YoIk7AWGVokzH8yI8/zn+MhgDvSf6
-	 7D15cuhmgkI8le59ECsrXKfpqlP7xkLiBYpgaha895NQKwoPECabCuQVs/hdG71If8
-	 9BgABEujEouKjlpdmuu+/YquoEiij4TnSsHyIMTY=
+	b=tmSSaltywlUwvGxPT5nnRWecxZMYe8xpzPTy0+Ze2RVbr6R8TPAlVVsq8372qaAj7
+	 fQ46gvMGYKOpgIf43bOl/IjCqfc+COSGvVzjH1AaoCSa2MQ86wN4CmmvzPCgXn9qrz
+	 WG44QpZ4ID/roVzxL6YS9syidS5f/7a6CqDiRlzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Zhang <18255117159@163.com>,
-	Hans Zhang <hans.zhang@cixtech.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Eric Sandeen <sandeen@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 133/227] PCI: cadence-ep: Fix the driver to send MSG TLP for INTx without data payload
+Subject: [PATCH 5.15 128/279] watch_queue: fix pipe accounting mismatch
 Date: Tue,  8 Apr 2025 12:48:31 +0200
-Message-ID: <20250408104824.311034977@linuxfoundation.org>
+Message-ID: <20250408104829.796967858@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Zhang <18255117159@163.com>
+From: Eric Sandeen <sandeen@redhat.com>
 
-[ Upstream commit 3ac47fbf4f6e8c3a7c3855fac68cc3246f90f850 ]
+[ Upstream commit f13abc1e8e1a3b7455511c4e122750127f6bc9b0 ]
 
-Per the Cadence's "PCIe Controller IP for AX14" user guide, Version
-1.04, Section 9.1.7.1, "AXI Subordinate to PCIe Address Translation
-Registers", Table 9.4, the bit 16 of the AXI Subordinate Address
-(axi_s_awaddr) when set corresponds to MSG with data, and when not set,
-to MSG without data.
+Currently, watch_queue_set_size() modifies the pipe buffers charged to
+user->pipe_bufs without updating the pipe->nr_accounted on the pipe
+itself, due to the if (!pipe_has_watch_queue()) test in
+pipe_resize_ring(). This means that when the pipe is ultimately freed,
+we decrement user->pipe_bufs by something other than what than we had
+charged to it, potentially leading to an underflow. This in turn can
+cause subsequent too_many_pipe_buffers_soft() tests to fail with -EPERM.
 
-However, the driver is currently doing the opposite and due to this,
-the INTx is never received on the host.
+To remedy this, explicitly account for the pipe usage in
+watch_queue_set_size() to match the number set via account_pipe_buffers()
 
-So, fix the driver to reflect the documentation and also make INTx work.
+(It's unclear why watch_queue_set_size() does not update nr_accounted;
+it may be due to intentional overprovisioning in watch_queue_set_size()?)
 
-Fixes: 37dddf14f1ae ("PCI: cadence: Add EndPoint Controller driver for Cadence PCIe controller")
-Signed-off-by: Hans Zhang <18255117159@163.com>
-Signed-off-by: Hans Zhang <hans.zhang@cixtech.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20250214165724.184599-1-18255117159@163.com
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Fixes: e95aada4cb93d ("pipe: wakeup wr_wait after setting max_usage")
+Signed-off-by: Eric Sandeen <sandeen@redhat.com>
+Link: https://lore.kernel.org/r/206682a8-0604-49e5-8224-fdbe0c12b460@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/cadence/pcie-cadence-ep.c | 3 +--
- drivers/pci/controller/cadence/pcie-cadence.h    | 2 +-
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ kernel/watch_queue.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/pci/controller/cadence/pcie-cadence-ep.c b/drivers/pci/controller/cadence/pcie-cadence-ep.c
-index 4c5e6349d78ce..403ff93bc8509 100644
---- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
-+++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
-@@ -311,8 +311,7 @@ static void cdns_pcie_ep_assert_intx(struct cdns_pcie_ep *ep, u8 fn,
- 	spin_unlock_irqrestore(&ep->lock, flags);
+diff --git a/kernel/watch_queue.c b/kernel/watch_queue.c
+index ae31bf8d2feb1..6ed37bc95cb7b 100644
+--- a/kernel/watch_queue.c
++++ b/kernel/watch_queue.c
+@@ -274,6 +274,15 @@ long watch_queue_set_size(struct pipe_inode_info *pipe, unsigned int nr_notes)
+ 	if (ret < 0)
+ 		goto error;
  
- 	offset = CDNS_PCIE_NORMAL_MSG_ROUTING(MSG_ROUTING_LOCAL) |
--		 CDNS_PCIE_NORMAL_MSG_CODE(msg_code) |
--		 CDNS_PCIE_MSG_NO_DATA;
-+		 CDNS_PCIE_NORMAL_MSG_CODE(msg_code);
- 	writel(0, ep->irq_cpu_addr + offset);
- }
- 
-diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
-index e0b59730bffb7..3139ea9f02c89 100644
---- a/drivers/pci/controller/cadence/pcie-cadence.h
-+++ b/drivers/pci/controller/cadence/pcie-cadence.h
-@@ -224,7 +224,7 @@ struct cdns_pcie_rp_ib_bar {
- #define CDNS_PCIE_NORMAL_MSG_CODE_MASK		GENMASK(15, 8)
- #define CDNS_PCIE_NORMAL_MSG_CODE(code) \
- 	(((code) << 8) & CDNS_PCIE_NORMAL_MSG_CODE_MASK)
--#define CDNS_PCIE_MSG_NO_DATA			BIT(16)
-+#define CDNS_PCIE_MSG_DATA			BIT(16)
- 
- struct cdns_pcie;
- 
++	/*
++	 * pipe_resize_ring() does not update nr_accounted for watch_queue
++	 * pipes, because the above vastly overprovisions. Set nr_accounted on
++	 * and max_usage this pipe to the number that was actually charged to
++	 * the user above via account_pipe_buffers.
++	 */
++	pipe->max_usage = nr_pages;
++	pipe->nr_accounted = nr_pages;
++
+ 	ret = -ENOMEM;
+ 	pages = kcalloc(sizeof(struct page *), nr_pages, GFP_KERNEL);
+ 	if (!pages)
 -- 
 2.39.5
 
