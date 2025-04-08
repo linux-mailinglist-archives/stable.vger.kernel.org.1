@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-131185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3546A8087D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:46:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53067A80BED
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:22:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94CA81B8607C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CBA6903FE6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A136268FD0;
-	Tue,  8 Apr 2025 12:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58FEA276040;
+	Tue,  8 Apr 2025 12:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wIbn1uFQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/BWbnKI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF25622488E;
-	Tue,  8 Apr 2025 12:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1710826AABC;
+	Tue,  8 Apr 2025 12:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115717; cv=none; b=o6JQzjrGkSAzgrCFOnPP2LCqatA3vS1YBpp5QTs1qb9Ak4atPnM0PwKJH0LULvQZbMc2hlzdZFVJ+ULENCmlEeNNe/pgYEJ6wADS6P5x+aZlf1r4O/uRYQl+ZZDRf1KLu37vjO/xViiuX0W9Dx9zsR0JsXBWjnp2eWzGYViENtc=
+	t=1744116721; cv=none; b=qalJBZT4nWCNKDTyTbeIeSKQkSRpMZHw4mtCACUefd1QhBavJ3S1YhDP96k9oaVlE1fct8QhFnNqIVleoMRqMrYnDIhAb+UujtxrAwsBxzv4ojy53xcOEGTx4bDetKZEw2uUMiQoJp0mobej3rR6qMD0atuY376IbBmC1fpFqyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115717; c=relaxed/simple;
-	bh=Pl9FZrBq7pYelHuuyrC5Mm31QYD0vnWZUb5Q0MpUWQE=;
+	s=arc-20240116; t=1744116721; c=relaxed/simple;
+	bh=iB/WxQikY+OJUrHTfA6OrIOrALSbrdliI+1Xzdci+ZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LOnAFpS7MLB2IwSkFGeGJF6UikhyKYrsNOtXwTVXmi2WAmY4h8SLr+T4LFGKbi6MKkuEFqmg9kZOVY/JBqxh39J2EWoScP9jGGo0pg3G26TpA6fXPT2NRGFHirCFiWy+nU6XdqJEsU/BejvUGolfSJ8Z1wvfcfK5yKjK8jV8i/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wIbn1uFQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D6C2C4CEE5;
-	Tue,  8 Apr 2025 12:35:17 +0000 (UTC)
+	 MIME-Version; b=rMWaDJzO5Hvz9z12ar5cgNZes6R/0meH7dcnlluUDsRKzJIjAL8Hysu14+wgse4w/xyabvs8c4l/KC7amn+KmMb+R2Y3vS3frHLWQrQpWdcH2GRIzGzudYF+pf3xBjozcTrYz0e39DQATbxsdtN75sErkLt/pvhWzEaHPzlo+44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/BWbnKI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FA98C4CEE5;
+	Tue,  8 Apr 2025 12:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115717;
-	bh=Pl9FZrBq7pYelHuuyrC5Mm31QYD0vnWZUb5Q0MpUWQE=;
+	s=korg; t=1744116720;
+	bh=iB/WxQikY+OJUrHTfA6OrIOrALSbrdliI+1Xzdci+ZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wIbn1uFQwf2royjRjJAzrYQ5bHFrhiGjfX14p9B3iq2+HlZHp8h//Hx1yCeUKZRBm
-	 agkq3XogsNImBSSgqqQjgO3S6dUEu4WhObbP0kT+IWuEk2GSW8hVGQr/hRw1C+jgNi
-	 bCGxntftE8HYR1ZPmBZTCkjEHQFTT7NhT7xH5w50=
+	b=p/BWbnKIL68jTvTkIWa2SsS9QZIRMBphnFcMLjqpc4gCtP2o5wEbPXMA4uHkGSfb9
+	 C6F6pVE/1FG74PJfugpdhtWWS0Te/7MfBbqpbCBV8oj+L/O5vvKu9SX0LMoltk8Aah
+	 H2XyGafFgwkqGco7UTfssvCTQrFs7w590kv8Ssy4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Quinlan <james.quinlan@broadcom.com>,
+	Jim Liu <jim.t90615@gmail.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
 	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 039/204] PCI: brcmstb: Fix error path after a call to regulator_bulk_get()
-Date: Tue,  8 Apr 2025 12:49:29 +0200
-Message-ID: <20250408104821.491589564@linuxfoundation.org>
+Subject: [PATCH 6.12 244/423] net: phy: broadcom: Correct BCM5221 PHY model detection
+Date: Tue,  8 Apr 2025 12:49:30 +0200
+Message-ID: <20250408104851.413899043@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Quinlan <james.quinlan@broadcom.com>
+From: Jim Liu <jim.t90615@gmail.com>
 
-[ Upstream commit 3651ad5249c51cf7eee078e12612557040a6bdb4 ]
+[ Upstream commit 4f1eaabb4b66a1f7473f584e14e15b2ac19dfaf3 ]
 
-If the regulator_bulk_get() returns an error and no regulators
-are created, we need to set their number to zero.
+Correct detect condition is applied to the entire 5221 family of PHYs.
 
-If we don't do this and the PCIe link up fails, a call to the
-regulator_bulk_free() will result in a kernel panic.
-
-While at it, print the error value, as we cannot return an error
-upwards as the kernel will WARN() on an error from add_bus().
-
-Fixes: 9e6be018b263 ("PCI: brcmstb: Enable child bus device regulators from DT")
-Signed-off-by: Jim Quinlan <james.quinlan@broadcom.com>
+Fixes: 3abbd0699b67 ("net: phy: broadcom: add support for BCM5221 phy")
+Signed-off-by: Jim Liu <jim.t90615@gmail.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20250214173944.47506-5-james.quinlan@broadcom.com
-[kwilczynski: commit log, use comma in the message to match style with
-other similar messages]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-brcmstb.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/phy/broadcom.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
-index feb825326d596..016ea0e79c3ad 100644
---- a/drivers/pci/controller/pcie-brcmstb.c
-+++ b/drivers/pci/controller/pcie-brcmstb.c
-@@ -1117,7 +1117,8 @@ static int brcm_pcie_add_bus(struct pci_bus *bus)
+diff --git a/drivers/net/phy/broadcom.c b/drivers/net/phy/broadcom.c
+index ddded162c44c1..d2a9cf3fde5ac 100644
+--- a/drivers/net/phy/broadcom.c
++++ b/drivers/net/phy/broadcom.c
+@@ -859,7 +859,7 @@ static int brcm_fet_config_init(struct phy_device *phydev)
+ 		return reg;
  
- 		ret = regulator_bulk_get(dev, sr->num_supplies, sr->supplies);
- 		if (ret) {
--			dev_info(dev, "No regulators for downstream device\n");
-+			dev_info(dev, "Did not get regulators, err=%d\n", ret);
-+			pcie->sr = NULL;
- 			goto no_regulators;
- 		}
+ 	/* Unmask events we are interested in and mask interrupts globally. */
+-	if (phydev->phy_id == PHY_ID_BCM5221)
++	if (phydev->drv->phy_id == PHY_ID_BCM5221)
+ 		reg = MII_BRCM_FET_IR_ENABLE |
+ 		      MII_BRCM_FET_IR_MASK;
+ 	else
+@@ -888,7 +888,7 @@ static int brcm_fet_config_init(struct phy_device *phydev)
+ 		return err;
+ 	}
  
+-	if (phydev->phy_id != PHY_ID_BCM5221) {
++	if (phydev->drv->phy_id != PHY_ID_BCM5221) {
+ 		/* Set the LED mode */
+ 		reg = __phy_read(phydev, MII_BRCM_FET_SHDW_AUXMODE4);
+ 		if (reg < 0) {
+@@ -1009,7 +1009,7 @@ static int brcm_fet_suspend(struct phy_device *phydev)
+ 		return err;
+ 	}
+ 
+-	if (phydev->phy_id == PHY_ID_BCM5221)
++	if (phydev->drv->phy_id == PHY_ID_BCM5221)
+ 		/* Force Low Power Mode with clock enabled */
+ 		reg = BCM5221_SHDW_AM4_EN_CLK_LPM | BCM5221_SHDW_AM4_FORCE_LPM;
+ 	else
 -- 
 2.39.5
 
