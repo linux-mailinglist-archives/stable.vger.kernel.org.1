@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-130879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56EA8A806D4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:31:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79E1AA809B1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:56:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC20B4C42EE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:24:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3CD57B47E2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C812D2698AE;
-	Tue,  8 Apr 2025 12:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D1312777F7;
+	Tue,  8 Apr 2025 12:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5pHuftY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSLrKO5u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870C02676E1;
-	Tue,  8 Apr 2025 12:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F9126E160;
+	Tue,  8 Apr 2025 12:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114899; cv=none; b=tQAbTGm+pzQhm4n8eyOdnzTKzlTj35fYPYFkRxgyCEZpzN5B58K4aAoeokZhKQNpnZJjIcHL39nCpvHcd+J4P1ihekdZJf5Bg8MZi7umMPPy5nUyxsAVEkaT7RSs+0Pc5Sx2/ZNB4CStmIdhxukp3YDpvv4ONtJO2LXNBxNbEJM=
+	t=1744116503; cv=none; b=CeL00Spb7Yls9Yj2GfClTjDtZvue8+C+Heg36juIks7wVhSOCS2f6arQhfdX8X5zPDmw5MRjQVFJHwO7tCRZI5J5lLSYU387b0zYfUQF5TLq841YEePQ1PjF158cVrbqyIcugtKCUoCMUU6vhCGrpHaCMfJ0uZUcdH2hYP2scU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114899; c=relaxed/simple;
-	bh=OF4P/6I3CcDi+fZaGgbCIMF+TToQtQbqxk6HC/Nn5us=;
+	s=arc-20240116; t=1744116503; c=relaxed/simple;
+	bh=mzj0aw/zVsacUXPRzv9NW4Xt1RSAm15DzNNb+ZI4qBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q49xPvPqUNBqR5pehxOIK5QkHLK4rR9NW41knNiOGFCrCvjHJ2xt1Hr9F7pZx+tOCP+xBuEclk2YA9dQqx7h+fEQXrjH1fuNmfFdUvz+9rCBJK9pJog4767nFqNJhWt7VLqbxW4IC6eQzery1gaVUvZ1+80uVBZPPaoNucpyBiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5pHuftY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB4F0C4CEE5;
-	Tue,  8 Apr 2025 12:21:38 +0000 (UTC)
+	 MIME-Version; b=h5Wl+v2AokKypJQ4yQFxxa+8OrN8Sgac8UeJFFdpw+UV3+eyBxBYgRWvZknj7d+jTUTdw45iiAg4qCEI+AuCtVMYFlX1XFog2DwaZ9JmHhXvFRKtXQj81Xea1uENglQhAretckiYRG1NTmWqQVM2xPxRc0kMGKnzBk0wS9jfr5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSLrKO5u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 282E6C4CEEE;
+	Tue,  8 Apr 2025 12:48:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114899;
-	bh=OF4P/6I3CcDi+fZaGgbCIMF+TToQtQbqxk6HC/Nn5us=;
+	s=korg; t=1744116502;
+	bh=mzj0aw/zVsacUXPRzv9NW4Xt1RSAm15DzNNb+ZI4qBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M5pHuftY+Rpkas8whFtkNsNrcW7S3ew5z4XbyQJYHN3wocCWr6W9NzHEITsLtDM5O
-	 9cycx4n3pR3XNtdTFjxp1OUFRwQJiTfNmUooVcg6y3Q/h4/ixaOCygc7pLGFOjWaY+
-	 vc1MFmT57bZ4kATMdGF93URghGxQae22oCA/rJ6w=
+	b=NSLrKO5um2to8Uv77023k25LV4+LCLW1J4aZvG0XuNVfj8/jBQAEjtdst0EH5HL4p
+	 xg2DG0tROR01rFQk55Gbx4H7l8YjVAT+apWXWfbl4AbA1O+aDcG5CDs+5Yv1Rh0RiA
+	 4Am0Fc/UrhdC8M5P63IVl/tdDYTnL/y3u1oteis0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Zhaolong <wangzhaolong1@huawei.com>,
-	Steve French <stfrench@microsoft.com>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@linaro.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Atish Patra <atishp@rivosinc.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 276/499] smb: client: Fix netns refcount imbalance causing leaks and use-after-free
+Subject: [PATCH 6.12 162/423] perf stat: Fix find_stat for mixed legacy/non-legacy events
 Date: Tue,  8 Apr 2025 12:48:08 +0200
-Message-ID: <20250408104858.100145967@linuxfoundation.org>
+Message-ID: <20250408104849.511368091@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,176 +65,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Zhaolong <wangzhaolong1@huawei.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 4e7f1644f2ac6d01dc584f6301c3b1d5aac4eaef ]
+[ Upstream commit 8ce0d2da14d3fb62844dd0e95982c194326b1a5f ]
 
-Commit ef7134c7fc48 ("smb: client: Fix use-after-free of network
-namespace.") attempted to fix a netns use-after-free issue by manually
-adjusting reference counts via sk->sk_net_refcnt and sock_inuse_add().
+Legacy events typically don't have a PMU when added leading to
+mismatched legacy/non-legacy cases in find_stat. Use evsel__find_pmu
+to make sure the evsel PMU is looked up. Update the evsel__find_pmu
+code to look for the PMU using the extended config type or, for legacy
+hardware/hw_cache events on non-hybrid systems, just use the core PMU.
 
-However, a later commit e9f2517a3e18 ("smb: client: fix TCP timers deadlock
-after rmmod") pointed out that the approach of manually setting
-sk->sk_net_refcnt in the first commit was technically incorrect, as
-sk->sk_net_refcnt should only be set for user sockets. It led to issues
-like TCP timers not being cleared properly on close. The second commit
-moved to a model of just holding an extra netns reference for
-server->ssocket using get_net(), and dropping it when the server is torn
-down.
-
-But there remain some gaps in the get_net()/put_net() balancing added by
-these commits. The incomplete reference handling in these fixes results
-in two issues:
-
-1. Netns refcount leaks[1]
-
-The problem process is as follows:
-
+Before:
 ```
-mount.cifs                        cifsd
+$ perf stat -e cycles,cpu/instructions/ -a sleep 1
+ Performance counter stats for 'system wide':
 
-cifs_do_mount
-  cifs_mount
-    cifs_mount_get_session
-      cifs_get_tcp_session
-        get_net()  /* First get net. */
-        ip_connect
-          generic_ip_connect /* Try port 445 */
-            get_net()
-            ->connect() /* Failed */
-            put_net()
-          generic_ip_connect /* Try port 139 */
-            get_net() /* Missing matching put_net() for this get_net().*/
-      cifs_get_smb_ses
-        cifs_negotiate_protocol
-          smb2_negotiate
-            SMB2_negotiate
-              cifs_send_recv
-                wait_for_response
-                                 cifs_demultiplex_thread
-                                   cifs_read_from_socket
-                                     cifs_readv_from_socket
-                                       cifs_reconnect
-                                         cifs_abort_connection
-                                           sock_release();
-                                           server->ssocket = NULL;
-                                           /* Missing put_net() here. */
-                                           generic_ip_connect
-                                             get_net()
-                                             ->connect() /* Failed */
-                                             put_net()
-                                             sock_release();
-                                             server->ssocket = NULL;
-          free_rsp_buf
-    ...
-                                   clean_demultiplex_info
-                                     /* It's only called once here. */
-                                     put_net()
+       215,309,764      cycles
+        44,326,491      cpu/instructions/
+
+       1.002555314 seconds time elapsed
+```
+After:
+```
+$ perf stat -e cycles,cpu/instructions/ -a sleep 1
+
+ Performance counter stats for 'system wide':
+
+       990,676,332      cycles
+     1,235,762,487      cpu/instructions/                #    1.25  insn per cycle
+
+       1.002667198 seconds time elapsed
 ```
 
-When cifs_reconnect() is triggered, the server->ssocket is released
-without a corresponding put_net() for the reference acquired in
-generic_ip_connect() before. it ends up calling generic_ip_connect()
-again to retry get_net(). After that, server->ssocket is set to NULL
-in the error path of generic_ip_connect(), and the net count cannot be
-released in the final clean_demultiplex_info() function.
-
-2. Potential use-after-free
-
-The current refcounting scheme can lead to a potential use-after-free issue
-in the following scenario:
-
-```
- cifs_do_mount
-   cifs_mount
-     cifs_mount_get_session
-       cifs_get_tcp_session
-         get_net()  /* First get net */
-           ip_connect
-             generic_ip_connect
-               get_net()
-               bind_socket
-	         kernel_bind /* failed */
-               put_net()
-         /* after out_err_crypto_release label */
-         put_net()
-         /* after out_err label */
-         put_net()
-```
-
-In the exception handling process where binding the socket fails, the
-get_net() and put_net() calls are unbalanced, which may cause the
-server->net reference count to drop to zero and be prematurely released.
-
-To address both issues, this patch ties the netns reference counting to
-the server->ssocket and server lifecycles. The extra reference is now
-acquired when the server or socket is created, and released when the
-socket is destroyed or the server is torn down.
-
-[1]: https://bugzilla.kernel.org/show_bug.cgi?id=219792
-
-Fixes: ef7134c7fc48 ("smb: client: Fix use-after-free of network namespace.")
-Fixes: e9f2517a3e18 ("smb: client: fix TCP timers deadlock after rmmod")
-Signed-off-by: Wang Zhaolong <wangzhaolong1@huawei.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 3612ca8e2935 ("perf stat: Fix the hard-coded metrics calculation on the hybrid")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Tested-by: James Clark <james.clark@linaro.org>
+Tested-by: Leo Yan <leo.yan@arm.com>
+Tested-by: Atish Patra <atishp@rivosinc.com>
+Link: https://lore.kernel.org/r/20250109222109.567031-3-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ tools/perf/util/pmus.c        | 20 +++++++++++++++++---
+ tools/perf/util/stat-shadow.c |  3 ++-
+ 2 files changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index a5d443c42996c..cc4cd7ec72249 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -316,6 +316,7 @@ cifs_abort_connection(struct TCP_Server_Info *server)
- 			 server->ssocket->flags);
- 		sock_release(server->ssocket);
- 		server->ssocket = NULL;
-+		put_net(cifs_net_ns(server));
+diff --git a/tools/perf/util/pmus.c b/tools/perf/util/pmus.c
+index d7d67e09d759b..362596ed27294 100644
+--- a/tools/perf/util/pmus.c
++++ b/tools/perf/util/pmus.c
+@@ -701,11 +701,25 @@ char *perf_pmus__default_pmu_name(void)
+ struct perf_pmu *evsel__find_pmu(const struct evsel *evsel)
+ {
+ 	struct perf_pmu *pmu = evsel->pmu;
++	bool legacy_core_type;
+ 
+-	if (!pmu) {
+-		pmu = perf_pmus__find_by_type(evsel->core.attr.type);
+-		((struct evsel *)evsel)->pmu = pmu;
++	if (pmu)
++		return pmu;
++
++	pmu = perf_pmus__find_by_type(evsel->core.attr.type);
++	legacy_core_type =
++		evsel->core.attr.type == PERF_TYPE_HARDWARE ||
++		evsel->core.attr.type == PERF_TYPE_HW_CACHE;
++	if (!pmu && legacy_core_type) {
++		if (perf_pmus__supports_extended_type()) {
++			u32 type = evsel->core.attr.config >> PERF_PMU_TYPE_SHIFT;
++
++			pmu = perf_pmus__find_by_type(type);
++		} else {
++			pmu = perf_pmus__find_core_pmu();
++		}
  	}
- 	server->sequence_number = 0;
- 	server->session_estab = false;
-@@ -3158,8 +3159,12 @@ generic_ip_connect(struct TCP_Server_Info *server)
- 		/*
- 		 * Grab netns reference for the socket.
- 		 *
--		 * It'll be released here, on error, or in clean_demultiplex_info() upon server
--		 * teardown.
-+		 * This reference will be released in several situations:
-+		 * - In the failure path before the cifsd thread is started.
-+		 * - In the all place where server->socket is released, it is
-+		 *   also set to NULL.
-+		 * - Ultimately in clean_demultiplex_info(), during the final
-+		 *   teardown.
- 		 */
- 		get_net(net);
- 
-@@ -3175,10 +3180,8 @@ generic_ip_connect(struct TCP_Server_Info *server)
- 	}
- 
- 	rc = bind_socket(server);
--	if (rc < 0) {
--		put_net(cifs_net_ns(server));
-+	if (rc < 0)
- 		return rc;
--	}
- 
- 	/*
- 	 * Eventually check for other socket options to change from
-@@ -3224,9 +3227,6 @@ generic_ip_connect(struct TCP_Server_Info *server)
- 	if (sport == htons(RFC1001_PORT))
- 		rc = ip_rfc1001_connect(server);
- 
--	if (rc < 0)
--		put_net(cifs_net_ns(server));
--
- 	return rc;
++	((struct evsel *)evsel)->pmu = pmu;
+ 	return pmu;
  }
  
+diff --git a/tools/perf/util/stat-shadow.c b/tools/perf/util/stat-shadow.c
+index 99376c12dd8ec..7c49997fab3a3 100644
+--- a/tools/perf/util/stat-shadow.c
++++ b/tools/perf/util/stat-shadow.c
+@@ -154,6 +154,7 @@ static double find_stat(const struct evsel *evsel, int aggr_idx, enum stat_type
+ {
+ 	const struct evsel *cur;
+ 	int evsel_ctx = evsel_context(evsel);
++	struct perf_pmu *evsel_pmu = evsel__find_pmu(evsel);
+ 
+ 	evlist__for_each_entry(evsel->evlist, cur) {
+ 		struct perf_stat_aggr *aggr;
+@@ -180,7 +181,7 @@ static double find_stat(const struct evsel *evsel, int aggr_idx, enum stat_type
+ 		 * Except the SW CLOCK events,
+ 		 * ignore if not the PMU we're looking for.
+ 		 */
+-		if ((type != STAT_NSECS) && (evsel->pmu != cur->pmu))
++		if ((type != STAT_NSECS) && (evsel_pmu != evsel__find_pmu(cur)))
+ 			continue;
+ 
+ 		aggr = &cur->stats->aggr[aggr_idx];
 -- 
 2.39.5
 
