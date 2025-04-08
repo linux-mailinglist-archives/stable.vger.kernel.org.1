@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-130538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAF61A804FF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:13:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75ED5A807B9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F0C51B65FFE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:08:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E3514C1378
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:33:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5A826AA9B;
-	Tue,  8 Apr 2025 12:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C85F26B08E;
+	Tue,  8 Apr 2025 12:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KbGkJvuL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x4So9aRY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FBA026A0AF;
-	Tue,  8 Apr 2025 12:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9A4267B6B;
+	Tue,  8 Apr 2025 12:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113977; cv=none; b=A6apXcy2dHQkr9ch3Qbi0WkRRzMrPgfx9K/OkO5bBJcOTo79WUhTVfQhJf/eppRSF8HSm7T+jpzR5osHD2j/h1VlB6pceXXtkjMx1XJnYoiIud5hAu8UTLEKSSAuxs6ChmzJTgocZyXf7Ms5eu5jO0AZaw06fI8XKjqx2PIUJyg=
+	t=1744115423; cv=none; b=Bb/JxVXkKzlS6rfD9Hmp3wZee39QgqX/pQWKBbsbZSnIcqE4x0QxjCRblzVEM8qxXXlFKj6c3bEbDiuTjL3gl3JtYHI8Z0bMBfWOqZnCUgPikdWZCX0g4SBTSgYg7Dyx2wA5SrH2G4/5pku6frbDrFwbKojEhGxUDj0UFzMM3YA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113977; c=relaxed/simple;
-	bh=thZ1sDa82j6aQbYRVLZyh3ppDUGKJmShqmIXYxpkdD0=;
+	s=arc-20240116; t=1744115423; c=relaxed/simple;
+	bh=kMEISixNm0286pbIXoA2IEYeFM8F9LHBtkGPtHGwYz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V+EEaFrsYxVNg0Z2CcMpfSKcPzy0JfyzpaJ9IuU89ABQfDROWypQ+303cWx+QbrkzsKNuUggBffrXJ4PjhUyzLJhxA6W6sIv52TEjwAERYBpGwyQ7gBn6fLd/ppfJqRuk6loNjF2NPT3sTiNQOjm3GqFTGYL+OfFRMszXq8vkT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KbGkJvuL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 316D5C4CEE5;
-	Tue,  8 Apr 2025 12:06:17 +0000 (UTC)
+	 MIME-Version; b=KpxKKTpyHTJZ3eXP9YY1xfy2X/IhBJwf5EP+5F3ZulH7NR21fRrgKp1mODpd/l4d2x+B9Ubys5ffUtEiztUIIzJ9baPrLcawdA68TqMza/sAC4xzCg9NYA8VlbEokH5RmbOUfTPxd2jXP7UmwBJ1vRgSvjKhw984VOgLioazAyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x4So9aRY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF11C4CEE5;
+	Tue,  8 Apr 2025 12:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113977;
-	bh=thZ1sDa82j6aQbYRVLZyh3ppDUGKJmShqmIXYxpkdD0=;
+	s=korg; t=1744115423;
+	bh=kMEISixNm0286pbIXoA2IEYeFM8F9LHBtkGPtHGwYz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KbGkJvuLXdhFYRKmT5uG3d8Up0SzCQljgIh8o/RVjg+CSUZMRunX2CfK5naaGdu+o
-	 nA7wKvdlHgJObMSdrWFIi8jdPq8GNgDVE6FvyzWFiL8Eu69mfMJoEcZClxHW4EkrGg
-	 Py5keXJAs/3W/bWiENFOlkSgUzqEM59aJg5cWNFc=
+	b=x4So9aRYUixrQ2AVdoXg9NoRPaLPVBRghlfQngvKzHjOEdIFcuSYJ66U3A1adwIha
+	 59jUUvBPJ3sCrJuLFYlGKcsLwIFP585SDm9pQmwADRenvU2MOlSl8U9EunaoBrXYfl
+	 boO+4HIVWW5+7sSO32st5WwzK89mLOJPJycSKAJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Chen <chen.dylane@linux.dev>,
-	Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Nihar Chaithanya <niharchaithanya@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 091/154] perf/ring_buffer: Allow the EPOLLRDNORM flag for poll
+Subject: [PATCH 6.13 420/499] staging: gpib: ni_usb: Handle gpib_register_driver() errors
 Date: Tue,  8 Apr 2025 12:50:32 +0200
-Message-ID: <20250408104818.239417254@linuxfoundation.org>
+Message-ID: <20250408104901.700934408@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,45 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Chen <chen.dylane@linux.dev>
+From: Nihar Chaithanya <niharchaithanya@gmail.com>
 
-[ Upstream commit c96fff391c095c11dc87dab35be72dee7d217cde ]
+[ Upstream commit 635ddb8ccdbde0d917b0a7448b0fd9d6cc27a2a9 ]
 
-The poll man page says POLLRDNORM is equivalent to POLLIN. For poll(),
-it seems that if user sets pollfd with POLLRDNORM in userspace, perf_poll
-will not return until timeout even if perf_output_wakeup called,
-whereas POLLIN returns.
+The usb_register() function can fail and returns an error value which
+is not returned. The function gpib_register_driver() can also fail
+which can result in semi-registered module.
 
-Fixes: 76369139ceb9 ("perf: Split up buffer handling from core code")
-Signed-off-by: Tao Chen <chen.dylane@linux.dev>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250314030036.2543180-1-chen.dylane@linux.dev
+In case gpib_register_driver() fails unregister the previous usb driver
+registering function. Return the error value if gpib_register_driver()
+or usb_register() functions fail. Add pr_err() statements indicating the
+fail and error value.
+
+Signed-off-by: Nihar Chaithanya <niharchaithanya@gmail.com>
+Link: https://lore.kernel.org/r/20241230185633.175690-14-niharchaithanya@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: a239c6e91b66 ("staging: gpib: Fix Oops after disconnect in ni_usb")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/ring_buffer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/gpib/ni_usb/ni_usb_gpib.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
-index 679cc87b40f4b..0611477e4dadd 100644
---- a/kernel/events/ring_buffer.c
-+++ b/kernel/events/ring_buffer.c
-@@ -19,7 +19,7 @@
- 
- static void perf_output_wakeup(struct perf_output_handle *handle)
+diff --git a/drivers/staging/gpib/ni_usb/ni_usb_gpib.c b/drivers/staging/gpib/ni_usb/ni_usb_gpib.c
+index 70b8b305e13b6..3c4132fd6de95 100644
+--- a/drivers/staging/gpib/ni_usb/ni_usb_gpib.c
++++ b/drivers/staging/gpib/ni_usb/ni_usb_gpib.c
+@@ -2619,12 +2619,23 @@ static struct usb_driver ni_usb_bus_driver = {
+ static int __init ni_usb_init_module(void)
  {
--	atomic_set(&handle->rb->poll, EPOLLIN);
-+	atomic_set(&handle->rb->poll, EPOLLIN | EPOLLRDNORM);
+ 	int i;
++	int ret;
  
- 	handle->event->pending_wakeup = 1;
- 	irq_work_queue(&handle->event->pending);
+ 	pr_info("ni_usb_gpib driver loading\n");
+ 	for (i = 0; i < MAX_NUM_NI_USB_INTERFACES; i++)
+ 		ni_usb_driver_interfaces[i] = NULL;
+-	usb_register(&ni_usb_bus_driver);
+-	gpib_register_driver(&ni_usb_gpib_interface, THIS_MODULE);
++
++	ret = usb_register(&ni_usb_bus_driver);
++	if (ret) {
++		pr_err("ni_usb_gpib: usb_register failed: error = %d\n", ret);
++		return ret;
++	}
++
++	ret = gpib_register_driver(&ni_usb_gpib_interface, THIS_MODULE);
++	if (ret) {
++		pr_err("ni_usb_gpib: gpib_register_driver failed: error = %d\n", ret);
++		return ret;
++	}
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
