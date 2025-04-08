@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-130366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6DC2A80475
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:08:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDBD1A804F2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:13:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 303663AD077
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:59:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88DC74646A0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA2B264FA0;
-	Tue,  8 Apr 2025 11:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B537826AA86;
+	Tue,  8 Apr 2025 12:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ta+Dyx/h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T3F1IkQy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BFA42698A0;
-	Tue,  8 Apr 2025 11:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F8026A1CD;
+	Tue,  8 Apr 2025 12:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113527; cv=none; b=eSOm7OtaUMuvQo2CkBXQAf3hTp4/x3Dlvjr7GOzyA83nRMCYeDLeZC13wzeA0VFCrxdfN7pW/F6sN5a6qQ/dONVTxFTsJQReK1jXCtiFKFQPZN1DdE3PzTO9WXU0aYOV5N5jxPvrJH5uNE1A3OWbbeq9HVcEFs9NvjzGxXaxkqE=
+	t=1744113898; cv=none; b=BFxpN3xies5H9vsLaWw9AnoAS3U1nZ95r2WRM/4N5VgJKv0LXhEeH6ZrqB+9XYOGCQSSEyCfioGpOm3QShwFPNjORUXl7l1/7ARAnWjhStNbgdqwqTR1X4Q3WSPL5NQ2yyfz1F9ys8jvRyFsRwH2+8HSCN2fD+ky78/vwoEMfKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113527; c=relaxed/simple;
-	bh=WZZUCc8gWV7etO9TZZp6BJlC+Jvl4dxznHag4WGWaPc=;
+	s=arc-20240116; t=1744113898; c=relaxed/simple;
+	bh=2RIrcSzcVtahQU0/EgMi/VBo3UAOAzCZUIycyw0gbk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uIsNJ4Ug2rmc4qgfkuTSNAAVsfc8gn1mVXC9f3rNtJND/oZoJ2z7Fc00VSNASq3B2BL4rWPyGoejU4pQxEL/8NfHSx61ftYRPpz5IJDB4tPNQGVOENdb+630CHHxEIs74qlnVlodC+WkWgvhwKEJ2Ajrqv/Gum5kWZR5zj3T9t4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ta+Dyx/h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B222C4CEE5;
-	Tue,  8 Apr 2025 11:58:46 +0000 (UTC)
+	 MIME-Version; b=dGqWwzijbAkNOPdh+G1UBxs56JBTK+fMrsvCRBVCX56dyE6RiNvjM26Kup1tgzCeqyrjLx83NUvIhNucbrT0R+sgQ6Wiq0s/LIFWe5/5GlCKjlS62+uDLA+XWFbUMjlV65RSwPoP1RUVvsTnhh7hdnnaFpUVX8IcwcJNB2EXu4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T3F1IkQy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91AACC4CEE5;
+	Tue,  8 Apr 2025 12:04:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113526;
-	bh=WZZUCc8gWV7etO9TZZp6BJlC+Jvl4dxznHag4WGWaPc=;
+	s=korg; t=1744113897;
+	bh=2RIrcSzcVtahQU0/EgMi/VBo3UAOAzCZUIycyw0gbk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ta+Dyx/hK9rjvyB5vctC+hbmbffav8g8kjqqx88XOiPrV+Dl/ToUo/jOdVN2i+270
-	 ZBa5R+qiKxbQXdzjLKEu//06bkeiCsYYnPMWz4wrsPYPS46EvQCCCzeKen/E7FSH5o
-	 2/3/ZTcjrMlveH1aNC1dvjpYOIntAdnLscHo86rI=
+	b=T3F1IkQyTXsrbuZqLNPaz+OY5dRmV3mJ3g5mmEpMSpEfS05gaqV7UNAaZR5/2HLWi
+	 wMvEMzjLfyUU5WcI3RIdLM28n1/ar9ZJ8eJMZuv5eN9O0XXEiKXnCTqHpJcyY8f6Hn
+	 6cveZfGlcLgmFcc5L06vrc1vm8QRBDsE0yRfkmLE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tasos Sahanidis <tasos@tasossah.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 190/268] hwmon: (nct6775-core) Fix out of bounds access for NCT679{8,9}
+	stable@kernel.org,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Nishanth Menon <nm@ti.com>,
+	Aniket Limaye <a-limaye@ti.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 5.4 060/154] i2c: omap: fix IRQ storms
 Date: Tue,  8 Apr 2025 12:50:01 +0200
-Message-ID: <20250408104833.680491860@linuxfoundation.org>
+Message-ID: <20250408104817.210824096@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tasos Sahanidis <tasos@tasossah.com>
+From: Andreas Kemnade <andreas@kemnade.info>
 
-[ Upstream commit 815f80ad20b63830949a77c816e35395d5d55144 ]
+commit 285df995f90e3d61d97f327d34b9659d92313314 upstream.
 
-pwm_num is set to 7 for these chips, but NCT6776_REG_PWM_MODE and
-NCT6776_PWM_MODE_MASK only contain 6 values.
+On the GTA04A5 writing a reset command to the gyroscope causes IRQ
+storms because NACK IRQs are enabled and therefore triggered but not
+acked.
 
-Fix this by adding another 0 to the end of each array.
+Sending a reset command to the gyroscope by
+i2cset 1 0x69 0x14 0xb6
+with an additional debug print in the ISR (not the thread) itself
+causes
 
-Signed-off-by: Tasos Sahanidis <tasos@tasossah.com>
-Link: https://lore.kernel.org/r/20250312030832.106475-1-tasos@tasossah.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ 363.353515] i2c i2c-1: ioctl, cmd=0x720, arg=0xbe801b00
+[ 363.359039] omap_i2c 48072000.i2c: addr: 0x0069, len: 2, flags: 0x0, stop: 1
+[ 363.366180] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x1110)
+[ 363.371673] omap_i2c 48072000.i2c: IRQ (ISR = 0x0010)
+[ 363.376892] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
+[ 363.382263] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
+[ 363.387664] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
+repeating till infinity
+[...]
+(0x2 = NACK, 0x100 = Bus free, which is not enabled)
+Apparently no other IRQ bit gets set, so this stalls.
+
+Do not ignore enabled interrupts and make sure they are acked.
+If the NACK IRQ is not needed, it should simply not enabled, but
+according to the above log, caring about it is necessary unless
+the Bus free IRQ is enabled and handled. The assumption that is
+will always come with a ARDY IRQ, which was the idea behind
+ignoring it, proves wrong.
+It is true for simple reads from an unused address.
+
+To still avoid the i2cdetect trouble which is the reason for
+commit c770657bd261 ("i2c: omap: Fix standard mode false ACK readings"),
+avoid doing much about NACK in omap_i2c_xfer_data() which is used
+by both IRQ mode and polling mode, so also the false detection fix
+is extended to polling usage and IRQ storms are avoided.
+
+By changing this, the hardirq handler is not needed anymore to filter
+stuff.
+
+The mentioned gyro reset now just causes a -ETIMEDOUT instead of
+hanging the system.
+
+Fixes: c770657bd261 ("i2c: omap: Fix standard mode false ACK readings").
+CC: stable@kernel.org
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Tested-by: Nishanth Menon <nm@ti.com>
+Reviewed-by: Aniket Limaye <a-limaye@ti.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250228140420.379498-1-andreas@kemnade.info
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/nct6775-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-omap.c |   26 +++++++-------------------
+ 1 file changed, 7 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/hwmon/nct6775-core.c b/drivers/hwmon/nct6775-core.c
-index 16f6b7ba2a5de..da4c3425d2d1d 100644
---- a/drivers/hwmon/nct6775-core.c
-+++ b/drivers/hwmon/nct6775-core.c
-@@ -273,8 +273,8 @@ static const s8 NCT6776_BEEP_BITS[NUM_BEEP_BITS] = {
- static const u16 NCT6776_REG_TOLERANCE_H[] = {
- 	0x10c, 0x20c, 0x30c, 0x80c, 0x90c, 0xa0c, 0xb0c };
+--- a/drivers/i2c/busses/i2c-omap.c
++++ b/drivers/i2c/busses/i2c-omap.c
+@@ -1049,23 +1049,6 @@ static int omap_i2c_transmit_data(struct
+ 	return 0;
+ }
  
--static const u8 NCT6776_REG_PWM_MODE[] = { 0x04, 0, 0, 0, 0, 0 };
--static const u8 NCT6776_PWM_MODE_MASK[] = { 0x01, 0, 0, 0, 0, 0 };
-+static const u8 NCT6776_REG_PWM_MODE[] = { 0x04, 0, 0, 0, 0, 0, 0 };
-+static const u8 NCT6776_PWM_MODE_MASK[] = { 0x01, 0, 0, 0, 0, 0, 0 };
+-static irqreturn_t
+-omap_i2c_isr(int irq, void *dev_id)
+-{
+-	struct omap_i2c_dev *omap = dev_id;
+-	irqreturn_t ret = IRQ_HANDLED;
+-	u16 mask;
+-	u16 stat;
+-
+-	stat = omap_i2c_read_reg(omap, OMAP_I2C_STAT_REG);
+-	mask = omap_i2c_read_reg(omap, OMAP_I2C_IE_REG) & ~OMAP_I2C_STAT_NACK;
+-
+-	if (stat & mask)
+-		ret = IRQ_WAKE_THREAD;
+-
+-	return ret;
+-}
+-
+ static int omap_i2c_xfer_data(struct omap_i2c_dev *omap)
+ {
+ 	u16 bits;
+@@ -1096,8 +1079,13 @@ static int omap_i2c_xfer_data(struct oma
+ 		}
  
- static const u16 NCT6776_REG_FAN_MIN[] = {
- 	0x63a, 0x63c, 0x63e, 0x640, 0x642, 0x64a, 0x64c };
--- 
-2.39.5
-
+ 		if (stat & OMAP_I2C_STAT_NACK) {
+-			err |= OMAP_I2C_STAT_NACK;
++			omap->cmd_err |= OMAP_I2C_STAT_NACK;
+ 			omap_i2c_ack_stat(omap, OMAP_I2C_STAT_NACK);
++
++			if (!(stat & ~OMAP_I2C_STAT_NACK)) {
++				err = -EAGAIN;
++				break;
++			}
+ 		}
+ 
+ 		if (stat & OMAP_I2C_STAT_AL) {
+@@ -1480,7 +1468,7 @@ omap_i2c_probe(struct platform_device *p
+ 				IRQF_NO_SUSPEND, pdev->name, omap);
+ 	else
+ 		r = devm_request_threaded_irq(&pdev->dev, omap->irq,
+-				omap_i2c_isr, omap_i2c_isr_thread,
++				NULL, omap_i2c_isr_thread,
+ 				IRQF_NO_SUSPEND | IRQF_ONESHOT,
+ 				pdev->name, omap);
+ 
 
 
 
