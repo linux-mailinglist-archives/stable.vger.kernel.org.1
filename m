@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-131742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BA74A80B95
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:18:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A3D5A80906
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:50:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01DD51BC5D22
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53A3C1BA5259
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7294A45027;
-	Tue,  8 Apr 2025 13:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8A427702A;
+	Tue,  8 Apr 2025 12:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UIJIDjLR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Enak57rF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8F23BB48;
-	Tue,  8 Apr 2025 13:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0992626B97E;
+	Tue,  8 Apr 2025 12:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117211; cv=none; b=hzr7w+5MofvYSfueCLg0koD41odvoXF3JONGN3x5IDDuORoV1JQtT2IDDzR1nhXYCUDGAsXwosZfKA6hWTGBwzT+dP4T2Q55PzotsQ47LHd6dumvNHFmXoPK3ZmJhwTkBPxwtYbkmcfJIpDLfkSd6ubuDFqH8f28ScxfwxuAW58=
+	t=1744116008; cv=none; b=dxl/X9FbioH7rLk3Tz12+ztlOFQcbqHXylN1kk+NT+P54gCmAFsVZzFY24R9KE3JAmOpHowDgmaJ+iz4oNQZ+Ojx9ws6fVWNMQ4pAAXTn63VzpiTZRSqdp1xlerXf7BkyVkIMtO9HvaMAVMmlVxqFs/zjyQseSiGY/ELcuLMPwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117211; c=relaxed/simple;
-	bh=KK1qUTT9g0sMNQXek4HWAjgJAMAOUXJSeCGXlTiSIm8=;
+	s=arc-20240116; t=1744116008; c=relaxed/simple;
+	bh=rlginEH5PnJHnxvz3Qc1SV5jT+bn0FekBevDzUA6ay4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kHCaxM458dFjTCBi4hkld9lESMfI/IdWMrFmZmbjvL/yhqHmfMHmiLy/xsDVHOCCyzViiEkURlRt4siTycmGFaJO3hm9mxDpRP4IyCMjiivtT/N9AlM5SWAam1KFSenN2BWpe2Qfp7Z92eweqp8S5bmyLkCDBlZMv55DV35IZ/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UIJIDjLR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF230C4CEEA;
-	Tue,  8 Apr 2025 13:00:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dTnbLRh88mYO/fPVb8pwjF2UDDIkwwFC+FDwNyD8F2iXpLwgWNDc/N00LlPOs4BqbZ1unkJAFZAoOYla3FxF7QO+ZPDKefqvJ/og2j5jBTn6SfQolWqIfGPktjPdbDsOZU8sX8FnDtq+0jwOZIshIS0HUlrJjW/NMgQEN6dK0XA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Enak57rF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9AEC4CEE5;
+	Tue,  8 Apr 2025 12:40:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117211;
-	bh=KK1qUTT9g0sMNQXek4HWAjgJAMAOUXJSeCGXlTiSIm8=;
+	s=korg; t=1744116007;
+	bh=rlginEH5PnJHnxvz3Qc1SV5jT+bn0FekBevDzUA6ay4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UIJIDjLRgDjZs3cp5Q0FAS37cx4aDjosrHYpNv9AqfZtzxOdjfr7Qj3j+C0ZuLxQh
-	 gwlG9xdfLdqECPjfqitogs5y+XL9/sIDX67RiBeJH8CSR72oGfD1Iwm8iD0S5azoXF
-	 ciaETnNkKON36buVbeeKx023iEGxqvdr6wp6vJ3g=
+	b=Enak57rFQEb7X68y7y+vph/eDDkqGE1iiOjgxwcXTQlEvn6l7pNOHyM8ujzeoh7DQ
+	 2aIgXLxFzlZ5mEVvrZNNFGBdMyPyWUmzDWAXEZZrXzuPeGYLmlv4Wz6yx1NaM0iGBy
+	 iKHTFMuizxQIM1ynbtFcuD5yN398dt/o2M85F06Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.12 390/423] mmc: omap: Fix memory leak in mmc_omap_new_slot
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Anton Shyndin <mrcold.il@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.1 186/204] ACPI: resource: Skip IRQ override on ASUS Vivobook 14 X1404VAP
 Date: Tue,  8 Apr 2025 12:51:56 +0200
-Message-ID: <20250408104854.977217126@linuxfoundation.org>
+Message-ID: <20250408104825.773947575@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,72 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
 
-commit 3834a759afb817e23a7a2f09c2c9911b0ce5c588 upstream.
+commit 2da31ea2a085cd189857f2db0f7b78d0162db87a upstream.
 
-Add err_free_host label to properly pair mmc_alloc_host() with
-mmc_free_host() in GPIO error paths. The allocated host memory was
-leaked when GPIO lookups failed.
+Like the ASUS Vivobook X1504VAP and Vivobook X1704VAP, the ASUS Vivobook 14
+X1404VAP has its keyboard IRQ (1) described as ActiveLow in the DSDT, which
+the kernel overrides to EdgeHigh breaking the keyboard.
 
-Fixes: e519f0bb64ef ("ARM/mmc: Convert old mmci-omap to GPIO descriptors")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250318140226.19650-1-linmq006@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+    $ sudo dmidecode
+    […]
+    System Information
+            Manufacturer: ASUSTeK COMPUTER INC.
+            Product Name: ASUS Vivobook 14 X1404VAP_X1404VA
+    […]
+    $ grep -A 30 PS2K dsdt.dsl | grep IRQ -A 1
+                 IRQ (Level, ActiveLow, Exclusive, )
+                     {1}
+
+Add the X1404VAP to the irq1_level_low_skip_override[] quirk table to fix
+this.
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219224
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Tested-by: Anton Shyndin <mrcold.il@gmail.com>
+Link: https://patch.msgid.link/20250318160903.77107-1-pmenzel@molgen.mpg.de
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/omap.c |   19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/acpi/resource.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/mmc/host/omap.c
-+++ b/drivers/mmc/host/omap.c
-@@ -1272,19 +1272,25 @@ static int mmc_omap_new_slot(struct mmc_
- 	/* Check for some optional GPIO controls */
- 	slot->vsd = devm_gpiod_get_index_optional(host->dev, "vsd",
- 						  id, GPIOD_OUT_LOW);
--	if (IS_ERR(slot->vsd))
--		return dev_err_probe(host->dev, PTR_ERR(slot->vsd),
-+	if (IS_ERR(slot->vsd)) {
-+		r = dev_err_probe(host->dev, PTR_ERR(slot->vsd),
- 				     "error looking up VSD GPIO\n");
-+		goto err_free_host;
-+	}
- 	slot->vio = devm_gpiod_get_index_optional(host->dev, "vio",
- 						  id, GPIOD_OUT_LOW);
--	if (IS_ERR(slot->vio))
--		return dev_err_probe(host->dev, PTR_ERR(slot->vio),
-+	if (IS_ERR(slot->vio)) {
-+		r = dev_err_probe(host->dev, PTR_ERR(slot->vio),
- 				     "error looking up VIO GPIO\n");
-+		goto err_free_host;
-+	}
- 	slot->cover = devm_gpiod_get_index_optional(host->dev, "cover",
- 						    id, GPIOD_IN);
--	if (IS_ERR(slot->cover))
--		return dev_err_probe(host->dev, PTR_ERR(slot->cover),
-+	if (IS_ERR(slot->cover)) {
-+		r = dev_err_probe(host->dev, PTR_ERR(slot->cover),
- 				     "error looking up cover switch GPIO\n");
-+		goto err_free_host;
-+	}
- 
- 	host->slots[id] = slot;
- 
-@@ -1344,6 +1350,7 @@ err_remove_slot_name:
- 		device_remove_file(&mmc->class_dev, &dev_attr_slot_name);
- err_remove_host:
- 	mmc_remove_host(mmc);
-+err_free_host:
- 	mmc_free_host(mmc);
- 	return r;
- }
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -440,6 +440,13 @@ static const struct dmi_system_id asus_l
+ 		},
+ 	},
+ 	{
++		/* Asus Vivobook X1404VAP */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "X1404VAP"),
++		},
++	},
++	{
+ 		/* Asus Vivobook X1504VAP */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
 
 
 
