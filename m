@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 593D5A807C7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24935A808D8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:49:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9B8B1B863FD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:35:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D74A61BA0379
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EC7326156E;
-	Tue,  8 Apr 2025 12:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B1326B2BE;
+	Tue,  8 Apr 2025 12:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5WquOIJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xW3SXfwU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D247206F18;
-	Tue,  8 Apr 2025 12:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A887E26B2BF;
+	Tue,  8 Apr 2025 12:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115520; cv=none; b=CTfONjy0n3mJyLGqztY0XFN2knlWMT0XDQNKv8EMWMI9IcSnvoJj4dswvO8l+AsbU6nRIYKVkmxCpBy0bFCLoBWXRcfAvaF39SMnByjKkHb14131D38poi8tYmRp4DlM+uuvrx71kRqGyW4sZs9+9yb/ZH06sM9zmJ6CwKt6wz0=
+	t=1744115919; cv=none; b=Ch40HLuA1AaXymyuWbtXNngqmQZdSzv+Dn4H//84RQclZhf17fcHsb7bQwx4zgBodiAkf3uA8Ati0bupyucAbPAdd8cydV31eNnXB0ZG1Scfow4qBzTFr+m/EgyGmnKZoKwHv0gcbeH7sjRn9gcIH0uoD2vwrKCqeOCUnSu/g2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115520; c=relaxed/simple;
-	bh=TgdVxhRT/tTOW2qeif0iIE+7EmeV9Rv8dq/j4h+0S3I=;
+	s=arc-20240116; t=1744115919; c=relaxed/simple;
+	bh=kbd5zB9m2vApikGpYqA+vVh5KuWBcJ1EzQO52GBUTQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y8iGYBwDybKVqFonMY7/SB0n/0upcnGe03F/oq8LqyU82JuoQ05o+SEdQ8gE+yZgXocPC9seVWCO5XlNpmQVU12E4On7TQFC6tnsfXzmR69KqkMpGh7sbvcnA/Rrof9K14hBW+9Iwyz9x5ScGKn6KpmljoC6uxF4e8xV0LjuLyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5WquOIJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B8AC4CEE5;
-	Tue,  8 Apr 2025 12:31:59 +0000 (UTC)
+	 MIME-Version; b=t9n+UTdWl+Xik6tOqlfhKvQcp9JpxT62f79uKR3i6a3OcHsGCay6o+G/LJcG3jm13sgjmCgQNgJQzE2wDgVmCHGWLruJgYouq0H6Io+JqKNcMayka2jbYWKBXcuDDKvbVUnr6+pUTsbZqqdH7U/4HfWAF2xz8yVPtDXZh3SawNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xW3SXfwU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CC98C4CEE5;
+	Tue,  8 Apr 2025 12:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115520;
-	bh=TgdVxhRT/tTOW2qeif0iIE+7EmeV9Rv8dq/j4h+0S3I=;
+	s=korg; t=1744115919;
+	bh=kbd5zB9m2vApikGpYqA+vVh5KuWBcJ1EzQO52GBUTQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z5WquOIJY89b7mypuydQdQbaT9AhWZqEUUi6vgXAJiRqN7CKRfeBIlNBKiqZ7gEjF
-	 kTvBvrQRrOsP0yV/AuE2/ilcoaa2OW0d6kgml1P3Axcblp+dJupc1Pc9K3UIwsGsHh
-	 vYs2sYYTliSFTw/J9kzQgBYJGRnAInIgSChGNZAU=
+	b=xW3SXfwUJKPhCxSA19tcT6PHjkoxES8q06sqssETQIs66mtN4wI5sOX6CawpxJSuQ
+	 curZK/BuqLqc3RyGAWHSnswE08/IA8qztIXJyG077SqF7JUvYSTj+WKBuJQlofzyTU
+	 CqeXF0GAnowvjT/fcDZjfjab6RMvm7vmwm7hW0oU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.13 470/499] ksmbd: fix overflow in dacloffset bounds check
+	Yajun Deng <yajun.deng@linux.dev>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Jon Mason <jdmason@kudzu.us>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 152/204] ntb_hw_switchtec: Fix shift-out-of-bounds in switchtec_ntb_mw_set_trans
 Date: Tue,  8 Apr 2025 12:51:22 +0200
-Message-ID: <20250408104903.076111251@linuxfoundation.org>
+Message-ID: <20250408104824.767847392@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Norbert Szetei <norbert@doyensec.com>
+From: Yajun Deng <yajun.deng@linux.dev>
 
-commit beff0bc9d69bc8e733f9bca28e2d3df5b3e10e42 upstream.
+[ Upstream commit de203da734fae00e75be50220ba5391e7beecdf9 ]
 
-The dacloffset field was originally typed as int and used in an
-unchecked addition, which could overflow and bypass the existing
-bounds check in both smb_check_perm_dacl() and smb_inherit_dacl().
+There is a kernel API ntb_mw_clear_trans() would pass 0 to both addr and
+size. This would make xlate_pos negative.
 
-This could result in out-of-bounds memory access and a kernel crash
-when dereferencing the DACL pointer.
+[   23.734156] switchtec switchtec0: MW 0: part 0 addr 0x0000000000000000 size 0x0000000000000000
+[   23.734158] ================================================================================
+[   23.734172] UBSAN: shift-out-of-bounds in drivers/ntb/hw/mscc/ntb_hw_switchtec.c:293:7
+[   23.734418] shift exponent -1 is negative
 
-This patch converts dacloffset to unsigned int and uses
-check_add_overflow() to validate access to the DACL.
+Ensuring xlate_pos is a positive or zero before BIT.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Norbert Szetei <norbert@doyensec.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1e2fd202f859 ("ntb_hw_switchtec: Check for alignment of the buffer in mw_set_trans()")
+Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smbacl.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/ntb/hw/mscc/ntb_hw_switchtec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -1026,7 +1026,9 @@ int smb_inherit_dacl(struct ksmbd_conn *
- 	struct dentry *parent = path->dentry->d_parent;
- 	struct mnt_idmap *idmap = mnt_idmap(path->mnt);
- 	int inherited_flags = 0, flags = 0, i, nt_size = 0, pdacl_size;
--	int rc = 0, dacloffset, pntsd_type, pntsd_size, acl_len, aces_size;
-+	int rc = 0, pntsd_type, pntsd_size, acl_len, aces_size;
-+	unsigned int dacloffset;
-+	size_t dacl_struct_end;
- 	u16 num_aces, ace_cnt = 0;
- 	char *aces_base;
- 	bool is_dir = S_ISDIR(d_inode(path->dentry)->i_mode);
-@@ -1035,8 +1037,11 @@ int smb_inherit_dacl(struct ksmbd_conn *
- 					    parent, &parent_pntsd);
- 	if (pntsd_size <= 0)
- 		return -ENOENT;
-+
- 	dacloffset = le32_to_cpu(parent_pntsd->dacloffset);
--	if (!dacloffset || (dacloffset + sizeof(struct smb_acl) > pntsd_size)) {
-+	if (!dacloffset ||
-+	    check_add_overflow(dacloffset, sizeof(struct smb_acl), &dacl_struct_end) ||
-+	    dacl_struct_end > (size_t)pntsd_size) {
- 		rc = -EINVAL;
- 		goto free_parent_pntsd;
- 	}
-@@ -1240,7 +1245,9 @@ int smb_check_perm_dacl(struct ksmbd_con
- 	struct smb_ntsd *pntsd = NULL;
- 	struct smb_acl *pdacl;
- 	struct posix_acl *posix_acls;
--	int rc = 0, pntsd_size, acl_size, aces_size, pdacl_size, dacl_offset;
-+	int rc = 0, pntsd_size, acl_size, aces_size, pdacl_size;
-+	unsigned int dacl_offset;
-+	size_t dacl_struct_end;
- 	struct smb_sid sid;
- 	int granted = le32_to_cpu(*pdaccess & ~FILE_MAXIMAL_ACCESS_LE);
- 	struct smb_ace *ace;
-@@ -1259,7 +1266,8 @@ int smb_check_perm_dacl(struct ksmbd_con
+diff --git a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
+index 7ce65a00db56b..1bdec59100019 100644
+--- a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
++++ b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
+@@ -288,7 +288,7 @@ static int switchtec_ntb_mw_set_trans(struct ntb_dev *ntb, int pidx, int widx,
+ 	if (size != 0 && xlate_pos < 12)
+ 		return -EINVAL;
  
- 	dacl_offset = le32_to_cpu(pntsd->dacloffset);
- 	if (!dacl_offset ||
--	    (dacl_offset + sizeof(struct smb_acl) > pntsd_size))
-+	    check_add_overflow(dacl_offset, sizeof(struct smb_acl), &dacl_struct_end) ||
-+	    dacl_struct_end > (size_t)pntsd_size)
- 		goto err_out;
- 
- 	pdacl = (struct smb_acl *)((char *)pntsd + le32_to_cpu(pntsd->dacloffset));
+-	if (!IS_ALIGNED(addr, BIT_ULL(xlate_pos))) {
++	if (xlate_pos >= 0 && !IS_ALIGNED(addr, BIT_ULL(xlate_pos))) {
+ 		/*
+ 		 * In certain circumstances we can get a buffer that is
+ 		 * not aligned to its size. (Most of the time
+-- 
+2.39.5
+
 
 
 
