@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-131540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BFFFA80ABA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:09:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54C78A80702
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:33:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAB201BC2FA8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCACF7A7358
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD15726B08C;
-	Tue,  8 Apr 2025 12:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB2C26A1C3;
+	Tue,  8 Apr 2025 12:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qsyw0NcP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ulSb74z+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3CA270EBD;
-	Tue,  8 Apr 2025 12:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE9526A1C4;
+	Tue,  8 Apr 2025 12:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116673; cv=none; b=qftBhK+2ei4bW0oDzmeh3tFq9Vw163cNfXgRPdciyc+yVpBp5gk5USguTgamWPKenZNXGiBLOBA3xEnl3OgGJ70mr1Be3sEb4jbT675isEmK4Rgkw8M2bdgfJwoar44FI0PrES3gJ83P/suiA9v0t0N0L8Zc6+r6ZkJy0EtVGSU=
+	t=1744115182; cv=none; b=MhK6CqhRfPBRvV5R8SAiihdVY5V+y/Pe7Pvnfq72ML3W9YPBNDQS8MXeLXe3T6giBGdlAQWW8mX8kSguQiacHZNjzBp14TlJdhwbMnd6NPlTLD9vbOaPl+8l5nizrhjfYmO+VoQ6PMTKiWCnnCnBJpiZ3x1ZwtfmwIeDfkLRiJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116673; c=relaxed/simple;
-	bh=O3xOzEPkXutP9o+Sb/4+wIfCsJIkW90eMUtOronfqEk=;
+	s=arc-20240116; t=1744115182; c=relaxed/simple;
+	bh=+tMsSGuSjyDAfvwhzJodcdKZ3ZpJ1Iq9cLNDN+xaVf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JAfjwAoEYeJXuhZ9BxXtKIiBi6xmTK8yxvppacY9nhTCmAn1y/zEIdrOidQKPloX1kEXWX23PhLMa0I/P0sXoid939X7NUjHlIV4//ARUoukqWT7ART3a/iOh7H3hX83Ioko1ZBCtsljka7rjXxKkRxgNOHr/ufqmoeFiEgBL7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qsyw0NcP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96073C4CEE5;
-	Tue,  8 Apr 2025 12:51:11 +0000 (UTC)
+	 MIME-Version; b=jzHYbbeofPUuvrziHn1qmf9TsRHn/NGUF5YBv7+LDeb/MJDuPHtpHfZaFGg84Cd3uCsBhY5jb+hLNXdKo6KTcFYTZFL1QjCM345P9namNJ9N5g77O1TWf6cPDgFbblYbgEi4WgWi0SMG/JX87oDFdqKMORWw1EsreV+Ju5X2EEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ulSb74z+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F59CC4CEE5;
+	Tue,  8 Apr 2025 12:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116672;
-	bh=O3xOzEPkXutP9o+Sb/4+wIfCsJIkW90eMUtOronfqEk=;
+	s=korg; t=1744115182;
+	bh=+tMsSGuSjyDAfvwhzJodcdKZ3ZpJ1Iq9cLNDN+xaVf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qsyw0NcPXuCN3zDF9o2+vO0X1Wcyy8Lc2fkrA8m3mGN3SiiKSRUktu0mnXnTTBpnQ
-	 FT937A8mOpMNS5dSQoZ2wD5JbQzq5iBatYyUbzHHodHMgrDBE3BV8JJIoyYhx7xv9p
-	 xvT/CERz0xPAfUpthF3u8tMu4yws+YfMMx+uahxc=
+	b=ulSb74z+Vie/x7B6uk40m60HdI/pRpYOnvBjZC+FirfnkjHufyhlJV2x9ySExmOwW
+	 Z9VVJTCB1/hl9P6rB3Bxu2qpKT6OK7HD4t5LMAIi0ptU4tzYzeT940mSi9QyDrl2zt
+	 kea+Tp5xbxvwI5JxgznOnpLFa37uT+/xLwzZ/Sl8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 227/423] objtool, media: dib8000: Prevent divide-by-zero in dib8000_set_dds()
+Subject: [PATCH 6.13 341/499] nvme-pci: fix stuck reset on concurrent DPC and HP
 Date: Tue,  8 Apr 2025 12:49:13 +0200
-Message-ID: <20250408104851.013898206@linuxfoundation.org>
+Message-ID: <20250408104859.729611020@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit e63d465f59011dede0a0f1d21718b59a64c3ff5c ]
+[ Upstream commit 3f674e7b670b7b7d9261935820e4eba3c059f835 ]
 
-If dib8000_set_dds()'s call to dib8000_read32() returns zero, the result
-is a divide-by-zero.  Prevent that from happening.
+The PCIe error handling has the nvme driver quiesce the device, attempt
+to restart it, then wait for that restart to complete.
 
-Fixes the following warning with an UBSAN kernel:
+A PCIe DPC event also toggles the PCIe link. If the slot doesn't have
+out-of-band presence detection, this will trigger a pciehp
+re-enumeration.
 
-  drivers/media/dvb-frontends/dib8000.o: warning: objtool: dib8000_tune() falls through to next function dib8096p_cfg_DibRx()
+The error handling that calls nvme_error_resume is holding the device
+lock while this happens. This lock blocks pciehp's request to disconnect
+the driver from proceeding.
 
-Fixes: 173a64cb3fcf ("[media] dib8000: enhancement")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/bd1d504d930ae3f073b1e071bcf62cae7708773c.1742852847.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/r/202503210602.fvH5DO1i-lkp@intel.com/
+Meanwhile the nvme's reset can't make forward progress because its
+device isn't there anymore with outstanding IO, and the timeout handler
+won't do anything to fix it because the device is undergoing error
+handling.
+
+End result: deadlocked.
+
+Fix this by having the timeout handler short cut the disabling for a
+disconnected PCIe device. The downside is that we're relying on an IO
+timeout to clean up this mess, which could be a minute by default.
+
+Tested-by: Nilay Shroff <nilay@linux.ibm.com>
+Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/dib8000.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/nvme/host/pci.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-frontends/dib8000.c b/drivers/media/dvb-frontends/dib8000.c
-index 2f5165918163d..cfe59c3255f70 100644
---- a/drivers/media/dvb-frontends/dib8000.c
-+++ b/drivers/media/dvb-frontends/dib8000.c
-@@ -2701,8 +2701,11 @@ static void dib8000_set_dds(struct dib8000_state *state, s32 offset_khz)
- 	u8 ratio;
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 563118b176d1c..99022be16d2a9 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1413,9 +1413,20 @@ static enum blk_eh_timer_return nvme_timeout(struct request *req)
+ 	struct nvme_dev *dev = nvmeq->dev;
+ 	struct request *abort_req;
+ 	struct nvme_command cmd = { };
++	struct pci_dev *pdev = to_pci_dev(dev->dev);
+ 	u32 csts = readl(dev->bar + NVME_REG_CSTS);
+ 	u8 opcode;
  
- 	if (state->revision == 0x8090) {
-+		u32 internal = dib8000_read32(state, 23) / 1000;
-+
- 		ratio = 4;
--		unit_khz_dds_val = (1<<26) / (dib8000_read32(state, 23) / 1000);
-+
-+		unit_khz_dds_val = (1<<26) / (internal ?: 1);
- 		if (offset_khz < 0)
- 			dds = (1 << 26) - (abs_offset_khz * unit_khz_dds_val);
- 		else
++	/*
++	 * Shutdown the device immediately if we see it is disconnected. This
++	 * unblocks PCIe error handling if the nvme driver is waiting in
++	 * error_resume for a device that has been removed. We can't unbind the
++	 * driver while the driver's error callback is waiting to complete, so
++	 * we're relying on a timeout to break that deadlock if a removal
++	 * occurs while reset work is running.
++	 */
++	if (pci_dev_is_disconnected(pdev))
++		nvme_change_ctrl_state(&dev->ctrl, NVME_CTRL_DELETING);
+ 	if (nvme_state_terminal(&dev->ctrl))
+ 		goto disable;
+ 
+@@ -1423,7 +1434,7 @@ static enum blk_eh_timer_return nvme_timeout(struct request *req)
+ 	 * the recovery mechanism will surely fail.
+ 	 */
+ 	mb();
+-	if (pci_channel_offline(to_pci_dev(dev->dev)))
++	if (pci_channel_offline(pdev))
+ 		return BLK_EH_RESET_TIMER;
+ 
+ 	/*
 -- 
 2.39.5
 
