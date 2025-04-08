@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-130014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3750A802D2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1364CA80103
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:37:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5E0E447B94
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75A021888B22
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8E6265CDF;
-	Tue,  8 Apr 2025 11:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637A026982F;
+	Tue,  8 Apr 2025 11:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPasEAWH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bUlCfK7r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCA419AD5C;
-	Tue,  8 Apr 2025 11:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EEBB268C60;
+	Tue,  8 Apr 2025 11:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112583; cv=none; b=k1aqaxIUewfeChE8VqNdjAZPngeyuDkE5a1UqZ/x464msPQ8yqLlbDE/ba5dkYpE8OkQPEQbAnZ9voRNtlRvuCnTOilQxzTbx4jovH5iYREDfcm+7zT2aSVVr4lA48DacdpPRMEmSRkrJCjUJmgnW0UTIbaSZSzVYwGU95Uw5tU=
+	t=1744111911; cv=none; b=FasZXJbfCtIkIL+pW7Gm+IV/dnCTAxjriIo6RfcJiFAfAIcMSBxSCv/kmMEqaGNFLhMni8k6FtZRAeLnfSw6gLaTcgWR4/O4Qu9pU9fAe0V/C9XCLoFv6WKnfMQbqjBxVfq4/xXrxk49UCmixnWEGO0w8TlhZNstC80EcjeQyoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112583; c=relaxed/simple;
-	bh=F4rllwDZ9ygs8SU7fszoLh9rjItAf5EMXXjveh570CI=;
+	s=arc-20240116; t=1744111911; c=relaxed/simple;
+	bh=0kcyTKjIscb6n5Lt2IhePNaYoh4jQ2FdAdRj/CExt6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=StjXUOhUkYNN/p4D2sQ8+3WR0OlEN6Zdcxv1scmK2b4D35qQKR9uCy1dLGtBiROpWyDQJ86wBFlzToPUoW82TJIkLz+U7t6cCcqW4M68pkBITJTiG3AILG4xSAFqk/ChdcaG+Z8kT35x3B9aWrybu8BooPQjyOyVC46EocefTXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPasEAWH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC52C4CEE5;
-	Tue,  8 Apr 2025 11:43:03 +0000 (UTC)
+	 MIME-Version; b=abGPa4suNBYjjd4dH2Uq7/Xta5F9EcqTcr7cCJviG8+2FhI3FMyUnVtJfliVF1OT3HsTGhsb74Ox2lfQREyId13HeG02TUqxmFboaw+J5JRXZApQ0GZqBUuesZX0/zDMy4bmST3ItK5TaNe6x1DVJd6CyYeQQArctXY8xiUcydw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bUlCfK7r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0602C4CEE5;
+	Tue,  8 Apr 2025 11:31:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112583;
-	bh=F4rllwDZ9ygs8SU7fszoLh9rjItAf5EMXXjveh570CI=;
+	s=korg; t=1744111911;
+	bh=0kcyTKjIscb6n5Lt2IhePNaYoh4jQ2FdAdRj/CExt6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WPasEAWHr3jvaiuEtAYil54P3jF/IOC+KbwoZfxvdU7UMVqjQUCR1laZPGfPXMqX7
-	 SLwzkV6ZOxhI/56eSSUJemqmSooo0/GSV0mKLpHWikryTi44Mqh9uhvpa1AMUNKO9b
-	 lzR7VTZmR7gICR+pYeaE8qirsEcgB3Y9fGxOoHi0=
+	b=bUlCfK7r1/z8a3XorQBafmGwLwJYMmNAj7JfCn/IqOQOj3iNy+KpbgLYHsvSDSSPg
+	 6PS13Sb8Ce0cMHh77L+DEth7Is2Ja4R2E7CK0xjFtYwgvOXfJfVkWCRntRor6iEATh
+	 XiINPB4lzHuhYUvBcWCRB+jWkMTS2mv9/A8lTG5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Cameron Williams <cang1@live.co.uk>
-Subject: [PATCH 5.15 120/279] tty: serial: 8250: Add some more device IDs
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 606/731] nvme-pci: skip nvme_write_sq_db on empty rqlist
 Date: Tue,  8 Apr 2025 12:48:23 +0200
-Message-ID: <20250408104829.587928369@linuxfoundation.org>
+Message-ID: <20250408104928.368986674@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cameron Williams <cang1@live.co.uk>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-commit be6a23650908e2f827f2e7839a3fbae41ccb5b63 upstream.
+[ Upstream commit 288ff0d10beb069355036355d5f7612579dc869c ]
 
-These card IDs got missed the first time around.
+nvme_submit_cmds() should check the rqlist before calling
+nvme_write_sq_db(); if the list is empty, it must return immediately.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Cameron Williams <cang1@live.co.uk>
-Link: https://lore.kernel.org/r/DB7PR02MB380295BCC879CCF91315AC38C4C12@DB7PR02MB3802.eurprd02.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: beadf0088501 ("nvme-pci: reverse request order in nvme_queue_rqs")
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_pci.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/nvme/host/pci.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -5536,6 +5536,14 @@ static const struct pci_device_id serial
- 		PCI_ANY_ID, PCI_ANY_ID,
- 		0, 0,
- 		pbn_b2_2_115200 },
-+	{       PCI_VENDOR_ID_INTASHIELD, 0x0BA2,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	{       PCI_VENDOR_ID_INTASHIELD, 0x0BA3,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
- 	/*
- 	 * Brainboxes UC-235/246
- 	 */
-@@ -5656,6 +5664,14 @@ static const struct pci_device_id serial
- 		PCI_ANY_ID, PCI_ANY_ID,
- 		0, 0,
- 		pbn_b2_4_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0C42,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_4_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0C43,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_4_115200 },
- 	/*
- 	 * Brainboxes UC-420
- 	 */
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 3ad7f197c8087..1dc12784efafc 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -989,6 +989,9 @@ static void nvme_submit_cmds(struct nvme_queue *nvmeq, struct rq_list *rqlist)
+ {
+ 	struct request *req;
+ 
++	if (rq_list_empty(rqlist))
++		return;
++
+ 	spin_lock(&nvmeq->sq_lock);
+ 	while ((req = rq_list_pop(rqlist))) {
+ 		struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
+-- 
+2.39.5
+
 
 
 
