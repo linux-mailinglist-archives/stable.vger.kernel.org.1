@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-130406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD78A80455
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:07:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B005FA8097B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:54:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAA1D19E48ED
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:02:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50BD68A7487
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D035F269892;
-	Tue,  8 Apr 2025 12:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D64E26A1AF;
+	Tue,  8 Apr 2025 12:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zoNbr/ht"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="luy0Mj9e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3E53AC1C;
-	Tue,  8 Apr 2025 12:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C67026A0E0;
+	Tue,  8 Apr 2025 12:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113628; cv=none; b=hAQ5+ZL4zDr5pgnrLQ3vBIinyVv4f1eTnbQb5m0mdF0fU5rK2ttqq/AIxwaFk4qxcCLC4rAzqp142MSm/0CsdES0QcENBhGmxRzk7R6gweeuERuSzf758TU1oxlvgBcMugZDu3jq5tRUTKHQmVPApej+b2ZUYHyMxWf5mCPKX90=
+	t=1744115806; cv=none; b=tRyukoSSqx/g4soBx39tE/PAB7YN/Qj1gODCyTN7O43OGj09hw+k5FYFCteNsKaXnyGG6BStec32ib+sCyx5AzlAUS5CFD9dHPU8Sx6+FJUurYbw/+9RtIOFL2HNgqsIdb8Ra+ypD+Mp/GU4j6QndJvRAcR0RLIkuWPyl+eY6QY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113628; c=relaxed/simple;
-	bh=4h9pSJ2yaVrTVS1YDFENzyOPeJjle+dIee+2s+6XQBw=;
+	s=arc-20240116; t=1744115806; c=relaxed/simple;
+	bh=Q8gPQEWcrtEeRtaoT964+0NwVj3IKdV9Z+s2v/rryYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mwBkiD/B4Juo1DuDm6vci5H6HGAW56XDaHcfbs0pBSrLRfEC/x5UZ1F0bVHZLAjpufrThXB+6a//v9ZMnihCrlg5c9f24oKh8JOfapI0iFHPQq8SO3Gen5iYykqy/KJgVLScAThtfD1QzHnCPpi192mG+JjDIcr6O9NMC98YpxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zoNbr/ht; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E7A0C4CEE5;
-	Tue,  8 Apr 2025 12:00:27 +0000 (UTC)
+	 MIME-Version; b=JmJ/sOUt7VuHi/AXPOzD+dUabY2+YCb+mRQqVtaOPdrY8Dxk6nPQbzYYXpx9FseQl6jbVZGGA5OD5aL4ssnQakfFpeeduojVLCDSU432qEOaGPWSr/hmnmzKzZfIelXg+0sCBzjR+wXUju8GuhMIopg7ch7rOZXNqowz3QtkkOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=luy0Mj9e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B70AC4CEE5;
+	Tue,  8 Apr 2025 12:36:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113628;
-	bh=4h9pSJ2yaVrTVS1YDFENzyOPeJjle+dIee+2s+6XQBw=;
+	s=korg; t=1744115805;
+	bh=Q8gPQEWcrtEeRtaoT964+0NwVj3IKdV9Z+s2v/rryYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zoNbr/htKwgj/HxkETwGmE7XojTFBHZ9cNOhBg/MZP1k5bmdgsv0GkX6DPMTd1IS2
-	 wGfuABeVrHVqdfq8KlVBRq7Pv7+C0FgM2jlvIY0/DJenicOSRbBWxNd7XRHRF7jH3L
-	 NQULye7GIVphpgnngwkt6a3Lw6BxwB5qwD3S5Syw=
+	b=luy0Mj9exwaec2wIcBiHDtlW3xH+LJFj8O0fssDQlaWqe7vCHPnum33Jv4fwcHh3J
+	 ZohAcR9aOtuwqfBsAwX2YVxAVdVvY2Z/I5gLa9rJKh+rwC+eaUrkBcW4FSzKt0R1kp
+	 6LBBhd5VXMqhkKsMOv0rI59h+RUn6jaXzpva/K6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Jianqi Ren <jianqi.ren.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 6.6 229/268] drm/amd/display: Check link_index before accessing dc->links[]
+	Marcus Meissner <meissner@suse.de>,
+	Leo Yan <leo.yan@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 110/204] perf tools: annotate asm_pure_loop.S
 Date: Tue,  8 Apr 2025 12:50:40 +0200
-Message-ID: <20250408104834.765354864@linuxfoundation.org>
+Message-ID: <20250408104823.558079689@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,47 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Marcus Meissner <meissner@suse.de>
 
-commit 8aa2864044b9d13e95fe224f32e808afbf79ecdf upstream.
+[ Upstream commit 9a352a90e88a041f4b26d359493e12a7f5ae1a6a ]
 
-[WHY & HOW]
-dc->links[] has max size of MAX_LINKS and NULL is return when trying to
-access with out-of-bound index.
+Annotate so it is built with non-executable stack.
 
-This fixes 3 OVERRUN and 1 RESOURCE_LEAK issues reported by Coverity.
-
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[The macro MAX_LINKS is introduced by Commit 60df5628144b ("drm/amd/display:
- handle invalid connector indices") after 6.10. So here we still use the
- original array length MAX_PIPES * 2]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8b97519711c3 ("perf test: Add asm pureloop test tool")
+Signed-off-by: Marcus Meissner <meissner@suse.de>
+Reviewed-by: Leo Yan <leo.yan@arm.com>
+Link: https://lore.kernel.org/r/20250323085410.23751-1-meissner@suse.de
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_link_exports.c |    3 +++
- 1 file changed, 3 insertions(+)
+ tools/perf/tests/shell/coresight/asm_pure_loop/asm_pure_loop.S | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc_link_exports.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_link_exports.c
-@@ -37,6 +37,9 @@
- #include "dce/dce_i2c.h"
- struct dc_link *dc_get_link_at_index(struct dc *dc, uint32_t link_index)
- {
-+	if (link_index >= (MAX_PIPES * 2))
-+		return NULL;
+diff --git a/tools/perf/tests/shell/coresight/asm_pure_loop/asm_pure_loop.S b/tools/perf/tests/shell/coresight/asm_pure_loop/asm_pure_loop.S
+index 75cf084a927d3..5777600467723 100644
+--- a/tools/perf/tests/shell/coresight/asm_pure_loop/asm_pure_loop.S
++++ b/tools/perf/tests/shell/coresight/asm_pure_loop/asm_pure_loop.S
+@@ -26,3 +26,5 @@ skip:
+ 	mov	x0, #0
+ 	mov	x8, #93 // __NR_exit syscall
+ 	svc	#0
 +
- 	return dc->links[link_index];
- }
- 
++.section .note.GNU-stack, "", @progbits
+-- 
+2.39.5
+
 
 
 
