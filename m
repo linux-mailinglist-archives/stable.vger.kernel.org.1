@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-130742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E349A8062B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:25:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78AC9A8096A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:54:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63A25176B5C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:17:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DC141BA63A8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6642226A1BC;
-	Tue,  8 Apr 2025 12:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 903E226B966;
+	Tue,  8 Apr 2025 12:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UN3y0cLR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ESpMfTt+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B15A26A1BB;
-	Tue,  8 Apr 2025 12:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3AF26B94D;
+	Tue,  8 Apr 2025 12:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114528; cv=none; b=kPP3J71W8iOWkduR4pRXgYEIECJaZ4dZ3GIO7yEobb02POXjgDanDr/lFhwTuCbrwaFkws/Uw81Vy0vYxas5SaUbanetORI9ZhMyQpHrYbGaQ1sVr5PnIkIDYa8eANXQhIRPjNSyzYq1K5M1WXackCf6XrmoIiz+hoF5c6MiI3g=
+	t=1744116132; cv=none; b=tdDo7x7py5lr5VH4goT3fgnzEM8rqQNDEjOOZJozZOPY4jg1PtNgiAGfL4L3bPmpeQY3b/typm2kSMNqg9uUlO8hYwWC7Eq9Pg+Idixo4WNMDciL5zp9X5YG9SMuuX2wYTi8pSx9yZ20MkynNZEfkVoIN503WqxrMLRqY1SJitg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114528; c=relaxed/simple;
-	bh=a+IEJWWF83txbUMiK0m47dBMHWJdxdNdy9LjDBOBhQw=;
+	s=arc-20240116; t=1744116132; c=relaxed/simple;
+	bh=b+02XH1FHUzocuvhF8SeZdvFpfmaSr9AtqukqWNsqv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gx1EJb67rvG4Dh8GMICiTznwlPOz7bw4bDXdNJdYDn+VRIbnjjyJZLIMITbCJkdPQ+cmSLKXYxb02P1tx+pNF4Fvraf88fYeNdi4PA8FQ3ikhZ5+HrylkWj58TVG/yZIFBriG8w3F5+ujRz0NO0ztrcv4Vkd0QDFn2Nro8mbaIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UN3y0cLR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 862C8C4CEE5;
-	Tue,  8 Apr 2025 12:15:27 +0000 (UTC)
+	 MIME-Version; b=VdOvFHNJEZluNQTRiB//RPFN8sMpMj49etrPTHKQa45N1Ysts1ssbJrrOEJMvIZEGN9q1bANNyIGSmyuAn6BfYXxGQiq6so6b3Zf9QqeUERZWlFmQ0JNWwzSWbc3iAxXczl1z0HpLcWyh68C4609tnr9CQbOMCdg8PMY/GEvMGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ESpMfTt+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4602C4CEE7;
+	Tue,  8 Apr 2025 12:42:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114527;
-	bh=a+IEJWWF83txbUMiK0m47dBMHWJdxdNdy9LjDBOBhQw=;
+	s=korg; t=1744116132;
+	bh=b+02XH1FHUzocuvhF8SeZdvFpfmaSr9AtqukqWNsqv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UN3y0cLRnpMxuq50ss7aGtfE0kUDY4JCf63OoTMLoTL1UWWqaxZeMqnmP/UJo4pEx
-	 onehTKO7Gec26YdjAim6YcXCzP+OkPHyVVy+DrHGkbLTwp2U9QzONFIpWNTtfW1AeP
-	 fL4ri/rU7lEFkrgBye4zCopicZwe2Yn7mvqLcXEM=
+	b=ESpMfTt+C/lFS9HJPPGRU28P3yhS92nQb1/XKo/yFsFhoe/p01eScrlBM0l8ETwU9
+	 1uqg7UBmsqPBetVNTqK++WYMWoYek8MkI9cJU5mlKTFDR+RNg60MCcnpGjC50WEeX4
+	 fJzruUtQuJi38+XUs13tsBrTloHgz2zByH4ddFYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Guenter Roeck <linux@roeck-us.net>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 141/499] clk: renesas: r8a08g045: Check the source of the CPU PLL settings
+Subject: [PATCH 6.12 027/423] lockdep: Dont disable interrupts on RT in disable_irq_nosync_lockdep.*()
 Date: Tue,  8 Apr 2025 12:45:53 +0200
-Message-ID: <20250408104854.706275424@linuxfoundation.org>
+Message-ID: <20250408104846.382179344@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,142 +64,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit dc0f16c1b76293ac942a783e960abfd19e95fdf5 ]
+[ Upstream commit 87886b32d669abc11c7be95ef44099215e4f5788 ]
 
-On the RZ/G3S SoC, the CPU PLL settings can be set and retrieved through
-the CPG_PLL1_CLK1 and CPG_PLL1_CLK2 registers.  However, these settings
-are applied only when CPG_PLL1_SETTING.SEL_PLL1 is set to 0.
-Otherwise, the CPU PLL operates at the default frequency of 1.1 GHz.
-Hence add support to the PLL driver for returning the 1.1 GHz frequency
-when the CPU PLL is configured with the default frequency.
+disable_irq_nosync_lockdep() disables interrupts with lockdep enabled to
+avoid false positive reports by lockdep that a certain lock has not been
+acquired with disabled interrupts. The user of this macros expects that
+a lock can be acquried without disabling interrupts because the IRQ line
+triggering the interrupt is disabled.
 
-Fixes: 01eabef547e6 ("clk: renesas: rzg2l: Add support for RZ/G3S PLL")
-Fixes: de60a3ebe410 ("clk: renesas: Add minimal boot support for RZ/G3S SoC")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20250115142059.1833063-1-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+This triggers a warning on PREEMPT_RT because after
+disable_irq_nosync_lockdep.*() the following spinlock_t now is acquired
+with disabled interrupts.
+
+On PREEMPT_RT there is no difference between spin_lock() and
+spin_lock_irq() so avoiding disabling interrupts in this case works for
+the two remaining callers as of today.
+
+Don't disable interrupts on PREEMPT_RT in disable_irq_nosync_lockdep.*().
+
+Closes: https://lore.kernel.org/760e34f9-6034-40e0-82a5-ee9becd24438@roeck-us.net
+Fixes: e8106b941ceab ("[PATCH] lockdep: core, add enable/disable_irq_irqsave/irqrestore() APIs")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Suggested-by: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20250212103619.2560503-2-bigeasy@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/r9a08g045-cpg.c |  5 +++--
- drivers/clk/renesas/rzg2l-cpg.c     | 13 ++++++++++++-
- drivers/clk/renesas/rzg2l-cpg.h     | 10 +++++++---
- 3 files changed, 22 insertions(+), 6 deletions(-)
+ include/linux/interrupt.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/renesas/r9a08g045-cpg.c b/drivers/clk/renesas/r9a08g045-cpg.c
-index b2ae8cdc4723e..43866dbf9663c 100644
---- a/drivers/clk/renesas/r9a08g045-cpg.c
-+++ b/drivers/clk/renesas/r9a08g045-cpg.c
-@@ -51,7 +51,7 @@
- #define G3S_SEL_SDHI2		SEL_PLL_PACK(G3S_CPG_SDHI_DSEL, 8, 2)
- 
- /* PLL 1/4/6 configuration registers macro. */
--#define G3S_PLL146_CONF(clk1, clk2)	((clk1) << 22 | (clk2) << 12)
-+#define G3S_PLL146_CONF(clk1, clk2, setting)	((clk1) << 22 | (clk2) << 12 | (setting))
- 
- #define DEF_G3S_MUX(_name, _id, _conf, _parent_names, _mux_flags, _clk_flags) \
- 	DEF_TYPE(_name, _id, CLK_TYPE_MUX, .conf = (_conf), \
-@@ -134,7 +134,8 @@ static const struct cpg_core_clk r9a08g045_core_clks[] __initconst = {
- 
- 	/* Internal Core Clocks */
- 	DEF_FIXED(".osc_div1000", CLK_OSC_DIV1000, CLK_EXTAL, 1, 1000),
--	DEF_G3S_PLL(".pll1", CLK_PLL1, CLK_EXTAL, G3S_PLL146_CONF(0x4, 0x8)),
-+	DEF_G3S_PLL(".pll1", CLK_PLL1, CLK_EXTAL, G3S_PLL146_CONF(0x4, 0x8, 0x100),
-+		    1100000000UL),
- 	DEF_FIXED(".pll2", CLK_PLL2, CLK_EXTAL, 200, 3),
- 	DEF_FIXED(".pll3", CLK_PLL3, CLK_EXTAL, 200, 3),
- 	DEF_FIXED(".pll4", CLK_PLL4, CLK_EXTAL, 100, 3),
-diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
-index ddf722ca79eb0..4bd8862dc82be 100644
---- a/drivers/clk/renesas/rzg2l-cpg.c
-+++ b/drivers/clk/renesas/rzg2l-cpg.c
-@@ -51,6 +51,7 @@
- #define RZG3S_DIV_M		GENMASK(25, 22)
- #define RZG3S_DIV_NI		GENMASK(21, 13)
- #define RZG3S_DIV_NF		GENMASK(12, 1)
-+#define RZG3S_SEL_PLL		BIT(0)
- 
- #define CLK_ON_R(reg)		(reg)
- #define CLK_MON_R(reg)		(0x180 + (reg))
-@@ -60,6 +61,7 @@
- #define GET_REG_OFFSET(val)		((val >> 20) & 0xfff)
- #define GET_REG_SAMPLL_CLK1(val)	((val >> 22) & 0xfff)
- #define GET_REG_SAMPLL_CLK2(val)	((val >> 12) & 0xfff)
-+#define GET_REG_SAMPLL_SETTING(val)	((val) & 0xfff)
- 
- #define CPG_WEN_BIT		BIT(16)
- 
-@@ -943,6 +945,7 @@ rzg2l_cpg_sipll5_register(const struct cpg_core_clk *core,
- 
- struct pll_clk {
- 	struct clk_hw hw;
-+	unsigned long default_rate;
- 	unsigned int conf;
- 	unsigned int type;
- 	void __iomem *base;
-@@ -980,12 +983,19 @@ static unsigned long rzg3s_cpg_pll_clk_recalc_rate(struct clk_hw *hw,
+diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
+index 457151f9f263d..b378fbf885ce3 100644
+--- a/include/linux/interrupt.h
++++ b/include/linux/interrupt.h
+@@ -448,7 +448,7 @@ irq_calc_affinity_vectors(unsigned int minvec, unsigned int maxvec,
+ static inline void disable_irq_nosync_lockdep(unsigned int irq)
  {
- 	struct pll_clk *pll_clk = to_pll(hw);
- 	struct rzg2l_cpg_priv *priv = pll_clk->priv;
--	u32 nir, nfr, mr, pr, val;
-+	u32 nir, nfr, mr, pr, val, setting;
- 	u64 rate;
+ 	disable_irq_nosync(irq);
+-#ifdef CONFIG_LOCKDEP
++#if defined(CONFIG_LOCKDEP) && !defined(CONFIG_PREEMPT_RT)
+ 	local_irq_disable();
+ #endif
+ }
+@@ -456,7 +456,7 @@ static inline void disable_irq_nosync_lockdep(unsigned int irq)
+ static inline void disable_irq_nosync_lockdep_irqsave(unsigned int irq, unsigned long *flags)
+ {
+ 	disable_irq_nosync(irq);
+-#ifdef CONFIG_LOCKDEP
++#if defined(CONFIG_LOCKDEP) && !defined(CONFIG_PREEMPT_RT)
+ 	local_irq_save(*flags);
+ #endif
+ }
+@@ -471,7 +471,7 @@ static inline void disable_irq_lockdep(unsigned int irq)
  
- 	if (pll_clk->type != CLK_TYPE_G3S_PLL)
- 		return parent_rate;
+ static inline void enable_irq_lockdep(unsigned int irq)
+ {
+-#ifdef CONFIG_LOCKDEP
++#if defined(CONFIG_LOCKDEP) && !defined(CONFIG_PREEMPT_RT)
+ 	local_irq_enable();
+ #endif
+ 	enable_irq(irq);
+@@ -479,7 +479,7 @@ static inline void enable_irq_lockdep(unsigned int irq)
  
-+	setting = GET_REG_SAMPLL_SETTING(pll_clk->conf);
-+	if (setting) {
-+		val = readl(priv->base + setting);
-+		if (val & RZG3S_SEL_PLL)
-+			return pll_clk->default_rate;
-+	}
-+
- 	val = readl(priv->base + GET_REG_SAMPLL_CLK1(pll_clk->conf));
- 
- 	pr = 1 << FIELD_GET(RZG3S_DIV_P, val);
-@@ -1038,6 +1048,7 @@ rzg2l_cpg_pll_clk_register(const struct cpg_core_clk *core,
- 	pll_clk->base = priv->base;
- 	pll_clk->priv = priv;
- 	pll_clk->type = core->type;
-+	pll_clk->default_rate = core->default_rate;
- 
- 	ret = devm_clk_hw_register(dev, &pll_clk->hw);
- 	if (ret)
-diff --git a/drivers/clk/renesas/rzg2l-cpg.h b/drivers/clk/renesas/rzg2l-cpg.h
-index 881a89b5a7100..b74c94a16986e 100644
---- a/drivers/clk/renesas/rzg2l-cpg.h
-+++ b/drivers/clk/renesas/rzg2l-cpg.h
-@@ -102,7 +102,10 @@ struct cpg_core_clk {
- 	const struct clk_div_table *dtable;
- 	const u32 *mtable;
- 	const unsigned long invalid_rate;
--	const unsigned long max_rate;
-+	union {
-+		const unsigned long max_rate;
-+		const unsigned long default_rate;
-+	};
- 	const char * const *parent_names;
- 	notifier_fn_t notifier;
- 	u32 flag;
-@@ -144,8 +147,9 @@ enum clk_types {
- 	DEF_TYPE(_name, _id, _type, .parent = _parent)
- #define DEF_SAMPLL(_name, _id, _parent, _conf) \
- 	DEF_TYPE(_name, _id, CLK_TYPE_SAM_PLL, .parent = _parent, .conf = _conf)
--#define DEF_G3S_PLL(_name, _id, _parent, _conf) \
--	DEF_TYPE(_name, _id, CLK_TYPE_G3S_PLL, .parent = _parent, .conf = _conf)
-+#define DEF_G3S_PLL(_name, _id, _parent, _conf, _default_rate) \
-+	DEF_TYPE(_name, _id, CLK_TYPE_G3S_PLL, .parent = _parent, .conf = _conf, \
-+		 .default_rate = _default_rate)
- #define DEF_INPUT(_name, _id) \
- 	DEF_TYPE(_name, _id, CLK_TYPE_IN)
- #define DEF_FIXED(_name, _id, _parent, _mult, _div) \
+ static inline void enable_irq_lockdep_irqrestore(unsigned int irq, unsigned long *flags)
+ {
+-#ifdef CONFIG_LOCKDEP
++#if defined(CONFIG_LOCKDEP) && !defined(CONFIG_PREEMPT_RT)
+ 	local_irq_restore(*flags);
+ #endif
+ 	enable_irq(irq);
 -- 
 2.39.5
 
