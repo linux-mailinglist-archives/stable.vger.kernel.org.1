@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-131606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC757A80B57
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:15:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B91FBA80877
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:45:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2110C4E4352
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E441C1BA3B7F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D1F27780C;
-	Tue,  8 Apr 2025 12:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FBBD277028;
+	Tue,  8 Apr 2025 12:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PnNxSqwR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hIw6GNNS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B98C26E165;
-	Tue,  8 Apr 2025 12:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F022D2690FB;
+	Tue,  8 Apr 2025 12:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116852; cv=none; b=oyRAD9kE3+XUO8+eVB3BDSLfbcIm+oljDyggSKESYdBhfjUVb+K4v0pBlZy0rosATvhAkQerjlnr94mXsDd4OD0gYBqGJqweIOGx2mKutO4sPf377DbloKjXTPQddAHI1an3T/KUfOwQluQZW+BbDQqmo0BiiyzCZTUowwwoe2g=
+	t=1744115739; cv=none; b=D/MOD6LzyncSzn7R5C0QvfsRxT85SQbM4wOJsTeYOdYFNN1zC1lO/PpzJwuJtqd9Aq2KjaolC103g479nKCakm+OgB1vw8K4gSXPpVKVgdTj1SHTPAChf9EBWYioeYuizBSuY8DAwVLdcvTRa+UVvM+HGULKU6LVD2t1M4/4Dno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116852; c=relaxed/simple;
-	bh=4iUdjLqb0xTmghWfqSb4qm7nq/BHldIq+D8mVyYCV2k=;
+	s=arc-20240116; t=1744115739; c=relaxed/simple;
+	bh=TlbvO2k3UpVXutnygaPHYW5d2mu5CnyVqpcsQ3yVq3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c9L+5HnXvBkEv7fjmAu5wztHe98/2foBnriHg3Jj0yw4E+1dWg/jGBTMsPHRS/gEgV3JIpbYFmY34Bjn9lK0ZGZg/9eavXWb1WIgJvyJBgYDNJJZUy+wvtDchmnqaF9xt+kuoSYek6WhSeAj0GPK0rfzc1Xjs7At58EgXy2dZWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PnNxSqwR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A70BC4CEE5;
-	Tue,  8 Apr 2025 12:54:11 +0000 (UTC)
+	 MIME-Version; b=uu9CEbihZ2knP2iW+sDkwv09bBifBuCMdGwk5Obh9v22dd9qxUHAz8chZcJeIepNYON1ORdXyWHPw5035beWfe3iBnM3MRroWP+Arr6+cI17ILR6aQiw8zWGU5AbcYVu6yjXgh6V5Ep9CykpeecQSKGF67h5SSbu4ehCaDkzRsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hIw6GNNS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 835D5C4CEE5;
+	Tue,  8 Apr 2025 12:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116851;
-	bh=4iUdjLqb0xTmghWfqSb4qm7nq/BHldIq+D8mVyYCV2k=;
+	s=korg; t=1744115738;
+	bh=TlbvO2k3UpVXutnygaPHYW5d2mu5CnyVqpcsQ3yVq3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PnNxSqwRhZ63jLj9jzvH44De7L/leNJeIJK1Jep+I40ZRkIODWsY4BYU8t6pF5CV+
-	 QiZ/RrFNSN830WRSwUVmzEeybwdRPlLJ/w37NpJZDPs6lDWZIfwURrhmugBiLvc1bj
-	 rnK7rygwn01oPcUeLU3xYTOVEA2C1vDgNeSf+G50=
+	b=hIw6GNNSpsUA6TUwoCHntSFrJ3FYx5DU66YYopiMuRn1TfAVlOvVjbt3q5I2SjHgu
+	 9uXA87wESbP2tSKFRr0jJrfUCqCZCh/0pMa14uZdD/frXLuCEv/vLubSCygp8CDVLO
+	 5mBbXG8KKUJm2aPOYwgcO0WsalkCmoZti54Fnoiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladis Dronov <vdronov@redhat.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kai Huang <kai.huang@intel.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Sean Christopherson <sean.j.christopherson@intel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 291/423] x86/sgx: Warn explicitly if X86_FEATURE_SGX_LC is not enabled
+Subject: [PATCH 6.1 087/204] soundwire: slave: fix an OF node reference leak in soundwire slave device
 Date: Tue,  8 Apr 2025 12:50:17 +0200
-Message-ID: <20250408104852.560820561@linuxfoundation.org>
+Message-ID: <20250408104822.908221204@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,88 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladis Dronov <vdronov@redhat.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 65be5c95d08eedda570a6c888a12384c77fe7614 ]
+[ Upstream commit aac2f8363f773ae1f65aab140e06e2084ac6b787 ]
 
-The kernel requires X86_FEATURE_SGX_LC to be able to create SGX enclaves,
-not just X86_FEATURE_SGX.
+When initializing a soundwire slave device, an OF node is stored to the
+device with refcount incremented. However, the refcount is not
+decremented in .release(), thus call of_node_put() in
+sdw_slave_release().
 
-There is quite a number of hardware which has X86_FEATURE_SGX but not
-X86_FEATURE_SGX_LC. A kernel running on such hardware does not create
-the /dev/sgx_enclave file and does so silently.
-
-Explicitly warn if X86_FEATURE_SGX_LC is not enabled to properly notify
-users that the kernel disabled the SGX driver.
-
-The X86_FEATURE_SGX_LC, a.k.a. SGX Launch Control, is a CPU feature
-that enables LE (Launch Enclave) hash MSRs to be writable (with
-additional opt-in required in the 'feature control' MSR) when running
-enclaves, i.e. using a custom root key rather than the Intel proprietary
-key for enclave signing.
-
-I've hit this issue myself and have spent some time researching where
-my /dev/sgx_enclave file went on SGX-enabled hardware.
-
-Related links:
-
-  https://github.com/intel/linux-sgx/issues/837
-  https://patchwork.kernel.org/project/platform-driver-x86/patch/20180827185507.17087-3-jarkko.sakkinen@linux.intel.com/
-
-[ mingo: Made the error message a bit more verbose, and added other cases
-         where the kernel fails to create the /dev/sgx_enclave device node. ]
-
-Signed-off-by: Vladis Dronov <vdronov@redhat.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Kai Huang <kai.huang@intel.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Sean Christopherson <sean.j.christopherson@intel.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250309172215.21777-2-vdronov@redhat.com
+Fixes: a2e484585ad3 ("soundwire: core: add device tree support for slave devices")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20241205034844.2784964-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/sgx/driver.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/soundwire/slave.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/cpu/sgx/driver.c b/arch/x86/kernel/cpu/sgx/driver.c
-index 22b65a5f5ec6c..7f8d1e11dbee2 100644
---- a/arch/x86/kernel/cpu/sgx/driver.c
-+++ b/arch/x86/kernel/cpu/sgx/driver.c
-@@ -150,13 +150,15 @@ int __init sgx_drv_init(void)
- 	u64 xfrm_mask;
- 	int ret;
+diff --git a/drivers/soundwire/slave.c b/drivers/soundwire/slave.c
+index c1c1a2ac293af..28b0d7b6d780c 100644
+--- a/drivers/soundwire/slave.c
++++ b/drivers/soundwire/slave.c
+@@ -12,6 +12,7 @@ static void sdw_slave_release(struct device *dev)
+ {
+ 	struct sdw_slave *slave = dev_to_sdw_dev(dev);
  
--	if (!cpu_feature_enabled(X86_FEATURE_SGX_LC))
-+	if (!cpu_feature_enabled(X86_FEATURE_SGX_LC)) {
-+		pr_info("SGX disabled: SGX launch control CPU feature is not available, /dev/sgx_enclave disabled.\n");
- 		return -ENODEV;
-+	}
- 
- 	cpuid_count(SGX_CPUID, 0, &eax, &ebx, &ecx, &edx);
- 
- 	if (!(eax & 1))  {
--		pr_err("SGX disabled: SGX1 instruction support not available.\n");
-+		pr_info("SGX disabled: SGX1 instruction support not available, /dev/sgx_enclave disabled.\n");
- 		return -ENODEV;
- 	}
- 
-@@ -173,8 +175,10 @@ int __init sgx_drv_init(void)
- 	}
- 
- 	ret = misc_register(&sgx_dev_enclave);
--	if (ret)
-+	if (ret) {
-+		pr_info("SGX disabled: Unable to register the /dev/sgx_enclave driver (%d).\n", ret);
- 		return ret;
-+	}
- 
- 	return 0;
++	of_node_put(slave->dev.of_node);
+ 	mutex_destroy(&slave->sdw_dev_lock);
+ 	kfree(slave);
  }
 -- 
 2.39.5
