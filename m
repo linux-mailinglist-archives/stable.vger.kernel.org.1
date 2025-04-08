@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-129364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF1B1A7FF41
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:20:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FACDA7FF64
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:21:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3973442E2A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:13:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FB7644157B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:13:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00C2F264614;
-	Tue,  8 Apr 2025 11:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE70266573;
+	Tue,  8 Apr 2025 11:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yJNcwnsa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fAdUDHJx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3725374C4;
-	Tue,  8 Apr 2025 11:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8F1207E14;
+	Tue,  8 Apr 2025 11:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110825; cv=none; b=M+tFheS+JOkULSEHXbmb7es0uDT/gHgGudFm3uiQ7/Llh1/rt/0MHLiF6YRQpdqNroqzHWTlHEVqQ4MLWxwrMefT9CbqX3WSH8ZvHu+jqoILB2PJMdzCqY5GEDlSfibzt2B1ZhgTkDv4imByVI9jPWTjji3j+cBm/aDB7qUacYQ=
+	t=1744110833; cv=none; b=LqWhRn096molBi8I8JeUQ1bVsDpqi2TJ6ke9ObBqX1LE97R5l5wBDO78i49nE9MMOTOf3nInq4goC6IKPC2yLYyeoa+AGpHKmIy05O13UwAI/dCqpq//ZcQ86czXoCSo/tY401cx0HvcZpBGyEmYbUlB4apgU54HrLDPd1FA5KQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110825; c=relaxed/simple;
-	bh=ZvP1RfnM4BTWKEcZYiw+EOGAxwq7NgHoNyBctC6LViM=;
+	s=arc-20240116; t=1744110833; c=relaxed/simple;
+	bh=gXNzF0+L4BYgGoQXuW8GA8S8gg3WFrvpDgp8JwRjWqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z4F43fdKq8MKrhks8EehkH3TLHfpJ7n7mFFThGlE5BhlEj6fiCr4Mt4XV3duC9AhyDdyoEPHeZHkThonRQnNpPqUis3BJEajnHqa9xb6nkDko1JQM1xfBGGgnH0ygUVFS5p8wVjWU42Z3iKsvOJJaQcqueUiIC7yQtYVljsx1/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yJNcwnsa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43129C4CEE5;
-	Tue,  8 Apr 2025 11:13:45 +0000 (UTC)
+	 MIME-Version; b=LMyGfOaPuDmiba5LzUDTPsR0R6ltz3YMlv329WJKuTy0zTsnW3MIetUPfFHinLaOXXkLmPbPmjVid3tEQX8nGKxb4LpZZ91b2eGGdzxtKfN7ES9vqInTj19xvsoJNljhbmK4Z4x5BRjxigexk/m32b++yGfFWa5w3b3kiwSerQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fAdUDHJx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C4EBC4CEE5;
+	Tue,  8 Apr 2025 11:13:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110825;
-	bh=ZvP1RfnM4BTWKEcZYiw+EOGAxwq7NgHoNyBctC6LViM=;
+	s=korg; t=1744110833;
+	bh=gXNzF0+L4BYgGoQXuW8GA8S8gg3WFrvpDgp8JwRjWqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yJNcwnsasjxyx3hH9FmnOwVyJ3qiBKJPMNZTRTSVelQ0zCmT+bJVU/K4w14LKql2L
-	 t2W11eUWhgHwcSQ6HU5U5F4PM42mSJyRWBYO1CA/SymERL158eKrnJ1N114Rmc31YA
-	 n8vdEb1lrRsn7YEJ0YvWSucHMqcLqrEvWS0+ZkOk=
+	b=fAdUDHJxdJDVhHcLENvo5VM8Q5PWSeIFOHOkLyjV2hv3WFsulBIiSjhNx5s7vnc1D
+	 Z/gYIlZvDdhTEyLmOOIJDtLfFH5Nh0sFZYvd8AI9es6SMrgmE8LVAmg2OTrbIwxOEj
+	 oyjYsEKgRtS/Hf7dUAKbmhkS8PW6v+eOuAalcV7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Peng Fan <peng.fan@nxp.com>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 171/731] arm64: dts: imx8mp: add AUDIO_AXI_CLK_ROOT to AUDIOMIX block
-Date: Tue,  8 Apr 2025 12:41:08 +0200
-Message-ID: <20250408104918.254223974@linuxfoundation.org>
+Subject: [PATCH 6.14 172/731] arm64: dts: imx8mp: change AUDIO_AXI_CLK_ROOT freq. to 800MHz
+Date: Tue,  8 Apr 2025 12:41:09 +0200
+Message-ID: <20250408104918.277009586@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -70,39 +70,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-[ Upstream commit cfe47a3d3f7440cd1bdf2a169b325257eba01534 ]
+[ Upstream commit c54e2f908da30a6c66195a6d0aba6412c673ec2c ]
 
-Needed because the DSP and OCRAM_A components from AUDIOMIX are clocked
-by AUDIO_AXI_CLK_ROOT instead of AUDIO_AHB_CLK_ROOT.
+AUDIO_AXI_CLK_ROOT can't run at currently requested 600MHz w/ its parent
+SYS_PLL1 configured at 800MHz. Configure it to run at 800MHz as some
+applications running on the DSP expect the core to run at this frequency
+anyways. This change also affects the AUDIOMIX NoC.
 
-Fixes: b86c3afabb4f ("arm64: dts: imx8mp: Add SAI, SDMA, AudioMIX")
+Fixes: b739681b3f8b ("arm64: dts: imx8mp: Fix SDMA2/3 clocks")
 Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
 Reviewed-by: Peng Fan <peng.fan@nxp.com>
 Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp.dtsi | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index e0d3b8cba221e..86c3055789ba7 100644
+index 86c3055789ba7..54147bce3b838 100644
 --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
 +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -1619,10 +1619,11 @@
- 					 <&clk IMX8MP_CLK_SAI3>,
- 					 <&clk IMX8MP_CLK_SAI5>,
- 					 <&clk IMX8MP_CLK_SAI6>,
--					 <&clk IMX8MP_CLK_SAI7>;
-+					 <&clk IMX8MP_CLK_SAI7>,
-+					 <&clk IMX8MP_CLK_AUDIO_AXI_ROOT>;
- 				clock-names = "ahb",
- 					      "sai1", "sai2", "sai3",
--					      "sai5", "sai6", "sai7";
-+					      "sai5", "sai6", "sai7", "axi";
- 				power-domains = <&pgc_audio>;
- 				assigned-clocks = <&clk IMX8MP_AUDIO_PLL1>,
- 						  <&clk IMX8MP_AUDIO_PLL2>;
+@@ -834,7 +834,7 @@
+ 						assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
+ 									 <&clk IMX8MP_SYS_PLL1_800M>;
+ 						assigned-clock-rates = <400000000>,
+-								       <600000000>;
++								       <800000000>;
+ 					};
+ 
+ 					pgc_gpu2d: power-domain@6 {
 -- 
 2.39.5
 
