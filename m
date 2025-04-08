@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-129855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3852EA80149
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:39:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60891A7FDC6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 031617A77C0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 006FC7A1D99
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59493266B54;
-	Tue,  8 Apr 2025 11:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C79A26A08B;
+	Tue,  8 Apr 2025 11:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nLI7ZqhP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHcrWUCQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138052192F2;
-	Tue,  8 Apr 2025 11:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC17374C4;
+	Tue,  8 Apr 2025 11:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112158; cv=none; b=Ivn8ImjSMNgLOcTCqXQnv2W6bzOesphqqEoZtLS/RbtK/8OyOzGgFvDybDcI6UVJc0h3iVUDbILFGnBZ+FGXn7wWP9I1Wxn4ssVj+q1zeoQ0SsWzpxcoPOEAeiqu8cp9AIvjZg0xjx9UCKMODilcUBIwRjq/+MTHNOtOE6oPKTs=
+	t=1744110272; cv=none; b=UV27qcH19xDacX97qmmVXSjF9LlWCayucHP8888H2dAheVHIjBcJjNPf7c/vEZ/wXYx+wxBLJnlRyDTM+Qy4GxCMZxKWS24TG9DmO7rZIof7T+//xAWWfRMIr3x8f7IhVdo8Gy/sfiT70ZcwMD/3JMtNpVTwDJENrDnsk3kUfHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112158; c=relaxed/simple;
-	bh=a736okLsGGKa1D7Stk4qa0Ohyr1C5L77bANUWQdqKzY=;
+	s=arc-20240116; t=1744110272; c=relaxed/simple;
+	bh=aTmKWIL2XqxtIllMLgQr6VTkFuMJRBON0ihuhZrrCXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eb/EVfWwQiNyqc1wkzg4F+CIOT3YvxNW7/VTWPaw88B6x/rVJIqjhZNlyGEQ3QFB7Q40lvYP8PdPQ7mQIqAW8F0ENn0JoK31vP9oYJAoKSsQFSYp6SJGI7Mwd7MEaXRYnAV+nbWUv2uGLwEX+g4ABG/YdoRmEN8MT9CwWQGhkvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nLI7ZqhP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 985D6C4CEE7;
-	Tue,  8 Apr 2025 11:35:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=m6aIqd077TfgD3jCdcvxSeH8OX6EchPfyfgYpqZapUoURW7focB2t5rbJTT7HN8Wc4XH50RKWEhM8N78h77+v7EPtCdv982KZtp1xiTnxpvueJp0L6f0WAhirLSI8jUJXCve4IS7CecdTgOUZL53FUvxkhBPvS1UKUub9dXUUVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHcrWUCQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB69C4CEE5;
+	Tue,  8 Apr 2025 11:04:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112157;
-	bh=a736okLsGGKa1D7Stk4qa0Ohyr1C5L77bANUWQdqKzY=;
+	s=korg; t=1744110272;
+	bh=aTmKWIL2XqxtIllMLgQr6VTkFuMJRBON0ihuhZrrCXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nLI7ZqhPMzzMM/hczXIQzMRgsGCrc0CzI/2Qu92UVfNBs3MdhsJxmq0hBQLZPxxj7
-	 OFnXm9VVtmwA6jVsWQQSSO0haRaNUyxQagJpxmgaDyezuX2dpYo3ajLYfZKKwWll+U
-	 0S2DXxo2IRnw0GhgOT0stF1imlzxHeszqky4MjHY=
+	b=oHcrWUCQe+PXanb5AWujFBnXbkRkP35304rumu67J0mqM/3qpysu0/GvUU3ap3eUy
+	 3syWgUj/5AnbjgCJhWt+mNjSNtcllJ6kLFGassZezInAFgOJyq4hxztXeubdN/2uK1
+	 w/K8BKnbqKBC7ftg008+SywC757Z6Rkshx9xjTvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.14 697/731] KVM: SVM: Dont change target vCPU state on AP Creation VMGEXIT error
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Anton Shyndin <mrcold.il@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.10 216/227] ACPI: resource: Skip IRQ override on ASUS Vivobook 14 X1404VAP
 Date: Tue,  8 Apr 2025 12:49:54 +0200
-Message-ID: <20250408104930.481253465@linuxfoundation.org>
+Message-ID: <20250408104826.788972510@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,85 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
 
-commit d26638bfcdfc5c8c4e085dc3f5976a0443abab3c upstream.
+commit 2da31ea2a085cd189857f2db0f7b78d0162db87a upstream.
 
-If KVM rejects an AP Creation event, leave the target vCPU state as-is.
-Nothing in the GHCB suggests the hypervisor is *allowed* to muck with vCPU
-state on failure, let alone required to do so.  Furthermore, kicking only
-in the !ON_INIT case leads to divergent behavior, and even the "kick" case
-is non-deterministic.
+Like the ASUS Vivobook X1504VAP and Vivobook X1704VAP, the ASUS Vivobook 14
+X1404VAP has its keyboard IRQ (1) described as ActiveLow in the DSDT, which
+the kernel overrides to EdgeHigh breaking the keyboard.
 
-E.g. if an ON_INIT request fails, the guest can successfully retry if the
-fixed AP Creation request is made prior to sending INIT.  And if a !ON_INIT
-fails, the guest can successfully retry if the fixed AP Creation request is
-handled before the target vCPU processes KVM's
-KVM_REQ_UPDATE_PROTECTED_GUEST_STATE.
+    $ sudo dmidecode
+    […]
+    System Information
+            Manufacturer: ASUSTeK COMPUTER INC.
+            Product Name: ASUS Vivobook 14 X1404VAP_X1404VA
+    […]
+    $ grep -A 30 PS2K dsdt.dsl | grep IRQ -A 1
+                 IRQ (Level, ActiveLow, Exclusive, )
+                     {1}
 
-Fixes: e366f92ea99e ("KVM: SEV: Support SEV-SNP AP Creation NAE event")
-Cc: stable@vger.kernel.org
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Link: https://lore.kernel.org/r/20250227012541.3234589-5-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Add the X1404VAP to the irq1_level_low_skip_override[] quirk table to fix
+this.
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219224
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Tested-by: Anton Shyndin <mrcold.il@gmail.com>
+Link: https://patch.msgid.link/20250318160903.77107-1-pmenzel@molgen.mpg.de
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/sev.c |   13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/acpi/resource.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -3969,16 +3969,12 @@ static int sev_snp_ap_creation(struct vc
- 
- 	/*
- 	 * The target vCPU is valid, so the vCPU will be kicked unless the
--	 * request is for CREATE_ON_INIT. For any errors at this stage, the
--	 * kick will place the vCPU in an non-runnable state.
-+	 * request is for CREATE_ON_INIT.
- 	 */
- 	kick = true;
- 
- 	mutex_lock(&target_svm->sev_es.snp_vmsa_mutex);
- 
--	target_svm->sev_es.snp_vmsa_gpa = INVALID_PAGE;
--	target_svm->sev_es.snp_ap_waiting_for_reset = true;
--
- 	/* Interrupt injection mode shouldn't change for AP creation */
- 	if (request < SVM_VMGEXIT_AP_DESTROY) {
- 		u64 sev_features;
-@@ -4024,20 +4020,23 @@ static int sev_snp_ap_creation(struct vc
- 		target_svm->sev_es.snp_vmsa_gpa = svm->vmcb->control.exit_info_2;
- 		break;
- 	case SVM_VMGEXIT_AP_DESTROY:
-+		target_svm->sev_es.snp_vmsa_gpa = INVALID_PAGE;
- 		break;
- 	default:
- 		vcpu_unimpl(vcpu, "vmgexit: invalid AP creation request [%#x] from guest\n",
- 			    request);
- 		ret = -EINVAL;
--		break;
-+		goto out;
- 	}
- 
--out:
-+	target_svm->sev_es.snp_ap_waiting_for_reset = true;
-+
- 	if (kick) {
- 		kvm_make_request(KVM_REQ_UPDATE_PROTECTED_GUEST_STATE, target_vcpu);
- 		kvm_vcpu_kick(target_vcpu);
- 	}
- 
-+out:
- 	mutex_unlock(&target_svm->sev_es.snp_vmsa_mutex);
- 
- 	return ret;
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -443,6 +443,13 @@ static const struct dmi_system_id asus_l
+ 		},
+ 	},
+ 	{
++		/* Asus Vivobook X1404VAP */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "X1404VAP"),
++		},
++	},
++	{
+ 		/* Asus Vivobook X1504VAP */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
 
 
 
