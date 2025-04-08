@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-131455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E06A809CD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:57:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA782A806B7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:30:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4EE41BA40F2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:52:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75A901B81373
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:25:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF7E02777EA;
-	Tue,  8 Apr 2025 12:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0221269825;
+	Tue,  8 Apr 2025 12:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgQ4f4VS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHm8XSFd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7EA268C6B;
-	Tue,  8 Apr 2025 12:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D99D2686BC;
+	Tue,  8 Apr 2025 12:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116442; cv=none; b=dUSj4khtTcD5EM69NV3/xoPOMH1ovN76pLsmVVPxajmDqiWUsRnBW7n2uNA5Bxvsj846XsAL7YWd8CLdrAvDMtGbT4rylaSmdlqXATYPAH4JiUYRkDXa1wCsQ+iJR0X1+IJYiRnLYtOFL5X5Pz71H9M79UKROgFAbK7VVTerIbY=
+	t=1744114955; cv=none; b=FzdQsselV2DPFP+XuTBIJW4YgyOsJCDWtrBFPx6wMwWropXwVjCOgCU7lb7KBZPxxOTGMq6hxIZqOd0kA+ci0JKnyuZU8gO+6OVH8LZNHPzDI4ykvXNe+Mr2Yl4biMnIHfWhupDlcRZaq6WEijkmJCf3NvTAaQ0Xn9lZ1vywTeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116442; c=relaxed/simple;
-	bh=K/h5NQvRlUUepPTDYwYxs5jHNNuy1/AU6l+vHg55PUc=;
+	s=arc-20240116; t=1744114955; c=relaxed/simple;
+	bh=M567oYxO7T98xYffFIW9+MVjP1f9SPjYNpMM4Jyychw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZIl2Wn9W4NdGpOsF4XmPUenwrtL7wD4qMHykSyYjiSmJ12NdrFYttZ1NWcEF0f5L4c+jXg4aJ6Bd/6PfD4TjK6wnyiTgxwfwnuK0APnBM6RI7cnNQi/2VBDpWeIEHU8BqeDlKR7defPCm4bfxqdrf20kpM4w3o/Fc3VtfA/NB+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgQ4f4VS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F261C4CEE5;
-	Tue,  8 Apr 2025 12:47:22 +0000 (UTC)
+	 MIME-Version; b=n8lcoDEpFaeq6iz5u9qMimJu+HUqN/ctDAixi7BFN7RIUpy4xUM7yfuqzBe0T+6apEnEWfAHGg4f9GetFF7L1Cdi3ZskB8+oH2AqOMk5gozO7duEnWjJY/Huvv+iW8CizzurGeHFc6b+BLTdC+VwqH7iPv6f5V9XXHWCH/UTrfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHm8XSFd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3B5C4CEE5;
+	Tue,  8 Apr 2025 12:22:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116442;
-	bh=K/h5NQvRlUUepPTDYwYxs5jHNNuy1/AU6l+vHg55PUc=;
+	s=korg; t=1744114955;
+	bh=M567oYxO7T98xYffFIW9+MVjP1f9SPjYNpMM4Jyychw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xgQ4f4VSb1LdkIFMLCQeo4EQdLciD+Q9AtWmFtZE+QP4OoAxLRVBorGIsLswi72QW
-	 YTp4JkWqERA/6O1UojNva1UqpRZSt3l7dAK2yLSxsfc2Bqh0UYYH4W19ybwy/5KO31
-	 KdRPYB5BBOpriPoW+Ej2NIQz7BptS1tDCEcFML3w=
+	b=bHm8XSFdqu5D8i8Sl6YUshGwdKVg346muuQXZJDyr0hYTERmLo3lwAfoT8FT6OhjL
+	 HrkJTkUnEb6VY9pypDB79Q+gnshsopSRWyQsgKdW/R4c65yVGJEHHwfrTGTZEVZuao
+	 MzjwAm9/G4Z7HMQk/Xg2ws1aN7ySjg4rQV56pJUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamir Duberstein <tamird@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Petr Mladek <pmladek@suse.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 143/423] rust: fix signature of rust_fmt_argument
+Subject: [PATCH 6.13 257/499] perf python: Decrement the refcount of just created event on failure
 Date: Tue,  8 Apr 2025 12:47:49 +0200
-Message-ID: <20250408104849.062098860@linuxfoundation.org>
+Message-ID: <20250408104857.619966265@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 901b3290bd4dc35e613d13abd03c129e754dd3dd ]
+[ Upstream commit 3de5a2bf5b4847f7a59a184568f969f8fe05d57f ]
 
-Without this change, the rest of this series will emit the following
-error message:
+To avoid a leak if we have the python object but then something happens
+and we need to return the operation, decrement the offset of the newly
+created object.
 
-error[E0308]: `if` and `else` have incompatible types
-  --> <linux>/rust/kernel/print.rs:22:22
-   |
-21 | #[export]
-   | --------- expected because of this
-22 | unsafe extern "C" fn rust_fmt_argument(
-   |                      ^^^^^^^^^^^^^^^^^ expected `u8`, found `i8`
-   |
-   = note: expected fn item `unsafe extern "C" fn(*mut u8, *mut u8, *mut c_void) -> *mut u8 {bindings::rust_fmt_argument}`
-              found fn item `unsafe extern "C" fn(*mut i8, *mut i8, *const c_void) -> *mut i8 {print::rust_fmt_argument}`
-
-The error may be different depending on the architecture.
-
-To fix this, change the void pointer argument to use a const pointer,
-and change the imports to use crate::ffi instead of core::ffi for
-integer types.
-
-Fixes: 787983da7718 ("vsprintf: add new `%pA` format specifier")
-Reviewed-by: Tamir Duberstein <tamird@gmail.com>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Acked-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20250303-export-macro-v3-1-41fbad85a27f@google.com
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: 377f698db12150a1 ("perf python: Add struct evsel into struct pyrf_event")
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250312203141.285263-5-acme@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/vsprintf.c       | 2 +-
- rust/kernel/print.rs | 7 +++----
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ tools/perf/util/python.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-index c5e2ec9303c5d..a69e71a1ca55e 100644
---- a/lib/vsprintf.c
-+++ b/lib/vsprintf.c
-@@ -2255,7 +2255,7 @@ int __init no_hash_pointers_enable(char *str)
- early_param("no_hash_pointers", no_hash_pointers_enable);
+diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
+index 14d7347ac0f38..88404e5c462f6 100644
+--- a/tools/perf/util/python.c
++++ b/tools/perf/util/python.c
+@@ -1011,6 +1011,7 @@ static PyObject *pyrf_evlist__read_on_cpu(struct pyrf_evlist *pevlist,
  
- /* Used for Rust formatting ('%pA'). */
--char *rust_fmt_argument(char *buf, char *end, void *ptr);
-+char *rust_fmt_argument(char *buf, char *end, const void *ptr);
+ 		evsel = evlist__event2evsel(evlist, event);
+ 		if (!evsel) {
++			Py_DECREF(pyevent);
+ 			Py_INCREF(Py_None);
+ 			return Py_None;
+ 		}
+@@ -1022,9 +1023,12 @@ static PyObject *pyrf_evlist__read_on_cpu(struct pyrf_evlist *pevlist,
+ 		/* Consume the even only after we parsed it out. */
+ 		perf_mmap__consume(&md->core);
  
- /*
-  * Show a '%p' thing.  A kernel extension is that the '%p' is followed
-diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-index a28077a7cb301..e52cd64333bcc 100644
---- a/rust/kernel/print.rs
-+++ b/rust/kernel/print.rs
-@@ -6,12 +6,11 @@
- //!
- //! Reference: <https://docs.kernel.org/core-api/printk-basics.html>
- 
--use core::{
-+use crate::{
-     ffi::{c_char, c_void},
--    fmt,
-+    str::RawFormatter,
- };
--
--use crate::str::RawFormatter;
-+use core::fmt;
- 
- // Called from `vsprintf` with format specifier `%pA`.
- #[expect(clippy::missing_safety_doc)]
+-		if (err)
++		if (err) {
++			Py_DECREF(pyevent);
+ 			return PyErr_Format(PyExc_OSError,
+ 					    "perf: can't parse sample, err=%d", err);
++		}
++
+ 		return pyevent;
+ 	}
+ end:
 -- 
 2.39.5
 
