@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-130475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B564A80502
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:14:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00BF7A8072A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:35:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 807D8426B43
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBA754C1E98
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E45269D1B;
-	Tue,  8 Apr 2025 12:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55BC526AAAA;
+	Tue,  8 Apr 2025 12:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSB+702l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1TpDFc1u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95DE268685;
-	Tue,  8 Apr 2025 12:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138C026A0A7;
+	Tue,  8 Apr 2025 12:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113809; cv=none; b=g4alshDohb61+OlLiJHT735DE5+o3Hqk6LuJKLZJqcyvcwRbQgs5skhznHPglYP4B3kgwCY/RHYPkTQ50owF1ejs+8HiYF4xW2MVIjAB517cEacKV/v+wvkZeOeoG/ukBzVwLHyxcnva/KDWi8fHF+X7OWsI/5aQpkcqHXAxpug=
+	t=1744115065; cv=none; b=lhnmjoaEwPBUCj16aN67KhjjMEoAm6kGy4Jn5EtK2h1In1CDz/s2x+KqrAWgOLDNptB9I2mVS4+UJJKP0ihwJrQa+E4W+8zJXnoVXegYgZBo91nXTneLbzNhB+L6PkUUyeFinWLN2sTy3Lu7qLTvrxXrKOzQpqktmbLuAQ89jKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113809; c=relaxed/simple;
-	bh=Kd1zjVAC2lE+6G+MAu0qIvU08toGIHpuRLkdG4qZrWE=;
+	s=arc-20240116; t=1744115065; c=relaxed/simple;
+	bh=YanGxqBISbE8K1iD9zz+rjyV9zw4/odQhyccBXUuDco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WQMb1Y7vT1t33ecZ6x74ix5rtqR9bOvjKkSvbza3v2X/qt47nnmt6pHNDtgmfKxNEbGg09ie6eEHo1VmCwpYio9W+mnbpBrBRdbBXD1orMKP6ueJgZbbkwolN/TObNvmXLPVPIwi0qkjXcheh+sW6xmz8EhA4s+lodx8HV/AQos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSB+702l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A10C4CEE5;
-	Tue,  8 Apr 2025 12:03:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VzAyKPBzKKT+/wigcGbvKiaTe14IMLfH4RlDy1ShGT5Bt9+yzjfwqPxQZOoz4um7QzaxNGwt9zz1yYmyelI4Ncwx4fRAXUU5Fxk4vPhii2CXAggKIZGjBGkY7mELaFivHv/0eq0IkSkiGHMkXBa4RKQNOu5g/eNxdSUn216/P8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1TpDFc1u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95EEEC4CEE5;
+	Tue,  8 Apr 2025 12:24:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113809;
-	bh=Kd1zjVAC2lE+6G+MAu0qIvU08toGIHpuRLkdG4qZrWE=;
+	s=korg; t=1744115064;
+	bh=YanGxqBISbE8K1iD9zz+rjyV9zw4/odQhyccBXUuDco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BSB+702lIEmZGGIqNVTWfo+ENCWc/LYuX2SxmPCb8YDOmVrTHgqYSEIeSgJUrxTFl
-	 mLPdMSJJS1/ok7nuOGh3xdgxzN66x/NTV2lB9nNt21kp4IRTloVonltkjKcL+GEq8F
-	 ZDlK1gAmx9n321ef+K7//QvX8TE7xNsbsNcztlDs=
+	b=1TpDFc1us32UiwSfHpr7MGHAiJP//9LP29KOiT/3vAESc/mq+SUK30VhKnx8WXvk6
+	 ihJ897DsYC3jny1+yRIyxRLF7d7ojwYuk2zIN/kUFfk9St4PMamc4tw/pUGDc5WDDG
+	 zAC7svQ/yo6EVxnLd7DQJFMP+MjSaF/G2EdBaiFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Magali Lemes <magali.lemes@canonical.com>
-Subject: [PATCH 5.4 005/154] Revert "sctp: sysctl: auth_enable: avoid using current->nsproxy"
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Shuming Fan <shumingf@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 334/499] ASoC: rt1320: set wake_capable = 0 explicitly
 Date: Tue,  8 Apr 2025 12:49:06 +0200
-Message-ID: <20250408104815.466292312@linuxfoundation.org>
+Message-ID: <20250408104859.554181080@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,35 +63,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Magali Lemes <magali.lemes@canonical.com>
+From: Bard Liao <yung-chuan.liao@linux.intel.com>
 
-This reverts commit 10c869a52f266e40f548cc3c565d14930a5edafc as it
-was backported incorrectly.
-A subsequent commit will re-backport the original patch.
+[ Upstream commit 927e6bec5cf3624665b0a2e9f64a1d32f3d22cdd ]
 
-Signed-off-by: Magali Lemes <magali.lemes@canonical.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+"generic_new_peripheral_assigned: invalid dev_num 1, wake supported 1"
+is reported by our internal CI test.
+
+Rt1320's wake feature is not used in Linux and that's why it is not in
+the wake_capable_list[] list in intel_auxdevice.c.
+However, BIOS may set it as wake-capable. Overwrite wake_capable to 0
+in the codec driver to align with wake_capable_list[].
+
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Acked-by: Shuming Fan <shumingf@realtek.com>
+Link: https://patch.msgid.link/20250305134113.201326-1-yung-chuan.liao@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/sysctl.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/rt1320-sdw.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/sctp/sysctl.c
-+++ b/net/sctp/sysctl.c
-@@ -326,7 +326,7 @@ static int proc_sctp_do_hmac_alg(struct
- 				void __user *buffer, size_t *lenp,
- 				loff_t *ppos)
- {
--	struct net *net = container_of(ctl->data, struct net, sctp.auth_enable);
-+	struct net *net = current->nsproxy->net_ns;
- 	struct ctl_table tbl;
- 	bool changed = false;
- 	char *none = "none";
+diff --git a/sound/soc/codecs/rt1320-sdw.c b/sound/soc/codecs/rt1320-sdw.c
+index 3510c3819074b..d83b236a04503 100644
+--- a/sound/soc/codecs/rt1320-sdw.c
++++ b/sound/soc/codecs/rt1320-sdw.c
+@@ -535,6 +535,9 @@ static int rt1320_read_prop(struct sdw_slave *slave)
+ 	/* set the timeout values */
+ 	prop->clk_stop_timeout = 64;
+ 
++	/* BIOS may set wake_capable. Make sure it is 0 as wake events are disabled. */
++	prop->wake_capable = 0;
++
+ 	return 0;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
