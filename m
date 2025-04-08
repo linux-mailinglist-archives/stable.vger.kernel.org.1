@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-129310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC3F4A7FF0E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:18:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3310A7FF6F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:21:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB8504469CC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:12:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FA034234F6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:12:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A840266583;
-	Tue,  8 Apr 2025 11:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08FBB264FB6;
+	Tue,  8 Apr 2025 11:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddNiKv9p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tLTelEwC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7412267F6C;
-	Tue,  8 Apr 2025 11:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD6D224F6;
+	Tue,  8 Apr 2025 11:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110682; cv=none; b=tSYs3Vmg0LdalCeXqQ/22N+vOOb9raSJzyFzfjIp3gL6Ewdfruj+HHN3t6kUym8iJuknidMeT3hfXYXM07jhg9Zr2m/fcmbEGBDrRTUt+jWN7zAkTek2qjXFnyBLQhZ5PKVHmHY1m3uSK/OTkoV8NUJF616ta/qo/+B5SDJpnRg=
+	t=1744110711; cv=none; b=Tf9uHx91vuON5Slrg42tlw8htr+P+Tu5gm6r3L+x543qJTnwFCp6eXIX2KepulLn/2MiBk5LhUXS7I5QLzzwA5LW6bBPMqZVI3Wj60g5Y6ZiwW2sB+5LqdAQnRPXJdUbaGSxi1947JouC9kap5Inwg9akT85bUAuP/h3ctnwUcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110682; c=relaxed/simple;
-	bh=Q+qxuiFV6aqvWEuL33zTh6Jkz3/H/3twnTNEFnJOw5o=;
+	s=arc-20240116; t=1744110711; c=relaxed/simple;
+	bh=p9aT5Fl6NcetG6xW9DPDElVzJhTo8kDu2OHMtJNDSlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tIYt1vVNrU8JFp7dvMNgLjiQ3E+prW3KO92HTmWKDE6lDwJALJdU5njSUAFDm9CPOeCn3Atv3ZZ+1K1uv1uD5Z5W52Xw28cJKyZYwy6y+RunLJqDTU/MRfHM95S3nnX1bFkAgwBEDeRAAAv/ksXZ9omrzqtZ1lMxmreaYLOIdro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddNiKv9p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA8AEC4CEE5;
-	Tue,  8 Apr 2025 11:11:21 +0000 (UTC)
+	 MIME-Version; b=cwB0+7RZ06K1aVulN5IMNFRJTQm2hFQjIgmpdWckGQTmxAdhcBRnxP8wvZO4X6JRFUZHIzhzi+SVuWKQ/4syNfJFY/wwIk75RMD0L3GCmSRykNEpvCmQ1HBbfxbgXJpijAEhH+qw1b0G9b4SGNsrnoz+k2IOF1CXUbD2tgM5vr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tLTelEwC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D888DC4CEE5;
+	Tue,  8 Apr 2025 11:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110682;
-	bh=Q+qxuiFV6aqvWEuL33zTh6Jkz3/H/3twnTNEFnJOw5o=;
+	s=korg; t=1744110711;
+	bh=p9aT5Fl6NcetG6xW9DPDElVzJhTo8kDu2OHMtJNDSlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ddNiKv9p84lLk9qkxKLlI0rds8gsz98/Qca77HkaPb5klfVzs6auTSWuX3ra1QrK3
-	 /KGAejo42BfU/O5plKggdMqRcbPkHZH0xFNa+QEPoJ224b1X3pc4fEDZffntZbqwbe
-	 TsUasdBF0QaEjIl4qWVhQwW3piYD9u9J0ezGTDu0=
+	b=tLTelEwC0bcQd4HXcPboGi2LiDXpxTVbufbBG0ynnOIeuOa5OEVDRO9ifxv8YerhL
+	 pAtA+KSRylSKDeAcATKiyEhYGc4eBLUWWWEjz6F0PB+9yMo++9MnMWW8L/U2dorSI2
+	 PhqaqVD1o0GsX4cJ3TL41WLioaJRXKLXMTVMEeG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Yohan Joung <yohan.joung@sk.com>,
+	syzbot+b01a36acd7007e273a83@syzkaller.appspotmail.com,
+	Leo Stone <leocstone@gmail.com>,
 	Chao Yu <chao@kernel.org>,
 	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 127/731] f2fs: fix to set .discard_granularity correctly
-Date: Tue,  8 Apr 2025 12:40:24 +0200
-Message-ID: <20250408104917.234032613@linuxfoundation.org>
+Subject: [PATCH 6.14 128/731] f2fs: add check for deleted inode
+Date: Tue,  8 Apr 2025 12:40:25 +0200
+Message-ID: <20250408104917.258091562@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -68,44 +68,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Leo Stone <leocstone@gmail.com>
 
-[ Upstream commit 1b60b23975d6d81703826e3797738e471c3009c6 ]
+[ Upstream commit 81edb983b3f5d6900d3e337b9af7b1bec4bef0f2 ]
 
-commit 4f993264fe29 ("f2fs: introduce discard_unit mount option") introduced
-a bug, when we enable discard_unit=section option, it will set
-.discard_granularity to BLKS_PER_SEC(), however discard granularity only
-supports [1, 512], once section size is not equal to segment size, it will
-cause issue_discard_thread() in DPOLICY_BG mode will not select discard entry
-w/ any granularity to issue.
+The syzbot reproducer mounts a f2fs image, then tries to unlink an
+existing file. However, the unlinked file already has a link count of 0
+when it is read for the first time in do_read_inode().
 
-Fixes: 4f993264fe29 ("f2fs: introduce discard_unit mount option")
-Reviewed-by: Daeho Jeong <daehojeong@google.com>
-Signed-off-by: Yohan Joung <yohan.joung@sk.com>
+Add a check to sanity_check_inode() for i_nlink == 0.
+
+[Chao Yu: rebase the code and fix orphan inode recovery issue]
+Reported-by: syzbot+b01a36acd7007e273a83@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b01a36acd7007e273a83
+Fixes: 39a53e0ce0df ("f2fs: add superblock and major in-memory structure")
+Signed-off-by: Leo Stone <leocstone@gmail.com>
 Signed-off-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/f2fs/namei.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 6ebe25eafafa5..2b415926641f0 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -2320,10 +2320,9 @@ static int create_discard_cmd_control(struct f2fs_sb_info *sbi)
- 	dcc->discard_granularity = DEFAULT_DISCARD_GRANULARITY;
- 	dcc->max_ordered_discard = DEFAULT_MAX_ORDERED_DISCARD_GRANULARITY;
- 	dcc->discard_io_aware = DPOLICY_IO_AWARE_ENABLE;
--	if (F2FS_OPTION(sbi).discard_unit == DISCARD_UNIT_SEGMENT)
-+	if (F2FS_OPTION(sbi).discard_unit == DISCARD_UNIT_SEGMENT ||
-+		F2FS_OPTION(sbi).discard_unit == DISCARD_UNIT_SECTION)
- 		dcc->discard_granularity = BLKS_PER_SEG(sbi);
--	else if (F2FS_OPTION(sbi).discard_unit == DISCARD_UNIT_SECTION)
--		dcc->discard_granularity = BLKS_PER_SEC(sbi);
+diff --git a/fs/f2fs/namei.c b/fs/f2fs/namei.c
+index a278c7da81778..3d85d8116dae7 100644
+--- a/fs/f2fs/namei.c
++++ b/fs/f2fs/namei.c
+@@ -502,6 +502,14 @@ static struct dentry *f2fs_lookup(struct inode *dir, struct dentry *dentry,
+ 		goto out;
+ 	}
  
- 	INIT_LIST_HEAD(&dcc->entry_list);
- 	for (i = 0; i < MAX_PLIST_NUM; i++)
++	if (inode->i_nlink == 0) {
++		f2fs_warn(F2FS_I_SB(inode), "%s: inode (ino=%lx) has zero i_nlink",
++			  __func__, inode->i_ino);
++		err = -EFSCORRUPTED;
++		set_sbi_flag(F2FS_I_SB(inode), SBI_NEED_FSCK);
++		goto out_iput;
++	}
++
+ 	if (IS_ENCRYPTED(dir) &&
+ 	    (S_ISDIR(inode->i_mode) || S_ISLNK(inode->i_mode)) &&
+ 	    !fscrypt_has_permitted_context(dir, inode)) {
 -- 
 2.39.5
 
