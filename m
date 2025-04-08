@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-130913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3BEEA80757
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:36:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67A9DA80B8F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:18:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28640467FFC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:25:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C5908C84F5
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:00:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A9526989E;
-	Tue,  8 Apr 2025 12:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3315B26FD89;
+	Tue,  8 Apr 2025 12:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gsc3NSMG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AMP1C9c2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE33206F18;
-	Tue,  8 Apr 2025 12:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E173326E17B;
+	Tue,  8 Apr 2025 12:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114993; cv=none; b=LorEq8MBElhwNRZjiyzkd7yCf+XhvhzCSmfbMdkyuWTyU8YN3w8yivKGlTU1cIU+/w6yh9/n4pztto1XYosnE6Emtv/AfyBzv2x4BwxMz4t22yGe5A/i+JfOASPswyxxEN6fleVmZdjUurrUvDpTxXY/Mg9PA+n3FMQqjTUoK6Q=
+	t=1744116597; cv=none; b=cs+pYPCvxWvYMNqSy6MRI6RywAipZ1C0Voy/w/Y8pXa/E7Q/t6qYtKtobBdAp5hqn9KHvzgFsbWosC7H4V2XB+cseuT+lCMovnhayKMwCJqov2jexctsYeFZbbEmF4DY+6dCiV1UX4iNtRJGIyDAxBh2g4Pn3YAQ9eKq97BeA/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114993; c=relaxed/simple;
-	bh=hYWkxJSTFIi/0YNdsJxB/V6q6enENPh1tLppj0hqdNw=;
+	s=arc-20240116; t=1744116597; c=relaxed/simple;
+	bh=QwWKI4h6Gl6kxckcEj1pl/tCsFTLKi6gkQFGefPUdXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pjUviGr7jScgJUB6X1+O4udLqibOrwy+GOdHW2x6MHJ9RsgIKG9emw3D30YaZg38ONdxClm2JqHz4Yd9ePC8d717UuhS8pYbVJRHZvgsJa4nulcIXNqjXv+Rp4oKFI4jkdu1wyEy4TzlHk7KxipOHx8GL3nNF/Xc1bxEs9ysZ8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gsc3NSMG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA866C4CEE5;
-	Tue,  8 Apr 2025 12:23:12 +0000 (UTC)
+	 MIME-Version; b=ShdUmjf9F25O4YYwymlY1q6uIoHeHWyxOswmyuDL/LT1DwtouxENC+lGEUVnrvmVyFWiovSksowG7uJwoNmUcdix53aSqy43WvyEnlL6CjGrNWH9oQLy+LNO9aB5Nc4lTzJLb9qlzE5Yp/BZiG9iPNfmQdTo1W5Xk5H3AYEk0TQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AMP1C9c2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B60C4CEE5;
+	Tue,  8 Apr 2025 12:49:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114993;
-	bh=hYWkxJSTFIi/0YNdsJxB/V6q6enENPh1tLppj0hqdNw=;
+	s=korg; t=1744116596;
+	bh=QwWKI4h6Gl6kxckcEj1pl/tCsFTLKi6gkQFGefPUdXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gsc3NSMGBTbz3lJRjCkDR2vmCt3itsP/GtBMx9hNZud5G8M2W9t30r/qw4ZqlWyUi
-	 GB7ZZSh20gyr2AlEXBN/3n0AdmwI/WE3KU52jdfL926w7L83IYHdda/tNk/i2aclRO
-	 J/CNi2pxVqBdfrApL/oAjuukh9GcfMZo/h+akiuU=
+	b=AMP1C9c22gmQR+BiJkispIfDBjm4mpZYRuBiTjlwoTGzy8wGJ890lY2ndlbl6hGwe
+	 yU+CtmxdvJVgiYmGrKCSz4sK0jj5FfGkoAKx56UYJpu6zAAYYT1i+dHNITrPXSlWHs
+	 9jaQFB+EEkmwkwFbtff68fHRdgs4UmrdDnAvAamY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Gospodnetich <me@kylegospodneti.ch>,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	Takashi Iwai <tiwai@suse.de>,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	syzbot+66c146268dc88f4341fd@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Kurt Hackel <kurt.hackel@oracle.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 311/499] ALSA: hda/realtek: Fix Asus Z13 2025 audio
-Date: Tue,  8 Apr 2025 12:48:43 +0200
-Message-ID: <20250408104858.973622048@linuxfoundation.org>
+Subject: [PATCH 6.12 198/423] ocfs2: validate l_tree_depth to avoid out-of-bounds access
+Date: Tue,  8 Apr 2025 12:48:44 +0200
+Message-ID: <20250408104850.346127038@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +70,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antheas Kapenekakis <lkml@antheas.dev>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-[ Upstream commit 12784ca33b62fd327631749e6a0cd2a10110a56c ]
+[ Upstream commit a406aff8c05115119127c962cbbbbd202e1973ef ]
 
-Use the basic quirk for this type of amplifier. Sound works in speakers,
-headphones, and microphone. Whereas none worked before.
+The l_tree_depth field is 16-bit (__le16), but the actual maximum depth is
+limited to OCFS2_MAX_PATH_DEPTH.
 
-Tested-by: Kyle Gospodnetich <me@kylegospodneti.ch>
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-Link: https://patch.msgid.link/20250227175107.33432-3-lkml@antheas.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Add a check to prevent out-of-bounds access if l_tree_depth has an invalid
+value, which may occur when reading from a corrupted mounted disk [1].
+
+Link: https://lkml.kernel.org/r/20250214084908.736528-1-kovalev@altlinux.org
+Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Reported-by: syzbot+66c146268dc88f4341fd@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=66c146268dc88f4341fd [1]
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Kurt Hackel <kurt.hackel@oracle.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Vasiliy Kovalev <kovalev@altlinux.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ocfs2/alloc.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 4c7f578726e26..575e76590a106 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10751,6 +10751,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1f1f, "ASUS H7604JI/JV/J3D", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1f62, "ASUS UX7602ZM", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1f92, "ASUS ROG Flow X16", ALC289_FIXUP_ASUS_GA401),
-+	SND_PCI_QUIRK(0x1043, 0x1fb3, "ASUS ROG Flow Z13 GZ302EA", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
- 	SND_PCI_QUIRK(0x1043, 0x31d0, "ASUS Zen AIO 27 Z272SD_A272SD", ALC274_FIXUP_ASUS_ZEN_AIO_27),
- 	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+diff --git a/fs/ocfs2/alloc.c b/fs/ocfs2/alloc.c
+index ea9127ba32084..5d9388b44e5be 100644
+--- a/fs/ocfs2/alloc.c
++++ b/fs/ocfs2/alloc.c
+@@ -1803,6 +1803,14 @@ static int __ocfs2_find_path(struct ocfs2_caching_info *ci,
+ 
+ 	el = root_el;
+ 	while (el->l_tree_depth) {
++		if (unlikely(le16_to_cpu(el->l_tree_depth) >= OCFS2_MAX_PATH_DEPTH)) {
++			ocfs2_error(ocfs2_metadata_cache_get_super(ci),
++				    "Owner %llu has invalid tree depth %u in extent list\n",
++				    (unsigned long long)ocfs2_metadata_cache_owner(ci),
++				    le16_to_cpu(el->l_tree_depth));
++			ret = -EROFS;
++			goto out;
++		}
+ 		if (le16_to_cpu(el->l_next_free_rec) == 0) {
+ 			ocfs2_error(ocfs2_metadata_cache_get_super(ci),
+ 				    "Owner %llu has empty extent list at depth %u\n",
 -- 
 2.39.5
 
