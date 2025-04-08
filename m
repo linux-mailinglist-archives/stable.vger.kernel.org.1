@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-130425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAB75A8049D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:10:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE2FDA808AD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:47:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C16A6423C8E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:03:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB1B918929D9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 193D926A0E8;
-	Tue,  8 Apr 2025 12:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8571026B954;
+	Tue,  8 Apr 2025 12:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPyiJuHP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2ckGRiC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB150267F57;
-	Tue,  8 Apr 2025 12:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4271B26B94F;
+	Tue,  8 Apr 2025 12:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113679; cv=none; b=AaNclRbWpMW/EYLfbwzxoNkTUHdarct9C83wFcab5zRT2JkaPnq8Hcqw438N/3lGVXdI02k1MVaFpIAd9dy7wImpG2VD+a+eP9U7mHzKYRC/5OOWR6pmPqdpQJquxyJxoLkHDLc3SC6uT2T30+ce0HvdkoqS/bStJtALlN3Fnes=
+	t=1744115856; cv=none; b=JdhD7ADZ/Z2ChJPbdeKuKtmoOyzAP866COnWTUfhcZkCxwVDZx4orIi1Egqu30S9t873ew4R0hwzLEYrIaeMEKXqYMzQXE3Ztz6KOYs2MWQr2n9ahiWazmt3ZVjpVzVjCcvjLcNh+diLY7Ts5xd2cF82liudxhkVsp4hgtGCOrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113679; c=relaxed/simple;
-	bh=vjSZCsyZonu3qYhgm+pS3HFnf/IgyoA7d2R+aVXfv8Q=;
+	s=arc-20240116; t=1744115856; c=relaxed/simple;
+	bh=WnvVL7T1rXhdmA5gy7PIlRiyus1hgI8qMTRDp0JFGbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rHKojVsS6Nu0vcV+cLEjCnJDviITGP6q7rNiMVRzSmJj4LhOwjkN8b3DCrxOMofpB8AeTOhNgE+6peUz5CsbX1Ib5HT54IorH1MXst0REbUakwrUSNt6DkSuSv4Z2a9U3FWkCGYaCdwUKRTc5hY0cF3VEKN6/jMrP03Bkbypp+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPyiJuHP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 589EBC4CEE5;
-	Tue,  8 Apr 2025 12:01:19 +0000 (UTC)
+	 MIME-Version; b=IpXTrW8PJ88Ee7k8g5qhdIBVDjlKpMYdEjIHq7cuGGef/IIc+mhnPQ1jEnQMJ/+TXzcUP2udB5kjPmFjg9EKgyJvwiQAjRmfZm3p1f3pvcw8QIx1fs6CQ/208b678NNCIWFD0gO3paxUQaSbHMNjcDBbOUvuSl2Eqv8QQ8gZIr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2ckGRiC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C62F6C4CEE5;
+	Tue,  8 Apr 2025 12:37:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113679;
-	bh=vjSZCsyZonu3qYhgm+pS3HFnf/IgyoA7d2R+aVXfv8Q=;
+	s=korg; t=1744115856;
+	bh=WnvVL7T1rXhdmA5gy7PIlRiyus1hgI8qMTRDp0JFGbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hPyiJuHPPLIWwrkzctxiYXoSzSCBOCMbnHpTGPXlhDNwi+amU7k7JV/8p7RAKyFbm
-	 M7X3miLNQQDPP/nRjauqLk8ZRM1UMszImZkybSLKptmHVy6TqTq1gUEnIqzSMOd1JD
-	 LPIaWmwUA5HsVUMxANA++FZUuiMjk49Rj67LXg6o=
+	b=A2ckGRiCU0bsckW1XyJOobO4axJeiIbiuhPsz/pK2pN252L9ClyMjbngOBDtepRjb
+	 WBCDO8iaOT6a26Z/RMfuJBtjk26vl5ouOEkZPiaYvWFmg4G3ZTCDlGLWlp6wTLETXt
+	 u43EHIQbu3rPMPPo4Nj8tS2ZZXgzPu0EG4QTzfYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Owens <daowens01@gmail.com>,
-	Romain Naour <romain.naour@smile.fr>,
-	Robert Nelson <robertcnelson@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Tony Lindgren <tony@atomide.com>
-Subject: [PATCH 6.6 250/268] mmc: sdhci-omap: Disable MMC_CAP_AGGRESSIVE_PM for eMMC/SD
+	Matthias Proske <email@matthias-proske.de>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 131/204] wifi: brcmfmac: keep power during suspend if board requires it
 Date: Tue,  8 Apr 2025 12:51:01 +0200
-Message-ID: <20250408104835.329719831@linuxfoundation.org>
+Message-ID: <20250408104824.143072158@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+From: Matthias Proske <email@matthias-proske.de>
 
-commit 49d162635151d0dd04935070d7cf67137ab863aa upstream.
+[ Upstream commit 8c3170628a9ce24a59647bd24f897e666af919b8 ]
 
-We have received reports about cards can become corrupt related to the
-aggressive PM support. Let's make a partial revert of the change that
-enabled the feature.
+After commit 92cadedd9d5f ("brcmfmac: Avoid keeping power to SDIO card
+unless WOWL is used"), the wifi adapter by default is turned off on
+suspend and then re-probed on resume.
 
-Reported-by: David Owens <daowens01@gmail.com>
-Reported-by: Romain Naour <romain.naour@smile.fr>
-Reported-by: Robert Nelson <robertcnelson@gmail.com>
-Tested-by: Robert Nelson <robertcnelson@gmail.com>
-Fixes: 3edf588e7fe0 ("mmc: sdhci-omap: Allow SDIO card power off and enable aggressive PM")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20250312121712.1168007-1-ulf.hansson@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This conflicts with some embedded boards that require to remain powered.
+They will fail on resume with:
+
+brcmfmac: brcmf_sdio_bus_rxctl: resumed on timeout
+ieee80211 phy1: brcmf_bus_started: failed: -110
+ieee80211 phy1: brcmf_attach: dongle is not responding: err=-110
+brcmfmac: brcmf_sdio_firmware_callback: brcmf_attach failed
+
+This commit checks for the Device Tree property 'cap-power-off-cards'.
+If this property is not set, it means that we do not have the capability
+to power off and should therefore remain powered.
+
+Signed-off-by: Matthias Proske <email@matthias-proske.de>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Link: https://patch.msgid.link/20250212185941.146958-2-email@matthias-proske.de
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-omap.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../broadcom/brcm80211/brcmfmac/bcmsdh.c      | 20 ++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
---- a/drivers/mmc/host/sdhci-omap.c
-+++ b/drivers/mmc/host/sdhci-omap.c
-@@ -1339,8 +1339,8 @@ static int sdhci_omap_probe(struct platf
- 	/* R1B responses is required to properly manage HW busy detection. */
- 	mmc->caps |= MMC_CAP_NEED_RSP_BUSY;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+index 9217e9f6e9076..7cd8ec6f515a4 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+@@ -1151,6 +1151,7 @@ static int brcmf_ops_sdio_suspend(struct device *dev)
+ 	struct brcmf_bus *bus_if;
+ 	struct brcmf_sdio_dev *sdiodev;
+ 	mmc_pm_flag_t sdio_flags;
++	bool cap_power_off;
+ 	int ret = 0;
  
--	/* Allow card power off and runtime PM for eMMC/SD card devices */
--	mmc->caps |= MMC_CAP_POWER_OFF_CARD | MMC_CAP_AGGRESSIVE_PM;
-+	/*  Enable SDIO card power off. */
-+	mmc->caps |= MMC_CAP_POWER_OFF_CARD;
+ 	func = container_of(dev, struct sdio_func, dev);
+@@ -1158,19 +1159,23 @@ static int brcmf_ops_sdio_suspend(struct device *dev)
+ 	if (func->num != 1)
+ 		return 0;
  
- 	ret = sdhci_setup_host(host);
- 	if (ret)
++	cap_power_off = !!(func->card->host->caps & MMC_CAP_POWER_OFF_CARD);
+ 
+ 	bus_if = dev_get_drvdata(dev);
+ 	sdiodev = bus_if->bus_priv.sdio;
+ 
+-	if (sdiodev->wowl_enabled) {
++	if (sdiodev->wowl_enabled || !cap_power_off) {
+ 		brcmf_sdiod_freezer_on(sdiodev);
+ 		brcmf_sdio_wd_timer(sdiodev->bus, 0);
+ 
+ 		sdio_flags = MMC_PM_KEEP_POWER;
+-		if (sdiodev->settings->bus.sdio.oob_irq_supported)
+-			enable_irq_wake(sdiodev->settings->bus.sdio.oob_irq_nr);
+-		else
+-			sdio_flags |= MMC_PM_WAKE_SDIO_IRQ;
++
++		if (sdiodev->wowl_enabled) {
++			if (sdiodev->settings->bus.sdio.oob_irq_supported)
++				enable_irq_wake(sdiodev->settings->bus.sdio.oob_irq_nr);
++			else
++				sdio_flags |= MMC_PM_WAKE_SDIO_IRQ;
++		}
+ 
+ 		if (sdio_set_host_pm_flags(sdiodev->func1, sdio_flags))
+ 			brcmf_err("Failed to set pm_flags %x\n", sdio_flags);
+@@ -1192,18 +1197,19 @@ static int brcmf_ops_sdio_resume(struct device *dev)
+ 	struct brcmf_sdio_dev *sdiodev = bus_if->bus_priv.sdio;
+ 	struct sdio_func *func = container_of(dev, struct sdio_func, dev);
+ 	int ret = 0;
++	bool cap_power_off = !!(func->card->host->caps & MMC_CAP_POWER_OFF_CARD);
+ 
+ 	brcmf_dbg(SDIO, "Enter: F%d\n", func->num);
+ 	if (func->num != 2)
+ 		return 0;
+ 
+-	if (!sdiodev->wowl_enabled) {
++	if (!sdiodev->wowl_enabled && cap_power_off) {
+ 		/* bus was powered off and device removed, probe again */
+ 		ret = brcmf_sdiod_probe(sdiodev);
+ 		if (ret)
+ 			brcmf_err("Failed to probe device on resume\n");
+ 	} else {
+-		if (sdiodev->settings->bus.sdio.oob_irq_supported)
++		if (sdiodev->wowl_enabled && sdiodev->settings->bus.sdio.oob_irq_supported)
+ 			disable_irq_wake(sdiodev->settings->bus.sdio.oob_irq_nr);
+ 
+ 		brcmf_sdiod_freezer_off(sdiodev);
+-- 
+2.39.5
+
 
 
 
