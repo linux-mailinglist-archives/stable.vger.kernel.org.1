@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-129775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2089FA801B0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C399DA802A7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:49:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DCAC170202
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 403B13B9F9E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:43:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 366FB269892;
-	Tue,  8 Apr 2025 11:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C25266EEA;
+	Tue,  8 Apr 2025 11:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXgZxYGL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gHxq8f7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5BDA263C78;
-	Tue,  8 Apr 2025 11:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30FF2288CB;
+	Tue,  8 Apr 2025 11:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111946; cv=none; b=bdEBtaEG0wYStmL8UcokuhYsrnOpezoOIOuXHWwUoMSRjp9qley+sY7IzEbBqf8BLrEc+CZh6Ckd5VXKTYAV1VizapvdjObnzxNRMcWWFyXDxrve9OVe06re1m7rS67y7XDLvNJD7+rcWREXIrFboSnQUikWr4Dm4APXjsmRwUU=
+	t=1744112607; cv=none; b=lIfaeyk9PVt5IMWnlHQU9ysBva0bw/SyaUujrJO87y8O3YL67Q5DxBwOLhtQfMf/tCF8Q5ue3cPbGlOVp61ES7h4dfwjd3jt75GePPBBwIHHqaImhSFUUUgkJfFNyJLgKDQ2E6MB4Mn5pIRCFeLn+bwmazCEDRvZz7hKYJje9Kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111946; c=relaxed/simple;
-	bh=70djLRNGTnsmbHAXdgg6ubPWftYbl2N+rfomqVAOtQM=;
+	s=arc-20240116; t=1744112607; c=relaxed/simple;
+	bh=Inlbhi8zwSm8FKjo3+xj7tlh8IGbgYizVwlpEvi8hQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gRudM70P5dyjeGO2B0Dn9wrrfhnE+CkLZLOeejfpLF3E/acxGGY9Af55j0FI8+d0qwtWXDCprUzQtQQPdfweuI7kkRsDeYGMvyo4IotVoPasA0gMErrxhuvEOH3R2sxrIaU6Gd48VoC1b4dLvXVzwGfxi84Q+yfrScPxWV3GRgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXgZxYGL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76DBDC4CEE5;
-	Tue,  8 Apr 2025 11:32:25 +0000 (UTC)
+	 MIME-Version; b=GBqWGXk/pAdezymcbyHhPnH6epPlHsDKnZ0iTXspahNDUWgsh+w1dk/FYsZYYvWB1wbbrwW9kUqwHSznoK69wqwgITBY0sBhs2+tME6KzYI2tMi+veyBmKaqknn83OLqOvn74pWGzLFska2NeoF74Y/edcGNXuYcblKCXxxTdLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gHxq8f7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F8BC4CEE5;
+	Tue,  8 Apr 2025 11:43:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111945;
-	bh=70djLRNGTnsmbHAXdgg6ubPWftYbl2N+rfomqVAOtQM=;
+	s=korg; t=1744112607;
+	bh=Inlbhi8zwSm8FKjo3+xj7tlh8IGbgYizVwlpEvi8hQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MXgZxYGLruWFvDk2gunpQGCv3yk8NIs4cQ9mEdwBo4ZD2ragtKxvpWKfQUzeWcSdF
-	 b45126OX60u+FD20q+e3MBcV+p0iibOGpUZ4ATkNGJtMTPO8v2JCe09o6RHeVLeQmD
-	 3PjmP/Yirhv9R/BcUz+9hvLtk6Yf4d/JC8RgwEqE=
+	b=0gHxq8f7iOGIpK44c96kSjjDTiyakl6MdKxPg9CmHisaGtEjWF1bn92sckBKgYgV/
+	 16ZcEpoCDD5OOsXpgy96UzJW8PTM/83YtIyo1ewHiMk7UldWmqzHXNdFSxuLlY4HEd
+	 trJP05QjkOKLI+mj9pVSxr0Maj3Q0K7mEUEg3jig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Oleg Nesterov <oleg@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 618/731] netfilter: nft_set_hash: GC reaps elements with conncount for dynamic sets only
+Subject: [PATCH 5.15 132/279] x86/fpu: Avoid copying dynamic FP state from init_task in arch_dup_task_struct()
 Date: Tue,  8 Apr 2025 12:48:35 +0200
-Message-ID: <20250408104928.644899196@linuxfoundation.org>
+Message-ID: <20250408104829.904216192@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit 9d74da1177c800eb3d51c13f9821b7b0683845a5 ]
+[ Upstream commit 5d3b81d4d8520efe888536b6906dc10fd1a228a8 ]
 
-conncount has its own GC handler which determines when to reap stale
-elements, this is convenient for dynamic sets. However, this also reaps
-non-dynamic sets with static configurations coming from control plane.
-Always run connlimit gc handler but honor feedback to reap element if
-this set is dynamic.
+The init_task instance of struct task_struct is statically allocated and
+may not contain the full FP state for userspace. As such, limit the copy
+to the valid area of both init_task and 'dst' and ensure all memory is
+initialized.
 
-Fixes: 290180e2448c ("netfilter: nf_tables: add connlimit support")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Note that the FP state is only needed for userspace, and as such it is
+entirely reasonable for init_task to not contain parts of it.
+
+Fixes: 5aaeb5c01c5b ("x86/fpu, sched: Introduce CONFIG_ARCH_WANTS_DYNAMIC_TASK_STRUCT and use it on x86")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20250226133136.816901-1-benjamin@sipsolutions.net
+----
+
+v2:
+- Fix code if arch_task_struct_size < sizeof(init_task) by using
+  memcpy_and_pad.
+
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_hash.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kernel/process.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
-index 8bfac4185ac79..abb0c8ec63719 100644
---- a/net/netfilter/nft_set_hash.c
-+++ b/net/netfilter/nft_set_hash.c
-@@ -309,7 +309,8 @@ static bool nft_rhash_expr_needs_gc_run(const struct nft_set *set,
- 
- 	nft_setelem_expr_foreach(expr, elem_expr, size) {
- 		if (expr->ops->gc &&
--		    expr->ops->gc(read_pnet(&set->net), expr))
-+		    expr->ops->gc(read_pnet(&set->net), expr) &&
-+		    set->flags & NFT_SET_EVAL)
- 			return true;
- 	}
- 
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index 720d99520316a..72eb0df1a1a5f 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -83,7 +83,12 @@ EXPORT_PER_CPU_SYMBOL_GPL(__tss_limit_invalid);
+  */
+ int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)
+ {
+-	memcpy(dst, src, arch_task_struct_size);
++	/* init_task is not dynamically sized (incomplete FPU state) */
++	if (unlikely(src == &init_task))
++		memcpy_and_pad(dst, arch_task_struct_size, src, sizeof(init_task), 0);
++	else
++		memcpy(dst, src, arch_task_struct_size);
++
+ #ifdef CONFIG_VM86
+ 	dst->thread.vm86 = NULL;
+ #endif
 -- 
 2.39.5
 
