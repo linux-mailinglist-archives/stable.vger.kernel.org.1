@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E054A8030B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:53:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE9A4A7FE3A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:11:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACD6319E32D6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:49:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F21011713B0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:05:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB98267F5B;
-	Tue,  8 Apr 2025 11:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F0AC269880;
+	Tue,  8 Apr 2025 11:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f291vyEc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIpAHSGY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3907C26461D;
-	Tue,  8 Apr 2025 11:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8B226981C;
+	Tue,  8 Apr 2025 11:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112937; cv=none; b=Ji0WYAlZpg6Rcaesrm6b8rJG01jh9KxupdOoiEGSoe/aNmnjTGbH8CXY/OYwwiBVjc0J7vzYOIkULOyVnoxseJiDvIdsa0zuX97l8cZOvbo3VaXj9sYnB2W+iGER33aRxJH2F8VsByD8wO45rB1gy6asO15W3HthxIVBlWBenu8=
+	t=1744110239; cv=none; b=edhOW/eOuloK0s9pvFecvsI8VH04r6A62j6YwASB1coBKAiuVbioRHyOU4SsSVsHSInxp0l/uz31ASogZIYi6sg/ILwG3YSdRtEzG2Ctz2IusuFKyt/6ILaY9iF5izNEAuYJlHdJKlp6x6UBmA5g7E0bO4DctBxkf0LPIjL+s/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112937; c=relaxed/simple;
-	bh=KyPFHBOrZau6qMhoQ5CvglrY3e8udmZPd4kT5p1FgJM=;
+	s=arc-20240116; t=1744110239; c=relaxed/simple;
+	bh=zgxisE+tVmSZQO1OLi4hWYGEtu12LhswwCX8za7kxlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dKdiBgA26E+yhwiCGlKe/Ke93JrYz2Y5p8kle8kKz4DV0rTLowYF9hz3eZZEweYiRZuoJsGbPvYjZRqqwV927yeHU8B3fsRxa5ipagojQR5jH7Bx01mFq52FyXnQj4QuBx2APw+VaxIjXiGtKNUYbFGWLNl/gv0KrZ/+R+NYJ/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f291vyEc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC78FC4CEEB;
-	Tue,  8 Apr 2025 11:48:56 +0000 (UTC)
+	 MIME-Version; b=CRTqWtG39YNtqNGxbW7Fc6cg3WtXTx8YsOf+HHXB9fHcYscMYzKoYnEMPt4fr6ujoX0MMlZiNjDcwH4F+J+yNuvjViI1Dx4eMaWkcCUbBlG8lMKEAYp01np6QLmSeblfxTJF8HiDV9J0yBXRD8CN8vSrAxOZKZrFRRa7YfKY2Ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIpAHSGY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEEC7C4CEE7;
+	Tue,  8 Apr 2025 11:03:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112937;
-	bh=KyPFHBOrZau6qMhoQ5CvglrY3e8udmZPd4kT5p1FgJM=;
+	s=korg; t=1744110239;
+	bh=zgxisE+tVmSZQO1OLi4hWYGEtu12LhswwCX8za7kxlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f291vyEc5tIlnXFPjyel6WRac2ZgAs6Y26gqXX659DH5ZcGZ88TdA/aDQk1VgyXR7
-	 FbarLFUAGoh/2BHxl1OGWAN8KiYsl5ZefF40uf552GDRf7EvtFNH0xZQULlxnklung
-	 A9jmQGSpfwV4Hkl8d8xE1N713DT7BU1Lgujha9HQ=
+	b=VIpAHSGYKztx0Qg5jRCuXHCgFSIpDj7ipxFTxgiSglFo2m45lWLS1+DpnMtPsdgf/
+	 JFh4hcfuj95CfKvUlFuTE5c65qp3oz2jt1wGJlCBfwt7LTYmdkJOg5Re1t1WfInH1B
+	 bohaqHDQrJa+O6gv987AHCz5qN9ZM4iyzQvSRAME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 214/279] ksmbd: use aead_request_free to match aead_request_alloc
-Date: Tue,  8 Apr 2025 12:49:57 +0200
-Message-ID: <20250408104832.127476630@linuxfoundation.org>
+	stable@kernel.org,
+	Theodore Tso <tytso@mit.edu>,
+	"Darrick J. Wong" <djwong@kernel.org>
+Subject: [PATCH 5.10 220/227] ext4: dont over-report free space or inodes in statvfs
+Date: Tue,  8 Apr 2025 12:49:58 +0200
+Message-ID: <20250408104826.897756721@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-[ Upstream commit 6171063e9d046ffa46f51579b2ca4a43caef581a ]
+commit f87d3af7419307ae26e705a2b2db36140db367a2 upstream.
 
-Use aead_request_free() instead of kfree() to properly free memory
-allocated by aead_request_alloc(). This ensures sensitive crypto data
-is zeroed before being freed.
+This fixes an analogus bug that was fixed in xfs in commit
+4b8d867ca6e2 ("xfs: don't over-report free space or inodes in
+statvfs") where statfs can report misleading / incorrect information
+where project quota is enabled, and the free space is less than the
+remaining quota.
 
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This commit will resolve a test failure in generic/762 which tests for
+this bug.
+
+Cc: stable@kernel.org
+Fixes: 689c958cbe6b ("ext4: add project quota support")
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/auth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/super.c |   27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/fs/ksmbd/auth.c b/fs/ksmbd/auth.c
-index 3b776b5de7db6..647692ca78a28 100644
---- a/fs/ksmbd/auth.c
-+++ b/fs/ksmbd/auth.c
-@@ -1211,7 +1211,7 @@ int ksmbd_crypt_message(struct ksmbd_work *work, struct kvec *iov,
- free_sg:
- 	kfree(sg);
- free_req:
--	kfree(req);
-+	aead_request_free(req);
- free_ctx:
- 	ksmbd_release_crypto_ctx(ctx);
- 	return rc;
--- 
-2.39.5
-
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -6123,22 +6123,29 @@ static int ext4_statfs_project(struct su
+ 			     dquot->dq_dqb.dqb_bhardlimit);
+ 	limit >>= sb->s_blocksize_bits;
+ 
+-	if (limit && buf->f_blocks > limit) {
++	if (limit) {
++		uint64_t	remaining = 0;
++
+ 		curblock = (dquot->dq_dqb.dqb_curspace +
+ 			    dquot->dq_dqb.dqb_rsvspace) >> sb->s_blocksize_bits;
+-		buf->f_blocks = limit;
+-		buf->f_bfree = buf->f_bavail =
+-			(buf->f_blocks > curblock) ?
+-			 (buf->f_blocks - curblock) : 0;
++		if (limit > curblock)
++			remaining = limit - curblock;
++
++		buf->f_blocks = min(buf->f_blocks, limit);
++		buf->f_bfree = min(buf->f_bfree, remaining);
++		buf->f_bavail = min(buf->f_bavail, remaining);
+ 	}
+ 
+ 	limit = min_not_zero(dquot->dq_dqb.dqb_isoftlimit,
+ 			     dquot->dq_dqb.dqb_ihardlimit);
+-	if (limit && buf->f_files > limit) {
+-		buf->f_files = limit;
+-		buf->f_ffree =
+-			(buf->f_files > dquot->dq_dqb.dqb_curinodes) ?
+-			 (buf->f_files - dquot->dq_dqb.dqb_curinodes) : 0;
++	if (limit) {
++		uint64_t	remaining = 0;
++
++		if (limit > dquot->dq_dqb.dqb_curinodes)
++			remaining = limit - dquot->dq_dqb.dqb_curinodes;
++
++		buf->f_files = min(buf->f_files, limit);
++		buf->f_ffree = min(buf->f_ffree, remaining);
+ 	}
+ 
+ 	spin_unlock(&dquot->dq_dqb_lock);
 
 
 
