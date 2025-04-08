@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-130055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94E77A80299
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D353A80196
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:41:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D9A819E22ED
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:45:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D21F880359
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:34:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A55B268C65;
-	Tue,  8 Apr 2025 11:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C6DB268C79;
+	Tue,  8 Apr 2025 11:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bc6f+hoI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pA+jbUTa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083AC264A76;
-	Tue,  8 Apr 2025 11:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2A6268C78;
+	Tue,  8 Apr 2025 11:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112695; cv=none; b=WK/cNAFtsDq/hUGivpWo95JiP/iEeqs513E0tAf1DISa88MTcN8JK+nuCLDWWivRQtFngs2WFJ1WxlSe8n8wI8IlRhdiZgr6fHwrL1Fl6QpyhiyJ5THSD5EEiOGITazCNnN/Z5Vn6Mhx52QpiMnxBAOyEqBgXqAP2/OHs0rYygo=
+	t=1744112021; cv=none; b=MxyROBAl7tLEx4vH+4WoAu1RSJ/pOFpJqk7avrm1EX9gMokKnc2dYHhCnKczbret9HAq+q8n7oMKnIcYbYHDLTebuxB04+OqUYL6NPvwF51xhRyiWTskOtPbAnS7kft0DxVmY4oddQAOD/5bFg9Gc6z6lAZ26IgIbJ82chLeWc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112695; c=relaxed/simple;
-	bh=7yhcDCJAwuCkHr2/PKwixHD2bQQefvOpPGRkajLf2LU=;
+	s=arc-20240116; t=1744112021; c=relaxed/simple;
+	bh=olfEgpTmeCJZqR7Ty7f+7yzmY9GgoIOr2D/iu9omOKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CxYrlDh/545maINqIx74JzYdo3ZYb2RQZPieltONiLGIZ3Wp685Y2JoaLmjp3VrkljD+rmK4Ji6DRXiy5X+p3XbrT6/cUa1kQMy3qwLxyg7S0ZuEZyBTVtvVT/MZNaDrGpCMjzcjLL+FwKLZgeKqW5DMTMPGsV93VJ3seetg3hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bc6f+hoI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C135C4CEE5;
-	Tue,  8 Apr 2025 11:44:54 +0000 (UTC)
+	 MIME-Version; b=DVcF8NlkNu/PCvPbHobqDlDBnd2Zv7qKVTYFxXWgYJMiq5t65MhoKHJEn2iV1cYLcymgQelARvpSYsmHJCHw7UG0f6hUQLocboXzxOjxIy04v3VJkmuo8hNefWBc1XOWRttBa85HdIhuVaHoE2YYfYAXgGM/nC5pgEMovERJimU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pA+jbUTa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDCE8C4CEE5;
+	Tue,  8 Apr 2025 11:33:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112694;
-	bh=7yhcDCJAwuCkHr2/PKwixHD2bQQefvOpPGRkajLf2LU=;
+	s=korg; t=1744112021;
+	bh=olfEgpTmeCJZqR7Ty7f+7yzmY9GgoIOr2D/iu9omOKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bc6f+hoIbwBZlnsisgjj2yEsDdTZ5zIER+jWtfw7+SuYrhqwuf+voQ+NWK4sOVwd4
-	 h39J5oolgn51IaBxRhclX/ukZ1qA9O1BHH1MywBE9w8mf2Z4J5+p43Kqh3cie2SnKu
-	 gZj0i2mlAE7qk37ELfgINFaGFv3QTEBFn3qaPjkQ=
+	b=pA+jbUTa2a7aF6nWGUJbngNNcDuxo5V/sa/yfpMjajpSd1pq48Np5jbJ8l7y/kLPP
+	 7JkyxpuaPIEmf0yyPC14le2krRZUMK3Jq78hrM+kNMEKLLTjWBkvuJy5zH4vBLbm7R
+	 gPDYkXMsxx/0/T7dsUI0gjS8HpO2Dm5I7WuulpAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Mattijs Korpershoek <mkorpershoek@baylibre.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Sunil Khatri <sunil.khatri@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 161/279] drm/mediatek: dsi: fix error codes in mtk_dsi_host_transfer()
+Subject: [PATCH 6.14 647/731] drm/amdgpu/gfx11: fix num_mec
 Date: Tue,  8 Apr 2025 12:49:04 +0200
-Message-ID: <20250408104830.683110508@linuxfoundation.org>
+Message-ID: <20250408104929.314836068@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,66 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit dcb166ee43c3d594e7b73a24f6e8cf5663eeff2c ]
+[ Upstream commit 4161050d47e1b083a7e1b0b875c9907e1a6f1f1f ]
 
-There is a type bug because the return statement:
+GC11 only has 1 mec.
 
-        return ret < 0 ? ret : recv_cnt;
-
-The issue is that ret is an int, recv_cnt is a u32 and the function
-returns ssize_t, which is a signed long.  The way that the type promotion
-works is that the negative error codes are first cast to u32 and then
-to signed long.  The error codes end up being positive instead of
-negative and the callers treat them as success.
-
-Fixes: 81cc7e51c4f1 ("drm/mediatek: Allow commands to be sent during video mode")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/r/202412210801.iADw0oIH-lkp@intel.com/
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Mattijs Korpershoek <mkorpershoek@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/b754a408-4f39-4e37-b52d-7706c132e27f@stanley.mountain/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: 3d879e81f0f9 ("drm/amdgpu: add init support for GFX11 (v2)")
+Reviewed-by: Sunil Khatri <sunil.khatri@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dsi.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dsi.c b/drivers/gpu/drm/mediatek/mtk_dsi.c
-index 3b55a83b7cdff..cac98f0104257 100644
---- a/drivers/gpu/drm/mediatek/mtk_dsi.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dsi.c
-@@ -920,12 +920,12 @@ static ssize_t mtk_dsi_host_transfer(struct mipi_dsi_host *host,
- 				     const struct mipi_dsi_msg *msg)
- {
- 	struct mtk_dsi *dsi = host_to_dsi(host);
--	u32 recv_cnt, i;
-+	ssize_t recv_cnt;
- 	u8 read_data[16];
- 	void *src_addr;
- 	u8 irq_flag = CMD_DONE_INT_FLAG;
- 	u32 dsi_mode;
--	int ret;
-+	int ret, i;
- 
- 	dsi_mode = readl(dsi->regs + DSI_MODE_CTRL);
- 	if (dsi_mode & MODE) {
-@@ -974,7 +974,7 @@ static ssize_t mtk_dsi_host_transfer(struct mipi_dsi_host *host,
- 	if (recv_cnt)
- 		memcpy(msg->rx_buf, src_addr, recv_cnt);
- 
--	DRM_INFO("dsi get %d byte data from the panel address(0x%x)\n",
-+	DRM_INFO("dsi get %zd byte data from the panel address(0x%x)\n",
- 		 recv_cnt, *((u8 *)(msg->tx_buf)));
- 
- restore_dsi_mode:
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+index 56c06b72a70ac..cfb51baa581a1 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+@@ -1559,7 +1559,7 @@ static int gfx_v11_0_sw_init(struct amdgpu_ip_block *ip_block)
+ 		adev->gfx.me.num_me = 1;
+ 		adev->gfx.me.num_pipe_per_me = 1;
+ 		adev->gfx.me.num_queue_per_pipe = 1;
+-		adev->gfx.mec.num_mec = 2;
++		adev->gfx.mec.num_mec = 1;
+ 		adev->gfx.mec.num_pipe_per_mec = 4;
+ 		adev->gfx.mec.num_queue_per_pipe = 4;
+ 		break;
 -- 
 2.39.5
 
