@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-130545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1095A80503
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:14:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 258E3A80B0D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:12:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B45019E4F22
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:08:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2B8C1BA825D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D10B72673B7;
-	Tue,  8 Apr 2025 12:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604D528151B;
+	Tue,  8 Apr 2025 12:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EMMK3mX8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RY8vhRw6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F499263F3B;
-	Tue,  8 Apr 2025 12:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBE926E166;
+	Tue,  8 Apr 2025 12:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113996; cv=none; b=UvGh3rk7tMUFNzq5ZyIgP/LIDNEsPaenuDSRafAXB0kN+03DDZVQLjF8WkRLhUOstmuxdRn0jHV36xSCne5BGn5gv4v0EutvbHMBpj0KQ5dwxg7MgxPY2FRaRkWxbRqofxfI8TnDqooyerLzzqnXcKIGJC/YHzEhojTgbCleb8Y=
+	t=1744116836; cv=none; b=NZxKzL5ApahZgCO0T+gETU3iGqi+BeLy60/Bb0F0FnIF/5xPdEwtFUPi92K5nRpbIEAD05IQ4WwUvHBtCTqzsYnNsOvpFEMh7/Gv+Y2p7htEkMlYA1EXpBetLIhBS5id5rOcoGtrDDGTbl2JI2OBhID8NTYInMd7N6VkTgOOba8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113996; c=relaxed/simple;
-	bh=20bvDM3nFV7LvUPUSrn2dU9guSmIkyLw/t6TRakCoy8=;
+	s=arc-20240116; t=1744116836; c=relaxed/simple;
+	bh=+ko9+syxyl8KRqsIM37+malAcKs1V9jZH0ReqhG9/r8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=So4TO7XeQSVYjdHLfH9H4AYX/vXIOei59CCBLFto9rlSMd1b0AdYR7MbMFMAnJCkiuOpHanI4LZGjtJtR/PC8Pi1nss8xN1XC4CPoP5ExaT3+Qm+Y4Q0df6RRLhFrfJ3yS5JQoXlmludbw5jKu2MSsDiqAFaQpw27SbJyqLo0wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EMMK3mX8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21811C4CEE5;
-	Tue,  8 Apr 2025 12:06:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VEzQ/kALtXNu1drtvW0y73tN6S/HYxRWphyp/fFK0MoAAW0lBqNlUA77b/G1dNjV+sesoW7Z/eKBqRtCowZQU09hrSGxX/Bm89gJAG+SJbolq/JZISFcudiQBCrRQRv7o3KuL/N/9+erE6OGYA6LC0/oLMkdFbZo5xBrpNJ0hPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RY8vhRw6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40109C4CEE5;
+	Tue,  8 Apr 2025 12:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113996;
-	bh=20bvDM3nFV7LvUPUSrn2dU9guSmIkyLw/t6TRakCoy8=;
+	s=korg; t=1744116835;
+	bh=+ko9+syxyl8KRqsIM37+malAcKs1V9jZH0ReqhG9/r8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EMMK3mX8wgRBOUf96azAEhYxQbrw5GgpTWqZjWzhcX0YaKqCvJVZkKFT/W4vZKfMX
-	 HCeCUoVpCTIYLL+iq/hV8EmIP3p3hAQrmy64Mr5t7f/tL6VZXOkFGWZjkDdmZW7P5Z
-	 YhLBZpDn0nrlJCiDE2Ay7UgyLpwax75GW6Lhkg9o=
+	b=RY8vhRw6tcCf84jfz0YuKkbCsnZ744ThxMbA98w/bI7YkE3VrsuKS4P06jKRu3d/i
+	 s6j9fCD9M0W/Ucq8Q3jwjpTUe5MHweUg8JYnRHp+HPgtOLqUAaMLGQ5KLq1sczh4fv
+	 UvIYyZgcDVVhYnWAbCmwIZseijj2Xnlw23sYAJAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yanjun Yang <yangyj.ee@gmail.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Kees Cook <kees@kernel.org>
-Subject: [PATCH 5.4 071/154] ARM: Remove address checking for MMUless devices
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Shuming Fan <shumingf@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 286/423] ASoC: rt1320: set wake_capable = 0 explicitly
 Date: Tue,  8 Apr 2025 12:50:12 +0200
-Message-ID: <20250408104817.577533798@linuxfoundation.org>
+Message-ID: <20250408104852.441575930@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +63,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yanjun Yang <yangyj.ee@gmail.com>
+From: Bard Liao <yung-chuan.liao@linux.intel.com>
 
-commit 3ccea4784fddd96fbd6c4497eb28b45dab638c2a upstream.
+[ Upstream commit 927e6bec5cf3624665b0a2e9f64a1d32f3d22cdd ]
 
-Commit 169f9102f9198b ("ARM: 9350/1: fault: Implement
-copy_from_kernel_nofault_allowed()") added the function to check address
-before use. However, for devices without MMU, addr > TASK_SIZE will
-always fail.  This patch move this function after the #ifdef CONFIG_MMU
-statement.
+"generic_new_peripheral_assigned: invalid dev_num 1, wake supported 1"
+is reported by our internal CI test.
 
-Signed-off-by: Yanjun Yang <yangyj.ee@gmail.com>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218953
-Fixes: 169f9102f9198b ("ARM: 9350/1: fault: Implement copy_from_kernel_nofault_allowed()")
-Link: https://lore.kernel.org/r/20240611100947.32241-1-yangyj.ee@gmail.com
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Rt1320's wake feature is not used in Linux and that's why it is not in
+the wake_capable_list[] list in intel_auxdevice.c.
+However, BIOS may set it as wake-capable. Overwrite wake_capable to 0
+in the codec driver to align with wake_capable_list[].
+
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Acked-by: Shuming Fan <shumingf@realtek.com>
+Link: https://patch.msgid.link/20250305134113.201326-1-yung-chuan.liao@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mm/fault.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/codecs/rt1320-sdw.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/arm/mm/fault.c
-+++ b/arch/arm/mm/fault.c
-@@ -25,6 +25,8 @@
+diff --git a/sound/soc/codecs/rt1320-sdw.c b/sound/soc/codecs/rt1320-sdw.c
+index f4e1ea29c2651..f2d194e76a947 100644
+--- a/sound/soc/codecs/rt1320-sdw.c
++++ b/sound/soc/codecs/rt1320-sdw.c
+@@ -3705,6 +3705,9 @@ static int rt1320_read_prop(struct sdw_slave *slave)
+ 	/* set the timeout values */
+ 	prop->clk_stop_timeout = 64;
  
- #include "fault.h"
- 
-+#ifdef CONFIG_MMU
++	/* BIOS may set wake_capable. Make sure it is 0 as wake events are disabled. */
++	prop->wake_capable = 0;
 +
- bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
- {
- 	unsigned long addr = (unsigned long)unsafe_src;
-@@ -32,8 +34,6 @@ bool copy_from_kernel_nofault_allowed(co
- 	return addr >= TASK_SIZE && ULONG_MAX - addr >= size;
+ 	return 0;
  }
  
--#ifdef CONFIG_MMU
--
- /*
-  * This is useful to dump out the page tables associated with
-  * 'addr' in mm 'mm'.
+-- 
+2.39.5
+
 
 
 
