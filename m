@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-129278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7350BA7FEFB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:17:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C3F1A7FF34
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:19:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2102844649C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:11:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F12D719E3276
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:11:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC1002686B3;
-	Tue,  8 Apr 2025 11:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 690572686AB;
+	Tue,  8 Apr 2025 11:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9Ud283D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YEcldCZA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A695A2686A8;
-	Tue,  8 Apr 2025 11:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4E4263C6D;
+	Tue,  8 Apr 2025 11:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110594; cv=none; b=AH3OrkvkIYCOPdo2ur3WTKTzSO5ZkO/4JlMq++zqtUU8PqVorqK/dqEYqSN8tT29UQhOJPfoRI7IFv1DozBpb4Qe4Jrjytc7/3K8WSu8jU1bEeqd8RBVrvxB302pQW5HqC+9ped7x6ecqIUmc12e0RvrHGw8BW4wGz6W26lapEw=
+	t=1744110600; cv=none; b=pY3WvL7BmC4uvPSI+29cYEIfHgnJHaUxYDaNgTbgyFUBk2nH7OeIqzcVP2Ve3tx3CD8fyWHD6QkU1iAhjiGthDAx8Y1BjVxKTTiIiMCUNBFoXmpen1kFZXxQVIf0/bG6qm2iG6RZdTqqbeLQWSXCJrdnu8EJgozNbND3aRYlO4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110594; c=relaxed/simple;
-	bh=GUA2FAeCot4+ucdIzbjDnUIEPseCB2K9vKlm0eREl0s=;
+	s=arc-20240116; t=1744110600; c=relaxed/simple;
+	bh=IeITd/t6QQ1zopeuvE+vnNNDLMvPTLZNT2se2+Ztplg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZQoM8onwLA6xYDDz0+MbG2UMuLr+aH7rL7FRoJ0mYnbkdDpbB+GGiP5JXYtgjVkW+IA+y8SGv7+fLrM2lMrVcG8LNishW6o5KRpQPqwSpVsdiGdV+Cl4Xs25gbrWr4bpOo8k0uUTl0IF1tLR7IL2hKu9fpeGv6gNb1Dzp5x/IFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9Ud283D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D5CC4CEE5;
-	Tue,  8 Apr 2025 11:09:54 +0000 (UTC)
+	 MIME-Version; b=fld9HOp2SV+H5IX97DK4uxMgG/J3yZBM6ZCupgs1zAxKOLQWPAspfnsFuWoQm4vxnyEjwl/kcL2ROIs4ER0G5bNrPqTWSo3xcLo8nTYbargljQtfN0fgLC6m7XaBtADoJbx62x5DfRelgr0LHrxI3SwWFsnJLBpGIKMs4sRp7tI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YEcldCZA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E60CC4CEE5;
+	Tue,  8 Apr 2025 11:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110594;
-	bh=GUA2FAeCot4+ucdIzbjDnUIEPseCB2K9vKlm0eREl0s=;
+	s=korg; t=1744110600;
+	bh=IeITd/t6QQ1zopeuvE+vnNNDLMvPTLZNT2se2+Ztplg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e9Ud283DNZnLg91nol9pOnUMW71cef6/bYg90LmmD2nE0S4eAFmCxGBFSLdJrWRnR
-	 2sqJh3uAtwqY/0D8xYAsNP4awf3DyOnQBGiADxMteFm8ZxFil2/bpx199FVs6NHbS8
-	 NmMBAQqeERIlDR92R6UdWoLKOXij/JVh/9CMgJT8=
+	b=YEcldCZAui4qrknhPYQ+w60hMZz5VezaPqCdBVZqulOrFbcncjhm+34eobjSh4Vtb
+	 +qvhPEaDNSEFs3n8kqs826PAXSrVEhyjXR+kwcLk+iW2B9BTNdMMEU9CwshUBPoPz9
+	 jJojfLod+TyZR1jhuSOL50MSfLf6l3uOQBkjaIsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 121/731] arm64: dts: imx8mp-skov: correct PMIC board limits
-Date: Tue,  8 Apr 2025 12:40:18 +0200
-Message-ID: <20250408104917.091253974@linuxfoundation.org>
+Subject: [PATCH 6.14 122/731] arm64: dts: imx8mp-skov: operate CPU at 850 mV by default
+Date: Tue,  8 Apr 2025 12:40:19 +0200
+Message-ID: <20250408104917.115342277@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -68,95 +68,57 @@ Content-Transfer-Encoding: 8bit
 
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-[ Upstream commit d19a6f79961df1c29d8b2ac93b01b96788f209fa ]
+[ Upstream commit 3d8ffe5702b24a0bd9d97446c0740110325f379b ]
 
-The PMIC voltage constraints in the device tree currently describe the
-permissible range of the PMIC. This is unnecessary as this information
-already exists in the driver and wrong as it doesn't account for
-board-specific constraints, e.g. a 2.1V on VDD_SOC would fry the SoC and
-a maximum voltage of 3.4V on the VDD_3V3 rail may be unexpected across
-the board.
+The Skov i.MX8MP boards are passively cooled and heatsink is specced for
+continuous operation at 1.2 GHz only. Short bouts of 1.6 GHz are ok,
+but these should be invoked intentionally, not as part of
+suspend/resume cycles.
 
-Fix this by adjusting constraints to reflect the board limits.
+Therefore, configure RUN frequency as 850 mV and remove the higher
+voltage operating points from those permissible for suspend.
 
 Fixes: 6d382d51d979 ("arm64: dts: freescale: Add SKOV IMX8MP CPU revB board")
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/freescale/imx8mp-skov-reva.dtsi  | 24 +++++++++----------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ .../boot/dts/freescale/imx8mp-skov-reva.dtsi      | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
-index 59813ef8e2bb3..ae82166b5c266 100644
+index ae82166b5c266..7ae686d37ddac 100644
 --- a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
 +++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
-@@ -247,8 +247,8 @@
+@@ -163,6 +163,19 @@
+ 	};
+ };
  
- 			reg_vdd_arm: BUCK2 {
- 				regulator-name = "VDD_ARM";
--				regulator-min-microvolt = <600000>;
--				regulator-max-microvolt = <2187500>;
-+				regulator-min-microvolt = <850000>;
-+				regulator-max-microvolt = <1000000>;
- 				vin-supply = <&reg_5v_p>;
++/*
++ * Board is passively cooled and heatsink is specced for continuous operation
++ * at 1.2 GHz only. Short bouts of 1.6 GHz are ok, but these should be done
++ * intentionally, not as part of suspend/resume cycles.
++ */
++&{/opp-table/opp-1600000000} {
++	/delete-property/ opp-suspend;
++};
++
++&{/opp-table/opp-1800000000} {
++	/delete-property/ opp-suspend;
++};
++
+ &A53_0 {
+ 	cpu-supply = <&reg_vdd_arm>;
+ };
+@@ -253,7 +266,7 @@
  				regulator-boot-on;
  				regulator-always-on;
-@@ -259,8 +259,8 @@
+ 				regulator-ramp-delay = <3125>;
+-				nxp,dvs-run-voltage = <950000>;
++				nxp,dvs-run-voltage = <850000>;
+ 				nxp,dvs-standby-voltage = <850000>;
+ 			};
  
- 			reg_vdd_3v3: BUCK4 {
- 				regulator-name = "VDD_3V3";
--				regulator-min-microvolt = <600000>;
--				regulator-max-microvolt = <3400000>;
-+				regulator-min-microvolt = <3300000>;
-+				regulator-max-microvolt = <3300000>;
- 				vin-supply = <&reg_5v_p>;
- 				regulator-boot-on;
- 				regulator-always-on;
-@@ -268,8 +268,8 @@
- 
- 			reg_vdd_1v8: BUCK5 {
- 				regulator-name = "VDD_1V8";
--				regulator-min-microvolt = <600000>;
--				regulator-max-microvolt = <3400000>;
-+				regulator-min-microvolt = <1800000>;
-+				regulator-max-microvolt = <1800000>;
- 				vin-supply = <&reg_5v_p>;
- 				regulator-boot-on;
- 				regulator-always-on;
-@@ -277,8 +277,8 @@
- 
- 			reg_nvcc_dram_1v1: BUCK6 {
- 				regulator-name = "NVCC_DRAM_1V1";
--				regulator-min-microvolt = <600000>;
--				regulator-max-microvolt = <3400000>;
-+				regulator-min-microvolt = <1100000>;
-+				regulator-max-microvolt = <1100000>;
- 				vin-supply = <&reg_5v_p>;
- 				regulator-boot-on;
- 				regulator-always-on;
-@@ -286,8 +286,8 @@
- 
- 			reg_nvcc_snvs_1v8: LDO1 {
- 				regulator-name = "NVCC_SNVS_1V8";
--				regulator-min-microvolt = <1600000>;
--				regulator-max-microvolt = <3300000>;
-+				regulator-min-microvolt = <1800000>;
-+				regulator-max-microvolt = <1800000>;
- 				vin-supply = <&reg_5v_p>;
- 				regulator-boot-on;
- 				regulator-always-on;
-@@ -295,8 +295,8 @@
- 
- 			reg_vdda_1v8: LDO3 {
- 				regulator-name = "VDDA_1V8";
--				regulator-min-microvolt = <800000>;
--				regulator-max-microvolt = <3300000>;
-+				regulator-min-microvolt = <1800000>;
-+				regulator-max-microvolt = <1800000>;
- 				vin-supply = <&reg_5v_p>;
- 				regulator-boot-on;
- 				regulator-always-on;
 -- 
 2.39.5
 
