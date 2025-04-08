@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-130918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 976FCA80715
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10362A80A9A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:07:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A0108A4502
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:25:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9DDE1BA4CFB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:01:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D420269D03;
-	Tue,  8 Apr 2025 12:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D48F5270EB2;
+	Tue,  8 Apr 2025 12:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iKkdmGym"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ffJvrvhO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADE2266580;
-	Tue,  8 Apr 2025 12:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED1A270EAC;
+	Tue,  8 Apr 2025 12:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115007; cv=none; b=Riiwk0al9S9sALghPkJEzOO9CiyJ9IL4q70Wx48D4zGnekn20dELJB3fRdINeFCOhbbjvD52UYgUisT1sDK+HQZ8a1dAeV7KkwSciUVnnPX9toC+CnoDUCe8zaVy4OJJ4JTBveEA9NIgqpmVyMHg4EJHZrfnGp7MMhAzedGPrjA=
+	t=1744116607; cv=none; b=oJLfA8bufACKaCPWic7/hENDaOoTOqRB0PZTWV8e2Rf8gA7aC7EtVzIeNl6WGzMWsBCSpg8i5oFvllsPd8I+yKqo3bGGfj2oyhq6n0L/HAkgAZq79l5xUOZYTN6JQxlTAQlRe5NNicMGw2xYGUdc7yGuzb+IwvB8QKvRv10ZmyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115007; c=relaxed/simple;
-	bh=WKDBpxQTork8LS1VYeQZb0dtOTs+1BJYfFo1d4RzIxA=;
+	s=arc-20240116; t=1744116607; c=relaxed/simple;
+	bh=obuebCR3VBR/fNd95I777PVRU2nw/yv8ixsVLJ5VYh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=js63chBcczO/Os9S3LtrVoaWv9/rmj+CZKZN2zUSiRLF0jFGZwn4bUP1zKXeY3nc4Js57lK6i4sp6ExYaib3EeGuUpXjeWHt6mIN5XGR3cxEru0dXOZwpgFMXgYGu1XFveUxjnzI0wkI+4phdRbVNd89BjYiWRq/bXIyFJMyVUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iKkdmGym; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84BF0C4CEE5;
-	Tue,  8 Apr 2025 12:23:26 +0000 (UTC)
+	 MIME-Version; b=IsOFPJpmDwCsdcusTI6HrdD9dSuNu88xx4suFkKOX/xMphGoJdVNQrSWotls82Qin7Wekyh/js3fUECyAn5cQj9b2aSc2B1MBuqUdno6EZLzcNTs0NLtdq2pb8WCDy+OyxqRdLLpfMwvaogijp3s2y3zxLdniQyhi1g9Q86AfVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ffJvrvhO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2084AC4CEE5;
+	Tue,  8 Apr 2025 12:50:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115007;
-	bh=WKDBpxQTork8LS1VYeQZb0dtOTs+1BJYfFo1d4RzIxA=;
+	s=korg; t=1744116607;
+	bh=obuebCR3VBR/fNd95I777PVRU2nw/yv8ixsVLJ5VYh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iKkdmGymIuLmCAZjhlvQ5IGkaz9+yKpvzco2KnFAC1y4Ew6qAn6PEw7FXoGdWlVQD
-	 tsZJSGG7/VwsFXJ2G9IG9r7dozoMePH6smK5pSK+CDHbBtb7hR3sdNBEjRTwPx1HfY
-	 dPL/JD39Q0xWpF2QuQJk0H2gjBZR3GZXzTMH66QA=
+	b=ffJvrvhO1OtTG2oydIb0tx3AIhw96mUy3MX3O9STKQQezBBYbUSl+rebW2a9hy6MF
+	 H1IiuOh23o2vgYW1F6S9RKBdIas/cWO/VUVI75pKxWvATNrP1GsCCZUicraHg3rK9b
+	 flU2ksQwhPm8Z3rn5buWYe58bzoNGVcOacQt+oO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 315/499] cifs: fix incorrect validation for num_aces field of smb_acl
-Date: Tue,  8 Apr 2025 12:48:47 +0200
-Message-ID: <20250408104859.074755716@linuxfoundation.org>
+Subject: [PATCH 6.12 202/423] NFSv4: Avoid unnecessary scans of filesystems for expired delegations
+Date: Tue,  8 Apr 2025 12:48:48 +0200
+Message-ID: <20250408104850.441625645@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit aa2a739a75ab6f24ef72fb3fdb9192c081eacf06 ]
+[ Upstream commit f163aa81a799e2d46d7f8f0b42a0e7770eaa0d06 ]
 
-parse_dcal() validate num_aces to allocate ace array.
+The amount of looping through the list of delegations is occasionally
+leading to soft lockups.  If the state manager was asked to reap the
+expired delegations, it should scan only those filesystems that hold
+delegations that need to be reaped.
 
-f (num_aces > ULONG_MAX / sizeof(struct smb_ace *))
-
-It is an incorrect validation that we can create an array of size ULONG_MAX.
-smb_acl has ->size field to calculate actual number of aces in response buffer
-size. Use this to check invalid num_aces.
-
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 7f156ef0bf45 ("NFSv4: Clean up nfs_delegation_reap_expired()")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsacl.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/nfs/delegation.c       | 7 +++++++
+ include/linux/nfs_fs_sb.h | 1 +
+ 2 files changed, 8 insertions(+)
 
-diff --git a/fs/smb/client/cifsacl.c b/fs/smb/client/cifsacl.c
-index 7d953208046af..64bd68f750f84 100644
---- a/fs/smb/client/cifsacl.c
-+++ b/fs/smb/client/cifsacl.c
-@@ -778,7 +778,8 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 	}
- 
- 	/* validate that we do not go past end of acl */
--	if (end_of_acl < (char *)pdacl + le16_to_cpu(pdacl->size)) {
-+	if (end_of_acl < (char *)pdacl + sizeof(struct smb_acl) ||
-+	    end_of_acl < (char *)pdacl + le16_to_cpu(pdacl->size)) {
- 		cifs_dbg(VFS, "ACL too small to parse DACL\n");
+diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
+index d1f5e497729c3..abd952cc47e4b 100644
+--- a/fs/nfs/delegation.c
++++ b/fs/nfs/delegation.c
+@@ -1284,6 +1284,7 @@ static void nfs_mark_test_expired_delegation(struct nfs_server *server,
  		return;
- 	}
-@@ -799,8 +800,11 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 	if (num_aces > 0) {
- 		umode_t denied_mode = 0;
+ 	clear_bit(NFS_DELEGATION_NEED_RECLAIM, &delegation->flags);
+ 	set_bit(NFS_DELEGATION_TEST_EXPIRED, &delegation->flags);
++	set_bit(NFS4SERV_DELEGATION_EXPIRED, &server->delegation_flags);
+ 	set_bit(NFS4CLNT_DELEGATION_EXPIRED, &server->nfs_client->cl_state);
+ }
  
--		if (num_aces > ULONG_MAX / sizeof(struct smb_ace *))
-+		if (num_aces > (le16_to_cpu(pdacl->size) - sizeof(struct smb_acl)) /
-+				(offsetof(struct smb_ace, sid) +
-+				 offsetof(struct smb_sid, sub_auth) + sizeof(__le16)))
- 			return;
-+
- 		ppace = kmalloc_array(num_aces, sizeof(struct smb_ace *),
- 				      GFP_KERNEL);
- 		if (!ppace)
+@@ -1362,6 +1363,9 @@ static int nfs_server_reap_expired_delegations(struct nfs_server *server,
+ 	nfs4_stateid stateid;
+ 	unsigned long gen = ++server->delegation_gen;
+ 
++	if (!test_and_clear_bit(NFS4SERV_DELEGATION_EXPIRED,
++				&server->delegation_flags))
++		return 0;
+ restart:
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(delegation, &server->delegations, super_list) {
+@@ -1391,6 +1395,9 @@ static int nfs_server_reap_expired_delegations(struct nfs_server *server,
+ 			goto restart;
+ 		}
+ 		nfs_inode_mark_test_expired_delegation(server,inode);
++		set_bit(NFS4SERV_DELEGATION_EXPIRED, &server->delegation_flags);
++		set_bit(NFS4CLNT_DELEGATION_EXPIRED,
++			&server->nfs_client->cl_state);
+ 		iput(inode);
+ 		return -EAGAIN;
+ 	}
+diff --git a/include/linux/nfs_fs_sb.h b/include/linux/nfs_fs_sb.h
+index 98fc10ee0b869..f4cb1f4850a0c 100644
+--- a/include/linux/nfs_fs_sb.h
++++ b/include/linux/nfs_fs_sb.h
+@@ -253,6 +253,7 @@ struct nfs_server {
+ 
+ 	unsigned long		delegation_flags;
+ #define NFS4SERV_DELEGRETURN		(1)
++#define NFS4SERV_DELEGATION_EXPIRED	(2)
+ 	unsigned long		delegation_gen;
+ 	unsigned long		mig_gen;
+ 	unsigned long		mig_status;
 -- 
 2.39.5
 
