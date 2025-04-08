@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-129847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37333A801E3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:43:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AEF8A7FE4F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:12:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 495BC17B9B1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:36:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A2A517D092
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:06:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01BB62690C4;
-	Tue,  8 Apr 2025 11:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEE1D26A0AF;
+	Tue,  8 Apr 2025 11:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtIAB++E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7rPvdZ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBAD2192F2;
-	Tue,  8 Apr 2025 11:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78478263C6D;
+	Tue,  8 Apr 2025 11:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112136; cv=none; b=CC1nE8Dvv97Hk/bTgBtcGr3eS4ENoknqldFvRbcGlnyoK8jdeT+o73rl+b3wJsuXpkxNtbve97u5RCyeNa8sDGCV7IJR/nN08GdtyDmC1jYrKHfCvrX8yKmqwvzR+pk7Gi8VYF7v7EkZd9/3H/YGlk3BnUnzGem6CgxpH2MbZWs=
+	t=1744110283; cv=none; b=hf8G0TzVClRirR8KnxcmRA5lf5wABEnvQY+uQlD6pAvLQ1gUe5oSE6+5dvLZPic0x6j7Nh/2AgIbWv0oqqFl4nqwMsDYTA/4ztHlwiGQDsqhM3YFcHTPU/LsB56miNYjWpu0qnh7Z8WRZ9cNMhvRj1Y53+1W1LjIIC6uitMC+Ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112136; c=relaxed/simple;
-	bh=uHfNI3nmTlvXV6mrvgHKf2CNQw2CzqnS+6TQwKr57q0=;
+	s=arc-20240116; t=1744110283; c=relaxed/simple;
+	bh=7IiKMxRzCL9o61FxvKicrS9nBijqE2fakX+VYOs8hz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mea6B3SS88NKRFNduXuDjYm+i9LgrqvU66X6+ZpzTJ3DoXAF005j5iGMPoZ1BQz4CbI1oarJ+bBxC0W8ghVFrXF352Nj72K/FMmdW33K7SXi6GMsijJohfAPxNZMF0Krwps7m/pjjZk2r5fMDUc5Xx6RJDnjw07aK1YFCdX4yuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtIAB++E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32817C4CEE5;
-	Tue,  8 Apr 2025 11:35:36 +0000 (UTC)
+	 MIME-Version; b=phI2qpd5SFIly5HaemcKw/i3z3pdogiCA11n3V4d0PeKT/2u9vxFJFhCQpbg5mRaFy+kKQ6y1060iIVFHWQv7/BNl0in7sRsqXZHV6PZjKQmne6jUsRCFX+FrF0ZgjeWLmZUGB548ZqXBw7bK6YIpNH7XP/bOlkKtF/6fNnaM50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7rPvdZ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07908C4CEE5;
+	Tue,  8 Apr 2025 11:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112136;
-	bh=uHfNI3nmTlvXV6mrvgHKf2CNQw2CzqnS+6TQwKr57q0=;
+	s=korg; t=1744110283;
+	bh=7IiKMxRzCL9o61FxvKicrS9nBijqE2fakX+VYOs8hz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mtIAB++En1OVnbAlPLJOInQ2MKvCKK41Y9OZzJ6cikZvtMhLJCZJcLILWvji/P66+
-	 xDUJ4souUub5u/yCqBpW9s0B68F6fhfK2175l7PnGPul7zjqGnrA57aFHLOsLmLf6N
-	 BFQdcBP8wDmeibAXUCAZDUDPjX5etILATHX4qnIE=
+	b=W7rPvdZ4w7OgVceUgzUraoWPoV94dtbD7oDzmhXojtF5dshFLMPWnQxFOyW/km5WX
+	 Qa3+/z0rxkog09nAKOrm5FYXN8xTS/lkRWw2981r6LY+gz0bgOI7xisyajKJHv1S6a
+	 CccOEnXkqUyuT81QTv4GlsD5FWlpowjnoX5HOHYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Subject: [PATCH 6.14 690/731] ARM: 9443/1: Require linker to support KEEP within OVERLAY for DCE
-Date: Tue,  8 Apr 2025 12:49:47 +0200
-Message-ID: <20250408104930.317702893@linuxfoundation.org>
+	Alex Hung <alex.hung@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Jianqi Ren <jianqi.ren.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.10 210/227] drm/amd/display: Skip inactive planes within ModeSupportAndSystemConfiguration
+Date: Tue,  8 Apr 2025 12:49:48 +0200
+Message-ID: <20250408104826.611395972@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +66,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-commit e7607f7d6d81af71dcc5171278aadccc94d277cd upstream.
+commit a54f7e866cc73a4cb71b8b24bb568ba35c8969df upstream.
 
-ld.lld prior to 21.0.0 does not support using the KEEP keyword within an
-overlay description, which may be needed to avoid discarding necessary
-sections within an overlay with '--gc-sections', which can be enabled
-for the kernel via CONFIG_LD_DEAD_CODE_DATA_ELIMINATION.
+[Why]
+Coverity reports Memory - illegal accesses.
 
-Disallow CONFIG_LD_DEAD_CODE_DATA_ELIMINATION without support for KEEP
-within OVERLAY and introduce a macro, OVERLAY_KEEP, that can be used to
-conditionally add KEEP when it is properly supported to avoid breaking
-old versions of ld.lld.
+[How]
+Skip inactive planes.
 
-Cc: stable@vger.kernel.org
-Link: https://github.com/llvm/llvm-project/commit/381599f1fe973afad3094e55ec99b1620dba7d8c
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[get_pipe_idx() was introduced as a helper by
+dda4fb85e433 ("drm/amd/display: DML changes for DCN32/321") in v6.0.
+This patch backports it to make code clearer. And minor conflict is
+resolved due to code context change.]
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/Kconfig                   |    2 +-
- arch/arm/include/asm/vmlinux.lds.h |    6 ++++++
- init/Kconfig                       |    5 +++++
- 3 files changed, 12 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dml/display_mode_vba.c |   27 +++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
 
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -121,7 +121,7 @@ config ARM
- 	select HAVE_KERNEL_XZ
- 	select HAVE_KPROBES if !XIP_KERNEL && !CPU_ENDIAN_BE32 && !CPU_V7M
- 	select HAVE_KRETPROBES if HAVE_KPROBES
--	select HAVE_LD_DEAD_CODE_DATA_ELIMINATION if (LD_VERSION >= 23600 || LD_IS_LLD)
-+	select HAVE_LD_DEAD_CODE_DATA_ELIMINATION if (LD_VERSION >= 23600 || LD_CAN_USE_KEEP_IN_OVERLAY)
- 	select HAVE_MOD_ARCH_SPECIFIC
- 	select HAVE_NMI
- 	select HAVE_OPTPROBES if !THUMB2_KERNEL
---- a/arch/arm/include/asm/vmlinux.lds.h
-+++ b/arch/arm/include/asm/vmlinux.lds.h
-@@ -34,6 +34,12 @@
- #define NOCROSSREFS
- #endif
+--- a/drivers/gpu/drm/amd/display/dc/dml/display_mode_vba.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/display_mode_vba.c
+@@ -838,11 +838,30 @@ static unsigned int CursorBppEnumToBits(
+ 	}
+ }
  
-+#ifdef CONFIG_LD_CAN_USE_KEEP_IN_OVERLAY
-+#define OVERLAY_KEEP(x)		KEEP(x)
-+#else
-+#define OVERLAY_KEEP(x)		x
-+#endif
++static unsigned int get_pipe_idx(struct display_mode_lib *mode_lib, unsigned int plane_idx)
++{
++	int pipe_idx = -1;
++	int i;
 +
- /* Set start/end symbol names to the LMA for the section */
- #define ARM_LMA(sym, section)						\
- 	sym##_start = LOADADDR(section);				\
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -129,6 +129,11 @@ config CC_HAS_COUNTED_BY
- 	# https://github.com/llvm/llvm-project/pull/112636
- 	depends on !(CC_IS_CLANG && CLANG_VERSION < 190103)
++	ASSERT(plane_idx < DC__NUM_DPP__MAX);
++
++	for (i = 0; i < DC__NUM_DPP__MAX ; i++) {
++		if (plane_idx == mode_lib->vba.pipe_plane[i]) {
++			pipe_idx = i;
++			break;
++		}
++	}
++	ASSERT(pipe_idx >= 0);
++
++	return pipe_idx;
++}
++
+ void ModeSupportAndSystemConfiguration(struct display_mode_lib *mode_lib)
+ {
+ 	soc_bounding_box_st *soc = &mode_lib->vba.soc;
+ 	unsigned int k;
+ 	unsigned int total_pipes = 0;
++	unsigned int pipe_idx = 0;
  
-+config LD_CAN_USE_KEEP_IN_OVERLAY
-+	# ld.lld prior to 21.0.0 did not support KEEP within an overlay description
-+	# https://github.com/llvm/llvm-project/pull/130661
-+	def_bool LD_IS_BFD || LLD_VERSION >= 210000
-+
- config RUSTC_HAS_COERCE_POINTEE
- 	def_bool RUSTC_VERSION >= 108400
+ 	mode_lib->vba.VoltageLevel = mode_lib->vba.cache_pipes[0].clks_cfg.voltage;
+ 	mode_lib->vba.ReturnBW = mode_lib->vba.ReturnBWPerState[mode_lib->vba.VoltageLevel][mode_lib->vba.maxMpcComb];
+@@ -862,8 +881,14 @@ void ModeSupportAndSystemConfiguration(s
+ 		mode_lib->vba.DISPCLK = soc->clock_limits[mode_lib->vba.VoltageLevel].dispclk_mhz;
+ 
+ 	// Total Available Pipes Support Check
+-	for (k = 0; k < mode_lib->vba.NumberOfActivePlanes; ++k)
++	for (k = 0; k < mode_lib->vba.NumberOfActivePlanes; ++k) {
++		pipe_idx = get_pipe_idx(mode_lib, k);
++		if (pipe_idx == -1) {
++			ASSERT(0);
++			continue; // skip inactive planes
++		}
+ 		total_pipes += mode_lib->vba.DPPPerPlane[k];
++	}
+ 	ASSERT(total_pipes <= DC__NUM_DPP__MAX);
+ }
  
 
 
