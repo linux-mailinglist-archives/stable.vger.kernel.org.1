@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-130803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D235A80671
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:27:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9558BA8093E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:52:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA64A4C2278
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:21:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7DD47A9979
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:49:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0697226B098;
-	Tue,  8 Apr 2025 12:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CACC263F4D;
+	Tue,  8 Apr 2025 12:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJBqiJ3r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jd8xMAaj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B583D26B08D;
-	Tue,  8 Apr 2025 12:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0F8268685;
+	Tue,  8 Apr 2025 12:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114692; cv=none; b=lQxejz71XDCS0stvBUQG5j7Jik/YH3yrYeYjISlu6MCPXpo+J3oc6FsqiyX7PvAu92nvsx+Gm608RX7c0GBXXQmbaXoxvNdWamahogyZNGfNf5DDIRWCRDPImaNbw+sgXXfrTLxrnRMUWmqR9r5yB30H+AlTNsgZrhcg0UIDd2Q=
+	t=1744116292; cv=none; b=GsFocbM0F5kRDcoZrbhZ8eEZaUmvdt/xjc2ve/CxjZb/RTNxxnbhsQncbthg4mD17JtoGkRO/+TgYx2Od03hfGO8a4ge9JyrRJ9ghUfwMz+YWCCzJPc7Y+5PxsDz2pWBePRp/35kYtJvPPLi7cF73ukb5hfTebLxSD8FJkl5aDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114692; c=relaxed/simple;
-	bh=b/XdxDjw/YhFrSoSn+wAy5YMPKNZnVOBTElzwdXKAHs=;
+	s=arc-20240116; t=1744116292; c=relaxed/simple;
+	bh=aA4sWyzikFrsV0EAtyeXd0seTrI/dOZUKcUCZFWs9h4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ADByL3JhjM4UkTKDIKMWDIdypFiXqcE8wfzmwWd9pt3pm8o6p1CksB8NiJ6sxZONCDbr4bxPDhArVkp2Ktkd/l5lA4bF7fsMqhWo10GCz3ar5DEJFqMIBNwrbZVfU2kssEHxR+QJTVLOdLi7Zu9x8E3cENmT8mOFHzMVoE2M9ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJBqiJ3r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44235C4CEE5;
-	Tue,  8 Apr 2025 12:18:12 +0000 (UTC)
+	 MIME-Version; b=a8wgdgnTE0S47+17wknMPlOX12L1jlSRwOo5wF/Un6Kw7siNGdAnV+V6yWSOR8fsMfJ1s+6Hjb2B4oXVc/l2qLeKxURPDUPuVZPV+98EXv04pZa21w41UCnu7bTfkggNFbHr6P7WpfhjRsBLvbqdxP27gv+ky1E1pZzqGPcHXAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jd8xMAaj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75AF4C4CEE5;
+	Tue,  8 Apr 2025 12:44:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114692;
-	bh=b/XdxDjw/YhFrSoSn+wAy5YMPKNZnVOBTElzwdXKAHs=;
+	s=korg; t=1744116291;
+	bh=aA4sWyzikFrsV0EAtyeXd0seTrI/dOZUKcUCZFWs9h4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gJBqiJ3rJBNmpCaK8WnoUBUKfI/J+WMtAgPERsokuE0NoLpJRuYsVTEiquv+v2fRN
-	 lL4qaCiBKmakvRQwnWgJ4dkpuvFqq24Kd5JyuN19aMlq28BWKBxRi0IrTVnLw59Flc
-	 69BbRBH3pIAU8tuCyfcOj1o/jv6g77ouvz9Qd0lw=
+	b=Jd8xMAajp4UnIDOziCuUPUYEL7Bo/SIfXY4kyZBsXevtFKraiSobpPvFhqzd2/h6N
+	 QaDapn9eF/ukaVp3ZPvUv+8cTmsvKv58y9i/H0i7M+bYAVppH11L1cixO4ukl8fhHM
+	 wi1KLeoGltlnW4ceMddWtE+P49WOb+V/N124W+2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ali Utku Selen <ali.utku.selen@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Jason-JH Lin <jason-jh.lin@mediatek.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 199/499] perf: Always feature test reallocarray
+Subject: [PATCH 6.12 085/423] drm/mediatek: Fix config_updating flag never false when no mbox channel
 Date: Tue,  8 Apr 2025 12:46:51 +0200
-Message-ID: <20250408104856.156927331@linuxfoundation.org>
+Message-ID: <20250408104847.722513065@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@linaro.org>
+From: Jason-JH Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit 4c4c0724d6521a8092b7c16f8f210c5869d95b17 ]
+[ Upstream commit 4ba973c8bad04d59fd4efa62512f4d9cee131714 ]
 
-This is also used in util/comm.c now, so instead of selectively doing
-the feature test, always do it. If it's ever used anywhere else it's
-less likely to cause another build failure.
+When CONFIG_MTK_CMDQ is enabled, if the display is controlled by the CPU
+while other hardware is controlled by the GCE, the display will encounter
+a mbox request channel failure.
+However, it will still enter the CONFIG_MTK_CMDQ statement, causing the
+config_updating flag to never be set to false. As a result, no page flip
+event is sent back to user space, and the screen does not update.
 
-This doesn't remove the need to manually include libc_compat.h, and
-missing that will still cause an error for glibc < 2.26. There isn't a
-way to fix that without poisoning reallocarray like libbpf did, but that
-has other downsides like making memory debugging tools less useful. So
-for Perf keep it like this and we'll have to fix up any missed includes.
-
-Fixes the following build error:
-
-  util/comm.c:152:31: error: implicit declaration of function
-                      'reallocarray' [-Wimplicit-function-declaration]
-  152 |                         tmp = reallocarray(comm_strs->strs,
-      |                               ^~~~~~~~~~~~
-
-Fixes: 13ca628716c6 ("perf comm: Add reference count checking to 'struct comm_str'")
-Reported-by: Ali Utku Selen <ali.utku.selen@arm.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250129154405.777533-1-james.clark@linaro.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: da03801ad08f ("drm/mediatek: Move mtk_crtc_finish_page_flip() to ddp_cmdq_cb()")
+Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250224051301.3538484-1-jason-jh.lin@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/Makefile.config | 10 ++++------
- tools/perf/util/comm.c     |  2 ++
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_crtc.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
-index 0e4f6a860ae25..ff4366992e6ae 100644
---- a/tools/perf/Makefile.config
-+++ b/tools/perf/Makefile.config
-@@ -516,13 +516,14 @@ ifeq ($(feature-setns), 1)
-   $(call detected,CONFIG_SETNS)
- endif
+diff --git a/drivers/gpu/drm/mediatek/mtk_crtc.c b/drivers/gpu/drm/mediatek/mtk_crtc.c
+index 5674f5707cca8..8f6fba4217ece 100644
+--- a/drivers/gpu/drm/mediatek/mtk_crtc.c
++++ b/drivers/gpu/drm/mediatek/mtk_crtc.c
+@@ -620,13 +620,16 @@ static void mtk_crtc_update_config(struct mtk_crtc *mtk_crtc, bool needs_vblank)
  
-+ifeq ($(feature-reallocarray), 0)
-+  CFLAGS += -DCOMPAT_NEED_REALLOCARRAY
-+endif
-+
- ifdef CORESIGHT
-   $(call feature_check,libopencsd)
-   ifeq ($(feature-libopencsd), 1)
-     CFLAGS += -DHAVE_CSTRACE_SUPPORT $(LIBOPENCSD_CFLAGS)
--    ifeq ($(feature-reallocarray), 0)
--      CFLAGS += -DCOMPAT_NEED_REALLOCARRAY
--    endif
-     LDFLAGS += $(LIBOPENCSD_LDFLAGS)
-     EXTLIBS += $(OPENCSDLIBS)
-     $(call detected,CONFIG_LIBOPENCSD)
-@@ -1130,9 +1131,6 @@ ifndef NO_AUXTRACE
-   ifndef NO_AUXTRACE
-     $(call detected,CONFIG_AUXTRACE)
-     CFLAGS += -DHAVE_AUXTRACE_SUPPORT
--    ifeq ($(feature-reallocarray), 0)
--      CFLAGS += -DCOMPAT_NEED_REALLOCARRAY
--    endif
-   endif
- endif
+ 		mbox_send_message(mtk_crtc->cmdq_client.chan, cmdq_handle);
+ 		mbox_client_txdone(mtk_crtc->cmdq_client.chan, 0);
++		goto update_config_out;
+ 	}
+-#else
++#endif
+ 	spin_lock_irqsave(&mtk_crtc->config_lock, flags);
+ 	mtk_crtc->config_updating = false;
+ 	spin_unlock_irqrestore(&mtk_crtc->config_lock, flags);
+-#endif
  
-diff --git a/tools/perf/util/comm.c b/tools/perf/util/comm.c
-index 49b79cf0c5cc5..8aa456d7c2cd2 100644
---- a/tools/perf/util/comm.c
-+++ b/tools/perf/util/comm.c
-@@ -5,6 +5,8 @@
- #include <internal/rc_check.h>
- #include <linux/refcount.h>
- #include <linux/zalloc.h>
-+#include <tools/libc_compat.h> // reallocarray
-+
- #include "rwsem.h"
++#if IS_REACHABLE(CONFIG_MTK_CMDQ)
++update_config_out:
++#endif
+ 	mutex_unlock(&mtk_crtc->hw_lock);
+ }
  
- DECLARE_RC_STRUCT(comm_str) {
 -- 
 2.39.5
 
