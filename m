@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A7C0A80577
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:18:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 207B6A80B20
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:13:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5697A4A5671
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:08:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DD281BC4133
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:07:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A89263F3B;
-	Tue,  8 Apr 2025 12:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179A3269882;
+	Tue,  8 Apr 2025 12:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+po1u2M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBfLDw7i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F51A94A;
-	Tue,  8 Apr 2025 12:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7353279356;
+	Tue,  8 Apr 2025 12:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114012; cv=none; b=hs91+hzN9upj4eMEwd3pYec0twvY74seSMcxMMnYW94qQW7yRBssCM9DMU7qeQoSRhtCxgcZGlGYF/glA1vC9XMRd/8p/PiiFqcAp2I9DooMswaU9fy6Z9OBj3ViIrRP3xClFUb2XShGyMK8u5xu3J0AEPka+37e9Qp8ruletJo=
+	t=1744116918; cv=none; b=bmJmCuP6XaFf4XZVAiGCzpcx7T/118BvbxeUp8PIT1H9D0LcT6TYWJ2mUBA7I7FozvMQc+ByeKuB3DIcAYE+MYPVH6ehYu7WQFQVWUI6ykTa8wAMNgOIo7mxVQ2OeHovDb7L6W9lA7shlsk5msS6wj+aX2WGU6rhFXGh5hd4pws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114012; c=relaxed/simple;
-	bh=GXwQI7BMsQistbBUT96wFjbiyPKjzweEsGFdUwomASM=;
+	s=arc-20240116; t=1744116918; c=relaxed/simple;
+	bh=M4CacRGIuS0Sail1FwZMbdzvi+qYy80DoKVmZX8bT3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i9V7+uG91MN84XNsk1Dk4EuAjmYlgBDNXBV3o3BMZueWopYgy0agw7L7eK8KGDcaMc0rORHG/aTgnlcZ2N46oKzegx42dOopIOgqynOlHQ/ylo8GmZxKpkXHAn/1dSwDdV0kmlM8sQpMNrVNgVkM0vaccOsOYUBsIwkfPi1W4tY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+po1u2M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 317B8C4CEE5;
-	Tue,  8 Apr 2025 12:06:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dOfbjXgwN8pc7ou+3FkE8C6qOh5d5JsmM0BobXMqerifAh8XSecFz88p5mteQpKlW6U6EdXWJ4ugLgbeoyHnvTaf4mm+5QzDaddVB6oHxdFc+wyMGkcFL1oW3CRZ3am5gQ9N3ggTOKQNblrt5asFYUx1sohxe/p0ss3jmaLUvr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBfLDw7i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD102C4CEE5;
+	Tue,  8 Apr 2025 12:55:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114012;
-	bh=GXwQI7BMsQistbBUT96wFjbiyPKjzweEsGFdUwomASM=;
+	s=korg; t=1744116918;
+	bh=M4CacRGIuS0Sail1FwZMbdzvi+qYy80DoKVmZX8bT3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W+po1u2MrBOdfiom39XEUMtAq88Dredb+35CCDqFo6k/59K/2sbe3p5cvQBY4VIe3
-	 CDHCirMU3podGVAhUGoR+Ct6W3/pLcodEjzhQ7KoP1C0YOtbNeC/AIGrtcTjbbgei3
-	 LAWF8D8zk29eUDle2s4wJJB7DlxPzb9X5ClUwibI=
+	b=mBfLDw7ijVI4lf590DLs4b+BzqbjQrlbo9NiXBuFOkYGLj3aFYgbPOt48Dr5nmeEJ
+	 eji2v8hJJvEVz5IS5jvtpPnDCAn7Ea5DQB886EdorFYODlUnG+iFo6vn1yIwf/0Z0S
+	 tQSsCT42iq/AAqT62V/27kLDTh686v62df9WdAIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tanya Agarwal <tanyaagarwal25699@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 103/154] lib: 842: Improve error handling in sw842_compress()
+Subject: [PATCH 6.12 318/423] riscv/purgatory: 4B align purgatory_start
 Date: Tue,  8 Apr 2025 12:50:44 +0200
-Message-ID: <20250408104818.631905926@linuxfoundation.org>
+Message-ID: <20250408104853.220882145@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +60,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tanya Agarwal <tanyaagarwal25699@gmail.com>
+From: Björn Töpel <bjorn@rivosinc.com>
 
-[ Upstream commit af324dc0e2b558678aec42260cce38be16cc77ca ]
+[ Upstream commit 3f7023171df43641a8a8a1c9a12124501e589010 ]
 
-The static code analysis tool "Coverity Scan" pointed the following
-implementation details out for further development considerations:
-CID 1309755: Unused value
-In sw842_compress: A value assigned to a variable is never used. (CWE-563)
-returned_value: Assigning value from add_repeat_template(p, repeat_count)
-to ret here, but that stored value is overwritten before it can be used.
+When a crashkernel is launched on RISC-V, the entry to purgatory is
+done by trapping via the stvec CSR. From riscv_kexec_norelocate():
 
-Conclusion:
-Add error handling for the return value from an add_repeat_template()
-call.
+  |  ...
+  |  /*
+  |   * Switch to physical addressing
+  |   * This will also trigger a jump to CSR_STVEC
+  |   * which in this case is the address of the new
+  |   * kernel.
+  |   */
+  |  csrw    CSR_STVEC, a2
+  |  csrw    CSR_SATP, zero
 
-Fixes: 2da572c959dd ("lib: add software 842 compression/decompression")
-Signed-off-by: Tanya Agarwal <tanyaagarwal25699@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+stvec requires that the address is 4B aligned, which was not the case,
+e.g.:
+
+  | Loaded purgatory at 0xffffc000
+  | kexec_file: kexec_file_load: type:1, start:0xffffd232 head:0x4 flags:0x6
+
+The address 0xffffd232 not 4B aligned.
+
+Correct by adding proper function alignment.
+
+With this change, crashkernels loaded with kexec-file will be able to
+properly enter the purgatory.
+
+Fixes: 736e30af583fb ("RISC-V: Add purgatory")
+Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20250328085313.1193815-1-bjorn@kernel.org
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/842/842_compress.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/riscv/purgatory/entry.S | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/842/842_compress.c b/lib/842/842_compress.c
-index c02baa4168e16..055356508d97c 100644
---- a/lib/842/842_compress.c
-+++ b/lib/842/842_compress.c
-@@ -532,6 +532,8 @@ int sw842_compress(const u8 *in, unsigned int ilen,
- 		}
- 		if (repeat_count) {
- 			ret = add_repeat_template(p, repeat_count);
-+			if (ret)
-+				return ret;
- 			repeat_count = 0;
- 			if (next == last) /* reached max repeat bits */
- 				goto repeat;
+diff --git a/arch/riscv/purgatory/entry.S b/arch/riscv/purgatory/entry.S
+index 0e6ca6d5ae4b4..c5db2f072c341 100644
+--- a/arch/riscv/purgatory/entry.S
++++ b/arch/riscv/purgatory/entry.S
+@@ -12,6 +12,7 @@
+ 
+ .text
+ 
++.align	2
+ SYM_CODE_START(purgatory_start)
+ 
+ 	lla	sp, .Lstack
 -- 
 2.39.5
 
