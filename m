@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-129331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1065EA7FF50
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:20:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FA2AA7FF5E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:20:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1A074468CA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:12:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEE66447A74
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E7B266EFC;
-	Tue,  8 Apr 2025 11:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6452C267F6C;
+	Tue,  8 Apr 2025 11:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOdRz02u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KveNBGRb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135C0374C4;
-	Tue,  8 Apr 2025 11:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2246B266EFC;
+	Tue,  8 Apr 2025 11:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110740; cv=none; b=sznJYQLe2unWSAx1KskrKodRFsHccEpTlcMFVXyoLJAsSmJOyDnK5IxEx0An+jnPwxai3eqn6XjaPOgGUAYoH/HSTBmlXiC8prYBob8SLfrvbKq+utYZ20o3XEBB8Jlf8BAHcPUdJQPZoHddrd4BiVRWSa7g9BwSqZbRE+UFR9E=
+	t=1744110767; cv=none; b=c8Zrl/UXgztgBOvxlmUnLRZg39INdAEFKuEhgZNRPfRXFJ3GQw8y7rHyLTiWwPHHw8UtuStDqcqFJkGTe2UHO2A/Zyf0Y+ULNyZEm9kvQRmvVNNSmiPIVLdxC6iiIJLK4NjybLIRo64QUpeNW15UmkDeBXFQ3+cxqez/N7g3/q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110740; c=relaxed/simple;
-	bh=js//+UoZ4WiJVSLtkFJPR22ojIdYahIupPUzEOD7/0s=;
+	s=arc-20240116; t=1744110767; c=relaxed/simple;
+	bh=TfUXL1WwqXKI1UV4j97Xv30GLK3Z/8ZeJdA5Mnz1uRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W+uQNwY6uo4i+MBb/d4kMoUu7uD9ccNhcghKrF/1YC/xFhE4/6QGEi9JZIp0gzy+ss5mWEcORuU2UiUNGK+vClrHZvkg8arjtsHu/rFYaEMLa+TO397d/eDONw/+X4RJFAn4CaXjr8qgSReo6zh3hetrMZATflKaoNP0AmgLn+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MOdRz02u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 349AAC4CEE7;
-	Tue,  8 Apr 2025 11:12:17 +0000 (UTC)
+	 MIME-Version; b=pw9EyV9KYMZljpWHH0854CHR9M1Sr1YvtHBuj+6dfigAmBou2KqEdKCKvawu90dBIrNVDCOaBI+fv/mmgR7LVGFRkpvxMg6voM6z4RKt1eAKotc7oSKN4eLZvXXUX7YAZ4UqA4PGAiMNoOxqP4ofXNWGW7qJH9QUmWvSd5Gtxyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KveNBGRb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B56C4CEE5;
+	Tue,  8 Apr 2025 11:12:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110737;
-	bh=js//+UoZ4WiJVSLtkFJPR22ojIdYahIupPUzEOD7/0s=;
+	s=korg; t=1744110767;
+	bh=TfUXL1WwqXKI1UV4j97Xv30GLK3Z/8ZeJdA5Mnz1uRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MOdRz02uHmq2T8GEMh+BZQxI4RCrL5nZLEJRQZtFC8Q34iuMaunStoTwVAnYvCXGS
-	 +AjjDV38mvMWwOF4zXNnvnWcAzsqboj6aL7zezL74mb19RTKu5HmUlAFKLNijsF70u
-	 n5Lh7CAoNkQKuh3e6+w23/rU3kmkj3RgmrBhGS7I=
+	b=KveNBGRbTUi2SryOWLSggM9q+7rnB0YLMz0lG5J9Z2m7ESMr0gY0QNf86XLYBxDIj
+	 8KJOMhmSkSVV/0AIo9S2ZCd7qEJ1L0zSkzvHA/IIbOUGD6i88dZKySnaSxFGa7zVZu
+	 UOoM768EjUELmB5C5wPoUacnYdNiQd8if4reAMoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 168/731] gfs2: minor evict fix
-Date: Tue,  8 Apr 2025 12:41:05 +0200
-Message-ID: <20250408104918.184478619@linuxfoundation.org>
+Subject: [PATCH 6.14 169/731] gfs2: skip if we cannot defer delete
+Date: Tue,  8 Apr 2025 12:41:06 +0200
+Message-ID: <20250408104918.208010413@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -67,60 +67,45 @@ Content-Transfer-Encoding: 8bit
 
 From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit e9e38ed7250f8ef6b2928216156c09df8b4834b3 ]
+[ Upstream commit 41a8e04c94b868023986ec35ca06756e31e1e229 ]
 
-In evict_should_delete(), when gfs2_upgrade_iopen_glock() fails, we
-detach the iopen glock from the inode without calling
-glock_clear_object().  This leads to a warning in glock_set_object()
-when the same inode is recreated and the glock is reused.
-Fix that by only detaching the iopen glock in gfs2_evict_inode().
+In gfs2_evict_inode(), in the unlikely case that we cannot defer
+deleting the inode, it is not safe to fall back to deleting the inode;
+the only valid choice we have is to skip the delete.
 
-In addition, remove the dequeue code from evict_should_delete(); we
-already perform a conditional dequeue in gfs2_evict_inode().
+In addition, in evict_should_delete(), if we cannot lock the inode glock
+exclusively, we are in a bad enough state that skipping the delete is
+likely a better choice than trying to recover from the failure later.
 
+Fixes: c5b7a2400edc ("gfs2: Only defer deletes when we have an iopen glock")
 Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Stable-dep-of: 41a8e04c94b8 ("gfs2: skip if we cannot defer delete")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/super.c | 17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
+ fs/gfs2/super.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index 92a3b6ddafdc1..ff8fdc6134ff5 100644
+index ff8fdc6134ff5..0e6ad7bf32be8 100644
 --- a/fs/gfs2/super.c
 +++ b/fs/gfs2/super.c
-@@ -1338,12 +1338,8 @@ static enum evict_behavior evict_should_delete(struct inode *inode,
- 
+@@ -1339,7 +1339,7 @@ static enum evict_behavior evict_should_delete(struct inode *inode,
  	/* Must not read inode block until block type has been verified */
  	ret = gfs2_glock_nq_init(ip->i_gl, LM_ST_EXCLUSIVE, GL_SKIP, gh);
--	if (unlikely(ret)) {
--		glock_clear_object(ip->i_iopen_gh.gh_gl, ip);
--		ip->i_iopen_gh.gh_flags |= GL_NOCACHE;
--		gfs2_glock_dq_uninit(&ip->i_iopen_gh);
-+	if (unlikely(ret))
- 		return EVICT_SHOULD_DEFER_DELETE;
--	}
+ 	if (unlikely(ret))
+-		return EVICT_SHOULD_DEFER_DELETE;
++		return EVICT_SHOULD_SKIP_DELETE;
  
  	if (gfs2_inode_already_deleted(ip->i_gl, ip->i_no_formal_ino))
  		return EVICT_SHOULD_SKIP_DELETE;
-@@ -1363,15 +1359,8 @@ static enum evict_behavior evict_should_delete(struct inode *inode,
- 
- should_delete:
- 	if (gfs2_holder_initialized(&ip->i_iopen_gh) &&
--	    test_bit(HIF_HOLDER, &ip->i_iopen_gh.gh_iflags)) {
--		enum evict_behavior behavior =
--			gfs2_upgrade_iopen_glock(inode);
--
--		if (behavior != EVICT_SHOULD_DELETE) {
--			gfs2_holder_uninit(&ip->i_iopen_gh);
--			return behavior;
--		}
--	}
-+	    test_bit(HIF_HOLDER, &ip->i_iopen_gh.gh_iflags))
-+		return gfs2_upgrade_iopen_glock(inode);
- 	return EVICT_SHOULD_DELETE;
- }
- 
+@@ -1498,7 +1498,7 @@ static void gfs2_evict_inode(struct inode *inode)
+ 				gfs2_glock_put(io_gl);
+ 			goto out;
+ 		}
+-		behavior = EVICT_SHOULD_DELETE;
++		behavior = EVICT_SHOULD_SKIP_DELETE;
+ 	}
+ 	if (behavior == EVICT_SHOULD_DELETE)
+ 		ret = evict_unlinked_inode(inode);
 -- 
 2.39.5
 
