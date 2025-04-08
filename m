@@ -1,126 +1,143 @@
-Return-Path: <stable+bounces-128818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F2E9A7F402
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 07:11:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7193AA7F40F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 07:20:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 565BA1712F6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 05:08:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9056718986D0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 05:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7F9223308;
-	Tue,  8 Apr 2025 05:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B07D25F79B;
+	Tue,  8 Apr 2025 05:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CgtXyY3r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbN111ko"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8716815A8;
-	Tue,  8 Apr 2025 05:08:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9EB253B4E;
+	Tue,  8 Apr 2025 05:19:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744088931; cv=none; b=TcG9Svsq1NpnExPZ/peVTY4iz1AAT3MEedHvsAuJ1RJU4rCgX0N5D1kqQbLCT6ZvxWyR8MagyneGP5VO6GEM6kVDuHQhWnSDeVkYpnPQi9bq1FbNukM+ia8GwjtmcaaRHPxURx7aDbDr5HFsGBB6zz8gq+ffhYezfB+PiFiBmIA=
+	t=1744089590; cv=none; b=fjyk5BqGVy4FQSwzY9/mYiW2WESPOMFSsC2+T7MqJbJ/REFCfHguOkIho7E64XCeoxN1r1JS4nDsvrqvEGLzVd9x/VlWe4PUiHj+oB/jNPsBogVzohygRMOY3yBGOgMAhRZmSWU/fm4qa8eZz23qlGhO5FWdrEiijgeRdn6//Zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744088931; c=relaxed/simple;
-	bh=dCFVXM4MfrbSjUno3IMYIAuWzWR5SEzGsM9gbJlGky8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=L9gBZ202P3Iu+UdIDD885/BwGzJAwb9UgefZJWksHcMTDVTV2O9c44wkLgbI1cy29cGY4dvmsf1xJtPWbg/iJ4BbrXr2oOj4Os1ZxiKuxsnHMwtCJ7h9bYshaWNuyqZvFlMIexYGw77Iq+hY9LHeuaIQFxs1atUP+vyuaUiQ6as=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CgtXyY3r; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7369ce5d323so4016653b3a.1;
-        Mon, 07 Apr 2025 22:08:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744088930; x=1744693730; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=msd/d1ehfzc3JsJDzVJrH86yQ9NABRze3WH3qpDSmYY=;
-        b=CgtXyY3raixh2clH8bli8QJpy/JslcaqX5dZATjlcFIxNfJcAilj4O/3qV19OZXuP6
-         3BWpRjhvc1s5iRHINnLjcvbwPN/Vr4EwDg1RCAigrGVlSZYkRWEH8KFrWt2ymOnJAyGj
-         J+/7MFN/UZYvkR5iw/KUDghfE2IYYNFtM6G4HcFPFGNeWKmBqy5eLmmZ1vFTKovus/3N
-         Ns+HaNXTgRCux0/8fBW1gvRgrSiZnSBTxrpk82lqjTzuUuodWCOA0Ss09k3Tvbvub08p
-         RuJKKzn+2Tj7a/NfiUIZdjJGuzoObmr5YG1HGZJczBCM/jA+L0vogna4OQ2irTWAT92w
-         r0lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744088930; x=1744693730;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=msd/d1ehfzc3JsJDzVJrH86yQ9NABRze3WH3qpDSmYY=;
-        b=sPXl0Cd5yZRKqvjMzI2xqN4t32jQekMxkGLtowROT33kvALsZEOSPWdHF1eoTOyYro
-         Rc9bwS9hWk1Ogl1hqb6YnMPnpMtnsZ70FPL5f4iCf+V0uF7DWkgl9tBDYJkQULiZEGa5
-         N67lUyEyjGAedWF/6NugwsneEaWm7AxXeGOnfOPiT6JSijM85PvujWP1wwA7jeleDx9O
-         IVR1EFw5LV/YpfHTAqHYVk7ePnAGm4BJOL406wnL9qMihm8Bn5CJPTYQNtaJ3e0dz0Zg
-         Wdfmqlq4Ez2AAp+RZV/VHCfLS0TEnY+wItucbgZtMbgm8565TIaSy7N3ugYXSG7AQU5I
-         izYg==
-X-Forwarded-Encrypted: i=1; AJvYcCU7hefeHhx72U4DPdfKLK3Ri8y2fPojsgCtLjX90ADq1BfPwB9aBZG5ibyMsM4YTYNHkcN4syUA@vger.kernel.org, AJvYcCUGwbDF76yf6f3/vgfs8eLvY2qSft0Cm4OjFzY88nuNVZgBXywmlxvuzhmw1q+IpR/XrkWrfBqPf2OR8kI=@vger.kernel.org, AJvYcCUM6gjif6+zEJOq5+A+yrOLd4rP4EYi1GKrRZeG6j0wlyzTKy/qCfNpawfNQsPrmgivtH7XqrM8FY9kwypvz6H2IsOS/w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYgug/a42dicfJCaWW1utSaH/P1bLb6Xnemviw1TuLN9uORYrq
-	P3CYlZ3CF2ResqCXetJtkk9GdlE39CDhTMW8P0vJ2A3XKjzatPZN
-X-Gm-Gg: ASbGncui/S4isNXnuJB2qpQM2f4qv03dF1SQ+VgmnyuNt+w/jIz67sXiQ8uOEXOnG32
-	Nwsmz0ff/hMml8eIgBJ3wbSftQQFQBjLRA5sDO6Q5nhby8xPZguXVE0G4iQ9re3rWTdefvhB1+Z
-	Pc+krZIJkx4ISh/aXMA5ENgOFJBHqv89p7F2a61x/isqeJOxnvTd4jeSLstJWVngkChpirjV8RP
-	jtoHm1cDuqlNqt5xPkFotfHaLD4jGG0XLxyE/9S4a2WTmhb2eJh+RWSOsOflGETps2nv+h+0347
-	F8Pw4ZmgQOYZdyTxyGKLPy14qwcr5CCGzG0pEg==
-X-Google-Smtp-Source: AGHT+IFMc8CTv5CM3QidabaC1+gT5QWZSr42z0RwSRQhSmgrztIdQxQEbgnOQHx7t1YCG0VrCQGQGA==
-X-Received: by 2002:a05:6a00:1411:b0:732:5164:3cc with SMTP id d2e1a72fcca58-739e711fcf5mr19489473b3a.19.1744088929480;
-        Mon, 07 Apr 2025 22:08:49 -0700 (PDT)
-Received: from localhost ([181.91.133.137])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-739d97d1b87sm9871932b3a.16.2025.04.07.22.08.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Apr 2025 22:08:49 -0700 (PDT)
+	s=arc-20240116; t=1744089590; c=relaxed/simple;
+	bh=6GBm8mUPt1kQdqjLA6hxiATej9VkFQyogG8+sWfT4fA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MrEG2zF5qL6XtUrx8/Bw9gkC5qct3VQVXb592i/lhoOkIlwwv6zZAdm3rk4cRcYrRpK5gBw5EhF/toF6X728AyPp8m6lTaZs84pm4HvkrDp7T3uoPN6pzgQmkMj903clGwuepQ9PuqY7eAJRFL9/aHzaHmWERNjhgOobFSsA5Vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbN111ko; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB42C4CEEA;
+	Tue,  8 Apr 2025 05:19:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1744089590;
+	bh=6GBm8mUPt1kQdqjLA6hxiATej9VkFQyogG8+sWfT4fA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=wbN111koqxsN/ETd6KHqYpZa37OMaCij8L0nhMB0v9Zrk18hMNCYZ9WspVqaaNx5I
+	 o0dSm+RuCX7g7DCn5cQIcge1/QYqLtu5zvmecv+8n85IYDqkyZ9TaU7sXwLxWieRBM
+	 /D/nV186FpCMxenSl4XIwE4edoaO78YkjmI7q40A=
+Date: Tue, 8 Apr 2025 07:18:17 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Wentao Liang <vulab@iscas.ac.cn>
+Cc: philipp.g.hortmann@gmail.com, linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v7] staging: rtl8723bs: Add error handling for sd_read()
+Message-ID: <2025040814-curtsy-overrule-1caf@gregkh>
+References: <20250408044152.3009-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 08 Apr 2025 02:08:45 -0300
-Message-Id: <D90ZXBE1FIMF.2DV3D7QERNFMR@gmail.com>
-From: "Kurt Borja" <kuurtb@gmail.com>
-To: "Wentao Liang" <vulab@iscas.ac.cn>, <hmh@hmh.eng.br>,
- <hdegoede@redhat.com>, <ilpo.jarvinen@linux.intel.com>
-Cc: <ibm-acpi-devel@lists.sourceforge.net>,
- <platform-driver-x86@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <stable@vger.kernel.org>
-Subject: Re: [PATCH v3] platform/x86: thinkpad-acpi: Add error check for
- tpacpi_check_quirks
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250408013950.2634-1-vulab@iscas.ac.cn>
-In-Reply-To: <20250408013950.2634-1-vulab@iscas.ac.cn>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250408044152.3009-1-vulab@iscas.ac.cn>
 
-Hi Wentao,
+On Tue, Apr 08, 2025 at 12:41:52PM +0800, Wentao Liang wrote:
+> The sdio_read32() calls sd_read(), but does not handle the error if
+> sd_read() fails. This could lead to subsequent operations processing
+> invalid data. A proper implementation can be found in sdio_readN(),
+> which has an error handling for the sd_read().
 
-On Mon Apr 7, 2025 at 10:39 PM -03, Wentao Liang wrote:
-> In tpacpi_battery_init(), the return value of tpacpi_check_quirks() needs
-> to be checked. The battery should not be hooked if there is no matched
-> battery information in quirk table.
+Great, why not move to that instead?
 
-Why is this the case? What problem is this fixing?
+> Add error handling for the sd_read() to free tmpbuf and return error
+> code if sd_read() fails. This ensure that the memcpy() is only performed
+> when the read operation is successful.
+> 
+> Since none of the callers check for the errors, there is no need to
+> return the error code propagated from sd_read(). Returning SDIO_ERR_VAL32
+> might be a better choice, which is a specialized error code for SDIO.
 
-It seems only a few devices are listed in battery_quirk_table, and the
-comment above it suggests it is just a fixup:
+Again, fixing the callers would be best.
 
-	/*
-	 * Individual addressing is broken on models that expose the
-	 * primary battery as BAT1.
-	 */
+> Another problem of returning propagated error code is that the error
+> code is a s32 type value, which is not fit with the u32 type return value
+> of the sdio_read32().
 
-Furthermore, I looked at uses of this quirk in the code and it's absence
-doesn't seem critical.
+Then that too should be fixed :)
 
->
-> Add an error check and return -ENODEV immediately if the device fail
-> the check.
+> An practical option would be to go through all the callers and add error
+> handling, which need to pass a pointer to u32 *val and return zero on
+> success or negative on failure. It is not a better choice since will cost
+> unnecessary effort on the error code.
 
-I bring this up because it has the potential to cause a regression on a
-lot of devices.
+I don't understand why this would be unnecessary effort, it would do the
+right thing, correct?
 
---=20
- ~ Kurt
+> The other opion is to replace sd_read() by sd_read32(), which return an
+> u32 type error code that can be directly used as the return value of
+> sdio_read32(). But, it is also a bad choice to use sd_read32() in a
+> alignment failed branch.
+
+What do you mean by "alignment failed branch"?
+
+> Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
+> Cc: stable@vger.kernel.org # v4.12+
+
+Why is this cc: stable?  Can you duplicate this problem on your system?
+Have you tested this change?
+
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+> ---
+> v7: Fix error code and add patch explanation
+> v6: Fix improper code to propagate error code
+> v5: Fix error code
+> v4: Add change log and fix error code
+> v3: Add Cc flag
+> v2: Change code to initialize val
+> 
+>  drivers/staging/rtl8723bs/hal/sdio_ops.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/staging/rtl8723bs/hal/sdio_ops.c b/drivers/staging/rtl8723bs/hal/sdio_ops.c
+> index 21e9f1858745..d79d41727042 100644
+> --- a/drivers/staging/rtl8723bs/hal/sdio_ops.c
+> +++ b/drivers/staging/rtl8723bs/hal/sdio_ops.c
+> @@ -185,7 +185,12 @@ static u32 sdio_read32(struct intf_hdl *intfhdl, u32 addr)
+>  			return SDIO_ERR_VAL32;
+>  
+>  		ftaddr &= ~(u16)0x3;
+> -		sd_read(intfhdl, ftaddr, 8, tmpbuf);
+> +		err = sd_read(intfhdl, ftaddr, 8, tmpbuf);
+> +		if (err) {
+> +			kfree(tmpbuf);
+> +			return SDIO_ERR_VAL32;
+> +		}
+
+Again, I think this whole "hal wrapper" should be removed instead, and
+not papered over like this.  If you dig deep enough, it all boils down
+to a call to sdio_readb(), which is an 8 bit read, so the alignment
+issues are not a problem, and if an error happens the proper error value
+is returned from that saying what happened.  Why not work on that like I
+recommended?  That would allow for at least 3, if not more, layers of
+indirection to be removed from this driver, making it more easy to
+understand and maintain over time.
+
+thanks,
+
+greg k-h
 
