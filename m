@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 366D5A8041E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:06:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1694FA80B8E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:18:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91EEA3BB754
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:58:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C61C4A6E50
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:03:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFCEB269D01;
-	Tue,  8 Apr 2025 11:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 518701EB3D;
+	Tue,  8 Apr 2025 12:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fLA0BKOQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RArOJegB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8989120CCD8;
-	Tue,  8 Apr 2025 11:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F8726A0F5;
+	Tue,  8 Apr 2025 12:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113470; cv=none; b=Ko6I9xe6npQmJyfZHFdwiys1GzEKs/tf5IWyxwrADDQ5AQ5f/QQHNZirLvtp6Uug3EXzUJeoXiN3zZy1qINEFUSNkBHrwiZjXWrutwZ7yr6SKwS/VEfCWKJLF0lGukwvDdvAT+JsNrObHhMS/EfnSzUqnRbC9ab5Fb862Df0YhI=
+	t=1744116761; cv=none; b=PSVs4Tdc9eMsavN4G3AmImilWP9Gy5FTypgLXJ+wQK0cnWszx13KDk2uQ03Av5dLWWjzXicQM8vYpjADXeCppMX8nK4FQFqrpDpVIBd5AJlqEZhg6Yz/zwhLjcNXwm4P+lif2Ro2CVqXb79WC5Ljm02+diBZsjOGiy/DVdy6QEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113470; c=relaxed/simple;
-	bh=kClUr0v1W+zuWl9IPlYeCpcN1YSUXdZYCWpJdVoM3do=;
+	s=arc-20240116; t=1744116761; c=relaxed/simple;
+	bh=H3IFkeNqPXc50utagbb2Ki4gnk9PfS6lIikjZkejrGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WHPh1+Lb3MqEeqDNHM/3sTxU/6u3PfasRIKMqplEyGp4oghWT1Z4N330Ofy1EFf7OYJSjPX58tDZu7zrsvp91faHyNQpFi9UHINgx7Qdf8MV3vUXc21PXq/CFb/WbR/aE4t9gOTMeR5nSezD6jxCkoFYOXX0PNLJN6yJywANA/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fLA0BKOQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 188FFC4CEEA;
-	Tue,  8 Apr 2025 11:57:49 +0000 (UTC)
+	 MIME-Version; b=GooGqThZL75cJPxJV73m6Ef3Ukcie8xvOaRJq2eSnCgAiZ+Ml2GiNORCSPriLVr1jc67v7oHEMsVl6wxuBIZ2brCWQilfnEm/78M7WNbFms6kpzaIxg8LIy1daTXPyRrqTBFgSeIUXLbOPIQRqoELW+mg0ey5VsFzRHDZA3Pr+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RArOJegB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B81C4CEE5;
+	Tue,  8 Apr 2025 12:52:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113470;
-	bh=kClUr0v1W+zuWl9IPlYeCpcN1YSUXdZYCWpJdVoM3do=;
+	s=korg; t=1744116760;
+	bh=H3IFkeNqPXc50utagbb2Ki4gnk9PfS6lIikjZkejrGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fLA0BKOQ99cXgztJ1No/Q3k8WMFNDs5kNuTsk8AADf8fjjmqwYNKfA7qHd+klwuvG
-	 ZNAiXjtBYErxznrAnGf+95CqCeDK2czu6IIwWHOIfb2JvHsKsyfxyXnrcscp5X4Bwn
-	 2ZJJyDegpAa1fZqum0ueNYY45Tq4ZHrZaKeeKwhE=
+	b=RArOJegBlLDUY3QuDr77h/kLxLyjaG6FvogkjgqJlHYxP2dhd1MJf74U6zEH8ovdq
+	 u5wLg1QgdO5rrs257yqzencBf8uUTfDYMxzWjiQqrHdRf1Ii+G4eF5XewzpOBcr2ck
+	 IqHSh2IcBFamvrd1sclQwQGEfxjkNpit4HuHoHk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Daniel=20B=C3=A1rta?= <daniel.barta@trustlab.cz>,
-	Takashi Iwai <tiwai@suse.de>,
+	Mike Lothian <mike@fireburn.co.uk>,
+	Elizabeth Figura <zfigura@codeweavers.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 171/268] ALSA: hda: Fix speakers on ASUS EXPERTBOOK P5405CSA 1.0
-Date: Tue,  8 Apr 2025 12:49:42 +0200
-Message-ID: <20250408104833.158425856@linuxfoundation.org>
+Subject: [PATCH 6.12 257/423] ntsync: Set the permissions to be 0666
+Date: Tue,  8 Apr 2025 12:49:43 +0200
+Message-ID: <20250408104851.729914678@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +60,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Bárta <daniel.barta@trustlab.cz>
+From: Mike Lothian <mike@fireburn.co.uk>
 
-[ Upstream commit f479ecc5ef15ed8d774968c1a8726a49420f11a0 ]
+[ Upstream commit fa2e55811ae25020a5e9b23a8932e67e6d6261a4 ]
 
-After some digging around I have found that this laptop has Cirrus's smart
-aplifiers connected to SPI bus (spi1-CSC3551:00-cs35l41-hda).
+This allows ntsync to be usuable by non-root processes out of the box
 
-To get them correctly detected and working I had to modify patch_realtek.c
-with ASUS EXPERTBOOK P5405CSA 1.0 SystemID (0x1043, 0x1f63) and add
-corresponding hda_quirk (ALC245_FIXUP_CS35L41_SPI_2).
-
-Signed-off-by: Daniel Bárta <daniel.barta@trustlab.cz>
-Link: https://patch.msgid.link/20250227161256.18061-2-daniel.barta@trustlab.cz
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
+Reviewed-by: Elizabeth Figura <zfigura@codeweavers.com>
+Link: https://lore.kernel.org/r/20250214122759.2629-2-mike@fireburn.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
+ drivers/misc/ntsync.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 7a40f66f8fd88..77fa07f0a8455 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10235,6 +10235,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1f11, "ASUS Zephyrus G14", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1f12, "ASUS UM5302", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1f62, "ASUS UX7602ZM", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x1f63, "ASUS P5405CSA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1f92, "ASUS ROG Flow X16", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1fb3, "ASUS ROG Flow Z13 GZ302EA", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
+diff --git a/drivers/misc/ntsync.c b/drivers/misc/ntsync.c
+index 4954553b7baa6..c3ba3f0ebf300 100644
+--- a/drivers/misc/ntsync.c
++++ b/drivers/misc/ntsync.c
+@@ -238,6 +238,7 @@ static struct miscdevice ntsync_misc = {
+ 	.minor		= MISC_DYNAMIC_MINOR,
+ 	.name		= NTSYNC_NAME,
+ 	.fops		= &ntsync_fops,
++	.mode		= 0666,
+ };
+ 
+ module_misc_device(ntsync_misc);
 -- 
 2.39.5
 
