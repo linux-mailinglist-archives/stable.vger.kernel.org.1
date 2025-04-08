@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-129202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6DACA7FE7F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:13:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16EADA7FDE8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D503F442341
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:07:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED0567A45AC
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E893269AE4;
-	Tue,  8 Apr 2025 11:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B1E3268FC2;
+	Tue,  8 Apr 2025 11:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LS76Gmvt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gGdlFUCt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C62A269894;
-	Tue,  8 Apr 2025 11:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0AA2135CD;
+	Tue,  8 Apr 2025 11:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110395; cv=none; b=kbyr6ej2d7i6lbCD5lUO9a4asaTLOF/zzTSbfZ/rU1WyB0t0Rlfn19Qplcqx1Ct5ZrirrL/ioy5BOtVXqoBaloM5fZeJV2GwifW/t/3vrwGy4dyowudf3rmYn5a6KWjHZ0+M8SglYQrUbfqrVUpUGysx//dnkYaWMUcYp6MBNTs=
+	t=1744110424; cv=none; b=g7nHkeeP1t2Vkti3kGu8Z7RAXHbF51TMyOJ0Ips6DuLwGAQzmmvgYuUS2Es1joJafEIZmY47FZU/MWLC/+oLBiOR8gNjMf91gMM34UKz1jvkvakPgWJkmAsNHbLz0mmr0KgAEVRUSdiN28Pw+oSXzh35f8OSlM5TqLkckAxgCEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110395; c=relaxed/simple;
-	bh=+NHQUS/kS3F3ca342vX3cIaIGLimSIqvEKdRfV7H6Y8=;
+	s=arc-20240116; t=1744110424; c=relaxed/simple;
+	bh=9Eyw8sTOo8BLzH/SS/RuXyT7iko5Nzouh1SiUrOww7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aXf6fvfURojoLhHljK3ivs1oqTv5MdkOo2nNF0fQmLmSPQmpLgw0WHXZRQZf3gsH42nPBabQyMA6QsUAHdAkMSRgaqm76OzcCHxJf0ZielJnqy927AwTjdG87LIoQ4184qeMFQ08XSYkJjZ3o6Lj2uZ302G+/IdrKqmTk/5vb1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LS76Gmvt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C9CC4CEE5;
-	Tue,  8 Apr 2025 11:06:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LPbnd+gtlOPUE7bxyY+NDzSwFpNkW1OEVzi/yIJAzL+uCHG3bmMnmpUEwjpN4mzAgREFUPl/D+imxea26eNlwYLy2INBLprJW12GpXpEmGdGvcXrxIsK9rShpZtLOohJ4FXoB8CBd2Skr5FLHyU7BXQiBZJON3ZHccz4loWgr48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gGdlFUCt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C6E1C4CEE5;
+	Tue,  8 Apr 2025 11:07:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110393;
-	bh=+NHQUS/kS3F3ca342vX3cIaIGLimSIqvEKdRfV7H6Y8=;
+	s=korg; t=1744110423;
+	bh=9Eyw8sTOo8BLzH/SS/RuXyT7iko5Nzouh1SiUrOww7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LS76Gmvt5Szg3Qh7CQ4mbdKyHYdt4pAjSW3a7PfInuIVZTvgB2mpqG0NrhHxQMCH8
-	 mo6F73YtN6NHUlTECOdRHj0X6dpZuDinrAyxhCqo3exz0haceV1v4y+fW6Z0jah0m+
-	 4Bhr+j/LelSWnaG2wAiwi9eInt19qJsjL/ni56dY=
+	b=gGdlFUCtkFmTctf1WAjShchzp9Jp/fe2AyKVXSpIxx/KGqjO2tpbvN9ywesAZ9NMf
+	 bY0xnqMRGGVAooks9KzliUH/SXiRmNuFiv6o0d3Yr3UlJEKfLkgYUrG+Aik8vWWK9H
+	 vbylFPSTwOX7WDRa01pui3/uj+HY6eu6BFaVYsSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dhruva Gole <d-gole@ti.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Yuanjie Yang <quic_yuanjiey@quicinc.com>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 040/731] cpuidle: Init cpuidle only for present CPUs
-Date: Tue,  8 Apr 2025 12:38:57 +0200
-Message-ID: <20250408104915.209645304@linuxfoundation.org>
+Subject: [PATCH 6.14 041/731] thermal: int340x: Add NULL check for adev
+Date: Tue,  8 Apr 2025 12:38:58 +0200
+Message-ID: <20250408104915.232462615@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -64,145 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacky Bai <ping.bai@nxp.com>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit 68cb0139fec8e05b93978dc0ef1bc8df90a86419 ]
+[ Upstream commit 2542a3f70e563a9e70e7ded314286535a3321bdb ]
 
-for_each_possible_cpu() is currently used to initialize cpuidle
-in below cpuidle drivers:
-  drivers/cpuidle/cpuidle-arm.c
-  drivers/cpuidle/cpuidle-big_little.c
-  drivers/cpuidle/cpuidle-psci.c
-  drivers/cpuidle/cpuidle-qcom-spm.c
-  drivers/cpuidle/cpuidle-riscv-sbi.c
+Not all devices have an ACPI companion fwnode, so adev might be NULL.
+This is similar to the commit cd2fd6eab480
+("platform/x86: int3472: Check for adev == NULL").
 
-However, in cpu_dev_register_generic(), for_each_present_cpu()
-is used to register CPU devices which means the CPU devices are
-only registered for present CPUs and not all possible CPUs.
+Add a check for adev not being set and return -ENODEV in that case to
+avoid a possible NULL pointer deref in int3402_thermal_probe().
 
-With nosmp or maxcpus=0, only the boot CPU is present, lead
-to the failure:
+Note, under the same directory, int3400_thermal_probe() has such a
+check.
 
-  |  Failed to register cpuidle device for cpu1
-
-Then rollback to cancel all CPUs' cpuidle registration.
-
-Change for_each_possible_cpu() to for_each_present_cpu() in the
-above cpuidle drivers to ensure it only registers cpuidle devices
-for CPUs that are actually present.
-
-Fixes: b0c69e1214bc ("drivers: base: Use present CPUs in GENERIC_CPU_DEVICES")
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Tested-by: Yuanjie Yang <quic_yuanjiey@quicinc.com>
-Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://patch.msgid.link/20250307145547.2784821-1-ping.bai@nxp.com
+Fixes: 77e337c6e23e ("Thermal: introduce INT3402 thermal driver")
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Acked-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://patch.msgid.link/20250313043611.1212116-1-chenyuan0y@gmail.com
+[ rjw: Subject edit, added Fixes: ]
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpuidle/cpuidle-arm.c        | 8 ++++----
- drivers/cpuidle/cpuidle-big_little.c | 2 +-
- drivers/cpuidle/cpuidle-psci.c       | 4 ++--
- drivers/cpuidle/cpuidle-qcom-spm.c   | 2 +-
- drivers/cpuidle/cpuidle-riscv-sbi.c  | 4 ++--
- 5 files changed, 10 insertions(+), 10 deletions(-)
+ drivers/thermal/intel/int340x_thermal/int3402_thermal.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/cpuidle/cpuidle-arm.c b/drivers/cpuidle/cpuidle-arm.c
-index caba6f4bb1b79..e044fefdb8167 100644
---- a/drivers/cpuidle/cpuidle-arm.c
-+++ b/drivers/cpuidle/cpuidle-arm.c
-@@ -137,9 +137,9 @@ static int __init arm_idle_init_cpu(int cpu)
- /*
-  * arm_idle_init - Initializes arm cpuidle driver
-  *
-- * Initializes arm cpuidle driver for all CPUs, if any CPU fails
-- * to register cpuidle driver then rollback to cancel all CPUs
-- * registration.
-+ * Initializes arm cpuidle driver for all present CPUs, if any
-+ * CPU fails to register cpuidle driver then rollback to cancel
-+ * all CPUs registration.
-  */
- static int __init arm_idle_init(void)
- {
-@@ -147,7 +147,7 @@ static int __init arm_idle_init(void)
- 	struct cpuidle_driver *drv;
- 	struct cpuidle_device *dev;
+diff --git a/drivers/thermal/intel/int340x_thermal/int3402_thermal.c b/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
+index 543b03960e992..57b90005888a3 100644
+--- a/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
++++ b/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
+@@ -45,6 +45,9 @@ static int int3402_thermal_probe(struct platform_device *pdev)
+ 	struct int3402_thermal_data *d;
+ 	int ret;
  
--	for_each_possible_cpu(cpu) {
-+	for_each_present_cpu(cpu) {
- 		ret = arm_idle_init_cpu(cpu);
- 		if (ret)
- 			goto out_fail;
-diff --git a/drivers/cpuidle/cpuidle-big_little.c b/drivers/cpuidle/cpuidle-big_little.c
-index 74972deda0ead..4abba42fcc311 100644
---- a/drivers/cpuidle/cpuidle-big_little.c
-+++ b/drivers/cpuidle/cpuidle-big_little.c
-@@ -148,7 +148,7 @@ static int __init bl_idle_driver_init(struct cpuidle_driver *drv, int part_id)
- 	if (!cpumask)
- 		return -ENOMEM;
++	if (!adev)
++		return -ENODEV;
++
+ 	if (!acpi_has_method(adev->handle, "_TMP"))
+ 		return -ENODEV;
  
--	for_each_possible_cpu(cpu)
-+	for_each_present_cpu(cpu)
- 		if (smp_cpuid_part(cpu) == part_id)
- 			cpumask_set_cpu(cpu, cpumask);
- 
-diff --git a/drivers/cpuidle/cpuidle-psci.c b/drivers/cpuidle/cpuidle-psci.c
-index 2562dc001fc1d..a4594c3d6562d 100644
---- a/drivers/cpuidle/cpuidle-psci.c
-+++ b/drivers/cpuidle/cpuidle-psci.c
-@@ -400,7 +400,7 @@ static int psci_idle_init_cpu(struct device *dev, int cpu)
- /*
-  * psci_idle_probe - Initializes PSCI cpuidle driver
-  *
-- * Initializes PSCI cpuidle driver for all CPUs, if any CPU fails
-+ * Initializes PSCI cpuidle driver for all present CPUs, if any CPU fails
-  * to register cpuidle driver then rollback to cancel all CPUs
-  * registration.
-  */
-@@ -410,7 +410,7 @@ static int psci_cpuidle_probe(struct platform_device *pdev)
- 	struct cpuidle_driver *drv;
- 	struct cpuidle_device *dev;
- 
--	for_each_possible_cpu(cpu) {
-+	for_each_present_cpu(cpu) {
- 		ret = psci_idle_init_cpu(&pdev->dev, cpu);
- 		if (ret)
- 			goto out_fail;
-diff --git a/drivers/cpuidle/cpuidle-qcom-spm.c b/drivers/cpuidle/cpuidle-qcom-spm.c
-index 3ab240e0e1229..5f386761b1562 100644
---- a/drivers/cpuidle/cpuidle-qcom-spm.c
-+++ b/drivers/cpuidle/cpuidle-qcom-spm.c
-@@ -135,7 +135,7 @@ static int spm_cpuidle_drv_probe(struct platform_device *pdev)
- 	if (ret)
- 		return dev_err_probe(&pdev->dev, ret, "set warm boot addr failed");
- 
--	for_each_possible_cpu(cpu) {
-+	for_each_present_cpu(cpu) {
- 		ret = spm_cpuidle_register(&pdev->dev, cpu);
- 		if (ret && ret != -ENODEV) {
- 			dev_err(&pdev->dev,
-diff --git a/drivers/cpuidle/cpuidle-riscv-sbi.c b/drivers/cpuidle/cpuidle-riscv-sbi.c
-index 0c92a628bbd40..0fe1ece9fbdca 100644
---- a/drivers/cpuidle/cpuidle-riscv-sbi.c
-+++ b/drivers/cpuidle/cpuidle-riscv-sbi.c
-@@ -529,8 +529,8 @@ static int sbi_cpuidle_probe(struct platform_device *pdev)
- 			return ret;
- 	}
- 
--	/* Initialize CPU idle driver for each CPU */
--	for_each_possible_cpu(cpu) {
-+	/* Initialize CPU idle driver for each present CPU */
-+	for_each_present_cpu(cpu) {
- 		ret = sbi_cpuidle_init_cpu(&pdev->dev, cpu);
- 		if (ret) {
- 			pr_debug("HART%ld: idle driver init failed\n",
 -- 
 2.39.5
 
