@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-130232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 195ABA80368
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:57:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A65BBA800E9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:36:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E90F47A6B1F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:52:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58D10188D225
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F1AB267B91;
-	Tue,  8 Apr 2025 11:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91BE268C61;
+	Tue,  8 Apr 2025 11:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZrWh2BP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKhgxGrd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5DE266F17;
-	Tue,  8 Apr 2025 11:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4208264A70;
+	Tue,  8 Apr 2025 11:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113173; cv=none; b=pTDNwdyyq1LZtz31eCcFnKYE7fAJ3TUF9nOWoEe+D7fvbaEqa0I1HtxUKA4pxrsmKAVtBYxM/A00SxLkmUtCpGC5Hdc6H+mKuHuze3rRHOs/w7V+sp4sENu2C3JdEQqKCh6bTUkC8Bo23V0POkXtxVkIUWqVc4F1sQ3Njl1Zhe8=
+	t=1744111823; cv=none; b=r/t+uqEESw0Ts86CLAneUaFKmRNUWBHnDF71PwjSnhYXV+vZAhK4HkF0fd3wxjzkV13kvhfxBwTDJTYXrsTN+DftcxTV9I5IEiwJoxSsnBgCxA4Azm+J4w7GKE4NzHZwtDXbc346oqDu/tyQWJiXgCYo43DqO2C3DgfoiygQj6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113173; c=relaxed/simple;
-	bh=D+3TUnlmRVtaq+e9YXQEjIq0xaHVrgSLJmb0wDqIyfU=;
+	s=arc-20240116; t=1744111823; c=relaxed/simple;
+	bh=l7RT9vPaUkoRCF9xi5B9bCje9orUwmrCMBZUYR8Ey+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XMETVaPqQtpRnRrmrJOMTK1gKqrcaS9XQXxgshowYF+JEySaKAV2OlZO4FIoUckaBd5+7blAK2dFD3keAgbWewv8dxvCvpq20hvshUH+n8xGSYQAzTbdlu7nk8DFDzEsgn5oc+1NyUoOOIrCHdxjLBZaGIv3tvueAzn3OHHEg+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZrWh2BP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A11DC4CEE5;
-	Tue,  8 Apr 2025 11:52:51 +0000 (UTC)
+	 MIME-Version; b=P0xXMaVV+s7mBlLvkRZyT3xMGi7Ub6Y0GjssfxECCB8/B4uobGx5IfcwPkgcCThujYKs28h89aqqZsiXpGENhtMxcM/jjjVeb23QEDywr4mhWHGwPxKbWYf6+tTY+z34QAt0M864MaxMXbcaOoK4W15LpT5FWoNJPGSG/VT3yjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKhgxGrd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B52C4CEE5;
+	Tue,  8 Apr 2025 11:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113172;
-	bh=D+3TUnlmRVtaq+e9YXQEjIq0xaHVrgSLJmb0wDqIyfU=;
+	s=korg; t=1744111823;
+	bh=l7RT9vPaUkoRCF9xi5B9bCje9orUwmrCMBZUYR8Ey+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NZrWh2BPzb0a2l1jHR1oCsStUsr17yaKGpj9lQisvX3ljWM1HAgLCTL6k4aQcrAz6
-	 S4fG8w5L/EGYIMdVQwOWggPSnyaFDRPatAZwOGSmIQVt7mcLWB4pVd5oIM9nUv2XZW
-	 nPupY8vlqJ4/g2cFA5xYukE1WAKXGydAL/NW8XOA=
+	b=NKhgxGrdULJVuocog+1BYY0owqvYnTI2+XYrYgCdAs23Hr7LWDlgN31F/O/HioVpd
+	 tYh9SyaLRdgqRerynYl/8in5eH5dpwLEopAoGtQfJNkte+kAPZHFpr6NA32yarCe2l
+	 3iBNV0JGmnmuAd44oXI3SJ7v4NjqxQ5YNJ7eplwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Helge Deller <deller@gmx.de>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/268] fbdev: au1100fb: Move a variable assignment behind a null pointer check
+Subject: [PATCH 6.14 573/731] rcu-tasks: Always inline rcu_irq_work_resched()
 Date: Tue,  8 Apr 2025 12:47:50 +0200
-Message-ID: <20250408104830.092830387@linuxfoundation.org>
+Message-ID: <20250408104927.600971038@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +64,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 2df2c0caaecfd869b49e14f2b8df822397c5dd7f ]
+[ Upstream commit 6309a5c43b0dc629851f25b2e5ef8beff61d08e5 ]
 
-The address of a data structure member was determined before
-a corresponding null pointer check in the implementation of
-the function “au1100fb_setmode”.
+Thanks to CONFIG_DEBUG_SECTION_MISMATCH, empty functions can be
+generated out of line.  rcu_irq_work_resched() can be called from
+noinstr code, so make sure it's always inlined.
 
-This issue was detected by using the Coccinelle software.
-
-Fixes: 3b495f2bb749 ("Au1100 FB driver uplift for 2.6.")
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Acked-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 564506495ca9 ("rcu/context-tracking: Move deferred nocb resched to context tracking")
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Frederic Weisbecker <frederic@kernel.org>
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/e84f15f013c07e4c410d972e75620c53b62c1b3e.1743481539.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/d1eca076-fdde-484a-b33e-70e0d167c36d@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/au1100fb.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/rcupdate.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/au1100fb.c b/drivers/video/fbdev/au1100fb.c
-index 648d6cac86e8f..6822589680798 100644
---- a/drivers/video/fbdev/au1100fb.c
-+++ b/drivers/video/fbdev/au1100fb.c
-@@ -137,13 +137,15 @@ static int au1100fb_fb_blank(int blank_mode, struct fb_info *fbi)
- 	 */
- int au1100fb_setmode(struct au1100fb_device *fbdev)
- {
--	struct fb_info *info = &fbdev->info;
-+	struct fb_info *info;
- 	u32 words;
- 	int index;
+diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
+index 48e5c03df1dd8..bd69ddc102fbc 100644
+--- a/include/linux/rcupdate.h
++++ b/include/linux/rcupdate.h
+@@ -138,7 +138,7 @@ static inline void rcu_sysrq_end(void) { }
+ #if defined(CONFIG_NO_HZ_FULL) && (!defined(CONFIG_GENERIC_ENTRY) || !defined(CONFIG_KVM_XFER_TO_GUEST_WORK))
+ void rcu_irq_work_resched(void);
+ #else
+-static inline void rcu_irq_work_resched(void) { }
++static __always_inline void rcu_irq_work_resched(void) { }
+ #endif
  
- 	if (!fbdev)
- 		return -EINVAL;
- 
-+	info = &fbdev->info;
-+
- 	/* Update var-dependent FB info */
- 	if (panel_is_active(fbdev->panel) || panel_is_color(fbdev->panel)) {
- 		if (info->var.bits_per_pixel <= 8) {
+ #ifdef CONFIG_RCU_NOCB_CPU
 -- 
 2.39.5
 
