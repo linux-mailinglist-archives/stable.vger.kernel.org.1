@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D570FA8060E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:23:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2805A80976
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:54:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BBE11B83B17
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:18:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E227E1BA662A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29E926B080;
-	Tue,  8 Apr 2025 12:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11AE326E170;
+	Tue,  8 Apr 2025 12:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBuOsouU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Md2IlDMM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A095526AABA;
-	Tue,  8 Apr 2025 12:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C198926B2B0;
+	Tue,  8 Apr 2025 12:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114583; cv=none; b=rq8mbjUnLimivLd4rkB9YN6NuUfrPpSbjgwQW0vKHsBCCLw4NjSnJvnodgbFzgK54ZdtpPibste3a8EqojjHtq9SAAjeX8W7FfwjPLp7YSJbDQQEvnjaaswxQ8vOfqXeRBM4oZDAOnmMSxCPRF8/1VTaiMUgF88FH1MZPTzhmTk=
+	t=1744116187; cv=none; b=IKOX5T8q6r3PxcTG0NWL76apH3GW0mgQ+pIgnCzo/l9jnnXOW2c1t0lJ808fitQlZhPd0VwV0y7KAS7XKdxO5CNp+XuPHn6/mJQJYpmoKurz0QcqrHhejeXpV57ioXE59ENGg/WxII7CqzlEamJtKNf26F8Rkjo3pt1GzLjRjcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114583; c=relaxed/simple;
-	bh=YBZauKEu2qvkjy/radoLDre14g+fLV9WhQKy3vGfI8I=;
+	s=arc-20240116; t=1744116187; c=relaxed/simple;
+	bh=BVA6cM9rTRsZcDIWOpJCql2da4eXXcWqWPBiHyjsI5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YwShIn7yBe4Ma0kO2X45drlb3XvEMaVeDVi3KBXSkh+Kxbb2kl0ei0Pu9J2VHzpoChoyzCY4p7PeaubcqeuBI6sAPvW0pSudokaA2BuVOHfJ5XiF8AI8vYuC412PFMfvl54C8QFCV43uDf2dQl+uenNwg1EDH/frtxpgonbcm3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBuOsouU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30C9EC4CEE5;
-	Tue,  8 Apr 2025 12:16:23 +0000 (UTC)
+	 MIME-Version; b=uQttwE16KmtbiE8YjD2lzSC9EujWpoFbULfUAOKccCfTO/hRlo4yQWSwQicBKKS2l3aHLhq6G1dTZyAbYPopUeOSX3aJ/yozXqQ3+9MaGlnyxcHCOze9Cpo+O3jTzqEIyTWbVp4j6Dpe+IailDG91B/9M6A2mTPF1Tzul4zcBjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Md2IlDMM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51400C4CEE5;
+	Tue,  8 Apr 2025 12:43:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114583;
-	bh=YBZauKEu2qvkjy/radoLDre14g+fLV9WhQKy3vGfI8I=;
+	s=korg; t=1744116187;
+	bh=BVA6cM9rTRsZcDIWOpJCql2da4eXXcWqWPBiHyjsI5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GBuOsouUpC0csoUK1uHnEuTqZ2p7WDvVfOsjK5RRBDR3BP4uh3al8piUM9SJoIN1v
-	 Yf8GZ/8HkiS24wJ2EoX45aaliwwWotdKH/Ub4T0tmteotHG7bKLRHDqlLJol6AXgKH
-	 Y+aRNcH624vKCdve6NDJgAxl/liw/mWdyvq8oL1Y=
+	b=Md2IlDMMN0erwgq317jWK9AZfM8/NWHMZD/mjdvdhZ8jnN7OZM8ESLO49L4g2pwZ5
+	 Nen+TR+J5S/ObH+hixI9YEl+E9DUSusJlvnGW4lonn1PL/Khkse8hY7+vajs5OZHb/
+	 goryg3Fho5gWfny+CvG7XZKkep2buM9ze5+Ux5rY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Jayesh Choudhary <j-choudhary@ti.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 159/499] RDMA/mlx5: Fix MR cache initialization error flow
+Subject: [PATCH 6.12 045/423] ASoC: ti: j721e-evm: Fix clock configuration for ti,j7200-cpb-audio compatible
 Date: Tue,  8 Apr 2025 12:46:11 +0200
-Message-ID: <20250408104855.147563846@linuxfoundation.org>
+Message-ID: <20250408104846.799612277@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Guralnik <michaelgur@nvidia.com>
+From: Jayesh Choudhary <j-choudhary@ti.com>
 
-[ Upstream commit a0130ef84b00c68ba0b79ee974a0f01459741421 ]
+[ Upstream commit 45ff65e30deb919604e68faed156ad96ce7474d9 ]
 
-Destroy all previously created cache entries and work queue when rolling
-back the MR cache initialization upon an error.
+For 'ti,j7200-cpb-audio' compatible, there is support for only one PLL for
+48k. For 11025, 22050, 44100 and 88200 sampling rates, due to absence of
+J721E_CLK_PARENT_44100, we get EINVAL while running any audio application.
+Add support for these rates by using the 48k parent clock and adjusting
+the clock for these rates later in j721e_configure_refclk.
 
-Fixes: 73d09b2fe833 ("RDMA/mlx5: Introduce mlx5r_cache_rb_key")
-Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
-Reviewed-by: Yishai Hadas <yishaih@nvidia.com>
-Link: https://patch.msgid.link/c41d525fb3c72e28dd38511bf3aaccb5d584063e.1741875692.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 6748d0559059 ("ASoC: ti: Add custom machine driver for j721e EVM (CPB and IVI)")
+Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
+Link: https://patch.msgid.link/20250318113524.57100-1-j-choudhary@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/mr.c | 33 ++++++++++++++++++++++-----------
- 1 file changed, 22 insertions(+), 11 deletions(-)
+ sound/soc/ti/j721e-evm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
-index eeb94d1ae60d9..068eac3bdb50b 100644
---- a/drivers/infiniband/hw/mlx5/mr.c
-+++ b/drivers/infiniband/hw/mlx5/mr.c
-@@ -919,6 +919,25 @@ mlx5r_cache_create_ent_locked(struct mlx5_ib_dev *dev,
- 	return ERR_PTR(ret);
- }
+diff --git a/sound/soc/ti/j721e-evm.c b/sound/soc/ti/j721e-evm.c
+index d9d1e021f5b2e..0f96cc45578d8 100644
+--- a/sound/soc/ti/j721e-evm.c
++++ b/sound/soc/ti/j721e-evm.c
+@@ -182,6 +182,8 @@ static int j721e_configure_refclk(struct j721e_priv *priv,
+ 		clk_id = J721E_CLK_PARENT_48000;
+ 	else if (!(rate % 11025) && priv->pll_rates[J721E_CLK_PARENT_44100])
+ 		clk_id = J721E_CLK_PARENT_44100;
++	else if (!(rate % 11025) && priv->pll_rates[J721E_CLK_PARENT_48000])
++		clk_id = J721E_CLK_PARENT_48000;
+ 	else
+ 		return ret;
  
-+static void mlx5r_destroy_cache_entries(struct mlx5_ib_dev *dev)
-+{
-+	struct rb_root *root = &dev->cache.rb_root;
-+	struct mlx5_cache_ent *ent;
-+	struct rb_node *node;
-+
-+	mutex_lock(&dev->cache.rb_lock);
-+	node = rb_first(root);
-+	while (node) {
-+		ent = rb_entry(node, struct mlx5_cache_ent, node);
-+		node = rb_next(node);
-+		clean_keys(dev, ent);
-+		rb_erase(&ent->node, root);
-+		mlx5r_mkeys_uninit(ent);
-+		kfree(ent);
-+	}
-+	mutex_unlock(&dev->cache.rb_lock);
-+}
-+
- int mlx5_mkey_cache_init(struct mlx5_ib_dev *dev)
- {
- 	struct mlx5_mkey_cache *cache = &dev->cache;
-@@ -970,6 +989,8 @@ int mlx5_mkey_cache_init(struct mlx5_ib_dev *dev)
- err:
- 	mutex_unlock(&cache->rb_lock);
- 	mlx5_mkey_cache_debugfs_cleanup(dev);
-+	mlx5r_destroy_cache_entries(dev);
-+	destroy_workqueue(cache->wq);
- 	mlx5_ib_warn(dev, "failed to create mkey cache entry\n");
- 	return ret;
- }
-@@ -1003,17 +1024,7 @@ void mlx5_mkey_cache_cleanup(struct mlx5_ib_dev *dev)
- 	mlx5_cmd_cleanup_async_ctx(&dev->async_ctx);
- 
- 	/* At this point all entries are disabled and have no concurrent work. */
--	mutex_lock(&dev->cache.rb_lock);
--	node = rb_first(root);
--	while (node) {
--		ent = rb_entry(node, struct mlx5_cache_ent, node);
--		node = rb_next(node);
--		clean_keys(dev, ent);
--		rb_erase(&ent->node, root);
--		mlx5r_mkeys_uninit(ent);
--		kfree(ent);
--	}
--	mutex_unlock(&dev->cache.rb_lock);
-+	mlx5r_destroy_cache_entries(dev);
- 
- 	destroy_workqueue(dev->cache.wq);
- 	del_timer_sync(&dev->delay_timer);
 -- 
 2.39.5
 
