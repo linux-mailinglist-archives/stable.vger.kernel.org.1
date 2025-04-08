@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-129637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78FD2A80155
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:39:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EEADA7FD93
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6685B179BC8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:29:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DB963B8DB7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7AD1269AE8;
-	Tue,  8 Apr 2025 11:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB8B268C65;
+	Tue,  8 Apr 2025 10:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kjx6Hyw3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDLPt0WN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C15268FC9;
-	Tue,  8 Apr 2025 11:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9895B227EBD;
+	Tue,  8 Apr 2025 10:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111577; cv=none; b=pC21/jSyLdKTQi6+AY1oinKomoJZpiFDZXcoCTMAsH+2i2NKfmscQXArv99JSf3a+HBJqctD2AZmiqtQ0GGKSjjl6qYDpSEMjyJbjwjqUMObOu1p7oEC1A0poBihbEtMyFwXKaG3eUFrgAkiCqCeNMAhLMBXJ+npa7NR1uEr6Ak=
+	t=1744109697; cv=none; b=qbGSeZZybXXDxzGpSMrTZwnqnDbHXltSMDKbEXUGNBdhrd9/9Tq72jt5w0YyfTRp0M1+YvPk48E7Wum3PDr+gUiZKm08M5+PLOAkN2vh9jEHAj+kOK4SxdBQadVmzfqd/1b6lMLuDPMCd7cPnuLU0kgU/YwdJ4Er4jLcanFt3OA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111577; c=relaxed/simple;
-	bh=5qlvx5yQzJCrYDDdUsPw/Fp5O7VXNWuEn1HGtTiPIiU=;
+	s=arc-20240116; t=1744109697; c=relaxed/simple;
+	bh=cAzfSNCoQL9Laifc1HT8uTErAk9QcuRJ7B2l4FCfAUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qKv0iYStFvcqivRPW7Fq7GQQob/lvvSILWo/Z2IpivkBLZGobq5drhClyvAOgceeHUnTOcdTLn2QuJ85AiXoHDo1eeTDsKzZBHhSq18YLqOsp8MuLMlDCNeuHaKdekOKLI0VjgRKVu7MiKrwRNI4wvQKzY16eHbtD6aR2+YfVnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kjx6Hyw3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E5D3C4CEE5;
-	Tue,  8 Apr 2025 11:26:16 +0000 (UTC)
+	 MIME-Version; b=VXq+nqbBzZ4w6VQykt4QDK+3k7XPANx3GrngNwcjkRfvP/Yk+l9Vd6LbvGp8cLtpm8GU0CaSSnxu/Bd9A+PSMXM/fSRT+tkGHTShwFeY1Z/G1WRPPweCJN1gybD++ZiB4Y4fAyYAlC35rgsC9NAD3lsgGH3QcxsgnaiszV4GGzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDLPt0WN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B416AC4CEE5;
+	Tue,  8 Apr 2025 10:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111577;
-	bh=5qlvx5yQzJCrYDDdUsPw/Fp5O7VXNWuEn1HGtTiPIiU=;
+	s=korg; t=1744109696;
+	bh=cAzfSNCoQL9Laifc1HT8uTErAk9QcuRJ7B2l4FCfAUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kjx6Hyw34pL2q/dsWimvNUoFkWzhXNWq44VxRtc16F3ocoyt949R5VNjH+/YW6jvK
-	 LfaFC+BgOQOpjNXAgWfbfVm5vKUO97R8C2CLbyheF27BqtFElWXWaEpA7uDctt6r1k
-	 WhVPbeYb5g5mcWf95vwoCruwztY+7fxsOh4Ffmlo=
+	b=kDLPt0WNJ9SvY2EX4FBxrKs3rMQBh+3MQtUV5zuZ77+mdq04uM2Q/8zu4pmw7a/J2
+	 QYApZZ96wl/rnF4C6UPGMI0l8qS0WlM1sFe+TyacDsGK87HR+0Ws4ACx4Km2nabUGR
+	 ntWCgZAJweH4sEC0EUlqA/XFl8WeTrLZGS6p01N4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 482/731] fs/ntfs3: Prevent integer overflow in hdr_first_de()
-Date: Tue,  8 Apr 2025 12:46:19 +0200
-Message-ID: <20250408104925.489137456@linuxfoundation.org>
+	Sean Christopherson <seanjc@google.com>,
+	Li RongQing <lirongqing@baidu.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Michael Kelley <mhkelley@outlook.com>
+Subject: [PATCH 5.10 002/227] clockevents/drivers/i8253: Fix stop sequence for timer 0
+Date: Tue,  8 Apr 2025 12:46:20 +0200
+Message-ID: <20250408104820.434200624@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,242 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-[ Upstream commit 6bb81b94f7a9cba6bde9a905cef52a65317a8b04 ]
+commit 531b2ca0a940ac9db03f246c8b77c4201de72b00 upstream.
 
-The "de_off" and "used" variables come from the disk so they both need to
-check.  The problem is that on 32bit systems if they're both greater than
-UINT_MAX - 16 then the check does work as intended because of an integer
-overflow.
+According to the data sheet, writing the MODE register should stop the
+counter (and thus the interrupts). This appears to work on real hardware,
+at least modern Intel and AMD systems. It should also work on Hyper-V.
 
-Fixes: 60ce8dfde035 ("fs/ntfs3: Fix wrong if in hdr_first_de")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, on some buggy virtual machines the mode change doesn't have any
+effect until the counter is subsequently loaded (or perhaps when the IRQ
+next fires).
+
+So, set MODE 0 and then load the counter, to ensure that those buggy VMs
+do the right thing and the interrupts stop. And then write MODE 0 *again*
+to stop the counter on compliant implementations too.
+
+Apparently, Hyper-V keeps firing the IRQ *repeatedly* even in mode zero
+when it should only happen once, but the second MODE write stops that too.
+
+Userspace test program (mostly written by tglx):
+=====
+ #include <stdio.h>
+ #include <unistd.h>
+ #include <stdlib.h>
+ #include <stdint.h>
+ #include <sys/io.h>
+
+static __always_inline void __out##bwl(type value, uint16_t port)	\
+{									\
+	asm volatile("out" #bwl " %" #bw "0, %w1"			\
+		     : : "a"(value), "Nd"(port));			\
+}									\
+									\
+static __always_inline type __in##bwl(uint16_t port)			\
+{									\
+	type value;							\
+	asm volatile("in" #bwl " %w1, %" #bw "0"			\
+		     : "=a"(value) : "Nd"(port));			\
+	return value;							\
+}
+
+BUILDIO(b, b, uint8_t)
+
+ #define inb __inb
+ #define outb __outb
+
+ #define PIT_MODE	0x43
+ #define PIT_CH0	0x40
+ #define PIT_CH2	0x42
+
+static int is8254;
+
+static void dump_pit(void)
+{
+	if (is8254) {
+		// Latch and output counter and status
+		outb(0xC2, PIT_MODE);
+		printf("%02x %02x %02x\n", inb(PIT_CH0), inb(PIT_CH0), inb(PIT_CH0));
+	} else {
+		// Latch and output counter
+		outb(0x0, PIT_MODE);
+		printf("%02x %02x\n", inb(PIT_CH0), inb(PIT_CH0));
+	}
+}
+
+int main(int argc, char* argv[])
+{
+	int nr_counts = 2;
+
+	if (argc > 1)
+		nr_counts = atoi(argv[1]);
+
+	if (argc > 2)
+		is8254 = 1;
+
+	if (ioperm(0x40, 4, 1) != 0)
+		return 1;
+
+	dump_pit();
+
+	printf("Set oneshot\n");
+	outb(0x38, PIT_MODE);
+	outb(0x00, PIT_CH0);
+	outb(0x0F, PIT_CH0);
+
+	dump_pit();
+	usleep(1000);
+	dump_pit();
+
+	printf("Set periodic\n");
+	outb(0x34, PIT_MODE);
+	outb(0x00, PIT_CH0);
+	outb(0x0F, PIT_CH0);
+
+	dump_pit();
+	usleep(1000);
+	dump_pit();
+	dump_pit();
+	usleep(100000);
+	dump_pit();
+	usleep(100000);
+	dump_pit();
+
+	printf("Set stop (%d counter writes)\n", nr_counts);
+	outb(0x30, PIT_MODE);
+	while (nr_counts--)
+		outb(0xFF, PIT_CH0);
+
+	dump_pit();
+	usleep(100000);
+	dump_pit();
+	usleep(100000);
+	dump_pit();
+
+	printf("Set MODE 0\n");
+	outb(0x30, PIT_MODE);
+
+	dump_pit();
+	usleep(100000);
+	dump_pit();
+	usleep(100000);
+	dump_pit();
+
+	return 0;
+}
+=====
+
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Co-developed-by: Li RongQing <lirongqing@baidu.com>
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Michael Kelley <mhkelley@outlook.com>
+Link: https://lore.kernel.org/all/20240802135555.564941-2-dwmw2@infradead.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/ntfs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/mshyperv.c |   11 -----------
+ drivers/clocksource/i8253.c    |   36 +++++++++++++++++++++++++-----------
+ include/linux/i8253.h          |    1 -
+ 3 files changed, 25 insertions(+), 23 deletions(-)
 
-diff --git a/fs/ntfs3/ntfs.h b/fs/ntfs3/ntfs.h
-index 241f2ffdd9201..1ff13b6f96132 100644
---- a/fs/ntfs3/ntfs.h
-+++ b/fs/ntfs3/ntfs.h
-@@ -717,7 +717,7 @@ static inline struct NTFS_DE *hdr_first_de(const struct INDEX_HDR *hdr)
- 	struct NTFS_DE *e;
- 	u16 esize;
+--- a/arch/x86/kernel/cpu/mshyperv.c
++++ b/arch/x86/kernel/cpu/mshyperv.c
+@@ -16,7 +16,6 @@
+ #include <linux/interrupt.h>
+ #include <linux/irq.h>
+ #include <linux/kexec.h>
+-#include <linux/i8253.h>
+ #include <linux/random.h>
+ #include <asm/processor.h>
+ #include <asm/hypervisor.h>
+@@ -389,16 +388,6 @@ static void __init ms_hyperv_init_platfo
+ 	if (efi_enabled(EFI_BOOT))
+ 		x86_platform.get_nmi_reason = hv_get_nmi_reason;
  
--	if (de_off >= used || de_off + sizeof(struct NTFS_DE) > used )
-+	if (de_off >= used || size_add(de_off, sizeof(struct NTFS_DE)) > used)
- 		return NULL;
+-	/*
+-	 * Hyper-V VMs have a PIT emulation quirk such that zeroing the
+-	 * counter register during PIT shutdown restarts the PIT. So it
+-	 * continues to interrupt @18.2 HZ. Setting i8253_clear_counter
+-	 * to false tells pit_shutdown() not to zero the counter so that
+-	 * the PIT really is shutdown. Generation 2 VMs don't have a PIT,
+-	 * and setting this value has no effect.
+-	 */
+-	i8253_clear_counter_on_shutdown = false;
+-
+ #if IS_ENABLED(CONFIG_HYPERV)
+ 	/*
+ 	 * Setup the hook to get control post apic initialization.
+--- a/drivers/clocksource/i8253.c
++++ b/drivers/clocksource/i8253.c
+@@ -20,13 +20,6 @@
+ DEFINE_RAW_SPINLOCK(i8253_lock);
+ EXPORT_SYMBOL(i8253_lock);
  
- 	e = Add2Ptr(hdr, de_off);
--- 
-2.39.5
-
+-/*
+- * Handle PIT quirk in pit_shutdown() where zeroing the counter register
+- * restarts the PIT, negating the shutdown. On platforms with the quirk,
+- * platform specific code can set this to false.
+- */
+-bool i8253_clear_counter_on_shutdown __ro_after_init = true;
+-
+ #ifdef CONFIG_CLKSRC_I8253
+ /*
+  * Since the PIT overflows every tick, its not very useful
+@@ -112,12 +105,33 @@ void clockevent_i8253_disable(void)
+ {
+ 	raw_spin_lock(&i8253_lock);
+ 
++	/*
++	 * Writing the MODE register should stop the counter, according to
++	 * the datasheet. This appears to work on real hardware (well, on
++	 * modern Intel and AMD boxes; I didn't dig the Pegasos out of the
++	 * shed).
++	 *
++	 * However, some virtual implementations differ, and the MODE change
++	 * doesn't have any effect until either the counter is written (KVM
++	 * in-kernel PIT) or the next interrupt (QEMU). And in those cases,
++	 * it may not stop the *count*, only the interrupts. Although in
++	 * the virt case, that probably doesn't matter, as the value of the
++	 * counter will only be calculated on demand if the guest reads it;
++	 * it's the interrupts which cause steal time.
++	 *
++	 * Hyper-V apparently has a bug where even in mode 0, the IRQ keeps
++	 * firing repeatedly if the counter is running. But it *does* do the
++	 * right thing when the MODE register is written.
++	 *
++	 * So: write the MODE and then load the counter, which ensures that
++	 * the IRQ is stopped on those buggy virt implementations. And then
++	 * write the MODE again, which is the right way to stop it.
++	 */
+ 	outb_p(0x30, PIT_MODE);
++	outb_p(0, PIT_CH0);
++	outb_p(0, PIT_CH0);
+ 
+-	if (i8253_clear_counter_on_shutdown) {
+-		outb_p(0, PIT_CH0);
+-		outb_p(0, PIT_CH0);
+-	}
++	outb_p(0x30, PIT_MODE);
+ 
+ 	raw_spin_unlock(&i8253_lock);
+ }
+--- a/include/linux/i8253.h
++++ b/include/linux/i8253.h
+@@ -21,7 +21,6 @@
+ #define PIT_LATCH	((PIT_TICK_RATE + HZ/2) / HZ)
+ 
+ extern raw_spinlock_t i8253_lock;
+-extern bool i8253_clear_counter_on_shutdown;
+ extern struct clock_event_device i8253_clockevent;
+ extern void clockevent_i8253_init(bool oneshot);
+ extern void clockevent_i8253_disable(void);
 
 
 
