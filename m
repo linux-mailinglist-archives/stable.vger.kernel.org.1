@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-130379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E349A803EE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:04:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8E0DA802BB
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 614931894448
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:00:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B92997A60F9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:47:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5AC268FD8;
-	Tue,  8 Apr 2025 11:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A0D2676DE;
+	Tue,  8 Apr 2025 11:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXodYlDt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbPB9Ppx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10143AC1C;
-	Tue,  8 Apr 2025 11:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83036A94A;
+	Tue,  8 Apr 2025 11:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113559; cv=none; b=bAJARp3lPVDY04cm/M1IcUgP2F2RVgJWqW2YCX2jnzu2TF8ctL4RrCtCuU9atztCeJVNAFVlCiBMNeH3nfGDAvHDZ/bRZjg3OjDw3zrFXwy0iHLClw+0xv7XfUVQECzROBYkn1JjukCCZpYOVnUXzB4nNVHjxyZmz/aTRIWoeV8=
+	t=1744112886; cv=none; b=bQAJ48c3i5uW0T+6XiqJ2NnUGA8FdQk1OALgGWKRX6eTI2eCT28EQPopB4THrwC7aOaFFnWs3sTi+whWK68AFO2lhQtctc79XdsIFEiEnAM+HZ/BVgJz4TQ6op1mRvMfIO1+PqhHrEtCERd8eprV2d2+/0+QuIS7Wm9qCH6mltk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113559; c=relaxed/simple;
-	bh=CZ4WLpQoPJsp2RC4uVzGwH4ZSUiP2VWF6KCcRTnONA0=;
+	s=arc-20240116; t=1744112886; c=relaxed/simple;
+	bh=TCvfWQxzZPjutLbg4FW+4z+qs23LMDGjguqbJMvQwpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gc+YEMgBIL1sgL8mlx3t7GvUhXSu/KO6s3tm1jduH32uM6NKeu1PQpPDf/bfaJvRs8YUUpk4Ql/4cRc/iPzwDYoyLOsjczvguzixRghCTPaJq1vljQ2fJ4RidJyxiMRUECG3AJjCakL7gHi88RlCPJ7VN++2CH2arhyFQa1YSu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXodYlDt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E34C4CEE5;
-	Tue,  8 Apr 2025 11:59:18 +0000 (UTC)
+	 MIME-Version; b=OjhkwNqUWR1JJoO6x3/7Du5r004wSseBODnR31/tfFBR+3qzhjZUtmnFRv7iDgLMH7EJOoM+isFrrv2oIqKYLlPvjw4A5jm9SQApXK8x8BicfCHe2xfikPc8sN8cwkBDN122OdPlP8n7jxbaVtFmfv5F87U4+nZIZlg8EZWBDnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sbPB9Ppx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11243C4CEE5;
+	Tue,  8 Apr 2025 11:48:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113558;
-	bh=CZ4WLpQoPJsp2RC4uVzGwH4ZSUiP2VWF6KCcRTnONA0=;
+	s=korg; t=1744112886;
+	bh=TCvfWQxzZPjutLbg4FW+4z+qs23LMDGjguqbJMvQwpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MXodYlDt1VgjJxth5/z7eJBQm1nou/FsG8ZB2eho3n6C8P6heP5vBDe8CtKkHWE9Y
-	 FhwtPi7ShXbxnZTn5E7uCS/AO32un9lfu2lE4a4Nd3eDcDW88lilmeHxhhB40Rh9Ee
-	 N7yPqNMF56CnEhOCHizfsrnmSlGijflyHxoxwHX0=
+	b=sbPB9PpxfQYpE06LJokc/HPaISz5AwoEM1U0p+qyjzlDeZJn1JUC5DNwKQ+2XhHVj
+	 pntpxSld5oancDtD5Nls3tnuihHi3kQ458tF4CSaWh2lt++1zYbJ1acE2LaXAsxxRm
+	 AhCTC7NPAFaXoIIxOUBTUtVRwf73lWfQkHWqvEUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Tasos Sahanidis <tasos@tasossah.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 205/268] netfilter: nft_set_hash: GC reaps elements with conncount for dynamic sets only
-Date: Tue,  8 Apr 2025 12:50:16 +0200
-Message-ID: <20250408104834.097449696@linuxfoundation.org>
+Subject: [PATCH 5.15 234/279] hwmon: (nct6775-core) Fix out of bounds access for NCT679{8,9}
+Date: Tue,  8 Apr 2025 12:50:17 +0200
+Message-ID: <20250408104832.693834277@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Tasos Sahanidis <tasos@tasossah.com>
 
-[ Upstream commit 9d74da1177c800eb3d51c13f9821b7b0683845a5 ]
+[ Upstream commit 815f80ad20b63830949a77c816e35395d5d55144 ]
 
-conncount has its own GC handler which determines when to reap stale
-elements, this is convenient for dynamic sets. However, this also reaps
-non-dynamic sets with static configurations coming from control plane.
-Always run connlimit gc handler but honor feedback to reap element if
-this set is dynamic.
+pwm_num is set to 7 for these chips, but NCT6776_REG_PWM_MODE and
+NCT6776_PWM_MODE_MASK only contain 6 values.
 
-Fixes: 290180e2448c ("netfilter: nf_tables: add connlimit support")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fix this by adding another 0 to the end of each array.
+
+Signed-off-by: Tasos Sahanidis <tasos@tasossah.com>
+Link: https://lore.kernel.org/r/20250312030832.106475-1-tasos@tasossah.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_hash.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hwmon/nct6775.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
-index 0370f69dce86d..2f1012bde1f34 100644
---- a/net/netfilter/nft_set_hash.c
-+++ b/net/netfilter/nft_set_hash.c
-@@ -308,7 +308,8 @@ static bool nft_rhash_expr_needs_gc_run(const struct nft_set *set,
+diff --git a/drivers/hwmon/nct6775.c b/drivers/hwmon/nct6775.c
+index 3645a19cdaf4d..71cfc1c5bd12e 100644
+--- a/drivers/hwmon/nct6775.c
++++ b/drivers/hwmon/nct6775.c
+@@ -420,8 +420,8 @@ static const s8 NCT6776_BEEP_BITS[] = {
+ static const u16 NCT6776_REG_TOLERANCE_H[] = {
+ 	0x10c, 0x20c, 0x30c, 0x80c, 0x90c, 0xa0c, 0xb0c };
  
- 	nft_setelem_expr_foreach(expr, elem_expr, size) {
- 		if (expr->ops->gc &&
--		    expr->ops->gc(read_pnet(&set->net), expr))
-+		    expr->ops->gc(read_pnet(&set->net), expr) &&
-+		    set->flags & NFT_SET_EVAL)
- 			return true;
- 	}
+-static const u8 NCT6776_REG_PWM_MODE[] = { 0x04, 0, 0, 0, 0, 0 };
+-static const u8 NCT6776_PWM_MODE_MASK[] = { 0x01, 0, 0, 0, 0, 0 };
++static const u8 NCT6776_REG_PWM_MODE[] = { 0x04, 0, 0, 0, 0, 0, 0 };
++static const u8 NCT6776_PWM_MODE_MASK[] = { 0x01, 0, 0, 0, 0, 0, 0 };
  
+ static const u16 NCT6776_REG_FAN_MIN[] = {
+ 	0x63a, 0x63c, 0x63e, 0x640, 0x642, 0x64a, 0x64c };
 -- 
 2.39.5
 
