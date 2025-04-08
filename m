@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-129157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD51A7FEE3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:17:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B5DAA8017B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:40:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D30C3B54D7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:06:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD7861893EE9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:36:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E2126A0A7;
-	Tue,  8 Apr 2025 11:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB52622424C;
+	Tue,  8 Apr 2025 11:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kURHm4Vi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Weo+ebNU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B952135CD;
-	Tue,  8 Apr 2025 11:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674BF19AD5C;
+	Tue,  8 Apr 2025 11:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110270; cv=none; b=JiKmVtriOsI/u8d62or+Mo44SofnmxGQE+tg4kI8ruDVFUU/YiO4UmsYLPc83I7+v8Qz+TGFImn8h+ECKlse8x0Uhw0xp3w/iCLsCV5FgYwCPVJpoPojIeyfshCurcZ0Csq752iCxHJti5ydxf4UHm3GjDf2xATB1E4Xy3O92As=
+	t=1744112155; cv=none; b=ZunAQ+/4e3p4PFNNsH8tZtou2PhTkpiXpigSnW5vakFJ+DcxzWJJC6ds+0E/ww00l4+aPOKBH1W1bngoRfA8X0VGTsc072TJLKTmFbtFdQHOM0UrXMIxcBs2Fl3LlqrFIY2Dj/hmWalV+nzCSgG/D1QLiwPJ+GFZE3s0DQWglu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110270; c=relaxed/simple;
-	bh=vUdglqaOfkAFVq7M+LvBpqplIG85PfB955v1KQYrY2Q=;
+	s=arc-20240116; t=1744112155; c=relaxed/simple;
+	bh=jAzLeX0I3LT6SFCgr2ccHA+W91UjI2X39zu3QrJvgC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KabkjfKGa+SPrU5SOoJbaoZGOhKqq0SNuPIKobr8Vt1CPY1O5pB6f4agOVKbIqW+fbkhZ/0ChWH2cUSVg033a+GtVf+Pccdb0diLvn02dpLU/iaPhcA7z3N/XZXxFBbIywAFDs/JBSU6oZneguzmkL6UlnohECq+237yICwsYAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kURHm4Vi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E48C4CEE5;
-	Tue,  8 Apr 2025 11:04:29 +0000 (UTC)
+	 MIME-Version; b=ZuwT2fM8cypULZWnJSQgf40K+sttudeyhEVg1hxXbOvC1b8/UjJS8CLB6teHTmzgIURB88xhGbQ0qlfGU4m2jBAtImBdkoSAr+e4lP0vX+7h+Z/UNfrvKyv3u/FGrbo+da4esQI3SA8COXjTxOOOG0Q+b+43aM3vlnAMtqpV9rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Weo+ebNU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB6CC4CEE5;
+	Tue,  8 Apr 2025 11:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110270;
-	bh=vUdglqaOfkAFVq7M+LvBpqplIG85PfB955v1KQYrY2Q=;
+	s=korg; t=1744112155;
+	bh=jAzLeX0I3LT6SFCgr2ccHA+W91UjI2X39zu3QrJvgC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kURHm4Vi6vbRI/81anuRuotR5Enm1P5ry7HOgsf+6p3t7N5PHJur0O9xm0FqqtPXx
-	 DQrySieNzScFsyGXE9/tMxPhwmFBIuyrGJxYzg7DzzRBcvKL2MNkWr8QL6h3GCBjW8
-	 NTG2kpscw9fkshSLYKQwMXsaeiyi/MS2hsigDRxc=
+	b=Weo+ebNUwBzi0nHx3ARPMIwWu6xo592rwqQm2RBnLzOTVpuqhLrq4V69meKfASq+o
+	 MMN3Zxh6RHFWjGuDhZahayhK10e4Mm35wfTCCXI8djKHv0yZldVcq4HxsKfXmq2L7y
+	 pkZY72Ahcm1kqSwb9yxKedoEAdsbFBH/IsG+6Iyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Ira Weiny <ira.weiny@intel.com>
-Subject: [PATCH 5.10 215/227] acpi: nfit: fix narrowing conversion in acpi_nfit_ctl
+	David Owens <daowens01@gmail.com>,
+	Romain Naour <romain.naour@smile.fr>,
+	Robert Nelson <robertcnelson@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Tony Lindgren <tony@atomide.com>
+Subject: [PATCH 6.14 696/731] mmc: sdhci-omap: Disable MMC_CAP_AGGRESSIVE_PM for eMMC/SD
 Date: Tue,  8 Apr 2025 12:49:53 +0200
-Message-ID: <20250408104826.759494594@linuxfoundation.org>
+Message-ID: <20250408104930.456136261@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-commit 2ff0e408db36c21ed3fa5e3c1e0e687c82cf132f upstream.
+commit 49d162635151d0dd04935070d7cf67137ab863aa upstream.
 
-Syzkaller has reported a warning in to_nfit_bus_uuid(): "only secondary
-bus families can be translated". This warning is emited if the argument
-is equal to NVDIMM_BUS_FAMILY_NFIT == 0. Function acpi_nfit_ctl() first
-verifies that a user-provided value call_pkg->nd_family of type u64 is
-not equal to 0. Then the value is converted to int, and only after that
-is compared to NVDIMM_BUS_FAMILY_MAX. This can lead to passing an invalid
-argument to acpi_nfit_ctl(), if call_pkg->nd_family is non-zero, while
-the lower 32 bits are zero.
+We have received reports about cards can become corrupt related to the
+aggressive PM support. Let's make a partial revert of the change that
+enabled the feature.
 
-Furthermore, it is best to return EINVAL immediately upon seeing the
-invalid user input.  The WARNING is insufficient to prevent further
-undefined behavior based on other invalid user input.
-
-All checks of the input value should be applied to the original variable
-call_pkg->nd_family.
-
-[iweiny: update commit message]
-
-Fixes: 6450ddbd5d8e ("ACPI: NFIT: Define runtime firmware activation commands")
+Reported-by: David Owens <daowens01@gmail.com>
+Reported-by: Romain Naour <romain.naour@smile.fr>
+Reported-by: Robert Nelson <robertcnelson@gmail.com>
+Tested-by: Robert Nelson <robertcnelson@gmail.com>
+Fixes: 3edf588e7fe0 ("mmc: sdhci-omap: Allow SDIO card power off and enable aggressive PM")
 Cc: stable@vger.kernel.org
-Reported-by: syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c80d8dc0d9fa81a3cd8c
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Link: https://patch.msgid.link/20250123163945.251-1-m.masimov@mt-integration.ru
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20250312121712.1168007-1-ulf.hansson@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/nfit/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-omap.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -484,7 +484,7 @@ int acpi_nfit_ctl(struct nvdimm_bus_desc
- 		cmd_mask = nd_desc->cmd_mask;
- 		if (cmd == ND_CMD_CALL && call_pkg->nd_family) {
- 			family = call_pkg->nd_family;
--			if (family > NVDIMM_BUS_FAMILY_MAX ||
-+			if (call_pkg->nd_family > NVDIMM_BUS_FAMILY_MAX ||
- 			    !test_bit(family, &nd_desc->bus_family_mask))
- 				return -EINVAL;
- 			family = array_index_nospec(family,
+--- a/drivers/mmc/host/sdhci-omap.c
++++ b/drivers/mmc/host/sdhci-omap.c
+@@ -1339,8 +1339,8 @@ static int sdhci_omap_probe(struct platf
+ 	/* R1B responses is required to properly manage HW busy detection. */
+ 	mmc->caps |= MMC_CAP_NEED_RSP_BUSY;
+ 
+-	/* Allow card power off and runtime PM for eMMC/SD card devices */
+-	mmc->caps |= MMC_CAP_POWER_OFF_CARD | MMC_CAP_AGGRESSIVE_PM;
++	/*  Enable SDIO card power off. */
++	mmc->caps |= MMC_CAP_POWER_OFF_CARD;
+ 
+ 	ret = sdhci_setup_host(host);
+ 	if (ret)
 
 
 
