@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-130783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BBF6A806CA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:31:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8F6DA8091A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:51:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 041B48A1D38
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:19:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65BBC7B2C54
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:48:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D82269B1E;
-	Tue,  8 Apr 2025 12:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4CA226FA55;
+	Tue,  8 Apr 2025 12:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xu4HzOmx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JAnnXXzN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45945263F4D;
-	Tue,  8 Apr 2025 12:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7A2265630;
+	Tue,  8 Apr 2025 12:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114641; cv=none; b=GVDvgJPmjNIf+h3vxcAxGD/6DD4UbU3Y4wnhqIlEWIlu78+XO73Qpr+IsyB0ne05gcs8cvlj2PQ6HaPZNQgRder0ZquO74sSW2L7i4OW0H1ik9Kn3yEatnjukGzueGydP13dR4b/uwSdFa9/pCUHCAENFxY3u0eeuplgOapLfi8=
+	t=1744116246; cv=none; b=R5NKgsOjmwOFZWpoWkO7O2nYY4gBKlsgGgqABna/eevNpq3sErANX/nxaiEXqA6ijtYPCcFfCMW0tY787U3CputK0FlI8DeGqPfHjYvg5MzlR0FhaPS86PWLPzIhjAQ3Oj9/39LJDxRx1yhWbR8lCpdO53mnZk9bdMJp5BoGbls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114641; c=relaxed/simple;
-	bh=3UGAUUerkVznOtPt54LGo5NUrb6MrS7nqABWYpCrfoc=;
+	s=arc-20240116; t=1744116246; c=relaxed/simple;
+	bh=CXCUiOiODMVWKOzRN0yVdfv4o+1wTi0TgHXHJVK1Wt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wa+3/hLavl1gW5Fh/f7DSRxDkw9R5wi6c5wP2O3NkfQAQnQJ29XTw82EnBBnwV8AJQa2YFQMCogN0aSA3QcxoUD7hncjYh0WM4JE8rTGrqYrpSSD/FuvGCtCJK8Rsud9+QLlk+z6qS7xF+3Q7cndL3Kf03nzj9cgS3oTpXPZJ4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xu4HzOmx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9974FC4CEE5;
-	Tue,  8 Apr 2025 12:17:20 +0000 (UTC)
+	 MIME-Version; b=JHTDIQdKSB/RCzsWeiDUMxAV0Xv1UK7iAIM4/qSt8tdVrhAxocMHOu7ji4XNFzUU0qd6Ybam+oOEQjobmuKSPpcZo/u168jvV44RLreZl6CuUJgyJQc1B2pg3dqxdrFpO/d77I6o7D7i0c/f85w51s+agseT8SbNV0ZYKTaE77w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JAnnXXzN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E03F6C4CEE5;
+	Tue,  8 Apr 2025 12:44:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114641;
-	bh=3UGAUUerkVznOtPt54LGo5NUrb6MrS7nqABWYpCrfoc=;
+	s=korg; t=1744116246;
+	bh=CXCUiOiODMVWKOzRN0yVdfv4o+1wTi0TgHXHJVK1Wt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xu4HzOmxvfvmyDqsrnBKzQr6trnrbB8eV45CK4rx6xihUshWWgeSHYGTZcg8aApdF
-	 pTReRUI3Ck1LHBksuPaC/nxCZ8Au90Ev2Wl4vGEkteRqP81C6VN/mhDxf1BHf8SWb4
-	 Lzpn11GF6Fk5HzvBknRrVPF+rIpJgYPg2dRcc93Q=
+	b=JAnnXXzNNY1W1SwynPWKyaxyl+CFhk2OhFT5xD24IsqoH4bIxnochh7LFDdWZe/7A
+	 YievwKLStFrLIP0avxgLVc+XXJ5VMb1UM18XRSEiB60fHBoC7wAbO0cO8cw0N6fulY
+	 QCML6hqyMGXZBfSK9r95BWSMY8Y0DQU5u4YOgmRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Brian Gerst <brgerst@gmail.com>,
-	Juergen Gross <jgross@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Kees Cook <keescook@chromium.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 182/499] x86/entry: Fix ORC unwinder for PUSH_REGS with save_ret=1
-Date: Tue,  8 Apr 2025 12:46:34 +0200
-Message-ID: <20250408104855.714922121@linuxfoundation.org>
+Subject: [PATCH 6.12 069/423] drm/msm/dsi: Set PHY usescase (and mode) before registering DSI host
+Date: Tue,  8 Apr 2025 12:46:35 +0200
+Message-ID: <20250408104847.353703182@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,57 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Marijn Suijten <marijn.suijten@somainline.org>
 
-[ Upstream commit 57e2428f8df8263275344566e02c277648a4b7f1 ]
+[ Upstream commit 660c396c98c061f9696bebacc178b74072e80054 ]
 
-PUSH_REGS with save_ret=1 is used by interrupt entry helper functions that
-initially start with a UNWIND_HINT_FUNC ORC state.
+Ordering issues here cause an uninitialized (default STANDALONE)
+usecase to be programmed (which appears to be a MUX) in some cases
+when msm_dsi_host_register() is called, leading to the slave PLL in
+bonded-DSI mode to source from a clock parent (dsi1vco) that is off.
 
-However, save_ret=1 means that we clobber the helper function's return
-address (and then later restore the return address further down on the
-stack); after that point, the only thing on the stack we can unwind through
-is the IRET frame, so use UNWIND_HINT_IRET_REGS until we have a full
-pt_regs frame.
+This should seemingly not be a problem as the actual dispcc clocks from
+DSI1 that are muxed in the clock tree of DSI0 are way further down, this
+bit still seems to have an effect on them somehow and causes the right
+side of the panel controlled by DSI1 to not function.
 
-( An alternate approach would be to move the pt_regs->di overwrite down
-  such that it is the final step of pt_regs setup; but I don't want to
-  rearrange entry code just to make unwinding a tiny bit more elegant. )
+In an ideal world this code is refactored to no longer have such
+error-prone calls "across subsystems", and instead model the "PLL src"
+register field as a regular mux so that changing the clock parents
+programmatically or in DTS via `assigned-clock-parents` has the
+desired effect.
+But for the avid reader, the clocks that we *are* muxing into DSI0's
+tree are way further down, so if this bit turns out to be a simple mux
+between dsiXvco and out_div, that shouldn't have any effect as this
+whole tree is off anyway.
 
-Fixes: 9e809d15d6b6 ("x86/entry: Reduce the code footprint of the 'idtentry' macro")
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Brian Gerst <brgerst@gmail.com>
-Cc: Juergen Gross <jgross@suse.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/r/20250325-2025-03-unwind-fixes-v1-1-acd774364768@google.com
+Fixes: 57bf43389337 ("drm/msm/dsi: Pass down use case to PHY")
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+Patchwork: https://patchwork.freedesktop.org/patch/637650/
+Link: https://lore.kernel.org/r/20250217-drm-msm-initial-dualpipe-dsc-fixes-v3-2-913100d6103f@somainline.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/entry/calling.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/msm/dsi/dsi_manager.c | 32 ++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
-index ea81770629eea..626a81c6015bd 100644
---- a/arch/x86/entry/calling.h
-+++ b/arch/x86/entry/calling.h
-@@ -70,6 +70,8 @@ For 32-bit we have the following conventions - kernel is built with
- 	pushq	%rsi		/* pt_regs->si */
- 	movq	8(%rsp), %rsi	/* temporarily store the return address in %rsi */
- 	movq	%rdi, 8(%rsp)	/* pt_regs->di (overwriting original return address) */
-+	/* We just clobbered the return address - use the IRET frame for unwinding: */
-+	UNWIND_HINT_IRET_REGS offset=3*8
- 	.else
- 	pushq   %rdi		/* pt_regs->di */
- 	pushq   %rsi		/* pt_regs->si */
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_manager.c b/drivers/gpu/drm/msm/dsi/dsi_manager.c
+index a210b7c9e5ca2..4fabb01345aa2 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_manager.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_manager.c
+@@ -74,17 +74,35 @@ static int dsi_mgr_setup_components(int id)
+ 	int ret;
+ 
+ 	if (!IS_BONDED_DSI()) {
++		/*
++		 * Set the usecase before calling msm_dsi_host_register(), which would
++		 * already program the PLL source mux based on a default usecase.
++		 */
++		msm_dsi_phy_set_usecase(msm_dsi->phy, MSM_DSI_PHY_STANDALONE);
++		msm_dsi_host_set_phy_mode(msm_dsi->host, msm_dsi->phy);
++
+ 		ret = msm_dsi_host_register(msm_dsi->host);
+ 		if (ret)
+ 			return ret;
+-
+-		msm_dsi_phy_set_usecase(msm_dsi->phy, MSM_DSI_PHY_STANDALONE);
+-		msm_dsi_host_set_phy_mode(msm_dsi->host, msm_dsi->phy);
+ 	} else if (other_dsi) {
+ 		struct msm_dsi *master_link_dsi = IS_MASTER_DSI_LINK(id) ?
+ 							msm_dsi : other_dsi;
+ 		struct msm_dsi *slave_link_dsi = IS_MASTER_DSI_LINK(id) ?
+ 							other_dsi : msm_dsi;
++
++		/*
++		 * PLL0 is to drive both DSI link clocks in bonded DSI mode.
++		 *
++		 * Set the usecase before calling msm_dsi_host_register(), which would
++		 * already program the PLL source mux based on a default usecase.
++		 */
++		msm_dsi_phy_set_usecase(clk_master_dsi->phy,
++					MSM_DSI_PHY_MASTER);
++		msm_dsi_phy_set_usecase(clk_slave_dsi->phy,
++					MSM_DSI_PHY_SLAVE);
++		msm_dsi_host_set_phy_mode(msm_dsi->host, msm_dsi->phy);
++		msm_dsi_host_set_phy_mode(other_dsi->host, other_dsi->phy);
++
+ 		/* Register slave host first, so that slave DSI device
+ 		 * has a chance to probe, and do not block the master
+ 		 * DSI device's probe.
+@@ -98,14 +116,6 @@ static int dsi_mgr_setup_components(int id)
+ 		ret = msm_dsi_host_register(master_link_dsi->host);
+ 		if (ret)
+ 			return ret;
+-
+-		/* PLL0 is to drive both 2 DSI link clocks in bonded DSI mode. */
+-		msm_dsi_phy_set_usecase(clk_master_dsi->phy,
+-					MSM_DSI_PHY_MASTER);
+-		msm_dsi_phy_set_usecase(clk_slave_dsi->phy,
+-					MSM_DSI_PHY_SLAVE);
+-		msm_dsi_host_set_phy_mode(msm_dsi->host, msm_dsi->phy);
+-		msm_dsi_host_set_phy_mode(other_dsi->host, other_dsi->phy);
+ 	}
+ 
+ 	return 0;
 -- 
 2.39.5
 
