@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-130363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA455A80436
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:07:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E62A804CE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:12:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DB59460986
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:59:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E6E71898069
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 537132690D6;
-	Tue,  8 Apr 2025 11:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0404626A1D4;
+	Tue,  8 Apr 2025 12:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNrOw8SV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UnFXyIq7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FEA62690CF;
-	Tue,  8 Apr 2025 11:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E6D26A1CD;
+	Tue,  8 Apr 2025 12:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113519; cv=none; b=FWHyEwSmlnF8SDcOGTYWSkLo7zF2ltkMrZodPi1DZYTRO+wGN3J7piWB21K+xt6VIKnI96Vtsb1JvFUU8hyb6+ZQYcQh5Byey07IKs/8sL5Di2XdD4fC08m2GdOar2HudwF+n/7EJV8xpwZkBJpVHZN8HqTvgKjbNkn+17utYZI=
+	t=1744113892; cv=none; b=WFrHDBrrO3k/IDMg482VHRIeL/dU/Oq9EalwsBbeGMrT8ccnjLgUFsuqmhxFFL49RgOnJUQAijWhk/StA4tX4SgCqNf/38uXBjV2WRL4wTukt0IeOP+Uo27jDBNupDkngO0Vqe8lO1SL/erz527SLXoZNVA+tW4yH7gLzEYsHUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113519; c=relaxed/simple;
-	bh=4TkobbsnkN+gdiQ3y4/eGuVut0fH0YaACr5ZV1WIF0g=;
+	s=arc-20240116; t=1744113892; c=relaxed/simple;
+	bh=wKyaDaNa3z3FRxxCLX2rmSeBlYEu4innudLuhV6bqN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J45YTF1rs2QXUihIvQHBV8yt6bpQkNU3HJElA92Tv4kHt6uZLu2WNJ8wnS/DDx0nqckqs4vbuFGBi7DQXpbVvucgM3DZDyeLglZaf3U1mFCpxeIdk/o6XNG/acUw86hIdudT8/XnzB9g7dRG4nwpB+lLMxJnhtqCg/4U1DtlgX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNrOw8SV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46802C4CEE5;
-	Tue,  8 Apr 2025 11:58:38 +0000 (UTC)
+	 MIME-Version; b=E4BmUzTDhU2pdVrRLGaRIDVnftnZY+eucahEsY3ij6cYy2dHWZbQMaByqeNFePy0Ts/owbhMehM+lvMPb+KGe4aldslIWbBQH+B02rGYXz1eJ2ifK8/wvl2ZeLZeR0SDuKmr1ogFfkzhWAoLdcHnlN+2Ibc8tP9Z948mzcxok6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UnFXyIq7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45AE1C4CEE5;
+	Tue,  8 Apr 2025 12:04:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113518;
-	bh=4TkobbsnkN+gdiQ3y4/eGuVut0fH0YaACr5ZV1WIF0g=;
+	s=korg; t=1744113892;
+	bh=wKyaDaNa3z3FRxxCLX2rmSeBlYEu4innudLuhV6bqN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rNrOw8SVFr1SuSxOhRsrI/sDT4AHmZT4ZvBmji9ViZT5QMZxLtYtFfU76a82Unyl3
-	 J9p23qQ+mSfEsTkBEQo3rkuWsuIAXnvZybOOjPqscd0mF8TLnIGI2ULFixfKmSi3AX
-	 CEDQUnDf4y+WLs38oL2beG2kBK1mvsUHtw8rkx84=
+	b=UnFXyIq7ntS8NjRc9WiojnYmF1I3gCnjUJgI+zJWLSdL27WG9jhLbzSw4ktJ9fFBK
+	 pKQ7hXRpZfeWNANy5BWbifqkEicoej8MLZGUlk2VNZ8rRxwDURxXYKJolIyjCf5HSf
+	 C7ZYwTEcyKEcscaW32LeiaP/Y2UH9KOwOxKO44R8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+78ce4489b812515d5e4d@syzkaller.appspotmail.com,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 188/268] can: statistics: use atomic access in hot path
+Subject: [PATCH 5.4 058/154] net: atm: fix use after free in lec_send()
 Date: Tue,  8 Apr 2025 12:49:59 +0200
-Message-ID: <20250408104833.625038658@linuxfoundation.org>
+Message-ID: <20250408104817.145896075@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,196 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 80b5f90158d1364cbd80ad82852a757fc0692bf2 ]
+[ Upstream commit f3009d0d6ab78053117f8857b921a8237f4d17b3 ]
 
-In can_send() and can_receive() CAN messages and CAN filter matches are
-counted to be visible in the CAN procfs files.
+The ->send() operation frees skb so save the length before calling
+->send() to avoid a use after free.
 
-KCSAN detected a data race within can_send() when two CAN frames have
-been generated by a timer event writing to the same CAN netdevice at the
-same time. Use atomic operations to access the statistics in the hot path
-to fix the KCSAN complaint.
-
-Reported-by: syzbot+78ce4489b812515d5e4d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67cd717d.050a0220.e1a89.0006.GAE@google.com
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250310143353.3242-1-socketcan@hartkopp.net
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/c751531d-4af4-42fe-affe-6104b34b791d@stanley.mountain
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/af_can.c | 12 ++++++------
- net/can/af_can.h | 12 ++++++------
- net/can/proc.c   | 46 +++++++++++++++++++++++++++-------------------
- 3 files changed, 39 insertions(+), 31 deletions(-)
+ net/atm/lec.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/can/af_can.c b/net/can/af_can.c
-index c469fc187f0c7..cdad0be43e8ff 100644
---- a/net/can/af_can.c
-+++ b/net/can/af_can.c
-@@ -287,8 +287,8 @@ int can_send(struct sk_buff *skb, int loop)
- 		netif_rx(newskb);
+diff --git a/net/atm/lec.c b/net/atm/lec.c
+index 3625a04a6c701..07d4f256c38c1 100644
+--- a/net/atm/lec.c
++++ b/net/atm/lec.c
+@@ -181,6 +181,7 @@ static void
+ lec_send(struct atm_vcc *vcc, struct sk_buff *skb)
+ {
+ 	struct net_device *dev = skb->dev;
++	unsigned int len = skb->len;
  
- 	/* update statistics */
--	pkg_stats->tx_frames++;
--	pkg_stats->tx_frames_delta++;
-+	atomic_long_inc(&pkg_stats->tx_frames);
-+	atomic_long_inc(&pkg_stats->tx_frames_delta);
- 
- 	return 0;
- 
-@@ -647,8 +647,8 @@ static void can_receive(struct sk_buff *skb, struct net_device *dev)
- 	int matches;
- 
- 	/* update statistics */
--	pkg_stats->rx_frames++;
--	pkg_stats->rx_frames_delta++;
-+	atomic_long_inc(&pkg_stats->rx_frames);
-+	atomic_long_inc(&pkg_stats->rx_frames_delta);
- 
- 	/* create non-zero unique skb identifier together with *skb */
- 	while (!(can_skb_prv(skb)->skbcnt))
-@@ -669,8 +669,8 @@ static void can_receive(struct sk_buff *skb, struct net_device *dev)
- 	consume_skb(skb);
- 
- 	if (matches > 0) {
--		pkg_stats->matches++;
--		pkg_stats->matches_delta++;
-+		atomic_long_inc(&pkg_stats->matches);
-+		atomic_long_inc(&pkg_stats->matches_delta);
+ 	ATM_SKB(skb)->vcc = vcc;
+ 	atm_account_tx(vcc, skb);
+@@ -191,7 +192,7 @@ lec_send(struct atm_vcc *vcc, struct sk_buff *skb)
  	}
+ 
+ 	dev->stats.tx_packets++;
+-	dev->stats.tx_bytes += skb->len;
++	dev->stats.tx_bytes += len;
  }
  
-diff --git a/net/can/af_can.h b/net/can/af_can.h
-index 7c2d9161e2245..22f3352c77fec 100644
---- a/net/can/af_can.h
-+++ b/net/can/af_can.h
-@@ -66,9 +66,9 @@ struct receiver {
- struct can_pkg_stats {
- 	unsigned long jiffies_init;
- 
--	unsigned long rx_frames;
--	unsigned long tx_frames;
--	unsigned long matches;
-+	atomic_long_t rx_frames;
-+	atomic_long_t tx_frames;
-+	atomic_long_t matches;
- 
- 	unsigned long total_rx_rate;
- 	unsigned long total_tx_rate;
-@@ -82,9 +82,9 @@ struct can_pkg_stats {
- 	unsigned long max_tx_rate;
- 	unsigned long max_rx_match_ratio;
- 
--	unsigned long rx_frames_delta;
--	unsigned long tx_frames_delta;
--	unsigned long matches_delta;
-+	atomic_long_t rx_frames_delta;
-+	atomic_long_t tx_frames_delta;
-+	atomic_long_t matches_delta;
- };
- 
- /* persistent statistics */
-diff --git a/net/can/proc.c b/net/can/proc.c
-index bbce97825f13f..25fdf060e30d0 100644
---- a/net/can/proc.c
-+++ b/net/can/proc.c
-@@ -118,6 +118,13 @@ void can_stat_update(struct timer_list *t)
- 	struct can_pkg_stats *pkg_stats = net->can.pkg_stats;
- 	unsigned long j = jiffies; /* snapshot */
- 
-+	long rx_frames = atomic_long_read(&pkg_stats->rx_frames);
-+	long tx_frames = atomic_long_read(&pkg_stats->tx_frames);
-+	long matches = atomic_long_read(&pkg_stats->matches);
-+	long rx_frames_delta = atomic_long_read(&pkg_stats->rx_frames_delta);
-+	long tx_frames_delta = atomic_long_read(&pkg_stats->tx_frames_delta);
-+	long matches_delta = atomic_long_read(&pkg_stats->matches_delta);
-+
- 	/* restart counting in timer context on user request */
- 	if (user_reset)
- 		can_init_stats(net);
-@@ -127,35 +134,33 @@ void can_stat_update(struct timer_list *t)
- 		can_init_stats(net);
- 
- 	/* prevent overflow in calc_rate() */
--	if (pkg_stats->rx_frames > (ULONG_MAX / HZ))
-+	if (rx_frames > (LONG_MAX / HZ))
- 		can_init_stats(net);
- 
- 	/* prevent overflow in calc_rate() */
--	if (pkg_stats->tx_frames > (ULONG_MAX / HZ))
-+	if (tx_frames > (LONG_MAX / HZ))
- 		can_init_stats(net);
- 
- 	/* matches overflow - very improbable */
--	if (pkg_stats->matches > (ULONG_MAX / 100))
-+	if (matches > (LONG_MAX / 100))
- 		can_init_stats(net);
- 
- 	/* calc total values */
--	if (pkg_stats->rx_frames)
--		pkg_stats->total_rx_match_ratio = (pkg_stats->matches * 100) /
--			pkg_stats->rx_frames;
-+	if (rx_frames)
-+		pkg_stats->total_rx_match_ratio = (matches * 100) / rx_frames;
- 
- 	pkg_stats->total_tx_rate = calc_rate(pkg_stats->jiffies_init, j,
--					    pkg_stats->tx_frames);
-+					    tx_frames);
- 	pkg_stats->total_rx_rate = calc_rate(pkg_stats->jiffies_init, j,
--					    pkg_stats->rx_frames);
-+					    rx_frames);
- 
- 	/* calc current values */
--	if (pkg_stats->rx_frames_delta)
-+	if (rx_frames_delta)
- 		pkg_stats->current_rx_match_ratio =
--			(pkg_stats->matches_delta * 100) /
--			pkg_stats->rx_frames_delta;
-+			(matches_delta * 100) /	rx_frames_delta;
- 
--	pkg_stats->current_tx_rate = calc_rate(0, HZ, pkg_stats->tx_frames_delta);
--	pkg_stats->current_rx_rate = calc_rate(0, HZ, pkg_stats->rx_frames_delta);
-+	pkg_stats->current_tx_rate = calc_rate(0, HZ, tx_frames_delta);
-+	pkg_stats->current_rx_rate = calc_rate(0, HZ, rx_frames_delta);
- 
- 	/* check / update maximum values */
- 	if (pkg_stats->max_tx_rate < pkg_stats->current_tx_rate)
-@@ -168,9 +173,9 @@ void can_stat_update(struct timer_list *t)
- 		pkg_stats->max_rx_match_ratio = pkg_stats->current_rx_match_ratio;
- 
- 	/* clear values for 'current rate' calculation */
--	pkg_stats->tx_frames_delta = 0;
--	pkg_stats->rx_frames_delta = 0;
--	pkg_stats->matches_delta   = 0;
-+	atomic_long_set(&pkg_stats->tx_frames_delta, 0);
-+	atomic_long_set(&pkg_stats->rx_frames_delta, 0);
-+	atomic_long_set(&pkg_stats->matches_delta, 0);
- 
- 	/* restart timer (one second) */
- 	mod_timer(&net->can.stattimer, round_jiffies(jiffies + HZ));
-@@ -214,9 +219,12 @@ static int can_stats_proc_show(struct seq_file *m, void *v)
- 	struct can_rcv_lists_stats *rcv_lists_stats = net->can.rcv_lists_stats;
- 
- 	seq_putc(m, '\n');
--	seq_printf(m, " %8ld transmitted frames (TXF)\n", pkg_stats->tx_frames);
--	seq_printf(m, " %8ld received frames (RXF)\n", pkg_stats->rx_frames);
--	seq_printf(m, " %8ld matched frames (RXMF)\n", pkg_stats->matches);
-+	seq_printf(m, " %8ld transmitted frames (TXF)\n",
-+		   atomic_long_read(&pkg_stats->tx_frames));
-+	seq_printf(m, " %8ld received frames (RXF)\n",
-+		   atomic_long_read(&pkg_stats->rx_frames));
-+	seq_printf(m, " %8ld matched frames (RXMF)\n",
-+		   atomic_long_read(&pkg_stats->matches));
- 
- 	seq_putc(m, '\n');
- 
+ static void lec_tx_timeout(struct net_device *dev)
 -- 
 2.39.5
 
