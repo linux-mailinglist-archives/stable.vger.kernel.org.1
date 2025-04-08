@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AD42A8039C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:00:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B0BFA80161
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:39:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E5D13BF02A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:52:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D81888212F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4211A2690F9;
-	Tue,  8 Apr 2025 11:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C90B269825;
+	Tue,  8 Apr 2025 11:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JIm4Exgs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zz9S1My1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCB72690DB;
-	Tue,  8 Apr 2025 11:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE698267B10;
+	Tue,  8 Apr 2025 11:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113124; cv=none; b=gEQDbkTVXJEu86L6uUkw0Ds7Ro9Fa5XbeKHEN0e6BMbFn+iJxwxFMfrxUL/jOEo0mHtnql5TmV8g2RemZAEVaSp6WPzd+gUw7jh3Mlh9RfWquMWMdj+qSdkAzP8Fkns9ulQgcIlKAxVXngUg9MiN3umAT2Kqd8ATVq5pwPcOUBw=
+	t=1744111886; cv=none; b=M2+VTG3n0vJukDIzmQMbMMOlIfz8Bs8FAXvZ5kTThwM0rT5VCRX+m+5UM6Q5Kd94GeHiO4nXc+K0aC8bTs2eEgZhO8xhFlU4d9ZdlU/fPbh426h7h0Gq4pQn0akitKAQPDfSPpgfE5DjtZAVFDvHAaNc08BDqqLRrjbru6b25nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113124; c=relaxed/simple;
-	bh=xn6NZmAjeh8dnIKS9Cz9YLAJ9J+XT7FaW7dB2Tuce+c=;
+	s=arc-20240116; t=1744111886; c=relaxed/simple;
+	bh=wRV7g60SuWLdQYCS613SHvL+Kicx7FH84a/8uq4hkvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sSRXx1+JZSzMun80zaWA72PiMgMykHNJ3ZO9hOVLLlgjVAewLHANKXuj4RsCTMeRZxX/G48jiVl69nJlNQdebyVsP/Zql4YdfeLg6B03YUQgwhGjAsu5dco6XCv4x7vRnP1JvIRcgs1ZxO/ljjrh80HhlJItHEBts4Xwxhcnrf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JIm4Exgs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25CC4C4CEE7;
-	Tue,  8 Apr 2025 11:52:02 +0000 (UTC)
+	 MIME-Version; b=gyGMDdWUyB5+wcLqzpo34MTefMXETQ8UojNU8T9/Gdfo50BaTMHt+HguR5JKvbKP6dgSuRxBr8R+MUqLotRhyDUP6uE65Epy7utfjjwbFgaWuKc9059227i9IT4CXeAo2/mMlG6gIEsRel4Xa5IuH4c3UTV1DJIaxJeFR4QlJto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zz9S1My1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50474C4CEE5;
+	Tue,  8 Apr 2025 11:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113123;
-	bh=xn6NZmAjeh8dnIKS9Cz9YLAJ9J+XT7FaW7dB2Tuce+c=;
+	s=korg; t=1744111886;
+	bh=wRV7g60SuWLdQYCS613SHvL+Kicx7FH84a/8uq4hkvQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JIm4ExgspxwDxqXXyq/A2joEgRXNVt6OMaWSkUiZiei4dw+3dXmP0Q/wiLcKa56Ck
-	 ilu/5aVNWLi91PtQfdn7OyObgsYGphoTXZEzr3hWh7gWQkpbpu+3x0u9xwJHbpypHh
-	 M6KDvA+leekVdaAk+mD/WcPaeJcPaLdmhwoou9tA=
+	b=zz9S1My1oN39gV0HEgN0ypN3qMU+F+/+Cg0NaUJapZqgzGSak2gZeA9U02AHjWXGB
+	 YKNzFeaolejzQMQuKRsSmDeqcDqyxeutM7q+aAE961jHA6/v/pF+r5ED+LzSRofXs9
+	 Isemqou9YTxjYQ0OIUJbVVFJ1/vX5x4f9sA0z/L0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
+	Lubomir Rintel <lkundrak@v3.sk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 042/268] drm/msm/dsi: Use existing per-interface slice count in DSC timing
+Subject: [PATCH 6.14 556/731] rndis_host: Flag RNDIS modems as WWAN devices
 Date: Tue,  8 Apr 2025 12:47:33 +0200
-Message-ID: <20250408104829.639657788@linuxfoundation.org>
+Message-ID: <20250408104927.209889524@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marijn Suijten <marijn.suijten@somainline.org>
+From: Lubomir Rintel <lkundrak@v3.sk>
 
-[ Upstream commit 14ad809ceb66d0874cbe4bd5ca9edf0de8d9ad96 ]
+[ Upstream commit 67d1a8956d2d62fe6b4c13ebabb57806098511d8 ]
 
-When configuring the timing of DSI hosts (interfaces) in
-dsi_timing_setup() all values written to registers are taking
-bonded-mode into account by dividing the original mode width by 2
-(half the data is sent over each of the two DSI hosts), but the full
-width instead of the interface width is passed as hdisplay parameter to
-dsi_update_dsc_timing().
+Set FLAG_WWAN instead of FLAG_ETHERNET for RNDIS interfaces on Mobile
+Broadband Modems, as opposed to regular Ethernet adapters.
 
-Currently only msm_dsc_get_slices_per_intf() is called within
-dsi_update_dsc_timing() with the `hdisplay` argument which clearly
-documents that it wants the width of a single interface (which, again,
-in bonded DSI mode is half the total width of the mode) resulting in all
-subsequent values to be completely off.
+Otherwise NetworkManager gets confused, misjudges the device type,
+and wouldn't know it should connect a modem to get the device to work.
+What would be the result depends on ModemManager version -- older
+ModemManager would end up disconnecting a device after an unsuccessful
+probe attempt (if it connected without needing to unlock a SIM), while
+a newer one might spawn a separate PPP connection over a tty interface
+instead, resulting in a general confusion and no end of chaos.
 
-However, as soon as we start to pass the halved hdisplay
-into dsi_update_dsc_timing() we might as well discard
-msm_dsc_get_slices_per_intf() since the value it calculates is already
-available in dsc->slice_count which is per-interface by the current
-design of MSM DPU/DSI implementations and their use of the DRM DSC
-helpers.
+The only way to get this work reliably is to fix the device type
+and have good enough version ModemManager (or equivalent).
 
-Fixes: 08802f515c3c ("drm/msm/dsi: Add support for DSC configuration")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Patchwork: https://patchwork.freedesktop.org/patch/637648/
-Link: https://lore.kernel.org/r/20250217-drm-msm-initial-dualpipe-dsc-fixes-v3-1-913100d6103f@somainline.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 63ba395cd7a5 ("rndis_host: support Novatel Verizon USB730L")
+Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+Link: https://patch.msgid.link/20250325095842.1567999-1-lkundrak@v3.sk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_host.c   |  8 ++++----
- drivers/gpu/drm/msm/msm_dsc_helper.h | 11 -----------
- 2 files changed, 4 insertions(+), 15 deletions(-)
+ drivers/net/usb/rndis_host.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
-index f920329fe2e09..f90ccdfbb2fc7 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_host.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
-@@ -825,7 +825,7 @@ static void dsi_ctrl_enable(struct msm_dsi_host *msm_host,
- 		dsi_write(msm_host, REG_DSI_CPHY_MODE_CTRL, BIT(0));
- }
+diff --git a/drivers/net/usb/rndis_host.c b/drivers/net/usb/rndis_host.c
+index 7b3739b29c8f7..bb0bf14158727 100644
+--- a/drivers/net/usb/rndis_host.c
++++ b/drivers/net/usb/rndis_host.c
+@@ -630,6 +630,16 @@ static const struct driver_info	zte_rndis_info = {
+ 	.tx_fixup =	rndis_tx_fixup,
+ };
  
--static void dsi_update_dsc_timing(struct msm_dsi_host *msm_host, bool is_cmd_mode, u32 hdisplay)
-+static void dsi_update_dsc_timing(struct msm_dsi_host *msm_host, bool is_cmd_mode)
- {
- 	struct drm_dsc_config *dsc = msm_host->dsc;
- 	u32 reg, reg_ctrl, reg_ctrl2;
-@@ -837,7 +837,7 @@ static void dsi_update_dsc_timing(struct msm_dsi_host *msm_host, bool is_cmd_mod
- 	/* first calculate dsc parameters and then program
- 	 * compress mode registers
- 	 */
--	slice_per_intf = msm_dsc_get_slices_per_intf(dsc, hdisplay);
-+	slice_per_intf = dsc->slice_count;
++static const struct driver_info	wwan_rndis_info = {
++	.description =	"Mobile Broadband RNDIS device",
++	.flags =	FLAG_WWAN | FLAG_POINTTOPOINT | FLAG_FRAMING_RN | FLAG_NO_SETINT,
++	.bind =		rndis_bind,
++	.unbind =	rndis_unbind,
++	.status =	rndis_status,
++	.rx_fixup =	rndis_rx_fixup,
++	.tx_fixup =	rndis_tx_fixup,
++};
++
+ /*-------------------------------------------------------------------------*/
  
- 	total_bytes_per_intf = dsc->slice_chunk_size * slice_per_intf;
- 	bytes_per_pkt = dsc->slice_chunk_size; /* * slice_per_pkt; */
-@@ -948,7 +948,7 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
- 
- 	if (msm_host->mode_flags & MIPI_DSI_MODE_VIDEO) {
- 		if (msm_host->dsc)
--			dsi_update_dsc_timing(msm_host, false, mode->hdisplay);
-+			dsi_update_dsc_timing(msm_host, false);
- 
- 		dsi_write(msm_host, REG_DSI_ACTIVE_H,
- 			DSI_ACTIVE_H_START(ha_start) |
-@@ -969,7 +969,7 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
- 			DSI_ACTIVE_VSYNC_VPOS_END(vs_end));
- 	} else {		/* command mode */
- 		if (msm_host->dsc)
--			dsi_update_dsc_timing(msm_host, true, mode->hdisplay);
-+			dsi_update_dsc_timing(msm_host, true);
- 
- 		/* image data and 1 byte write_memory_start cmd */
- 		if (!msm_host->dsc)
-diff --git a/drivers/gpu/drm/msm/msm_dsc_helper.h b/drivers/gpu/drm/msm/msm_dsc_helper.h
-index b9049fe1e2790..63f95523b2cbb 100644
---- a/drivers/gpu/drm/msm/msm_dsc_helper.h
-+++ b/drivers/gpu/drm/msm/msm_dsc_helper.h
-@@ -12,17 +12,6 @@
- #include <linux/math.h>
- #include <drm/display/drm_dsc_helper.h>
- 
--/**
-- * msm_dsc_get_slices_per_intf() - calculate number of slices per interface
-- * @dsc: Pointer to drm dsc config struct
-- * @intf_width: interface width in pixels
-- * Returns: Integer representing the number of slices for the given interface
-- */
--static inline u32 msm_dsc_get_slices_per_intf(const struct drm_dsc_config *dsc, u32 intf_width)
--{
--	return DIV_ROUND_UP(intf_width, dsc->slice_width);
--}
--
- /**
-  * msm_dsc_get_bytes_per_line() - calculate bytes per line
-  * @dsc: Pointer to drm dsc config struct
+ static const struct usb_device_id	products [] = {
+@@ -666,9 +676,11 @@ static const struct usb_device_id	products [] = {
+ 	USB_INTERFACE_INFO(USB_CLASS_WIRELESS_CONTROLLER, 1, 3),
+ 	.driver_info = (unsigned long) &rndis_info,
+ }, {
+-	/* Novatel Verizon USB730L */
++	/* Mobile Broadband Modem, seen in Novatel Verizon USB730L and
++	 * Telit FN990A (RNDIS)
++	 */
+ 	USB_INTERFACE_INFO(USB_CLASS_MISC, 4, 1),
+-	.driver_info = (unsigned long) &rndis_info,
++	.driver_info = (unsigned long)&wwan_rndis_info,
+ },
+ 	{ },		// END
+ };
 -- 
 2.39.5
 
