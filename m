@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7AFAA8035E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:57:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9288A7FD9A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 686BD188ADDF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37DAD16E670
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 899FC2690EC;
-	Tue,  8 Apr 2025 11:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B6B826A0FC;
+	Tue,  8 Apr 2025 10:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbK+R5PC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zzLZRynD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461B8A94A;
-	Tue,  8 Apr 2025 11:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5833C26A0F4;
+	Tue,  8 Apr 2025 10:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113126; cv=none; b=fnRY0ZtYV+kU6CDZU92urHYCNAUpm4e+4z6+6xF0pWl+iuJMfSy6Dd0nWlZEYayeP+k0TDpEyizb1TG8L8Mc/Nyb1v6F9qlhBvY83IDb62BuAT3vpTsdsNd/fgwPUpZMEW15LsQgCh1Q/Nv53Tu6jfhLZyGZC34OzrDrD0rXKDA=
+	t=1744109853; cv=none; b=qi9CBhQpbCfQcslcTTnPDYah0L7kgV08sQQCFjMT4BLPlhpU+EfOSOCswRN1Jhh4KGB6WmkAVuFiThEFVM16Rpibp/D1yH0WkvDl7GG95pdX3Gy6/LJ1btlLE2fZ1D7Fuqf3D3ry5HZtUQL5BUI+Xmrg7d0hxAq/v9CnbUURmlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113126; c=relaxed/simple;
-	bh=/6zExwEMsIaynNl2Lpa8of7Bh5FFIoFXHh5S1mYycTo=;
+	s=arc-20240116; t=1744109853; c=relaxed/simple;
+	bh=ORzbuypqkxy43Xws9n5rtUweFq9NnTktEZl9Ab/wa4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qN7WOdEr0u+SW/A7+b+ZOWgjIoR4PB5BPT/HSv4d6Ff5PU7zZj7uZFlu8S2RzwEF6ImdEs3wVYj/yGptzDg2502fqziqYPen3Gx6onOFCcOluy7gavvt2Tv/mmwenwUjzbXl0LM22Edojjw32w4lOX715uFfNxokVczMppqc/gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbK+R5PC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6047C4CEE5;
-	Tue,  8 Apr 2025 11:52:05 +0000 (UTC)
+	 MIME-Version; b=mIub6MrouSXXhfIZ+n4mt9FnF8m5yAXX2MqWtuxO1SJBdDwxWc/1RCU40+cqyICVRi7+tVmWbecsMeThENtajhRA0UIXSUFoWPSeJ8uV5HkPKGtZ4ggEuT44dM7VsIbaqM3daLPLw0dgJ0vokg6GneyYkFefhTO3uwEnWZxFyQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zzLZRynD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE448C4CEE5;
+	Tue,  8 Apr 2025 10:57:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113126;
-	bh=/6zExwEMsIaynNl2Lpa8of7Bh5FFIoFXHh5S1mYycTo=;
+	s=korg; t=1744109853;
+	bh=ORzbuypqkxy43Xws9n5rtUweFq9NnTktEZl9Ab/wa4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fbK+R5PCpKE+S4rZKy+N6LOST+zQkIRGwJlNByozXG6xqklLR0Tu24L+Acqwr+zAe
-	 sqs+d3cAq9CuY3gt/IZSJoGM49lgBtVsVZsdxR8BNVldHfAv3hSC5ZRDZiHCNWHk/o
-	 +1SWavj2NQpFml0utkJtp1z4a+ZdUW36PVGU4tnE=
+	b=zzLZRynDnvO3n8zKUmrDc0XM90IvvEVC4o7X3VTGcQyetsDVaA+1Onc0+c6hzgDtb
+	 av5wNpB4RKsND9jeKVkH1kEzibuKCA4nsekKJdDAU7hwDFTj+1IkkUb30sEhZ20QYr
+	 gtP50E5AH7iPdsGJz5dy5HC0DyFiAl3nirlJ9a2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/268] drm/msm/dsi: Set PHY usescase (and mode) before registering DSI host
+Subject: [PATCH 5.10 076/227] Bluetooth: Fix error code in chan_alloc_skb_cb()
 Date: Tue,  8 Apr 2025 12:47:34 +0200
-Message-ID: <20250408104829.665053242@linuxfoundation.org>
+Message-ID: <20250408104822.669511951@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marijn Suijten <marijn.suijten@somainline.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 660c396c98c061f9696bebacc178b74072e80054 ]
+[ Upstream commit 72d061ee630d0dbb45c2920d8d19b3861c413e54 ]
 
-Ordering issues here cause an uninitialized (default STANDALONE)
-usecase to be programmed (which appears to be a MUX) in some cases
-when msm_dsi_host_register() is called, leading to the slave PLL in
-bonded-DSI mode to source from a clock parent (dsi1vco) that is off.
+The chan_alloc_skb_cb() function is supposed to return error pointers on
+error.  Returning NULL will lead to a NULL dereference.
 
-This should seemingly not be a problem as the actual dispcc clocks from
-DSI1 that are muxed in the clock tree of DSI0 are way further down, this
-bit still seems to have an effect on them somehow and causes the right
-side of the panel controlled by DSI1 to not function.
-
-In an ideal world this code is refactored to no longer have such
-error-prone calls "across subsystems", and instead model the "PLL src"
-register field as a regular mux so that changing the clock parents
-programmatically or in DTS via `assigned-clock-parents` has the
-desired effect.
-But for the avid reader, the clocks that we *are* muxing into DSI0's
-tree are way further down, so if this bit turns out to be a simple mux
-between dsiXvco and out_div, that shouldn't have any effect as this
-whole tree is off anyway.
-
-Fixes: 57bf43389337 ("drm/msm/dsi: Pass down use case to PHY")
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Patchwork: https://patchwork.freedesktop.org/patch/637650/
-Link: https://lore.kernel.org/r/20250217-drm-msm-initial-dualpipe-dsc-fixes-v3-2-913100d6103f@somainline.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 6b8d4a6a0314 ("Bluetooth: 6LoWPAN: Use connected oriented channel instead of fixed one")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_manager.c | 32 ++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 11 deletions(-)
+ net/bluetooth/6lowpan.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_manager.c b/drivers/gpu/drm/msm/dsi/dsi_manager.c
-index 28b8012a21f2b..1a75f9c18c24b 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_manager.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_manager.c
-@@ -74,17 +74,35 @@ static int dsi_mgr_setup_components(int id)
- 	int ret;
+diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
+index 7601ce9143c18..7e698b0ac7bc7 100644
+--- a/net/bluetooth/6lowpan.c
++++ b/net/bluetooth/6lowpan.c
+@@ -855,11 +855,16 @@ static struct sk_buff *chan_alloc_skb_cb(struct l2cap_chan *chan,
+ 					 unsigned long hdr_len,
+ 					 unsigned long len, int nb)
+ {
++	struct sk_buff *skb;
++
+ 	/* Note that we must allocate using GFP_ATOMIC here as
+ 	 * this function is called originally from netdev hard xmit
+ 	 * function in atomic context.
+ 	 */
+-	return bt_skb_alloc(hdr_len + len, GFP_ATOMIC);
++	skb = bt_skb_alloc(hdr_len + len, GFP_ATOMIC);
++	if (!skb)
++		return ERR_PTR(-ENOMEM);
++	return skb;
+ }
  
- 	if (!IS_BONDED_DSI()) {
-+		/*
-+		 * Set the usecase before calling msm_dsi_host_register(), which would
-+		 * already program the PLL source mux based on a default usecase.
-+		 */
-+		msm_dsi_phy_set_usecase(msm_dsi->phy, MSM_DSI_PHY_STANDALONE);
-+		msm_dsi_host_set_phy_mode(msm_dsi->host, msm_dsi->phy);
-+
- 		ret = msm_dsi_host_register(msm_dsi->host);
- 		if (ret)
- 			return ret;
--
--		msm_dsi_phy_set_usecase(msm_dsi->phy, MSM_DSI_PHY_STANDALONE);
--		msm_dsi_host_set_phy_mode(msm_dsi->host, msm_dsi->phy);
- 	} else if (other_dsi) {
- 		struct msm_dsi *master_link_dsi = IS_MASTER_DSI_LINK(id) ?
- 							msm_dsi : other_dsi;
- 		struct msm_dsi *slave_link_dsi = IS_MASTER_DSI_LINK(id) ?
- 							other_dsi : msm_dsi;
-+
-+		/*
-+		 * PLL0 is to drive both DSI link clocks in bonded DSI mode.
-+		 *
-+		 * Set the usecase before calling msm_dsi_host_register(), which would
-+		 * already program the PLL source mux based on a default usecase.
-+		 */
-+		msm_dsi_phy_set_usecase(clk_master_dsi->phy,
-+					MSM_DSI_PHY_MASTER);
-+		msm_dsi_phy_set_usecase(clk_slave_dsi->phy,
-+					MSM_DSI_PHY_SLAVE);
-+		msm_dsi_host_set_phy_mode(msm_dsi->host, msm_dsi->phy);
-+		msm_dsi_host_set_phy_mode(other_dsi->host, other_dsi->phy);
-+
- 		/* Register slave host first, so that slave DSI device
- 		 * has a chance to probe, and do not block the master
- 		 * DSI device's probe.
-@@ -98,14 +116,6 @@ static int dsi_mgr_setup_components(int id)
- 		ret = msm_dsi_host_register(master_link_dsi->host);
- 		if (ret)
- 			return ret;
--
--		/* PLL0 is to drive both 2 DSI link clocks in bonded DSI mode. */
--		msm_dsi_phy_set_usecase(clk_master_dsi->phy,
--					MSM_DSI_PHY_MASTER);
--		msm_dsi_phy_set_usecase(clk_slave_dsi->phy,
--					MSM_DSI_PHY_SLAVE);
--		msm_dsi_host_set_phy_mode(msm_dsi->host, msm_dsi->phy);
--		msm_dsi_host_set_phy_mode(other_dsi->host, other_dsi->phy);
- 	}
- 
- 	return 0;
+ static void chan_suspend_cb(struct l2cap_chan *chan)
 -- 
 2.39.5
 
