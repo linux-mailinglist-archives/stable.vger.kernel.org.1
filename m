@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13E5BA80504
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:14:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9132BA80A95
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:07:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78F271B661C7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:08:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21C217B48E9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8871E264FB0;
-	Tue,  8 Apr 2025 12:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E9F279347;
+	Tue,  8 Apr 2025 12:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+dfyKZ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tnd3Rei1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468D51B87CF;
-	Tue,  8 Apr 2025 12:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C485281520;
+	Tue,  8 Apr 2025 12:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113999; cv=none; b=eQK551siQ9P9zJ7a6WRdQ+MC1WOi+ueWlwmoz6I/WMCyBjaPc7gq7EOquIgCem4JgVEOFUoMp2ZK7BkQpxOGO4wOilOU7fbiFrqfwCPYXoK8Mzh8jKanhYnZALF5uBaXwVPWUJZmqBhD6Z5KTN7Zd3trdwstRdKEK8Deosh3r2U=
+	t=1744116905; cv=none; b=eAW6dIEnq2yDriqQToW2LGDb937xJgcVhSgLzClxvN1Lk7K57mTArM/2Vb8oM+n7MFJ3XxZyJ1T11C4r2YwH/5TdcxCkcR8kfVLM8yPERrJbX4sDbiTE3BGIn5yjeH6KYaEkQ+xTQhne3UEspv5rduqj59gdb4kC4u2ppgSMha8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113999; c=relaxed/simple;
-	bh=ukVrrNSPxfYDXXT/FyYTwGfMMu1PQ7mLflcpm5Eahfc=;
+	s=arc-20240116; t=1744116905; c=relaxed/simple;
+	bh=VmolB/ZGH7XnH6eVh3froFCKHirE7Emhg47qRmHU/lU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TTotNGIYMH4X3/SozAYm4eHbSHbXP4G8jxVpMI8yrZ3YLBNsu0lpT2AKdHz1PO2LHh3gaI53UVbxWth2D9fsK9Vo7WtJc9hv9yZIoP9HJMCTZn8BVpPEdfAb/GkHeTUVQ5/+h55HuXD8hNke8FovEGGgh7UINVxtRhcC13OMEx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+dfyKZ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90AFC4CEE5;
-	Tue,  8 Apr 2025 12:06:38 +0000 (UTC)
+	 MIME-Version; b=ZTvtGcdl1RyeVIYVobBTqLrylgmCD6SB8MfI/VbeO57hCqsGE6xv+2Ep3CzTkqQ1VpbMsVzUlWiv6d/G8v/Ab5+LiQR5/mZL0q8BZf1xPXIV7mrlo+kDUr0W8Wx6M99B3Gsq8iybhjPM2nRYocBh4CHBpsmDNeFKAnJxmLKGRlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tnd3Rei1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D3BCC4CEE7;
+	Tue,  8 Apr 2025 12:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113999;
-	bh=ukVrrNSPxfYDXXT/FyYTwGfMMu1PQ7mLflcpm5Eahfc=;
+	s=korg; t=1744116904;
+	bh=VmolB/ZGH7XnH6eVh3froFCKHirE7Emhg47qRmHU/lU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v+dfyKZ038GvzXNPQRe8pv4XI0FZF6/+WM7jghR2CPKbF+EwVa0tJPMJ5hRgFN4Ea
-	 gcAlmxV/SCtHZgSmBTGQ0Ii/fNhLwbUOyt1BWKDpN/DoGxOldpUu6UyUY5HLEyO0Qi
-	 0phVM2WiraLaebaHCHrcjD+NtuCSr6LOV1efMqo8=
+	b=Tnd3Rei1f/ZsQvIWB4u/e31tbn3mQmYIrHT2lq5l3mEkJ1SvQ4kha7R4kP7bJQQmz
+	 QfVYRg/Va9n3xyvxOKQqeLw8j0vQs9mSNeDJ+0Dqe8QmuCoCq8k9AQI6aNZ36VM4sn
+	 dk14BPo1kYVc2yokjgrC6Nqeii6dIPNK9icBymYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Helge Deller <deller@gmx.de>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 098/154] fbdev: au1100fb: Move a variable assignment behind a null pointer check
+Subject: [PATCH 6.12 313/423] s390/entry: Fix setting _CIF_MCCK_GUEST with lowcore relocation
 Date: Tue,  8 Apr 2025 12:50:39 +0200
-Message-ID: <20250408104818.465989077@linuxfoundation.org>
+Message-ID: <20250408104853.095852683@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-[ Upstream commit 2df2c0caaecfd869b49e14f2b8df822397c5dd7f ]
+[ Upstream commit 121df45b37a1016ee6828c2ca3ba825f3e18a8c1 ]
 
-The address of a data structure member was determined before
-a corresponding null pointer check in the implementation of
-the function “au1100fb_setmode”.
+When lowcore relocation is enabled, the machine check handler doesn't
+use the lowcore address when setting _CIF_MCCK_GUEST. Fix this by
+adding the missing base register.
 
-This issue was detected by using the Coccinelle software.
-
-Fixes: 3b495f2bb749 ("Au1100 FB driver uplift for 2.6.")
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Acked-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 0001b7bbc53a ("s390/entry: Make mchk_int_handler() ready for lowcore relocation")
+Reported-by: Heiko Carstens <hca@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/au1100fb.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/s390/kernel/entry.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/au1100fb.c b/drivers/video/fbdev/au1100fb.c
-index 99941ae1f3a1c..514bd874a627e 100644
---- a/drivers/video/fbdev/au1100fb.c
-+++ b/drivers/video/fbdev/au1100fb.c
-@@ -137,13 +137,15 @@ static int au1100fb_fb_blank(int blank_mode, struct fb_info *fbi)
- 	 */
- int au1100fb_setmode(struct au1100fb_device *fbdev)
- {
--	struct fb_info *info = &fbdev->info;
-+	struct fb_info *info;
- 	u32 words;
- 	int index;
- 
- 	if (!fbdev)
- 		return -EINVAL;
- 
-+	info = &fbdev->info;
-+
- 	/* Update var-dependent FB info */
- 	if (panel_is_active(fbdev->panel) || panel_is_color(fbdev->panel)) {
- 		if (info->var.bits_per_pixel <= 8) {
+diff --git a/arch/s390/kernel/entry.S b/arch/s390/kernel/entry.S
+index 594da4cba707a..a7de838f80318 100644
+--- a/arch/s390/kernel/entry.S
++++ b/arch/s390/kernel/entry.S
+@@ -501,7 +501,7 @@ SYM_CODE_START(mcck_int_handler)
+ 	clgrjl	%r9,%r14, 4f
+ 	larl	%r14,.Lsie_leave
+ 	clgrjhe	%r9,%r14, 4f
+-	lg	%r10,__LC_PCPU
++	lg	%r10,__LC_PCPU(%r13)
+ 	oi	__PCPU_FLAGS+7(%r10), _CIF_MCCK_GUEST
+ 4:	BPENTER	__SF_SIE_FLAGS(%r15),_TIF_ISOLATE_BP_GUEST
+ 	SIEEXIT __SF_SIE_CONTROL(%r15),%r13
 -- 
 2.39.5
 
