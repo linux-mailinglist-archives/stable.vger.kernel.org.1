@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-130819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A684A806BF
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:30:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 597C0A80A72
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:05:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 181224C269B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:22:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 903E94E77C3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:51:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB5EC269B0E;
-	Tue,  8 Apr 2025 12:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF2926AA91;
+	Tue,  8 Apr 2025 12:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q7MZCS2x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THSqaTX7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5352206F18;
-	Tue,  8 Apr 2025 12:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48AC72690EC;
+	Tue,  8 Apr 2025 12:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114735; cv=none; b=K+hQiWLEQj/ePeYKvYC3mMBu98mTwvyIC+NZ23V8kK5jIM+9tzJCrCMdIIJh2NAGM8xtaaTKZU5dexQBssiW+uvNE7iPYhMyaggb96q2+G4oeGKWD3KB6OA7o2+VrdD0dJvgWS7EesRxiJ0VIT6UBtMZTaTndyjtmN84ipnBGJQ=
+	t=1744116421; cv=none; b=VSwmlF4RlmjsLVqQ/bhdh6SC6AaQVVnrinSwVKR7wBJiKHWtvF7jpzqflMHMKWQSO+0IM419J6qSfgz29Xn7xVh8uaZfTIMfIVnPP7PVp7w13kU7s2wTEkNCZLl5hHChOJjJuTDCFSUWhjj0aJClnGXAywLbfGsf75ykuMHfdjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114735; c=relaxed/simple;
-	bh=I1llT2oDtEOxrzhiIG46LdmlgMUuxHAWAPHfzQf/Eiw=;
+	s=arc-20240116; t=1744116421; c=relaxed/simple;
+	bh=09z+wJFS/TJWp72xzVxq/2i6TRg3AcXmkoKZ124fbpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U2mBA3xzYOXbEBcnZ+51mTBt/jMU9zAf3Dm0EdxIeqxJs1IanSaYViytZIGGvHcmijX75UB3aNHQSkwLzgZSG/4d9QvAkOPNg1ywcA6bWANhkpIPoDuo/bwTZUubYqeZL3ZI0NQ+DmaOM8K1wxpKfG9hkqjYjEvsJQAsHQOFmGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q7MZCS2x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E91C4CEE5;
-	Tue,  8 Apr 2025 12:18:55 +0000 (UTC)
+	 MIME-Version; b=mYQRKvM1t0sMSyoPuQ0MZsanTMc28418VYs0o37numqcXFmvasUigKui26d0SoZgjRktfUODxPiah0oCPyTi8X5/m2jwj4rb2bYTB6SF3t246yjghCF0iu+VR/iV/EU6Ko+h1wTuiCyLjKg8mHRX+U+xWrJZT8LAJQGx4tlJNb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THSqaTX7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3219C4CEE5;
+	Tue,  8 Apr 2025 12:47:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114735;
-	bh=I1llT2oDtEOxrzhiIG46LdmlgMUuxHAWAPHfzQf/Eiw=;
+	s=korg; t=1744116421;
+	bh=09z+wJFS/TJWp72xzVxq/2i6TRg3AcXmkoKZ124fbpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q7MZCS2xjJ5BmFCaUv10hKVHXk4AWpsoG4bGWRyxvX18KFge5muk38h7pFf7LVHVg
-	 C6dIOvPb/1I+elvsuCprJW57z8Hefxau4veeUdUBpjfO6cnxBnzD7Vc9F1cTYxu76m
-	 2Orsbu8KASbWeeoKnQp/YKSC5+YjsxN4HuvDXh0U=
+	b=THSqaTX7Hc2L/QGCX+ZUqSI7KAhLE/EP1XtLWrqNcYSnRcW1mMXXIcrxzZM6xWhRM
+	 WfqQW8PZiQhueJixXKnD4o2ac3WBggwz4olxc7iDq2Lzgl6jYHtZtyTLQC4EhHihO1
+	 mlXZfQ8WDSu3D+GLZtpIucRKmfjmin+qf3XyPHfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@linaro.org>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 209/499] perf tests: Fix Tool PMU test segfault
+Subject: [PATCH 6.12 095/423] mdacon: rework dependency list
 Date: Tue,  8 Apr 2025 12:47:01 +0200
-Message-ID: <20250408104856.419617768@linuxfoundation.org>
+Message-ID: <20250408104847.952529679@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,60 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@linaro.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 615ec00b06f78912c370b372426190768402a5b9 ]
+[ Upstream commit 5bbcc7645f4b244ffb5ac6563fbe9d3d42194447 ]
 
-tool_pmu__event_to_str() now handles skipped events by returning NULL,
-so it's wrong to re-check for a skip on the resulting string. Calling
-tool_pmu__skip_event() with a NULL string results in a segfault so
-remove the unnecessary skip to fix it:
+mdacon has roughly the same dependencies as vgacon but expresses them
+as a negative list instead of a positive list, with the only practical
+difference being PowerPC/CHRP, which uses vga16fb instead of vgacon.
 
-  $ perf test -vv "parsing with PMU name"
+The CONFIG_MDA_CONSOLE description advises to only turn it on when vgacon
+is also used because MDA/Hercules-only systems should be using vgacon
+instead, so just change the list to enforce that directly for simplicity.
 
-  12.2: Parsing with PMU name:
-  ...
-  ---- unexpected signal (11) ----
-  12.2: Parsing with PMU name         : FAILED!
+The probing was broken from 2002 to 2008, this improves on the fix
+that was added then: If vgacon is a loadable module, then mdacon
+cannot be built-in now, and the list of systems that support vgacon
+is carried over.
 
-Fixes: ee8aef2d2321 ("perf tools: Add skip check in tool_pmu__event_to_str()")
-Signed-off-by: James Clark <james.clark@linaro.org>
-Reported-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Acked-by: Kan Liang <kan.liang@linux.intel.com>
-Tested-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250212163859.1489916-1-james.clark@linaro.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 0b9cf3aa6b1e ("mdacon messing up default vc's - set default to vc13-16 again")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/tool_pmu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/video/console/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/tests/tool_pmu.c b/tools/perf/tests/tool_pmu.c
-index 187942b749b7c..1e900ef92e378 100644
---- a/tools/perf/tests/tool_pmu.c
-+++ b/tools/perf/tests/tool_pmu.c
-@@ -27,7 +27,7 @@ static int do_test(enum tool_pmu_event ev, bool with_pmu)
- 	parse_events_error__init(&err);
- 	ret = parse_events(evlist, str, &err);
- 	if (ret) {
--		if (tool_pmu__skip_event(tool_pmu__event_to_str(ev))) {
-+		if (!tool_pmu__event_to_str(ev)) {
- 			ret = TEST_OK;
- 			goto out;
- 		}
-@@ -59,7 +59,7 @@ static int do_test(enum tool_pmu_event ev, bool with_pmu)
- 		}
- 	}
+diff --git a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
+index c4a8f74df2493..3e9f2bda67027 100644
+--- a/drivers/video/console/Kconfig
++++ b/drivers/video/console/Kconfig
+@@ -24,7 +24,7 @@ config VGA_CONSOLE
+ 	  Say Y.
  
--	if (!found && !tool_pmu__skip_event(tool_pmu__event_to_str(ev))) {
-+	if (!found && tool_pmu__event_to_str(ev)) {
- 		pr_debug("FAILED %s:%d Didn't find tool event '%s' in parsed evsels\n",
- 			 __FILE__, __LINE__, str);
- 		ret = TEST_FAIL;
+ config MDA_CONSOLE
+-	depends on !M68K && !PARISC && ISA
++	depends on VGA_CONSOLE && ISA
+ 	tristate "MDA text console (dual-headed)"
+ 	help
+ 	  Say Y here if you have an old MDA or monochrome Hercules graphics
 -- 
 2.39.5
 
