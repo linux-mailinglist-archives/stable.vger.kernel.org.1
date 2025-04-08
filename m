@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-130386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB598A80406
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:05:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C482A80AEA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:11:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76E1D1B60D91
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:00:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 003C21B85D9F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1A926A095;
-	Tue,  8 Apr 2025 11:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D7E126B97C;
+	Tue,  8 Apr 2025 12:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O846jMQe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yeRezxhF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA58269CF6;
-	Tue,  8 Apr 2025 11:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC0526B972;
+	Tue,  8 Apr 2025 12:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113577; cv=none; b=HASv5/4cYuwlAHaT4ebCWe1AoiNzSPlQ/qFuxu8klhkRd0Vu8tzEmc8qAFXqKr3zIfGzKcHmdjEGLYRKJJ04HFBahc38vUMICH3KYChWxB5KYzrTNvkkKuaeeqm9uNGTCIE9AwIv+sH1c3+mEkO7ZltNsagoaSIIgI3bZOxJM4U=
+	t=1744116816; cv=none; b=T0+rROg3q6E4eQQrQ0YQ9NCUfdzyQzKsDXxSMGO7y2ucMUk76rn3CyKwA45Z/4tXk+MFP+Y/YBtDYKE9yCwF5A0owFnRyq/jLezQkndzDAXszFh3lknvTidVpyVCfnKIOpoWoIElIvgLA5J6uLOJqu2uFHKy4uabd9c9Fqmme18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113577; c=relaxed/simple;
-	bh=lURI0yJ9oliLnOL/S9A1Kq+SBegWKhFeBqjs/ni+oqY=;
+	s=arc-20240116; t=1744116816; c=relaxed/simple;
+	bh=YoZnQ+ODiQ6prZe2CHcwQWpHNhUP6irJA1k4ZObrxy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c5WJEft6YT2fwLdElSOYDemqWrdxDU+yGkCgsX1PhctL69399r7j9EUoBzZDzFNU6JoHx+/CaLxATWERPChaUTkjDSyoKDPD7uKDT+I8lf+XFhcWxcFnYmKjATM6edOAJ8sH34clAd7F4pNSUbFAkV56HeJROUFG8SxGznBf9FI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O846jMQe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52532C4CEE5;
-	Tue,  8 Apr 2025 11:59:37 +0000 (UTC)
+	 MIME-Version; b=CMjQjZEzIVM25u6djbXktBI/mn7MxzzMsiqfM1IxF04YQVB/K4YrUbqiB9F3LaFyu006e1YuIxFp/XtmLPCw/6xNLPx4m8w9cOUfxnlfCO5PqbKVPjGlavuseW73e3RgLryuCUa7dFRO7tdDeujgUIJGNEnr/AmDJsPSiw6SzS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yeRezxhF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 507B2C4CEE5;
+	Tue,  8 Apr 2025 12:53:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113577;
-	bh=lURI0yJ9oliLnOL/S9A1Kq+SBegWKhFeBqjs/ni+oqY=;
+	s=korg; t=1744116816;
+	bh=YoZnQ+ODiQ6prZe2CHcwQWpHNhUP6irJA1k4ZObrxy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O846jMQeiH6RfkhZbOeCfk0duA6ghn4JeEuu8hgv2uxaY/keEV5L1NnKIXhWwrFB5
-	 h8Mo4NTHEhIQhW8ZSHN+SCltQlW8FtvDB1rK2700Zzog+JyMPly41iaJTLQ7GFt0Er
-	 7Aud+vGAfLXCUkE+leWFKdZkdekIrR5AHD1oHWuk=
+	b=yeRezxhFm6tPxOXdj9YaBRqsiDYbPl2zzZ3LZwh97iGAXPcqKx68G4iHLa9rLhi56
+	 tkpoHVW2NcTDE7lcFkaZmwUM27DZHZx8fDDYckxLb9e0GgIyk0rkPmjd2NQQ/31RXz
+	 3H1c8MHrxCxoqCB5Z2+qwG7VIruYO61SuyqYapRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juhan Jin <juhan.jin@foxmail.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 194/268] riscv: ftrace: Add parentheses in macro definitions of make_call_t0 and make_call_ra
+Subject: [PATCH 6.12 279/423] ALSA: hda/realtek: Add support for various ASUS Laptops using CS35L41 HDA
 Date: Tue,  8 Apr 2025 12:50:05 +0200
-Message-ID: <20250408104833.791202629@linuxfoundation.org>
+Message-ID: <20250408104852.271595654@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juhan Jin <juhan.jin@foxmail.com>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit 5f1a58ed91a040d4625d854f9bb3dd4995919202 ]
+[ Upstream commit 859a11917001424776e1cca02b762efcabb4044e ]
 
-This patch adds parentheses to parameters caller and callee of macros
-make_call_t0 and make_call_ra. Every existing invocation of these two
-macros uses a single variable for each argument, so the absence of the
-parentheses seems okay. However, future invocations might use more
-complex expressions as arguments. For example, a future invocation might
-look like this: make_call_t0(a - b, c, call). Without parentheses in the
-macro definition, the macro invocation expands to:
+Add support for ASUS B3405CVA, B5405CVA, B5605CVA, B3605CVA.
 
-...
-unsigned int offset = (unsigned long) c - (unsigned long) a - b;
-...
+Laptops use 2 CS35L41 Amps with HDA, using Internal boost, with SPI
 
-which is clearly wrong.
-
-The use of parentheses ensures arguments are correctly evaluated and
-potentially saves future users of make_call_t0 and make_call_ra debugging
-trouble.
-
-Fixes: 6724a76cff85 ("riscv: ftrace: Reduce the detour code size to half")
-Signed-off-by: Juhan Jin <juhan.jin@foxmail.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/tencent_AE90AA59903A628E87E9F80E563DA5BA5508@qq.com
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250305170714.755794-5-sbinding@opensource.cirrus.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/ftrace.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/riscv/include/asm/ftrace.h b/arch/riscv/include/asm/ftrace.h
-index 42777f91a9c58..9004dfec8c855 100644
---- a/arch/riscv/include/asm/ftrace.h
-+++ b/arch/riscv/include/asm/ftrace.h
-@@ -103,7 +103,7 @@ struct dyn_arch_ftrace {
- #define make_call_t0(caller, callee, call)				\
- do {									\
- 	unsigned int offset =						\
--		(unsigned long) callee - (unsigned long) caller;	\
-+		(unsigned long) (callee) - (unsigned long) (caller);	\
- 	call[0] = to_auipc_t0(offset);					\
- 	call[1] = to_jalr_t0(offset);					\
- } while (0)
-@@ -119,7 +119,7 @@ do {									\
- #define make_call_ra(caller, callee, call)				\
- do {									\
- 	unsigned int offset =						\
--		(unsigned long) callee - (unsigned long) caller;	\
-+		(unsigned long) (callee) - (unsigned long) (caller);	\
- 	call[0] = to_auipc_ra(offset);					\
- 	call[1] = to_jalr_ra(offset);					\
- } while (0)
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 6117aad97ba37..7a9d996ac1a45 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10636,6 +10636,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x125e, "ASUS Q524UQK", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x1271, "ASUS X430UN", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x1290, "ASUS X441SA", ALC233_FIXUP_EAPD_COEF_AND_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0x1043, 0x1294, "ASUS B3405CVA", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x12a0, "ASUS X441UV", ALC233_FIXUP_EAPD_COEF_AND_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x12a3, "Asus N7691ZM", ALC269_FIXUP_ASUS_N7601ZM),
+ 	SND_PCI_QUIRK(0x1043, 0x12af, "ASUS UX582ZS", ALC245_FIXUP_CS35L41_SPI_2),
+@@ -10722,6 +10723,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1f63, "ASUS P5405CSA", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1f92, "ASUS ROG Flow X16", ALC289_FIXUP_ASUS_GA401),
+ 	SND_PCI_QUIRK(0x1043, 0x1fb3, "ASUS ROG Flow Z13 GZ302EA", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x1043, 0x3011, "ASUS B5605CVA", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
+ 	SND_PCI_QUIRK(0x1043, 0x31d0, "ASUS Zen AIO 27 Z272SD_A272SD", ALC274_FIXUP_ASUS_ZEN_AIO_27),
+ 	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+@@ -10740,6 +10742,8 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x3f10, "ASUS Strix G835LR_LW_LX", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x1043, 0x3f20, "ASUS Strix G615LR_LW", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x1043, 0x3f30, "ASUS Strix G815LR_LW", ALC287_FIXUP_TAS2781_I2C),
++	SND_PCI_QUIRK(0x1043, 0x3fd0, "ASUS B3605CVA", ALC245_FIXUP_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x3ff0, "ASUS B5405CVA", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x831a, "ASUS P901", ALC269_FIXUP_STEREO_DMIC),
+ 	SND_PCI_QUIRK(0x1043, 0x834a, "ASUS S101", ALC269_FIXUP_STEREO_DMIC),
+ 	SND_PCI_QUIRK(0x1043, 0x8398, "ASUS P1005", ALC269_FIXUP_STEREO_DMIC),
 -- 
 2.39.5
 
