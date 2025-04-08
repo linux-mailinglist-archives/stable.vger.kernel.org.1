@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-131384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BE4AA809E2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:58:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C788A805D3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:21:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3C364E61F1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:49:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66F1E7AED6C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:19:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0488D26FA57;
-	Tue,  8 Apr 2025 12:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE11526A1D8;
+	Tue,  8 Apr 2025 12:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ELqalhSp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3egHqEO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6112265630;
-	Tue,  8 Apr 2025 12:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB65F26A1CA;
+	Tue,  8 Apr 2025 12:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116251; cv=none; b=J6Lvc0RVhos5jAftz7++I68YrsdKAnxkfPgeWu03G4TqotfRCfW9ApGN00V3/XbFuTCrH9RL3RGBmeZBBh8dgaOrrqQ5Cu+ay2CwhVT5iYTx1ZtYYj9cqrsCv0PVEooNCFiXfSaxrTzB7d1PBIBHvVRHMiTCY4WJVtRsenUsmVc=
+	t=1744114654; cv=none; b=GrlkLNMSCy6eEapIu0JaRvsAAe7F5oGRkC/Tf7fI7l1v2Y7+eePVld1ZZ1VaG+eK2gz7oATEwO2ZrHx4buJkKxziIGeXeaBSu88+7pzhIK30Xuaqv9iTIYQXPn1i3P78mJNpyKwvB8k8gZQ7qhUGHZJNJkvRq7RvsuUquXuo3HY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116251; c=relaxed/simple;
-	bh=ok2dsSmslfALs5R5nKRXZu8Ay0NvAKhRDfoI5itWbzQ=;
+	s=arc-20240116; t=1744114654; c=relaxed/simple;
+	bh=2zyYDova+OXBQai8QP1mPJtTFF2PEn4KRuD4S++eygQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=is0rg13Nf4xaG8TN4pKVg8ZR1JTGEyM+X76fzL/G+af2QX2LfjtSIyxDYENxwvgzdT8wrFclbbszCZ7/pUi7cfdtYR/qJRxhsKtzzu0kYhWkm2NtHEN+At18thaELPpjQRaQuON+UiP9iGF7k36VueugRAb7ffeRDoQubpoUolQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ELqalhSp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3886AC4CEE5;
-	Tue,  8 Apr 2025 12:44:11 +0000 (UTC)
+	 MIME-Version; b=UvOUY7ljsYo505nJKIoymVKpnuGnItVCqLh04XJ5+cGjXTX5z35CFBQd6ZZoPNWA/Embs1fny22A4phGmIVxShfeN5expBusbrGZWghtKiZV7ZXao0ryfhQ68u39xIHcD9+YOVRZSIGITJy5sJ9hjO1AS0vTeJnP8dgmyN+q2mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3egHqEO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14C89C4CEE7;
+	Tue,  8 Apr 2025 12:17:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116251;
-	bh=ok2dsSmslfALs5R5nKRXZu8Ay0NvAKhRDfoI5itWbzQ=;
+	s=korg; t=1744114654;
+	bh=2zyYDova+OXBQai8QP1mPJtTFF2PEn4KRuD4S++eygQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ELqalhSp1oV4Rpe9cnzqFYPnqswsDfj8+zqUkrg+qEo1swWNiL8SNhnRMDRq6LGME
-	 BHbsBquNHEQPtxQ8y8RhjvmxAY7mxGEjRbBLfTszsBEqLKImLmyyy1n1Jbdz3I+1T/
-	 H9xgusz2QQbCGeE0GvEt+n0uhr2QaPYnWMSVZx6s=
+	b=P3egHqEO5IHzYBSPyxEGG8sOksCyaya37apiM1jZ/6fpV37QLOXZfurwqrVftdCmY
+	 h7zJm5Lht4E6RfxxrjaVmRQxuxY5nhmQw1p/cWa0EZjzedj+1H4VIa1e4DMaErUP9z
+	 FiavyH4VThfDEQ+k9D5whlOOupNEamehFV/hwu8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Zhang <18255117159@163.com>,
-	Hans Zhang <hans.zhang@cixtech.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	syzbot+d2a2c639d03ac200a4f1@syzkaller.appspotmail.com,
+	Jiayuan Chen <mrpre@163.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 071/423] PCI: cadence-ep: Fix the driver to send MSG TLP for INTx without data payload
-Date: Tue,  8 Apr 2025 12:46:37 +0200
-Message-ID: <20250408104847.401910125@linuxfoundation.org>
+Subject: [PATCH 6.13 186/499] bpf: Fix array bounds error with may_goto
+Date: Tue,  8 Apr 2025 12:46:38 +0200
+Message-ID: <20250408104855.813106102@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +61,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Zhang <18255117159@163.com>
+From: Jiayuan Chen <mrpre@163.com>
 
-[ Upstream commit 3ac47fbf4f6e8c3a7c3855fac68cc3246f90f850 ]
+[ Upstream commit 6ebc5030e0c5a698f1dd9a6684cddf6ccaed64a0 ]
 
-Per the Cadence's "PCIe Controller IP for AX14" user guide, Version
-1.04, Section 9.1.7.1, "AXI Subordinate to PCIe Address Translation
-Registers", Table 9.4, the bit 16 of the AXI Subordinate Address
-(axi_s_awaddr) when set corresponds to MSG with data, and when not set,
-to MSG without data.
+may_goto uses an additional 8 bytes on the stack, which causes the
+interpreters[] array to go out of bounds when calculating index by
+stack_size.
 
-However, the driver is currently doing the opposite and due to this,
-the INTx is never received on the host.
+1. If a BPF program is rewritten, re-evaluate the stack size. For non-JIT
+cases, reject loading directly.
 
-So, fix the driver to reflect the documentation and also make INTx work.
+2. For non-JIT cases, calculating interpreters[idx] may still cause
+out-of-bounds array access, and just warn about it.
 
-Fixes: 37dddf14f1ae ("PCI: cadence: Add EndPoint Controller driver for Cadence PCIe controller")
-Signed-off-by: Hans Zhang <18255117159@163.com>
-Signed-off-by: Hans Zhang <hans.zhang@cixtech.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20250214165724.184599-1-18255117159@163.com
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+3. For jit_requested cases, the execution of bpf_func also needs to be
+warned. So move the definition of function __bpf_prog_ret0_warn out of
+the macro definition CONFIG_BPF_JIT_ALWAYS_ON.
+
+Reported-by: syzbot+d2a2c639d03ac200a4f1@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/bpf/0000000000000f823606139faa5d@google.com/
+Fixes: 011832b97b311 ("bpf: Introduce may_goto instruction")
+Signed-off-by: Jiayuan Chen <mrpre@163.com>
+Link: https://lore.kernel.org/r/20250214091823.46042-2-mrpre@163.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/cadence/pcie-cadence-ep.c | 3 +--
- drivers/pci/controller/cadence/pcie-cadence.h    | 2 +-
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ kernel/bpf/core.c     | 19 +++++++++++++++----
+ kernel/bpf/verifier.c |  7 +++++++
+ 2 files changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/controller/cadence/pcie-cadence-ep.c b/drivers/pci/controller/cadence/pcie-cadence-ep.c
-index e0cc4560dfde7..0bf4cde34f517 100644
---- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
-+++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
-@@ -352,8 +352,7 @@ static void cdns_pcie_ep_assert_intx(struct cdns_pcie_ep *ep, u8 fn, u8 intx,
- 	spin_unlock_irqrestore(&ep->lock, flags);
- 
- 	offset = CDNS_PCIE_NORMAL_MSG_ROUTING(MSG_ROUTING_LOCAL) |
--		 CDNS_PCIE_NORMAL_MSG_CODE(msg_code) |
--		 CDNS_PCIE_MSG_NO_DATA;
-+		 CDNS_PCIE_NORMAL_MSG_CODE(msg_code);
- 	writel(0, ep->irq_cpu_addr + offset);
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index da729cbbaeb90..a0200fbbace99 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -2290,17 +2290,18 @@ void bpf_patch_call_args(struct bpf_insn *insn, u32 stack_depth)
+ 	insn->code = BPF_JMP | BPF_CALL_ARGS;
  }
+ #endif
+-#else
++#endif
++
+ static unsigned int __bpf_prog_ret0_warn(const void *ctx,
+ 					 const struct bpf_insn *insn)
+ {
+ 	/* If this handler ever gets executed, then BPF_JIT_ALWAYS_ON
+-	 * is not working properly, so warn about it!
++	 * is not working properly, or interpreter is being used when
++	 * prog->jit_requested is not 0, so warn about it!
+ 	 */
+ 	WARN_ON_ONCE(1);
+ 	return 0;
+ }
+-#endif
  
-diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
-index f5eeff834ec19..39ee9945c903e 100644
---- a/drivers/pci/controller/cadence/pcie-cadence.h
-+++ b/drivers/pci/controller/cadence/pcie-cadence.h
-@@ -246,7 +246,7 @@ struct cdns_pcie_rp_ib_bar {
- #define CDNS_PCIE_NORMAL_MSG_CODE_MASK		GENMASK(15, 8)
- #define CDNS_PCIE_NORMAL_MSG_CODE(code) \
- 	(((code) << 8) & CDNS_PCIE_NORMAL_MSG_CODE_MASK)
--#define CDNS_PCIE_MSG_NO_DATA			BIT(16)
-+#define CDNS_PCIE_MSG_DATA			BIT(16)
+ bool bpf_prog_map_compatible(struct bpf_map *map,
+ 			     const struct bpf_prog *fp)
+@@ -2380,8 +2381,18 @@ static void bpf_prog_select_func(struct bpf_prog *fp)
+ {
+ #ifndef CONFIG_BPF_JIT_ALWAYS_ON
+ 	u32 stack_depth = max_t(u32, fp->aux->stack_depth, 1);
++	u32 idx = (round_up(stack_depth, 32) / 32) - 1;
  
- struct cdns_pcie;
- 
+-	fp->bpf_func = interpreters[(round_up(stack_depth, 32) / 32) - 1];
++	/* may_goto may cause stack size > 512, leading to idx out-of-bounds.
++	 * But for non-JITed programs, we don't need bpf_func, so no bounds
++	 * check needed.
++	 */
++	if (!fp->jit_requested &&
++	    !WARN_ON_ONCE(idx >= ARRAY_SIZE(interpreters))) {
++		fp->bpf_func = interpreters[idx];
++	} else {
++		fp->bpf_func = __bpf_prog_ret0_warn;
++	}
+ #else
+ 	fp->bpf_func = __bpf_prog_ret0_warn;
+ #endif
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 4f02345b764fd..4f31a666b4bfc 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -21472,6 +21472,13 @@ static int do_misc_fixups(struct bpf_verifier_env *env)
+ 		if (subprogs[cur_subprog + 1].start == i + delta + 1) {
+ 			subprogs[cur_subprog].stack_depth += stack_depth_extra;
+ 			subprogs[cur_subprog].stack_extra = stack_depth_extra;
++
++			stack_depth = subprogs[cur_subprog].stack_depth;
++			if (stack_depth > MAX_BPF_STACK && !prog->jit_requested) {
++				verbose(env, "stack size %d(extra %d) is too large\n",
++					stack_depth, stack_depth_extra);
++				return -EINVAL;
++			}
+ 			cur_subprog++;
+ 			stack_depth = subprogs[cur_subprog].stack_depth;
+ 			stack_depth_extra = 0;
 -- 
 2.39.5
 
