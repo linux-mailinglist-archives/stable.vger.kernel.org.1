@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1221A80366
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:57:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FB37A80275
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:48:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE9B217FC06
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86F6E8807B3
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51B2F268681;
-	Tue,  8 Apr 2025 11:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D129219301;
+	Tue,  8 Apr 2025 11:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZn+8t2L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ft3kzF/P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8D422257E;
-	Tue,  8 Apr 2025 11:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C6E267AF2;
+	Tue,  8 Apr 2025 11:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113149; cv=none; b=dRoxtbeuRztQIlaij8S6lbSsXQuGNNZ/7UFWQxJuVbSlOliriYYAddkr61miqCgAYMJNnsroSEgTg8PDYcgbWCUS1L0HZdi08/lRYOJn/aTsbcS/3kO+jNs8YJx9FAnFcjDH6BtkzsY5YnBoLH/IFL2F/bLYXltarb/ly1n0298=
+	t=1744112486; cv=none; b=kncBkmle7bIBPfGzoUXywoZBMhnFmpCBb2B0XsVAFbI4Re8260EQBXGAgPb5PuVxsHZ2CQySuzt0ZDVyiwRVDFtEqfH0pmzvvbBFZZZ6p3d/0Ue7BIG1KJfN+yPALv51rC+z2SMX6WmCcswvken1N4CPERSUpst0SWLoL8e6GP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113149; c=relaxed/simple;
-	bh=FdFRaDDgjWavtNAc7mjeTscpsD0fcECDyo/9/aAc+3Y=;
+	s=arc-20240116; t=1744112486; c=relaxed/simple;
+	bh=M6NRKdE2dqTP5mnqkXS//O2iUGb8amp+7UCn7cGUWws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gfd4nRKg/mpP7EjMSd0epFQFaFTl94CS+eec26YaggaGnZyp7UMB7H6PoX6uxKyrqIP8t4RpR/0VN6ePDfpUwtD3j7WvdaC7qpiGp4CajjeOJWeEdyCAnraVvDlYK6KM+YAqUytMGiF7npZMvIx+b2T0KIF60P8Fn7fh1rJT6AY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZn+8t2L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6BD9C4CEE5;
-	Tue,  8 Apr 2025 11:52:27 +0000 (UTC)
+	 MIME-Version; b=snSBK9zh9JNDvs0mrEfcpjd8jf57LvpUa0tlK1agLmWyil8gT+hoOVmNrOoknbjHRJ2CZaOeCMinIFTYXixUfb6q/3YAjsXJsRCNifeIsQ9WN1D9WJw7MZpwqWp4jSawYq5E1BTjLATm9Ytbk4iyQRw7y9XWqOZ7vtJ/37XJNVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ft3kzF/P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F62C4CEE5;
+	Tue,  8 Apr 2025 11:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113148;
-	bh=FdFRaDDgjWavtNAc7mjeTscpsD0fcECDyo/9/aAc+3Y=;
+	s=korg; t=1744112486;
+	bh=M6NRKdE2dqTP5mnqkXS//O2iUGb8amp+7UCn7cGUWws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iZn+8t2LxH28zNZRG98zf/QOZenQA7zMuDHhr5ozMB9PIVhQmvulGeN2KSjIOYOQn
-	 mA13qbNveQecojvT1271O/YXFaQU9m7DUf3H5oXbzFKZIaakWKhQ/qhHKDLZVDVf7n
-	 7b0E+i7tlECBs97vMJF+TB2dg33op/lD1nd/9YNU=
+	b=ft3kzF/Pw9woF4Joe1D3bSbO+aOOaw/lAfbjKhX11q6nLdgYc9lGPBND9USqvBDG1
+	 txwXrHR5eBbzHRvPCCRnLKwPfrvCPF4dFBmY/MZkwcpjpXcTVEsgHQpWc18Aqbe/PI
+	 4XpegXFVVEGWVyejF8yJcwhSJghvPBBkE/J5FeCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/268] drm/amd/display: fix type mismatch in CalculateDynamicMetadataParameters()
+Subject: [PATCH 5.15 079/279] firmware: imx-scu: fix OF node leak in .probe()
 Date: Tue,  8 Apr 2025 12:47:42 +0200
-Message-ID: <20250408104829.878050641@linuxfoundation.org>
+Message-ID: <20250408104828.476962791@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit c3c584c18c90a024a54716229809ba36424f9660 ]
+[ Upstream commit fbf10b86f6057cf79300720da4ea4b77e6708b0d ]
 
-There is a type mismatch between what CalculateDynamicMetadataParameters()
-takes and what is passed to it. Currently this function accepts several
-args as signed long but it's called with unsigned integers and integer. On
-some systems where long is 32 bits and one of these unsigned int params is
-greater than INT_MAX it may cause passing input params as negative values.
+imx_scu_probe() calls of_parse_phandle_with_args(), but does not
+release the OF node reference obtained by it. Add a of_node_put() call
+after done with the node.
 
-Fix this by changing these argument types from long to unsigned int and to
-int respectively. Also this will align the function's definition with
-similar functions in other dcn* drivers.
-
-Found by Linux Verification Center (linuxtesting.org) with Svace.
-
-Fixes: 6725a88f88a7 ("drm/amd/display: Add DCN3 DML")
-Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: f25a066d1a07 ("firmware: imx-scu: Support one TX and one RX")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/dml/dcn30/display_mode_vba_30.c   | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/firmware/imx/imx-scu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c b/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c
-index ad741a723c0e8..72ffa1abebaa1 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c
-@@ -281,10 +281,10 @@ static void CalculateDynamicMetadataParameters(
- 		double DISPCLK,
- 		double DCFClkDeepSleep,
- 		double PixelClock,
--		long HTotal,
--		long VBlank,
--		long DynamicMetadataTransmittedBytes,
--		long DynamicMetadataLinesBeforeActiveRequired,
-+		unsigned int HTotal,
-+		unsigned int VBlank,
-+		unsigned int DynamicMetadataTransmittedBytes,
-+		int DynamicMetadataLinesBeforeActiveRequired,
- 		int InterlaceEnable,
- 		bool ProgressiveToInterlaceUnitInOPP,
- 		double *Tsetup,
-@@ -3277,8 +3277,8 @@ static double CalculateWriteBackDelay(
+diff --git a/drivers/firmware/imx/imx-scu.c b/drivers/firmware/imx/imx-scu.c
+index dca79caccd01c..fa25c082109ac 100644
+--- a/drivers/firmware/imx/imx-scu.c
++++ b/drivers/firmware/imx/imx-scu.c
+@@ -279,6 +279,7 @@ static int imx_scu_probe(struct platform_device *pdev)
+ 		return ret;
  
+ 	sc_ipc->fast_ipc = of_device_is_compatible(args.np, "fsl,imx8-mu-scu");
++	of_node_put(args.np);
  
- static void CalculateDynamicMetadataParameters(int MaxInterDCNTileRepeaters, double DPPCLK, double DISPCLK,
--		double DCFClkDeepSleep, double PixelClock, long HTotal, long VBlank, long DynamicMetadataTransmittedBytes,
--		long DynamicMetadataLinesBeforeActiveRequired, int InterlaceEnable, bool ProgressiveToInterlaceUnitInOPP,
-+		double DCFClkDeepSleep, double PixelClock, unsigned int HTotal, unsigned int VBlank, unsigned int DynamicMetadataTransmittedBytes,
-+		int DynamicMetadataLinesBeforeActiveRequired, int InterlaceEnable, bool ProgressiveToInterlaceUnitInOPP,
- 		double *Tsetup, double *Tdmbf, double *Tdmec, double *Tdmsks)
- {
- 	double TotalRepeaterDelayTime = 0;
+ 	num_channel = sc_ipc->fast_ipc ? 2 : SCU_MU_CHAN_NUM;
+ 	for (i = 0; i < num_channel; i++) {
 -- 
 2.39.5
 
