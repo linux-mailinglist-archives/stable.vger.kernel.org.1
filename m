@@ -1,38 +1,38 @@
-Return-Path: <stable+bounces-128881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 002D0A7FB05
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:08:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16605A7FAEA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:06:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8ACE3A779B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:04:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E7D8441033
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA01426659F;
-	Tue,  8 Apr 2025 09:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC062686A9;
+	Tue,  8 Apr 2025 09:56:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF91266B4B
-	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 09:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F2D8266B4B
+	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 09:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744106186; cv=none; b=eype3frz2NDtvZONVKd731eNlI0g29pOcSgOzIRm5JknGGuR2WSDJg+cv9I4+u1LKwXq6TY4ZLPUsSNiIHCtWfo7236FYv1ngygvqEFMbWcPzwQgrBvCArEa6A14jcTkamFTm4QHlMh41d/P/LOLGrczaJan0eo16Ds0Lwiuxb8=
+	t=1744106189; cv=none; b=tP4P5Vk8DJ8ku+CCLFo8Dy5LZ+9qJvRaFkX5+rPgrhUV24ctD25eq3hp7IZzPsKWvnOz2udwFaEwkNEIakvbMrLE2w2sWfAUwak+LKPNBrecoLEv0YS9lPUsS4fxEQYjkVJ67s/X2zS6feRRTbrojddKyOW6DxIqvFc9p75DWeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744106186; c=relaxed/simple;
-	bh=S/InSRwpNLZI35GFTmyFT56mR5uhN0+AkkVT6cGTLv0=;
+	s=arc-20240116; t=1744106189; c=relaxed/simple;
+	bh=2vuUvvU4RxqamtGGbKOeHqJGwiiKynmEwtdD4yixGNQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZufWktOvgt33yldFf8UPQxjNpoB283IhUOPQ9hkjLAgJdvMAn42uEaGyBzDqrylkV1HUa2nA/z3GD9MTC79+oqJHF064wq2UvXO5p0B5g4ZEJpO+X+htUnTo2SKGNxOs54cPNk0LmV+6DNoWBZoHN5nC/gVA8MMB6QqcFJNd814=
+	 MIME-Version; b=NMcrd6j561TO3PmjqGQEygPkCb+7iuDQXNJuz/i4sFFcBRr82ychZfMmahZaROqmeQlBn4wvj3a86N+tbhCrl2hPO0eZDQZyGdo/fQCgeN9qS8jSFD/cuRYMuL4gpdP7zH3nSqdEP+IBhafO6Yx3Dh6Dw6yGOSogiBJ+vtZubfY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AB5031688;
-	Tue,  8 Apr 2025 02:56:25 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9B46A1688;
+	Tue,  8 Apr 2025 02:56:28 -0700 (PDT)
 Received: from a077893.arm.com (unknown [10.163.48.241])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 9BE903F6A8;
-	Tue,  8 Apr 2025 02:56:22 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 629563F6A8;
+	Tue,  8 Apr 2025 02:56:25 -0700 (PDT)
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: stable@vger.kernel.org
 Cc: catalin.marinas@arm.com,
@@ -40,9 +40,9 @@ Cc: catalin.marinas@arm.com,
 	robh@kernel.org,
 	mark.rutland@arm.com,
 	anshuman.khandual@arm.com
-Subject: [PATCH 6.14.y 4/7] arm64/sysreg: Add register fields for HFGITR2_EL2
-Date: Tue,  8 Apr 2025 15:26:03 +0530
-Message-Id: <20250408095606.1219230-5-anshuman.khandual@arm.com>
+Subject: [PATCH 6.14.y 5/7] arm64/sysreg: Add register fields for HFGRTR2_EL2
+Date: Tue,  8 Apr 2025 15:26:04 +0530
+Message-Id: <20250408095606.1219230-6-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250408095606.1219230-1-anshuman.khandual@arm.com>
 References: <20250408095606.1219230-1-anshuman.khandual@arm.com>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This adds register fields for HFGITR2_EL2 as per the definitions based
+This adds register fields for HFGRTR2_EL2 as per the definitions based
 on DDI0601 2024-12.
 
 Cc: Will Deacon <will@kernel.org>
@@ -64,31 +64,44 @@ Cc: linux-kernel@vger.kernel.org
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20250203050828.1049370-5-anshuman.khandual@arm.com
+Link: https://lore.kernel.org/r/20250203050828.1049370-6-anshuman.khandual@arm.com
 Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[cherry picked from commit 9401476f17747586a8bfb29abfdf5ade7a8bceef]
+[cherry picked from commit 59236089ad5243377b6905d78e39ba4183dc35f5]
 Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
- arch/arm64/tools/sysreg | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm64/tools/sysreg | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
 diff --git a/arch/arm64/tools/sysreg b/arch/arm64/tools/sysreg
-index f1c366866c93..0008ff35a655 100644
+index 0008ff35a655..cae085317b8c 100644
 --- a/arch/arm64/tools/sysreg
 +++ b/arch/arm64/tools/sysreg
-@@ -2872,6 +2872,12 @@ Field	1	AMEVCNTR00_EL0
- Field	0	AMCNTEN0
+@@ -2700,6 +2700,25 @@ Field	1	nPMIAR_EL1
+ Field	0	nPMECR_EL1
  EndSysreg
  
-+Sysreg	HFGITR2_EL2	3	4	3	1	7
-+Res0	63:2
-+Field	1	nDCCIVAPS
-+Field	0	TSBCSYNC
++Sysreg	HFGRTR2_EL2	3	4	3	1	2
++Res0	63:15
++Field	14	nACTLRALIAS_EL1
++Field	13	nACTLRMASK_EL1
++Field	12	nTCR2ALIAS_EL1
++Field	11	nTCRALIAS_EL1
++Field	10	nSCTLRALIAS2_EL1
++Field	9	nSCTLRALIAS_EL1
++Field	8	nCPACRALIAS_EL1
++Field	7	nTCR2MASK_EL1
++Field	6	nTCRMASK_EL1
++Field	5	nSCTLR2MASK_EL1
++Field	4	nSCTLRMASK_EL1
++Field	3	nCPACRMASK_EL1
++Field	2	nRCWSMASK_EL1
++Field	1	nERXGSR_EL1
++Field	0	nPFAR_EL1
 +EndSysreg
 +
- Sysreg	ZCR_EL2	3	4	1	2	0
- Fields	ZCR_ELx
- EndSysreg
+ Sysreg HDFGRTR_EL2	3	4	3	1	4
+ Field	63	PMBIDR_EL1
+ Field	62	nPMSNEVFR_EL1
 -- 
 2.30.2
 
