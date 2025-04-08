@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-130804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CE8CA805E8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:22:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5770A80999
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:55:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1263E7AF30D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:20:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC7DA1BA4F9C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADCD726A0C4;
-	Tue,  8 Apr 2025 12:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11F4270EBB;
+	Tue,  8 Apr 2025 12:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JY8+H06s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+dwf71Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699C9267F5B;
-	Tue,  8 Apr 2025 12:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0DD2676C9;
+	Tue,  8 Apr 2025 12:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114695; cv=none; b=SANa5Vf5osvtwvD+sIRqMCt3h5iKnXcQoFVcLVrjo3tbbJ7feti2DwDxHJO38fABTR6bFc+xVHDRv/ddhJrCWAXqzOuAhiudniU+gs7a6gckxR68lnixDa9W2Jb1loeKaDVREXz+c9DLMruyXU/LftKo/beUfnLkhGxq9AMVmXw=
+	t=1744116300; cv=none; b=dPmxDqIbQh3UEzLWbkqDjia3MX1K1L5xtrzZMdNPt7BLBnMeM3AAd0EfNM9FS5Bo5Gdn5DT88uT9h+qOKVZOXYdrmL5oYVheyngLKyHikXx3p4sCFVU8fIJJcrYB+jUoim8Hs6ZziR4fvTCI0n3TPrmcLT2IaRgcLnbJgqNLqRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114695; c=relaxed/simple;
-	bh=ucQTgKOIFCoJRN8wfKCbnTxhTUpPkBjeeCsY85QRoL8=;
+	s=arc-20240116; t=1744116300; c=relaxed/simple;
+	bh=jlZwS7bbyuROMf6R3gZCdobk18sUhFuoi28GumsgAsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ndM0/rrmbp1um63WyH9ql/3mcYJUx8/zbHaxYIfPsG3dTMHpJ0Mh9Q/BZpHpqa6vc5No/FkBg3bwr6CA4MHQhdXEjt7ffAkWlRmNevMj7Idl2DUXwN7i5BpXhZWeCCiqmFElmLY1KachcL2Q80tBZC+iE+nu4Jk2JVJPQT1iESQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JY8+H06s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE959C4CEE5;
-	Tue,  8 Apr 2025 12:18:14 +0000 (UTC)
+	 MIME-Version; b=E+1wsrOPoBbNkD1oL38NZz5GGHf3niwaUT/rWxnIA6wR7to2Rob/nyskl7HIXqhjzTi5NmzBbO8TuwQimRHPvKN2eGW5w/Ns+PekkHQS7V1xnDG14LGNOV48UFejKrsLbEKgbMQOA0hVQj2yS8YW71Ma50W7MEEKasi6Z4yfmUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+dwf71Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 850EDC4CEE5;
+	Tue,  8 Apr 2025 12:44:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114695;
-	bh=ucQTgKOIFCoJRN8wfKCbnTxhTUpPkBjeeCsY85QRoL8=;
+	s=korg; t=1744116299;
+	bh=jlZwS7bbyuROMf6R3gZCdobk18sUhFuoi28GumsgAsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JY8+H06saYeRYaZju+3vU2M78utoIJjibzOXnKc3ow+770qSuQaEfop2LwfBR5VZW
-	 E70xQVds8q4OoNyl8CIs9/8lwpSuS6v1oM3ci7yJU4GJCvrYEZrU0Ijp2FhE8gjp7H
-	 1U014uYDZeJnSJ24T0DsKuqdu+4m9IXnVEHEHP9o=
+	b=x+dwf71ZHNR+tDQKkyRPLGd5Clsn0EPNZApO3mG2ZJKpjMmNMiwii7SZ+ROos3J58
+	 68xCRurzgj04JpT4m4Xby8Hulg8TQP96jU60WsUBjoM8IIR/dfZqEYqh9IYM4X84a0
+	 24XGPNBFKU31Vm0AM3J02gsEeviYBAC5ujqr9nj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Christoph Winklhofer <cj.winklhofer@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Mattijs Korpershoek <mkorpershoek@baylibre.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 200/499] w1: fix NULL pointer dereference in probe
-Date: Tue,  8 Apr 2025 12:46:52 +0200
-Message-ID: <20250408104856.184501903@linuxfoundation.org>
+Subject: [PATCH 6.12 087/423] drm/mediatek: dsi: fix error codes in mtk_dsi_host_transfer()
+Date: Tue,  8 Apr 2025 12:46:53 +0200
+Message-ID: <20250408104847.767310993@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +66,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 0dd6770a72f138dabea9eae87f3da6ffa68f0d06 ]
+[ Upstream commit dcb166ee43c3d594e7b73a24f6e8cf5663eeff2c ]
 
-The w1_uart_probe() function calls w1_uart_serdev_open() (which includes
-devm_serdev_device_open()) before setting the client ops via
-serdev_device_set_client_ops(). This ordering can trigger a NULL pointer
-dereference in the serdev controller's receive_buf handler, as it assumes
-serdev->ops is valid when SERPORT_ACTIVE is set.
+There is a type bug because the return statement:
 
-This is similar to the issue fixed in commit 5e700b384ec1
-("platform/chrome: cros_ec_uart: properly fix race condition") where
-devm_serdev_device_open() was called before fully initializing the
-device.
+        return ret < 0 ? ret : recv_cnt;
 
-Fix the race by ensuring client ops are set before enabling the port via
-w1_uart_serdev_open().
+The issue is that ret is an int, recv_cnt is a u32 and the function
+returns ssize_t, which is a signed long.  The way that the type promotion
+works is that the negative error codes are first cast to u32 and then
+to signed long.  The error codes end up being positive instead of
+negative and the callers treat them as success.
 
-Fixes: a3c08804364e ("w1: add UART w1 bus driver")
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Acked-by: Christoph Winklhofer <cj.winklhofer@gmail.com>
-Link: https://lore.kernel.org/r/20250111181803.2283611-1-chenyuan0y@gmail.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: 81cc7e51c4f1 ("drm/mediatek: Allow commands to be sent during video mode")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/r/202412210801.iADw0oIH-lkp@intel.com/
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Mattijs Korpershoek <mkorpershoek@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/b754a408-4f39-4e37-b52d-7706c132e27f@stanley.mountain/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/w1/masters/w1-uart.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_dsi.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/w1/masters/w1-uart.c b/drivers/w1/masters/w1-uart.c
-index a31782e56ba75..c87eea3478067 100644
---- a/drivers/w1/masters/w1-uart.c
-+++ b/drivers/w1/masters/w1-uart.c
-@@ -372,11 +372,11 @@ static int w1_uart_probe(struct serdev_device *serdev)
- 	init_completion(&w1dev->rx_byte_received);
- 	mutex_init(&w1dev->rx_mutex);
+diff --git a/drivers/gpu/drm/mediatek/mtk_dsi.c b/drivers/gpu/drm/mediatek/mtk_dsi.c
+index b9b7fd08b7d7e..88f3dfeb4731d 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dsi.c
++++ b/drivers/gpu/drm/mediatek/mtk_dsi.c
+@@ -1108,12 +1108,12 @@ static ssize_t mtk_dsi_host_transfer(struct mipi_dsi_host *host,
+ 				     const struct mipi_dsi_msg *msg)
+ {
+ 	struct mtk_dsi *dsi = host_to_dsi(host);
+-	u32 recv_cnt, i;
++	ssize_t recv_cnt;
+ 	u8 read_data[16];
+ 	void *src_addr;
+ 	u8 irq_flag = CMD_DONE_INT_FLAG;
+ 	u32 dsi_mode;
+-	int ret;
++	int ret, i;
  
-+	serdev_device_set_drvdata(serdev, w1dev);
-+	serdev_device_set_client_ops(serdev, &w1_uart_serdev_ops);
- 	ret = w1_uart_serdev_open(w1dev);
- 	if (ret < 0)
- 		return ret;
--	serdev_device_set_drvdata(serdev, w1dev);
--	serdev_device_set_client_ops(serdev, &w1_uart_serdev_ops);
+ 	dsi_mode = readl(dsi->regs + DSI_MODE_CTRL);
+ 	if (dsi_mode & MODE) {
+@@ -1162,7 +1162,7 @@ static ssize_t mtk_dsi_host_transfer(struct mipi_dsi_host *host,
+ 	if (recv_cnt)
+ 		memcpy(msg->rx_buf, src_addr, recv_cnt);
  
- 	return w1_add_master_device(&w1dev->bus);
- }
+-	DRM_INFO("dsi get %d byte data from the panel address(0x%x)\n",
++	DRM_INFO("dsi get %zd byte data from the panel address(0x%x)\n",
+ 		 recv_cnt, *((u8 *)(msg->tx_buf)));
+ 
+ restore_dsi_mode:
 -- 
 2.39.5
 
