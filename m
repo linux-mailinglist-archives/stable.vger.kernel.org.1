@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-130967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04FDEA807CB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBECCA804D6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:12:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C868F8A54E9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:28:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 434A3188902A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:07:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E586F26B2C7;
-	Tue,  8 Apr 2025 12:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A6B4269823;
+	Tue,  8 Apr 2025 12:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iOKSBXZ4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g2gmUz0x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43F02676FA;
-	Tue,  8 Apr 2025 12:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078C6264627;
+	Tue,  8 Apr 2025 12:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115134; cv=none; b=h3LgG7CH43S/xauLa5cJ2WZWNONC5yZKi8gxs81kgGKNRYsB7eCk+uqQQEVdVtuIIKCccDS5Zd3Kf7qQbu9oNGwTT3GZPqRmE3vSAJfWYrxXkhGiG4bHNT2T1YrfoLE+dq4Nfsq1762vZUvrFbmXt+WezCJe+ezPdSU+4EIJuC4=
+	t=1744113927; cv=none; b=hQwUar953vA9JB6h760K1dPkz3mRSHCMmi/VYOC+ff3cYzqrE4TrLWKg5rZc0xWi1Z3jPNlzYfx8e2tdtg0kqc0c6PKwIt45cYCzeFky+vC2pFk7cP5sB2zbQY84X3w1hk5M+UCPp2ilfr8l3vzGRHCn9MpDXUx+Va319pW5IWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115134; c=relaxed/simple;
-	bh=/GTc78TfoPry8OZHYL7SDWpcEQocDQSPwzZyK1MKd4E=;
+	s=arc-20240116; t=1744113927; c=relaxed/simple;
+	bh=pOUMuggcxYlogc9cx5eHoYPXxO3Tzp0JgA4wRNMiEz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c1YcAj8NOeWzlfvlHu5oJF0z309PQ4fUATD8ltGbfoRDC55iiaTjjG6GSUAtBauUfM5va3vR4+XMiBi+ZhNrXGpJ0ALk9YRUL4y4VJF1/DUWNEytck4yBmnwB1eWPltjEnLE2Pl4xwSFz7cw1B1JtK9I4Y4H2dXXJ97ZCXRu+zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iOKSBXZ4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30C02C4CEE7;
-	Tue,  8 Apr 2025 12:25:34 +0000 (UTC)
+	 MIME-Version; b=XwJcEguS/PwFDENS7oO7lXefecPDKNpThItKQbj0VqSvQGBJI83HZz82SC3bYDq7abKwZPT4wAL2u7UDil+TQHGXH3XG+VgeUkeDYUiNQ6ImOLN1qgQfWYWtVU2S+hhow1SoZdtVlTv/Fk6hnI5WcZGtzXynO/80hGDQCRejqSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g2gmUz0x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD0CC4CEE7;
+	Tue,  8 Apr 2025 12:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115134;
-	bh=/GTc78TfoPry8OZHYL7SDWpcEQocDQSPwzZyK1MKd4E=;
+	s=korg; t=1744113926;
+	bh=pOUMuggcxYlogc9cx5eHoYPXxO3Tzp0JgA4wRNMiEz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iOKSBXZ409o4AQg/2A9kHFpS7mq1+odVOG+LPQp2Ix3/gRtCiy7SI7XUvpoZ/+ptG
-	 GKoJ7EYhhzuFM8TcYbLlmN0cownprCglIXMTZjGde5Rg0EVBjjAs7RzuoTY3hb25WB
-	 Q9f7hFiOXEApbhRbKWrsiJ2S2OZ3d3g3+smngo+k=
+	b=g2gmUz0x/uNOaB/yJIlXIDO/z+MKjbG0CkXLx6wFoKckaKgY5qO11oEiQFN/Y5L1X
+	 /RtmpMnK6DcJtJ/TDGZQa6KuOv0WdhCAEySfneer1dEMM5f6G44vWXTVnb43WWe3gX
+	 //4PCWX8sqeW9b2xXwG92P8rmbV1iQVyUwe7ndVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Shubin <n.shubin@yadro.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Jon Mason <jdmason@kudzu.us>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Daniel Wagner <wagi@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 362/499] ntb: intel: Fix using link status DBs
+Subject: [PATCH 5.4 033/154] nvme: only allow entering LIVE from CONNECTING state
 Date: Tue,  8 Apr 2025 12:49:34 +0200
-Message-ID: <20250408104900.258275344@linuxfoundation.org>
+Message-ID: <20250408104816.319430763@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Shubin <n.shubin@yadro.com>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit 8144e9c8f30fb23bb736a5d24d5c9d46965563c4 ]
+[ Upstream commit d2fe192348f93fe3a0cb1e33e4aba58e646397f4 ]
 
-Make sure we are not using DB's which were remapped for link status.
+The fabric transports and also the PCI transport are not entering the
+LIVE state from NEW or RESETTING. This makes the state machine more
+restrictive and allows to catch not supported state transitions, e.g.
+directly switching from RESETTING to LIVE.
 
-Fixes: f6e51c354b60 ("ntb: intel: split out the gen3 code")
-Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ntb/hw/intel/ntb_hw_gen3.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/nvme/host/core.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/ntb/hw/intel/ntb_hw_gen3.c b/drivers/ntb/hw/intel/ntb_hw_gen3.c
-index ffcfc3e02c353..a5aa96a31f4a6 100644
---- a/drivers/ntb/hw/intel/ntb_hw_gen3.c
-+++ b/drivers/ntb/hw/intel/ntb_hw_gen3.c
-@@ -215,6 +215,9 @@ static int gen3_init_ntb(struct intel_ntb_dev *ndev)
- 	}
- 
- 	ndev->db_valid_mask = BIT_ULL(ndev->db_count) - 1;
-+	/* Make sure we are not using DB's used for link status */
-+	if (ndev->hwerr_flags & NTB_HWERR_MSIX_VECTOR32_BAD)
-+		ndev->db_valid_mask &= ~ndev->db_link_mask;
- 
- 	ndev->reg->db_iowrite(ndev->db_valid_mask,
- 			      ndev->self_mmio +
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index dd4b99ea956ac..9816debe5cb51 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -351,8 +351,6 @@ bool nvme_change_ctrl_state(struct nvme_ctrl *ctrl,
+ 	switch (new_state) {
+ 	case NVME_CTRL_LIVE:
+ 		switch (old_state) {
+-		case NVME_CTRL_NEW:
+-		case NVME_CTRL_RESETTING:
+ 		case NVME_CTRL_CONNECTING:
+ 			changed = true;
+ 			/* FALLTHRU */
 -- 
 2.39.5
 
