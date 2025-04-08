@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-131120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D150A80848
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:43:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D6F5A80AC7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:09:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EB394C4E9D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:35:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 344DC1BC3096
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1276220330;
-	Tue,  8 Apr 2025 12:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF3B26AA82;
+	Tue,  8 Apr 2025 12:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="phHWGpiF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ixkVKTHF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4BBB26989E;
-	Tue,  8 Apr 2025 12:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF84C148;
+	Tue,  8 Apr 2025 12:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115541; cv=none; b=hxUfp50+L8dMbDsHbHEwADSufikt8/7DNEg4W3/W4PxVPd1TiokMZh4CcD0fbHGRTHGqnx/vyjWaK63KhijUx9ug8nWHYTpWPoFWu4hOEqyGv0jM1OvgXo1X45Q3Op5Bvwy6MN4M+j1jcSgs0nQL7R9dptifU4dI7FnlnDf7250=
+	t=1744116696; cv=none; b=LPii0tSi1BkxQtCtC+BdpKSrW1SHI988+4jw2Np5VzQnKPZ6HrnD1id8UD+K1gNXXDGSV0M6KWruf+YFeF1NcZwhpmfZtx2fnO8AfYLda9fYHfRwu4QJIDEU73FoXkqr31pimBopQPb0HqoAI2jMY/o8Q1BtGrINm7K3+kXpD4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115541; c=relaxed/simple;
-	bh=shpgbdOJ88iBSIzaL1D5QORN/TlUz6XdLYyY3v+X2EY=;
+	s=arc-20240116; t=1744116696; c=relaxed/simple;
+	bh=kZ2+oqgFesKc5p5NI7I9XaRRvZFXOLGfAVY8HFvE/BA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FHIpRLGlgePy2DgT6s9iEJxDtkXI77jYPcD/Kwg/eK4Q8hIRr6rFCGpykiKTAjlDwOrC4uwqBP2+fXnsVh5g1g1ey+U5baYDyFBDf83bII2raPybsmnN9vHMoJDhfFqQOxR8BNqa9HoGox2gmCol78oOwNOx1v00EBg+jBFEttE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phHWGpiF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B90C4CEE5;
-	Tue,  8 Apr 2025 12:32:21 +0000 (UTC)
+	 MIME-Version; b=AZ/JuC9TYWSU7YjqnON1jrbKFRCuCqZkZa7tyW2rZupETVipwvnZmIlpUwtVcE+zMyJBqkMmzNC1W7i81sV5MeBo9kH1srRXm7ydX88ia4sP7vLdatLoE63IbnEnADEkmJpez/B3W1RMLGbNJvLwDJZmlARwkNT8fhBb5SQ0MkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ixkVKTHF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F5B4C4CEE5;
+	Tue,  8 Apr 2025 12:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115541;
-	bh=shpgbdOJ88iBSIzaL1D5QORN/TlUz6XdLYyY3v+X2EY=;
+	s=korg; t=1744116696;
+	bh=kZ2+oqgFesKc5p5NI7I9XaRRvZFXOLGfAVY8HFvE/BA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=phHWGpiFV15tPJPQzexzDeRh8m/CyzEX9611z2QkkaRuIydubRIaNniUEM58orW1w
-	 WcJliRT2AWRNWNLn858RCXkr0/9OApoyZcX/O0CpCodnizPkjb7icJQYNEL7vcjGo3
-	 cnFpK3u0iNjg/ZKS5yW77DmjWGb79O6ez5BsUiXI=
+	b=ixkVKTHFrB//cgr59SK3J85RtjJfc1L5U2ixizrZFHXZ8q4gLKJJeXhlg68mjb7Dt
+	 Rzsuf7OaKNujuXxVkwodjwk2nruZ5LhrIFzL/2qiT6luNGGpge8iDQSPRAwH4da5Pm
+	 hQVUbdsNcjiks1fvISRLvU2HgD1mdqvrvHs1meE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Gary Wang <gary.c.wang@intel.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 014/204] EDAC/ie31200: Fix the DIMM size mask for several SoCs
+Subject: [PATCH 6.12 218/423] staging: vchiq_arm: Register debugfs after cdev
 Date: Tue,  8 Apr 2025 12:49:04 +0200
-Message-ID: <20250408104820.732292496@linuxfoundation.org>
+Message-ID: <20250408104850.806613963@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 3427befbbca6b19fe0e37f91d66ce5221de70bf1 ]
+[ Upstream commit 63f4dbb196db60a8536ba3d1b835d597a83f6cbb ]
 
-The DIMM size mask for {Sky, Kaby, Coffee} Lake is not bits{7:0},
-but bits{5:0}. Fix it.
+The commit 2a4d15a4ae98 ("staging: vchiq: Refactor vchiq cdev code")
+moved the debugfs directory creation before vchiq character device
+registration. In case the latter fails, the debugfs directory won't
+be cleaned up.
 
-Fixes: 953dee9bbd24 ("EDAC, ie31200_edac: Add Skylake support")
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Tested-by: Gary Wang <gary.c.wang@intel.com>
-Link: https://lore.kernel.org/r/20250310011411.31685-3-qiuxu.zhuo@intel.com
+Fixes: 2a4d15a4ae98 ("staging: vchiq: Refactor vchiq cdev code")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20250309125014.37166-2-wahrenst@gmx.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/ie31200_edac.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
-index 98d74c604d726..92714dd88b3f6 100644
---- a/drivers/edac/ie31200_edac.c
-+++ b/drivers/edac/ie31200_edac.c
-@@ -162,6 +162,7 @@
- #define IE31200_MAD_DIMM_0_OFFSET		0x5004
- #define IE31200_MAD_DIMM_0_OFFSET_SKL		0x500C
- #define IE31200_MAD_DIMM_SIZE			GENMASK_ULL(7, 0)
-+#define IE31200_MAD_DIMM_SIZE_SKL		GENMASK_ULL(5, 0)
- #define IE31200_MAD_DIMM_A_RANK			BIT(17)
- #define IE31200_MAD_DIMM_A_RANK_SHIFT		17
- #define IE31200_MAD_DIMM_A_RANK_SKL		BIT(10)
-@@ -375,7 +376,7 @@ static void __iomem *ie31200_map_mchbar(struct pci_dev *pdev)
- static void __skl_populate_dimm_info(struct dimm_data *dd, u32 addr_decode,
- 				     int chan)
- {
--	dd->size = (addr_decode >> (chan << 4)) & IE31200_MAD_DIMM_SIZE;
-+	dd->size = (addr_decode >> (chan << 4)) & IE31200_MAD_DIMM_SIZE_SKL;
- 	dd->dual_rank = (addr_decode & (IE31200_MAD_DIMM_A_RANK_SKL << (chan << 4))) ? 1 : 0;
- 	dd->x16_width = ((addr_decode & (IE31200_MAD_DIMM_A_WIDTH_SKL << (chan << 4))) >>
- 				(IE31200_MAD_DIMM_A_WIDTH_SKL_SHIFT + (chan << 4)));
+diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+index 5fab33adf58ed..ecf6e9635a10b 100644
+--- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
++++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+@@ -1745,8 +1745,6 @@ static int vchiq_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto failed_platform_init;
+ 
+-	vchiq_debugfs_init(&mgmt->state);
+-
+ 	dev_dbg(&pdev->dev, "arm: platform initialised - version %d (min %d)\n",
+ 		VCHIQ_VERSION, VCHIQ_VERSION_MIN);
+ 
+@@ -1760,6 +1758,8 @@ static int vchiq_probe(struct platform_device *pdev)
+ 		goto error_exit;
+ 	}
+ 
++	vchiq_debugfs_init(&mgmt->state);
++
+ 	bcm2835_audio = vchiq_device_register(&pdev->dev, "bcm2835-audio");
+ 	bcm2835_camera = vchiq_device_register(&pdev->dev, "bcm2835-camera");
+ 
 -- 
 2.39.5
 
