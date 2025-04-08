@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-131707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FA90A80B94
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:18:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28DC2A80520
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA2C38A60EB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:09:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A7CC4A38D7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8314526F453;
-	Tue,  8 Apr 2025 12:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33EAF2690EB;
+	Tue,  8 Apr 2025 12:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kNtnr2WS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JbBITOSF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF2C263C76;
-	Tue,  8 Apr 2025 12:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A952698AE;
+	Tue,  8 Apr 2025 12:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117121; cv=none; b=U1tPc+/oPoYJNOjld4w4oOPf8u1uyWBZokQ3mxcL7bGaOYww0MT6htEdpfPA6yHX2z04ugx3RKZHTqObW761RoMuKI/Kd+qFWFOz3TIC0pXSSqFRzlONlVuhFSnOQmISZpB8Yk+bY2yLkAD7sgPvWOx10HWrCPu8/Jg+PdfI3dw=
+	t=1744113731; cv=none; b=u1AHNkyVmjrtoSz07Jmh6XYWGnos+v6+9nELwcmr/JtmwsX7GTceb9Xq7+VY0zaJ9MY0bJUg/ns24ccsERieA6k2N8/09LYUNslTDISQCbDruDKKGn88x7CFo17S0bnBprrybIYHMcjWCjbxzV6nkVyVSSzZpkcT9iHfQZCF+JE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117121; c=relaxed/simple;
-	bh=jl3Ivb7VJz5lrJKt1Za1PP5ZrOVtcyYmWLFXPtunRl8=;
+	s=arc-20240116; t=1744113731; c=relaxed/simple;
+	bh=1GW5evtOVi+VdbfzLCB/Q5jBkoxfrODoJAL0LyRsP1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IHKPA9yIJuLp1AzRsi0TuZjcnmWQSwLqC0nGHY8eMQs7agU0KDf23DPdRmcCD/XxHG3dmjlVId+eKGOYMxLkZxgeuTZHFTnY8GgdT12HolVK3VItPrHvUjhYKfRIlvph5Cp0U+47+nJBQtjhZQUjLPrjcDVHAN6cbffm7e4Lobk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kNtnr2WS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED2EC4CEE7;
-	Tue,  8 Apr 2025 12:58:39 +0000 (UTC)
+	 MIME-Version; b=EnILuxLlyXsyCzUPgp43oKDHdxZYiLOI7UMohiecRCwfuTYrEzSkZpY7H+UWiBNglZcBS0UkcXgoM40QPsYv8qAn4+6qv4guvKUdNfBPGkat00seYVFfcFoC+1kLJaWBSchQRWUcX8ZPdXzv0wuifNY0nPdGJsXBfnOrkCm8Qos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JbBITOSF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64ADBC4CEE5;
+	Tue,  8 Apr 2025 12:02:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744117119;
-	bh=jl3Ivb7VJz5lrJKt1Za1PP5ZrOVtcyYmWLFXPtunRl8=;
+	s=korg; t=1744113731;
+	bh=1GW5evtOVi+VdbfzLCB/Q5jBkoxfrODoJAL0LyRsP1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kNtnr2WSXJ/LrawZ5urhxHn5Cw4MbH9CI1OslktUWc7IAGH0NTea0HaiXNk74Wfww
-	 938Fr4nR7odnjCHVlKAv+w7755j+x+eRSuCsXJwXhcZUeRC2oh16H/CBcaA89Zq6ac
-	 M78/nbchSyZo26EHFeZ0CEA26GozNQkQ+Vcl0e8Q=
+	b=JbBITOSFk0E+9lid1Aaf0iQ27GsfThDmPHaY5ZISiEe9/QRvqyu13HQ6cVl0fllxP
+	 GwAfdQyBdyIqmF+X7C1iKHjZmyUzNYPDBZQWCkHaNlSjGt6OghKXr+nxtc7JAxDfEZ
+	 3EV7XmwjoC/6apj25FZD22I/4wa0bugPQFkOrg+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuah Khan <shuah@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Tom Zanussi <zanussi@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 352/423] tracing/hist: Support POLLPRI event for poll on histogram
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 267/268] nfsd: put dl_stid if fail to queue dl_recall
 Date: Tue,  8 Apr 2025 12:51:18 +0200
-Message-ID: <20250408104854.048315424@linuxfoundation.org>
+Message-ID: <20250408104835.776902127@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,124 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-[ Upstream commit 66fc6f521a0b91051ce6968a216a30bc52267bf8 ]
+commit 230ca758453c63bd38e4d9f4a21db698f7abada8 upstream.
 
-Since POLLIN will not be flushed until the hist file is read, the user
-needs to repeatedly read() and poll() on the hist file for monitoring the
-event continuously. But the read() is somewhat redundant when the user is
-only monitoring for event updates.
+Before calling nfsd4_run_cb to queue dl_recall to the callback_wq, we
+increment the reference count of dl_stid.
+We expect that after the corresponding work_struct is processed, the
+reference count of dl_stid will be decremented through the callback
+function nfsd4_cb_recall_release.
+However, if the call to nfsd4_run_cb fails, the incremented reference
+count of dl_stid will not be decremented correspondingly, leading to the
+following nfs4_stid leak:
+unreferenced object 0xffff88812067b578 (size 344):
+  comm "nfsd", pid 2761, jiffies 4295044002 (age 5541.241s)
+  hex dump (first 32 bytes):
+    01 00 00 00 6b 6b 6b 6b b8 02 c0 e2 81 88 ff ff  ....kkkk........
+    00 6b 6b 6b 6b 6b 6b 6b 00 00 00 00 ad 4e ad de  .kkkkkkk.....N..
+  backtrace:
+    kmem_cache_alloc+0x4b9/0x700
+    nfsd4_process_open1+0x34/0x300
+    nfsd4_open+0x2d1/0x9d0
+    nfsd4_proc_compound+0x7a2/0xe30
+    nfsd_dispatch+0x241/0x3e0
+    svc_process_common+0x5d3/0xcc0
+    svc_process+0x2a3/0x320
+    nfsd+0x180/0x2e0
+    kthread+0x199/0x1d0
+    ret_from_fork+0x30/0x50
+    ret_from_fork_asm+0x1b/0x30
+unreferenced object 0xffff8881499f4d28 (size 368):
+  comm "nfsd", pid 2761, jiffies 4295044005 (age 5541.239s)
+  hex dump (first 32 bytes):
+    01 00 00 00 00 00 00 00 30 4d 9f 49 81 88 ff ff  ........0M.I....
+    30 4d 9f 49 81 88 ff ff 20 00 00 00 01 00 00 00  0M.I.... .......
+  backtrace:
+    kmem_cache_alloc+0x4b9/0x700
+    nfs4_alloc_stid+0x29/0x210
+    alloc_init_deleg+0x92/0x2e0
+    nfs4_set_delegation+0x284/0xc00
+    nfs4_open_delegation+0x216/0x3f0
+    nfsd4_process_open2+0x2b3/0xee0
+    nfsd4_open+0x770/0x9d0
+    nfsd4_proc_compound+0x7a2/0xe30
+    nfsd_dispatch+0x241/0x3e0
+    svc_process_common+0x5d3/0xcc0
+    svc_process+0x2a3/0x320
+    nfsd+0x180/0x2e0
+    kthread+0x199/0x1d0
+    ret_from_fork+0x30/0x50
+    ret_from_fork_asm+0x1b/0x30
+Fix it by checking the result of nfsd4_run_cb and call nfs4_put_stid if
+fail to queue dl_recall.
 
-Add POLLPRI poll event on the hist file so the event returns when a
-histogram is updated after open(), poll() or read(). Thus it is possible
-to wait for the next event without having to issue a read().
-
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/173527248770.464571.2536902137325258133.stgit@devnote2
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Reviewed-by: Tom Zanussi <zanussi@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Stable-dep-of: 0b4ffbe4888a ("tracing: Correct the refcount if the hist/hist_debug file fails to open")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events_hist.c | 29 ++++++++++++++++++++++++++---
- 1 file changed, 26 insertions(+), 3 deletions(-)
+ fs/nfsd/nfs4state.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index 9e33cd2a73b5c..e07d75adab8e3 100644
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -5598,6 +5598,7 @@ static void hist_trigger_show(struct seq_file *m,
- struct hist_file_data {
- 	struct file *file;
- 	u64 last_read;
-+	u64 last_act;
- };
- 
- static u64 get_hist_hit_count(struct trace_event_file *event_file)
-@@ -5633,6 +5634,11 @@ static int hist_show(struct seq_file *m, void *v)
- 			hist_trigger_show(m, data, n++);
- 	}
- 	hist_file->last_read = get_hist_hit_count(event_file);
-+	/*
-+	 * Update last_act too so that poll()/POLLPRI can wait for the next
-+	 * event after any syscall on hist file.
-+	 */
-+	hist_file->last_act = hist_file->last_read;
- 
- 	return 0;
- }
-@@ -5642,6 +5648,8 @@ static __poll_t event_hist_poll(struct file *file, struct poll_table_struct *wai
- 	struct trace_event_file *event_file;
- 	struct seq_file *m = file->private_data;
- 	struct hist_file_data *hist_file = m->private;
-+	__poll_t ret = 0;
-+	u64 cnt;
- 
- 	guard(mutex)(&event_mutex);
- 
-@@ -5651,10 +5659,15 @@ static __poll_t event_hist_poll(struct file *file, struct poll_table_struct *wai
- 
- 	hist_poll_wait(file, wait);
- 
--	if (hist_file->last_read != get_hist_hit_count(event_file))
--		return EPOLLIN | EPOLLRDNORM;
-+	cnt = get_hist_hit_count(event_file);
-+	if (hist_file->last_read != cnt)
-+		ret |= EPOLLIN | EPOLLRDNORM;
-+	if (hist_file->last_act != cnt) {
-+		hist_file->last_act = cnt;
-+		ret |= EPOLLPRI;
-+	}
- 
--	return 0;
-+	return ret;
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -1066,6 +1066,12 @@ static struct nfs4_ol_stateid * nfs4_all
+ 	return openlockstateid(stid);
  }
  
- static int event_hist_release(struct inode *inode, struct file *file)
-@@ -5668,6 +5681,7 @@ static int event_hist_release(struct inode *inode, struct file *file)
- 
- static int event_hist_open(struct inode *inode, struct file *file)
++/*
++ * As the sc_free callback of deleg, this may be called by nfs4_put_stid
++ * in nfsd_break_one_deleg.
++ * Considering nfsd_break_one_deleg is called with the flc->flc_lock held,
++ * this function mustn't ever sleep.
++ */
+ static void nfs4_free_deleg(struct nfs4_stid *stid)
  {
-+	struct trace_event_file *event_file;
- 	struct hist_file_data *hist_file;
- 	int ret;
+ 	struct nfs4_delegation *dp = delegstateid(stid);
+@@ -4920,6 +4926,7 @@ static const struct nfsd4_callback_ops n
  
-@@ -5675,16 +5689,25 @@ static int event_hist_open(struct inode *inode, struct file *file)
- 	if (ret)
- 		return ret;
- 
-+	guard(mutex)(&event_mutex);
-+
-+	event_file = event_file_data(file);
-+	if (!event_file)
-+		return -ENODEV;
-+
- 	hist_file = kzalloc(sizeof(*hist_file), GFP_KERNEL);
- 	if (!hist_file)
- 		return -ENOMEM;
-+
- 	hist_file->file = file;
-+	hist_file->last_act = get_hist_hit_count(event_file);
- 
- 	/* Clear private_data to avoid warning in single_open() */
- 	file->private_data = NULL;
- 	ret = single_open(file, hist_show, hist_file);
- 	if (ret)
- 		kfree(hist_file);
-+
- 	return ret;
+ static void nfsd_break_one_deleg(struct nfs4_delegation *dp)
+ {
++	bool queued;
+ 	/*
+ 	 * We're assuming the state code never drops its reference
+ 	 * without first removing the lease.  Since we're in this lease
+@@ -4928,7 +4935,10 @@ static void nfsd_break_one_deleg(struct
+ 	 * we know it's safe to take a reference.
+ 	 */
+ 	refcount_inc(&dp->dl_stid.sc_count);
+-	WARN_ON_ONCE(!nfsd4_run_cb(&dp->dl_recall));
++	queued = nfsd4_run_cb(&dp->dl_recall);
++	WARN_ON_ONCE(!queued);
++	if (!queued)
++		nfs4_put_stid(&dp->dl_stid);
  }
  
--- 
-2.39.5
-
+ /* Called from break_lease() with flc_lock held. */
 
 
 
