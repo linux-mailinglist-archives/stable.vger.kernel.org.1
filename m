@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-131062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 663F9A8074F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:36:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6496DA80589
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:19:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E95567A5946
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:31:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 078B84A1FB4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E8C26AA8C;
-	Tue,  8 Apr 2025 12:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B128D269AF8;
+	Tue,  8 Apr 2025 12:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cyuuk9IG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKLvkBaN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C2626A1D8;
-	Tue,  8 Apr 2025 12:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB63268685;
+	Tue,  8 Apr 2025 12:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115386; cv=none; b=t9j4x51kfgDm3IbTmbALKzNJ+sfxB5+Z00C+rqo+Ot4vIzisg2TS/gDxrvewm/VD96214/loiMdo19/Hrcb/ksM4b/tQo92djzKMawoAaUHMEwLuf1UGkh6WiAYTDgZPEIAZSQjg7S18eaXM/1e503DCAud8GevhDF7pWJksgaY=
+	t=1744114068; cv=none; b=fU5hfjdv01HaepiPM1qW4CHCixwsMdwGWQOLaS5LJTZVwwkOlwEHjMsjfOWw+G1H+YxlugVLwnbZXm6V8xQjqmft+0V7+rjK7ZVA500HRrGX4IAjIGFuGcu8gcyh4aiWCk2BNRQnuqOxG/3cgN4hii/G3bRLU8+Q9it6w1iwFDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115386; c=relaxed/simple;
-	bh=iRK1PWBI9LUNAsg3DWuRDWV8cYx7pxrWciXmv7Sv+Wk=;
+	s=arc-20240116; t=1744114068; c=relaxed/simple;
+	bh=Gobktv8SstNqrPiytHResXc7Cr4DqfyfTjA9OT/R70k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YnTu8YwBp18tAMBnYuW5nM213OC0uvyVp+jnblM3IhLdedpIadjYkPT6eJZwjTfPEcU5j8Hc6b7kBEtNBONC6FIUsoxhw9AUNd1Uxj8/AywCkdWSVxB3nJaGZhBSFZiE5A6WPi3TsBKfEc+VRhIEYrFnNAyOLSNhASVrRoB90MI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cyuuk9IG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D72C4CEE5;
-	Tue,  8 Apr 2025 12:29:45 +0000 (UTC)
+	 MIME-Version; b=fIYR73mJcYmdNIzFMfwDLxDLZN83OB0MjfXayI0hb+L/5T4NvDUCZzJKCgGEbjllHoYu6gwCVcpY5NQ1FjQITZ64gYxQMOF0bzdvC92AZXWfPJPDVd83RB/tKoAdPpEiEsJ0z7nSHrUzf/UR36I0+dKl/U1FGBdImiRghoVquBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKLvkBaN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA66C4CEE5;
+	Tue,  8 Apr 2025 12:07:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115386;
-	bh=iRK1PWBI9LUNAsg3DWuRDWV8cYx7pxrWciXmv7Sv+Wk=;
+	s=korg; t=1744114067;
+	bh=Gobktv8SstNqrPiytHResXc7Cr4DqfyfTjA9OT/R70k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cyuuk9IGWIb74iyesXNImI6FkPPZPOFHd04C5KY4Do6x5oizlbYkRsQdGZ44ZY7zn
-	 BERDU/LpPseb4he8LDv1PUg8+CENniKwhDk7H6Qu60TSTx6msvMYqSP2Eh4nuadPTA
-	 mYVfDZ1D84jp5f3M6hBy3+bFpK2bSVzMCy45JnQE=
+	b=OKLvkBaNnIa+dM36n8VZmSk47cf0lBYvpNNl7dHFRysxXmJFYGEpt2IDUU+zr6k/5
+	 KznYHxrH7KOgi0ISxNwrNEoS5cAKcVkbnmO0IIjlLNRELUClE7LJg2hqsVz3+2jGXp
+	 cUT448qJhWfmQ7hYMXUktI5zvplobL2kVU22CYG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.13 454/499] x86/mm: Fix flush_tlb_range() when used for zapping normal PMDs
+	kernel test robot <lkp@intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 125/154] objtool, media: dib8000: Prevent divide-by-zero in dib8000_set_dds()
 Date: Tue,  8 Apr 2025 12:51:06 +0200
-Message-ID: <20250408104902.556142012@linuxfoundation.org>
+Message-ID: <20250408104819.318676496@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-commit 3ef938c3503563bfc2ac15083557f880d29c2e64 upstream.
+[ Upstream commit e63d465f59011dede0a0f1d21718b59a64c3ff5c ]
 
-On the following path, flush_tlb_range() can be used for zapping normal
-PMD entries (PMD entries that point to page tables) together with the PTE
-entries in the pointed-to page table:
+If dib8000_set_dds()'s call to dib8000_read32() returns zero, the result
+is a divide-by-zero.  Prevent that from happening.
 
-    collapse_pte_mapped_thp
-      pmdp_collapse_flush
-        flush_tlb_range
+Fixes the following warning with an UBSAN kernel:
 
-The arm64 version of flush_tlb_range() has a comment describing that it can
-be used for page table removal, and does not use any last-level
-invalidation optimizations. Fix the X86 version by making it behave the
-same way.
+  drivers/media/dvb-frontends/dib8000.o: warning: objtool: dib8000_tune() falls through to next function dib8096p_cfg_DibRx()
 
-Currently, X86 only uses this information for the following two purposes,
-which I think means the issue doesn't have much impact:
-
- - In native_flush_tlb_multi() for checking if lazy TLB CPUs need to be
-   IPI'd to avoid issues with speculative page table walks.
- - In Hyper-V TLB paravirtualization, again for lazy TLB stuff.
-
-The patch "x86/mm: only invalidate final translations with INVLPGB" which
-is currently under review (see
-<https://lore.kernel.org/all/20241230175550.4046587-13-riel@surriel.com/>)
-would probably be making the impact of this a lot worse.
-
-Fixes: 016c4d92cd16 ("x86/mm/tlb: Add freed_tables argument to flush_tlb_mm_range")
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20250103-x86-collapse-flush-fix-v1-1-3c521856cfa6@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 173a64cb3fcf ("[media] dib8000: enhancement")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/bd1d504d930ae3f073b1e071bcf62cae7708773c.1742852847.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/r/202503210602.fvH5DO1i-lkp@intel.com/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/tlbflush.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/dvb-frontends/dib8000.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/tlbflush.h
-+++ b/arch/x86/include/asm/tlbflush.h
-@@ -242,7 +242,7 @@ void flush_tlb_multi(const struct cpumas
- 	flush_tlb_mm_range((vma)->vm_mm, start, end,			\
- 			   ((vma)->vm_flags & VM_HUGETLB)		\
- 				? huge_page_shift(hstate_vma(vma))	\
--				: PAGE_SHIFT, false)
-+				: PAGE_SHIFT, true)
+diff --git a/drivers/media/dvb-frontends/dib8000.c b/drivers/media/dvb-frontends/dib8000.c
+index 02cb48223dc67..a28cbbd9e475c 100644
+--- a/drivers/media/dvb-frontends/dib8000.c
++++ b/drivers/media/dvb-frontends/dib8000.c
+@@ -2701,8 +2701,11 @@ static void dib8000_set_dds(struct dib8000_state *state, s32 offset_khz)
+ 	u8 ratio;
  
- extern void flush_tlb_all(void);
- extern void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
+ 	if (state->revision == 0x8090) {
++		u32 internal = dib8000_read32(state, 23) / 1000;
++
+ 		ratio = 4;
+-		unit_khz_dds_val = (1<<26) / (dib8000_read32(state, 23) / 1000);
++
++		unit_khz_dds_val = (1<<26) / (internal ?: 1);
+ 		if (offset_khz < 0)
+ 			dds = (1 << 26) - (abs_offset_khz * unit_khz_dds_val);
+ 		else
+-- 
+2.39.5
+
 
 
 
