@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-129636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFBFCA800A1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:33:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58F37A7FD34
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:58:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67C56189BE18
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:29:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2718A16472E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C50B269AE4;
-	Tue,  8 Apr 2025 11:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0834C265CAF;
+	Tue,  8 Apr 2025 10:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iHOMTk4Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sTscm22v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC823269830;
-	Tue,  8 Apr 2025 11:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1264265626;
+	Tue,  8 Apr 2025 10:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111575; cv=none; b=VKKf7RE7pGtRillDjM7OUMj6G6RGxVU6B8vv40ZRNUnyxI4GVevMQ0r4U2bo2UEXAQPumdhxPGF8Am0XdGUZ2T9k8tGbeOTqeiPMyEpjoLCPc48p89EDfJKCJvLpi+ZXxJkpcslVq50lev7zTv86c5bjy1SAXmj/p7QmllexieQ=
+	t=1744109666; cv=none; b=rAZ3q8guNc2TgImMqYVS4BVIf+t6vVXAQrVF0MyvRGtrTNS6dv2cS8E9onQbEPcNgHHHFuxtGrYHjFu2mdV0l3VE+bxLZUu7wJ49RdV4kiivHohj8oPLi+YG0LD5akwe3FjaIw70SVV4OLctGRN6unX4tlEyVofbyEK4rsBmJUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111575; c=relaxed/simple;
-	bh=U3tnj44QcU8jaay1cVW59WV/1FQrJTxDVHhLEZLieKI=;
+	s=arc-20240116; t=1744109666; c=relaxed/simple;
+	bh=66vhCjF3+STFmJUUHXsFtUYsLbGopm9yeWUPsZ++7pk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DkQCtE/Lg9iP7uQ49eKJLcjiJnRQt5mdWImNL40v3eLF1TwErRpPE5dy4GYEARqWmiknme0l/8MfTNi3Rt81cGVMC5vLYf4u3kRlD9soIcJDJjwtm1khYw6Le2TVQAVWyO4Mj1rJ5jHIEIahHZ70bIZrevdEV33Y1NRgAZa6DzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iHOMTk4Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F5FC4CEE5;
-	Tue,  8 Apr 2025 11:26:14 +0000 (UTC)
+	 MIME-Version; b=oyK+9AcLIoNN7ignZ2SN0eBYv2pHAW5QtyD1S1ToBYWxLKe3PVTF7rPYXgQNGLUjBvm4pLNbVVmrugd3kPuqnpkr/JrfUtAWlxeK25r49/XGGWQ/iZRWohkd0/aX7ea2YEraCpnLk284z0mMWIrdswDIzl0hn8kpVIQo7sNrVoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sTscm22v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C59C6C4CEE5;
+	Tue,  8 Apr 2025 10:54:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111574;
-	bh=U3tnj44QcU8jaay1cVW59WV/1FQrJTxDVHhLEZLieKI=;
+	s=korg; t=1744109666;
+	bh=66vhCjF3+STFmJUUHXsFtUYsLbGopm9yeWUPsZ++7pk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iHOMTk4YAPHnQKCb3S3dWUFFebJ8tRcm7Ks4hq5n3gdk79zfM0rp2TdpVQ0Yvruvp
-	 1hCjjJtTD7vWXDUGGRIgRnh0lbUicQuX7/0YRYFsjfXJg+u/dOZDRDq4SnxscSp1Iy
-	 n5nGV81tAEoWgZQSPd4oSUFMNENgBv9It4+Sn7CI=
+	b=sTscm22vtq88yh3Eqo6UO0b9H20wSLjuyp9wmsYUXyq7eRkMds8AVsCwAM/kOdFUl
+	 46pJHeXQoPTQGa3Z9/2fFFQSJlFH2E8HSFe6tVt/wISKw/u8Odof08kBl34I6zWfNc
+	 hp3CI5JNM2QHtBSxOS2jPpwqkE1PoS4BdKH+ryEg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 481/731] fs/ntfs3: Fix a couple integer overflows on 32bit systems
-Date: Tue,  8 Apr 2025 12:46:18 +0200
-Message-ID: <20250408104925.465873682@linuxfoundation.org>
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10 001/227] vlan: fix memory leak in vlan_newlink()
+Date: Tue,  8 Apr 2025 12:46:19 +0200
+Message-ID: <20250408104820.401818056@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 5ad414f4df2294b28836b5b7b69787659d6aa708 ]
+commit 72a0b329114b1caa8e69dfa7cdad1dd3c69b8602 upstream.
 
-On 32bit systems the "off + sizeof(struct NTFS_DE)" addition can
-have an integer wrapping issue.  Fix it by using size_add().
+Blamed commit added back a bug I fixed in commit 9bbd917e0bec
+("vlan: fix memory leak in vlan_dev_set_egress_priority")
 
-Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If a memory allocation fails in vlan_changelink() after other allocations
+succeeded, we need to call vlan_dev_free_egress_priority()
+to free all allocated memory because after a failed ->newlink()
+we do not call any methods like ndo_uninit() or dev->priv_destructor().
+
+In following example, if the allocation for last element 2000:2001 fails,
+we need to free eight prior allocations:
+
+ip link add link dummy0 dummy0.100 type vlan id 100 \
+	egress-qos-map 1:2 2:3 3:4 4:5 5:6 6:7 7:8 8:9 2000:2001
+
+syzbot report was:
+
+BUG: memory leak
+unreferenced object 0xffff888117bd1060 (size 32):
+comm "syz-executor408", pid 3759, jiffies 4294956555 (age 34.090s)
+hex dump (first 32 bytes):
+09 00 00 00 00 a0 00 00 00 00 00 00 00 00 00 00 ................
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+backtrace:
+[<ffffffff83fc60ad>] kmalloc include/linux/slab.h:600 [inline]
+[<ffffffff83fc60ad>] vlan_dev_set_egress_priority+0xed/0x170 net/8021q/vlan_dev.c:193
+[<ffffffff83fc6628>] vlan_changelink+0x178/0x1d0 net/8021q/vlan_netlink.c:128
+[<ffffffff83fc67c8>] vlan_newlink+0x148/0x260 net/8021q/vlan_netlink.c:185
+[<ffffffff838b1278>] rtnl_newlink_create net/core/rtnetlink.c:3363 [inline]
+[<ffffffff838b1278>] __rtnl_newlink+0xa58/0xdc0 net/core/rtnetlink.c:3580
+[<ffffffff838b1629>] rtnl_newlink+0x49/0x70 net/core/rtnetlink.c:3593
+[<ffffffff838ac66c>] rtnetlink_rcv_msg+0x21c/0x5c0 net/core/rtnetlink.c:6089
+[<ffffffff839f9c37>] netlink_rcv_skb+0x87/0x1d0 net/netlink/af_netlink.c:2501
+[<ffffffff839f8da7>] netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+[<ffffffff839f8da7>] netlink_unicast+0x397/0x4c0 net/netlink/af_netlink.c:1345
+[<ffffffff839f9266>] netlink_sendmsg+0x396/0x710 net/netlink/af_netlink.c:1921
+[<ffffffff8384dbf6>] sock_sendmsg_nosec net/socket.c:714 [inline]
+[<ffffffff8384dbf6>] sock_sendmsg+0x56/0x80 net/socket.c:734
+[<ffffffff8384e15c>] ____sys_sendmsg+0x36c/0x390 net/socket.c:2488
+[<ffffffff838523cb>] ___sys_sendmsg+0x8b/0xd0 net/socket.c:2542
+[<ffffffff838525b8>] __sys_sendmsg net/socket.c:2571 [inline]
+[<ffffffff838525b8>] __do_sys_sendmsg net/socket.c:2580 [inline]
+[<ffffffff838525b8>] __se_sys_sendmsg net/socket.c:2578 [inline]
+[<ffffffff838525b8>] __x64_sys_sendmsg+0x78/0xf0 net/socket.c:2578
+[<ffffffff845ad8d5>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+[<ffffffff845ad8d5>] do_syscall_64+0x35/0xb0 arch/x86/entry/common.c:80
+[<ffffffff8460006a>] entry_SYSCALL_64_after_hwframe+0x46/0xb0
+
+Fixes: 37aa50c539bc ("vlan: introduce vlan_dev_free_egress_priority")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/index.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/8021q/vlan_netlink.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
-index 7eb9fae22f8da..78d20e4baa2c9 100644
---- a/fs/ntfs3/index.c
-+++ b/fs/ntfs3/index.c
-@@ -618,7 +618,7 @@ static bool index_hdr_check(const struct INDEX_HDR *hdr, u32 bytes)
- 	u32 off = le32_to_cpu(hdr->de_off);
+--- a/net/8021q/vlan_netlink.c
++++ b/net/8021q/vlan_netlink.c
+@@ -186,10 +186,14 @@ static int vlan_newlink(struct net *src_
+ 	else if (dev->mtu > max_mtu)
+ 		return -EINVAL;
  
- 	if (!IS_ALIGNED(off, 8) || tot > bytes || end > tot ||
--	    off + sizeof(struct NTFS_DE) > end) {
-+	    size_add(off, sizeof(struct NTFS_DE)) > end) {
- 		/* incorrect index buffer. */
- 		return false;
- 	}
-@@ -736,7 +736,7 @@ static struct NTFS_DE *hdr_find_e(const struct ntfs_index *indx,
- 	if (end > total)
- 		return NULL;
- 
--	if (off + sizeof(struct NTFS_DE) > end)
-+	if (size_add(off, sizeof(struct NTFS_DE)) > end)
- 		return NULL;
- 
- 	e = Add2Ptr(hdr, off);
--- 
-2.39.5
-
++	/* Note: If this initial vlan_changelink() fails, we need
++	 * to call vlan_dev_free_egress_priority() to free memory.
++	 */
+ 	err = vlan_changelink(dev, tb, data, extack);
+-	if (err)
+-		return err;
+-	err = register_vlan_dev(dev, extack);
++
++	if (!err)
++		err = register_vlan_dev(dev, extack);
++
+ 	if (err)
+ 		vlan_dev_free_egress_priority(dev);
+ 	return err;
 
 
 
