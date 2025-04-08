@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-129983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5647AA80245
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:46:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C601EA7FDBD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0ABC61890C41
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:42:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E63C42186C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4719F2686B8;
-	Tue,  8 Apr 2025 11:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF0B1FBCB2;
+	Tue,  8 Apr 2025 10:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeBgDGf9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fwxLCLPL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0294925FA13;
-	Tue,  8 Apr 2025 11:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFAA22171A;
+	Tue,  8 Apr 2025 10:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112503; cv=none; b=oXVXm6WDoU+r7OqOPRvNwgr9ZbbqB5L2ivt3fGcii965d4gNmPuOvkwEsOBgASOh2v1MKFCx3EBAEV0vJ4as46E8WAYv3fSnRoodEAILRNY05HF/1T//9TzQX+NiaPPiGZ3peXQTwIhIRt7nNCNRQUfXgSL8tME1Vu6J7jTduUM=
+	t=1744109907; cv=none; b=pjHNGyFcwe0Va1OyY8EHEM2rhlEaPVSWW6hHcxXSrK/A+7j5NkiX67/2xBVetuD/eTl1DFskbQZE7+9A+8WVKgXgQjlIwJkyT0ZxLOMSIzltxx2sjStTh9cISOTDpaPt6ZIHVb+Y086DLcxZDuWE3NEadghxjrquyAudZYAHcAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112503; c=relaxed/simple;
-	bh=86OBg5Lk28xeBNar22JHP706luZoebYF2ZIcXjk5SDk=;
+	s=arc-20240116; t=1744109907; c=relaxed/simple;
+	bh=VWYbfDHKlbUFiIOsM2u1VVEnh9YxJr0PLrekLUTMq6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S8fOzdSdS51d63cwtwobq5mWeqcMW2iYDM4t7OLTOAISzTfzEMUVAqJdJ7D6zS+wB10nm/fnivQxfA9M+pFFTBT7G/Rc+ij1yfjWZMK3EqcFpu7aiU9sVxOqw9FeCjt97FYpdQunw8+YquaTE+9PMnJGtueMt2a8J1NSha6gLqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeBgDGf9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8819DC4CEE5;
-	Tue,  8 Apr 2025 11:41:42 +0000 (UTC)
+	 MIME-Version; b=jpOe26SQPGrBxbVm7KBPfQzrUTrwsS2qsxenlqcu9hGSBY5vbOPnPofHJIBTW+/DudHUJKPKvii9jK6tI6+tCH5jcFtXbYFQJzUnCdWnmI6hzLpjPGIEQ/K+zeHe0c/I9O8KhqlZpLgV7mMJXmogo7n8r5kU7+RQq+KIk1h2kWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fwxLCLPL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F923C4CEE5;
+	Tue,  8 Apr 2025 10:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112502;
-	bh=86OBg5Lk28xeBNar22JHP706luZoebYF2ZIcXjk5SDk=;
+	s=korg; t=1744109907;
+	bh=VWYbfDHKlbUFiIOsM2u1VVEnh9YxJr0PLrekLUTMq6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zeBgDGf9+ntGVKYYLj1aswqBrfG811Eq1uxwJTeYMBfqpOPhIXwDO3Mi0dsTbjBNM
-	 AKMV/A8EFr7R+B8/IBIi/paVEcl9awrM93emF/r1P0oJpOmX+rhAIUHjrv/0tpRv7G
-	 9Le6K4iP8+EwgtuIOw93/mOJl2gbFYC1Hz66jncQ=
+	b=fwxLCLPLJ+/z2TwbCEhW4iUXsbJmYiDvP1lPK5kkboWUds9zFk9X2kO43dAr49if2
+	 KCOOGW6IdzYS3ymDYzoxISHaSBce/2Njc9eBJQCfGRspXXn1HMqg43r6mDOdmxUlAH
+	 2XIZN7W36HVoXlSxYsdgPtCmao67YSDOLb/sI2Gk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 093/279] net: atm: fix use after free in lec_send()
+	Yanjun Yang <yangyj.ee@gmail.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Kees Cook <kees@kernel.org>
+Subject: [PATCH 5.10 098/227] ARM: Remove address checking for MMUless devices
 Date: Tue,  8 Apr 2025 12:47:56 +0200
-Message-ID: <20250408104828.865794424@linuxfoundation.org>
+Message-ID: <20250408104823.304445009@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Yanjun Yang <yangyj.ee@gmail.com>
 
-[ Upstream commit f3009d0d6ab78053117f8857b921a8237f4d17b3 ]
+commit 3ccea4784fddd96fbd6c4497eb28b45dab638c2a upstream.
 
-The ->send() operation frees skb so save the length before calling
-->send() to avoid a use after free.
+Commit 169f9102f9198b ("ARM: 9350/1: fault: Implement
+copy_from_kernel_nofault_allowed()") added the function to check address
+before use. However, for devices without MMU, addr > TASK_SIZE will
+always fail.  This patch move this function after the #ifdef CONFIG_MMU
+statement.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/c751531d-4af4-42fe-affe-6104b34b791d@stanley.mountain
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Yanjun Yang <yangyj.ee@gmail.com>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218953
+Fixes: 169f9102f9198b ("ARM: 9350/1: fault: Implement copy_from_kernel_nofault_allowed()")
+Link: https://lore.kernel.org/r/20240611100947.32241-1-yangyj.ee@gmail.com
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/atm/lec.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/mm/fault.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/atm/lec.c b/net/atm/lec.c
-index 7226c784dbe0c..ca9952c52fb5c 100644
---- a/net/atm/lec.c
-+++ b/net/atm/lec.c
-@@ -181,6 +181,7 @@ static void
- lec_send(struct atm_vcc *vcc, struct sk_buff *skb)
+--- a/arch/arm/mm/fault.c
++++ b/arch/arm/mm/fault.c
+@@ -24,6 +24,8 @@
+ 
+ #include "fault.h"
+ 
++#ifdef CONFIG_MMU
++
+ bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
  {
- 	struct net_device *dev = skb->dev;
-+	unsigned int len = skb->len;
- 
- 	ATM_SKB(skb)->vcc = vcc;
- 	atm_account_tx(vcc, skb);
-@@ -191,7 +192,7 @@ lec_send(struct atm_vcc *vcc, struct sk_buff *skb)
- 	}
- 
- 	dev->stats.tx_packets++;
--	dev->stats.tx_bytes += skb->len;
-+	dev->stats.tx_bytes += len;
+ 	unsigned long addr = (unsigned long)unsafe_src;
+@@ -31,8 +33,6 @@ bool copy_from_kernel_nofault_allowed(co
+ 	return addr >= TASK_SIZE && ULONG_MAX - addr >= size;
  }
  
- static void lec_tx_timeout(struct net_device *dev, unsigned int txqueue)
--- 
-2.39.5
-
+-#ifdef CONFIG_MMU
+-
+ /*
+  * This is useful to dump out the page tables associated with
+  * 'addr' in mm 'mm'.
 
 
 
