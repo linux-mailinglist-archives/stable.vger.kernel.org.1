@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-129706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7EE4A800B5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:34:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2491A80394
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:00:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 533A67A80B6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:30:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 830A63BEC1B
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:52:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A6926B0BC;
-	Tue,  8 Apr 2025 11:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0823268688;
+	Tue,  8 Apr 2025 11:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNqWEX4q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bnpqqtfh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E1126B0A7;
-	Tue,  8 Apr 2025 11:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F18C269899;
+	Tue,  8 Apr 2025 11:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111762; cv=none; b=ptHjaFYSAsHGm6qPJDgdyd55wy7WtDG06g284dtALPzE41+y8TPB8cqorlePvHUgFQzmy28u0wwlU1aOJNisbPvXktcUnXL50p1MAuf13o2EkwodoXYP6eIg3gD3dgVZxmnk+2JMRbCRNV1xCr47vjn7C36s1fC8TwCuCWyu/4I=
+	t=1744113098; cv=none; b=ANADxmbsBrdwlh62kRMvhEvacqjM39k4l531AdmouPD4UsJy8CPR8T0rU6Xt54tNwaXwRtFkT21AkHPLkEFI+PsQjy0Qcm+OyzwlP8ewNYGWF4qfcT3vD0oIXXgCc5OALYAzo+hT3SMuG/005uWXKH8TqSCimi8h3bZGzSAgaE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111762; c=relaxed/simple;
-	bh=H3CA9wYjvwNBslnOEC0ne7WgV7bVJNlZMEms/n8ptqw=;
+	s=arc-20240116; t=1744113098; c=relaxed/simple;
+	bh=C+t+o5T+m8vIERIu/AjJUy3hD4kpnGYeY3nGbeE42IU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A603ZjmB4G1CqmfmeRrH9fnto8fJbSd/iXg946ymYL33si5Mtb3kmIklKVJ+FM2j+K2YQXS3ny/UsQaeJkMKzU4ilJ40DDJ1/1ak8f2SELhcnoNroDz3yO2rzR0caH7KMEwbLanxdm8vVHw9s/e5yFYIdPwExSC28OpRXjBQrGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNqWEX4q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C8FC4CEE5;
-	Tue,  8 Apr 2025 11:29:21 +0000 (UTC)
+	 MIME-Version; b=E5/M/P1s4ccTxgoMnQ2VXvxi23Sym2NYfW/nybzRdvIgebMtNFDJMCzU2cRZHCof3a7AzvzDTYru4//1C7waqmuCAkOdsTavE6RQ/D3ti34lF9ISS8xWszsvsI3icbEwLXZvlBZCE0e0uouMifExjIFL8UWtQOejmSCdDLFBr00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bnpqqtfh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0344EC4CEEB;
+	Tue,  8 Apr 2025 11:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111762;
-	bh=H3CA9wYjvwNBslnOEC0ne7WgV7bVJNlZMEms/n8ptqw=;
+	s=korg; t=1744113098;
+	bh=C+t+o5T+m8vIERIu/AjJUy3hD4kpnGYeY3nGbeE42IU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UNqWEX4q8bvBK5+FVCG2paOx0lV/qHHRkH5/dm3r2MqcPBdVcob9i37HghZFHGWaj
-	 kpN9n3mfqyRuxwrLuhm6Fzeq5U9pFBYzRsgB115363tTzCyI9lwBNIF5ODJQA03a0P
-	 vYJRcWmyPUjDmcKdc5Ss6/WWGgfc7IUZGH72WH/4=
+	b=BnpqqtfhByUtaKES6A7sHMt3LcQ3lL5x6ggrUsvzT1lte216BG7KXHJ9QY6wk7OKU
+	 pILxP44/Xmj9oVKzT1D8U3POnpMA24L75vetzTdNgAwDfaVQzEvZONKk/zbOhcZgKr
+	 +3Kf77lOH7fVBSrDaE3vCIqtIjfpbDrnMiYyIN8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Hermes Wu <Hermes.wu@ite.com.tw>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 548/731] objtool, spi: amd: Fix out-of-bounds stack access in amd_set_spi_freq()
+Subject: [PATCH 6.6 034/268] drm/bridge: it6505: fix HDCP V match check is not performed correctly
 Date: Tue,  8 Apr 2025 12:47:25 +0200
-Message-ID: <20250408104927.023504130@linuxfoundation.org>
+Message-ID: <20250408104829.420932034@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,52 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Hermes Wu <Hermes.wu@ite.com.tw>
 
-[ Upstream commit 76e51db43fe4aaaebcc5ddda67b0807f7c9bdecc ]
+[ Upstream commit a5072fc77fb9e38fa9fd883642c83c3720049159 ]
 
-If speed_hz < AMD_SPI_MIN_HZ, amd_set_spi_freq() iterates over the
-entire amd_spi_freq array without breaking out early, causing 'i' to go
-beyond the array bounds.
+Fix a typo where V compare incorrectly compares av[] with av[] itself,
+which can result in HDCP failure.
 
-Fix that by stopping the loop when it gets to the last entry, so the low
-speed_hz value gets clamped up to AMD_SPI_MIN_HZ.
+The loop of V compare is expected to iterate for 5 times
+which compare V array form av[0][] to av[4][].
+It should check loop counter reach the last statement "i == 5"
+before return true
 
-Fixes the following warning with an UBSAN kernel:
-
-  drivers/spi/spi-amd.o: error: objtool: amd_set_spi_freq() falls through to next function amd_spi_set_opcode()
-
-Fixes: 3fe26121dc3a ("spi: amd: Configure device speed")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Mark Brown <broonie@kernel.org>
-Cc: Raju Rangoju <Raju.Rangoju@amd.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/78fef0f2434f35be9095bcc9ffa23dd8cab667b9.1742852847.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/r/202503161828.RUk9EhWx-lkp@intel.com/
+Fixes: 0989c02c7a5c ("drm/bridge: it6505: fix HDCP CTS compare V matching")
+Signed-off-by: Hermes Wu <Hermes.wu@ite.com.tw>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250121-fix-hdcp-v-comp-v4-1-185f45c728dc@ite.com.tw
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-amd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/ite-it6505.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-amd.c b/drivers/spi/spi-amd.c
-index c85997478b819..17fc0b17e756d 100644
---- a/drivers/spi/spi-amd.c
-+++ b/drivers/spi/spi-amd.c
-@@ -302,7 +302,7 @@ static void amd_set_spi_freq(struct amd_spi *amd_spi, u32 speed_hz)
- {
- 	unsigned int i, spd7_val, alt_spd;
+diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
+index fe33b988d7523..e094165e584a5 100644
+--- a/drivers/gpu/drm/bridge/ite-it6505.c
++++ b/drivers/gpu/drm/bridge/ite-it6505.c
+@@ -2039,12 +2039,13 @@ static bool it6505_hdcp_part2_ksvlist_check(struct it6505 *it6505)
+ 			continue;
+ 		}
  
--	for (i = 0; i < ARRAY_SIZE(amd_spi_freq); i++)
-+	for (i = 0; i < ARRAY_SIZE(amd_spi_freq)-1; i++)
- 		if (speed_hz >= amd_spi_freq[i].speed_hz)
- 			break;
+-		for (i = 0; i < 5; i++) {
++		for (i = 0; i < 5; i++)
+ 			if (bv[i][3] != av[i][0] || bv[i][2] != av[i][1] ||
+-			    av[i][1] != av[i][2] || bv[i][0] != av[i][3])
++			    bv[i][1] != av[i][2] || bv[i][0] != av[i][3])
+ 				break;
  
+-			DRM_DEV_DEBUG_DRIVER(dev, "V' all match!! %d, %d", retry, i);
++		if (i == 5) {
++			DRM_DEV_DEBUG_DRIVER(dev, "V' all match!! %d", retry);
+ 			return true;
+ 		}
+ 	}
 -- 
 2.39.5
 
