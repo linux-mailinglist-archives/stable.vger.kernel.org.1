@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-128967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79029A7FD65
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C536FA8017E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:40:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D1F2162E1F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40AF61798F8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50464269827;
-	Tue,  8 Apr 2025 10:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D27DB268FDE;
+	Tue,  8 Apr 2025 11:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRHF08P+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynUB38NA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC131DDA0C;
-	Tue,  8 Apr 2025 10:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903FD2686B9;
+	Tue,  8 Apr 2025 11:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109760; cv=none; b=GgyfJlQ2q44uGGV2Rkc5sF3g89Y+LTWbg684kbza2jY/fluLT8xeXHBhhS+af4LX00g5P9aO4r1l2WLpWtN0LaXguSXExZ9JK4TKcKM3ct1rVNNK/IMDohUja35zQx7akYWH232V0WkEh+oKqAChPtB1Pd3bn5oa43slgnkUaDM=
+	t=1744111593; cv=none; b=VuvD6Zt906sI9cJ8X9B2de6cYhJnVqnUU5tKpxF1g083xe7wsl6wUCTGtjREWxtAxLftNMTaXJWsCZ+laEXOZa1x8EtBfx1EQhsgINTr+EmCa7vzBcv73qan5YFmhcckj4dtn6yEyMeLLgF0KwM5iP7fLsBDsgqpTpwhp5uDSak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109760; c=relaxed/simple;
-	bh=i6Y1/iwxyURZHdMIOiP4NvciPJAAIuDhMHvZUeLMQXc=;
+	s=arc-20240116; t=1744111593; c=relaxed/simple;
+	bh=cJXRXlp2WqI/ikKvGKTxFsIpPTxEH2OOsstnJ5oRg1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QUFkBeGo4ZQnM3a+4kyT3yyqAIYvH7kvbXtM09sX+3wbBVF32Cqm+Ws/uIjua+t1Nd+M4bLQsUvvOj8PgSVmfhJs3IxjyjvLZz0Kd3HZHgrgEAM4HxTa8z4iVWMZhCCpX1MUuTXcU7G6nWBCVcNGvIPx6YaUBfupHpU5TFAJJ1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRHF08P+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA11C4CEEA;
-	Tue,  8 Apr 2025 10:55:59 +0000 (UTC)
+	 MIME-Version; b=Fzraj7C/en/xKpzHhTpLNWjwoq3fSTr0VYC3HeQj6obIIystWztV1YW+g0sghSVbSZfo398x5jltaAEWELWrGCw8Zd/fBm0ShqF+JL4L3g9HpTsBBxvwVWcsrNNMHPxWakB11/VzeFkSxu3CEaW7QLWu40qj7etalnlDntPUw64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynUB38NA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EACDC4CEE5;
+	Tue,  8 Apr 2025 11:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109759;
-	bh=i6Y1/iwxyURZHdMIOiP4NvciPJAAIuDhMHvZUeLMQXc=;
+	s=korg; t=1744111593;
+	bh=cJXRXlp2WqI/ikKvGKTxFsIpPTxEH2OOsstnJ5oRg1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vRHF08P+03IMmvv481Q1bgw/hZE1nM3ZqGhz6xHuFwKLLZUwGMfAPwT5Q5Dsb6lo+
-	 FESjh569nyztpmTK8pDQ88lzU+4iObdR1PyFSpydPz+fMJokJAfN1jHBdCa+4AZkW3
-	 x2cFpVpvQIxuPHM10HbGDFzIBy9NQxIoaWZuZDtc=
+	b=ynUB38NAWHWDZ0ca/29OB1dXQsxrjYc3teq7tN8mEkuqKvIzB0Dcl67zHXpZAQSY9
+	 OLdADDCzYsUlf/S0Eb8pphLodGIoQ5Cr2Y94D9qdc2xDyQ49p6t2zTG6twdfWlkdkg
+	 fGG1EeMC7NXzY88hWDaBAwkC8CvEdbL9Caz7uQLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dongjie Zou <zoudongjie@huawei.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Abdelkareem Abdelsaamad <kareemem@amazon.com>
-Subject: [PATCH 5.10 005/227] KVM: x86: Reject Hyper-Vs SEND_IPI hypercalls if local APIC isnt in-kernel
-Date: Tue,  8 Apr 2025 12:46:23 +0200
-Message-ID: <20250408104820.530848257@linuxfoundation.org>
+	Frank Li <Frank.Li@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 487/731] dmaengine: fsl-edma: cleanup chan after dma_async_device_unregister
+Date: Tue,  8 Apr 2025 12:46:24 +0200
+Message-ID: <20250408104925.604157119@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-commit a8de7f100bb5989d9c3627d3a223ee1c863f3b69 upstream.
+[ Upstream commit c9c59da76ce9cb3f215b66eb3708cda1134a5206 ]
 
-Advertise support for Hyper-V's SEND_IPI and SEND_IPI_EX hypercalls if and
-only if the local API is emulated/virtualized by KVM, and explicitly reject
-said hypercalls if the local APIC is emulated in userspace, i.e. don't rely
-on userspace to opt-in to KVM_CAP_HYPERV_ENFORCE_CPUID.
+There is kernel dump when do module test:
+sysfs: cannot create duplicate filename
+/devices/platform/soc@0/44000000.bus/44000000.dma-controller/dma/dma0chan0
+ __dma_async_device_channel_register+0x128/0x19c
+ dma_async_device_register+0x150/0x454
+ fsl_edma_probe+0x6cc/0x8a0
+ platform_probe+0x68/0xc8
 
-Rejecting SEND_IPI and SEND_IPI_EX fixes a NULL-pointer dereference if
-Hyper-V enlightenments are exposed to the guest without an in-kernel local
-APIC:
+fsl_edma_cleanup_vchan will unlink vchan.chan.device_node, while
+dma_async_device_unregister  needs the link to do
+__dma_async_device_channel_unregister. So need move fsl_edma_cleanup_vchan
+after dma_async_device_unregister to make sure channel could be freed.
 
-  dump_stack+0xbe/0xfd
-  __kasan_report.cold+0x34/0x84
-  kasan_report+0x3a/0x50
-  __apic_accept_irq+0x3a/0x5c0
-  kvm_hv_send_ipi.isra.0+0x34e/0x820
-  kvm_hv_hypercall+0x8d9/0x9d0
-  kvm_emulate_hypercall+0x506/0x7e0
-  __vmx_handle_exit+0x283/0xb60
-  vmx_handle_exit+0x1d/0xd0
-  vcpu_enter_guest+0x16b0/0x24c0
-  vcpu_run+0xc0/0x550
-  kvm_arch_vcpu_ioctl_run+0x170/0x6d0
-  kvm_vcpu_ioctl+0x413/0xb20
-  __se_sys_ioctl+0x111/0x160
-  do_syscal1_64+0x30/0x40
-  entry_SYSCALL_64_after_hwframe+0x67/0xd1
+So clean up chan after dma_async_device_unregister to address this.
 
-Note, checking the sending vCPU is sufficient, as the per-VM irqchip_mode
-can't be modified after vCPUs are created, i.e. if one vCPU has an
-in-kernel local APIC, then all vCPUs have an in-kernel local APIC.
-
-Reported-by: Dongjie Zou <zoudongjie@huawei.com>
-Fixes: 214ff83d4473 ("KVM: x86: hyperv: implement PV IPI send hypercalls")
-Fixes: 2bc39970e932 ("x86/kvm/hyper-v: Introduce KVM_GET_SUPPORTED_HV_CPUID")
-Cc: stable@vger.kernel.org
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Link: https://lore.kernel.org/r/20250118003454.2619573-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[ Conflict due to 72167a9d7da2 ("KVM: x86: hyper-v: Stop shadowing
-  global 'current_vcpu' variable") not in the tree ]
-Signed-off-by: Abdelkareem Abdelsaamad <kareemem@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6f93b93b2a1b ("dmaengine: fsl-edma: kill the tasklets upon exit")
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/r/20250228071720.3780479-1-peng.fan@oss.nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/hyperv.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/dma/fsl-edma-main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -1618,6 +1618,9 @@ static u64 kvm_hv_send_ipi(struct kvm_vc
- 	u32 vector;
- 	bool all_cpus;
+diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+index f989b6c9c0a98..133bdb48d1a5c 100644
+--- a/drivers/dma/fsl-edma-main.c
++++ b/drivers/dma/fsl-edma-main.c
+@@ -802,9 +802,9 @@ static void fsl_edma_remove(struct platform_device *pdev)
+ 	struct fsl_edma_engine *fsl_edma = platform_get_drvdata(pdev);
  
-+	if (!lapic_in_kernel(current_vcpu))
-+		return HV_STATUS_INVALID_HYPERCALL_INPUT;
-+
- 	if (!ex) {
- 		if (!fast) {
- 			if (unlikely(kvm_read_guest(kvm, ingpa, &send_ipi,
-@@ -2060,7 +2063,8 @@ int kvm_vcpu_ioctl_get_hv_cpuid(struct k
- 			ent->eax |= HV_X64_REMOTE_TLB_FLUSH_RECOMMENDED;
- 			ent->eax |= HV_X64_APIC_ACCESS_RECOMMENDED;
- 			ent->eax |= HV_X64_RELAXED_TIMING_RECOMMENDED;
--			ent->eax |= HV_X64_CLUSTER_IPI_RECOMMENDED;
-+			if (!vcpu || lapic_in_kernel(vcpu))
-+				ent->eax |= HV_X64_CLUSTER_IPI_RECOMMENDED;
- 			ent->eax |= HV_X64_EX_PROCESSOR_MASKS_RECOMMENDED;
- 			if (evmcs_ver)
- 				ent->eax |= HV_X64_ENLIGHTENED_VMCS_RECOMMENDED;
+ 	fsl_edma_irq_exit(pdev, fsl_edma);
+-	fsl_edma_cleanup_vchan(&fsl_edma->dma_dev);
+ 	of_dma_controller_free(np);
+ 	dma_async_device_unregister(&fsl_edma->dma_dev);
++	fsl_edma_cleanup_vchan(&fsl_edma->dma_dev);
+ 	fsl_disable_clocks(fsl_edma, fsl_edma->drvdata->dmamuxs);
+ }
+ 
+-- 
+2.39.5
+
 
 
 
