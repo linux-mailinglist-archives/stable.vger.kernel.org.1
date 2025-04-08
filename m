@@ -1,121 +1,162 @@
-Return-Path: <stable+bounces-128800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 519EAA7F1D8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 02:57:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91B62A7F1DA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 02:57:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDD663B4EEA
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 00:56:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 373993B4D30
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 00:56:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C4EB25F98D;
-	Tue,  8 Apr 2025 00:54:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vJm3gbT1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8988C25F786;
+	Tue,  8 Apr 2025 00:56:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392E725F793;
-	Tue,  8 Apr 2025 00:54:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7BD25F784;
+	Tue,  8 Apr 2025 00:56:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744073687; cv=none; b=fTz9qKzKqmNpAaE2GuWJ4+NRL3fn8N27lzNcZXvVtmzyxn5pC4Xli/uOx3vk4YgoP9yS+/J+Sjsp22IWRqZEKrJ5qep/o7yBqfkA2eqD+rpuW6DNhnuU289F10SbM/aFrvVrAeDOOzRM2EO9MsMvidT5s7YkTvqJ12xLcL+V6Gs=
+	t=1744073785; cv=none; b=EFmy45pzThAzI7cK0CJ6pGOt/uj4LM3s0BHnBcVZE62Vlw0Ebrv3UUeR2D2ZY39D1tbx/Pr0YrAfzni4kIMufnC776ouOxsRMou75aSLS/DvXShnlBasjnrfoKKL3ImjxGXx/vuZDIb+sW9BnoqzU9BaWS/N/ckxpQqXW0n17ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744073687; c=relaxed/simple;
-	bh=uIclwtFQPhM45ra5x1CNBJS+U5d0woNUyIqzXH/gjpw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EPJlguat9zxVyRSX46WcbQaGvWVzkY8hPfHU81K7KYZCx5i/LZyjUo83/Bpogl2XNHAilbRmKL+p9jBk3qhqCmW3veHgJjJFkQaiUEUrKr5Kiu/2ao/z4WP3WzLw8wM8tsNpQ8iaWxgRVSRoQJ6j8T1PjKMjEwFctJM7CNKIFhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vJm3gbT1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86082C4CEDD;
-	Tue,  8 Apr 2025 00:54:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744073686;
-	bh=uIclwtFQPhM45ra5x1CNBJS+U5d0woNUyIqzXH/gjpw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=vJm3gbT19A1BqO671ArzM/3w4vpvc6bDAI7ohB/B0ZSpuwQBzgM9sGCcNQ3NJfn+J
-	 9u/gZFMDM0lDGM/U7rmRAg+Y+K40Nh9CRq/joj3MLGyrR2XOsoGgLm4ovOk6NC7JAV
-	 aThITcJRa4vP9DZTEMTMLTGz1WZTFsCymR0bofrlccuGcL4P4Ph4EtEPgTnZKBBHAp
-	 ZKgYTWU7k8e5qgzTnN2cr9PzKUvc153FliMORl5VRG+THGz3OI/WHEVGCBg+4W0fGf
-	 4uKnu/NGn4a+7hKdWuyz+u+Yss5VYsSUf2ll7xizlha/9nqIJMDUHTPGJtxoA/SG+o
-	 JEskOPpI/peAA==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Oleg Nesterov <oleg@redhat.com>,
-	kernel test robot <lkp@intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	ojeda@kernel.org,
-	aliceryhl@google.com,
-	akpm@linux-foundation.org,
-	tj@kernel.org,
-	masahiroy@kernel.org,
-	mmaurer@google.com,
-	yoann.congal@smile.fr,
-	jeffxu@chromium.org,
-	roman.gushchin@linux.dev,
-	axboe@kernel.dk,
-	chenridong@huawei.com,
-	jannh@google.com,
-	mark.rutland@arm.com,
-	brgerst@gmail.com,
-	vincent.guittot@linaro.org
-Subject: [PATCH AUTOSEL 5.4] sched/isolation: Make CONFIG_CPU_ISOLATION depend on CONFIG_SMP
-Date: Mon,  7 Apr 2025 20:54:37 -0400
-Message-Id: <20250408005438.3335036-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1744073785; c=relaxed/simple;
+	bh=qmNTvFHPZ33JyeaH3gNkORpdeGjMr/hDa3hDZaRHrcU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qpxrSaOEyN+3NjSA7NrU9hYTq4TIc0RKIuJIqPdf6Fz+NWTU3C0j8uOsw+sWgSllwn380T7BTNLL+y5quhPLTnLfbUdkTe4zTdaVfZSIQyr/4pKnFAa8R9mbpWyfGdCjHPOWJJx0yeMlZiFP6+iRG6XygpLDCGzwzWiZbozqzSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5380cg6I015863;
+	Mon, 7 Apr 2025 17:56:13 -0700
+Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45tyt4avaw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Mon, 07 Apr 2025 17:56:12 -0700 (PDT)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Mon, 7 Apr 2025 17:56:12 -0700
+Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Mon, 7 Apr 2025 17:56:07 -0700
+From: <jianqi.ren.cn@windriver.com>
+To: <stable@vger.kernel.org>
+CC: <Tim.Huang@amd.com>, <Jesse.Zhang@amd.com>, <patches@lists.linux.dev>,
+        <gregkh@linuxfoundation.org>, <linux-kernel@vger.kernel.org>,
+        <jianqi.ren.cn@windriver.com>, <harry.wentland@amd.com>,
+        <sunpeng.li@amd.com>, <Rodrigo.Siqueira@amd.com>,
+        <alexander.deucher@amd.com>, <christian.koenig@amd.com>,
+        <Xinhui.Pan@amd.com>, <airlied@gmail.com>, <daniel@ffwll.ch>,
+        <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+        <chiahsuan.chung@amd.com>, <alex.hung@amd.com>,
+        <daniel.wheeler@amd.com>, <hersenxs.wu@amd.com>
+Subject: [PATCH 5.15.y] drm/amd/pm: Fix negative array index read
+Date: Tue, 8 Apr 2025 08:56:06 +0800
+Message-ID: <20250408005606.3361967-1-jianqi.ren.cn@windriver.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.291
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: 4A0S1jrqQW4UZopi2LADRofgMVa2BW0T
+X-Authority-Analysis: v=2.4 cv=RMSzH5i+ c=1 sm=1 tr=0 ts=67f4742c cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=XR8D0OoHHMoA:10 a=zd2uoN0lAAAA:8 a=t7CeM3EgAAAA:8 a=6BafUjstUjXQXARlYJgA:9 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-GUID: 4A0S1jrqQW4UZopi2LADRofgMVa2BW0T
+X-Sensitive_Customer_Information: Yes
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-07_07,2025-04-07_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 impostorscore=0
+ lowpriorityscore=0 mlxscore=0 malwarescore=0 suspectscore=0
+ mlxlogscore=999 spamscore=0 priorityscore=1501 adultscore=0 clxscore=1011
+ bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.21.0-2502280000
+ definitions=main-2504080005
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-[ Upstream commit 975776841e689dd8ba36df9fa72ac3eca3c2957a ]
+[ Upstream commit c8c19ebf7c0b202a6a2d37a52ca112432723db5f ]
 
-kernel/sched/isolation.c obviously makes no sense without CONFIG_SMP, but
-the Kconfig entry we have right now:
+Avoid using the negative values
+for clk_idex as an index into an array pptable->DpmDescriptor.
 
-	config CPU_ISOLATION
-		bool "CPU isolation"
-		depends on SMP || COMPILE_TEST
+V2: fix clk_index return check (Tim Huang)
 
-allows the creation of pointless .config's which cause
-build failures.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250330134955.GA7910@redhat.com
-
-Closes: https://lore.kernel.org/oe-kbuild-all/202503260646.lrUqD3j5-lkp@intel.com/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[Minor conflict resolved due to code context change.]
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 ---
- init/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Verified the build test
+---
+ .../gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c   | 21 ++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/init/Kconfig b/init/Kconfig
-index f641518f4ac5c..01beb047aff2f 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -559,7 +559,7 @@ endmenu # "CPU/Task time and stats accounting"
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
+index dfba0bc73207..9f5dcfaebe63 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
+@@ -1231,19 +1231,22 @@ static int navi10_get_current_clk_freq_by_table(struct smu_context *smu,
+ 					   value);
+ }
  
- config CPU_ISOLATION
- 	bool "CPU isolation"
--	depends on SMP || COMPILE_TEST
-+	depends on SMP
- 	default y
- 	help
- 	  Make sure that CPUs running critical tasks are not disturbed by
+-static bool navi10_is_support_fine_grained_dpm(struct smu_context *smu, enum smu_clk_type clk_type)
++static int navi10_is_support_fine_grained_dpm(struct smu_context *smu, enum smu_clk_type clk_type)
+ {
+ 	PPTable_t *pptable = smu->smu_table.driver_pptable;
+ 	DpmDescriptor_t *dpm_desc = NULL;
+-	uint32_t clk_index = 0;
++	int clk_index = 0;
+ 
+ 	clk_index = smu_cmn_to_asic_specific_index(smu,
+ 						   CMN2ASIC_MAPPING_CLK,
+ 						   clk_type);
++	if (clk_index < 0)
++		return clk_index;
++
+ 	dpm_desc = &pptable->DpmDescriptor[clk_index];
+ 
+ 	/* 0 - Fine grained DPM, 1 - Discrete DPM */
+-	return dpm_desc->SnapToDiscrete == 0;
++	return dpm_desc->SnapToDiscrete == 0 ? 1 : 0;
+ }
+ 
+ static inline bool navi10_od_feature_is_supported(struct smu_11_0_overdrive_table *od_table, enum SMU_11_0_ODFEATURE_CAP cap)
+@@ -1299,7 +1302,11 @@ static int navi10_print_clk_levels(struct smu_context *smu,
+ 		if (ret)
+ 			return size;
+ 
+-		if (!navi10_is_support_fine_grained_dpm(smu, clk_type)) {
++		ret = navi10_is_support_fine_grained_dpm(smu, clk_type);
++		if (ret < 0)
++			return ret;
++
++		if (!ret) {
+ 			for (i = 0; i < count; i++) {
+ 				ret = smu_v11_0_get_dpm_freq_by_index(smu, clk_type, i, &value);
+ 				if (ret)
+@@ -1468,7 +1475,11 @@ static int navi10_force_clk_levels(struct smu_context *smu,
+ 	case SMU_UCLK:
+ 	case SMU_FCLK:
+ 		/* There is only 2 levels for fine grained DPM */
+-		if (navi10_is_support_fine_grained_dpm(smu, clk_type)) {
++		ret = navi10_is_support_fine_grained_dpm(smu, clk_type);
++		if (ret < 0)
++			return ret;
++
++		if (ret) {
+ 			soft_max_level = (soft_max_level >= 1 ? 1 : 0);
+ 			soft_min_level = (soft_min_level >= 1 ? 1 : 0);
+ 		}
 -- 
-2.39.5
+2.34.1
 
 
