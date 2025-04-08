@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-131157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8787BA80849
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:43:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 326ADA8070A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0817F4C2488
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:37:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D91A1B85E27
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A5226B084;
-	Tue,  8 Apr 2025 12:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784C6268FED;
+	Tue,  8 Apr 2025 12:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pFW7LiEW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zr/bdEQu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727ED26E158;
-	Tue,  8 Apr 2025 12:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341262686A5;
+	Tue,  8 Apr 2025 12:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115643; cv=none; b=ZjX6HcU5FgNcK5Ykfb104PQ9VMEf5ZxBzNF8Qmudj71HUPpB/WUMcpMqL48fQWkdPooi32S/DTYZlUySFhBiMV6sPkvYRr6Yw/tJ414gVl9w7Hdp5i4y+Z0WBnnGhNEDP7cU9G7/+5tPwlzHVwj6XN99kmQNLgCDrX/T4gAvWAM=
+	t=1744115153; cv=none; b=Z0i1ryvV7oibyCPMAD/86mgk4e4hwI5pSbjpbYM3ZLx7mSgk5mpQje4J/gB/jPUyOpriTuVhY4IF9g7g/KQgLSow1kNmBJksb7lH09tJHi2BbCUtI1YY+xmXWO69yTMNyj/59T03PT2MXDurbZDGW04JIFiRrkhdz79/JJBXtMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115643; c=relaxed/simple;
-	bh=CUE2osu8L+nfcfptL7L8qKuFA2sCGu7iq7ZXPnEm9BY=;
+	s=arc-20240116; t=1744115153; c=relaxed/simple;
+	bh=fG4yCUOj1y+8gGsb/0YVQhqDufgmPr+DA2KGnQJNBWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gf/CXpIrVVAZXGASh4kz8UXpFrylku4237kzIOnc5jYGpqTP3MB+6tBVPJOkhRiMvnZBwVmi+el2aX9zrcRUwHZ7uEBnWg8Z+FH04eZt5ozeN6AvwqjmV5gZqTyttb+WBBGDTVUjrHN1QsBbFJ1D7TdZ2EAfiYA2QL0cmUwMykg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pFW7LiEW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0112AC4CEE5;
-	Tue,  8 Apr 2025 12:34:02 +0000 (UTC)
+	 MIME-Version; b=q4io2tdRanJeS6pytFg5E9C+x81tQSmxMJ4KqHdgq7Zbu5MMAPsf+cngHAqwNquGCxIJUksY7dmPcyBR2xkruF5TyfmOYFiVDoF52phiIWGGGYim5Jh00/eUgpUoApx6pBhjjiVe8UpeGqKW9Aj20hj6rx5kji/y4iCKT9CmAwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zr/bdEQu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8CFEC4CEE7;
+	Tue,  8 Apr 2025 12:25:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115643;
-	bh=CUE2osu8L+nfcfptL7L8qKuFA2sCGu7iq7ZXPnEm9BY=;
+	s=korg; t=1744115153;
+	bh=fG4yCUOj1y+8gGsb/0YVQhqDufgmPr+DA2KGnQJNBWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pFW7LiEWwV/rFUQETCGb2eNd51/BQXJGMPqBlS0D+rvEy1BDrK8VLKwhW5Dr3mlsz
-	 dyfo0zFSgK3DWFoF6gxF0HNzGMW14VCvTSZ3MV1PIgUkADAMKmH3H9jwDxciQD+zim
-	 2UFpudEBsHllv5gVvLOZ4o+OblhF7zwB5iyZ89Zo=
+	b=zr/bdEQuyrwdN3vf/dQfoQd7fKrJwEN2yFaps1SZZHB2oJvufMbWbaFRMwb59QBy/
+	 GExuuojSp7D6cb0CtY2jQ46m+p3xkNOK3P4zcNjlBTgV1TEuzF84PI+E+uu28O6qED
+	 c+pAU1/Q1pFhxHsf41m2KbLffYe5ZRh0mFlNPwFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Helge Deller <deller@gmx.de>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 050/204] mdacon: rework dependency list
+Subject: [PATCH 6.13 368/499] RISC-V: errata: Use medany for relocatable builds
 Date: Tue,  8 Apr 2025 12:49:40 +0200
-Message-ID: <20250408104821.812425719@linuxfoundation.org>
+Message-ID: <20250408104900.406272696@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Palmer Dabbelt <palmer@rivosinc.com>
 
-[ Upstream commit 5bbcc7645f4b244ffb5ac6563fbe9d3d42194447 ]
+[ Upstream commit bb58e1579f431d42469b6aed0f03eff383ba6db5 ]
 
-mdacon has roughly the same dependencies as vgacon but expresses them
-as a negative list instead of a positive list, with the only practical
-difference being PowerPC/CHRP, which uses vga16fb instead of vgacon.
+We're trying to mix non-PIC/PIE objects into the otherwise-PIE
+relocatable kernels, to avoid GOT/PLT references during early boot
+alternative resolution (which happens before the GOT/PLT are set up).
 
-The CONFIG_MDA_CONSOLE description advises to only turn it on when vgacon
-is also used because MDA/Hercules-only systems should be using vgacon
-instead, so just change the list to enforce that directly for simplicity.
+riscv64-unknown-linux-gnu-ld: arch/riscv/errata/sifive/errata.o: relocation R_RISCV_HI20 against `tlb_flush_all_threshold' can not be used when making a shared object; recompile with -fPIC
+riscv64-unknown-linux-gnu-ld: arch/riscv/errata/thead/errata.o: relocation R_RISCV_HI20 against `riscv_cbom_block_size' can not be used when making a shared object; recompile with -fPIC
 
-The probing was broken from 2002 to 2008, this improves on the fix
-that was added then: If vgacon is a loadable module, then mdacon
-cannot be built-in now, and the list of systems that support vgacon
-is carried over.
-
-Fixes: 0b9cf3aa6b1e ("mdacon messing up default vc's - set default to vc13-16 again")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 8dc2a7e8027f ("riscv: Fix relocatable kernels with early alternatives using -fno-pie")
+Link: https://lore.kernel.org/r/20250326224506.27165-2-palmer@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/console/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/errata/Makefile | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
-index 22cea5082ac46..5c4df3aaab1ed 100644
---- a/drivers/video/console/Kconfig
-+++ b/drivers/video/console/Kconfig
-@@ -24,7 +24,7 @@ config VGA_CONSOLE
- 	  Say Y.
+diff --git a/arch/riscv/errata/Makefile b/arch/riscv/errata/Makefile
+index f0da9d7b39c37..bc6c77ba837d2 100644
+--- a/arch/riscv/errata/Makefile
++++ b/arch/riscv/errata/Makefile
+@@ -1,5 +1,9 @@
+ ifdef CONFIG_RELOCATABLE
+-KBUILD_CFLAGS += -fno-pie
++# We can't use PIC/PIE when handling early-boot errata parsing, as the kernel
++# doesn't have a GOT setup at that point.  So instead just use medany: it's
++# usually position-independent, so it should be good enough for the errata
++# handling.
++KBUILD_CFLAGS += -fno-pie -mcmodel=medany
+ endif
  
- config MDA_CONSOLE
--	depends on !M68K && !PARISC && ISA
-+	depends on VGA_CONSOLE && ISA
- 	tristate "MDA text console (dual-headed)"
- 	help
- 	  Say Y here if you have an old MDA or monochrome Hercules graphics
+ ifdef CONFIG_RISCV_ALTERNATIVE_EARLY
 -- 
 2.39.5
 
