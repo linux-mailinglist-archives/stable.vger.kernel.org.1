@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-130984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E674A80777
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:37:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3464A80840
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:43:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 902944A71C7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:29:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED4BF1BA2438
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:38:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5CB126F45A;
-	Tue,  8 Apr 2025 12:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E137269882;
+	Tue,  8 Apr 2025 12:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ua/r9fY6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eS60pUBv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844FC26F453;
-	Tue,  8 Apr 2025 12:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6C726B2A8;
+	Tue,  8 Apr 2025 12:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115180; cv=none; b=kGLzPKmKdwdtx+ZBOmmDc78yEu2EJ6eZ+fZvz75+pXdMbs3CEfS4ZDraTX0q+9MklIF+GwiFRSqCfjsOpo6nJYpNXMCN9g4zfiCWpgkpQFXY4CcPboO71ZsjkC3f4Wa9GL2zlXpgNFbiJau5CpxVr7wj5iUEuPFH5BE/Qq3xufI=
+	t=1744115667; cv=none; b=CH/b+CrosOBbJBlgyvP3XSM89RHMiMbltxkm6LLU391B0kiq7/2lBMJyaCbwTIj9pQ0SEFX692V8WUDCwgyt8F46pK2TsPGzkItMmfQbakp2b5FPb92zHig1nxCcOXx1pq5jgny0roZQvk9DSiqbLmjGmPYLt5HUbMvQJsMSDmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115180; c=relaxed/simple;
-	bh=HzV3oDwi1vk9KKIlMEb/LegV+pEaMJxETqlszwoxJvo=;
+	s=arc-20240116; t=1744115667; c=relaxed/simple;
+	bh=rVZbOqn2TpZf5kI/3t87dWFoax/Uuw6vRpGJMN+vW68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iJaVq/I8xCo5d2wz/ekzgt9NmeZC4xKw16OvtiYMbbY2uvAMd52FfJhrl/chx+asYN4KWvUf7VCn/2c2TyymRqS4IM0oo9ZJQQiaROY47itjeI5GuPxXMvLAAeKBAjfwagtsAaS8dhYWDszYuLx040Qm1FMnH5JFWijKqcYfvzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ua/r9fY6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B029EC4CEED;
-	Tue,  8 Apr 2025 12:26:19 +0000 (UTC)
+	 MIME-Version; b=XVxIw5oGOTPEaDle3N6GOdvjx23DAPad4onSNAgwNyjm2y1Jr0hJQb44CD0eptyxpSrGIcmh8SSUB3uqolMCZEC3WpmF9tkYYi8Oum0kS0oi+gHXmxiwJ2ZocE9iwkWul8ddV7eJO1b7SwGZExSCK0tbQDZsfDXv9EDQoOGbG1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eS60pUBv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD44C4CEE5;
+	Tue,  8 Apr 2025 12:34:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115180;
-	bh=HzV3oDwi1vk9KKIlMEb/LegV+pEaMJxETqlszwoxJvo=;
+	s=korg; t=1744115667;
+	bh=rVZbOqn2TpZf5kI/3t87dWFoax/Uuw6vRpGJMN+vW68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ua/r9fY6FNqxhAu9GCB6bertZI4c97c9W0IzVOzZdF/aXq0C2m6VIfxxUqR8wlGVK
-	 fwn4EoIWuPthTnlSAYHJdxy1YJP8dW0sI/Y5dCPXVdazMAweRCtRigr7QIILDYrTz6
-	 HN4zJupB35YTbprkj9+LjDe0FuVFfwRZ4WTvhkQU=
+	b=eS60pUBvHhlYiJg9QkxlPY0E00qOyEoG8aDroVePI58VgssLga0wTw+Sf+fBqqJct
+	 KTDZNeXW4bMtthxNv8nZgTxmU02oQu28/IppNjKWGCweKrysbOkgU9ONymJxpei9dx
+	 ya8ZfWWlV9oiyrF/TOxK7sHOWR54jmInngZ9FE98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Will McVicker <willmcvicker@google.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 377/499] nvme/ioctl: dont warn on vectorized uring_cmd with fixed buffer
+Subject: [PATCH 6.1 059/204] clk: samsung: Fix UBSAN panic in samsung_clk_init()
 Date: Tue,  8 Apr 2025 12:49:49 +0200
-Message-ID: <20250408104900.635352321@linuxfoundation.org>
+Message-ID: <20250408104822.082612672@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,42 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Caleb Sander Mateos <csander@purestorage.com>
+From: Will McVicker <willmcvicker@google.com>
 
-[ Upstream commit eada75467fca0b016b9b22212637c07216135c20 ]
+[ Upstream commit d19d7345a7bcdb083b65568a11b11adffe0687af ]
 
-The vectorized io_uring NVMe passthru opcodes don't yet support fixed
-buffers. But since userspace can trigger this condition based on the
-io_uring SQE parameters, it shouldn't cause a kernel warning.
+With UBSAN_ARRAY_BOUNDS=y, I'm hitting the below panic due to
+dereferencing `ctx->clk_data.hws` before setting
+`ctx->clk_data.num = nr_clks`. Move that up to fix the crash.
 
-Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Fixes: 23fd22e55b76 ("nvme: wire up fixed buffer support for nvme passthrough")
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+  UBSAN: array index out of bounds: 00000000f2005512 [#1] PREEMPT SMP
+  <snip>
+  Call trace:
+   samsung_clk_init+0x110/0x124 (P)
+   samsung_clk_init+0x48/0x124 (L)
+   samsung_cmu_register_one+0x3c/0xa0
+   exynos_arm64_register_cmu+0x54/0x64
+   __gs101_cmu_top_of_clk_init_declare+0x28/0x60
+   ...
+
+Fixes: e620a1e061c4 ("drivers/clk: convert VL struct to struct_size")
+Signed-off-by: Will McVicker <willmcvicker@google.com>
+Link: https://lore.kernel.org/r/20250212183253.509771-1-willmcvicker@google.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/ioctl.c | 2 +-
+ drivers/clk/samsung/clk.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
-index 24e2c702da7a2..fed6b29098ad3 100644
---- a/drivers/nvme/host/ioctl.c
-+++ b/drivers/nvme/host/ioctl.c
-@@ -141,7 +141,7 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
- 		struct iov_iter iter;
+diff --git a/drivers/clk/samsung/clk.c b/drivers/clk/samsung/clk.c
+index bca4731b14ea5..a95047319fcb6 100644
+--- a/drivers/clk/samsung/clk.c
++++ b/drivers/clk/samsung/clk.c
+@@ -64,11 +64,11 @@ struct samsung_clk_provider *__init samsung_clk_init(struct device_node *np,
+ 	if (!ctx)
+ 		panic("could not allocate clock provider context.\n");
  
- 		/* fixedbufs is only for non-vectored io */
--		if (WARN_ON_ONCE(flags & NVME_IOCTL_VEC)) {
-+		if (flags & NVME_IOCTL_VEC) {
- 			ret = -EINVAL;
- 			goto out;
- 		}
++	ctx->clk_data.num = nr_clks;
+ 	for (i = 0; i < nr_clks; ++i)
+ 		ctx->clk_data.hws[i] = ERR_PTR(-ENOENT);
+ 
+ 	ctx->reg_base = base;
+-	ctx->clk_data.num = nr_clks;
+ 	spin_lock_init(&ctx->lock);
+ 
+ 	return ctx;
 -- 
 2.39.5
 
