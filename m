@@ -1,16 +1,16 @@
-Return-Path: <stable+bounces-128919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D90CBA7FC36
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:36:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCAECA7FC45
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:38:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70F9719E1915
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:31:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 587E53BD4D6
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EC58269B1C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8F3269B12;
 	Tue,  8 Apr 2025 10:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
 	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJXqyW1o"
