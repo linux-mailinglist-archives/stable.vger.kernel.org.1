@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-128997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58C8EA7FDC8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 220F2A801CE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:43:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6790D3BA24F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FEE07A5814
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8184326A0E8;
-	Tue,  8 Apr 2025 10:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F5B8263C90;
+	Tue,  8 Apr 2025 11:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bWLeNLqh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GqiXIZ3T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D82826A0A6;
-	Tue,  8 Apr 2025 10:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E102C22424C;
+	Tue,  8 Apr 2025 11:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109840; cv=none; b=Cw/e1IJ6Pid46V7PYJ3kYtQcXX53x651DOPnv9STJKWv+szQSjsvS3HD5buFyMcl7LDq+NoFkxIqz5b6KJeuh7ZC/7QR+5++FSs9WoTbdCHCYb10hfRuD1LtuIR+C9remwY6sxyMlu+NEv4gqslWXF2680K+FEa4v2G7yZLWVhA=
+	t=1744112434; cv=none; b=DI9RvQLc9zTj9jP5flr1sBZ7z4AdkiPHOkhUat14tHVwqnY+h4tUkuddZoDVU16sO1DHhm+dOwe80BSM1O0MPLamThPN/GbStDFdt7ZuK5K1DRPRfV6r/QnENGVhG5f14qLv2STgULcWJDJkwANRBejoTuinCyXQFXltfGVd6rA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109840; c=relaxed/simple;
-	bh=3smmB//ksvIgOVcLsOYH3eM+nogxv6sU5kQKZcjV0JY=;
+	s=arc-20240116; t=1744112434; c=relaxed/simple;
+	bh=EEueIMvJnGT75uzv7AiJsm5k0rK/v9P/JRIkgdXaUAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ne/uP0VpvUj0sEjeBe2hJ6bVlTwM2cylh2JpNvZfgV9N3ZA0+woerrp1ag7eJsW8IjtjqveRt5PWGedKwf0zFzqjK9woQA40DGbtyqhT4R6z5kh5sUCsT7rJHtWhheB0XsfZsgFC6581bfiRHeqmzEUyY6ueNWwJ7Df4nfyZtY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bWLeNLqh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6274C4CEE5;
-	Tue,  8 Apr 2025 10:57:19 +0000 (UTC)
+	 MIME-Version; b=V6Gnv1MxeZ74b+1brR6+ASPTxfvqmT9KRdeqMUY3ueD/3q1E0fhOaVdsQuH29nNJYRuE7J1YGUFknqKP76QxQU/n/z5VSpWk0cCBEGQ7ltEoYnoUs0uUVjjapaZGnvt7nlu6FdnZAT21NMWMCO40ESnb4d3rXEMZ3B0r6lxKocU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GqiXIZ3T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73624C4CEE5;
+	Tue,  8 Apr 2025 11:40:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109840;
-	bh=3smmB//ksvIgOVcLsOYH3eM+nogxv6sU5kQKZcjV0JY=;
+	s=korg; t=1744112433;
+	bh=EEueIMvJnGT75uzv7AiJsm5k0rK/v9P/JRIkgdXaUAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bWLeNLqhJAp7HGtqpRKiEammfMB3UwU+57jcXu9xeQe/4+0GXmRu9/Mi9ZoeakGB8
-	 tUEbaTP7cbArLzHnNjreKZPlkZZ4nXNpvMxw+97UUMCOyPvE0bYe1245/jcUteLmH9
-	 Uk6NfexsRHkFdSeVQzLZBcK8gLxV+W1eq2sNgYr4=
+	b=GqiXIZ3THQs0XE9wImmv/n6LTv949gTNrdDFVZ+UtWqy+aRrGaJ5uYYxiIi3JRGdM
+	 nmHIyrd4tGYAClT2Qclj4lUmBJPMuOZBrhrLapkJl//txpjfmA9IesJF280Y0m0xxW
+	 MhipiF71ZZwvqoioE43cHxzOUZK9RGp11Yzfhtek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Elwell <phil@raspberrypi.com>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ivan Abramov <i.abramov@mt-integration.ru>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 071/227] ARM: dts: bcm2711: Dont mark timer regs unconfigured
+Subject: [PATCH 5.15 066/279] drm/gma500: Add NULL check for pci_gfx_root in mid_get_vbt_data()
 Date: Tue,  8 Apr 2025 12:47:29 +0200
-Message-ID: <20250408104822.528064467@linuxfoundation.org>
+Message-ID: <20250408104828.122979018@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Elwell <phil@raspberrypi.com>
+From: Ivan Abramov <i.abramov@mt-integration.ru>
 
-[ Upstream commit c24f272ae751a9f54f8816430e7f2d56031892cc ]
+[ Upstream commit 9af152dcf1a06f589f44a74da4ad67e365d4db9a ]
 
-During upstream process of Raspberry Pi 4 back in 2019 the ARMv7 stubs
-didn't configured the ARM architectural timer. This firmware issue has
-been fixed in 2020, which gave users enough time to update their system.
+Since pci_get_domain_bus_and_slot() can return NULL, add NULL check for
+pci_gfx_root in the mid_get_vbt_data().
 
-So drop this property to allow the use of the vDSO version of
-clock_gettime.
+This change is similar to the checks implemented in mid_get_fuse_settings()
+and mid_get_pci_revID(), which were introduced by commit 0cecdd818cd7
+("gma500: Final enables for Oaktrail") as "additional minor
+bulletproofing".
 
-Link: https://github.com/raspberrypi/tools/pull/113
-Fixes: 7dbe8c62ceeb ("ARM: dts: Add minimal Raspberry Pi 4 support")
-Signed-off-by: Phil Elwell <phil@raspberrypi.com>
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250222094113.48198-1-wahrenst@gmx.net
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: f910b411053f ("gma500: Add the glue to the various BIOS and firmware interfaces")
+Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
+Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250306112046.17144-1-i.abramov@mt-integration.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/bcm2711.dtsi | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/gma500/mid_bios.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm/boot/dts/bcm2711.dtsi b/arch/arm/boot/dts/bcm2711.dtsi
-index 0f559f2653920..9bb98338609b6 100644
---- a/arch/arm/boot/dts/bcm2711.dtsi
-+++ b/arch/arm/boot/dts/bcm2711.dtsi
-@@ -424,8 +424,6 @@ IRQ_TYPE_LEVEL_LOW)>,
- 					  IRQ_TYPE_LEVEL_LOW)>,
- 			     <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(4) |
- 					  IRQ_TYPE_LEVEL_LOW)>;
--		/* This only applies to the ARMv7 stub */
--		arm,cpu-registers-not-fw-configured;
- 	};
+diff --git a/drivers/gpu/drm/gma500/mid_bios.c b/drivers/gpu/drm/gma500/mid_bios.c
+index 68e787924ed04..1ba33f9518da2 100644
+--- a/drivers/gpu/drm/gma500/mid_bios.c
++++ b/drivers/gpu/drm/gma500/mid_bios.c
+@@ -280,6 +280,11 @@ static void mid_get_vbt_data(struct drm_psb_private *dev_priv)
+ 					    0, PCI_DEVFN(2, 0));
+ 	int ret = -1;
  
- 	cpus: cpus {
++	if (pci_gfx_root == NULL) {
++		WARN_ON(1);
++		return;
++	}
++
+ 	/* Get the address of the platform config vbt */
+ 	pci_read_config_dword(pci_gfx_root, 0xFC, &addr);
+ 	pci_dev_put(pci_gfx_root);
 -- 
 2.39.5
 
