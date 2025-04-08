@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5885A806F1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:32:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 168D7A80A18
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:00:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2E458A1D15
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:19:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4B0A4E610F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A4F269B0B;
-	Tue,  8 Apr 2025 12:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E4826FA4F;
+	Tue,  8 Apr 2025 12:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MRid4Iov"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUzdJZlP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2327263F4D;
-	Tue,  8 Apr 2025 12:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1722526FA4C;
+	Tue,  8 Apr 2025 12:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114638; cv=none; b=gUZpqrYAdEJkgF9UF9hNngG8/GTWbZmRyTIyBYe6KlFs9OqSAE9x9uKliF5ZksvU/1EahHNN4yyp17dmBn0ffm68WLQ5/tzwu/xX1bC0G1BpB70niFN/TashkyhkIcFIvgkI1WgwpNjUOpIt0Rt13U1snBQNRNJ5859bpGPteMo=
+	t=1744116241; cv=none; b=Mr/xUkjrBV0Tc4YIVidHPZ9OU2PeZXye/l/rCxSgelkMfdAfGGP6Bvu0WyyB4eS3HCNYXtiSVv26VcMB05AOWNM9hRvzTdgL6Bq5Fe0R9l1gS2yDxk+BwYQNyvuNN47gvKEwwBzkq1SvEznGsUSuprkbvwx5vp7DkQkEIuoWZro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114638; c=relaxed/simple;
-	bh=1Fj9bzBPnFYgIRwmqZDw9vCuJShTmbAtBzXBswPGbsg=;
+	s=arc-20240116; t=1744116241; c=relaxed/simple;
+	bh=WK6nr6umOm3DdJ9lepMpCC+mjy8GAYt7sEte4OliaDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K/bDcrB4paHRHzQv4wbBfeTKOQSm0cBG05/vIhOlcilix9FfxekMWGXEqcIu5FZ4Mt0hb/pr5iFW4XxjThfE+nrRVvz8RmvcV6Wp0nEg88XsQ3uBVgOEixH9R57m12KnAf7H0T+aYnZAkUCQXFPlwVFIc+8MDEsB/+ojpIPtTjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MRid4Iov; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 276CFC4CEE5;
-	Tue,  8 Apr 2025 12:17:17 +0000 (UTC)
+	 MIME-Version; b=IezMP17HIXbCygvIsYMNb00LyG/lu5Wh8kc45zt9OSx2Oje+oYc3aXVzD6BuTtMv5YChRMd4jPo5MBWAGa6LDaMCzZOaSHo/pVt+1FXnmCbCYTmLFzrzf8EXFD96FhkOfioKO5RXTPQtUxhjKYp4LMbO/Ov+LmZQbfsv+thEojY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUzdJZlP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A14DC4CEE5;
+	Tue,  8 Apr 2025 12:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114638;
-	bh=1Fj9bzBPnFYgIRwmqZDw9vCuJShTmbAtBzXBswPGbsg=;
+	s=korg; t=1744116241;
+	bh=WK6nr6umOm3DdJ9lepMpCC+mjy8GAYt7sEte4OliaDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MRid4Ioves6Mb+h4yTkbNipRl7FFdqbhvRFD87dlb2AbzowDjHUD1p9k8WppJp6VC
-	 SGimPBiDxwPY9ocsoH7z1TYbohLHqamTPigOvAaV4o3qB2YEWK3zFKTw+upVzLpqCd
-	 W/AHIATHTbnlnhCbsM9veqpXx1ANl06mULpE7Hi0=
+	b=vUzdJZlPs/8Iwe5XQCo7eQZsDG62nSnpnw4NOwKzS0tHwBOaqqfNRJLkO0Y5rjTAF
+	 3bEV3wDWwBSkIBjmXTIsAbCPhgnbBIUagiwcDscOnRQ4ywvivg3vBLYeMw0mHoApbM
+	 OaUGo2RjTKaXuBy37LkXs0PLYSoeNDVIa4ubaUQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jerome Brunet <jbrunet@baylibre.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 181/499] clk: amlogic: g12a: fix mmc A peripheral clock
+Subject: [PATCH 6.12 067/423] drm/msm/dsi/phy: Program clock inverters in correct register
 Date: Tue,  8 Apr 2025 12:46:33 +0200
-Message-ID: <20250408104855.689949597@linuxfoundation.org>
+Message-ID: <20250408104847.307644760@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 0079e77c08de692cb20b38e408365c830a44b1ef ]
+[ Upstream commit baf49072877726616c7f5943a6b45eb86bfeca0a ]
 
-The bit index of the peripheral clock for mmc A is wrong
-This was probably not a problem for mmc A as the peripheral is likely left
-enabled by the bootloader.
+Since SM8250 all downstream sources program clock inverters in
+PLL_CLOCK_INVERTERS_1 register and leave the PLL_CLOCK_INVERTERS as
+reset value (0x0).  The most recent Hardware Programming Guide for 3 nm,
+4 nm, 5 nm and 7 nm PHYs also mention PLL_CLOCK_INVERTERS_1.
 
-No issues has been reported so far but it could be a problem, most likely
-some form of conflict between the ethernet and mmc A clock, breaking
-ethernet on init.
-
-Use the value provided by the documentation for mmc A before this
-becomes an actual problem.
-
-Fixes: 085a4ea93d54 ("clk: meson: g12a: add peripheral clock controller")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241213-amlogic-clk-g12a-mmca-fix-v1-1-5af421f58b64@baylibre.com
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: 1ef7c99d145c ("drm/msm/dsi: add support for 7nm DSI PHY/PLL")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reported-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/634489/
+Link: https://lore.kernel.org/r/20250129115504.40080-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/meson/g12a.c | 2 +-
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/meson/g12a.c b/drivers/clk/meson/g12a.c
-index 563759c51f747..ceabebb1863d6 100644
---- a/drivers/clk/meson/g12a.c
-+++ b/drivers/clk/meson/g12a.c
-@@ -4323,7 +4323,7 @@ static MESON_GATE(g12a_spicc_1,			HHI_GCLK_MPEG0,	14);
- static MESON_GATE(g12a_hiu_reg,			HHI_GCLK_MPEG0,	19);
- static MESON_GATE(g12a_mipi_dsi_phy,		HHI_GCLK_MPEG0,	20);
- static MESON_GATE(g12a_assist_misc,		HHI_GCLK_MPEG0,	23);
--static MESON_GATE(g12a_emmc_a,			HHI_GCLK_MPEG0,	4);
-+static MESON_GATE(g12a_emmc_a,			HHI_GCLK_MPEG0,	24);
- static MESON_GATE(g12a_emmc_b,			HHI_GCLK_MPEG0,	25);
- static MESON_GATE(g12a_emmc_c,			HHI_GCLK_MPEG0,	26);
- static MESON_GATE(g12a_audio_codec,		HHI_GCLK_MPEG0,	28);
+diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
+index 798168180c1ab..a2c87c84aa05b 100644
+--- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
++++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
+@@ -305,7 +305,7 @@ static void dsi_pll_commit(struct dsi_pll_7nm *pll, struct dsi_pll_config *confi
+ 	writel(pll->phy->cphy_mode ? 0x00 : 0x10,
+ 	       base + REG_DSI_7nm_PHY_PLL_CMODE_1);
+ 	writel(config->pll_clock_inverters,
+-	       base + REG_DSI_7nm_PHY_PLL_CLOCK_INVERTERS);
++	       base + REG_DSI_7nm_PHY_PLL_CLOCK_INVERTERS_1);
+ }
+ 
+ static int dsi_pll_7nm_vco_set_rate(struct clk_hw *hw, unsigned long rate,
 -- 
 2.39.5
 
