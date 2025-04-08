@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6647A809A4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:56:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2463FA80656
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:26:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD0191B8489E
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:50:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A88651B829B4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:21:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9A1269AFB;
-	Tue,  8 Apr 2025 12:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228EA26FA40;
+	Tue,  8 Apr 2025 12:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+u1shpz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KnwdGBev"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3812D17A311;
-	Tue,  8 Apr 2025 12:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BFD26F47E;
+	Tue,  8 Apr 2025 12:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116316; cv=none; b=ki7Q4CtS/2QPtIMzo7DdjxsJvxV02kg2OgUjvBgGn8Vwjxt4DdamGS9quPmgO7rnUoTx1S2AT5gUlsgUMuU67MP58ECwQ0O6EkmbZsDVHYfdRA2UerC5gqJ76osIkA31E77Tt3UxqwD2sUmzbYQDkkEvnDrJ5ygBmE2+0Cwi4Lg=
+	t=1744114681; cv=none; b=sNoHtcIGE+l0ly8xftKuE6slzwCQGGPqNdtb74kVhsjAi3VRcXhtac4SXar8H7Tr5Q34hECF/jXdqSC9nfcAuRv1mFv4+2QqxPfYIQ86U2Iw7fhjzI1+v4HJnvuRgMddhX8hjOBEZR8tW1RW930rCqYm0zFk9mAfjkqO3Yg0mGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116316; c=relaxed/simple;
-	bh=3mI36GI+OixFSITRAaXBiN0h2hKGPu40apwPAUNcln4=;
+	s=arc-20240116; t=1744114681; c=relaxed/simple;
+	bh=vIYE0K34uCnwjJ10wndM0qVW88K83pEttf23DPRTYT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pg7MzlT6EASUSy2vWh6PleKrTtwOaV0koD/HpGcI6KGFphoEEZGdmT8fxb5JSFc2i35UxLenUJZLbomc1IVrEth/O7nSZJLGL1uLAZU/ahdTfmIRh5teVhBt/idk9TyvsegHt2TU6CDpay14XnU/1Ue+xG8bORysquj3zxPv9us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+u1shpz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDD9AC4CEE5;
-	Tue,  8 Apr 2025 12:45:15 +0000 (UTC)
+	 MIME-Version; b=p1SgQfOhP2I6vf5O9fTEMo5e0yCtAtJiC3ZYzg8SS3l+oLNFPkdugMxS8dorkErauLVGnomaeu8Iml5beiE0+ZcgULM9oELzQwbeGWRs+QD6EKcUuaB0baMJc737QTUjlF9FO2QUVObSPBaHztFJHWsiHJK7mEdD2wz62oZ1n6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KnwdGBev; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F97C4CEE7;
+	Tue,  8 Apr 2025 12:18:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116316;
-	bh=3mI36GI+OixFSITRAaXBiN0h2hKGPu40apwPAUNcln4=;
+	s=korg; t=1744114681;
+	bh=vIYE0K34uCnwjJ10wndM0qVW88K83pEttf23DPRTYT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x+u1shpzdt7Xpm4HN+BAC0z3UHNBjCHeeef2BAz80XdDC2pgY1R3SWtdBAN7DYarz
-	 Z1n5c2AGdWtd5mDAXS5OyWzQmGj23j2x408xkkfiJFRoQOOv1ztaRIgDrxMGxDW7lx
-	 ZuGXJwjRKn3i2zT+5TF3CKLEWgaPYkuXMy9vY3tQ=
+	b=KnwdGBev/kULKGHAu5fDCjcN0WxAOJsEF+4jVlx+VHUonekHSnzNqszwGkwwFVOjs
+	 tHn3Y6B6j8XJUSOmN4Pju0JMPv74DoZAjcJkrZoyyQHuzfn0yk+k6rF4OSZ/6hvs9p
+	 4Fd1VGExmx5wYMuPAzYurS4VAKxE3Jn6dY6hU/zI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitalii Mordan <mordan@ispras.ru>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
+	Prathamesh Shete <pshete@nvidia.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/423] gpu: cdns-mhdp8546: fix call balance of mhdp->clk handling routines
+Subject: [PATCH 6.13 169/499] pinctrl: tegra: Set SFIO mode to Mux Register
 Date: Tue,  8 Apr 2025 12:46:21 +0200
-Message-ID: <20250408104847.032457291@linuxfoundation.org>
+Message-ID: <20250408104855.391708457@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitalii Mordan <mordan@ispras.ru>
+From: Prathamesh Shete <pshete@nvidia.com>
 
-[ Upstream commit f65727be3fa5f252c8d982d15023aab8255ded19 ]
+[ Upstream commit 17013f0acb322e5052ff9b9d0fab0ab5a4bfd828 ]
 
-If the clock mhdp->clk was not enabled in cdns_mhdp_probe(), it should not
-be disabled in any path.
+Tegra devices have an 'sfsel' bit field that determines whether a pin
+operates in SFIO (Special Function I/O) or GPIO mode. Currently,
+tegra_pinctrl_gpio_disable_free() sets this bit when releasing a GPIO.
 
-The return value of clk_prepare_enable() is not checked. If mhdp->clk was
-not enabled, it may be disabled in the error path of cdns_mhdp_probe()
-(e.g., if cdns_mhdp_load_firmware() fails) or in cdns_mhdp_remove() after
-a successful cdns_mhdp_probe() call.
+However, tegra_pinctrl_set_mux() can be called independently in certain
+code paths where gpio_disable_free() is not invoked. In such cases, failing
+to set the SFIO mode could lead to incorrect pin configurations, resulting
+in functional issues for peripherals relying on SFIO.
 
-Use the devm_clk_get_enabled() helper function to ensure proper call
-balance for mhdp->clk.
+This patch ensures that whenever set_mux() is called, the SFIO mode is
+correctly set in the Mux Register if the 'sfsel' bit is present. This
+prevents situations where the pin remains in GPIO mode despite being
+configured for SFIO use.
 
-Found by Linux Verification Center (linuxtesting.org) with Klever.
-
-Fixes: fb43aa0acdfd ("drm: bridge: Add support for Cadence MHDP8546 DPI/DP bridge")
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250214154632.1907425-1-mordan@ispras.ru
+Fixes: 971dac7123c7 ("pinctrl: add a driver for NVIDIA Tegra")
+Signed-off-by: Prathamesh Shete <pshete@nvidia.com>
+Link: https://lore.kernel.org/20250306050542.16335-1-pshete@nvidia.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/pinctrl/tegra/pinctrl-tegra.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
-index 41f72d458487f..9ba2a667a1f3a 100644
---- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
-+++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
-@@ -2463,9 +2463,9 @@ static int cdns_mhdp_probe(struct platform_device *pdev)
- 	if (!mhdp)
- 		return -ENOMEM;
+diff --git a/drivers/pinctrl/tegra/pinctrl-tegra.c b/drivers/pinctrl/tegra/pinctrl-tegra.c
+index c83e5a65e6801..3b046450bd3ff 100644
+--- a/drivers/pinctrl/tegra/pinctrl-tegra.c
++++ b/drivers/pinctrl/tegra/pinctrl-tegra.c
+@@ -270,6 +270,9 @@ static int tegra_pinctrl_set_mux(struct pinctrl_dev *pctldev,
+ 	val = pmx_readl(pmx, g->mux_bank, g->mux_reg);
+ 	val &= ~(0x3 << g->mux_bit);
+ 	val |= i << g->mux_bit;
++	/* Set the SFIO/GPIO selection to SFIO when under pinmux control*/
++	if (pmx->soc->sfsel_in_mux)
++		val |= (1 << g->sfsel_bit);
+ 	pmx_writel(pmx, val, g->mux_bank, g->mux_reg);
  
--	clk = devm_clk_get(dev, NULL);
-+	clk = devm_clk_get_enabled(dev, NULL);
- 	if (IS_ERR(clk)) {
--		dev_err(dev, "couldn't get clk: %ld\n", PTR_ERR(clk));
-+		dev_err(dev, "couldn't get and enable clk: %ld\n", PTR_ERR(clk));
- 		return PTR_ERR(clk);
- 	}
- 
-@@ -2504,14 +2504,12 @@ static int cdns_mhdp_probe(struct platform_device *pdev)
- 
- 	mhdp->info = of_device_get_match_data(dev);
- 
--	clk_prepare_enable(clk);
--
- 	pm_runtime_enable(dev);
- 	ret = pm_runtime_resume_and_get(dev);
- 	if (ret < 0) {
- 		dev_err(dev, "pm_runtime_resume_and_get failed\n");
- 		pm_runtime_disable(dev);
--		goto clk_disable;
-+		return ret;
- 	}
- 
- 	if (mhdp->info && mhdp->info->ops && mhdp->info->ops->init) {
-@@ -2590,8 +2588,6 @@ static int cdns_mhdp_probe(struct platform_device *pdev)
- runtime_put:
- 	pm_runtime_put_sync(dev);
- 	pm_runtime_disable(dev);
--clk_disable:
--	clk_disable_unprepare(mhdp->clk);
- 
- 	return ret;
- }
-@@ -2632,8 +2628,6 @@ static void cdns_mhdp_remove(struct platform_device *pdev)
- 	cancel_work_sync(&mhdp->modeset_retry_work);
- 	flush_work(&mhdp->hpd_work);
- 	/* Ignoring mhdp->hdcp.check_work and mhdp->hdcp.prop_work here. */
--
--	clk_disable_unprepare(mhdp->clk);
- }
- 
- static const struct of_device_id mhdp_ids[] = {
+ 	return 0;
 -- 
 2.39.5
 
