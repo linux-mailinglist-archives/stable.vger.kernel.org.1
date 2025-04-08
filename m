@@ -1,173 +1,272 @@
-Return-Path: <stable+bounces-130937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9DADA806E2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:32:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E160A8071D
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6075518879F5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:26:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99CA27AEEC2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2164A26AA9B;
-	Tue,  8 Apr 2025 12:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7B826B093;
+	Tue,  8 Apr 2025 12:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kvaser.com header.i=@kvaser.com header.b="f+rf7Ewo"
+	dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b="FVIgvj1C"
 X-Original-To: stable@vger.kernel.org
-Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2114.outbound.protection.outlook.com [40.107.247.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E284269CEB;
-	Tue,  8 Apr 2025 12:24:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.114
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115057; cv=fail; b=Ij/gfik81WiyXMp7xpEegDdDsgkSlRLgcfY+VumASGa4Ci1Zwb26bqlgl7J0yfr9o6FSe0F8cUutcyZW2GyZzCRsRDvCdJXUTr81tELEyDigz1GPGXDiinzkz0Oe7FHGqM3S6eJ7iw5n70fgSO8cDJIJO0I9YzwyvWrqgC/2FWM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115057; c=relaxed/simple;
-	bh=dSOGEwWScOZt+xWmGVyAPLWcnserTXzbD5XJTvxBX/8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 Content-Type:MIME-Version; b=KoAV1VXPbDD5sL/wQ72Gd4edsPbFDNparJtuCLNX8rrmMJP93/2uBh8SU0dQ4D/SYLx7zHF/vmFQQ/GO9a3Fd6v0UqjoEBo5CBGWPC9jPTuld50HJ77HfmBGSN22KZ606Wgfgddqu9diTg9Y4Jy7KmC+xRI5Tv/0lXQwSLNvOjU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kvaser.com; spf=pass smtp.mailfrom=kvaser.com; dkim=pass (1024-bit key) header.d=kvaser.com header.i=@kvaser.com header.b=f+rf7Ewo; arc=fail smtp.client-ip=40.107.247.114
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kvaser.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kvaser.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uTldOQs8gwSO+x/L/X2/XpYr9Ykp7t1Kva0KrV5PMNQnt1pTabdLRq7Hyjn61yN537cjTAHAsbbbQNroq+GM4eYzS7WT7BqtEzFDqv8t8so8gGEsCM4kZlUypNAb+pEh3P77PtUoDU+KZ+pFlFQULAq+3xJ1+QAV8mcrB1RRgzbUXo9FBpUUz6ojpDhwAchCKVPSeGohYowbe1GWMXvJD+kSPUnif11yhPeKjd6lWutCqTOGvC6KJ8CHi94wrW9W+5WPVmUTa+NI2AL2QuqL0EAbpaMFralmTz8VBSVEWdk8eoAWMDrRzz1YX+/B5mOkpHNvtvsPq2a6Fwnm1R86+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZVVTZOMstDjIPF6H66719ObB69J6OotupDD+IPqPt+U=;
- b=Mvp64JpY9naS8ezJIBFgAyE9K9qcql9i/OL4t4rzi+2knjEvESevOwkCq9+kfdQwuKV7FLvZCsPi0z9+7LOjTAWvYUtEks7LOem30dQQRPAR+EKYX7hXxrmAoji0Q9kUBKhL3WBYZYH89JQYdpmUSaGqyQdv3civnm/CcQaMN1jychUTJ2VW+8VSkrPptFWV98l5P2XAfkHbUcu6s+VdPGRfOt1n+Amj/nqgzHLHJEHxs+L7hzEkNDx2g3H2n5t/Tp2nngNyyFPzOlwFL6l291c4mtp1CRJuPxmWYtnoZkk5GgqOyz7bY7rcn7/jHYJY7JESysAzJD4/nOm9B2efbA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=kvaser.com; dmarc=pass action=none header.from=kvaser.com;
- dkim=pass header.d=kvaser.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kvaser.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZVVTZOMstDjIPF6H66719ObB69J6OotupDD+IPqPt+U=;
- b=f+rf7EwoUeOoTSFR9IZgCgXw2kpdncKJQTH6CcUH7tF4gyJyJWHYLGzP3zowJ1a/pfQx6N+McBfFgxq129xnZSK4JEV7PgTQAUccJvCMF/m/3/f+JEQ1QwmvSjqeLJJ5cT4SCKpRvRZQTBV2YPhgOtDkwpAr2mtkFITRiYmN6CA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=kvaser.com;
-Received: from PAXP193MB1663.EURP193.PROD.OUTLOOK.COM (2603:10a6:102:1c3::18)
- by VI0P193MB2617.EURP193.PROD.OUTLOOK.COM (2603:10a6:800:258::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.17; Tue, 8 Apr
- 2025 12:24:10 +0000
-Received: from PAXP193MB1663.EURP193.PROD.OUTLOOK.COM
- ([fe80::a4de:d967:751f:55fc]) by PAXP193MB1663.EURP193.PROD.OUTLOOK.COM
- ([fe80::a4de:d967:751f:55fc%3]) with mapi id 15.20.8632.017; Tue, 8 Apr 2025
- 12:24:10 +0000
-From: Axel Forsman <axfo@kvaser.com>
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: linux-can@vger.kernel.org, mailhol.vincent@wanadoo.fr,
- stable@vger.kernel.org, Jimmy Assarsson <extja@kvaser.com>
-Subject: Re: [PATCH 1/3] can: kvaser_pciefd: Force IRQ edge in case of
- nested IRQ
-In-Reply-To: <20250407-unyielding-panda-of-wealth-5c277e-mkl@pengutronix.de>
-References: <20250331072528.137304-1-axfo@kvaser.com>
- <20250331072528.137304-2-axfo@kvaser.com>
- <20250407-unyielding-panda-of-wealth-5c277e-mkl@pengutronix.de>
-Date: Tue, 08 Apr 2025 14:24:08 +0200
-Message-ID: <871pu296zb.fsf@kvaser.com>
-Content-Type: text/plain
-X-ClientProxiedBy: MM0P280CA0037.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:190:b::27) To PAXP193MB1663.EURP193.PROD.OUTLOOK.COM
- (2603:10a6:102:1c3::18)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AECC20330
+	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 12:27:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.194
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744115251; cv=none; b=sZ9JfjOj/6NNIm+jJSag+kCxvaSug6xHqYM6eqdOju+iLOyGS5g+aPDysxOc4ZYqtvavMm2GXPeXw0orRKp8/pesPMTJJ7Fof7ZbrERw9FQ9lrIgWzMqA/W10QikwDbGQMf9EZyhYLry0+cz0YSLm3+ZUUdm4SGKsiTulWqo2N4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744115251; c=relaxed/simple;
+	bh=7pDXX5qKEpqWR6owJbZ0J2s5gS1nguyi3j8agn/MuKY=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=Ij9tTJDR2HzuSeSOI3wa8+ddQbnIIkhsfmzPQSXyXTeV6Ej++f3OzN7bxyCjg84jcHQCg1nk/B8Ipxzr2JDz2IUWu6KJPWX96DyDwSeeAj4Ph87+PLvm+zNCRgekiZpa/gZJTAi3gmTE6FezZBx7gwfJQdrHH9doOPswTAAeKJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com; spf=pass smtp.mailfrom=mvista.com; dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b=FVIgvj1C; arc=none smtp.client-ip=209.85.214.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mvista.com
+Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-22409077c06so66395585ad.1
+        for <stable@vger.kernel.org>; Tue, 08 Apr 2025 05:27:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mvista.com; s=google; t=1744115249; x=1744720049; darn=vger.kernel.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=F9r4DUUNNJ+VOtRF5XOf0EAFuamIHUakC9yRXxooLb0=;
+        b=FVIgvj1CqRSgKpzWdDdLIrgXGeXrPYk8mf+yqgKaYC29GtXRPkRqGPHUibkZsv3Uvu
+         JHlUI9Wrf8YQpxyNJ5JOzSTx8lD1eH0SDE0K0NnNqhX289AAJijfP3/26nam71LQODqS
+         T63bmq6Gj9+zwa/dWZEqFq3akmMF5FZ/XDOU0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744115249; x=1744720049;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=F9r4DUUNNJ+VOtRF5XOf0EAFuamIHUakC9yRXxooLb0=;
+        b=cKzlduxSJROx0xKlvZdzINwtsBkFkxZgWMbxQqxZX34OwM3tLriOu6SQyc24EgWIH+
+         /h9QlVG9a/fwaJ70xmJShoFhFTztTRx46i4TqYbRR44i/qbP8G2eVLHZ+sZLDgqNoCRs
+         5DuKRxnG1+neiBMPoPQ0D3DK34aRS/ZMvvNTGWnIsAsyoHkTfIC8rdad6szxtMXr13fR
+         dOqK80YD8Kjt5Nk4UOBo/c6QG7ksIrwM5oe30MXTzs5OJMr01dVA0nVCeb02lSV1DJCc
+         fY/K5LHUhQBaIijfUpbjUb9s4u2WrGs0PuiFv7zKxTErOv2N4QoI4AZcs/04q4FT7kAg
+         6upg==
+X-Gm-Message-State: AOJu0YwpVa9jmeXaBFDpaVtyCR2z6ozzdzyTSEWfUGggB7hsBBejMqJ/
+	tbcR+WEzZovc/HxXUTwCm4n6JOUM1zeySbSS0Aar77D/0IhCSz8rlA2LupiZi+as8C/8ICLiOao
+	gOKpACA==
+X-Gm-Gg: ASbGncujwg96WI3tKSw62LlZZtu1Br/UQsaigX91KTPkssLhWHt4eloB0hxhNUnfrjE
+	y0VAvHd9Z82iTBBmX/jrjQCkUaYzjBnPmBciJSKmSkJA6MIUbRDPc71/31/gd6q5e9HAlgaw3+Y
+	HGEQuZOEO5vBOg//MUmnGz8Adu6GbANsoaEVms6k1TbERtxy9q6tjLmMV6GvV+iX1NHLj/MdUSx
+	WBwp2pTFH1oikF9DLy5eYfjh9krPDLEAkyVUWipyNI1GRYYG2dHq/WoC1FngqJPNoOMCnJOvmdI
+	PYiXmFJNuzB66+oHc6MeQSP0uU5UzMb//N4M99/j7ttbwA==
+X-Google-Smtp-Source: AGHT+IGCLFZ2rEqFf7yxUtFhEq8vAryPSRjYrjWbOyHOs2SflSBGFDsOVVhmB7sRtEOXuY/1/TkXAg==
+X-Received: by 2002:a17:902:cec1:b0:21d:dfae:300c with SMTP id d9443c01a7336-22a8a84ecc6mr184094435ad.3.1744115249124;
+        Tue, 08 Apr 2025 05:27:29 -0700 (PDT)
+Received: from jupiter.mvista.com ([182.74.28.237])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-229785bfe40sm98762625ad.72.2025.04.08.05.27.27
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 08 Apr 2025 05:27:28 -0700 (PDT)
+From: Hardik Gohil <hgohil@mvista.com>
+To: stable@vger.kernel.org
+Cc: christophe.kerello@foss.st.com,
+	sashal@kernel.org,
+	ulf.hansson@linaro.org,
+	Yann Gautier <yann.gautier@foss.st.com>
+Subject: [PATCH 1/2 v5.4.y] mmc: mmci: stm32: use a buffer for unaligned DMA requests
+Date: Tue,  8 Apr 2025 17:57:20 +0530
+Message-Id: <1744115241-28452-1-git-send-email-hgohil@mvista.com>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXP193MB1663:EE_|VI0P193MB2617:EE_
-X-MS-Office365-Filtering-Correlation-Id: 34a5626d-05e2-43d9-b867-08dd769843cc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?O9gB0D1QLAXAyxDf0pMpl7wWHvLrr/ahkl0TaQmelK9TF7zcSO2E2/Wc/mrj?=
- =?us-ascii?Q?xWpNWiN2dZ8m/BXiarI3CimsMN6uUUB9DR3u/VYlLknUyfvXdu5TVv2s66uE?=
- =?us-ascii?Q?KqfyAhn+zR6oxH2+qsbgxbfmwrutBl/vfxUVyoZPkfjiPBBS7/PytBpp2l+V?=
- =?us-ascii?Q?UYfndimaGqd36ua5+TBAFuwxcDqhe4+DIvr9HseKUWp9dSoZNjxu/VgRfJwm?=
- =?us-ascii?Q?RVMpsnVW+n8Tk/951gfHJRX8/A0vcfc7JhvhewK5oFBtErOxXYLKAB3DrAeu?=
- =?us-ascii?Q?Gb2NMyOYba8IO6sg0jqEw8dqmKK30TCbFsStBmFlAhgNoOYyn9+WvnFYY4Tk?=
- =?us-ascii?Q?iEBZmSSSthXj7be5eqT2rARw+GKAAYB8h6iQ8HlBB2OEFadXS7VR4CwwJ+Lb?=
- =?us-ascii?Q?ePUXGq9k+721OpP8MA8WsBFyR5Z6wJ5y4oOoFe+ohgOEIIkshbaBgkIUg9Me?=
- =?us-ascii?Q?yUey76Cj+NvFdLVmzqT8PdOdeVB8Lou0cN8hPuvvkBfIZg4YkMsdcH3YQhKK?=
- =?us-ascii?Q?50jzA8cTP7FT6dPaSg4PTCT9BCjJZppwfIiOe44nW7Fdigo9ifDDbBfthNaZ?=
- =?us-ascii?Q?mSfu0znZmOUaxfdi0sxi9rgOzzWRVJGZMcveV1eJX7X7VRf5bzui0jB0qlLJ?=
- =?us-ascii?Q?8O6nG8v1bIFVSeEoWd/THoUCZWayobMfRwQvmsBFF0I/26zLR1s5eGEA09Yt?=
- =?us-ascii?Q?JpbOBR/uNYa14AjqZweEN652e51M1mdsBRjbGIn7CezO5aZi/k5h3C+QOvmB?=
- =?us-ascii?Q?KV9QB98gpLxwG81l+QgRCYMrox78lAZO0YmIgHquF4EMeg+PNprSkSofA9GJ?=
- =?us-ascii?Q?7okOsLSz28zSKDUdt40P7pP7qEubcqGJGLLkEGXg81giUd4cNLNOTxit9DAx?=
- =?us-ascii?Q?bnPsjgsLBkbwCg9l6W6cL8TsQITfu4J2U6pNCOV0pzk1yQRriGvCJPHqSpop?=
- =?us-ascii?Q?WvzcJ0RUZYvGKwyR9QhZlHYPu8LWGqb8ZoxcazPjfwCV9KheY8Slg0OvwNaU?=
- =?us-ascii?Q?Z9S5VsePhQYDu22DQSzZjYiateUF2xuAhIPvh4oJH6WAW7XOXPhjIWAwjdu0?=
- =?us-ascii?Q?8Xq02XsYK9A2o7CbHKA7n1t1wmqOVP56dB8i4hI+eFT2mnDMW73MDlNoUxM2?=
- =?us-ascii?Q?bnEY7W68ORrI1wD4yBwmMBFX24RJGPc6WfataiqJnyDtCkXq2cJXguEmR2jR?=
- =?us-ascii?Q?SeXBjgV3VH7TXWyrg1RBlorbPyNh9z7plB61LdCeO/+L2y8A3DMnkpQTyx04?=
- =?us-ascii?Q?PG+rEFsqGJj0uY0OQ40HxD1pQHjxri1InBwi9kd1Je3QvHbKkJS1d/bitiF2?=
- =?us-ascii?Q?Uyt7Ms6pkZKiVBbima5WrBzHsv85Uq5zBhRWtxBu2Pa50tOalC24cd85AN4k?=
- =?us-ascii?Q?fQJKQc0v6Wx6UYrmMCU7SnfZzIgp?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXP193MB1663.EURP193.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?nqpk+ErYqEzp7s9JUob+YvRLOPGGr+QdznAcL9Ss0a8otFlqLbA4RmAIrTHO?=
- =?us-ascii?Q?I59LCxNvBKv518ofBmfOHZg7Rsa64iaDszHyxD9G+htpbkPdTUUwZ+N9SDtJ?=
- =?us-ascii?Q?SDG5UOpo2XWns01Dn4YvsShH2xTZQKwF5ReiMPMt/nv0zz9LyvC5p0MlRMFl?=
- =?us-ascii?Q?dh0ile+zznHEGtkH17OD4EqXGXOslrveuv8vsHam5ZWn29wu9D/73qDAAM2W?=
- =?us-ascii?Q?SAtTmXJLk0cKGkfis/55XpLPoakJteEqSbt5oXofMph9agOxhBvhI7R9kLEv?=
- =?us-ascii?Q?wQm9MTaWrIPCdGlPW/VgrnBDgtW24F2Q4ZmPDSBxVyYAAPc2PswY+G4D9Ct2?=
- =?us-ascii?Q?FRC18qe0ihIQy559N+2R3hJGJVIKbYuI8GvWcK1TXcvW9bvgt5PnYuVF0QOV?=
- =?us-ascii?Q?gJqgTAMcyZmW7KxmKDKddathNUV3QYdWRk0crgzoiTLcezC/tTvzUau6N7MQ?=
- =?us-ascii?Q?Er3fopJ+wuo0o4swqQMjXlAtGYPjYizucHvmChKimXPqicNcPF4/M2ApYPNN?=
- =?us-ascii?Q?3isMGlhWOGi6AJJkNodLW8DbIGsTfzwpd0bTh+u/arpTogbN3wvuPiPHF+RV?=
- =?us-ascii?Q?BAzKqg330/FnsY11PlMHHeNFmhNqufNFQVPN9av1WsWdsb9xsioakDOMYk9W?=
- =?us-ascii?Q?tc/BNv1vo6uJ6M2vTuawV2bkDkdTNXrHdYBA4cQMjxdW+MbXxnCAHB9h31cJ?=
- =?us-ascii?Q?ZHhITQdqa/EZ9a3UYeCnxJcDVTCyGw8k6pt9b+ZmFfQfwXQVUTd4kyekdbd+?=
- =?us-ascii?Q?zV656s798lK4A6IaKZRBJcCsPChABESl0+er9rX+Khf5Ps8UAYhKxElIvbXl?=
- =?us-ascii?Q?M52687kiNHbbTDSynv1GWhhPhJwky0Sob7KKUpsAvtjAnccFalLb84iQB/FI?=
- =?us-ascii?Q?7XDra+WjVuE95dLavW7EN4zt0FCiNQPo6QhzcQzP72mE6w/m/oIIEIM+mW5o?=
- =?us-ascii?Q?yPF1AvZF/qigC3kRdJQUA3g8kuf5VYYMwNOYzCQ8Za6hOEHhnAzklxCtFdVe?=
- =?us-ascii?Q?MnTz32aGbHkffO+kWbEqfNpFtK4QTdIAL9OTUKb5EByFDgDLKGiF7j0XQaHT?=
- =?us-ascii?Q?A7LPHiHdYbIsefWifyteh5j+amizkHwMxW2jiUeC9hUW5SLCTSffppdR20c0?=
- =?us-ascii?Q?Y65JKVdhcedJ057LHzmcmhU172OnW1zS1Lrn0JV4TQWSC09z2WIlcWA4DFnj?=
- =?us-ascii?Q?USc5d7Pxnfki03kXMvLaE1Mxg74kxQl0LOl6goajRCndtAG/iFnAuxJ1j7HK?=
- =?us-ascii?Q?7pO6FkDyd3zWORfWqRnDNtUfC6+53B4C7tPlRT4HUG6G89CjhyEKkVLouSnJ?=
- =?us-ascii?Q?67MwIKQJafmU6OuEw7JCrqUMturycThUcUctCulnZdW65q0HgFOdt7P0V1qW?=
- =?us-ascii?Q?+ZfgYASxY59XSrBo8ca/zhrjieYUdHMMNiStQRVlswef0uSWi1Y0UXBR3GL3?=
- =?us-ascii?Q?s1DBGto4Oc7dX+lQRIV7487k5dLhXcOw/gzqCjxe9yMkg9gohPFpbIIH/e/S?=
- =?us-ascii?Q?EcwbkpPaw5rMLedztNIulC56piVlvDCTYQVNYV8S2yhFu5uq1CKQL4Wg9QNP?=
- =?us-ascii?Q?h3WUqUdiL1p3C3rAx29uQkukVB/WGhLpuxRpyf0f?=
-X-OriginatorOrg: kvaser.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 34a5626d-05e2-43d9-b867-08dd769843cc
-X-MS-Exchange-CrossTenant-AuthSource: PAXP193MB1663.EURP193.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2025 12:24:10.3031
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 73c42141-e364-4232-a80b-d96bd34367f3
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JKXVRLRkHgrTYleOmx7LCxXFAPPYif3+nUyA3tryYWtD5IUzdJzx4JJGnXKx3bPjIHWGph90ZoX/TxzuLDKT4w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0P193MB2617
 
-Marc Kleine-Budde <mkl@pengutronix.de> writes:
+From: Yann Gautier <yann.gautier@foss.st.com>
 
-> On 31.03.2025 09:25:26, Axel Forsman wrote:
->> -static u32 kvaser_pciefd_receive_irq(struct kvaser_pciefd *pcie)
->> +static void kvaser_pciefd_receive_irq(struct kvaser_pciefd *pcie)
->>  {
->> +	__le32 __iomem *srb_cmd_reg = KVASER_PCIEFD_SRB_ADDR(pcie) + KVASER_PCIEFD_SRB_CMD_REG;
->
-> Why is this an __le32? The struct kvaser_pciefd::reg_base is __iomem
-> void *.
+[ Upstream commit 970dc9c11a17994ab878016b536612ab00d1441d ]
 
-Just as a hint that the register is 32-bit.
-But you are right, I will change to "void __iomem *" for consistency
-in the next iteration.
+In SDIO mode, the sg list for requests can be unaligned with what the
+STM32 SDMMC internal DMA can support. In that case, instead of failing,
+use a temporary bounce buffer to copy from/to the sg list.
+This buffer is limited to 1MB. But for that we need to also limit
+max_req_size to 1MB. It has not shown any throughput penalties for
+SD-cards or eMMC.
 
+Signed-off-by: Yann Gautier <yann.gautier@foss.st.com>
+Link: https://lore.kernel.org/r/20220328145114.334577-1-yann.gautier@foss.st.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: 6b1ba3f9040b ("mmc: mmci: stm32: fix DMA API overlapping mappings warning")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Tested-by: Hardik A Gohil <hgohil@mvista.com>
+---
+This fix was not backported to v5.4
 
-/Axel
+Patch 1 and Patch 2 there were only line change.
+
+Tested build successfully
+
+dependend patch for this 2 patches
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v5.10.235&id=bdbf9faf5f2e6bb0c0243350428c908ac85c16b2
+
+ drivers/mmc/host/mmci_stm32_sdmmc.c | 88 ++++++++++++++++++++++++++++++-------
+ 1 file changed, 71 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/mmc/host/mmci_stm32_sdmmc.c b/drivers/mmc/host/mmci_stm32_sdmmc.c
+index aa8c0ab..cab3a52 100644
+--- a/drivers/mmc/host/mmci_stm32_sdmmc.c
++++ b/drivers/mmc/host/mmci_stm32_sdmmc.c
+@@ -23,11 +23,16 @@ struct sdmmc_lli_desc {
+ struct sdmmc_idma {
+ 	dma_addr_t sg_dma;
+ 	void *sg_cpu;
++	dma_addr_t bounce_dma_addr;
++	void *bounce_buf;
++	bool use_bounce_buffer;
+ };
+ 
+ int sdmmc_idma_validate_data(struct mmci_host *host,
+ 			     struct mmc_data *data)
+ {
++	struct sdmmc_idma *idma = host->dma_priv;
++	struct device *dev = mmc_dev(host->mmc);
+ 	struct scatterlist *sg;
+ 	int i;
+ 
+@@ -35,41 +40,69 @@ int sdmmc_idma_validate_data(struct mmci_host *host,
+ 	 * idma has constraints on idmabase & idmasize for each element
+ 	 * excepted the last element which has no constraint on idmasize
+ 	 */
++	idma->use_bounce_buffer = false;
+ 	for_each_sg(data->sg, sg, data->sg_len - 1, i) {
+ 		if (!IS_ALIGNED(sg->offset, sizeof(u32)) ||
+ 		    !IS_ALIGNED(sg->length, SDMMC_IDMA_BURST)) {
+-			dev_err(mmc_dev(host->mmc),
++			dev_dbg(mmc_dev(host->mmc),
+ 				"unaligned scatterlist: ofst:%x length:%d\n",
+ 				data->sg->offset, data->sg->length);
+-			return -EINVAL;
++			goto use_bounce_buffer;
+ 		}
+ 	}
+ 
+ 	if (!IS_ALIGNED(sg->offset, sizeof(u32))) {
+-		dev_err(mmc_dev(host->mmc),
++		dev_dbg(mmc_dev(host->mmc),
+ 			"unaligned last scatterlist: ofst:%x length:%d\n",
+ 			data->sg->offset, data->sg->length);
+-		return -EINVAL;
++		goto use_bounce_buffer;
++	}
++
++	return 0;
++
++use_bounce_buffer:
++	if (!idma->bounce_buf) {
++		idma->bounce_buf = dmam_alloc_coherent(dev,
++						       host->mmc->max_req_size,
++						       &idma->bounce_dma_addr,
++						       GFP_KERNEL);
++		if (!idma->bounce_buf) {
++			dev_err(dev, "Unable to map allocate DMA bounce buffer.\n");
++			return -ENOMEM;
++		}
+ 	}
+ 
++	idma->use_bounce_buffer = true;
++
+ 	return 0;
+ }
+ 
+ static int _sdmmc_idma_prep_data(struct mmci_host *host,
+ 				 struct mmc_data *data)
+ {
+-	int n_elem;
++	struct sdmmc_idma *idma = host->dma_priv;
+ 
+-	n_elem = dma_map_sg(mmc_dev(host->mmc),
+-			    data->sg,
+-			    data->sg_len,
+-			    mmc_get_dma_dir(data));
++	if (idma->use_bounce_buffer) {
++		if (data->flags & MMC_DATA_WRITE) {
++			unsigned int xfer_bytes = data->blksz * data->blocks;
+ 
+-	if (!n_elem) {
+-		dev_err(mmc_dev(host->mmc), "dma_map_sg failed\n");
+-		return -EINVAL;
+-	}
++			sg_copy_to_buffer(data->sg, data->sg_len,
++					  idma->bounce_buf, xfer_bytes);
++			dma_wmb();
++		}
++	} else {
++		int n_elem;
+ 
++		n_elem = dma_map_sg(mmc_dev(host->mmc),
++				    data->sg,
++				    data->sg_len,
++				    mmc_get_dma_dir(data));
++
++		if (!n_elem) {
++			dev_err(mmc_dev(host->mmc), "dma_map_sg failed\n");
++			return -EINVAL;
++		}
++	}
+ 	return 0;
+ }
+ 
+@@ -86,8 +119,19 @@ static int sdmmc_idma_prep_data(struct mmci_host *host,
+ static void sdmmc_idma_unprep_data(struct mmci_host *host,
+ 				   struct mmc_data *data, int err)
+ {
+-	dma_unmap_sg(mmc_dev(host->mmc), data->sg, data->sg_len,
+-		     mmc_get_dma_dir(data));
++	struct sdmmc_idma *idma = host->dma_priv;
++
++	if (idma->use_bounce_buffer) {
++		if (data->flags & MMC_DATA_READ) {
++			unsigned int xfer_bytes = data->blksz * data->blocks;
++
++			sg_copy_from_buffer(data->sg, data->sg_len,
++					    idma->bounce_buf, xfer_bytes);
++		}
++	} else {
++		dma_unmap_sg(mmc_dev(host->mmc), data->sg, data->sg_len,
++			     mmc_get_dma_dir(data));
++	}
+ }
+ 
+ static int sdmmc_idma_setup(struct mmci_host *host)
+@@ -112,6 +156,8 @@ static int sdmmc_idma_setup(struct mmci_host *host)
+ 		host->mmc->max_segs = SDMMC_LLI_BUF_LEN /
+ 			sizeof(struct sdmmc_lli_desc);
+ 		host->mmc->max_seg_size = host->variant->stm32_idmabsize_mask;
++
++		host->mmc->max_req_size = SZ_1M;
+ 	} else {
+ 		host->mmc->max_segs = 1;
+ 		host->mmc->max_seg_size = host->mmc->max_req_size;
+@@ -129,8 +175,16 @@ static int sdmmc_idma_start(struct mmci_host *host, unsigned int *datactrl)
+ 	struct scatterlist *sg;
+ 	int i;
+ 
+-	if (!host->variant->dma_lli || data->sg_len == 1) {
+-		writel_relaxed(sg_dma_address(data->sg),
++	if (!host->variant->dma_lli || data->sg_len == 1 ||
++	    idma->use_bounce_buffer) {
++		u32 dma_addr;
++
++		if (idma->use_bounce_buffer)
++			dma_addr = idma->bounce_dma_addr;
++		else
++			dma_addr = sg_dma_address(data->sg);
++
++		writel_relaxed(dma_addr,
+ 			       host->base + MMCI_STM32_IDMABASE0R);
+ 		writel_relaxed(MMCI_STM32_IDMAEN,
+ 			       host->base + MMCI_STM32_IDMACTRLR);
+-- 
+2.7.4
+
 
