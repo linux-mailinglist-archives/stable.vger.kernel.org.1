@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-131379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE3CDA80983
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:55:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3395CA805B9
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:20:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8C221BA6ABD
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:49:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16C397AEB0F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:18:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A708A26A0A5;
-	Tue,  8 Apr 2025 12:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681012698A0;
+	Tue,  8 Apr 2025 12:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gs6GGyEt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ir8gs/lw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D1926B2CD;
-	Tue,  8 Apr 2025 12:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2097B263F4D;
+	Tue,  8 Apr 2025 12:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116238; cv=none; b=hInybC7GuQLkoLYMATaepbeUA5IddZlgPrt68Vi4Plf+of1Cm+l+Pdy/9GMZEa5nkAiB+VlKQE1jwEZ7I+e4B+b7n1Iyp5pTkZ9iZCOqK+Iw2+/IBxAslFHG6yCUID5IFQ7a5iO8ZN2pcmwaIvHrSuuPh7CHXEqqRHFrzAelkRc=
+	t=1744114635; cv=none; b=BeWcxaUyk85Nid3BYNsCUSRs4L0He9GqvLm8Am6q0Q+JUXOmZHZbaHT2WUJj0XY69oN/lhdQAknEfPvhyXhU8FjmCjejDoUYsz4VidrdMT2sio8ZBjGi7KgcNrwbHjEzl/pJ2o9XvqSJsi0Hjo3c47mtRt7oo2Wdh6Ep6vphccU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116238; c=relaxed/simple;
-	bh=DA5JV307KvoUz3lVrwetEmTBkrn0kjrnH/60UUpiDog=;
+	s=arc-20240116; t=1744114635; c=relaxed/simple;
+	bh=1lq/TM9CvePiRpLjb4z2QpNGcVItDw3xmgg2ws1MYnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QyRrEQwGjF7t5QIIqy+2UER1TxPT9N573jgSmajkLIeh47Da9/+mKy2btH9c2eTaO8COeANzI8Sahhfm/wAfY+6V5THtNcjpohkpPHxJ+QoB6xh3Fu31fEgxr99ftH8ClJws2xiacStR+CkZMLfxXCJDe8lLBvPyxuv4cm06q3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gs6GGyEt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E763CC4CEE5;
-	Tue,  8 Apr 2025 12:43:57 +0000 (UTC)
+	 MIME-Version; b=sYmTRGS384q3eb38uvihrS/1+mvE6x/GGavPW2ZKGa/lM04pbbbw52S4EpFpydvNDnYAnl6pU7SrOa11Lv1a7CorlNGQwbORSfVOX/mR3SB306u0Kdb7CsKDQEOQ1jZkERmCRwhq7VOLWSzJjomZ0uYZpVznOCRdisFI/7AIk/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ir8gs/lw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF50C4CEE7;
+	Tue,  8 Apr 2025 12:17:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116238;
-	bh=DA5JV307KvoUz3lVrwetEmTBkrn0kjrnH/60UUpiDog=;
+	s=korg; t=1744114635;
+	bh=1lq/TM9CvePiRpLjb4z2QpNGcVItDw3xmgg2ws1MYnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gs6GGyEtf4SqK6AYkNAjcMQzoReqNYhoECVKcGzE5/WolL0upkU5Z83Hpf0uJyt19
-	 DTkN82uvxD94Exa/DiW4VxtSEHNzIbqyIHTJmlpnlVTB1l6UxGwbRGzCWRL27qdRqR
-	 cL38LDSbsmDI4D1xFB1dNKJaCIj/r/FshrZhZr6I=
+	b=ir8gs/lw482KUc8YSr4uSUU7jxnJaMCrN6/wAWQ1IrHB0X2IA0/ls3s59+OPErE++
+	 OH+zUklX4z6JXsbayY7Hta/WdKJQuYx5sRts1t0K0oc8FAbeetUi71UWxCd8nP4vF6
+	 zKHTl61fWKc4qEuNKLhdfSBxWY3MWUp0G8QuusNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>,
+	Iuliana Prodan <iuliana.prodan@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 066/423] drm/msm/dpu: dont use active in atomic_check()
+Subject: [PATCH 6.13 180/499] clk: clk-imx8mp-audiomix: fix dsp/ocram_a clock parents
 Date: Tue,  8 Apr 2025 12:46:32 +0200
-Message-ID: <20250408104847.285662098@linuxfoundation.org>
+Message-ID: <20250408104855.664686701@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-[ Upstream commit 25b4614843bcc56ba150f7c99905125a019e656c ]
+[ Upstream commit 91be7d27099dedf813b80702e4ca117d1fb38ce6 ]
 
-The driver isn't supposed to consult crtc_state->active/active_check for
-resource allocation. Instead all resources should be allocated if
-crtc_state->enabled is set. Stop consulting active / active_changed in
-order to determine whether the hardware resources should be
-(re)allocated.
+The DSP and OCRAM_A modules from AUDIOMIX are clocked by
+AUDIO_AXI_CLK_ROOT, not AUDIO_AHB_CLK_ROOT. Update the clock data
+accordingly.
 
-Fixes: ccc862b957c6 ("drm/msm/dpu: Fix reservation failures in modeset")
-Reported-by: Simona Vetter <simona.vetter@ffwll.ch>
-Closes: https://lore.kernel.org/dri-devel/ZtW_S0j5AEr4g0QW@phenom.ffwll.local/
-Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/633393/
-Link: https://lore.kernel.org/r/20250123-drm-dirty-modeset-v2-1-bbfd3a6cd1a4@linaro.org
+Fixes: 6cd95f7b151c ("clk: imx: imx8mp: Add audiomix block control")
+Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/r/20250226164513.33822-3-laurentiumihalcea111@gmail.com
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c    | 4 ----
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 3 +--
- 2 files changed, 1 insertion(+), 6 deletions(-)
+ drivers/clk/imx/clk-imx8mp-audiomix.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
-index db6c57900781d..ecd595215a6be 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
-@@ -1191,10 +1191,6 @@ static int dpu_crtc_atomic_check(struct drm_crtc *crtc,
- 
- 	DRM_DEBUG_ATOMIC("%s: check\n", dpu_crtc->name);
- 
--	/* force a full mode set if active state changed */
--	if (crtc_state->active_changed)
--		crtc_state->mode_changed = true;
--
- 	if (cstate->num_mixers) {
- 		rc = _dpu_crtc_check_and_setup_lm_bounds(crtc, crtc_state);
- 		if (rc)
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-index 2cf8150adf81f..47b514c89ce66 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-@@ -718,12 +718,11 @@ static int dpu_encoder_virt_atomic_check(
- 		crtc_state->mode_changed = true;
- 	/*
- 	 * Release and Allocate resources on every modeset
--	 * Dont allocate when active is false.
- 	 */
- 	if (drm_atomic_crtc_needs_modeset(crtc_state)) {
- 		dpu_rm_release(global_state, drm_enc);
- 
--		if (!crtc_state->active_changed || crtc_state->enable)
-+		if (crtc_state->enable)
- 			ret = dpu_rm_reserve(&dpu_kms->rm, global_state,
- 					drm_enc, crtc_state, topology);
- 		if (!ret)
+diff --git a/drivers/clk/imx/clk-imx8mp-audiomix.c b/drivers/clk/imx/clk-imx8mp-audiomix.c
+index c409fc7e06186..775f62dddb11d 100644
+--- a/drivers/clk/imx/clk-imx8mp-audiomix.c
++++ b/drivers/clk/imx/clk-imx8mp-audiomix.c
+@@ -180,14 +180,14 @@ static struct clk_imx8mp_audiomix_sel sels[] = {
+ 	CLK_GATE("asrc", ASRC_IPG),
+ 	CLK_GATE("pdm", PDM_IPG),
+ 	CLK_GATE("earc", EARC_IPG),
+-	CLK_GATE("ocrama", OCRAMA_IPG),
++	CLK_GATE_PARENT("ocrama", OCRAMA_IPG, "axi"),
+ 	CLK_GATE("aud2htx", AUD2HTX_IPG),
+ 	CLK_GATE_PARENT("earc_phy", EARC_PHY, "sai_pll_out_div2"),
+ 	CLK_GATE("sdma2", SDMA2_ROOT),
+ 	CLK_GATE("sdma3", SDMA3_ROOT),
+ 	CLK_GATE("spba2", SPBA2_ROOT),
+-	CLK_GATE("dsp", DSP_ROOT),
+-	CLK_GATE("dspdbg", DSPDBG_ROOT),
++	CLK_GATE_PARENT("dsp", DSP_ROOT, "axi"),
++	CLK_GATE_PARENT("dspdbg", DSPDBG_ROOT, "axi"),
+ 	CLK_GATE("edma", EDMA_ROOT),
+ 	CLK_GATE_PARENT("audpll", AUDPLL_ROOT, "osc_24m"),
+ 	CLK_GATE("mu2", MU2_ROOT),
 -- 
 2.39.5
 
