@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-129123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BF73A7FE28
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:10:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8721AA802D7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:50:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F9AE16E4A7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:04:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93FB4188BE2E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:46:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908682676CF;
-	Tue,  8 Apr 2025 11:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7680F268C6B;
+	Tue,  8 Apr 2025 11:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oXBJjuBR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ct4UyMKd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5731311AC;
-	Tue,  8 Apr 2025 11:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322B9266EEA;
+	Tue,  8 Apr 2025 11:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744110177; cv=none; b=osGnELk7tEKMOUIsmt4QDFBwC63coo4Z9RQFozPyrn/ViEuHeOSF+OY6bV7If3LlGIu1iLymfgImfsOgtSFb7p/ZnjnvZie5pck6zxhGmbFKPV70TQb00JIxkUW4OvoVjJtUj9wqnOn9IRggMn2yOZtDxaS+4Lf//wTFBZrkkIs=
+	t=1744112770; cv=none; b=tMtGNdJshtgHvvefdTAbVxEASwprzy0KimMzFbaJAZGbrinEF1fBrp6/2BGjSmQ5QPnWXnwyPlXbsO2ZbzI8a77yGc87nam75Q2nHLbmWRPfDk/N4ezDddOGM6WytEC4xD6FfKMjraPhCNHdQILrNQSPKxRl8oiSewT+aDZELmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744110177; c=relaxed/simple;
-	bh=ZEBQLC6mOmhvsnfHm3rAJMYy+iO5XSiF/nyDnT2Cc5o=;
+	s=arc-20240116; t=1744112770; c=relaxed/simple;
+	bh=Su69aC9kt0+5FMVCr1SqUw80vJjKb7e5JR82TZCyrQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LmCNcrtYmsovxg9vc894jBkrKiXL4r/hMUUMydn5Sby0eHRPV4eumc9vZrg71LCCxzUPXW5HyZhVo1nD9d2vNGO4YEwPz/rIGugJMyutv06qrGmebvuczfsETn59WwrP782hCQ2POu1SIUPtxpvdx7OmMlaFp9tG80AzSsTR7YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXBJjuBR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D10A5C4CEE5;
-	Tue,  8 Apr 2025 11:02:56 +0000 (UTC)
+	 MIME-Version; b=GTWOM1rd3M29hDxlJDOdnH65s5BRm51nV5ZoWogflfMQwa/g7NUDQfjeeVMIM+L2yVvhIgc86lHg9Ud70485cqCA89fN89UNh1sS7z9l9b7EMF55QCxyyUgZuJamIeUqy9tu4oZjIeyB4MpkBJPZW7hkA1ySlMEC2Dttjc0XK0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ct4UyMKd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52A6BC4CEE5;
+	Tue,  8 Apr 2025 11:46:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744110177;
-	bh=ZEBQLC6mOmhvsnfHm3rAJMYy+iO5XSiF/nyDnT2Cc5o=;
+	s=korg; t=1744112769;
+	bh=Su69aC9kt0+5FMVCr1SqUw80vJjKb7e5JR82TZCyrQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oXBJjuBRa8sUFEI7CNk0Hl8O7X91C0lHiWR7WTWrsjoAhIKZU4F2utgiN/+kBlPbb
-	 f2tiZkeCi1x1K6giSm9/jVRrV/s/k0SHakQhCd8LxKOqFlnNH3zz9d3s1pZwaa5uUV
-	 oaCF+UxinOWSXL4XFM2ATREuOM+ddPIBkgzxF2vU=
+	b=ct4UyMKdpEi+lqMJKa6G92OZfgx0mVyrwATGMiH+2eXwofssg4v9DdEmMxMN6pSHu
+	 08EeAj583HJPL9XRP2qlgDWNE0Vs+0aYooxwJc9KIzRrpJ0NRZGfIMfwtB6LbG4EWK
+	 gG7Xoc1+io7sq1ZnXOd0v7DJJ9xSM+ErVJxiX1uY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Shubin <n.shubin@yadro.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Jon Mason <jdmason@kudzu.us>,
+	Jann Horn <jannh@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 196/227] ntb: intel: Fix using link status DBs
+Subject: [PATCH 5.15 191/279] x86/dumpstack: Fix inaccurate unwinding from exception stacks due to misplaced assignment
 Date: Tue,  8 Apr 2025 12:49:34 +0200
-Message-ID: <20250408104826.178950931@linuxfoundation.org>
+Message-ID: <20250408104831.495225949@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Shubin <n.shubin@yadro.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 8144e9c8f30fb23bb736a5d24d5c9d46965563c4 ]
+[ Upstream commit 2c118f50d7fd4d9aefc4533a26f83338b2906b7a ]
 
-Make sure we are not using DB's which were remapped for link status.
+Commit:
 
-Fixes: f6e51c354b60 ("ntb: intel: split out the gen3 code")
-Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+  2e4be0d011f2 ("x86/show_trace_log_lvl: Ensure stack pointer is aligned, again")
+
+was intended to ensure alignment of the stack pointer; but it also moved
+the initialization of the "stack" variable down into the loop header.
+
+This was likely intended as a no-op cleanup, since the commit
+message does not mention it; however, this caused a behavioral change
+because the value of "regs" is different between the two places.
+
+Originally, get_stack_pointer() used the regs provided by the caller; after
+that commit, get_stack_pointer() instead uses the regs at the top of the
+stack frame the unwinder is looking at. Often, there are no such regs at
+all, and "regs" is NULL, causing get_stack_pointer() to fall back to the
+task's current stack pointer, which is not what we want here, but probably
+happens to mostly work. Other times, the original regs will point to
+another regs frame - in that case, the linear guess unwind logic in
+show_trace_log_lvl() will start unwinding too far up the stack, causing the
+first frame found by the proper unwinder to never be visited, resulting in
+a stack trace consisting purely of guess lines.
+
+Fix it by moving the "stack = " assignment back where it belongs.
+
+Fixes: 2e4be0d011f2 ("x86/show_trace_log_lvl: Ensure stack pointer is aligned, again")
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20250325-2025-03-unwind-fixes-v1-2-acd774364768@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ntb/hw/intel/ntb_hw_gen3.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/kernel/dumpstack.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ntb/hw/intel/ntb_hw_gen3.c b/drivers/ntb/hw/intel/ntb_hw_gen3.c
-index ffcfc3e02c353..a5aa96a31f4a6 100644
---- a/drivers/ntb/hw/intel/ntb_hw_gen3.c
-+++ b/drivers/ntb/hw/intel/ntb_hw_gen3.c
-@@ -215,6 +215,9 @@ static int gen3_init_ntb(struct intel_ntb_dev *ndev)
- 	}
+diff --git a/arch/x86/kernel/dumpstack.c b/arch/x86/kernel/dumpstack.c
+index 92b33c7eaf3f9..8a8660074284f 100644
+--- a/arch/x86/kernel/dumpstack.c
++++ b/arch/x86/kernel/dumpstack.c
+@@ -195,6 +195,7 @@ static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
+ 	printk("%sCall Trace:\n", log_lvl);
  
- 	ndev->db_valid_mask = BIT_ULL(ndev->db_count) - 1;
-+	/* Make sure we are not using DB's used for link status */
-+	if (ndev->hwerr_flags & NTB_HWERR_MSIX_VECTOR32_BAD)
-+		ndev->db_valid_mask &= ~ndev->db_link_mask;
+ 	unwind_start(&state, task, regs, stack);
++	stack = stack ?: get_stack_pointer(task, regs);
+ 	regs = unwind_get_entry_regs(&state, &partial);
  
- 	ndev->reg->db_iowrite(ndev->db_valid_mask,
- 			      ndev->self_mmio +
+ 	/*
+@@ -213,9 +214,7 @@ static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
+ 	 * - hardirq stack
+ 	 * - entry stack
+ 	 */
+-	for (stack = stack ?: get_stack_pointer(task, regs);
+-	     stack;
+-	     stack = stack_info.next_sp) {
++	for (; stack; stack = stack_info.next_sp) {
+ 		const char *stack_name;
+ 
+ 		stack = PTR_ALIGN(stack, sizeof(long));
 -- 
 2.39.5
 
