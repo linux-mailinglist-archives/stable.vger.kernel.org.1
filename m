@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-129046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 304D2A7FDC0
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:06:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12AB6A8017C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:40:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AD4319E2F88
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:01:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3FAA880107
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:34:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC08269839;
-	Tue,  8 Apr 2025 10:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B46D02690D0;
+	Tue,  8 Apr 2025 11:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="okMEY67E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1TKplZOr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1422265630;
-	Tue,  8 Apr 2025 10:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717E72676DE;
+	Tue,  8 Apr 2025 11:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109967; cv=none; b=DwjRRZy0Q98GXhXxochHsbq7lLrOPs64DwHSREUe1BPtlSx5PAqyWy4l/Lk5I2ckPfDpcN5F+kZSAKzpAnG2+/M2oRod6Kecf8PBsV6/EQ3G31RmV6Ne1wAKSJmDVdpehXYsfuRzUujm28ipnHEWuJE0xuWczDeMnBlAhiofYMY=
+	t=1744112002; cv=none; b=a9o7QiGATgH7h4BBeZtez3H28AzVOLcy6dEtIbuZN6OtoW/EgPIKWkD3JT7icm+HcGYU5PpHHthMoxlWOR0SlBOztg+HYofXl6jpOuW1G9XcuryP7s5hKUZ/3b/XTyggiIPfn5A5x/QfDS+uFh7pPHoo3ENBUeawFTqFmqq+aBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109967; c=relaxed/simple;
-	bh=QsDzYbdV5+0ASxo2HKSU9KbbsX6vbg8Ty4FUrKmFEj8=;
+	s=arc-20240116; t=1744112002; c=relaxed/simple;
+	bh=HAl2OM5otpMttXpf/ssfQ4evuUF8TopqYNCUDEh2NPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dDLmQ9XD1PeXD8JFtmUiN/b/eZH5x/IENJ2BfTgJ8rCIk3tB1AIdJrrgjUZCUl161AP3L9IVCYcxExogegCTAiQ5Ru7y5xCyTQOMI97Ds78tLZKgrHxztnBlEKceYbNR+6WVsTK9GhZO/bJ8DhmXDwkxAOFKCCkxQLkU144QPps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=okMEY67E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7331FC4CEE5;
-	Tue,  8 Apr 2025 10:59:26 +0000 (UTC)
+	 MIME-Version; b=EHI6l92DPdHakMI8RLatfjlF6Luqq7h8HxifjxOa85EE7KlOGcckDfeYR/y7rGHtwzgd9y/XtvtiLp1s37l/qbLpbjgU2ePWELFUEXARIeJPIdTRcs7n8EDcW0whX/XYb8+rWaXnhVfJKrx5GdGWds/diGE9zoA5SGoM1RvZsAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1TKplZOr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2421C4CEE5;
+	Tue,  8 Apr 2025 11:33:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109966;
-	bh=QsDzYbdV5+0ASxo2HKSU9KbbsX6vbg8Ty4FUrKmFEj8=;
+	s=korg; t=1744112002;
+	bh=HAl2OM5otpMttXpf/ssfQ4evuUF8TopqYNCUDEh2NPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=okMEY67EMPbBN7eioLuvFusnc80/vRbBBkagccNtrhYCmBA3Ih+vH7L1bvR/d74CS
-	 XpjT1FWbZPFEJFAW14W72A4m+49joaymLeSQLToiJ3nGWlSetzGKtkku2Xo0T5GyYH
-	 Y7aphCBu0AYKrccnDysqxbROpPlp5y/j6AR2WpvY=
+	b=1TKplZOrHyNoTIaeVbjYDASGXv1oQdEvvIDpph9urL7vLF2dfBlg6I8Na5uZofGLe
+	 tu4qkmaCf6YmFRg6aH40dyBPzNNAuf3g9otachVUsjBjOEwkbXFCUmrQeJKbDxgo+0
+	 Kj+eVFWczpEbv4fIDJoEpD1KiKFGXeEyD1NWJufY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Schumacher <tim.schumacher1@huawei.com>,
-	Paul Moore <paul@paul-moore.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 118/227] selinux: Chain up tool resolving errors in install_policy.sh
-Date: Tue,  8 Apr 2025 12:48:16 +0200
-Message-ID: <20250408104823.881427043@linuxfoundation.org>
+Subject: [PATCH 6.14 600/731] ASoC: codecs: rt5665: Fix some error handling paths in rt5665_probe()
+Date: Tue,  8 Apr 2025 12:48:17 +0200
+Message-ID: <20250408104928.228876517@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Schumacher <tim.schumacher1@huawei.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 6ae0042f4d3f331e841495eb0a3d51598e593ec2 ]
+[ Upstream commit 1ebd4944266e86a7ce274f197847f5a6399651e8 ]
 
-Subshell evaluations are not exempt from errexit, so if a command is
-not available, `which` will fail and exit the script as a whole.
-This causes the helpful error messages to not be printed if they are
-tacked on using a `$?` comparison.
+Should an error occur after a successful regulator_bulk_enable() call,
+regulator_bulk_disable() should be called, as already done in the remove
+function.
 
-Resolve the issue by using chains of logical operators, which are not
-subject to the effects of errexit.
+Instead of adding an error handling path in the probe, switch from
+devm_regulator_bulk_get() to devm_regulator_bulk_get_enable() and
+simplify the remove function and some other places accordingly.
 
-Fixes: e37c1877ba5b1 ("scripts/selinux: modernize mdp")
-Signed-off-by: Tim Schumacher <tim.schumacher1@huawei.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Finally, add a missing const when defining rt5665_supply_names to please
+checkpatch and constify a few bytes.
+
+Fixes: 33ada14a26c8 ("ASoC: add rt5665 codec driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://patch.msgid.link/e3c2aa1b2fdfa646752d94f4af968630c0d58248.1742629525.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/selinux/install_policy.sh | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ sound/soc/codecs/rt5665.c | 24 ++++--------------------
+ 1 file changed, 4 insertions(+), 20 deletions(-)
 
-diff --git a/scripts/selinux/install_policy.sh b/scripts/selinux/install_policy.sh
-index 20af56ce245c5..c68f0e045fb00 100755
---- a/scripts/selinux/install_policy.sh
-+++ b/scripts/selinux/install_policy.sh
-@@ -6,27 +6,24 @@ if [ `id -u` -ne 0 ]; then
- 	exit 1
- fi
+diff --git a/sound/soc/codecs/rt5665.c b/sound/soc/codecs/rt5665.c
+index 47df14ba52784..4f0236b34a2d9 100644
+--- a/sound/soc/codecs/rt5665.c
++++ b/sound/soc/codecs/rt5665.c
+@@ -31,9 +31,7 @@
+ #include "rl6231.h"
+ #include "rt5665.h"
  
--SF=`which setfiles`
--if [ $? -eq 1 ]; then
-+SF=`which setfiles` || {
- 	echo "Could not find setfiles"
- 	echo "Do you have policycoreutils installed?"
- 	exit 1
--fi
-+}
+-#define RT5665_NUM_SUPPLIES 3
+-
+-static const char *rt5665_supply_names[RT5665_NUM_SUPPLIES] = {
++static const char * const rt5665_supply_names[] = {
+ 	"AVDD",
+ 	"MICVDD",
+ 	"VBAT",
+@@ -46,7 +44,6 @@ struct rt5665_priv {
+ 	struct gpio_desc *gpiod_ldo1_en;
+ 	struct gpio_desc *gpiod_reset;
+ 	struct snd_soc_jack *hs_jack;
+-	struct regulator_bulk_data supplies[RT5665_NUM_SUPPLIES];
+ 	struct delayed_work jack_detect_work;
+ 	struct delayed_work calibrate_work;
+ 	struct delayed_work jd_check_work;
+@@ -4471,8 +4468,6 @@ static void rt5665_remove(struct snd_soc_component *component)
+ 	struct rt5665_priv *rt5665 = snd_soc_component_get_drvdata(component);
  
--CP=`which checkpolicy`
--if [ $? -eq 1 ]; then
-+CP=`which checkpolicy` || {
- 	echo "Could not find checkpolicy"
- 	echo "Do you have checkpolicy installed?"
- 	exit 1
--fi
-+}
- VERS=`$CP -V | awk '{print $1}'`
+ 	regmap_write(rt5665->regmap, RT5665_RESET, 0);
+-
+-	regulator_bulk_disable(ARRAY_SIZE(rt5665->supplies), rt5665->supplies);
+ }
  
--ENABLED=`which selinuxenabled`
--if [ $? -eq 1 ]; then
-+ENABLED=`which selinuxenabled` || {
- 	echo "Could not find selinuxenabled"
- 	echo "Do you have libselinux-utils installed?"
- 	exit 1
--fi
-+}
+ #ifdef CONFIG_PM
+@@ -4758,7 +4753,7 @@ static int rt5665_i2c_probe(struct i2c_client *i2c)
+ {
+ 	struct rt5665_platform_data *pdata = dev_get_platdata(&i2c->dev);
+ 	struct rt5665_priv *rt5665;
+-	int i, ret;
++	int ret;
+ 	unsigned int val;
  
- if selinuxenabled; then
-     echo "SELinux is already enabled"
+ 	rt5665 = devm_kzalloc(&i2c->dev, sizeof(struct rt5665_priv),
+@@ -4774,24 +4769,13 @@ static int rt5665_i2c_probe(struct i2c_client *i2c)
+ 	else
+ 		rt5665_parse_dt(rt5665, &i2c->dev);
+ 
+-	for (i = 0; i < ARRAY_SIZE(rt5665->supplies); i++)
+-		rt5665->supplies[i].supply = rt5665_supply_names[i];
+-
+-	ret = devm_regulator_bulk_get(&i2c->dev, ARRAY_SIZE(rt5665->supplies),
+-				      rt5665->supplies);
++	ret = devm_regulator_bulk_get_enable(&i2c->dev, ARRAY_SIZE(rt5665_supply_names),
++					     rt5665_supply_names);
+ 	if (ret != 0) {
+ 		dev_err(&i2c->dev, "Failed to request supplies: %d\n", ret);
+ 		return ret;
+ 	}
+ 
+-	ret = regulator_bulk_enable(ARRAY_SIZE(rt5665->supplies),
+-				    rt5665->supplies);
+-	if (ret != 0) {
+-		dev_err(&i2c->dev, "Failed to enable supplies: %d\n", ret);
+-		return ret;
+-	}
+-
+-
+ 	rt5665->gpiod_ldo1_en = devm_gpiod_get_optional(&i2c->dev,
+ 							"realtek,ldo1-en",
+ 							GPIOD_OUT_HIGH);
 -- 
 2.39.5
 
