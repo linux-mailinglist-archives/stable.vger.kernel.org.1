@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-129697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73A96A800CE
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:35:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A30F0A7FD84
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:04:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16A561893EC5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:31:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2EB216CDA8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A47526AABB;
-	Tue,  8 Apr 2025 11:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61696269882;
+	Tue,  8 Apr 2025 10:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1yu+4p3Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k0CzDYdA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28AFA268C5D;
-	Tue,  8 Apr 2025 11:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA37267B65;
+	Tue,  8 Apr 2025 10:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111738; cv=none; b=MWCbaYhfAvD+JDuJt9QUXX/kYWwiRRog2ZOxShNFt1NqOXmGb/NpXCPWVizZRx2jhO1C6/kavuHfwjR1t1xOVG+FJFEE0Af8PLiN3r18meM0qNVCBUNVBFSUXX1N/Mh/yFugSnCmwe7wZGGjIburkz5GrJwFXh8jFCrhqo1DerE=
+	t=1744109803; cv=none; b=acOQkN6p3dBgRCP38F30QnDWn4RgyLxKAdEYn4UI0/al3A7OcMgkRp5Ss2RGkO+qlVLer4RM4NQvK+RQsrbgq1dBpv07An1VZolnbclztGQPQFyutgLV/kLIooDq+4tOyshAWiKvnaZwQwhJ0J2obUQunh42Q3wyvIPhrziyJOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111738; c=relaxed/simple;
-	bh=yE404GQq97ciw6VKnVhU2Efmd+SOitEjS1nm0JPQZRU=;
+	s=arc-20240116; t=1744109803; c=relaxed/simple;
+	bh=ZB9dEB0q5AMXZG84Zkq3jdQt6ZUs+IrzxyMRDbY3lQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iczuiFCYY49q9K6ql+FE2giH0wlrWfHW/nanR41BMSzoUq23Q4ijZFMHKnm4Qr1+xnVLttWYcESYDrJj3gbOiN8Tv/pb2OGCNvEyfsp9n9OEEoD8M/+RVGdPpzWoTL0u782Qgx6hjEVTC/b1XrNuosTMn2vyyI0GsDAm5p0pA6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1yu+4p3Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD817C4CEE7;
-	Tue,  8 Apr 2025 11:28:57 +0000 (UTC)
+	 MIME-Version; b=nev3pQLyJPAu515VlfQ3Sc9nqe3SWMXjiy1qbhiPg1vdtesqy9kznfUQC6mcv5S+yXkNGoh7/l+re5SfgJ5rek9kBMyFVSmlDVQvdQ5okMvCoCgLJvZfPiikJfJ6cJizS/HWekXpsrrzGamB6vHk31aUSBTLzkWFxgIaEjDPD8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k0CzDYdA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42638C4CEE5;
+	Tue,  8 Apr 2025 10:56:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111738;
-	bh=yE404GQq97ciw6VKnVhU2Efmd+SOitEjS1nm0JPQZRU=;
+	s=korg; t=1744109802;
+	bh=ZB9dEB0q5AMXZG84Zkq3jdQt6ZUs+IrzxyMRDbY3lQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1yu+4p3ZtUC4CslLTH+qJo73JEDSWxXMdKl78Oor0BYqs82gaf5K9ZgDbXf+JfPPS
-	 hVOvUqAPnsYKE2tsJzrch2KQL/cHUym6sdml4iK7vSoRbSCUbM15ZhajuL9e7xWmj6
-	 J6JuLCcpj4NmzJdL5LxrQk+MJ++i7SCcxGyODUqs=
+	b=k0CzDYdAFraPBk+bCsls07Grk54DhLTJ5Shn7f9H843bFVkhOrCqBeLWvfkBvJiBP
+	 uzh0Wb6j3/85ssfB7iJI9sQMIKxjSNQdmdQ4RbPRcfAyVMArEkPZLrrmCA0puPpwHN
+	 qPmY3SN+nS2xOuu7ybylI+8oUa4CIsLU4yQ5Bvg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Likhitha Korrapati <likhitha@linux.ibm.com>,
-	Athira Rajeev <atrajeev@linux.ibm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 540/731] perf tools: Fix is_compat_mode build break in ppc64
+Subject: [PATCH 5.10 059/227] i2c: ali15x3: Fix an error handling path in ali15x3_probe()
 Date: Tue,  8 Apr 2025 12:47:17 +0200
-Message-ID: <20250408104926.837620002@linuxfoundation.org>
+Message-ID: <20250408104822.174799196@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
+References: <20250408104820.353768086@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Likhitha Korrapati <likhitha@linux.ibm.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 7e442be7015af524d2b5fb84f0ff04a44501542b ]
+[ Upstream commit 6e55caaf30c88209d097e575a169b1dface1ab69 ]
 
-Commit 54f9aa1092457 ("tools/perf/powerpc/util: Add support to
-handle compatible mode PVR for perf json events") introduced
-to select proper JSON events in case of compat mode using
-auxiliary vector. But this caused a compilation error in ppc64
-Big Endian.
+If i2c_add_adapter() fails, the request_region() call in ali15x3_setup()
+must be undone by a corresponding release_region() call, as done in the
+remove function.
 
-arch/powerpc/util/header.c: In function 'is_compat_mode':
-arch/powerpc/util/header.c:20:21: error: cast to pointer from
-integer of different size [-Werror=int-to-pointer-cast]
-   20 |         if (!strcmp((char *)platform, (char *)base_platform))
-      |                     ^
-arch/powerpc/util/header.c:20:39: error: cast to pointer from
-integer of different size [-Werror=int-to-pointer-cast]
-   20 |         if (!strcmp((char *)platform, (char *)base_platform))
-      |
-
-Commit saved the getauxval(AT_BASE_PLATFORM) and getauxval(AT_PLATFORM)
-return values in u64 which causes the compilation error.
-
-Patch fixes this issue by changing u64 to "unsigned long".
-
-Fixes: 54f9aa1092457 ("tools/perf/powerpc/util: Add support to handle compatible mode PVR for perf json events")
-Signed-off-by: Likhitha Korrapati <likhitha@linux.ibm.com>
-Reviewed-by: Athira Rajeev <atrajeev@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250321100726.699956-1-likhitha@linux.ibm.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/9b2090cbcc02659f425188ea05f2e02745c4e67b.1741031878.git.christophe.jaillet@wanadoo.fr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/arch/powerpc/util/header.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-ali15x3.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/arch/powerpc/util/header.c b/tools/perf/arch/powerpc/util/header.c
-index c7df534dbf8f8..0be74f048f964 100644
---- a/tools/perf/arch/powerpc/util/header.c
-+++ b/tools/perf/arch/powerpc/util/header.c
-@@ -14,8 +14,8 @@
+diff --git a/drivers/i2c/busses/i2c-ali15x3.c b/drivers/i2c/busses/i2c-ali15x3.c
+index cc58feacd0821..28a57cb6efb99 100644
+--- a/drivers/i2c/busses/i2c-ali15x3.c
++++ b/drivers/i2c/busses/i2c-ali15x3.c
+@@ -473,6 +473,8 @@ MODULE_DEVICE_TABLE (pci, ali15x3_ids);
  
- static bool is_compat_mode(void)
+ static int ali15x3_probe(struct pci_dev *dev, const struct pci_device_id *id)
  {
--	u64 base_platform = getauxval(AT_BASE_PLATFORM);
--	u64 platform = getauxval(AT_PLATFORM);
-+	unsigned long base_platform = getauxval(AT_BASE_PLATFORM);
-+	unsigned long platform = getauxval(AT_PLATFORM);
++	int ret;
++
+ 	if (ali15x3_setup(dev)) {
+ 		dev_err(&dev->dev,
+ 			"ALI15X3 not detected, module not inserted.\n");
+@@ -484,7 +486,15 @@ static int ali15x3_probe(struct pci_dev *dev, const struct pci_device_id *id)
  
- 	if (!strcmp((char *)platform, (char *)base_platform))
- 		return false;
+ 	snprintf(ali15x3_adapter.name, sizeof(ali15x3_adapter.name),
+ 		"SMBus ALI15X3 adapter at %04x", ali15x3_smba);
+-	return i2c_add_adapter(&ali15x3_adapter);
++	ret = i2c_add_adapter(&ali15x3_adapter);
++	if (ret)
++		goto release_region;
++
++	return 0;
++
++release_region:
++	release_region(ali15x3_smba, ALI15X3_SMB_IOSIZE);
++	return ret;
+ }
+ 
+ static void ali15x3_remove(struct pci_dev *dev)
 -- 
 2.39.5
 
