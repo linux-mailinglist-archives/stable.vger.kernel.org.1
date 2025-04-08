@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-131391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B02A1A80987
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:55:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D90DA806C0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:31:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BF4F1BA6FA6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:49:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9C1D4C1CE8
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:20:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B89BA26FA6B;
-	Tue,  8 Apr 2025 12:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E0926F446;
+	Tue,  8 Apr 2025 12:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWxzA/6l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZI+i0Qq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C0326FD99;
-	Tue,  8 Apr 2025 12:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EC926F443;
+	Tue,  8 Apr 2025 12:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116270; cv=none; b=l76nWU1oX+oVgwDJy4z2xQDyooS38casYgKMN2CuALc3QmiZlwd7lRvFbyOmpVTEUORqoKOCGNIqjnJQw9L4WZq4+o5tqRuKQ9wqSzCabsZCBF+Lqexi6rgc1Kn4sAg7zQ8DEqrWezAxa+dui1LcdN8hnf2rhgA3oBrnmkfeASk=
+	t=1744114669; cv=none; b=Yey+Nwll9Fb03hcI0H3uefQe76RmBc2doKNjqPQEpnnbsoN6yOPrSftkkx/yxWfCTv8S6NGMP4UPBDYZ8fKYOrUilOY8H5gQKOaejIyzv/7IE6TxwIayAcwO1dKa2ccya65MNh7KKdSSMpprWYsjpKxtyxPYuD67B4pJZ6l2T3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116270; c=relaxed/simple;
-	bh=2Ri6vN45AyznpefHf7ft286BADK5PdQ4F3ziWKDWG98=;
+	s=arc-20240116; t=1744114669; c=relaxed/simple;
+	bh=lk/PlWermvrU1ATLDZM7euW0Pj+9mSOswdTFNFzfv2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B+3uHvddAZ+jXF8Axspr0WC8y+HW8enW3dhWhiIf1G2H3VV7N4p/YtI3Zg5HnMDDu1v6WqCgT/RvgvYAVQNTO6hEGYjCAEBWh3UN/9RD7MCDuFHJcTBlfNLaslCzoTMgQ+eQLMcDagXh8EjdXjYRuqRaKOr9gLEGFO8ONwUKtGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWxzA/6l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE166C4CEE5;
-	Tue,  8 Apr 2025 12:44:29 +0000 (UTC)
+	 MIME-Version; b=HpXfUbDIF22IjaRP4y11eJowyCoce6mzO0/uOVvpT90Pb2VLvnjSLRsQpS/T2xhLJgtVfuXbHB3YsSNqzDMUGK2lf7Htq6WoeD/PwV3Vsq6j83YKJ2HT30gfkS6/pGw8mIDf5aZ44ewIkx3Qv7TY/GHutA/P9sTGgRprHyU8sVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZI+i0Qq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78D1C4CEF2;
+	Tue,  8 Apr 2025 12:17:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116270;
-	bh=2Ri6vN45AyznpefHf7ft286BADK5PdQ4F3ziWKDWG98=;
+	s=korg; t=1744114668;
+	bh=lk/PlWermvrU1ATLDZM7euW0Pj+9mSOswdTFNFzfv2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PWxzA/6liYOpE1kWczHq3JMwtOpvKFyKOoWWKzsWc7cm2Q4MN/S9zazDsP4YhkaVd
-	 daWisG7zAxgvn8YFFj2zH5fXg3aNrsr9+JJjJGwMCajy+w9N+qVCDRcJdbZuxJehYH
-	 fyuBrqCcvmqxbDuoaqLLKyOcKcHBmN7JG1XySJWw=
+	b=XZI+i0QqEc9E3jRj8on5KUw+xqcaFhgZOCzXJywdD2fq5MlQQIycLbsElkCy+tZBB
+	 AE+Zeuo54dTNeoXQRkHo5UaOxM4gYFHCz33v1YPdhe6fa56KUmUVIMvH9ebXg5p08f
+	 shgX4+oU0W8ig63OfYT0RQvNhHa+fauMLfJulVo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nishanth Aravamudan <naravamudan@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Raphael Norwitz <raphael.norwitz@nutanix.com>,
-	Amey Narkhede <ameynarkhede03@gmail.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Kevin Tian <kevin.tian@intel.com>,
+	Remi Pommarel <repk@triplefau.lt>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 077/423] PCI: Avoid reset when disabled via sysfs
+Subject: [PATCH 6.13 191/499] leds: Fix LED_OFF brightness race
 Date: Tue,  8 Apr 2025 12:46:43 +0200
-Message-ID: <20250408104847.536938544@linuxfoundation.org>
+Message-ID: <20250408104855.945470618@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,69 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nishanth Aravamudan <naravamudan@nvidia.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-[ Upstream commit 479380efe1625e251008d24b2810283db60d6fcd ]
+[ Upstream commit 2c70953b6f535f7698ccbf22c1f5ba26cb6c2816 ]
 
-After d88f521da3ef ("PCI: Allow userspace to query and set device reset
-mechanism"), userspace can disable reset of specific PCI devices by writing
-an empty string to the sysfs reset_method file.
+While commit fa15d8c69238 ("leds: Fix set_brightness_delayed() race")
+successfully forces led_set_brightness() to be called with LED_OFF at
+least once when switching from blinking to LED on state so that
+hw-blinking can be disabled, another race remains. Indeed in
+led_set_brightness(LED_OFF) followed by led_set_brightness(any)
+scenario the following CPU scheduling can happen:
 
-However, pci_slot_resettable() does not check pci_reset_supported(), which
-means that pci_reset_function() will still reset the device even if
-userspace has disabled all the reset methods.
+    CPU0                                     CPU1
+    ----                                     ----
+ set_brightness_delayed() {
+   test_and_clear_bit(BRIGHTNESS_OFF)
+                                         led_set_brightness(LED_OFF) {
+                                           set_bit(BRIGHTNESS_OFF)
+					   queue_work()
+                                         }
+                                         led_set_brightness(any) {
+                                           set_bit(BRIGHTNESS)
+					   queue_work() //already queued
+                                         }
+   test_and_clear_bit(BRIGHTNESS)
+     /* LED set with brightness any */
+ }
 
-I was able to reproduce this issue with a vfio device passed to a qemu
-guest, where I had disabled PCI reset via sysfs.
+ /* From previous CPU1 queue_work() */
+ set_brightness_delayed() {
+   test_and_clear_bit(BRIGHTNESS_OFF)
+     /* LED turned off */
+   test_and_clear_bit(BRIGHTNESS)
+     /* Clear from previous run, LED remains off */
 
-Add an explicit check of pci_reset_supported() in both
-pci_slot_resettable() and pci_bus_resettable() to ensure both the reset
-status and reset execution are bypassed if an administrator disables it for
-a device.
+In that case the led_set_brightness(LED_OFF)/led_set_brightness(any)
+sequence will be effectively executed in reverse order and LED will
+remain off.
 
-Link: https://lore.kernel.org/r/20250207205600.1846178-1-naravamudan@nvidia.com
-Fixes: d88f521da3ef ("PCI: Allow userspace to query and set device reset mechanism")
-Signed-off-by: Nishanth Aravamudan <naravamudan@nvidia.com>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Alex Williamson <alex.williamson@redhat.com>
-Cc: Raphael Norwitz <raphael.norwitz@nutanix.com>
-Cc: Amey Narkhede <ameynarkhede03@gmail.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Yishai Hadas <yishaih@nvidia.com>
-Cc: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Cc: Kevin Tian <kevin.tian@intel.com>
+With the introduction of commit 32360bf6a5d4 ("leds: Introduce ordered
+workqueue for LEDs events instead of system_wq") the race is easier to
+trigger as sysfs brightness configuration does not wait for
+set_brightness_delayed() work to finish (flush_work() removal).
+
+Use delayed_set_value to optionnally re-configure brightness after a
+LED_OFF. That way a LED state could be configured more that once but
+final state will always be as expected. Ensure that delayed_set_value
+modification is seen before set_bit() using smp_mb__before_atomic().
+
+Fixes: fa15d8c69238 ("leds: Fix set_brightness_delayed() race")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/19c81177059dab7b656c42063958011a8e4d1a66.1740050412.git.repk@triplefau.lt
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/leds/led-core.c | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 25211d1219227..169aa8fd74a11 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -5528,6 +5528,8 @@ static bool pci_bus_resettable(struct pci_bus *bus)
- 		return false;
+diff --git a/drivers/leds/led-core.c b/drivers/leds/led-core.c
+index f6c46d2e5276b..e3d8ddcff5670 100644
+--- a/drivers/leds/led-core.c
++++ b/drivers/leds/led-core.c
+@@ -159,8 +159,19 @@ static void set_brightness_delayed(struct work_struct *ws)
+ 	 * before this work item runs once. To make sure this works properly
+ 	 * handle LED_SET_BRIGHTNESS_OFF first.
+ 	 */
+-	if (test_and_clear_bit(LED_SET_BRIGHTNESS_OFF, &led_cdev->work_flags))
++	if (test_and_clear_bit(LED_SET_BRIGHTNESS_OFF, &led_cdev->work_flags)) {
+ 		set_brightness_delayed_set_brightness(led_cdev, LED_OFF);
++		/*
++		 * The consecutives led_set_brightness(LED_OFF),
++		 * led_set_brightness(LED_FULL) could have been executed out of
++		 * order (LED_FULL first), if the work_flags has been set
++		 * between LED_SET_BRIGHTNESS_OFF and LED_SET_BRIGHTNESS of this
++		 * work. To avoid ending with the LED turned off, turn the LED
++		 * on again.
++		 */
++		if (led_cdev->delayed_set_value != LED_OFF)
++			set_bit(LED_SET_BRIGHTNESS, &led_cdev->work_flags);
++	}
  
- 	list_for_each_entry(dev, &bus->devices, bus_list) {
-+		if (!pci_reset_supported(dev))
-+			return false;
- 		if (dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
- 		    (dev->subordinate && !pci_bus_resettable(dev->subordinate)))
- 			return false;
-@@ -5604,6 +5606,8 @@ static bool pci_slot_resettable(struct pci_slot *slot)
- 	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
- 		if (!dev->slot || dev->slot != slot)
- 			continue;
-+		if (!pci_reset_supported(dev))
-+			return false;
- 		if (dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
- 		    (dev->subordinate && !pci_bus_resettable(dev->subordinate)))
- 			return false;
+ 	if (test_and_clear_bit(LED_SET_BRIGHTNESS, &led_cdev->work_flags))
+ 		set_brightness_delayed_set_brightness(led_cdev, led_cdev->delayed_set_value);
+@@ -331,10 +342,13 @@ void led_set_brightness_nopm(struct led_classdev *led_cdev, unsigned int value)
+ 	 * change is done immediately afterwards (before the work runs),
+ 	 * it uses a separate work_flag.
+ 	 */
+-	if (value) {
+-		led_cdev->delayed_set_value = value;
++	led_cdev->delayed_set_value = value;
++	/* Ensure delayed_set_value is seen before work_flags modification */
++	smp_mb__before_atomic();
++
++	if (value)
+ 		set_bit(LED_SET_BRIGHTNESS, &led_cdev->work_flags);
+-	} else {
++	else {
+ 		clear_bit(LED_SET_BRIGHTNESS, &led_cdev->work_flags);
+ 		clear_bit(LED_SET_BLINK, &led_cdev->work_flags);
+ 		set_bit(LED_SET_BRIGHTNESS_OFF, &led_cdev->work_flags);
 -- 
 2.39.5
 
