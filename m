@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-129639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EE85A800F3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:36:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DD0BA8007A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:31:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCD2D4613C5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:29:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 340617A7C23
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA0C268FD0;
-	Tue,  8 Apr 2025 11:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82284268FE4;
+	Tue,  8 Apr 2025 11:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KsYAo+Gp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2Fg8+8D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07324268FCB;
-	Tue,  8 Apr 2025 11:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2B9267F4F;
+	Tue,  8 Apr 2025 11:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111583; cv=none; b=BA2AeS9UsfFBmwQlS+WQoHRnqFHbrlSSNdQHCEK/3GBydCSQoZX4TrO457li46Qy5twmP2Ped1BNKeMobvB4iudnGDm7WlLrBVED5FHKRnfmtgycyeB5svkPaDk5b6xutx35ebSCinH+rqL08aTcXWGkbN8tgeYAnDo7vovgZ0E=
+	t=1744111612; cv=none; b=WXYWwyAcJUNSh0eaK2lueY41MP9kV9yuVPuRKzHBJLZ7GndYRZatcKqONjf9WalKskEQjS4FI/+rxZvsK5xrV7KdctNFJfwR1IP2M4Pnt/SriDs7LM3/XQB5zdKF8TH8IQCcNTr0Fa17oqyaWbykXEEnnAfXSnI3G1NYDQbjNq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111583; c=relaxed/simple;
-	bh=b1knjCQNePHusw4FN0KUj6XyvqJRTlR4W25IVCiL/MM=;
+	s=arc-20240116; t=1744111612; c=relaxed/simple;
+	bh=BGOah1WY0M+CYz61+AbaLKSlDMnJSN8dZCDQEZPdtDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c53xuLAzGUutI/Wcb4dPqEhA0ekgynJJ3TWpcMj+r/Vz3oNEuUjdyrW+iw+9IE1oMqA5fqT7ml4/+x29LFddEnqdcGKt57SYoep+AykTB6THCou/cOjNH4mK+JDMPaJjgDHperonBt+yxhVVBavgznycFK4/jL6MwwHAQPx+bSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KsYAo+Gp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6346DC4CEE5;
-	Tue,  8 Apr 2025 11:26:22 +0000 (UTC)
+	 MIME-Version; b=NRPspz7+NEIaRWJcVqb/ULU1cLZ+aMFWWx2b1P2HVse+wn/LL5CSafWmuJfpcK5xnIsUhyFKApOga/gMkUORYGK4c92B2c5g3XsTHOnnNAKHaUWT0nyPXHGDsUrrsWx6pvYAuAILLmuz5C/J23pvvmEjRGjaez38gLLLWM82FYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2Fg8+8D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABA6C4CEE5;
+	Tue,  8 Apr 2025 11:26:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111582;
-	bh=b1knjCQNePHusw4FN0KUj6XyvqJRTlR4W25IVCiL/MM=;
+	s=korg; t=1744111612;
+	bh=BGOah1WY0M+CYz61+AbaLKSlDMnJSN8dZCDQEZPdtDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KsYAo+GpCRO1/o6MkQHLGtuSuN+zAruk3NXqOcRxGrGzN0iaO9RkeOZlhV18CIuxZ
-	 VNgi/Px9DSkJmnYEHyZ69/8YdZ0ti93tkUkFJGKnRX3AWo6xOQH8NVMrXmSRD4RbaE
-	 XyT0zjmF/f5++7V6tH4lcZlrrUSGsNOvnzF/xc1s=
+	b=U2Fg8+8DvaBpN1nYd5Hvo7ZzB/2A2SxjzIU8Dju1muR5932ROshNXIWYT90iyF8e6
+	 f/Py6XH8t3hn0tqJ5xAvDk1IS1cdlNuAGCzZ2sfzZ3+hFZuIG1+QRGWlvSpwTVf3gY
+	 9MO/IWzRJI/2e6JbFrtqmy4jGd/qXjtGEr9WZBNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	James Clark <james.clark@linaro.org>,
 	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 466/731] perf pmu: Dynamically allocate tool PMU
-Date: Tue,  8 Apr 2025 12:46:03 +0200
-Message-ID: <20250408104925.118339732@linuxfoundation.org>
+Subject: [PATCH 6.14 467/731] perf pmu: Dont double count common sysfs and json events
+Date: Tue,  8 Apr 2025 12:46:04 +0200
+Message-ID: <20250408104925.139946853@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -69,97 +69,77 @@ Content-Transfer-Encoding: 8bit
 
 From: James Clark <james.clark@linaro.org>
 
-[ Upstream commit 72c6f57a4193f2eadceb52261315438719c4c1ad ]
+[ Upstream commit c9d699e10fa6c0cdabcddcf991e7ff42af6b2503 ]
 
-perf_pmus__destroy() treats all PMUs as allocated and free's them so we
-can't have any static PMUs that are added to the PMU lists. Fix it by
-allocating the tool PMU in the same way as the others. Current users of
-the tool PMU already use find_pmu() and not perf_pmus__tool_pmu(), so
-rename the function to add 'new' to avoid it being misused in the
-future.
+After pmu_add_cpu_aliases() is called, perf_pmu__num_events() returns an
+incorrect value that double counts common events and doesn't match the
+actual count of events in the alias list. This is because after
+'cpu_aliases_added == true', the number of events returned is
+'sysfs_aliases + cpu_json_aliases'. But when adding 'case
+EVENT_SRC_SYSFS' events, 'sysfs_aliases' and 'cpu_json_aliases' are both
+incremented together, failing to account that these ones overlap and
+only add a single item to the list. Fix it by adding another counter for
+overlapping events which doesn't influence 'cpu_json_aliases'.
 
-perf_pmus__fake_pmu() can remain as static as it's not added to the
-PMU lists.
+There doesn't seem to be a current issue because it's used in perf list
+before pmu_add_cpu_aliases() so the correct value is returned. Other
+uses in tests may also miss it for other reasons like only looking at
+uncore events. However it's marked as a fixes commit in case any new fix
+with new uses of perf_pmu__num_events() is backported.
 
-Fixes the following error:
-
-  $ perf bench internals pmu-scan
-
-  # Running 'internals/pmu-scan' benchmark:
-  Computing performance of sysfs PMU event scan for 100 times
-  munmap_chunk(): invalid pointer
-  Aborted (core dumped)
-
-Fixes: 240505b2d0ad ("perf tool_pmu: Factor tool events into their own PMU")
+Fixes: d9c5f5f94c2d ("perf pmu: Count sys and cpuid JSON events separately")
 Reviewed-by: Ian Rogers <irogers@google.com>
 Signed-off-by: James Clark <james.clark@linaro.org>
-Link: https://lore.kernel.org/r/20250226104111.564443-2-james.clark@linaro.org
+Link: https://lore.kernel.org/r/20250226104111.564443-3-james.clark@linaro.org
 Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/pmus.c     |  2 +-
- tools/perf/util/tool_pmu.c | 23 +++++++++++------------
- tools/perf/util/tool_pmu.h |  2 +-
- 3 files changed, 13 insertions(+), 14 deletions(-)
+ tools/perf/util/pmu.c | 7 ++++---
+ tools/perf/util/pmu.h | 5 +++++
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/util/pmus.c b/tools/perf/util/pmus.c
-index 8a0a919415d49..6498021acef01 100644
---- a/tools/perf/util/pmus.c
-+++ b/tools/perf/util/pmus.c
-@@ -268,7 +268,7 @@ static void pmu_read_sysfs(unsigned int to_read_types)
+diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
+index a8193ac8f2e7d..98cc525dc9ded 100644
+--- a/tools/perf/util/pmu.c
++++ b/tools/perf/util/pmu.c
+@@ -596,7 +596,7 @@ static int perf_pmu__new_alias(struct perf_pmu *pmu, const char *name,
+ 			};
+ 			if (pmu_events_table__find_event(pmu->events_table, pmu, name,
+ 							 update_alias, &data) == 0)
+-				pmu->cpu_json_aliases++;
++				pmu->cpu_common_json_aliases++;
+ 		}
+ 		pmu->sysfs_aliases++;
+ 		break;
+@@ -1851,9 +1851,10 @@ size_t perf_pmu__num_events(struct perf_pmu *pmu)
+ 	if (pmu->cpu_aliases_added)
+ 		 nr += pmu->cpu_json_aliases;
+ 	else if (pmu->events_table)
+-		nr += pmu_events_table__num_events(pmu->events_table, pmu) - pmu->cpu_json_aliases;
++		nr += pmu_events_table__num_events(pmu->events_table, pmu) -
++			pmu->cpu_common_json_aliases;
+ 	else
+-		assert(pmu->cpu_json_aliases == 0);
++		assert(pmu->cpu_json_aliases == 0 && pmu->cpu_common_json_aliases == 0);
  
- 	if ((to_read_types & PERF_TOOL_PMU_TYPE_TOOL_MASK) != 0 &&
- 	    (read_pmu_types & PERF_TOOL_PMU_TYPE_TOOL_MASK) == 0) {
--		tool_pmu = perf_pmus__tool_pmu();
-+		tool_pmu = tool_pmu__new();
- 		list_add_tail(&tool_pmu->list, &other_pmus);
- 	}
- 	if ((to_read_types & PERF_TOOL_PMU_TYPE_HWMON_MASK) != 0 &&
-diff --git a/tools/perf/util/tool_pmu.c b/tools/perf/util/tool_pmu.c
-index 3a68debe71437..9156745ea180d 100644
---- a/tools/perf/util/tool_pmu.c
-+++ b/tools/perf/util/tool_pmu.c
-@@ -490,17 +490,16 @@ int evsel__tool_pmu_read(struct evsel *evsel, int cpu_map_idx, int thread)
- 	return 0;
- }
- 
--struct perf_pmu *perf_pmus__tool_pmu(void)
-+struct perf_pmu *tool_pmu__new(void)
- {
--	static struct perf_pmu tool = {
--		.name = "tool",
--		.type = PERF_PMU_TYPE_TOOL,
--		.aliases = LIST_HEAD_INIT(tool.aliases),
--		.caps = LIST_HEAD_INIT(tool.caps),
--		.format = LIST_HEAD_INIT(tool.format),
--	};
--	if (!tool.events_table)
--		tool.events_table = find_core_events_table("common", "common");
--
--	return &tool;
-+	struct perf_pmu *tool = zalloc(sizeof(struct perf_pmu));
-+
-+	tool->name = strdup("tool");
-+	tool->type = PERF_PMU_TYPE_TOOL;
-+	INIT_LIST_HEAD(&tool->aliases);
-+	INIT_LIST_HEAD(&tool->caps);
-+	INIT_LIST_HEAD(&tool->format);
-+	tool->events_table = find_core_events_table("common", "common");
-+
-+	return tool;
- }
-diff --git a/tools/perf/util/tool_pmu.h b/tools/perf/util/tool_pmu.h
-index a60184859080f..c6ad1dd90a56d 100644
---- a/tools/perf/util/tool_pmu.h
-+++ b/tools/perf/util/tool_pmu.h
-@@ -51,6 +51,6 @@ int evsel__tool_pmu_open(struct evsel *evsel,
- 			 int start_cpu_map_idx, int end_cpu_map_idx);
- int evsel__tool_pmu_read(struct evsel *evsel, int cpu_map_idx, int thread);
- 
--struct perf_pmu *perf_pmus__tool_pmu(void);
-+struct perf_pmu *tool_pmu__new(void);
- 
- #endif /* __TOOL_PMU_H */
+ 	if (perf_pmu__is_tool(pmu))
+ 		nr -= tool_pmu__num_skip_events();
+diff --git a/tools/perf/util/pmu.h b/tools/perf/util/pmu.h
+index edd36c20aedc2..deaf9c268ed13 100644
+--- a/tools/perf/util/pmu.h
++++ b/tools/perf/util/pmu.h
+@@ -136,6 +136,11 @@ struct perf_pmu {
+ 	uint32_t cpu_json_aliases;
+ 	/** @sys_json_aliases: Number of json event aliases loaded matching the PMU's identifier. */
+ 	uint32_t sys_json_aliases;
++	/**
++	 * @cpu_common_json_aliases: Number of json events that overlapped with sysfs when
++	 * loading all sysfs events.
++	 */
++	uint32_t cpu_common_json_aliases;
+ 	/** @sysfs_aliases_loaded: Are sysfs aliases loaded from disk? */
+ 	bool sysfs_aliases_loaded;
+ 	/**
 -- 
 2.39.5
 
