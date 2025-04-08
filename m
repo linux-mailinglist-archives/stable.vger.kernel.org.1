@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-129479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0EC8A80000
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:27:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAEC0A7FFDE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:24:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AA9417324D
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:19:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9480D3B90F1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:18:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF83266583;
-	Tue,  8 Apr 2025 11:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70D9B266583;
+	Tue,  8 Apr 2025 11:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWC31sq3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8z3nEMv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFFF224F6;
-	Tue,  8 Apr 2025 11:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F846224F6;
+	Tue,  8 Apr 2025 11:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111140; cv=none; b=Jm8tgaPpslaefnyNePZaJvuyConYSbZqbDuV8QQ54tGv2Nij8Z7MG0FAxmtu/tnbZuMURpZ18y5Kf6JrMYzR1HhLX+r89mUQI0dwFbbg98ZsRUfz1MMgLcA3NEFTgxCrKdeY2gf+NVEeLpuOmrv7UfvJuGMOve3l8aDWkiVNvmU=
+	t=1744111146; cv=none; b=FSqELoVkAVJRsQuZR1ope15kJoh2ZbvQ5wWeEFyLFFI1BOSOwjXDB9gbW6vqDddJNfQDHcVPbFcjzqgmByTECOXQ7sUQrodOJh9jgVrC9sXKG3ebsrhzbq3JXUAIPZGuoyFTuj72SWafKaXI60b1zsClMxGwnZiIY5tENjjGDyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111140; c=relaxed/simple;
-	bh=nrOV5JrIHHq3gO9Lv+lJh0A+5sP6zRGOfSD/xkHbTyE=;
+	s=arc-20240116; t=1744111146; c=relaxed/simple;
+	bh=aMd9tdc/bNmIlUxhozcnXmYT9AaOkwGA21ghczQjht8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gyxYkrB7Rb+ysM47rl11jZM6DmnlRYxPqE6QslFxJJjwkZpOOHB7yckjHu/4HhkGWBlUIEX3nO144r/JkvB8uxbq4gt7Fq0vFaLecweTdEBYnArXu6oKIHU/DZLubSgU+teMNFPKqvszz/nvine0Nczice+f2RZ7f3jqVNckPJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWC31sq3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48315C4CEE5;
-	Tue,  8 Apr 2025 11:19:00 +0000 (UTC)
+	 MIME-Version; b=jSrmhmznQDB+qfOO0q9+ZHKUcXmXsxabgqxzgSWjpPQpkhCco+bJQr2/zzBamReHaSsCNuyQt1p5JAOIs/OoYW1hH+VMWKljmOOMFPJiPeXT3tYNLj6JN7qxWPpXyt/0Qyd6gsUFi5N7cQcCE9NjaYTMspYr88PUiFqT0beGsKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8z3nEMv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D1BC4CEE5;
+	Tue,  8 Apr 2025 11:19:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111140;
-	bh=nrOV5JrIHHq3gO9Lv+lJh0A+5sP6zRGOfSD/xkHbTyE=;
+	s=korg; t=1744111146;
+	bh=aMd9tdc/bNmIlUxhozcnXmYT9AaOkwGA21ghczQjht8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tWC31sq3Qjs2ExsXRsJkLz6OMXJNy1tYVarJZ5Vym5o7uFcL+XpDDRVzZX6y2gM55
-	 uELTUU80M+Bc0HFM1jEH2a2UsvgW3IuDXVl29mWBeR3inV406urCkI/euB6zimxCRR
-	 yKEldty7BsoYLwXhPC7LWdEpkH0bB8lK0STsI1+0=
+	b=M8z3nEMvDU5TzKkXT5XEIicv3amj6Vs+Qb4sv/kB3KKdA6OsVk7njxxlYihTtR8oL
+	 bYoc2MX/N/MK1CCHT3nTCqe8GixeN2KXemyiCCsPkRw4CBwqaYGP7nMwpNQMY8DGUl
+	 5m4eyRXYlQsizBhCDEsKK+W8nxnNAI3X3n5HOrVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robdclark@chromium.org>,
+	Vaibhav Jain <vaibhav@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 323/731] drm/msm/a6xx: Fix a6xx indexed-regs in devcoreduump
-Date: Tue,  8 Apr 2025 12:43:40 +0200
-Message-ID: <20250408104921.789439299@linuxfoundation.org>
+Subject: [PATCH 6.14 324/731] powerpc/perf: Fix ref-counting on the PMU vpa_pmu
+Date: Tue,  8 Apr 2025 12:43:41 +0200
+Message-ID: <20250408104921.812123882@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
 References: <20250408104914.247897328@linuxfoundation.org>
@@ -65,36 +66,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
 
-[ Upstream commit 06dd5d86c6aef1c7609ca3a5ffa4097e475e2213 ]
+[ Upstream commit ff99d5b6a246715f2257123cdf6c4a29cb33aa78 ]
 
-Somehow, possibly as a result of rebase gone badly, setting
-nr_indexed_regs for pre-a650 a6xx devices lost the setting of
-nr_indexed_regs, resulting in values getting snapshot, but omitted
-from the devcoredump.
+Commit 176cda0619b6 ("powerpc/perf: Add perf interface to expose vpa
+counters") introduced 'vpa_pmu' to expose Book3s-HV nested APIv2 provided
+L1<->L2 context switch latency counters to L1 user-space via
+perf-events. However the newly introduced PMU named 'vpa_pmu' doesn't
+assign ownership of the PMU to the module 'vpa_pmu'. Consequently the
+module 'vpa_pmu' can be unloaded while one of the perf-events are still
+active, which can lead to kernel oops and panic of the form below on a
+Pseries-LPAR:
 
-Fixes: e997ae5f45ca ("drm/msm/a6xx: Mostly implement A7xx gpu_state")
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Patchwork: https://patchwork.freedesktop.org/patch/640289/
+BUG: Kernel NULL pointer dereference on read at 0x00000058
+<snip>
+ NIP [c000000000506cb8] event_sched_out+0x40/0x258
+ LR [c00000000050e8a4] __perf_remove_from_context+0x7c/0x2b0
+ Call Trace:
+ [c00000025fc3fc30] [c00000025f8457a8] 0xc00000025f8457a8 (unreliable)
+ [c00000025fc3fc80] [fffffffffffffee0] 0xfffffffffffffee0
+ [c00000025fc3fcd0] [c000000000501e70] event_function+0xa8/0x120
+<snip>
+ Kernel panic - not syncing: Aiee, killing interrupt handler!
+
+Fix this by adding the module ownership to 'vpa_pmu' so that the module
+'vpa_pmu' is ref-counted and prevented from being unloaded when perf-events
+are initialized.
+
+Fixes: 176cda0619b6 ("powerpc/perf: Add perf interface to expose vpa counters")
+Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250204153527.125491-1-vaibhav@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/perf/vpa-pmu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-index 0fcae53c0b140..159665cb6b14f 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-@@ -1507,6 +1507,8 @@ static void a6xx_get_indexed_registers(struct msm_gpu *gpu,
- 
- 	/* Restore the size in the hardware */
- 	gpu_write(gpu, REG_A6XX_CP_MEM_POOL_SIZE, mempool_size);
-+
-+	a6xx_state->nr_indexed_regs = count;
+diff --git a/arch/powerpc/perf/vpa-pmu.c b/arch/powerpc/perf/vpa-pmu.c
+index 6a5bfd2a13b5a..8407334689596 100644
+--- a/arch/powerpc/perf/vpa-pmu.c
++++ b/arch/powerpc/perf/vpa-pmu.c
+@@ -156,6 +156,7 @@ static void vpa_pmu_del(struct perf_event *event, int flags)
  }
  
- static void a7xx_get_indexed_registers(struct msm_gpu *gpu,
+ static struct pmu vpa_pmu = {
++	.module		= THIS_MODULE,
+ 	.task_ctx_nr	= perf_sw_context,
+ 	.name		= "vpa_pmu",
+ 	.event_init	= vpa_pmu_event_init,
 -- 
 2.39.5
 
