@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-129722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C08DA80131
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:38:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71296A80369
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:57:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F10D3B15B9
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:32:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2ECA546413C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:53:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 061E9268FD8;
-	Tue,  8 Apr 2025 11:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 976FB265633;
+	Tue,  8 Apr 2025 11:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0wfvAiP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PnWrNA9m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B729E267B8C;
-	Tue,  8 Apr 2025 11:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B48268C6B;
+	Tue,  8 Apr 2025 11:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111804; cv=none; b=QeVhWyxHqPcYStDu8zrNct3RU+HrF8DTr7TUHp92nsHIuMYo7LjCtyMShwAC+ZBc8FHZmZvZJoHNmSvn+N5YktskQ3EKT/+BN/Mv79JC0901+5BQaIJnnqKxCvOleKeM07rpoNgaqlqrAYsPfGIAvMSJ1c7r6BmUSL7hMxbJeF8=
+	t=1744113156; cv=none; b=UCpYrXG6UAxEgbWiYsSfAdKAJe3dKA+af5+eBdFC/PhoGmWfTU02du38WxYyltvQ7kFDa+kJ/pJvmfPBLiSU0WSCy0QwqnIeox76EL+xE9D/f7YIvi5K+ul81XwKwrIME3/VIQuZdC2RxNho76CT41c6D4tNVn7YJH31q+ytA/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111804; c=relaxed/simple;
-	bh=M+TZ2re8DRjUxs4I9oDALGUFg28cKjHDDEi4E3IArhk=;
+	s=arc-20240116; t=1744113156; c=relaxed/simple;
+	bh=0FRFwgza53t0d2Z1USVSyF0oYLSbDxdRexafvArgSbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rgu63KPe1D9Fbu5aJOTuhaI8u+gBXP8VUOLp98n3Z/OOgGyljB8BAUE0l0PTpj8ll6Y7WgLyFi3gwGijBFf0rzTZZrED3bDvx+NmIEwPMnDjSvR12KQYdvxHP6HwuR1w5yOUbwbNGtmAwg/tmzu3aM1Synvpft7kEUFGrigkbUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A0wfvAiP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48A29C4CEE5;
-	Tue,  8 Apr 2025 11:30:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bYm4Y5pSrUlLH1G1+kZCCtttpuKnKxeMvqCIPfiK/ANWlNe/5H3sB/BUFPJUdgRD/+in3I18EXVrXhgS3E5KqJSUqB5ZPZSteWDd1q9aN2kVaIQV9lDf3QAZTQwnc+vBKK3I5VHlp+PZNhOvGOKZkDA9d8FplwXPkPf7u0b3U2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PnWrNA9m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9350C4CEE5;
+	Tue,  8 Apr 2025 11:52:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111804;
-	bh=M+TZ2re8DRjUxs4I9oDALGUFg28cKjHDDEi4E3IArhk=;
+	s=korg; t=1744113156;
+	bh=0FRFwgza53t0d2Z1USVSyF0oYLSbDxdRexafvArgSbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A0wfvAiPjGY+wEI3ut8SKXBa4eQvOmiJWwnUfVJWX7pCyqJKW/hOHClNIq0GwA3fm
-	 qJ/EtQFYh7PeJ1sRyD3+0BBhHFkfSBTa/RA3h1y4mAKhgN9O0TOaifaBcI+ISfH+IE
-	 oTV2yaKwkIvhKmMcY0hhUIUQNwEnAR2JecT0nEfU=
+	b=PnWrNA9mTvtsrA3D3Qk6QQv9PNV4NZGw1ioi8kV8r+2M1O8MrirOJDRjCYXa50TXi
+	 5MNYa/PnVVCSqRkLg2VhDMkJ/cG97zPFJSwYJ4EbvjXGEneedzh0RrPNer/+LNUhjM
+	 Kg/M0zR44HhknHsgTZ4ERFdN2j2tyADr+5DMvOcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Liu <jim.t90615@gmail.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Thippeswamy Havalige <thippeswamy.havalige@amd.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 567/731] net: phy: broadcom: Correct BCM5221 PHY model detection
+Subject: [PATCH 6.6 053/268] PCI: xilinx-cpm: Fix IRQ domain leak in error path of probe
 Date: Tue,  8 Apr 2025 12:47:44 +0200
-Message-ID: <20250408104927.463215647@linuxfoundation.org>
+Message-ID: <20250408104829.931157091@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +60,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Liu <jim.t90615@gmail.com>
+From: Thippeswamy Havalige <thippeswamy.havalige@amd.com>
 
-[ Upstream commit 4f1eaabb4b66a1f7473f584e14e15b2ac19dfaf3 ]
+[ Upstream commit 57b0302240741e73fe51f88404b3866e0d2933ad ]
 
-Correct detect condition is applied to the entire 5221 family of PHYs.
+The IRQ domain allocated for the PCIe controller is not freed if
+resource_list_first_type() returns NULL, leading to a resource leak.
 
-Fixes: 3abbd0699b67 ("net: phy: broadcom: add support for BCM5221 phy")
-Signed-off-by: Jim Liu <jim.t90615@gmail.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+This fix ensures properly cleaning up the allocated IRQ domain in
+the error path.
+
+Fixes: 49e427e6bdd1 ("Merge branch 'pci/host-probe-refactor'")
+Signed-off-by: Thippeswamy Havalige <thippeswamy.havalige@amd.com>
+[kwilczynski: added missing Fixes: tag, refactored to use one of the goto labels]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Link: https://lore.kernel.org/r/20250224155025.782179-2-thippeswamy.havalige@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/broadcom.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/pci/controller/pcie-xilinx-cpm.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/phy/broadcom.c b/drivers/net/phy/broadcom.c
-index 22edb7e4c1a1f..5a963b2b7ea78 100644
---- a/drivers/net/phy/broadcom.c
-+++ b/drivers/net/phy/broadcom.c
-@@ -859,7 +859,7 @@ static int brcm_fet_config_init(struct phy_device *phydev)
- 		return reg;
- 
- 	/* Unmask events we are interested in and mask interrupts globally. */
--	if (phydev->phy_id == PHY_ID_BCM5221)
-+	if (phydev->drv->phy_id == PHY_ID_BCM5221)
- 		reg = MII_BRCM_FET_IR_ENABLE |
- 		      MII_BRCM_FET_IR_MASK;
- 	else
-@@ -888,7 +888,7 @@ static int brcm_fet_config_init(struct phy_device *phydev)
+diff --git a/drivers/pci/controller/pcie-xilinx-cpm.c b/drivers/pci/controller/pcie-xilinx-cpm.c
+index 4a787a941674b..51379d791005b 100644
+--- a/drivers/pci/controller/pcie-xilinx-cpm.c
++++ b/drivers/pci/controller/pcie-xilinx-cpm.c
+@@ -594,15 +594,17 @@ static int xilinx_cpm_pcie_probe(struct platform_device *pdev)
  		return err;
+ 
+ 	bus = resource_list_first_type(&bridge->windows, IORESOURCE_BUS);
+-	if (!bus)
+-		return -ENODEV;
++	if (!bus) {
++		err = -ENODEV;
++		goto err_free_irq_domains;
++	}
+ 
+ 	port->variant = of_device_get_match_data(dev);
+ 
+ 	err = xilinx_cpm_pcie_parse_dt(port, bus->res);
+ 	if (err) {
+ 		dev_err(dev, "Parsing DT failed\n");
+-		goto err_parse_dt;
++		goto err_free_irq_domains;
  	}
  
--	if (phydev->phy_id != PHY_ID_BCM5221) {
-+	if (phydev->drv->phy_id != PHY_ID_BCM5221) {
- 		/* Set the LED mode */
- 		reg = __phy_read(phydev, MII_BRCM_FET_SHDW_AUXMODE4);
- 		if (reg < 0) {
-@@ -1009,7 +1009,7 @@ static int brcm_fet_suspend(struct phy_device *phydev)
- 		return err;
- 	}
- 
--	if (phydev->phy_id == PHY_ID_BCM5221)
-+	if (phydev->drv->phy_id == PHY_ID_BCM5221)
- 		/* Force Low Power Mode with clock enabled */
- 		reg = BCM5221_SHDW_AM4_EN_CLK_LPM | BCM5221_SHDW_AM4_FORCE_LPM;
- 	else
+ 	xilinx_cpm_pcie_init_port(port);
+@@ -626,7 +628,7 @@ static int xilinx_cpm_pcie_probe(struct platform_device *pdev)
+ 	xilinx_cpm_free_interrupts(port);
+ err_setup_irq:
+ 	pci_ecam_free(port->cfg);
+-err_parse_dt:
++err_free_irq_domains:
+ 	xilinx_cpm_free_irq_domains(port);
+ 	return err;
+ }
 -- 
 2.39.5
 
