@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-131322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CB89A809A2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:56:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70319A80600
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:23:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3151D4E5630
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:47:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D60314A83E4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:16:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6CD268C6B;
-	Tue,  8 Apr 2025 12:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2E4269825;
+	Tue,  8 Apr 2025 12:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1o07eWT6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHZw+B/R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374A81AAA32;
-	Tue,  8 Apr 2025 12:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE26426156E;
+	Tue,  8 Apr 2025 12:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116084; cv=none; b=XwLapWi/XrO8lBBIyQNsP4zRjNxqAeGAm2vB7RSNFntAcOxxKOnXmH3HK1joOH+SXRW84rynmzDxubLVgrnzoWSc/TP0FBcM6gbXBqedMcFwiB+yVOMjHYEkS/aTLVWwQ0j8McjhqmyCFuPiUYSKEI5FP9bvXzVp4AGntPMpswY=
+	t=1744114466; cv=none; b=JYVkMsd53WwWEXQ3AlVAoRCopc3o0PeONj50haryLqgc+lQ9FGjpDKWs9bcn3Dofrest1kRiloYcignFf9UT20uAnz2FI7QPQzroage2lzg3g0/J3ZJ5ZA5E/VzQCJmBuxugjcAYsj8l8NhLkBXUfV3V+qAA1X+fn57txqrrl7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116084; c=relaxed/simple;
-	bh=77LWS7bY4MPHjB8uq4xePK2z2TenaUr6WLcmOXgOIIw=;
+	s=arc-20240116; t=1744114466; c=relaxed/simple;
+	bh=y3deuOFwzRk75dmGvOicONp2rydOm0mygxP+McEYCpY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qHEfV3K0Ms2EanfRW1ucsmT40dFiMMQeUFURFT4ix7KRrtx9CisCdIWSfm+CIArKBeZxGCJFUGL5b/met1t507Vy6Ga9mb0xr6EdnZu7vbJy2JKEuILS7MW5f8DwaftbVwjJAjPd2gFW70In9iiMjRFuyjqd6hQr5mwDWIfbw4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1o07eWT6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F94BC4CEEB;
-	Tue,  8 Apr 2025 12:41:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aBQv4UcSHTZcHyHoYdMVYY5N319hxy/YSd9Nd/PKHcKqvsTBZfyeNXiZ/8PH+Hc18kEANbMva6jVDuc+yHrGd5TS0AnSjR5FRbEqpMrud0uLUmmdeymRgoDx3Zy30tgbU1UOZm660aWaaA1R/gcKGllyTYukex4RN0n6LVFjQSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHZw+B/R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0840C4CEE5;
+	Tue,  8 Apr 2025 12:14:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744116083;
-	bh=77LWS7bY4MPHjB8uq4xePK2z2TenaUr6WLcmOXgOIIw=;
+	s=korg; t=1744114466;
+	bh=y3deuOFwzRk75dmGvOicONp2rydOm0mygxP+McEYCpY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1o07eWT6oNnc0i5TQcxjfVbnj2ToyA34jygF8RIj1LMbwI7b159IyuWKWGSAF0mZ+
-	 2d028b0FxFAiwid1rmCLkZLMGLfpeKDnBOZRXizMkf9sWlEl4vy9WzyC625m+b2hzP
-	 quuF70GZWPPh1B1Hit8cxFRIupBoOOa9535v0McQ=
+	b=XHZw+B/RPzwxkVCAXmLnC0Ls43C9HI3DOLzkOC0YyAdr9/SO0T3jSgaB1Jomtt8lY
+	 U1sOeYlPpIFl8O5NLHOHJCpYT7LOqYJUhHZmrTU9hpayZkHXWBwxgpCRx4bG/Rv6vm
+	 1wqq2Z/83lzhlCbHtbr8reV5+Wpu0IZZadb/xZ70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Markus Elfring <elfring@users.sourceforge.net>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 002/423] x86/mm/pat: cpa-test: fix length for CPA_ARRAY test
+Subject: [PATCH 6.13 116/499] fbdev: au1100fb: Move a variable assignment behind a null pointer check
 Date: Tue,  8 Apr 2025 12:45:28 +0200
-Message-ID: <20250408104845.742102091@linuxfoundation.org>
+Message-ID: <20250408104854.096704687@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
-References: <20250408104845.675475678@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Rapoport (Microsoft) <rppt@kernel.org>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-[ Upstream commit 33ea120582a638b2f2e380a50686c2b1d7cce795 ]
+[ Upstream commit 2df2c0caaecfd869b49e14f2b8df822397c5dd7f ]
 
-The CPA_ARRAY test always uses len[1] as numpages argument to
-change_page_attr_set() although the addresses array is different each
-iteration of the test loop.
+The address of a data structure member was determined before
+a corresponding null pointer check in the implementation of
+the function “au1100fb_setmode”.
 
-Replace len[1] with len[i] to have numpages matching the addresses array.
+This issue was detected by using the Coccinelle software.
 
-Fixes: ecc729f1f471 ("x86/mm/cpa: Add ARRAY and PAGES_ARRAY selftests")
-Signed-off-by: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250126074733.1384926-2-rppt@kernel.org
+Fixes: 3b495f2bb749 ("Au1100 FB driver uplift for 2.6.")
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Acked-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/pat/cpa-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/au1100fb.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/mm/pat/cpa-test.c b/arch/x86/mm/pat/cpa-test.c
-index 3d2f7f0a6ed14..ad3c1feec990d 100644
---- a/arch/x86/mm/pat/cpa-test.c
-+++ b/arch/x86/mm/pat/cpa-test.c
-@@ -183,7 +183,7 @@ static int pageattr_test(void)
- 			break;
+diff --git a/drivers/video/fbdev/au1100fb.c b/drivers/video/fbdev/au1100fb.c
+index 840f221607635..6251a6b07b3a1 100644
+--- a/drivers/video/fbdev/au1100fb.c
++++ b/drivers/video/fbdev/au1100fb.c
+@@ -137,13 +137,15 @@ static int au1100fb_fb_blank(int blank_mode, struct fb_info *fbi)
+ 	 */
+ int au1100fb_setmode(struct au1100fb_device *fbdev)
+ {
+-	struct fb_info *info = &fbdev->info;
++	struct fb_info *info;
+ 	u32 words;
+ 	int index;
  
- 		case 1:
--			err = change_page_attr_set(addrs, len[1], PAGE_CPA_TEST, 1);
-+			err = change_page_attr_set(addrs, len[i], PAGE_CPA_TEST, 1);
- 			break;
+ 	if (!fbdev)
+ 		return -EINVAL;
  
- 		case 2:
++	info = &fbdev->info;
++
+ 	/* Update var-dependent FB info */
+ 	if (panel_is_active(fbdev->panel) || panel_is_color(fbdev->panel)) {
+ 		if (info->var.bits_per_pixel <= 8) {
 -- 
 2.39.5
 
