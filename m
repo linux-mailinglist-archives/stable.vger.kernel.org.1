@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-130764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94220A80612
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:23:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A83BA808FE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:50:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BB461B6514F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:18:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5376A7B2769
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A38026B2B3;
-	Tue,  8 Apr 2025 12:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2263926B2B3;
+	Tue,  8 Apr 2025 12:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pSyrpfnw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i32TYk78"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED24126B2AC;
-	Tue,  8 Apr 2025 12:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4BA1269839;
+	Tue,  8 Apr 2025 12:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114589; cv=none; b=jxQDCEKjxBOj/A4FBnkfKbKRAJ98vVJ6RhQXels7+l16bCs8nRlPTWdDfVRREP+lL9gWKvjO27n3HsKugsafCDjgSmHZCbuy5HuKFQqxsPcWLrN9amHFoL4WqGrubhyA0AjUveQhFSKmgrjqXAYu2dxk1tNV/UBFnm/ABEOHihs=
+	t=1744116206; cv=none; b=Bu0CprsuUIIwVkdSoaQ4VN1dSEgomvr9ATEB8RxdqBCtEf6ykEPwEJFeyTNEC2Nu6Pa55lmTwumr1uKmJYXbvmLpOXC8dCUZGf/I9deN4/DNdvPokV4evquusVVOUJo5HQXASHeopMJ5gJyD+eL5SR23qELgQX4zVec4Y/pisEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114589; c=relaxed/simple;
-	bh=MWXr5AYjIJRPXPsRPsHOAqgpTrsJFx6YMU2wscYsLX4=;
+	s=arc-20240116; t=1744116206; c=relaxed/simple;
+	bh=pi5nI257IOnDgk+lI8I2xZPf1+0APvBXeq7vy0lkUIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KKxMZJ0ifNgDhlXdAmthYbI1U3AXEAU/L6p+gPgx87mZutzl0cg+y0NFskSf86H+HzSbKxEG7gwF6u5r0PUsl2J0qjFnRH01pfSX8PlDk1+J1vLimMvo6J7bimU+Blb6FxQw2OUB8Sr2uUERahUgeVhqMGayxs4tuIDq4ZfWohQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pSyrpfnw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C489C4CEE7;
-	Tue,  8 Apr 2025 12:16:28 +0000 (UTC)
+	 MIME-Version; b=iHLFht/Wl8sK1jIDCoLJdgytKq6PwQZMkqHqHWfgh67S9gxNIyF3U+mmkNAeEYFFf6xUz6GZVvFDt7PpXR5d7+yjgHAKrq2SIyiYMMg5lDYDc1IMpujfbuNw7QpkXR19DQkljBaVjWecN96v4GfihRraF2G2kS3iFdkNqSAhoOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i32TYk78; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 040AFC4CEE5;
+	Tue,  8 Apr 2025 12:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114588;
-	bh=MWXr5AYjIJRPXPsRPsHOAqgpTrsJFx6YMU2wscYsLX4=;
+	s=korg; t=1744116206;
+	bh=pi5nI257IOnDgk+lI8I2xZPf1+0APvBXeq7vy0lkUIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pSyrpfnw5Cmh9ekzaKsvSPcF5t2VuNm420hEHCO1cyhohwjWjL4zOnNHoBStD0v+U
-	 moA/b0JZ+W2NdoO7oh7+EmQZoyyt3kHu6HvKFZv61zpIaAEv2tzB9ti40O4ceiyDT7
-	 uFs1o4DJO9axopEQ+mqjiYivxAtO1kMxG39GS8CI=
+	b=i32TYk78vcD44Lk9poPrDXjPjhemFlz1BzdUD+lzVqh90SpJ4KoLQw3nz3BPcbwUY
+	 PExqIo99wkRkx/ngxKllCPa3HO0EsW63TRzIpOh5O3oRC7rkKhAK0Cqm/3BZM7taOp
+	 6dVIMSKUWIHz7V8Y0/2kOziDdbKb8U7MhV9nhTcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Geis <pgwipeout@gmail.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 161/499] clk: rockchip: rk3328: fix wrong clk_ref_usb3otg parent
+Subject: [PATCH 6.12 047/423] drm/bridge: ti-sn65dsi86: Fix multiple instances
 Date: Tue,  8 Apr 2025 12:46:13 +0200
-Message-ID: <20250408104855.196260293@linuxfoundation.org>
+Message-ID: <20250408104846.846157046@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Geis <pgwipeout@gmail.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit a9e60f1ffe1ca57d6af6a2573e2f950e76efbf5b ]
+[ Upstream commit 574f5ee2c85a00a579549d50e9fc9c6c072ee4c4 ]
 
-Correct the clk_ref_usb3otg parent to fix clock control for the usb3
-controller on rk3328. Verified against the rk3328 trm, the rk3228h trm,
-and the rk3328 usb3 phy clock map.
+Each bridge instance creates up to four auxiliary devices with different
+names.  However, their IDs are always zero, causing duplicate filename
+errors when a system has multiple bridges:
 
-Fixes: fe3511ad8a1c ("clk: rockchip: add clock controller for rk3328")
-Signed-off-by: Peter Geis <pgwipeout@gmail.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://lore.kernel.org/r/20250115012628.1035928-2-pgwipeout@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+    sysfs: cannot create duplicate filename '/bus/auxiliary/devices/ti_sn65dsi86.gpio.0'
+
+Fix this by using a unique instance ID per bridge instance.  The
+instance ID is derived from the I2C adapter number and the bridge's I2C
+address, to support multiple instances on the same bus.
+
+Fixes: bf73537f411b ("drm/bridge: ti-sn65dsi86: Break GPIO and MIPI-to-eDP bridge into sub-drivers")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/7a68a0e3f927e26edca6040067fb653eb06efb79.1733840089.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/rockchip/clk-rk3328.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/ti-sn65dsi86.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/rockchip/clk-rk3328.c b/drivers/clk/rockchip/clk-rk3328.c
-index 3bb87b27b662d..cf60fcf2fa5cd 100644
---- a/drivers/clk/rockchip/clk-rk3328.c
-+++ b/drivers/clk/rockchip/clk-rk3328.c
-@@ -201,7 +201,7 @@ PNAME(mux_aclk_peri_pre_p)	= { "cpll_peri",
- 				    "gpll_peri",
- 				    "hdmiphy_peri" };
- PNAME(mux_ref_usb3otg_src_p)	= { "xin24m",
--				    "clk_usb3otg_ref" };
-+				    "clk_ref_usb3otg_src" };
- PNAME(mux_xin24m_32k_p)		= { "xin24m",
- 				    "clk_rtc32k" };
- PNAME(mux_mac2io_src_p)		= { "clk_mac2io_src",
+diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+index 582cf4f73a74c..95ce50ed53acf 100644
+--- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
++++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+@@ -480,6 +480,7 @@ static int ti_sn65dsi86_add_aux_device(struct ti_sn65dsi86 *pdata,
+ 				       const char *name)
+ {
+ 	struct device *dev = pdata->dev;
++	const struct i2c_client *client = to_i2c_client(dev);
+ 	struct auxiliary_device *aux;
+ 	int ret;
+ 
+@@ -488,6 +489,7 @@ static int ti_sn65dsi86_add_aux_device(struct ti_sn65dsi86 *pdata,
+ 		return -ENOMEM;
+ 
+ 	aux->name = name;
++	aux->id = (client->adapter->nr << 10) | client->addr;
+ 	aux->dev.parent = dev;
+ 	aux->dev.release = ti_sn65dsi86_aux_device_release;
+ 	device_set_of_node_from_dev(&aux->dev, dev);
 -- 
 2.39.5
 
