@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-128941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0946CA7FD67
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:02:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72CB7A800AE
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:33:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40647188F4C2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:58:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5F02188C4B7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:30:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB91267F6D;
-	Tue,  8 Apr 2025 10:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BB226A08A;
+	Tue,  8 Apr 2025 11:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UE5w6Qwg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qs9wzrxG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2EC268C43;
-	Tue,  8 Apr 2025 10:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34494263C90;
+	Tue,  8 Apr 2025 11:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744109688; cv=none; b=kQ3iwO2Yd2YSqUzfZZ3BNkueRKDJNC6IeyufvG8Jiy7uDQJi90S6ohQNX07ym1SJqE6jwea923jWeAmbQ2HHAmj+omt/MSRKXWdnVOxl5Vh1wnlh7SzGTuTsfxmn4wICS3tHkH2LoJZ10kWljVNQInJ5prcLytKPXUFEf2rZ7VU=
+	t=1744111628; cv=none; b=ripGa6PqHqA5qHWfQQ0xmLAu0lh4OzWYZLS8w+ymMb4hF0lYfYwYlOTTFEkW2rwL0C7pZyueSXP7mKyfYRj0KKe3JbLbN4I+YroJk1Id20t6DJ+Bm15hc6QXh5L0qGIUKb4scBnYtKyW382IWuU5Pl8o5z7zxmHcppCi5zWflTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744109688; c=relaxed/simple;
-	bh=7/1kARzhQvV5gnwFgRNkwNl3O0m0PwXsI/oyNrZEQsA=;
+	s=arc-20240116; t=1744111628; c=relaxed/simple;
+	bh=ONVbwcyHMs9gnXNYekYKgwdOcF1EWZtGzug7C256cA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RV3wHZkJVcMFt2Bd5bexhQ3Ro81bFeRG8lhZ0xnP+j7ZhOpiyD8kBwsn6mLnfdRgTqqCvGGJrllq2dxHiNBN06ZfAR4LIeN/1cfrAfuBgwmZvLxH8dUlsdDC6ojdqNdLXtXoj5X/H4YssjYVdiwDMIN6+KJYoCc7FV8biWNBM8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UE5w6Qwg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D1CC4CEEB;
-	Tue,  8 Apr 2025 10:54:47 +0000 (UTC)
+	 MIME-Version; b=QU/1/HHw4z5majBU1YSRrWW/++ExpFmiTZpE4yq+hnHE+eR9lhijfSXWKQX3jwUwcKbh99LOrWjOETxWNO894mZjG0MoRRoSvW5eAs7TGV2EVc/LPvGUrOmQw+JWD7YrPtBminMthbF0iZvdaA9+vlozc+hngBC8SfQr8W3oY50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qs9wzrxG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9608C4CEE7;
+	Tue,  8 Apr 2025 11:27:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744109688;
-	bh=7/1kARzhQvV5gnwFgRNkwNl3O0m0PwXsI/oyNrZEQsA=;
+	s=korg; t=1744111628;
+	bh=ONVbwcyHMs9gnXNYekYKgwdOcF1EWZtGzug7C256cA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UE5w6QwgX1xvsojS2kMIYifwP3K1m7xRBMLS5pJbB5Btqb/2ZCOtogNVUUT3ryOmo
-	 gdGTfrgkY47/YhVaGwhGhiC111mZoiTK5TlXM4f9lEj7JS4A0euyBdRz3/sNAxkuNx
-	 XhU0emoOrjDIMiNRSvywGrrVZrE6YzHRqghWmMy8=
+	b=qs9wzrxGuMTNfATLhptBDIh3+Ugvx+bc+MOYvjIKUwUAn3V592Ce6Kzn6XkqOnBGK
+	 QePk6KKJEcFCCpeP15tZctuOKRkI7YDjVy/YRfiEfeMYaWVZ9GFn2lBfWAtZE6jNGd
+	 HTxvRs/9Q/AwdS3pfXdJSG1VrpcZAtQL/M/XWBvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Julian Anastasov <ja@ssi.bg>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Howard Chu <howardchu95@gmail.com>,
+	Ian Rogers <irogers@google.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 017/227] ipvs: prevent integer overflow in do_ip_vs_get_ctl()
-Date: Tue,  8 Apr 2025 12:46:35 +0200
-Message-ID: <20250408104820.913603316@linuxfoundation.org>
+Subject: [PATCH 6.14 499/731] perf evsel: tp_format accessing improvements
+Date: Tue,  8 Apr 2025 12:46:36 +0200
+Message-ID: <20250408104925.881220681@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.353768086@linuxfoundation.org>
-References: <20250408104820.353768086@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 80b78c39eb86e6b55f56363b709eb817527da5aa ]
+[ Upstream commit eb7e83a7ca2dba01671c711e1711705e1a15626d ]
 
-The get->num_services variable is an unsigned int which is controlled by
-the user.  The struct_size() function ensures that the size calculation
-does not overflow an unsigned long, however, we are saving the result to
-an int so the calculation can overflow.
+Ensure evsel__clone copies the tp_sys and tp_name variables.
+In evsel__tp_format, if tp_sys isn't set, use the config value to find
+the tp_format. This succeeds in python code where pyrf__tracepoint has
+already found the format.
 
-Both "len" and "get->num_services" come from the user.  This check is
-just a sanity check to help the user and ensure they are using the API
-correctly.  An integer overflow here is not a big deal.  This has no
-security impact.
-
-Save the result from struct_size() type size_t to fix this integer
-overflow bug.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Reviewed-by: Howard Chu <howardchu95@gmail.com>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Link: https://lore.kernel.org/r/20250228222308.626803-4-irogers@google.com
+Fixes: 6c8310e8380d472c ("perf evsel: Allow evsel__newtp without libtraceevent")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_ctl.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/perf/util/evsel.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
-index d0b64c36471d5..fb9f1badeddbf 100644
---- a/net/netfilter/ipvs/ip_vs_ctl.c
-+++ b/net/netfilter/ipvs/ip_vs_ctl.c
-@@ -2852,12 +2852,12 @@ do_ip_vs_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
- 	case IP_VS_SO_GET_SERVICES:
- 	{
- 		struct ip_vs_get_services *get;
--		int size;
-+		size_t size;
+diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
+index bc144388f8929..9cd78cdee6282 100644
+--- a/tools/perf/util/evsel.c
++++ b/tools/perf/util/evsel.c
+@@ -511,6 +511,16 @@ struct evsel *evsel__clone(struct evsel *dest, struct evsel *orig)
+ 	}
+ 	evsel->cgrp = cgroup__get(orig->cgrp);
+ #ifdef HAVE_LIBTRACEEVENT
++	if (orig->tp_sys) {
++		evsel->tp_sys = strdup(orig->tp_sys);
++		if (evsel->tp_sys == NULL)
++			goto out_err;
++	}
++	if (orig->tp_name) {
++		evsel->tp_name = strdup(orig->tp_name);
++		if (evsel->tp_name == NULL)
++			goto out_err;
++	}
+ 	evsel->tp_format = orig->tp_format;
+ #endif
+ 	evsel->handler = orig->handler;
+@@ -634,7 +644,11 @@ struct tep_event *evsel__tp_format(struct evsel *evsel)
+ 	if (evsel->core.attr.type != PERF_TYPE_TRACEPOINT)
+ 		return NULL;
  
- 		get = (struct ip_vs_get_services *)arg;
- 		size = struct_size(get, entrytable, get->num_services);
- 		if (*len != size) {
--			pr_err("length: %u != %u\n", *len, size);
-+			pr_err("length: %u != %zu\n", *len, size);
- 			ret = -EINVAL;
- 			goto out;
- 		}
-@@ -2893,12 +2893,12 @@ do_ip_vs_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
- 	case IP_VS_SO_GET_DESTS:
- 	{
- 		struct ip_vs_get_dests *get;
--		int size;
-+		size_t size;
+-	tp_format = trace_event__tp_format(evsel->tp_sys, evsel->tp_name);
++	if (!evsel->tp_sys)
++		tp_format = trace_event__tp_format_id(evsel->core.attr.config);
++	else
++		tp_format = trace_event__tp_format(evsel->tp_sys, evsel->tp_name);
++
+ 	if (IS_ERR(tp_format)) {
+ 		int err = -PTR_ERR(evsel->tp_format);
  
- 		get = (struct ip_vs_get_dests *)arg;
- 		size = struct_size(get, entrytable, get->num_dests);
- 		if (*len != size) {
--			pr_err("length: %u != %u\n", *len, size);
-+			pr_err("length: %u != %zu\n", *len, size);
- 			ret = -EINVAL;
- 			goto out;
- 		}
 -- 
 2.39.5
 
