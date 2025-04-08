@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-130005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82BD4A80259
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:47:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B2E2A80198
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:41:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BB3D18950E5
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:42:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F9DA3A6428
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B041265602;
-	Tue,  8 Apr 2025 11:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1028E268FF0;
+	Tue,  8 Apr 2025 11:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cDM4TwEF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EYHkPpoK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27AC52288CB;
-	Tue,  8 Apr 2025 11:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F5B2676DE;
+	Tue,  8 Apr 2025 11:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112562; cv=none; b=U4QKCwNr7zBNVpLpxWiy+pfTz5CsBRnu164JRP59ctURE/cA+R9xbwFtGqnq5OZUmdoEJOqtPXHj8Tkm0FttCgmtst6MBhB5UkPEFAt6Gjg0+uJBelxBQoiACvAUXYZv16E0dPqZBWGDGveEyRBDZwWg6EHxvVYmHfFUW06wA54=
+	t=1744111999; cv=none; b=YEJST3YmRRv5cTMmL/Zn9ozTQbegf+Unkkwjv97QjiT4jFFn6DyE69ogEt1uXeDCBQylvJq9TKtjRLFsQkXzmD99d7SHD6eIAOo4l/Dt9OAFH1LHF3CAsCTaq1WmyowxUvwbk6rq9HQ9OzCALB7ySFYuBJ3VBQUUQmEGa+jTLIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112562; c=relaxed/simple;
-	bh=E3kJhKCYWfHqXreF27z87MG0nJUDiKKvzCqnE/3WopE=;
+	s=arc-20240116; t=1744111999; c=relaxed/simple;
+	bh=BzEvyEOTTlj2YimVDPJUppu6Ld5ng2+XFOi4regKyWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZgSEFKxR/YFVhFrLIW2wCsrFwKtlmsoG+Cc94gyB69gLDDZ3oMJoA7BGjvFJB+wB8ldOXZMBRHx2Kf5Y7gagjn+My3fkhxRi46iUHLzGLP//fHQ1b4wD4RATrO+7VYUoaDCKWDJgdQsH4Frt1LaBf35c/mH9M2W7jOj87joQQX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cDM4TwEF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A61F9C4CEE5;
-	Tue,  8 Apr 2025 11:42:41 +0000 (UTC)
+	 MIME-Version; b=ON/vfL8qPVNwvyya2lnKKEYwo49u/5f+qI8AaTPUCKMpZ5xUcgaMz79w6QXAd4rpPvJgUHt/dwEzcaKAFTni/wC08H9P7Y3+T7XRPZfVm48/s/gAT2TJ7xeUk3RILxLy7k6B4ahHGQHSiO2WUh90umFmYfvbZ1s9jp7rC++4/o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EYHkPpoK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 501B4C4CEE5;
+	Tue,  8 Apr 2025 11:33:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112562;
-	bh=E3kJhKCYWfHqXreF27z87MG0nJUDiKKvzCqnE/3WopE=;
+	s=korg; t=1744111999;
+	bh=BzEvyEOTTlj2YimVDPJUppu6Ld5ng2+XFOi4regKyWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cDM4TwEFf8NKAWAYYxJEw4CKnMmaFKxxrarUTGdk6RxlxE31IGmv2pqqngTk4PhT/
-	 tbzHkesUjdrK5pMnvbiXaue2hLGJ3RszSOAPvVDRn/GiJWeyJDW3dg/dQTLwCQtqJT
-	 D+LDP8St0HYXO3FbU8go5x2zSJV9QxkxiRRIXkDU=
+	b=EYHkPpoKyyMdMvrrkXaBglDKxGokzjtABe1QcGeLJA/TNIzg5M8T8ndd51UaCcuNc
+	 PbDWzU82q37Smcg5gMVOVzeLlm0gU+2ojSrRbvlZp7YM/e8hxOwHGZlBulf4/NlJHC
+	 8e3R8+KB6uctXnEOGDtjN6cBajUIUeYwjfJch6/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Wang Kefeng <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ben Hutchings <ben@decadent.org.uk>,
-	linux-arm-kernel@lists.infradead.org,
-	Kees Cook <keescook@chromium.org>
-Subject: [PATCH 5.15 113/279] ARM: 9350/1: fault: Implement copy_from_kernel_nofault_allowed()
+	Heiko Carstens <hca@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 599/731] s390/entry: Fix setting _CIF_MCCK_GUEST with lowcore relocation
 Date: Tue,  8 Apr 2025 12:48:16 +0200
-Message-ID: <20250408104829.397723163@linuxfoundation.org>
+Message-ID: <20250408104928.205816683@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-References: <20250408104826.319283234@linuxfoundation.org>
+In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
+References: <20250408104914.247897328@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,54 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-commit 169f9102f9198b04afffa6164372a4ba4070f412 upstream.
+[ Upstream commit 121df45b37a1016ee6828c2ca3ba825f3e18a8c1 ]
 
-Under PAN emulation when dumping backtraces from things like the
-LKDTM EXEC_USERSPACE test[1], a double fault (which would hang a CPU)
-would happen because of dump_instr() attempting to read a userspace
-address. Make sure copy_from_kernel_nofault() does not attempt this
-any more.
+When lowcore relocation is enabled, the machine check handler doesn't
+use the lowcore address when setting _CIF_MCCK_GUEST. Fix this by
+adding the missing base register.
 
-Closes: https://lava.sirena.org.uk/scheduler/job/497571
-Link: https://lore.kernel.org/all/202401181125.D48DCB4C@keescook/ [1]
-
-Reported-by: Mark Brown <broonie@kernel.org>
-Suggested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Tested-by: Mark Brown <broonie@kernel.org>
-Cc: Wang Kefeng <wangkefeng.wang@huawei.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Ben Hutchings <ben@decadent.org.uk>
-Cc: linux-arm-kernel@lists.infradead.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0001b7bbc53a ("s390/entry: Make mchk_int_handler() ready for lowcore relocation")
+Reported-by: Heiko Carstens <hca@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mm/fault.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/s390/kernel/entry.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm/mm/fault.c
-+++ b/arch/arm/mm/fault.c
-@@ -24,6 +24,13 @@
- 
- #include "fault.h"
- 
-+bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
-+{
-+	unsigned long addr = (unsigned long)unsafe_src;
-+
-+	return addr >= TASK_SIZE && ULONG_MAX - addr >= size;
-+}
-+
- #ifdef CONFIG_MMU
- 
- /*
+diff --git a/arch/s390/kernel/entry.S b/arch/s390/kernel/entry.S
+index 4cc3408c4dacf..88e09a650d2df 100644
+--- a/arch/s390/kernel/entry.S
++++ b/arch/s390/kernel/entry.S
+@@ -467,7 +467,7 @@ SYM_CODE_START(mcck_int_handler)
+ 	clgrjl	%r9,%r14, 4f
+ 	larl	%r14,.Lsie_leave
+ 	clgrjhe	%r9,%r14, 4f
+-	lg	%r10,__LC_PCPU
++	lg	%r10,__LC_PCPU(%r13)
+ 	oi	__PCPU_FLAGS+7(%r10), _CIF_MCCK_GUEST
+ 4:	BPENTER	__SF_SIE_FLAGS(%r15),_TIF_ISOLATE_BP_GUEST
+ 	SIEEXIT __SF_SIE_CONTROL(%r15),%r13
+-- 
+2.39.5
+
 
 
 
