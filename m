@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-130435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9861EA8051C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C814A808DA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:49:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEE048822D1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:04:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 334001B66795
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A6526A0FC;
-	Tue,  8 Apr 2025 12:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014EF269882;
+	Tue,  8 Apr 2025 12:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sGscrmsX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h1w55cEI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6696F26773A;
-	Tue,  8 Apr 2025 12:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E5D2676FA;
+	Tue,  8 Apr 2025 12:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113706; cv=none; b=StGmHkEU4xb8gNphlsqfA4YST7bcXhUQsWvjjFX/N8xj6cNd27BlJWkgS0W5ppa1bU7+Fo99Ds2rMbdg0a8Vfz4LJx03tvZKYBuy52+GSW3aMbjRKtReBmo/DdWYQCmn/rsONRJRJeaUZNdW5UQJoQv6Lqy5jv1nLEKwrSoX/9M=
+	t=1744115884; cv=none; b=Zjg1hq9xWREKk5/c2c3ehkJefRjB0xYbQLNecQ/v4PsF9+owqR8G/94ztzatKKObNAwNKrA81PqBp3nSeX/2tnANtXcQKmnvEgfp3qUvIdNDb1p6W7ruNhysQyOhAX6oEQ789ulZ+er8riLdpN08DMSjXVdBTyIZjhPCf5DQ7ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113706; c=relaxed/simple;
-	bh=CVe2TbOXlPU6sogzCKLeECZ3HVtXOCUwR38J7a2DiYE=;
+	s=arc-20240116; t=1744115884; c=relaxed/simple;
+	bh=r9F65B0HjCEiADnAnfR0WtfT8RO56NEJrFqlNDkQRpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k90NDhRdbofRvBot+RyUtztu76XYZL50jjCrE4umgiTizMeH4RJ6ey8a4K3g0h2exJn44wvDxgN58W/sVgJ5gXk4EX/xn5f2OYGvLa+cxn+58/LRLRxhM+9GZ20tnQjhN72UHXMAekNBoHloJwHvczoY+31whUzfXIjK2uDad9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sGscrmsX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E237FC4CEE5;
-	Tue,  8 Apr 2025 12:01:45 +0000 (UTC)
+	 MIME-Version; b=JrVPpei8R9ec2WN6tcN8yZGxcVj2YzmfQ6x9Ys9pEwBPjK8+0DVlSeFNc0rkByTaUZ1BYsFr3LCnYMLn9OABox+kUen+SdNSeckZtjTmuJKvE780PEHnFEj5K/LOgpa9JLVOrvrTG5nJ0Kn0NU8PpBkgkKT02V2KqDFZepyN+zE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h1w55cEI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39DD1C4CEE7;
+	Tue,  8 Apr 2025 12:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113706;
-	bh=CVe2TbOXlPU6sogzCKLeECZ3HVtXOCUwR38J7a2DiYE=;
+	s=korg; t=1744115884;
+	bh=r9F65B0HjCEiADnAnfR0WtfT8RO56NEJrFqlNDkQRpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sGscrmsXbVdfbTazWyeyGPkoJ3A8Q2bHp4Kanj0aatHz8TyEJ21neUNbPSUsziLZd
-	 aeeSPXinSJr00qjf0Znl+s3b9WKhuYRaQLH5fiNvYuTbd3i2xv9xvLfhr86lNsIlt2
-	 xlQrk5ngPPeZwPsBiC4M2EZV4K72DoP08R7+ran4=
+	b=h1w55cEIVfOmvD6MbdmdlO/f7KGT98L4jErvivZ13QU4twl5yJXH9TYqSVuMibvTZ
+	 59l5dxcgQtjLfmlZWfGy5O/2R4j6999EffH0meeB8+KeXEVpsc6f3+oHXaajRVzHiG
+	 6fk8YK89S6U7V1rA7FedaSacUQWias3XZzU5GNIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ran Xiaokai <ran.xiaokai@zte.com.cn>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 259/268] tracing/osnoise: Fix possible recursive locking for cpus_read_lock()
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 140/204] sched/deadline: Use online cpus for validating runtime
 Date: Tue,  8 Apr 2025 12:51:10 +0200
-Message-ID: <20250408104835.565793224@linuxfoundation.org>
+Message-ID: <20250408104824.403850204@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
 
-commit 7e6b3fcc9c5294aeafed0dbe1a09a1bc899bd0f2 upstream.
+[ Upstream commit 14672f059d83f591afb2ee1fff56858efe055e5a ]
 
-Lockdep reports this deadlock log:
+The ftrace selftest reported a failure because writing -1 to
+sched_rt_runtime_us returns -EBUSY. This happens when the possible
+CPUs are different from active CPUs.
 
-osnoise: could not start sampling thread
-============================================
-WARNING: possible recursive locking detected
---------------------------------------------
-       CPU0
-       ----
-  lock(cpu_hotplug_lock);
-  lock(cpu_hotplug_lock);
+Active CPUs are part of one root domain, while remaining CPUs are part
+of def_root_domain. Since active cpumask is being used, this results in
+cpus=0 when a non active CPUs is used in the loop.
 
- Call Trace:
-  <TASK>
-  print_deadlock_bug+0x282/0x3c0
-  __lock_acquire+0x1610/0x29a0
-  lock_acquire+0xcb/0x2d0
-  cpus_read_lock+0x49/0x120
-  stop_per_cpu_kthreads+0x7/0x60
-  start_kthread+0x103/0x120
-  osnoise_hotplug_workfn+0x5e/0x90
-  process_one_work+0x44f/0xb30
-  worker_thread+0x33e/0x5e0
-  kthread+0x206/0x3b0
-  ret_from_fork+0x31/0x50
-  ret_from_fork_asm+0x11/0x20
-  </TASK>
+Fix it by looping over the online CPUs instead for validating the
+bandwidth calculations.
 
-This is the deadlock scenario:
-osnoise_hotplug_workfn()
-  guard(cpus_read_lock)();      // first lock call
-  start_kthread(cpu)
-    if (IS_ERR(kthread)) {
-      stop_per_cpu_kthreads(); {
-        cpus_read_lock();      // second lock call. Cause the AA deadlock
-      }
-    }
-
-It is not necessary to call stop_per_cpu_kthreads() which stops osnoise
-kthread for every other CPUs in the system if a failure occurs during
-hotplug of a certain CPU.
-For start_per_cpu_kthreads(), if the start_kthread() call fails,
-this function calls stop_per_cpu_kthreads() to handle the error.
-Therefore, similarly, there is no need to call stop_per_cpu_kthreads()
-again within start_kthread().
-So just remove stop_per_cpu_kthreads() from start_kthread to solve this issue.
-
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250321095249.2739397-1-ranxiaokai627@163.com
-Fixes: c8895e271f79 ("trace/osnoise: Support hotplug operations")
-Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Juri Lelli <juri.lelli@redhat.com>
+Link: https://lore.kernel.org/r/20250306052954.452005-2-sshegde@linux.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_osnoise.c |    1 -
- 1 file changed, 1 deletion(-)
+ kernel/sched/deadline.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/trace/trace_osnoise.c
-+++ b/kernel/trace/trace_osnoise.c
-@@ -2038,7 +2038,6 @@ static int start_kthread(unsigned int cp
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index 389290e950bea..7f378fa0b6ed3 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -2762,7 +2762,7 @@ int sched_dl_global_validate(void)
+ 	 * value smaller than the currently allocated bandwidth in
+ 	 * any of the root_domains.
+ 	 */
+-	for_each_possible_cpu(cpu) {
++	for_each_online_cpu(cpu) {
+ 		rcu_read_lock_sched();
  
- 	if (IS_ERR(kthread)) {
- 		pr_err(BANNER "could not start sampling thread\n");
--		stop_per_cpu_kthreads();
- 		return -ENOMEM;
- 	}
- 
+ 		if (dl_bw_visited(cpu, gen))
+-- 
+2.39.5
+
 
 
 
