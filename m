@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-130608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E39EA80568
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:17:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C349EA80B72
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:16:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45AE11B80607
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:11:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7C23501D5A
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC44326AAB2;
-	Tue,  8 Apr 2025 12:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DEEC26F47D;
+	Tue,  8 Apr 2025 12:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MHYhIbqT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GC5nnC1t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693FA26AA9B;
-	Tue,  8 Apr 2025 12:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6FD27C861;
+	Tue,  8 Apr 2025 12:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114167; cv=none; b=oNUyBDyyXnYZbza4e4KHo3e56XZ1XKEX81RcSyXEdPhndHqhQYvKN1wqn4tGRRt2VqT2qmVBcc4a3e6iFQ996MOrrzJhl7tVX0NMniod4dASW0afu8/gOlfIxEsKFxiLXj0sFQCFvSNUgImvHsNmxhHEUUpLFsM04+BeU0unXA8=
+	t=1744117058; cv=none; b=duunwl5NcIkWuPuh+EsU7L7O+BN82nx0B0lwnrnJcxqLQ7B4iNYbko/hRZS7DRpl5XR2lwLYf6mszGtuMr9xMYFiMXcezRtUOpI672A625h1yqudzAZkbkVu4ib0+CaCXPZoLKn0wtgZNuM9dXk2fJaBiDgaFZ6qx6wepwt5fTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114167; c=relaxed/simple;
-	bh=K3b8s1FfJXOWPpIaBU64PETL9rveaAZXSQHVearwoRw=;
+	s=arc-20240116; t=1744117058; c=relaxed/simple;
+	bh=ehD7LCrxnboVZEt41lihvG4QqEuXtAS6n3sRmyY/80M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=efkxHe9aitoVKXCro9416Icl52UelWVtQzko9llZZhiIX6rmMUiSsFp/ihCIEbaOYgfim3Ws0Q6md1dYBtg05LaTkm9ZxlwkFYhjVUgYg3o0LoB5LrmjDOJFdW3zpqe4LqRdea6y5bh3OEfPJa3YXlWmr0k0NEtlVa0afWFZsRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MHYhIbqT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0160C4CEE5;
-	Tue,  8 Apr 2025 12:09:26 +0000 (UTC)
+	 MIME-Version; b=h1xykPIatPDPy8z9+UH2RqYmqS/e306BjtCkvBhByP/tcIe9Gg9I7T8+LBPte3RuHRDxtBeVTis3XRlJHUZW4K7iuhuwWH1kxf/rcQGBl0L5LhOsAnGlupb2yumRgfU/UuPsEscFW681MykXMEw+S2yu4jJirGhW9VNZmtqMagw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GC5nnC1t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57DC1C4CEE5;
+	Tue,  8 Apr 2025 12:57:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114167;
-	bh=K3b8s1FfJXOWPpIaBU64PETL9rveaAZXSQHVearwoRw=;
+	s=korg; t=1744117058;
+	bh=ehD7LCrxnboVZEt41lihvG4QqEuXtAS6n3sRmyY/80M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MHYhIbqT7yvE6vH3IbSwu2LsIP7mb5qZ7J8FRrnHvuI+hSHkRZKrvxTqG/iYA5aFA
-	 7RrwEidOUgwg82+romc8MRdnCIa+dtMCMLj2gjmHE0ycR9sJySkJc7W1EC8dpvd8mY
-	 yUD51PqKQwtJ1JUJ2xlUnlRCBYz7R4RM55dTEWEo=
+	b=GC5nnC1tN6P32BNrabe0N/FVBw94NM42ENcGAfCuwpFrZEQCkAEnrzQXZY1MuUiem
+	 vu2Kkry/3TsknsPr1jQHfycFMxPifqNQEi27ZDCqKWvT+uhLvrDUEyluZvfzJVlSbb
+	 hpAjcnD8MXuxYU4XdtWp4RRfeTpK7lZNHh67swZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+9120834fc227768625ba@syzkaller.appspotmail.com>,
-	Roman Smirnov <r.smirnov@omp.ru>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>
-Subject: [PATCH 5.4 154/154] jfs: add index corruption check to DT_GETPAGE()
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>
+Subject: [PATCH 6.12 369/423] KVM: x86: block KVM_CAP_SYNC_REGS if guest state is protected
 Date: Tue,  8 Apr 2025 12:51:35 +0200
-Message-ID: <20250408104820.223637841@linuxfoundation.org>
+Message-ID: <20250408104854.461110808@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Smirnov <r.smirnov@omp.ru>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-commit a8dfb2168906944ea61acfc87846b816eeab882d upstream.
+commit 74c1807f6c4feddb3c3cb1056c54531d4adbaea6 upstream.
 
-If the file system is corrupted, the header.stblindex variable
-may become greater than 127. Because of this, an array access out
-of bounds may occur:
+KVM_CAP_SYNC_REGS does not make sense for VMs with protected guest state,
+since the register values cannot actually be written.  Return 0
+when using the VM-level KVM_CHECK_EXTENSION ioctl, and accordingly
+return -EINVAL from KVM_RUN if the valid/dirty fields are nonzero.
 
-------------[ cut here ]------------
-UBSAN: array-index-out-of-bounds in fs/jfs/jfs_dtree.c:3096:10
-index 237 is out of range for type 'struct dtslot[128]'
-CPU: 0 UID: 0 PID: 5822 Comm: syz-executor740 Not tainted 6.13.0-rc4-syzkaller-00110-g4099a71718b0 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- ubsan_epilogue lib/ubsan.c:231 [inline]
- __ubsan_handle_out_of_bounds+0x121/0x150 lib/ubsan.c:429
- dtReadFirst+0x622/0xc50 fs/jfs/jfs_dtree.c:3096
- dtReadNext fs/jfs/jfs_dtree.c:3147 [inline]
- jfs_readdir+0x9aa/0x3c50 fs/jfs/jfs_dtree.c:2862
- wrap_directory_iterator+0x91/0xd0 fs/readdir.c:65
- iterate_dir+0x571/0x800 fs/readdir.c:108
- __do_sys_getdents64 fs/readdir.c:403 [inline]
- __se_sys_getdents64+0x1e2/0x4b0 fs/readdir.c:389
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
----[ end trace ]---
+However, on exit from KVM_RUN userspace could have placed a nonzero
+value into kvm_run->kvm_valid_regs, so check guest_state_protected
+again and skip store_regs() in that case.
 
-Add a stblindex check for corruption.
-
-Reported-by: syzbot <syzbot+9120834fc227768625ba@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=9120834fc227768625ba
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Fixes: 517987e3fb19 ("KVM: x86: add fields to struct kvm_arch for CoCo features")
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <20250306202923.646075-1-pbonzini@redhat.com>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dtree.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kvm/x86.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/fs/jfs/jfs_dtree.c
-+++ b/fs/jfs/jfs_dtree.c
-@@ -117,7 +117,8 @@ do {									\
- 	if (!(RC)) {							\
- 		if (((P)->header.nextindex >				\
- 		     (((BN) == 0) ? DTROOTMAXSLOT : (P)->header.maxslot)) || \
--		    ((BN) && ((P)->header.maxslot > DTPAGEMAXSLOT))) {	\
-+		    ((BN) && (((P)->header.maxslot > DTPAGEMAXSLOT) ||	\
-+		    ((P)->header.stblindex >= DTPAGEMAXSLOT)))) {	\
- 			BT_PUTPAGE(MP);					\
- 			jfs_error((IP)->i_sb,				\
- 				  "DT_GETPAGE: dtree page corrupt\n");	\
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -4590,6 +4590,11 @@ static bool kvm_is_vm_type_supported(uns
+ 	return type < 32 && (kvm_caps.supported_vm_types & BIT(type));
+ }
+ 
++static inline u32 kvm_sync_valid_fields(struct kvm *kvm)
++{
++	return kvm && kvm->arch.has_protected_state ? 0 : KVM_SYNC_X86_VALID_FIELDS;
++}
++
+ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+ {
+ 	int r = 0;
+@@ -4698,7 +4703,7 @@ int kvm_vm_ioctl_check_extension(struct
+ 		break;
+ #endif
+ 	case KVM_CAP_SYNC_REGS:
+-		r = KVM_SYNC_X86_VALID_FIELDS;
++		r = kvm_sync_valid_fields(kvm);
+ 		break;
+ 	case KVM_CAP_ADJUST_CLOCK:
+ 		r = KVM_CLOCK_VALID_FLAGS;
+@@ -11470,6 +11475,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_v
+ {
+ 	struct kvm_queued_exception *ex = &vcpu->arch.exception;
+ 	struct kvm_run *kvm_run = vcpu->run;
++	u32 sync_valid_fields;
+ 	int r;
+ 
+ 	r = kvm_mmu_post_init_vm(vcpu->kvm);
+@@ -11515,8 +11521,9 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_v
+ 		goto out;
+ 	}
+ 
+-	if ((kvm_run->kvm_valid_regs & ~KVM_SYNC_X86_VALID_FIELDS) ||
+-	    (kvm_run->kvm_dirty_regs & ~KVM_SYNC_X86_VALID_FIELDS)) {
++	sync_valid_fields = kvm_sync_valid_fields(vcpu->kvm);
++	if ((kvm_run->kvm_valid_regs & ~sync_valid_fields) ||
++	    (kvm_run->kvm_dirty_regs & ~sync_valid_fields)) {
+ 		r = -EINVAL;
+ 		goto out;
+ 	}
+@@ -11574,7 +11581,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_v
+ 
+ out:
+ 	kvm_put_guest_fpu(vcpu);
+-	if (kvm_run->kvm_valid_regs)
++	if (kvm_run->kvm_valid_regs && likely(!vcpu->arch.guest_state_protected))
+ 		store_regs(vcpu);
+ 	post_kvm_run_save(vcpu);
+ 	kvm_vcpu_srcu_read_unlock(vcpu);
 
 
 
