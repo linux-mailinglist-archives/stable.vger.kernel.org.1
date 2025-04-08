@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-131106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7EA3A808C8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:48:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79F2BA80980
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:55:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51B5D8C0253
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:34:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41EF74E476C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:44:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40842268FED;
-	Tue,  8 Apr 2025 12:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F413A27700B;
+	Tue,  8 Apr 2025 12:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BlGniaGV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGRHXu17"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2360268C4F;
-	Tue,  8 Apr 2025 12:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2C526B0A2;
+	Tue,  8 Apr 2025 12:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115504; cv=none; b=PWZSCwOtgso5kjEYAgxJJxivyjDEfN/JQya3o976zgELA2ZswZaMsJsUXTDY4sNOC/uXQnx2ENJBmXdiMTp1RRXMgpRwgq/zu5+dp2Rg8B3o8fevNq3dmMsPvR3pPLQH5FsCCdPFuuzuN8xotaUmVrcGVjWWqrsElSkQhV0OZBI=
+	t=1744115994; cv=none; b=pc07CC4h2i5PwWP+h3f8A32N/3k7ZgJSQH3uB8mobcJiAzH+NRRsc9VhFd+gBKm/gQtfxBe5q/TtjBlsIvhKkozEZSpHrrK6h/1HDoUVWqnp/93x5b+/yA4BJEUpJmpnqiSpVMx2RvfpB2iuU2vua3cWJZqsIvuFRRqdxidO0p0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115504; c=relaxed/simple;
-	bh=3WGBUHX12fTxQjneKWf59Yet3/fWAIWTusa1SQc/SXg=;
+	s=arc-20240116; t=1744115994; c=relaxed/simple;
+	bh=pwWZORsjgRlShLnqNdke0yZnbSpz+1iZxfDAfJEk7Tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l+9u56X5RPaokJDi6iPwbiYPfXEA9xwMtKFQ95lp/HbLXwvK72Y2EuEQbPU3ysp0UA9yvRCpk7sJyr9tqpT2XITVm5M0UrbvI3qKjE69aRZnjQ0GEgNEtCm4Q/zmH+sz96s43r5roquyvi/NW/u8MyZ5DUiLOd116ZJNHGAKTgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BlGniaGV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83719C4CEE5;
-	Tue,  8 Apr 2025 12:31:43 +0000 (UTC)
+	 MIME-Version; b=ok2q6ca+bItOQOpPLW43uYaeN5ZdBqYLsxyzx+Jbdl7Ldw4zyp3KfRksUvf1jeO8qrcYfRxzh9+brHeOT7XNVvGBybaQVz8Smi92AqYP9n1TUrIiEQKC3SJzlDeqeVX7JbRJOB9WB1I/7usNvEIDklo81QGNTJsW3gIDcKOKF5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGRHXu17; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34926C4CEE7;
+	Tue,  8 Apr 2025 12:39:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115503;
-	bh=3WGBUHX12fTxQjneKWf59Yet3/fWAIWTusa1SQc/SXg=;
+	s=korg; t=1744115994;
+	bh=pwWZORsjgRlShLnqNdke0yZnbSpz+1iZxfDAfJEk7Tc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BlGniaGV0gVJkXVxMewv8Tmqur+6iOIHkwTF9LEE8XCSsuxwH9O2pNkUY5Dm/RBA1
-	 N8QdI2uFdFkFP4PR2aJZiw9Xzv4d5TGG3Eva41kvQXy2Nnf3aZ7K2KSSrPehk4boKR
-	 cO4jlBb3ZSa4jFlEwB+2S9Wz7ad2G6R6cdY1EMzI=
+	b=VGRHXu17OAm7kiMkm3LW+F/caCP2da+9BCQEe1L4J9tqc/7gNuOcL5IMrAvg3rbCK
+	 L9OxFo2592A8O2pTAlGZ28Ey6azS1GSf5DQyV2Bd4k+72CYXptbWY+q/+j5nWHByKH
+	 n/rZsacSSvjRhrXHgDujEuHeYZH6V0b3+2de031g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Maciej Strozek <mstrozek@opensource.cirrus.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.13 498/499] ASoC: cs42l43: convert to SYSTEM_SLEEP_PM_OPS
-Date: Tue,  8 Apr 2025 12:51:50 +0200
-Message-ID: <20250408104903.782158762@linuxfoundation.org>
+	Ivan Orlov <ivan.orlov0322@gmail.com>,
+	David Gow <davidgow@google.com>,
+	Kees Cook <kees@kernel.org>,
+	Jianqi Ren <jianqi.ren.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 6.1 181/204] kunit/overflow: Fix UB in overflow_allocation_test
+Date: Tue,  8 Apr 2025 12:51:51 +0200
+Message-ID: <20250408104825.629732002@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Ivan Orlov <ivan.orlov0322@gmail.com>
 
-commit 658fb7fe8e7f4014ea17a4da0e0c1d9bc319fa35 upstream.
+commit 92e9bac18124682c4b99ede9ee3bcdd68f121e92 upstream.
 
-The custom suspend function causes a build warning when CONFIG_PM_SLEEP
-is disabled:
+The 'device_name' array doesn't exist out of the
+'overflow_allocation_test' function scope. However, it is being used as
+a driver name when calling 'kunit_driver_create' from
+'kunit_device_register'. It produces the kernel panic with KASAN
+enabled.
 
-sound/soc/codecs/cs42l43.c:2405:12: error: unused function 'cs42l43_codec_runtime_force_suspend' [-Werror,-Wunused-function]
+Since this variable is used in one place only, remove it and pass the
+device name into kunit_device_register directly as an ascii string.
 
-Change SET_SYSTEM_SLEEP_PM_OPS() to the newer SYSTEM_SLEEP_PM_OPS(),
-to avoid this.
-
-Fixes: 164b7dd4546b ("ASoC: cs42l43: Add jack delay debounce after suspend")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Maciej Strozek <mstrozek@opensource.cirrus.com>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250305172738.3437513-1-arnd@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Ivan Orlov <ivan.orlov0322@gmail.com>
+Reviewed-by: David Gow <davidgow@google.com>
+Link: https://lore.kernel.org/r/20240815000431.401869-1-ivan.orlov0322@gmail.com
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/cs42l43.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/overflow_kunit.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/sound/soc/codecs/cs42l43.c
-+++ b/sound/soc/codecs/cs42l43.c
-@@ -2417,7 +2417,7 @@ static int cs42l43_codec_runtime_force_s
+--- a/lib/overflow_kunit.c
++++ b/lib/overflow_kunit.c
+@@ -608,7 +608,6 @@ DEFINE_TEST_ALLOC(devm_kzalloc,  devm_kf
  
- static const struct dev_pm_ops cs42l43_codec_pm_ops = {
- 	RUNTIME_PM_OPS(NULL, cs42l43_codec_runtime_resume, NULL)
--	SET_SYSTEM_SLEEP_PM_OPS(cs42l43_codec_runtime_force_suspend, pm_runtime_force_resume)
-+	SYSTEM_SLEEP_PM_OPS(cs42l43_codec_runtime_force_suspend, pm_runtime_force_resume)
- };
+ static void overflow_allocation_test(struct kunit *test)
+ {
+-	const char device_name[] = "overflow-test";
+ 	struct device *dev;
+ 	int count = 0;
  
- static const struct platform_device_id cs42l43_codec_id_table[] = {
+@@ -618,7 +617,7 @@ static void overflow_allocation_test(str
+ } while (0)
+ 
+ 	/* Create dummy device for devm_kmalloc()-family tests. */
+-	dev = root_device_register(device_name);
++	dev = root_device_register("overflow-test");
+ 	KUNIT_ASSERT_FALSE_MSG(test, IS_ERR(dev),
+ 			       "Cannot register test device\n");
+ 
 
 
 
