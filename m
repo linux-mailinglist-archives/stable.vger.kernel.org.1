@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-131183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3793CA8087B
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:46:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78729A80484
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:09:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E878B4C3D56
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:40:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5C4A3B1466
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1972F267F4F;
-	Tue,  8 Apr 2025 12:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D77E52698A0;
+	Tue,  8 Apr 2025 11:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNo6cayj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQcMT8W5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA49922488E;
-	Tue,  8 Apr 2025 12:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93DF0268685;
+	Tue,  8 Apr 2025 11:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115712; cv=none; b=G4C/BCUUNGtu7JA2g0SI6aP3Ebdi5QdjppDkbAVdoYrTu/GxKPxDqBnCzeBE5W9OfbCMxcVx0qGbHIxqGAL9e4i0e2i6oYnWXCKKITRXhyEsxDJYBbrf8W7bf0WxTkqZHpSQyXND15JWaSgc5C7P1IYggk6TMEQuMulVi4MGNEQ=
+	t=1744113537; cv=none; b=Mg/GZJ3OUJK6++c4ZfQliOmsV1vVXwFFnUQQ2JG9giEmVBSkaPW1BXGL3aTwNx19gZACgxP/eoDL6+8jdhAcz/WgzDXpMXARtxmkY65NpAes5q9tDFvLNmH8GciHz+0AU9xgD9sRav0PLCdaDRqJ8eMtNJKFM3W9nY4RRu+Dp+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115712; c=relaxed/simple;
-	bh=UrCbe6kywAhHOUhcCgCEQoMlsvFJQKTf3P7i5vb4FFc=;
+	s=arc-20240116; t=1744113537; c=relaxed/simple;
+	bh=rdNFQnmjzfw4YU6QNCIHfmzls8FgJHG6J1T29vPaVl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ezBlYSKPGw6aU3vQBChT87ADMmCJf4xKaMJusmBMJ/vsp/NgGmu1bgxYJiDC+y089Jgfi5OC4/Sspt6Yhd5QsnX0Simu++5QSPNN7gZcPpxkoyAoQLYvgbdlvhedonUWGBmp6Xxfhx49ynUoJEPweVcYohIDhYcJJaUyICU5FzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNo6cayj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0106CC4CEE5;
-	Tue,  8 Apr 2025 12:35:11 +0000 (UTC)
+	 MIME-Version; b=Zq8fweN7NtAQbBHhPqmmkVjXcDNGwZJ3IfGPVTRR7Z9MAa1u3wxsevkpDeyE8aeIFbib2OvxOAJ8vR1/0+oP35SfTudyUpu/Ve3bPyeQBSIaxWVVEFRRC1jlKri0jY3YMA0dCSCMhLMhR2d4qoQ9+4lVwRAQOYXJJa6I2MkTZNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQcMT8W5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22BBAC4CEE5;
+	Tue,  8 Apr 2025 11:58:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115712;
-	bh=UrCbe6kywAhHOUhcCgCEQoMlsvFJQKTf3P7i5vb4FFc=;
+	s=korg; t=1744113537;
+	bh=rdNFQnmjzfw4YU6QNCIHfmzls8FgJHG6J1T29vPaVl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DNo6cayjU5E+KlEW+aihzW8TqsLO1Ht59DTw/8178b7P7gto6mBBfYzpZizCWOkAk
-	 zZk4qfA6IOmNYOP4tLOtDDY2VLqgwwoddUPJpcvCpVzcglu3TdasIHfJIjpsx2hIf1
-	 NfU6/6+EdvOFvOlyvqOgYdUDlnm5N19Rm5crvDyw=
+	b=DQcMT8W5rJv9kVZTh/ks82uTa0T5JNGtAF3+xaFy/EPc0/XPjjT90cB6ikzHXUXNV
+	 AE5kYWae0pimZImaJvc6BeNsFLgnok61jdQpJNv1qc6OcDFRHGnge+hTW6vGOSNYwx
+	 CXA6TceATMg4Mh+2jNBunc2BdvSShmwdtX/LschU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Zhang <18255117159@163.com>,
-	Hans Zhang <hans.zhang@cixtech.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 037/204] PCI: cadence-ep: Fix the driver to send MSG TLP for INTx without data payload
+Subject: [PATCH 6.6 156/268] octeontx2-af: Fix mbox INTR handler when num VFs > 64
 Date: Tue,  8 Apr 2025 12:49:27 +0200
-Message-ID: <20250408104821.432627040@linuxfoundation.org>
+Message-ID: <20250408104832.750369299@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Zhang <18255117159@163.com>
+From: Geetha sowjanya <gakula@marvell.com>
 
-[ Upstream commit 3ac47fbf4f6e8c3a7c3855fac68cc3246f90f850 ]
+[ Upstream commit 0fdba88a211508984eb5df62008c29688692b134 ]
 
-Per the Cadence's "PCIe Controller IP for AX14" user guide, Version
-1.04, Section 9.1.7.1, "AXI Subordinate to PCIe Address Translation
-Registers", Table 9.4, the bit 16 of the AXI Subordinate Address
-(axi_s_awaddr) when set corresponds to MSG with data, and when not set,
-to MSG without data.
+When number of RVU VFs > 64, the vfs value passed to "rvu_queue_work"
+function is incorrect. Due to which mbox workqueue entries for
+VFs 0 to 63 never gets added to workqueue.
 
-However, the driver is currently doing the opposite and due to this,
-the INTx is never received on the host.
-
-So, fix the driver to reflect the documentation and also make INTx work.
-
-Fixes: 37dddf14f1ae ("PCI: cadence: Add EndPoint Controller driver for Cadence PCIe controller")
-Signed-off-by: Hans Zhang <18255117159@163.com>
-Signed-off-by: Hans Zhang <hans.zhang@cixtech.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20250214165724.184599-1-18255117159@163.com
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Fixes: 9bdc47a6e328 ("octeontx2-af: Mbox communication support btw AF and it's VFs")
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250327091441.1284-1-gakula@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/cadence/pcie-cadence-ep.c | 3 +--
- drivers/pci/controller/cadence/pcie-cadence.h    | 2 +-
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/cadence/pcie-cadence-ep.c b/drivers/pci/controller/cadence/pcie-cadence-ep.c
-index b8b655d4047ec..a87dab9abba26 100644
---- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
-+++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
-@@ -354,8 +354,7 @@ static void cdns_pcie_ep_assert_intx(struct cdns_pcie_ep *ep, u8 fn, u8 intx,
- 	spin_unlock_irqrestore(&ep->lock, flags);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+index 5241737222236..67e6d755b30ec 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+@@ -2563,7 +2563,7 @@ static irqreturn_t rvu_mbox_intr_handler(int irq, void *rvu_irq)
+ 		rvupf_write64(rvu, RVU_PF_VFPF_MBOX_INTX(1), intr);
  
- 	offset = CDNS_PCIE_NORMAL_MSG_ROUTING(MSG_ROUTING_LOCAL) |
--		 CDNS_PCIE_NORMAL_MSG_CODE(msg_code) |
--		 CDNS_PCIE_MSG_NO_DATA;
-+		 CDNS_PCIE_NORMAL_MSG_CODE(msg_code);
- 	writel(0, ep->irq_cpu_addr + offset);
- }
+ 		rvu_queue_work(&rvu->afvf_wq_info, 64, vfs, intr);
+-		vfs -= 64;
++		vfs = 64;
+ 	}
  
-diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
-index 190786e47df93..2891e8c16a592 100644
---- a/drivers/pci/controller/cadence/pcie-cadence.h
-+++ b/drivers/pci/controller/cadence/pcie-cadence.h
-@@ -240,7 +240,7 @@ struct cdns_pcie_rp_ib_bar {
- #define CDNS_PCIE_NORMAL_MSG_CODE_MASK		GENMASK(15, 8)
- #define CDNS_PCIE_NORMAL_MSG_CODE(code) \
- 	(((code) << 8) & CDNS_PCIE_NORMAL_MSG_CODE_MASK)
--#define CDNS_PCIE_MSG_NO_DATA			BIT(16)
-+#define CDNS_PCIE_MSG_DATA			BIT(16)
- 
- struct cdns_pcie;
- 
+ 	intr = rvupf_read64(rvu, RVU_PF_VFPF_MBOX_INTX(0));
 -- 
 2.39.5
 
