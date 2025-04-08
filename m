@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-131013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C71FA807B1
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:39:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25732A80449
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:07:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A86D3B1E0F
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:30:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 235F7445B38
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:00:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A149D26B2D5;
-	Tue,  8 Apr 2025 12:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D842690FA;
+	Tue,  8 Apr 2025 11:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xs4PUjgs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IOtDjdPs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F30C1B87CF;
-	Tue,  8 Apr 2025 12:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9DDE26981A;
+	Tue,  8 Apr 2025 11:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115258; cv=none; b=kbJLk+vE0Ht0UYWNWwVm7RjCnwu72rsoZBxah1i7LejUU2pW+kePDg14Nj5fTyzQIO9EyzIQDZNPyv5NdsQfvJtR7/OoHKYlBpy0tJqk1rZ+tq6qyGOXCPl55+JA075lRNGew0KGmT9DqTJALn18yQk3fmtsqdj52fae2YQGS/0=
+	t=1744113567; cv=none; b=OGsp4SIi/7jwW0Blq0OkQeaGcfVjh/SN2lGFiVLgyLLZrhTtU70h/zzE0sDWSczuT+UyyidqIwE8p87HcdzQCbb7ZO0S8P87gbEONYyDIhJhbdby8C46+k8GQOGCfS83zlLPOymLOcREFc4BLoSfYwu6wibdbQrXqIKuMzEl4wE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115258; c=relaxed/simple;
-	bh=hOn5JnodkuscjfraVje2YmdAQT5D42Nh1u/8bXCjxWI=;
+	s=arc-20240116; t=1744113567; c=relaxed/simple;
+	bh=l5i9v8mljcnCzoSrUxaLVHZS9j1AIEsgmPak7jOYItQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BFJmhdph1saWKB7oxxh9FN7EjX2UcAFFGGvTxIh1FutV6eEPqtYUHbje00vfC0llkuoFh3z09AtC4DHIeP9L8UMjkeYL9t3w7zjx0d7mz7nTgJo7TkhWiRHCtdVX6dQdsxAVYar5Zl1xMxudHF4rpRuCG6cCoC+/6wDdGCTD7mA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xs4PUjgs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C0EC4CEE5;
-	Tue,  8 Apr 2025 12:27:37 +0000 (UTC)
+	 MIME-Version; b=pV/bGs2wyRJa98iarh4UX+JV3hXQJaisirtThPGhAu/B/DE4OS33/rCgotP5dCiKCh3wTRfx0LC0mKi9jfz2CQQDet1FwsG9tyoAVizFYFMLF1KaTn3read2M9VjA5U9BOpq1FHiZNHJWVYx/dEBWmBvJrTGEI9kqdJvJUdVP5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IOtDjdPs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77E4FC4CEE5;
+	Tue,  8 Apr 2025 11:59:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115257;
-	bh=hOn5JnodkuscjfraVje2YmdAQT5D42Nh1u/8bXCjxWI=;
+	s=korg; t=1744113566;
+	bh=l5i9v8mljcnCzoSrUxaLVHZS9j1AIEsgmPak7jOYItQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xs4PUjgs1ms1vCzI16kl4mMxsOkodb8Tycf7JfqeW2+BnBXDbO6QbUO/WPZGRrkKe
-	 TxvwP8136/3KSSNSoYBMWbYR5EAns89XwNmI4QoHStPWkGIlTF1Pctb+Y8Q7KiDtQN
-	 B9eQVdjDF4eUT6mCuPnDnpWPKWkUntseJQHYMd2k=
+	b=IOtDjdPsXOKfYfpn+bCvlCj6nW+US3ezphd5KpafhoKq+UsuoCC1G4ILd4mqg9zVD
+	 jk3PuR8rJt/cm6B9OSkbgI2KimwPCz3dE+aFQf1PhF1Fb167bodPv4R4yD0ZRRW08C
+	 lEJRWSG9mc3oocfd9jyYEW6uPYwFPIycq9hFO4c0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	syzbot+a3422a19b05ea96bee18@syzkaller.appspotmail.com,
+	Nishanth Devarajan <ndev2021@gmail.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 407/499] drm/xe: Fix unmet direct dependencies warning
+Subject: [PATCH 6.6 208/268] net_sched: skbprio: Remove overly strict queue assertions
 Date: Tue,  8 Apr 2025 12:50:19 +0200
-Message-ID: <20250408104901.377317440@linuxfoundation.org>
+Message-ID: <20250408104834.184341134@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +65,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 5e66cf6edddb5f6237e3afb07475ace57ecb56bc ]
+[ Upstream commit ce8fe975fd99b49c29c42e50f2441ba53112b2e8 ]
 
-WARNING: unmet direct dependencies detected for FB_IOMEM_HELPERS
-  Depends on [n]: HAS_IOMEM [=y] && FB_CORE [=n]
-  Selected by [m]:
-  - DRM_XE_DISPLAY [=y] && HAS_IOMEM [=y] && DRM [=m] && DRM_XE [=m] && DRM_XE [=m]=m [=m] && HAS_IOPORT [=y]
+In the current implementation, skbprio enqueue/dequeue contains an assertion
+that fails under certain conditions when SKBPRIO is used as a child qdisc under
+TBF with specific parameters. The failure occurs because TBF sometimes peeks at
+packets in the child qdisc without actually dequeuing them when tokens are
+unavailable.
 
-DRM_XE_DISPLAY requires FB_IOMEM_HELPERS, but the dependency FB_CORE is
-missing, selecting FB_IOMEM_HELPERS if DRM_FBDEV_EMULATION is set as
-other drm drivers.
+This peek operation creates a discrepancy between the parent and child qdisc
+queue length counters. When TBF later receives a high-priority packet,
+SKBPRIO's queue length may show a different value than what's reflected in its
+internal priority queue tracking, triggering the assertion.
 
-Fixes: 44e694958b95 ("drm/xe/display: Implement display support")
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250323114103.1960511-1-yuehaibing@huawei.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit 689582882802cd64986c1eb584c9f5184d67f0cf)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+The fix removes this overly strict assertions in SKBPRIO, they are not
+necessary at all.
+
+Reported-by: syzbot+a3422a19b05ea96bee18@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a3422a19b05ea96bee18
+Fixes: aea5f654e6b7 ("net/sched: add skbprio scheduler")
+Cc: Nishanth Devarajan <ndev2021@gmail.com>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://patch.msgid.link/20250329222536.696204-2-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_skbprio.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/Kconfig b/drivers/gpu/drm/xe/Kconfig
-index b51a2bde73e29..dcf6583a4c522 100644
---- a/drivers/gpu/drm/xe/Kconfig
-+++ b/drivers/gpu/drm/xe/Kconfig
-@@ -52,7 +52,7 @@ config DRM_XE
- config DRM_XE_DISPLAY
- 	bool "Enable display support"
- 	depends on DRM_XE && DRM_XE=m && HAS_IOPORT
--	select FB_IOMEM_HELPERS
-+	select FB_IOMEM_HELPERS if DRM_FBDEV_EMULATION
- 	select I2C
- 	select I2C_ALGOBIT
- 	default y
+diff --git a/net/sched/sch_skbprio.c b/net/sched/sch_skbprio.c
+index 5df2dacb7b1ab..05aa363a7fee9 100644
+--- a/net/sched/sch_skbprio.c
++++ b/net/sched/sch_skbprio.c
+@@ -121,8 +121,6 @@ static int skbprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	/* Check to update highest and lowest priorities. */
+ 	if (skb_queue_empty(lp_qdisc)) {
+ 		if (q->lowest_prio == q->highest_prio) {
+-			/* The incoming packet is the only packet in queue. */
+-			BUG_ON(sch->q.qlen != 1);
+ 			q->lowest_prio = prio;
+ 			q->highest_prio = prio;
+ 		} else {
+@@ -154,7 +152,6 @@ static struct sk_buff *skbprio_dequeue(struct Qdisc *sch)
+ 	/* Update highest priority field. */
+ 	if (skb_queue_empty(hpq)) {
+ 		if (q->lowest_prio == q->highest_prio) {
+-			BUG_ON(sch->q.qlen);
+ 			q->highest_prio = 0;
+ 			q->lowest_prio = SKBPRIO_MAX_PRIORITY - 1;
+ 		} else {
 -- 
 2.39.5
 
