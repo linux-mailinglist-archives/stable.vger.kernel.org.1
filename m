@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-130604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54FF1A80594
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:19:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54F7EA808C7
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:48:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 044E64A173A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:11:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C12A98A7561
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95307268C72;
-	Tue,  8 Apr 2025 12:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4DB269B02;
+	Tue,  8 Apr 2025 12:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XyL3Qg4s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="paIILS5u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52EF7265CDF;
-	Tue,  8 Apr 2025 12:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0FC2686AA;
+	Tue,  8 Apr 2025 12:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114156; cv=none; b=aR9k1NjTiHt2jW1TeIhEyQf4vZ8kwOgghAvJQnJeqnUE6xWWfNeGNOlB+vOKyz8xbXbQ3x1nFjEOHYuPkGfdEtInRXFtOMPbW/BC0eEcP/naSnvbL2g+4g6P/fcy+6bgDdausim/W9BI8E2pRmJoL6oAS5/p1KZJ5/9Ygbt+LX0=
+	t=1744115850; cv=none; b=ed+Rfl6UCDrl+YbCLyU+aVMj7SDlxxORrr7cnb24OUgf1hgBwex7Tv9bZ37rjwa9v2Nlr55bRjRmGCvDzA4e5rvNTAThBjJ3b2lhGPPsKlOVgroNL2nLxT6tRMhUjBHudCld43MZYSRRNe8gmzt7icXTV5evxWfXECQz3x6pAsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114156; c=relaxed/simple;
-	bh=5uXPoX8dDQxgHpyphVScwehFy1rP0TJpbxGftFUp3zc=;
+	s=arc-20240116; t=1744115850; c=relaxed/simple;
+	bh=WkP3AOSutE4jsU7YaizltjT3LJJo+IEdfaE5tlr+C4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mTekRpu9m70C2/ZzqL2hiqpLUmEkxkvfIF6NiDO6GzQmn0XdM0vXoWe9W27gpKOVp2IqLwU2j7bt/RQ+LcYN6extFReQzzECD4whXdeGZpHeOs1eqye08D+w/WZKZ9d6FRTqtP+1e1kkqCGQTqQmmKBy8nsCI24PlDR8eelF1JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyL3Qg4s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6359C4CEE5;
-	Tue,  8 Apr 2025 12:09:15 +0000 (UTC)
+	 MIME-Version; b=tTzYVX3gNcw61qhsBFW6AHNtrjwlovqHlauZCqbggGaP5BM5DkX+/zS5NIRfzh2bKhg91Vo1IanoPvG1WfUrm83exqGcPBum7SDJ+UJ37HlIAyH8Nz0jGcdmE8um1T7sqLV+pduGYjHZA2sSzKQ9HFefG8uDI7GybjO/Dd8LS3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=paIILS5u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52BA1C4CEE5;
+	Tue,  8 Apr 2025 12:37:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114156;
-	bh=5uXPoX8dDQxgHpyphVScwehFy1rP0TJpbxGftFUp3zc=;
+	s=korg; t=1744115850;
+	bh=WkP3AOSutE4jsU7YaizltjT3LJJo+IEdfaE5tlr+C4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XyL3Qg4sremIt0QdjCCh70Q+racJjX//2Ojy5BWEMFEywQ+I7Son9/utRT6EWr09O
-	 aB33Y1Rj3fxmdWYxNTERZMBLcLMhgaYcuDj6jqeBmBQ8/Q1Hs/TzLrrVNCrCYx0lir
-	 tzOvABQ2tfW05PP5F6LuHHbthwCLkiqM4/5mIAu4=
+	b=paIILS5uyV1eNXEfTKdHMbp5c0XSrXEtFD8x+q13T9DHyZiQfpZOW8UUMFI9w+R2z
+	 EIpWDq3GZPBPvv9maweNgnPxw7SIFgQFhZ6UBjeUxPnHaSrW4OWeu/n5TZSZ8+eBo+
+	 yHC4E1hf6krWT9SlnL0o0WVYU0jwF+18WD3x7iqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Icenowy Zheng <uwu@icenowy.me>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 118/154] perf units: Fix insufficient array space
+Subject: [PATCH 6.1 129/204] nvme-pci: clean up CMBMSC when registering CMB fails
 Date: Tue,  8 Apr 2025 12:50:59 +0200
-Message-ID: <20250408104819.102631036@linuxfoundation.org>
+Message-ID: <20250408104824.086663943@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
-References: <20250408104815.295196624@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Icenowy Zheng <uwu@icenowy.me>
 
-[ Upstream commit cf67629f7f637fb988228abdb3aae46d0c1748fe ]
+[ Upstream commit 6a3572e10f740acd48e2713ef37e92186a3ce5e8 ]
 
-No need to specify the array size, let the compiler figure that out.
+CMB decoding should get disabled when the CMB block isn't successfully
+registered to P2P DMA subsystem.
 
-This addresses this compiler warning that was noticed while build
-testing on fedora rawhide:
+Clean up the CMBMSC register in this error handling codepath to disable
+CMB decoding (and CMBLOC/CMBSZ registers).
 
-  31    15.81 fedora:rawhide                : FAIL gcc version 15.0.1 20250225 (Red Hat 15.0.1-0) (GCC)
-    util/units.c: In function 'unit_number__scnprintf':
-    util/units.c:67:24: error: initializer-string for array of 'char' is too long [-Werror=unterminated-string-initialization]
-       67 |         char unit[4] = "BKMG";
-          |                        ^~~~~~
-    cc1: all warnings being treated as errors
-
-Fixes: 9808143ba2e54818 ("perf tools: Add unit_number__scnprintf function")
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Link: https://lore.kernel.org/r/20250310194534.265487-3-acme@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/units.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/util/units.c b/tools/perf/util/units.c
-index a46762aec4c9f..24c83b8b8c980 100644
---- a/tools/perf/util/units.c
-+++ b/tools/perf/util/units.c
-@@ -57,7 +57,7 @@ unsigned long convert_unit(unsigned long value, char *unit)
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index afcb9668dad98..bfca71f958a06 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1949,6 +1949,7 @@ static void nvme_map_cmb(struct nvme_dev *dev)
+ 	if (pci_p2pdma_add_resource(pdev, bar, size, offset)) {
+ 		dev_warn(dev->ctrl.device,
+ 			 "failed to register the CMB\n");
++		hi_lo_writeq(0, dev->bar + NVME_REG_CMBMSC);
+ 		return;
+ 	}
  
- int unit_number__scnprintf(char *buf, size_t size, u64 n)
- {
--	char unit[4] = "BKMG";
-+	char unit[] = "BKMG";
- 	int i = 0;
- 
- 	while (((n / 1024) > 1) && (i < 3)) {
 -- 
 2.39.5
 
