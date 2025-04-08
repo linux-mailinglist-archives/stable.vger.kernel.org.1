@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-129793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B391A80124
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:38:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95CACA80386
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:59:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99302188BD3A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:34:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15AE57ABCFD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:54:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB4DD35973;
-	Tue,  8 Apr 2025 11:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ACDF268FF1;
+	Tue,  8 Apr 2025 11:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNwhCTSm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGTH+kvL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B02266583;
-	Tue,  8 Apr 2025 11:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2711926A0AB;
+	Tue,  8 Apr 2025 11:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111994; cv=none; b=NJgzv1TsCFV+WhNDdscg5Psy5GmVAUNE5OBhJ2SBj5QYCpauerYIZbEFMOhOCoU7kIN8AYjB3YCs272UrpgozkEYkyuN4yPHE5iUi+SBO4AG79SDjTo5XhaMTSvOFpwG+NxflkIbMEPRP9irydR1S5opZZcvzmYoaXyAm9ebOlw=
+	t=1744113231; cv=none; b=czKMsrqH6aqKPEv1CLsKICywumWF+mWxM8OIbpLEnUvxar+w8C7S7iNQMNxZXdFc8ZOczUgXd+j9KnxM97TDO5ESaCtn7MbsexWMXxyu8iiwwsMrilf3AfRO3gYw3hzRc/u+6/OYi62nDdU85wFRxAuyK3o2nEN7zVYO+AkY8yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111994; c=relaxed/simple;
-	bh=0zCU8MDJYeqi6iNkWF6TI/EpIBszjXx6VpBrJXRLgNE=;
+	s=arc-20240116; t=1744113231; c=relaxed/simple;
+	bh=KlxYQUWaX5LB4R8vsZAUoMt4tn9roZWyOtTaCqkBbkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xbv5ijypvSv6ULncJ6iMkCgRtggMuAH00/UoubNInMQV2cn2FCYzXPWiQmaQO4T1qxDN4+YhkYTKyuhc8t/zvS11Bx9z28m70CWz6wfSdMhTh3xUq8QnzYvZER62ITbkN7e9Lk7PwRIlNycz0yMuT6Lu1/L3Qyrl126yVj6vozE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNwhCTSm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB07DC4CEE5;
-	Tue,  8 Apr 2025 11:33:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HkJ6+VNWZi72bzdTmykuWJNCqDnzFKgh0w5fVSUqMmQu7Az/rQZwWteF3YsDuNJrOw3hom2F+LJeMbOmdyaCOybqgesZ+srDYnD7oDbfnEDlu30heQiueyR/Mj4Ksky10PMHAHgKRnrCO7UUE8EammJxWfs3Qw0IJ0iKU+dICgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zGTH+kvL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACBADC4CEE5;
+	Tue,  8 Apr 2025 11:53:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744111994;
-	bh=0zCU8MDJYeqi6iNkWF6TI/EpIBszjXx6VpBrJXRLgNE=;
+	s=korg; t=1744113231;
+	bh=KlxYQUWaX5LB4R8vsZAUoMt4tn9roZWyOtTaCqkBbkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rNwhCTSmpolWA+WQTw7/pG4zZHHRct6IeBLZ3nDkRyfi2ClEyvoRFejoOvp6H0/+i
-	 DE+H9qdDPD0bfBuQcANa9Bu2qv68hwx6+PazM4r9Xe49s6jG7Z91h2W4B3vrgqcX0J
-	 yDijJwmPlXdkmshwD+AY2JmHFPw/Sf282DNVPKdo=
+	b=zGTH+kvL0uHnVQ21beRCKNsoT0CB4BY5UcRzIR7FS0PVYHnxHouR8xJEhsSafsiki
+	 +PNiKuzUgiJgVqslnn5HW9np770o/KpQsX2THoDm2rYdrQa9T1Yx/Pa0weWVw11l5R
+	 HcHeG8JewbXrEoV/HGlrPAoFkjRVpyOKUwnNvoHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ondrej Lichtner <olichtne@redhat.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Herton R. Krzesinski" <herton@redhat.com>,
-	Ingo Molnar <mingo@kernel.org>,
+	=?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Luca Weiss <luca@lucaweiss.eu>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 597/731] x86/uaccess: Improve performance by aligning writes to 8 bytes in copy_user_generic(), on non-FSRM/ERMS CPUs
+Subject: [PATCH 6.6 083/268] remoteproc: qcom_q6v5_mss: Handle platforms with one power domain
 Date: Tue,  8 Apr 2025 12:48:14 +0200
-Message-ID: <20250408104928.160669954@linuxfoundation.org>
+Message-ID: <20250408104830.734798360@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,193 +62,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herton R. Krzesinski <herton@redhat.com>
+From: Luca Weiss <luca@lucaweiss.eu>
 
-[ Upstream commit b5322b6ec06a6c58650f52abcd2492000396363b ]
+[ Upstream commit 4641840341f37dc8231e0840ec1514b4061b4322 ]
 
-History of the performance regression:
-======================================
+For example MSM8974 has mx voltage rail exposed as regulator and only cx
+voltage rail is exposed as power domain. This power domain (cx) is
+attached internally in power domain and cannot be attached in this driver.
 
-Since the following series of user copy updates were merged upstream
-~2 years ago via:
-
-  a5624566431d ("Merge branch 'x86-rep-insns': x86 user copy clarifications")
-
-.. copy_user_generic() on x86_64 stopped doing alignment of the
-writes to the destination to a 8 byte boundary for the non FSRM case.
-
-Previously, this was done through the ALIGN_DESTINATION macro that
-was used in the now removed copy_user_generic_unrolled function.
-
-Turns out this change causes some loss of performance/throughput on
-some use cases and specific CPU/platforms without FSRM and ERMS.
-
-Lately I got two reports of performance/throughput issues after a
-RHEL 9 kernel pulled the same upstream series with updates to user
-copy functions. Both reports consisted of running specific
-networking/TCP related testing using iperf3.
-
-Partial upstream fix
-====================
-
-The first report was related to a Linux Bridge testing using VMs on a
-specific machine with an AMD CPU (EPYC 7402), and after a brief
-investigation it turned out that the later change via:
-
-  ca96b162bfd2 ("x86: bring back rep movsq for user access on CPUs without ERMS")
-
-... helped/fixed the performance issue.
-
-However, after the later commit/fix was applied, then I got another
-regression reported in a multistream TCP test on a 100Gbit mlx5 nic, also
-running on an AMD based platform (AMD EPYC 7302 CPU), again that was using
-iperf3 to run the test. That regression was after applying the later
-fix/commit, but only this didn't help in telling the whole history.
-
-Testing performed to pinpoint residual regression
-=================================================
-
-So I narrowed down the second regression use case, but running it
-without traffic through a NIC, on localhost, in trying to narrow down
-CPU usage and not being limited by other factor like network bandwidth.
-I used another system also with an AMD CPU (AMD EPYC 7742). Basically,
-I run iperf3 in server and client mode in the same system, for example:
-
- - Start the server binding it to CPU core/thread 19:
-   $ taskset -c 19 iperf3 -D -s -B 127.0.0.1 -p 12000
-
- - Start the client always binding/running on CPU core/thread 17, using
-   perf to get statistics:
-   $ perf stat -o stat.txt taskset -c 17 iperf3 -c 127.0.0.1 -b 0/1000 -V \
-       -n 50G --repeating-payload -l 16384 -p 12000 --cport 12001 2>&1 \
-       > stat-19.txt
-
-For the client, always running/pinned to CPU 17. But for the iperf3 in
-server mode, I did test runs using CPUs 19, 21, 23 or not pinned to any
-specific CPU. So it basically consisted with four runs of the same
-commands, just changing the CPU which the server is pinned, or without
-pinning by removing the taskset call before the server command. The CPUs
-were chosen based on NUMA node they were on, this is the relevant output
-of lscpu on the system:
-
-  $ lscpu
-  ...
-    Model name:             AMD EPYC 7742 64-Core Processor
-  ...
-  Caches (sum of all):
-    L1d:                    2 MiB (64 instances)
-    L1i:                    2 MiB (64 instances)
-    L2:                     32 MiB (64 instances)
-    L3:                     256 MiB (16 instances)
-  NUMA:
-    NUMA node(s):           4
-    NUMA node0 CPU(s):      0,1,8,9,16,17,24,25,32,33,40,41,48,49,56,57,64,65,72,73,80,81,88,89,96,97,104,105,112,113,120,121
-    NUMA node1 CPU(s):      2,3,10,11,18,19,26,27,34,35,42,43,50,51,58,59,66,67,74,75,82,83,90,91,98,99,106,107,114,115,122,123
-    NUMA node2 CPU(s):      4,5,12,13,20,21,28,29,36,37,44,45,52,53,60,61,68,69,76,77,84,85,92,93,100,101,108,109,116,117,124,125
-    NUMA node3 CPU(s):      6,7,14,15,22,23,30,31,38,39,46,47,54,55,62,63,70,71,78,79,86,87,94,95,102,103,110,111,118,119,126,127
-  ...
-
-So for the server run, when picking a CPU, I chose CPUs to be not on the same
-node. The reason is with that I was able to get/measure relevant
-performance differences when changing the alignment of the writes to the
-destination in copy_user_generic.
-
-Testing shows up to +81% performance improvement under iperf3
-=============================================================
-
-Here's a summary of the iperf3 runs:
-
-  # Vanilla upstream alignment:
-
-		     CPU      RATE          SYS          TIME     sender-receiver
-	Server bind   19: 13.0Gbits/sec 28.371851000 33.233499566 86.9%-70.8%
-	Server bind   21: 12.9Gbits/sec 28.283381000 33.586486621 85.8%-69.9%
-	Server bind   23: 11.1Gbits/sec 33.660190000 39.012243176 87.7%-64.5%
-	Server bind none: 18.9Gbits/sec 19.215339000 22.875117865 86.0%-80.5%
-
-  # With the attached patch (aligning writes in non ERMS/FSRM case):
-
-		     CPU      RATE          SYS          TIME     sender-receiver
-	Server bind   19: 20.8Gbits/sec 14.897284000 20.811101382 75.7%-89.0%
-	Server bind   21: 20.4Gbits/sec 15.205055000 21.263165909 75.4%-89.7%
-	Server bind   23: 20.2Gbits/sec 15.433801000 21.456175000 75.5%-89.8%
-	Server bind none: 26.1Gbits/sec 12.534022000 16.632447315 79.8%-89.6%
-
-So I consistently got better results when aligning the write. The
-results above were run on 6.14.0-rc6/rc7 based kernels. The sys is sys
-time and then the total time to run/transfer 50G of data. The last
-field is the CPU usage of sender/receiver iperf3 process. It's also
-worth to note that each pair of iperf3 runs may get slightly different
-results on each run, but I always got consistent higher results with
-the write alignment for this specific test of running the processes
-on CPUs in different NUMA nodes.
-
-Linus Torvalds helped/provided this version of the patch. Initially I
-proposed a version which aligned writes for all cases in
-rep_movs_alternative, however it used two extra registers and thus
-Linus provided an enhanced version that only aligns the write on the
-large_movsq case, which is sufficient since the problem happens only
-on those AMD CPUs like ones mentioned above without ERMS/FSRM, and
-also doesn't require using extra registers. Also, I validated that
-aligning only on large_movsq case is really enough for getting the
-performance back.
-
-I also tested this patch on an old Intel based non-ERMS/FRMS system
-(with Xeon E5-2667 - Sandy Bridge based) and didn't get any problems:
-no performance enhancement but also no regression either, using the
-same iperf3 based benchmark. Also newer Intel processors after
-Sandy Bridge usually have ERMS and should not be affected by this change.
-
-[ mingo: Updated the changelog. ]
-
-Fixes: ca96b162bfd2 ("x86: bring back rep movsq for user access on CPUs without ERMS")
-Fixes: 034ff37d3407 ("x86: rewrite '__copy_user_nocache' function")
-Reported-by: Ondrej Lichtner <olichtne@redhat.com>
-Co-developed-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Herton R. Krzesinski <herton@redhat.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250320142213.2623518-1-herton@redhat.com
+Fixes: 8750cf392394 ("remoteproc: qcom_q6v5_mss: Allow replacing regulators with power domains")
+Co-developed-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+Link: https://lore.kernel.org/r/20250217-msm8226-modem-v5-4-2bc74b80e0ae@lucaweiss.eu
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/lib/copy_user_64.S | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/remoteproc/qcom_q6v5_mss.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/lib/copy_user_64.S b/arch/x86/lib/copy_user_64.S
-index fc9fb5d061744..b8f74d80f35c6 100644
---- a/arch/x86/lib/copy_user_64.S
-+++ b/arch/x86/lib/copy_user_64.S
-@@ -74,6 +74,24 @@ SYM_FUNC_START(rep_movs_alternative)
- 	_ASM_EXTABLE_UA( 0b, 1b)
+diff --git a/drivers/remoteproc/qcom_q6v5_mss.c b/drivers/remoteproc/qcom_q6v5_mss.c
+index 2d717f2ed396c..8f93489aa0d49 100644
+--- a/drivers/remoteproc/qcom_q6v5_mss.c
++++ b/drivers/remoteproc/qcom_q6v5_mss.c
+@@ -1838,6 +1838,13 @@ static int q6v5_pds_attach(struct device *dev, struct device **devs,
+ 	while (pd_names[num_pds])
+ 		num_pds++;
  
- .Llarge_movsq:
-+	/* Do the first possibly unaligned word */
-+0:	movq (%rsi),%rax
-+1:	movq %rax,(%rdi)
++	/* Handle single power domain */
++	if (num_pds == 1 && dev->pm_domain) {
++		devs[0] = dev;
++		pm_runtime_enable(dev);
++		return 1;
++	}
 +
-+	_ASM_EXTABLE_UA( 0b, .Lcopy_user_tail)
-+	_ASM_EXTABLE_UA( 1b, .Lcopy_user_tail)
+ 	for (i = 0; i < num_pds; i++) {
+ 		devs[i] = dev_pm_domain_attach_by_name(dev, pd_names[i]);
+ 		if (IS_ERR_OR_NULL(devs[i])) {
+@@ -1858,8 +1865,15 @@ static int q6v5_pds_attach(struct device *dev, struct device **devs,
+ static void q6v5_pds_detach(struct q6v5 *qproc, struct device **pds,
+ 			    size_t pd_count)
+ {
++	struct device *dev = qproc->dev;
+ 	int i;
+ 
++	/* Handle single power domain */
++	if (pd_count == 1 && dev->pm_domain) {
++		pm_runtime_disable(dev);
++		return;
++	}
 +
-+	/* What would be the offset to the aligned destination? */
-+	leaq 8(%rdi),%rax
-+	andq $-8,%rax
-+	subq %rdi,%rax
-+
-+	/* .. and update pointers and count to match */
-+	addq %rax,%rdi
-+	addq %rax,%rsi
-+	subq %rax,%rcx
-+
-+	/* make %rcx contain the number of words, %rax the remainder */
- 	movq %rcx,%rax
- 	shrq $3,%rcx
- 	andl $7,%eax
+ 	for (i = 0; i < pd_count; i++)
+ 		dev_pm_domain_detach(pds[i], false);
+ }
+@@ -2471,13 +2485,13 @@ static const struct rproc_hexagon_res msm8974_mss = {
+ 			.supply = "pll",
+ 			.uA = 100000,
+ 		},
+-		{}
+-	},
+-	.fallback_proxy_supply = (struct qcom_mss_reg_res[]) {
+ 		{
+ 			.supply = "mx",
+ 			.uV = 1050000,
+ 		},
++		{}
++	},
++	.fallback_proxy_supply = (struct qcom_mss_reg_res[]) {
+ 		{
+ 			.supply = "cx",
+ 			.uA = 100000,
+@@ -2503,7 +2517,6 @@ static const struct rproc_hexagon_res msm8974_mss = {
+ 		NULL
+ 	},
+ 	.proxy_pd_names = (char*[]){
+-		"mx",
+ 		"cx",
+ 		NULL
+ 	},
 -- 
 2.39.5
 
