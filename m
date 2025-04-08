@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-131108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38B48A8079A
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:38:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84A44A80569
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:17:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 503537AA7F4
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:33:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 982664A5DAD
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:10:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1099E26E16F;
-	Tue,  8 Apr 2025 12:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F0D265CAF;
+	Tue,  8 Apr 2025 12:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CWuE/wlA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b8wU1i5Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32E626E16B;
-	Tue,  8 Apr 2025 12:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B501B87CF;
+	Tue,  8 Apr 2025 12:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115509; cv=none; b=o+3WNHqPTEfH1/NMXsVVaqqf7QDFvnDEpG+gQ6xkv0UU8F0r4iBscWtoFEQCmSFdlu+KHhJraheCNwJeAUusXlSg44z8giz6iz/RWNtlyu6up1db6YCuHF2s9orKI94WHkW49smbnEyAvpBFJAZuThmV1lZjfo7QmyiughnzzvI=
+	t=1744114102; cv=none; b=DLMDdGEbTDzFFVBaZHdeAanntqNII6zatOa9zqEnMFOwua6tZMEDbn1ev506ZAajQZBtbUDDi2Cj+tScH0liW+9buYxsND9afap4ezGwgFNIoRRkKt5ICtBZgDn3yXEkaHsc0WKawlfP9VLqjFKyB55lFVHnyvRawnwMW0xTyjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115509; c=relaxed/simple;
-	bh=rp+J/JkaeYH/p/bYOY4p23Grz0T7P3QGeI1253lizsA=;
+	s=arc-20240116; t=1744114102; c=relaxed/simple;
+	bh=5emjh1+X5ghxh3j/kqPwKxP9cQ2rC5qeD/KdUlJQH84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qj+5NbEf/PlYiddndUsilW6UidXiV2o4ZPuZRwexmqw1GfwHai0ZAlrTSj2jJXK2wzlt+F20qf0OfNLyUtDpv49hbv/g6bBrtb1eV0Act1ey01hsuJlzNnygGhOeTnLxnaicIOYAeHPJvKuluhVyiMgfL1oGu12W6F7nDI+aZck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CWuE/wlA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE27C4CEE5;
-	Tue,  8 Apr 2025 12:31:48 +0000 (UTC)
+	 MIME-Version; b=o/A+czuERATuNYOFPf9Do+oP/VlH3hNLfH6jy9xywSdCjsbBk5Qq7L9rr+I2JRlGdjREM3Qu3AZBKJ8C5Nle/oCc0sN7Of/nlMv3XAhqxNMoclWWiTAwjQLA6f7HVfHAsZuojIEtVTWq2x3uBORPbyPwljDUxgBVLoNT+YPI1v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b8wU1i5Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45546C4CEE5;
+	Tue,  8 Apr 2025 12:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115509;
-	bh=rp+J/JkaeYH/p/bYOY4p23Grz0T7P3QGeI1253lizsA=;
+	s=korg; t=1744114102;
+	bh=5emjh1+X5ghxh3j/kqPwKxP9cQ2rC5qeD/KdUlJQH84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CWuE/wlAN+JVCXOieQGcrANUIT7O7Rv++3p2LP+Qi/IG+w20Gv4oVZ22JMqi3Pu6e
-	 n7bqvUY4rp+6rcT1P92iJusLrJQB80pVyccMsy8ugs0iM//nso4sWxl1OSucSXK5o0
-	 xe3V8qFpN3pJwhgG5YjAVvMCToXMlici/iJJlP3E=
+	b=b8wU1i5QYS+X+SUBhgLR2yP+vcc5MaczuZzf32QMoZz5q0HplqMZ4dNFrV5PoDI/L
+	 rd6yXAkXJPpfyFOnfKJeexX5RI6zY6rU9wVxu4rhWIk8Q29t4QrqJqz/+yauNWbd9G
+	 1ysvNI/eGUrrrkAVKMf6FRKiQeCKYZveYO5i5FxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.13 466/499] ksmbd: add bounds check for durable handle context
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 137/154] spufs: fix a leak in spufs_create_context()
 Date: Tue,  8 Apr 2025 12:51:18 +0200
-Message-ID: <20250408104902.862421359@linuxfoundation.org>
+Message-ID: <20250408104819.705415933@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit 542027e123fc0bfd61dd59e21ae0ee4ef2101b29 upstream.
+[ Upstream commit 0f5cce3fc55b08ee4da3372baccf4bcd36a98396 ]
 
-Add missing bounds check for durable handle context.
+Leak fixes back in 2008 missed one case - if we are trying to set affinity
+and spufs_mkdir() fails, we need to drop the reference to neighbor.
 
-Cc: stable@vger.kernel.org
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 58119068cb27 "[POWERPC] spufs: Fix memory leak on SPU affinity"
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |   21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ arch/powerpc/platforms/cell/spufs/inode.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2703,6 +2703,13 @@ static int parse_durable_handle_context(
- 				goto out;
- 			}
+diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
+index 1183e264ff421..93214d52ae82a 100644
+--- a/arch/powerpc/platforms/cell/spufs/inode.c
++++ b/arch/powerpc/platforms/cell/spufs/inode.c
+@@ -440,8 +440,11 @@ spufs_create_context(struct inode *inode, struct dentry *dentry,
+ 	}
  
-+			if (le16_to_cpu(context->DataOffset) +
-+				le32_to_cpu(context->DataLength) <
-+			    sizeof(struct create_durable_reconn_v2_req)) {
-+				err = -EINVAL;
-+				goto out;
-+			}
-+
- 			recon_v2 = (struct create_durable_reconn_v2_req *)context;
- 			persistent_id = recon_v2->Fid.PersistentFileId;
- 			dh_info->fp = ksmbd_lookup_durable_fd(persistent_id);
-@@ -2736,6 +2743,13 @@ static int parse_durable_handle_context(
- 				goto out;
- 			}
+ 	ret = spufs_mkdir(inode, dentry, flags, mode & 0777);
+-	if (ret)
++	if (ret) {
++		if (neighbor)
++			put_spu_context(neighbor);
+ 		goto out_aff_unlock;
++	}
  
-+			if (le16_to_cpu(context->DataOffset) +
-+				le32_to_cpu(context->DataLength) <
-+			    sizeof(struct create_durable_reconn_req)) {
-+				err = -EINVAL;
-+				goto out;
-+			}
-+
- 			recon = (struct create_durable_reconn_req *)context;
- 			persistent_id = recon->Data.Fid.PersistentFileId;
- 			dh_info->fp = ksmbd_lookup_durable_fd(persistent_id);
-@@ -2760,6 +2774,13 @@ static int parse_durable_handle_context(
- 				err = -EINVAL;
- 				goto out;
- 			}
-+
-+			if (le16_to_cpu(context->DataOffset) +
-+				le32_to_cpu(context->DataLength) <
-+			    sizeof(struct create_durable_req_v2)) {
-+				err = -EINVAL;
-+				goto out;
-+			}
- 
- 			durable_v2_blob =
- 				(struct create_durable_req_v2 *)context;
+ 	if (affinity) {
+ 		spufs_set_affinity(flags, SPUFS_I(d_inode(dentry))->i_ctx,
+-- 
+2.39.5
+
 
 
 
