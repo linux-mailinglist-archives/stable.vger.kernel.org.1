@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-130293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEAD3A803F7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:05:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3889EA80AA4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 15:08:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3693F460343
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:56:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33E00503D73
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:01:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E5DE26A082;
-	Tue,  8 Apr 2025 11:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7748826AABD;
+	Tue,  8 Apr 2025 12:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bqfi0YM6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUnLWbmt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C81D267F68;
-	Tue,  8 Apr 2025 11:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34562221547;
+	Tue,  8 Apr 2025 12:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744113332; cv=none; b=W0BUDPui4TOMErR9PlowPPLZ5zfag2U3189/dU27qA7UsojqGNC0Lgmw01djJp3GwwLpCQfT9YftoHeaRK4k0MCH8L5lZ7Eq9p9EdtVHevkPkTmNt199N5vDH8VP+rJoimKGssRoYR1TU4onfILYLWrxMERw++4PFjuVjaDGNC0=
+	t=1744116621; cv=none; b=UkLYLg9FmEipoiZFIL2F5hv5Rc/fK1hPKnbR4KTYIMrtlRLJ2C2uFekpXI+yPnC4E17yTFtKDkpfJ6t8kg29jhaJZ/qJjAAxF2QHNGDQHTbTcxPtnXvHzj0xCr7ISHpQ7ICsYEhhOFj5mKpVa4bZeMES/lZJ7aHFM4hKPl6s9TU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744113332; c=relaxed/simple;
-	bh=3wvO/A5Kl63hJfysu7auIJ8KywnM15uuu+27C3JzzZI=;
+	s=arc-20240116; t=1744116621; c=relaxed/simple;
+	bh=nj8nh31SyM7RuTvN/FtnTg0YCAqQUWGiWc2VvTkCYwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jvl6xfzSvVIqlKhpAgQhfhwbn5vdPI4J09j/+EMnXx1jr7DSCzD58b9rb7ZHvHmviBHwKdZ/zhnyE2EXMCiNPIZHjaf17V867xAKGhBh3Yv1/IV5i2qBsN7EMnxk0o+14D4VomMrnxk+bsWoMTseaOs7SNesP1IV2jRKJ8if8UU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bqfi0YM6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC83BC4CEE5;
-	Tue,  8 Apr 2025 11:55:31 +0000 (UTC)
+	 MIME-Version; b=AcQaTIyjAqyV+y0nsJQDTphTgq8DJcWnpOJHAe8973C56u2JyI3XiVuo7P4zEizsbXfQysZo2C+zhz63nk0/e1bfdvBccdJYPqQj9NI9/8nOcq+Te7YnsRSIXCfYO6giwg9y7UAxszGo89Awpf3eERPAlVRrZe13q2VuYoOXtGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUnLWbmt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92689C4AF09;
+	Tue,  8 Apr 2025 12:50:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744113332;
-	bh=3wvO/A5Kl63hJfysu7auIJ8KywnM15uuu+27C3JzzZI=;
+	s=korg; t=1744116621;
+	bh=nj8nh31SyM7RuTvN/FtnTg0YCAqQUWGiWc2VvTkCYwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bqfi0YM64+vP9dVqdZzLHMffgDsXzI5DplorKmhqoJnl6K3bGxkH3rZWORRxfqzfS
-	 Z3+fDEgrFomoBz5Gclo/JCJhoRAbozrifg0UmK2hockPNfkvCz0oY/lkcHYP+74ibK
-	 ijc74HOu2gvxk058la3wIB7Mv0p9W0NQwiyEuqhs=
+	b=yUnLWbmtFzEclofDWMBYOsArXf19cr5VCGP/nnDLahpp7l3GSfishuKPZS1OO96Y1
+	 hSKTO0iHCXo7BH+SGNk4MG5Fm3KaEBtqLUXhjkbmzAkmOJB67+eZx0WA/zOsULRP/z
+	 8ZXyLxHbNNyjBGT+F8HXs2Mv8LoVZqDNrzsvUqOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Howard Chu <howardchu95@gmail.com>,
-	Ian Rogers <irogers@google.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Cyan Yang <cyan.yang@sifive.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	David Hildenbrand <david@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 121/268] perf evlist: Add success path to evlist__create_syswide_maps
+Subject: [PATCH 6.12 206/423] selftests/mm/cow: fix the incorrect error handling
 Date: Tue,  8 Apr 2025 12:48:52 +0200
-Message-ID: <20250408104831.760736351@linuxfoundation.org>
+Message-ID: <20250408104850.532796252@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-References: <20250408104828.499967190@linuxfoundation.org>
+In-Reply-To: <20250408104845.675475678@linuxfoundation.org>
+References: <20250408104845.675475678@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +66,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Cyan Yang <cyan.yang@sifive.com>
 
-[ Upstream commit fe0ce8a9d85a48642880c9b78944cb0d23e779c5 ]
+[ Upstream commit f841ad9ca5007167c02de143980c9dc703f90b3d ]
 
-Over various refactorings evlist__create_syswide_maps has been made to
-only ever return with -ENOMEM. Fix this so that when
-perf_evlist__set_maps is successfully called, 0 is returned.
+Error handling doesn't check the correct return value.  This patch will
+fix it.
 
-Reviewed-by: Howard Chu <howardchu95@gmail.com>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Link: https://lore.kernel.org/r/20250228222308.626803-3-irogers@google.com
-Fixes: 8c0498b6891d7ca5 ("perf evlist: Fix create_syswide_maps() not propagating maps")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lkml.kernel.org/r/20250312043840.71799-1-cyan.yang@sifive.com
+Fixes: f4b5fd6946e2 ("selftests/vm: anon_cow: THP tests")
+Signed-off-by: Cyan Yang <cyan.yang@sifive.com>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/evlist.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ tools/testing/selftests/mm/cow.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/evlist.c b/tools/perf/util/evlist.c
-index 1eadb4f7c1b9d..f86a1eb4ea36a 100644
---- a/tools/perf/util/evlist.c
-+++ b/tools/perf/util/evlist.c
-@@ -1362,19 +1362,18 @@ static int evlist__create_syswide_maps(struct evlist *evlist)
- 	 */
- 	cpus = perf_cpu_map__new(NULL);
- 	if (!cpus)
--		goto out;
-+		return -ENOMEM;
- 
- 	threads = perf_thread_map__new_dummy();
--	if (!threads)
--		goto out_put;
-+	if (!threads) {
-+		perf_cpu_map__put(cpus);
-+		return -ENOMEM;
-+	}
- 
- 	perf_evlist__set_maps(&evlist->core, cpus, threads);
--
- 	perf_thread_map__put(threads);
--out_put:
- 	perf_cpu_map__put(cpus);
--out:
--	return -ENOMEM;
-+	return 0;
- }
- 
- int evlist__open(struct evlist *evlist)
+diff --git a/tools/testing/selftests/mm/cow.c b/tools/testing/selftests/mm/cow.c
+index 1238e1c5aae15..d87c5b1763ff1 100644
+--- a/tools/testing/selftests/mm/cow.c
++++ b/tools/testing/selftests/mm/cow.c
+@@ -876,7 +876,7 @@ static void do_run_with_thp(test_fn fn, enum thp_run thp_run, size_t thpsize)
+ 		mremap_size = thpsize / 2;
+ 		mremap_mem = mmap(NULL, mremap_size, PROT_NONE,
+ 				  MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+-		if (mem == MAP_FAILED) {
++		if (mremap_mem == MAP_FAILED) {
+ 			ksft_test_result_fail("mmap() failed\n");
+ 			goto munmap;
+ 		}
 -- 
 2.39.5
 
