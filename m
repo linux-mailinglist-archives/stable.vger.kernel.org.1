@@ -1,38 +1,38 @@
-Return-Path: <stable+bounces-128883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B804A7FB20
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:09:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7909CA7FB09
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:08:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1E5D19E3C34
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:04:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B3413B39C2
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:04:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A5B22686A1;
-	Tue,  8 Apr 2025 09:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A083266B4B;
+	Tue,  8 Apr 2025 09:56:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2FA22686AB
-	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 09:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8945A266B75
+	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 09:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744106192; cv=none; b=JRZ3tFF9owA0nCkl59pFGuX2UEahTMMH6Gb3KbcVMs+BBMjhanVqh1WjwTgePq/vKVzh2y71eieIK+UA934+0w9O2D4NNUzvVGimyEKQoTQq4gdFcpLKiBTxlq4CqzrVIWqH05VrYzHXfzPX7MRlo/i2bzejdy4JxtoWGJZk88c=
+	t=1744106197; cv=none; b=RPMrAH7+s9UCkNSCzVRhoLEZCscEUu0JSicvG+nrlJPkWYrknijJkCVlO9mGKsN0WS2BG0+uhtWSUB0oE44kg55hYXcrLWsfYqO/wese83nBPUCLKhyaJgy5NiZkl/N3cU0HK5YoIQvex9m82ZCZEAjmj5edr5TTwdFqbiyAU6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744106192; c=relaxed/simple;
-	bh=QZz0+rv3hMoxoAVnAdYBFn2XhT5Yw9YfO8HRYLZS1Xo=;
+	s=arc-20240116; t=1744106197; c=relaxed/simple;
+	bh=QDnJkaJ45/O7w4rNSRilfI8KaHqK5L6Z5Op8eKujfDE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=K6kmhdhGnZmZZOKsIn1H7JR2clfkm8saq1Xblf9rTF+uK1dbTwbSk9GwhOfhurAFzzT1YDeDnf9mo+MsG9UZ/gXPIwjN6TlP7PPYCWz7xTUw7avnsJqRkZS0hsIlM5uVSj+IeFzjc5LHVz342Qp1HYfGEb11J6MG9p7AG70yHnM=
+	 MIME-Version; b=SMd1DXHdVf4aoeSkYoiZ8nyHlWFeZt6cPl9F+wZ0SlGmYb6KnCGrEzmzL7wsMHcqG2otWVJJt57dx91/4SzuhX7Cf3QP1CX+gLwYQSJJM80yjNzMk9cM2d2pn7JyKUvqohfI+4hpJ0xSxOFMSsfBm1qU4o84w9G9wdeKLEP7fPw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6EF391688;
-	Tue,  8 Apr 2025 02:56:31 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B13741688;
+	Tue,  8 Apr 2025 02:56:34 -0700 (PDT)
 Received: from a077893.arm.com (unknown [10.163.48.241])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 52BB73F6A8;
-	Tue,  8 Apr 2025 02:56:28 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id AB1383F6A8;
+	Tue,  8 Apr 2025 02:56:30 -0700 (PDT)
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: stable@vger.kernel.org
 Cc: catalin.marinas@arm.com,
@@ -40,9 +40,9 @@ Cc: catalin.marinas@arm.com,
 	robh@kernel.org,
 	mark.rutland@arm.com,
 	anshuman.khandual@arm.com
-Subject: [PATCH 6.14.y 6/7] arm64/sysreg: Add register fields for HFGWTR2_EL2
-Date: Tue,  8 Apr 2025 15:26:05 +0530
-Message-Id: <20250408095606.1219230-7-anshuman.khandual@arm.com>
+Subject: [PATCH 6.14.y 7/7] arm64/boot: Enable EL2 requirements for FEAT_PMUv3p9
+Date: Tue,  8 Apr 2025 15:26:06 +0530
+Message-Id: <20250408095606.1219230-8-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250408095606.1219230-1-anshuman.khandual@arm.com>
 References: <20250408095606.1219230-1-anshuman.khandual@arm.com>
@@ -54,54 +54,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This adds register fields for HFGWTR2_EL2 as per the definitions based
-on DDI0601 2024-12.
+FEAT_PMUv3p9 registers such as PMICNTR_EL0, PMICFILTR_EL0, and PMUACR_EL1
+access from EL1 requires appropriate EL2 fine grained trap configuration
+via FEAT_FGT2 based trap control registers HDFGRTR2_EL2 and HDFGWTR2_EL2.
+Otherwise such register accesses will result in traps into EL2.
+
+Add a new helper __init_el2_fgt2() which initializes FEAT_FGT2 based fine
+grained trap control registers HDFGRTR2_EL2 and HDFGWTR2_EL2 (setting the
+bits nPMICNTR_EL0, nPMICFILTR_EL0 and nPMUACR_EL1) to enable access into
+PMICNTR_EL0, PMICFILTR_EL0, and PMUACR_EL1 registers.
+
+Also update booting.rst with SCR_EL3.FGTEn2 requirement for all FEAT_FGT2
+based registers to be accessible in EL2.
 
 Cc: Will Deacon <will@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oliver.upton@linux.dev>
 Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-doc@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
+Cc: kvmarm@lists.linux.dev
+Fixes: 0bbff9ed8165 ("perf/arm_pmuv3: Add PMUv3.9 per counter EL0 access control")
+Fixes: d8226d8cfbaf ("perf: arm_pmuv3: Add support for Armv9.4 PMU instruction counter")
+Tested-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20250203050828.1049370-7-anshuman.khandual@arm.com
+Link: https://lore.kernel.org/r/20250227035119.2025171-1-anshuman.khandual@arm.com
 Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[cherry picked from commit ea37be0773f04420515b8db49e50abedbaa97e23]
+[cherry picked from commit 858c7bfcb35e1100b58bb63c9f562d86e09418d9]
 Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
- arch/arm64/tools/sysreg | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ Documentation/arch/arm64/booting.rst | 22 ++++++++++++++++++++++
+ arch/arm64/include/asm/el2_setup.h   | 25 +++++++++++++++++++++++++
+ 2 files changed, 47 insertions(+)
 
-diff --git a/arch/arm64/tools/sysreg b/arch/arm64/tools/sysreg
-index cae085317b8c..891fe033e1b6 100644
---- a/arch/arm64/tools/sysreg
-+++ b/arch/arm64/tools/sysreg
-@@ -2719,6 +2719,25 @@ Field	1	nERXGSR_EL1
- Field	0	nPFAR_EL1
- EndSysreg
+diff --git a/Documentation/arch/arm64/booting.rst b/Documentation/arch/arm64/booting.rst
+index cad6fdc96b98..dee7b6de864f 100644
+--- a/Documentation/arch/arm64/booting.rst
++++ b/Documentation/arch/arm64/booting.rst
+@@ -288,6 +288,12 @@ Before jumping into the kernel, the following conditions must be met:
  
-+Sysreg	HFGWTR2_EL2	3	4	3	1	3
-+Res0	63:15
-+Field	14	nACTLRALIAS_EL1
-+Field	13	nACTLRMASK_EL1
-+Field	12	nTCR2ALIAS_EL1
-+Field	11	nTCRALIAS_EL1
-+Field	10	nSCTLRALIAS2_EL1
-+Field	9	nSCTLRALIAS_EL1
-+Field	8	nCPACRALIAS_EL1
-+Field	7	nTCR2MASK_EL1
-+Field	6	nTCRMASK_EL1
-+Field	5	nSCTLR2MASK_EL1
-+Field	4	nSCTLRMASK_EL1
-+Field	3	nCPACRMASK_EL1
-+Field	2	nRCWSMASK_EL1
-+Res0	1
-+Field	0	nPFAR_EL1
-+EndSysreg
+     - SCR_EL3.FGTEn (bit 27) must be initialised to 0b1.
+ 
++  For CPUs with the Fine Grained Traps 2 (FEAT_FGT2) extension present:
 +
- Sysreg HDFGRTR_EL2	3	4	3	1	4
- Field	63	PMBIDR_EL1
- Field	62	nPMSNEVFR_EL1
++  - If EL3 is present and the kernel is entered at EL2:
++
++    - SCR_EL3.FGTEn2 (bit 59) must be initialised to 0b1.
++
+   For CPUs with support for HCRX_EL2 (FEAT_HCX) present:
+ 
+   - If EL3 is present and the kernel is entered at EL2:
+@@ -382,6 +388,22 @@ Before jumping into the kernel, the following conditions must be met:
+ 
+     - SMCR_EL2.EZT0 (bit 30) must be initialised to 0b1.
+ 
++  For CPUs with the Performance Monitors Extension (FEAT_PMUv3p9):
++
++ - If EL3 is present:
++
++    - MDCR_EL3.EnPM2 (bit 7) must be initialised to 0b1.
++
++ - If the kernel is entered at EL1 and EL2 is present:
++
++    - HDFGRTR2_EL2.nPMICNTR_EL0 (bit 2) must be initialised to 0b1.
++    - HDFGRTR2_EL2.nPMICFILTR_EL0 (bit 3) must be initialised to 0b1.
++    - HDFGRTR2_EL2.nPMUACR_EL1 (bit 4) must be initialised to 0b1.
++
++    - HDFGWTR2_EL2.nPMICNTR_EL0 (bit 2) must be initialised to 0b1.
++    - HDFGWTR2_EL2.nPMICFILTR_EL0 (bit 3) must be initialised to 0b1.
++    - HDFGWTR2_EL2.nPMUACR_EL1 (bit 4) must be initialised to 0b1.
++
+   For CPUs with Memory Copy and Memory Set instructions (FEAT_MOPS):
+ 
+   - If the kernel is entered at EL1 and EL2 is present:
+diff --git a/arch/arm64/include/asm/el2_setup.h b/arch/arm64/include/asm/el2_setup.h
+index 555c613fd232..ebceaae3c749 100644
+--- a/arch/arm64/include/asm/el2_setup.h
++++ b/arch/arm64/include/asm/el2_setup.h
+@@ -259,6 +259,30 @@
+ .Lskip_fgt_\@:
+ .endm
+ 
++.macro __init_el2_fgt2
++	mrs	x1, id_aa64mmfr0_el1
++	ubfx	x1, x1, #ID_AA64MMFR0_EL1_FGT_SHIFT, #4
++	cmp	x1, #ID_AA64MMFR0_EL1_FGT_FGT2
++	b.lt	.Lskip_fgt2_\@
++
++	mov	x0, xzr
++	mrs	x1, id_aa64dfr0_el1
++	ubfx	x1, x1, #ID_AA64DFR0_EL1_PMUVer_SHIFT, #4
++	cmp	x1, #ID_AA64DFR0_EL1_PMUVer_V3P9
++	b.lt	.Lskip_pmuv3p9_\@
++
++	orr	x0, x0, #HDFGRTR2_EL2_nPMICNTR_EL0
++	orr	x0, x0, #HDFGRTR2_EL2_nPMICFILTR_EL0
++	orr	x0, x0, #HDFGRTR2_EL2_nPMUACR_EL1
++.Lskip_pmuv3p9_\@:
++	msr_s   SYS_HDFGRTR2_EL2, x0
++	msr_s   SYS_HDFGWTR2_EL2, x0
++	msr_s   SYS_HFGRTR2_EL2, xzr
++	msr_s   SYS_HFGWTR2_EL2, xzr
++	msr_s   SYS_HFGITR2_EL2, xzr
++.Lskip_fgt2_\@:
++.endm
++
+ .macro __init_el2_gcs
+ 	mrs_s	x1, SYS_ID_AA64PFR1_EL1
+ 	ubfx	x1, x1, #ID_AA64PFR1_EL1_GCS_SHIFT, #4
+@@ -304,6 +328,7 @@
+ 	__init_el2_nvhe_idregs
+ 	__init_el2_cptr
+ 	__init_el2_fgt
++	__init_el2_fgt2
+         __init_el2_gcs
+ .endm
+ 
 -- 
 2.30.2
 
