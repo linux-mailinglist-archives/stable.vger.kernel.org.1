@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-129850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B36A801C6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:42:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2144BA802A0
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 13:49:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B07613AAA36
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:35:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11C4A7A555E
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 11:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5073C3AC1C;
-	Tue,  8 Apr 2025 11:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D7A2676DE;
+	Tue,  8 Apr 2025 11:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBeNXEdF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zsYXPuP/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E43C2192F2;
-	Tue,  8 Apr 2025 11:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF601AAA0F;
+	Tue,  8 Apr 2025 11:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744112145; cv=none; b=SL77/09gIuuUjE22M/GZEkKyH6ahQAtUnHXhAEi715sDGE2vZuoCU14Oq+Ukc5uEbm+YaxdhH6ZmBzpcl0DGsHgizAexWKC/oTnmNqsg1qyPJiH4ipGbHPvzsNlp2BjnHLUtZ3WU96e5Fa1XAOtkQ3hvdeuOIVemlZuo16758ew=
+	t=1744112833; cv=none; b=tqyJg7A4+13xo07RljRk+tLneB+8l9T9NT0jO5yqLzi+7hikLdTFlMqo0Bd6ONdm77yR1IlLDDLuAmefjSZAtrkONkitHKeWWpdYQbwdoojWzv3NOFV1gPchvWYFjshfDUSp01EmvB3ig2WOpdOVPP6Qucw5J6bbKQDrmA/l3ZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744112145; c=relaxed/simple;
-	bh=nDmL6XNdbFdwHMF91uN1i31V71yqi+E8kHaqo71qJuQ=;
+	s=arc-20240116; t=1744112833; c=relaxed/simple;
+	bh=GX7poqs+V8KaVGukVrku0kPmqvGLo61z3FZM/ZA/l1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tGSovXsM1jYgEP0Sd17m4G/UG+XbuAR9l+3Uk1Lztik/a4ByfNaWykQ5VV6k7i6O5Tt+42x7s066k+kkCwOTrQlX8vmjqIkER0HQMkAsJVzlGRXg1T70SxTat8Pm812xZKHWkv8Iku1ymhyG6egB0UWA43igCo5If/BFdAAIZdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBeNXEdF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35BA2C4CEE5;
-	Tue,  8 Apr 2025 11:35:44 +0000 (UTC)
+	 MIME-Version; b=hblV2bU1cqDNylIEJ37/Xc8tvZY3iVz+OajAPmoD00ME6c3bhXhk/PhAJIU9GaEG/VM48k1XqMKKmIukRo2tE8GAW1Ru63Jy5MyerXO+JTLugVCSmM9naFzhq98+hqvVXHKvnnf6uBUkPvEji0ixANEF2KnLCzYro2uaT9DHpOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zsYXPuP/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F81C4CEE5;
+	Tue,  8 Apr 2025 11:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744112144;
-	bh=nDmL6XNdbFdwHMF91uN1i31V71yqi+E8kHaqo71qJuQ=;
+	s=korg; t=1744112832;
+	bh=GX7poqs+V8KaVGukVrku0kPmqvGLo61z3FZM/ZA/l1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mBeNXEdFSPbA5BYKaC8NQimsvAHJR54DkUXz8whrefHcJ1KmHlEe38VktlGjVwfhT
-	 vM6Gz5eWf4NZ5lZnFOhjOCnP/jWZYQc/frCsiHI4ayyUclLId+FSA2YHPPFtbBiKI7
-	 njxBO/Owo39+X7xolVx1+DULSeD/NEf+i4bX/Lbw=
+	b=zsYXPuP/zIF3/V3LIbFuOpDci2Pd7NQhucUi6Rt5MxiFl56UeAyafVwdRGbFRCFBB
+	 p3FfzMqpg5hh16vpNBF7RgW+nDd5c+ZPE+CcOxwCOa1p8U3CzpoyxIQSBQUwW972f2
+	 Aj/wUkx/HjI0OKSooXPqoA/2nMda296zfrY/OAwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Candice Li <candice.li@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.14 693/731] Remove unnecessary firmware version check for gc v9_4_2
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 207/279] perf python: Decrement the refcount of just created event on failure
 Date: Tue,  8 Apr 2025 12:49:50 +0200
-Message-ID: <20250408104930.387495808@linuxfoundation.org>
+Message-ID: <20250408104831.929243265@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104914.247897328@linuxfoundation.org>
-References: <20250408104914.247897328@linuxfoundation.org>
+In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
+References: <20250408104826.319283234@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Candice Li <candice.li@amd.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-commit 5b3c08ae9ed324743f5f7286940d45caeb656e6e upstream.
+[ Upstream commit 3de5a2bf5b4847f7a59a184568f969f8fe05d57f ]
 
-GC v9_4_2 uses a new versioning scheme for CP firmware, making
-the warning ("CP firmware version too old, please update!") irrelevant.
+To avoid a leak if we have the python object but then something happens
+and we need to return the operation, decrement the offset of the newly
+created object.
 
-Signed-off-by: Candice Li <candice.li@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 377f698db12150a1 ("perf python: Add struct evsel into struct pyrf_event")
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250312203141.285263-5-acme@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/util/python.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-@@ -1269,6 +1269,7 @@ static void gfx_v9_0_check_fw_write_wait
- 	adev->gfx.mec_fw_write_wait = false;
+diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
+index 13d65a3cc6d7d..368a5f2c244c8 100644
+--- a/tools/perf/util/python.c
++++ b/tools/perf/util/python.c
+@@ -1084,6 +1084,7 @@ static PyObject *pyrf_evlist__read_on_cpu(struct pyrf_evlist *pevlist,
  
- 	if ((amdgpu_ip_version(adev, GC_HWIP, 0) != IP_VERSION(9, 4, 1)) &&
-+	    (amdgpu_ip_version(adev, GC_HWIP, 0) != IP_VERSION(9, 4, 2)) &&
- 	    ((adev->gfx.mec_fw_version < 0x000001a5) ||
- 	     (adev->gfx.mec_feature_version < 46) ||
- 	     (adev->gfx.pfp_fw_version < 0x000000b7) ||
+ 		evsel = evlist__event2evsel(evlist, event);
+ 		if (!evsel) {
++			Py_DECREF(pyevent);
+ 			Py_INCREF(Py_None);
+ 			return Py_None;
+ 		}
+@@ -1095,9 +1096,12 @@ static PyObject *pyrf_evlist__read_on_cpu(struct pyrf_evlist *pevlist,
+ 		/* Consume the even only after we parsed it out. */
+ 		perf_mmap__consume(&md->core);
+ 
+-		if (err)
++		if (err) {
++			Py_DECREF(pyevent);
+ 			return PyErr_Format(PyExc_OSError,
+ 					    "perf: can't parse sample, err=%d", err);
++		}
++
+ 		return pyevent;
+ 	}
+ end:
+-- 
+2.39.5
+
 
 
 
