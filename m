@@ -1,150 +1,190 @@
-Return-Path: <stable+bounces-131771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E36DA80F1C
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 17:01:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B21B9A80F20
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 17:02:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9102416CB96
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:59:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80EC316632F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:59:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150A9218584;
-	Tue,  8 Apr 2025 14:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0491DF252;
+	Tue,  8 Apr 2025 14:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="Y1hwHZ1U"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MKSeq3tp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2078.outbound.protection.outlook.com [40.107.92.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA501DF749
-	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 14:59:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744124349; cv=none; b=jYQl6yyS8CCRI66RFWqVScXgFKzkfZuThPbPhF2CKbIiHxYo2et8swasAa6VXJp5MfJYve4DphJR+t51O3A4kMDfrigoi2roJzCpjqqmlbQZ7blAE9eltL0F8MJPpqhWHKjSR4leQfq07nH3y8qVJAF1YRpo2vBcp/vq9WrjNXk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744124349; c=relaxed/simple;
-	bh=IbcYRH62SKTcHVpPSWKMsMk+Afut+PEIm8FeltxsHgE=;
-	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=VJzI0wz+Ip7CBwbDqbkpjGZZKlvNEqQMhM8cVXdjyZZA1vjczh2KNKtCr+h0pW/QjVqUvR8pENU/6RXHm34Fk0wkYEwnDQj4HqWDWb2ycjH0WdOyRd2sMvXDqrUgSd5uw+PwdGcrwjcOmxl3iZXb6JRHv1a8EqLpKrwzFwVoEkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=Y1hwHZ1U; arc=none smtp.client-ip=209.85.219.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-e6a8aa771e8so4833123276.3
-        for <stable@vger.kernel.org>; Tue, 08 Apr 2025 07:59:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1744124347; x=1744729147; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
-         :from:mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=DWOlthETPvb3V9XMs3bIRH6muRPWH/+pRKoFmTQKLpc=;
-        b=Y1hwHZ1UYVlQNVVUM1+yL/8Z7EjjJXOC99xT8hiMUU8kd6Mf66LPNiT3bdP7bM00ai
-         1TeCKHE8uPIOtDq+dP+gZnQJy65OZMmGO7iuqqWuVYXheM/WpP0C+OUz3MSTv8Q9JD4p
-         HrLIAT0bhqXOShsuuTKb6387M8My44fjWe1pqJctszYh/t6wFekyqKhpiDLImgLQaI1n
-         tKm1Wwreb6zwVMdUA6E3vczqVewkMuQvH2DMltfxiEtgX1KuEpZiQal3qVQNQQK1Iv8m
-         SVlJMJ2AmCXeBykXNwFgngko79xEKdKiyix/ZmEq0z9jcoxIz9/IJA+0VEoSiJLqvR4e
-         WWAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744124347; x=1744729147;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
-         :from:mime-version:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DWOlthETPvb3V9XMs3bIRH6muRPWH/+pRKoFmTQKLpc=;
-        b=OgWMdhx0JjnWaJ+kYsP5TlU6qk6UQLf5iWpzRUmT2Vcl083UEMQvRAXymLSEFgb9DI
-         Ce82TysT7miW0YFb+eiExz7szRCgYyj6IkYo6VGwxaDPlEVmQwjP2iDlZ9CkO8qI95tc
-         pRfOOR1+GozARzEld4UCoA5/EP5Lc0CXKNirG3Yl9uboG7qDsnF2O+Xj9aGCAtLijxPn
-         2vmq7Nifs5vYQpKGLRzgz1A/oMo8x4eooMNl0Ql/PuhCfuFmwxkLkNYAJvMTAgjjHKE1
-         tTY0cKzIXweQ0PFQOGAgD/LxuRjvjImMCTbrfqppIllOwOR03E6yCCg05d3VIPWeRBqh
-         pLew==
-X-Forwarded-Encrypted: i=1; AJvYcCVWKZ6TELlfsl7LbsTpZSVSHTSm/9tx+rJ9CY6YlMGvra0SqhO0Om8WlU44zlaFK4Frx3LR2E0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0Bd6A+nnTeMI1INxnHAoEIwAWXP6vx5euPUFCf+lBYbz/OsyR
-	C0oC+jWntXcV7f9K+xhgebmIVt0Iitc197E+NS1BYQjtEGsjCtfl8Bc8QrL2yojEY2GlvQKcjjB
-	V6n2SvZKqeR9zsyp2+Cri0Ko2GUnufUUTKqdEZw==
-X-Gm-Gg: ASbGncvO5TdrqlfJFGUOlqiNrnT1qHxKAa1VQa+4q4Af+Rhk04p4/AU2yq1wTjoTHz/
-	xeOtEKlozOKxZp20iQirT0oABsR3atF5/mqgWDOTGWv4DVizStADOjWZORifoeDlXoX7ghzByrW
-	5CxUxEn+LeRR4VS0j/+FaeWzhA
-X-Google-Smtp-Source: AGHT+IE42rHcBHiXJkkRKqUWKwkpAK0omF8bVC/d9tsGyoObQAYnRwkLAXoSp/UXs/1PnbCtmRz+ebBwjwxJ9Z5a9ZA=
-X-Received: by 2002:a05:6902:480e:b0:e6d:f157:c601 with SMTP id
- 3f1490d57ef6-e6e1c29af83mr24917953276.17.1744124346757; Tue, 08 Apr 2025
- 07:59:06 -0700 (PDT)
-Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 8 Apr 2025 07:59:05 -0700
-Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 8 Apr 2025 07:59:05 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116CD20CCD8
+	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 14:59:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.78
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744124387; cv=fail; b=uVbu5QsOhqPj7olDTTDZttkKKjYKkN8tiXogqHz/FrhmJGit0OryfDthUERWYyVCXe+S9q6D5fGp68OHZXyHlWhm7VDA8sxENKbYo526SYyh5J0DKELzMyLJovCJv+beGvhW8Ersnm7JREj8AlZ/DF/+X8SoY2bl4awM6+tIIaY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744124387; c=relaxed/simple;
+	bh=cifblk6WZ+WzZLRQ+9jfTvYHdAifDBDb69M6ochkUQ4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Kq/U7AOFH6IxqvoDgfeMedetszHHrbLOkTyBBB3ISCs19LZQts62yEPpCZt+hkFZ1+t2zA5mKm0HZ78pCHB+8afSATnE7UNeKNiwkDEGkaGwYgNaAmixJ4nWYaA7cTTXfv1UEAzy/RSaKtbr1XjIti7gp/zbmuR5CpTUU88quZY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MKSeq3tp; arc=fail smtp.client-ip=40.107.92.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qFs6NMtzq8bQJG/HXhVgLT8sfPT9KQiaV8SuyL3PPl/8TZCoFxQccO6PMnB/k13dCWX8/Gp+4G3N6SUNU97gEITL9CUJnP+HRXB/VpTsCZNj/cIVYygq6gF9h7jI9ZOjmriwv/Jcxvn0wNcpk951LxQfyMknYFgB8bf61fDY06TywIOVOePTaAjWBLnGZkWyCdyB9IlUfaxqQXdi9KprCrGe/LsMtrb9DjPtINSc8rYvpTmgbOrrRawfYpctDBa3apwmHa1gg1pifCn0Mc+UuLnpynONpRp/0uQjn7GWwO2wWtQD0YPLL4zJ4oJokvVxG9j/zYCH6kYV3Rbi/j6vqA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xjFnj3Db2lDiNnfPswSaeg7Pk//4eYjdtYGaGXfWwXQ=;
+ b=AZxed/mqSsJN4NJsBR8eJpixd/azkQBbZiMqkf4gb5Yj6slT9jUdyJ75hweFcpzwYLrzvybWpJ2zvUCn959DAMhdfDpqYvGMXUa5N5QHypqzJNi2i5gVPOcTxBW2FBxiIYOx+8jQ7YohR1obINce9avx/PyxJOl1OxMIpLxpcQ/qbGegmzg21Ku/0G0eKBnF5yUhpvfgND+jofPqNvtNo+xG2gD1JtijM80iwBGMVWAll0NNgjQ/Q1GebIGckq3Q1MUeJdys5jG0vb4b60SxHAX1ueITqFmNkXRz/E4oIP9XKdsiml/FVHX9ls4B7JzNCLhxRaewftJWwRdFUPDrsw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xjFnj3Db2lDiNnfPswSaeg7Pk//4eYjdtYGaGXfWwXQ=;
+ b=MKSeq3tpZuM1DNF6CvMH1VXa4cxkxTRt8Dhbwi8Sh9u2QtYHqxxl6S2uu8vSmIi/s3MuwdJLQ0hBOz3ainhO4gqv45/FWqUa0QyiC34dTkv06Rl1yxqf2Bkm6Awqqp/5rfjpvLihO3YHWTEKS6e/v4Ed3YRRL1oI5I8ip5twbrPZLgw/CGqaPC4AujbwnNF2JAHmdPVy0Q4SK1RtktcbFsGCk0mNL/QZCVhJWMRlsuPdnkRJ932PWBf36pc4zrknyH2Q+N49sgSKlcGFQuLtgnDtUWzE+JRZl8iCu38Mb3erhy6nn8w6oB6ChZY7X1zVhQn+yQmbKFX2UD0YRHdI/Q==
+Received: from SJ0P220CA0028.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:41b::11)
+ by SA5PPF9BB0D8619.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8d8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.34; Tue, 8 Apr
+ 2025 14:59:39 +0000
+Received: from BY1PEPF0001AE1A.namprd04.prod.outlook.com
+ (2603:10b6:a03:41b:cafe::99) by SJ0P220CA0028.outlook.office365.com
+ (2603:10b6:a03:41b::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8606.35 via Frontend Transport; Tue,
+ 8 Apr 2025 14:59:39 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BY1PEPF0001AE1A.mail.protection.outlook.com (10.167.242.102) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8606.22 via Frontend Transport; Tue, 8 Apr 2025 14:59:39 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 8 Apr 2025
+ 07:59:25 -0700
+Received: from sw-mtx-036.mtx.nbulabs.nvidia.com (10.126.231.35) by
+ rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Tue, 8 Apr 2025 07:59:24 -0700
+From: Parav Pandit <parav@nvidia.com>
+To: <mst@redhat.com>, <virtualization@lists.linux.dev>, <jasowang@redhat.com>
+CC: <stefanha@redhat.com>, <pbonzini@redhat.com>,
+	<xuanzhuo@linux.alibaba.com>, Parav Pandit <parav@nvidia.com>,
+	<stable@vger.kernel.org>, <lirongqing@baidu.com>, Max Gurtovoy
+	<mgurtovoy@nvidia.com>
+Subject: [PATCH] Revert "virtio_pci: Support surprise removal of virtio pci device"
+Date: Tue, 8 Apr 2025 17:59:08 +0300
+Message-ID: <20250408145908.51811-1-parav@nvidia.com>
+X-Mailer: git-send-email 2.26.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-from: KernelCI bot <bot@kernelci.org>
-Reply-To: kernelci@lists.linux.dev
-Date: Tue, 8 Apr 2025 07:59:05 -0700
-X-Gm-Features: ATxdqUGEZGNxGIRmrGbXJyEmwsYWfk4vdAGagCU6BM6CX9EoBpIQZm_Hs3o8ahE
-Message-ID: <CACo-S-0-PUaB6MtRO4OBPyW1Bh8Tztwm5OjMmqRfUxWxwXkcLA@mail.gmail.com>
-Subject: [REGRESSION] stable-rc/linux-6.12.y: (build) in vmlinux
- (scripts/Makefile.vmlinux:34) [logspec:kbuild,kbuild.co...
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE1A:EE_|SA5PPF9BB0D8619:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9d6d65bf-e7da-48b5-d1f3-08dd76adfc98
+X-LD-Processed: 43083d15-7273-40c1-b7db-39efd9ccc17a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|36860700013|1800799024|82310400026|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?rJ0054xmNEkh7yVXMdzD82+SpFu8C1HN29InW7ZEcE4T02CkZaHHeyIxF4E/?=
+ =?us-ascii?Q?dsEn1w4dVbq1TSSJdsM8bynPwHoBIaAGqpCIGw19XnnaH3iWzNCQPaCA9i1g?=
+ =?us-ascii?Q?Psp8gJ/uEp15UHar5VgJj8da6q/zlNeBuqvueAfOwDWaOlWtAPlg41D960ZW?=
+ =?us-ascii?Q?WJ/9lDrN6fa73sKOEP0XvGntK5Ia682Hh7Eu47hw9IVAd6UaAIVlLfiSR6sF?=
+ =?us-ascii?Q?2YzfnOQwedgQmQUYLiDuY3r0l8V4jkToCLMRppEbtvzsTt/p8k5xkjeM5V1Y?=
+ =?us-ascii?Q?rsUYzUwv1pZKtexEe3a/Kmg+iYVMwWG0tend8PqKwf9WvmwG68r+5/YdW7nA?=
+ =?us-ascii?Q?E0KKhgCTnT+0a2n3KI1Wap4lMnWUfzWBE4WEfYRdIKufumGGpdXnqKg2o1TK?=
+ =?us-ascii?Q?cDgN4T3aooFp2G8ipoNSZGr4VjVBqrzVwQDMVL4cw1gbgnc8tVb6x62l4Frn?=
+ =?us-ascii?Q?M3VQUe+/FPEJrxznbwH+iAjQTOazt0vEHmZztS996jT2sPJ8qgV+6NVaCjhP?=
+ =?us-ascii?Q?KZew+pQKwAXEkECF2sQXV7bgRKrT7p6EKIzyY2STsTAsES6qmR7HzyJQq1+O?=
+ =?us-ascii?Q?oU2x2f0pfvFHUM1WgsXWc1vpkiTDwgu7Ri7nCrVK30SSTCi0No4I2MjdqP/A?=
+ =?us-ascii?Q?byzMAKk8TjuUf+86JTqYbWSrRYimFO+RdFullYE9vDohrmMoBraG9okaYtpP?=
+ =?us-ascii?Q?I3BUKSeHcW1N0Gg24YRtvaG904BO0NUFUKUJcBa4ZtUfOdoajYx79rGe2e/a?=
+ =?us-ascii?Q?N7GJUgMcv7V6RmRYk9N2oW0AsPTsMGnmbofhCTH1MO2kIisTxuPt7wWRrEem?=
+ =?us-ascii?Q?VplpkmiwvmSr41A9oii68Ume5jfgFleEqj0vzQ+RH2okuWiXbXNwreWkPEnL?=
+ =?us-ascii?Q?vek/ljMwEGWpw+uMeqPOWLaRFPJphcNutqWpA7kC/6pSOq12tXWQVpPqBVcD?=
+ =?us-ascii?Q?YigmwNP5NDfGQlqBE7PBrih04CmRgaaf144OzmfhawYQVqwXgIdMTpO5jR6o?=
+ =?us-ascii?Q?Hg6PO4UQz0ly5Me+dgQikxT+W8huRxmp/lXDP7RQvltsH0dHMUNqca9I3iZd?=
+ =?us-ascii?Q?oOb/G4fMFIylyrG1yTL68w6KxLm0+CW6xjAYIfo5f27TlMy1KhcleWbSSIXl?=
+ =?us-ascii?Q?hGgmtSgXaGs7J01Qpk/U3RGGRIcRumZ57moVpiDExc+SJfdGqTMjs63HLZ9T?=
+ =?us-ascii?Q?DQBlut28B//MyG8naBYpYuNGlMqL1tFA9gFP6S1iRJNI/qZSK2cbgeEh4Hbc?=
+ =?us-ascii?Q?9A28Xhr016Ay3jl2lX5IssZLHjoipk9tShKeu6mhiNQJeaFh9dr2I7I6oH3m?=
+ =?us-ascii?Q?H/FdKsrvnrt/Ch3jlnuhgXtvVZu3njPJzWV4UYxxXNug1t2poX7jKEZ7eiYT?=
+ =?us-ascii?Q?WNBTLr4OjM+f1b8L9qwPc0Ky4eK6ZvluuK07H1/pyQJppwvGVvVQp7IYhPgz?=
+ =?us-ascii?Q?Xz1LkugqkEEhSfK7rZ6tGNmPXuP3TdndSMui/K8rDaaj+/vaGf8hUEfPS87u?=
+ =?us-ascii?Q?TxI4nSVzJS6OMCU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(36860700013)(1800799024)(82310400026)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2025 14:59:39.5615
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9d6d65bf-e7da-48b5-d1f3-08dd76adfc98
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BY1PEPF0001AE1A.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF9BB0D8619
 
-Hello,
+This reverts commit 43bb40c5b926 ("virtio_pci: Support surprise removal of virtio pci device").
 
-New build issue found on stable-rc/linux-6.12.y:
+The cited commit introduced a fix that marks the device as broken
+during surprise removal. However, this approach causes uncompleted
+I/O requests on virtio-blk device. The presence of uncompleted I/O
+requests prevents the successful removal of virtio-blk devices.
 
+This fix allows devices that simulate a surprise removal but actually
+remove gracefully to continue working as before.
+
+For surprise removals, a better solution will be preferred in the future.
+
+Fixes: 43bb40c5b926 ("virtio_pci: Support surprise removal of virtio pci device")
+Cc: stable@vger.kernel.org
+Reported-by: lirongqing@baidu.com
+Closes: https://lore.kernel.org/virtualization/c45dd68698cd47238c55fb73ca9b4741@baidu.com/
+Reviewed-by: Max Gurtovoy<mgurtovoy@nvidia.com>
+Signed-off-by: Parav Pandit <parav@nvidia.com>
 ---
- in vmlinux (scripts/Makefile.vmlinux:34)
-[logspec:kbuild,kbuild.compiler.linker_error]
----
+ drivers/virtio/virtio_pci_common.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-- dashboard: https://d.kernelci.org/i/maestro:044a06526d293c2801fdbdc2f440e=
-46bd3b51a52
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
-le-rc.git
-- commit HEAD:  8e9508dd93587658f8f8116bc709aeb272144427
+diff --git a/drivers/virtio/virtio_pci_common.c b/drivers/virtio/virtio_pci_common.c
+index d6d79af44569..dba5eb2eaff9 100644
+--- a/drivers/virtio/virtio_pci_common.c
++++ b/drivers/virtio/virtio_pci_common.c
+@@ -747,13 +747,6 @@ static void virtio_pci_remove(struct pci_dev *pci_dev)
+ 	struct virtio_pci_device *vp_dev = pci_get_drvdata(pci_dev);
+ 	struct device *dev = get_device(&vp_dev->vdev.dev);
+ 
+-	/*
+-	 * Device is marked broken on surprise removal so that virtio upper
+-	 * layers can abort any ongoing operation.
+-	 */
+-	if (!pci_device_is_present(pci_dev))
+-		virtio_break_device(&vp_dev->vdev);
+-
+ 	pci_disable_sriov(pci_dev);
+ 
+ 	unregister_virtio_device(&vp_dev->vdev);
+-- 
+2.26.2
 
-
-Log excerpt:
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-ld.lld: error: ./arch/arm/kernel/vmlinux.lds:36: ( expected, but got }
->>>  __vectors_lma =3D .; OVERLAY 0xffff0000 : AT(__vectors_lma) { .vectors=
- { OVERLAY_KEEP(*(.vectors)) } .vectors.bhb.loop8 { OVERLAY_KEEP(*(.vectors=
-.bhb.loop8)) } .vectors.bhb.bpiall { OVERLAY_KEEP(*(.vectors.bhb.bpiall)) }=
- } __vectors_start =3D LOADADDR(.vectors); __vectors_end =3D LOADADDR(.vect=
-ors) + SIZEOF(.vectors); __vectors_bhb_loop8_start =3D LOADADDR(.vectors.bh=
-b.loop8); __vectors_bhb_loop8_end =3D LOADADDR(.vectors.bhb.loop8) + SIZEOF=
-(.vectors.bhb.loop8); __vectors_bhb_bpiall_start =3D LOADADDR(.vectors.bhb.=
-bpiall); __vectors_bhb_bpiall_end =3D LOADADDR(.vectors.bhb.bpiall) + SIZEO=
-F(.vectors.bhb.bpiall); . =3D __vectors_lma + SIZEOF(.vectors) + SIZEOF(.ve=
-ctors.bhb.loop8) + SIZEOF(.vectors.bhb.bpiall); __stubs_lma =3D .; .stubs A=
-DDR(.vectors) + 0x1000 : AT(__stubs_lma) { *(.stubs) } __stubs_start =3D LO=
-ADADDR(.stubs); __stubs_end =3D LOADADDR(.stubs) + SIZEOF(.stubs); . =3D __=
-stubs_lma + SIZEOF(.stubs); PROVIDE(vector_fiq_offset =3D vector_fiq - ADDR=
-(.vectors));
->>>                                                                        =
-                           ^
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-
-
-# Builds where the incident occurred:
-
-## defconfig+allmodconfig+CONFIG_FRAME_WARN=3D2048 on (arm):
-- compiler: clang-17
-- dashboard: https://d.kernelci.org/build/maestro:67f50be06fa43d168f278ccc
-
-
-#kernelci issue maestro:044a06526d293c2801fdbdc2f440e46bd3b51a52
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
 
