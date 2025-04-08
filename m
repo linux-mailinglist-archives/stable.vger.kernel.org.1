@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-130990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5F11A80733
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:35:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C376A80902
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:50:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7104E4A72BB
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:29:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DBA58C0630
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F0C26AA92;
-	Tue,  8 Apr 2025 12:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCF89265CD3;
+	Tue,  8 Apr 2025 12:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DuWfR1nH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LsCEBZ8G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1278D26A1C8;
-	Tue,  8 Apr 2025 12:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79EF2224AEB;
+	Tue,  8 Apr 2025 12:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115196; cv=none; b=dJWVMm9IUVVv2xrSz2syismQY8WQkoazBCKnBbgNejRnfiDQs0kpc4HqgBs+9mumuM6O+8V6MSYegYaeHyuVvq3V1UqOsjEzYiWR1emgQ9M6f0myyA1Y0Hdm+vup1UlDBzuPl1ASeLHRB1qoVUZp6tPM+/oap/YBHvPxdyEFbSk=
+	t=1744115552; cv=none; b=f02PAgWdSQ8y/SPFj8nK9htAySZbJeYLqGADC5utvRGrafRq0hFjX1oI5THhc0UAimbjX/b2+FMqxa4kjHGWYwELfaR0clf1LhOb/BDuLj8ppdk6zv77D6EL5eleRovvqPeN67M56gmUp1Vg86rLCrCd8Em/BvMCssNGWR++VBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115196; c=relaxed/simple;
-	bh=BVsVUO7D8oE3o9PWZIuu0Sw+xCvoQJvBjragxL00gkE=;
+	s=arc-20240116; t=1744115552; c=relaxed/simple;
+	bh=ogU47p6UKayhdN1xJBV60zEa2nhHjHs76nkfrV411TQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l4kcrujYwknyIy+CKnxtldigfDjyH4Jzdg+wC5ZI9CZxJkIxO02rkCxfkU533Rs3am8HQ95K1vGqEpo6OQfR/O/fQxzt0sNFY5g0ir4Icq7gc/TNwuoFVrM9tUEU+iZK6faMy2nfHt4dNNMdL13j7S2Kpq8DsTnvwxCfEZhLf8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuWfR1nH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 958AAC4CEE5;
-	Tue,  8 Apr 2025 12:26:35 +0000 (UTC)
+	 MIME-Version; b=dS/WftnMzTKcyASWTweGfKJ82oV9pV7KVPSVHGfb+1rjHiUSwHMMwo84vYoe4DwEywDCqEhENL5QHWudGrn3Z0/2oR7YxFvG7H20wIfx/m/aC5btWSeVDr+3epZ1yRb34lwJUdLR1keoiQQ3qIt0su2m4ORnIepokFGstjbfjbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LsCEBZ8G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6FE0C4CEE5;
+	Tue,  8 Apr 2025 12:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115195;
-	bh=BVsVUO7D8oE3o9PWZIuu0Sw+xCvoQJvBjragxL00gkE=;
+	s=korg; t=1744115552;
+	bh=ogU47p6UKayhdN1xJBV60zEa2nhHjHs76nkfrV411TQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DuWfR1nH8XahTLWNe9IpI9TMdZPD8ZQSvnMGSOmd8L7/C6v1E/fWIBQUcYRHq3MO/
-	 X8cIf/E2jgvT6QAADfn6aYtv89Is3WU0Norl/EltLwBy3ho04Klh3YbW/RaXnH2lA6
-	 iG8MlLKxrSazL5lq7wceC/wW6Mk3MCGAKHlzknhw=
+	b=LsCEBZ8GVqT8MeQ1iIySCzzt5gCUijaqT3aJtLIfjsQIWY3BZoiumPO14o88mC/Ny
+	 O6a4YOGhTRPUpoGSa52bUoP8Smez325tK4LFMWJqPTck+T8N7rquzGWHopyPER+ix0
+	 Ao8EgmpyZuB8Bmh67gn5NnnFcPYKQrl7ZqWy8rSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 336/499] wifi: mac80211: fix SA Query processing in MLO
+Subject: [PATCH 6.1 018/204] lockdep: Dont disable interrupts on RT in disable_irq_nosync_lockdep.*()
 Date: Tue,  8 Apr 2025 12:49:08 +0200
-Message-ID: <20250408104859.602596091@linuxfoundation.org>
+Message-ID: <20250408104820.855897769@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
-References: <20250408104851.256868745@linuxfoundation.org>
+In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
+References: <20250408104820.266892317@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +64,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 9a267ce4a3fca93a34a8881046f97bcf472228c8 ]
+[ Upstream commit 87886b32d669abc11c7be95ef44099215e4f5788 ]
 
-When MLO is used and SA Query processing isn't done by
-userspace (e.g. wpa_supplicant w/o CONFIG_OCV), then
-the mac80211 code kicks in but uses the wrong addresses.
-Fix them.
+disable_irq_nosync_lockdep() disables interrupts with lockdep enabled to
+avoid false positive reports by lockdep that a certain lock has not been
+acquired with disabled interrupts. The user of this macros expects that
+a lock can be acquried without disabling interrupts because the IRQ line
+triggering the interrupt is disabled.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250306123626.bab48bb49061.I9391b22f1360d20ac8c4e92604de23f27696ba8f@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+This triggers a warning on PREEMPT_RT because after
+disable_irq_nosync_lockdep.*() the following spinlock_t now is acquired
+with disabled interrupts.
+
+On PREEMPT_RT there is no difference between spin_lock() and
+spin_lock_irq() so avoiding disabling interrupts in this case works for
+the two remaining callers as of today.
+
+Don't disable interrupts on PREEMPT_RT in disable_irq_nosync_lockdep.*().
+
+Closes: https://lore.kernel.org/760e34f9-6034-40e0-82a5-ee9becd24438@roeck-us.net
+Fixes: e8106b941ceab ("[PATCH] lockdep: core, add enable/disable_irq_irqsave/irqrestore() APIs")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Suggested-by: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20250212103619.2560503-2-bigeasy@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/rx.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ include/linux/interrupt.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index c4a28ccbd0647..a42959b39bd01 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -6,7 +6,7 @@
-  * Copyright 2007-2010	Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright(c) 2015 - 2017 Intel Deutschland GmbH
-- * Copyright (C) 2018-2024 Intel Corporation
-+ * Copyright (C) 2018-2025 Intel Corporation
-  */
+diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
+index 4a1dc88ddbff9..2610a7d156da8 100644
+--- a/include/linux/interrupt.h
++++ b/include/linux/interrupt.h
+@@ -441,7 +441,7 @@ irq_calc_affinity_vectors(unsigned int minvec, unsigned int maxvec,
+ static inline void disable_irq_nosync_lockdep(unsigned int irq)
+ {
+ 	disable_irq_nosync(irq);
+-#ifdef CONFIG_LOCKDEP
++#if defined(CONFIG_LOCKDEP) && !defined(CONFIG_PREEMPT_RT)
+ 	local_irq_disable();
+ #endif
+ }
+@@ -449,7 +449,7 @@ static inline void disable_irq_nosync_lockdep(unsigned int irq)
+ static inline void disable_irq_nosync_lockdep_irqsave(unsigned int irq, unsigned long *flags)
+ {
+ 	disable_irq_nosync(irq);
+-#ifdef CONFIG_LOCKDEP
++#if defined(CONFIG_LOCKDEP) && !defined(CONFIG_PREEMPT_RT)
+ 	local_irq_save(*flags);
+ #endif
+ }
+@@ -464,7 +464,7 @@ static inline void disable_irq_lockdep(unsigned int irq)
  
- #include <linux/jiffies.h>
-@@ -3330,8 +3330,8 @@ static void ieee80211_process_sa_query_req(struct ieee80211_sub_if_data *sdata,
- 		return;
- 	}
+ static inline void enable_irq_lockdep(unsigned int irq)
+ {
+-#ifdef CONFIG_LOCKDEP
++#if defined(CONFIG_LOCKDEP) && !defined(CONFIG_PREEMPT_RT)
+ 	local_irq_enable();
+ #endif
+ 	enable_irq(irq);
+@@ -472,7 +472,7 @@ static inline void enable_irq_lockdep(unsigned int irq)
  
--	if (!ether_addr_equal(mgmt->sa, sdata->deflink.u.mgd.bssid) ||
--	    !ether_addr_equal(mgmt->bssid, sdata->deflink.u.mgd.bssid)) {
-+	if (!ether_addr_equal(mgmt->sa, sdata->vif.cfg.ap_addr) ||
-+	    !ether_addr_equal(mgmt->bssid, sdata->vif.cfg.ap_addr)) {
- 		/* Not from the current AP or not associated yet. */
- 		return;
- 	}
-@@ -3347,9 +3347,9 @@ static void ieee80211_process_sa_query_req(struct ieee80211_sub_if_data *sdata,
- 
- 	skb_reserve(skb, local->hw.extra_tx_headroom);
- 	resp = skb_put_zero(skb, 24);
--	memcpy(resp->da, mgmt->sa, ETH_ALEN);
-+	memcpy(resp->da, sdata->vif.cfg.ap_addr, ETH_ALEN);
- 	memcpy(resp->sa, sdata->vif.addr, ETH_ALEN);
--	memcpy(resp->bssid, sdata->deflink.u.mgd.bssid, ETH_ALEN);
-+	memcpy(resp->bssid, sdata->vif.cfg.ap_addr, ETH_ALEN);
- 	resp->frame_control = cpu_to_le16(IEEE80211_FTYPE_MGMT |
- 					  IEEE80211_STYPE_ACTION);
- 	skb_put(skb, 1 + sizeof(resp->u.action.u.sa_query));
+ static inline void enable_irq_lockdep_irqrestore(unsigned int irq, unsigned long *flags)
+ {
+-#ifdef CONFIG_LOCKDEP
++#if defined(CONFIG_LOCKDEP) && !defined(CONFIG_PREEMPT_RT)
+ 	local_irq_restore(*flags);
+ #endif
+ 	enable_irq(irq);
 -- 
 2.39.5
 
