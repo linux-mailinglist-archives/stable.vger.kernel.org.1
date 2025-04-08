@@ -1,51 +1,71 @@
-Return-Path: <stable+bounces-128884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-128886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7909CA7FB09
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:08:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9A4AA7FAED
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:06:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B3413B39C2
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:04:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D29117FEE4
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 10:04:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A083266B4B;
-	Tue,  8 Apr 2025 09:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82A9C266EEC;
+	Tue,  8 Apr 2025 09:57:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VFSvUJFD"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8945A266B75
-	for <stable@vger.kernel.org>; Tue,  8 Apr 2025 09:56:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD076265CBD;
+	Tue,  8 Apr 2025 09:57:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744106197; cv=none; b=RPMrAH7+s9UCkNSCzVRhoLEZCscEUu0JSicvG+nrlJPkWYrknijJkCVlO9mGKsN0WS2BG0+uhtWSUB0oE44kg55hYXcrLWsfYqO/wese83nBPUCLKhyaJgy5NiZkl/N3cU0HK5YoIQvex9m82ZCZEAjmj5edr5TTwdFqbiyAU6s=
+	t=1744106240; cv=none; b=udPIUKMRTXOZkHVXq/8OAZRqbzO7oZhw2AOKZfA+JlbIZ2IC7n8MVo/1Y5hCE3pywVWrYgZlIWsdvhDp7Z+IHe3bcdBrIONTjsAQ3yVnnqMc7YDm6yW4hyB9UAEnLHZDcHYO6X8xThz0g1Ah+FdRiQMcgp1WOsJk9xgwFqOHwWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744106197; c=relaxed/simple;
-	bh=QDnJkaJ45/O7w4rNSRilfI8KaHqK5L6Z5Op8eKujfDE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SMd1DXHdVf4aoeSkYoiZ8nyHlWFeZt6cPl9F+wZ0SlGmYb6KnCGrEzmzL7wsMHcqG2otWVJJt57dx91/4SzuhX7Cf3QP1CX+gLwYQSJJM80yjNzMk9cM2d2pn7JyKUvqohfI+4hpJ0xSxOFMSsfBm1qU4o84w9G9wdeKLEP7fPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B13741688;
-	Tue,  8 Apr 2025 02:56:34 -0700 (PDT)
-Received: from a077893.arm.com (unknown [10.163.48.241])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id AB1383F6A8;
-	Tue,  8 Apr 2025 02:56:30 -0700 (PDT)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: stable@vger.kernel.org
-Cc: catalin.marinas@arm.com,
-	will@kernel.org,
-	robh@kernel.org,
-	mark.rutland@arm.com,
-	anshuman.khandual@arm.com
-Subject: [PATCH 6.14.y 7/7] arm64/boot: Enable EL2 requirements for FEAT_PMUv3p9
-Date: Tue,  8 Apr 2025 15:26:06 +0530
-Message-Id: <20250408095606.1219230-8-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250408095606.1219230-1-anshuman.khandual@arm.com>
-References: <20250408095606.1219230-1-anshuman.khandual@arm.com>
+	s=arc-20240116; t=1744106240; c=relaxed/simple;
+	bh=c2kkyDGmcy0tJfiAWkCKNxeyCjaVZX2wrgt6fLQSKdU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rfQ0KnQFmZO/c1UUGDdrYInPyJerp5o7oTYOn8lrAK3k05ShzUGALflXdyo1BilPcqv6WgqdwX8YkAhGzDYdFGQgz6RLQwExFvVOwjLK3mZmn7xYwrz+aizTG5Rx4d7YFjuDkWfrnN5Khn2Dp34/fjv6exrAqJMFotVd7Ocd9OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VFSvUJFD; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744106239; x=1775642239;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=c2kkyDGmcy0tJfiAWkCKNxeyCjaVZX2wrgt6fLQSKdU=;
+  b=VFSvUJFDaUY6jugkRzu1LZIpMfydR92S5i3RX66hUCy2GRHzQv7wn/6r
+   2E1xm95xuRxYQfnt8Dz6CLSgSx1SXpTBVwGrzi1nrlCwOEn/oxyOzbjpV
+   t6VorHe0BdMUJKD8iKCfVHbPasqlcVdPSRHWoZEGruBmlSYzrZDtbNKNC
+   QmBLl91EZ3mVnQHwn7ewzxyfHA2JLLGNFm+gzRv4OmFFPWgvR+eXPxrwK
+   NXjCrNx+8n3BrUZyU4Kl85PCSxJYFVd1Bo/fmpPhltUlI3dEjwg7s+fvm
+   u0d2DWSevmFld+0rC3WBRazWqFA5Z43V55ymEknIHJ2psbvt8XOaImYI3
+   g==;
+X-CSE-ConnectionGUID: DOFPd1soTFmH7t7bNARwFA==
+X-CSE-MsgGUID: rYcnWhAcSlqDjaz9zSycnw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="68002526"
+X-IronPort-AV: E=Sophos;i="6.15,197,1739865600"; 
+   d="scan'208";a="68002526"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2025 02:57:16 -0700
+X-CSE-ConnectionGUID: vj85qJ6DTKeB49jeRpfXEg==
+X-CSE-MsgGUID: GAfGe7p+Tc+MpogH3haAzw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,197,1739865600"; 
+   d="scan'208";a="133424452"
+Received: from jlawryno.igk.intel.com ([10.91.220.59])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2025 02:57:13 -0700
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+To: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	Karol Wachowski <karol.wachowski@intel.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Subject: [PATCH] accel/ivpu: Add handling of VPU_JSM_STATUS_MVNCI_CONTEXT_VIOLATION_HW
+Date: Tue,  8 Apr 2025 11:57:11 +0200
+Message-ID: <20250408095711.635185-1-jacek.lawrynowicz@linux.intel.com>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,127 +74,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-FEAT_PMUv3p9 registers such as PMICNTR_EL0, PMICFILTR_EL0, and PMUACR_EL1
-access from EL1 requires appropriate EL2 fine grained trap configuration
-via FEAT_FGT2 based trap control registers HDFGRTR2_EL2 and HDFGWTR2_EL2.
-Otherwise such register accesses will result in traps into EL2.
+From: Karol Wachowski <karol.wachowski@intel.com>
 
-Add a new helper __init_el2_fgt2() which initializes FEAT_FGT2 based fine
-grained trap control registers HDFGRTR2_EL2 and HDFGWTR2_EL2 (setting the
-bits nPMICNTR_EL0, nPMICFILTR_EL0 and nPMUACR_EL1) to enable access into
-PMICNTR_EL0, PMICFILTR_EL0, and PMUACR_EL1 registers.
+commit dad945c27a42dfadddff1049cf5ae417209a8996 upstream.
 
-Also update booting.rst with SCR_EL3.FGTEn2 requirement for all FEAT_FGT2
-based registers to be accessible in EL2.
+Trigger recovery of the NPU upon receiving HW context violation from
+the firmware. The context violation error is a fatal error that prevents
+any subsequent jobs from being executed. Without this fix it is
+necessary to reload the driver to restore the NPU operational state.
 
-Cc: Will Deacon <will@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oliver.upton@linux.dev>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-doc@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: kvmarm@lists.linux.dev
-Fixes: 0bbff9ed8165 ("perf/arm_pmuv3: Add PMUv3.9 per counter EL0 access control")
-Fixes: d8226d8cfbaf ("perf: arm_pmuv3: Add support for Armv9.4 PMU instruction counter")
-Tested-by: Rob Herring (Arm) <robh@kernel.org>
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20250227035119.2025171-1-anshuman.khandual@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[cherry picked from commit 858c7bfcb35e1100b58bb63c9f562d86e09418d9]
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+This is simplified version of upstream commit as the full implementation
+would require all engine reset/resume logic to be backported.
+
+Signed-off-by: Karol Wachowski <karol.wachowski@intel.com>
+Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
+Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250107173238.381120-13-maciej.falkowski@linux.intel.com
+Fixes: 0adff3b0ef12 ("accel/ivpu: Share NPU busy time in sysfs")
+Cc: <stable@vger.kernel.org> # v6.11+
 ---
- Documentation/arch/arm64/booting.rst | 22 ++++++++++++++++++++++
- arch/arm64/include/asm/el2_setup.h   | 25 +++++++++++++++++++++++++
- 2 files changed, 47 insertions(+)
+ drivers/accel/ivpu/ivpu_job.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/Documentation/arch/arm64/booting.rst b/Documentation/arch/arm64/booting.rst
-index cad6fdc96b98..dee7b6de864f 100644
---- a/Documentation/arch/arm64/booting.rst
-+++ b/Documentation/arch/arm64/booting.rst
-@@ -288,6 +288,12 @@ Before jumping into the kernel, the following conditions must be met:
+diff --git a/drivers/accel/ivpu/ivpu_job.c b/drivers/accel/ivpu/ivpu_job.c
+index be2e2bf0f43f0..70b3676974407 100644
+--- a/drivers/accel/ivpu/ivpu_job.c
++++ b/drivers/accel/ivpu/ivpu_job.c
+@@ -482,6 +482,8 @@ static struct ivpu_job *ivpu_job_remove_from_submitted_jobs(struct ivpu_device *
+ 	return job;
+ }
  
-     - SCR_EL3.FGTEn (bit 27) must be initialised to 0b1.
++#define VPU_JSM_STATUS_MVNCI_CONTEXT_VIOLATION_HW 0xEU
++
+ static int ivpu_job_signal_and_destroy(struct ivpu_device *vdev, u32 job_id, u32 job_status)
+ {
+ 	struct ivpu_job *job;
+@@ -490,6 +492,9 @@ static int ivpu_job_signal_and_destroy(struct ivpu_device *vdev, u32 job_id, u32
+ 	if (!job)
+ 		return -ENOENT;
  
-+  For CPUs with the Fine Grained Traps 2 (FEAT_FGT2) extension present:
++	if (job_status == VPU_JSM_STATUS_MVNCI_CONTEXT_VIOLATION_HW)
++		ivpu_pm_trigger_recovery(vdev, "HW context violation");
 +
-+  - If EL3 is present and the kernel is entered at EL2:
-+
-+    - SCR_EL3.FGTEn2 (bit 59) must be initialised to 0b1.
-+
-   For CPUs with support for HCRX_EL2 (FEAT_HCX) present:
- 
-   - If EL3 is present and the kernel is entered at EL2:
-@@ -382,6 +388,22 @@ Before jumping into the kernel, the following conditions must be met:
- 
-     - SMCR_EL2.EZT0 (bit 30) must be initialised to 0b1.
- 
-+  For CPUs with the Performance Monitors Extension (FEAT_PMUv3p9):
-+
-+ - If EL3 is present:
-+
-+    - MDCR_EL3.EnPM2 (bit 7) must be initialised to 0b1.
-+
-+ - If the kernel is entered at EL1 and EL2 is present:
-+
-+    - HDFGRTR2_EL2.nPMICNTR_EL0 (bit 2) must be initialised to 0b1.
-+    - HDFGRTR2_EL2.nPMICFILTR_EL0 (bit 3) must be initialised to 0b1.
-+    - HDFGRTR2_EL2.nPMUACR_EL1 (bit 4) must be initialised to 0b1.
-+
-+    - HDFGWTR2_EL2.nPMICNTR_EL0 (bit 2) must be initialised to 0b1.
-+    - HDFGWTR2_EL2.nPMICFILTR_EL0 (bit 3) must be initialised to 0b1.
-+    - HDFGWTR2_EL2.nPMUACR_EL1 (bit 4) must be initialised to 0b1.
-+
-   For CPUs with Memory Copy and Memory Set instructions (FEAT_MOPS):
- 
-   - If the kernel is entered at EL1 and EL2 is present:
-diff --git a/arch/arm64/include/asm/el2_setup.h b/arch/arm64/include/asm/el2_setup.h
-index 555c613fd232..ebceaae3c749 100644
---- a/arch/arm64/include/asm/el2_setup.h
-+++ b/arch/arm64/include/asm/el2_setup.h
-@@ -259,6 +259,30 @@
- .Lskip_fgt_\@:
- .endm
- 
-+.macro __init_el2_fgt2
-+	mrs	x1, id_aa64mmfr0_el1
-+	ubfx	x1, x1, #ID_AA64MMFR0_EL1_FGT_SHIFT, #4
-+	cmp	x1, #ID_AA64MMFR0_EL1_FGT_FGT2
-+	b.lt	.Lskip_fgt2_\@
-+
-+	mov	x0, xzr
-+	mrs	x1, id_aa64dfr0_el1
-+	ubfx	x1, x1, #ID_AA64DFR0_EL1_PMUVer_SHIFT, #4
-+	cmp	x1, #ID_AA64DFR0_EL1_PMUVer_V3P9
-+	b.lt	.Lskip_pmuv3p9_\@
-+
-+	orr	x0, x0, #HDFGRTR2_EL2_nPMICNTR_EL0
-+	orr	x0, x0, #HDFGRTR2_EL2_nPMICFILTR_EL0
-+	orr	x0, x0, #HDFGRTR2_EL2_nPMUACR_EL1
-+.Lskip_pmuv3p9_\@:
-+	msr_s   SYS_HDFGRTR2_EL2, x0
-+	msr_s   SYS_HDFGWTR2_EL2, x0
-+	msr_s   SYS_HFGRTR2_EL2, xzr
-+	msr_s   SYS_HFGWTR2_EL2, xzr
-+	msr_s   SYS_HFGITR2_EL2, xzr
-+.Lskip_fgt2_\@:
-+.endm
-+
- .macro __init_el2_gcs
- 	mrs_s	x1, SYS_ID_AA64PFR1_EL1
- 	ubfx	x1, x1, #ID_AA64PFR1_EL1_GCS_SHIFT, #4
-@@ -304,6 +328,7 @@
- 	__init_el2_nvhe_idregs
- 	__init_el2_cptr
- 	__init_el2_fgt
-+	__init_el2_fgt2
-         __init_el2_gcs
- .endm
+ 	if (job->file_priv->has_mmu_faults)
+ 		job_status = DRM_IVPU_JOB_STATUS_ABORTED;
  
 -- 
-2.30.2
+2.45.1
 
 
