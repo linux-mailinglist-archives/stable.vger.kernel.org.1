@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-130841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49299A806FC
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:33:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E758A80713
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:34:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 134244C34A7
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:23:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 146498A37D1
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:23:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED6826FA55;
-	Tue,  8 Apr 2025 12:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2151F26A1DE;
+	Tue,  8 Apr 2025 12:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F+pvgUXN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEe07etY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1BD269CEB;
-	Tue,  8 Apr 2025 12:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D5E267F57;
+	Tue,  8 Apr 2025 12:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744114797; cv=none; b=LQ8D/Kpc60khcDg9oQznLlUYpnrSR69htWjDUFMqY+7IY7HXYioNSHaKaHa4QLcgpEU0pfKCgd2MhRuKGsMcHU/Bcure+Hx+PNAstNoyby/KMSbih1AoK+EeLwN3tP9xw2JmCXxouiiAmnJyx2fYVXDQcsZF7NKR7nj4LqmHEfo=
+	t=1744114826; cv=none; b=BlV5B/zWkNwawda9dnvzPvXn3fYgy3DdNdJvCg4BCE4Iz0+xBYbE6Nf3qy0BiEo+dZNZfKerywAXkIk1PDs0AunKiJ4jjqpAygpYg2fgnujwopVFLcIL6/cOQD6/o5QgBf2vg1CPLR4NUff7N0PXxyEuiwCxSsV2fdxofZE1hrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744114797; c=relaxed/simple;
-	bh=T5mdom7VbRmMpA4rwdBg5Dqb61JlK5JNnAWXtPk5Q+s=;
+	s=arc-20240116; t=1744114826; c=relaxed/simple;
+	bh=YJxLmvq/sH6HBWcqo4Fm6FCAcGtqBgh3Rqdm9IQA8u8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oof2tbptJX6G4nuY3RG6w4FAmVKqGuxwhNHBxA2kXEWDlxUQ3JCHdNlbTiQ5l1/S7neTBFNo0dGCg8KNC3k/Z98QCjAZNOb/f1BZySpR8FOxwHuHh+SbBZ9uivMIeyFUSGYGeuPxgSUzfB3ALcYCOMvwEd8yiDGotIRc43etC4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F+pvgUXN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D67AC4CEE5;
-	Tue,  8 Apr 2025 12:19:56 +0000 (UTC)
+	 MIME-Version; b=fLx9r5M6BxfhI1sOo7/dj+I2AURPV0c6vDmD8Iw0HbOtvaOaTJjgVLoL2IE8vQ8pXQNePmVm8EMi3FQbEvrf6gBGOQU4hfNKfoB3awD/IpODILeBqxpqy5CwkcpITwpKlYwCOy91ss5tJnXVZwRhOT7mn/bS/oQhTflt1hECKWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEe07etY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B15C4CEE7;
+	Tue,  8 Apr 2025 12:20:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744114797;
-	bh=T5mdom7VbRmMpA4rwdBg5Dqb61JlK5JNnAWXtPk5Q+s=;
+	s=korg; t=1744114826;
+	bh=YJxLmvq/sH6HBWcqo4Fm6FCAcGtqBgh3Rqdm9IQA8u8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F+pvgUXNQigQwLJSYkcV4oDd2eFjsuX/ACP5/Wueq6MmAij6xEl434kx7+9Q0vGiY
-	 MYpZKg4qgKsq6Hfn1Ky3puHzBhibbx6Z/prCw7WA1Tiix3Ds23Iw8T0h91cjZhwJhr
-	 JncCY6CSak7BJksu0CLHYXu7cenEKczGnERKYbfg=
+	b=kEe07etYw1/mK6mXr2MbPWVEvVd8SvegNN1KavoFDJ3BvFelz9Oydlr5VejzJz+Zs
+	 cM9Z2XyS2hBsY+CNkfj0KfH2T8txNSiPAiY2IvL1Bjk8j3x13mGimEQ/GYRxRxJVBe
+	 LQxlFkB2lzOLNB7+Fv1/i2brC4L2aMTX8CUtMjGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Dave Penkler <dpenkler@gmail.com>,
+	James Clark <james.clark@linaro.org>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 211/499] staging: gpib: Fix cb7210 pcmcia Oops
-Date: Tue,  8 Apr 2025 12:47:03 +0200
-Message-ID: <20250408104856.471883088@linuxfoundation.org>
+Subject: [PATCH 6.13 212/499] perf report: Switch data file correctly in TUI
+Date: Tue,  8 Apr 2025 12:47:04 +0200
+Message-ID: <20250408104856.495410043@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
 References: <20250408104851.256868745@linuxfoundation.org>
@@ -66,41 +66,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dave Penkler <dpenkler@gmail.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit c1baf6528bcfd6a86842093ff3f8ff8caf309c12 ]
+[ Upstream commit 43c2b6139b188d8a756130147f7efd5ddf99f88d ]
 
-The  pcmcia_driver struct was still only using the old .name
-initialization in the drv field. This led to a NULL pointer
-deref Oops in strcmp called from pcmcia_register_driver.
+The 's' key is to switch to a new data file and load the data in the
+same window.  The switch_data_file() will show a popup menu to select
+which data file user wants and update the 'input_name' global variable.
 
-Initialize the pcmcia_driver struct name field.
+But in the cmd_report(), it didn't update the data.path using the new
+'input_name' and keep usng the old file.  This is fairly an old bug and
+I assume people don't use this feature much. :)
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202502131453.cb6d2e4a-lkp@intel.com
-Fixes: e9dc69956d4d ("staging: gpib: Add Computer Boards GPIB driver")
-Signed-off-by: Dave Penkler <dpenkler@gmail.com>
-Link: https://lore.kernel.org/r/20250213103112.4415-1-dpenkler@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250211060745.294289-1-namhyung@kernel.org
+Closes: https://lore.kernel.org/linux-perf-users/89e678bc-f0af-4929-a8a6-a2666f1294a4@linaro.org
+Fixes: f5fc14124c5cefdd ("perf tools: Add data object to handle perf data file")
+Reported-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/gpib/cb7210/cb7210.c | 2 +-
+ tools/perf/builtin-report.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/gpib/cb7210/cb7210.c b/drivers/staging/gpib/cb7210/cb7210.c
-index 59e41c97f518d..ef6be5ab3a17c 100644
---- a/drivers/staging/gpib/cb7210/cb7210.c
-+++ b/drivers/staging/gpib/cb7210/cb7210.c
-@@ -1342,8 +1342,8 @@ static struct pcmcia_device_id cb_pcmcia_ids[] = {
- MODULE_DEVICE_TABLE(pcmcia, cb_pcmcia_ids);
+diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
+index a5672749f7819..a35f754f05a12 100644
+--- a/tools/perf/builtin-report.c
++++ b/tools/perf/builtin-report.c
+@@ -1555,12 +1555,12 @@ int cmd_report(int argc, const char **argv)
+ 			input_name = "perf.data";
+ 	}
  
- static struct pcmcia_driver cb_gpib_cs_driver = {
-+	.name           = "cb_gpib_cs",
- 	.owner		= THIS_MODULE,
--	.drv = { .name = "cb_gpib_cs", },
- 	.id_table	= cb_pcmcia_ids,
- 	.probe		= cb_gpib_probe,
- 	.remove		= cb_gpib_remove,
++repeat:
+ 	data.path  = input_name;
+ 	data.force = symbol_conf.force;
+ 
+ 	symbol_conf.skip_empty = report.skip_empty;
+ 
+-repeat:
+ 	perf_tool__init(&report.tool, ordered_events);
+ 	report.tool.sample		 = process_sample_event;
+ 	report.tool.mmap		 = perf_event__process_mmap;
 -- 
 2.39.5
 
