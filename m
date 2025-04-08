@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-131217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2AC2A80897
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:47:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4440FA8054F
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:16:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CDC11B86717
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:41:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C9E4427770
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E76726B094;
-	Tue,  8 Apr 2025 12:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308952638B8;
+	Tue,  8 Apr 2025 12:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z4Ssbh9H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jpOD82h3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08CE01AAA32;
-	Tue,  8 Apr 2025 12:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14EDA94A;
+	Tue,  8 Apr 2025 12:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115803; cv=none; b=rbYkQ4U1rofDqjO1kCc4DM4BB9/WpVr2DG0BWLbweEobu2V4nyex7xhmGypPKgwBFOn9c1ALbtuCGnCevfdqZy270YaTei+YXn7F5wTghkobHV4dKTh4/44+ob9B9YioVQhjzBToriIhqhDGgpEcUjdifrLD2cxp5+Kzd251W7I=
+	t=1744114002; cv=none; b=ZXj/JFWzjZgplkzYy2O0DZKAElul25Bm+OxATQoh8jkcFA3BK++VvIQCrbartziV1JC/I5XsTkHBguTDR+6Py3CanKwFxwQ3YF36+PNFFOmEW7R1dgynOwxYiUlknrmhWg08YxdiTH9KVYeiV7ToTQ3Ve1tgcgwKz0Y+S2pVdXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115803; c=relaxed/simple;
-	bh=kDU9jiqjC725864a22GjtjhhYim1q5pE5UjE1Bl55X4=;
+	s=arc-20240116; t=1744114002; c=relaxed/simple;
+	bh=qlI9oP/tTz1/Vx0VOc8+9/Wt7Nm6jPvzTRcZDVltyrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VpqM5sUNVWCZRZEVTIrGW+MVyo4O7h59LWYkQRUR0OdXQfTxO0jU4R0dlTBl0gBWVI7M1BSIkhANbpkPK2AOejutbvFi7SlldRWTAkao4Ug/kzCQNM+m0ed3Cx7IlpGyzRjtdXLYW6+nI/XkY5IxtlFIDmrMSkkJXfH3HKv0d60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z4Ssbh9H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2B6C4CEE5;
-	Tue,  8 Apr 2025 12:36:42 +0000 (UTC)
+	 MIME-Version; b=V4CV7LrFI1Sarhi3RGWs+TdbPkfiknRfJGbX/Y/j1tdAWHn86j8Cbe89PwmDf+oB+L/V8xCfO0JQLCMneWPJ4bL5B0NCBkl/4628/1pDxgcyxWqc/8qmuFh5OE9KWa2eciKbP3cFjwJexGJwMycNoj8990SJjXLfrATQXAYZbGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jpOD82h3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7362EC4CEE5;
+	Tue,  8 Apr 2025 12:06:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115802;
-	bh=kDU9jiqjC725864a22GjtjhhYim1q5pE5UjE1Bl55X4=;
+	s=korg; t=1744114001;
+	bh=qlI9oP/tTz1/Vx0VOc8+9/Wt7Nm6jPvzTRcZDVltyrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z4Ssbh9HmN4+MJtxN6AwRo65xSmW/2CSmeUikq6vM/KrW7HHkIoAuPb5Glv2HERKK
-	 UlPlbY6ScchqrdJQ4Ju/W2EldCHiM63iWvkCEUEm4gt/DbqoVNEES1oRb5tM7+UvXo
-	 CZ0SknwDkz8GBw2beb0qlZBEwvB/8/HMFhHkaNG0=
+	b=jpOD82h3FLVTvNbs3SjVLQaIGRE0/d6MIdMe8Inl7ayt1RAxLbXIxTzdAOymzrBUR
+	 pdAtjgTQMs0Rhw4DkhnJL1VJKL3htSD631LESX3rXaA7+fxtfhkvSATPEGD/NVUexl
+	 j14nfKK1XsFNbjekYsHVI00MjEsoqB+o+RQWqpJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Kees Cook <kees@kernel.org>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 109/204] fs/procfs: fix the comment above proc_pid_wchan()
-Date: Tue,  8 Apr 2025 12:50:39 +0200
-Message-ID: <20250408104823.531370643@linuxfoundation.org>
+Subject: [PATCH 5.4 099/154] mdacon: rework dependency list
+Date: Tue,  8 Apr 2025 12:50:40 +0200
+Message-ID: <20250408104818.498704427@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104815.295196624@linuxfoundation.org>
+References: <20250408104815.295196624@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,43 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 6287fbad1cd91f0c25cdc3a580499060828a8f30 ]
+[ Upstream commit 5bbcc7645f4b244ffb5ac6563fbe9d3d42194447 ]
 
-proc_pid_wchan() used to report kernel addresses to user space but that is
-no longer the case today.  Bring the comment above proc_pid_wchan() in
-sync with the implementation.
+mdacon has roughly the same dependencies as vgacon but expresses them
+as a negative list instead of a positive list, with the only practical
+difference being PowerPC/CHRP, which uses vga16fb instead of vgacon.
 
-Link: https://lkml.kernel.org/r/20250319210222.1518771-1-bvanassche@acm.org
-Fixes: b2f73922d119 ("fs/proc, core/debug: Don't expose absolute kernel addresses via wchan")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The CONFIG_MDA_CONSOLE description advises to only turn it on when vgacon
+is also used because MDA/Hercules-only systems should be using vgacon
+instead, so just change the list to enforce that directly for simplicity.
+
+The probing was broken from 2002 to 2008, this improves on the fix
+that was added then: If vgacon is a loadable module, then mdacon
+cannot be built-in now, and the list of systems that support vgacon
+is carried over.
+
+Fixes: 0b9cf3aa6b1e ("mdacon messing up default vc's - set default to vc13-16 again")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/base.c | 2 +-
+ drivers/video/console/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/proc/base.c b/fs/proc/base.c
-index 82e4a8805bae6..fb169bdfd9a8e 100644
---- a/fs/proc/base.c
-+++ b/fs/proc/base.c
-@@ -415,7 +415,7 @@ static const struct file_operations proc_pid_cmdline_ops = {
- #ifdef CONFIG_KALLSYMS
- /*
-  * Provides a wchan file via kallsyms in a proper one-value-per-file format.
-- * Returns the resolved symbol.  If that fails, simply return the address.
-+ * Returns the resolved symbol to user space.
-  */
- static int proc_pid_wchan(struct seq_file *m, struct pid_namespace *ns,
- 			  struct pid *pid, struct task_struct *task)
+diff --git a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
+index 3b432a18b5ab6..60102eea17abc 100644
+--- a/drivers/video/console/Kconfig
++++ b/drivers/video/console/Kconfig
+@@ -23,7 +23,7 @@ config VGA_CONSOLE
+ 	  Say Y.
+ 
+ config MDA_CONSOLE
+-	depends on !M68K && !PARISC && ISA
++	depends on VGA_CONSOLE && ISA
+ 	tristate "MDA text console (dual-headed)"
+ 	---help---
+ 	  Say Y here if you have an old MDA or monochrome Hercules graphics
 -- 
 2.39.5
 
