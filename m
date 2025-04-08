@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24935A808D8
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:49:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AEAAA807BA
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:40:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D74A61BA0379
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:43:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 097241B86436
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B1326B2BE;
-	Tue,  8 Apr 2025 12:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C14E26980C;
+	Tue,  8 Apr 2025 12:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xW3SXfwU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sgUv4cqR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A887E26B2BF;
-	Tue,  8 Apr 2025 12:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8F7206F18;
+	Tue,  8 Apr 2025 12:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115919; cv=none; b=Ch40HLuA1AaXymyuWbtXNngqmQZdSzv+Dn4H//84RQclZhf17fcHsb7bQwx4zgBodiAkf3uA8Ati0bupyucAbPAdd8cydV31eNnXB0ZG1Scfow4qBzTFr+m/EgyGmnKZoKwHv0gcbeH7sjRn9gcIH0uoD2vwrKCqeOCUnSu/g2Q=
+	t=1744115523; cv=none; b=fv53K5OhFbeNC/a70BhfTa9fhsHxulDCAcEygf+JxEllm8bzjITdFMU2AGSsna5V5W+DL0WEOrDmTFE2EpZe1wtgMHS6CdoAseyyKeAYY1+kGqAefD2TLXySTdcYlkSLZgW36Uy/eqnCb/EXw0BE0DYGtX+twpfaQqslt23PtYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115919; c=relaxed/simple;
-	bh=kbd5zB9m2vApikGpYqA+vVh5KuWBcJ1EzQO52GBUTQs=;
+	s=arc-20240116; t=1744115523; c=relaxed/simple;
+	bh=NhQmOC1qg30eleAs+FwP/Sm0cjyeZciDQKdfPB8RWIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t9n+UTdWl+Xik6tOqlfhKvQcp9JpxT62f79uKR3i6a3OcHsGCay6o+G/LJcG3jm13sgjmCgQNgJQzE2wDgVmCHGWLruJgYouq0H6Io+JqKNcMayka2jbYWKBXcuDDKvbVUnr6+pUTsbZqqdH7U/4HfWAF2xz8yVPtDXZh3SawNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xW3SXfwU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CC98C4CEE5;
-	Tue,  8 Apr 2025 12:38:38 +0000 (UTC)
+	 MIME-Version; b=kFymc6qEA6n0343/6ten4O2eok18HkcFaHYFI7gqrIy9wPnoICCH4DlGMoh3bE9tRSCOmfAIjELu60kH39nCTHIuD+byHaGLuKHeOudWpJoqt/78pcObYNMyD1WqeSfmV6pGqgRsx7Bw4vR7iGQrz4FXvfdjm8deiWn97L5c1QU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sgUv4cqR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AB3DC4CEE5;
+	Tue,  8 Apr 2025 12:32:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115919;
-	bh=kbd5zB9m2vApikGpYqA+vVh5KuWBcJ1EzQO52GBUTQs=;
+	s=korg; t=1744115522;
+	bh=NhQmOC1qg30eleAs+FwP/Sm0cjyeZciDQKdfPB8RWIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xW3SXfwUJKPhCxSA19tcT6PHjkoxES8q06sqssETQIs66mtN4wI5sOX6CawpxJSuQ
-	 curZK/BuqLqc3RyGAWHSnswE08/IA8qztIXJyG077SqF7JUvYSTj+WKBuJQlofzyTU
-	 CqeXF0GAnowvjT/fcDZjfjab6RMvm7vmwm7hW0oU=
+	b=sgUv4cqRAHMW8tZs6IM1GXarNzvaFNpJvfv7/oVm7jhFvIZwdDxqno6mxUK4Fp8TS
+	 NB5Un4l8NiMh+Hg6G4Ajb0VCP8fDjCsOiFM+kRLaRqnIpulqf/LarkmofpVKnlaPJZ
+	 bMUWDhrzjhKC4H+VfcA+vL72R4vHdIEH+10fYvbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yajun Deng <yajun.deng@linux.dev>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Jon Mason <jdmason@kudzu.us>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 152/204] ntb_hw_switchtec: Fix shift-out-of-bounds in switchtec_ntb_mw_set_trans
-Date: Tue,  8 Apr 2025 12:51:22 +0200
-Message-ID: <20250408104824.767847392@linuxfoundation.org>
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.13 471/499] ksmbd: validate zero num_subauth before sub_auth is accessed
+Date: Tue,  8 Apr 2025 12:51:23 +0200
+Message-ID: <20250408104903.099239042@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104851.256868745@linuxfoundation.org>
+References: <20250408104851.256868745@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yajun Deng <yajun.deng@linux.dev>
+From: Norbert Szetei <norbert@doyensec.com>
 
-[ Upstream commit de203da734fae00e75be50220ba5391e7beecdf9 ]
+commit bf21e29d78cd2c2371023953d9c82dfef82ebb36 upstream.
 
-There is a kernel API ntb_mw_clear_trans() would pass 0 to both addr and
-size. This would make xlate_pos negative.
+Access psid->sub_auth[psid->num_subauth - 1] without checking
+if num_subauth is non-zero leads to an out-of-bounds read.
+This patch adds a validation step to ensure num_subauth != 0
+before sub_auth is accessed.
 
-[   23.734156] switchtec switchtec0: MW 0: part 0 addr 0x0000000000000000 size 0x0000000000000000
-[   23.734158] ================================================================================
-[   23.734172] UBSAN: shift-out-of-bounds in drivers/ntb/hw/mscc/ntb_hw_switchtec.c:293:7
-[   23.734418] shift exponent -1 is negative
-
-Ensuring xlate_pos is a positive or zero before BIT.
-
-Fixes: 1e2fd202f859 ("ntb_hw_switchtec: Check for alignment of the buffer in mw_set_trans()")
-Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Norbert Szetei <norbert@doyensec.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ntb/hw/mscc/ntb_hw_switchtec.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/smbacl.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
-index 7ce65a00db56b..1bdec59100019 100644
---- a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
-+++ b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
-@@ -288,7 +288,7 @@ static int switchtec_ntb_mw_set_trans(struct ntb_dev *ntb, int pidx, int widx,
- 	if (size != 0 && xlate_pos < 12)
- 		return -EINVAL;
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -270,6 +270,11 @@ static int sid_to_id(struct mnt_idmap *i
+ 		return -EIO;
+ 	}
  
--	if (!IS_ALIGNED(addr, BIT_ULL(xlate_pos))) {
-+	if (xlate_pos >= 0 && !IS_ALIGNED(addr, BIT_ULL(xlate_pos))) {
- 		/*
- 		 * In certain circumstances we can get a buffer that is
- 		 * not aligned to its size. (Most of the time
--- 
-2.39.5
-
++	if (psid->num_subauth == 0) {
++		pr_err("%s: zero subauthorities!\n", __func__);
++		return -EIO;
++	}
++
+ 	if (sidtype == SIDOWNER) {
+ 		kuid_t uid;
+ 		uid_t id;
 
 
 
