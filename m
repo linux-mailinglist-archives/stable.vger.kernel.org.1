@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-131272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-130454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BC45A808F3
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:49:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E50A80535
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 14:15:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6748F1BA27C6
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:44:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D7273A3F2C
+	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 12:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE8CF270EDD;
-	Tue,  8 Apr 2025 12:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9AEE26AAB9;
+	Tue,  8 Apr 2025 12:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQkQswoR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gzi/IdhU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6C8269801;
-	Tue,  8 Apr 2025 12:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B7B265CDF;
+	Tue,  8 Apr 2025 12:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744115949; cv=none; b=pu744R33SeOb5GE5JyZfzrq53sT+Oyh8r6kNTDfeqIWnrVOieuk8r9RZppPlWqJpj1Sl6duqV34lm8IaMUW8VMqfFbzl9v8VRylW7nmLqIY0Tl9TX9U9liFH5oa5qBEQzYcFN3BpWjEaZpM0RNQSFdmFM7w9I+TziXP3rEt42fc=
+	t=1744113753; cv=none; b=HFQ9ZmkCfwD+KIvDPhvGocq1mrRwuTZBfzLjxruYSlyRhhSl3sN23/iGfOW6sI1H7mySx32yTqImIFo+zJB+od4FgDqx8gDC5l2vqx98u91TOi59VgTZU8gh8trV6LuTRl0c3shxG1kRjc6KEbIFv03wHlIPJCR1uYbrcclllpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744115949; c=relaxed/simple;
-	bh=UlhvLk5FlU9u6fbjGuWAFkA3d5eiv0xPvoY9KE1WTL0=;
+	s=arc-20240116; t=1744113753; c=relaxed/simple;
+	bh=E7a6Ky19GGFEATI/fkVYrs+RxgN6wsm/FsSZwgLst7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cmIC+DqwtjDYSeScOWxWTcG0KMDBwszmYDCGLpMNzOS5Bre/0iDQdolH4cqgQMwTPbGUcy7fI3wnysc4MVU9a9oVHB3Z58qsYV3ZJ6Pcxid7nhy5wq1pjdzVblWD5pLt+s76KvwvTl6NHyxdvS1x/HJVC5qE93PUPP/Y1jswbZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQkQswoR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9C4C4CEE5;
-	Tue,  8 Apr 2025 12:39:08 +0000 (UTC)
+	 MIME-Version; b=FzgPsoOA1FYw+BjLblmRy3z2cmM3LfRcCCC1aPyBkzdqkz1Zc6eudB77HjFRqcSl6ELphg9EMAl2bx2oIN5pMeE9lUp6m8YnaovEj6fhYGB0xAK0LWTlYiwCgh48StJT61ufEjeX7ztM9nOkvdvDnB7ubgasnyT+MDxgGXw8jvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gzi/IdhU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DB5C4CEE5;
+	Tue,  8 Apr 2025 12:02:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744115949;
-	bh=UlhvLk5FlU9u6fbjGuWAFkA3d5eiv0xPvoY9KE1WTL0=;
+	s=korg; t=1744113753;
+	bh=E7a6Ky19GGFEATI/fkVYrs+RxgN6wsm/FsSZwgLst7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vQkQswoRD27gTIN3jJxGaP4POVEsvlyBz4ichktLgo++mE2MvxNppmqYD+emgXDml
-	 9UtYbBXh7wNMFwa9hAhXlBVvcY0mASVPAgOEoXDlOuEfuD4VLJSsbCMgFKL520tiYv
-	 0HLh7/Q3I4GicnOF1ODrxDmxPNCPl8/0AIYdUp1M=
+	b=Gzi/IdhU1JbHvIifcN8+b81YGzo+XfRb3lUsdWMjCwH6F8Wve/l6efp9x0xkTTwy0
+	 QiLBvY7tMX21RuzgUv7JJhAFCNSQUOF85xJjAyMYuYpKNBucQ+GphhzE+X7KXX01oZ
+	 wRhvofi6HrRqgldjGmWaTkILHiuI90E1xcCTnalA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 115/204] ksmbd: use aead_request_free to match aead_request_alloc
+	Vincent Li <vincent.mc.li@gmail.com>,
+	Hengqi Chen <hengqi.chen@gmail.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 234/268] LoongArch: BPF: Use move_addr() for BPF_PSEUDO_FUNC
 Date: Tue,  8 Apr 2025 12:50:45 +0200
-Message-ID: <20250408104823.695867831@linuxfoundation.org>
+Message-ID: <20250408104834.901790612@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250408104820.266892317@linuxfoundation.org>
-References: <20250408104820.266892317@linuxfoundation.org>
+In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
+References: <20250408104828.499967190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Hengqi Chen <hengqi.chen@gmail.com>
 
-[ Upstream commit 6171063e9d046ffa46f51579b2ca4a43caef581a ]
+commit 52266f1015a8b5aabec7d127f83d105f702b388e upstream.
 
-Use aead_request_free() instead of kfree() to properly free memory
-allocated by aead_request_alloc(). This ensures sensitive crypto data
-is zeroed before being freed.
+Vincent reported that running XDP synproxy program on LoongArch results
+in the following error:
 
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    JIT doesn't support bpf-to-bpf calls
+
+With dmesg:
+
+    multi-func JIT bug 1391 != 1390
+
+The root cause is that verifier will refill the imm with the correct
+addresses of bpf_calls for BPF_PSEUDO_FUNC instructions and then run
+the last pass of JIT. So we generate different JIT code for the same
+instruction in two passes (one for placeholder and the other for the
+real address). Let's use move_addr() instead.
+
+See commit 64f50f6575721ef0 ("LoongArch, bpf: Use 4 instructions for
+function address in JIT") for a similar fix.
+
+Cc: stable@vger.kernel.org
+Fixes: 69c087ba6225 ("bpf: Add bpf_for_each_map_elem() helper")
+Fixes: bb035ef0cc91 ("LoongArch: BPF: Support mixing bpf2bpf and tailcalls")
+Reported-by: Vincent Li <vincent.mc.li@gmail.com>
+Tested-by: Vincent Li <vincent.mc.li@gmail.com>
+Closes: https://lore.kernel.org/loongarch/CAK3+h2yfM9FTNiXvEQBkvtuoJrvzmN4c_NZsFXqEk4Cj1tsBNA@mail.gmail.com/T/#u
+Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/auth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/net/bpf_jit.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/auth.c b/fs/smb/server/auth.c
-index 8e24a6665abdb..c34b30642bfdd 100644
---- a/fs/smb/server/auth.c
-+++ b/fs/smb/server/auth.c
-@@ -1211,7 +1211,7 @@ int ksmbd_crypt_message(struct ksmbd_work *work, struct kvec *iov,
- free_sg:
- 	kfree(sg);
- free_req:
--	kfree(req);
-+	aead_request_free(req);
- free_ctx:
- 	ksmbd_release_crypto_ctx(ctx);
- 	return rc;
--- 
-2.39.5
-
+--- a/arch/loongarch/net/bpf_jit.c
++++ b/arch/loongarch/net/bpf_jit.c
+@@ -872,7 +872,10 @@ static int build_insn(const struct bpf_i
+ 	{
+ 		const u64 imm64 = (u64)(insn + 1)->imm << 32 | (u32)insn->imm;
+ 
+-		move_imm(ctx, dst, imm64, is32);
++		if (bpf_pseudo_func(insn))
++			move_addr(ctx, dst, imm64);
++		else
++			move_imm(ctx, dst, imm64, is32);
+ 		return 1;
+ 	}
+ 
 
 
 
