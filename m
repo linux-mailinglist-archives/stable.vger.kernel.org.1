@@ -1,128 +1,111 @@
-Return-Path: <stable+bounces-131947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94568A82631
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 15:23:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE652A824ED
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 14:33:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3C328C7340
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 13:21:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D836160C5F
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 12:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 601E325DD13;
-	Wed,  9 Apr 2025 13:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA2225E816;
+	Wed,  9 Apr 2025 12:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="l8o4HGu6"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="fXqaPu4F"
 X-Original-To: stable@vger.kernel.org
-Received: from sonic314-20.consmr.mail.ne1.yahoo.com (sonic314-20.consmr.mail.ne1.yahoo.com [66.163.189.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74226218EA2
-	for <stable@vger.kernel.org>; Wed,  9 Apr 2025 13:21:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.189.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244E221858D;
+	Wed,  9 Apr 2025 12:31:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744204864; cv=none; b=Md6n7nlipy7DCdOiTDAt2RWTBFyPf5sx1a+XW/W71H33uerKHMpl7Cwm67G2WJHARSvEJa/b2Ioj+/9L5ZTssuzAlFAnwBi+3SqE7kDiIDyVhactArimZbjCWcL2Jsu+/QNxm3t17ExjR4xKwezOTqTrfS8/OoqmUb/p0ZTa/NQ=
+	t=1744201904; cv=none; b=hhcYGiYsUAQEWvz9Zmx+Z7JeOz0qg65SpTl1EhPN3bYoceKK+3l+a+2RN5pTb04uMMbpxpP3uhOMp0aRhwlaHi71EqbOw5Pu6JikakrRQ23ezCAQI592JXNwmi2E3d4QL57e21iM9qSKZbGX00p3+0V8p0eHOGQ4ijJGRl6IyXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744204864; c=relaxed/simple;
-	bh=DmhUiTxWM15kAj6iKf+nRYCNQwtSNUVvoxOL3+hEcAo=;
-	h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type:
-	 References; b=UyLIxUbhkDOeVl9Wk+TuhVGyD+yo282gcnJ2a4ATFuKWls1iDpUIr2BrRrMyEz7H69GW72WGBA1W5cWNZ4deRbyA/K+i8y0GnM12LRN+IEbu3ouIgjfKlPTdmUi6Yh6vcySoHvaXzQNv+7OWlflh/oWWbzmeTrR3g4dIQLMonbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=l8o4HGu6; arc=none smtp.client-ip=66.163.189.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1744204861; bh=DmhUiTxWM15kAj6iKf+nRYCNQwtSNUVvoxOL3+hEcAo=; h=Date:From:Reply-To:To:Subject:References:From:Subject:Reply-To; b=l8o4HGu6KEbGhgrEPhWMb69pouHre0MFUqBVR2L7M4JPpy2fpwe3ev1xz3/Ps8c1houEYeX4W/y75TNxEQZuXzT+G/TGoXXFHKwpOZSuk+Lu3QF+gSUssR76GAi6TeOFrjAA31TRoAELDKLb0FIA2tz5tbbNZI/eZHV0F6ztlVYzsoJtVyI42GtEaEaPYEtCLLCTrPgQnN84TrHhGbseBfaP+vQhyr5KP7RXD+7eKjE2Wyz/hdnoFt3wgIqAJYkEJY9BsT2AStvGIeN2TLgiorJdlYYEYP0b+n2AcEbOdi8EQc+1JInmf9Uq7mGlnjr8+9/E821je3oGqGm52VyEsQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1744204861; bh=5Jy9qyGsA5JhPvCOQ+D2CAMlfvoIOEG3+E5a0de9a14=; h=X-Sonic-MF:Date:From:To:Subject:From:Subject; b=PAAU4NR93lCaxJDpXYWnNrKmw4JB7XWjDxQtA+hf0noIelkcV9hJ0yy951bkeRArSGxEvbfjhQ8XuLvqnIkWK74jvr04bG3BpGkWb0gOhXpAlKIdFqkJ2T2xt2zjBtmXxjKHWKzJrgk4yACQIGheOMLNqrTf6iyAp8f68nMb1kwAO193HkzrtbSWjJmTrQPqqMiKGrnOwLyxpd0nx8ZunOZmyN2tg867QFyUJhRvzwQ5Bqpc9GICcpZ6kJiYOJKxo8Lb6+sVSNhsmE05pkREGhqUxGhIMyjlN8H09a9fCUUAPaR2irMfeGKXDIyx5xyt0Rz465K5jWgqVfQj8iP+2A==
-X-YMail-OSG: rJmavj4VM1makiQBj9N0GJ5UzFVc.326NK7ft7kIPPk4zEj60wbpCDdFyQ0b5lA
- ZErI6GfbfKNaWIXScipQqNhRejA1h_6MdHfq2qo8kGjUJikGosklk73AhXFD1mNXtf6I4Gff61M8
- T5EOsdnliy.ZpGWaPMQgfKJg5BLN2aGtmcYll_fkINWLnA_ztEr.7HNZyBdvmz8RddH7JhUQCnnt
- frzTH7xn1zPVShi4olf.h1mHyaczCQX2_e7m0ilIkkjp6tbotUN30GwgzY5NKbGkTJ_h5i1TNNvN
- XkSUT9xz35qFciw61AmU8fCX7ACjwoSyVFwBJkcI5Z55UAgsn2OliYvoThLvdTzzode.sgNJG9ms
- UQIDahqNZumhIYpHTiYv18vcmQUiELxu_G4oBQ_JaAOYfQ7i91znss8Pj8.uhjoqYU1VwBMXWnHe
- U_48cFza9myg8wjpnXavqyo5jCUsCMtUisGZP7OnW2PVtEWkD.ITjdh1Al26W.XiCJBpis__XKJ4
- csfQ4Lhfb6p.WpTqyLNrGBXkkF9sSBKJ6xD0qksh1jyQdNaOnveCuxLSR5MVC0gvI_0EhQoYq2Md
- R7wh4by6d9MmClU3Zy0fq6kj4RoumkkR7qR.eqf1C7jz4Zh3Quia1pNraiKgP_yf2fw0u6J5.ybT
- c1RA8ekN8OYic8s9zsOerz0CN3OYeE0JKvnc0ZLcYKVp1UNwZybiPTS4SU31LOYkMUG4iMy.c7vC
- QNmLKArzrFWiSKmiAVizqcMCvHI0WTyleCtIq.RYhjOQ8.WThhF2CT.oFSaCdZovrq8VsWEk7vWG
- kEVMur9rhwop.TdMg5.oxg_RQFsRsr1o2eYeJbfGqZgGdGvM8xGGKNUAlKeEV9p5YvLXZJeTRZfW
- 2posyavcfGlEg4aDbnP6wbQClb7eP.m4C_D9n102HLlGbBINkh3NTAaCN.JelOGeXXFmx6QA_dWN
- JF.Tv2LshIAFJrrZzXRQDszzGp7DxR9n5s7JNLiTSMiUSrqvmKDzHARNWc7ngAa6FMD5azOfQfYx
- k4cMRaRmvEOwiWfv2YiRmPnLixxNvbiupFNKl8seoTKMtqhKawPrv4XW1NvzlD44lyYhGClXjpou
- 4sU9KjxRvlJKCApxRf7U4wpYfHbLwA5wnnBotJHdR_73LhEqrd5AcCzuZpn90yGZP7y87G2OXDrL
- 6aLRGr1NW_MyBkcSaBT6P1q3p4a9c6DLykp3U80ajxrQeL3uKscxtY6YFPbxjjut7rV407NvSnv.
- sFj9yQjCtkoVktIaKzZRhKR_E4XmBKqESOUeKBUtU6kLtcEoBKWupGFUF10v3PKfBe2bjeGIDcjJ
- CPc66IwV5GHUVCCSp0zIixfyUEv9LmdsCTlkIVXdf3_S1U2S6ytBhMGxSHG0ohcdMcC3zS1KTOyy
- HhxFDgfqc06.216nVT5BfIKQ3hy8byU9ZI7Feb3brCjADUnXYPn4O9GZ8s9OyhCZmQSD11a1uhFx
- nw15jv4txjB.uJAZe7b9mIyNGiayiR4C9n41UBokEsqz2ThSCP0rPuzXzI.hEBJ4tiOAXzmuClZB
- okaWISj3fUkHjL.T8v_6gDGFSjqX62zRDWFlcFNEbwksh9G_TG8N1P5lBnT6LSr1G7wvuU6lCTQX
- cR_WDQ1PvqvQqvERPQTPEAEgznzAjYvkzDH2FCFK5kP3dIaiA7JVMoJuu6bvMzk1aqsFE7TXUsCq
- Bkf3A1PpSxzVlXRVk92NWginVu2FuEcm7_y3U4HC2VER76hukLm6.R4dwOYNuHYnP9L.kd369aGN
- xysgB_5CdvVfl6UbL4C71aPLwWSYOg3yl5.ZzyamuEsIBIl_442TfQL8OcesxJY_RGvFGwr.1Xo.
- tGeHUxipxKkWIIAFDg7IR3tKzoYFxzyJ4zWiAwW6hIOXksUr9kYo5gR8PQsgnTIDI5KuHld0DGzO
- YcigoSZfpH0TZ.Pn.SshylZCMEkgSenCx34k8yAsQU2Lnw7FxFoPQU60jKKghLKqMmq1ikvE1q0y
- pWzw3llB81e7rbUEllP.EMO9tT3ADfEPRzw7lRyKl.BszUEUtc3OsvyesFMi3Or6IYXOVQJMYd8v
- B.rp3QM_tSSgvGtyVSAHFZWrxkVxtYDOWUyk4ss0mrRSmGsvNrdWGxIZo2oPwKsLN8iwO.dE0YaQ
- iD7aAYY6V0WS2hOxWbEEBPWxZYkzb1sTesAUzMxDWJQ41UtMCEdRep.UR5p9C.ALvOEg-
-X-Sonic-MF: <emoriel17@yahoo.com>
-X-Sonic-ID: 356f85df-4828-4801-be26-5b98567ab52e
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.ne1.yahoo.com with HTTP; Wed, 9 Apr 2025 13:21:01 +0000
-Date: Wed, 9 Apr 2025 12:30:23 +0000 (UTC)
-From: moriel5 <emoriel17@yahoo.com>
-Reply-To: moriel5 <emoriel17@yahoo.com>
-To: "stable@vger.kernel.org" <stable@vger.kernel.org>
-Message-ID: <1110488197.3499072.1744201823968@mail.yahoo.com>
-Subject: Broken S3 on Asus Z97 Pro Gamer
+	s=arc-20240116; t=1744201904; c=relaxed/simple;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=G19nER0MV8OKV8BtT7Uj08e1MXiJFEFwezlNvTM/3axdccv/CzO9PtQ8kIzbgUFEPVn5kQetMcsM5aZRpXLJgJYpYVX+HX4u/ZhKnUVCybGN7NC9AEI0+H4OhX423oZEjjOqJyvrAPCi7ZjmnxjTEkjyCE6m4q5mGDRJO4f6dac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=fXqaPu4F; arc=none smtp.client-ip=212.227.15.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1744201877; x=1744806677; i=rwarsow@gmx.de;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=fXqaPu4Fpu6/nm6QEyAZAjC85NQSQs0PUALi+mkm/syWLchKtEmoLcQM82pjZqwO
+	 oJcFolGGMkCdObsGFCtx8P/xbipZCNUJZxdoWc0wvEH0FW1dUEteLuDEIReSE8zQT
+	 4RPaz3hXzJm8FXqgHQnBwp41zBAZdfDERqYaP6+Dm7uN0hR99qN8cYjEVurem2WK7
+	 gZAyB3DT7IOxkf5ZJHqXfU3tVA+R7Ug3T3tCZSslNvFwRkS/Z/lIevPskL/mD9W3O
+	 ItmZra9EhAMhaFscv7mNIt+K42WFebTEbDD/uz535bjU/zZaCjB5ah5zPp0h9inBd
+	 KoNHgxWMpn0ZOjQRLQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.33.88]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MgvvT-1tQQ8m2PHh-00oBvK; Wed, 09
+ Apr 2025 14:31:17 +0200
+Message-ID: <1ab58338-d663-4457-a113-67ae2142a978@gmx.de>
+Date: Wed, 9 Apr 2025 14:31:16 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-References: <1110488197.3499072.1744201823968.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.23590 YMailNorrin
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.14 000/726] 6.14.2-rc4 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250409115934.968141886@linuxfoundation.org>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <20250409115934.968141886@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:bORnGVt06sB2sVQc4wayjK/8AUsQgBOI5577Vn2o9FxhtGrsuJj
+ oOPlKGbIA+JTqyVYVcgcKGh5HXREoj1Ll3Z7Yvr2unamPEzq7cuuhuhAkMKxknY503+aYQt
+ h4kT9QVrTvdIB2l13zIlLd/BUHqhZMS+Wln74DOoxxWYxpxJurJDlNKKbMNJ9hXvS4/CJIm
+ KY1s8culc8xgLOPuaSJQw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:G3NdtSYX7jw=;a2sz+NerWmd6+vjyZGdaotYGgsz
+ MKvkse2qm7i6/nbn7yFA8+wne8zFMRjzbb1UX58GIjWBzaA+dzlA11PpcNpsldg2sK0P8MBKS
+ 6Npte8/3vzxNHuL93P2J29gSzw9cywFZNqwbkfl3Rk8PWIY4TVrngMDOr7QlAALaS/JiJquIu
+ lT9mFqljkbYS1zSj65/ZOJai2aOex/DUM9czYHa5MM3P6kq04Qyfna4H41c0EnjpSdbcdrYyz
+ M7+Bg1zo9GiqDgCSodX60/itxr7+Al1793IaI6DcZMFBBdLNfPhZ7hwsNffkNoIAhgoPYmd0V
+ Yhs9uM2AR0TOHOu07oOF3Ba+pbFaXsCGej6U6UYX9BAI/Uc/aj0CT/XSJ0DzJpVtM0RcFvhdH
+ 7ObBAb8TmJoqnyQRF3YUSsFEC3Fr+Xdm5vSckzpfkohJ2OiPMSRk+UWJd+AnVhilTbc2vAjPd
+ nS2R5mnNG/ydC8jt9bDkD0e0HWzImSG8vDBX01gSxxGwYnxRxim39TXWat7WF/oAsg41iwDFm
+ XoYZkI1dZfsuWw0KIkNNl80x5r/uB+c8ZOlMfckWsdE2r4tebE9jf6Cy62Smj8fuNG78OwsRj
+ aMpXwz8voHca4/l5IAUZKlp4ovHTjiPAggk/fR/hDPCgDONxgdexUMJcTlW5c3TuSoFb9xx1a
+ wJ+UydWSj8aLXPFgPMJl3voc3yXlG4Trvcir4tu9mq8uDohJClCX+oo4osMR1ZZUMcIgd7Gwb
+ tuB+7kaOey3Y+YgM5U//FUEB4uYn5+WS9T0z/qKrvTo3irUtkqZ/wt+g+/UDkRPzeBYGeNMUE
+ oYrri0iz469TqayZ7YRm9NRMuh3m+INjnDkTmJ3QeaVliHxr/HgMzIims3UsYu3FHH2dmIJ4L
+ 3dB7Atc6MifFZOs5Y78N27YosXtxKFFDyrHCZpSnDIEwO02oSs8mvDaM33NWi9Fwocu2Ow7r/
+ /B8Kylc6QaWjxnSP19bgSrsVJjAjp6Z49PU1957MVDO1Zd5qQ4bZZnyXFtnYvBw2LhaGenMqN
+ ScDKb55ceYS0PIl1E+DTbPlbefNnvw6e4lj6QPFRfrqGBJNV6Ihpe+UfLqt5Si9Ac0F/eXG18
+ IfXaijTN0/izjtEe9r9DlfWFYeU8VkcrATpVGsZDYv0YFFPtvEJ6XxvyjvG+f9PsaQ6IIh52j
+ /g4jRd1us3MCvybFtCsyOwBdrCcLfy7NclruxhGtwPaZLof7yc1vMI0FYpm3mH66uQswSkqfE
+ /fDZ8wnQYXiEA/JExKaMn9ewJCjoo4sivP+DfGVJbBro+XBhhCd1oexABrEry7yKwV0QyLIA9
+ Ruf//NmKgW7yLXuw3F5Hhx8W0TNlHe/NFa+wGatg53uKQc12SkpLHxUO4cTQrFr/yFc1aksTw
+ 7XxJmAshVDpRSHixjNiYdgRn6mSPrFsmXXDSv1LCmNMRhS/G8ojSNb5kOiUoAmTTuqQUDAyr2
+ Rnw5KYwLG6uryHuffrQcMJ46ALGw=
 
-Good day/night to everyone.
-I have had S3 sleep broken for well over half a year at this point where th=
-e kernel simply crashes upon entering sleep, and the PC turns off (literall=
-y stops pulling power from the power supply), and turning it on, at first, =
-causes to to run through 1 on/off cycle, with I believe is a diagnostic ste=
-p on this board, as it happens whenever something causes the PC to unexpect=
-edly turn off (unless the source is external, like a blackout, in which cas=
-e once power is restored and I turn on the PC, it turns on normally).
+Hi Greg
 
-At first I thought that it might be an AMDGPU issue, however removing my dG=
-PU, and also, the rest of my hardware, changed nothing.
-However I have had at one point had asus-wmi try to put the system into S0i=
-x, despite the firmware lacking support for S0ix, and now FastFetch no long=
-er prints out my motherboards model number on the Host line, instead just s=
-howing ASUS MB, so I have reason to suspect that asus-wmi may be the culpri=
-t for this regression.
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
-Unfortunately, I am unable to procure logs, since the kernel crashes before=
- anything meaningful is logged.
+Thanks
 
-I know that this is not a hardware issue, since on Windows and older live-i=
-mages (Solus is my distribution of choice) these issues do not exist.
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
-I am unsure as to which kernel update broke S3 for me, however I believe it=
- was either late in the 6.10.x cycle or the 6.11.x cycle, since the Solus 4=
-.6 live-image has no such issues on 6.10.13, which was also our last 6.10.x=
- kernel update, and I only started experienced it when we updated to 6.11.5=
-, our first update to 6.11.x, and updating to 6.12.x did not fix anything. =
-The current Solus 4.7 live-image has 6.12.9, and my installed system is cur=
-rently on 6.12.21.
-
-Hardware:
-Motherboard: Asus Z97 Pro Gamer
-CPU: i5-4570
-dGPU: Sapphire Radeon 540 4GB
-RAM: 2x Crucial 8GB DDR3L@1600MT/s, 1x Crucial 4GB DDR3L@1600MT/s
-Storage: 500GB Western Digital WD5000AAKX SATA3 7200RPM HDD
-DVD Drive: Lite-On DH16ABSH
-Add-in cards: Intel 3168 PCIe+USB (by means of a simple adapter) VIA VT6315=
- Firewire 400 PCIe, MosChip MCS9865 Parallel PCI (over integrated ASMedia A=
-SM1083/1085 PCIe to PCI bridge)
-PSU: Seasonix SS-860XP=C2=B2 860W
 
