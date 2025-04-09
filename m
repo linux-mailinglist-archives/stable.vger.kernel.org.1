@@ -1,124 +1,112 @@
-Return-Path: <stable+bounces-132015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B6FBA83465
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 01:13:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75DC0A83470
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 01:20:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4701B19E7C28
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 23:13:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F2377A9F36
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 23:17:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 034E926ACB;
-	Wed,  9 Apr 2025 23:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFCD62144C4;
+	Wed,  9 Apr 2025 23:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="HB6hMWN2"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vhzk8li5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CC981B6CE4;
-	Wed,  9 Apr 2025 23:13:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D6115855E
+	for <stable@vger.kernel.org>; Wed,  9 Apr 2025 23:18:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744240416; cv=none; b=IsvvZY9+BlUnvYj9mWT2EzApOUjUXvCVmo0Lr6oliMDfIwFsMhdAkRKAZHbC60J0oG4Sc79jdgX11jGq3ih1mbOpF96YavaWwqwindb6ztggPrJp2+pSYmBU3ZsDumUFXCCqHiCNasHfCjsEWpQdQFDkGezMD4LJIEpQgy7K5QE=
+	t=1744240731; cv=none; b=uXoNTZrYs70zrLhZKgHJV17QDZPbWb9HDZEvAVoNpFQI44HD6qLurH4Ax2LAYPmSJvCrmZMU3m67uEkFW+1uPAXQ81euro6dpglaIJAuojSEaz1M1EeprAK1jFRTQ00wUqrsYwWKlJhXfATh1AnpH6MX+mqbqbhTEepMDV02ghE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744240416; c=relaxed/simple;
-	bh=gwk9OrycqkKVdhpm87tobsijpdGkykWCrAcP3S79gRU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kHUKDfv4TBkDrdOlnousKMteizWNTeBY77pCnbRg482JGVxmHyIEfYpwW2RF7RkIpHAOjfwac451DpDT0yCbtgH3wZ3M4FAJ19qdhqwUqQNKwSt5/gTz14i/SpzSDUkAu3XLFw/GGmUCtwHMXK0AFg+jF+0uOQymEgkzaAxgPnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=HB6hMWN2; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-43cfe574976so1503205e9.1;
-        Wed, 09 Apr 2025 16:13:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1744240413; x=1744845213; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JW74z6cHpNu60kU9OE2aazhTFE9YDkFOWDJkNNru92Q=;
-        b=HB6hMWN21r3OPO7HiiCWqlUpWPcOv8rfNMA6mXhaDk27IjinAYPLFqZ2EVWjlr+kGV
-         h2TKOY4xxmDxubvdB5Bff66TLcatKA/PAXc6WONmbkAat0NpvaKZYKnnwej9LeJkT797
-         TZerTYyVMvk7v8rluR8QerybEnsYjQ7aPcMl05ve9u0kNFqysE/QFmBXua6hSbYY+JHy
-         NaSrJ8bV9AoCO4jmWawjQNI5DnjeJwNfkCXStC3BUj21BSk4X4XMHjgzdgj8Gj92cKtK
-         8arm2divHhW/XYV3JCQ4bmGP7/nRL/FlJBVTMVQOAcpWuXHtbeOIuNWMia5AFmKn1wev
-         b9Ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744240413; x=1744845213;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JW74z6cHpNu60kU9OE2aazhTFE9YDkFOWDJkNNru92Q=;
-        b=SuzP2QlCeY3S3wxCsfSH9ODPInlwjy5QJLqxhlFEYLICnOQK5NnnFPi/Y/FTFnOc8X
-         cg+j65eMzp5hgqC9PhlOSpO25xm4JDFmsur6o2Zoga7V/4uhDQUJ1huE69Q/WLa5M73N
-         RFgjiG5lUoRyJ1l73sGlQNKcrCIg8f6xgqffqysusgSjrrTKVJPcUUGrXojOKgrZwHoN
-         dR/O0vRP4bRuG3zCt8AhcIUVtC4yA0sjjwsMo4jppnjnwgDoGfsDDwJE+7E6U/a+nA8r
-         oW8RDLv2KNRFzc8g++u6E1I/UlHFQZIXxAOYibaOh5IY1J4/EdJkzEtQkSOsnhL2pznP
-         ADEA==
-X-Forwarded-Encrypted: i=1; AJvYcCUu42yH/tKug5Yo73i6GmbtCtnxAh9tvVlwwt6/gWmknW9PH17m6PPxpzJLYukGqhcVKGVgdFiKCQL6hLw=@vger.kernel.org, AJvYcCVcZ7TguVSTAGYm9w2Mcnes70ki7Jr31blnQDPWHksRhDZYIQYYuStCJNWDH1BAkqChP2yi80gH@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8ipVAVzIeezSpC9lHUzM5uFsVWOxa4LU2djnHQ6hzJiysVz4m
-	YVN/YM/dcF4UbNpn0RDL/MhxF5z9IXBoL8892h5sx+rLelV1Diw=
-X-Gm-Gg: ASbGncstI1DMDRBWtrIDK4h8H2hkmUKKiAzzkm2RJyGuvd5n6I0NxLUzTuwoIOQPAlU
-	M8T8E/yMEymSGXl8FrP2C7JdSUNxLpLtSWF/Lyq4FgH2bAFyYqv1a8YLSN9GlEgyMozOZv3SjwO
-	RS87mvJsZ9y6FQA8udDmiRd+Lxz9OYRzQbGurUhBpA1OCvSKj0Rim8MMWkoYoD3NDD88LWwgogW
-	FHSTd+0gue2bWUpfkeqrWDc/sdd6mIgWqCs224VjCgO5gvOGFRIfWbXtY3OwN+bzcGbnTI/CD4+
-	n4qXEB0D4bWaTBInsqT63V5g4UB/2dbHZMgFzwhCwyPAO7/GRGWqxYyYq7xvjY4vasxn+LjNzm8
-	WveR4IKnOVdS88liuvAtu/IZbArA=
-X-Google-Smtp-Source: AGHT+IECp8SZn0v3pCPADW9jULXwJGPBFrCS/fIc9I+DpPyMRE88HI4kqXtXrTxOosCltUSPuXtrYQ==
-X-Received: by 2002:a05:6000:2586:b0:391:39fb:59c8 with SMTP id ffacd0b85a97d-39d8f4744a3mr335672f8f.25.1744240413129;
-        Wed, 09 Apr 2025 16:13:33 -0700 (PDT)
-Received: from [192.168.1.3] (p5b057855.dip0.t-ipconnect.de. [91.5.120.85])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f23572ce4sm31128885e9.30.2025.04.09.16.13.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Apr 2025 16:13:31 -0700 (PDT)
-Message-ID: <5e8d7416-3666-4a2b-bdc9-8cbc2a761b8a@googlemail.com>
-Date: Thu, 10 Apr 2025 01:13:30 +0200
+	s=arc-20240116; t=1744240731; c=relaxed/simple;
+	bh=iuDjoJoK9qNLd32r4c/Sxi7hqHWPnlw/KIwV6mWhCm4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=utGD17NttJ4IZmvHtpP7Zd+1BuyOmgHNuySmErxUKHEfJgnQk+ZAP0G8uGIzsttpo3hiEhaXtXqwX3iHAAlTq3So0IbTdmjpoPJwI+LL7nEm0AGDDWLwe1yu+eBBOWE936HFSJaSEK+HLlw/LWmcWplSLPK2NH6TX9WxVxrCf5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vhzk8li5; arc=none smtp.client-ip=95.215.58.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Wed, 9 Apr 2025 19:18:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1744240725;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6lnNhCARkmfZPIs4ZCP8cYdUTseSWihASprLxik5U8M=;
+	b=vhzk8li5JnfJ4M7pKN1vQ5Vd9ceeh7sSnwuYgnuUo2JUALbiCQXbwLIAsyn3DsoaDn079C
+	eeb9N04grTpaIyARLPeTuexg9yb6pspMQ679PB214NppcRhmgnbfnGApvL/CtyLhfPmG8D
+	c+OuL0LTOwZRIN8W/XOxVMU3QDfJWnA=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, mm-commits@vger.kernel.org, 
+	stable@vger.kernel.org, janghyuck.kim@samsung.com, tjmercier@google.com
+Subject: Re: +
+ alloc_tag-handle-incomplete-bulk-allocations-in-vm_module_tags_populate.patch
+ added to mm-hotfixes-unstable branch
+Message-ID: <npfuocigbrn7wy25ssezqucz3kd5fjpmiqkeqzzmomz2r6wyrd@pmfig3afweud>
+References: <20250409211241.70C37C4CEE2@smtp.kernel.org>
+ <hzrrdhrvtabiz7g4bvj53lg64f7th5d7ravduisnaqmwmmqubr@f52xy2uq6222>
+ <CAJuCfpGe3cY3yYGB03kTGJR-Dyh02w8spDDRkckjdP+qSKtdXg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.14 000/726] 6.14.2-rc4 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250409115934.968141886@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250409115934.968141886@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJuCfpGe3cY3yYGB03kTGJR-Dyh02w8spDDRkckjdP+qSKtdXg@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 
-Am 09.04.2025 um 14:03 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.14.2 release.
-> There are 726 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed, Apr 09, 2025 at 03:31:57PM -0700, Suren Baghdasaryan wrote:
+> On Wed, Apr 9, 2025 at 3:10 PM Kent Overstreet
+> <kent.overstreet@linux.dev> wrote:
+> >
+> > On Wed, Apr 09, 2025 at 02:12:40PM -0700, Andrew Morton wrote:
+> > >
+> > > The patch titled
+> > >      Subject: alloc_tag: handle incomplete bulk allocations in vm_module_tags_populate
+> > > has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+> > >      alloc_tag-handle-incomplete-bulk-allocations-in-vm_module_tags_populate.patch
+> > >
+> > > This patch will shortly appear at
+> > >      https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/alloc_tag-handle-incomplete-bulk-allocations-in-vm_module_tags_populate.patch
+> > >
+> > > This patch will later appear in the mm-hotfixes-unstable branch at
+> > >     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> > >
+> > > Before you just go and hit "reply", please:
+> > >    a) Consider who else should be cc'ed
+> > >    b) Prefer to cc a suitable mailing list as well
+> > >    c) Ideally: find the original patch on the mailing list and do a
+> > >       reply-to-all to that, adding suitable additional cc's
+> > >
+> > > *** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+> > >
+> > > The -mm tree is included into linux-next via the mm-everything
+> > > branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> > > and is updated there every 2-3 working days
+> >
+> > I don't think we want to rush this patch, given that it's not fixing an
+> > actual crash.
+> 
+> It's not designed to fix a crash. The issue is that whenever tags
+> require more than one page and CONFIG_PAGE_OWNER is enabled, memory
+> allocation profiling gets disabled. I missed the fact that
+> alloc_pages_bulk_node() can return less number of pages than requested
+> and this patch fixes that.
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+That's my point; "allocation profiling gets silently disabled" is much
+less severe than the crash we're chasing.
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
-
-
-Beste Grüße,
-Peter Schneider
-
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
-
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+I just want to make sure we're not introducing new things while we're
+chasing more severe bugs, although the patch does look simple enough.
 
