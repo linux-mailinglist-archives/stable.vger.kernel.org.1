@@ -1,173 +1,108 @@
-Return-Path: <stable+bounces-131920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 678F9A822A7
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 12:48:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F10A2A822D7
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 12:54:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0EDF3B8CE8
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 10:47:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70F857ABEE6
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 10:52:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5654B25D8F6;
-	Wed,  9 Apr 2025 10:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B370F25DD01;
+	Wed,  9 Apr 2025 10:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="nWLoa3vF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OyA4UbkE"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837CC1F94A;
-	Wed,  9 Apr 2025 10:47:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65AA325D8FD;
+	Wed,  9 Apr 2025 10:53:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744195677; cv=none; b=MbEDazexECdJBquQlsM4WPRQ2wABlQ1rBxqJDYmvcJfSl/05M48iPB1MxYUz0LXBlBmtw3eTFEULLXM9nwYc8sVxBfrUosZp0+FcCS6uJQxG6AFNWQNpKpXEtfvQ42Uh9GeyMTf6+cIyzlU6m2v+OCv+9MB6hQRoQSwR5Fbz1+c=
+	t=1744196022; cv=none; b=AJqcm58oQiZLiAmZA9/057bQF/BOgrA0F2DseRanj8GqMR/g6V3qlmH6o5BafkcoogW7CzUI3HXfISURWhe9ecd13d9gV9mABaWfGHPlGLjZAoNiuahVeBfeXICRp9I/b6Znl71sUV+w3XAzV7mCTVrGxS0wCBNaAwn3kD4wVOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744195677; c=relaxed/simple;
-	bh=hBzxKk31jvSLo0GZkJ5a990Ww8g8aq/wLKXQJfwcDRU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=s8SCp+gLksXiC9bnxFY1av4TJu20FXsR8XwfF+5m3ANGuUtqrnL0J9BObCyPqHvsi2nCpDtp5gtaIHwoPlTE3GodwVuRrvtNEING9rnxwuRCTh+WJyf9x/MzQ6Rjr/CzohdN3Tqnv9h/g4mkutJYlQU4np5kwX53P6F2rh5ItEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=nWLoa3vF; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5398NoYO004578;
-	Wed, 9 Apr 2025 10:47:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=IHaI+++jwCuYOwCz1k8fO4
-	Z77OcdqIOA2hEjPVpuZeA=; b=nWLoa3vFQwdTSr3L7nGqmMm8bqlEH1el7YDHqt
-	n8sIyMtmSjhgSD00LBx22MwbZ+bcBhxv2p1tIh9vKCooMCrBiuWeDa6YF/NURijE
-	ctlUhBNcmdbQY4TM0XcNLtvD7JUFNNuWLIAPbbpNc/c9l1eOGtnLrHfUcerNp3fI
-	KDT6e3g5xGWUxk4IJr9f2wq+gFu4f9GvzqDcRhKOpv2NmvEe8t8QNn0F9m1ZTp9+
-	yR6HLIJ23PYwbLbyHuuRzzq7ReGPCbcKjHrN6auiNaqhNTsL4nouEYFwewNC1I5w
-	e3lCigpwAMW4Ib2ywFM3iPqpnSRGdBDN9LRs/j/H3/SDYHZg==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45twtb34k5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Apr 2025 10:47:50 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 539Alnf6015431
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 9 Apr 2025 10:47:49 GMT
-Received: from hu-sumk-hyd.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Wed, 9 Apr 2025 03:47:45 -0700
-From: Sumit Kumar <quic_sumk@quicinc.com>
-Date: Wed, 9 Apr 2025 16:17:43 +0530
-Subject: [PATCH] bus: mhi: ep: Update read pointer only after buffer is
- written
+	s=arc-20240116; t=1744196022; c=relaxed/simple;
+	bh=eVMRJDXERtHOWQOAVkvdKlyQaILN4QE79oCv2jlKIm0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BDbQe3iv0QPM0ICwmkTKEa1VOyHcHEwS+/AvpvU+n1XkWbCchD7qBf75cFpBhc+eeLr5ottzrTZyeOIdpF9Cbupuvw0Uf0ePPVXWGhnYdpAE1Fqfrm6kaLHnjQ6dxtwcbMXe9gdM1JGY1+Vkex3Zr+7MYCBENmctXLhG0p2Tfek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OyA4UbkE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78903C4CEE3;
+	Wed,  9 Apr 2025 10:53:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1744196021;
+	bh=eVMRJDXERtHOWQOAVkvdKlyQaILN4QE79oCv2jlKIm0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OyA4UbkEjktaolmAjfXlkxox+pfJofwNZD8xNyoqyt2DFtR5evFuU2QfWRk1QDU66
+	 TlecLHnutC91ybTejVS6sAYAQv2vt8+kBKWtfUDL/1KDXKWyRg43/rAxq4P5JLHvNx
+	 ORMX9M1bzLY+sCEgfg37WQV8UUt81Cqg7NKnNeCI=
+Date: Wed, 9 Apr 2025 12:52:07 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Al Cooper <alcooperx@gmail.com>, Kamal Dasu <kdasu.kdev@gmail.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15 253/279] mmc: sdhci-brcmstb: Add ability to increase
+ max clock rate for 72116b0
+Message-ID: <2025040954-swaddling-anything-9d90@gregkh>
+References: <20250408104826.319283234@linuxfoundation.org>
+ <20250408104833.210619151@linuxfoundation.org>
+ <20250408160235.GA3698564@ax162>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20250409-rp_fix-v1-1-8cf1fa22ed28@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAE5Q9mcC/zXMQQ6CMBCF4auQWVvTKYKVlfcwxJTpKLOwYKtEQ
- 7i7FePyf3n5ZkgchRM0xQyRJ0kyhBy4KYB6F66sxOcGo02lS2NVHM8XeSm/547QdlR2DPk8Rs7
- zCp3a3L2kxxDfqzvhd/0RO41/YkKFimpLB2/RVbU73p9CEmhLww3aZVk+66qdYp4AAAA=
-X-Change-ID: 20250328-rp_fix-d7ebc18bc3be
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Alex Elder
-	<elder@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: <mhi@lists.linux.dev>, <linux-arm-msm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <quic_krichai@quicinc.com>,
-        <quic_akhvin@quicinc.com>, <quic_skananth@quicinc.com>,
-        <quic_vbadigan@quicinc.com>, <stable@vger.kernel.org>,
-        Youssef Samir
-	<quic_yabdulra@quicinc.com>,
-        Sumit Kumar <quic_sumk@quicinc.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1744195665; l=2247;
- i=quic_sumk@quicinc.com; s=20250409; h=from:subject:message-id;
- bh=hBzxKk31jvSLo0GZkJ5a990Ww8g8aq/wLKXQJfwcDRU=;
- b=WWIZamR7npB5C07lOVX97sL3VZSf9QwyHVXsu4NzE430YlqPTIoetP1bE80uzc/4YWDW0YLfQ
- GcaZnbULLzjDa/GilCHogak+QGgqc9Nmsim8fKXn1cDC0JrNFsnu3RB
-X-Developer-Key: i=quic_sumk@quicinc.com; a=ed25519;
- pk=3cys6srXqLACgA68n7n7KjDeM9JiMK1w6VxzMxr0dnM=
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: BMIKhFQlxciX4-RCK1zJrG426wdG4PV4
-X-Authority-Analysis: v=2.4 cv=LLlmQIW9 c=1 sm=1 tr=0 ts=67f65056 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=zHbxs7Yk4LvyobavtX0A:9
- a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-ORIG-GUID: BMIKhFQlxciX4-RCK1zJrG426wdG4PV4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-09_04,2025-04-08_04,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
- clxscore=1011 mlxlogscore=999 malwarescore=0 phishscore=0
- lowpriorityscore=0 priorityscore=1501 mlxscore=0 spamscore=0 adultscore=0
- suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504090061
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250408160235.GA3698564@ax162>
 
-Inside mhi_ep_ring_add_element, the read pointer (rd_offset) is updated
-before the buffer is written, potentially causing race conditions where
-the host sees an updated read pointer before the buffer is actually
-written. Updating rd_offset prematurely can lead to the host accessing
-an uninitialized or incomplete element, resulting in data corruption.
+On Tue, Apr 08, 2025 at 09:02:35AM -0700, Nathan Chancellor wrote:
+> Hi Greg,
+> 
+> On Tue, Apr 08, 2025 at 12:50:36PM +0200, Greg Kroah-Hartman wrote:
+> > 5.15-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Kamal Dasu <kdasu.kdev@gmail.com>
+> > 
+> > [ Upstream commit 97904a59855c7ac7c613085bc6bdc550d48524ff ]
+> > 
+> > The 72116B0 has improved SDIO controllers that allow the max clock
+> > rate to be increased from a max of 100MHz to a max of 150MHz. The
+> > driver will need to get the clock and increase it's default rate
+> > and override the caps register, that still indicates a max of 100MHz.
+> > The new clock will be named "sdio_freq" in the DT node's "clock-names"
+> > list. The driver will use a DT property, "clock-frequency", to
+> > enable this functionality and will get the actual rate in MHz
+> > from the property to allow various speeds to be requested.
+> > 
+> > Signed-off-by: Al Cooper <alcooperx@gmail.com>
+> > Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
+> > Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+> > Link: https://lore.kernel.org/r/20220520183108.47358-3-kdasu.kdev@gmail.com
+> > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> > Stable-dep-of: 723ef0e20dbb ("mmc: sdhci-brcmstb: add cqhci suspend/resume to PM ops")
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+> This change needs a fix for a clang -Wsometimes-uninitialized warning,
+> commit c3c0ed75ffbf ("mmc: sdhci-brcmstb: Initialize base_clk to NULL in
+> sdhci_brcmstb_probe()"), as pointed out by KernelCI.
+> 
+> https://lore.kernel.org/CACo-S-297JUFPCNaeSoA0WHSP=sC+QquSZaX=rQto=JZzi1PUA@mail.gmail.com/
+> 
+> Not exactly your fault, I had a Fixes tag on the original patch but it
+> seems like it got stripped during application :/
+> 
+> https://lore.kernel.org/20220608152757.82529-1-nathan@kernel.org/
 
-Invoke the buffer write before updating rd_offset to ensure the element
-is fully written before signaling its availability.
+Thanks, I'll go queue that up now.
 
-Fixes: bbdcba57a1a2 ("bus: mhi: ep: Add support for ring management")
-cc: stable@vger.kernel.org
-Co-developed-by: Youssef Samir <quic_yabdulra@quicinc.com>
-Signed-off-by: Youssef Samir <quic_yabdulra@quicinc.com>
-Signed-off-by: Sumit Kumar <quic_sumk@quicinc.com>
----
----
- drivers/bus/mhi/ep/ring.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/bus/mhi/ep/ring.c b/drivers/bus/mhi/ep/ring.c
-index aeb53b2c34a8cd859393529d0c8860462bc687ed..26357ee68dee984d70ae5bf39f8f09f2cbcafe30 100644
---- a/drivers/bus/mhi/ep/ring.c
-+++ b/drivers/bus/mhi/ep/ring.c
-@@ -131,19 +131,23 @@ int mhi_ep_ring_add_element(struct mhi_ep_ring *ring, struct mhi_ring_element *e
- 	}
- 
- 	old_offset = ring->rd_offset;
--	mhi_ep_ring_inc_index(ring);
- 
- 	dev_dbg(dev, "Adding an element to ring at offset (%zu)\n", ring->rd_offset);
-+	buf_info.host_addr = ring->rbase + (old_offset * sizeof(*el));
-+	buf_info.dev_addr = el;
-+	buf_info.size = sizeof(*el);
-+
-+	ret = mhi_cntrl->write_sync(mhi_cntrl, &buf_info);
-+	if (ret)
-+		return ret;
-+
-+	mhi_ep_ring_inc_index(ring);
- 
- 	/* Update rp in ring context */
- 	rp = cpu_to_le64(ring->rd_offset * sizeof(*el) + ring->rbase);
- 	memcpy_toio((void __iomem *) &ring->ring_ctx->generic.rp, &rp, sizeof(u64));
- 
--	buf_info.host_addr = ring->rbase + (old_offset * sizeof(*el));
--	buf_info.dev_addr = el;
--	buf_info.size = sizeof(*el);
--
--	return mhi_cntrl->write_sync(mhi_cntrl, &buf_info);
-+	return ret;
- }
- 
- void mhi_ep_ring_init(struct mhi_ep_ring *ring, enum mhi_ep_ring_type type, u32 id)
-
----
-base-commit: 1e26c5e28ca5821a824e90dd359556f5e9e7b89f
-change-id: 20250328-rp_fix-d7ebc18bc3be
-
-Best regards,
--- 
-Sumit Kumar <quic_sumk@quicinc.com>
-
+greg k-h
 
