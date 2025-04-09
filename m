@@ -1,140 +1,153 @@
-Return-Path: <stable+bounces-131959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 302CFA82750
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 16:11:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D65A8276F
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 16:15:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D15B7B4501
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 14:10:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 653541B84221
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 14:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672E4265613;
-	Wed,  9 Apr 2025 14:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B762A265CB5;
+	Wed,  9 Apr 2025 14:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CzeTAKDj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GNOPrJi3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DD3525EFBD;
-	Wed,  9 Apr 2025 14:11:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6965526156D;
+	Wed,  9 Apr 2025 14:14:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744207903; cv=none; b=oKcDtcJ++IBdIF+BppGnJe/eHuxaMZEs3tek6iNtfQpgwWD3gcs9bAlKIfAyrh5nGVLHtVCf4l5MT84psbFS1uEJoxBT+H0qX9SiCavFULqh2UC12jWxkBauOLs3+EaqMr+5PgE9JzsW2tPSfZ/bnSZwfkARXo6M1AmDg5cBkZI=
+	t=1744208093; cv=none; b=KEoWjxSEhAYLul6EEp/UNu8H27SeIko6gk246VqUJXacDIhX5pUSS7cNWt6E4fObhoLUBj73B1fETbxCn0mnNJqScy8Rc0RmmwY0CDVQ/hh+T8vAuiYW/IA4NvS4MH+lCNjjKGSI5zS+KCJDNhB4baSMzrOlkq7e1MDy36LgfSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744207903; c=relaxed/simple;
-	bh=7PQYfFfvCRNIX65tpI4QKa4NR1Ha1vaEAgebWu62+kg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YhSi8HEbz9sVU8kjVnQaY01/+Wr8X9FUAmXXZpkT6HeeXXth1TFvUejqlmNg4uRsNBHOvgZrD+Q82ub08CYrmT6KCXJhW6ajYPxmUWw0dFnCbvbaxyY57fJsHrSrwO8TCs2A5EZMDAoSeBmmwtvLoC/5b+5aDqx6EYhjRAxMx2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CzeTAKDj; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3978ef9a778so885558f8f.0;
-        Wed, 09 Apr 2025 07:11:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744207900; x=1744812700; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=79dRAhMX6hAzgdIihnfQk7TyjpU16Gt/P7A1hHpHnDM=;
-        b=CzeTAKDjUeS3wEk4TaNTVDH99uciL+p9pgX7aGcuwFO0tSjrBUuBeNxyfymwojZmS8
-         gC0T4b0ZfJ0hafkkWnQpGsNWcG345oqC1riNRWHM/FHYkUeEChE7bi0aOrbdt1jIvZiP
-         zxy0gpcttnriL2mWLGsHV8l3LQkE78869C/jxtazgPrfWpmOBh+w6MDpWvAAtsc6+m+F
-         mwt57J/39FR/WzDJDDgU0bVS6+N6abOUCfiwCK2PrDHBAVF0hdV1r53yZoMvcPyCRWnH
-         TZLkHLOWIuWcF9EaibKyDf2nUGTLEmHfA5V5zOWNbdMg00L0Gz5JvEdD2OVM+WLsoyTl
-         FcjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744207900; x=1744812700;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=79dRAhMX6hAzgdIihnfQk7TyjpU16Gt/P7A1hHpHnDM=;
-        b=kXhEGkLlzcCVz/1n57qQOMNXR7kvrKjE7TMavFfCvrdOsA4+d76M5/dar57xF5UOee
-         l4Pf2VX9YWOEi/OqQ/thjH45b/dZrLo3cvspo+xOuoBiCkJl3v0ZGjOdfkyfZdBvPjzT
-         Iv0aHPHONQI509HEjLeubz9+O9aq8k0CjgsoLv6+i5aaeODtrRnGydwFvSxajjwR4k4E
-         c4WdU80zo676z9DWzZGrDsfK9Vu1Sf50I5UN7JRg1C83aR9rPppwOln6YJmoJEbkn2UP
-         iVg90pkix2lfNq3r02G8TnP1KCnyQraXSX41D26NVkPTh3YmTlulIHmuxyvDeckl+mun
-         Ssgw==
-X-Forwarded-Encrypted: i=1; AJvYcCU+yKtiqpET5uS5TYlIzFQvfd6ml3nGGTHwRqMk18nK8G5VO4Hvo6wmwgccGMKBNHTpkDmqZSPfA4R8WmU=@vger.kernel.org, AJvYcCVSZq/Qx7pf/7zRvK70jY2HxNVtjokQFgVxC2bCKetZYFA1bRuW5gQnd4/nx8qWzjx26Pq6IHGMz5kHwQ==@vger.kernel.org, AJvYcCXZ1TjP9sq8eIAK3RGpqnPzlWtRxlHFgwtoMqRecBu5mYndVWok2cqyrIiXATa4XT91COP35s3X0/nyIQ==@vger.kernel.org, AJvYcCXg7SENH0cjSZ/ZHXjZyL3C4GumODf8xpgHSKLcx2IIB0wMGrcQQ5Ucbsb6Yy0GlRirYWclxfMx@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2WgB1faCCydZT6OcPJ+LUSFY6FxSAmHk+9XX7Rs8/R8qANtZz
-	lsUSPzX6hzwRWhYPpE3V3kEzrHzLzO83/1zB4zgor+JKeTth/+XF
-X-Gm-Gg: ASbGncvLeiLm6VF/j43LxXiVeinmCUu+Dwu4HrzHQzMpzvluAkbnHuG6tpsopfo+xp3
-	nXMdaiP6Tv0oao0fBjvZ6GQea6UlapD4YbibQg3K9QSxIOq9Pjj+SU8CFhh2ufw0SxHBeRCQW+J
-	y+JK64O1Qm6IsbCYN4QDwi68Sg5VjWpq7HagCDd0frNGEgtaR2y7c3E1R+fQu5zpgvZRvHqRGaK
-	4RG5u+Tk/chLtf0uHvGFpCShYfORsg7MC7HahkdiI7vViNTRg4u1Nio2oqkQIZcfOCupK2wM249
-	bIRNGbNJHE8DVyAa1X2DF9jOB7FPBikeDEJusaTf04kIRKW4nWUgP+QSUtb4NSdOZLWhSA==
-X-Google-Smtp-Source: AGHT+IHSANHfnsI22VvG7U6Add3MtuqdkHlNUqXmc+ZOIvDB4qPCFfsNQQmWuYIJe4cIBvlXQ9bdkg==
-X-Received: by 2002:a05:6000:2901:b0:391:2acc:aadf with SMTP id ffacd0b85a97d-39d87ab626emr1029141f8f.6.1744207899192;
-        Wed, 09 Apr 2025 07:11:39 -0700 (PDT)
-Received: from [172.27.52.232] (auburn-lo423.yndx.net. [93.158.190.104])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f235a5d31sm17305755e9.35.2025.04.09.07.11.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Apr 2025 07:11:38 -0700 (PDT)
-Message-ID: <3e245617-81a5-4ea3-843f-b86261cf8599@gmail.com>
-Date: Wed, 9 Apr 2025 16:10:58 +0200
+	s=arc-20240116; t=1744208093; c=relaxed/simple;
+	bh=iAuzqC8Qd+VEzJGSAubYlMUnCIszvAwVM1YYMjubFpU=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=ZO6cOQtZ4J8zBtfXO2xFiTarCseYkdOafHpYGUPhiyM2AVwZ2ap+vqCS2IKXt8/KkphO+uotbD7QifB9SMUPyRiC99YIh2winf2jFAVmwxAV8LKmdte2A/5IMVdduNEUeHvV6OtPYaiGwAmdlXqozqKiHQHmN5oXkMqHByVs4Gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GNOPrJi3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73142C4CEEE;
+	Wed,  9 Apr 2025 14:14:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744208092;
+	bh=iAuzqC8Qd+VEzJGSAubYlMUnCIszvAwVM1YYMjubFpU=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=GNOPrJi3FLcGTxPcYU2A8vmzBGKk7I1qAEeYRrBXEMQbtQnt9BZvoRGuqBgfQNuTp
+	 A7wQ/j0Pklll8ErvQGkIclgOTMixumnPq4i0Ps83xy68CpO6cMp8lI7NunM5s9c8j+
+	 Fn1hYsNaBm32ER+RlP/uFkoJXxmuOOnm75r3jE+9AaeSD56tRhsBK+6jsSnCb2zCjE
+	 PQfAkYxvsx4i8xQR8/W75alFaWyZyT0cDAHjc5rkRnWzwgVkh4A2Fn0K1txLZC5e8h
+	 7yoIO/AFAh4OynLqMFR5DSq3Pg6sCF7QpmbYvEMaN7UAqbwSRC3AVISpKhzEnFVX4J
+	 q1fiBjrv/OGuA==
+Date: Wed, 09 Apr 2025 09:14:51 -0500
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] kasan: Avoid sleepable page allocation from atomic
- context
-To: Alexander Gordeev <agordeev@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Hugh Dickins <hughd@google.com>, Nicholas Piggin <npiggin@gmail.com>,
- Guenter Roeck <linux@roeck-us.net>, Juergen Gross <jgross@suse.com>,
- Jeremy Fitzhardinge <jeremy@goop.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, kasan-dev@googlegroups.com, sparclinux@vger.kernel.org,
- xen-devel@lists.xenproject.org, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, stable@vger.kernel.org
-References: <cover.1744128123.git.agordeev@linux.ibm.com>
- <2d9f4ac4528701b59d511a379a60107fa608ad30.1744128123.git.agordeev@linux.ibm.com>
-Content-Language: en-US
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-In-Reply-To: <2d9f4ac4528701b59d511a379a60107fa608ad30.1744128123.git.agordeev@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Conor Dooley <conor+dt@kernel.org>, 
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+ stable@vger.kernel.org, Lukasz Czechowski <lukasz.czechowski@thaumatec.com>, 
+ quentin.schulz@cherry.de, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Heiko Stuebner <heiko@sntech.de>, Benjamin Bara <benjamin.bara@skidata.com>, 
+ linux-usb@vger.kernel.org, Klaus Goger <klaus.goger@theobroma-systems.com>, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Matthias Kaehlcke <mka@chromium.org>
+To: Conor Dooley <conor@kernel.org>
+In-Reply-To: <20250326-fanatic-onion-5f6bf8ec97e3@spud>
+References: <20250326-onboard_usb_dev-v1-0-a4b0a5d1b32c@thaumatec.com>
+ <20250326-onboard_usb_dev-v1-2-a4b0a5d1b32c@thaumatec.com>
+ <20250326-fanatic-onion-5f6bf8ec97e3@spud>
+Message-Id: <174420798613.310269.1187763839287532334.robh@kernel.org>
+Subject: Re: [PATCH 2/5] dt-bindings: usb: cypress,hx3: Add support for all
+ variants
 
 
-
-On 4/8/25 6:07 PM, Alexander Gordeev wrote:
-> apply_to_page_range() enters lazy MMU mode and then invokes
-> kasan_populate_vmalloc_pte() callback on each page table walk
-> iteration. The lazy MMU mode may only be entered only under
-> protection of the page table lock. However, the callback can
-> go into sleep when trying to allocate a single page.
+On Wed, 26 Mar 2025 17:58:11 +0000, Conor Dooley wrote:
+> On Wed, Mar 26, 2025 at 05:22:57PM +0100, Lukasz Czechowski wrote:
+> > The Cypress HX3 hubs use different default PID value depending
+> > on the variant. Update compatibles list.
+> >
+> > Fixes: 1eca51f58a10 ("dt-bindings: usb: Add binding for Cypress HX3 USB 3.0 family")
+> > Cc: stable@vger.kernel.org # 6.6
+> > Cc: stable@vger.kernel.org # Backport of the patch in this series fixing product ID in onboard_dev_id_table and onboard_dev_match in drivers/usb/misc/onboard_usb_dev.{c,h} driver
+> > Signed-off-by: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
+> > ---
+> >  Documentation/devicetree/bindings/usb/cypress,hx3.yaml | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> >
+> > diff --git a/Documentation/devicetree/bindings/usb/cypress,hx3.yaml b/Documentation/devicetree/bindings/usb/cypress,hx3.yaml
+> > index 1033b7a4b8f9..f0b93002bd02 100644
+> > --- a/Documentation/devicetree/bindings/usb/cypress,hx3.yaml
+> > +++ b/Documentation/devicetree/bindings/usb/cypress,hx3.yaml
+> > @@ -15,8 +15,14 @@ allOf:
+> >  properties:
+> >    compatible:
+> >      enum:
+> > +      - usb4b4,6500
+> > +      - usb4b4,6502
+> > +      - usb4b4,6503
+> >        - usb4b4,6504
+> >        - usb4b4,6506
+> > +      - usb4b4,6507
+> > +      - usb4b4,6508
+> > +      - usb4b4,650a
 > 
-> Change __get_free_page() allocation mode from GFP_KERNEL to
-> GFP_ATOMIC to avoid scheduling out while in atomic context.
+> All these devices seem to have the same match data, why is a fallback
+> not suitable?
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 3c5c3cfb9ef4 ("kasan: support backing vmalloc space with real shadow memory")
-> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-> ---
->  mm/kasan/shadow.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> >    reg: true
+> >
+> >
+> > --
+> > 2.43.0
+> >
 > 
-> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
-> index 88d1c9dcb507..edfa77959474 100644
-> --- a/mm/kasan/shadow.c
-> +++ b/mm/kasan/shadow.c
-> @@ -301,7 +301,7 @@ static int kasan_populate_vmalloc_pte(pte_t *ptep, unsigned long addr,
->  	if (likely(!pte_none(ptep_get(ptep))))
->  		return 0;
->  
-> -	page = __get_free_page(GFP_KERNEL);
-> +	page = __get_free_page(GFP_ATOMIC);
->  	if (!page)
->  		return -ENOMEM;
->  
 
-I think a better way to fix this would be moving out allocation from atomic context. Allocate page prior
-to apply_to_page_range() call and pass it down to kasan_populate_vmalloc_pte().
 
-Whenever kasan_populate_vmalloc_pte() will require additional page we could bail out with -EAGAIN,
-and allocate another one.
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
+
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+This patch series was applied (using b4) to base:
+ Base: using specified base-commit 1e26c5e28ca5821a824e90dd359556f5e9e7b89f
+
+If this is not the correct base, please add 'base-commit' tag
+(or use b4 which does this automatically)
+
+New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/rockchip/' for 20250326-fanatic-onion-5f6bf8ec97e3@spud:
+
+arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dtb: hub@1 (usb4b4,6502): 'vdd-supply' is a required property
+	from schema $id: http://devicetree.org/schemas/usb/cypress,hx3.yaml#
+arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dtb: hub@1 (usb4b4,6502): 'vdd2-supply' is a required property
+	from schema $id: http://devicetree.org/schemas/usb/cypress,hx3.yaml#
+arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dtb: hub@2 (usb4b4,6500): 'vdd-supply' is a required property
+	from schema $id: http://devicetree.org/schemas/usb/cypress,hx3.yaml#
+arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dtb: hub@2 (usb4b4,6500): 'vdd2-supply' is a required property
+	from schema $id: http://devicetree.org/schemas/usb/cypress,hx3.yaml#
+arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dtb: pinctrl (rockchip,rk3399-pinctrl): gpios: {'bios-disable-override-hog-pin': {'rockchip,pins': [[3, 29, 0, 190]], 'phandle': 185}, 'q7-thermal-pin': {'rockchip,pins': [[0, 3, 0, 189]], 'phandle': 184}} is not of type 'array'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml#
+
+
+
+
+
 
