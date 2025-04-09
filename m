@@ -1,87 +1,79 @@
-Return-Path: <stable+bounces-131966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57941A82865
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 16:46:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0942A82A2C
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 17:26:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DD557BBB64
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 14:40:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFF3C9A678F
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 15:04:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916282676D6;
-	Wed,  9 Apr 2025 14:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B37252690EC;
+	Wed,  9 Apr 2025 14:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jT78wl4X"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eZeqCwJg"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA230265CDC
-	for <stable@vger.kernel.org>; Wed,  9 Apr 2025 14:41:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF5E268FE7;
+	Wed,  9 Apr 2025 14:57:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744209670; cv=none; b=LC/nnE67RwRe/qcLnexjdpkI5DKPqG7UCp+qATBsVD0Q+P3Zkds5QWYAdHidd8fkM0iDAFCe7lQCgxTNsBZkEidECCHtyBCPtPF9emMCqVIMlP6XfghY+LUeXaN2e/IdawnnCRJGmDbz/MGyMcnNpamwQ+KmvimGGruyyyCXDSw=
+	t=1744210633; cv=none; b=XO+iXoshCPL4wuLI9I0vD45eVD9q86c8YxODaWvRG4mpl4HinaVpSN3ekMYDCeHhEIKiBRSjX7T4tLme7c17rXekX0zrMZ1D3LceMC1IL55A9uMVre3mxAKYYSti5bewdWZzez39SgfWWKxOk7Gi7REnP/juc7pBDtUPSZakHp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744209670; c=relaxed/simple;
-	bh=+jAaxo1TCO741+kpdjVMq0f8msIm1aVBprj7vRnZB9M=;
+	s=arc-20240116; t=1744210633; c=relaxed/simple;
+	bh=ADNGUNPjht6pF0bZgUe8BuYoaHN32NWDtMTTxruXVD0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=frDBaaMb5mrvw9u63PxXoC85tvexXISFGM52z46Y/lCpldeuxhvWfSjiuDxfkuU/w5TjGvdGwhhldpq7IiEGbqNeQ9w3t+BVH4eXbh/Bu4khdq9owALXcj2v0ePnDLOmwop0hbjip8gYByLOdMJ/D5+l+sSqpXFix962l71nqb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jT78wl4X; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5398dj2V008056
-	for <stable@vger.kernel.org>; Wed, 9 Apr 2025 14:41:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	LG0gqeloi7FE5d7p16XRDqhtX9K2zsgebX8qfY7Te+M=; b=jT78wl4XukyH/die
-	0Bj8lEldfMDGVTa0F15PvGw+qHq7UM1o5hBL7fEkTv11aZsQQ2DLxkbUe6+/lYJF
-	yA8MnajdBub8F/6K2aBBkwAiQIyHxcdxbPVyjZ0sDnWcD19cboQV+htqOy+LkniG
-	fv0y5RjvxHdjot7WZtMdAjqIdy0oosrn+QrYeCwNWIDHjM7TlAUOmYt/x+gnhr+E
-	HQu+GdrZu/vK0T5qZNSV39+VBK3IVqdUwONzswXj4k1o7Fn2tNlLsWe8A6Dqqazc
-	fpITKQ9NJeufUQT5+dO5jTIW6GW9pYuXsAfiG+28+mhLK1MwQwem0i6YCxAO2u1t
-	xyn/Dw==
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45twg3knxk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 09 Apr 2025 14:41:07 +0000 (GMT)
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2262051205aso50062295ad.3
-        for <stable@vger.kernel.org>; Wed, 09 Apr 2025 07:41:06 -0700 (PDT)
+	 In-Reply-To:Content-Type; b=l37MTtjHZ2v0bkWrM61EP+SxMHT1a5awUuYYVk/63qML4xzXeqcdK04E4GP6UmNpPjv70SgTQwojWMCqhLR9VP8if13rmKB4+P/WM2ZOqioFL7iBlpDOKwF52/rl9gZfsSCDCCugRiDWuc78iPzqToHyhhOuOWApI3lbsL4wqGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eZeqCwJg; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-30bf8f3fbd6so7626851fa.2;
+        Wed, 09 Apr 2025 07:57:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744210630; x=1744815430; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XTxp3qW+KPuzf+zXWuGUYa2ldWHd+1dpKttsCAAJnR4=;
+        b=eZeqCwJgTbS5AM6/SUnly4j1VmICDewXKwZQoCl5BQt2jc4KyR06uxYC0ZcYBBwLo8
+         EXhRZaFBn9NlIFcwEo7miiNaozhgRz7HD+Wg718CUT6QnlhowxQjt8+lNNj/lX4V8IZL
+         ckPTuIMZHlY9VSf0jkTQNIG5g8hhZwxHI2K7r8oWmaTSg8p4dZs7eBKsGjy/OHnzC1L+
+         VtkNNn+rV8AhCSFRIe1h6JgdB+qpC4SiwVaUjib8xGU1dV6geF8wwVeZg7DZEYrdhGl6
+         kBK2urHK4ucHnSb+cnsMTPtSDRm8PhpEmXLuRF3qAR2+DSl9bcJO9RJasFe/Rc1z3m8V
+         2KYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744209666; x=1744814466;
+        d=1e100.net; s=20230601; t=1744210630; x=1744815430;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LG0gqeloi7FE5d7p16XRDqhtX9K2zsgebX8qfY7Te+M=;
-        b=v0K1Z5NwdRlUFJgxtcQQGC/QwotOKfyvbU93X75F8lO+KLCCNGmj8uvLPL9RTeenAS
-         wa430+m1TnIrJGsT+JbueeFaIMRWgDyoANQGfen7zlKMw1lKSnoHj7PC2c85Ys7wfZGQ
-         lrQTWsKL8u9NsujL8BE4d9cW+W3HZnLBphNLA9AOPtdu0MkTPFOSXufug0qz0cSo+O/p
-         GM+SQeeS31TaMFPKJTMdxNvHYr8VXekz0q66XgPEMMmF8Qks5lRVCaeDbiGsdlRef9S6
-         SQJRIp82Sh9YdtCT/Lv0+OuM6MTh0lzPY8vcXC5kBDFphaYpgZw9dyzTuRb1DA6ECrcm
-         4Abw==
-X-Forwarded-Encrypted: i=1; AJvYcCUaPxeaiYEca0Z7USNJ5yDEG4xwUWBPx4DMJK+Rix8+bTNLCt5Lt2837S9InOWmbPfwr3QbfB8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzB6Pvza7IV9su3+qule0i8mnMQoHIKHq1lfeh+ejNtrnhMVaU8
-	kH/dOiXLvYrj04B8eTe6i+0NdUcUnb6UoRMIGK9Y9Di7k1guIdLMkdPXhTjCgfhx+1UNQdl6L38
-	awNqsCN0CbDud52XeUN5lyucuo0XJgR+3U971YFx6Ti2LQKkDFrybjOo=
-X-Gm-Gg: ASbGnctS0O0U98M1e8v16W3orfreLxEza/QIm1yFC1R28BSpL4+9QogXn2cwdr42TUy
-	BPn5fKbCbZYrnXxh+CHkcG+YBs3cAU/47pZKQNXzea/MBOYxGmJ6jb6PJO2p89w7P1mhGkDl/pc
-	t4rNLpeCEFWuA+yNtFfV5Sbw/p3mkLUjAoWwK3lnOQMs1ze40aok4eOAVahQBmBZXKe2lFAFIdM
-	oZsWCKInO4RTjwoyywxbDyEOE2LyCHX+kbRdEYCJKKGGjIiO1hDdk9yq1mQHkNq0ZutekQk+T7n
-	bUEw6YokRUAS/XxX+08xQeER3crBf7e5jmZwWhWhy9NgL4Z1XflR/sRrUx6XhQ==
-X-Received: by 2002:a17:902:e94c:b0:223:f408:c3cf with SMTP id d9443c01a7336-22ac29a7d9bmr55332365ad.21.1744209665721;
-        Wed, 09 Apr 2025 07:41:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEPfuY6hqgOg5etkGo/HTOxudMRDkIQgYiO8YJN+34a0GSOQamTjc5qFyXZO44KKkIKLc2Acg==
-X-Received: by 2002:a17:902:e94c:b0:223:f408:c3cf with SMTP id d9443c01a7336-22ac29a7d9bmr55331925ad.21.1744209665320;
-        Wed, 09 Apr 2025 07:41:05 -0700 (PDT)
-Received: from [10.226.59.182] (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22ac7b6511dsm12744275ad.7.2025.04.09.07.41.03
+        bh=XTxp3qW+KPuzf+zXWuGUYa2ldWHd+1dpKttsCAAJnR4=;
+        b=nZlfv7ZQEr//dhqLH6WF9DWZ7u03yXdJyJFKvuHSap/kxUx4nprYxVQrVph4VM04Df
+         yZZDr4r9h3HuH4XI94TyPHgTyOiGR1yURxC5gPaghegSr08gxwIHJGjRrWhhBEPqO2eb
+         stK34X0gv5tdVvIuzcudgsn9YPERfcVlI7rwQusMK71JvJMkK1GNwYDCX7CL5x+ALHTI
+         8TwyrLTSGD1hLshnM8HwWS+6yonKiuExbAcbG+VSRKBVEUEmfwToXeAQE+aK33S+6BMk
+         0DaoDtL+shmIy3jolXW2QMJ6DHmqwpJmgJR6kVXyhji5UsqlYOBUL1FHi0XwIxEbun4w
+         coLA==
+X-Forwarded-Encrypted: i=1; AJvYcCVFX8QzIMSXVI+CgvUU7pPa0v0AR7lsWYyTuX4FIY+L9WOXSVsy3calB7ZWurL3Q376ARgvbkv8MT9tqA==@vger.kernel.org, AJvYcCWYQGJC5GsLGApCVJWagnf+p1oL7miZ4H9SFvfxhvNQasewdwNv9aLX1tX4+RB1FmAV3lLUYayd@vger.kernel.org, AJvYcCWz08ISi45ig7p41fdcVaK7iDfwYaMRuWWOJ+CKSJ7UaU/yZCuzOgwKC0XmlZPyRgOajtat1XIfZ6MJajM=@vger.kernel.org, AJvYcCX/V9DPdGCJPdjWZrJg2jiamquDXqZ2Pb45hYFjEq3KD7FNQBiv8ESfo8pk6O1VoyyiS/zfMehoaH5Abw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzM8WwaEjUGmW4L5YKM2lJJqN4tLfWERz2QDm4jduPt3XTJxdzY
+	gB6g07QOtkFR/Vyk30zkkG0OBUXDhnLJrQViQfDhb4OyTbX5nRpy
+X-Gm-Gg: ASbGnctBNw9viPsr3mSFcabmVEFcGRUm/KOA9eWuV/YqabS74uWwDYDVwnPdL8vDUSp
+	WXl7oJ346mvIZq80AlRLx1kzy/b20ToWZUL60ptStVogxfdOSe+12rCHQC7/V4BqQ/7LLLWOu+4
+	aUnhG+EPlcx2kE7EKWEiduQi05v+8I/A8uCaMPkKGTmbXsWv2cMviZcM28tftLYDLz/dQcyc+mf
+	GMBk5CIrR9PLUaTgHNDcAxLmUTZPOTYPwVDi+YrysZBYxW1DBmD9Ifx864lJf+tUL0KBIlSpDaj
+	0HX3UmycvA6odJ9SRAwqdBPgurGxMqZFOMK3uhWzr1AOGTTvvIipkczwgyquzXp79UBlEQ==
+X-Google-Smtp-Source: AGHT+IG7fk9emZaqKs/kKGowvaUASd2CDo9SSBq5dR2zvDPKxRK4W1C4hr7cqLTnQPNN0OUJNfi0kg==
+X-Received: by 2002:a05:651c:221a:b0:30d:62c1:3bfc with SMTP id 38308e7fff4ca-30f4387ba49mr2911011fa.7.1744210629436;
+        Wed, 09 Apr 2025 07:57:09 -0700 (PDT)
+Received: from [172.27.52.232] (auburn-lo423.yndx.net. [93.158.190.104])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30f4649d61csm1929521fa.7.2025.04.09.07.57.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Apr 2025 07:41:04 -0700 (PDT)
-Message-ID: <27642cab-9d0a-4989-9f3d-68f329676674@oss.qualcomm.com>
-Date: Wed, 9 Apr 2025 08:41:03 -0600
+        Wed, 09 Apr 2025 07:57:09 -0700 (PDT)
+Message-ID: <02d570de-001b-4622-b4c4-cfedf1b599a1@gmail.com>
+Date: Wed, 9 Apr 2025 16:56:29 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,52 +81,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] bus: mhi: ep: Update read pointer only after buffer is
- written
-To: Sumit Kumar <quic_sumk@quicinc.com>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Alex Elder <elder@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, quic_krichai@quicinc.com,
-        quic_akhvin@quicinc.com, quic_skananth@quicinc.com,
-        quic_vbadigan@quicinc.com, stable@vger.kernel.org,
-        Youssef Samir <quic_yabdulra@quicinc.com>
-References: <20250409-rp_fix-v1-1-8cf1fa22ed28@quicinc.com>
+Subject: Re: [PATCH v2 1/3] kasan: Avoid sleepable page allocation from atomic
+ context
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins
+ <hughd@google.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Guenter Roeck <linux@roeck-us.net>, Juergen Gross <jgross@suse.com>,
+ Jeremy Fitzhardinge <jeremy@goop.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, kasan-dev@googlegroups.com, sparclinux@vger.kernel.org,
+ xen-devel@lists.xenproject.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, stable@vger.kernel.org
+References: <cover.1744128123.git.agordeev@linux.ibm.com>
+ <2d9f4ac4528701b59d511a379a60107fa608ad30.1744128123.git.agordeev@linux.ibm.com>
+ <3e245617-81a5-4ea3-843f-b86261cf8599@gmail.com>
+ <Z/aDckdBFPfg2h/P@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
 Content-Language: en-US
-From: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-In-Reply-To: <20250409-rp_fix-v1-1-8cf1fa22ed28@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+In-Reply-To: <Z/aDckdBFPfg2h/P@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: jhPZQ4OZ2kwlfUumJWy1HFPW52wbUp10
-X-Proofpoint-ORIG-GUID: jhPZQ4OZ2kwlfUumJWy1HFPW52wbUp10
-X-Authority-Analysis: v=2.4 cv=I/9lRMgg c=1 sm=1 tr=0 ts=67f68703 cx=c_pps a=cmESyDAEBpBGqyK7t0alAg==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8 a=Mw1Om9em43-oCLZg1R0A:9
- a=QEXdDO2ut3YA:10 a=1OuFwYUASf3TG4hYMiVC:22 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-09_05,2025-04-08_04,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
- phishscore=0 suspectscore=0 mlxlogscore=999 lowpriorityscore=0 spamscore=0
- clxscore=1015 malwarescore=0 adultscore=0 priorityscore=1501
- impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504090092
 
-On 4/9/2025 4:47 AM, Sumit Kumar wrote:
-> Inside mhi_ep_ring_add_element, the read pointer (rd_offset) is updated
-> before the buffer is written, potentially causing race conditions where
-> the host sees an updated read pointer before the buffer is actually
-> written. Updating rd_offset prematurely can lead to the host accessing
-> an uninitialized or incomplete element, resulting in data corruption.
-> 
-> Invoke the buffer write before updating rd_offset to ensure the element
-> is fully written before signaling its availability.
-> 
-> Fixes: bbdcba57a1a2 ("bus: mhi: ep: Add support for ring management")
-> cc: stable@vger.kernel.org
-> Co-developed-by: Youssef Samir <quic_yabdulra@quicinc.com>
-> Signed-off-by: Youssef Samir <quic_yabdulra@quicinc.com>
-> Signed-off-by: Sumit Kumar <quic_sumk@quicinc.com>
 
-Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+
+On 4/9/25 4:25 PM, Alexander Gordeev wrote:
+> On Wed, Apr 09, 2025 at 04:10:58PM +0200, Andrey Ryabinin wrote:
+> 
+> Hi Andrey,
+> 
+>>> @@ -301,7 +301,7 @@ static int kasan_populate_vmalloc_pte(pte_t *ptep, unsigned long addr,
+>>>  	if (likely(!pte_none(ptep_get(ptep))))
+>>>  		return 0;
+>>>  
+>>> -	page = __get_free_page(GFP_KERNEL);
+>>> +	page = __get_free_page(GFP_ATOMIC);
+>>>  	if (!page)
+>>>  		return -ENOMEM;
+>>>  
+>>
+>> I think a better way to fix this would be moving out allocation from atomic context. Allocate page prior
+>> to apply_to_page_range() call and pass it down to kasan_populate_vmalloc_pte().
+> 
+> I think the page address could be passed as the parameter to kasan_populate_vmalloc_pte().
+
+We'll need to pass it as 'struct page **page' or maybe as pointer to some struct, e.g.:
+struct page_data {
+ struct page *page;
+};
+
+
+So, the kasan_populate_vmalloc_pte() would do something like this:
+
+kasan_populate_vmalloc_pte() {
+	if (!pte_none)
+		return 0;
+	if (!page_data->page)
+		return -EAGAIN;
+
+	//use page to set pte
+
+        //NULLify pointer so that next kasan_populate_vmalloc_pte() will bail
+	// out to allocate new page
+	page_data->page = NULL; 
+}
+
+And it might be good idea to add 'last_addr' to page_data, so that we know where we stopped
+so that the next apply_to_page_range() call could continue, instead of starting from the beginning. 
+
+
+> 
+>> Whenever kasan_populate_vmalloc_pte() will require additional page we could bail out with -EAGAIN,
+>> and allocate another one.
+> 
+> When would it be needed? kasan_populate_vmalloc_pte() handles just one page.
+> 
+
+apply_to_page_range() goes over range of addresses and calls kasan_populate_vmalloc_pte()
+multiple times (each time with different 'addr' but the same '*unused' arg). Things will go wrong
+if you'll use same page multiple times for different addresses.
+
+
+> Thanks!
+
 
