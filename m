@@ -1,156 +1,103 @@
-Return-Path: <stable+bounces-131917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7BD0A8227C
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 12:42:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FC82A822A2
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 12:47:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4CBF4A7354
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 10:42:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87B344A863B
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 10:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CDC25D542;
-	Wed,  9 Apr 2025 10:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32A025DB17;
+	Wed,  9 Apr 2025 10:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="HCWhznDU";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="rT0KkMH/";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="HCWhznDU";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="rT0KkMH/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mzcYAHgI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1BC25C6EE
-	for <stable@vger.kernel.org>; Wed,  9 Apr 2025 10:42:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697752566F3;
+	Wed,  9 Apr 2025 10:46:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744195372; cv=none; b=k0tJWuDO8JL9OsIFtxKUgZbPPbpVJ4o9AF759YmjDfVb7GT0J6T4djBZwCX/57LPMxDzdNXA4uwNg7XDETdiSdNBPJw0th/D7kxgRfQSR2gYpwd3DHVVbt3b0aRGUuBXpULsM8aYJDnI3x14lu89OXoncG0q1Ljli95FDrsWuDU=
+	t=1744195617; cv=none; b=gvgILeVZaUGNJwuUI40JVDMfSvUHoHpc7XGrb+sKlyncqjPxoY00T8zlPC5VJV1ZjezfSJplJ6T7fX1H53JmduYVJrnON2+/SXzYj5952rEnYImL/zSvca4Hpi6hWSiaXmS9ZdvBvxHNZi+sJo3IaTL4OjHcIBm32F97Es/O24k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744195372; c=relaxed/simple;
-	bh=EdCjpD8KSUrLuHs5GvIkdcerRehZ40AK1poflo4d2k4=;
+	s=arc-20240116; t=1744195617; c=relaxed/simple;
+	bh=IOcIpFE6jTQjeFrOWgbckjiDdf9pdeuZRXCDxYjN5eA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=djVGLU8TPLuFtu2kCepKi4MViKKV0qmPEv45OV1DbXII1w9kFuab0VE2TQcdsWH3fizROOftDwcrNbxPm05WFZzR4t/VeV1ZPU5BLrcB80QDuUjMcUnH3n+UWOub4jqHjZUL07zjN/UGb2zx1S+r1znx+zTnObbIknBQV/2c1Tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=HCWhznDU; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=rT0KkMH/; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=HCWhznDU; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=rT0KkMH/; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C122421169;
-	Wed,  9 Apr 2025 10:42:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1744195368; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Yen6uUM+rymVHNJ1ppKOFMdkW13sc3zHqEh7q670KX0=;
-	b=HCWhznDUKFBV83n2K/OHI8uPFkO+hBE+L385r6JhK3IVciLS5fWENZYdz8RIu2J9+nzv+p
-	Hm9isDnYmA+vpR90moAaR8KugyylDl1ZSoK7CvpZyInHvK4bAW8siJnWj/9gVNTdVA5G8v
-	Kzz43O2LYpmJWz+klV00BHQBO2pRtvg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1744195368;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Yen6uUM+rymVHNJ1ppKOFMdkW13sc3zHqEh7q670KX0=;
-	b=rT0KkMH/b8UG/NRNl/bkB1rAntWBtQsjK3NLBDy/p4I1VlCn7UzIDJFzj69aVK/E969g3+
-	qyLqRcEJqB0HN9CA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1744195368; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Yen6uUM+rymVHNJ1ppKOFMdkW13sc3zHqEh7q670KX0=;
-	b=HCWhznDUKFBV83n2K/OHI8uPFkO+hBE+L385r6JhK3IVciLS5fWENZYdz8RIu2J9+nzv+p
-	Hm9isDnYmA+vpR90moAaR8KugyylDl1ZSoK7CvpZyInHvK4bAW8siJnWj/9gVNTdVA5G8v
-	Kzz43O2LYpmJWz+klV00BHQBO2pRtvg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1744195368;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Yen6uUM+rymVHNJ1ppKOFMdkW13sc3zHqEh7q670KX0=;
-	b=rT0KkMH/b8UG/NRNl/bkB1rAntWBtQsjK3NLBDy/p4I1VlCn7UzIDJFzj69aVK/E969g3+
-	qyLqRcEJqB0HN9CA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AF3EE13691;
-	Wed,  9 Apr 2025 10:42:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id aL/EKihP9me3CQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 09 Apr 2025 10:42:48 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 3BFADA0838; Wed,  9 Apr 2025 12:42:48 +0200 (CEST)
-Date: Wed, 9 Apr 2025 12:42:48 +0200
-From: Jan Kara <jack@suse.cz>
-To: Artem Sadovnikov <a.sadovnikov@ispras.ru>
-Cc: Jan Kara <jack@suse.cz>, linux-ext4@vger.kernel.org, 
-	Theodore Ts'o <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>, 
-	Eric Sandeen <sandeen@redhat.com>, linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ext4: fix off-by-one error in do_split
-Message-ID: <z4fxzkutn3bjrpb4kmezorp6hbbapsvmijoznbny5ll2qajmm5@i5dl3zy2inch>
-References: <20250404082804.2567-3-a.sadovnikov@ispras.ru>
- <odgkvml62unm4ux3sbnympgyzj22z7dwjgdvdmlbgtiybq4j7z@gnnaygdp7muw>
- <fc291720-bba7-4799-b451-ae7c84e6697c@ispras.ru>
+	 Content-Type:Content-Disposition:In-Reply-To; b=N2nHNRB6rg9IUa9jUW58Ud1x46Uz44EUTww6DyA9PfvuZ10YFdB8NZotJufqyPHsOK8JqJ6WbV6IRSZNa3f53+zNT31rtyyxN3cFqnrGm08gAYl/wiJX0VHKl5gUIpSSx+PMEA4mcqVlRDWMRDq5NrDgiyjX7aobXgBdO6WCVhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mzcYAHgI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54656C4CEE7;
+	Wed,  9 Apr 2025 10:46:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1744195616;
+	bh=IOcIpFE6jTQjeFrOWgbckjiDdf9pdeuZRXCDxYjN5eA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mzcYAHgIthAWVKOkYgOqgl96brwdu2acWnmnzdXnhZdo0K4y8rWbVuifob9+YLlfF
+	 7fti74uImyojXfkkb5XpEK2bUShTsJ38kSzOKIZjtoTdVmcWa73/+gWAuEsiJJrN5O
+	 5pXijL32f8Q+oCoUFfgnz6DTNLPwMw5NN/f8fTNQ=
+Date: Wed, 9 Apr 2025 12:45:21 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Thorsten Leemhuis <linux@leemhuis.info>
+Cc: Florian Fainelli <f.fainelli@gmail.com>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+	Justin Forbes <jforbes@redhat.com>,
+	Dmitry Vyukov <dvyukov@google.com>, namhyung@kernel.org,
+	irogers@google.com, acme@kernel.org, ak@linux.intel.com
+Subject: Re: [PATCH 6.14 000/728] 6.14.2-rc3 review
+Message-ID: <2025040902-shimmer-anchor-0019@gregkh>
+References: <20250408195232.204375459@linuxfoundation.org>
+ <929581ef-cc54-4619-8f4d-0e0f3369a38c@gmail.com>
+ <1de4a315-1855-4eba-9bfe-d61018be5705@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <fc291720-bba7-4799-b451-ae7c84e6697c@ispras.ru>
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.80 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_COUNT_THREE(0.00)[3];
-	FROM_HAS_DN(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email]
-X-Spam-Score: -3.80
-X-Spam-Flag: NO
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1de4a315-1855-4eba-9bfe-d61018be5705@leemhuis.info>
 
-On Tue 08-04-25 16:38:36, Artem Sadovnikov wrote:
-> On 07.04.2025 16:02, Jan Kara wrote:
-> > Thanks for debugging this! The fix looks good, but I'm still failing to see
-> > the use-after-free / end-of-buffer issue. If we wrongly split to two parts
-> > count/2 each, then dx_move_dirents() and dx_pack_dirents() seem to still
-> > work correctly. Just they will make too small amount of space in bh but
-> > still at least one dir entry gets moved? Following add_dirent_to_buf() is
-> > more likely to fail due to ENOSPC but still I don't see the buffer overrun
-> > issue? Can you please tell me what I'm missing? Thanks!
+On Wed, Apr 09, 2025 at 09:09:02AM +0200, Thorsten Leemhuis wrote:
+> On 09.04.25 01:05, Florian Fainelli wrote:
+> > On 4/8/25 12:55, Greg Kroah-Hartman wrote:
+> >> This is the start of the stable review cycle for the 6.14.2 release.
+> >> There are 728 patches in this series, all will be posted as a response
+> >> to this one.  If anyone has any issues with these being applied, please
+> >> let me know.
+> > 
+> > perf fails to build with:
+> > 
+> > util/hist.c: In function '__hists__add_entry':
+> > util/hist.c:745:37: error: 'struct addr_location' has no member named
+> > 'parallelism'
+> >   745 |                 .parallelism    = al->parallelism,
+> >       |                                     ^~
+> > make[6]: *** [/local/users/fainelli/buildroot/output/arm64/build/linux-
+> > custom/tools/build/Makefile.build:86: /local/users/fainelli/buildroot/
+> > output/arm64/build/linux-custom/tools/perf/util/hist.o] Error 1
 > 
-> add_dirent_to_buf() only checks for available space if its de parameter
-> is NULL, but make_indexed_dir() provides a non-NULL de, so that space
-> check is skipped entirely. add_dirent_to_buf() then calls
-> ext4_insert_dentry() which will write a filename that's potentially
-> larger than entry size and will cause an out-of-bounds write.
+> Same here. From a quick look and test-compile it seems that the patch
+> "perf report: Add parallelism sort key" that is included in this rc
+> depends on f13bc61b2e3795 ("perf report: Add machine parallelism").
+> 
+> The former is 2/7 of a series, where the latter is 1/7 (
+> https://lore.kernel.org/all/0f8c1b8eb12619029e31b3d5c0346f4616a5aeda.1739437531.git.dvyukov@google.com/
+> )
 
-Indeed. I didn't notice this detail. Thanks for explanation!
+Thanks, now dropped, and I've verified that this fixes the build issue.
+I'll do a new -rc round in a bit.
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+thanks for testing!
+
+greg k-h
 
