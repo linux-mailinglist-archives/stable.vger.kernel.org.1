@@ -1,236 +1,134 @@
-Return-Path: <stable+bounces-131907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A662A81F41
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 10:07:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C3E6A81F92
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 10:17:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17AD2464586
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 08:07:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09EE219E60CE
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 08:17:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 325B325B66A;
-	Wed,  9 Apr 2025 08:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A6C25B66A;
+	Wed,  9 Apr 2025 08:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RwX4KyfO"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="uuzKgUkG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.15.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B0525A64B
-	for <stable@vger.kernel.org>; Wed,  9 Apr 2025 08:07:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F8F2550D9;
+	Wed,  9 Apr 2025 08:16:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744186057; cv=none; b=McCCiI7ccLBbISpqHgBT9ulNmuuLX8cCSoOGg7Ob0Z0iQumcjxRmHhEQXQCQP+Vlsrvu6MiMLjDJJqCMl2xnez5qCRmspVvRXOG3c6eAJzBv3AVF188jo1y0UlbNPjoTpcqkmKIzgdTwqvmueDd9o1WKZ0UyC2tGUM/ZLV61DMo=
+	t=1744186622; cv=none; b=V31DTYjhhstiR2Qe06ATQanRNi/e6VR2VevciZRpYLbUYXGLje+ZdmyscOsw0ARhxbk59RzHQIbGjL3zeBj5xZqkBKK99yFg1QDlMgIMa883nQDRZYqpRjICF231XvvCIn7eLpUCA1m685Qioq2ZQrsfW0XV5TE19pLiZxafayw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744186057; c=relaxed/simple;
-	bh=LJ8VdqrBwDeVAFSf6p8TCiwf+/ow6MjEMwXoqiuQ1WM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gnzNZHgMygniSRxEefZ/tR+OzRERcPCJSMtrg2okDMRT8QuSVKNn4PgWFdIA/1o1HrlNaO2E7ZyC8WfW9Xu66a6XN834KxJu5YezGKevNURIrqwcfcwX/sA1+16RVivd6A1eWLSRABoCieHQeNtgsNA52RncwRlm6iqq/Jpbs/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RwX4KyfO; arc=none smtp.client-ip=209.85.222.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-86718c2c3b9so2786327241.2
-        for <stable@vger.kernel.org>; Wed, 09 Apr 2025 01:07:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744186054; x=1744790854; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JXkmBNvnOMHhHWAuvCtHYqjOtkAXTSz9hABkvsrQyCg=;
-        b=RwX4KyfOS9PUkB4Ii5NGXk3oKcPrvQcZelhShIaB7p1qnU+9eYyNm6h5iiRrgar28H
-         nqM66TrCmLVOQbO6WgqM3Oz76+5F6m7qiW/CZabk7y1roN3Xt7OKyXCn/GlLvtlS7pzU
-         DUzZv30quJ6hL8dXqY4Z+yOai8g/FC4sCFo8iPDsZOw6BI34IsiMrVYi/SKNROoOMeE3
-         1TrGKkKMBu8RfaIhFaAK6fqIpKIAii7aPvzlbiw2iJut6Fhtx/zCENi2xrglvviLo3Mu
-         JlzlZH8EPlN3gi6chl/Bxn4n2FqGnZMxp+1mkbNNVwzlECfdk6B9lbzoW+iwh0D9imvm
-         1cKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744186054; x=1744790854;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JXkmBNvnOMHhHWAuvCtHYqjOtkAXTSz9hABkvsrQyCg=;
-        b=XJHEE86DXtcxZjgZg3mYRsuUQoy8kIr9M8Sd82RmSM+xpFJeX55WZL22p7T1KbEY46
-         6+ZPbupl4Vpbr+p2AcEVDmK3zQPoVuV2WfVQd30sAyWn+uKSIfkqDGcJsj7uKUv6e/58
-         n9SX0WmA/3ZT2deTsqMtOmaRotwifj1BRFUBceowle8SZ8ouE6yjT010ha2T0JHTpPlS
-         4ZhmArxWZKrbOjFaEWUTba7fv8juAi1TalshUNbAg9R61OMiuKQDZMLsrQYCouSjQjQ/
-         OBRJsjaaqRUnXSp+ntdN283ib5BUpZPTxKTwrLADWS3o1MQa0FlTIgTShwL3mfUYueb+
-         WCgg==
-X-Gm-Message-State: AOJu0YzBYtjHoT8KnoQlp1W5agPSvkc0kDXWYhBEO+BDFLUZpJFLhUcV
-	PUmg+ksA8zbwgkM25NhSHUClJ5yAeqW5rToMcFRXFGSCkDkhd55GI0/vrudRNOt3nYOPhlYweQv
-	oqhv2Xk4JjNXpSn+L/WCZmXg7oUUzAUUAssdyqw==
-X-Gm-Gg: ASbGncuIFb8oi9gCSmGL9gfaxrAxL6jNZq4MReP2GEkcHGqkIcaYRjlfiggcOBmNltX
-	edsKcFm2y7A4B7/QiIxqwqDQbuq0ObHFV23+D/n7+u+R/l+CpFsHXv7rDwKRRScN0RSY37NXvG5
-	Cs2O3VWUynvUG4X7B9vanr5xzAandijAAiOoVfmFCaPrsE1eWfiYnAjls=
-X-Google-Smtp-Source: AGHT+IGFd80pHefyWARuDC/0TA3j5rVxp1YRwgqT9bkfVwo/ArU5djEx5pO/sutri3xBssURUTwwWWmFK3A0Cxqn3Tk=
-X-Received: by 2002:a05:6102:3f9f:b0:4c6:d008:7349 with SMTP id
- ada2fe7eead31-4c9c447b61bmr1417231137.21.1744186054131; Wed, 09 Apr 2025
- 01:07:34 -0700 (PDT)
+	s=arc-20240116; t=1744186622; c=relaxed/simple;
+	bh=h6CgCYyKE/mzMr9eg+tCZEt2jzGIbosM23RT+DB8mr8=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=GiDqChqsYCjS+2+FH/dn8sdcdsPdED++ANqPzFg3mteuilQrAObOqytJ8/VJd2R4h2i7clOAj1GNSrZy/2FgeEfP3l4IhpJCJ4yhddIPMykg9iq1kG/NUT+Kp2XKVX7EhyJCzjF7s+4WWxRC8v4P+ZCQAKKWVK1ESQv+KkPAd1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=uuzKgUkG; arc=none smtp.client-ip=212.227.15.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1744186612; x=1744791412; i=markus.elfring@web.de;
+	bh=1YJHp6epgREJ9ryf8kdlCCnU4DSI6UznrnADAXME3CU=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=uuzKgUkGQVyPs66fE+1IhkN2AQ5w40Jz30r1M00YWgg4PR/3gKeg2+fsvH/M5jp2
+	 6jbQubNyoyjOgQHq0PZYKLrcSEEHNPHjd8XmHgMVDVEYPa05CWIvz3dj7/1oiA62f
+	 ganqsHhwsIgPtN5zJNlgGnWNA8If9rMMIV/VmCo8ZOVRlGHwBXb7T5BHYKVGNi4tl
+	 jbNctl8B8XSdp+Utqk38mxTkKdMQZEFEJEL9lSvNTex86KTz8+KvKE6BawO6iNip6
+	 xpqVXkqF8oJNbRwLL9RFi9dk4WyZYsgY0/mdMUTWyjlbTUpqF0lK1V7psu3mchRje
+	 YTr2EPWIXByz4uK4ww==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.70.27]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1M7Nmq-1tz8I41iQe-00F7Sz; Wed, 09
+ Apr 2025 10:16:52 +0200
+Message-ID: <8cf4d7d5-e9f8-4c10-810b-5c7da72db1c8@web.de>
+Date: Wed, 9 Apr 2025 10:16:34 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250408104828.499967190@linuxfoundation.org>
-In-Reply-To: <20250408104828.499967190@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 9 Apr 2025 13:37:21 +0530
-X-Gm-Features: ATxdqUFaqvKK2ZPTUXJqPBxfGL-fWoHAWKFBy9DLIszM6anKNe6D_M-6Zroe8Lc
-Message-ID: <CA+G9fYuY0igSO2icsycTh5yDtU79qHU21f6PYRkXo1a4i-exyg@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/268] 6.6.87-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+To: vulab@iscas.ac.cn, brcm80211-dev-list.pdl@broadcom.com,
+ brcm80211@lists.linux.dev, linux-wireless@vger.kernel.org
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Arend van Spriel <arend.vanspriel@broadcom.com>,
+ Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
+ Kalle Valo <kvalo@kernel.org>, =?UTF-8?Q?Ond=C5=99ej_Jirman?= <megi@xff.cz>,
+ Sai Krishna <saikrishnag@marvell.com>
+References: <20250406081930.2909-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH] brcm80211: fmac: Add error check for brcmf_usb_dlneeded()
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250406081930.2909-1-vulab@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:yMPQ9G5ZsbpKYU067fpj1wYqk1uW/OnPvh6SXiN2B7pwB5kHnXT
+ AOlBTXLf8JMQFbiIZoCU26LjvgCIJ32cd0eamP9twA/+MLzo8hwcCYVp31RtCAJrsnwF7uZ
+ M7A2Imz2lYbajLG5/I66n+mV1HhgESfzqL+x8EFY1TMI6awlgMAowjYzl4YbPknKssAwOHs
+ SB9NjgRm1PC6YSDxpEs8A==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:/QrlraN5r0k=;iZ33Kw0PCBy1LINLZzn/xnbJ0Zh
+ g5xcTMqUz3kS9YQZtAQ507pA4VC5YiS5dExWcU5I9bkUBZRTZ+zshPEDYaPKMdtfJm/xbvFpt
+ Iv8mP2lX+g/oIGhziOldg/kLwq67h9xq7zhB34AyyL0vBQ+8QOABmUtf7u+XJLbsIyzm9kroY
+ XbwERg6HrHJKelvPaPl5LdbxrUS7DMsp7fn/68Rkiha16WZa3Tzbd3qfemYWswrX5UEzLQew+
+ qX+GmtzuJmiq+rBl8E0BQw4X8v/i1kjqS0JJxhTaIfJC+O0Aisr1z8hiyAKYpGovFcs39Z/GC
+ aO/1RC40/TtsJEVJceVzBPN1pl90EyS73k3EsLd8rfg9r2W2IfqSK0qOlKhhmYVAD+Y3KfvA6
+ YmqACZddDF4/bIfGNcKg2qBrDHNzPpxmYNDw18ftwqeGZoZ4LHyxj78Nm+E4RH3WxuM0dAlZl
+ 4d+UKEoXX2U6aipayfwchW5FhNIVViUdgzLJZJr3M9jMnnn7YbSNTRdClQcL4I+BGEllfDniA
+ VTqrgdKaxGP49TjTbCffUygQPG9CQoX8eFRiX7qV9MH20XwLrwpaIJS9YAHVORnWnsmyjZBb2
+ rjTQdmAC9mASZ0JR669n6jORj6nyXdouydsfdYd5HrMBGzv/hBGyHvULGMxLSGs9sDQHnzkyO
+ wmhjPqT9ezbaqF4IV/YEWJZX4CtGyHKli3mM+wqadxnboV80Whc+i2rnXArvuOstM3W53Drdl
+ 1mJNJm2kxLMaVTF8fEkMYVj2Is5WZETgo4Drc1xXr+1iI4dCpPFptNOrhVbTPmjM3lI2IO07p
+ xxUt1FYCO5WtbO8a+0U2P74UZ5k2+5nq0z8/CHZuv/LS3Fu0zZA2ckRrMDxcHFnxUkJTJVU6x
+ Lc8ZbUW/1N+QldL9YKyL7BB4SUTAYMUl8Dh/WfLJ3OM54+VHrf7xXs3lh7qHT0a4WLA2yJY0s
+ wsZ3rap9uHXX9tfhmqgJpfmsVj+hx9TcpWgXqm7cGR+O2Em5vt9FAhnukpOiWmx6qJbtPQ6mC
+ XMbk/HpBAiY/9XzVZX9vbzLiOWoQW/vCFEvo0sZ4TRoCEP1PAx1Nx7Lgau80QAXu61Vayi7sM
+ 4RJ19dLBA0ZBuaOLk+U4hrblL6Wm47Xg2MqbxMF2lYTs4ezolE2uclZ4F5A3DudZYlHmoaU8m
+ 3VCkO3oZx/cMV2zuvHC1l1/bBiDguU2VW5cgshJGdBlvkpfx2xNcTeMR/yIKJ46VNelYz4mLK
+ u/UaCJhgNuRNjvzZtbvdDSgML3Fwlp686ioFPTtdLWzwJvkhjCQyfXsCkaMsku+kzP/3NkiMd
+ 6diezPdeUdJ/y7ZGa0ThIaFC2aVdzVuow9T1aRao8BsishaXOBZiqcUzur9l+zxEEK4GxHu4f
+ 17nPPQ5zIsZ+KCmEkAWOOP2PFwX01Mq6bs9ekJ5GtDtq04gMvGwceH8kw3CWatI7hUjXUupMi
+ bvIKx4PCiejdhulZTY8Nj8JJvOQEneeF+c3eTnUoonS8t/f52Kbs6rMqZOD1q0oHdP+ukCg==
 
-On Tue, 8 Apr 2025 at 17:21, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+=E2=80=A6
+> Add error handling for brcmf_usb_dl_cmd() to return the function if the
+> 'id.chiprev' is uninitialized.
+
+* Please reconsider the offered conclusion once more.
+
+* I propose to replace the word =E2=80=9Cfor=E2=80=9D by =E2=80=9Cin=E2=80=
+=9D (before function names)
+  in some summary phrases.
+
+
+=E2=80=A6
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+=E2=80=A6
+> @@ -798,7 +799,11 @@ brcmf_usb_dlneeded(struct brcmf_usbdev_info *devinf=
+o)
 >
-> This is the start of the stable review cycle for the 6.6.87 release.
-> There are 268 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 10 Apr 2025 10:47:53 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.87-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+>  	/* Check if firmware downloaded already by querying runtime ID */
+>  	id.chip =3D cpu_to_le32(0xDEAD);
+> -	brcmf_usb_dl_cmd(devinfo, DL_GETVER, &id, sizeof(id));
+> +	err =3D brcmf_usb_dl_cmd(devinfo, DL_GETVER, &id, sizeof(id));
+> +	if (err) {
+> +		brcmf_err("DL_GETID Failed\n");
+> +		return false;
+> +	}
+=E2=80=A6
 
+Would an error hint like =E2=80=9CDL_GETVER failed\n=E2=80=9D be more appr=
+opriate here?
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
-
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Build
-* kernel: 6.6.87-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: 5c3c45826e66d7aa24ccc47998543005bc190a84
-* git describe: v6.6.86-269-g5c3c45826e66
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.8=
-6-269-g5c3c45826e66
-
-## Test Regressions (compared to v6.6.83-270-g0d015475ca4d)
-
-## Metric Regressions (compared to v6.6.83-270-g0d015475ca4d)
-
-## Test Fixes (compared to v6.6.83-270-g0d015475ca4d)
-
-## Metric Fixes (compared to v6.6.83-270-g0d015475ca4d)
-
-## Test result summary
-total: 93166, pass: 74695, fail: 3829, skip: 14230, xfail: 412
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 129 total, 128 passed, 1 failed
-* arm64: 44 total, 42 passed, 2 failed
-* i386: 27 total, 23 passed, 4 failed
-* mips: 26 total, 25 passed, 1 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 32 total, 29 passed, 3 failed
-* riscv: 20 total, 20 passed, 0 failed
-* s390: 14 total, 12 passed, 2 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 7 total, 7 passed, 0 failed
-* x86_64: 37 total, 34 passed, 3 failed
-
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
+Regards,
+Markus
 
