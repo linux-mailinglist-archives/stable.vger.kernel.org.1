@@ -1,103 +1,213 @@
-Return-Path: <stable+bounces-131919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FC82A822A2
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 12:47:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C07FA8229D
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 12:47:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87B344A863B
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 10:47:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B1DB881DE8
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 10:46:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32A025DB17;
-	Wed,  9 Apr 2025 10:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 360F225D552;
+	Wed,  9 Apr 2025 10:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mzcYAHgI"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Xd6xezr9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697752566F3;
-	Wed,  9 Apr 2025 10:46:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C15C9184F
+	for <stable@vger.kernel.org>; Wed,  9 Apr 2025 10:46:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744195617; cv=none; b=gvgILeVZaUGNJwuUI40JVDMfSvUHoHpc7XGrb+sKlyncqjPxoY00T8zlPC5VJV1ZjezfSJplJ6T7fX1H53JmduYVJrnON2+/SXzYj5952rEnYImL/zSvca4Hpi6hWSiaXmS9ZdvBvxHNZi+sJo3IaTL4OjHcIBm32F97Es/O24k=
+	t=1744195611; cv=none; b=awtxt7zEqN6D0FY6vCRI3Vtao92lsCEIvlNJbKqa1gYIwCc0/m04KBeksjaIkT6Hk+XsYfus8lnERovxiTq6qluuOlgoQ/tlBlWfw59fMrKrySjS8f90O8z+57gZYmkxTE2+7KCOkvnjwlWIseI+5KYCE1OCxEwre7t3t5NmkPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744195617; c=relaxed/simple;
-	bh=IOcIpFE6jTQjeFrOWgbckjiDdf9pdeuZRXCDxYjN5eA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N2nHNRB6rg9IUa9jUW58Ud1x46Uz44EUTww6DyA9PfvuZ10YFdB8NZotJufqyPHsOK8JqJ6WbV6IRSZNa3f53+zNT31rtyyxN3cFqnrGm08gAYl/wiJX0VHKl5gUIpSSx+PMEA4mcqVlRDWMRDq5NrDgiyjX7aobXgBdO6WCVhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mzcYAHgI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54656C4CEE7;
-	Wed,  9 Apr 2025 10:46:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744195616;
-	bh=IOcIpFE6jTQjeFrOWgbckjiDdf9pdeuZRXCDxYjN5eA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mzcYAHgIthAWVKOkYgOqgl96brwdu2acWnmnzdXnhZdo0K4y8rWbVuifob9+YLlfF
-	 7fti74uImyojXfkkb5XpEK2bUShTsJ38kSzOKIZjtoTdVmcWa73/+gWAuEsiJJrN5O
-	 5pXijL32f8Q+oCoUFfgnz6DTNLPwMw5NN/f8fTNQ=
-Date: Wed, 9 Apr 2025 12:45:21 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Thorsten Leemhuis <linux@leemhuis.info>
-Cc: Florian Fainelli <f.fainelli@gmail.com>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
-	Justin Forbes <jforbes@redhat.com>,
-	Dmitry Vyukov <dvyukov@google.com>, namhyung@kernel.org,
-	irogers@google.com, acme@kernel.org, ak@linux.intel.com
-Subject: Re: [PATCH 6.14 000/728] 6.14.2-rc3 review
-Message-ID: <2025040902-shimmer-anchor-0019@gregkh>
-References: <20250408195232.204375459@linuxfoundation.org>
- <929581ef-cc54-4619-8f4d-0e0f3369a38c@gmail.com>
- <1de4a315-1855-4eba-9bfe-d61018be5705@leemhuis.info>
+	s=arc-20240116; t=1744195611; c=relaxed/simple;
+	bh=A2izym1Utk7diiSIRS/WVNxBg+tpqvZb4BlF0EjbH74=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CDaH9t54H6CS4VXPOgWWc9IWdgKfYryXLOyxfOGfoFDuBc7mGAeA6442GuCUznz7WB+rce5kzSpNcOTsF8FKNbww4Ih4QkOwfFR/D8+YlbdAKr6mX8lRASoO2CNdm3Y1qWnKrx9+IblF4/K8ahC+4AKgdK5i9OPF3XwV8XexUkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Xd6xezr9; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744195607;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=C6GURs+rA2kl1DB3dCBq9SPCewqe7vVe7c7T2yJZQFo=;
+	b=Xd6xezr9cfaP1+qjkrXqaw6ZKXqtL4Ce+gIuOQ2O+3SsF+NZb5lIlDP+vXfu0UVwwR3s9v
+	6mw75wRq4wmJTPF8OlQGM3HxymGJaj1awu5eM3qUjurZ0YdrMPG+WL4ehMZ13m0cpCJ+E2
+	tXQYQBdkXVg+NdMQV7uWlV9RLs1bhE4=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-433-SmUr-f_aPGiQLfLRKIAMfg-1; Wed, 09 Apr 2025 06:46:46 -0400
+X-MC-Unique: SmUr-f_aPGiQLfLRKIAMfg-1
+X-Mimecast-MFC-AGG-ID: SmUr-f_aPGiQLfLRKIAMfg_1744195605
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-43941ad86d4so36179475e9.2
+        for <Stable@vger.kernel.org>; Wed, 09 Apr 2025 03:46:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744195605; x=1744800405;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=C6GURs+rA2kl1DB3dCBq9SPCewqe7vVe7c7T2yJZQFo=;
+        b=ijuJh/rrrz04rM/RHmd7cv57t4D5Nxg5l6gv9bkNVChoGMheJmVlMXxidXoFkL7GBf
+         1IUk3yfaGeBCEEkoXtDgrmIopg2gV6QXMNSfRz9NiUJaCAW1LD9p/qvwNi5n7rYRNlTE
+         vrQU77GO7kXeQ2sT4HkFJx0RCmrdTq0aHrBfCNyPQLHGE7t9+AkCCjUOe5Tsm7yDKtLQ
+         C+R+5njy3JZu4ZX/9IS4pVeKaVRvG0I3YpNPKEEso34FkjTaUWGbbxTcYegR5KMkWg8g
+         K4PPPq0RsB3YeoRI/sW74/A4LMD6LMjJOkuxuLp0nlUa91EucXw5d7QxU9yFz3/bxvsM
+         dDpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUJgWAt/0VtBncbfJCLqyYZ+8IRTgjkiTvaN4rMjuo0dJZG066A0jddbl/2w3nPqe3PuDn682s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCon4bfg7VudVgPUnsiayl/k7X1Yj9+Zd5io/fFMjRctUtcZL7
+	ZYwzeJLAd72uuYvZ7GLwjhuTlxa0G8zCTn0vEyb0h6hhRYjkDpL090EfouaZGatA4JcbpT9ouMh
+	iRZd4lL184JK3PJ/k09rSE0ZIcehrqYMtp85DNFBnIuLBXtqAicWqBA==
+X-Gm-Gg: ASbGnctoNQAirxlwr5pzLmXFTBHCMgAuXwNpMNoz1aI84/UKwcVll0i4o4GA415Qw1J
+	AgqYhdW5rN0yOyGeTlsGj92LMt93Y978SOv5MYO6hXi28gEtfiSr98PTNdzp+8QhIKt3rax1e8B
+	dc4AWKlNlV0YZW6aa4yCJbn6DLIrxhrKDmKbnmhAHD/1sKnKUvkyIGpSE5GG76/lh2OQA79176K
+	jrluXev1dJVftSsxUOAJq42XnV5IvGF75+CAvoQgLrcUpCrK5syMVV1RBA9c8KT7FrSoIHBZPi2
+	a6Al25tSSrtHYbEK/Os9Sx/QV5eoAx9Q2CDJvf2qGCf2ybzdmeidc9eNykG+vjFiAKEJsA0d68w
+	G/o7RF/mQk21azoaFzcQTcrdl2G0Szfn45g==
+X-Received: by 2002:a05:600c:3541:b0:43c:e467:d6ce with SMTP id 5b1f17b1804b1-43f1ec7ccf2mr23763585e9.4.1744195604950;
+        Wed, 09 Apr 2025 03:46:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHmXr3kF+YruO7Uq1wa7mPMZCskFwiPljKb7DzlEdURTSUO/hZuYTN96OR5ijWouCv8RJEFvQ==
+X-Received: by 2002:a05:600c:3541:b0:43c:e467:d6ce with SMTP id 5b1f17b1804b1-43f1ec7ccf2mr23763245e9.4.1744195604612;
+        Wed, 09 Apr 2025 03:46:44 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c70d:8400:ed9b:a3a:88e5:c6a? (p200300cbc70d8400ed9b0a3a88e50c6a.dip0.t-ipconnect.de. [2003:cb:c70d:8400:ed9b:a3a:88e5:c6a])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f2066d26bsm16164845e9.22.2025.04.09.03.46.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Apr 2025 03:46:43 -0700 (PDT)
+Message-ID: <440de313-e470-4afa-9f8a-59598fe8dc21@redhat.com>
+Date: Wed, 9 Apr 2025 12:46:41 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1de4a315-1855-4eba-9bfe-d61018be5705@leemhuis.info>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] s390/virtio_ccw: don't allocate/assign airqs for
+ non-existing queues
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Daniel Verkamp <dverkamp@chromium.org>, Halil Pasic
+ <pasic@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ linux-s390@vger.kernel.org, virtualization@lists.linux.dev,
+ kvm@vger.kernel.org, Chandra Merla <cmerla@redhat.com>,
+ Stable@vger.kernel.org, Cornelia Huck <cohuck@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Eric Farman <farman@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Wei Wang <wei.w.wang@intel.com>
+References: <20250407042058-mutt-send-email-mst@kernel.org>
+ <0c221abf-de20-4ce3-917d-0375c1ec9140@redhat.com>
+ <20250407044743-mutt-send-email-mst@kernel.org>
+ <b331a780-a9db-4d76-af7c-e9e8e7d1cc10@redhat.com>
+ <20250407045456-mutt-send-email-mst@kernel.org>
+ <a86240bc-8417-48a6-bf13-01dd7ace5ae9@redhat.com>
+ <33def1b0-d9d5-46f1-9b61-b0269753ecce@redhat.com>
+ <88d8f2d2-7b8a-458f-8fc4-c31964996817@redhat.com>
+ <CABVzXAmMEsw70Tftg4ZNi0G4d8j9pGTyrNqOFMjzHwEpy0JqyA@mail.gmail.com>
+ <3bbad51d-d7d8-46f7-a28c-11cc3af6ef76@redhat.com>
+ <20250407170239-mutt-send-email-mst@kernel.org>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20250407170239-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 09, 2025 at 09:09:02AM +0200, Thorsten Leemhuis wrote:
-> On 09.04.25 01:05, Florian Fainelli wrote:
-> > On 4/8/25 12:55, Greg Kroah-Hartman wrote:
-> >> This is the start of the stable review cycle for the 6.14.2 release.
-> >> There are 728 patches in this series, all will be posted as a response
-> >> to this one.  If anyone has any issues with these being applied, please
-> >> let me know.
-> > 
-> > perf fails to build with:
-> > 
-> > util/hist.c: In function '__hists__add_entry':
-> > util/hist.c:745:37: error: 'struct addr_location' has no member named
-> > 'parallelism'
-> >   745 |                 .parallelism    = al->parallelism,
-> >       |                                     ^~
-> > make[6]: *** [/local/users/fainelli/buildroot/output/arm64/build/linux-
-> > custom/tools/build/Makefile.build:86: /local/users/fainelli/buildroot/
-> > output/arm64/build/linux-custom/tools/perf/util/hist.o] Error 1
+On 07.04.25 23:20, Michael S. Tsirkin wrote:
+> On Mon, Apr 07, 2025 at 08:47:05PM +0200, David Hildenbrand wrote:
+>>> In my opinion, it makes the most sense to keep the spec as it is and
+>>> change QEMU and the kernel to match, but obviously that's not trivial
+>>> to do in a way that doesn't break existing devices and drivers.
+>>
+>> If only it would be limited to QEMU and Linux ... :)
+>>
+>> Out of curiosity, assuming we'd make the spec match the current QEMU/Linux
+>> implementation at least for the 3 involved features only, would there be a
+>> way to adjust crossvm without any disruption?
+>>
+>> I still have the feeling that it will be rather hard to get that all
+>> implementations match the spec ... For new features+queues it will be easy
+>> to force the usage of fixed virtqueue numbers, but for free-page-hinting and
+>> reporting, it's a mess :(
 > 
-> Same here. From a quick look and test-compile it seems that the patch
-> "perf report: Add parallelism sort key" that is included in this rc
-> depends on f13bc61b2e3795 ("perf report: Add machine parallelism").
 > 
-> The former is 2/7 of a series, where the latter is 1/7 (
-> https://lore.kernel.org/all/0f8c1b8eb12619029e31b3d5c0346f4616a5aeda.1739437531.git.dvyukov@google.com/
-> )
+> Still thinking about a way to fix drivers... We can discuss this
+> theoretically, maybe?
 
-Thanks, now dropped, and I've verified that this fixes the build issue.
-I'll do a new -rc round in a bit.
+Yes, absolutely. I took the time to do some more digging; regarding 
+drivers only Linux seems to be problematic.
 
-thanks for testing!
+virtio-win, FreeBSD, NetBSD and OpenBSD and don't seem to support 
+problematic features (free page hinting, free page reporting) in their 
+virtio-balloon implementations.
 
-greg k-h
+So from the known drivers, only Linux is applicable.
+
+reporting_vq is either at idx 4/3/2
+free_page_vq is either at idx 3/2
+statsq is at idx2 (only relevant if the feature is offered)
+
+So if we could test for the existence of a virtqueue at an idx easily, 
+we could test from highest-to-smallest idx.
+
+But I recall that testing for the existance of a virtqueue on s390x 
+resulted in the problem/deadlock in the first place ...
+
+-- 
+Cheers,
+
+David / dhildenb
+
 
