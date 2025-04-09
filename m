@@ -1,96 +1,108 @@
-Return-Path: <stable+bounces-131869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64DEEA81967
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 01:33:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97FE9A819C6
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 02:15:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2C2A7AD274
-	for <lists+stable@lfdr.de>; Tue,  8 Apr 2025 23:32:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E6F6446B88
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 00:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 047E42566EC;
-	Tue,  8 Apr 2025 23:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D79BE67;
+	Wed,  9 Apr 2025 00:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ULrhmzZ8"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Bix6uS7m"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3C123FC4B;
-	Tue,  8 Apr 2025 23:33:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10821EC5
+	for <stable@vger.kernel.org>; Wed,  9 Apr 2025 00:15:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744155225; cv=none; b=jWVoE+AeIKwg/NG7NZPMmfHVrIgYUGHXxOHRyBlNM1X1tnKiCz73PQG9TgtHTAvDqYyhXf6SZfOj3W9ewQO4EjVPvLUQLjfqBCISnG2qMWfHPeaKZYWN0SFe86Uxh+ghg6gk79/+VuN7VzkIytIa8c1+BEqlEYdA+zimkvtOez8=
+	t=1744157716; cv=none; b=UUF1yc2iOS/aOBQjjt0ye/7eGq3Fq/j84stPJyjpXZfiNKIwBfATKWVKdOEsPnMk/YU1WpqptZhfX6+eydvVpe0CA1UrUe85a38r8Op9cWNO6Vo21bpTxS1wg7eNGvTyvovI5XkRMThlidPwyiKS5/Cvi0Mn05mSEu/qOV++a3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744155225; c=relaxed/simple;
-	bh=/ch1wD6o2Vl0FXPYL+F9372/FrXWZmbfesdlSP688wE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XjGjvG/zf1BnGTuFlSntdRIfPDYN3Ggg7rehXmzcLQ73ot9U0W05Yk1Dpsurx1ckNFGOeRYSS3+iFK0cBqHIBTrrVJp0YI3gP3E3Ln1DVEIfDxtW/w5gymD8daBrAEOiTytjHGSwo7ocOsNnrfuETrROqBpuCtGaQtPitRpAtQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ULrhmzZ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B5C6C4CEE5;
-	Tue,  8 Apr 2025 23:33:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744155225;
-	bh=/ch1wD6o2Vl0FXPYL+F9372/FrXWZmbfesdlSP688wE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ULrhmzZ8tFu65Uf/S9eYFLeouWcrXOr3pHX1lkdpfLcET3XCdrIBqGXcPDGkIKD8A
-	 rUpKpnf/RCcHKUk1thFwNtW/ZamTngoGZZjAWyTX0kEmib2nhT1zwLco+tskHfAVBo
-	 /0QcGtrXTFeoJyqYFAx87uH5XGcsfs4ov9E+BU5bRJ8de0LnGazmHZ58VFXYaLFOom
-	 Kc3tE/6xRPg4aHPc4OrJ68KMkjC/Fo3BTYqcPEf81GDPryt0Z+vquFjb3Wki/OvHUY
-	 RHN2erKiiiyBwZiUhW5BzrfZQUzIzsIUYbv9ty6D71AkfIRs9dRueP6KI2hGYA/eC5
-	 3htlonFoMaG2w==
-Date: Tue, 8 Apr 2025 16:33:42 -0700
-From: Kees Cook <kees@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] kbuild: Add '-fno-builtin-wcslen'
-Message-ID: <202504081632.00837E7921@keescook>
-References: <20250407-fno-builtin-wcslen-v1-1-6775ce759b15@kernel.org>
+	s=arc-20240116; t=1744157716; c=relaxed/simple;
+	bh=kzUr1f5PApCyyaQsNWZA+8T6s6ncUwpR5rXya9vt64M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gbsHWin7Oy8pc99+F2PeR6BmzcByF/HyaTYtpkfbEZmVBcw5oFOrl0iaTLK1tZ+3zsbrVXKyGq9wM72af5cC0PayEwc+rccoCVRN3u5lY7kNwLYVvNQ4OehFhwU+Q+w3qtj1HlnD90UD4XmsHjwKSjHzM8oQ9pNiSQnIyCsV1T0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Bix6uS7m; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ac2aeada833so42767066b.0
+        for <stable@vger.kernel.org>; Tue, 08 Apr 2025 17:15:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1744157712; x=1744762512; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=y7RB+y2EUGP8TtBqM/TIRDMB8wrdZCpt37v8TqudoNA=;
+        b=Bix6uS7mmnHJCuU2P0aApB761XAuX7fKx6/FMPhFrzK/nNUkxSHKtu/iWoMcZXUSf9
+         XvZsThwa1kkGqyVqT9L7hrUOjifgOJJNu/wLYc6hGt0PQrki4/YRtK5LvVvOg9k0Cs3e
+         PSpyJZKECvFDOVjvWMACI+P3+6dpqGdgy998Q=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744157712; x=1744762512;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=y7RB+y2EUGP8TtBqM/TIRDMB8wrdZCpt37v8TqudoNA=;
+        b=gFsZiv+BmHGgLc3K4EAcbNofllFLg6o5DnV+CNcX5TD5lIfrjED+mSaSeolIBXMtlL
+         LABSiQNnCcsP2LPvzIKlqpMRN0e/8R5jJs5eufaudrDA+1lSdyXtyn3eEKOhDMH0eJo0
+         4cIspsHWU2osN3Fqwnk/wxNJS601VKWr9lXAB7zRvdZ4iWKh+WvYucL32VjcqP1LtJiQ
+         9dBkl5bNB1l7qKB+83ZuL8U+FE3Houh/WnWvW56gUykpKbws/NEJDpYZG+paSJukgmGh
+         K5jV2YYLnOEokZP66AfDb8YjmJ5GEjs3VwTG4pAjEn80n0iYfonr5Sr3Dg4WQHZwqiNI
+         DkCA==
+X-Forwarded-Encrypted: i=1; AJvYcCW1/96aGj19/L5AHHNdDWp35E8wzdPloS1dvYarHGvEtc2pn7D3IJ0aTgWhDtjc4MzshNqtzgM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwoqmFsY1FVxm49BGF7rtyHuAKqWxqKuADwqB/QyImUnXlcn/GG
+	QhFmAnU5OoBQnLBSFoROTvMV2lo5gf6GSTbCqyBRvUP1tK0yliEWWcdgERUEtHeTc3t/HDud6Rk
+	mxt4=
+X-Gm-Gg: ASbGncson2+qevSBYi2QbI7UlltgSomYTt7KzxoebXVnPcza0MbB5HA7sRtt5zr+MQj
+	sznzNa9ZHC8xzh/+UWJ653RE8EFv5wakfD4pz1d8PczxjjO2DoWbPJOfdEOTqfCPQEeUbObl3Hr
+	BSWZX7LWMLinJpweLfG0ttyzqQ9sk5bzs7sk5zBuh8LcLJ1W5JmUy1LTT/hJm/0JjTyFUoJhrzv
+	j1U4hyDGsxs3djYjp7bB9gVFPFnV206/i9JkhreNHDc3snMycj55dJt7zGhjCFj+9fdb8RzrU0w
+	H0iPF7FDtAADH2QWT6PxCNRVSCB0sJxlHKzNVnCMt6ASw6nEpVi+KHSxk1Q3CzMfd5Lqs5ExfPN
+	0XfStqqSxtdOxeaptK8g=
+X-Google-Smtp-Source: AGHT+IFolJGDR7Fc392ZY/6rtBRchU8xioUdvqNI+S1HIg4ApeU8Fz4Jt9GzVwdC86jH9DRupbKKRA==
+X-Received: by 2002:a17:907:2d88:b0:ac7:e4a6:20e4 with SMTP id a640c23a62f3a-aca9c0d8b65mr56502666b.19.1744157712156;
+        Tue, 08 Apr 2025 17:15:12 -0700 (PDT)
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com. [209.85.218.41])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac7c013fda7sm992288366b.117.2025.04.08.17.15.11
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Apr 2025 17:15:11 -0700 (PDT)
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-ac7bd86f637so40888466b.1
+        for <stable@vger.kernel.org>; Tue, 08 Apr 2025 17:15:11 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUEuDRIY3gS81tDiIeEQQ4YaKlFtLBknomLrIuD0iw2t3sdwv7gOuhx4s4CLtIA57cRlebHEXA=@vger.kernel.org
+X-Received: by 2002:a17:907:97ca:b0:ac3:ef17:f6f0 with SMTP id
+ a640c23a62f3a-aca9bfb0d37mr81837666b.5.1744157710814; Tue, 08 Apr 2025
+ 17:15:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250407-fno-builtin-wcslen-v1-1-6775ce759b15@kernel.org>
+References: <20250407-fno-builtin-wcslen-v1-1-6775ce759b15@kernel.org> <202504081632.00837E7921@keescook>
+In-Reply-To: <202504081632.00837E7921@keescook>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 8 Apr 2025 17:14:53 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiN62aoWPkgRutvjKpxbXJdvgNNY0DqDc=9_r5FGUjfNA@mail.gmail.com>
+X-Gm-Features: ATxdqUEzxdv_c924M2x5edBsLVmXTsnFzfYKX1p8a7EiZ3toGIQu_4WxIx108FY
+Message-ID: <CAHk-=wiN62aoWPkgRutvjKpxbXJdvgNNY0DqDc=9_r5FGUjfNA@mail.gmail.com>
+Subject: Re: [PATCH] kbuild: Add '-fno-builtin-wcslen'
+To: Kees Cook <kees@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nicolas Schier <nicolas.schier@linux.dev>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Apr 07, 2025 at 04:22:12PM -0700, Nathan Chancellor wrote:
-> A recent optimization change in LLVM [1] aims to transform certain loop
-> idioms into calls to strlen() or wcslen(). This change transforms the
-> first while loop in UniStrcat() into a call to wcslen(), breaking the
-> build when UniStrcat() gets inlined into alloc_path_with_tree_prefix():
-> 
->   ld.lld: error: undefined symbol: wcslen
->   >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
->   >>>               vmlinux.o:(alloc_path_with_tree_prefix)
->   >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
->   >>>               vmlinux.o:(alloc_path_with_tree_prefix)
-> 
-> Disable this optimization with '-fno-builtin-wcslen', which prevents the
-> compiler from assuming that wcslen() is available in the kernel's C
-> library
-> 
-> Cc: stable@vger.kernel.org
-> Link: https://github.com/llvm/llvm-project/commit/9694844d7e36fd5e01011ab56b64f27b867aa72d [1]
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+On Tue, 8 Apr 2025 at 16:33, Kees Cook <kees@kernel.org> wrote:
+> Since I have stuff queued for -rc2, do you want me to snag this too?
 
-Thanks for chasing this down. :)
+Well, since I felt so strongly about this one, I already took it...
 
-Reviewed-by: Kees Cook <kees@kernel.org>
-
-Since I have stuff queued for -rc2, do you want me to snag this too?
-
--- 
-Kees Cook
+           Linus
 
