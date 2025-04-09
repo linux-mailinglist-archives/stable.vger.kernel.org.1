@@ -1,234 +1,180 @@
-Return-Path: <stable+bounces-131922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 573F0A822D1
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 12:53:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D716A822E8
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 12:56:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F43E3B3430
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 10:53:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD69F3B9039
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 10:56:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011AF25DAF8;
-	Wed,  9 Apr 2025 10:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A3725DAF4;
+	Wed,  9 Apr 2025 10:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="q6UdqjmS"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GZpzofv3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC8025D911
-	for <stable@vger.kernel.org>; Wed,  9 Apr 2025 10:53:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C262450FE
+	for <stable@vger.kernel.org>; Wed,  9 Apr 2025 10:56:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744195998; cv=none; b=h9PXwfbMF+qiLcBHNm1Cb4I1jLqsGPdbOGDpCetgy7oIYfpg/yy7rCr9e8BgwOq0MY5j2oyZdIZN2MxluaZjQWWDbtTj4RbhCf9CO6msdvT9oWNqHF8xthYcOI0gx8A3myA12vylgUcPVhzDuBARIKXqPla/cNKTz9U+gstQU54=
+	t=1744196187; cv=none; b=iFMSRVWmsnDNkiDl/B+PCNfCBdswNM099blqaXjApNFan3URsQq1mqmPqZbWQ4ZSdqOwmN+bRjj2q8UK2p2AS9SE8UJ1dbNf1nONW6zGQ5MQ3u4HFjklqRbkvMyGLKH1ptmNjS7TnJ2sdrQqwl4qEO/JlzpknTZOOp666NTz71k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744195998; c=relaxed/simple;
-	bh=Rx3deIVSJsCpMffhYe0+mXtPcPwYju8RaKlb1UWGh0U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CmXsVEMmcLq3Us5ZTzKuqP7xfoOaJ+f/PS+y6CIxrdaGZe8isGVidg3NrauMKAY1Zsn8BrCRCNiomkJ96IVv3epwiAFmp+gjPWHdxDfadZNC/PKbOvwUNvg5QmYU+EEiC3HdPoiAkhCd8Reoh9pSsfdLYDZjVfALnasQpx+3wRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=q6UdqjmS; arc=none smtp.client-ip=209.85.221.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5259331b31eso3082149e0c.0
-        for <stable@vger.kernel.org>; Wed, 09 Apr 2025 03:53:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744195996; x=1744800796; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eiSuolfqjKUCKmLZlhGjwnD6UU5gFbBKHX8f8BQoFeg=;
-        b=q6UdqjmS/3IGyai85xmAtycP9eoerN4F4QCV6iAUQvodGtEuLIa8vf+b2biLHLW9E2
-         K8k+p6vf7rvjXnK92jXV8NP9qlfMEuleLhefKmZQJzogLM9EmLtSIQ80HnDrGljfmq6s
-         lUjMHkAMLXmDQ/v4g56YCa+HNIkqcPZn/JiR3/NhYwmt/M+ntp8cPjPF7Cvv+3k2tKG4
-         haMQby+H97g9qgIDS/A5WQ3+cIHPld+QamLp0Q3wAMi7MtV9XfSaNkf1Yru/B8kIfjRa
-         YmX+hdS7Wr/ERH/zsBBMcAP46d6PBSICtwkVs4uMue7u9jENgCJvJR+ErHg8dhcUfARH
-         HvOg==
+	s=arc-20240116; t=1744196187; c=relaxed/simple;
+	bh=LTCwaImwKuvWXY2scLkUXgWwOFI49yWpZ+qPbyisx2U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hJ9IMmxugZ76855thAVBfzVAZGpC66ikJo+G1jCJC/3J61Y/p0BQh96PCsgt0dO9qNGFXmRrGQi/FT8yYV3e/suHBPQbQqjc+oEWjki9GAxP5DKmkNutj8nZpOsUsP3zkqJB7+seZMhCRDkx1CDgTytM5cOlb1PfIJlwX5gXFHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GZpzofv3; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744196184;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Giukvq1XMekOaAYyLauP2qjMQgVPWM9Bad3lqnf3cCw=;
+	b=GZpzofv3VnlMlF3TsU2dcxEsH6EXSUW7C2SaH7X0djruiyD2/Y3D39WLchoMk/OXpwnETM
+	MLiE0oH5eSzrnY5zCpOJIvb3Gu1yiu7eX9UUX4HVrGB0JoqjfMcX5V9IdW4V+Sldo6YNYU
+	x3voRVE0/a+19sHqdgTlongZ2FiTShY=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-357-xYKNPjPxOFeZE749QN6Cmg-1; Wed, 09 Apr 2025 06:56:23 -0400
+X-MC-Unique: xYKNPjPxOFeZE749QN6Cmg-1
+X-Mimecast-MFC-AGG-ID: xYKNPjPxOFeZE749QN6Cmg_1744196182
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43d5ca7c86aso43121555e9.0
+        for <Stable@vger.kernel.org>; Wed, 09 Apr 2025 03:56:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744195996; x=1744800796;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eiSuolfqjKUCKmLZlhGjwnD6UU5gFbBKHX8f8BQoFeg=;
-        b=UNphVXC2CgLdnDtw+7MVh/BZQl2k4FfzwLJ9uySO2ONAfxAaWEhGf8mrwuV5WJi5gI
-         Snk3FQeNq/3zChJgMfSH3OcCcCOOW5C/T/5YwM7/dUAK1nldaVrT8rfQ5wJ0Xl9EkKdB
-         uE+FprD/e06Ibe+piykkidQ5eXhlAG/npMftBq13wk2iZXyRKis6+mU/aTrn7caikMpN
-         fEXXFI9kO8siscuQbKeqGKPpUq/8t3s6vzL0ZC+FSyWxHiyzaC0fv4SPwOfzYru+1agn
-         Rbwz8UYQiwWWkky8VPQc0cHUR/AAsRYd1W4gAIWF74YbM/s5Qk6yJ4W4eYAPJgPuZBOn
-         8wcw==
-X-Gm-Message-State: AOJu0Yxxs2d8ulDlMx8nu0lTEHqqqhqJ6dq05fwRbbgAH7vCJh2ve1iV
-	CzYUshVLE1eiBR6cXNOIz5LoTypcPVgfZKC1NfM/UOmGNJ4jkceg88OZZZ4G8TEYKFYibGmHSqh
-	2dUZ2UigkShmj8BA/ogrWOhyIJUODcTgOLmzaoA==
-X-Gm-Gg: ASbGncsVyuq6I/W91X41aX/NHu5jMu2zqRAJrpw34RKHJ2mG6ONoxLvgM1zd9N7D1Ec
-	yEjNoQ0DUI4R0DOTfhjuW9OaGmb9r0myoUTogAflpXBTM9qJxeVs/Z5HYSgEDZ45M+jMvlqnZFC
-	Iu20KOec9RwNALT2l+62uQsDDy9hMVE9D0tJhh9PZ+Bxr8WaJYV9KdSBY=
-X-Google-Smtp-Source: AGHT+IHUUDx6l8u13RcSCGLZYeTwydGM6vMjR+/x4CWrRBmQ0Xu18i8GLar6TCKnKPo4jFCSrfqJUH+ol6sLG0X2aoY=
-X-Received: by 2002:a05:6102:3310:b0:4c1:9738:820d with SMTP id
- ada2fe7eead31-4c9c4175156mr1513729137.6.1744195995808; Wed, 09 Apr 2025
- 03:53:15 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1744196182; x=1744800982;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Giukvq1XMekOaAYyLauP2qjMQgVPWM9Bad3lqnf3cCw=;
+        b=jpNrYVBbPzYN7A4cOFcvwy00E0JYsUsVX8elGpNK0TTXTzP7m14NFpKiyvkLOgUh6j
+         CwlhN1+Fp/Qpcf1k//GE4oLNVmQJj9/QE+mZtKPBOIYTjROmsr9exLGVWsdvLL9fs2I+
+         C8bh9qfZ2HyCDJwYat0nARWibYPjXDo9xgqWMUX50vMg9KjFt1Bd6MdCpL73YXykW1Pe
+         BuQDhyqBq2dMOj+WeQGO6faEmXddY6SI6FEte5w87guNx0gY37OOWIDXYEJ1gwtTlOAX
+         IX0Ej/v8niBjJBveNIM9DnsJnK35Usg5KSqcwjyQQlgZv1jLsF9j7Kk77aWTlsc7FZYV
+         3paQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWuKlUUbVi7/UHtY5im/vFdfP+0FJm8sEHd5Cm8nTCf9gJfnuvXA4qdp6vU6HoZOm4uOtPhMjw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzXz+xUQCapoHcVAJhab9zDbLQxgllIuhn4vjUX3rrCVf2n91i/
+	EOxLJ+KjgvkFcPTwbSvlYPpNwEDNSqWDQ7kzuLFowIPWxIi9Ia4wPBiyB0UqFIPnta4PpqiZwRA
+	NgS0JyM9igU9JLG1Hp1JFV2y3OMNaem/2/W1UgwB5MPvdWQjv8PisPw==
+X-Gm-Gg: ASbGncsSiVRI59SN3SvdcjtqO36REIjStCca0MzSK8S/cZ5YqEUUpxYFucF3zk8Y1II
+	HnNCXjcjjDa2+noReukzwtdB5avLSHJWysfs4X3r+Qdk30haFfkkxcqMMuXBR2jl3RS0ylrOHov
+	R1DExxidbsVMYAGUN/N1kTs0ulFLFtC/vMI1PUtK6dr6+9y98Dan6zcJ28qUGjO8yCLJUCNbOv5
+	cCEIt3uqvSg16LP/YRgr1zg7aDDYT+e+mMSCwAkkoBEsVvt+0OzdHdbtsX1n+Acu/3qmDG8aUJL
+	w6+nEg==
+X-Received: by 2002:a05:600c:3b0d:b0:43b:b756:f0a9 with SMTP id 5b1f17b1804b1-43f1eca7da6mr24601195e9.11.1744196182106;
+        Wed, 09 Apr 2025 03:56:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGNLH4SJp0xl9ym+oA6t+X06BpgXTrGstDaDUYdeGqpHCubYFfAQEql88GLYD8pGId9XSYpMw==
+X-Received: by 2002:a05:600c:3b0d:b0:43b:b756:f0a9 with SMTP id 5b1f17b1804b1-43f1eca7da6mr24600885e9.11.1744196181679;
+        Wed, 09 Apr 2025 03:56:21 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f20625eeesm16142845e9.11.2025.04.09.03.56.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Apr 2025 03:56:20 -0700 (PDT)
+Date: Wed, 9 Apr 2025 06:56:17 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: Daniel Verkamp <dverkamp@chromium.org>,
+	Halil Pasic <pasic@linux.ibm.com>, linux-kernel@vger.kernel.org,
+	linux-s390@vger.kernel.org, virtualization@lists.linux.dev,
+	kvm@vger.kernel.org, Chandra Merla <cmerla@redhat.com>,
+	Stable@vger.kernel.org, Cornelia Huck <cohuck@redhat.com>,
+	Thomas Huth <thuth@redhat.com>, Eric Farman <farman@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Wei Wang <wei.w.wang@intel.com>
+Subject: Re: [PATCH v1] s390/virtio_ccw: don't allocate/assign airqs for
+ non-existing queues
+Message-ID: <20250409065216-mutt-send-email-mst@kernel.org>
+References: <20250407044743-mutt-send-email-mst@kernel.org>
+ <b331a780-a9db-4d76-af7c-e9e8e7d1cc10@redhat.com>
+ <20250407045456-mutt-send-email-mst@kernel.org>
+ <a86240bc-8417-48a6-bf13-01dd7ace5ae9@redhat.com>
+ <33def1b0-d9d5-46f1-9b61-b0269753ecce@redhat.com>
+ <88d8f2d2-7b8a-458f-8fc4-c31964996817@redhat.com>
+ <CABVzXAmMEsw70Tftg4ZNi0G4d8j9pGTyrNqOFMjzHwEpy0JqyA@mail.gmail.com>
+ <3bbad51d-d7d8-46f7-a28c-11cc3af6ef76@redhat.com>
+ <20250407170239-mutt-send-email-mst@kernel.org>
+ <440de313-e470-4afa-9f8a-59598fe8dc21@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250408104826.319283234@linuxfoundation.org>
-In-Reply-To: <20250408104826.319283234@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 9 Apr 2025 16:23:04 +0530
-X-Gm-Features: ATxdqUEwK9jEVkiLJOSPz0AkhU_UIpO5zjMmuDtWqiV45Powfno279jQC9NPjCw
-Message-ID: <CA+G9fYtQnkt4vJ_e5GkxSCn5=sgO2MK+cms4pitkmnveY9M2cg@mail.gmail.com>
-Subject: Re: [PATCH 5.15 000/279] 5.15.180-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <440de313-e470-4afa-9f8a-59598fe8dc21@redhat.com>
 
-On Tue, 8 Apr 2025 at 17:09, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.15.180 release.
-> There are 279 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 10 Apr 2025 10:47:53 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.15.180-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Wed, Apr 09, 2025 at 12:46:41PM +0200, David Hildenbrand wrote:
+> On 07.04.25 23:20, Michael S. Tsirkin wrote:
+> > On Mon, Apr 07, 2025 at 08:47:05PM +0200, David Hildenbrand wrote:
+> > > > In my opinion, it makes the most sense to keep the spec as it is and
+> > > > change QEMU and the kernel to match, but obviously that's not trivial
+> > > > to do in a way that doesn't break existing devices and drivers.
+> > > 
+> > > If only it would be limited to QEMU and Linux ... :)
+> > > 
+> > > Out of curiosity, assuming we'd make the spec match the current QEMU/Linux
+> > > implementation at least for the 3 involved features only, would there be a
+> > > way to adjust crossvm without any disruption?
+> > > 
+> > > I still have the feeling that it will be rather hard to get that all
+> > > implementations match the spec ... For new features+queues it will be easy
+> > > to force the usage of fixed virtqueue numbers, but for free-page-hinting and
+> > > reporting, it's a mess :(
+> > 
+> > 
+> > Still thinking about a way to fix drivers... We can discuss this
+> > theoretically, maybe?
+> 
+> Yes, absolutely. I took the time to do some more digging; regarding drivers
+> only Linux seems to be problematic.
+> 
+> virtio-win, FreeBSD, NetBSD and OpenBSD and don't seem to support
+> problematic features (free page hinting, free page reporting) in their
+> virtio-balloon implementations.
+> 
+> So from the known drivers, only Linux is applicable.
+> 
+> reporting_vq is either at idx 4/3/2
+> free_page_vq is either at idx 3/2
+> statsq is at idx2 (only relevant if the feature is offered)
+> 
+> So if we could test for the existence of a virtqueue at an idx easily, we
+> could test from highest-to-smallest idx.
+> 
+> But I recall that testing for the existance of a virtqueue on s390x resulted
+> in the problem/deadlock in the first place ...
+> 
+> -- 
+> Cheers,
+> 
+> David / dhildenb
+
+So let's talk about a new feature bit?
+
+Since vqs are probed after feature negotiation, it looks like
+we could have a feature bit trigger sane behaviour, right?
+
+I kind of dislike it that we have a feature bit for bugs though.
+What would be a minimal new feature to add so it does not
+feel wrong?
+
+Maybe it's in the field of psychology though ...
 
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+-- 
+MST
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Build
-* kernel: 5.15.180-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: 0b4857306c618d2052f6455b90747ef1df364ecd
-* git describe: v5.15.179-280-g0b4857306c61
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
-.179-280-g0b4857306c61
-
-## Test Regressions (compared to v5.15.178-617-g4372970bf866)
-
-## Metric Regressions (compared to v5.15.178-617-g4372970bf866)
-
-## Test Fixes (compared to v5.15.178-617-g4372970bf866)
-
-## Metric Fixes (compared to v5.15.178-617-g4372970bf866)
-
-## Test result summary
-total: 51097, pass: 36064, fail: 2716, skip: 11897, xfail: 420
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 102 total, 102 passed, 0 failed
-* arm64: 30 total, 30 passed, 0 failed
-* i386: 22 total, 20 passed, 2 failed
-* mips: 22 total, 22 passed, 0 failed
-* parisc: 3 total, 3 passed, 0 failed
-* powerpc: 22 total, 22 passed, 0 failed
-* riscv: 8 total, 8 passed, 0 failed
-* s390: 9 total, 9 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 26 total, 26 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
