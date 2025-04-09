@@ -1,167 +1,256 @@
-Return-Path: <stable+bounces-131956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C0E6A826E1
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 16:00:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76E32A826F6
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 16:03:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F12019E884E
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 14:00:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A3451B67A81
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 14:03:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB8E253F01;
-	Wed,  9 Apr 2025 14:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 316C8264F8C;
+	Wed,  9 Apr 2025 14:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b="Ki55mXt9"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="nL8SGc+4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BE925E820
-	for <stable@vger.kernel.org>; Wed,  9 Apr 2025 14:00:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12DF264F88
+	for <stable@vger.kernel.org>; Wed,  9 Apr 2025 14:02:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744207236; cv=none; b=U2gFPHT0teGUteAkXzRCMgVopqGe7A2Tdy7bm6fmfrw/qVm1XCOyJaK82T1jKDMGvaGK6zq6sGbRJyofzkxwldMOMGdFHxAtaKokq5304ixU7eEZf3cTm4wOvnS8orwVryZQAPDWzKx1aqs9rd5ULr7ZQEFNpFGwHwx67praJok=
+	t=1744207361; cv=none; b=LTWM2yIlFdAGmQ5tHxmWhMxaW6nN2ko/H6j1gRVvyivgD9ItKOA6sQhazXmlIfTMD6IcAmCSVhxgMmEYI7JWOovEt/kV4Dqp6VIMwqE1VylqK8LZWe81NeWEHTqp7Hx8CeZd/dYw46301TUhGBZ7DuyANaY9qPU1suupu2PJf8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744207236; c=relaxed/simple;
-	bh=fKAUplVIh9IVEilSqxt68vCgZpO8rfAd86TA8bIK61U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hrJQmzRCdDMc6dZQRdMmFzmZLHHnqXFkROH4sqx8gTqh6vYCPZGlhV1JiAO2ADHwdpUnVczJKsgysoTo02Tgsz1pGKpk3QigO+WvZK2f8pfn5TInS9LI2aQj0xM5YtZhBNoO9Z2BMSCGcSmHknZOpoMSegNtelwzb6LSewgn90o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org; spf=pass smtp.mailfrom=cmpxchg.org; dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b=Ki55mXt9; arc=none smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmpxchg.org
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7c53b9d66fdso870314585a.3
-        for <stable@vger.kernel.org>; Wed, 09 Apr 2025 07:00:33 -0700 (PDT)
+	s=arc-20240116; t=1744207361; c=relaxed/simple;
+	bh=iFyXqVFXEULPsNSqQwDUF2/Adtt/V3zIh9vrgqGq5bc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AeX07UIIUKhr/iVyt64edxQtBdq9MiAUZyYolfL8o+VUyH4pCCj9uqho0eq5k0vD+UZ6Nyu7T2Vg/ptK6agRbgZ8dL54PlBevnNbYBbuBCFTGamNh2Y7uZwmmOroLmGQ6eLkeegNvi77kVkm3x7uCmVarYxX59t61haPoXJKQ9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=nL8SGc+4; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-aaee2c5ee6eso913665566b.1
+        for <stable@vger.kernel.org>; Wed, 09 Apr 2025 07:02:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1744207232; x=1744812032; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lfO9/CEy4dgci6iz8QJ7UzHvpG+GvqY3wOSCyMzSDbM=;
-        b=Ki55mXt9Hom4WOBoo1syI47/Peq6VYzCRgr07Xkth7Pv6+n5snVquciU5yjdz5/mW9
-         wuZZ8l2gvxLGkqASk+ykEK0THPVXsnC1QTYBqSqpr4LMQ+JQGxgKnHZDkaexLNrKqrm5
-         s122TcPGLLplU0fM4VOH4MHrK278yNvZGnezh45/rOHaLaT8tMALFqtQd2omWXqdmf1X
-         DszIa2YfNsTijTDAX9X7ED4rj6xAXEMKlwmwiL35Vurh4uZ4j1GR6Yl+MdDNNHEE6+YN
-         FGbfh4gY1xPbYZy2micJJYcoTW24bm8cY3OxE+fUs2BOhVuw9hhsGchj1y4JOVVB4cnW
-         hQLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744207232; x=1744812032;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=chromium.org; s=google; t=1744207356; x=1744812156; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lfO9/CEy4dgci6iz8QJ7UzHvpG+GvqY3wOSCyMzSDbM=;
-        b=sk/XUyJeAd/BN9/Je1jxr5DhqLcvV14uoRh1NcLDga8rvgCte7fXiKLz/pI4fku4Ey
-         oXW/hLarrSA+XKi0tkY/PtftCt4a2K6ApC5ZMtHEcOxEcIoxUG1pqS4YeuQsOK1PTF5p
-         usrcEbyaHSNFN346KoManRnZMz2iGTu7npbUwBfdajRCajtJA54WmR/BCtBIobw3SIdn
-         qnI98G+QsrWc9lJdtQFrlFLKaNfSdOnSDENrmDW3A4+BU41j2JAnZkaS3rtL94RdSqhC
-         LrxZcEpF/z7T92leM8pDEwxc0C6Zb89yx08O+pWBWHGZPsJQUkVRi6x81YuidDqgfaMH
-         SzKA==
-X-Forwarded-Encrypted: i=1; AJvYcCUyQhEKlUv5fz+a7WM8wE60TWsa0Lr5ZQB2zLI4GQH5sirE0TtwTT/+LbbzNiaRsJLXgxFBHSg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5vdRKb5wMqzdg4MV86gfsdewIvp/3uBr9R4uZFj4nWrTC0jiK
-	AXxG572zHvZBF6k/N4a4/2YKFih9Wm+d8q9ntzZ9v86Rn6gL3yVqvCQEmyYMFnnqAVNDPb28C6u
-	o
-X-Gm-Gg: ASbGncuDYkr24GNHLjaUr2t5mTGG1iqZIPj+EWEs/75nOEDHO3tGy+LNbkaULqmEk7K
-	5BN7v+fAzMweezt0PySctcMmFzazAcfigDlN9d7HD4q1258Si50Ww6UVvAJPD70QTpAtVPfBQlg
-	FDa4DWj2jnf/uOToHlSLV1X9i1jsE3oRWhJFrwmXWfmHlOd97gxgv+SciT5xuV2H19/t3G3cXx0
-	iwfpiqaVsW/qXdhXTJupL4suaAnStRiA0Uq9KIZ2gDzlZ99SkbdCeAcl5e/zidW8+8SpR+n1w3d
-	2WmG52it5wrv/Rkjs434rcn0iv23lsQx
-X-Google-Smtp-Source: AGHT+IGzpZNpd5bWmJIrglPrlH0pmCswaggSnMgMXggJtdtTARzTu3BIp4nxphDdER+S+PLR/Q6L3g==
-X-Received: by 2002:a05:620a:2614:b0:7c5:50dd:5079 with SMTP id af79cd13be357-7c79dd932c0mr375653685a.1.1744207232165;
-        Wed, 09 Apr 2025 07:00:32 -0700 (PDT)
-Received: from localhost ([2620:10d:c091:600::1:8699])
-        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-7c7a10d3ba6sm76640685a.63.2025.04.09.07.00.30
+        bh=E5bQBdzdrrxAwjVcMoSn7R6YHyOz0D1Ji82aPtHYgp0=;
+        b=nL8SGc+4dlyVuEapohvoPNZ7JPue1fzj9JSh9l4rQb763aOMiRYsXH/YJKlmcGTzGJ
+         mAckIn+QgZSjm9MJMd+CQKRLvNqXgzKnV+iCX+w15eEC8iR2zp4boAeFiWSMArIQDOXM
+         vO9tGpogD2TWWjj6mKFwNQuhOJtHgk2haOixM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744207356; x=1744812156;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=E5bQBdzdrrxAwjVcMoSn7R6YHyOz0D1Ji82aPtHYgp0=;
+        b=ugPkucXqrhjAea82+230z1PwLtg3xqzBNQdPb0YrB5g5NZVvsB4BW14joO8Ws1sM9U
+         u3xXDi3BPljkd+c1cUlwavZe9y5+SMp+CPqhwIl9in+E9pd6dsth64giKBya96tuvBSN
+         qtkz7MMOhRXJ3Zc/SBOmdI+16QyosjTgFpOSU8X1uKy4C8RWdpHk7EQHdrW7TpcZ4qYJ
+         MlpuFJqPXIJHzfm3UWZm9ykMjhil9n2Ebsnc4AIU5snyj5xE5x9W4IlR1Hr2KXvC/GZU
+         2sOHIt8rsieC9+K+sCbWx7Ta7qzFQGDVn+AXt53IAKEtpOXf88SAQGpe+Z/tsAdaxeBa
+         cldg==
+X-Forwarded-Encrypted: i=1; AJvYcCW8/iHU1+RF9bLC4rfUq2d5Smy+IUWW/FQRZ7glBNb9sNQwkW1+WXM1dDT1VjcYDCk/qNp2Ydw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRBwc4XB19X0od7sfpry1YzbQn5IdbupneF3pdLzEVwqybVj0X
+	q+e7Vp9VSxrpUpnVlucNefGOjAcrs/djfCskHzkQST4YE42PZb4aQ0dbqE84qA==
+X-Gm-Gg: ASbGnct6jwLh0rx+kytnowCjYG8qV6Zhl4B5ucgNg+Nj5bw4fGwMzZVQZe9e7/0xRmF
+	N0jTXDLXDfZ7txpphyVQzx0vhwHFLEavnr9/xpvS8E7v3i6HEc6JYe26GbFpBup9p+i3hIoW+pK
+	P5+57wQNGMfgz1WryJxxw2DVCku6/eCIYC5kO0b6fgzL+yxsHpP7MugL4FHmcQfwNe3R6GerPVN
+	blH6746M/9B9LXSl552JDnQZ2xbiY9Edk7PBTgadLxXnXXkp+jh9yeeBVas3bU0f/PlPZ2J9BDl
+	SEnRkN+uVT6PvsBpWaVbLqP93ezKCpkvc2HggklweqjxHHRrPRoJOofaT6V9hZnarW8kru0EdgR
+	7iT1CrHRTJPrAUxsMJ2DAvRwBKpIp4Xx8vg==
+X-Google-Smtp-Source: AGHT+IF7PMb1R5q8p59rA8TPAQBNjDsN03YUpj4RFQLPJr+kj5p6VXfvnMhdUKLLBLycNLAOFsyk9g==
+X-Received: by 2002:a17:907:97c9:b0:ac2:cdcb:6a85 with SMTP id a640c23a62f3a-aca9b65e427mr329385266b.22.1744207355609;
+        Wed, 09 Apr 2025 07:02:35 -0700 (PDT)
+Received: from akuchynski.c.googlers.com.com (185.155.90.34.bc.googleusercontent.com. [34.90.155.185])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acaa1be95d0sm102657966b.55.2025.04.09.07.02.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Apr 2025 07:00:31 -0700 (PDT)
-Date: Wed, 9 Apr 2025 10:00:23 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Yunsheng Lin <linyunsheng@huawei.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Brendan Jackman <jackmanb@google.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Carlos Song <carlos.song@nxp.com>, linux-mm@kvack.org,
+        Wed, 09 Apr 2025 07:02:35 -0700 (PDT)
+From: Andrei Kuchynski <akuchynski@chromium.org>
+To: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jameson Thies <jthies@google.com>,
+	Abhishek Pandit-Subedi <abhishekpandit@chromium.org>,
+	Benson Leung <bleung@chromium.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>,
+	Pooja Katiyar <pooja.katiyar@intel.com>,
+	Madhu M <madhu.m@intel.com>
+Cc: linux-usb@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm: page_alloc: speed up fallbacks in rmqueue_bulk()
-Message-ID: <20250409140023.GA2313@cmpxchg.org>
-References: <20250407180154.63348-1-hannes@cmpxchg.org>
- <38964e68-ac20-4595-b41d-8adc83ae6ba0@huawei.com>
+	Andrei Kuchynski <akuchynski@chromium.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] usb: typec: ucsi: displayport: Fix deadlock
+Date: Wed,  9 Apr 2025 14:02:20 +0000
+Message-ID: <20250409140221.654892-2-akuchynski@chromium.org>
+X-Mailer: git-send-email 2.49.0.504.g3bcea36a83-goog
+In-Reply-To: <20250409140221.654892-1-akuchynski@chromium.org>
+References: <20250409140221.654892-1-akuchynski@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <38964e68-ac20-4595-b41d-8adc83ae6ba0@huawei.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Apr 09, 2025 at 04:02:39PM +0800, Yunsheng Lin wrote:
-> On 2025/4/8 2:01, Johannes Weiner wrote:
-> > @@ -2934,6 +2981,7 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
-> >  {
-> >  	struct page *page;
-> >  	unsigned long flags;
-> > +	enum rmqueue_mode rmqm = RMQUEUE_NORMAL;
-> >  
-> >  	do {
-> >  		page = NULL;
-> > @@ -2945,7 +2993,7 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
-> >  		if (alloc_flags & ALLOC_HIGHATOMIC)
-> >  			page = __rmqueue_smallest(zone, order, MIGRATE_HIGHATOMIC);
-> >  		if (!page) {
-> > -			page = __rmqueue(zone, order, migratetype, alloc_flags);
-> > +			page = __rmqueue(zone, order, migratetype, alloc_flags, &rmqm);
-> >  
-> >  			/*
-> >  			 * If the allocation fails, allow OOM handling and
-> 
-> It was not in the diff, but it seems the zone->lock is held inside the do..while loop,
-> doesn't it mean that the freelists are subject to outside changes and rmqm is stale?
+This patch introduces the ucsi_con_mutex_lock / ucsi_con_mutex_unlock
+functions to the UCSI driver. ucsi_con_mutex_lock ensures the connector
+mutex is only locked if a connection is established and the partner pointer
+is valid. This resolves a deadlock scenario where
+ucsi_displayport_remove_partner holds con->mutex waiting for
+dp_altmode_work to complete while dp_altmode_work attempts to acquire it.
 
-Yes. Note that it only loops when there is a bug/corrupted page, so it
-won't make much difference in practice. But it's still kind of weird.
-
-Thanks for your review, Yunsheng!
-
-Andrew, could you please fold the below fixlet?
-
+Cc: stable@vger.kernel.org
+Fixes: af8622f6a585 ("usb: typec: ucsi: Support for DisplayPort alt mode")
+Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
 ---
+ drivers/usb/typec/ucsi/displayport.c | 19 ++++++++-------
+ drivers/usb/typec/ucsi/ucsi.c        | 36 ++++++++++++++++++++++++++++
+ drivers/usb/typec/ucsi/ucsi.h        |  2 ++
+ 3 files changed, 49 insertions(+), 8 deletions(-)
 
-From 71b1eea7ded41c1f674909f9755c23b9ee9bcb6a Mon Sep 17 00:00:00 2001
-From: Johannes Weiner <hannes@cmpxchg.org>
-Date: Wed, 9 Apr 2025 09:56:52 -0400
-Subject: [PATCH] mm: page_alloc: speed up fallbacks in rmqueue_bulk() fix
-
-reset rmqueue_mode in rmqueue_buddy() error loop, per Yunsheng Lin
-
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
----
- mm/page_alloc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index dfb2b3f508af..7ffeeb0f62d3 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -2983,7 +2983,6 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
- {
- 	struct page *page;
- 	unsigned long flags;
--	enum rmqueue_mode rmqm = RMQUEUE_NORMAL;
+diff --git a/drivers/usb/typec/ucsi/displayport.c b/drivers/usb/typec/ucsi/displayport.c
+index 420af5139c70..acd053d4e38c 100644
+--- a/drivers/usb/typec/ucsi/displayport.c
++++ b/drivers/usb/typec/ucsi/displayport.c
+@@ -54,7 +54,8 @@ static int ucsi_displayport_enter(struct typec_altmode *alt, u32 *vdo)
+ 	u8 cur = 0;
+ 	int ret;
  
- 	do {
- 		page = NULL;
-@@ -2996,6 +2995,8 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
- 		if (alloc_flags & ALLOC_HIGHATOMIC)
- 			page = __rmqueue_smallest(zone, order, MIGRATE_HIGHATOMIC);
- 		if (!page) {
-+			enum rmqueue_mode rmqm = RMQUEUE_NORMAL;
+-	mutex_lock(&dp->con->lock);
++	if (!ucsi_con_mutex_lock(dp->con))
++		return -ENOTCONN;
+ 
+ 	if (!dp->override && dp->initialized) {
+ 		const struct typec_altmode *p = typec_altmode_get_partner(alt);
+@@ -100,7 +101,7 @@ static int ucsi_displayport_enter(struct typec_altmode *alt, u32 *vdo)
+ 	schedule_work(&dp->work);
+ 	ret = 0;
+ err_unlock:
+-	mutex_unlock(&dp->con->lock);
++	ucsi_con_mutex_unlock(dp->con);
+ 
+ 	return ret;
+ }
+@@ -112,7 +113,8 @@ static int ucsi_displayport_exit(struct typec_altmode *alt)
+ 	u64 command;
+ 	int ret = 0;
+ 
+-	mutex_lock(&dp->con->lock);
++	if (!ucsi_con_mutex_lock(dp->con))
++		return -ENOTCONN;
+ 
+ 	if (!dp->override) {
+ 		const struct typec_altmode *p = typec_altmode_get_partner(alt);
+@@ -144,7 +146,7 @@ static int ucsi_displayport_exit(struct typec_altmode *alt)
+ 	schedule_work(&dp->work);
+ 
+ out_unlock:
+-	mutex_unlock(&dp->con->lock);
++	ucsi_con_mutex_unlock(dp->con);
+ 
+ 	return ret;
+ }
+@@ -202,20 +204,21 @@ static int ucsi_displayport_vdm(struct typec_altmode *alt,
+ 	int cmd = PD_VDO_CMD(header);
+ 	int svdm_version;
+ 
+-	mutex_lock(&dp->con->lock);
++	if (!ucsi_con_mutex_lock(dp->con))
++		return -ENOTCONN;
+ 
+ 	if (!dp->override && dp->initialized) {
+ 		const struct typec_altmode *p = typec_altmode_get_partner(alt);
+ 
+ 		dev_warn(&p->dev,
+ 			 "firmware doesn't support alternate mode overriding\n");
+-		mutex_unlock(&dp->con->lock);
++		ucsi_con_mutex_unlock(dp->con);
+ 		return -EOPNOTSUPP;
+ 	}
+ 
+ 	svdm_version = typec_altmode_get_svdm_version(alt);
+ 	if (svdm_version < 0) {
+-		mutex_unlock(&dp->con->lock);
++		ucsi_con_mutex_unlock(dp->con);
+ 		return svdm_version;
+ 	}
+ 
+@@ -259,7 +262,7 @@ static int ucsi_displayport_vdm(struct typec_altmode *alt,
+ 		break;
+ 	}
+ 
+-	mutex_unlock(&dp->con->lock);
++	ucsi_con_mutex_unlock(dp->con);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index e8c7e9dc4930..ef867136e51d 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -1922,6 +1922,42 @@ void ucsi_set_drvdata(struct ucsi *ucsi, void *data)
+ }
+ EXPORT_SYMBOL_GPL(ucsi_set_drvdata);
+ 
++/**
++ * ucsi_con_mutex_lock - Acquire the connector mutex
++ * @con: The connector interface to lock
++ *
++ * Returns true on success, false if the connector is disconnected
++ */
++bool ucsi_con_mutex_lock(struct ucsi_connector *con)
++{
++	bool mutex_locked = false;
++	bool connected = true;
 +
- 			page = __rmqueue(zone, order, migratetype, alloc_flags, &rmqm);
++	while (connected && !mutex_locked) {
++		mutex_locked = mutex_trylock(&con->lock) != 0;
++		connected = UCSI_CONSTAT(con, CONNECTED);
++		if (connected && !mutex_locked)
++			msleep(20);
++	}
++
++	connected = connected && con->partner;
++	if (!connected && mutex_locked)
++		mutex_unlock(&con->lock);
++
++	return connected;
++}
++EXPORT_SYMBOL_GPL(ucsi_con_mutex_lock);
++
++/**
++ * ucsi_con_mutex_unlock - Release the connector mutex
++ * @con: The connector interface to unlock
++ */
++void ucsi_con_mutex_unlock(struct ucsi_connector *con)
++{
++	mutex_unlock(&con->lock);
++}
++EXPORT_SYMBOL_GPL(ucsi_con_mutex_unlock);
++
+ /**
+  * ucsi_create - Allocate UCSI instance
+  * @dev: Device interface to the PPM (Platform Policy Manager)
+diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
+index 3a2c1762bec1..9c5278a0c5d4 100644
+--- a/drivers/usb/typec/ucsi/ucsi.h
++++ b/drivers/usb/typec/ucsi/ucsi.h
+@@ -94,6 +94,8 @@ int ucsi_register(struct ucsi *ucsi);
+ void ucsi_unregister(struct ucsi *ucsi);
+ void *ucsi_get_drvdata(struct ucsi *ucsi);
+ void ucsi_set_drvdata(struct ucsi *ucsi, void *data);
++bool ucsi_con_mutex_lock(struct ucsi_connector *con);
++void ucsi_con_mutex_unlock(struct ucsi_connector *con);
  
- 			/*
+ void ucsi_connector_change(struct ucsi *ucsi, u8 num);
+ 
 -- 
-2.49.0
+2.49.0.504.g3bcea36a83-goog
 
 
