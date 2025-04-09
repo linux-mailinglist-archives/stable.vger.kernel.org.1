@@ -1,296 +1,198 @@
-Return-Path: <stable+bounces-131939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E52EA82459
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 14:08:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AB68A8246C
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 14:12:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0FA64C1A1E
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 12:08:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5557C8C3C06
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 12:11:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA28025F7B0;
-	Wed,  9 Apr 2025 12:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D1F25E471;
+	Wed,  9 Apr 2025 12:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KkbzC/uQ"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="YMtC1S08"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0CA25E806
-	for <stable@vger.kernel.org>; Wed,  9 Apr 2025 12:07:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D771D54E9
+	for <stable@vger.kernel.org>; Wed,  9 Apr 2025 12:11:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744200459; cv=none; b=aUiXx2fpqa/+0jdiOBVXBOOb9UzgWZh4pJKZhAo4tfB6PZkbjpHVzYfQ1+68V7m7HdA0gPe6vKRfm0RDoeSs2pxabgbL0wTeG5e74hF+boucy5ZJlWAZgwPHVKOVuzvwGK2EMnXPwPCGiNdG+pyZU1jcIumgX7yVMnIf0AXqIdU=
+	t=1744200673; cv=none; b=CEoqEl2HDyGCMfzjOqvcuiXBypaUviP0J95Y8iioa63A8HMJbkKPuGFS0n8J0jci3+jwVAoxc6vV6HUXfE4GNLG3e8A4srU6TKYP77nxqzCKFDZJIaIBfbMJz+Va4Q7ITa8rchjPtlZprs4/5JCNtM9mGjTXyclVZN1pqO1d4Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744200459; c=relaxed/simple;
-	bh=b8JlKxfWsW1Q1FUlQniB4qLGZUd/o9jlhbIFjs404XU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IlQCFTyECHeURf2Ow5JXWI9QQfNcoBd6Dl9OM0GkB2AifdGHX9kN/6QKzyIXsG8Yx1KD0x1SW+OULoZY6TFf8LagtOtU9dh+j6yie24aKZ9Zj2yOjdQ4B6nGtskqMG/aQtmen/dQa8sshgb9feUQGHSj7Ti87FFrAMT8WaDR7Es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KkbzC/uQ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744200456;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=93G2Nz5v0VWYsyTUc29spHX3l7oxT61r/O1+sjmvXx0=;
-	b=KkbzC/uQdxPdTxoM4x3vhyGYvg5SJJG4ewQcH00kSQ3KrrEEuN661YMTqzxr2smDga6qDg
-	esp6aA8p99RDwZOMyfKFDqScXcnnO2RkIG6tbwbnWqnyau/pDESvmdISNClFMI44WF44Hy
-	uX/mPxVBPlubZ9dGFyL3vLS2pAhNuK8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-411-NdCO4X0OOFG7B_soG2Smsg-1; Wed, 09 Apr 2025 08:07:33 -0400
-X-MC-Unique: NdCO4X0OOFG7B_soG2Smsg-1
-X-Mimecast-MFC-AGG-ID: NdCO4X0OOFG7B_soG2Smsg_1744200452
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-43cf446681cso46710975e9.1
-        for <Stable@vger.kernel.org>; Wed, 09 Apr 2025 05:07:33 -0700 (PDT)
+	s=arc-20240116; t=1744200673; c=relaxed/simple;
+	bh=FjmBBQuTbqcSqV4VON5V19OosV8aeGF3vbwcOaR6PEU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Gu2xBHFaFxAn3iSLeqhAnREQ6CT73Wt34CrjEkvsbpYfGZ196+yv6d8GeWroXu69g2qn1c2D0dMSYBrNVxG5mJG0IatbHE1HbANQXOQHpLhsrTMcImcn++0kw10NHU/jOByrgfnYW1W4sa7In4Pcq4aGJRxgAIOcC9u700jPg1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=YMtC1S08; arc=none smtp.client-ip=209.85.210.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-72c14235af3so3956671a34.3
+        for <stable@vger.kernel.org>; Wed, 09 Apr 2025 05:11:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1744200669; x=1744805469; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=4PtXMGs7EWmz8YpnhCnXD5krrhFi7/XXZNLQxormo78=;
+        b=YMtC1S08yIe2L84xw6e7Yo8bzoUSmvFP+dAZk/fDbwYmIdoLMX/fjcRTk+yK/d+x+c
+         NruSO6zYjblaKvuaIHrnMVgrkNpq+Bd/3e8VS6mVuZBRGH586P4UDSTCCo6guHaxm0sC
+         VfVovpLMVJNhGH329YF/2qE05VkU+xk6ggqwQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744200452; x=1744805252;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1744200669; x=1744805469;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=93G2Nz5v0VWYsyTUc29spHX3l7oxT61r/O1+sjmvXx0=;
-        b=CExaSRMG6mYQFvngaEJiabFCd1/OQFaBm82WGC8T3ajCNaTViLmgNoINyes8fe3gaN
-         09HzH8SPPNgIrSE4u6ERjqGCDOIvTb68GEqHS4n+rqEhFwplp4KVNmeKyCxL3ahVqkTy
-         JvIubKGncsWwQp5PlT3qza9Y0FBu1QXqlYFzRT06hw0EBQmRinzs87V66IxlsYnKlLW0
-         37soXpDaFin+1R0Z5zN0OmllVJVpkMa3dHYQ9UoE7CzatFhG+gtXNv1o7jk83Saf3Zl2
-         DNW89DLsB06OqWHCaD7D3fT+9ZG+Jq7jKe9Ld/nma16vDVCWwcxYNpsY7Ot1IJZLQyjL
-         wGYg==
-X-Forwarded-Encrypted: i=1; AJvYcCVWI/zKodT6w0JTljyp9pue/5kSeF4MQJbAIYHD5ulewsq6ciUDb1Ugsw3GDEIh1Oi1cIwmHhY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4s3kuReKb78u7+dVtrSDTg8f0eb9BI25abc5ZIlO4A1Ncr3qN
-	tgJCYXV1PpvXA5x9Q4eBXcEQY/qxVWttpFWLgsUrqEBuu85OMscLwBkZXliG3yQkOF94huZ95OQ
-	4litdMvhk5/mEEA902sjQe18pqkk5QDQ33bZqkzsOl9K4cyaXJG4Okw==
-X-Gm-Gg: ASbGnctc8H+ss4KiYAT5TIvKq5mZcnQ2GtFrZQy3cW2wnRU7btGCpS6EDjf2s8fKA7r
-	ygOy4AXIz5YzF+5/dNN6EL73lIQ75xjS9i7YB9q838gUJt21F9xvjaPgdn0Dhu8KmBi4W5xQ2Ph
-	OtUWAFySj7XxOiuBhY0nKT77ww0J9gwYV0yr29fuxmwG9kknFJTPJST9LZsXXgW4fFhWo8WqJ8J
-	9TRIxaJ/+7VXNV8drMZJqyfnni3KRMTRW3WdWAjQA+iTvH7PZ3AWOJtxSrLfZe9W/W1rzCANAMj
-	sfZuLA==
-X-Received: by 2002:a05:600c:4f06:b0:43c:eec7:eabb with SMTP id 5b1f17b1804b1-43f1eca7d49mr25281855e9.8.1744200452030;
-        Wed, 09 Apr 2025 05:07:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEgSZUF2eaDFJtZf7ycuhgCh7uKezx7J6gwsxBt6Ke0ZQtqogJFzTU/28nf3axU595G1MOTHA==
-X-Received: by 2002:a05:600c:4f06:b0:43c:eec7:eabb with SMTP id 5b1f17b1804b1-43f1eca7d49mr25281355e9.8.1744200451567;
-        Wed, 09 Apr 2025 05:07:31 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f2066d26bsm18374765e9.22.2025.04.09.05.07.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Apr 2025 05:07:30 -0700 (PDT)
-Date: Wed, 9 Apr 2025 08:07:27 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Daniel Verkamp <dverkamp@chromium.org>,
-	Halil Pasic <pasic@linux.ibm.com>, linux-kernel@vger.kernel.org,
-	linux-s390@vger.kernel.org, virtualization@lists.linux.dev,
-	kvm@vger.kernel.org, Chandra Merla <cmerla@redhat.com>,
-	Stable@vger.kernel.org, Cornelia Huck <cohuck@redhat.com>,
-	Thomas Huth <thuth@redhat.com>, Eric Farman <farman@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Wei Wang <wei.w.wang@intel.com>
-Subject: Re: [PATCH v1] s390/virtio_ccw: don't allocate/assign airqs for
- non-existing queues
-Message-ID: <20250409073652-mutt-send-email-mst@kernel.org>
-References: <20250407045456-mutt-send-email-mst@kernel.org>
- <a86240bc-8417-48a6-bf13-01dd7ace5ae9@redhat.com>
- <33def1b0-d9d5-46f1-9b61-b0269753ecce@redhat.com>
- <88d8f2d2-7b8a-458f-8fc4-c31964996817@redhat.com>
- <CABVzXAmMEsw70Tftg4ZNi0G4d8j9pGTyrNqOFMjzHwEpy0JqyA@mail.gmail.com>
- <3bbad51d-d7d8-46f7-a28c-11cc3af6ef76@redhat.com>
- <20250407170239-mutt-send-email-mst@kernel.org>
- <440de313-e470-4afa-9f8a-59598fe8dc21@redhat.com>
- <20250409065216-mutt-send-email-mst@kernel.org>
- <4ad4b12e-b474-48bb-a665-6c1dc843cd51@redhat.com>
+        bh=4PtXMGs7EWmz8YpnhCnXD5krrhFi7/XXZNLQxormo78=;
+        b=GmNp42iaRijPV3m4+cb9eUsG9CR9I9E6HcCuwnhrCGz+gJoyTX3l7iRXqWEST70LYQ
+         pnPrHNLJeE3CrRKlnawPDxaukvrU+5X3myZpfxGsfcLE/VL4N/4bSjyvFasxr4UTDozH
+         T0o7s8ANEq1UquzmRJEe2QmTu3m/c8F2M4lmzfHHhiUguu+uQmh6URA2VpIxK7UyH1Em
+         pmkt2TFkU8DhA5ENwWpqzZH7a3qS0Dq+b18z0CIvQOzMe1WzwiAhMCXFfGdmTeI/bNRK
+         7RQ3gviSEdN0xhMEv5aarPF9G54Tu23BPQC1hEgq+rQ+z0/p+rADkVGG+Qg/2tey0FP4
+         PqdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWn0WDcys5mbERK9Ic7cK+l1O3gcigxcONez8YYeUz8n3vE5V77vMXosafwBy54FhDxYKrLHrY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGDRK+20tZKNRn7Qqv9zTaFY0bLLW6oP8RaT2jckao7XeKJbto
+	W+unqXd1RP/GmhUOTCwpNbitfHdFlMGdK35m1Z0GE4pehdjUUrHzccHJhMPmdw==
+X-Gm-Gg: ASbGncvpKXqvIvO6pjsrAQJNmDru8/S03TzzX9x+ePAmaVjyq7mH/ud9zBwc4RlN23G
+	Olw6MCE4fQuZnO0MUG/ntS6D6zuHHMz/BHJtgri/gfhCXinILfOSACSqio9U+KK0HY11TbefnMh
+	pO3fmQ3xcAaMzoc6UEvmppI5ddl6+mp8izAoq6PryYJojTX4vL5O2BGfyg2avMBgil3o/RqISdC
+	4+vNj2aBT2MwvN6h6eOeRJ3lH+QrOYXABn2MCrF5C4HaaFkbVAEL6UdPGaIMfvjNhrkB/tinykE
+	QY96KSJec9XJJqHlGWwBK3om6UGX0XgchtJ8tF4JocSeZLW9QglHnaVcA5pL9FoS8PiaNINZzqE
+	saEU=
+X-Google-Smtp-Source: AGHT+IFZAPvCBJgh9XVazfblCmGFa6YHh0C56/60XRWXvVZNJuVRhmhgazTESo+2pXIgjIbzPz1kxw==
+X-Received: by 2002:a05:6830:6086:b0:72b:9506:8db6 with SMTP id 46e09a7af769-72e71aa22admr1193256a34.6.1744200669147;
+        Wed, 09 Apr 2025 05:11:09 -0700 (PDT)
+Received: from [10.176.68.145] ([192.19.176.250])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-72e73e67465sm135366a34.57.2025.04.09.05.11.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Apr 2025 05:11:07 -0700 (PDT)
+Message-ID: <d791185d-6a23-4c6f-8a93-d5464409939a@broadcom.com>
+Date: Wed, 9 Apr 2025 14:11:02 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4ad4b12e-b474-48bb-a665-6c1dc843cd51@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] brcm80211: fmac: Add error check for brcmf_usb_dlneeded()
+To: Wentao Liang <vulab@iscas.ac.cn>, kvalo@kernel.org
+Cc: christophe.jaillet@wanadoo.fr, megi@xff.cz, saikrishnag@marvell.com,
+ linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+ brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250406081930.2909-1-vulab@iscas.ac.cn>
+Content-Language: en-US
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
+ 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
+In-Reply-To: <20250406081930.2909-1-vulab@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 09, 2025 at 01:12:19PM +0200, David Hildenbrand wrote:
-> On 09.04.25 12:56, Michael S. Tsirkin wrote:
-> > On Wed, Apr 09, 2025 at 12:46:41PM +0200, David Hildenbrand wrote:
-> > > On 07.04.25 23:20, Michael S. Tsirkin wrote:
-> > > > On Mon, Apr 07, 2025 at 08:47:05PM +0200, David Hildenbrand wrote:
-> > > > > > In my opinion, it makes the most sense to keep the spec as it is and
-> > > > > > change QEMU and the kernel to match, but obviously that's not trivial
-> > > > > > to do in a way that doesn't break existing devices and drivers.
-> > > > > 
-> > > > > If only it would be limited to QEMU and Linux ... :)
-> > > > > 
-> > > > > Out of curiosity, assuming we'd make the spec match the current QEMU/Linux
-> > > > > implementation at least for the 3 involved features only, would there be a
-> > > > > way to adjust crossvm without any disruption?
-> > > > > 
-> > > > > I still have the feeling that it will be rather hard to get that all
-> > > > > implementations match the spec ... For new features+queues it will be easy
-> > > > > to force the usage of fixed virtqueue numbers, but for free-page-hinting and
-> > > > > reporting, it's a mess :(
-> > > > 
-> > > > 
-> > > > Still thinking about a way to fix drivers... We can discuss this
-> > > > theoretically, maybe?
-> > > 
-> > > Yes, absolutely. I took the time to do some more digging; regarding drivers
-> > > only Linux seems to be problematic.
-> > > 
-> > > virtio-win, FreeBSD, NetBSD and OpenBSD and don't seem to support
-> > > problematic features (free page hinting, free page reporting) in their
-> > > virtio-balloon implementations.
-> > > 
-> > > So from the known drivers, only Linux is applicable.
-> > > 
-> > > reporting_vq is either at idx 4/3/2
-> > > free_page_vq is either at idx 3/2
-> > > statsq is at idx2 (only relevant if the feature is offered)
-> > > 
-> > > So if we could test for the existence of a virtqueue at an idx easily, we
-> > > could test from highest-to-smallest idx.
-> > > 
-> > > But I recall that testing for the existance of a virtqueue on s390x resulted
-> > > in the problem/deadlock in the first place ...
-> > > 
-> > > -- 
-> > > Cheers,
-> > > 
-> > > David / dhildenb
-> > 
-> > So let's talk about a new feature bit?
+On 4/6/2025 10:19 AM, Wentao Liang wrote:
+> The function brcmf_usb_dlneeded() calls the function brcmf_usb_dl_cmd()
+> but dose not check its return value. The 'id.chiprev' is uninitialized if
+> the function brcmf_usb_dl_cmd() fails, and may propagate to
+> 'devinfo->bus_pub.chiprev'.
 > 
-> Are you thinking about a new feature that switches between "fixed queue
-> indices" and "compressed queue indices", whereby the latter would be the
-> legacy default and we would expect all devices to switch to the new
-> fixed-queue-indices layout?
+> Add error handling for brcmf_usb_dl_cmd() to return the function if the
+> 'id.chiprev' is uninitialized.
+
+Thanks for the patch, but NAK. Let me explain why below...
+
+> Fixes: 71bb244ba2fd ("brcm80211: fmac: add USB support for bcm43235/6/8 chipsets")
+> Cc: stable@vger.kernel.org # v3.4+
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+> ---
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c | 7 ++++++-
+>   1 file changed, 6 insertions(+), 1 deletion(-)
 > 
-> We could make all new features require "fixed-queue-indices".
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+> index 2821c27f317e..50dddac8a2ab 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+> @@ -790,6 +790,7 @@ brcmf_usb_dlneeded(struct brcmf_usbdev_info *devinfo)
+>   {
+>   	struct bootrom_id_le id;
+>   	u32 chipid, chiprev;
+> +	int err;
+>   
+>   	brcmf_dbg(USB, "Enter\n");
+>   
+> @@ -798,7 +799,11 @@ brcmf_usb_dlneeded(struct brcmf_usbdev_info *devinfo)
+>   
+>   	/* Check if firmware downloaded already by querying runtime ID */
+>   	id.chip = cpu_to_le32(0xDEAD);
+> -	brcmf_usb_dl_cmd(devinfo, DL_GETVER, &id, sizeof(id));
+> +	err = brcmf_usb_dl_cmd(devinfo, DL_GETVER, &id, sizeof(id));
+> +	if (err) {
+> +		brcmf_err("DL_GETID Failed\n");
+> +		return false;
 
-I see two ways:
-1. we make driver behave correctly with in spec and out of spec devices
-   and we make qemu behave correctly with in spec and out of spec devices
-2. a new feature bit
+The boolean return value does not indicate pass or fail. It answers the 
+question implied by the function name brcmf_usb_dlneeded(), ie. is the 
+USB device running firmware (false) or do we need to download firmware 
+(true). So returning false here is not going to help us.
 
-I prefer 1, and when we add a new feature we can also
-document that it should be in spec if negotiated.
+The id.chip is initialized to 0xDEAD so upon a failure that value is 
+being passed to brcmf_usb_prepare_fw_request() which will consequently 
+return NULL, because we do not support a 0xDEAD chip. So there is no 
+need to bail out here. Just print the failure message is enough although 
+I would suggest to include the err value:
 
-My question is if 1 is practical.
+-	brcmf_usb_dl_cmd(devinfo, DL_GETVER, &id, sizeof(id));
++	err = brcmf_usb_dl_cmd(devinfo, DL_GETVER, &id, sizeof(id));
++	if (err)
++		brcmf_err("DL_GETVER failed: err=%d\n", err);
 
-
-
-
-
-> > 
-> > Since vqs are probed after feature negotiation, it looks like
-> > we could have a feature bit trigger sane behaviour, right?
-> 
-> In the Linux driver, yes. In QEMU (devices), we add the queues when
-> realizing, so we'd need some mechanism to adjust the queue indices based on
-> feature negotiation I guess?
-
-Well we can add queues later, nothing prevents that.
-
-
-> For virtio-balloon it might be doable to simply always create+indicate
-> free-page hinting to resolve the issue easily.
-
-
-OK, so
-- for devices, we suggest that basically VIRTIO_BALLOON_F_REPORTING
-  only created with VIRTIO_BALLOON_F_FREE_PAGE_HINT and 
-  VIRTIO_BALLOON_F_FREE_PAGE_HINT only created with VIRTIO_BALLOON_F_STATS_VQ
-
-I got that.
-
-
-Now, for drivers.
-
-If the dependency is satisfied as above, no difference.
-
-What should drivers do if not?
-
-
-
-I think the thing to do would be to first probe spec compliant
-vq numbers? If not there, try with the non compliant version?
-
-
-However,  you wrote:
-> > > But I recall that testing for the existance of a virtqueue on s390x resulted
-> > > in the problem/deadlock in the first place ...
-
-I think the deadlock was if trying to *use* a non-existent virtqueue?
-
-This is qemu code:
-
-    case CCW_CMD_READ_VQ_CONF:
-        if (check_len) {
-            if (ccw.count != sizeof(vq_config)) {
-                ret = -EINVAL;
-                break;
-            }
-        } else if (ccw.count < sizeof(vq_config)) {
-            /* Can't execute command. */
-            ret = -EINVAL;
-            break;
-        }
-        if (!ccw.cda) {
-            ret = -EFAULT;
-        } else {
-            ret = ccw_dstream_read(&sch->cds, vq_config.index);
-            if (ret) {
-                break;
-            }
-            vq_config.index = be16_to_cpu(vq_config.index);
-            if (vq_config.index >= VIRTIO_QUEUE_MAX) {
-                ret = -EINVAL;
-                break;
-            }
-            vq_config.num_max = virtio_queue_get_num(vdev,
-                                                     vq_config.index);
-            vq_config.num_max = cpu_to_be16(vq_config.num_max);
-            ret = ccw_dstream_write(&sch->cds, vq_config.num_max);
-            if (!ret) {
-                sch->curr_status.scsw.count = ccw.count - sizeof(vq_config);
-            }
-        }
-
-and
-
-            
-int virtio_queue_get_num(VirtIODevice *vdev, int n)
-{               
-    return vdev->vq[n].vring.num;
-}           
-            
-
-
-it seems to happily return vq size with no issues?
-
-
-
-
-> For virtio-fs it might not be that easy.
-
-virtio fs? But it has no features?
-
-> > 
-> > I kind of dislike it that we have a feature bit for bugs though.
-> > What would be a minimal new feature to add so it does not
-> > feel wrong?
-> 
-> Probably as above: fixed vs. compressed virtqueue indices?
-> 
-> -- 
-> Cheers,
-> 
-> David / dhildenb
+Regards,
+Arend
 
 
