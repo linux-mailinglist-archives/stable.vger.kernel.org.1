@@ -1,186 +1,156 @@
-Return-Path: <stable+bounces-131916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F55EA8226E
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 12:39:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7BD0A8227C
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 12:42:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21B4C7A69B1
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 10:37:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4CBF4A7354
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 10:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EAA525D536;
-	Wed,  9 Apr 2025 10:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CDC25D542;
+	Wed,  9 Apr 2025 10:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UhglxuYM"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="HCWhznDU";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="rT0KkMH/";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="HCWhznDU";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="rT0KkMH/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF8B25D210
-	for <stable@vger.kernel.org>; Wed,  9 Apr 2025 10:38:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1BC25C6EE
+	for <stable@vger.kernel.org>; Wed,  9 Apr 2025 10:42:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744195131; cv=none; b=XPd12K3hGS3HifPDAOLj1Pzf5+V1nyBk/vBzAkReBbjMaazCMFivHJ2WPeFSqkz5Xth5YzqC9ow43o1p58Qd8i6Qng4qW2Pm2b9xzKoEHqPMm3oFAQqrWUPZwA0Tqv3aj/8cLQtz3D/cF4gLKZYc2Z8rEDwPced+VcLM70nOUZg=
+	t=1744195372; cv=none; b=k0tJWuDO8JL9OsIFtxKUgZbPPbpVJ4o9AF759YmjDfVb7GT0J6T4djBZwCX/57LPMxDzdNXA4uwNg7XDETdiSdNBPJw0th/D7kxgRfQSR2gYpwd3DHVVbt3b0aRGUuBXpULsM8aYJDnI3x14lu89OXoncG0q1Ljli95FDrsWuDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744195131; c=relaxed/simple;
-	bh=o+AjhrvwOzqpxWWvumcXZNVcIwjQpsTTzIZvFoOFzJI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bB01M0TozXNH5Wv1zGZFUHgctBax88oa7i7aBGcD/mu6RThkDmEb2DKOzLRi6RZ0WNafj1BolWuUZQjmYvSDtOHLZdQ8oa958itWy9tdnUazHqZWkN42Ipn3Gj3M7jHVVOwU4pXPbSEzfua+NFeOkHKYKrLnKwBQASicfwZcYrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UhglxuYM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E54C4CEE3;
-	Wed,  9 Apr 2025 10:38:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744195130;
-	bh=o+AjhrvwOzqpxWWvumcXZNVcIwjQpsTTzIZvFoOFzJI=;
-	h=Subject:To:Cc:From:Date:From;
-	b=UhglxuYMoVls/c+IZR+dDyrRopc4uJ2bLejKjRstfqto2L8FQW2cbIiF7KDBZVX9b
-	 /ASIarr+hoSphBX355jCsHfWXcAitMt1feuwJOiCDrzs7scSTLnerp+k/C7TWgg87b
-	 Ubx8UGBxF0xR+UrI9HgpFmkY/NO3xERXqtKGU438=
-Subject: FAILED: patch "[PATCH] drm/panthor: Replace sleep locks with spinlocks in fdinfo" failed to apply to 6.13-stable tree
-To: adrian.larumbe@collabora.com,boris.brezillon@collabora.com,liviu.dudau@arm.com,steven.price@arm.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Wed, 09 Apr 2025 12:37:16 +0200
-Message-ID: <2025040916-appraiser-chute-b24d@gregkh>
+	s=arc-20240116; t=1744195372; c=relaxed/simple;
+	bh=EdCjpD8KSUrLuHs5GvIkdcerRehZ40AK1poflo4d2k4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=djVGLU8TPLuFtu2kCepKi4MViKKV0qmPEv45OV1DbXII1w9kFuab0VE2TQcdsWH3fizROOftDwcrNbxPm05WFZzR4t/VeV1ZPU5BLrcB80QDuUjMcUnH3n+UWOub4jqHjZUL07zjN/UGb2zx1S+r1znx+zTnObbIknBQV/2c1Tg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=HCWhznDU; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=rT0KkMH/; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=HCWhznDU; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=rT0KkMH/; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C122421169;
+	Wed,  9 Apr 2025 10:42:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1744195368; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Yen6uUM+rymVHNJ1ppKOFMdkW13sc3zHqEh7q670KX0=;
+	b=HCWhznDUKFBV83n2K/OHI8uPFkO+hBE+L385r6JhK3IVciLS5fWENZYdz8RIu2J9+nzv+p
+	Hm9isDnYmA+vpR90moAaR8KugyylDl1ZSoK7CvpZyInHvK4bAW8siJnWj/9gVNTdVA5G8v
+	Kzz43O2LYpmJWz+klV00BHQBO2pRtvg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1744195368;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Yen6uUM+rymVHNJ1ppKOFMdkW13sc3zHqEh7q670KX0=;
+	b=rT0KkMH/b8UG/NRNl/bkB1rAntWBtQsjK3NLBDy/p4I1VlCn7UzIDJFzj69aVK/E969g3+
+	qyLqRcEJqB0HN9CA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1744195368; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Yen6uUM+rymVHNJ1ppKOFMdkW13sc3zHqEh7q670KX0=;
+	b=HCWhznDUKFBV83n2K/OHI8uPFkO+hBE+L385r6JhK3IVciLS5fWENZYdz8RIu2J9+nzv+p
+	Hm9isDnYmA+vpR90moAaR8KugyylDl1ZSoK7CvpZyInHvK4bAW8siJnWj/9gVNTdVA5G8v
+	Kzz43O2LYpmJWz+klV00BHQBO2pRtvg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1744195368;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Yen6uUM+rymVHNJ1ppKOFMdkW13sc3zHqEh7q670KX0=;
+	b=rT0KkMH/b8UG/NRNl/bkB1rAntWBtQsjK3NLBDy/p4I1VlCn7UzIDJFzj69aVK/E969g3+
+	qyLqRcEJqB0HN9CA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AF3EE13691;
+	Wed,  9 Apr 2025 10:42:48 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id aL/EKihP9me3CQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 09 Apr 2025 10:42:48 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 3BFADA0838; Wed,  9 Apr 2025 12:42:48 +0200 (CEST)
+Date: Wed, 9 Apr 2025 12:42:48 +0200
+From: Jan Kara <jack@suse.cz>
+To: Artem Sadovnikov <a.sadovnikov@ispras.ru>
+Cc: Jan Kara <jack@suse.cz>, linux-ext4@vger.kernel.org, 
+	Theodore Ts'o <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>, 
+	Eric Sandeen <sandeen@redhat.com>, linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] ext4: fix off-by-one error in do_split
+Message-ID: <z4fxzkutn3bjrpb4kmezorp6hbbapsvmijoznbny5ll2qajmm5@i5dl3zy2inch>
+References: <20250404082804.2567-3-a.sadovnikov@ispras.ru>
+ <odgkvml62unm4ux3sbnympgyzj22z7dwjgdvdmlbgtiybq4j7z@gnnaygdp7muw>
+ <fc291720-bba7-4799-b451-ae7c84e6697c@ispras.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fc291720-bba7-4799-b451-ae7c84e6697c@ispras.ru>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.80 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_THREE(0.00)[3];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email]
+X-Spam-Score: -3.80
+X-Spam-Flag: NO
 
+On Tue 08-04-25 16:38:36, Artem Sadovnikov wrote:
+> On 07.04.2025 16:02, Jan Kara wrote:
+> > Thanks for debugging this! The fix looks good, but I'm still failing to see
+> > the use-after-free / end-of-buffer issue. If we wrongly split to two parts
+> > count/2 each, then dx_move_dirents() and dx_pack_dirents() seem to still
+> > work correctly. Just they will make too small amount of space in bh but
+> > still at least one dir entry gets moved? Following add_dirent_to_buf() is
+> > more likely to fail due to ENOSPC but still I don't see the buffer overrun
+> > issue? Can you please tell me what I'm missing? Thanks!
+> 
+> add_dirent_to_buf() only checks for available space if its de parameter
+> is NULL, but make_indexed_dir() provides a non-NULL de, so that space
+> check is skipped entirely. add_dirent_to_buf() then calls
+> ext4_insert_dentry() which will write a filename that's potentially
+> larger than entry size and will cause an out-of-bounds write.
 
-The patch below does not apply to the 6.13-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Indeed. I didn't notice this detail. Thanks for explanation!
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.13.y
-git checkout FETCH_HEAD
-git cherry-pick -x e379856b428acafb8ed689f31d65814da6447b2e
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025040916-appraiser-chute-b24d@gregkh' --subject-prefix 'PATCH 6.13.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From e379856b428acafb8ed689f31d65814da6447b2e Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>
-Date: Mon, 3 Mar 2025 19:08:45 +0000
-Subject: [PATCH] drm/panthor: Replace sleep locks with spinlocks in fdinfo
- path
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-Commit 0590c94c3596 ("drm/panthor: Fix race condition when gathering fdinfo
-group samples") introduced an xarray lock to deal with potential
-use-after-free errors when accessing groups fdinfo figures. However, this
-toggles the kernel's atomic context status, so the next nested mutex lock
-will raise a warning when the kernel is compiled with mutex debug options:
-
-CONFIG_DEBUG_RT_MUTEXES=y
-CONFIG_DEBUG_MUTEXES=y
-
-Replace Panthor's group fdinfo data mutex with a guarded spinlock.
-
-Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
-Fixes: 0590c94c3596 ("drm/panthor: Fix race condition when gathering fdinfo group samples")
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250303190923.1639985-1-adrian.larumbe@collabora.com
-
-diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
-index 1a276db095ff..4d31d1967716 100644
---- a/drivers/gpu/drm/panthor/panthor_sched.c
-+++ b/drivers/gpu/drm/panthor/panthor_sched.c
-@@ -9,6 +9,7 @@
- #include <drm/panthor_drm.h>
- 
- #include <linux/build_bug.h>
-+#include <linux/cleanup.h>
- #include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/dma-mapping.h>
-@@ -631,10 +632,10 @@ struct panthor_group {
- 		struct panthor_gpu_usage data;
- 
- 		/**
--		 * @lock: Mutex to govern concurrent access from drm file's fdinfo callback
--		 * and job post-completion processing function
-+		 * @fdinfo.lock: Spinlock to govern concurrent access from drm file's fdinfo
-+		 * callback and job post-completion processing function
- 		 */
--		struct mutex lock;
-+		spinlock_t lock;
- 
- 		/** @fdinfo.kbo_sizes: Aggregate size of private kernel BO's held by the group. */
- 		size_t kbo_sizes;
-@@ -910,8 +911,6 @@ static void group_release_work(struct work_struct *work)
- 						   release_work);
- 	u32 i;
- 
--	mutex_destroy(&group->fdinfo.lock);
--
- 	for (i = 0; i < group->queue_count; i++)
- 		group_free_queue(group, group->queues[i]);
- 
-@@ -2861,12 +2860,12 @@ static void update_fdinfo_stats(struct panthor_job *job)
- 	struct panthor_job_profiling_data *slots = queue->profiling.slots->kmap;
- 	struct panthor_job_profiling_data *data = &slots[job->profiling.slot];
- 
--	mutex_lock(&group->fdinfo.lock);
--	if (job->profiling.mask & PANTHOR_DEVICE_PROFILING_CYCLES)
--		fdinfo->cycles += data->cycles.after - data->cycles.before;
--	if (job->profiling.mask & PANTHOR_DEVICE_PROFILING_TIMESTAMP)
--		fdinfo->time += data->time.after - data->time.before;
--	mutex_unlock(&group->fdinfo.lock);
-+	scoped_guard(spinlock, &group->fdinfo.lock) {
-+		if (job->profiling.mask & PANTHOR_DEVICE_PROFILING_CYCLES)
-+			fdinfo->cycles += data->cycles.after - data->cycles.before;
-+		if (job->profiling.mask & PANTHOR_DEVICE_PROFILING_TIMESTAMP)
-+			fdinfo->time += data->time.after - data->time.before;
-+	}
- }
- 
- void panthor_fdinfo_gather_group_samples(struct panthor_file *pfile)
-@@ -2880,12 +2879,11 @@ void panthor_fdinfo_gather_group_samples(struct panthor_file *pfile)
- 
- 	xa_lock(&gpool->xa);
- 	xa_for_each(&gpool->xa, i, group) {
--		mutex_lock(&group->fdinfo.lock);
-+		guard(spinlock)(&group->fdinfo.lock);
- 		pfile->stats.cycles += group->fdinfo.data.cycles;
- 		pfile->stats.time += group->fdinfo.data.time;
- 		group->fdinfo.data.cycles = 0;
- 		group->fdinfo.data.time = 0;
--		mutex_unlock(&group->fdinfo.lock);
- 	}
- 	xa_unlock(&gpool->xa);
- }
-@@ -3537,7 +3535,7 @@ int panthor_group_create(struct panthor_file *pfile,
- 	mutex_unlock(&sched->reset.lock);
- 
- 	add_group_kbo_sizes(group->ptdev, group);
--	mutex_init(&group->fdinfo.lock);
-+	spin_lock_init(&group->fdinfo.lock);
- 
- 	return gid;
- 
-
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
