@@ -1,78 +1,87 @@
-Return-Path: <stable+bounces-131940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-131941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AB68A8246C
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 14:12:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB4AFA824B0
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 14:28:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5557C8C3C06
-	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 12:11:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E57C31BC33F7
+	for <lists+stable@lfdr.de>; Wed,  9 Apr 2025 12:26:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D1F25E471;
-	Wed,  9 Apr 2025 12:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9A5263C78;
+	Wed,  9 Apr 2025 12:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="YMtC1S08"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BNh+WLXN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D771D54E9
-	for <stable@vger.kernel.org>; Wed,  9 Apr 2025 12:11:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC089262D0B
+	for <stable@vger.kernel.org>; Wed,  9 Apr 2025 12:24:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744200673; cv=none; b=CEoqEl2HDyGCMfzjOqvcuiXBypaUviP0J95Y8iioa63A8HMJbkKPuGFS0n8J0jci3+jwVAoxc6vV6HUXfE4GNLG3e8A4srU6TKYP77nxqzCKFDZJIaIBfbMJz+Va4Q7ITa8rchjPtlZprs4/5JCNtM9mGjTXyclVZN1pqO1d4Ok=
+	t=1744201481; cv=none; b=X+fKJ80ULqq5TxBr+ZOy9jzMPbxX1ob1VzIyzPtBiI6bKVCwZ5PKdTA0o/aATF9BkKlVMbfttbiI0fA0sU96/AAVFrNMzjQqhmjRS+bDoMaxxQ6x7psmqQJGS3SswRW3/zZAyIswHcXWH+R9w06bF3mE+m5bnHtTpP4ImyXd/yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744200673; c=relaxed/simple;
-	bh=FjmBBQuTbqcSqV4VON5V19OosV8aeGF3vbwcOaR6PEU=;
+	s=arc-20240116; t=1744201481; c=relaxed/simple;
+	bh=50fY5CqvbIXRuOQjF6sVR9Vhlh7zPPI5xAkTQE68g/A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Gu2xBHFaFxAn3iSLeqhAnREQ6CT73Wt34CrjEkvsbpYfGZ196+yv6d8GeWroXu69g2qn1c2D0dMSYBrNVxG5mJG0IatbHE1HbANQXOQHpLhsrTMcImcn++0kw10NHU/jOByrgfnYW1W4sa7In4Pcq4aGJRxgAIOcC9u700jPg1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=YMtC1S08; arc=none smtp.client-ip=209.85.210.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-72c14235af3so3956671a34.3
-        for <stable@vger.kernel.org>; Wed, 09 Apr 2025 05:11:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1744200669; x=1744805469; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=4PtXMGs7EWmz8YpnhCnXD5krrhFi7/XXZNLQxormo78=;
-        b=YMtC1S08yIe2L84xw6e7Yo8bzoUSmvFP+dAZk/fDbwYmIdoLMX/fjcRTk+yK/d+x+c
-         NruSO6zYjblaKvuaIHrnMVgrkNpq+Bd/3e8VS6mVuZBRGH586P4UDSTCCo6guHaxm0sC
-         VfVovpLMVJNhGH329YF/2qE05VkU+xk6ggqwQ=
+	 In-Reply-To:Content-Type; b=cUtmLzcJJscqqZSLjQu5u+U7Bksp6BlEuehclR5RqFfU/oLndMjsgdItd3XLxMQsGiRpjdz28cfTx6Ccvl18Gjtjs4Lp6sAAfSwaHx/K93ofbxI0HdhbHzp1U3YkdMrpwIEdjV6npMw2HhgCGfR5JqMBOQA00B54ekFgrlDMBHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BNh+WLXN; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744201478;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=BB0co1XQSYhwpSvOjb23lF2MGsgWfCMGL+h6GKHJnpU=;
+	b=BNh+WLXNZLbf6XYt0Hc9Qkf9taC6ay1lTBgI9cxpTGPEsM/9xXGvahwXQpy6sQbBPbvQ+u
+	FiYcsmxQdJDVgGqjje7vSpabMi4yry44n19dqFuF0APllpQlV69ZXGV2JMIeXMlVgmh+I3
+	VqmfhLOxkXYWy0OHz2NFoHNC8aiTnM4=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-541-BiKFPnVRNjqBot3Q-aSzgw-1; Wed, 09 Apr 2025 08:24:36 -0400
+X-MC-Unique: BiKFPnVRNjqBot3Q-aSzgw-1
+X-Mimecast-MFC-AGG-ID: BiKFPnVRNjqBot3Q-aSzgw_1744201475
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43ce8f82e66so42246715e9.3
+        for <Stable@vger.kernel.org>; Wed, 09 Apr 2025 05:24:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744200669; x=1744805469;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4PtXMGs7EWmz8YpnhCnXD5krrhFi7/XXZNLQxormo78=;
-        b=GmNp42iaRijPV3m4+cb9eUsG9CR9I9E6HcCuwnhrCGz+gJoyTX3l7iRXqWEST70LYQ
-         pnPrHNLJeE3CrRKlnawPDxaukvrU+5X3myZpfxGsfcLE/VL4N/4bSjyvFasxr4UTDozH
-         T0o7s8ANEq1UquzmRJEe2QmTu3m/c8F2M4lmzfHHhiUguu+uQmh6URA2VpIxK7UyH1Em
-         pmkt2TFkU8DhA5ENwWpqzZH7a3qS0Dq+b18z0CIvQOzMe1WzwiAhMCXFfGdmTeI/bNRK
-         7RQ3gviSEdN0xhMEv5aarPF9G54Tu23BPQC1hEgq+rQ+z0/p+rADkVGG+Qg/2tey0FP4
-         PqdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWn0WDcys5mbERK9Ic7cK+l1O3gcigxcONez8YYeUz8n3vE5V77vMXosafwBy54FhDxYKrLHrY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGDRK+20tZKNRn7Qqv9zTaFY0bLLW6oP8RaT2jckao7XeKJbto
-	W+unqXd1RP/GmhUOTCwpNbitfHdFlMGdK35m1Z0GE4pehdjUUrHzccHJhMPmdw==
-X-Gm-Gg: ASbGncvpKXqvIvO6pjsrAQJNmDru8/S03TzzX9x+ePAmaVjyq7mH/ud9zBwc4RlN23G
-	Olw6MCE4fQuZnO0MUG/ntS6D6zuHHMz/BHJtgri/gfhCXinILfOSACSqio9U+KK0HY11TbefnMh
-	pO3fmQ3xcAaMzoc6UEvmppI5ddl6+mp8izAoq6PryYJojTX4vL5O2BGfyg2avMBgil3o/RqISdC
-	4+vNj2aBT2MwvN6h6eOeRJ3lH+QrOYXABn2MCrF5C4HaaFkbVAEL6UdPGaIMfvjNhrkB/tinykE
-	QY96KSJec9XJJqHlGWwBK3om6UGX0XgchtJ8tF4JocSeZLW9QglHnaVcA5pL9FoS8PiaNINZzqE
-	saEU=
-X-Google-Smtp-Source: AGHT+IFZAPvCBJgh9XVazfblCmGFa6YHh0C56/60XRWXvVZNJuVRhmhgazTESo+2pXIgjIbzPz1kxw==
-X-Received: by 2002:a05:6830:6086:b0:72b:9506:8db6 with SMTP id 46e09a7af769-72e71aa22admr1193256a34.6.1744200669147;
-        Wed, 09 Apr 2025 05:11:09 -0700 (PDT)
-Received: from [10.176.68.145] ([192.19.176.250])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-72e73e67465sm135366a34.57.2025.04.09.05.11.05
+        d=1e100.net; s=20230601; t=1744201475; x=1744806275;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=BB0co1XQSYhwpSvOjb23lF2MGsgWfCMGL+h6GKHJnpU=;
+        b=pmyyQws7/ho85rZc+WxVDhjXBmdx2bcP2Ykgh1e9gwT2KAT0HZ9KfPnMCJdj3bS11b
+         V4HDd8a8NLcrqQDG8xKmi1ne15DaZwOA0p+Q6eC8TvtwNZcEBMcJIS+Hv4J1SjOKk5b3
+         BPCf7gawvzfjTDD5Gr2/8wFmu2wVS+5sO3V+4YHDxPwFJRzt6rZ19taPBdVYnRsRhqJR
+         DeK+WkxxrQxv/5IRTEsfePzm1WZqA9Mf6Cit964UsF+9UO4GWo3Ajk+xk1wNCHZTB2mg
+         /NRUtD6EgcS/gZ7WXaKZQNdS4ykz8BMwuhxUTtLjOEvtyfTk4aJ0d1BLtajEXbW4PiMI
+         6YXw==
+X-Forwarded-Encrypted: i=1; AJvYcCUR507pJikYOac/nG5jlCQsngl2ExfpZ3vKty2YbZu38mOa8LStLOLZQzhW/f/M+8qxx5xq/IY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2/OGOhqeJf12NXJM+UiPrDZ/LDNV1TygzwLnReyomuBhQ6v+a
+	a855Ioo4V6pMCuDYyC53oH8MHIdvOjN0RPjon5977rZuEPapSnHZAsg0h4xs5QP8XFF8BXAu7AS
+	m9PsDHF4VhEd9p7q+Ke3ylhNfIX5PeRq0JOLgc6cCACKJUydJjwViQg==
+X-Gm-Gg: ASbGncsH8gTGtkUcpVeXzc1nJCpsFFaCiJTmFIB6vj8RibUe2N2Hbofn0PVZbFqZjG6
+	klzf8WvWGCG5dHr3EfozlnMeEbwTQSdjbAoew3a5yhx3SVnHpcNKWQqM4McadwS7gegiYOCjp0f
+	oNwKxcM+k8tVIYDlNllpRfbSeqcQ/LHKt5T3jUCmVZ2Gwp8QcmAZEZ+X7gHjf4/l5hS8vHca5dp
+	XAPxBN/vc1gduAPkkvdLPVuWJvqMmqzaFwtr1uFAMcbUoTk3c2njHEi+SYPlrxbxbro30fi7CjI
+	D8PBq/Zfz+zPauN3tdCbDM/KYO4on6l1gJVfb53qqQ==
+X-Received: by 2002:a05:600c:3c9f:b0:43d:17f1:2640 with SMTP id 5b1f17b1804b1-43f1ed4bc36mr23576465e9.26.1744201474923;
+        Wed, 09 Apr 2025 05:24:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGr2pJ0AXoGi87tl94rBYvAXq1MU8VYDVKHvStf7fiGqkSwDqMeylbppcsKE9zj5NgoInD/2Q==
+X-Received: by 2002:a05:600c:3c9f:b0:43d:17f1:2640 with SMTP id 5b1f17b1804b1-43f1ed4bc36mr23576175e9.26.1744201474550;
+        Wed, 09 Apr 2025 05:24:34 -0700 (PDT)
+Received: from [192.168.3.141] (p4ff23667.dip0.t-ipconnect.de. [79.242.54.103])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f233c7a68sm14567855e9.19.2025.04.09.05.24.33
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Apr 2025 05:11:07 -0700 (PDT)
-Message-ID: <d791185d-6a23-4c6f-8a93-d5464409939a@broadcom.com>
-Date: Wed, 9 Apr 2025 14:11:02 +0200
+        Wed, 09 Apr 2025 05:24:33 -0700 (PDT)
+Message-ID: <5cd8463e-21ed-4c99-a9b2-9af45c6eb7af@redhat.com>
+Date: Wed, 9 Apr 2025 14:24:32 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,119 +89,189 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] brcm80211: fmac: Add error check for brcmf_usb_dlneeded()
-To: Wentao Liang <vulab@iscas.ac.cn>, kvalo@kernel.org
-Cc: christophe.jaillet@wanadoo.fr, megi@xff.cz, saikrishnag@marvell.com,
- linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
- brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250406081930.2909-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH v1] s390/virtio_ccw: don't allocate/assign airqs for
+ non-existing queues
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Daniel Verkamp <dverkamp@chromium.org>, Halil Pasic
+ <pasic@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ linux-s390@vger.kernel.org, virtualization@lists.linux.dev,
+ kvm@vger.kernel.org, Chandra Merla <cmerla@redhat.com>,
+ Stable@vger.kernel.org, Cornelia Huck <cohuck@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Eric Farman <farman@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Wei Wang <wei.w.wang@intel.com>,
+ "stefanha@redhat.com" <stefanha@redhat.com>, Vivek Goyal <vgoyal@redhat.com>
+References: <20250407045456-mutt-send-email-mst@kernel.org>
+ <a86240bc-8417-48a6-bf13-01dd7ace5ae9@redhat.com>
+ <33def1b0-d9d5-46f1-9b61-b0269753ecce@redhat.com>
+ <88d8f2d2-7b8a-458f-8fc4-c31964996817@redhat.com>
+ <CABVzXAmMEsw70Tftg4ZNi0G4d8j9pGTyrNqOFMjzHwEpy0JqyA@mail.gmail.com>
+ <3bbad51d-d7d8-46f7-a28c-11cc3af6ef76@redhat.com>
+ <20250407170239-mutt-send-email-mst@kernel.org>
+ <440de313-e470-4afa-9f8a-59598fe8dc21@redhat.com>
+ <20250409065216-mutt-send-email-mst@kernel.org>
+ <4ad4b12e-b474-48bb-a665-6c1dc843cd51@redhat.com>
+ <20250409073652-mutt-send-email-mst@kernel.org>
+From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
- 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
-In-Reply-To: <20250406081930.2909-1-vulab@iscas.ac.cn>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20250409073652-mutt-send-email-mst@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 4/6/2025 10:19 AM, Wentao Liang wrote:
-> The function brcmf_usb_dlneeded() calls the function brcmf_usb_dl_cmd()
-> but dose not check its return value. The 'id.chiprev' is uninitialized if
-> the function brcmf_usb_dl_cmd() fails, and may propagate to
-> 'devinfo->bus_pub.chiprev'.
+On 09.04.25 14:07, Michael S. Tsirkin wrote:
+> On Wed, Apr 09, 2025 at 01:12:19PM +0200, David Hildenbrand wrote:
+>> On 09.04.25 12:56, Michael S. Tsirkin wrote:
+>>> On Wed, Apr 09, 2025 at 12:46:41PM +0200, David Hildenbrand wrote:
+>>>> On 07.04.25 23:20, Michael S. Tsirkin wrote:
+>>>>> On Mon, Apr 07, 2025 at 08:47:05PM +0200, David Hildenbrand wrote:
+>>>>>>> In my opinion, it makes the most sense to keep the spec as it is and
+>>>>>>> change QEMU and the kernel to match, but obviously that's not trivial
+>>>>>>> to do in a way that doesn't break existing devices and drivers.
+>>>>>>
+>>>>>> If only it would be limited to QEMU and Linux ... :)
+>>>>>>
+>>>>>> Out of curiosity, assuming we'd make the spec match the current QEMU/Linux
+>>>>>> implementation at least for the 3 involved features only, would there be a
+>>>>>> way to adjust crossvm without any disruption?
+>>>>>>
+>>>>>> I still have the feeling that it will be rather hard to get that all
+>>>>>> implementations match the spec ... For new features+queues it will be easy
+>>>>>> to force the usage of fixed virtqueue numbers, but for free-page-hinting and
+>>>>>> reporting, it's a mess :(
+>>>>>
+>>>>>
+>>>>> Still thinking about a way to fix drivers... We can discuss this
+>>>>> theoretically, maybe?
+>>>>
+>>>> Yes, absolutely. I took the time to do some more digging; regarding drivers
+>>>> only Linux seems to be problematic.
+>>>>
+>>>> virtio-win, FreeBSD, NetBSD and OpenBSD and don't seem to support
+>>>> problematic features (free page hinting, free page reporting) in their
+>>>> virtio-balloon implementations.
+>>>>
+>>>> So from the known drivers, only Linux is applicable.
+>>>>
+>>>> reporting_vq is either at idx 4/3/2
+>>>> free_page_vq is either at idx 3/2
+>>>> statsq is at idx2 (only relevant if the feature is offered)
+>>>>
+>>>> So if we could test for the existence of a virtqueue at an idx easily, we
+>>>> could test from highest-to-smallest idx.
+>>>>
+>>>> But I recall that testing for the existance of a virtqueue on s390x resulted
+>>>> in the problem/deadlock in the first place ...
+>>>>
+>>>> -- 
+>>>> Cheers,
+>>>>
+>>>> David / dhildenb
+>>>
+>>> So let's talk about a new feature bit?
+>>
+>> Are you thinking about a new feature that switches between "fixed queue
+>> indices" and "compressed queue indices", whereby the latter would be the
+>> legacy default and we would expect all devices to switch to the new
+>> fixed-queue-indices layout?
+>>
+>> We could make all new features require "fixed-queue-indices".
 > 
-> Add error handling for brcmf_usb_dl_cmd() to return the function if the
-> 'id.chiprev' is uninitialized.
-
-Thanks for the patch, but NAK. Let me explain why below...
-
-> Fixes: 71bb244ba2fd ("brcm80211: fmac: add USB support for bcm43235/6/8 chipsets")
-> Cc: stable@vger.kernel.org # v3.4+
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c | 7 ++++++-
->   1 file changed, 6 insertions(+), 1 deletion(-)
+> I see two ways:
+> 1. we make driver behave correctly with in spec and out of spec devices
+>     and we make qemu behave correctly with in spec and out of spec devices
+> 2. a new feature bit
 > 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-> index 2821c27f317e..50dddac8a2ab 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-> @@ -790,6 +790,7 @@ brcmf_usb_dlneeded(struct brcmf_usbdev_info *devinfo)
->   {
->   	struct bootrom_id_le id;
->   	u32 chipid, chiprev;
-> +	int err;
->   
->   	brcmf_dbg(USB, "Enter\n");
->   
-> @@ -798,7 +799,11 @@ brcmf_usb_dlneeded(struct brcmf_usbdev_info *devinfo)
->   
->   	/* Check if firmware downloaded already by querying runtime ID */
->   	id.chip = cpu_to_le32(0xDEAD);
-> -	brcmf_usb_dl_cmd(devinfo, DL_GETVER, &id, sizeof(id));
-> +	err = brcmf_usb_dl_cmd(devinfo, DL_GETVER, &id, sizeof(id));
-> +	if (err) {
-> +		brcmf_err("DL_GETID Failed\n");
-> +		return false;
+> I prefer 1, and when we add a new feature we can also
+> document that it should be in spec if negotiated.
+> 
+> My question is if 1 is practical.
 
-The boolean return value does not indicate pass or fail. It answers the 
-question implied by the function name brcmf_usb_dlneeded(), ie. is the 
-USB device running firmware (false) or do we need to download firmware 
-(true). So returning false here is not going to help us.
+AFAIKT, 1) implies:
 
-The id.chip is initialized to 0xDEAD so upon a failure that value is 
-being passed to brcmf_usb_prepare_fw_request() which will consequently 
-return NULL, because we do not support a 0xDEAD chip. So there is no 
-need to bail out here. Just print the failure message is enough although 
-I would suggest to include the err value:
+virtio-balloon:
 
--	brcmf_usb_dl_cmd(devinfo, DL_GETVER, &id, sizeof(id));
-+	err = brcmf_usb_dl_cmd(devinfo, DL_GETVER, &id, sizeof(id));
-+	if (err)
-+		brcmf_err("DL_GETVER failed: err=%d\n", err);
+a) Driver
 
-Regards,
-Arend
+As mentioned above, we'd need a reliable way to test for the existence 
+of a virtqueue, so we can e.g., test for reporting_vq idx 4 -> 3 -> 2
+
+With that we'd be able to support compressed+fixed at the same time.
+
+Q: Is it possible/feasible?
+
+b) Device: virtio-balloon: we can fake existence of STAT and 
+FREE_PAGE_HINTING easily, such that the compressed layout corresponds to 
+the fixed layout easily.
+
+Q: alternatives? We could try creating multiple queues for the same 
+feature, but it's going to be a mess I'm afraid ...
+
+
+virtio-fs:
+
+a) Driver
+
+Linux does not even implement VIRTIO_FS_F_NOTIFICATION or respect 
+VIRTIO_FS_F_NOTIFICATION when calculating queue indices, ...
+
+b) Device
+
+Same applies to virtiofsd ...
+
+Q: Did anybody actually implement VIRTIO_FS_F_NOTIFICATION ever? If not, 
+can we just remove it from the spec completely and resolve the issue 
+that way?
+
+-- 
+Cheers,
+
+David / dhildenb
 
 
