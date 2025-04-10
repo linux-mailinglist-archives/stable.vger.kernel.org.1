@@ -1,190 +1,158 @@
-Return-Path: <stable+bounces-132182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6097A84CF2
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 21:26:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E97FA84FC2
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 00:47:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C6AE9C2890
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 19:23:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0480F4A0FC2
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 22:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5B429008C;
-	Thu, 10 Apr 2025 19:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA1420C021;
+	Thu, 10 Apr 2025 22:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="WHzYBZza"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="KC4PV+7y"
 X-Original-To: stable@vger.kernel.org
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazolkn19010013.outbound.protection.outlook.com [52.103.13.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C882853EF;
-	Thu, 10 Apr 2025 19:22:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.13.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744312967; cv=fail; b=foKK4NBV6AEIdQqqFYTHFzfjHjBWXWhv1V25haNLOP/mo8xWTfHOJIdY1OTm9wz9Jm7ZGWb1f/3wR7eyCiJ/s+NMVpsdh84kh1MocmqFgRUKV0+bFxfaxV5Qj8R8sGFMcKDQW0un5TDycLwnqx3j/A5DNuPcRgobrKOzfwuP+Ng=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744312967; c=relaxed/simple;
-	bh=/bEa5fxT5nth+aOEJSxpkT4brgwWyB28zbj/VlvoTkk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=d+3RuKEBw7IoYVgFwTfleLE254I2xI0hgM/PRcGxjemjiBTA6KpiOcOxwp5qAaXEZiGKd88mctO5OZTFvbqLMkAlRYL05E9ZMlP7qZ3fyuQ/Hw227tC/W++DdRBU0yXQhH+G4u5Gi3PNu2WV35W5b7Hoo2pD26VXzAVFH/mAp+Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=WHzYBZza; arc=fail smtp.client-ip=52.103.13.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BQs04IYzuBBEUIgEU/KJAeKGslipJfj3o2s+39siloJFsbg0kNF3T25BRs57GeH+ml+hpoHWgKYMdkpxDZjhdgmtyejz8ahtmlQu9ooT8uYaLuqtdlGKQkrrZ3+BFBFeBNt/6DSVvbrui6KeUOTBOqx0ZQKtbUKS1AOb1KPBK2c0b7lOeJLAtGRgLkCR4pB6Y2HUSxU+hpfF/9afNRzlNPCQLeJBWuY2D7K/60wPT0gdQZY7XeeJrolXJudEn7a1TGC1sQSZ0pw6OH/ZxS18xAl+qyJy977DC9tuEtTHbU+q8Pmnb0LxMo8uQ8KnyQwYzI9QVqynsmoYk22oeNFuCQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/bEa5fxT5nth+aOEJSxpkT4brgwWyB28zbj/VlvoTkk=;
- b=OzHmsL+noBL2R7BoOeyU7jOmAqUyHJcPxQN0wRoES7tqp4tCsDumpScPaASmM7Lldzu11seimRejOblsYpjDAaNy1xrfUGIqK88W/JtsP70160cUCDQMcR9yneUG2LMSH0Qb6yAuP9nAEX1jP8JdzAwwSuObLQ7YM+B7giQ0f/AiwbUfuReg+OnNG8CrmOKbMRbk0tDmRU35i/e28cAfHNktuCF87WcfhdiaaXJSOK2SKkQlM0gUtOo0AXt8vzVe2gTKDnP3pGIpd84OfOI223eJ0pzyUQgDG+Rx//Ov7t+mcRLTOnlI6djxgris0k9Eysl9DiOOepcSj47fSYZlxg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/bEa5fxT5nth+aOEJSxpkT4brgwWyB28zbj/VlvoTkk=;
- b=WHzYBZza3bXcLqgBWMG5QqGGJ8E2IryM2K9XsWzTMnd1IfPBQ+3idxdl7GOYPPUlrUOGgYcaKzAZeOTrzQfmNHKHM9JEGQ7SndU5xzqrZjHdctSewTZpwCxCYHZW7LcXndBSyTM3PrBK58+6CFJwCQahgR++CBZF8eXa/5rcwku6JdLtOQEjr1Ga7ZSb5Bve3OpNNh7Vga5uNAiHT3VbAp04SxAhkvj7l+iFjmEkYCjbN6FRjx/+d01blYbrYXZADiiUZVesQD6/8Fm8ueRQCdqev9IfyDgkMtZEeLRV3B+VCQgKo1uQ4dCi+ezAwa2COT/S7Qu0ODhZrBpcNzbFsQ==
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
- by MW4PR02MB7474.namprd02.prod.outlook.com (2603:10b6:303:75::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.23; Thu, 10 Apr
- 2025 19:22:42 +0000
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::cedd:1e64:8f61:b9df]) by SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::cedd:1e64:8f61:b9df%5]) with mapi id 15.20.8632.021; Thu, 10 Apr 2025
- 19:22:42 +0000
-From: Michael Kelley <mhklinux@outlook.com>
-To: He Zhe <zhe.he@windriver.com>, "rick.p.edgecombe@intel.com"
-	<rick.p.edgecombe@intel.com>, "sathyanarayanan.kuppuswamy@linux.intel.com"
-	<sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
-	"wei.liu@kernel.org" <wei.liu@kernel.org>
-CC: "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>, LKML
-	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: vmbus CVE-2024-36912 CVE-2024-36913
-Thread-Topic: vmbus CVE-2024-36912 CVE-2024-36913
-Thread-Index: AQHbqeBE1oL0kNw5skqLnwrnBYdwgrOdRv2w
-Date: Thu, 10 Apr 2025 19:22:42 +0000
-Message-ID:
- <SN6PR02MB415791F29F01716CCB1A23FAD4B72@SN6PR02MB4157.namprd02.prod.outlook.com>
-References: <ecaa2736-1e5d-48aa-b06c-df78547a721c@windriver.com>
-In-Reply-To: <ecaa2736-1e5d-48aa-b06c-df78547a721c@windriver.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|MW4PR02MB7474:EE_
-x-ms-office365-filtering-correlation-id: 3bf128d0-5435-4e79-9094-08dd786510a4
-x-microsoft-antispam:
- BCL:0;ARA:14566002|8062599003|461199028|15080799006|8060799006|19110799003|10035399004|3412199025|440099028|102099032;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?8U5cSfu8p/ELqweOt586L7Chf7xGQ2Fpi5jazSmIFzUMkg+ZWREmot5j12N5?=
- =?us-ascii?Q?xZIEnSbtmExnpqnHDr25DwaxnJCpYVKtgRGDAdWaQoLNH9McaC5L6n5p7huo?=
- =?us-ascii?Q?QuUPNtvwUH4xrlPvvN0W06NcWKY7zp3fJzXHhFCBtAwA10TiitB/SGM6wV5p?=
- =?us-ascii?Q?+WnjtQrdqbVB+ShlcEUm30EQ8jSQWqbEUzoOwG3tS4Ues7mFtvR0Co0dJSBk?=
- =?us-ascii?Q?TRsFfAdPhWUdOsOGKndlnWABQAWAXUsBvUzfa5BPv2dRfHGH/oOI6CyGgIIJ?=
- =?us-ascii?Q?yYmiwrwQLLtx/BCS2t8u90uHtFZtKkaKb1o+5ZRflGV9aU6+4bz8rcw1aA1k?=
- =?us-ascii?Q?3f1HlRJg1FaMyTamHrd4rfePi6FrtkcZFPMF0yW8N/L+WtAVhaZ0HONsA65/?=
- =?us-ascii?Q?+3I1wvtpCAGlLQBYvrcWmbkibIM+R7VkhQ93HsP8tAaiqn36CT5MS05Sdgdc?=
- =?us-ascii?Q?+VFTQ7D2zHhSiEdle09vsaozIwLYIrcyIrj5xqxkpXPllVk8SQmV+tC7JAZS?=
- =?us-ascii?Q?8SNErkHz6LlRWb3WLH6zRhFpGIdm1hbBtvJXwRl973nHYzJXPnRw9Jr5AI04?=
- =?us-ascii?Q?fkDSjm+cEbHuI8suQ0IHTxDQv1W02d1CfOlxH21WashPzFQbwV/G39Amn22U?=
- =?us-ascii?Q?/CDTnRnAPRjC+IbFN/TYgFjUQrUsCuUVTmiUj7r13wRnUQJEk1aX7uzrCXX5?=
- =?us-ascii?Q?xh5aapsvjS0WRLIra8UI/RhXRdiIFX6qj7Z4GgmU3GyXSc097/9AGozUy4TB?=
- =?us-ascii?Q?v3FeR1BUg7hH82s6D++17wxZmbWKwMiwHseO5cDFVG6irwFbnxMLzIAYSWBI?=
- =?us-ascii?Q?au0MidJ8cAmC4URFrz7iNXh6i9/EiKAKVXaoCXbJ6/m6lIaDV2kXlkg7LtaW?=
- =?us-ascii?Q?eojBJtNSpq/PPXilwO1slEsKrpjfGuvSF0UOQ2pO9X8Dr4BkC8JDLzKFhbof?=
- =?us-ascii?Q?M+ZNcqDEOvGq4LYBksLvrEwfmcrZ43LcxYm9L/xE/UeA2LRLv0p1JWYKWIEy?=
- =?us-ascii?Q?WQdvp/sJyyTyu1wXulk7ewpdhXLSW6SgKZN3+wr4V+3nreZ+cTijZ3nKA8xF?=
- =?us-ascii?Q?k1xiNJMhmOLanaoxT23z9eF6OyORkQsVbqLrjSg96Ji3k8aOWQVQTsiRplLl?=
- =?us-ascii?Q?8Fzwl4USpcfkMmtcKMW74zWwZAXQZ3P1Jw=3D=3D?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?N5gz3VVqT0fklYqDTCw+cC9zhkA4eNhXnpZjuQSZIYkT97vuMlnl4PwkSwW0?=
- =?us-ascii?Q?1BWsjbf7MqUpJ1naQSipUa/Qt+3ULR7Rp1ErfaQ1gdszTPIhFHoNMMZ2BVmz?=
- =?us-ascii?Q?4z6Star3xlv7dz2+m/3NObqUcFsMztrG4AyB1ygaHWMYgolU/FQGaFwIXDY7?=
- =?us-ascii?Q?rraQ2Sz+nDaKDc+95CJkb/cWby4Y+/1YiG2n92xRPIp4J5bvOJ/DAkxvq4yd?=
- =?us-ascii?Q?u1vYGDVTNrYcudPt6FkzC2Wxf86McIMtqAEkNqPQkrdT/K8gJpEBzL+YJJ7U?=
- =?us-ascii?Q?Wj/epJnChT8UvScgsQRrTVrFdFImwtc4jrN+SEhR9uOdmSwomhYutgCLTsr9?=
- =?us-ascii?Q?CgoKSf1FkyJEv+rymhkMZ+kd7qOAyS0EZHF6LerHokeZTqwXcDh0sDDEptK3?=
- =?us-ascii?Q?K4ITrH95ktKy0V4n+G1IzOM7NWUmBciRuWeGM0U3LxUK54L4qUKW2RW2ZFt9?=
- =?us-ascii?Q?DmupzRSfrgTSjbqLbDH5jkxkkj38UXQJhkY9j0eNCgbTO1fhQ4I0pfGdw3+q?=
- =?us-ascii?Q?7/GnLj+iFCOygBURh0x2fpSbZYYysXU+2Vpf/aa0qF9ka/1yMcirGPP1iA1n?=
- =?us-ascii?Q?ka1njpWWU5ogKfuCu04LW/bRW1wtVpijoCjLro+pwb9vZVC5IB8UkWa/WMra?=
- =?us-ascii?Q?996PLoXQkxMorCODKFhF73LU1MA3XFogIUCp8Xek3toFXnD6lbd0h120RY5A?=
- =?us-ascii?Q?oJI4y60QQIGxa/rZZ3NN+SWOFb2PNUHr6sbeHYGpwSHtrszXv2Uy0OWQGq1z?=
- =?us-ascii?Q?YIeOlzkiZ37md0HaUQtwgoA3E9SJ6rc0v88bKTxlmYmQcC06RFBfQMur51Xb?=
- =?us-ascii?Q?o4SoiIH948ugClmSfYSJw3wtWYWqBO7IF1vA1ZRPowl4zsEC54jJJDIqEf54?=
- =?us-ascii?Q?vAf68DwZG/G2v4S+faoTsuMZWGjxWiQJw+wXNnMBprOKhjleMAwJIa8vogJE?=
- =?us-ascii?Q?3HJ32BLHRBvDuJBZ5n8LnAfque2/FM5CqHWEPUa0Gjwf0/i4a6PcG4N75UNC?=
- =?us-ascii?Q?bqsUbHVuC1pFnfnnUuQvA+X9UO9IVvbnppIqNz2Dr/htpZVNulqKjxJjQ+nS?=
- =?us-ascii?Q?stKe722TiJkfxsF1nZbfMmtmHwEtgb44um8vahyA5wTXpGdkWF7SRgxlkibN?=
- =?us-ascii?Q?lsS6yX/coj7qLwrZ49I52Vn5vDMhYG/+oJQrMcfQB7QWPJleL6CVGtBPtu2G?=
- =?us-ascii?Q?i5GHGFxqC0Lm0+OzNC9lqQUqfLWXpE4Nt+xjCiIJ8r1C3DtAJsRmH8PkYHs?=
- =?us-ascii?Q?=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 612111FC10E;
+	Thu, 10 Apr 2025 22:47:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744325245; cv=none; b=FxaCd5R1LtiYHelASqTff1gl4tuM8TNcTTWtRr2GbkcUpLPvoqbdcSxykIbNlHNjYRM3uweIa4FZEndsGMY7rXG2gS0Mc+K+nOPgHIDfyHS+Qsa7Dio+rmqWlBIxlirGjqcMwAy5G/vDvIm0OeX+3shfEFtR+kJfkS2jen42SnI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744325245; c=relaxed/simple;
+	bh=45A55zbTta3+sm2yur+7uadHuUUZJBsmn0VOhAtw+Qk=;
+	h=Date:To:From:Subject:Message-Id; b=DJRfLjyNNjLr7SVqs9ADy3XiORD9HU7NM6KjrUDNOT5MfBn98xT2jI+RHtIs/aQOXYg9wqGE9/1qFsX8WFbifC/LO7TUwIyYQp5OaAwEXbEi8kiTTaQoDJEF/A+Zo+sIz0sPlEbMTgtEIZPsgdm7zw8nti4OPIfCBPWFSnFlIXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=KC4PV+7y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A38C4CEDD;
+	Thu, 10 Apr 2025 22:47:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1744325244;
+	bh=45A55zbTta3+sm2yur+7uadHuUUZJBsmn0VOhAtw+Qk=;
+	h=Date:To:From:Subject:From;
+	b=KC4PV+7yVqqnfY6u5KJvE0PIOKGBDPQ9t/Bcg+VxuV11SYrNenz5k6cgr4kF0um3R
+	 6p2dc2niF94KxTlpfEMr1gQm43nGOO1mp5DjTSMWVSLw6R/D4MKvIPNv93qSlyGRpi
+	 dOcEIiQUt4dG/GRjfbZNs1bOsCnjHU+iTdfcK4+0=
+Date: Thu, 10 Apr 2025 15:47:23 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,ryabinin.a.a@gmail.com,npiggin@gmail.com,linux@roeck-us.net,jgross@suse.com,jeremy@goop.org,hughd@google.com,agordeev@linux.ibm.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [to-be-updated] kasan-avoid-sleepable-page-allocation-from-atomic-context.patch removed from -mm tree
+Message-Id: <20250410224724.A6A38C4CEDD@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3bf128d0-5435-4e79-9094-08dd786510a4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Apr 2025 19:22:42.2361
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR02MB7474
 
-From: He Zhe <zhe.he@windriver.com> Sent: Wednesday, April 9, 2025 11:15 PM
->=20
-> Hello,
->=20
-> I'm investigating if v5.15 and early versions are vulnerable to the follo=
-wing CVEs. Could
-> you please help confirm the following cases?
->=20
-> For CVE-2024-36912, the suggested fix is 211f514ebf1e ("Drivers: hv: vmbu=
-s: Track
-> decrypted status in vmbus_gpadl") according to https://www.cve.org/CVERec=
-ord?id=3DCVE-2024-36912=20
-> It seems 211f514ebf1e is based on d4dccf353db8 ("Drivers: hv: vmbus: Mark=
- vmbus
-> ring buffer visible to host in Isolation VM") which was introduced since =
-v5.16. For v5.15
-> and early versions, vmbus ring buffer hadn't been made visible to host, s=
-o there's no
-> need to backport 211f514ebf1e to those versions, right?
->=20
-> For CVE-2024-36913, the suggested fix is 03f5a999adba ("Drivers: hv: vmbu=
-s: Leak
-> pages if set_memory_encrypted() fails") according to https://www.cve.org/=
-CVERecord?id=3DCVE-2024-36913
-> It seems 03f5a999adba is based on f2f136c05fb6 ("Drivers: hv: vmbus: Add =
-SNP
-> support for VMbus channel initiate message") which was introduced since v=
-5.16. For
-> v5.15 and early verions, monitor pages hadn't been made visible to host, =
-so there's no
-> need to backport 03f5a999adba to those versions, right?
->=20
 
-I agree with your conclusions. The two CVE's you list are for Confidential =
-Computing
-virtual machines. Support for CoCo VMs (called "Isolation VMs" in commits
-d4dccf353db8 and f2f136c05fb6) on Hyper-V was first added in Linux kernel
-version 5.16. So the fixes for the CVEs don't need to be backported to any
-versions earlier than 5.16.
+The quilt patch titled
+     Subject: kasan: avoid sleepable page allocation from atomic context
+has been removed from the -mm tree.  Its filename was
+     kasan-avoid-sleepable-page-allocation-from-atomic-context.patch
 
-Michael Kelley
+This patch was dropped because an updated version will be issued
+
+------------------------------------------------------
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: kasan: avoid sleepable page allocation from atomic context
+Date: Tue, 8 Apr 2025 18:07:30 +0200
+
+Patch series "mm: Fix apply_to_pte_range() vs lazy MMU mode", v2.
+
+This series is an attempt to fix the violation of lazy MMU mode context
+requirement as described for arch_enter_lazy_mmu_mode():
+
+    This mode can only be entered and left under the protection of
+    the page table locks for all page tables which may be modified.
+
+On s390 if I make arch_enter_lazy_mmu_mode() -> preempt_enable() and
+arch_leave_lazy_mmu_mode() -> preempt_disable() I am getting this:
+
+    [  553.332108] preempt_count: 1, expected: 0
+    [  553.332117] no locks held by multipathd/2116.
+    [  553.332128] CPU: 24 PID: 2116 Comm: multipathd Kdump: loaded Tainted:
+    [  553.332139] Hardware name: IBM 3931 A01 701 (LPAR)
+    [  553.332146] Call Trace:
+    [  553.332152]  [<00000000158de23a>] dump_stack_lvl+0xfa/0x150
+    [  553.332167]  [<0000000013e10d12>] __might_resched+0x57a/0x5e8
+    [  553.332178]  [<00000000144eb6c2>] __alloc_pages+0x2ba/0x7c0
+    [  553.332189]  [<00000000144d5cdc>] __get_free_pages+0x2c/0x88
+    [  553.332198]  [<00000000145663f6>] kasan_populate_vmalloc_pte+0x4e/0x110
+    [  553.332207]  [<000000001447625c>] apply_to_pte_range+0x164/0x3c8
+    [  553.332218]  [<000000001448125a>] apply_to_pmd_range+0xda/0x318
+    [  553.332226]  [<000000001448181c>] __apply_to_page_range+0x384/0x768
+    [  553.332233]  [<0000000014481c28>] apply_to_page_range+0x28/0x38
+    [  553.332241]  [<00000000145665da>] kasan_populate_vmalloc+0x82/0x98
+    [  553.332249]  [<00000000144c88d0>] alloc_vmap_area+0x590/0x1c90
+    [  553.332257]  [<00000000144ca108>] __get_vm_area_node.constprop.0+0x138/0x260
+    [  553.332265]  [<00000000144d17fc>] __vmalloc_node_range+0x134/0x360
+    [  553.332274]  [<0000000013d5dbf2>] alloc_thread_stack_node+0x112/0x378
+    [  553.332284]  [<0000000013d62726>] dup_task_struct+0x66/0x430
+    [  553.332293]  [<0000000013d63962>] copy_process+0x432/0x4b80
+    [  553.332302]  [<0000000013d68300>] kernel_clone+0xf0/0x7d0
+    [  553.332311]  [<0000000013d68bd6>] __do_sys_clone+0xae/0xc8
+    [  553.332400]  [<0000000013d68dee>] __s390x_sys_clone+0xd6/0x118
+    [  553.332410]  [<0000000013c9d34c>] do_syscall+0x22c/0x328
+    [  553.332419]  [<00000000158e7366>] __do_syscall+0xce/0xf0
+    [  553.332428]  [<0000000015913260>] system_call+0x70/0x98
+
+This exposes a KASAN issue fixed with patch 1 and apply_to_pte_range()
+issue fixed with patch 3, while patch 2 is a prerequisite.
+
+Commit b9ef323ea168 ("powerpc/64s: Disable preemption in hash lazy mmu
+mode") looks like powerpc-only fix, yet not entirely conforming to the
+above provided requirement (page tables itself are still not protected). 
+If I am not mistaken, xen and sparc are alike.
+
+
+This patch (of 3):
+
+apply_to_page_range() enters lazy MMU mode and then invokes
+kasan_populate_vmalloc_pte() callback on each page table walk iteration. 
+The lazy MMU mode may only be entered only under protection of the page
+table lock.  However, the callback can go into sleep when trying to
+allocate a single page.
+
+Change __get_free_page() allocation mode from GFP_KERNEL to GFP_ATOMIC to
+avoid scheduling out while in atomic context.
+
+Link: https://lkml.kernel.org/r/cover.1744128123.git.agordeev@linux.ibm.com
+Link: https://lkml.kernel.org/r/2d9f4ac4528701b59d511a379a60107fa608ad30.1744128123.git.agordeev@linux.ibm.com
+Fixes: 3c5c3cfb9ef4 ("kasan: support backing vmalloc space with real shadow memory")
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Guenetr Roeck <linux@roeck-us.net>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Jeremy Fitzhardinge <jeremy@goop.org>
+Cc: Juegren Gross <jgross@suse.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/kasan/shadow.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/kasan/shadow.c~kasan-avoid-sleepable-page-allocation-from-atomic-context
++++ a/mm/kasan/shadow.c
+@@ -301,7 +301,7 @@ static int kasan_populate_vmalloc_pte(pt
+ 	if (likely(!pte_none(ptep_get(ptep))))
+ 		return 0;
+ 
+-	page = __get_free_page(GFP_KERNEL);
++	page = __get_free_page(GFP_ATOMIC);
+ 	if (!page)
+ 		return -ENOMEM;
+ 
+_
+
+Patches currently in -mm which might be from agordeev@linux.ibm.com are
+
+mm-cleanup-apply_to_pte_range-routine.patch
+mm-protect-kernel-pgtables-in-apply_to_pte_range.patch
 
 
