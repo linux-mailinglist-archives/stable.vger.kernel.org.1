@@ -1,143 +1,124 @@
-Return-Path: <stable+bounces-132017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED9E2A83509
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 02:15:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ABCFA8351C
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 02:41:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D55D1B65F3D
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 00:14:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB0B88A4041
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 00:39:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80FB1DFE8;
-	Thu, 10 Apr 2025 00:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC4D4D8D1;
+	Thu, 10 Apr 2025 00:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="2pFmiQBn"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="HWYTXuRK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECD4182D7;
-	Thu, 10 Apr 2025 00:12:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29CC4CA4B;
+	Thu, 10 Apr 2025 00:39:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744243974; cv=none; b=QwxC/oxxAijcYLXZmSaCNqMMI7mEj0KJ427MghQH5JWSIyxf+4mLr7AX/6J/nG9WMeXc5Ea1xtXkJ2oYAlGnzW6BAAfzRc2xo8Uq0kjIsLk1MyCIyno7Xr86rYO00VOaMa/KhBCTIuqXsSTVTMIu6ULtbfqXifdskM9DyzCiz4g=
+	t=1744245574; cv=none; b=nv/ue+f8wNy7ufVu2iKNp8ro5kUo+MhD4So6V4a5JxjkLpvSo5bmlJSVHZ6WH5J3QM+v85lk7F+UOptmhKh52WMzzL1kufO92CRk2PBkKFOxgGWZzT3j9G2SxXdNKEQF35PSUabViG9BM/Ma9IBBnnj5PrJ4LzDgkWBD/KUreGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744243974; c=relaxed/simple;
-	bh=brzMxkokl/A2yuvVweg7zwMj9kSt8pinLnzqSYL7HVc=;
-	h=Date:To:From:Subject:Message-Id; b=j0pUStBKG0tk9b/k94ZzAodsx9bEGqnhy5xM5M8ipLOg0KHhEW0DkOJx8rxBqoGeoW5zV1ItCY9z7FDQLNnPXUnd0bpVVZNKPVatm/s7CdhuiKwsUqLO9EIOTu5zIqJlDsCak8me1AwTNR5mI8mzaaemdYMtprda35Ul4AG8bk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=2pFmiQBn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B68C4CEE2;
-	Thu, 10 Apr 2025 00:12:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1744243973;
-	bh=brzMxkokl/A2yuvVweg7zwMj9kSt8pinLnzqSYL7HVc=;
-	h=Date:To:From:Subject:From;
-	b=2pFmiQBnYPeXpYPTD51T7rh3ZtbxoBqNJxkSatQ7y5e77lORllVtUYuMgUZLAB/2O
-	 8/gc4vFgOfD49MUC5x6n8ZFT9ZUqIoZUYsO4BG94tlhBtgrJIe9wmaGiFk1ukSG5ZO
-	 0GxGh1/35lBDTrwV19gzN5tyyiMuFFoncfZvUWys=
-Date: Wed, 09 Apr 2025 17:12:52 -0700
-To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,kent.overstreet@linux.dev,janghyuck.kim@samsung.com,tjmercier@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + alloc_tag-handle-incomplete-bulk-allocations-in-vm_module_tags_populate.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250410001253.B0B68C4CEE2@smtp.kernel.org>
+	s=arc-20240116; t=1744245574; c=relaxed/simple;
+	bh=v1xTqYyQGjrdHdfqnJMCy/GEsGpvzq0zxz4dc1BbO+w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uEtblcp4Y8UqpWlPmwucrM9VG219j1ApL2f0Nzp6zFLHM7rdrrvIQTnZfRRHEplbpSfGlJaV6gVH6IZxn1GhiOCl7NQy/ZTRb34mZSE7ptubYiOuYA4HnhKrkoNq9gwP4DjZBHSIbxEVd4hD/ivn+bBbT0rlBBzyRAhF+Rv2fos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=HWYTXuRK; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43cfecdd8b2so2185505e9.2;
+        Wed, 09 Apr 2025 17:39:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1744245571; x=1744850371; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WR6EtZhgqa4qIvzL5KBbZ/Tlso86MFa8EDmz2drhxVw=;
+        b=HWYTXuRKit/kI01kJmQa/y4ykVEfcshVG3MWmO+TQYYxq8OxCAfEWZIy85FoXq9S90
+         klV4vB4zIFqaLx0NbQHfU9vI44Uf+WLa9tXgK2cQtRaIuC6dQANa80XEwsc889xwWp3N
+         DLQnifU0yIsxPwe1S8m1/HZ5qak3ZvuVHI9ljEKojjxMtwrwn+hpK3MT1OOh2rUtKV+7
+         /TrwuyCFfI5bvaOr3TdC4xffd6k79180NkUNEZvELH/uyRRhD5e9U0L8gyXDjFXmxOm8
+         xSLJfi3CZtis/31zo2mU93NoX0wrOd+1igUSRNtCGQCqcPWO4Rs1R0H3mCJc8FZoRhFz
+         XuTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744245571; x=1744850371;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WR6EtZhgqa4qIvzL5KBbZ/Tlso86MFa8EDmz2drhxVw=;
+        b=iWvTDcOLKl0/yxN090TWR8gn+GG7sPShUwBbk561UzRsXw1stBH8GW4ntkgvAsTzpM
+         guquWU/OpPPZbyvSweHanyXkvrJ3BjKLJK4dxa1d8txSHAKIVjTGsPdJ2omd+8jVTH2L
+         vJ8QF5wt39RX8z54ElNrNpmE8s3gsspzZvC/1W+bkclyppqCkHSfMrOGA3XIbo1DAu9n
+         HfMRzGcUniR4j/Hhl9lAm6Z35VwpR9r9L75tnBUOexowYTQpuMwkKb0fAKYHerIR6MX1
+         xORw+orXjyds9/vqT3QGWgrnN74n/9oF+zQ5CUkElkUtCmZ/YDkOqY/DSk0ZJd13IDJV
+         dUOA==
+X-Forwarded-Encrypted: i=1; AJvYcCVkC2eaABj4gq93/6Hgcl2OuHUmbnvjoz/2+Wm7Yb8FQgDUGtzmEZwJW2RaiohOoKOZAVv3A4r/VUd7Sqc=@vger.kernel.org, AJvYcCXo+EzslSrTkJwh+bvWVEagRWJyek21XpxQvar+XnBMdISCBpMlKvMf9kfRxjkdusBFr03fc2J0@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdGQSZ+IgIyAsSLvah8UqGMKjVrKJBnXJnzjxgWm+1HtiXpwjh
+	d0Hy0ak79FT5v8h2MB3PiCP5rIIFabecnunUujs2SKFuxzS2tN4=
+X-Gm-Gg: ASbGnctEuOaASCTnX4EL+QYgwlq23PSAgyxrbHNsPrZgw4Ijvnnn5iNwOIUDnHatA7o
+	8iQzlp5tEmVGN/MG23s0od56Vz8ZJWJdB2eN7uxaaUhqdokMTFX3vmfUy0RLTp135Qk91pynDtG
+	4GAgoTzZsW5LJa9hPl31t4Lh68hAitHD8aApHM2+WR/1Jt8RILadEq+AyZwggI7bK58+orIK2KR
+	W7uGYjZp09L08ABwwyaaa7PqNRkhk/lHo51C93eHS30bdAYoxd/pmZ2d1iMz2gAiHYfTTMOWJCz
+	SVdY79jjxIa8YhGtNczc+THTM2h019eYFojHYXns9kcwUz4BNOUa15CCmI3aSdmkNzzNtYWMod3
+	+4QLi7/TYWs8oyov6dLMTo3uncH0=
+X-Google-Smtp-Source: AGHT+IEGLlOEVjD0cfNCMZEAvQK/rkLT6cKka5phhDaoU/N8I3k1WGhfmz01KwcDGykFj9fymvC63A==
+X-Received: by 2002:a05:600c:3b19:b0:43c:fb95:c76f with SMTP id 5b1f17b1804b1-43f2fedc137mr2644815e9.9.1744245571303;
+        Wed, 09 Apr 2025 17:39:31 -0700 (PDT)
+Received: from [192.168.1.3] (p5b057855.dip0.t-ipconnect.de. [91.5.120.85])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f2075fc6dsm36304595e9.28.2025.04.09.17.39.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Apr 2025 17:39:30 -0700 (PDT)
+Message-ID: <3747935d-8e6c-4971-b7b1-b53ea9dbb6d2@googlemail.com>
+Date: Thu, 10 Apr 2025 02:39:29 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.13 000/502] 6.13.11-rc3 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250409115907.324928010@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250409115907.324928010@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+Am 09.04.2025 um 14:03 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.13.11 release.
+> There are 502 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
+
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
 
-The patch titled
-     Subject: alloc_tag: handle incomplete bulk allocations in vm_module_tags_populate
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     alloc_tag-handle-incomplete-bulk-allocations-in-vm_module_tags_populate.patch
+Beste Grüße,
+Peter Schneider
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/alloc_tag-handle-incomplete-bulk-allocations-in-vm_module_tags_populate.patch
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: "T.J. Mercier" <tjmercier@google.com>
-Subject: alloc_tag: handle incomplete bulk allocations in vm_module_tags_populate
-Date: Wed, 9 Apr 2025 22:51:11 +0000
-
-alloc_pages_bulk_node() may partially succeed and allocate fewer than the
-requested nr_pages.  There are several conditions under which this can
-occur, but we have encountered the case where CONFIG_PAGE_OWNER is enabled
-causing all bulk allocations to always fallback to single page allocations
-due to commit 187ad460b841 ("mm/page_alloc: avoid page allocator recursion
-with pagesets.lock held").
-
-Currently vm_module_tags_populate() immediately fails when
-alloc_pages_bulk_node() returns fewer than the requested number of pages. 
-When this happens memory allocation profiling gets disabled, for example
-
-[   14.297583] [9:       modprobe:  465] Failed to allocate memory for allocation tags in the module scsc_wlan. Memory allocation profiling is disabled!
-[   14.299339] [9:       modprobe:  465] modprobe: Failed to insmod '/vendor/lib/modules/scsc_wlan.ko' with args '': Out of memory
-
-This patch causes vm_module_tags_populate() to retry bulk allocations for
-the remaining memory instead of failing immediately which will avoid the
-disablement of memory allocation profiling.
-
-Link: https://lkml.kernel.org/r/20250409225111.3770347-1-tjmercier@google.com
-Fixes: 0f9b685626da ("alloc_tag: populate memory for module tags as needed")
-Signed-off-by: T.J. Mercier <tjmercier@google.com>
-Reported-by: Janghyuck Kim <janghyuck.kim@samsung.com>
-Acked-by: Suren Baghdasaryan <surenb@google.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- lib/alloc_tag.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
-
---- a/lib/alloc_tag.c~alloc_tag-handle-incomplete-bulk-allocations-in-vm_module_tags_populate
-+++ a/lib/alloc_tag.c
-@@ -422,11 +422,20 @@ static int vm_module_tags_populate(void)
- 		unsigned long old_shadow_end = ALIGN(phys_end, MODULE_ALIGN);
- 		unsigned long new_shadow_end = ALIGN(new_end, MODULE_ALIGN);
- 		unsigned long more_pages;
--		unsigned long nr;
-+		unsigned long nr = 0;
- 
- 		more_pages = ALIGN(new_end - phys_end, PAGE_SIZE) >> PAGE_SHIFT;
--		nr = alloc_pages_bulk_node(GFP_KERNEL | __GFP_NOWARN,
--					   NUMA_NO_NODE, more_pages, next_page);
-+		while (nr < more_pages) {
-+			unsigned long allocated;
-+
-+			allocated = alloc_pages_bulk_node(GFP_KERNEL | __GFP_NOWARN,
-+				NUMA_NO_NODE, more_pages - nr, next_page + nr);
-+
-+			if (!allocated)
-+				break;
-+			nr += allocated;
-+		}
-+
- 		if (nr < more_pages ||
- 		    vmap_pages_range(phys_end, phys_end + (nr << PAGE_SHIFT), PAGE_KERNEL,
- 				     next_page, PAGE_SHIFT) < 0) {
-_
-
-Patches currently in -mm which might be from tjmercier@google.com are
-
-alloc_tag-handle-incomplete-bulk-allocations-in-vm_module_tags_populate.patch
-
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
