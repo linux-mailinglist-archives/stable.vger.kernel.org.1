@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-132157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF42A84901
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 17:59:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACE68A84915
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 18:00:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76DC59C1B60
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 15:54:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 635404674BA
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 15:54:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A80E1EA7FF;
-	Thu, 10 Apr 2025 15:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B10C1EB1B9;
+	Thu, 10 Apr 2025 15:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YB1gIFC2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VN+IYya1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58DB81E9B2F
-	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 15:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AA01E9B2F
+	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 15:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744300483; cv=none; b=uIgiYQUdrbpw5+nCt/BRpU+IH2y8fevgYb70EcqUX4mYAKsNfPIdczsiD9zQI1lQNWlHpFdaSFDBKRwQj91JuwhiBTsmwnPaHUPTqHCn8XsENh+XNfvxDy2c9c2V+InSA/CbXu9BHkmWv7SxqnGu/xQDApewl9gtNANS+n1EQXk=
+	t=1744300485; cv=none; b=QPJ7yuaJLcdW4oEh2Dif5m2Nnpt1eFiBfVRI4B/xwNhZuomCG7wkOy5RNq/BWYdDYyeJ+HVnWMupW7HxRy3/zZNYPB05LkatP2Wa9msJ1x8tLN6Nv5E4rRklopHXPZu0OjLabGZNJKsy/NiAne1azdbgHAIcInvCz5v5UTvW9Lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744300483; c=relaxed/simple;
-	bh=rx2CApgANnHfGMYlVjM4RpWy1nL+iXSBlNg7Xa0fX2E=;
+	s=arc-20240116; t=1744300485; c=relaxed/simple;
+	bh=alD8iwRiulZV2p4ufUhr8XY0+hplyzfzsJc8S2L/vaY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SeHSchnh2R11LWN9nQWXtm9KziAn2v6cQp8BxXKL0dgMEQl47cGrjp4/OET4R1TO7xtzPbrObxggjvhRqPnr5FNc+EYESQJ67yYDHFbZwYTntAh3mGAu92ZH8CUP7m5BMMsUJCA/aI4/aESzA5Lz/yZpKz1CYj/Kjz7iN78X0nI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YB1gIFC2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6AFBC4CEE9;
-	Thu, 10 Apr 2025 15:54:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FCVMjOZVKNQGgQS8S6jjYXs3U59IwNAZMow5PRlf2SYVMmR1rk6XQgsE8S6gkjMLpTJw5Z63W+hGx5b6XL4RXBz4Ld5sr4lyMuGekK+0MXvzdMrLJQoqYloGMCF54u6TEIT26MFB373BQ9OWLOJXBCtyBO2cTUEqhL68K3uICn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VN+IYya1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E53C4CEDD;
+	Thu, 10 Apr 2025 15:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744300483;
-	bh=rx2CApgANnHfGMYlVjM4RpWy1nL+iXSBlNg7Xa0fX2E=;
+	s=k20201202; t=1744300485;
+	bh=alD8iwRiulZV2p4ufUhr8XY0+hplyzfzsJc8S2L/vaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YB1gIFC2UAievYGEc9lV2UeWthvKcL7JYt8oKUOQoITMBHMFclNy16Aad0s0n+Iov
-	 57B7ph8qg6NNn6vxs4bbun6RU1nrSASUxR/HkbFMRwM7XYmzF4iMC/t87Re45Pf5bn
-	 EKQp169hEvyUYqdPUBvsr4b4pkPRiKD4fT2EBwo6vREO0/FDjaU5u3KDx7hsuLA5N5
-	 VI63llmfHhwkxs2bdN9JHRKkWk11Ub3831S0l3O2yMvu1ouL3jcZ691pkOEbv9NXiK
-	 9lOdSMhQf+TSNSRbq7pdLJz1YnOW55cmGC5obrYngIdvaE+qulbIF2CWLLGopUbhkJ
-	 VJioNN2hTwsOg==
+	b=VN+IYya16H7Zep+Pq3g97GEQKlNKdiWcMqCvK24RhjL4kJsK+L5lWyE744l7IpS40
+	 DyKRZHcd9hGjSQQH0GUjQDa6vbz3+qARNGK7Tna563bfPx7EpsH76pVn4EjYxsdtVK
+	 7RZPk13iDZ5iVpIg/scvO1kJ7RriYbYsoDxuQaPIeZNIK7X35lgCjQWhO1e10ocd9Z
+	 uhWTqKPCRs7GjWsvDdGXW99aNSpjsz5lorIwIyAoSj/bLFFgmOQKO7z/SVdAcUT+cY
+	 xR0EDVSfkQyl0TY5OFK51c64BflmLtDecl9sNBssr5tA8ksNVzRl/6ohucXoBgsKHs
+	 +Bpi8L2tHFVLQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	broonie@kernel.org
+	anshuman.khandual@arm.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15 v3 01/11] KVM: arm64: Get rid of host SVE tracking/saving
-Date: Thu, 10 Apr 2025 11:54:41 -0400
-Message-Id: <20250410112209-863d60ce97fc4e9f@stable.kernel.org>
+Subject: Re: [PATCH 6.13.y 1/7] arm64/sysreg: Update register fields for ID_AA64MMFR0_EL1
+Date: Thu, 10 Apr 2025 11:54:43 -0400
+Message-Id: <20250410082017-e20108903eaf0284@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250408-stable-sve-5-15-v3-1-ca9a6b850f55@kernel.org>
+In-Reply-To:  <20250408093859.1205615-2-anshuman.khandual@arm.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,82 +65,30 @@ Content-Transfer-Encoding: 8bit
 Hi,
 
 Summary of potential issues:
-⚠️ Found follow-up fixes in mainline
+⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-The upstream commit SHA1 provided is correct: 8383741ab2e773a992f1f0f8acdca5e7a4687c49
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Mark Brown<broonie@kernel.org>
-Commit author: Marc Zyngier<maz@kernel.org>
+Found matching upstream commit: cc15f548cc77574bcd68425ae01a796659bd3705
 
 Status in newer kernel trees:
-6.14.y | Present (exact SHA1)
-6.13.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-6.1.y | Present (exact SHA1)
-
-Found fixes commits:
-d52d165d67c5 KVM: arm64: Always start with clearing SVE flag on load
+6.14.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  8383741ab2e77 ! 1:  e6a9fd27335d3 KVM: arm64: Get rid of host SVE tracking/saving
-    @@ Metadata
-      ## Commit message ##
-         KVM: arm64: Get rid of host SVE tracking/saving
-     
-    +    [ Upstream commit 8383741ab2e773a992f1f0f8acdca5e7a4687c49 ]
-    +
-         The SVE host tracking in KVM is pretty involved. It relies on a
-         set of flags tracking the ownership of the SVE register, as well
-         as that of the EL0 access.
+1:  cc15f548cc775 ! 1:  0ac931bb8341b arm64/sysreg: Update register fields for ID_AA64MMFR0_EL1
     @@ Commit message
+         Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+         Link: https://lore.kernel.org/r/20250203050828.1049370-2-anshuman.khandual@arm.com
+         Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+    +    [cherry picked from commit cc15f548cc77574bcd68425ae01a796659bd3705]
+    +    Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
      
-         Reviewed-by: Mark Brown <broonie@kernel.org>
-         Signed-off-by: Marc Zyngier <maz@kernel.org>
-    +    Signed-off-by: Mark Brown <broonie@kernel.org>
-     
-      ## arch/arm64/include/asm/kvm_host.h ##
-     @@ arch/arm64/include/asm/kvm_host.h: struct kvm_vcpu_arch {
-    @@ arch/arm64/kvm/fpsimd.c: void kvm_arch_vcpu_put_fp(struct kvm_vcpu *vcpu)
-     
-      ## arch/arm64/kvm/hyp/include/hyp/switch.h ##
-     @@ arch/arm64/kvm/hyp/include/hyp/switch.h: static inline bool __populate_fault_info(struct kvm_vcpu *vcpu)
-    - 	return __get_fault_info(vcpu->arch.fault.esr_el2, &vcpu->arch.fault);
-    + 	return __get_fault_info(esr, &vcpu->arch.fault);
-      }
-      
-     -static inline void __hyp_sve_save_host(struct kvm_vcpu *vcpu)
-    @@ arch/arm64/kvm/hyp/include/hyp/switch.h: static inline bool __populate_fault_inf
-      {
-      	sve_cond_update_zcr_vq(vcpu_sve_max_vq(vcpu) - 1, SYS_ZCR_EL2);
-     @@ arch/arm64/kvm/hyp/include/hyp/switch.h: static inline void __hyp_sve_restore_guest(struct kvm_vcpu *vcpu)
-    -  */
-    - static bool kvm_hyp_handle_fpsimd(struct kvm_vcpu *vcpu, u64 *exit_code)
-    + /* Check for an FPSIMD/SVE trap and handle as appropriate */
-    + static inline bool __hyp_handle_fpsimd(struct kvm_vcpu *vcpu)
-      {
-     -	bool sve_guest, sve_host;
-     +	bool sve_guest;
-    @@ arch/arm64/kvm/hyp/include/hyp/switch.h: static inline void __hyp_sve_restore_gu
-     -
-     +	sve_guest = vcpu_has_sve(vcpu);
-      	esr_ec = kvm_vcpu_trap_get_class(vcpu);
-    - 
-    - 	/* Don't handle SVE traps for non-SVE vcpus here: */
-    -@@ arch/arm64/kvm/hyp/include/hyp/switch.h: static bool kvm_hyp_handle_fpsimd(struct kvm_vcpu *vcpu, u64 *exit_code)
-    + 	if (esr_ec != ESR_ELx_EC_FP_ASIMD &&
-    + 	    esr_ec != ESR_ELx_EC_SVE)
-    +@@ arch/arm64/kvm/hyp/include/hyp/switch.h: static inline bool __hyp_handle_fpsimd(struct kvm_vcpu *vcpu)
-      	isb();
-      
-      	if (vcpu->arch.flags & KVM_ARM64_FP_HOST) {
+      ## arch/arm64/tools/sysreg ##
+     @@ arch/arm64/tools/sysreg: EndEnum
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-6.13.y       |  Success    |  Success   |
 
