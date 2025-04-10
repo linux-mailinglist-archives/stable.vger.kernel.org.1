@@ -1,64 +1,81 @@
-Return-Path: <stable+bounces-132079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31CBCA83F01
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 11:38:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11917A83FA7
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 11:57:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 327F49E79F0
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 09:32:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FA613AB8E0
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 09:56:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B6F25E44D;
-	Thu, 10 Apr 2025 09:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEDA126AA92;
+	Thu, 10 Apr 2025 09:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="Wdmv1d8k"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eb/rRbbo"
 X-Original-To: stable@vger.kernel.org
-Received: from forward102a.mail.yandex.net (forward102a.mail.yandex.net [178.154.239.85])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC34F25DD02;
-	Thu, 10 Apr 2025 09:32:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF3626A1B4
+	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 09:55:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744277537; cv=none; b=Wpw00+pA7tru89fkQK+8UoPv2Xpp9Xo3021Q4o1ubX7IuJnA45gWh+INo8kOxslly2t4RVCgmRys3fkshFjomfJZemfqYm0FpBQl4rneXHNVc3q37Af5/RoLYgZQryDMyLattY0iDWB+4JqEspZpS0l3KYGk/6EOZrPAaebjbfo=
+	t=1744278937; cv=none; b=XbP+EdcM8EDhjWja02+M6QBw6gNQBJB7+UgHlclFcsDAGZa3TtvLW2kPgaPSP0NgMSUiCDXecJaZcC2svelXLRHmF0dXIgeCdVLBR2eNW9lDKYF6iluWiJhZQMCiCSBIgl2Lt6A5QbjHnc+L7/LARsEYb7OAtYuf4WySgDvOczs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744277537; c=relaxed/simple;
-	bh=TCCRl9jIueVVg17Z3PWc+XwXDqaxSqlrioRauCJF9HE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VWG+m/PA/6lSngorRBohp1m1CGxRkOM8dsiI+XjAQ9aWyXf1cUmDa7GsBDe/FTDas4pwJ2q0YdX4UTKCk8UwP4fUlZ35Xb0e+HaI0lt4jLQQug4ZrpHreDjXOHMVc7ZzYYasNBmmfF+JSdh/xyhJdvBiXGYCdNwm5YFN19sGQpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=Wdmv1d8k; arc=none smtp.client-ip=178.154.239.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from mail-nwsmtp-smtp-production-main-60.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-60.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1d:5b1c:0:640:ee42:0])
-	by forward102a.mail.yandex.net (Yandex) with ESMTPS id D672A60E4E;
-	Thu, 10 Apr 2025 12:32:05 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-60.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id tVbEbTALfqM0-lAk6mWQF;
-	Thu, 10 Apr 2025 12:32:05 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1744277525; bh=nK1yvymzih+AilMriCVCTOysmngjzRVZTXXMphFhjoY=;
-	h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=Wdmv1d8kjqtDiBFp1kyCJyLsChS1/tpDM4kymVaTkWd4IM7vsdt/47chcEMQbUbic
-	 ZCZbPEVkGNXb9ubIeRLJxwzeqCVN8y9BcAheXroGeytVfGITLAnKHv9P0tQRMDiC/q
-	 hqumxhWSTxP1nV6qD8M6mBaCWN/53PxMuDCE1iFY=
-Authentication-Results: mail-nwsmtp-smtp-production-main-60.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Andrey Tsygunka <aitsygunka@yandex.ru>
-To: Matthieu CASTET <castet.matthieu@free.fr>,
-	Stanislaw Gruszka <stf_xl@wp.pl>
-Cc: Andrey Tsygunka <aitsygunka@yandex.ru>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH 1/1] usb: ueagle-atm: wait for a firmware upload to complete
-Date: Thu, 10 Apr 2025 12:31:46 +0300
-Message-Id: <20250410093146.3776801-2-aitsygunka@yandex.ru>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250410093146.3776801-1-aitsygunka@yandex.ru>
-References: <20250410093146.3776801-1-aitsygunka@yandex.ru>
+	s=arc-20240116; t=1744278937; c=relaxed/simple;
+	bh=i65w8+lGrxYWx7rpHSbpC2JJCKns/es9Qf7+yH/Hrd0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SM3D/tAzkfUC+0mvZnDiYU3xPI8nEOf9y3XLXeDi1cq3NVsoT1lTBw/I2e7I+30FioTjfyEBOuKwcUTt8tIXDvTCFdyW2kqo9lauStkWCgywzHFi9NbRQ6vEq3Uq2MiPEHXGc9D8N6tKUY+2rYhKN4IfbE7YPboQNt4NzZtH2WI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eb/rRbbo; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744278934;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=II82/lgaIjXOphMlPq6hOhd8dnjPIIYTpFuurPbQULs=;
+	b=eb/rRbbovACI/nQvpOq+l+54F9LZpn0OIoKvU//XBzngZ9aHUZavWA+yjwYTgnjfhPjq+d
+	frW+HnfhYCTreEedf4x9I0WsOYhZkbwklyHlubmHjFLvha+SBQfDFdPh1GofX2vtT3KNn6
+	/MZYw2HioXphtt/A1HPRJmeDJi84zV4=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-450-2_HmN8aTPH-c1qsKFvXmJQ-1; Thu,
+ 10 Apr 2025 05:55:32 -0400
+X-MC-Unique: 2_HmN8aTPH-c1qsKFvXmJQ-1
+X-Mimecast-MFC-AGG-ID: 2_HmN8aTPH-c1qsKFvXmJQ_1744278930
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C30F9180882E;
+	Thu, 10 Apr 2025 09:55:29 +0000 (UTC)
+Received: from vmalik-fedora.redhat.com (unknown [10.45.226.81])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 813843001D0E;
+	Thu, 10 Apr 2025 09:55:23 +0000 (UTC)
+From: Viktor Malik <vmalik@redhat.com>
+To: bpf@vger.kernel.org
+Cc: Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Viktor Malik <vmalik@redhat.com>,
+	lmarch2 <2524158037@qq.com>,
+	stable@vger.kernel.org,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH bpf v2] libbpf: Fix buffer overflow in bpf_object__init_prog
+Date: Thu, 10 Apr 2025 11:55:17 +0200
+Message-ID: <20250410095517.141271-1-vmalik@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,156 +83,103 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Syzkaller reported:
+As reported by CVE-2025-29481 [1], it is possible to corrupt a BPF ELF
+file such that arbitrary BPF instructions are loaded by libbpf. This can
+be done by setting a symbol (BPF program) section offset to a large
+(unsigned) number such that <section start + symbol offset> overflows
+and points before the section data in the memory.
 
-sysfs group 'power' not found for kobject 'ueagle-atm!adi930.fw'
-WARNING: CPU: 1 PID: 6804 at fs/sysfs/group.c:278 sysfs_remove_group+0x120/0x170 fs/sysfs/group.c:278
-Modules linked in:
-CPU: 1 PID: 6804 Comm: kworker/1:5 Not tainted 6.1.128 #1
-Hardware name: linux,dummy-virt (DT)
-Workqueue: events request_firmware_work_func
-Call trace:
- sysfs_remove_group+0x120/0x170 fs/sysfs/group.c:278
- dpm_sysfs_remove+0x9c/0xc0 drivers/base/power/sysfs.c:837
- device_del+0x1e0/0xb30 drivers/base/core.c:3861
- fw_load_sysfs_fallback drivers/base/firmware_loader/fallback.c:120 [inline]
- fw_load_from_user_helper drivers/base/firmware_loader/fallback.c:158 [inline]
- firmware_fallback_sysfs+0x880/0xa30 drivers/base/firmware_loader/fallback.c:234
- _request_firmware+0xcc0/0x1030 drivers/base/firmware_loader/main.c:884
- request_firmware_work_func+0xf0/0x240 drivers/base/firmware_loader/main.c:1135
- process_one_work+0x878/0x1770 kernel/workqueue.c:2292
- worker_thread+0x48c/0xe40 kernel/workqueue.c:2439
- kthread+0x274/0x2e0 kernel/kthread.c:376
- ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:864
+Consider the situation below where:
+- prog_start = sec_start + symbol_offset    <-- size_t overflow here
+- prog_end   = prog_start + prog_size
 
-When calling the usb-device probe() method, request_firmware_nowait()
-is called, an async task is created that creates a child device
-to load the firmware and waits (fw_sysfs_wait_timeout()) for the
-firmware to be ready. If an async disconnect event occurs for
-usb-device while waiting, we may get a WARN() when calling
-firmware_fallback_sysfs() about "no sysfs group 'power' found
-for kobject" because it was removed by usb_disconnect().
+    prog_start        sec_start        prog_end        sec_end
+        |                |                 |              |
+        v                v                 v              v
+    .....................|################################|............
 
-To avoid this, add a routine to wait for the firmware loading process
-to complete to prevent premature device disconnection.
+The CVE report in [1] also provides a corrupted BPF ELF which can be
+used as a reproducer:
 
-Fixes: b72458a80c75 ("[PATCH] USB: Eagle and ADI 930 usb adsl modem driver")
+    $ readelf -S crash
+    Section Headers:
+      [Nr] Name              Type             Address           Offset
+           Size              EntSize          Flags  Link  Info  Align
+    ...
+      [ 2] uretprobe.mu[...] PROGBITS         0000000000000000  00000040
+           0000000000000068  0000000000000000  AX       0     0     8
+
+    $ readelf -s crash
+    Symbol table '.symtab' contains 8 entries:
+       Num:    Value          Size Type    Bind   Vis      Ndx Name
+    ...
+         6: ffffffffffffffb8   104 FUNC    GLOBAL DEFAULT    2 handle_tp
+
+Here, the handle_tp prog has section offset ffffffffffffffb8, i.e. will
+point before the actual memory where section 2 is allocated.
+
+This is also reported by AddressSanitizer:
+
+    =================================================================
+    ==1232==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x7c7302fe0000 at pc 0x7fc3046e4b77 bp 0x7ffe64677cd0 sp 0x7ffe64677490
+    READ of size 104 at 0x7c7302fe0000 thread T0
+        #0 0x7fc3046e4b76 in memcpy (/lib64/libasan.so.8+0xe4b76)
+        #1 0x00000040df3e in bpf_object__init_prog /src/libbpf/src/libbpf.c:856
+        #2 0x00000040df3e in bpf_object__add_programs /src/libbpf/src/libbpf.c:928
+        #3 0x00000040df3e in bpf_object__elf_collect /src/libbpf/src/libbpf.c:3930
+        #4 0x00000040df3e in bpf_object_open /src/libbpf/src/libbpf.c:8067
+        #5 0x00000040f176 in bpf_object__open_file /src/libbpf/src/libbpf.c:8090
+        #6 0x000000400c16 in main /poc/poc.c:8
+        #7 0x7fc3043d25b4 in __libc_start_call_main (/lib64/libc.so.6+0x35b4)
+        #8 0x7fc3043d2667 in __libc_start_main@@GLIBC_2.34 (/lib64/libc.so.6+0x3667)
+        #9 0x000000400b34 in _start (/poc/poc+0x400b34)
+
+    0x7c7302fe0000 is located 64 bytes before 104-byte region [0x7c7302fe0040,0x7c7302fe00a8)
+    allocated by thread T0 here:
+        #0 0x7fc3046e716b in malloc (/lib64/libasan.so.8+0xe716b)
+        #1 0x7fc3045ee600 in __libelf_set_rawdata_wrlock (/lib64/libelf.so.1+0xb600)
+        #2 0x7fc3045ef018 in __elf_getdata_rdlock (/lib64/libelf.so.1+0xc018)
+        #3 0x00000040642f in elf_sec_data /src/libbpf/src/libbpf.c:3740
+
+The problem here is that currently, libbpf only checks that the program
+end is within the section bounds. There used to be a check
+`while (sec_off < sec_sz)` in bpf_object__add_programs, however, it was
+removed by commit 6245947c1b3c ("libbpf: Allow gaps in BPF program
+sections to support overriden weak functions").
+
+Put the above condition back to bpf_object__init_prog to make sure that
+the program start is also within the bounds of the section to avoid the
+potential buffer overflow.
+
+[1] https://github.com/lmarch2/poc/blob/main/libbpf/libbpf.md
+
+Reported-by: lmarch2 <2524158037@qq.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Andrey Tsygunka <aitsygunka@yandex.ru>
+Fixes: 6245947c1b3c ("libbpf: Allow gaps in BPF program sections to support overriden weak functions")
+Link: https://github.com/lmarch2/poc/blob/main/libbpf/libbpf.md
+Link: https://www.cve.org/CVERecord?id=CVE-2025-29481
+Signed-off-by: Viktor Malik <vmalik@redhat.com>
+Reviewed-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 ---
- drivers/usb/atm/ueagle-atm.c | 40 +++++++++++++++++++++++++++++++-----
- 1 file changed, 35 insertions(+), 5 deletions(-)
+ tools/lib/bpf/libbpf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/atm/ueagle-atm.c b/drivers/usb/atm/ueagle-atm.c
-index cd0f7b4bd82a..eaa5ad316d89 100644
---- a/drivers/usb/atm/ueagle-atm.c
-+++ b/drivers/usb/atm/ueagle-atm.c
-@@ -570,6 +570,12 @@ MODULE_PARM_DESC(annex,
- #define LOAD_INTERNAL     0xA0
- #define F8051_USBCS       0x7f92
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index 6b85060f07b3..d0ece3c9618e 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -896,7 +896,7 @@ bpf_object__add_programs(struct bpf_object *obj, Elf_Data *sec_data,
+ 			return -LIBBPF_ERRNO__FORMAT;
+ 		}
  
-+struct uea_interface_data {
-+	struct completion fw_upload_complete;
-+	struct usb_device *usb;
-+	struct usb_interface *intf;
-+};
-+
- /*
-  * uea_send_modem_cmd - Send a command for pre-firmware devices.
-  */
-@@ -599,7 +605,8 @@ static int uea_send_modem_cmd(struct usb_device *usb,
- static void uea_upload_pre_firmware(const struct firmware *fw_entry,
- 								void *context)
- {
--	struct usb_device *usb = context;
-+	struct uea_interface_data *uea_intf_data = context;
-+	struct usb_device *usb = uea_intf_data->usb;
- 	const u8 *pfw;
- 	u8 value;
- 	u32 crc = 0;
-@@ -669,15 +676,17 @@ static void uea_upload_pre_firmware(const struct firmware *fw_entry,
- 	uea_err(usb, "firmware is corrupted\n");
- err:
- 	release_firmware(fw_entry);
-+	complete(&uea_intf_data->fw_upload_complete);
- 	uea_leaves(usb);
- }
- 
- /*
-  * uea_load_firmware - Load usb firmware for pre-firmware devices.
-  */
--static int uea_load_firmware(struct usb_device *usb, unsigned int ver)
-+static int uea_load_firmware(struct uea_interface_data *uea_intf_data, unsigned int ver)
- {
- 	int ret;
-+	struct usb_device *usb = uea_intf_data->usb;
- 	char *fw_name = EAGLE_FIRMWARE;
- 
- 	uea_enters(usb);
-@@ -702,7 +711,7 @@ static int uea_load_firmware(struct usb_device *usb, unsigned int ver)
- 	}
- 
- 	ret = request_firmware_nowait(THIS_MODULE, 1, fw_name, &usb->dev,
--					GFP_KERNEL, usb,
-+					GFP_KERNEL, uea_intf_data,
- 					uea_upload_pre_firmware);
- 	if (ret)
- 		uea_err(usb, "firmware %s is not available\n", fw_name);
-@@ -2586,6 +2595,7 @@ static struct usbatm_driver uea_usbatm_driver = {
- static int uea_probe(struct usb_interface *intf, const struct usb_device_id *id)
- {
- 	struct usb_device *usb = interface_to_usbdev(intf);
-+	struct uea_interface_data *uea_intf_data;
- 	int ret;
- 
- 	uea_enters(usb);
-@@ -2597,8 +2607,23 @@ static int uea_probe(struct usb_interface *intf, const struct usb_device_id *id)
- 
- 	usb_reset_device(usb);
- 
--	if (UEA_IS_PREFIRM(id))
--		return uea_load_firmware(usb, UEA_CHIP_VERSION(id));
-+	if (UEA_IS_PREFIRM(id)) {
-+		uea_intf_data = devm_kzalloc(&usb->dev, sizeof(*uea_intf_data), GFP_KERNEL);
-+		if (!uea_intf_data)
-+			return -ENOMEM;
-+
-+		init_completion(&uea_intf_data->fw_upload_complete);
-+		uea_intf_data->usb = usb;
-+		uea_intf_data->intf = intf;
-+
-+		usb_set_intfdata(intf, uea_intf_data);
-+
-+		ret = uea_load_firmware(uea_intf_data, UEA_CHIP_VERSION(id));
-+		if (ret)
-+			complete(&uea_intf_data->fw_upload_complete);
-+
-+		return ret;
-+	}
- 
- 	ret = usbatm_usb_probe(intf, id, &uea_usbatm_driver);
- 	if (ret == 0) {
-@@ -2618,6 +2643,7 @@ static int uea_probe(struct usb_interface *intf, const struct usb_device_id *id)
- static void uea_disconnect(struct usb_interface *intf)
- {
- 	struct usb_device *usb = interface_to_usbdev(intf);
-+	struct uea_interface_data *uea_intf_data;
- 	int ifnum = intf->altsetting->desc.bInterfaceNumber;
- 	uea_enters(usb);
- 
-@@ -2629,6 +2655,10 @@ static void uea_disconnect(struct usb_interface *intf)
- 		usbatm_usb_disconnect(intf);
- 		mutex_unlock(&uea_mutex);
- 		uea_info(usb, "ADSL device removed\n");
-+	} else {
-+		uea_intf_data = usb_get_intfdata(intf);
-+		uea_info(usb, "wait for completion uploading firmware\n");
-+		wait_for_completion(&uea_intf_data->fw_upload_complete);
- 	}
- 
- 	uea_leaves(usb);
+-		if (sec_off + prog_sz > sec_sz) {
++		if (sec_off >= sec_sz || sec_off + prog_sz > sec_sz) {
+ 			pr_warn("sec '%s': program at offset %zu crosses section boundary\n",
+ 				sec_name, sec_off);
+ 			return -LIBBPF_ERRNO__FORMAT;
 -- 
-2.25.1
+2.49.0
 
 
