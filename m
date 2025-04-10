@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-132165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70CBFA84906
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 17:59:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8823CA8490A
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 17:59:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C09EB1895C39
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 15:55:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DEBB1895E84
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 15:55:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02C831EB5E6;
-	Thu, 10 Apr 2025 15:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB8D1E9B1C;
+	Thu, 10 Apr 2025 15:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RZme/JOM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SqzfwVDv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7AFE1E98FC
-	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 15:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B63F1E5201
+	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 15:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744300506; cv=none; b=DiAwtO/ntYIhQvC4BB2Dix49ZQy8T3i4zJD/QPbZbCI+smwjF8khDiNq9NY1SnHZkGj7IC8bIGpRM10YPf5ic/Oq3V2AK0HmqXZwrjzqyFcWQmBgZFHs9TtJlePAneOnSlsUYAO/yq+rq/moxZMZvdpr+ecOE6Sf2CoJDrFgfBs=
+	t=1744300509; cv=none; b=BL299l7kv+DZTNKiHz6Mk963CRg3WlVkSACPeNxHHOFsBRvSXc12MZhjBYQ2uMeIRiuVeE0ca7aN4fud2opf2MX3Cti6vlyceSXfsNrX9UUuANv5ot4Lfw98rMqlSKlcQCrFj6Zu8JRtG/6J6xTeE82ZRKlY2i32u9m2Lkc39m4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744300506; c=relaxed/simple;
-	bh=SGkQBSQdcea13+tRcMAbtqCw080CzRG14B9wSvTbLUo=;
+	s=arc-20240116; t=1744300509; c=relaxed/simple;
+	bh=SYCw9mwHwTvVLsi5Gjyx5STDi/K3G8olb/aGl6LzpzI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gIhCq5CNpKy05m72hnljYuhCLnyEKJ9Iqg86QcGczQBgiifVFIj8qYSl5LsCpHLfdHPh1Uq3T/wMDtNd1bIMcSH9Opb7h70sCwj/P9+L+6ltGv7dBgaP8x69xYeDIvvYYpTwykd+NmiMQg6XEUOYX5AFSRCMXbB4Y3+iVwiVO/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RZme/JOM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 071F3C4CEDD;
-	Thu, 10 Apr 2025 15:55:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ft0iAXhSQ9ITW/FmkOjhc9+8J28ynO6hZDTPzwlFBePdVkOaYfxog7Q0IUqWfEIGSl0X8g1qKizwpOHYm6/406pXytj6W6pDlnpp5tMKiBmQpz9sMxon7F2ZkoQ82Q41FK1AZBYG//wWut9+28nVuN5FP3d62ihEOFp+CSIpKXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SqzfwVDv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7853AC4CEDD;
+	Thu, 10 Apr 2025 15:55:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744300506;
-	bh=SGkQBSQdcea13+tRcMAbtqCw080CzRG14B9wSvTbLUo=;
+	s=k20201202; t=1744300509;
+	bh=SYCw9mwHwTvVLsi5Gjyx5STDi/K3G8olb/aGl6LzpzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RZme/JOMyvgo2UjHpKuW/7+0ajlk9D9KHXjMHsstOSe8uTMPR44vdxe5lP+woMk56
-	 TAGgRZS5zx+Pm+v0/jmdBxQEQHnY2P3rE9nTKJBhOd9TLN5pR/mcIxRHZiP1FfjsAo
-	 T7RS6ezCWTWsd1gWRF6n2l6I6QbPiysQn/1GXcqNV5D+pv7h1N0rgm+wfEPheEJDgo
-	 NfrqWTBPJUzj7qZeiddfmOXtZj5oYsmnt85QikATuUXsonG4tU4UkL02WCpnpsCZN4
-	 UsEIQuUT1YYFRikYPAkyA90qZNzj2TEBkBLnoXl62zHtltMyToiCaO37tc2M5YQSEK
-	 8FFZ19d643hBA==
+	b=SqzfwVDvGxzLX0dzz4lhVTKiWOCPXGRCRQB5x+8PvbR0vJZwKqdzMmKCd4NQNqsY/
+	 lDi1SBiJ3SJTt07qlXO0pcz7asUaiT9J/T4a8u59kcGPjJ3LCAG8+S5Nm7T5w2oTSk
+	 aJOFtze7SGlEQZ3eYVZ7Ie6gTsCc9ovQ7kOCo6NWYo7cdjqbIlrU4pACiDeRlX3UD6
+	 6UWe/gJGtmE36XmvyER718+Dro/B4TYjvQgz0Oas0ZWAej3dCBt6136E8mg6u16WCu
+	 fCwi6LFzd0NcjdvIAd4TNZ1QN/kLElNJzU7T0M5Vbx7r/X7R40cPBtYq9Q59UJHBRT
+	 zNBx4XgG9lF4g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	vannapurve@google.com
+	anshuman.khandual@arm.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y] x86/tdx: Fix arch_safe_halt() execution for TDX VMs
-Date: Thu, 10 Apr 2025 11:55:04 -0400
-Message-Id: <20250409225828-b7a54078f1a739bb@stable.kernel.org>
+Subject: Re: [PATCH 6.13.y 6/7] arm64/sysreg: Add register fields for HFGWTR2_EL2
+Date: Thu, 10 Apr 2025 11:55:07 -0400
+Message-Id: <20250410090243-eb3fded32a5fb07b@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250408134717.304476-1-vannapurve@google.com>
+In-Reply-To:  <20250408093859.1205615-7-anshuman.khandual@arm.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,80 +65,34 @@ Content-Transfer-Encoding: 8bit
 Hi,
 
 Summary of potential issues:
+ℹ️ This is part 6/7 of a series
 ⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-Found matching upstream commit: 9f98a4f4e7216dbe366010b4cdcab6b220f229c4
+Found matching upstream commit: ea37be0773f04420515b8db49e50abedbaa97e23
 
 Status in newer kernel trees:
-6.14.y | Present (different SHA1: 8defd0d8678b)
-6.13.y | Present (different SHA1: f88759f8f742)
-6.12.y | Present (different SHA1: 7aff5ffe2c87)
+6.14.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  9f98a4f4e7216 ! 1:  882c95e29bbba x86/tdx: Fix arch_safe_halt() execution for TDX VMs
+1:  ea37be0773f04 ! 1:  ccc9b1721d196 arm64/sysreg: Add register fields for HFGWTR2_EL2
     @@ Commit message
-         Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-         Cc: stable@vger.kernel.org
-         Link: https://lore.kernel.org/r/20250228014416.3925664-3-vannapurve@google.com
-    +    (cherry picked from commit 9f98a4f4e7216dbe366010b4cdcab6b220f229c4)
+         Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+         Link: https://lore.kernel.org/r/20250203050828.1049370-7-anshuman.khandual@arm.com
+         Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+    +    [cherry picked from commit ea37be0773f04420515b8db49e50abedbaa97e23]
+    +    Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
      
-      ## arch/x86/Kconfig ##
-     @@ arch/x86/Kconfig: config INTEL_TDX_GUEST
-    @@ arch/x86/coco/tdx/tdx.c
-      #include <asm/insn-eval.h>
-     +#include <asm/paravirt_types.h>
-      #include <asm/pgtable.h>
-    - #include <asm/set_memory.h>
-      #include <asm/traps.h>
-    + 
-     @@ arch/x86/coco/tdx/tdx.c: static int handle_halt(struct ve_info *ve)
-      	return ve_instr_len(ve);
-      }
-    @@ arch/x86/coco/tdx/tdx.c: void __cpuidle tdx_safe_halt(void)
-     +
-      static int read_msr(struct pt_regs *regs, struct ve_info *ve)
-      {
-    - 	struct tdx_module_args args = {
-    + 	struct tdx_hypercall_args args = {
-     @@ arch/x86/coco/tdx/tdx.c: void __init tdx_early_init(void)
-    - 	x86_platform.guest.enc_kexec_begin	     = tdx_kexec_begin;
-    - 	x86_platform.guest.enc_kexec_finish	     = tdx_kexec_finish;
-    + 	x86_platform.guest.enc_cache_flush_required  = tdx_cache_flush_required;
-    + 	x86_platform.guest.enc_tlb_flush_required    = tdx_tlb_flush_required;
-      
-     +	/*
-     +	 * Avoid "sti;hlt" execution in TDX guests as HLT induces a #VE that
-    @@ arch/x86/include/asm/tdx.h: void tdx_get_ve_info(struct ve_info *ve);
-      
-      bool tdx_early_handle_ve(struct pt_regs *regs);
-      
-    -@@ arch/x86/include/asm/tdx.h: void __init tdx_dump_td_ctls(u64 td_ctls);
-    +@@ arch/x86/include/asm/tdx.h: int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport);
-      #else
-      
-      static inline void tdx_early_init(void) { };
-    @@ arch/x86/include/asm/tdx.h: void __init tdx_dump_td_ctls(u64 td_ctls);
-      
-     
-      ## arch/x86/kernel/process.c ##
-    -@@ arch/x86/kernel/process.c: void __init select_idle_routine(void)
-    +@@ arch/x86/kernel/process.c: void select_idle_routine(const struct cpuinfo_x86 *c)
-      		static_call_update(x86_idle, mwait_idle);
-      	} else if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
-      		pr_info("using TDX aware idle routine\n");
-     -		static_call_update(x86_idle, tdx_safe_halt);
-     +		static_call_update(x86_idle, tdx_halt);
-    - 	} else {
-    + 	} else
-      		static_call_update(x86_idle, default_idle);
-    - 	}
-    + }
+      ## arch/arm64/tools/sysreg ##
+     @@ arch/arm64/tools/sysreg: Field	1	nERXGSR_EL1
 ---
+
+NOTE: These results are for this patch alone. Full series testing will be
+performed when all parts are received.
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-6.14.y       |  Success    |  Success   |
 
