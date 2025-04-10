@@ -1,349 +1,220 @@
-Return-Path: <stable+bounces-132131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACF49A8481C
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 17:37:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82525A84851
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 17:45:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 839097AE727
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 15:36:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C985D167549
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 15:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDD821EB5D8;
-	Thu, 10 Apr 2025 15:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE971EB1BC;
+	Thu, 10 Apr 2025 15:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="AIpO4x3n"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="dwqCuYoA"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013000.outbound.protection.outlook.com [40.107.162.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE9E1EB193;
-	Thu, 10 Apr 2025 15:36:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744299418; cv=none; b=QG95AK+ssh/7k70RCwFPULCF5j9QHaGW8zPlmLPoWbLLDqSif0YFML9HGV9VIOMHNdmICAdvOQhJ8X3i+uOmGPaDcZbXo9AZahKBHU9Eux+F4/m10YRO4K0HSgj8yr9blIHQm0TGyZXQQpBP7TaPHKJ8JbU90wWhq8+53ZihQuY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744299418; c=relaxed/simple;
-	bh=KiAbrcaJ9KIqp3ummdtSlVnqDorB80kiF4Qx7afdjsM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=IikoM/R1e+r90Ds0bjXUatPvwGZ+EpKaqZGqiXlDmrcrcEO+WtBIdaO73nvGwRY6xfJnc2mK2w2YXcx5M0p2vaYqgTPGtrEddhEA8pGikiHq91Qnl/X45I1mQaX0qsUO+3hIVDygf4RkQVSTRl8yD6k+GA9uK9eQ/nnzc/T2dMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=AIpO4x3n; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4ZYP7H3fKSz9shl;
-	Thu, 10 Apr 2025 17:36:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1744299403; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P9+QqdYG4mDRVeosGe6Cms2HjBGgK+zNhnnFSTSo6Yk=;
-	b=AIpO4x3n6xHT70+tOoPw8y7k4ukvlib+2KwkPScvhWcoQE87X5acZ4Eb9qiQm0Dm+6Ahn+
-	cYjTqHC1CtpM9f+AoLmXZe4+zxFpV19Lcz8suyfRQpVNXf8fdrcCkaeYvXSeS+NuWQ9+56
-	5vnMjy2cqKS+TPO2McsXHbeJrvqJO9RQxKbLR+SdA51lbIfWNqFZiKEkmWd1JBgqfMdPKI
-	+TM/YLHdVFwDQGwqeL0a7+dpiZ/d2KpQRLgbIHI1d2WCWdxlJXwA2+Gj6IEIOhDTUQD0nA
-	Ynbcra043KVq+LPJIOu3GQvszCxOAKSoxRbLfhC+7CL7LM4RZGD2xwhm6krziA==
-Message-ID: <1a73e5fe4350d6ee4b7d807612264eb637c4f2a9.camel@mailbox.org>
-Subject: Re: [PATCH 1/3] drm/nouveau: Prevent signaled fences in pending list
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, 
-	phasta@kernel.org, Lyude Paul <lyude@redhat.com>, Danilo Krummrich
-	 <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter
-	 <simona@ffwll.ch>, Sabrina Dubroca <sd@queasysnail.net>, Sumit Semwal
-	 <sumit.semwal@linaro.org>
-Cc: dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C78E41E98FC;
+	Thu, 10 Apr 2025 15:45:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744299924; cv=fail; b=XReKUKsKQ55BsjVvVmmXBK5SssOOsoRVkG8QhsnHLzw80oTbcnGlW0u9OS44Psu/hsHXFspZtbsnvbt2fL3EbvC2w0qZLaYCqf2N5y1wWUlQZC4jwM8UOuwJSwG/3EjfifLvljQQafvDu7TNcLx77hv89JGWIfqB0+urvBAmaHs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744299924; c=relaxed/simple;
+	bh=K7xVGSJj8FMVa5U0f6LwnA0S8VyqlKsoLQ0k0QxJjK0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=NE7oYRyNwY21Y6LpmHXvxkeXSdZaVQzp0EL29Vrf4tC2hRagn0emwbYsT/qEZW2qzv5auOicgnqeLuV16kjesrLPkG2LT/6Oi6SLh8XN7Xl2UB7AeB3AGofgVgD7pmIIAuY9/k4Iz/4zKxjHir50T14FML9AkLKhMDbKG4GyGf4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=dwqCuYoA; arc=fail smtp.client-ip=40.107.162.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sLRCA7JRNpS3xzr/0pN00ufggpt3ELIladmercYw+ISbf9u4RiN9ks7kVkgJ94Oi6MlV/JlhxR3nSP18LD5ggBnGfZXozn4ez6NHb13X1RLVTGAPi34GbuBk0YsIB72PCngbmAHm3ECAFGL03yHDgxQfBaVlSqxIUMBoXawGPKeuF/7xFxfQWk3ul+DNJ91I3zD3kd8CYUXnPJkyV2A6N9cHlVIdaiz5OJmNJEFhhHPO90n/q3SlGl4YtPATiEeOSC4AesBvRP8rXOSGv6891R3xXGeseFZlOCcZlIW3LVzxU2PEoWnNThhdpiP6vFiQCslyg/ohgomU3szA/IOiXQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=snrslRUZA7M1SW+pdCvnTdcKYVIP6NIYIpCwRwa0Nxw=;
+ b=Rer9h7/FNSa7S/lrfvIz4TqPeXwlfakg2LaQRYl4+p4//pwvRoSBpf7c2FhbPaz0lFwioGzQlzdL8M5nG09bid+5L9O92088ZF4cgV06egGQG1KAi+d47NkqvpYln4bh3Kb2rHZfwQxq9Bs2yACP3Yygu3Vc7ADbw3mrnySZQCDR7KmHjNhwLPa/TN4prKXY7jBuz1e6Kj8VNqENHQjqohtThvmz9h8nsjHXiSTBNLIaRhYYt9ko/mDBSUBaa3Mu3DCUlErLZy/RvuTibAg/QKgZqh9zRZ1HEPb7uEi/pIjEKnlMD3nPDggvzmmhuJLuG/B1MoEMDfd+WCs8QiFpCw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=snrslRUZA7M1SW+pdCvnTdcKYVIP6NIYIpCwRwa0Nxw=;
+ b=dwqCuYoAktFIkJfbJhIFtqrMhH9CEXPSKQSqKSV2JTtatd1NZho9SyHmZoc4zGEG0KoKbYMbyJdICtVK2QWkwRRbSx0HYi2+eV6Srok3zSsgCus3Nm2fuMk7ugvfWo9Sl6WjG1q0xSCmCT8bZdFcJv5A0gZLMd7a+C4ZrsBKmot/e13e+kBTrsBzTEGbHw9J/p4ClA8w0jeNTs9F2H23Do6w2zjy1F/0wEhSMPEQ1w3RODNODSRolrHlLDjCR2/98L2kW3BebJI0512y+wOmaLoLQvJzaK9KXzOYuFzg2XRsWbtakY7yCgkykxzVutzfbYYZFiLg17chV627hzpb8w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AM8PR04MB7841.eurprd04.prod.outlook.com (2603:10a6:20b:244::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.34; Thu, 10 Apr
+ 2025 15:45:19 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8632.021; Thu, 10 Apr 2025
+ 15:45:19 +0000
+Date: Thu, 10 Apr 2025 11:45:13 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Kevin Hao <haokexin@gmail.com>
+Cc: linux-spi@vger.kernel.org, Han Xu <han.xu@nxp.com>,
+	Mark Brown <broonie@kernel.org>, imx@lists.linux.dev,
 	stable@vger.kernel.org
-Date: Thu, 10 Apr 2025 17:36:39 +0200
-In-Reply-To: <50c9530d-e274-4f89-8620-16afe0981239@amd.com>
-References: <20250410092418.135258-2-phasta@kernel.org>
-	 <20250410092418.135258-3-phasta@kernel.org>
-	 <8583665a-6886-4245-be49-fd8839cfe212@amd.com>
-	 <c737c89c7ce9174e349c61ab4e5712eee8946f13.camel@mailbox.org>
-	 <50c9530d-e274-4f89-8620-16afe0981239@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 1/3] spi: fsl-qspi: Fix double cleanup in probe error path
+Message-ID: <Z/fniXBnfnx7RHxR@lizhi-Precision-Tower-5810>
+References: <20250410-spi-v1-0-56e867cc19cf@gmail.com>
+ <20250410-spi-v1-1-56e867cc19cf@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250410-spi-v1-1-56e867cc19cf@gmail.com>
+X-ClientProxiedBy: PH8P223CA0007.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:510:2db::10) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-ID: 84ec33af105abd139b5
-X-MBO-RS-META: kiyghzsqxxi4yjsni7xcg347t76osqot
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM8PR04MB7841:EE_
+X-MS-Office365-Filtering-Correlation-Id: ffa6436c-2b4f-49e3-4127-08dd7846b236
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|52116014|376014|366016|38350700014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?rQEP/6pRQ8iwyfA1OYU/HeILymw8Khgfr81z+peI15m8ewwen4lAy8r8M523?=
+ =?us-ascii?Q?YN7/z4Fs9Ie2CS+iNlgKKOWRIDoa2YkwxgPKJaVDKK7DbwgmigtrmIUPCz2Z?=
+ =?us-ascii?Q?7FThqFdopm0FVWxjFOa2ePgCpGKuDvUVz4OxIIZzaiJTb4Rbgz+t6u+opGDI?=
+ =?us-ascii?Q?6ZvSqLg7o+jrf4uz3CAQbsy4yjD7E+S5TlQP0nw4bUsGCtSXflIjeVHuBiX+?=
+ =?us-ascii?Q?mCrZyqOv07jwSmjmvgj6aKXl8WoKjHfKnTZ83ZKLPV/IjNmL5tLaLgYjkqbo?=
+ =?us-ascii?Q?n7fehPHb6JfM5PEmz37uAT0rhsDcJZwDpU7lJCP3ebe4gZS/syQqFpzujTCW?=
+ =?us-ascii?Q?s+gDroY/BdCmrn1FWWVTasPNbl0BYqcas2qbK4fAvJxtwN7tBNYQWfmAPIUo?=
+ =?us-ascii?Q?k6Gx0O80mrGAa0fLUDasJ6A26h35XruTSbbnikeiVQ6tG5HCAj5lmT0zvyd2?=
+ =?us-ascii?Q?QdoIGJhRnpmNywUylJ/GSPwCODhxKCXFv/mQ0dp8pIFUom+3VxIr6L3vnIAX?=
+ =?us-ascii?Q?XtfWQk91LiT/Cv6GEVLFvHGDBOOEQl1KOtljkSYFxicFawMvUeGxhw0y9J/P?=
+ =?us-ascii?Q?dpp0Y/bLQhNQxzxoDA9ZIlSFFa1JE1Bw2fPStM9Hpa/UIHdwZkfwvj4WtQTm?=
+ =?us-ascii?Q?YSo7Fu0noP+ayfTNOAynBnCRCVUt6gBVHX7kytEMGK+RTGrX3SAtcKnY1TlD?=
+ =?us-ascii?Q?J4tQHrj9RxBiT6xb8zvfFFHzbHQYwQrbc7x3E/oFI854rS5zF30g59iLIJ14?=
+ =?us-ascii?Q?MTiK0fLD42rH1IUEBbfnHu0+A8UefazkPfzpan4697snkZS412wUBKfDuLXe?=
+ =?us-ascii?Q?CRIkj6ZbzycIDN62TBJRh/s4I45JlcXGuyCRcWekBH7SDC48p5Gbgz8LOkDe?=
+ =?us-ascii?Q?mCg11ZV/9Arwz9V8AuKdxBwjQcpJr3uwFJuapZDy1WJ8LotOMteTx2H6trZo?=
+ =?us-ascii?Q?L7RaQQOpkRVICVAkPujKeE05+t+0y2OUdXv/aUQAX7Bmx2S2MEQp+xRiXpfM?=
+ =?us-ascii?Q?m1LrdsRY1oJkCFXjUOhd4xi5bHR1IqIZBWUF/atOLJohu1o1XCgfIKVUzZN5?=
+ =?us-ascii?Q?7vxTMF3XA6rnBRQ7vTMvxtTa/UXbxLV23bX84fNwJ+p7rD5vteVB5Q4n44Dv?=
+ =?us-ascii?Q?fvUwY8bxPAMlGbmHzLsghIFX6fO5uxDaW6qwdys4ik6HSzoN4rYgJtSAv2Ji?=
+ =?us-ascii?Q?oLOddzzRBzowsC9Z01Y9Wd/LwsSfqP/Ijz6N7nfQh6QbPh3QH9lMtgzA36up?=
+ =?us-ascii?Q?isNwr1opuUkH/B3Q7LR6BZYNWovcicDnWoqTqfuVkW47DqQyEM9ZVFXIl+/l?=
+ =?us-ascii?Q?INn+l9sq34I5E/OYqvs5v/2vCWFOSQvHd5K+03jormp6pkk1610KarM08y5M?=
+ =?us-ascii?Q?IVbkLSMoyCNixlIAqq4qlFMKwrwZGnl+1sdbW2BPdpR8jVPPs6ngcs2+6uVf?=
+ =?us-ascii?Q?qwqf2rxW1fEp0WR1PwodOXShn2MRghfIvUFqE2uY1aoS0ZqxStIPog=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(376014)(366016)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?0ULYR8K+2JZU8wuM/tW0en0X0QOja+mnxaog4ier4we0Ahi3iVwsyNidvxhE?=
+ =?us-ascii?Q?4qYEChY0r5XEAKrxb7veVQH41Q8tukDKftsE2L3Pqzj+1Te0LI+KtDeNc/88?=
+ =?us-ascii?Q?DOCrqd5EZQGYYFXyjaz/4/svc8ozyTi4s70easrmIX+3kz/TD+hDKxP3W5o6?=
+ =?us-ascii?Q?cWD+3o7dXa6v2Bp4NlCSpclSOgWgEcH9Ivi52wm6Qq3PJo2SkDZ2nBz+gh09?=
+ =?us-ascii?Q?s7GPPqEZHjA4l1tiQYu1jPv1nkInW3fJVV3NovmanmBfAWT2e1kMQ4N/KzJn?=
+ =?us-ascii?Q?EsYoO8ECvgJmKQrQWm/U6YanEl2uqh3nYEbbkQmP0QtVZW8EqHQwGEYQkPAR?=
+ =?us-ascii?Q?k4oNCLi2pPhk0Fpuy9SEt3QwoQS8/+I9t3Usqm3EKxM5C/cpZ3n4NCMmcWY7?=
+ =?us-ascii?Q?mTLsE6iXV17GYpg0gZppyYJD1BS2prQVRg7plL/X7ptI0sen/exV4OGxI8Vb?=
+ =?us-ascii?Q?2I7FUmeocZr/DgpRpN4rR/JgteLQWFXSZBTCEi9+AhfPzxvNcdssuNylSl/7?=
+ =?us-ascii?Q?BSfhqJ/r/dK6AEhX51NlYPLaSqaivxxeP18ORG28/iEO9C8f1gabNAWVVQtl?=
+ =?us-ascii?Q?NzPzC7iihwkVEoAq5aZMRFcj1gD4s7ewuCG3a9JgIl+XwfBKOyHM4ePMunJb?=
+ =?us-ascii?Q?LdB0qWq6BcaU2r2GOWfuCziilodUsU9CBzgyEuTeKJPp2cghsRBNjwaonTiZ?=
+ =?us-ascii?Q?aGsQLVc0wOOUcZa8G1pr62u43bB/6DIQrpXWJ5yaCjPP+otEyOymGqexU81c?=
+ =?us-ascii?Q?OxTFSQf7r09caVupNWZc3Y9Sn+wprM6YFyd62PRmI9IkdwL86cUQxgcfTAWE?=
+ =?us-ascii?Q?rrSiAWzXXwu690dQga0zO2+jZHfY0HtC9MfDjjXOIm9v9nCRUecygVYDHVBd?=
+ =?us-ascii?Q?DoxPJR3STO9trBgmhMxF0XGGiJqulbKObvuTyXARdHxDSUt92vQL2sV4d/6L?=
+ =?us-ascii?Q?E5upLhdtMI0/CUIHECKCKb1Z2dd0L66lQXYcQtmGV3JYMGtlVl/f/U2meDtu?=
+ =?us-ascii?Q?+30sE22b3uRAuQNvY348SuXKywXJNtwshf7FS+Rm5zdxx9/hsg/QgLAU0KnD?=
+ =?us-ascii?Q?RgXAix9acHyRzWVIZbPifFnlTYJo5wrWjC9e0ce1/TMdMfHqjGWuQ5jUrULo?=
+ =?us-ascii?Q?cP3uHW8EwoYFtkD3uYvP3HuAVJl6sbNGcA82vS1LKx4R0DidzSCkZ3cuDhSh?=
+ =?us-ascii?Q?yBqzqnwlFvoCriZeD1SW4sjXJtP00sJ7igJBfMgsZ8NnldkxFFN5mjocY4IH?=
+ =?us-ascii?Q?szXr6xqAq9U1JLE0t8LpsWI0aCrIa0VAjtidfq7399glXQvHdYZ9pBRR7+MU?=
+ =?us-ascii?Q?1LFWARkDLN6u8TjC4I/V8Ig3ilxn9OAPVZlmnrr+2oZdgr8rQs9Lqdlb5uBQ?=
+ =?us-ascii?Q?JnFompw3bz8gprJj9O3m6rJQ7JFbtVO2EIH97FdNs+c9YL2YM3HOiOWNJEx9?=
+ =?us-ascii?Q?ycgPbpIhSlrZp1k0/XBIkzCW+EAqatWT64DaFT/GwR5Y/dEuHefeiiI/pM79?=
+ =?us-ascii?Q?0cBx0kzCD4eJhERrW6b3GC5rw4hp5p9Egv1INwP0fGod9RSHFzeoSJxkMNAd?=
+ =?us-ascii?Q?Ug2upz8gCCy8LMbNo9WZ9nB6favuusikTGe1KcC2?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ffa6436c-2b4f-49e3-4127-08dd7846b236
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Apr 2025 15:45:19.1771
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UG4ujrKrU5RBu3ndxpmx9VYxQ/ZTrQyk4r43dvTf0B4ve5ZztGlSQ3VkxQSojg6PDhslgfhrHqEArG64LzSaVg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7841
 
-On Thu, 2025-04-10 at 15:16 +0200, Christian K=C3=B6nig wrote:
-> Am 10.04.25 um 15:09 schrieb Philipp Stanner:
-> > On Thu, 2025-04-10 at 14:58 +0200, Christian K=C3=B6nig wrote:
-> > > Am 10.04.25 um 11:24 schrieb Philipp Stanner:
-> > > > Nouveau currently relies on the assumption that dma_fences will
-> > > > only
-> > > > ever get signaled through nouveau_fence_signal(), which takes
-> > > > care
-> > > > of
-> > > > removing a signaled fence from the list
-> > > > nouveau_fence_chan.pending.
-> > > >=20
-> > > > This self-imposed rule is violated in nouveau_fence_done(),
-> > > > where
-> > > > dma_fence_is_signaled() (somewhat surprisingly, considering its
-> > > > name)
-> > > > can signal the fence without removing it from the list. This
-> > > > enables
-> > > > accesses to already signaled fences through the list, which is
-> > > > a
-> > > > bug.
-> > > >=20
-> > > > In particular, it can race with nouveau_fence_context_kill(),
-> > > > which
-> > > > would then attempt to set an error code on an already signaled
-> > > > fence,
-> > > > which is illegal.
-> > > >=20
-> > > > In nouveau_fence_done(), the call to nouveau_fence_update()
-> > > > already
-> > > > ensures to signal all ready fences. Thus, the signaling
-> > > > potentially
-> > > > performed by dma_fence_is_signaled() is actually not necessary.
-> > > Ah, I now got what you are trying to do here! But that won't
-> > > help.
-> > >=20
-> > > The problem is it is perfectly valid for somebody external (e.g.
-> > > other driver, TTM etc...) to call dma_fence_is_signaled() on a
-> > > nouveau fence.
-> > >=20
-> > > This will then in turn still signal the fence and leave it on the
-> > > pending list and creating the problem you have.
-> > Good to hear =E2=80=93 precisely that then is the use case for a dma_fe=
-nce
-> > callback! ^_^ It guarantees that, no matter who signals a fence, no
-> > matter at what place, a certain action will always be performed.
-> >=20
-> > I can't think of any other mechanism which could guarantee that a
-> > signaled fence immediately gets removed from nouveau's pending
-> > list,
-> > other than the callbacks.
-> >=20
-> > But seriously, I don't think that anyone does this currently, nor
-> > do I
-> > think that anyone could get away with doing it without the entire
-> > computer burning down.
->=20
-> Yeah, I don't think that this is possible at the moment.
->=20
-> When you do stuff like that from the provider side you will always
-> run into lifetime issues because in the signaling from interrupt case
-> you then drop the last reference before the signaling is completed.
->=20
-> How about the attached (not even compile tested) patch? I think it
-> should fix the issue.
+On Thu, Apr 10, 2025 at 02:56:09PM +0800, Kevin Hao wrote:
+> Commit 40369bfe717e ("spi: fsl-qspi: use devm function instead of driver
+> remove") introduced managed cleanup via fsl_qspi_cleanup(), but
+> incorrectly retain manual cleanup in two scenarios:
+>
+> - On devm_add_action_or_reset() failure, the function automatically call
+>   fsl_qspi_cleanup(). However, the current code still jumps to
+>   err_destroy_mutex, repeating cleanup.
+>
+> - After the fsl_qspi_cleanup() action is added successfully, there is no
+>   need to manually perform the cleanup in the subsequent error path.
+>   However, the current code still jumps to err_destroy_mutex on spi
+>   controller failure, repeating cleanup.
+>
+> Skip redundant manual cleanup calls to fix these issues.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 40369bfe717e ("spi: fsl-qspi: use devm function instead of driver remove")
+> Signed-off-by: Kevin Hao <haokexin@gmail.com>
+> ---
+>  drivers/spi/spi-fsl-qspi.c | 7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
+> index 5c59fddb32c1b9cc030e7abb49484662ec7b382c..2f54dc09d11b1c56cfe57ceec8452fbb29322d3f 100644
+> --- a/drivers/spi/spi-fsl-qspi.c
+> +++ b/drivers/spi/spi-fsl-qspi.c
+> @@ -949,17 +949,14 @@ static int fsl_qspi_probe(struct platform_device *pdev)
+>
+>  	ret = devm_add_action_or_reset(dev, fsl_qspi_cleanup, q);
+>  	if (ret)
+> -		goto err_destroy_mutex;
+> +		goto err_put_ctrl;
 
-This patch looked correct enough for me to try it out on top of my
-memleak fix series [1] (which seems to reveal all those problems
-through races appearing due to the removal of the waitqueue in
-nouveau_sched_fini()).
+fsl_qspi_cleanup() already included mutex_destroy() and
+fsl_qspi_clk_disable_unprep()
 
-The code looked correct to me, but it still makes boom-boom, again
-because two parties get their fingers onto list_del():
+simple
+		return ret;
+>
+>  	ret = devm_spi_register_controller(dev, ctlr);
+>  	if (ret)
+> -		goto err_destroy_mutex;
+> +		goto err_put_ctrl;
 
-[paste in case my editor explodes again:
-https://paste.debian.net/1368705/ ]
+return ret;
+>
+>  	return 0;
+>
+> -err_destroy_mutex:
+> -	mutex_destroy(&q->lock);
+> -
+>  err_disable_clk:
+>  	fsl_qspi_clk_disable_unprep(q);
 
-[   41.681698] list_del corruption, ff31ae696cdc86a0->next is
-LIST_POISON1 (dead000000000100)
-[   41.681720] ------------[ cut here ]------------
-[   41.681722] kernel BUG at lib/list_debug.c:56!
-[   41.681729] Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-[   41.681732] CPU: 22 UID: 42 PID: 1733 Comm: gnome-shell Not tainted
-6.14.0-rc4+ #11
-[   41.681735] Hardware name: Dell Inc. Precision 7960 Tower/01G0M6,
-BIOS 2.7.0 12/17/2024
-[   41.681737] RIP: 0010:__list_del_entry_valid_or_report+0x76/0xf0
-[   41.681743] Code: 75 66 5b b8 01 00 00 00 5d 41 5c c3 cc cc cc cc 48
-89 ef e8 4c e7 b0 ff 48 89 ea 48 89 de 48 c7 c7 38 fb b5 a0 e8 3a 6d 6b
-ff <0f> 0b 4c 89 e7 e8 30 e7 b0 ff 4c 89 e2 48 89 de 48 c7 c7 70 fb b5
-[   41.681745] RSP: 0018:ff4fe30cc0f83b30 EFLAGS: 00010246
-[   41.681748] RAX: 000000000000004e RBX: ff31ae696cdc86a0 RCX:
-0000000000000027
-[   41.681749] RDX: 0000000000000000 RSI: 0000000000000001 RDI:
-ff31ae8850321900
-[   41.681751] RBP: dead000000000100 R08: 0000000000000000 R09:
-0000000000000000
-[   41.681752] R10: 7572726f63206c65 R11: 6c65645f7473696c R12:
-dead000000000122
-[   41.681753] R13: ff31ae696cdc8662 R14: ff4fe30cc0f83cb8 R15:
-00007f68b7f9a000
-[   41.681754] FS:  00007f68bd0396c0(0000) GS:ff31ae8850300000(0000)
-knlGS:0000000000000000
-[   41.681756] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   41.681757] CR2: 00005577caaad68c CR3: 000000010407c003 CR4:
-0000000000f71ef0
-[   41.681758] DR0: 0000000000000000 DR1: 0000000000000000 DR2:
-0000000000000000
-[   41.681759] DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7:
-0000000000000400
-[   41.681760] PKRU: 55555554
-[   41.681761] Call Trace:
-[   41.681763]  <TASK>
-[   41.681764]  ? __die_body.cold+0x19/0x27
-[   41.681768]  ? die+0x2e/0x50
-[   41.681772]  ? do_trap+0xca/0x110
-[   41.681775]  ? do_error_trap+0x6a/0x90
-[   41.681776]  ? __list_del_entry_valid_or_report+0x76/0xf0
-[   41.681778]  ? exc_invalid_op+0x50/0x70
-[   41.681781]  ? __list_del_entry_valid_or_report+0x76/0xf0
-[   41.681782]  ? asm_exc_invalid_op+0x1a/0x20
-[   41.681788]  ? __list_del_entry_valid_or_report+0x76/0xf0
-[   41.681789]  nouveau_fence_is_signaled+0x47/0xc0 [nouveau]
-[   41.681961]  dma_resv_iter_walk_unlocked.part.0+0xbd/0x170
-[   41.681966]  dma_resv_test_signaled+0x53/0x100
-[   41.681969]  ttm_bo_release+0x12d/0x2f0 [ttm]
-[   41.681979]  nouveau_gem_object_del+0x54/0x80 [nouveau]
-[   41.682090]  ttm_bo_vm_close+0x41/0x60 [ttm]
-[   41.682097]  remove_vma+0x2c/0x70
-[   41.682100]  vms_complete_munmap_vmas+0xd8/0x180
-[   41.682102]  do_vmi_align_munmap+0x1d7/0x250
-[   41.682106]  do_vmi_munmap+0xd0/0x170
-[   41.682109]  __vm_munmap+0xb1/0x180
-[   41.682112]  __x64_sys_munmap+0x1b/0x30
-[   41.682115]  do_syscall_64+0x82/0x160
-[   41.682117]  ? do_user_addr_fault+0x55a/0x7b0
-[   41.682121]  ? exc_page_fault+0x7e/0x1a0
-[   41.682124]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[   41.682127] RIP: 0033:0x7f68cceff02b
-[   41.682130] Code: 73 01 c3 48 8b 0d e5 6d 0f 00 f7 d8 64 89 01 48 83
-c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 0b 00 00 00 0f
-05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d b5 6d 0f 00 f7 d8 64 89 01 48
-[   41.682131] RSP: 002b:00007ffed8d00c08 EFLAGS: 00000206 ORIG_RAX:
-000000000000000b
-[   41.682134] RAX: ffffffffffffffda RBX: 00005577ca99ef50 RCX:
-00007f68cceff02b
-[   41.682135] RDX: 0000000000000000 RSI: 0000000000001000 RDI:
-00007f68b7f9a000
-[   41.682136] RBP: 00007ffed8d00c50 R08: 00005577cacc4160 R09:
-00005577caccf930
-[   41.682137] R10: 000199999996d999 R11: 0000000000000206 R12:
-0000000000000000
-[   41.682138] R13: 00007ffed8d00c60 R14: 00005577caf6c550 R15:
-0000000000000035
-[   41.682141]  </TASK>
-[   41.682141] Modules linked in: nf_conntrack_netbios_ns
-nf_conntrack_broadcast nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib
-nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct
-nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 rfkill
-ip_set nf_tables qrtr sunrpc snd_sof_pci_intel_tgl
-snd_sof_pci_intel_cnl snd_sof_intel_hda_generic snd_sof_pci
-snd_sof_xtensa_dsp snd_sof_intel_hda_common snd_soc_hdac_hda
-snd_sof_intel_hda snd_sof snd_sof_utils snd_soc_acpi_intel_match
-snd_soc_acpi snd_soc_acpi_intel_sdca_quirks snd_sof_intel_hda_mlink
-snd_soc_sdca snd_soc_avs snd_ctl_led intel_rapl_msr snd_soc_hda_codec
-snd_hda_ext_core intel_rapl_common snd_hda_codec_realtek snd_soc_core
-intel_uncore_frequency snd_hda_codec_generic
-intel_uncore_frequency_common intel_ifs snd_hda_scodec_component
-snd_hda_codec_hdmi i10nm_edac snd_compress skx_edac_common binfmt_misc
-nfit snd_hda_intel snd_intel_dspcfg snd_hda_codec libnvdimm snd_hwdep
-snd_hda_core snd_seq snd_seq_device x86_pkg_temp_thermal dell_pc
-dell_wmi
-[   41.682195]  dax_hmem platform_profile intel_powerclamp
-sparse_keymap cxl_acpi snd_pcm cxl_port coretemp iTCO_wdt cxl_core
-spi_nor intel_pmc_bxt dell_wmi_sysman rapl pmt_telemetry dell_smbios
-iTCO_vendor_support pmt_class intel_cstate snd_timer vfat dcdbas
-isst_if_mmio mtd dell_smm_hwmon dell_wmi_ddv dell_wmi_descriptor
-intel_uncore firmware_attributes_class wmi_bmof atlantic fat einj
-pcspkr isst_if_mbox_pci snd isst_if_common intel_vsec i2c_i801 mei_me
-e1000e spi_intel_pci macsec soundcore i2c_smbus spi_intel mei joydev
-loop nfnetlink zram nouveau drm_ttm_helper ttm iaa_crypto
-polyval_clmulni rtsx_pci_sdmmc polyval_generic mmc_core gpu_sched
-ghash_clmulni_intel i2c_algo_bit nvme sha512_ssse3 drm_gpuvm drm_exec
-sha256_ssse3 idxd nvme_core sha1_ssse3 drm_display_helper rtsx_pci cec
-nvme_auth idxd_bus pinctrl_alderlake ip6_tables ip_tables fuse
-[   41.682269] ---[ end trace 0000000000000000 ]---
-[   41.969442] RIP: 0010:__list_del_entry_valid_or_report+0x76/0xf0
-[   41.969458] Code: 75 66 5b b8 01 00 00 00 5d 41 5c c3 cc cc cc cc 48
-89 ef e8 4c e7 b0 ff 48 89 ea 48 89 de 48 c7 c7 38 fb b5 a0 e8 3a 6d 6b
-ff <0f> 0b 4c 89 e7 e8 30 e7 b0 ff 4c 89 e2 48 89 de 48 c7 c7 70 fb b5
-[   41.969461] RSP: 0018:ff4fe30cc0f83b30 EFLAGS: 00010246
-[   41.969464] RAX: 000000000000004e RBX: ff31ae696cdc86a0 RCX:
-0000000000000027
-[   41.969466] RDX: 0000000000000000 RSI: 0000000000000001 RDI:
-ff31ae8850321900
-[   41.969468] RBP: dead000000000100 R08: 0000000000000000 R09:
-0000000000000000
-[   41.969469] R10: 7572726f63206c65 R11: 6c65645f7473696c R12:
-dead000000000122
-[   41.969470] R13: ff31ae696cdc8662 R14: ff4fe30cc0f83cb8 R15:
-00007f68b7f9a000
-[   41.969471] FS:  00007f68bd0396c0(0000) GS:ff31ae8850300000(0000)
-knlGS:0000000000000000
-[   41.969473] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   41.969474] CR2: 00005577caaad68c CR3: 000000010407c003 CR4:
-0000000000f71ef0
-[   41.969476] DR0: 0000000000000000 DR1: 0000000000000000 DR2:
-0000000000000000
-[   41.969477] DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7:
-0000000000000400
-[   41.969478] PKRU: 55555554
+remove these two labels
 
-
-I fail to see why exactly right now, but am also quite tired. Might
-take another look the next days.
-
-Although I'm not convinced that my solution is bad either. It's
-Nouveau, after all. On this ranch a cowboy has to defend himself with
-the pitchfork instead of the colt at times.
-
-
-[1] https://lore.kernel.org/all/20250407152239.34429-2-phasta@kernel.org/
-
-
-
-P.
-
->=20
-> Regards,
-> Christian.
->=20
-> >=20
-> > P.
-> >=20
-> >=20
-> >=20
-> > > Regards,
-> > > Christian.
-> > >=20
-> > > > Replace the call to dma_fence_is_signaled() with
-> > > > nouveau_fence_base_is_signaled().
-> > > >=20
-> > > > Cc: <stable@vger.kernel.org> # 4.10+, precise commit not to be
-> > > > determined
-> > > > Signed-off-by: Philipp Stanner <phasta@kernel.org>
-> > > > ---
-> > > > =C2=A0drivers/gpu/drm/nouveau/nouveau_fence.c | 2 +-
-> > > > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
-> > > >=20
-> > > > diff --git a/drivers/gpu/drm/nouveau/nouveau_fence.c
-> > > > b/drivers/gpu/drm/nouveau/nouveau_fence.c
-> > > > index 7cc84472cece..33535987d8ed 100644
-> > > > --- a/drivers/gpu/drm/nouveau/nouveau_fence.c
-> > > > +++ b/drivers/gpu/drm/nouveau/nouveau_fence.c
-> > > > @@ -274,7 +274,7 @@ nouveau_fence_done(struct nouveau_fence
-> > > > *fence)
-> > > > =C2=A0			nvif_event_block(&fctx->event);
-> > > > =C2=A0		spin_unlock_irqrestore(&fctx->lock, flags);
-> > > > =C2=A0	}
-> > > > -	return dma_fence_is_signaled(&fence->base);
-> > > > +	return test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence-
-> > > > > base.flags);
-> > > > =C2=A0}
-> > > > =C2=A0
-> > > > =C2=A0static long
-
+Frank
+>
+>
+> --
+> 2.49.0
+>
 
