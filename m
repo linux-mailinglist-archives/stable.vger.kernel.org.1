@@ -1,185 +1,255 @@
-Return-Path: <stable+bounces-132080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11917A83FA7
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 11:57:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C90C2A8412C
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 12:48:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FA613AB8E0
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 09:56:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2F9246242C
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 10:48:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEDA126AA92;
-	Thu, 10 Apr 2025 09:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E8C9267F7E;
+	Thu, 10 Apr 2025 10:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eb/rRbbo"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="5dF/jMhb"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2065.outbound.protection.outlook.com [40.107.95.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF3626A1B4
-	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 09:55:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744278937; cv=none; b=XbP+EdcM8EDhjWja02+M6QBw6gNQBJB7+UgHlclFcsDAGZa3TtvLW2kPgaPSP0NgMSUiCDXecJaZcC2svelXLRHmF0dXIgeCdVLBR2eNW9lDKYF6iluWiJhZQMCiCSBIgl2Lt6A5QbjHnc+L7/LARsEYb7OAtYuf4WySgDvOczs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744278937; c=relaxed/simple;
-	bh=i65w8+lGrxYWx7rpHSbpC2JJCKns/es9Qf7+yH/Hrd0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SM3D/tAzkfUC+0mvZnDiYU3xPI8nEOf9y3XLXeDi1cq3NVsoT1lTBw/I2e7I+30FioTjfyEBOuKwcUTt8tIXDvTCFdyW2kqo9lauStkWCgywzHFi9NbRQ6vEq3Uq2MiPEHXGc9D8N6tKUY+2rYhKN4IfbE7YPboQNt4NzZtH2WI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eb/rRbbo; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744278934;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=II82/lgaIjXOphMlPq6hOhd8dnjPIIYTpFuurPbQULs=;
-	b=eb/rRbbovACI/nQvpOq+l+54F9LZpn0OIoKvU//XBzngZ9aHUZavWA+yjwYTgnjfhPjq+d
-	frW+HnfhYCTreEedf4x9I0WsOYhZkbwklyHlubmHjFLvha+SBQfDFdPh1GofX2vtT3KNn6
-	/MZYw2HioXphtt/A1HPRJmeDJi84zV4=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-450-2_HmN8aTPH-c1qsKFvXmJQ-1; Thu,
- 10 Apr 2025 05:55:32 -0400
-X-MC-Unique: 2_HmN8aTPH-c1qsKFvXmJQ-1
-X-Mimecast-MFC-AGG-ID: 2_HmN8aTPH-c1qsKFvXmJQ_1744278930
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C30F9180882E;
-	Thu, 10 Apr 2025 09:55:29 +0000 (UTC)
-Received: from vmalik-fedora.redhat.com (unknown [10.45.226.81])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 813843001D0E;
-	Thu, 10 Apr 2025 09:55:23 +0000 (UTC)
-From: Viktor Malik <vmalik@redhat.com>
-To: bpf@vger.kernel.org
-Cc: Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Viktor Malik <vmalik@redhat.com>,
-	lmarch2 <2524158037@qq.com>,
-	stable@vger.kernel.org,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH bpf v2] libbpf: Fix buffer overflow in bpf_object__init_prog
-Date: Thu, 10 Apr 2025 11:55:17 +0200
-Message-ID: <20250410095517.141271-1-vmalik@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0B11BE251;
+	Thu, 10 Apr 2025 10:48:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744282117; cv=fail; b=cLKSauroWLFHi8qYvWjTw7xdXG9qR2G+JS3t+Gmjc2Y5EW9LkirjO2ZrvBPA25kohOdF6N5KUsoJl1zkBRIW4LSr801abJvgfqEzKZvEvgl6i/hj9WxFZc3Tm/gOWbZL11806ZjfAcDX3hMcE234lB6CHH9OHDyXZELftEkk9xs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744282117; c=relaxed/simple;
+	bh=145F9OisA2/cVoxEbOjKKUIvuoajLhpuDQH4yIUIENo=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=j7/53TV5OybeQy0+AZKZrsaUSHpUF8FtvcSFSzl/fSaidLTQMnwCmATvW5mYRMNAoIxfQ10E8TyQVGTt7e/qOYhKh8HcXUh4IVK6AndQIDp6pzLBgNso0kXG3hXmZLwBVwGSpQPE3vV3ROvRlqYegeaRyGG5H7Qv/09reE5lVrI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=5dF/jMhb; arc=fail smtp.client-ip=40.107.95.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LzKLp5iPK8NuNl/XAc3qufa1PC+2C7LTTDDH8sPGncPWUD9c9sMUUsoDKsjJasYnpnxWe0NtEwogWWP3i5tOiNeEUazGc1V39uaEJdeO/uC/a7YlkcOxljMzi/v8JEh4bT0J86q3YQ932PZpdAVeF+1S1JtgQSZHGrpCLQrAG4wFqLUpeyl3WQfgKMdpB6RZ+p8wYy0EaLoeoj/zYIA7um+hySM1+qgfBkWyY6EzRCwft5NUVr8anndV5+23V+sUSgWIuHK0rPsbW0MzvMKCwgSEc9HJvvWDJFXkvJAHGRI+GI3oblWfwbYon5nnXzwp+XU5/VocpwhWhniRnzeVYQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pvKfnt27iN0knQFqzvLRIxtxnr2ckh+Ps13MT/cqzTo=;
+ b=k2vyz+/HA55geMRqERzp6w5rbnLipsL2FXJfv8WiIc2Q2OKL/WFZ5Q5CL+A+bGq9TLwgbbd1Ml+Vas6DPoQNS2F8TYbIeDkNuyY5pMTu4nMsceRu3Rh29xu1H7c/7tAdqclQOqJXbmRw3TWjIBOZvTvDkMAR+wbs9ntrUCVhTTKshkRbY2zlWeagsYOTwjPLBfAVkRASPPgiWIvw+LIi8rQg9/d9+JAWVcofUED66PjkvvoKv5m40v6+1h5xrxagFsVZ4QO2d3lCRQzOjnJE43ONVWkdH6Wi/xiJxNP9wzniUD9AT9rW1wmFGajV/0lwOTZp5heI4T2mVCwA5vmkCw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pvKfnt27iN0knQFqzvLRIxtxnr2ckh+Ps13MT/cqzTo=;
+ b=5dF/jMhbiLEB5uca4M/Yahr3NFrrhfqhdTw1cAghNleUjbhYvy3OcY7ciz9wEM+9uxSWMRhZXGdabzSyz659nMUBGbZtVIjZG6vEZBAvmpCUumQ5eYnm2gBvGBZrw/htmAyazHEACqFYgB82fgbHV3ey4QCAUHUNcRUbD6EagDw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH2PR12MB4262.namprd12.prod.outlook.com (2603:10b6:610:af::8)
+ by CH2PR12MB9460.namprd12.prod.outlook.com (2603:10b6:610:27f::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.23; Thu, 10 Apr
+ 2025 10:48:32 +0000
+Received: from CH2PR12MB4262.namprd12.prod.outlook.com
+ ([fe80::3bdb:bf3d:8bde:7870]) by CH2PR12MB4262.namprd12.prod.outlook.com
+ ([fe80::3bdb:bf3d:8bde:7870%4]) with mapi id 15.20.8606.033; Thu, 10 Apr 2025
+ 10:48:32 +0000
+Message-ID: <2d1e2122-0308-4b13-b87c-54b64c4f1901@amd.com>
+Date: Thu, 10 Apr 2025 16:18:25 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm: page_alloc: speed up fallbacks in rmqueue_bulk()
+To: Johannes Weiner <hannes@cmpxchg.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>,
+ Mel Gorman <mgorman@techsingularity.net>, Carlos Song <carlos.song@nxp.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org
+References: <20250407180154.63348-1-hannes@cmpxchg.org>
+Content-Language: en-US
+From: Shivank Garg <shivankg@amd.com>
+In-Reply-To: <20250407180154.63348-1-hannes@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PN2PR01CA0194.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:e8::19) To CH2PR12MB4262.namprd12.prod.outlook.com
+ (2603:10b6:610:af::8)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB4262:EE_|CH2PR12MB9460:EE_
+X-MS-Office365-Filtering-Correlation-Id: d9bf1f2a-1f59-49c7-602c-08dd781d3c6d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?eWhOMVZYVHVrMG10cVBtZWt1d04zN3JqWTJKdE80VWZNSHQ2Vlk0V2Nxb0FK?=
+ =?utf-8?B?R1JlZUhva2FMUVU4UVNsaW5Tb2R1c0ZLdDdMckEwbGQwYTQwNitVM1dKYjJn?=
+ =?utf-8?B?ajhIbDJ1cTZrK0pFRzR6bXVGL0hRbjdWTloyQnorejRlbmlwQU9uSWhEcHIy?=
+ =?utf-8?B?NXBGaEV3cWxLbitOVDBnMWpIUU1hdkRHQmtETUZnajlSay9PZjhsNTRiVjNz?=
+ =?utf-8?B?VUVqZEp6VUlnYk5lamdpWXc1cmhkN09iL2lKbHF2N2JKK29HeGZ5aUJTV3cv?=
+ =?utf-8?B?dVQrUXNCL1lHL0FLUVUxNUZocnprZFFTYThRcFpZNEpXQm4zZ0xTQjB5eUZu?=
+ =?utf-8?B?cWFoVlNnWHQwV3hzZ0kyR1NKSjAzcHVoZjdLNW1JakdzbGp6UHlnSGpkWndK?=
+ =?utf-8?B?aEM3UjhCSjJZQ1JURHZtODB0ZUlIQ2F3bnZZbGVQclNzMDlIM2lxRGd5QzdB?=
+ =?utf-8?B?a0RmMWFPcW5QRnpEN0xmVmdVaHBYbVpMa3MxV2JIaUpLNWt0enM2SHVOSEpt?=
+ =?utf-8?B?WXRjQ0kvMllaY1JROHRXZGE0N3hwb0RMMUk3ZWVBTVJ6U01tYVBTTFlWdlkx?=
+ =?utf-8?B?Ui84dmM0ZW5wZkgyY1ZUNEdvVUZBTUQ2NkRKT2oxbTdObDF2SXJXeUc0Rnc3?=
+ =?utf-8?B?bUxadE1vUXNZc3AwdVRJWDQ2ZjhCc3lhTlliTnd2R3NySGM1bUdnaVordEN4?=
+ =?utf-8?B?bFEzZk93b2hlUVRscXRkZ3hYZUdHaURXUGxrSEpseEZENmVoQmgvajZJUjd6?=
+ =?utf-8?B?VzVGcHQ1SnhNb0VTaEJ5dTBNZ1Q2VkRiVHc5M0F3M1J1TFF5b09JYTVaUUNO?=
+ =?utf-8?B?eGs2ZTZYeit3SU4wM3QvKy9DVzgyWEtPa1plTElQVzRmUzlDQTI2Mlh0ekZ5?=
+ =?utf-8?B?THE0OE9mSGVNL0plZTBaQ240OTR1RjB1ak9SellERVluNS9lWHcvQk42OWNa?=
+ =?utf-8?B?RmlqRStxbUtobndWMUc1eG84WjYwRlZjaFJuaFRCMHpDNHNKU0dCQjlTRWV2?=
+ =?utf-8?B?YkJSRlN4SXUxaUJpaERPYlVxS003V2x1ckVUSDh2bFZtRVFrSnV4N1hJLzRV?=
+ =?utf-8?B?aWl5ZEtnTHZGNG1lbVdrdVNxS2hMeExlcU9iMXk1UlpqSE9KbU85V1N1UlV3?=
+ =?utf-8?B?QTR6b09wNklSVE9ZbUZjd1NEWGtuS3pPT2lQMGhjQnFUTk9vMjJDL3JkU1d2?=
+ =?utf-8?B?Zi9DQVZhSmZrdFFvTFpNalZ0SzRrL3JrZ0pnZndZcC9SZmoxazkzQVpWQnF6?=
+ =?utf-8?B?R1AzN0p4SzF3TWI2VktLTjhsNkZnTEVudjJ5cit4dEtxaVpFc3YwSVQwWDM0?=
+ =?utf-8?B?Nmc0VEp3QlFWVE9CYkRleFQ0Q3gzNnBSUlg1NzVreVN3U21uem9oL3lZZFhu?=
+ =?utf-8?B?dmV3UnVVT0hvNllPSTdjaDZOQ3lXWGoxVzNzcWxoRUE3dVZVRlJjYjJLT1Fw?=
+ =?utf-8?B?SHNnUjV6TTJBQ2s1Mk5MUWRoTndxWnliaW9OTHhMa3g4T0kvNE0vY0wvaVJT?=
+ =?utf-8?B?OFZOMFh2ZVhxS2c3dUkrdkZrTE5nWXVhcUZqSG1vNVV6WElJNnBSdGVIUWxa?=
+ =?utf-8?B?ZVZ1dHBGanFOU1hHbm15NjdQTmRhMHp1L3RXemJ2WWVKd1Zwd2tEYkxpYkJ3?=
+ =?utf-8?B?VUR6cVpsYUhQS2dKTXp5S054NW1QWFNlNjRDdjllVmZmakRuRmsvakJSQksz?=
+ =?utf-8?B?NEYvYjZ3YXFLVmlIMytoeFdyamV0V2VBa1Y2WE1OeUVqbmVSSTBuQVd1Zm9q?=
+ =?utf-8?B?SG9BQUh5VU55TVFkSlhwMHN4YWxiWVF6V2NRU1NnNCt3ZVZOSzBFeWhUTmFK?=
+ =?utf-8?B?OW5sY3JDVzFwUVZ4Qm1lelI4L1NjcVZsTmhkUHR3TE9MdnZUTGVoZURnTjBm?=
+ =?utf-8?Q?DoDTyGnPSx6OZ?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB4262.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Tzc0NENoRjNWT08vRjA3ZFZlcUpXVFJXNU1LSGJrS21mM0MyMVB6SGZzbVRh?=
+ =?utf-8?B?V2VGYU94N3F6NXRvek9lWld0dElDVENLb3FwVTQvSFlBdWYxS2l0bjE5Wk1L?=
+ =?utf-8?B?L043akU0cjZja1N1S2tQRWRyM09lbEdiYjlxeG5qa3ZMTUtEck9CbkNKYmFD?=
+ =?utf-8?B?bHRDVkFGTC96MXQ4a05HWjY3QjZXaUI0aTlGd0NOcDU5clQ4ak1CUnp2TW50?=
+ =?utf-8?B?NHFBY2JldE5nMEQ0ZjZyQzBhZUYwNDRkeXdSemg1bGM4NkErOFVhYk9FbnBO?=
+ =?utf-8?B?R0h2U2VQZDc3UWxtK09aZmgvc2NscWVBbkJpdWN6Nmc3enlKTWFDVmNoTFlv?=
+ =?utf-8?B?L0NrdHFzVlVDaE1rVTZQNkVkTHAvdHgyTU81bTRvVjhNTzhIdjZwdnQvdDRr?=
+ =?utf-8?B?TWJjMFphL2pZb2ZrYUphUUVGODlBZXZJSTNhaWZucC8wbFNqMjA0U2dwRmJN?=
+ =?utf-8?B?QjExR3U2TDJBdERMd3FZWkdrcHNPRHhPZHVFR1ZJN2VVMDZ2Mi85WHV1RDZh?=
+ =?utf-8?B?YVdVODFDa3Q0YlZlT1U2a2lBcVVVaTRQNHVSRlhHblY0dmpqL1pRaUZqRlhG?=
+ =?utf-8?B?SjhscC9uclVqUXYzM0JKVjZGNDc3elNnb1ZsQzBPMi9tendvZVJkY254d0pH?=
+ =?utf-8?B?Y1N1OVpRS2VYaWVZK28ySTF0Q2FCSTIxMVBTdDlCWExUNU1lQ2NiNThqUTAy?=
+ =?utf-8?B?VlFtUUxTaENrd1BreHAvTTIwV2lrTDlSVTI1allCMXNhYndTZlhIRlNwcXNS?=
+ =?utf-8?B?TFpoRm9qUlVpVVpsRmdMOXJLVGF1bHFzTjIxUmxLVVVNdWhhWkIvVXRFSWNI?=
+ =?utf-8?B?cjRRQWdVeUZuUjgvZC84YWd4b2tQcjBxZWRjSVZxVndCSWE5RHA2T1plTklD?=
+ =?utf-8?B?blB2Q2NWSnliNjE3cDZIb2VkV1RsNkxnY3YwRDBVSFpBMml1UXJkNXRvOHR5?=
+ =?utf-8?B?N2JlV0JaN0VGRUZqcWtpd1BhSDEyc0pTSFFENTY0eHFRd0hiUFllNytHM0JX?=
+ =?utf-8?B?eW96TytubGQ0SFlDS2c0eTNCdFY1bGpWOG5xOTE5cGJTV0t1L0E3Q1ZtaDBm?=
+ =?utf-8?B?ajFXL3NwZlFFdXVOYWk5cEZPcUIvdjlCQkQyNnRORlZ3dDVIalFKV3UzWnpH?=
+ =?utf-8?B?TzdnRmd1SW8rTyt3eGZ5Z0RRcUtKc0U1cDBjNFJiTlc0K0EyK29tcVp5by8w?=
+ =?utf-8?B?dkQvYmg5RlNqM0dzTGlEV2lGb0pMSnV5d3pQbndoSTZ5QVBMN01TYjhhblNR?=
+ =?utf-8?B?a2l2WXYzVDBEb3ZLUjEvbG9FS0RIbnVpdEMzMExRQ2VyMVl0Q3RYUysvaUg5?=
+ =?utf-8?B?b212Z0VpRXlIeHRscnYwMTFiM0VzWm13NTg2ajR6dGNDbTFweHdYK0JhZHRh?=
+ =?utf-8?B?My9QUHhjTjVCaHAyQ1puc1hJVHUvYWhKczlLL2hIblBTQmFrdWUxQTQrd0c1?=
+ =?utf-8?B?UXNROVlYVlZHU1JoZEhjY2gwZ3ZnVm5sdk54ZUlLYjJPOVU5aksySFlzOWR0?=
+ =?utf-8?B?WWt0c2psK1hwUUg2Z3hFWFNGM3RwQkFGRDViWTQ5RjRWVU84KzBCQUZYNHZw?=
+ =?utf-8?B?SDNtWEZ4RE5CRkhxT1oyUmN5Sy9qS0luRW5aQ01tVDZFQllYVEZ5RFZJQW9m?=
+ =?utf-8?B?ckJDQUNHcVJpcjF1WjAyRk9QVDdSa0dHOEJkM3FnaER5MW9QTmg1M2FrNEZz?=
+ =?utf-8?B?ZVkzOEh4Zk5HTTdycjRGN0R4ZGJDbEhvZ29qTXNQUWJCS09EbHhRODVVZnpV?=
+ =?utf-8?B?NWZ4d3ZBUXVIQXIrSW5ieTlGUUlVTkZrOVlWN3F5d2wrMG5uZi9OYXFMcXpC?=
+ =?utf-8?B?dUJUUmVPenNJbHJLMEJSc1krck4ybVZZcGVCNXoxeFVGTHFNc000czZWbEho?=
+ =?utf-8?B?U2poakZIK0tBUEwzYWMrYjZpbjZwRGFJSEQwS2FMb2U0bkZDNUZGeS9YSWtM?=
+ =?utf-8?B?dURTM0x5eVY1Ukhnci9qMWJETS8zR09FeHBDVWd4ZjR2Tm53VjlMNGtwUXMr?=
+ =?utf-8?B?WGRRbEJScW1FUzRsTVZjbXBhUWk5d2xhaEdzeWdHQ3RIV01tV0ZUUW82TGpt?=
+ =?utf-8?B?R3oySEVUVUx4Y0xoOVF0dTBjRXBwSVR5ZkluQXMwd3I0SkxLZFVRMTNXcVM2?=
+ =?utf-8?Q?+RTsYAT5mGbGUvusaNgU46R5e?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d9bf1f2a-1f59-49c7-602c-08dd781d3c6d
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB4262.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Apr 2025 10:48:32.4366
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CS1v0bVk2zHGHa7C8Qf01QqLQITCMMDvwoXiU/V5HrahAW1wxMN4lvU2P21HwMJbEDa4nh1E/6aY6aE6GZzyHQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB9460
 
-As reported by CVE-2025-29481 [1], it is possible to corrupt a BPF ELF
-file such that arbitrary BPF instructions are loaded by libbpf. This can
-be done by setting a symbol (BPF program) section offset to a large
-(unsigned) number such that <section start + symbol offset> overflows
-and points before the section data in the memory.
 
-Consider the situation below where:
-- prog_start = sec_start + symbol_offset    <-- size_t overflow here
-- prog_end   = prog_start + prog_size
 
-    prog_start        sec_start        prog_end        sec_end
-        |                |                 |              |
-        v                v                 v              v
-    .....................|################################|............
+On 4/7/2025 11:31 PM, Johannes Weiner wrote:
+> The test robot identified c2f6ea38fc1b ("mm: page_alloc: don't steal
+> single pages from biggest buddy") as the root cause of a 56.4%
+> regression in vm-scalability::lru-file-mmap-read.
+> 
+> Carlos reports an earlier patch, c0cd6f557b90 ("mm: page_alloc: fix
+> freelist movement during block conversion"), as the root cause for a
+> regression in worst-case zone->lock+irqoff hold times.
+> 
+> Both of these patches modify the page allocator's fallback path to be
+> less greedy in an effort to stave off fragmentation. The flip side of
+> this is that fallbacks are also less productive each time around,
+> which means the fallback search can run much more frequently.
+> 
+> Carlos' traces point to rmqueue_bulk() specifically, which tries to
+> refill the percpu cache by allocating a large batch of pages in a
+> loop. It highlights how once the native freelists are exhausted, the
+> fallback code first scans orders top-down for whole blocks to claim,
+> then falls back to a bottom-up search for the smallest buddy to steal.
+> For the next batch page, it goes through the same thing again.
+> 
+> This can be made more efficient. Since rmqueue_bulk() holds the
+> zone->lock over the entire batch, the freelists are not subject to
+> outside changes; when the search for a block to claim has already
+> failed, there is no point in trying again for the next page.
+> 
+> Modify __rmqueue() to remember the last successful fallback mode, and
+> restart directly from there on the next rmqueue_bulk() iteration.
+> 
+> Oliver confirms that this improves beyond the regression that the test
+> robot reported against c2f6ea38fc1b:
+> 
+> commit:
+>   f3b92176f4 ("tools/selftests: add guard region test for /proc/$pid/pagemap")
+>   c2f6ea38fc ("mm: page_alloc: don't steal single pages from biggest buddy")
+>   acc4d5ff0b ("Merge tag 'net-6.15-rc0' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
+>   2c847f27c3 ("mm: page_alloc: speed up fallbacks in rmqueue_bulk()")   <--- your patch
+> 
+> f3b92176f4f7100f c2f6ea38fc1b640aa7a2e155cc1 acc4d5ff0b61eb1715c498b6536 2c847f27c37da65a93d23c237c5
+> ---------------- --------------------------- --------------------------- ---------------------------
+>          %stddev     %change         %stddev     %change         %stddev     %change         %stddev
+>              \          |                \          |                \          |                \
+>   25525364 ±  3%     -56.4%   11135467           -57.8%   10779336           +31.6%   33581409        vm-scalability.throughput
+> 
+> Carlos confirms that worst-case times are almost fully recovered
+> compared to before the earlier culprit patch:
+> 
+>   2dd482ba627d (before freelist hygiene):    1ms
+>   c0cd6f557b90  (after freelist hygiene):   90ms
+>  next-20250319    (steal smallest buddy):  280ms
+>     this patch                          :    8ms
+> 
+> Reported-by: kernel test robot <oliver.sang@intel.com>
+> Reported-by: Carlos Song <carlos.song@nxp.com>
+> Tested-by: kernel test robot <oliver.sang@intel.com>
+> Fixes: c0cd6f557b90 ("mm: page_alloc: fix freelist movement during block conversion")
+> Fixes: c2f6ea38fc1b ("mm: page_alloc: don't steal single pages from biggest buddy")
+> Closes: https://lore.kernel.org/oe-lkp/202503271547.fc08b188-lkp@intel.com
+> Cc: stable@vger.kernel.org	# 6.10+
+> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+> ---
 
-The CVE report in [1] also provides a corrupted BPF ELF which can be
-used as a reproducer:
+Tested on AMD Zen 3 EPYC (2-socket and 1 NUMA node, 64 CPUs on each socket)
+vm-scalability/300s-lru-file-mmap-read.
 
-    $ readelf -S crash
-    Section Headers:
-      [Nr] Name              Type             Address           Offset
-           Size              EntSize          Flags  Link  Info  Align
-    ...
-      [ 2] uretprobe.mu[...] PROGBITS         0000000000000000  00000040
-           0000000000000068  0000000000000000  AX       0     0     8
+		Vanilla		Patched		Change
+Throughput	32267451	36112127 	+11.9% improvement
+Stddev% 	2477.36		2969.18		+19.8%
+Free Time	0.144072	0.148774	+3.2%
+Median		227967		249851		+9.6%
 
-    $ readelf -s crash
-    Symbol table '.symtab' contains 8 entries:
-       Num:    Value          Size Type    Bind   Vis      Ndx Name
-    ...
-         6: ffffffffffffffb8   104 FUNC    GLOBAL DEFAULT    2 handle_tp
+Tested-by: Shivank Garg <shivankg@amd.com>
 
-Here, the handle_tp prog has section offset ffffffffffffffb8, i.e. will
-point before the actual memory where section 2 is allocated.
+Thanks,
+Shivank
 
-This is also reported by AddressSanitizer:
 
-    =================================================================
-    ==1232==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x7c7302fe0000 at pc 0x7fc3046e4b77 bp 0x7ffe64677cd0 sp 0x7ffe64677490
-    READ of size 104 at 0x7c7302fe0000 thread T0
-        #0 0x7fc3046e4b76 in memcpy (/lib64/libasan.so.8+0xe4b76)
-        #1 0x00000040df3e in bpf_object__init_prog /src/libbpf/src/libbpf.c:856
-        #2 0x00000040df3e in bpf_object__add_programs /src/libbpf/src/libbpf.c:928
-        #3 0x00000040df3e in bpf_object__elf_collect /src/libbpf/src/libbpf.c:3930
-        #4 0x00000040df3e in bpf_object_open /src/libbpf/src/libbpf.c:8067
-        #5 0x00000040f176 in bpf_object__open_file /src/libbpf/src/libbpf.c:8090
-        #6 0x000000400c16 in main /poc/poc.c:8
-        #7 0x7fc3043d25b4 in __libc_start_call_main (/lib64/libc.so.6+0x35b4)
-        #8 0x7fc3043d2667 in __libc_start_main@@GLIBC_2.34 (/lib64/libc.so.6+0x3667)
-        #9 0x000000400b34 in _start (/poc/poc+0x400b34)
-
-    0x7c7302fe0000 is located 64 bytes before 104-byte region [0x7c7302fe0040,0x7c7302fe00a8)
-    allocated by thread T0 here:
-        #0 0x7fc3046e716b in malloc (/lib64/libasan.so.8+0xe716b)
-        #1 0x7fc3045ee600 in __libelf_set_rawdata_wrlock (/lib64/libelf.so.1+0xb600)
-        #2 0x7fc3045ef018 in __elf_getdata_rdlock (/lib64/libelf.so.1+0xc018)
-        #3 0x00000040642f in elf_sec_data /src/libbpf/src/libbpf.c:3740
-
-The problem here is that currently, libbpf only checks that the program
-end is within the section bounds. There used to be a check
-`while (sec_off < sec_sz)` in bpf_object__add_programs, however, it was
-removed by commit 6245947c1b3c ("libbpf: Allow gaps in BPF program
-sections to support overriden weak functions").
-
-Put the above condition back to bpf_object__init_prog to make sure that
-the program start is also within the bounds of the section to avoid the
-potential buffer overflow.
-
-[1] https://github.com/lmarch2/poc/blob/main/libbpf/libbpf.md
-
-Reported-by: lmarch2 <2524158037@qq.com>
-Cc: stable@vger.kernel.org
-Fixes: 6245947c1b3c ("libbpf: Allow gaps in BPF program sections to support overriden weak functions")
-Link: https://github.com/lmarch2/poc/blob/main/libbpf/libbpf.md
-Link: https://www.cve.org/CVERecord?id=CVE-2025-29481
-Signed-off-by: Viktor Malik <vmalik@redhat.com>
-Reviewed-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
----
- tools/lib/bpf/libbpf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 6b85060f07b3..d0ece3c9618e 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -896,7 +896,7 @@ bpf_object__add_programs(struct bpf_object *obj, Elf_Data *sec_data,
- 			return -LIBBPF_ERRNO__FORMAT;
- 		}
- 
--		if (sec_off + prog_sz > sec_sz) {
-+		if (sec_off >= sec_sz || sec_off + prog_sz > sec_sz) {
- 			pr_warn("sec '%s': program at offset %zu crosses section boundary\n",
- 				sec_name, sec_off);
- 			return -LIBBPF_ERRNO__FORMAT;
--- 
-2.49.0
 
 
