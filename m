@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-132123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AD77A846D7
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 16:50:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06F6EA846D8
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 16:50:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFEDF3B0FBD
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 14:46:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E25D3B1909
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 14:46:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AD7A28CF5E;
-	Thu, 10 Apr 2025 14:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8864928CF5F;
+	Thu, 10 Apr 2025 14:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="QOwSjq3P"
+	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="oLu2Qefl"
 X-Original-To: stable@vger.kernel.org
-Received: from forwardcorp1a.mail.yandex.net (forwardcorp1a.mail.yandex.net [178.154.239.72])
+Received: from forwardcorp1d.mail.yandex.net (forwardcorp1d.mail.yandex.net [178.154.239.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB33728EA60
-	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 14:44:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F23204F80
+	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 14:44:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744296256; cv=none; b=FVXFH1JxE4F2wJJz6UNc6lSTMbAs32GPePs/KzFovfWS3by41HTh/8SSfDOcMev5bFgz6XPYFybMwN9bf2Wb6j4qWr7M9/x0KlnY71EMNqyxzqNu6wXwCeTnq2OTxpQsbUxKxfQ5m5eXvE4GXwHLcBd97BEtApk8kJmAEEPLOKQ=
+	t=1744296285; cv=none; b=fLqKPhstsRWPgvSg4OeL40KBLY9bgLeYlFogih9ChqeslpnkMNb8b4JIPFbGr3WGxKBToVd4QD01k5DK3lr3VpxL6Nr/OhyFgvWYJXueqMXc32QK/YsOT27BnH9oqc+swK7/2USPJINhvZ5Gem8T9IL0k07TSZ5YwefqMpQMJzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744296256; c=relaxed/simple;
-	bh=ZN8Nggpneb96uqr6kMlogrApSwdzskBmY494B31w61g=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uLW7RUMSeWlxzZhNc4pDNq+UbTDZzAfgNZGKySRjFkKAQzRkYzLgiMjpHAkexmCE41J6WNt20VJgesOQg+L2B+IKGi5NFPeraW5gC2PiOWkRDonVM4B6tFli4PqN4BOnu0le/aPuaM/taz+Cd+DgQ1WVXM4X5fw10mbpN6tiNlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=QOwSjq3P; arc=none smtp.client-ip=178.154.239.72
+	s=arc-20240116; t=1744296285; c=relaxed/simple;
+	bh=FofydQ0MqcUu4QUKuNWAbs4463NgNMQkYNYWs2GXYpc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=O7W4ElGhBC0pYp+kty3diIXgPnDDyuqJaB3BtiXNY5TqUrqrtje2HVJamYJ3hKr8DIYJjjM+XlzMkPQcI7iSZfm0Eo2InngL1ISm5S1XS3RwJwN0tpHiA4v6RQea/cSCrlRKUvP/WYLMlIZp9YFf192vhpMPbdO+aAnoI7PtIGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=oLu2Qefl; arc=none smtp.client-ip=178.154.239.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
 Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:471f:0:640:4191:0])
-	by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 868F360CFA;
-	Thu, 10 Apr 2025 17:42:35 +0300 (MSK)
+	by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 5FFBD6098C;
+	Thu, 10 Apr 2025 17:43:25 +0300 (MSK)
 Received: from davydov-max-lin.yandex.net (unknown [2a02:6bf:8011:f00:b4e7:8a36:c937:5b33])
-	by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id Hgg7LB0FTmI0-onbKXPdT;
-	Thu, 10 Apr 2025 17:42:34 +0300
+	by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id DhgIQB0FcOs0-8VjmymBb;
+	Thu, 10 Apr 2025 17:43:24 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
-	s=default; t=1744296154;
-	bh=Twh953pDCJHno8PnQJ7P/Z67uy9fDFj3ZhjFhDpMSvw=;
+	s=default; t=1744296204;
+	bh=RtmbY1O4gA6c7i1Ndxbg5C95RljS2ohwn8hEdg8s/Fk=;
 	h=Message-Id:Date:Cc:Subject:To:From;
-	b=QOwSjq3PZramnk43znzyusE++T+D9GjC9dd68MxAoQqZ4H8VWS8iTEe53VMOssuzJ
-	 QkAOH7HfiFvIthpQlRQIhLXwYD8OzxCiP8LCqmjQVuhf3R8nc/LvOvO+M8s4HYwUbZ
-	 rFG2Y8O5Zy1qhf1k3kkoBZp6GMxhNSQegKmYsUxk=
+	b=oLu2QeflYWoU3yDnQkLy0nlzl6w0TGUttjzqc43F0I+5Uz/v1XmBjmsKh1z5KSMHU
+	 uAPFGAWjYQ3KwP09g13kGbdlWxztaMHvjwF48V82HRWyMnCyu2YrR0/4E4S/2LYmoV
+	 EYPB/eD/NA/w5pFUa0JenOzT4bRj+w+BXaQNN7ek=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
 From: Maksim Davydov <davydov-max@yandex-team.ru>
 To: stable@vger.kernel.org
@@ -53,9 +53,9 @@ Cc: davydov-max@yandex-team.ru,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Ravi Bangoria <ravi.bangoria@amd.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>
-Subject: [PATCH 6.6.y] x86/split_lock: Fix the delayed detection logic
-Date: Thu, 10 Apr 2025 17:41:39 +0300
-Message-Id: <20250410144139.93834-1-davydov-max@yandex-team.ru>
+Subject: [PATCH 6.1.y] x86/split_lock: Fix the delayed detection logic
+Date: Thu, 10 Apr 2025 17:43:09 +0300
+Message-Id: <20250410144309.93864-1-davydov-max@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -168,10 +168,10 @@ Link: https://lore.kernel.org/r/20250115131704.132609-1-davydov-max@yandex-team.
  1 file changed, 16 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
-index 38eeff91109f..6c0e0619e6d3 100644
+index b91f3d72bcdd..2c43a1423b09 100644
 --- a/arch/x86/kernel/cpu/intel.c
 +++ b/arch/x86/kernel/cpu/intel.c
-@@ -1168,7 +1168,13 @@ static void __split_lock_reenable(struct work_struct *work)
+@@ -1204,7 +1204,13 @@ static void __split_lock_reenable(struct work_struct *work)
  {
  	sld_update_msr(true);
  }
@@ -186,7 +186,7 @@ index 38eeff91109f..6c0e0619e6d3 100644
  
  /*
   * If a CPU goes offline with pending delayed work to re-enable split lock
-@@ -1189,7 +1195,7 @@ static int splitlock_cpu_offline(unsigned int cpu)
+@@ -1225,7 +1231,7 @@ static int splitlock_cpu_offline(unsigned int cpu)
  
  static void split_lock_warn(unsigned long ip)
  {
@@ -195,7 +195,7 @@ index 38eeff91109f..6c0e0619e6d3 100644
  	int cpu;
  
  	if (!current->reported_split_lock)
-@@ -1211,11 +1217,17 @@ static void split_lock_warn(unsigned long ip)
+@@ -1247,11 +1253,17 @@ static void split_lock_warn(unsigned long ip)
  		if (down_interruptible(&buslock_sem) == -EINTR)
  			return;
  		work = &sl_reenable_unlock;
