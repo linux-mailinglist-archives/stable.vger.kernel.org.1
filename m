@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-132142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9ADAA848EA
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 17:58:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 430EEA848F6
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 17:58:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 752521B603FC
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 15:54:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B75049C0547
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 15:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F59B1EB9E8;
-	Thu, 10 Apr 2025 15:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F6521EDA0B;
+	Thu, 10 Apr 2025 15:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LOpEsn13"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mo07hDT+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601B11E9B38
-	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 15:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40D41EC018
+	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 15:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744300415; cv=none; b=B4mSnRtlghyFXQzgmDrQuG56qg+D3kujBDTsfdlyzPBm8GlNoi7gNbp16oCBsDsBfzfVCtDb6U/92Lh9xMvy8wzER4BzbevbF2oXXuSWCgm9bsv41ASsAbnEs34ViNRD/ShKNreM8sQS9pbiyODg7iJN4jqdEeG6VDUAShhGmTA=
+	t=1744300417; cv=none; b=Oks2nkPEGXBRXF4Nc4uZ0Q/tzS+TXVi8GbQMcc5YioxZK5KvsxQ5ZmUCZuNlbGYQTIbvguOsK7xxe528tVMAMa0jk90PvtbLXt0xr2IJ9YsEYimcKttyXU2EQMZpm2G1XnwuERNJz3K5X77dBE7J1YMm7UtUlYBqjF+FHN+WxL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744300415; c=relaxed/simple;
-	bh=lRMqFF8inLhkctx9sAjt4aiwRsYeKLWnIeO+H+OTpWI=;
+	s=arc-20240116; t=1744300417; c=relaxed/simple;
+	bh=LryRdxGkt466/X/0dEZuLkx4fVO1ITfHCbp1J3Cy/dg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bRMavUc17EseWwsVWw3f7dvoAUfJAVp4pgli1+o6PbNdMHGiq1G6w+JR9KSmYK9/wZ3cLt5l+mGeF0AMDU0aIYznBzES77Jvj3h8bmvdw8nMkAAkLZqCjE/CFZPkCiR8Berjn438cKreEO0kr5KRRpL8mzv2sHOs2adgo3mgemI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LOpEsn13; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435A7C4CEDD;
-	Thu, 10 Apr 2025 15:53:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ijUu/l8kd8JNgNbHdwe8ZBk9LubXG46IAne7vpFxIs2nQvcwQWT6qlal4LLbLy008jZ9/R5hZcMWdFo6F66rGKbrmJgWTrsSZarZiQcRP3/w/G6MDvi0QC1TQ50xcycLHde3+yzq/O8QxnIUPfHQQwVZZH63u9v4+ysf8KrFRrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mo07hDT+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1BAEC4CEDD;
+	Thu, 10 Apr 2025 15:53:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744300414;
-	bh=lRMqFF8inLhkctx9sAjt4aiwRsYeKLWnIeO+H+OTpWI=;
+	s=k20201202; t=1744300417;
+	bh=LryRdxGkt466/X/0dEZuLkx4fVO1ITfHCbp1J3Cy/dg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LOpEsn13SCIh4enNZUGEARrjCQJn/xKiTR5UpPYJb22/YP+4aA2E7R9atCI7yhJ7X
-	 k38k5k6XGeqF+djSSVWFPQzJYcYPnG7XRPypqakGc6dQxzAyvN4h26Z6vfkdFypbBV
-	 f0Q3PyPlI5KBFCI352y6W6OY3dzigbN5pfucvkw+7NY782XWL+F4C02s+6ASKNiTsq
-	 2Ghv/HR7nwzSuln3id/rQvAyhH0ueuCHqYkRL0kv3aXcY3AAJeoKdEn8cqGKRl+6Zu
-	 T+iyTGsSmQ8LfbesG29pUdr1TqYh+5ZyMYmWupLJRjUPPyzE+y1qHJiq375OqXZX9j
-	 urNUHGXS1sIRg==
+	b=mo07hDT+gd4zgDxydVKUmqHyhzKwYQ2l1G5tfhl/k1lQ/jW3J3bmavHQc1M/UXd6J
+	 IwqXq50uV5Iv8o7v6db1wpVpV+1E6jBFwDMhkzcJqhPNnBej0cQcvMXEgtXM7SECXv
+	 ybRh1iu02Z81aMUCnpLYCRpCWIpOnAjjPY9z9zms6JhwuJBrEaYbXpYVQPs7590JUo
+	 sHS7myhIKzdTt2DK3au94vGqHPoP/iOpQVaFFFRhiKk10H6PjXDq2neKUSR8YpxtZh
+	 Z6lmRXyB2qd/a0832PJIQRcBzuluCS8ZLJD9qWJ+QquzOrymLAVcjSBYyPuVGAR1Ej
+	 eFiYmFv5pegiw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	broonie@kernel.org
+	vannapurve@google.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15 v3 02/11] KVM: arm64: Always start with clearing SVE flag on load
-Date: Thu, 10 Apr 2025 11:53:32 -0400
-Message-Id: <20250410112437-6c51badd1fa7bb35@stable.kernel.org>
+Subject: Re: [PATCH 6.13.y] x86/paravirt: Move halt paravirt calls under CONFIG_PARAVIRT
+Date: Thu, 10 Apr 2025 11:53:35 -0400
+Message-Id: <20250409233229-83aa147302465a90@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250408-stable-sve-5-15-v3-2-ca9a6b850f55@kernel.org>
+In-Reply-To:  <20250408125645.3856166-1-vannapurve@google.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,62 +65,69 @@ Content-Transfer-Encoding: 8bit
 Hi,
 
 Summary of potential issues:
-ℹ️ This is part 02/11 of a series
-❌ Build failures detected
+⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-The upstream commit SHA1 provided is correct: d52d165d67c5aa26c8c89909003c94a66492d23d
+Found matching upstream commit: 22cc5ca5de52bbfc36a7d4a55323f91fb4492264
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Mark Brown<broonie@kernel.org>
-Commit author: Marc Zyngier<maz@kernel.org>
+WARNING: Author mismatch between patch and found commit:
+Backport author: Vishal Annapurve<vannapurve@google.com>
+Commit author: Kirill A. Shutemov<kirill.shutemov@linux.intel.com>
 
 Status in newer kernel trees:
-6.14.y | Present (exact SHA1)
-6.13.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-6.1.y | Present (exact SHA1)
+6.14.y | Present (different SHA1: 263850bf7db9)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  d52d165d67c5a ! 1:  ab39b2accf324 KVM: arm64: Always start with clearing SVE flag on load
-    @@ Metadata
-      ## Commit message ##
-         KVM: arm64: Always start with clearing SVE flag on load
-     
-    +    [ Upstream commit d52d165d67c5aa26c8c89909003c94a66492d23d ]
-    +
-         On each vcpu load, we set the KVM_ARM64_HOST_SVE_ENABLED
-         flag if SVE is enabled for EL0 on the host. This is used to restore
-         the correct state on vpcu put.
+1:  22cc5ca5de52b ! 1:  5fca555be7cc5 x86/paravirt: Move halt paravirt calls under CONFIG_PARAVIRT
     @@ Commit message
-         Cc: stable@vger.kernel.org
-         Reviewed-by: Mark Brown <broonie@kernel.org>
-         Link: https://lore.kernel.org/r/20220528113829.1043361-2-maz@kernel.org
-    +    Signed-off-by: Mark Brown <broonie@kernel.org>
+         Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+         Cc: stable@kernel.org
+         Link: https://lore.kernel.org/r/20250228014416.3925664-2-vannapurve@google.com
+    +    (cherry picked from commit 22cc5ca5de52bbfc36a7d4a55323f91fb4492264)
      
-      ## arch/arm64/kvm/fpsimd.c ##
-     @@ arch/arm64/kvm/fpsimd.c: void kvm_arch_vcpu_load_fp(struct kvm_vcpu *vcpu)
-    @@ arch/arm64/kvm/fpsimd.c: void kvm_arch_vcpu_load_fp(struct kvm_vcpu *vcpu)
-     +	vcpu->arch.flags &= ~KVM_ARM64_HOST_SVE_ENABLED;
-      	if (read_sysreg(cpacr_el1) & CPACR_EL1_ZEN_EL0EN)
-      		vcpu->arch.flags |= KVM_ARM64_HOST_SVE_ENABLED;
-    - 
-    + }
+      ## arch/x86/include/asm/irqflags.h ##
+     @@ arch/x86/include/asm/irqflags.h: static __always_inline void native_local_irq_restore(unsigned long flags)
+    @@ arch/x86/include/asm/paravirt.h: static inline void __write_cr4(unsigned long x)
+     -	PVOP_VCALL0(irq.halt);
+     -}
+     -
+    - static inline u64 paravirt_read_msr(unsigned msr)
+    - {
+    - 	return PVOP_CALL1(u64, cpu.read_msr, msr);
+    + extern noinstr void pv_native_wbinvd(void);
+    + 
+    + static __always_inline void wbinvd(void)
+     
+      ## arch/x86/include/asm/paravirt_types.h ##
+     @@ arch/x86/include/asm/paravirt_types.h: struct pv_irq_ops {
+    @@ arch/x86/include/asm/paravirt_types.h: struct pv_irq_ops {
+      struct pv_mmu_ops {
+     
+      ## arch/x86/kernel/paravirt.c ##
+    -@@ arch/x86/kernel/paravirt.c: void paravirt_set_sched_clock(u64 (*func)(void))
+    - 	static_call_update(pv_sched_clock, func);
+    +@@ arch/x86/kernel/paravirt.c: int paravirt_disable_iospace(void)
+    + 	return request_resource(&ioport_resource, &reserve_ioports);
+      }
+      
+     +static noinstr void pv_native_safe_halt(void)
+    @@ arch/x86/kernel/paravirt.c: void paravirt_set_sched_clock(u64 (*func)(void))
+      #ifdef CONFIG_PARAVIRT_XXL
+      static noinstr void pv_native_write_cr2(unsigned long val)
+      {
+    -@@ arch/x86/kernel/paravirt.c: static noinstr void pv_native_set_debugreg(int regno, unsigned long val)
+    +@@ arch/x86/kernel/paravirt.c: noinstr void pv_native_wbinvd(void)
+      {
+    - 	native_set_debugreg(regno, val);
+    + 	native_wbinvd();
+      }
+     -
+     -static noinstr void pv_native_safe_halt(void)
 ---
-
-NOTE: These results are for this patch alone. Full series testing will be
-performed when all parts are received.
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Failed    |
-
-Build Errors:
-Build error:
-    Segmentation fault
-    make: *** [Makefile:1231: vmlinux] Error 139
-    make: Target '__all' not remade because of errors.
+| stable/linux-6.13.y       |  Success    |  Success   |
 
