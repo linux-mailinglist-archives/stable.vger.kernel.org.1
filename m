@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-132163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9943A84905
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0200A84904
 	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 17:59:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A4F81882095
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 15:55:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FA2C1895D68
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 15:55:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF291EB19D;
-	Thu, 10 Apr 2025 15:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD891EB1BD;
+	Thu, 10 Apr 2025 15:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CcPNpOcA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jOh8IG9l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E661E9B2F
-	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 15:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD1A1E9B1C
+	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 15:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744300501; cv=none; b=kJ5Lmu0aZZy/rm2Xw5KtwjENqMB25kg1K9Vz7M1KnbQWqr6Ge21czEg/zCG/XgvDTO+A0Crid+EkNuUgtJpdlUMaPIAeskxF36HsiGziEsaqb1SyKZnTvoOmxDZzAl2jxFt8FTC9b/Rs+8EYqI6oEGmltFdU+KQW3e5xI4ANhlQ=
+	t=1744300504; cv=none; b=bH0borNtztdegTXs6J+LM5xKPa0QntgF3xHtzXN6M7sODICSeR3Cqw1IHaNrlvMO+4evnhKdiH5w4cl2tYcvwdlJs7c2XAqmjnuf3yV7JQhI/KO28XhbT9dCWMWJ4loKKB6TeVf+JOlQfTXfkUgoMpjiVzpuFJA2vDYHrTs2Cxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744300501; c=relaxed/simple;
-	bh=ZGGDt1XQIilY6UHjJ14tK3fl9IqtzOetmIMD8OylJws=;
+	s=arc-20240116; t=1744300504; c=relaxed/simple;
+	bh=GxkYO68EbMIrEmHkOUWfakEmF+PjDDYx1pP+8zXZLiw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fARD+usoK2gnERI0UTV/wnMJC3AHinDmRy5a4LsKHYuI2y2CA9XgPVTum9w/Ku64BBCJ0cuVrdOl9r79GlyEIdapx/jw2liXAGfPftQIKENJ3ehy4g6cyxRBsTTwYetmm0mcbI7hPfJu39Ug6jORgxH3jBb6H/mjrLHGkwRbvjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CcPNpOcA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B194C4CEDD;
-	Thu, 10 Apr 2025 15:55:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RbDWOyFWprecjQ2wfbSOhJz1hr6I5fKT7LRtiiX5hIvW/AeiCXvZiTPT6Z0ePXswfWY3PU6K1R6zC0KbShtgbABh/ifb2Lle6kMw6MnOtrgQb/TpMb/Gz1hn7hHUKm8HPVI925L6/Ryow3qeu0LL2a8tTHt+LHkVSQCdgt1ZDeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jOh8IG9l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8056AC4CEDD;
+	Thu, 10 Apr 2025 15:55:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744300501;
-	bh=ZGGDt1XQIilY6UHjJ14tK3fl9IqtzOetmIMD8OylJws=;
+	s=k20201202; t=1744300504;
+	bh=GxkYO68EbMIrEmHkOUWfakEmF+PjDDYx1pP+8zXZLiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CcPNpOcA5PiH7vsOWB+KGoBmGNbEzd3bfNZpXu8DvZRWFhOpd+rk2NjPkO6fAuxcR
-	 lZk1XN+UmgPa73Udl6ooVRw6diV87MLOfesT8ymqxmfEJMixMnZtfPh0xtIUwI/2FH
-	 1nDAruTcUjf83s+XNnLvTNV/pf1P825zPWAnBAPzYo45kc8Zo309ffnkt3jJ0WTz+Z
-	 a8RZtDSnjJXMfgBRGR59TTPPvBJI7+Ht98AGsrTTU3EmsLy2LQU2X9ztbm38SfKOoV
-	 P92+kzh+RjLSiocWbTURDkzA1v/O/3Nslh2XXNXEw1j4itwiVZUW5a4NyqUDUvDqvn
-	 YS8Izcmby6lYg==
+	b=jOh8IG9ll1xMjK5I/H+v1Z88ierlxELtu0dORJeGvqcHdmEo6teU7CykQJlNjQFzr
+	 /g/2j/aA+z+dLYlPNYwrhE2fTYNjWB0N0FUmSnaFJ0MqHlz3HRObJwaegtML4CbAt6
+	 HdUAGDCIyEhmDYL+RBEOJypF7wKkVLRhATCdAqPdJjgXncidil2TnSGAjkWA4SjFoi
+	 NgvDf3UTl+swTxqePtBQmJOkpE/ubRSS/SIFNjubK/jpAvq0EMMUspviVYyzXkHRRU
+	 DiNT5kDbQUE46gS+wLlH0cW7msr8sbGkdJO0vs7tBy8yN5gne5W9OYjbcgRM+zPTvZ
+	 Zj7iyZYqs2DAA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	anshuman.khandual@arm.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.14.y 4/7] arm64/sysreg: Add register fields for HFGITR2_EL2
-Date: Thu, 10 Apr 2025 11:54:59 -0400
-Message-Id: <20250410101605-070c98efe8c86394@stable.kernel.org>
+Subject: Re: [PATCH 6.14.y 2/7] arm64/sysreg: Add register fields for HDFGRTR2_EL2
+Date: Thu, 10 Apr 2025 11:55:02 -0400
+Message-Id: <20250410100015-b404f9b2f1e2de30@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250408095606.1219230-5-anshuman.khandual@arm.com>
+In-Reply-To:  <20250408095606.1219230-3-anshuman.khandual@arm.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,23 +65,23 @@ Content-Transfer-Encoding: 8bit
 Hi,
 
 Summary of potential issues:
-ℹ️ This is part 4/7 of a series
+ℹ️ This is part 2/7 of a series
 ⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-Found matching upstream commit: 9401476f17747586a8bfb29abfdf5ade7a8bceef
+Found matching upstream commit: 44844551670cff70a8aa5c1cde27ad1e0367e009
 
 Note: The patch differs from the upstream commit:
 ---
-1:  9401476f17747 ! 1:  bdea87153697e arm64/sysreg: Add register fields for HFGITR2_EL2
+1:  44844551670cf ! 1:  3f5dfa41354cb arm64/sysreg: Add register fields for HDFGRTR2_EL2
     @@ Commit message
          Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-         Link: https://lore.kernel.org/r/20250203050828.1049370-5-anshuman.khandual@arm.com
+         Link: https://lore.kernel.org/r/20250203050828.1049370-3-anshuman.khandual@arm.com
          Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-    +    [cherry picked from commit 9401476f17747586a8bfb29abfdf5ade7a8bceef]
+    +    [cherry picked from commit 44844551670cff70a8aa5c1cde27ad1e0367e009]
     +    Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
      
       ## arch/arm64/tools/sysreg ##
-     @@ arch/arm64/tools/sysreg: Field	1	AMEVCNTR00_EL0
+     @@ arch/arm64/tools/sysreg: Field	0	E0HTRE
 ---
 
 NOTE: These results are for this patch alone. Full series testing will be
