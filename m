@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-132151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09665A848F0
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 17:58:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B1AFA8490C
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 17:59:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 645AF18958F8
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 15:54:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31D7C4664AB
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 15:54:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4079F1EE014;
-	Thu, 10 Apr 2025 15:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A2601EDA36;
+	Thu, 10 Apr 2025 15:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iGlsZ0oF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l82VkECR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A9B1EDA2B
-	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 15:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE931E5201
+	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 15:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744300437; cv=none; b=D4lbX94Pl0ai8DKl/+DrcLASiy/v0heIbk74sw/2CPKczMao2mKUXfzIbgojytw1TelAhdiRnNq5M79zh+1TxL7aO45rBdi2V1ZZSmRfNr7zubY4qVi2EGkS5C88h+utsGCWno+/KAHrxj5pqUgyDFKudiPxLuJwC1FiWHYwq00=
+	t=1744300439; cv=none; b=NGvXOjA98S8ipbWpoaBblwjEk2qVh+fXjKHRgEvsM8oLgZUh3W1MNZLLFDKtRYKSa3Jo/0CVtidk00jJizJQwEGTkVS7o+LShGE2ieJxRN6hHDJdjSMYOxq0xS+qj/p3FasFBYRXRFgU3d5S0wvZfpDwPw75lOYU1J97whCj6x0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744300437; c=relaxed/simple;
-	bh=TEnImJCVb5V5j157PTe24nqEjVzQ6KFJ/plApe72bO4=;
+	s=arc-20240116; t=1744300439; c=relaxed/simple;
+	bh=Cwln+eiXKtXXfFMn/Pl1dorn1RUuZjP4OdEk5UtOhLQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SIpkKyAR3ija0IyjRW95r4lhVeg+5qDc4GLNO0Ivst5Sn+iaH7vUDUOzDmuWgRuAypVru1PIvIiz7hzKfCsG9Y9FIvQhHLrN135p5UDZ7r2HuuChnbyqLWfkwoQ4y9gtnXL55Awp/+Dn5ZVsEJqLt0NvvwLPqp61l8jCYab4h28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iGlsZ0oF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B803C4CEDD;
-	Thu, 10 Apr 2025 15:53:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mvJtmfH0F/XpduOWRNOfJXPBpyg0MuKuin+e22w4GSCRQahAOEUyXCiq18ouCn6ELD2REzXLey1ThtaDbKSzF/0Dk35xhzNYjC6e3F8qhsYif+R8T5/JwNU/SZ72z7eKyORP6c1PSO+6vfwwDBYg2vgo6bFd+Pv6yIARKAe7y04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l82VkECR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D2AC4CEDD;
+	Thu, 10 Apr 2025 15:53:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744300436;
-	bh=TEnImJCVb5V5j157PTe24nqEjVzQ6KFJ/plApe72bO4=;
+	s=k20201202; t=1744300439;
+	bh=Cwln+eiXKtXXfFMn/Pl1dorn1RUuZjP4OdEk5UtOhLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iGlsZ0oFAVZ1yQ+DccpraTOROV7VD14crJPLctGH4QuSfyc2SINaSRyNmUSW1JVtY
-	 TzwT/8e95IZwnCoj3SgtrOrOnb+YNP3PsG2sY7c2vQIVu2ZP2HFBSqwzM3Rcpb2GR9
-	 aC5At0fDd1VJFQwlLzz4sQTrNJRN2NLcjieBt400bycb4FIvWVHijiWrfyN65z1Y6i
-	 nwqCmSed72YH9Opwq59RaTqPaEoF5dLIW68otwPGMWnHFamqT0ey+P9ERoPMh6uFdT
-	 mvv/auJKoWYKqJWPMoTorfbIek+UwVDRAtT4tWIgky/f51FUTcVmEAs8tPfwmxOVd6
-	 Dz5TGjjtn+lbQ==
+	b=l82VkECRuQ+m2ySZ+SUQDZsN509PMVIJL6SlaidKsIHwyvlQ7G6wYRRFLbrEBpohD
+	 yiu931YAYoOvrmD45jO9/w104uPgoJxqfrYH/7YE/3T3ZS5ZQ91OZUN9TdRhKauusb
+	 Bs1rrvob3xPAugPRjiN3T6HIUfW69VyrRfC7EHJO/j3yTO8ugfWmTGcpo6EvT8FMJp
+	 kWt/+9FrpwfGkNEpg4KTCdxGHDSUzSV9x1NyPVWE4e/Bpr1q+IZ7t65kKgI6l3XfyM
+	 4z6bbxxNVtnGcXu/RSevNgSQNX3vbfOJaFeCYGjgjTe2SRRVtaZItanOCsoflC0AiU
+	 3UJFN58WRpYFA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	anshuman.khandual@arm.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.14.y 6/7] arm64/sysreg: Add register fields for HFGWTR2_EL2
-Date: Thu, 10 Apr 2025 11:53:54 -0400
-Message-Id: <20250410103149-22d7895c37ed2075@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: jianqi.ren.cn@windriver.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15.y] drm/amd/pm: Fix negative array index read
+Date: Thu, 10 Apr 2025 11:53:57 -0400
+Message-Id: <20250409230333-75c796b94bb61fb9@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250408095606.1219230-7-anshuman.khandual@arm.com>
+In-Reply-To:  <20250408005606.3361967-1-jianqi.ren.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,32 +64,69 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-ℹ️ This is part 6/7 of a series
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Found matching upstream commit: ea37be0773f04420515b8db49e50abedbaa97e23
+The upstream commit SHA1 provided is correct: c8c19ebf7c0b202a6a2d37a52ca112432723db5f
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: <jianqi.ren.cn@windriver.com>
+Commit author: Jesse Zhang<jesse.zhang@amd.com>
+
+Status in newer kernel trees:
+6.14.y | Present (exact SHA1)
+6.13.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 4711b1347cb9)
+6.1.y | Present (different SHA1: 60f4a4bc3329)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  ea37be0773f04 ! 1:  05e641890fd7f arm64/sysreg: Add register fields for HFGWTR2_EL2
-    @@ Commit message
-         Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-         Link: https://lore.kernel.org/r/20250203050828.1049370-7-anshuman.khandual@arm.com
-         Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-    +    [cherry picked from commit ea37be0773f04420515b8db49e50abedbaa97e23]
-    +    Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+1:  c8c19ebf7c0b2 ! 1:  81f567e4957da drm/amd/pm: Fix negative array index read
+    @@ Metadata
+      ## Commit message ##
+         drm/amd/pm: Fix negative array index read
      
-      ## arch/arm64/tools/sysreg ##
-     @@ arch/arm64/tools/sysreg: Field	1	nERXGSR_EL1
+    +    [ Upstream commit c8c19ebf7c0b202a6a2d37a52ca112432723db5f ]
+    +
+         Avoid using the negative values
+         for clk_idex as an index into an array pptable->DpmDescriptor.
+     
+    @@ Commit message
+         Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+         Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+         Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+    +    [Minor conflict resolved due to code context change.]
+    +    Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
+     
+      ## drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c ##
+     @@ drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c: static int navi10_get_current_clk_freq_by_table(struct smu_context *smu,
+    @@ drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c: static int navi10_get_current_c
+      }
+      
+      static inline bool navi10_od_feature_is_supported(struct smu_11_0_overdrive_table *od_table, enum SMU_11_0_ODFEATURE_CAP cap)
+    -@@ drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c: static int navi10_emit_clk_levels(struct smu_context *smu,
+    - 		if (ret)
+    - 			return ret;
+    - 
+    --		if (!navi10_is_support_fine_grained_dpm(smu, clk_type)) {
+    -+		ret = navi10_is_support_fine_grained_dpm(smu, clk_type);
+    -+		if (ret < 0)
+    -+			return ret;
+    -+
+    -+		if (!ret) {
+    - 			for (i = 0; i < count; i++) {
+    - 				ret = smu_v11_0_get_dpm_freq_by_index(smu,
+    - 								      clk_type, i, &value);
+     @@ drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c: static int navi10_print_clk_levels(struct smu_context *smu,
+      		if (ret)
+      			return size;
 ---
-
-NOTE: These results are for this patch alone. Full series testing will be
-performed when all parts are received.
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
