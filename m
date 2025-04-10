@@ -1,90 +1,190 @@
-Return-Path: <stable+bounces-132186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FDB9A84FC7
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 00:47:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50999A84FE3
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 00:57:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25E964A1838
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 22:47:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51E4D7A9A89
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 22:55:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD900205E0F;
-	Thu, 10 Apr 2025 22:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D3420F065;
+	Thu, 10 Apr 2025 22:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="e6xef16q"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R6tV4Nsz"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC8C1D5ADE;
-	Thu, 10 Apr 2025 22:47:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1E820C470
+	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 22:56:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744325266; cv=none; b=YzxZ5U3ZmsbvVg3VwzU/NJYUQ9plyNhtqCtsphuhv8RNoG94QdnXkH++LwEJaQkDUpBbKqDIPo3Go4kZyygW2lRSzW3xf42v1KMbVdenI2tJbzRck8TN/MBGXasKJgQOR4eJ4vOKW1vFquPUems1cwqXsr5LHko9N41APqc1SAM=
+	t=1744325818; cv=none; b=dolR00fVML0UYqKtEueqBbfuXgP1r2W9QjNTxn4ssN3zfTWyZPU3SClJN4OiWjOlUq5r+gJrQV2o8y4NDBKYbWICeHGTMymM7qqH4fVR6/h1ayRrG1+NPTUbxlvz19Uf3Agot8DX1XCE4082Ynid/a++eA+OQCEaVYSSoQsUTHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744325266; c=relaxed/simple;
-	bh=1tnfPuvkdBHhkMd126G0IxK9k3gsj3KHkqYbgp6rqwk=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=t9VJB7dKsIqJ0fR3u5VO/GgfvMZXiTtgIulRHQBTRfTcBkvvq1B3VBSO1sWk60QvWpneBY3h4QknNWYr9lU0lHrf/rqu6IX7NDuA276YqQjhgrRA/6OENHkz6qYaqBiH0RN+cxlCIPmee0BamBXER1ak9ibAwwVjmn3NdsmOaUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=e6xef16q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72DF3C4CEDD;
-	Thu, 10 Apr 2025 22:47:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1744325266;
-	bh=1tnfPuvkdBHhkMd126G0IxK9k3gsj3KHkqYbgp6rqwk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=e6xef16qlSCuaWmvesXMrxudpX3PdJoqdNQrXzsVNJrRRrc/hIgkchadNM34Ppb4j
-	 YRP22ogIXwogTnAqDkh7D1n1YtKcQftorM0XAqg0S2/V4Yun6qCg+vGECTW9UKKua2
-	 l9Tu9D3P64Os0dK/iz7clScFQuOJTR8wIZOF5Qj8=
-Date: Thu, 10 Apr 2025 15:47:44 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Hugh Dickins
- <hughd@google.com>, Nicholas Piggin <npiggin@gmail.com>, Guenter Roeck
- <linux@roeck-us.net>, Juergen Gross <jgross@suse.com>, Jeremy Fitzhardinge
- <jeremy@goop.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- kasan-dev@googlegroups.com, sparclinux@vger.kernel.org,
- xen-devel@lists.xenproject.org, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] mm: Protect kernel pgtables in
- apply_to_pte_range()
-Message-Id: <20250410154744.44991b2abe5f842e34320917@linux-foundation.org>
-In-Reply-To: <Z/fauW5hDSt+ciwr@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
-References: <cover.1744128123.git.agordeev@linux.ibm.com>
-	<ef8f6538b83b7fc3372602f90375348f9b4f3596.1744128123.git.agordeev@linux.ibm.com>
-	<Z/fauW5hDSt+ciwr@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1744325818; c=relaxed/simple;
+	bh=ioO7YnFQp/5JpmP9BSFi1G6qczczKVGe499+v+64Fmc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=nm/4uIpAMfpWKDTVcFAceptJpdt6JeO0lQUC0dzWxh5QYE2yfBWjaiD+I8w4dTHWyp3K82+TiG5BM76jnDAbRfiLlqIW3pc4LoWGdGUbXHQEK9CYC15mi/Z5c36cdNEt/9YVGy+xDGGTUcxKc1J02qeqk5LuU765JkK9iNTIs5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R6tV4Nsz; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-af570998077so1143514a12.0
+        for <stable@vger.kernel.org>; Thu, 10 Apr 2025 15:56:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1744325815; x=1744930615; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aSIC6qytDmqhN54u3QCj5+Mk33tFk68mhLUykdlDCdY=;
+        b=R6tV4Nsz1qBgtfcD5P62Eo1Z5IWkpta58Bs4TyrtuZxsOvXAaPebSZ3M8AflNEZfsk
+         2aFQh2+zHh7VgD6WtpsnqhQqAvp/csOUj4FHhKSQylhSvOrIdU8ExXWgaDGrEi3QtL9I
+         gGkrejhaUgKRRqEiLbaT5/RIw3ClLlF3zYJkb2wIrKjHOweG6VViqx3Q6r08vc04uEsk
+         GUzZ9iis/+30lj0+rfOeCoc60159YTQbJrF4zX6Dcm06ubas+BsXJmBN7Y4FKLylPK/R
+         3zMzSWlluafuhDuieaoZKVrgYMZrQOjcQbELxwhkwXZIE1CPIK+gj0FaT/0d7TzFe+xT
+         yaaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744325815; x=1744930615;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aSIC6qytDmqhN54u3QCj5+Mk33tFk68mhLUykdlDCdY=;
+        b=MV/JjYoZeYOTPi4n64UCXs7Pscqf50/EyrcRR0z4/7wpmKoU1/Uzh9ut+EYwSRa7eZ
+         /VDRUuh8bFy6l+kfIOPg2bxcI8k6LABFfwRzJ2L2ZkboCT8CtowChotBmJ7VkqLwYuL8
+         EHe1KNKh9I6xqOmhIhh0zsjf40DKyFeGq0BOpbaPHPA7KOXwi/lVn1RgC22rKSXGMboD
+         jjaOijC7yFQ9JQqHShcM60IIMn+uNRUp4gkV0ssXPATB3FmbZTohVhLfwM/tELj4btWq
+         TBXk2JIYc1sZSQEolzBJnwnk9dKg1AIr1eMj5FUFjRwFNv76aXgprayss4QR3U4ebq0G
+         TRbg==
+X-Forwarded-Encrypted: i=1; AJvYcCXJptdXXI+ghIvL1c6OaxW/bTPkg3Dkgfrc1NE0V6UzXDEasHBp0c81tdztQm9QlCGEih3gthA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlA63uOd9xoJxGftCemHP+hEIi5u4PO8pnKFRhmhGYb9OWJOe+
+	pLhwpFb2qbTN8r3QsUV86Ela2la4mdS+xa3QhyCft+8oGFiY53N+w0BO7KZ9Fry8MxBjwE5VUj6
+	ZEQ==
+X-Google-Smtp-Source: AGHT+IEojre5lz+OxmngvdVqLN1KtTwsWACVjyD16MFf07sg4OiDszm756ulpW/Ml+uxcG0gRpJ7nQnFSQw=
+X-Received: from pfbgv13.prod.google.com ([2002:a05:6a00:4e8d:b0:730:848d:a5a3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:ce4a:b0:1f5:6e00:14c9
+ with SMTP id adf61e73a8af0-201797a56eemr936365637.15.1744325815468; Thu, 10
+ Apr 2025 15:56:55 -0700 (PDT)
+Date: Thu, 10 Apr 2025 15:56:53 -0700
+In-Reply-To: <20250324175707.19925-1-m.lobanov@rosa.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20250324175707.19925-1-m.lobanov@rosa.ru>
+Message-ID: <Z_hMtVGU9Sg-TTtc@google.com>
+Subject: Re: [PATCH] KVM: x86: forcibly leave SMM mode on vCPU reset
+From: Sean Christopherson <seanjc@google.com>
+To: Mikhail Lobanov <m.lobanov@rosa.ru>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Maxim Levitsky <mlevitsk@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, 10 Apr 2025 16:50:33 +0200 Alexander Gordeev <agordeev@linux.ibm.com> wrote:
+On Mon, Mar 24, 2025, Mikhail Lobanov wrote:
+> Previously, commit ed129ec9057f ("KVM: x86: forcibly leave nested mode
+> on vCPU reset") addressed an issue where a triple fault occurring in
+> nested mode could lead to use-after-free scenarios. However, the commit
+> did not handle the analogous situation for System Management Mode (SMM).
+> 
+> This omission results in triggering a WARN when a vCPU reset occurs
+> while still in SMM mode, due to the check in kvm_vcpu_reset(). This
+> situation was reprodused using Syzkaller by:
+> 1) Creating a KVM VM and vCPU
+> 2) Sending a KVM_SMI ioctl to explicitly enter SMM
+> 3) Executing invalid instructions causing consecutive exceptions and
+> eventually a triple fault
+> 
+> The issue manifests as follows:
+> 
+> WARNING: CPU: 0 PID: 25506 at arch/x86/kvm/x86.c:12112
+> kvm_vcpu_reset+0x1d2/0x1530 arch/x86/kvm/x86.c:12112
+> Modules linked in:
+> CPU: 0 PID: 25506 Comm: syz-executor.0 Not tainted
+> 6.1.130-syzkaller-00157-g164fe5dde9b6 #0
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+> BIOS 1.12.0-1 04/01/2014
+> RIP: 0010:kvm_vcpu_reset+0x1d2/0x1530 arch/x86/kvm/x86.c:12112
+> Call Trace:
+>  <TASK>
+>  shutdown_interception+0x66/0xb0 arch/x86/kvm/svm/svm.c:2136
+>  svm_invoke_exit_handler+0x110/0x530 arch/x86/kvm/svm/svm.c:3395
+>  svm_handle_exit+0x424/0x920 arch/x86/kvm/svm/svm.c:3457
+>  vcpu_enter_guest arch/x86/kvm/x86.c:10959 [inline]
+>  vcpu_run+0x2c43/0x5a90 arch/x86/kvm/x86.c:11062
+>  kvm_arch_vcpu_ioctl_run+0x50f/0x1cf0 arch/x86/kvm/x86.c:11283
+>  kvm_vcpu_ioctl+0x570/0xf00 arch/x86/kvm/../../../virt/kvm/kvm_main.c:4122
+>  vfs_ioctl fs/ioctl.c:51 [inline]
+>  __do_sys_ioctl fs/ioctl.c:870 [inline]
+>  __se_sys_ioctl fs/ioctl.c:856 [inline]
+>  __x64_sys_ioctl+0x19a/0x210 fs/ioctl.c:856
+>  do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+>  do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
+>  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+> 
+> Considering that hardware CPUs exit SMM mode completely upon receiving
+> a triple fault by triggering a hardware reset (which inherently leads
+> to exiting SMM), explicitly perform SMM exit prior to the WARN check.
+> Although subsequent code clears vCPU hflags, including the SMM flag,
+> calling kvm_smm_changed ensures the exit from SMM is handled correctly
+> and explicitly, aligning precisely with hardware behavior.
+> 
+> 
+> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+> 
+> Fixes: ed129ec9057f ("KVM: x86: forcibly leave nested mode on vCPU reset")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
+> ---
+>  arch/x86/kvm/x86.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 4b64ab350bcd..f1c95c21703a 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -12409,6 +12409,9 @@ void kvm_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event)
+>  	if (is_guest_mode(vcpu))
+>  		kvm_leave_nested(vcpu);
+>  
+> +	if (is_smm(vcpu))
+> +		kvm_smm_changed(vcpu, false);
 
-> On Tue, Apr 08, 2025 at 06:07:32PM +0200, Alexander Gordeev wrote:
-> 
-> Hi Andrew,
-> 
-> > The lazy MMU mode can only be entered and left under the protection
-> > of the page table locks for all page tables which may be modified.
-> 
-> Heiko Carstens noticed that the above claim is not valid, since
-> v6.15-rc1 commit 691ee97e1a9d ("mm: fix lazy mmu docs and usage"),
-> which restates it to:
-> 
-> "In the general case, no lock is guaranteed to be held between entry and exit
-> of the lazy mode. So the implementation must assume preemption may be enabled"
-> 
-> That effectively invalidates this patch, so it needs to be dropped.
-> 
-> Patch 2 still could be fine, except -stable and Fixes tags and it does
-> not need to aim 6.15-rcX. Do you want me to repost it?
+Hmm, this probably belongs in SVM's shutdown_interception().  Architecturally,
+INIT is blocked when the CPU is in SMM.  KVM's WARN() below is intended to guard
+against KVM bugs more than anything else, e.g. if KVM emulates INIT when it shouldn't.
 
-I dropped the whole series - let's start again.
+SHUTDOWN on SVM is a weird edge case where KVM needs to do _something_ sane with
+the VMCB, since it's technically undefined, and INIT is the least awful choice given
+KVM's ABI.
+
+I can't think off any other paths that can/should force INIT while SMM is active,
+so while it's a bit gross to have this as a one-off, I think we should do:
+
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index cc1c721ba067..5a2041bc1ba2 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -2231,6 +2231,8 @@ static int shutdown_interception(struct kvm_vcpu *vcpu)
+         */
+        if (!sev_es_guest(vcpu->kvm)) {
+                clear_page(svm->vmcb);
++               if (is_smm(vcpu))
++                       kvm_smm_changed(vcpu, false);
+                kvm_vcpu_reset(vcpu, true);
+        }
+ 
+
+
+> +
+>  	kvm_lapic_reset(vcpu, init_event);
+>  
+>  	WARN_ON_ONCE(is_guest_mode(vcpu) || is_smm(vcpu));
+> -- 
+> 2.47.2
+> 
 
