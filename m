@@ -1,103 +1,128 @@
-Return-Path: <stable+bounces-132174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1A39A8494F
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 18:11:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76971A849A3
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 18:28:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F7D03B165A
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 16:11:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FF2B9C4E14
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 16:27:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDD461EB1BC;
-	Thu, 10 Apr 2025 16:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B091E9B07;
+	Thu, 10 Apr 2025 16:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rd8vNwyF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E1sLzRZH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE0E1E1C36
-	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 16:11:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBB31D5CE8
+	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 16:27:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744301471; cv=none; b=du+se4Eeok+ZYLpYUDrYA1NCTtQNhN0eeK4VwdR0cn2Hov8dH/H6/WD/Gd9dClamghhAn9lMieJmqxQk08JrNjCDhFSv1B0FXSoJ1OsOF3Zk3aZgU3/kdx/eVMFyl/7lzwzYkPgsHuEvGGrVEEOyHDWr0DlkGtvxwNoux4D88eE=
+	t=1744302451; cv=none; b=MJZofwY+gb0o73t5gajEjirz2UBkOC1BTOSOZF7+aidLE9Ct6x1Xl2dhSv6AP1qnDqIN4r8+l/H0EkSobUE02y2G//NWi0ZVSFLPj/yJH+clBdheDRCxQBN9ThhGxGS2OKogpV3zQ690SkP9afOQBMyFz2dN0QuXm0CE3IEu+zU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744301471; c=relaxed/simple;
-	bh=8tqXQsuDeXNx3vLQ0t/YPQbw6SLxac+JG+W+sSqnyQk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fbxdcwI6wPdLAi50E1DRBeXsuqbwV6oYs3Q69A1FsXDnqivNMtELsYGGq+Ife0mEDSKcSEdLJlduyc+VEix6ZFReOHqLAQOD+AJBSZZsRmWjjZjbrqi1yENFKzNNE8Fpu37Cfqev7hpySTPT+i8yVBRc3bs5YHXNrIZgOKFzp6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rd8vNwyF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B4A0C4CEDD;
-	Thu, 10 Apr 2025 16:11:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744301469;
-	bh=8tqXQsuDeXNx3vLQ0t/YPQbw6SLxac+JG+W+sSqnyQk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Rd8vNwyFJqZOldX0GuXG56AMIwVRFru4Q3FdB7f+GweRem1lrqeMp1EPaynS3/dKf
-	 Ei354QkVJrm/pcA1rvXNDcmvGcHZKpKnGqur0frUf6O1Gn+JwDUUyEZ+tqF7PSq04G
-	 Ors5X2NrfuwzjSaM1WMf/OYg/k9r7LHJ+ZvgmppA0xuJnUkReswLvcd5vw7Aa2Ni6Y
-	 RfM8zOQz4+EPcrRv0P3QgCgF7qqUENPGpc17p2AcL6C1DuuKERzuObxbDQC0rdiF3Z
-	 bEFrrHWvYtM0DQJqbFcCH47JIIi+iIysFlG91qMQH48j+Zsu4m89yjUQX/wHOJwHC/
-	 VyWkYjjRQaq4w==
-Date: Thu, 10 Apr 2025 17:11:06 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH 5.15 v3 02/11] KVM: arm64: Always start with clearing SVE
- flag on load
-Message-ID: <05817c61-13dd-42d4-86f8-4cf76ba1df4b@sirena.org.uk>
-References: <20250408-stable-sve-5-15-v3-2-ca9a6b850f55@kernel.org>
- <20250410112437-6c51badd1fa7bb35@stable.kernel.org>
+	s=arc-20240116; t=1744302451; c=relaxed/simple;
+	bh=chKz2qbGpXeMzyi0x8vRH1CFhl6txUlwu3vv0gJbwUw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=G8h37r4tNtFyQiIqWZg+DIoElQLIghviH/esWTIJRkU7sXni/OeYJi+EXFvsEuvM5rWRUXfCm1PmJqDYy22WSXihy10Ho8hzPCUjm59nhQKKpuA9pw+uakVTgSu57nJPMMG4Mo+bCBHjkftxU4LbOu8w5ebU7qfId0UEkPG5LLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E1sLzRZH; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744302450; x=1775838450;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=chKz2qbGpXeMzyi0x8vRH1CFhl6txUlwu3vv0gJbwUw=;
+  b=E1sLzRZHzOGUbNC3Ajp86d3ICu4NV2wJo2XPZDlcugkqrRY/t28Y0t6J
+   XUDGJoWssz2UVfcdXUU/Dpb1dWOLD1QTAg+0C1p4VaGPk84KpA7mCUhjV
+   zgM5QTsioAqbekRBfXmv5zFXkqP0QrDvdOLW6glYBw/pBXwuJ0N4TqPOL
+   0sNcKXmMQ+ScGLpAit41olDO/D1yGdPRKdV5mUDdMT4LYXD4xLK6rOVbZ
+   M1bQ4IYVGLnkty0wYB18N77tfu+y4CEecv7pU+m54y2apHFIzb0DQu0It
+   eUAegCZQ2gFDyTfe2JCuk0fyMc1qt99b63GQPgNHUOKv03rxQr8pspM8V
+   w==;
+X-CSE-ConnectionGUID: WbulPEpYTfuV74OkfxbF9A==
+X-CSE-MsgGUID: Eemdmrm9Sy6PUce/yeoKlQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="63377526"
+X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; 
+   d="scan'208";a="63377526"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2025 09:27:29 -0700
+X-CSE-ConnectionGUID: VynYyzp3Sw6zOYf33MFRRA==
+X-CSE-MsgGUID: lS/peeEeTPuuQ9QBhaSONA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; 
+   d="scan'208";a="152135201"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO mwauld-desk.intel.com) ([10.245.245.125])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2025 09:27:28 -0700
+From: Matthew Auld <matthew.auld@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	stable@vger.kernel.org,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Subject: [PATCH] drm/xe/dma_buf: stop relying on placement in unmap
+Date: Thu, 10 Apr 2025 17:27:17 +0100
+Message-ID: <20250410162716.159403-2-matthew.auld@intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="L1mCirjBRMWIrkcH"
-Content-Disposition: inline
-In-Reply-To: <20250410112437-6c51badd1fa7bb35@stable.kernel.org>
-X-Cookie: You will be awarded some great honor.
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+The is_vram() is checking the current placement, however if we consider
+exported VRAM with dynamic dma-buf, it looks possible for the xe driver
+to async evict the memory, notifying the importer, however importer does
+not have to call unmap_attachment() immediately, but rather just as
+"soon as possible", like when the dma-resv idles. Following from this we
+would then pipeline the move, attaching the fence to the manager, and
+then update the current placement. But when the unmap_attachment() runs
+at some later point we might see that is_vram() is now false, and take
+the complete wrong path when dma-unmapping the sg, leading to
+explosions.
 
---L1mCirjBRMWIrkcH
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+To fix this check if the sgl was mapping a struct page.
 
-On Thu, Apr 10, 2025 at 11:53:32AM -0400, Sasha Levin wrote:
+v2:
+  - The attachment can be mapped multiple times it seems, so we can't
+    really rely on encoding something in the attachment->priv. Instead
+    see if the page_link has an encoded struct page. For vram we expect
+    this to be NULL.
 
-> Summary of potential issues:
-> =E2=84=B9=EF=B8=8F This is part 02/11 of a series
-> =E2=9D=8C Build failures detected
+Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4563
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Acked-by: Christian König <christian.koenig@amd.com>
+---
+ drivers/gpu/drm/xe/xe_dma_buf.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-> Build Errors:
-> Build error:
->     Segmentation fault
->     make: *** [Makefile:1231: vmlinux] Error 139
->     make: Target '__all' not remade because of errors.
+diff --git a/drivers/gpu/drm/xe/xe_dma_buf.c b/drivers/gpu/drm/xe/xe_dma_buf.c
+index f67803e15a0e..f7a20264ea33 100644
+--- a/drivers/gpu/drm/xe/xe_dma_buf.c
++++ b/drivers/gpu/drm/xe/xe_dma_buf.c
+@@ -145,10 +145,7 @@ static void xe_dma_buf_unmap(struct dma_buf_attachment *attach,
+ 			     struct sg_table *sgt,
+ 			     enum dma_data_direction dir)
+ {
+-	struct dma_buf *dma_buf = attach->dmabuf;
+-	struct xe_bo *bo = gem_to_xe_bo(dma_buf->priv);
+-
+-	if (!xe_bo_is_vram(bo)) {
++	if (sg_page(sgt->sgl)) {
+ 		dma_unmap_sgtable(attach->dev, sgt, dir, 0);
+ 		sg_free_table(sgt);
+ 		kfree(sgt);
+-- 
+2.49.0
 
-This looks like some sort of infrastructure issue with the linker
-crashing?  What configuration was this trying to build and with what
-toolchain?  My own per-patch build tests were successful.
-
---L1mCirjBRMWIrkcH
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmf37ZkACgkQJNaLcl1U
-h9DYVAf9HmaWlSjX17LskXru3pt+y/Q1GRBbI2OZ1gu52hc5PUZ+IxY5/UwyUsiZ
-u9PzJIHw6L5m984ZY963MEAYNSYjRXYSP9UmOzvAKvXesjNhAlUe9CvbmsWlrGue
-Pz5Hg4yP/UqXR0JLF97crLKubugHQWHg0B09qKg/zK/BEp5dlggfNfwiVnGxj5dj
-NyYsWeZiWmzhsP7IvSW0iBtdvFbo1kY9VKx5rG3REPDG4uoxARVNWes/l2cBzGrF
-mhYE27UMHDPdbm2UfIeAMobLUGoLO1xRPmiXVOb0Nj0gnaPXVxrD37Fii9vx7ZeJ
-reS1N+xXm3TtLhXgoGmzpwHqcQgM1g==
-=rNb4
------END PGP SIGNATURE-----
-
---L1mCirjBRMWIrkcH--
 
