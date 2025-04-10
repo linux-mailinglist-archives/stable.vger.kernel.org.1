@@ -1,244 +1,349 @@
-Return-Path: <stable+bounces-132130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 575E1A84813
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 17:35:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACF49A8481C
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 17:37:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3ACCE18897F8
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 15:36:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 839097AE727
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 15:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28EC51E98FF;
-	Thu, 10 Apr 2025 15:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDD821EB5D8;
+	Thu, 10 Apr 2025 15:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="MUzScDjG";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="ACNvsIPF"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="AIpO4x3n"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A837156C62;
-	Thu, 10 Apr 2025 15:35:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744299344; cv=fail; b=aTZUuTuwBYZ9HRRQq8ZReyVTE+Vb95zia4SzvfpwQJyPBZmJauDb47bdVuWsmxpa2/uEab5ronCbXedSEfb/jUt3GyRGVVDCg0oPF9AlkNop3SVzWMs+yKGTkCOWInqPOl2X0mfWTbkUJnnh0bpK+PjFyY7HAQZjUciaN5Qxw5Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744299344; c=relaxed/simple;
-	bh=4obEOeyr+l70pv46on+4b9CavXV9+s8kCAPUNpW7Vuw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=UoWYHhtapoXKhVMGCqT0UQcqkF5TxE08Jf2JFhM15Yb4+tQjE2Xuc2uxmYXpfN88m6GWHnpa51TKXmNaoHMCMTw/EaJXZj57aUSjY/iQmEjGnYTVbCgMl6fiv1ajy5+mzTnssuJdIWkXC7gXOBuWqzOs9xAhx77idOBFg58ctcA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=MUzScDjG; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=ACNvsIPF; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53AFQs6f012764;
-	Thu, 10 Apr 2025 15:35:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2023-11-20; bh=/m52cKjFsIb3RVtXB96d0fh2s1rV+mLzie8yan4U31w=; b=
-	MUzScDjGCIrHLxVfDDHSENg3wIMH6zYKf3GmL59+3KBcEihXb/d37BI4hT3WcRxS
-	rgE7K10tk0qF8dvLCH68uzvBTtH8pJp4wDQDhZS9z8vUl4v2Qhwe2N4rehdnzIBw
-	DFTQEdmkh2ZRE09hVDPW+9+QFlb8Vm9+DMK0XtrtIBH7TrkArK+i/XCOncpMxqy/
-	F0mFDkAkiUJinGAdjMPzRohMLLgPE2H4y4j1o+Dou5zdYt6uqE0Q64e/FETDiS9K
-	w+4Ju/UUCTNPnNcBN9MCpxrLpwxmTohvarJk7pYlpsVsYVhyyREhRoTRHM2+mD3x
-	1zZwGN2oLjDgTQ+/UJGdcQ==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 45xgmwg0hq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 10 Apr 2025 15:35:05 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 53AFNo5f013924;
-	Thu, 10 Apr 2025 15:35:04 GMT
-Received: from byapr05cu005.outbound.protection.outlook.com (mail-westusazlp17010005.outbound.protection.outlook.com [40.93.1.5])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 45ttyjratj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 10 Apr 2025 15:35:03 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=y9S4WShAojh1JZVlhvE12bB2KoA2Ly5BFJV2/QcC41shW8/yUUAiagG4NJcfB9KJXoJKnKjoiDa8wTXlO7QqH+VF1KyXXub7D3pmI0WWLxRE6MLaPnciOd051OseetaHKAD6xdYfwop5EYqZ6c28QGsmVfEOnIN2G0aR2hwSfIKdLugYFAzqp8dJvJ6cWpSgDU9+mEeqDLNiaI62zT8RlzpPrLibpCWj2zcY1qbkjno8lPRSV5k0NwzfUlTDWi7DsvkLIzNOjNDvSbRxXCpn/xbs8Gs+LG0WuaCJUBp287NmCcLwZJVIKEuNlowcnURHysgEXDbyzpWVueLIx4duYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/m52cKjFsIb3RVtXB96d0fh2s1rV+mLzie8yan4U31w=;
- b=M74HYEnXCAZEFkcrwehLZ4vkUHeK4BQ+o38iq/j3rL6IZBKXYnJivDhLcR8QGtGhJdsu8y2zSxIMDaCcdClh/ZqkQ/OylwGOGMguaRfkZUWtldHu7y6xnch8WUoOjQBsHb1rmWkoTR/hA83eJzWs0Wl+hReFno6vKmxAlk4CmO8QV+GXsrgx+Cw0nzytYEcj/se640tSGg0rL8sB/JHdpDWBfgSuuFFH5TQRcc5gLldvom4i1CiFuKs8Jhw8c+z6AIDrdkHZqV2o4r22Q9JSdpQSn2wWD8BuR76lXK7R2vlj9zEwiU0HCLdVrq8L1o0g8h5zsqBlQ8/twWM5yo5G5A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/m52cKjFsIb3RVtXB96d0fh2s1rV+mLzie8yan4U31w=;
- b=ACNvsIPFmc5AVqpjQ3fEQOjln0zxT+pwj7sBkkj62u52d3ZUZIjGMdc9sJgV8EBzCgG5v9qKDALUNB0BvpXpB10y4VyZeLhfJAd+FwzUurvqByXbGyqRr6LfNVlE4/gTdlSdH1xrYiOAcNoxWH5yyqrSxGWMT2Eq8vKho0xQJEE=
-Received: from SJ0PR10MB5437.namprd10.prod.outlook.com (2603:10b6:a03:3aa::8)
- by SA1PR10MB6519.namprd10.prod.outlook.com (2603:10b6:806:2b1::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8583.46; Thu, 10 Apr
- 2025 15:34:59 +0000
-Received: from SJ0PR10MB5437.namprd10.prod.outlook.com
- ([fe80::e4e9:670b:5d8f:f2af]) by SJ0PR10MB5437.namprd10.prod.outlook.com
- ([fe80::e4e9:670b:5d8f:f2af%4]) with mapi id 15.20.8606.035; Thu, 10 Apr 2025
- 15:34:59 +0000
-Message-ID: <82e8adcb-aa9a-4c94-b355-a43756a012c6@oracle.com>
-Date: Thu, 10 Apr 2025 21:04:47 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 000/281] 5.15.180-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
-        rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com,
-        broonie@kernel.org
-References: <20250409115832.538646489@linuxfoundation.org>
-Content-Language: en-US
-From: Vijayendra Suman <vijayendra.suman@oracle.com>
-In-Reply-To: <20250409115832.538646489@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI2PR01CA0007.apcprd01.prod.exchangelabs.com
- (2603:1096:4:191::11) To SJ0PR10MB5437.namprd10.prod.outlook.com
- (2603:10b6:a03:3aa::8)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE9E1EB193;
+	Thu, 10 Apr 2025 15:36:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744299418; cv=none; b=QG95AK+ssh/7k70RCwFPULCF5j9QHaGW8zPlmLPoWbLLDqSif0YFML9HGV9VIOMHNdmICAdvOQhJ8X3i+uOmGPaDcZbXo9AZahKBHU9Eux+F4/m10YRO4K0HSgj8yr9blIHQm0TGyZXQQpBP7TaPHKJ8JbU90wWhq8+53ZihQuY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744299418; c=relaxed/simple;
+	bh=KiAbrcaJ9KIqp3ummdtSlVnqDorB80kiF4Qx7afdjsM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=IikoM/R1e+r90Ds0bjXUatPvwGZ+EpKaqZGqiXlDmrcrcEO+WtBIdaO73nvGwRY6xfJnc2mK2w2YXcx5M0p2vaYqgTPGtrEddhEA8pGikiHq91Qnl/X45I1mQaX0qsUO+3hIVDygf4RkQVSTRl8yD6k+GA9uK9eQ/nnzc/T2dMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=AIpO4x3n; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4ZYP7H3fKSz9shl;
+	Thu, 10 Apr 2025 17:36:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1744299403; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P9+QqdYG4mDRVeosGe6Cms2HjBGgK+zNhnnFSTSo6Yk=;
+	b=AIpO4x3n6xHT70+tOoPw8y7k4ukvlib+2KwkPScvhWcoQE87X5acZ4Eb9qiQm0Dm+6Ahn+
+	cYjTqHC1CtpM9f+AoLmXZe4+zxFpV19Lcz8suyfRQpVNXf8fdrcCkaeYvXSeS+NuWQ9+56
+	5vnMjy2cqKS+TPO2McsXHbeJrvqJO9RQxKbLR+SdA51lbIfWNqFZiKEkmWd1JBgqfMdPKI
+	+TM/YLHdVFwDQGwqeL0a7+dpiZ/d2KpQRLgbIHI1d2WCWdxlJXwA2+Gj6IEIOhDTUQD0nA
+	Ynbcra043KVq+LPJIOu3GQvszCxOAKSoxRbLfhC+7CL7LM4RZGD2xwhm6krziA==
+Message-ID: <1a73e5fe4350d6ee4b7d807612264eb637c4f2a9.camel@mailbox.org>
+Subject: Re: [PATCH 1/3] drm/nouveau: Prevent signaled fences in pending list
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, 
+	phasta@kernel.org, Lyude Paul <lyude@redhat.com>, Danilo Krummrich
+	 <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter
+	 <simona@ffwll.ch>, Sabrina Dubroca <sd@queasysnail.net>, Sumit Semwal
+	 <sumit.semwal@linaro.org>
+Cc: dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
+	stable@vger.kernel.org
+Date: Thu, 10 Apr 2025 17:36:39 +0200
+In-Reply-To: <50c9530d-e274-4f89-8620-16afe0981239@amd.com>
+References: <20250410092418.135258-2-phasta@kernel.org>
+	 <20250410092418.135258-3-phasta@kernel.org>
+	 <8583665a-6886-4245-be49-fd8839cfe212@amd.com>
+	 <c737c89c7ce9174e349c61ab4e5712eee8946f13.camel@mailbox.org>
+	 <50c9530d-e274-4f89-8620-16afe0981239@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR10MB5437:EE_|SA1PR10MB6519:EE_
-X-MS-Office365-Filtering-Correlation-Id: 85ed0b71-b88a-4a45-3eb8-08dd78454078
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Y1NCM0tlc1pFeGt0RlEvY3ZCeTBaaTRGZFZBVkRSYXZHYnhFbGpQNUxFOEVT?=
- =?utf-8?B?OXZ2S1dNT1RtWUxOMy81aytweld5QWE2ZGVHZ1RQRHR3MGR2T2VpNHIxSm1z?=
- =?utf-8?B?UEVMejFuWEd1MURjcVNGUnArMm1YM0F2Q2VHeWZyalNsVXl2Rys3MkMyVURs?=
- =?utf-8?B?YUxCaUs0LytRaTIxcEJ0ZGpOcEM4YzJyVjFtQ25oTVFkSXRvVEJuOUE5TWto?=
- =?utf-8?B?QWpBUGlIYWpxT3hhY2hBWXFnaGdpWmUrenZacEo4Tk8zNk56eG00bnBDcUU2?=
- =?utf-8?B?UmZOWGRUMTExd1hEdlprSEFVeXVWNU4vYW9YRjlMUjRGb202NEJ6MzlDc21O?=
- =?utf-8?B?ZUNJTWw5M3hSbW5lNnlRLzNOSDBwU1FQcjJrS1N4dHlSZlRNYVY1dnZLdnRK?=
- =?utf-8?B?SmR0bU5EOEhNTFQ2SjU5RDlTSUduNjNDbmxVenVVcVdNQzNiV0FHOVJVcnVL?=
- =?utf-8?B?OXUwMU8xRml5bFFHOHliUTMxVHZnSUw5NzJuTEE4c0gzeFNuVkJPQnZrTkhB?=
- =?utf-8?B?bmszYmRHRnV6UXY3VnphWEgwYmI0c29Wd29iZmEzSTJ6QjU2RzEvRnJoaVQv?=
- =?utf-8?B?SCs4OU5ZU0NhTjVyTVQyTlZyakdadnJBTUk0dzJKWUVpdXFYdHFGaGhTRWNG?=
- =?utf-8?B?aVE2R1NoZXV2S3BHdmgxaEMrSk1BamRXT3ZnSHVudDNVU3Z6ZGVEaHhSWU5S?=
- =?utf-8?B?TVNGZTFka3JrNnQwTVpHM2hScjI4VTlZeHEwUngvK1FQMkhaK1FTMk1rbXFZ?=
- =?utf-8?B?M3hCeldHRVo0N3Ztdkp0TjBkT1hWa0t0TzZ2eXVxU3RtRjVUVHp6ZlFhQVgv?=
- =?utf-8?B?Wlg0OFlsbEtmaDJpNVJzN1FQS0ZVR3RZaVppTFVwNExNUkdCVXRwZDRSd01m?=
- =?utf-8?B?UVlQQzNNblFXTFd3a1hac0oyK00xV2lBSnRjVXpnblRRZXBzand0QzJKZXNJ?=
- =?utf-8?B?dFp3UHo1SnNLY2dOTG13Z05oTGF0UVdLS0N5MXEydEhQbEo0TE5BY0FnM3pS?=
- =?utf-8?B?NFBvK0lMbE1zaGs2TjIwUWc0VnRjOGloNE1qV3M1VkczYzdXRUtOWUwyemlH?=
- =?utf-8?B?SzB0Q1ZqUXc1d1RSZGRYekY1Nit1OGcvZWhnMXpkZHI3WkY1b3lqUVBPVlo1?=
- =?utf-8?B?STE2dkhmVjdHM1lFVUtDcEJhUG9ORmdveFFCOU1nTzFteTZOb1gvaENOdll5?=
- =?utf-8?B?RzBzQlF4NlRQTE9GZUR4YlN6WFhhZ054NHI3dVlzei9pdXN4Z09wOXJ4SEp2?=
- =?utf-8?B?WUtibVcvREdSR21sMFJsSlFuS3RnOTdSRVJBcXBwTkl0OVNBalhvZURveStG?=
- =?utf-8?B?RTBtZHM1c2xaT3U5Q1FubDdHQys5cXpvOUx5b0UvNmxqUmxNS0pBa1R3emFk?=
- =?utf-8?B?Ly9RaG9oS2UzU1lSbVJxNVlIbm81L0lmRWtvYlVPQzJNcTVXQVBGSC93c2J6?=
- =?utf-8?B?SXdGSjZ3WXpuSnYwbks4TzdsbXFvZmpBRUhYbVY5ZHhmbHJGTlRZbUhsajh1?=
- =?utf-8?B?KzlBWUdOd1hyRGptTGZxZ0V4UEI0SDhpa2lyWHhFMTQxR3VxVGZFc1NpelNz?=
- =?utf-8?B?cjJESGVuaXJNZGtDSWRPN0E1UkpRbS93b2txa0tpQlV3eUFJTkNSL2ZKTUZ6?=
- =?utf-8?B?eURUN2lSVFBrSTFPZnhCLzBjNGlib1NaRk5HbXVDZ2tLaDZXWSs4dHFDaUs3?=
- =?utf-8?B?K1dSN09NdFJLTkp4ZTBnSXVTOHlYMCt5VXMxQ1hjWXpxZVhkY2w0cGdiMVZo?=
- =?utf-8?B?L1pJd0lOUVNXRGtUdXlJalNkcWJXNSs5OWZrR0tHOE8xblVUenVLZEc5aVFj?=
- =?utf-8?B?V01rUjY4TUFSU0d2OGJpWXd6Zk92MGxoZ0Z5eGlLd1hONTA4YS9UZXhrUVFU?=
- =?utf-8?B?RHdnZUx5VjNKWXBqVC9PNjhsNXh4Z1R1ZnloZnpaMXMwRFpsZDNnY1FsRHJE?=
- =?utf-8?Q?ylH7iUfOWeo=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR10MB5437.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?T0g3OFh5bjVRTGJOcWExRUJQL0dsc3J3SVBaMXpmTmJWUTlOdHdXaHA0eWky?=
- =?utf-8?B?WWhpQVR2NGFGeGNhYjl6RUo1RWhpcWJtMXRucnFKZ0VXdHZTaFUwL1ZTS0JG?=
- =?utf-8?B?MUt5NUJoUjdkc0diMndaSE1iczlSdVliT0t0MERzZ2hZU3VQMzZqUzRIMEw4?=
- =?utf-8?B?YTZPQkxhNkNjZ1VtdlhXaXBmY3h4emEyZE9WTTRRNnBPWVdnWDNFM201R1g2?=
- =?utf-8?B?dnpLd2JqNnNhTHlVTmlvZ09LdVRtWUJEck1iaXVDeFp2enVHS0hUYWFFeS9p?=
- =?utf-8?B?YXRNbmFJdE40TTN4TlVBZlUzb0ZXb1FvaVVkMWt2cVZFSGRNL2FQVkh2Ri9u?=
- =?utf-8?B?dXBEMEtIY2FRQmYwUy9iWitWSkFnUGd1OEdWUmFSRFRaZDVYYXdtby9sSlg5?=
- =?utf-8?B?L2E3RE53RnFJL2VqVVJ1WitubTRtSC9kc0xlTUpicUNmNzNFM0V6M1BJeE1R?=
- =?utf-8?B?YlhLeTRPeDQ4ZGl5bENySG9uSkF0aXVXUTFsVmkxOGxKZU1abE5wb1BHaWNh?=
- =?utf-8?B?ZU8xYnV2VHJFNkdlOEFjcUZVUHd4MUNqQTFzY1BSK2RDS3MvQ2tVcXVsN3l3?=
- =?utf-8?B?TmdHRlB1ZUFEcVhtems5R2xXbEFCbmc3enpPNk8ycW1mTWMzZFFZaHF5SEQv?=
- =?utf-8?B?LytlVVBMdGZqWkxHMk84QUZiNXZoT3dEMW5yRmxoOWp1UHBmbWpYL2lLU1lS?=
- =?utf-8?B?c282eHhkcG52Y2pBZmRtbTE0NmZvUStyU3M1R1NqNFk3dFNXRkNzeThtK0VY?=
- =?utf-8?B?V0kydjdHeFgvbkJyaVJjUXNYUWRGK3FST1VsS2xmSXFmWk5OOC94UGQ1enlm?=
- =?utf-8?B?Rm9LemVFd3BrNmJqUktRUmpuSTR0ZlFqbnE0a2pDcFpPbUVJcU5HUm1xbXRi?=
- =?utf-8?B?Q3RlQmNtN0lwQjRtcEE3dXp2bGpPR0xyL0NjQjNQS3hiNmxnRTM2NnplOWF5?=
- =?utf-8?B?TkdwRG1lZW9aQjlCVGRMbVVqWmJnTVUvclRNRHVaYlE2bzhZa2tyMnJ6OHQ2?=
- =?utf-8?B?d1Q1d25VTnVPdzVMQTkrcnAzOGkwZEdsYXB0OFVZZVVPQ3NPWXhvMnJIWDRS?=
- =?utf-8?B?M0NvMVNXOTZoUy81NVVMOXlrYUE5bHEvTFExTUN2SElBMWdKT0pjTzUxOTRO?=
- =?utf-8?B?TXIyeERzNmdYM0YvNlVZUXFKcjh0SDJTZ0g5cHdUMHppTHJ5bEtFS0d6TSt4?=
- =?utf-8?B?Q0pyeTFiRzZYQ2xDUmIxRHR6b3E2WHhGWnJxaDNIaHA1N2ZYeFpndjlPdVpO?=
- =?utf-8?B?SEp0dlhBVlVlcmZBQ1VNY2lQT0QyV0pxeGhPY3ZUWVl1Y1EyaWNYamdQcllH?=
- =?utf-8?B?SFc2NjUwQlB5SUo5WUpRVWVuMVR4QkxXYkRsSjR1WWFSK1VmbUR3Zi9OL1Ew?=
- =?utf-8?B?K2hIcklxVTFZdW12OEc5cmJKdEJZeHNoS2R2L2d4QVc5OFdPb3F4Z0wyYWxS?=
- =?utf-8?B?YUcvcVpxeFREQW5uL1FDcmdpcHZBWEt1Q3pYVldoeFJELzVKejdvWEdmV3lD?=
- =?utf-8?B?aWQ3S3VRSkV2djIyWG1NZTh6L1gzU2ZaT0R6R0JsU2k5TERWQjN6SGJwV3lO?=
- =?utf-8?B?ZVEyKzQraHZtNTlyOVFLSUxKSWx6UlFHSkNGVmhBVk9va3Zuc293bm1hSzd3?=
- =?utf-8?B?dTFPMUNOdVVwcENiWEoyRDF3aExrSzVsa094ZTF3d3p5c1A3cGFXZ2RmRUts?=
- =?utf-8?B?SmFqZTNYYXU0dFNoWi9veEkyUzRNRWRkSDJlYWxwQzVXcm1IQTdGTWVWaEpF?=
- =?utf-8?B?QTc1RjZ3NmNnck9UN1hBUUlkKzN2YmJ3V0psOXlGYkJINytSR3ppSk4ybHY0?=
- =?utf-8?B?VndqMCtEeWhBUHhkWHRpeUFmNUJqT28xRjJyNkMraWY1SDlKN0x2TkRjRGNq?=
- =?utf-8?B?bUpaZVlZd1k5aVcrcHlESjc3V0VTcGd5UU5jdnJsSW54WmtxczIwYkZiNDJq?=
- =?utf-8?B?RHc3RjVJM21uTFZSR3krcXlWek5PZ0JybTFNUmhFeDVEVEdLV1o5Qk1XN2tD?=
- =?utf-8?B?d2MwVTZuQUthb0lQajcwWGdxM0VSaHpkUXhyRTZDUndYZFZXVmEvUnRtaG5O?=
- =?utf-8?B?SGp0eXFkMFVpbzN0MTROdUk5VWN2KzR4Mmw3aDR0ZlIxQ0xuMlpTY1F2Q29C?=
- =?utf-8?B?N0dqbzdPaE1XaVZVcTZNZzZINERzUjFYcEt3K2x3cFozMWlLWERNbGtoTUVN?=
- =?utf-8?B?NXc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	9kQ6035rbpLyGzXqgNokyyBUjQle3FxvZ/wJvrK0OpskqXO0k8mneVsirkf1AZxwwG+x8cQgh8abZLOcQk17oabwBMYIIWU2Sk+t7xHEesXT90WkW3lFYU7iSq7de7MVqHqODmxfnJBy46NDZ4rsYhFpY6vVhD/BJNNb4IZkVmO9zkwT8hznavQMz59DQTvzhERebX6/EWWVhYrgqmYe+7U4G4sHqlXMgH8d2yUBgeP877CjxNRtnwUOs3BTPYGgpSbsdIk3VmEmsOAYoHrpNdvyOTm2GekSbGdeNX+TYiA8XavyxZpKMTYcxavdLF/FpBpYOPh5iFBrSPyDdoKWH/W0auyjvdyTElj6IIQFxKBS6/3/3+mQDPB7XhHEm3yt97cxHsJvOQhE/gQUlsQ2Yvgp3G2ZWIykMvYhv7owMz6vxz9hFj9S5Jk/U0YJTMTm3gCupOsic2xKCFHqifwg0dCMjbT0frVCHxWx1PtsY7lTpACxxvJWpfgn1+ydWYpYwncSk++9FeEItTcFnAOqVDCenRQ3FIFl+6wq4JtQXEccHaZ/BeZH/EzuVgpDUGq4YOjSolkWyABgOoQfbrmCOePLSRyV8EeMKQDhDHG/d/g=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 85ed0b71-b88a-4a45-3eb8-08dd78454078
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR10MB5437.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Apr 2025 15:34:59.2243
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Mx/okjFZiJ+D4PE2YM1/+kVDxlUsmNWXch9uSZll7s5XCcHI4CiR+WKV1QBssbWGAlrJxzryBY9eaiGp2eObK9/z+L4+h4eWneRTnRF0B0Y=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR10MB6519
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-10_04,2025-04-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 adultscore=0
- mlxlogscore=999 bulkscore=0 suspectscore=0 mlxscore=0 spamscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2502280000 definitions=main-2504100113
-X-Proofpoint-GUID: fqAdiQbTTPhFw2EMN-jY1T9rppaHE59K
-X-Proofpoint-ORIG-GUID: fqAdiQbTTPhFw2EMN-jY1T9rppaHE59K
+X-MBO-RS-ID: 84ec33af105abd139b5
+X-MBO-RS-META: kiyghzsqxxi4yjsni7xcg347t76osqot
+
+On Thu, 2025-04-10 at 15:16 +0200, Christian K=C3=B6nig wrote:
+> Am 10.04.25 um 15:09 schrieb Philipp Stanner:
+> > On Thu, 2025-04-10 at 14:58 +0200, Christian K=C3=B6nig wrote:
+> > > Am 10.04.25 um 11:24 schrieb Philipp Stanner:
+> > > > Nouveau currently relies on the assumption that dma_fences will
+> > > > only
+> > > > ever get signaled through nouveau_fence_signal(), which takes
+> > > > care
+> > > > of
+> > > > removing a signaled fence from the list
+> > > > nouveau_fence_chan.pending.
+> > > >=20
+> > > > This self-imposed rule is violated in nouveau_fence_done(),
+> > > > where
+> > > > dma_fence_is_signaled() (somewhat surprisingly, considering its
+> > > > name)
+> > > > can signal the fence without removing it from the list. This
+> > > > enables
+> > > > accesses to already signaled fences through the list, which is
+> > > > a
+> > > > bug.
+> > > >=20
+> > > > In particular, it can race with nouveau_fence_context_kill(),
+> > > > which
+> > > > would then attempt to set an error code on an already signaled
+> > > > fence,
+> > > > which is illegal.
+> > > >=20
+> > > > In nouveau_fence_done(), the call to nouveau_fence_update()
+> > > > already
+> > > > ensures to signal all ready fences. Thus, the signaling
+> > > > potentially
+> > > > performed by dma_fence_is_signaled() is actually not necessary.
+> > > Ah, I now got what you are trying to do here! But that won't
+> > > help.
+> > >=20
+> > > The problem is it is perfectly valid for somebody external (e.g.
+> > > other driver, TTM etc...) to call dma_fence_is_signaled() on a
+> > > nouveau fence.
+> > >=20
+> > > This will then in turn still signal the fence and leave it on the
+> > > pending list and creating the problem you have.
+> > Good to hear =E2=80=93 precisely that then is the use case for a dma_fe=
+nce
+> > callback! ^_^ It guarantees that, no matter who signals a fence, no
+> > matter at what place, a certain action will always be performed.
+> >=20
+> > I can't think of any other mechanism which could guarantee that a
+> > signaled fence immediately gets removed from nouveau's pending
+> > list,
+> > other than the callbacks.
+> >=20
+> > But seriously, I don't think that anyone does this currently, nor
+> > do I
+> > think that anyone could get away with doing it without the entire
+> > computer burning down.
+>=20
+> Yeah, I don't think that this is possible at the moment.
+>=20
+> When you do stuff like that from the provider side you will always
+> run into lifetime issues because in the signaling from interrupt case
+> you then drop the last reference before the signaling is completed.
+>=20
+> How about the attached (not even compile tested) patch? I think it
+> should fix the issue.
+
+This patch looked correct enough for me to try it out on top of my
+memleak fix series [1] (which seems to reveal all those problems
+through races appearing due to the removal of the waitqueue in
+nouveau_sched_fini()).
+
+The code looked correct to me, but it still makes boom-boom, again
+because two parties get their fingers onto list_del():
+
+[paste in case my editor explodes again:
+https://paste.debian.net/1368705/ ]
+
+[   41.681698] list_del corruption, ff31ae696cdc86a0->next is
+LIST_POISON1 (dead000000000100)
+[   41.681720] ------------[ cut here ]------------
+[   41.681722] kernel BUG at lib/list_debug.c:56!
+[   41.681729] Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+[   41.681732] CPU: 22 UID: 42 PID: 1733 Comm: gnome-shell Not tainted
+6.14.0-rc4+ #11
+[   41.681735] Hardware name: Dell Inc. Precision 7960 Tower/01G0M6,
+BIOS 2.7.0 12/17/2024
+[   41.681737] RIP: 0010:__list_del_entry_valid_or_report+0x76/0xf0
+[   41.681743] Code: 75 66 5b b8 01 00 00 00 5d 41 5c c3 cc cc cc cc 48
+89 ef e8 4c e7 b0 ff 48 89 ea 48 89 de 48 c7 c7 38 fb b5 a0 e8 3a 6d 6b
+ff <0f> 0b 4c 89 e7 e8 30 e7 b0 ff 4c 89 e2 48 89 de 48 c7 c7 70 fb b5
+[   41.681745] RSP: 0018:ff4fe30cc0f83b30 EFLAGS: 00010246
+[   41.681748] RAX: 000000000000004e RBX: ff31ae696cdc86a0 RCX:
+0000000000000027
+[   41.681749] RDX: 0000000000000000 RSI: 0000000000000001 RDI:
+ff31ae8850321900
+[   41.681751] RBP: dead000000000100 R08: 0000000000000000 R09:
+0000000000000000
+[   41.681752] R10: 7572726f63206c65 R11: 6c65645f7473696c R12:
+dead000000000122
+[   41.681753] R13: ff31ae696cdc8662 R14: ff4fe30cc0f83cb8 R15:
+00007f68b7f9a000
+[   41.681754] FS:  00007f68bd0396c0(0000) GS:ff31ae8850300000(0000)
+knlGS:0000000000000000
+[   41.681756] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   41.681757] CR2: 00005577caaad68c CR3: 000000010407c003 CR4:
+0000000000f71ef0
+[   41.681758] DR0: 0000000000000000 DR1: 0000000000000000 DR2:
+0000000000000000
+[   41.681759] DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7:
+0000000000000400
+[   41.681760] PKRU: 55555554
+[   41.681761] Call Trace:
+[   41.681763]  <TASK>
+[   41.681764]  ? __die_body.cold+0x19/0x27
+[   41.681768]  ? die+0x2e/0x50
+[   41.681772]  ? do_trap+0xca/0x110
+[   41.681775]  ? do_error_trap+0x6a/0x90
+[   41.681776]  ? __list_del_entry_valid_or_report+0x76/0xf0
+[   41.681778]  ? exc_invalid_op+0x50/0x70
+[   41.681781]  ? __list_del_entry_valid_or_report+0x76/0xf0
+[   41.681782]  ? asm_exc_invalid_op+0x1a/0x20
+[   41.681788]  ? __list_del_entry_valid_or_report+0x76/0xf0
+[   41.681789]  nouveau_fence_is_signaled+0x47/0xc0 [nouveau]
+[   41.681961]  dma_resv_iter_walk_unlocked.part.0+0xbd/0x170
+[   41.681966]  dma_resv_test_signaled+0x53/0x100
+[   41.681969]  ttm_bo_release+0x12d/0x2f0 [ttm]
+[   41.681979]  nouveau_gem_object_del+0x54/0x80 [nouveau]
+[   41.682090]  ttm_bo_vm_close+0x41/0x60 [ttm]
+[   41.682097]  remove_vma+0x2c/0x70
+[   41.682100]  vms_complete_munmap_vmas+0xd8/0x180
+[   41.682102]  do_vmi_align_munmap+0x1d7/0x250
+[   41.682106]  do_vmi_munmap+0xd0/0x170
+[   41.682109]  __vm_munmap+0xb1/0x180
+[   41.682112]  __x64_sys_munmap+0x1b/0x30
+[   41.682115]  do_syscall_64+0x82/0x160
+[   41.682117]  ? do_user_addr_fault+0x55a/0x7b0
+[   41.682121]  ? exc_page_fault+0x7e/0x1a0
+[   41.682124]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   41.682127] RIP: 0033:0x7f68cceff02b
+[   41.682130] Code: 73 01 c3 48 8b 0d e5 6d 0f 00 f7 d8 64 89 01 48 83
+c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 0b 00 00 00 0f
+05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d b5 6d 0f 00 f7 d8 64 89 01 48
+[   41.682131] RSP: 002b:00007ffed8d00c08 EFLAGS: 00000206 ORIG_RAX:
+000000000000000b
+[   41.682134] RAX: ffffffffffffffda RBX: 00005577ca99ef50 RCX:
+00007f68cceff02b
+[   41.682135] RDX: 0000000000000000 RSI: 0000000000001000 RDI:
+00007f68b7f9a000
+[   41.682136] RBP: 00007ffed8d00c50 R08: 00005577cacc4160 R09:
+00005577caccf930
+[   41.682137] R10: 000199999996d999 R11: 0000000000000206 R12:
+0000000000000000
+[   41.682138] R13: 00007ffed8d00c60 R14: 00005577caf6c550 R15:
+0000000000000035
+[   41.682141]  </TASK>
+[   41.682141] Modules linked in: nf_conntrack_netbios_ns
+nf_conntrack_broadcast nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib
+nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct
+nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 rfkill
+ip_set nf_tables qrtr sunrpc snd_sof_pci_intel_tgl
+snd_sof_pci_intel_cnl snd_sof_intel_hda_generic snd_sof_pci
+snd_sof_xtensa_dsp snd_sof_intel_hda_common snd_soc_hdac_hda
+snd_sof_intel_hda snd_sof snd_sof_utils snd_soc_acpi_intel_match
+snd_soc_acpi snd_soc_acpi_intel_sdca_quirks snd_sof_intel_hda_mlink
+snd_soc_sdca snd_soc_avs snd_ctl_led intel_rapl_msr snd_soc_hda_codec
+snd_hda_ext_core intel_rapl_common snd_hda_codec_realtek snd_soc_core
+intel_uncore_frequency snd_hda_codec_generic
+intel_uncore_frequency_common intel_ifs snd_hda_scodec_component
+snd_hda_codec_hdmi i10nm_edac snd_compress skx_edac_common binfmt_misc
+nfit snd_hda_intel snd_intel_dspcfg snd_hda_codec libnvdimm snd_hwdep
+snd_hda_core snd_seq snd_seq_device x86_pkg_temp_thermal dell_pc
+dell_wmi
+[   41.682195]  dax_hmem platform_profile intel_powerclamp
+sparse_keymap cxl_acpi snd_pcm cxl_port coretemp iTCO_wdt cxl_core
+spi_nor intel_pmc_bxt dell_wmi_sysman rapl pmt_telemetry dell_smbios
+iTCO_vendor_support pmt_class intel_cstate snd_timer vfat dcdbas
+isst_if_mmio mtd dell_smm_hwmon dell_wmi_ddv dell_wmi_descriptor
+intel_uncore firmware_attributes_class wmi_bmof atlantic fat einj
+pcspkr isst_if_mbox_pci snd isst_if_common intel_vsec i2c_i801 mei_me
+e1000e spi_intel_pci macsec soundcore i2c_smbus spi_intel mei joydev
+loop nfnetlink zram nouveau drm_ttm_helper ttm iaa_crypto
+polyval_clmulni rtsx_pci_sdmmc polyval_generic mmc_core gpu_sched
+ghash_clmulni_intel i2c_algo_bit nvme sha512_ssse3 drm_gpuvm drm_exec
+sha256_ssse3 idxd nvme_core sha1_ssse3 drm_display_helper rtsx_pci cec
+nvme_auth idxd_bus pinctrl_alderlake ip6_tables ip_tables fuse
+[   41.682269] ---[ end trace 0000000000000000 ]---
+[   41.969442] RIP: 0010:__list_del_entry_valid_or_report+0x76/0xf0
+[   41.969458] Code: 75 66 5b b8 01 00 00 00 5d 41 5c c3 cc cc cc cc 48
+89 ef e8 4c e7 b0 ff 48 89 ea 48 89 de 48 c7 c7 38 fb b5 a0 e8 3a 6d 6b
+ff <0f> 0b 4c 89 e7 e8 30 e7 b0 ff 4c 89 e2 48 89 de 48 c7 c7 70 fb b5
+[   41.969461] RSP: 0018:ff4fe30cc0f83b30 EFLAGS: 00010246
+[   41.969464] RAX: 000000000000004e RBX: ff31ae696cdc86a0 RCX:
+0000000000000027
+[   41.969466] RDX: 0000000000000000 RSI: 0000000000000001 RDI:
+ff31ae8850321900
+[   41.969468] RBP: dead000000000100 R08: 0000000000000000 R09:
+0000000000000000
+[   41.969469] R10: 7572726f63206c65 R11: 6c65645f7473696c R12:
+dead000000000122
+[   41.969470] R13: ff31ae696cdc8662 R14: ff4fe30cc0f83cb8 R15:
+00007f68b7f9a000
+[   41.969471] FS:  00007f68bd0396c0(0000) GS:ff31ae8850300000(0000)
+knlGS:0000000000000000
+[   41.969473] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   41.969474] CR2: 00005577caaad68c CR3: 000000010407c003 CR4:
+0000000000f71ef0
+[   41.969476] DR0: 0000000000000000 DR1: 0000000000000000 DR2:
+0000000000000000
+[   41.969477] DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7:
+0000000000000400
+[   41.969478] PKRU: 55555554
+
+
+I fail to see why exactly right now, but am also quite tired. Might
+take another look the next days.
+
+Although I'm not convinced that my solution is bad either. It's
+Nouveau, after all. On this ranch a cowboy has to defend himself with
+the pitchfork instead of the colt at times.
+
+
+[1] https://lore.kernel.org/all/20250407152239.34429-2-phasta@kernel.org/
 
 
 
-On 09/04/25 5:32 pm, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.180 release.
-> There are 281 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 11 Apr 2025 11:58:00 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/ 
-> patch-5.15.180-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
+P.
 
-No issues were seen on x86_64 and aarch64 platforms with our testing.
+>=20
+> Regards,
+> Christian.
+>=20
+> >=20
+> > P.
+> >=20
+> >=20
+> >=20
+> > > Regards,
+> > > Christian.
+> > >=20
+> > > > Replace the call to dma_fence_is_signaled() with
+> > > > nouveau_fence_base_is_signaled().
+> > > >=20
+> > > > Cc: <stable@vger.kernel.org> # 4.10+, precise commit not to be
+> > > > determined
+> > > > Signed-off-by: Philipp Stanner <phasta@kernel.org>
+> > > > ---
+> > > > =C2=A0drivers/gpu/drm/nouveau/nouveau_fence.c | 2 +-
+> > > > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+> > > >=20
+> > > > diff --git a/drivers/gpu/drm/nouveau/nouveau_fence.c
+> > > > b/drivers/gpu/drm/nouveau/nouveau_fence.c
+> > > > index 7cc84472cece..33535987d8ed 100644
+> > > > --- a/drivers/gpu/drm/nouveau/nouveau_fence.c
+> > > > +++ b/drivers/gpu/drm/nouveau/nouveau_fence.c
+> > > > @@ -274,7 +274,7 @@ nouveau_fence_done(struct nouveau_fence
+> > > > *fence)
+> > > > =C2=A0			nvif_event_block(&fctx->event);
+> > > > =C2=A0		spin_unlock_irqrestore(&fctx->lock, flags);
+> > > > =C2=A0	}
+> > > > -	return dma_fence_is_signaled(&fence->base);
+> > > > +	return test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence-
+> > > > > base.flags);
+> > > > =C2=A0}
+> > > > =C2=A0
+> > > > =C2=A0static long
 
-Tested-by: Vijayendra Suman <vijayendra.suman@oracle.com>
-
-> 
-> thanks,
-> 
-> greg k-h
-
-Thanks
-Vijay
 
