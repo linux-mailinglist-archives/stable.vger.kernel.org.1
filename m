@@ -1,77 +1,132 @@
-Return-Path: <stable+bounces-132021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5935EA835B6
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 03:23:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2AC2A83582
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 03:14:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 796451B68115
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 01:23:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE04E19E6CEA
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 01:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415B8185B72;
-	Thu, 10 Apr 2025 01:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44367137923;
+	Thu, 10 Apr 2025 01:14:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="HyLJ1WhE"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092FC1A7046
-	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 01:23:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D807628E0F;
+	Thu, 10 Apr 2025 01:14:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744248207; cv=none; b=EJX/B8Fk3Nau6/QtLnMhYfHeleLGgPIgnhtdpwP+zg8uquraxnvyE27nt4W4mA7TuGOBenUVO4notG9dy4IUD8g8+17JCUEX705EPIHOJMRigZeOBzSO3IXrtnWkwJhnUV6HAeIqrqp63p85rCqFiizQkwGcUtXwWphdBWXh2zw=
+	t=1744247687; cv=none; b=nLCKAJg4h+UoTzOIzKd1h0+WhG8m3Um03+5BzgEeeRVavFQjZaci4qddqqHRUUKsKe//3RdvqJw9zGc0lGzwzgxKXjgneTZO02OjaRTKtan7c0H0fPsv2ADKiZd4ZhJsa9oZ/8F7wvddP7DRMj8vonC+Y13VKvbljU+2akr0Z8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744248207; c=relaxed/simple;
-	bh=pOZVrMfrWZwXxblXIy3b2k9R+4+tJ+rkgl/l0X+e4w8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jfZibAioc7QCEMmNUBTnHp/i/HJq7WbgEu/lszHFJRFuV8Ww/doWbROyRFYxJhbvXKJum/GCvYJSLSwkc4wOR8Y/LRlS/bnWGEMdCayau9UyLLdtT0U4VO2+hJKrVF8xFRBxucl0D1iWCuh3s4BsXLyYrhNqDAgeyQIfdLXteSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4ZY24w07RZz2TSHv;
-	Thu, 10 Apr 2025 09:18:24 +0800 (CST)
-Received: from kwepemo200002.china.huawei.com (unknown [7.202.195.209])
-	by mail.maildlp.com (Postfix) with ESMTPS id 114B81A016C;
-	Thu, 10 Apr 2025 09:23:22 +0800 (CST)
-Received: from huawei.com (10.175.124.71) by kwepemo200002.china.huawei.com
- (7.202.195.209) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 10 Apr
- 2025 09:23:20 +0800
-From: Jinjiang Tu <tujinjiang@huawei.com>
-To: <gregkh@linuxfoundation.org>, <riel@surriel.com>, <mingo@kernel.org>
-CC: <dave.hansen@linux.intel.com>, <luto@kernel.org>,
-	<mathieu.desnoyers@efficios.com>, <oliver.sang@intel.com>,
-	<patches@lists.linux.dev>, <peterz@infradead.org>, <sashal@kernel.org>,
-	<stable@vger.kernel.org>, <wangkefeng.wang@huawei.com>,
-	<tujinjiang@huawei.com>
-Subject: Re: [PATCH 6.6 046/152] x86/mm/tlb: Only trim the mm_cpumask once a second
-Date: Thu, 10 Apr 2025 09:13:29 +0800
-Message-ID: <20250410011329.2597888-1-tujinjiang@huawei.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250219082551.866842270@linuxfoundation.org>
-References: <20250219082551.866842270@linuxfoundation.org>
+	s=arc-20240116; t=1744247687; c=relaxed/simple;
+	bh=DkvV/5X2DCk8F1pk8fGBWXxLlBnfwTonnk2IELQ9B9w=;
+	h=Date:To:From:Subject:Message-Id; b=OncpEJ2c4/QdwJG/zrU45oewj0hjjjRsezXjj4J9jH197w8KyBx7/Q+SQ9sCbaMoUwiPEuXYGhIDknVx9EHb6u8GpfHJ39QfrMZO/PdgAbnsigyiFKg2GlvBExPqvSvt7LtacGMgFJFXAFc1sBYeKZNE3uA3DRIiVzQMV6Tty+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=HyLJ1WhE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F29C4CEE2;
+	Thu, 10 Apr 2025 01:14:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1744247686;
+	bh=DkvV/5X2DCk8F1pk8fGBWXxLlBnfwTonnk2IELQ9B9w=;
+	h=Date:To:From:Subject:From;
+	b=HyLJ1WhE2DT0+hmzkjprMc/3m9938PKoK+4ie7Ma2LAI0i9oeOgQRh3J1hTCeh2sQ
+	 KlVMA89BdUJDMbWVt8OyZFL+GbqyjkjBrumSOh57zVfjC54yQT7SUh+BL9TkdjgTfV
+	 txNAWYIhi/6hsLB/PbjZ2kYj8dWQz77BoWudWaqI=
+Date: Wed, 09 Apr 2025 18:14:45 -0700
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,dja@axtens.net,david@redhat.com,kirill.shutemov@linux.intel.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-fix-apply_to_existing_page_range.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250410011446.43F29C4CEE2@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemo200002.china.huawei.com (7.202.195.209)
 
-Hi,
 
-I noticed commit 6db2526c1d69 ("x86/mm/tlb: Only trim the mm_cpumask once a second")
-is aimed to fix performance regression introduced by commit 209954cbc7d0
-("x86/mm/tlb: Update mm_cpumask lazily")
+The patch titled
+     Subject: mm: fix apply_to_existing_page_range()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-fix-apply_to_existing_page_range.patch
 
-But commit 209954cbc7d0 isn't merged into stable 6.6, it seems merely
-merging commit 6db2526c1d69 into stable 6.6 is meaningless.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-fix-apply_to_existing_page_range.patch
 
-Thanks.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: mm: fix apply_to_existing_page_range()
+Date: Wed, 9 Apr 2025 12:40:43 +0300
+
+In the case of apply_to_existing_page_range(), apply_to_pte_range() is
+reached with 'create' set to false.  When !create, the loop over the PTE
+page table is broken.
+
+apply_to_pte_range() will only move to the next PTE entry if 'create' is
+true or if the current entry is not pte_none().
+
+This means that the user of apply_to_existing_page_range() will not have
+'fn' called for any entries after the first pte_none() in the PTE page
+table.
+
+Fix the loop logic in apply_to_pte_range().
+
+There are no known runtime issues from this, but the fix is trivial enough
+for stable@ even without a known buggy user. 
+
+Link: https://lkml.kernel.org/r/20250409094043.1629234-1-kirill.shutemov@linux.intel.com
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Fixes: be1db4753ee6 ("mm/memory.c: add apply_to_existing_page_range() helper")
+Cc: Daniel Axtens <dja@axtens.net>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/memory.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+--- a/mm/memory.c~mm-fix-apply_to_existing_page_range
++++ a/mm/memory.c
+@@ -2943,11 +2943,11 @@ static int apply_to_pte_range(struct mm_
+ 	if (fn) {
+ 		do {
+ 			if (create || !pte_none(ptep_get(pte))) {
+-				err = fn(pte++, addr, data);
++				err = fn(pte, addr, data);
+ 				if (err)
+ 					break;
+ 			}
+-		} while (addr += PAGE_SIZE, addr != end);
++		} while (pte++, addr += PAGE_SIZE, addr != end);
+ 	}
+ 
+ 	arch_leave_lazy_mmu_mode();
+_
+
+Patches currently in -mm which might be from kirill.shutemov@linux.intel.com are
+
+mm-page_alloc-fix-deadlock-on-cpu_hotplug_lock-in-__accept_page.patch
+mm-fix-apply_to_existing_page_range.patch
 
 
