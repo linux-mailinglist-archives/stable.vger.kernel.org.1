@@ -1,54 +1,64 @@
-Return-Path: <stable+bounces-132096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BB15A843B3
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 14:53:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2AE5A84372
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 14:42:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 790CD442A14
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 12:50:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BCD71B8207D
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 12:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA212857D6;
-	Thu, 10 Apr 2025 12:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA743284B4B;
+	Thu, 10 Apr 2025 12:39:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cxpuVsAG"
 X-Original-To: stable@vger.kernel.org
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E4E2857E1;
-	Thu, 10 Apr 2025 12:50:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.236.30
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB203284B53;
+	Thu, 10 Apr 2025 12:39:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744289436; cv=none; b=IogDotDpCkZRvqqUEXtuqCoKiUAGRiOIiTN0IssNqs1rmWV5HGaDnk18pBEg7sZlWGd3guBRAsCdERWU4dh9klSO6HB1rQLKEuBAFHTqVgoPHvOJoEtoqCykEaOBTQnePe91yf6Fd8mvBKEIQTU8+GvOaTHKVBrOfvePau5ZUJw=
+	t=1744288749; cv=none; b=leSZl57ZzKkOro1NDdnkTuu8hnviNrHC5myOWokCIGWF5SFwms83dROdkJJu3u4WjHqQq30jny2AxLtisAH7iUk3nn87ojeL/ly/WXdVgnD0Yt1khr7FDm+zL8jJJQfSh6HaSWpCAoaUe8iK9kcodPxPjAIlg7ZB3ipTRzZzZXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744289436; c=relaxed/simple;
-	bh=JZTtl48+x7XX/RdiGVmTjwgBC0HZ67XGcxpWFr/A1pU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dipjSH5Lu/ewkb+dqGvHi9FoS0gyP6W67V6+sUxwi4r0jTw2gdtnCRfBtp8f/jeJAS8Zrz4ojHBfWj0UUWdnVH59np/eFEippdMQJUeTXOxZpgyfGUOXhHII//oKjwURz6y2Effa7A+oJ4qdnJUDZqCrcCHPaY/Se0jbVr32q20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.236.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4ZYJsP6tlKz9vL4;
-	Thu, 10 Apr 2025 14:24:25 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id W6XqfgGmjU73; Thu, 10 Apr 2025 14:24:25 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4ZYJsP68B3z9s2l;
-	Thu, 10 Apr 2025 14:24:25 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id CD0BE8B764;
-	Thu, 10 Apr 2025 14:24:25 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id q8ya75z2-d-G; Thu, 10 Apr 2025 14:24:25 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 382C08B763;
-	Thu, 10 Apr 2025 14:24:25 +0200 (CEST)
-Message-ID: <66bccfab-66f0-4e67-8c81-24de09b85a81@csgroup.eu>
-Date: Thu, 10 Apr 2025 14:24:24 +0200
+	s=arc-20240116; t=1744288749; c=relaxed/simple;
+	bh=D5YjB2GVpRrw1ZnkCsESEUxsq+inna4uxA4zu0NDiZ8=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Cc:Content-Type; b=R+J792FLvROPwjEQqt5Fd8pxG62l0jJYkbcBVTbm5jZcQqgN1yQFHrWgYLheB8Id59RwCYTp+ojvvw0ezC7w4eip2ILa3XvbktNfJNEraGXrU/JbCXpjMGSKyZb64W+6alFyV8AlbtaeDv+rIINz28jm0f/uvQKJ7IQQHCBMauE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cxpuVsAG; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744288748; x=1775824748;
+  h=message-id:date:mime-version:to:from:subject:cc:
+   content-transfer-encoding;
+  bh=D5YjB2GVpRrw1ZnkCsESEUxsq+inna4uxA4zu0NDiZ8=;
+  b=cxpuVsAGLRmCeldyNdMCPqe3zXgey7LMwSO6KDi0RB5/ugFUeYVWgaHH
+   9efizGLlfZpSlMpjn4RJGTE7Nv3CJJx1q4aX6ypHjBPiTh4axQi4Wnx8i
+   +i52Mnzl/AqoyhaTBo+fho7ABMyUHeXklHpxEyNqJpeASqWp2k9akTzaX
+   v8HT7of8Cg8rZ0GG2KTpxZsN53lj9Ajnt9Q4t5VfvF7AGOvyPvDw8l+ef
+   0lNp7Pthqzc3C6s4Z+mibAO71TLTn7PlQjO/allPMXlNdAmLnnDTwQwaH
+   3JLMt7S8H2kXpWn4EBKsgjkI+rvJbzLnajv4yQyjGbWCRDZkOZXp7kbOw
+   w==;
+X-CSE-ConnectionGUID: LA+5tp3WR12TD0RHj2eSMw==
+X-CSE-MsgGUID: IIKSn8lAS26jdS8BZtHlPg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="56472873"
+X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; 
+   d="scan'208";a="56472873"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2025 05:39:06 -0700
+X-CSE-ConnectionGUID: Aw12CSFOQyuKX6n0SyxQWw==
+X-CSE-MsgGUID: wf8Wls4YT1qblH5QYpjKsQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; 
+   d="scan'208";a="129836093"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO [10.245.248.114]) ([10.245.248.114])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2025 05:39:03 -0700
+Message-ID: <1e160cc3-8fc5-4fc7-992e-b24980c55c47@linux.intel.com>
+Date: Thu, 10 Apr 2025 15:40:01 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,65 +66,28 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ASoC: fsl: fsl_qmc_audio: Reset audio data pointers on
- TRIGGER_START event
-To: Herve Codina <herve.codina@bootlin.com>,
- Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>,
- Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc: linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org
-References: <20250410091643.535627-1-herve.codina@bootlin.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20250410091643.535627-1-herve.codina@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Language: en-US
+To: stable@vger.kernel.org
+From: =?UTF-8?Q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@linux.intel.com>
+Subject: [6.12 LTS / 6.14 stable] Lenovo X1 Fold 16 Gen 1 audio support
+Cc: Bard Liao <yung-chuan.liao@linux.intel.com>, linux-sound@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, "Vehmanen, Kai" <kai.vehmanen@intel.com>,
+ Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+ Liam Girdwood <lgirdwood@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+Hi,
 
+I would like to request a backport of
+8b36447c9ae1 ("ASoC: Intel: adl: add 2xrt1316 audio configuration")
 
-Le 10/04/2025 à 11:16, Herve Codina a écrit :
-> On SNDRV_PCM_TRIGGER_START event, audio data pointers are not reset.
-> 
-> This leads to wrong data buffer usage when multiple TRIGGER_START are
-> received and ends to incorrect buffer usage between the user-space and
-> the driver. Indeed, the driver can read data that are not already set by
-> the user-space or the user-space and the driver are writing and reading
-> the same area.
-> 
-> Fix that resetting data pointers on each SNDRV_PCM_TRIGGER_START events.
-> 
-> Fixes: 075c7125b11c ("ASoC: fsl: Add support for QMC audio")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+to 6.12 LTS and 6.14 stable kernel as we have at least one affected user:
+https://github.com/thesofproject/linux/issues/5274
 
+The topology file has been already released.
 
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-
-
-Tested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-
-
-
-> ---
->   sound/soc/fsl/fsl_qmc_audio.c | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/sound/soc/fsl/fsl_qmc_audio.c b/sound/soc/fsl/fsl_qmc_audio.c
-> index b2979290c973..5614a8b909ed 100644
-> --- a/sound/soc/fsl/fsl_qmc_audio.c
-> +++ b/sound/soc/fsl/fsl_qmc_audio.c
-> @@ -250,6 +250,9 @@ static int qmc_audio_pcm_trigger(struct snd_soc_component *component,
->   	switch (cmd) {
->   	case SNDRV_PCM_TRIGGER_START:
->   		bitmap_zero(prtd->chans_pending, 64);
-> +		prtd->buffer_ended = 0;
-> +		prtd->ch_dma_addr_current = prtd->ch_dma_addr_start;
-> +
->   		if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
->   			for (i = 0; i < prtd->channels; i++)
->   				prtd->qmc_dai->chans[i].prtd_tx = prtd;
+Thanks,
+Péter
 
 
