@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-132148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF431A848ED
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 17:58:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F51A848C0
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 17:55:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C55A0189F948
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 15:54:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E0AF7B4FD3
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 15:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2B181EB5D5;
-	Thu, 10 Apr 2025 15:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3631B1EDA2F;
+	Thu, 10 Apr 2025 15:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hs6/31Yr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GUxPlU+t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F471E5201
-	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 15:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA87A1EDA2B
+	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 15:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744300429; cv=none; b=KX9UhXsrEXgxHlcVg82S/RIiiXoxaOndmE8V6eUO2Jyze0BJ9CTMdvwomUCLqsau3WpM3Hf3UptojbArQZpxXPXj1C/e0ygEWa+SnUu0fBebvrfOzxXsJnmgU4dLxUK9z+UBGf2uVK9zTh1flujmgASxz/jJpdVji6pkBYLazrc=
+	t=1744300432; cv=none; b=g6LEOeeixDDF7p1dD+jFXq5QFBwzZr3yJT/56pAk0kJlqfEugEWW2PShmNYz3o1chQCdn4BTM/6y8jtQscUWC2uBgW7lem6QDUj5kcziG+EFO0po0tdVSSpJMszUbwBVzYy+oZAjN0Ky9M7+mndi3pHGu8gGDI9jdifxL4wjkVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744300429; c=relaxed/simple;
-	bh=xjLgnUtWXfUdYegbskiPJFztrJhYoVLywjDxG8Ps80I=;
+	s=arc-20240116; t=1744300432; c=relaxed/simple;
+	bh=ssHpch7n04mvtuA4R9+qALG58X3yXRVzZ5ZJ6vqZwFk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F7GClG1jxJlwh0Nzzqh4P5SstTgSoDJUGb8DA6EnUMg5v3W8UrID85I0cEBmbf+1nIgyGNxXBSvvrXOYfl48o1QUO+AvBwSH//D5N8Vy5CImSD5k0DfIcdNRQ6Yn+e7mGzPPhzyYQR98SVgNxE+9rGw0IHlGYtTKa1adPiQLncA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hs6/31Yr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1CA0C4CEDD;
-	Thu, 10 Apr 2025 15:53:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Tyi8WSs6Qed9rcbv7kjk7vwvbeYCfS3yOLArm+TMS7tBUy/GvX+SqbyoDmKHbKjBTR4qGRjq75uKPFcJPYCdWJkVaALvaus9V922bpSZ5O47W0foFJtCMxdLoAtf69G2iHvVhx1mc3tvR6JQph0VvsuMGwNWttzCmG4KWMP7iko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GUxPlU+t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B1CBC4CEDD;
+	Thu, 10 Apr 2025 15:53:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744300429;
-	bh=xjLgnUtWXfUdYegbskiPJFztrJhYoVLywjDxG8Ps80I=;
+	s=k20201202; t=1744300431;
+	bh=ssHpch7n04mvtuA4R9+qALG58X3yXRVzZ5ZJ6vqZwFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hs6/31YrU7KkynDKuO0E3FyCV6M+I2+H5zCUD6Zuug9akJX+jeQ9QrZKs/ir3Ak4K
-	 BNH7shw0wfo+tD8UJOSBWxOk4j7VwSNB9JsNX8uPut8/u/u+CNkC3x6PMdmkCrAJxv
-	 Dvznr07HmZWwgCGKIX4TKwsS+uOBkANYuJEhC6boAh4iEwksAfRxiMdWjEEcYwXR7f
-	 zIfXrN+01oHgssubWaU4CoqCkmV9VaoKHT/6uJdBASfHLvRFIktLZFGM7RvBbrrszr
-	 JbnQDCaNot85JjgvuK6mTq7dokg7q1m4/NEj/ZjPx5cC4JczszfqCuWFq8u1yF3fpX
-	 kl6Th1EJFFSCQ==
+	b=GUxPlU+tb8FaJENw03mqUig6kV+fYuZn4NwsdXTNc0AMg8upa2BMeQShQuJpq5lOO
+	 mHRkqc6AmjMJTOlc6oTHcJkodVhb+BliWHpItIhYlrZojPEyL/xpXoNqC8kAQCo/CI
+	 j/uOVYUprzVRVh+muncnRNNjkhQXA+Jgssv9DWSnhNrBpeyufWRhbnQU3Q9Vx66O8g
+	 2hf9Z3HWQcD7sdp8THX/oXcn6LuU15q/72mxV0TVUmJX5tSMSanET+E3iNEjR7rgj7
+	 xquak2aKbNwG9Yedar18JePackU1fW4Wt00dQ/jEYWvyTbAu/BjQR00R/wBRsSPcWb
+	 a/gDQv0afCRug==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	xiangyu.chen@eng.windriver.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y] perf: Fix perf_pending_task() UaF
-Date: Thu, 10 Apr 2025 11:53:47 -0400
-Message-Id: <20250410104653-ae35cbb8469d8d56@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: jianqi.ren.cn@windriver.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10.y] drm/amd/pm: Fix negative array index read
+Date: Thu, 10 Apr 2025 11:53:49 -0400
+Message-Id: <20250409230916-8840d2154bb4e7b4@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250408061044.3786102-1-xiangyu.chen@eng.windriver.com>
+In-Reply-To:  <20250408005916.3362084-1-jianqi.ren.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,144 +64,76 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-❌ Build failures detected
-⚠️ Found follow-up fixes in mainline
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 517e6a301f34613bff24a8e35b5455884f2d83d8
+The upstream commit SHA1 provided is correct: c8c19ebf7c0b202a6a2d37a52ca112432723db5f
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Xiangyu Chen<xiangyu.chen@eng.windriver.com>
-Commit author: Peter Zijlstra<peterz@infradead.org>
+Backport author: <jianqi.ren.cn@windriver.com>
+Commit author: Jesse Zhang<jesse.zhang@amd.com>
 
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
 6.13.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-6.1.y | Present (exact SHA1)
-5.15.y | Present (different SHA1: 8bffa95ac19f)
-
-Found fixes commits:
-3a5465418f5f perf: Fix event leak upon exec and file release
-2fd5ad3f310d perf: Fix event leak upon exit
+6.6.y | Present (different SHA1: 4711b1347cb9)
+6.1.y | Present (different SHA1: 60f4a4bc3329)
+5.15.y | Present (different SHA1: d7f112ac4f8a)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  517e6a301f346 ! 1:  b2173ec15f3b2 perf: Fix perf_pending_task() UaF
+1:  c8c19ebf7c0b2 ! 1:  c12cb5c0d5794 drm/amd/pm: Fix negative array index read
     @@ Metadata
       ## Commit message ##
-         perf: Fix perf_pending_task() UaF
+         drm/amd/pm: Fix negative array index read
      
-    +    [ Upstream commit 517e6a301f34613bff24a8e35b5455884f2d83d8 ]
+    +    [ Upstream commit c8c19ebf7c0b202a6a2d37a52ca112432723db5f ]
     +
-         Per syzbot it is possible for perf_pending_task() to run after the
-         event is free()'d. There are two related but distinct cases:
+         Avoid using the negative values
+         for clk_idex as an index into an array pptable->DpmDescriptor.
      
     @@ Commit message
-         Reported-by: syzbot+9228d6098455bb209ec8@syzkaller.appspotmail.com
-         Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-         Tested-by: Marco Elver <elver@google.com>
-    +    [ Discard the changes in event_sched_out() due to 5.10 don't have the
-    +    commit: 97ba62b27867 ("perf: Add support for SIGTRAP on perf events")
-    +    and commit: ca6c21327c6a ("perf: Fix missing SIGTRAPs") ]
-    +    Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+         Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+         Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+         Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+    +    [Minor conflict resolved due to code context change.]
+    +    Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
     +    Signed-off-by: He Zhe <zhe.he@windriver.com>
      
-      ## kernel/events/core.c ##
-    -@@ kernel/events/core.c: event_sched_out(struct perf_event *event,
-    - 		    !event->pending_work) {
-    - 			event->pending_work = 1;
-    - 			dec = false;
-    -+			WARN_ON_ONCE(!atomic_long_inc_not_zero(&event->refcount));
-    - 			task_work_add(current, &event->pending_task, TWA_RESUME);
-    - 		}
-    - 		if (dec)
-     @@ kernel/events/core.c: group_sched_out(struct perf_event *group_event,
-    + }
+      ## drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c ##
+     @@ drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c: static int navi10_get_current_clk_freq_by_table(struct smu_context *smu,
+    @@ drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c: static int navi10_get_current_c
+      	dpm_desc = &pptable->DpmDescriptor[clk_index];
       
-      #define DETACH_GROUP	0x01UL
-    - #define DETACH_CHILD	0x02UL
-     +#define DETACH_DEAD	0x04UL
-      
-      /*
-    @@ kernel/events/core.c: __perf_remove_from_context(struct perf_event *event,
-      	event_sched_out(event, cpuctx, ctx);
-      	if (flags & DETACH_GROUP)
-      		perf_group_detach(event);
-    - 	if (flags & DETACH_CHILD)
-    - 		perf_child_detach(event);
-      	list_del_event(event, ctx);
-     +	if (flags & DETACH_DEAD)
-     +		event->state = PERF_EVENT_STATE_DEAD;
-    @@ kernel/events/core.c: int perf_event_release_kernel(struct perf_event *event)
-      
-      	perf_event_ctx_unlock(event, ctx);
-      
-    -@@ kernel/events/core.c: static void perf_pending_task(struct callback_head *head)
-    +@@ kernel/events/core.c: static void perf_pending_event(struct irq_work *entry)
-    + 
-      	if (rctx >= 0)
-      		perf_swevent_put_recursion_context(rctx);
-    - 	preempt_enable_notrace();
-     +
-     +	put_event(event);
+      	/* 0 - Fine grained DPM, 1 - Discrete DPM */
+    --	return dpm_desc->SnapToDiscrete == 0;
+    +-	return dpm_desc->SnapToDiscrete == 0 ? true : false;
+     +	return dpm_desc->SnapToDiscrete == 0 ? 1 : 0;
       }
       
-    - #ifdef CONFIG_GUEST_PERF_EVENTS
-    + /*
+      static inline bool navi10_od_feature_is_supported(struct smu_11_0_overdrive_table *od_table, enum SMU_11_0_ODFEATURE_CAP cap)
+    -@@ drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c: static int navi10_emit_clk_levels(struct smu_context *smu,
+    - 		if (ret)
+    - 			return ret;
+    - 
+    --		if (!navi10_is_support_fine_grained_dpm(smu, clk_type)) {
+    -+		ret = navi10_is_support_fine_grained_dpm(smu, clk_type);
+    -+		if (ret < 0)
+    -+			return ret;
+    -+
+    -+		if (!ret) {
+    - 			for (i = 0; i < count; i++) {
+    - 				ret = smu_v11_0_get_dpm_freq_by_index(smu,
+    - 								      clk_type, i, &value);
+     @@ drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c: static int navi10_print_clk_levels(struct smu_context *smu,
+      		if (ret)
+      			return size;
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Failed    |
-
-Build Errors:
-Build error for stable/linux-5.10.y:
-    kernel/trace/trace_events_synth.c: In function 'synth_event_reg':
-    kernel/trace/trace_events_synth.c:769:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
-      769 |         int ret = trace_event_reg(call, type, data);
-          |         ^~~
-    In file included from ./include/linux/kernel.h:15,
-                     from ./include/linux/list.h:9,
-                     from ./include/linux/kobject.h:19,
-                     from ./include/linux/of.h:17,
-                     from ./include/linux/clk-provider.h:9,
-                     from drivers/clk/qcom/clk-rpmh.c:6:
-    drivers/clk/qcom/clk-rpmh.c: In function 'clk_rpmh_bcm_send_cmd':
-    ./include/linux/minmax.h:20:35: warning: comparison of distinct pointer types lacks a cast [-Wcompare-distinct-pointer-types]
-       20 |         (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
-          |                                   ^~
-    ./include/linux/minmax.h:26:18: note: in expansion of macro '__typecheck'
-       26 |                 (__typecheck(x, y) && __no_side_effects(x, y))
-          |                  ^~~~~~~~~~~
-    ./include/linux/minmax.h:36:31: note: in expansion of macro '__safe_cmp'
-       36 |         __builtin_choose_expr(__safe_cmp(x, y), \
-          |                               ^~~~~~~~~~
-    ./include/linux/minmax.h:45:25: note: in expansion of macro '__careful_cmp'
-       45 | #define min(x, y)       __careful_cmp(x, y, <)
-          |                         ^~~~~~~~~~~~~
-    drivers/clk/qcom/clk-rpmh.c:273:21: note: in expansion of macro 'min'
-      273 |         cmd_state = min(cmd_state, BCM_TCS_CMD_VOTE_MASK);
-          |                     ^~~
-    drivers/firmware/efi/mokvar-table.c: In function 'efi_mokvar_table_init':
-    drivers/firmware/efi/mokvar-table.c:107:23: warning: unused variable 'size' [-Wunused-variable]
-      107 |         unsigned long size;
-          |                       ^~~~
-    .tmp_vmlinux.kallsyms2.S:196892:57: internal compiler error: Segmentation fault
-    196892 |         .byte 0x0b, 0x74, 0x77, 0x77, 0x5f, 0xb6, 0x73, 0xfc, 0x6e, 0xbd, 0x6d, 0xed
-           |                                                         ^~~~
-    0x7f74e8f6cd1f ???
-    	./signal/../sysdeps/unix/sysv/linux/x86_64/libc_sigaction.c:0
-    0x7f74e8f56d67 __libc_start_call_main
-    	../sysdeps/nptl/libc_start_call_main.h:58
-    0x7f74e8f56e24 __libc_start_main_impl
-    	../csu/libc-start.c:360
-    Please submit a full bug report, with preprocessed source (by using -freport-bug).
-    Please include the complete backtrace with any bug report.
-    See <https://gcc.gnu.org/bugs/> for instructions.
-    make: *** [Makefile:1212: vmlinux] Error 1
-    make: Target '__all' not remade because of errors.
+| stable/linux-5.10.y       |  Success    |  Success   |
 
