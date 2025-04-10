@@ -1,126 +1,126 @@
-Return-Path: <stable+bounces-132020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D2CDA83591
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 03:18:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE47FA835B8
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 03:25:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E27C173384
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 01:18:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE439462C30
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 01:25:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374FB185B72;
-	Thu, 10 Apr 2025 01:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFB02AEFE;
+	Thu, 10 Apr 2025 01:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="v09QVbDC"
+	dkim=pass (1024-bit key) header.d=jf-bd.net header.i=@jf-bd.net header.b="JadzC/S0"
 X-Original-To: stable@vger.kernel.org
-Received: from pv50p00im-hyfv10021501.me.com (pv50p00im-hyfv10021501.me.com [17.58.6.48])
+Received: from qmt20.citechco.net (qmt20.citechco.net [203.191.33.192])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DA959B71
-	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 01:18:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52F41DA4E
+	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 01:25:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.191.33.192
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744247889; cv=none; b=e9aWtvlrFc3NtUsBTLSlPqeXzkCyFJUn8LPQagd7yXfxhnp1cG8B44n7wuM6/X7hv9wLKuCPK8ZowrQbU7x5kqY5kgMH0YSsIqDoa+DEIQKofPNAl/uZYxQuClcYr0foMEQVwYx/0GVLxgCLs5hO4myP6PqVObbqz47aSaHQ0C4=
+	t=1744248333; cv=none; b=aSo+6KihyMHS0YkZ0HrsTufy33jtJu7zHdGTVc8hIW8m8Z4mz2m2J5lKqoZDz/4xhNi5RxzmRF5r9pyLKI2xdX48Kvr/ItHlKhilgrPwmJFBUVcA6w31xJIUokIwZZvXu8IxjIw1Z+Yka8xe9g0E0YP5KEuYVLT0zG1V741SvLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744247889; c=relaxed/simple;
-	bh=L0sLWjj/luVXtpTiBCBVPxJ1t4EFPXdlyg8sQAf/k0c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=BFrqAoAI7yvsMPT0qk7f1HPvdW/pcHQMSqtj42v1zJoqD4f91clGeQsUOFctCMUwHA7sT4HeYlYVN518upFUqh1hnfFI9qq7oJcl8a8NdMZIDYY5usAeBMGDPQ/GLaRYtwMGanag30jPzK5P5TiQyh4UM/cPhKpmf00KphXHZMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=v09QVbDC; arc=none smtp.client-ip=17.58.6.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; bh=kBEyT3qDEPt8tYTpXkrYGSKfX4WjFrjtoXeB5/GCzVs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme;
-	b=v09QVbDCLtVWFhV2mlOSkTWwOjHCbc9U+wux4BLXxw05nbsRVazQyqSp3hH2aMdCI
-	 +GmIcyVcnj9eEhsd85mLjQbtCqvjWzHKkxBtLKSlxdAlhtCuEUYxmzJ6/ZNlZx5fBb
-	 9Fd4ye2XAIrLUMjmyVlnpGGTLGubBE6Of5P1DV4UhcRo3JBU7svlIA/lMLc8vpWqqG
-	 HeFdtA28xVQBy7uESmmNnXPA4du/BN0F3s4xHTguOYfP4wPnHXuUsJBrbubG0uClP4
-	 xMRbyHSLddSf7OP0PGQ4sbQMN19cig81F/9GWhbRil6wKu+WM/VjpmJynx8YmeqOqa
-	 Eph22GTTvSuVw==
-Received: from pv50p00im-hyfv10021501.me.com (pv50p00im-hyfv10021501.me.com [17.58.6.48])
-	by pv50p00im-hyfv10021501.me.com (Postfix) with ESMTPS id 666042C02D7;
-	Thu, 10 Apr 2025 01:18:02 +0000 (UTC)
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-hyfv10021501.me.com (Postfix) with ESMTPSA id DB1E82C0304;
-	Thu, 10 Apr 2025 01:18:00 +0000 (UTC)
-Message-ID: <79206e66-f683-4733-894d-36e197cdde9a@icloud.com>
-Date: Thu, 10 Apr 2025 09:17:57 +0800
+	s=arc-20240116; t=1744248333; c=relaxed/simple;
+	bh=hqskI2l0bSS7XdAaXzIxsB/kNb7inziURcq7FFqQol8=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uk412hBUEHlfz4uDjcfv5mGat/GHvUm6uVXXWOpic86ObJT0qsPCXxg/JtOWNM1RWV0FYHmy/qEaAD4e5/PpIn4rgCzQsQQ5Se0AM3WllWcsjebQyndwK4OIe7UJvxvD+StZSH/9eIh4yUe7k4SmMrBm6RL4nS7S3ggXwapSuaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jf-bd.net; spf=pass smtp.mailfrom=jf-bd.net; dkim=pass (1024-bit key) header.d=jf-bd.net header.i=@jf-bd.net header.b=JadzC/S0; arc=none smtp.client-ip=203.191.33.192
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jf-bd.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jf-bd.net
+DomainKey-Signature: a=rsa-sha1; c=nofws; d=jf-bd.net; h=reply-to:from
+	:to:subject:date:message-id:mime-version:content-type
+	:content-transfer-encoding; q=dns; s=dkim1; b=bvdyuYZ7equ67DIcwT
+	RaVO8VMLAynmmZA+dnyTKzEoZYeEzgYxQ4z3Xy79jHws/7Xp/qYKqWHeO27awRc3
+	jtAactIpoRHCkykeTRTzvwOrUmt3SwDkl/gMVQlDIDG2HhAEMAGLYsxLSyGekPri
+	h78tD5pRa4OgpANK9hzPJgilg=
+DKIM-Signature: v=1; a=rsa-sha1; c=simple; d=jf-bd.net; h=reply-to:from
+	:to:subject:date:message-id:mime-version:content-type
+	:content-transfer-encoding; s=dkim1; bh=BQ4VYQ759GlRs1a2EUBRjVDV
+	aZ8=; b=JadzC/S0p79LS0k4S+2/Sql6SNGmTUel0FQLouETPhnZy8sKKLg3KKXB
+	tcMkyBZUze2gvLkfuQSOnW43CrB7v82o5UXRjiCDU9S5nzC8hhZW9K+zDkY9OqsM
+	septgOegtKCuICXEXFP9E3iLMBFfsIOpv8toJKt3Vaqk7qCzw+M=
+Received: (qmail 3677 invoked by uid 89); 10 Apr 2025 01:25:21 -0000
+Received: from unknown (HELO 179-190-173-23.cable.cabotelecom.com.br) (commercial@jf-bd.net@154.205.144.222)
+  by qmt20.citechco.net with ESMTPA; 10 Apr 2025 01:25:21 -0000
+Reply-To: winstontaylor@theleadingone.net
+From: Winston Taylor <commercial@jf-bd.net>
+To: stable@vger.kernel.org
+Subject: WTS
+Date: 9 Apr 2025 20:25:19 -0500
+Message-ID: <20250409202518.2BCC2B6B7C238171@jf-bd.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] configfs: Correct condition for returning -EEXIST in
- configfs_symlink()
-To: Pantelis Antoniou <pantelis.antoniou@konsulko.com>,
- Al Viro <viro@zeniv.linux.org.uk>, linux-kernel@vger.kernel.org,
- Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
-References: <20250408-fix_configfs-v1-0-5a4c88805df7@quicinc.com>
- <20250408-fix_configfs-v1-4-5a4c88805df7@quicinc.com>
- <Z_Wn978o-kwscN29@google.com>
-Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <Z_Wn978o-kwscN29@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: P540-XJaRz2ioCjGwMVRgiiLj6QpVStw
-X-Proofpoint-GUID: P540-XJaRz2ioCjGwMVRgiiLj6QpVStw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-09_06,2025-04-08_04,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0 spamscore=0
- suspectscore=0 mlxlogscore=954 mlxscore=0 clxscore=1015 phishscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2504100008
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2025/4/9 06:49, Joel Becker wrote:
->> configfs_symlink() returns -EEXIST under condition d_unhashed(), but the
->> condition often means the dentry does not exist.
->>
->> Fix by changing the condition to !d_unhashed().
-> I don't think this is quite right.
-> 
+Hello ,
+These are available for sale. If you=E2=80=99re interested in purchasing=20=
 
-agree.
+these, please email me
 
-> viro put this together in 351e5d869e5ac, which was a while ago.  Read
-> his comment on 351e5d869e5ac.  Because I unlock the parent directory to
-> look up the target, we can't trust our symlink dentry hasn't been
-> changed underneath us.
-> 
-> * If there is now dentry->d_inode, some other inode has been put here.
->   -EEXIST.
-> * If the dentry was unhashed, somehow the dentry we are creating was
->   removed from the dcache, and adding things to our dentry will at best
->   go nowhere, and at worst dangle in space.  I'm pretty sure viro
->   returns -EEXIST because if this dentry is unhashed, some *other*
->   dentry has entered the dcache in its place (another file type,
->   perhaps).
-> 
-> If you instead check for !d_unhashed(), you're discovering our candidate
-> dentry is still live in the dcache, which is what we expect and want.
-> 
-> How did you identify this as a problem?  Perhaps we need a more nuanced
+brand new and original
+Brand New ST8000NM017B  $70 EA
+Brand New ST20000NM007D   $100 EACH
+Brand New ST4000NM000A   $30 EA
+Brand New WD80EFPX   $60 EA
+ Brand New WD101PURZ    $70 EA
 
-for current condition to return -EEXIST, if hit d_unhashed(dentry), that
-means that "if ((dentry->d_inode == NULL) && d_unhashed(dentry)) return
--EEXIST" which looks weird and not right as well.
+Brand New CISCO C9300-48UXM-E
+Available 5
+$21800 EACH
 
-> check than d_unhashed() these days (for example, d_is_positive/negative
-> didn't exist back then).
-> 
+Intel Xeon Gold 5418Y Processors
+QTY28 $780 each
 
-any suggestions about how to correct the condition to return -EEXIST ?
+Brand New C9200L-48T-4X-E  $1000 EAC
 
-> Thanks,
-> Joel
-> 
-> PS: I enjoyed the trip down memory lane to Al reaming me quite
->     thoroughly for this API.
 
+ Brand New N9K-C93108TC-FX-24 Nexus
+9300-FX w/ 24p 100M/1/10GT & 6p 40/100G
+Available 4
+$3000 each
+
+Brand New NVIDIA GeForce RTX 4090 Founders
+Edition 24GB - QTY: 56 - $700 each
+
+Brand new Palit NVIDIA GeForce RTX 5080
+GamingPro OC card with full manufacturer
+QTY 48 $750 EAC
+
+BRAND NEW - ASUS TUF Gaming GeForce RTX =E2=84=A2 5080 16GB
+GDDR7 OC Edition Gaming Graphics Card SEALED
+QTY50  $700 EACH
+
+Condition: Grade A
+Used HP EliteBook 840 G7 i7-10610U 16GB RAM 512GB
+SSD Windows 11 Pro TOUCH Screen
+QTY 30 USD 100 each
+
+Condition: Grade A
+Used HP EliteBook 850 G8 15.6" FHD,
+INTEL I7, 256GB SSD, 8GB RAM Win11
+ QTY50 $240 EACH
+
+SK Hynix 48GB DDR5 4800 1Rx4 PC5-4800B-
+PF0-1010-XT 288pin Server EC4 RDIMM RAM
+QTY 239 $50 EACH
+
+
+-----------------------------------------------------------------
+---------------
+
+Best Regards,
+Winston Taylor
+300 Laird St, Wilkes-Barre, PA 18702, USA
+Mobile: +1 (570) 890-5512
+Email: winstontaylor@theleadingone.net
+www.theleadingone.net
 
