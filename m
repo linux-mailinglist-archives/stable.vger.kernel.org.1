@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-132141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EFDBA84900
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 17:59:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9ADAA848EA
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 17:58:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C32E917ED33
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 15:54:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 752521B603FC
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 15:54:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D504B1EBFEB;
-	Thu, 10 Apr 2025 15:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F59B1EB9E8;
+	Thu, 10 Apr 2025 15:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fxjrzbCV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LOpEsn13"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C6D1E9B38
-	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 15:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601B11E9B38
+	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 15:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744300412; cv=none; b=NeUg2ANLhgb5n+kNn/Xix1VZWgkZIyhLE3UaPVexReMhazrarOk3Y1LD5v3e1LnNw45MNid6v5bhmTg9r05qCJWubu2/rIqV1deDtx3SxRDxJCWqgq1RVZLWTaJBEzSN79o9e0uxucDOuuidTwVsE/NpOdPdJ0qv6yj1mJILfnA=
+	t=1744300415; cv=none; b=B4mSnRtlghyFXQzgmDrQuG56qg+D3kujBDTsfdlyzPBm8GlNoi7gNbp16oCBsDsBfzfVCtDb6U/92Lh9xMvy8wzER4BzbevbF2oXXuSWCgm9bsv41ASsAbnEs34ViNRD/ShKNreM8sQS9pbiyODg7iJN4jqdEeG6VDUAShhGmTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744300412; c=relaxed/simple;
-	bh=rfrxhcdwt6lAA2bSI87D9e0RLWut00c53/cKkCNzNPY=;
+	s=arc-20240116; t=1744300415; c=relaxed/simple;
+	bh=lRMqFF8inLhkctx9sAjt4aiwRsYeKLWnIeO+H+OTpWI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j9fLwpKw7bNlcPCbkTrYgvnKHEp7bPvuSx+VVYQ1Ei+CV+MRHPxLX1xk1MYcohi2x3oZfI7jRd+4fq2ydbl/4n4w3kKcaTiJ33J9aLAN3Mc7vMjrrLd2YHkY6u7gi9z75KQREgIteqavMf+QWbMrR2IwgEFNZGmh0jMbafdie6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fxjrzbCV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E233FC4CEDD;
-	Thu, 10 Apr 2025 15:53:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bRMavUc17EseWwsVWw3f7dvoAUfJAVp4pgli1+o6PbNdMHGiq1G6w+JR9KSmYK9/wZ3cLt5l+mGeF0AMDU0aIYznBzES77Jvj3h8bmvdw8nMkAAkLZqCjE/CFZPkCiR8Berjn438cKreEO0kr5KRRpL8mzv2sHOs2adgo3mgemI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LOpEsn13; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435A7C4CEDD;
+	Thu, 10 Apr 2025 15:53:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744300412;
-	bh=rfrxhcdwt6lAA2bSI87D9e0RLWut00c53/cKkCNzNPY=;
+	s=k20201202; t=1744300414;
+	bh=lRMqFF8inLhkctx9sAjt4aiwRsYeKLWnIeO+H+OTpWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fxjrzbCVXw04jn/b8vTum+JKiCclcACJY9aNZAuJ7+nu+GoZEa0FycvhCZ/nsK/hi
-	 WPxmLGKuu4dcKXd7Urfcb2eBaOMl+ULpy4p0I15uQUs9OeuPTLPugZycGXGnLM92e8
-	 z7zclFKSJWkJ51siTxlz3H1RcYsQ5Ck5azK4PuSEQ4SAsNjQiBhCO2X636IC7nWx2p
-	 fJIYU/D9QuqXv+BKhBXk4V2u8x1u6YyjrZqu34JBzvOa68stxTCQMW1s9zNB6ZRQBb
-	 c1VsSfjknSEIDygWW0+XVUj1vrJ0YJhoXSrz8ejiUXOJCLj47LuTGL2U32q+2rLMl6
-	 S1XD6YKaDMQgQ==
+	b=LOpEsn13SCIh4enNZUGEARrjCQJn/xKiTR5UpPYJb22/YP+4aA2E7R9atCI7yhJ7X
+	 k38k5k6XGeqF+djSSVWFPQzJYcYPnG7XRPypqakGc6dQxzAyvN4h26Z6vfkdFypbBV
+	 f0Q3PyPlI5KBFCI352y6W6OY3dzigbN5pfucvkw+7NY782XWL+F4C02s+6ASKNiTsq
+	 2Ghv/HR7nwzSuln3id/rQvAyhH0ueuCHqYkRL0kv3aXcY3AAJeoKdEn8cqGKRl+6Zu
+	 T+iyTGsSmQ8LfbesG29pUdr1TqYh+5ZyMYmWupLJRjUPPyzE+y1qHJiq375OqXZX9j
+	 urNUHGXS1sIRg==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Xiangyu Chen <xiangyu.chen@eng.windriver.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10/5.15] Bluetooth: hci_event: Align BR/EDR JUST_WORKS paring with LE
-Date: Thu, 10 Apr 2025 11:53:30 -0400
-Message-Id: <20250410075438-0440ea38a354d17b@stable.kernel.org>
+To: stable@vger.kernel.org,
+	broonie@kernel.org
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15 v3 02/11] KVM: arm64: Always start with clearing SVE flag on load
+Date: Thu, 10 Apr 2025 11:53:32 -0400
+Message-Id: <20250410112437-6c51badd1fa7bb35@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250410080917.2121970-1-xiangyu.chen@eng.windriver.com>
+In-Reply-To:  <20250408-stable-sve-5-15-v3-2-ca9a6b850f55@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,62 +64,63 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+ℹ️ This is part 02/11 of a series
+❌ Build failures detected
 
-The upstream commit SHA1 provided is correct: b25e11f978b63cb7857890edb3a698599cddb10e
+The upstream commit SHA1 provided is correct: d52d165d67c5aa26c8c89909003c94a66492d23d
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Xiangyu Chen<xiangyu.chen@eng.windriver.com>
-Commit author: Luiz Augusto von Dentz<luiz.von.dentz@intel.com>
+Backport author: Mark Brown<broonie@kernel.org>
+Commit author: Marc Zyngier<maz@kernel.org>
 
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
 6.13.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 830c03e58beb)
-6.1.y | Present (different SHA1: d17c631ba04e)
-5.15.y | Present (different SHA1: fc37ccc52a5f)
+6.6.y | Present (exact SHA1)
+6.1.y | Present (exact SHA1)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  b25e11f978b63 ! 1:  008d8b083b73c Bluetooth: hci_event: Align BR/EDR JUST_WORKS paring with LE
+1:  d52d165d67c5a ! 1:  ab39b2accf324 KVM: arm64: Always start with clearing SVE flag on load
     @@ Metadata
       ## Commit message ##
-         Bluetooth: hci_event: Align BR/EDR JUST_WORKS paring with LE
+         KVM: arm64: Always start with clearing SVE flag on load
      
-    +    commit b25e11f978b63cb7857890edb3a698599cddb10e upstream.
+    +    [ Upstream commit d52d165d67c5aa26c8c89909003c94a66492d23d ]
     +
-         This aligned BR/EDR JUST_WORKS method with LE which since 92516cd97fd4
-         ("Bluetooth: Always request for user confirmation for Just Works")
-         always request user confirmation with confirm_hint set since the
+         On each vcpu load, we set the KVM_ARM64_HOST_SVE_ENABLED
+         flag if SVE is enabled for EL0 on the host. This is used to restore
+         the correct state on vpcu put.
     @@ Commit message
-         Fixes: ba15a58b179e ("Bluetooth: Fix SSP acceptor just-works confirmation without MITM")
-         Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-         Tested-by: Kiran K <kiran.k@intel.com>
-    +    Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
-    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
+         Cc: stable@vger.kernel.org
+         Reviewed-by: Mark Brown <broonie@kernel.org>
+         Link: https://lore.kernel.org/r/20220528113829.1043361-2-maz@kernel.org
+    +    Signed-off-by: Mark Brown <broonie@kernel.org>
      
-      ## net/bluetooth/hci_event.c ##
-    -@@ net/bluetooth/hci_event.c: static void hci_user_confirm_request_evt(struct hci_dev *hdev, void *data,
-    +@@ net/bluetooth/hci_event.c: static void hci_user_confirm_request_evt(struct hci_dev *hdev,
-      		goto unlock;
-      	}
-      
-    @@ net/bluetooth/hci_event.c: static void hci_user_confirm_request_evt(struct hci_d
-     -		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT &&
-     -		    (loc_mitm || rem_mitm)) {
-     +		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT) {
-    - 			bt_dev_dbg(hdev, "Confirming auto-accept as acceptor");
-    + 			BT_DBG("Confirming auto-accept as acceptor");
-      			confirm_hint = 1;
-      			goto confirm;
+      ## arch/arm64/kvm/fpsimd.c ##
+     @@ arch/arm64/kvm/fpsimd.c: void kvm_arch_vcpu_load_fp(struct kvm_vcpu *vcpu)
+    @@ arch/arm64/kvm/fpsimd.c: void kvm_arch_vcpu_load_fp(struct kvm_vcpu *vcpu)
+     +	vcpu->arch.flags &= ~KVM_ARM64_HOST_SVE_ENABLED;
+      	if (read_sysreg(cpacr_el1) & CPACR_EL1_ZEN_EL0EN)
+      		vcpu->arch.flags |= KVM_ARM64_HOST_SVE_ENABLED;
+    - 
+    + }
 ---
+
+NOTE: These results are for this patch alone. Full series testing will be
+performed when all parts are received.
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Failed    |
+
+Build Errors:
+Build error:
+    Segmentation fault
+    make: *** [Makefile:1231: vmlinux] Error 139
+    make: Target '__all' not remade because of errors.
 
