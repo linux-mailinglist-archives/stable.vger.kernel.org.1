@@ -1,121 +1,137 @@
-Return-Path: <stable+bounces-132083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1795A841C2
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 13:31:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C053A841E4
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 13:40:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD86F7A83D2
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 11:28:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3059F8C0DB3
+	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 11:37:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146162836BE;
-	Thu, 10 Apr 2025 11:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315712836B9;
+	Thu, 10 Apr 2025 11:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="CJJl3MsG"
+	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="M9MwfTiA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6EF283691
-	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 11:29:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B599228153F
+	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 11:37:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744284589; cv=none; b=PFCSGxoU2NIBoBS6MJqBMfUdASG6tJrR40IPqK4QEVeGCTCCEV9P/QpbY8C/LwJ+BPXtLV+3EuFdzbFcUSGgVhT8W61TZh8bmpRejXuURdh1+KW8bGKiQ0/o5coudva6wtHoHetB5PnkM8ollt1jPPnoWT02jHp6s2YIYRaorvY=
+	t=1744285078; cv=none; b=el8EY61o+L/8D/fzksaNVjF62FlL2YmugywAehQB+L2hViIov+n9C1mz6MCIrOr3cgPFdPa+O35u4hbaVOCBiIK/vG619Maf0YPIw0ebTd7LNpc/JZdEazQYPix/EThUBZFTXafogzheMlOjCS7oeB/S+kqMc+zN7REkpEZbWsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744284589; c=relaxed/simple;
-	bh=7EF92uy0HqAr0vHv++Xpljd9wbqIP32aaDhXDf2csFE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ethNKu0+NrnFuLJEPXRHAYTZVMyOL/QtxSWwCqLW9bljq33nnPs0rCp4RPZhvKfjkCqpLmu8ShGtjczCoy53Twa8FKWS7yeE7NT497zzKFunBsMRPk+gzvzeACRTIVFJaqmBKgpe51FehwP2CyZKJnEA5wjzTOuVhABrTjavYos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=CJJl3MsG; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43d04ea9d9aso3316385e9.3
-        for <stable@vger.kernel.org>; Thu, 10 Apr 2025 04:29:47 -0700 (PDT)
+	s=arc-20240116; t=1744285078; c=relaxed/simple;
+	bh=0Of5U4z8afXfK7Xi3Rsr1a6ex6vo7JrOynH81ykhVz4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Z+enPQsvp/oyyo6hdDWtYh9ZyAqgVoZO663FYyMLz9X+YUkgQn3BcpjqJ6LRCl31Wp9v5lXlR93ww7Q2bLKEYL73NhmE58NfzppyDakjSAwqUGrKd0ya0XKih8ne3VedVqrHxjkzWVaNgtEZN1npkgbTrISOO+LbP1+L9Jv7hI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=M9MwfTiA; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-b00e3c87713so654869a12.2
+        for <stable@vger.kernel.org>; Thu, 10 Apr 2025 04:37:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1744284586; x=1744889386; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=inreEjGkP2FB86SvKqikRoCXcnYDIYzGtWDBTQYF/sA=;
-        b=CJJl3MsGLDMR6MEGfXjAewU7fLufwgbRvt9V3FK52IxvnTq3RD6OKYcfcT02+khAbA
-         8RPf8STtBAYkhASw41OKs/2zC8/0rmjLahSqYGX+eZZUg711+DqyuOuIzqrHRVsASkxc
-         7FUSqgBktoaUSFFCj285QZFah1sgSdPx8hrSJWhY8ZOiyRlonpYCRDTSbiuI2XodgEYu
-         palOUjUQ9Ug1l7YTcF7nf4hNVrg/cOZemHqJ9G8u8b51u9c2YOMkczDCgr7ur+gq+E7U
-         hxIPln6blfTqm0sSZU50mZwYWdBQUj2tpt42S1bBssx+E2qRRFkrCt+Dx9uTcJw8Y0a9
-         m3jQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744284586; x=1744889386;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=futuring-girl.com; s=google; t=1744285074; x=1744889874; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=inreEjGkP2FB86SvKqikRoCXcnYDIYzGtWDBTQYF/sA=;
-        b=TZGdv0NgBhQWsEreGRFvFbjIEEAAjbEMlLJZNtb17eFepyhCNXSovANxk0dsRswQls
-         4qRydiDzLGgz4EPsrZGZXX6uHKEpra2vwW12F1R9ViPDFmHeR6JKGZ02BdYeWSGnYqMD
-         gj1VPyfSF4qKI1p4Cw2KMbtkTWaI28G5CRiMP/YukCglWXfqgvVYxInV9H3K+4+qvg6o
-         TFu4pG9Om8jWu19CU39kVFfh5UT/U4OL3TgkjxDQvFBuKCn3XCx4akOEd/9EQhC69FLh
-         NPgt/HJIK+3Az8+qnU8MiK5XLojwsIGWrMbWDv3BaQ9X13IpfSQ2AFcmWF3W75gt/urz
-         Qhug==
-X-Forwarded-Encrypted: i=1; AJvYcCUCi/zKOM99lPaP0oJD6SliEt05rIPnT7VrmSfQXWW0Q9OkDAy1jSITe+VI8gnL7drL/x3t2Mk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzI2L5sNDvAlGZIM19rnhb9sBHc5jQtKXB2KFE62hhHbmYO5iLn
-	XNQkJlfrAxxrYJfviC68ycF1UHRX/Vr701qzGjTmYWu09uLb25MuMuMhC2vu840=
-X-Gm-Gg: ASbGnct6SdK01aORpy/cQl9g/Qyfzcyiavzuv/e0fXPu8OZDWTd3Gq7EqtdmbPmN2f6
-	CJOU4zW0sv7AJs8PxxIIjd6x9jDHVsX11iQrF2EFO613CueZ9ylZyGaoxE6wh7LrfGDxXH5BC/E
-	qIDgPe+SuTZJmY9htmxr74hpN9CyobWjzufIxqebjeil/LdgqsuEdGKQuOtFbgefoEj5ZtPAOBx
-	SvVhG6XjmZSCGVDEWWGU6vLEH9qkrqDiXQsZYt6meKWtHA6fWZz+yz2eiWD5DMXBw9IXhJ14v7r
-	I6hX4BRmAL8vmn0xIg1V7xTsiROLW61tj1sOsgrkzqU=
-X-Google-Smtp-Source: AGHT+IGiu0OWEfT2fJWCoTEv1DArNTgNn8X+CE9Dq1sIudD9zQeKyE4/MK4CcE//ivPh7Bmvd/5jzw==
-X-Received: by 2002:a05:6000:1863:b0:39c:30d8:f104 with SMTP id ffacd0b85a97d-39d8f36c5femr2027739f8f.6.1744284585872;
-        Thu, 10 Apr 2025 04:29:45 -0700 (PDT)
-Received: from pathway.suse.cz ([176.114.240.130])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39d893f0b09sm4616409f8f.63.2025.04.10.04.29.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Apr 2025 04:29:45 -0700 (PDT)
-Date: Thu, 10 Apr 2025 13:29:43 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: Ryo Takakura <ryotkkr98@gmail.com>
-Cc: alex@ghiti.fr, aou@eecs.berkeley.edu, bigeasy@linutronix.de,
-	conor.dooley@microchip.com, gregkh@linuxfoundation.org,
-	jirislaby@kernel.org, john.ogness@linutronix.de, palmer@dabbelt.com,
-	paul.walmsley@sifive.com, samuel.holland@sifive.com,
-	u.kleine-koenig@baylibre.com, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-serial@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] serial: sifive: lock port in startup()/shutdown()
- callbacks
-Message-ID: <Z_erp2nLRKzLXuwF@pathway.suse.cz>
-References: <20250405145354.492947-1-ryotkkr98@gmail.com>
+        bh=0f9QEAX1CJe5R8QcJVmzqkTEC/iZNvG/J6WAAg8e6aU=;
+        b=M9MwfTiAP2Gw6YZ1GC482IM8gpnAnqd+4HCAiYpK2BuON0nJRSBO1okRRYiAnQJPuS
+         yGkieZIAOdTScdhtbUFGnscNT+hwA4BOwoAkkrTeD7JKQghT5WWstvTqI6ET/1dESJwP
+         An4fqDQ2TE4GhE/0lM5pcuDMWNQzdvlc4NfB6hrhr2Zo5RbpRa2Jrlu9p5vmOeaudImL
+         vgjtOtcVGw/gcPzxbN7qTdoTfWUDmTRsmX15FLmU2wa9t7veAgRpfFjXGZlK+kJWQ/vY
+         OxL18GltJL5vtPyvdag0Zfb+48Io7yFGtJzmIJuWCwxBiVxEWGEBWuZo0JsBb/TtH9Rj
+         JBLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744285074; x=1744889874;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0f9QEAX1CJe5R8QcJVmzqkTEC/iZNvG/J6WAAg8e6aU=;
+        b=qrPMeTgCKdwW84Iga3WZCOwvVdN6pBNCxTEK4EfCJtdnzi3CHhEYc8Yj/MmwIjCE/2
+         NjUZ6n1+JVG3YiOuj/huG7QYUTsFjrPalEfgz5zL6HjE/Eul8GIRMczczGmg8ZjPOrPu
+         WblqhP1pgptV7SVPQ2WED5XQiO+HaVkmpkAOhj98fjid82ydyK/lk23q9FVT0nGHJA+1
+         1xJE3F55QGgfmWe8JnY1dOBT/H+gmYgq/TjevFMdQ8HfMcXchGl9B5wQ8hQog7opNhkN
+         P2V6L1ZDXdbLppEIN7zNrybHWWgb+FyNguizRGMHppcv1n7fz8sJ4vRQiTXiSRmZYZFY
+         4fVQ==
+X-Gm-Message-State: AOJu0Yz+itVkp83+aCpMduvB5WBySEQDPbL/Rha65BVUJPePzBXFMxw7
+	nXaLgJe9i3zihXpIEUcwFepe0HRLcHOzbq/+GUnlmxz71QR+tX6EW931hz/A9JEJl0lBc/OBIAw
+	yDI2JdP6Ve4A0Vb5koPJ6odxb31VWdeh+EDX5Bw==
+X-Gm-Gg: ASbGncvDAAvKW/wklrbciUfzEErKgBC+OTsP0O3r+9OJlaUTQMZsq1QN/Ye3Ki8s0GK
+	wHfo9wovf+L3rdtgu6iRx8JeSP+aSJwF9P/XO4+GG9d1/99kSyPFxPa9Mo+vS4l5j+7XzvaR+uX
+	5vg1qtAROL9auvPZJ/e6jQjw==
+X-Google-Smtp-Source: AGHT+IFf9b6rD0mshIXEsi9eKtMgmQeW8WAUbIpHUW9028hvz2quBzJ17jpTHpfufL5MoDKUhrB0LBxePV2EC/lvj7w=
+X-Received: by 2002:a17:90b:2d47:b0:2f6:be57:49d2 with SMTP id
+ 98e67ed59e1d1-307e59995eemr3269202a91.17.1744285073875; Thu, 10 Apr 2025
+ 04:37:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250405145354.492947-1-ryotkkr98@gmail.com>
+References: <20250409115934.968141886@linuxfoundation.org>
+In-Reply-To: <20250409115934.968141886@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Thu, 10 Apr 2025 20:37:36 +0900
+X-Gm-Features: ATxdqUGFfH4m7c8SppFhuEE7O4S7fKdsw8gN_V0ons2x8pr1JB25QeDueDaMLTA
+Message-ID: <CAKL4bV41OA2u8LnGk6WuC_5sO8moTSK-w-U2r0yqEQ+fbFsTGg@mail.gmail.com>
+Subject: Re: [PATCH 6.14 000/726] 6.14.2-rc4 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat 2025-04-05 23:53:54, Ryo Takakura wrote:
-> startup()/shutdown() callbacks access SIFIVE_SERIAL_IE_OFFS.
-> The register is also accessed from write() callback.
-> 
-> If console were printing and startup()/shutdown() callback
-> gets called, its access to the register could be overwritten.
-> 
-> Add port->lock to startup()/shutdown() callbacks to make sure
-> their access to SIFIVE_SERIAL_IE_OFFS is synchronized against
-> write() callback.
-> 
-> Fixes: 45c054d0815b ("tty: serial: add driver for the SiFive UART")
-> Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
-> Cc: stable@vger.kernel.org
+Hi Greg
 
-I do not have the hardware around so I could not test it.
-But the change make sense. It fixes a real race.
-And the code looks reasonable:
+On Wed, Apr 9, 2025 at 9:06=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.14.2 release.
+> There are 726 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 11 Apr 2025 11:58:08 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.14.2-rc4.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.14.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-Reviewed-by: Petr Mladek <pmladek@suse.com>
+6.14.2-rc4 tested.
 
-Best Regards,
-Petr
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
+
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+
+[    0.000000] Linux version 6.14.2-rc4rv-g2cc38486a844
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 14.2.1 20250207, GNU ld (GNU
+Binutils) 2.44) #1 SMP PREEMPT_DYNAMIC Thu Apr 10 19:57:30 JST 2025
+
+Thanks
+
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
