@@ -1,168 +1,129 @@
-Return-Path: <stable+bounces-132224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 311D8A85A1C
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 12:36:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F0CFA85B4C
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 13:15:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAD784A54D1
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 10:35:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1ADF1442248
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 11:12:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A56D204581;
-	Fri, 11 Apr 2025 10:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196F2221292;
+	Fri, 11 Apr 2025 11:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M2CEKUpf"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="fcLkhqJT"
+X-Original-To: Stable@vger.kernel.org
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B531A17D2;
-	Fri, 11 Apr 2025 10:35:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DEA0221261;
+	Fri, 11 Apr 2025 11:12:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744367718; cv=none; b=E2xmDdNHrsrWYdrelgtugji0OGzj0sv6uWzJVw+IahMVMrxZLx/K2sAp/05uwm55EfGfM9L8prDBL1nhFRXhByQP7eGRq+OH+vCCcXI/rAtwn3iE7+fU+QSZ0quUl2boHcoY41/zH2Wmb/QDjnSj/H8vnC/RkWisCuJoUeWDWS8=
+	t=1744369932; cv=none; b=dzFxITI1XAMQKo7BaWossQt5sRDkJ7kMwI1xGgu+qwjE4MVU+roqQsjqWO/3G85IuOHRQQBYeCHtgpUMP7vowRs5zHY5avodVbTJWambV5OxZFq5fxoSvFwHt5n5DzgTEywxyhe3xcMVgcm9kBjdVMfhlV9ovNAVwYr0l+WokRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744367718; c=relaxed/simple;
-	bh=ZzgqBVvUJRx01Xdr3ZUB0nMTq1IDHwQSF+NS92g+sto=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lKLtWNF7CQ2dCgUV35j5Nb3EN3BISHVCBWzDv/XqdWf6kRCjxpQITK0WHUKMQsIAgPwUsdr/QMP9u6LBQ9iIUha4WD5Ev8eFRTV1wguxlV7gvNBi/sPUIWd3VAke841D49Vn+8lpfGIdeRNbv4u1Ls0ixZ45NFllx35GkWArg44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M2CEKUpf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F3ECC4CEE2;
-	Fri, 11 Apr 2025 10:35:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744367716;
-	bh=ZzgqBVvUJRx01Xdr3ZUB0nMTq1IDHwQSF+NS92g+sto=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M2CEKUpfHqqDerKDhIYJp2apcdLnhC17OX9lzAT0gqybRu8mnxS4/2j400RoTWHqZ
-	 MW4opsgFLHwG5t8qbVvdDm2HI4ODPreciwiieWudZ28LdRCnamyB/B1o7JVQrdnplJ
-	 NTe2vWrHcZrqccNFgG7yE+C9M2kYstoD5Ag8ivFLCjdTGiB9LT/XH9KiX2gvFLR8JB
-	 vT7293e8orUWPGoB+8ZowaN/RmIf4wIfifcou+2Dgq5n8AdPiMQ98SjFQSqborUQQC
-	 n+T9o5k9u3Xtd5OhebnmyFYfaaX01pZKaSrR7OU3PH8xuo1S9Ug4yLlHPpP+/csAec
-	 xu1O2TmaAooHg==
-Date: Fri, 11 Apr 2025 12:35:10 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Christian Schrefl <chrisi.schrefl@gmail.com>
-Cc: Luis Chamberlain <mcgrof@kernel.org>,
-	Russ Weight <russ.weight@linux.dev>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] rust: fix building firmware abstraction on 32bit arm
-Message-ID: <Z_jwXsQae9DjLWha@pollux>
-References: <20250411-rust_arm_fix_fw_abstaction-v1-1-0a9e598451c6@gmail.com>
+	s=arc-20240116; t=1744369932; c=relaxed/simple;
+	bh=FUQOpShM/qKPlkYr0w/mK5JyznMNm4iflYY28xYMzuc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tRg93maQbz4Lr+8YG6lMDHx/q8QMtYbROPWzkyejgtn0OuqHFU/Rlkift0edPI5+hFx6nv1abzielJDVu02FQOqvFA1bczJLu28nTgiF+4mgP+Tw6kYm23cW5rGwyTxSaRaFxKh8qV3A+6e73oYxLTBZNTUVv0fDtTRNweqGpwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=fcLkhqJT; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53B3kJD6027632;
+	Fri, 11 Apr 2025 11:12:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=qFNRJ0
+	NLHfjTNq+Xox+fYdzva/4pe8ltrKWFdZWaN/I=; b=fcLkhqJTA93tRApbCxcP7H
+	MdmzynvcEsxkbsxhV8gfGf+q4nB/Pbsl/+GOJurTZxbs71uKWyABCri5dvSNMX70
+	Nod+H9wgf3IjSFpZutTA1oPgzu8nKvUuBgBFgpT3juIG2Jonb7NlUFuASutTTHzK
+	KIFafoN0EzNuOXVA/erRh2hMrlSddivIKPM6jApC7Th9UKCg4KPoD0cYrQWZTfXF
+	yxRoDH2mYdKPyDgfkrYhJ0UhiriPbeRuOWnVQNHJihLVy1ngODZYxLKbdaTs4ezw
+	fZ02HS6QJ284bk2honJvQ9VdHmKvMJSyavBakgdr0GHy5rH66/jX/5kk7EdwLknw
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45xufa9v72-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 11 Apr 2025 11:12:01 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53B9EIrl024577;
+	Fri, 11 Apr 2025 11:12:00 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 45ueuttvvn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 11 Apr 2025 11:12:00 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53BBBuAP43057640
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 11 Apr 2025 11:11:56 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6F6902004B;
+	Fri, 11 Apr 2025 11:11:56 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8F2F620043;
+	Fri, 11 Apr 2025 11:11:55 +0000 (GMT)
+Received: from [9.171.62.213] (unknown [9.171.62.213])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 11 Apr 2025 11:11:55 +0000 (GMT)
+Message-ID: <a6f667b2-ef7d-4636-ba3c-cf4afe8ff6c3@linux.ibm.com>
+Date: Fri, 11 Apr 2025 13:11:55 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250411-rust_arm_fix_fw_abstaction-v1-1-0a9e598451c6@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] s390/virtio_ccw: don't allocate/assign airqs for
+ non-existing queues
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, virtualization@lists.linux.dev,
+        kvm@vger.kernel.org, Chandra Merla <cmerla@redhat.com>,
+        Stable@vger.kernel.org, Cornelia Huck <cohuck@redhat.com>,
+        Thomas Huth <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+        Eric Farman <farman@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev
+ <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>, Wei Wang <wei.w.wang@intel.com>
+References: <20250402203621.940090-1-david@redhat.com>
+ <065d46ba-83c1-473a-9cbe-d5388237d1ea@redhat.com>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <065d46ba-83c1-473a-9cbe-d5388237d1ea@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 7j2Hpeh7kYNRktpeuE5HSecIMZ7XXZyg
+X-Proofpoint-ORIG-GUID: 7j2Hpeh7kYNRktpeuE5HSecIMZ7XXZyg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-11_04,2025-04-10_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ priorityscore=1501 adultscore=0 spamscore=0 bulkscore=0 mlxlogscore=852
+ clxscore=1015 suspectscore=0 malwarescore=0 mlxscore=0 impostorscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2504110069
 
-On Fri, Apr 11, 2025 at 09:14:48AM +0200, Christian Schrefl wrote:
-> When trying to build the rust firmware abstractions on 32 bit arm the
-> following build error occures:
+Am 10.04.25 um 20:44 schrieb David Hildenbrand:
+[...]
+>> ---
 > 
-> ```
-> error[E0308]: mismatched types
->   --> rust/kernel/firmware.rs:20:14
->    |
-> 20 |         Self(bindings::request_firmware)
->    |         ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item
->    |         |
->    |         arguments to this function are incorrect
->    |
->    = note: expected fn pointer `unsafe extern "C" fn(_, *const i8, _) -> _`
->                  found fn item `unsafe extern "C" fn(_, *const u8, _) -> _ {request_firmware}`
+> So, given that
+> 
+> (a) people are actively running into this
+> (b) we'll have to backport this quite a lot
+> (c) the spec issue is not a s390x-only issue
+> (d) it's still unclear how to best deal with the spec issue
+> 
+> I suggest getting this fix here upstream asap. It will neither making sorting out the spec issue easier nor harder :)
+> 
+> I can spot it in the s390 fixes tree already.
 
-This looks like you have local changes in your tree, running in this error. I
-get the exact same errors when I apply the following diff:
+Makes sense to me. MST, ok with you to send via s390 tree?
 
-diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
-index f04b058b09b2..a67047e3aa6b 100644
---- a/rust/kernel/firmware.rs
-+++ b/rust/kernel/firmware.rs
-@@ -12,7 +12,7 @@
- /// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
- /// `bindings::firmware_request_platform`, `bindings::request_firmware_direct`.
- struct FwFunc(
--    unsafe extern "C" fn(*mut *const bindings::firmware, *const u8, *mut bindings::device) -> i32,
-+    unsafe extern "C" fn(*mut *const bindings::firmware, *const i8, *mut bindings::device) -> i32,
- );
-
-> note: tuple struct defined here
->   --> rust/kernel/firmware.rs:14:8
->    |
-> 14 | struct FwFunc(
->    |        ^^^^^^
-> 
-> error[E0308]: mismatched types
->   --> rust/kernel/firmware.rs:24:14
->    |
-> 24 |         Self(bindings::firmware_request_nowarn)
->    |         ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item
->    |         |
->    |         arguments to this function are incorrect
->    |
->    = note: expected fn pointer `unsafe extern "C" fn(_, *const i8, _) -> _`
->                  found fn item `unsafe extern "C" fn(_, *const u8, _) -> _ {firmware_request_nowarn}`
-> note: tuple struct defined here
->   --> rust/kernel/firmware.rs:14:8
->    |
-> 14 | struct FwFunc(
->    |        ^^^^^^
-> 
-> error[E0308]: mismatched types
->   --> rust/kernel/firmware.rs:64:45
->    |
-> 64 |         let ret = unsafe { func.0(pfw as _, name.as_char_ptr(), dev.as_raw()) };
->    |                            ------           ^^^^^^^^^^^^^^^^^^ expected `*const i8`, found `*const u8`
->    |                            |
->    |                            arguments to this function are incorrect
->    |
->    = note: expected raw pointer `*const i8`
->               found raw pointer `*const u8`
-> 
-> error: aborting due to 3 previous errors
-> ```
-
-I did a test build with multi_v7_defconfig and I can't reproduce this issue.
-
-I think the kernel does always use -funsigned-char, as also documented in commit
-1bae8729e50a ("rust: map `long` to `isize` and `char` to `u8`")?
-
-> 
-> To fix this error the char pointer type in `FwFunc` is converted to
-> `ffi::c_char`.
-> 
-> Fixes: de6582833db0 ("rust: add firmware abstractions")
-> Cc: stable@vger.kernel.org # Backport only to 6.15 needed
-> 
-> Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
-> ---
->  rust/kernel/firmware.rs | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
-> index f04b058b09b2d2397e26344d0e055b3aa5061432..1d6284316f2a4652ef3f76272670e5e29b0ff924 100644
-> --- a/rust/kernel/firmware.rs
-> +++ b/rust/kernel/firmware.rs
-> @@ -5,14 +5,18 @@
->  //! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h)
->  
->  use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
-> -use core::ptr::NonNull;
-> +use core::{ffi, ptr::NonNull};
-
-The change itself seems to be fine anyways, but I think we should use crate::ffi
-instead.
 
