@@ -1,100 +1,154 @@
-Return-Path: <stable+bounces-132228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56AB9A85C92
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 14:12:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D887A85C94
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 14:12:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CA188C2A7B
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 12:11:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F5B97B54B0
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 12:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7064298CC8;
-	Fri, 11 Apr 2025 12:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2351D29C34D;
+	Fri, 11 Apr 2025 12:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N/wQGC7v"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lz+qo4Gn"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2542980DA;
-	Fri, 11 Apr 2025 12:10:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B613629B214
+	for <stable@vger.kernel.org>; Fri, 11 Apr 2025 12:10:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744373418; cv=none; b=sKiC1rNuXJf3u+as3/46+b/xbf2nd9iQ7rBZV8iV2aUDUa3S/T4pQrdK4EbF32usED7ZOE2z44QK2UVBzx6gnh9CkwteEt9vPq0M2zx+VePGcGu8ro1rnqtTXC3Bpidim9eIEhvXbbN+vVOaWozsNVhPJpAe6405LvfjpYJKSX4=
+	t=1744373444; cv=none; b=H4YCoYzsMhZba6ex0RjJ4vOAkRWeGo/N7YXyWaUDjrauhiTZrsDs+gVGUXBiuAofJOtD4paP/m07ZoX/mCv/niLNSrYPjoasUB+Extukjk26IJx9DXMxoOdipH6gS4D48yalruH7RFOzaBQxmfQIGVjlzd1cnT9xXZ6AGEND1Pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744373418; c=relaxed/simple;
-	bh=Ncgr/bHwGWav0++g7h6qO7mSC7ga7BpzOJD/jKK+NKU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=TQ32/KWancTpNH1OI0hdp310+hYnG9QuQmKfYwhqEmL9wBAf4SDyYsCqdx2LWXSNnd+tQEqnsxmEdexqz8F4ePGR5Azhx4rYDgvNloRl92lWkK90Bc6tE5qO0sW1zEfyNnLqkmRF4//FeLCnd9iWOL7OZkU6NNUlDz9Rvm0VARg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N/wQGC7v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 564EFC4CEE2;
-	Fri, 11 Apr 2025 12:10:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744373417;
-	bh=Ncgr/bHwGWav0++g7h6qO7mSC7ga7BpzOJD/jKK+NKU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=N/wQGC7vrzvR7qbFAp5Haf03GN3YrAALauuaUPTYuw+nVIhvcnISJshYgzU0YIfh2
-	 tYTPw+CfexM8MVtYpICAiQWAPWskohNC8N1T5YEXa09WC3TT3+M2x6+zfayEQ6q8bb
-	 tGrolWJCtIHrRBRZ7cACRs4oQIZlyBqzizYlUaXjT9Tspb2fEwOItRST8aUac3IIrR
-	 QBwvoXHFwseNY10lnv4L5CWKoEO/hNxG9+WSPGFZUW07hHDJmRYSqxdVzkYIH+UNG9
-	 ul21nt68g8eFPYkqbrDUh8Ls+mQrBhbWybepk6BkBoZ0eCeoFquqdfL89Dz9H7Eo4f
-	 8r/An6v9qRyqg==
-From: Vinod Koul <vkoul@kernel.org>
-To: jonathanh@nvidia.com, thierry.reding@gmail.com, jckuo@nvidia.com, 
- kishon@kernel.org, Wayne Chang <waynec@nvidia.com>
-Cc: linux-phy@lists.infradead.org, linux-tegra@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20250408030905.990474-1-waynec@nvidia.com>
-References: <20250408030905.990474-1-waynec@nvidia.com>
-Subject: Re: [PATCH V3 1/1] phy: tegra: xusb: Use a bitmask for UTMI pad
- power state tracking
-Message-Id: <174437341497.673813.4496801277326172956.b4-ty@kernel.org>
-Date: Fri, 11 Apr 2025 17:40:14 +0530
+	s=arc-20240116; t=1744373444; c=relaxed/simple;
+	bh=dGHld92vUVbOFD/u6AtKaP9uEUe1RGPsRpaLDsrOO/w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HTU0XKWr5U5L+A/NNXb2bEX0LMFNrCHN4LaWpcniYfNW2U/GMMaD8mVyzbvwZ2TIJu65idr9vOMAsz8AtX9UCLINXBxnrI9QUoKJ/+6I8Nsxg0lEAmp5iUz8oZxuQEEVmDnIHp3quP3LWIT+cZnXY4Z3uigv1+4LuzU/sG30W1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lz+qo4Gn; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-43cfa7e7f54so12053375e9.1
+        for <stable@vger.kernel.org>; Fri, 11 Apr 2025 05:10:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1744373441; x=1744978241; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/5LlnegqhXWYoYcLoLagqAZu+k870W60Ciw5agd+TQE=;
+        b=lz+qo4Gn3kxsri5qolrG9V6egeFebKxqHNRtcxRp6fWCmzfW4FAoajq3UGpmgRgng/
+         2DLUO1O+zTnXVHC9JjkzCEeQpRhlYw3itR8bft4dkKpWMmAz5AaFF5xIg/zdGdLYyO/+
+         IXKIZY9G0XYS8Gvkn7uXeWkGRY+2c11haossZo4tfkwEACVhjFgOZFgclUCwDf/aKERp
+         bXTwwmq+Ivnhqj0vk7BWK8q6NuQqxglmoQdel0fvH24TrKVUDpN7/5oV0ejnadY/thc2
+         eFxrf9dgSXSui6Jnu1CCSVm6YB+dzUf/oJbMsaYtwga/yjf8dBWU0qdS7X8KY1t7r5ZU
+         I+Qw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744373441; x=1744978241;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/5LlnegqhXWYoYcLoLagqAZu+k870W60Ciw5agd+TQE=;
+        b=wULFXdfXEalsvCzyNiSIVT777k8+1kPSeVW43hZhqBsz5Q/KMgL85hzDuPew9ZtY04
+         C9ktxG29JEI1g645ljHsp8FOcezAFh2yJlFrOcFNIa0qCmiA3Ia2aeXGbK4LxXL6N32/
+         fODrcpRcDL8TMp5bKaXeGmU9UpkREi97DdDfeDv1PeX7ryWvUvziQxIZpyEq1e3uUtLA
+         v8tCWwxYg6upTj2RvRSgVAmpTHdu7lOj8Mqc2x/HeudE5LU+ztlcRzyKbEUMFXBqUI70
+         KuOPaL3tgqo44iyHV5vlTLL+AbJhDsmthQxZCvNYwiPH5RJFD5RwC9VUaS0Wrx55KkOa
+         BPRA==
+X-Forwarded-Encrypted: i=1; AJvYcCVj3kPqqPoHDVpkBDu1IYuQMuwBRp2E+sXj+k8WFE7yzI1LmDnS0qwSwWeoRR2pR4+AJnWdatw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/+s/JaH5curoJeCSRiFSwDsJIpRyFwD82dRauA2UNjNwORcUy
+	bBds7qtTTUfaF4feDIbrIVPMsCsksrHKE5TNC/e9m9y5DSEpi4ouWvLFLcuyHI8=
+X-Gm-Gg: ASbGncuus6tU7ehWP3/1TztUXm7Dh7jlkKNYEDpFcMyjZlGv6na2b5X6mQZmUbkHxFu
+	KiHtLw1bE5NV0ltBUKVOj3lgzCIfgrh+wz01h7de8QET8k47mh8Sjn02KRqGlBSdiHEQPBnFvd8
+	lTo8JvdRexFkgafyVzAoE7kR3JpzlWfH/K85PWairdTSA2ytvjtdfv5+KdwUxlIjthCPt5qMyw/
+	5R5FweH/TqYXefzrClDX0OQSqLG5IjxkZ3RPPFbFFoHbLVqiXrDnLqACJyBJ1hszJyBMYhaQoSk
+	Byounw5aFJaFxmOd9a8WeuKXxfwVm9bGvKDCX2APvm6xzugwHSPyiiOCc95U1GL8XnvGSKNtdDp
+	TB82ZIg==
+X-Google-Smtp-Source: AGHT+IHlOq8/ca5REmCpBpkFoqbdN5SzfkW5Ay4uvrR7nOsyWNcTGKb621SxyZxe+WjLiuuz2iXeFA==
+X-Received: by 2002:a05:600c:4f50:b0:43c:ed33:a500 with SMTP id 5b1f17b1804b1-43f2eb51034mr62138375e9.10.1744373441065;
+        Fri, 11 Apr 2025 05:10:41 -0700 (PDT)
+Received: from [192.168.0.34] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f233c817dsm80436805e9.23.2025.04.11.05.10.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 11 Apr 2025 05:10:40 -0700 (PDT)
+Message-ID: <811cd70e-dc27-4ce0-b7da-296fa5926f90@linaro.org>
+Date: Fri, 11 Apr 2025 13:10:39 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/20] media: iris: Skip destroying internal buffer if not
+ dequeued
+To: Dikshita Agarwal <quic_dikshita@quicinc.com>,
+ Vikash Garodia <quic_vgarodia@quicinc.com>,
+ Abhinav Kumar <quic_abhinavk@quicinc.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Stefan Schmidt <stefan.schmidt@linaro.org>, Hans Verkuil
+ <hverkuil@xs4all.nl>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>, linux-media@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, stable@vger.kernel.org
+References: <20250408-iris-dec-hevc-vp9-v1-0-acd258778bd6@quicinc.com>
+ <20250408-iris-dec-hevc-vp9-v1-1-acd258778bd6@quicinc.com>
+Content-Language: en-US
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+In-Reply-To: <20250408-iris-dec-hevc-vp9-v1-1-acd258778bd6@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
 
-
-On Tue, 08 Apr 2025 11:09:05 +0800, Wayne Chang wrote:
-> The current implementation uses bias_pad_enable as a reference count to
-> manage the shared bias pad for all UTMI PHYs. However, during system
-> suspension with connected USB devices, multiple power-down requests for
-> the UTMI pad result in a mismatch in the reference count, which in turn
-> produces warnings such as:
+On 08/04/2025 16:54, Dikshita Agarwal wrote:
+> Firmware might hold the DPB buffers for reference in case of sequence
+> change, so skip destroying buffers for which QUEUED flag is not removed.
 > 
-> [  237.762967] WARNING: CPU: 10 PID: 1618 at tegra186_utmi_pad_power_down+0x160/0x170
-> [  237.763103] Call trace:
-> [  237.763104]  tegra186_utmi_pad_power_down+0x160/0x170
-> [  237.763107]  tegra186_utmi_phy_power_off+0x10/0x30
-> [  237.763110]  phy_power_off+0x48/0x100
-> [  237.763113]  tegra_xusb_enter_elpg+0x204/0x500
-> [  237.763119]  tegra_xusb_suspend+0x48/0x140
-> [  237.763122]  platform_pm_suspend+0x2c/0xb0
-> [  237.763125]  dpm_run_callback.isra.0+0x20/0xa0
-> [  237.763127]  __device_suspend+0x118/0x330
-> [  237.763129]  dpm_suspend+0x10c/0x1f0
-> [  237.763130]  dpm_suspend_start+0x88/0xb0
-> [  237.763132]  suspend_devices_and_enter+0x120/0x500
-> [  237.763135]  pm_suspend+0x1ec/0x270
+> Cc: stable@vger.kernel.org
+> Fixes: 73702f45db81 ("media: iris: allocate, initialize and queue internal buffers")
+> Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+> ---
+>   drivers/media/platform/qcom/iris/iris_buffer.c | 7 +++++++
+>   1 file changed, 7 insertions(+)
 > 
-> [...]
+> diff --git a/drivers/media/platform/qcom/iris/iris_buffer.c b/drivers/media/platform/qcom/iris/iris_buffer.c
+> index e5c5a564fcb8..75fe63cc2327 100644
+> --- a/drivers/media/platform/qcom/iris/iris_buffer.c
+> +++ b/drivers/media/platform/qcom/iris/iris_buffer.c
+> @@ -396,6 +396,13 @@ int iris_destroy_internal_buffers(struct iris_inst *inst, u32 plane)
+>   	for (i = 0; i < len; i++) {
+>   		buffers = &inst->buffers[internal_buf_type[i]];
+>   		list_for_each_entry_safe(buf, next, &buffers->list, list) {
+> +			/*
+> +			 * skip destroying internal(DPB) buffer if firmware
+> +			 * did not return it.
+> +			 */
+> +			if (buf->attr & BUF_ATTR_QUEUED)
+> +				continue;
+> +
+>   			ret = iris_destroy_internal_buffer(inst, buf);
+>   			if (ret)
+>   				return ret;
+> 
 
-Applied, thanks!
+iris_destroy_internal_buffers() is called from
 
-[1/1] phy: tegra: xusb: Use a bitmask for UTMI pad power state tracking
-      commit: b47158fb42959c417ff2662075c0d46fb783d5d1
+- iris_vdec_streamon_output
+- iris_venc_streamon_output
+- iris_close
 
-Best regards,
--- 
-~Vinod
+So if we skip releasing the buffer here, when will the memory be released ?
 
+Particularly the kfree() in iris_destroy_internal_buffer() ?
 
+iris_close -> iris_destroy_internal_buffers ! -> iris_destroy_buffer
+
+Is a leak right ?
+
+---
+bod
 
