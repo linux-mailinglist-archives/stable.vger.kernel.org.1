@@ -1,107 +1,78 @@
-Return-Path: <stable+bounces-132268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C73F3A86064
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 16:21:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9651CA86077
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 16:24:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97180164940
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 14:18:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C221416DF73
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 14:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9E501F417A;
-	Fri, 11 Apr 2025 14:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC191F1516;
+	Fri, 11 Apr 2025 14:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZD75URx5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ykrbSkiF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BA61E89C;
-	Fri, 11 Apr 2025 14:18:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881061C3BEB;
+	Fri, 11 Apr 2025 14:23:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744381099; cv=none; b=jPnnC8UlfeyCtru1TM8vNaq4H5OdCr3952/3KLDD+47aVKlbv9oRrqXCYnMtAf72NYAP4gZVMyv0+uYlvPC++4/uLK5CVJ9CyZc91fYGUi+CPCDN3WXaxTJvydMLt+Q1Yagm0Of10MeyzwxJt004egzLg5eGCRKiIlO2XHKnrzI=
+	t=1744381423; cv=none; b=r5NxglBr4DJ/S+ETtACa3JFTzM6QpCTR0OJz8lJDvKTPn2fgTOK7CZ9joNXZCRhWXLP2mIeQVfwagAIO/fXiZ2cacyYOGOyaeTbQJRdEesQJBXXb3Ko87HeBjbYyLkdYcIJ65h8vGi/+ueQ3XUlDZPOqURn7WHIo8FcQ4Z+PxQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744381099; c=relaxed/simple;
-	bh=fuLmkbGQ9AE0lEuqX0lr8BR1lAWRQLYNrT8LVsLS2dU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G7Hbi79bylOkxijV2TXWgasbV3IT+iZT6414GehX65efxPqn/3bDdkEvRMqr3xMborii0oElMYZVDZ9+lOVIBos9ioxsUEIAiFTJEw7l8i8GArZZ3OvgYRvLfpOJUAL51KqHb3LDigVnlLgwFWJ77g06SyqdzpX95x6B0YSugiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZD75URx5; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-301a8b7398cso313334a91.1;
-        Fri, 11 Apr 2025 07:18:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744381097; x=1744985897; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fuLmkbGQ9AE0lEuqX0lr8BR1lAWRQLYNrT8LVsLS2dU=;
-        b=ZD75URx5A8K/1xGGQJDhuYKRSYTVmXPSBnUvjkLG5GHVbMpU/diSwtGkv2HIz8fXQv
-         XZofO74aDGJ8lMLCwWHMhGr0OsVItPHDGRYCn4W+sGtS3oFMDX1HGsiGYuuneYfsEdtE
-         Emx3WCUhTK4eZHjKihPvlVw7YqrECWj6Mv9m1EvUIsfdKqdExUam7sOyWsonJ53fcQDg
-         yYQI4eT1IbD9y3qpxctyI1WluKUtlGE/GtP2rOUDiitrJGkIVHo/CpI+LRthaaXCBSxC
-         uQK0kCnw/Jy/KynKPOExlvO/HPrDrsBCIwE9c4tjoZy15g0qi7jiheekRU5zJYOs+EIR
-         oAwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744381097; x=1744985897;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fuLmkbGQ9AE0lEuqX0lr8BR1lAWRQLYNrT8LVsLS2dU=;
-        b=Ddxm0i0euVZhciVIl91yYf7cAsoTrhUWZNOJlFkWggS4+RJyLw8y+ycXXFK4V58AIl
-         XMPs6tpMaKUOcpVtdkB7V4GIFuhuzsljrf7DMVXeObqeidlWeqf+u2dZI+0mxviOtsPg
-         lLuV9exxcoZLt/my0dr6NSLhT7jzUm341dPjMW5gIe13wwUL0pAum4qhsipV6Me/qm1v
-         r9oCWRXFOr0Pc02GD1cMH3uOr5tOrixt3u8BNUKkBUDaMx6Zg0F2TLlsoEvjqc7BwYdN
-         owkdDCist5jLBb1/nLolkBahi0cdJHKi4/2syFx4mpFjAiEOsM9yqWu71NPWSRpwJcRC
-         JZKw==
-X-Forwarded-Encrypted: i=1; AJvYcCU/Aep6PQkMN3YyaqKCz04jKSvKW4J8LQm8bOYKF4rddt+RiCql1MEV5y0D9EXUW3cqwg+HzUMjktt8oZyNvK4=@vger.kernel.org, AJvYcCVv/yKK/FqWSm2lrAKpCUW//6FiVTC4QsQdb869l2ojDWSDKL5K1U4R09UWQ7NS7eGRrWB0OARt@vger.kernel.org, AJvYcCXPnE0g5xA6C9vgXmrxTM9VDl8Ls4agvGWknm+jaSTZi3zCIcERm+M+tH2xcFvyTO6Ish0N/5mwOjHH+qM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynmkI9GBEtp/MPY2iznxfif295JfuW3m2OZTD/jVWW96KbQ5As
-	dT3ha4UhfI4lcyc4VjNBoDhTp8L3ylkDWdiXwVqMFWe/7q0+lnZiYLQmvtaGIdf2uiu6V09DlO6
-	rNDR1EXAul25XZONnhFhfKe1hSTk=
-X-Gm-Gg: ASbGnct6fReGZ674R9PoGbBZGFQOS78XsUxqOrn3W3qFAu4gRPgdbj2fBz7VnJio9iL
-	O57z+MBavklaX6m8UdU/EnPvbI8a7gCan6MpDcgvnJcfe9pcPuC6WI/8Idbb46Gkwaa1NJeCSH0
-	QLPhtXsmtWXg31W747awwqUw==
-X-Google-Smtp-Source: AGHT+IGn2B8Sk/8cQPoHh8yzlKy3DAGcSM68xE89Bdl+hrr2Ja7Epy8cWbpV8fXFQV3WDb4HuYV3tkpZ7TgbxMiCmL4=
-X-Received: by 2002:a17:90b:3912:b0:2ff:5759:549a with SMTP id
- 98e67ed59e1d1-30823624fa5mr1618122a91.1.1744381097389; Fri, 11 Apr 2025
- 07:18:17 -0700 (PDT)
+	s=arc-20240116; t=1744381423; c=relaxed/simple;
+	bh=GJX49r3BKpYaA7bCwqkvzU5fTQ0dfWOuIUAYjRLKwrI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GWhUcJPDLu58KM1+CVnnQq1hsBPgsvnc4lK+iDVA4j5KRgHuW0eTUAyWIW79g/gLdaBnYU/au2s0/nzhzeVq7faanGySxJij1wXi8na+WhbHsqQ0f16PhnDXjDtouAO6jm7OZRhHU+4WD3/Mz45R+ex0O0TL3H6ttH4+76ZvaoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ykrbSkiF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D59FC4CEE2;
+	Fri, 11 Apr 2025 14:23:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1744381423;
+	bh=GJX49r3BKpYaA7bCwqkvzU5fTQ0dfWOuIUAYjRLKwrI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ykrbSkiFYCTU78cv7nHZ/NKfAWj8GpkCFCqBKjO0j0/eisI7B3hvs/K9YlpPNiFdI
+	 YBc9iW4tTH96iD8Aj0DArHvuOhdVqUZ6hcMZbNMFs+Mbon2Y2pQXU3fjbOnuz9NvaI
+	 Y5wPUpg3gdByrBIFKnOun9nT+lOg20Mieq7XkzIs=
+Date: Fri, 11 Apr 2025 16:23:40 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Kuen-Han Tsai <khtsai@google.com>
+Cc: Thinh.Nguyen@synopsys.com, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3] usb: dwc3: Abort suspend on soft disconnect failure
+Message-ID: <2025041149-krypton-rejoice-bced@gregkh>
+References: <20250327133233.2566528-1-khtsai@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250411-rust_arm_fix_fw_abstaction-v1-1-0a9e598451c6@gmail.com>
- <D93TIWHR8EZM.25205EFWBLJLM@proton.me> <CANiq72kc4gzfieD-FjuWfELRDXXD2vLgPv4wqk3nt4pjdPQ=qg@mail.gmail.com>
-In-Reply-To: <CANiq72kc4gzfieD-FjuWfELRDXXD2vLgPv4wqk3nt4pjdPQ=qg@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 11 Apr 2025 16:18:03 +0200
-X-Gm-Features: ATxdqUEiLtXgDKUXmiwfmi4EnlT6ig8SgUDhLxUqtMdesasU2J2pJNPsiK-qjQY
-Message-ID: <CANiq72=+mYOd-v6W+oZ1hpqRXWn1qdKOuLwTgoafwNViWABj_A@mail.gmail.com>
-Subject: Re: [PATCH] rust: fix building firmware abstraction on 32bit arm
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Christian Schrefl <chrisi.schrefl@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Russ Weight <russ.weight@linux.dev>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250327133233.2566528-1-khtsai@google.com>
 
-On Fri, Apr 11, 2025 at 4:15=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> In 6.6, C `char` changed to unsigned, but `core::ffi::c_char` is
-> signed (in x86_64 at least).
+On Thu, Mar 27, 2025 at 09:32:16PM +0800, Kuen-Han Tsai wrote:
+> When dwc3_gadget_soft_disconnect() fails, dwc3_suspend_common() keeps
+> going with the suspend, resulting in a period where the power domain is
+> off, but the gadget driver remains connected.  Within this time frame,
+> invoking vbus_event_work() will cause an error as it attempts to access
+> DWC3 registers for endpoint disabling after the power domain has been
+> completely shut down.
+> 
+> Abort the suspend sequence when dwc3_gadget_suspend() cannot halt the
+> controller and proceeds with a soft connect.
+> 
+> Fixes: 9f8a67b65a49 ("usb: dwc3: gadget: fix gadget suspend/resume")
+> CC: stable@vger.kernel.org
+> Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
 
-By 6.6, I meant since 6.6.y LTS (since that is the one I remember due
-to backports), the actual change happened earlier but after 6.1.y LTS.
+Always test your patches before submitting them so you don't get emails
+from grumpy maintainers telling you to test your patches so that they
+don't break the build :(
 
-Cheers,
-Miguel
 
