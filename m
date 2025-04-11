@@ -1,76 +1,164 @@
-Return-Path: <stable+bounces-132217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C720A85808
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 11:29:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 668A1A85831
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 11:41:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CC399C2F2B
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 09:29:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37CD54C78E1
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 09:41:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1A612980A8;
-	Fri, 11 Apr 2025 09:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4912989B6;
+	Fri, 11 Apr 2025 09:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="jXbEVltp"
+	dkim=pass (2048-bit key) header.d=cadence.com header.i=@cadence.com header.b="LHH5HYuU";
+	dkim=pass (1024-bit key) header.d=cadence.com header.i=@cadence.com header.b="cU8sJOx8"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+Received: from mx0a-0014ca01.pphosted.com (mx0a-0014ca01.pphosted.com [208.84.65.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB751C8639;
-	Fri, 11 Apr 2025 09:29:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744363763; cv=none; b=kL2JRwfuszBa/hl8hpX7tr0tQOaW1SLiIVnmiAISR6nLztEujJFrzpdW2HHLibLdsv8ZYMuy3pRtJGq/eFtv2NUF7yK2GrrfWtkxHfNd1OZs8PaYL8oTHAbvE+9PhK3+rBzbvmCfSW7f01qu/5pw7cfql6F/53BhNWZlxh5eDYU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744363763; c=relaxed/simple;
-	bh=AoNBQIPQWxghYwG76l2hQj29+DpLKnCEVn5/qJWdfvg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EJKNl9Til7YYwzqPo+rMpGlHXenPXkIsj8j9J/XEUyVXthN3s/fwZZPoioNlbks4gLlqs8irof+PHUepSvhftrjlUuPaK1kE0TOgjQ4CG5GBtWvZJ5Udng0yA0Bd+Mq96ybarLNZBSVzhoHydHaPQN/knGDaIqHi6DGdjGimw0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=jXbEVltp; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4ZYrwp6qX4z9skn;
-	Fri, 11 Apr 2025 11:29:14 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1744363755; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q5zTpwouEWfIDk/tDwSvuusiMSydk0PC8z/fa/PfMis=;
-	b=jXbEVltp9FKxICxLsQtMoUJsdhI8kO66dqOhfh4zSnII7ghoeRMGedBQZFW3nAW1ys4HNB
-	kjldNEZui3/Vut1ffqXbcq9bJi6Gl3Je7FP4OxbRpyE2wVw6BxQcPO3djmdZhXDjXxJVQz
-	/R2POFMWT7/IJu5aWoj2nGalo4IsQ6Pqa8ps6TfRa9m4VuIEdUwYSfS670v+IvTcXayNSa
-	lqdFpL6Qmy/N95pAF5XK2JZMbLDyspQxyPfVJf+WhMWp4emx7Py2nwn/M2w2on3mtpAy5R
-	5cPvFkKG5EXLRuaLm+YPLhbcn7/XrwnihZ3fko+X86/yFd8lWZPr0NqrdVKM6Q==
-Message-ID: <d3dee321cd6b70d6ca98768fbcf6f1e6134c43a1.camel@mailbox.org>
-Subject: Re: [PATCH 1/3] drm/nouveau: Prevent signaled fences in pending list
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: phasta@kernel.org, Christian =?ISO-8859-1?Q?K=F6nig?=
- <christian.koenig@amd.com>, Lyude Paul <lyude@redhat.com>, Danilo Krummrich
- <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter
- <simona@ffwll.ch>, Sabrina Dubroca <sd@queasysnail.net>, Sumit Semwal
- <sumit.semwal@linaro.org>
-Cc: dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
-	stable@vger.kernel.org
-Date: Fri, 11 Apr 2025 11:29:09 +0200
-In-Reply-To: <1a73e5fe4350d6ee4b7d807612264eb637c4f2a9.camel@mailbox.org>
-References: <20250410092418.135258-2-phasta@kernel.org>
-	 <20250410092418.135258-3-phasta@kernel.org>
-	 <8583665a-6886-4245-be49-fd8839cfe212@amd.com>
-	 <c737c89c7ce9174e349c61ab4e5712eee8946f13.camel@mailbox.org>
-	 <50c9530d-e274-4f89-8620-16afe0981239@amd.com>
-	 <1a73e5fe4350d6ee4b7d807612264eb637c4f2a9.camel@mailbox.org>
-Content-Type: text/plain; charset="UTF-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD3B1EE017;
+	Fri, 11 Apr 2025 09:40:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=208.84.65.235
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744364406; cv=fail; b=WkVWeu8EJ7tSxsqOuUnUJhoAvlgewWAnumm69p+J72JqRDD5WXKfLzYvoV/OGC5LMc0syFX7cs6EIKhyQ0ulkWhuyBBJhQlbaPvsCO8n8Zs9sq7lYrz8bbE7+UtHxE4gJg3W0oX+G6X5DyGtBRow6OiGzoVoLrWNMt6XDAMjfmg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744364406; c=relaxed/simple;
+	bh=ifXzVh82ybFbMFOVoMsvz4SqnUuBD/ntXPVxwrZ+a2A=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Z6JApOvZlnFUSCaE+ZaDJVyMT1tYMF+pAbDeHeSvLuzP9Yn3wWS1WomjOcbwVYCfpAuyuprbBoy6zkSAJxfNjymyCHwZjd28hUVbbsK/R6ylGIHetLGnnx70IZGspDx77i01RKoA+0DcJb9xxlELXteCa4Bsdat4g/lbzHtJv4E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cadence.com; spf=pass smtp.mailfrom=cadence.com; dkim=pass (2048-bit key) header.d=cadence.com header.i=@cadence.com header.b=LHH5HYuU; dkim=pass (1024-bit key) header.d=cadence.com header.i=@cadence.com header.b=cU8sJOx8; arc=fail smtp.client-ip=208.84.65.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cadence.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cadence.com
+Received: from pps.filterd (m0042385.ppops.net [127.0.0.1])
+	by mx0a-0014ca01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53B8NQKq001987;
+	Fri, 11 Apr 2025 02:39:48 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=proofpoint;
+	 bh=A2zYnSdvUJHowH4cvRHlvYT3yEvq8huV10bhKJmYDyo=; b=LHH5HYuUlo49
+	Z+6El89KmhpbIJhpgVUp0xiHTQVJmlVjzGxmhjj7La77V9GSNJK+xvV8mxi3txB2
+	AxntVoS2yujJk3yyX7uo3glK/A93zwRF7ucJrB16vjWWQdR+ouYSUpHWQfoRTvQ0
+	42a0EgUTHdwE9W6J/yHASDum+4XnWw1x0SQqNoo8Efx4bp2yKT1UWk3ruHWsxz7Y
+	YeJr6qAgJrPx1LxQTxrhWANDqdi+oKaQSErvlhV73DauEGsAl+FCK9Zk403AJKfE
+	bFSPt3fU1ANi6PGz9yBZvXYyCja+a1E73OmlzTzLQyDJnyPQWL91OG655ASeOaqh
+	B69u5aT/aw==
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2043.outbound.protection.outlook.com [104.47.55.43])
+	by mx0a-0014ca01.pphosted.com (PPS) with ESMTPS id 45vbd2y6e2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 11 Apr 2025 02:39:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hNcWp7btITotqq413+VP4rCIjUsVJnEi0eXEl//swNNjC/LY6QfptpYWZg7B6G/BW17CygWN2udu3eBlVtebfi8Dmc8Lp+e3ZHolvAzQWnEVcitKw+Ufr6sm0DoufhYFfuKaiTNLCD9xSy85gPg90hZ63GUF6JopyUy8NJXZzN23rB4h+CQvV5R8RM+mPGNjhMQAAM3AgHyB/a1Hb31wr6izQME9k0XPTlx0N2DK3Gqb9JP6AZUbnSW955abbeCq6g3xrHvbhug1796j44YydU4ki+5LxZfWuJFoYoKazc8X8gamLQaUZwC2uScngDpzvMGXj/vdIDiFvlM/KEN+iA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=A2zYnSdvUJHowH4cvRHlvYT3yEvq8huV10bhKJmYDyo=;
+ b=NDWjvFnRob+/qRf3LpRE/z+1S7SgQRxVbDiJ+5s/uLU99DknaR6lHXK5bED21NTnMsGo+JIT/M8XHXrz8wVXplXfzRDsa3gHrzPfpn31gpC21SAoT5VsK5ws4O80qoiWopfReC7YEt6DLwRe2+3q3PBtialcOC8BmkDlRWGRBqwg1GntEstrWWFtuhg12PU4zxClW7OA9aeihiOXeiG9rMn6L4EyNas6Yb6wKf8M4qox2BISOaZqnE4PBN8mscgJR3IXIP8qOwP98Vy2he1F+u6BU1BSt7UcYluiiI/3o2qOTN+cEDdFWNCoLzRZd2UR6eD2Qqf+p3o0gv4pgSq00A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cadence.com; dmarc=pass action=none header.from=cadence.com;
+ dkim=pass header.d=cadence.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=A2zYnSdvUJHowH4cvRHlvYT3yEvq8huV10bhKJmYDyo=;
+ b=cU8sJOx8ue06q6f5RucHcuWn6ESCLdyoVO5BbPrjSYlEzF3nppTQ611fa9OyEjHceV9iwwd0ylzw0x57vW9PdYNXZh/5qcMs9V84nVtLux2Ag3x0Fd1qt+JTYMpYaR0zIREa+hSChKavcROsU+FhY4rxOtQuhTCORrMsD9htlmw=
+Received: from PH7PR07MB9538.namprd07.prod.outlook.com (2603:10b6:510:203::19)
+ by SJ0PR07MB7552.namprd07.prod.outlook.com (2603:10b6:a03:278::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.34; Fri, 11 Apr
+ 2025 09:39:42 +0000
+Received: from PH7PR07MB9538.namprd07.prod.outlook.com
+ ([fe80::5dbd:49e3:4dc:ccc7]) by PH7PR07MB9538.namprd07.prod.outlook.com
+ ([fe80::5dbd:49e3:4dc:ccc7%5]) with mapi id 15.20.8606.029; Fri, 11 Apr 2025
+ 09:39:42 +0000
+From: Pawel Laszczak <pawell@cadence.com>
+To: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+CC: "peter.chen@kernel.org" <peter.chen@kernel.org>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] usb: cdnsp: Fix issue with resuming from L1
+Thread-Topic: [PATCH] usb: cdnsp: Fix issue with resuming from L1
+Thread-Index: AQHbqemXS6B5IuQjiUyJckm8ZGIk1bOcgYzQgAAf8gCAAZTOMA==
+Date: Fri, 11 Apr 2025 09:39:42 +0000
+Message-ID:
+ <PH7PR07MB9538E0DE72D3A4C0B8A6DABFDDB62@PH7PR07MB9538.namprd07.prod.outlook.com>
+References: <20250410072333.2100511-1-pawell@cadence.com>
+ <PH7PR07MB9538959C61B32EBCA33D1909DDB72@PH7PR07MB9538.namprd07.prod.outlook.com>
+ <2025041050-condition-stout-8168@gregkh>
+In-Reply-To: <2025041050-condition-stout-8168@gregkh>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-dg-rorf: true
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR07MB9538:EE_|SJ0PR07MB7552:EE_
+x-ms-office365-filtering-correlation-id: dfa89f1b-3201-42f2-382d-08dd78dcc954
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?xYlBK/Ktj4hkgLwsL034kuh+ApAPSXnjTm+lxZ6rqe2ipjv23wJEwMZpk3wY?=
+ =?us-ascii?Q?WKVxoro3WlDyA8rD4yO/vgNkU1+EA4ZVImOSLPKYA823e5wtc3mdQGQ46vX3?=
+ =?us-ascii?Q?AUqBugElDbeiHCGb7OxhlaErr7VRWB6gTgcF016vYAw7u1EFfrV5MMKZWS5q?=
+ =?us-ascii?Q?8xdO5VTjpud11KReAgUuWtcUb0fEMrootR2TbSnDDZuZtU85EoN5Gxas7Pr5?=
+ =?us-ascii?Q?emmdqw8QJLSkSiqtIgvW/d7ScmJhMOkCGAZvXo+7gYDAC/VeLWOD8Z4QsIBR?=
+ =?us-ascii?Q?b+ZHnKehZtKvu3KAz1EgksBE4/M6GVNiMg4ro9HpRtGWb7hB9vdV8AkT1gnl?=
+ =?us-ascii?Q?BGBzHSDtrTjjZpNYGFqeqDnxyArU259U0I3Qu5KVAoZLfcDIXYobUv/i+8wE?=
+ =?us-ascii?Q?P6+S1bZ+VzHTu6jxcGFFq6TE5bgDNSfPH8YL09L3BvZkQHqYrFxunHH4LRua?=
+ =?us-ascii?Q?FRUmWHmv6H6hOYNroj+7lpcxE/ghb/iUKvzIDQjQAUI2YW0v8acfXSuKM+DJ?=
+ =?us-ascii?Q?fE0BsepUdzH4+SBC+fZ5gzPuUmMa8lxviddRxMDUSg3OM0kFBSN+ZS8P96CZ?=
+ =?us-ascii?Q?itrwJeLGLevjMSNMTHqZXen6YyePEzlHqX/lNBIiTdh2SmlWwH/2WKg52h4i?=
+ =?us-ascii?Q?dBXBmIuXUgyX4wPY36yX1VicgImZJkGiL5WNeLJgtR7bYvdQlZdmBZUmnFg6?=
+ =?us-ascii?Q?BsXQZ91qQNmNCB14sx8huXeQpm/eqa5sqf+6aWGqnWCziVhJoBhwD8cWwcfR?=
+ =?us-ascii?Q?x4Uh9f9wYQQfw/FRKyOqNm0A9dvOOsoTfhMRhJP2L9eBjBqJfO5XI640QTzG?=
+ =?us-ascii?Q?KbikzEihtTHKNAKeW2MTSN3dQyvthelTApC7MYDOcNl9tBen+fNpDxY2pS6H?=
+ =?us-ascii?Q?tCJWSnqCIFHptd0JrC2MGS9CiHlgxfbgkDAwfbEMqMQCxFC+17oGIRmVzejG?=
+ =?us-ascii?Q?o/C7vFt8ns0mDS1a6Pk0375zzk0gGgtPeqva2BUQkl9uTuBGTHcG40oH7OGs?=
+ =?us-ascii?Q?FlCkG4IF+lEgTwN23YUgc8hZ4+jxVz/vq1dUvplT2t5UHP2Ucfa8OQ/3lyqq?=
+ =?us-ascii?Q?1l5/k2I4FW+WVlbmcqPuCVOJ4mMIffzaPZOPxb0MwenWC1QdRni8uLruA+Ck?=
+ =?us-ascii?Q?FkndHSaCuvA6vePC08aAgyoZX3y3oCp4aQqlYKFNIl25e+/qAH7TGSLk1TQ6?=
+ =?us-ascii?Q?yPYPhD0WXg4iG6Vvz8WMv/x3i7PGxN+asLoGWx3y5BhptRUbl3mHnwf47p3V?=
+ =?us-ascii?Q?HifVSsHJvNyZjDH1NC+Fqp35MP/HsryAPxjnhkmR4b8Cpt/ZomC/ebZKAcvH?=
+ =?us-ascii?Q?jwP+M3EqOyMdr2Fg7ED9dCnYnXyYFl6IReKD9v+/7pwmkiXmNRFs2klW1iai?=
+ =?us-ascii?Q?qyBXtBQuXY1xzw5pu/Uew31LDkVmXRCPmhUPlRibCGaO+H5AdUlNOAJFbGcf?=
+ =?us-ascii?Q?bfOfgXcagQDCVnswPd8czeepXNbca6gj3URyCDr5U8jJ3yEzmeTdCVp+MFET?=
+ =?us-ascii?Q?ka2763Nfvza2Quk=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR07MB9538.namprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?YHJX+XE1vlCtt/UcMlxVC9ISDKvscdjNRWEjPqyjibvpXw0KGLnDB6o+BC9m?=
+ =?us-ascii?Q?jnWiplHesw9o/j8uddr6taH0p3v5lleLHbxmIvnPKUx/DJO7Li62l8SJ3HZK?=
+ =?us-ascii?Q?RXvbbiw3FW4L3c+mSFgiZzVRpXzDyA5h3I48OP9pNorekt+gNgmnT3ypdUMe?=
+ =?us-ascii?Q?8KiKyb9A8fKoKR6IuvUAbDTbXB+P/DOYB86y9f6wLllz6rdYpEqRIIVCp+Xw?=
+ =?us-ascii?Q?n6MolqPbAOO7dSd/LmfjqkYYC75MpIcLsjJ+lHw7O3a7NkwIZ3tSAM72YDDy?=
+ =?us-ascii?Q?4g8grEvyRnv55/k+J5elTZ4Q6kPIYc6HN9H32MmDmG1Qe/zojZycCLWdm35v?=
+ =?us-ascii?Q?EeVo1UxbloikK0l3tvGEAwyCqm+WvPARbk9B/8Mola3TMAdcA9is8jzS3XDd?=
+ =?us-ascii?Q?aVY+VRpKtmi809CIkelN0dErhRcSQ0g1N6txg6oDRDGvZHvZ1uSJfSns0AAW?=
+ =?us-ascii?Q?UzlwxFCTbmq5/yEI55znbjJqPj9wmQtszVqUmNab0sVmXD1KXvz7cioHccK6?=
+ =?us-ascii?Q?UVvsZAuJZYzqPOzv2tdmSbzjBWRIRSb3E40wa9R8vf9ysZWmZP+TGlbv0AbB?=
+ =?us-ascii?Q?mlkhdyKAV176q3k8wGjxNRebjC9ev6DGUs8R65sdzwQbRSTWP1GkygT5HmbV?=
+ =?us-ascii?Q?yGPgNGRLCpKSds1lZzA5c/Fa2Lr5k+OaSR/BCgNK2TRZNVspy4A2byGDLekY?=
+ =?us-ascii?Q?UcjMvbqpt0V3MYRoLxHjR3pvtfHugW+4/CRv4hyrDW3dl8HRN0ClIukbuUGd?=
+ =?us-ascii?Q?Tw4oDBW1/icwuS+4PK6si+2F6RxUaW+/YHlsl3orpiyrY0PYEH33goNsOH83?=
+ =?us-ascii?Q?rAOj6YC8zKDR8hFBYLRYySlhyMH+AJvDbD2o7WETxl1CmWdcYAp4T7yyEj9O?=
+ =?us-ascii?Q?P3RADXUsld3UnlZ9LWqsXItb9ysJi8KpKPfEll5kEbvP00yBcJYh2e2ocOCE?=
+ =?us-ascii?Q?NfU9aDB0vyboW++02jqR+803+JUh/HoUZmHqERR8HBHFSlsONiJ2Ums8xdZq?=
+ =?us-ascii?Q?0O8gnqaiw4ZrCinwZ0o0ybP5lZ9/X8O6yjPLMbrB4QhBJ7B3BZj23Uk3FglX?=
+ =?us-ascii?Q?sc+OMBmBmO8hDGtKMRlS8fCmkNpbF4LV4LkEhToRRctcOcof4jhbpKDN/mWL?=
+ =?us-ascii?Q?62tT+yr6I8avGjCBp2kQtAXFEiD8Y4aQhcF6s4oKV5HAI/ovCzPPnsEHM4tc?=
+ =?us-ascii?Q?1v+fWfzEEa0qgsGw6eWBE10CM6raEd3Vu/ct0bs4mG7IkPMg8ZuxLUksmMAK?=
+ =?us-ascii?Q?Hx3mLYFiXzWXNURYpCzI4V/Rlv1z8A0lwmDI0QbRJ151M+lA5hN4eQjUr8n5?=
+ =?us-ascii?Q?cODqkpP0yRYN4kCX2cI6aOB1VVXRmwG4jxw61x2havj60vfgIYiUVohR2DF1?=
+ =?us-ascii?Q?AvoP68aPQ9CUmPKOlKFFuIjcUJ9y998RD0+N/h661HhzWJYfqaM0wDgVewZ9?=
+ =?us-ascii?Q?4hF4quLJHuCViIsbJ8VMsd9P8ycPeKrZCPb33ijVDuimaGSgRKs5kPDEtz8y?=
+ =?us-ascii?Q?xAtQ1fJ/Jtqetwq15c8fw1AZ2BDX41QEKLVVHFeajDwNJ6ZNazT75EIqDaR9?=
+ =?us-ascii?Q?G08z/+OZiBy9vIq+QmeMct7gjM91b1ZETkT2TCMd?=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -78,425 +166,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-META: 36cyd77yo4dstwirgwo1yeikuk9x6jpp
-X-MBO-RS-ID: 9e7d41134df5cc8be07
+X-OriginatorOrg: cadence.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR07MB9538.namprd07.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dfa89f1b-3201-42f2-382d-08dd78dcc954
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Apr 2025 09:39:42.2274
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: d36035c5-6ce6-4662-a3dc-e762e61ae4c9
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: hM35kajUjntxD0QXi8u4m88+cbC0xKgUfCe7MRBhnotiFGzIuJX2IEK3KSiT1kzPBhNX2Fai8fdVFrTEtYFzvWS4GBvJf5yJWIRnXJ8s6V4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR07MB7552
+X-Proofpoint-ORIG-GUID: 853_MZhzXrP_Fs2ApGju0SpjcSsTq8Hp
+X-Authority-Analysis: v=2.4 cv=HIXDFptv c=1 sm=1 tr=0 ts=67f8e364 cx=c_pps a=2TzYObwzRp/N0knVItohZg==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=XR8D0OoHHMoA:10 a=Zpq2whiEiuAA:10 a=VwQbUJbxAAAA:8 a=Br2UW1UjAAAA:8 a=_yvrbvyXin3ZIJHglYsA:9 a=CjuIK1q_8ugA:10 a=WmXOPjafLNExVIMTj843:22
+X-Proofpoint-GUID: 853_MZhzXrP_Fs2ApGju0SpjcSsTq8Hp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-11_03,2025-04-10_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_check_notspam policy=outbound_check score=0 phishscore=0
+ priorityscore=1501 adultscore=0 bulkscore=0 mlxlogscore=990 suspectscore=0
+ clxscore=1015 malwarescore=0 mlxscore=0 spamscore=0 impostorscore=0
+ lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504110060
 
-On Thu, 2025-04-10 at 17:36 +0200, Philipp Stanner wrote:
-> On Thu, 2025-04-10 at 15:16 +0200, Christian K=C3=B6nig wrote:
-> > Am 10.04.25 um 15:09 schrieb Philipp Stanner:
-> > > On Thu, 2025-04-10 at 14:58 +0200, Christian K=C3=B6nig wrote:
-> > > > Am 10.04.25 um 11:24 schrieb Philipp Stanner:
-> > > > > Nouveau currently relies on the assumption that dma_fences
-> > > > > will
-> > > > > only
-> > > > > ever get signaled through nouveau_fence_signal(), which takes
-> > > > > care
-> > > > > of
-> > > > > removing a signaled fence from the list
-> > > > > nouveau_fence_chan.pending.
-> > > > >=20
-> > > > > This self-imposed rule is violated in nouveau_fence_done(),
-> > > > > where
-> > > > > dma_fence_is_signaled() (somewhat surprisingly, considering
-> > > > > its
-> > > > > name)
-> > > > > can signal the fence without removing it from the list. This
-> > > > > enables
-> > > > > accesses to already signaled fences through the list, which
-> > > > > is
-> > > > > a
-> > > > > bug.
-> > > > >=20
-> > > > > In particular, it can race with nouveau_fence_context_kill(),
-> > > > > which
-> > > > > would then attempt to set an error code on an already
-> > > > > signaled
-> > > > > fence,
-> > > > > which is illegal.
-> > > > >=20
-> > > > > In nouveau_fence_done(), the call to nouveau_fence_update()
-> > > > > already
-> > > > > ensures to signal all ready fences. Thus, the signaling
-> > > > > potentially
-> > > > > performed by dma_fence_is_signaled() is actually not
-> > > > > necessary.
-> > > > Ah, I now got what you are trying to do here! But that won't
-> > > > help.
-> > > >=20
-> > > > The problem is it is perfectly valid for somebody external
-> > > > (e.g.
-> > > > other driver, TTM etc...) to call dma_fence_is_signaled() on a
-> > > > nouveau fence.
-> > > >=20
-> > > > This will then in turn still signal the fence and leave it on
-> > > > the
-> > > > pending list and creating the problem you have.
-> > > Good to hear =E2=80=93 precisely that then is the use case for a
-> > > dma_fence
-> > > callback! ^_^ It guarantees that, no matter who signals a fence,
-> > > no
-> > > matter at what place, a certain action will always be performed.
-> > >=20
-> > > I can't think of any other mechanism which could guarantee that a
-> > > signaled fence immediately gets removed from nouveau's pending
-> > > list,
-> > > other than the callbacks.
-> > >=20
-> > > But seriously, I don't think that anyone does this currently, nor
-> > > do I
-> > > think that anyone could get away with doing it without the entire
-> > > computer burning down.
-> >=20
-> > Yeah, I don't think that this is possible at the moment.
-> >=20
-> > When you do stuff like that from the provider side you will always
-> > run into lifetime issues because in the signaling from interrupt
-> > case
-> > you then drop the last reference before the signaling is completed.
-> >=20
-> > How about the attached (not even compile tested) patch? I think it
-> > should fix the issue.
->=20
-> This patch looked correct enough for me to try it out on top of my
-> memleak fix series [1] (which seems to reveal all those problems
-> through races appearing due to the removal of the waitqueue in
-> nouveau_sched_fini()).
->=20
-> The code looked correct to me, but it still makes boom-boom, again
-> because two parties get their fingers onto list_del():
->=20
-> [paste in case my editor explodes again:
-> https://paste.debian.net/1368705/=C2=A0]
->=20
-> [=C2=A0=C2=A0 41.681698] list_del corruption, ff31ae696cdc86a0->next is
-> LIST_POISON1 (dead000000000100)
-> [=C2=A0=C2=A0 41.681720] ------------[ cut here ]------------
-> [=C2=A0=C2=A0 41.681722] kernel BUG at lib/list_debug.c:56!
-> [=C2=A0=C2=A0 41.681729] Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPT=
-I
-> [=C2=A0=C2=A0 41.681732] CPU: 22 UID: 42 PID: 1733 Comm: gnome-shell Not
-> tainted
-> 6.14.0-rc4+ #11
-> [=C2=A0=C2=A0 41.681735] Hardware name: Dell Inc. Precision 7960 Tower/01=
-G0M6,
-> BIOS 2.7.0 12/17/2024
-> [=C2=A0=C2=A0 41.681737] RIP: 0010:__list_del_entry_valid_or_report+0x76/=
-0xf0
-> [=C2=A0=C2=A0 41.681743] Code: 75 66 5b b8 01 00 00 00 5d 41 5c c3 cc cc =
-cc cc
-> 48
-> 89 ef e8 4c e7 b0 ff 48 89 ea 48 89 de 48 c7 c7 38 fb b5 a0 e8 3a 6d
-> 6b
-> ff <0f> 0b 4c 89 e7 e8 30 e7 b0 ff 4c 89 e2 48 89 de 48 c7 c7 70 fb
-> b5
-> [=C2=A0=C2=A0 41.681745] RSP: 0018:ff4fe30cc0f83b30 EFLAGS: 00010246
-> [=C2=A0=C2=A0 41.681748] RAX: 000000000000004e RBX: ff31ae696cdc86a0 RCX:
-> 0000000000000027
-> [=C2=A0=C2=A0 41.681749] RDX: 0000000000000000 RSI: 0000000000000001 RDI:
-> ff31ae8850321900
-> [=C2=A0=C2=A0 41.681751] RBP: dead000000000100 R08: 0000000000000000 R09:
-> 0000000000000000
-> [=C2=A0=C2=A0 41.681752] R10: 7572726f63206c65 R11: 6c65645f7473696c R12:
-> dead000000000122
-> [=C2=A0=C2=A0 41.681753] R13: ff31ae696cdc8662 R14: ff4fe30cc0f83cb8 R15:
-> 00007f68b7f9a000
-> [=C2=A0=C2=A0 41.681754] FS:=C2=A0 00007f68bd0396c0(0000) GS:ff31ae885030=
-0000(0000)
-> knlGS:0000000000000000
-> [=C2=A0=C2=A0 41.681756] CS:=C2=A0 0010 DS: 0000 ES: 0000 CR0: 0000000080=
-050033
-> [=C2=A0=C2=A0 41.681757] CR2: 00005577caaad68c CR3: 000000010407c003 CR4:
-> 0000000000f71ef0
-> [=C2=A0=C2=A0 41.681758] DR0: 0000000000000000 DR1: 0000000000000000 DR2:
-> 0000000000000000
-> [=C2=A0=C2=A0 41.681759] DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7:
-> 0000000000000400
-> [=C2=A0=C2=A0 41.681760] PKRU: 55555554
-> [=C2=A0=C2=A0 41.681761] Call Trace:
-> [=C2=A0=C2=A0 41.681763]=C2=A0 <TASK>
-> [=C2=A0=C2=A0 41.681764]=C2=A0 ? __die_body.cold+0x19/0x27
-> [=C2=A0=C2=A0 41.681768]=C2=A0 ? die+0x2e/0x50
-> [=C2=A0=C2=A0 41.681772]=C2=A0 ? do_trap+0xca/0x110
-> [=C2=A0=C2=A0 41.681775]=C2=A0 ? do_error_trap+0x6a/0x90
-> [=C2=A0=C2=A0 41.681776]=C2=A0 ? __list_del_entry_valid_or_report+0x76/0x=
-f0
-> [=C2=A0=C2=A0 41.681778]=C2=A0 ? exc_invalid_op+0x50/0x70
-> [=C2=A0=C2=A0 41.681781]=C2=A0 ? __list_del_entry_valid_or_report+0x76/0x=
-f0
-> [=C2=A0=C2=A0 41.681782]=C2=A0 ? asm_exc_invalid_op+0x1a/0x20
-> [=C2=A0=C2=A0 41.681788]=C2=A0 ? __list_del_entry_valid_or_report+0x76/0x=
-f0
-> [=C2=A0=C2=A0 41.681789]=C2=A0 nouveau_fence_is_signaled+0x47/0xc0 [nouve=
-au]
-> [=C2=A0=C2=A0 41.681961]=C2=A0 dma_resv_iter_walk_unlocked.part.0+0xbd/0x=
-170
-> [=C2=A0=C2=A0 41.681966]=C2=A0 dma_resv_test_signaled+0x53/0x100
-> [=C2=A0=C2=A0 41.681969]=C2=A0 ttm_bo_release+0x12d/0x2f0 [ttm]
-> [=C2=A0=C2=A0 41.681979]=C2=A0 nouveau_gem_object_del+0x54/0x80 [nouveau]
-> [=C2=A0=C2=A0 41.682090]=C2=A0 ttm_bo_vm_close+0x41/0x60 [ttm]
-> [=C2=A0=C2=A0 41.682097]=C2=A0 remove_vma+0x2c/0x70
-> [=C2=A0=C2=A0 41.682100]=C2=A0 vms_complete_munmap_vmas+0xd8/0x180
-> [=C2=A0=C2=A0 41.682102]=C2=A0 do_vmi_align_munmap+0x1d7/0x250
-> [=C2=A0=C2=A0 41.682106]=C2=A0 do_vmi_munmap+0xd0/0x170
-> [=C2=A0=C2=A0 41.682109]=C2=A0 __vm_munmap+0xb1/0x180
-> [=C2=A0=C2=A0 41.682112]=C2=A0 __x64_sys_munmap+0x1b/0x30
-> [=C2=A0=C2=A0 41.682115]=C2=A0 do_syscall_64+0x82/0x160
-> [=C2=A0=C2=A0 41.682117]=C2=A0 ? do_user_addr_fault+0x55a/0x7b0
-> [=C2=A0=C2=A0 41.682121]=C2=A0 ? exc_page_fault+0x7e/0x1a0
-> [=C2=A0=C2=A0 41.682124]=C2=A0 entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> [=C2=A0=C2=A0 41.682127] RIP: 0033:0x7f68cceff02b
-> [=C2=A0=C2=A0 41.682130] Code: 73 01 c3 48 8b 0d e5 6d 0f 00 f7 d8 64 89 =
-01 48
-> 83
-> c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 0b 00 00 00
-> 0f
-> 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d b5 6d 0f 00 f7 d8 64 89 01
-> 48
-> [=C2=A0=C2=A0 41.682131] RSP: 002b:00007ffed8d00c08 EFLAGS: 00000206 ORIG=
-_RAX:
-> 000000000000000b
-> [=C2=A0=C2=A0 41.682134] RAX: ffffffffffffffda RBX: 00005577ca99ef50 RCX:
-> 00007f68cceff02b
-> [=C2=A0=C2=A0 41.682135] RDX: 0000000000000000 RSI: 0000000000001000 RDI:
-> 00007f68b7f9a000
-> [=C2=A0=C2=A0 41.682136] RBP: 00007ffed8d00c50 R08: 00005577cacc4160 R09:
-> 00005577caccf930
-> [=C2=A0=C2=A0 41.682137] R10: 000199999996d999 R11: 0000000000000206 R12:
-> 0000000000000000
-> [=C2=A0=C2=A0 41.682138] R13: 00007ffed8d00c60 R14: 00005577caf6c550 R15:
-> 0000000000000035
-> [=C2=A0=C2=A0 41.682141]=C2=A0 </TASK>
-> [=C2=A0=C2=A0 41.682141] Modules linked in: nf_conntrack_netbios_ns
-> nf_conntrack_broadcast nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib
-> nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct
-> nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4
-> rfkill
-> ip_set nf_tables qrtr sunrpc snd_sof_pci_intel_tgl
-> snd_sof_pci_intel_cnl snd_sof_intel_hda_generic snd_sof_pci
-> snd_sof_xtensa_dsp snd_sof_intel_hda_common snd_soc_hdac_hda
-> snd_sof_intel_hda snd_sof snd_sof_utils snd_soc_acpi_intel_match
-> snd_soc_acpi snd_soc_acpi_intel_sdca_quirks snd_sof_intel_hda_mlink
-> snd_soc_sdca snd_soc_avs snd_ctl_led intel_rapl_msr snd_soc_hda_codec
-> snd_hda_ext_core intel_rapl_common snd_hda_codec_realtek snd_soc_core
-> intel_uncore_frequency snd_hda_codec_generic
-> intel_uncore_frequency_common intel_ifs snd_hda_scodec_component
-> snd_hda_codec_hdmi i10nm_edac snd_compress skx_edac_common
-> binfmt_misc
-> nfit snd_hda_intel snd_intel_dspcfg snd_hda_codec libnvdimm snd_hwdep
-> snd_hda_core snd_seq snd_seq_device x86_pkg_temp_thermal dell_pc
-> dell_wmi
-> [=C2=A0=C2=A0 41.682195]=C2=A0 dax_hmem platform_profile intel_powerclamp
-> sparse_keymap cxl_acpi snd_pcm cxl_port coretemp iTCO_wdt cxl_core
-> spi_nor intel_pmc_bxt dell_wmi_sysman rapl pmt_telemetry dell_smbios
-> iTCO_vendor_support pmt_class intel_cstate snd_timer vfat dcdbas
-> isst_if_mmio mtd dell_smm_hwmon dell_wmi_ddv dell_wmi_descriptor
-> intel_uncore firmware_attributes_class wmi_bmof atlantic fat einj
-> pcspkr isst_if_mbox_pci snd isst_if_common intel_vsec i2c_i801 mei_me
-> e1000e spi_intel_pci macsec soundcore i2c_smbus spi_intel mei joydev
-> loop nfnetlink zram nouveau drm_ttm_helper ttm iaa_crypto
-> polyval_clmulni rtsx_pci_sdmmc polyval_generic mmc_core gpu_sched
-> ghash_clmulni_intel i2c_algo_bit nvme sha512_ssse3 drm_gpuvm drm_exec
-> sha256_ssse3 idxd nvme_core sha1_ssse3 drm_display_helper rtsx_pci
-> cec
-> nvme_auth idxd_bus pinctrl_alderlake ip6_tables ip_tables fuse
-> [=C2=A0=C2=A0 41.682269] ---[ end trace 0000000000000000 ]---
-> [=C2=A0=C2=A0 41.969442] RIP: 0010:__list_del_entry_valid_or_report+0x76/=
-0xf0
-> [=C2=A0=C2=A0 41.969458] Code: 75 66 5b b8 01 00 00 00 5d 41 5c c3 cc cc =
-cc cc
-> 48
-> 89 ef e8 4c e7 b0 ff 48 89 ea 48 89 de 48 c7 c7 38 fb b5 a0 e8 3a 6d
-> 6b
-> ff <0f> 0b 4c 89 e7 e8 30 e7 b0 ff 4c 89 e2 48 89 de 48 c7 c7 70 fb
-> b5
-> [=C2=A0=C2=A0 41.969461] RSP: 0018:ff4fe30cc0f83b30 EFLAGS: 00010246
-> [=C2=A0=C2=A0 41.969464] RAX: 000000000000004e RBX: ff31ae696cdc86a0 RCX:
-> 0000000000000027
-> [=C2=A0=C2=A0 41.969466] RDX: 0000000000000000 RSI: 0000000000000001 RDI:
-> ff31ae8850321900
-> [=C2=A0=C2=A0 41.969468] RBP: dead000000000100 R08: 0000000000000000 R09:
-> 0000000000000000
-> [=C2=A0=C2=A0 41.969469] R10: 7572726f63206c65 R11: 6c65645f7473696c R12:
-> dead000000000122
-> [=C2=A0=C2=A0 41.969470] R13: ff31ae696cdc8662 R14: ff4fe30cc0f83cb8 R15:
-> 00007f68b7f9a000
-> [=C2=A0=C2=A0 41.969471] FS:=C2=A0 00007f68bd0396c0(0000) GS:ff31ae885030=
-0000(0000)
-> knlGS:0000000000000000
-> [=C2=A0=C2=A0 41.969473] CS:=C2=A0 0010 DS: 0000 ES: 0000 CR0: 0000000080=
-050033
-> [=C2=A0=C2=A0 41.969474] CR2: 00005577caaad68c CR3: 000000010407c003 CR4:
-> 0000000000f71ef0
-> [=C2=A0=C2=A0 41.969476] DR0: 0000000000000000 DR1: 0000000000000000 DR2:
-> 0000000000000000
-> [=C2=A0=C2=A0 41.969477] DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7:
-> 0000000000000400
-> [=C2=A0=C2=A0 41.969478] PKRU: 55555554
->=20
->=20
-> I fail to see why exactly right now, but am also quite tired. Might
-> take another look the next days.
->=20
-> Although I'm not convinced that my solution is bad either. It's
-> Nouveau, after all. On this ranch a cowboy has to defend himself with
-> the pitchfork instead of the colt at times.
->=20
->=20
-> [1]
-> https://lore.kernel.org/all/20250407152239.34429-2-phasta@kernel.org/
->=20
+>
+>
+>On Thu, Apr 10, 2025 at 07:34:16AM +0000, Pawel Laszczak wrote:
+>> Subject: [PATCH] usb: cdnsp: Fix issue with resuming from L1
+>
+>Why is the subject line duplicated here?  Can you fix up your git send-ema=
+il
+>process to not do that?
+>
+>> In very rare cases after resuming controller from L1 to L0 it reads
+>> registers before the clock has been enabled and as the result driver
+>> reads incorrect value.
+>> To fix this issue driver increases APB timeout value.
+>>
+>> Probably this issue occurs only on Cadence platform but fix should
+>> have no impact for other existing platforms.
+>
+>If this is the case, shouldn't you just handle this for Cadence-specific h=
+ardware
+>and add the check for that to this change?
 
-I think I see the issue now. Let's look at your code, Christian:
+This fix will not have negative impact for other platforms, but I'm not sur=
+e
+whether other platforms are free from this issue.=20
+It is very hard to recreate and debug this issue.
 
-/*
- * In an ideal world, read would not assume the channel context is
-still alive.
- * This function may be called from another device, running into free
-memory as a
- * result. The drm node should still be there, so we can derive the
-index from
- * the fence context.
- */
-static bool nouveau_fence_is_signaled(struct dma_fence *f)
-{
-	struct nouveau_fence *fence =3D from_fence(f);
-	struct nouveau_fence_chan *fctx =3D nouveau_fctx(fence);
-	struct nouveau_channel *chan;
-	bool ret =3D false;
-
-	rcu_read_lock();
-	chan =3D rcu_dereference(fence->channel);
-	if (chan)
-		ret =3D (int)(fctx->read(chan) - fence->base.seqno) >=3D
-0;
-	rcu_read_unlock();
-
-	if (ret) {
-		/*
-		 * caller should have a reference on the fence,
-		 * else fence could get freed here
-		 */
-		WARN_ON(kref_read(&fence->base.refcount) <=3D 1);
-
-		list_del(&fence->head);
-		dma_fence_put(&fence->base);
-	}
-
-	return ret;
-}
-
-[snip]
-
-static const struct dma_fence_ops nouveau_fence_ops_uevent =3D {
-	.get_driver_name =3D nouveau_fence_get_get_driver_name,
-	.get_timeline_name =3D nouveau_fence_get_timeline_name,
-	.enable_signaling =3D nouveau_fence_enable_signaling,
-	.signaled =3D nouveau_fence_is_signaled,
-	.release =3D nouveau_fence_release
-};
-
-
-So the nouveau_fence_done() will run into nouveau_fence_is_signaled().
-This will remove the list entry without any locking, because
-dma_fence_is_signaled() expects its callback to take the lock itself:
-
-bool
-nouveau_fence_done(struct nouveau_fence *fence)
-{
-	if (fence->base.ops =3D=3D &nouveau_fence_ops_legacy ||
-	    fence->base.ops =3D=3D &nouveau_fence_ops_uevent) {
-		struct nouveau_fence_chan *fctx =3D nouveau_fctx(fence);
-		struct nouveau_channel *chan;
-		unsigned long flags;
-
-		if (test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence-
->base.flags))
-			return true;
-
-		spin_lock_irqsave(&fctx->lock, flags);
-		chan =3D rcu_dereference_protected(fence->channel,
-lockdep_is_held(&fctx->lock));
-		if (chan && nouveau_fence_update(chan, fctx))
-			nvif_event_block(&fctx->event);
-		spin_unlock_irqrestore(&fctx->lock, flags);
-	}
-	return dma_fence_is_signaled(&fence->base);
-}
-
-
-
-It could be, however, that at the same moment nouveau_fence_signal() is
-removing that entry, holding the appropriate lock.
-
-So we have a race. Again.
-
-You see, fixing things in Nouveau is difficult :)
-It gets more difficult if you want to clean it up "properly", so it
-conforms to rules such as those from dma_fence.
-
-I have now provided two fixes that both work, but you are not satisfied
-with from the dma_fence-maintainer's perspective. I understand that,
-but please also understand that it's actually not my primary task to
-work on Nouveau. I just have to fix this bug to move on with my
-scheduler work.
-
-So if you have another idea, feel free to share it. But I'd like to
-know how we can go on here.
-
-I'm running out of ideas. What I'm wondering if we couldn't just remove
-performance hacky fastpath functions such as
-nouveau_fence_is_signaled() completely. It seems redundant to me.
-
-Or we might add locking to it, but IDK what was achieved with RCU here.
-In any case it's definitely bad that Nouveau has so many redundant and
-half-redundant mechanisms.
-
-
-P.
-
->=20
->=20
-> P.
->=20
-> >=20
-> > Regards,
-> > Christian.
-> >=20
-> > >=20
-> > > P.
-> > >=20
-> > >=20
-> > >=20
-> > > > Regards,
-> > > > Christian.
-> > > >=20
-> > > > > Replace the call to dma_fence_is_signaled() with
-> > > > > nouveau_fence_base_is_signaled().
-> > > > >=20
-> > > > > Cc: <stable@vger.kernel.org> # 4.10+, precise commit not to
-> > > > > be
-> > > > > determined
-> > > > > Signed-off-by: Philipp Stanner <phasta@kernel.org>
-> > > > > ---
-> > > > > =C2=A0drivers/gpu/drm/nouveau/nouveau_fence.c | 2 +-
-> > > > > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
-> > > > >=20
-> > > > > diff --git a/drivers/gpu/drm/nouveau/nouveau_fence.c
-> > > > > b/drivers/gpu/drm/nouveau/nouveau_fence.c
-> > > > > index 7cc84472cece..33535987d8ed 100644
-> > > > > --- a/drivers/gpu/drm/nouveau/nouveau_fence.c
-> > > > > +++ b/drivers/gpu/drm/nouveau/nouveau_fence.c
-> > > > > @@ -274,7 +274,7 @@ nouveau_fence_done(struct nouveau_fence
-> > > > > *fence)
-> > > > > =C2=A0			nvif_event_block(&fctx->event);
-> > > > > =C2=A0		spin_unlock_irqrestore(&fctx->lock, flags);
-> > > > > =C2=A0	}
-> > > > > -	return dma_fence_is_signaled(&fence->base);
-> > > > > +	return test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence-
-> > > > > > base.flags);
-> > > > > =C2=A0}
-> > > > > =C2=A0
-> > > > > =C2=A0static long
->=20
-
+Thanks,
+Pawel
+>
+>>
+>> Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence
+>> USBSSP DRD Driver")
+>> cc: stable@vger.kernel.org
+>> Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+>> ---
+>>  drivers/usb/cdns3/cdnsp-gadget.c | 22 ++++++++++++++++++++++
+>> drivers/usb/cdns3/cdnsp-gadget.h |  4 ++++
+>>  2 files changed, 26 insertions(+)
+>>
+>> diff --git a/drivers/usb/cdns3/cdnsp-gadget.c
+>> b/drivers/usb/cdns3/cdnsp-gadget.c
+>> index 87f310841735..b12581b94567 100644
+>> --- a/drivers/usb/cdns3/cdnsp-gadget.c
+>> +++ b/drivers/usb/cdns3/cdnsp-gadget.c
+>> @@ -139,6 +139,21 @@ static void cdnsp_clear_port_change_bit(struct
+>cdnsp_device *pdev,
+>>  	       (portsc & PORT_CHANGE_BITS), port_regs);  }
+>>
+>> +static void cdnsp_set_apb_timeout_value(struct cdnsp_device *pdev) {
+>> +	__le32 __iomem *reg;
+>> +	void __iomem *base;
+>> +	u32 offset =3D 0;
+>> +	u32 val;
+>> +
+>> +	base =3D &pdev->cap_regs->hc_capbase;
+>> +	offset =3D cdnsp_find_next_ext_cap(base, offset, D_XEC_PRE_REGS_CAP);
+>> +	reg =3D base + offset + REG_CHICKEN_BITS_3_OFFSET;
+>> +
+>> +	val  =3D le32_to_cpu(readl(reg));
+>> +	writel(cpu_to_le32(CHICKEN_APB_TIMEOUT_SET(val)), reg);
+>
+>Do you need to do a read to ensure that the write is flushed to the device=
+ before
+>continuing?
+>
+>> +}
+>> +
+>>  static void cdnsp_set_chicken_bits_2(struct cdnsp_device *pdev, u32
+>> bit)  {
+>>  	__le32 __iomem *reg;
+>> @@ -1798,6 +1813,13 @@ static int cdnsp_gen_setup(struct cdnsp_device
+>*pdev)
+>>  	pdev->hci_version =3D HC_VERSION(pdev->hcc_params);
+>>  	pdev->hcc_params =3D readl(&pdev->cap_regs->hcc_params);
+>>
+>> +	/* In very rare cases after resuming controller from L1 to L0 it reads
+>> +	 * registers before the clock has been enabled and as the result drive=
+r
+>> +	 * reads incorrect value.
+>> +	 * To fix this issue driver increases APB timeout value.
+>> +	 */
+>
+>Nit, please use the "normal" kernel comment style.
+>
+>thanks,
+>
+>greg k-h
 
