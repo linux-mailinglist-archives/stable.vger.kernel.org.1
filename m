@@ -1,213 +1,255 @@
-Return-Path: <stable+bounces-132252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35E1DA85F9E
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 15:51:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C761A85FA2
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 15:51:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7037E44237A
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 13:47:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7A654C2215
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 13:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A22E1E5B94;
-	Fri, 11 Apr 2025 13:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529F6146585;
+	Fri, 11 Apr 2025 13:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GMBmv6AV"
+	dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b="XVCmtEfg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3321D86FB;
-	Fri, 11 Apr 2025 13:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5B01953A1
+	for <stable@vger.kernel.org>; Fri, 11 Apr 2025 13:48:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744379255; cv=none; b=LCCcSme3YEKEHZEEuOell03NWePotRCGwbF1paNqqaTru3DoeMxB6srHQmHXDWr3s3YJGWdq7cuqXKECINn/T02hyLHTtzm3K00BwPuTszQj6SgWlkXugkVJXwIjAJbc7vy2jdSrqo5+NkILQoGtBW+JJezLg+aRs1XvnoySevs=
+	t=1744379285; cv=none; b=O/Aa6UlwiXhJhpGymJqOZgtNk9Iat7CnYEa/1lQCWaFm4dQZDxx5k8H8pXN64Rn4DqcVFfnkAjgvfUcH4/EI7RZskpVHGtJtWjW/gsvfngenbOWrFV9j2CiNkAQl7VMeq0AN4jF3YrTV7opv3qJM8zYkCaLX2ag92oYAx9bad0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744379255; c=relaxed/simple;
-	bh=PogR4W7dnXucGICz/AQVDV9oEY2yJBO7er+MO0ZqtZo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=q7lUtwzkZuNGYqAEgdGTCaMzvp8sZQOzH++jTXBXG1Fe1uMemrIOlFiTZ+DANO6vr069j9TMqXg9efRBXoKhwwqOvoHn7y1vOlRPE9eGqSJV5NJR3DY0cNhpw4Frv30vZZGcRVhGGJ1gJBJkC269I2riobJtZ2HM4WqYzy10EPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GMBmv6AV; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-ac73723b2d5so398504966b.3;
-        Fri, 11 Apr 2025 06:47:32 -0700 (PDT)
+	s=arc-20240116; t=1744379285; c=relaxed/simple;
+	bh=GTPR1QvEWuzlPfORjRABD/7ixL5veLEnUyT0276Wre0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DFxrisrgVfTg7q8XsKDECOW3OoKbIhOeRzdjug3O+rhMhtKvGExOslUiel1UGKBWNUBerAR4S7h796n9xabWxeM/NFso4akXaSR1DoLZ0v1SpGdd4+NvxHLiSfe//aa6UBFj/6BJwolhRMhBbmZKIsKV5MOMQH8cdxF35Nkh0eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com; spf=pass smtp.mailfrom=mvista.com; dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b=XVCmtEfg; arc=none smtp.client-ip=209.85.160.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mvista.com
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-2c7b2c14455so1190730fac.2
+        for <stable@vger.kernel.org>; Fri, 11 Apr 2025 06:48:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744379251; x=1744984051; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=o5n+QohqvB7s/Sb0490fMM5HBbQ3f/3RmRNA2L8Qxnk=;
-        b=GMBmv6AVOiSBEgESelZmu++MVZbL5kUoCDdyyRvNQ0Dzbv/jLQwDjBXLsiCu5IECtK
-         XXibYP8hA5DirBsrFWJNArwFSevmDx7u1WqkCnJEsGf7JJN7scmleNyZtzkBqxwuWDgg
-         +QXhnCbEuNbUbxXxV7Qrsss0NCGdvMMKX33uHNXmeZD3Q/j6Lz5kQrEXqjFDRJ68igQQ
-         i7tJDlYsn6JjKAGIgPoi+MK/on09uzfvoS52QHz8ZQIpB6QSd8DaG+RRgcnlQwaiGxhH
-         Hl8ZQO2x8VzzIvDXDeUhjhDoHdIrKT+IjI8jAxL70hz97iG/Klij0/X+YCeNb9QkrB3T
-         RQ+w==
+        d=mvista.com; s=google; t=1744379282; x=1744984082; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CITcD9bOx6vA0SBSE7uRTj2LdZG2Bo+0uQ7T3uAJ1z8=;
+        b=XVCmtEfgF66hki5gI9suhHfDsAOPaC1gBByqM0M2DoheFwh7kC3UJAdKUVLB+0lDz4
+         /5N6sMb+SLASOMA7ozXZr5iIOf/+86DJ2VvrxHGWSyqePFCE2ay/oySQT+ZmgYE6I7q2
+         ioltVLyz+CKI3Ix90s7mrEQU+I7Ks9kGs4tlg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744379251; x=1744984051;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=o5n+QohqvB7s/Sb0490fMM5HBbQ3f/3RmRNA2L8Qxnk=;
-        b=Os0ASRDiBRiaXDqlELQIvZorv1oceH7ZjIL+G0vm5u39PuxU3oRVgiTHVz43Kz1ZQR
-         /wB+N3f3vMP0+pQwo2xeamhc6260qtWW4P8lkGy0lTOV/2OkHIxYNxLi3o4R3QjP88Fr
-         EA5TeNQF9FwCQCCkbI1Y0e0s27LuafD2PwNOAdO9PZF9+yjfw1hEGMSjywTwRSb3wFuH
-         9KPxah+8q9GN4PehVH0+zmK/TAnYhqMQOezrJ4rNV+TDyWvbdtd17TzYDQypz/jNdckI
-         ZSH6AE2EC48yLtkZf8Tv5qwUtfUFbIniZSBLmC56mWMciRURfrd3udCTcd9eknP/P++v
-         iDug==
-X-Forwarded-Encrypted: i=1; AJvYcCUvBwxvt6GSJtTBEptaIvFGyuzyWdFpcEK1wdsFmQrSuvtxuGYnbJpjoM+kBs2t+bveZciQCpnW@vger.kernel.org, AJvYcCWveBehoOAivrkAJnF2FvWKk6uoDO6ziKVYyaKSHns3FNi6n3CjjkPqBdxKq0aaZMl/ArAk3/Vea1XUBZU=@vger.kernel.org, AJvYcCX6+ECqfcW5sQX3ZafsCLR54o25qCHN3xUfQD9pwAc6yvykyxHAG1p9dkqR9yS6SpIRvcV7QTVcRhy2MDq/ApY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzrxmNYYjiHSgFAWIrP5RbWNF9bR+Dpss5Bx8UnhnRP0N8lceWl
-	Fx/EHocTrLLOFec5/MNqOOlagtpJBRC/hTIaJjC0Xcg7DarVHs5a
-X-Gm-Gg: ASbGnct8tqzxBR1+dFROPtf9Z6zl6k/e2CDAYmf38GpMy4tv0Nl+EGLT87XtojyCmXZ
-	vgr4spDJRkS09h9Y1KvYnXt5YL7Zv++DxVrdPIWvEsZMVKXgiODmJoOF9/tRIFNdMRMt/olaqLp
-	P/iMncKaXrmwv4kRcOAQN6eOFi/UW4lPS8crn5SfUGJ/fPQOF+HZ3KVWC7YtD0gN2okh44CeWoT
-	bgLk4IGUSyDTyEHyN6zZbZuusjR/Kk1XyvA0b2FiGDBiNsUqtYV60M4BfKdI7ZnUveWA/HlRRSV
-	H452fOYuhfOzYNZtBCEYUZdknNW1MnOKNvj9mrmmoOYieMSTOPF/Cks+8hhz99xA348Q8QWxwK1
-	tD/d7UDwoTioJDh2KF1I=
-X-Google-Smtp-Source: AGHT+IHxm8659RzD3xWh3EuM0iDPlgOx6OC9RUxPjuJSZXQ8ecMHseGUJ7xwZNzC+27SLQe8FZ4ZQA==
-X-Received: by 2002:a17:907:c22:b0:ac7:e5c4:1187 with SMTP id a640c23a62f3a-acad343c76fmr227896466b.11.1744379251125;
-        Fri, 11 Apr 2025 06:47:31 -0700 (PDT)
-Received: from ?IPV6:2001:4bc9:801:666a:43aa:5aff:fcd4:ae38? ([2001:4bc9:801:666a:43aa:5aff:fcd4:ae38])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acaa1be87e1sm451142866b.53.2025.04.11.06.47.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Apr 2025 06:47:30 -0700 (PDT)
-Message-ID: <99070274-4891-411a-89e1-420ca4d5d0fb@gmail.com>
-Date: Fri, 11 Apr 2025 15:47:28 +0200
+        d=1e100.net; s=20230601; t=1744379282; x=1744984082;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CITcD9bOx6vA0SBSE7uRTj2LdZG2Bo+0uQ7T3uAJ1z8=;
+        b=pm0s5f0vyOTFIIRU1RXMynqjXe5SNaqTfK/AOoyNDjfhy6+OmdYnzc0NgwIEo3RzbR
+         G1nXZOuvNN7kIasS/IYpDAkWQ/gQ9HkT+Gm/BNjxdZuecvz1V/0WYzQlvQOpiSdSlJpR
+         QtdLqXaHeegGYOzAN8/xbPUqL2Ow5prruoZFgG/qD9KCJ6emYWu7HB4ZTOkm86BC3rZ7
+         xGLvc9/IVsV1/8w20XEPIJbmdAAOl4ufokYBq8DyX/LZdRwLy+6bHqUJwHl7y8rmZtTg
+         soUOUadgCpYIOqRXsIJ2Pjhtg6Ij9Ym5LIdNxcrVrT7IzL/qvmRWyJat+K/j1uu/NsEk
+         89Cg==
+X-Gm-Message-State: AOJu0YyZbS2/40LK0CtctKdjPVXfWWzNsGw79qzWbnGSojLF09BY9C/K
+	z8pagP+x5bR5mgQy7vA8eMUz+DcfjF1KowifjpdGJq4S1zWjkPKZrpiy/SUD+VNDWihF7XQ/j+0
+	g7gxxd69h+QTSV6K97y7QdCJFIca9VJtrSSc8eg==
+X-Gm-Gg: ASbGncsgnRKqHx9Zlgnfe9Lp4KiT/OE7FnN1rjRPuErQyQfmy3DMQ4+5/F/Q0rmEHj4
+	96JSuM85ElMdiqa3MziE4DTB1ftTt0i+CG50DGWalB56ylgVQskZOt/NPcU5thFFUxWkr3niDne
+	RhhB0oqpUaqMyR4E9X9WZU0e4+DRUiFcgsUlFi8IBsaoazDnza7pWi
+X-Google-Smtp-Source: AGHT+IFg0J0KnnzsIPv4jPspJ7Gj7vA6W1Qgia5npdRg1ZdWPHRYcnq+hl85iW70pyvBlgwVF8enMxlrB/ileIRd0Zs=
+X-Received: by 2002:a05:6870:b019:b0:2c1:51f7:e648 with SMTP id
+ 586e51a60fabf-2d0d5fb2fc7mr1647077fac.35.1744379282202; Fri, 11 Apr 2025
+ 06:48:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: fix building firmware abstraction on 32bit arm
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Russ Weight
- <russ.weight@linux.dev>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, stable@vger.kernel.org
-References: <20250411-rust_arm_fix_fw_abstaction-v1-1-0a9e598451c6@gmail.com>
- <Z_jwXsQae9DjLWha@pollux>
-Content-Language: en-US, de-DE
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <Z_jwXsQae9DjLWha@pollux>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <1744115241-28452-1-git-send-email-hgohil@mvista.com> <20250410105201-817b136065a9badf@stable.kernel.org>
+In-Reply-To: <20250410105201-817b136065a9badf@stable.kernel.org>
+From: Hardik Gohil <hgohil@mvista.com>
+Date: Fri, 11 Apr 2025 19:17:50 +0530
+X-Gm-Features: ATxdqUGOXpZCbt-Y4xJMPFHjmh0jtuyxX4hw-skH_1C1JpC6gCkmiprJlHJjThU
+Message-ID: <CAH+zgeFRfgf_OTPjycj+3wm72+bQa4ZrH6CTPZ7rd75bfCx-YA@mail.gmail.com>
+Subject: Re: [PATCH 1/2 v5.4.y] mmc: mmci: stm32: use a buffer for unaligned
+ DMA requests
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11.04.25 12:35 PM, Danilo Krummrich wrote:
-> On Fri, Apr 11, 2025 at 09:14:48AM +0200, Christian Schrefl wrote:
->> When trying to build the rust firmware abstractions on 32 bit arm the
->> following build error occures:
->>
->> ```
->> error[E0308]: mismatched types
->>   --> rust/kernel/firmware.rs:20:14
->>    |
->> 20 |         Self(bindings::request_firmware)
->>    |         ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item
->>    |         |
->>    |         arguments to this function are incorrect
->>    |
->>    = note: expected fn pointer `unsafe extern "C" fn(_, *const i8, _) -> _`
->>                  found fn item `unsafe extern "C" fn(_, *const u8, _) -> _ {request_firmware}`
-> 
-> This looks like you have local changes in your tree, running in this error. I
-> get the exact same errors when I apply the following diff:
-> 
-> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
-> index f04b058b09b2..a67047e3aa6b 100644
-> --- a/rust/kernel/firmware.rs
-> +++ b/rust/kernel/firmware.rs
-> @@ -12,7 +12,7 @@
->  /// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
->  /// `bindings::firmware_request_platform`, `bindings::request_firmware_direct`.
->  struct FwFunc(
-> -    unsafe extern "C" fn(*mut *const bindings::firmware, *const u8, *mut bindings::device) -> i32,
-> +    unsafe extern "C" fn(*mut *const bindings::firmware, *const i8, *mut bindings::device) -> i32,
->  );
-> 
->> note: tuple struct defined here
->>   --> rust/kernel/firmware.rs:14:8
->>    |
->> 14 | struct FwFunc(
->>    |        ^^^^^^
->>
->> error[E0308]: mismatched types
->>   --> rust/kernel/firmware.rs:24:14
->>    |
->> 24 |         Self(bindings::firmware_request_nowarn)
->>    |         ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item
->>    |         |
->>    |         arguments to this function are incorrect
->>    |
->>    = note: expected fn pointer `unsafe extern "C" fn(_, *const i8, _) -> _`
->>                  found fn item `unsafe extern "C" fn(_, *const u8, _) -> _ {firmware_request_nowarn}`
->> note: tuple struct defined here
->>   --> rust/kernel/firmware.rs:14:8
->>    |
->> 14 | struct FwFunc(
->>    |        ^^^^^^
->>
->> error[E0308]: mismatched types
->>   --> rust/kernel/firmware.rs:64:45
->>    |
->> 64 |         let ret = unsafe { func.0(pfw as _, name.as_char_ptr(), dev.as_raw()) };
->>    |                            ------           ^^^^^^^^^^^^^^^^^^ expected `*const i8`, found `*const u8`
->>    |                            |
->>    |                            arguments to this function are incorrect
->>    |
->>    = note: expected raw pointer `*const i8`
->>               found raw pointer `*const u8`
->>
->> error: aborting due to 3 previous errors
->> ```
-> 
-> I did a test build with multi_v7_defconfig and I can't reproduce this issue.
-> 
-Interesting, I've it seems this is only an issue on 6.13 with my arm patches applied.
+Helo Sasha,
 
-It seems that it works on v6.14 and v6.15-rc1 but the error occurs on ffd294d346d1 (tag: v6.13)
-with my 32-bit arm patches applied.
+Does this error have to do anything with the patch fix ? The driver
+fix is dependent on ARM arch and does not apply to x86 arch.
 
-> I think the kernel does always use -funsigned-char, as also documented in commit
-> 1bae8729e50a ("rust: map `long` to `isize` and `char` to `u8`")?
-> 
->>
->> To fix this error the char pointer type in `FwFunc` is converted to
->> `ffi::c_char`.
->>
->> Fixes: de6582833db0 ("rust: add firmware abstractions")
->> Cc: stable@vger.kernel.org # Backport only to 6.15 needed
->>
->> Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
->> ---
->>  rust/kernel/firmware.rs | 8 ++++++--
->>  1 file changed, 6 insertions(+), 2 deletions(-)
->>
->> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
->> index f04b058b09b2d2397e26344d0e055b3aa5061432..1d6284316f2a4652ef3f76272670e5e29b0ff924 100644
->> --- a/rust/kernel/firmware.rs
->> +++ b/rust/kernel/firmware.rs
->> @@ -5,14 +5,18 @@
->>  //! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h)
->>  
->>  use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
->> -use core::ptr::NonNull;
->> +use core::{ffi, ptr::NonNull};
-> 
-> The change itself seems to be fine anyways, but I think we should use crate::ffi
-> instead.
-Right, I just did what RA recommended without thinking about it much.
+I have compiled the 5.4.y kernel with patch applied and there was no such e=
+rror.
 
-I guess this patch isn't really needed. Should I still send a V2 using `crate::ffi`?
+Regards,
+Hardik
 
-Cheers,
-Christian
 
+On Thu, Apr 10, 2025 at 9:23=E2=80=AFPM Sasha Levin <sashal@kernel.org> wro=
+te:
+>
+> [ Sasha's backport helper bot ]
+>
+> Hi,
+>
+> Summary of potential issues:
+> =E2=9D=8C Build failures detected
+>
+> The upstream commit SHA1 provided is correct: 970dc9c11a17994ab878016b536=
+612ab00d1441d
+>
+> WARNING: Author mismatch between patch and upstream commit:
+> Backport author: Hardik Gohil<hgohil@mvista.com>
+> Commit author: Yann Gautier<yann.gautier@foss.st.com>
+>
+> Status in newer kernel trees:
+> 6.14.y | Present (exact SHA1)
+> 6.13.y | Present (exact SHA1)
+> 6.12.y | Present (exact SHA1)
+> 6.6.y | Present (exact SHA1)
+> 6.1.y | Present (exact SHA1)
+> 5.15.y | Present (different SHA1: 287093040fc5)
+> 5.10.y | Present (different SHA1: abda366ece48)
+>
+> Note: The patch differs from the upstream commit:
+> ---
+> 1:  970dc9c11a179 < -:  ------------- mmc: mmci: stm32: use a buffer for =
+unaligned DMA requests
+> -:  ------------- > 1:  1b01d9c341770 Linux 5.4.292
+> ---
+>
+> Results of testing on various branches:
+>
+> | Branch                    | Patch Apply | Build Test |
+> |---------------------------|-------------|------------|
+> | stable/linux-5.4.y        |  Success    |  Failed    |
+>
+> Build Errors:
+> Build error for stable/linux-5.4.y:
+>     arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1e1: stack=
+ state mismatch: cfa1=3D7+56 cfa2=3D7+40
+>     arch/x86/kvm/vmx/vmenter.o: warning: objtool: __vmx_vcpu_run()+0x12a:=
+ return with modified stack frame
+>     In file included from ./include/linux/list.h:9,
+>                      from ./include/linux/kobject.h:19,
+>                      from ./include/linux/of.h:17,
+>                      from ./include/linux/clk-provider.h:9,
+>                      from drivers/clk/qcom/clk-rpmh.c:6:
+>     drivers/clk/qcom/clk-rpmh.c: In function 'clk_rpmh_bcm_send_cmd':
+>     ./include/linux/kernel.h:843:43: warning: comparison of distinct poin=
+ter types lacks a cast [-Wcompare-distinct-pointer-types]
+>       843 |                 (!!(sizeof((typeof(x) *)1 =3D=3D (typeof(y) *=
+)1)))
+>           |                                           ^~
+>     ./include/linux/kernel.h:857:18: note: in expansion of macro '__typec=
+heck'
+>       857 |                 (__typecheck(x, y) && __no_side_effects(x, y)=
+)
+>           |                  ^~~~~~~~~~~
+>     ./include/linux/kernel.h:867:31: note: in expansion of macro '__safe_=
+cmp'
+>       867 |         __builtin_choose_expr(__safe_cmp(x, y), \
+>           |                               ^~~~~~~~~~
+>     ./include/linux/kernel.h:876:25: note: in expansion of macro '__caref=
+ul_cmp'
+>       876 | #define min(x, y)       __careful_cmp(x, y, <)
+>           |                         ^~~~~~~~~~~~~
+>     drivers/clk/qcom/clk-rpmh.c:273:21: note: in expansion of macro 'min'
+>       273 |         cmd_state =3D min(cmd_state, BCM_TCS_CMD_VOTE_MASK);
+>           |                     ^~~
+>     fs/xfs/libxfs/xfs_inode_fork.c: In function 'xfs_ifork_verify_attr':
+>     fs/xfs/libxfs/xfs_inode_fork.c:735:13: warning: the comparison will a=
+lways evaluate as 'true' for the address of 'i_df' will never be NULL [-Wad=
+dress]
+>       735 |         if (!XFS_IFORK_PTR(ip, XFS_ATTR_FORK))
+>           |             ^
+>     In file included from fs/xfs/libxfs/xfs_inode_fork.c:14:
+>     ./fs/xfs/xfs_inode.h:38:33: note: 'i_df' declared here
+>        38 |         struct xfs_ifork        i_df;           /* data fork =
+*/
+>           |                                 ^~~~
+>     drivers/net/dsa/microchip/ksz9477.c: In function 'ksz9477_reset_switc=
+h':
+>     drivers/net/dsa/microchip/ksz9477.c:198:12: warning: unused variable =
+'data8' [-Wunused-variable]
+>       198 |         u8 data8;
+>           |            ^~~~~
+>     drivers/gpu/drm/i915/display/intel_dp.c: In function 'intel_dp_mode_v=
+alid':
+>     drivers/gpu/drm/i915/display/intel_dp.c:639:33: warning: 'drm_dp_dsc_=
+sink_max_slice_count' reading 16 bytes from a region of size 0 [-Wstringop-=
+overread]
+>       639 |                                 drm_dp_dsc_sink_max_slice_cou=
+nt(intel_dp->dsc_dpcd,
+>           |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~~~~~~~~~~~~~~~~~~
+>       640 |                                                              =
+   true);
+>           |                                                              =
+   ~~~~~
+>     drivers/gpu/drm/i915/display/intel_dp.c:639:33: note: referencing arg=
+ument 1 of type 'const u8[16]' {aka 'const unsigned char[16]'}
+>     In file included from drivers/gpu/drm/i915/display/intel_dp.c:39:
+>     ./include/drm/drm_dp_helper.h:1174:4: note: in a call to function 'dr=
+m_dp_dsc_sink_max_slice_count'
+>      1174 | u8 drm_dp_dsc_sink_max_slice_count(const u8 dsc_dpcd[DP_DSC_R=
+ECEIVER_CAP_SIZE],
+>           |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>     In file included from ./include/linux/bitops.h:5,
+>                      from ./include/linux/kernel.h:12,
+>                      from ./include/linux/list.h:9,
+>                      from ./include/linux/module.h:9,
+>                      from drivers/net/ethernet/qlogic/qed/qed_debug.c:6:
+>     drivers/net/ethernet/qlogic/qed/qed_debug.c: In function 'qed_grc_dum=
+p_addr_range':
+>     ./include/linux/bits.h:8:33: warning: overflow in conversion from 'lo=
+ng unsigned int' to 'u8' {aka 'unsigned char'} changes value from '(long un=
+signed int)((int)vf_id << 8 | 128)' to '128' [-Woverflow]
+>         8 | #define BIT(nr)                 (UL(1) << (nr))
+>           |                                 ^
+>     drivers/net/ethernet/qlogic/qed/qed_debug.c:2572:31: note: in expansi=
+on of macro 'BIT'
+>      2572 |                         fid =3D BIT(PXP_PRETEND_CONCRETE_FID_=
+VFVALID_SHIFT) |
+>           |                               ^~~
+>     drivers/gpu/drm/nouveau/dispnv50/wndw.c:628:1: warning: conflicting t=
+ypes for 'nv50_wndw_new_' due to enum/integer mismatch; have 'int(const str=
+uct nv50_wndw_func *, struct drm_device *, enum drm_plane_type,  const char=
+ *, int,  const u32 *, u32,  enum nv50_disp_interlock_type,  u32,  struct n=
+v50_wndw **)' {aka 'int(const struct nv50_wndw_func *, struct drm_device *,=
+ enum drm_plane_type,  const char *, int,  const unsigned int *, unsigned i=
+nt,  enum nv50_disp_interlock_type,  unsigned int,  struct nv50_wndw **)'} =
+[-Wenum-int-mismatch]
+>       628 | nv50_wndw_new_(const struct nv50_wndw_func *func, struct drm_=
+device *dev,
+>           | ^~~~~~~~~~~~~~
+>     In file included from drivers/gpu/drm/nouveau/dispnv50/wndw.c:22:
+>     drivers/gpu/drm/nouveau/dispnv50/wndw.h:39:5: note: previous declarat=
+ion of 'nv50_wndw_new_' with type 'int(const struct nv50_wndw_func *, struc=
+t drm_device *, enum drm_plane_type,  const char *, int,  const u32 *, enum=
+ nv50_disp_interlock_type,  u32,  u32,  struct nv50_wndw **)' {aka 'int(con=
+st struct nv50_wndw_func *, struct drm_device *, enum drm_plane_type,  cons=
+t char *, int,  const unsigned int *, enum nv50_disp_interlock_type,  unsig=
+ned int,  unsigned int,  struct nv50_wndw **)'}
+>        39 | int nv50_wndw_new_(const struct nv50_wndw_func *, struct drm_=
+device *,
+>           |     ^~~~~~~~~~~~~~
+>     .tmp_vmlinux.kallsyms1.S: Assembler messages:
+>     .tmp_vmlinux.kallsyms1.S:148756: Warning: zero assumed for missing ex=
+pression
+>     /home/sasha/compilers/gcc-14.2.0-nolibc/x86_64-linux/bin/x86_64-linux=
+-ld: .tmp_vmlinux.kallsyms1.o: in function `kallsyms_names':
+>     (.rodata+0x956df): undefined reference to `xb8'
+>     make: *** [Makefile:1121: vmlinux] Error 1
+>     make: Target '_all' not remade because of errors.
 
