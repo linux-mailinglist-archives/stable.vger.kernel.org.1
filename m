@@ -1,255 +1,137 @@
-Return-Path: <stable+bounces-132253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C761A85FA2
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 15:51:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE025A85FA4
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 15:51:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7A654C2215
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 13:48:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D05318949E2
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 13:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529F6146585;
-	Fri, 11 Apr 2025 13:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44181E5B78;
+	Fri, 11 Apr 2025 13:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b="XVCmtEfg"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="SR5jd+om"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5B01953A1
-	for <stable@vger.kernel.org>; Fri, 11 Apr 2025 13:48:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB39E1C3BEB;
+	Fri, 11 Apr 2025 13:50:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744379285; cv=none; b=O/Aa6UlwiXhJhpGymJqOZgtNk9Iat7CnYEa/1lQCWaFm4dQZDxx5k8H8pXN64Rn4DqcVFfnkAjgvfUcH4/EI7RZskpVHGtJtWjW/gsvfngenbOWrFV9j2CiNkAQl7VMeq0AN4jF3YrTV7opv3qJM8zYkCaLX2ag92oYAx9bad0k=
+	t=1744379431; cv=none; b=j57aPpqVlcoYM+zhahnyJdX9H8lvcoQuf1eny39R2dkpbyTh2smU/VcVSFVsusoQeys46+N6uvUBsv0pxtK3LPbmMEvUqcs45VFAleKGXgRDhWgFkeh1jYEGxioSGVjUMR9Vf6bardMWmivf1uXuJqHGnnXNuqiAx0bXoM6zLX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744379285; c=relaxed/simple;
-	bh=GTPR1QvEWuzlPfORjRABD/7ixL5veLEnUyT0276Wre0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DFxrisrgVfTg7q8XsKDECOW3OoKbIhOeRzdjug3O+rhMhtKvGExOslUiel1UGKBWNUBerAR4S7h796n9xabWxeM/NFso4akXaSR1DoLZ0v1SpGdd4+NvxHLiSfe//aa6UBFj/6BJwolhRMhBbmZKIsKV5MOMQH8cdxF35Nkh0eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com; spf=pass smtp.mailfrom=mvista.com; dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b=XVCmtEfg; arc=none smtp.client-ip=209.85.160.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mvista.com
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-2c7b2c14455so1190730fac.2
-        for <stable@vger.kernel.org>; Fri, 11 Apr 2025 06:48:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mvista.com; s=google; t=1744379282; x=1744984082; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CITcD9bOx6vA0SBSE7uRTj2LdZG2Bo+0uQ7T3uAJ1z8=;
-        b=XVCmtEfgF66hki5gI9suhHfDsAOPaC1gBByqM0M2DoheFwh7kC3UJAdKUVLB+0lDz4
-         /5N6sMb+SLASOMA7ozXZr5iIOf/+86DJ2VvrxHGWSyqePFCE2ay/oySQT+ZmgYE6I7q2
-         ioltVLyz+CKI3Ix90s7mrEQU+I7Ks9kGs4tlg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744379282; x=1744984082;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CITcD9bOx6vA0SBSE7uRTj2LdZG2Bo+0uQ7T3uAJ1z8=;
-        b=pm0s5f0vyOTFIIRU1RXMynqjXe5SNaqTfK/AOoyNDjfhy6+OmdYnzc0NgwIEo3RzbR
-         G1nXZOuvNN7kIasS/IYpDAkWQ/gQ9HkT+Gm/BNjxdZuecvz1V/0WYzQlvQOpiSdSlJpR
-         QtdLqXaHeegGYOzAN8/xbPUqL2Ow5prruoZFgG/qD9KCJ6emYWu7HB4ZTOkm86BC3rZ7
-         xGLvc9/IVsV1/8w20XEPIJbmdAAOl4ufokYBq8DyX/LZdRwLy+6bHqUJwHl7y8rmZtTg
-         soUOUadgCpYIOqRXsIJ2Pjhtg6Ij9Ym5LIdNxcrVrT7IzL/qvmRWyJat+K/j1uu/NsEk
-         89Cg==
-X-Gm-Message-State: AOJu0YyZbS2/40LK0CtctKdjPVXfWWzNsGw79qzWbnGSojLF09BY9C/K
-	z8pagP+x5bR5mgQy7vA8eMUz+DcfjF1KowifjpdGJq4S1zWjkPKZrpiy/SUD+VNDWihF7XQ/j+0
-	g7gxxd69h+QTSV6K97y7QdCJFIca9VJtrSSc8eg==
-X-Gm-Gg: ASbGncsgnRKqHx9Zlgnfe9Lp4KiT/OE7FnN1rjRPuErQyQfmy3DMQ4+5/F/Q0rmEHj4
-	96JSuM85ElMdiqa3MziE4DTB1ftTt0i+CG50DGWalB56ylgVQskZOt/NPcU5thFFUxWkr3niDne
-	RhhB0oqpUaqMyR4E9X9WZU0e4+DRUiFcgsUlFi8IBsaoazDnza7pWi
-X-Google-Smtp-Source: AGHT+IFg0J0KnnzsIPv4jPspJ7Gj7vA6W1Qgia5npdRg1ZdWPHRYcnq+hl85iW70pyvBlgwVF8enMxlrB/ileIRd0Zs=
-X-Received: by 2002:a05:6870:b019:b0:2c1:51f7:e648 with SMTP id
- 586e51a60fabf-2d0d5fb2fc7mr1647077fac.35.1744379282202; Fri, 11 Apr 2025
- 06:48:02 -0700 (PDT)
+	s=arc-20240116; t=1744379431; c=relaxed/simple;
+	bh=fBMPce3nXkTzC5YitcBdnnxth6H4sTrD9RAuJ+F4s38=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=iYWtGeUcXBFoJDcbDwDaY7R9CdcVTMz0T+J0s3dL/X92rW+n3wv9c1GmDgDLHIq/raVvKhF9ZnHmGy9w4XExmAXvCcUXJD0lsS6+2qpP9AsVpYthrlmd52jQTV/NE7TnivWpvI3+GJAkNBIVcjMP5eWyTJK1Lnqgo1a6ZneGKyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=SR5jd+om; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53BDoJUS2141356
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 11 Apr 2025 08:50:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1744379419;
+	bh=qQDSFd0KgWBYuvyGNC6FIuW3TAEXHe3afLsrb7vpjYk=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=SR5jd+omWQxFX6UsqjsPKJ90ihXVqD9unyjxmpgtOwxUWqzaiAGqu+/+jjisWUfZk
+	 +WE12+qo/scn+FIl4BsRZoTY1FrVvLWk7j5+i8bflzxwUroKQX+ExD41QTVPhB2l8L
+	 qlrxRuy3vo36UxIaEBzPUACKcMxqdba+I8Hu2sRw=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53BDoJCD031578
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 11 Apr 2025 08:50:19 -0500
+Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 11
+ Apr 2025 08:50:19 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 11 Apr 2025 08:50:18 -0500
+Received: from [10.249.136.157] ([10.249.136.157])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53BDoDJO001396;
+	Fri, 11 Apr 2025 08:50:14 -0500
+Message-ID: <293dfbda-841b-4a5a-85ac-6a6c2df5df09@ti.com>
+Date: Fri, 11 Apr 2025 19:20:12 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <1744115241-28452-1-git-send-email-hgohil@mvista.com> <20250410105201-817b136065a9badf@stable.kernel.org>
-In-Reply-To: <20250410105201-817b136065a9badf@stable.kernel.org>
-From: Hardik Gohil <hgohil@mvista.com>
-Date: Fri, 11 Apr 2025 19:17:50 +0530
-X-Gm-Features: ATxdqUGOXpZCbt-Y4xJMPFHjmh0jtuyxX4hw-skH_1C1JpC6gCkmiprJlHJjThU
-Message-ID: <CAH+zgeFRfgf_OTPjycj+3wm72+bQa4ZrH6CTPZ7rd75bfCx-YA@mail.gmail.com>
-Subject: Re: [PATCH 1/2 v5.4.y] mmc: mmci: stm32: use a buffer for unaligned
- DMA requests
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/7] arm64: dts: ti: am68-sk: Fix regulator hierarchy
+To: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>, <nm@ti.com>,
+        <vigneshr@ti.com>
+CC: <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+        <conor+dt@kernel.org>, <vaishnav.a@ti.com>, <jai.luthra@linux.dev>,
+        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
+        <imx@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+        <u-kumar1@ti.com>, <stable@vger.kernel.org>
+References: <20250409134128.2098195-1-y-abhilashchandra@ti.com>
+ <20250409134128.2098195-3-y-abhilashchandra@ti.com>
+Content-Language: en-US
+From: "Francis, Neha" <n-francis@ti.com>
+In-Reply-To: <20250409134128.2098195-3-y-abhilashchandra@ti.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Helo Sasha,
-
-Does this error have to do anything with the patch fix ? The driver
-fix is dependent on ARM arch and does not apply to x86 arch.
-
-I have compiled the 5.4.y kernel with patch applied and there was no such e=
-rror.
-
-Regards,
-Hardik
-
-
-On Thu, Apr 10, 2025 at 9:23=E2=80=AFPM Sasha Levin <sashal@kernel.org> wro=
-te:
->
-> [ Sasha's backport helper bot ]
->
-> Hi,
->
-> Summary of potential issues:
-> =E2=9D=8C Build failures detected
->
-> The upstream commit SHA1 provided is correct: 970dc9c11a17994ab878016b536=
-612ab00d1441d
->
-> WARNING: Author mismatch between patch and upstream commit:
-> Backport author: Hardik Gohil<hgohil@mvista.com>
-> Commit author: Yann Gautier<yann.gautier@foss.st.com>
->
-> Status in newer kernel trees:
-> 6.14.y | Present (exact SHA1)
-> 6.13.y | Present (exact SHA1)
-> 6.12.y | Present (exact SHA1)
-> 6.6.y | Present (exact SHA1)
-> 6.1.y | Present (exact SHA1)
-> 5.15.y | Present (different SHA1: 287093040fc5)
-> 5.10.y | Present (different SHA1: abda366ece48)
->
-> Note: The patch differs from the upstream commit:
+On 4/9/2025 7:11 PM, Yemike Abhilash Chandra wrote:
+> Update the vin-supply of the TLV71033 regulator from LM5141 (vsys_3v3) to
+> LM61460 (vsys_5v0) to match the schematics. Add a fixed regulator node for
+> the LM61460 5V supply to support this change.
+> 
+> AM68-SK schematics: https://www.ti.com/lit/zip/sprr463
+> Fixes: a266c180b398 ("arm64: dts: ti: k3-am68-sk: Add support for AM68 SK base board")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
 > ---
-> 1:  970dc9c11a179 < -:  ------------- mmc: mmci: stm32: use a buffer for =
-unaligned DMA requests
-> -:  ------------- > 1:  1b01d9c341770 Linux 5.4.292
-> ---
->
-> Results of testing on various branches:
->
-> | Branch                    | Patch Apply | Build Test |
-> |---------------------------|-------------|------------|
-> | stable/linux-5.4.y        |  Success    |  Failed    |
->
-> Build Errors:
-> Build error for stable/linux-5.4.y:
->     arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1e1: stack=
- state mismatch: cfa1=3D7+56 cfa2=3D7+40
->     arch/x86/kvm/vmx/vmenter.o: warning: objtool: __vmx_vcpu_run()+0x12a:=
- return with modified stack frame
->     In file included from ./include/linux/list.h:9,
->                      from ./include/linux/kobject.h:19,
->                      from ./include/linux/of.h:17,
->                      from ./include/linux/clk-provider.h:9,
->                      from drivers/clk/qcom/clk-rpmh.c:6:
->     drivers/clk/qcom/clk-rpmh.c: In function 'clk_rpmh_bcm_send_cmd':
->     ./include/linux/kernel.h:843:43: warning: comparison of distinct poin=
-ter types lacks a cast [-Wcompare-distinct-pointer-types]
->       843 |                 (!!(sizeof((typeof(x) *)1 =3D=3D (typeof(y) *=
-)1)))
->           |                                           ^~
->     ./include/linux/kernel.h:857:18: note: in expansion of macro '__typec=
-heck'
->       857 |                 (__typecheck(x, y) && __no_side_effects(x, y)=
-)
->           |                  ^~~~~~~~~~~
->     ./include/linux/kernel.h:867:31: note: in expansion of macro '__safe_=
-cmp'
->       867 |         __builtin_choose_expr(__safe_cmp(x, y), \
->           |                               ^~~~~~~~~~
->     ./include/linux/kernel.h:876:25: note: in expansion of macro '__caref=
-ul_cmp'
->       876 | #define min(x, y)       __careful_cmp(x, y, <)
->           |                         ^~~~~~~~~~~~~
->     drivers/clk/qcom/clk-rpmh.c:273:21: note: in expansion of macro 'min'
->       273 |         cmd_state =3D min(cmd_state, BCM_TCS_CMD_VOTE_MASK);
->           |                     ^~~
->     fs/xfs/libxfs/xfs_inode_fork.c: In function 'xfs_ifork_verify_attr':
->     fs/xfs/libxfs/xfs_inode_fork.c:735:13: warning: the comparison will a=
-lways evaluate as 'true' for the address of 'i_df' will never be NULL [-Wad=
-dress]
->       735 |         if (!XFS_IFORK_PTR(ip, XFS_ATTR_FORK))
->           |             ^
->     In file included from fs/xfs/libxfs/xfs_inode_fork.c:14:
->     ./fs/xfs/xfs_inode.h:38:33: note: 'i_df' declared here
->        38 |         struct xfs_ifork        i_df;           /* data fork =
-*/
->           |                                 ^~~~
->     drivers/net/dsa/microchip/ksz9477.c: In function 'ksz9477_reset_switc=
-h':
->     drivers/net/dsa/microchip/ksz9477.c:198:12: warning: unused variable =
-'data8' [-Wunused-variable]
->       198 |         u8 data8;
->           |            ^~~~~
->     drivers/gpu/drm/i915/display/intel_dp.c: In function 'intel_dp_mode_v=
-alid':
->     drivers/gpu/drm/i915/display/intel_dp.c:639:33: warning: 'drm_dp_dsc_=
-sink_max_slice_count' reading 16 bytes from a region of size 0 [-Wstringop-=
-overread]
->       639 |                                 drm_dp_dsc_sink_max_slice_cou=
-nt(intel_dp->dsc_dpcd,
->           |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
-~~~~~~~~~~~~~~~~~~~~~~
->       640 |                                                              =
-   true);
->           |                                                              =
-   ~~~~~
->     drivers/gpu/drm/i915/display/intel_dp.c:639:33: note: referencing arg=
-ument 1 of type 'const u8[16]' {aka 'const unsigned char[16]'}
->     In file included from drivers/gpu/drm/i915/display/intel_dp.c:39:
->     ./include/drm/drm_dp_helper.h:1174:4: note: in a call to function 'dr=
-m_dp_dsc_sink_max_slice_count'
->      1174 | u8 drm_dp_dsc_sink_max_slice_count(const u8 dsc_dpcd[DP_DSC_R=
-ECEIVER_CAP_SIZE],
->           |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->     In file included from ./include/linux/bitops.h:5,
->                      from ./include/linux/kernel.h:12,
->                      from ./include/linux/list.h:9,
->                      from ./include/linux/module.h:9,
->                      from drivers/net/ethernet/qlogic/qed/qed_debug.c:6:
->     drivers/net/ethernet/qlogic/qed/qed_debug.c: In function 'qed_grc_dum=
-p_addr_range':
->     ./include/linux/bits.h:8:33: warning: overflow in conversion from 'lo=
-ng unsigned int' to 'u8' {aka 'unsigned char'} changes value from '(long un=
-signed int)((int)vf_id << 8 | 128)' to '128' [-Woverflow]
->         8 | #define BIT(nr)                 (UL(1) << (nr))
->           |                                 ^
->     drivers/net/ethernet/qlogic/qed/qed_debug.c:2572:31: note: in expansi=
-on of macro 'BIT'
->      2572 |                         fid =3D BIT(PXP_PRETEND_CONCRETE_FID_=
-VFVALID_SHIFT) |
->           |                               ^~~
->     drivers/gpu/drm/nouveau/dispnv50/wndw.c:628:1: warning: conflicting t=
-ypes for 'nv50_wndw_new_' due to enum/integer mismatch; have 'int(const str=
-uct nv50_wndw_func *, struct drm_device *, enum drm_plane_type,  const char=
- *, int,  const u32 *, u32,  enum nv50_disp_interlock_type,  u32,  struct n=
-v50_wndw **)' {aka 'int(const struct nv50_wndw_func *, struct drm_device *,=
- enum drm_plane_type,  const char *, int,  const unsigned int *, unsigned i=
-nt,  enum nv50_disp_interlock_type,  unsigned int,  struct nv50_wndw **)'} =
-[-Wenum-int-mismatch]
->       628 | nv50_wndw_new_(const struct nv50_wndw_func *func, struct drm_=
-device *dev,
->           | ^~~~~~~~~~~~~~
->     In file included from drivers/gpu/drm/nouveau/dispnv50/wndw.c:22:
->     drivers/gpu/drm/nouveau/dispnv50/wndw.h:39:5: note: previous declarat=
-ion of 'nv50_wndw_new_' with type 'int(const struct nv50_wndw_func *, struc=
-t drm_device *, enum drm_plane_type,  const char *, int,  const u32 *, enum=
- nv50_disp_interlock_type,  u32,  u32,  struct nv50_wndw **)' {aka 'int(con=
-st struct nv50_wndw_func *, struct drm_device *, enum drm_plane_type,  cons=
-t char *, int,  const unsigned int *, enum nv50_disp_interlock_type,  unsig=
-ned int,  unsigned int,  struct nv50_wndw **)'}
->        39 | int nv50_wndw_new_(const struct nv50_wndw_func *, struct drm_=
-device *,
->           |     ^~~~~~~~~~~~~~
->     .tmp_vmlinux.kallsyms1.S: Assembler messages:
->     .tmp_vmlinux.kallsyms1.S:148756: Warning: zero assumed for missing ex=
-pression
->     /home/sasha/compilers/gcc-14.2.0-nolibc/x86_64-linux/bin/x86_64-linux=
--ld: .tmp_vmlinux.kallsyms1.o: in function `kallsyms_names':
->     (.rodata+0x956df): undefined reference to `xb8'
->     make: *** [Makefile:1121: vmlinux] Error 1
->     make: Target '_all' not remade because of errors.
+>  arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts | 13 ++++++++++++-
+>  1 file changed, 12 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts b/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
+> index 11522b36e0ce..5fa70a874d7b 100644
+> --- a/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
+> +++ b/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
+> @@ -44,6 +44,17 @@ vusb_main: regulator-vusb-main5v0 {
+>  		regulator-boot-on;
+>  	};
+>  
+> +	vsys_5v0: regulator-vsys5v0 {
+> +		/* Output of LM61460 */
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "vsys_5v0";
+> +		regulator-min-microvolt = <5000000>;
+> +		regulator-max-microvolt = <5000000>;
+> +		vin-supply = <&vusb_main>;
+> +		regulator-always-on;
+> +		regulator-boot-on;
+> +	};
+> +
+>  	vsys_3v3: regulator-vsys3v3 {
+>  		/* Output of LM5141 */
+>  		compatible = "regulator-fixed";
+> @@ -76,7 +87,7 @@ vdd_sd_dv: regulator-tlv71033 {
+>  		regulator-min-microvolt = <1800000>;
+>  		regulator-max-microvolt = <3300000>;
+>  		regulator-boot-on;
+> -		vin-supply = <&vsys_3v3>;
+> +		vin-supply = <&vsys_5v0>;
+>  		gpios = <&main_gpio0 49 GPIO_ACTIVE_HIGH>;
+>  		states = <1800000 0x0>,
+>  			 <3300000 0x1>;
+
+Reviewed-by: Neha Malcom Francis <n-francis@ti.com>
+
+-- 
+Thanking You
+Neha Malcom Francis
+
 
