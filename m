@@ -1,184 +1,203 @@
-Return-Path: <stable+bounces-132205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99A44A85500
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 09:11:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A53F7A85540
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 09:16:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3AB59A5EB3
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 07:11:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A50CB3A089E
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 07:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504C127CCF4;
-	Fri, 11 Apr 2025 07:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3672853EB;
+	Fri, 11 Apr 2025 07:14:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U8vPazfe"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BFD1E98FB;
-	Fri, 11 Apr 2025 07:11:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C962853F4;
+	Fri, 11 Apr 2025 07:14:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744355473; cv=none; b=QW/a2QQWhkl4PW3lJ3A6tacNL/jBSXH5nLVCh03vOznQapXYTo//1W/Fla7Hg7XTtea8YSQVTvzsFs3um4bHzGBkM8CePZXp3LuCYEkbGU5/c/Tn7eXrvj1yf2eawxESLXfav/13TvwlwywKNKtBCGqrYT5U4o/FvDOGfXBFzLE=
+	t=1744355696; cv=none; b=JYNigUq+LTwTso43z8F65nr95uLn+psXTDP8mLIXg3kxEMYsetMtjsHSxdoAAubCmMEJRCjR3ExD3M0RUrOnZo0HuIfOeYpTKDTb1SPhVNvvOpKw4HifnoGVQV1zLY5i8cJEKhurdwVDyl8HD6HNdTb1RcdncBDShHODjlGxFig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744355473; c=relaxed/simple;
-	bh=d1asBId/vImwN+l9IIgHITylI4P4oM+6PNnKpdlyGyY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Kj5k9D71BbVYlQdSlxAvjhVQwvJZdg0UPMq2l7252XNrGPqx2udBWnuUmUZUEYTpkjq2Wvy9w1ri3dqVkJJnasYhyB1bQUxl+5qjTj1PrggMXSOqPs1FD/GWCtk0fv+QWpCfWdsLHhN8Qx9IRdH1ZE8xMtt5pRAASoQK47V7mPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53B5AfLo028040;
-	Fri, 11 Apr 2025 07:10:22 GMT
-Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45tug8qxyh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Fri, 11 Apr 2025 07:10:22 +0000 (GMT)
-Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Fri, 11 Apr 2025 00:10:21 -0700
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Fri, 11 Apr 2025 00:10:16 -0700
-From: <jianqi.ren.cn@windriver.com>
-To: <stable@vger.kernel.org>
-CC: <patches@lists.linux.dev>, <gregkh@linuxfoundation.org>,
-        <linux-kernel@vger.kernel.org>, <jianqi.ren.cn@windriver.com>,
-        <ast@kernel.org>, <daniel@iogearbox.net>, <john.fastabend@gmail.com>,
-        <andrii@kernel.org>, <martin.lau@linux.dev>, <song@kernel.org>,
-        <yhs@fb.com>, <kpsingh@kernel.org>, <sdf@google.com>,
-        <haoluo@google.com>, <jolsa@kernel.org>, <davem@davemloft.net>,
-        <kuba@kernel.org>, <hawk@kernel.org>, <bpf@vger.kernel.org>,
-        <xukuohai@huawei.com>
-Subject: [PATCH 6.1.y] bpf: Prevent tail call between progs attached to different hooks
-Date: Fri, 11 Apr 2025 15:10:15 +0800
-Message-ID: <20250411071015.3418413-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1744355696; c=relaxed/simple;
+	bh=tpS0UlAr4w1LsBHuXYb1fiiOH8hIvS0JrS2AM6UhpwM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HI963IQ7HIqSl9m+0UMX0sLo13dIqXwpPBY3mLaJ/ErR2wDTUyK4Wda/enam2eQjQKhUyAnEMIrN/MSjUFoJOQ8+HjrV/TxBEi6TmVbqc2lBA7Mf7OVe6okWZVDYUT6y+NlEAHL40JYW6A/+FIXR2plsZB37HKgQ5x1OSG5R1Ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U8vPazfe; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-acacb8743a7so141050266b.1;
+        Fri, 11 Apr 2025 00:14:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744355693; x=1744960493; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9Hq5nxbhmh17ZZ8eYIzyyvh2Q6aoKe7PhPVOM2wk4Eo=;
+        b=U8vPazfeoMV+wEsU+oL66wKqFPtP/u1D8q/EUxC7/SK8e3Vz2u+pUGnf1P83ReaKC8
+         hrG/JP/lTC94n9/w45Uv5eNs2f6Jx04nWGO0/bev6en267NVmmEfaulY3vuOIseUl5pj
+         mY4YGB57V3Pad3NeaTJ89poXwBhaJb117/bfI70bFrra6Kk8ijd8kTt8DePfIEfgZaDI
+         Ps3r5m/huYnuJVm/YYLVHND28HIU1Utk9mxY+BE1xlRgCJP6PkcKjcaT4wGQtmZs4AKT
+         9jnZAp0eiVRFuyGzq/hxxV30ZUwYKa7aFGRFDZm23QjMHASYqKzggfDSElG5tRCPuJLD
+         RRQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744355693; x=1744960493;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9Hq5nxbhmh17ZZ8eYIzyyvh2Q6aoKe7PhPVOM2wk4Eo=;
+        b=EyIvDDIBxnepHPqNE2gOFmtc0cTeX7eBYupJKr0xzHYHLbknFgTUeVWSn6/k6Y3ySw
+         4HG6qePffWH7bpOsqafgk51CkkJfyHNvJRcib21NHWpsPJkrm72HhvmV/gT/lYfMgSca
+         8vJu/uwoH6fQLStjZTPo8Iwpt3KwZguedPKB3zSoEePOvgSurZFLMDaxuX909G50oJgw
+         iJuEr5oYxjsFc7N56PTTMmBXMIhzkSaxh6MbXjGpSN9/j2bU0gzME+t7Gdjz+t76RK1y
+         zvtAj+7K8v4KAte5pKTLHAmKbY9vC6x7r3uct07wTNPr6hZcaENCAkWscSt1+u552eKd
+         uY2g==
+X-Forwarded-Encrypted: i=1; AJvYcCVevoPHvjozPcGHolAQbyiIvJ1gNanTfERXGVc5xzXjbXEvN+vsO+Z7w8y+hUIi8qyB4fFLxUo1@vger.kernel.org, AJvYcCXyOvsG2LzU3GTMnYQ+7/Tt7m5sNsKb1qqONZ1HkdPVSP7KN+6V0eMdIXfsADfMxdoNku/kTSiD7HkdA9GE8A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJZAKr2C/PyTPqxmhC0k3uGTBm2O3bopA3zFGV2Z8sBPeZil7R
+	3JRVRM3m5u8ztp9Cr35NtXPVfQ5QalAPLfUdgjej5+EzObzXpk7d
+X-Gm-Gg: ASbGncvE3Md8UV7rbSflXZ+KrkHGdFmc2pcRiVEHI0/X8CHv/Z8HvRoeB320NnRPGBr
+	1LaRJwnAHi90PAfd0KG+vIisqIYfSm3JCsCsfKQwMbuKtNjt78P6tNSfrWjzLgq62+njncwepX4
+	7S6cyIIqy5XHJEei8HHoCoBcW1vq6NGv+oFgBVvi9/o9MYpWVFG7alJsB2CgxS+4e+XdHOxNw15
+	LmL11Y0paPc+TvF5gqFv9inlaocpStW71D1Ec0uRWHwdfPAYTdaZEk+3jZ0sF4DXQ/uBQTlbBTW
+	IEDDRmMrG90RCJqgyP2yPGQ9oxRJR1nEndwvVk7tBCE89nWzqtT2
+X-Google-Smtp-Source: AGHT+IE8mGpY5sxmCCDsK+kIl318ye2lnYZ63ltBewZtDKuUvd1gjqFGWJqESIxbKkKzXidqQZX5Nw==
+X-Received: by 2002:a17:907:6e9e:b0:ac7:b494:8c0c with SMTP id a640c23a62f3a-acabc24974cmr381517466b.16.1744355692427;
+        Fri, 11 Apr 2025 00:14:52 -0700 (PDT)
+Received: from [10.27.99.142] ([193.170.124.198])
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-acaa1999d96sm395178666b.0.2025.04.11.00.14.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Apr 2025 00:14:52 -0700 (PDT)
+From: Christian Schrefl <chrisi.schrefl@gmail.com>
+Date: Fri, 11 Apr 2025 09:14:48 +0200
+Subject: [PATCH] rust: fix building firmware abstraction on 32bit arm
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: tT9gAepxN9zNWcm2eSIYEBdIy9MSnCNk
-X-Authority-Analysis: v=2.4 cv=YJefyQGx c=1 sm=1 tr=0 ts=67f8c05e cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=AiHppB-aAAAA:8 a=i0EeH86SAAAA:8 a=t7CeM3EgAAAA:8 a=iaREAby1aPJEnX_tXCEA:9
- a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-ORIG-GUID: tT9gAepxN9zNWcm2eSIYEBdIy9MSnCNk
-X-Sensitive_Customer_Information: Yes
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-11_02,2025-04-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 bulkscore=0 mlxlogscore=999 adultscore=0 lowpriorityscore=0
- mlxscore=0 clxscore=1011 impostorscore=0 phishscore=0 spamscore=0
- suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2502280000
- definitions=main-2504110049
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250411-rust_arm_fix_fw_abstaction-v1-1-0a9e598451c6@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAGfB+GcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDEwML3aLS4pL4xKLc+LTMivi08vjEpOKSxOQSoDZdk2TjRAvLFHPTVCN
+ LJaABBUWpQEVgw6Nja2sBwYNPFGwAAAA=
+X-Change-ID: 20250408-rust_arm_fix_fw_abstaction-4c3a89d75e29
+To: Luis Chamberlain <mcgrof@kernel.org>, 
+ Russ Weight <russ.weight@linux.dev>, Danilo Krummrich <dakr@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ stable@vger.kernel.org, Christian Schrefl <chrisi.schrefl@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1744355691; l=3313;
+ i=chrisi.schrefl@gmail.com; s=20250119; h=from:subject:message-id;
+ bh=tpS0UlAr4w1LsBHuXYb1fiiOH8hIvS0JrS2AM6UhpwM=;
+ b=2D05eOYdLxxiSrURCt3/1oKKRXE4zYpAX/wJcncEymVElybR/gatP9W5q9/2IbwuIY6tk/sJU
+ 1Kej50cBWz4AiLE/Q9lDrIF2hcuRWeVpmzqWkfj5zOLq7gT3bG5knPn
+X-Developer-Key: i=chrisi.schrefl@gmail.com; a=ed25519;
+ pk=EIyitYCrzxWlybrqoGqiL2jyvO7Vp9X40n0dQ6HE4oU=
 
-From: Xu Kuohai <xukuohai@huawei.com>
+When trying to build the rust firmware abstractions on 32 bit arm the
+following build error occures:
 
-[ Upstream commit 28ead3eaabc16ecc907cfb71876da028080f6356 ]
+```
+error[E0308]: mismatched types
+  --> rust/kernel/firmware.rs:20:14
+   |
+20 |         Self(bindings::request_firmware)
+   |         ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item
+   |         |
+   |         arguments to this function are incorrect
+   |
+   = note: expected fn pointer `unsafe extern "C" fn(_, *const i8, _) -> _`
+                 found fn item `unsafe extern "C" fn(_, *const u8, _) -> _ {request_firmware}`
+note: tuple struct defined here
+  --> rust/kernel/firmware.rs:14:8
+   |
+14 | struct FwFunc(
+   |        ^^^^^^
 
-bpf progs can be attached to kernel functions, and the attached functions
-can take different parameters or return different return values. If
-prog attached to one kernel function tail calls prog attached to another
-kernel function, the ctx access or return value verification could be
-bypassed.
+error[E0308]: mismatched types
+  --> rust/kernel/firmware.rs:24:14
+   |
+24 |         Self(bindings::firmware_request_nowarn)
+   |         ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item
+   |         |
+   |         arguments to this function are incorrect
+   |
+   = note: expected fn pointer `unsafe extern "C" fn(_, *const i8, _) -> _`
+                 found fn item `unsafe extern "C" fn(_, *const u8, _) -> _ {firmware_request_nowarn}`
+note: tuple struct defined here
+  --> rust/kernel/firmware.rs:14:8
+   |
+14 | struct FwFunc(
+   |        ^^^^^^
 
-For example, if prog1 is attached to func1 which takes only 1 parameter
-and prog2 is attached to func2 which takes two parameters. Since verifier
-assumes the bpf ctx passed to prog2 is constructed based on func2's
-prototype, verifier allows prog2 to access the second parameter from
-the bpf ctx passed to it. The problem is that verifier does not prevent
-prog1 from passing its bpf ctx to prog2 via tail call. In this case,
-the bpf ctx passed to prog2 is constructed from func1 instead of func2,
-that is, the assumption for ctx access verification is bypassed.
+error[E0308]: mismatched types
+  --> rust/kernel/firmware.rs:64:45
+   |
+64 |         let ret = unsafe { func.0(pfw as _, name.as_char_ptr(), dev.as_raw()) };
+   |                            ------           ^^^^^^^^^^^^^^^^^^ expected `*const i8`, found `*const u8`
+   |                            |
+   |                            arguments to this function are incorrect
+   |
+   = note: expected raw pointer `*const i8`
+              found raw pointer `*const u8`
 
-Another example, if BPF LSM prog1 is attached to hook file_alloc_security,
-and BPF LSM prog2 is attached to hook bpf_lsm_audit_rule_known. Verifier
-knows the return value rules for these two hooks, e.g. it is legal for
-bpf_lsm_audit_rule_known to return positive number 1, and it is illegal
-for file_alloc_security to return positive number. So verifier allows
-prog2 to return positive number 1, but does not allow prog1 to return
-positive number. The problem is that verifier does not prevent prog1
-from calling prog2 via tail call. In this case, prog2's return value 1
-will be used as the return value for prog1's hook file_alloc_security.
-That is, the return value rule is bypassed.
+error: aborting due to 3 previous errors
+```
 
-This patch adds restriction for tail call to prevent such bypasses.
+To fix this error the char pointer type in `FwFunc` is converted to
+`ffi::c_char`.
 
-Signed-off-by: Xu Kuohai <xukuohai@huawei.com>
-Link: https://lore.kernel.org/r/20240719110059.797546-4-xukuohai@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-[Minor conflict resolved due to code context change.]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Fixes: de6582833db0 ("rust: add firmware abstractions")
+Cc: stable@vger.kernel.org # Backport only to 6.15 needed
+
+Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
 ---
-Verified the build test
----
- include/linux/bpf.h |  1 +
- kernel/bpf/core.c   | 19 +++++++++++++++++--
- 2 files changed, 18 insertions(+), 2 deletions(-)
+ rust/kernel/firmware.rs | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 2189c0d18fa7..e9c1338851e3 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -250,6 +250,7 @@ struct bpf_map {
- 	 * same prog type, JITed flag and xdp_has_frags flag.
- 	 */
- 	struct {
-+		const struct btf_type *attach_func_proto;
- 		spinlock_t lock;
- 		enum bpf_prog_type type;
- 		bool jited;
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 83b416af4da1..c281f5b8705e 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -2121,6 +2121,7 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
- {
- 	enum bpf_prog_type prog_type = resolve_prog_type(fp);
- 	bool ret;
-+	struct bpf_prog_aux *aux = fp->aux;
+diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+index f04b058b09b2d2397e26344d0e055b3aa5061432..1d6284316f2a4652ef3f76272670e5e29b0ff924 100644
+--- a/rust/kernel/firmware.rs
++++ b/rust/kernel/firmware.rs
+@@ -5,14 +5,18 @@
+ //! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h)
  
- 	if (fp->kprobe_override)
- 		return false;
-@@ -2132,12 +2133,26 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
- 		 */
- 		map->owner.type  = prog_type;
- 		map->owner.jited = fp->jited;
--		map->owner.xdp_has_frags = fp->aux->xdp_has_frags;
-+		map->owner.xdp_has_frags = aux->xdp_has_frags;
-+		map->owner.attach_func_proto = aux->attach_func_proto;
- 		ret = true;
- 	} else {
- 		ret = map->owner.type  == prog_type &&
- 		      map->owner.jited == fp->jited &&
--		      map->owner.xdp_has_frags == fp->aux->xdp_has_frags;
-+		      map->owner.xdp_has_frags == aux->xdp_has_frags;
-+		if (ret &&
-+		    map->owner.attach_func_proto != aux->attach_func_proto) {
-+			switch (prog_type) {
-+			case BPF_PROG_TYPE_TRACING:
-+			case BPF_PROG_TYPE_LSM:
-+			case BPF_PROG_TYPE_EXT:
-+			case BPF_PROG_TYPE_STRUCT_OPS:
-+				ret = false;
-+				break;
-+			default:
-+				break;
-+			}
-+		}
- 	}
- 	spin_unlock(&map->owner.lock);
+ use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
+-use core::ptr::NonNull;
++use core::{ffi, ptr::NonNull};
  
+ /// # Invariants
+ ///
+ /// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
+ /// `bindings::firmware_request_platform`, `bindings::request_firmware_direct`.
+ struct FwFunc(
+-    unsafe extern "C" fn(*mut *const bindings::firmware, *const u8, *mut bindings::device) -> i32,
++    unsafe extern "C" fn(
++        *mut *const bindings::firmware,
++        *const ffi::c_char,
++        *mut bindings::device,
++    ) -> i32,
+ );
+ 
+ impl FwFunc {
+
+---
+base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+change-id: 20250408-rust_arm_fix_fw_abstaction-4c3a89d75e29
+
+Best regards,
 -- 
-2.34.1
+Christian Schrefl <chrisi.schrefl@gmail.com>
 
 
