@@ -1,64 +1,80 @@
-Return-Path: <stable+bounces-132251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15720A85F9B
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 15:50:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35E1DA85F9E
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 15:51:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0A8917BB3E
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 13:46:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7037E44237A
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 13:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AA831F099A;
-	Fri, 11 Apr 2025 13:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A22E1E5B94;
+	Fri, 11 Apr 2025 13:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Gk2uQTcH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GMBmv6AV"
 X-Original-To: stable@vger.kernel.org
-Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2CE1D95B3;
-	Fri, 11 Apr 2025 13:46:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3321D86FB;
+	Fri, 11 Apr 2025 13:47:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744379183; cv=none; b=Ry97x6ZZiiorFGdQLAGNJmYUsmLz5oQ7zucTdZxdqTgAtBsU6KnLckY228ghelTm05Vt0ykbNpdcX77gMtVTMAUuhRrKYKjWa9/JIN8SNP2I9dC38ESBimqMoK5r0EPB1zTspw7baA46L5tXZZZtYakGiNZupBjY/kvD1NB0PFM=
+	t=1744379255; cv=none; b=LCCcSme3YEKEHZEEuOell03NWePotRCGwbF1paNqqaTru3DoeMxB6srHQmHXDWr3s3YJGWdq7cuqXKECINn/T02hyLHTtzm3K00BwPuTszQj6SgWlkXugkVJXwIjAJbc7vy2jdSrqo5+NkILQoGtBW+JJezLg+aRs1XvnoySevs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744379183; c=relaxed/simple;
-	bh=zw6iXtHpECB8AOe7/FVi+IgvgSypoJ2Ji1MLxsLtHx4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=YXF3usQq66Z2dSnxt/QkpKspUNMC1+ZJsgDYRHj9m2FktwGHR2MTAZrSH5wWWKyUoD8Jq/KGhXrNL4AppFjkWGFFPs5xDP+SPUjGOXQwBgXVp7yx/oTfAG9VvPFDuTjDtFtTOny5FIh/EIICMDUsqF6NOxMY2lEFR/KkKcUJXok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Gk2uQTcH; arc=none smtp.client-ip=198.47.19.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53BDkB0a2140146
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 11 Apr 2025 08:46:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1744379171;
-	bh=dyl4VJ4NFKTvxc57ODEOoVjJmEfMQrs8ZXag1cIaiu0=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=Gk2uQTcHeH4nzT6Glj0uV8LS0iUAda68IF4ZwTF0mGzcW11qGTDUo24Emn6kLRBpX
-	 SWehkYMfkE968s7ORvuFuh0P903Qp2G/RFTtyq1cC6n9wg2WqfZsaKjJK/BZh3/pob
-	 QFJTH+KUz9kIz9uawiCPq+jWGG3BNxwZHwU+ub40=
-Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53BDkBlG054534
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 11 Apr 2025 08:46:11 -0500
-Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 11
- Apr 2025 08:46:10 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 11 Apr 2025 08:46:10 -0500
-Received: from [10.249.141.75] ([10.249.141.75])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53BDk6S7109624;
-	Fri, 11 Apr 2025 08:46:07 -0500
-Message-ID: <6b730f33-9d83-4ced-839d-dc03b2eb8e4c@ti.com>
-Date: Fri, 11 Apr 2025 19:16:05 +0530
+	s=arc-20240116; t=1744379255; c=relaxed/simple;
+	bh=PogR4W7dnXucGICz/AQVDV9oEY2yJBO7er+MO0ZqtZo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=q7lUtwzkZuNGYqAEgdGTCaMzvp8sZQOzH++jTXBXG1Fe1uMemrIOlFiTZ+DANO6vr069j9TMqXg9efRBXoKhwwqOvoHn7y1vOlRPE9eGqSJV5NJR3DY0cNhpw4Frv30vZZGcRVhGGJ1gJBJkC269I2riobJtZ2HM4WqYzy10EPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GMBmv6AV; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-ac73723b2d5so398504966b.3;
+        Fri, 11 Apr 2025 06:47:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744379251; x=1744984051; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=o5n+QohqvB7s/Sb0490fMM5HBbQ3f/3RmRNA2L8Qxnk=;
+        b=GMBmv6AVOiSBEgESelZmu++MVZbL5kUoCDdyyRvNQ0Dzbv/jLQwDjBXLsiCu5IECtK
+         XXibYP8hA5DirBsrFWJNArwFSevmDx7u1WqkCnJEsGf7JJN7scmleNyZtzkBqxwuWDgg
+         +QXhnCbEuNbUbxXxV7Qrsss0NCGdvMMKX33uHNXmeZD3Q/j6Lz5kQrEXqjFDRJ68igQQ
+         i7tJDlYsn6JjKAGIgPoi+MK/on09uzfvoS52QHz8ZQIpB6QSd8DaG+RRgcnlQwaiGxhH
+         Hl8ZQO2x8VzzIvDXDeUhjhDoHdIrKT+IjI8jAxL70hz97iG/Klij0/X+YCeNb9QkrB3T
+         RQ+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744379251; x=1744984051;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=o5n+QohqvB7s/Sb0490fMM5HBbQ3f/3RmRNA2L8Qxnk=;
+        b=Os0ASRDiBRiaXDqlELQIvZorv1oceH7ZjIL+G0vm5u39PuxU3oRVgiTHVz43Kz1ZQR
+         /wB+N3f3vMP0+pQwo2xeamhc6260qtWW4P8lkGy0lTOV/2OkHIxYNxLi3o4R3QjP88Fr
+         EA5TeNQF9FwCQCCkbI1Y0e0s27LuafD2PwNOAdO9PZF9+yjfw1hEGMSjywTwRSb3wFuH
+         9KPxah+8q9GN4PehVH0+zmK/TAnYhqMQOezrJ4rNV+TDyWvbdtd17TzYDQypz/jNdckI
+         ZSH6AE2EC48yLtkZf8Tv5qwUtfUFbIniZSBLmC56mWMciRURfrd3udCTcd9eknP/P++v
+         iDug==
+X-Forwarded-Encrypted: i=1; AJvYcCUvBwxvt6GSJtTBEptaIvFGyuzyWdFpcEK1wdsFmQrSuvtxuGYnbJpjoM+kBs2t+bveZciQCpnW@vger.kernel.org, AJvYcCWveBehoOAivrkAJnF2FvWKk6uoDO6ziKVYyaKSHns3FNi6n3CjjkPqBdxKq0aaZMl/ArAk3/Vea1XUBZU=@vger.kernel.org, AJvYcCX6+ECqfcW5sQX3ZafsCLR54o25qCHN3xUfQD9pwAc6yvykyxHAG1p9dkqR9yS6SpIRvcV7QTVcRhy2MDq/ApY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrxmNYYjiHSgFAWIrP5RbWNF9bR+Dpss5Bx8UnhnRP0N8lceWl
+	Fx/EHocTrLLOFec5/MNqOOlagtpJBRC/hTIaJjC0Xcg7DarVHs5a
+X-Gm-Gg: ASbGnct8tqzxBR1+dFROPtf9Z6zl6k/e2CDAYmf38GpMy4tv0Nl+EGLT87XtojyCmXZ
+	vgr4spDJRkS09h9Y1KvYnXt5YL7Zv++DxVrdPIWvEsZMVKXgiODmJoOF9/tRIFNdMRMt/olaqLp
+	P/iMncKaXrmwv4kRcOAQN6eOFi/UW4lPS8crn5SfUGJ/fPQOF+HZ3KVWC7YtD0gN2okh44CeWoT
+	bgLk4IGUSyDTyEHyN6zZbZuusjR/Kk1XyvA0b2FiGDBiNsUqtYV60M4BfKdI7ZnUveWA/HlRRSV
+	H452fOYuhfOzYNZtBCEYUZdknNW1MnOKNvj9mrmmoOYieMSTOPF/Cks+8hhz99xA348Q8QWxwK1
+	tD/d7UDwoTioJDh2KF1I=
+X-Google-Smtp-Source: AGHT+IHxm8659RzD3xWh3EuM0iDPlgOx6OC9RUxPjuJSZXQ8ecMHseGUJ7xwZNzC+27SLQe8FZ4ZQA==
+X-Received: by 2002:a17:907:c22:b0:ac7:e5c4:1187 with SMTP id a640c23a62f3a-acad343c76fmr227896466b.11.1744379251125;
+        Fri, 11 Apr 2025 06:47:31 -0700 (PDT)
+Received: from ?IPV6:2001:4bc9:801:666a:43aa:5aff:fcd4:ae38? ([2001:4bc9:801:666a:43aa:5aff:fcd4:ae38])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acaa1be87e1sm451142866b.53.2025.04.11.06.47.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 11 Apr 2025 06:47:30 -0700 (PDT)
+Message-ID: <99070274-4891-411a-89e1-420ca4d5d0fb@gmail.com>
+Date: Fri, 11 Apr 2025 15:47:28 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,78 +82,132 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/7] arm64: dts: ti: am68-sk: Fix regulator hierarchy
-To: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>, <nm@ti.com>,
-        <vigneshr@ti.com>
-CC: <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-        <conor+dt@kernel.org>, <vaishnav.a@ti.com>, <jai.luthra@linux.dev>,
-        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
-        <imx@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-References: <20250409134128.2098195-1-y-abhilashchandra@ti.com>
- <20250409134128.2098195-3-y-abhilashchandra@ti.com>
-Content-Language: en-US
-From: "Kumar, Udit" <u-kumar1@ti.com>
-In-Reply-To: <20250409134128.2098195-3-y-abhilashchandra@ti.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Subject: Re: [PATCH] rust: fix building firmware abstraction on 32bit arm
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Russ Weight
+ <russ.weight@linux.dev>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, stable@vger.kernel.org
+References: <20250411-rust_arm_fix_fw_abstaction-v1-1-0a9e598451c6@gmail.com>
+ <Z_jwXsQae9DjLWha@pollux>
+Content-Language: en-US, de-DE
+From: Christian Schrefl <chrisi.schrefl@gmail.com>
+In-Reply-To: <Z_jwXsQae9DjLWha@pollux>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
+On 11.04.25 12:35 PM, Danilo Krummrich wrote:
+> On Fri, Apr 11, 2025 at 09:14:48AM +0200, Christian Schrefl wrote:
+>> When trying to build the rust firmware abstractions on 32 bit arm the
+>> following build error occures:
+>>
+>> ```
+>> error[E0308]: mismatched types
+>>   --> rust/kernel/firmware.rs:20:14
+>>    |
+>> 20 |         Self(bindings::request_firmware)
+>>    |         ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item
+>>    |         |
+>>    |         arguments to this function are incorrect
+>>    |
+>>    = note: expected fn pointer `unsafe extern "C" fn(_, *const i8, _) -> _`
+>>                  found fn item `unsafe extern "C" fn(_, *const u8, _) -> _ {request_firmware}`
+> 
+> This looks like you have local changes in your tree, running in this error. I
+> get the exact same errors when I apply the following diff:
+> 
+> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+> index f04b058b09b2..a67047e3aa6b 100644
+> --- a/rust/kernel/firmware.rs
+> +++ b/rust/kernel/firmware.rs
+> @@ -12,7 +12,7 @@
+>  /// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
+>  /// `bindings::firmware_request_platform`, `bindings::request_firmware_direct`.
+>  struct FwFunc(
+> -    unsafe extern "C" fn(*mut *const bindings::firmware, *const u8, *mut bindings::device) -> i32,
+> +    unsafe extern "C" fn(*mut *const bindings::firmware, *const i8, *mut bindings::device) -> i32,
+>  );
+> 
+>> note: tuple struct defined here
+>>   --> rust/kernel/firmware.rs:14:8
+>>    |
+>> 14 | struct FwFunc(
+>>    |        ^^^^^^
+>>
+>> error[E0308]: mismatched types
+>>   --> rust/kernel/firmware.rs:24:14
+>>    |
+>> 24 |         Self(bindings::firmware_request_nowarn)
+>>    |         ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item
+>>    |         |
+>>    |         arguments to this function are incorrect
+>>    |
+>>    = note: expected fn pointer `unsafe extern "C" fn(_, *const i8, _) -> _`
+>>                  found fn item `unsafe extern "C" fn(_, *const u8, _) -> _ {firmware_request_nowarn}`
+>> note: tuple struct defined here
+>>   --> rust/kernel/firmware.rs:14:8
+>>    |
+>> 14 | struct FwFunc(
+>>    |        ^^^^^^
+>>
+>> error[E0308]: mismatched types
+>>   --> rust/kernel/firmware.rs:64:45
+>>    |
+>> 64 |         let ret = unsafe { func.0(pfw as _, name.as_char_ptr(), dev.as_raw()) };
+>>    |                            ------           ^^^^^^^^^^^^^^^^^^ expected `*const i8`, found `*const u8`
+>>    |                            |
+>>    |                            arguments to this function are incorrect
+>>    |
+>>    = note: expected raw pointer `*const i8`
+>>               found raw pointer `*const u8`
+>>
+>> error: aborting due to 3 previous errors
+>> ```
+> 
+> I did a test build with multi_v7_defconfig and I can't reproduce this issue.
+> 
+Interesting, I've it seems this is only an issue on 6.13 with my arm patches applied.
 
-On 4/9/2025 7:11 PM, Yemike Abhilash Chandra wrote:
-> Update the vin-supply of the TLV71033 regulator from LM5141 (vsys_3v3) to
-> LM61460 (vsys_5v0) to match the schematics. Add a fixed regulator node for
-> the LM61460 5V supply to support this change.
->
-> AM68-SK schematics: https://www.ti.com/lit/zip/sprr463
-> Fixes: a266c180b398 ("arm64: dts: ti: k3-am68-sk: Add support for AM68 SK base board")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
-> ---
->   arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts | 13 ++++++++++++-
->   1 file changed, 12 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts b/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
-> index 11522b36e0ce..5fa70a874d7b 100644
-> --- a/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
-> +++ b/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
-> @@ -44,6 +44,17 @@ vusb_main: regulator-vusb-main5v0 {
->   		regulator-boot-on;
->   	};
->   
-> +	vsys_5v0: regulator-vsys5v0 {
-> +		/* Output of LM61460 */
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "vsys_5v0";
-> +		regulator-min-microvolt = <5000000>;
-> +		regulator-max-microvolt = <5000000>;
-> +		vin-supply = <&vusb_main>;
-> +		regulator-always-on;
-> +		regulator-boot-on;
-> +	};
-> +
->   	vsys_3v3: regulator-vsys3v3 {
->   		/* Output of LM5141 */
->   		compatible = "regulator-fixed";
-> @@ -76,7 +87,7 @@ vdd_sd_dv: regulator-tlv71033 {
->   		regulator-min-microvolt = <1800000>;
->   		regulator-max-microvolt = <3300000>;
->   		regulator-boot-on;
-> -		vin-supply = <&vsys_3v3>;
-> +		vin-supply = <&vsys_5v0>;
+It seems that it works on v6.14 and v6.15-rc1 but the error occurs on ffd294d346d1 (tag: v6.13)
+with my 32-bit arm patches applied.
 
-Looking at schematic page -3
+> I think the kernel does always use -funsigned-char, as also documented in commit
+> 1bae8729e50a ("rust: map `long` to `isize` and `char` to `u8`")?
+> 
+>>
+>> To fix this error the char pointer type in `FwFunc` is converted to
+>> `ffi::c_char`.
+>>
+>> Fixes: de6582833db0 ("rust: add firmware abstractions")
+>> Cc: stable@vger.kernel.org # Backport only to 6.15 needed
+>>
+>> Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+>> ---
+>>  rust/kernel/firmware.rs | 8 ++++++--
+>>  1 file changed, 6 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+>> index f04b058b09b2d2397e26344d0e055b3aa5061432..1d6284316f2a4652ef3f76272670e5e29b0ff924 100644
+>> --- a/rust/kernel/firmware.rs
+>> +++ b/rust/kernel/firmware.rs
+>> @@ -5,14 +5,18 @@
+>>  //! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h)
+>>  
+>>  use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
+>> -use core::ptr::NonNull;
+>> +use core::{ffi, ptr::NonNull};
+> 
+> The change itself seems to be fine anyways, but I think we should use crate::ffi
+> instead.
+Right, I just did what RA recommended without thinking about it much.
 
-USB PD Controller is giving input to LM61460 , LM5141(3V3), and TPS62177.
+I guess this patch isn't really needed. Should I still send a V2 using `crate::ffi`?
 
-Could you please recheck this, vin-supply for 3v3 regulator
+Cheers,
+Christian
 
-Thanks
-
-Udit
-
-
->   		gpios = <&main_gpio0 49 GPIO_ACTIVE_HIGH>;
->   		states = <1800000 0x0>,
->   			 <3300000 0x1>;
 
