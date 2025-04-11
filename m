@@ -1,100 +1,183 @@
-Return-Path: <stable+bounces-132299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46DF0A8676C
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 22:41:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CED53A86905
+	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 01:08:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A4D44C3606
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 20:41:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C492E1B86108
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 23:08:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E825528CF60;
-	Fri, 11 Apr 2025 20:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110BC2BD593;
+	Fri, 11 Apr 2025 23:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vAn5rWNY"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=adrian.larumbe@collabora.com header.b="jl69uMpT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender3-op-o12.zoho.com (sender3-op-o12.zoho.com [136.143.184.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3BC78F45;
-	Fri, 11 Apr 2025 20:41:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744404104; cv=none; b=cSUq82QcP1CL/dBjFjxbRIZ5lXniwfLoczwrJZOKiXbtG+topQl1bryFPfWL1WQHGunp7FjmjYjy5JjT1s8XkGfqQ9fUvK6teRd/rtzVAv7XpGLrcB5FA9YIy1Qy8vhlXjmONXoIZF5qycGc+umbaUu2AzNNooS3H8J0pKNPxnM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744404104; c=relaxed/simple;
-	bh=k26H15Ik1Kmm3cA4tCIzG2ROtOvMozU7PH44mwjktQA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mDqPz9z191cN8LzGSA1vVQq3U9uMqRZwhDUspB9ZjXAUNJSAQcqaEvXJ0Ir1zKzjGJkvIbJO/JXe2nRP9Lz15ZhiZpm377q+PXK3pacHYJalar0x2CdpX3sQzE/SgkIIC0SrswhlxpGTZDqA28QsZt0BBI0aONL1fVRFQjPOrd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vAn5rWNY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73ABFC4CEE2;
-	Fri, 11 Apr 2025 20:41:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744404104;
-	bh=k26H15Ik1Kmm3cA4tCIzG2ROtOvMozU7PH44mwjktQA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vAn5rWNYUDU7QTNjxNZAvaVrOSAWaOaEQxYOLWtvQc8FPTujo5wLnIXT88/X3N7Sk
-	 SiYe/4ERefrOgzR4yN3/HPGByXkg75yHtzQnLnNP2iVioOS3BJ3OSAdYxky4SQW94Z
-	 rKWU/Co6Ddhg8FQhC0YeG5wvylbyuCsrwzhK4+EChzNypkGtptlTyLsAlXKZKPhC07
-	 ucrJnZhNAhc702if0uHBTIq6JT21svg2CsdHUr7Zclj2ARxKRpF9LU+VYNM0dRxkOe
-	 zJZI0i/ve0DuTFQuT1SkZfctugCYX46s2pID023lZRvCXl2RF7xgT/dKWEe6GHoeMk
-	 2tu+tPRwgaGTA==
-Date: Fri, 11 Apr 2025 23:41:38 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: keyrings@vger.kernel.org, Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>,
-	stable@vger.kernel.org, Lukas Wunner <lukas@wunner.de>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Mimi Zohar <zohar@linux.ibm.com>, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org,
-	linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v8] KEYS: Add a list for unreferenced keys
-Message-ID: <Z_l-gjmdztcvkBWZ@kernel.org>
-References: <20250407125801.40194-1-jarkko@kernel.org>
- <2426186.1744387151@warthog.procyon.org.uk>
- <Z_l9f45aO3CqYng_@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E541E47C5
+	for <stable@vger.kernel.org>; Fri, 11 Apr 2025 23:08:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744412908; cv=pass; b=CyQuDKLpuAhkldWhi0Z8bOmkmMXRqbOU5ytZlaYb54ujWn1aPMNHVUbT/Xw68+PXru283k4nXSRceuGeYr+HQjOYmsS6ssEIb8aUoOaBZqlQSiA6q7NIm/9rYXX+UFZ+OortVF+ZoQ0pRHOhfsl3l0OfdW+bByK8d95ExltIt4M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744412908; c=relaxed/simple;
+	bh=RPlJHumzePWi6zfxek0y3Id4+ANSEwiCN69ZU5sWAxI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FAR46BikKzXNNYHjfodzSVb77zrw4bQ+kxLxa7C5uM2hYas1sJsS4eBlZQ/FZj7kXvcBdjlvz1/mjGgtW7tfUOUB6v0dAio4F7FsGp/1MOXSqMOo1XxSnkiERUx/lDOSzEJtObzBzyrNdDsxYCsrauRWUpByiMLJEG8g69cfQKQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=adrian.larumbe@collabora.com header.b=jl69uMpT; arc=pass smtp.client-ip=136.143.184.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1744412903; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=CY5TzjBK+euSbzbPRedgd904ujF7Uq5f4ydRcSGN1iO+Q78RUWWgdnM7INO5hBwT3FD9VnuaI1JsCNhvc2D5c8X9mfQ+TNVVbVHZKh14mjEIwTr9vifK3isrDr6p9XCkxGFZ75XcDfu5STx13FBSpl34YAMIll7WQZcIVi3Sd/w=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1744412903; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=fctzQ2Awgwcv7R2pLa59QIlfgnjE2k729AlFZXsqvNI=; 
+	b=iInD8sRFYc8tFu0TYBSDKgq1pWKBnfwPigP7bBurlTBIr5zHowoqEjTgYpU4pSYLxiyp9FIz9uzeEx3VgxkJ4nxKQbMciAyo8311g77wE+Hp3fvzoha4AEeUVGFUf3ITRu/TIRmIJfetPoKsxUwo6RO/lF9ZiNwzCmxfLKzZ+Go=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=adrian.larumbe@collabora.com;
+	dmarc=pass header.from=<adrian.larumbe@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1744412902;
+	s=zohomail; d=collabora.com; i=adrian.larumbe@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=fctzQ2Awgwcv7R2pLa59QIlfgnjE2k729AlFZXsqvNI=;
+	b=jl69uMpTl0ajKQPkpQIfazl7zIBpXP+RZ8MreJP2EF6dVeTFOmYg20A7XLTsJYW9
+	IMfxZO508dH4wbElLAyUnPqiZyBMZGOtPSQdugtKwfTgZthq4Z6EtYObukrsLtS6LpU
+	LGwNpCbNs2L3we55UI3Uio/iBASpkAyfGgyFhFUc=
+Received: by mx.zohomail.com with SMTPS id 1744412899604893.8561971456228;
+	Fri, 11 Apr 2025 16:08:19 -0700 (PDT)
+From: =?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>
+To: stable@vger.kernel.org
+Cc: =?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Steven Price <steven.price@arm.com>
+Subject: [PATCH 6.13.y] drm/panthor: Replace sleep locks with spinlocks in fdinfo path
+Date: Sat, 12 Apr 2025 00:08:03 +0100
+Message-ID: <20250411230808.3648376-1-adrian.larumbe@collabora.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <2025040916-appraiser-chute-b24d@gregkh>
+References: <2025040916-appraiser-chute-b24d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z_l9f45aO3CqYng_@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Apr 11, 2025 at 11:37:25PM +0300, Jarkko Sakkinen wrote:
-> > This is going to enable and disable interrupts twice and that can be
-> > expensive, depending on the arch.  I wonder if it would be better to do:
-> > 
-> > 			local_irq_save(flags);
-> > 			spin_lock(&key_graveyard_lock);
-> > 			list_add_tail(&key->graveyard_link, &key_graveyard);
-> > 			spin_unlock(&key_graveyard_lock);
-> > 			schedule_work(&key_gc_work);
-> > 			local_irq_restore(flags);
-> 
-> I like this but shouldn't this also comprehend the quota update before
-> (just asking for completeness sake)?
+Commit 0590c94c3596 ("drm/panthor: Fix race condition when gathering fdinfo
+group samples") introduced an xarray lock to deal with potential
+use-after-free errors when accessing groups fdinfo figures. However, this
+toggles the kernel's atomic context status, so the next nested mutex lock
+will raise a warning when the kernel is compiled with mutex debug options:
 
-"This brings me on to another though:  Should key_serial_lock be a seqlock?
-And should the gc use RCU + read_seqlock() and insertion
-write_seqlock()?"
-https://lore.kernel.org/keyrings/797521.1743602083@warthog.procyon.org.uk/
+CONFIG_DEBUG_RT_MUTEXES=y
+CONFIG_DEBUG_MUTEXES=y
 
-I think that should be done too (because it made whole a lot of sense)
-as a separate patch. I'd just prefer move slowly and in baby steps for
-better quality, and keep that as a separate follow-up patch.
+Replace Panthor's group fdinfo data mutex with a guarded spinlock.
 
-It makes obviously sense given rare writes.
+Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
+Fixes: 0590c94c3596 ("drm/panthor: Fix race condition when gathering fdinfo group samples")
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250303190923.1639985-1-adrian.larumbe@collabora.com
+(cherry picked from commit e379856b428acafb8ed689f31d65814da6447b2e)
+---
+ drivers/gpu/drm/panthor/panthor_sched.c | 28 ++++++++++++-------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
-BR, Jarkko
+diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
+index eb2c2ca375d7..52b5543acc19 100644
+--- a/drivers/gpu/drm/panthor/panthor_sched.c
++++ b/drivers/gpu/drm/panthor/panthor_sched.c
+@@ -9,6 +9,7 @@
+ #include <drm/panthor_drm.h>
+ 
+ #include <linux/build_bug.h>
++#include <linux/cleanup.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/dma-mapping.h>
+@@ -620,14 +621,14 @@ struct panthor_group {
+ 
+ 	/** @fdinfo: Per-file total cycle and timestamp values reference. */
+ 	struct {
+-		/** @data: Total sampled values for jobs in queues from this group. */
++		/** @fdinfo.data: Total sampled values for jobs in queues from this group. */
+ 		struct panthor_gpu_usage data;
+ 
+ 		/**
+-		 * @lock: Mutex to govern concurrent access from drm file's fdinfo callback
+-		 * and job post-completion processing function
++		 * @fdinfo.lock: Spinlock to govern concurrent access from drm file's fdinfo
++		 * callback and job post-completion processing function
+ 		 */
+-		struct mutex lock;
++		spinlock_t lock;
+ 	} fdinfo;
+ 
+ 	/** @state: Group state. */
+@@ -900,8 +901,6 @@ static void group_release_work(struct work_struct *work)
+ 						   release_work);
+ 	u32 i;
+ 
+-	mutex_destroy(&group->fdinfo.lock);
+-
+ 	for (i = 0; i < group->queue_count; i++)
+ 		group_free_queue(group, group->queues[i]);
+ 
+@@ -2845,12 +2844,12 @@ static void update_fdinfo_stats(struct panthor_job *job)
+ 	struct panthor_job_profiling_data *slots = queue->profiling.slots->kmap;
+ 	struct panthor_job_profiling_data *data = &slots[job->profiling.slot];
+ 
+-	mutex_lock(&group->fdinfo.lock);
+-	if (job->profiling.mask & PANTHOR_DEVICE_PROFILING_CYCLES)
+-		fdinfo->cycles += data->cycles.after - data->cycles.before;
+-	if (job->profiling.mask & PANTHOR_DEVICE_PROFILING_TIMESTAMP)
+-		fdinfo->time += data->time.after - data->time.before;
+-	mutex_unlock(&group->fdinfo.lock);
++	scoped_guard(spinlock, &group->fdinfo.lock) {
++		if (job->profiling.mask & PANTHOR_DEVICE_PROFILING_CYCLES)
++			fdinfo->cycles += data->cycles.after - data->cycles.before;
++		if (job->profiling.mask & PANTHOR_DEVICE_PROFILING_TIMESTAMP)
++			fdinfo->time += data->time.after - data->time.before;
++	}
+ }
+ 
+ void panthor_fdinfo_gather_group_samples(struct panthor_file *pfile)
+@@ -2864,12 +2863,11 @@ void panthor_fdinfo_gather_group_samples(struct panthor_file *pfile)
+ 
+ 	xa_lock(&gpool->xa);
+ 	xa_for_each(&gpool->xa, i, group) {
+-		mutex_lock(&group->fdinfo.lock);
++		guard(spinlock)(&group->fdinfo.lock);
+ 		pfile->stats.cycles += group->fdinfo.data.cycles;
+ 		pfile->stats.time += group->fdinfo.data.time;
+ 		group->fdinfo.data.cycles = 0;
+ 		group->fdinfo.data.time = 0;
+-		mutex_unlock(&group->fdinfo.lock);
+ 	}
+ 	xa_unlock(&gpool->xa);
+ }
+@@ -3491,7 +3489,7 @@ int panthor_group_create(struct panthor_file *pfile,
+ 	}
+ 	mutex_unlock(&sched->reset.lock);
+ 
+-	mutex_init(&group->fdinfo.lock);
++	spin_lock_init(&group->fdinfo.lock);
+ 
+ 	return gid;
+ 
+-- 
+2.48.1
+
 
