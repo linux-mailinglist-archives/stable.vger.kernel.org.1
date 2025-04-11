@@ -1,155 +1,248 @@
-Return-Path: <stable+bounces-132283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17560A862F4
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 18:14:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D124A8631E
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 18:23:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B63919E74B9
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 16:14:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 058831BA09A3
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 16:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33034218AA3;
-	Fri, 11 Apr 2025 16:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47C4421B905;
+	Fri, 11 Apr 2025 16:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b="rK0avM8z"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="azQ8JZsV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CD41401C
-	for <stable@vger.kernel.org>; Fri, 11 Apr 2025 16:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD1526AD9;
+	Fri, 11 Apr 2025 16:22:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744388049; cv=none; b=PyH6816iY+H6INjIafh7/VWHoIspPtaLxkozjjYYcFssYikps6S+wNMYLFZBQRV/M0Bax0//eUhLXmINqe4iGbw5zZUa9nxOC9ewZA2SGAubBKO4BjU7zjJnpn/wudsJl2GbQk4aX3CgLeuTXJQWJFjjcwd/jONxQgBeUCnTjrE=
+	t=1744388573; cv=none; b=UtWCPI0VTEc1346eCZ71BEMXrpPgzmmG5H5fbM4OkOVRt2CI4hyMgAWpprzQMeUS7OfO5gs/dkWbrVVQX00295kaz6+CM0RYoxI59gkIy9KVqCdxjIth8+Wbc8EnUgOpofB7z6y6WjUYFpm7nRUkZkOXNtYNXc1aUyY77dom6jQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744388049; c=relaxed/simple;
-	bh=SUS72ZJX6ih4mjntexuVb42z+ZrZJMcFQ/JW/b6mfPs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XRY0gqIUZLWEkBC7MdG+oTTcUtMgAX4EaQK3T5dJAyk237+IXDF/eOvOba6b16vao8fKJ+kH6h2qB50rddGChfSqeeGfwDFUze4Twd7qqDQQLRp1gX21YPHZvpDAmJo00PXOtoAG4mB5ZAdeQFmA0wcC+XvnZiQPA2bRDwz409k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b=rK0avM8z; arc=none smtp.client-ip=99.78.197.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+	s=arc-20240116; t=1744388573; c=relaxed/simple;
+	bh=5rB2vSHPlJjeLbucCa9fOjc63VVGLRNKyQuL3lgdq8Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hGZxUt4Az7VskADrIZkbO5iNH9qDyJRTI5DSjtmm68y5ApDN3wvyCvVyGQq4DgSkXDOCCr6aPQL+dY9XSecgyDL0y5Z7sU9zHAHTcBnO8OaRHWTnFgf1/mo+w/GAwvbsVAzFsLNUcfQbPPOuwI5EZujR1AYksa+PXCqTWzjDyKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=azQ8JZsV; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-73712952e1cso2184850b3a.1;
+        Fri, 11 Apr 2025 09:22:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
-  t=1744388049; x=1775924049;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=a51rYD/X3seEN2eQX7z3X0nmHt+0xtrIus5KVw9BtV0=;
-  b=rK0avM8zJ66ASOS22mCiIp/lBW98vr6/MfIYQQBuafIZE5WRJuYOMikD
-   EkNdE7uiZE+8doUkePaNklRFTLkcKULAEbUVhTeKbq8lkIWrpQMMdYveW
-   UUI11zDlVv5NSfs3/yJ+JOawvnEbjAsLFWSeJiLESrq47d3rG+wp+Z6x4
-   Q=;
-X-IronPort-AV: E=Sophos;i="6.15,205,1739836800"; 
-   d="scan'208";a="395113506"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2025 16:14:06 +0000
-Received: from EX19MTAEUB001.ant.amazon.com [10.0.10.100:35641]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.10.242:2525] with esmtp (Farcaster)
- id e88b4356-cd4f-4c53-8953-82a08f46bf08; Fri, 11 Apr 2025 16:14:05 +0000 (UTC)
-X-Farcaster-Flow-ID: e88b4356-cd4f-4c53-8953-82a08f46bf08
-Received: from EX19D023EUB003.ant.amazon.com (10.252.51.5) by
- EX19MTAEUB001.ant.amazon.com (10.252.51.28) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Fri, 11 Apr 2025 16:14:04 +0000
-Received: from dev-dsk-dssauerw-1b-2c5f429c.eu-west-1.amazon.com
- (10.13.238.31) by EX19D023EUB003.ant.amazon.com (10.252.51.5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1544.14; Fri, 11 Apr 2025 16:14:02 +0000
-From: David Sauerwein <dssauerw@amazon.de>
-To: <stable@vger.kernel.org>
-CC: Andrii Nakryiko <andrii@kernel.org>,
-	<syzbot+4dc041c686b7c816a71e@syzkaller.appspotmail.com>, Alexei Starovoitov
-	<ast@kernel.org>, Sasha Levin <sashal@kernel.org>, David Sauerwein
-	<dssauerw@amazon.de>
-Subject: [PATCH 5.10.y] bpf: avoid holding freeze_mutex during mmap operation
-Date: Fri, 11 Apr 2025 16:13:54 +0000
-Message-ID: <20250411161354.13041-1-dssauerw@amazon.de>
-X-Mailer: git-send-email 2.47.1
+        d=gmail.com; s=20230601; t=1744388570; x=1744993370; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=baX3GRriSGAR4q6Gb5P6eXLG5DHv9DgzrxJCCNiVizU=;
+        b=azQ8JZsVSy3cyZvEpm6FX3inRQhQLTFiq935uayrAev4FLcbjnaUsdZJS5kmviKzjq
+         Ui/Hm8TyTsgRUsdE9ZkcmL//9hmNuJ9gA4hFtAtIEX4DGnkeo9QmfI9ZzTQdebCVTYSy
+         YANGQsYCX1BEnpz/jpXWcNWHLutEgHm6W80PLNVPY7WuY6u3lhG2PEXbPNhqaV8Nb81L
+         7BF6Zc/ZaV/j/mPzDHYIDiUXvhRuEjCTs5TIiGzJZ3RRIZTyUjWKyxyOX21uNQDfXeJ0
+         1kE3QIZLVlF8LHU6RVikjedUB3t9PCJ/g1+gq76iw+5Lt727ahtVssFC7o+XRQHT4M/Q
+         8INA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744388570; x=1744993370;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=baX3GRriSGAR4q6Gb5P6eXLG5DHv9DgzrxJCCNiVizU=;
+        b=Qq70g5V8R4v8CbDj6RzEgAqtLQ90JCJe+lKWT7uAxuh3/nY5S3TWqZXBx8aMSxa4e7
+         QdnW7svbfwJkQMMetX2hzV8zhEi4AqG8/XwI/UQVdjmHNnkMroIt06h5LiqD3/w+0/qI
+         Ccx3q+3zbdwYTryL+tSQUXMjO65kutXevvjxdAa9VNSx97QfgSGBDU74FxFXwor3OQ9e
+         W2BXHbsKr5P2n27grb9zPblKGmL+xz9eaTBZ149sCWzcJbOzBF1urOUI2QFuKyE2zFbx
+         ddY1nY5JHOdwdgKl5SNEku16j6ZHltvPbxgwepOoDBP/eWqpWbZpSTHLCT1KKYyeQ0IQ
+         Utgg==
+X-Forwarded-Encrypted: i=1; AJvYcCX32fhO5E4UA6EBE2hWw/z/OMwWWsLbUZYpR7W+PY39+xhhxRUh7Y4LQrL8qWubUyOZC3AquRk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1xkuJjel6uCNtFFHGrZjnfT5L0gVQ7e2LuIARrGimfg81MKNH
+	+QJclDpymQWzWw3ygIsZ7gse+15mPFllrSLn3iCtqyBcLD7X6zHsCRCIcNrr6QMKiC5xcAkSerh
+	km61eO8LT6EgR5jiPMuSZh00cfLI=
+X-Gm-Gg: ASbGncvd8ibeIfxhGB4lZl36KfyzEHNtHYuiLkMVZj1bnqf2gkmFHh0Dtxynh4/Wxa+
+	iaUbR1MquzLI5og8GX/zzHtY7os+n1J/t25y93ZUQhCSlldkk59nRtEOgqyuOc1K2hAVBVdj9Cm
+	U6Md9dQwBkNWEAH3/np0tNS3JNsw33DY6ddZ5PKj96h3Pp4fs=
+X-Google-Smtp-Source: AGHT+IH/AHSMPpcHMSpdd831NVuZ6wPIlyassBglWdslI21V1PqlLgFfogK98BXS1nokG6d6/15QBelPvbiGAAnfAYg=
+X-Received: by 2002:a05:6a00:909c:b0:736:ff65:3fcc with SMTP id
+ d2e1a72fcca58-73bd1263c4bmr4375124b3a.16.1744388570483; Fri, 11 Apr 2025
+ 09:22:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D040UWB001.ant.amazon.com (10.13.138.82) To
- EX19D023EUB003.ant.amazon.com (10.252.51.5)
+References: <20250410095517.141271-1-vmalik@redhat.com>
+In-Reply-To: <20250410095517.141271-1-vmalik@redhat.com>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Fri, 11 Apr 2025 09:22:37 -0700
+X-Gm-Features: ATxdqUFwzogkAAn6Mma_RCicNnu3ETJW2tli5HmLORLn3X8bRqdq1ym85aJOBDY
+Message-ID: <CAEf4Bzb2S+1TonOp9UH86r0e6aGG2LEA4kwbQhJWr=9Xju=NEw@mail.gmail.com>
+Subject: Re: [PATCH bpf v2] libbpf: Fix buffer overflow in bpf_object__init_prog
+To: Viktor Malik <vmalik@redhat.com>
+Cc: bpf@vger.kernel.org, Andrii Nakryiko <andrii@kernel.org>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
+	Jiri Olsa <jolsa@kernel.org>, lmarch2 <2524158037@qq.com>, stable@vger.kernel.org, 
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Andrii Nakryiko <andrii@kernel.org>
+On Thu, Apr 10, 2025 at 2:55=E2=80=AFAM Viktor Malik <vmalik@redhat.com> wr=
+ote:
+>
+> As reported by CVE-2025-29481 [1], it is possible to corrupt a BPF ELF
+> file such that arbitrary BPF instructions are loaded by libbpf. This can
+> be done by setting a symbol (BPF program) section offset to a large
+> (unsigned) number such that <section start + symbol offset> overflows
+> and points before the section data in the memory.
+>
+> Consider the situation below where:
+> - prog_start =3D sec_start + symbol_offset    <-- size_t overflow here
+> - prog_end   =3D prog_start + prog_size
+>
+>     prog_start        sec_start        prog_end        sec_end
+>         |                |                 |              |
+>         v                v                 v              v
+>     .....................|################################|............
+>
+> The CVE report in [1] also provides a corrupted BPF ELF which can be
+> used as a reproducer:
+>
+>     $ readelf -S crash
+>     Section Headers:
+>       [Nr] Name              Type             Address           Offset
+>            Size              EntSize          Flags  Link  Info  Align
+>     ...
+>       [ 2] uretprobe.mu[...] PROGBITS         0000000000000000  00000040
+>            0000000000000068  0000000000000000  AX       0     0     8
+>
+>     $ readelf -s crash
+>     Symbol table '.symtab' contains 8 entries:
+>        Num:    Value          Size Type    Bind   Vis      Ndx Name
+>     ...
+>          6: ffffffffffffffb8   104 FUNC    GLOBAL DEFAULT    2 handle_tp
+>
+> Here, the handle_tp prog has section offset ffffffffffffffb8, i.e. will
+> point before the actual memory where section 2 is allocated.
+>
+> This is also reported by AddressSanitizer:
+>
+>     =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>     =3D=3D1232=3D=3DERROR: AddressSanitizer: heap-buffer-overflow on addr=
+ess 0x7c7302fe0000 at pc 0x7fc3046e4b77 bp 0x7ffe64677cd0 sp 0x7ffe64677490
+>     READ of size 104 at 0x7c7302fe0000 thread T0
+>         #0 0x7fc3046e4b76 in memcpy (/lib64/libasan.so.8+0xe4b76)
+>         #1 0x00000040df3e in bpf_object__init_prog /src/libbpf/src/libbpf=
+.c:856
+>         #2 0x00000040df3e in bpf_object__add_programs /src/libbpf/src/lib=
+bpf.c:928
+>         #3 0x00000040df3e in bpf_object__elf_collect /src/libbpf/src/libb=
+pf.c:3930
+>         #4 0x00000040df3e in bpf_object_open /src/libbpf/src/libbpf.c:806=
+7
+>         #5 0x00000040f176 in bpf_object__open_file /src/libbpf/src/libbpf=
+.c:8090
+>         #6 0x000000400c16 in main /poc/poc.c:8
+>         #7 0x7fc3043d25b4 in __libc_start_call_main (/lib64/libc.so.6+0x3=
+5b4)
+>         #8 0x7fc3043d2667 in __libc_start_main@@GLIBC_2.34 (/lib64/libc.s=
+o.6+0x3667)
+>         #9 0x000000400b34 in _start (/poc/poc+0x400b34)
+>
+>     0x7c7302fe0000 is located 64 bytes before 104-byte region [0x7c7302fe=
+0040,0x7c7302fe00a8)
+>     allocated by thread T0 here:
+>         #0 0x7fc3046e716b in malloc (/lib64/libasan.so.8+0xe716b)
+>         #1 0x7fc3045ee600 in __libelf_set_rawdata_wrlock (/lib64/libelf.s=
+o.1+0xb600)
+>         #2 0x7fc3045ef018 in __elf_getdata_rdlock (/lib64/libelf.so.1+0xc=
+018)
+>         #3 0x00000040642f in elf_sec_data /src/libbpf/src/libbpf.c:3740
+>
+> The problem here is that currently, libbpf only checks that the program
+> end is within the section bounds. There used to be a check
+> `while (sec_off < sec_sz)` in bpf_object__add_programs, however, it was
+> removed by commit 6245947c1b3c ("libbpf: Allow gaps in BPF program
+> sections to support overriden weak functions").
+>
+> Put the above condition back to bpf_object__init_prog to make sure that
+> the program start is also within the bounds of the section to avoid the
+> potential buffer overflow.
+>
+> [1] https://github.com/lmarch2/poc/blob/main/libbpf/libbpf.md
+>
+> Reported-by: lmarch2 <2524158037@qq.com>
+> Cc: stable@vger.kernel.org
 
-[ Upstream commit bc27c52eea189e8f7492d40739b7746d67b65beb ]
+Libbpf is packaged and consumed from Github mirror, which is produced
+from latest bpf-next and bpf trees, so there is no point in
+backporting fixes like this to stable kernel branches. Please drop the
+CC: stable in the next revision.
 
-We use map->freeze_mutex to prevent races between map_freeze() and
-memory mapping BPF map contents with writable permissions. The way we
-naively do this means we'll hold freeze_mutex for entire duration of all
-the mm and VMA manipulations, which is completely unnecessary. This can
-potentially also lead to deadlocks, as reported by syzbot in [0].
+> Fixes: 6245947c1b3c ("libbpf: Allow gaps in BPF program sections to suppo=
+rt overriden weak functions")
+> Link: https://github.com/lmarch2/poc/blob/main/libbpf/libbpf.md
+> Link: https://www.cve.org/CVERecord?id=3DCVE-2025-29481
 
-So, instead, hold freeze_mutex only during writeability checks, bump
-(proactively) "write active" count for the map, unlock the mutex and
-proceed with mmap logic. And only if something went wrong during mmap
-logic, then undo that "write active" counter increment.
+libbpf is meant to load BPF programs under root. It's a
+highly-privileged operation, and libbpf is not meant, designed, and
+actually explicitly discouraged from loading untrusted ELF files. As
+such, this is just a normal bug fix, like lots of others. So let's
+drop the CVE link as well.
 
-  [0] https://lore.kernel.org/bpf/678dcbc9.050a0220.303755.0066.GAE@google.com/
+Again, no one in their sane mind should be passing untrusted ELF files
+into libbpf while running under root. Period.
 
-Fixes: fc9702273e2e ("bpf: Add mmap() support for BPF_MAP_TYPE_ARRAY")
-Reported-by: syzbot+4dc041c686b7c816a71e@syzkaller.appspotmail.com
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20250129012246.1515826-2-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: David Sauerwein <dssauerw@amazon.de>
----
- kernel/bpf/syscall.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+All production use cases load ELF that they generated and control
+(usually embedded into their memory through BPF skeleton header). And
+if that ELF file is corrupted, you have problems somewhere else,
+libbpf is not a culprit.
 
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index 008bb4e5c4dd..dc3d9a111cf1 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -647,7 +647,7 @@ static const struct vm_operations_struct bpf_map_default_vmops = {
- static int bpf_map_mmap(struct file *filp, struct vm_area_struct *vma)
- {
- 	struct bpf_map *map = filp->private_data;
--	int err;
-+	int err = 0;
- 
- 	if (!map->ops->map_mmap || map_value_has_spin_lock(map))
- 		return -ENOTSUPP;
-@@ -671,7 +671,12 @@ static int bpf_map_mmap(struct file *filp, struct vm_area_struct *vma)
- 			err = -EACCES;
- 			goto out;
- 		}
-+		bpf_map_write_active_inc(map);
- 	}
-+out:
-+	mutex_unlock(&map->freeze_mutex);
-+	if (err)
-+		return err;
- 
- 	/* set default open/close callbacks */
- 	vma->vm_ops = &bpf_map_default_vmops;
-@@ -682,13 +687,11 @@ static int bpf_map_mmap(struct file *filp, struct vm_area_struct *vma)
- 		vma->vm_flags &= ~VM_MAYWRITE;
- 
- 	err = map->ops->map_mmap(map, vma);
--	if (err)
--		goto out;
-+	if (err) {
-+		if (vma->vm_flags & VM_WRITE)
-+			bpf_map_write_active_dec(map);
-+	}
- 
--	if (vma->vm_flags & VM_MAYWRITE)
--		bpf_map_write_active_inc(map);
--out:
--	mutex_unlock(&map->freeze_mutex);
- 	return err;
- }
- 
--- 
-2.47.1
+> Signed-off-by: Viktor Malik <vmalik@redhat.com>
+> Reviewed-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+> ---
+>  tools/lib/bpf/libbpf.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+> index 6b85060f07b3..d0ece3c9618e 100644
+> --- a/tools/lib/bpf/libbpf.c
+> +++ b/tools/lib/bpf/libbpf.c
+> @@ -896,7 +896,7 @@ bpf_object__add_programs(struct bpf_object *obj, Elf_=
+Data *sec_data,
+>                         return -LIBBPF_ERRNO__FORMAT;
+>                 }
+>
+> -               if (sec_off + prog_sz > sec_sz) {
+> +               if (sec_off >=3D sec_sz || sec_off + prog_sz > sec_sz) {
 
+So the thing we are protecting against is that sec_off + prog_sz can
+overflow and turn out to be < sec_sz (even though the sum is actually
+bigger), right?
+
+If my understanding is correct, then I'd find it much more obviously
+expressed as:
+
+
+if (sec_off + prog_sz > sec_sz || sec_off + prog_sz < sec_off)
+
+We have such an overflow detection checking pattern used in a few
+places already, I believe. WDYT?
+
+pw-bot: cr
+
+>                         pr_warn("sec '%s': program at offset %zu crosses =
+section boundary\n",
+>                                 sec_name, sec_off);
+>                         return -LIBBPF_ERRNO__FORMAT;
+> --
+> 2.49.0
+>
 
