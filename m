@@ -1,158 +1,104 @@
-Return-Path: <stable+bounces-132265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0125A86059
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 16:19:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFCDDA8605C
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 16:19:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 917649A4CC4
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 14:17:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAD414A3CD5
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 14:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DAFE1F875A;
-	Fri, 11 Apr 2025 14:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C6E81E5B99;
+	Fri, 11 Apr 2025 14:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cp6sLDKP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZBjYwzpC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE461F3BBE;
-	Fri, 11 Apr 2025 14:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318A51E89C;
+	Fri, 11 Apr 2025 14:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744380976; cv=none; b=aGF0kNuF/WNOB8buTof+1WdH9+rRRnEnEOsdv83K6SejEWKlVImHpnRfh9TTz4LYCHnHcuh60jGpNtuKHDEyNsLJn40tIdQAJ5yQcer5WU19WS9ZfmwWlzZLypKsXxlEHSFEnrI5ZzmK01z2ljoV9YD9yfpC/TjcSGKSW7IUSdw=
+	t=1744381033; cv=none; b=ld8ngPNgKNVQJRZNE1gQea81JI4TIaC0EMny4ZM+PDkW37LEi8R9UcDbtJizCQPAs6ZVCa3xvWcrcf3sBk+lkv4sUMP2SHRuoBRiNVOIDDxqGHbHziRKSHz4JNE8Xti2NixgcszGmr3haxb9kz29/R8jYb9WNK9Fbelx3ymEJlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744380976; c=relaxed/simple;
-	bh=eeycAu5NMGHcZIH3iNC4x4DQf8akT1Yx3tBBEzJbMwo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YImw52QE1sNHjjg9Ne4t7p44QFPWboVHOswehFYcDsl77MnOUJK54J9YDGYPF9OjctKBsVvWGNm4nAyjjmiGPi9AEWC5B+U/oCU4RAshRnp1QQeFQtRfFDCD7hlDjO5HCbFYyew5IWOlpT/9NGPIV9fMXLredaDCiFGpZK8rwYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cp6sLDKP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9AC8C4CEEB;
-	Fri, 11 Apr 2025 14:16:15 +0000 (UTC)
+	s=arc-20240116; t=1744381033; c=relaxed/simple;
+	bh=dq0L6tQYUSAcSdcqt6jk2P9Paxbojlt97D0W4MpXgiw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gkUUh1/FM/k4oFy5jFl07Ojwec1dza4CStlpu1Eea8mQJVRvvWnjn0RwgrNA1f8rOFFy9Zw2M7MhEjQYKu0yFIcpgZHPskV2yJHyXvQozHdzP93V62vFStV89ycumqw2ktKxKxG+7NzWR49Vs/km9dFSP4bT4exHfeHvaZHU9Jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZBjYwzpC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82350C4CEE7;
+	Fri, 11 Apr 2025 14:17:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744380976;
-	bh=eeycAu5NMGHcZIH3iNC4x4DQf8akT1Yx3tBBEzJbMwo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=cp6sLDKPycZXAGpis7r4ESaeYytQPhegsA9qYSLcaRspPT9JjcUZochLPgxr911PQ
-	 TD+gP5Yg+gMUpC4Z/MsN4MtshXPvlwVsZsMIqp//1TSkQ2vMwy4BGFsI/qMZSjhiT+
-	 Smd8IdNyK5DASwPric1f8hlKJWgoQBtKq/z2H+1TsPGtEAE8XaN5fBj9Q09brmC3So
-	 jq0QNWRgLmPwhZhXb4BX5Dr+LE5ySvp+eRI7sNrxrG8T5bcF+LsadgAa3G3NwfGLd2
-	 Ddp4bIyFQJHclbeFOmVK7nAQM47Tf3IF79ux4CrAXjPfvv2/NZ8DWtgqbvgqz27vTt
-	 8Ppdx1CoGKzfQ==
-From: cel@kernel.org
-To: <stable@vger.kernel.org>
-Cc: <linux-nfs@vger.kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	syzbot+e34ad04f27991521104c@syzkaller.appspotmail.com
-Subject: [PATCH v6.12] nfsd: don't ignore the return code of svc_proc_register()
-Date: Fri, 11 Apr 2025 10:16:11 -0400
-Message-ID: <20250411141611.27150-1-cel@kernel.org>
-X-Mailer: git-send-email 2.47.0
+	s=k20201202; t=1744381032;
+	bh=dq0L6tQYUSAcSdcqt6jk2P9Paxbojlt97D0W4MpXgiw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZBjYwzpCZpyerfG6K5aGh4518j7WK2C974hjpgftJoe8j6jxO2juVgS3Pgvleplw0
+	 j2dyd9exKXGPI+5mw3r8XQ41aZgHPWSaCZi37Hc/ExgCQCjKfDttz4Qtd4Ufv+OvRv
+	 WVZpZCvFbzxSf2OU15nq+t4236Od8T19VKrpN8e1Uf7prU64nWRIsZu8RjKy8ukI0E
+	 0sPgDn4bnSL7bSP8CaZAuT7dnAUQ14Z0xFPvMa1P1sLwppvL4w2rmPQVeoFMhk4zf4
+	 zP9gXOe8o1Oktu70gYQ2VDuS428ZjuvBAj6nIhwOhLd1ZTV6FJ8r6MGx/BXp2XgYQM
+	 s3KUzGu0019jg==
+Date: Fri, 11 Apr 2025 16:17:06 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Christian Schrefl <chrisi.schrefl@gmail.com>
+Cc: Luis Chamberlain <mcgrof@kernel.org>,
+	Russ Weight <russ.weight@linux.dev>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] rust: fix building firmware abstraction on 32bit arm
+Message-ID: <Z_kkYsLNiZ_t4z5b@cassiopeiae>
+References: <20250411-rust_arm_fix_fw_abstaction-v1-1-0a9e598451c6@gmail.com>
+ <Z_jwXsQae9DjLWha@pollux>
+ <99070274-4891-411a-89e1-420ca4d5d0fb@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <99070274-4891-411a-89e1-420ca4d5d0fb@gmail.com>
 
-From: Jeff Layton <jlayton@kernel.org>
+On Fri, Apr 11, 2025 at 03:47:28PM +0200, Christian Schrefl wrote:
+> On 11.04.25 12:35 PM, Danilo Krummrich wrote:
+> > On Fri, Apr 11, 2025 at 09:14:48AM +0200, Christian Schrefl wrote:
+> > I did a test build with multi_v7_defconfig and I can't reproduce this issue.
+> > 
+> Interesting, I've it seems this is only an issue on 6.13 with my arm patches applied.
+> 
+> It seems that it works on v6.14 and v6.15-rc1 but the error occurs on ffd294d346d1 (tag: v6.13)
+> with my 32-bit arm patches applied.
 
-[ Upstream commit 930b64ca0c511521f0abdd1d57ce52b2a6e3476b ]
+That makes sense, commit 1bae8729e50a ("rust: map `long` to `isize` and `char`
+to `u8`") changed FwFunc to take a *const u8, which previously was *const i8.
 
-Currently, nfsd_proc_stat_init() ignores the return value of
-svc_proc_register(). If the procfile creation fails, then the kernel
-will WARN when it tries to remove the entry later.
+> >> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+> >> index f04b058b09b2d2397e26344d0e055b3aa5061432..1d6284316f2a4652ef3f76272670e5e29b0ff924 100644
+> >> --- a/rust/kernel/firmware.rs
+> >> +++ b/rust/kernel/firmware.rs
+> >> @@ -5,14 +5,18 @@
+> >>  //! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h)
+> >>  
+> >>  use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
+> >> -use core::ptr::NonNull;
+> >> +use core::{ffi, ptr::NonNull};
+> > 
+> > The change itself seems to be fine anyways, but I think we should use crate::ffi
+> > instead.
+> Right, I just did what RA recommended without thinking about it much.
+> 
+> I guess this patch isn't really needed. Should I still send a V2 using `crate::ffi`?
 
-Fix nfsd_proc_stat_init() to return the same type of pointer as
-svc_proc_register(), and fix up nfsd_net_init() to check that and fail
-the nfsd_net construction if it occurs.
-
-svc_proc_register() can fail if the dentry can't be allocated, or if an
-identical dentry already exists. The second case is pretty unlikely in
-the nfsd_net construction codepath, so if this happens, return -ENOMEM.
-
-Reported-by: syzbot+e34ad04f27991521104c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-nfs/67a47501.050a0220.19061f.05f9.GAE@google.com/
-Cc: stable@vger.kernel.org # v6.9
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
----
- fs/nfsd/nfsctl.c | 9 ++++++++-
- fs/nfsd/stats.c  | 4 ++--
- fs/nfsd/stats.h  | 2 +-
- 3 files changed, 11 insertions(+), 4 deletions(-)
-
-I did not have any problem cherry-picking 930b64 onto v6.12.23. This            
-built and ran some simple NFSD tests in my lab. 
-
-diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
-index e83629f39604..2e835e7c107e 100644
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -2244,8 +2244,14 @@ static __net_init int nfsd_net_init(struct net *net)
- 					  NFSD_STATS_COUNTERS_NUM);
- 	if (retval)
- 		goto out_repcache_error;
-+
- 	memset(&nn->nfsd_svcstats, 0, sizeof(nn->nfsd_svcstats));
- 	nn->nfsd_svcstats.program = &nfsd_programs[0];
-+	if (!nfsd_proc_stat_init(net)) {
-+		retval = -ENOMEM;
-+		goto out_proc_error;
-+	}
-+
- 	for (i = 0; i < sizeof(nn->nfsd_versions); i++)
- 		nn->nfsd_versions[i] = nfsd_support_version(i);
- 	for (i = 0; i < sizeof(nn->nfsd4_minorversions); i++)
-@@ -2255,12 +2261,13 @@ static __net_init int nfsd_net_init(struct net *net)
- 	nfsd4_init_leases_net(nn);
- 	get_random_bytes(&nn->siphash_key, sizeof(nn->siphash_key));
- 	seqlock_init(&nn->writeverf_lock);
--	nfsd_proc_stat_init(net);
- #if IS_ENABLED(CONFIG_NFS_LOCALIO)
- 	INIT_LIST_HEAD(&nn->local_clients);
- #endif
- 	return 0;
- 
-+out_proc_error:
-+	percpu_counter_destroy_many(nn->counter, NFSD_STATS_COUNTERS_NUM);
- out_repcache_error:
- 	nfsd_idmap_shutdown(net);
- out_idmap_error:
-diff --git a/fs/nfsd/stats.c b/fs/nfsd/stats.c
-index bb22893f1157..f7eaf95e20fc 100644
---- a/fs/nfsd/stats.c
-+++ b/fs/nfsd/stats.c
-@@ -73,11 +73,11 @@ static int nfsd_show(struct seq_file *seq, void *v)
- 
- DEFINE_PROC_SHOW_ATTRIBUTE(nfsd);
- 
--void nfsd_proc_stat_init(struct net *net)
-+struct proc_dir_entry *nfsd_proc_stat_init(struct net *net)
- {
- 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
- 
--	svc_proc_register(net, &nn->nfsd_svcstats, &nfsd_proc_ops);
-+	return svc_proc_register(net, &nn->nfsd_svcstats, &nfsd_proc_ops);
- }
- 
- void nfsd_proc_stat_shutdown(struct net *net)
-diff --git a/fs/nfsd/stats.h b/fs/nfsd/stats.h
-index 04aacb6c36e2..e4efb0e4e56d 100644
---- a/fs/nfsd/stats.h
-+++ b/fs/nfsd/stats.h
-@@ -10,7 +10,7 @@
- #include <uapi/linux/nfsd/stats.h>
- #include <linux/percpu_counter.h>
- 
--void nfsd_proc_stat_init(struct net *net);
-+struct proc_dir_entry *nfsd_proc_stat_init(struct net *net);
- void nfsd_proc_stat_shutdown(struct net *net);
- 
- static inline void nfsd_stats_rc_hits_inc(struct nfsd_net *nn)
--- 
-2.47.0
-
+Yes, please. I think it's still an improvement.
 
