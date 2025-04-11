@@ -1,119 +1,189 @@
-Return-Path: <stable+bounces-132271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BD0EA860E9
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 16:43:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A00E8A8611B
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 16:56:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5585F16A661
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 14:43:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFBD18C137F
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 14:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A5C1F4198;
-	Fri, 11 Apr 2025 14:43:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TSWb9rIs"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898FE1F7575;
+	Fri, 11 Apr 2025 14:56:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735361F3FC8
-	for <stable@vger.kernel.org>; Fri, 11 Apr 2025 14:43:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BAD4537FF;
+	Fri, 11 Apr 2025 14:56:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.67.55.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744382602; cv=none; b=ndeuQeUE4+llDaboxXVrmjXIaqM/rt61CLb+yCL0VzY6yI6yDRkOZ9ntbnZx26T8Kvso8xY7/NHWQq/z2Ph3hjIXuWjdeNqC3iFfz86bqagOzkuwvRDXEC1KT8aNdNVSnH+nN6ImF+B8G3bHcjHeJTC0qb9JojPpIAbQjCtdW4Y=
+	t=1744383400; cv=none; b=TlLVzmee3Xywm9aZ3aZl5V6Pmq0WyMOYHcDuMR+qnEch67P6Yzo4/vaSYezwyGD5niwCCvtapMCJ4U2JhLI25KKpsxlENAiogzeeWyjZiiuJIWzO1c47H/UFLcKRLbWe45eZs9dhMHU6AOuYfiftNRtPcIJzzZ8uSVblSsTmUdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744382602; c=relaxed/simple;
-	bh=3Z6HT9Tfv0F4a8qgDzqrJy9v3ND72f5yLT6i3F3ZeW0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sFRMzHBfKp0qplJKvgOTmkfd2IN7p9JIlcgvN2gDBah4kW6mODXnaBCQ9uyMrNl8bevKDQSiQEYSZMSG2kGo7crdglc5RJBK5Hgk7xgweXJPxdqtrkfdLIJnTWSUPLpSzr6ivfAxeJwRGvKolbYpnBR2n6NQLFFWozFusr6h03Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TSWb9rIs; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744382600; x=1775918600;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=3Z6HT9Tfv0F4a8qgDzqrJy9v3ND72f5yLT6i3F3ZeW0=;
-  b=TSWb9rIsJ+ZKw7MgAV8ee08JXVGbdtnGHVJe8sui1b1pjFFeVkFCuHx6
-   HYOFTJIf9Hd7uqOuhonFLPVY7Aey3PvjC5TZaIdbhuWxuriTqL+E37pGG
-   DC5uauT0p5/DHuc5dnC6wCtUHMx4V4tPPzBpLLkmG6u7xQlUV23RzOxe5
-   vOprEO0SsNHCYs41RfP4Tk1TYMUyGW8Dmn6rlG9I4G8oDn9G4wx/mSuSd
-   bRWgahL9Dv2Kcc/8QJ3R4k6dNWwk0G4+1huRbPsNhb+KHTA97jIky9p0o
-   W9YuYgtrWwL6IKachsi6YWZF8FXDLHGSBtk7TaHyvaqdZ6Ny90/naFxUA
-   w==;
-X-CSE-ConnectionGUID: J3vsUw/FT0ak+bvtWK+N1Q==
-X-CSE-MsgGUID: nqQTYmh4QE6G7mEqq+5v3g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11401"; a="57316232"
-X-IronPort-AV: E=Sophos;i="6.15,205,1739865600"; 
-   d="scan'208";a="57316232"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2025 07:43:19 -0700
-X-CSE-ConnectionGUID: r9FBdMF5SOe0SZIBZ6HAWw==
-X-CSE-MsgGUID: zdrtha3ISFadceuLL7lzmQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,205,1739865600"; 
-   d="scan'208";a="134370135"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
-  by orviesa005.jf.intel.com with SMTP; 11 Apr 2025 07:43:17 -0700
-Received: by stinkbox (sSMTP sendmail emulation); Fri, 11 Apr 2025 17:43:16 +0300
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-To: intel-gfx@lists.freedesktop.org
-Cc: stable@vger.kernel.org,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>
-Subject: [PATCH v2 1/2] drm/i915/gem: Allow EXEC_CAPTURE on recoverable contexts on DG1
-Date: Fri, 11 Apr 2025 17:43:12 +0300
-Message-ID: <20250411144313.11660-2-ville.syrjala@linux.intel.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250411144313.11660-1-ville.syrjala@linux.intel.com>
-References: <20250411144313.11660-1-ville.syrjala@linux.intel.com>
+	s=arc-20240116; t=1744383400; c=relaxed/simple;
+	bh=zWdF7QoaOLIE+jmvSXVqWmHLvhor+vabMK1HXjfyclg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=epddOafcF+PGTBkOfeG7jKEGC0THUiApJf9Is6C76nHW17s015/+PMdHxpHU/QJfmaJzl+PNmdnpPlQQxVAVQMr6WgKImO97aIn/qXcnItlvpoaagE0AuZz5ilVRz1bqEfZ2sinRrv87MmmrdEadIPwxGxPlGpZT0xGTVsT77Qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=surriel.com; spf=pass smtp.mailfrom=shelob.surriel.com; arc=none smtp.client-ip=96.67.55.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=surriel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shelob.surriel.com
+Received: from [2601:18c:8180:83cc:5a47:caff:fe78:8708] (helo=fangorn)
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@shelob.surriel.com>)
+	id 1u3FjC-000000005D4-2uHd;
+	Fri, 11 Apr 2025 10:51:34 -0400
+Date: Fri, 11 Apr 2025 10:51:34 -0400
+From: Rik van Riel <riel@surriel.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Pat Cody <pat@patcody.io>, mingo@redhat.com, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
+ bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+ linux-kernel@vger.kernel.org, patcody@meta.com, kernel-team@meta.com,
+ stable@vger.kernel.org, Breno Leitao <leitao@debian.org>
+Subject: Re: [PATCH] sched/fair: Add null pointer check to
+ pick_next_entity()
+Message-ID: <20250411105134.1f316982@fangorn>
+In-Reply-To: <20250409152703.GL9833@noisy.programming.kicks-ass.net>
+References: <20250320205310.779888-1-pat@patcody.io>
+	<20250324115613.GD14944@noisy.programming.kicks-ass.net>
+	<9d38c61098b426777c1a748cf1baf8e57c41c334.camel@surriel.com>
+	<20250402180734.GX5880@noisy.programming.kicks-ass.net>
+	<b40f830845f1f97aa4b686c5c1333ff1bf5d59b3.camel@surriel.com>
+	<20250409152703.GL9833@noisy.programming.kicks-ass.net>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Sender: riel@surriel.com
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+On Wed, 9 Apr 2025 17:27:03 +0200
+Peter Zijlstra <peterz@infradead.org> wrote:
+> On Wed, Apr 09, 2025 at 10:29:43AM -0400, Rik van Riel wrote:
+> > Our trouble workload still makes the scheduler crash
+> > with this patch.
+> > 
+> > I'll go put the debugging patch on our kernel.
+> > 
+> > Should I try to get debugging data with this patch
+> > part of the mix, or with the debugging patch just
+> > on top of what's in 6.13 already?  
+> 
+> Whatever is more convenient I suppose.
+> 
+> If you can dump the full tree that would be useful. Typically the
+> se::{vruntime,weight} and cfs_rq::{zero_vruntime,avg_vruntime,avg_load}
+> such that we can do full manual validation of the numbers.
 
-The intel-media-driver is currently broken on DG1 because
-it uses EXEC_CAPTURE with recovarable contexts. Relax the
-check to allow that.
+Here is a dump of the scheduler tree of the crashing CPU.
 
-I've also submitted a fix for the intel-media-driver:
-https://github.com/intel/media-driver/pull/1920
+Unfortunately the CPU crashed in pick_next_entity, and not in your
+debugging code. I'll add two more calls to avg_vruntime_validate(),
+one from avg_vruntime_update(), and one rfom __update_min_vruntime()
+when we skip the call to avg_vruntime_update(). The line numbers in
+the backtrace could be a clue.
 
-Cc: stable@vger.kernel.org
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Testcase: igt/gem_exec_capture/capture-invisible
-Fixes: 71b1669ea9bd ("drm/i915/uapi: tweak error capture on recoverable contexts")
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
----
- drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I have edited the cgroup names to make things more readable, but everything
+else is untouched.
 
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-index ca7e9216934a..ea9d5063ce78 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-@@ -2013,7 +2013,7 @@ static int eb_capture_stage(struct i915_execbuffer *eb)
- 			continue;
- 
- 		if (i915_gem_context_is_recoverable(eb->gem_context) &&
--		    (IS_DGFX(eb->i915) || GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 0)))
-+		    GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 10))
- 			return -EINVAL;
- 
- 		for_each_batch_create_order(eb, j) {
--- 
-2.49.0
+One thing that stands out to me is how the vruntime of each of the
+entities on the CPU's cfs_rq are really large negative numbers.
+
+vruntime = 18429030910682621789 equals 0xffc111f8d9ee675d
+
+I do not know how those se->vruntime numbers got to that point,
+but they are a suggestive cause of the overflow.
+
+I'll go comb through the se->vruntime updating code to see how those
+large numbers could end up as the vruntime for these sched entities.
+
+
+nr_running = 3
+min_vruntime = 107772371139014
+avg_vruntime = -1277161882867784752
+avg_load = 786
+tasks_timeline = [
+  {
+    cgroup /A
+    weight = 10230 => 9
+    rq = {
+      nr_running = 0
+      min_vruntime = 458975898004
+      avg_vruntime = 0
+      avg_load = 0
+      tasks_timeline = [
+      ]
+    }
+  },
+  {
+    cgroup /B
+    vruntime = 18445226958208703357
+    weight = 319394 => 311
+    rq = {
+      nr_running = 2
+      min_vruntime = 27468255210769
+      avg_vruntime = 0
+      avg_load = 93
+      tasks_timeline = [
+        {
+          cgroup /B/a
+          vruntime = 27468255210769
+          weight = 51569 => 50
+          rq = {
+            nr_running = 1
+            min_vruntime = 820449693961
+            avg_vruntime = 0
+            avg_load = 15
+            tasks_timeline = [
+              {
+                task = 3653382 (fc0)
+                vruntime = 820449693961
+                weight = 15360 => 15
+              },
+            ]
+          }
+        },
+        {
+          cgroup /B/b
+          vruntime = 27468255210769
+          weight = 44057 => 43
+          rq = {
+            nr_running = 1
+            min_vruntime = 563178567930
+            avg_vruntime = 0
+            avg_load = 15
+            tasks_timeline = [
+              {
+                task = 3706454 (fc0)
+                vruntime = 563178567930
+                weight = 15360 => 15
+              },
+            ]
+          }
+        },
+      ]
+    }
+  },
+  {
+    cgroup /C
+    vruntime = 18445539757376619550
+    weight = 477855 => 466
+    rq = {
+      nr_running = 0
+      min_vruntime = 17163581720739
+      avg_vruntime = 0
+      avg_load = 0
+      tasks_timeline = [
+      ]
+    }
+  },
+]
 
 
