@@ -1,154 +1,131 @@
-Return-Path: <stable+bounces-132229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D887A85C94
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 14:12:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B96ECA85DAE
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 14:51:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F5B97B54B0
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 12:11:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EE144C369C
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 12:44:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2351D29C34D;
-	Fri, 11 Apr 2025 12:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434222BD58B;
+	Fri, 11 Apr 2025 12:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lz+qo4Gn"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="SICH88CT"
+X-Original-To: Stable@vger.kernel.org
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B613629B214
-	for <stable@vger.kernel.org>; Fri, 11 Apr 2025 12:10:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621DF29CB42;
+	Fri, 11 Apr 2025 12:42:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744373444; cv=none; b=H4YCoYzsMhZba6ex0RjJ4vOAkRWeGo/N7YXyWaUDjrauhiTZrsDs+gVGUXBiuAofJOtD4paP/m07ZoX/mCv/niLNSrYPjoasUB+Extukjk26IJx9DXMxoOdipH6gS4D48yalruH7RFOzaBQxmfQIGVjlzd1cnT9xXZ6AGEND1Pk=
+	t=1744375378; cv=none; b=KZPlx8MVqJds9kTfB55v39S4lzbmfPVMuXuGutsgaCnGR53cQZRA0jmOZo4ENIyi+reWQoOVfdd7WTNN9aYE75/vjJSxZW1F3Z9GtN1RrK/5zN5a6m5ZOBe3antq4/tCUU5SyxCYoK09aNbyHBAkwN/sDgEnmo3WvC4cPncn38c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744373444; c=relaxed/simple;
-	bh=dGHld92vUVbOFD/u6AtKaP9uEUe1RGPsRpaLDsrOO/w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HTU0XKWr5U5L+A/NNXb2bEX0LMFNrCHN4LaWpcniYfNW2U/GMMaD8mVyzbvwZ2TIJu65idr9vOMAsz8AtX9UCLINXBxnrI9QUoKJ/+6I8Nsxg0lEAmp5iUz8oZxuQEEVmDnIHp3quP3LWIT+cZnXY4Z3uigv1+4LuzU/sG30W1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lz+qo4Gn; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-43cfa7e7f54so12053375e9.1
-        for <stable@vger.kernel.org>; Fri, 11 Apr 2025 05:10:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744373441; x=1744978241; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/5LlnegqhXWYoYcLoLagqAZu+k870W60Ciw5agd+TQE=;
-        b=lz+qo4Gn3kxsri5qolrG9V6egeFebKxqHNRtcxRp6fWCmzfW4FAoajq3UGpmgRgng/
-         2DLUO1O+zTnXVHC9JjkzCEeQpRhlYw3itR8bft4dkKpWMmAz5AaFF5xIg/zdGdLYyO/+
-         IXKIZY9G0XYS8Gvkn7uXeWkGRY+2c11haossZo4tfkwEACVhjFgOZFgclUCwDf/aKERp
-         bXTwwmq+Ivnhqj0vk7BWK8q6NuQqxglmoQdel0fvH24TrKVUDpN7/5oV0ejnadY/thc2
-         eFxrf9dgSXSui6Jnu1CCSVm6YB+dzUf/oJbMsaYtwga/yjf8dBWU0qdS7X8KY1t7r5ZU
-         I+Qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744373441; x=1744978241;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/5LlnegqhXWYoYcLoLagqAZu+k870W60Ciw5agd+TQE=;
-        b=wULFXdfXEalsvCzyNiSIVT777k8+1kPSeVW43hZhqBsz5Q/KMgL85hzDuPew9ZtY04
-         C9ktxG29JEI1g645ljHsp8FOcezAFh2yJlFrOcFNIa0qCmiA3Ia2aeXGbK4LxXL6N32/
-         fODrcpRcDL8TMp5bKaXeGmU9UpkREi97DdDfeDv1PeX7ryWvUvziQxIZpyEq1e3uUtLA
-         v8tCWwxYg6upTj2RvRSgVAmpTHdu7lOj8Mqc2x/HeudE5LU+ztlcRzyKbEUMFXBqUI70
-         KuOPaL3tgqo44iyHV5vlTLL+AbJhDsmthQxZCvNYwiPH5RJFD5RwC9VUaS0Wrx55KkOa
-         BPRA==
-X-Forwarded-Encrypted: i=1; AJvYcCVj3kPqqPoHDVpkBDu1IYuQMuwBRp2E+sXj+k8WFE7yzI1LmDnS0qwSwWeoRR2pR4+AJnWdatw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/+s/JaH5curoJeCSRiFSwDsJIpRyFwD82dRauA2UNjNwORcUy
-	bBds7qtTTUfaF4feDIbrIVPMsCsksrHKE5TNC/e9m9y5DSEpi4ouWvLFLcuyHI8=
-X-Gm-Gg: ASbGncuus6tU7ehWP3/1TztUXm7Dh7jlkKNYEDpFcMyjZlGv6na2b5X6mQZmUbkHxFu
-	KiHtLw1bE5NV0ltBUKVOj3lgzCIfgrh+wz01h7de8QET8k47mh8Sjn02KRqGlBSdiHEQPBnFvd8
-	lTo8JvdRexFkgafyVzAoE7kR3JpzlWfH/K85PWairdTSA2ytvjtdfv5+KdwUxlIjthCPt5qMyw/
-	5R5FweH/TqYXefzrClDX0OQSqLG5IjxkZ3RPPFbFFoHbLVqiXrDnLqACJyBJ1hszJyBMYhaQoSk
-	Byounw5aFJaFxmOd9a8WeuKXxfwVm9bGvKDCX2APvm6xzugwHSPyiiOCc95U1GL8XnvGSKNtdDp
-	TB82ZIg==
-X-Google-Smtp-Source: AGHT+IHlOq8/ca5REmCpBpkFoqbdN5SzfkW5Ay4uvrR7nOsyWNcTGKb621SxyZxe+WjLiuuz2iXeFA==
-X-Received: by 2002:a05:600c:4f50:b0:43c:ed33:a500 with SMTP id 5b1f17b1804b1-43f2eb51034mr62138375e9.10.1744373441065;
-        Fri, 11 Apr 2025 05:10:41 -0700 (PDT)
-Received: from [192.168.0.34] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f233c817dsm80436805e9.23.2025.04.11.05.10.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Apr 2025 05:10:40 -0700 (PDT)
-Message-ID: <811cd70e-dc27-4ce0-b7da-296fa5926f90@linaro.org>
-Date: Fri, 11 Apr 2025 13:10:39 +0100
+	s=arc-20240116; t=1744375378; c=relaxed/simple;
+	bh=LRBlzSos3dhGHutKp01tSFMKt4Gbxl3XFGUSmAinjeU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q5yW1r+f9x7wiIg6xu9wHrd3Sfk5FN6Gq3e0ulJ2aO3Rlr3zbffpHQRJgJiF/dJSdExA3KJiZh0wHKLK0Q+eNYuJkHgTHh/MHuDab8Dov9/F47mCxoQ+4Pze1qKe5rGiJ2SO+J4nYvle4ZMOhtYesayt48ZnRF/GUybW4xxKzoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=SICH88CT; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53B2GwTQ028860;
+	Fri, 11 Apr 2025 12:42:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=wllDMLVyjUN526ZRNsd50HowPiyj1q
+	cvrx5XL9ogpG0=; b=SICH88CT3h4e5JoHQhDhlysl8FFRCeiJoF4pIiDIj0HQtP
+	goz4LQb6iBTxk0A/2clqpGP0NesX0has3UbYRMOctiK8oYWULcvxWmKB8Mr0snls
+	vYmKQLxHRxkVMqGfR10cDTpw1YWMCbV/7Cv0M01Fuhrj942j9UI9AtBWcGBJolxz
+	Ikp1up47HDPeSYsgBo9cm9OfyX/M85K40LbAwLwlMbIIdZkGZzjM/b1HddImP4Jb
+	P1/DCW9JmB/dBfwEX9UKBOavUnI+8CauzOb1FuJWNQnwIreLrvE9xQ5ayXNYHdUf
+	yMTpC6wYa+/1Xc4Lw2j1RTULtDMULX8PGBi5ynjw==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45xj5xmhh7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 11 Apr 2025 12:42:49 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53BB57rE017826;
+	Fri, 11 Apr 2025 12:42:48 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 45uh2m2su6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 11 Apr 2025 12:42:48 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53BCgitX45613410
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 11 Apr 2025 12:42:45 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CD35420043;
+	Fri, 11 Apr 2025 12:42:44 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D7CD320040;
+	Fri, 11 Apr 2025 12:42:43 +0000 (GMT)
+Received: from osiris (unknown [9.171.65.230])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 11 Apr 2025 12:42:43 +0000 (GMT)
+Date: Fri, 11 Apr 2025 14:42:42 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, virtualization@lists.linux.dev,
+        kvm@vger.kernel.org, Chandra Merla <cmerla@redhat.com>,
+        Stable@vger.kernel.org, Cornelia Huck <cohuck@redhat.com>,
+        Thomas Huth <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+        Eric Farman <farman@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>, Wei Wang <wei.w.wang@intel.com>
+Subject: Re: [PATCH v1] s390/virtio_ccw: don't allocate/assign airqs for
+ non-existing queues
+Message-ID: <20250411124242.123863D16-hca@linux.ibm.com>
+References: <20250402203621.940090-1-david@redhat.com>
+ <065d46ba-83c1-473a-9cbe-d5388237d1ea@redhat.com>
+ <a6f667b2-ef7d-4636-ba3c-cf4afe8ff6c3@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/20] media: iris: Skip destroying internal buffer if not
- dequeued
-To: Dikshita Agarwal <quic_dikshita@quicinc.com>,
- Vikash Garodia <quic_vgarodia@quicinc.com>,
- Abhinav Kumar <quic_abhinavk@quicinc.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Stefan Schmidt <stefan.schmidt@linaro.org>, Hans Verkuil
- <hverkuil@xs4all.nl>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Neil Armstrong <neil.armstrong@linaro.org>, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, stable@vger.kernel.org
-References: <20250408-iris-dec-hevc-vp9-v1-0-acd258778bd6@quicinc.com>
- <20250408-iris-dec-hevc-vp9-v1-1-acd258778bd6@quicinc.com>
-Content-Language: en-US
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <20250408-iris-dec-hevc-vp9-v1-1-acd258778bd6@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a6f667b2-ef7d-4636-ba3c-cf4afe8ff6c3@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 9om_QFYPDMLFrBloZCYPQNzLoFWKkiaT
+X-Proofpoint-ORIG-GUID: 9om_QFYPDMLFrBloZCYPQNzLoFWKkiaT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-11_04,2025-04-10_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 impostorscore=0
+ spamscore=0 malwarescore=0 bulkscore=0 phishscore=0 mlxscore=0
+ suspectscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0
+ mlxlogscore=719 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2504110080
 
-On 08/04/2025 16:54, Dikshita Agarwal wrote:
-> Firmware might hold the DPB buffers for reference in case of sequence
-> change, so skip destroying buffers for which QUEUED flag is not removed.
+On Fri, Apr 11, 2025 at 01:11:55PM +0200, Christian Borntraeger wrote:
+> Am 10.04.25 um 20:44 schrieb David Hildenbrand:
+> [...]
+> > > ---
+> > 
+> > So, given that
+> > 
+> > (a) people are actively running into this
+> > (b) we'll have to backport this quite a lot
+> > (c) the spec issue is not a s390x-only issue
+> > (d) it's still unclear how to best deal with the spec issue
+> > 
+> > I suggest getting this fix here upstream asap. It will neither making sorting out the spec issue easier nor harder :)
+> > 
+> > I can spot it in the s390 fixes tree already.
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 73702f45db81 ("media: iris: allocate, initialize and queue internal buffers")
-> Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-> ---
->   drivers/media/platform/qcom/iris/iris_buffer.c | 7 +++++++
->   1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/media/platform/qcom/iris/iris_buffer.c b/drivers/media/platform/qcom/iris/iris_buffer.c
-> index e5c5a564fcb8..75fe63cc2327 100644
-> --- a/drivers/media/platform/qcom/iris/iris_buffer.c
-> +++ b/drivers/media/platform/qcom/iris/iris_buffer.c
-> @@ -396,6 +396,13 @@ int iris_destroy_internal_buffers(struct iris_inst *inst, u32 plane)
->   	for (i = 0; i < len; i++) {
->   		buffers = &inst->buffers[internal_buf_type[i]];
->   		list_for_each_entry_safe(buf, next, &buffers->list, list) {
-> +			/*
-> +			 * skip destroying internal(DPB) buffer if firmware
-> +			 * did not return it.
-> +			 */
-> +			if (buf->attr & BUF_ATTR_QUEUED)
-> +				continue;
-> +
->   			ret = iris_destroy_internal_buffer(inst, buf);
->   			if (ret)
->   				return ret;
-> 
+> Makes sense to me. MST, ok with you to send via s390 tree?
 
-iris_destroy_internal_buffers() is called from
+Well, it is already part of a pull request:
+https://lore.kernel.org/r/20250411100301.123863C11-hca@linux.ibm.com/
 
-- iris_vdec_streamon_output
-- iris_venc_streamon_output
-- iris_close
-
-So if we skip releasing the buffer here, when will the memory be released ?
-
-Particularly the kfree() in iris_destroy_internal_buffer() ?
-
-iris_close -> iris_destroy_internal_buffers ! -> iris_destroy_buffer
-
-Is a leak right ?
-
----
-bod
+...and contains all the Acks that were given in this thread.
 
