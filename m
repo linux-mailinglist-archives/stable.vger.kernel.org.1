@@ -1,131 +1,260 @@
-Return-Path: <stable+bounces-132230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B96ECA85DAE
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 14:51:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE759A85DA7
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 14:51:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EE144C369C
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 12:44:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAD959C1410
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 12:45:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434222BD58B;
-	Fri, 11 Apr 2025 12:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 933C62367B1;
+	Fri, 11 Apr 2025 12:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="SICH88CT"
-X-Original-To: Stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="YnvjuG45"
+X-Original-To: stable@vger.kernel.org
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621DF29CB42;
-	Fri, 11 Apr 2025 12:42:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667B22367A2;
+	Fri, 11 Apr 2025 12:44:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744375378; cv=none; b=KZPlx8MVqJds9kTfB55v39S4lzbmfPVMuXuGutsgaCnGR53cQZRA0jmOZo4ENIyi+reWQoOVfdd7WTNN9aYE75/vjJSxZW1F3Z9GtN1RrK/5zN5a6m5ZOBe3antq4/tCUU5SyxCYoK09aNbyHBAkwN/sDgEnmo3WvC4cPncn38c=
+	t=1744375470; cv=none; b=BITIjBIaI0m3wlln3/xwpWvLRoE7ydL0ed6SmsTUrshAs90N40TE+uF17iVv5T3XfiFULs+hE5lgRc3KbtSgcvW5EW36IosI0coq8luvRSJuZzlMHSFOOcudwgaYdnt5ZDVvpOAbDKLZUyP4oOhEkqZS00ErFTaqO0H+/1wKOxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744375378; c=relaxed/simple;
-	bh=LRBlzSos3dhGHutKp01tSFMKt4Gbxl3XFGUSmAinjeU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q5yW1r+f9x7wiIg6xu9wHrd3Sfk5FN6Gq3e0ulJ2aO3Rlr3zbffpHQRJgJiF/dJSdExA3KJiZh0wHKLK0Q+eNYuJkHgTHh/MHuDab8Dov9/F47mCxoQ+4Pze1qKe5rGiJ2SO+J4nYvle4ZMOhtYesayt48ZnRF/GUybW4xxKzoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=SICH88CT; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53B2GwTQ028860;
-	Fri, 11 Apr 2025 12:42:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=wllDMLVyjUN526ZRNsd50HowPiyj1q
-	cvrx5XL9ogpG0=; b=SICH88CT3h4e5JoHQhDhlysl8FFRCeiJoF4pIiDIj0HQtP
-	goz4LQb6iBTxk0A/2clqpGP0NesX0has3UbYRMOctiK8oYWULcvxWmKB8Mr0snls
-	vYmKQLxHRxkVMqGfR10cDTpw1YWMCbV/7Cv0M01Fuhrj942j9UI9AtBWcGBJolxz
-	Ikp1up47HDPeSYsgBo9cm9OfyX/M85K40LbAwLwlMbIIdZkGZzjM/b1HddImP4Jb
-	P1/DCW9JmB/dBfwEX9UKBOavUnI+8CauzOb1FuJWNQnwIreLrvE9xQ5ayXNYHdUf
-	yMTpC6wYa+/1Xc4Lw2j1RTULtDMULX8PGBi5ynjw==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45xj5xmhh7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 11 Apr 2025 12:42:49 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53BB57rE017826;
-	Fri, 11 Apr 2025 12:42:48 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 45uh2m2su6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 11 Apr 2025 12:42:48 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53BCgitX45613410
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 11 Apr 2025 12:42:45 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CD35420043;
-	Fri, 11 Apr 2025 12:42:44 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D7CD320040;
-	Fri, 11 Apr 2025 12:42:43 +0000 (GMT)
-Received: from osiris (unknown [9.171.65.230])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 11 Apr 2025 12:42:43 +0000 (GMT)
-Date: Fri, 11 Apr 2025 14:42:42 +0200
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, virtualization@lists.linux.dev,
-        kvm@vger.kernel.org, Chandra Merla <cmerla@redhat.com>,
-        Stable@vger.kernel.org, Cornelia Huck <cohuck@redhat.com>,
-        Thomas Huth <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
-        Eric Farman <farman@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>, Wei Wang <wei.w.wang@intel.com>
-Subject: Re: [PATCH v1] s390/virtio_ccw: don't allocate/assign airqs for
- non-existing queues
-Message-ID: <20250411124242.123863D16-hca@linux.ibm.com>
-References: <20250402203621.940090-1-david@redhat.com>
- <065d46ba-83c1-473a-9cbe-d5388237d1ea@redhat.com>
- <a6f667b2-ef7d-4636-ba3c-cf4afe8ff6c3@linux.ibm.com>
+	s=arc-20240116; t=1744375470; c=relaxed/simple;
+	bh=AXcAHh4A99ApfSw7e1FE0t9CbPKh5z2rMgIkiKLkgjQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=TaDyl1yRe/ku5iDuSjyEKjfCLGIAV6A2Uy0KXqPSpDdTNADPUVgcqGruwnmPgMFrIuimIJ5QcG95Im915ud0qBzLZAcBsEsfy8jCR0dmlEWqEyNZd+tfMKUop/htUur2LQAPCVKBfaSKofFbWgQoCaYeRmPNCZHSM6tRxb+j7YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=YnvjuG45; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4ZYxG02S0Mz9snx;
+	Fri, 11 Apr 2025 14:44:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1744375464; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Du4qqvATMM8DpLvGgTuHF9F5VvpdjpJA6n9DJyaGPRs=;
+	b=YnvjuG45lTJrdSA3FlIcRfV0ksiDBOXoKjJN0mjnLaQUNzPuBAjcFfot2/hiu3vR8zsgTe
+	ZWsGvPf36O008LxYT3JtfR5ONeTc3yK+XD4fYXqo0kE0CGZIl0vvL4vN3MTQEvEZV4fObB
+	NM+Q6dSFX5aiVEQQ8M5KQfRn+9g/dMezD+Kx+ChA7HJgHBc3W6ISY7hyPbR98IOCjjjYZ0
+	Qmv+6lcQBHKVPlTf8W2iIwg7d7axNo0Ynk8HBrj6EgRF8OXZ3MWUCdCR3X33XgG02Ggiz5
+	wj23pZUS5kKeHJ9842CTJVfibOv40lTZ8Ca8AiW4oBZ4gCow7hBqCqK4Fz6TRw==
+Message-ID: <aca00cb25b813da4fd2f215829f02337f05642f3.camel@mailbox.org>
+Subject: Re: [PATCH 1/3] drm/nouveau: Prevent signaled fences in pending list
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, 
+	phasta@kernel.org, Lyude Paul <lyude@redhat.com>, Danilo Krummrich
+	 <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter
+	 <simona@ffwll.ch>, Sabrina Dubroca <sd@queasysnail.net>, Sumit Semwal
+	 <sumit.semwal@linaro.org>
+Cc: dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
+	stable@vger.kernel.org
+Date: Fri, 11 Apr 2025 14:44:18 +0200
+In-Reply-To: <81a70ba6-94b1-4bb3-a0b2-9e8890f90b33@amd.com>
+References: <20250410092418.135258-2-phasta@kernel.org>
+	 <20250410092418.135258-3-phasta@kernel.org>
+	 <8583665a-6886-4245-be49-fd8839cfe212@amd.com>
+	 <c737c89c7ce9174e349c61ab4e5712eee8946f13.camel@mailbox.org>
+	 <50c9530d-e274-4f89-8620-16afe0981239@amd.com>
+	 <1a73e5fe4350d6ee4b7d807612264eb637c4f2a9.camel@mailbox.org>
+	 <d3dee321cd6b70d6ca98768fbcf6f1e6134c43a1.camel@mailbox.org>
+	 <81a70ba6-94b1-4bb3-a0b2-9e8890f90b33@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a6f667b2-ef7d-4636-ba3c-cf4afe8ff6c3@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 9om_QFYPDMLFrBloZCYPQNzLoFWKkiaT
-X-Proofpoint-ORIG-GUID: 9om_QFYPDMLFrBloZCYPQNzLoFWKkiaT
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-11_04,2025-04-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 impostorscore=0
- spamscore=0 malwarescore=0 bulkscore=0 phishscore=0 mlxscore=0
- suspectscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0
- mlxlogscore=719 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2504110080
+X-MBO-RS-META: i96m4o7hgfmzjg76chu9n7jme4bognqy
+X-MBO-RS-ID: f5ad7dea73dd44f5d10
 
-On Fri, Apr 11, 2025 at 01:11:55PM +0200, Christian Borntraeger wrote:
-> Am 10.04.25 um 20:44 schrieb David Hildenbrand:
-> [...]
-> > > ---
-> > 
-> > So, given that
-> > 
-> > (a) people are actively running into this
-> > (b) we'll have to backport this quite a lot
-> > (c) the spec issue is not a s390x-only issue
-> > (d) it's still unclear how to best deal with the spec issue
-> > 
-> > I suggest getting this fix here upstream asap. It will neither making sorting out the spec issue easier nor harder :)
-> > 
-> > I can spot it in the s390 fixes tree already.
-> 
-> Makes sense to me. MST, ok with you to send via s390 tree?
+On Fri, 2025-04-11 at 13:05 +0200, Christian K=C3=B6nig wrote:
+> =C2=A0Am 11.04.25 um 11:29 schrieb Philipp Stanner:
+> =C2=A0
+> > [SNIP]
+> > =C2=A0
+> > It could be, however, that at the same moment
+> > nouveau_fence_signal() is
+> > removing that entry, holding the appropriate lock.
+> >=20
+> > So we have a race. Again.
+> > =C2=A0
+> =C2=A0
+> =C2=A0Ah, yes of course. If signaled is called with or without the lock i=
+s
+> actually undetermined.
+> =C2=A0
+> =C2=A0
+> > =C2=A0
+> > You see, fixing things in Nouveau is difficult :)
+> > It gets more difficult if you want to clean it up "properly", so it
+> > conforms to rules such as those from dma_fence.
+> >=20
+> > I have now provided two fixes that both work, but you are not
+> > satisfied
+> > with from the dma_fence-maintainer's perspective. I understand
+> > that,
+> > but please also understand that it's actually not my primary task
+> > to
+> > work on Nouveau. I just have to fix this bug to move on with my
+> > scheduler work.
+> > =C2=A0
+> =C2=A0
+> =C2=A0Well I'm happy with whatever solution as long as it works, but as
+> far as I can see the approach with the callback simply doesn't.
+> =C2=A0
+> =C2=A0You just can't drop the fence reference for the list from the
+> callback.
+> =C2=A0
+> =C2=A0
+> > =C2=A0
+> > So if you have another idea, feel free to share it. But I'd like to
+> > know how we can go on here.
+> > =C2=A0
+> =C2=A0
+> =C2=A0Well the fence code actually works, doesn't it? The problem is
+> rather that setting the error throws a warning because it doesn't
+> expect signaled fences on the pending list.
+> =C2=A0
+> =C2=A0Maybe we should fix that instead.
 
-Well, it is already part of a pull request:
-https://lore.kernel.org/r/20250411100301.123863C11-hca@linux.ibm.com/
+The fence code works as the author intended, but I would be happy if it
+were more explicitly documented.
 
-...and contains all the Acks that were given in this thread.
+Regarding the WARN_ON: It occurs in dma_fence_set_error() because there
+is an attempt to set an error code on a signaled fence. I don't think
+that should be "fixed", it works as intended: You must not set an error
+code of a fence that was already signaled.
+
+The reason seems to be that once a fence is signaled, a third party
+might evaluate the error code.
+
+But I think this wasn't wat you meant with "fix".
+
+In any case, there must not be signaled fences in nouveau's pending-
+list. They must be removed immediately once they signal, and this must
+not race.
+
+> =C2=A0
+> =C2=A0
+> > =C2=A0
+> > I'm running out of ideas. What I'm wondering if we couldn't just
+> > remove
+> > performance hacky fastpath functions such as
+> > nouveau_fence_is_signaled() completely. It seems redundant to me.
+> > =C2=A0
+> =C2=A0
+> =C2=A0That would work for me as well.
+
+I'll test this approach. Seems a bit like the nuclear approach, but if
+it works we'd at least clean up a lot of this mess.
+
+
+P.
+
+
+> =C2=A0
+> =C2=A0
+> > =C2=A0
+> >=20
+> > Or we might add locking to it, but IDK what was achieved with RCU
+> > here.
+> > In any case it's definitely bad that Nouveau has so many redundant
+> > and
+> > half-redundant mechanisms.
+> > =C2=A0
+> =C2=A0
+> =C2=A0Yeah, agree messing with the locks even more won't help us here.
+> =C2=A0
+> =C2=A0Regards,
+> =C2=A0Christian.
+> =C2=A0
+> =C2=A0
+> > =C2=A0
+> >=20
+> >=20
+> > P.
+> >=20
+> > =C2=A0
+> > > =C2=A0
+> > >=20
+> > > P.
+> > >=20
+> > > =C2=A0
+> > > > =C2=A0
+> > > > Regards,
+> > > > Christian.
+> > > >=20
+> > > > =C2=A0
+> > > > > =C2=A0
+> > > > > P.
+> > > > >=20
+> > > > >=20
+> > > > >=20
+> > > > > =C2=A0
+> > > > > > =C2=A0
+> > > > > > Regards,
+> > > > > > Christian.
+> > > > > >=20
+> > > > > > =C2=A0
+> > > > > > > =C2=A0
+> > > > > > > Replace the call to dma_fence_is_signaled() with
+> > > > > > > nouveau_fence_base_is_signaled().
+> > > > > > >=20
+> > > > > > > Cc: <stable@vger.kernel.org> # 4.10+, precise commit not
+> > > > > > > to
+> > > > > > > be
+> > > > > > > determined
+> > > > > > > Signed-off-by: Philipp Stanner <phasta@kernel.org>
+> > > > > > > ---
+> > > > > > > =C2=A0drivers/gpu/drm/nouveau/nouveau_fence.c | 2 +-
+> > > > > > > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+> > > > > > >=20
+> > > > > > > diff --git a/drivers/gpu/drm/nouveau/nouveau_fence.c
+> > > > > > > b/drivers/gpu/drm/nouveau/nouveau_fence.c
+> > > > > > > index 7cc84472cece..33535987d8ed 100644
+> > > > > > > --- a/drivers/gpu/drm/nouveau/nouveau_fence.c
+> > > > > > > +++ b/drivers/gpu/drm/nouveau/nouveau_fence.c
+> > > > > > > @@ -274,7 +274,7 @@ nouveau_fence_done(struct
+> > > > > > > nouveau_fence
+> > > > > > > *fence)
+> > > > > > > =C2=A0			nvif_event_block(&fctx->event);
+> > > > > > > =C2=A0		spin_unlock_irqrestore(&fctx->lock,
+> > > > > > > flags);
+> > > > > > > =C2=A0	}
+> > > > > > > -	return dma_fence_is_signaled(&fence->base);
+> > > > > > > +	return test_bit(DMA_FENCE_FLAG_SIGNALED_BIT,
+> > > > > > > &fence-
+> > > > > > > =C2=A0
+> > > > > > > > =C2=A0
+> > > > > > > > base.flags);
+> > > > > > > > =C2=A0
+> > > > > > > =C2=A0
+> > > > > > > =C2=A0}
+> > > > > > > =C2=A0
+> > > > > > > =C2=A0static long
+> > > > > > > =C2=A0
+> > > > > > =C2=A0
+> > > > > =C2=A0
+> > > > =C2=A0
+> > > =C2=A0=C2=A0
+> > =C2=A0=C2=A0
+> =C2=A0
+> =C2=A0
+
 
