@@ -1,154 +1,107 @@
-Return-Path: <stable+bounces-132267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EED3BA86062
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 16:21:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C73F3A86064
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 16:21:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBDF41B8213E
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 14:18:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97180164940
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 14:18:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC7B71F7098;
-	Fri, 11 Apr 2025 14:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9E501F417A;
+	Fri, 11 Apr 2025 14:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="U8OmFibV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZD75URx5"
 X-Original-To: stable@vger.kernel.org
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3D11F3D50;
-	Fri, 11 Apr 2025 14:17:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BA61E89C;
+	Fri, 11 Apr 2025 14:18:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744381066; cv=none; b=L4rsRV/3jo/uDG6iQSTY0SZg/64BrC9qjG3+AqIvmg3miNX0fjuGgzZpDSGqCDgnH36rLSXCRWKQRnyVUXyq2X+4/27sbBPWPNd/yKzLvZMtKZ5uvxwammHcGqfLNObV+yZiv9XqvkSoJwaRnD1jzzubYBdE5GsK7pjiOPBaXYI=
+	t=1744381099; cv=none; b=jPnnC8UlfeyCtru1TM8vNaq4H5OdCr3952/3KLDD+47aVKlbv9oRrqXCYnMtAf72NYAP4gZVMyv0+uYlvPC++4/uLK5CVJ9CyZc91fYGUi+CPCDN3WXaxTJvydMLt+Q1Yagm0Of10MeyzwxJt004egzLg5eGCRKiIlO2XHKnrzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744381066; c=relaxed/simple;
-	bh=MUxyJ6e8mDQbyfZx9BUETJLHV2q/o6GLx2i3m7D1L8k=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rnswRB7lYV6PQiWYBo9Yje3XLFL+CQkcSh77wHN4pLIIkjeCdH57qBRT72UCI5TOUKG6Uykb2sXaZzBGW6s4sCMLO+zvMKT/dG9BxMBhkK2WqF4LqAwmQVNuzjE5FxSzkhZ2RaUCW65rVi3N5cLeFOkIWN+pTHjbbCKfJIDBUtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=U8OmFibV; arc=none smtp.client-ip=198.47.23.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53BEHbl32094889
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 11 Apr 2025 09:17:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1744381057;
-	bh=z1/nNUIFGXE6LFF+d4YwvIEc4Kciht20sPaPOMMio7c=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=U8OmFibV6W67vclOB7974WizPyD/km+DsqSpxO3R12f6uuNAlezzoUOgyx2+QIJFW
-	 u+qWAdvuZnr1QMbJtj+RQS38qsAoiNLb1KxDplErtYIto1AqW//A2mOxTqxCuA37Cv
-	 9166fbnauxJi+p0moAtgLpJkizvMgtv4y/Q/n0IM=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53BEHb8i107722
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 11 Apr 2025 09:17:37 -0500
-Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 11
- Apr 2025 09:17:37 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 11 Apr 2025 09:17:37 -0500
-Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.113])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53BEHako022556;
-	Fri, 11 Apr 2025 09:17:36 -0500
-Date: Fri, 11 Apr 2025 19:47:35 +0530
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: "Kumar, Udit" <u-kumar1@ti.com>
-CC: Siddharth Vadapalli <s-vadapalli@ti.com>, <nm@ti.com>, <vigneshr@ti.com>,
-        <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-        <conor+dt@kernel.org>, <rogerq@kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <srk@ti.com>
-Subject: Re: [PATCH v2 2/2] arm64: dts: ti: k3-j722s-main: Disable
- "serdes_wiz0" and "serdes_wiz1"
-Message-ID: <475a1ac1-abb1-4c6e-b5b2-3f1a3399d5c4@ti.com>
-References: <20250408103606.3679505-1-s-vadapalli@ti.com>
- <20250408103606.3679505-3-s-vadapalli@ti.com>
- <7b2f69ad-48aa-4aa9-be0e-f0edae272bdb@ti.com>
+	s=arc-20240116; t=1744381099; c=relaxed/simple;
+	bh=fuLmkbGQ9AE0lEuqX0lr8BR1lAWRQLYNrT8LVsLS2dU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=G7Hbi79bylOkxijV2TXWgasbV3IT+iZT6414GehX65efxPqn/3bDdkEvRMqr3xMborii0oElMYZVDZ9+lOVIBos9ioxsUEIAiFTJEw7l8i8GArZZ3OvgYRvLfpOJUAL51KqHb3LDigVnlLgwFWJ77g06SyqdzpX95x6B0YSugiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZD75URx5; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-301a8b7398cso313334a91.1;
+        Fri, 11 Apr 2025 07:18:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744381097; x=1744985897; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fuLmkbGQ9AE0lEuqX0lr8BR1lAWRQLYNrT8LVsLS2dU=;
+        b=ZD75URx5A8K/1xGGQJDhuYKRSYTVmXPSBnUvjkLG5GHVbMpU/diSwtGkv2HIz8fXQv
+         XZofO74aDGJ8lMLCwWHMhGr0OsVItPHDGRYCn4W+sGtS3oFMDX1HGsiGYuuneYfsEdtE
+         Emx3WCUhTK4eZHjKihPvlVw7YqrECWj6Mv9m1EvUIsfdKqdExUam7sOyWsonJ53fcQDg
+         yYQI4eT1IbD9y3qpxctyI1WluKUtlGE/GtP2rOUDiitrJGkIVHo/CpI+LRthaaXCBSxC
+         uQK0kCnw/Jy/KynKPOExlvO/HPrDrsBCIwE9c4tjoZy15g0qi7jiheekRU5zJYOs+EIR
+         oAwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744381097; x=1744985897;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fuLmkbGQ9AE0lEuqX0lr8BR1lAWRQLYNrT8LVsLS2dU=;
+        b=Ddxm0i0euVZhciVIl91yYf7cAsoTrhUWZNOJlFkWggS4+RJyLw8y+ycXXFK4V58AIl
+         XMPs6tpMaKUOcpVtdkB7V4GIFuhuzsljrf7DMVXeObqeidlWeqf+u2dZI+0mxviOtsPg
+         lLuV9exxcoZLt/my0dr6NSLhT7jzUm341dPjMW5gIe13wwUL0pAum4qhsipV6Me/qm1v
+         r9oCWRXFOr0Pc02GD1cMH3uOr5tOrixt3u8BNUKkBUDaMx6Zg0F2TLlsoEvjqc7BwYdN
+         owkdDCist5jLBb1/nLolkBahi0cdJHKi4/2syFx4mpFjAiEOsM9yqWu71NPWSRpwJcRC
+         JZKw==
+X-Forwarded-Encrypted: i=1; AJvYcCU/Aep6PQkMN3YyaqKCz04jKSvKW4J8LQm8bOYKF4rddt+RiCql1MEV5y0D9EXUW3cqwg+HzUMjktt8oZyNvK4=@vger.kernel.org, AJvYcCVv/yKK/FqWSm2lrAKpCUW//6FiVTC4QsQdb869l2ojDWSDKL5K1U4R09UWQ7NS7eGRrWB0OARt@vger.kernel.org, AJvYcCXPnE0g5xA6C9vgXmrxTM9VDl8Ls4agvGWknm+jaSTZi3zCIcERm+M+tH2xcFvyTO6Ish0N/5mwOjHH+qM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YynmkI9GBEtp/MPY2iznxfif295JfuW3m2OZTD/jVWW96KbQ5As
+	dT3ha4UhfI4lcyc4VjNBoDhTp8L3ylkDWdiXwVqMFWe/7q0+lnZiYLQmvtaGIdf2uiu6V09DlO6
+	rNDR1EXAul25XZONnhFhfKe1hSTk=
+X-Gm-Gg: ASbGnct6fReGZ674R9PoGbBZGFQOS78XsUxqOrn3W3qFAu4gRPgdbj2fBz7VnJio9iL
+	O57z+MBavklaX6m8UdU/EnPvbI8a7gCan6MpDcgvnJcfe9pcPuC6WI/8Idbb46Gkwaa1NJeCSH0
+	QLPhtXsmtWXg31W747awwqUw==
+X-Google-Smtp-Source: AGHT+IGn2B8Sk/8cQPoHh8yzlKy3DAGcSM68xE89Bdl+hrr2Ja7Epy8cWbpV8fXFQV3WDb4HuYV3tkpZ7TgbxMiCmL4=
+X-Received: by 2002:a17:90b:3912:b0:2ff:5759:549a with SMTP id
+ 98e67ed59e1d1-30823624fa5mr1618122a91.1.1744381097389; Fri, 11 Apr 2025
+ 07:18:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <7b2f69ad-48aa-4aa9-be0e-f0edae272bdb@ti.com>
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+References: <20250411-rust_arm_fix_fw_abstaction-v1-1-0a9e598451c6@gmail.com>
+ <D93TIWHR8EZM.25205EFWBLJLM@proton.me> <CANiq72kc4gzfieD-FjuWfELRDXXD2vLgPv4wqk3nt4pjdPQ=qg@mail.gmail.com>
+In-Reply-To: <CANiq72kc4gzfieD-FjuWfELRDXXD2vLgPv4wqk3nt4pjdPQ=qg@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 11 Apr 2025 16:18:03 +0200
+X-Gm-Features: ATxdqUEiLtXgDKUXmiwfmi4EnlT6ig8SgUDhLxUqtMdesasU2J2pJNPsiK-qjQY
+Message-ID: <CANiq72=+mYOd-v6W+oZ1hpqRXWn1qdKOuLwTgoafwNViWABj_A@mail.gmail.com>
+Subject: Re: [PATCH] rust: fix building firmware abstraction on 32bit arm
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Christian Schrefl <chrisi.schrefl@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Russ Weight <russ.weight@linux.dev>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 11, 2025 at 07:31:52PM +0530, Kumar, Udit wrote:
+On Fri, Apr 11, 2025 at 4:15=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> In 6.6, C `char` changed to unsigned, but `core::ffi::c_char` is
+> signed (in x86_64 at least).
 
-Hello Udit,
+By 6.6, I meant since 6.6.y LTS (since that is the one I remember due
+to backports), the actual change happened earlier but after 6.1.y LTS.
 
-> 
-> On 4/8/2025 4:06 PM, Siddharth Vadapalli wrote:
-> > Since "serdes0" and "serdes1" which are the sub-nodes of "serdes_wiz0"
-> > and "serdes_wiz1" respectively, have been disabled in the SoC file already,
-> > and, given that these sub-nodes will only be enabled in a board file if the
-> > board utilizes any of the SERDES instances and the peripherals bound to
-> > them, we end up in a situation where the board file doesn't explicitly
-> > disable "serdes_wiz0" and "serdes_wiz1". As a consequence of this, the
-> > following errors show up when booting Linux:
-> > 
-> >    wiz bus@f0000:phy@f000000: probe with driver wiz failed with error -12
-> >    ...
-> >    wiz bus@f0000:phy@f010000: probe with driver wiz failed with error -12
-> > 
-> > To not only fix the above, but also, in order to follow the convention of
-> > disabling device-tree nodes in the SoC file and enabling them in the board
-> > files for those boards which require them, disable "serdes_wiz0" and
-> > "serdes_wiz1" device-tree nodes.
-> > 
-> > Fixes: 628e0a0118e6 ("arm64: dts: ti: k3-j722s-main: Add SERDES and PCIe support")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-> > ---
-> > 
-> > v1 of this patch is at:
-> > https://lore.kernel.org/r/20250408060636.3413856-3-s-vadapalli@ti.com/
-> > Changes since v1:
-> > - Added "Fixes" tag and updated commit message accordingly.
-> > 
-> > Regards,
-> > Siddharth.
-> > 
-> >   arch/arm64/boot/dts/ti/k3-j722s-main.dtsi | 4 ++++
-> >   1 file changed, 4 insertions(+)
-> > 
-> > diff --git a/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi b/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi
-> > index 6850f50530f1..beda9e40e931 100644
-> > --- a/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi
-> > +++ b/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi
-> > @@ -32,6 +32,8 @@ serdes_wiz0: phy@f000000 {
-> >   		assigned-clocks = <&k3_clks 279 1>;
-> >   		assigned-clock-parents = <&k3_clks 279 5>;
-> > +		status = "disabled";
-> > +
-> 
-> Since you are disabling parent node.
-> 
-> Do you still want to carry status = "disabled" in child nodes serdes0 and
-> serdes1.
-
-I could drop it, but then the patches will look something like:
-1) Patch 1: Same as the first patch in this series
-2) Patch 2: Current patch + Remove status = "disabled" within serdes0/1
-3) Patch 3: Removed redundant status = "okay" within serdes0/1 in
-            k3-j722s-evm.dts
-
-Updated Patch 2 and the new Patch 3 mentioned above aren't necessarily a
-complete "Fix" and have other changes in addition to the "Fix". For that
-reason, the changes associated with the updated patch 2 and the new patch 3
-could be a separate series, unless you believe that they should go
-together in the current series. Please let me know.
-
-Regards,
-Siddharth.
+Cheers,
+Miguel
 
