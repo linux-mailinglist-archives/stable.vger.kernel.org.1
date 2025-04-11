@@ -1,80 +1,75 @@
-Return-Path: <stable+bounces-132233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AA4BA85DBD
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 14:53:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEAFCA85DC0
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 14:53:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 867101BC046D
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 12:48:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC4839C4F51
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 12:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2089C2BD5B2;
-	Fri, 11 Apr 2025 12:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D942367C6;
+	Fri, 11 Apr 2025 12:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uBdknXfo"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="NV4jkFtV"
+X-Original-To: Stable@vger.kernel.org
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1608221FA0
-	for <stable@vger.kernel.org>; Fri, 11 Apr 2025 12:46:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6BE2367A2;
+	Fri, 11 Apr 2025 12:47:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744375577; cv=none; b=YH8nDnE+ygs3OAgIgB3yxliB23Mjnc8Sf4IMaBP4NEVc/H5/y/Ls3faW53H5Y6IA7N1NoPco1EYMMo5YR5crsKK0vmL4EFbSbrfLP4Hh1kXC7a7G70Q1CPQmcPClESQY5CW+x+tJsCg4GICSbg02m/l4Oj3gpaFQAx6qwjs3iDw=
+	t=1744375658; cv=none; b=mWrc7xAXoSDg2NcwqSbL+D2Uv7I6Mu2QSOlz4mNndbjJD6GYo7BqFQMv65HmrT2pJ/x0U4g9EvJ/KdrML/83iNeuZI4roSx0HiBWhqaufET31kumY33dh6zBaVgzcff+Rae6/rkIZZUYEOrVWQdqoACwEE9YU0d4oTLjbkGWA8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744375577; c=relaxed/simple;
-	bh=qMsaU3AgfYd7npEUcPpNqxwxWZ1VhJND28wYGKSzw0Q=;
+	s=arc-20240116; t=1744375658; c=relaxed/simple;
+	bh=yEXSM0GUEEbC1EoQQ2NsENJB2K834/66CU5+MxF3xnY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RN2H9IRYqbXkr6sQyI6n8jeRbxZhNmY371NyLl+rZn8p4kZvIVQMEe84p+srWQKs3QQt1OQQ0tRZPfMzS/abiFOrSTmm5kI+NZU7Q9CxeZiC84X3axk+47omrhJ8boHQ46y+3fzFiib/StWE2mD+BtN5ghdNmRvld7Qt1OI63KA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uBdknXfo; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43cf628cb14so21166565e9.1
-        for <stable@vger.kernel.org>; Fri, 11 Apr 2025 05:46:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744375573; x=1744980373; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PhDLvQWbhdTyN2VlzbNDlR4PYDwczdCrrExl7J1Ijlo=;
-        b=uBdknXfoDK04p53+p+44C3wW2P1L2yQqQ40vUlMU5CSA7hmeVcasAMDhsuwmf3IA5i
-         0CQ0Rvl0KRWGHoMeAMZfhkJkUapkkwhou+G/G6gbubeyQYtVxQkdOwtzUG0sh9QRp3jA
-         oBlRXit6BD2dponBXtu+UOOxBynI4cc0beBNlMDlBfh/wS/SpgRMpsa4jSDJT2zKUCBH
-         8fHVbWUiUgNPNFHVVjNaPmUkaCfjvJDBpPgcub92sZ5d4LTf1EG/ocdS/qLPqUXbm1QP
-         lq0X47+z/tABqagEBkgGE5XD2hpoQ3sa3NKEnPM3KkCCSQVGJAcXyl/DI2tsLxphQcKo
-         jZlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744375573; x=1744980373;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PhDLvQWbhdTyN2VlzbNDlR4PYDwczdCrrExl7J1Ijlo=;
-        b=rcGdj8CcecRwnaxDHz6iiSo5UnDNzKqWfL9e3VjAwXFaEOgzVM7u0eU/Q8gVTCu/wd
-         gMsX3CtwdYecRJi4JizfwRc6uvmZKi/ZJTiy8R3do0pR/CV7FdGYJSJo86zmQUq80qx2
-         Z27bUcHBxgzHHTdJVUwRIbYcPtsR/85qS9gwmwnLGEJsZPE+LcaEdez5KCdjqD+wp8jt
-         ooqwN2uxk5pzcnVovFPeR5E9tr+7CEfnqU0UEr0nzkbYBOEe9jXhrYkbwu8lsReKQm29
-         gIYJfmcJNKBObBe9ZJRc6Xpx6ObVuQTzxJupz3dTWDS/HhCGDXyMMlnv9jBcmlUGQH7a
-         wCzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXkb3fvf3IWq+t83a0F+QGmr6TJlbPOQNwZvynyHDXvsatrw231nHbL7U0MhWLZbr87FumI9aw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwerWSEVO2/IhSluPutZnFoT5Md6T6dUJpJRjWn3qcHG69oh+0s
-	5E/G1IIFyu7u/gNPp7IOdi5jH/R2Pt/LI0xKekJ9g362Xe/dF8Cl1o7htOGYl3A=
-X-Gm-Gg: ASbGncvKtkAYkMwIFRtBhoZwzmnkSbfHyylt5fFVwLH7BbK37I23xs1raEU1hqu7LAM
-	OMK46XLFp2lD6P7JVilFrnNN/vCCBG0AKTNRFUIVgQ7pJi9ncvLaMNOX3Ka3gaqfIYVh+PkeEIO
-	ojc0dJUbuEoh0ptqdkAR29dbCWFkmlbnRrY6P4YqYM/4y6q+KpS3dyP3inDAhFYcp0O5npjdFrT
-	0uP7myHUljA5P9qbKogC/IQBJic9/Y4WdOeWjD4JCTqPl7Ti65AfT+ZPCQlDuslEycn7WzFjwBm
-	EupGZBk47Trj3G/0pMz867ZCYQ/LTOEmRSywb50ij/OjYZ1NdDL2+LOKRruQRaiv1HkIiqYCeCt
-	IRWMUMw==
-X-Google-Smtp-Source: AGHT+IFfOHu8NpwGY9QeJT4Px/nGS9JkxmRsI2hzwbDzfKKsDsEvu0wZdG1qPhsO1ljPGuw427Xyfg==
-X-Received: by 2002:a05:600c:a012:b0:43c:f3e1:a729 with SMTP id 5b1f17b1804b1-43f2eb50f83mr65513485e9.12.1744375573083;
-        Fri, 11 Apr 2025 05:46:13 -0700 (PDT)
-Received: from [192.168.0.35] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39eaf43ccd8sm1936648f8f.72.2025.04.11.05.46.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Apr 2025 05:46:12 -0700 (PDT)
-Message-ID: <697dcd15-22de-46fa-b28b-0409dd18a79b@linaro.org>
-Date: Fri, 11 Apr 2025 13:46:11 +0100
+	 In-Reply-To:Content-Type; b=iEmwPXyVHtCmxWYAW3q2OzPS36E/R5rEJCrcf+wTwdIde71RidusccgQQEUSmofmONa1cQk4tHIS1XxBiKwCwF1EOU/1LAp4z0k4d5rqT3qh2SIdHEhzyFklEGr8CRJDUGi7CKXp4u2GejFLM3cF/Eqpvy2fcjakmWt774mYT9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=NV4jkFtV; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53B67S5t029160;
+	Fri, 11 Apr 2025 12:47:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=elmg/s
+	bueavbN5pHa2hAlrKAi+l5t4tQL/Ymj5aLTmU=; b=NV4jkFtVGO759WjFnqDC3f
+	BSrYh4byJiIimvAhsAX+xM90M1ca5fQR3+BtUFVj/q2NM1W4IUx2k6TaR74kNfsQ
+	NN8L9+rIQLZLv4HNURVcmdI6XzmhxMxodWBfvNQxyLRKNeQLPFJHO/c/btx5zDGi
+	oj2L3bb+dNsUq9D1SgRNtX71ibPkj/2MGMB01/5346z0SC/byOTH7te8G0JSOkFj
+	QKpS+pLMotP5+QJ5MRIK4Hz4NmrQxizKy9RhoRkJHknDUNpZOzlhtvml76vQ40jy
+	zTeNhMFDx5cqPbrDnReFTT1rj7oQOLMfNUebrK1/hvnLQFle93hp9mG+L9kPqJxg
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45xj5xmj39-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 11 Apr 2025 12:47:30 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53B9OuEc025546;
+	Fri, 11 Apr 2025 12:47:30 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45ugbmaxvd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 11 Apr 2025 12:47:30 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53BClQBr14156088
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 11 Apr 2025 12:47:26 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 31E6A2004B;
+	Fri, 11 Apr 2025 12:47:26 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6ECA820043;
+	Fri, 11 Apr 2025 12:47:25 +0000 (GMT)
+Received: from [9.171.62.213] (unknown [9.171.62.213])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 11 Apr 2025 12:47:25 +0000 (GMT)
+Message-ID: <d2806f87-05e1-4bf4-b9b9-21f35c419cf0@linux.ibm.com>
+Date: Fri, 11 Apr 2025 14:47:25 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,59 +77,65 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/20] media: iris: Update CAPTURE format info based on
- OUTPUT format
-To: Dikshita Agarwal <quic_dikshita@quicinc.com>,
- Vikash Garodia <quic_vgarodia@quicinc.com>,
- Abhinav Kumar <quic_abhinavk@quicinc.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Stefan Schmidt <stefan.schmidt@linaro.org>, Hans Verkuil
- <hverkuil@xs4all.nl>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Neil Armstrong <neil.armstrong@linaro.org>, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, stable@vger.kernel.org
-References: <20250408-iris-dec-hevc-vp9-v1-0-acd258778bd6@quicinc.com>
- <20250408-iris-dec-hevc-vp9-v1-2-acd258778bd6@quicinc.com>
+Subject: Re: [PATCH v1] s390/virtio_ccw: don't allocate/assign airqs for
+ non-existing queues
+To: Heiko Carstens <hca@linux.ibm.com>
+Cc: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, virtualization@lists.linux.dev,
+        kvm@vger.kernel.org, Chandra Merla <cmerla@redhat.com>,
+        Stable@vger.kernel.org, Cornelia Huck <cohuck@redhat.com>,
+        Thomas Huth <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+        Eric Farman <farman@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>, Wei Wang <wei.w.wang@intel.com>
+References: <20250402203621.940090-1-david@redhat.com>
+ <065d46ba-83c1-473a-9cbe-d5388237d1ea@redhat.com>
+ <a6f667b2-ef7d-4636-ba3c-cf4afe8ff6c3@linux.ibm.com>
+ <20250411124242.123863D16-hca@linux.ibm.com>
 Content-Language: en-US
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <20250408-iris-dec-hevc-vp9-v1-2-acd258778bd6@quicinc.com>
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <20250411124242.123863D16-hca@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: a5lN-y0hY8Qb0l291hvTgndCFPPa854X
+X-Proofpoint-ORIG-GUID: a5lN-y0hY8Qb0l291hvTgndCFPPa854X
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-11_04,2025-04-10_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
+ spamscore=0 malwarescore=0 bulkscore=0 phishscore=0 mlxscore=0
+ suspectscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0
+ mlxlogscore=919 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2504110080
 
-On 08/04/2025 16:54, Dikshita Agarwal wrote:
-> Update the width, height and buffer size of CAPTURE based on the
-> resolution set to OUTPUT via VIDIOC_S_FMT. This is required to set the
-> updated capture resolution to firmware when S_FMT is called only for
-> OUTPUT.
+
+Am 11.04.25 um 14:42 schrieb Heiko Carstens:
+> On Fri, Apr 11, 2025 at 01:11:55PM +0200, Christian Borntraeger wrote:
+>> Am 10.04.25 um 20:44 schrieb David Hildenbrand:
+>> [...]
+>>>> ---
+>>>
+>>> So, given that
+>>>
+>>> (a) people are actively running into this
+>>> (b) we'll have to backport this quite a lot
+>>> (c) the spec issue is not a s390x-only issue
+>>> (d) it's still unclear how to best deal with the spec issue
+>>>
+>>> I suggest getting this fix here upstream asap. It will neither making sorting out the spec issue easier nor harder :)
+>>>
+>>> I can spot it in the s390 fixes tree already.
+>>
+>> Makes sense to me. MST, ok with you to send via s390 tree?
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: b530b95de22c ("media: iris: implement s_fmt, g_fmt and try_fmt ioctls")
-> Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-> ---
->   drivers/media/platform/qcom/iris/iris_vdec.c | 5 +++++
->   1 file changed, 5 insertions(+)
+> Well, it is already part of a pull request:
+> https://lore.kernel.org/r/20250411100301.123863C11-hca@linux.ibm.com/
+
+Oh, I missed that.
 > 
-> diff --git a/drivers/media/platform/qcom/iris/iris_vdec.c b/drivers/media/platform/qcom/iris/iris_vdec.c
-> index 4143acedfc57..c5d85936b3ae 100644
-> --- a/drivers/media/platform/qcom/iris/iris_vdec.c
-> +++ b/drivers/media/platform/qcom/iris/iris_vdec.c
-> @@ -171,6 +171,11 @@ int iris_vdec_s_fmt(struct iris_inst *inst, struct v4l2_format *f)
->   		output_fmt->fmt.pix_mp.ycbcr_enc = f->fmt.pix_mp.ycbcr_enc;
->   		output_fmt->fmt.pix_mp.quantization = f->fmt.pix_mp.quantization;
->   
-> +		/* Update capture format based on new ip w/h */
-> +		output_fmt->fmt.pix_mp.width = ALIGN(f->fmt.pix_mp.width, 128);
-> +		output_fmt->fmt.pix_mp.height = ALIGN(f->fmt.pix_mp.height, 32);
-> +		inst->buffers[BUF_OUTPUT].size = iris_get_buffer_size(inst, BUF_OUTPUT);
-> +
->   		inst->crop.left = 0;
->   		inst->crop.top = 0;
->   		inst->crop.width = f->fmt.pix_mp.width;
->
+> ...and contains all the Acks that were given in this thread.
 
-
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Thanks.
 
