@@ -1,125 +1,117 @@
-Return-Path: <stable+bounces-132211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CEBCA85676
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 10:25:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED3E6A85672
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 10:25:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71E529A5F26
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 08:24:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB1A01756B4
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 08:25:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847DA293B7A;
-	Fri, 11 Apr 2025 08:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61428293B6D;
+	Fri, 11 Apr 2025 08:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nSuFX3JY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PMhr8FOj"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2E729346B;
-	Fri, 11 Apr 2025 08:24:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D970290BBB;
+	Fri, 11 Apr 2025 08:25:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744359869; cv=none; b=bIH1/an3IKCwXmJSyt3vDCnX8BbLTzoFgr1K43HHF01GoB0UfHfsdRdmo/zW7Z9C31FPOc9suWjdjwSBpDcR30r8WUJ2kuvRgc/B8MHOdC0QKf1q+MP7ywz4jnuH8mcLNeMTHgbC/Iz7+nirDrJFyzEOowQiraVKDEGLfJvFmLY=
+	t=1744359912; cv=none; b=eu9mkcwrIfs0YWqdd00S3DLI5GBI6J9/cjV2R46HovlzWNG2fxNTElvFYavD35EBnEF5nJs6+FtjtitqpNK5P/qYd0EERxCE/GFXfBIK/m7SXLBnvINb48v5OdF0e2+jXNlKhxnsFW3uzraJlcZWbxp6+r8dyDh6QRkSZd4PSco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744359869; c=relaxed/simple;
-	bh=wd8J/WcJetlQbeQ1IoCPp1JzqLyHlAEkt4KEhKVEVQA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BoRGF+B6FqRj2EyxsutjTfMPzVjEmJ4VMKWgXzg7/WQYA6LXDmE8PNnUQWjTRCOJU7+p7V3YJDY1j+7znYDwOmMq62PM5cC8GpgJNcD4eQYTnj+IB6u/FBdTyzTYOg48882DeZHkwHunyEESgzTf591jwIAK7JqF2rJ5Uo2oYVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nSuFX3JY; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744359868; x=1775895868;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=wd8J/WcJetlQbeQ1IoCPp1JzqLyHlAEkt4KEhKVEVQA=;
-  b=nSuFX3JYyjroPGBHrUmbZJo7LahqgijTOqrsgGkJ+sIe0EexUzp4qEK4
-   IOYD3bfig6itu1ffokUf2VJGDfANDtueWx+rvoNRPlOQUoRUekfpFagP2
-   /DnlURfW/MBn6O1oDWS+UB/nxZHKxaX0XhkKVbckzEcItx4CTpDkRTFe3
-   4Z9N4eu1AlAqLqaDKiBpJgNanNVC97xwwZMicQQwO6GNBOo3pQO2jfO4i
-   wxJXiIajNYq1P7Y9Vq9c49VjLtw5Vi/55+opAvsxaDJE99B8n0yF5ttMj
-   ZJJHNXmLtt4QbLfsNhCy3twViOowlaohlAHujEbSM2GmdtcLYSPf07Dki
-   A==;
-X-CSE-ConnectionGUID: kGGPCc92QhO8WO/P4lySuA==
-X-CSE-MsgGUID: p9rykTtbRYC/PlpSwxUXhQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="45615370"
-X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; 
-   d="scan'208";a="45615370"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2025 01:24:27 -0700
-X-CSE-ConnectionGUID: QvwHwBrPT8618veo0yKJ/g==
-X-CSE-MsgGUID: f6/EJAqpTTaB6L0smyjDEg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; 
-   d="scan'208";a="133238882"
-Received: from bjledic266.bj.intel.com ([172.16.127.175])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2025 01:24:22 -0700
-From: Dongcheng Yan <dongcheng.yan@intel.com>
-To: linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	sakari.ailus@linux.intel.com,
-	hverkuil@xs4all.nl,
-	andriy.shevchenko@linux.intel.com,
-	hdegoede@redhat.com,
-	u.kleine-koenig@baylibre.com,
-	ricardo.ribalda@gmail.com,
-	bingbu.cao@linux.intel.com
-Cc: stable@vger.kernel.org,
-	dongcheng.yan@linux.intel.com,
-	hao.yao@intel.com
-Subject: [PATCH v1 2/2] media: i2c: change lt6911uxe irq_gpio name to "hpd"
-Date: Fri, 11 Apr 2025 16:23:57 +0800
-Message-Id: <20250411082357.392713-2-dongcheng.yan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250411082357.392713-1-dongcheng.yan@intel.com>
-References: <20250411082357.392713-1-dongcheng.yan@intel.com>
+	s=arc-20240116; t=1744359912; c=relaxed/simple;
+	bh=CavpjmKXQjmZtDHhC3IR+5g5o+wulEUd5EPF7mBYPFo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DadiM5l6W+aFSUyZmDcwOVKqqk1TMX9Wp9eocxJEJMvJSW0OBDZlItAAQJt4pxrvaOhwk5KJLqmhP1HLLYRg13qgrhPVJlRN+WZ4cOSmxv0cWgaoJq8vBJEv42uPlD8wFdd/mUZ8PpzxrjklaOeRELZbTTQJNqYoxhwklX2MAhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PMhr8FOj; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43cef035a3bso11739135e9.1;
+        Fri, 11 Apr 2025 01:25:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744359908; x=1744964708; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=CavpjmKXQjmZtDHhC3IR+5g5o+wulEUd5EPF7mBYPFo=;
+        b=PMhr8FOjJoy83aEgkrZwhBLVCh0yoejTR53z1lXoLd465DqAoAUrBIXJuGevIDDcVm
+         OOjb3RkNnapXHELSG/VpKZgyL3YBVRlPW2TM2srodr5zxHdW1oxlPPrk37ZAk7OYw79M
+         7pEys1+CqFFBwRv3jIVBtu73hWVUyz/tPr7lIvJhgsZqNev8w6SXfkl9iil+psoGMmq6
+         tbt2qrgroNVZsadIn1bCdNRmlnr1nz0m5SMfJUMx3XTdKcQQLJs491a7fKBmCMU3H+vc
+         JUP/MlRaG4lrmuI5ixPnVE845ZaZp7iEXzmqcTeCyKr9ug97FNBRrKQWzk5uSU/bE3S4
+         WQ8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744359908; x=1744964708;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CavpjmKXQjmZtDHhC3IR+5g5o+wulEUd5EPF7mBYPFo=;
+        b=EveGIttKHoz/9ZhACxB3cpRSQTV+nE/A1TbvIHY0nvgYA4LhmGAME5fuxUDKFRErWo
+         RsMWqWb1Gtj68lZN1Qidzg9GUnuT0s/Wx2niO2e126CPUilhluwv40J5Sy+SLlWH2q2Q
+         LYfjn7wReVCPc1WnjhDh4pwMK3f6h0UYKX6PMm/BCYsdS+L204ZtMo4Nl/QyuMHA/fxz
+         cPqxCi0hAsEeROk7k3iDHLtIjSV7EAe+T1D/2Ybh0brBXsL2GzdXizNG3Wmj0+lQbaaB
+         eKHNhl3nN61lKlNCSv4cmRtjQi3+avToBNVwGifgSQflOPPGGzh4wSyf8aP1Tzzr57sa
+         y5fg==
+X-Forwarded-Encrypted: i=1; AJvYcCVoF2f/g89G4ZFOQy7R9PWfc+AmyjQ24G9yovWqey+PVYxVlqyadxivVDBnQ2UwJXdklEmZ+PJJ8ayP+18=@vger.kernel.org, AJvYcCWSvNfwm+qcGrJRgO1hXj8zaXJeS+56JwinHwSYdcbLTi95S0tsE3z3a4os+7ndedzg1d/eXxkr@vger.kernel.org, AJvYcCXLHfpq0VY3s+viJD4JhJqLwLILZEfCjYiQAkikqvtEEf0RAMPuoLsYIDAf342JbDl2W9X7zDHrVOIbMnqj@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgccTng27p+hnb/ONrAVmA7tkcBRJcIP7Q4BqWpA6Jd/F4p9YG
+	0gAPKY4B/I7Sl9L3a5II3Oxbor9EnYjklp34XaVcn6iOXYcPpS2Ng71kkMDl
+X-Gm-Gg: ASbGncuRymzp6GDz40hCQq9Brc8hS0QbWD5/NzgthX2BlSXp08QM4Qf6P6XcNTK+WTM
+	X0fTPXTt9jNvkfF/Gn7iXlvwtMheQSjCuOmX4VBYjCFY7hlaSdG8/UgBxl7ezQGSgNAyJEIE4Q9
+	Q9NOEe7frdxUHr/7LUyY18/P6qkmRjJohobWB1x4am8Is+inO5tvViocUW9hj9sa5vGbw3MGkRp
+	HI2Z3znyGOF/qemQwHHMt5dkyxcXe1ECh9HOWj7g73SAiBgSXGb+ZCEzIzhg/VS0bX2gqeCaoy/
+	eRhpVYvv9aLAvPeIa3VYiaqer1BjEqVbLRqUqa6tYyJRvYaK3jx62r0BeJGgI1WB3ev5zPIZTB/
+	sPw==
+X-Google-Smtp-Source: AGHT+IHFtJlY4GIg3ATZj4XulRODy9ZQg/KCy9yu2qXDH9d6bFXyyZafdslcVYLkZONjYARX+zSyEw==
+X-Received: by 2002:a05:600c:4f45:b0:43c:eea9:f45d with SMTP id 5b1f17b1804b1-43f3a95a248mr10834225e9.18.1744359907518;
+        Fri, 11 Apr 2025 01:25:07 -0700 (PDT)
+Received: from localhost (ip87-106-108-193.pbiaas.com. [87.106.108.193])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-43f233c8224sm74776565e9.22.2025.04.11.01.25.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Apr 2025 01:25:07 -0700 (PDT)
+Date: Fri, 11 Apr 2025 10:25:05 +0200
+From: =?iso-8859-1?Q?G=FCnther?= Noack <gnoack3000@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>, linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Jared Finder <jared@finder.org>,
+	Jann Horn <jannh@google.com>,
+	Hanno =?iso-8859-1?Q?B=F6ck?= <hanno@hboeck.de>,
+	Kees Cook <kees@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH RESEND] tty: Require CAP_SYS_ADMIN for all usages of
+ TIOCL_SELMOUSEREPORT
+Message-ID: <20250411.6070ec138c6c@gnoack.org>
+References: <20250411070144.3959-2-gnoack3000@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250411070144.3959-2-gnoack3000@gmail.com>
 
-lt6911uxe is used in IPU6 / x86 platform, worked with an out-of-tree
-int3472 patch and upstream intel/ipu6 before.
-The upstream int3472 driver uses "hpd" instead of "readystat" now.
-this patch updates the irq_gpio name to "hpd" accordingly, so that
-mere users can now use the upstream version directly without relying
-on out-of-tree int3472 pin support.
+Hello Greg, Jared and others!
 
-The new name "hpd" (Hotplug Detect) aligns with common naming
-conventions used in other drivers(like adv7604) and documentation.
+On Fri, Apr 11, 2025 at 09:01:45AM +0200, Günther Noack wrote:
+> This requirement was overeagerly loosened in commit 2f83e38a095f
+> ("tty: Permit some TIOCL_SETSEL modes without CAP_SYS_ADMIN"),
+> ...
 
-Fixes: e49563c3be09d4 ("media: i2c: add lt6911uxe hdmi bridge driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dongcheng Yan <dongcheng.yan@intel.com>
----
- drivers/media/i2c/lt6911uxe.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+For context, the links to the previous mail thread, where this patch
+was a bit too "hidden" in a sub-thread:
 
-diff --git a/drivers/media/i2c/lt6911uxe.c b/drivers/media/i2c/lt6911uxe.c
-index c5b40bb58a37..24857d683fcf 100644
---- a/drivers/media/i2c/lt6911uxe.c
-+++ b/drivers/media/i2c/lt6911uxe.c
-@@ -605,10 +605,10 @@ static int lt6911uxe_probe(struct i2c_client *client)
- 		return dev_err_probe(dev, PTR_ERR(lt6911uxe->reset_gpio),
- 				     "failed to get reset gpio\n");
- 
--	lt6911uxe->irq_gpio = devm_gpiod_get(dev, "readystat", GPIOD_IN);
-+	lt6911uxe->irq_gpio = devm_gpiod_get(dev, "hpd", GPIOD_IN);
- 	if (IS_ERR(lt6911uxe->irq_gpio))
- 		return dev_err_probe(dev, PTR_ERR(lt6911uxe->irq_gpio),
--				     "failed to get ready_stat gpio\n");
-+				     "failed to get hpd gpio\n");
- 
- 	ret = lt6911uxe_fwnode_parse(lt6911uxe, dev);
- 	if (ret)
--- 
-2.34.1
+Original patch:
+https://lore.kernel.org/all/20250223205449.7432-2-gnoack3000@gmail.com/
 
+Brief additional summary for why I consider this safe:
+https://lore.kernel.org/all/20250307.9339126c0c96@gnoack.org
+
+Thank you!
+–Günther
 
