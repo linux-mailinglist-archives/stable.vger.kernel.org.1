@@ -1,190 +1,118 @@
-Return-Path: <stable+bounces-132187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50999A84FE3
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 00:57:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B972A850BE
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 02:44:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51E4D7A9A89
-	for <lists+stable@lfdr.de>; Thu, 10 Apr 2025 22:55:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 817D94C228F
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 00:44:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D3420F065;
-	Thu, 10 Apr 2025 22:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 066ED235BE5;
+	Fri, 11 Apr 2025 00:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R6tV4Nsz"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="nOoXGtMI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1E820C470
-	for <stable@vger.kernel.org>; Thu, 10 Apr 2025 22:56:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C57F22356D8
+	for <stable@vger.kernel.org>; Fri, 11 Apr 2025 00:44:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744325818; cv=none; b=dolR00fVML0UYqKtEueqBbfuXgP1r2W9QjNTxn4ssN3zfTWyZPU3SClJN4OiWjOlUq5r+gJrQV2o8y4NDBKYbWICeHGTMymM7qqH4fVR6/h1ayRrG1+NPTUbxlvz19Uf3Agot8DX1XCE4082Ynid/a++eA+OQCEaVYSSoQsUTHI=
+	t=1744332275; cv=none; b=EF4EnkIwiv2sKtOYYxy4+ji7LBOgzCt4ZMlJzCCrfx/X4r9Mm2bat4/Tf3ncj+hLlvfzUQN4b0SVZ0Nzi7FAu3KknJohdNKAtr6e5xi/svXBsY/rdWoYKIIQSSX0WW6XR/vihUSdbWM5fINiQ/qJHvpI/oOZ+qpMGbz44+Qj6Zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744325818; c=relaxed/simple;
-	bh=ioO7YnFQp/5JpmP9BSFi1G6qczczKVGe499+v+64Fmc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nm/4uIpAMfpWKDTVcFAceptJpdt6JeO0lQUC0dzWxh5QYE2yfBWjaiD+I8w4dTHWyp3K82+TiG5BM76jnDAbRfiLlqIW3pc4LoWGdGUbXHQEK9CYC15mi/Z5c36cdNEt/9YVGy+xDGGTUcxKc1J02qeqk5LuU765JkK9iNTIs5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R6tV4Nsz; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-af570998077so1143514a12.0
-        for <stable@vger.kernel.org>; Thu, 10 Apr 2025 15:56:56 -0700 (PDT)
+	s=arc-20240116; t=1744332275; c=relaxed/simple;
+	bh=1ZEPH7TmFUPnTJrhe0atIMbdcdbraXRklkxsYKwkU/s=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=fcNjLmBuW+SlVsf4XS5v+uqnlBtxtN3R4cikJaBGPvkBYNuo2H2qJYQJNgiTNUDwZdjVhrSDgJ17EHZuG7uMFZx9925Lx5F3HmsGugeTcCg9Ys6UI3+EO7zf22bnTYUePAPM6IO7sW5m/OqxCx9YdduPbbz0MHHsExZSuRSAtDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=nOoXGtMI; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7390d21bb1cso1407442b3a.2
+        for <stable@vger.kernel.org>; Thu, 10 Apr 2025 17:44:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1744325815; x=1744930615; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aSIC6qytDmqhN54u3QCj5+Mk33tFk68mhLUykdlDCdY=;
-        b=R6tV4Nsz1qBgtfcD5P62Eo1Z5IWkpta58Bs4TyrtuZxsOvXAaPebSZ3M8AflNEZfsk
-         2aFQh2+zHh7VgD6WtpsnqhQqAvp/csOUj4FHhKSQylhSvOrIdU8ExXWgaDGrEi3QtL9I
-         gGkrejhaUgKRRqEiLbaT5/RIw3ClLlF3zYJkb2wIrKjHOweG6VViqx3Q6r08vc04uEsk
-         GUzZ9iis/+30lj0+rfOeCoc60159YTQbJrF4zX6Dcm06ubas+BsXJmBN7Y4FKLylPK/R
-         3zMzSWlluafuhDuieaoZKVrgYMZrQOjcQbELxwhkwXZIE1CPIK+gj0FaT/0d7TzFe+xT
-         yaaA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1744332273; x=1744937073; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vsdZTMwIykwxFZW7XdBDDBQTHYKFUKUO10UneP5f6Co=;
+        b=nOoXGtMIFe6EhxQrTSlvKfccPlUzmFf130pwUKHAYPfwouDrIO4/ZLXFsFz6W7/jnn
+         ERqXrmA1IZ5eagU7uMdH3/1ILpEF6xci/B4m644AOLov23Z3lBzsKZEJddySyEQFJxMX
+         baGMCgNzTSkLcm0luawYBqd30kj/dCQ2gl1L4wMn59zFn8Prt+Tvy6G9csn2ZZS7Oumn
+         FAM/irLz6SRHY/QAFqrbPz8Z5Vx7Kahxx2MnUR2dZ9+GpZRU3zSkTVT0Pml83KMJPyw+
+         QX+z2D+k5iNMNl3sGMUZFdZECWdlpdbWzK9lLdHou4bcoUm9Cks9F51hvGdeK8uA7DKv
+         XiTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744325815; x=1744930615;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aSIC6qytDmqhN54u3QCj5+Mk33tFk68mhLUykdlDCdY=;
-        b=MV/JjYoZeYOTPi4n64UCXs7Pscqf50/EyrcRR0z4/7wpmKoU1/Uzh9ut+EYwSRa7eZ
-         /VDRUuh8bFy6l+kfIOPg2bxcI8k6LABFfwRzJ2L2ZkboCT8CtowChotBmJ7VkqLwYuL8
-         EHe1KNKh9I6xqOmhIhh0zsjf40DKyFeGq0BOpbaPHPA7KOXwi/lVn1RgC22rKSXGMboD
-         jjaOijC7yFQ9JQqHShcM60IIMn+uNRUp4gkV0ssXPATB3FmbZTohVhLfwM/tELj4btWq
-         TBXk2JIYc1sZSQEolzBJnwnk9dKg1AIr1eMj5FUFjRwFNv76aXgprayss4QR3U4ebq0G
-         TRbg==
-X-Forwarded-Encrypted: i=1; AJvYcCXJptdXXI+ghIvL1c6OaxW/bTPkg3Dkgfrc1NE0V6UzXDEasHBp0c81tdztQm9QlCGEih3gthA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlA63uOd9xoJxGftCemHP+hEIi5u4PO8pnKFRhmhGYb9OWJOe+
-	pLhwpFb2qbTN8r3QsUV86Ela2la4mdS+xa3QhyCft+8oGFiY53N+w0BO7KZ9Fry8MxBjwE5VUj6
-	ZEQ==
-X-Google-Smtp-Source: AGHT+IEojre5lz+OxmngvdVqLN1KtTwsWACVjyD16MFf07sg4OiDszm756ulpW/Ml+uxcG0gRpJ7nQnFSQw=
-X-Received: from pfbgv13.prod.google.com ([2002:a05:6a00:4e8d:b0:730:848d:a5a3])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:ce4a:b0:1f5:6e00:14c9
- with SMTP id adf61e73a8af0-201797a56eemr936365637.15.1744325815468; Thu, 10
- Apr 2025 15:56:55 -0700 (PDT)
-Date: Thu, 10 Apr 2025 15:56:53 -0700
-In-Reply-To: <20250324175707.19925-1-m.lobanov@rosa.ru>
+        d=1e100.net; s=20230601; t=1744332273; x=1744937073;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vsdZTMwIykwxFZW7XdBDDBQTHYKFUKUO10UneP5f6Co=;
+        b=FVe6Bkg3+DHwY4n55CAklOE9wVRGXkzyVpD7DSR/cARqtaxDa1Nf5USyLNiFBUGC0a
+         KdtncXEfCP3vCkWDKkUjPmtoqkBdYWdpPaXaSEMeqbsgUiyuJlft+RmAq08VevImu+dm
+         cF3j2S++gt9Bk5oSnO0oyCAqTW3fqwelujHPnN2Zc9CXU75RSZS1rfzznjtN276pfj/x
+         OYIYEeuHAzC+ClA8Axs4ZYHCBj2M7TBFbQLs5iXjuo7/pJFjWW/n/kZKtaXd0WnHDpkm
+         Xtr9J3Kap92tc50QOW03fg0MESVFd8TqFr/+LJWW5HbhBRwEpFOc2S33tY7JHtOSdCDu
+         qcQA==
+X-Gm-Message-State: AOJu0Yy9ALP5eS4hQL/Cmsh4VIevgndj7yz+cbpBa7xxii0FSbskmqYm
+	DJmarxpYWrf1/LkwZg1JC59654jRvgzuoTuSS9941jLcwO0pvhM2dmgd6bva+H0=
+X-Gm-Gg: ASbGncunEv4iPXhUDxt50YCkHUBKTq4GN3/HJi9rq0A+e54kNzT8FG04F1ie4VHeAcK
+	beBR06U2EbWThOBhjKzBFeLOp8JPg2R2XNpRVMY+m2bXALdx6aK7EyP8U4sKTxrv0Ait8JOb1ow
+	ZetBXJJLBIbEe2jMYuCisHqjF4B1hk3iW/fjFv3UWs6Rg55qREj+DAZv6wz5w45RfedUbHlba+L
+	zQAFzNyxH1oCGmxa55R5x36hie66sQ0+06BCKRAsKFCgfFwNfV2potg+YOmknwwZVwViEWeibgz
+	tmGCdLxwjv7bHVeqzfbWFB45SO4OvmWUsiEle7c=
+X-Google-Smtp-Source: AGHT+IGkKIOCVVDwPQC40Jos5ojyeCmRImM+y0qVGUmSsNBURG1P7WKROT7Lbtkb6eCO6oUjraoobA==
+X-Received: by 2002:a17:90b:2752:b0:2ff:5e4e:861 with SMTP id 98e67ed59e1d1-308237b52c1mr1313845a91.24.1744332273039;
+        Thu, 10 Apr 2025 17:44:33 -0700 (PDT)
+Received: from localhost ([97.126.182.119])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-306dd11e996sm4406937a91.20.2025.04.10.17.44.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Apr 2025 17:44:32 -0700 (PDT)
+From: Kevin Hilman <khilman@baylibre.com>
+To: khilman@kernel.org, aaro.koskinen@iki.fi, rogerq@kernel.org, 
+ tony@atomide.com, linux@armlinux.org.uk, linux-omap@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ sre@kernel.org, Andreas Kemnade <andreas@kemnade.info>
+Cc: stable@vger.kernel.org
+In-Reply-To: <20250331144439.769697-1-andreas@kemnade.info>
+References: <20250331144439.769697-1-andreas@kemnade.info>
+Subject: Re: [PATCH] ARM: omap: pmic-cpcap: do not mess around without
+ CPCAP or OMAP4
+Message-Id: <174433227218.2416322.15261895858877666275.b4-ty@baylibre.com>
+Date: Thu, 10 Apr 2025 17:44:32 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250324175707.19925-1-m.lobanov@rosa.ru>
-Message-ID: <Z_hMtVGU9Sg-TTtc@google.com>
-Subject: Re: [PATCH] KVM: x86: forcibly leave SMM mode on vCPU reset
-From: Sean Christopherson <seanjc@google.com>
-To: Mikhail Lobanov <m.lobanov@rosa.ru>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Maxim Levitsky <mlevitsk@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
-
-On Mon, Mar 24, 2025, Mikhail Lobanov wrote:
-> Previously, commit ed129ec9057f ("KVM: x86: forcibly leave nested mode
-> on vCPU reset") addressed an issue where a triple fault occurring in
-> nested mode could lead to use-after-free scenarios. However, the commit
-> did not handle the analogous situation for System Management Mode (SMM).
-> 
-> This omission results in triggering a WARN when a vCPU reset occurs
-> while still in SMM mode, due to the check in kvm_vcpu_reset(). This
-> situation was reprodused using Syzkaller by:
-> 1) Creating a KVM VM and vCPU
-> 2) Sending a KVM_SMI ioctl to explicitly enter SMM
-> 3) Executing invalid instructions causing consecutive exceptions and
-> eventually a triple fault
-> 
-> The issue manifests as follows:
-> 
-> WARNING: CPU: 0 PID: 25506 at arch/x86/kvm/x86.c:12112
-> kvm_vcpu_reset+0x1d2/0x1530 arch/x86/kvm/x86.c:12112
-> Modules linked in:
-> CPU: 0 PID: 25506 Comm: syz-executor.0 Not tainted
-> 6.1.130-syzkaller-00157-g164fe5dde9b6 #0
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
-> BIOS 1.12.0-1 04/01/2014
-> RIP: 0010:kvm_vcpu_reset+0x1d2/0x1530 arch/x86/kvm/x86.c:12112
-> Call Trace:
->  <TASK>
->  shutdown_interception+0x66/0xb0 arch/x86/kvm/svm/svm.c:2136
->  svm_invoke_exit_handler+0x110/0x530 arch/x86/kvm/svm/svm.c:3395
->  svm_handle_exit+0x424/0x920 arch/x86/kvm/svm/svm.c:3457
->  vcpu_enter_guest arch/x86/kvm/x86.c:10959 [inline]
->  vcpu_run+0x2c43/0x5a90 arch/x86/kvm/x86.c:11062
->  kvm_arch_vcpu_ioctl_run+0x50f/0x1cf0 arch/x86/kvm/x86.c:11283
->  kvm_vcpu_ioctl+0x570/0xf00 arch/x86/kvm/../../../virt/kvm/kvm_main.c:4122
->  vfs_ioctl fs/ioctl.c:51 [inline]
->  __do_sys_ioctl fs/ioctl.c:870 [inline]
->  __se_sys_ioctl fs/ioctl.c:856 [inline]
->  __x64_sys_ioctl+0x19a/0x210 fs/ioctl.c:856
->  do_syscall_x64 arch/x86/entry/common.c:51 [inline]
->  do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
->  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-> 
-> Considering that hardware CPUs exit SMM mode completely upon receiving
-> a triple fault by triggering a hardware reset (which inherently leads
-> to exiting SMM), explicitly perform SMM exit prior to the WARN check.
-> Although subsequent code clears vCPU hflags, including the SMM flag,
-> calling kvm_smm_changed ensures the exit from SMM is handled correctly
-> and explicitly, aligning precisely with hardware behavior.
-> 
-> 
-> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-> 
-> Fixes: ed129ec9057f ("KVM: x86: forcibly leave nested mode on vCPU reset")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
-> ---
->  arch/x86/kvm/x86.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 4b64ab350bcd..f1c95c21703a 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -12409,6 +12409,9 @@ void kvm_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event)
->  	if (is_guest_mode(vcpu))
->  		kvm_leave_nested(vcpu);
->  
-> +	if (is_smm(vcpu))
-> +		kvm_smm_changed(vcpu, false);
-
-Hmm, this probably belongs in SVM's shutdown_interception().  Architecturally,
-INIT is blocked when the CPU is in SMM.  KVM's WARN() below is intended to guard
-against KVM bugs more than anything else, e.g. if KVM emulates INIT when it shouldn't.
-
-SHUTDOWN on SVM is a weird edge case where KVM needs to do _something_ sane with
-the VMCB, since it's technically undefined, and INIT is the least awful choice given
-KVM's ABI.
-
-I can't think off any other paths that can/should force INIT while SMM is active,
-so while it's a bit gross to have this as a one-off, I think we should do:
-
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index cc1c721ba067..5a2041bc1ba2 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -2231,6 +2231,8 @@ static int shutdown_interception(struct kvm_vcpu *vcpu)
-         */
-        if (!sev_es_guest(vcpu->kvm)) {
-                clear_page(svm->vmcb);
-+               if (is_smm(vcpu))
-+                       kvm_smm_changed(vcpu, false);
-                kvm_vcpu_reset(vcpu, true);
-        }
- 
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3-dev-94c79
 
 
-> +
->  	kvm_lapic_reset(vcpu, init_event);
->  
->  	WARN_ON_ONCE(is_guest_mode(vcpu) || is_smm(vcpu));
-> -- 
-> 2.47.2
+On Mon, 31 Mar 2025 16:44:39 +0200, Andreas Kemnade wrote:
+> The late init call just writes to omap4 registers as soon as
+> CONFIG_MFD_CPCAP is enabled without checking whether the
+> cpcap driver is actually there or the SoC is indeed an
+> OMAP4.
+> Rather do these things only with the right device combination.
 > 
+> Fixes booting the BT200 with said configuration enabled and non-factory
+> X-Loader and probably also some surprising behavior on other devices.
+> 
+> [...]
+
+Applied, thanks!
+
+[1/1] ARM: omap: pmic-cpcap: do not mess around without CPCAP or OMAP4
+      commit: 7397daf1029d5bfd3415ec8622f5179603d5702d
+
+Best regards,
+-- 
+Kevin Hilman <khilman@baylibre.com>
+
 
