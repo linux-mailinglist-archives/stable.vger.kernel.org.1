@@ -1,248 +1,283 @@
-Return-Path: <stable+bounces-132284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D124A8631E
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 18:23:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F40E9A8632E
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 18:27:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 058831BA09A3
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 16:23:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FA2B3B67C2
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 16:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47C4421B905;
-	Fri, 11 Apr 2025 16:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D6421B91F;
+	Fri, 11 Apr 2025 16:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="azQ8JZsV"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="gefXXaXX";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="vLdLttkG";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="gefXXaXX";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="vLdLttkG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD1526AD9;
-	Fri, 11 Apr 2025 16:22:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8663020FA8B
+	for <stable@vger.kernel.org>; Fri, 11 Apr 2025 16:27:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744388573; cv=none; b=UtWCPI0VTEc1346eCZ71BEMXrpPgzmmG5H5fbM4OkOVRt2CI4hyMgAWpprzQMeUS7OfO5gs/dkWbrVVQX00295kaz6+CM0RYoxI59gkIy9KVqCdxjIth8+Wbc8EnUgOpofB7z6y6WjUYFpm7nRUkZkOXNtYNXc1aUyY77dom6jQ=
+	t=1744388827; cv=none; b=X3lNztDUeBhAuIMo3SRjvHLIaXdXI5+AFVKnDF1amjXQ2p3tk5baPziB1oTev1d0b75FMqID2Lt4X8dfUrY1RQqGMis1FHQvE9tmJQJDgPWFFf1geOnMS3/1wTI9SDZcN449NLD4nZ3dDddppEisgc2fKpq+DLn90r9tw+VjHBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744388573; c=relaxed/simple;
-	bh=5rB2vSHPlJjeLbucCa9fOjc63VVGLRNKyQuL3lgdq8Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hGZxUt4Az7VskADrIZkbO5iNH9qDyJRTI5DSjtmm68y5ApDN3wvyCvVyGQq4DgSkXDOCCr6aPQL+dY9XSecgyDL0y5Z7sU9zHAHTcBnO8OaRHWTnFgf1/mo+w/GAwvbsVAzFsLNUcfQbPPOuwI5EZujR1AYksa+PXCqTWzjDyKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=azQ8JZsV; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-73712952e1cso2184850b3a.1;
-        Fri, 11 Apr 2025 09:22:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744388570; x=1744993370; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=baX3GRriSGAR4q6Gb5P6eXLG5DHv9DgzrxJCCNiVizU=;
-        b=azQ8JZsVSy3cyZvEpm6FX3inRQhQLTFiq935uayrAev4FLcbjnaUsdZJS5kmviKzjq
-         Ui/Hm8TyTsgRUsdE9ZkcmL//9hmNuJ9gA4hFtAtIEX4DGnkeo9QmfI9ZzTQdebCVTYSy
-         YANGQsYCX1BEnpz/jpXWcNWHLutEgHm6W80PLNVPY7WuY6u3lhG2PEXbPNhqaV8Nb81L
-         7BF6Zc/ZaV/j/mPzDHYIDiUXvhRuEjCTs5TIiGzJZ3RRIZTyUjWKyxyOX21uNQDfXeJ0
-         1kE3QIZLVlF8LHU6RVikjedUB3t9PCJ/g1+gq76iw+5Lt727ahtVssFC7o+XRQHT4M/Q
-         8INA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744388570; x=1744993370;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=baX3GRriSGAR4q6Gb5P6eXLG5DHv9DgzrxJCCNiVizU=;
-        b=Qq70g5V8R4v8CbDj6RzEgAqtLQ90JCJe+lKWT7uAxuh3/nY5S3TWqZXBx8aMSxa4e7
-         QdnW7svbfwJkQMMetX2hzV8zhEi4AqG8/XwI/UQVdjmHNnkMroIt06h5LiqD3/w+0/qI
-         Ccx3q+3zbdwYTryL+tSQUXMjO65kutXevvjxdAa9VNSx97QfgSGBDU74FxFXwor3OQ9e
-         W2BXHbsKr5P2n27grb9zPblKGmL+xz9eaTBZ149sCWzcJbOzBF1urOUI2QFuKyE2zFbx
-         ddY1nY5JHOdwdgKl5SNEku16j6ZHltvPbxgwepOoDBP/eWqpWbZpSTHLCT1KKYyeQ0IQ
-         Utgg==
-X-Forwarded-Encrypted: i=1; AJvYcCX32fhO5E4UA6EBE2hWw/z/OMwWWsLbUZYpR7W+PY39+xhhxRUh7Y4LQrL8qWubUyOZC3AquRk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1xkuJjel6uCNtFFHGrZjnfT5L0gVQ7e2LuIARrGimfg81MKNH
-	+QJclDpymQWzWw3ygIsZ7gse+15mPFllrSLn3iCtqyBcLD7X6zHsCRCIcNrr6QMKiC5xcAkSerh
-	km61eO8LT6EgR5jiPMuSZh00cfLI=
-X-Gm-Gg: ASbGncvd8ibeIfxhGB4lZl36KfyzEHNtHYuiLkMVZj1bnqf2gkmFHh0Dtxynh4/Wxa+
-	iaUbR1MquzLI5og8GX/zzHtY7os+n1J/t25y93ZUQhCSlldkk59nRtEOgqyuOc1K2hAVBVdj9Cm
-	U6Md9dQwBkNWEAH3/np0tNS3JNsw33DY6ddZ5PKj96h3Pp4fs=
-X-Google-Smtp-Source: AGHT+IH/AHSMPpcHMSpdd831NVuZ6wPIlyassBglWdslI21V1PqlLgFfogK98BXS1nokG6d6/15QBelPvbiGAAnfAYg=
-X-Received: by 2002:a05:6a00:909c:b0:736:ff65:3fcc with SMTP id
- d2e1a72fcca58-73bd1263c4bmr4375124b3a.16.1744388570483; Fri, 11 Apr 2025
- 09:22:50 -0700 (PDT)
+	s=arc-20240116; t=1744388827; c=relaxed/simple;
+	bh=qN+fveIB7Z/uxWyU4hV35lEUrbKyoG6kZOE6JvM5BEc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LV8xFS/LY7yIjQOh3ginSv0XfnfgkRAalmRO4ASgdU2u5STdAVC0szuSd6aSdVEnIBk2wbf9MfFSAXHg3fdD59yJqFO+CFiUoCv03eGTC1UYdmDVoegus5IzDAjLk3jM0/g+wW4NPJj3P6wFVD3r+6osXuWKisVR0r3hOLmfMC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=gefXXaXX; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=vLdLttkG; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=gefXXaXX; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=vLdLttkG; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 1725121197;
+	Fri, 11 Apr 2025 16:27:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1744388823; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=236nQ8T7pqzlQq9bwZKJotq/CNMIrrJmnALSAeK5HJ8=;
+	b=gefXXaXXMXhnoCT7Ah6ijWqatyPfpdMiLrQaAnWfi1hVKWyqD4KKClHwy/PNHQxCRR+3s8
+	dXCHMWLB5jkioX3YvU3sQes1t95NSGG+CGYeEM2SdxG+XmUHjCaCpCq8AEnQmyz5wHneLQ
+	Z29eHTg4oUjxTiMDt5w36LhI6XCX4gI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1744388823;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=236nQ8T7pqzlQq9bwZKJotq/CNMIrrJmnALSAeK5HJ8=;
+	b=vLdLttkGuf99qsUTibZx1xOu6OJdg+dZAMCI8QO1YmyWhqlhcIq0QCSAS7WLN/Ty34qvyN
+	0VjmLcrnQ1RKiyAw==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=gefXXaXX;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vLdLttkG
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1744388823; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=236nQ8T7pqzlQq9bwZKJotq/CNMIrrJmnALSAeK5HJ8=;
+	b=gefXXaXXMXhnoCT7Ah6ijWqatyPfpdMiLrQaAnWfi1hVKWyqD4KKClHwy/PNHQxCRR+3s8
+	dXCHMWLB5jkioX3YvU3sQes1t95NSGG+CGYeEM2SdxG+XmUHjCaCpCq8AEnQmyz5wHneLQ
+	Z29eHTg4oUjxTiMDt5w36LhI6XCX4gI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1744388823;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=236nQ8T7pqzlQq9bwZKJotq/CNMIrrJmnALSAeK5HJ8=;
+	b=vLdLttkGuf99qsUTibZx1xOu6OJdg+dZAMCI8QO1YmyWhqlhcIq0QCSAS7WLN/Ty34qvyN
+	0VjmLcrnQ1RKiyAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EC3E9136A4;
+	Fri, 11 Apr 2025 16:27:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id IvswOdZC+WfDLwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 11 Apr 2025 16:27:02 +0000
+Message-ID: <c88ec69c-87ee-4865-8b2a-87f32f46b0bc@suse.cz>
+Date: Fri, 11 Apr 2025 18:26:58 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250410095517.141271-1-vmalik@redhat.com>
-In-Reply-To: <20250410095517.141271-1-vmalik@redhat.com>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Fri, 11 Apr 2025 09:22:37 -0700
-X-Gm-Features: ATxdqUFwzogkAAn6Mma_RCicNnu3ETJW2tli5HmLORLn3X8bRqdq1ym85aJOBDY
-Message-ID: <CAEf4Bzb2S+1TonOp9UH86r0e6aGG2LEA4kwbQhJWr=9Xju=NEw@mail.gmail.com>
-Subject: Re: [PATCH bpf v2] libbpf: Fix buffer overflow in bpf_object__init_prog
-To: Viktor Malik <vmalik@redhat.com>
-Cc: bpf@vger.kernel.org, Andrii Nakryiko <andrii@kernel.org>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
-	Jiri Olsa <jolsa@kernel.org>, lmarch2 <2524158037@qq.com>, stable@vger.kernel.org, 
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] slab: ensure slab->obj_exts is clear in a newly
+ allocated slab page
+Content-Language: en-US
+To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
+Cc: kent.overstreet@linux.dev, roman.gushchin@linux.dev, cl@linux.com,
+ rientjes@google.com, harry.yoo@oracle.com, souravpanda@google.com,
+ pasha.tatashin@soleen.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250411155737.1360746-1-surenb@google.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <20250411155737.1360746-1-surenb@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 1725121197
+X-Spam-Score: -4.51
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	TO_DN_SOME(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.cz:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-On Thu, Apr 10, 2025 at 2:55=E2=80=AFAM Viktor Malik <vmalik@redhat.com> wr=
-ote:
->
-> As reported by CVE-2025-29481 [1], it is possible to corrupt a BPF ELF
-> file such that arbitrary BPF instructions are loaded by libbpf. This can
-> be done by setting a symbol (BPF program) section offset to a large
-> (unsigned) number such that <section start + symbol offset> overflows
-> and points before the section data in the memory.
->
-> Consider the situation below where:
-> - prog_start =3D sec_start + symbol_offset    <-- size_t overflow here
-> - prog_end   =3D prog_start + prog_size
->
->     prog_start        sec_start        prog_end        sec_end
->         |                |                 |              |
->         v                v                 v              v
->     .....................|################################|............
->
-> The CVE report in [1] also provides a corrupted BPF ELF which can be
-> used as a reproducer:
->
->     $ readelf -S crash
->     Section Headers:
->       [Nr] Name              Type             Address           Offset
->            Size              EntSize          Flags  Link  Info  Align
->     ...
->       [ 2] uretprobe.mu[...] PROGBITS         0000000000000000  00000040
->            0000000000000068  0000000000000000  AX       0     0     8
->
->     $ readelf -s crash
->     Symbol table '.symtab' contains 8 entries:
->        Num:    Value          Size Type    Bind   Vis      Ndx Name
->     ...
->          6: ffffffffffffffb8   104 FUNC    GLOBAL DEFAULT    2 handle_tp
->
-> Here, the handle_tp prog has section offset ffffffffffffffb8, i.e. will
-> point before the actual memory where section 2 is allocated.
->
-> This is also reported by AddressSanitizer:
->
->     =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->     =3D=3D1232=3D=3DERROR: AddressSanitizer: heap-buffer-overflow on addr=
-ess 0x7c7302fe0000 at pc 0x7fc3046e4b77 bp 0x7ffe64677cd0 sp 0x7ffe64677490
->     READ of size 104 at 0x7c7302fe0000 thread T0
->         #0 0x7fc3046e4b76 in memcpy (/lib64/libasan.so.8+0xe4b76)
->         #1 0x00000040df3e in bpf_object__init_prog /src/libbpf/src/libbpf=
-.c:856
->         #2 0x00000040df3e in bpf_object__add_programs /src/libbpf/src/lib=
-bpf.c:928
->         #3 0x00000040df3e in bpf_object__elf_collect /src/libbpf/src/libb=
-pf.c:3930
->         #4 0x00000040df3e in bpf_object_open /src/libbpf/src/libbpf.c:806=
-7
->         #5 0x00000040f176 in bpf_object__open_file /src/libbpf/src/libbpf=
-.c:8090
->         #6 0x000000400c16 in main /poc/poc.c:8
->         #7 0x7fc3043d25b4 in __libc_start_call_main (/lib64/libc.so.6+0x3=
-5b4)
->         #8 0x7fc3043d2667 in __libc_start_main@@GLIBC_2.34 (/lib64/libc.s=
-o.6+0x3667)
->         #9 0x000000400b34 in _start (/poc/poc+0x400b34)
->
->     0x7c7302fe0000 is located 64 bytes before 104-byte region [0x7c7302fe=
-0040,0x7c7302fe00a8)
->     allocated by thread T0 here:
->         #0 0x7fc3046e716b in malloc (/lib64/libasan.so.8+0xe716b)
->         #1 0x7fc3045ee600 in __libelf_set_rawdata_wrlock (/lib64/libelf.s=
-o.1+0xb600)
->         #2 0x7fc3045ef018 in __elf_getdata_rdlock (/lib64/libelf.so.1+0xc=
-018)
->         #3 0x00000040642f in elf_sec_data /src/libbpf/src/libbpf.c:3740
->
-> The problem here is that currently, libbpf only checks that the program
-> end is within the section bounds. There used to be a check
-> `while (sec_off < sec_sz)` in bpf_object__add_programs, however, it was
-> removed by commit 6245947c1b3c ("libbpf: Allow gaps in BPF program
-> sections to support overriden weak functions").
->
-> Put the above condition back to bpf_object__init_prog to make sure that
-> the program start is also within the bounds of the section to avoid the
-> potential buffer overflow.
->
-> [1] https://github.com/lmarch2/poc/blob/main/libbpf/libbpf.md
->
-> Reported-by: lmarch2 <2524158037@qq.com>
-> Cc: stable@vger.kernel.org
+On 4/11/25 17:57, Suren Baghdasaryan wrote:
+> ktest recently reported crashes while running several buffered io tests
+> with __alloc_tagging_slab_alloc_hook() at the top of the crash call stack.
+> The signature indicates an invalid address dereference with low bits of
+> slab->obj_exts being set. The bits were outside of the range used by
+> page_memcg_data_flags and objext_flags and hence were not masked out
+> by slab_obj_exts() when obtaining the pointer stored in slab->obj_exts.
+> The typical crash log looks like this:
+> 
+> 00510 Unable to handle kernel NULL pointer dereference at virtual address 0000000000000010
+> 00510 Mem abort info:
+> 00510   ESR = 0x0000000096000045
+> 00510   EC = 0x25: DABT (current EL), IL = 32 bits
+> 00510   SET = 0, FnV = 0
+> 00510   EA = 0, S1PTW = 0
+> 00510   FSC = 0x05: level 1 translation fault
+> 00510 Data abort info:
+> 00510   ISV = 0, ISS = 0x00000045, ISS2 = 0x00000000
+> 00510   CM = 0, WnR = 1, TnD = 0, TagAccess = 0
+> 00510   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+> 00510 user pgtable: 4k pages, 39-bit VAs, pgdp=0000000104175000
+> 00510 [0000000000000010] pgd=0000000000000000, p4d=0000000000000000, pud=0000000000000000
+> 00510 Internal error: Oops: 0000000096000045 [#1]  SMP
+> 00510 Modules linked in:
+> 00510 CPU: 10 UID: 0 PID: 7692 Comm: cat Not tainted 6.15.0-rc1-ktest-g189e17946605 #19327 NONE
+> 00510 Hardware name: linux,dummy-virt (DT)
+> 00510 pstate: 20001005 (nzCv daif -PAN -UAO -TCO -DIT +SSBS BTYPE=--)
+> 00510 pc : __alloc_tagging_slab_alloc_hook+0xe0/0x190
+> 00510 lr : __kmalloc_noprof+0x150/0x310
+> 00510 sp : ffffff80c87df6c0
+> 00510 x29: ffffff80c87df6c0 x28: 000000000013d1ff x27: 000000000013d200
+> 00510 x26: ffffff80c87df9e0 x25: 0000000000000000 x24: 0000000000000001
+> 00510 x23: ffffffc08041953c x22: 000000000000004c x21: ffffff80c0002180
+> 00510 x20: fffffffec3120840 x19: ffffff80c4821000 x18: 0000000000000000
+> 00510 x17: fffffffec3d02f00 x16: fffffffec3d02e00 x15: fffffffec3d00700
+> 00510 x14: fffffffec3d00600 x13: 0000000000000200 x12: 0000000000000006
+> 00510 x11: ffffffc080bb86c0 x10: 0000000000000000 x9 : ffffffc080201e58
+> 00510 x8 : ffffff80c4821060 x7 : 0000000000000000 x6 : 0000000055555556
+> 00510 x5 : 0000000000000001 x4 : 0000000000000010 x3 : 0000000000000060
+> 00510 x2 : 0000000000000000 x1 : ffffffc080f50cf8 x0 : ffffff80d801d000
+> 00510 Call trace:
+> 00510  __alloc_tagging_slab_alloc_hook+0xe0/0x190 (P)
+> 00510  __kmalloc_noprof+0x150/0x310
+> 00510  __bch2_folio_create+0x5c/0xf8
+> 00510  bch2_folio_create+0x2c/0x40
+> 00510  bch2_readahead+0xc0/0x460
+> 00510  read_pages+0x7c/0x230
+> 00510  page_cache_ra_order+0x244/0x3a8
+> 00510  page_cache_async_ra+0x124/0x170
+> 00510  filemap_readahead.isra.0+0x58/0xa0
+> 00510  filemap_get_pages+0x454/0x7b0
+> 00510  filemap_read+0xdc/0x418
+> 00510  bch2_read_iter+0x100/0x1b0
+> 00510  vfs_read+0x214/0x300
+> 00510  ksys_read+0x6c/0x108
+> 00510  __arm64_sys_read+0x20/0x30
+> 00510  invoke_syscall.constprop.0+0x54/0xe8
+> 00510  do_el0_svc+0x44/0xc8
+> 00510  el0_svc+0x18/0x58
+> 00510  el0t_64_sync_handler+0x104/0x130
+> 00510  el0t_64_sync+0x154/0x158
+> 00510 Code: d5384100 f9401c01 b9401aa3 b40002e1 (f8227881)
+> 00510 ---[ end trace 0000000000000000 ]---
+> 00510 Kernel panic - not syncing: Oops: Fatal exception
+> 00510 SMP: stopping secondary CPUs
+> 00510 Kernel Offset: disabled
+> 00510 CPU features: 0x0000,000000e0,00000410,8240500b
+> 00510 Memory Limit: none
+> 
+> Investigation indicates that these bits are already set when we allocate
+> slab page and are not zeroed out after allocation. We are not yet sure
+> why these crashes start happening only recently but regardless of the
+> reason, not initializing a field that gets used later is wrong. Fix it
+> by initializing slab->obj_exts during slab page allocation.
 
-Libbpf is packaged and consumed from Github mirror, which is produced
-from latest bpf-next and bpf trees, so there is no point in
-backporting fixes like this to stable kernel branches. Please drop the
-CC: stable in the next revision.
+slab->obj_exts overlays page->memcg_data and the checks on page alloc and
+page free should catch any non-zero values, i.e. page_expected_state()
+page_bad_reason() so if anyone is e.g. UAF-writing there or leaving garbage
+there while freeing the page it's a bug.
 
-> Fixes: 6245947c1b3c ("libbpf: Allow gaps in BPF program sections to suppo=
-rt overriden weak functions")
-> Link: https://github.com/lmarch2/poc/blob/main/libbpf/libbpf.md
-> Link: https://www.cve.org/CVERecord?id=3DCVE-2025-29481
+Perhaps CONFIG_MEMCG is disabled in the ktests and thus the checks are not
+happening? We could extend them for CONFIG_SLAB_OBJ_EXT checking
+_unused_slab_obj_exts perhaps. But it would be a short lived change, see below.
 
-libbpf is meant to load BPF programs under root. It's a
-highly-privileged operation, and libbpf is not meant, designed, and
-actually explicitly discouraged from loading untrusted ELF files. As
-such, this is just a normal bug fix, like lots of others. So let's
-drop the CVE link as well.
+> Fixes: 21c690a349ba ("mm: introduce slabobj_ext to support slab object extensions")
+> Reported-by: Kent Overstreet <kent.overstreet@linux.dev>
+> Tested-by: Kent Overstreet <kent.overstreet@linux.dev>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> Acked-by: Kent Overstreet <kent.overstreet@linux.dev>
+> Cc: <stable@vger.kernel.org>
 
-Again, no one in their sane mind should be passing untrusted ELF files
-into libbpf while running under root. Period.
+We'll need this anyway for the not so far future when struct slab is
+separated from struct page so it's fine but it would still be great to find
+the underlying buggy code which this is going to hide.
 
-All production use cases load ELF that they generated and control
-(usually embedded into their memory through BPF skeleton header). And
-if that ELF file is corrupted, you have problems somewhere else,
-libbpf is not a culprit.
-
-> Signed-off-by: Viktor Malik <vmalik@redhat.com>
-> Reviewed-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 > ---
->  tools/lib/bpf/libbpf.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-> index 6b85060f07b3..d0ece3c9618e 100644
-> --- a/tools/lib/bpf/libbpf.c
-> +++ b/tools/lib/bpf/libbpf.c
-> @@ -896,7 +896,7 @@ bpf_object__add_programs(struct bpf_object *obj, Elf_=
-Data *sec_data,
->                         return -LIBBPF_ERRNO__FORMAT;
->                 }
->
-> -               if (sec_off + prog_sz > sec_sz) {
-> +               if (sec_off >=3D sec_sz || sec_off + prog_sz > sec_sz) {
+>  mm/slub.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index b46f87662e71..dc9e729e1d26 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -1973,6 +1973,11 @@ static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
+>  #define OBJCGS_CLEAR_MASK	(__GFP_DMA | __GFP_RECLAIMABLE | \
+>  				__GFP_ACCOUNT | __GFP_NOFAIL)
+>  
+> +static inline void init_slab_obj_exts(struct slab *slab)
+> +{
+> +	slab->obj_exts = 0;
+> +}
+> +
+>  int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+>  		        gfp_t gfp, bool new_slab)
+>  {
+> @@ -2058,6 +2063,10 @@ static inline bool need_slab_obj_ext(void)
+>  
+>  #else /* CONFIG_SLAB_OBJ_EXT */
+>  
+> +static inline void init_slab_obj_exts(struct slab *slab)
+> +{
+> +}
+> +
+>  static int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+>  			       gfp_t gfp, bool new_slab)
+>  {
+> @@ -2637,6 +2646,7 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+>  	slab->objects = oo_objects(oo);
+>  	slab->inuse = 0;
+>  	slab->frozen = 0;
+> +	init_slab_obj_exts(slab);
+>  
+>  	account_slab(slab, oo_order(oo), s, flags);
+>  
+> 
+> base-commit: c496b37f9061db039b413c03ccd33506175fe6ec
 
-So the thing we are protecting against is that sec_off + prog_sz can
-overflow and turn out to be < sec_sz (even though the sum is actually
-bigger), right?
-
-If my understanding is correct, then I'd find it much more obviously
-expressed as:
-
-
-if (sec_off + prog_sz > sec_sz || sec_off + prog_sz < sec_off)
-
-We have such an overflow detection checking pattern used in a few
-places already, I believe. WDYT?
-
-pw-bot: cr
-
->                         pr_warn("sec '%s': program at offset %zu crosses =
-section boundary\n",
->                                 sec_name, sec_off);
->                         return -LIBBPF_ERRNO__FORMAT;
-> --
-> 2.49.0
->
 
