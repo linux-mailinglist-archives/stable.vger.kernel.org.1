@@ -1,78 +1,173 @@
-Return-Path: <stable+bounces-132269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9651CA86077
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 16:24:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E324A8609E
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 16:30:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C221416DF73
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 14:23:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EAA07AED19
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 14:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC191F1516;
-	Fri, 11 Apr 2025 14:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E72F1F4606;
+	Fri, 11 Apr 2025 14:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ykrbSkiF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DpArR5aK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881061C3BEB;
-	Fri, 11 Apr 2025 14:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABCAC14F9D6;
+	Fri, 11 Apr 2025 14:29:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744381423; cv=none; b=r5NxglBr4DJ/S+ETtACa3JFTzM6QpCTR0OJz8lJDvKTPn2fgTOK7CZ9joNXZCRhWXLP2mIeQVfwagAIO/fXiZ2cacyYOGOyaeTbQJRdEesQJBXXb3Ko87HeBjbYyLkdYcIJ65h8vGi/+ueQ3XUlDZPOqURn7WHIo8FcQ4Z+PxQM=
+	t=1744381783; cv=none; b=Bki469jaeV1OjzvC+97QkCNgEo02taK8VFSLL97VY96EIFMMbyt+mZf66rn/q7nRUuGbBvmJhbNKEfWS/X7XVfkQiggHS4Nn+uL9EeFsN+mPpANrRk6PuzA/hGcrgNiJD9vz46i/nGCwliMJlrRrtuk7HtfzEVC+EZDN0r7kLgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744381423; c=relaxed/simple;
-	bh=GJX49r3BKpYaA7bCwqkvzU5fTQ0dfWOuIUAYjRLKwrI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GWhUcJPDLu58KM1+CVnnQq1hsBPgsvnc4lK+iDVA4j5KRgHuW0eTUAyWIW79g/gLdaBnYU/au2s0/nzhzeVq7faanGySxJij1wXi8na+WhbHsqQ0f16PhnDXjDtouAO6jm7OZRhHU+4WD3/Mz45R+ex0O0TL3H6ttH4+76ZvaoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ykrbSkiF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D59FC4CEE2;
-	Fri, 11 Apr 2025 14:23:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744381423;
-	bh=GJX49r3BKpYaA7bCwqkvzU5fTQ0dfWOuIUAYjRLKwrI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ykrbSkiFYCTU78cv7nHZ/NKfAWj8GpkCFCqBKjO0j0/eisI7B3hvs/K9YlpPNiFdI
-	 YBc9iW4tTH96iD8Aj0DArHvuOhdVqUZ6hcMZbNMFs+Mbon2Y2pQXU3fjbOnuz9NvaI
-	 Y5wPUpg3gdByrBIFKnOun9nT+lOg20Mieq7XkzIs=
-Date: Fri, 11 Apr 2025 16:23:40 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Kuen-Han Tsai <khtsai@google.com>
-Cc: Thinh.Nguyen@synopsys.com, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3] usb: dwc3: Abort suspend on soft disconnect failure
-Message-ID: <2025041149-krypton-rejoice-bced@gregkh>
-References: <20250327133233.2566528-1-khtsai@google.com>
+	s=arc-20240116; t=1744381783; c=relaxed/simple;
+	bh=G+0nVYQRoJH4rJppKIhEIBLL7hjyhBhGIcXNcwUucIU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PWan76D4d7bYX15XSof7a8twkVF2RV4/gWdkJV8wPEmH1Ben5UuHcO4LffKiS1ostqIPrwmFA3tIVZ0TluY39Rv19JmoQ6EPLFDgr4fD0kKhz38nWAZVUr5WgxUoOAmH9MVQOFMFI+Vk2JzOmBullwc66lv0jnnCzTJj5bQHpUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DpArR5aK; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-736a7e126c7so1848402b3a.3;
+        Fri, 11 Apr 2025 07:29:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744381781; x=1744986581; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=P0B2X27Vy1PVZALJj52RE/yzAKgD4YWmN8f+MkQnKqE=;
+        b=DpArR5aK/vdIs6ize/utGCQpGl+sLhrEV3TsJi5PI0VZD3zDbK70Bw4tHRtztNnoqh
+         XuhRqQA33QHPdmTtvAeto/qrCePBhXba4cGJ2mXuObkKKW8Np6KmsKhmFouPuIHY03fZ
+         ta9T1NS7/u1bJdOj/0snB2hFzN3xwf807tft1ZXfgO7lPR/TM4o9Rh0h9EKZYH7BmEbL
+         rOLUO52XiIDII7RIRW+3c0qS2R+wlGKR85l2L2FDnu9GDugHvTMVpCjPHDkoZ9B7u32C
+         CFZ/4dagRZcNSO3CD/VJg+qCZZvrTtZs0vfjEDrHHRy8tsIcMQggIpbSugfInbu9js57
+         tqwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744381781; x=1744986581;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=P0B2X27Vy1PVZALJj52RE/yzAKgD4YWmN8f+MkQnKqE=;
+        b=kxSJuvcrmJ5YBeZTiumnFAgi/FGWw2qDUwMQsw3zLFYO/VZMmDZ0bbtEGz/qHjQoMv
+         WQ22XfCBZAYekZcYlYkLUm1CNE02uwuEAa4ZR7MmWQ9iP000dDMqnVHPq01LAbxabIuQ
+         C+0hTwmQkozX7LMybcVh5brZT9VJAjz4aMUpNFVfMchVU9DWwsmBJkHk3bnMP2WvgncU
+         J4TBGsFIeA1qkrvPRFAgWE0Cnf8Lyv4tjD787jnLND2jVJAEPmiQlobGb20c3TsFhxSt
+         EYtuZmM0KJs6CABdeP/rjK7iP5yOT17zFnsyeVYd7hXqVUxES6xVGbRT8mGszPsgNW0M
+         hYDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVOs/6JNAQWqyAMczGh9PMbldFcbuM3Ma6CSClu4/cjHoGvBkAcn9erXcpy3w216WDbei2bhAf/@vger.kernel.org, AJvYcCVzALEqSlZSwvNjieP2b0UFxz/m01aoL5Splek4MuM5ozu9oVajDnen0FMqhVxmXKLa6JjGL0rEjRTBn2c=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzm93z6533sGJOYBNokdsrIvs6jiTkoTsr8jhEOp0z5Hjw4Vmi3
+	1q/sEyv/J2b/r1mL2ZP2YyNipKaasgZP/Tg8vhCw8HxjA89QQlPM
+X-Gm-Gg: ASbGncu28vgjtsn9tcbQgObOrvokJVK2VB1x19vLZ1tvFyKOiia0Z2lTiKoed8HPuAq
+	B4ZVcNNREo//n69IHy1Ffdwj5U6Txnxh0ZpyqpnnhYc6Ekmy6q+sjT7LElEK0JmEqWB+4gkUEnS
+	GlICEtFtfSyzwN6bM3NFRPuFoXYDvgv3NS+Ku6GDePEyQoVM1XGP/pBOw/piUrIEMqVaO43i9eI
+	3h9WRO0UsL6lFyYmU+FsZNhQ0zDN/LTq6FIXLrlRS1j+eozXNmqf1RYwMJmqVl1BGEbNHPuUm5J
+	o6OxMqTNuTT+nMIzZnveCyf799QW9lRuyRXRjTSN4MjPZqmYK5JbWTTdEXIE8auHYDS5To3B2Nn
+	S1ZnpaTIz4t7BZA==
+X-Google-Smtp-Source: AGHT+IGAnZdXK8PXfdxuwTPTQNYwmDyrng6oztRepxmPAHYqxemSZWZ7A3RasclLiCfvOYTVVUh+1g==
+X-Received: by 2002:a05:6a20:6f07:b0:1f5:8714:8147 with SMTP id adf61e73a8af0-201797c3481mr4195387637.23.1744381780848;
+        Fri, 11 Apr 2025 07:29:40 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bd2334468sm1540239b3a.169.2025.04.11.07.29.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 11 Apr 2025 07:29:40 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <90288944-3f5b-45b7-ae7d-c7a54398db55@roeck-us.net>
+Date: Fri, 11 Apr 2025 07:29:38 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250327133233.2566528-1-khtsai@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 000/205] 6.1.134-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+ srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org
+References: <20250409115832.610030955@linuxfoundation.org>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <20250409115832.610030955@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Mar 27, 2025 at 09:32:16PM +0800, Kuen-Han Tsai wrote:
-> When dwc3_gadget_soft_disconnect() fails, dwc3_suspend_common() keeps
-> going with the suspend, resulting in a period where the power domain is
-> off, but the gadget driver remains connected.  Within this time frame,
-> invoking vbus_event_work() will cause an error as it attempts to access
-> DWC3 registers for endpoint disabling after the power domain has been
-> completely shut down.
+On 4/9/25 05:02, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.134 release.
+> There are 205 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Abort the suspend sequence when dwc3_gadget_suspend() cannot halt the
-> controller and proceeds with a soft connect.
+> Responses should be made by Fri, 11 Apr 2025 11:58:02 +0000.
+> Anything received after that time might be too late.
 > 
-> Fixes: 9f8a67b65a49 ("usb: dwc3: gadget: fix gadget suspend/resume")
-> CC: stable@vger.kernel.org
-> Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
 
-Always test your patches before submitting them so you don't get emails
-from grumpy maintainers telling you to test your patches so that they
-don't break the build :(
+Building loongarch:defconfig ... failed
+--------------
+Error log:
+In file included from arch/loongarch/net/bpf_jit.c:7:
+arch/loongarch/net/bpf_jit.h: In function 'emit_nop':
+arch/loongarch/net/bpf_jit.h:30:22: error: 'INSN_NOP' undeclared
+
+Caused by commit e9ccb262b39a ("LoongArch: BPF: Fix off-by-one error
+in build_prologue()"). INSN_NOP was introduced with commit 19e5eb15b00c5
+in v6.2.
+
+Also, the description of e9ccb262b39a says "With BPF progs mixing bpf2bpf
+and tailcalls...". Support for that was introduced in v6.4 with commit
+bb035ef0cc91 ("LoongArch: BPF: Support mixing bpf2bpf and tailcalls"),
+so I do wonder if e9ccb262b39a was really needed in 6.1.
+
+Guenter
 
 
