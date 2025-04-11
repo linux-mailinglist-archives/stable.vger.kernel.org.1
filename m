@@ -1,168 +1,141 @@
-Return-Path: <stable+bounces-132293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02D8CA864B1
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 19:28:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 005C9A864BE
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 19:29:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0FA416630C
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 17:28:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D05327AD8F3
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 17:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11BC3231A21;
-	Fri, 11 Apr 2025 17:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A0B8232368;
+	Fri, 11 Apr 2025 17:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MymUixhS"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="HDjyd73M"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD71E23099C;
-	Fri, 11 Apr 2025 17:28:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007C3231A2A;
+	Fri, 11 Apr 2025 17:29:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744392491; cv=none; b=AIF4bkkKCrGYFKoCGTMwV2PghqvAIkPT9kayG32YybpfBOcL2oJKzf5Y8tL1YsHhG6yRrdzSRkmTT1vFVSBBSbQvWsB5PAoEBXfKJ/dafxhj+oZKdyV6mjlOtA618aqLes6ShoXy9t05+73AH5Ns8v0IhnUzZ2P9arkMfvDrFpE=
+	t=1744392583; cv=none; b=SLcVAsbyA27LW3bD8RthurtbYvjuLsb9eZBaIQf0EiBD9m481u1dCP58TPxLlZzW7p0TvJmzTnF3ufCUSuLjX2XAoHmfopz5qL+BE5fS9wRiawkp4G/TgsSI4CfqH2SWZs3K70kbK5LupBEtsfAwUcuQCywsWeK05bmKMnFAk1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744392491; c=relaxed/simple;
-	bh=WC3u1ImMrIwQcuUwS71L4kjKo8LAJfFX0pYiJWHDjs0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RdFLUADw+VGUoXdbMWmQhR6/5xrnHQAdZcybtSABeIAco/ACqQKgMxbWJSF83IqcveNNt7obhV9tHNfos3QC1dkvNXLJZNsL56tNfxIS6tS855A/P4Km2rR47MobONFZWus5860xnw8fFWQG4qlWBYiFhTbJg/zMGoB5ot7wFRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MymUixhS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AB82C4CEE2;
-	Fri, 11 Apr 2025 17:28:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744392491;
-	bh=WC3u1ImMrIwQcuUwS71L4kjKo8LAJfFX0pYiJWHDjs0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=MymUixhS6j31bXwFvi6mFMde2JMsbqVN+cM5XbJ2n0Fw/uSA4PPjbKbuOl03Ljm65
-	 c1+UhbEjQan/xoAt0c9NIRR65zLecEmEUJF3NyMD8/ejDRa/Iz2ZsBE1iTpENqhIEh
-	 00Q1T95PWm9ASE3S+nTEm0EsKYpVUZ+dzRrCeswWM17+kYaykbNZ6y4Jk9j4RyONDx
-	 PRqI4GNN8WIB62+cER8is5rrKbYsvr+yCpfBLHLU935pl+Q+ogeLrdmontI6Z8IjM4
-	 WUh4/SyHAdwJKiNNgXyLGRr9hKTCDLc/M0r4VONW5ZFiceGjNAin/RD/b2MBZ2AJPq
-	 wRe0JosummXAg==
-From: Will Deacon <will@kernel.org>
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	Piotr Jaroszynski <pjaroszynski@nvidia.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	SeongJae Park <sj@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	linux-arm-kernel@lists.infradead.org,
-	iommu@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [BACKPORT PATCH 6.6.y] Fix mmu notifiers for range-based invalidates
-Date: Fri, 11 Apr 2025 18:28:04 +0100
-Message-Id: <20250411172804.6014-1-will@kernel.org>
-X-Mailer: git-send-email 2.20.1
+	s=arc-20240116; t=1744392583; c=relaxed/simple;
+	bh=SNjjkvPi8mDPCgliOBOb/sKtvfgDejUzyhE44uJp3mk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=rxdLVEmYVgQgse4KCMmYuPwa6pULMO2rsl5S43l1pAMO3glKvyAgmUQGLCbP0UnlKtkVIIjzZhHeo09auZh+6bGLP4YAdtLmogNKjrgDbyirKCYmL7s5UC9lvtGil9jLfu2vkxTDWmtFuaTYMWATXMqQmeQ6yZfhYNN54hqL3lM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=HDjyd73M; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53BHTU492187578
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 11 Apr 2025 12:29:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1744392570;
+	bh=0CmmRFEk2Mpf6bDBwWDF9TSqpw/smnpuGGU09f+E/SM=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=HDjyd73MFFe9fhAPqvvRBo9bMJaUdSpHxcNQ+s2jLa7FRWsF95qQFJI28yYTJnrgw
+	 kurLC3kqP8AQpXiN6ku8PhT40Z6xpOuEXqM2CzDPTtL98ozxh+QrmViA83CT5KocVZ
+	 BXkuXhCqtcE8eY7cTNpEn5+iVZq4oOHiM8VrTIkA=
+Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53BHTUF6128866
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 11 Apr 2025 12:29:30 -0500
+Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 11
+ Apr 2025 12:29:30 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 11 Apr 2025 12:29:29 -0500
+Received: from [10.249.141.75] ([10.249.141.75])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53BHTPSt002976;
+	Fri, 11 Apr 2025 12:29:26 -0500
+Message-ID: <624fd8c5-1315-4af3-8fb2-486ca95045f2@ti.com>
+Date: Fri, 11 Apr 2025 22:59:25 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/7] arm64: dts: ti: am68-sk: Fix regulator hierarchy
+To: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>, <nm@ti.com>,
+        <vigneshr@ti.com>
+CC: <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+        <conor+dt@kernel.org>, <vaishnav.a@ti.com>, <jai.luthra@linux.dev>,
+        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
+        <imx@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>, <u-kumar1@ti.com>
+References: <20250409134128.2098195-1-y-abhilashchandra@ti.com>
+ <20250409134128.2098195-3-y-abhilashchandra@ti.com>
+Content-Language: en-US
+From: "Kumar, Udit" <u-kumar1@ti.com>
+In-Reply-To: <20250409134128.2098195-3-y-abhilashchandra@ti.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-From: Piotr Jaroszynski <pjaroszynski@nvidia.com>
 
-[ Upstream commit f7edb07ad7c66eab3dce57384f33b9799d579133 ]
+On 4/9/2025 7:11 PM, Yemike Abhilash Chandra wrote:
+> Update the vin-supply of the TLV71033 regulator from LM5141 (vsys_3v3) to
+> LM61460 (vsys_5v0) to match the schematics. Add a fixed regulator node for
+> the LM61460 5V supply to support this change.
+>
+> AM68-SK schematics: https://www.ti.com/lit/zip/sprr463
+> Fixes: a266c180b398 ("arm64: dts: ti: k3-am68-sk: Add support for AM68 SK base board")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+> ---
+>   arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts | 13 ++++++++++++-
+>   1 file changed, 12 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts b/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
+> index 11522b36e0ce..5fa70a874d7b 100644
+> --- a/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
+> +++ b/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
+> @@ -44,6 +44,17 @@ vusb_main: regulator-vusb-main5v0 {
+>   		regulator-boot-on;
+>   	};
+>   
+> +	vsys_5v0: regulator-vsys5v0 {
+> +		/* Output of LM61460 */
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "vsys_5v0";
+> +		regulator-min-microvolt = <5000000>;
+> +		regulator-max-microvolt = <5000000>;
+> +		vin-supply = <&vusb_main>;
+> +		regulator-always-on;
+> +		regulator-boot-on;
+> +	};
+> +
+>   	vsys_3v3: regulator-vsys3v3 {
+>   		/* Output of LM5141 */
+>   		compatible = "regulator-fixed";
+> @@ -76,7 +87,7 @@ vdd_sd_dv: regulator-tlv71033 {
+>   		regulator-min-microvolt = <1800000>;
+>   		regulator-max-microvolt = <3300000>;
+>   		regulator-boot-on;
+> -		vin-supply = <&vsys_3v3>;
+> +		vin-supply = <&vsys_5v0>;
+>   		gpios = <&main_gpio0 49 GPIO_ACTIVE_HIGH>;
 
-Update the __flush_tlb_range_op macro not to modify its parameters as
-these are unexepcted semantics. In practice, this fixes the call to
-mmu_notifier_arch_invalidate_secondary_tlbs() in
-__flush_tlb_range_nosync() to use the correct range instead of an empty
-range with start=end. The empty range was (un)lucky as it results in
-taking the invalidate-all path that doesn't cause correctness issues,
-but can certainly result in suboptimal perf.
 
-This has been broken since commit 6bbd42e2df8f ("mmu_notifiers: call
-invalidate_range() when invalidating TLBs") when the call to the
-notifiers was added to __flush_tlb_range(). It predates the addition of
-the __flush_tlb_range_op() macro from commit 360839027a6e ("arm64: tlb:
-Refactor the core flush algorithm of __flush_tlb_range") that made the
-bug hard to spot.
+Please ignore previous comment , I realized you are changing parent for 
+tlv71033 not for vsys_3v3.
 
-Fixes: 6bbd42e2df8f ("mmu_notifiers: call invalidate_range() when invalidating TLBs")
+With that
 
-Signed-off-by: Piotr Jaroszynski <pjaroszynski@nvidia.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Raghavendra Rao Ananta <rananta@google.com>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Nicolin Chen <nicolinc@nvidia.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: iommu@lists.linux.dev
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org # Backport for 6.6.y only
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Link: https://lore.kernel.org/r/20250304085127.2238030-1-pjaroszynski@nvidia.com
-[will: Resolve conflicts due to lack of LPA2 support]
-Signed-off-by: Will Deacon <will@kernel.org>
----
- arch/arm64/include/asm/tlbflush.h | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+Reviewed-by: Udit Kumar <u-kumar1@ti.com>
 
-diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
-index b73baaf8ae47..d37db2f7a54c 100644
---- a/arch/arm64/include/asm/tlbflush.h
-+++ b/arch/arm64/include/asm/tlbflush.h
-@@ -369,31 +369,33 @@ static inline void arch_tlbbatch_flush(struct arch_tlbflush_unmap_batch *batch)
- #define __flush_tlb_range_op(op, start, pages, stride,			\
- 				asid, tlb_level, tlbi_user)		\
- do {									\
-+	typeof(start) __flush_start = start;				\
-+	typeof(pages) __flush_pages = pages;				\
- 	int num = 0;							\
- 	int scale = 3;							\
- 	unsigned long addr;						\
- 									\
--	while (pages > 0) {						\
-+	while (__flush_pages > 0) {					\
- 		if (!system_supports_tlb_range() ||			\
--		    pages == 1) {					\
--			addr = __TLBI_VADDR(start, asid);		\
-+		    __flush_pages == 1) {				\
-+			addr = __TLBI_VADDR(__flush_start, asid);	\
- 			__tlbi_level(op, addr, tlb_level);		\
- 			if (tlbi_user)					\
- 				__tlbi_user_level(op, addr, tlb_level);	\
--			start += stride;				\
--			pages -= stride >> PAGE_SHIFT;			\
-+			__flush_start += stride;			\
-+			__flush_pages -= stride >> PAGE_SHIFT;		\
- 			continue;					\
- 		}							\
- 									\
--		num = __TLBI_RANGE_NUM(pages, scale);			\
-+		num = __TLBI_RANGE_NUM(__flush_pages, scale);		\
- 		if (num >= 0) {						\
--			addr = __TLBI_VADDR_RANGE(start, asid, scale,	\
--						  num, tlb_level);	\
-+			addr = __TLBI_VADDR_RANGE(__flush_start, asid,	\
-+						scale, num, tlb_level);	\
- 			__tlbi(r##op, addr);				\
- 			if (tlbi_user)					\
- 				__tlbi_user(r##op, addr);		\
--			start += __TLBI_RANGE_PAGES(num, scale) << PAGE_SHIFT; \
--			pages -= __TLBI_RANGE_PAGES(num, scale);	\
-+			__flush_start += __TLBI_RANGE_PAGES(num, scale) << PAGE_SHIFT; \
-+			__flush_pages -= __TLBI_RANGE_PAGES(num, scale);\
- 		}							\
- 		scale--;						\
- 	}								\
--- 
-2.49.0.604.gff1f9ca942-goog
 
+>   		states = <1800000 0x0>,
+>   			 <3300000 0x1>;
 
