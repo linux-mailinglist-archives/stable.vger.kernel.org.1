@@ -1,129 +1,131 @@
-Return-Path: <stable+bounces-132225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F0CFA85B4C
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 13:15:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D684AA85B5F
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 13:19:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1ADF1442248
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 11:12:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EED2D19E5DEB
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 11:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196F2221292;
-	Fri, 11 Apr 2025 11:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9124020D509;
+	Fri, 11 Apr 2025 11:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="fcLkhqJT"
-X-Original-To: Stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="iItvVO66"
+X-Original-To: stable@vger.kernel.org
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DEA0221261;
-	Fri, 11 Apr 2025 11:12:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5BC7278E4A
+	for <stable@vger.kernel.org>; Fri, 11 Apr 2025 11:19:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744369932; cv=none; b=dzFxITI1XAMQKo7BaWossQt5sRDkJ7kMwI1xGgu+qwjE4MVU+roqQsjqWO/3G85IuOHRQQBYeCHtgpUMP7vowRs5zHY5avodVbTJWambV5OxZFq5fxoSvFwHt5n5DzgTEywxyhe3xcMVgcm9kBjdVMfhlV9ovNAVwYr0l+WokRY=
+	t=1744370359; cv=none; b=FdPws1/SUziPz4yoMb+lO+8Ht605oYr3LzWSAjT1FsQyICCYT8O0AD0MXoceQy4sIDL1B7odatIxB/307TVs0byAOlCBwukYA1HXEbmU9zwTD1sBD5PlmIxsnx4Z0FFrXG9oU3a4svly54q3tABx9lY/5mPLPExgulDMommrxw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744369932; c=relaxed/simple;
-	bh=FUQOpShM/qKPlkYr0w/mK5JyznMNm4iflYY28xYMzuc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tRg93maQbz4Lr+8YG6lMDHx/q8QMtYbROPWzkyejgtn0OuqHFU/Rlkift0edPI5+hFx6nv1abzielJDVu02FQOqvFA1bczJLu28nTgiF+4mgP+Tw6kYm23cW5rGwyTxSaRaFxKh8qV3A+6e73oYxLTBZNTUVv0fDtTRNweqGpwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=fcLkhqJT; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53B3kJD6027632;
-	Fri, 11 Apr 2025 11:12:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=qFNRJ0
-	NLHfjTNq+Xox+fYdzva/4pe8ltrKWFdZWaN/I=; b=fcLkhqJTA93tRApbCxcP7H
-	MdmzynvcEsxkbsxhV8gfGf+q4nB/Pbsl/+GOJurTZxbs71uKWyABCri5dvSNMX70
-	Nod+H9wgf3IjSFpZutTA1oPgzu8nKvUuBgBFgpT3juIG2Jonb7NlUFuASutTTHzK
-	KIFafoN0EzNuOXVA/erRh2hMrlSddivIKPM6jApC7Th9UKCg4KPoD0cYrQWZTfXF
-	yxRoDH2mYdKPyDgfkrYhJ0UhiriPbeRuOWnVQNHJihLVy1ngODZYxLKbdaTs4ezw
-	fZ02HS6QJ284bk2honJvQ9VdHmKvMJSyavBakgdr0GHy5rH66/jX/5kk7EdwLknw
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45xufa9v72-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 11 Apr 2025 11:12:01 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53B9EIrl024577;
-	Fri, 11 Apr 2025 11:12:00 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 45ueuttvvn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 11 Apr 2025 11:12:00 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53BBBuAP43057640
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 11 Apr 2025 11:11:56 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6F6902004B;
-	Fri, 11 Apr 2025 11:11:56 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8F2F620043;
-	Fri, 11 Apr 2025 11:11:55 +0000 (GMT)
-Received: from [9.171.62.213] (unknown [9.171.62.213])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 11 Apr 2025 11:11:55 +0000 (GMT)
-Message-ID: <a6f667b2-ef7d-4636-ba3c-cf4afe8ff6c3@linux.ibm.com>
-Date: Fri, 11 Apr 2025 13:11:55 +0200
+	s=arc-20240116; t=1744370359; c=relaxed/simple;
+	bh=0Li/qqcuMF5C+sKteXxSetwme8NCv2hfNLGDfl1J4Ps=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=tnJRcH6UgyeFXseVOXQqATSwirL9RcY4yWAN5C2a732PWeFgjmt58KnhuvrKpyMagO0z9+5pVxSzxnYbLDdHL6JOggK/Gds17RQV62jniORrG0utaONAtiuAPjrHt8nsAPOWMpjn5Mt9V805c52S72ElMOiXrz0PdM/Xau/4svk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=iItvVO66; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-72d3b48d2ffso1876577b3a.2
+        for <stable@vger.kernel.org>; Fri, 11 Apr 2025 04:19:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1744370357; x=1744975157; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/m/3d3TtE5r56N988VKyJ5gOZ77ZQPrrPQjrW9ZMYPo=;
+        b=iItvVO66uqzMhK+/Qp4Ni8+tuqzhsxLXnB41nqDGLGTD+CxfuxO3MKF3Zz6sU5NWVV
+         X4sdf3a4YamsKPirNR8O6juV20SFz/9TdFpjizZcY+K1LNiXPK/AfxeHTKqXmh2xFlBW
+         zfqNOeN9EYCuPicHoOqqZvTKW33zmEjEAvZ0Q=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744370357; x=1744975157;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/m/3d3TtE5r56N988VKyJ5gOZ77ZQPrrPQjrW9ZMYPo=;
+        b=B0gUqxNAyotuqC5U0r7Q92xWV/MszczYY+1/YEFeQtHghu0e7eNksHCZx20ATgPT/f
+         tMb+pprocvyXNdYQf+Oc0/lwFEnXO4QZ0ZH2tRqk4G958hgPmgcL15qDDZx4WtYMrOis
+         80leU5KumU0Gg70IvP+ikSwUc7zwCOiTwlA9U+renevvD5qSTH43cew7f0QN9igpwRfL
+         mjbOLo8PAg/QCc5ELZW9FlqljPjwZpO1i5PmS22sZ2Hn20bUDjY0u14OpVbiUq3TZ/jG
+         YITgmGqW8pka0NlNs2bcb8K69RBpQzWk228W2YNo7+PjBKUul2jyyf4m4NauO1LV8OUL
+         jSYA==
+X-Forwarded-Encrypted: i=1; AJvYcCVpg7pgdiQfe2rhIjAb3d3NpFkb5+1V9Vz3MvBVa1MAuFHVPMDi8YAuq0aGR0IVR1dHsbH0U2o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxynvaVoW2aEvhn1l6pRmucMcIb4EEyKBGisKzKXZfMWJBCYzEg
+	TO3uD+oJO7FoVTP6wxMnNdzliqngp3kWnOk7y8D7x4TUyvJ/N7soBYknb9btqw==
+X-Gm-Gg: ASbGncvhcJMLPnzj2pj+WGFqwRZNOJdjpIn+/95NBfrRv46dmA3E0YPi+2gt5OYTyEA
+	Jj+0yZAGXJNScpshVA9THs6xGqcl6/5kt2/u+YXLgVOUrA9vxRGnHKcgxff/Di7sdPUC8GU0JGK
+	JwuGAHg6/GLwTx3c7UI5QACBVv/gELNOdpzGJkop2lJQmLLtkmj8tleh8jp/XQ0cGYsQOm10Nif
+	v17ES0UD6pIOPap5zly325+YzuJZFptK/qLuwbU8qPgB0lidKByEKS0+XK1pSIFTflFbqd5oGXY
+	7RCPZIf8b+muzNFoLxkWshfYI497s3UPEbXWjxaTgs8WAlu3kyR1h8NNxTaxsxOXAnLlq+4p6mL
+	w8+8QtLuI
+X-Google-Smtp-Source: AGHT+IHdB7cuaz+h6Nd3nw3MX6wsA00yUMF4he1ZUzS+zxMceGqPQacHi3ZzkELiHzuL2/A+pkFjzQ==
+X-Received: by 2002:a05:6a00:a91:b0:736:62a8:e52d with SMTP id d2e1a72fcca58-73bd11fe733mr3546676b3a.12.1744370357057;
+        Fri, 11 Apr 2025 04:19:17 -0700 (PDT)
+Received: from localhost.localdomain ([192.19.234.250])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bd21c65c9sm1266920b3a.61.2025.04.11.04.19.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Apr 2025 04:19:16 -0700 (PDT)
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+To: linux-scsi@vger.kernel.org,
+	martin.petersen@oracle.com
+Cc: rajsekhar.chundru@broadcom.com,
+	sathya.prakash@broadcom.com,
+	sumit.saxena@broadcom.com,
+	chandrakanth.patil@broadcom.com,
+	prayas.patel@broadcom.com,
+	tadamsjr@google.com,
+	vishakhavc@google.com,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v1 1/2] Regression fix: Fix pending IOs counter per reply queue
+Date: Fri, 11 Apr 2025 16:44:18 +0530
+Message-Id: <20250411111419.135485-2-ranjan.kumar@broadcom.com>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20250411111419.135485-1-ranjan.kumar@broadcom.com>
+References: <20250411111419.135485-1-ranjan.kumar@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] s390/virtio_ccw: don't allocate/assign airqs for
- non-existing queues
-To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-Cc: linux-s390@vger.kernel.org, virtualization@lists.linux.dev,
-        kvm@vger.kernel.org, Chandra Merla <cmerla@redhat.com>,
-        Stable@vger.kernel.org, Cornelia Huck <cohuck@redhat.com>,
-        Thomas Huth <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
-        Eric Farman <farman@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev
- <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>, Wei Wang <wei.w.wang@intel.com>
-References: <20250402203621.940090-1-david@redhat.com>
- <065d46ba-83c1-473a-9cbe-d5388237d1ea@redhat.com>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <065d46ba-83c1-473a-9cbe-d5388237d1ea@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 7j2Hpeh7kYNRktpeuE5HSecIMZ7XXZyg
-X-Proofpoint-ORIG-GUID: 7j2Hpeh7kYNRktpeuE5HSecIMZ7XXZyg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-11_04,2025-04-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- priorityscore=1501 adultscore=0 spamscore=0 bulkscore=0 mlxlogscore=852
- clxscore=1015 suspectscore=0 malwarescore=0 mlxscore=0 impostorscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2504110069
+Content-Transfer-Encoding: 8bit
 
-Am 10.04.25 um 20:44 schrieb David Hildenbrand:
-[...]
->> ---
-> 
-> So, given that
-> 
-> (a) people are actively running into this
-> (b) we'll have to backport this quite a lot
-> (c) the spec issue is not a s390x-only issue
-> (d) it's still unclear how to best deal with the spec issue
-> 
-> I suggest getting this fix here upstream asap. It will neither making sorting out the spec issue easier nor harder :)
-> 
-> I can spot it in the s390 fixes tree already.
+Commit 199510e33dea ("scsi: mpi3mr: Update consumer index of
+reply queues after every 100 replies") introduced a regression
+with Per reply queue pending IOs counter was wrongly decremented
+leading to counter getting negative.
 
-Makes sense to me. MST, ok with you to send via s390 tree?
+Fixed the issue by dropping the extra atomic decrement for
+pending IOs counter.
+
+Fixes: 199510e33dea ("scsi: mpi3mr: Update consumer index of reply queues after every 100 replies")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sathya Prakash <sathya.prakash@broadcom.com>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+---
+ drivers/scsi/mpi3mr/mpi3mr_fw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+index 3fcb1ad3b070..d6e402aacb2a 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -565,7 +565,7 @@ int mpi3mr_process_op_reply_q(struct mpi3mr_ioc *mrioc,
+ 		WRITE_ONCE(op_req_q->ci, le16_to_cpu(reply_desc->request_queue_ci));
+ 		mpi3mr_process_op_reply_desc(mrioc, reply_desc, &reply_dma,
+ 		    reply_qidx);
+-		atomic_dec(&op_reply_q->pend_ios);
++
+ 		if (reply_dma)
+ 			mpi3mr_repost_reply_buf(mrioc, reply_dma);
+ 		num_op_reply++;
+-- 
+2.31.1
 
 
