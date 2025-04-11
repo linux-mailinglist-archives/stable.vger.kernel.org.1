@@ -1,89 +1,89 @@
-Return-Path: <stable+bounces-132288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18D61A863C6
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 18:56:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D30CA863B5
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 18:52:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01D469C2984
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 16:51:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9424A7AB66D
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 16:50:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E56D1F3FED;
-	Fri, 11 Apr 2025 16:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F1521ABC3;
+	Fri, 11 Apr 2025 16:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="dVM6lmNf"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="gaREhpvx"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2055.outbound.protection.outlook.com [40.107.244.55])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2056.outbound.protection.outlook.com [40.107.236.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66024215773
-	for <stable@vger.kernel.org>; Fri, 11 Apr 2025 16:51:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D24821CC5D
+	for <stable@vger.kernel.org>; Fri, 11 Apr 2025 16:51:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.56
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744390294; cv=fail; b=b5zyu0UqTYDzHVEyFThxNRwurtFtY6ujSpjoUtlhvjGCatanGLP86IHe3cVux6qU+XF195V4kVqZTgDahLL3lOFlcP+gqD0LL8ttkVLJcmDOS1kGLG8wKpi4CsTZKq1zyuuOn6Z293ncgBDcNRsBhRlhoI40zqV/ELboaTx0Yws=
+	t=1744390298; cv=fail; b=bVk8gvaBHB8CCaZQ6JvkTmX4h/wgCFShkyym54AYQ4rTTe0D60fAz62T9MbQWSsIuJijtCnXt4lJLqtcg2/kBPFFPkeYcQePZWRCaHG5sVD3/YxzyBpwcUxo8BAGiBTGzngCFhrT4tKptHxj3X0DrMJk6/A3JDkZbVWQNfQmaXs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744390294; c=relaxed/simple;
-	bh=753CZhZX5tLHCaVJXavvK7IuepJ+QUMd4d1f/SKBEZg=;
+	s=arc-20240116; t=1744390298; c=relaxed/simple;
+	bh=wSdxGzxZgrw13dfz233lDjKcD1sqTq3v7w3TGx6x0yw=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T4a9NvfcKeVUwwzxCy9K1XKBzu4UOiKQvQPNXSLj1IV+fYqGxL8U5RNUQWFI3aQL1F431uoqMjvZ1Of0QXG8lnrVqy3//Hb5wRrJ1kbJGNGuqHib+ZtZLmh5d32cUw3vPFcfdBV3Wf+yJ5wqsMrBA6yyn5BYCbCSwzFEzUgG/f4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=dVM6lmNf; arc=fail smtp.client-ip=40.107.244.55
+	 MIME-Version:Content-Type; b=aBWNI7cdGt7qpjeEvYRJCKw2yilnlr9Q1SiSnbD+JaxwY7aAfX7+m8SiCIcuo82fH0rr9PScTbaDUQtiY2jc3DcSRPI28TztRYrhXUKvoBMvR5boVJXVg0H4Iue5e2ZsZqP9wS+WQLev2JnRJq5XPCg71Awr+6J8oWiYSkUs9WM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=gaREhpvx; arc=fail smtp.client-ip=40.107.236.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qBNKUTWNo8CA8r+yWTColl7kKmB8iN9zOXV8oNM6+XUwVjdiDV4/THE89x3y6gL+2C3HHdb+/4CFytJRaI+mbmEuuZSFl/VKf8mJL4x8XhRL14mS6iRQivfYAWVQUTQgtEyFOyOAantf2UjB7g0tUWoob455itunHJTSmHc0wYdYvBbTFoxx8XXy2wGpKsA0oQ6uB8jj31BwKjj89+xqwEMYGYEEFATpyxuZOQu4rrIJDu8FP7VaZ52HWHyKXtYKIFbLptRXW/INbwYt+68DbeY7b0hXt7DWKv9cWYWq00GU4IaA2u6UvGIOAqVfL8hR4Z5tneEdkr/Vg2hz+cX74g==
+ b=uZkxr/onmAJnUBEoPpun7PggEmOmEnZFHdJ/lVuYmN2s6MGIFEzG2pnFI6ZRi251xu8j6/XffWyefEgESFfftt8lYyeMpkStxAVL+TlJ0hGqZtqr6vUSkUfZCAo2MtLOlJ+umIg5W3kJT0OBkKh6GWIGDYi/oZNKPhnI48VJ9p6mp5n95ualD0B+AQEKoRbfPmfAQjs4iGMS36rSaYwc9lGL7mKtVKNzCd31lzpGehBbfncyC1FWaBNm84vDxSfRlJ7UmRF55ea0bHDXTlVsLXvoo40CwjroPtjT0yKaYBlG7bu6n1Zo224KVfxMdi+W1+thrZdfjdbOtfQoBZbI3w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/0SkV4RC7WdJ3enE2CDQ4tbrjSWeCNeuXhm3ZMN0lNM=;
- b=e1BENU95dmNfURsW/W/dhncke26QigG6jObQjF0z5m4hHqwxde7W8qMholgWyOk6OYd/oR+v339RePNh6Gax1BpY6bJAPjx/TA+IkydYKyWGOe8Qw8c26Vnxg2DdX928enmixWfTeKlwJzVHrJoLODq0jKPrDpACPCDw1pnEPHHio+Q3xAvx8wm25+z9N0Q2gG1nH8sled/ELSK239KjFW4ciOa2JY/KQ/t4SZ7tbiimGCh7/2F1euINeNPTJ6Nmk9fCzAfgAl+ZQ25g0aVui6FcMmUbaBAYutJqoocdMgqEe/u2xeqdshx7NHBG4jK3+BCHggbK8GqvIX5tLfaswQ==
+ bh=JazLtXrN/OOS/RRuKwUWawM1+E6sF/UMT1Lz4GO2fIY=;
+ b=WMgRo+iyDif2+31nFXTY8f9z4IWVzqwooQlcCThJfsjEUTo06v6kndCls+bfTJqum5IrbVk8EIHEglftUBJLG3bkmiZ/DMJh0za6kYEsts+kU8Gohg3bUdApXdj5IcGGp47uu0qD0YLYIGPyhDz7oUZ1XX0XohIYBfK01CBhpc6czQwawZJwUF0yCIj5+9Yh5uIij6NiIsAV8Ki5hehnNhcXDfmrOuiHtdc7tPtTQff0090sNbkwFnbtZ+PACm9ttQLsrRckoNId3Wl1lRHalZ9KpYbwKqXelc9c+7IQDPeUAoOj6n7pxj0oNwUBvGP2MXziv0CbMyXmdtP5FDrbPQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/0SkV4RC7WdJ3enE2CDQ4tbrjSWeCNeuXhm3ZMN0lNM=;
- b=dVM6lmNfXPtG4YXBl11rrPkzB3D37RRj6rhdscmi/w3mYbAnnEgvcVkQAe7E7IxVI8sVFAZMWKWs4xoTJ4mCZLWoohAMsNJgFxjXnYTahV00gafwPqTIyoXI7erXgFEpOVY3uCfy84vLdA5d3bz1BTC15CSv6wFW5UDDpkG0/Rw=
-Received: from CH0P223CA0006.NAMP223.PROD.OUTLOOK.COM (2603:10b6:610:116::24)
- by DM6PR12MB4217.namprd12.prod.outlook.com (2603:10b6:5:219::24) with
+ bh=JazLtXrN/OOS/RRuKwUWawM1+E6sF/UMT1Lz4GO2fIY=;
+ b=gaREhpvxPwqvcTGc5c2/wXrR85r/DHEMUTdadFyvGA3bd4YKivQYHmhRYLz13jwmNiOTTnMbBbTy0yJQxCzHb7j5uzCearO75qqS2fg9Azw30adGyTnYwNAHoxdX60iy90CmwK+L9nnMUF7uAj/lyF7pyt94WszGsBfTUZ8R7Zg=
+Received: from BY5PR17CA0031.namprd17.prod.outlook.com (2603:10b6:a03:1b8::44)
+ by SN7PR12MB8146.namprd12.prod.outlook.com (2603:10b6:806:323::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.27; Fri, 11 Apr
- 2025 16:51:30 +0000
-Received: from CH3PEPF00000014.namprd21.prod.outlook.com
- (2603:10b6:610:116:cafe::10) by CH0P223CA0006.outlook.office365.com
- (2603:10b6:610:116::24) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8632.27 via Frontend Transport; Fri,
- 11 Apr 2025 16:51:30 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.34; Fri, 11 Apr
+ 2025 16:51:32 +0000
+Received: from SJ1PEPF000026C5.namprd04.prod.outlook.com
+ (2603:10b6:a03:1b8:cafe::73) by BY5PR17CA0031.outlook.office365.com
+ (2603:10b6:a03:1b8::44) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8632.26 via Frontend Transport; Fri,
+ 11 Apr 2025 16:51:32 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- CH3PEPF00000014.mail.protection.outlook.com (10.167.244.119) with Microsoft
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SJ1PEPF000026C5.mail.protection.outlook.com (10.167.244.102) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8655.0 via Frontend Transport; Fri, 11 Apr 2025 16:51:30 +0000
-Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.8655.12 via Frontend Transport; Fri, 11 Apr 2025 16:51:32 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 11 Apr
- 2025 11:51:30 -0500
+ 2025 11:51:31 -0500
 Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
  (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 11 Apr
- 2025 11:51:29 -0500
+ 2025 11:51:31 -0500
 Received: from fedora.mshome.net (10.180.168.240) by SATLEXMB03.amd.com
  (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Fri, 11 Apr 2025 11:51:29 -0500
+ Transport; Fri, 11 Apr 2025 11:51:30 -0500
 From: Jason Andryuk <jason.andryuk@amd.com>
 To: <stable@vger.kernel.org>
 CC: Roger Pau Monne <roger.pau@citrix.com>, Juergen Gross <jgross@suse.com>,
 	Jason Andryuk <jason.andryuk@amd.com>
-Subject: [PATCH 1/2] x86/xen: move xen_reserve_extra_memory()
-Date: Fri, 11 Apr 2025 12:51:21 -0400
-Message-ID: <20250411165122.18587-2-jason.andryuk@amd.com>
+Subject: [PATCH 2/2] x86/xen: fix memblock_reserve() usage on PVH
+Date: Fri, 11 Apr 2025 12:51:22 -0400
+Message-ID: <20250411165122.18587-3-jason.andryuk@amd.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250411165122.18587-1-jason.andryuk@amd.com>
 References: <20250411165122.18587-1-jason.andryuk@amd.com>
@@ -97,185 +97,174 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PEPF00000014:EE_|DM6PR12MB4217:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9feede7e-eaeb-4b8f-0377-08dd79191be5
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000026C5:EE_|SN7PR12MB8146:EE_
+X-MS-Office365-Filtering-Correlation-Id: 59789c7d-c2b6-4c60-6bca-08dd79191cf1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700013;
+	BCL:0;ARA:13230040|376014|82310400026|1800799024|36860700013;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NUlMWlRMQ2FaZkRyWno2eHNyRWt1K3RWejgyNlRsbXYrSXNuMTNHTjd6a3Nz?=
- =?utf-8?B?ekp3emN3S0dHT1N4bWd1VGovYjhFUXYxeDhzdGdZUHc0VU8waStueExYUkVh?=
- =?utf-8?B?ZlRxaVJTaXk3MXRsb3NNSS9mYkp1RWQ3TlNtdlowL2Zsai8yTkRVQzFnREht?=
- =?utf-8?B?SUVEb3RtWlpvOEthdkNKWDFCNDc5MG1GV3RRZUcyUk8vZGk0SmVTRkltNE9N?=
- =?utf-8?B?UzVNek15TGZYQUdSTTcrZ2ZTcm5MZHlMeGNIY0FUZ3RuRlIzTXNUTFdlaFha?=
- =?utf-8?B?OEl4bGhaOXZoNGx1azhXcDFiUWJMNnUrUUZBSnZzenY5YlJUNElqQ3lpVExP?=
- =?utf-8?B?QjF3azZtaEViaXFYUDYvYjYyM0JBc21INEp4L2Z4ZmhlR01CQWJSU1k2bHJu?=
- =?utf-8?B?RU1oclI0MW93TUcxbUYvZHRwbUlsVEZzNnVJTGI4TE5YOEhobmtPMWRnQWlB?=
- =?utf-8?B?a3BzdXBRL2grTjNSazd2VHk2ak9vM05tWUMrMW0xK2pYRHRTam1zS0Z0eEV6?=
- =?utf-8?B?c2xIK0ZOMmkzcnZHSHVlTkZnUkRBYU4vcUg5WU9hZk40TXJoQmU5VnVxS05L?=
- =?utf-8?B?RmVIQStZRW1HWHFlZjM1YVNUU09JbWVLNHg0Rit1Mkp2NHpIdG05Mk9wUUUy?=
- =?utf-8?B?clFETktkYlNJcUlFb0NJSzF6emczaFZ6M3NFMWQ4Nk8reGJOWHp6aW1uVlA3?=
- =?utf-8?B?dDVQdW9vM0Y2ZjljUTVUVXNQSlhHUHZIZEUxM2x1YzQzenZZUHc0RUpzNFRv?=
- =?utf-8?B?WW55aFA1Nm9HQU9Bc3BtS3hnUHRwL0Q1TTc2YzVVTTFMQU83bG84QjRlallq?=
- =?utf-8?B?a0IzZzdSZ1NpOHZ4cFp6N29MQkcwYWxJNm04MnllV0lrelpNdGp4UVBvRk1s?=
- =?utf-8?B?ejE3N2p2MGxkQVo3S3RURjVFOXhYNXltdDFJa2o1aWYxQkZ2dHp1MTk3ZWF1?=
- =?utf-8?B?WDk4eVc4YzMvbERVWEtVeUV0eTZtUG5NQ2VrSlErNEF6NUt2dDFheXArallu?=
- =?utf-8?B?NDc1RGxvcnVmeklmMWpjTEdqeDBqZ3hPTi9SWUVJYlN6Zlc0ZC9VZG5nZDVs?=
- =?utf-8?B?MlBCMXdWK2x2cmRCdmVxUjV3Q3dpOS9YUFFHb2lRWjN3V2NZU3MxSFRQUlFn?=
- =?utf-8?B?eTNLOGdzSjdHWm0rN1V2YVRTUldJZk9WSFJwd05HK1VuY0xSU0N5Vyt6QXox?=
- =?utf-8?B?d1dJSTMzVk16WjM4VHViaEtOSlVHWXh6V2pSZHVrTlRWSk9MRnY4K3hKQWox?=
- =?utf-8?B?dW5ZQnIvOW8zZ3pzVFhxeC93bmVlV3ZIRHFBZFZCWXd5RTNQTGVkNlpMK285?=
- =?utf-8?B?NG1FQkVwa3VyNFFEcmpSWXBRQWNHWElOU1VlN1RIVG1lYm1yRlhmaldudkQ4?=
- =?utf-8?B?djl1eG9ReXN5M0Z1UXh0OUxGRGlMWDkzZ056c1IvTllQb05mSDBKS2FIdGll?=
- =?utf-8?B?Q0t0dnBNQmxDaDJ5T25RNTRHRFBxNGxNaHlUQXIzb3QxeXJCdW1WS1RTdGtO?=
- =?utf-8?B?ZjZCQnBXZUZvekNpWElUbUtXQloyQVJQZDdocFNra0tuTmtxSjZ0TFo3UTIr?=
- =?utf-8?B?b01iL2dUa0JIR3p4U09wU0g2OG94c3Z0MHA2aFFJVkY2dHpKcFFuaUlvR3cx?=
- =?utf-8?B?b3R6TDZHZExzL2p6M0s2TnVMWHNBWHZwUmthOVF2ZDlmMVBBUjBXdFlZT0E2?=
- =?utf-8?B?akZqWFBVVFVUQWltSUlnUjhUcnJkb2trZ05jWGtzRDU5V1YyUytOdzM3aTA0?=
- =?utf-8?B?TDlxQ0JtOUxUenJGV0RreWFHa3NsUTI3WS8wWGNFY1c0SHRub0FFSjBEV0gz?=
- =?utf-8?B?a0NEejZWNUJkcWR6SlE4LzZ4S3hBNkRrSkYveW4reWlzaEJGaUhSaE12dWd3?=
- =?utf-8?B?Rm5zWXU2RE5mUTJVNUVJMUM5TW5RbTNYQ3ZkM1dMa1NkS2xtNjNNbHg2dnA1?=
- =?utf-8?B?Ujk4RGdhdGRiRUZML0hTYmdFMld3cmxBT0U5REV4a3p4S251MlFLc3RkaDJJ?=
- =?utf-8?B?a1J5NEhzZUo1Y2J4TGVmaFBBRnFNVWRUaTFMWmRyZjQ3eXNzZVNjSzFZY0Yv?=
- =?utf-8?Q?8mKbhB?=
+	=?utf-8?B?cjZYaXoxTWE0V2JKWW5ROXlIakw4Slp1dzFlQTFJTXNyOEM0dEQyVXpjMEYw?=
+ =?utf-8?B?bGxwVlpRKzhLMUdBb1lBcFNnM0xFUHlrSWh1cG42YzJ6NzVCeUx0SHpua2Vi?=
+ =?utf-8?B?TlkwRGdJUFFMLzZ0RTBqSlpmRnUzcmlSYlB1aW5RbWwza2ZkZDhPOFBkcWVV?=
+ =?utf-8?B?TEg3cHZxRlFTVVl0U3JnaE5KS2lJQmJ0YXlEVURubkVDRE0yMXdVK28wK2Vl?=
+ =?utf-8?B?eloyU1IySmhDZjJpSWVlSGFUaEVKRnRyaDhScDBuVWV1NHU5aTVCb25FTlRM?=
+ =?utf-8?B?TEpZbVpKNDViSDljTFNmcWVaazlDTVdaSStVb01vWXJHSTFlZmFSVUN6NlBh?=
+ =?utf-8?B?S2JZQVExMTVxOHkwVnlvZkZVNzU3dFlKcEFaUTAzYkhKT29PdUlOek5ndmVI?=
+ =?utf-8?B?QVlFK3g4MW5temZyZ3VwWUJzMWt0Kzk3L1BwRUxYZUNaRnNFTzF2eTczelBK?=
+ =?utf-8?B?RkJWMlYzbFhvYVFGUkFFTG9nTUZaNVJaaGlsUGRPdzFkQjNkR29hV3hhT0Z5?=
+ =?utf-8?B?OTlDU0JIN2ZQSHJMK1lNcDhHeW0vbE96Y3ZLQm5nTXdDSlNRY3lHRFB4cW9D?=
+ =?utf-8?B?clI5MHYxMFh0ZXc3ekZWQjBlK3RteFBiNVQ4Z2EwY3N1MG1BdzRyMEs3WEQ1?=
+ =?utf-8?B?aVVGQVUyL2tqYy9BeGRmaC9vVG9XQndJZ09SZVhDdUdTTHMrVGlCa1ZCeitY?=
+ =?utf-8?B?UlJzVVU0QURmMFcyZHlwTmlQRjRIRS85b3l5THBIb3l0eVJOd3JMWWdOeXJa?=
+ =?utf-8?B?R0xMSVkvTzRPc0tVMU4zNTBZdjZ3YXdIZTRLeDhBTjFqelIxNXNxSCtXRTI2?=
+ =?utf-8?B?eTcxb0FFcEhoTTluc0xvejJhM1FlQldNWFJXemx5T1kvM2VPU05za3VWUGtY?=
+ =?utf-8?B?UVl6UHFWbWdXQmEvNzE0Mk5BcTV0VGNQbHZzK3Jvb0o2MHFaY1NZSmVjKzBX?=
+ =?utf-8?B?SVdTN0xtcVF0a01kN0laMnZyWXpZZXB1Tm9ocTczeXNWSzZveU9oYkU5cFVL?=
+ =?utf-8?B?NEdtajZqd2YvRUc4K2d2NFZBd1M2bUgyUit5b1JzT1k0QUtTVE5jZGxNK2lx?=
+ =?utf-8?B?Q2RNejFhZDNINXV0ZWxmL2tCWlQ1emdBRlc4cmZpZVpROGR0UFd5QnFJV3Mz?=
+ =?utf-8?B?U3QxRXZaTmpTbTVMRHVyTVpySTExMkQ2TFFNVmxHU2tkRG9mMG1KSUFldUJa?=
+ =?utf-8?B?NkJBMGx2cUZqMTBud0g4MWdTdmVZODBGc05aa2tyY3VDbnlnajBMcDI0aVdk?=
+ =?utf-8?B?K2FsT1IxSjJzZkdFM0xOaGthT1BWRlhDVVd2aFQrUnd6NzdUY1UxMDRDZUx0?=
+ =?utf-8?B?TWpUdDJNWXpDcjVlM1ZoY2pRakJOQTM0OWZWaGxGSm82eVdmbTdmMXQ2ZzNa?=
+ =?utf-8?B?cFlJQjhTMklnQlZ6dWd2MWRVZDcvWW0zSzhDdlNhNkYrY3I0V2tabVN0Nmd0?=
+ =?utf-8?B?TnBXTlk5dzU2N1ZMUG8rbm4rL1FqU1NSOTJRYmlGNVhBeFZhQ21BVGlnVHcz?=
+ =?utf-8?B?SHNKY1ppRVdNVmpRNDR3ajcyaUd2VHYvZ0k2aVA3bTJHellpaUo5OTFBKzZL?=
+ =?utf-8?B?TmlyS0p6dGZvSzdMemJoWU5VWHpPQzkrNnNlYjlsdVorWkJ4QXZGVlFIajY3?=
+ =?utf-8?B?Mlh3NVN5Y0xuSEJOOEpoWWV3WEdFY1Rmc2d3NlFiNnVVTmRRcGo5WFNqTHhz?=
+ =?utf-8?B?VXhldGV5WWdXR3UxR0tTWVBKZ1IxK3RjdHhuL1RTcVBHNytiR3lqUEswd3JJ?=
+ =?utf-8?B?MnNqUTZYYmxwcUxtei9KVFY2MEs3YUxaN0hBN2dXUUZyUGVVdGJ2NXBLUStQ?=
+ =?utf-8?B?QytOZUsrTkZGc0lGRTBaYkRoTkRBMXJWN0lMK1Q5MDE2VFRrUDRTMlgxYVpN?=
+ =?utf-8?B?bHc3ZDhaZXhtMXFocDlFRHU2MTZOaWtuandpcjR5LzR6UU5lZ21XVnBlMUZp?=
+ =?utf-8?B?K0FVQk5WUG12RjZjYnpseEVscERmR04zMXdlTEZTejlKUkgvTFJuZ3RsMTFB?=
+ =?utf-8?B?NmM3MHVJYUtEMTRqNUptVDRvblZIUXhXeFRoSjNWRnFwRzNJRmZ4Q2ozajVw?=
+ =?utf-8?Q?NIHDdz?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(1800799024)(36860700013);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2025 16:51:30.4959
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2025 16:51:32.1798
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9feede7e-eaeb-4b8f-0377-08dd79191be5
+X-MS-Exchange-CrossTenant-Network-Message-Id: 59789c7d-c2b6-4c60-6bca-08dd79191cf1
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CH3PEPF00000014.namprd21.prod.outlook.com
+	SJ1PEPF000026C5.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4217
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8146
 
 From: Roger Pau Monne <roger.pau@citrix.com>
 
-commit fc05ea89c9ab45e70cb73e70bc0b9cdd403e0ee1 upstream
+commit 4c006734898a113a64a528027274a571b04af95a upstream
 
-In preparation for making the function static.
+The current usage of memblock_reserve() in init_pvh_bootparams() is done before
+the .bss is zeroed, and that used to be fine when
+memblock_reserved_init_regions implicitly ended up in the .meminit.data
+section.  However after commit 73db3abdca58c memblock_reserved_init_regions
+ends up in the .bss section, thus breaking it's usage before the .bss is
+cleared.
 
-No functional change.
+Move and rename the call to xen_reserve_extra_memory() so it's done in the
+x86_init.oem.arch_setup hook, which gets executed after the .bss has been
+zeroed, but before calling e820__memory_setup().
 
+Fixes: 73db3abdca58c ("init/modpost: conditionally check section mismatch to __meminit*")
 Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
 Reviewed-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20240725073116.14626-2-roger.pau@citrix.com>
+Message-ID: <20240725073116.14626-3-roger.pau@citrix.com>
 Signed-off-by: Juergen Gross <jgross@suse.com>
-[ Stable backport - move the code as it exists ]
+[ Context fixup for hypercall_page removal ]
 Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
 ---
 For stable-6.6
 
-This patch is code movement, but it doesn't directly apply since it
-predates the removal of the Xen hypercall_page.  This version moves
-the code as it exists in 6.6.
+Context fixup is needed to cherry-pick after Xen hypercall_page removal.
 
-Pre-req for 4c006734898a113a64a528027274a571b04af95a backport
+The Fixes commit was backported to 6.6, so this is needed to fix booting
+for Xen PVH.
 ---
- arch/x86/xen/enlighten_pvh.c | 82 ++++++++++++++++++------------------
- 1 file changed, 41 insertions(+), 41 deletions(-)
+ arch/x86/include/asm/xen/hypervisor.h |  5 -----
+ arch/x86/platform/pvh/enlighten.c     |  3 ---
+ arch/x86/xen/enlighten_pvh.c          | 15 ++++++++++++---
+ 3 files changed, 12 insertions(+), 11 deletions(-)
 
+diff --git a/arch/x86/include/asm/xen/hypervisor.h b/arch/x86/include/asm/xen/hypervisor.h
+index 64fbd2dbc5b7..a9088250770f 100644
+--- a/arch/x86/include/asm/xen/hypervisor.h
++++ b/arch/x86/include/asm/xen/hypervisor.h
+@@ -62,11 +62,6 @@ void xen_arch_unregister_cpu(int num);
+ #ifdef CONFIG_PVH
+ void __init xen_pvh_init(struct boot_params *boot_params);
+ void __init mem_map_via_hcall(struct boot_params *boot_params_p);
+-#ifdef CONFIG_XEN_PVH
+-void __init xen_reserve_extra_memory(struct boot_params *bootp);
+-#else
+-static inline void xen_reserve_extra_memory(struct boot_params *bootp) { }
+-#endif
+ #endif
+ 
+ /* Lazy mode for batching updates / context switch */
+diff --git a/arch/x86/platform/pvh/enlighten.c b/arch/x86/platform/pvh/enlighten.c
+index a12117f3d4de..00a92cb2c814 100644
+--- a/arch/x86/platform/pvh/enlighten.c
++++ b/arch/x86/platform/pvh/enlighten.c
+@@ -74,9 +74,6 @@ static void __init init_pvh_bootparams(bool xen_guest)
+ 	} else
+ 		xen_raw_printk("Warning: Can fit ISA range into e820\n");
+ 
+-	if (xen_guest)
+-		xen_reserve_extra_memory(&pvh_bootparams);
+-
+ 	pvh_bootparams.hdr.cmd_line_ptr =
+ 		pvh_start_info.cmdline_paddr;
+ 
 diff --git a/arch/x86/xen/enlighten_pvh.c b/arch/x86/xen/enlighten_pvh.c
-index 60b358c2f434..89984018141c 100644
+index 89984018141c..ac0a8adb2c50 100644
 --- a/arch/x86/xen/enlighten_pvh.c
 +++ b/arch/x86/xen/enlighten_pvh.c
-@@ -26,47 +26,6 @@
- bool __ro_after_init xen_pvh;
- EXPORT_SYMBOL_GPL(xen_pvh);
+@@ -8,6 +8,7 @@
+ #include <asm/io_apic.h>
+ #include <asm/hypervisor.h>
+ #include <asm/e820/api.h>
++#include <asm/setup.h>
  
--void __init xen_pvh_init(struct boot_params *boot_params)
--{
--	xen_pvh = 1;
--	xen_domain_type = XEN_HVM_DOMAIN;
--	xen_start_flags = pvh_start_info.flags;
--
--	if (xen_initial_domain())
--		x86_init.oem.arch_setup = xen_add_preferred_consoles;
--	x86_init.oem.banner = xen_banner;
--
--	xen_efi_init(boot_params);
--
--	if (xen_initial_domain()) {
--		struct xen_platform_op op = {
--			.cmd = XENPF_get_dom0_console,
--		};
--		int ret = HYPERVISOR_platform_op(&op);
--
--		if (ret > 0)
--			xen_init_vga(&op.u.dom0_console,
--				     min(ret * sizeof(char),
--					 sizeof(op.u.dom0_console)),
--				     &boot_params->screen_info);
--	}
--}
--
--void __init mem_map_via_hcall(struct boot_params *boot_params_p)
--{
--	struct xen_memory_map memmap;
--	int rc;
--
--	memmap.nr_entries = ARRAY_SIZE(boot_params_p->e820_table);
--	set_xen_guest_handle(memmap.buffer, boot_params_p->e820_table);
--	rc = HYPERVISOR_memory_op(XENMEM_memory_map, &memmap);
--	if (rc) {
--		xen_raw_printk("XENMEM_memory_map failed (%d)\n", rc);
--		BUG();
--	}
--	boot_params_p->e820_entries = memmap.nr_entries;
--}
--
- /*
-  * Reserve e820 UNUSABLE regions to inflate the memory balloon.
-  *
-@@ -133,3 +92,44 @@ void __init xen_reserve_extra_memory(struct boot_params *bootp)
- 		xen_add_extra_mem(PFN_UP(e->addr), pages);
+ #include <xen/xen.h>
+ #include <asm/xen/interface.h>
+@@ -40,8 +41,9 @@ EXPORT_SYMBOL_GPL(xen_pvh);
+  * hypervisor should notify us which memory ranges are suitable for creating
+  * foreign mappings, but that's not yet implemented.
+  */
+-void __init xen_reserve_extra_memory(struct boot_params *bootp)
++static void __init pvh_reserve_extra_memory(void)
+ {
++	struct boot_params *bootp = &boot_params;
+ 	unsigned int i, ram_pages = 0, extra_pages;
+ 
+ 	for (i = 0; i < bootp->e820_entries; i++) {
+@@ -93,14 +95,21 @@ void __init xen_reserve_extra_memory(struct boot_params *bootp)
  	}
  }
-+
-+void __init xen_pvh_init(struct boot_params *boot_params)
+ 
++static void __init pvh_arch_setup(void)
 +{
-+	xen_pvh = 1;
-+	xen_domain_type = XEN_HVM_DOMAIN;
-+	xen_start_flags = pvh_start_info.flags;
++	pvh_reserve_extra_memory();
 +
 +	if (xen_initial_domain())
-+		x86_init.oem.arch_setup = xen_add_preferred_consoles;
-+	x86_init.oem.banner = xen_banner;
-+
-+	xen_efi_init(boot_params);
-+
-+	if (xen_initial_domain()) {
-+		struct xen_platform_op op = {
-+			.cmd = XENPF_get_dom0_console,
-+		};
-+		int ret = HYPERVISOR_platform_op(&op);
-+
-+		if (ret > 0)
-+			xen_init_vga(&op.u.dom0_console,
-+				     min(ret * sizeof(char),
-+					 sizeof(op.u.dom0_console)),
-+				     &boot_params->screen_info);
-+	}
++		xen_add_preferred_consoles();
 +}
 +
-+void __init mem_map_via_hcall(struct boot_params *boot_params_p)
-+{
-+	struct xen_memory_map memmap;
-+	int rc;
-+
-+	memmap.nr_entries = ARRAY_SIZE(boot_params_p->e820_table);
-+	set_xen_guest_handle(memmap.buffer, boot_params_p->e820_table);
-+	rc = HYPERVISOR_memory_op(XENMEM_memory_map, &memmap);
-+	if (rc) {
-+		xen_raw_printk("XENMEM_memory_map failed (%d)\n", rc);
-+		BUG();
-+	}
-+	boot_params_p->e820_entries = memmap.nr_entries;
-+}
+ void __init xen_pvh_init(struct boot_params *boot_params)
+ {
+ 	xen_pvh = 1;
+ 	xen_domain_type = XEN_HVM_DOMAIN;
+ 	xen_start_flags = pvh_start_info.flags;
+ 
+-	if (xen_initial_domain())
+-		x86_init.oem.arch_setup = xen_add_preferred_consoles;
++	x86_init.oem.arch_setup = pvh_arch_setup;
+ 	x86_init.oem.banner = xen_banner;
+ 
+ 	xen_efi_init(boot_params);
 -- 
 2.49.0
 
