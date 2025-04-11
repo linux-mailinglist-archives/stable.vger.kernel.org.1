@@ -1,173 +1,119 @@
-Return-Path: <stable+bounces-132270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E324A8609E
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 16:30:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BD0EA860E9
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 16:43:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EAA07AED19
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 14:28:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5585F16A661
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 14:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E72F1F4606;
-	Fri, 11 Apr 2025 14:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A5C1F4198;
+	Fri, 11 Apr 2025 14:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DpArR5aK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TSWb9rIs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABCAC14F9D6;
-	Fri, 11 Apr 2025 14:29:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735361F3FC8
+	for <stable@vger.kernel.org>; Fri, 11 Apr 2025 14:43:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744381783; cv=none; b=Bki469jaeV1OjzvC+97QkCNgEo02taK8VFSLL97VY96EIFMMbyt+mZf66rn/q7nRUuGbBvmJhbNKEfWS/X7XVfkQiggHS4Nn+uL9EeFsN+mPpANrRk6PuzA/hGcrgNiJD9vz46i/nGCwliMJlrRrtuk7HtfzEVC+EZDN0r7kLgQ=
+	t=1744382602; cv=none; b=ndeuQeUE4+llDaboxXVrmjXIaqM/rt61CLb+yCL0VzY6yI6yDRkOZ9ntbnZx26T8Kvso8xY7/NHWQq/z2Ph3hjIXuWjdeNqC3iFfz86bqagOzkuwvRDXEC1KT8aNdNVSnH+nN6ImF+B8G3bHcjHeJTC0qb9JojPpIAbQjCtdW4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744381783; c=relaxed/simple;
-	bh=G+0nVYQRoJH4rJppKIhEIBLL7hjyhBhGIcXNcwUucIU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PWan76D4d7bYX15XSof7a8twkVF2RV4/gWdkJV8wPEmH1Ben5UuHcO4LffKiS1ostqIPrwmFA3tIVZ0TluY39Rv19JmoQ6EPLFDgr4fD0kKhz38nWAZVUr5WgxUoOAmH9MVQOFMFI+Vk2JzOmBullwc66lv0jnnCzTJj5bQHpUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DpArR5aK; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-736a7e126c7so1848402b3a.3;
-        Fri, 11 Apr 2025 07:29:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744381781; x=1744986581; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=P0B2X27Vy1PVZALJj52RE/yzAKgD4YWmN8f+MkQnKqE=;
-        b=DpArR5aK/vdIs6ize/utGCQpGl+sLhrEV3TsJi5PI0VZD3zDbK70Bw4tHRtztNnoqh
-         XuhRqQA33QHPdmTtvAeto/qrCePBhXba4cGJ2mXuObkKKW8Np6KmsKhmFouPuIHY03fZ
-         ta9T1NS7/u1bJdOj/0snB2hFzN3xwf807tft1ZXfgO7lPR/TM4o9Rh0h9EKZYH7BmEbL
-         rOLUO52XiIDII7RIRW+3c0qS2R+wlGKR85l2L2FDnu9GDugHvTMVpCjPHDkoZ9B7u32C
-         CFZ/4dagRZcNSO3CD/VJg+qCZZvrTtZs0vfjEDrHHRy8tsIcMQggIpbSugfInbu9js57
-         tqwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744381781; x=1744986581;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=P0B2X27Vy1PVZALJj52RE/yzAKgD4YWmN8f+MkQnKqE=;
-        b=kxSJuvcrmJ5YBeZTiumnFAgi/FGWw2qDUwMQsw3zLFYO/VZMmDZ0bbtEGz/qHjQoMv
-         WQ22XfCBZAYekZcYlYkLUm1CNE02uwuEAa4ZR7MmWQ9iP000dDMqnVHPq01LAbxabIuQ
-         C+0hTwmQkozX7LMybcVh5brZT9VJAjz4aMUpNFVfMchVU9DWwsmBJkHk3bnMP2WvgncU
-         J4TBGsFIeA1qkrvPRFAgWE0Cnf8Lyv4tjD787jnLND2jVJAEPmiQlobGb20c3TsFhxSt
-         EYtuZmM0KJs6CABdeP/rjK7iP5yOT17zFnsyeVYd7hXqVUxES6xVGbRT8mGszPsgNW0M
-         hYDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVOs/6JNAQWqyAMczGh9PMbldFcbuM3Ma6CSClu4/cjHoGvBkAcn9erXcpy3w216WDbei2bhAf/@vger.kernel.org, AJvYcCVzALEqSlZSwvNjieP2b0UFxz/m01aoL5Splek4MuM5ozu9oVajDnen0FMqhVxmXKLa6JjGL0rEjRTBn2c=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzm93z6533sGJOYBNokdsrIvs6jiTkoTsr8jhEOp0z5Hjw4Vmi3
-	1q/sEyv/J2b/r1mL2ZP2YyNipKaasgZP/Tg8vhCw8HxjA89QQlPM
-X-Gm-Gg: ASbGncu28vgjtsn9tcbQgObOrvokJVK2VB1x19vLZ1tvFyKOiia0Z2lTiKoed8HPuAq
-	B4ZVcNNREo//n69IHy1Ffdwj5U6Txnxh0ZpyqpnnhYc6Ekmy6q+sjT7LElEK0JmEqWB+4gkUEnS
-	GlICEtFtfSyzwN6bM3NFRPuFoXYDvgv3NS+Ku6GDePEyQoVM1XGP/pBOw/piUrIEMqVaO43i9eI
-	3h9WRO0UsL6lFyYmU+FsZNhQ0zDN/LTq6FIXLrlRS1j+eozXNmqf1RYwMJmqVl1BGEbNHPuUm5J
-	o6OxMqTNuTT+nMIzZnveCyf799QW9lRuyRXRjTSN4MjPZqmYK5JbWTTdEXIE8auHYDS5To3B2Nn
-	S1ZnpaTIz4t7BZA==
-X-Google-Smtp-Source: AGHT+IGAnZdXK8PXfdxuwTPTQNYwmDyrng6oztRepxmPAHYqxemSZWZ7A3RasclLiCfvOYTVVUh+1g==
-X-Received: by 2002:a05:6a20:6f07:b0:1f5:8714:8147 with SMTP id adf61e73a8af0-201797c3481mr4195387637.23.1744381780848;
-        Fri, 11 Apr 2025 07:29:40 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bd2334468sm1540239b3a.169.2025.04.11.07.29.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Apr 2025 07:29:40 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <90288944-3f5b-45b7-ae7d-c7a54398db55@roeck-us.net>
-Date: Fri, 11 Apr 2025 07:29:38 -0700
+	s=arc-20240116; t=1744382602; c=relaxed/simple;
+	bh=3Z6HT9Tfv0F4a8qgDzqrJy9v3ND72f5yLT6i3F3ZeW0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sFRMzHBfKp0qplJKvgOTmkfd2IN7p9JIlcgvN2gDBah4kW6mODXnaBCQ9uyMrNl8bevKDQSiQEYSZMSG2kGo7crdglc5RJBK5Hgk7xgweXJPxdqtrkfdLIJnTWSUPLpSzr6ivfAxeJwRGvKolbYpnBR2n6NQLFFWozFusr6h03Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TSWb9rIs; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744382600; x=1775918600;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=3Z6HT9Tfv0F4a8qgDzqrJy9v3ND72f5yLT6i3F3ZeW0=;
+  b=TSWb9rIsJ+ZKw7MgAV8ee08JXVGbdtnGHVJe8sui1b1pjFFeVkFCuHx6
+   HYOFTJIf9Hd7uqOuhonFLPVY7Aey3PvjC5TZaIdbhuWxuriTqL+E37pGG
+   DC5uauT0p5/DHuc5dnC6wCtUHMx4V4tPPzBpLLkmG6u7xQlUV23RzOxe5
+   vOprEO0SsNHCYs41RfP4Tk1TYMUyGW8Dmn6rlG9I4G8oDn9G4wx/mSuSd
+   bRWgahL9Dv2Kcc/8QJ3R4k6dNWwk0G4+1huRbPsNhb+KHTA97jIky9p0o
+   W9YuYgtrWwL6IKachsi6YWZF8FXDLHGSBtk7TaHyvaqdZ6Ny90/naFxUA
+   w==;
+X-CSE-ConnectionGUID: J3vsUw/FT0ak+bvtWK+N1Q==
+X-CSE-MsgGUID: nqQTYmh4QE6G7mEqq+5v3g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11401"; a="57316232"
+X-IronPort-AV: E=Sophos;i="6.15,205,1739865600"; 
+   d="scan'208";a="57316232"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2025 07:43:19 -0700
+X-CSE-ConnectionGUID: r9FBdMF5SOe0SZIBZ6HAWw==
+X-CSE-MsgGUID: zdrtha3ISFadceuLL7lzmQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,205,1739865600"; 
+   d="scan'208";a="134370135"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+  by orviesa005.jf.intel.com with SMTP; 11 Apr 2025 07:43:17 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Fri, 11 Apr 2025 17:43:16 +0300
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+To: intel-gfx@lists.freedesktop.org
+Cc: stable@vger.kernel.org,
+	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>
+Subject: [PATCH v2 1/2] drm/i915/gem: Allow EXEC_CAPTURE on recoverable contexts on DG1
+Date: Fri, 11 Apr 2025 17:43:12 +0300
+Message-ID: <20250411144313.11660-2-ville.syrjala@linux.intel.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250411144313.11660-1-ville.syrjala@linux.intel.com>
+References: <20250411144313.11660-1-ville.syrjala@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/205] 6.1.134-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org, shuah@kernel.org,
- patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
- jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
- srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org
-References: <20250409115832.610030955@linuxfoundation.org>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20250409115832.610030955@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 4/9/25 05:02, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.134 release.
-> There are 205 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 11 Apr 2025 11:58:02 +0000.
-> Anything received after that time might be too late.
-> 
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Building loongarch:defconfig ... failed
---------------
-Error log:
-In file included from arch/loongarch/net/bpf_jit.c:7:
-arch/loongarch/net/bpf_jit.h: In function 'emit_nop':
-arch/loongarch/net/bpf_jit.h:30:22: error: 'INSN_NOP' undeclared
+The intel-media-driver is currently broken on DG1 because
+it uses EXEC_CAPTURE with recovarable contexts. Relax the
+check to allow that.
 
-Caused by commit e9ccb262b39a ("LoongArch: BPF: Fix off-by-one error
-in build_prologue()"). INSN_NOP was introduced with commit 19e5eb15b00c5
-in v6.2.
+I've also submitted a fix for the intel-media-driver:
+https://github.com/intel/media-driver/pull/1920
 
-Also, the description of e9ccb262b39a says "With BPF progs mixing bpf2bpf
-and tailcalls...". Support for that was introduced in v6.4 with commit
-bb035ef0cc91 ("LoongArch: BPF: Support mixing bpf2bpf and tailcalls"),
-so I do wonder if e9ccb262b39a was really needed in 6.1.
+Cc: stable@vger.kernel.org
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Testcase: igt/gem_exec_capture/capture-invisible
+Fixes: 71b1669ea9bd ("drm/i915/uapi: tweak error capture on recoverable contexts")
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Guenter
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+index ca7e9216934a..ea9d5063ce78 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+@@ -2013,7 +2013,7 @@ static int eb_capture_stage(struct i915_execbuffer *eb)
+ 			continue;
+ 
+ 		if (i915_gem_context_is_recoverable(eb->gem_context) &&
+-		    (IS_DGFX(eb->i915) || GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 0)))
++		    GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 10))
+ 			return -EINVAL;
+ 
+ 		for_each_batch_create_order(eb, j) {
+-- 
+2.49.0
 
 
