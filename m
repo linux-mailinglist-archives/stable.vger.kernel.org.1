@@ -1,224 +1,228 @@
-Return-Path: <stable+bounces-132203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01118A854A7
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 08:50:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67369A854E2
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 09:02:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BB283B0456
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 06:50:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95BD21BA191D
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 07:02:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4BA27CCDE;
-	Fri, 11 Apr 2025 06:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C691E9B38;
+	Fri, 11 Apr 2025 07:02:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h0XaucI9"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E815927CCD0;
-	Fri, 11 Apr 2025 06:50:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744354239; cv=fail; b=NOqpl0hua7atNUNvZQRTZbX4xefQIZ9nRVyS8h45Q/654upqMwPBUSVQOFk9N9nSoJBaKs3vUs0ZwodhYG4loFE4RBvbKMZY054LO1WE86O8JUiDzcNmxv7DherGn9QRNIiIr1OhrYbkrFYuYJgvzbyq+mO63mZJrl6AYHAM6Yg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744354239; c=relaxed/simple;
-	bh=FNQFjeCeqlfJMwf3befmhCoCdUoLMrpUDfSC/G+S3+g=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=nCAVuQOf+6aNrlgvLkzlPmWefEb3f6AC8LZDp1ChB5Y8JjxkoqpszX0PvlDKKmzO2O4l70v9EYJ/J8KwHCVwqDEchJheNs2FJrBStFOqPj1O8Gdt4MKS9iIa0tijAvVxbbsC8VJAuLisYwxwGxFhOBJZ/R5N26bkulPn9jU1Sds=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53B5GMn1005535;
-	Fri, 11 Apr 2025 06:49:50 GMT
-Received: from nam02-dm3-obe.outbound.protection.outlook.com (mail-dm3nam02lp2043.outbound.protection.outlook.com [104.47.56.43])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45tug8qxhn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 11 Apr 2025 06:49:50 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JeJ4aV5OuffsiYTh0e+7Pq4DuP/qkueF2zCwyYk40IJmH+FUruD1NmrtRBwHbGzTHOB+mj5qAduAAQP5//dv3O/cbjokOIVHJitJ69f3YxY5e/BR/D93U8GBc4h5xhlYdegQ9kCcvapQAQoz3jqbFtzhRbQybBU3As1Te+8nMiVgWCHKNLussiY/YSpKmSf/nBVhhcrEVGbZ2GY+2nzUviCcGaYf1ssVcKWDjeg6CMTic/Rg+qw75EmB1Yhi8gYxWbnQ0q30JSirBeNIIDxxQ9zYo2MMa+k/lA6QUTTZg99RAm1yabbECcnN/VLipMSdueIthh3O0wBXtCmfrvcl1Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=POMOYbiLClxhy26wYRoqiGYxObN0qHJ7+IGCsMN98GU=;
- b=iwyRE79JMXownifLBBE8i+w8XRLa56RM1Yi+GrubG7kFvh6qLzyNjScurZPAR9r/ZYjcXFWZz3aEzidLCZULMVBxuLQqhQnyu6mh5IL7zf+T1AxhPTUafTm3LWBmGaM5ZAfomplTsHLN6w6Bc1dSgj5NAFlSaBi3smkmb6WypWjPNoMKy7AbPeHnd+egaAp24loDxb/J3hm+UnSdZMtSqWnZr7XRPb8xLJuWqXZWi3p6M2QzmB+sIKCtt9NTCXYvw8WZabT8p5aLQIZzRValCpZRIUI3TXIFDLVRKvBPIN2YselfKek6UqnjFvvr3ijMdm/2+r1nlxO6MmLsL5jBsQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
-Received: from CY8PR11MB7012.namprd11.prod.outlook.com (2603:10b6:930:54::6)
- by SA2PR11MB5161.namprd11.prod.outlook.com (2603:10b6:806:fa::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.25; Fri, 11 Apr
- 2025 06:49:48 +0000
-Received: from CY8PR11MB7012.namprd11.prod.outlook.com
- ([fe80::83d5:946f:3692:8c0d]) by CY8PR11MB7012.namprd11.prod.outlook.com
- ([fe80::83d5:946f:3692:8c0d%4]) with mapi id 15.20.8606.033; Fri, 11 Apr 2025
- 06:49:48 +0000
-From: Cliff Liu <donghua.liu@windriver.com>
-To: stable@vger.kernel.org
-Cc: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
-        donghua.liu@windriver.com, leitao@debian.org, nathanl@linux.ibm.com,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        Zhe.He@windriver.com
-Subject: [PATCH 5.15.y] powerpc/rtas: Prevent Spectre v1 gadget construction in sys_rtas()
-Date: Fri, 11 Apr 2025 14:49:37 +0800
-Message-Id: <20250411064937.3662385-1-donghua.liu@windriver.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TYCPR01CA0122.jpnprd01.prod.outlook.com
- (2603:1096:400:26d::11) To CY8PR11MB7012.namprd11.prod.outlook.com
- (2603:10b6:930:54::6)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E641372;
+	Fri, 11 Apr 2025 07:02:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744354934; cv=none; b=USRjGLMFsgfOwiqThPXGhZfZcSz2djMyhERm4PJOETWpONFpVzlzQ++xa+HaWMlm5d83Dn1bUhZoGhSy+h2irpWyTQXRE66SYM/R7xspRCijgOTnyFkpIdiVpT6k6r7R7u59EyOoLqPa7G2VxbQN5e8AMz3JVF2gMlyxFe/BTJ8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744354934; c=relaxed/simple;
+	bh=AGFFGmB9vBy6TsRyCyNlIMC/OHTiQ9NPOBxnBxibdTI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RuMmBx7FY8Y9hs8s9pftl2QBuNlZp0Naa0frfLPyF03xy27BpZh5Iyj+4glfU2782IwqjzdSVC+3dy4+vlEmvuI2fZ6VFboAVCfRK4KeghGL0GnxYpws2VM7+088ZCykJMHp+ONyWbzYmiZ5piISrpOe7gdqccXTFG/n+bbBCqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h0XaucI9; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3913d129c1aso1130656f8f.0;
+        Fri, 11 Apr 2025 00:02:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744354931; x=1744959731; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=e0fB4A0zqHMl0E93R7yWp+6DKpBbr/GksX5p6qlRsg4=;
+        b=h0XaucI9JSWi9mmV+9WVlTKy3o4qX9Hn4sM3+be157u0lzr9ZsgAA/Ak8Db3PeZ31g
+         puGXxdRfZGTZi+d4mW9iPgcy6WCTc+yJH3845O50IWOxp6xHh+WNXmIXBCK4hou1sPx9
+         HVgSoeWNsvPo5utDK7jsvsJsn8nfofOYO3kp0K2lNT6oZdmkaouT1fwIbSK7l0RH+Tgf
+         1mbFMb7ho5SwtCkBokbjhHtBkPXL8GmOmuFAg/2IfOa9up5g5syhgI/fqbnk9McuX687
+         n8c8WgYXvA2c31gRJbA5YSwvefP3IVDjypbTYtn17NJVnn4QMxI8cs3bQ/TAOhWNiYd9
+         jvZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744354931; x=1744959731;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=e0fB4A0zqHMl0E93R7yWp+6DKpBbr/GksX5p6qlRsg4=;
+        b=rqIgymRH15pr+lmmLOb+Vlu1CneU2UoTT2zx5RTLKj5tanmh8gj9PLadsO0YHcsM7s
+         LJV0fVsv2qW088SyvkeC5lx/+UXOviNWdaZEv9jvNcnjPYTumAf23FMmg14dAKyjnVrj
+         VbQI7ADl2ovj27w7a60kjR2t+yeUYibaDg2XrywmLtWyYCpnb9ln38TaFYmiCyjNglTH
+         iB/pXYq3ZXbuDmGGcSL3I6CknfzYiopibyG3tdKFelS7c5zuW1idMQ4PLiOI7k85aZ1a
+         XprnAUR2XTRaKcjkAn622uM1tQ0vMz3jP7a1yBPD9cO3JLFUVh1WxTUmHw5m4OBm0fSQ
+         oZ0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVJhbmZNhHTpI44mqMfKbfyIcLcptnZvaxvw8IQ/xJJew8bd7vQwaB/HynJhdKnNOvjddxY0MrevKMN5hMO@vger.kernel.org, AJvYcCW78yqyCrzfTTnSh9jWHCUUdCNzsjjlwy+M9SeH9cFFXBhfnJoiHwi7GqzRpeShBko6VJt56jgDc3p6TYc=@vger.kernel.org, AJvYcCXES5ECVLNEFAQnwHbRdKNEfDkl6ss2Tz31e/dkL3CGEplHrRpgKHYR6rmSdPTNQZdVimlxSY/R@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxfw8swseu86HoPgllh70qREBdsvUIES9gkc/xLqAXsVqdD1gDv
+	ab4h4AOd+hPoECiy02rskQ0frg34whBMjkN6GJyiwq/SYBmOMVly
+X-Gm-Gg: ASbGnctpFaKgzozCq7iE4wOj0ttq0ISxEypAnoAJ2wzl708nAHMZ+kTkfZvztdF5J5B
+	br4LrTVZwyQppjzFNL4gsq5A1RFDNAhGqh6LaZRIElMEGjZNk5iQ9y+2pah0RwwMNj4sZr8BpKP
+	T6oOBbFJ3wWwqjm7GkHM0gdacj3oge4SfZ+7Wj6xKg0QA6Bo4Pre0vT4SFJM9iQSUqeSngndYjN
+	6YDtWVmNDkAgdJfxYejSZ+7wq6LgR9/65v3WgtLVgNmEqU41Zf9CJsM8c3F4A6n7o4f00IkxkMo
+	Ln1nzdWRYSJUNgULS06XWOOHscrmJP0nhF3g2jUEMAe4f5IrtWaQ3g0SYyU41bPlw08=
+X-Google-Smtp-Source: AGHT+IH8LCzHUSZqtfBQFlJkR7MqXFEh62hFWVQl5PF1/8RaLCtx+2Lw6/EeRGjCvjbReYcDJv6wgQ==
+X-Received: by 2002:a05:6000:1887:b0:38a:4184:14ec with SMTP id ffacd0b85a97d-39e6e45d52fmr1187829f8f.1.1744354930629;
+        Fri, 11 Apr 2025 00:02:10 -0700 (PDT)
+Received: from localhost (ip87-106-108-193.pbiaas.com. [87.106.108.193])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-39eae964073sm1109117f8f.9.2025.04.11.00.02.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Apr 2025 00:02:10 -0700 (PDT)
+From: =?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>,
+	linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>,
+	Jared Finder <jared@finder.org>,
+	Jann Horn <jannh@google.com>,
+	=?UTF-8?q?Hanno=20B=C3=B6ck?= <hanno@hboeck.de>,
+	Kees Cook <kees@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH RESEND] tty: Require CAP_SYS_ADMIN for all usages of TIOCL_SELMOUSEREPORT
+Date: Fri, 11 Apr 2025 09:01:45 +0200
+Message-ID: <20250411070144.3959-2-gnoack3000@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR11MB7012:EE_|SA2PR11MB5161:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1ca68110-db13-4d7e-7583-08dd78c50d4b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|366016|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Ht74ORMSIfnvAUSvHbRBsYVSBq41DePvB2f/DUDKrFbAiC/1MDU+Yka3Cdij?=
- =?us-ascii?Q?Tl42oCYvoiQAQ1/xhLoUhLjRhjsic42QFBvHyw7e46IQ4ABKZ630PDA7eRL1?=
- =?us-ascii?Q?xpDlI+fLDi6kFHA/t8Juv7GOINhQd9b9+ESmuyKdkwLGQ3tYf4gDrx9cJzzC?=
- =?us-ascii?Q?3nMB1oPcSZIkDNWhqFvDDy9uY2nbihhxscFTg1VDoTr1UeUT1z5VWFg+i6BW?=
- =?us-ascii?Q?D2t2lp5eVQoE686zxe6oYx2pqfJ/oZhTE5J/ODq90NdYyfvQ6dDfGuiqM2Z7?=
- =?us-ascii?Q?EwqNPZq00adtSSceFrXdcmggpspkWrnN8vZ9tM9DGWWvCDI+yfW0rG20HvzY?=
- =?us-ascii?Q?/+s3InMrpgDgZlYbDETfmftUiy5/lT9WGtiLWpGc/eJSgozEkTJ0dBZ/WwCz?=
- =?us-ascii?Q?HCv6gT5+H++Q+osN3/xyfTJGsZbCH/IFBBTxFxBWibqKodJsQrjwgDqFY3fu?=
- =?us-ascii?Q?lRw2x3c2+kOxCSl5qLO1zJl1ke2sRMxm52efEeeXl825nLAF/2+EdL0xk1Bt?=
- =?us-ascii?Q?ZqsTrhg/XhCZmEQwni4Oz7cxDMBao30Ou1Td4ve6G+Tk3kKGznXig7/aKHSB?=
- =?us-ascii?Q?LYRHKcoDvrmQIbmCtHkJquZHviCN1IfoeiYUwkdne7/aoo1M8OtYDNQzVf96?=
- =?us-ascii?Q?iqzGBnR/PLBbrhIPT6er5E+PzkWLQ0zCv2SBX7YGn8r3WhafJzQeJ/Qbv2ca?=
- =?us-ascii?Q?3lM8ytb42Jyoe4KS85qO/4nVB12B0eYSqVUOUZec/mO8xBIIsC3BVibvW15C?=
- =?us-ascii?Q?76CmIkVMpZ8MyE4f8hmUD2a5YBQbZC5pTsiVTLtJgTyOkDyST3dzjtnoposX?=
- =?us-ascii?Q?l46y0D57Ptwzv53fAv5jiK9FHDc+NN42+xRIjbgKBXVSqu7k4tnLOMNHLRxu?=
- =?us-ascii?Q?ODX6U6pC8Brko4Mt7ls78I5pfzsKPcRQox2VTOMbh83SxrEN5UWZ9ssiEnuN?=
- =?us-ascii?Q?W/uL7a7JOkebv2gDiEqhL1UTb0hm5un5SBysHYpgR5Y3EMXAiyaAQ4LnBsaK?=
- =?us-ascii?Q?D3Vty3Byyv1I4zy50riYKyhrCL+N2qaM6LJHLEQ7WqJzZUhEIcww4ccACgMZ?=
- =?us-ascii?Q?/PlUC3T6bCrUKue7Ui+eOavfM1qcn5roMU4KxJ1Hmsx/fJbqodBQnMyaKvTO?=
- =?us-ascii?Q?rf23YNH51dEwUYfcrN+RGXLxp+tE6HBwuhJA6bh/MBhnfXZRXxoGepwjpBw6?=
- =?us-ascii?Q?qPdyoOsnU7FAFH65hRn6hiLXyyo+sX/mzlQhZoajjy3m92mq7Ln2LvXNwxgT?=
- =?us-ascii?Q?yD/7XkdwQ4Eke9AmhGUEVTTDP4noW7sqv+UhbFWPgXj3dd82ri8bav/66Nux?=
- =?us-ascii?Q?O7xDELBiPS+FXftlLwYs9hWtENLwHPxpfLrj6hDSr1oKpU+sATa2vI39FTvv?=
- =?us-ascii?Q?VIOd2PnRJaOvYQ+qyvJXp4OeWY0sYAvB+FaLuLX59Wk8zjjbkzq/GifXXMF1?=
- =?us-ascii?Q?tWnlxfM9S2k=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR11MB7012.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ORi8d6+QgHGcFCg3Im1VbqkEZXTdY7erfR2bZUXV/L8ff0c0MJXeS2sKIbMi?=
- =?us-ascii?Q?2nQClqOSUOobmetXCtiwor1WLzSzUTynS/TaDLsqRVmQAzRiICQzifmjCEti?=
- =?us-ascii?Q?Y74uCCCJcDlMwjpLLzxCW407qOnOG/3n1krE1jufL+Zd5nJrkikOTHMGLXeQ?=
- =?us-ascii?Q?SrZLUXMb4fGHvAfPNFagI9lwSaO6Uhr3TA3uTQ+k7y3i0rB0ieTGBZskrWsF?=
- =?us-ascii?Q?LcEbye5WV0dTJ36sjklFEOACRZgSwmV/YV08B90fj9z26EBpNhMlgQbH9mcE?=
- =?us-ascii?Q?IrfnIUpzo/2XMlusinbEFYCkW7C+NaihSIv+sdZmHIfkr3IjX9JhYe8rYsTb?=
- =?us-ascii?Q?4GeJuLV1CiGydhUlsSVUlnJj1g8hQRxgueNRXQzB4mYVFfnTfQv81DhXuNcA?=
- =?us-ascii?Q?J57lW2JhCE+MdtmE49g4aRsdp3jMNb1uM5+tMlyGoT5pyKFOBH5pvxiCoz+E?=
- =?us-ascii?Q?8678qkAbayrThj7R1PgvMLp4LS/tbxC4AHqLiLU948n5VVFyF8wf1gNT2BlD?=
- =?us-ascii?Q?TIa2S7V+LVknaKxMce1IZPvJDz5IoADG84n2O694wIt60nblb2j4XrMcyCYA?=
- =?us-ascii?Q?wxl0OehBAQsOAeRWvu9le6cvRpYCricmGyyKb+mym4sl8C1zzmhh9l+JCMWi?=
- =?us-ascii?Q?xzz/8M2v07lAmd5v51Ucav72uje7t6CGywH3skXoFiytaR9jkxnkZgk8oXiO?=
- =?us-ascii?Q?/N90U9WFECL/zokYbEhtkSwq+d4hnR2/FP4sc4qIKAKNAXu8frUtZpqYdwl8?=
- =?us-ascii?Q?Ovol9QbHGw8OIoxMjrQeaHeAD7ImNKy2wa22PE0eqxEUnybDxHu4CgN21zGL?=
- =?us-ascii?Q?OACoYJKJI3To/3P6Ft678vCXg6gWe//pecb0RsC2xUkU5eUNsUWE/esTow9b?=
- =?us-ascii?Q?P360TOpl1qznxSjbTR3YiuoruCaFYD/dkaVkegpljqvR/sSSj6mlL6RPyTb1?=
- =?us-ascii?Q?3RPUUFNwwp40ToThbCs7DorsavrPONZ2hmeW8kOkPoaKG3giSli+eFF4I3xq?=
- =?us-ascii?Q?0EwK6vCQlN3jZ8g2UpHBTtbtmUr8WJ7sSw2N3yJSwO1AODJHD+LVw4oWkb33?=
- =?us-ascii?Q?iy3aXIAMByGJRcKupmch9qgf50kyti42aFVZbsY4VoIpK1TUKdVdj/7fFypD?=
- =?us-ascii?Q?YAc1tqwrJgcvYltsO39TCfGKXN28hcVif5K6InNLxHUoiL9GeRt8mHFEBNPA?=
- =?us-ascii?Q?LHJFJ2+0938Cvf3tsgzHOoTNYyNccA2NFtAwEGwo8hmPV1GubIPfT1xAQoyV?=
- =?us-ascii?Q?IHEhUGhmK6zWG4q0OubXk5Ekfb0ReSClMCCl42Drf68Z63Eb1KpH57EolHoN?=
- =?us-ascii?Q?4yLdi8WzIYR91rI//PIVx4V4PPdfn3j7gtE5N7jBwf8s1lUbtvd34zYUwGlE?=
- =?us-ascii?Q?iHWGdAEwRC1v0GbVTCrI7GYM5eLaoxAyMHjCiG/uyrjjxYPcWHLKvhKOKEd7?=
- =?us-ascii?Q?CmxcYsZfn6559vBdT2T6ABmy7mwflOZWhy+GLnxiGWCkbLqtIAI1vcO1c9gE?=
- =?us-ascii?Q?tkdvqPQPMeglj2ZRqSaKO/unux/D15buzN1Cdj98Mui9oF4S7/CrDCmB/7DH?=
- =?us-ascii?Q?uv6I7EUrws3OAKNT7qRipUKaGPdOpiWr+GMzvx8+JbMVtAAWohSTIa8nVDXH?=
- =?us-ascii?Q?bA=3D=3D?=
-X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1ca68110-db13-4d7e-7583-08dd78c50d4b
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7012.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2025 06:49:48.5091
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qWjfVjAj2TyHtNh6bgU3S3pkqKLAlPm6HLCe58rIsPQyu5OJuT7BQb8dlbCt25qo5PeQ30n9zvBZLK0jLbTABuNpZvbFfIr2NYNqC5cK/Yc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5161
-X-Proofpoint-GUID: H1qDoR9faxTMXt9p5cMDJyLzFbJaUbbK
-X-Authority-Analysis: v=2.4 cv=YJefyQGx c=1 sm=1 tr=0 ts=67f8bb8e cx=c_pps a=QfxD4CzqCnNUzUqh5S/TIg==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=XR8D0OoHHMoA:10
- a=bC-a23v3AAAA:8 a=VnNF1IyMAAAA:8 a=xNf9USuDAAAA:8 a=t7CeM3EgAAAA:8 a=u2LiicgN0kIDZIMe9SoA:9 a=-FEs8UIgK8oA:10 a=FO4_E8m0qiDe52t0p3_H:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-ORIG-GUID: H1qDoR9faxTMXt9p5cMDJyLzFbJaUbbK
-X-Sensitive_Customer_Information: Yes
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-11_02,2025-04-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 bulkscore=0 mlxlogscore=999 adultscore=0 lowpriorityscore=0
- mlxscore=0 clxscore=1015 impostorscore=0 phishscore=0 spamscore=0
- suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2502280000
- definitions=main-2504110047
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+This requirement was overeagerly loosened in commit 2f83e38a095f
+("tty: Permit some TIOCL_SETSEL modes without CAP_SYS_ADMIN"), but as
+it turns out,
 
-[ Upstream commit 0974d03eb479384466d828d65637814bee6b26d7 ]
+  (1) the logic I implemented there was inconsistent (apologies!),
 
-Smatch warns:
+  (2) TIOCL_SELMOUSEREPORT might actually be a small security risk
+      after all, and
 
-  arch/powerpc/kernel/rtas.c:1932 __do_sys_rtas() warn: potential
-  spectre issue 'args.args' [r] (local cap)
+  (3) TIOCL_SELMOUSEREPORT is only meant to be used by the mouse
+      daemon (GPM or Consolation), which runs as CAP_SYS_ADMIN
+      already.
 
-The 'nargs' and 'nret' locals come directly from a user-supplied
-buffer and are used as indexes into a small stack-based array and as
-inputs to copy_to_user() after they are subject to bounds checks.
+In more detail:
 
-Use array_index_nospec() after the bounds checks to clamp these values
-for speculative execution.
+1. The previous patch has inconsistent logic:
 
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Reported-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240530-sys_rtas-nargs-nret-v1-1-129acddd4d89@linux.ibm.com
-[Minor context change fixed]
-Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
-Signed-off-by: He Zhe <Zhe.He@windriver.com>
+   In commit 2f83e38a095f ("tty: Permit some TIOCL_SETSEL modes
+   without CAP_SYS_ADMIN"), we checked for sel_mode ==
+   TIOCL_SELMOUSEREPORT, but overlooked that the lower four bits of
+   this "mode" parameter were actually used as an additional way to
+   pass an argument.  So the patch did actually still require
+   CAP_SYS_ADMIN, if any of the mouse button bits are set, but did not
+   require it if none of the mouse buttons bits are set.
+
+   This logic is inconsistent and was not intentional.  We should have
+   the same policies for using TIOCL_SELMOUSEREPORT independent of the
+   value of the "hidden" mouse button argument.
+
+   I sent a separate documentation patch to the man page list with
+   more details on TIOCL_SELMOUSEREPORT:
+   https://lore.kernel.org/all/20250223091342.35523-2-gnoack3000@gmail.com/
+
+2. TIOCL_SELMOUSEREPORT is indeed a potential security risk which can
+   let an attacker simulate "keyboard" input to command line
+   applications on the same terminal, like TIOCSTI and some other
+   TIOCLINUX "selection mode" IOCTLs.
+
+   By enabling mouse reporting on a terminal and then injecting mouse
+   reports through TIOCL_SELMOUSEREPORT, an attacker can simulate
+   mouse movements on the same terminal, similar to the TIOCSTI
+   keystroke injection attacks that were previously possible with
+   TIOCSTI and other TIOCL_SETSEL selection modes.
+
+   Many programs (including libreadline/bash) are then prone to
+   misinterpret these mouse reports as normal keyboard input because
+   they do not expect input in the X11 mouse protocol form.  The
+   attacker does not have complete control over the escape sequence,
+   but they can at least control the values of two consecutive bytes
+   in the binary mouse reporting escape sequence.
+
+   I went into more detail on that in the discussion at
+   https://lore.kernel.org/all/20250221.0a947528d8f3@gnoack.org/
+
+   It is not equally trivial to simulate arbitrary keystrokes as it
+   was with TIOCSTI (commit 83efeeeb3d04 ("tty: Allow TIOCSTI to be
+   disabled")), but the general mechanism is there, and together with
+   the small number of existing legit use cases (see below), it would
+   be better to revert back to requiring CAP_SYS_ADMIN for
+   TIOCL_SELMOUSEREPORT, as it was already the case before
+   commit 2f83e38a095f ("tty: Permit some TIOCL_SETSEL modes without
+   CAP_SYS_ADMIN").
+
+3. TIOCL_SELMOUSEREPORT is only used by the mouse daemons (GPM or
+   Consolation), and they are the only legit use case:
+
+   To quote console_codes(4):
+
+     The mouse tracking facility is intended to return
+     xterm(1)-compatible mouse status reports.  Because the console
+     driver has no way to know the device or type of the mouse, these
+     reports are returned in the console input stream only when the
+     virtual terminal driver receives a mouse update ioctl.  These
+     ioctls must be generated by a mouse-aware user-mode application
+     such as the gpm(8) daemon.
+
+   Jared Finder has also confirmed in
+   https://lore.kernel.org/all/491f3df9de6593df8e70dbe77614b026@finder.org/
+   that Emacs does not call TIOCL_SELMOUSEREPORT directly, and it
+   would be difficult to find good reasons for doing that, given that
+   it would interfere with the reports that GPM is sending.
+
+   More information on the interaction between GPM, terminals and the
+   kernel with additional pointers is also available in this patch:
+   https://lore.kernel.org/all/a773e48920aa104a65073671effbdee665c105fc.1603963593.git.tammo.block@gmail.com/
+
+   For background on who else uses TIOCL_SELMOUSEREPORT: Debian Code
+   search finds one page of results, the only two known callers are
+   the two mouse daemons GPM and Consolation.  (GPM does not show up
+   in the search results because it uses literal numbers to refer to
+   TIOCLINUX-related enums.  I looked through GPM by hand instead.
+   TIOCL_SELMOUSEREPORT is also not used from libgpm.)
+   https://codesearch.debian.net/search?q=TIOCL_SELMOUSEREPORT
+
+Cc: Jared Finder <jared@finder.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Hanno Böck <hanno@hboeck.de>
+Cc: Jiri Slaby <jirislaby@kernel.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 2f83e38a095f ("tty: Permit some TIOCL_SETSEL modes without CAP_SYS_ADMIN")
+Signed-off-by: Günther Noack <gnoack3000@gmail.com>
 ---
-Verified the powerpc build test.
----
- arch/powerpc/kernel/rtas.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/tty/vt/selection.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index d01a0ad57e38..f2378f51cbed 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -16,6 +16,7 @@
- #include <linux/capability.h>
- #include <linux/delay.h>
- #include <linux/cpu.h>
-+#include <linux/nospec.h>
- #include <linux/sched.h>
- #include <linux/smp.h>
- #include <linux/completion.h>
-@@ -1076,6 +1077,9 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
- 	    || nargs + nret > ARRAY_SIZE(args.args))
- 		return -EINVAL;
+diff --git a/drivers/tty/vt/selection.c b/drivers/tty/vt/selection.c
+index 0bd6544e30a6b..791e2f1f7c0b6 100644
+--- a/drivers/tty/vt/selection.c
++++ b/drivers/tty/vt/selection.c
+@@ -193,13 +193,12 @@ int set_selection_user(const struct tiocl_selection __user *sel,
+ 		return -EFAULT;
  
-+	nargs = array_index_nospec(nargs, ARRAY_SIZE(args.args));
-+	nret = array_index_nospec(nret, ARRAY_SIZE(args.args) - nargs);
-+
- 	/* Copy in args. */
- 	if (copy_from_user(args.args, uargs->args,
- 			   nargs * sizeof(rtas_arg_t)) != 0)
+ 	/*
+-	 * TIOCL_SELCLEAR, TIOCL_SELPOINTER and TIOCL_SELMOUSEREPORT are OK to
+-	 * use without CAP_SYS_ADMIN as they do not modify the selection.
++	 * TIOCL_SELCLEAR and TIOCL_SELPOINTER are OK to use without
++	 * CAP_SYS_ADMIN as they do not modify the selection.
+ 	 */
+ 	switch (v.sel_mode) {
+ 	case TIOCL_SELCLEAR:
+ 	case TIOCL_SELPOINTER:
+-	case TIOCL_SELMOUSEREPORT:
+ 		break;
+ 	default:
+ 		if (!capable(CAP_SYS_ADMIN))
+
+base-commit: 27102b38b8ca7ffb1622f27bcb41475d121fb67f
 -- 
-2.34.1
+2.48.1
 
 
