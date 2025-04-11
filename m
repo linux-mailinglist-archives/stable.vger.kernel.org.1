@@ -1,205 +1,168 @@
-Return-Path: <stable+bounces-132276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09274A8624B
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 17:49:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4202A86259
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 17:52:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 425E68A6FAF
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 15:48:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C96FD3B2955
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 15:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6248D20E03C;
-	Fri, 11 Apr 2025 15:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BAB42135C3;
+	Fri, 11 Apr 2025 15:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b="LSftiyYp"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="T4zt6GBZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-52003.amazon.com (smtp-fw-52003.amazon.com [52.119.213.152])
+Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF2B126C13
-	for <stable@vger.kernel.org>; Fri, 11 Apr 2025 15:48:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839FC35961;
+	Fri, 11 Apr 2025 15:52:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744386506; cv=none; b=arFkJfXt5+JdncZX1Ke9cKL2DH72N4dEFml5oP0W/3llAaWa9XSRvs6waeFF3q7bEoWChAn3HpOGVqUSqf029fhPTTnM4uCT7OHxKECO96ovHtq7RhMYGZf8uMkj6Uk5DdmO/4Jaq6WKyn9lZ0ClahAMLurb5remz1dXMm15OgI=
+	t=1744386739; cv=none; b=GULv4SLwgCLnV3NPIsyKuJcEPIiMTtVVSbia/WUcU2OhKou/TJxOyLQruS5gT/grkujfG/9m5HdiPGQx6QcuTPLabT/S039gYzTCNpnjeQMgRG96LwtbozvlqUJB9uXlTF5xatgoiJeTfEXp5v/75r9q0OgYXOAyX6Hs8lNEr7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744386506; c=relaxed/simple;
-	bh=djb8YAzfiPjgdXMX2duxYPXhxZHjj5t0sxCKKmKbqTA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DV/0990HMyS4p2UNSCQ7+O+HJeCz9oc2JjFqZyQ1EqNWH5S5y5YS3mgIhPDv2y1knSMFP8BTmFI+W+em/jP7HL1cGTEHsxGKTnwSLCDjGICSp6zGAqFqnu59l3nvnRBhW0AUtR07OpsiLGTEDxYu8sOYN3E9Hg+Qv43MYj+BUBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b=LSftiyYp; arc=none smtp.client-ip=52.119.213.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
-  t=1744386505; x=1775922505;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Boa7HasX643xuHx6SQAC1Y+vDhAKy4vjytnJi7TM80U=;
-  b=LSftiyYpKOxfIFWnVp4KNODHFLJ7TCQeXpNixNsVji12aUInXMf4JAbx
-   qZtEKkFgjPsmgFC3B6p/qBcuftqE5noBqJAAFYxDCp9LHcDvHZn+mNG5P
-   zQVQFjKEjSXX9qKdIMu8k9nhLn8FO5H2opm9muiRpJarTYaWY0mmPqtIT
-   8=;
-X-IronPort-AV: E=Sophos;i="6.15,205,1739836800"; 
-   d="scan'208";a="82918999"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-52003.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2025 15:48:21 +0000
-Received: from EX19MTAEUA001.ant.amazon.com [10.0.43.254:59055]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.16.69:2525] with esmtp (Farcaster)
- id 01a5845a-d395-4ab4-883a-a0b7f43ba48a; Fri, 11 Apr 2025 15:48:20 +0000 (UTC)
-X-Farcaster-Flow-ID: 01a5845a-d395-4ab4-883a-a0b7f43ba48a
-Received: from EX19D023EUB003.ant.amazon.com (10.252.51.5) by
- EX19MTAEUA001.ant.amazon.com (10.252.50.192) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Fri, 11 Apr 2025 15:48:19 +0000
-Received: from dev-dsk-dssauerw-1b-2c5f429c.eu-west-1.amazon.com
- (10.13.238.31) by EX19D023EUB003.ant.amazon.com (10.252.51.5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1544.14; Fri, 11 Apr 2025 15:48:17 +0000
-From: David Sauerwein <dssauerw@amazon.de>
-To: <stable@vger.kernel.org>
-CC: Oleg Nesterov <oleg@redhat.com>, Dylan Hatch <dylanbhatch@google.com>,
-	"Eric W. Biederman" <ebiederm@xmission.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Sasha Levin <sashal@kernel.org>, David Sauerwein
-	<dssauerw@amazon.de>
-Subject: [PATCH 5.10.y] fs/proc: do_task_stat: use sig->stats_lock to gather the threads/children stats
-Date: Fri, 11 Apr 2025 15:47:58 +0000
-Message-ID: <20250411154758.57959-1-dssauerw@amazon.de>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1744386739; c=relaxed/simple;
+	bh=E8+IDs1XgDEHII66e1FhtR8QtgunZIE14bTYSZOPaYo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=j5KnP48F3lY2mf7IN3vxs15PO5Bzf6uxP/56c0wZH1Wki8n5kvVoBijXvE566k7ONSv4xEJbgL5jL4n3ZCkGeS+rtdNprcegDwWOhjrjmDrcSQI7Jp7M8knH6v0GBFiSYVwqLg6DD8YmMywtkk13Ty2q8rldPOog16HGS/sIeHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=T4zt6GBZ; arc=none smtp.client-ip=198.47.19.245
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53BFq57r1486028
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 11 Apr 2025 10:52:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1744386725;
+	bh=VEBB3+nk9eRMLAfQSWyx+3KioB6f3dgvNv/THggbzWE=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=T4zt6GBZzgqzkard/K33ATb/J8UEtV1ATL2CoVX6zoLf3NqE+q+B632UQ+o3WNjdQ
+	 fjCFyGf7+NwZ+fTX6DTSFxTkz+4bOVH6V1X9Wcn7XhaRRPkU2TQS1KiElgDpB9DIfk
+	 mb8Q4etS63M/MZirOyG+nGK8UOMoGI/KpWTI3Wt0=
+Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53BFq52E035194
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 11 Apr 2025 10:52:05 -0500
+Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 11
+ Apr 2025 10:52:05 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 11 Apr 2025 10:52:05 -0500
+Received: from [10.249.141.75] ([10.249.141.75])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53BFq1dm026503;
+	Fri, 11 Apr 2025 10:52:01 -0500
+Message-ID: <28f1e0b7-9947-43f3-9a47-f3c6ecd69b91@ti.com>
+Date: Fri, 11 Apr 2025 21:22:00 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D041UWA002.ant.amazon.com (10.13.139.121) To
- EX19D023EUB003.ant.amazon.com (10.252.51.5)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] arm64: dts: ti: k3-j722s-main: Disable
+ "serdes_wiz0" and "serdes_wiz1"
+To: Siddharth Vadapalli <s-vadapalli@ti.com>
+CC: <nm@ti.com>, <vigneshr@ti.com>, <kristo@kernel.org>, <robh@kernel.org>,
+        <krzk+dt@kernel.org>, <conor+dt@kernel.org>, <rogerq@kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <srk@ti.com>, <u-kumar1@ti.com>
+References: <20250408103606.3679505-1-s-vadapalli@ti.com>
+ <20250408103606.3679505-3-s-vadapalli@ti.com>
+ <7b2f69ad-48aa-4aa9-be0e-f0edae272bdb@ti.com>
+ <475a1ac1-abb1-4c6e-b5b2-3f1a3399d5c4@ti.com>
+Content-Language: en-US
+From: "Kumar, Udit" <u-kumar1@ti.com>
+In-Reply-To: <475a1ac1-abb1-4c6e-b5b2-3f1a3399d5c4@ti.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-From: Oleg Nesterov <oleg@redhat.com>
+Hi
 
-[ Upstream commit 7601df8031fd67310af891897ef6cc0df4209305 ]
+On 4/11/2025 7:47 PM, Siddharth Vadapalli wrote:
+> On Fri, Apr 11, 2025 at 07:31:52PM +0530, Kumar, Udit wrote:
+>
+> Hello Udit,
+>
+>> On 4/8/2025 4:06 PM, Siddharth Vadapalli wrote:
+>>> Since "serdes0" and "serdes1" which are the sub-nodes of "serdes_wiz0"
+>>> and "serdes_wiz1" respectively, have been disabled in the SoC file already,
+>>> and, given that these sub-nodes will only be enabled in a board file if the
+>>> board utilizes any of the SERDES instances and the peripherals bound to
+>>> them, we end up in a situation where the board file doesn't explicitly
+>>> disable "serdes_wiz0" and "serdes_wiz1". As a consequence of this, the
+>>> following errors show up when booting Linux:
+>>>
+>>>     wiz bus@f0000:phy@f000000: probe with driver wiz failed with error -12
+>>>     ...
+>>>     wiz bus@f0000:phy@f010000: probe with driver wiz failed with error -12
+>>>
+>>> To not only fix the above, but also, in order to follow the convention of
+>>> disabling device-tree nodes in the SoC file and enabling them in the board
+>>> files for those boards which require them, disable "serdes_wiz0" and
+>>> "serdes_wiz1" device-tree nodes.
+>>>
+>>> Fixes: 628e0a0118e6 ("arm64: dts: ti: k3-j722s-main: Add SERDES and PCIe support")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+>>> ---
+>>>
+>>> v1 of this patch is at:
+>>> https://lore.kernel.org/r/20250408060636.3413856-3-s-vadapalli@ti.com/
+>>> Changes since v1:
+>>> - Added "Fixes" tag and updated commit message accordingly.
+>>>
+>>> Regards,
+>>> Siddharth.
+>>>
+>>>    arch/arm64/boot/dts/ti/k3-j722s-main.dtsi | 4 ++++
+>>>    1 file changed, 4 insertions(+)
+>>>
+>>> diff --git a/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi b/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi
+>>> index 6850f50530f1..beda9e40e931 100644
+>>> --- a/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi
+>>> +++ b/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi
+>>> @@ -32,6 +32,8 @@ serdes_wiz0: phy@f000000 {
+>>>    		assigned-clocks = <&k3_clks 279 1>;
+>>>    		assigned-clock-parents = <&k3_clks 279 5>;
+>>> +		status = "disabled";
+>>> +
+>> Since you are disabling parent node.
+>>
+>> Do you still want to carry status = "disabled" in child nodes serdes0 and
+>> serdes1.
+> I could drop it, but then the patches will look something like:
+> 1) Patch 1: Same as the first patch in this series
+> 2) Patch 2: Current patch + Remove status = "disabled" within serdes0/1
+> 3) Patch 3: Removed redundant status = "okay" within serdes0/1 in
+>              k3-j722s-evm.dts
+>
+> Updated Patch 2 and the new Patch 3 mentioned above aren't necessarily a
+> complete "Fix" and have other changes in addition to the "Fix". For that
+> reason, the changes associated with the updated patch 2 and the new patch 3
+> could be a separate series, unless you believe that they should go
+> together in the current series. Please let me know.
 
-lock_task_sighand() can trigger a hard lockup.  If NR_CPUS threads call
-do_task_stat() at the same time and the process has NR_THREADS, it will
-spin with irqs disabled O(NR_CPUS * NR_THREADS) time.
+I don't see any use case where serdes_wiz0 is enabled and serdes0 is 
+disabled.
 
-Change do_task_stat() to use sig->stats_lock to gather the statistics
-outside of ->siglock protected section, in the likely case this code will
-run lockless.
+So your comment 3) is valid. you can take this clean up in other series
 
-Link: https://lkml.kernel.org/r/20240123153357.GA21857@redhat.com
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Dylan Hatch <dylanbhatch@google.com>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: David Sauerwein <dssauerw@amazon.de>
----
- fs/proc/array.c | 52 ++++++++++++++++++++++++++++---------------------
- 1 file changed, 30 insertions(+), 22 deletions(-)
 
-diff --git a/fs/proc/array.c b/fs/proc/array.c
-index 18a4588c35be..8fba6d39e776 100644
---- a/fs/proc/array.c
-+++ b/fs/proc/array.c
-@@ -443,12 +443,12 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
- 	int permitted;
- 	struct mm_struct *mm;
- 	unsigned long long start_time;
--	unsigned long cmin_flt = 0, cmaj_flt = 0;
--	unsigned long  min_flt = 0,  maj_flt = 0;
--	u64 cutime, cstime, utime, stime;
--	u64 cgtime, gtime;
-+	unsigned long cmin_flt, cmaj_flt, min_flt, maj_flt;
-+	u64 cutime, cstime, cgtime, utime, stime, gtime;
- 	unsigned long rsslim = 0;
- 	unsigned long flags;
-+	struct signal_struct *sig = task->signal;
-+	unsigned int seq = 1;
- 
- 	state = *get_task_state(task);
- 	vsize = eip = esp = 0;
-@@ -476,12 +476,9 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
- 
- 	sigemptyset(&sigign);
- 	sigemptyset(&sigcatch);
--	cutime = cstime = utime = stime = 0;
--	cgtime = gtime = 0;
-+	utime = stime = 0;
- 
- 	if (lock_task_sighand(task, &flags)) {
--		struct signal_struct *sig = task->signal;
--
- 		if (sig->tty) {
- 			struct pid *pgrp = tty_get_pgrp(sig->tty);
- 			tty_pgrp = pid_nr_ns(pgrp, ns);
-@@ -492,37 +489,48 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
- 		num_threads = get_nr_threads(task);
- 		collect_sigign_sigcatch(task, &sigign, &sigcatch);
- 
-+		rsslim = READ_ONCE(sig->rlim[RLIMIT_RSS].rlim_cur);
-+
-+		sid = task_session_nr_ns(task, ns);
-+		ppid = task_tgid_nr_ns(task->real_parent, ns);
-+		pgid = task_pgrp_nr_ns(task, ns);
-+
-+		unlock_task_sighand(task, &flags);
-+	}
-+
-+	if (permitted && (!whole || num_threads < 2))
-+		wchan = get_wchan(task);
-+
-+	do {
-+		seq++; /* 2 on the 1st/lockless path, otherwise odd */
-+		flags = read_seqbegin_or_lock_irqsave(&sig->stats_lock, &seq);
-+
- 		cmin_flt = sig->cmin_flt;
- 		cmaj_flt = sig->cmaj_flt;
- 		cutime = sig->cutime;
- 		cstime = sig->cstime;
- 		cgtime = sig->cgtime;
--		rsslim = READ_ONCE(sig->rlim[RLIMIT_RSS].rlim_cur);
- 
--		/* add up live thread stats at the group level */
- 		if (whole) {
- 			struct task_struct *t = task;
-+
-+			min_flt = sig->min_flt;
-+			maj_flt = sig->maj_flt;
-+			gtime = sig->gtime;
-+
-+			rcu_read_lock();
- 			do {
- 				min_flt += t->min_flt;
- 				maj_flt += t->maj_flt;
- 				gtime += task_gtime(t);
- 			} while_each_thread(task, t);
-+			rcu_read_unlock();
- 
--			min_flt += sig->min_flt;
--			maj_flt += sig->maj_flt;
- 			thread_group_cputime_adjusted(task, &utime, &stime);
--			gtime += sig->gtime;
- 		}
-+	} while (need_seqretry(&sig->stats_lock, seq));
-+	done_seqretry_irqrestore(&sig->stats_lock, seq, flags);
- 
--		sid = task_session_nr_ns(task, ns);
--		ppid = task_tgid_nr_ns(task->real_parent, ns);
--		pgid = task_pgrp_nr_ns(task, ns);
--
--		unlock_task_sighand(task, &flags);
--	}
--
--	if (permitted && (!whole || num_threads < 2))
--		wchan = get_wchan(task);
- 	if (!whole) {
- 		min_flt = task->min_flt;
- 		maj_flt = task->maj_flt;
--- 
-2.47.1
+For now
 
+Reviewed-by: Udit Kumar <u-kumar1@ti.com>
+
+
+
+> Regards,
+> Siddharth.
 
