@@ -1,271 +1,258 @@
-Return-Path: <stable+bounces-132290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D30CA863B5
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 18:52:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A800CA863DA
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 19:00:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9424A7AB66D
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 16:50:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A1164A0013
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 16:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F1521ABC3;
-	Fri, 11 Apr 2025 16:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E23321D584;
+	Fri, 11 Apr 2025 16:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="gaREhpvx"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WFz9AhNb"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2056.outbound.protection.outlook.com [40.107.236.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D24821CC5D
-	for <stable@vger.kernel.org>; Fri, 11 Apr 2025 16:51:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744390298; cv=fail; b=bVk8gvaBHB8CCaZQ6JvkTmX4h/wgCFShkyym54AYQ4rTTe0D60fAz62T9MbQWSsIuJijtCnXt4lJLqtcg2/kBPFFPkeYcQePZWRCaHG5sVD3/YxzyBpwcUxo8BAGiBTGzngCFhrT4tKptHxj3X0DrMJk6/A3JDkZbVWQNfQmaXs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744390298; c=relaxed/simple;
-	bh=wSdxGzxZgrw13dfz233lDjKcD1sqTq3v7w3TGx6x0yw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aBWNI7cdGt7qpjeEvYRJCKw2yilnlr9Q1SiSnbD+JaxwY7aAfX7+m8SiCIcuo82fH0rr9PScTbaDUQtiY2jc3DcSRPI28TztRYrhXUKvoBMvR5boVJXVg0H4Iue5e2ZsZqP9wS+WQLev2JnRJq5XPCg71Awr+6J8oWiYSkUs9WM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=gaREhpvx; arc=fail smtp.client-ip=40.107.236.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uZkxr/onmAJnUBEoPpun7PggEmOmEnZFHdJ/lVuYmN2s6MGIFEzG2pnFI6ZRi251xu8j6/XffWyefEgESFfftt8lYyeMpkStxAVL+TlJ0hGqZtqr6vUSkUfZCAo2MtLOlJ+umIg5W3kJT0OBkKh6GWIGDYi/oZNKPhnI48VJ9p6mp5n95ualD0B+AQEKoRbfPmfAQjs4iGMS36rSaYwc9lGL7mKtVKNzCd31lzpGehBbfncyC1FWaBNm84vDxSfRlJ7UmRF55ea0bHDXTlVsLXvoo40CwjroPtjT0yKaYBlG7bu6n1Zo224KVfxMdi+W1+thrZdfjdbOtfQoBZbI3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JazLtXrN/OOS/RRuKwUWawM1+E6sF/UMT1Lz4GO2fIY=;
- b=WMgRo+iyDif2+31nFXTY8f9z4IWVzqwooQlcCThJfsjEUTo06v6kndCls+bfTJqum5IrbVk8EIHEglftUBJLG3bkmiZ/DMJh0za6kYEsts+kU8Gohg3bUdApXdj5IcGGp47uu0qD0YLYIGPyhDz7oUZ1XX0XohIYBfK01CBhpc6czQwawZJwUF0yCIj5+9Yh5uIij6NiIsAV8Ki5hehnNhcXDfmrOuiHtdc7tPtTQff0090sNbkwFnbtZ+PACm9ttQLsrRckoNId3Wl1lRHalZ9KpYbwKqXelc9c+7IQDPeUAoOj6n7pxj0oNwUBvGP2MXziv0CbMyXmdtP5FDrbPQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JazLtXrN/OOS/RRuKwUWawM1+E6sF/UMT1Lz4GO2fIY=;
- b=gaREhpvxPwqvcTGc5c2/wXrR85r/DHEMUTdadFyvGA3bd4YKivQYHmhRYLz13jwmNiOTTnMbBbTy0yJQxCzHb7j5uzCearO75qqS2fg9Azw30adGyTnYwNAHoxdX60iy90CmwK+L9nnMUF7uAj/lyF7pyt94WszGsBfTUZ8R7Zg=
-Received: from BY5PR17CA0031.namprd17.prod.outlook.com (2603:10b6:a03:1b8::44)
- by SN7PR12MB8146.namprd12.prod.outlook.com (2603:10b6:806:323::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.34; Fri, 11 Apr
- 2025 16:51:32 +0000
-Received: from SJ1PEPF000026C5.namprd04.prod.outlook.com
- (2603:10b6:a03:1b8:cafe::73) by BY5PR17CA0031.outlook.office365.com
- (2603:10b6:a03:1b8::44) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8632.26 via Frontend Transport; Fri,
- 11 Apr 2025 16:51:32 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SJ1PEPF000026C5.mail.protection.outlook.com (10.167.244.102) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8655.12 via Frontend Transport; Fri, 11 Apr 2025 16:51:32 +0000
-Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 11 Apr
- 2025 11:51:31 -0500
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
- (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 11 Apr
- 2025 11:51:31 -0500
-Received: from fedora.mshome.net (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Fri, 11 Apr 2025 11:51:30 -0500
-From: Jason Andryuk <jason.andryuk@amd.com>
-To: <stable@vger.kernel.org>
-CC: Roger Pau Monne <roger.pau@citrix.com>, Juergen Gross <jgross@suse.com>,
-	Jason Andryuk <jason.andryuk@amd.com>
-Subject: [PATCH 2/2] x86/xen: fix memblock_reserve() usage on PVH
-Date: Fri, 11 Apr 2025 12:51:22 -0400
-Message-ID: <20250411165122.18587-3-jason.andryuk@amd.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250411165122.18587-1-jason.andryuk@amd.com>
-References: <20250411165122.18587-1-jason.andryuk@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE381F3FED
+	for <stable@vger.kernel.org>; Fri, 11 Apr 2025 16:59:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744390763; cv=none; b=hwZgRxyt7Se7VnyJy+89En5IhNhlHHMpqKPysgOl6/fXyVlNv2cqwnpd/hSXlga15UqfLDQuNl30otduRWFvrs6lPG+pVUZDpp6jwNGRjrRRF5c8r2qEJnR1RGaJEHXtNRnT8ehcP0PXiFMVtzLSupL9AWQyZOHHLgz6HdlTUx0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744390763; c=relaxed/simple;
+	bh=7CHKsti2/PYbs9GG2ylP1IP5kzMjVZNIXW09K8zUSmI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OMYxByWHiqDtyHytgxRSnId09wfMWZg88JleBRVMGHHSG7zODTWvvIulnFeUnuFuMDYOyF1J9O7Mb94hHrf+rbXJcHLPrmNfNH204r19t2xLiwCuNJUw5jq6lL2FD+wvvS0IwTRI4M8IHNV0PJpvJZNDMi0+szF3XOTl1i4afeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WFz9AhNb; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4774611d40bso11091cf.0
+        for <stable@vger.kernel.org>; Fri, 11 Apr 2025 09:59:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1744390760; x=1744995560; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7JcWT8F950TD+QqQ0UqNeDHA12hwY89YTBPGXVQrv5I=;
+        b=WFz9AhNbfYrj6nu+qML2Lt0OPEMJOTKflpB48cgxXYfIWWQ/EyPDlghxu1KcjfJlax
+         7h6sXJl1LPODCpXcOSjv8HQTP1hoitu39zjeDc1kTajSwtq1Z2+pPAKyDkb9wte9lJu/
+         nInjTe05l7NZfzlWg+yZ+7H5jm5kT46qVatF4O4lF1WJ3WX0oPDvEwajuqKPZj4NcS6v
+         HAX7jKUfm7KXs+kK1vqI+AP4JYx5aQ3F4oEw8MrZJwry/wfnEwNSVsEElYVFw393ll/i
+         /X9dHKQbbPMy2ic4kN2Y+GKtZtVPbZzpI8sGASMGy/o+keQnLdE4MDGyDjkQQtRf+caY
+         UyKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744390760; x=1744995560;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7JcWT8F950TD+QqQ0UqNeDHA12hwY89YTBPGXVQrv5I=;
+        b=iZSlGouXzwZ7dfnM/fGa/sXQwnGzr3mF9fSOu4CPrIh6XKV4pd9pdawECDl6CJDbAW
+         29EWFaOkowN4t2mcRTAp+oS4J6pycjMNKLYB8OaCmEj9X6TjuOQIdGZOPhGdbOFZUXni
+         fYYVr4HzUEt0CTUsaIJx/svKi0LXQV8BRFep4U6POaPAURLLedvDx+giceOV6v+u49/M
+         yRR9i5d9v3TR+jpRes2KYGGy6yHL41wolJ/xHyrOFwB2ls/uCT2p/xpffgFofR4rg0sO
+         +6xzYa+/vjdNc/mjRSWdn9s2Kk1Zqx23BckxgUZ8w/YgcYZNm5IRerpxSCcm1xHMaBQI
+         yYSg==
+X-Forwarded-Encrypted: i=1; AJvYcCU5DVQB7+oHW75kAvPQmW9bBDq21hYuQW0Gaen/vFj0fHnx2i/i/HozH2swg1aewUfYjULES80=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyr9KLeiekqWvGAcy3GHx6FSIiEFG1r6ZIztZC+LEEPuHJ5pjbA
+	J0V/84jJKlOz6HaN1WL9CNAesgw0/CwqgF970MHo9+2PAm+kIHK8mgdnmoRdDRYKCAVpTOFAJNJ
+	rzfRuH4iFRqmjILbo7RKP3VuGGI4mIhASbIaS80TgWUASIQkEFWLo53s=
+X-Gm-Gg: ASbGncvuHtFa6T0mVm+Pp7PM+toPbinfoFV6ueNjkLEowmfWCDpjfslZwJPakwN4Wx7
+	fPO0I6psSHOlbxTz5pgrFx4NaFKvXgO5jOL1ZKtpFa0OKQrWy+2mHAAM+sPBuuHDL9LZS0lgCYm
+	Y/Ztbrx2egrzLyAeKAi1Us
+X-Google-Smtp-Source: AGHT+IFNCkECOF/4RUVrmmZrtr5X6NNOxIvUa6cUDsx7jrRz0J7jFjLKNPLhhm6DC1O9UvkHzLKWiZ/u3eEUA7iSzBA=
+X-Received: by 2002:a05:622a:649:b0:472:915:a200 with SMTP id
+ d75a77b69052e-479766a6b4cmr5960931cf.28.1744390760129; Fri, 11 Apr 2025
+ 09:59:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20250411155737.1360746-1-surenb@google.com> <c88ec69c-87ee-4865-8b2a-87f32f46b0bc@suse.cz>
+In-Reply-To: <c88ec69c-87ee-4865-8b2a-87f32f46b0bc@suse.cz>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Fri, 11 Apr 2025 09:59:08 -0700
+X-Gm-Features: ATxdqUETX9K1wffK9PtEH3J3qFn8MD3LfPBIvEHH6O6tBTLAX7jyrRgfnIPMYHY
+Message-ID: <CAJuCfpE6_Hb40kyM7E4ESw8-_ptm3SARuL0q_YBB49cqkVbPig@mail.gmail.com>
+Subject: Re: [PATCH 1/1] slab: ensure slab->obj_exts is clear in a newly
+ allocated slab page
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: akpm@linux-foundation.org, kent.overstreet@linux.dev, 
+	roman.gushchin@linux.dev, cl@linux.com, rientjes@google.com, 
+	harry.yoo@oracle.com, souravpanda@google.com, pasha.tatashin@soleen.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF000026C5:EE_|SN7PR12MB8146:EE_
-X-MS-Office365-Filtering-Correlation-Id: 59789c7d-c2b6-4c60-6bca-08dd79191cf1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|1800799024|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cjZYaXoxTWE0V2JKWW5ROXlIakw4Slp1dzFlQTFJTXNyOEM0dEQyVXpjMEYw?=
- =?utf-8?B?bGxwVlpRKzhLMUdBb1lBcFNnM0xFUHlrSWh1cG42YzJ6NzVCeUx0SHpua2Vi?=
- =?utf-8?B?TlkwRGdJUFFMLzZ0RTBqSlpmRnUzcmlSYlB1aW5RbWwza2ZkZDhPOFBkcWVV?=
- =?utf-8?B?TEg3cHZxRlFTVVl0U3JnaE5KS2lJQmJ0YXlEVURubkVDRE0yMXdVK28wK2Vl?=
- =?utf-8?B?eloyU1IySmhDZjJpSWVlSGFUaEVKRnRyaDhScDBuVWV1NHU5aTVCb25FTlRM?=
- =?utf-8?B?TEpZbVpKNDViSDljTFNmcWVaazlDTVdaSStVb01vWXJHSTFlZmFSVUN6NlBh?=
- =?utf-8?B?S2JZQVExMTVxOHkwVnlvZkZVNzU3dFlKcEFaUTAzYkhKT29PdUlOek5ndmVI?=
- =?utf-8?B?QVlFK3g4MW5temZyZ3VwWUJzMWt0Kzk3L1BwRUxYZUNaRnNFTzF2eTczelBK?=
- =?utf-8?B?RkJWMlYzbFhvYVFGUkFFTG9nTUZaNVJaaGlsUGRPdzFkQjNkR29hV3hhT0Z5?=
- =?utf-8?B?OTlDU0JIN2ZQSHJMK1lNcDhHeW0vbE96Y3ZLQm5nTXdDSlNRY3lHRFB4cW9D?=
- =?utf-8?B?clI5MHYxMFh0ZXc3ekZWQjBlK3RteFBiNVQ4Z2EwY3N1MG1BdzRyMEs3WEQ1?=
- =?utf-8?B?aVVGQVUyL2tqYy9BeGRmaC9vVG9XQndJZ09SZVhDdUdTTHMrVGlCa1ZCeitY?=
- =?utf-8?B?UlJzVVU0QURmMFcyZHlwTmlQRjRIRS85b3l5THBIb3l0eVJOd3JMWWdOeXJa?=
- =?utf-8?B?R0xMSVkvTzRPc0tVMU4zNTBZdjZ3YXdIZTRLeDhBTjFqelIxNXNxSCtXRTI2?=
- =?utf-8?B?eTcxb0FFcEhoTTluc0xvejJhM1FlQldNWFJXemx5T1kvM2VPU05za3VWUGtY?=
- =?utf-8?B?UVl6UHFWbWdXQmEvNzE0Mk5BcTV0VGNQbHZzK3Jvb0o2MHFaY1NZSmVjKzBX?=
- =?utf-8?B?SVdTN0xtcVF0a01kN0laMnZyWXpZZXB1Tm9ocTczeXNWSzZveU9oYkU5cFVL?=
- =?utf-8?B?NEdtajZqd2YvRUc4K2d2NFZBd1M2bUgyUit5b1JzT1k0QUtTVE5jZGxNK2lx?=
- =?utf-8?B?Q2RNejFhZDNINXV0ZWxmL2tCWlQ1emdBRlc4cmZpZVpROGR0UFd5QnFJV3Mz?=
- =?utf-8?B?U3QxRXZaTmpTbTVMRHVyTVpySTExMkQ2TFFNVmxHU2tkRG9mMG1KSUFldUJa?=
- =?utf-8?B?NkJBMGx2cUZqMTBud0g4MWdTdmVZODBGc05aa2tyY3VDbnlnajBMcDI0aVdk?=
- =?utf-8?B?K2FsT1IxSjJzZkdFM0xOaGthT1BWRlhDVVd2aFQrUnd6NzdUY1UxMDRDZUx0?=
- =?utf-8?B?TWpUdDJNWXpDcjVlM1ZoY2pRakJOQTM0OWZWaGxGSm82eVdmbTdmMXQ2ZzNa?=
- =?utf-8?B?cFlJQjhTMklnQlZ6dWd2MWRVZDcvWW0zSzhDdlNhNkYrY3I0V2tabVN0Nmd0?=
- =?utf-8?B?TnBXTlk5dzU2N1ZMUG8rbm4rL1FqU1NSOTJRYmlGNVhBeFZhQ21BVGlnVHcz?=
- =?utf-8?B?SHNKY1ppRVdNVmpRNDR3ajcyaUd2VHYvZ0k2aVA3bTJHellpaUo5OTFBKzZL?=
- =?utf-8?B?TmlyS0p6dGZvSzdMemJoWU5VWHpPQzkrNnNlYjlsdVorWkJ4QXZGVlFIajY3?=
- =?utf-8?B?Mlh3NVN5Y0xuSEJOOEpoWWV3WEdFY1Rmc2d3NlFiNnVVTmRRcGo5WFNqTHhz?=
- =?utf-8?B?VXhldGV5WWdXR3UxR0tTWVBKZ1IxK3RjdHhuL1RTcVBHNytiR3lqUEswd3JJ?=
- =?utf-8?B?MnNqUTZYYmxwcUxtei9KVFY2MEs3YUxaN0hBN2dXUUZyUGVVdGJ2NXBLUStQ?=
- =?utf-8?B?QytOZUsrTkZGc0lGRTBaYkRoTkRBMXJWN0lMK1Q5MDE2VFRrUDRTMlgxYVpN?=
- =?utf-8?B?bHc3ZDhaZXhtMXFocDlFRHU2MTZOaWtuandpcjR5LzR6UU5lZ21XVnBlMUZp?=
- =?utf-8?B?K0FVQk5WUG12RjZjYnpseEVscERmR04zMXdlTEZTejlKUkgvTFJuZ3RsMTFB?=
- =?utf-8?B?NmM3MHVJYUtEMTRqNUptVDRvblZIUXhXeFRoSjNWRnFwRzNJRmZ4Q2ozajVw?=
- =?utf-8?Q?NIHDdz?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(1800799024)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2025 16:51:32.1798
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 59789c7d-c2b6-4c60-6bca-08dd79191cf1
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF000026C5.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8146
+Content-Transfer-Encoding: quoted-printable
 
-From: Roger Pau Monne <roger.pau@citrix.com>
+On Fri, Apr 11, 2025 at 9:27=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
+ote:
+>
+> On 4/11/25 17:57, Suren Baghdasaryan wrote:
+> > ktest recently reported crashes while running several buffered io tests
+> > with __alloc_tagging_slab_alloc_hook() at the top of the crash call sta=
+ck.
+> > The signature indicates an invalid address dereference with low bits of
+> > slab->obj_exts being set. The bits were outside of the range used by
+> > page_memcg_data_flags and objext_flags and hence were not masked out
+> > by slab_obj_exts() when obtaining the pointer stored in slab->obj_exts.
+> > The typical crash log looks like this:
+> >
+> > 00510 Unable to handle kernel NULL pointer dereference at virtual addre=
+ss 0000000000000010
+> > 00510 Mem abort info:
+> > 00510   ESR =3D 0x0000000096000045
+> > 00510   EC =3D 0x25: DABT (current EL), IL =3D 32 bits
+> > 00510   SET =3D 0, FnV =3D 0
+> > 00510   EA =3D 0, S1PTW =3D 0
+> > 00510   FSC =3D 0x05: level 1 translation fault
+> > 00510 Data abort info:
+> > 00510   ISV =3D 0, ISS =3D 0x00000045, ISS2 =3D 0x00000000
+> > 00510   CM =3D 0, WnR =3D 1, TnD =3D 0, TagAccess =3D 0
+> > 00510   GCS =3D 0, Overlay =3D 0, DirtyBit =3D 0, Xs =3D 0
+> > 00510 user pgtable: 4k pages, 39-bit VAs, pgdp=3D0000000104175000
+> > 00510 [0000000000000010] pgd=3D0000000000000000, p4d=3D0000000000000000=
+, pud=3D0000000000000000
+> > 00510 Internal error: Oops: 0000000096000045 [#1]  SMP
+> > 00510 Modules linked in:
+> > 00510 CPU: 10 UID: 0 PID: 7692 Comm: cat Not tainted 6.15.0-rc1-ktest-g=
+189e17946605 #19327 NONE
+> > 00510 Hardware name: linux,dummy-virt (DT)
+> > 00510 pstate: 20001005 (nzCv daif -PAN -UAO -TCO -DIT +SSBS BTYPE=3D--)
+> > 00510 pc : __alloc_tagging_slab_alloc_hook+0xe0/0x190
+> > 00510 lr : __kmalloc_noprof+0x150/0x310
+> > 00510 sp : ffffff80c87df6c0
+> > 00510 x29: ffffff80c87df6c0 x28: 000000000013d1ff x27: 000000000013d200
+> > 00510 x26: ffffff80c87df9e0 x25: 0000000000000000 x24: 0000000000000001
+> > 00510 x23: ffffffc08041953c x22: 000000000000004c x21: ffffff80c0002180
+> > 00510 x20: fffffffec3120840 x19: ffffff80c4821000 x18: 0000000000000000
+> > 00510 x17: fffffffec3d02f00 x16: fffffffec3d02e00 x15: fffffffec3d00700
+> > 00510 x14: fffffffec3d00600 x13: 0000000000000200 x12: 0000000000000006
+> > 00510 x11: ffffffc080bb86c0 x10: 0000000000000000 x9 : ffffffc080201e58
+> > 00510 x8 : ffffff80c4821060 x7 : 0000000000000000 x6 : 0000000055555556
+> > 00510 x5 : 0000000000000001 x4 : 0000000000000010 x3 : 0000000000000060
+> > 00510 x2 : 0000000000000000 x1 : ffffffc080f50cf8 x0 : ffffff80d801d000
+> > 00510 Call trace:
+> > 00510  __alloc_tagging_slab_alloc_hook+0xe0/0x190 (P)
+> > 00510  __kmalloc_noprof+0x150/0x310
+> > 00510  __bch2_folio_create+0x5c/0xf8
+> > 00510  bch2_folio_create+0x2c/0x40
+> > 00510  bch2_readahead+0xc0/0x460
+> > 00510  read_pages+0x7c/0x230
+> > 00510  page_cache_ra_order+0x244/0x3a8
+> > 00510  page_cache_async_ra+0x124/0x170
+> > 00510  filemap_readahead.isra.0+0x58/0xa0
+> > 00510  filemap_get_pages+0x454/0x7b0
+> > 00510  filemap_read+0xdc/0x418
+> > 00510  bch2_read_iter+0x100/0x1b0
+> > 00510  vfs_read+0x214/0x300
+> > 00510  ksys_read+0x6c/0x108
+> > 00510  __arm64_sys_read+0x20/0x30
+> > 00510  invoke_syscall.constprop.0+0x54/0xe8
+> > 00510  do_el0_svc+0x44/0xc8
+> > 00510  el0_svc+0x18/0x58
+> > 00510  el0t_64_sync_handler+0x104/0x130
+> > 00510  el0t_64_sync+0x154/0x158
+> > 00510 Code: d5384100 f9401c01 b9401aa3 b40002e1 (f8227881)
+> > 00510 ---[ end trace 0000000000000000 ]---
+> > 00510 Kernel panic - not syncing: Oops: Fatal exception
+> > 00510 SMP: stopping secondary CPUs
+> > 00510 Kernel Offset: disabled
+> > 00510 CPU features: 0x0000,000000e0,00000410,8240500b
+> > 00510 Memory Limit: none
+> >
+> > Investigation indicates that these bits are already set when we allocat=
+e
+> > slab page and are not zeroed out after allocation. We are not yet sure
+> > why these crashes start happening only recently but regardless of the
+> > reason, not initializing a field that gets used later is wrong. Fix it
+> > by initializing slab->obj_exts during slab page allocation.
+>
+> slab->obj_exts overlays page->memcg_data and the checks on page alloc and
+> page free should catch any non-zero values, i.e. page_expected_state()
+> page_bad_reason() so if anyone is e.g. UAF-writing there or leaving garba=
+ge
+> there while freeing the page it's a bug.
+>
+> Perhaps CONFIG_MEMCG is disabled in the ktests and thus the checks are no=
+t
+> happening? We could extend them for CONFIG_SLAB_OBJ_EXT checking
+> _unused_slab_obj_exts perhaps. But it would be a short lived change, see =
+below.
 
-commit 4c006734898a113a64a528027274a571b04af95a upstream
+Correct, CONFIG_MEMCG was disabled during these tests. We added
+BUG_ON() in the slab allocation path to trigger on these low bits and
+it did trigger but the same assertion in the freeing path did not
+catch anything. We suspected 4996fc547f5b ("mm: let _folio_nr_pages
+overlay memcg_data in first tail page") to cause this but Kent's
+bisection did not confirm that.
 
-The current usage of memblock_reserve() in init_pvh_bootparams() is done before
-the .bss is zeroed, and that used to be fine when
-memblock_reserved_init_regions implicitly ended up in the .meminit.data
-section.  However after commit 73db3abdca58c memblock_reserved_init_regions
-ends up in the .bss section, thus breaking it's usage before the .bss is
-cleared.
+>
+> > Fixes: 21c690a349ba ("mm: introduce slabobj_ext to support slab object =
+extensions")
+> > Reported-by: Kent Overstreet <kent.overstreet@linux.dev>
+> > Tested-by: Kent Overstreet <kent.overstreet@linux.dev>
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > Acked-by: Kent Overstreet <kent.overstreet@linux.dev>
+> > Cc: <stable@vger.kernel.org>
+>
+> We'll need this anyway for the not so far future when struct slab is
+> separated from struct page so it's fine but it would still be great to fi=
+nd
+> the underlying buggy code which this is going to hide.
 
-Move and rename the call to xen_reserve_extra_memory() so it's done in the
-x86_init.oem.arch_setup hook, which gets executed after the .bss has been
-zeroed, but before calling e820__memory_setup().
+Yeah, we will try to find the culprit. For now to prevent others from
+stepping on this mine I would like to get this in. Thanks!
 
-Fixes: 73db3abdca58c ("init/modpost: conditionally check section mismatch to __meminit*")
-Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20240725073116.14626-3-roger.pau@citrix.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-[ Context fixup for hypercall_page removal ]
-Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
----
-For stable-6.6
-
-Context fixup is needed to cherry-pick after Xen hypercall_page removal.
-
-The Fixes commit was backported to 6.6, so this is needed to fix booting
-for Xen PVH.
----
- arch/x86/include/asm/xen/hypervisor.h |  5 -----
- arch/x86/platform/pvh/enlighten.c     |  3 ---
- arch/x86/xen/enlighten_pvh.c          | 15 ++++++++++++---
- 3 files changed, 12 insertions(+), 11 deletions(-)
-
-diff --git a/arch/x86/include/asm/xen/hypervisor.h b/arch/x86/include/asm/xen/hypervisor.h
-index 64fbd2dbc5b7..a9088250770f 100644
---- a/arch/x86/include/asm/xen/hypervisor.h
-+++ b/arch/x86/include/asm/xen/hypervisor.h
-@@ -62,11 +62,6 @@ void xen_arch_unregister_cpu(int num);
- #ifdef CONFIG_PVH
- void __init xen_pvh_init(struct boot_params *boot_params);
- void __init mem_map_via_hcall(struct boot_params *boot_params_p);
--#ifdef CONFIG_XEN_PVH
--void __init xen_reserve_extra_memory(struct boot_params *bootp);
--#else
--static inline void xen_reserve_extra_memory(struct boot_params *bootp) { }
--#endif
- #endif
- 
- /* Lazy mode for batching updates / context switch */
-diff --git a/arch/x86/platform/pvh/enlighten.c b/arch/x86/platform/pvh/enlighten.c
-index a12117f3d4de..00a92cb2c814 100644
---- a/arch/x86/platform/pvh/enlighten.c
-+++ b/arch/x86/platform/pvh/enlighten.c
-@@ -74,9 +74,6 @@ static void __init init_pvh_bootparams(bool xen_guest)
- 	} else
- 		xen_raw_printk("Warning: Can fit ISA range into e820\n");
- 
--	if (xen_guest)
--		xen_reserve_extra_memory(&pvh_bootparams);
--
- 	pvh_bootparams.hdr.cmd_line_ptr =
- 		pvh_start_info.cmdline_paddr;
- 
-diff --git a/arch/x86/xen/enlighten_pvh.c b/arch/x86/xen/enlighten_pvh.c
-index 89984018141c..ac0a8adb2c50 100644
---- a/arch/x86/xen/enlighten_pvh.c
-+++ b/arch/x86/xen/enlighten_pvh.c
-@@ -8,6 +8,7 @@
- #include <asm/io_apic.h>
- #include <asm/hypervisor.h>
- #include <asm/e820/api.h>
-+#include <asm/setup.h>
- 
- #include <xen/xen.h>
- #include <asm/xen/interface.h>
-@@ -40,8 +41,9 @@ EXPORT_SYMBOL_GPL(xen_pvh);
-  * hypervisor should notify us which memory ranges are suitable for creating
-  * foreign mappings, but that's not yet implemented.
-  */
--void __init xen_reserve_extra_memory(struct boot_params *bootp)
-+static void __init pvh_reserve_extra_memory(void)
- {
-+	struct boot_params *bootp = &boot_params;
- 	unsigned int i, ram_pages = 0, extra_pages;
- 
- 	for (i = 0; i < bootp->e820_entries; i++) {
-@@ -93,14 +95,21 @@ void __init xen_reserve_extra_memory(struct boot_params *bootp)
- 	}
- }
- 
-+static void __init pvh_arch_setup(void)
-+{
-+	pvh_reserve_extra_memory();
-+
-+	if (xen_initial_domain())
-+		xen_add_preferred_consoles();
-+}
-+
- void __init xen_pvh_init(struct boot_params *boot_params)
- {
- 	xen_pvh = 1;
- 	xen_domain_type = XEN_HVM_DOMAIN;
- 	xen_start_flags = pvh_start_info.flags;
- 
--	if (xen_initial_domain())
--		x86_init.oem.arch_setup = xen_add_preferred_consoles;
-+	x86_init.oem.arch_setup = pvh_arch_setup;
- 	x86_init.oem.banner = xen_banner;
- 
- 	xen_efi_init(boot_params);
--- 
-2.49.0
-
+>
+> > ---
+> >  mm/slub.c | 10 ++++++++++
+> >  1 file changed, 10 insertions(+)
+> >
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index b46f87662e71..dc9e729e1d26 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -1973,6 +1973,11 @@ static inline void handle_failed_objexts_alloc(u=
+nsigned long obj_exts,
+> >  #define OBJCGS_CLEAR_MASK    (__GFP_DMA | __GFP_RECLAIMABLE | \
+> >                               __GFP_ACCOUNT | __GFP_NOFAIL)
+> >
+> > +static inline void init_slab_obj_exts(struct slab *slab)
+> > +{
+> > +     slab->obj_exts =3D 0;
+> > +}
+> > +
+> >  int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+> >                       gfp_t gfp, bool new_slab)
+> >  {
+> > @@ -2058,6 +2063,10 @@ static inline bool need_slab_obj_ext(void)
+> >
+> >  #else /* CONFIG_SLAB_OBJ_EXT */
+> >
+> > +static inline void init_slab_obj_exts(struct slab *slab)
+> > +{
+> > +}
+> > +
+> >  static int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s=
+,
+> >                              gfp_t gfp, bool new_slab)
+> >  {
+> > @@ -2637,6 +2646,7 @@ static struct slab *allocate_slab(struct kmem_cac=
+he *s, gfp_t flags, int node)
+> >       slab->objects =3D oo_objects(oo);
+> >       slab->inuse =3D 0;
+> >       slab->frozen =3D 0;
+> > +     init_slab_obj_exts(slab);
+> >
+> >       account_slab(slab, oo_order(oo), s, flags);
+> >
+> >
+> > base-commit: c496b37f9061db039b413c03ccd33506175fe6ec
+>
 
