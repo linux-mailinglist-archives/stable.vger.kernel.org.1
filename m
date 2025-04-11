@@ -1,148 +1,165 @@
-Return-Path: <stable+bounces-132241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F7C2A85F0C
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 15:33:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3600BA85F37
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 15:39:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5364B441C8E
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 13:31:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94F5D1BC4B32
+	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 13:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 896181ACED1;
-	Fri, 11 Apr 2025 13:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D7F203714;
+	Fri, 11 Apr 2025 13:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OED7EW9o"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="ubbbPPRo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f194.google.com (mail-lj1-f194.google.com [209.85.208.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0BB2EB1D;
-	Fri, 11 Apr 2025 13:30:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC38B1F1507;
+	Fri, 11 Apr 2025 13:32:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744378242; cv=none; b=bIKtDfrCtP3/wZ700HYJPPAdSRiP+5cD3DLU0vANe7d8pPf+KGKSCc6tM2D0nS2iW6+iOw0SW0k9HtjDymgRNompWVH9emM70WJ5uq9ifc4MqPsiL84NZDJD2Si2f9TAkTO9LG7oBM8uKUTw70QRoqOyypChNlT/RW9JJ6pO5XY=
+	t=1744378374; cv=none; b=PwEnzXn/+zBxbGYVaK+fD6M10BXyG6qkmIUVy3DkJh1HdJH3LnSh9P+MIud8N8S9qup+3GK6u/tbfzZrUXgkq+eEcyU7Zhaks6hf7WmR+hK5A1KP6zELwcwQCLyZXiZixUzhlmOLPHLT6hAZPHrvfF/758c/IYwzHk5xAXL3fo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744378242; c=relaxed/simple;
-	bh=jueZpG4oTv3+EEGxq89YYgWm1ZpK/jmc9aD28F2zK0Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Lrc7hjIk+9T4baglrJdIrK6xcU8GBw16ZVdV431gYQR4G9zoxlBd8AFl0h+sudHSZA8njitaYvbPGbm0r7Czo75qv2LvRLxw+V827CHeFVAdnzxEJRmNbp6182Ft1Zjs8LDCs/SZEM/chgKEwRH5Clo+VxH129qJCbuOqH/9QJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OED7EW9o; arc=none smtp.client-ip=209.85.208.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f194.google.com with SMTP id 38308e7fff4ca-30bf5d7d107so16308631fa.2;
-        Fri, 11 Apr 2025 06:30:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744378239; x=1744983039; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T2R/IkUgsNUQZyYj/hsSGzxvJ2UNWF/IZAubjoxHQl0=;
-        b=OED7EW9oxb0n1TJOyAt2IWEcpfTsqfsAPRfvJIjYM3OkF8H23GzElV7o20jDOnYGod
-         knfquLm8ZDzFW0AbjQWK+AX/ln/a7tQ+a9m30aMHzCiiQk2N7VmvOWSqqJ2Cvc84sK6Z
-         LG35SRljqlFngR97aP0plXUi5r9/1hWh/Gh85rLC9ytOmlTm+Mw36boo/GKDlUf4p8P4
-         kODQag4R+74W0TUR+U35r/7ZYDr158OQMnBcijRHQTtCqs9gnuydId19MhxCNrprKBbo
-         IjfNSY16GM8px7OTQNsW6jGC0Quur7TLQV81C+PU5gdvqFB6ev5JfcuKoIZQmwV5qj5f
-         n+Cg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744378239; x=1744983039;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T2R/IkUgsNUQZyYj/hsSGzxvJ2UNWF/IZAubjoxHQl0=;
-        b=J5Ezn56mqyYWnSQnNw34k1Ym/c3eCrUvLcUxUUSpwG4knlWurAUx7u0Qvv4aHtzh19
-         3jxJNFiIxb6eW33TDtcRC24ZW962HH4cuAZO+wx7M2KI5Pnogi9evDSiPRKgHApxSBZI
-         VkNImIG84/M+A470hFa5D+fb0VtCqX8K+f30StosGBePvS0Owsx7Z3JFOzkrryBNtgX5
-         q3urxJdfxv2r6bs0f8MQa64gJxlR45k8CbdWbRfERGGxvy5Kan8J7GBWau6fL6kq3dUS
-         clnQrKKQN9//+F4JdPC18GPBcEKOAeCIGID5rO/e1GbcqAc2GuoIMOrc+gKeaeqoiosp
-         LeUw==
-X-Forwarded-Encrypted: i=1; AJvYcCU0M02NylB7BNELlSeB4NILq9HX2ujQYPX0D8lcbrHNAqMXHUWzxgYsZEJU5xSTgdirYSjoN2XgCl59@vger.kernel.org, AJvYcCUfASsqMZ85tqmYqlN0XhN+xD3QxF/NcoSMx2F4MDlOZKQpFYlU0O6+cq1jbfZ2J6NzEv90mnXc@vger.kernel.org, AJvYcCXA8OaL+LwRCtA/4JXpDN3OEBdoZjvxh2ST9CSYPxkTOz1K4fF5FgiCVVCrv8lP9JX6K+ahx0EUUE2ZNTI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdeM6dS1lsb1a4u22lEHjDHWM4Zm3FIXfHBy9rAfHL1HeSGENR
-	7BeoL6AaRgw7I7djSKk7LCixW+cGYYxiXbCFcQc2X99Y30U9tlfkaz3Fth7zOd6PzDdKUNNaAR7
-	+ddb+0wcfpCHWKWc3dkz98sPKR6E=
-X-Gm-Gg: ASbGncudll7R0S8KjJ/aX/DLbG2D4P6GmlgxNikq5tvTvYDeVmTaF0jzCVMPHb5inSE
-	tZQvJ4o2wuv8vAWK2lOxPTYnl18DZE1iHJ5dgEVYAUGYCAJTpmSEdq+qn2T8HDCNCxig7ex3vKU
-	PMeU1SVLd9k4V9iraSHdCG
-X-Google-Smtp-Source: AGHT+IG1lqVlN04eQ+Cdjd0vIhu0KNn3WIjR2MqivG0AARDZu5eY1L6Hi/Vnc2KqgBWl1QD8jRqYqg+Y0ThYnZbHxqc=
-X-Received: by 2002:a2e:a545:0:b0:30b:a92e:8b42 with SMTP id
- 38308e7fff4ca-31049a930d6mr9258461fa.26.1744378237355; Fri, 11 Apr 2025
- 06:30:37 -0700 (PDT)
+	s=arc-20240116; t=1744378374; c=relaxed/simple;
+	bh=az4A2h4Fh8Qax5uqmPNNmxM9dROSi+JrFtVmdCqudbU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=VEtf6G5FabkyrxeREcOMtyyGJ1IFW+ekm46PrWgIWpVghleEv1jTaG760RBFDbM9Ja84fi040w9GJA66mkp2UJ9O4bS4Falag6vLwHxw+Wo4fyOuYcvIV9p4VpoDgVMPYWrDAb9hQbedS9+C8aqPijkmvkf3ird76+h+2hVsVUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=ubbbPPRo; arc=none smtp.client-ip=198.47.23.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53BDWWYb2086133
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 11 Apr 2025 08:32:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1744378352;
+	bh=Gboexee6mD0L1jweFt2EEXBwApJzHNO1ztWVUzHiKoM=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=ubbbPPRoTePNDMPdfLtMBZpmJTGOITP771vSjv2qNk/m54WJmWZEd6mPuKrciEIaC
+	 DeNzEG0VetxaLfgDHEtM/94Js/4z87J1JVfg1lt0fE71nLWA6oCsnCd9p+GslJqQHC
+	 9uLnFeAhmC/jK+P1OqRzsORAQ94R1tTyhlg3Q4D4=
+Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53BDWW1p021039
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 11 Apr 2025 08:32:32 -0500
+Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 11
+ Apr 2025 08:32:31 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 11 Apr 2025 08:32:31 -0500
+Received: from [10.249.136.157] ([10.249.136.157])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53BDWQDe107922;
+	Fri, 11 Apr 2025 08:32:27 -0500
+Message-ID: <9d0f7fc5-070d-4475-8569-d3e0e9421313@ti.com>
+Date: Fri, 11 Apr 2025 19:02:26 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250405113020.80387-1-bsdhenrymartin@gmail.com> <2025041119-debit-cosmic-f41c@gregkh>
-In-Reply-To: <2025041119-debit-cosmic-f41c@gregkh>
-From: henry martin <bsdhenrymartin@gmail.com>
-Date: Fri, 11 Apr 2025 21:30:26 +0800
-X-Gm-Features: ATxdqUFFH3sTnc2x3CM9EZtpM34AzSWHqdFLolBE3C_g_Sf3mnv8aMarh0qkivM
-Message-ID: <CAEnQdOqmq3wwn3FLNq2wiq6MuM9ZMgcs6vcmwpVVgwzY=zeceg@mail.gmail.com>
-Subject: Re: [PATCH v2] usb/gadget: Add NULL check in ast_vhub_init_dev()
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: joel@jms.id.au, andrew@codeconstruct.com.au, linux-usb@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/7] arm64: dts: ti: j721e-sk: Add DT nodes for power
+ regulators
+To: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>, <nm@ti.com>,
+        <vigneshr@ti.com>
+CC: <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+        <conor+dt@kernel.org>, <vaishnav.a@ti.com>, <jai.luthra@linux.dev>,
+        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
+        <imx@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+        <u-kumar1@ti.com>, <stable@vger.kernel.org>
+References: <20250409134128.2098195-1-y-abhilashchandra@ti.com>
+ <20250409134128.2098195-2-y-abhilashchandra@ti.com>
+Content-Language: en-US
+From: "Francis, Neha" <n-francis@ti.com>
+In-Reply-To: <20250409134128.2098195-2-y-abhilashchandra@ti.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-> What kernel version did you make this against?  It does not apply to
-> 6.15-rc1 for me :(
+Hi Abhilash
 
-Apologies for the noise.
+On 4/9/2025 7:11 PM, Yemike Abhilash Chandra wrote:
+> Add device tree nodes for two power regulators on the J721E SK board.
+> vsys_5v0: A fixed regulator representing the 5V supply output from the
+> LM61460 and vdd_sd_dv: A GPIO-controlled TLV71033 regulator.
+> 
+> J721E-SK schematics: https://www.ti.com/lit/zip/sprr438
+> Fixes: 1bfda92a3a36 ("arm64: dts: ti: Add support for J721E SK")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+> ---
+>  arch/arm64/boot/dts/ti/k3-j721e-sk.dts | 31 ++++++++++++++++++++++++++
+>  1 file changed, 31 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+> index 440ef57be294..4965957e6545 100644
+> --- a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+> +++ b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+> @@ -184,6 +184,17 @@ vsys_3v3: fixedregulator-vsys3v3 {
+>  		regulator-boot-on;
+>  	};
+>  
+> +	vsys_5v0: fixedregulator-vsys5v0 {
+> +		/* Output of LM61460 */
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "vsys_5v0";
+> +		regulator-min-microvolt = <5000000>;
+> +		regulator-max-microvolt = <5000000>;
+> +		vin-supply = <&vusb_main>;
+> +		regulator-always-on;
+> +		regulator-boot-on;
+> +	};
+> +
+>  	vdd_mmc1: fixedregulator-sd {
+>  		compatible = "regulator-fixed";
+>  		pinctrl-names = "default";
+> @@ -211,6 +222,20 @@ vdd_sd_dv_alt: gpio-regulator-tps659411 {
+>  			 <3300000 0x1>;
+>  	};
+>  
+> +	vdd_sd_dv: gpio-regulator-TLV71033 {
+> +		compatible = "regulator-gpio";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&vdd_sd_dv_pins_default>;
+> +		regulator-name = "tlv71033";
+> +		regulator-min-microvolt = <1800000>;
+> +		regulator-max-microvolt = <3300000>;
+> +		regulator-boot-on;
+> +		vin-supply = <&vsys_5v0>;
+> +		gpios = <&main_gpio0 118 GPIO_ACTIVE_HIGH>;
+> +		states = <1800000 0x0>,
+> +			 <3300000 0x1>;
+> +	};
+> +
+>  	transceiver1: can-phy1 {
+>  		compatible = "ti,tcan1042";
+>  		#phy-cells = <0>;
+> @@ -613,6 +638,12 @@ J721E_WKUP_IOPAD(0xd4, PIN_OUTPUT, 7) /* (G26) WKUP_GPIO0_9 */
+>  		>;
+>  	};
+>  
+> +	vdd_sd_dv_pins_default: vdd-sd-dv-default-pins {
+> +		pinctrl-single,pins = <
+> +			J721E_IOPAD(0x1dc, PIN_INPUT, 7) /* (Y1) SPI1_CLK.GPIO0_118 */
+> +		>;
+> +	};
+> +
+>  	wkup_uart0_pins_default: wkup-uart0-default-pins {
+>  		pinctrl-single,pins = <
+>  			J721E_WKUP_IOPAD(0xa0, PIN_INPUT, 0) /* (J29) WKUP_UART0_RXD */
 
-I just rebased onto v6.15-rc1 and noticed that this issue has already been
-fixed upstream.
-Thanks again for taking the time to review =E2=80=94 I'll drop this patch.
+Reviewed-by: Neha Malcom Francis <n-francis@ti.com>
 
-Best regards,
-Henry
+-- 
+Thanking You
+Neha Malcom Francis
 
-Greg KH <gregkh@linuxfoundation.org> =E4=BA=8E2025=E5=B9=B44=E6=9C=8811=E6=
-=97=A5=E5=91=A8=E4=BA=94 21:06=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Sat, Apr 05, 2025 at 07:30:20PM +0800, Henry Martin wrote:
-> > devm_kasprintf() returns NULL when memory allocation fails. Currently,
-> > ast_vhub_init_dev() does not check for this case, which results in a
-> > NULL pointer dereference.
-> >
-> > Add NULL check after devm_kasprintf() to prevent this issue.
-> >
-> > Cc: stable@vger.kernel.org    # v4.18
-> > Fixes: 7ecca2a4080c ("usb/gadget: Add driver for Aspeed SoC virtual hub=
-")
-> > Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-> > ---
-> > V1 -> V2: Add Cc: stable label and correct commit message.
-> >
-> >  drivers/usb/gadget/udc/aspeed-vhub/dev.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/drivers/usb/gadget/udc/aspeed-vhub/dev.c b/drivers/usb/gad=
-get/udc/aspeed-vhub/dev.c
-> > index 573109ca5b79..5b7d41a990d7 100644
-> > --- a/drivers/usb/gadget/udc/aspeed-vhub/dev.c
-> > +++ b/drivers/usb/gadget/udc/aspeed-vhub/dev.c
-> > @@ -548,6 +548,8 @@ int ast_vhub_init_dev(struct ast_vhub *vhub, unsign=
-ed int idx)
-> >       d->vhub =3D vhub;
-> >       d->index =3D idx;
-> >       d->name =3D devm_kasprintf(parent, GFP_KERNEL, "port%d", idx+1);
-> > +     if (!d->name)
-> > +             return -ENOMEM;
-> >       d->regs =3D vhub->regs + 0x100 + 0x10 * idx;
-> >
-> >       ast_vhub_init_ep0(vhub, &d->ep0, d);
-> > --
-> > 2.34.1
-> >
->
-> What kernel version did you make this against?  It does not apply to
-> 6.15-rc1 for me :(
->
-> thanks,
->
-> greg k-h
 
