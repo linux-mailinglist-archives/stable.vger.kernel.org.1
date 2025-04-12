@@ -1,177 +1,105 @@
-Return-Path: <stable+bounces-132314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2CAA86B3F
-	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 08:24:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 261E1A86BFB
+	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 11:27:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABCE8464928
-	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 06:24:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 180C8446565
+	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 09:27:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E949D18B475;
-	Sat, 12 Apr 2025 06:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28DB719F421;
+	Sat, 12 Apr 2025 09:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XD3+sZ7c"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=herecura.eu header.i=linux@herecura.eu header.b="xvCZyP3H"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from o28.p25.mailjet.com (o28.p25.mailjet.com [185.189.236.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8121C7FD;
-	Sat, 12 Apr 2025 06:24:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5CF4199EB7
+	for <stable@vger.kernel.org>; Sat, 12 Apr 2025 09:27:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.189.236.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744439071; cv=none; b=P7sojAolIMGRoPWha34oFCWUXRZEKAuqJJSNjIu/iqFbF+S2u4kXEX9zFAgjuQp9asANIyqy5+YILoHoaTMEa9LqQYcrg+ybDZY19hNFRwLEQTQ62coamzjbk1mQrcctEimkrKd3W3mkwhUa6ykt4p0Tqah05twAlUxmA8IkYiY=
+	t=1744450047; cv=none; b=Gf/SVslA3RDHqo4q8Frwg9myVzyMX3TMNrwc2KivmCc0rw/hutWd+Lu35BbxH3SQHDSfoKsWlx240oztSCMbVQF8MVRMIlhF2e4f5HJEtdP3GduCgxQNJKC098XB05R/6R7BuN04NaxeUbceg6kOfbf3ZoSGUO3NoLdQpS4Zk2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744439071; c=relaxed/simple;
-	bh=cASD74BDVecXPscxZX54wCavoipGk0tOYQ7XNeflobo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JVY7C/LRNWTACuOfYhCupl1RGZcFArLg45CKrvoLZdSwHhLR8zfjCGYohTkc5g/UHbJ919MUQcFSCqru2j4lqQu/KQ+6hCLInIrOcU94vk8uvhonQnAON6CiwHWMCiJiR6iVNhF5HVwIT8wSL7+UTGt9b53y4CEEvMaEI7mjWek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XD3+sZ7c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29FF1C4CEE3;
-	Sat, 12 Apr 2025 06:24:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744439070;
-	bh=cASD74BDVecXPscxZX54wCavoipGk0tOYQ7XNeflobo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XD3+sZ7c7EsbLbLRCui43vraC6vo6YNdf2XlAHBFk1OGKAwPVluQI2vMB/w0DI7DV
-	 iqGeOJCaoEYxpGSXekdJxZZ0jW+8DFwXxF/KhQr70mdnc3V3N9FNV8jP4eUFxgnYxy
-	 pAE1G+5txJj+Q3LgDTSt/1m0Uw8Yb5QI+kiBES3o=
-Date: Sat, 12 Apr 2025 08:24:27 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Cc: Viktor Malik <vmalik@redhat.com>, bpf@vger.kernel.org,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-	lmarch2 <2524158037@qq.com>, stable@vger.kernel.org,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: Re: [PATCH bpf v2] libbpf: Fix buffer overflow in
- bpf_object__init_prog
-Message-ID: <2025041242-ignore-python-f4ef@gregkh>
-References: <20250410095517.141271-1-vmalik@redhat.com>
- <CAEf4Bzb2S+1TonOp9UH86r0e6aGG2LEA4kwbQhJWr=9Xju=NEw@mail.gmail.com>
+	s=arc-20240116; t=1744450047; c=relaxed/simple;
+	bh=j5jV4FYbM8Hq8DaeSb7opCaZ01laZe72zt1avgpjZ5k=;
+	h=Message-Id:MIME-Version:From:To:Subject:Date:Content-Type; b=KFIAUyJhX5ngEBaHSsVRRH2hTAG3gOjRTzjOPkB7rvLgq16s5GJo2MUdo7uiqHf6c7a55PlroRwv+r4Ki3HC7gPe6d0jZ6wlA/JS+IbqRGNSLoGFtnJkwVKTeWNH/2uf20D0XQm6uAfuqisHUbPiSBCnDjNeKCQ/GqbP5Vl5pfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=herecura.eu; spf=pass smtp.mailfrom=a1780319.bnc3.mailjet.com; dkim=pass (1024-bit key) header.d=herecura.eu header.i=linux@herecura.eu header.b=xvCZyP3H; arc=none smtp.client-ip=185.189.236.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=herecura.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=a1780319.bnc3.mailjet.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; q=dns/txt;
+  d=herecura.eu; i=linux@herecura.eu; s=mailjet; x=1744457241;
+  h=message-id:mime-version:from:from:to:to:subject:subject:date:date:list-unsubscribe-post:list-unsubscribe:
+  feedback-id:x-csa-complaints:x-mj-mid:x-mj-smtpguid:x-report-abuse-to:
+  x-spamd-bar:content-language:content-type:content-transfer-encoding;
+  bh=j5jV4FYbM8Hq8DaeSb7opCaZ01laZe72zt1avgpjZ5k=;
+  b=xvCZyP3HKhgWEmygmFRjk32LqDTlAkDPgtr+e0JX9Xg7aUcv4xRS1MzFi
+ EfLs+hVhxLrisbdnhkV56kzcJD3XbJQ1A8Qhd/5GfIwAEceiYVzyH24x0r6J
+ W9Ls4wsJ3blgCJ507f23lMPCjke+SyBFIrkipjGJrbqHqoyGfA01NE=
+Message-Id: <3e1b616b.AMcAAGjWv5wAAAAAAAAAA9W7g6YAAAAANfgAAAAAABsqXwBn-jH5@mailjet.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEf4Bzb2S+1TonOp9UH86r0e6aGG2LEA4kwbQhJWr=9Xju=NEw@mail.gmail.com>
+From: Ike Devolder <linux@herecura.eu>
+To: stable@vger.kernel.org
+Subject: Missing paravirt backport in 6.12.23
+Date: Sat, 12 Apr 2025 11:27:18 +0200
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+Feedback-Id: 42.1780319.1710535:MJ
+X-CSA-Complaints: csa-complaints@eco.de
+X-MJ-Mid:
+	AMcAAGjWv5wAAAAAAAAAA9W7g6YAAAAANfgAAAAAABsqXwBn-jH5qmlQ98zAT86rOJsi4t3rEwAaGcc
+X-MJ-SMTPGUID: aa6950f7-ccc0-4fce-ab38-9b22e2ddeb13
+X-REPORT-ABUSE-TO: Message sent by Mailjet please report to
+	abuse@mailjet.com with a copy of the message
+X-Spamd-Bar: /
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Apr 11, 2025 at 09:22:37AM -0700, Andrii Nakryiko wrote:
-> On Thu, Apr 10, 2025 at 2:55 AM Viktor Malik <vmalik@redhat.com> wrote:
-> >
-> > As reported by CVE-2025-29481 [1], it is possible to corrupt a BPF ELF
-> > file such that arbitrary BPF instructions are loaded by libbpf. This can
-> > be done by setting a symbol (BPF program) section offset to a large
-> > (unsigned) number such that <section start + symbol offset> overflows
-> > and points before the section data in the memory.
-> >
-> > Consider the situation below where:
-> > - prog_start = sec_start + symbol_offset    <-- size_t overflow here
-> > - prog_end   = prog_start + prog_size
-> >
-> >     prog_start        sec_start        prog_end        sec_end
-> >         |                |                 |              |
-> >         v                v                 v              v
-> >     .....................|################################|............
-> >
-> > The CVE report in [1] also provides a corrupted BPF ELF which can be
-> > used as a reproducer:
-> >
-> >     $ readelf -S crash
-> >     Section Headers:
-> >       [Nr] Name              Type             Address           Offset
-> >            Size              EntSize          Flags  Link  Info  Align
-> >     ...
-> >       [ 2] uretprobe.mu[...] PROGBITS         0000000000000000  00000040
-> >            0000000000000068  0000000000000000  AX       0     0     8
-> >
-> >     $ readelf -s crash
-> >     Symbol table '.symtab' contains 8 entries:
-> >        Num:    Value          Size Type    Bind   Vis      Ndx Name
-> >     ...
-> >          6: ffffffffffffffb8   104 FUNC    GLOBAL DEFAULT    2 handle_tp
-> >
-> > Here, the handle_tp prog has section offset ffffffffffffffb8, i.e. will
-> > point before the actual memory where section 2 is allocated.
-> >
-> > This is also reported by AddressSanitizer:
-> >
-> >     =================================================================
-> >     ==1232==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x7c7302fe0000 at pc 0x7fc3046e4b77 bp 0x7ffe64677cd0 sp 0x7ffe64677490
-> >     READ of size 104 at 0x7c7302fe0000 thread T0
-> >         #0 0x7fc3046e4b76 in memcpy (/lib64/libasan.so.8+0xe4b76)
-> >         #1 0x00000040df3e in bpf_object__init_prog /src/libbpf/src/libbpf.c:856
-> >         #2 0x00000040df3e in bpf_object__add_programs /src/libbpf/src/libbpf.c:928
-> >         #3 0x00000040df3e in bpf_object__elf_collect /src/libbpf/src/libbpf.c:3930
-> >         #4 0x00000040df3e in bpf_object_open /src/libbpf/src/libbpf.c:8067
-> >         #5 0x00000040f176 in bpf_object__open_file /src/libbpf/src/libbpf.c:8090
-> >         #6 0x000000400c16 in main /poc/poc.c:8
-> >         #7 0x7fc3043d25b4 in __libc_start_call_main (/lib64/libc.so.6+0x35b4)
-> >         #8 0x7fc3043d2667 in __libc_start_main@@GLIBC_2.34 (/lib64/libc.so.6+0x3667)
-> >         #9 0x000000400b34 in _start (/poc/poc+0x400b34)
-> >
-> >     0x7c7302fe0000 is located 64 bytes before 104-byte region [0x7c7302fe0040,0x7c7302fe00a8)
-> >     allocated by thread T0 here:
-> >         #0 0x7fc3046e716b in malloc (/lib64/libasan.so.8+0xe716b)
-> >         #1 0x7fc3045ee600 in __libelf_set_rawdata_wrlock (/lib64/libelf.so.1+0xb600)
-> >         #2 0x7fc3045ef018 in __elf_getdata_rdlock (/lib64/libelf.so.1+0xc018)
-> >         #3 0x00000040642f in elf_sec_data /src/libbpf/src/libbpf.c:3740
-> >
-> > The problem here is that currently, libbpf only checks that the program
-> > end is within the section bounds. There used to be a check
-> > `while (sec_off < sec_sz)` in bpf_object__add_programs, however, it was
-> > removed by commit 6245947c1b3c ("libbpf: Allow gaps in BPF program
-> > sections to support overriden weak functions").
-> >
-> > Put the above condition back to bpf_object__init_prog to make sure that
-> > the program start is also within the bounds of the section to avoid the
-> > potential buffer overflow.
-> >
-> > [1] https://github.com/lmarch2/poc/blob/main/libbpf/libbpf.md
-> >
-> > Reported-by: lmarch2 <2524158037@qq.com>
-> > Cc: stable@vger.kernel.org
-> 
-> Libbpf is packaged and consumed from Github mirror, which is produced
-> from latest bpf-next and bpf trees, so there is no point in
-> backporting fixes like this to stable kernel branches. Please drop the
-> CC: stable in the next revision.
-> 
-> > Fixes: 6245947c1b3c ("libbpf: Allow gaps in BPF program sections to support overriden weak functions")
-> > Link: https://github.com/lmarch2/poc/blob/main/libbpf/libbpf.md
-> > Link: https://www.cve.org/CVERecord?id=CVE-2025-29481
-> 
-> libbpf is meant to load BPF programs under root. It's a
-> highly-privileged operation, and libbpf is not meant, designed, and
-> actually explicitly discouraged from loading untrusted ELF files. As
-> such, this is just a normal bug fix, like lots of others. So let's
-> drop the CVE link as well.
-> 
-> Again, no one in their sane mind should be passing untrusted ELF files
-> into libbpf while running under root. Period.
-> 
-> All production use cases load ELF that they generated and control
-> (usually embedded into their memory through BPF skeleton header). And
-> if that ELF file is corrupted, you have problems somewhere else,
-> libbpf is not a culprit.
+Hi,
 
-Should that context-less CVE be revoked as well?  Who asked for it to be
-issued?
+Can I report an issue with 6.12 LTS?
 
-thanks,
+This backport in 6.12.23
+[805e3ce5e0e32b31dcecc0774c57c17a1f13cef6][1]
+also needs this upstream commit as well
+[22cc5ca5de52bbfc36a7d4a55323f91fb4492264][2]
 
-greg k-h
+If it is missing and you don't have XEN enabled the build fails:
+
+```
+arch/x86/coco/tdx/tdx.c:1080:13: error: no member named 'safe_halt' in 
+'struct pv_irq_ops'
+  1080 |         pv_ops.irq.safe_halt = tdx_safe_halt;
+       |         ~~~~~~~~~~ ^
+arch/x86/coco/tdx/tdx.c:1081:13: error: no member named 'halt' in 
+'struct pv_irq_ops'
+  1081 |         pv_ops.irq.halt = tdx_halt;
+       |         ~~~~~~~~~~ ^
+2 errors generated.
+make[5]: *** [scripts/Makefile.build:229: arch/x86/coco/tdx/tdx.o] Error 1
+make[4]: *** [scripts/Makefile.build:478: arch/x86/coco/tdx] Error 2
+make[3]: *** [scripts/Makefile.build:478: arch/x86/coco] Error 2
+make[2]: *** [scripts/Makefile.build:478: arch/x86] Error 2
+```
+
+To make it work I have added the backport of 
+[805e3ce5e0e32b31dcecc0774c57c17a1f13cef6][1] as patch in my local build[3].
+
+Best regards,
+Ike
+
+[1]: 
+https://web.git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-6.12.y&id=805e3ce5e0e32b31dcecc0774c57c17a1f13cef6
+[2]: 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=22cc5ca5de52bbfc36a7d4a55323f91fb4492264
+[3]: 
+https://gitlab.com/herecura/packages/linux-bede-lts/-/blob/0d7e313f13fdae9bde7f79967481f186cc1ba8fd/0003-x86-paravirt-Move-halt-paravirt-calls-under-CONFIG_P.patch
 
