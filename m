@@ -1,105 +1,125 @@
-Return-Path: <stable+bounces-132315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 261E1A86BFB
-	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 11:27:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19B01A86C4E
+	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 12:01:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 180C8446565
-	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 09:27:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C75E464170
+	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 10:01:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28DB719F421;
-	Sat, 12 Apr 2025 09:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4430F192D66;
+	Sat, 12 Apr 2025 10:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=herecura.eu header.i=linux@herecura.eu header.b="xvCZyP3H"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=proton.me header.i=@proton.me header.b="O/Lc9gQh"
 X-Original-To: stable@vger.kernel.org
-Received: from o28.p25.mailjet.com (o28.p25.mailjet.com [185.189.236.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-24417.protonmail.ch (mail-24417.protonmail.ch [109.224.244.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5CF4199EB7
-	for <stable@vger.kernel.org>; Sat, 12 Apr 2025 09:27:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.189.236.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5D81C84A4
+	for <stable@vger.kernel.org>; Sat, 12 Apr 2025 10:01:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744450047; cv=none; b=Gf/SVslA3RDHqo4q8Frwg9myVzyMX3TMNrwc2KivmCc0rw/hutWd+Lu35BbxH3SQHDSfoKsWlx240oztSCMbVQF8MVRMIlhF2e4f5HJEtdP3GduCgxQNJKC098XB05R/6R7BuN04NaxeUbceg6kOfbf3ZoSGUO3NoLdQpS4Zk2c=
+	t=1744452097; cv=none; b=f/gkjPTf25jkILN/wW1IAlJevRr76dgrB6Bz7EzcuwliB6ZTPx2Z3BqkcBPfdpvAzvsTe9X7CUkaarx75dbHBMHHgEUu/ZItaI25xNFHckmkn4S6zmyDf+vjCDlUeJKk/0NADG2Fq60pml7q6f22T8Oti+D1TD5Y1pdmvJhHhm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744450047; c=relaxed/simple;
-	bh=j5jV4FYbM8Hq8DaeSb7opCaZ01laZe72zt1avgpjZ5k=;
-	h=Message-Id:MIME-Version:From:To:Subject:Date:Content-Type; b=KFIAUyJhX5ngEBaHSsVRRH2hTAG3gOjRTzjOPkB7rvLgq16s5GJo2MUdo7uiqHf6c7a55PlroRwv+r4Ki3HC7gPe6d0jZ6wlA/JS+IbqRGNSLoGFtnJkwVKTeWNH/2uf20D0XQm6uAfuqisHUbPiSBCnDjNeKCQ/GqbP5Vl5pfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=herecura.eu; spf=pass smtp.mailfrom=a1780319.bnc3.mailjet.com; dkim=pass (1024-bit key) header.d=herecura.eu header.i=linux@herecura.eu header.b=xvCZyP3H; arc=none smtp.client-ip=185.189.236.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=herecura.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=a1780319.bnc3.mailjet.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; q=dns/txt;
-  d=herecura.eu; i=linux@herecura.eu; s=mailjet; x=1744457241;
-  h=message-id:mime-version:from:from:to:to:subject:subject:date:date:list-unsubscribe-post:list-unsubscribe:
-  feedback-id:x-csa-complaints:x-mj-mid:x-mj-smtpguid:x-report-abuse-to:
-  x-spamd-bar:content-language:content-type:content-transfer-encoding;
-  bh=j5jV4FYbM8Hq8DaeSb7opCaZ01laZe72zt1avgpjZ5k=;
-  b=xvCZyP3HKhgWEmygmFRjk32LqDTlAkDPgtr+e0JX9Xg7aUcv4xRS1MzFi
- EfLs+hVhxLrisbdnhkV56kzcJD3XbJQ1A8Qhd/5GfIwAEceiYVzyH24x0r6J
- W9Ls4wsJ3blgCJ507f23lMPCjke+SyBFIrkipjGJrbqHqoyGfA01NE=
-Message-Id: <3e1b616b.AMcAAGjWv5wAAAAAAAAAA9W7g6YAAAAANfgAAAAAABsqXwBn-jH5@mailjet.com>
+	s=arc-20240116; t=1744452097; c=relaxed/simple;
+	bh=gctz7JVAZNhoV8W8iIskQvtz6KYucHNDoTF2Crsr+48=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JFEDokgnosZV8FtJxAcopZUsPlaWLFg7cXrIWVgXV8qrh5oUZp82Qn0vRRW+SLIfdpCkcBEa62LzFZ5h3yBsLuumu2BFmcre6ANbivMZenlXTE8NuvA0MhLE4Hl4wYmH6/vw1wxyt3wcZ15Gxe1gvQTuZRMM8oD/oLaQ5+q7ngY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=O/Lc9gQh; arc=none smtp.client-ip=109.224.244.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1744452088; x=1744711288;
+	bh=FFmx/R+eIscgMWQqmhbFAfJgkDuQbwwym1T6jG1NDe0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=O/Lc9gQhf7cF3CwTlcqgR0OGUvPQnOGUan5urHjTGk7o8Exq8W9UnSnQqg1Zu5QLe
+	 /XY3oM2CWbzPTmzDfAkshQvMBYXkHgXA1gCeDfaVpJ3G104B8pmWAZc+czb1aSpqVK
+	 L4OhvZS3cfLMzfCutrSKpjcDDq7IXDKpLaEl5VmCjPPQIz0V+O78Q6zvrWJ6Fq9FlE
+	 knBWxjXyL8xQPkhvVGtC1mT3AJTHoe39BvTkFNpdS6NZTs11A0astFlKiIF9xyx8bQ
+	 1/lQoBf3gf6/RFBR6eaYTy5ewqZ20TudU0ccgCWhv+lZAkhcUVTB9QWkWhToMmdPk1
+	 GCKQAaCGXnwbw==
+Date: Sat, 12 Apr 2025 10:01:22 +0000
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Christian Schrefl <chrisi.schrefl@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] rust: fix building firmware abstraction on 32bit arm
+Message-ID: <D94KNIHTJOWU.1EHA7217LSC4S@proton.me>
+In-Reply-To: <CANiq72kc4gzfieD-FjuWfELRDXXD2vLgPv4wqk3nt4pjdPQ=qg@mail.gmail.com>
+References: <20250411-rust_arm_fix_fw_abstaction-v1-1-0a9e598451c6@gmail.com> <D93TIWHR8EZM.25205EFWBLJLM@proton.me> <CANiq72kc4gzfieD-FjuWfELRDXXD2vLgPv4wqk3nt4pjdPQ=qg@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 75669246ee197850379a62647421f2407153a805
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Ike Devolder <linux@herecura.eu>
-To: stable@vger.kernel.org
-Subject: Missing paravirt backport in 6.12.23
-Date: Sat, 12 Apr 2025 11:27:18 +0200
-List-Unsubscribe-Post: List-Unsubscribe=One-Click
-Feedback-Id: 42.1780319.1710535:MJ
-X-CSA-Complaints: csa-complaints@eco.de
-X-MJ-Mid:
-	AMcAAGjWv5wAAAAAAAAAA9W7g6YAAAAANfgAAAAAABsqXwBn-jH5qmlQ98zAT86rOJsi4t3rEwAaGcc
-X-MJ-SMTPGUID: aa6950f7-ccc0-4fce-ab38-9b22e2ddeb13
-X-REPORT-ABUSE-TO: Message sent by Mailjet please report to
-	abuse@mailjet.com with a copy of the message
-X-Spamd-Bar: /
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Fri Apr 11, 2025 at 4:15 PM CEST, Miguel Ojeda wrote:
+> On Fri, Apr 11, 2025 at 2:46=E2=80=AFPM Benno Lossin <benno.lossin@proton=
+.me> wrote:
+>>
+>> Ah I overlooked this, you should be using `kernel::ffi` (or
+>> `crate::ffi`) instead of `core`. (for `c_char` it doesn't matter, but we
+>> shouldn't be using `core::ffi`, since we have our own mappings).
+>
+> In 6.6, C `char` changed to unsigned, but `core::ffi::c_char` is
+> signed (in x86_64 at least).
+>
+> We should just never use `core::ffi` (except in `rust/ffi.rs`, of
+> course) -- I think we should just add the C types to the prelude
+> (which we discussed in the past) so that it is easy to avoid the
+> mistake (something like the patch attached as the end result, but
+> tested and across a kernel cycle or two) and mention it in the Coding
+> Guidelines. Thoughts?
 
-Can I report an issue with 6.12 LTS?
+Yeah sounds like a good idea.
 
-This backport in 6.12.23
-[805e3ce5e0e32b31dcecc0774c57c17a1f13cef6][1]
-also needs this upstream commit as well
-[22cc5ca5de52bbfc36a7d4a55323f91fb4492264][2]
+> I tried to use Clippy's `disallowed-types` too:
+>
+>     disallowed-types =3D [
+>         { path =3D "core::ffi::c_void", reason =3D "the `kernel::ffi`
+> types should be used instead" },
+>         { path =3D "core::ffi::c_char", reason =3D "the `kernel::ffi`
+> types should be used instead" },
+>         { path =3D "core::ffi::c_schar", reason =3D "the `kernel::ffi`
+> types should be used instead" },
+>         { path =3D "core::ffi::c_uchar", reason =3D "the `kernel::ffi`
+> types should be used instead" },
+>         { path =3D "core::ffi::c_short", reason =3D "the `kernel::ffi`
+> types should be used instead" },
+>         { path =3D "core::ffi::c_ushort", reason =3D "the `kernel::ffi`
+> types should be used instead" },
+>         { path =3D "core::ffi::c_int", reason =3D "the `kernel::ffi` type=
+s
+> should be used instead" },
+>         { path =3D "core::ffi::c_uint", reason =3D "the `kernel::ffi`
+> types should be used instead" },
+>         { path =3D "core::ffi::c_long", reason =3D "the `kernel::ffi`
+> types should be used instead" },
+>         { path =3D "core::ffi::c_ulong", reason =3D "the `kernel::ffi`
+> types should be used instead" },
+>         { path =3D "core::ffi::c_longlong", reason =3D "the `kernel::ffi`
+> types should be used instead" },
+>         { path =3D "core::ffi::c_ulonglong", reason =3D "the `kernel::ffi=
+`
+> types should be used instead" },
+>     ]
+>
+> But it goes across aliases.
 
-If it is missing and you don't have XEN enabled the build fails:
+We could make the types in `ffi` be transparent newtypes. But not sure
+if that could interfere with kCFI or other stuff.
 
-```
-arch/x86/coco/tdx/tdx.c:1080:13: error: no member named 'safe_halt' in 
-'struct pv_irq_ops'
-  1080 |         pv_ops.irq.safe_halt = tdx_safe_halt;
-       |         ~~~~~~~~~~ ^
-arch/x86/coco/tdx/tdx.c:1081:13: error: no member named 'halt' in 
-'struct pv_irq_ops'
-  1081 |         pv_ops.irq.halt = tdx_halt;
-       |         ~~~~~~~~~~ ^
-2 errors generated.
-make[5]: *** [scripts/Makefile.build:229: arch/x86/coco/tdx/tdx.o] Error 1
-make[4]: *** [scripts/Makefile.build:478: arch/x86/coco/tdx] Error 2
-make[3]: *** [scripts/Makefile.build:478: arch/x86/coco] Error 2
-make[2]: *** [scripts/Makefile.build:478: arch/x86] Error 2
-```
+---
+Cheers,
+Benno
 
-To make it work I have added the backport of 
-[805e3ce5e0e32b31dcecc0774c57c17a1f13cef6][1] as patch in my local build[3].
-
-Best regards,
-Ike
-
-[1]: 
-https://web.git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-6.12.y&id=805e3ce5e0e32b31dcecc0774c57c17a1f13cef6
-[2]: 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=22cc5ca5de52bbfc36a7d4a55323f91fb4492264
-[3]: 
-https://gitlab.com/herecura/packages/linux-bede-lts/-/blob/0d7e313f13fdae9bde7f79967481f186cc1ba8fd/0003-x86-paravirt-Move-halt-paravirt-calls-under-CONFIG_P.patch
 
