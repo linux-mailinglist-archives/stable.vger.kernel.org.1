@@ -1,166 +1,138 @@
-Return-Path: <stable+bounces-132302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43705A869BD
-	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 02:21:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82BC4A869D1
+	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 02:33:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0118B442CCA
-	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 00:19:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F00E4C22A3
+	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 00:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B5FECA52;
-	Sat, 12 Apr 2025 00:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719141E493;
+	Sat, 12 Apr 2025 00:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BLYbhQF4"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Rzvkm/gj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840719443;
-	Sat, 12 Apr 2025 00:19:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3BC134D4;
+	Sat, 12 Apr 2025 00:33:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744417161; cv=none; b=FIF0yMMpjikgifZGbH+bvFLpUQxTfSs4RxIN1fGigRBxPTA49C5nSwuKwEFD8ACg45oWOGAo58SI5wTgua6WSp5bG3Z3Ek3QGcno8fEyMfEd7QSRVWM2sUCGSfWrVo7VlWZpiyWP3RMyUvykWfjLBP3seNaKJOyao2wG/DVVqA0=
+	t=1744417998; cv=none; b=UKbbyDvWR7WIfo8yf6fTuosj9WhdE4nFh7mpLhMVN2rB2TZCkpR8ERqOcrDNWyIyEmWdOOP8tvQqp3ke6Wry/rAZFRZIALRFMTzIxjcJre4CaISTUM/FiHQxdKz2ysNAS4VxPMBpWvHo/7J8tY7d2N/ytsPZV18wL7xzS7QYu94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744417161; c=relaxed/simple;
-	bh=BLQ439q1MPWjp/KqOogAeG7uQPJqD5biwqUYUPtBIC0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OIFNvr0tmwyihLchHupxWuDcihDj0SRr8oyBj3d0JXzyFg8OsCP5Y8u4afRSf5HzXhCxg7VDCtB4GfoR1VRY6f6FC2nrd8AvfY/Xk4zKK7s3NCeznG3FQOj77t97FDrAjxm8eloHFZaubLvnelPVovu+MQXXb8lC44xyTMzGnUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BLYbhQF4; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7359aca7ef2so3693676b3a.2;
-        Fri, 11 Apr 2025 17:19:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744417157; x=1745021957; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Pl4Ao+sGi12Y8GuDBgcGJjc/F643etgfiqYpC5NF9Bs=;
-        b=BLYbhQF4ameMDSr6422pBxBx38BPYXvTivzuZ9kvcDVOqWkjVQJnNXWItpEyhRKs2R
-         KBxdAUET3joaKocOQ8meF3gd6CAZxbCQWhge0q7hYepMO49HFgULmRHGwjgnA26N8IHU
-         HGaLG/SHfC00Sk4wLBDKS+T4PmVXSVbYb4eL7fKaR1oRo+Z+H0dbNj+wwaiAp5y+62Na
-         LIZhU2sFnuw96YADzRA9+xS2FPu51LiiSuBz/bZR4b2H3O/ZnqUacWPq0IGHE+vgDnlO
-         alhUeU/LAud6MMEOsbqtsa6ymY/+/9MxkLCYwWs7LKMos6oYl8O17MQJwoNpWrF9tmZj
-         sWNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744417158; x=1745021958;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Pl4Ao+sGi12Y8GuDBgcGJjc/F643etgfiqYpC5NF9Bs=;
-        b=fBjZ+mvRH97Q7S4gDyRsHyd6TO9m75V63rPKgQ2jNHhy9vvLJAac0xlNm0EW/i5TUB
-         cNeH5/NHsuIrobmowRQSvt/4s4/IdQ/iGGlV8e3+QmYzCG0v4OuYa1yJpEc55Jv8td5D
-         pPOlmCiqdS8jFp8qwcxXzUp83FE0nJjxIeJXWo7fwM5g8RBP2f9OF2ks+CVo+eIYjFZr
-         7/W3h2835eYQN1RYTc0u3ptvQn+84w+vH+KH7fjfRhIa3IJrPovu7ylvqJfyCcIc4bLM
-         OlNRsZaLF8FrX5JVD9yLz1mh9+mA78Gaab5jUMXfcBxj328Wq16sSih/1IpXMJbSrDXT
-         XeQA==
-X-Forwarded-Encrypted: i=1; AJvYcCUxkT/3WE3y+7w/9e8UnwrQ+lQasRYKcT0ToRFFQFMdmltPWzb86yHfCZICJVP1lGSo/Q0UUiuZ67+Y31c=@vger.kernel.org, AJvYcCVMruT8AYAk6AqXUzImMTa2MF7wwnvgQ95p/ASn1fCHj54jTiUCTNPwFGS+zY0RbfclCgQSDwfj@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYhzsKCj9pHy5GDTYyI+Nz4mkcz+Il+lmwernCRko4CdH6Z6oM
-	oY6AfqoUlLED13PakAZ3U71nnHntT/DzZ1dv0dVxRqQum20tm4tA
-X-Gm-Gg: ASbGnctzQkCP5GNTnsNmeneIhVRKlNl1B84H36bAGboIuSnpiPz/S3t0wr5e3ip1j9T
-	0wIs/njahRM5otSNTDlsbXGC/hjwVtE5mq7VxWMwMnMYDFicbnMzpHKEIEBZIhygNVVF1EPa7Cn
-	yyTJ2Dq4BAms8cqNccBsswf6zhaSbezODcQZN+GmkE1+cnG4W027KCrGBvPyPpxYMGRvXCuTWD9
-	r/dLiZ3aNNls+4Eb2ldYkx3J0pcfVEy6g+7bYuSuFztAD0NO90xWfOwBA4on0gFznvoptG1PAEy
-	QL4gs27gzZ+qtietBX95GytrQJ7GkM1qm2EoRQlKBaqeLhYgPVRd3XdohIAaeejlUEq26TyoPQV
-	YSWxYGGK8uw7VojA1c0DSsczfWIr8fkWPKuTq+Q==
-X-Google-Smtp-Source: AGHT+IHxZRgFKr/eoGrqndx0eEnSsquSVnD+KeF8iKFQdtKjOmi7NLYyrW1oWrufBCw9OJAiRQqcNg==
-X-Received: by 2002:a05:6a21:789d:b0:1f5:6c94:2cc9 with SMTP id adf61e73a8af0-201797c3a64mr6674058637.22.1744417157441;
-        Fri, 11 Apr 2025 17:19:17 -0700 (PDT)
-Received: from DESKTOP-NBGHJ1C.flets-east.jp (p12284229-ipxg45101marunouchi.tokyo.ocn.ne.jp. [60.39.60.229])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b02a0cf3604sm5520285a12.25.2025.04.11.17.19.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Apr 2025 17:19:17 -0700 (PDT)
-From: Ryo Takakura <ryotkkr98@gmail.com>
-To: alex@ghiti.fr,
-	aou@eecs.berkeley.edu,
-	bigeasy@linutronix.de,
-	conor.dooley@microchip.com,
-	gregkh@linuxfoundation.org,
-	jirislaby@kernel.org,
-	john.ogness@linutronix.de,
-	palmer@dabbelt.com,
-	paul.walmsley@sifive.com,
-	pmladek@suse.com,
-	samuel.holland@sifive.com,
-	u.kleine-koenig@baylibre.com
-Cc: linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-serial@vger.kernel.org,
-	stable@vger.kernel.org,
-	Ryo Takakura <ryotkkr98@gmail.com>
-Subject: [PATCH v3] serial: sifive: lock port in startup()/shutdown() callbacks
-Date: Sat, 12 Apr 2025 09:18:47 +0900
-Message-Id: <20250412001847.183221-1-ryotkkr98@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1744417998; c=relaxed/simple;
+	bh=QvQLQvUsfFxQ/HgsJPCZdh6AHYZ5/v3mon4wsv6UMgE=;
+	h=Date:To:From:Subject:Message-Id; b=Q6k2ePnG6BtAKxtF/+7aUk30OUXz7glanqLCNvCsq5HROnY7nVJaasNzFMLLLIOlHAKitZeQ7WZ1sw4N7pr13WUwtxf5CimGabAz4aZF8WSTdTBvAP5euq8SRfFh3SbuPbzE2uWFkRCc83Y6vd5P2oy5Gblw78CU7dv7xP/hwM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Rzvkm/gj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A645C4CEE2;
+	Sat, 12 Apr 2025 00:33:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1744417997;
+	bh=QvQLQvUsfFxQ/HgsJPCZdh6AHYZ5/v3mon4wsv6UMgE=;
+	h=Date:To:From:Subject:From;
+	b=Rzvkm/gjLIUIIj2t6aVHeARFl5fxsW/Qx/cGYisSaZdY9Dx02B+L2SuEmSqqVE7DO
+	 Vk7Zr8IFkY1XloYescQ/f9eSVgwTjjmBoSu34GhVh9ifcfAyDuOsCTVx5sAlzSnp8a
+	 CDHM93WLCrbD/LezlBd1trfXV2IH7Lz78zTkECRw=
+Date: Fri, 11 Apr 2025 17:33:17 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,vbabka@suse.cz,stable@vger.kernel.org,shengyong1@xiaomi.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] lib-iov_iter-fix-to-increase-non-slab-folio-refcount.patch removed from -mm tree
+Message-Id: <20250412003317.8A645C4CEE2@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-startup()/shutdown() callbacks access SIFIVE_SERIAL_IE_OFFS.
-The register is also accessed from write() callback.
 
-If console were printing and startup()/shutdown() callback
-gets called, its access to the register could be overwritten.
+The quilt patch titled
+     Subject: lib/iov_iter: fix to increase non slab folio refcount
+has been removed from the -mm tree.  Its filename was
+     lib-iov_iter-fix-to-increase-non-slab-folio-refcount.patch
 
-Add port->lock to startup()/shutdown() callbacks to make sure
-their access to SIFIVE_SERIAL_IE_OFFS is synchronized against
-write() callback.
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Fixes: 45c054d0815b ("tty: serial: add driver for the SiFive UART")
-Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Cc: stable@vger.kernel.org
+------------------------------------------------------
+From: Sheng Yong <shengyong1@xiaomi.com>
+Subject: lib/iov_iter: fix to increase non slab folio refcount
+Date: Tue, 1 Apr 2025 22:47:12 +0800
+
+When testing EROFS file-backed mount over v9fs on qemu, I encountered a
+folio UAF issue.  The page sanity check reports the following call trace. 
+The root cause is that pages in bvec are coalesced across a folio bounary.
+The refcount of all non-slab folios should be increased to ensure
+p9_releas_pages can put them correctly.
+
+BUG: Bad page state in process md5sum  pfn:18300
+page: refcount:0 mapcount:0 mapping:00000000d5ad8e4e index:0x60 pfn:0x18300
+head: order:0 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+aops:z_erofs_aops ino:30b0f dentry name(?):"GoogleExtServicesCn.apk"
+flags: 0x100000000000041(locked|head|node=0|zone=1)
+raw: 0100000000000041 dead000000000100 dead000000000122 ffff888014b13bd0
+raw: 0000000000000060 0000000000000020 00000000ffffffff 0000000000000000
+head: 0100000000000041 dead000000000100 dead000000000122 ffff888014b13bd0
+head: 0000000000000060 0000000000000020 00000000ffffffff 0000000000000000
+head: 0100000000000000 0000000000000000 ffffffffffffffff 0000000000000000
+head: 0000000000000010 0000000000000000 00000000ffffffff 0000000000000000
+page dumped because: PAGE_FLAGS_CHECK_AT_FREE flag(s) set
+Call Trace:
+ dump_stack_lvl+0x53/0x70
+ bad_page+0xd4/0x220
+ __free_pages_ok+0x76d/0xf30
+ __folio_put+0x230/0x320
+ p9_release_pages+0x179/0x1f0
+ p9_virtio_zc_request+0xa2a/0x1230
+ p9_client_zc_rpc.constprop.0+0x247/0x700
+ p9_client_read_once+0x34d/0x810
+ p9_client_read+0xf3/0x150
+ v9fs_issue_read+0x111/0x360
+ netfs_unbuffered_read_iter_locked+0x927/0x1390
+ netfs_unbuffered_read_iter+0xa2/0xe0
+ vfs_iocb_iter_read+0x2c7/0x460
+ erofs_fileio_rq_submit+0x46b/0x5b0
+ z_erofs_runqueue+0x1203/0x21e0
+ z_erofs_readahead+0x579/0x8b0
+ read_pages+0x19f/0xa70
+ page_cache_ra_order+0x4ad/0xb80
+ filemap_readahead.isra.0+0xe7/0x150
+ filemap_get_pages+0x7aa/0x1890
+ filemap_read+0x320/0xc80
+ vfs_read+0x6c6/0xa30
+ ksys_read+0xf9/0x1c0
+ do_syscall_64+0x9e/0x1a0
+ entry_SYSCALL_64_after_hwframe+0x71/0x79
+
+Link: https://lkml.kernel.org/r/20250401144712.1377719-1-shengyong1@xiaomi.com
+Fixes: b9c0e49abfca ("mm: decline to manipulate the refcount on a slab page")
+Signed-off-by: Sheng Yong <shengyong1@xiaomi.com>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
-Changes since v1:
-https://lore.kernel.org/all/20250405043833.397020-1-ryotkkr98@gmail.com/
+ lib/iov_iter.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-- It was sent as part of series but resent as a single patch.
+--- a/lib/iov_iter.c~lib-iov_iter-fix-to-increase-non-slab-folio-refcount
++++ a/lib/iov_iter.c
+@@ -1191,7 +1191,7 @@ static ssize_t __iov_iter_get_pages_allo
+ 			return -ENOMEM;
+ 		p = *pages;
+ 		for (int k = 0; k < n; k++) {
+-			struct folio *folio = page_folio(page);
++			struct folio *folio = page_folio(page + k);
+ 			p[k] = page + k;
+ 			if (!folio_test_slab(folio))
+ 				folio_get(folio);
+_
 
-Changes since v2:
-https://lore.kernel.org/linux-serial/20250405145354.492947-1-ryotkkr98@gmail.com/
+Patches currently in -mm which might be from shengyong1@xiaomi.com are
 
-- Add Reviewed-by by Petr. Thanks Petr for the review!
-
----
- drivers/tty/serial/sifive.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/tty/serial/sifive.c b/drivers/tty/serial/sifive.c
-index 5904a2d4c..054a8e630 100644
---- a/drivers/tty/serial/sifive.c
-+++ b/drivers/tty/serial/sifive.c
-@@ -563,8 +563,11 @@ static void sifive_serial_break_ctl(struct uart_port *port, int break_state)
- static int sifive_serial_startup(struct uart_port *port)
- {
- 	struct sifive_serial_port *ssp = port_to_sifive_serial_port(port);
-+	unsigned long flags;
- 
-+	uart_port_lock_irqsave(&ssp->port, &flags);
- 	__ssp_enable_rxwm(ssp);
-+	uart_port_unlock_irqrestore(&ssp->port, flags);
- 
- 	return 0;
- }
-@@ -572,9 +575,12 @@ static int sifive_serial_startup(struct uart_port *port)
- static void sifive_serial_shutdown(struct uart_port *port)
- {
- 	struct sifive_serial_port *ssp = port_to_sifive_serial_port(port);
-+	unsigned long flags;
- 
-+	uart_port_lock_irqsave(&ssp->port, &flags);
- 	__ssp_disable_rxwm(ssp);
- 	__ssp_disable_txwm(ssp);
-+	uart_port_unlock_irqrestore(&ssp->port, flags);
- }
- 
- /**
--- 
-2.34.1
 
 
