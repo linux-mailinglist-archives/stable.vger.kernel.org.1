@@ -1,116 +1,151 @@
-Return-Path: <stable+bounces-132310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4ABCA869D4
-	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 02:34:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95BAEA86A17
+	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 03:30:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DEC14C2B55
-	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 00:33:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 938103BA25F
+	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 01:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 298CD53365;
-	Sat, 12 Apr 2025 00:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012CA13AA3C;
+	Sat, 12 Apr 2025 01:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="NDqMLJUg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hWpSOZpC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEE1DDAB;
-	Sat, 12 Apr 2025 00:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BEF195;
+	Sat, 12 Apr 2025 01:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744418033; cv=none; b=WEuLrM5/w+hN6fOl5py/KeYGPz9cWqhmsX05Tkcbe3S+BGWDzcyBaV4xZQjaJrFg1u5YY0MMQ4du2Rcvwj+WV2NmFAOnKeW3ydiUWQSJZYsqSY6Olgq+zdfV6qqLYzhrrkd+3C4dTud2Jj45nZn9Xkoo8ozCAdV1dKR8djXL+vc=
+	t=1744421424; cv=none; b=QiKSCdwMaNaCX9KhfY7NkyoJdlQXGdK6YTC656yOEK0TneB3iqZn0Xt5bH4vJanStPbKT3PAZAFZw38Ok33OPwtxSF00dv93XBk3IuhozwPJLyH9Rt4cff3Jh1Zhfpr6ny6Cw2Ax0Ly8JF8sBW74XDpaf7+1Wf6nRbebbD7NUuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744418033; c=relaxed/simple;
-	bh=4YBUtJxxe7H7a7/0Of+mMvC4zQtMmNlVeJDJOwiSlpY=;
-	h=Date:To:From:Subject:Message-Id; b=diXG6XS/yidKSjh5J3FyaSAFRhjhh3eTrV/q3m9Xcd1fTTt062m7Vl1NH8LLWf6IJ6q7IgRWUhOC+9rn5gw5wkXSBm6hLpy11EZ11geLJ5QBJiLmPTnelpfL6BmdsHb/wEBnnaIWkKeoPWMU2K04jAbf432X/VU1HHUav1qTBCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=NDqMLJUg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3289C4CEE2;
-	Sat, 12 Apr 2025 00:33:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1744418032;
-	bh=4YBUtJxxe7H7a7/0Of+mMvC4zQtMmNlVeJDJOwiSlpY=;
-	h=Date:To:From:Subject:From;
-	b=NDqMLJUgbCz9WffT0lKYLTE7DffEemTIu8/LCZ+2cSEuOze9fFUppBuSNGjMEMRoG
-	 941QSAtBTjwV3TQnYx3DYZn4k2DZK5QzCnAa/U7N6n9R67bYA0CEqMNHzW0nXT7L0E
-	 0+HZkBtXDi4Xlg7nb/iYlQR7FDH/Yi4ORr/7s1iM=
-Date: Fri, 11 Apr 2025 17:33:52 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,dja@axtens.net,david@redhat.com,kirill.shutemov@linux.intel.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-fix-apply_to_existing_page_range.patch removed from -mm tree
-Message-Id: <20250412003352.B3289C4CEE2@smtp.kernel.org>
+	s=arc-20240116; t=1744421424; c=relaxed/simple;
+	bh=Fe0fCF/tuq0mEs3h1dkfZG1C4wSL3OME901B7lp5VWM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NpSIoHTcWWg9JitcdR8zfww/bS+TCr4SuB7AUvjmx+K2ZwtVZffrCMS28Dcya6mI/W9gYVSX3aoiXnJVw6xWSRENa5HnkdS/S49hdifb+BpuneIuRs8KUn+fgIYEUo4unced4RIDFTdOHRh1ohlxoJuAUo+jidG6QNcn7fbdGpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hWpSOZpC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C24FC4CEE2;
+	Sat, 12 Apr 2025 01:30:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744421424;
+	bh=Fe0fCF/tuq0mEs3h1dkfZG1C4wSL3OME901B7lp5VWM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hWpSOZpChz0odP4hab5Gjam+KIQNYOL3DxmcgCXZWOCt1zkyCRSDLjyiB8bgbDu80
+	 TfXpGdKjP20mhhJg2ZSrLH7lKM6BQ8qyjyUwNgQNrM6veTb8dATSyFX+GPAyboOzso
+	 cN9ukrMTDuve3WDzWCbjwDZhxCGCkx4iZ+RJj/CySTJFRtq/zbths1zeurg4KHttoA
+	 hFfSN56cwUSRgK0eTEtQGMOQ7JC2Gpn+3lKBG2xxoVlfw0tsjrnTwCh0vGQhRXNWfh
+	 N31QDE+EkAhoEhsoScIbfk8ZYxIMXKHmON+uuQ/NtagbnsJWNRzDHxG3g4BrBkfk/v
+	 1qOnSdS0UyvxA==
+Date: Sat, 12 Apr 2025 04:30:20 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: keyrings@vger.kernel.org, Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>,
+	stable@vger.kernel.org, Lukas Wunner <lukas@wunner.de>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Mimi Zohar <zohar@linux.ibm.com>, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org,
+	linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v8] KEYS: Add a list for unreferenced keys
+Message-ID: <Z_nCLHD33VR3un3O@kernel.org>
+References: <20250407125801.40194-1-jarkko@kernel.org>
+ <2426186.1744387151@warthog.procyon.org.uk>
+ <Z_l9f45aO3CqYng_@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z_l9f45aO3CqYng_@kernel.org>
 
+On Fri, Apr 11, 2025 at 11:37:25PM +0300, Jarkko Sakkinen wrote:
+> On Fri, Apr 11, 2025 at 04:59:11PM +0100, David Howells wrote:
+> > Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> > 
+> > > +	spin_lock_irqsave(&key_graveyard_lock, flags);
+> > > +	list_splice_init(&key_graveyard, &graveyard);
+> > > +	spin_unlock_irqrestore(&key_graveyard_lock, flags);
+> > 
+> > I would wrap this bit in a check to see if key_graveyard is empty so that we
+> > can avoid disabling irqs and taking the lock if the graveyard is empty.
+> 
+> Can do, and does make sense.
+> 
+> > 
+> > > +		if (!refcount_inc_not_zero(&key->usage)) {
+> > 
+> > Sorry, but eww.  You're going to wangle the refcount twice on every key on the
+> > system every time the gc does a pass.  Further, in some cases inc_not_zero is
+> > not the fastest op in the world.
+> 
+> One could alternatively "test_bit(KEY_FLAG_FINAL_PUT, &key->flags)) &&
+> !refcount_inc_not_zero(&key->usage))" without mb() on either side and
 
-The quilt patch titled
-     Subject: mm: fix apply_to_existing_page_range()
-has been removed from the -mm tree.  Its filename was
-     mm-fix-apply_to_existing_page_range.patch
+Refactoring the changes to key_put() would be (draft):
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+void key_put(struct key *key)
+{
+	unsigned long flags;
 
-------------------------------------------------------
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: mm: fix apply_to_existing_page_range()
-Date: Wed, 9 Apr 2025 12:40:43 +0300
+	if (!key)
+		return;
 
-In the case of apply_to_existing_page_range(), apply_to_pte_range() is
-reached with 'create' set to false.  When !create, the loop over the PTE
-page table is broken.
+	key_check(key);
 
-apply_to_pte_range() will only move to the next PTE entry if 'create' is
-true or if the current entry is not pte_none().
+	if (!refcount_dec_and_test(&key->usage))
+		return;
 
-This means that the user of apply_to_existing_page_range() will not have
-'fn' called for any entries after the first pte_none() in the PTE page
-table.
+	local_irq_save(flags);
 
-Fix the loop logic in apply_to_pte_range().
+	set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
 
-There are no known runtime issues from this, but the fix is trivial enough
-for stable@ even without a known buggy user. 
+	/* Remove user's key tracking and quota: */
+	if (test_bit(KEY_FLAG_IN_QUOTA, &key->flags)) {
+		spin_lock(&key->user->lock);
+		key->user->qnkeys--;
+		key->user->qnbytes -= key->quotalen;
+		spin_unlock(&key->user->lock);
+	}
 
-Link: https://lkml.kernel.org/r/20250409094043.1629234-1-kirill.shutemov@linux.intel.com
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Fixes: be1db4753ee6 ("mm/memory.c: add apply_to_existing_page_range() helper")
-Cc: Daniel Axtens <dja@axtens.net>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+	spin_lock(&key_graveyard_lock);
+	list_add_tail(&key->graveyard_link, &key_graveyard);
+	spin_unlock(&key_graveyard_lock);
 
- mm/memory.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+	schedule_work(&key_gc_work);
 
---- a/mm/memory.c~mm-fix-apply_to_existing_page_range
-+++ a/mm/memory.c
-@@ -2938,11 +2938,11 @@ static int apply_to_pte_range(struct mm_
- 	if (fn) {
- 		do {
- 			if (create || !pte_none(ptep_get(pte))) {
--				err = fn(pte++, addr, data);
-+				err = fn(pte, addr, data);
- 				if (err)
- 					break;
- 			}
--		} while (addr += PAGE_SIZE, addr != end);
-+		} while (pte++, addr += PAGE_SIZE, addr != end);
+	local_irq_restore(flags);
+}
+
+And:
+
+static bool key_get_gc(struct key *key)
+{
+	return !test_bit(KEY_FLAG_FINAL_PUT, &key->flags)) &&	/* fast path */
+	       refcount_inc_not_zero(&key->usage)		/* slow path */
+}
+
+In the gc-loop:
+
+	if (!key_get_gc(&key)) {
+		key = NULL;
+		gc_state |= KEY_GC_REAP_AGAIN;
+		goto skip_dead_key;
  	}
- 	*mask |= PGTBL_PTE_MODIFIED;
- 
-_
 
-Patches currently in -mm which might be from kirill.shutemov@linux.intel.com are
+[none yet compiled]
 
-mm-page_alloc-fix-deadlock-on-cpu_hotplug_lock-in-__accept_page.patch
-
+BR, Jarkko
 
