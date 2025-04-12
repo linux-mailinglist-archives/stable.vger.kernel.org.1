@@ -1,77 +1,77 @@
-Return-Path: <stable+bounces-132323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 321C1A86EDA
-	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 20:39:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF2E0A86EE7
+	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 20:40:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01BD519E0F6D
-	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 18:39:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46AF68C0147
+	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 18:39:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63A2221FCE;
-	Sat, 12 Apr 2025 18:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 033C921C19A;
+	Sat, 12 Apr 2025 18:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JxXPofZd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YB6r2lBL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA302147F8;
-	Sat, 12 Apr 2025 18:38:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3E5222565;
+	Sat, 12 Apr 2025 18:38:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744483130; cv=none; b=XICbJ0y/6NegSG2XPNa/BEORClAYqOwA9JwDdfYP2RJ0QO6psBA4EEOxgd4TBztr3qzN2QWv27fGEMs4Mi/Y5A588rWmc8vUD/11294AVdwefJXRP8wrSwwsxvlyZrKvSpT7EZZeGC6AFfMbxB8e1lGOix2DEN4uJBDbXmmc/cE=
+	t=1744483132; cv=none; b=B5x38aY90L3s1OUTAi/RXIOxTtj0U6BcBUTCDem/wOyR8i5ZTpuno/XwHuz77vDYklVoUqRQUtgBKyY5p5F7UDkM3ZT5RTPpvZ4yysU18XO6l1t/uXCgvdbO9UZ7fFXMYO6XRUaQ6qddNnM1DzY+RoqlkEd3SIyzGitPBWSv44M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744483130; c=relaxed/simple;
-	bh=zUgtBxcHNfQHwID95Nlq2oNdFKYo8VFOlfj+ZMKdcwo=;
+	s=arc-20240116; t=1744483132; c=relaxed/simple;
+	bh=pbWG1NuW44d0XHkj7KB2doeEqkX9NqKKFm40CfzHlJc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ME2/tiYWeBfncI+Bz3QLmiS3gPwcK1DiKVmhi5Tl2Xoazi2R5Tw1Ocht/tLKWW8uKT70ULqpQG0DwDhJLxcU0qAAMEW8pbbAFGcfF0F2MIZ5nft7hqU/+/P6CzH1ZAfKiuLjCF1bZBMDq0qmhZh1BTtaNNu/eUj9dv+WmCG7cCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JxXPofZd; arc=none smtp.client-ip=209.85.128.51
+	 MIME-Version; b=Er5hz/poeQ3AmdP+J5M2kAwg6qbwY90ftao6DdXqkOzrAhMiLSBvrOMkAKlO+ycMEE0gsl/ofFQqi6QZXcLg8vkfQn7qowoldMvBfuO0XOwEDHskYCHceQynuCXFp25KGbdMm5eMnUUCR3WYxg0Vq5Y9xJsTBOdLZ5wixhnCNlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YB6r2lBL; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43ea40a6e98so26850465e9.1;
-        Sat, 12 Apr 2025 11:38:48 -0700 (PDT)
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-43ed8d32a95so26038745e9.3;
+        Sat, 12 Apr 2025 11:38:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744483127; x=1745087927; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1744483129; x=1745087929; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DUgYhksfu+Eoy58ll0DmCMo/txL7WUG0gWBs2LYDM8U=;
-        b=JxXPofZd1V9Yo7ZiAvQosT2LX2Kc6y26stttUgGmao9uKDZ7zplGYqUikFdyhtAn2S
-         MVODZno8cG5nTamclnO4i/QMZZ1n0Ga2lVBXawi6bzAC+WkRRQrCDQw4D50G2WNUKKly
-         MhVIgWA+xeO/TqyOxuwRkJhfK6VZzZIwBcL1OrlIB0gxC/VLhQH4qDbZJXReCwjzZVfQ
-         4cwCFcYQ2261QcxY+K5a954difngPfiPTBtHiMaCKlx/MUkboKiWJMQ32QEqttZEwWMy
-         OsryJZhQfQQPf/NiyU5zfP1wA+StVe9UppLHHJQlTjcAR74SnM8U5BzGbGWurC7YhQki
-         G04Q==
+        bh=QM5uFKAHI/bfbAV4bgQOJ/dtNzxx2KflwSSXyFhKQ54=;
+        b=YB6r2lBLu57irImszoHJ8FINaVvHFgl6mubyam8p516v3YuEl510eW51VZgJ0iMbIJ
+         Gu/lMJqwZIF+9k+bxMa85OQIppehf1oin5AoTDzqDwF6pW9R320X9QoKFSKTLfWmC9TJ
+         Q3EAugimXCuPcqrP96JK3O5soTFpvf93K9yHhZ6KYXROteZnlTRexlphJBfSVA77wOuH
+         sYWEHFYaHyT6t5QfdR5I60pwTrE7XlmS149PpdUpzbwUN4GAWdzpS/iSld5K4jab+iqT
+         KfNY60i0/udkUgNz7aJugsfLAbSvSW822H/wPV+JGnotIwjEh9vpmr0bJlkxzpnMXTs0
+         10rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744483127; x=1745087927;
+        d=1e100.net; s=20230601; t=1744483129; x=1745087929;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DUgYhksfu+Eoy58ll0DmCMo/txL7WUG0gWBs2LYDM8U=;
-        b=ITUb6jJrSXGkE1Yu9s+flv/6JtV6aXzxFoTOOVvuuYtYHtRVbmk1rVuedV0LnJlqpx
-         LLa74u50yGgjQD5jEg5UFsxROwNiRp5I6Pglv3ywacB7MeXVQg7cfLPkNM83kyuIpRa4
-         mH6LbkKDJmiGnEHLNK3CuZhEm59Rz2Z0AAcSj60KTdCUKnlApITKQnmgtHTpDC18iAQo
-         vW0pktSWf0mm/8siLH5VB/O9kUk2a5WRjIqZYWeKtg94j+ppEc6R0/mJmCJlb5cQ31ii
-         Nj/DwKsKw6Zpacor+84C8xwxGrEx5/Xkscx8+wfu7gVgCFMdetHFf9N4LD6weC40qQUs
-         o1bw==
-X-Forwarded-Encrypted: i=1; AJvYcCUJ0Ja+XV4xlLML+ex9hfyxh1HWLIcDSDSgE7UoBA2bAyYi7w2Jqwq/6w2Btx9lJUAUuBohcFkqxA7X@vger.kernel.org, AJvYcCUdy/GW4pf1GXzDgC9SN7wuO9g0D5TcyKSaxecumpj3dUKBYySJO/jldAvxEzUHHwEOrTW66PrV@vger.kernel.org, AJvYcCUr9Y03ChxnS89fEOJp3tor883eiRJb3ewbGf2Nqhg5qRX8u9nkePplvpgiF7zTZHX7kxd1FukS@vger.kernel.org, AJvYcCX4cExZJ0MdfKwhKrT2oidPhHCvYtNLBqhEuTLCiK/r32rknWtvuXtTeN2O0ue6fTGxMHDiBSgTYe84yuY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzX4r6DYYpKMeD9JH5ufK52ifB4unky2VB8Bu3mSjxNpqh3Ca/y
-	hjL9amGy+Sbo/FrDwvoi75FYZMUpOOJItny4aRvcTJaukBYKeYJe
-X-Gm-Gg: ASbGncsHERvocPH5e64SlmD+mTPJXarieaufjiqeW50KWdbLodBCw8TCR0uXmM6+JB9
-	sJCnA7c7WUuqCuDPsq943Gbi48KrfMVLWrKN3+RzH/CBYlQAwTx6caTF7C2XshCO+tW3s4uAIiI
-	8f3aA4xnloh29kueV28RgBKpyDTWLiXGdtBd5q//XMpDxbpxNMiP+4V5xOZ1jQ/FuXfE5qL98gD
-	692Cix3ZXbrMQRSqV3dfQCvluW/9tOdym2Y9nghkj3RFLmnweu4r8d+7HoLFkHCgv2KRqBqHHFj
-	FuPFLG/0aVYwfkEkIb6Zsd64/rn+xArFAW+oI9G3ZLcztOdtv7i/wp4=
-X-Google-Smtp-Source: AGHT+IEuU//N4q6Mgvz6wC6S1hlZkt1w7Omac2lzLX0BCkFbvgKOxgZnRbknb6CWCqXhsC8obs+M6A==
-X-Received: by 2002:a05:600c:3c91:b0:43d:49eb:9675 with SMTP id 5b1f17b1804b1-43f3a9a68a1mr55598015e9.22.1744483126901;
-        Sat, 12 Apr 2025 11:38:46 -0700 (PDT)
+        bh=QM5uFKAHI/bfbAV4bgQOJ/dtNzxx2KflwSSXyFhKQ54=;
+        b=Eixr08aS0Fnau29myT2aPM/OUVexSngsk/3pL0zJ7upJHghowoATNk5cEmeQiUt2Ic
+         KTSqHcdGGjsX0ckREXi7DJHgXBL4aahsK+sMqO2xxftdMw1hgyiqV5PQVFopvowbT5LI
+         fssydtgUhA431og8y6F7MWKF4CNspt8KETbHxKyLfGax9wEJa+zqVx48DYr3/GfhcBB/
+         uIjKb9IO1y8wjdZu1kxwhrKFGfcWNzIGCSgc6K+WUXFpLUkkbZPQqCDTnNpB8+53qlRj
+         z/zQZL0Raz4WH53/4sutowmJOrbpi8bm39QKfeSCgXZKc2NH2CYzARCdZ4KdLhOnMnk6
+         6Vhg==
+X-Forwarded-Encrypted: i=1; AJvYcCV4lmNTY470RppjFZk62rXK661qHoZp1stN6mljdqEjB00SNz8Rx8kW+7eMznv8YPCfeibSMgEf@vger.kernel.org, AJvYcCVMhSLq6HtoRZeGNe31mg4macrgNaf/v9Kc38NICH9U8ABIjd9/G7slZnzqbEwJxOVI/Qe4Iwmo@vger.kernel.org, AJvYcCWv3tfR/1JjFWPMLJ/MBRL/TDuYNSKj5Pf1pWc16EqW1MMvWSww7T+P0VSC/ZWei+NHSXkhgKAlAztmGIc=@vger.kernel.org, AJvYcCXFXtaPLbgdM5+1EBtlU7TkZ8Yu6+lPJpJ9vZmwF3nD4TroRXJqWvDAq7gXnYWDcySej55uPUcuj4GH@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRpH+Y9YQxfr3w0/0VM91jaSF+iFfoqvx++U8zUimfqw6MxRN5
+	aXy94lTEA9kooBJ/qmYztOrsts0Of11AjuMCkLocFtvEgyuacg1/
+X-Gm-Gg: ASbGnctg7Pr3sVOQDbMKl3qfb/8TVdMO8yeBM9u+2lvvO+/5PKISte7rlLdn92R2AKG
+	TfmM/ktLJ7svuI27UNjZmdl/HNSpIbOV/65pMJxdNvYeoWHRFP52kfy++rCOkrSxgKNH6ic7Y1e
+	kW483aQgIpT2cm3MhIY9WusMkSSlc1FUNpEW4ecvEHGugnWwVr9A08gJ/zVRKrnQq0pbywILO8i
+	39L0q2MlH7zgPMmcVuT2dyhUqglxO/uF215iCxPgno1jzRAR4+oKFC8p/0xzZvqumZVHm3dui7m
+	aqXGDveY1x92R2P7M6UJ4vpzi4kVJ3qOrIdJ+5HxVwAhvACZ7AK8KC8=
+X-Google-Smtp-Source: AGHT+IGOjRMbGNcVSyofzN/ItKV09dIC/2nWWi/KZ+1aoX3auTz02NmOy7o6NMmHWYvVaCx0vDG3zQ==
+X-Received: by 2002:a05:600c:154d:b0:43d:ed:ad07 with SMTP id 5b1f17b1804b1-43f3a9aee78mr48790995e9.29.1744483128872;
+        Sat, 12 Apr 2025 11:38:48 -0700 (PDT)
 Received: from localhost.localdomain ([2a02:c7c:6696:8300:f069:f1cb:5bbc:db26])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f233c817dsm120599515e9.23.2025.04.12.11.38.45
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f233c817dsm120599515e9.23.2025.04.12.11.38.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Apr 2025 11:38:46 -0700 (PDT)
+        Sat, 12 Apr 2025 11:38:48 -0700 (PDT)
 From: Qasim Ijaz <qasdev00@gmail.com>
 To: andrew+netdev@lunn.ch,
 	davem@davemloft.net,
@@ -85,9 +85,9 @@ To: andrew+netdev@lunn.ch,
 	syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com,
 	stable@vger.kernel.org
 Cc: Qasim Ijaz <qasdev00@gmail.com>
-Subject: [PATCH 2/5] net: ch9200: remove extraneous return that prevents error propagation
-Date: Sat, 12 Apr 2025 19:38:26 +0100
-Message-Id: <20250412183829.41342-3-qasdev00@gmail.com>
+Subject: [PATCH 3/5] net: ch9200: fail fast on control_read() failures during get_mac_address()
+Date: Sat, 12 Apr 2025 19:38:27 +0100
+Message-Id: <20250412183829.41342-4-qasdev00@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250412183829.41342-1-qasdev00@gmail.com>
 References: <20250412183829.41342-1-qasdev00@gmail.com>
@@ -99,32 +99,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The control_write() function sets err to -EINVAL however there
-is an incorrectly placed 'return 0' statement after it which stops
-the propogation of the error.
+The get_mac_address() function has an issue where it does not
+directly check the return value of each control_read(), instead
+it sums up the return values and checks them all at the end
+which means if any call to control_read() fails the function just
+continues on.
 
-Fix this issue by removing the 'return 0'.
+Handle this by validating the return value of each call and fail fast
+and early instead of continuing.
 
 Fixes: 4a476bd6d1d9 ("usbnet: New driver for QinHeng CH9200 devices")
 Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
 ---
- drivers/net/usb/ch9200.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/usb/ch9200.c | 32 +++++++++++++++++++-------------
+ 1 file changed, 19 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/net/usb/ch9200.c b/drivers/net/usb/ch9200.c
-index 4f29ecf2240a..61eb6c207eb1 100644
+index 61eb6c207eb1..4f1d2e9045a9 100644
 --- a/drivers/net/usb/ch9200.c
 +++ b/drivers/net/usb/ch9200.c
-@@ -168,8 +168,6 @@ static int control_write(struct usbnet *dev, unsigned char request,
- 		err = -EINVAL;
- 	kfree(buf);
+@@ -304,24 +304,27 @@ static int ch9200_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
  
--	return 0;
--
- err_out:
- 	return err;
+ static int get_mac_address(struct usbnet *dev, unsigned char *data)
+ {
+-	int err = 0;
+ 	unsigned char mac_addr[0x06];
+-	int rd_mac_len = 0;
++	int rd_mac_len;
+ 
+ 	netdev_dbg(dev->net, "%s:\n\tusbnet VID:%0x PID:%0x\n", __func__,
+ 		   le16_to_cpu(dev->udev->descriptor.idVendor),
+ 		   le16_to_cpu(dev->udev->descriptor.idProduct));
+ 
+-	memset(mac_addr, 0, sizeof(mac_addr));
+-	rd_mac_len = control_read(dev, REQUEST_READ, 0,
+-				  MAC_REG_STATION_L, mac_addr, 0x02,
+-				  CONTROL_TIMEOUT_MS);
+-	rd_mac_len += control_read(dev, REQUEST_READ, 0, MAC_REG_STATION_M,
+-				   mac_addr + 2, 0x02, CONTROL_TIMEOUT_MS);
+-	rd_mac_len += control_read(dev, REQUEST_READ, 0, MAC_REG_STATION_H,
+-				   mac_addr + 4, 0x02, CONTROL_TIMEOUT_MS);
+-	if (rd_mac_len != ETH_ALEN)
+-		err = -EINVAL;
++	rd_mac_len = control_read(dev, REQUEST_READ, 0, MAC_REG_STATION_L,
++				  mac_addr, 0x02, CONTROL_TIMEOUT_MS);
++	if (rd_mac_len < 0)
++		return rd_mac_len;
++
++	rd_mac_len = control_read(dev, REQUEST_READ, 0, MAC_REG_STATION_M,
++				  mac_addr + 2, 0x02, CONTROL_TIMEOUT_MS);
++	if (rd_mac_len < 0)
++		return rd_mac_len;
++
++	rd_mac_len = control_read(dev, REQUEST_READ, 0, MAC_REG_STATION_H,
++				  mac_addr + 4, 0x02, CONTROL_TIMEOUT_MS);
++	if (rd_mac_len < 0)
++		return rd_mac_len;
+ 
+ 	data[0] = mac_addr[5];
+ 	data[1] = mac_addr[4];
+@@ -330,7 +333,7 @@ static int get_mac_address(struct usbnet *dev, unsigned char *data)
+ 	data[4] = mac_addr[1];
+ 	data[5] = mac_addr[0];
+ 
+-	return err;
++	return 0;
  }
+ 
+ static int ch9200_bind(struct usbnet *dev, struct usb_interface *intf)
+@@ -386,6 +389,9 @@ static int ch9200_bind(struct usbnet *dev, struct usb_interface *intf)
+ 			       CONTROL_TIMEOUT_MS);
+ 
+ 	retval = get_mac_address(dev, addr);
++	if (retval < 0)
++		return retval;
++
+ 	eth_hw_addr_set(dev->net, addr);
+ 
+ 	return retval;
 -- 
 2.39.5
 
