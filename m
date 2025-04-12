@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-132328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC0F0A86FB7
-	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 23:03:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2CFBA86FBA
+	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 23:03:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E6DC16B962
-	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 21:03:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 066C719E1061
+	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 21:04:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03D1F2206B2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B11822539E;
 	Sat, 12 Apr 2025 21:03:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC191170A23;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D797224AE9;
 	Sat, 12 Apr 2025 21:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744491822; cv=none; b=eA88iBO00hCMQ+kS9oT4AdWjkXIWVuP0kZsFPFPt5idpLZkxDED1LHNo6MwE3kDdWkrK7VcwPixmbVNC8uJysCsXzqC2TC2U3+pdX4f1ikZo4Z3cLswQCICQyMk23VTCbLiFvYu2H24vAofwMhU/2Mzz+f1V+LkTa0MOFXwffYw=
+	t=1744491823; cv=none; b=JHrFSOr/LktSWjFekx3xQFVocgxZhkE/oayknmIl1WxXA3whoA2h1l6vJG8kHPtXQknuz9Y92BUU6mg1Ffw727b+/MTF6ROEBWLvtMR/H29fJmNPVTZZHYL4/g21oLO8mr28yrwso/bcWrCj2/CidLZAPgYX7cyiU4oGOqqVyqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744491822; c=relaxed/simple;
-	bh=/dxTjvf1nwp47obOQpKc/nAnFrDcdVF8sqdQbGww0ns=;
+	s=arc-20240116; t=1744491823; c=relaxed/simple;
+	bh=/7sePx7POrKj9P/1s80fgQXpzWu41bRLoFG3jSTo7ZY=;
 	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=htWavPlSPQ9otk1b9eoBnNrkl5v8m/5hq2hBo29xCBNtrjZmsP3/a0EQQ1zopRyrb6aWsMFvaFwltPVubsiLNRlIvbMDmolbrzcnEA1dkin8RgZLvwyR1Ry8f8YRt2Nox8p/yTXwlXosXlmPEFO1b8LxGagZS8exIoIPj89ejU0=
+	 Content-Type; b=gCn9mxX0sejaCFAZRVATkrZScOkrUK4IXKnLuMphpzSUUcV162oAmkfZdDE1ieNoB9F2w+V+io5rG+G6u+KE0VkB8GftNSUcZIz45fQNM9PzCAuzUXs+jkMAHBdkSevW/va//dHQCOuCFNrT+JdnU0cHfHeK+H6VnhJwUcXyjp0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF1AC4CEEC;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6FABC4CEEA;
 	Sat, 12 Apr 2025 21:03:42 +0000 (UTC)
 Received: from rostedt by gandalf with local (Exim 4.98)
 	(envelope-from <rostedt@goodmis.org>)
-	id 1u3i2I-0000000AEDs-2aS5;
+	id 1u3i2I-0000000AEEM-3IYV;
 	Sat, 12 Apr 2025 17:05:10 -0400
-Message-ID: <20250412210510.464408595@goodmis.org>
+Message-ID: <20250412210510.639390059@goodmis.org>
 User-Agent: quilt/0.68
-Date: Sat, 12 Apr 2025 17:04:48 -0400
+Date: Sat, 12 Apr 2025 17:04:49 -0400
 From: Steven Rostedt <rostedt@goodmis.org>
 To: linux-kernel@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>,
@@ -43,9 +43,8 @@ Cc: Masami Hiramatsu <mhiramat@kernel.org>,
  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  stable@vger.kernel.org,
- Tom Zanussi <zanussi@kernel.org>,
- Douglas Raillard <douglas.raillard@arm.com>
-Subject: [for-linus][PATCH 2/7] tracing: Do not add length to print format in synthetic events
+ Andy Chiu <andybnac@gmail.com>
+Subject: [for-linus][PATCH 3/7] ftrace: Properly merge notrace hashes
 References: <20250412210446.338481957@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -55,56 +54,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Andy Chiu <andybnac@gmail.com>
 
-The following causes a vsnprintf fault:
-
-  # echo 's:wake_lat char[] wakee; u64 delta;' >> /sys/kernel/tracing/dynamic_events
-  # echo 'hist:keys=pid:ts=common_timestamp.usecs if !(common_flags & 0x18)' > /sys/kernel/tracing/events/sched/sched_waking/trigger
-  # echo 'hist:keys=next_pid:delta=common_timestamp.usecs-$ts:onmatch(sched.sched_waking).trace(wake_lat,next_comm,$delta)' > /sys/kernel/tracing/events/sched/sched_switch/trigger
-
-Because the synthetic event's "wakee" field is created as a dynamic string
-(even though the string copied is not). The print format to print the
-dynamic string changed from "%*s" to "%s" because another location
-(__set_synth_event_print_fmt()) exported this to user space, and user
-space did not need that. But it is still used in print_synth_event(), and
-the output looks like:
-
-          <idle>-0       [001] d..5.   193.428167: wake_lat: wakee=(efault)sshd-sessiondelta=155
-    sshd-session-879     [001] d..5.   193.811080: wake_lat: wakee=(efault)kworker/u34:5delta=58
-          <idle>-0       [002] d..5.   193.811198: wake_lat: wakee=(efault)bashdelta=91
-            bash-880     [002] d..5.   193.811371: wake_lat: wakee=(efault)kworker/u35:2delta=21
-          <idle>-0       [001] d..5.   193.811516: wake_lat: wakee=(efault)sshd-sessiondelta=129
-    sshd-session-879     [001] d..5.   193.967576: wake_lat: wakee=(efault)kworker/u34:5delta=50
-
-The length isn't needed as the string is always nul terminated. Just print
-the string and not add the length (which was hard coded to the max string
-length anyway).
+The global notrace hash should be jointly decided by the intersection of
+each subops's notrace hash, but not the filter hash.
 
 Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Tom Zanussi <zanussi@kernel.org>
-Cc: Douglas Raillard <douglas.raillard@arm.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Link: https://lore.kernel.org/20250407154139.69955768@gandalf.local.home
-Fixes: 4d38328eb442d ("tracing: Fix synth event printk format for str fields");
+Link: https://lore.kernel.org/20250408160258.48563-1-andybnac@gmail.com
+Fixes: 5fccc7552ccb ("ftrace: Add subops logic to allow one ops to manage many")
+Signed-off-by: Andy Chiu <andybnac@gmail.com>
+[ fixed removing of freeing of filter_hash ]
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- kernel/trace/trace_events_synth.c | 1 -
- 1 file changed, 1 deletion(-)
+ kernel/trace/ftrace.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/trace/trace_events_synth.c b/kernel/trace/trace_events_synth.c
-index 969f48742d72..33cfbd4ed76d 100644
---- a/kernel/trace/trace_events_synth.c
-+++ b/kernel/trace/trace_events_synth.c
-@@ -370,7 +370,6 @@ static enum print_line_t print_synth_event(struct trace_iterator *iter,
- 				union trace_synth_field *data = &entry->fields[n_u64];
+diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+index 1a48aedb5255..8939eeebb02e 100644
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -3526,16 +3526,16 @@ int ftrace_startup_subops(struct ftrace_ops *ops, struct ftrace_ops *subops, int
+ 	    ftrace_hash_empty(subops->func_hash->notrace_hash)) {
+ 		notrace_hash = EMPTY_HASH;
+ 	} else {
+-		size_bits = max(ops->func_hash->filter_hash->size_bits,
+-				subops->func_hash->filter_hash->size_bits);
++		size_bits = max(ops->func_hash->notrace_hash->size_bits,
++				subops->func_hash->notrace_hash->size_bits);
+ 		notrace_hash = alloc_ftrace_hash(size_bits);
+ 		if (!notrace_hash) {
+ 			free_ftrace_hash(filter_hash);
+ 			return -ENOMEM;
+ 		}
  
- 				trace_seq_printf(s, print_fmt, se->fields[i]->name,
--						 STR_VAR_LEN_MAX,
- 						 (char *)entry + data->as_dynamic.offset,
- 						 i == se->n_fields - 1 ? "" : " ");
- 				n_u64++;
+-		ret = intersect_hash(&notrace_hash, ops->func_hash->filter_hash,
+-				     subops->func_hash->filter_hash);
++		ret = intersect_hash(&notrace_hash, ops->func_hash->notrace_hash,
++				     subops->func_hash->notrace_hash);
+ 		if (ret < 0) {
+ 			free_ftrace_hash(filter_hash);
+ 			free_ftrace_hash(notrace_hash);
 -- 
 2.47.2
 
