@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-132306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3575AA869D8
-	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 02:35:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29DE0A869D6
+	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 02:34:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC0C57ACE61
-	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 00:32:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EAD98A4AD7
+	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 00:33:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731B9502BE;
-	Sat, 12 Apr 2025 00:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764003B1A4;
+	Sat, 12 Apr 2025 00:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="pWaJ0T0m"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Nvcxy0iI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D950134D4;
-	Sat, 12 Apr 2025 00:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F189134D4;
+	Sat, 12 Apr 2025 00:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744418005; cv=none; b=J9wE86g/laWaHSbXZ/m/FvU+lQB/KsZXD7qMB2keqbq3u7oBh3ov+JoDAjup/qWdGuZBz6ah0U+h/W8fP4O02O3zcq97mPPKG365p5O28UUZSq76zDygDQDk6IcnFoD8M0mx4WBJRI4jLZxtJxLdp7dE6NQ0BkLM1ErjtUJGYoA=
+	t=1744418018; cv=none; b=QiMPwxPQZ/Qj5QZPSwkJD0VblfcVdYVVvyiWIgFlK3INuT5O8i8BuaZvyZGMoQV/sPr6iA0DzrcAkl5IZSPqwu33gVTt4McMK5C9AxaL6re6exD3J0TTqs4WRf0GOWvvGGe9eNRRnwP9HKmBZdwQb/x4oKOvW5Rf9ND5Pz6awlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744418005; c=relaxed/simple;
-	bh=roizcqXHBDWN6JPsDLvszCa19qcD5YMRMD3Ey4TnXwE=;
-	h=Date:To:From:Subject:Message-Id; b=etcB1ac9CA8NixT9+lnjcYODzPpnKpFLFOQCq51ELqb7F7Tb29/RbpL+O4xElzGKBb3qKto7AA2e5Ql71ZbgnWQKZ02ftNkw+TVDX+QtUqTsNxSij3f34ieDrFC8jORAYfHiu1si+6cJU7Rb4OaTw1WWvpQsnfPxmMcSvyRuk9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=pWaJ0T0m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00300C4CEE2;
-	Sat, 12 Apr 2025 00:33:24 +0000 (UTC)
+	s=arc-20240116; t=1744418018; c=relaxed/simple;
+	bh=Y/BgYprArmobohjfwYyE2fdHt3WHGHMfi8XEPkyzuWI=;
+	h=Date:To:From:Subject:Message-Id; b=QNnu8ZlOVr9tLg4B1FRQPt2EK1j4tLw+Xv/432h2bZ+ODNEhcz2eCVdGo+nU3U5C9Vy3d+epaHFUSud8JKKcnQ8juaa/JByWK5Z1Z7ByDg3WJhcjDVpS9tVIp8h9nMtX42JhXZwCmdBrhl3Ae2KJq7IHoiQrOmCAXAfr7sfZgwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Nvcxy0iI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60ABC4CEE2;
+	Sat, 12 Apr 2025 00:33:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1744418005;
-	bh=roizcqXHBDWN6JPsDLvszCa19qcD5YMRMD3Ey4TnXwE=;
+	s=korg; t=1744418017;
+	bh=Y/BgYprArmobohjfwYyE2fdHt3WHGHMfi8XEPkyzuWI=;
 	h=Date:To:From:Subject:From;
-	b=pWaJ0T0mV1Jlo3hBV85FuQ8K8qo9s7ytVpbJQI+tXtM5D/bz2UcGucvyLfqi5MuEN
-	 Gfdzir4cdwXSgMwl0FU6XkpW+Tc3Uv1k8yMk9h7cfLTgQ/XlV9jBy0fo28Mg3To441
-	 zj8YrP7enEP1heRZfDySGGkigONH2R2tLF0gRJ0I=
-Date: Fri, 11 Apr 2025 17:33:24 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,pfalcato@suse.de,jannh@google.com,lorenzo.stoakes@oracle.com,akpm@linux-foundation.org
+	b=Nvcxy0iIcAXGsCSf0epyRVONEV9qh7GtEjEdh+d8JD2fRf3OMXFXIfMxc8N9RhXn4
+	 jnjWVY82Ms3ueJp9tjVoRlXa0KgTONXfIefHX5N3gDnr687Qn/L1BZvfyY5ZqJPLhV
+	 W8sfVvSKkReWiDbCY+tv3kMB0BEQp1aGVp6ZIETg=
+Date: Fri, 11 Apr 2025 17:33:37 -0700
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,vbabka@suse.cz,stable@vger.kernel.org,shivankg@amd.com,oliver.sang@intel.com,jackmanb@google.com,carlos.song@nxp.com,hannes@cmpxchg.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-vma-add-give_up_on_oom-option-on-modify-merge-use-in-uffd-release.patch removed from -mm tree
-Message-Id: <20250412003325.00300C4CEE2@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-page_alloc-speed-up-fallbacks-in-rmqueue_bulk.patch removed from -mm tree
+Message-Id: <20250412003337.D60ABC4CEE2@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,249 +50,284 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/vma: add give_up_on_oom option on modify/merge, use in uffd release
+     Subject: mm: page_alloc: speed up fallbacks in rmqueue_bulk()
 has been removed from the -mm tree.  Its filename was
-     mm-vma-add-give_up_on_oom-option-on-modify-merge-use-in-uffd-release.patch
+     mm-page_alloc-speed-up-fallbacks-in-rmqueue_bulk.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: mm/vma: add give_up_on_oom option on modify/merge, use in uffd release
-Date: Fri, 21 Mar 2025 10:09:37 +0000
+From: Johannes Weiner <hannes@cmpxchg.org>
+Subject: mm: page_alloc: speed up fallbacks in rmqueue_bulk()
+Date: Mon, 7 Apr 2025 14:01:53 -0400
 
-Currently, if a VMA merge fails due to an OOM condition arising on commit
-merge or a failure to duplicate anon_vma's, we report this so the caller
-can handle it.
+The test robot identified c2f6ea38fc1b ("mm: page_alloc: don't steal
+single pages from biggest buddy") as the root cause of a 56.4% regression
+in vm-scalability::lru-file-mmap-read.
 
-However there are cases where the caller is only ostensibly trying a
-merge, and doesn't mind if it fails due to this condition.
+Carlos reports an earlier patch, c0cd6f557b90 ("mm: page_alloc: fix
+freelist movement during block conversion"), as the root cause for a
+regression in worst-case zone->lock+irqoff hold times.
 
-Since we do not want to introduce an implicit assumption that we only
-actually modify VMAs after OOM conditions might arise, add a 'give up on
-oom' option and make an explicit contract that, should this flag be set, we
-absolutely will not modify any VMAs should OOM arise and just bail out.
+Both of these patches modify the page allocator's fallback path to be less
+greedy in an effort to stave off fragmentation.  The flip side of this is
+that fallbacks are also less productive each time around, which means the
+fallback search can run much more frequently.
 
-Since it'd be very unusual for a user to try to vma_modify() with this flag
-set but be specifying a range within a VMA which ends up being split (which
-can fail due to rlimit issues, not only OOM), we add a debug warning for
-this condition.
+Carlos' traces point to rmqueue_bulk() specifically, which tries to refill
+the percpu cache by allocating a large batch of pages in a loop.  It
+highlights how once the native freelists are exhausted, the fallback code
+first scans orders top-down for whole blocks to claim, then falls back to
+a bottom-up search for the smallest buddy to steal.  For the next batch
+page, it goes through the same thing again.
 
-The motivating reason for this is uffd release - syzkaller (and Pedro
-Falcato's VERY astute analysis) found a way in which an injected fault on
-allocation, triggering an OOM condition on commit merge, would result in
-uffd code becoming confused and treating an error value as if it were a VMA
-pointer.
+This can be made more efficient.  Since rmqueue_bulk() holds the
+zone->lock over the entire batch, the freelists are not subject to outside
+changes; when the search for a block to claim has already failed, there is
+no point in trying again for the next page.
 
-To avoid this, we make use of this new VMG flag to ensure that this never
-occurs, utilising the fact that, should we be clearing entire VMAs, we do
-not wish an OOM event to be reported to us.
+Modify __rmqueue() to remember the last successful fallback mode, and
+restart directly from there on the next rmqueue_bulk() iteration.
 
-Many thanks to Pedro Falcato for his excellent analysis and Jann Horn for
-his insightful and intelligent analysis of the situation, both of whom were
-instrumental in this fix.
+Oliver confirms that this improves beyond the regression that the test
+robot reported against c2f6ea38fc1b:
 
-Link: https://lkml.kernel.org/r/20250321100937.46634-1-lorenzo.stoakes@oracle.com
-Reported-by: syzbot+20ed41006cf9d842c2b5@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67dc67f0.050a0220.25ae54.001e.GAE@google.com/
-Fixes: 47b16d0462a4 ("mm: abort vma_modify() on merge out of memory failure")
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Suggested-by: Pedro Falcato <pfalcato@suse.de>
-Suggested-by: Jann Horn <jannh@google.com>
-Cc: <stable@vger.kernel.org>
+commit:
+  f3b92176f4 ("tools/selftests: add guard region test for /proc/$pid/pagemap")
+  c2f6ea38fc ("mm: page_alloc: don't steal single pages from biggest buddy")
+  acc4d5ff0b ("Merge tag 'net-6.15-rc0' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
+  2c847f27c3 ("mm: page_alloc: speed up fallbacks in rmqueue_bulk()")   <--- your patch
+
+f3b92176f4f7100f c2f6ea38fc1b640aa7a2e155cc1 acc4d5ff0b61eb1715c498b6536 2c847f27c37da65a93d23c237c5
+---------------- --------------------------- --------------------------- ---------------------------
+         %stddev     %change         %stddev     %change         %stddev     %change         %stddev
+             \          |                \          |                \          |                \
+  25525364 ±  3%     -56.4%   11135467           -57.8%   10779336           +31.6%   33581409        vm-scalability.throughput
+
+Carlos confirms that worst-case times are almost fully recovered
+compared to before the earlier culprit patch:
+
+  2dd482ba627d (before freelist hygiene):    1ms
+  c0cd6f557b90  (after freelist hygiene):   90ms
+ next-20250319    (steal smallest buddy):  280ms
+    this patch                          :    8ms
+
+[jackmanb@google.com: comment updates]
+  Link: https://lkml.kernel.org/r/D92AC0P9594X.3BML64MUKTF8Z@google.com
+[hannes@cmpxchg.org: reset rmqueue_mode in rmqueue_buddy() error loop, per Yunsheng Lin]
+  Link: https://lkml.kernel.org/r/20250409140023.GA2313@cmpxchg.org
+Link: https://lkml.kernel.org/r/20250407180154.63348-1-hannes@cmpxchg.org
+Fixes: c0cd6f557b90 ("mm: page_alloc: fix freelist movement during block conversion")
+Fixes: c2f6ea38fc1b ("mm: page_alloc: don't steal single pages from biggest buddy")
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Reported-by: Carlos Song <carlos.song@nxp.com>
+Tested-by: Carlos Song <carlos.song@nxp.com>
+Tested-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202503271547.fc08b188-lkp@intel.com
+Reviewed-by: Brendan Jackman <jackmanb@google.com>
+Tested-by: Shivank Garg <shivankg@amd.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>	[6.10+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/userfaultfd.c |   13 +++++++++--
- mm/vma.c         |   51 +++++++++++++++++++++++++++++++++++++++++----
- mm/vma.h         |    9 +++++++
- 3 files changed, 66 insertions(+), 7 deletions(-)
+ mm/page_alloc.c |  113 ++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 79 insertions(+), 34 deletions(-)
 
---- a/mm/userfaultfd.c~mm-vma-add-give_up_on_oom-option-on-modify-merge-use-in-uffd-release
-+++ a/mm/userfaultfd.c
-@@ -1902,6 +1902,14 @@ struct vm_area_struct *userfaultfd_clear
- 					     unsigned long end)
- {
- 	struct vm_area_struct *ret;
-+	bool give_up_on_oom = false;
-+
-+	/*
-+	 * If we are modifying only and not splitting, just give up on the merge
-+	 * if OOM prevents us from merging successfully.
-+	 */
-+	if (start == vma->vm_start && end == vma->vm_end)
-+		give_up_on_oom = true;
+--- a/mm/page_alloc.c~mm-page_alloc-speed-up-fallbacks-in-rmqueue_bulk
++++ a/mm/page_alloc.c
+@@ -2183,23 +2183,15 @@ try_to_claim_block(struct zone *zone, st
+ }
  
- 	/* Reset ptes for the whole vma range if wr-protected */
- 	if (userfaultfd_wp(vma))
-@@ -1909,7 +1917,7 @@ struct vm_area_struct *userfaultfd_clear
- 
- 	ret = vma_modify_flags_uffd(vmi, prev, vma, start, end,
- 				    vma->vm_flags & ~__VM_UFFD_FLAGS,
--				    NULL_VM_UFFD_CTX);
-+				    NULL_VM_UFFD_CTX, give_up_on_oom);
- 
- 	/*
- 	 * In the vma_merge() successful mprotect-like case 8:
-@@ -1960,7 +1968,8 @@ int userfaultfd_register_range(struct us
- 		new_flags = (vma->vm_flags & ~__VM_UFFD_FLAGS) | vm_flags;
- 		vma = vma_modify_flags_uffd(&vmi, prev, vma, start, vma_end,
- 					    new_flags,
--					    (struct vm_userfaultfd_ctx){ctx});
-+					    (struct vm_userfaultfd_ctx){ctx},
-+					    /* give_up_on_oom = */false);
- 		if (IS_ERR(vma))
- 			return PTR_ERR(vma);
- 
---- a/mm/vma.c~mm-vma-add-give_up_on_oom-option-on-modify-merge-use-in-uffd-release
-+++ a/mm/vma.c
-@@ -666,6 +666,9 @@ static void vmg_adjust_set_range(struct
  /*
-  * Actually perform the VMA merge operation.
+- * Try finding a free buddy page on the fallback list.
+- *
+- * This will attempt to claim a whole pageblock for the requested type
+- * to ensure grouping of such requests in the future.
+- *
+- * If a whole block cannot be claimed, steal an individual page, regressing to
+- * __rmqueue_smallest() logic to at least break up as little contiguity as
+- * possible.
++ * Try to allocate from some fallback migratetype by claiming the entire block,
++ * i.e. converting it to the allocation's start migratetype.
   *
-+ * IMPORTANT: We guarantee that, should vmg->give_up_on_oom is set, to not
-+ * modify any VMAs or cause inconsistent state should an OOM condition arise.
-+ *
-  * Returns 0 on success, or an error value on failure.
+  * The use of signed ints for order and current_order is a deliberate
+  * deviation from the rest of this file, to make the for loop
+  * condition simpler.
+- *
+- * Return the stolen page, or NULL if none can be found.
   */
- static int commit_merge(struct vma_merge_struct *vmg)
-@@ -685,6 +688,12 @@ static int commit_merge(struct vma_merge
- 
- 	init_multi_vma_prep(&vp, vma, vmg);
- 
-+	/*
-+	 * If vmg->give_up_on_oom is set, we're safe, because we don't actually
-+	 * manipulate any VMAs until we succeed at preallocation.
-+	 *
-+	 * Past this point, we will not return an error.
-+	 */
- 	if (vma_iter_prealloc(vmg->vmi, vma))
- 		return -ENOMEM;
- 
-@@ -915,7 +924,13 @@ static __must_check struct vm_area_struc
- 		if (anon_dup)
- 			unlink_anon_vmas(anon_dup);
- 
--		vmg->state = VMA_MERGE_ERROR_NOMEM;
-+		/*
-+		 * We've cleaned up any cloned anon_vma's, no VMAs have been
-+		 * modified, no harm no foul if the user requests that we not
-+		 * report this and just give up, leaving the VMAs unmerged.
-+		 */
-+		if (!vmg->give_up_on_oom)
-+			vmg->state = VMA_MERGE_ERROR_NOMEM;
- 		return NULL;
+ static __always_inline struct page *
+-__rmqueue_fallback(struct zone *zone, int order, int start_migratetype,
++__rmqueue_claim(struct zone *zone, int order, int start_migratetype,
+ 						unsigned int alloc_flags)
+ {
+ 	struct free_area *area;
+@@ -2237,14 +2229,29 @@ __rmqueue_fallback(struct zone *zone, in
+ 		page = try_to_claim_block(zone, page, current_order, order,
+ 					  start_migratetype, fallback_mt,
+ 					  alloc_flags);
+-		if (page)
+-			goto got_one;
++		if (page) {
++			trace_mm_page_alloc_extfrag(page, order, current_order,
++						    start_migratetype, fallback_mt);
++			return page;
++		}
  	}
  
-@@ -926,7 +941,15 @@ static __must_check struct vm_area_struc
- abort:
- 	vma_iter_set(vmg->vmi, start);
- 	vma_iter_load(vmg->vmi);
--	vmg->state = VMA_MERGE_ERROR_NOMEM;
+-	if (alloc_flags & ALLOC_NOFRAGMENT)
+-		return NULL;
++	return NULL;
++}
 +
-+	/*
-+	 * This means we have failed to clone anon_vma's correctly, but no
-+	 * actual changes to VMAs have occurred, so no harm no foul - if the
-+	 * user doesn't want this reported and instead just wants to give up on
-+	 * the merge, allow it.
-+	 */
-+	if (!vmg->give_up_on_oom)
-+		vmg->state = VMA_MERGE_ERROR_NOMEM;
++/*
++ * Try to steal a single page from some fallback migratetype. Leave the rest of
++ * the block as its current migratetype, potentially causing fragmentation.
++ */
++static __always_inline struct page *
++__rmqueue_steal(struct zone *zone, int order, int start_migratetype)
++{
++	struct free_area *area;
++	int current_order;
++	struct page *page;
++	int fallback_mt;
++	bool claim_block;
+ 
+-	/* No luck claiming pageblock. Find the smallest fallback page */
+ 	for (current_order = order; current_order < NR_PAGE_ORDERS; current_order++) {
+ 		area = &(zone->free_area[current_order]);
+ 		fallback_mt = find_suitable_fallback(area, current_order,
+@@ -2254,25 +2261,28 @@ __rmqueue_fallback(struct zone *zone, in
+ 
+ 		page = get_page_from_free_area(area, fallback_mt);
+ 		page_del_and_expand(zone, page, order, current_order, fallback_mt);
+-		goto got_one;
++		trace_mm_page_alloc_extfrag(page, order, current_order,
++					    start_migratetype, fallback_mt);
++		return page;
+ 	}
+ 
  	return NULL;
+-
+-got_one:
+-	trace_mm_page_alloc_extfrag(page, order, current_order,
+-		start_migratetype, fallback_mt);
+-
+-	return page;
  }
  
-@@ -1068,6 +1091,10 @@ int vma_expand(struct vma_merge_struct *
- 		/* This should already have been checked by this point. */
- 		VM_WARN_ON_VMG(!can_merge_remove_vma(next), vmg);
- 		vma_start_write(next);
-+		/*
-+		 * In this case we don't report OOM, so vmg->give_up_on_mm is
-+		 * safe.
-+		 */
- 		ret = dup_anon_vma(middle, next, &anon_dup);
- 		if (ret)
- 			return ret;
-@@ -1090,9 +1117,15 @@ int vma_expand(struct vma_merge_struct *
- 	return 0;
- 
- nomem:
--	vmg->state = VMA_MERGE_ERROR_NOMEM;
- 	if (anon_dup)
- 		unlink_anon_vmas(anon_dup);
-+	/*
-+	 * If the user requests that we just give upon OOM, we are safe to do so
-+	 * here, as commit merge provides this contract to us. Nothing has been
-+	 * changed - no harm no foul, just don't report it.
-+	 */
-+	if (!vmg->give_up_on_oom)
-+		vmg->state = VMA_MERGE_ERROR_NOMEM;
- 	return -ENOMEM;
- }
- 
-@@ -1534,6 +1567,13 @@ static struct vm_area_struct *vma_modify
- 	if (vmg_nomem(vmg))
- 		return ERR_PTR(-ENOMEM);
- 
-+	/*
-+	 * Split can fail for reasons other than OOM, so if the user requests
-+	 * this it's probably a mistake.
-+	 */
-+	VM_WARN_ON(vmg->give_up_on_oom &&
-+		   (vma->vm_start != start || vma->vm_end != end));
++enum rmqueue_mode {
++	RMQUEUE_NORMAL,
++	RMQUEUE_CMA,
++	RMQUEUE_CLAIM,
++	RMQUEUE_STEAL,
++};
 +
- 	/* Split any preceding portion of the VMA. */
- 	if (vma->vm_start < start) {
- 		int err = split_vma(vmg->vmi, vma, start, 1);
-@@ -1602,12 +1642,15 @@ struct vm_area_struct
- 		       struct vm_area_struct *vma,
- 		       unsigned long start, unsigned long end,
- 		       unsigned long new_flags,
--		       struct vm_userfaultfd_ctx new_ctx)
-+		       struct vm_userfaultfd_ctx new_ctx,
-+		       bool give_up_on_oom)
+ /*
+  * Do the hard work of removing an element from the buddy allocator.
+  * Call me with the zone->lock already held.
+  */
+ static __always_inline struct page *
+ __rmqueue(struct zone *zone, unsigned int order, int migratetype,
+-						unsigned int alloc_flags)
++	  unsigned int alloc_flags, enum rmqueue_mode *mode)
  {
- 	VMG_VMA_STATE(vmg, vmi, prev, vma, start, end);
+ 	struct page *page;
  
- 	vmg.flags = new_flags;
- 	vmg.uffd_ctx = new_ctx;
-+	if (give_up_on_oom)
-+		vmg.give_up_on_oom = true;
+@@ -2291,16 +2301,48 @@ __rmqueue(struct zone *zone, unsigned in
+ 		}
+ 	}
  
- 	return vma_modify(&vmg);
- }
---- a/mm/vma.h~mm-vma-add-give_up_on_oom-option-on-modify-merge-use-in-uffd-release
-+++ a/mm/vma.h
-@@ -114,6 +114,12 @@ struct vma_merge_struct {
- 	 */
- 	bool just_expand :1;
- 
+-	page = __rmqueue_smallest(zone, order, migratetype);
+-	if (unlikely(!page)) {
+-		if (alloc_flags & ALLOC_CMA)
 +	/*
-+	 * If a merge is possible, but an OOM error occurs, give up and don't
-+	 * execute the merge, returning NULL.
++	 * First try the freelists of the requested migratetype, then try
++	 * fallbacks modes with increasing levels of fragmentation risk.
++	 *
++	 * The fallback logic is expensive and rmqueue_bulk() calls in
++	 * a loop with the zone->lock held, meaning the freelists are
++	 * not subject to any outside changes. Remember in *mode where
++	 * we found pay dirt, to save us the search on the next call.
 +	 */
-+	bool give_up_on_oom :1;
++	switch (*mode) {
++	case RMQUEUE_NORMAL:
++		page = __rmqueue_smallest(zone, order, migratetype);
++		if (page)
++			return page;
++		fallthrough;
++	case RMQUEUE_CMA:
++		if (alloc_flags & ALLOC_CMA) {
+ 			page = __rmqueue_cma_fallback(zone, order);
+-
+-		if (!page)
+-			page = __rmqueue_fallback(zone, order, migratetype,
+-						  alloc_flags);
++			if (page) {
++				*mode = RMQUEUE_CMA;
++				return page;
++			}
++		}
++		fallthrough;
++	case RMQUEUE_CLAIM:
++		page = __rmqueue_claim(zone, order, migratetype, alloc_flags);
++		if (page) {
++			/* Replenished preferred freelist, back to normal mode. */
++			*mode = RMQUEUE_NORMAL;
++			return page;
++		}
++		fallthrough;
++	case RMQUEUE_STEAL:
++		if (!(alloc_flags & ALLOC_NOFRAGMENT)) {
++			page = __rmqueue_steal(zone, order, migratetype);
++			if (page) {
++				*mode = RMQUEUE_STEAL;
++				return page;
++			}
++		}
+ 	}
+-	return page;
++	return NULL;
+ }
+ 
+ /*
+@@ -2312,6 +2354,7 @@ static int rmqueue_bulk(struct zone *zon
+ 			unsigned long count, struct list_head *list,
+ 			int migratetype, unsigned int alloc_flags)
+ {
++	enum rmqueue_mode rmqm = RMQUEUE_NORMAL;
+ 	unsigned long flags;
+ 	int i;
+ 
+@@ -2323,7 +2366,7 @@ static int rmqueue_bulk(struct zone *zon
+ 	}
+ 	for (i = 0; i < count; ++i) {
+ 		struct page *page = __rmqueue(zone, order, migratetype,
+-								alloc_flags);
++					      alloc_flags, &rmqm);
+ 		if (unlikely(page == NULL))
+ 			break;
+ 
+@@ -2948,7 +2991,9 @@ struct page *rmqueue_buddy(struct zone *
+ 		if (alloc_flags & ALLOC_HIGHATOMIC)
+ 			page = __rmqueue_smallest(zone, order, MIGRATE_HIGHATOMIC);
+ 		if (!page) {
+-			page = __rmqueue(zone, order, migratetype, alloc_flags);
++			enum rmqueue_mode rmqm = RMQUEUE_NORMAL;
 +
- 	/* Internal flags set during merge process: */
++			page = __rmqueue(zone, order, migratetype, alloc_flags, &rmqm);
  
- 	/*
-@@ -255,7 +261,8 @@ __must_check struct vm_area_struct
- 		       struct vm_area_struct *vma,
- 		       unsigned long start, unsigned long end,
- 		       unsigned long new_flags,
--		       struct vm_userfaultfd_ctx new_ctx);
-+		       struct vm_userfaultfd_ctx new_ctx,
-+		       bool give_up_on_oom);
- 
- __must_check struct vm_area_struct
- *vma_merge_new_range(struct vma_merge_struct *vmg);
+ 			/*
+ 			 * If the allocation fails, allow OOM handling and
 _
 
-Patches currently in -mm which might be from lorenzo.stoakes@oracle.com are
+Patches currently in -mm which might be from hannes@cmpxchg.org are
 
-maintainers-add-memory-advice-section.patch
-mm-vma-fix-incorrectly-disallowed-anonymous-vma-merges.patch
-tools-testing-add-procmap_query-helper-functions-in-mm-self-tests.patch
-tools-testing-selftests-assert-that-anon-merge-cases-behave-as-expected.patch
+mm-page_alloc-tighten-up-find_suitable_fallback.patch
 
 
