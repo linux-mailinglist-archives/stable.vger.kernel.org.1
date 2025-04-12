@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-132308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3877BA869D5
-	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 02:34:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FC23A869D7
+	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 02:34:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFD2B1B62B95
-	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 00:33:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A1188A68C8
+	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 00:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3195A481CD;
-	Sat, 12 Apr 2025 00:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B62D954F81;
+	Sat, 12 Apr 2025 00:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="zDZ0rZzY"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="174KIiTY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E319D2AF1E;
-	Sat, 12 Apr 2025 00:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5BEDDAB;
+	Sat, 12 Apr 2025 00:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744418027; cv=none; b=oTrjDVOnPl4dMUMeo2g7xCBFYSN9m770fe5cA0tE1vUx5Bei0Tw+TVppYCJaKcdkazV/ynk/JxHPlfbvQBgXy7PVa3gifuYu3F0gsbUjMwnPikV5oXHVw31IJ0BbvZosk7qoVWShRQG03PqwQHlm3dj/z9C+igWKHg55n6WAZDI=
+	t=1744418030; cv=none; b=TTbCqPIXhKcuBXhFJsjUcloKsD80En3In3EwfqwsMbTCBhL59EE/6EKpW0DPihmnaekdUEuznqH+EIl5bQ1ZOZg6tARl51E8isUWYed1CpSy5c4IeQtbWlFJEfp1WKZyi8AhJOT+jvucIh5IG4aM3khg/yYOqHXMys/nIjB38/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744418027; c=relaxed/simple;
-	bh=NeUq7VrT+XSN/l8d6hx1AgaUYOdgwGzdyuZYzSVPyOo=;
-	h=Date:To:From:Subject:Message-Id; b=PLQxQSwX/Lk1UIZpM4XunKdo9ZnWixUSZpYlQgQRD4LGdfFBR5YsoNtrjE0MdENIPbgHFdW68vgPe1CTZaXYR0fdA3DhCQVPmxfZt+0ZvenmOPTZrrjv8A4NMUL+QG8jK2Pv6RTC24fNjsbFq8XCCZHB7dYkCa/km+U2w7ajsig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=zDZ0rZzY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B61FDC4CEE2;
-	Sat, 12 Apr 2025 00:33:46 +0000 (UTC)
+	s=arc-20240116; t=1744418030; c=relaxed/simple;
+	bh=lCWgKvp2dAjww6VJQsCwMDikAmQLeTw+jeg63+Vy1pI=;
+	h=Date:To:From:Subject:Message-Id; b=b5JyRcF9Q2RgL1nNw0YLuRIn6vxc6ESady167GCg+YSSwwGNJHkXf7UvQIIGN3S0zfm7H0koyDwX6CSU46aQfa9s62xUCYyEnj/d5J0VpOg+uSCq4CJRXCHJYaEVm3rrAKzvXse6+yT0p+jlLYfju12MPP3TTELDQlX7Jq6B/B4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=174KIiTY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BACC4CEE2;
+	Sat, 12 Apr 2025 00:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1744418026;
-	bh=NeUq7VrT+XSN/l8d6hx1AgaUYOdgwGzdyuZYzSVPyOo=;
+	s=korg; t=1744418030;
+	bh=lCWgKvp2dAjww6VJQsCwMDikAmQLeTw+jeg63+Vy1pI=;
 	h=Date:To:From:Subject:From;
-	b=zDZ0rZzYf3JsQhKXW7brOZ6tEDdYvOShk5hmj1To/7Hc9DkI4ITJ494GrPhazoAso
-	 8rLWup53GER4TyRlIVia188bM2sQqjCtRy5YYYNZsrJMeGJu5FPTFMP1PVWiwfK6Yr
-	 sVm5XyVM8m6THn9D2AkpC3F26aiusLJHkOKmvrfc=
-Date: Fri, 11 Apr 2025 17:33:46 -0700
-To: mm-commits@vger.kernel.org,willy@infradead.org,vivek.kasireddy@intel.com,stable@vger.kernel.org,quwenruo.btrfs@gmx.com,vishal.moola@gmail.com,akpm@linux-foundation.org
+	b=174KIiTYxh5BiLSK8ItnjDAhPlB5oF361wXNxXHP8ZzstBGTfJjrPoLV0MYp7qT+a
+	 VZR3nwI3WX2cEL6eEfqf8eRJjdUI7vic6j2zp/xuxczgw+esTll8avgdKcaQ+0IV+P
+	 5hgMz5A4BDaPfYhsEiO/blOYe2JnZ6iXKhI+zR6k=
+Date: Fri, 11 Apr 2025 17:33:49 -0700
+To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,kent.overstreet@linux.dev,janghyuck.kim@samsung.com,tjmercier@google.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-fix-filemap_get_folios_contig-returning-batches-of-identical-folios.patch removed from -mm tree
-Message-Id: <20250412003346.B61FDC4CEE2@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] alloc_tag-handle-incomplete-bulk-allocations-in-vm_module_tags_populate.patch removed from -mm tree
+Message-Id: <20250412003350.40BACC4CEE2@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,61 +50,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm: fix filemap_get_folios_contig returning batches of identical folios
+     Subject: alloc_tag: handle incomplete bulk allocations in vm_module_tags_populate
 has been removed from the -mm tree.  Its filename was
-     mm-fix-filemap_get_folios_contig-returning-batches-of-identical-folios.patch
+     alloc_tag-handle-incomplete-bulk-allocations-in-vm_module_tags_populate.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Subject: mm: fix filemap_get_folios_contig returning batches of identical folios
-Date: Thu, 3 Apr 2025 16:54:17 -0700
+From: "T.J. Mercier" <tjmercier@google.com>
+Subject: alloc_tag: handle incomplete bulk allocations in vm_module_tags_populate
+Date: Wed, 9 Apr 2025 22:51:11 +0000
 
-filemap_get_folios_contig() is supposed to return distinct folios found
-within [start, end].  Large folios in the Xarray become multi-index
-entries.  xas_next() can iterate through the sub-indexes before finding a
-sibling entry and breaking out of the loop.
+alloc_pages_bulk_node() may partially succeed and allocate fewer than the
+requested nr_pages.  There are several conditions under which this can
+occur, but we have encountered the case where CONFIG_PAGE_OWNER is enabled
+causing all bulk allocations to always fallback to single page allocations
+due to commit 187ad460b841 ("mm/page_alloc: avoid page allocator recursion
+with pagesets.lock held").
 
-This can result in a returned folio_batch containing an indeterminate
-number of duplicate folios, which forces the callers to skeptically handle
-the returned batch.  This is inefficient and incurs a large maintenance
-overhead.
+Currently vm_module_tags_populate() immediately fails when
+alloc_pages_bulk_node() returns fewer than the requested number of pages. 
+When this happens memory allocation profiling gets disabled, for example
 
-We can fix this by calling xas_advance() after we have successfully adding
-a folio to the batch to ensure our Xarray is positioned such that it will
-correctly find the next folio - similar to filemap_get_read_batch().
+[   14.297583] [9:       modprobe:  465] Failed to allocate memory for allocation tags in the module scsc_wlan. Memory allocation profiling is disabled!
+[   14.299339] [9:       modprobe:  465] modprobe: Failed to insmod '/vendor/lib/modules/scsc_wlan.ko' with args '': Out of memory
 
-Link: https://lkml.kernel.org/r/Z-8s1-kiIDkzgRbc@fedora
-Fixes: 35b471467f88 ("filemap: add filemap_get_folios_contig()")
-Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Reported-by: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Closes: https://lkml.kernel.org/r/b714e4de-2583-4035-b829-72cfb5eb6fc6@gmx.com
-Tested-by: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+This patch causes vm_module_tags_populate() to retry bulk allocations for
+the remaining memory instead of failing immediately which will avoid the
+disablement of memory allocation profiling.
+
+Link: https://lkml.kernel.org/r/20250409225111.3770347-1-tjmercier@google.com
+Fixes: 0f9b685626da ("alloc_tag: populate memory for module tags as needed")
+Signed-off-by: T.J. Mercier <tjmercier@google.com>
+Reported-by: Janghyuck Kim <janghyuck.kim@samsung.com>
+Acked-by: Suren Baghdasaryan <surenb@google.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/filemap.c |    1 +
- 1 file changed, 1 insertion(+)
+ lib/alloc_tag.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/mm/filemap.c~mm-fix-filemap_get_folios_contig-returning-batches-of-identical-folios
-+++ a/mm/filemap.c
-@@ -2244,6 +2244,7 @@ unsigned filemap_get_folios_contig(struc
- 			*start = folio->index + nr;
- 			goto out;
- 		}
-+		xas_advance(&xas, folio_next_index(folio) - 1);
- 		continue;
- put_folio:
- 		folio_put(folio);
+--- a/lib/alloc_tag.c~alloc_tag-handle-incomplete-bulk-allocations-in-vm_module_tags_populate
++++ a/lib/alloc_tag.c
+@@ -422,11 +422,20 @@ static int vm_module_tags_populate(void)
+ 		unsigned long old_shadow_end = ALIGN(phys_end, MODULE_ALIGN);
+ 		unsigned long new_shadow_end = ALIGN(new_end, MODULE_ALIGN);
+ 		unsigned long more_pages;
+-		unsigned long nr;
++		unsigned long nr = 0;
+ 
+ 		more_pages = ALIGN(new_end - phys_end, PAGE_SIZE) >> PAGE_SHIFT;
+-		nr = alloc_pages_bulk_node(GFP_KERNEL | __GFP_NOWARN,
+-					   NUMA_NO_NODE, more_pages, next_page);
++		while (nr < more_pages) {
++			unsigned long allocated;
++
++			allocated = alloc_pages_bulk_node(GFP_KERNEL | __GFP_NOWARN,
++				NUMA_NO_NODE, more_pages - nr, next_page + nr);
++
++			if (!allocated)
++				break;
++			nr += allocated;
++		}
++
+ 		if (nr < more_pages ||
+ 		    vmap_pages_range(phys_end, phys_end + (nr << PAGE_SHIFT), PAGE_KERNEL,
+ 				     next_page, PAGE_SHIFT) < 0) {
 _
 
-Patches currently in -mm which might be from vishal.moola@gmail.com are
+Patches currently in -mm which might be from tjmercier@google.com are
 
-mm-compaction-use-folio-in-hugetlb-pathway.patch
 
 
