@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-132304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54655A869D3
-	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 02:33:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5C0FA869D2
+	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 02:33:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 649348A2111
-	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 00:33:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9AFA1B68DC2
+	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 00:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E60F2AF14;
-	Sat, 12 Apr 2025 00:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 297BD481CD;
+	Sat, 12 Apr 2025 00:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="nKi2sVtJ"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="VOmqxk4A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E1B134D4;
-	Sat, 12 Apr 2025 00:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D459D134D4;
+	Sat, 12 Apr 2025 00:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744417999; cv=none; b=ikOcaMzfHxHEXT5JsBcVCoLWAE3QhWBS0l0Wmljdjg0ZuGP3/+aYlCWmm6+VAF5tOCQD6OwDYfrnhBBwq3sabpmxOgFz3ZKM7UZHnPQ5qklPNVjCbYzNWSYf6Jh7QHGf2Q3CXwz2UMOAgJRIv8X3ZuVTXya6jLLJVcop2ZYcIz4=
+	t=1744418003; cv=none; b=rfraOi5XM+hl73ABrYEg4shGRzz3bFYnC+Sz6oNHzTKkLfJdR3A78eclxuevFhvYmUBfwwg8BFuz+Pqm0Fa+FslCFPgYgfL+LdBP8PdubSZvA+dL98mTFRODF8QeAuf4YK47bl5CeRUg2etKxZc1PFrN5sbpgYtlvJ3oTOEr0qY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744417999; c=relaxed/simple;
-	bh=xGzU0X7SRCBDAJO5suzOf72w3/oxaM40udUpJZaDZCc=;
-	h=Date:To:From:Subject:Message-Id; b=jZCWkjbAYBzLIXzLf8MypR36lwDgluUeLwKxbZUlGCb46y8aOni9eoXVEnMHKsAGh0eDwg+nkri4wunWIuW1Ef7fMU+Ob+qyYbmeeZUKBm4Dhk9Bb7wkeaT4c5eEL5tOsIdDxauDX771dT4AXTh0ipWq3LjoaXXetHQ0mg2d6ME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=nKi2sVtJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBE24C4CEE2;
-	Sat, 12 Apr 2025 00:33:18 +0000 (UTC)
+	s=arc-20240116; t=1744418003; c=relaxed/simple;
+	bh=Hkv+HIlOorc54XLRJEchje1Z/P8tCiOxPuv7lV/G/Gs=;
+	h=Date:To:From:Subject:Message-Id; b=Pc/mpqvgm2p9KxAYJXqmT9r+GrALDdz9KCsuNIlEoKlXywq4GY/iCGJ8Nrv/iiA5ziULNaariQCVlzLCE6K8MX43rHd/1LLDL2FxUhwJHT80K67s3T77ZEvXoAKxtKVqEYsSDRzqqCJ7CGOpokYTEW8zpxfT6E8keOjopAmVmjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=VOmqxk4A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB6AC4CEE2;
+	Sat, 12 Apr 2025 00:33:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1744417998;
-	bh=xGzU0X7SRCBDAJO5suzOf72w3/oxaM40udUpJZaDZCc=;
+	s=korg; t=1744418003;
+	bh=Hkv+HIlOorc54XLRJEchje1Z/P8tCiOxPuv7lV/G/Gs=;
 	h=Date:To:From:Subject:From;
-	b=nKi2sVtJY6TUiDHb21x6fMpDtTeKluMNcY7WRt2+1wKaPpxpBwF1Hh3BIquz/GQ9s
-	 v1FT0C9TY5SauaZRBXkkrZCQnRnSuF9MC/Cq3jYEGE1MP3W9UPU4lxBqC86neuh69D
-	 jo7vkyZGWUXQcmxgEZPZh50CqL4xN+O75jZJKH3E=
-Date: Fri, 11 Apr 2025 17:33:18 -0700
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,stable@vger.kernel.org,osalvador@suse.de,linmiaohe@huawei.com,vishal.moola@gmail.com,akpm@linux-foundation.org
+	b=VOmqxk4ASySlXJk9EK7gsCETPRLqAZSYADVVE3SLZ27Wcz2LjQNHrsp78Mji3/aWA
+	 3zNHI0s2KVGO5n1/Wf7Mdjyi382Ib/lfIg1yULldewsIEqFVuMALZlBUbTmKiKbNDG
+	 UpciGOcRgT39p51VqeXIkPgRKgyt01F1Lxc6JrlA=
+Date: Fri, 11 Apr 2025 17:33:22 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shuah@kernel.org,longman@redhat.com,almasrymina@google.com,aishwarya.tcv@arm.com,broonie@kernel.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-compaction-fix-bug-in-hugetlb-handling-pathway.patch removed from -mm tree
-Message-Id: <20250412003318.BBE24C4CEE2@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] selftests-mm-generate-a-temporary-mountpoint-for-cgroup-filesystem.patch removed from -mm tree
+Message-Id: <20250412003323.9FB6AC4CEE2@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,79 +50,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/compaction: fix bug in hugetlb handling pathway
+     Subject: selftests/mm: generate a temporary mountpoint for cgroup filesystem
 has been removed from the -mm tree.  Its filename was
-     mm-compaction-fix-bug-in-hugetlb-handling-pathway.patch
+     selftests-mm-generate-a-temporary-mountpoint-for-cgroup-filesystem.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Subject: mm/compaction: fix bug in hugetlb handling pathway
-Date: Mon, 31 Mar 2025 19:10:24 -0700
+From: Mark Brown <broonie@kernel.org>
+Subject: selftests/mm: generate a temporary mountpoint for cgroup filesystem
+Date: Fri, 04 Apr 2025 17:42:32 +0100
 
-The compaction code doesn't take references on pages until we're certain
-we should attempt to handle it.
+Currently if the filesystem for the cgroups version it wants to use is not
+mounted charge_reserved_hugetlb.sh and hugetlb_reparenting_test.sh tests
+will attempt to mount it on the hard coded path /dev/cgroup/memory,
+deleting that directory when the test finishes.  This will fail if there
+is not a preexisting directory at that path, and since the directory is
+deleted subsequent runs of the test will fail.  Instead of relying on this
+hard coded directory name use mktemp to generate a temporary directory to
+use as a mountpoint, fixing both the assumption and the disruption caused
+by deleting a preexisting directory.
 
-In the hugetlb case, isolate_or_dissolve_huge_page() may return -EBUSY
-without taking a reference to the folio associated with our pfn.  If our
-folio's refcount drops to 0, compound_nr() becomes unpredictable, making
-low_pfn and nr_scanned unreliable.  The user-visible effect is minimal -
-this should rarely happen (if ever).
+This means that if the relevant cgroup filesystem is not already mounted
+then we rely on having coreutils (which provides mktemp) installed.  I
+suspect that many current users are relying on having things automounted
+by default, and given that the script relies on bash it's probably not an
+unreasonable requirement.
 
-Fix this by storing the folio statistics earlier on the stack (just like
-the THP and Buddy cases).
-
-Also revert commit 66fe1cf7f581 ("mm: compaction: use helper compound_nr
-in isolate_migratepages_block") to make backporting easier.
-
-Link: https://lkml.kernel.org/r/20250401021025.637333-1-vishal.moola@gmail.com
-Fixes: 369fa227c219 ("mm: make alloc_contig_range handle free hugetlb pages")
-Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Oscar Salvador <osalvador@suse.de>
+Link: https://lkml.kernel.org/r/20250404-kselftest-mm-cgroup2-detection-v1-1-3dba6d32ba8c@kernel.org
+Fixes: 209376ed2a84 ("selftests/vm: make charge_reserved_hugetlb.sh work with existing cgroup setting")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: Aishwarya TCV <aishwarya.tcv@arm.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Mina Almasry <almasrymina@google.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Waiman Long <longman@redhat.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/compaction.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/selftests/mm/charge_reserved_hugetlb.sh  |    4 ++--
+ tools/testing/selftests/mm/hugetlb_reparenting_test.sh |    2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/mm/compaction.c~mm-compaction-fix-bug-in-hugetlb-handling-pathway
-+++ a/mm/compaction.c
-@@ -981,13 +981,13 @@ isolate_migratepages_block(struct compac
- 		}
- 
- 		if (PageHuge(page)) {
-+			const unsigned int order = compound_order(page);
- 			/*
- 			 * skip hugetlbfs if we are not compacting for pages
- 			 * bigger than its order. THPs and other compound pages
- 			 * are handled below.
- 			 */
- 			if (!cc->alloc_contig) {
--				const unsigned int order = compound_order(page);
- 
- 				if (order <= MAX_PAGE_ORDER) {
- 					low_pfn += (1UL << order) - 1;
-@@ -1011,8 +1011,8 @@ isolate_migratepages_block(struct compac
- 				 /* Do not report -EBUSY down the chain */
- 				if (ret == -EBUSY)
- 					ret = 0;
--				low_pfn += compound_nr(page) - 1;
--				nr_scanned += compound_nr(page) - 1;
-+				low_pfn += (1UL << order) - 1;
-+				nr_scanned += (1UL << order) - 1;
- 				goto isolate_fail;
- 			}
- 
+--- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh~selftests-mm-generate-a-temporary-mountpoint-for-cgroup-filesystem
++++ a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+@@ -29,7 +29,7 @@ fi
+ if [[ $cgroup2 ]]; then
+   cgroup_path=$(mount -t cgroup2 | head -1 | awk '{print $3}')
+   if [[ -z "$cgroup_path" ]]; then
+-    cgroup_path=/dev/cgroup/memory
++    cgroup_path=$(mktemp -d)
+     mount -t cgroup2 none $cgroup_path
+     do_umount=1
+   fi
+@@ -37,7 +37,7 @@ if [[ $cgroup2 ]]; then
+ else
+   cgroup_path=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
+   if [[ -z "$cgroup_path" ]]; then
+-    cgroup_path=/dev/cgroup/memory
++    cgroup_path=$(mktemp -d)
+     mount -t cgroup memory,hugetlb $cgroup_path
+     do_umount=1
+   fi
+--- a/tools/testing/selftests/mm/hugetlb_reparenting_test.sh~selftests-mm-generate-a-temporary-mountpoint-for-cgroup-filesystem
++++ a/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
+@@ -23,7 +23,7 @@ fi
+ if [[ $cgroup2 ]]; then
+   CGROUP_ROOT=$(mount -t cgroup2 | head -1 | awk '{print $3}')
+   if [[ -z "$CGROUP_ROOT" ]]; then
+-    CGROUP_ROOT=/dev/cgroup/memory
++    CGROUP_ROOT=$(mktemp -d)
+     mount -t cgroup2 none $CGROUP_ROOT
+     do_umount=1
+   fi
 _
 
-Patches currently in -mm which might be from vishal.moola@gmail.com are
+Patches currently in -mm which might be from broonie@kernel.org are
 
-mm-compaction-use-folio-in-hugetlb-pathway.patch
 
 
