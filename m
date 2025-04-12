@@ -1,77 +1,77 @@
-Return-Path: <stable+bounces-132324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF2E0A86EE7
-	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 20:40:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0741AA86EE0
+	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 20:40:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46AF68C0147
-	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 18:39:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91E43189FCAB
+	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 18:40:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 033C921C19A;
-	Sat, 12 Apr 2025 18:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD6222D4FE;
+	Sat, 12 Apr 2025 18:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YB6r2lBL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GwSsVDnS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3E5222565;
-	Sat, 12 Apr 2025 18:38:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D946F2253F6;
+	Sat, 12 Apr 2025 18:38:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744483132; cv=none; b=B5x38aY90L3s1OUTAi/RXIOxTtj0U6BcBUTCDem/wOyR8i5ZTpuno/XwHuz77vDYklVoUqRQUtgBKyY5p5F7UDkM3ZT5RTPpvZ4yysU18XO6l1t/uXCgvdbO9UZ7fFXMYO6XRUaQ6qddNnM1DzY+RoqlkEd3SIyzGitPBWSv44M=
+	t=1744483134; cv=none; b=JV9t3cu1H+QttCclweK5IYe6JyyTdyXcKRuEI5ov7iv7r7c+a5qxhlC4ZRdB/DJ/lENhmoM+os3RWZUlb6ZfuPiFZ4+oGZkzr18OL1TPL6QSEPy28gfbK0UGCxNP4O80T/TBQZTMeM7f+FK4VoAUWgk8HxP6YAKGMDhVl36m8qE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744483132; c=relaxed/simple;
-	bh=pbWG1NuW44d0XHkj7KB2doeEqkX9NqKKFm40CfzHlJc=;
+	s=arc-20240116; t=1744483134; c=relaxed/simple;
+	bh=aAE/d7UpQHFw50I58n0+tir89bev9C8/OsLlB+W1FH0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Er5hz/poeQ3AmdP+J5M2kAwg6qbwY90ftao6DdXqkOzrAhMiLSBvrOMkAKlO+ycMEE0gsl/ofFQqi6QZXcLg8vkfQn7qowoldMvBfuO0XOwEDHskYCHceQynuCXFp25KGbdMm5eMnUUCR3WYxg0Vq5Y9xJsTBOdLZ5wixhnCNlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YB6r2lBL; arc=none smtp.client-ip=209.85.128.54
+	 MIME-Version; b=BvExVQ3DR6OJRVTlHvAcCj5DNQ8/6EIrzf+K9x1jywNcJuDXgq9bG2MRtdaMLSFbNETZy592v97aVN55k8oPgGJ1X8S9zQriXzh+3OrY+/CK3NNIsvyADZMlydXzZbW40lFHEfLw+w66dNAckPo/c7bxZKObpVDebYzZ++YjeRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GwSsVDnS; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-43ed8d32a95so26038745e9.3;
-        Sat, 12 Apr 2025 11:38:50 -0700 (PDT)
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-399737f4fa4so1622329f8f.0;
+        Sat, 12 Apr 2025 11:38:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744483129; x=1745087929; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1744483131; x=1745087931; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QM5uFKAHI/bfbAV4bgQOJ/dtNzxx2KflwSSXyFhKQ54=;
-        b=YB6r2lBLu57irImszoHJ8FINaVvHFgl6mubyam8p516v3YuEl510eW51VZgJ0iMbIJ
-         Gu/lMJqwZIF+9k+bxMa85OQIppehf1oin5AoTDzqDwF6pW9R320X9QoKFSKTLfWmC9TJ
-         Q3EAugimXCuPcqrP96JK3O5soTFpvf93K9yHhZ6KYXROteZnlTRexlphJBfSVA77wOuH
-         sYWEHFYaHyT6t5QfdR5I60pwTrE7XlmS149PpdUpzbwUN4GAWdzpS/iSld5K4jab+iqT
-         KfNY60i0/udkUgNz7aJugsfLAbSvSW822H/wPV+JGnotIwjEh9vpmr0bJlkxzpnMXTs0
-         10rw==
+        bh=jvqb0KMQk6u+lJxNrDAty2Q7xf8HSHBvDR79iDfIorw=;
+        b=GwSsVDnS4xYQn7mig9Lye7LGhHzVxNSyOCPrVyZF6wB68blCbsx6v1sbhaBEWKzvMf
+         +ixz7MGb7MuQdbqHRRgGJBzVbNq2yey4cVFt/tsWBHA1DCd0FSNbiju/W4H5QX6sr2IJ
+         ZJ1gcB7H5ObWuimGB6jcod14s7MnXc4rG9rSZtlIwSf6ebOiz+QnNkfTammeno+QcxLM
+         MIr1zqBLlNzhG4iubT4NTISp0UhXzU1ULCJ2aT4HuL+x1Rk0ErWgHtfy95Agixdkv5Ad
+         /mQZLWDL8pQEKr3jWJihbRdvarZ1qNNK7yEtSd0MGcheTGedQxAQ53Z6deZjlSB7foyv
+         Wa5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744483129; x=1745087929;
+        d=1e100.net; s=20230601; t=1744483131; x=1745087931;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QM5uFKAHI/bfbAV4bgQOJ/dtNzxx2KflwSSXyFhKQ54=;
-        b=Eixr08aS0Fnau29myT2aPM/OUVexSngsk/3pL0zJ7upJHghowoATNk5cEmeQiUt2Ic
-         KTSqHcdGGjsX0ckREXi7DJHgXBL4aahsK+sMqO2xxftdMw1hgyiqV5PQVFopvowbT5LI
-         fssydtgUhA431og8y6F7MWKF4CNspt8KETbHxKyLfGax9wEJa+zqVx48DYr3/GfhcBB/
-         uIjKb9IO1y8wjdZu1kxwhrKFGfcWNzIGCSgc6K+WUXFpLUkkbZPQqCDTnNpB8+53qlRj
-         z/zQZL0Raz4WH53/4sutowmJOrbpi8bm39QKfeSCgXZKc2NH2CYzARCdZ4KdLhOnMnk6
-         6Vhg==
-X-Forwarded-Encrypted: i=1; AJvYcCV4lmNTY470RppjFZk62rXK661qHoZp1stN6mljdqEjB00SNz8Rx8kW+7eMznv8YPCfeibSMgEf@vger.kernel.org, AJvYcCVMhSLq6HtoRZeGNe31mg4macrgNaf/v9Kc38NICH9U8ABIjd9/G7slZnzqbEwJxOVI/Qe4Iwmo@vger.kernel.org, AJvYcCWv3tfR/1JjFWPMLJ/MBRL/TDuYNSKj5Pf1pWc16EqW1MMvWSww7T+P0VSC/ZWei+NHSXkhgKAlAztmGIc=@vger.kernel.org, AJvYcCXFXtaPLbgdM5+1EBtlU7TkZ8Yu6+lPJpJ9vZmwF3nD4TroRXJqWvDAq7gXnYWDcySej55uPUcuj4GH@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRpH+Y9YQxfr3w0/0VM91jaSF+iFfoqvx++U8zUimfqw6MxRN5
-	aXy94lTEA9kooBJ/qmYztOrsts0Of11AjuMCkLocFtvEgyuacg1/
-X-Gm-Gg: ASbGnctg7Pr3sVOQDbMKl3qfb/8TVdMO8yeBM9u+2lvvO+/5PKISte7rlLdn92R2AKG
-	TfmM/ktLJ7svuI27UNjZmdl/HNSpIbOV/65pMJxdNvYeoWHRFP52kfy++rCOkrSxgKNH6ic7Y1e
-	kW483aQgIpT2cm3MhIY9WusMkSSlc1FUNpEW4ecvEHGugnWwVr9A08gJ/zVRKrnQq0pbywILO8i
-	39L0q2MlH7zgPMmcVuT2dyhUqglxO/uF215iCxPgno1jzRAR4+oKFC8p/0xzZvqumZVHm3dui7m
-	aqXGDveY1x92R2P7M6UJ4vpzi4kVJ3qOrIdJ+5HxVwAhvACZ7AK8KC8=
-X-Google-Smtp-Source: AGHT+IGOjRMbGNcVSyofzN/ItKV09dIC/2nWWi/KZ+1aoX3auTz02NmOy7o6NMmHWYvVaCx0vDG3zQ==
-X-Received: by 2002:a05:600c:154d:b0:43d:ed:ad07 with SMTP id 5b1f17b1804b1-43f3a9aee78mr48790995e9.29.1744483128872;
-        Sat, 12 Apr 2025 11:38:48 -0700 (PDT)
+        bh=jvqb0KMQk6u+lJxNrDAty2Q7xf8HSHBvDR79iDfIorw=;
+        b=HrU9/IpL6Wz56IVwlyX4xQU19lteOn0s1Wu/L5jKQtmR8y/txNtrEy7MnuB44Cs9p9
+         TfnHbmNHiyVnWIT2FeWoe7PMmj4JYuFZpnqyIUAtnh0p9nqXXJI4Nh9JIpcK5Ps0B4ig
+         dqD3akhT6IkxfxpY1Iv3n/3Ol/jhJWxKRDadLq2uxdu2WayL3t+VJs2QluaGd6gKtHCp
+         0l4VdQbMSgc6j8cdWMjVSVx0Bx250JTfltyFYXfLpplbPZj1saBApLTnlBIwDfh/IDO8
+         Jbs7wQuxI7cWCdubclb6WNUK8S6APFTBXsRa1Fy4aAan9p7LmojRyACevP0HaoexNfKn
+         k5lw==
+X-Forwarded-Encrypted: i=1; AJvYcCVOfeSi6mAdmosWtI/oSYv6Wd0EKWQxi5WHRseylk00zIkwAfd83KT70fDD26ZkAlp+hJAqX1kc@vger.kernel.org, AJvYcCXBD6BkWgCQE+mQtTCwBgkaq4tGK4kD40E3yXALAWPt6nLHnK08TNElGJkjV0h7Vi0JRcS1DC6sep+1@vger.kernel.org, AJvYcCXHYtgQX/mvK/0CdeBVfSqYy4/j/TLEUwMm/ovYAcgm/qHYTWtVV3V3xnP1btfEB0m0acmR8YZa@vger.kernel.org, AJvYcCXNjCgnsbaW61Ue3AgpRR8+EawE0aYet+3mOji8KekYU/K1q9+iI40PPcA+QQ1g2BsaptjOvp2iKRhfOaU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAXTi/jMgYS1PDr+2wiTMUeecmdtgKIvy9Kf80GvFkSSqPtQrU
+	044INP9s1pSzLNULw4eV67/Q6A+IhuHPrq2dycYYiKNT0feSM8+K
+X-Gm-Gg: ASbGncs/VLIjVWFBt899NPxgcY/LH5cdM1c+RfIwliPC74AvZbfTzJYU3pImX7lsZTj
+	Up67tvkV08xQCVo+Kor/JJoBcECLz5h+b14PCmaX+63w3Bywxtd9g0VekpGZqHnguXcLn2Qdteu
+	cmyQB5kD3VFNYSYAFQIh0rX5RrD4Ddd16BmSeJ+MN1RCTI20tN+oiuRria/Ez6zUkkaNBObyRS2
+	qGTebcKKl3F19qKwhBNjCsS3dOY4TjdR2sLQqAOnV6zjBF2TdBMKbbJq6TUmcHLswUx/JD75LvG
+	3D9xhHqHGMVJwdVnfTMWRU0VPVD6nVr9rcg8eW3/QbQnaSSODPhAg+0=
+X-Google-Smtp-Source: AGHT+IEML3MWxiYWXhrvkSwTw5jVxeWZ37spCp+ourghAiC/n6v6Nrk1vNemPhLImYX0Oqyo/GpbHQ==
+X-Received: by 2002:adf:b650:0:b0:399:6d26:7752 with SMTP id ffacd0b85a97d-39eaaed220dmr4425241f8f.38.1744483130917;
+        Sat, 12 Apr 2025 11:38:50 -0700 (PDT)
 Received: from localhost.localdomain ([2a02:c7c:6696:8300:f069:f1cb:5bbc:db26])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f233c817dsm120599515e9.23.2025.04.12.11.38.48
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f233c817dsm120599515e9.23.2025.04.12.11.38.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Apr 2025 11:38:48 -0700 (PDT)
+        Sat, 12 Apr 2025 11:38:50 -0700 (PDT)
 From: Qasim Ijaz <qasdev00@gmail.com>
 To: andrew+netdev@lunn.ch,
 	davem@davemloft.net,
@@ -85,9 +85,9 @@ To: andrew+netdev@lunn.ch,
 	syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com,
 	stable@vger.kernel.org
 Cc: Qasim Ijaz <qasdev00@gmail.com>
-Subject: [PATCH 3/5] net: ch9200: fail fast on control_read() failures during get_mac_address()
-Date: Sat, 12 Apr 2025 19:38:27 +0100
-Message-Id: <20250412183829.41342-4-qasdev00@gmail.com>
+Subject: [PATCH 4/5] net: ch9200: add missing error handling in ch9200_bind()
+Date: Sat, 12 Apr 2025 19:38:28 +0100
+Message-Id: <20250412183829.41342-5-qasdev00@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250412183829.41342-1-qasdev00@gmail.com>
 References: <20250412183829.41342-1-qasdev00@gmail.com>
@@ -99,85 +99,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The get_mac_address() function has an issue where it does not
-directly check the return value of each control_read(), instead
-it sums up the return values and checks them all at the end
-which means if any call to control_read() fails the function just
-continues on.
+The ch9200_bind() function has no error handling for any
+control_write() calls.
 
-Handle this by validating the return value of each call and fail fast
-and early instead of continuing.
+Fix this by checking if any control_write() call fails and 
+propagate the error to the caller.
 
 Fixes: 4a476bd6d1d9 ("usbnet: New driver for QinHeng CH9200 devices")
 Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
 ---
- drivers/net/usb/ch9200.c | 32 +++++++++++++++++++-------------
- 1 file changed, 19 insertions(+), 13 deletions(-)
+ drivers/net/usb/ch9200.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/usb/ch9200.c b/drivers/net/usb/ch9200.c
-index 61eb6c207eb1..4f1d2e9045a9 100644
+index 4f1d2e9045a9..187bbfc991f5 100644
 --- a/drivers/net/usb/ch9200.c
 +++ b/drivers/net/usb/ch9200.c
-@@ -304,24 +304,27 @@ static int ch9200_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+@@ -338,12 +338,12 @@ static int get_mac_address(struct usbnet *dev, unsigned char *data)
  
- static int get_mac_address(struct usbnet *dev, unsigned char *data)
+ static int ch9200_bind(struct usbnet *dev, struct usb_interface *intf)
  {
--	int err = 0;
- 	unsigned char mac_addr[0x06];
--	int rd_mac_len = 0;
-+	int rd_mac_len;
+-	int retval = 0;
++	int retval;
+ 	unsigned char data[2];
+ 	u8 addr[ETH_ALEN];
  
- 	netdev_dbg(dev->net, "%s:\n\tusbnet VID:%0x PID:%0x\n", __func__,
- 		   le16_to_cpu(dev->udev->descriptor.idVendor),
- 		   le16_to_cpu(dev->udev->descriptor.idProduct));
+ 	retval = usbnet_get_endpoints(dev, intf);
+-	if (retval)
++	if (retval < 0)
+ 		return retval;
  
--	memset(mac_addr, 0, sizeof(mac_addr));
--	rd_mac_len = control_read(dev, REQUEST_READ, 0,
--				  MAC_REG_STATION_L, mac_addr, 0x02,
--				  CONTROL_TIMEOUT_MS);
--	rd_mac_len += control_read(dev, REQUEST_READ, 0, MAC_REG_STATION_M,
--				   mac_addr + 2, 0x02, CONTROL_TIMEOUT_MS);
--	rd_mac_len += control_read(dev, REQUEST_READ, 0, MAC_REG_STATION_H,
--				   mac_addr + 4, 0x02, CONTROL_TIMEOUT_MS);
--	if (rd_mac_len != ETH_ALEN)
--		err = -EINVAL;
-+	rd_mac_len = control_read(dev, REQUEST_READ, 0, MAC_REG_STATION_L,
-+				  mac_addr, 0x02, CONTROL_TIMEOUT_MS);
-+	if (rd_mac_len < 0)
-+		return rd_mac_len;
-+
-+	rd_mac_len = control_read(dev, REQUEST_READ, 0, MAC_REG_STATION_M,
-+				  mac_addr + 2, 0x02, CONTROL_TIMEOUT_MS);
-+	if (rd_mac_len < 0)
-+		return rd_mac_len;
-+
-+	rd_mac_len = control_read(dev, REQUEST_READ, 0, MAC_REG_STATION_H,
-+				  mac_addr + 4, 0x02, CONTROL_TIMEOUT_MS);
-+	if (rd_mac_len < 0)
-+		return rd_mac_len;
+ 	dev->mii.dev = dev->net;
+@@ -361,32 +361,44 @@ static int ch9200_bind(struct usbnet *dev, struct usb_interface *intf)
+ 	data[1] = 0x0F;
+ 	retval = control_write(dev, REQUEST_WRITE, 0, MAC_REG_THRESHOLD, data,
+ 			       0x02, CONTROL_TIMEOUT_MS);
++	if (retval < 0)
++		return retval;
  
- 	data[0] = mac_addr[5];
- 	data[1] = mac_addr[4];
-@@ -330,7 +333,7 @@ static int get_mac_address(struct usbnet *dev, unsigned char *data)
- 	data[4] = mac_addr[1];
- 	data[5] = mac_addr[0];
+ 	data[0] = 0xA0;
+ 	data[1] = 0x90;
+ 	retval = control_write(dev, REQUEST_WRITE, 0, MAC_REG_FIFO_DEPTH, data,
+ 			       0x02, CONTROL_TIMEOUT_MS);
++	if (retval < 0)
++		return retval;
  
--	return err;
+ 	data[0] = 0x30;
+ 	data[1] = 0x00;
+ 	retval = control_write(dev, REQUEST_WRITE, 0, MAC_REG_PAUSE, data,
+ 			       0x02, CONTROL_TIMEOUT_MS);
++	if (retval < 0)
++		return retval;
+ 
+ 	data[0] = 0x17;
+ 	data[1] = 0xD8;
+ 	retval = control_write(dev, REQUEST_WRITE, 0, MAC_REG_FLOW_CONTROL,
+ 			       data, 0x02, CONTROL_TIMEOUT_MS);
++	if (retval < 0)
++		return retval;
+ 
+ 	/* Undocumented register */
+ 	data[0] = 0x01;
+ 	data[1] = 0x00;
+ 	retval = control_write(dev, REQUEST_WRITE, 0, 254, data, 0x02,
+ 			       CONTROL_TIMEOUT_MS);
++	if (retval < 0)
++		return retval;
+ 
+ 	data[0] = 0x5F;
+ 	data[1] = 0x0D;
+ 	retval = control_write(dev, REQUEST_WRITE, 0, MAC_REG_CTRL, data, 0x02,
+ 			       CONTROL_TIMEOUT_MS);
++	if (retval < 0)
++		return retval;
+ 
+ 	retval = get_mac_address(dev, addr);
+ 	if (retval < 0)
+@@ -394,7 +406,7 @@ static int ch9200_bind(struct usbnet *dev, struct usb_interface *intf)
+ 
+ 	eth_hw_addr_set(dev->net, addr);
+ 
+-	return retval;
 +	return 0;
  }
  
- static int ch9200_bind(struct usbnet *dev, struct usb_interface *intf)
-@@ -386,6 +389,9 @@ static int ch9200_bind(struct usbnet *dev, struct usb_interface *intf)
- 			       CONTROL_TIMEOUT_MS);
- 
- 	retval = get_mac_address(dev, addr);
-+	if (retval < 0)
-+		return retval;
-+
- 	eth_hw_addr_set(dev->net, addr);
- 
- 	return retval;
+ static const struct driver_info ch9200_info = {
 -- 
 2.39.5
 
