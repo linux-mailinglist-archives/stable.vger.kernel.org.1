@@ -1,192 +1,166 @@
-Return-Path: <stable+bounces-132301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13F75A86925
-	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 01:28:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43705A869BD
+	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 02:21:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE3C618949C2
-	for <lists+stable@lfdr.de>; Fri, 11 Apr 2025 23:28:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0118B442CCA
+	for <lists+stable@lfdr.de>; Sat, 12 Apr 2025 00:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A362BD5A0;
-	Fri, 11 Apr 2025 23:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B5FECA52;
+	Sat, 12 Apr 2025 00:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="iXTVBarr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BLYbhQF4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADC2290BC0;
-	Fri, 11 Apr 2025 23:28:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840719443;
+	Sat, 12 Apr 2025 00:19:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744414088; cv=none; b=mmxHj1U6wWeOa64Em3j8NxR6g5fIYfqVHoXEs5R5L1RNti2GgxnGtg/L2xmKxfbne6LbF9MZUq2jxLtqR0r2uf1UG9dXAYO1D8Vi7sNdvyORM3V15pjWu3NsoKFC7N0tAkcIkDCm7MXRRz+O6c81QQml6PJYefIwfZ0URXDT1pM=
+	t=1744417161; cv=none; b=FIF0yMMpjikgifZGbH+bvFLpUQxTfSs4RxIN1fGigRBxPTA49C5nSwuKwEFD8ACg45oWOGAo58SI5wTgua6WSp5bG3Z3Ek3QGcno8fEyMfEd7QSRVWM2sUCGSfWrVo7VlWZpiyWP3RMyUvykWfjLBP3seNaKJOyao2wG/DVVqA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744414088; c=relaxed/simple;
-	bh=mOmQ75OpMhQoNbqGg9Et/yb4RCLF5cHRZ5C7oAIcwWY=;
-	h=Date:To:From:Subject:Message-Id; b=BQWEh32ZMsK2Eukz9sTzHPn/nn2TI+FyYisdX/+bKcIZDQYgWCBHpM2ah0VGo5/4vWEFH3xePzbkEETl8JiFsqOJKiv5jynVlINFLCBn38+lF4Xqjlf4JbRVsPiM//nFmFuNT0t90BnlPla7VmZ2HbYpmR10V5w5/VRZhKf7Yz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=iXTVBarr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75132C4CEE2;
-	Fri, 11 Apr 2025 23:28:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1744414087;
-	bh=mOmQ75OpMhQoNbqGg9Et/yb4RCLF5cHRZ5C7oAIcwWY=;
-	h=Date:To:From:Subject:From;
-	b=iXTVBarrZsBSsF2+aWmWk+i1woBLaESRgmbDAL/iVkH/VCjMaTnWy/oSf3oD/chRJ
-	 CVMQzP92ceEBIW58w8dh6Fc5eTZJT1cwBaE276LX2MONiDOiF/NJjvWd7QM/ouLg1V
-	 uEaeeC5nZNNMo35PCJa3wka+2ZJQJcyrirVUqbzY=
-Date: Fri, 11 Apr 2025 16:28:06 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,muchun.song@linux.dev,joshua.hahnjy@gmail.com,david@redhat.com,mawupeng1@huawei.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-hugetlb-fix-incorrect-fallback-for-subpool.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250411232807.75132C4CEE2@smtp.kernel.org>
+	s=arc-20240116; t=1744417161; c=relaxed/simple;
+	bh=BLQ439q1MPWjp/KqOogAeG7uQPJqD5biwqUYUPtBIC0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OIFNvr0tmwyihLchHupxWuDcihDj0SRr8oyBj3d0JXzyFg8OsCP5Y8u4afRSf5HzXhCxg7VDCtB4GfoR1VRY6f6FC2nrd8AvfY/Xk4zKK7s3NCeznG3FQOj77t97FDrAjxm8eloHFZaubLvnelPVovu+MQXXb8lC44xyTMzGnUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BLYbhQF4; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7359aca7ef2so3693676b3a.2;
+        Fri, 11 Apr 2025 17:19:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744417157; x=1745021957; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Pl4Ao+sGi12Y8GuDBgcGJjc/F643etgfiqYpC5NF9Bs=;
+        b=BLYbhQF4ameMDSr6422pBxBx38BPYXvTivzuZ9kvcDVOqWkjVQJnNXWItpEyhRKs2R
+         KBxdAUET3joaKocOQ8meF3gd6CAZxbCQWhge0q7hYepMO49HFgULmRHGwjgnA26N8IHU
+         HGaLG/SHfC00Sk4wLBDKS+T4PmVXSVbYb4eL7fKaR1oRo+Z+H0dbNj+wwaiAp5y+62Na
+         LIZhU2sFnuw96YADzRA9+xS2FPu51LiiSuBz/bZR4b2H3O/ZnqUacWPq0IGHE+vgDnlO
+         alhUeU/LAud6MMEOsbqtsa6ymY/+/9MxkLCYwWs7LKMos6oYl8O17MQJwoNpWrF9tmZj
+         sWNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744417158; x=1745021958;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Pl4Ao+sGi12Y8GuDBgcGJjc/F643etgfiqYpC5NF9Bs=;
+        b=fBjZ+mvRH97Q7S4gDyRsHyd6TO9m75V63rPKgQ2jNHhy9vvLJAac0xlNm0EW/i5TUB
+         cNeH5/NHsuIrobmowRQSvt/4s4/IdQ/iGGlV8e3+QmYzCG0v4OuYa1yJpEc55Jv8td5D
+         pPOlmCiqdS8jFp8qwcxXzUp83FE0nJjxIeJXWo7fwM5g8RBP2f9OF2ks+CVo+eIYjFZr
+         7/W3h2835eYQN1RYTc0u3ptvQn+84w+vH+KH7fjfRhIa3IJrPovu7ylvqJfyCcIc4bLM
+         OlNRsZaLF8FrX5JVD9yLz1mh9+mA78Gaab5jUMXfcBxj328Wq16sSih/1IpXMJbSrDXT
+         XeQA==
+X-Forwarded-Encrypted: i=1; AJvYcCUxkT/3WE3y+7w/9e8UnwrQ+lQasRYKcT0ToRFFQFMdmltPWzb86yHfCZICJVP1lGSo/Q0UUiuZ67+Y31c=@vger.kernel.org, AJvYcCVMruT8AYAk6AqXUzImMTa2MF7wwnvgQ95p/ASn1fCHj54jTiUCTNPwFGS+zY0RbfclCgQSDwfj@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYhzsKCj9pHy5GDTYyI+Nz4mkcz+Il+lmwernCRko4CdH6Z6oM
+	oY6AfqoUlLED13PakAZ3U71nnHntT/DzZ1dv0dVxRqQum20tm4tA
+X-Gm-Gg: ASbGnctzQkCP5GNTnsNmeneIhVRKlNl1B84H36bAGboIuSnpiPz/S3t0wr5e3ip1j9T
+	0wIs/njahRM5otSNTDlsbXGC/hjwVtE5mq7VxWMwMnMYDFicbnMzpHKEIEBZIhygNVVF1EPa7Cn
+	yyTJ2Dq4BAms8cqNccBsswf6zhaSbezODcQZN+GmkE1+cnG4W027KCrGBvPyPpxYMGRvXCuTWD9
+	r/dLiZ3aNNls+4Eb2ldYkx3J0pcfVEy6g+7bYuSuFztAD0NO90xWfOwBA4on0gFznvoptG1PAEy
+	QL4gs27gzZ+qtietBX95GytrQJ7GkM1qm2EoRQlKBaqeLhYgPVRd3XdohIAaeejlUEq26TyoPQV
+	YSWxYGGK8uw7VojA1c0DSsczfWIr8fkWPKuTq+Q==
+X-Google-Smtp-Source: AGHT+IHxZRgFKr/eoGrqndx0eEnSsquSVnD+KeF8iKFQdtKjOmi7NLYyrW1oWrufBCw9OJAiRQqcNg==
+X-Received: by 2002:a05:6a21:789d:b0:1f5:6c94:2cc9 with SMTP id adf61e73a8af0-201797c3a64mr6674058637.22.1744417157441;
+        Fri, 11 Apr 2025 17:19:17 -0700 (PDT)
+Received: from DESKTOP-NBGHJ1C.flets-east.jp (p12284229-ipxg45101marunouchi.tokyo.ocn.ne.jp. [60.39.60.229])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b02a0cf3604sm5520285a12.25.2025.04.11.17.19.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Apr 2025 17:19:17 -0700 (PDT)
+From: Ryo Takakura <ryotkkr98@gmail.com>
+To: alex@ghiti.fr,
+	aou@eecs.berkeley.edu,
+	bigeasy@linutronix.de,
+	conor.dooley@microchip.com,
+	gregkh@linuxfoundation.org,
+	jirislaby@kernel.org,
+	john.ogness@linutronix.de,
+	palmer@dabbelt.com,
+	paul.walmsley@sifive.com,
+	pmladek@suse.com,
+	samuel.holland@sifive.com,
+	u.kleine-koenig@baylibre.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-serial@vger.kernel.org,
+	stable@vger.kernel.org,
+	Ryo Takakura <ryotkkr98@gmail.com>
+Subject: [PATCH v3] serial: sifive: lock port in startup()/shutdown() callbacks
+Date: Sat, 12 Apr 2025 09:18:47 +0900
+Message-Id: <20250412001847.183221-1-ryotkkr98@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+startup()/shutdown() callbacks access SIFIVE_SERIAL_IE_OFFS.
+The register is also accessed from write() callback.
 
-The patch titled
-     Subject: mm: hugetlb: fix incorrect fallback for subpool
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-hugetlb-fix-incorrect-fallback-for-subpool.patch
+If console were printing and startup()/shutdown() callback
+gets called, its access to the register could be overwritten.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb-fix-incorrect-fallback-for-subpool.patch
+Add port->lock to startup()/shutdown() callbacks to make sure
+their access to SIFIVE_SERIAL_IE_OFFS is synchronized against
+write() callback.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Wupeng Ma <mawupeng1@huawei.com>
-Subject: mm: hugetlb: fix incorrect fallback for subpool
-Date: Thu, 10 Apr 2025 14:26:33 +0800
-
-During our testing with hugetlb subpool enabled, we observe that
-hstate->resv_huge_pages may underflow into negative values.  Root cause
-analysis reveals a race condition in subpool reservation fallback handling
-as follow:
-
-hugetlb_reserve_pages()
-    /* Attempt subpool reservation */
-    gbl_reserve = hugepage_subpool_get_pages(spool, chg);
-
-    /* Global reservation may fail after subpool allocation */
-    if (hugetlb_acct_memory(h, gbl_reserve) < 0)
-        goto out_put_pages;
-
-out_put_pages:
-    /* This incorrectly restores reservation to subpool */
-    hugepage_subpool_put_pages(spool, chg);
-
-When hugetlb_acct_memory() fails after subpool allocation, the current
-implementation over-commits subpool reservations by returning the full
-'chg' value instead of the actual allocated 'gbl_reserve' amount.  This
-discrepancy propagates to global reservations during subsequent releases,
-eventually causing resv_huge_pages underflow.
-
-This problem can be trigger easily with the following steps:
-1. reverse hugepage for hugeltb allocation
-2. mount hugetlbfs with min_size to enable hugetlb subpool
-3. alloc hugepages with two task(make sure the second will fail due to
-   insufficient amount of hugepages)
-4. with for a few seconds and repeat step 3 which will make
-   hstate->resv_huge_pages to go below zero.
-
-To fix this problem, return corrent amount of pages to subpool during the
-fallback after hugepage_subpool_get_pages is called.
-
-Link: https://lkml.kernel.org/r/20250410062633.3102457-1-mawupeng1@huawei.com
-Fixes: 1c5ecae3a93f ("hugetlbfs: add minimum size accounting to subpools")
-Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
-Tested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Ma Wupeng <mawupeng1@huawei.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 45c054d0815b ("tty: serial: add driver for the SiFive UART")
+Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Cc: stable@vger.kernel.org
 ---
 
- mm/hugetlb.c |   28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
+Changes since v1:
+https://lore.kernel.org/all/20250405043833.397020-1-ryotkkr98@gmail.com/
 
---- a/mm/hugetlb.c~mm-hugetlb-fix-incorrect-fallback-for-subpool
-+++ a/mm/hugetlb.c
-@@ -3010,7 +3010,7 @@ struct folio *alloc_hugetlb_folio(struct
- 	struct hugepage_subpool *spool = subpool_vma(vma);
- 	struct hstate *h = hstate_vma(vma);
- 	struct folio *folio;
--	long retval, gbl_chg;
-+	long retval, gbl_chg, gbl_reserve;
- 	map_chg_state map_chg;
- 	int ret, idx;
- 	struct hugetlb_cgroup *h_cg = NULL;
-@@ -3163,8 +3163,16 @@ out_uncharge_cgroup_reservation:
- 		hugetlb_cgroup_uncharge_cgroup_rsvd(idx, pages_per_huge_page(h),
- 						    h_cg);
- out_subpool_put:
--	if (map_chg)
--		hugepage_subpool_put_pages(spool, 1);
-+	/*
-+	 * put page to subpool iff the quota of subpool's rsv_hpages is used
-+	 * during hugepage_subpool_get_pages.
-+	 */
-+	if (map_chg && !gbl_chg) {
-+		gbl_reserve = hugepage_subpool_put_pages(spool, 1);
-+		hugetlb_acct_memory(h, -gbl_reserve);
-+	}
-+
-+
- out_end_reservation:
- 	if (map_chg != MAP_CHG_ENFORCED)
- 		vma_end_reservation(h, vma, addr);
-@@ -7233,7 +7241,7 @@ bool hugetlb_reserve_pages(struct inode
- 					struct vm_area_struct *vma,
- 					vm_flags_t vm_flags)
+- It was sent as part of series but resent as a single patch.
+
+Changes since v2:
+https://lore.kernel.org/linux-serial/20250405145354.492947-1-ryotkkr98@gmail.com/
+
+- Add Reviewed-by by Petr. Thanks Petr for the review!
+
+---
+ drivers/tty/serial/sifive.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/drivers/tty/serial/sifive.c b/drivers/tty/serial/sifive.c
+index 5904a2d4c..054a8e630 100644
+--- a/drivers/tty/serial/sifive.c
++++ b/drivers/tty/serial/sifive.c
+@@ -563,8 +563,11 @@ static void sifive_serial_break_ctl(struct uart_port *port, int break_state)
+ static int sifive_serial_startup(struct uart_port *port)
  {
--	long chg = -1, add = -1;
-+	long chg = -1, add = -1, spool_resv, gbl_resv;
- 	struct hstate *h = hstate_inode(inode);
- 	struct hugepage_subpool *spool = subpool_inode(inode);
- 	struct resv_map *resv_map;
-@@ -7368,8 +7376,16 @@ bool hugetlb_reserve_pages(struct inode
- 	return true;
+ 	struct sifive_serial_port *ssp = port_to_sifive_serial_port(port);
++	unsigned long flags;
  
- out_put_pages:
--	/* put back original number of pages, chg */
--	(void)hugepage_subpool_put_pages(spool, chg);
-+	spool_resv = chg - gbl_reserve;
-+	if (spool_resv) {
-+		/* put sub pool's reservation back, chg - gbl_reserve */
-+		gbl_resv = hugepage_subpool_put_pages(spool, spool_resv);
-+		/*
-+		 * subpool's reserved pages can not be put back due to race,
-+		 * return to hstate.
-+		 */
-+		hugetlb_acct_memory(h, -gbl_resv);
-+	}
- out_uncharge_cgroup:
- 	hugetlb_cgroup_uncharge_cgroup_rsvd(hstate_index(h),
- 					    chg * pages_per_huge_page(h), h_cg);
-_
-
-Patches currently in -mm which might be from mawupeng1@huawei.com are
-
-mm-hugetlb-fix-incorrect-fallback-for-subpool.patch
++	uart_port_lock_irqsave(&ssp->port, &flags);
+ 	__ssp_enable_rxwm(ssp);
++	uart_port_unlock_irqrestore(&ssp->port, flags);
+ 
+ 	return 0;
+ }
+@@ -572,9 +575,12 @@ static int sifive_serial_startup(struct uart_port *port)
+ static void sifive_serial_shutdown(struct uart_port *port)
+ {
+ 	struct sifive_serial_port *ssp = port_to_sifive_serial_port(port);
++	unsigned long flags;
+ 
++	uart_port_lock_irqsave(&ssp->port, &flags);
+ 	__ssp_disable_rxwm(ssp);
+ 	__ssp_disable_txwm(ssp);
++	uart_port_unlock_irqrestore(&ssp->port, flags);
+ }
+ 
+ /**
+-- 
+2.34.1
 
 
