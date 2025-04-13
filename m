@@ -1,111 +1,112 @@
-Return-Path: <stable+bounces-132362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EE6EA873CD
-	for <lists+stable@lfdr.de>; Sun, 13 Apr 2025 22:21:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B78EEA8743A
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 00:25:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 306EC18815B7
-	for <lists+stable@lfdr.de>; Sun, 13 Apr 2025 20:21:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D0217A2F2E
+	for <lists+stable@lfdr.de>; Sun, 13 Apr 2025 22:23:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E81B1EDA22;
-	Sun, 13 Apr 2025 20:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18BA18DF9D;
+	Sun, 13 Apr 2025 22:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ekQqTnwm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lHyN8+M5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E48AD17B425;
-	Sun, 13 Apr 2025 20:21:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1F318A6C1;
+	Sun, 13 Apr 2025 22:24:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744575676; cv=none; b=ensRfr5boQhjyDCZIGZSEASW87v9pWIaIuliK3lyVcewPSP0Yu7P9266o+5LoVdIdhGQYzeS7lHOMxd5hE3jdJ0wRa1VAF8pOguNVmAisshkaZvRvlDxpE8MbrrymbyfHmzcLcu7evcB363YregMl9S4dLA7YdlR+FXooskn35g=
+	t=1744583093; cv=none; b=r5e3DZq6CuYILe33eLYvimhdX/H8mxyo4382aBd6Vlt2oY5022yMUYJqGy54aFCGqCViEUkU2ZbJul9PqIUZJnupXVQm02JZ6s6BJLI77Xi/v9XDYkvPLTv1uuTSh2ZCoIjLSCy3jTkl5FBXgM9pTYKTf698yb6oakHkxqFw2RA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744575676; c=relaxed/simple;
-	bh=wQojJBXzJlTHOpAXpbc1jTR7Ss/PzQRN0e82ejpEgU0=;
+	s=arc-20240116; t=1744583093; c=relaxed/simple;
+	bh=zFhWszMXgcrrhbxro47Xom7wsLkxxg0I4+qRejGxZ4o=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YXb50Ojn2JYmZVV0ncGj5KgHa6XZXpiuQSNPAT7vlmEOPOGhMhUprok85kzoS+h1PjNyqRSncc6W9rUR3PCdFXo3ywQvhPoiclYH1KqiBEmSVV+Kaa2uI1vgG/ifVfvPkanMHlnbQgn2omwwOUc/Gk3xWICdfARd3XJOYzalVUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ekQqTnwm; arc=none smtp.client-ip=209.85.216.43
+	 To:Cc:Content-Type; b=bpY8TF9uMCb+Dnjjq/m2a/rvJwNPuO2iKuJb2b4CQ41bgOqvIztHnXHHPL/h8P3dlBIdo9GTuubdp1le/DFkNsbaz+2HjAfOJowOGAs88K5sNXknvi1EtjhGNMX/wHtQvn8C9swKQCpEIo4GxmQyRcUt6osmZQYSuHkgtI237RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lHyN8+M5; arc=none smtp.client-ip=209.85.216.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2ff6ce72844so726353a91.2;
-        Sun, 13 Apr 2025 13:21:14 -0700 (PDT)
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-301a8b7398cso699735a91.1;
+        Sun, 13 Apr 2025 15:24:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744575674; x=1745180474; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1744583091; x=1745187891; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wQojJBXzJlTHOpAXpbc1jTR7Ss/PzQRN0e82ejpEgU0=;
-        b=ekQqTnwmb6Lx2PteEuv1VdEm68LkAVBjnJiecDktQxwp0dHDe8T9Mdgw50CZ6pydOJ
-         fTuLrScVjkSNq4uuk/yvku9WeHewDVmkNDMZon8Upzjdk698Qf5cAVqYsgrO72D7JGXp
-         Rz52RDe6nlcgKD/A8+krInQzSVYG5CzsGpKNOylK21M7CnzL/aWkVGd91T7FXv+3FR0o
-         Nyt41V00VuBSlNBKyYlqqFXGnrZLCIGF1++pHxl93uIUypk64L7p9fbNS3SZKto6sY1a
-         nkQ8Xs85lsL47DBIWxEllTWUxGNyaAw1menunFL6hqTLa7T0KBNWGy0DfXBI/gjhT1MI
-         2PAg==
+        bh=zFhWszMXgcrrhbxro47Xom7wsLkxxg0I4+qRejGxZ4o=;
+        b=lHyN8+M55JNyT63CkRsnk3p7p8CAOLire1tn0crW4+l05G0RCWnhc3x9vBY3dNh9Ib
+         6Al8XDeUcSbasTeO5JQsf6xzGb+ZDptPGJfhBKMO16MywPC57apQxNokWVJADCCZwro/
+         caFHu+RawozpZz0Q0uCVUxLpev241KOCDJyJjmGaZFXQ5UOABLlOHvlTKb7oTKfdLH9Z
+         SEwNgHO/WEuD4KEjq3gJH8datteS2+9soQ+Sf2OFQGcT7g5jyDsbxpUgY5FSvfyBCErm
+         3yYVDSKn+klx5PwS85T1mHYq/l3oLjxRDohrfAIOsLCdULxpmy0OKiGYcVrCQosF/Xw4
+         UjOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744575674; x=1745180474;
+        d=1e100.net; s=20230601; t=1744583091; x=1745187891;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wQojJBXzJlTHOpAXpbc1jTR7Ss/PzQRN0e82ejpEgU0=;
-        b=V1J52f2RBPpYE/5gdWfKM+wLn7HS1xWkcBDQqMgd+if8OyoR+Z3Na5q0SZ/4HbNDKx
-         SUM6DPqo9BbLn+GbP3ucc3orfS9l/DvDsukbjEN4cqYm8FTxz+9zyqe1ybe43Mi7VJBc
-         kdHVbNe451FzvUcAlSr1Hw90rZMmvq/jKRJC91apXQo2ES45itAsx9OWnJvGGUe4aEel
-         S7ZoyvXZ15Vt/YRYdEhZfxv4IpBT8YoZBgmkOfvjGWkFIF0i3hlOVeSQNZvtqkCkEn8m
-         OKz24AasAdgJhrTU4Kbw6NCw8ZuvvAgBb3A+aJh3b33HiU672p1jQbqw1uLlUjlx904D
-         Kfag==
-X-Forwarded-Encrypted: i=1; AJvYcCUbmfQBrK6VxOyAvhO9CAdjOTb/tKZAWSIUgaJuf6VSvqsrXOo1oj4HbK2E5FiGvJGsE/qhDUsyz3DHHPM=@vger.kernel.org, AJvYcCW1P1zMy9Pj+q7ZLXoL3UEsivWxvii52ujG8hqJa79ghv2Ju+/qTaX0JID/v9P0IHfxGGM8NO6n@vger.kernel.org, AJvYcCWJC5aRPsO8h2GHjLxaHuFbH/LOCP0oJdLAaWluiBbD7hGiiX+n1ioAyze5PUhkWSBJp5yNQpUHT1y5RB13F/4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDKeSgRcqhBW1qLCwPZ0RlqRptU4hC/dZFfet/R0SSLveOxxiU
-	NS425Ps0l4WrexVeZEsn+w3rcCMXu5Rr/AkTMcDhYhNtwoVi8UQHpxwxV+j/73d8ZVtjVrjycKU
-	u6jnJzjHf/Rw5EjDKXSCvRjVsluw=
-X-Gm-Gg: ASbGncsYneCjgEu5GcYjogJ+aYbfE7kZNkKH0jfvPJqG52UVZFazDzeNrrTQKr5ACy4
-	MrTBBPRW19VZzbpYdRQelvjj3OM+IFU8yJKBqBDLaOwa+FzTKQG52v1YMEtDoN7CMWHGdKG6nj/
-	evs4iGwr9LkQ0KQjelDJwlUHvVk91aT/Cu
-X-Google-Smtp-Source: AGHT+IHgC/aFHrf625tyae7K7J2fuI+kFnrOeyX1zk71aY4lL5CN1XCHDAVntE6UxNra5dZY9rZcYCPgabyfDINUTnM=
-X-Received: by 2002:a17:90b:390e:b0:2ff:7970:d2b6 with SMTP id
- 98e67ed59e1d1-308273f3592mr4946965a91.5.1744575673973; Sun, 13 Apr 2025
- 13:21:13 -0700 (PDT)
+        bh=zFhWszMXgcrrhbxro47Xom7wsLkxxg0I4+qRejGxZ4o=;
+        b=egPqqJFIIqd+b/VUtqrN9uThdggiZjq2w8e5hoi8/uRwn34h2Dj9oEDwxTtbpAb4sS
+         TOj1qXtCqkweJzJsWf5k4ZXSO5t7Hf3Grij58yv9qgsAn59J1vSz9UNk084HEmPNAZL+
+         Nd4RycqT7RGCEKvdwx950spT2GesABdqcVdQUaiq3xTJOoIjqIVD0C8Wr/Jz2WIPu7Yu
+         R1aaI3J3IuGtUDOmrR6ZPW4UN3zKDpXstaME+XgnULzWr8jBbdbgtPqSig8CYO93FvIS
+         IKUlhB+piV6IKV9fx+ILgojXi7VuVyrD0KXqJuqo/vj5MCgt7nECt6lT/maNcMGQSLw1
+         RfkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU9RU3+Cb9ZnnJ9ACZmnQjjYctTsmSnT7uEHaQN4bO7JbrVLANjWteVM3PksxZtizxPpad0ThI/o3k1xiZF@vger.kernel.org, AJvYcCVM9ISBImOmr9ow32Sd+oEKenyTBkRaIsHIpc1j0oNUv+Z6qPkxLdo6UyFrOnPPl4pGzjov18VXH2uxtaM=@vger.kernel.org, AJvYcCX7q5upDlghAF3fBWODT+CEdM+zQffXC8OPgGSVndA0S1zG6jWDq7+OIkddCC/2fxshT+4zyEOHTTJKKLsCmpM=@vger.kernel.org, AJvYcCXh/kVP1wo1cDDisw6Lwu9Gnq2ROFypGKn3Rbw2dQx3I8DVKLrjRnUUL8UpIT3j4lomTauD0EuV@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWmSlOc38rxf7isQxltD/8KD4mGQ6Htygce3rmmIkFR+zBSXK3
+	IPRhkuQbxmT7D9Svox8qNrZW0aOzHsRAPn6t3qIcECKa4lklPXF96eM84Ggy/3M2Jyl4FTdzdLS
+	ELVPXK2rytyTW47rXF1nIovHfLBI=
+X-Gm-Gg: ASbGncv/ZbtAyPk5iGeAdhBUR+UMPXeLZEIV2yTmkgKHHb79kuyMVUed1GLAboxHHn5
+	E0wKA3U8itkFil2PhFM9gbsbyS7Aa8pPGHAaB4387UEvYLcORcM7KvatFBAD0dOBzfY7OUBdEXy
+	ONfAjEpWZdqw07Wwr+e/RBpQ==
+X-Google-Smtp-Source: AGHT+IG/LchdQKMox22QGMHkIWwBwPyMFHqfgkcpLRiUpZjH6w3oFEuC/XhSYgZH5QECaauRKtTcSLIWVzEWcqpeoa4=
+X-Received: by 2002:a17:90b:4a89:b0:2ff:78dd:2875 with SMTP id
+ 98e67ed59e1d1-3082378c78fmr5674698a91.5.1744583091360; Sun, 13 Apr 2025
+ 15:24:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250413-rust_arm_fix_fw_abstaction-v3-1-8dd7c0bbcd47@gmail.com>
-In-Reply-To: <20250413-rust_arm_fix_fw_abstaction-v3-1-8dd7c0bbcd47@gmail.com>
+References: <20250408220311.1033475-1-ojeda@kernel.org>
+In-Reply-To: <20250408220311.1033475-1-ojeda@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 13 Apr 2025 22:21:01 +0200
-X-Gm-Features: ATxdqUEbJUZabY5ly0oKwSmSo00qbXw56zoRY0ep3Vfv-E42xwj8kfluLC02Tl8
-Message-ID: <CANiq72kJ+tv-P6+Yq7Bg+J73q93m+EKV_4E-GR=sdY5KRgCs6w@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: Use `ffi::c_char` type in firmware abstraction `FwFunc`
-To: Christian Schrefl <chrisi.schrefl@gmail.com>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Mon, 14 Apr 2025 00:24:39 +0200
+X-Gm-Features: ATxdqUHU76_51ZQ1TnRtKTvt1ZG1eN1xA3kopPBEH1n6HKtgRxWv-zmZkdx8n_g
+Message-ID: <CANiq72mxi7_RXCzEmWeLYs5x0Dy9j8BNYTA1ZSZ-8=yJFrfMyw@mail.gmail.com>
+Subject: Re: [PATCH] rust: kasan/kbuild: fix missing flags on first build
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, stable@vger.kernel.org
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	kasan-dev@googlegroups.com, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
+	Matthew Maurer <mmaurer@google.com>, Sami Tolvanen <samitolvanen@google.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Apr 13, 2025 at 9:27=E2=80=AFPM Christian Schrefl
-<chrisi.schrefl@gmail.com> wrote:
+On Wed, Apr 9, 2025 at 12:03=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> The `FwFunc` struct contains an function with a char pointer argument,
-> for which a `*const u8` pointer was used. This is not really the
-> "proper" type for this, so use a `*const kernel::ffi::c_char` pointer
-> instead.
+> Thus filter out the target.
 
-If I don't take it:
+Applied to `rust-fixes` -- thanks everyone!
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-
-Thanks!
+I am applying this one fairly quickly, to start to get wider testing,
+but it would be nice to get some tags, so I am happy to rebase to add
+them for the next day or two.
 
 Cheers,
 Miguel
