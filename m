@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-132354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 907CCA872B3
-	for <lists+stable@lfdr.de>; Sun, 13 Apr 2025 18:47:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68BA8A872B5
+	for <lists+stable@lfdr.de>; Sun, 13 Apr 2025 18:47:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C29E3B776F
-	for <lists+stable@lfdr.de>; Sun, 13 Apr 2025 16:47:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F51E16D6D9
+	for <lists+stable@lfdr.de>; Sun, 13 Apr 2025 16:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5C561D7E37;
-	Sun, 13 Apr 2025 16:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3259C1D7E37;
+	Sun, 13 Apr 2025 16:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nNshVhPq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TY6gT+N9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867E214A0A8
-	for <stable@vger.kernel.org>; Sun, 13 Apr 2025 16:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E721F14A0A8
+	for <stable@vger.kernel.org>; Sun, 13 Apr 2025 16:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744562836; cv=none; b=fPHKzXR0n1aHrpCNmLYLApWNUQVT9rB50ZkLp4VeM/YGkunnP8CjWQEYM791lVHNZeiWJEveNBBAPsD8PWYvRAzoo+8y2kEVJURK4TAatAzJksVZ7WhanQLq3IdNJZXToy0Bz4c4buJpjHLew6hgv6hX9OvhoeOL0PXdnD+jiZA=
+	t=1744562858; cv=none; b=NI5UPJexecIJR2dC3uTIb3RGfSGTK7M/Ehj2Kg0vGQFFjOAyT9gupKZeUgfQs4WHTLeq8zsOM2pPRFJs02qEKpK6XZbwscZMTwOZRdNo68OgdLB+EZdd5rL8Ioik0CMxBunOPoXSYMHm7kWzbmsOqKAMnFumswf4NHUHEXMv0T4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744562836; c=relaxed/simple;
-	bh=WoC61Fw3W9cjHAFqqzw4tkGU56FLwZj++VdW+FSxMzY=;
+	s=arc-20240116; t=1744562858; c=relaxed/simple;
+	bh=3dSgbRQm3dQ0tgWBWUkstTQ8uZn8ut/+dPgx7rlo0SA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=asWVAVTVpautbyVxjoApb32fK28j6VdEBuCy1RL2+rLr2TG5w6wTcW5WQTUWYW6hUMfSYIHC82e/hy8reo7t0e7hQ3hGG4cxp6TThOskw7aFkVGiy7J0uQ7VM6L0E1Vhw1jskznfIxOVFJ3Hz5T4YyZ9e/TMgYVscPkkLvc4n2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nNshVhPq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6232BC4CEDD;
-	Sun, 13 Apr 2025 16:47:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Fqn5Ry8raPIqg7kXISgGbTeC+NCkBkuIpqfoLPdgrI3+qyP4rqpPAEKQwbSXl7e4ao1/Ny090r8VwGaBbhIjsZtax1Hh6UMnJFrmjjL7yUD+W2yX3jBzcbqz51Dz6ak0sjVk4WxBakcG/P1M3DUl3QSHQzPTe35l064WITrGwLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TY6gT+N9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B73C4CEDD;
+	Sun, 13 Apr 2025 16:47:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744562834;
-	bh=WoC61Fw3W9cjHAFqqzw4tkGU56FLwZj++VdW+FSxMzY=;
+	s=k20201202; t=1744562857;
+	bh=3dSgbRQm3dQ0tgWBWUkstTQ8uZn8ut/+dPgx7rlo0SA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nNshVhPqdKnR7Pm+2vjPaf/R7HCbzqv8lAJVtbUmEmlbQ0DWlJZCpW+KKdYkWZ3BR
-	 AmmufJ8i9MHdg7sHbPrQC1yQjfnMyu4PNluy19NsvVzyAJXJCkAVcFC1ARVJiurjiE
-	 2s8Wf4mVaCKcm1kmwW1NmV2/Ejr1bK2I+D4tKMoPFDznMJlY25FzxLCh7kiNMq9UKJ
-	 hSlVErZGJ4x1tk6rn+8kKUbcvS26WLGzG8+Lpm3SeCNkZA9oIjoEGv6sxCQq2HkzaD
-	 VTENlFtBg0l+rzd/uNrFm9y8s7lDN6TJ1HbviP81/1LYqfm5gWM0dUCssdIHOU7zCx
-	 D0dRed/qarVoA==
+	b=TY6gT+N9omaZKjxp9g9xQmUz43G1W+axMepzOXT1ljkZIJevOduouL+Ovw32lxUPT
+	 xpPUpDGplo6q2zLNeCShUlKC8E1hfq/e30kGSfuXYeC/KskdGaC2y3irFbpHfNtMl6
+	 S3ywEgs2NVziTeF9C0qSJ7LnlPs6Ebkgdp0GRkpOKrD78QN30ycuQoBBAxAD5w03eb
+	 vzNTvyD32R4jRY1x7vhQ5TjIU2PHxYsI1iKLugprN3eLKP+IH/3fwV9ZDrn89GVpRT
+	 /LqHLWUYc7THbpwfXxkPk+uAl0jrdHh7lCzmZXPNAarcZ7togCflMAqegOpDevSatV
+	 NNNQ9eI/ZmmNg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: He Zhe <zhe.he@windriver.com>,
+Cc: cel@kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12.y] libbpf: Prevent compiler warnings/errors
-Date: Sun, 13 Apr 2025 12:47:11 -0400
-Message-Id: <20250412091854-fc75ac150750cf4d@stable.kernel.org>
+Subject: Re: [PATCH v6.12] nfsd: don't ignore the return code of svc_proc_register()
+Date: Sun, 13 Apr 2025 12:47:35 -0400
+Message-Id: <20250412123343-3854ac696f2b3a1c@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250411033644.1156976-1-zhe.he@windriver.com>
+In-Reply-To:  <20250411141611.27150-1-cel@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,37 +67,36 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 7f4ec77f3fee41dd6a41f03a40703889e6e8f7b2
+The upstream commit SHA1 provided is correct: 930b64ca0c511521f0abdd1d57ce52b2a6e3476b
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: He Zhe<zhe.he@windriver.com>
-Commit author: Eder Zulian<ezulian@redhat.com>
+Backport author: cel@kernel.org
+Commit author: Jeff Layton<jlayton@kernel.org>
 
 Status in newer kernel trees:
-6.14.y | Present (exact SHA1)
-6.13.y | Present (exact SHA1)
+6.14.y | Present (different SHA1: 9d9456185fd5)
+6.13.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  7f4ec77f3fee4 ! 1:  1a7061fb10c80 libbpf: Prevent compiler warnings/errors
+1:  930b64ca0c511 ! 1:  7d53ffdf10e3f nfsd: don't ignore the return code of svc_proc_register()
     @@ Metadata
       ## Commit message ##
-         libbpf: Prevent compiler warnings/errors
+         nfsd: don't ignore the return code of svc_proc_register()
      
-    +    commit 7f4ec77f3fee41dd6a41f03a40703889e6e8f7b2 upstream.
+    +    [ Upstream commit 930b64ca0c511521f0abdd1d57ce52b2a6e3476b ]
     +
-         Initialize 'new_off' and 'pad_bits' to 0 and 'pad_type' to  NULL in
-         btf_dump_emit_bit_padding to prevent compiler warnings/errors which are
-         observed when compiling with 'EXTRA_CFLAGS=-g -Og' options, but do not
-    @@ Commit message
-         Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-         Acked-by: Jiri Olsa <jolsa@kernel.org>
-         Link: https://lore.kernel.org/bpf/20241022172329.3871958-3-ezulian@redhat.com
-    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
-    +    Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
-     
-      ## tools/lib/bpf/btf_dump.c ##
-     @@ tools/lib/bpf/btf_dump.c: static void btf_dump_emit_bit_padding(const struct btf_dump *d,
+         Currently, nfsd_proc_stat_init() ignores the return value of
+         svc_proc_register(). If the procfile creation fails, then the kernel
+         will WARN when it tries to remove the entry later.
+    @@ fs/nfsd/nfsctl.c: static __net_init int nfsd_net_init(struct net *net)
+      	seqlock_init(&nn->writeverf_lock);
+     -	nfsd_proc_stat_init(net);
+      #if IS_ENABLED(CONFIG_NFS_LOCALIO)
+    - 	spin_lock_init(&nn->local_clients_lock);
+      	INIT_LIST_HEAD(&nn->local_clients);
+      #endif
+      	return 0;
 ---
 
 Results of testing on various branches:
