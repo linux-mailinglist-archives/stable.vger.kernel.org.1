@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-132351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C52E9A872AF
-	for <lists+stable@lfdr.de>; Sun, 13 Apr 2025 18:47:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DB96A872B1
+	for <lists+stable@lfdr.de>; Sun, 13 Apr 2025 18:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC8AB16D698
-	for <lists+stable@lfdr.de>; Sun, 13 Apr 2025 16:47:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 141AD16D5EA
+	for <lists+stable@lfdr.de>; Sun, 13 Apr 2025 16:47:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37F8514A0A8;
-	Sun, 13 Apr 2025 16:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6A41D7E37;
+	Sun, 13 Apr 2025 16:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="geFXR23o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dGo+RPrx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA36C1DD9AB
-	for <stable@vger.kernel.org>; Sun, 13 Apr 2025 16:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F6314A0A8
+	for <stable@vger.kernel.org>; Sun, 13 Apr 2025 16:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744562827; cv=none; b=RzrElW/y7hWucP5OqL/NCD3nKTqVbvGgqXpxd164RG4+/CoeqeyZt0jDMPpVDGJ9mRhOwG4tpCOpdjxjDtF6PbD+aBHyUm2/WE1c9EMVJI/wZeNnSoqT3doDtdhiAzJal7Hymx2oaYs4WA9blnwGZCdg+oZHQpjFYjBqK9uIviE=
+	t=1744562830; cv=none; b=V231eDVNMdY0ezS/Bi1D2EtHZjmXxOBhFJ5HxeCDVrWyYV7RXwFH9vFuCQ20Yzrr+MmAWIM5tuCM3LZjZCsiTcGhXfPQp93GwuwLEgr5CLPcMhX+S/Q5Lx/WFadPop8tOdm/xnHHq687zQlzpbWpP8gWNJXDrQ88RJyPMv/kwk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744562827; c=relaxed/simple;
-	bh=D71yNlD/gyab1l9zgH3iDzrDfOy2jD1Oz2qWKoko+U0=;
+	s=arc-20240116; t=1744562830; c=relaxed/simple;
+	bh=B5gm1rePdMrprYdpPW779SVZJbYEJyqIpu/6260VXw8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VFIkojTCGu37IefDXUi5UU13G6rr1WkAwrIyc4VsrQbacpabETQ+lfHrBd1thRy69ZR3tMjDf9stMonZZPiX6V6iL+5EjA5j+NsVWAkJTefShsVyazjXCkxv0D8HKh0rkflLsGkTUYdXHrsnHEstmHaWIXIPc1sK8LlpVNOjpHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=geFXR23o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3708CC4CEDD;
-	Sun, 13 Apr 2025 16:47:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Tkp5dmKaLiimsf3xo9ArnFRmE3iULwYwr2v+tvPkej+uRL6N7ewX0TwLkpxIAHFc+EtvgEeL0Qq69to3C/5MWX/Gj18LqagGzgOq6wNRfOsf70eWOxJHPN/91al2T2WkYU/dmC3lw3ZDEBVpdboLayyaYQsfH+TbURxNPQ/0WFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dGo+RPrx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DE66C4CEDD;
+	Sun, 13 Apr 2025 16:47:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744562826;
-	bh=D71yNlD/gyab1l9zgH3iDzrDfOy2jD1Oz2qWKoko+U0=;
+	s=k20201202; t=1744562829;
+	bh=B5gm1rePdMrprYdpPW779SVZJbYEJyqIpu/6260VXw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=geFXR23opVWCpKchWMfbUcfw5pyZZVdGA4xqdoOTE7wR/kG3Yn6BBrj5bzWVEiiCk
-	 UTMn9eBSsBLZKRxVbr8Ku7kEDW6NdHJLq4l4PhmGS1j9xbTkvrydg29x+E03QVzf2J
-	 hqmF2i4InJsKyn7YxNRmSC6WE5WDi9rYMbWxVCCsVxGLovCYZLLR6yqIj2hrH3S3Mh
-	 s8Qw5gjV7PJtB5yHX4kP7kzj9CO79iOVNPaEvbHa8K5PCjONs3DfkMiub6EaQ1xHmi
-	 X5gkZS1MhwVPTq3TCnPh1oukGFyslR7+k7y1Toqvn4O8NOnDe4X1q58vIr6WtSf+wq
-	 IgnxGurnAmf1w==
+	b=dGo+RPrxYDEtZJlmLf/Z2aMzFQnq+kQT+dIRHEazSiJKZSjKOFRBFrAZjtf+Q45CW
+	 6e36RtVrjVvwa+0azHCXV+yinGz8FGX1FAPAqUmBqTDU6CKLHbE6ztGJP3z57dHgSu
+	 vhN9EQNQPZcbz8lV16VtIR8+2TDsORd4TgUzzh/Q07vxQiFExjOEEvUnMFTz5CqX63
+	 6Y4if2Vv8AnSnbZ2pMyX8LUE/XLVZyOftJGsy1C3qvifQqmesk5Oor5nPDRMdRHONE
+	 uJVnMS/sopJTbVpqSG696fUQekNFjm2uZGODJ/37nKaVOXngl/G3cL90a7UDu+YkNL
+	 cV8SE2FMiPqWQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Jason Andryuk <jason.andryuk@amd.com>,
+Cc: David Sauerwein <dssauerw@amazon.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 1/2] x86/xen: move xen_reserve_extra_memory()
-Date: Sun, 13 Apr 2025 12:47:04 -0400
-Message-Id: <20250412122501-c369a62fdc5c5069@stable.kernel.org>
+Subject: Re: [PATCH 5.15.y] bpf: avoid holding freeze_mutex during mmap operation
+Date: Sun, 13 Apr 2025 12:47:07 -0400
+Message-Id: <20250412102709-d3b675cd9a8746bf@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250411165122.18587-2-jason.andryuk@amd.com>
+In-Reply-To:  <20250411161253.11836-1-dssauerw@amazon.de>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,21 +67,74 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: fc05ea89c9ab45e70cb73e70bc0b9cdd403e0ee1
+The upstream commit SHA1 provided is correct: bc27c52eea189e8f7492d40739b7746d67b65beb
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Jason Andryuk<jason.andryuk@amd.com>
-Commit author: Roger Pau Monne<roger.pau@citrix.com>
+Backport author: David Sauerwein<dssauerw@amazon.de>
+Commit author: Andrii Nakryiko<andrii@kernel.org>
+
+Status in newer kernel trees:
+6.14.y | Present (exact SHA1)
+6.13.y | Present (different SHA1: 271e49f8a58e)
+6.12.y | Present (different SHA1: d95607a5f2f9)
+6.6.y | Present (different SHA1: 29cfda62ab4d)
+6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  fc05ea89c9ab4 < -:  ------------- x86/xen: move xen_reserve_extra_memory()
--:  ------------- > 1:  9bc5c94e278f7 Linux 6.14.2
+1:  bc27c52eea189 ! 1:  74c702cd74209 bpf: avoid holding freeze_mutex during mmap operation
+    @@ Metadata
+      ## Commit message ##
+         bpf: avoid holding freeze_mutex during mmap operation
+     
+    +    [ Upstream commit bc27c52eea189e8f7492d40739b7746d67b65beb ]
+    +
+         We use map->freeze_mutex to prevent races between map_freeze() and
+         memory mapping BPF map contents with writable permissions. The way we
+         naively do this means we'll hold freeze_mutex for entire duration of all
+    @@ Commit message
+         Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+         Link: https://lore.kernel.org/r/20250129012246.1515826-2-andrii@kernel.org
+         Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+    +    Signed-off-by: Sasha Levin <sashal@kernel.org>
+    +    Signed-off-by: David Sauerwein <dssauerw@amazon.de>
+     
+      ## kernel/bpf/syscall.c ##
+     @@ kernel/bpf/syscall.c: static const struct vm_operations_struct bpf_map_default_vmops = {
+    @@ kernel/bpf/syscall.c: static const struct vm_operations_struct bpf_map_default_v
+     -	int err;
+     +	int err = 0;
+      
+    - 	if (!map->ops->map_mmap || !IS_ERR_OR_NULL(map->record))
+    - 		return -ENOTSUPP;
+    + 	if (!map->ops->map_mmap || map_value_has_spin_lock(map) ||
+    + 	    map_value_has_timer(map))
+     @@ kernel/bpf/syscall.c: static int bpf_map_mmap(struct file *filp, struct vm_area_struct *vma)
+      			err = -EACCES;
+      			goto out;
+    @@ kernel/bpf/syscall.c: static int bpf_map_mmap(struct file *filp, struct vm_area_
+      	/* set default open/close callbacks */
+      	vma->vm_ops = &bpf_map_default_vmops;
+     @@ kernel/bpf/syscall.c: static int bpf_map_mmap(struct file *filp, struct vm_area_struct *vma)
+    - 		vm_flags_clear(vma, VM_MAYWRITE);
+    + 		vma->vm_flags &= ~VM_MAYWRITE;
+      
+      	err = map->ops->map_mmap(map, vma);
+     -	if (err)
+    @@ kernel/bpf/syscall.c: static int bpf_map_mmap(struct file *filp, struct vm_area_
+     +			bpf_map_write_active_dec(map);
+     +	}
+      
+    --	if (vma->vm_flags & VM_WRITE)
+    +-	if (vma->vm_flags & VM_MAYWRITE)
+     -		bpf_map_write_active_inc(map);
+     -out:
+     -	mutex_unlock(&map->freeze_mutex);
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
