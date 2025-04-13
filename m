@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-132339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97DAEA872A8
-	for <lists+stable@lfdr.de>; Sun, 13 Apr 2025 18:46:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48459A872A4
+	for <lists+stable@lfdr.de>; Sun, 13 Apr 2025 18:46:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E708B1892C75
-	for <lists+stable@lfdr.de>; Sun, 13 Apr 2025 16:46:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EBCC16D1C9
+	for <lists+stable@lfdr.de>; Sun, 13 Apr 2025 16:46:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6635A1D7E37;
-	Sun, 13 Apr 2025 16:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB4E51D7E37;
+	Sun, 13 Apr 2025 16:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aQBqBPEm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oJsSTIJ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255361C1F21
-	for <stable@vger.kernel.org>; Sun, 13 Apr 2025 16:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7857814A0A8
+	for <stable@vger.kernel.org>; Sun, 13 Apr 2025 16:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744562796; cv=none; b=gmPsyGpRcmE1FwrKSsNbI/YiAonu9s9Qf3QIKHnIXpVHcZ3g5bOpohK+La05db1dZ0VjeImOnbY6Q1mR7eG/7PenmNIv9IZVjM79Ae382GPgUF8+ITCMCHX/bq4+1nE8O8Y8YMr+P0LAioFH9LLluIStPUgbVegwL/4W5QBftY8=
+	t=1744562798; cv=none; b=S70qTQBcPJBcj9eQZX5qrTh8W8AWaVYJ8pTUK0Fqk/Am3esl21PVI57niQATPq1gtMkyyAD/DaqsK3kSOkrH0ItYuPYbjwowyjp58vSTR201TpLDHGOVL5jfl3B1wqnL4dUHx5XndGkaYAxwht0NH60PQq37RYykl6TPU/WWLHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744562796; c=relaxed/simple;
-	bh=eJ7V+Ni0Uamj3HcOsyw2B8k0GfAq0/rqzUIyeyKhdg4=;
+	s=arc-20240116; t=1744562798; c=relaxed/simple;
+	bh=s2LCbkMUKReWqPIm7pcCWTG5wzpWVYI7HKy/HxSQ98g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IwJQLEr5MCCKADHAvu5jIzSZoDZOpH6HCGiS1/tNz6CTDh50J3fvksdFlAmpxts4g484d2/MVynIBSb7mTvDe5uEEvfTd9WtIInKtsXpOSitIq8Acb2lEpnJeSamtpqhDuaVouxd6UfaeTwKu/iVwHIZKOdhErFQoV5uwQX9rwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aQBqBPEm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C2EC4CEDD;
-	Sun, 13 Apr 2025 16:46:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rcTW1VHU6+YBuzfZnHsgYkenK2baPonbrNu1jWcGL6vb9G53jtXoWh0+6Z+fKT1U9k6hw0SvRv/uvaCejgqz5R/p0gfn72mopL0lCleajSFPgl+NThIfKdB5ob6PWCRKYFb+StNHX8e6fBAdLZ0JFPsTjsvg4zyB7EY8FMmTpbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oJsSTIJ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BE69C4CEDD;
+	Sun, 13 Apr 2025 16:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744562795;
-	bh=eJ7V+Ni0Uamj3HcOsyw2B8k0GfAq0/rqzUIyeyKhdg4=;
+	s=k20201202; t=1744562798;
+	bh=s2LCbkMUKReWqPIm7pcCWTG5wzpWVYI7HKy/HxSQ98g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aQBqBPEm/IlRg+Up9rkloL+uy3xmidF6MiS2SMve/cdMTtE0S3uOKT+lI4lJnSL9x
-	 ycBmbh7DT7eZUHbGgdvKBOko3OfbEzWMeyQILqV1EkQTgVF//sVrCrlIpWJ6EOAvAv
-	 7bOsSZfsEamgMqW5VkPxBPRYPa/cVBts5GTRBfQMEHfo7nXPSoWqomaEhtZbdkmcW3
-	 j5MXdqfqiTBwxR95i35y4Giz/rKq7mxz452cWOO6UKXrNdJVfutIMZlxZOuhgb1J5p
-	 1ccDUQtwS2fkXCkFrpEGglh2w8E/Q62A8a2oi3IjHtZjVkZMop9O7y/l7sjHb4vlkS
-	 9tTk8r4Wh9wwg==
+	b=oJsSTIJ13/Z+bKYl2UChmR5jCaez8+KDyuPj8h8ADvinLtm6Mr0U9N5l34/4zkfdQ
+	 Sm25V6vOLx+eEOmsV3BlkToLgVpqKchtsH7Rg+Kr518W0J3sz9RwKyq42v44SU0gZh
+	 hKilGctlQuk0F5n03NTjsGCnxNnGpE3MXG7BL5m4SosNOw7y8HLoX8zuCxRMnS8QXp
+	 SpIuY1dXXXdB6KHkOR+5cMtuYQMW5gI7H2kZQ0mu8c08LmSeu+oN78kK0zvh0c2oTN
+	 JVPU3lz9UH+yWfPDbqwfawapfG75+4e2Wn5UoeyrfiD1q8nVccP4ukfG7frFog3SO9
+	 eS5hN4QibMkjQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Xiangyu Chen <xiangyu.chen@eng.windriver.com>,
+Cc: Cliff Liu <donghua.liu@windriver.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15] ext4: fix timer use-after-free on failed mount
-Date: Sun, 13 Apr 2025 12:46:33 -0400
-Message-Id: <20250412101326-fbe02ede0ea1bd3e@stable.kernel.org>
+Subject: Re: [PATCH 6.6.y] powerpc/rtas: Prevent Spectre v1 gadget construction in sys_rtas()
+Date: Sun, 13 Apr 2025 12:46:35 -0400
+Message-Id: <20250412100538-96e5cf1aa82cc9a2@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250411081911.219016-1-xiangyu.chen@eng.windriver.com>
+In-Reply-To:  <20250411064213.3647619-1-donghua.liu@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,28 +67,51 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 0ce160c5bdb67081a62293028dc85758a8efb22a
+The upstream commit SHA1 provided is correct: 0974d03eb479384466d828d65637814bee6b26d7
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Xiangyu Chen<xiangyu.chen@eng.windriver.com>
-Commit author: Xiaxi Shen<shenxiaxi26@gmail.com>
+Backport author: Cliff Liu<donghua.liu@windriver.com>
+Commit author: Nathan Lynch<nathanl@linux.ibm.com>
 
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
 6.13.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 9203817ba46e)
-6.1.y | Present (different SHA1: cf3196e5e2f3)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  0ce160c5bdb67 < -:  ------------- ext4: fix timer use-after-free on failed mount
--:  ------------- > 1:  806747a29525d ext4: fix timer use-after-free on failed mount
+1:  0974d03eb4793 ! 1:  510e3f8eef3ac powerpc/rtas: Prevent Spectre v1 gadget construction in sys_rtas()
+    @@ Metadata
+      ## Commit message ##
+         powerpc/rtas: Prevent Spectre v1 gadget construction in sys_rtas()
+     
+    +    [ Upstream commit 0974d03eb479384466d828d65637814bee6b26d7 ]
+    +
+         Smatch warns:
+     
+           arch/powerpc/kernel/rtas.c:1932 __do_sys_rtas() warn: potential
+    @@ Commit message
+         Reviewed-by: Breno Leitao <leitao@debian.org>
+         Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+         Link: https://msgid.link/20240530-sys_rtas-nargs-nret-v1-1-129acddd4d89@linux.ibm.com
+    +    [Minor context change fixed]
+    +    Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
+    +    Signed-off-by: He Zhe <Zhe.He@windriver.com>
+     
+      ## arch/powerpc/kernel/rtas.c ##
+     @@
+    + #include <linux/kernel.h>
+      #include <linux/lockdep.h>
+      #include <linux/memblock.h>
+    - #include <linux/mutex.h>
+     +#include <linux/nospec.h>
+      #include <linux/of.h>
+      #include <linux/of_fdt.h>
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
