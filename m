@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-132333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E777EA8704B
-	for <lists+stable@lfdr.de>; Sun, 13 Apr 2025 02:26:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E2DEA8717D
+	for <lists+stable@lfdr.de>; Sun, 13 Apr 2025 12:12:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AC61189BB6C
-	for <lists+stable@lfdr.de>; Sun, 13 Apr 2025 00:26:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1CFF460589
+	for <lists+stable@lfdr.de>; Sun, 13 Apr 2025 10:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF6BE567;
-	Sun, 13 Apr 2025 00:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F291619E7F9;
+	Sun, 13 Apr 2025 10:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hyvh4CBQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kDV4586M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9CCBA49;
-	Sun, 13 Apr 2025 00:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76CA2367B7;
+	Sun, 13 Apr 2025 10:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744503961; cv=none; b=FIk/XQrFtn//vQsyBwbs3Zz+9GsbIRgkQM73iT1j+s/P0cbxyIue5hZGNArRXj1sdINyErW9dF8ONAQjzYSCQ+bFD3vFamXolx91LZ4IZCJ7I+G8SExG2dP0JksFng3rKRAeR3M70h46iTd0f6sXexb4ZiJyRnWdX5M93LMJ8r4=
+	t=1744539116; cv=none; b=ElmBATO8NB5+YW4FqbZWMbyQLFX2HssoP5oXtIFcvC3mcmJg6Gyqhboso/yt8lidM3RZ8Mt5yh3739+cZFpUe+VZl4GdwALsVlwuywqqwaAb+pYGIysvisyKZfxfZAKx6WEZMu756SCkby0zqizo+5ROJXPVvojLHoKkErR/n9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744503961; c=relaxed/simple;
-	bh=ma3//bYP5NsNIhP5erbPOIXQNgt8Q5cf+5oa2YsETf4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TF7ql689QvAxFt0MsR6YW2yKNRuGHzgqdtvMD+imrOCpMST8QRVzCw3JYIrBT0SEdtwutjZR1a4hbOuNhL8K0AZD6McefoVo49l7lecyAKof4FX+hSY6Z5wbEyK4IGXj1hGqRc82z2eyUmLRB5CnGicjhMM2uC3z7xWJypGREBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hyvh4CBQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1FB8C4CEE3;
-	Sun, 13 Apr 2025 00:25:56 +0000 (UTC)
+	s=arc-20240116; t=1744539116; c=relaxed/simple;
+	bh=gExjhGq0RicraFHTSpxAfHlYl7CYZ3m6ih1z9/sAZtk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=R1A2MwPzI8un41KpsTSG0RgOJsIiH8H24gNusSuW7cE2mD7txtUPJSPArsMglKKIdWj1B0qs6zOYkBEct4pyrLjwthnD7VL4AVrv+dqwTzYwcFFOJKpAvzCWDPYOtBSXiZj2sigwHeynOPk7CqDrG2S2DPKiMVHXuG9kN/iIFV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kDV4586M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C36CC4CEDD;
+	Sun, 13 Apr 2025 10:11:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744503960;
-	bh=ma3//bYP5NsNIhP5erbPOIXQNgt8Q5cf+5oa2YsETf4=;
+	s=k20201202; t=1744539115;
+	bh=gExjhGq0RicraFHTSpxAfHlYl7CYZ3m6ih1z9/sAZtk=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Hyvh4CBQGVpkZke9Eevo4Du530yg+SyCbC8PHMFkTNpfWs+KEkSymUUZfq0Tneg95
-	 ja0EckenR/73QUrQdNi2i817jmiYoULWVol2wFxjoBlKV6DtpufczdkOg7JivlW07G
-	 yHgbV/O+X7FjUdKBlPyhJP51A26hb4FMGrCag2SipRwThB9d6JYx/oU3dsQR3frJpS
-	 YTN67cQ71ZduyUlmhDqtnqzp7sAq8H/37ByWbVnDmib1sYQryaDis6IiZUZ9b2imuw
-	 80PQW7Ck4GaZiYiraT91m4PUkl3+xUWSQ262TYBm6OOcAnofU16x7WrEdmoE1bzXiO
-	 cldJx6aLqME2Q==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH] objtool/rust: add one more `noreturn` Rust function
-Date: Sun, 13 Apr 2025 02:23:38 +0200
-Message-ID: <20250413002338.1741593-1-ojeda@kernel.org>
+	b=kDV4586MaW2vyaPEwbGruENlUG/QM/hxyeEopqZSNoGXf9TIuesGeqLnZ9V023gp/
+	 4X6hDwrztnMmim7jI/wlgH8eedUBEgPQtuYy/lJCABpDj/Ep9K2uvEBgdR3SAcGA9K
+	 vxvRcU+KjDYmQdoWK0aDt81s7OrKosfWDcGbeNX0B7R8FJonpt1I4Cp82epnfoeqIa
+	 PostLT/qDDFVwRqygxj61CQHSNMUIZ3Y3CKKSqNHA/RYtZhFKe0HJ9GAnkPg/nLUa3
+	 VzyvhKsaUxUCCUo7OYF0e8Hs7bLnyioxLgrOTQU5J6YANeGDNTTMayG4TewFbW5hpI
+	 cV3WurTpC6ZUA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1u3uJc-004wDv-QD;
+	Sun, 13 Apr 2025 11:11:52 +0100
+From: Marc Zyngier <maz@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Subject: [PATCH] cpufreq: cppc: Fix invalid return value in .get() callback
+Date: Sun, 13 Apr 2025 11:11:42 +0100
+Message-Id: <20250413101142.125173-1-maz@kernel.org>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,47 +63,38 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, stable@vger.kernel.org, rafael@kernel.org, viresh.kumar@linaro.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Starting with Rust 1.86.0 (see upstream commit b151b513ba2b ("Insert null
-checks for pointer dereferences when debug assertions are enabled") [1]),
-under some kernel configurations with `CONFIG_RUST_DEBUG_ASSERTIONS=y`,
-one may trigger a new `objtool` warning:
+Returning a negative error code in a function with an unsigned
+return type is a pretty bad idea. It is probably worse when the
+justification for the change is "our static analisys tool found it".
 
-    rust/kernel.o: warning: objtool: _R..._6kernel9workqueue6system()
-    falls through to next function _R...9workqueue14system_highpri()
-
-due to a call to the `noreturn` symbol:
-
-    core::panicking::panic_null_pointer_dereference
-
-Thus add it to the list so that `objtool` knows it is actually `noreturn`.
-
-See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
-for more details.
-
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Fixes: 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
-Link: https://github.com/rust-lang/rust/commit/b151b513ba2b65c7506ec1a80f2712bbd09154d1 [1]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: cf7de25878a1 ("cppc_cpufreq: Fix possible null pointer dereference")
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>
 ---
- tools/objtool/check.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/cpufreq/cppc_cpufreq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 4a1f6c3169b3..67006eeb30c8 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -225,6 +225,7 @@ static bool is_rust_noreturn(const struct symbol *func)
- 	       str_ends_with(func->name, "_4core9panicking14panic_nounwind")				||
- 	       str_ends_with(func->name, "_4core9panicking18panic_bounds_check")			||
- 	       str_ends_with(func->name, "_4core9panicking19assert_failed_inner")			||
-+	       str_ends_with(func->name, "_4core9panicking30panic_null_pointer_dereference")		||
- 	       str_ends_with(func->name, "_4core9panicking36panic_misaligned_pointer_dereference")	||
- 	       strstr(func->name, "_4core9panicking13assert_failed")					||
- 	       strstr(func->name, "_4core9panicking11panic_const24panic_const_")			||
-
-base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+index b3d74f9adcf0b..cb93f00bafdba 100644
+--- a/drivers/cpufreq/cppc_cpufreq.c
++++ b/drivers/cpufreq/cppc_cpufreq.c
+@@ -747,7 +747,7 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+ 	int ret;
+ 
+ 	if (!policy)
+-		return -ENODEV;
++		return 0;
+ 
+ 	cpu_data = policy->driver_data;
+ 
 -- 
-2.49.0
+2.39.2
 
 
