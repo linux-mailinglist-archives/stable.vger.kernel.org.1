@@ -1,95 +1,100 @@
-Return-Path: <stable+bounces-132369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3247A8754A
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 03:35:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC6B5A875C3
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 04:09:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EDA916F7A0
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 01:35:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB9C716F5D2
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 02:09:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EAC1188CAE;
-	Mon, 14 Apr 2025 01:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765F818DF80;
+	Mon, 14 Apr 2025 02:09:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mskoONHC"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA0C17A2EA;
-	Mon, 14 Apr 2025 01:35:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784DE188CB1
+	for <stable@vger.kernel.org>; Mon, 14 Apr 2025 02:09:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744594511; cv=none; b=EYgpv6i1fPKSb+K4s9cDAvy2IcBG+DMXa9Zv0dPAL6n+wMoZCDcfFG9keib0W8ZREEASIuJIBuI7eY9Rngg+mFbyiHayufJW2C2idVuxqjAQHH8TiSF+g6kmeVvB44KC6BLnjO8LcqebnHmtpp3+tuEmMV9IWLi0qV/FUN2yjAM=
+	t=1744596580; cv=none; b=GKmnyEY2d8wDWYW+Oi8qDSd5OGluLrZkDC5qAx2NhbVxyLrD3WdiqaVCpMhybiuBENornSdMn2pSQK9pS+575zJr1TXC9QsLptaYZWD6/4ZdaONh+0q4V2YG8Kh1cJsDGlS+m64hJzBPUKjxeGdYwvKcD0PF9cJOaxoGCF00jEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744594511; c=relaxed/simple;
-	bh=CBAvm1+dSagG1OXbFKj8zpy52RWsL456kA7GUFDYlZA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=XHfqjFbTE4mRI35//VV8Bdi1QADyqrs6fuPtFX3SL5RxDcoSdO/d6l0kjo3DMzm2H30AzRbdizPg7xF5+NJJYO0itAHYNN3/YghlQcULPATTCdQ+uSm3WM9rmSq8ZuSQaCYaS6ksl/RdRdLv6wXQj7yftuuZQyTSF9qvMXBG3lE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4ZbVGD2B91zsSgt;
-	Mon, 14 Apr 2025 09:35:00 +0800 (CST)
-Received: from kwepemh100008.china.huawei.com (unknown [7.202.181.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8994318005F;
-	Mon, 14 Apr 2025 09:35:05 +0800 (CST)
-Received: from [10.67.121.90] (10.67.121.90) by kwepemh100008.china.huawei.com
- (7.202.181.93) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 14 Apr
- 2025 09:35:05 +0800
-Message-ID: <23466140-5d0c-435f-8e73-d1c4826930ec@huawei.com>
-Date: Mon, 14 Apr 2025 09:35:03 +0800
+	s=arc-20240116; t=1744596580; c=relaxed/simple;
+	bh=ap71KQGj7IxXMTQ4DUDW9fnPUxaN+WdgLy/qwSwAUxo=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=mUBlmgucyDFJ4X655jwfb53XknwvaHMgGeHIfNF0ibqJnNLcVC/wRdeMDHDjxfQMEbzVgcIrH/7HOwAADp9cBzpjlAYnmatPgi4NYPSIm1RURDYKYna9mg1XKlgzMhPy8THXBAKt3xENmZD0PfLYqTnp2X/s8L5UBWQr2Iwx9Oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mskoONHC; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744596579; x=1776132579;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=ap71KQGj7IxXMTQ4DUDW9fnPUxaN+WdgLy/qwSwAUxo=;
+  b=mskoONHCcl6bp8Gz1yzLoq5INSCvp5yXy0/6McQ+Bng3rPWvRqo+RN1Q
+   F4lmUuJyXeoVf7gPUeFPzDAS9GIx4C0j2m8gROi/cs6y5BDaKSRieQCdL
+   AK015uXWV9JnXZ+nez9R2xMLacrGEtYV4hRTEgGmG3w8qu6zGfGrc1a4x
+   /rD4VSDD+JGf2TA3tQFAj6TztTj40r6Cz6Y1jpTNIeekQ+Cl7/1MkGDD5
+   81jZkf3GQs/oPvo48IOkLwl+43RxEW+fpAAufkz4eGkYoVFJlhxrVN3sz
+   Ezq5wEMBe5YDK7PhHKjF7qx42Gs9PTXrA+xLLAkB+LnqvXUl1rIP18kT3
+   Q==;
+X-CSE-ConnectionGUID: CTuSIcMUR1CNB6prqgIOhg==
+X-CSE-MsgGUID: bcy/73Z4RaSyncNvYrf+AA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11402"; a="46189250"
+X-IronPort-AV: E=Sophos;i="6.15,211,1739865600"; 
+   d="scan'208";a="46189250"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2025 19:09:38 -0700
+X-CSE-ConnectionGUID: hMbIKpMsRuutSFlXI3z+Hg==
+X-CSE-MsgGUID: ZyH/F/SZQfO1gjX3E5tMQQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,211,1739865600"; 
+   d="scan'208";a="166862838"
+Received: from lkp-server01.sh.intel.com (HELO b207828170a5) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 13 Apr 2025 19:09:37 -0700
+Received: from kbuild by b207828170a5 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1u49GQ-000DAI-2U;
+	Mon, 14 Apr 2025 02:09:34 +0000
+Date: Mon, 14 Apr 2025 10:08:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2] gpiolib: Allow to use setters with return value for
+ output-only gpios
+Message-ID: <Z_xuO9PZ6_afeii1@6bf5cb62fcc2>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] cpufreq: cppc: Fix invalid return value in .get()
- callback
-To: Marc Zyngier <maz@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-pm@vger.kernel.org>
-CC: <stable@vger.kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Viresh
- Kumar <viresh.kumar@linaro.org>
-References: <20250413101142.125173-1-maz@kernel.org>
-From: "zhenglifeng (A)" <zhenglifeng1@huawei.com>
-In-Reply-To: <20250413101142.125173-1-maz@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- kwepemh100008.china.huawei.com (7.202.181.93)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250411-mdb-gpiolib-setters-fix-v2-1-9611280d8822@bootlin.com>
 
-On 2025/4/13 18:11, Marc Zyngier wrote:
+Hi,
 
-> Returning a negative error code in a function with an unsigned
-> return type is a pretty bad idea. It is probably worse when the
-> justification for the change is "our static analisys tool found it".
-> 
-> Fixes: cf7de25878a1 ("cppc_cpufreq: Fix possible null pointer dereference")
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> Cc: stable@vger.kernel.org
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Cc: Viresh Kumar <viresh.kumar@linaro.org>
-> ---
->  drivers/cpufreq/cppc_cpufreq.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-> index b3d74f9adcf0b..cb93f00bafdba 100644
-> --- a/drivers/cpufreq/cppc_cpufreq.c
-> +++ b/drivers/cpufreq/cppc_cpufreq.c
-> @@ -747,7 +747,7 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
->  	int ret;
->  
->  	if (!policy)
-> -		return -ENODEV;
-> +		return 0;
->  
->  	cpu_data = policy->driver_data;
->  
+Thanks for your patch.
 
-Reviewed-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH v2] gpiolib: Allow to use setters with return value for output-only gpios
+Link: https://lore.kernel.org/stable/20250411-mdb-gpiolib-setters-fix-v2-1-9611280d8822%40bootlin.com
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
+
 
