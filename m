@@ -1,207 +1,317 @@
-Return-Path: <stable+bounces-132414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41B7BA87B4F
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 11:03:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6418BA87B84
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 11:08:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67F931888890
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 09:02:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F773188DDC6
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 09:08:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C23325DAFC;
-	Mon, 14 Apr 2025 09:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF1F225DCE3;
+	Mon, 14 Apr 2025 09:08:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="rOtHTB/a"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A91625C71C;
-	Mon, 14 Apr 2025 09:01:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B8325A622;
+	Mon, 14 Apr 2025 09:08:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744621317; cv=none; b=czuCSkhM/0QsllbvUJHwZ277mI91bxd8IRbjuJoyGAu+hCvs9++0mWF1kC4TxILWI12t869pwzspTnqM70XDVpYrcwh+vJ0r03OPxOTayy5JjUZ1bhkm1kbExSFt2fdhvD+gwhEUkQSxFjlcPsoUKZKehlrOiQE1n8p518UPHmk=
+	t=1744621723; cv=none; b=PkvP23TUHIYbjR6A28OJw+kWDGOdKDhEL8FehVs65R+g0gx9/vbCHd3bZ10XmBrkHym+XfIEEAm/lW7cSZZ2tE+Y/r4Smv4FbK/1OICUVOJ/T4+m6mSvG1MWcx5Nlofi//BbCuzdQazfy+wwb6UNKNvfkmyscdNaVvqqTPnYTY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744621317; c=relaxed/simple;
-	bh=/zeE1xow8wBjpWsTV3JAHV6bocCxJtjVfG/nzD2yhv8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ejPBq5UsVsq1YpL1XoqvnyjdQs0TZfmrl8+86dkbtBYgj0/XW5K81TqLcBdp1Xyed/7WjM+QP914KVZimrldY1A5KHV3H+6v2wyTyw7g/wRPSqIREd6YpxwNXKVatE303CTDZd27VSOMwN0Yi9G8VotHxkN0GQ0iIjUuJvb19Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53E8vVDr016304;
-	Mon, 14 Apr 2025 02:00:47 -0700
-Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45yqpkhg6m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 14 Apr 2025 02:00:46 -0700 (PDT)
-Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Mon, 14 Apr 2025 02:00:46 -0700
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Mon, 14 Apr 2025 02:00:42 -0700
-From: <jianqi.ren.cn@windriver.com>
-To: <stable@vger.kernel.org>
-CC: <patches@lists.linux.dev>, <gregkh@linuxfoundation.org>,
-        <linux-kernel@vger.kernel.org>, <jianqi.ren.cn@windriver.com>,
-        <tom@talpey.com>, <jiyin@redhat.com>, <pc@manguebit.com>,
-        <stfrench@microsoft.com>, <sfrench@samba.org>, <ematsumiya@suse.de>,
-        <linux-cifs@vger.kernel.org>, <samba-technical@lists.samba.org>
-Subject: [PATCH 5.15.y 2/2] smb: client: fix NULL ptr deref in crypto_aead_setkey()
-Date: Mon, 14 Apr 2025 17:00:42 +0800
-Message-ID: <20250414090042.1633186-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1744621723; c=relaxed/simple;
+	bh=In9erdKEjFVkINEXwuH2VAurvdHZpC/9zxHLi/Zd7ow=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZNKdBBc4dl98zfLreewrhLcdYPQ/ubP4NRibjO1ibSRySvvX3eywqKYwOIkB1tqH3FkyI5UJYmUmFgk1r/sE6JXUyNCmd37qfkrXRdW7u/Q8FrGVV7SzXm5mh8NXAuemKwR6REq5ZuucWkJvkth7BVWjmnArMW4kEWHPRLAoago=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=rOtHTB/a; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=heKJMC1wrf6opHCwQhR4/CUPeEmuCtR7XwusV0V8Zq0=; b=rOtHTB/a7G+i4mnRCZZORquCIr
+	sBsjplypZfeFnUjFv+z1SlqaxLK5ma7NT/i/r+1ga/KEjvfUfUyNH467XEW0cIcxa6xuGetuIWN6O
+	mngIy4Jncgqpf4M6H7NgaKTkZfMVTYiuDagtXIggFAVB7g0uZHtVP/NNLwcYYjigHIjzXIcFjE1ek
+	qABlZ4Zk8B6cNtAmxNYUs5BocS5bJCCUqJUqSUEfz4ghiikCN2djGZhVUaGqX5+g0f6QkarcP/Fl0
+	Df+Dck44wnnSlhYJVdLnbO7MolWkz008PwOVJeWdqf4fYovpswJotEdyt70W798E06Rrf+1nnoWyy
+	7Ikey53Q==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1u4Fnj-00000007uSG-3UPI;
+	Mon, 14 Apr 2025 09:08:24 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id DAE6E3003AF; Mon, 14 Apr 2025 11:08:23 +0200 (CEST)
+Date: Mon, 14 Apr 2025 11:08:23 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Rik van Riel <riel@surriel.com>
+Cc: Pat Cody <pat@patcody.io>, mingo@redhat.com, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+	vschneid@redhat.com, linux-kernel@vger.kernel.org, patcody@meta.com,
+	kernel-team@meta.com, stable@vger.kernel.org,
+	Breno Leitao <leitao@debian.org>
+Subject: Re: [PATCH] sched/fair: Add null pointer check to pick_next_entity()
+Message-ID: <20250414090823.GB5600@noisy.programming.kicks-ass.net>
+References: <20250320205310.779888-1-pat@patcody.io>
+ <20250324115613.GD14944@noisy.programming.kicks-ass.net>
+ <9d38c61098b426777c1a748cf1baf8e57c41c334.camel@surriel.com>
+ <20250402180734.GX5880@noisy.programming.kicks-ass.net>
+ <b40f830845f1f97aa4b686c5c1333ff1bf5d59b3.camel@surriel.com>
+ <20250409152703.GL9833@noisy.programming.kicks-ass.net>
+ <20250411105134.1f316982@fangorn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: QrCgIwP9G8ZJ11Ba7ESLIweES89dQPaP
-X-Proofpoint-GUID: QrCgIwP9G8ZJ11Ba7ESLIweES89dQPaP
-X-Authority-Analysis: v=2.4 cv=UZBRSLSN c=1 sm=1 tr=0 ts=67fccebe cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=XR8D0OoHHMoA:10 a=Li1AiuEPAAAA:8 a=SEc3moZ4AAAA:8 a=20KFwNOVAAAA:8 a=VwQbUJbxAAAA:8 a=yMhMjlubAAAA:8 a=t7CeM3EgAAAA:8
- a=riu9DmvwmDMTBw3IfOsA:9 a=qGKPP_lnpMOaqR3bcYHU:22 a=5oRCH6oROnRZc2VpWJZ3:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Sensitive_Customer_Information: Yes
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-14_02,2025-04-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1011
- priorityscore=1501 mlxscore=0 impostorscore=0 phishscore=0 malwarescore=0
- spamscore=0 adultscore=0 mlxlogscore=999 lowpriorityscore=0 bulkscore=0
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.21.0-2502280000
- definitions=main-2504140064
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250411105134.1f316982@fangorn>
 
-From: Paulo Alcantara <pc@manguebit.com>
+On Fri, Apr 11, 2025 at 10:51:34AM -0400, Rik van Riel wrote:
+> On Wed, 9 Apr 2025 17:27:03 +0200
+> Peter Zijlstra <peterz@infradead.org> wrote:
+> > On Wed, Apr 09, 2025 at 10:29:43AM -0400, Rik van Riel wrote:
+> > > Our trouble workload still makes the scheduler crash
+> > > with this patch.
+> > > 
+> > > I'll go put the debugging patch on our kernel.
+> > > 
+> > > Should I try to get debugging data with this patch
+> > > part of the mix, or with the debugging patch just
+> > > on top of what's in 6.13 already?  
+> > 
+> > Whatever is more convenient I suppose.
+> > 
+> > If you can dump the full tree that would be useful. Typically the
+> > se::{vruntime,weight} and cfs_rq::{zero_vruntime,avg_vruntime,avg_load}
+> > such that we can do full manual validation of the numbers.
+> 
+> Here is a dump of the scheduler tree of the crashing CPU.
+> 
+> Unfortunately the CPU crashed in pick_next_entity, and not in your
+> debugging code. I'll add two more calls to avg_vruntime_validate(),
+> one from avg_vruntime_update(), and one rfom __update_min_vruntime()
+> when we skip the call to avg_vruntime_update(). The line numbers in
+> the backtrace could be a clue.
+> 
+> I have edited the cgroup names to make things more readable, but everything
+> else is untouched.
 
-commit 4bdec0d1f658f7c98749bd2c5a486e6cfa8565d2 upstream.
+Hmm, I didn't think you guys used the cgroup stuff.
 
-Neither SMB3.0 or SMB3.02 supports encryption negotiate context, so
-when SMB2_GLOBAL_CAP_ENCRYPTION flag is set in the negotiate response,
-the client uses AES-128-CCM as the default cipher.  See MS-SMB2
-3.3.5.4.
+Anyway, given cgroups, which group pick is the one that went boom? Also,
+what is curr (for that cgroup).
 
-Commit b0abcd65ec54 ("smb: client: fix UAF in async decryption") added
-a @server->cipher_type check to conditionally call
-smb3_crypto_aead_allocate(), but that check would always be false as
-@server->cipher_type is unset for SMB3.02.
+curr lives outside of the tree, but is included in the eligibility
+consideration (when still on_rq and all that).
 
-Fix the following KASAN splat by setting @server->cipher_type for
-SMB3.02 as well.
+> nr_running = 3
+> min_vruntime = 107772371139014
+> avg_vruntime = -1277161882867784752
+> avg_load = 786
+> tasks_timeline = [
+>   {
+>     cgroup /A
+>     weight = 10230 => 9
 
-mount.cifs //srv/share /mnt -o vers=3.02,seal,...
+No vruntime, I'll assume !on_rq, but that makes avg_load above not match
+:/ So something is off here.
 
-BUG: KASAN: null-ptr-deref in crypto_aead_setkey+0x2c/0x130
-Read of size 8 at addr 0000000000000020 by task mount.cifs/1095
-CPU: 1 UID: 0 PID: 1095 Comm: mount.cifs Not tainted 6.12.0 #1
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-3.fc41
-04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x5d/0x80
- ? crypto_aead_setkey+0x2c/0x130
- kasan_report+0xda/0x110
- ? crypto_aead_setkey+0x2c/0x130
- crypto_aead_setkey+0x2c/0x130
- crypt_message+0x258/0xec0 [cifs]
- ? __asan_memset+0x23/0x50
- ? __pfx_crypt_message+0x10/0x10 [cifs]
- ? mark_lock+0xb0/0x6a0
- ? hlock_class+0x32/0xb0
- ? mark_lock+0xb0/0x6a0
- smb3_init_transform_rq+0x352/0x3f0 [cifs]
- ? lock_acquire.part.0+0xf4/0x2a0
- smb_send_rqst+0x144/0x230 [cifs]
- ? __pfx_smb_send_rqst+0x10/0x10 [cifs]
- ? hlock_class+0x32/0xb0
- ? smb2_setup_request+0x225/0x3a0 [cifs]
- ? __pfx_cifs_compound_last_callback+0x10/0x10 [cifs]
- compound_send_recv+0x59b/0x1140 [cifs]
- ? __pfx_compound_send_recv+0x10/0x10 [cifs]
- ? __create_object+0x5e/0x90
- ? hlock_class+0x32/0xb0
- ? do_raw_spin_unlock+0x9a/0xf0
- cifs_send_recv+0x23/0x30 [cifs]
- SMB2_tcon+0x3ec/0xb30 [cifs]
- ? __pfx_SMB2_tcon+0x10/0x10 [cifs]
- ? lock_acquire.part.0+0xf4/0x2a0
- ? __pfx_lock_release+0x10/0x10
- ? do_raw_spin_trylock+0xc6/0x120
- ? lock_acquire+0x3f/0x90
- ? _get_xid+0x16/0xd0 [cifs]
- ? __pfx_SMB2_tcon+0x10/0x10 [cifs]
- ? cifs_get_smb_ses+0xcdd/0x10a0 [cifs]
- cifs_get_smb_ses+0xcdd/0x10a0 [cifs]
- ? __pfx_cifs_get_smb_ses+0x10/0x10 [cifs]
- ? cifs_get_tcp_session+0xaa0/0xca0 [cifs]
- cifs_mount_get_session+0x8a/0x210 [cifs]
- dfs_mount_share+0x1b0/0x11d0 [cifs]
- ? __pfx___lock_acquire+0x10/0x10
- ? __pfx_dfs_mount_share+0x10/0x10 [cifs]
- ? lock_acquire.part.0+0xf4/0x2a0
- ? find_held_lock+0x8a/0xa0
- ? hlock_class+0x32/0xb0
- ? lock_release+0x203/0x5d0
- cifs_mount+0xb3/0x3d0 [cifs]
- ? do_raw_spin_trylock+0xc6/0x120
- ? __pfx_cifs_mount+0x10/0x10 [cifs]
- ? lock_acquire+0x3f/0x90
- ? find_nls+0x16/0xa0
- ? smb3_update_mnt_flags+0x372/0x3b0 [cifs]
- cifs_smb3_do_mount+0x1e2/0xc80 [cifs]
- ? __pfx_vfs_parse_fs_string+0x10/0x10
- ? __pfx_cifs_smb3_do_mount+0x10/0x10 [cifs]
- smb3_get_tree+0x1bf/0x330 [cifs]
- vfs_get_tree+0x4a/0x160
- path_mount+0x3c1/0xfb0
- ? kasan_quarantine_put+0xc7/0x1d0
- ? __pfx_path_mount+0x10/0x10
- ? kmem_cache_free+0x118/0x3e0
- ? user_path_at+0x74/0xa0
- __x64_sys_mount+0x1a6/0x1e0
- ? __pfx___x64_sys_mount+0x10/0x10
- ? mark_held_locks+0x1a/0x90
- do_syscall_64+0xbb/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>     rq = {
+>       nr_running = 0
+>       min_vruntime = 458975898004
+>       avg_vruntime = 0
+>       avg_load = 0
+>       tasks_timeline = [
+>       ]
+>     }
+>   },
+>   {
+>     cgroup /B
+>     vruntime = 18445226958208703357
+>     weight = 319394 => 311
+>     rq = {
+>       nr_running = 2
+>       min_vruntime = 27468255210769
+>       avg_vruntime = 0
+>       avg_load = 93
+>       tasks_timeline = [
+>         {
+>           cgroup /B/a
+>           vruntime = 27468255210769
+>           weight = 51569 => 50
+>           rq = {
+>             nr_running = 1
+>             min_vruntime = 820449693961
+>             avg_vruntime = 0
+>             avg_load = 15
+>             tasks_timeline = [
+>               {
+>                 task = 3653382 (fc0)
+>                 vruntime = 820449693961
+>                 weight = 15360 => 15
+>               },
+>             ]
+>           }
+>         },
+>         {
+>           cgroup /B/b
+>           vruntime = 27468255210769
+>           weight = 44057 => 43
+>           rq = {
+>             nr_running = 1
+>             min_vruntime = 563178567930
+>             avg_vruntime = 0
+>             avg_load = 15
+>             tasks_timeline = [
+>               {
+>                 task = 3706454 (fc0)
+>                 vruntime = 563178567930
+>                 weight = 15360 => 15
+>               },
+>             ]
+>           }
+>         },
+>       ]
+>     }
+>   },
+>   {
+>     cgroup /C
+>     vruntime = 18445539757376619550
+>     weight = 477855 => 466
+>     rq = {
+>       nr_running = 0
+>       min_vruntime = 17163581720739
+>       avg_vruntime = 0
+>       avg_load = 0
+>       tasks_timeline = [
+>       ]
+>     }
+>   },
+> ]
 
-Cc: Tom Talpey <tom@talpey.com>
-Reported-by: Jianhong Yin <jiyin@redhat.com>
-Cc: stable@vger.kernel.org # v6.12
-Fixes: b0abcd65ec54 ("smb: client: fix UAF in async decryption")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[Commit b0abcd65ec54 ("smb: client: fix UAF in async decryption")
-fixes CVE-2024-50047 but brings NULL-pointer dereferebce. So
-commit 4bdec0d1f658 ("smb: client: fix NULL ptr deref in crypto_aead_setkey()")
-should be backported too.]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
----
-Verified the build test
----
- fs/cifs/smb2pdu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+So given the above, I've created the below files, and that gives:
 
-diff --git a/fs/cifs/smb2pdu.c b/fs/cifs/smb2pdu.c
-index 2b2c3330ba96..302c08dfb686 100644
---- a/fs/cifs/smb2pdu.c
-+++ b/fs/cifs/smb2pdu.c
-@@ -1028,7 +1028,9 @@ SMB2_negotiate(const unsigned int xid, struct cifs_ses *ses)
- 	 * SMB3.0 supports only 1 cipher and doesn't have a encryption neg context
- 	 * Set the cipher type manually.
- 	 */
--	if (server->dialect == SMB30_PROT_ID && (server->capabilities & SMB2_GLOBAL_CAP_ENCRYPTION))
-+	if ((server->dialect == SMB30_PROT_ID ||
-+	     server->dialect == SMB302_PROT_ID) &&
-+	    (server->capabilities & SMB2_GLOBAL_CAP_ENCRYPTION))
- 		server->cipher_type = SMB2_ENCRYPTION_AES128_CCM;
- 
- 	security_blob = smb2_get_data_area_len(&blob_offset, &blob_length,
--- 
-2.34.1
+$ ./vruntime < root.txt
+  k: 0 w: 311 k*w: 0
+  k: 312799167916193 w: 466 k*w: 145764412248945938
+  v': 107772371139014 = v: 18445226958208703357 + d: 1624887871987273
+  V': -1116773464285165183 = V: 145764412248945938 - d: 1624887871987273 * W: 777
+min_vruntime: 107772371139014
+avg_vruntime: -1116773464285165183
+avg_load: 777
+
+> One thing that stands out to me is how the vruntime of each of the
+> entities on the CPU's cfs_rq are really large negative numbers.
+> 
+> vruntime = 18429030910682621789 equals 0xffc111f8d9ee675d
+> 
+> I do not know how those se->vruntime numbers got to that point,
+> but they are a suggestive cause of the overflow.
+> 
+> I'll go comb through the se->vruntime updating code to see how those
+> large numbers could end up as the vruntime for these sched entities.
+
+As you can see from the output here, the large negative is the result
+of min_vruntime being significantly ahead of the actual entities.
+
+This can happen due to that monotonicity filter the thing has -- it
+doesn't want to go backwards. Whereas the 0-lag point can move
+backwards, seeing how it is the weighted average, and inserting a task
+with positive lag will insert a task left of middle, moving the middle
+left.
+
+The zero_vruntime patch I gave earlier should avoid this particular
+issue.
+
+
+$ ./vruntime < B.txt
+  k: 0 w: 50 k*w: 0
+  k: 0 w: 43 k*w: 0
+  v': 27468255210769 = v: 27468255210769 + d: 0
+  V': 0 = V: 0 - d: 0 * W: 93
+min_vruntime: 27468255210769
+avg_vruntime: 0
+avg_load: 93
+
+
+C, B/a and B/b are not really interesting, they're single entries where
+min_vruntime == vruntime and boring.
+
+---8<---(root.txt)---8<---
+entity 18445226958208703357     319394
+entity 18445539757376619550     477855
+group   107772371139014
+
+
+---8<---(B.txt)---8<---
+entity  27468255210769  51569
+entity  27468255210769  44057
+group   27468255210769
+
+
+---8<---(vruntime.c)---8<---
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+
+int main (int argc, char **argv)
+{
+        unsigned long V, W;
+        unsigned long V0;
+        bool init = false;
+
+        for (;;) {
+                unsigned long vruntime, weight;
+                char type[32];
+
+                int r = scanf("%s\t%lu\t%lu\n", &type, &vruntime, &weight);
+                if (r == EOF)
+                        break;
+
+                if (!strcmp(type, "entity")) {
+                        if (!init) {
+                                V = W = 0;
+                                V0 = vruntime;
+                                init = true;
+                        }
+
+                        unsigned long k = vruntime - V0;
+                        unsigned long w = weight / 1024;
+
+                        V += k * w;
+                        W += w;
+
+                        printf("  k: %ld w: %lu k*w: %ld\n", k, w, k*w);
+                }
+
+                if (!strcmp(type, "group")) {
+                        unsigned long d = vruntime - V0;
+
+                        printf("  v': %lu = v: %lu + d: %lu\n", V0 + d, V0, d);
+                        printf("  V': %ld = V: %ld - d: %ld * W: %lu\n",
+                                        V - d * W, V, d, W);
+
+                        V0 += d;
+                        V -= d * W;
+                }
+        }
+
+        printf("min_vruntime: %lu\n", V0);
+        printf("avg_vruntime: %ld\n", V);
+        printf("avg_load: %lu\n", W);
+
+        return 0;
+}
 
 
