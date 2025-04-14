@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-132625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FCF3A88423
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 16:13:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 774B0A88418
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 16:12:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC7C83A073C
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 14:05:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 512B817C9C8
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 14:06:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBD42DF3C6;
-	Mon, 14 Apr 2025 13:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57AA92DF3F7;
+	Mon, 14 Apr 2025 13:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MUTNVUaL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PDbLoFkD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED3A2DEBAE;
-	Mon, 14 Apr 2025 13:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E652DF3F2;
+	Mon, 14 Apr 2025 13:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637552; cv=none; b=KAn38k8mBPOMY9AuR+w3dFWzL6yFhGQ3veg6Jv+fQDV0v/QP0D2RA5Eq9NX8Vu98aJkYfPeacNEJnFXWKsLdZqDBnmMvVtvTR16lE48b2b4aTHkbFJ5C3xIonzwazWdTFQNutaLBuHq7qGP1YSAE6P0urvb955E9uJ73o9M19BI=
+	t=1744637555; cv=none; b=UwB54Ld1GXtWDB0H37qxs06+UFKEjpsqSRChc0DnmqY7T1r2HP1SZnzV/nzD3kjXKfw90aMo5+xLHnTRe9Uwj4TbxOlzD9KPQx7B8JEhwpBbsg/N58Xbl0P1fK7Xfm14P/KoMCF/PmMJsBx43RPMWu6ojlYAkDDxBQTdcD+RwsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637552; c=relaxed/simple;
-	bh=Skw2haJGpIZiFYqO2n3E1IxwuSukQmD1H2oxwPBWPho=;
+	s=arc-20240116; t=1744637555; c=relaxed/simple;
+	bh=mHJ4Su4MoDsklNEAlFK1BQlqXdp4gCw/8nYVfgV43f8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XgCDxSOyz7ZCdiW6zRGsJJL0DGTsol3PkXRBoCV5TNxHumXxnpTa53ST58Gm1tO0XPCh2dS5byGyhzlAGvrcIHZZczQM0Rh2OB0tbi7SUk4nQ6uNLpFfFXzwXWkeY1oaF0O4YxPZu+Mq3At1KeIlP+/dwLB6f/sp1Ejgcxg5/bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MUTNVUaL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB563C4CEE9;
-	Mon, 14 Apr 2025 13:32:30 +0000 (UTC)
+	 MIME-Version; b=dZsGQdt8BO0Jc1QvS79MIU4ig6DAbzh02K+GmK2rLaeMEEDUVIONgMrasV4vjHI7mKR6EzgEWNumRlk8ZJEgo6rvNxGsjRyMJNMLKwnRnzKK/JlDwlqkiuzIH+tjYWceTumE4HcmGAIiu/4igrUCQBxGDJFxkIm8+yKM/ljjMIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PDbLoFkD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AC9C4CEED;
+	Mon, 14 Apr 2025 13:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744637552;
-	bh=Skw2haJGpIZiFYqO2n3E1IxwuSukQmD1H2oxwPBWPho=;
+	s=k20201202; t=1744637553;
+	bh=mHJ4Su4MoDsklNEAlFK1BQlqXdp4gCw/8nYVfgV43f8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MUTNVUaL2L3k3s3rUu3JqrBrQN1H0COjzl2Cqw5JUbZJLU/I563U3gKkT3/eaKAXo
-	 I8BIDtlJ+xMdcVpemP5PAgMBbY7W3NTm+O7k3jLLu4f0WlBu64pV6WFj6p5CuTXfA9
-	 uu09WAYwzFyW+jYWkNxxC0tKV6ezaTuu64niztC4XFVDqYWgPVFQzA1sQVYujvzblV
-	 oqxDelpQAabLWAW6IlEImM2pNFI3BpLlXFnAy+Vie5Y+1kNe8vH1H9iaOMqOmB6CeE
-	 JtaYa+c1FOgji9oyQ8joO+9ws9KRJCO+QDNV10xu0tGNnJpos0vhwzSzTruud2tWww
-	 9LOpTNwCdDZbw==
+	b=PDbLoFkDDuqACiCXGkS24Us2T4ogF/4MV6Mw4vUk21vBlVJ5o/GBVNqGX2t5jZBIQ
+	 e+X4dnvzRRRqnC1F/0l7tHHC5AHzwuUw+3vAgnFYMXUPQVQnlOTbst++Oe2OdZysJQ
+	 eyBorVj7hJMV50gddzSJIgSBT17xMNmZljnyTmq+IgbzrOYgRbFL3GlvHnhSpSUj7s
+	 58yAgNB+KyGiLGJmkgUet7zJueuuNvl05W1UNdA6aB4n+B6s7mKtzAcudROmLuwlIh
+	 VVxR7el9FBUL2gHpZuRJd6GU7d19l9mFBgm87U+DjfGJahN58LcmL/qonC7PqPfUOZ
+	 t/LupUUBusm+A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ming Lei <ming.lei@redhat.com>,
-	Uday Shankar <ushankar@purestorage.com>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: Jean-Marc Eurin <jmeurin@google.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	shuah@kernel.org,
-	linux-block@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 3/5] selftests: ublk: fix test_stripe_04
-Date: Mon, 14 Apr 2025 09:32:21 -0400
-Message-Id: <20250414133223.681195-3-sashal@kernel.org>
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 4/5] ACPI PPTT: Fix coding mistakes in a couple of sizeof() calls
+Date: Mon, 14 Apr 2025 09:32:22 -0400
+Message-Id: <20250414133223.681195-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250414133223.681195-1-sashal@kernel.org>
 References: <20250414133223.681195-1-sashal@kernel.org>
@@ -68,56 +66,44 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.292
 Content-Transfer-Encoding: 8bit
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Jean-Marc Eurin <jmeurin@google.com>
 
-[ Upstream commit 72070e57b0a518ec8e562a2b68fdfc796ef5c040 ]
+[ Upstream commit 7ab4f0e37a0f4207e742a8de69be03984db6ebf0 ]
 
-Commit 57ed58c13256 ("selftests: ublk: enable zero copy for stripe target")
-added test entry of test_stripe_04, but forgot to add the test script.
+The end of table checks should be done with the structure size,
+but 2 of the 3 similar calls use the pointer size.
 
-So fix the test by adding the script file.
-
-Reported-by: Uday Shankar <ushankar@purestorage.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Uday Shankar <ushankar@purestorage.com>
-Link: https://lore.kernel.org/r/20250404001849.1443064-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Jean-Marc Eurin <jmeurin@google.com>
+Link: https://patch.msgid.link/20250402001542.2600671-1-jmeurin@google.com
+[ rjw: Subject edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/ublk/test_stripe_04.sh  | 24 +++++++++++++++++++
- 1 file changed, 24 insertions(+)
- create mode 100755 tools/testing/selftests/ublk/test_stripe_04.sh
+ drivers/acpi/pptt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/ublk/test_stripe_04.sh b/tools/testing/selftests/ublk/test_stripe_04.sh
-new file mode 100755
-index 0000000000000..1f2b642381d17
---- /dev/null
-+++ b/tools/testing/selftests/ublk/test_stripe_04.sh
-@@ -0,0 +1,24 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+. "$(cd "$(dirname "$0")" && pwd)"/test_common.sh
-+
-+TID="stripe_04"
-+ERR_CODE=0
-+
-+_prep_test "stripe" "mkfs & mount & umount on zero copy"
-+
-+backfile_0=$(_create_backfile 256M)
-+backfile_1=$(_create_backfile 256M)
-+dev_id=$(_add_ublk_dev -t stripe -z -q 2 "$backfile_0" "$backfile_1")
-+_check_add_dev $TID $? "$backfile_0" "$backfile_1"
-+
-+_mkfs_mount_test /dev/ublkb"${dev_id}"
-+ERR_CODE=$?
-+
-+_cleanup_test "stripe"
-+
-+_remove_backfile "$backfile_0"
-+_remove_backfile "$backfile_1"
-+
-+_show_result $TID $ERR_CODE
+diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+index f31544d3656e3..c1c7727ab9324 100644
+--- a/drivers/acpi/pptt.c
++++ b/drivers/acpi/pptt.c
+@@ -216,7 +216,7 @@ static int acpi_pptt_leaf_node(struct acpi_table_header *table_hdr,
+ 	node_entry = ACPI_PTR_DIFF(node, table_hdr);
+ 	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
+ 			     sizeof(struct acpi_table_pptt));
+-	proc_sz = sizeof(struct acpi_pptt_processor *);
++	proc_sz = sizeof(struct acpi_pptt_processor);
+ 
+ 	while ((unsigned long)entry + proc_sz < table_end) {
+ 		cpu_node = (struct acpi_pptt_processor *)entry;
+@@ -257,7 +257,7 @@ static struct acpi_pptt_processor *acpi_find_processor_node(struct acpi_table_he
+ 	table_end = (unsigned long)table_hdr + table_hdr->length;
+ 	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
+ 			     sizeof(struct acpi_table_pptt));
+-	proc_sz = sizeof(struct acpi_pptt_processor *);
++	proc_sz = sizeof(struct acpi_pptt_processor);
+ 
+ 	/* find the processor structure associated with this cpuid */
+ 	while ((unsigned long)entry + proc_sz < table_end) {
 -- 
 2.39.5
 
