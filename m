@@ -1,103 +1,144 @@
-Return-Path: <stable+bounces-132395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3923A877D1
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 08:20:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4DD6A87821
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 08:48:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8B813AFF24
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 06:20:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8E1D189104B
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 06:48:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179F81A5BA8;
-	Mon, 14 Apr 2025 06:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE2871B0412;
+	Mon, 14 Apr 2025 06:48:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Dt+/FOWR"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A68148832;
-	Mon, 14 Apr 2025 06:20:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62BA1AAE08
+	for <stable@vger.kernel.org>; Mon, 14 Apr 2025 06:48:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744611649; cv=none; b=Gw2yKMqYDq9lhL6JDJ7S2jt562KHxxXiLaVvWVVrbf8scS4gTk4Fb6QfPjuOtfZ8xW1BMxpLuqtRrzREELxMbnWsA9yCIFB1poSIB54LzB04rVe5Su5X5lFxCgpKsoK4DnYX1Efp+T7V/9du5im7wnMU35AfPLORVQkRMVWpsyM=
+	t=1744613285; cv=none; b=VFRu/P1ugazmhI0EU5jRK9+AmWnGtSOIRlfedF0cGOHxtapWMVt8OEhm/MRcd06uBzJH3Z45mqMepXoTYnrIGOZvZlp2i1x9bGxQlUxt6YlY7wJVGR44AqdVl3RYXWIe8EbwN3CqBUUVj/UxlWyH6cV4tHXIZdyafM7uFIeJRCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744611649; c=relaxed/simple;
-	bh=ILfg5pyctVPHtkSPD5Gd/QGaqHzm5kjfCvQdn9D5FAc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lNC+big/UG3mVqCtO9vhFGpkYV0uxjz4RdJVUlvzrq+MyUF8JVlw80daE23wOcgdfObfIBQ8cXlOd8s1ycH9LPrvuXvwzTkBGHwdmVyo6ni07LfIe+zeSOG9NjtoLVlZcZnVOyjkeZkpN+8QbKuGbeI1MyWGkzIkWcfLXZ+TB7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-05 (Coremail) with SMTP id zQCowABnpQ03qfxnkijlCA--.684S2;
-	Mon, 14 Apr 2025 14:20:41 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: mchehab@kernel.org,
-	linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH RESEND] media: dst_ca: Add error handling for dst_comm_init()
-Date: Mon, 14 Apr 2025 14:20:11 +0800
-Message-ID: <20250414062012.2026-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	s=arc-20240116; t=1744613285; c=relaxed/simple;
+	bh=lksO+Vg8abSOPIziWy5VXpHCoLZLZwxzqRRtW1nA3NQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qSxJDZg/gsR8+7pna9kzJQ7Mt1H0LD1NITmunuW2GqXNhFq2j87CKobLKu5de+PslkVxGb4iA4im4sp7uTCYFdjZx/Bl5CN6/UxzJ5zUZMEQR45U42chBik21eDtGhRVrMbFudBCCvq2oPQZRsf4HKnk/UyTp32q+CP3CtKR4GE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Dt+/FOWR; arc=none smtp.client-ip=95.215.58.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Mon, 14 Apr 2025 12:17:42 +0530
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1744613271;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sJTVD7jo/Otn6b9WVWQ6HDZFYqH5A0K7Bz7wq0uQ/wE=;
+	b=Dt+/FOWRaugCrElq6wtIZic2VZ5ebwpR6k7EbcBcjuFWW3qFwfhqFHBd0xyEgkK2/LWfUJ
+	cOHS5C/Bw6O9yiqqA7BJys06RcE5Vb+AFsMMU8feT8cVN31IjuFrCpXBuUxuWk/3Oa1VLp
+	kCa923oDQJtyG2juPvprTiBcRJypTZ4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Jai Luthra <jai.luthra@linux.dev>
+To: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+Cc: nm@ti.com, vigneshr@ti.com, kristo@kernel.org, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, vaishnav.a@ti.com, 
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, u-kumar1@ti.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2 3/7] arm64: dts: ti: k3-j721e-sk: Remove clock-names
+ property from IMX219 overlay
+Message-ID: <gegzfauj2ow4ibilu7bsfr2bj4p4s7mea75vj5gxiifqj5dafc@qmaan4suzxql>
+X-PGP-Key: http://jailuthra.in/files/public-key.asc
+References: <20250409134128.2098195-1-y-abhilashchandra@ti.com>
+ <20250409134128.2098195-4-y-abhilashchandra@ti.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowABnpQ03qfxnkijlCA--.684S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7GryUJrykJF4kZr43GrWrGrg_yoW8Jr4Dpa
-	yqy39IkF98Jw4UX3srA348uFy5GanYka43Ka4Skw13Z3Z8JFsFvr4jq342gr4jgrW7Zay3
-	JF15WryUG3WkCw7anT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvm14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
-	JF0_Jw1lc2xSY4AK67AK6r47MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
-	4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
-	67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
-	x0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
-	z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnU
-	UI43ZEXa7VUUbAw7UUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgwMA2f8nCQemQABsg
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="eqifq5opzzp3xw6i"
+Content-Disposition: inline
+In-Reply-To: <20250409134128.2098195-4-y-abhilashchandra@ti.com>
+X-Migadu-Flow: FLOW_OUT
 
-The function dst_ci_command() calls the function dst_comm_init()
-but does not handle the error if the init fails. A proper implementation
-can be found in dst_command() in /source/drivers/media/pci/bt8xx/dst.c.
 
-Add error handling to the dst_comm_init(). Print an error message via
-dprintk(), and jump to the 'error' label if the function fails.
+--eqifq5opzzp3xw6i
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 3/7] arm64: dts: ti: k3-j721e-sk: Remove clock-names
+ property from IMX219 overlay
+MIME-Version: 1.0
 
-Fixes: 50b215a05878 ("[PATCH] dvb: DST: reorganize Twinhan DST driver to support CI")
-Cc: stable@vger.kernel.org # v2.6+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/media/pci/bt8xx/dst_ca.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Hi Abhilash,
 
-diff --git a/drivers/media/pci/bt8xx/dst_ca.c b/drivers/media/pci/bt8xx/dst_ca.c
-index a9cc6e7a57f9..a743f7653fdd 100644
---- a/drivers/media/pci/bt8xx/dst_ca.c
-+++ b/drivers/media/pci/bt8xx/dst_ca.c
-@@ -66,7 +66,10 @@ static int dst_ci_command(struct dst_state* state, u8 * data, u8 *ca_string, u8
- 	u8 reply;
- 
- 	mutex_lock(&state->dst_mutex);
--	dst_comm_init(state);
-+	if (dst_comm_init(state) < 0) {
-+		dprintk(verbose, DST_CA_ERROR, 1, "DST initialization failed.");
-+		goto error;
-+	}
- 	msleep(65);
- 
- 	if (write_dst(state, data, len)) {
--- 
-2.42.0.windows.2
+Thanks for the fix.
 
+On Wed, Apr 09, 2025 at 07:11:24PM +0530, Yemike Abhilash Chandra wrote:
+> The IMX219 sensor device tree bindings do not include a clock-names
+> property. Remove the incorrectly added clock-names entry to avoid
+> dtbs_check warnings.
+>=20
+> Fixes: f767eb918096 ("arm64: dts: ti: k3-j721e-sk: Add overlay for IMX219=
+")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+
+Reviewed-by: Jai Luthra <jai.luthra@linux.dev>
+
+> ---
+>  arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso | 2 --
+>  1 file changed, 2 deletions(-)
+>=20
+> diff --git a/arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso b/a=
+rch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso
+> index 47bb5480b5b0..4a395d1209c8 100644
+> --- a/arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso
+> +++ b/arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso
+> @@ -34,7 +34,6 @@ imx219_0: imx219-0@10 {
+>  		reg =3D <0x10>;
+> =20
+>  		clocks =3D <&clk_imx219_fixed>;
+> -		clock-names =3D "xclk";
+> =20
+>  		port {
+>  			csi2_cam0: endpoint {
+> @@ -56,7 +55,6 @@ imx219_1: imx219-1@10 {
+>  		reg =3D <0x10>;
+> =20
+>  		clocks =3D <&clk_imx219_fixed>;
+> -		clock-names =3D "xclk";
+> =20
+>  		port {
+>  			csi2_cam1: endpoint {
+> --=20
+> 2.34.1
+>=20
+
+--eqifq5opzzp3xw6i
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEETeDYGOXVdejUWq/FQ96R+SSacUUFAmf8r44ACgkQQ96R+SSa
+cUXg+Q//czeJY8KpGxGTyeaS0FCuPmwFgcYuyIq4tAzbvSMCzjsNqfy4b99yP7GK
+YehndSrRB+e6HRoxZtrmM9Z73h1nriCF0ZkrrNFasWYwzKlnjLVnzv4E2oWI02P8
+FXHG4w6nwYZYPpVasTn+uwzCuDUDFrRTC/z4apYXdIItZJj/vujjBOsdTw5rLXmk
+WuB+rdq8C8tXbASekBF42FqR521Ua4t8mE5f+ItiBVcMw5mlnyzaMWh8jMzBloWV
+RYFNU4Qu9z32+VpNkyPJp0pHe5/yLUaL3Ku2wRHyBDMVbRWFAF0+vLcTqwfJwaO8
+CvSfmRN1uUj7Kg2znLNj8op/Jg/3ewSNmxkIL2+DxvMaFwpIvUR1Fz1uU80R7M9Y
+0oW6CTM4oDQMc6AYp+WQRUKnSCAv410gjG3mtlaQUdt1FamPJ/OVJacNpQP0haKx
+MUcZwvNbO8wiKREMLsPxF4Uf+rNNAtvGvvfs31oYbcUujMq4XkbE8hMnGzWQGTxF
+T27K2Pa3SGjiRSNYhXG6zdBzN5Ilkiu5Vz3Uy45kgcjVaep/dEilo2kJnhCpmgPo
+wDYwd3J7So9stf2IwPntbMshvJmvEl8e3D6y0koIz1W+KKaaWVJsY0/tBcJK781C
+z3g4UlSxK9UkxmrAtNyR9/1bT4qD8y1Xo2Fp13GdJdgJZs1wJBQ=
+=NQGY
+-----END PGP SIGNATURE-----
+
+--eqifq5opzzp3xw6i--
 
