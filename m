@@ -1,65 +1,96 @@
-Return-Path: <stable+bounces-132422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D1FA87CA2
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 11:59:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC50FA87D9D
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 12:27:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 853711888326
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 09:59:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22AD63A7EFD
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 10:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F73267B8C;
-	Mon, 14 Apr 2025 09:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8EF1269AF5;
+	Mon, 14 Apr 2025 10:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JUbKnkWQ"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="eWGLZUdQ";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="ON52rTej";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="eWGLZUdQ";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="ON52rTej"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280F8267AE5;
-	Mon, 14 Apr 2025 09:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E90269891
+	for <stable@vger.kernel.org>; Mon, 14 Apr 2025 10:24:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744624761; cv=none; b=kDSB9l0IM1dbPUADDO9o1q1gUrPGE9hiCOgY9CLNX1TXCIyLHQvYR6vFH2Z74joqfwccOyMcHYQVjVtEcM9Sx1KfiGwRIGsgb0WzgwFoad2RwYSuzG7LuHw+Pq9IafpHuz6IPhe9y/2W5l0Y3J9hYHJxacF45VTSFn8IDMAGYdU=
+	t=1744626252; cv=none; b=DksbFWYQEHXvFx8rxyIgSCjNrsy81KRak5y3dCaJZ52tcZgZgsWL18228cLDlrY5b4RjoqbTEYbyEI3d9ZFFcJd3Mx6Pto5Ig9csHtxNfzMf8MCMDPgEG34Ge99or2uehuhGTnT5r2xgWa02tXMdsTLG3IIVYUBwogLv68sVhEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744624761; c=relaxed/simple;
-	bh=x2MDu58h9JoknfphytpLlAqXi9FcUSFB38RkSqXHjWA=;
+	s=arc-20240116; t=1744626252; c=relaxed/simple;
+	bh=bJkS8pdoPhOHbmv5878hnOxd7DhNaFYFet884RM0XGA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SpTqEq38ZLUI4JMVOnaOsgYiCl+6gdTfGJuV+oe2c1TURSeelsWg3bW4FuxiEi1mUvBzUQEagh2M4IZAOgBTKroS/ZerqiouBN/1njEamC24KteZq9RJZywL6SoQlckWl6sBm3irZifWx/5JopYK3tHYoTt4YUC/uIRshn6PI4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JUbKnkWQ; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744624759; x=1776160759;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=x2MDu58h9JoknfphytpLlAqXi9FcUSFB38RkSqXHjWA=;
-  b=JUbKnkWQMOnTxZGVwiEG4G0nj0FgDo0q6BvkI9vlNiLVD/Iz43SLsZDR
-   xYy1d6A09gY4Khl6AlMO14Q9o/I9RxRLKULzvm5U7jtMvPplWJ0RyLDc6
-   P/Sz7sTIys9H6AaVrtSNg6ye6YkIQlBSSPVBhAhV6/dOy2Pp6yN8kPjPq
-   RtahNApdxesKQhHPm9iFZVP76iB0hhMzbTNhsoaPQ7MsS9agx/qM5Cb9H
-   kWfGOyJUi4Fnb7mUPV85qst3Wk48MLKxbw9sTkFICuSYIYnXMeBRJ/XFe
-   sSK+F725lbkOTCpgfj/WYBoirQPJxrUQwlnpq5esn/tE2wuNxJk0EJFpD
-   Q==;
-X-CSE-ConnectionGUID: 9qGKcDlRTiikupEzx2hfvA==
-X-CSE-MsgGUID: 0tHzrsySSh2rSv82kBPwIQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11402"; a="71472237"
-X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; 
-   d="scan'208";a="71472237"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 02:59:18 -0700
-X-CSE-ConnectionGUID: +nNSrTNoRui/IPBJmwCdgQ==
-X-CSE-MsgGUID: tg7BsxTMTjKQqkUBWcyipQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; 
-   d="scan'208";a="129756657"
-Received: from unknown (HELO [10.238.224.239]) ([10.238.224.239])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 02:59:16 -0700
-Message-ID: <f10f919e-7bdc-4a01-b131-41bdc9eb6573@intel.com>
-Date: Mon, 14 Apr 2025 17:59:13 +0800
+	 In-Reply-To:Content-Type; b=OPXqFKaqcW4vCWEeMRthQ1Awkxb4ybuvq0GmIh7A1qe3Qu79N8hExbfhKwEWELBCkAtdgumBNUcCZaFiCPTTbFcfEXT3HOySTAJ792O4TaSjpnk/kLcBDwnn4r9qodoPfYpuEgsa/KDLlH+uSrm0R9cPFZvJGwwz4cj0e9y46Lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=eWGLZUdQ; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=ON52rTej; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=eWGLZUdQ; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=ON52rTej; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id A138C2122D;
+	Mon, 14 Apr 2025 10:24:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1744626248; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=H8pZ1ekNSuzCGbf1/ozGBr9ns5MGwbJ9vX66mbbuzuI=;
+	b=eWGLZUdQkN8rhGHJPhiETdEf0Xyn3osto9P+8QnsVnyaAxmy2nm4l9NF0kYp/UmxfZzysI
+	+wW727D9Dy+g8vf2Dx1y0yRqXbqamXQ7ZvU/zVpRCAM9x7yqTFpzI7js71bu2U2MYLoH9g
+	aSFktaLDEnUg09rRrXUXCUymvyCWpto=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1744626248;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=H8pZ1ekNSuzCGbf1/ozGBr9ns5MGwbJ9vX66mbbuzuI=;
+	b=ON52rTejpJKFUg6QhdFxhOOh4VdkLZhizhNnJZJ9XCqTl6fFq63Ppb6hL6Cmchgcfek4ox
+	MAdhrUBikm1RxRBA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eWGLZUdQ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ON52rTej
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1744626248; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=H8pZ1ekNSuzCGbf1/ozGBr9ns5MGwbJ9vX66mbbuzuI=;
+	b=eWGLZUdQkN8rhGHJPhiETdEf0Xyn3osto9P+8QnsVnyaAxmy2nm4l9NF0kYp/UmxfZzysI
+	+wW727D9Dy+g8vf2Dx1y0yRqXbqamXQ7ZvU/zVpRCAM9x7yqTFpzI7js71bu2U2MYLoH9g
+	aSFktaLDEnUg09rRrXUXCUymvyCWpto=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1744626248;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=H8pZ1ekNSuzCGbf1/ozGBr9ns5MGwbJ9vX66mbbuzuI=;
+	b=ON52rTejpJKFUg6QhdFxhOOh4VdkLZhizhNnJZJ9XCqTl6fFq63Ppb6hL6Cmchgcfek4ox
+	MAdhrUBikm1RxRBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 869D01336F;
+	Mon, 14 Apr 2025 10:24:08 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id dJZCIEji/GdFQwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 14 Apr 2025 10:24:08 +0000
+Message-ID: <32eb2a11-2079-450b-a34c-ca432f416500@suse.cz>
+Date: Mon, 14 Apr 2025 12:24:08 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,81 +98,70 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/2] platform/x86: int3472: add hpd pin support
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Hans de Goede <hdegoede@redhat.com>,
- "Yan, Dongcheng" <dongcheng.yan@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- sakari.ailus@linux.intel.com, hverkuil@xs4all.nl,
- u.kleine-koenig@baylibre.com, ricardo.ribalda@gmail.com,
- bingbu.cao@linux.intel.com, stable@vger.kernel.org, hao.yao@intel.com
-References: <20250411082357.392713-1-dongcheng.yan@intel.com>
- <cfc709a8-85fc-4e44-9dcf-ae3ef7ee0738@redhat.com>
- <c8ae2d43-157c-408a-af89-7248b30d52d1@linux.intel.com>
- <Z_zDGYD1QXZYWwI9@smile.fi.intel.com>
- <d9cab351-4850-42c7-8fee-a9340d157ed9@linux.intel.com>
- <Z_zMMtUdJYpHuny7@smile.fi.intel.com>
+Subject: Re: [PATCH 1/1] slab: ensure slab->obj_exts is clear in a newly
+ allocated slab page
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, kent.overstreet@linux.dev,
+ roman.gushchin@linux.dev, cl@linux.com, rientjes@google.com,
+ harry.yoo@oracle.com, souravpanda@google.com, pasha.tatashin@soleen.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250411155737.1360746-1-surenb@google.com>
+ <c88ec69c-87ee-4865-8b2a-87f32f46b0bc@suse.cz>
+ <CAJuCfpE6_Hb40kyM7E4ESw8-_ptm3SARuL0q_YBB49cqkVbPig@mail.gmail.com>
+ <CAJuCfpGrJNiDWxsD=53ZOzWKHAh=xw2pGidg6oAgwj8mETGPQQ@mail.gmail.com>
 Content-Language: en-US
-From: "Yan, Dongcheng" <dongcheng.yan@intel.com>
-In-Reply-To: <Z_zMMtUdJYpHuny7@smile.fi.intel.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <CAJuCfpGrJNiDWxsD=53ZOzWKHAh=xw2pGidg6oAgwj8mETGPQQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A138C2122D
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -4.51
+X-Spam-Flag: NO
 
-Hi Andy and Hans,
-
-I found the description of lt6911uxe's GPIO in the spec:
-GPIO5 is used as the interrupt signal (50ms low level) to inform SOC
-start reading registers from 6911UXE;
-
-So setting the polarity as GPIO_ACTIVE_LOW is acceptable?
-We used RISING and FALLING in irq(not GPIO) to ensure that HDMI events
-will not be lost to the greatest extent possible.
-
-Thanks,
-Dongcheng
-
-On 4/14/2025 4:49 PM, Andy Shevchenko wrote:
-> On Mon, Apr 14, 2025 at 04:40:26PM +0800, Yan, Dongcheng wrote:
->> On 4/14/2025 4:11 PM, Andy Shevchenko wrote:
->>> On Mon, Apr 14, 2025 at 03:52:50PM +0800, Yan, Dongcheng wrote:
->>>> On 4/11/2025 4:33 PM, Hans de Goede wrote:
->>>>> On 11-Apr-25 10:23 AM, Dongcheng Yan wrote:
+On 4/11/25 19:45, Suren Baghdasaryan wrote:
+> On Fri, Apr 11, 2025 at 9:59 AM Suren Baghdasaryan <surenb@google.com> wrote:
 > 
-> ...
+> Kent asked me to forward this (his email is misbehaving for some reason):
 > 
->>>>>> +	case INT3472_GPIO_TYPE_HOTPLUG_DETECT:
->>>>>> +		*con_id = "hpd";
->>>>>> +		*gpio_flags = GPIO_LOOKUP_FLAGS_DEFAULT;
->>>>>
->>>>> This looks wrong, we really need to clearly provide a polarity
->>>>> here since the ACPI GPIO resources do not provide one.
->>>>>
->>>> I tested gpio_flags=GPIO_LOOKUP_FLAGS_DEFAULT/HIGH/LOW, the lt6911uxe
->>>> driver can pass the test and work normally.
->>>
->>> I doubt you tested that correctly. It's impossible to have level triggered
->>> event to work with either polarity. It might be also a bug in the code lurking
->>> somewhere, but it would be unlikely (taking into account amount of systems
->>> relying on this).
->>>
->>> Is it edge triggered event?
->>>
->>
->> It is an edge triggered event in lt6911uxe. In order to better adapt to
->> other uses, "hpd" is meaningful to specify a polarity here.
->>
->> In lt6911uxe, GPIO "hpd" is used as irq, and set irq-flag to
->> IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING | IRQF_ONESHOT. So no matter
->> rising or falling, driver can work normally.
->> "
->> ret = request_threaded_irq(gpiod_to_irq(lt6911uxe->irq_gpio),	NULL,
->> lt6911uxe_threaded_irq_fn, IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING |
->> IRQF_ONESHOT, NULL, lt6911uxe);
->> "
+> Yes, ktest doesn't flip on CONFIG_MEMCG.
 > 
-> So, the driver must not override the firmware, if there is no bugs.
-> So, why do you even use those flags there? It seems like a bad code
-> in the driver that doesn't look correct to me.
-> 
+> Those checks you're talking about are also behind CONFIG_DEBUG_VM,
+> which isn't normally on. I did do some runs with it on and it didn't
 
+Hm yes I forgot we moved them to be DEBUG_VM or debug_pagealloc only.
+
+> fire - only additional asserts Suren and I added - so something's
+> missing.
+> 
+> In the meantime, this needs to go in quickly as a hotfix because it's
+> a 6.15-rc1 regression, and I've been getting distros to enable memory
+> allocation profiling and I'd be shocked if it doesn't cause memcg
+> crashes as well.
+
+I'll send it this week so rc3.
 
