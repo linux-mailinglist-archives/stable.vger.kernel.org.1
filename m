@@ -1,123 +1,133 @@
-Return-Path: <stable+bounces-132672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 435D2A88EBE
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 00:01:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E538A88FDC
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 00:57:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F15473A4184
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 22:01:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B42DF3A555C
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 22:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C101E5208;
-	Mon, 14 Apr 2025 22:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 420141F3BBB;
+	Mon, 14 Apr 2025 22:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="avycfQ4/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iwZEtazG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA741A0BFA;
-	Mon, 14 Apr 2025 22:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0088F201100;
+	Mon, 14 Apr 2025 22:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744668078; cv=none; b=ckx2XXB2YWweO4gbwcNf2pvsqmEPyu/76QIFoNuMH0U5SvCTdDnILWqPgDjJBAwDlJT/RlDMGWQggKRXQuMnatIZFHQO9NNbKqdfcWDVpZLNwFngwB3bpzFtpwvdXMrBGyfP6S555wfEwL4MhC8/3+e/yms0ZFM8MUs7dsS+JNg=
+	t=1744671421; cv=none; b=baLuPyJKyu7AZQrjbfcobxWdFSlPbmCfGet4S6NL5EufZvRElyfLVn+cfxhH7sYbRtQgG8dqcT2mokAcxLBtktOcf7kVodYotJxUOS+qVWAmJDwMt7jxF6tAofBAsCaZBSVkQ8QLfK9LlnphX9z4kjy5gah7upsuKXs2jctXhzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744668078; c=relaxed/simple;
-	bh=1l08P30O+lKCvZ5y1d3ISGQUNkb1SwA1W+kwuLxu/6E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Be1pYYg7al9sQElxyypCTkVAK6PbWPzq2v5siRPCxOSehq0QPSTNt3W8Ciz4GRaqFn5CmzxAxD8TbsnkxbsRkjXxAvnAOG+kZNlpgOwYAvtqzT3dHhxRtWXIJRJfML3vOjPay7t4zoxHecoH2mSCftTIcEfWknqvdStjzgBcqH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=avycfQ4/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EA36C4CEE5;
-	Mon, 14 Apr 2025 22:01:14 +0000 (UTC)
+	s=arc-20240116; t=1744671421; c=relaxed/simple;
+	bh=O8Cg+UG/jr/Kl6PFms4D8O0Iw2r6nd/5sC7AS9OipL0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=JP72UpS5fL2+Jq8sNBRU6ABU+auRyhvLR/e59PrZ2uWLgTpOn0xu1zu9z1USuszg9Fed0uxY4aLkzGFOM9lfyW6vjntzZZzgGW88Amd8xZgZb0qF3sneZQd9KfN7kv1HhLX0lTc2IYrzsZFoDdCRASgILj0e6Wc2/iBtwh8JLxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iwZEtazG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4E61C4CEE2;
+	Mon, 14 Apr 2025 22:57:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744668076;
-	bh=1l08P30O+lKCvZ5y1d3ISGQUNkb1SwA1W+kwuLxu/6E=;
-	h=From:Date:Subject:To:Cc:From;
-	b=avycfQ4/0cG4DMg8yoIOazqlWCLis60DvfwmQwQ1vdOPuF6I2gjyJTxQ3zPOgTiM7
-	 cwCXLjU3lalJsXZnZEGzvUpDTmhfoleQf9Pjd8sN4z0VjmyCfEol/pcWG3GJpplFDq
-	 XdEwyzLslHTU7l7VVY3mcV+pmm6557XrN78FmvLYPkRy74y8pqUSUHJ3M5OcnZE0hu
-	 0NGecSiDdypE1ydyoyvvBCxc2BotJpGJvduTn8Pk3hPt8M39Dth+QVyzS/MBmsWKx4
-	 pz9decYhFN4GFA5xTiYXmb8ILHHXYeUeiDTWKYc7d3CUfAuCVrx849/J+a8PkmYLzZ
-	 j+z0azCYRu4Mg==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Mon, 14 Apr 2025 15:00:59 -0700
-Subject: [PATCH] lib/Kconfig.ubsan: Remove 'default UBSAN' from
- UBSAN_INTEGER_WRAP
+	s=k20201202; t=1744671420;
+	bh=O8Cg+UG/jr/Kl6PFms4D8O0Iw2r6nd/5sC7AS9OipL0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=iwZEtazGwIwnf1+eHRLraxUGavhdd4vcGyb8TYMUBGZfsBMB8wbyxPlDn/Q2yDUqy
+	 uKBCdLCOo5CwKKS+pJ0xwdj8qOKiU9C6+wretJqKCIlCSs3fKIS5HuMCgpwFQXSoWc
+	 ROkB1Ut0j5PH98ZDCw1i/p+VGpZiEuwd+lBTsW0Zs1GWqhte2mKR3BOqmkM4pcP34H
+	 JW5zzIofKiNKPTKT5gN1DMKeaHej35mmuH+S73f9ebdU+rLdhkSJP73d82nFh3BnwE
+	 NZrigqBcvLgtBsvEwq0iZ/0o8HhwSs9rsvlNBlWkSs6aR5edT1ogEr13LwtctB20yY
+	 cmwAftB3zhbDQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAD6E3822D1A;
+	Mon, 14 Apr 2025 22:57:39 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250414-drop-default-ubsan-integer-wrap-v1-1-392522551d6b@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAJqF/WcC/x3NQQrCMBBG4auUWTuQhiroVcRFpvlTByQNk7YKp
- XdvcPlt3tupwhSVHt1Ohk2rzrmhv3Q0vkOewBqbyTt/dUM/cLS5cEQK62fhVWrIrHnBBOOvhcK
- SHOSGJP4u1CrFkPT3Pzxfx3ECt51ZE3EAAAA=
-X-Change-ID: 20250414-drop-default-ubsan-integer-wrap-bf0eb6efb29b
-To: Kees Cook <kees@kernel.org>
-Cc: Marco Elver <elver@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
- Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
- Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org, 
- kasan-dev@googlegroups.com, linux-hardening@vger.kernel.org, 
- stable@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1816; i=nathan@kernel.org;
- h=from:subject:message-id; bh=1l08P30O+lKCvZ5y1d3ISGQUNkb1SwA1W+kwuLxu/6E=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDOl/W1eWOfmu1DwxweuGvH3/Sf4k3X33El1u672ftf+R6
- henoktLO0pZGMS4GGTFFFmqH6seNzScc5bxxqlJMHNYmUCGMHBxCsBElJgYGeYJHfpSVKezRjLY
- 5psHd3usUePBLd6OTZ3hbaoW72cmWDIy7Hz4Penn6vQbBxLDUk+xfPrTVGl7w5jjnt4j/YUhAeq
- tXAA=
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+Content-Transfer-Encoding: 8bit
+Subject: Re: [f2fs-dev] [PATCH] f2fs: prevent kernel warning due to negative
+ i_nlink from corrupted image
+From: patchwork-bot+f2fs@kernel.org
+Message-Id: 
+ <174467145850.2060374.10714533632161359459.git-patchwork-notify@kernel.org>
+Date: Mon, 14 Apr 2025 22:57:38 +0000
+References: <20250412214226.2907676-1-jaegeuk@kernel.org>
+In-Reply-To: <20250412214226.2907676-1-jaegeuk@kernel.org>
+To: Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+ stable@vger.kernel.org
 
-CONFIG_UBSAN_INTEGER_WRAP is 'default UBSAN', which is problematic for a
-couple of reasons.
+Hello:
 
-The first is that this sanitizer is under active development on the
-compiler side to come up with a solution that is maintainable on the
-compiler side and usable on the kernel side. As a result of this, there
-are many warnings when the sanitizer is enabled that have no clear path
-to resolution yet but users may see them and report them in the meantime.
+This patch was applied to jaegeuk/f2fs.git (dev)
+by Jaegeuk Kim <jaegeuk@kernel.org>:
 
-The second is that this option was renamed from
-CONFIG_UBSAN_SIGNED_WRAP, meaning that if a configuration has
-CONFIG_UBSAN=y but CONFIG_UBSAN_SIGNED_WRAP=n and it is upgraded via
-olddefconfig (common in non-interactive scenarios such as CI),
-CONFIG_UBSAN_INTEGER_WRAP will be silently enabled again.
+On Sat, 12 Apr 2025 21:42:26 +0000 you wrote:
+> WARNING: CPU: 1 PID: 9426 at fs/inode.c:417 drop_nlink+0xac/0xd0
+> home/cc/linux/fs/inode.c:417
+> Modules linked in:
+> CPU: 1 UID: 0 PID: 9426 Comm: syz-executor568 Not tainted
+> 6.14.0-12627-g94d471a4f428 #2 PREEMPT(full)
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+> 1.13.0-1ubuntu1.1 04/01/2014
+> RIP: 0010:drop_nlink+0xac/0xd0 home/cc/linux/fs/inode.c:417
+> Code: 48 8b 5d 28 be 08 00 00 00 48 8d bb 70 07 00 00 e8 f9 67 e6 ff
+> f0 48 ff 83 70 07 00 00 5b 5d e9 9a 12 82 ff e8 95 12 82 ff 90
+> &lt;0f&gt; 0b 90 c7 45 48 ff ff ff ff 5b 5d e9 83 12 82 ff e8 fe 5f e6
+> ff
+> RSP: 0018:ffffc900026b7c28 EFLAGS: 00010293
+> RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff8239710f
+> RDX: ffff888041345a00 RSI: ffffffff8239717b RDI: 0000000000000005
+> RBP: ffff888054509ad0 R08: 0000000000000005 R09: 0000000000000000
+> R10: 0000000000000000 R11: ffffffff9ab36f08 R12: ffff88804bb40000
+> R13: ffff8880545091e0 R14: 0000000000008000 R15: ffff8880545091e0
+> FS:  000055555d0c5880(0000) GS:ffff8880eb3e3000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00007f915c55b178 CR3: 0000000050d20000 CR4: 0000000000352ef0
+> Call Trace:
+>  <task>
+>  f2fs_i_links_write home/cc/linux/fs/f2fs/f2fs.h:3194 [inline]
+>  f2fs_drop_nlink+0xd1/0x3c0 home/cc/linux/fs/f2fs/dir.c:845
+>  f2fs_delete_entry+0x542/0x1450 home/cc/linux/fs/f2fs/dir.c:909
+>  f2fs_unlink+0x45c/0x890 home/cc/linux/fs/f2fs/namei.c:581
+>  vfs_unlink+0x2fb/0x9b0 home/cc/linux/fs/namei.c:4544
+>  do_unlinkat+0x4c5/0x6a0 home/cc/linux/fs/namei.c:4608
+>  __do_sys_unlink home/cc/linux/fs/namei.c:4654 [inline]
+>  __se_sys_unlink home/cc/linux/fs/namei.c:4652 [inline]
+>  __x64_sys_unlink+0xc5/0x110 home/cc/linux/fs/namei.c:4652
+>  do_syscall_x64 home/cc/linux/arch/x86/entry/syscall_64.c:63 [inline]
+>  do_syscall_64+0xc7/0x250 home/cc/linux/arch/x86/entry/syscall_64.c:94
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7fb3d092324b
+> Code: 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01 48 83 c8 ff c3 66
+> 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 57 00 00 00 0f 05
+> &lt;48&gt; 3d 01 f0 ff ff 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01
+> 48
+> RSP: 002b:00007ffdc232d938 EFLAGS: 00000206 ORIG_RAX: 0000000000000057
+> RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fb3d092324b
+> RDX: 00007ffdc232d960 RSI: 00007ffdc232d960 RDI: 00007ffdc232d9f0
+> RBP: 00007ffdc232d9f0 R08: 0000000000000001 R09: 00007ffdc232d7c0
+> R10: 00000000fffffffd R11: 0000000000000206 R12: 00007ffdc232eaf0
+> R13: 000055555d0cebb0 R14: 00007ffdc232d958 R15: 0000000000000001
+>  </task>
+> 
+> [...]
 
-Remove 'default UBSAN' from CONFIG_UBSAN_INTEGER_WRAP until it is ready
-for regular usage and testing from a broader community than the folks
-actively working on the feature.
+Here is the summary with links:
+  - [f2fs-dev] f2fs: prevent kernel warning due to negative i_nlink from corrupted image
+    https://git.kernel.org/jaegeuk/f2fs/c/42cb74a92ada
 
-Cc: stable@vger.kernel.org
-Fixes: 557f8c582a9b ("ubsan: Reintroduce signed overflow sanitizer")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- lib/Kconfig.ubsan | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/lib/Kconfig.ubsan b/lib/Kconfig.ubsan
-index 4216b3a4ff21..f6ea0c5b5da3 100644
---- a/lib/Kconfig.ubsan
-+++ b/lib/Kconfig.ubsan
-@@ -118,7 +118,6 @@ config UBSAN_UNREACHABLE
- 
- config UBSAN_INTEGER_WRAP
- 	bool "Perform checking for integer arithmetic wrap-around"
--	default UBSAN
- 	depends on !COMPILE_TEST
- 	depends on $(cc-option,-fsanitize-undefined-ignore-overflow-pattern=all)
- 	depends on $(cc-option,-fsanitize=signed-integer-overflow)
-
----
-base-commit: 26fe62cc5e8420d5c650d6b86fee061952d348cd
-change-id: 20250414-drop-default-ubsan-integer-wrap-bf0eb6efb29b
-
-Best regards,
+You are awesome, thank you!
 -- 
-Nathan Chancellor <nathan@kernel.org>
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
