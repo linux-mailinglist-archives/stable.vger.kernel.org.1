@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-132495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EFDBA8827D
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:37:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1A51A882AB
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:41:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D00F7AA6CB
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:35:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39DA73BDFF0
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD82F28BA9D;
-	Mon, 14 Apr 2025 13:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29B4328BAB5;
+	Mon, 14 Apr 2025 13:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z2L9lq3u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IioLIqY9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A21F28BA97;
-	Mon, 14 Apr 2025 13:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A7F28BAB2;
+	Mon, 14 Apr 2025 13:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637266; cv=none; b=c93K/RxBJU0bVFve9vhqZXVaWmD0glcScMkx3RMylgCZCzKZIa3b8dhsigarP//zeY52PnMiL3Kg0AfBSIY1y6B0y6y+MAhCWHoNZMCw65+XmjflC3bsLSemX0iB+DVVlPqHikp68eSi27SjE7/mvtSaQz2gkcSLU2dyo3ZW0iE=
+	t=1744637267; cv=none; b=CAMWQXbOUXcn8BaspX8LLX6Aw9HFG2RMSvgsP2XGK1tNEtFjcFiWpVhLM0sQZAI3YlGJXA6BLSCRfa87a3Cr0NCpRfs4CDQKKneXyJ24iF+i0sJmLuH6hGEk1bGUMF58IIWibCaB3Px6GGYT4QvdP72UN3Lv1WzNsmBeiC0emZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637266; c=relaxed/simple;
-	bh=l/yHk582AK4bFUjbv7xQMGDY1aE4V/qkqvcLDCRbGaQ=;
+	s=arc-20240116; t=1744637267; c=relaxed/simple;
+	bh=BLF5CT5kwcWC1miXyvm9/Lok3k9VPVK/u1JpmTejCmM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qDdX7h9LMJOxJauDIJwXZvxnYdIBOQhSBZVPb9UMjwdx/Qhxmnrt2R9dqNiBHsKW1V5w3g3J0GU4yMf+C0bMhHiUVa/xfZqvofQEw7JqvENl1K7Pa0mSpPd/bDDR/fo64xLrEs8b0K3V4ES9FaCqfD0s0Sk2fLukdoTiqkNuQt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z2L9lq3u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C27C4CEE9;
-	Mon, 14 Apr 2025 13:27:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TVzJqske5Iq9FMHdcJc+bCjCwmI4M9hLkn7WNfCCOurC3rMRMGjUK8MGWQGxyXU0yMCrP8hUivfdw8//WqC+yB0OR3M3QsEPooD0eCJnqT8ce9YcHh/SPpzDhzSw2XHUPhXTUR/PFt0ve7uvI0kwvOnosOlOFLWhsga3Q0wMclg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IioLIqY9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 999EDC4CEED;
+	Mon, 14 Apr 2025 13:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744637266;
-	bh=l/yHk582AK4bFUjbv7xQMGDY1aE4V/qkqvcLDCRbGaQ=;
+	s=k20201202; t=1744637267;
+	bh=BLF5CT5kwcWC1miXyvm9/Lok3k9VPVK/u1JpmTejCmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z2L9lq3upqVI+SAI17zW0a2ntUNGZv0kQhs3tOeVXAaigbfeKB33pFawJWZKXxeg2
-	 v/heFzy8VosVo1JS4t4MDRrCRbmbF6KSdS5kkJ0MCD2kqZoVS1sJmJD2kAO3YmvCDv
-	 HC1MJzq3YuRPTjrZc906aNGS28lpAHZB4epAVTMLlON+giRJ9mFBiC+5vpFznTEPRB
-	 lmNFILTayYMTS2bzM9faSqUWPri8YIpXEmKFR6t06SxEy43i1v06/JXBzdm34K+WOd
-	 WxDI7BtY1r+3xdhytQFdeVvv1JM+E4upHBVQezYqpNN8FCvHGPj6Eg6ut4NDBYknPD
-	 I7rnuijhwO/8w==
+	b=IioLIqY9IoMV+ORUzAYADOxUAAj7aIZ1fZ39vpl6DqScR2coigcEvR38Z20t1w2wW
+	 2nm1iZTxMFV/5PiWc7woamt4JmV6k0+K/gSkKH/hKLEre+rxAu8f/f8khrZIrXt+dn
+	 /rBZWuZ1nsQyYDrUeAMyPaimL4qKWUYC7Gx/yFm4KAyVcRGDtPWjq7qA5f0xGR2wXU
+	 7UbjnRhaRHClnNoDMcByPhz6k7uyOf1F06GNrZ4s2Sul487LeJ84K3Kr28e2ziCGe7
+	 1I91+dfxr15eu17bTQ1Tbayq0q9bsRfBZJRazBUfWDOVp2Q8NmvtjIFB8fVPqzgHgB
+	 5dGYfaf+xe2fA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jason Andryuk <jason.andryuk@amd.com>,
-	Jan Beulich <jbeulich@suse.com>,
-	Juergen Gross <jgross@suse.com>,
+Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Trevor Gamblin <tgamblin@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	sstabellini@kernel.org,
-	xen-devel@lists.xenproject.org
-Subject: [PATCH AUTOSEL 6.13 07/34] xen: Change xen-acpi-processor dom0 dependency
-Date: Mon, 14 Apr 2025 09:27:01 -0400
-Message-Id: <20250414132729.679254-7-sashal@kernel.org>
+	linux-pwm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 08/34] pwm: Let pwm_set_waveform() succeed even if lowlevel driver rounded up
+Date: Mon, 14 Apr 2025 09:27:02 -0400
+Message-Id: <20250414132729.679254-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250414132729.679254-1-sashal@kernel.org>
 References: <20250414132729.679254-1-sashal@kernel.org>
@@ -62,43 +61,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.11
 Content-Transfer-Encoding: 8bit
 
-From: Jason Andryuk <jason.andryuk@amd.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit 0f2946bb172632e122d4033e0b03f85230a29510 ]
+[ Upstream commit 00e53d0f4baedd72196b65f00698b2a5a537dc2b ]
 
-xen-acpi-processor functions under a PVH dom0 with only a
-xen_initial_domain() runtime check.  Change the Kconfig dependency from
-PV dom0 to generic dom0 to reflect that.
+Waveform parameters are supposed to be rounded down to the next value
+possible for the hardware. However when a requested value is too small,
+.round_waveform_tohw() is supposed to pick the next bigger value and
+return 1. Let pwm_set_waveform() behave in the same way.
 
-Suggested-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Tested-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250331172913.51240-1-jason.andryuk@amd.com>
+This creates consistency between pwm_set_waveform_might_sleep() with
+exact=false and pwm_round_waveform_might_sleep() +
+pwm_set_waveform_might_sleep() with exact=true.
+
+The PWM_DEBUG rounding check has to be adapted to only trigger if no
+uprounding happend.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Tested-by: Trevor Gamblin <tgamblin@baylibre.com>
+Link: https://lore.kernel.org/r/353dc6ae31be815e41fd3df89c257127ca0d1a09.1743844730.git.u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pwm/core.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/xen/Kconfig b/drivers/xen/Kconfig
-index f7d6f47971fdf..24f485827e039 100644
---- a/drivers/xen/Kconfig
-+++ b/drivers/xen/Kconfig
-@@ -278,7 +278,7 @@ config XEN_PRIVCMD_EVENTFD
+diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
+index 99d0bc6933152..bd79953272405 100644
+--- a/drivers/pwm/core.c
++++ b/drivers/pwm/core.c
+@@ -322,7 +322,7 @@ static int __pwm_set_waveform(struct pwm_device *pwm,
+ 	const struct pwm_ops *ops = chip->ops;
+ 	char wfhw[WFHWSIZE];
+ 	struct pwm_waveform wf_rounded;
+-	int err;
++	int err, ret_tohw;
  
- config XEN_ACPI_PROCESSOR
- 	tristate "Xen ACPI processor"
--	depends on XEN && XEN_PV_DOM0 && X86 && ACPI_PROCESSOR && CPU_FREQ
-+	depends on XEN && XEN_DOM0 && X86 && ACPI_PROCESSOR && CPU_FREQ
- 	default m
- 	help
- 	  This ACPI processor uploads Power Management information to the Xen
+ 	BUG_ON(WFHWSIZE < ops->sizeof_wfhw);
+ 
+@@ -332,16 +332,16 @@ static int __pwm_set_waveform(struct pwm_device *pwm,
+ 	if (!pwm_wf_valid(wf))
+ 		return -EINVAL;
+ 
+-	err = __pwm_round_waveform_tohw(chip, pwm, wf, &wfhw);
+-	if (err)
+-		return err;
++	ret_tohw = __pwm_round_waveform_tohw(chip, pwm, wf, &wfhw);
++	if (ret_tohw < 0)
++		return ret_tohw;
+ 
+ 	if ((IS_ENABLED(CONFIG_PWM_DEBUG) || exact) && wf->period_length_ns) {
+ 		err = __pwm_round_waveform_fromhw(chip, pwm, &wfhw, &wf_rounded);
+ 		if (err)
+ 			return err;
+ 
+-		if (IS_ENABLED(CONFIG_PWM_DEBUG) && !pwm_check_rounding(wf, &wf_rounded))
++		if (IS_ENABLED(CONFIG_PWM_DEBUG) && ret_tohw == 0 && !pwm_check_rounding(wf, &wf_rounded))
+ 			dev_err(&chip->dev, "Wrong rounding: requested %llu/%llu [+%llu], result %llu/%llu [+%llu]\n",
+ 				wf->duty_length_ns, wf->period_length_ns, wf->duty_offset_ns,
+ 				wf_rounded.duty_length_ns, wf_rounded.period_length_ns, wf_rounded.duty_offset_ns);
+@@ -382,7 +382,8 @@ static int __pwm_set_waveform(struct pwm_device *pwm,
+ 				wf_rounded.duty_length_ns, wf_rounded.period_length_ns, wf_rounded.duty_offset_ns,
+ 				wf_set.duty_length_ns, wf_set.period_length_ns, wf_set.duty_offset_ns);
+ 	}
+-	return 0;
++
++	return ret_tohw;
+ }
+ 
+ /**
 -- 
 2.39.5
 
