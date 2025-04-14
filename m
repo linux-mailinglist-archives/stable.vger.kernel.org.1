@@ -1,139 +1,180 @@
-Return-Path: <stable+bounces-132627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D843FA88424
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 16:13:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 667A2A88493
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 16:22:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52525189C5BF
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 14:06:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 579D83BF8D4
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 14:13:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1592DDCFB;
-	Mon, 14 Apr 2025 13:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063F028DEF8;
+	Mon, 14 Apr 2025 13:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gdxM7q++"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U2UZPjdY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6A3275855;
-	Mon, 14 Apr 2025 13:32:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A64717A2EA;
+	Mon, 14 Apr 2025 13:48:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637557; cv=none; b=r17fykL+rTUTD2cKSrQeP1ckc2i+KTPHMy65fn8hRC5+h1lopyy6V3ivaWl+CucR4rBAi2jbyKLVaIP4jm9TQhDCOYdYKhmCrqZOeOC58DaLg2sIBQj+hMYW3D4HSspmzCHkhiCN5VOVF8Yalo0GFnE8CgSf5q6+r+bvLn91Hi8=
+	t=1744638505; cv=none; b=QdhYyLOHz5x9pPxaR07QnmA7kEur2rS45HTjLL0pRBwcW21lvSR53oZHjNFFHSyz1+0bCiyeEYSXiQ7dx3SzghiFSogPPj5ebrUARq+e1lQzM9iq+ZlDnP8bvbuZ2WmV+CNStpKu6xN1KPG74v9NTgyY6u65VIDMYZJXZeTkusc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637557; c=relaxed/simple;
-	bh=xSAkdHyLm0BbLTXjNPY0QAHDsgE7I90h6SKsfhAiTuI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BIZPHfFFD9T9TpmxttEdCm3Rvubc6nQISO8vwEeTWY4yDj488hHZGXu+RYehst43GafRN+WbStXbNowF7Ip0PfP9EQOKysy5awcQ3mcz3Cc1dGfVHsTerG9LpRJr2JH7O/QPpNugVVZKQsC8D8XFtM+cBkPMKRnzK0NhdvVQcOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gdxM7q++; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1213EC4CEE2;
-	Mon, 14 Apr 2025 13:32:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744637556;
-	bh=xSAkdHyLm0BbLTXjNPY0QAHDsgE7I90h6SKsfhAiTuI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gdxM7q++0D7EdlLkUv4QJJOgHUfQ5fB7wpIHWpq+d0oKriQuC5qeSXBA4kc5rlEhW
-	 ts7fHh2uKkVYTpJY9ZQggKZCErm7yELai8ZXoj7Mk5KR/u99lSwMhcg4lbI17Y2Zfb
-	 ub05DCrPalWfY4XKGWUnp8qVJIyqvA+PmHrYVz453DrDpkBhxcu3NCLrYdDOG8MGAa
-	 l3GqI8i7Mu99zIq/YZzgkNoLcVv27xkYPPvI0NKpuph9DQvgFiJVM5GvNfZ/T0kUoc
-	 9iv4y5WdbpMC4UxTGIJs5EyHFloqkDp7TnlkQ0dXhfvLPsCaazG4putax8NN3jQqSv
-	 AsNsRTVIMGecg==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Amit Shah <amit.shah@amd.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Sasha Levin <sashal@kernel.org>,
-	tglx@linutronix.de,
-	bp@alien8.de,
-	peterz@infradead.org,
-	mingo@redhat.com,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org
-Subject: [PATCH AUTOSEL 5.4 5/5] x86/bugs: Don't fill RSB on VMEXIT with eIBRS+retpoline
-Date: Mon, 14 Apr 2025 09:32:23 -0400
-Message-Id: <20250414133223.681195-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250414133223.681195-1-sashal@kernel.org>
-References: <20250414133223.681195-1-sashal@kernel.org>
+	s=arc-20240116; t=1744638505; c=relaxed/simple;
+	bh=AWnJELZDlGf9iOY/hMcXqPZQ4dopiqhIlPLaJbM7KdM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TsDhRr7b6dooH1q3AOyhtbRr+wThVT/nnQyETPttcwzbm1W8HEboMMFdpBsHjZE/+ImWVFrSaH+Ak93Tb/hm361LVOq7vVdkefwM48wSugQHTkgO7Qj9dRAvya4hhyUX6Tog7qHJ3HjJh7tZl2Uv5g6YIx572mUuvu/Ko9bx6jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U2UZPjdY; arc=none smtp.client-ip=209.85.221.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-523f5836aaeso215059e0c.3;
+        Mon, 14 Apr 2025 06:48:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744638503; x=1745243303; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9gg6c9JaP3fAvNMBtbYiSQTaF78FsgYOrIyM/tQBJqE=;
+        b=U2UZPjdYdIkb9hRU0jwvGIdFbWexA3pCAKCGMecU7CrVYllUtaUF6f1qQFSqVe+tLC
+         WIlPWIC/RqWoA8WbTcXcQRB/gPqUmLeMnXHeu0MyFA3mjIBfpZOXQjblzpgpFBtWFtbJ
+         AnEHmqe7hjnNMOL5nuL+HaCJ0cebCF5yHIeTMTywieWHKZukKa87t/u0/7nMlacGzFRm
+         3ZYWoQ6vYQrmLFLBy7F2Xv96rPaD1NPJrM2g8pcvs2nQxYCfTpoR8VFVUttmdvvsj2i9
+         i0TcS0O5kaU3fpsR7NMzrWlhr2ieDGqi2v03jlcv6D1d/uoKk31rHm7cVy7X6xsU7Xp+
+         jtKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744638503; x=1745243303;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9gg6c9JaP3fAvNMBtbYiSQTaF78FsgYOrIyM/tQBJqE=;
+        b=uAsgdT0k9MpmIuOZRaBeWILoe3720OpDG5EMBMfzOlWPEeZfjgalR4809qnDVnuAxV
+         HLxg6H54FSgx/cygiwIc4DxIGFOTyLSRow0xxFVOTZQVjPpbgdyLlIHR/0FXLRVxpX6t
+         SxmTNvyEmLHGh+TixDO7AOCmQaaNmpWcStgdNrI7JH+mz2iWVX8l/WMzvJowGsA8cIlx
+         djO3mXyqJHfsUiuurz2kj2PhM5T7CU/EUYTH60heFo+9etjMJjjSREAUqgN4YjaheE1H
+         FMTujDUumD0NbhCD9jAfhQN7fEMlSyTc/+IwgDy0GD/RcaPmaxvW4zMkC4KAdqV2J3ce
+         Qr8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWVSbLck0dKSG6eu/FljSEo8P6d3l7Vnqk9Ubygq7oebYAXWMGPKn5g3f8aF3z93e4vetnMDf0y@vger.kernel.org, AJvYcCXRtoKrZFAt/k3LzDfmLhi1dlI9Z7TxYwV3QROLU3qQMT5RSwr/QKZz2eE0i/Bc+bqL4EtYfrKzJJH+7A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdKyZmBxaC5FlBtptNiA1mUSp8zqeGC7wy24GgGaVtvanp3pMq
+	o/9GXaQcZMEbdlls1NdNObTGxskeqHkJ8jCm+XHYS1fkVKW1udeo52EenYXBJlIejmvB50+ebxa
+	pV48bDL0XtOlvCxoLjMOVg5wRYSI=
+X-Gm-Gg: ASbGncv/ZhlgptJChdPW+FncxHzIwgIMCEvHfOnu5pM5AyYNBaL0CjGjH+Zlb+j+VYa
+	yObxxCdfLB5ksgRcS+F/TN+UyG/1+yeQ9dsrzhdRNaE/5ci+qA5sayQVDtJFhEhsxzsM4i2h2Yv
+	HiKjyk7vog8ovAfa7cpb8Gvg==
+X-Google-Smtp-Source: AGHT+IFZNxc/KHoZDwFGFG6I1MTEwTJWg8WdgpWDyKSrkajFA9wV/Z9DP3VoJO9ODfnboEI+ZztudNXfilRisu5rbL8=
+X-Received: by 2002:a05:6122:daa:b0:520:5400:ac0f with SMTP id
+ 71dfb90a1353d-527c35b6a41mr2823390e0c.3.1744638502640; Mon, 14 Apr 2025
+ 06:48:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.292
-Content-Transfer-Encoding: 8bit
+References: <20250414132729.679254-1-sashal@kernel.org> <20250414132729.679254-15-sashal@kernel.org>
+In-Reply-To: <20250414132729.679254-15-sashal@kernel.org>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Mon, 14 Apr 2025 09:48:10 -0400
+X-Gm-Features: ATxdqUGsIVkJwostdQs5byeooJDamJZ9S8mgOlW4xpayrB_LVHSmjP3XNtx4Yaw
+Message-ID: <CADnq5_OyrpJL3fnbyiueyddkNZ2B-uRO9pyrRVqBTeY5AnepYw@mail.gmail.com>
+Subject: Re: [Linaro-mm-sig] [PATCH AUTOSEL 6.13 15/34] drm/amdgpu: allow
+ pinning DMA-bufs into VRAM if all importers can do P2P
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Simona Vetter <simona.vetter@ffwll.ch>, Felix Kuehling <felix.kuehling@amd.com>, 
+	Pak Nin Lui <pak.lui@amd.com>, Alex Deucher <alexander.deucher@amd.com>, simona@ffwll.ch, 
+	sumit.semwal@linaro.org, Yunxiang.Li@amd.com, tvrtko.ursulin@igalia.com, 
+	matthew.auld@intel.com, amd-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
+	linaro-mm-sig@lists.linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+On Mon, Apr 14, 2025 at 9:28=E2=80=AFAM Sasha Levin <sashal@kernel.org> wro=
+te:
+>
+> From: Christian K=C3=B6nig <christian.koenig@amd.com>
+>
+> [ Upstream commit f5e7fabd1f5c65b2e077efcdb118cfa67eae7311 ]
+>
+> Try pinning into VRAM to allow P2P with RDMA NICs without ODP
+> support if all attachments can do P2P. If any attachment can't do
+> P2P just pin into GTT instead.
+>
+> Acked-by: Simona Vetter <simona.vetter@ffwll.ch>
+> Signed-off-by: Christian K=C3=B6nig <christian.koenig@amd.com>
+> Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+> Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+> Tested-by: Pak Nin Lui <pak.lui@amd.com>
+> Cc: Simona Vetter <simona.vetter@ffwll.ch>
+> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-[ Upstream commit 18bae0dfec15b24ec14ca17dc18603372f5f254f ]
+This should not go to stable.  It depends on dmem cgroups.
 
-eIBRS protects against guest->host RSB underflow/poisoning attacks.
-Adding retpoline to the mix doesn't change that.  Retpoline has a
-balanced CALL/RET anyway.
+Alex
 
-So the current full RSB filling on VMEXIT with eIBRS+retpoline is
-overkill.  Disable it or do the VMEXIT_LITE mitigation if needed.
 
-Suggested-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Reviewed-by: Amit Shah <amit.shah@amd.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>
-Link: https://lore.kernel.org/r/84a1226e5c9e2698eae1b5ade861f1b8bf3677dc.1744148254.git.jpoimboe@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/x86/kernel/cpu/bugs.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index af748d1c78d41..4f803aed2ef0e 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1348,20 +1348,20 @@ static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_
- 	case SPECTRE_V2_NONE:
- 		return;
- 
--	case SPECTRE_V2_EIBRS_LFENCE:
- 	case SPECTRE_V2_EIBRS:
-+	case SPECTRE_V2_EIBRS_LFENCE:
-+	case SPECTRE_V2_EIBRS_RETPOLINE:
- 		if (boot_cpu_has_bug(X86_BUG_EIBRS_PBRSB)) {
--			setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT_LITE);
- 			pr_info("Spectre v2 / PBRSB-eIBRS: Retire a single CALL on VMEXIT\n");
-+			setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT_LITE);
- 		}
- 		return;
- 
--	case SPECTRE_V2_EIBRS_RETPOLINE:
- 	case SPECTRE_V2_RETPOLINE:
- 	case SPECTRE_V2_LFENCE:
- 	case SPECTRE_V2_IBRS:
--		setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT);
- 		pr_info("Spectre v2 / SpectreRSB : Filling RSB on VMEXIT\n");
-+		setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT);
- 		return;
- 	}
- 
--- 
-2.39.5
-
+> ---
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c | 25 +++++++++++++++------
+>  1 file changed, 18 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c b/drivers/gpu/dr=
+m/amd/amdgpu/amdgpu_dma_buf.c
+> index 8e81a83d37d84..83390143c2e9f 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
+> @@ -72,11 +72,25 @@ static int amdgpu_dma_buf_attach(struct dma_buf *dmab=
+uf,
+>   */
+>  static int amdgpu_dma_buf_pin(struct dma_buf_attachment *attach)
+>  {
+> -       struct drm_gem_object *obj =3D attach->dmabuf->priv;
+> -       struct amdgpu_bo *bo =3D gem_to_amdgpu_bo(obj);
+> +       struct dma_buf *dmabuf =3D attach->dmabuf;
+> +       struct amdgpu_bo *bo =3D gem_to_amdgpu_bo(dmabuf->priv);
+> +       u32 domains =3D bo->preferred_domains;
+>
+> -       /* pin buffer into GTT */
+> -       return amdgpu_bo_pin(bo, AMDGPU_GEM_DOMAIN_GTT);
+> +       dma_resv_assert_held(dmabuf->resv);
+> +
+> +       /*
+> +        * Try pinning into VRAM to allow P2P with RDMA NICs without ODP
+> +        * support if all attachments can do P2P. If any attachment can't=
+ do
+> +        * P2P just pin into GTT instead.
+> +        */
+> +       list_for_each_entry(attach, &dmabuf->attachments, node)
+> +               if (!attach->peer2peer)
+> +                       domains &=3D ~AMDGPU_GEM_DOMAIN_VRAM;
+> +
+> +       if (domains & AMDGPU_GEM_DOMAIN_VRAM)
+> +               bo->flags |=3D AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED;
+> +
+> +       return amdgpu_bo_pin(bo, domains);
+>  }
+>
+>  /**
+> @@ -131,9 +145,6 @@ static struct sg_table *amdgpu_dma_buf_map(struct dma=
+_buf_attachment *attach,
+>                 r =3D ttm_bo_validate(&bo->tbo, &bo->placement, &ctx);
+>                 if (r)
+>                         return ERR_PTR(r);
+> -
+> -       } else if (bo->tbo.resource->mem_type !=3D TTM_PL_TT) {
+> -               return ERR_PTR(-EBUSY);
+>         }
+>
+>         switch (bo->tbo.resource->mem_type) {
+> --
+> 2.39.5
+>
+> _______________________________________________
+> Linaro-mm-sig mailing list -- linaro-mm-sig@lists.linaro.org
+> To unsubscribe send an email to linaro-mm-sig-leave@lists.linaro.org
 
