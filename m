@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-132500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A60C5A882A1
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:40:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81671A8829E
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:40:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3460176F72
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:37:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4795C1898AFC
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:38:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D798628DF02;
-	Mon, 14 Apr 2025 13:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 757B82BEC5E;
+	Mon, 14 Apr 2025 13:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Aem5JENe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Urp0phb3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9280928DEFA;
-	Mon, 14 Apr 2025 13:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25ABE29899D;
+	Mon, 14 Apr 2025 13:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637274; cv=none; b=lU2C54rhOyUjAj02lAxCAP+8X7pYRboGTgVhCWXjhkbQ8JMKuDQh90wX1erKYoK3il8p0KD0wkT+jZHLCLvO0Y/NIZngMlCzTSNIk6RkG2UHrLjbAmyDPfPTcarMtD5m5njSdZdveRPkeOcmtso3kdKYPdxb2aaZdl/5CDHxAQk=
+	t=1744637277; cv=none; b=rwHAq9Z9F8oVsZFD2FFt+bh0TiZ+S+xrOnhD6TTZpJKFqIbGd9Len6bjF6ZtRR1G7t3LHQDU4h4quqhUWz2mkL0q9AbP5ycerIch2JgAWxhlmhi2tkKIwFSwKH4cR3+NZFUMfKZpCdIcH9wOGY6WniaukTvOG3SNiBzDMb8o+fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637274; c=relaxed/simple;
-	bh=AwcB7sgJ2b3w3rrwnUM1rfisGcuuzSfBoHqPMRdTGF0=;
+	s=arc-20240116; t=1744637277; c=relaxed/simple;
+	bh=PNaP345gDSSlxLCmwD5j7Q5zUx3k3pb511nj8ViwC28=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=e5IybXcRmtr7WUdVfTQihmnClSpMWz0Da+5tVOcvigefAyS8JIOGxy9o7mWhkbmgwSIcZ6UhkXXPQage3uZ5nnw/nLwE1GtWjhczG6353TyY5+Z5ruOCaRiD4nwRum7oThRnnNiqhPAVdnge4mRxHzZyyCO8FtLj4rb8sy4yLIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Aem5JENe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64AB3C4CEEB;
-	Mon, 14 Apr 2025 13:27:53 +0000 (UTC)
+	 MIME-Version; b=drAz2KyyTbHzD3rJzy0EfagQ6QM/QrmeL3gTYoAqxvbcidkbQtw2ErezGyvjDy1bmeaLrC8l91bECaIl72q67FcrjyvT8iG0M23cHzLMSOTHFg+hlIBYcJjGj/yxj0rL2cOcm3AzulpGvYdKF4/J2vgsVoXpGW00AQYxLQT8Em8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Urp0phb3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0185CC4CEEB;
+	Mon, 14 Apr 2025 13:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744637274;
-	bh=AwcB7sgJ2b3w3rrwnUM1rfisGcuuzSfBoHqPMRdTGF0=;
+	s=k20201202; t=1744637276;
+	bh=PNaP345gDSSlxLCmwD5j7Q5zUx3k3pb511nj8ViwC28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aem5JENeG9vN9CQJVO0qttmjooKwcXN+0MDZuIFjQzEdmywY5zlz5DIlr50QwPvYA
-	 1AefUDXX2h01MXgT4UdMV3nDMFWmwOkcgk2tWJG6bFp8NJCt/afvauOWbjlF+mv8bZ
-	 rUBjcvfcoHxOadxln/xUx4kJsqlDr6Y9T6+Z5CQMoBoTGUxdQiNfwQxyBHzrF0m1tJ
-	 O7yPC9j6NdCPatWrrmAp5YpvGsip5E5ModHLT9FrZ2eLL2mWfuNZN/VSseCqaQJSNw
-	 SCXqWTzPEvsW8FTvmiKuyah4rOnJwuP1Hfg5aAdjLOZLDyBjfYqFJzBClbZ4M2XmAU
-	 IhLlZ+BQHC8Fw==
+	b=Urp0phb3LQJBjCnNWZ0Rmx3qlgewZXlnRKfflWGQkjqw0gh/YKhbaZ05t6Vh1iywo
+	 N+EnhRaUPpE2ZMqXhwHD2dGbVntu7pwKE3gk21JG5ZtutEFP9BWYgeN40nvX08Q6x5
+	 QsMzDo+vzrKnqC1ybTurlFohoupT899kD6KMR8jOUVJnRPCPXlqQC59YAnWeWff+Qc
+	 WkXWkyQlNuhp3V0pv/v1MaZ/qr7yV7jZjwcGR73kEstnfuWYfjgkOd1AWtxAKflnPE
+	 POgpnusFSjXi56UMqFJ2m5bJJNgN+IeKDC0cF+Jo7u4oDM+f+xVbte/EhIaQKABuyb
+	 1IKYQIM/3dGDQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jean-Marc Eurin <jmeurin@google.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Emily Deng <Emily.Deng@amd.com>,
+	Jonathan Kim <jonathan.kim@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 12/34] ACPI PPTT: Fix coding mistakes in a couple of sizeof() calls
-Date: Mon, 14 Apr 2025 09:27:06 -0400
-Message-Id: <20250414132729.679254-12-sashal@kernel.org>
+	Felix.Kuehling@amd.com,
+	christian.koenig@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.13 13/34] drm/amdkfd: sriov doesn't support per queue reset
+Date: Mon, 14 Apr 2025 09:27:07 -0400
+Message-Id: <20250414132729.679254-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250414132729.679254-1-sashal@kernel.org>
 References: <20250414132729.679254-1-sashal@kernel.org>
@@ -66,44 +71,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.11
 Content-Transfer-Encoding: 8bit
 
-From: Jean-Marc Eurin <jmeurin@google.com>
+From: Emily Deng <Emily.Deng@amd.com>
 
-[ Upstream commit 7ab4f0e37a0f4207e742a8de69be03984db6ebf0 ]
+[ Upstream commit ba6d8f878d6180d4d0ed0574479fc1e232928184 ]
 
-The end of table checks should be done with the structure size,
-but 2 of the 3 similar calls use the pointer size.
+Disable per queue reset for sriov.
 
-Signed-off-by: Jean-Marc Eurin <jmeurin@google.com>
-Link: https://patch.msgid.link/20250402001542.2600671-1-jmeurin@google.com
-[ rjw: Subject edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Emily Deng <Emily.Deng@amd.com>
+Reviewed-by: Jonathan Kim <jonathan.kim@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/pptt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-index a35dd0e41c270..f73ce6e13065d 100644
---- a/drivers/acpi/pptt.c
-+++ b/drivers/acpi/pptt.c
-@@ -229,7 +229,7 @@ static int acpi_pptt_leaf_node(struct acpi_table_header *table_hdr,
- 	node_entry = ACPI_PTR_DIFF(node, table_hdr);
- 	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
- 			     sizeof(struct acpi_table_pptt));
--	proc_sz = sizeof(struct acpi_pptt_processor *);
-+	proc_sz = sizeof(struct acpi_pptt_processor);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+index 9476e30d6baa1..f45fb81cacd2f 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+@@ -1999,7 +1999,8 @@ static void kfd_topology_set_capabilities(struct kfd_topology_device *dev)
+ 			dev->node_props.capability |=
+ 				HSA_CAP_TRAP_DEBUG_PRECISE_MEMORY_OPERATIONS_SUPPORTED;
  
- 	while ((unsigned long)entry + proc_sz < table_end) {
- 		cpu_node = (struct acpi_pptt_processor *)entry;
-@@ -270,7 +270,7 @@ static struct acpi_pptt_processor *acpi_find_processor_node(struct acpi_table_he
- 	table_end = (unsigned long)table_hdr + table_hdr->length;
- 	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
- 			     sizeof(struct acpi_table_pptt));
--	proc_sz = sizeof(struct acpi_pptt_processor *);
-+	proc_sz = sizeof(struct acpi_pptt_processor);
- 
- 	/* find the processor structure associated with this cpuid */
- 	while ((unsigned long)entry + proc_sz < table_end) {
+-		dev->node_props.capability |= HSA_CAP_PER_QUEUE_RESET_SUPPORTED;
++		if (!amdgpu_sriov_vf(dev->gpu->adev))
++			dev->node_props.capability |= HSA_CAP_PER_QUEUE_RESET_SUPPORTED;
+ 	} else {
+ 		dev->node_props.debug_prop |= HSA_DBG_WATCH_ADDR_MASK_LO_BIT_GFX10 |
+ 					HSA_DBG_WATCH_ADDR_MASK_HI_BIT;
 -- 
 2.39.5
 
