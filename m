@@ -1,191 +1,206 @@
-Return-Path: <stable+bounces-132666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C345A88BBE
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 20:51:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A718EA88BDF
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 21:02:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E228189AC52
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 18:51:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D400B189AB25
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 19:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8D3D1AF0BF;
-	Mon, 14 Apr 2025 18:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242D428A1D2;
+	Mon, 14 Apr 2025 19:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="iHnmd86m"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kNFN5N3S"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B2B1A3031
-	for <stable@vger.kernel.org>; Mon, 14 Apr 2025 18:51:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046F34C74
+	for <stable@vger.kernel.org>; Mon, 14 Apr 2025 19:02:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744656665; cv=none; b=Vfo1EkDREJzOR9n4RX0FIno7Thupl6rn5l3yR6Jzhj7zuNKUZtAB27+cTsW5fttWLhCCH/2xa1rhSgLMO+ncqMxRm2FcssdXsGkxltKChEdQVdABKrreS5Sze6lv8CV537x4+Eo78KI+Z8z3D0vjDszn+58yaHMlX+wx7AMBr18=
+	t=1744657339; cv=none; b=mDOPn4T+7xQ7NwFn3Ugxyk7Ytdz8J6Ixufe8LVr/RgIK8pWyXz+zoITcttSKIPdvP4kRspB4P38SEJ7Sv1IxG+XuuKG90DTfAPmtsULjPVdEz/26Yvi5E8nLLRixkSH6v8DSnJSFINH8hi48Kvxu4buWmoVXkGTOonTw3vHSJ9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744656665; c=relaxed/simple;
-	bh=rQUlMHyD8MJEmUcRviCFcj/9kJJJj2fL3io4f1Kl+DA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U2upwHFIEGuPFdoLRlvV2aHbnBZZRpom1mfpRboWSXyPYeNzAPS59h427FGvMOBZ4sMwsnJMukBdzgoAZfqhp62xHoN4oFkzWTz7VdA8Q2nci51UZJsLbGjsqPwg95Vzh7Xa98fovhrsPHVDEzdVMpHMNvKFb1FeaSq/8n6MIho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=iHnmd86m; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53EH0p6W016959;
-	Mon, 14 Apr 2025 18:50:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2023-11-20; bh=BjJ+h
-	K+pNvO2NvJga8l5UWEk4VdWf0bonZmf4Xe8pvY=; b=iHnmd86ml+Dq/A+48NwKs
-	ZlcMKVX4FZwfUpNdtbdrw2tqU6RJwokTKZkbCdCeQryYbNlz0MWT4dxUuAIK2XYf
-	GZCkcuwtm6XWmR4l2D46IIUS6dDs/9k1OyFBLKxSgnvP9T5Or6/teT55kC06OGvN
-	7MitOM4z2jgvv9v6WpiBrGd0ujEzhH+zLr+sbFy4DgrHllulXZhwIFYo76esArrr
-	Oxx43nYPGtW21MiDdcc2LID5dAbQgY4qzaiwxYaZbI1nOkBBoohDvcXUaYAKuXIF
-	UCIZ0szuwSmMjNkedG+oppAB7Xh+IpOU0bkyfM83FFYyCfwz1as9pcmOzTqQThDh
-	A==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4615yag95c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 14 Apr 2025 18:50:49 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 53EHiUsD024737;
-	Mon, 14 Apr 2025 18:50:49 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 460d4y5fdt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 14 Apr 2025 18:50:49 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 53EIoUHM035509;
-	Mon, 14 Apr 2025 18:50:48 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 460d4y5f48-7;
-	Mon, 14 Apr 2025 18:50:48 +0000
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-To: stable@vger.kernel.org
-Cc: vegard.nossum@oracle.com, Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet <edumazet@google.com>, David Ahern <dsahern@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 5.15.y 6/6] ipv6: release nexthop on device removal
-Date: Mon, 14 Apr 2025 11:50:23 -0700
-Message-ID: <20250414185023.2165422-7-harshit.m.mogalapalli@oracle.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250414185023.2165422-1-harshit.m.mogalapalli@oracle.com>
-References: <20250414185023.2165422-1-harshit.m.mogalapalli@oracle.com>
+	s=arc-20240116; t=1744657339; c=relaxed/simple;
+	bh=lmVL5iXx8UtM9yGScibg2MyfyJuub7bM6yPpWGeTZS0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F6PBkcOifVmHi9eHSm7tFZLJMoSXDNumqbCRLmeOvEgVn1IAGY64BX4xsoWbjd4nNeb5WqhrxvCbkAAfnH4qfGa8CMUi4dXGRwBjBmHrGbqxJPXCSiclbSgbb4SPCmCYvWgLLNDdadWQzPbwTRTu0bJSDODa/RhZXdcBYpjhlos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kNFN5N3S; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5e677f59438so6867363a12.2
+        for <stable@vger.kernel.org>; Mon, 14 Apr 2025 12:02:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744657336; x=1745262136; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6LY3Z65IQjRhzzZTzIq8s4BIA0G+Zu9nAcODU8uzb1U=;
+        b=kNFN5N3SZkg8PsECo0Fc8CEF6Q/BLVipmTegAKlBfOPiXQTFP5ICdI6skkwCJWiTXg
+         BNnlOn7b+J2zNn914pxA5klsYWLB3Xb4XtADHjKrCVEnPgzizWYhtpY7r1ee1JLAO4eY
+         Fbe81E5YbqX0ig6SvfhLk1HCzu7TvvKl5k9LfRQz0NkVeRHkVTCsRfsEbLMC6HnLIo5v
+         niugiUWcIFcOaAlLrieXas51HO7nlqxAxxnIWl9YgwH17tryde039Rz0WVGAPEU3Nmtf
+         FqCOJZi8qVkpEtz4IOuf2ZByvNPlKMm3uS0rDeseaWrYf0NByXKvTK8rsihIKQzn3Azk
+         HfKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744657336; x=1745262136;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6LY3Z65IQjRhzzZTzIq8s4BIA0G+Zu9nAcODU8uzb1U=;
+        b=aTZde3rOsjlXX9tcyQ1YCyVKfRyZNhDqqN4lIJMr5hIYPqS0ZxYLaNTaMt4LnYM7lu
+         ZJx5gwkYHqBDV6Z5l5DKV6Yn7Xomj3NnmElKBE6Ry8b2U20l93kQyM3JSC1iPX1wLfiE
+         CU9O+8TipCjwBxT6/Iln7bcKqicUzOCpe9PiJtMEcFhHFlRrFvXuycd9unmZo1upmUrj
+         4YTtTv18IDxjDo+qvloKhKUj/sg0nYxT2hp7DCC307QFHgmLAxxJeykr3498MndYv3dN
+         jcrzsWg+AWnqHdFpdn/SxX06g/jyVyRDbNcerLYRYF5hjs/56bMBnf1VpG2vqiP4Pyuf
+         h3bA==
+X-Forwarded-Encrypted: i=1; AJvYcCW9kpkqPeeL0FXptGpPMY/1xxmoEGYFskc1Wjrj2J/cXx39ZraLAgHU/gJlhXBkHtY72TTro4w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEpEqimyOXyL/DIZMrg56J85kVbZizLx/pt3meDMSY8xQ9N2Bk
+	SqEi2Co9pPxHnyajp51KqFKUS3lYi67PHkI5P2EUahkXvFXlPD/a
+X-Gm-Gg: ASbGncucdFc8q6SBOJdVUrSv5UDFq4AvCmQd0MuEi+LpBCWVKiD9b8Ha+QQlCyIA3Bk
+	NG0dQC0RrmBkCnnf3/HIx9DrBOtLjlqbsuD5eZ3a/qL1Sp9PucTh1rMvm+qF2kR8GxNBRm65/r6
+	LxfAJGSpqV4TXt2sbp2qkvCqDu26+zFFbavKzqs82Un3M00ZVvVLvK20CwLHEFnFf7//6lPhOgn
+	X7PdfXH9hAeXGT/mkOlecf2xDo6GkabQ29rtHT37JQ5QDSEPMq9CzePMZoHy0m/FPGadPmnR1VB
+	b2JuxY7bX7RqvnCTWM213npCpjSdEO8Vq4BcrNcHWTBk3M3DZ14fiMQjmy7ITL2uZRSQCNFkD4I
+	jaEqXDfom
+X-Google-Smtp-Source: AGHT+IFWkE1Glhu6cGY2ezqU0g1m+eeErpXkykD7wcWilXB3BpQqNt8TFncACH+ooaDNRap/v9EI9A==
+X-Received: by 2002:a17:907:7f14:b0:ac7:edfb:5210 with SMTP id a640c23a62f3a-acad3496114mr1183905866b.20.1744657335667;
+        Mon, 14 Apr 2025 12:02:15 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acaa1ce7fdcsm969991366b.176.2025.04.14.12.02.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Apr 2025 12:02:15 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 2D6C5BE2DE0; Mon, 14 Apr 2025 21:02:14 +0200 (CEST)
+Date: Mon, 14 Apr 2025 21:02:14 +0200
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Jan Beulich <jbeulich@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Juergen Gross <jgross@suse.com>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1 051/198] Xen/swiotlb: mark xen_swiotlb_fixup() __init
+Message-ID: <Z_1btrSDlzd-ac20@eldamar.lan>
+References: <20250325122156.633329074@linuxfoundation.org>
+ <20250325122157.975417185@linuxfoundation.org>
+ <20250407181218.GA737271@ax162>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-14_07,2025-04-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0
- mlxlogscore=922 bulkscore=0 suspectscore=0 mlxscore=0 malwarescore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2502280000 definitions=main-2504140137
-X-Proofpoint-GUID: eO_jlQV9uJ9KB2syP_hXkrNv6D_t5tTS
-X-Proofpoint-ORIG-GUID: eO_jlQV9uJ9KB2syP_hXkrNv6D_t5tTS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250407181218.GA737271@ax162>
 
-From: Paolo Abeni <pabeni@redhat.com>
+Hi,
 
-[ Upstream commit eb02688c5c45c3e7af7e71f036a7144f5639cbfe ]
+On Mon, Apr 07, 2025 at 11:12:18AM -0700, Nathan Chancellor wrote:
+> Hi Greg,
+> 
+> On Tue, Mar 25, 2025 at 08:20:13AM -0400, Greg Kroah-Hartman wrote:
+> > 6.1-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Jan Beulich <jbeulich@suse.com>
+> > 
+> > [ Upstream commit 75ad02318af2e4ae669e26a79f001bd5e1f97472 ]
+> > 
+> > It's sole user (pci_xen_swiotlb_init()) is __init, too.
+> 
+> This is not true in 6.1 though... which results in:
+> 
+>   WARNING: modpost: vmlinux.o: section mismatch in reference: pci_xen_swiotlb_init_late (section: .text) -> xen_swiotlb_fixup (section: .init.text)
+> 
+> Perhaps commit f9a38ea5172a ("x86: always initialize xen-swiotlb when
+> xen-pcifront is enabling") and its dependency 358cd9afd069 ("xen/pci:
+> add flag for PCI passthrough being possible") should be added (I did not
+> test if they applied cleanly though) but it seems like a revert would be
+> more appropriate. I don't see this change as a dependency of another one
+> and the reason it exists upstream does not apply in this tree so why
+> should it be here?
 
-The CI is hitting some aperiodic hangup at device removal time in the
-pmtu.sh self-test:
+Might be following bugreport we got in Debian be related?
+https://bugs.debian.org/1103153
 
-unregister_netdevice: waiting for veth_A-R1 to become free. Usage count = 6
-ref_tracker: veth_A-R1@ffff888013df15d8 has 1/5 users at
-	dst_init+0x84/0x4a0
-	dst_alloc+0x97/0x150
-	ip6_dst_alloc+0x23/0x90
-	ip6_rt_pcpu_alloc+0x1e6/0x520
-	ip6_pol_route+0x56f/0x840
-	fib6_rule_lookup+0x334/0x630
-	ip6_route_output_flags+0x259/0x480
-	ip6_dst_lookup_tail.constprop.0+0x5c2/0x940
-	ip6_dst_lookup_flow+0x88/0x190
-	udp_tunnel6_dst_lookup+0x2a7/0x4c0
-	vxlan_xmit_one+0xbde/0x4a50 [vxlan]
-	vxlan_xmit+0x9ad/0xf20 [vxlan]
-	dev_hard_start_xmit+0x10e/0x360
-	__dev_queue_xmit+0xf95/0x18c0
-	arp_solicit+0x4a2/0xe00
-	neigh_probe+0xaa/0xf0
+The kernel log contains:
 
-While the first suspect is the dst_cache, explicitly tracking the dst
-owing the last device reference via probes proved such dst is held by
-the nexthop in the originating fib6_info.
+[    1.370662] pcifront pci-0: Installing PCI frontend
+[    1.370674] software IO TLB: area num 4.
+[    1.370853] kernel tried to execute NX-protected page - exploit attempt? (uid: 0)
+[    1.370861] BUG: unable to handle page fault for address: ffffffff830c7c05
+[    1.370865] #PF: supervisor instruction fetch in kernel mode
+[    1.370869] #PF: error_code(0x0011) - permissions violation
+[    1.370873] PGD 2a15067 P4D 2a15067 PUD 2a16067 PMD 4a1e067 PTE 80100000030c7067
+[    1.370879] Oops: 0011 [#1] PREEMPT SMP NOPTI
+[    1.370884] CPU: 3 PID: 42 Comm: xenwatch Not tainted 6.1.0-33-amd64 #1  Debian 6.1.133-1
+[    1.370889] RIP: e030:xen_swiotlb_fixup+0x0/0xb7
+[    1.370895] Code: cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc <cc> cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc
+[    1.370904] RSP: e02b:ffffc90040177dd8 EFLAGS: 00010286
+[    1.370907] RAX: ffffffff830c7c05 RBX: ffff88810a800000 RCX: 0000000000000001
+[    1.370912] RDX: 000000000000000a RSI: 0000000000000800 RDI: ffff88810a800000
+[    1.370916] RBP: 0000000000000800 R08: 000000000000002a R09: 0000000000000000
+[    1.370920] R10: 000000000000000a R11: 0000000000000000 R12: 0000000000000001
+[    1.370923] R13: 0000000000002cc0 R14: 0000000000000002 R15: 000000000000000a
+[    1.370931] FS:  0000000000000000(0000) GS:ffff888277780000(0000) knlGS:0000000000000000
+[    1.370936] CS:  e030 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    1.370940] CR2: ffffffff830c7c05 CR3: 0000000101e88000 CR4: 0000000000050660
+[    1.370946] Call Trace:
+[    1.370950]  <TASK>
+[    1.370952]  ? __die_body.cold+0x1a/0x1f
+[    1.370958]  ? platform_driver_init+0x1a/0x1a
+[    1.370963]  ? page_fault_oops+0xd2/0x2b0
+[    1.370967]  ? search_module_extables+0x15/0x60
+[    1.370973]  ? platform_driver_init+0x1a/0x1a
+[    1.370976]  ? exc_page_fault+0xca/0x170
+[    1.370982]  ? asm_exc_page_fault+0x22/0x30
+[    1.370986]  ? platform_driver_init+0x1a/0x1a
+[    1.370989]  ? platform_driver_init+0x1a/0x1a
+[    1.370993]  ? __get_free_pages+0xd/0x40
+[    1.370997]  swiotlb_init_late+0xd5/0x2b0
+[    1.371001]  ? platform_driver_init+0x1a/0x1a
+[    1.371004]  ? xenbus_dev_request_and_reply+0x80/0x80
+[    1.371009]  pci_xen_swiotlb_init_late+0x4c/0x60
+[    1.371015]  pcifront_connect_and_init_dma.cold+0x42/0x66 [xen_pcifront]
+[    1.371021]  pcifront_backend_changed+0x274/0x397 [xen_pcifront]
+[    1.371028]  ? xenbus_dev_request_and_reply+0x80/0x80
+[    1.371031]  ? xenbus_read_driver_state+0x41/0x70
+[    1.371035]  ? xenbus_otherend_changed+0x5b/0x110
+[    1.371039]  xenwatch_thread+0x8f/0x1b0
+[    1.371042]  ? cpuusage_read+0x10/0x10
+[    1.371046]  kthread+0xd7/0x100
+[    1.371051]  ? kthread_complete_and_exit+0x20/0x20
+[    1.371055]  ret_from_fork+0x1f/0x30
+[    1.371060]  </TASK>
+[    1.371062] Modules linked in: crct10dif_pclmul crct10dif_common crc32_pclmul crc32c_intel xen_pcifront(+)
+[    1.371070] CR2: ffffffff830c7c05
+[    1.371072] ---[ end trace 0000000000000000 ]---
+[    1.371076] RIP: e030:xen_swiotlb_fixup+0x0/0xb7
+[    1.371080] Code: cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc <cc> cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc
+[    1.371088] RSP: e02b:ffffc90040177dd8 EFLAGS: 00010286
+[    1.371092] RAX: ffffffff830c7c05 RBX: ffff88810a800000 RCX: 0000000000000001
+[    1.371096] RDX: 000000000000000a RSI: 0000000000000800 RDI: ffff88810a800000
+[    1.371100] RBP: 0000000000000800 R08: 000000000000002a R09: 0000000000000000
+[    1.371104] R10: 000000000000000a R11: 0000000000000000 R12: 0000000000000001
+[    1.371107] R13: 0000000000002cc0 R14: 0000000000000002 R15: 000000000000000a
+[    1.371114] FS:  0000000000000000(0000) GS:ffff888277780000(0000) knlGS:0000000000000000
+[    1.371118] CS:  e030 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    1.371122] CR2: ffffffff830c7c05 CR3: 0000000101e88000 CR4: 0000000000050660
+[    1.371127] note: xenwatch[42] exited with irqs disabled
+[    1.377029] xen_netfront: Initialising Xen virtual ethernet driver
+[    6.464888] xenbus_probe_frontend: Waiting for devices to initialise: 25s...
+[    6.472956] xenbus_probe_frontend: Waiting for devices to initialise:
+[    6.472992] xenbus_probe_frontend: Waiting for devices to initialise:
 
-Similar to commit f5b51fe804ec ("ipv6: route: purge exception on
-removal"), we need to explicitly release the originating fib info when
-disconnecting a to-be-removed device from a live ipv6 dst: move the
-fib6_info cleanup into ip6_dst_ifdown().
+And we have other reports of (KVM) VMs with pci-passthrough devices
+not booting up.
 
-Tested running:
-
-./pmtu.sh cleanup_ipv6_exception
-
-in a tight loop for more than 400 iterations with no spat, running an
-unpatched kernel  I observed a splat every ~10 iterations.
-
-Fixes: f88d8ea67fbd ("ipv6: Plumb support for nexthop object in a fib6_info")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/604c45c188c609b732286b47ac2a451a40f6cf6d.1730828007.git.pabeni@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-(cherry picked from commit eb02688c5c45c3e7af7e71f036a7144f5639cbfe)
-[Harshit: Resolved conflict due to missing commit: e5f80fcf869a ("ipv6:
-give an IPv6 dev to blackhole_netdev") and commit: b4cb4a1391dc ("net:
-use unrcu_pointer() helper") in linux-5.15.y]
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
----
- net/ipv6/route.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index f8b2fdaef67f..f30a5b7d93f4 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -377,6 +377,7 @@ static void ip6_dst_ifdown(struct dst_entry *dst, struct net_device *dev,
- 	struct inet6_dev *idev = rt->rt6i_idev;
- 	struct net_device *loopback_dev =
- 		dev_net(dev)->loopback_dev;
-+	struct fib6_info *from;
- 
- 	if (idev && idev->dev != loopback_dev) {
- 		struct inet6_dev *loopback_idev = in6_dev_get(loopback_dev);
-@@ -385,6 +386,8 @@ static void ip6_dst_ifdown(struct dst_entry *dst, struct net_device *dev,
- 			in6_dev_put(idev);
- 		}
- 	}
-+	from = xchg((__force struct fib6_info **)&rt->from, NULL);
-+	fib6_info_release(from);
- }
- 
- static bool __rt6_check_expired(const struct rt6_info *rt)
-@@ -1443,7 +1446,6 @@ static DEFINE_SPINLOCK(rt6_exception_lock);
- static void rt6_remove_exception(struct rt6_exception_bucket *bucket,
- 				 struct rt6_exception *rt6_ex)
- {
--	struct fib6_info *from;
- 	struct net *net;
- 
- 	if (!bucket || !rt6_ex)
-@@ -1455,8 +1457,6 @@ static void rt6_remove_exception(struct rt6_exception_bucket *bucket,
- 	/* purge completely the exception to allow releasing the held resources:
- 	 * some [sk] cache may keep the dst around for unlimited time
- 	 */
--	from = xchg((__force struct fib6_info **)&rt6_ex->rt6i->from, NULL);
--	fib6_info_release(from);
- 	dst_dev_put(&rt6_ex->rt6i->dst);
- 
- 	hlist_del_rcu(&rt6_ex->hlist);
--- 
-2.47.1
-
+Regards,
+Salvatore
 
