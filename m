@@ -1,58 +1,66 @@
-Return-Path: <stable+bounces-132365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80720A874F2
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 02:12:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFE07A874F6
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 02:12:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7E031885449
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 00:12:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16874188D45E
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 00:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1737B3FC2;
-	Mon, 14 Apr 2025 00:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286C810F2;
+	Mon, 14 Apr 2025 00:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JxIVPrh7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kPvDDUXQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FE464D;
-	Mon, 14 Apr 2025 00:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CA24A07;
+	Mon, 14 Apr 2025 00:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744589515; cv=none; b=nNLOL+FTFpRAsUSH95ifljMT7OSJxJWH8Ed5pBsQgI5XwVbRd1mAF+5JBVXrlY/UOXS4MslgmTiXAhw959lxVFqugJkHL+6Pd+/guo34LHLSUKT9ObqoMm4oGiqaT2pxewD9NkbjzV99Z0hr2JJVUsXWDAYTH6KBfxkglZEvMpA=
+	t=1744589540; cv=none; b=lKx52hUmOXwxG83la0fFc9qOMkcxX3eMahCuuXkoxoUzlF/3ypZHCK/T3UlDOLpZCU51E2xqSViozSvTQ29NcRwpIAVWaET8HPr9tKBPicjw0/xsfQkCzN0og3PVFu8L1ouOBM6SAKgIW49G/isqO86mvOjOTI6kILl3tj2p0vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744589515; c=relaxed/simple;
-	bh=VCN2F59ZCkIWnRcQK6xkMYDWXTnlfwOUkEdgVge3kn4=;
+	s=arc-20240116; t=1744589540; c=relaxed/simple;
+	bh=BENLlnhV6obc/Xc5tTfY3/9UWXuwEIUyVe6XJUmn2SA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u6E6oRQx0gf11Pk86En8pLoDola+WImkrO5bX46yrRHq5HKikBSI+0/thWwKFoqgCQMSJkCzal/Uk5lHJklTlfBHdF/R315SBriBKrs7EM89AkNVVMm2KQ/LtwVEIRCQ0O6HYkI96x6+8AJC2BoWJNf9r9zyNmflrrWOcu/5d/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JxIVPrh7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B48C4CEDD;
-	Mon, 14 Apr 2025 00:11:54 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=PodoJxRnOTbWCODxGa5LjHM2xo/X6LJDCgkPQvjB9KXe1HQr3uvMKONoXqWOU2jG3vT3vk098L4/Fe27lDiwSJFVLOio259ROyBxJypQbKhg44gt/J0DX1+Frf/Z9sJNiHKBovZVFaPZ3F40Mw4QWhFSer5EddlbRtHzxcXYoIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kPvDDUXQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13043C4CEDD;
+	Mon, 14 Apr 2025 00:12:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744589515;
-	bh=VCN2F59ZCkIWnRcQK6xkMYDWXTnlfwOUkEdgVge3kn4=;
+	s=k20201202; t=1744589540;
+	bh=BENLlnhV6obc/Xc5tTfY3/9UWXuwEIUyVe6XJUmn2SA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JxIVPrh7VjVrZnNYYuNfmVttsL5hghqQl9qr9TqGCIesL0l4i8ioRqoNNEr8MY6u5
-	 Q2jttOTuSCEjg6MjAJArueQG8Ogy+yulHAQByc1u4rqx9p1RsbLEAzJs13WB+MQ3t4
-	 /QWel27wQALLesgMpKR/ydNURmJK58ff5uUl8wEOy9J/98TzlzK2rMLgrm4M4tShTe
-	 bPj75jKgVH1vQ+xffe1C7WtxobsMwQ4kF8U2sgYUex7CGETA+kPeug2viDjUHEcjyD
-	 U9KiOS8AGl4DK+gU7WoTibMjt+h5/eL5mHp6qnYlhpErbFSDFHs5k/4juQgYscJ521
-	 /b8Ae2VxLpEcg==
-Date: Sun, 13 Apr 2025 20:11:53 -0400
+	b=kPvDDUXQ4XmbbnKJ31tHS1xcoTdFtQmVrG0giwsE342TPZ9+FQhV2eXLq+60xti72
+	 V2JYzpCrivQKiZLAHSn8C1oFpEve+McBVPdYOP/KMMV9GHPgtpaBeLer0ClU2ifdJe
+	 OrV4NinG7QgRfYKiy94WW9RGng03B+PdxFAIDb2feqVOqza4pnjImz8vfbzbA7soOm
+	 6Cw/n8R3Fore/tkiFRY2fjEaR11n7HJWtcZAdyvuXNbhaQIMz5tk+Kh5vdtwGIUNGk
+	 cKcfp6OR2/zVExNwaKFhNSyxwFcoiE+LrlBya1ashfumANpakBSwrYqyM2XIZBPLrR
+	 KjgVwNg6FpvJw==
+Date: Sun, 13 Apr 2025 20:12:18 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: David Sterba <dsterba@suse.cz>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>,
-	clm@fb.com, josef@toxicpanda.com, linux-btrfs@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.14 40/54] btrfs: reject out-of-band dirty
- folios during writeback
-Message-ID: <Z_xSyaMfIt8z_CYk@lappy>
+To: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
+	Jens Axboe <axboe@kernel.dk>, "kch@nvidia.com" <kch@nvidia.com>,
+	"yanjun.zhu@linux.dev" <yanjun.zhu@linux.dev>,
+	"zhengqixing@huawei.com" <zhengqixing@huawei.com>,
+	"yukuai3@huawei.com" <yukuai3@huawei.com>,
+	"martin.petersen@oracle.com" <martin.petersen@oracle.com>,
+	"hare@suse.de" <hare@suse.de>,
+	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>
+Subject: Re: [PATCH AUTOSEL 6.14 29/54] null_blk: replace null_process_cmd()
+ call in null_zone_write()
+Message-ID: <Z_xS4iiTNPJ5mP0-@lappy>
 References: <20250403190209.2675485-1-sashal@kernel.org>
- <20250403190209.2675485-40-sashal@kernel.org>
- <20250403193717.GS32661@suse.cz>
+ <20250403190209.2675485-29-sashal@kernel.org>
+ <qytrsydugyz3ksuzg4m3aznskweuhphm7nkhm2faks3oefc7ok@jmteb2yigxj5>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,18 +69,26 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20250403193717.GS32661@suse.cz>
+In-Reply-To: <qytrsydugyz3ksuzg4m3aznskweuhphm7nkhm2faks3oefc7ok@jmteb2yigxj5>
 
-On Thu, Apr 03, 2025 at 09:37:17PM +0200, David Sterba wrote:
->On Thu, Apr 03, 2025 at 03:01:55PM -0400, Sasha Levin wrote:
->> From: Qu Wenruo <wqu@suse.com>
+On Fri, Apr 04, 2025 at 03:31:03AM +0000, Shinichiro Kawasaki wrote:
+>On Apr 03, 2025 / 15:01, Sasha Levin wrote:
+>> From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 >>
->> [ Upstream commit 7ca3e84980ef6484a5c6f004aa180b61ce0c37d9 ]
+>> [ Upstream commit 4f235000b1e88934d1e6117dc43ed814710ef4e2 ]
+>>
+>> As a preparation to support partial data transfer due to badblocks,
+>> replace the null_process_cmd() call in null_zone_write() with equivalent
+>> calls to null_handle_badblocks() and null_handle_memory_backed(). This
+>> commit does not change behavior. It will enable null_handle_badblocks()
+>> to return the size of partial data transfer in the following commit,
+>> allowing null_zone_write() to move write pointers appropriately.
 >
->Please drop this commit from all stable branches, it's relevant only for
->testing.
+>Hello Sasha, I don't think this patch should be in stable kernels, since it
+>just refactors code as a preparation for another patch. I suggest to drop it
+>for all stable kernels.
 
-Will do, thanks!
+I'll drop it, thanks!
 
 -- 
 Thanks,
