@@ -1,129 +1,151 @@
-Return-Path: <stable+bounces-132645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85EF9A887C1
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 17:50:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31024A8887C
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 18:21:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E5623A912F
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:50:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E56533B4318
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 16:21:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F201027B517;
-	Mon, 14 Apr 2025 15:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18D20284664;
+	Mon, 14 Apr 2025 16:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LDum1kyc"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="INWn65hJ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="I7pBzCM8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3634525392F
-	for <stable@vger.kernel.org>; Mon, 14 Apr 2025 15:50:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408E627F73B;
+	Mon, 14 Apr 2025 16:21:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744645847; cv=none; b=J7nF6Vs7hvKKyIvVHRJMooOwWtO6silhxQxMl/zgsdCvJZINPLLWSqCW8MMH05Q4wGHcd2TcGL2Ji1hAxGoYI+XfZLkWdzj8cGS8PIzE/M2h1w+yATGgbSo9rtkuuGN+NlE8XgEt+R7oZjNd9wPVD/GL80WkxoWkdPGZk+fJktA=
+	t=1744647684; cv=none; b=OW+kflmsTiWv1gZI10/IIU5D1ljqXEwEHxVZWR/mftU2/WXKQbGqE5upTtfU6tKC1LFwCiNw3eL5FdKZh/URwhc/YlWe5eyOqaq2Hr0cHbSRAi6fwuxkgEsujy0Jn6DfwzNKAWP4IWSB4s70b5QvOKnPbFf1ltqR+4mFhR8gaYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744645847; c=relaxed/simple;
-	bh=Y2R2YkgMI4z5Gdq/9hMDzIFoW0ch3l2+U7PzSeN3pOA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mE9MhnQkGi1r18jefQ0sZ7jQRQNLE/zMAcgRsLvF33uvSPFfXVJL+4qfWaels+VNcsbtVW9ZXxGiOgUXN4Jp1XhszMECIwPtLsaCPv6AVzVZ/DVQTfFgwqXSRxUELurD8EepsXrpMVmYjE9/VK5bxWEBWMXSVhjIWd1Vu1cH6gA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LDum1kyc; arc=none smtp.client-ip=209.85.222.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7c5e39d1e0eso443520685a.1
-        for <stable@vger.kernel.org>; Mon, 14 Apr 2025 08:50:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744645845; x=1745250645; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=THkCE1P6uezsB9SiyYtWzI3sCDAsq5Y3PC8P0mjg8FU=;
-        b=LDum1kycG41XtxVzJckQvu6fw/8VDe1fIsNXCKzLDtXONRFVwoFf2jGu6hifFZnGzh
-         az49LawN67SQgy3nvTgdTYBY9BObDqpyByfNFrRo7urpq5hpdx70it7nartFgMTxHjgZ
-         YOFdOUn1fokaR7W+GrQ2EvcMzDkzmKvTXYL0Ij4s+T0Jy7GmRDBYloHhquE2J44stz1K
-         wRgCOt1oJZ1E8QC7BWnBJgaStlmTKDVRIxVHUaVRsBX/v3BMZwfDkwGs5B0Ek5sG84Ua
-         GjUUMlYOLwHhGfzBlUG6LOUHJNfFPwP80GLeqLQiwJ+YuXQLkrM0AzN+TP655TOWLk5v
-         wU8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744645845; x=1745250645;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=THkCE1P6uezsB9SiyYtWzI3sCDAsq5Y3PC8P0mjg8FU=;
-        b=qlYGvuj3d5eyImUfrNSpv8GwJ9GwSI9Jb1ZSjRing7zV3rJfhjF7shc49uy3kriO6T
-         5rFs50mGXBYOJREPMRFXtZDsgW05vyPaabvlZ1GzRRiEXActaAH0VqJK6mxuUp4yIP4C
-         I7CXVpKPgQpupeJOgmbOR55bR548znv3Xxf19J27WBg8cJAs2yGMS++W1ZXVLMC8v14N
-         PVOM08jPFuRw61X29EyUFGhWwtMnh1bxUSy9uEaMKJZfZdx1mnrUVAYX1N34uyxmMCiB
-         1UVYbDBxWipJ3Kq1YhET4Zy366d51ZkWBA1lxUaKgyoUAi2nnq0rWvosVD6WHI0LnwYW
-         LLSQ==
-X-Gm-Message-State: AOJu0Yyvxbs8OzKD34yyXdjFLEXqrhfOiEwuMWfm7tkpkWpn8wG66j0O
-	Yo6phyS5k5tq3zix+KEwg0FhCm7HLR3ZK9aiIERGc8oIPuhQpS9c
-X-Gm-Gg: ASbGncu9Svi4hbCwrb6EiCXZAvv4VJifbyRbIlxajqmz29yholkclwvdu1edUxjSuhs
-	w3faLWTWP/NYKuGW96AZ9VyjDWEvu6oC84e5ymPjxxCHPre4kCX6KYARsvSHfVDHhwPJtWDuYEM
-	A0WGcCf+6EuslhHtWAZDfEAyCJVJgvWZ7qfYaibhp7uWlBiZKr1BoAqRGocp+jc6T9w4T6yqm2B
-	msFHHNpxSpOB1FIH/hmtHRCbMOgT148ma3puSuWLk5a0BXdI91tP5tpGtBFnWqBbf0ggPd+YAlS
-	1Z3UFpou/4GVwsa2GhQvYvrqogKwIr/12XUIADgfBW4jykPrkAUh8I7PtCoM5LbUI9AlfGDHfBO
-	+y4z3D2J8gy2muzVJZT2Xf2thIm6qPg==
-X-Google-Smtp-Source: AGHT+IFpMR5TS6sIrxDwvnpWdgRWjNXUv9PNaxg0g3wvv5dnwlccQbPrdkY0nKXi9ehGbIYT61JqmA==
-X-Received: by 2002:a05:6214:2a8f:b0:6e8:9e8f:cfb with SMTP id 6a1803df08f44-6f230d8d3e2mr179510476d6.24.1744645844568;
-        Mon, 14 Apr 2025 08:50:44 -0700 (PDT)
-Received: from theriatric.mshome.net (c-73-123-232-110.hsd1.ma.comcast.net. [73.123.232.110])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f0de9731bcsm85519206d6.43.2025.04.14.08.50.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Apr 2025 08:50:44 -0700 (PDT)
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-To: gshahrouzi@gmail.com
-Cc: stable@vger.kernel.org
-Subject: [PATCH v3] iio: adc: Correct conditional logic for store mode
-Date: Mon, 14 Apr 2025 11:50:42 -0400
-Message-ID: <20250414155042.469737-1-gshahrouzi@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1744647684; c=relaxed/simple;
+	bh=qRF+pfwYj6kETHQRodo3O/1RpBYbS5HpUN20HQPLn78=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=GpgkA7obgKZ8gFjV+BwPTvt/ifEm03liLZNuRD9cpDcDpoVWsvYFo7G+wf/d/Fv5cDMMcQBAQFm313jyAqAD2Xzbbrwm8HRaNzHi/C09IKAzI8zYlqrLEdaNg2lgLaUKM2TTODcL5KQVeW1wf5kcYejj8b1zLemEUotHysfkn/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=INWn65hJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=I7pBzCM8; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 14 Apr 2025 18:21:20 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1744647681;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=s5XmoymLjfpV+yjct381cZITXuVhuoSqQggfPGZ/6EA=;
+	b=INWn65hJIypRHFv4doRTwj/lJ0oA/T/caDKhQWHhr2y0GsAKIeR95NmatAHqklKrXP8E3o
+	e1IAGdn3LInnzHDYSk90Hsfc8UP+bIdf/BPr552/hX0w60r7kM/2+UtLse6sCBoJVht5KD
+	Llw7KAtuw9AItRO0qLKFqutv7RXkJYXU1BrcaA4WxIiEYFm+ep8QJAUVWXxNDNEtg2cHjR
+	POFcyeaSbvbuNg8Ce/NULIKYNkD7l+GSRn38WKkGKxKkuwjeFhv2NUQl7gUhvXch+lMgpj
+	3J5XM9nXtTbCJwtmoGWYWNfH9UtZoUwE2VWbGqB5Vdh3oAmJxMDzb6uPWe3Y0A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1744647681;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=s5XmoymLjfpV+yjct381cZITXuVhuoSqQggfPGZ/6EA=;
+	b=I7pBzCM8/RuiD0W5wNL+1VdJ+299PeNdQfc3FdiNaMEEoOjYfyHOEsxGK0hRoaEQ0sfyAa
+	evg/FkLuns7/D0CA==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: stable@vger.kernel.org
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
+	Ricardo =?utf-8?Q?Ca=C3=B1uelo?= Navarro <rcn@igalia.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>
+Subject: [PATCH stable] xdp: Reset bpf_redirect_info before running a xdp's
+ BPF prog.
+Message-ID: <20250414162120.U-UFSLv8@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The mode setting logic in ad7816_store_mode was reversed due to
-incorrect handling of the strcmp return value. strcmp returns 0 on
-match, so the `if (strcmp(buf, "full"))` block executed when the
-input was not "full".
+Ricardo reported a KASAN discovered use after free in v6.6-stable.
 
-This resulted in "full" setting the mode to AD7816_PD (power-down) and
-other inputs setting it to AD7816_FULL.
+The syzbot starts a BPF program via xdp_test_run_batch() which assigns
+ri->tgt_value via dev_hash_map_redirect() and the return code isn't
+XDP_REDIRECT it looks like nonsense. So the output in
+bpf_warn_invalid_xdp_action() appears once.
+Then the TUN driver runs another BPF program (on the same CPU) which
+returns XDP_REDIRECT without setting ri->tgt_value first. It invokes
+bpf_trace_printk() to print four characters and obtain the required
+return value. This is enough to get xdp_do_redirect() invoked which
+then accesses the pointer in tgt_value which might have been already
+deallocated.
 
-Fix this by checking it against 0 to correctly check for "full" and
-"power-down", mapping them to AD7816_FULL and AD7816_PD respectively.
+This problem does not affect upstream because since commit
+	401cb7dae8130 ("net: Reference bpf_redirect_info via task_struct on PREEMP=
+T_RT.")
 
-Fixes: 7924425db04a ("staging: iio: adc: new driver for AD7816 devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+the per-CPU variable is referenced via task's task_struct and exists on
+the stack during NAPI callback. Therefore it is cleared once before the
+first invocation and remains valid within the RCU section of the NAPI
+callback.
+
+Instead of performing the huge backport of the commit (plus its fix ups)
+here is an alternative version which only resets the variable in
+question prior invoking the BPF program.
+
+Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@kernel.org>
+Reported-by: Ricardo Ca=C3=B1uelo Navarro <rcn@igalia.com>
+Closes: https://lore.kernel.org/all/20250226-20250204-kasan-slab-use-after-=
+free-read-in-dev_map_enqueue__submit-v3-0-360efec441ba@igalia.com/
+Fixes: 97f91a7cf04ff ("bpf: add bpf_redirect_map helper routine")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
-Changes since v3:
-	- Tag stable@vger.kernel.org instead of an email CC
-	- Use the correct version for patch
-Changes since v2:
-	- Add fixes tag that references commit that introduced the bug.
-        - Replace sysfs_streq with strcmp.
----
- drivers/staging/iio/adc/ad7816.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/iio/adc/ad7816.c b/drivers/staging/iio/adc/ad7816.c
-index 6c14d7bcdd675..081b17f498638 100644
---- a/drivers/staging/iio/adc/ad7816.c
-+++ b/drivers/staging/iio/adc/ad7816.c
-@@ -136,7 +136,7 @@ static ssize_t ad7816_store_mode(struct device *dev,
- 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
- 	struct ad7816_chip_info *chip = iio_priv(indio_dev);
- 
--	if (strcmp(buf, "full")) {
-+	if (strcmp(buf, "full") == 0) {
- 		gpiod_set_value(chip->rdwr_pin, 1);
- 		chip->mode = AD7816_FULL;
- 	} else {
--- 
-2.43.0
+I discussed this with Toke, thread starts at
+	https://lore.kernel.org/all/20250313183911.SPAmGLyw@linutronix.de/
+
+The commit, which this by accident, is part of v6.11-rc1.
+I added the commit introducing map redirects as the origin of the
+problem which is v4.14-rc1. The code is a bit different there but it
+seems to work similar.
+Affected kernels would be from v4.14 to v6.10.
+
+ include/net/xdp.h | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/include/net/xdp.h b/include/net/xdp.h
+index de08c8e0d1348..b39ac83618a55 100644
+--- a/include/net/xdp.h
++++ b/include/net/xdp.h
+@@ -486,7 +486,14 @@ static __always_inline u32 bpf_prog_run_xdp(const stru=
+ct bpf_prog *prog,
+ 	 * under local_bh_disable(), which provides the needed RCU protection
+ 	 * for accessing map entries.
+ 	 */
+-	u32 act =3D __bpf_prog_run(prog, xdp, BPF_DISPATCHER_FUNC(xdp));
++	struct bpf_redirect_info *ri =3D this_cpu_ptr(&bpf_redirect_info);
++	u32 act;
++
++	if (ri->map_id || ri->map_type) {
++		ri->map_id =3D 0;
++		ri->map_type =3D BPF_MAP_TYPE_UNSPEC;
++	}
++	act =3D __bpf_prog_run(prog, xdp, BPF_DISPATCHER_FUNC(xdp));
+=20
+ 	if (static_branch_unlikely(&bpf_master_redirect_enabled_key)) {
+ 		if (act =3D=3D XDP_TX && netif_is_bond_slave(xdp->rxq->dev))
+--=20
+2.49.0
 
 
