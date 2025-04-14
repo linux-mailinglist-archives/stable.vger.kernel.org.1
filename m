@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-132491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E348CA88284
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:38:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46129A8827F
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:37:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8CE017AFF8
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:35:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D856188F41C
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790E627A10A;
-	Mon, 14 Apr 2025 13:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F5528B4EB;
+	Mon, 14 Apr 2025 13:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oMqg/MOf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T7mPHtH/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3591627A12B;
-	Mon, 14 Apr 2025 13:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CD128B4E4;
+	Mon, 14 Apr 2025 13:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637257; cv=none; b=UlURsy0p+Wg6cFBAnLNxd1Vw6kJoki/uYhFtVYXt+8Kwk2NO5SoFncUUbgOD6AgDHuG4gV2YUsw9RKb6Z6GjzSySATCVG+UOXdI+obdYg/aZZ5zBB7bDGHywGCrMEh7Tb5/dWLNSQsBtizf7SH31UHeR8PZinQhMyM2x5q3UuCY=
+	t=1744637259; cv=none; b=dQSbRra0AQsBzbUN8GcSo75s37CszinAg9sd2PKrL0MORZV3J1hOOf1eL+d+IdvhcXQBd4jYi449OObz2hixBmJd3Yzupxp+5GKuiHPJfGf1lEvE5UqjEKSQoHf71fUB9NQu1j8s9t0SXPVajqPdtSM6dhVTGSiyNVl9trA7LMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637257; c=relaxed/simple;
-	bh=TsvvjU34ou6DeKBnAEaZf6xjk/wVJu2sGieu/mEr1vs=;
+	s=arc-20240116; t=1744637259; c=relaxed/simple;
+	bh=/2zqRkxAlAw/uJ1J6jZx9l7WcbB1OHfrAqcIyUXNnTw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GQyQ3+835i+yOrp1x7VZ89aJxWvGrwd7qMBYyqJH8IfAmEssG2x+TD7M4Ju1VPRv7NMyTi+Rjzni0IgeXyPs6t2vSsjmEqigA9Hgvh6BY90ONKrVUFF/Fgr3NPrlwp6WmJfWF6sMKPlg1q9zTuNbxJrTNCYxhcnyHtMlLtzgG9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oMqg/MOf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C120C4CEE2;
-	Mon, 14 Apr 2025 13:27:35 +0000 (UTC)
+	 MIME-Version; b=WLSa4ropNuKbiusjfjh4mhFYQTEOXbM+bu25YbrDu9AAM3tNY3UHj/Ap8k0ggihuoS4GV0V+A9kwScSsqLhOT7WoJqc7QZ5LL+MoCn74h71g92eBfYlpQRKBYSfstdISQ1RAv8fQbN365cElPw3SSJ1ORObUHgR+rk5jQ6vPxAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T7mPHtH/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF8E6C4CEEB;
+	Mon, 14 Apr 2025 13:27:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744637257;
-	bh=TsvvjU34ou6DeKBnAEaZf6xjk/wVJu2sGieu/mEr1vs=;
+	s=k20201202; t=1744637259;
+	bh=/2zqRkxAlAw/uJ1J6jZx9l7WcbB1OHfrAqcIyUXNnTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oMqg/MOf3Lo00KJvtKWWbFZDheN9yP2HK+OpYqI7R8SXt+pWU3AC6r1MdK0VaHNUm
-	 wB+bZ7JUs1WQ7jrPJK8HrTr23Vip3CUo/ySzeTGXBmqbwJUODuYN8okrt3fcsZreFR
-	 2UuWug76wUzP3SahaJOCZ6Iarv8h4VBxE5vJI04iokHUKGceodm0vLJx78v8dQ6wmP
-	 /axJ9I7fgBro3iyUcDwoBliZBpjsu3m2wFSIto74BO/dgWMryPmsBG6Bm7saV0bs9Z
-	 4yH7omRPby867GmIxULPBEx+CcGG0TcCuO4H9niyv7H1G6N7Vnab0fMMEpxFMI9NEg
-	 VW+at8GvTpA6A==
+	b=T7mPHtH/9P3WxyLADwtb64qlL8TqrfUOYdWXFCn/dyI0pj70sLmy1Xg+mL7ppjR34
+	 Z5X5FEcFMOGrL0iAZdqup602Y2hvO7U31fkHXIdA9D5ofTdsy7Fxqg6u1ETW7DEBCJ
+	 m7fEGjx37IlI2IMW7yUgQT355TXqLPoDbViPf0B60JxrvR+NtNqTugxvxuCouDzuzC
+	 IWedsYYdCsadDbsl2HMtB7I7zngB4POgToODWIUQnRXocLDn5o7eA8xclUPLqLXpdD
+	 in50MUnF4ZSgM25xom+42Ld1j6FSqNVNnQi3SRX5xWv1Z4q8UZmyGn5UC//9fX6Xxl
+	 Q1Nbxk/UOCSHg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Xiaogang Chen <xiaogang.chen@amd.com>,
-	Xiaogang Chen <Xiaogang.Chen@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+Cc: Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kraxel@redhat.com,
-	vivek.kasireddy@intel.com,
-	sumit.semwal@linaro.org,
-	dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org
-Subject: [PATCH AUTOSEL 6.13 03/34] udmabuf: fix a buf size overflow issue during udmabuf creation
-Date: Mon, 14 Apr 2025 09:26:57 -0400
-Message-Id: <20250414132729.679254-3-sashal@kernel.org>
+	hannes@cmpxchg.org,
+	mkoutny@suse.com,
+	cgroups@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 04/34] cgroup/cpuset: Don't allow creation of local partition over a remote one
+Date: Mon, 14 Apr 2025 09:26:58 -0400
+Message-Id: <20250414132729.679254-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250414132729.679254-1-sashal@kernel.org>
 References: <20250414132729.679254-1-sashal@kernel.org>
@@ -66,39 +62,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.11
 Content-Transfer-Encoding: 8bit
 
-From: Xiaogang Chen <xiaogang.chen@amd.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 021ba7f1babd029e714d13a6bf2571b08af96d0f ]
+[ Upstream commit 6da580ec656a5ed135db2cdf574b47635611a4d7 ]
 
-by casting size_limit_mb to u64  when calculate pglimit.
+Currently, we don't allow the creation of a remote partition underneath
+another local or remote partition. However, it is currently possible to
+create a new local partition with an existing remote partition underneath
+it if top_cpuset is the parent. However, the current cpuset code does
+not set the effective exclusive CPUs correctly to account for those
+that are taken by the remote partition.
 
-Signed-off-by: Xiaogang Chen<Xiaogang.Chen@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250321164126.329638-1-xiaogang.chen@amd.com
-Signed-off-by: Christian König <christian.koenig@amd.com>
+Changing the code to properly account for those remote partition CPUs
+under all possible circumstances can be complex. It is much easier to
+not allow such a configuration which is not that useful. So forbid
+that by making sure that exclusive_cpus mask doesn't overlap with
+subpartitions_cpus and invalidate the partition if that happens.
+
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma-buf/udmabuf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/cgroup/cpuset-internal.h |  1 +
+ kernel/cgroup/cpuset.c          | 14 ++++++++++++++
+ 2 files changed, 15 insertions(+)
 
-diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
-index cc7398cc17d67..e74e36a8ecda2 100644
---- a/drivers/dma-buf/udmabuf.c
-+++ b/drivers/dma-buf/udmabuf.c
-@@ -393,7 +393,7 @@ static long udmabuf_create(struct miscdevice *device,
- 	if (!ubuf)
- 		return -ENOMEM;
+diff --git a/kernel/cgroup/cpuset-internal.h b/kernel/cgroup/cpuset-internal.h
+index 976a8bc3ff603..383963e28ac69 100644
+--- a/kernel/cgroup/cpuset-internal.h
++++ b/kernel/cgroup/cpuset-internal.h
+@@ -33,6 +33,7 @@ enum prs_errcode {
+ 	PERR_CPUSEMPTY,
+ 	PERR_HKEEPING,
+ 	PERR_ACCESS,
++	PERR_REMOTE,
+ };
  
--	pglimit = (size_limit_mb * 1024 * 1024) >> PAGE_SHIFT;
-+	pglimit = ((u64)size_limit_mb * 1024 * 1024) >> PAGE_SHIFT;
- 	for (i = 0; i < head->count; i++) {
- 		pgoff_t subpgcnt;
+ /* bits in struct cpuset flags field */
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 0f910c828973a..01e1745957534 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -62,6 +62,7 @@ static const char * const perr_strings[] = {
+ 	[PERR_CPUSEMPTY] = "cpuset.cpus and cpuset.cpus.exclusive are empty",
+ 	[PERR_HKEEPING]  = "partition config conflicts with housekeeping setup",
+ 	[PERR_ACCESS]    = "Enable partition not permitted",
++	[PERR_REMOTE]    = "Have remote partition underneath",
+ };
  
+ /*
+@@ -2821,6 +2822,19 @@ static int update_prstate(struct cpuset *cs, int new_prs)
+ 			goto out;
+ 		}
+ 
++		/*
++		 * We don't support the creation of a new local partition with
++		 * a remote partition underneath it. This unsupported
++		 * setting can happen only if parent is the top_cpuset because
++		 * a remote partition cannot be created underneath an existing
++		 * local or remote partition.
++		 */
++		if ((parent == &top_cpuset) &&
++		    cpumask_intersects(cs->exclusive_cpus, subpartitions_cpus)) {
++			err = PERR_REMOTE;
++			goto out;
++		}
++
+ 		/*
+ 		 * If parent is valid partition, enable local partiion.
+ 		 * Otherwise, enable a remote partition.
 -- 
 2.39.5
 
