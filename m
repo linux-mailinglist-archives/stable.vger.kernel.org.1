@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-132524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 079F7A882DB
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:46:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2250FA882C4
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:43:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AFAD176C48
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:43:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AAA57A3EB9
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 420702957D8;
-	Mon, 14 Apr 2025 13:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CDFC27B4EA;
+	Mon, 14 Apr 2025 13:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bkYXQxVf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YfMsNjFn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68022957CC;
-	Mon, 14 Apr 2025 13:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06EDE2D3A89;
+	Mon, 14 Apr 2025 13:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637333; cv=none; b=eutSjdfYbcq2DE3oSvLtCpCM2BVoWeJ80iHbucxsL7yvDyQLdZWnCDHhuH+UAqcuDCxNCZt4ygOw4AwWG5KhuSC9XPv25d+BhPUmDuPzgv0CL9ScW2YPk/3dMJarRZRagFPHVzqWEP/r0402wwujBVuNG0/JgSPR/wLtCvF9NA4=
+	t=1744637336; cv=none; b=Oc9xGyFQ3veF2mQmJlF3BLxQ5xg9TamSZTnztwvCDu+cDOO5e+K94sWy9IQGoJZ8id42WhLl7k2ckOJfMfRDp4tZwIjRtoQr/qlbXdhyrLT/a4wG/dPgFXrRVi+a4ivdXUXP4IdD2ULACpP6Ki8/uU3ZDcPiJ33eDrTVG2ENrYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637333; c=relaxed/simple;
-	bh=36JVFDFvQfpm6HGHntZUrBhb8aeuTf4lVyVy5/Wj5Tg=;
+	s=arc-20240116; t=1744637336; c=relaxed/simple;
+	bh=Gqe6osqrDtogyYH4e2lRBOFcj02xeka10yVlkz2hg8g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OR7fR8azJAyD2bhVeN2trp4u2UGbU4PgRT3BR6pYgrRGP9uZyDd4+x92BU9tyyoUeo2pm7hBwG/58F4l9NDoBqJ3H00jV1CAIfzep/CVRG3jczgnd0KcDLghiwPzjj1Pp2gVQhfsA5H7uibASCSQ+BxDAbiWNgnX61bGAWElP9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bkYXQxVf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF202C4CEE2;
-	Mon, 14 Apr 2025 13:28:51 +0000 (UTC)
+	 MIME-Version; b=qYjuF6fF5d0DykoNnWynFScTwN/doEpDC3GnZBiw8Z3CvhLkuiZGfUY6nyvpsG5d/+LqafTnvx9bfiJraSsUxEnsxFAWpI4HpdUCqPQ1i/3zJ6wNYEFTQ6hUIrcQ5qUpA+HlXpmrSGoAk25hm7TzgSrIuItp1KjNKpHanyzDou0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YfMsNjFn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5495FC4CEE2;
+	Mon, 14 Apr 2025 13:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744637333;
-	bh=36JVFDFvQfpm6HGHntZUrBhb8aeuTf4lVyVy5/Wj5Tg=;
+	s=k20201202; t=1744637335;
+	bh=Gqe6osqrDtogyYH4e2lRBOFcj02xeka10yVlkz2hg8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bkYXQxVfo05uBpMb4D/8gLazwrbNFlnvfIEzwJJGzXbFWdj94gT7xyqPJbNHvIdXo
-	 EjDOhr4AFxGX1PzUgi2zGaNSTdGQXbf5v8H2/1j/or9vXxIZQEm4Wx7nkTz6M8Rthp
-	 aVmbW/AM7yrWBea/INP7XblwlfwfsQGlrtc8uq2mffSRtSGMwjIOBD5z7ewvxTd5Uj
-	 o8fGt74z/YpUY0h7yeueTTAquctcapW2CjMRp7Zgh4BEU3EQO+rXhpcUaG3zQvrfo4
-	 M2Yf0i2WvHNP22DfwsMLZh+aPGSgU06PgkQjROLy6ajoJrzdGRZ1AlKl8qtByrp0pj
-	 nWQDaGk13qSSg==
+	b=YfMsNjFnGZffy+OGOpQlZWmSAdDh2QNLTWseUbW6Son+DDHggiSa9lQalDqv4Aceh
+	 18l9f2K2zc8n1iEiEQ9fMt6AfKRzPBI1DKxuxKplTvv1rN2n+oKKrxbVpx2JDMtokq
+	 cNiSQa/TAqJtc3BPDXFWSzTNO9ve8LjOHzhMroG7OmPJPF3EHaHPHRf7Tu2JdFUjtH
+	 6Vm8ciAQU2T4vyyoKHiKecSByltt5F8AsczBpRmt6djr919hVmvxL3RWtsLW8lDhgI
+	 Q4D/FEFppwNVTsoGuOM6hIm1FmfGkToAqp5NLPW/8LvRfE033i+lu6oZjYGfG7oxBB
+	 UcBLZpWCUDctQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Michael Mueller <mimu@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
+Cc: Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	borntraeger@linux.ibm.com,
-	imbrenda@linux.ibm.com,
-	hca@linux.ibm.com,
-	gor@linux.ibm.com,
-	agordeev@linux.ibm.com,
-	kvm@vger.kernel.org,
-	linux-s390@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 02/30] KVM: s390: Don't use %pK through debug printing
-Date: Mon, 14 Apr 2025 09:28:19 -0400
-Message-Id: <20250414132848.679855-2-sashal@kernel.org>
+	hannes@cmpxchg.org,
+	mkoutny@suse.com,
+	cgroups@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 03/30] cgroup/cpuset: Don't allow creation of local partition over a remote one
+Date: Mon, 14 Apr 2025 09:28:20 -0400
+Message-Id: <20250414132848.679855-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250414132848.679855-1-sashal@kernel.org>
 References: <20250414132848.679855-1-sashal@kernel.org>
@@ -67,139 +62,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.23
 Content-Transfer-Encoding: 8bit
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 0c7fbae5bc782429c97d68dc40fb126748d7e352 ]
+[ Upstream commit 6da580ec656a5ed135db2cdf574b47635611a4d7 ]
 
-Restricted pointers ("%pK") are only meant to be used when directly
-printing to a file from task context.
-Otherwise it can unintentionally expose security sensitive,
-raw pointer values.
+Currently, we don't allow the creation of a remote partition underneath
+another local or remote partition. However, it is currently possible to
+create a new local partition with an existing remote partition underneath
+it if top_cpuset is the parent. However, the current cpuset code does
+not set the effective exclusive CPUs correctly to account for those
+that are taken by the remote partition.
 
-Use regular pointer formatting instead.
+Changing the code to properly account for those remote partition CPUs
+under all possible circumstances can be complex. It is much easier to
+not allow such a configuration which is not that useful. So forbid
+that by making sure that exclusive_cpus mask doesn't overlap with
+subpartitions_cpus and invalidate the partition if that happens.
 
-Link: https://lore.kernel.org/lkml/20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023@linutronix.de/
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Michael Mueller <mimu@linux.ibm.com>
-Tested-by: Michael Mueller <mimu@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250217-restricted-pointers-s390-v1-2-0e4ace75d8aa@linutronix.de
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Message-ID: <20250217-restricted-pointers-s390-v1-2-0e4ace75d8aa@linutronix.de>
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kvm/intercept.c |  2 +-
- arch/s390/kvm/interrupt.c |  8 ++++----
- arch/s390/kvm/kvm-s390.c  | 10 +++++-----
- 3 files changed, 10 insertions(+), 10 deletions(-)
+ kernel/cgroup/cpuset-internal.h |  1 +
+ kernel/cgroup/cpuset.c          | 14 ++++++++++++++
+ 2 files changed, 15 insertions(+)
 
-diff --git a/arch/s390/kvm/intercept.c b/arch/s390/kvm/intercept.c
-index b16352083ff98..f0be263b334ce 100644
---- a/arch/s390/kvm/intercept.c
-+++ b/arch/s390/kvm/intercept.c
-@@ -94,7 +94,7 @@ static int handle_validity(struct kvm_vcpu *vcpu)
+diff --git a/kernel/cgroup/cpuset-internal.h b/kernel/cgroup/cpuset-internal.h
+index 976a8bc3ff603..383963e28ac69 100644
+--- a/kernel/cgroup/cpuset-internal.h
++++ b/kernel/cgroup/cpuset-internal.h
+@@ -33,6 +33,7 @@ enum prs_errcode {
+ 	PERR_CPUSEMPTY,
+ 	PERR_HKEEPING,
+ 	PERR_ACCESS,
++	PERR_REMOTE,
+ };
  
- 	vcpu->stat.exit_validity++;
- 	trace_kvm_s390_intercept_validity(vcpu, viwhy);
--	KVM_EVENT(3, "validity intercept 0x%x for pid %u (kvm 0x%pK)", viwhy,
-+	KVM_EVENT(3, "validity intercept 0x%x for pid %u (kvm 0x%p)", viwhy,
- 		  current->pid, vcpu->kvm);
+ /* bits in struct cpuset flags field */
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 24ece85fd3b12..01e0af84552f7 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -62,6 +62,7 @@ static const char * const perr_strings[] = {
+ 	[PERR_CPUSEMPTY] = "cpuset.cpus and cpuset.cpus.exclusive are empty",
+ 	[PERR_HKEEPING]  = "partition config conflicts with housekeeping setup",
+ 	[PERR_ACCESS]    = "Enable partition not permitted",
++	[PERR_REMOTE]    = "Have remote partition underneath",
+ };
  
- 	/* do not warn on invalid runtime instrumentation mode */
-diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
-index 4f0e7f61edf78..bc65fa6dc1555 100644
---- a/arch/s390/kvm/interrupt.c
-+++ b/arch/s390/kvm/interrupt.c
-@@ -3161,7 +3161,7 @@ void kvm_s390_gisa_clear(struct kvm *kvm)
- 	if (!gi->origin)
- 		return;
- 	gisa_clear_ipm(gi->origin);
--	VM_EVENT(kvm, 3, "gisa 0x%pK cleared", gi->origin);
-+	VM_EVENT(kvm, 3, "gisa 0x%p cleared", gi->origin);
- }
- 
- void kvm_s390_gisa_init(struct kvm *kvm)
-@@ -3178,7 +3178,7 @@ void kvm_s390_gisa_init(struct kvm *kvm)
- 	gi->timer.function = gisa_vcpu_kicker;
- 	memset(gi->origin, 0, sizeof(struct kvm_s390_gisa));
- 	gi->origin->next_alert = (u32)virt_to_phys(gi->origin);
--	VM_EVENT(kvm, 3, "gisa 0x%pK initialized", gi->origin);
-+	VM_EVENT(kvm, 3, "gisa 0x%p initialized", gi->origin);
- }
- 
- void kvm_s390_gisa_enable(struct kvm *kvm)
-@@ -3219,7 +3219,7 @@ void kvm_s390_gisa_destroy(struct kvm *kvm)
- 		process_gib_alert_list();
- 	hrtimer_cancel(&gi->timer);
- 	gi->origin = NULL;
--	VM_EVENT(kvm, 3, "gisa 0x%pK destroyed", gisa);
-+	VM_EVENT(kvm, 3, "gisa 0x%p destroyed", gisa);
- }
- 
- void kvm_s390_gisa_disable(struct kvm *kvm)
-@@ -3468,7 +3468,7 @@ int __init kvm_s390_gib_init(u8 nisc)
+ /*
+@@ -2807,6 +2808,19 @@ static int update_prstate(struct cpuset *cs, int new_prs)
+ 			goto out;
  		}
- 	}
  
--	KVM_EVENT(3, "gib 0x%pK (nisc=%d) initialized", gib, gib->nisc);
-+	KVM_EVENT(3, "gib 0x%p (nisc=%d) initialized", gib, gib->nisc);
- 	goto out;
- 
- out_unreg_gal:
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index bb7134faaebff..286a224c81ee4 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -998,7 +998,7 @@ static int kvm_s390_set_mem_control(struct kvm *kvm, struct kvm_device_attr *att
- 		}
- 		mutex_unlock(&kvm->lock);
- 		VM_EVENT(kvm, 3, "SET: max guest address: %lu", new_limit);
--		VM_EVENT(kvm, 3, "New guest asce: 0x%pK",
-+		VM_EVENT(kvm, 3, "New guest asce: 0x%p",
- 			 (void *) kvm->arch.gmap->asce);
- 		break;
- 	}
-@@ -3421,7 +3421,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
- 		kvm_s390_gisa_init(kvm);
- 	INIT_LIST_HEAD(&kvm->arch.pv.need_cleanup);
- 	kvm->arch.pv.set_aside = NULL;
--	KVM_EVENT(3, "vm 0x%pK created by pid %u", kvm, current->pid);
-+	KVM_EVENT(3, "vm 0x%p created by pid %u", kvm, current->pid);
- 
- 	return 0;
- out_err:
-@@ -3484,7 +3484,7 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
- 	kvm_s390_destroy_adapters(kvm);
- 	kvm_s390_clear_float_irqs(kvm);
- 	kvm_s390_vsie_destroy(kvm);
--	KVM_EVENT(3, "vm 0x%pK destroyed", kvm);
-+	KVM_EVENT(3, "vm 0x%p destroyed", kvm);
- }
- 
- /* Section: vcpu related */
-@@ -3605,7 +3605,7 @@ static int sca_switch_to_extended(struct kvm *kvm)
- 
- 	free_page((unsigned long)old_sca);
- 
--	VM_EVENT(kvm, 2, "Switched to ESCA (0x%pK -> 0x%pK)",
-+	VM_EVENT(kvm, 2, "Switched to ESCA (0x%p -> 0x%p)",
- 		 old_sca, kvm->arch.sca);
- 	return 0;
- }
-@@ -3978,7 +3978,7 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
- 			goto out_free_sie_block;
- 	}
- 
--	VM_EVENT(vcpu->kvm, 3, "create cpu %d at 0x%pK, sie block at 0x%pK",
-+	VM_EVENT(vcpu->kvm, 3, "create cpu %d at 0x%p, sie block at 0x%p",
- 		 vcpu->vcpu_id, vcpu, vcpu->arch.sie_block);
- 	trace_kvm_s390_create_vcpu(vcpu->vcpu_id, vcpu, vcpu->arch.sie_block);
- 
++		/*
++		 * We don't support the creation of a new local partition with
++		 * a remote partition underneath it. This unsupported
++		 * setting can happen only if parent is the top_cpuset because
++		 * a remote partition cannot be created underneath an existing
++		 * local or remote partition.
++		 */
++		if ((parent == &top_cpuset) &&
++		    cpumask_intersects(cs->exclusive_cpus, subpartitions_cpus)) {
++			err = PERR_REMOTE;
++			goto out;
++		}
++
+ 		/*
+ 		 * If parent is valid partition, enable local partiion.
+ 		 * Otherwise, enable a remote partition.
 -- 
 2.39.5
 
