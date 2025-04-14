@@ -1,62 +1,73 @@
-Return-Path: <stable+bounces-132501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81671A8829E
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:40:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFDB5A882A6
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:40:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4795C1898AFC
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:38:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 003ED1688C9
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:38:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 757B82BEC5E;
-	Mon, 14 Apr 2025 13:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95BBA28E604;
+	Mon, 14 Apr 2025 13:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Urp0phb3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WAauo3Qp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25ABE29899D;
-	Mon, 14 Apr 2025 13:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5046C28E602;
+	Mon, 14 Apr 2025 13:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637277; cv=none; b=rwHAq9Z9F8oVsZFD2FFt+bh0TiZ+S+xrOnhD6TTZpJKFqIbGd9Len6bjF6ZtRR1G7t3LHQDU4h4quqhUWz2mkL0q9AbP5ycerIch2JgAWxhlmhi2tkKIwFSwKH4cR3+NZFUMfKZpCdIcH9wOGY6WniaukTvOG3SNiBzDMb8o+fM=
+	t=1744637283; cv=none; b=TiG8ezraEJKhbDkFOO77xBLPX/Pz/L5IoJuE4xT19AhMLVqqwjX0uvJYGTnmrbsHWG42K8DUeCsoYcVPwHdDHdAykm3kdAmcGDp8zfcPOvlxD4RWFCCzsvumdVHMdwcOK1syMtbCJYn3OB8SKJgvrN7k8eJMMT5Jtfr2bB6UsLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637277; c=relaxed/simple;
-	bh=PNaP345gDSSlxLCmwD5j7Q5zUx3k3pb511nj8ViwC28=;
+	s=arc-20240116; t=1744637283; c=relaxed/simple;
+	bh=yiCakT6a87ff4mYqOlpsOl3qr/fZmE8zhLmyzevO6Dw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=drAz2KyyTbHzD3rJzy0EfagQ6QM/QrmeL3gTYoAqxvbcidkbQtw2ErezGyvjDy1bmeaLrC8l91bECaIl72q67FcrjyvT8iG0M23cHzLMSOTHFg+hlIBYcJjGj/yxj0rL2cOcm3AzulpGvYdKF4/J2vgsVoXpGW00AQYxLQT8Em8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Urp0phb3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0185CC4CEEB;
-	Mon, 14 Apr 2025 13:27:54 +0000 (UTC)
+	 MIME-Version; b=pX0C9K6zpKi2w761+HIQ43ig+8sKSZG3bP2eiRJoQPaxnDI2YVRDSDkH5+EBSoqnI8jE+24YcKPZxTwuaSHhrbt7RdWA6TayZWZ/aKwElNS8GueFORas6eUwWu4aG3lFFPVntbsNJgg89fO9sgoGcbSeA3hKLwkLk5bwWVPw3Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WAauo3Qp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3609AC4CEE2;
+	Mon, 14 Apr 2025 13:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744637276;
-	bh=PNaP345gDSSlxLCmwD5j7Q5zUx3k3pb511nj8ViwC28=;
+	s=k20201202; t=1744637283;
+	bh=yiCakT6a87ff4mYqOlpsOl3qr/fZmE8zhLmyzevO6Dw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Urp0phb3LQJBjCnNWZ0Rmx3qlgewZXlnRKfflWGQkjqw0gh/YKhbaZ05t6Vh1iywo
-	 N+EnhRaUPpE2ZMqXhwHD2dGbVntu7pwKE3gk21JG5ZtutEFP9BWYgeN40nvX08Q6x5
-	 QsMzDo+vzrKnqC1ybTurlFohoupT899kD6KMR8jOUVJnRPCPXlqQC59YAnWeWff+Qc
-	 WkXWkyQlNuhp3V0pv/v1MaZ/qr7yV7jZjwcGR73kEstnfuWYfjgkOd1AWtxAKflnPE
-	 POgpnusFSjXi56UMqFJ2m5bJJNgN+IeKDC0cF+Jo7u4oDM+f+xVbte/EhIaQKABuyb
-	 1IKYQIM/3dGDQ==
+	b=WAauo3QpKGw0ANmL4Uv6QVNkffFnFDZP22lU4mcN2ATyS7iRe059VFqAN/O9GBGyZ
+	 1XMFLIM+k5qTpKb0Eqjc+MXaxd6lYbPESjkJUFlMxswoEOs/aEIff+98KSzAddHVNC
+	 1SKsE1oqPE3CfOIiDE79jvzI8DPMJzKtjTsCYDxuwWtKVMp9m6dDV6rWRwQML0c2vy
+	 YGBJnDLEGWiN/9Mjjw6q/eIEuDHZ8oxggCTU/dCANJFTDr3mxEkQ0/jy/pPH5MWVBk
+	 ejdGz28vDzZmBgoafJswwtEbb5tU5+a48VQP0Whfbt1XzdRRaSbEL6BTvsmhZvHezt
+	 +yu1K+ogniHkw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Emily Deng <Emily.Deng@amd.com>,
-	Jonathan Kim <jonathan.kim@amd.com>,
+Cc: Jay Cornwall <jay.cornwall@amd.com>,
+	Kent Russell <kent.russell@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	Felix.Kuehling@amd.com,
 	christian.koenig@amd.com,
 	airlied@gmail.com,
 	simona@ffwll.ch,
+	lijo.lazar@amd.com,
+	Hawking.Zhang@amd.com,
+	sunil.khatri@amd.com,
+	srinivasan.shanmugam@amd.com,
+	Jesse.zhang@amd.com,
+	linux@treblig.org,
+	zhangzekun11@huawei.com,
+	victor.skvortsov@amd.com,
+	rajneesh.bhardwaj@amd.com,
+	Yunxiang.Li@amd.com,
+	tim.huang@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.13 13/34] drm/amdkfd: sriov doesn't support per queue reset
-Date: Mon, 14 Apr 2025 09:27:07 -0400
-Message-Id: <20250414132729.679254-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.13 14/34] drm/amdgpu: Increase KIQ invalidate_tlbs timeout
+Date: Mon, 14 Apr 2025 09:27:08 -0400
+Message-Id: <20250414132729.679254-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250414132729.679254-1-sashal@kernel.org>
 References: <20250414132729.679254-1-sashal@kernel.org>
@@ -71,34 +82,83 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.11
 Content-Transfer-Encoding: 8bit
 
-From: Emily Deng <Emily.Deng@amd.com>
+From: Jay Cornwall <jay.cornwall@amd.com>
 
-[ Upstream commit ba6d8f878d6180d4d0ed0574479fc1e232928184 ]
+[ Upstream commit 3666ed821832f42baaf25f362680dda603cde732 ]
 
-Disable per queue reset for sriov.
+KIQ invalidate_tlbs request has been seen to marginally exceed the
+configured 100 ms timeout on systems under load.
 
-Signed-off-by: Emily Deng <Emily.Deng@amd.com>
-Reviewed-by: Jonathan Kim <jonathan.kim@amd.com>
+All other KIQ requests in the driver use a 10 second timeout. Use a
+similar timeout implementation on the invalidate_tlbs path.
+
+v2: Poll once before msleep
+v3: Fix return value
+
+Signed-off-by: Jay Cornwall <jay.cornwall@amd.com>
+Cc: Kent Russell <kent.russell@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h     |  1 -
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c | 19 ++++++++++++++-----
+ 2 files changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-index 9476e30d6baa1..f45fb81cacd2f 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-@@ -1999,7 +1999,8 @@ static void kfd_topology_set_capabilities(struct kfd_topology_device *dev)
- 			dev->node_props.capability |=
- 				HSA_CAP_TRAP_DEBUG_PRECISE_MEMORY_OPERATIONS_SUPPORTED;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+index 4653a8d2823a6..d5514b5ac1239 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+@@ -352,7 +352,6 @@ enum amdgpu_kiq_irq {
+ 	AMDGPU_CP_KIQ_IRQ_DRIVER0 = 0,
+ 	AMDGPU_CP_KIQ_IRQ_LAST
+ };
+-#define SRIOV_USEC_TIMEOUT  1200000 /* wait 12 * 100ms for SRIOV */
+ #define MAX_KIQ_REG_WAIT       5000 /* in usecs, 5ms */
+ #define MAX_KIQ_REG_BAILOUT_INTERVAL   5 /* in msecs, 5ms */
+ #define MAX_KIQ_REG_TRY 1000
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+index 1c19a65e65533..ef74259c448d7 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+@@ -678,12 +678,10 @@ int amdgpu_gmc_flush_gpu_tlb_pasid(struct amdgpu_device *adev, uint16_t pasid,
+ 				   uint32_t flush_type, bool all_hub,
+ 				   uint32_t inst)
+ {
+-	u32 usec_timeout = amdgpu_sriov_vf(adev) ? SRIOV_USEC_TIMEOUT :
+-		adev->usec_timeout;
+ 	struct amdgpu_ring *ring = &adev->gfx.kiq[inst].ring;
+ 	struct amdgpu_kiq *kiq = &adev->gfx.kiq[inst];
+ 	unsigned int ndw;
+-	int r;
++	int r, cnt = 0;
+ 	uint32_t seq;
  
--		dev->node_props.capability |= HSA_CAP_PER_QUEUE_RESET_SUPPORTED;
-+		if (!amdgpu_sriov_vf(dev->gpu->adev))
-+			dev->node_props.capability |= HSA_CAP_PER_QUEUE_RESET_SUPPORTED;
- 	} else {
- 		dev->node_props.debug_prop |= HSA_DBG_WATCH_ADDR_MASK_LO_BIT_GFX10 |
- 					HSA_DBG_WATCH_ADDR_MASK_HI_BIT;
+ 	/*
+@@ -740,10 +738,21 @@ int amdgpu_gmc_flush_gpu_tlb_pasid(struct amdgpu_device *adev, uint16_t pasid,
+ 
+ 		amdgpu_ring_commit(ring);
+ 		spin_unlock(&adev->gfx.kiq[inst].ring_lock);
+-		if (amdgpu_fence_wait_polling(ring, seq, usec_timeout) < 1) {
++
++		r = amdgpu_fence_wait_polling(ring, seq, MAX_KIQ_REG_WAIT);
++
++		might_sleep();
++		while (r < 1 && cnt++ < MAX_KIQ_REG_TRY &&
++		       !amdgpu_reset_pending(adev->reset_domain)) {
++			msleep(MAX_KIQ_REG_BAILOUT_INTERVAL);
++			r = amdgpu_fence_wait_polling(ring, seq, MAX_KIQ_REG_WAIT);
++		}
++
++		if (cnt > MAX_KIQ_REG_TRY) {
+ 			dev_err(adev->dev, "timeout waiting for kiq fence\n");
+ 			r = -ETIME;
+-		}
++		} else
++			r = 0;
+ 	}
+ 
+ error_unlock_reset:
 -- 
 2.39.5
 
