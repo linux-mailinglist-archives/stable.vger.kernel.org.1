@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-132564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007BBA88362
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:56:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24C73A88364
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:56:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F260B188F52B
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:52:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51E661892081
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:52:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88A232C259B;
-	Mon, 14 Apr 2025 13:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 201DA2C2AAB;
+	Mon, 14 Apr 2025 13:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sncKg9e3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kS0jcChJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468072C2590;
-	Mon, 14 Apr 2025 13:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D257D2C2AA2;
+	Mon, 14 Apr 2025 13:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637420; cv=none; b=nmVK8qHA5FSSJ0oLt8o2ywt+rd/ekGYE4oKtSBF44YIFOf7M0T/1wWtMbN7a9mVLPRkpwHpAhIPA/xdLilA+CNeOepFTcSVtYpu3msrlHQqMwnySOv5CK3uHXUjYvfwnxX7R5vcSXGpeBXnDZVYW40GaDc9gHqfDNgQAHsuISVA=
+	t=1744637421; cv=none; b=k/hqAlR+9aH8KIkrPKAgqcTOOaEqVYTPQz6/NpNmfbOfJLKYtIYzCx6gG/NZk3D1RLiDDWoe69cPHQ0fZ6sEwThLoBeDjm/ZpsbjH+QE3jV6AbKyucTCZsSMrKR06eJ19MmKzXAUgV8ExXqeYQ+daQPfBejWdcdPfhe6wPa7bc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637420; c=relaxed/simple;
-	bh=NAmXP6hkqc7M65jevgVkQZLlEo8nyQbY85BB8DmywSk=;
+	s=arc-20240116; t=1744637421; c=relaxed/simple;
+	bh=mrl33OR0fU4Et+K9HW4K498PEpsbz1M0/gpno/iwQhM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YKxt+ecbDlRvIPy/Qmz25QELy90WbcCOOYr2DXa8yMgGVm+oonvp8td6dE+2ONyIHQ3kSdj+Grf2zhFp77+by63IDv0usp8e3rXu2Log/6AKC7dhcH8aaIC0IzmFoouEsjiS33r+G8Ubl1eQr0Hj1JPHSqneoMxFnIYLv6+zWEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sncKg9e3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F58C4CEEC;
-	Mon, 14 Apr 2025 13:30:18 +0000 (UTC)
+	 MIME-Version; b=EhukWIZN4nVDWGOTpgdtC0z+ti0B4xNUJpykRgegnYh1U4tw6TaSNaAtDtTxVjmgzMzoxJonxe9Jg0T21yJuZy/IOTltg3WflRh/lgQW11xqfmKWZlcd1Q/5CwRXQhqVIuKsnmx96B+SXenp2R34mbGAUOjusGfktCBz26OyppA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kS0jcChJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A065DC4CEE2;
+	Mon, 14 Apr 2025 13:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744637420;
-	bh=NAmXP6hkqc7M65jevgVkQZLlEo8nyQbY85BB8DmywSk=;
+	s=k20201202; t=1744637421;
+	bh=mrl33OR0fU4Et+K9HW4K498PEpsbz1M0/gpno/iwQhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sncKg9e3w5Trt0nMWNC/jUH1KS7+WvLOEhAU/WXitGGrrbdbYoPeZmFvGqnuHd7K6
-	 X3+PmLBVUri8WIaNWjaD64QAkv5l1JLuP0HmtIV9IoHoEP5MgY28TEg594j7GC4TsV
-	 t0SZB5sWd5m/NDkNhcyt86gg0V7+wwmoOU08R2k5QaiRBPh4z8Ui+6TiQTzjDHuoQ3
-	 GUmEJJWeNdt3xcWkkoPBIxO9Gp+ClkTQ5OdHEmhx2aH9tczM+hNLm4mJ3sJBaXE1tg
-	 TL0Tg3PNGT+d4ilceaNJt2UXkTOCp/FljR0aqWN6bLhtDERkXjt8bYxIw9P8kMx7q8
-	 t2eVfl2HfgRHQ==
+	b=kS0jcChJeZAAPN7dALvcqqCxvnhYQvSbJqL4pYXdqXgXGpBdV5y/n2Mci/GEhwX+X
+	 TLj4Y/tsjGmjViAfMj10Y2eub694VTYceRjWxhikPTRD1uZHViG2Efk858DD/4riZN
+	 VqELZxlgPAtoYw49y9IPS6LH5x1G1XqC+01tLOFaoiZsTT0XK9Zp/v7NmmDQWQQC1s
+	 GocenBYSlDfQ5B/uqHKRBGVNDmsfqaf/0+N5Yeqr3wHiMwBNWcKBRD6P8GdStGrCah
+	 t4fPnXsZ7FTzeuvqMbj9eh9Y6Dihj4Rm1w/wSJtz7EW4XEO/VnetT06jjQEYYq3HcL
+	 ROqkqgIUDaWFA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Uday Shankar <ushankar@purestorage.com>,
-	Christoph Hellwig <hch@lst.de>,
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kbusch@kernel.org,
-	sagi@grimberg.me,
-	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 11/24] nvme: multipath: fix return value of nvme_available_path
-Date: Mon, 14 Apr 2025 09:29:44 -0400
-Message-Id: <20250414132957.680250-11-sashal@kernel.org>
+	peterz@infradead.org
+Subject: [PATCH AUTOSEL 6.6 12/24] objtool: Stop UNRET validation on UD2
+Date: Mon, 14 Apr 2025 09:29:45 -0400
+Message-Id: <20250414132957.680250-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250414132957.680250-1-sashal@kernel.org>
 References: <20250414132957.680250-1-sashal@kernel.org>
@@ -67,33 +66,36 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.87
 Content-Transfer-Encoding: 8bit
 
-From: Uday Shankar <ushankar@purestorage.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit e3105f54a51554fb1bbf19dcaf93c4411d2d6c8a ]
+[ Upstream commit 9f9cc012c2cbac4833746a0182e06a8eec940d19 ]
 
-The function returns bool so we should return false, not NULL. No
-functional changes are expected.
+In preparation for simplifying INSN_SYSCALL, make validate_unret()
+terminate control flow on UD2 just like validate_branch() already does.
 
-Signed-off-by: Uday Shankar <ushankar@purestorage.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/ce841269e7e28c8b7f32064464a9821034d724ff.1744095216.git.jpoimboe@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/multipath.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/objtool/check.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
-index 32283301199f0..119afdfe4b91e 100644
---- a/drivers/nvme/host/multipath.c
-+++ b/drivers/nvme/host/multipath.c
-@@ -426,7 +426,7 @@ static bool nvme_available_path(struct nvme_ns_head *head)
- 	struct nvme_ns *ns;
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 9102ad5985cc0..78f38a74bd398 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -3935,6 +3935,9 @@ static int validate_unret(struct objtool_file *file, struct instruction *insn)
+ 			break;
+ 		}
  
- 	if (!test_bit(NVME_NSHEAD_DISK_LIVE, &head->flags))
--		return NULL;
-+		return false;
- 
- 	list_for_each_entry_srcu(ns, &head->list, siblings,
- 				 srcu_read_lock_held(&head->srcu)) {
++		if (insn->dead_end)
++			return 0;
++
+ 		if (!next) {
+ 			WARN_INSN(insn, "teh end!");
+ 			return -1;
 -- 
 2.39.5
 
