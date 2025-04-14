@@ -1,180 +1,163 @@
-Return-Path: <stable+bounces-132628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 667A2A88493
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 16:22:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E408FA88485
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 16:21:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 579D83BF8D4
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 14:13:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EE06440A76
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 14:15:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063F028DEF8;
-	Mon, 14 Apr 2025 13:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B8FC25228F;
+	Mon, 14 Apr 2025 13:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U2UZPjdY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fqTqEbei"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A64717A2EA;
-	Mon, 14 Apr 2025 13:48:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2422252287;
+	Mon, 14 Apr 2025 13:50:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744638505; cv=none; b=QdhYyLOHz5x9pPxaR07QnmA7kEur2rS45HTjLL0pRBwcW21lvSR53oZHjNFFHSyz1+0bCiyeEYSXiQ7dx3SzghiFSogPPj5ebrUARq+e1lQzM9iq+ZlDnP8bvbuZ2WmV+CNStpKu6xN1KPG74v9NTgyY6u65VIDMYZJXZeTkusc=
+	t=1744638625; cv=none; b=TucHVdob2AGcHMVLns4ltgh9cX2v7A9nZwMR3VF750ao7XVbyVIqhVM7y92ZR4ciSgZCoSrPH4xjmlumlcQnXEiTjawbLzCxkN26bA429xxikZh/mLA40bg12DZhqweAWks3b9pfU2k3HydyyC7z0voCVjQQ6l2Igd/vgX+bJKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744638505; c=relaxed/simple;
-	bh=AWnJELZDlGf9iOY/hMcXqPZQ4dopiqhIlPLaJbM7KdM=;
+	s=arc-20240116; t=1744638625; c=relaxed/simple;
+	bh=lDtbpfkDb0sbJyDh75g32G6rT05Ooc8LqydQ7WPPzwQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TsDhRr7b6dooH1q3AOyhtbRr+wThVT/nnQyETPttcwzbm1W8HEboMMFdpBsHjZE/+ImWVFrSaH+Ak93Tb/hm361LVOq7vVdkefwM48wSugQHTkgO7Qj9dRAvya4hhyUX6Tog7qHJ3HjJh7tZl2Uv5g6YIx572mUuvu/Ko9bx6jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U2UZPjdY; arc=none smtp.client-ip=209.85.221.175
+	 To:Cc:Content-Type; b=poDezXBIboPbZMup7lx1XiUufdyUroIG03c7EBTdTkftcPq64IYabNeLmtYB3SSJ96BJYX4uUk3LAH0Noc8d9OMVnFkB82LHm3m8HQEkxAdKsLSHQJKCSzoi3lenVITJPzxoFeipqzUZwtjtFi6KODwIE0s9JaplX88glsZ9/rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fqTqEbei; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-523f5836aaeso215059e0c.3;
-        Mon, 14 Apr 2025 06:48:23 -0700 (PDT)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ac6ed4ab410so730868666b.1;
+        Mon, 14 Apr 2025 06:50:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744638503; x=1745243303; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1744638622; x=1745243422; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9gg6c9JaP3fAvNMBtbYiSQTaF78FsgYOrIyM/tQBJqE=;
-        b=U2UZPjdYdIkb9hRU0jwvGIdFbWexA3pCAKCGMecU7CrVYllUtaUF6f1qQFSqVe+tLC
-         WIlPWIC/RqWoA8WbTcXcQRB/gPqUmLeMnXHeu0MyFA3mjIBfpZOXQjblzpgpFBtWFtbJ
-         AnEHmqe7hjnNMOL5nuL+HaCJ0cebCF5yHIeTMTywieWHKZukKa87t/u0/7nMlacGzFRm
-         3ZYWoQ6vYQrmLFLBy7F2Xv96rPaD1NPJrM2g8pcvs2nQxYCfTpoR8VFVUttmdvvsj2i9
-         i0TcS0O5kaU3fpsR7NMzrWlhr2ieDGqi2v03jlcv6D1d/uoKk31rHm7cVy7X6xsU7Xp+
-         jtKw==
+        bh=XrroSWvo72WiUi9EHy2B6vrgLkP9ABP6R6n5k4cIqGo=;
+        b=fqTqEbei3jqsaBfSk5hNh2aQlOzwV+b8bDsPH56r6z4t9TwLGS7Qb/no+DoJUIlmgX
+         Wcq9H/iwqDhXg/PtFwYAwwlX3nWe0yjcd9ysk1cjC32tAKkCaZFomefyI3uha+6JpyCr
+         flbUMj5GfCzPMW5lpu19g+00K5vWqdIi82IzRbnjnxfYedCh4c3p9t/UEjKtBkjec3Ma
+         0CcQssiA1mluRdtCzEFRNMzDrbwgzmWY++ZjAn13YpXEPUGedKPGUD88i7JMeiMm0MJn
+         v9gayZNGoXClhFllUNpSN6Nznb17sF+JYAmwuYLY+C9oiAKl5h29VfIGrrxxlgNTm+vA
+         vR9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744638503; x=1745243303;
+        d=1e100.net; s=20230601; t=1744638622; x=1745243422;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9gg6c9JaP3fAvNMBtbYiSQTaF78FsgYOrIyM/tQBJqE=;
-        b=uAsgdT0k9MpmIuOZRaBeWILoe3720OpDG5EMBMfzOlWPEeZfjgalR4809qnDVnuAxV
-         HLxg6H54FSgx/cygiwIc4DxIGFOTyLSRow0xxFVOTZQVjPpbgdyLlIHR/0FXLRVxpX6t
-         SxmTNvyEmLHGh+TixDO7AOCmQaaNmpWcStgdNrI7JH+mz2iWVX8l/WMzvJowGsA8cIlx
-         djO3mXyqJHfsUiuurz2kj2PhM5T7CU/EUYTH60heFo+9etjMJjjSREAUqgN4YjaheE1H
-         FMTujDUumD0NbhCD9jAfhQN7fEMlSyTc/+IwgDy0GD/RcaPmaxvW4zMkC4KAdqV2J3ce
-         Qr8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWVSbLck0dKSG6eu/FljSEo8P6d3l7Vnqk9Ubygq7oebYAXWMGPKn5g3f8aF3z93e4vetnMDf0y@vger.kernel.org, AJvYcCXRtoKrZFAt/k3LzDfmLhi1dlI9Z7TxYwV3QROLU3qQMT5RSwr/QKZz2eE0i/Bc+bqL4EtYfrKzJJH+7A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdKyZmBxaC5FlBtptNiA1mUSp8zqeGC7wy24GgGaVtvanp3pMq
-	o/9GXaQcZMEbdlls1NdNObTGxskeqHkJ8jCm+XHYS1fkVKW1udeo52EenYXBJlIejmvB50+ebxa
-	pV48bDL0XtOlvCxoLjMOVg5wRYSI=
-X-Gm-Gg: ASbGncv/ZhlgptJChdPW+FncxHzIwgIMCEvHfOnu5pM5AyYNBaL0CjGjH+Zlb+j+VYa
-	yObxxCdfLB5ksgRcS+F/TN+UyG/1+yeQ9dsrzhdRNaE/5ci+qA5sayQVDtJFhEhsxzsM4i2h2Yv
-	HiKjyk7vog8ovAfa7cpb8Gvg==
-X-Google-Smtp-Source: AGHT+IFZNxc/KHoZDwFGFG6I1MTEwTJWg8WdgpWDyKSrkajFA9wV/Z9DP3VoJO9ODfnboEI+ZztudNXfilRisu5rbL8=
-X-Received: by 2002:a05:6122:daa:b0:520:5400:ac0f with SMTP id
- 71dfb90a1353d-527c35b6a41mr2823390e0c.3.1744638502640; Mon, 14 Apr 2025
- 06:48:22 -0700 (PDT)
+        bh=XrroSWvo72WiUi9EHy2B6vrgLkP9ABP6R6n5k4cIqGo=;
+        b=b++HJ+Kf/9DDqpCxL+0l2UyIVUiDIJSPR2tQKudBTPBJtZ/RLy2pNgAas8naIwhK13
+         mLfO8noTFmwe5RVAcKRx6J7v7OExzrFp2jLjowZRViSiDxvzq308VizoHY/o0jKRQ1EL
+         jxM/GoORVvWB9HAEORSpoh+1xEzQWPqkQ7x6paWz9hd20a+M1fB/uY5eTZuCCiZEtPVL
+         BCIpoUyKDqCIqxV3Xc9qj+TUefyVWot+NTvRgNahFQ64HQ37sNCyaOlrhXmuU0MySbkc
+         BRsR+G1/U3V3PgjnUTtSksPVZwnWrnP+zD3obOZHYAWy71+Nu6kLdfey9F67mvo8QWod
+         meng==
+X-Forwarded-Encrypted: i=1; AJvYcCVvuiQs4i26UhVTRYX/KPNCu/6D8M7EO3mpYlTRb/1OB6sWw7x+Tzovu70lOt5gHo485I1TYLUjttM=@vger.kernel.org, AJvYcCWERwTjAdh42QNmed/1dUKWACa0ffjOdiN9Sr/wF5OvH9kUY/9D8a9rg7cHfAEWhZL4cYGyxF5E@vger.kernel.org
+X-Gm-Message-State: AOJu0YzPrePLR4woPBwJUrlKhp9GF/TqCxsEGkM7WtGHoOY4OD4kHcGc
+	owX4m1fSyPm5gX+4mSvO9UwKaG6JHDRVWdM9CeJAmmY0LeR3UXBcYRh1ga/ogWCDSpUmbl25hxR
+	YGZ9Czv714VOUNVsiGg/fgD4cNXo=
+X-Gm-Gg: ASbGnctGBaYIvC3YW0wAQPseUrNUEBsAcGDEdXo0n6TgrfN3B+lojRNXLxpD9emwcGN
+	tnwGiNEwRpTV0i5Q+0//DgcA/5oqcyym6ePVwYXgCYRCqE+wR6709VSjZXFlLiMkSzGzkG9e8of
+	eLD5NJfeKMeP60e+GWav4FAg==
+X-Google-Smtp-Source: AGHT+IEtba8dgXQ4QEsemJaFPww7CAC7Vm/VHKvp9nxvo9rouUeXAB0Hu4l+P++1InTuvbKunMVr5DbBgVKohUQ5PGc=
+X-Received: by 2002:a17:907:2ce2:b0:ac1:f5a4:6da5 with SMTP id
+ a640c23a62f3a-acad359b1e3mr1004798366b.37.1744638621723; Mon, 14 Apr 2025
+ 06:50:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250414132729.679254-1-sashal@kernel.org> <20250414132729.679254-15-sashal@kernel.org>
-In-Reply-To: <20250414132729.679254-15-sashal@kernel.org>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Mon, 14 Apr 2025 09:48:10 -0400
-X-Gm-Features: ATxdqUGsIVkJwostdQs5byeooJDamJZ9S8mgOlW4xpayrB_LVHSmjP3XNtx4Yaw
-Message-ID: <CADnq5_OyrpJL3fnbyiueyddkNZ2B-uRO9pyrRVqBTeY5AnepYw@mail.gmail.com>
-Subject: Re: [Linaro-mm-sig] [PATCH AUTOSEL 6.13 15/34] drm/amdgpu: allow
- pinning DMA-bufs into VRAM if all importers can do P2P
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Simona Vetter <simona.vetter@ffwll.ch>, Felix Kuehling <felix.kuehling@amd.com>, 
-	Pak Nin Lui <pak.lui@amd.com>, Alex Deucher <alexander.deucher@amd.com>, simona@ffwll.ch, 
-	sumit.semwal@linaro.org, Yunxiang.Li@amd.com, tvrtko.ursulin@igalia.com, 
-	matthew.auld@intel.com, amd-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
-	linaro-mm-sig@lists.linaro.org
+References: <20250403040756.720409-1-chenhuacai@loongson.cn>
+In-Reply-To: <20250403040756.720409-1-chenhuacai@loongson.cn>
+From: Huacai Chen <chenhuacai@gmail.com>
+Date: Mon, 14 Apr 2025 21:50:18 +0800
+X-Gm-Features: ATxdqUFe-VE5EU624oOl8szgIy_2nN3Sdsg23Hn5hcZ5BlvhdRLC_V7ChQkKipA
+Message-ID: <CAAhV-H4FwdDM9UEFE8hcsaL+pY1+ky5twrp3VLXGThX6qgkozQ@mail.gmail.com>
+Subject: Re: [PATCH V2] PCI: Add ACS quirk for Loongson PCIe
+To: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+	Rob Herring <robh@kernel.org>, linux-pci@vger.kernel.org, 
+	Jianmin Lv <lvjianmin@loongson.cn>, Xuefeng Li <lixuefeng@loongson.cn>, 
+	Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org, 
+	Xianglai Li <lixianglai@loongson.cn>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 14, 2025 at 9:28=E2=80=AFAM Sasha Levin <sashal@kernel.org> wro=
-te:
->
-> From: Christian K=C3=B6nig <christian.koenig@amd.com>
->
-> [ Upstream commit f5e7fabd1f5c65b2e077efcdb118cfa67eae7311 ]
->
-> Try pinning into VRAM to allow P2P with RDMA NICs without ODP
-> support if all attachments can do P2P. If any attachment can't do
-> P2P just pin into GTT instead.
->
-> Acked-by: Simona Vetter <simona.vetter@ffwll.ch>
-> Signed-off-by: Christian K=C3=B6nig <christian.koenig@amd.com>
-> Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
-> Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-> Tested-by: Pak Nin Lui <pak.lui@amd.com>
-> Cc: Simona Vetter <simona.vetter@ffwll.ch>
-> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+Gentle ping?
 
-This should not go to stable.  It depends on dmem cgroups.
+Huacai
 
-Alex
-
-
+On Thu, Apr 3, 2025 at 12:08=E2=80=AFPM Huacai Chen <chenhuacai@loongson.cn=
+> wrote:
+>
+> Loongson PCIe Root Ports don't advertise an ACS capability, but they do
+> not allow peer-to-peer transactions between Root Ports. Add an ACS quirk
+> so each Root Port can be in a separate IOMMU group.
+>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 > ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c | 25 +++++++++++++++------
->  1 file changed, 18 insertions(+), 7 deletions(-)
+> V2: Add more device ids.
 >
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c b/drivers/gpu/dr=
-m/amd/amdgpu/amdgpu_dma_buf.c
-> index 8e81a83d37d84..83390143c2e9f 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-> @@ -72,11 +72,25 @@ static int amdgpu_dma_buf_attach(struct dma_buf *dmab=
-uf,
->   */
->  static int amdgpu_dma_buf_pin(struct dma_buf_attachment *attach)
->  {
-> -       struct drm_gem_object *obj =3D attach->dmabuf->priv;
-> -       struct amdgpu_bo *bo =3D gem_to_amdgpu_bo(obj);
-> +       struct dma_buf *dmabuf =3D attach->dmabuf;
-> +       struct amdgpu_bo *bo =3D gem_to_amdgpu_bo(dmabuf->priv);
-> +       u32 domains =3D bo->preferred_domains;
+>  drivers/pci/quirks.c | 23 +++++++++++++++++++++++
+>  1 file changed, 23 insertions(+)
 >
-> -       /* pin buffer into GTT */
-> -       return amdgpu_bo_pin(bo, AMDGPU_GEM_DOMAIN_GTT);
-> +       dma_resv_assert_held(dmabuf->resv);
-> +
-> +       /*
-> +        * Try pinning into VRAM to allow P2P with RDMA NICs without ODP
-> +        * support if all attachments can do P2P. If any attachment can't=
- do
-> +        * P2P just pin into GTT instead.
-> +        */
-> +       list_for_each_entry(attach, &dmabuf->attachments, node)
-> +               if (!attach->peer2peer)
-> +                       domains &=3D ~AMDGPU_GEM_DOMAIN_VRAM;
-> +
-> +       if (domains & AMDGPU_GEM_DOMAIN_VRAM)
-> +               bo->flags |=3D AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED;
-> +
-> +       return amdgpu_bo_pin(bo, domains);
+> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> index 8d610c17e0f2..eee96ad03614 100644
+> --- a/drivers/pci/quirks.c
+> +++ b/drivers/pci/quirks.c
+> @@ -4995,6 +4995,18 @@ static int pci_quirk_brcm_acs(struct pci_dev *dev,=
+ u16 acs_flags)
+>                 PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
 >  }
 >
->  /**
-> @@ -131,9 +145,6 @@ static struct sg_table *amdgpu_dma_buf_map(struct dma=
-_buf_attachment *attach,
->                 r =3D ttm_bo_validate(&bo->tbo, &bo->placement, &ctx);
->                 if (r)
->                         return ERR_PTR(r);
-> -
-> -       } else if (bo->tbo.resource->mem_type !=3D TTM_PL_TT) {
-> -               return ERR_PTR(-EBUSY);
->         }
->
->         switch (bo->tbo.resource->mem_type) {
+> +static int pci_quirk_loongson_acs(struct pci_dev *dev, u16 acs_flags)
+> +{
+> +       /*
+> +        * Loongson PCIe Root Ports don't advertise an ACS capability, bu=
+t
+> +        * they do not allow peer-to-peer transactions between Root Ports=
+.
+> +        * Allow each Root Port to be in a separate IOMMU group by maskin=
+g
+> +        * SV/RR/CR/UF bits.
+> +        */
+> +       return pci_acs_ctrl_enabled(acs_flags,
+> +               PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
+> +}
+> +
+>  /*
+>   * Wangxun 40G/25G/10G/1G NICs have no ACS capability, but on
+>   * multi-function devices, the hardware isolates the functions by
+> @@ -5128,6 +5140,17 @@ static const struct pci_dev_acs_enabled {
+>         { PCI_VENDOR_ID_BROADCOM, 0x1762, pci_quirk_mf_endpoint_acs },
+>         { PCI_VENDOR_ID_BROADCOM, 0x1763, pci_quirk_mf_endpoint_acs },
+>         { PCI_VENDOR_ID_BROADCOM, 0xD714, pci_quirk_brcm_acs },
+> +       /* Loongson PCIe Root Ports */
+> +       { PCI_VENDOR_ID_LOONGSON, 0x3C09, pci_quirk_loongson_acs },
+> +       { PCI_VENDOR_ID_LOONGSON, 0x3C19, pci_quirk_loongson_acs },
+> +       { PCI_VENDOR_ID_LOONGSON, 0x3C29, pci_quirk_loongson_acs },
+> +       { PCI_VENDOR_ID_LOONGSON, 0x7A09, pci_quirk_loongson_acs },
+> +       { PCI_VENDOR_ID_LOONGSON, 0x7A19, pci_quirk_loongson_acs },
+> +       { PCI_VENDOR_ID_LOONGSON, 0x7A29, pci_quirk_loongson_acs },
+> +       { PCI_VENDOR_ID_LOONGSON, 0x7A39, pci_quirk_loongson_acs },
+> +       { PCI_VENDOR_ID_LOONGSON, 0x7A49, pci_quirk_loongson_acs },
+> +       { PCI_VENDOR_ID_LOONGSON, 0x7A59, pci_quirk_loongson_acs },
+> +       { PCI_VENDOR_ID_LOONGSON, 0x7A69, pci_quirk_loongson_acs },
+>         /* Amazon Annapurna Labs */
+>         { PCI_VENDOR_ID_AMAZON_ANNAPURNA_LABS, 0x0031, pci_quirk_al_acs }=
+,
+>         /* Zhaoxin multi-function devices */
 > --
-> 2.39.5
+> 2.47.1
 >
-> _______________________________________________
-> Linaro-mm-sig mailing list -- linaro-mm-sig@lists.linaro.org
-> To unsubscribe send an email to linaro-mm-sig-leave@lists.linaro.org
 
