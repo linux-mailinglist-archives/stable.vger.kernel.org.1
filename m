@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-132471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A581A8825A
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:34:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBEFDA8824A
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:32:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43A893BB15A
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:31:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0529C17B080
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6FF225394F;
-	Mon, 14 Apr 2025 13:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6122A27F730;
+	Mon, 14 Apr 2025 13:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wp6M8RL+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BZ+Sjidy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72117253939;
-	Mon, 14 Apr 2025 13:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE0427F728;
+	Mon, 14 Apr 2025 13:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637213; cv=none; b=o9uCkPxoi6FiROAPU4KBQeQX4Q2L+QCx2bEYLZGrdaBYl4qvSpmkbej/j/zFi/JPXIaQEqtxTXC/bvuzsGgAj4dhd+lqsgUJwZNIjyURtWKVAGgZFOYV2v2GE8Rv+l0w3UXkzAexFxWHw9FBxevQBki6E/G4kG+WRsi3mGwzd80=
+	t=1744637215; cv=none; b=QFx5hcmU/DW2KlDg7LlfZ6ijSLATFMMGUCT92Xi0twmcxKa6wOEwrCjl20n6ZUSTlkoARbTl/o2Kiq8Zn2rG76EAJ4NG3s1t0KrabA54MXo6nwUwa3OyamSjhjbGnfTbkwDvCE4vXChAX2gdR+ARIjs/f3iCc6Ezh+IQw+QZYMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637213; c=relaxed/simple;
-	bh=Dk7DGQ+Ldoaia2BqL7ftzKH5lZunYpvEa29t/X7CyhQ=;
+	s=arc-20240116; t=1744637215; c=relaxed/simple;
+	bh=3mmWf7aL2pXLiP/H5JF5mbA92xb7zwsGt3ckJCNigyM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fgzPlqySlmR63bqaHtUIy75i8eCIbw5z83tsFV3Ei9cupCbcOL8yksCr/YLX9Y6jnPWrbckXftmM5ylCXyY/Ig91/JjYCMdpKF2KSeI06isUL8lsL4SgIWT/3X8m9125PFqJWpNaIgXcFr+1gMRPbaoATpeYsfypeouphq536ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wp6M8RL+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33BE8C4CEE9;
-	Mon, 14 Apr 2025 13:26:52 +0000 (UTC)
+	 MIME-Version; b=rHGZgbGhSAti67raLMrISu3UnW/q/RnZr0udDONYWQZT0CasBGcI6Z2Qr9xUzvn+AJ2lKIcycAHMupVe97STEP+LnC3ZEomSkUijTkK+9Ce5xptcNj+VG0PxYgNTEOPXNkXeHmybTIWv+j69L8UlQFeOG5142QzuKid9T3WaIVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BZ+Sjidy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC91AC4CEE9;
+	Mon, 14 Apr 2025 13:26:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744637213;
-	bh=Dk7DGQ+Ldoaia2BqL7ftzKH5lZunYpvEa29t/X7CyhQ=;
+	s=k20201202; t=1744637214;
+	bh=3mmWf7aL2pXLiP/H5JF5mbA92xb7zwsGt3ckJCNigyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wp6M8RL+N4r8W++cz/SajOHog4LVXZvMLwAacla/oRsx0rvOy87pKolyky/P2g3sL
-	 DC5+mcgdx5Ne6qUU+9iTKYeA0++iKkqEepsOT7DrkUfN+WnkIDAUHpU7Te5oIVF6QY
-	 3HuXfEO+Rupunho0FgwUsq24s2w0hIHdWQby8zku0DnpzkcxSebDdBNlBtAlcoOMTV
-	 WyKN/wsgLXHuBhXg4x3ljl/sPWiPlJRzTwPdXzFT+8oYEh2AnweLAjuty+Y/Hausmv
-	 n3hjhcrptxDHZdmmJcSImOxJwOMe//5jsyhBPhq4d9gd9nDy8CqQ/Z9U+iOPB2Nnfu
-	 5pIoss8sTcT+Q==
+	b=BZ+Sjidy3r1jI83G4iRLZ2lnrsspoVeYJbBif4HpO7EN9fNG3T850QejrxwjFvzXZ
+	 RkOBhyoA1jFrtBMndDmgd/vxVRrOiXHxo/7oLjMFM+A/P7VL9eD0wSyOy39KUCfABc
+	 onGGDRwn6rDGzvgF+qGpgIkhNLHIpGlytq70kVS2zEm6LCNOYlXpBhmb0r27xeH5og
+	 AB6eaPK/FIRAQVQYpCiXYimzr4UtHfFtTlSv8sFMMhhpFYe7KKC6cZ1eTppuzDi2yh
+	 qW1kBLXKv1Aa30s+V6NmnlNHKi5FrSGSbAnP1gXq0xF1kn9eYMFkQZ8h7P3sHqXy+o
+	 PMQ9848a3jSKQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hannes Reinecke <hare@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
+Cc: Uday Shankar <ushankar@purestorage.com>,
 	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>,
+	kbusch@kernel.org,
 	sagi@grimberg.me,
 	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.14 17/34] nvme: re-read ANA log page after ns scan completes
-Date: Mon, 14 Apr 2025 09:25:53 -0400
-Message-Id: <20250414132610.677644-17-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 18/34] nvme: multipath: fix return value of nvme_available_path
+Date: Mon, 14 Apr 2025 09:25:54 -0400
+Message-Id: <20250414132610.677644-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250414132610.677644-1-sashal@kernel.org>
 References: <20250414132610.677644-1-sashal@kernel.org>
@@ -67,45 +67,33 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.2
 Content-Transfer-Encoding: 8bit
 
-From: Hannes Reinecke <hare@kernel.org>
+From: Uday Shankar <ushankar@purestorage.com>
 
-[ Upstream commit 62baf70c327444338c34703c71aa8cc8e4189bd6 ]
+[ Upstream commit e3105f54a51554fb1bbf19dcaf93c4411d2d6c8a ]
 
-When scanning for new namespaces we might have missed an ANA AEN.
+The function returns bool so we should return false, not NULL. No
+functional changes are expected.
 
-The NVMe base spec (NVMe Base Specification v2.1, Figure 151 'Asynchonous
-Event Information - Notice': Asymmetric Namespace Access Change) states:
-
-  A controller shall not send this even if an Attached Namespace
-  Attribute Changed asynchronous event [...] is sent for the same event.
-
-so we need to re-read the ANA log page after we rescanned the namespace
-list to update the ANA states of the new namespaces.
-
-Signed-off-by: Hannes Reinecke <hare@kernel.org>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Uday Shankar <ushankar@purestorage.com>
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/nvme/host/multipath.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 70f9c2d2b1130..edee1ec3d4780 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -4296,6 +4296,11 @@ static void nvme_scan_work(struct work_struct *work)
- 	/* Requeue if we have missed AENs */
- 	if (test_bit(NVME_AER_NOTICE_NS_CHANGED, &ctrl->events))
- 		nvme_queue_scan(ctrl);
-+#ifdef CONFIG_NVME_MULTIPATH
-+	else
-+		/* Re-read the ANA log page to not miss updates */
-+		queue_work(nvme_wq, &ctrl->ana_work);
-+#endif
- }
+diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
+index 2a76355650830..f39823cde62c7 100644
+--- a/drivers/nvme/host/multipath.c
++++ b/drivers/nvme/host/multipath.c
+@@ -427,7 +427,7 @@ static bool nvme_available_path(struct nvme_ns_head *head)
+ 	struct nvme_ns *ns;
  
- /*
+ 	if (!test_bit(NVME_NSHEAD_DISK_LIVE, &head->flags))
+-		return NULL;
++		return false;
+ 
+ 	list_for_each_entry_srcu(ns, &head->list, siblings,
+ 				 srcu_read_lock_held(&head->srcu)) {
 -- 
 2.39.5
 
