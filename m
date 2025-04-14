@@ -1,84 +1,248 @@
-Return-Path: <stable+bounces-132450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B3B3A880A7
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 14:41:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 594FDA880E7
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 14:58:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54CC8175582
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 12:41:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 124843AA9CD
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 12:58:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75A72BE7DB;
-	Mon, 14 Apr 2025 12:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8BA278E63;
+	Mon, 14 Apr 2025 12:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EKHWmdSy"
+	dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b="SDln8aV1";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="svJeRnNi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE252BE7B8;
-	Mon, 14 Apr 2025 12:41:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5549539A;
+	Mon, 14 Apr 2025 12:58:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744634507; cv=none; b=G3lKqpiVD97tjfDLNjzE1rwPFF3EpEaiB/a6wiqKdO1798iEfYGU9P7G3E664Sb1m3RYQ+4UJ70Y+DpKNlqMyJ8uBBeepGz9e36Q/WgAfS104I7Mo+iUf98CD3ntlbtzboE2IsEkCKU3t8HKI3Z9Lzr5ZLk+e0Aeh8BOfeOP/xg=
+	t=1744635496; cv=none; b=G6681JZ2e0avqz+OAmd9rXl9XUwOZDKPvKVcABExNWRoTjgCZ5yKjkU0qmOZ3K1hV54aEO4puoC2UfBMU6RtBfdrgG2PjSCJystPIKCo/cUx+jHQtGnueP8BkqbgWJG1gqpLeWM3bwThjCQqJizxrqhbHWiMbS71d6D3eTFv5LE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744634507; c=relaxed/simple;
-	bh=3BlNmQpMp82xJdAZ0Bho2rJ8qJsNAxUz1OgSOw9idJE=;
+	s=arc-20240116; t=1744635496; c=relaxed/simple;
+	bh=GuS4kD8hqpTqJstJPkWgHhRffVNevrduFdkI/CdwkvI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KwWALlSlk4nZL1jnYizfCxSQyQZsmD/YngeikZiOL0V+AMWrVZGBhQ96ECFWOyrAqjWfBWOm8Qw0RFla9Nhncr4oOhm7Vv2qFnNXeAJv+MrpRgdpnexlL14HsBYr5dbJrRPKS6l5cYaHPkzK/iz7F754wDyX8Oq1BrT3irD5dY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EKHWmdSy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4082C4CEE2;
-	Mon, 14 Apr 2025 12:41:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744634506;
-	bh=3BlNmQpMp82xJdAZ0Bho2rJ8qJsNAxUz1OgSOw9idJE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EKHWmdSyJPedYFPNxldVA2LFgAkClYqz35karquJkKls9Qicneob6E3Pxfl6Oa5oE
-	 Tg8CdWKsVnxCoiiA8994/hHfLGB1frgaaPr5fkTJnf8pIogEmq4v7Srb80rwFUmlBM
-	 TqSqWp1o3fCHP487pbfILQxw0iqWTwjLnWwx/+z0NlHK2yyy7lszo4dBsuiG2B7JrM
-	 +Z8QDyXNXN9ALILXlxZyNCGqmMTesHOyRfy6KM/ngHyIZCKgz7k1VMHwhApNf9fyno
-	 G8JsK0v2JC3N11qrF6EaSkEMNApyij81rz5Yaz8SzqtUO4AdXrri9DCWQ16YAPqw7i
-	 P5MjfMBm5yFsA==
-Date: Mon, 14 Apr 2025 14:41:41 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Christian Schrefl <chrisi.schrefl@gmail.com>
-Cc: Luis Chamberlain <mcgrof@kernel.org>,
-	Russ Weight <russ.weight@linux.dev>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] rust: Use `ffi::c_char` type in firmware abstraction
- `FwFunc`
-Message-ID: <Z_0ChQQkMtHoTo1C@cassiopeiae>
-References: <20250413-rust_arm_fix_fw_abstaction-v3-1-8dd7c0bbcd47@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=RzvEHR3BgtPj8yICPQ7D2ZOSUStb+ZZk9qtlYXDEF5GgZf6LQ6f6tJCeGnLayHPdvD8L4sEWBuDMZIDSqpNv/0PNkHhnM0YoxRj/6EW+/UTqyIeCoKdYO8eEp+90vevHNYTNVUCxtCr5fb2d3rujfYMkUFv0k6ZbI/q7v4+dLn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com; spf=pass smtp.mailfrom=invisiblethingslab.com; dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b=SDln8aV1; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=svJeRnNi; arc=none smtp.client-ip=202.12.124.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=invisiblethingslab.com
+Received: from phl-compute-08.internal (phl-compute-08.phl.internal [10.202.2.48])
+	by mailfout.stl.internal (Postfix) with ESMTP id 9DD0311400A8;
+	Mon, 14 Apr 2025 08:58:13 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-08.internal (MEProxy); Mon, 14 Apr 2025 08:58:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	invisiblethingslab.com; h=cc:cc:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1744635493;
+	 x=1744721893; bh=ZdtjygeQwRRON2KbdpHTn72DZDHfbhRKvMnYK9WBN70=; b=
+	SDln8aV1wIvrC+L+Eu3kFn2nWEm4gM1S4n0hdIikSpx0dIzFqSKe2L9YzorvZXSj
+	J0sCy1bzHRMz9ZpLM0nh6B9BoPigX77eOs0ZKbaAnGGXKXBpQ/e9e3gr57OanASY
+	joQ/Mm1SrY2dTsh/G4en4gBAYcwpScfgv7bVVdEK25T6XrkjECE0RQZG4JyXxbKH
+	G8/yW9TM3e0J3DQz+YAIfQKQGmtsmCA8t+RbBVVBzQ+Ows7IMW1VsdWZ1rY0UQXn
+	lbl7X7kf0qMZHpQiPCfMloJH4a71NjP4ZZ9biesaYKnSFzWsdL3M8JXe6CfxP66m
+	0jF7a99BNt/Tw9NQnsN43w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1744635493; x=1744721893; bh=ZdtjygeQwRRON2KbdpHTn72DZDHfbhRKvMn
+	YK9WBN70=; b=svJeRnNi/9e2Hc2GAlXV3usuUtxKc+S5U0thcmfF6QdBNzZIBde
+	Sp2xj2NyMVYAx+cuI5lUr4ZikEHQigSWnav5o6yA5LOv5sE3hzzQeK+zPoSKobfN
+	GUuc0n/voEmBXj+p6Goi3cyAdcKsRtTF8tbVkMyAaoj+Mv4dOkkFrMNMxIq1CQTB
+	7uFxPnEaagJ56uvWcfHlK8CyCeKT0wGz0NiWH0mUNlPAFo4xP5eCRD3rTEdvcU8i
+	nz+oKymC0U7an1KMUjkrTb7L2EPLveFdKgr8WHazbI57a7zuMcmGhGj4vrejx2Gs
+	3RNTxHYIvrcIUMid3zYF6Qhg9uHuDj8tWKg==
+X-ME-Sender: <xms:ZQb9Z4mW49M8EELf4w9Og69C2_o-jcr7JJ9QRHX0yWxxLo6g1eKYrw>
+    <xme:ZQb9Z31KaI0Au0Kb00PDX96vEsgm-d-VUy4M2v3B6PG9SzJhI_9qv1KFS4m5aGK5s
+    nmRLdSWIvj_cA>
+X-ME-Received: <xmr:ZQb9Z2pd8PCXbdwXL8cqCxwJB3O6Cd02uwVuD_lD5pay0t6UzWg8T0Ll-qolsSxxMieGfFo-zqPjQSmNz1FKZVXH2uoo3ZKLPA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvvddtiedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesghdtreertddt
+    jeenucfhrhhomhepofgrrhgvkhcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuc
+    eomhgrrhhmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecu
+    ggftrfgrthhtvghrnhepgfduleetfeevhfefheeiteeliefhjefhleduveetteekveettd
+    dvgeeuteefjedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhf
+    rhhomhepmhgrrhhmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
+    dpnhgspghrtghpthhtohepkedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepvhhi
+    thgrlhihrdhlihhfshhhihhtshesihhnthgvlhdrtghomhdprhgtphhtthhopehjvghssh
+    gvrdgsrhgrnhguvggsuhhrghesihhnthgvlhdrtghomhdprhgtphhtthhopegrnhhthhho
+    nhihrdhlrdhnghhuhigvnhesihhnthgvlhdrtghomhdprhgtphhtthhopehnvghtuggvvh
+    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehinhhtvghlqdifihhrvggu
+    qdhlrghnsehlihhsthhsrdhoshhuohhslhdrohhrghdprhgtphhtthhopehrvghgrhgvsh
+    hsihhonhhssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepshhtrggslhgv
+    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshgrshhhrghlsehkvghrnh
+    gvlhdrohhrgh
+X-ME-Proxy: <xmx:ZQb9Z0lu4NiL_ful3VhbQ4wGuUq8v6uz5XVHjJwAi2K_xo6aBDu99Q>
+    <xmx:ZQb9Z21PNDD7SqkDApNtPOpOvmJ7ntvjz206t-aADhjt3vk2XKcDkQ>
+    <xmx:ZQb9Z7tbBMXbuYmBsMy--HFpR9ELE3szOWMohCyMDGmG5KHd-DphYg>
+    <xmx:ZQb9ZyWiRvpRyAzAOKD-QyFVtKw6cuR5B5dp_y7grP0vuMfEGGyp_w>
+    <xmx:ZQb9Z4pYFe8Sq2TAt5DY4F0Pb-qIuv2BrR0XLkpyq6JINvYHWuULAMH2>
+Feedback-ID: i1568416f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 14 Apr 2025 08:58:11 -0400 (EDT)
+Date: Mon, 14 Apr 2025 14:58:09 +0200
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: "Lifshits, Vitaly" <vitaly.lifshits@intel.com>
+Cc: Jesse Brandeburg <jesse.brandeburg@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>, netdev@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org, regressions@lists.linux.dev,
+	stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Subject: Re: [REGRESSION] e1000e heavy packet loss on Meteor Lake - 6.14.2
+Message-ID: <Z_0GYR8jR-5NWZ9K@mail-itl>
+References: <Z_z9EjcKtwHCQcZR@mail-itl>
+ <b1f5e997-033c-33ed-5e3b-6fe2632bf718@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="3dtuJQ5HLXloIV6T"
 Content-Disposition: inline
-In-Reply-To: <20250413-rust_arm_fix_fw_abstaction-v3-1-8dd7c0bbcd47@gmail.com>
+In-Reply-To: <b1f5e997-033c-33ed-5e3b-6fe2632bf718@intel.com>
 
-On Sun, Apr 13, 2025 at 09:26:56PM +0200, Christian Schrefl wrote:
-> The `FwFunc` struct contains an function with a char pointer argument,
-> for which a `*const u8` pointer was used. This is not really the
-> "proper" type for this, so use a `*const kernel::ffi::c_char` pointer
-> instead.
 
-With the following changes, applied to driver-core-linus, thanks!
+--3dtuJQ5HLXloIV6T
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 14 Apr 2025 14:58:09 +0200
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: "Lifshits, Vitaly" <vitaly.lifshits@intel.com>
+Cc: Jesse Brandeburg <jesse.brandeburg@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>, netdev@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org, regressions@lists.linux.dev,
+	stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Subject: Re: [REGRESSION] e1000e heavy packet loss on Meteor Lake - 6.14.2
 
-  * add firmware prefix to commit subject
+On Mon, Apr 14, 2025 at 03:38:39PM +0300, Lifshits, Vitaly wrote:
+> Do you see the high packet loss without the virtualization?
 
-- Danilo
+I can't check that easily right now, will try later.
+
+> Can you please share the lspci output?
+
+Sure:
+
+00:07.0 Ethernet controller [0200]: Intel Corporation Device [8086:550a] (r=
+ev 20)
+	Subsystem: CLEVO/KAPOK Computer Device [1558:a743]
+	Physical Slot: 7
+	Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Steppi=
+ng- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=3Dfast >TAbort- <TAbort- =
+<MAbort- >SERR- <PERR- INTx-
+	Latency: 64
+	Interrupt: pin D routed to IRQ 69
+	Region 0: Memory at f2000000 (32-bit, non-prefetchable) [size=3D128K]
+	Capabilities: [c8] Power Management version 3
+		Flags: PMEClk- DSI+ D1- D2- AuxCurrent=3D0mA PME(D0-,D1-,D2-,D3hot-,D3col=
+d-)
+		Status: D0 NoSoftRst+ PME-Enable- DSel=3D0 DScale=3D1 PME-
+	Capabilities: [d0] MSI: Enable+ Count=3D1/1 Maskable- 64bit+
+		Address: 00000000fee00000  Data: 0000
+	Kernel driver in use: e1000e
+	Kernel modules: e1000e
+
+
+
+> Does your switch/link partner support flow control? if it is configurable
+> can you try to enable it?
+
+It does support it. Enabling it makes things much worse...
+
+> Do you see any errors in dmesg related to the e1000e driver?
+
+Not really.
+dmesg | grep 'e1000e\|ens7':
+
+[    3.088489] e1000e: Intel(R) PRO/1000 Network Driver
+[    3.088512] e1000e: Copyright(c) 1999 - 2015 Intel Corporation.
+[    3.093256] e1000e 0000:00:07.0: Interrupt Throttling Rate (ints/sec) se=
+t to dynamic conservative mode
+[    3.343378] e1000e 0000:00:07.0 0000:00:07.0 (uninitialized): registered=
+ PHC clock
+[    3.718946] e1000e 0000:00:07.0 eth0: (PCI Express:2.5GT/s:Width x1) d4:=
+93:90:3e:0d:bb
+[    3.718966] e1000e 0000:00:07.0 eth0: Intel(R) PRO/1000 Network Connecti=
+on
+[    3.719101] e1000e 0000:00:07.0 eth0: MAC: 16, PHY: 12, PBA No: FFFFFF-0=
+FF
+[    3.759444] e1000e 0000:00:07.0 ens7: renamed from eth0
+[    8.632317] e1000e 0000:00:07.0 ens7: NIC Link is Up 1000 Mbps Full Dupl=
+ex, Flow Control: None
+[  239.458205] e1000e 0000:00:07.0 ens7: NIC Link is Down
+[  242.485869] e1000e 0000:00:07.0 ens7: NIC Link is Up 1000 Mbps Full Dupl=
+ex, Flow Control: Rx/Tx
+
+(you can also see a test with flow control above)
+
+
+And also ethtool output if useful:
+Settings for ens7:
+	Supported ports: [ TP ]
+	Supported link modes:   10baseT/Half 10baseT/Full
+	                        100baseT/Half 100baseT/Full
+	                        1000baseT/Full
+	Supported pause frame use: Symmetric Receive-only
+	Supports auto-negotiation: Yes
+	Supported FEC modes: Not reported
+	Advertised link modes:  10baseT/Half 10baseT/Full
+	                        100baseT/Half 100baseT/Full
+	                        1000baseT/Full
+	Advertised pause frame use: Symmetric Receive-only
+	Advertised auto-negotiation: Yes
+	Advertised FEC modes: Not reported
+	Link partner advertised link modes:  10baseT/Half 10baseT/Full
+	                                     100baseT/Half 100baseT/Full
+	                                     1000baseT/Full
+	Link partner advertised pause frame use: No
+	Link partner advertised auto-negotiation: Yes
+	Link partner advertised FEC modes: Not reported
+	Speed: 1000Mb/s
+	Duplex: Full
+	Auto-negotiation: on
+	Port: Twisted Pair
+	PHYAD: 1
+	Transceiver: internal
+	MDI-X: on (auto)
+	Supports Wake-on: d
+	Wake-on: d
+        Current message level: 0x00000007 (7)
+                               drv probe link
+	Link detected: yes
+
+
+--=20
+Best Regards,
+Marek Marczykowski-G=C3=B3recki
+Invisible Things Lab
+
+--3dtuJQ5HLXloIV6T
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmf9BmEACgkQ24/THMrX
+1ywZZQf/VzpE9UiEUa/4GQjlzqL4ic3Lfu4aN6g4RuEVdM9dIGS1ZsNSg6r5Z9Vj
+qxmm/J7h6i+ma685KIK62ZaFKmK29sTYh0dq0oI0TldQeWj5g9BHKmbMJevXJdKJ
+F/zdOAqnaY7U2iT3nVQ5I38dwgCwrPH7WYruF582LgFeFIgvcA23ya4EmGqIVolX
+Uu/JeU3MICCM3HvEv3VvFpWSGHGVSdpc4WnCr6KoywLVwz2QCO49GmNDcykRwkjL
+NbEdi9/1N7W6i1+J1ISUqrv6dLAJvpYyK3HP7bovdFjs01BQ5lXKmsX0Gn7SYa89
+LuB2k2oNOpoLJgFxcjrIkGzfX/8dRA==
+=+RlG
+-----END PGP SIGNATURE-----
+
+--3dtuJQ5HLXloIV6T--
 
