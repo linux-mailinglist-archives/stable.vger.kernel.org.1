@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-132547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 570ABA88354
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:55:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67773A88332
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:52:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 036003B69BB
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:48:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75CD4165494
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4806929E073;
-	Mon, 14 Apr 2025 13:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05CA2BCF55;
+	Mon, 14 Apr 2025 13:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PPtBqQgN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SD0pt11P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00BEB29E069;
-	Mon, 14 Apr 2025 13:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7ABA2BCF49;
+	Mon, 14 Apr 2025 13:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637385; cv=none; b=e+u4Vuo5Yp/riuwBxFucR8O3Pi1NfodLgal30rvhho8luztRX7AOM9GqbF1u7HSQ+HaL/yF1n0gG4P1X4cqKaq/h5BFit5cH/w8Gq7VPC+kIuaa0DGjDKXZMjINfElI6tett3/1c/+nZTPRT7Cd5dQrYN99FpNSx5mfiV4OP/mE=
+	t=1744637386; cv=none; b=rXmnEfLkQ6FaIHIn8byfW+7DM8ZnQqQtGmOmgq0jUKXheS4wzIHd03OoL46lyDIoiL0i7EBTaayN10HyN2wNSCgMO++k4Nm7HsMHKuaUuq0lW9wLQ+ZGdDChEdVKw0mLPIkUuq46+OsrqqngGY4VDx9Zqfr1yMmJsLDrGItPvFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637385; c=relaxed/simple;
-	bh=DDLp9F3hw0/j5DNaV3tFyRMhvyjy0IKOIaq0JQaile8=;
+	s=arc-20240116; t=1744637386; c=relaxed/simple;
+	bh=fpJRf9CZe3T5C9C8/QyTP6/QH8MxITneSs68umnEErU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=s1Nu1kTxKVJw/O/L/CQdQU/gdDWROxP2t0IM1dyt6i7wctI1J25e5mCjy9wHRjhzYK9kDYsRGCF0j/4+AUMpfuEpb8cczZHN5HcllBW+V5qVBZeb6qQvdBenY9n+ZOJZyio1QVuDb5alCQ8RR7qK/tjnAtP+6iXLwdLTGsGItSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PPtBqQgN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39998C4CEE9;
-	Mon, 14 Apr 2025 13:29:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LTot8bL16xV9YyybAGYWvwOTvqdgVqNh25oWl6mMNyNCTewunhpZghjPZPkR0AL6vg1aVgMEKD/VdWB/kBXePjfCxAF5GCzGz4IzaUUcMHF/ItQO2LoJ9nPG2RPUvA6fxOtAP4HM9G/9IBxXSxIbvTqd6MpzNra8Oe4bAmXrm2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SD0pt11P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6328CC4CEEC;
+	Mon, 14 Apr 2025 13:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744637384;
-	bh=DDLp9F3hw0/j5DNaV3tFyRMhvyjy0IKOIaq0JQaile8=;
+	s=k20201202; t=1744637386;
+	bh=fpJRf9CZe3T5C9C8/QyTP6/QH8MxITneSs68umnEErU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PPtBqQgNUpuhqJW4Z1zBQHKuU6NXJGmH+tkDm5LjpRM13T6RBw8BkNAwVabmfNWEl
-	 yqcB0hAIR1Mwcuq3+LA5POzBRBcz1mV/dsRdKh4y+NongAXj/ZK9CSjTN22BZ+okSk
-	 DhRc9lR6jB9/47eVKA7mOt5wYq4l4ed2QlmyTPQ40fXTamc1Mox3fewnKNyGUPL4/a
-	 y4RwSw5u3ALxortLVnhWLhuj/5BTqbPD8onwWUF2o78J2dNL+/GRh4XvH7zsUodr7T
-	 EQCsGlKDCYBsxmj3ablEiqymxgagOj2FCkOrJrIyvpxzSASnLOACHI369oqpzOeGA2
-	 uhFHdq+OsuuNw==
+	b=SD0pt11P+LNACgWtgyL8apNeE16icaB9wFrIjOxl5c6dP1zLIVyBc8Zx/N/WdGbkW
+	 cFk7+8vYYak4pnN+4Tw+5faGa+5F8BOw4PtKtTtMxJ548oFSQhoXmqAJANSmBhxtsX
+	 vfAMBMkxfO4TYuEsFaOODJdOWbMrKqmQ/WoOZrM70VbWRh5rpk6tbqhIJm/7zqLX6g
+	 pSudXrxN3zcnw+KeiS9tWq+IBIlHIW62eXlmYyyEHGSM7faVDEimB3orQa4ImdiR9U
+	 slwF/Hhkw5AJKbyOoY16vcPXVgExWaxEp/Ggnw4VR7pofRVQvs1i2KKh1zW6odcMDt
+	 Q3wCK0oRTsWgQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Octavian Purdila <tavip@google.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jhs@mojatatu.com,
-	jiri@resnulli.us,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 24/30] net_sched: sch_sfq: use a temporary work area for validating configuration
-Date: Mon, 14 Apr 2025 09:28:41 -0400
-Message-Id: <20250414132848.679855-24-sashal@kernel.org>
+	sfrench@samba.org,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org
+Subject: [PATCH AUTOSEL 6.12 25/30] cifs: Fix encoding of SMB1 Session Setup Kerberos Request in non-UNICODE mode
+Date: Mon, 14 Apr 2025 09:28:42 -0400
+Message-Id: <20250414132848.679855-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250414132848.679855-1-sashal@kernel.org>
 References: <20250414132848.679855-1-sashal@kernel.org>
@@ -66,125 +62,135 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.23
 Content-Transfer-Encoding: 8bit
 
-From: Octavian Purdila <tavip@google.com>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 8c0cea59d40cf6dd13c2950437631dd614fbade6 ]
+[ Upstream commit 16cb6b0509b65ac89187e9402e0b7a9ddf1765ef ]
 
-Many configuration parameters have influence on others (e.g. divisor
--> flows -> limit, depth -> limit) and so it is difficult to correctly
-do all of the validation before applying the configuration. And if a
-validation error is detected late it is difficult to roll back a
-partially applied configuration.
+Like in UNICODE mode, SMB1 Session Setup Kerberos Request contains oslm and
+domain strings.
 
-To avoid these issues use a temporary work area to update and validate
-the configuration and only then apply the configuration to the
-internal state.
+Extract common code into ascii_oslm_strings() and ascii_domain_string()
+functions (similar to unicode variants) and use these functions in
+non-UNICODE code path in sess_auth_kerberos().
 
-Signed-off-by: Octavian Purdila <tavip@google.com>
-Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Decision if non-UNICODE or UNICODE mode is used is based on the
+SMBFLG2_UNICODE flag in Flags2 packed field, and not based on the
+capabilities of server. Fix this check too.
+
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_sfq.c | 56 +++++++++++++++++++++++++++++++++++----------
- 1 file changed, 44 insertions(+), 12 deletions(-)
+ fs/smb/client/sess.c | 60 +++++++++++++++++++++++++++++---------------
+ 1 file changed, 40 insertions(+), 20 deletions(-)
 
-diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
-index 65d5b59da5830..7714ae94e0521 100644
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -631,6 +631,15 @@ static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
- 	struct red_parms *p = NULL;
- 	struct sk_buff *to_free = NULL;
- 	struct sk_buff *tail = NULL;
-+	unsigned int maxflows;
-+	unsigned int quantum;
-+	unsigned int divisor;
-+	int perturb_period;
-+	u8 headdrop;
-+	u8 maxdepth;
-+	int limit;
-+	u8 flags;
-+
+diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
+index 95e14977baeab..0a8fdbbfc081d 100644
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -700,6 +700,22 @@ unicode_oslm_strings(char **pbcc_area, const struct nls_table *nls_cp)
+ 	*pbcc_area = bcc_ptr;
+ }
  
- 	if (opt->nla_len < nla_attr_size(sizeof(*ctl)))
- 		return -EINVAL;
-@@ -656,36 +665,59 @@ static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
- 		NL_SET_ERR_MSG_MOD(extack, "invalid limit");
- 		return -EINVAL;
- 	}
++static void
++ascii_oslm_strings(char **pbcc_area, const struct nls_table *nls_cp)
++{
++	char *bcc_ptr = *pbcc_area;
 +
- 	sch_tree_lock(sch);
++	strcpy(bcc_ptr, "Linux version ");
++	bcc_ptr += strlen("Linux version ");
++	strcpy(bcc_ptr, init_utsname()->release);
++	bcc_ptr += strlen(init_utsname()->release) + 1;
 +
-+	limit = q->limit;
-+	divisor = q->divisor;
-+	headdrop = q->headdrop;
-+	maxdepth = q->maxdepth;
-+	maxflows = q->maxflows;
-+	perturb_period = q->perturb_period;
-+	quantum = q->quantum;
-+	flags = q->flags;
++	strcpy(bcc_ptr, CIFS_NETWORK_OPSYS);
++	bcc_ptr += strlen(CIFS_NETWORK_OPSYS) + 1;
 +
-+	/* update and validate configuration */
- 	if (ctl->quantum)
--		q->quantum = ctl->quantum;
--	WRITE_ONCE(q->perturb_period, ctl->perturb_period * HZ);
-+		quantum = ctl->quantum;
-+	perturb_period = ctl->perturb_period * HZ;
- 	if (ctl->flows)
--		q->maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
-+		maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
- 	if (ctl->divisor) {
--		q->divisor = ctl->divisor;
--		q->maxflows = min_t(u32, q->maxflows, q->divisor);
-+		divisor = ctl->divisor;
-+		maxflows = min_t(u32, maxflows, divisor);
- 	}
- 	if (ctl_v1) {
- 		if (ctl_v1->depth)
--			q->maxdepth = min_t(u32, ctl_v1->depth, SFQ_MAX_DEPTH);
-+			maxdepth = min_t(u32, ctl_v1->depth, SFQ_MAX_DEPTH);
- 		if (p) {
--			swap(q->red_parms, p);
--			red_set_parms(q->red_parms,
-+			red_set_parms(p,
- 				      ctl_v1->qth_min, ctl_v1->qth_max,
- 				      ctl_v1->Wlog,
- 				      ctl_v1->Plog, ctl_v1->Scell_log,
- 				      NULL,
- 				      ctl_v1->max_P);
- 		}
--		q->flags = ctl_v1->flags;
--		q->headdrop = ctl_v1->headdrop;
-+		flags = ctl_v1->flags;
-+		headdrop = ctl_v1->headdrop;
- 	}
- 	if (ctl->limit) {
--		q->limit = min_t(u32, ctl->limit, q->maxdepth * q->maxflows);
--		q->maxflows = min_t(u32, q->maxflows, q->limit);
-+		limit = min_t(u32, ctl->limit, maxdepth * maxflows);
-+		maxflows = min_t(u32, maxflows, limit);
++	*pbcc_area = bcc_ptr;
++}
++
+ static void unicode_domain_string(char **pbcc_area, struct cifs_ses *ses,
+ 				   const struct nls_table *nls_cp)
+ {
+@@ -724,6 +740,25 @@ static void unicode_domain_string(char **pbcc_area, struct cifs_ses *ses,
+ 	*pbcc_area = bcc_ptr;
+ }
+ 
++static void ascii_domain_string(char **pbcc_area, struct cifs_ses *ses,
++				const struct nls_table *nls_cp)
++{
++	char *bcc_ptr = *pbcc_area;
++	int len;
++
++	/* copy domain */
++	if (ses->domainName != NULL) {
++		len = strscpy(bcc_ptr, ses->domainName, CIFS_MAX_DOMAINNAME_LEN);
++		if (WARN_ON_ONCE(len < 0))
++			len = CIFS_MAX_DOMAINNAME_LEN - 1;
++		bcc_ptr += len;
++	} /* else we send a null domain name so server will default to its own domain */
++	*bcc_ptr = 0;
++	bcc_ptr++;
++
++	*pbcc_area = bcc_ptr;
++}
++
+ static void unicode_ssetup_strings(char **pbcc_area, struct cifs_ses *ses,
+ 				   const struct nls_table *nls_cp)
+ {
+@@ -769,25 +804,10 @@ static void ascii_ssetup_strings(char **pbcc_area, struct cifs_ses *ses,
+ 	*bcc_ptr = 0;
+ 	bcc_ptr++; /* account for null termination */
+ 
+-	/* copy domain */
+-	if (ses->domainName != NULL) {
+-		len = strscpy(bcc_ptr, ses->domainName, CIFS_MAX_DOMAINNAME_LEN);
+-		if (WARN_ON_ONCE(len < 0))
+-			len = CIFS_MAX_DOMAINNAME_LEN - 1;
+-		bcc_ptr += len;
+-	} /* else we send a null domain name so server will default to its own domain */
+-	*bcc_ptr = 0;
+-	bcc_ptr++;
+-
+ 	/* BB check for overflow here */
+ 
+-	strcpy(bcc_ptr, "Linux version ");
+-	bcc_ptr += strlen("Linux version ");
+-	strcpy(bcc_ptr, init_utsname()->release);
+-	bcc_ptr += strlen(init_utsname()->release) + 1;
+-
+-	strcpy(bcc_ptr, CIFS_NETWORK_OPSYS);
+-	bcc_ptr += strlen(CIFS_NETWORK_OPSYS) + 1;
++	ascii_domain_string(&bcc_ptr, ses, nls_cp);
++	ascii_oslm_strings(&bcc_ptr, nls_cp);
+ 
+ 	*pbcc_area = bcc_ptr;
+ }
+@@ -1590,7 +1610,7 @@ sess_auth_kerberos(struct sess_data *sess_data)
+ 	sess_data->iov[1].iov_len = msg->secblob_len;
+ 	pSMB->req.SecurityBlobLength = cpu_to_le16(sess_data->iov[1].iov_len);
+ 
+-	if (ses->capabilities & CAP_UNICODE) {
++	if (pSMB->req.hdr.Flags2 & SMBFLG2_UNICODE) {
+ 		/* unicode strings must be word aligned */
+ 		if (!IS_ALIGNED(sess_data->iov[0].iov_len + sess_data->iov[1].iov_len, 2)) {
+ 			*bcc_ptr = 0;
+@@ -1599,8 +1619,8 @@ sess_auth_kerberos(struct sess_data *sess_data)
+ 		unicode_oslm_strings(&bcc_ptr, sess_data->nls_cp);
+ 		unicode_domain_string(&bcc_ptr, ses, sess_data->nls_cp);
+ 	} else {
+-		/* BB: is this right? */
+-		ascii_ssetup_strings(&bcc_ptr, ses, sess_data->nls_cp);
++		ascii_oslm_strings(&bcc_ptr, sess_data->nls_cp);
++		ascii_domain_string(&bcc_ptr, ses, sess_data->nls_cp);
  	}
  
-+	/* commit configuration */
-+	q->limit = limit;
-+	q->divisor = divisor;
-+	q->headdrop = headdrop;
-+	q->maxdepth = maxdepth;
-+	q->maxflows = maxflows;
-+	WRITE_ONCE(q->perturb_period, perturb_period);
-+	q->quantum = quantum;
-+	q->flags = flags;
-+	if (p)
-+		swap(q->red_parms, p);
-+
- 	qlen = sch->q.qlen;
- 	while (sch->q.qlen > q->limit) {
- 		dropped += sfq_drop(sch, &to_free);
+ 	sess_data->iov[2].iov_len = (long) bcc_ptr -
 -- 
 2.39.5
 
