@@ -1,99 +1,95 @@
-Return-Path: <stable+bounces-132368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEBEBA87533
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 03:19:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3247A8754A
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 03:35:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FE3218913E4
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 01:19:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EDA916F7A0
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 01:35:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE970155322;
-	Mon, 14 Apr 2025 01:19:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RikvhosS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EAC1188CAE;
+	Mon, 14 Apr 2025 01:35:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58826288DB
-	for <stable@vger.kernel.org>; Mon, 14 Apr 2025 01:19:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA0C17A2EA;
+	Mon, 14 Apr 2025 01:35:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744593569; cv=none; b=lAsQRufhCUGFlZ98aiqMiTYeV9qnv9YcbNeV8BSsgKy9Q2NP23vR3kKi+FzcqSLF/p9V9hRGY7lrjsW6qs1P5q14pElmzsoUfL8DP2L0eKv4xixVfhvY2dQXTdRva7QDVAgLTPZexZ6TN/fUK6/+lQ2PEM7rnbc68y6PZt7ihzw=
+	t=1744594511; cv=none; b=EYgpv6i1fPKSb+K4s9cDAvy2IcBG+DMXa9Zv0dPAL6n+wMoZCDcfFG9keib0W8ZREEASIuJIBuI7eY9Rngg+mFbyiHayufJW2C2idVuxqjAQHH8TiSF+g6kmeVvB44KC6BLnjO8LcqebnHmtpp3+tuEmMV9IWLi0qV/FUN2yjAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744593569; c=relaxed/simple;
-	bh=AEPduV/LHCbc3zEY/wypc/eoqJDBMmVWOqlkp+0ektI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=hdrujhYKBBUyWgBISPiStx3uAiQGob7qTqqvUOAqUfmz7pvL3yUkTFClEBXSeUqVM3yhpdAUgi2kzIBqDc04d1LdH3cZf+XHwQLswppo/vXYEKKqyI4ddqK96QYAwxrNubiPHo8/ojkbKMFSrHSFSNjmc8zM57tgdZypt11CKXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RikvhosS; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744593567; x=1776129567;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=AEPduV/LHCbc3zEY/wypc/eoqJDBMmVWOqlkp+0ektI=;
-  b=RikvhosS6DkCY6kTWMllmJd+h06ekyY4aIpSrkAkrtSqdYN/IvRlAZKB
-   p+EDtNtla8OgsS5PIw3M1pSiq4UGTXk7Mu67EKmdYZVvwSD4Q5mZbd63Z
-   xDhqda4mq9hCfoeEPFQOkHuyNsCVMDHPQVpWSP5kLXQk0pL8I8HTwgKhY
-   BXtDdUsTs7XleorfHV1eiXnDjBvPXxtTc3zgozl235sAp+BVTG+f8FFRu
-   YrrIqB5KOLMxczc2KKh3CXAGDefmfNBrb8Mt3vNsfi/VlyWWSbtLqVeJK
-   9mjLloVFWka/jflIs97TGmneaS21IbyZTrM/T3c+UtrJiTIpGpNgEmKcb
-   g==;
-X-CSE-ConnectionGUID: P5bN7E/ITeKgjuJE5u7Eyw==
-X-CSE-MsgGUID: x+ZIJjpFRFWhlsYYheoLwA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11402"; a="56697717"
-X-IronPort-AV: E=Sophos;i="6.15,211,1739865600"; 
-   d="scan'208";a="56697717"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2025 18:19:26 -0700
-X-CSE-ConnectionGUID: pwPkqWTrRSOXNsnxTn1zbg==
-X-CSE-MsgGUID: 2sRdcrLeSf2CVSApmKSjDw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,211,1739865600"; 
-   d="scan'208";a="134656739"
-Received: from lkp-server01.sh.intel.com (HELO b207828170a5) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 13 Apr 2025 18:19:25 -0700
-Received: from kbuild by b207828170a5 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1u48Tq-000D26-0d;
-	Mon, 14 Apr 2025 01:19:22 +0000
-Date: Mon, 14 Apr 2025 09:18:37 +0800
-From: kernel test robot <lkp@intel.com>
-To: Dongcheng Yan <dongcheng.yan@intel.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v1 1/2] platform/x86: int3472: add hpd pin support
-Message-ID: <Z_xibVzEiiL7HSbJ@6bf5cb62fcc2>
+	s=arc-20240116; t=1744594511; c=relaxed/simple;
+	bh=CBAvm1+dSagG1OXbFKj8zpy52RWsL456kA7GUFDYlZA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=XHfqjFbTE4mRI35//VV8Bdi1QADyqrs6fuPtFX3SL5RxDcoSdO/d6l0kjo3DMzm2H30AzRbdizPg7xF5+NJJYO0itAHYNN3/YghlQcULPATTCdQ+uSm3WM9rmSq8ZuSQaCYaS6ksl/RdRdLv6wXQj7yftuuZQyTSF9qvMXBG3lE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4ZbVGD2B91zsSgt;
+	Mon, 14 Apr 2025 09:35:00 +0800 (CST)
+Received: from kwepemh100008.china.huawei.com (unknown [7.202.181.93])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8994318005F;
+	Mon, 14 Apr 2025 09:35:05 +0800 (CST)
+Received: from [10.67.121.90] (10.67.121.90) by kwepemh100008.china.huawei.com
+ (7.202.181.93) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 14 Apr
+ 2025 09:35:05 +0800
+Message-ID: <23466140-5d0c-435f-8e73-d1c4826930ec@huawei.com>
+Date: Mon, 14 Apr 2025 09:35:03 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250411082357.392713-1-dongcheng.yan@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] cpufreq: cppc: Fix invalid return value in .get()
+ callback
+To: Marc Zyngier <maz@kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-pm@vger.kernel.org>
+CC: <stable@vger.kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Viresh
+ Kumar <viresh.kumar@linaro.org>
+References: <20250413101142.125173-1-maz@kernel.org>
+From: "zhenglifeng (A)" <zhenglifeng1@huawei.com>
+In-Reply-To: <20250413101142.125173-1-maz@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemh100008.china.huawei.com (7.202.181.93)
 
-Hi,
+On 2025/4/13 18:11, Marc Zyngier wrote:
 
-Thanks for your patch.
+> Returning a negative error code in a function with an unsigned
+> return type is a pretty bad idea. It is probably worse when the
+> justification for the change is "our static analisys tool found it".
+> 
+> Fixes: cf7de25878a1 ("cppc_cpufreq: Fix possible null pointer dereference")
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> Cc: stable@vger.kernel.org
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Viresh Kumar <viresh.kumar@linaro.org>
+> ---
+>  drivers/cpufreq/cppc_cpufreq.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+> index b3d74f9adcf0b..cb93f00bafdba 100644
+> --- a/drivers/cpufreq/cppc_cpufreq.c
+> +++ b/drivers/cpufreq/cppc_cpufreq.c
+> @@ -747,7 +747,7 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+>  	int ret;
+>  
+>  	if (!policy)
+> -		return -ENODEV;
+> +		return 0;
+>  
+>  	cpu_data = policy->driver_data;
+>  
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v1 1/2] platform/x86: int3472: add hpd pin support
-Link: https://lore.kernel.org/stable/20250411082357.392713-1-dongcheng.yan%40intel.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+Reviewed-by: Lifeng Zheng <zhenglifeng1@huawei.com>
 
