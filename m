@@ -1,129 +1,84 @@
-Return-Path: <stable+bounces-132410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4978A87A9C
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 10:40:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB14A87D8B
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 12:25:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D06E3AFBF2
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 08:40:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E16E18951F0
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 10:25:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F03A25A344;
-	Mon, 14 Apr 2025 08:40:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iqbq3J4k"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E6D726B0A2;
+	Mon, 14 Apr 2025 10:23:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from correo.desarrollominero.gob.ve (correo.desarrollominero.gob.ve [190.205.109.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB8A15DBB3;
-	Mon, 14 Apr 2025 08:40:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C5126A0D3
+	for <stable@vger.kernel.org>; Mon, 14 Apr 2025 10:23:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=190.205.109.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744620034; cv=none; b=Q03drq3RuZqIto9z9Rj49JIcRi1KZzOF0h7oq7fSui/eb3cQvfcso55SOCH6G5JvNfoiB/ZyoHeUEO9vmxFo5KNi0MBmHsJn+aJFQ+44tUsuwO5LOP+iff65gY0u6oP4Dv/NZc5P49o+rpPwDvb9azxhYpvOcTO5YiRO9o2KMvY=
+	t=1744626214; cv=none; b=Jza5PiGc0sN+TA99vdf+0QLzoba5H+wYT+211WFY1KZ14+mZTaARA/uwHuhrUNCquUilAGHZuT3NdzkoAqqoBO/qUWBqmZmCJbUV7ZKCsESt06wa2d9mr2JCazwhEUmYynSvuoMT/OG2KUFdPgo0Nar4wS0goj/og/p8bDcQ4jE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744620034; c=relaxed/simple;
-	bh=Qi7BkYrPqYiT7gOVCbd48fLoGzlj1PlhmMxJBqQEbMs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hLd1ns1A9ocXQ5Bug0RU4skJYIP5NKGnEYeD/JN+V8SwWD2B4apuJDz+YS3fJxS4r0XKrmospyVw3zN/b7ovKGIHH6aObGIOtaAY2tnePVQJdZWxs049Hg1Zdx65gWUXmdR4pl3J1me7bw8Zp7a/Vx7diJbT6WATKUMys8IkyI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iqbq3J4k; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744620032; x=1776156032;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Qi7BkYrPqYiT7gOVCbd48fLoGzlj1PlhmMxJBqQEbMs=;
-  b=iqbq3J4kKuTvYPP9fhi2jTHSxRgbHRG6XBEUi9e1prfxvXlEm219ELuF
-   SdjfneVibtt/nlOmF1U2QyMY84Ceky6ywXWaUGZIV7/NLyOEVjP7YEzUr
-   UlgHx5hSIwIFRbZ2Qh/BNSE5eNEKAEXBKNQPVqBLk6DHUSOte5Gct3Ix8
-   S1hzcae3eeBTKrC5WKylxlqOhLF77hy/BKxcSxDWrlLFnBEGUyQM0z5CT
-   MKpZ8p3BpjwhkF9xFGosNnA0HCSEHI2HJvxzqzp6JXWrz3drmij5dkEyN
-   UOk6Wcsp92vkDutZ9KQjrd9LHGcWRErQ/GYu2+EYn5elCDHDxhTg+Pcf8
-   A==;
-X-CSE-ConnectionGUID: O0eq5HYHS/2azmJIBonIUw==
-X-CSE-MsgGUID: yjgFSqSrRCWsumygpjblcg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11402"; a="49884291"
-X-IronPort-AV: E=Sophos;i="6.15,211,1739865600"; 
-   d="scan'208";a="49884291"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 01:40:31 -0700
-X-CSE-ConnectionGUID: atjLFG0dQv2zpX9U5KqH/g==
-X-CSE-MsgGUID: BEHY/GH3QvWzdzuh7HSxfQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,211,1739865600"; 
-   d="scan'208";a="130084667"
-Received: from unknown (HELO [10.238.224.239]) ([10.238.224.239])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 01:40:28 -0700
-Message-ID: <d9cab351-4850-42c7-8fee-a9340d157ed9@linux.intel.com>
-Date: Mon, 14 Apr 2025 16:40:26 +0800
+	s=arc-20240116; t=1744626214; c=relaxed/simple;
+	bh=qixgJMCDMcubUZLa0DxGXmUNEG+n+H2SRuuXC2t0504=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=R6ahe9WqnDQZ/jsIapHRomHgti9oeXY4M2L8mydw7R0GgTGtxt2Zz2Gm8W67/bTUr2hrCutqSbXW5lD0DVN9phSB0pSnGwZW22ETiitnW+9xE26vfyMn/jHpTcFsWcuAw8oz/Fldz3f1b3XwMgCGxP0u6z1UVXEtWhv6Uq2ymU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=elzoghby-eg.com; spf=fail smtp.mailfrom=elzoghby-eg.com; arc=none smtp.client-ip=190.205.109.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=elzoghby-eg.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=elzoghby-eg.com
+Received: from localhost (localhost [127.0.0.1])
+	by correo.desarrollominero.gob.ve (Postfix) with ESMTP id 7A9B6C2AB80
+	for <stable@vger.kernel.org>; Mon, 14 Apr 2025 04:44:32 -0400 (VET)
+Received: from correo.desarrollominero.gob.ve ([127.0.0.1])
+	by localhost (correo.desarrollominero.gob.ve [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id xwt5KYRtNSgV for <stable@vger.kernel.org>;
+	Mon, 14 Apr 2025 04:44:32 -0400 (VET)
+Received: from correo.desarrollominero.gob.ve (localhost [127.0.0.1])
+	by correo.desarrollominero.gob.ve (Postfix) with ESMTPS id 46078C2AB7E
+	for <stable@vger.kernel.org>; Mon, 14 Apr 2025 04:44:32 -0400 (VET)
+Received: from [185.42.124.23] (unknown [185.42.124.23])
+	by correo.desarrollominero.gob.ve (Postfix) with ESMTPSA id 8D210C2AB79
+	for <stable@vger.kernel.org>; Mon, 14 Apr 2025 04:44:31 -0400 (VET)
+Reply-To: kazpetro@sggenergytech.com
+From: SGG ENERGY<sggenergytechnology@elzoghby-eg.com>
+To: stable@vger.kernel.org
+Subject: ATTENTION
+Date: 14 Apr 2025 11:44:28 +0300
+Message-ID: <20250414114426.A4114223C548A06E@elzoghby-eg.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/2] platform/x86: int3472: add hpd pin support
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Hans de Goede <hdegoede@redhat.com>,
- Dongcheng Yan <dongcheng.yan@intel.com>, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, sakari.ailus@linux.intel.com,
- hverkuil@xs4all.nl, u.kleine-koenig@baylibre.com, ricardo.ribalda@gmail.com,
- bingbu.cao@linux.intel.com, stable@vger.kernel.org, hao.yao@intel.com
-References: <20250411082357.392713-1-dongcheng.yan@intel.com>
- <cfc709a8-85fc-4e44-9dcf-ae3ef7ee0738@redhat.com>
- <c8ae2d43-157c-408a-af89-7248b30d52d1@linux.intel.com>
- <Z_zDGYD1QXZYWwI9@smile.fi.intel.com>
-Content-Language: en-US
-From: "Yan, Dongcheng" <dongcheng.yan@linux.intel.com>
-In-Reply-To: <Z_zDGYD1QXZYWwI9@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Andy,
+Dear stable
+To whom it may Concern.
 
-On 4/14/2025 4:11 PM, Andy Shevchenko wrote:
-> On Mon, Apr 14, 2025 at 03:52:50PM +0800, Yan, Dongcheng wrote:
->> On 4/11/2025 4:33 PM, Hans de Goede wrote:
->>> On 11-Apr-25 10:23 AM, Dongcheng Yan wrote:
-> 
-> ...
-> 
->>>> +	case INT3472_GPIO_TYPE_HOTPLUG_DETECT:
->>>> +		*con_id = "hpd";
->>>> +		*gpio_flags = GPIO_LOOKUP_FLAGS_DEFAULT;
->>>
->>> This looks wrong, we really need to clearly provide a polarity
->>> here since the ACPI GPIO resources do not provide one.
->>>
->> I tested gpio_flags=GPIO_LOOKUP_FLAGS_DEFAULT/HIGH/LOW, the lt6911uxe
->> driver can pass the test and work normally.
-> 
-> I doubt you tested that correctly. It's impossible to have level triggered
-> event to work with either polarity. It might be also a bug in the code lurking
-> somewhere, but it would be unlikely (taking into account amount of systems
-> relying on this).
-> 
-> Is it edge triggered event?
-> 
+We PRIVATE COMPANY SGG ENERGY TECHNOLOGY LTD, With BIN Code:=20
+211140900115 and Office address located at Astana, Esil District,=20
+Syganak Street, Building 54a, N.P. 142A. With authorized legalized=20
+mandate certificate from trusted and reliable supplier refinery of=20
+petroleum commodities. Attached kindly find our official offer for=20
+your review and if any of our give procedure is acceptable to any=20
+ready buyer=E2=80=99s management, do kindly proceed to issue an official IC=
+PO=20
+to commence transaction.
+And further your management is in need of assistance and further=20
+clarification do not hesitate to contact our management.
 
-It is an edge triggered event in lt6911uxe. In order to better adapt to
-other uses, "hpd" is meaningful to specify a polarity here.
-
-In lt6911uxe, GPIO "hpd" is used as irq, and set irq-flag to
-IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING | IRQF_ONESHOT. So no matter
-rising or falling, driver can work normally.
-"
-ret = request_threaded_irq(gpiod_to_irq(lt6911uxe->irq_gpio),	NULL,
-lt6911uxe_threaded_irq_fn, IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING |
-IRQF_ONESHOT, NULL, lt6911uxe);
-"
-
-Thanks,
-Dongcheng
-
+Thank You.
+---
+PRIVATE COMPANY SGG ENERGY TECHNOLOGY LTD.
+Address: Astana, Esil District, Syganak Street, Building 54a, N.P.=20
+142A
+BIN: 211140900115
+Email:kazpetro@sggenergytech.com=20=20
+Tel/WhatsApp: +7 775 540 3537
+Director: Dou Shengjun
 
