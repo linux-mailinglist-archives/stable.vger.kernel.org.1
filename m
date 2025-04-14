@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-132566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84812A88368
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:56:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04AB9A88367
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:56:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8685E188499D
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:53:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1F5616E611
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:53:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336E22C2ADF;
-	Mon, 14 Apr 2025 13:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3C32C1E3A;
+	Mon, 14 Apr 2025 13:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oJcJCmvq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vN2ctiwI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05462C2AA5;
-	Mon, 14 Apr 2025 13:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A7227A119;
+	Mon, 14 Apr 2025 13:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637424; cv=none; b=YABfi3MB++8tnl8G4qJdPRLm2th0ArMq3OemuFmU+22u8VvUpqm83uN9d9QXQv8I05LkLDbnX5dS1kRIYV/NPuhHdxtfL7tVJuAqT2utHOc3b4csOBfUQYhQj0cLIqXglTYZUnL6G2lLFT4qcNMuJiekwoIhnd9b9p5RcBJWjcE=
+	t=1744637426; cv=none; b=JY5FHarvA6xXUjtQBS3OGQRxbHhXJCzOEt/tO0zPym/wCjZu+s/9oBsLgAZpbmUMG2f7Xk69wAgPG+2J+vQjzHNKgv9ozeustoNqco7FMJpqlniQ/nbIMva7Wr0clFWkoQkxpaEzNnUvY2/pYtKLmPgGRqPhyjIk9Qwdhsh05hI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637424; c=relaxed/simple;
-	bh=pK4wU4mod5JTUm/l7vr1AtMMQDpxsHfsu1cMbkKNcrA=;
+	s=arc-20240116; t=1744637426; c=relaxed/simple;
+	bh=xNnRKoQXxRlOLWE/k0GpBF6IO5Qx9pRJo8np+CxFsKM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sVnBW+RTjgafMxW7KfeIoXpOSjE2i8Em35wLQ818Vpxbh90vnf5uw3i+tU14uXsVHvluv+wJ27foyMlLOtVdVPk2OC7AM53vlIryuijDxX4lhRmaI5/Xtu3I/cc56Ub9Epsh0zPCU/3EuMh1we1ChrZ8OPrhkLwn20A9I9FsVb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oJcJCmvq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF88C4AF09;
-	Mon, 14 Apr 2025 13:30:22 +0000 (UTC)
+	 MIME-Version; b=m373dGfi2Ipd6p3ovj2qXZk/4nBw4xAu1NnFXhxVTHOrxLJ+lTK1KCq0Z0HxD1OwBVG2z3/87o+BYcZj4iJXH19wUiwxpMXCExtHQxRLWtg9lRYXgZA5tUugStyVUCvAVDjXeFRFSKObIAmC3b5x1yep0lRegOzZROYXkjrGQzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vN2ctiwI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B86C4CEEF;
+	Mon, 14 Apr 2025 13:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744637423;
-	bh=pK4wU4mod5JTUm/l7vr1AtMMQDpxsHfsu1cMbkKNcrA=;
+	s=k20201202; t=1744637426;
+	bh=xNnRKoQXxRlOLWE/k0GpBF6IO5Qx9pRJo8np+CxFsKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oJcJCmvqeQpbtEHv8GExglmSmnZrHzfzxa0qehgsCfD/o0J7En5cCqGcwGQinE0iw
-	 Gcac7iGFmTIOjc6OCdLEHACcPREypfTpQrIZ7uN3qg8CNVAvGulCtUI9YFIdV3IQ1n
-	 iWTQsJmp2h+nQfRQSfWTY0KN7e6QElGlND8gore3MMe13nGWYe+IbgFWqivOozI6w3
-	 vgRVRjjcjtVXn8NUewLhTcpdQ6NKvuMUq6KqTJedDouIkK23wKqx+ab34adLuYdPHh
-	 yMRAEg4xlj/ZO5MU+693kafIWZGExGbPDSIxrwxSUJrxR1RH751QUMnFTP81tA2zWM
-	 2dAWzU/qONZSQ==
+	b=vN2ctiwIMyj4LFAnYVRaGKMaIUK19tFx33fk3wxNE8aeZ5dJtPO5gtEk2Vmcvqx5l
+	 MT2CZaoHT0ER7uwmbj4oUhITIh71ZHa033wUKwfmPDHCsG8APjS1RZqTOTte8r7TAl
+	 /iOUy6gpOJ/QeuaHcF1rormbiXyn20BS1MfxcY2FE6rmr1W5vYFt3Pl/ftArU46hUY
+	 Agonywtqo/h4Dqw4dzCkswrch8xnax31G6zHbVgzl3P6CUUskJ6ut78lu7Bwd1fS5G
+	 8Eot4MvRnp5e3YT8VXOBEmOtrj98zSvvnc0BWG9azD298TDDw8Ko3NHSEvbjFC4Q+V
+	 nGNCYe73RPsaA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+Cc: Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Yi Lai <yi1.lai@intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linus.walleij@linaro.org,
-	brgl@bgdev.pl,
-	linux-gpio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 13/24] gpiolib: of: Move Atmel HSMCI quirk up out of the regulator comment
-Date: Mon, 14 Apr 2025 09:29:46 -0400
-Message-Id: <20250414132957.680250-13-sashal@kernel.org>
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 14/24] selftests/mincore: Allow read-ahead pages to reach the end of the file
+Date: Mon, 14 Apr 2025 09:29:47 -0400
+Message-Id: <20250414132957.680250-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250414132957.680250-1-sashal@kernel.org>
 References: <20250414132957.680250-1-sashal@kernel.org>
@@ -67,47 +67,59 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.87
 Content-Transfer-Encoding: 8bit
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-[ Upstream commit b8c7a1ac884cc267d1031f8de07f1a689a69fbab ]
+[ Upstream commit 197c1eaa7ba633a482ed7588eea6fd4aa57e08d4 ]
 
-The regulator comment in of_gpio_set_polarity_by_property()
-made on top of a couple of the cases, while Atmel HSMCI quirk
-is not related to that. Make it clear by moving Atmel HSMCI
-quirk up out of the scope of the regulator comment.
+When running the mincore_selftest on a system with an XFS file system, it
+failed the "check_file_mmap" test case due to the read-ahead pages reaching
+the end of the file. The failure log is as below:
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20250402122058.1517393-3-andriy.shevchenko@linux.intel.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+   RUN           global.check_file_mmap ...
+  mincore_selftest.c:264:check_file_mmap:Expected i (1024) < vec_size (1024)
+  mincore_selftest.c:265:check_file_mmap:Read-ahead pages reached the end of the file
+  check_file_mmap: Test failed
+           FAIL  global.check_file_mmap
+
+This is because the read-ahead window size of the XFS file system on this
+machine is 4 MB, which is larger than the size from the #PF address to the
+end of the file. As a result, all the pages for this file are populated.
+
+  blockdev --getra /dev/nvme0n1p5
+    8192
+  blockdev --getbsz /dev/nvme0n1p5
+    512
+
+This issue can be fixed by extending the current FILE_SIZE 4MB to a larger
+number, but it will still fail if the read-ahead window size of the file
+system is larger enough. Additionally, in the real world, read-ahead pages
+reaching the end of the file can happen and is an expected behavior.
+Therefore, allowing read-ahead pages to reach the end of the file is a
+better choice for the "check_file_mmap" test case.
+
+Link: https://lore.kernel.org/r/20250311080940.21413-1-qiuxu.zhuo@intel.com
+Reported-by: Yi Lai <yi1.lai@intel.com>
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-of.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/selftests/mincore/mincore_selftest.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
-index cec9e8f29bbdf..a0a2a0f75bba4 100644
---- a/drivers/gpio/gpiolib-of.c
-+++ b/drivers/gpio/gpiolib-of.c
-@@ -247,6 +247,9 @@ static void of_gpio_set_polarity_by_property(const struct device_node *np,
- 		{ "fsl,imx8qm-fec",  "phy-reset-gpios", "phy-reset-active-high" },
- 		{ "fsl,s32v234-fec", "phy-reset-gpios", "phy-reset-active-high" },
- #endif
-+#if IS_ENABLED(CONFIG_MMC_ATMELMCI)
-+		{ "atmel,hsmci",       "cd-gpios",     "cd-inverted" },
-+#endif
- #if IS_ENABLED(CONFIG_PCI_IMX6)
- 		{ "fsl,imx6q-pcie",  "reset-gpio", "reset-gpio-active-high" },
- 		{ "fsl,imx6sx-pcie", "reset-gpio", "reset-gpio-active-high" },
-@@ -272,9 +275,6 @@ static void of_gpio_set_polarity_by_property(const struct device_node *np,
- #if IS_ENABLED(CONFIG_REGULATOR_GPIO)
- 		{ "regulator-gpio",    "enable-gpio",  "enable-active-high" },
- 		{ "regulator-gpio",    "enable-gpios", "enable-active-high" },
--#endif
--#if IS_ENABLED(CONFIG_MMC_ATMELMCI)
--		{ "atmel,hsmci",       "cd-gpios",     "cd-inverted" },
- #endif
- 	};
- 	unsigned int i;
+diff --git a/tools/testing/selftests/mincore/mincore_selftest.c b/tools/testing/selftests/mincore/mincore_selftest.c
+index e949a43a61450..efabfcbe0b498 100644
+--- a/tools/testing/selftests/mincore/mincore_selftest.c
++++ b/tools/testing/selftests/mincore/mincore_selftest.c
+@@ -261,9 +261,6 @@ TEST(check_file_mmap)
+ 		TH_LOG("No read-ahead pages found in memory");
+ 	}
+ 
+-	EXPECT_LT(i, vec_size) {
+-		TH_LOG("Read-ahead pages reached the end of the file");
+-	}
+ 	/*
+ 	 * End of the readahead window. The rest of the pages shouldn't
+ 	 * be in memory.
 -- 
 2.39.5
 
