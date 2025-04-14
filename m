@@ -1,226 +1,201 @@
-Return-Path: <stable+bounces-132447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CC4FA87FF2
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 14:04:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4411A88040
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 14:18:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 644F73B3331
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 12:03:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7EF17A3823
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 12:17:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A292BE7C1;
-	Mon, 14 Apr 2025 12:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B8D29AB18;
+	Mon, 14 Apr 2025 12:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="DeOr86lZ"
+	dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b="neFzF5pu";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="h1deeLkR"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2070.outbound.protection.outlook.com [40.107.236.70])
+Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E984B2BD598;
-	Mon, 14 Apr 2025 12:03:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744632209; cv=fail; b=Lzhj1YMorDTVrVlHMrzNQu3NK2MplJu8MhC34X68B/Pmg4lVCKkiULzf1wnmR5zq3E2yTpgVblquFbQLipScgX/4TY+iYADWSxFUSgdnfIfNVaEE5eOSMmICHlm23FV4pBcc/U3d9ycl+HEWD86oBiROH1qaLw2grpFuuN2Lhqg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744632209; c=relaxed/simple;
-	bh=GLRXkkfneXcnkhkWa7JJWhdjVfINz2a03COLbIiAbxQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WWJuo0jSa7A0VbY9gNFp6QoFjtZZNYvcWfZNSTOz8JDpugGeRSYQEbUEjDrlEvl7DmEhLX42VW9CjFQuKKee0n8M6cDKxVODSq0yeCTo5UC69Zz35SyW+JUYNbx/33vVjUugaNGQ07PYeqBTvBKjn0fLxX7xVw7xvPeecLEKWJQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=DeOr86lZ; arc=fail smtp.client-ip=40.107.236.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WdJ/R0zAr9urFfrSGflOlSAaq+HQfTYbZktZCl/aYu7lXk+ZIeFJmO342l8Vka4aYFLQYkDo1ZN22VkfQmva4NK7DOEZsfvrmf4tzKipq7n8NKEDFU66YzmkgrbiJnfkZlRKIC9F6lMCEIFtio2dB9wHwYM/Spyg/4t4mpYyAQ/hVo7AY66V9wiliPFXK8TsoeZTBas/iqKadl4YivfV6jcepCADfCmrCcFKo0TpG4/H+2t00wxycUK8N1nXWE0a/u5kBOL8UQLJkYN8Ffq1CF7GkNMMldaDbWUPxY9I14ehRA3lRK2ErP/ceBf0icuYVf61CewA/3Mf5fNpR2fJuA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ydmCh2KkKYvAaThkc3Bvh4ZWGfwUTZw0BD5omlqmf7c=;
- b=fnIjf1Onbqkjw412JGF3elCib/VzYd+Eh2c0Vqwe+B307rtY2+1A0qr8gHs/f41ix/nFlxdgIJcmiWnv+RpEiRh+nILG8S6Gcclj74apeILiJJWuH8JBr62SKO9rs+d0yQ2JxcF7RG44rH+G7t2wOoF1ctOhGsuZ9EwdqVwrrac4HBLScOplHVMJKJO6a2iLO9sF3KApufUKph8SL8FP+lfWQckcbhjDTCCwsn4arpGBMkDoIAS0tm41ZiSAm4T0wMMfbja/NKlA2SnOkRz/6BdoRholJFw2cGjszMf6VXASgVLUPXwaFesH8bhppyKmv4J8Ejf9mEyf/RRuacS/5g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lunn.ch smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ydmCh2KkKYvAaThkc3Bvh4ZWGfwUTZw0BD5omlqmf7c=;
- b=DeOr86lZET0N1IHJek0IB6VIy6cRzW/qO9NB0A6Kvtapzss5FW+NvMn27OdFqZuENtICLQ1SEOTHeM5lpn4dv0d4FwJ9r9w8tpbqU4mJftqzfbDhsld0YVFZVxR/M5XaIaKOCj4NnBCL89uj6Z/fVH3fi6SGa1a3MeYLYr317qU=
-Received: from BN9PR03CA0392.namprd03.prod.outlook.com (2603:10b6:408:111::7)
- by SA3PR12MB8440.namprd12.prod.outlook.com (2603:10b6:806:2f8::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.27; Mon, 14 Apr
- 2025 12:03:25 +0000
-Received: from BN3PEPF0000B36F.namprd21.prod.outlook.com
- (2603:10b6:408:111:cafe::f6) by BN9PR03CA0392.outlook.office365.com
- (2603:10b6:408:111::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8632.34 via Frontend Transport; Mon,
- 14 Apr 2025 12:03:25 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN3PEPF0000B36F.mail.protection.outlook.com (10.167.243.166) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8678.4 via Frontend Transport; Mon, 14 Apr 2025 12:03:24 +0000
-Received: from airavat.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 14 Apr
- 2025 07:03:21 -0500
-From: Vishal Badole <Vishal.Badole@amd.com>
-To: <Shyam-sundar.S-k@amd.com>, <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <Thomas.Lendacky@amd.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: Vishal Badole <Vishal.Badole@amd.com>, <stable@vger.kernel.org>
-Subject: [PATCH net 2/2] amd-xgbe: Fix to ensure dependent features are toggled with RX checksum offload
-Date: Mon, 14 Apr 2025 17:32:28 +0530
-Message-ID: <20250414120228.182190-3-Vishal.Badole@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250414120228.182190-1-Vishal.Badole@amd.com>
-References: <20250414120228.182190-1-Vishal.Badole@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2913229615F;
+	Mon, 14 Apr 2025 12:18:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744633114; cv=none; b=IwNhPGAQYmFpowwxzf4kb3EfLp86qCDWWoygbMg5tqcHkwnwuJ6vmyZ12x2+l/Pezz5iro02/Huz/PFWzI5JSoH8wN6J1iHcQuVjE9tR8/MsTE7H6rDSlFxwP3iEdN57jtcT4eXBejLhl/XwhfRnRYUQXpxS27TmWuc12y+MYB8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744633114; c=relaxed/simple;
+	bh=pYk64UtoAE7XqkvZol/ce4ZhgHriO5Lb+BUk8PKbeXw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=i51tto8PWFDziMRdcPoXSNR6+LOYyvcybt7BmaSlDnd/0ZMtyzo6WO8/KAvYT1WfK7c252pjtqt/B2csfLZevh0U7K+nI5IfwXUlc8QsT7imesjLLg/DC6xub1GyAo4A+ZJsa5w35h9QlN7JYOiug6XUMCf0Aqud32jFWSam9w8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com; spf=pass smtp.mailfrom=invisiblethingslab.com; dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b=neFzF5pu; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=h1deeLkR; arc=none smtp.client-ip=202.12.124.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=invisiblethingslab.com
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
+	by mailfout.stl.internal (Postfix) with ESMTP id 07F9111400A4;
+	Mon, 14 Apr 2025 08:18:30 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Mon, 14 Apr 2025 08:18:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	invisiblethingslab.com; h=cc:cc:content-type:content-type:date
+	:date:from:from:in-reply-to:message-id:mime-version:reply-to
+	:subject:subject:to:to; s=fm2; t=1744633109; x=1744719509; bh=14
+	vOFFZCQHiLV/92bFmMrgdRuS1SSchqrTzaRecxFAQ=; b=neFzF5pudr2K9mQAQt
+	USaEElu4vbl3JvJqoKGBCmDb3rwHFLOuiEJNmwkZ7jBU9teCxaMN+PLiACdWQBa8
+	OF7N38G0zN6Yc5TK0KRywa03hgCbQ+TXomUg+uN6HilLIwlMW+o9bLnJ/Z2BecxZ
+	WtmlRUi/RrofYLZLEnchuh7qKISOu5YoAO6z4luJNl3+v3aHthMMMV17on141duH
+	K5VPDc6b2gqZ9KaQEBYfAzZe5txNrRODL8mCNau85VKdDCPTsVczRInLqnsMiICf
+	VLSomEzB6esqYk+IDVUriIJvMfaZhlpTFaxJ1DsdVVTN3e9in2gfd90Bp9LRoHx4
+	Y9OQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:message-id
+	:mime-version:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1744633109; x=
+	1744719509; bh=14vOFFZCQHiLV/92bFmMrgdRuS1SSchqrTzaRecxFAQ=; b=h
+	1deeLkRjeZScMtORyUD8FJLqe9c+7LHPc5RBz2Jooq3hI66tpNs0SMvk70erzg3u
+	RFqqLnAjRXrUKxZLir7v6ax1RgrTG2sE7DQSMtLO9mKzwlOWjmCEsfupmFO+wN9d
+	q7H6JXnBHTb/XM0nHod5H7mcvskQMXTWw0j93NN/qiu/QMgmSFCDaN2J5TI5N8R/
+	goHI+Ul7xQJcVz9i55k+gXkE7gNG/BvQ+Anx/JNwc+Sx017U3uf/quevx81c0W7n
+	UatAo/PStrzKjVP8I8PbI2qgXXgu4nZlNXDmLpp8tSJSmQmVPyQvOvwJg/WP9lH4
+	5We0N5pdYePgcmK7rVt2A==
+X-ME-Sender: <xms:Ff38Z_y_8f72HC71bHOQoZbVnxtMSi799Eo1kVxjPcG36gZiQO4V4Q>
+    <xme:Ff38Z3RCsYvLaW2xeXtkaaBtGbYbqg-cV3DlJf6oVuTixBYzG4R_cyviymaYzjwSN
+    ihRV0atBF4sgw>
+X-ME-Received: <xmr:Ff38Z5XbfY6sPl4uTnWJdsDsYZ12rTsG0d8cr5RE2XmwhFk8rNatQz4kzpB6YGVxTnSGFZA5B0tfAlAS3GsS_hIuWmnMZ7v0sQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvvddtheefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkgggtugesghdtreertddtjeen
+    ucfhrhhomhepofgrrhgvkhcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomh
+    grrhhmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuggft
+    rfgrthhtvghrnhepudfggfeileeuueektdfhffelvdfhjeeffeehueeikefhleduleejje
+    elgeejudffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhho
+    mhepmhgrrhhmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomhdpnh
+    gspghrtghpthhtohepkedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepvhhithgr
+    lhihrdhlihhfshhhihhtshesihhnthgvlhdrtghomhdprhgtphhtthhopehjvghsshgvrd
+    gsrhgrnhguvggsuhhrghesihhnthgvlhdrtghomhdprhgtphhtthhopegrnhhthhhonhih
+    rdhlrdhnghhuhigvnhesihhnthgvlhdrtghomhdprhgtphhtthhopehnvghtuggvvhesvh
+    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehinhhtvghlqdifihhrvgguqdhl
+    rghnsehlihhsthhsrdhoshhuohhslhdrohhrghdprhgtphhtthhopehrvghgrhgvshhsih
+    honhhssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepshhtrggslhgvsehv
+    ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshgrshhhrghlsehkvghrnhgvlh
+    drohhrgh
+X-ME-Proxy: <xmx:Ff38Z5jIHafS9XZE4m0c-MYjzKxy7LWWkH8yZ9Q7DZrnrm5W-eQozQ>
+    <xmx:Ff38ZxC9SuIEBzUbVaU5FAl8EupDR3K4sD2fv0uvtoFE__eDKXB41w>
+    <xmx:Ff38ZyJ8VSseiCAAFq9VCGZQqS4e-0bCdOXMX5NC_Z_ROHrpLU3_tQ>
+    <xmx:Ff38ZwD44Z5OhXxTyJmdCW44X4xa2Z9MSdcA-57bFR8PIe_FZNDxHw>
+    <xmx:Ff38Z43yEnkn1sB6jgMoLYqZgmhG3keNee6NssA2ruwcXT905VrQZR3J>
+Feedback-ID: i1568416f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 14 Apr 2025 08:18:27 -0400 (EDT)
+Date: Mon, 14 Apr 2025 14:18:25 +0200
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Jesse Brandeburg <jesse.brandeburg@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>, netdev@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org
+Cc: regressions@lists.linux.dev, stable@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [REGRESSION] e1000e heavy packet loss on Meteor Lake - 6.14.2
+Message-ID: <Z_z9EjcKtwHCQcZR@mail-itl>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B36F:EE_|SA3PR12MB8440:EE_
-X-MS-Office365-Filtering-Correlation-Id: e682fbc8-f3f6-421a-5db7-08dd7b4c5c27
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?48KclsQmtl8Y++LNDXx1LzLGKHvSz5y6mWs4aQ+OzMzYei05YZrEIWs0cXAZ?=
- =?us-ascii?Q?HgD1XvLpcwLI6vV0jgb2Aa15jC37AIE9Hg1qiUZKL4FwZzBh/SVxul0vASJE?=
- =?us-ascii?Q?ZvFLYzR1b6vAcBPeQSE54Lide4mdPo7LzsWGaR+CbmV//ZQDYBPBNalKtk4C?=
- =?us-ascii?Q?iIRPeePsC5TPng4y9UFI7gsPR/8yc23rgiCYDN/qzwe4s29wBbMxqQtQUJBX?=
- =?us-ascii?Q?xR/ygz0VMDyZNkwlFFgnGJcTVxvLnrlS7Onv7CtElLCwergg6nhnC7WYJY3N?=
- =?us-ascii?Q?RgNBDq+dOrvJBMyz6qhvLTnAShrPP2qDmo855uWR4M9I1Z2J7WJYT9QbEbhQ?=
- =?us-ascii?Q?pSw4T4S4OlabiTnyK96LyMbVFALBQEHUEPI+NlHS9g+waEgXt9Q1dHh/MBYQ?=
- =?us-ascii?Q?Xn2CtQoZ3VAuNduQn+JocZW9tLHCYKMnchmwCxIF8ZvjDrvN8WpMsuDauIfg?=
- =?us-ascii?Q?6AwZsbhQIplK1dPZXG7cHFT65YgDqGAYgHYz2qNETWHQyWTzNiOX9X6zEo/x?=
- =?us-ascii?Q?Hd3v86QuPBFOoSdiP9ZU/EksWl81pOFKYgBhx0Cdg3vw1t9ROQj2KZZQGqCc?=
- =?us-ascii?Q?Ugj5AFeLII4Tj6n9DZMis6mI1B2hZQnYvx4UdosWOoCtCO5r/rTjXHNhvFhN?=
- =?us-ascii?Q?XiGm1x5XYoMZ+jH2C5YQRZlI2S6SegdNQ91i1J5AQAaJJjp5SOnQA3uJBpod?=
- =?us-ascii?Q?I6mcKR2qSoalRPWHiEDe0TgBn3UoABo0tjdHmXs2WntE10VOVTKJ5b/atwNN?=
- =?us-ascii?Q?N2n76hf8vRCv0MuV/QXBKQVi79MqtYxrPXTmxVt7VDbcW31dt1g0Qbg4/QNl?=
- =?us-ascii?Q?ETW3JjlH+WJl09usKLund/QVSiHECX+E68y5fdKFu0gtuhLaURzvkHBHJ8HM?=
- =?us-ascii?Q?CE1fqZbZ5fE+8wJuM/1PGHlI9NjYw3Q27dhn2CxytyAkLj5NFMAJXSg9Q+bc?=
- =?us-ascii?Q?HfQh9aatRqqs7vVCizleByihq/6w08vODxO4qIcqpBRxut9rQhiwXBqsrvpG?=
- =?us-ascii?Q?tyIyxRLshbTALZX0R6O6QSHi9xIAFRW6AX6yR66B7BE2Fhk8e9TcYyXVXFco?=
- =?us-ascii?Q?o9J1dZiMndkV3rq/3gsSp6qAZXe5wVYzl7j0KhI9BWRnRyJBggwbYmy+JCUC?=
- =?us-ascii?Q?s7Q3UKY/y9VV2RrNy8+PDSsOzCA/yrPC5syElGvCysXxUA81x5p/b56bRqgN?=
- =?us-ascii?Q?pY0MhEyyGrxLjg1nKVe8G2iTsl0lvy78AMmu6DqySj2sgrhUhr25WjYbyisz?=
- =?us-ascii?Q?b4VEH8jBsTPGVeNSCUnNsNH2qfb+mL7AwPnx/fM0PCpeBVo18WTuDoeZmgIN?=
- =?us-ascii?Q?oRbIKi26JgXJNCmayLxKhtEi/gax7Xj/4xSndX/x3qsLklAdiJS91jOtn7Vo?=
- =?us-ascii?Q?r8O37FOHgqt3ni9ki9ms1Z7jFBIjdrb8HcF3XwoJkViQNjqS94YBTW9SlP/J?=
- =?us-ascii?Q?B8STUISB4FNRgOqaYtA3dOMPyjP/4mk0omxYPgvWgpY0Jl/uBsyWFjG1YtaB?=
- =?us-ascii?Q?Z6QuON7eEnbhKw6Ri4s2XPn5GP/hn3Qw4o1h?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Apr 2025 12:03:24.9874
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e682fbc8-f3f6-421a-5db7-08dd7b4c5c27
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF0000B36F.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB8440
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="5JPjsqyE+gD2u5U8"
+Content-Disposition: inline
 
-According to the XGMAC specification, enabling features such as Layer 3
-and Layer 4 Packet Filtering, Split Header, Receive Side Scaling (RSS),
-and Virtualized Network support automatically selects the IPC Full
-Checksum Offload Engine on the receive side.
 
-When RX checksum offload is disabled, these dependent features must also
-be disabled to prevent abnormal behavior caused by mismatched feature
-dependencies.
+--5JPjsqyE+gD2u5U8
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 14 Apr 2025 14:18:25 +0200
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Jesse Brandeburg <jesse.brandeburg@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>, netdev@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org
+Cc: regressions@lists.linux.dev, stable@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [REGRESSION] e1000e heavy packet loss on Meteor Lake - 6.14.2
 
-Ensure that toggling RX checksum offload (disabling or enabling) properly
-disables or enables all dependent features, maintaining consistent and
-expected behavior in the network device.
+Hi,
 
-Cc: stable@vger.kernel.org
-Fixes: c5aa9e3b8156 ("amd-xgbe: Initial AMD 10GbE platform driver")
-Signed-off-by: Vishal Badole <Vishal.Badole@amd.com>
----
- drivers/net/ethernet/amd/xgbe/xgbe-dev.c |  8 ++++++--
- drivers/net/ethernet/amd/xgbe/xgbe-drv.c | 19 +++++++++++++++++--
- 2 files changed, 23 insertions(+), 4 deletions(-)
+After updating to 6.14.2, the ethernet adapter is almost unusable, I get
+over 30% packet loss.
+Bisect says it's this commit:
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-dev.c b/drivers/net/ethernet/amd/xgbe/xgbe-dev.c
-index 429c5e1444d8..48a474337d96 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-dev.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-dev.c
-@@ -3764,8 +3764,12 @@ static int xgbe_init(struct xgbe_prv_data *pdata)
- 	xgbe_config_tx_coalesce(pdata);
- 	xgbe_config_rx_buffer_size(pdata);
- 	xgbe_config_tso_mode(pdata);
--	xgbe_config_sph_mode(pdata);
--	xgbe_config_rss(pdata);
-+
-+	if (pdata->netdev->features & NETIF_F_RXCSUM) {
-+		xgbe_config_sph_mode(pdata);
-+		xgbe_config_rss(pdata);
-+	}
-+
- 	desc_if->wrapper_tx_desc_init(pdata);
- 	desc_if->wrapper_rx_desc_init(pdata);
- 	xgbe_enable_dma_interrupts(pdata);
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-index f249f89fec38..0146af7f93cd 100755
---- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-@@ -2267,6 +2267,16 @@ static netdev_features_t xgbe_fix_features(struct net_device *netdev,
- 		}
- 	}
- 
-+	if (features & NETIF_F_RXCSUM) {
-+		netdev_notice(netdev,
-+			      "forcing receive hashing on\n");
-+		features |= NETIF_F_RXHASH;
-+	} else {
-+		netdev_notice(netdev,
-+			      "forcing receive hashing off\n");
-+		features &= ~NETIF_F_RXHASH;
-+	}
-+
- 	return features;
- }
- 
-@@ -2290,10 +2300,15 @@ static int xgbe_set_features(struct net_device *netdev,
- 	if (ret)
- 		return ret;
- 
--	if ((features & NETIF_F_RXCSUM) && !rxcsum)
-+	if ((features & NETIF_F_RXCSUM) && !rxcsum) {
-+		hw_if->enable_sph(pdata);
-+		hw_if->enable_vxlan(pdata);
- 		hw_if->enable_rx_csum(pdata);
--	else if (!(features & NETIF_F_RXCSUM) && rxcsum)
-+	} else if (!(features & NETIF_F_RXCSUM) && rxcsum) {
-+		hw_if->disable_sph(pdata);
-+		hw_if->disable_vxlan(pdata);
- 		hw_if->disable_rx_csum(pdata);
-+	}
- 
- 	if ((features & NETIF_F_HW_VLAN_CTAG_RX) && !rxvlan)
- 		hw_if->enable_rx_vlan_stripping(pdata);
--- 
-2.34.1
+    commit 85f6414167da39e0da30bf370f1ecda5a58c6f7b
+    Author: Vitaly Lifshits <vitaly.lifshits@intel.com>
+    Date:   Thu Mar 13 16:05:56 2025 +0200
 
+        e1000e: change k1 configuration on MTP and later platforms
+       =20
+        [ Upstream commit efaaf344bc2917cbfa5997633bc18a05d3aed27f ]
+       =20
+        Starting from Meteor Lake, the Kumeran interface between the integr=
+ated
+        MAC and the I219 PHY works at a different frequency. This causes sp=
+oradic
+        MDI errors when accessing the PHY, and in rare circumstances could =
+lead
+        to packet corruption.
+       =20
+        To overcome this, introduce minor changes to the Kumeran idle
+        state (K1) parameters during device initialization. Hardware reset
+        reverts this configuration, therefore it needs to be applied in a f=
+ew
+        places.
+       =20
+        Fixes: cc23f4f0b6b9 ("e1000e: Add support for Meteor Lake")
+        Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+        Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
+        Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+        Signed-off-by: Sasha Levin <sashal@kernel.org>
+
+     drivers/net/ethernet/intel/e1000e/defines.h |  3 ++
+     drivers/net/ethernet/intel/e1000e/ich8lan.c | 80 +++++++++++++++++++++=
+++++++--
+     drivers/net/ethernet/intel/e1000e/ich8lan.h |  4 ++
+     3 files changed, 82 insertions(+), 5 deletions(-)
+
+My system is Novacustom V540TU laptop with Intel Core Ultra 5 125H. And
+the e1000e driver is running in a Xen HVM (with PCI passthrough).
+Interestingly, I have also another one with Intel Core Ultra 7 155H
+where the issue does not happen. I don't see what is different about
+network adapter there, they look identical on lspci (but there are
+differences about other devices)...
+
+I see the commit above was already backported to other stable branches
+too...
+
+#regzbot introduced: 85f6414167da39e0da30bf370f1ecda5a58c6f7b
+
+--=20
+Best Regards,
+Marek Marczykowski-G=C3=B3recki
+Invisible Things Lab
+
+--5JPjsqyE+gD2u5U8
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmf8/REACgkQ24/THMrX
+1yypfAf+N7oPT/p3gMa3SFQmHBMe2BJBSC+RhLh+KBD8CpszZRO4TGw6f5u6ss0f
+wRDbgw5f2w2SGumk/BABv0ghWH//T+PwC2IoEjjjUtUYzXM6BENGTPqk+XArMnlB
+S5MPYyFcIaraR12oVMm+gUpHnO0OH/eNN6eXh1CUr8sxZ+wvRkDOZQccEfSBiAE5
+yC3GGmAyAK+XcQDdVZsQe1h7d6nOuZGNLVe3yLdUcESZlUetRH6HLVuE+yM3O+IA
+A/kW5vVHO07FhNwdNsgh9n/XdUmt2t1B7yvg7GRT+EHXP+mTco/UeYYq/HkGodEt
+uIX8rA3eaDdORKHQU8tqIf2Lekbcyg==
+=3xGN
+-----END PGP SIGNATURE-----
+
+--5JPjsqyE+gD2u5U8--
 
