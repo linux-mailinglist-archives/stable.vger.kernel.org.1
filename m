@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-132519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4434FA882CE
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:44:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12F6DA882D2
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:45:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AF7E16B7DC
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:42:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6ADF188BDF3
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:42:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D632949FB;
-	Mon, 14 Apr 2025 13:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FEF2294A1E;
+	Mon, 14 Apr 2025 13:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cy7kizvB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DS9p+br0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D2E2949F4;
-	Mon, 14 Apr 2025 13:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1D3294A15;
+	Mon, 14 Apr 2025 13:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637321; cv=none; b=KX3YVdCvqXS/vWQL86UmYCxnD+wTJcP5Ev0nfgkaQOiWUfJNaMXAvf2yJqsjbnnu1Z+ohLJ99OJtdLHfCpAEs/r8XvK23Cm9OSzatlfmw6wtFmEn6X+lNiT9qcUOfsRx7V+pa37+wand5RkgkDAjPjBrww1g8gqiXkTWCyfvCCA=
+	t=1744637323; cv=none; b=gsdlKyFd+J7VNwItKrMYz4mpl5WB/SAD6jXdrhverIjicADOugpf/JQC4h4sp2NRoDz+pNnSxzV/M/XcWooSwV4+oBZsMMCkZDVDYsgZ44CYsSTkIyy3LHVybtNl/ynpE5koqGa0GlXjoyujrQrRdUpfobHrsiuECa2TuTR/m60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637321; c=relaxed/simple;
-	bh=dByaXTsfwiBh8dWHjGZAuH4OEsIXcsEUBHnNOKSQ440=;
+	s=arc-20240116; t=1744637323; c=relaxed/simple;
+	bh=ive9HXjdFaLlIvQIi8OCLS8jzkis2suMRljyaH5H8HI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HavDxkU+pZinP7DKr3JgQvR4hZoAeSLBsr14yZ4pMriwNUY/C13Jm8Ua4TwFVyE1hYBdvH1OCC/K4BxjoNiGEAr9CD3tsTvTXf2HR8UHqUL408ENmixFANkLfGbhuVQHgHHWDjAPVbMxHu1+dwQqEbBG8/3IuR55aJeg+TtKxgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cy7kizvB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E37C4CEE2;
-	Mon, 14 Apr 2025 13:28:39 +0000 (UTC)
+	 MIME-Version; b=IqDg2ExRBbDGJECMrRsu0RxL+ml6kC74J0CzQuOJ5CwPtVrunj3jBlJBSBFZScqnSDhDRnOtRC7MnJaYa/iU2zxAxPGu4Z8rRk21DYGf8FEjeVDSX82BOmZy02x+MedV8wkcLHEvIHUTz73ucYCF4mFsJbvp3ThXsqmu71nl12c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DS9p+br0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 991D8C4CEE9;
+	Mon, 14 Apr 2025 13:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744637321;
-	bh=dByaXTsfwiBh8dWHjGZAuH4OEsIXcsEUBHnNOKSQ440=;
+	s=k20201202; t=1744637323;
+	bh=ive9HXjdFaLlIvQIi8OCLS8jzkis2suMRljyaH5H8HI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cy7kizvByqb3D/8PLcr7UISkMnHEazDGOUIyzfOlz4ebymcZG0fqPFOjW083Sm2J3
-	 HxGFaIYK1OXYVmZ/O6LUAmaW0sdFVwXWomRTKWn4Ifayn6DM/0mio+mNpG+xBtsFSR
-	 dOEKnPQxVhcz/UrJjpwfBFRXYzwTZ4P7dl8Z/PsMbGugQV8kyGMH8gQqdSebCpmAqO
-	 CzJ9onDfGxRcen5bTEKfM9nyhBlqUyQz0EdOhyawaZxKF9hUgg+vonf7lAvEnTKxrT
-	 GUQnjmZQBn0l3vUQ4qLSRdbkYuiUvLzVyPstdX3bD7Pw1MpQb4KmOORP2yaxje0jfD
-	 RTyqnsSzpPsEw==
+	b=DS9p+br0eyIzYkVdDwIlWStVjVy4IenrPvwbE3ZtrgzQYL1VzIuOt58GTA5zay0cK
+	 dYk4fcivCGM9uydU4qwqNN1azZUQeayxoKqy+v5IIOcLFZ1njmVwktdzbH3CjeTWBl
+	 gzS3Ulm+1VIB66nJZYzYeoLTLdM4TuwHlb609GlwArDyn7lxZ03+Ktc+umunU10a4e
+	 LYnfNhfIIkNXtLK9gzACtOOwrZw5fh7/KYFsNyXZiSXM9tgOOExD7euCyIiCZIYL7y
+	 pNP8xR9cxxWSunOrJjWy7qf5/751g+o5LP8P1Fhw0QBmQXWxCQF7/wIldtkz+npyGJ
+	 Y+YU2fh6AyjxQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Russell King <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	sfrench@samba.org,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Subject: [PATCH AUTOSEL 6.13 31/34] cifs: Fix querying of WSL CHR and BLK reparse points over SMB1
-Date: Mon, 14 Apr 2025 09:27:25 -0400
-Message-Id: <20250414132729.679254-31-sashal@kernel.org>
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 32/34] net: phy: move phy_link_change() prior to mdio_bus_phy_may_suspend()
+Date: Mon, 14 Apr 2025 09:27:26 -0400
+Message-Id: <20250414132729.679254-32-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250414132729.679254-1-sashal@kernel.org>
 References: <20250414132729.679254-1-sashal@kernel.org>
@@ -62,77 +66,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.11
 Content-Transfer-Encoding: 8bit
 
-From: Pali Rohár <pali@kernel.org>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit ef86ab131d9127dfbfa8f06e12441d05fdfb090b ]
+[ Upstream commit f40a673d6b4a128fe95dd9b8c3ed02da50a6a862 ]
 
-When reparse point in SMB1 query_path_info() callback was detected then
-query also for EA $LXDEV. In this EA are stored device major and minor
-numbers used by WSL CHR and BLK reparse points. Without major and minor
-numbers, stat() syscall does not work for char and block devices.
+In an upcoming change, mdio_bus_phy_may_suspend() will need to
+distinguish a phylib-based PHY client from a phylink PHY client.
+For that, it will need to compare the phydev->phy_link_change() function
+pointer with the eponymous phy_link_change() provided by phylib.
 
-Similar code is already in SMB2+ query_path_info() callback function.
+To avoid forward function declarations, the default PHY link state
+change method should be moved upwards. There is no functional change
+associated with this patch, it is only to reduce the noise from a real
+bug fix.
 
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/20250407093900.2155112-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb1ops.c | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ drivers/net/phy/phy_device.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/fs/smb/client/smb1ops.c b/fs/smb/client/smb1ops.c
-index bd791aa54681f..55cceb8229323 100644
---- a/fs/smb/client/smb1ops.c
-+++ b/fs/smb/client/smb1ops.c
-@@ -597,6 +597,42 @@ static int cifs_query_path_info(const unsigned int xid,
- 			CIFSSMBClose(xid, tcon, fid.netfid);
- 	}
- 
-+#ifdef CONFIG_CIFS_XATTR
-+	/*
-+	 * For WSL CHR and BLK reparse points it is required to fetch
-+	 * EA $LXDEV which contains major and minor device numbers.
-+	 */
-+	if (!rc && data->reparse_point) {
-+		struct smb2_file_full_ea_info *ea;
-+
-+		ea = (struct smb2_file_full_ea_info *)data->wsl.eas;
-+		rc = CIFSSMBQAllEAs(xid, tcon, full_path, SMB2_WSL_XATTR_DEV,
-+				    &ea->ea_data[SMB2_WSL_XATTR_NAME_LEN + 1],
-+				    SMB2_WSL_XATTR_DEV_SIZE, cifs_sb);
-+		if (rc == SMB2_WSL_XATTR_DEV_SIZE) {
-+			ea->next_entry_offset = cpu_to_le32(0);
-+			ea->flags = 0;
-+			ea->ea_name_length = SMB2_WSL_XATTR_NAME_LEN;
-+			ea->ea_value_length = cpu_to_le16(SMB2_WSL_XATTR_DEV_SIZE);
-+			memcpy(&ea->ea_data[0], SMB2_WSL_XATTR_DEV, SMB2_WSL_XATTR_NAME_LEN + 1);
-+			data->wsl.eas_len = sizeof(*ea) + SMB2_WSL_XATTR_NAME_LEN + 1 +
-+					    SMB2_WSL_XATTR_DEV_SIZE;
-+			rc = 0;
-+		} else if (rc >= 0) {
-+			/* It is an error if EA $LXDEV has wrong size. */
-+			rc = -EINVAL;
-+		} else {
-+			/*
-+			 * In all other cases ignore error if fetching
-+			 * of EA $LXDEV failed. It is needed only for
-+			 * WSL CHR and BLK reparse points and wsl_to_fattr()
-+			 * handle the case when EA is missing.
-+			 */
-+			rc = 0;
-+		}
-+	}
-+#endif
-+
- 	return rc;
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 5f1ad0c7fb534..eedcdae883982 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -289,6 +289,19 @@ static bool phy_drv_wol_enabled(struct phy_device *phydev)
+ 	return wol.wolopts != 0;
  }
  
++static void phy_link_change(struct phy_device *phydev, bool up)
++{
++	struct net_device *netdev = phydev->attached_dev;
++
++	if (up)
++		netif_carrier_on(netdev);
++	else
++		netif_carrier_off(netdev);
++	phydev->adjust_link(netdev);
++	if (phydev->mii_ts && phydev->mii_ts->link_state)
++		phydev->mii_ts->link_state(phydev->mii_ts, phydev);
++}
++
+ static bool mdio_bus_phy_may_suspend(struct phy_device *phydev)
+ {
+ 	struct device_driver *drv = phydev->mdio.dev.driver;
+@@ -1101,19 +1114,6 @@ struct phy_device *phy_find_first(struct mii_bus *bus)
+ }
+ EXPORT_SYMBOL(phy_find_first);
+ 
+-static void phy_link_change(struct phy_device *phydev, bool up)
+-{
+-	struct net_device *netdev = phydev->attached_dev;
+-
+-	if (up)
+-		netif_carrier_on(netdev);
+-	else
+-		netif_carrier_off(netdev);
+-	phydev->adjust_link(netdev);
+-	if (phydev->mii_ts && phydev->mii_ts->link_state)
+-		phydev->mii_ts->link_state(phydev->mii_ts, phydev);
+-}
+-
+ /**
+  * phy_prepare_link - prepares the PHY layer to monitor link status
+  * @phydev: target phy_device struct
 -- 
 2.39.5
 
