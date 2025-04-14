@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-132497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBC2FA88293
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:39:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19418A882AF
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:41:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8968C171C8B
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:37:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C3C43B1831
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D93AF27A911;
-	Mon, 14 Apr 2025 13:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8773827A935;
+	Mon, 14 Apr 2025 13:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SbI3R2Hu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BntZI/6+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EDCC27A909;
-	Mon, 14 Apr 2025 13:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439B127A92B;
+	Mon, 14 Apr 2025 13:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637269; cv=none; b=cKXpJxO96FixWj+6vP8qEuOR0zxgs/Iu4MIy0ZAof8R/P/EUp8dhWnEuS8yqtFWCuksUrTCxyDdM8z2h+WYpGkJFV9B72oprlLm2S61fYSSrAo6de+6al6+bjQGrNf6MiVRXv4GppYf42yXmt3/jfu9/dmlUizEM4k0i+0dcQ6I=
+	t=1744637271; cv=none; b=UNIi1pSzDjdEFHU6QMQsEXJMoBWr1Nbm/A6SDsglqPzby8Zj8ei9i4os7aDQzBlvk3KiBvKACwommaXCtwnxr9lRqHanNaWysgAo0jWcuy9SPx0Hoew3Z29Z0xbwL6I9lTNYrsH+nT3hVL1vAN4K5RusK7nl4ufupCNq9urBcBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637269; c=relaxed/simple;
-	bh=W9a1bZacIMHZgIEupV7PVdZLCgm8bqcqKRtbQq4Ex1E=;
+	s=arc-20240116; t=1744637271; c=relaxed/simple;
+	bh=5h2lMXQWMzNDy6atMz06+3FskdOTLm+ZoYi30GgjGDU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mX5V+1jS0g9KPMdcEeIomkFS71KEksffxVFjRI3ETK7KZ33mhOOrnMtBUnvS7yVVp6+d8QS5tueGyWPArvik0SuudZDJpQv9F+UNASxSp3LVl3hgtwgEp55nrObhaub9lExocsa0LSctlhBYJXsVjUqDQInPMn9JKtjw95V9eLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SbI3R2Hu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BFF8C4CEE9;
-	Mon, 14 Apr 2025 13:27:48 +0000 (UTC)
+	 MIME-Version; b=m/AyK+vbbWL4KlgPHbJR5Wch66BCqaqBYhKz9CDxN5GEJb6USkD6niPcF0C/TY7bnnKb1sk4cCoq8YT3Cuf/HPDjhdwdAewgpX5/I7sSJzfFXM+7WcnS0hb7JkcctPpPrFQAwVsF/Wqt4Ty0Qx6oHFjqPXVwUq/wzqgTQKFQFG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BntZI/6+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F31FBC4CEE9;
+	Mon, 14 Apr 2025 13:27:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744637269;
-	bh=W9a1bZacIMHZgIEupV7PVdZLCgm8bqcqKRtbQq4Ex1E=;
+	s=k20201202; t=1744637271;
+	bh=5h2lMXQWMzNDy6atMz06+3FskdOTLm+ZoYi30GgjGDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SbI3R2HuY5SatqlYnlIkFo7rdplGekmfNhK8Wn/Lq2Z0u0qCwFrD+12dtQuX9ptSP
-	 nLIaV0tPS/wyGRUR1H5KGuBiWl8mw0O24axwGt2cHzMr9+8fsyd5DxZp54G1EkxxDs
-	 jZBCAIlMCo7G/3eUmgLdsGxXeMdlTgaN9om2AYaePZd7G+WhxgvJe5Jkx8Kb0o6cw1
-	 qACAwGUpBRK0j/PglNTXjpTTa/OyDwbtvLk1QMiJSW7AaFUcS/397s3PTCFzEv8Hzl
-	 hl6FAnJZYNvzbon2AEKzKqcQHZT9ThB8Ey+IqodqXRqm/KEsnLU3QMGER+fGwDLzQI
-	 gJ1QROoahfP/w==
+	b=BntZI/6+Tw56TxUAstC8U+iB+8gN/ezfS5Iu0+qbVfI1xvEQU1VlbscjzJ2EQV6cH
+	 ohEViIUIPjUCqs0BwWVztb7KTwY+GQO336zdIDzk7XybkVl7PBzmCHUE2m11/KuanQ
+	 pDkhSQZ/zF31GNdhIGKQXkPCdwG2pQ564C/rbUEfr79XxLdiGlWPTbtY4HbJShh59q
+	 2WU9KV/62GQQcH/HhhdiV8zQNG8x5/NCZsxxRj2moQuM24MYNwrFT1DL1PU+NTyV0x
+	 p/b2+QQaXpQy65k/OkTxR2X7s2JPIjrWXEbWoRo2xZFv56RQIU66WLiZ46SrnXcZ+y
+	 sLxwhYRZpIsQQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+Cc: Hannes Reinecke <hare@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>,
-	michael.hennerich@analog.com,
-	nuno.sa@analog.com,
-	linux-pwm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 09/34] pwm: axi-pwmgen: Let .round_waveform_tohw() signal when request was rounded up
-Date: Mon, 14 Apr 2025 09:27:03 -0400
-Message-Id: <20250414132729.679254-9-sashal@kernel.org>
+	sagi@grimberg.me,
+	linux-nvme@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.13 10/34] nvme: requeue namespace scan on missed AENs
+Date: Mon, 14 Apr 2025 09:27:04 -0400
+Message-Id: <20250414132729.679254-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250414132729.679254-1-sashal@kernel.org>
 References: <20250414132729.679254-1-sashal@kernel.org>
@@ -63,69 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.11
 Content-Transfer-Encoding: 8bit
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Hannes Reinecke <hare@kernel.org>
 
-[ Upstream commit a85e08a05bf77d5d03b4ac0c59768a606a1b640b ]
+[ Upstream commit 9546ad1a9bda7362492114f5866b95b0ac4a100e ]
 
-The .round_waveform_tohw() is supposed to return 1 if the requested
-waveform cannot be implemented by rounding down all parameters. Also
-adapt the corresponding comment to better describe why the implemented
-procedure is right.
+Scanning for namespaces can take some time, so if the target is
+reconfigured while the scan is running we may miss a Attached Namespace
+Attribute Changed AEN.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Tested-by: Trevor Gamblin <tgamblin@baylibre.com>
-Link: https://lore.kernel.org/r/ba451573f0218d76645f068cec78bd97802cf010.1743844730.git.u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Check if the NVME_AER_NOTICE_NS_CHANGED bit is set once the scan has
+finished, and requeue scanning to pick up any missed change.
+
+Signed-off-by: Hannes Reinecke <hare@kernel.org>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-axi-pwmgen.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/nvme/host/core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/pwm/pwm-axi-pwmgen.c b/drivers/pwm/pwm-axi-pwmgen.c
-index 4259a0db9ff45..4337c8f5acf05 100644
---- a/drivers/pwm/pwm-axi-pwmgen.c
-+++ b/drivers/pwm/pwm-axi-pwmgen.c
-@@ -75,6 +75,7 @@ static int axi_pwmgen_round_waveform_tohw(struct pwm_chip *chip,
- {
- 	struct axi_pwmgen_waveform *wfhw = _wfhw;
- 	struct axi_pwmgen_ddata *ddata = axi_pwmgen_ddata_from_chip(chip);
-+	int ret = 0;
- 
- 	if (wf->period_length_ns == 0) {
- 		*wfhw = (struct axi_pwmgen_waveform){
-@@ -91,12 +92,15 @@ static int axi_pwmgen_round_waveform_tohw(struct pwm_chip *chip,
- 		if (wfhw->period_cnt == 0) {
- 			/*
- 			 * The specified period is too short for the hardware.
--			 * Let's round .duty_cycle down to 0 to get a (somewhat)
--			 * valid result.
-+			 * So round up .period_cnt to 1 (i.e. the smallest
-+			 * possible period). With .duty_cycle and .duty_offset
-+			 * being less than or equal to .period, their rounded
-+			 * value must be 0.
- 			 */
- 			wfhw->period_cnt = 1;
- 			wfhw->duty_cycle_cnt = 0;
- 			wfhw->duty_offset_cnt = 0;
-+			ret = 1;
- 		} else {
- 			wfhw->duty_cycle_cnt = min_t(u64,
- 						     mul_u64_u32_div(wf->duty_length_ns, ddata->clk_rate_hz, NSEC_PER_SEC),
-@@ -111,7 +115,7 @@ static int axi_pwmgen_round_waveform_tohw(struct pwm_chip *chip,
- 		pwm->hwpwm, wf->duty_length_ns, wf->period_length_ns, wf->duty_offset_ns,
- 		ddata->clk_rate_hz, wfhw->period_cnt, wfhw->duty_cycle_cnt, wfhw->duty_offset_cnt);
- 
--	return 0;
-+	return ret;
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index e4034cec59237..1b386889242c3 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -4282,6 +4282,10 @@ static void nvme_scan_work(struct work_struct *work)
+ 			nvme_scan_ns_sequential(ctrl);
+ 	}
+ 	mutex_unlock(&ctrl->scan_lock);
++
++	/* Requeue if we have missed AENs */
++	if (test_bit(NVME_AER_NOTICE_NS_CHANGED, &ctrl->events))
++		nvme_queue_scan(ctrl);
  }
  
- static int axi_pwmgen_round_waveform_fromhw(struct pwm_chip *chip, struct pwm_device *pwm,
+ /*
 -- 
 2.39.5
 
