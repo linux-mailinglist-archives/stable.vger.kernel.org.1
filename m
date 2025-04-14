@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-132562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB8A7A88359
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:55:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A665FA8835F
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:56:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5863917D69B
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:52:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC555188E0E4
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57BCD2C1E2E;
-	Mon, 14 Apr 2025 13:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9A82C2578;
+	Mon, 14 Apr 2025 13:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KWvKx7qD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KQ2KmPoO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EED82C1E1F;
-	Mon, 14 Apr 2025 13:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A7D2C256F;
+	Mon, 14 Apr 2025 13:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637417; cv=none; b=sBr4epGqx+m1/ee+mRy4xqgpcF1oubGwuwXYX7wmgPoKdPjNB31TXayf/IEBD5UTNPT9+tO8oa20wbAy9hpsK+H1CUD/5JypuUrp4Vnqk9qjmWlRXLZRu9RVVjiSJpqREqWY9CL/f57za5zs9sjjh4VP6I/y3IaqSbbsnyZOKDU=
+	t=1744637418; cv=none; b=Rw7nm+w54g4YnnfIv51QGPd5a6qkIkYwOugF1ts2/j4zTLC4080Jc6thJISpiSgQTCSeZKP2kPbRd07COow63of4I+cdXyPmuH0RWDZ3snQ/s0CrZW/KOEX7G4Nrxf0DSN3xLWLPwacJ+E7lkeJHCWsttOxPdkIgrM6DwsLxt04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637417; c=relaxed/simple;
-	bh=AwcB7sgJ2b3w3rrwnUM1rfisGcuuzSfBoHqPMRdTGF0=;
+	s=arc-20240116; t=1744637418; c=relaxed/simple;
+	bh=WR1nmioPnYCDw/Q/8Q6v2DL7uBItXhvHeiWqF0rSOzo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pRZe+d47tOu8YO7lopA5kY6ggVElKAPRDqA17ztGJmTdcIwk1/E2esG0gJ4b2xm3FvTu4d07lh+zyB5IS5Qe2Txx2WQq7BovVpvo+lcLvM4U5wyUeXgsoPGAR5pwmVZ7QXg/7In28AxuP84hCOXE0xUPGIOEj5xPieYL5j8kG5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KWvKx7qD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D478AC4CEE2;
-	Mon, 14 Apr 2025 13:30:15 +0000 (UTC)
+	 MIME-Version; b=cVLFpSBQk8oBDqFx1Tt90d7cVuL3uwMTfyjnL+6HVRAGgFh6etcU0sunk8x/z4J4VHWwttzzkr4GTf5vrrrGhqJyNAktfXgFOUjfQo0l6BTSK+KL15jJixx4OyuYzaLLvBzECKuKwHNk6qisHATnAGthSGN4LExbH0JpGfIfMvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KQ2KmPoO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A4BC4CEE2;
+	Mon, 14 Apr 2025 13:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744637416;
-	bh=AwcB7sgJ2b3w3rrwnUM1rfisGcuuzSfBoHqPMRdTGF0=;
+	s=k20201202; t=1744637418;
+	bh=WR1nmioPnYCDw/Q/8Q6v2DL7uBItXhvHeiWqF0rSOzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KWvKx7qDLUGVRsvXmFR+XJkaBChQa4TXO+Wml9e+EDeNh6UsCp7h54CcUI2lHgoUn
-	 bvQREnHs4TXnDqqxSYTITQbg0YIDdmvWLBB6XaO3DeQY2uwDFGYxNxfP8sydcbrB+W
-	 eMzfSnT2G/+whuOCfBGy/UEw0daYN2x22chBxFGSx0qRpnSRF6Qugx1lmrtNwYjWfQ
-	 w7gLFWzYVhCmsxLZnAcxrrGJAiDV+u3x+9x/tQzXXpGqbHeyQLWfpQPfY3OvXSOX3F
-	 8xk+bsYTMeZ/ROwxkZUfypjuiYCkvy1yPFcW1TvFQZBWygmLKe5AzccIjqgBqVJ21O
-	 EpJ6YuwtWuQTg==
+	b=KQ2KmPoOKeAVzLKhm7fQR3u2A8TDQK+qCsecIuYdPeBOtBVq4EUIQvPMlW+6YVkYZ
+	 IxF7fPUUuMXwp4hORWtSySMigUmONuzxoI8bu8UIFme200U4fBKrfWdhMS+iEMR0CK
+	 yQnsmYbtSBohEc2pdc1Xy1pd/EXs2vLexxfZfGdSa76bwNewZWkEeQm2lX4bYTtdLq
+	 zgqn9h1FjAbK7c40fk8MGPS/ACLEEqymj6bc+o5vpqprR+2t7gW7MiU1XMQXClLpTP
+	 cBurPKZmTcHdBEFTzeXMp0IiLcAVTTDDGc8NTjDxIqIJ42LZETX5Brd0ezy7LFhxYt
+	 dKEe8UaxnrQYw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jean-Marc Eurin <jmeurin@google.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Hannes Reinecke <hare@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 09/24] ACPI PPTT: Fix coding mistakes in a couple of sizeof() calls
-Date: Mon, 14 Apr 2025 09:29:42 -0400
-Message-Id: <20250414132957.680250-9-sashal@kernel.org>
+	sagi@grimberg.me,
+	linux-nvme@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.6 10/24] nvme: re-read ANA log page after ns scan completes
+Date: Mon, 14 Apr 2025 09:29:43 -0400
+Message-Id: <20250414132957.680250-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250414132957.680250-1-sashal@kernel.org>
 References: <20250414132957.680250-1-sashal@kernel.org>
@@ -66,44 +67,45 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.87
 Content-Transfer-Encoding: 8bit
 
-From: Jean-Marc Eurin <jmeurin@google.com>
+From: Hannes Reinecke <hare@kernel.org>
 
-[ Upstream commit 7ab4f0e37a0f4207e742a8de69be03984db6ebf0 ]
+[ Upstream commit 62baf70c327444338c34703c71aa8cc8e4189bd6 ]
 
-The end of table checks should be done with the structure size,
-but 2 of the 3 similar calls use the pointer size.
+When scanning for new namespaces we might have missed an ANA AEN.
 
-Signed-off-by: Jean-Marc Eurin <jmeurin@google.com>
-Link: https://patch.msgid.link/20250402001542.2600671-1-jmeurin@google.com
-[ rjw: Subject edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+The NVMe base spec (NVMe Base Specification v2.1, Figure 151 'Asynchonous
+Event Information - Notice': Asymmetric Namespace Access Change) states:
+
+  A controller shall not send this even if an Attached Namespace
+  Attribute Changed asynchronous event [...] is sent for the same event.
+
+so we need to re-read the ANA log page after we rescanned the namespace
+list to update the ANA states of the new namespaces.
+
+Signed-off-by: Hannes Reinecke <hare@kernel.org>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/pptt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/nvme/host/core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-index a35dd0e41c270..f73ce6e13065d 100644
---- a/drivers/acpi/pptt.c
-+++ b/drivers/acpi/pptt.c
-@@ -229,7 +229,7 @@ static int acpi_pptt_leaf_node(struct acpi_table_header *table_hdr,
- 	node_entry = ACPI_PTR_DIFF(node, table_hdr);
- 	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
- 			     sizeof(struct acpi_table_pptt));
--	proc_sz = sizeof(struct acpi_pptt_processor *);
-+	proc_sz = sizeof(struct acpi_pptt_processor);
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index e36c6fcab1eed..8827614ab8c63 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -3976,6 +3976,11 @@ static void nvme_scan_work(struct work_struct *work)
+ 	/* Requeue if we have missed AENs */
+ 	if (test_bit(NVME_AER_NOTICE_NS_CHANGED, &ctrl->events))
+ 		nvme_queue_scan(ctrl);
++#ifdef CONFIG_NVME_MULTIPATH
++	else
++		/* Re-read the ANA log page to not miss updates */
++		queue_work(nvme_wq, &ctrl->ana_work);
++#endif
+ }
  
- 	while ((unsigned long)entry + proc_sz < table_end) {
- 		cpu_node = (struct acpi_pptt_processor *)entry;
-@@ -270,7 +270,7 @@ static struct acpi_pptt_processor *acpi_find_processor_node(struct acpi_table_he
- 	table_end = (unsigned long)table_hdr + table_hdr->length;
- 	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
- 			     sizeof(struct acpi_table_pptt));
--	proc_sz = sizeof(struct acpi_pptt_processor *);
-+	proc_sz = sizeof(struct acpi_pptt_processor);
- 
- 	/* find the processor structure associated with this cpuid */
- 	while ((unsigned long)entry + proc_sz < table_end) {
+ /*
 -- 
 2.39.5
 
