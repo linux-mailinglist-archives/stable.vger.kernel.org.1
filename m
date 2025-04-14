@@ -1,177 +1,118 @@
-Return-Path: <stable+bounces-132592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4276EA883E4
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 16:07:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 150C0A883BF
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 16:05:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F16DC3BBC7A
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:57:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44C6E188AA7B
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:59:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADE1E2D86AC;
-	Mon, 14 Apr 2025 13:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A512DA0F6;
+	Mon, 14 Apr 2025 13:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kqCQmNUp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q69N8OxM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD03274FF1;
-	Mon, 14 Apr 2025 13:31:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D02B2DA0F1;
+	Mon, 14 Apr 2025 13:31:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637481; cv=none; b=kk3uCkjfph0GKzrynRzHV/0PfxjIrYnX4ENcT/O/sVvidjEc+sFx5Ae35QHO4MU3oUQeFF0RNrhUwNRmM0ErqXci11BLoSvn3SqXTvHrJ6J2+NHpl/MakCzIXFg0MfYbPenyUzTNpnwkgcQFPnuxICmiq9hbfj1AXKpqW7x8uH0=
+	t=1744637489; cv=none; b=CBJBULU+sZYTSfqlbG4C0xFqcqZ1SPJRJhaRE7gfHfSABXiSax2DG1FtJ7xqm1aLHkRdJR2OuYjyiBJkrONw9yxktDIrUQ+h6Rg5cadHOWbIXODtTkWBJVOhvpxKrVkisUtxoCpX/wxbhvKhzg0NbC1bm2MbUzNF97TbecRh5/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637481; c=relaxed/simple;
-	bh=/DKLPkP/kE/SbdXBpzy9/+/hp24aY6BC85SDxh/CeVo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cziraSP+8D/TIARdKfUF2+hyCAQmLEcApqPh1Tw03Gl2fj3CesdAflxbJLtBalVkCKnJihUn+XsfWhkVRC7Cx4FX6YA8rKYpPpeLgW+ATdDo62ua2d1UKewv8/VpCsK449KWVG3ipQRsO4pjqV4m3g0h1JWfz9hxBqEUauWHLK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kqCQmNUp; arc=none smtp.client-ip=209.85.221.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-5241abb9655so230326e0c.0;
-        Mon, 14 Apr 2025 06:31:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744637474; x=1745242274; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VYko5P0Uj9dxBvgZY4N+74k0M8yvQGkjvUrVryWcOYM=;
-        b=kqCQmNUpxTZ/ex7jhtWwqWAJBQ+Mtx3ANNxmVUCZdjhl8jamHCwvHLiI5QHDDJp1Wu
-         yFOKZWj8/IxbxMKGTDr33W24FGjz4h+ZO3JwQAVVnyIiw4crgzpYkPcmksuK9qg+zlIu
-         YpVGBSc7cj6/1Ki5EYRaB4COMZxgoJbCDibQ/x/2O9dIdCWvhIPA+T/BlTlKcOCynYis
-         c7ln9ep8dlaSaMS3lOrCps6D1zvffScchdARrDhvZatcrTcQJIvk1TLtErgsRB6Vcl+8
-         u754A9n4Sx/7ZP1+PMuplLj99CLDHL53Fhu+8Llh8Objf/ZuWXnQwHY0tjiMqt3GbQlX
-         tNNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744637474; x=1745242274;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VYko5P0Uj9dxBvgZY4N+74k0M8yvQGkjvUrVryWcOYM=;
-        b=iw6X0JEA1yUFwlxxT/x2vEw1AFyTtkvxtMxmVNtZN5faVFMQzABZmGT4FycDcVbQFQ
-         ZU0k+oDbGui8xzWtJ5BTdHGVE6dqgiN0Ou7I0WxRRmqTv6CYM1psMbwceAPqieTNZfPK
-         Y5+01PQhE8u7atSXC7hh/5QObVmEUR+X3zJp5ULY9HRY4yLeGr+sNsLkZfRdqc9VGIPo
-         KGbDQFTDpSuFjVnAzBy3i3zuf21e+sgbENejL05xXB5in8Az4AFiwtDY6mkf722m41mk
-         GxXjm5Kl79+BJcbFXkcAKbFB2ZboA5zEvll5J32oOA+w0uGVOf7rVvw4J9XdF3+IeLVH
-         dtkw==
-X-Forwarded-Encrypted: i=1; AJvYcCUKRqg0KmZ7Ot1tT/0ydTpTVIPDXAGlqJtRqTy1eK+/rwj12rlplIwM77HP9p7Una+hKEhRiYRWDOV3qA==@vger.kernel.org, AJvYcCWJB21x1SEMdUqsPbKNib38SoTW7J90RH0x23WaQnIcJs2ENuvSgqHkQyox7DyyGGzx3nMZFaCy@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVb+vnf/SQJRL3vEhYeoBl0eKIzKYyTYCi2t6gdggVKXCv7NSW
-	KT2Ko7ogwMFLwQcVYWK5F4bNAer30eaSRqD7S8UAbqgmYKSn5NoV3/pS6D+0JY/eUTS7cKli6OG
-	d7kzOo0DOsOxLbYuTwUUSmtuAiMw=
-X-Gm-Gg: ASbGncsp7L8Yq9e6p23WQDndRH4hqyBKtRD2P/q/+FieYvU20VtxxsVJ0zNB0jRsugh
-	0b34dFWbcQ1ylJXz3U4s7Lm2nqlOqbcG7IL2tmMTle3spwXNP7V86/iqrQm6l/JUphVtXEfrN0r
-	MrhWk3DQ6HrI1e5qJJJhDmpA==
-X-Google-Smtp-Source: AGHT+IHU9FwQkANqVWq6HB4deVY97gLIMf5+FLJTdy75WKChAzk9OeMBEaB4Pi9kHLb3C3nJNsVYA0qgr7byQiE5wXc=
-X-Received: by 2002:a05:6122:da1:b0:516:20fe:d5d8 with SMTP id
- 71dfb90a1353d-527c359ccf4mr1741010e0c.2.1744637474078; Mon, 14 Apr 2025
- 06:31:14 -0700 (PDT)
+	s=arc-20240116; t=1744637489; c=relaxed/simple;
+	bh=9J/z5T0JY/xcwsk6SXFTA+zsyiZ/gs3asCJyO6IhBN4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=oxvfrkuVuotFRLjZjP1/O7qzqESlGripsHKhxDYaA/hbl/knnvBrdJqzgUHPlxEFz8ONmhTRGfzDOalcvQKgL+Ipb4lcOOJ6mf6QDBuOC/YycP7fxDV6PMEoN2BxwSxvBwEIu+u4HOwZiJMe1HyzwysI8BepjkH1olmmfcYuJpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q69N8OxM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93A12C4CEE9;
+	Mon, 14 Apr 2025 13:31:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744637489;
+	bh=9J/z5T0JY/xcwsk6SXFTA+zsyiZ/gs3asCJyO6IhBN4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=q69N8OxMGC6IqrI1hs6JxTtGs6GZwO3HUAFb9Lkhw93vRJrRMXWDgIQ46Vr7I0CxR
+	 qSfWZXVH2oyXwping3PdkpTl2OD5VjFm4Va2rsqWkd47SlUv0piFogN4/TwYcdvIdb
+	 PQcyeH0z+Ppj0nKLkzGc1Pd9C5FNEvPBhdiwCgm6rO1NCWdqfW+uYvOXNmMk0mLl5g
+	 iPu7VwcEk65PJj8v90fm5MhkfY/rKnCen8QMI9+VJJVvStUZgKG79HPNI1Nab3KQXB
+	 AL6Cfrkw12j0jJyvBR5It605q/RaFVAopVuhzkZfUAis0kN+13UzFJ1J0Dho/S+4Oi
+	 ywLQn4vKHKboQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Michael Mueller <mimu@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>,
+	borntraeger@linux.ibm.com,
+	imbrenda@linux.ibm.com,
+	hca@linux.ibm.com,
+	gor@linux.ibm.com,
+	agordeev@linux.ibm.com,
+	kvm@vger.kernel.org,
+	linux-s390@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 01/15] KVM: s390: Don't use %pK through tracepoints
+Date: Mon, 14 Apr 2025 09:31:11 -0400
+Message-Id: <20250414133126.680846-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250414132848.679855-1-sashal@kernel.org> <20250414132848.679855-11-sashal@kernel.org>
-In-Reply-To: <20250414132848.679855-11-sashal@kernel.org>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Mon, 14 Apr 2025 09:31:01 -0400
-X-Gm-Features: ATxdqUHGTxjstZXt6MENE-PXqnTQyUOB_COxTyDCeu_fpv9Pwmta6iiK5pHbslw
-Message-ID: <CADnq5_PqqY07uBERuSGC--+=dsffxydrPrvzt7pw6SfmmqbDjw@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 6.12 11/30] drm/amdgpu: allow pinning DMA-bufs
- into VRAM if all importers can do P2P
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Simona Vetter <simona.vetter@ffwll.ch>, Felix Kuehling <felix.kuehling@amd.com>, 
-	Pak Nin Lui <pak.lui@amd.com>, Alex Deucher <alexander.deucher@amd.com>, airlied@gmail.com, 
-	simona@ffwll.ch, sumit.semwal@linaro.org, Yunxiang.Li@amd.com, 
-	matthew.auld@intel.com, tvrtko.ursulin@igalia.com, 
-	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 5.15.180
+Content-Transfer-Encoding: 8bit
 
-On Mon, Apr 14, 2025 at 9:29=E2=80=AFAM Sasha Levin <sashal@kernel.org> wro=
-te:
->
-> From: Christian K=C3=B6nig <christian.koenig@amd.com>
->
-> [ Upstream commit f5e7fabd1f5c65b2e077efcdb118cfa67eae7311 ]
->
-> Try pinning into VRAM to allow P2P with RDMA NICs without ODP
-> support if all attachments can do P2P. If any attachment can't do
-> P2P just pin into GTT instead.
->
-> Acked-by: Simona Vetter <simona.vetter@ffwll.ch>
-> Signed-off-by: Christian K=C3=B6nig <christian.koenig@amd.com>
-> Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
-> Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-> Tested-by: Pak Nin Lui <pak.lui@amd.com>
-> Cc: Simona Vetter <simona.vetter@ffwll.ch>
-> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-This should not go to stable.  It depends on dmem groups.
+[ Upstream commit 6c9567e0850be2f0f94ab64fa6512413fd1a1eb1 ]
 
+Restricted pointers ("%pK") are not meant to be used through TP_format().
+It can unintentionally expose security sensitive, raw pointer values.
 
-Alex
+Use regular pointer formatting instead.
 
-> ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c | 25 +++++++++++++++------
->  1 file changed, 18 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c b/drivers/gpu/dr=
-m/amd/amdgpu/amdgpu_dma_buf.c
-> index 8e81a83d37d84..83390143c2e9f 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-> @@ -72,11 +72,25 @@ static int amdgpu_dma_buf_attach(struct dma_buf *dmab=
-uf,
->   */
->  static int amdgpu_dma_buf_pin(struct dma_buf_attachment *attach)
->  {
-> -       struct drm_gem_object *obj =3D attach->dmabuf->priv;
-> -       struct amdgpu_bo *bo =3D gem_to_amdgpu_bo(obj);
-> +       struct dma_buf *dmabuf =3D attach->dmabuf;
-> +       struct amdgpu_bo *bo =3D gem_to_amdgpu_bo(dmabuf->priv);
-> +       u32 domains =3D bo->preferred_domains;
->
-> -       /* pin buffer into GTT */
-> -       return amdgpu_bo_pin(bo, AMDGPU_GEM_DOMAIN_GTT);
-> +       dma_resv_assert_held(dmabuf->resv);
-> +
-> +       /*
-> +        * Try pinning into VRAM to allow P2P with RDMA NICs without ODP
-> +        * support if all attachments can do P2P. If any attachment can't=
- do
-> +        * P2P just pin into GTT instead.
-> +        */
-> +       list_for_each_entry(attach, &dmabuf->attachments, node)
-> +               if (!attach->peer2peer)
-> +                       domains &=3D ~AMDGPU_GEM_DOMAIN_VRAM;
-> +
-> +       if (domains & AMDGPU_GEM_DOMAIN_VRAM)
-> +               bo->flags |=3D AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED;
-> +
-> +       return amdgpu_bo_pin(bo, domains);
->  }
->
->  /**
-> @@ -131,9 +145,6 @@ static struct sg_table *amdgpu_dma_buf_map(struct dma=
-_buf_attachment *attach,
->                 r =3D ttm_bo_validate(&bo->tbo, &bo->placement, &ctx);
->                 if (r)
->                         return ERR_PTR(r);
-> -
-> -       } else if (bo->tbo.resource->mem_type !=3D TTM_PL_TT) {
-> -               return ERR_PTR(-EBUSY);
->         }
->
->         switch (bo->tbo.resource->mem_type) {
-> --
-> 2.39.5
->
+Link: https://lore.kernel.org/lkml/20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023@linutronix.de/
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Michael Mueller <mimu@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250217-restricted-pointers-s390-v1-1-0e4ace75d8aa@linutronix.de
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Message-ID: <20250217-restricted-pointers-s390-v1-1-0e4ace75d8aa@linutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/s390/kvm/trace-s390.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/s390/kvm/trace-s390.h b/arch/s390/kvm/trace-s390.h
+index 6f0209d45164f..9c5f546a2e1a3 100644
+--- a/arch/s390/kvm/trace-s390.h
++++ b/arch/s390/kvm/trace-s390.h
+@@ -56,7 +56,7 @@ TRACE_EVENT(kvm_s390_create_vcpu,
+ 		    __entry->sie_block = sie_block;
+ 		    ),
+ 
+-	    TP_printk("create cpu %d at 0x%pK, sie block at 0x%pK",
++	    TP_printk("create cpu %d at 0x%p, sie block at 0x%p",
+ 		      __entry->id, __entry->vcpu, __entry->sie_block)
+ 	);
+ 
+@@ -255,7 +255,7 @@ TRACE_EVENT(kvm_s390_enable_css,
+ 		    __entry->kvm = kvm;
+ 		    ),
+ 
+-	    TP_printk("enabling channel I/O support (kvm @ %pK)\n",
++	    TP_printk("enabling channel I/O support (kvm @ %p)\n",
+ 		      __entry->kvm)
+ 	);
+ 
+-- 
+2.39.5
+
 
