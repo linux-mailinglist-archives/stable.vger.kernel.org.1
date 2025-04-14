@@ -1,46 +1,52 @@
-Return-Path: <stable+bounces-132401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7A5CA87872
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 09:11:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41DC9A8789B
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 09:21:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADC4116910A
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 07:11:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9238C188BBC5
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 07:21:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C62623718F;
-	Mon, 14 Apr 2025 07:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B4592580C3;
+	Mon, 14 Apr 2025 07:21:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CFF237172;
-	Mon, 14 Apr 2025 07:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547DF158520;
+	Mon, 14 Apr 2025 07:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744614675; cv=none; b=YoL2KpEX+YFSygVUCFA+vjcAGp/iiuk2C2BX23h0/ZTPAe5bToPmUOGBdx/TElHZEAMaFENSVn1RLXBiQou6KeeyCRX5ADWz6jVJRhDCjOwoSle+tP3bM6Iktm7fQBMWXL51e+pxFXd60otMIVMgKcshGNNopLRMEGCAWI3zpmY=
+	t=1744615301; cv=none; b=E4ZQqFjjARjBwzoeSYFZpaVejE6TPj/70DTu0bJLXF1xKqbvnN0ZL8wJ5KGteB406nkY8dZXUGNSARPQx4YjnSKuLC1mbo1TRcDaXUJt48wZm955rjuEA0Oin1FJHK0cImhDg3Ms+QgLTPWrVFdw/AVAG5vIvJpHmqZSa/ncawM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744614675; c=relaxed/simple;
-	bh=7tPfO4YljEpw7kJklhNj2drCqG4KDq+vh0zUeK403dg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CokLAkNkpRYm8zjnpdUOsr9K179RjAB5OUQZLm2SWVtwO62flPZUQ0BH/gH3HHSDG1/TPVYlO0bm7+uEAz37V46qhm640c/IeRi1vK/19Nr18b5fH8jGgDItOSQTjY2CFzvJNMgdF9tmZ5HX74NST1axPYfmfeqsO58aLKcDHXE=
+	s=arc-20240116; t=1744615301; c=relaxed/simple;
+	bh=LlzX1kcRFPEFmjGFFhIYoLpgsX3j0aUAkFJIpyNT7Jg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GMQIn7Bl6BVunfieKk2sxu73T3IUO06JUuSjw2H5xlUQCTge3TGtwnCXymhR4tlvp4BCMUHWEV1X84s20SoNPnvmuX5Lj8dx/IGULhMRUKSo1i37tkBpQlCghxoVRg2xxD+oyuGJGegOOVCmG5LdxY2u1he3XpbOh+GMUmrxHO4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-05 (Coremail) with SMTP id zQCowABHhQ0Ktfxn4NPmCA--.19073S2;
-	Mon, 14 Apr 2025 15:11:08 +0800 (CST)
+	by APP-05 (Coremail) with SMTP id zQCowACHxQ10t_xndifnCA--.16716S2;
+	Mon, 14 Apr 2025 15:21:25 +0800 (CST)
 From: Wentao Liang <vulab@iscas.ac.cn>
-To: hverkuil@xs4all.nl,
-	mchehab@kernel.org
-Cc: linux-media@vger.kernel.org,
+To: arend.vanspriel@broadcom.com,
+	kvalo@kernel.org
+Cc: jacobe.zang@wesion.com,
+	sebastian.reichel@collabora.com,
+	christophe.jaillet@wanadoo.fr,
+	erick.archer@outlook.com,
+	linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com,
 	linux-kernel@vger.kernel.org,
 	Wentao Liang <vulab@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH RESEND] media: gspca: Add error handling for stv06xx_read_sensor()
-Date: Mon, 14 Apr 2025 15:10:46 +0800
-Message-ID: <20250414071046.2192-1-vulab@iscas.ac.cn>
+Subject: [PATCH RESEND] brcm80211: fmac: Add error handling for brcmf_usb_dl_writeimage()
+Date: Mon, 14 Apr 2025 15:20:58 +0800
+Message-ID: <20250414072058.2222-1-vulab@iscas.ac.cn>
 X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -49,57 +55,57 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowABHhQ0Ktfxn4NPmCA--.19073S2
-X-Coremail-Antispam: 1UD129KBjvJXoWrtw4xKrykGFy5tFW8AF18Krg_yoW8JF4rpF
-	WfWryFv3yjya17WF1UJw1v93W5t3ySyFW5Cr9Fqwn5Zw17JrsFvFyFy3W0vws7GF9xC3Wf
-	trn5KayUWas7AaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+X-CM-TRANSID:zQCowACHxQ10t_xndifnCA--.16716S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxJrykZr13Kw4UuFW5uryUZFb_yoW8XFyfp3
+	Z7XasrurykW3yaka17tFs7AFykK3WrJa4vkFW8Zwn3XF4kCw10krs0gFyFkw4DCrWfAa47
+	JF4DAry7Jrs8KFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
-	AVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
-	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
-	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
-	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUcBMtUUU
-	UU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAgMA2f8nB5YwQAAsL
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26r
+	xl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+	6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr
+	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
+	8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwVW8CwCF04k20xvY0x0EwI
+	xGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
+	Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7
+	IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k2
+	6cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
+	AFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUvNtsUUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRAMA2f8nMBWvwABs5
 
-In hdcs_init(), the return value of stv06xx_read_sensor() needs to be
-checked. A proper implementation can be found in vv6410_dump(). Add a
-check in loop condition and propergate error code to fix this issue.
+The function brcmf_usb_dl_writeimage() calls the function
+brcmf_usb_dl_cmd() but dose not check its return value. The
+'state.state' and the 'state.bytes' are uninitialized if the
+function brcmf_usb_dl_cmd() fails. It is dangerous to use
+uninitialized variables in the conditions.
 
-Fixes: 4c98834addfe ("V4L/DVB (10048): gspca - stv06xx: New subdriver.")
-Cc: stable@vger.kernel.org # v2.6+
+Add error handling for brcmf_usb_dl_cmd() to jump to error
+handling path if the brcmf_usb_dl_cmd() fails and the
+'state.state' and the 'state.bytes' are uninitialized.
+
+Fixes: 71bb244ba2fd ("brcm80211: fmac: add USB support for bcm43235/6/8 chipsets")
+Cc: stable@vger.kernel.org # v3.4+
 Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c b/drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c
-index 5a47dcbf1c8e..303b055fefea 100644
---- a/drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c
-+++ b/drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c
-@@ -520,12 +520,13 @@ static int hdcs_init(struct sd *sd)
- static int hdcs_dump(struct sd *sd)
- {
- 	u16 reg, val;
-+	int err = 0;
- 
- 	pr_info("Dumping sensor registers:\n");
- 
--	for (reg = HDCS_IDENT; reg <= HDCS_ROWEXPH; reg++) {
--		stv06xx_read_sensor(sd, reg, &val);
-+	for (reg = HDCS_IDENT; reg <= HDCS_ROWEXPH && !err; reg++) {
-+		err = stv06xx_read_sensor(sd, reg, &val);
- 		pr_info("reg 0x%02x = 0x%02x\n", reg, val);
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+index 50dddac8a2ab..1c97cd777225 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+@@ -901,7 +901,9 @@ brcmf_usb_dl_writeimage(struct brcmf_usbdev_info *devinfo, u8 *fw, int fwlen)
  	}
--	return 0;
-+	return (err < 0) ? err : 0;
- }
+ 
+ 	/* 1) Prepare USB boot loader for runtime image */
+-	brcmf_usb_dl_cmd(devinfo, DL_START, &state, sizeof(state));
++	err = brcmf_usb_dl_cmd(devinfo, DL_START, &state, sizeof(state));
++	if (err)
++		goto fail;
+ 
+ 	rdlstate = le32_to_cpu(state.state);
+ 	rdlbytes = le32_to_cpu(state.bytes);
 -- 
 2.42.0.windows.2
 
