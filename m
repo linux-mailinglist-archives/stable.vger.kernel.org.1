@@ -1,247 +1,120 @@
-Return-Path: <stable+bounces-132378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA35CA87652
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 05:49:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1E81A87653
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 05:49:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A91A3A2DC9
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 03:49:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABCC316E5A5
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 03:49:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 747E6139566;
-	Mon, 14 Apr 2025 03:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED1D6149C41;
+	Mon, 14 Apr 2025 03:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NeNVw0Iz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P9HV8NwI"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BBD748D
-	for <stable@vger.kernel.org>; Mon, 14 Apr 2025 03:49:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744602554; cv=fail; b=kHTyBR2byBeIVd3ZAb0z3gpnJdj8+TsfbrkRIUl83KiQ2hiqqgqxDFbcNPsqDsxGKEEyc2V74WRQseF3OmORY1cvDxc9WQ+AcKVQqqDTm3V9LyrAmePMWwyquZbK3aFFTZ81oYsEu0Iu7y8AQL00e7T804nbn7HMI/qMWiU8M80=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744602554; c=relaxed/simple;
-	bh=x+p9jblJoXomcMmTkoo9ykKilG9y1UjvOFzHxsemQvs=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=dcxO7eycPjm24tiVsMgPtVegQQD/EPjBvYCjFNZfaNbqP7IjmUftSjKQDBYzhoar1YXYxoTTekjzzf2AinKqInsZtrU+Qyj17gGEL+qKYo7UiPnRDAwKUFBjEQ/JIJkzWuJ19O025XelvvpgWarYyWaZhB4Ov8XDW89WY70d1bM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NeNVw0Iz; arc=fail smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744602552; x=1776138552;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=x+p9jblJoXomcMmTkoo9ykKilG9y1UjvOFzHxsemQvs=;
-  b=NeNVw0IzL6Zp2uz55l4URkVtGW4wIXQe8VVyWxoC2VU5/vgtD4/3XVZz
-   S/iRz6DAh2iTsEZ01idp1TH9Jc6tXhfha75B8zWQffHICQUOajzcgNMPV
-   LxPArk6HfkPerCV+DNyfhAoydUE3lDuYfdZZGj0hWNDBalBXQ/tscpwOu
-   ILVtBVZqcaKS3Qohusf3kAgtjYBAKARLCd8NWvDjrEGMkmbhXuWDqfV8B
-   noftIYN4e0YvtGm7j3BIqZM/ig7P7XIFsP+6Xycp6ECvIv0cSHzFfFefp
-   bDP9ms1+VpVI+xNjZ+Gpo1muv7mAflUU4yNTES0jaVHMrPRTz7LP7yt5F
-   w==;
-X-CSE-ConnectionGUID: JjfBA3szR1e5u8RK7/3ADQ==
-X-CSE-MsgGUID: AHfCObKUQTKQrLA24Rpzqg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11402"; a="49862197"
-X-IronPort-AV: E=Sophos;i="6.15,211,1739865600"; 
-   d="scan'208";a="49862197"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2025 20:49:12 -0700
-X-CSE-ConnectionGUID: julZHoIIQpO+nV4cdaIvzw==
-X-CSE-MsgGUID: ed5ErQGKQ6+L7FCIoXyi3Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,211,1739865600"; 
-   d="scan'208";a="130677751"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2025 20:49:11 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Sun, 13 Apr 2025 20:49:11 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Sun, 13 Apr 2025 20:49:11 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.176)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Sun, 13 Apr 2025 20:49:10 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iBRRfzhK/zbCvRZa0Mn/9wWtnieIjSKwsCi41lD4z9OmKx866GXjjU6PLTNwVPSDT6XF9IgY0UB1p9A0H/j+jKChQJ/jm4nPMwSZSviV5+CNFgTcNIfvrfFeIysVyem7hoMVEhrtiNnSfEKvAnQW73JBG3P0vMWyXyxW5QsKEHE/SrSTZ6S29YHz4dlb9YGdFxqlUUTckZ4jAY43dWD1LslJhWJCtNEf23k889NXy4SIGtCqd6rt4zGgugbyh2RaxL8qNdR+ocLMVDTuS0mJoRaZuB0RG2XybcIPYgnpsOLnN/DHGHC7Y5T/eZvnwk+Hsedp6iIYyoTp7Kos84phWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AhWd2T49BxzvA8dHoZQcimMvkSRRcBn5ZlRxx6l3vcs=;
- b=lH6m2Fd69OIhyh/HRPohmLgTaukQ64lXZSqahQih0H6vTX7jLflHBzxDQUqLlsSwo70nTMOTD3t+ug2Hb7GFamLg1lggVgjRnCJUirG+6vwSa8D41ElqVgPMVbrtRHKHdRX4Q3iTngYCncQ9AeBR5JcZVOG7hBrIRhGn145HPNq0pwM2IsYeoBFgWwGVg4PsM3/Eab2JNIuy/JygFpA7627APqbaSihc5B5eBL8H/dDAxw2UKr1ob71FMKhnzR3LdnGltXApHv4gsw9N/vbgOEVagvaJ0RFJuWlU1mEEqgWsQAIohLd+IbCb7iHQ78Mas7dElBSURJ01iJZrU9+o/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SN7PR11MB6750.namprd11.prod.outlook.com (2603:10b6:806:266::21)
- by IA0PR11MB8333.namprd11.prod.outlook.com (2603:10b6:208:491::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.32; Mon, 14 Apr
- 2025 03:48:54 +0000
-Received: from SN7PR11MB6750.namprd11.prod.outlook.com
- ([fe80::9570:169d:a0d5:527]) by SN7PR11MB6750.namprd11.prod.outlook.com
- ([fe80::9570:169d:a0d5:527%4]) with mapi id 15.20.8606.033; Mon, 14 Apr 2025
- 03:48:54 +0000
-From: "Kandpal, Suraj" <suraj.kandpal@intel.com>
-To: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>,
-	"intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-	"intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>
-CC: "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH 1/2] drm/i915/display: Add macro for checking 3 DSC
- engines
-Thread-Topic: [PATCH 1/2] drm/i915/display: Add macro for checking 3 DSC
- engines
-Thread-Index: AQHbrOiOx+o/Xxf1GUWf3BCA7GoKMLOihcAg
-Date: Mon, 14 Apr 2025 03:48:54 +0000
-Message-ID: <SN7PR11MB675077FC1AD909171A753B24E3B32@SN7PR11MB6750.namprd11.prod.outlook.com>
-References: <20250414024256.2782702-1-ankit.k.nautiyal@intel.com>
- <20250414024256.2782702-2-ankit.k.nautiyal@intel.com>
-In-Reply-To: <20250414024256.2782702-2-ankit.k.nautiyal@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN7PR11MB6750:EE_|IA0PR11MB8333:EE_
-x-ms-office365-filtering-correlation-id: 7c929a6e-f855-43be-9710-08dd7b074729
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|38070700018|7053199007;
-x-microsoft-antispam-message-info: =?us-ascii?Q?rAl4ZWxlYYZtif5KOYE2R5vOBHQr1aYVM+0IRihS9X9eLwsOuCptG4wz6Xs6?=
- =?us-ascii?Q?M79ImCE9D4aJuin484MsOh6yEe94P5gixGR4DCYX72ngjwpg/TrtOPZtTYaW?=
- =?us-ascii?Q?VClg4rHqubLdfBLStScUg361k1eabkN4AEkpRcbGQjQtAvEGZ+zA+7RxhSHp?=
- =?us-ascii?Q?6sbuVKCfykKeMu44zjWwgP6vIYZ+TjVJ2nam+rEBlau1GsTXts5U+lTFeAcE?=
- =?us-ascii?Q?D4je/ecvkH13kvOblS/ACZJ3I5EPgtz2D/3SR/IDAT6revNPPBmiTi46q7cA?=
- =?us-ascii?Q?EUU6d+Ok6H0Gx4SsR6mdUY5Mxefv+im8uzI+cMNHPy83mC63ZVOH/Be6HDsl?=
- =?us-ascii?Q?hOU4Lylk9oyVez25DuZfilj7CXenRqnKz2JtQfy7D4zYp1iw3uvsh+JMsvxm?=
- =?us-ascii?Q?x8oSVbZ/ZiRkMquowM8KMB9G/pua01bmhpUudfHB/l9cFhm1BKU43WvlMSGU?=
- =?us-ascii?Q?8exUYz/iPfMouR57t8YU2bdkZn/ILsdVSWb2jm/Ivm72hdvrys1kX/rOFqdR?=
- =?us-ascii?Q?b5YQ/jlub5HlHHEiEGvY8/mkwlXhhkaPgm/0pS4OuEKG9m/lWK3QN7rbAkYb?=
- =?us-ascii?Q?Sx/e0bhnK9Qk7Jb5CfKbe/jFg8ALPLgysUVXE6g59dYB7K8fd1jkA++IThfW?=
- =?us-ascii?Q?3xpihDubffQThKNU52wE+VVqUAgmP53gttooZFKd2ETepyFUNYnmkmtRtAuf?=
- =?us-ascii?Q?aLQGi1oz3yAhEWArc4xnS2vI4Hu77L2bWGDpe4fS4IvQxDkfHIFJVnJCqpNj?=
- =?us-ascii?Q?1oxryl1E8Zv9hEw5IChNa1lxT/NIhV/drPvLFLigW/BwJ8Unu8+HMh2UloAS?=
- =?us-ascii?Q?+7lorOxYeme3fyfX0k0O/RzLIpdJZ6C0THc7dBpWDq2uqJGTYlmkj5aNhWm2?=
- =?us-ascii?Q?MGUwD6onLp48XVv1AbWioioRFsvoY8UJJf81BuRf+etlk82602Lb47Saq6Su?=
- =?us-ascii?Q?UGRyz3snIOuOLUfFnOrrpXu/SLA41N8p7eJy7YlQzkELdh68MXM2UGmhEKOH?=
- =?us-ascii?Q?Aa3jtpmr+/VC2rlpH9ChLVxkx3C1ISIaPwt0+mzjsYpU30dPFQCcuWYcgqNN?=
- =?us-ascii?Q?rmMCqiMa+4LC+wPDQf4TayC6uPv1VknCOJFJSkyaLgWzDrFXiexWfky+hRF8?=
- =?us-ascii?Q?jKVrtIxCjjEE1UARVmZ90SFykjlKEcFdIuIv1vv4pJFRqzJPDPWq1ud1L/ny?=
- =?us-ascii?Q?ujfQ843hpgwSQ6uSeK+kJb+SLmvfQyAbMKAXzd3rFF09+X1aEtQMIrNm4xtT?=
- =?us-ascii?Q?eWCvEnALiiSMx12KSlASO4IoJJa72idzliAMPyB9xoPldXVVxQkycy4470zC?=
- =?us-ascii?Q?wBgfTWoycyUPLkt6McI8X937L0JBVhl1lzJSxatrrOWUe25otNr8AtFhojm8?=
- =?us-ascii?Q?dkg5BhE1aPwxRW6fxqrlg/WIKjfZhGYZrchuXNrRsBHbtcQwoy3fn5n3xXF9?=
- =?us-ascii?Q?/li+was78r5XxOdl8kJ8wcdxuUI0hnINQGX6Jm4oKAwzxV4Gao99Ug=3D=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR11MB6750.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700018)(7053199007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?1AOjQfJvbC2PAJWrCgRchubcIgaz8s9KVLK88j0aJDtjfxScOUoCrgv4TTCt?=
- =?us-ascii?Q?/KrwfZ9AXEnarL46T5KgMoqhTHn2HdDs/dZINE6yP7iQX+0uXV4jLosTGyCs?=
- =?us-ascii?Q?nS5to476Da9EpZWLlD7kAz1TjDfWiThtsE2h2MP7duFpIiv420G0lZKgd1FY?=
- =?us-ascii?Q?nfee/7Jx3Wy89ylnhxA1d2rvy7wW5I7s6z/7EsU20zIf141feyscZdELS9xE?=
- =?us-ascii?Q?xhLCT6qLbaiCjjeJQ/ZcSslht9Tmak6/0srWLn9vO8Se+mtfEDCBFtYKKlx4?=
- =?us-ascii?Q?0JGSXnd736LWKu7gI8RAiO1XBB70gsR6Qd2lG1flteXtgOPLXgUkrdjTm8Wo?=
- =?us-ascii?Q?Ub2FlnC78d2JRybZIjiQ/pYrE+ZXRqlJRqH28nnJ866tVFw4TcKjSdFz9x7e?=
- =?us-ascii?Q?eFK/a4q4iOpxRBq7lWNsSkrMKsuJJhVpPBPGcIVRoB5RpYWenkNM8Yktckh/?=
- =?us-ascii?Q?Q8bQM1Me6IAVolqll7QXE6G6uhpiI/LDRPd18tplmWVLUhjLSI0fAyshQzc3?=
- =?us-ascii?Q?lN/mQaW/0xbR9IpD2h0odVv2dggmx+I1WT6seXQTpfheyI94rW0CZbAvx7P+?=
- =?us-ascii?Q?ls/IkOdzcmTOaUIQ+MoTQpg8BpGI3ENzcE+QBh+KyowJZbglqAWhs9Gl0FDe?=
- =?us-ascii?Q?Yln0+Bpp2quTy4lwU5sAY9g8ZSJanL+7Ej4HFjEaxzt1Jitx+MKeZtpDIm85?=
- =?us-ascii?Q?dABH+tUAuTzBSSn4LJtRsd4/DqxnlDS1MoNNEMtAkMsSimBrAN/DKnN+D34i?=
- =?us-ascii?Q?Bbu9fIaY56ya4ehQXha1fONpiSLxJmgplHq+gy8gSEL53K2K+/lQwYr178LF?=
- =?us-ascii?Q?oeUixhoUgmw7hZbxALeOFblGQPDGBfyNfvNGAfc9oaWLZ1fyerm1MaVhrMWP?=
- =?us-ascii?Q?wzPtwsoZjkmhoka66Mrmnd8sCvmWwVEoFBFHR4mPY75wsYXnE4rX3GQQrEzR?=
- =?us-ascii?Q?UwjPyF7Zi9R+v+upWXDNgS2ZJOpw3T/fz0PyzIVt0fa6E00cHYglQhMANmtI?=
- =?us-ascii?Q?gG0AXzUXWQ3oR1A0dFSR5vBuGir9o3xOsvpPbouvVVpaicUDzoPZdd7A5Hsq?=
- =?us-ascii?Q?A3REeC9kzqukZNnQROvhY07bou3/KFKsqSMcrKdIj/ymz03/ySNe3LuVdLyM?=
- =?us-ascii?Q?mvBQpB+bug5S+gnRsB3ag0dd4IAxEH73XIpiJx+F3Q1lirHWjcPl1As/8iFx?=
- =?us-ascii?Q?8dLoYzOqSnvkJWAK+G6YV9k7hlhJUse/JiL7BZYG9DROb2QfzTrZvBOJO6Qf?=
- =?us-ascii?Q?D8EpNgmTfuPSs1nN5H9o0BhV4QEi0Way+6a3u901QWk/49qhpKHj9CWnStqt?=
- =?us-ascii?Q?opbnLAUQy7Zq58VAowyuPdkY/IpPA0y378st/+6GGfb//pSlDR/2qw1AEmb7?=
- =?us-ascii?Q?jqkCsjTqSjQ9n7C4WPF6F62PHBQOqi3T9mEtPq338K2NX7mt4pA9+3NO98p2?=
- =?us-ascii?Q?0nROek8C2+97IulmROiAdiuiDATq2TuYJWG47SsloagKsiRXDLargapi/cSJ?=
- =?us-ascii?Q?aXm1K2Ay3RFOeFz1y97ygijzyLlggDRm/x7UXmZ7WIAMGPwy4eniH8Z+En7z?=
- =?us-ascii?Q?boLNFOffqoofpSO+S44r0rRIff1UfAu6DELzcBQE?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EB3137750;
+	Mon, 14 Apr 2025 03:49:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744602569; cv=none; b=c7LIlD7vrO/tY0dhVM7oV5eqVUkyjggckBTKP5JAOsUilNeuJVNI/X6GDtZ3Kz4A3ul6ftQqgWEHBhmFoeaeHuOCpop1AN+Sbjuwuw0ZRwhMWlNtiGQnv/tlSWr54lsJ27u2ChpOGrI8yDqwgkM7nWr5n/g417PRaK2yb+N5OYw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744602569; c=relaxed/simple;
+	bh=lUcWQccR/bhfsFgTbctZHB2jErDD9Wr06l4iz/xmVTA=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=CDAjzLE75NqvadwqFZ9OTgR5smhYwZw0FLIlbdNT2khpnOUsEr1uevLJ9QE+X/2+2XgtQX0DHxkRrgGB+7P1rFlokHWC8JyUSfYz5d2vHmis1KwDdd05XKwGjNAsJioLnL6hJCiNdxzCcQOWEZQpaeZIU4PCWaBBBRCSLq3rYfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P9HV8NwI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C76C4CEE2;
+	Mon, 14 Apr 2025 03:49:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744602569;
+	bh=lUcWQccR/bhfsFgTbctZHB2jErDD9Wr06l4iz/xmVTA=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+	b=P9HV8NwIZZKJwXjQSLmrjRhR43gD86iTf6H7jryKuyUtAuNXiJHZVQjySJKsZgFgE
+	 C4OKXYPeFTKnEwEq0TbnYu/0q84agZxKWSC+oFHZTfIVG4osNLt2sxPLX973nUfI4s
+	 lij7g2WDDfeCam3vG3BOtSLL8BF2qbl6skvaALO3YCF6eOrrRqWqB7qzpYVy4TcYmc
+	 cfWeWLaI1G7Yid3GU+rMU3vQKo5uHvhN+2wop8CR5ASeJRvXyqNd5E3n63o73dQ07d
+	 Q1fZYlWCbXd4iCKjOTGHGA02TYeS+dSgSloYfO+KUl2hIqED68kPDTSinn4b71rm7Z
+	 yeqR5NIZFE17Q==
+Message-ID: <48ccf640-fe56-4253-9155-27aa32b2d9b8@kernel.org>
+Date: Mon, 14 Apr 2025 11:49:26 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR11MB6750.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7c929a6e-f855-43be-9710-08dd7b074729
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Apr 2025 03:48:54.5066
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: cA95TzsPOD6E3uRayhfltZ+xrojUknOiV8DJUfKUVRvxDLT3megXvsS0JBEalljJaVaFvGWgjvbJIZi7QkFKaw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB8333
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Cc: chao@kernel.org, stable@vger.kernel.org
+Subject: Re: [f2fs-dev] [PATCH] f2fs: prevent kernel warning due to negative
+ i_nlink from corrupted image
+To: Jaegeuk Kim <jaegeuk@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-f2fs-devel@lists.sourceforge.net
+References: <20250412214226.2907676-1-jaegeuk@kernel.org>
+Content-Language: en-US
+From: Chao Yu <chao@kernel.org>
+In-Reply-To: <20250412214226.2907676-1-jaegeuk@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 4/13/25 05:42, Jaegeuk Kim via Linux-f2fs-devel wrote:
+> WARNING: CPU: 1 PID: 9426 at fs/inode.c:417 drop_nlink+0xac/0xd0
+> home/cc/linux/fs/inode.c:417
+> Modules linked in:
+> CPU: 1 UID: 0 PID: 9426 Comm: syz-executor568 Not tainted
+> 6.14.0-12627-g94d471a4f428 #2 PREEMPT(full)
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+> 1.13.0-1ubuntu1.1 04/01/2014
+> RIP: 0010:drop_nlink+0xac/0xd0 home/cc/linux/fs/inode.c:417
+> Code: 48 8b 5d 28 be 08 00 00 00 48 8d bb 70 07 00 00 e8 f9 67 e6 ff
+> f0 48 ff 83 70 07 00 00 5b 5d e9 9a 12 82 ff e8 95 12 82 ff 90
+> &lt;0f&gt; 0b 90 c7 45 48 ff ff ff ff 5b 5d e9 83 12 82 ff e8 fe 5f e6
+> ff
+> RSP: 0018:ffffc900026b7c28 EFLAGS: 00010293
+> RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff8239710f
+> RDX: ffff888041345a00 RSI: ffffffff8239717b RDI: 0000000000000005
+> RBP: ffff888054509ad0 R08: 0000000000000005 R09: 0000000000000000
+> R10: 0000000000000000 R11: ffffffff9ab36f08 R12: ffff88804bb40000
+> R13: ffff8880545091e0 R14: 0000000000008000 R15: ffff8880545091e0
+> FS:  000055555d0c5880(0000) GS:ffff8880eb3e3000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00007f915c55b178 CR3: 0000000050d20000 CR4: 0000000000352ef0
+> Call Trace:
+>  <task>
+>  f2fs_i_links_write home/cc/linux/fs/f2fs/f2fs.h:3194 [inline]
+>  f2fs_drop_nlink+0xd1/0x3c0 home/cc/linux/fs/f2fs/dir.c:845
+>  f2fs_delete_entry+0x542/0x1450 home/cc/linux/fs/f2fs/dir.c:909
+>  f2fs_unlink+0x45c/0x890 home/cc/linux/fs/f2fs/namei.c:581
+>  vfs_unlink+0x2fb/0x9b0 home/cc/linux/fs/namei.c:4544
+>  do_unlinkat+0x4c5/0x6a0 home/cc/linux/fs/namei.c:4608
+>  __do_sys_unlink home/cc/linux/fs/namei.c:4654 [inline]
+>  __se_sys_unlink home/cc/linux/fs/namei.c:4652 [inline]
+>  __x64_sys_unlink+0xc5/0x110 home/cc/linux/fs/namei.c:4652
+>  do_syscall_x64 home/cc/linux/arch/x86/entry/syscall_64.c:63 [inline]
+>  do_syscall_64+0xc7/0x250 home/cc/linux/arch/x86/entry/syscall_64.c:94
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7fb3d092324b
+> Code: 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01 48 83 c8 ff c3 66
+> 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 57 00 00 00 0f 05
+> &lt;48&gt; 3d 01 f0 ff ff 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01
+> 48
+> RSP: 002b:00007ffdc232d938 EFLAGS: 00000206 ORIG_RAX: 0000000000000057
+> RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fb3d092324b
+> RDX: 00007ffdc232d960 RSI: 00007ffdc232d960 RDI: 00007ffdc232d9f0
+> RBP: 00007ffdc232d9f0 R08: 0000000000000001 R09: 00007ffdc232d7c0
+> R10: 00000000fffffffd R11: 0000000000000206 R12: 00007ffdc232eaf0
+> R13: 000055555d0cebb0 R14: 00007ffdc232d958 R15: 0000000000000001
+>  </task>
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 
+Reviewed-by: Chao Yu <chao@kernel.org>
 
-> -----Original Message-----
-> From: Nautiyal, Ankit K <ankit.k.nautiyal@intel.com>
-> Sent: Monday, April 14, 2025 8:13 AM
-> To: intel-gfx@lists.freedesktop.org; intel-xe@lists.freedesktop.org
-> Cc: Kandpal, Suraj <suraj.kandpal@intel.com>; stable@vger.kernel.org;
-> Nautiyal, Ankit K <ankit.k.nautiyal@intel.com>
-> Subject: [PATCH 1/2] drm/i915/display: Add macro for checking 3 DSC engin=
-es
->=20
-> 3 DSC engines per pipe is currently supported only for BMG.
-
-Would it be better to have a function here which can be modified later to a=
-dd more
-platforms in future if they decide to add 3 DSC engine elsewhere too?
-
-> Add a macro to check whether a platform supports 3 DSC engines per pipe.
->=20
-> Bspec: 50175
-> Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-> ---
->  drivers/gpu/drm/i915/display/intel_display_device.h | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/drivers/gpu/drm/i915/display/intel_display_device.h
-> b/drivers/gpu/drm/i915/display/intel_display_device.h
-> index 368b0d3417c2..1a215791d0ba 100644
-> --- a/drivers/gpu/drm/i915/display/intel_display_device.h
-> +++ b/drivers/gpu/drm/i915/display/intel_display_device.h
-> @@ -163,6 +163,7 @@ struct intel_display_platforms {
->  #define HAS_DP_MST(__display)		(DISPLAY_INFO(__display)-
-> >has_dp_mst)
->  #define HAS_DSB(__display)		(DISPLAY_INFO(__display)->has_dsb)
->  #define HAS_DSC(__display)		(DISPLAY_RUNTIME_INFO(__display)-
-> >has_dsc)
-> +#define HAS_DSC_3ENGINES(__display)	(DISPLAY_VERx100(display) =3D=3D 140=
-1
-
-Shouldn't this be __display instead of just display
-
-Regards,
-Suraj Kandpal
-
-> && HAS_DSC(__display))
->  #define HAS_DSC_MST(__display)		(DISPLAY_VER(__display) >=3D 12
-> && HAS_DSC(__display))
->  #define HAS_FBC(__display)		(DISPLAY_RUNTIME_INFO(__display)-
-> >fbc_mask !=3D 0)
->  #define HAS_FBC_DIRTY_RECT(__display)	(DISPLAY_VER(__display) >=3D
-> 30)
-> --
-> 2.34.1
-
+Thanks,
 
