@@ -1,100 +1,160 @@
-Return-Path: <stable+bounces-132634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE0EA8863A
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 17:04:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA286A885C9
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 16:52:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0B4E3BE37A
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 14:42:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7E4D188E50C
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 14:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EC51296D01;
-	Mon, 14 Apr 2025 14:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5DE2296D3D;
+	Mon, 14 Apr 2025 14:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UQCpq0AB"
+	dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b="UEvAevRo";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Ft8asqhg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F258B2957DB;
-	Mon, 14 Apr 2025 14:27:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A9F296D1C;
+	Mon, 14 Apr 2025 14:27:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744640833; cv=none; b=hBIvFwFMJ62Dh0eJFkk5bIrUkaNEOe5Az/uJxlUS7F+QIX1mgkzGcrs6C5PESIIghnmC7Mo7PRh2GYeRgXV2f6etzKoMmXL39X2wB7ZbEotpj8yUGZK2aJFhjQQ6FjqTd1JNZ1WAHH7Kq51pfqxA+FPe2/xRUz6C66A2N2hmMXc=
+	t=1744640845; cv=none; b=sPFJPHMI8abPtVxeXOBt80ptXnmPz2zOre5q9ncuGGG473V9pX4aqgfdhGePbWqnEhTPjbNNizhfXt7H/VR8PZZFZD7Z74vXW5Y+yameJiaUSrXTWjBa12zhK8GI9TGvWQdQZRYnh0o6xjmxADHSiNXJcnd7raF5SZ3D9XZc7Iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744640833; c=relaxed/simple;
-	bh=JWVti9yDCkyhRv0BTyTqquIhF/3Y9o19PO3iuCETym8=;
+	s=arc-20240116; t=1744640845; c=relaxed/simple;
+	bh=7HUhjmwcPNmFHFopEOLG3LYIR4w1KoVGOZxGdF8k7C4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ouwZzSNf5FWj5f3hUIxietdOGWT3v/wLfvinXUJhaMSufK4ZPafcYlNC+HVgsdcoFN72h9Fg+3hVs6iJ2JY6jibD3cnmGwGX6peomQebw0P8Agw/zwrSSdyiGI4jwbad04KY7J5bV848twGYQTF0e8SX/Wrt3iHRg1Itj/WbHAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UQCpq0AB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92AD9C4CEE2;
-	Mon, 14 Apr 2025 14:27:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744640832;
-	bh=JWVti9yDCkyhRv0BTyTqquIhF/3Y9o19PO3iuCETym8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UQCpq0ABSl2OfpmYLyUO46h6ATAeVaZBibS9KwX3p7ArIrXTDEg8krVSXdXwLB4To
-	 I/Al+bTOimEiznRgOxdzX3OlMlcTlnp4hnHQomdNaVzLElWfM6+v9YTnTKAq9ffZqF
-	 811pOgD8mZ9gDca7XQpJL+UKogHhduI3BpplcszT/IJPvjMEH1VXwcxHumEgUkt2BL
-	 BNlRSFxFrSQ5giUFMjWtwLXftLwzqO7buY7Qc2VBwO79fFtTeTayO0m6Z4t8YOkGKS
-	 7oT6ndVIgkJEQdfhwYg1DZOTqoRuWKZKZWhKGkJk1fbLXdarXiOaPd2F2gOJfELOLk
-	 Ao+/njDNXZRag==
-Date: Mon, 14 Apr 2025 16:27:06 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: phasta@kernel.org
-Cc: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Lyude Paul <lyude@redhat.com>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/3] drm/nouveau: Prevent signaled fences in pending list
-Message-ID: <Z_0bOgTBkkRH9jib@cassiopeiae>
-References: <8583665a-6886-4245-be49-fd8839cfe212@amd.com>
- <c737c89c7ce9174e349c61ab4e5712eee8946f13.camel@mailbox.org>
- <50c9530d-e274-4f89-8620-16afe0981239@amd.com>
- <1a73e5fe4350d6ee4b7d807612264eb637c4f2a9.camel@mailbox.org>
- <d3dee321cd6b70d6ca98768fbcf6f1e6134c43a1.camel@mailbox.org>
- <81a70ba6-94b1-4bb3-a0b2-9e8890f90b33@amd.com>
- <aca00cb25b813da4fd2f215829f02337f05642f3.camel@mailbox.org>
- <45d66ca4-5390-42e9-869a-f5f9125d05b6@amd.com>
- <1127db242503055b2e5e8d07db3aeae46cfb7a24.camel@mailbox.org>
- <6e4628c3cfc7e0d1e4ea9af510ce0b09b34a8cf8.camel@mailbox.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=uMFqM7ZEPZ5n+AeO9W3ZEkixkWCnO5/B9ZOqo27BySBxNzL45YyRBBhv8nYAMOSuDKP1d8GcGaQspENxWMYqsSLZvf1kyMyqkF5uMdUkUU5079D4eyWfIn2Sdp/FTMSVXD9ifTAWYUOkbSR7CZ+Tf8sTaTBFw28y20aTXnZytjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com; spf=pass smtp.mailfrom=invisiblethingslab.com; dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b=UEvAevRo; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ft8asqhg; arc=none smtp.client-ip=202.12.124.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=invisiblethingslab.com
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id B218A2540092;
+	Mon, 14 Apr 2025 10:27:22 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Mon, 14 Apr 2025 10:27:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	invisiblethingslab.com; h=cc:cc:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1744640842;
+	 x=1744727242; bh=FGczV9RNjMQmfxd5ITnC2B5H9+mipmvnLLOBr0rYbCM=; b=
+	UEvAevRoNXvAlB6qUjAuZfSlFYe2Ibhl4BhFljf1+2Nm4Ha3jEVpBG2uSY+vnrt7
+	iba8gjnrbVNXWYOXsEsh3LyvkltxP1U3b4f20X/j65dN4D9DOqtwPOW+3L2h/o7/
+	QsHJpdjDr9qSkVo8+AI30nqkLr2c08tp1/6Cei2QUOIHzsAAdi7JmmWdHIS3v4ff
+	G0bMMITqPF13ZlfO84m14/OV1hX3kPC7RUy4H0vcmo5/i3KkYBSFPrDi784NHIjD
+	FLI6OvytE+Veiq4CDcFh1LdhvNOydXphG3kfDnthXrzMqoebz+kjMuMQ0St5vrtb
+	ksK99U+bsQ7O+nHFFrOIeQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1744640842; x=1744727242; bh=FGczV9RNjMQmfxd5ITnC2B5H9+mipmvnLLO
+	Br0rYbCM=; b=Ft8asqhgNZHMhjVRK6nSuhT1hEzeVjLo80WQTha3IeT1kv1nqdY
+	8RK8d9bqGlD2t4mgyo5/xzjKUeJ8DDqUtmIhoN+ArcuQBZlG8io+5OocvXmotAlj
+	ABfcc6gmwi+GnwkPBhDG5TvWO6CVXewTvGjXcWFAxkYh5urzB7epEt5gbMpXAuw3
+	M0WO4heXjoMmMKZrcuxbaShyja3bhECRElcpftxygfjeDqeLnCuUIHbHNJjJoref
+	iHgesMXHQfn7kHEDDDrK7hKJpxKiaXJxG/dbwGQETwImXKUmsa0nnHGmXQraPcj+
+	q7Cp2qNannKUWBSKOrBVURgdGP13ydiu/LA==
+X-ME-Sender: <xms:Shv9Z-HDHvZB7J3iBDdUSQ-ZH4y0ki1OipAAXf4o5xFAnQRcefx5mA>
+    <xme:Shv9Z_Wod2hOamRjVzLqxeUd5gvVdrTm5wTZPZA6wxi9CDX9rgxkMkOZTD71r6-q1
+    XjdvOk36Pwptw>
+X-ME-Received: <xmr:Shv9Z4Jm-ytIC-oRHDGWRfSpk24IcOPqJQ7e9gLNPjaBmIhoB1WXkAXSWYvp9YOxucJDY8EHeKn3AihIoqcofxDQ23eRbGbt8w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvvddtjeelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesghdtreertddt
+    jeenucfhrhhomhepofgrrhgvkhcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuc
+    eomhgrrhhmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecu
+    ggftrfgrthhtvghrnhepgfduleetfeevhfefheeiteeliefhjefhleduveetteekveettd
+    dvgeeuteefjedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhf
+    rhhomhepmhgrrhhmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
+    dpnhgspghrtghpthhtohepkedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepvhhi
+    thgrlhihrdhlihhfshhhihhtshesihhnthgvlhdrtghomhdprhgtphhtthhopehjvghssh
+    gvrdgsrhgrnhguvggsuhhrghesihhnthgvlhdrtghomhdprhgtphhtthhopegrnhhthhho
+    nhihrdhlrdhnghhuhigvnhesihhnthgvlhdrtghomhdprhgtphhtthhopehnvghtuggvvh
+    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehinhhtvghlqdifihhrvggu
+    qdhlrghnsehlihhsthhsrdhoshhuohhslhdrohhrghdprhgtphhtthhopehrvghgrhgvsh
+    hsihhonhhssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepshhtrggslhgv
+    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshgrshhhrghlsehkvghrnh
+    gvlhdrohhrgh
+X-ME-Proxy: <xmx:Shv9Z4Hd3hjCGEhxqSrTN-ZRylr_4bd5M6TKcw8eAUwC8tpq5lTtfg>
+    <xmx:Shv9Z0X6FR_S9SvvzCR2Xzd1BJr2or9LUQkBPICM2Bu8lUUEIqVb5w>
+    <xmx:Shv9Z7MpuAl91ymTARkmz2H49ltLoE1-Ye4UIzEBipuYQF3qIxzdbQ>
+    <xmx:Shv9Z70kgrarP4T3-kbgzpcQCe_Bh-5Vb2O450Rc19EB47Wgo46_RQ>
+    <xmx:Shv9Z2IenmIynaODyFpXHB4RWhJU5kVtpLZgV5kntx7VeHSUKVGeTTaF>
+Feedback-ID: i1568416f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 14 Apr 2025 10:27:20 -0400 (EDT)
+Date: Mon, 14 Apr 2025 16:27:18 +0200
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: "Lifshits, Vitaly" <vitaly.lifshits@intel.com>
+Cc: Jesse Brandeburg <jesse.brandeburg@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>, netdev@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org, regressions@lists.linux.dev,
+	stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Subject: Re: [REGRESSION] e1000e heavy packet loss on Meteor Lake - 6.14.2
+Message-ID: <Z_0bRoXicYoDN8Yf@mail-itl>
+References: <Z_z9EjcKtwHCQcZR@mail-itl>
+ <b1f5e997-033c-33ed-5e3b-6fe2632bf718@intel.com>
+ <Z_0GYR8jR-5NWZ9K@mail-itl>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="rTRxnz3WOg1FQi+e"
 Content-Disposition: inline
-In-Reply-To: <6e4628c3cfc7e0d1e4ea9af510ce0b09b34a8cf8.camel@mailbox.org>
+In-Reply-To: <Z_0GYR8jR-5NWZ9K@mail-itl>
 
-On Mon, Apr 14, 2025 at 10:54:25AM +0200, Philipp Stanner wrote:
-> @Danilo:
-> We have now 2 possible solutions for the firing WARN_ON floating.
-> 
-> Version A (Christian)
-> Check in nouveau_fence_context_kill() whether a fence is already
-> signaled before setting an error.
-> 
-> Version B (Me)
-> This patch series here. Make sure that in Nouveau, only
-> nouveau_fence_signal() signals fences.
-> 
-> 
-> Both should do the trick. Please share a maintainer-preference so I can
-> move on here.
 
-Thanks for working on this Philipp.
+--rTRxnz3WOg1FQi+e
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 14 Apr 2025 16:27:18 +0200
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: "Lifshits, Vitaly" <vitaly.lifshits@intel.com>
+Cc: Jesse Brandeburg <jesse.brandeburg@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>, netdev@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org, regressions@lists.linux.dev,
+	stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Subject: Re: [REGRESSION] e1000e heavy packet loss on Meteor Lake - 6.14.2
 
-If you don't want to rework things entirely, A seems to be superior, since it
-also catches the case when someone else would call dma_fence_is_signaled() on a
-nouveau fence (which could happen at any time). This doesn't seem to be caught
-by B, right?
+On Mon, Apr 14, 2025 at 02:58:09PM +0200, Marek Marczykowski-G=C3=B3recki w=
+rote:
+> On Mon, Apr 14, 2025 at 03:38:39PM +0300, Lifshits, Vitaly wrote:
+> > Do you see the high packet loss without the virtualization?
+>=20
+> I can't check that easily right now, will try later.
+
+Tried now, the same issue is without any virtualization too.
+
+--=20
+Best Regards,
+Marek Marczykowski-G=C3=B3recki
+Invisible Things Lab
+
+--rTRxnz3WOg1FQi+e
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmf9G0YACgkQ24/THMrX
+1yweRgf/aORxxg52KTbf5Wzyo3+4I32anJhuAiYfyvBI6iVxylb/WPaUmJpWgEyg
+AbIRZ1AH+VEQBrEkp8MnHwzohTVJoujvoNxtYm3cXcyimvdTlF8Kxs0pbPJRvqYp
+UJoJnJfssPcA5/SMOaggYVAbRl6YWm8V3MC+PNWyyc6p9Pk8sU7RBM/0MQZ2ev8V
+G1m24gH9ZrEwKZRhJnGdPz/eUNEYzFBd2lfodkRt0rw/suep/JhzxJNm5mfcn/WC
+mVZfU8/j8sJxO58tFRjIZ7Cw24W1TVorM2c8MC6NDYMbKSmn2q1odXEs9PYeRO0W
+viBB/84x4D82qNVmbDS1Q96Qw93B7g==
+=M5lp
+-----END PGP SIGNATURE-----
+
+--rTRxnz3WOg1FQi+e--
 
