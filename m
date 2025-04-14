@@ -1,65 +1,71 @@
-Return-Path: <stable+bounces-132458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E286BA88214
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:30:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAC3FA8820B
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:29:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 470FD3B914E
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:28:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D1643A89AB
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35D7247295;
-	Mon, 14 Apr 2025 13:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1511A2749DC;
+	Mon, 14 Apr 2025 13:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GGCmOwGi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Kwmv+d3d"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B41B247280;
-	Mon, 14 Apr 2025 13:26:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940A618B0F
+	for <stable@vger.kernel.org>; Mon, 14 Apr 2025 13:26:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637180; cv=none; b=hOdhrtCC+ndymoESiVBTPLptapXTbRqlDDbjM7jgy6SmlYc8iMyzKOlLLhPPt3a5fmmAbMo0Qeedm60VLArC882u/XwQuTybtjlcdDwCpLUrmY9hnFvf/BmIwB5CjJUYYpiOQ9TOCl+ARBZeumJaGXe7lIKR88YHx4nGYTxpnps=
+	t=1744637170; cv=none; b=Mvd04aXzuKcxw2sOsaQyUFuUxcUUgCFUe+QdK1GtkJ9isvuxji+aQoH/Wz/M3lv17fTIR8d0sshzFxfeL1/nreQ20gSg+y9v0I67EGwQmMSG6HRfMOG91n/cQg2a54VX8utO9BbyFLPaLZaDbMzTEcgGF60MKyUse/2/++M9bK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637180; c=relaxed/simple;
-	bh=TsvvjU34ou6DeKBnAEaZf6xjk/wVJu2sGieu/mEr1vs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PkxP4lJJ4YVRijxM/BvzUYz3QvhHPvWTH9WMdmxoA1i2QpPHF6E0I/6XOdWzfM9RYLOS4MoqpSdxkdEaPZ//vwGbAoRf8xTws3YSHZBf8U/bebgwLyCRBcBImVjS0y6RojWzPhKqcRg745KvA7L2wQquBT4HVvoFV7zcAcYUed0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GGCmOwGi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8ECDC4CEEB;
-	Mon, 14 Apr 2025 13:26:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744637178;
-	bh=TsvvjU34ou6DeKBnAEaZf6xjk/wVJu2sGieu/mEr1vs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GGCmOwGiudfQ5/3NNQ5aNd6+B8nkT/bqwedQWP+NuBSSQRkjSYS7COmYhfiFS7nc1
-	 eztfXm6mlqIQ1u72XVGEhyCSGcDMEWWL9z7FYUyzOjEYSC6z2quaj5TvyY27w2TIpn
-	 AYek6uQk8KIdEBfC+tSLCIi+tT5mK/AzhP80hVzBbvLbcYDaTBDeNZ6ZX35dN8AXS0
-	 hKILfWXKkqjm8DZ4MYfvPhBE+BhGaNPyrQq0fSPyq6wqUviUlFRoi/hUJ1VMr06xvD
-	 IbgBkCsf5fNU9KTdo9rGGx/QiZT3vgA5ULtis60312MFBhoT3dcCRj96oK2lwXCk0/
-	 7b78mFGHPuKTg==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1744637170; c=relaxed/simple;
+	bh=PKJ4Roznl3Yg2FWFUh3nz+SZkHXf4hT8t2CQq8HDJu0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=k3R6ZrS/YP3YHDO2AKPH+9bMl7YxrESGHDh94vtJE2UC4kGPuzj4LHVsUXY61K1QkobO1t3xz7gOg+5Zm5tc9OWyLTALY5IgkvEYJM+JZLFshzc48myh5fVmzJavzaspIRVaKhBhRBJx6D6l7OaX/9kk58lI4b4uEEsBSbF3TYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Kwmv+d3d; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744637168; x=1776173168;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=PKJ4Roznl3Yg2FWFUh3nz+SZkHXf4hT8t2CQq8HDJu0=;
+  b=Kwmv+d3dEeUWPPrToNRbL1v/9lcXALnBigrcjPTwcdYTMfop8ogRXYhl
+   DiTgXA/RUQlCGecSx7DLxIfmFTFYrVIQ5jJS8hE/UmIpyJlTkZj2Iosyz
+   fS9vCoRkxvafMy+ALHBYqhamjC6IaQIET4QaItRycrqTQZP0MB+4e/V81
+   yYnbAwcOd4gkvXOZOhBBZgD3dnKZQG4VO8nIjGgJUVVzlBt05MDe86ifg
+   tWmQiLw0pXA2C0Y2eDZ6gB5Q85z/RIKXUTX4uhyKPlW8i0L7CnbxvQ5V2
+   9JZsXlaf1W4HtGcmLSzMxx783HZoDgOA9ADBPninJMINX5bbo7crS4arI
+   w==;
+X-CSE-ConnectionGUID: QhY9ul6MTG6Dhfq+HNzmpA==
+X-CSE-MsgGUID: tUklHGrvSFK5Fi+UBTN1lQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11402"; a="45987897"
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; 
+   d="scan'208";a="45987897"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 06:26:08 -0700
+X-CSE-ConnectionGUID: 9GqZHTiWRkWZ4YmIK1iPkg==
+X-CSE-MsgGUID: 6PazK+wXR7ySdV2awzdjeA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; 
+   d="scan'208";a="160775103"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO mwauld-desk.intel.com) ([10.245.244.253])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 06:26:06 -0700
+From: Matthew Auld <matthew.auld@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
 	stable@vger.kernel.org
-Cc: Xiaogang Chen <xiaogang.chen@amd.com>,
-	Xiaogang Chen <Xiaogang.Chen@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Sasha Levin <sashal@kernel.org>,
-	kraxel@redhat.com,
-	vivek.kasireddy@intel.com,
-	sumit.semwal@linaro.org,
-	dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org
-Subject: [PATCH AUTOSEL 6.14 03/34] udmabuf: fix a buf size overflow issue during udmabuf creation
-Date: Mon, 14 Apr 2025 09:25:39 -0400
-Message-Id: <20250414132610.677644-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250414132610.677644-1-sashal@kernel.org>
-References: <20250414132610.677644-1-sashal@kernel.org>
+Subject: [PATCH] drm/xe/userptr: fix notifier vs folio deadlock
+Date: Mon, 14 Apr 2025 14:25:40 +0100
+Message-ID: <20250414132539.26654-2-matthew.auld@intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,39 +73,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.14.2
 Content-Transfer-Encoding: 8bit
 
-From: Xiaogang Chen <xiaogang.chen@amd.com>
+User is reporting what smells like notifier vs folio deadlock, where
+migrate_pages_batch() on core kernel side is holding folio lock(s) and
+then interacting with the mappings of it, however those mappings are
+tied to some userptr, which means calling into the notifier callback and
+grabbing the notifier lock. With perfect timing it looks possible that
+the pages we pulled from the hmm fault can get sniped by
+migrate_pages_batch() at the same time that we are holding the notifier
+lock to mark the pages as accessed/dirty, but at this point we also want
+to grab the folio locks(s) to mark them as dirty, but if they are
+contended from notifier/migrate_pages_batch side then we deadlock since
+folio lock won't be dropped until we drop the notifier lock.
 
-[ Upstream commit 021ba7f1babd029e714d13a6bf2571b08af96d0f ]
+Fortunately the mark_page_accessed/dirty is not really needed in the
+first place it seems and should have already been done by hmm fault, so
+just remove it.
 
-by casting size_limit_mb to u64  when calculate pglimit.
-
-Signed-off-by: Xiaogang Chen<Xiaogang.Chen@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250321164126.329638-1-xiaogang.chen@amd.com
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4765
+Fixes: 0a98219bcc96 ("drm/xe/hmm: Don't dereference struct page pointers without notifier lock")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v6.10+
 ---
- drivers/dma-buf/udmabuf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_hmm.c | 24 ------------------------
+ 1 file changed, 24 deletions(-)
 
-diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
-index cc7398cc17d67..e74e36a8ecda2 100644
---- a/drivers/dma-buf/udmabuf.c
-+++ b/drivers/dma-buf/udmabuf.c
-@@ -393,7 +393,7 @@ static long udmabuf_create(struct miscdevice *device,
- 	if (!ubuf)
- 		return -ENOMEM;
+diff --git a/drivers/gpu/drm/xe/xe_hmm.c b/drivers/gpu/drm/xe/xe_hmm.c
+index c3cc0fa105e8..57b71956ddf4 100644
+--- a/drivers/gpu/drm/xe/xe_hmm.c
++++ b/drivers/gpu/drm/xe/xe_hmm.c
+@@ -19,29 +19,6 @@ static u64 xe_npages_in_range(unsigned long start, unsigned long end)
+ 	return (end - start) >> PAGE_SHIFT;
+ }
  
--	pglimit = (size_limit_mb * 1024 * 1024) >> PAGE_SHIFT;
-+	pglimit = ((u64)size_limit_mb * 1024 * 1024) >> PAGE_SHIFT;
- 	for (i = 0; i < head->count; i++) {
- 		pgoff_t subpgcnt;
+-/**
+- * xe_mark_range_accessed() - mark a range is accessed, so core mm
+- * have such information for memory eviction or write back to
+- * hard disk
+- * @range: the range to mark
+- * @write: if write to this range, we mark pages in this range
+- * as dirty
+- */
+-static void xe_mark_range_accessed(struct hmm_range *range, bool write)
+-{
+-	struct page *page;
+-	u64 i, npages;
+-
+-	npages = xe_npages_in_range(range->start, range->end);
+-	for (i = 0; i < npages; i++) {
+-		page = hmm_pfn_to_page(range->hmm_pfns[i]);
+-		if (write)
+-			set_page_dirty_lock(page);
+-
+-		mark_page_accessed(page);
+-	}
+-}
+-
+ static int xe_alloc_sg(struct xe_device *xe, struct sg_table *st,
+ 		       struct hmm_range *range, struct rw_semaphore *notifier_sem)
+ {
+@@ -331,7 +308,6 @@ int xe_hmm_userptr_populate_range(struct xe_userptr_vma *uvma,
+ 	if (ret)
+ 		goto out_unlock;
  
+-	xe_mark_range_accessed(&hmm_range, write);
+ 	userptr->sg = &userptr->sgt;
+ 	xe_hmm_userptr_set_mapped(uvma);
+ 	userptr->notifier_seq = hmm_range.notifier_seq;
 -- 
-2.39.5
+2.49.0
 
 
