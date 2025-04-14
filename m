@@ -1,257 +1,238 @@
-Return-Path: <stable+bounces-132656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F14DA88AB8
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 20:08:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4EACA88AFA
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 20:26:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 427491893904
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 18:08:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAD5C7A8D95
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 18:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ECB4288CB0;
-	Mon, 14 Apr 2025 18:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57AC728B50C;
+	Mon, 14 Apr 2025 18:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="II2omZJk";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="hBk/+EnV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HsvItA+H"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA4627467D;
-	Mon, 14 Apr 2025 18:08:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744654101; cv=fail; b=if1akZb8JVuyemrcyR7YHU7RPRWV0SN7s4YypQ8dgauCMZKIYDJgssyEt6HFuHrS5scyiKh/ciUwD9jpoCDtqxVUJKmrJM87arfviFE2JvrSYFhif+sZJ2s3+bg/8Gp6zdTzwlMfjCvWzeq1L04TIECyjky0qfV0ScYYkfrTG8Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744654101; c=relaxed/simple;
-	bh=ig7GPW4D9ouqBlzy4LovY9jGQNjZWMtP7cIPAOXFi9Y=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=URpX0CPIyQ+6aRjhUTzfS48AW7wlbbu4fBdN7msdTM0/w2yU98w8F6pvgADd3hxqDKlU5pJvVEoNugbw5DqEET2bxDZDXJ0TNDdKjFF1P4FrVrtzXlGedzKqrCczJSU9ICKeaec6aa48Iy9+XwFBLO10XtKlRFLbTky/J8/32/Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=II2omZJk; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=hBk/+EnV; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53EI1xbq007349;
-	Mon, 14 Apr 2025 18:08:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2023-11-20; bh=TaeOEvN/+1QQgqOehgcsL5IYnEOBR9BdWIE+GxlRclk=; b=
-	II2omZJk/k6ysCdTZakLs7072mn2jN+ndD5MDQf+iZ1V/xFo6jhfvFnOjDf6zMLt
-	B6wIDfHFMkj8B1VD7EsB8ec9DkO1bmmkWnWp649kxLHTTSC2ElMZSKYq+mTRmoZ6
-	GDGoBxSH8kMd6AiB0PmdYgzDXfOtA7WZWavqXe2T4yAFML3+J+ZxA17/bSU3c05K
-	akf28k929hYnohh6omRbN3Q5Xt9Bjd9hSaX1VRy/PbMPB12qvd2OaKW5Hj6PM3/v
-	d/XaJQxZkeA1nObJNQTC1qQoWVpy2TqvrQvQdeLDOqQhOmRK3TDmm2MsVd5v+d+K
-	ZmRyj4VVtF6fRUA0AOq9gw==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46179gr0bd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 14 Apr 2025 18:07:59 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 53EHjhu2005663;
-	Mon, 14 Apr 2025 18:07:59 GMT
-Received: from cy4pr02cu008.outbound.protection.outlook.com (mail-westcentralusazlp17011026.outbound.protection.outlook.com [40.93.6.26])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 460d5u3uq9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 14 Apr 2025 18:07:59 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TdemcVJ+eKhcZqqBwRAVP8hYh2sFR12cICMsMhMRoMojZYMQBHUDDxoHX8i/qWVOBjX/KWaJPijrEq320whPR1QJe+Bnhw6FOMli8ZP2u2HlKek99SXcX4RZQ5f+svYPtoHHmJw6bbZ4b+KBDzOzp+gyn3FXKf+HvCOGeVxDvBNi46RMtf7bDzFqGwWgc46a4h2oztF9INGKZBkYrl3vXSECbNzP8L0QZE3UF3MtqrOgdmvyNZBGrzKKkQt47hnVU0/kNz+6/ZY+8yceJOFS5bOuFOF26xwdZqC6gudpbaEChsZbvwXtVWNYnIK4336sKdXxM0f+O9nKJD2ngFUUaw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TaeOEvN/+1QQgqOehgcsL5IYnEOBR9BdWIE+GxlRclk=;
- b=AtQv0akbRwoLU7ppb8qBjc8TyC7eStnHCyfFQNA0G2M5Np/tz9CuSLvWthP1XXtn/e4CtvoPNuTCa8w5QFxVL535Sr2h1xjAx1iPlp4eL1O6yfw8sJW7G3gss7wX43ICrDhPKbdOyv/vf93wU0qeRakXfW7h74O8d9EBJkGGeg5bVG+/04LKRAuyyE6t1qrPe/HafzP/GAGOWvpej8faJw8360SYkmr3f9yER2hZKtT5qDMaZGOpUHHEq/nTExpBk6VDVJqxPBIGvYgugdGeJA64nwoLfLzofyxOpLiuhUejEPYxfbPy0TDvqGQ1vGsUg6CUQ/UHkru7qdwAvL7LNQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TaeOEvN/+1QQgqOehgcsL5IYnEOBR9BdWIE+GxlRclk=;
- b=hBk/+EnVGIybV3lUWnMC5MixNAXxKY3kFw1QJo0LIaWV2e3w66TcGZvo+4WTJLl67I1lx5AG1LLgq9qqW73YwEffH3jwJPtbGf5uwp2ck4XoqCGpN1ZWHjkgIRG8ZYb7a30UwrTs2HiCApFKzuY+hvFJ7kJhsrsxhZpGu5gTCRU=
-Received: from CY8PR10MB7266.namprd10.prod.outlook.com (2603:10b6:930:7c::17)
- by SN7PR10MB6620.namprd10.prod.outlook.com (2603:10b6:806:2af::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.35; Mon, 14 Apr
- 2025 18:07:56 +0000
-Received: from CY8PR10MB7266.namprd10.prod.outlook.com
- ([fe80::9714:91fc:3a27:9ec0]) by CY8PR10MB7266.namprd10.prod.outlook.com
- ([fe80::9714:91fc:3a27:9ec0%3]) with mapi id 15.20.8632.035; Mon, 14 Apr 2025
- 18:07:56 +0000
-Message-ID: <82791292-9caf-41b6-8d63-1190ea59e559@oracle.com>
-Date: Mon, 14 Apr 2025 12:07:44 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND] sparc: fix error handling in scan_one_device()
-To: Ma Ke <make24@iscas.ac.cn>, davem@davemloft.net, andreas@gaisler.com,
-        sam@ravnborg.org, dawei.li@shingroup.cn
-Cc: sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        akpm@linux-foundation.org, stable@vger.kernel.org
-References: <20250414111845.3084334-1-make24@iscas.ac.cn>
-Content-Language: en-US
-From: Rob Gardner <rob.gardner@oracle.com>
-In-Reply-To: <20250414111845.3084334-1-make24@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR13CA0200.namprd13.prod.outlook.com
- (2603:10b6:a03:2c3::25) To CY8PR10MB7266.namprd10.prod.outlook.com
- (2603:10b6:930:7c::17)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12AF328B508;
+	Mon, 14 Apr 2025 18:26:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744655194; cv=none; b=LXoe90PDPpQfYU1JMcoaGnskWVETcCSiQvBqi3lHTREF33wcYU3czsS8B/Ih6b0uaZKuth8HL8/3S0ucw+tsSr6ZcfpD5rIVzn+Ezu3oFelYDZinoD4squqLVADBqvSR27nbnBnocZjbhu/Cw22Ft/nW68PFsWU4wB+iHgDGzho=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744655194; c=relaxed/simple;
+	bh=zxI4p+wjrRQ0jkQ2RkuWxk4aLUvNDztSLjxQS/HnlH4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UkJjf90lb2ItQG+udbT3WDWNXl8BPLD4aLKM3qAtkmaBYOHEkda5G+5NHLTr5e1TkcoHkY4FfQl0Bd5vZtte83QipjSa6wLIABXPlWITAMcd5Mngbu0aurohGKK9tFhz0z9w2a+kXQZsDfC53EKepj7qM5A/wP3qEP6za3fafAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HsvItA+H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8447C4CEEC;
+	Mon, 14 Apr 2025 18:26:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744655193;
+	bh=zxI4p+wjrRQ0jkQ2RkuWxk4aLUvNDztSLjxQS/HnlH4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HsvItA+HZnP3HMwBQ0qn+x/+lX1FG8CYN4emOP0fuPiFIaW0eg0g2P3VCBAqIkWzd
+	 PyZIJd0I99m2kBnv9F5ZVfljpT0YVJ5Gjn2yBkvzwbNKMgbrRuWM306E91jCF/YkrJ
+	 dE1ODM/M5U/z9xyjxZYb9/ladb++fU2RT8Zz+oiA78qQGbf24NpbOrIZxvuL9P0YQf
+	 cfnKSNQ4ak4I9cEGuFl64IV62zdVUO0OB9zF8lP49BvRVYoP2q0/vk9Rrro4qTmpM2
+	 Cvq2b7ko1z2JRarESeNUDv/Oou4PimbWKUJztypjS19v0aHQcvqNUOiPxTsC5z43sh
+	 WFKs/m81h9LKA==
+Date: Mon, 14 Apr 2025 23:52:45 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: dave.hansen@linux.intel.com, x86@kernel.org, 
+	Ingo Molnar <mingo@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Kirill Shutemov <kirill.shutemov@linux.intel.com>, Nikolay Borisov <nik.borisov@suse.com>, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] x86/devmem: Restrict /dev/mem access for
+ potentially unaccepted memory by default
+Message-ID: <l2crzyeoux2pammbifkivrhp637gza7piumd3s6j66mezsfvdy@nwczgs2hkq4f>
+References: <174433453526.924142.15494575917593543330.stgit@dwillia2-xfh.jf.intel.com>
+ <174433455868.924142.4040854723344197780.stgit@dwillia2-xfh.jf.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR10MB7266:EE_|SN7PR10MB6620:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7bf6a82b-928a-4ffd-852e-08dd7b7f4880
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MHJOZEdSbjRaeGt5K00vb3pma1dyYXk3SjdnYXE0QW5YMEVyT3ppQWhzbHFO?=
- =?utf-8?B?QXo5N2RYcytqT2pXcHo5QmRqMnAzb3hGd1dPcWVRR0t6TWNVeG11ZEZxV2pL?=
- =?utf-8?B?SlFnWHhvZ3N3N1gxaUwycDFyeTUxSTJoUG5oWHZFRzdKRTA3QjFta0VVYW5q?=
- =?utf-8?B?K2pFVWY1cFFEZWJ1R0hJYW1jenk5SHdBMW15YXQzaFhjSkNEUW51aXpZeDBj?=
- =?utf-8?B?WjZmaE1IcHRKVXNqem41cnBjLzlIbUtJMnJwZjBDZWh2c1dYTnFJaGNRQVMx?=
- =?utf-8?B?OWpieDBXRitkdkdsYXdtWFZwOTBha2ZIeXRFamJrSEVzdCt6QmRNa3NPTGwy?=
- =?utf-8?B?TzhWcXBwdk5NNTJCVzdtbWJJTkJWajh5T1NXaUNld3ptNVl0dVBVdG91czFX?=
- =?utf-8?B?dVU1S2hPNnRzSkMvUmoyL3VDaVhtSU50c1RacXBDK2c0TThjcVl4b1dIYmw1?=
- =?utf-8?B?dDlrSWV5S21zdDBydDA2d3N1NzRHa2RyUHZydGwxSnYxVXFSR0taUXh6Vkxs?=
- =?utf-8?B?SFRBZWgxSXVkaFVGTUdDWXlJOTZiN282QjBEMFppVTdoVHlTbGw2WlRvTmto?=
- =?utf-8?B?TzU3V01QaFlvMmRmL3dlRFRUVW8xc3V2Tk1IOG4rZjRWWWpyNkhEbUJ3R29q?=
- =?utf-8?B?RW1HRWRTRytEeHpieGV3RmU2UUN4TmlGVksvZkM5T25talNDbmpnTlN2UDNm?=
- =?utf-8?B?UDhTTTNEYXk5eXdJSW5IUDErZmd5cnFYM3hIY3pnZjNBYW9EUXI5a3piMlJC?=
- =?utf-8?B?N3c5eVJkdSsxQWZ0cE4veExmYVVQOHVFRGdHR240dHZaL3FSSDA5N1ZvVTd1?=
- =?utf-8?B?V2VENEtBK0llV3ljVzliSzUrclBja0ZJOGRYdktXYUVoOWd3TnJJZXVYSDJp?=
- =?utf-8?B?UHF0U2hVUGZTZFdrYnQra3V4eEJTTmE1T0ZoMm9ZN1JmUjQyUkZGUzBnMUV5?=
- =?utf-8?B?TmUvSkZtOWFXc1IvYXVDejVEbWgwNlhzdFM0TzVseW80eHgwczlCNnhYKyt6?=
- =?utf-8?B?R3FsY3ZyLzJDQWVGVTUvV1gyMmtEeE1FazdDbVJhNU9jR0UwUmI4NHYvTlAv?=
- =?utf-8?B?cFRsMlpzbktuQU5HTzFmSzdhUHlWeXpwZFVuMVJpRUQ3KytQcmp6VE5tUi9O?=
- =?utf-8?B?ZEhlci81MGppc3ZpZnpNYXc4SklhVFFXRkREcGY1R2lBVGFBaE9rb2VGRDdP?=
- =?utf-8?B?dm1VQjlVemp5S3hPZTJkNUN0NnVGMm9tMGN2MjVkaW9DdWFoRlM3OWVPOWZQ?=
- =?utf-8?B?YlBEWUU1SStaaTRxRlgxNjY4ZDZQT2RoTEtLT1JzQ2xidkh1VjV6QTZKNit5?=
- =?utf-8?B?RU5BWHZVa0YxcUp2VVltWU9GTGdtb0cyTHN2ak9UanFzTGFVdkFwUWFsWWVh?=
- =?utf-8?B?cmI0RmcxbDArWExqQUFYK1RMV2p1NzZVMmw3ek9wOEtTdWQzdWlER3ordzNX?=
- =?utf-8?B?cUpBa0hqN05BaHZzeHN0b2txeFR5TWZwcGhUUDJWdjd4QmEzUkx1MDZxTXZ4?=
- =?utf-8?B?aXdyUFk5UGVyV1hnQzFXL0VHNWlOZWNVZFhxRk5KWWVDcWpzVUJEcWt3SWsz?=
- =?utf-8?B?bUlWNXMwMGpKNjlQZSs3QUFYbW43enovRjJzRzBrM0JWbnptODN3ZjhoM1ZV?=
- =?utf-8?B?KzkzUEFzY3Y3dEdLd1pJRjJZUVBBRjRxL1pmNUROZ2E0VjlLU0F1NXdsWXps?=
- =?utf-8?B?Zmxyb1QxK1ZEdDNrcjRVdmtmOUhOaHpXMGI0YnlVZi95VHAzQTRIOHNtcWxs?=
- =?utf-8?B?bUVoaHFBZU15TWlCRXp2TEVWbEhncXBEQXpZRVk0Rko5VFgxaG9GT1p4ZTVE?=
- =?utf-8?B?dUcrOVU3elJOWVB2aS9rZEVUMmJjTDdNSmZNa1J5eC9OZ0k0bTAyYk1sVTFR?=
- =?utf-8?B?RHpVZlVnOXlDTjZZN2dLY3dldm1wOTNJUWlkQ3ErVm5NWWJUUnVzQVFuRnVO?=
- =?utf-8?Q?nndQVN3tOrA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR10MB7266.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SWJsSlRkV2EzdGl2ZEhQblpnU0k3UGlpQ0tGVGhtd1VvQnF6UzFqU3FxYndM?=
- =?utf-8?B?c0R4S3pzNklFTzczVzZJMWIxbE4zSjRZS3crRDBTMnVIc3VXZ0VXSUhDTnhu?=
- =?utf-8?B?SFhXek93ZlAxK0lpS0xZMU0zc3QwS2x3dHN3OWpqeng3eDIramdPMis1RVov?=
- =?utf-8?B?czVaQXh1ekh2Ly82WlJMcHZ5NVVoUXFtdDRvUU01c3R5RElPbmZQUFZXYUNN?=
- =?utf-8?B?dG5BdHZHdTFvWXRCS0taMFZ3cDdOM0lReE84eDVDVW1BVEZNWEg1bU5UWlFQ?=
- =?utf-8?B?SkFZZGtxUGlTbHAydVBUbzB0QmtyTWsxMDBVVUcweXcrZjNpTWVRQUUrSys3?=
- =?utf-8?B?WklUN3dyblBtUDJ0SVF3WU4rRWFkYldON0xiendjbnhjSzJqaWkxdTdHMWZt?=
- =?utf-8?B?bGVVU1A2cE1iTHB4blRZOEhnM1Nra0RGUUJBTjdKRTVXckV0WHhsajF3aCtl?=
- =?utf-8?B?cjNJN3crdkFrNGdncE9qNHBablBXVGRoaG96MXVVSmJRN094Wk5iTW1hdzZX?=
- =?utf-8?B?djNRekdMWUM5eHpxdlp0eUp4L0NjUElqQjlYZ2JGOUMvU2NrQUJKMk9Kc3R5?=
- =?utf-8?B?YXNZbi9tTFpEQ3lXMnVzdG9XeEc2SUNVNTRTQnR4MTQ3dENFenB5OTRWMVZ6?=
- =?utf-8?B?NWtyL0I4V2J2T1hEdTd3ZG5odmVoUTBqUCtZNlpwWnZHekRLbDRubUNoMmVX?=
- =?utf-8?B?Y3E1eHpBcVJNZFlKMm5lSEFubVlQTEZBRktNR05WbW1PUG5ncGEyZS9xeGdu?=
- =?utf-8?B?N3NZN1VPa2ZZWU9ENEY4dVc0ZjlRaWZtdFMyUCtYYzVIM3N4RWsyVEl6aG10?=
- =?utf-8?B?bm9uaEFob2hVb2ZqNHZsdmo0eHpuQkpmYjRJZE1Ob0E5RDJNeGZWRlFCKzB6?=
- =?utf-8?B?SnRhTEI1VTZKdTB6Y3F0V3JXZzM0MHhGM3RMb2lPRjc4ODRWcGpmRHpMT0lF?=
- =?utf-8?B?WlhXMGJGV0JxdUM0Q0RVWm9xemVVU1h5VFRLcVFYVWJqN2ppeG9ucElzR2ll?=
- =?utf-8?B?d0VVajhHeHBQWFIrT1BROUZPSm85ZGFMYVJvOEN4bkFndWMxTHhKcXNmMHoy?=
- =?utf-8?B?Sk5qUHRITTQ1ZStIdk1qeUNHTUxadjc1OHNjdDBJY25xSnBYUGt1bGR5NnEy?=
- =?utf-8?B?ankxSGpDc3ZyMEtaQldkeUZjVDllS1ZrWWpKdEh5cnA5UWdRc1IvOFNxTnZB?=
- =?utf-8?B?Y3J0QzZwelhDbTVYd0trS2R5L1VMVklYY2VWc0NjS2tGbUlSWk80ZW40WW9n?=
- =?utf-8?B?azFkbmhYeDY0NW8xNXNhb3FlUllpeG5CRWptKzRzMjEzWUZ5U3Njcmd5a011?=
- =?utf-8?B?cy8xUGZJZGlZdFQydmZMTGlIUHRQN1NRQU5peXFwSlRsc1lUYklvcU91SStH?=
- =?utf-8?B?LzZucWFPZVdmZTNCOGVtOEdyMlZ5ZjNIL24vWldXTjlhdEVxdzlYbWRjS3Fu?=
- =?utf-8?B?SytmL1JkNUhLOUlaaGU5WmVvRGxNbENhNTFkU3RSejZFd0xtNGxqbFFVREVu?=
- =?utf-8?B?NnZ4dkh1SGlUemtBYTlEU0I3VjZ5U2lyYm1xT0N0RjNrRnBiVmNsQ2ZtZFJv?=
- =?utf-8?B?QVpDUituMTJHWVlmanI3YjMxeE55ckNYMzRBSzdObCtpc1NySXB2YjAvdTk4?=
- =?utf-8?B?SGtYZlhoZXNxNVFxemM3UUpDSEYxTFVKdy9aOEF1STNIUnZsbENJaUdZQjMy?=
- =?utf-8?B?YmUweDNCWHptT2NzVUw2QWhzT1dqN01MczZidkhBUVhzdnhKeUgwcnptcUF0?=
- =?utf-8?B?b2xDZDZ5MUM3SU9oMlhIa01DaGNJSDE1Vk41bVU3LzhxRVRyTFdHVFhZUnVT?=
- =?utf-8?B?S1R2WDJKbE9VbHd6SmdZdlJZaHJIc0IyNzJRQlJtL1NYWmJMZHYxekd4MjVX?=
- =?utf-8?B?NEZWc2hORHZlc1F2VWxFSEp5eWZpNS82MzhPSUdyMWZITmUrdlkrMjBvK2tY?=
- =?utf-8?B?WmRUNHZuYlVoR2kzbklrUjl6WnB2RUUrcW5KRTRMZUpzMi95azJ4akNBZjVG?=
- =?utf-8?B?b2Fqd1cyWENvNHorRytuZ1ZsMWNGU0U2OHNiVUNXUGpGM0RLMGkwR1ExcTVS?=
- =?utf-8?B?Q3NhRlAwbXc3Z2Z4YVZBb21GbmdrVS9OdDg0bEd1QnB0b2xFUkdSdC9PdU02?=
- =?utf-8?Q?o0HIyB2fPTF9R5kPrsQaEL60c?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	g5OWG+5zLJUtW6J1r9sHTeFWbMMpCeMEECVpU4qZ3dxWTHJ614BVTbAD/5uLpwRCD1G1woAiR9vJpcpzMTqvKNDi9OtCGfpF9t6a9tEi1LkNcU29YuTlfYqM16lqw+wfCGHupiZLwsx8JIk2YergSbBAKOCXlFqEPGeiDcO6Nao69NlQmMVDlsl74vb9kjUscJ7eBx+/gc2P5lVoHtr5021olXA1FikwrE8ubbaYS+2GPL6X1bmAv8XrxGaQ4D/6QYWW+gksptlFTAVvpH2xN78nB+ps0av7qAxf3T01MZlADS8RQRl2jrAlqUsJYsjlzHROQoB9IAnlmm8nkXfrHrWiXDvWhqPQ3aK7rNZFGeCOmOteTTZ54ziE3EEItVn1/4Qy5pSPjpU0pQPmMuv23r+m4qDkdv0/9TEyhnTrXM5t+qmbRdcm5Wo4UxVVqBlKczOL57SiV65gAJ45he2tp//PE1w1G4tzdhGcV9bLluZ9Xtmxo0dMETkkja2V4HjhJJBHbao/ghloEOYNHdvmNmNqU1+MJAZNzeV+U/OSqEk8nzijQlEVmxkrod6/QrcVizqws592GloofyCiKB80iOsUnEGFeHTgtn51doA1u6k=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7bf6a82b-928a-4ffd-852e-08dd7b7f4880
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR10MB7266.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Apr 2025 18:07:56.5899
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oT1HGRC7txGcBHkG7owtM4TF0rE/HFC4gpH0EtHD4vlfWZiMrZEpqZ7jRf7X8IY1DGwbGNOeuLx+xTN+bCHg9g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR10MB6620
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-14_07,2025-04-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxlogscore=999
- suspectscore=0 spamscore=0 bulkscore=0 malwarescore=0 adultscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2502280000 definitions=main-2504140131
-X-Proofpoint-ORIG-GUID: aUQI_9EbNIgMNTltKUvY6k2bb1YWve_z
-X-Proofpoint-GUID: aUQI_9EbNIgMNTltKUvY6k2bb1YWve_z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <174433455868.924142.4040854723344197780.stgit@dwillia2-xfh.jf.intel.com>
 
-On 4/14/25 05:18, Ma Ke wrote:
-> Once of_device_register() failed, we should call put_device() to
-> decrement reference count for cleanup. Or it could cause memory leak.
-> So fix this by calling put_device(), then the name can be freed in
-> kobject_cleanup().
+On Thu, Apr 10, 2025 at 06:22:38PM -0700, Dan Williams wrote:
+> Nikolay reports [1] that accessing BIOS data (first 1MB of the physical
+> address space) via /dev/mem results in an SEPT violation.
+> 
+> The cause is ioremap() (via xlate_dev_mem_ptr()) establishes an
+> unencrypted mapping where the kernel had established an encrypted
+> mapping previously.
+> 
+> An initial attempt to fix this revealed that TDX and SEV-SNP have
+> different expectations about which and when address ranges can be mapped
+> via /dev/mem.
+> 
+> Rather than develop a precise set of allowed /dev/mem capable TVM
+> address ranges, teach devmem_is_allowed() to always restrict access to
+> the BIOS data space.
 
-This seems ok but it's not clear why you delete "kfree(op)" here.
+This patch does more than just restrict the BIOS data space - it rejects 
+all accesses to /dev/mem _apart_ from the first 1MB. That should be made 
+clear here.
 
-scan_one_device() allocates the memory for op via kzalloc, and in the 
-case where of_device_register() fails, it sets op = NULL. This 
-superficially looks like you *create* a memory leak here, since I don't 
-see any other obvious reference to that kzalloc'd memory after 
-scan_one_device() returns. Is the "op" pointer saved somewhere quietly 
-by build_device_resources()?
-
-I think you should still free the memory (that you allocated) after the 
-call to put_device(), or explain why this is not necessary.
-
-
->
-> As comment of device_add() says, 'if device_add() succeeds, you should
-> call device_del() when you want to get rid of it. If device_add() has
-> not succeeded, use only put_device() to drop the reference count'.
->
-> Found by code review.
->
-> Cc: stable@vger.kernel.org
-> Fixes: cf44bbc26cf1 ("[SPARC]: Beginnings of generic of_device framework.")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> This means return 0s for read(), drop write(), and
+> -EPERM mmap(). This can still be later relaxed as specific needs arise,
+> but in the meantime, close off this source of mismatched
+> IORES_MAP_ENCRYPTED expectations.
+> 
+> Cc: <x86@kernel.org>
+> Cc: Ingo Molnar <mingo@kernel.org>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Vishal Annapurve <vannapurve@google.com>
+> Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>
+> Reported-by: Nikolay Borisov <nik.borisov@suse.com>
+> Closes: http://lore.kernel.org/20250318113604.297726-1-nik.borisov@suse.com [1]
+> Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+> Fixes: 9aa6ea69852c ("x86/tdx: Make pages shared in ioremap()")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 > ---
->   arch/sparc/kernel/of_device_64.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/sparc/kernel/of_device_64.c b/arch/sparc/kernel/of_device_64.c
-> index f98c2901f335..4272746d7166 100644
-> --- a/arch/sparc/kernel/of_device_64.c
-> +++ b/arch/sparc/kernel/of_device_64.c
-> @@ -677,7 +677,7 @@ static struct platform_device * __init scan_one_device(struct device_node *dp,
->   
->   	if (of_device_register(op)) {
->   		printk("%pOF: Could not register of device.\n", dp);
-> -		kfree(op);
-> +		put_device(&op->dev);
->   		op = NULL;
->   	}
->   
+>  arch/x86/Kconfig                |    2 ++
+>  arch/x86/include/asm/x86_init.h |    2 ++
+>  arch/x86/kernel/x86_init.c      |    6 ++++++
+>  arch/x86/mm/init.c              |   23 +++++++++++++++++------
+>  4 files changed, 27 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 4b9f378e05f6..12a1b5acd55b 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -891,6 +891,7 @@ config INTEL_TDX_GUEST
+>  	depends on X86_X2APIC
+>  	depends on EFI_STUB
+>  	depends on PARAVIRT
+> +	depends on STRICT_DEVMEM
+>  	select ARCH_HAS_CC_PLATFORM
+>  	select X86_MEM_ENCRYPT
+>  	select X86_MCE
+> @@ -1510,6 +1511,7 @@ config AMD_MEM_ENCRYPT
+>  	bool "AMD Secure Memory Encryption (SME) support"
+>  	depends on X86_64 && CPU_SUP_AMD
+>  	depends on EFI_STUB
+> +	depends on STRICT_DEVMEM
+>  	select DMA_COHERENT_POOL
+>  	select ARCH_USE_MEMREMAP_PROT
+>  	select INSTRUCTION_DECODER
+> diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
+> index 213cf5379a5a..0ae436b34b88 100644
+> --- a/arch/x86/include/asm/x86_init.h
+> +++ b/arch/x86/include/asm/x86_init.h
+> @@ -305,6 +305,7 @@ struct x86_hyper_runtime {
+>   * 				semantics.
+>   * @realmode_reserve:		reserve memory for realmode trampoline
+>   * @realmode_init:		initialize realmode trampoline
+> + * @devmem_is_allowed		restrict /dev/mem and PCI sysfs resource access
+>   * @hyper:			x86 hypervisor specific runtime callbacks
+>   */
+>  struct x86_platform_ops {
+> @@ -323,6 +324,7 @@ struct x86_platform_ops {
+>  	void (*set_legacy_features)(void);
+>  	void (*realmode_reserve)(void);
+>  	void (*realmode_init)(void);
+> +	bool (*devmem_is_allowed)(unsigned long pfn);
+>  	struct x86_hyper_runtime hyper;
+>  	struct x86_guest guest;
+>  };
+> diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
+> index 0a2bbd674a6d..346301375bd4 100644
+> --- a/arch/x86/kernel/x86_init.c
+> +++ b/arch/x86/kernel/x86_init.c
+> @@ -143,6 +143,11 @@ static void enc_kexec_begin_noop(void) {}
+>  static void enc_kexec_finish_noop(void) {}
+>  static bool is_private_mmio_noop(u64 addr) {return false; }
+>  
+> +static bool platform_devmem_is_allowed(unsigned long pfn)
+> +{
+> +	return !cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT);
+> +}
+> +
+>  struct x86_platform_ops x86_platform __ro_after_init = {
+>  	.calibrate_cpu			= native_calibrate_cpu_early,
+>  	.calibrate_tsc			= native_calibrate_tsc,
+> @@ -156,6 +161,7 @@ struct x86_platform_ops x86_platform __ro_after_init = {
+>  	.restore_sched_clock_state	= tsc_restore_sched_clock_state,
+>  	.realmode_reserve		= reserve_real_mode,
+>  	.realmode_init			= init_real_mode,
+> +	.devmem_is_allowed		= platform_devmem_is_allowed,
+>  	.hyper.pin_vcpu			= x86_op_int_noop,
+>  	.hyper.is_private_mmio		= is_private_mmio_noop,
+>  
+> diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+> index bfa444a7dbb0..df5435c8dbea 100644
+> --- a/arch/x86/mm/init.c
+> +++ b/arch/x86/mm/init.c
+> @@ -861,18 +861,23 @@ void __init poking_init(void)
+>   * area traditionally contains BIOS code and data regions used by X, dosemu,
+>   * and similar apps. Since they map the entire memory range, the whole range
+>   * must be allowed (for mapping), but any areas that would otherwise be
+> - * disallowed are flagged as being "zero filled" instead of rejected.
+> + * disallowed are flagged as being "zero filled" instead of rejected, for
+> + * read()/write().
+> + *
+>   * Access has to be given to non-kernel-ram areas as well, these contain the
+>   * PCI mmio resources as well as potential bios/acpi data regions.
+>   */
+>  int devmem_is_allowed(unsigned long pagenr)
+>  {
+> +	bool platform_allowed = x86_platform.devmem_is_allowed(pagenr);
+> +
 
+If we are going to do this, I don't see the point of having an 
+x86_platform_op. It may be better to simply gate this on  
+cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) directly here.
+
+
+Thanks,
+Naveen
+
+>  	if (region_intersects(PFN_PHYS(pagenr), PAGE_SIZE,
+>  				IORESOURCE_SYSTEM_RAM, IORES_DESC_NONE)
+>  			!= REGION_DISJOINT) {
+>  		/*
+> -		 * For disallowed memory regions in the low 1MB range,
+> -		 * request that the page be shown as all zeros.
+> +		 * For disallowed memory regions in the low 1MB range, request
+> +		 * that the page be shown as all zeros for read()/write(), fail
+> +		 * mmap()
+>  		 */
+>  		if (pagenr < 256)
+>  			return 2;
+> @@ -885,14 +890,20 @@ int devmem_is_allowed(unsigned long pagenr)
+>  	 * restricted resource under CONFIG_STRICT_DEVMEM.
+>  	 */
+>  	if (iomem_is_exclusive(pagenr << PAGE_SHIFT)) {
+> -		/* Low 1MB bypasses iomem restrictions. */
+> -		if (pagenr < 256)
+> +		/*
+> +		 * Low 1MB bypasses iomem restrictions unless the platform says
+> +		 * the physical address is not suitable for direct access.
+> +		 */
+> +		if (pagenr < 256) {
+> +			if (!platform_allowed)
+> +				return 2;
+>  			return 1;
+> +		}
+>  
+>  		return 0;
+>  	}
+>  
+> -	return 1;
+> +	return platform_allowed;
+>  }
+>  
+>  void free_init_pages(const char *what, unsigned long begin, unsigned long end)
+> 
 
