@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-132582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2F28A8838A
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 16:00:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D26A88366
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:56:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4F9B16CA62
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:56:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A82C97A8291
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:55:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885C225393D;
-	Mon, 14 Apr 2025 13:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45FD275102;
+	Mon, 14 Apr 2025 13:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jbfKHNCj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oSa6JObt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3802A2D0270;
-	Mon, 14 Apr 2025 13:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE522750F8;
+	Mon, 14 Apr 2025 13:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637460; cv=none; b=bPgCKeN+c9XcZ4MZUbzDAPFQsBOLZ1+FkpqkvUwz4SWydqoCQbRWY5vWcWYZizl30vk0hYZdia74BkmqVtCgXkvrvm5SJK9azqdBBBEoFnf17YyhLctd9trYwWkDtC9rlQ2Hwrh1eYXpsZpU78/OYxB6KxG1UZSqZMjs2k4G5vI=
+	t=1744637462; cv=none; b=datTIea3JmwFclCNPPuW9USx/T+2VEXhnLdwlCixprrBdvbKhN04vWWAWQ7GFBu+ItEZi3G+sbShOt69SV88CvzlaxFDgtGb47Nxlzj8dEI4paeKeZwuuWzzjxkvGh3vM+zCzTyK4bx1DM5fCCHNzNgaf5oaHH/rj8gbAeLSg3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637460; c=relaxed/simple;
-	bh=JiNGGLDvkpSf69DH9x7QcroMSUkNyxMbco3HquxO5Qc=;
+	s=arc-20240116; t=1744637462; c=relaxed/simple;
+	bh=y4jcVl45GQD2KOAbS1k9HHIQXGs52Nm5blGslxLVn1A=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lcjyt9QJCspE1j0o6ZiTKyX/2GZi63//V0DWhs/T24g0ejtoiWx2pq9ZNxx7nqnnH//Kp7yNFG7ILU5a0tSEjZ9G+xDn66HxKQJvyPHOjPF00Pr3WBWTpnWyMNmpAdVPRe9yKCb3Khmn492b4zBRAapgjVco1nUY/oJFt+hpS1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jbfKHNCj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E856FC4CEEB;
-	Mon, 14 Apr 2025 13:30:58 +0000 (UTC)
+	 MIME-Version; b=SDRm3A0K37G3sSm05jx2qOlB7NMuYsmWVW9nUi4pmuUSeoO6nMNYKItPwZO8YLALxbEnUx4Aj9oE+ou3RTn+aJZXQY8v9nHgglAf7Nkh0chql72EqnWgc5vT5dNayBaxBSkUhwfHiCEP82zYogHbISB4W+hXcdEEXhUkH2m5vFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oSa6JObt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A20E5C4CEED;
+	Mon, 14 Apr 2025 13:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744637460;
-	bh=JiNGGLDvkpSf69DH9x7QcroMSUkNyxMbco3HquxO5Qc=;
+	s=k20201202; t=1744637462;
+	bh=y4jcVl45GQD2KOAbS1k9HHIQXGs52Nm5blGslxLVn1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jbfKHNCjBHDfi5sbg8qo0Zo9hX2HyUXHvE+O/RyzEFniCC60WN0IE/ONfZq3Bhdq5
-	 9P9p9CINyqwoh76PbxOydDhy6da2CzYGc8mnPii6p6OTxHbDAqhrHLseA18bfvrUAm
-	 +K9IypQReCwZtW6hHjR4v6uR375xaZtnceJ360XmOyR4Xgns+uwyLmPNVl+azXNrsx
-	 SIYpyc9kfhHn0sfrcv3/YV4SFcoPD4TrK7/dO/ZKDCE+Jk04k9ppGqn0pBP55dVEdp
-	 dMfxCpKYhTSZEmN6JD7lYAnd+mS3dbk6J/jolK/4QpRcHQYW0F8Bw9D4OAAE8jNmNq
-	 Fk6tSRjWN4fSg==
+	b=oSa6JObthgvzjWX93pnGpfTRpPdmP4Mhlw7q9GgCrZ0xEfIl2AONeRUD+bLSrbEUT
+	 72R5iPNyJ0PKFY9if/e/OyDo3UuUkJb9/DRfwsZaJdpHhsvFcgSgyJPxgX5LjLBBId
+	 EcwHWln48zNmpT1wGI4IIHnzpawWD3PQbty/ZvhNBWO/2BQo+JiJ2y90dHh6Wq4YJf
+	 2MQR0TV7DP5ibigrJ/sL+1On/hnD+L2zzFzJ24b8nydGI5YA4uIMSWI6v6qSGJ2cfW
+	 YS75wJ3W7bFzpYEz3T3bEKkB1RCZKs6ZwUKRuw5HLEQVXMAuCOqhkqTsAknqZItxw2
+	 Q/VIy8nA8rpzw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hannes Reinecke <hare@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
+Cc: Mario Limonciello <mario.limonciello@amd.com>,
+	Antheas Kapenekakis <lkml@antheas.dev>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	sagi@grimberg.me,
-	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 05/17] nvme: requeue namespace scan on missed AENs
-Date: Mon, 14 Apr 2025 09:30:36 -0400
-Message-Id: <20250414133048.680608-5-sashal@kernel.org>
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 06/17] ACPI: EC: Set ec_no_wakeup for Lenovo Go S
+Date: Mon, 14 Apr 2025 09:30:37 -0400
+Message-Id: <20250414133048.680608-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250414133048.680608-1-sashal@kernel.org>
 References: <20250414133048.680608-1-sashal@kernel.org>
@@ -67,40 +67,80 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.134
 Content-Transfer-Encoding: 8bit
 
-From: Hannes Reinecke <hare@kernel.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 9546ad1a9bda7362492114f5866b95b0ac4a100e ]
+[ Upstream commit b988685388effd648150aab272533f833a2a70f0 ]
 
-Scanning for namespaces can take some time, so if the target is
-reconfigured while the scan is running we may miss a Attached Namespace
-Attribute Changed AEN.
+When AC adapter is unplugged or plugged in EC wakes from HW sleep but
+APU doesn't enter back into HW sleep.
 
-Check if the NVME_AER_NOTICE_NS_CHANGED bit is set once the scan has
-finished, and requeue scanning to pick up any missed change.
+The reason this happens is that, when the APU exits HW sleep, the power
+rails controlled by the EC will power up the TCON.  The TCON has a GPIO
+that will be toggled at this time.  The GPIO is not marked as a wakeup
+source, but the GPIO controller still has an unserviced interrupt.
+Unserviced interrupts will block entering HW sleep again. Clearing the
+GPIO doesn't help as the TCON continues to assert it until it's been
+initialized by i2c-hid.
 
-Signed-off-by: Hannes Reinecke <hare@kernel.org>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixing this would require TCON F/W changes and it's already broken in
+the wild on production hardware.
+
+To avoid triggering this issue add a quirk to avoid letting EC wake
+up system at all.  The power button still works properly on this system.
+
+Reported-by: Antheas Kapenekakis <lkml@antheas.dev>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3929
+Link: https://github.com/bazzite-org/patchwork/commit/95b93b2852718ee1e808c72e6b1836da4a95fc63
+Co-developed-by: Antheas Kapenekakis <lkml@antheas.dev>
+Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/20250401133858.1892077-1-superm1@kernel.org
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/acpi/ec.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 6a636fe6506b4..ec73ec1cf0ff5 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -4704,6 +4704,10 @@ static void nvme_scan_work(struct work_struct *work)
- 	if (nvme_scan_ns_list(ctrl) != 0)
- 		nvme_scan_ns_sequential(ctrl);
- 	mutex_unlock(&ctrl->scan_lock);
-+
-+	/* Requeue if we have missed AENs */
-+	if (test_bit(NVME_AER_NOTICE_NS_CHANGED, &ctrl->events))
-+		nvme_queue_scan(ctrl);
- }
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index 63803091f8b1e..5776987390907 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -2260,6 +2260,34 @@ static const struct dmi_system_id acpi_ec_no_wakeup[] = {
+ 			DMI_MATCH(DMI_PRODUCT_FAMILY, "103C_5336AN HP ZHAN 66 Pro"),
+ 		},
+ 	},
++	/*
++	 * Lenovo Legion Go S; touchscreen blocks HW sleep when woken up from EC
++	 * https://gitlab.freedesktop.org/drm/amd/-/issues/3929
++	 */
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83L3"),
++		}
++	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83N6"),
++		}
++	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83Q2"),
++		}
++	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83Q3"),
++		}
++	},
+ 	{ },
+ };
  
- /*
 -- 
 2.39.5
 
