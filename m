@@ -1,107 +1,141 @@
-Return-Path: <stable+bounces-132670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABBD1A88CF9
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 22:23:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60710A88D9C
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 23:19:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42AD23B3D77
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 20:22:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F41803B4E6C
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 21:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A0D21DE4C2;
-	Mon, 14 Apr 2025 20:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57151E0DD8;
+	Mon, 14 Apr 2025 21:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FuVRJ46s"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JskgDtal"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33CE155C82;
-	Mon, 14 Apr 2025 20:23:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E84C17555
+	for <stable@vger.kernel.org>; Mon, 14 Apr 2025 21:18:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744662189; cv=none; b=dNy0Vv3RAQxK0o6K4WzrF2Sdn69Qb4b9XFu4ryCnOHIUeuqpJWhi1gCBFtSr1lzpIbkWxZZMLweNRyt/5HXJ5VLT1jAJjPBJzhNB3lMbmH9M9NiTWY5cfxDN1Ntlo7rpP7zDvSPgBgr+qWXgvTx2sn+QxYtKzxo+sY66rL5kuPo=
+	t=1744665535; cv=none; b=HTI9X3EJztWPnFdX6dYtmVraS4ii/Zre7Slk+Ai0nzy5I1qsRTh1I0ylS1tIHlOuox8lekhj+yya16dPc8UmibOK7eIln3pfwTiYTtsCJBRUKOAzO75Oq6EKwObFqune7e1vY46B1q2rlE5xTONjDFhP+wxkxDrXsS8sZN5mJt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744662189; c=relaxed/simple;
-	bh=pgwH9G9Z5XgUOKl+P79Q5KZCCe2yrjR8tSQ/gnwaIgI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cwXEVG3+VOoI8HBuArsE2HrKXdTWYk/Z1QjabqoJGZ7elZd7ECvUpM9skM4fB9my5fdbii++lagXtiCmaccQoBhcc0MWO38vNmvTEksZf62mjL8qBK2u+PUFUqGq7Q2056gQr2Qd5RJaZcTJxzYJLmBKDcDv4ICOTG+OOpbh6tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FuVRJ46s; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-af50aa04e07so394005a12.1;
-        Mon, 14 Apr 2025 13:23:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744662187; x=1745266987; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pgwH9G9Z5XgUOKl+P79Q5KZCCe2yrjR8tSQ/gnwaIgI=;
-        b=FuVRJ46skIff1rtH3B02ikEm9DCEwPZw8EpKjCkG8j6iJFV9sbE8QDtjtuYQVIkrbI
-         1bXtuAMchsHibEzuGfjNEzCXs/8LcLlAPO+xBrsbDtNhvMaz4rQxA1dVb2pCjuRXjZud
-         d3s/YqX6VQMlgJ9Yef42iT6aybAb+UO/spT6JdFPvM37eUieKSvyFdkLuJLDnern5jBz
-         Ga7aJ3XOwQadsAZpwR4CWWKHbiohDZGGjfYKfDq6UWbLUngBM+JrcxlKroPqFkboOW1k
-         NBF5MKmubpbUnXhfp3+TvS6KKUWYGKuPcJ1w+6C4MpPVKf5I3DPB7vg43n4tvKeQbshd
-         rKnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744662187; x=1745266987;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pgwH9G9Z5XgUOKl+P79Q5KZCCe2yrjR8tSQ/gnwaIgI=;
-        b=Z8dJaa4xc0//U7K6qLxAvCZ/aprlPanycbPo/AXJ9Bb/pgMHH2Jr9aSQZbY007RRcr
-         lCMyr6ibzox6yH+/y5NCCCeWsADc7SnV9zofl79CQ7vDY8JmemXu7SItP+Q4bXGtdMnG
-         QEM4DQScusw0Wx8tQvkkrDbmjkkQIwFaZw/FrqPoZPuVjEpANu1SrwEchQyHDRS862z1
-         LCoMgjeRuJGUF18U4stKZ+wcNwWbrsRKyyQB0n8HihmUpKWn61Ezl1E+Zvh5iPfFPsNg
-         bTqPdcUCr2oSHNxxXwTqenu+ijKx8DBoms4oeSwtTlboXLoXd8hJlGnakcgBWk7CMbdy
-         rQTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVLhfmWHTjkkl8s7OpP6Gp8kAb6Wy0Q08xGw1wj9Oh7RhMhM25oj/Vgyojw4++EHPTangkk6bWFHHsVhf8=@vger.kernel.org, AJvYcCVMe+NemWrxmwxHEUc0Hs3trNkB79YBl6phznUPCV6hZ/uhRH6eOJPQkBBTxJa/C94ADb8HoeDYujYHrUeCTlc=@vger.kernel.org, AJvYcCX/Ks4HJpNynh5GitVAs/HUUY/1UJ4jICNAzSEhPcf1kKLcBIA0nmubf1u9PEk70tQJqWa13iDOmHBUpwDD@vger.kernel.org, AJvYcCX90yFSbYFNXYeeNZ2Hz0PZ+liEBDkuYuU/A0URKZtkdN5hvdJUmNriQld7l3SZ/lSGstap6lhe@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyt3RyIEAFSj80DWJo7I5oIirrLtwi0g+X9odKGTtcYHSUzaBDq
-	D3CdLUbF7LYi91CvRr/xOSuNX5TyH2Q19jywjg9xF4dvWM9UbJLUs074XPCBtiTkoy3AIpkFHFW
-	/eLbqYDZBAMumLP0A13QzcQClIIo=
-X-Gm-Gg: ASbGnctGCaKqgU9NyLusIFbxEh27Ym6szj54b7uHvlYr7Y4/djnCmn9sP4xmiuvzAj9
-	1ZVfWY0f9SYtT8MAuDytFmoo3dx+5kIc8+mukTOhQw0sINp2bFf015hJxwx/SLCJvScGW4qfV+S
-	ZJoJ762fiCmmt1TjKrA+sUmss1X+R+Zuq0
-X-Google-Smtp-Source: AGHT+IE8lDVhXfx4QpCOlSPx0TEX0rr/XZDgXqRTo1W6pH6GeNLdFPig1QevSP2mJMRR4WS0tWFlOT00RW9nujyQbbo=
-X-Received: by 2002:a17:90b:1651:b0:2ff:5540:bb48 with SMTP id
- 98e67ed59e1d1-308237e291fmr7719166a91.8.1744662186769; Mon, 14 Apr 2025
- 13:23:06 -0700 (PDT)
+	s=arc-20240116; t=1744665535; c=relaxed/simple;
+	bh=YQ/06zfvEcF5UMcfQSij1aUf1GFr5wunJW2D9NZOJbo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YFGJK5Z33h/LQYSsKzEpZzvi74476cgFkHkj9NEML9N3Gy+O23JrxqxmmitARjz3mklTdsiglgB4UAvWpvWVREFKtQgHrHAOYRNQs0mVqoQ/3087gy43lrBIJiw5dpwSnRmHOHrL1gXhnfH30VIZQKaPfDMFUpffD5VomKYTBvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JskgDtal; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744665532;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=coS5bIjv+D/gf/yiERTG+K9wJBtK2z0KhS0caIojfFA=;
+	b=JskgDtalH8GcQoHQnQZFLACEr0yXbSf57iCbeT+OhY3ezGYgawdSVOEYustqHLl6OnB6uh
+	BlSd6b9cKTkK+Kv5DDGE1/d7shbFXzL0wd8RzOPi4aNij1eGGTvJeTcPvyrxz/xtWLPA0O
+	Vs6OSPpp7GWYGVfxhvrScCNpaO7namE=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-446-lbrIh1omMAuEXJ--FixISw-1; Mon,
+ 14 Apr 2025 17:18:48 -0400
+X-MC-Unique: lbrIh1omMAuEXJ--FixISw-1
+X-Mimecast-MFC-AGG-ID: lbrIh1omMAuEXJ--FixISw_1744665526
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F36CE18608CB;
+	Mon, 14 Apr 2025 21:18:35 +0000 (UTC)
+Received: from omen.home.shazbot.org (unknown [10.22.88.22])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 15B4F1809B73;
+	Mon, 14 Apr 2025 21:18:29 +0000 (UTC)
+From: Alex Williamson <alex.williamson@redhat.com>
+To: helgaas@kernel.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+	naravamudan@nvidia.com,
+	bhelgaas@google.com,
+	raphael.norwitz@nutanix.com,
+	ameynarkhede03@gmail.com,
+	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jgg@nvidia.com,
+	yishaih@nvidia.com,
+	shameerali.kolothum.thodi@huawei.com,
+	kevin.tian@intel.com,
+	kvm@vger.kernel.org,
+	cp@absolutedigital.net,
+	stable@vger.kernel.org
+Subject: [PATCH] Revert "PCI: Avoid reset when disabled via sysfs"
+Date: Mon, 14 Apr 2025 15:18:23 -0600
+Message-ID: <20250414211828.3530741-1-alex.williamson@redhat.com>
+In-Reply-To: <20250207205600.1846178-1-naravamudan@nvidia.com>
+References: <20250207205600.1846178-1-naravamudan@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250414171241.2126137-1-ojeda@kernel.org>
-In-Reply-To: <20250414171241.2126137-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 14 Apr 2025 22:22:54 +0200
-X-Gm-Features: ATxdqUG7GLyRN3-AU_RPemLfMtwDRsoWtduWsQR0UuCp1mItMnHU5tGCPliq59U
-Message-ID: <CANiq72kkXVLg8qaDmQj26Gi0jPZvqTad=qry5p5LnaOFnnWUkA@mail.gmail.com>
-Subject: Re: [PATCH] rust: kbuild: use `pound` to support GNU Make < 4.3
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Mon, Apr 14, 2025 at 7:13=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> Reported-by: moyi geek
+This reverts commit 479380efe1625e251008d24b2810283db60d6fcd.
 
-moyi told me it is OK to add the email from Zulip, so:
+The reset_method attribute on a PCI device is only intended to manage
+the availability of function scoped resets for a device.  It was never
+intended to restrict resets targeting the bus or slot.
 
-Reported-by: moyi geek <1441339168@qq.com>
+In introducing a restriction that each device must support function
+level reset by testing pci_reset_supported(), we essentially create a
+catch-22, that a device must have a function scope reset in order to
+support bus/slot reset, when we use bus/slot reset to effect a reset
+of a device that does not support a function scoped reset, especially
+multi-function devices.
 
-Cheers,
-Miguel
+This breaks the majority of uses cases where vfio-pci uses bus/slot
+resets to manage multifunction devices that do not support function
+scoped resets.
+
+Fixes: 479380efe162 ("PCI: Avoid reset when disabled via sysfs")
+Reported-by: Cal Peake <cp@absolutedigital.net>
+Link: https://lore.kernel.org/all/808e1111-27b7-f35b-6d5c-5b275e73677b@absolutedigital.net
+Cc: stable@vger.kernel.org
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+---
+ drivers/pci/pci.c | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 4d7c9f64ea24..e77d5b53c0ce 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -5429,8 +5429,6 @@ static bool pci_bus_resettable(struct pci_bus *bus)
+ 		return false;
+ 
+ 	list_for_each_entry(dev, &bus->devices, bus_list) {
+-		if (!pci_reset_supported(dev))
+-			return false;
+ 		if (dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
+ 		    (dev->subordinate && !pci_bus_resettable(dev->subordinate)))
+ 			return false;
+@@ -5507,8 +5505,6 @@ static bool pci_slot_resettable(struct pci_slot *slot)
+ 	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
+ 		if (!dev->slot || dev->slot != slot)
+ 			continue;
+-		if (!pci_reset_supported(dev))
+-			return false;
+ 		if (dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
+ 		    (dev->subordinate && !pci_bus_resettable(dev->subordinate)))
+ 			return false;
+-- 
+2.48.1
+
 
