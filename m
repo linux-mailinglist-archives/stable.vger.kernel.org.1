@@ -1,70 +1,67 @@
-Return-Path: <stable+bounces-132652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83552A88995
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 19:19:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4385A88974
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 19:13:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC6021896DEC
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 17:19:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A74CE7A5181
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 17:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 758A7289342;
-	Mon, 14 Apr 2025 17:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE57C289344;
+	Mon, 14 Apr 2025 17:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b="mC0xs/5P"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R1ijFpYf"
 X-Original-To: stable@vger.kernel.org
-Received: from forward205b.mail.yandex.net (forward205b.mail.yandex.net [178.154.239.152])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F31028469A;
-	Mon, 14 Apr 2025 17:18:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0EA1F236B;
+	Mon, 14 Apr 2025 17:13:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744651139; cv=none; b=O53JQ5wbdjhFAy0aNK7Lf6+5jcPx6hLoSWgx7Pfn6e27G3zO2rfWT55jGCStvn/9Z+k6nVW5IgG+GzBGvkVxBn1OL1OlwWCvF2FdWGE5dUWvlgVS8ZeB2QtrPOIBBU5HA3yK1OmfMc5/ZldfwEA1fR5ND1R0BV7CuLpHuh1sV/Y=
+	t=1744650785; cv=none; b=MCR4ZS/ePrGmAQVD8VfW78kACNOYa5sYM47tWehz4+0QCiFtz7BiUXgyKSFpMllAAsMj2k7iM1V/rrKGMg9lknPY8T7U0vs+R1OhiviZT6QKv31XHYwG/vX2WWOIOfgo5hVeb/2KsXUcoxJCGvZtM7B4/IcsEaU2ulc0SVaH1+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744651139; c=relaxed/simple;
-	bh=G77ROff31km5oic0MrLl+7V+X9eKW5/vOe5Aa4RAjlQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LEDfuewna9zvZstqmaXBHNw/HLrPX7YyPH+GX8+NoBWKilldbWBg+WXwuFeSeNMwkv11xAE1ZgoekwVUP9UMMv+RkZ/8+ro3XF2YIDP6mtZShuW8E+6SSkzlGt3XuWCJ6wgD4t1Zf1rHWKS0rJ9ORz3Lt3yhgpDW8G1SccsIGWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru; spf=pass smtp.mailfrom=rosa.ru; dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b=mC0xs/5P; arc=none smtp.client-ip=178.154.239.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosa.ru
-Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d102])
-	by forward205b.mail.yandex.net (Yandex) with ESMTPS id 1DE766522C;
-	Mon, 14 Apr 2025 20:12:38 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net [IPv6:2a02:6b8:c11:3fa3:0:640:b228:0])
-	by forward102b.mail.yandex.net (Yandex) with ESMTPS id A739C609D3;
-	Mon, 14 Apr 2025 20:12:29 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id PCKvQd1LmW20-QSrumStn;
-	Mon, 14 Apr 2025 20:12:28 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosa.ru; s=mail;
-	t=1744650748; bh=wFx6lLFV+QupO4M4+wLGufqzKiqBmpx6VWXYCXbP+dU=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=mC0xs/5PO+JAudJ+Yfo9WY73Caa8C77wLAUOratA0i1DxX58kUOHYB08BT86W/8rZ
-	 b7Ze9gTt3vwiUaatGbBJEpqutn8ETFPW1/SdRvqgKgS2f3mYtrwLDstFoDcZc266mB
-	 aOTD0DM6Pn8wLoZfUImzgUo2kaBN7i22r5JeJ0Tg=
-Authentication-Results: mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net; dkim=pass header.i=@rosa.ru
-From: Mikhail Lobanov <m.lobanov@rosa.ru>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Mikhail Lobanov <m.lobanov@rosa.ru>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	kvm@vger.kernel.org,
+	s=arc-20240116; t=1744650785; c=relaxed/simple;
+	bh=ylkQokXT4qhYAlggPHU4HculS2KKVxH752KsAb9kliU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tKQoyr/Fyd3ESF7KC36N5cTB52M8dADzf8TTQDkkEPS3xN70FPpGdLLX30HP8k9LOX5Wjh9AMxBq3bhM8Zbk7W+1UOM03tNyc3WILe3/V8muY4zRVMOglc8ENkySOTKZQAHwBngNvWGPgoRw1L8ZrPrGIJQzGHwnoRmBwY5ubVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R1ijFpYf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E94C6C4CEE2;
+	Mon, 14 Apr 2025 17:13:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744650785;
+	bh=ylkQokXT4qhYAlggPHU4HculS2KKVxH752KsAb9kliU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=R1ijFpYfQGhA6bq6WujhrBCMnc8WkmPCNhW+TkcHzBFk/1bU2Sjt9oBjqlpy0Lgyx
+	 +ys5PyBw1DFaFUCBTS3sMFGYyFmA3U2smH8WWtU4IpS62PRUt/p0jslfUJdkdJzJad
+	 VH4Fm5Z6PXzJOM0E/STafPiIBsNHKip2IaA2fcWe9kfIlQjG0RZ+o72JXR0bqd1U8S
+	 7cWd2GQVoldAYCXWbLfMygg/v6mBoJGmiYPE5eXnWqpWSl6Tll7bhFuLUUUI2PGZFC
+	 rJEtGU2RVsEOKk5JVdvgssbKaWfxl+TKzdVF/jw9wCtCZ9BfPrjFgji30Nj2dFt4sj
+	 rCYyn4nbLhmfA==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Masahiro Yamada <masahiroy@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	linux-kbuild@vger.kernel.org,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
+	patches@lists.linux.dev,
 	stable@vger.kernel.org
-Subject: [PATCH v3] KVM: SVM: forcibly leave SMM mode on vCPU reset
-Date: Mon, 14 Apr 2025 20:12:06 +0300
-Message-ID: <20250414171207.155121-1-m.lobanov@rosa.ru>
-X-Mailer: git-send-email 2.47.2
+Subject: [PATCH] rust: kbuild: use `pound` to support GNU Make < 4.3
+Date: Mon, 14 Apr 2025 19:12:41 +0200
+Message-ID: <20250414171241.2126137-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,104 +70,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Previously, commit ed129ec9057f ("KVM: x86: forcibly leave nested mode
-on vCPU reset") addressed an issue where a triple fault occurring in
-nested mode could lead to use-after-free scenarios. However, the commit
-did not handle the analogous situation for System Management Mode (SMM).
+GNU Make 4.3 changed the behavior of `#` inside commands in commit
+c6966b323811 ("[SV 20513] Un-escaped # are not comments in function
+invocations"):
 
-This omission results in triggering a WARN when a vCPU reset occurs
-while still in SMM mode, due to the check in kvm_vcpu_reset(). This
-situation was reprodused using Syzkaller by:
-1) Creating a KVM VM and vCPU
-2) Sending a KVM_SMI ioctl to explicitly enter SMM
-3) Executing invalid instructions causing consecutive exceptions and
-eventually a triple fault
+    * WARNING: Backward-incompatibility!
+      Number signs (#) appearing inside a macro reference or function invocation
+      no longer introduce comments and should not be escaped with backslashes:
+      thus a call such as:
+        foo := $(shell echo '#')
+      is legal.  Previously the number sign needed to be escaped, for example:
+        foo := $(shell echo '\#')
+      Now this latter will resolve to "\#".  If you want to write makefiles
+      portable to both versions, assign the number sign to a variable:
+        H := \#
+        foo := $(shell echo '$H')
+      This was claimed to be fixed in 3.81, but wasn't, for some reason.
+      To detect this change search for 'nocomment' in the .FEATURES variable.
 
-The issue manifests as follows:
+Unlike other commits in the kernel about this issue, such as commit
+633174a7046e ("lib/raid6/test/Makefile: Use $(pound) instead of \#
+for Make 4.3"), that fixed the issue for newer GNU Makes, in our case
+it was the opposite, i.e. we need to fix it for the older ones: someone
+building with e.g. 4.2.1 gets the following error:
 
-WARNING: CPU: 0 PID: 25506 at arch/x86/kvm/x86.c:12112
-kvm_vcpu_reset+0x1d2/0x1530 arch/x86/kvm/x86.c:12112
-Modules linked in:
-CPU: 0 PID: 25506 Comm: syz-executor.0 Not tainted
-6.1.130-syzkaller-00157-g164fe5dde9b6 #0
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
-BIOS 1.12.0-1 04/01/2014
-RIP: 0010:kvm_vcpu_reset+0x1d2/0x1530 arch/x86/kvm/x86.c:12112
-Call Trace:
- <TASK>
- shutdown_interception+0x66/0xb0 arch/x86/kvm/svm/svm.c:2136
- svm_invoke_exit_handler+0x110/0x530 arch/x86/kvm/svm/svm.c:3395
- svm_handle_exit+0x424/0x920 arch/x86/kvm/svm/svm.c:3457
- vcpu_enter_guest arch/x86/kvm/x86.c:10959 [inline]
- vcpu_run+0x2c43/0x5a90 arch/x86/kvm/x86.c:11062
- kvm_arch_vcpu_ioctl_run+0x50f/0x1cf0 arch/x86/kvm/x86.c:11283
- kvm_vcpu_ioctl+0x570/0xf00 arch/x86/kvm/../../../virt/kvm/kvm_main.c:4122
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:870 [inline]
- __se_sys_ioctl fs/ioctl.c:856 [inline]
- __x64_sys_ioctl+0x19a/0x210 fs/ioctl.c:856
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+    scripts/Makefile.compiler:81: *** unterminated call to function 'call': missing ')'.  Stop.
 
-Architecturally, hardware CPUs exit SMM upon receiving a triple
-fault as part of a hardware reset. To reflect this behavior and
-avoid triggering the WARN, this patch explicitly calls
-kvm_smm_changed(vcpu, false) in the SVM-specific shutdown_interception()
-handler prior to resetting the vCPU.
+Thus use the existing variable to fix it.
 
-The initial version of this patch attempted to address the issue by calling
-kvm_smm_changed() inside kvm_vcpu_reset(). However, this approach was not
-architecturally accurate, as INIT is blocked during SMM and SMM should not
-be exited implicitly during a generic vCPU reset. This version moves the
-fix into shutdown_interception() for SVM, where the triple fault is
-actually handled, and where exiting SMM explicitly is appropriate.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: ed129ec9057f ("KVM: x86: forcibly leave nested mode on vCPU reset")
+Reported-by: moyi geek
+Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/291565/topic/x/near/512001985
 Cc: stable@vger.kernel.org
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
+Fixes: e72a076c620f ("kbuild: fix issues with rustc-option")
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
-v2: Move SMM exit from kvm_vcpu_reset() to SVM's shutdown_interception(), 
-per suggestion from Sean Christopherson <seanjc@google.com>.
-v3: -Export kvm_smm_changed() using EXPORT_SYMBOL_GPL.
--Wrap the call to kvm_smm_changed() in svm.c with #ifdef CONFIG_KVM_SMM 
-to avoid build errors when SMM support is disabled.
+ scripts/Makefile.compiler | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- arch/x86/kvm/smm.c     | 1 +
- arch/x86/kvm/svm/svm.c | 4 ++++
- 2 files changed, 5 insertions(+)
+diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
+index 7ed7f92a7daa..f4fcc1eaaeae 100644
+--- a/scripts/Makefile.compiler
++++ b/scripts/Makefile.compiler
+@@ -79,7 +79,7 @@ ld-option = $(call try-run, $(LD) $(KBUILD_LDFLAGS) $(1) -v,$(1),$(2),$(3))
+ # Usage: MY_RUSTFLAGS += $(call __rustc-option,$(RUSTC),$(MY_RUSTFLAGS),-Cinstrument-coverage,-Zinstrument-coverage)
+ # TODO: remove RUSTC_BOOTSTRAP=1 when we raise the minimum GNU Make version to 4.4
+ __rustc-option = $(call try-run,\
+-	echo '#![allow(missing_docs)]#![feature(no_core)]#![no_core]' | RUSTC_BOOTSTRAP=1\
++	echo '$(pound)![allow(missing_docs)]$(pound)![feature(no_core)]$(pound)![no_core]' | RUSTC_BOOTSTRAP=1\
+ 	$(1) --sysroot=/dev/null $(filter-out --sysroot=/dev/null --target=%,$(2)) $(3)\
+ 	--crate-type=rlib --out-dir=$(TMPOUT) --emit=obj=- - >/dev/null,$(3),$(4))
+ 
 
-diff --git a/arch/x86/kvm/smm.c b/arch/x86/kvm/smm.c
-index 699e551ec93b..9864c057187d 100644
---- a/arch/x86/kvm/smm.c
-+++ b/arch/x86/kvm/smm.c
-@@ -131,6 +131,7 @@ void kvm_smm_changed(struct kvm_vcpu *vcpu, bool entering_smm)
- 
- 	kvm_mmu_reset_context(vcpu);
- }
-+EXPORT_SYMBOL_GPL(kvm_smm_changed);
- 
- void process_smi(struct kvm_vcpu *vcpu)
- {
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index d5d0c5c3300b..c5470d842aed 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -2231,6 +2231,10 @@ static int shutdown_interception(struct kvm_vcpu *vcpu)
- 	 */
- 	if (!sev_es_guest(vcpu->kvm)) {
- 		clear_page(svm->vmcb);
-+#ifdef CONFIG_KVM_SMM
-+		if (is_smm(vcpu))
-+			kvm_smm_changed(vcpu, false);
-+#endif
- 		kvm_vcpu_reset(vcpu, true);
- 	}
- 
+base-commit: a3cd5f507b72c0532c3345b6913557efab34f405
 -- 
-2.47.2
+2.49.0
 
 
