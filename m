@@ -1,73 +1,68 @@
-Return-Path: <stable+bounces-132502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFDB5A882A6
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:40:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 673C3A882A8
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:41:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 003ED1688C9
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:38:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADDF6178FAD
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:38:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95BBA28E604;
-	Mon, 14 Apr 2025 13:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D7F101EE;
+	Mon, 14 Apr 2025 13:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WAauo3Qp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ixdHXDA1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5046C28E602;
-	Mon, 14 Apr 2025 13:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909BC28E61A;
+	Mon, 14 Apr 2025 13:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637283; cv=none; b=TiG8ezraEJKhbDkFOO77xBLPX/Pz/L5IoJuE4xT19AhMLVqqwjX0uvJYGTnmrbsHWG42K8DUeCsoYcVPwHdDHdAykm3kdAmcGDp8zfcPOvlxD4RWFCCzsvumdVHMdwcOK1syMtbCJYn3OB8SKJgvrN7k8eJMMT5Jtfr2bB6UsLU=
+	t=1744637287; cv=none; b=eKaUfcN1iz63ww/shBtpyND+J1fvWl0uJdHlNsxEespRXLxB9rjsFHHTplWs8nefCLWoHFNLfx0WLGVGjDU7GJSwbC7FeYqQnYO2oJF8k/O2/C0toMvY7ZqDM4yPk6/5z8bcDD6qd+plcCubVe22yRdQGgrHMd1Z6I62eFUvoX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637283; c=relaxed/simple;
-	bh=yiCakT6a87ff4mYqOlpsOl3qr/fZmE8zhLmyzevO6Dw=;
+	s=arc-20240116; t=1744637287; c=relaxed/simple;
+	bh=c4bb7948CzGoj3oK8R1FhfxFgh0zTsJGIPCWe8mgqO0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pX0C9K6zpKi2w761+HIQ43ig+8sKSZG3bP2eiRJoQPaxnDI2YVRDSDkH5+EBSoqnI8jE+24YcKPZxTwuaSHhrbt7RdWA6TayZWZ/aKwElNS8GueFORas6eUwWu4aG3lFFPVntbsNJgg89fO9sgoGcbSeA3hKLwkLk5bwWVPw3Do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WAauo3Qp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3609AC4CEE2;
-	Mon, 14 Apr 2025 13:28:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SwWwrwMNdxBHhAimuUagUDNP5nTPiyxcnDW4cDYk7s5OjDkJ50ePxzT38r67YAy7Fm0Rz/uk05JyfREd57NgqGn72DOELtg5kZZZ3F9UA0SkeYJXsR1dM5Ey8mOT1rvN2AmerTlLzclWI6PTGtI3Clqy+pecLoGxMHcyb8NdohU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ixdHXDA1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D028C4CEEC;
+	Mon, 14 Apr 2025 13:28:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744637283;
-	bh=yiCakT6a87ff4mYqOlpsOl3qr/fZmE8zhLmyzevO6Dw=;
+	s=k20201202; t=1744637287;
+	bh=c4bb7948CzGoj3oK8R1FhfxFgh0zTsJGIPCWe8mgqO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WAauo3QpKGw0ANmL4Uv6QVNkffFnFDZP22lU4mcN2ATyS7iRe059VFqAN/O9GBGyZ
-	 1XMFLIM+k5qTpKb0Eqjc+MXaxd6lYbPESjkJUFlMxswoEOs/aEIff+98KSzAddHVNC
-	 1SKsE1oqPE3CfOIiDE79jvzI8DPMJzKtjTsCYDxuwWtKVMp9m6dDV6rWRwQML0c2vy
-	 YGBJnDLEGWiN/9Mjjw6q/eIEuDHZ8oxggCTU/dCANJFTDr3mxEkQ0/jy/pPH5MWVBk
-	 ejdGz28vDzZmBgoafJswwtEbb5tU5+a48VQP0Whfbt1XzdRRaSbEL6BTvsmhZvHezt
-	 +yu1K+ogniHkw==
+	b=ixdHXDA1oaXbJ/ajJJx/tnZGSTWVfbw19e9orAdL7Oik1ZXGBOEtcZBxtTS0JnMbo
+	 Yoa5S5s8606JbsHIbZB9b+SkLGk3TEnYNaSixzpjHYd6whDPzHhdWz5MEk3o/yyvcR
+	 JDnGmUJxpA1vyTKGjbQMorGbrluD5mhbGI7XQWDM6/ZFUtVDWR/k4ItyPyW8xvYYmM
+	 e+NEdtvKt5Wp1zTS3HWu3RTPYxrvUkqAUeOVmtsTqRQ6xrBsDBMwomele/SgzcYHFl
+	 VXnNRgZcOoijVxknRrtSGMo1CD4wI8ek9sM2yHPweRLsXNGhRh9o0NC23CbjzMpRyx
+	 sLVBQEN209/BQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jay Cornwall <jay.cornwall@amd.com>,
-	Kent Russell <kent.russell@amd.com>,
-	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+Cc: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Pak Nin Lui <pak.lui@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	christian.koenig@amd.com,
 	airlied@gmail.com,
 	simona@ffwll.ch,
-	lijo.lazar@amd.com,
-	Hawking.Zhang@amd.com,
-	sunil.khatri@amd.com,
-	srinivasan.shanmugam@amd.com,
-	Jesse.zhang@amd.com,
-	linux@treblig.org,
-	zhangzekun11@huawei.com,
-	victor.skvortsov@amd.com,
-	rajneesh.bhardwaj@amd.com,
+	sumit.semwal@linaro.org,
 	Yunxiang.Li@amd.com,
-	tim.huang@amd.com,
+	tvrtko.ursulin@igalia.com,
+	matthew.auld@intel.com,
 	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.13 14/34] drm/amdgpu: Increase KIQ invalidate_tlbs timeout
-Date: Mon, 14 Apr 2025 09:27:08 -0400
-Message-Id: <20250414132729.679254-14-sashal@kernel.org>
+	dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org
+Subject: [PATCH AUTOSEL 6.13 15/34] drm/amdgpu: allow pinning DMA-bufs into VRAM if all importers can do P2P
+Date: Mon, 14 Apr 2025 09:27:09 -0400
+Message-Id: <20250414132729.679254-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250414132729.679254-1-sashal@kernel.org>
 References: <20250414132729.679254-1-sashal@kernel.org>
@@ -77,88 +72,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.11
 Content-Transfer-Encoding: 8bit
 
-From: Jay Cornwall <jay.cornwall@amd.com>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit 3666ed821832f42baaf25f362680dda603cde732 ]
+[ Upstream commit f5e7fabd1f5c65b2e077efcdb118cfa67eae7311 ]
 
-KIQ invalidate_tlbs request has been seen to marginally exceed the
-configured 100 ms timeout on systems under load.
+Try pinning into VRAM to allow P2P with RDMA NICs without ODP
+support if all attachments can do P2P. If any attachment can't do
+P2P just pin into GTT instead.
 
-All other KIQ requests in the driver use a 10 second timeout. Use a
-similar timeout implementation on the invalidate_tlbs path.
-
-v2: Poll once before msleep
-v3: Fix return value
-
-Signed-off-by: Jay Cornwall <jay.cornwall@amd.com>
-Cc: Kent Russell <kent.russell@amd.com>
-Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Acked-by: Simona Vetter <simona.vetter@ffwll.ch>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Tested-by: Pak Nin Lui <pak.lui@amd.com>
+Cc: Simona Vetter <simona.vetter@ffwll.ch>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu.h     |  1 -
- drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c | 19 ++++++++++++++-----
- 2 files changed, 14 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c | 25 +++++++++++++++------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-index 4653a8d2823a6..d5514b5ac1239 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-@@ -352,7 +352,6 @@ enum amdgpu_kiq_irq {
- 	AMDGPU_CP_KIQ_IRQ_DRIVER0 = 0,
- 	AMDGPU_CP_KIQ_IRQ_LAST
- };
--#define SRIOV_USEC_TIMEOUT  1200000 /* wait 12 * 100ms for SRIOV */
- #define MAX_KIQ_REG_WAIT       5000 /* in usecs, 5ms */
- #define MAX_KIQ_REG_BAILOUT_INTERVAL   5 /* in msecs, 5ms */
- #define MAX_KIQ_REG_TRY 1000
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-index 1c19a65e65533..ef74259c448d7 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-@@ -678,12 +678,10 @@ int amdgpu_gmc_flush_gpu_tlb_pasid(struct amdgpu_device *adev, uint16_t pasid,
- 				   uint32_t flush_type, bool all_hub,
- 				   uint32_t inst)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
+index 8e81a83d37d84..83390143c2e9f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
+@@ -72,11 +72,25 @@ static int amdgpu_dma_buf_attach(struct dma_buf *dmabuf,
+  */
+ static int amdgpu_dma_buf_pin(struct dma_buf_attachment *attach)
  {
--	u32 usec_timeout = amdgpu_sriov_vf(adev) ? SRIOV_USEC_TIMEOUT :
--		adev->usec_timeout;
- 	struct amdgpu_ring *ring = &adev->gfx.kiq[inst].ring;
- 	struct amdgpu_kiq *kiq = &adev->gfx.kiq[inst];
- 	unsigned int ndw;
--	int r;
-+	int r, cnt = 0;
- 	uint32_t seq;
+-	struct drm_gem_object *obj = attach->dmabuf->priv;
+-	struct amdgpu_bo *bo = gem_to_amdgpu_bo(obj);
++	struct dma_buf *dmabuf = attach->dmabuf;
++	struct amdgpu_bo *bo = gem_to_amdgpu_bo(dmabuf->priv);
++	u32 domains = bo->preferred_domains;
  
- 	/*
-@@ -740,10 +738,21 @@ int amdgpu_gmc_flush_gpu_tlb_pasid(struct amdgpu_device *adev, uint16_t pasid,
+-	/* pin buffer into GTT */
+-	return amdgpu_bo_pin(bo, AMDGPU_GEM_DOMAIN_GTT);
++	dma_resv_assert_held(dmabuf->resv);
++
++	/*
++	 * Try pinning into VRAM to allow P2P with RDMA NICs without ODP
++	 * support if all attachments can do P2P. If any attachment can't do
++	 * P2P just pin into GTT instead.
++	 */
++	list_for_each_entry(attach, &dmabuf->attachments, node)
++		if (!attach->peer2peer)
++			domains &= ~AMDGPU_GEM_DOMAIN_VRAM;
++
++	if (domains & AMDGPU_GEM_DOMAIN_VRAM)
++		bo->flags |= AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED;
++
++	return amdgpu_bo_pin(bo, domains);
+ }
  
- 		amdgpu_ring_commit(ring);
- 		spin_unlock(&adev->gfx.kiq[inst].ring_lock);
--		if (amdgpu_fence_wait_polling(ring, seq, usec_timeout) < 1) {
-+
-+		r = amdgpu_fence_wait_polling(ring, seq, MAX_KIQ_REG_WAIT);
-+
-+		might_sleep();
-+		while (r < 1 && cnt++ < MAX_KIQ_REG_TRY &&
-+		       !amdgpu_reset_pending(adev->reset_domain)) {
-+			msleep(MAX_KIQ_REG_BAILOUT_INTERVAL);
-+			r = amdgpu_fence_wait_polling(ring, seq, MAX_KIQ_REG_WAIT);
-+		}
-+
-+		if (cnt > MAX_KIQ_REG_TRY) {
- 			dev_err(adev->dev, "timeout waiting for kiq fence\n");
- 			r = -ETIME;
--		}
-+		} else
-+			r = 0;
+ /**
+@@ -131,9 +145,6 @@ static struct sg_table *amdgpu_dma_buf_map(struct dma_buf_attachment *attach,
+ 		r = ttm_bo_validate(&bo->tbo, &bo->placement, &ctx);
+ 		if (r)
+ 			return ERR_PTR(r);
+-
+-	} else if (bo->tbo.resource->mem_type != TTM_PL_TT) {
+-		return ERR_PTR(-EBUSY);
  	}
  
- error_unlock_reset:
+ 	switch (bo->tbo.resource->mem_type) {
 -- 
 2.39.5
 
