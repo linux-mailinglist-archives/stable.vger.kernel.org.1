@@ -1,215 +1,157 @@
-Return-Path: <stable+bounces-132630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03867A88497
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 16:22:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D751A8856C
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 16:43:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E4801889AFE
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 14:16:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4017856297C
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 14:29:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D84982522B9;
-	Mon, 14 Apr 2025 13:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 197432D0A49;
+	Mon, 14 Apr 2025 14:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m0NuMVO2"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CP0V714z"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8556D25229C;
-	Mon, 14 Apr 2025 13:52:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244972D0A4B
+	for <stable@vger.kernel.org>; Mon, 14 Apr 2025 14:06:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744638758; cv=none; b=Tm/6l+ecNzb5eAbwS4eFvgAxCwsgwyMAGoZWVGh2xzXjFNfwjgOCqcnehS5jymLTPcI3MBn7PDgl3xDsgi/SaI6CDCKqr4mzJZSaedmT+iNYCNaSBG9Vx7fsMnR30z1jkyjVFSDgmSqMskqW17S5RKX5hrIBBeD5hULGo5D33V4=
+	t=1744639563; cv=none; b=RYOhSKDSdfbE6B9JsddboCdty0bE3iVkBcWN2LPQrt7U7qAeqU6th8GuZpdhXODGz7O1x/5IuHCyqsmQzHStE24mVExCnHtA4OOqZZKwWls+zT99+W62Nw/J6AOfcDZ56ENvmL/Dz+zdCwaVC8TKYgZ8aK6/YEYaO2CBPwS3uLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744638758; c=relaxed/simple;
-	bh=ua8cASNkPaWRfa3lb5p4l80TaaxTdU9VK5enTPHP22U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RmcLoCYPMx8bP9D0Ut79TVHPMYX8OqLizKZI7QgewbXbTb7mi3+wMk4eCrqasDQdFlEdmZEup005TfaS5n76webK8u7aOPqvmQMDK+KHJa/z48kyt0LADBVI3GBv0gqxQPQwVWsjWzVPGsNwm0poYjHgK41OK8bpTng4XLQ4ytU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m0NuMVO2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04825C4CEED;
-	Mon, 14 Apr 2025 13:52:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744638758;
-	bh=ua8cASNkPaWRfa3lb5p4l80TaaxTdU9VK5enTPHP22U=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=m0NuMVO26ktidw9tegT2dsWUHdlydwNaqfHnjdcVc3u1AdX3nP9ymx5Yx06eUhAwr
-	 d5dyW7yEEDBPaPPmzrmDTVJ1JO5U37iebS9J1aE0dza8PPSYHV45YQAWvC9HXptWuf
-	 Xc/J7GIVQ0DuAtZEdNVfceNsTYUo58uxOYb36I7wbU3wRgULo+V55zl2Cn1CdI1bx8
-	 719McGg+A+Z/fXu+j+7BaYwLhkBPlXhO8cgIbmMqS9f5+eFeuJatPjShhFU2yImCre
-	 UAZaMrZ6+7mttz6LxuaVizP40/4XYFBRyDttkKJrXTx5Lq4XLLpvng3oqnvopkrvWq
-	 tTXnVrA7V3Gfw==
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ac29fd22163so690414966b.3;
-        Mon, 14 Apr 2025 06:52:37 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVMLlrzCqqppRRknQ8FHCrxRUVe2RGw6LGjwmfXsZzch+mHAEKHqxlPeUD0tNBZo40nj7ZvV3eACw==@vger.kernel.org, AJvYcCVptBw6O/LLy4Iq8hl8iVu+4VrarZ4qn8cP+5sO/XexJ6ZX3H5R4d+4G/ONpR68vYpPaFSCUUHk@vger.kernel.org, AJvYcCX47vhs1m6BqYYvPk1IlHye9tAMHFYRCSzZWZh56vZyF74mFRv7lj6Yp4b7jpCfRaCJUHNRM5hRIsBiHuJO@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywy54qMwCfx0gsPsDkB3Aj5cIZ7gy4n3+6wPr2xQ0ElOOoRUG3P
-	qZo7LrGGPPNZdp5EguieOHvVDfCJ9Hw1dQlDzeCTnN40Z7XmVkh/FKKH5Tvi4SBBSJY7eMT0UaL
-	5KBZ23X55yiOWsXPqEeJgONNMWzI=
-X-Google-Smtp-Source: AGHT+IEb9cXahzO8rO6tTtsRYaxmrd0g3AGSHrWP5pO4nON1SGuxFGxFHtpFDvEAu9sp8G1Us6/u8WHw7IosPBIF6N0=
-X-Received: by 2002:a17:906:f585:b0:ac7:3912:5ea8 with SMTP id
- a640c23a62f3a-acad371af0amr1104496566b.61.1744638756467; Mon, 14 Apr 2025
- 06:52:36 -0700 (PDT)
+	s=arc-20240116; t=1744639563; c=relaxed/simple;
+	bh=1Tpyq5xBZ9bBoXA1okFnsjXuvR0LvRO7JEf1SqZG1A0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Qjl7YDCSJl8GOKvS6I1SIP5W4YI+tBtJvlU0XpSmusgqCuLxGt7FuleDj4/QI/99zofvgSMtTQUPkIxJ165gemzoqIuEQb1/4uSEUeJ3Gon7HpBj+td5nj8Oko7OzDuMxlR/joU/jtAMJWQo0JTWhctZ9WB6gaaaZuNcc9kOueg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CP0V714z; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3913aea90b4so1884054f8f.2
+        for <stable@vger.kernel.org>; Mon, 14 Apr 2025 07:06:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1744639560; x=1745244360; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pquPnA1PEeiSIlwvjcbZGrtyLxq30mwUO7DzjIyEInU=;
+        b=CP0V714zVRvI6BPoFKJv/511uVdtY2KKjP4J5SRbnEKmAbGQGsEaCJhVwlg3DsMa+m
+         6se662E0q3EkwI8bI3zQx8ljO+zgXKMb4BT/3nynxDTC6qxDCjxc7XWfeZo80ny/WGDt
+         +FJxDxAa53aQxF+hf1IBrCB7bBnzEQbT2Su06hXDjNIrLnBI5FG+mkHFxUM9PDnfPe12
+         EwwJbxnAxXuzxINt8s1diavKHShPAVa6ASO9XtWGZvbpoLIp41KqbqqCz5nTOLxTeoWH
+         ToKtDrzLDczrBn1ZyzD6Y/y3ntjH7TJdGcM00nNBKYTy/54lScYYlCgkY8fyVDpWWmJi
+         9SkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744639560; x=1745244360;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=pquPnA1PEeiSIlwvjcbZGrtyLxq30mwUO7DzjIyEInU=;
+        b=KrdKkhgBsgiPOSORyhts7VBFexKv0yGEnlmaiWdYSfdY/57q7xz53q61zOEu/cn097
+         vPKFv18jmnhfEPo1IrpF0Id+0MzWi5QFFuEwpP0WKm9fEe91OWFyJCc9u1rEbn0eivVl
+         cl06Uhq7a9LNxTieL8peVGwTNqdU6JMuruaUuQCaSYdBxHzancqu6A7AILxKr5IUU7Qu
+         SX2N7c071Eh6O8/GMPQdZNPZYOACg3M4O84UqumzzrTxdnrdhebPdUfxGUQLhT4jnt6/
+         zH0Ef/oIescVbdOWIIJEDVqNG2gj9UFH/IWNpDRhZ3lEOWtriM0XrZGNt+SFTVKlioVl
+         AHgg==
+X-Forwarded-Encrypted: i=1; AJvYcCWpl7NkM8ugLwRSRP1Zj6Ro8twRR5TYCn6DVcd8fGYkBSYXoR4RlKmLx5EiClnnx/5IurPTWKA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkURA51IDvGlr839+Ljry4Hi0S7NDN5ZzeFQ+475T/3TR2oiLS
+	lkSRgwNfsfdQzGFmm/X4ScQgs294zheceI4oxuM+NKQV1tjnZgWsxl8n74g7QFxSEv2IDN7R1np
+	tJWgOfOp93pijxQ==
+X-Google-Smtp-Source: AGHT+IGQbHeuxbBbZFXwHsYpF9g2N88M1bkKFXroszwDXJntxCkbevVk0P6QDHTRfo+/ugItOAMd6LUWJaI08es=
+X-Received: from wmbev15.prod.google.com ([2002:a05:600c:800f:b0:43d:7e5:30f0])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:2483:b0:39a:d32c:fb5e with SMTP id ffacd0b85a97d-39ea51f577emr9570064f8f.21.1744639560478;
+ Mon, 14 Apr 2025 07:06:00 -0700 (PDT)
+Date: Mon, 14 Apr 2025 14:05:58 +0000
+In-Reply-To: <D94KNIHTJOWU.1EHA7217LSC4S@proton.me>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250319064031.2971073-1-chenhuacai@loongson.cn>
- <20250319064031.2971073-4-chenhuacai@loongson.cn> <2025031943-disparity-dash-cfa3@gregkh>
- <Z9rYQy3l5V5cvW7W@t14s> <2025031942-portside-finite-34a9@gregkh>
- <CAASaF6zNsiwUOcSD177aORwfBu4kaq8EKh1XdZkO13kgedcOPA@mail.gmail.com>
- <CAAhV-H7ECQp4S8SNF8_fbK2CHHpgAsfAZk4QdJLYb4iXtjLYyA@mail.gmail.com> <CAASaF6zvEntqKZUzqRjw4Pp5edsRHdd0Dz7-RD=TTMc1n_HMPA@mail.gmail.com>
-In-Reply-To: <CAASaF6zvEntqKZUzqRjw4Pp5edsRHdd0Dz7-RD=TTMc1n_HMPA@mail.gmail.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Mon, 14 Apr 2025 21:52:35 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H7h5SW40jDyJs2naBQ3ZLH9S_PLNeq=19P5+75jwT5eYQ@mail.gmail.com>
-X-Gm-Features: ATxdqUG1icZREjZMGI3uSy2brC-wqNFlBfkcadOO9-HvQ5kt1SjX-qscPsLmFhE
-Message-ID: <CAAhV-H7h5SW40jDyJs2naBQ3ZLH9S_PLNeq=19P5+75jwT5eYQ@mail.gmail.com>
-Subject: Re: [PATCH 6.1&6.6 V3 3/3] sign-file,extract-cert: use pkcs11
- provider for OPENSSL MAJOR >= 3
-To: Jan Stancek <jstancek@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Huacai Chen <chenhuacai@loongson.cn>, 
-	Sasha Levin <sashal@kernel.org>, Xuerui Wang <kernel@xen0n.name>, stable@vger.kernel.org, 
-	David Howells <dhowells@redhat.com>, David Woodhouse <dwmw2@infradead.org>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	loongarch@lists.linux.dev, R Nageswara Sastry <rnsastry@linux.ibm.com>, 
-	Neal Gompa <neal@gompa.dev>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20250411-rust_arm_fix_fw_abstaction-v1-1-0a9e598451c6@gmail.com>
+ <D93TIWHR8EZM.25205EFWBLJLM@proton.me> <CANiq72kc4gzfieD-FjuWfELRDXXD2vLgPv4wqk3nt4pjdPQ=qg@mail.gmail.com>
+ <D94KNIHTJOWU.1EHA7217LSC4S@proton.me>
+Message-ID: <Z_0WRohxxMYqKxM5@google.com>
+Subject: Re: [PATCH] rust: fix building firmware abstraction on 32bit arm
+From: Alice Ryhl <aliceryhl@google.com>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	Christian Schrefl <chrisi.schrefl@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Russ Weight <russ.weight@linux.dev>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi, Greg and Sasha,
+On Sat, Apr 12, 2025 at 10:01:22AM +0000, Benno Lossin wrote:
+> On Fri Apr 11, 2025 at 4:15 PM CEST, Miguel Ojeda wrote:
+> > On Fri, Apr 11, 2025 at 2:46=E2=80=AFPM Benno Lossin <benno.lossin@prot=
+on.me> wrote:
+> >>
+> >> Ah I overlooked this, you should be using `kernel::ffi` (or
+> >> `crate::ffi`) instead of `core`. (for `c_char` it doesn't matter, but =
+we
+> >> shouldn't be using `core::ffi`, since we have our own mappings).
+> >
+> > In 6.6, C `char` changed to unsigned, but `core::ffi::c_char` is
+> > signed (in x86_64 at least).
+> >
+> > We should just never use `core::ffi` (except in `rust/ffi.rs`, of
+> > course) -- I think we should just add the C types to the prelude
+> > (which we discussed in the past) so that it is easy to avoid the
+> > mistake (something like the patch attached as the end result, but
+> > tested and across a kernel cycle or two) and mention it in the Coding
+> > Guidelines. Thoughts?
+>=20
+> Yeah sounds like a good idea.
+>=20
+> > I tried to use Clippy's `disallowed-types` too:
+> >
+> >     disallowed-types =3D [
+> >         { path =3D "core::ffi::c_void", reason =3D "the `kernel::ffi`
+> > types should be used instead" },
+> >         { path =3D "core::ffi::c_char", reason =3D "the `kernel::ffi`
+> > types should be used instead" },
+> >         { path =3D "core::ffi::c_schar", reason =3D "the `kernel::ffi`
+> > types should be used instead" },
+> >         { path =3D "core::ffi::c_uchar", reason =3D "the `kernel::ffi`
+> > types should be used instead" },
+> >         { path =3D "core::ffi::c_short", reason =3D "the `kernel::ffi`
+> > types should be used instead" },
+> >         { path =3D "core::ffi::c_ushort", reason =3D "the `kernel::ffi`
+> > types should be used instead" },
+> >         { path =3D "core::ffi::c_int", reason =3D "the `kernel::ffi` ty=
+pes
+> > should be used instead" },
+> >         { path =3D "core::ffi::c_uint", reason =3D "the `kernel::ffi`
+> > types should be used instead" },
+> >         { path =3D "core::ffi::c_long", reason =3D "the `kernel::ffi`
+> > types should be used instead" },
+> >         { path =3D "core::ffi::c_ulong", reason =3D "the `kernel::ffi`
+> > types should be used instead" },
+> >         { path =3D "core::ffi::c_longlong", reason =3D "the `kernel::ff=
+i`
+> > types should be used instead" },
+> >         { path =3D "core::ffi::c_ulonglong", reason =3D "the `kernel::f=
+fi`
+> > types should be used instead" },
+> >     ]
+> >
+> > But it goes across aliases.
+>=20
+> We could make the types in `ffi` be transparent newtypes. But not sure
+> if that could interfere with kCFI or other stuff.
 
-On Sun, Mar 30, 2025 at 9:40=E2=80=AFPM Jan Stancek <jstancek@redhat.com> w=
-rote:
->
-> On Sun, Mar 30, 2025 at 3:08=E2=80=AFPM Huacai Chen <chenhuacai@kernel.or=
-g> wrote:
-> >
-> > On Thu, Mar 20, 2025 at 12:53=E2=80=AFAM Jan Stancek <jstancek@redhat.c=
-om> wrote:
-> > >
-> > > On Wed, Mar 19, 2025 at 5:26=E2=80=AFPM Greg Kroah-Hartman
-> > > <gregkh@linuxfoundation.org> wrote:
-> > > >
-> > > > On Wed, Mar 19, 2025 at 03:44:19PM +0100, Jan Stancek wrote:
-> > > > > On Wed, Mar 19, 2025 at 07:13:13AM -0700, Greg Kroah-Hartman wrot=
-e:
-> > > > > > On Wed, Mar 19, 2025 at 02:40:31PM +0800, Huacai Chen wrote:
-> > > > > > > From: Jan Stancek <jstancek@redhat.com>
-> > > > > > >
-> > > > > > > commit 558bdc45dfb2669e1741384a0c80be9c82fa052c upstream.
-> > > > > > >
-> > > > > > > ENGINE API has been deprecated since OpenSSL version 3.0 [1].
-> > > > > > > Distros have started dropping support from headers and in fut=
-ure
-> > > > > > > it will likely disappear also from library.
-> > > > > > >
-> > > > > > > It has been superseded by the PROVIDER API, so use it instead
-> > > > > > > for OPENSSL MAJOR >=3D 3.
-> > > > > > >
-> > > > > > > [1] https://github.com/openssl/openssl/blob/master/README-ENG=
-INES.md
-> > > > > > >
-> > > > > > > [jarkko: fixed up alignment issues reported by checkpatch.pl =
---strict]
-> > > > > > >
-> > > > > > > Signed-off-by: Jan Stancek <jstancek@redhat.com>
-> > > > > > > Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > > > > > > Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
-> > > > > > > Reviewed-by: Neal Gompa <neal@gompa.dev>
-> > > > > > > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > > > > > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > > > > > ---
-> > > > > > >  certs/extract-cert.c | 103 ++++++++++++++++++++++++++++++---=
-----------
-> > > > > > >  scripts/sign-file.c  |  93 ++++++++++++++++++++++++++-------=
------
-> > > > > > >  2 files changed, 138 insertions(+), 58 deletions(-)
-> > > > > >
-> > > > > > This seems to differ from what is upstream by a lot, please doc=
-ument
-> > > > > > what you changed from it and why when you resend this series ag=
-ain.
-> > > > >
-> > > > > Hunks are arranged differently, but code appears to be identical.
-> > > > > When I apply the series to v6.6.83 and compare with upstream I ge=
-t:
-> > > >
-> > > > If so, why is the diffstat different?  Also why are the hunks arran=
-ged
-> > > > differently,
-> > >
-> > > He appears to be using "--diff-algorithm=3Dminimal", while you probab=
-ly
-> > > patience or histogram.
-> > Hi, Jan,
-> >
-> > I tried --diff-algorithm=3Dminimal/patience/histogram from the upstream
-> > commit, they all give the same result as this patch. But Sasha said
-> > the upstream diffstat is different, so how does he generate the patch?
->
-> Hi,
->
-> I don't know how he generates the patch, but with git-2.43 I get noticabl=
-e
-> different patches and diff stats for minimal vs. histogram. "minimal" one
-> matches your v3 patch. I don't know details of Greg's workflow, just offe=
-red
-> one possible explanation that would allow this series to progress further=
-.
->
-> $ git format-patch -1 --stdout --diff-algorithm=3Dminimal 558bdc45dfb2 |
-> grep -A3 -m1 -- "---"
-Could you please tell me how you generate patches? I always get the
-same result from the upstream repo.
+Transparent newtypes for all integers would be super inconvenient.
 
-Huacai
-
-> ---
->  certs/extract-cert.c | 103 ++++++++++++++++++++++++++++++-------------
->  scripts/sign-file.c  |  93 ++++++++++++++++++++++++++------------
->  2 files changed, 138 insertions(+), 58 deletions(-)
->
-> $ git format-patch -1 --stdout --diff-algorithm=3Dhistogram 558bdc45dfb2
-> | grep -A3 -m1 -- "---"
-> ---
->  certs/extract-cert.c | 103 ++++++++++++++++++++++++++++++-------------
->  scripts/sign-file.c  |  95 +++++++++++++++++++++++++++------------
->  2 files changed, 139 insertions(+), 59 deletions(-)
->
-> Regards,
-> Jan
->
-> >
-> > Huacai
-> >
-> > >
-> > > $ git format-patch -1 --stdout --diff-algorithm=3Dminimal 558bdc45dfb=
-2 |
-> > > grep -A3 -m1 -- "---"
-> > > ---
-> > >  certs/extract-cert.c | 103 ++++++++++++++++++++++++++++++-----------=
---
-> > >  scripts/sign-file.c  |  93 ++++++++++++++++++++++++++------------
-> > >  2 files changed, 138 insertions(+), 58 deletions(-)
-> > >
-> > > Should be easy to regenerate with different diff-alg for v4.
-> > >
-> > > Regards,
-> > > Jan
-> > >
-> > > > that's a hint to me that something went wrong and I can't
-> > > > trust the patch at all.
-> > > >
-> > > > thanks,
-> > > >
-> > > > greg k-h
-> > > >
-> > >
-> >
->
->
+Alice
 
