@@ -1,77 +1,65 @@
-Return-Path: <stable+bounces-132421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F666A87C1F
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 11:44:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41D1FA87CA2
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 11:59:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 722E27A2E57
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 09:43:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 853711888326
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 09:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342022641FD;
-	Mon, 14 Apr 2025 09:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F73267B8C;
+	Mon, 14 Apr 2025 09:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="JEVW145G"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JUbKnkWQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1912586CD
-	for <stable@vger.kernel.org>; Mon, 14 Apr 2025 09:44:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280F8267AE5;
+	Mon, 14 Apr 2025 09:59:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744623863; cv=none; b=ZgHFIPPxF4u98HZ1t8tWN6pgcXnbGqJWNBykqkTkWXMY8b3KGjyRxmHFDQ9cKlpRKu6o0Jy3bj+4+epK+OyfD5hfW3sUQ6T6jZVLf7bqh/xLPnBKAsHHxjvpulcRLPIuMWA9GDjndEt0n4xlFFX9Ix3HGtk9OxCRgSyJ1AHZWGw=
+	t=1744624761; cv=none; b=kDSB9l0IM1dbPUADDO9o1q1gUrPGE9hiCOgY9CLNX1TXCIyLHQvYR6vFH2Z74joqfwccOyMcHYQVjVtEcM9Sx1KfiGwRIGsgb0WzgwFoad2RwYSuzG7LuHw+Pq9IafpHuz6IPhe9y/2W5l0Y3J9hYHJxacF45VTSFn8IDMAGYdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744623863; c=relaxed/simple;
-	bh=NXvUhNlB1aPee7uCd9a9odVHLo/yRPdk/MtLRPcDwqg=;
+	s=arc-20240116; t=1744624761; c=relaxed/simple;
+	bh=x2MDu58h9JoknfphytpLlAqXi9FcUSFB38RkSqXHjWA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hcgs19gyTO+lqxaBhkZKOa2WOKchJOlrh7H3KW5c9cSwcwbt642UNOBDHFQcIntrouQgclX/xeIKbbNFK6PUYELPmv3pHi9i+hwDPSOfkWdvXsqYL2/09vZDGeIn7f3wNNKTWFn03eUso7t4oaUs5c8gvWGKxVb2xB0c4DGCpUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=JEVW145G; arc=none smtp.client-ip=209.85.160.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-2c2bb447e5eso2259368fac.0
-        for <stable@vger.kernel.org>; Mon, 14 Apr 2025 02:44:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1744623859; x=1745228659; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=CbM+1WmBZ2Io1n+rSXRsp0Md07GTpvrvG0bVbAmVeMs=;
-        b=JEVW145GbBL3gPGGQ9yAzATfEoWvjwN4uQ2ZnglMOQR1rFW4RRXrJwNuoAJw/YWMXC
-         olPMlrvPJzGQuBe46rqJA1FD6VuA8TDuejUdwRw49YIyWcU5QfW8nN6oojahrPv49yjL
-         K8itRpTFr/HyaX7Ny0777ndiSoZnPwsACTtUE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744623859; x=1745228659;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CbM+1WmBZ2Io1n+rSXRsp0Md07GTpvrvG0bVbAmVeMs=;
-        b=DeW5UKfYRlEG1BBZFYlg9VFf2Rf4NzEzbyn3WKXDHa+X2ZBm3syW2bMifa7eqM73cb
-         W5pvDkOEarHUpSOFFYlcqTAqzouIp9By9D1+jVDMgN0sQO85gKMQ1h4FBEj1dxRbLjHQ
-         cj2gXSwn1j7BeT+caR08yAkxkvQay8dkMmr0hLgI1R0Sxu0tdx0JlX7DUD1sLi3x9k3n
-         hEm3gh9mKoyGXZeRo8hPa5YS9cliVV4uDXbGMAk57SwchAVD4KC1mwRPHg6tu28dZg25
-         S3U78YRHnxVRBfyGk7GUaTdr5A+p6LBdPC5fLZ1//FXBn3FTdfRBPfFYTpJx4esTHp4d
-         D61g==
-X-Forwarded-Encrypted: i=1; AJvYcCUtpZ1g4QJbgFx36vjVl07Ij/6r5/rCHr79/lGOEVw3aN7iMIkI4mrriAgLIso3utM+bhOFxkY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxJ4RS/nTc2uzVrTS1wQdfvjOCZ2VRaUd4B8muZDrfiEyKPavy
-	i7J7rSq83jDnXiAIhUj4890fajm31llToWt6368uo0PSAeJVAW07A+BT4hwJcg==
-X-Gm-Gg: ASbGncvwEujEG0EoETiggvS8yb0r3LyDjmXY2OJvWrN2e7LTJsD7ETj2BzyDG2QMSzh
-	QF8xEzxjoghl2XoaOPwRvOrkIY7TgplLNphEaowDlIwRqlFxGrXzJFIe2Z2Sebmt+itL8ELyh/E
-	gEkxmeO/Nh9XsvHekaWAELBM2v/e6acLoQ6hRGKOZPsRWFszAe4XK8NXLKr2BuWsI4hiNsD0bQS
-	/ZyA9y1JwP6b54qpdZnShRLGBEZ2jc3QEBaz3b0ixWrP5uhbQOcNubbCczwKM5nZ7H2oKsTZaVs
-	jZjwg/tpYsbO8IRzFsf1lHEquZItpkGCRy3A01ki00+HNBD22Sh+iuP2i2Dk2PH5yaU=
-X-Google-Smtp-Source: AGHT+IHoa/4/GaqO5TrPYoiHTitCv7q3FYMa5EoLzYEXRejGfSZ58lhxAhVipcuemkWz6IEsfTI5Ig==
-X-Received: by 2002:a05:6870:1587:b0:2cb:c780:ac52 with SMTP id 586e51a60fabf-2d0d5d9e35cmr5396992fac.23.1744623858829;
-        Mon, 14 Apr 2025 02:44:18 -0700 (PDT)
-Received: from [10.176.68.80] ([192.19.176.227])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2d096cd262asm2314652fac.35.2025.04.14.02.44.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Apr 2025 02:44:17 -0700 (PDT)
-Message-ID: <282afdd9-bb71-40f8-bfa9-bc7e57e1957d@broadcom.com>
-Date: Mon, 14 Apr 2025 11:44:12 +0200
+	 In-Reply-To:Content-Type; b=SpTqEq38ZLUI4JMVOnaOsgYiCl+6gdTfGJuV+oe2c1TURSeelsWg3bW4FuxiEi1mUvBzUQEagh2M4IZAOgBTKroS/ZerqiouBN/1njEamC24KteZq9RJZywL6SoQlckWl6sBm3irZifWx/5JopYK3tHYoTt4YUC/uIRshn6PI4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JUbKnkWQ; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744624759; x=1776160759;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=x2MDu58h9JoknfphytpLlAqXi9FcUSFB38RkSqXHjWA=;
+  b=JUbKnkWQMOnTxZGVwiEG4G0nj0FgDo0q6BvkI9vlNiLVD/Iz43SLsZDR
+   xYy1d6A09gY4Khl6AlMO14Q9o/I9RxRLKULzvm5U7jtMvPplWJ0RyLDc6
+   P/Sz7sTIys9H6AaVrtSNg6ye6YkIQlBSSPVBhAhV6/dOy2Pp6yN8kPjPq
+   RtahNApdxesKQhHPm9iFZVP76iB0hhMzbTNhsoaPQ7MsS9agx/qM5Cb9H
+   kWfGOyJUi4Fnb7mUPV85qst3Wk48MLKxbw9sTkFICuSYIYnXMeBRJ/XFe
+   sSK+F725lbkOTCpgfj/WYBoirQPJxrUQwlnpq5esn/tE2wuNxJk0EJFpD
+   Q==;
+X-CSE-ConnectionGUID: 9qGKcDlRTiikupEzx2hfvA==
+X-CSE-MsgGUID: 0tHzrsySSh2rSv82kBPwIQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11402"; a="71472237"
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; 
+   d="scan'208";a="71472237"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 02:59:18 -0700
+X-CSE-ConnectionGUID: +nNSrTNoRui/IPBJmwCdgQ==
+X-CSE-MsgGUID: tg7BsxTMTjKQqkUBWcyipQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; 
+   d="scan'208";a="129756657"
+Received: from unknown (HELO [10.238.224.239]) ([10.238.224.239])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 02:59:16 -0700
+Message-ID: <f10f919e-7bdc-4a01-b131-41bdc9eb6573@intel.com>
+Date: Mon, 14 Apr 2025 17:59:13 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,96 +67,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND] brcm80211: fmac: Add error handling for
- brcmf_usb_dl_writeimage()
-To: Wentao Liang <vulab@iscas.ac.cn>, kvalo@kernel.org
-Cc: jacobe.zang@wesion.com, sebastian.reichel@collabora.com,
- christophe.jaillet@wanadoo.fr, erick.archer@outlook.com,
- linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
- brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250414072058.2222-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH v1 1/2] platform/x86: int3472: add hpd pin support
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Hans de Goede <hdegoede@redhat.com>,
+ "Yan, Dongcheng" <dongcheng.yan@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ sakari.ailus@linux.intel.com, hverkuil@xs4all.nl,
+ u.kleine-koenig@baylibre.com, ricardo.ribalda@gmail.com,
+ bingbu.cao@linux.intel.com, stable@vger.kernel.org, hao.yao@intel.com
+References: <20250411082357.392713-1-dongcheng.yan@intel.com>
+ <cfc709a8-85fc-4e44-9dcf-ae3ef7ee0738@redhat.com>
+ <c8ae2d43-157c-408a-af89-7248b30d52d1@linux.intel.com>
+ <Z_zDGYD1QXZYWwI9@smile.fi.intel.com>
+ <d9cab351-4850-42c7-8fee-a9340d157ed9@linux.intel.com>
+ <Z_zMMtUdJYpHuny7@smile.fi.intel.com>
 Content-Language: en-US
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
- 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
-In-Reply-To: <20250414072058.2222-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: "Yan, Dongcheng" <dongcheng.yan@intel.com>
+In-Reply-To: <Z_zMMtUdJYpHuny7@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 4/14/2025 9:20 AM, Wentao Liang wrote:
-> The function brcmf_usb_dl_writeimage() calls the function
-> brcmf_usb_dl_cmd() but dose not check its return value. The
-> 'state.state' and the 'state.bytes' are uninitialized if the
-> function brcmf_usb_dl_cmd() fails. It is dangerous to use
-> uninitialized variables in the conditions.
+Hi Andy and Hans,
+
+I found the description of lt6911uxe's GPIO in the spec:
+GPIO5 is used as the interrupt signal (50ms low level) to inform SOC
+start reading registers from 6911UXE;
+
+So setting the polarity as GPIO_ACTIVE_LOW is acceptable?
+We used RISING and FALLING in irq(not GPIO) to ensure that HDMI events
+will not be lost to the greatest extent possible.
+
+Thanks,
+Dongcheng
+
+On 4/14/2025 4:49 PM, Andy Shevchenko wrote:
+> On Mon, Apr 14, 2025 at 04:40:26PM +0800, Yan, Dongcheng wrote:
+>> On 4/14/2025 4:11 PM, Andy Shevchenko wrote:
+>>> On Mon, Apr 14, 2025 at 03:52:50PM +0800, Yan, Dongcheng wrote:
+>>>> On 4/11/2025 4:33 PM, Hans de Goede wrote:
+>>>>> On 11-Apr-25 10:23 AM, Dongcheng Yan wrote:
 > 
-> Add error handling for brcmf_usb_dl_cmd() to jump to error
-> handling path if the brcmf_usb_dl_cmd() fails and the
-> 'state.state' and the 'state.bytes' are uninitialized.
+> ...
+> 
+>>>>>> +	case INT3472_GPIO_TYPE_HOTPLUG_DETECT:
+>>>>>> +		*con_id = "hpd";
+>>>>>> +		*gpio_flags = GPIO_LOOKUP_FLAGS_DEFAULT;
+>>>>>
+>>>>> This looks wrong, we really need to clearly provide a polarity
+>>>>> here since the ACPI GPIO resources do not provide one.
+>>>>>
+>>>> I tested gpio_flags=GPIO_LOOKUP_FLAGS_DEFAULT/HIGH/LOW, the lt6911uxe
+>>>> driver can pass the test and work normally.
+>>>
+>>> I doubt you tested that correctly. It's impossible to have level triggered
+>>> event to work with either polarity. It might be also a bug in the code lurking
+>>> somewhere, but it would be unlikely (taking into account amount of systems
+>>> relying on this).
+>>>
+>>> Is it edge triggered event?
+>>>
+>>
+>> It is an edge triggered event in lt6911uxe. In order to better adapt to
+>> other uses, "hpd" is meaningful to specify a polarity here.
+>>
+>> In lt6911uxe, GPIO "hpd" is used as irq, and set irq-flag to
+>> IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING | IRQF_ONESHOT. So no matter
+>> rising or falling, driver can work normally.
+>> "
+>> ret = request_threaded_irq(gpiod_to_irq(lt6911uxe->irq_gpio),	NULL,
+>> lt6911uxe_threaded_irq_fn, IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING |
+>> IRQF_ONESHOT, NULL, lt6911uxe);
+>> "
+> 
+> So, the driver must not override the firmware, if there is no bugs.
+> So, why do you even use those flags there? It seems like a bad code
+> in the driver that doesn't look correct to me.
+> 
 
-Agree. Have one request though...
-
-Just below the code you touched the USB bootloader state is checked:
-
-	/* 2) Check we are in the Waiting state */
-	if (rdlstate != DL_WAITING) {
--		brcmf_err("Failed to DL_START\n");
-+		brcmf_err("Invalid DL state: %u\n", rdlstate);
-		err = -EINVAL;
-		goto fail;
-	}
-
-Can you improve the error message as suggested.
-
-Regards,
-Arend
-
-> Fixes: 71bb244ba2fd ("brcm80211: fmac: add USB support for bcm43235/6/8 chipsets")
-> Cc: stable@vger.kernel.org # v3.4+
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
 
