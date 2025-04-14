@@ -1,158 +1,118 @@
-Return-Path: <stable+bounces-132528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C85AA882E9
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:47:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C522A88340
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:53:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69AB6164C24
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:44:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A15431887CAA
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:50:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E83E2D4B53;
-	Mon, 14 Apr 2025 13:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24CE5252292;
+	Mon, 14 Apr 2025 13:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b="J9UCMz5C";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VsF2XSoZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X+ZA/MO/"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E2F296D25;
-	Mon, 14 Apr 2025 13:29:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECE82C0319;
+	Mon, 14 Apr 2025 13:30:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637342; cv=none; b=L0n/02mzwdSJJvZPZ3qXtDCUhhzWyJbfvx3LyzJAtz5DMJkzFj8E1Voi2VEqu9nFZohubHk9lx4O/jrBp+vhsIUz56W5A6qJmc+CZmH/ErAYBgWFlOLHxSpQEUa/N1FCIxwaqIWFi2OsPKhcbCZiitmHw6oLBqoiKEbwRXE9tAo=
+	t=1744637400; cv=none; b=pbi0TKzSUZar7qEiOOPjXjaAYuBuDmw1Py9l24r0uOvPBAIvw3vHr+nz2Eoa4gC3NTnNi2GJyBM3UB45XdK450PyQwRpifjum6cPaCM7unrQQnSOJ3YC4tmHfnE2sHTu09BI7W50nXyYh/Tt4cpm+Tx+/XHoOin16CnyDZtSWzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637342; c=relaxed/simple;
-	bh=w+GaCOk0unonkO298r/VvlKxdoXSTagPlOGL8b+c4pg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H4DsU0TLBOgbqSDJyhoYHvBvoqi7+BrJQM/JarNERWhaqQ3FbuT9W8SZxNkAAAVxi+nljDMiEtb+u5nCIAK6m1IeUAtR96nzT+rsyBmeXjDhzhmJk9CEwvpI+3AqzA5eJxkmdSF1w2X9rWHt8kJ2Rv4d/HgycqAxyoKD1mYBchw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com; spf=pass smtp.mailfrom=invisiblethingslab.com; dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b=J9UCMz5C; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VsF2XSoZ; arc=none smtp.client-ip=202.12.124.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=invisiblethingslab.com
-Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 797D72540329;
-	Mon, 14 Apr 2025 09:28:59 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Mon, 14 Apr 2025 09:28:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	invisiblethingslab.com; h=cc:cc:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1744637339;
-	 x=1744723739; bh=iMO9IccfCm2xvSWEFUJlubmfDh1c2iU+/IvUT7403yc=; b=
-	J9UCMz5Ci/JXc2kD5UMu7YzqaxsTMyjl6YcPNGo4zkLwlg72sb6Znubb4OOYgr9F
-	LW3OQI6++RNwHFWZjJvOAJvOUKoHj5lq9z7I1ru9xPX5a13ir8RQP3iSJy4/KeJ3
-	c3Y7dxgjIWb0zrrsQf6YOfmpEA9IG/EjQvGvnNOHemSlaufNjTSXoam1Xp2Ncc46
-	quAFqH3NPhFSjg6Rwhsdq4d+oRrnWR8+BgKsxaui5MGUGyju2p/rFHVXoYCKM2xC
-	G0rJXk1hUrfZjGZerZlvtBrWuDSMKPLheX6i2+K+qkjT1D7xEWOsgleZOnaWjb/q
-	7SuFHhJpnq4A4h4TcVXGaA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1744637339; x=1744723739; bh=iMO9IccfCm2xvSWEFUJlubmfDh1c2iU+/Iv
-	UT7403yc=; b=VsF2XSoZvg+Fvp5WmnhCdfMmDw/+gqKQxfg5pNWOIyJi8ph5tvV
-	Raw+fXzYWPJ2aJ5NOTpvMvhhOrTtGMy900o40Apqe/naae/u/4oMqL3PJwod+Kui
-	w1knbc10IWj95mfYA3VycRivJ6BtSqynV4B+0upwk6j79qGn4Y5vA+3R0llLoZ33
-	+r8ErlMADjqULs0P9Pzw9B61G581fidI/MH9Fr9POSr1njzZO21FBJtvrtgA8gtc
-	8PPHehIrL475SGX2w2NCGha9tCpYvDKDnDkM+NWFC9t9k135QXnK6sBZ+r3c25PG
-	2IqjngAc92qeNYQLvwPIgJ8HQuHpWFBtDog==
-X-ME-Sender: <xms:mg39Z6MO2uCp0gPH6tNK2EulZ3-WKc4wVrDOE1tewMT6SPRQCSnPDA>
-    <xme:mg39Z4_JOMYHM42kmKKE5-WkTFGasCoMFbqBzeJ0RmptqzraSq2Guw7gaoKUJzAzJ
-    decGJTNhFsMPA>
-X-ME-Received: <xmr:mg39ZxSkeDTyuzKz_HqtNGVtjNP0K9UWHbEXIK-7Qn5QqNQiYbMGhyQ9_M9LdT570peAE_eRcw-T32ih2s6teSFqC9IvtsO8Ww>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvvddtieejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesghdtreertddt
-    jeenucfhrhhomhepofgrrhgvkhcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuc
-    eomhgrrhhmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecu
-    ggftrfgrthhtvghrnhepgfduleetfeevhfefheeiteeliefhjefhleduveetteekveettd
-    dvgeeuteefjedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhf
-    rhhomhepmhgrrhhmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
-    dpnhgspghrtghpthhtohepkedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepvhhi
-    thgrlhihrdhlihhfshhhihhtshesihhnthgvlhdrtghomhdprhgtphhtthhopehjvghssh
-    gvrdgsrhgrnhguvggsuhhrghesihhnthgvlhdrtghomhdprhgtphhtthhopegrnhhthhho
-    nhihrdhlrdhnghhuhigvnhesihhnthgvlhdrtghomhdprhgtphhtthhopehnvghtuggvvh
-    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehinhhtvghlqdifihhrvggu
-    qdhlrghnsehlihhsthhsrdhoshhuohhslhdrohhrghdprhgtphhtthhopehrvghgrhgvsh
-    hsihhonhhssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepshhtrggslhgv
-    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshgrshhhrghlsehkvghrnh
-    gvlhdrohhrgh
-X-ME-Proxy: <xmx:mg39Z6tAG5q_-mlN7TbVkEKknpZDzoH-FH1TfLkoAo_sGOMEnYA-0w>
-    <xmx:mg39Zyfvmz1sVnPqkWaxWLP7aezRpvNvHDkwoah6fsBuRa6uaAKEtQ>
-    <xmx:mg39Z-15HB_I08LrNCQSPUSSHFHWa2sRowet8gXQxWyzwyklTgo9Og>
-    <xmx:mg39Z29pxDP62hoQfrq-pErrAo3uOVL0Jh6m9Wg3DmnfcPlZujxFmw>
-    <xmx:mw39Z4T_dWr6aU2pDmSsaOokywZ5Op15EXF5ZCggmlMoh-IzJ01dpaRp>
-Feedback-ID: i1568416f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 14 Apr 2025 09:28:57 -0400 (EDT)
-Date: Mon, 14 Apr 2025 15:28:54 +0200
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: "Lifshits, Vitaly" <vitaly.lifshits@intel.com>
-Cc: Jesse Brandeburg <jesse.brandeburg@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>, netdev@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org, regressions@lists.linux.dev,
-	stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: Re: [REGRESSION] e1000e heavy packet loss on Meteor Lake - 6.14.2
-Message-ID: <Z_0Nl1yD4n__oWiO@mail-itl>
-References: <Z_z9EjcKtwHCQcZR@mail-itl>
- <b1f5e997-033c-33ed-5e3b-6fe2632bf718@intel.com>
- <Z_0GYR8jR-5NWZ9K@mail-itl>
- <50da66d0-fe66-0563-4d34-7bd2e25695a4@intel.com>
+	s=arc-20240116; t=1744637400; c=relaxed/simple;
+	bh=9J/z5T0JY/xcwsk6SXFTA+zsyiZ/gs3asCJyO6IhBN4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=ud4aZTe4dPpbEE7gClS22r0kBzTpiRiIs7b9yAzcGTEyjWlDU/KHk02TGcti2RRmXemWkchpSmNs+JaAjFfFEM6Oo0bzNXQGizlmyM9EP36oo+xb2KbNtoMVD+iA3Mi07EM+8Jm1B46GYjOc+zE7cTRMbDbMN+gg9EK6uLFPxUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X+ZA/MO/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 005E1C4CEE2;
+	Mon, 14 Apr 2025 13:29:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744637400;
+	bh=9J/z5T0JY/xcwsk6SXFTA+zsyiZ/gs3asCJyO6IhBN4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=X+ZA/MO/6pO3VZKIoY/rjL1w0VrNTYq6gu+NjqK8kpc8XxPr3dkU5Owgguif21Egj
+	 48P3QvjBe/3ZNnBnc4KT55VFpn2PhseKas70t5kD8ul0l7WBVjbJ1TUYWpp2nGho+D
+	 /pD/kIN3FlHoI1cL9uFHRzjQ1ejPLtb4e9GP4MeuTlakcDDb4hJmIyHw+2ijdNUNZA
+	 xwpi8M8jIG11FP/OVTVuqQlDeYXdNZjqORRcmbZOiuFkKE+K8DHdG/Nnq49JdCxmY1
+	 dqwAwIG9GQs26j3cEvO4XJSgYic1xBibwxSbQvOmHjiYzQq38Ud7Pm/xoSMsjAzgnr
+	 36UX7cj/gQDpA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Michael Mueller <mimu@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>,
+	borntraeger@linux.ibm.com,
+	imbrenda@linux.ibm.com,
+	hca@linux.ibm.com,
+	gor@linux.ibm.com,
+	agordeev@linux.ibm.com,
+	kvm@vger.kernel.org,
+	linux-s390@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 01/24] KVM: s390: Don't use %pK through tracepoints
+Date: Mon, 14 Apr 2025 09:29:34 -0400
+Message-Id: <20250414132957.680250-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="IB2IGAFxKW/DJnLD"
-Content-Disposition: inline
-In-Reply-To: <50da66d0-fe66-0563-4d34-7bd2e25695a4@intel.com>
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6.87
+Content-Transfer-Encoding: 8bit
 
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
---IB2IGAFxKW/DJnLD
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 14 Apr 2025 15:28:54 +0200
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: "Lifshits, Vitaly" <vitaly.lifshits@intel.com>
-Cc: Jesse Brandeburg <jesse.brandeburg@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>, netdev@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org, regressions@lists.linux.dev,
-	stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: Re: [REGRESSION] e1000e heavy packet loss on Meteor Lake - 6.14.2
+[ Upstream commit 6c9567e0850be2f0f94ab64fa6512413fd1a1eb1 ]
 
-On Mon, Apr 14, 2025 at 04:04:51PM +0300, Lifshits, Vitaly wrote:
-> Do you have mei modules running? Can you try if disabling them make things
-> better?
+Restricted pointers ("%pK") are not meant to be used through TP_format().
+It can unintentionally expose security sensitive, raw pointer values.
 
-I do, disabling them (via module_blacklist=3Dmei) doesn't help.
+Use regular pointer formatting instead.
 
---=20
-Best Regards,
-Marek Marczykowski-G=C3=B3recki
-Invisible Things Lab
+Link: https://lore.kernel.org/lkml/20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023@linutronix.de/
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Michael Mueller <mimu@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250217-restricted-pointers-s390-v1-1-0e4ace75d8aa@linutronix.de
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Message-ID: <20250217-restricted-pointers-s390-v1-1-0e4ace75d8aa@linutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/s390/kvm/trace-s390.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---IB2IGAFxKW/DJnLD
-Content-Type: application/pgp-signature; name=signature.asc
+diff --git a/arch/s390/kvm/trace-s390.h b/arch/s390/kvm/trace-s390.h
+index 6f0209d45164f..9c5f546a2e1a3 100644
+--- a/arch/s390/kvm/trace-s390.h
++++ b/arch/s390/kvm/trace-s390.h
+@@ -56,7 +56,7 @@ TRACE_EVENT(kvm_s390_create_vcpu,
+ 		    __entry->sie_block = sie_block;
+ 		    ),
+ 
+-	    TP_printk("create cpu %d at 0x%pK, sie block at 0x%pK",
++	    TP_printk("create cpu %d at 0x%p, sie block at 0x%p",
+ 		      __entry->id, __entry->vcpu, __entry->sie_block)
+ 	);
+ 
+@@ -255,7 +255,7 @@ TRACE_EVENT(kvm_s390_enable_css,
+ 		    __entry->kvm = kvm;
+ 		    ),
+ 
+-	    TP_printk("enabling channel I/O support (kvm @ %pK)\n",
++	    TP_printk("enabling channel I/O support (kvm @ %p)\n",
+ 		      __entry->kvm)
+ 	);
+ 
+-- 
+2.39.5
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmf9DZcACgkQ24/THMrX
-1yyNbwf+ORoBWsb6q5Fjli64YiXuY/22Zvq/ugiuZv9CrpfLnRxkgLbkxdb9h2wv
-n/YiAPxVIi/Prn8ihpS3UiMCLv9jEfMVIY8STpWr+O+gutyIaU0g43ZUECxpbyRW
-cZWssO2ylXx2n83BzOEpJDFVcgZhWLQu/qjERf4Ub9BtQT6WsfkdoZ3muSK3TyuA
-hTNDMAVcOa70nGwg6J9ksV3WrEHRHoD96HRwgS3IRmH8SRf2yvCQm4OWyUJqTE2A
-XUzY2g1JQeWMdELJoxfFi6WlqWbIeCxXc2heLSC+NfQOAxCBmhVDK9b37Wj/Gwkk
-0+SUrOc9A7ImL6/4SQivifiZRz1S0g==
-=OV6S
------END PGP SIGNATURE-----
-
---IB2IGAFxKW/DJnLD--
 
