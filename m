@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-132520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12F6DA882D2
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:45:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B1BAA882B6
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 15:42:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6ADF188BDF3
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:42:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71B027A6529
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:41:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FEF2294A1E;
-	Mon, 14 Apr 2025 13:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 882902951AB;
+	Mon, 14 Apr 2025 13:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DS9p+br0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gp668Arl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1D3294A15;
-	Mon, 14 Apr 2025 13:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4125F2BF3E1;
+	Mon, 14 Apr 2025 13:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637323; cv=none; b=gsdlKyFd+J7VNwItKrMYz4mpl5WB/SAD6jXdrhverIjicADOugpf/JQC4h4sp2NRoDz+pNnSxzV/M/XcWooSwV4+oBZsMMCkZDVDYsgZ44CYsSTkIyy3LHVybtNl/ynpE5koqGa0GlXjoyujrQrRdUpfobHrsiuECa2TuTR/m60=
+	t=1744637325; cv=none; b=NQpLSMNuELIMiV/1S9wVLxjgYGc82M4dIBet20hTD14TW9tPglkob5+LFBFZqaqjL3IgHcExRdh8i2o+6xiC6RhpoH72dcfl6T8dsooqsb2kCKBuHaKnkSuI+uxw4nna92GTinj27QR710h5cqIJKQhgnlCdvsqMQjytKbrQkl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637323; c=relaxed/simple;
-	bh=ive9HXjdFaLlIvQIi8OCLS8jzkis2suMRljyaH5H8HI=;
+	s=arc-20240116; t=1744637325; c=relaxed/simple;
+	bh=n84S1QE6kVvWUC0rKRfdAoFhRE/FBltF/gdyikDbI5Y=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IqDg2ExRBbDGJECMrRsu0RxL+ml6kC74J0CzQuOJ5CwPtVrunj3jBlJBSBFZScqnSDhDRnOtRC7MnJaYa/iU2zxAxPGu4Z8rRk21DYGf8FEjeVDSX82BOmZy02x+MedV8wkcLHEvIHUTz73ucYCF4mFsJbvp3ThXsqmu71nl12c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DS9p+br0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 991D8C4CEE9;
-	Mon, 14 Apr 2025 13:28:41 +0000 (UTC)
+	 MIME-Version; b=fsOFTCVn307tYywHSzEH/FEcpw8Rzx5mYplmv2qe5fqfJRmYO5AaqqEV8qYRpZXsJNHqjdnL3pQmGvsqkrmGcVs7J64U4OmrNwupppl23NsNo20G7t4WJMMIwS2vfV7IN6UO0spOQ/m8/YAT2FzvcfIJ2K3+8ghDCE2sRT10q7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gp668Arl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BACDAC4CEEB;
+	Mon, 14 Apr 2025 13:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744637323;
-	bh=ive9HXjdFaLlIvQIi8OCLS8jzkis2suMRljyaH5H8HI=;
+	s=k20201202; t=1744637325;
+	bh=n84S1QE6kVvWUC0rKRfdAoFhRE/FBltF/gdyikDbI5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DS9p+br0eyIzYkVdDwIlWStVjVy4IenrPvwbE3ZtrgzQYL1VzIuOt58GTA5zay0cK
-	 dYk4fcivCGM9uydU4qwqNN1azZUQeayxoKqy+v5IIOcLFZ1njmVwktdzbH3CjeTWBl
-	 gzS3Ulm+1VIB66nJZYzYeoLTLdM4TuwHlb609GlwArDyn7lxZ03+Ktc+umunU10a4e
-	 LYnfNhfIIkNXtLK9gzACtOOwrZw5fh7/KYFsNyXZiSXM9tgOOExD7euCyIiCZIYL7y
-	 pNP8xR9cxxWSunOrJjWy7qf5/751g+o5LP8P1Fhw0QBmQXWxCQF7/wIldtkz+npyGJ
-	 Y+YU2fh6AyjxQ==
+	b=gp668ArlbTwCvH+G03a1gTfuCUY2xEORm8BzINoRa8A4rj2WV8NeckRoxWrydvpjM
+	 ONjbK+YbDP0KKberWoyYMP31n+YPzWlu+imYXHFWBVWJcPh2h21aSpAWbxTjYC9Jhr
+	 eUk4kN9j8QtJoNVR7yj1Y7DkmyLJLt27l0Pu4seD2taTGhomQ3Ah4926ytAbQXSiOI
+	 85y2vZ2BI6Gp4PSSVevE4nEhmGjMrCXiiKt/krpBFvm+N1Je8fAluMNLaDJ3eYImku
+	 L3wgRCGwon3sXeaxNNI6P115Tn26DHmyZgMJoJkIyvsZTG3/UhYT/tybRqnlLE7MMH
+	 UHaXZDlvUsgTA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Russell King <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Robin Murphy <robin.murphy@arm.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 32/34] net: phy: move phy_link_change() prior to mdio_bus_phy_may_suspend()
-Date: Mon, 14 Apr 2025 09:27:26 -0400
-Message-Id: <20250414132729.679254-32-sashal@kernel.org>
+	joro@8bytes.org,
+	will@kernel.org,
+	iommu@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.13 33/34] iommu: Clear iommu-dma ops on cleanup
+Date: Mon, 14 Apr 2025 09:27:27 -0400
+Message-Id: <20250414132729.679254-33-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250414132729.679254-1-sashal@kernel.org>
 References: <20250414132729.679254-1-sashal@kernel.org>
@@ -71,73 +69,47 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.11
 Content-Transfer-Encoding: 8bit
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit f40a673d6b4a128fe95dd9b8c3ed02da50a6a862 ]
+[ Upstream commit 280e5a30100578106a4305ce0118e0aa9b866f12 ]
 
-In an upcoming change, mdio_bus_phy_may_suspend() will need to
-distinguish a phylib-based PHY client from a phylink PHY client.
-For that, it will need to compare the phydev->phy_link_change() function
-pointer with the eponymous phy_link_change() provided by phylib.
+If iommu_device_register() encounters an error, it can end up tearing
+down already-configured groups and default domains, however this
+currently still leaves devices hooked up to iommu-dma (and even
+historically the behaviour in this area was at best inconsistent across
+architectures/drivers...) Although in the case that an IOMMU is present
+whose driver has failed to probe, users cannot necessarily expect DMA to
+work anyway, it's still arguable that we should do our best to put
+things back as if the IOMMU driver was never there at all, and certainly
+the potential for crashing in iommu-dma itself is undesirable. Make sure
+we clean up the dev->dma_iommu flag along with everything else.
 
-To avoid forward function declarations, the default PHY link state
-change method should be moved upwards. There is no functional change
-associated with this patch, it is only to reduce the noise from a real
-bug fix.
-
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/20250407093900.2155112-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Chen-Yu Tsai <wenst@chromium.org>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Closes: https://lore.kernel.org/all/CAGXv+5HJpTYmQ2h-GD7GjyeYT7bL9EBCvu0mz5LgpzJZtzfW0w@mail.gmail.com/
+Tested-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/e788aa927f6d827dd4ea1ed608fada79f2bab030.1744284228.git.robin.murphy@arm.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy_device.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ drivers/iommu/iommu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 5f1ad0c7fb534..eedcdae883982 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -289,6 +289,19 @@ static bool phy_drv_wol_enabled(struct phy_device *phydev)
- 	return wol.wolopts != 0;
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index 599030e1e890b..1c566675281e5 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -508,6 +508,9 @@ static void iommu_deinit_device(struct device *dev)
+ 	dev->iommu_group = NULL;
+ 	module_put(ops->owner);
+ 	dev_iommu_free(dev);
++#ifdef CONFIG_IOMMU_DMA
++	dev->dma_iommu = false;
++#endif
  }
  
-+static void phy_link_change(struct phy_device *phydev, bool up)
-+{
-+	struct net_device *netdev = phydev->attached_dev;
-+
-+	if (up)
-+		netif_carrier_on(netdev);
-+	else
-+		netif_carrier_off(netdev);
-+	phydev->adjust_link(netdev);
-+	if (phydev->mii_ts && phydev->mii_ts->link_state)
-+		phydev->mii_ts->link_state(phydev->mii_ts, phydev);
-+}
-+
- static bool mdio_bus_phy_may_suspend(struct phy_device *phydev)
- {
- 	struct device_driver *drv = phydev->mdio.dev.driver;
-@@ -1101,19 +1114,6 @@ struct phy_device *phy_find_first(struct mii_bus *bus)
- }
- EXPORT_SYMBOL(phy_find_first);
- 
--static void phy_link_change(struct phy_device *phydev, bool up)
--{
--	struct net_device *netdev = phydev->attached_dev;
--
--	if (up)
--		netif_carrier_on(netdev);
--	else
--		netif_carrier_off(netdev);
--	phydev->adjust_link(netdev);
--	if (phydev->mii_ts && phydev->mii_ts->link_state)
--		phydev->mii_ts->link_state(phydev->mii_ts, phydev);
--}
--
- /**
-  * phy_prepare_link - prepares the PHY layer to monitor link status
-  * @phydev: target phy_device struct
+ DEFINE_MUTEX(iommu_probe_device_lock);
 -- 
 2.39.5
 
