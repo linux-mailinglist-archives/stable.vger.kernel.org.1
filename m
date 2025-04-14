@@ -1,80 +1,86 @@
-Return-Path: <stable+bounces-132427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06BD4A87E32
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 12:56:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E2CCA87E60
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:05:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 038AA175A90
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 10:56:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2FB8175B4F
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 11:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFEF27EC70;
-	Mon, 14 Apr 2025 10:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9E1284B31;
+	Mon, 14 Apr 2025 11:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="XmCvxL5y"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GS+0x51K"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C668227E1C1
-	for <stable@vger.kernel.org>; Mon, 14 Apr 2025 10:56:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7105D281348
+	for <stable@vger.kernel.org>; Mon, 14 Apr 2025 11:04:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744628187; cv=none; b=Xw1PN95vdjQo82kuXd7a7iBD+LZ+gvBqKDQG7o46Dwc4sMeirpgyfpKOgq1k2h82/5dDFh/junEqT3jmkFRUTEh8sPyVwcp+6+SUtrL63L5JvGqYA6fcZwWV/EevLqS7SLm6MPuiVR/QjDZKV8Zwwm85jwaoLU6KRB5M5YNa/SU=
+	t=1744628694; cv=none; b=i1XYc6BIZofFQwsCHW7KqeIlxwy541Q0ST3okxD91ph0baQoiZxsLleNPdxxC4vXcngu1G7ZWQRDq/z5LTZp0gi3DwN+NIt/MUeCfFYat9w6PCejzghvDQojJhn1qkE/YyfEb5iKPIZvgsPN7Auj14kQm/VDOrfnjJlQHfQjH1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744628187; c=relaxed/simple;
-	bh=YJKAmLU8sEcOzRICq4h2JLOCaTHgSMdUialUxaQrbMg=;
+	s=arc-20240116; t=1744628694; c=relaxed/simple;
+	bh=a1QgMoqZLxidPT8MZIzNeo0ahI4AIlk9j3HsOU7C7SE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SiamtKUwxjkCRJtKfiuxYTFEPF/gbr2ELyb4sW6YA9SUbkLMvqwAhAGI7eUs3mp26dIQRu0kz69xsl8GrTQmpSRY43LusFnuccj2pSwRYzT/8wQnITNdHdq9BLZVn6Axb6J8VFZWyP1xz1TMSRsyk2TgjigEPsG3/zi7OjO1k8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=XmCvxL5y; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ac2963dc379so686758566b.2
-        for <stable@vger.kernel.org>; Mon, 14 Apr 2025 03:56:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1744628183; x=1745232983; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=sDnDfLpXfE7PWrKyWCHICC9gvn0J/O7cW+D86gMjszQ=;
-        b=XmCvxL5yI7XkX8kyxEigVPkoynp4riEAD88pbA9sL5CYf/aGSlU1pUXHWnClY8rUpU
-         0cfdP2HWIehZsh5e3MIssXFlOpr37zS/BjPnfvvpG3b7wWgA3McvA3L7hs44RLFGSASr
-         ATKosKe7Oo+XIAIshBRMeOH36VV8O7Mowz4t7l8DAbdFnj6d6f07x2Z+xBnrVNFexX7z
-         Aki6GznmDC2SoZsidhRlltXcqVq2CSlwecnAqrIqh5NT+u5ErAqKR+dTVzSa+8CPE5pv
-         afYItPptIwo0DKob8zpfr9qtPxATUeMeBUlNKnvpNUolRHGNRmaaaDafI3jogPqeeFD9
-         o5RA==
+	 In-Reply-To:Content-Type; b=e+ZC3615VdIQUVJp+6IsVy1uoDDeqQk1Zk9kI3rALHlkmR7+on/0W8nSgx9os+sQK4zgZRuEA7lINTeg5GA67QbzaJWCeAeAD2DC2Z25kakNuFkpyG0sYQ8m+oj/s9dZvKogvjNusxexX4K5JAYnWwl5wknGDyK1vVKEKb6Nc+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GS+0x51K; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744628691;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dqNH3rALHkPYmFYYLgGdDpOMZYwATfXy50C2/Ds0wAU=;
+	b=GS+0x51KvBcaVdf8j5BM+89s5NFnDeUeGFXL90WieMj8nMwKsZ1IIzfU+GJpSXOH7gthmr
+	gBo6FMUyr+W2DKAu50ltVmn42B5cTiwlzqWAZO/NM188ZDJENg+5QOT211sfUYI2R5AJTb
+	JwHZm4jb5iZQu7ypSc8hefnapsI5NCk=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-14-ZE3yt3puMtyq1zY5sqboaQ-1; Mon, 14 Apr 2025 07:04:50 -0400
+X-MC-Unique: ZE3yt3puMtyq1zY5sqboaQ-1
+X-Mimecast-MFC-AGG-ID: ZE3yt3puMtyq1zY5sqboaQ_1744628689
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-ac287f28514so357993066b.0
+        for <stable@vger.kernel.org>; Mon, 14 Apr 2025 04:04:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744628183; x=1745232983;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sDnDfLpXfE7PWrKyWCHICC9gvn0J/O7cW+D86gMjszQ=;
-        b=dYQoy5GhhlU46IK3oLtT2P3gsW77wy8gJ2DBAhlM2b2EdEcuZIv6OQxCt9T/Zu3lXJ
-         zZygXywC6TOQ4Id3b7ARP6x5jOKavoHzwXGHCWwEslSUEsXTOaAY7barg9GAbbY/c1KR
-         k0qBLddhovsigGrKYdOGtWL4UQrTUT+V4GvcD2TA9PaA5bTegVytk2N7koeEw5Np7dJR
-         2gRf3j8XEYNFjMeA11xHgqrpyNMeYQ0VXd8fElpP88xvlu5ji2KG0k+cDL4jFQafRyRJ
-         TWvEZBdIlVuGYXfzZFHQQeE2m+IAV7FMYbDYS+Jp/LR0K2nqHgYhGz/B+a+ZAKQNXHsB
-         iONA==
-X-Forwarded-Encrypted: i=1; AJvYcCWnry9CIfV3O65LcYdNJLb5EgfijfiE5Z6vAQHM7qNldxUFklLTp9WD+DJmRd878k6ShupGL7U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqfpJ9tqvfNReCbpAJmeCBIMqKMyerXYFAmlIxH/46iQRouhS/
-	WtNJBCDpH8lb9d+lUt5xBGU8qMboNp3pFVnfXH1Mn/j9HIN5XKaV6AlvkQPEdHs=
-X-Gm-Gg: ASbGncuOW17bSrdb8jRc7Hue7UulsP5GEju24BJUz9T4WA93WnthGdkCvdfUQ72FLyS
-	nm1Mgsca2T3SozzS+yB+UoB87qMoOEQESq4bw2XxckB4acZ+kYKE0Jd36GE6MsTOOxPvCuMSS0j
-	pzK9GIrTfMKflq0WeHBDnUVRUzgomwoP5H1W++D5K7IbZCx+NYqXEWF+xF2cMAu5/qT/zC8fB7r
-	uVpLlhrMM97mWa/Nhtx6IfquDGXHaHfuSLLRHIMLe2fudWes745OE2s6KuhBXT8izHiyM0KnXYT
-	SxIhGem0mqY/ZZ0HkbsU/dcrx3ueSr3Cv/zhNC/XwD8veg==
-X-Google-Smtp-Source: AGHT+IHBgv4chZU26xpAAuoQ+CvN0c7pnhZNwHGP/bnsThoMPPSqzWnD4rBK5YkZvT0T/+/zupdAuQ==
-X-Received: by 2002:a17:907:7ea5:b0:abf:6aa4:924c with SMTP id a640c23a62f3a-acad348dd92mr986154866b.17.1744628182845;
-        Mon, 14 Apr 2025 03:56:22 -0700 (PDT)
-Received: from [192.168.0.20] ([212.21.133.247])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acaa1cb42casm874100266b.88.2025.04.14.03.56.21
+        d=1e100.net; s=20230601; t=1744628689; x=1745233489;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dqNH3rALHkPYmFYYLgGdDpOMZYwATfXy50C2/Ds0wAU=;
+        b=uOOZ3sNcY0PaMEZ+INdYahwZLzruhwSSbgPHhBAJBHCkpJfySFIcQDd4nh2v4qa/Ny
+         g+dC7lxnkbOMPOS0id2KGnYMoenMZs6vIIp5XTGjypHvil1qho0c8IH0iiuqijII/aj0
+         ay9QCHGWW76DeGXelZxHrdw9Fdjuf3FPqGSh2ySGyjYTuNGRgsOlPNpIXZ4ZiZfRXw7V
+         N8f4vpSHHyNl6iO1pYlsU4LANiLoh5Jz1IWt9UZQ5IOIC3nIf0kXbrCETjPTTU4WvGaP
+         A/g0IYD8zBYM6dwMmxxu/A+5cKJXHqElf8k7DrSO334YcRc7akY2l+DviVQ3KBvqerZD
+         W/gA==
+X-Forwarded-Encrypted: i=1; AJvYcCUNoSfM7sadHxGW6cPdKBNj+TfWf8Ph4Yr6O38OvENezSXlMnAKP3On2HIistKRTSVhLq19lQ8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxsfZtGbyYBwqFBE7L4tHX/iMs0fmLRvUY/r6CzQRSSpzMZM+OX
+	iBoxHvrex69x8aDO8W9QwHc3CRK3Evv8A0SQOZJ9iZmW8iYU7rwANV2sVwKWjBL8wlooQ8VHczT
+	Pp1SqSe4/YyoBf5HTaKwhMFgbfWK+75hpwxA+Qwku+/oZ4K9gnlYq8ayALb/XQA==
+X-Gm-Gg: ASbGnctpapN14GUlUgajH1v88IBuTbmajUjAjyUox8BIo5HzGjuKK6ulT/VD9hoy+cT
+	7YVieBCUEOVj28cTqUSoRDMmU3JML/1xlbrCpmrzZTsk5xIjTRvUGuaxrtvrA6myLWI0CLqer0n
+	ZVf0Gf5XrRlDGdYh5ZKzqx6kVPj60sz/RQvpI4pppqdDfhVNHD1MFZaAvM0/rKmrdKzZJFNVadO
+	wELutdw5cnXXAfofaP6i5Ly0CDbiE5dGBNZ8z45qNaSoVC+rrUI+solDjyHHtnUpNKlgXTgMocB
+	cJCt/Gw/wavDGDo=
+X-Received: by 2002:a17:907:3e1b:b0:ac3:c020:25e9 with SMTP id a640c23a62f3a-acad352b84bmr1013631666b.34.1744628688686;
+        Mon, 14 Apr 2025 04:04:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFhE+alPWy7hdC04GePGwU5YUyVn9AO1aVXzOVYnmufV8WxGpecarDzQvJenRhXNJ8+nBHdOg==
+X-Received: by 2002:a17:907:3e1b:b0:ac3:c020:25e9 with SMTP id a640c23a62f3a-acad352b84bmr1013627866b.34.1744628688129;
+        Mon, 14 Apr 2025 04:04:48 -0700 (PDT)
+Received: from [10.40.98.122] ([78.108.130.194])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5f36ee54e11sm4860929a12.2.2025.04.14.04.04.47
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Apr 2025 03:56:22 -0700 (PDT)
-Message-ID: <0df1ea92-4386-4237-bf98-02503a5829ba@suse.com>
-Date: Mon, 14 Apr 2025 13:56:21 +0300
+        Mon, 14 Apr 2025 04:04:47 -0700 (PDT)
+Message-ID: <01570d5d-0bdf-4192-a703-88854e9bcf78@redhat.com>
+Date: Mon, 14 Apr 2025 13:04:46 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,116 +88,95 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] Restrict devmem for confidential VMs
-To: Dan Williams <dan.j.williams@intel.com>, dave.hansen@linux.intel.com
-Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>,
- Vishal Annapurve <vannapurve@google.com>, Kees Cook <keescook@chromium.org>,
- stable@vger.kernel.org, x86@kernel.org, Ingo Molnar <mingo@kernel.org>,
- linux-kernel@vger.kernel.org
-References: <174433453526.924142.15494575917593543330.stgit@dwillia2-xfh.jf.intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <174433453526.924142.15494575917593543330.stgit@dwillia2-xfh.jf.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v1 1/2] platform/x86: int3472: add hpd pin support
+To: "Yan, Dongcheng" <dongcheng.yan@intel.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ "Yan, Dongcheng" <dongcheng.yan@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ sakari.ailus@linux.intel.com, hverkuil@xs4all.nl,
+ u.kleine-koenig@baylibre.com, ricardo.ribalda@gmail.com,
+ bingbu.cao@linux.intel.com, stable@vger.kernel.org, hao.yao@intel.com
+References: <20250411082357.392713-1-dongcheng.yan@intel.com>
+ <cfc709a8-85fc-4e44-9dcf-ae3ef7ee0738@redhat.com>
+ <c8ae2d43-157c-408a-af89-7248b30d52d1@linux.intel.com>
+ <Z_zDGYD1QXZYWwI9@smile.fi.intel.com>
+ <d9cab351-4850-42c7-8fee-a9340d157ed9@linux.intel.com>
+ <Z_zMMtUdJYpHuny7@smile.fi.intel.com>
+ <f10f919e-7bdc-4a01-b131-41bdc9eb6573@intel.com>
+Content-Language: en-US, nl
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <f10f919e-7bdc-4a01-b131-41bdc9eb6573@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Hi,
+
+On 14-Apr-25 11:59, Yan, Dongcheng wrote:
+> Hi Andy and Hans,
+> 
+> I found the description of lt6911uxe's GPIO in the spec:
+> GPIO5 is used as the interrupt signal (50ms low level) to inform SOC
+> start reading registers from 6911UXE;
+> 
+> So setting the polarity as GPIO_ACTIVE_LOW is acceptable?
+
+Yes that is acceptable, thank you for looking this up.
+
+Regards,
+
+Hans
 
 
 
-On 11.04.25 г. 4:22 ч., Dan Williams wrote:
-> Changes since v1 [1]:
-> * Fix the fact that devmem_is_allowed() == 2 does not prevent
->    mmap access (Kees)
-> * Rather than teach devmem_is_allowed() == 2 to map zero pages in the
->    mmap case, just fail (Nikolay)
+> We used RISING and FALLING in irq(not GPIO) to ensure that HDMI events
+> will not be lost to the greatest extent possible.
 > 
-> [1]: http://lore.kernel.org/67f5b75c37143_71fe2949b@dwillia2-xfh.jf.intel.com.notmuch
+> Thanks,
+> Dongcheng
 > 
-> ---
-> The story starts with Nikolay reporting an SEPT violation due to
-> mismatched encrypted/non-encrypted mappings of the BIOS data space [2].
+> On 4/14/2025 4:49 PM, Andy Shevchenko wrote:
+>> On Mon, Apr 14, 2025 at 04:40:26PM +0800, Yan, Dongcheng wrote:
+>>> On 4/14/2025 4:11 PM, Andy Shevchenko wrote:
+>>>> On Mon, Apr 14, 2025 at 03:52:50PM +0800, Yan, Dongcheng wrote:
+>>>>> On 4/11/2025 4:33 PM, Hans de Goede wrote:
+>>>>>> On 11-Apr-25 10:23 AM, Dongcheng Yan wrote:
+>>
+>> ...
+>>
+>>>>>>> +	case INT3472_GPIO_TYPE_HOTPLUG_DETECT:
+>>>>>>> +		*con_id = "hpd";
+>>>>>>> +		*gpio_flags = GPIO_LOOKUP_FLAGS_DEFAULT;
+>>>>>>
+>>>>>> This looks wrong, we really need to clearly provide a polarity
+>>>>>> here since the ACPI GPIO resources do not provide one.
+>>>>>>
+>>>>> I tested gpio_flags=GPIO_LOOKUP_FLAGS_DEFAULT/HIGH/LOW, the lt6911uxe
+>>>>> driver can pass the test and work normally.
+>>>>
+>>>> I doubt you tested that correctly. It's impossible to have level triggered
+>>>> event to work with either polarity. It might be also a bug in the code lurking
+>>>> somewhere, but it would be unlikely (taking into account amount of systems
+>>>> relying on this).
+>>>>
+>>>> Is it edge triggered event?
+>>>>
+>>>
+>>> It is an edge triggered event in lt6911uxe. In order to better adapt to
+>>> other uses, "hpd" is meaningful to specify a polarity here.
+>>>
+>>> In lt6911uxe, GPIO "hpd" is used as irq, and set irq-flag to
+>>> IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING | IRQF_ONESHOT. So no matter
+>>> rising or falling, driver can work normally.
+>>> "
+>>> ret = request_threaded_irq(gpiod_to_irq(lt6911uxe->irq_gpio),	NULL,
+>>> lt6911uxe_threaded_irq_fn, IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING |
+>>> IRQF_ONESHOT, NULL, lt6911uxe);
+>>> "
+>>
+>> So, the driver must not override the firmware, if there is no bugs.
+>> So, why do you even use those flags there? It seems like a bad code
+>> in the driver that doesn't look correct to me.
+>>
 > 
-> An initial suggestion to just make sure that the BIOS data space is
-> mapped consistently [3] ran into another issue that TDX and SEV-SNP
-> disagree about when that space can be mapped as encrypted.
-> 
-> Then, in response to a partial patch to allow SEV-SNP to block BIOS data
-> space for other reasons [4], Dave asked why not just give up on /dev/mem
-> access entirely in the confidential VM case [5].
-> 
-> Enter this series to:
-> 
-> 1/ Close a subtle hole whereby /dev/mem that is supposed return zeros in
->     lieu of access only enforces that for read()/write()
-> 
-> 2/ Use that new closed hole to reliably disable all /dev/mem access for
->     confidential x86 VMs
-> 
-> [2]: http://lore.kernel.org/20250318113604.297726-1-nik.borisov@suse.com
-> [3]: http://lore.kernel.org/174346288005.2166708.14425674491111625620.stgit@dwillia2-xfh.jf.intel.com
-> [4]: http://lore.kernel.org/20250403120228.2344377-1-naveen@kernel.org
-> [5]: http://lore.kernel.org/fd683daa-d953-48ca-8c5d-6f4688ad442c@intel.com
-> ---
-> 
-> Dan Williams (3):
->        x86/devmem: Remove duplicate range_is_allowed() definition
->        devmem: Block mmap access when read/write access is restricted
->        x86/devmem: Restrict /dev/mem access for potentially unaccepted memory by default
-> 
-> 
->   arch/x86/Kconfig                |    2 ++
->   arch/x86/include/asm/x86_init.h |    2 ++
->   arch/x86/kernel/x86_init.c      |    6 ++++++
->   arch/x86/mm/init.c              |   23 +++++++++++++++++------
->   arch/x86/mm/pat/memtype.c       |   31 ++++---------------------------
->   drivers/char/mem.c              |   18 ------------------
->   include/linux/io.h              |   26 ++++++++++++++++++++++++++
->   7 files changed, 57 insertions(+), 51 deletions(-)
-> 
-> base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
-
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
 
 
