@@ -1,68 +1,60 @@
-Return-Path: <stable+bounces-132620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DE44A883B6
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 16:04:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85163A88410
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 16:11:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E27537A2F53
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 14:03:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C77418957AC
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 14:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE6B12820D5;
-	Mon, 14 Apr 2025 13:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A35592DE450;
+	Mon, 14 Apr 2025 13:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HVYAFZvs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Glyr+NDQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB362820D0;
-	Mon, 14 Apr 2025 13:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D37F2DE444;
+	Mon, 14 Apr 2025 13:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637541; cv=none; b=euhz3Z2bHZBoFmDULJfmFbgG1stV8avyFqGvCHWwQUBGAHbhKKRedN8DUpBeXJ7kzu1WCa4kbfxC1X7CFYsf47EKv2uo4uBBUN/D0QgL577WlyNgSOM6rWXLJzYYS813JES7DdhYWSRBWkfBG0crvGWF8XII/dE0MiBkS+cWMU4=
+	t=1744637543; cv=none; b=vFT5IeYXQeTKNsS3HdMH82NiQtY6SvZ3Yhy+mE36pEkF7JlglykG8dL8I5oHsc1wwGc730n7a1Bi4nXWNoWoPJdxI2HacAwDmkq27x12VLyiX8Q0qxL+IsouFHRI2QXiNc/WLKMOgb/l6lGkZJNL1CA4MeKhkkkjw8tp2NBtLrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637541; c=relaxed/simple;
-	bh=uWaws+Dxdlz2i70jmntXndOFO1MQf9B1UM6QrGtKe4A=;
+	s=arc-20240116; t=1744637543; c=relaxed/simple;
+	bh=loXYO8n1qZIRscLbqjgFDKa3b0uWIsgp0jeUEqmCJGM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=I2QXnXka/cE/+FbOxNupt1r1uqAxImtjnXvwwWiKl6oywqCK8B4OYOavzzu0Xulp676zuylri/ddj9aaNuMcyRp8gqZP/0UVeYsskJuXupipdhNiZe604esMo0nShZRI7pgykNm5065ylYwzKbRvIKXjUxEGH0C230dMAkvO70s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HVYAFZvs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8617DC4CEE9;
-	Mon, 14 Apr 2025 13:32:18 +0000 (UTC)
+	 MIME-Version; b=BXBAB6MPwe8/bFstYmwQN5cbn390ISInuSCMrOyJz6nA25Xg7eUpSUI7DSXxf6UjvkwUd3ZP8ttfR/sduVL+wv74/G7++QpGxT6SZaY6ILbeRIi0A14huEXgcfiKOGFoUv6UYy0R52s5iO6Z/2cL1JRXNYy04nt4/qQFBY8DSsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Glyr+NDQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691CFC4CEE2;
+	Mon, 14 Apr 2025 13:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744637540;
-	bh=uWaws+Dxdlz2i70jmntXndOFO1MQf9B1UM6QrGtKe4A=;
+	s=k20201202; t=1744637542;
+	bh=loXYO8n1qZIRscLbqjgFDKa3b0uWIsgp0jeUEqmCJGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HVYAFZvstJWRSwS7nv/FcY+b0yCg6bkYqDpIDCtUMjFpXHTQlMdue/mPdXbFoN9PW
-	 ijSzSeIq6VXt/dnXxBQ8I/zqw6gB1tCYOeQApaS9NrEwfVsR9hwacZJHqD055dAem9
-	 x87qc00rIxVBlSOua+RQehy1ozVhwh9d6VUQIFzQyZ+Yj4cA7Fsqq/Wjj3xQZ5wk/J
-	 uH1h2vGoVBH2+97glHM0hmN4GzRRn8ome6+9q+D/LLe1eFhyJO88//Q2w06H6YkmiJ
-	 pho63IaZbxNsav9dBc7JGffqobz5vPdRs1n76Yb0BM2hJaQnpf1lbqtxKbhGaXhaX3
-	 AnqxRaKrSgYKg==
+	b=Glyr+NDQnIxK4bPbH/OohWmY8W+H/fqbiN1BVlJRgJfPbl4TVi4cwN03nv8B+sBu6
+	 xehKw0cTAzwjmEt2otx1gumQ/DxnmqoP6ujamPJFQHxfkGTJA7ViVjjcMOx19S9eP2
+	 SbUm71ZE3x6BPZZ1lzsBmgcgXkuMbAlzjs/VQRMB8EiRZPkoDIsSUkzEADoURsQQfc
+	 6ykLuGs6tOzAouhCTrJBpEpB92pnxWBHeED5jSrADVTeldVV52mj0Tsoe1V2Voeihc
+	 2VfbJsBDD84Zx3lMIeBrPTrJTVwYA6aVBcuIsvhQTqdGbgtUFgWAzW4cEtoS1Je3D8
+	 Nj1/UblwArF/Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Amit Shah <amit.shah@amd.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	David Woodhouse <dwmw2@infradead.org>,
+Cc: Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Ts'o <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>,
-	tglx@linutronix.de,
-	bp@alien8.de,
-	peterz@infradead.org,
-	mingo@redhat.com,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org
-Subject: [PATCH AUTOSEL 5.10 10/11] x86/bugs: Don't fill RSB on VMEXIT with eIBRS+retpoline
-Date: Mon, 14 Apr 2025 09:31:57 -0400
-Message-Id: <20250414133158.681045-10-sashal@kernel.org>
+	adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 11/11] ext4: make block validity check resistent to sb bh corruption
+Date: Mon, 14 Apr 2025 09:31:58 -0400
+Message-Id: <20250414133158.681045-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250414133158.681045-1-sashal@kernel.org>
 References: <20250414133158.681045-1-sashal@kernel.org>
@@ -77,62 +69,76 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.236
 Content-Transfer-Encoding: 8bit
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 
-[ Upstream commit 18bae0dfec15b24ec14ca17dc18603372f5f254f ]
+[ Upstream commit ccad447a3d331a239477c281533bacb585b54a98 ]
 
-eIBRS protects against guest->host RSB underflow/poisoning attacks.
-Adding retpoline to the mix doesn't change that.  Retpoline has a
-balanced CALL/RET anyway.
+Block validity checks need to be skipped in case they are called
+for journal blocks since they are part of system's protected
+zone.
 
-So the current full RSB filling on VMEXIT with eIBRS+retpoline is
-overkill.  Disable it or do the VMEXIT_LITE mitigation if needed.
+Currently, this is done by checking inode->ino against
+sbi->s_es->s_journal_inum, which is a direct read from the ext4 sb
+buffer head. If someone modifies this underneath us then the
+s_journal_inum field might get corrupted. To prevent against this,
+change the check to directly compare the inode with journal->j_inode.
 
-Suggested-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Reviewed-by: Amit Shah <amit.shah@amd.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>
-Link: https://lore.kernel.org/r/84a1226e5c9e2698eae1b5ade861f1b8bf3677dc.1744148254.git.jpoimboe@kernel.org
+**Slight change in behavior**: During journal init path,
+check_block_validity etc might be called for journal inode when
+sbi->s_journal is not set yet. In this case we now proceed with
+ext4_inode_block_valid() instead of returning early. Since systems zones
+have not been set yet, it is okay to proceed so we can perform basic
+checks on the blocks.
+
+Suggested-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/0c06bc9ebfcd6ccfed84a36e79147bf45ff5adc1.1743142920.git.ojaswin@linux.ibm.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/ext4/block_validity.c | 5 ++---
+ fs/ext4/inode.c          | 7 ++++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 725f827718a71..045ab6d0a98bb 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1543,20 +1543,20 @@ static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_
- 	case SPECTRE_V2_NONE:
- 		return;
+diff --git a/fs/ext4/block_validity.c b/fs/ext4/block_validity.c
+index 295e89d93295e..5d5befac5622b 100644
+--- a/fs/ext4/block_validity.c
++++ b/fs/ext4/block_validity.c
+@@ -353,10 +353,9 @@ int ext4_check_blockref(const char *function, unsigned int line,
+ {
+ 	__le32 *bref = p;
+ 	unsigned int blk;
++	journal_t *journal = EXT4_SB(inode->i_sb)->s_journal;
  
--	case SPECTRE_V2_EIBRS_LFENCE:
- 	case SPECTRE_V2_EIBRS:
-+	case SPECTRE_V2_EIBRS_LFENCE:
-+	case SPECTRE_V2_EIBRS_RETPOLINE:
- 		if (boot_cpu_has_bug(X86_BUG_EIBRS_PBRSB)) {
--			setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT_LITE);
- 			pr_info("Spectre v2 / PBRSB-eIBRS: Retire a single CALL on VMEXIT\n");
-+			setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT_LITE);
- 		}
- 		return;
+-	if (ext4_has_feature_journal(inode->i_sb) &&
+-	    (inode->i_ino ==
+-	     le32_to_cpu(EXT4_SB(inode->i_sb)->s_es->s_journal_inum)))
++	if (journal && inode == journal->j_inode)
+ 		return 0;
  
--	case SPECTRE_V2_EIBRS_RETPOLINE:
- 	case SPECTRE_V2_RETPOLINE:
- 	case SPECTRE_V2_LFENCE:
- 	case SPECTRE_V2_IBRS:
--		setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT);
- 		pr_info("Spectre v2 / SpectreRSB : Filling RSB on VMEXIT\n");
-+		setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT);
- 		return;
- 	}
- 
+ 	while (bref < p+max) {
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index c991955412a49..7d31506deb9e5 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -409,10 +409,11 @@ static int __check_block_validity(struct inode *inode, const char *func,
+ 				unsigned int line,
+ 				struct ext4_map_blocks *map)
+ {
+-	if (ext4_has_feature_journal(inode->i_sb) &&
+-	    (inode->i_ino ==
+-	     le32_to_cpu(EXT4_SB(inode->i_sb)->s_es->s_journal_inum)))
++	journal_t *journal = EXT4_SB(inode->i_sb)->s_journal;
++
++	if (journal && inode == journal->j_inode)
+ 		return 0;
++
+ 	if (!ext4_inode_block_valid(inode, map->m_pblk, map->m_len)) {
+ 		ext4_error_inode(inode, func, line, map->m_pblk,
+ 				 "lblock %lu mapped to illegal pblock %llu "
 -- 
 2.39.5
 
