@@ -1,238 +1,147 @@
-Return-Path: <stable+bounces-132657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4EACA88AFA
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 20:26:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B89EFA88B68
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 20:36:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAD5C7A8D95
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 18:25:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C921B3B4E8D
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 18:35:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57AC728B50C;
-	Mon, 14 Apr 2025 18:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC2D028DF0C;
+	Mon, 14 Apr 2025 18:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HsvItA+H"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HvGThh7+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12AF328B508;
-	Mon, 14 Apr 2025 18:26:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB4528DF09;
+	Mon, 14 Apr 2025 18:33:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744655194; cv=none; b=LXoe90PDPpQfYU1JMcoaGnskWVETcCSiQvBqi3lHTREF33wcYU3czsS8B/Ih6b0uaZKuth8HL8/3S0ucw+tsSr6ZcfpD5rIVzn+Ezu3oFelYDZinoD4squqLVADBqvSR27nbnBnocZjbhu/Cw22Ft/nW68PFsWU4wB+iHgDGzho=
+	t=1744655605; cv=none; b=pevNp2muGAQftuS+x9b1sYSsnqpqO6aj3oq9+URap5s6fWWtPNrWRe4Mm68ErjAKXmHg062bVhtNfxXdTGNI2PTjn3b5jd9akLE8RrrjU9I7n3mgqlVLvnooZOsbR+Q1hgH7JK9y4rSU1goNdBRaPnQxRCdxaeqgoIqkDXmYswc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744655194; c=relaxed/simple;
-	bh=zxI4p+wjrRQ0jkQ2RkuWxk4aLUvNDztSLjxQS/HnlH4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UkJjf90lb2ItQG+udbT3WDWNXl8BPLD4aLKM3qAtkmaBYOHEkda5G+5NHLTr5e1TkcoHkY4FfQl0Bd5vZtte83QipjSa6wLIABXPlWITAMcd5Mngbu0aurohGKK9tFhz0z9w2a+kXQZsDfC53EKepj7qM5A/wP3qEP6za3fafAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HsvItA+H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8447C4CEEC;
-	Mon, 14 Apr 2025 18:26:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744655193;
-	bh=zxI4p+wjrRQ0jkQ2RkuWxk4aLUvNDztSLjxQS/HnlH4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HsvItA+HZnP3HMwBQ0qn+x/+lX1FG8CYN4emOP0fuPiFIaW0eg0g2P3VCBAqIkWzd
-	 PyZIJd0I99m2kBnv9F5ZVfljpT0YVJ5Gjn2yBkvzwbNKMgbrRuWM306E91jCF/YkrJ
-	 dE1ODM/M5U/z9xyjxZYb9/ladb++fU2RT8Zz+oiA78qQGbf24NpbOrIZxvuL9P0YQf
-	 cfnKSNQ4ak4I9cEGuFl64IV62zdVUO0OB9zF8lP49BvRVYoP2q0/vk9Rrro4qTmpM2
-	 Cvq2b7ko1z2JRarESeNUDv/Oou4PimbWKUJztypjS19v0aHQcvqNUOiPxTsC5z43sh
-	 WFKs/m81h9LKA==
-Date: Mon, 14 Apr 2025 23:52:45 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: dave.hansen@linux.intel.com, x86@kernel.org, 
-	Ingo Molnar <mingo@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Kirill Shutemov <kirill.shutemov@linux.intel.com>, Nikolay Borisov <nik.borisov@suse.com>, stable@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] x86/devmem: Restrict /dev/mem access for
- potentially unaccepted memory by default
-Message-ID: <l2crzyeoux2pammbifkivrhp637gza7piumd3s6j66mezsfvdy@nwczgs2hkq4f>
-References: <174433453526.924142.15494575917593543330.stgit@dwillia2-xfh.jf.intel.com>
- <174433455868.924142.4040854723344197780.stgit@dwillia2-xfh.jf.intel.com>
+	s=arc-20240116; t=1744655605; c=relaxed/simple;
+	bh=ZunjNYFnI7JxoSGkJJ1EQ4iGF1wabxw0aCcA7Ph4hm4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PZhiVoiTgHWvOPqy/dS205KKZHegf1YlR2m/AFg2QScGsI7U3jVDfc8n5zHzojh5Hzrqvj6+JPkprKlQAhauaptgjpoh4Am2Cp3txejfcZA3rghqaWEvaLrbDPhowD5Y7TdjRizU24Vx+5d6zR078lIVdoT6yOOWQEvvHko04K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HvGThh7+; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-39d83782ef6so3711684f8f.0;
+        Mon, 14 Apr 2025 11:33:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744655602; x=1745260402; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sMvJif03h5Plq8yKKl4hxQHkJT/0k2MiFgQENlo2UEg=;
+        b=HvGThh7+uNOXSQaljona5wz+E+KVQYm/ZlcupM9Jq0XAwHX9w44nO2Ttv5WiqGX9Kd
+         1BiBvaZq0fllqen5q3QZPYZgSAFg2vdBZeJVSjO1a7Nw5orBKGvRrK+g48x2dWnEGrXd
+         UlM3pXzekYtBfyXrsFRsYGyS+s70/B8aPO01yMe1/KBV0288sS4JRPscZjVA2KdiNiiA
+         yYvG3Tzvuf/BPIaJtMYc+9gg49CVEuNKdj5Gc/bARpQ54A9x/lfL8uxwgzN2HgE2KDZf
+         f72OvkNhwCeJhQiAc66nGC7NiyXlmkZgDW7fA9Zlrn9XD0Xf+z3Re8kRlGnkCm2PupB5
+         M5Jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744655602; x=1745260402;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sMvJif03h5Plq8yKKl4hxQHkJT/0k2MiFgQENlo2UEg=;
+        b=J3ksvp0jVzYjZKmwTTQmnUEszcykTqmfGCchgvo1CLLK4RwSz/AI31aoZ3HcWzpMYP
+         J5dKJz4YhdmPA9qlYbCadIlKSUMtLg+HqQmFSNG4oVuycd28BW2VM1/+t9u6mnCyKbaK
+         AzubvWmTjn79NEIyvOPErgpMOITOd/uKlixAAs8LMzUjDm4YB7s2jvxtFeoE3yJZKazx
+         Her4yYRx7d4EYuq10XkJ++vFetQMxSE6cOQce6A424E8nqb5k3TUw13l9L3Nioxa76+e
+         qHMWy5K+86qg5SaUQRqa/7QLRZiWeJ1t2PJiOQqnYcAM7Xlf//NGpKoDJv0Exu6G1fLz
+         G21A==
+X-Forwarded-Encrypted: i=1; AJvYcCVyscq5SAqodFPWW9wWSO3yR17p02yk8HaFeW+WXDlFvjiatI4/UPcPGiVWtwrLsDEwVJ1rk1zgi5vRlgo=@vger.kernel.org, AJvYcCW5XPNBmKtqk89lc+UpO0NbD31+0J71FLko8f3t79nrKZ0rAdIfKFo4UNHPVGnKuTFEUcych/Rw@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvAAXfGV/21D0eDTSm5mx8YynLwP93rXt5Q7EyvQlJGaMXZ4Ed
+	lcwjQWkP8lmIwQY+BXEs2nw0hpJyGBP2vXmo6Bh2Xtw3JrGsUIrL
+X-Gm-Gg: ASbGncu66qpM/NC3eu9rNLy4EoOSiTSVixP9gbJfIJ34lVcr7ssHh/BwyjZPTNCVfts
+	rECdyDsisWlAvGuq8oy8PCAqpu/L1c09dQmLF4RuN/aZW235Bks2fAEiA5R1ugKzrDfum9XkzXi
+	sOhGjeZ2U6C0wJ0KTfpWhTuh3U2ZoTOTr+PKWph19UwoINoa3FPJbkq6Q2f2WF96kRYJQb9hH9j
+	G4bL7etqInAeMQKoH1z9b+sFLXOboFn6F1MmsqoGBpwxi/BIWwD6l6zty6kJv++dGSBnYKk7i66
+	xfnWCDKNHFvbjdQO3GOOidIgFLXOlHVlfhwD0+OtmvnY1JRX80dz
+X-Google-Smtp-Source: AGHT+IHa7BlNKNs9GPmoBr8JI6RAbn9nU/ijM2HYizj2vYjbNw2hMoAzVfhZQUc2ygmwT4a2gw9nUg==
+X-Received: by 2002:a5d:47cb:0:b0:39c:dfa:e86c with SMTP id ffacd0b85a97d-39edc30b175mr426912f8f.13.1744655601870;
+        Mon, 14 Apr 2025 11:33:21 -0700 (PDT)
+Received: from qasdev.Home ([2a02:c7c:6696:8300:2c4f:a30a:c7f7:acf7])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39eaf43d046sm12043150f8f.63.2025.04.14.11.33.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Apr 2025 11:33:20 -0700 (PDT)
+From: Qasim Ijaz <qasdev00@gmail.com>
+To: ping.cheng@wacom.com,
+	jason.gerecke@wacom.com,
+	jikos@kernel.org,
+	bentiss@kernel.org
+Cc: linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot <syzbot+d5204cbbdd921f1f7cad@syzkaller.appspotmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 RESEND] HID: wacom: fix shift OOB in kfifo allocation for zero pktlen
+Date: Mon, 14 Apr 2025 19:33:17 +0100
+Message-Id: <20250414183317.11478-1-qasdev00@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <174433455868.924142.4040854723344197780.stgit@dwillia2-xfh.jf.intel.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Apr 10, 2025 at 06:22:38PM -0700, Dan Williams wrote:
-> Nikolay reports [1] that accessing BIOS data (first 1MB of the physical
-> address space) via /dev/mem results in an SEPT violation.
-> 
-> The cause is ioremap() (via xlate_dev_mem_ptr()) establishes an
-> unencrypted mapping where the kernel had established an encrypted
-> mapping previously.
-> 
-> An initial attempt to fix this revealed that TDX and SEV-SNP have
-> different expectations about which and when address ranges can be mapped
-> via /dev/mem.
-> 
-> Rather than develop a precise set of allowed /dev/mem capable TVM
-> address ranges, teach devmem_is_allowed() to always restrict access to
-> the BIOS data space.
+During wacom_parse_and_register() the code calls wacom_devm_kfifo_alloc
+to allocate a fifo. During this operation it passes kfifo_alloc a
+fifo_size of 0. Kfifo attempts to round the size passed to it to the
+next power of 2 via roundup_pow_of_two (queue-type data structures
+do this to maintain efficiency of operations).
 
-This patch does more than just restrict the BIOS data space - it rejects 
-all accesses to /dev/mem _apart_ from the first 1MB. That should be made 
-clear here.
+However during this phase a problem arises when the roundup_pow_of_two()
+function utilises a shift exponent of fls_long(n-1), where n is the
+fifo_size. Since n is 0 in this case and n is also an unsigned long,
+doing n-1 causes unsigned integer wrap-around to occur making the
+fifo_size 4294967295. So the code effectively does fls_long(4294967295)
+which results in 64. Returning back to roundup_pow_of_two(), the code
+utilises a shift exponent of 64. When a shift exponent of 64 is used
+on a 64-bit type such as 1UL it results in a shift-out-of-bounds.
 
-> This means return 0s for read(), drop write(), and
-> -EPERM mmap(). This can still be later relaxed as specific needs arise,
-> but in the meantime, close off this source of mismatched
-> IORES_MAP_ENCRYPTED expectations.
-> 
-> Cc: <x86@kernel.org>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Vishal Annapurve <vannapurve@google.com>
-> Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>
-> Reported-by: Nikolay Borisov <nik.borisov@suse.com>
-> Closes: http://lore.kernel.org/20250318113604.297726-1-nik.borisov@suse.com [1]
-> Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-> Fixes: 9aa6ea69852c ("x86/tdx: Make pages shared in ioremap()")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  arch/x86/Kconfig                |    2 ++
->  arch/x86/include/asm/x86_init.h |    2 ++
->  arch/x86/kernel/x86_init.c      |    6 ++++++
->  arch/x86/mm/init.c              |   23 +++++++++++++++++------
->  4 files changed, 27 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 4b9f378e05f6..12a1b5acd55b 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -891,6 +891,7 @@ config INTEL_TDX_GUEST
->  	depends on X86_X2APIC
->  	depends on EFI_STUB
->  	depends on PARAVIRT
-> +	depends on STRICT_DEVMEM
->  	select ARCH_HAS_CC_PLATFORM
->  	select X86_MEM_ENCRYPT
->  	select X86_MCE
-> @@ -1510,6 +1511,7 @@ config AMD_MEM_ENCRYPT
->  	bool "AMD Secure Memory Encryption (SME) support"
->  	depends on X86_64 && CPU_SUP_AMD
->  	depends on EFI_STUB
-> +	depends on STRICT_DEVMEM
->  	select DMA_COHERENT_POOL
->  	select ARCH_USE_MEMREMAP_PROT
->  	select INSTRUCTION_DECODER
-> diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
-> index 213cf5379a5a..0ae436b34b88 100644
-> --- a/arch/x86/include/asm/x86_init.h
-> +++ b/arch/x86/include/asm/x86_init.h
-> @@ -305,6 +305,7 @@ struct x86_hyper_runtime {
->   * 				semantics.
->   * @realmode_reserve:		reserve memory for realmode trampoline
->   * @realmode_init:		initialize realmode trampoline
-> + * @devmem_is_allowed		restrict /dev/mem and PCI sysfs resource access
->   * @hyper:			x86 hypervisor specific runtime callbacks
->   */
->  struct x86_platform_ops {
-> @@ -323,6 +324,7 @@ struct x86_platform_ops {
->  	void (*set_legacy_features)(void);
->  	void (*realmode_reserve)(void);
->  	void (*realmode_init)(void);
-> +	bool (*devmem_is_allowed)(unsigned long pfn);
->  	struct x86_hyper_runtime hyper;
->  	struct x86_guest guest;
->  };
-> diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
-> index 0a2bbd674a6d..346301375bd4 100644
-> --- a/arch/x86/kernel/x86_init.c
-> +++ b/arch/x86/kernel/x86_init.c
-> @@ -143,6 +143,11 @@ static void enc_kexec_begin_noop(void) {}
->  static void enc_kexec_finish_noop(void) {}
->  static bool is_private_mmio_noop(u64 addr) {return false; }
->  
-> +static bool platform_devmem_is_allowed(unsigned long pfn)
-> +{
-> +	return !cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT);
-> +}
-> +
->  struct x86_platform_ops x86_platform __ro_after_init = {
->  	.calibrate_cpu			= native_calibrate_cpu_early,
->  	.calibrate_tsc			= native_calibrate_tsc,
-> @@ -156,6 +161,7 @@ struct x86_platform_ops x86_platform __ro_after_init = {
->  	.restore_sched_clock_state	= tsc_restore_sched_clock_state,
->  	.realmode_reserve		= reserve_real_mode,
->  	.realmode_init			= init_real_mode,
-> +	.devmem_is_allowed		= platform_devmem_is_allowed,
->  	.hyper.pin_vcpu			= x86_op_int_noop,
->  	.hyper.is_private_mmio		= is_private_mmio_noop,
->  
-> diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-> index bfa444a7dbb0..df5435c8dbea 100644
-> --- a/arch/x86/mm/init.c
-> +++ b/arch/x86/mm/init.c
-> @@ -861,18 +861,23 @@ void __init poking_init(void)
->   * area traditionally contains BIOS code and data regions used by X, dosemu,
->   * and similar apps. Since they map the entire memory range, the whole range
->   * must be allowed (for mapping), but any areas that would otherwise be
-> - * disallowed are flagged as being "zero filled" instead of rejected.
-> + * disallowed are flagged as being "zero filled" instead of rejected, for
-> + * read()/write().
-> + *
->   * Access has to be given to non-kernel-ram areas as well, these contain the
->   * PCI mmio resources as well as potential bios/acpi data regions.
->   */
->  int devmem_is_allowed(unsigned long pagenr)
->  {
-> +	bool platform_allowed = x86_platform.devmem_is_allowed(pagenr);
-> +
+The root cause of the issue seems to stem from insufficient validation
+of wacom_compute_pktlen(), since in this case the fifo_size comes
+from wacom_wac->features.pktlen. During wacom_parse_and_register()
+the wacom_compute_pktlen() function sets the pktlen as 0.
 
-If we are going to do this, I don't see the point of having an 
-x86_platform_op. It may be better to simply gate this on  
-cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) directly here.
+To fix this, we should handle cases where wacom_compute_pktlen()
+results in 0.
 
+Reported-by: syzbot <syzbot+d5204cbbdd921f1f7cad@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=d5204cbbdd921f1f7cad
+Fixes: 5e013ad20689 ("HID: wacom: Remove static WACOM_PKGLEN_MAX limit")
+Tested-by: Qasim Ijaz <qasdev00@gmail.com>
+Reviewed-by: Jason Gerecke <jason.gerecke@wacom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+---
+v2:
+- Added Fixes tag as suggested by Jason Gerecke
 
-Thanks,
-Naveen
+ drivers/hid/wacom_sys.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
->  	if (region_intersects(PFN_PHYS(pagenr), PAGE_SIZE,
->  				IORESOURCE_SYSTEM_RAM, IORES_DESC_NONE)
->  			!= REGION_DISJOINT) {
->  		/*
-> -		 * For disallowed memory regions in the low 1MB range,
-> -		 * request that the page be shown as all zeros.
-> +		 * For disallowed memory regions in the low 1MB range, request
-> +		 * that the page be shown as all zeros for read()/write(), fail
-> +		 * mmap()
->  		 */
->  		if (pagenr < 256)
->  			return 2;
-> @@ -885,14 +890,20 @@ int devmem_is_allowed(unsigned long pagenr)
->  	 * restricted resource under CONFIG_STRICT_DEVMEM.
->  	 */
->  	if (iomem_is_exclusive(pagenr << PAGE_SHIFT)) {
-> -		/* Low 1MB bypasses iomem restrictions. */
-> -		if (pagenr < 256)
-> +		/*
-> +		 * Low 1MB bypasses iomem restrictions unless the platform says
-> +		 * the physical address is not suitable for direct access.
-> +		 */
-> +		if (pagenr < 256) {
-> +			if (!platform_allowed)
-> +				return 2;
->  			return 1;
-> +		}
->  
->  		return 0;
->  	}
->  
-> -	return 1;
-> +	return platform_allowed;
->  }
->  
->  void free_init_pages(const char *what, unsigned long begin, unsigned long end)
-> 
+diff --git a/drivers/hid/wacom_sys.c b/drivers/hid/wacom_sys.c
+index 97393a3083ca..9b2f3dbca467 100644
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -2361,6 +2361,8 @@ static int wacom_parse_and_register(struct wacom *wacom, bool wireless)
+ 	unsigned int connect_mask = HID_CONNECT_HIDRAW;
+ 
+ 	features->pktlen = wacom_compute_pktlen(hdev);
++	if (!features->pktlen)
++		return -ENODEV;
+ 
+ 	if (!devres_open_group(&hdev->dev, wacom, GFP_KERNEL))
+ 		return -ENOMEM;
+-- 
+2.39.5
+
 
