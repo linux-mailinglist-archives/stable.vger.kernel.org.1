@@ -1,64 +1,47 @@
-Return-Path: <stable+bounces-132441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6724A87F71
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:43:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B505FA87F7E
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:45:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CED4B18996CF
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 11:42:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86B79173EFA
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 11:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF9629CB36;
-	Mon, 14 Apr 2025 11:41:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="xfUZB7np"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA08E2980BA;
+	Mon, 14 Apr 2025 11:44:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B642989AA;
-	Mon, 14 Apr 2025 11:41:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F172853EB
+	for <stable@vger.kernel.org>; Mon, 14 Apr 2025 11:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744630882; cv=none; b=FDGHyqe/vUj3/9kZEl+7qS7rlIgHIaE6T6Y6kaPNgDtDXS1Z3AfeE+1aXWz+b3/Xj81ARfyTrcrMmSilKuR0haDWFwL8VUU5DgUZ8UMQZkKHAk+JnT/VIZjgxijiPQq+f6owZqq8+/lir8fzIefbW5rJBXjUBv+Do898mt9OSr0=
+	t=1744631092; cv=none; b=Fjh5keM6rOS71QLV230u4ssyS0/Qqs+unItXM3S9Ow4Bd5i7JnIjuiz8+rGbTjuOpDl5VOn8L4+1z3BXLUbqHeV/KpKBHOQX/EGWHunlfJLrnLl+MBrYET2Uywb9evBLDVIKVmD/yVgzR91ZSg4Y4OumGSIP77GS3oNqFpQZOMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744630882; c=relaxed/simple;
-	bh=ChNHziXZOA2FpaIGY9w+vgsO8XllfkcXrxbG4utZ4bs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=f6QRKNTMH/anK2o+NvWzAipiOcqzw3gQnP9LFSSBX2un6zzA8YGYVvEadJ00BpiQf3/Dp4szm/UETXtieHzW48IuGb8gflNgI8oHAcsYeXr34YcvYchPbIV3UjBkB5fYsLPDfACckViU+4Y0gSb7IjqZEghMcpnfGoF5JMy/GAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=xfUZB7np; arc=none smtp.client-ip=198.47.19.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53EBekXw2046321
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 14 Apr 2025 06:40:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1744630846;
-	bh=z2v2YqDM9wvESESnYHXaNZpR11dPLsmv6R7Z15lYtSc=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=xfUZB7npYQOpoB54c4TURLLSpjiSlMy8CTSi5P27KH4fLe3UbByHjGqDXcxWveT6W
-	 cUClb1Xcl+4td+jDQzvDUzL4rEz70rsnu5gtBYjIp6FjXN5maISUSsHe0UXO5fZusg
-	 gvrTGJjo3JO+CEq5C7QbtGbQQpF9FZAvUepIjfRk=
-Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53EBekMm102049
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 14 Apr 2025 06:40:46 -0500
-Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 14
- Apr 2025 06:40:46 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 14 Apr 2025 06:40:45 -0500
-Received: from [172.24.227.115] (abhilash-hp.dhcp.ti.com [172.24.227.115])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53EBefOi038625;
-	Mon, 14 Apr 2025 06:40:42 -0500
-Message-ID: <28fa61b8-15a6-40c6-96b8-268939226a03@ti.com>
-Date: Mon, 14 Apr 2025 17:10:41 +0530
+	s=arc-20240116; t=1744631092; c=relaxed/simple;
+	bh=eNSaHlvEIP2M+Wl70rGcLoYlRcf6km68wl9xNSOkjlk=;
+	h=Content-Type:Message-ID:Date:MIME-Version:To:CC:From:Subject; b=tBu3+uGZPSI3fYL0/RxSxMTrZPXtAP3R0+Lx86EZsJ+pXjBzqov9CwfYyGJqYhV27r6bke7vFbcaNRpWYcOwt5BOb+o1iZVgN48Zd3b3jI4h8rCA24/XAW/L5ZP3oqVUUg9SmgkstwoJ75KqTsuXEqC0qLKZGOw46QBaX6laOb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Zbljs1pCdz2CdYG;
+	Mon, 14 Apr 2025 19:41:21 +0800 (CST)
+Received: from kwepemg100004.china.huawei.com (unknown [7.202.181.21])
+	by mail.maildlp.com (Postfix) with ESMTPS id A611C1800B2;
+	Mon, 14 Apr 2025 19:44:46 +0800 (CST)
+Received: from [10.67.111.137] (10.67.111.137) by
+ kwepemg100004.china.huawei.com (7.202.181.21) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 14 Apr 2025 19:44:46 +0800
+Content-Type: multipart/mixed;
+	boundary="------------z6kcUXTqDTHc4C349fgCGwX0"
+Message-ID: <42fa27ef-1807-4fd0-aaf0-1a1ceb1db10e@huawei.com>
+Date: Mon, 14 Apr 2025 19:44:45 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,118 +49,196 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/7] arm64: dts: ti: k3-j721e-sk: Add requiried voltage
- supplies for IMX219
-To: "Francis, Neha" <n-francis@ti.com>, <nm@ti.com>, <vigneshr@ti.com>
-CC: <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-        <conor+dt@kernel.org>, <vaishnav.a@ti.com>, <jai.luthra@linux.dev>,
-        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
-        <imx@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-        <u-kumar1@ti.com>, <stable@vger.kernel.org>
-References: <20250409134128.2098195-1-y-abhilashchandra@ti.com>
- <20250409134128.2098195-5-y-abhilashchandra@ti.com>
- <16713a1b-1e74-4b08-bd4c-12dc0a9d32df@ti.com>
 Content-Language: en-US
-From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
-In-Reply-To: <16713a1b-1e74-4b08-bd4c-12dc0a9d32df@ti.com>
+To: <stable@vger.kernel.org>
+CC: <regressions@lists.linux.dev>
+From: "liaochen (A)" <liaochen4@huawei.com>
+Subject: BUG: perf hardware breakpoint pc value mismatch
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ kwepemg100004.china.huawei.com (7.202.181.21)
+
+--------------z6kcUXTqDTHc4C349fgCGwX0
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
-
-Hi Neha,
-
-On 11/04/25 19:08, Francis, Neha wrote:
-> On 4/9/2025 7:11 PM, Yemike Abhilash Chandra wrote:
->> The device tree overlay for the IMX219 sensor requires three voltage
->> supplies to be defined: VANA (analog), VDIG (digital core), and VDDL
->> (digital I/O). Add the corresponding voltage supply definitions to avoid
->> dtbs_check warnings.
->>
->> Fixes: f767eb918096 ("arm64: dts: ti: k3-j721e-sk: Add overlay for IMX219")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
->> ---
->>   .../dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso  | 33 +++++++++++++++++++
->>   1 file changed, 33 insertions(+)
->>
->> diff --git a/arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso b/arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso
->> index 4a395d1209c8..4eb3cffab032 100644
->> --- a/arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso
->> +++ b/arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso
-> 
-> The link to the schematics seems to need updation, would like to see where these
-> regulators are mentioned, can't find them in [0] which I assume is the latest link.
-> 
-
-Yes, It seems that the link to the schematics has been changed.
-I will submit a separate patch to fix that.
-
-While the regulators are not clearly documented in the schematics,
-the voltage levels can be observed in the top-right corner of the 
-schematics.
-
-However, the required regulators are explicitly described in the device 
-tree bindings.
-Please refer: ./Documentation/devicetree/bindings/media/i2c/imx219.yaml
-
-Thanks and Regards
-Yemike Abhilash Chandra
 
 
->> @@ -19,6 +19,33 @@ clk_imx219_fixed: imx219-xclk {
->>   		#clock-cells = <0>;
->>   		clock-frequency = <24000000>;
->>   	};
->> +
->> +	reg_2p8v: regulator-2p8v {
->> +		compatible = "regulator-fixed";
->> +		regulator-name = "2P8V";
->> +		regulator-min-microvolt = <2800000>;
->> +		regulator-max-microvolt = <2800000>;
->> +		vin-supply = <&vdd_sd_dv>;
->> +		regulator-always-on;
->> +	};
->> +
->> +	reg_1p8v: regulator-1p8v {
->> +		compatible = "regulator-fixed";
->> +		regulator-name = "1P8V";
->> +		regulator-min-microvolt = <1800000>;
->> +		regulator-max-microvolt = <1800000>;
->> +		vin-supply = <&vdd_sd_dv>;
->> +		regulator-always-on;
->> +	};
->> +
->> +	reg_1p2v: regulator-1p2v {
->> +		compatible = "regulator-fixed";
->> +		regulator-name = "1P2V";
->> +		regulator-min-microvolt = <1200000>;
->> +		regulator-max-microvolt = <1200000>;
->> +		vin-supply = <&vdd_sd_dv>;
->> +		regulator-always-on;
->> +	};
->>   };
->>   
->>   &csi_mux {
->> @@ -34,6 +61,9 @@ imx219_0: imx219-0@10 {
->>   		reg = <0x10>;
->>   
->>   		clocks = <&clk_imx219_fixed>;
->> +		VANA-supply = <&reg_2p8v>;
->> +		VDIG-supply = <&reg_1p8v>;
->> +		VDDL-supply = <&reg_1p2v>;
->>   
->>   		port {
->>   			csi2_cam0: endpoint {
->> @@ -55,6 +85,9 @@ imx219_1: imx219-1@10 {
->>   		reg = <0x10>;
->>   
->>   		clocks = <&clk_imx219_fixed>;
->> +		VANA-supply = <&reg_2p8v>;
->> +		VDIG-supply = <&reg_1p8v>;
->> +		VDDL-supply = <&reg_1p2v>;
->>   
->>   		port {
->>   			csi2_cam1: endpoint {
-> [0] https://datasheets.raspberrypi.com/camera/camera-module-2-schematics.pdf
-> 
+Hi all,
+
+We found the following issue with Linux v6.12-rc7 on KunPeng920 
+platform. A very low frequency problem of pc value mismatch occurs when 
+using perf hardware breakpoints to trigger a signal handler and 
+comparing pc from u_context with its desired value.
+
+Attached please find the reproducer for this issue. It applies perf 
+events to set a hardware breakpoint to an address while binding a signal 
+to the perf event fd. When stepping into the breakpoint address, the 
+signal handler compares pc value copied from signal ucontext with the 
+real breakpoint address and see if there is a mismatch.
+
+While looking into the flow of execution:
+// normal flow of exe:
+            a.out-19844   [038] d...  8763.348609: 
+hw_breakpoint_control: perf user addr: 400c6c, bp addr: 400c6c, ops: 0
+// breakpoint exception:
+            a.out-19844   [038] d...  8763.348611: do_debug_exception: 
+ec: 0, pc: 400c6c, pstate: 20001000
+            a.out-19844   [038] d...  8763.348611: breakpoint_handler: 
+perf bp read: 400c6c
+// send signal:
+            a.out-19844   [038] d.h.  8763.348613: send_sigio_to_task 
+<-send_sigio
+            a.out-19844   [038] d.h.  8763.348614: <stack trace>
+  => send_sigio_to_task
+  => send_sigio
+  => kill_fasync_rcu
+  => kill_fasync
+  => perf_event_wakeup
+  => perf_pending_event
+  => irq_work_single
+  => irq_work_run_list
+  => irq_work_run
+  => do_handle_IPI
+  => ipi_handler
+  => handle_percpu_devid_fasteoi_ipi
+  => __handle_domain_irq
+  => gic_handle_irq
+  => el0_irq_naked
+            a.out-19844   [038] d.h.  8763.348614: send_sigio_to_task: 
+step in with signum 38
+            a.out-19844   [038] d.h.  8763.348615: send_sigio_to_task: 
+will do_send_sig_info 38
+// kernel signal handling:
+            a.out-19844   [038] ....  8763.348616: do_notify_resume: 
+thread_flags 2097665, _TIF_SIGPENDING 1, _TIF_NOTIFY_SIGNAL40
+            a.out-19844   [038] ....  8763.348617: setup_sigframe: 
+restore sig: 400c6c
+// single step exception:
+            a.out-19844   [038] d...  8763.348619: do_debug_exception: 
+ec: 1, pc: 400988, pstate: 20001000
+            a.out-19844   [038] d...  8763.348621: 
+hw_breakpoint_control: perf user addr: 400c6c, bp addr: 400c6c, ops: 1
+
+// abnormal flow of exe:
+            a.out-19844   [084] d...  8763.782103: 
+hw_breakpoint_control: perf user addr: 400c6c, bp addr: 400c6c, ops: 0
+// breakpoint exception:
+            a.out-19844   [084] d...  8763.782104: do_debug_exception: 
+ec: 0, pc: 400c6c, pstate: 20001000
+// single step exception:
+            a.out-19844   [084] d...  8763.782105: breakpoint_handler: 
+perf bp read: 400c6c
+            a.out-19844   [084] d...  8763.782107: do_debug_exception: 
+ec: 1, pc: 400c70, pstate: 20001000
+// send signal:
+            a.out-19844   [084] d.h.  8763.782108: send_sigio_to_task 
+<-send_sigio
+            a.out-19844   [084] d.h.  8763.782109: <stack trace>
+  => send_sigio_to_task
+  => send_sigio
+  => kill_fasync_rcu
+  => kill_fasync
+  => perf_event_wakeup
+  => perf_pending_event
+  => irq_work_single
+  => irq_work_run_list
+  => irq_work_run
+  => do_handle_IPI
+  => ipi_handler
+  => handle_percpu_devid_fasteoi_ipi
+  => __handle_domain_irq
+  => gic_handle_irq
+  => el0_irq_naked
+            a.out-19844   [084] d.h.  8763.782110: send_sigio_to_task: 
+step in with signum 38
+            a.out-19844   [084] d.h.  8763.782110: send_sigio_to_task: 
+will do_send_sig_info 38
+// kernel signal handling:
+            a.out-19844   [084] ....  8763.782111: do_notify_resume: 
+thread_flags 513, _TIF_SIGPENDING 1, _TIF_NOTIFY_SIGNAL40
+            a.out-19844   [084] ....  8763.782113: setup_sigframe: 
+restore sig: 400c70
+            a.out-19844   [084] d...  8763.782115: 
+hw_breakpoint_control: perf user addr: 400c6c, bp addr: 400c6c, ops: 1
+
+Kernel sends this signal to task through pushing a perf_pending_event 
+(which sends the signal) in irq_work_queue then triggering an IPI to let 
+kernel handle this pended task.
+seems that when mismatch occurs, the IPI does not preempt the breakpoint 
+exception it should preempt, causing no pending signals to be handled. 
+In this way, there is no pending signals in do_notify_resume and kernel 
+will not set up signal frame with correct pc value.
+
+Thanks,
+Chen
+--------------z6kcUXTqDTHc4C349fgCGwX0
+Content-Type: text/plain; charset="UTF-8"; name="reproducer.cpp"
+Content-Disposition: attachment; filename="reproducer.cpp"
+Content-Transfer-Encoding: base64
+
+I2luY2x1ZGUgPHN0ZGlvLmg+CiNpbmNsdWRlIDxzdGRsaWIuaD4KI2luY2x1ZGUgPHN0cmlu
+Zy5oPgojaW5jbHVkZSA8dW5pc3RkLmg+CiNpbmNsdWRlIDxzaWduYWwuaD4KI2luY2x1ZGUg
+PHN5cy9zeXNjYWxsLmg+CiNpbmNsdWRlIDxsaW51eC9wZXJmX2V2ZW50Lmg+CiNpbmNsdWRl
+IDxzdGRpbnQuaD4KI2luY2x1ZGUgPHVjb250ZXh0Lmg+CiNpbmNsdWRlIDxsaW51eC9od19i
+cmVha3BvaW50Lmg+CiNpbmNsdWRlIDxzeXMvaW9jdGwuaD4KI2luY2x1ZGUgPHN5cy9mY250
+bC5oPgojaW5jbHVkZSA8c3lzL21tYW4uaD4KI2luY2x1ZGUgPGVycm5vLmg+CiNpbmNsdWRl
+IDx0aHJlYWQ+Cgp1c2luZyBuYW1lc3BhY2Ugc3RkOwoKc3RhdGljIHZvaWQgKmJyZWFrcG9p
+bnRfYWRkciA9IE5VTEw7Cgp2b2lkIHNpZ25hbF9oYW5kbGVyKGludCBzaWdudW0sIHNpZ2lu
+Zm9fdCAqaW5mbywgdm9pZCAqY29udGV4dCkgewogICAgaW9jdGwoaW5mby0+c2lfZmQsIFBF
+UkZfRVZFTlRfSU9DX0RJU0FCTEUsIDApOwogICAgY2xvc2UoaW5mby0+c2lfZmQpOwogICAg
+dWNvbnRleHRfdCAqdWNvbnRleHQgPSAodWNvbnRleHRfdCAqKWNvbnRleHQ7CiAgICB1aW50
+cHRyX3QgcGMgPSAodWludHB0cl90KXVjb250ZXh0LT51Y19tY29udGV4dC5wYzsKCiAgICBp
+ZiAocGMgIT0gKHVpbnRwdHJfdClicmVha3BvaW50X2FkZHIpCiAgICAgICAgcHJpbnRmKCJX
+YXJuaW5nOiBQQyAoMHglbHgpIGRvZXMgbm90IG1hdGNoIGJyZWFrcG9pbnQgYWRkcmVzcyAo
+MHglbHgpIHNpZ251bTogJWRcbiIsIHBjLCAodWludHB0cl90KWJyZWFrcG9pbnRfYWRkciwg
+c2lnbnVtKTsKfQoKc3RhdGljIGludCBzZXRfaHdfYnJlYWtwb2ludCh2b2lkICphZGRyKSB7
+CiAgICBzdHJ1Y3QgcGVyZl9ldmVudF9hdHRyIHBlOwogICAgaW50IGZkOwoKICAgIG1lbXNl
+dCgmcGUsIDAsIHNpemVvZihzdHJ1Y3QgcGVyZl9ldmVudF9hdHRyKSk7CiAgICBwZS50eXBl
+ID0gUEVSRl9UWVBFX0JSRUFLUE9JTlQ7CiAgICBwZS5zaXplID0gc2l6ZW9mKHN0cnVjdCBw
+ZXJmX2V2ZW50X2F0dHIpOwogICAgcGUuY29uZmlnID0gMDsKICAgIHBlLmJwX3R5cGUgPSBI
+V19CUkVBS1BPSU5UX1g7CiAgICBwZS5icF9hZGRyID0gKHVpbnRwdHJfdClhZGRyOwogICAg
+cGUuYnBfbGVuID0gNDsKICAgIHBlLnNhbXBsZV9wZXJpb2QgPSAxOwogICAgcGUuZGlzYWJs
+ZWQgPSAxOwogICAgcGUuZXhjbHVkZV9rZXJuZWwgPSAxOwoKICAgIC8vIHBlcmZfZXZlbnRf
+b3BlbiBzeXNjYWxsCiAgICBmZCA9IHN5c2NhbGwoX19OUl9wZXJmX2V2ZW50X29wZW4sICZw
+ZSwgc3lzY2FsbChTWVNfZ2V0dGlkKSwgLTEsIC0xLCAwKTsKICAgIGlmIChmZCA8IDApIHsK
+ICAgICAgICBwZXJyb3IoInBlcmZfZXZlbnRfb3BlbiIpOwogICAgICAgIHJldHVybiAtMTsK
+ICAgIH0KCiAgICBzdHJ1Y3QgZl9vd25lcl9leCBvd25lcjsKICAgIG93bmVyLnR5cGUgPSBG
+X09XTkVSX1RJRDsKICAgIG93bmVyLnBpZCA9IHN5c2NhbGwoU1lTX2dldHRpZCk7CgogICAg
+aWYgKGZjbnRsKGZkLCBGX1NFVE9XTl9FWCwgJm93bmVyKSA9PSAtMSkKICAgIHsKICAgICAg
+ICBwZXJyb3IoIkZfU0VUU0lHIik7CiAgICAgICAgZXhpdChFWElUX0ZBSUxVUkUpOwogICAg
+fQoKICAgIGlmIChmY250bChmZCwgRl9TRVRTSUcsIFNJR1JUTUlOKzQpID09IC0xKSB7CiAg
+ICAgICAgcGVycm9yKCJGX1NFVFNJRyIpOwogICAgICAgIGNsb3NlKGZkKTsKICAgICAgICBl
+eGl0KEVYSVRfRkFJTFVSRSk7CiAgICB9CgogICAgaW50IGZsYWdzID0gZmNudGwoZmQsIEZf
+R0VURkwsIDApOwogICAgaWYgKGZsYWdzID09IC0xKSB7CiAgICAgICAgcGVycm9yKCJGX0dF
+VEZMIik7CiAgICAgICAgY2xvc2UoZmQpOwogICAgICAgIGV4aXQoRVhJVF9GQUlMVVJFKTsK
+ICAgIH0KCiAgICBpZiAoZmNudGwoZmQsIEZfU0VURkwsIGZsYWdzIHwgT19BU1lOQykgPT0g
+LTEpIHsKICAgICAgICBwZXJyb3IoIkZfU0VURkwiKTsKICAgICAgICBjbG9zZShmZCk7CiAg
+ICAgICAgZXhpdChFWElUX0ZBSUxVUkUpOwogICAgfQoKICAgIC8vIGVuYWJsZSBicmVha3Bv
+aW50CiAgICBpZiAoaW9jdGwoZmQsIFBFUkZfRVZFTlRfSU9DX1JFU0VULCAwKSA8IDApIHsK
+ICAgICAgICBwZXJyb3IoIlBFUkZfRVZFTlRfSU9DX1JFU0VUIik7CiAgICAgICAgY2xvc2Uo
+ZmQpOwogICAgICAgIHJldHVybiAtMTsKICAgIH0KCiAgICBpZiAoaW9jdGwoZmQsIFBFUkZf
+RVZFTlRfSU9DX0VOQUJMRSwgMCkgPCAwKSB7CiAgICAgICAgcGVycm9yKCJQRVJGX0VWRU5U
+X0lPQ19FTkFCTEUiKTsKICAgICAgICBjbG9zZShmZCk7CiAgICAgICAgcmV0dXJuIC0xOwog
+ICAgfQoKICAgIHJldHVybiBmZDsKfQoKLy8gZnVuY3Rpb24gd2hlcmUgYnJlYWtwb2ludHMg
+Z2V0IHNldAp2b2lkIHRhcmdldF9mdW5jdGlvbigpIHsKICAgIGludCBpID0gMDsKICAgIGkr
+KzsKfQoKaW50IG1haW4oKSB7CiAgICBpbnQgYnJlYWtwb2ludF9mZDsKCiAgICAvLyBzZXQg
+YnJlYWtwb2ludAogICAgYnJlYWtwb2ludF9hZGRyID0gKHZvaWQgKil0YXJnZXRfZnVuY3Rp
+b247CiAgICBwcmludGYoIkJyZWFrcG9pbnQgYWRkcmVzczogJXAsIHRhcmdldF9mdW5jdGlv
+biBhZGRyZXNzOiAlcFxuIiwgYnJlYWtwb2ludF9hZGRyLCB0YXJnZXRfZnVuY3Rpb24pOwoK
+ICAgIC8vIHNldCBzaWcgaGFuZGxlcgogICAgc3RydWN0IHNpZ2FjdGlvbiBzYTsKICAgIG1l
+bXNldCgmc2EsIDAsIHNpemVvZihzdHJ1Y3Qgc2lnYWN0aW9uKSk7CiAgICBzYS5zYV9zaWdh
+Y3Rpb24gPSBzaWduYWxfaGFuZGxlcjsKICAgIHNhLnNhX2ZsYWdzID0gU0FfU0lHSU5GTyB8
+IFNBX1JFU1RBUlQ7CiAgICBzaWdmaWxsc2V0KCZzYS5zYV9tYXNrKTsKICAgIGlmIChzaWdh
+Y3Rpb24oU0lHUlRNSU4rNCwgJnNhLCBOVUxMKSA9PSAtMSkgewogICAgICAgIHBlcnJvcigi
+c2lnYWN0aW9uIik7CiAgICAgICAgY2xvc2UoYnJlYWtwb2ludF9mZCk7CiAgICAgICAgcmV0
+dXJuIEVYSVRfRkFJTFVSRTsKICAgIH0KCiAgICAvLyB0ZXN0IGJyZWFrcG9pbnQKICAgIHBy
+aW50ZigiQ2FsbGluZyB0YXJnZXQgZnVuY3Rpb24uLi5cbiIpOwogICAgd2hpbGUgKDEpIHsg
+ICAgCglicmVha3BvaW50X2ZkID0gc2V0X2h3X2JyZWFrcG9pbnQoYnJlYWtwb2ludF9hZGRy
+KTsKICAgICAgICBpZiAoYnJlYWtwb2ludF9mZCA8IDApIHsKICAgICAgICAgICAgZnByaW50
+ZihzdGRlcnIsICJGYWlsZWQgdG8gc2V0IGhhcmR3YXJlIGJyZWFrcG9pbnRcbiIpOwogICAg
+ICAgICAgICByZXR1cm4gMTsKICAgICAgICB9CiAgICAgICAgICAgIHRhcmdldF9mdW5jdGlv
+bigpOwoJLy8gZGlzYWJsZSBicmVha3BvaW50CiAgICAJaW9jdGwoYnJlYWtwb2ludF9mZCwg
+UEVSRl9FVkVOVF9JT0NfRElTQUJMRSwgMCk7CiAgICAJY2xvc2UoYnJlYWtwb2ludF9mZCk7
+CiAgICB9CgogICAgcmV0dXJuIDA7Cn0KCg==
+
+--------------z6kcUXTqDTHc4C349fgCGwX0--
 
