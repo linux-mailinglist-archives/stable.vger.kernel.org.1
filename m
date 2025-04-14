@@ -1,77 +1,75 @@
-Return-Path: <stable+bounces-132662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CFDCA88BBA
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 20:50:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19619A88BBB
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 20:50:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB847189ABBE
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 18:51:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CABC73B5DE3
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 18:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86957270EA4;
-	Mon, 14 Apr 2025 18:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A376127990D;
+	Mon, 14 Apr 2025 18:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="eicil4uG"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="Tjuusrbe"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999801EE02F
-	for <stable@vger.kernel.org>; Mon, 14 Apr 2025 18:50:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E255923D285
+	for <stable@vger.kernel.org>; Mon, 14 Apr 2025 18:50:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744656649; cv=none; b=olzvcl+rHOdbAUTDd2Hqfrdt91PC0fwkYh9qbO8eYVUh+XOOVHtzwpONo5VPEt5BweEzuP67S1CrQTNlNC2Qjkh96OaMj7tFEY0eBD9CC28UiYSolyXpFO4BFoyYhxhD1MkAEOeGk7Pkj2gNrg1EiyruwlHJgSaF1irVDcG8cqI=
+	t=1744656652; cv=none; b=blgQVKWbd1RLapvDWRfRA6U9zQBxZ4gNR82mj7olMlVg5Xa+sBuBqt8ldOkUd5GNgyYNHcR3/uPzn5AroBY6K5TDoLpntkkqyTw+JBISKfxTHtHMk+j79QZs72BvyEzXLU7p20rTDRZx4OigA4gHcsvE5gtuZxfivsBucVua+X8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744656649; c=relaxed/simple;
-	bh=fAAlhwldKlVO7dRiqSGee1zdG1lvsTFCI5xvCKeN/QY=;
+	s=arc-20240116; t=1744656652; c=relaxed/simple;
+	bh=NMTCv4smwbB3aDB2leB8W3xAGvBWXZqyrPSHdBaRu/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RRA76kB6+Gn3EV9pH0XpEZcnifwfVAeMpB3CZJvXYgobgMNZcd87CNL0Lx3Cz/zQfufnMoJaBVUbxcIUB+yTMYQbLXM0WC5FlgAmtDjsRCZy8OXM6U8Fv2hq05Bnmfx1bHZRkZoSdS4CNF8pdD7iOzLbRE+HAd+evqh4s4aivZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=eicil4uG; arc=none smtp.client-ip=205.220.165.32
+	 MIME-Version:Content-Type; b=US/tBUH+pesLKVAkizEr/OcBxId7zokW0ftOMQnaTE8R4TI9ge/hnf4iYlncLwMbAbhw33scUb/wmreBnNJSTKuW4LOntdc/JqBVa4TjfE1meIXqug/6/u8cJRmYua4aLAvPhADScPwDYuoiCs4zhtTo7NY3LG9uswcVVJgRIHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=Tjuusrbe; arc=none smtp.client-ip=205.220.177.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53EI1x2u007352;
-	Mon, 14 Apr 2025 18:50:38 GMT
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53EIMnww021326;
+	Mon, 14 Apr 2025 18:50:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2023-11-20; bh=4BG6p
-	krVQsI5IiAvkLi5UkzMpu4gZvfjmgYYkpy7lvE=; b=eicil4uGasZHPZmKhemEo
-	ORY/cbQ4yBqVcaG3grUB2GmkBDY/Vl9DDt0fMOv4STYeARvaokjZx0gKAz2wH5vI
-	kU4b2xMG1FMCrVclaWmLJMeXw9oZcgZ6gMY26CBIt53o58zKWxxCgOa9ipwbKWWK
-	t/CKhf56IA9w8e5rUgMSDg5GlwuE4Vwfk2pRiZSzbrEmioLbwieBA0qm7z0b0EvW
-	eKnUJAr/8JjQcaYEAY7pr8dF5GhhaF+JnpihBwzccDcIJSW4s7rJdmRoOiSdvWr6
-	Ifo8djz4Cam7M/ebyoNedhnaES8z6nLmn6XK7qP0CZHle+ERW9J2Gye8suwYWtK6
-	Q==
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2023-11-20; bh=r1I1AV+wkb9tMVQf0qcQyUIdRuiI/sMHnHyxE4yHLOI=; b=
+	Tjuusrbe2D1pna9qNh9rdsaQoDxKQ64cMllFe1P0MDTDmOkQH3kX4vQI9i9xD5BM
+	YH9VjlSDI1NmH31ALr7cgwsi0qFIChNELscJU/4ghPB3MMOuW6isT/sQt+56ocWE
+	D8D19Zhzs8n2ldvV/PqKa+U/bQbnxfNu+x3eJnKPNtxOputHOuOMrhSOv12A0QzR
+	9epc74C/t1aExBBV7rCxKh7EghA7Vv+F3uAISgNRSMlwpSmQ15ug9uIfywr/Lkv1
+	w5r5GGrLfUNGGyxpFaKxRJKZyH5Ke1n4YaYWUCVNfx+V/E78dGQ9/gRT0xYYvISU
+	AiwVAf/KIbTDh9iFfIAhRQ==
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46179gr391-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4617ju81u8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 14 Apr 2025 18:50:37 +0000 (GMT)
+	Mon, 14 Apr 2025 18:50:40 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 53EHitpE024756;
-	Mon, 14 Apr 2025 18:50:37 GMT
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 53EHGloP024656;
+	Mon, 14 Apr 2025 18:50:39 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 460d4y5f7g-1
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 460d4y5f8g-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 14 Apr 2025 18:50:37 +0000
+	Mon, 14 Apr 2025 18:50:39 +0000
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 53EIoUHE035509;
-	Mon, 14 Apr 2025 18:50:36 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 53EIoUHG035509;
+	Mon, 14 Apr 2025 18:50:38 GMT
 Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 460d4y5f48-3;
-	Mon, 14 Apr 2025 18:50:36 +0000
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 460d4y5f48-4;
+	Mon, 14 Apr 2025 18:50:38 +0000
 From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 To: stable@vger.kernel.org
-Cc: vegard.nossum@oracle.com, Michal Schmidt <mschmidt@redhat.com>,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Xiangyu Chen <xiangyu.chen@windriver.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: vegard.nossum@oracle.com,
+        =?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <courmisch@gmail.com>,
+        Paolo Abeni <pabeni@redhat.com>, Sasha Levin <sashal@kernel.org>,
         Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 5.15.y 2/6] bnxt_re: avoid shift undefined behavior in bnxt_qplib_alloc_init_hwq
-Date: Mon, 14 Apr 2025 11:50:19 -0700
-Message-ID: <20250414185023.2165422-3-harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 5.15.y 3/6] phonet/pep: fix racy skb_queue_empty() use
+Date: Mon, 14 Apr 2025 11:50:20 -0700
+Message-ID: <20250414185023.2165422-4-harshit.m.mogalapalli@oracle.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250414185023.2165422-1-harshit.m.mogalapalli@oracle.com>
 References: <20250414185023.2165422-1-harshit.m.mogalapalli@oracle.com>
@@ -81,6 +79,7 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
@@ -89,127 +88,87 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phis
  mlxlogscore=999 bulkscore=0 suspectscore=0 mlxscore=0 malwarescore=0
  spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2502280000 definitions=main-2504140137
-X-Proofpoint-ORIG-GUID: PhKt2K-OujIsH2o9-wGkfLvONuDC0yF-
-X-Proofpoint-GUID: PhKt2K-OujIsH2o9-wGkfLvONuDC0yF-
+X-Proofpoint-GUID: fKmSFeeTN-gmvme_uOZQHEANJajGxOLp
+X-Proofpoint-ORIG-GUID: fKmSFeeTN-gmvme_uOZQHEANJajGxOLp
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Rémi Denis-Courmont <courmisch@gmail.com>
 
-commit 78cfd17142ef70599d6409cbd709d94b3da58659 upstream.
+[ Upstream commit 7d2a894d7f487dcb894df023e9d3014cf5b93fe5 ]
 
-Undefined behavior is triggered when bnxt_qplib_alloc_init_hwq is called
-with hwq_attr->aux_depth != 0 and hwq_attr->aux_stride == 0.
-In that case, "roundup_pow_of_two(hwq_attr->aux_stride)" gets called.
-roundup_pow_of_two is documented as undefined for 0.
+The receive queues are protected by their respective spin-lock, not
+the socket lock. This could lead to skb_peek() unexpectedly
+returning NULL or a pointer to an already dequeued socket buffer.
 
-Fix it in the one caller that had this combination.
-
-The undefined behavior was detected by UBSAN:
-  UBSAN: shift-out-of-bounds in ./include/linux/log2.h:57:13
-  shift exponent 64 is too large for 64-bit type 'long unsigned int'
-  CPU: 24 PID: 1075 Comm: (udev-worker) Not tainted 6.9.0-rc6+ #4
-  Hardware name: Abacus electric, s.r.o. - servis@abacus.cz Super Server/H12SSW-iN, BIOS 2.7 10/25/2023
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x5d/0x80
-   ubsan_epilogue+0x5/0x30
-   __ubsan_handle_shift_out_of_bounds.cold+0x61/0xec
-   __roundup_pow_of_two+0x25/0x35 [bnxt_re]
-   bnxt_qplib_alloc_init_hwq+0xa1/0x470 [bnxt_re]
-   bnxt_qplib_create_qp+0x19e/0x840 [bnxt_re]
-   bnxt_re_create_qp+0x9b1/0xcd0 [bnxt_re]
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __kmalloc+0x1b6/0x4f0
-   ? create_qp.part.0+0x128/0x1c0 [ib_core]
-   ? __pfx_bnxt_re_create_qp+0x10/0x10 [bnxt_re]
-   create_qp.part.0+0x128/0x1c0 [ib_core]
-   ib_create_qp_kernel+0x50/0xd0 [ib_core]
-   create_mad_qp+0x8e/0xe0 [ib_core]
-   ? __pfx_qp_event_handler+0x10/0x10 [ib_core]
-   ib_mad_init_device+0x2be/0x680 [ib_core]
-   add_client_context+0x10d/0x1a0 [ib_core]
-   enable_device_and_get+0xe0/0x1d0 [ib_core]
-   ib_register_device+0x53c/0x630 [ib_core]
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   bnxt_re_probe+0xbd8/0xe50 [bnxt_re]
-   ? __pfx_bnxt_re_probe+0x10/0x10 [bnxt_re]
-   auxiliary_bus_probe+0x49/0x80
-   ? driver_sysfs_add+0x57/0xc0
-   really_probe+0xde/0x340
-   ? pm_runtime_barrier+0x54/0x90
-   ? __pfx___driver_attach+0x10/0x10
-   __driver_probe_device+0x78/0x110
-   driver_probe_device+0x1f/0xa0
-   __driver_attach+0xba/0x1c0
-   bus_for_each_dev+0x8f/0xe0
-   bus_add_driver+0x146/0x220
-   driver_register+0x72/0xd0
-   __auxiliary_driver_register+0x6e/0xd0
-   ? __pfx_bnxt_re_mod_init+0x10/0x10 [bnxt_re]
-   bnxt_re_mod_init+0x3e/0xff0 [bnxt_re]
-   ? __pfx_bnxt_re_mod_init+0x10/0x10 [bnxt_re]
-   do_one_initcall+0x5b/0x310
-   do_init_module+0x90/0x250
-   init_module_from_file+0x86/0xc0
-   idempotent_init_module+0x121/0x2b0
-   __x64_sys_finit_module+0x5e/0xb0
-   do_syscall_64+0x82/0x160
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? syscall_exit_to_user_mode_prepare+0x149/0x170
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? syscall_exit_to_user_mode+0x75/0x230
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? do_syscall_64+0x8e/0x160
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __count_memcg_events+0x69/0x100
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? count_memcg_events.constprop.0+0x1a/0x30
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? handle_mm_fault+0x1f0/0x300
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? do_user_addr_fault+0x34e/0x640
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  RIP: 0033:0x7f4e5132821d
-  Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d e3 db 0c 00 f7 d8 64 89 01 48
-  RSP: 002b:00007ffca9c906a8 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
-  RAX: ffffffffffffffda RBX: 0000563ec8a8f130 RCX: 00007f4e5132821d
-  RDX: 0000000000000000 RSI: 00007f4e518fa07d RDI: 000000000000003b
-  RBP: 00007ffca9c90760 R08: 00007f4e513f6b20 R09: 00007ffca9c906f0
-  R10: 0000563ec8a8faa0 R11: 0000000000000246 R12: 00007f4e518fa07d
-  R13: 0000000000020000 R14: 0000563ec8409e90 R15: 0000563ec8a8fa60
-   </TASK>
-  ---[ end trace ]---
-
-Fixes: 0c4dcd602817 ("RDMA/bnxt_re: Refactor hardware queue memory allocation")
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Link: https://lore.kernel.org/r/20240507103929.30003-1-mschmidt@redhat.com
-Acked-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[Harshit: backport to 5.15.y, this is a clean cherrypick from 6.1.y
-commit ]
+Fixes: 9641458d3ec4 ("Phonet: Pipe End Point for Phonet Pipes protocol")
+Signed-off-by: Rémi Denis-Courmont <courmisch@gmail.com>
+Link: https://lore.kernel.org/r/20240218081214.4806-2-remi@remlab.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[Harshit: backport to 5.15.y, clean cherrypick from 6.1.y commit]
 Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_fp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/phonet/pep.c | 41 ++++++++++++++++++++++++++++++++---------
+ 1 file changed, 32 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-index 3725f05ad297..be895398df09 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-@@ -1013,7 +1013,8 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
- 	hwq_attr.stride = sizeof(struct sq_sge);
- 	hwq_attr.depth = bnxt_qplib_get_depth(sq);
- 	hwq_attr.aux_stride = psn_sz;
--	hwq_attr.aux_depth = bnxt_qplib_set_sq_size(sq, qp->wqe_mode);
-+	hwq_attr.aux_depth = psn_sz ? bnxt_qplib_set_sq_size(sq, qp->wqe_mode)
-+				    : 0;
- 	hwq_attr.type = HWQ_TYPE_QUEUE;
- 	rc = bnxt_qplib_alloc_init_hwq(&sq->hwq, &hwq_attr);
- 	if (rc)
+diff --git a/net/phonet/pep.c b/net/phonet/pep.c
+index 65d463ad8770..3ea23e7caab6 100644
+--- a/net/phonet/pep.c
++++ b/net/phonet/pep.c
+@@ -916,6 +916,37 @@ static int pep_sock_enable(struct sock *sk, struct sockaddr *addr, int len)
+ 	return 0;
+ }
+ 
++static unsigned int pep_first_packet_length(struct sock *sk)
++{
++	struct pep_sock *pn = pep_sk(sk);
++	struct sk_buff_head *q;
++	struct sk_buff *skb;
++	unsigned int len = 0;
++	bool found = false;
++
++	if (sock_flag(sk, SOCK_URGINLINE)) {
++		q = &pn->ctrlreq_queue;
++		spin_lock_bh(&q->lock);
++		skb = skb_peek(q);
++		if (skb) {
++			len = skb->len;
++			found = true;
++		}
++		spin_unlock_bh(&q->lock);
++	}
++
++	if (likely(!found)) {
++		q = &sk->sk_receive_queue;
++		spin_lock_bh(&q->lock);
++		skb = skb_peek(q);
++		if (skb)
++			len = skb->len;
++		spin_unlock_bh(&q->lock);
++	}
++
++	return len;
++}
++
+ static int pep_ioctl(struct sock *sk, int cmd, unsigned long arg)
+ {
+ 	struct pep_sock *pn = pep_sk(sk);
+@@ -929,15 +960,7 @@ static int pep_ioctl(struct sock *sk, int cmd, unsigned long arg)
+ 			break;
+ 		}
+ 
+-		lock_sock(sk);
+-		if (sock_flag(sk, SOCK_URGINLINE) &&
+-		    !skb_queue_empty(&pn->ctrlreq_queue))
+-			answ = skb_peek(&pn->ctrlreq_queue)->len;
+-		else if (!skb_queue_empty(&sk->sk_receive_queue))
+-			answ = skb_peek(&sk->sk_receive_queue)->len;
+-		else
+-			answ = 0;
+-		release_sock(sk);
++		answ = pep_first_packet_length(sk);
+ 		ret = put_user(answ, (int __user *)arg);
+ 		break;
+ 
 -- 
 2.47.1
 
