@@ -1,108 +1,170 @@
-Return-Path: <stable+bounces-132438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 174E4A87ED7
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:19:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 341FDA87EE9
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 13:22:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 112B917174F
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 11:19:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EAE3188E537
+	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 11:22:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 069882620D6;
-	Mon, 14 Apr 2025 11:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA0228151F;
+	Mon, 14 Apr 2025 11:22:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y2HKJHlj"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3661A18DB18;
-	Mon, 14 Apr 2025 11:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D44269882
+	for <stable@vger.kernel.org>; Mon, 14 Apr 2025 11:22:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744629559; cv=none; b=nxPKLf31lsC3XfVy3bgxYY8ZbyG5iV1zwgu1sS/JsaaDfwuP0OavDETW8c9MypOWI+oZ/PiitdZ7sSSWuALNyvmssSl7Nm+9DjJ9a8BKsLFSwS5RYWBOeY1b7yLpX/Yza8X3K8THrTBKaOIBTkutiObqbSn1s/W7QQyj+m7J7I4=
+	t=1744629746; cv=none; b=A4DFDfm+sNd82T4qQd4R+BB/B6AqtU7q90l4h988orol9tq7O4C5J0oVNfNuB+zXMAmsJXVZJQm+gjQv7UYBFnCE0y9yhHgJiQobksl50LCs5itlTD5/06wjwXzmcWPNjBe8tHqf7gQQF54j95ogO7k9N2msfkRELNY+lE4N73Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744629559; c=relaxed/simple;
-	bh=4sYWNtAc4YF7YZg03HO0SzkfYuVw4goAQfDHPc5y0l0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mUWkGrKRt7bSS7lINPJgQXJUhcCtTMUCMcncowfXpKPZdK1hrd7ViRyt6s8up4vkWNSznN54vvgbR7WHQ93lrCI3lkvcAzsSAW3EKQWvNPrqUtrcPjirMyL1tHYjtmKIiyWEJRm+2N6DcjEcgxoBdz3ciI/EKStQV7MajDHsX5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowABH9EAX7_xnqxTUCA--.8348S2;
-	Mon, 14 Apr 2025 19:18:59 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: davem@davemloft.net,
-	andreas@gaisler.com,
-	make24@iscas.ac.cn,
-	sam@ravnborg.org,
-	dawei.li@shingroup.cn
-Cc: sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	stable@vger.kernel.org
-Subject: [PATCH RESEND] sparc: fix error handling in scan_one_device()
-Date: Mon, 14 Apr 2025 19:18:45 +0800
-Message-Id: <20250414111845.3084334-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1744629746; c=relaxed/simple;
+	bh=5Fvjkjfat+nJk7Vy80tDWnDp5NpzHStADTmDQuN5aCE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Rm/spGjGL65dPF36wtmxrCyNYfJmbMZQ9olDpMWXUojr/Xho9iCTbRQmlmp++1bXOtbPQLwHBlDCqx+ZLrskeWeXOybwI6uIMBgM+3fmTW6CaeeiefEnnWYTzvgb6AlqjfUq4gI4IHU1S34w+XM7hYz4CzlCcwHG4nPafZlA0a0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y2HKJHlj; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43cfebc343dso31332075e9.2
+        for <stable@vger.kernel.org>; Mon, 14 Apr 2025 04:22:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1744629743; x=1745234543; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Rft3EAUTLyhnp7+tWC0d5mWYcohYnVvJHm8W23d6BUU=;
+        b=Y2HKJHljzyuuReTwKUy2YuPklO26NnXFOTtF9/+RRuF97SdY6XPya+/i57cfiMk5bu
+         +O3d203lG9935JLqdiDpLarbsbUPK5VCk+wTXmCu6XinJY68OaAPkn/0Xb8OdSGzbuwi
+         seE6p0hsuampbw/LRr2aTeiZ3ecG4M2lfxlW6ojWtU/ZBVvcPBVH5SrlRVqDHG0s3Z9K
+         MxS87kQLv5O+LqEI+SeRoRvk6yhNp/FamMuONeqTdAs6Y8FjVsUr2GeMmvLPfB9OmYXn
+         8qUwi6giR72ciKOWdnl2KqFCSuPow5oZ94Yma74GJwNcnslz57b71O70M03/uvQs6VMh
+         FE/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744629743; x=1745234543;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Rft3EAUTLyhnp7+tWC0d5mWYcohYnVvJHm8W23d6BUU=;
+        b=rFWBZG6JDWgNYMZoMWp6cqKKujzot2KghBZrMn9mmJbVya5qwoTW3uQfZh6pBlZ60z
+         m35vBPakCLpKh+uv7gWl5XRwTRoVg9uhxegA3+O/xyfTBeaLIXGlTYPd/jIebHnx/P2Q
+         0eZ4nQ20KqcB8US7FleRwKJoB55AB50Zbdjyj2NKUncdlzf9G7zDyvZlPlcbsNsuSfwK
+         NVNIVUo9sFD+wS5s/cD1JayRQ+z5iwTBSJz/1kZDsehXskOnz+A9RRntcw0EA8zfvmob
+         t6FFIYKIO893P4AAB31BUXUb/dtY3nNHYpUIvFiHarUXRi/9e9HEDKaVfFlwrI3BA1Jf
+         i+fQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUV73byosvB55C4qtHPTkrSfUXa4bdeTMiSj5Ak79zlnxj1blgArmMlB6a7jZKDetpt02ySuKc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwaK+l8iIQqeOuV+MO4P1zK1Nio4Aca9nB4XsHS3/c9pg2gCoA
+	fuVH+NbyEwlSI66Xw/HAxyH41mWWTk0ul671sAlbTVVbw7UzggsLLCFhs3fo679SzwKzpX72svA
+	c9CbmvnIyyPZ/TP6G3uNTKDzeoKQ0yfrZNkCB
+X-Gm-Gg: ASbGnctGGlSs9wioOP152bRWZ94fRv9fVzMznSEOquew25Yp702xwKHBgeTn2rRM8gj
+	96dEjqWlHmjKqFCZmdYOSdnleiOzUPiN5PRozrEjAXA/CvB+5ZxIuVCpgRDle1hpge4ahiDiLhm
+	FSl0axgjozSycx95D70DVrmqrfWNJVOdcB/0G32jual0b0ySrKCag=
+X-Google-Smtp-Source: AGHT+IEZZBt3UNC3+TSE5+/gmDD+2unhz/9dXO7/xHNdpPGb0TNqsh6CfuUuMhd+ZdyeJAI6BZseyvWSCutQpwcC5zk=
+X-Received: by 2002:a05:6000:2405:b0:39c:1257:feb9 with SMTP id
+ ffacd0b85a97d-39eaaed586amr8788733f8f.57.1744629742684; Mon, 14 Apr 2025
+ 04:22:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowABH9EAX7_xnqxTUCA--.8348S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7GF13GrWUGF4kuFW8WF43GFg_yoWktwbEga
-	12v34UWr1fAwsagw43Ar4a9r1xtrnFyFWrK34Iyr1kJayrXrZrWrs5Gw4vvr9rWa17Cr1D
-	Za4qqrsFkr1SgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbVkFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
-	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
-	YxC7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r
-	1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CE
-	b7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0x
-	vE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAI
-	cVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2Kf
-	nxnUUI43ZEXa7VUbQVy7UUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+References: <20250408220311.1033475-1-ojeda@kernel.org>
+In-Reply-To: <20250408220311.1033475-1-ojeda@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 14 Apr 2025 13:22:10 +0200
+X-Gm-Features: ATxdqUF9via54VPG5nlOhtSrUPwWIS_mfTXT8g_wST2xwdZg_Zg47Lq68Zxptiw
+Message-ID: <CAH5fLgjb3Wxbkzvvy9H6QUYVpxXvkse1rnDmmR3nVHjp6zEx9A@mail.gmail.com>
+Subject: Re: [PATCH] rust: kasan/kbuild: fix missing flags on first build
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	kasan-dev@googlegroups.com, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
+	Matthew Maurer <mmaurer@google.com>, Sami Tolvanen <samitolvanen@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Once of_device_register() failed, we should call put_device() to
-decrement reference count for cleanup. Or it could cause memory leak.
-So fix this by calling put_device(), then the name can be freed in
-kobject_cleanup().
+On Wed, Apr 9, 2025 at 12:03=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
+>
+> If KASAN is enabled, and one runs in a clean repository e.g.:
+>
+>     make LLVM=3D1 prepare
+>     make LLVM=3D1 prepare
+>
+> Then the Rust code gets rebuilt, which should not happen.
+>
+> The reason is some of the LLVM KASAN `rustc` flags are added in the
+> second run:
+>
+>     -Cllvm-args=3D-asan-instrumentation-with-call-threshold=3D10000
+>     -Cllvm-args=3D-asan-stack=3D0
+>     -Cllvm-args=3D-asan-globals=3D1
+>     -Cllvm-args=3D-asan-kernel-mem-intrinsic-prefix=3D1
+>
+> Further runs do not rebuild Rust because the flags do not change anymore.
+>
+> Rebuilding like that in the second run is bad, even if this just happens
+> with KASAN enabled, but missing flags in the first one is even worse.
+>
+> The root issue is that we pass, for some architectures and for the moment=
+,
+> a generated `target.json` file. That file is not ready by the time `rustc=
+`
+> gets called for the flag test, and thus the flag test fails just because
+> the file is not available, e.g.:
+>
+>     $ ... --target=3D./scripts/target.json ... -Cllvm-args=3D...
+>     error: target file "./scripts/target.json" does not exist
+>
+> There are a few approaches we could take here to solve this. For instance=
+,
+> we could ensure that every time that the config is rebuilt, we regenerate
+> the file and recompute the flags. Or we could use the LLVM version to
+> check for these flags, instead of testing the flag (which may have other
+> advantages, such as allowing us to detect renames on the LLVM side).
+>
+> However, it may be easier than that: `rustc` is aware of the `-Cllvm-args=
+`
+> regardless of the `--target` (e.g. I checked that the list printed
+> is the same, plus that I can check for these flags even if I pass
+> a completely unrelated target), and thus we can just eliminate the
+> dependency completely.
+>
+> Thus filter out the target.
+>
+> This does mean that `rustc-option` cannot be used to test a flag that
+> requires the right target, but we don't have other users yet, it is a
+> minimal change and we want to get rid of custom targets in the future.
+>
+> We could only filter in the case `target.json` is used, to make it work
+> in more cases, but then it would be harder to notice that it may not
+> work in a couple architectures.
+>
+> Cc: Matthew Maurer <mmaurer@google.com>
+> Cc: Sami Tolvanen <samitolvanen@google.com>
+> Cc: stable@vger.kernel.org
+> Fixes: e3117404b411 ("kbuild: rust: Enable KASAN support")
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-As comment of device_add() says, 'if device_add() succeeds, you should
-call device_del() when you want to get rid of it. If device_add() has
-not succeeded, use only put_device() to drop the reference count'.
+I've boot-tested Android's KASAN configuration with this patch, and it
+continues to work. It also passes Android CI [1].
 
-Found by code review.
+Tested-by: Alice Ryhl <aliceryhl@google.com>
 
-Cc: stable@vger.kernel.org
-Fixes: cf44bbc26cf1 ("[SPARC]: Beginnings of generic of_device framework.")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- arch/sparc/kernel/of_device_64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Alice
 
-diff --git a/arch/sparc/kernel/of_device_64.c b/arch/sparc/kernel/of_device_64.c
-index f98c2901f335..4272746d7166 100644
---- a/arch/sparc/kernel/of_device_64.c
-+++ b/arch/sparc/kernel/of_device_64.c
-@@ -677,7 +677,7 @@ static struct platform_device * __init scan_one_device(struct device_node *dp,
- 
- 	if (of_device_register(op)) {
- 		printk("%pOF: Could not register of device.\n", dp);
--		kfree(op);
-+		put_device(&op->dev);
- 		op = NULL;
- 	}
- 
--- 
-2.25.1
-
+[1]: http://r.android.com/3584874
 
