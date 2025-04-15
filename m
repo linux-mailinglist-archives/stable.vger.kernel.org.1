@@ -1,209 +1,309 @@
-Return-Path: <stable+bounces-132766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3342AA8A464
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 18:43:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A8E5A8A4C7
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 18:59:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B11293B0649
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 16:42:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37E1F7A49E1
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 16:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF87629A3ED;
-	Tue, 15 Apr 2025 16:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9998529C33B;
+	Tue, 15 Apr 2025 16:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="sFtX3Hjl";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="iMqvCkzi";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="sFtX3Hjl";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="iMqvCkzi"
+	dkim=pass (2048-bit key) header.d=dilger-ca.20230601.gappssmtp.com header.i=@dilger-ca.20230601.gappssmtp.com header.b="lj6B1/tS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B991B274667
-	for <stable@vger.kernel.org>; Tue, 15 Apr 2025 16:42:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195972957C3
+	for <stable@vger.kernel.org>; Tue, 15 Apr 2025 16:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744735367; cv=none; b=b80SYnc/cn1UZCcAVd6AlST1HgB9O0WbUq9FU0PS3bj1+yZN7wdgPpWvT8f3dbzSgiIgtqo0xNAhzG6K/O4v31zPO8dD41u868C+80I/h1QaIGnv1MKAMQ620E+mT/H/QLFogGpPR0a9VrO42lodUSELoBAnV2/jL2mkBdht3o0=
+	t=1744736329; cv=none; b=CCANBD4P67XZY25GWW3FpHWO1F/Nf2ZBjd4cq2jVhBj8WONOJkGe3e1Mg7eejuUfvKcuE6XsTfZF4CktltILSTUIRypIddFAYbNfHLcV2iXdVmpApeQvqfFat03Znr1+u2Y53i78H70xgc59xPBCbeF7RkzNqqFYykmgxle/ofc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744735367; c=relaxed/simple;
-	bh=7guA22Z/jVIhTId3TiU3XjIQwgyWBjZKeRgCg5KS4MA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=II/oqtXDmgHSLsZsyhzX/XogawRj+1FCPxYHSpZ2l4hKisEi6EG8/q52J2e5rPx/8KczVUhQeWGB9o6clvkNhs+2ttKM+6aC/EJRbfxKq1RSKARYKFPqFDXb1vz9YCc9TJN9eVismbyEuyvUcUspKCP3dN6ZK8jfXn9zdyRvIFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=sFtX3Hjl; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=iMqvCkzi; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=sFtX3Hjl; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=iMqvCkzi; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id C02BB1F461;
-	Tue, 15 Apr 2025 16:42:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1744735362; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uYXbDnEVw6T3gFBR1xGBJ2FVAU/2FayUDTj0+2zKHis=;
-	b=sFtX3Hjlx1wOA1FTuoTIpaVVg+kPH1ZDX/PiG2f5KPK2R0WOWf3i0d+6ZGvERhAUFyTauW
-	sKpMtvqWfTWyQoC+C+tqyH8Sbl8yD5IgoJ+9mb8C6KOHW0nFnlgBn4o2Skrrlv1A3h25H9
-	5cxWdGxrV/h58/r7z7+ZDLGoYMXuG/Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1744735362;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uYXbDnEVw6T3gFBR1xGBJ2FVAU/2FayUDTj0+2zKHis=;
-	b=iMqvCkziOv6yRDVxHSqu2D65vGD1SOJL+/mbf57m7xxMKydTRf63ng8sVgHtnhD6xbMf+W
-	avZl3LJdSRIvoQCQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1744735362; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uYXbDnEVw6T3gFBR1xGBJ2FVAU/2FayUDTj0+2zKHis=;
-	b=sFtX3Hjlx1wOA1FTuoTIpaVVg+kPH1ZDX/PiG2f5KPK2R0WOWf3i0d+6ZGvERhAUFyTauW
-	sKpMtvqWfTWyQoC+C+tqyH8Sbl8yD5IgoJ+9mb8C6KOHW0nFnlgBn4o2Skrrlv1A3h25H9
-	5cxWdGxrV/h58/r7z7+ZDLGoYMXuG/Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1744735362;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uYXbDnEVw6T3gFBR1xGBJ2FVAU/2FayUDTj0+2zKHis=;
-	b=iMqvCkziOv6yRDVxHSqu2D65vGD1SOJL+/mbf57m7xxMKydTRf63ng8sVgHtnhD6xbMf+W
-	avZl3LJdSRIvoQCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B1BBF137A5;
-	Tue, 15 Apr 2025 16:42:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id yqxZK4KM/mdeZgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 15 Apr 2025 16:42:42 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 3A5D5A0947; Tue, 15 Apr 2025 18:42:42 +0200 (CEST)
-Date: Tue, 15 Apr 2025 18:42:42 +0200
-From: Jan Kara <jack@suse.cz>
-To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Jens Axboe <axboe@kernel.dk>, Martijn Coenen <maco@android.com>, 
-	Alyssa Ross <hi@alyssa.is>, Christoph Hellwig <hch@lst.de>, Greg KH <greg@kroah.com>, 
-	Jan Kara <jack@suse.cz>, John Ogness <john.ogness@linutronix.de>, 
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3] loop: LOOP_SET_FD: send uevents for partitions
-Message-ID: <2wzcj4odajfsvubribqetasj26pp5u3wnusnowwwjiwy4lj5p5@vpa7vwwseyq2>
-References: <20250415-loop-uevent-changed-v3-1-60ff69ac6088@linutronix.de>
+	s=arc-20240116; t=1744736329; c=relaxed/simple;
+	bh=PwOYin/M89oJCAmOFawBNjPUKiaJAkazAKO3lsCdr1A=;
+	h=From:Message-Id:Content-Type:Mime-Version:Subject:Date:
+	 In-Reply-To:Cc:To:References; b=b8oXXQeC2y4pDK5gmlXbekepwlGdXY055cKo5OlQZfakixF28D5YBJej/uxgaf58BIcEpd2A1nueEsHm97OkPSOa4B6U0Ey/5jrmeoxKFPeOUK8NW1pUJDT7G+nuz7tF93VBESPeFgyBlBuvcVqBg1D9IwZOYt/tkoDJuGWsiMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dilger.ca; spf=pass smtp.mailfrom=dilger.ca; dkim=pass (2048-bit key) header.d=dilger-ca.20230601.gappssmtp.com header.i=@dilger-ca.20230601.gappssmtp.com header.b=lj6B1/tS; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dilger.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dilger.ca
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-306b6ae4fb2so5836111a91.3
+        for <stable@vger.kernel.org>; Tue, 15 Apr 2025 09:58:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dilger-ca.20230601.gappssmtp.com; s=20230601; t=1744736325; x=1745341125; darn=vger.kernel.org;
+        h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=d4N0GbCfLHO59eB1QCB5kpwpQjnRZnji86liGp99znY=;
+        b=lj6B1/tSKzTZ1gAKJj9Rw+TImBIzeDTtJQkG2ZLw4rrUEbr/sZeFizRZYX0YKkJDEF
+         MpKdDC+8WA+2dEiOcojS7ORwDsahiSwDc4TsDfDscwLZzVselJnCGhcThOwD+WSCQnAj
+         nhsQpGQcPwJWOLGYrkkAdMBQX02SHep4ixvgGU4vef99W6UtWZlZ4cjDsS/IKQ2Hq/9E
+         ufQAzyBkbYGDRJ5Mf7qZlSMbmAKUhoLusPwKl+8/umg6j9pNl7tc8OfobwJtR6QSErHt
+         1KTobwPp1Yd291ZkthceQ36FV0ZyR/BnKFnhZ0BAYnLsZarRUA75qc8eTlELRPfntfOZ
+         Hmhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744736325; x=1745341125;
+        h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=d4N0GbCfLHO59eB1QCB5kpwpQjnRZnji86liGp99znY=;
+        b=sQ4qCjcypOeLFMgTPGfR9DWYDaoJZ6/KVIw97SYLOmZo5uP4byJoDOi7kdT62SNf9h
+         VmYjqRaO4lK0Doqdvn6bxv5ToIWc2Y0T4HKkDtA6cFXSv3Iv4WiDg8OayNwnpO2P8Vze
+         91vnCUFPapO9ZslEl9NjjcIZ4V/9ZTPM6Rc1S/XEKpKuymmNwkKw8xVsfHGD/XSWYZXA
+         SnHfFr4YX2POOMB36pOcA4dzlbxiCt8RUdzoUZZ2N/2STZwO6dily/jdKFLNm1689aNO
+         nq0cHTxRzl9KzfHkx+sharaDANuKdbFcOf+scqW38QJbXs6UWeSmuQsRhkIpk6a0J+3W
+         EuGA==
+X-Forwarded-Encrypted: i=1; AJvYcCWpj0JfcfBU2rjHddKNu7R5WBjgiy9xn/ddKPWP4r2AVHk+uWGLUfrKFr0vWJEaLBKT80gaQyE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUpyGr8+pZwUDLHZlmOuigB5+u/f2qyGmZAeGlDUAv8woMZvfC
+	mXhTxRUm9qekS1dMku8Ket5wEnGbQ7v4idPjvoA7JpVPiMVYuSmawCmexLSqWBI=
+X-Gm-Gg: ASbGncvLuEuRh0wjPYrK7s2m2luZlN4lyvP/hdDS9whhQrv/6yqm23g/vQM0htcwgFK
+	9+wHu9dROTYy79Yn9R2DTRWfF/u0axFEILkQMWZEFjmgag3Ni74t5mKcV9oBed93FK5oCGD6KvS
+	bTano1hGUd9ARgg8Tz6xmUl9hIIUVBo6+bge6vOs2IBBocWjGnAb0xTMDOJjss04XYRRDfyofJC
+	GvTAVFvb+RiIUMwHnI3qYy0fpfPswuNkAugR2hj0tWXD7jeGGvRUKz9d4WcQTtxfK4A1pt3uryZ
+	aj5e8e8peTOYtbS5RWFd2o/dVJRL4e+E+UJFY/GI8/zrVSIuRcKIbHnYblBzyYCAb3E/NcJm3WK
+	mWkD68ku5rVHRJA==
+X-Google-Smtp-Source: AGHT+IHWLBcMK2aikj4+V5lXXYsh4Y7jhcTSssSkuGmWzzsbfiWGA8LrTh3jgyZvi0NTVXjpRbFkIw==
+X-Received: by 2002:a17:90b:57e8:b0:2ee:ab29:1a63 with SMTP id 98e67ed59e1d1-30823624894mr22531834a91.3.1744736325209;
+        Tue, 15 Apr 2025 09:58:45 -0700 (PDT)
+Received: from cabot.adilger.int (S01068c763f81ca4b.cg.shawcable.net. [70.77.200.158])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-306dd1717c3sm13575842a91.30.2025.04.15.09.58.43
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 15 Apr 2025 09:58:44 -0700 (PDT)
+From: Andreas Dilger <adilger@dilger.ca>
+Message-Id: <B1333FB3-D44F-407F-AD02-A2A93BB1E53B@dilger.ca>
+Content-Type: multipart/signed;
+ boundary="Apple-Mail=_BCC47921-4CA5-490E-973D-1DCFA8BB70C3";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250415-loop-uevent-changed-v3-1-60ff69ac6088@linutronix.de>
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_COUNT_THREE(0.00)[3];
-	FROM_HAS_DN(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.cz:email]
-X-Spam-Score: -3.80
-X-Spam-Flag: NO
+Mime-Version: 1.0 (Mac OS X Mail 10.3 \(3273\))
+Subject: Re: [PATCH] ext4: inline: fix len overflow in
+ ext4_prepare_inline_data
+Date: Tue, 15 Apr 2025 10:58:38 -0600
+In-Reply-To: <20250415-ext4-prepare-inline-overflow-v1-1-f4c13d900967@igalia.com>
+Cc: Theodore Ts'o <tytso@mit.edu>,
+ Tao Ma <boyu.mt@taobao.com>,
+ Jan Kara <jack@suse.com>,
+ Ext4 Developers List <linux-ext4@vger.kernel.org>,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>,
+ kernel-dev@igalia.com,
+ syzbot+fe2a25dae02a207717a0@syzkaller.appspotmail.com,
+ stable@vger.kernel.org
+To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+References: <20250415-ext4-prepare-inline-overflow-v1-1-f4c13d900967@igalia.com>
+X-Mailer: Apple Mail (2.3273)
 
-On Tue 15-04-25 16:55:06, Thomas Weiﬂschuh wrote:
-> Remove the suppression of the uevents before scanning for partitions.
-> The partitions inherit their suppression settings from their parent device,
-> which lead to the uevents being dropped.
-> 
-> This is similar to the same changes for LOOP_CONFIGURE done in
-> commit bb430b694226 ("loop: LOOP_CONFIGURE: send uevents for partitions").
-> 
-> Fixes: 498ef5c777d9 ("loop: suppress uevents while reconfiguring the device")
+
+--Apple-Mail=_BCC47921-4CA5-490E-973D-1DCFA8BB70C3
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=us-ascii
+
+On Apr 15, 2025, at 8:53 AM, Thadeu Lima de Souza Cascardo =
+<cascardo@igalia.com> wrote:
+>=20
+> When running the following code on an ext4 filesystem with inline_data
+> feature enabled, it will lead to the bug below.
+>=20
+>        fd =3D open("file1", O_RDWR | O_CREAT | O_TRUNC, 0666);
+>        ftruncate(fd, 30);
+>        pwrite(fd, "a", 1, (1UL << 40) + 5UL);
+>=20
+> That happens because write_begin will succeed as when
+> ext4_generic_write_inline_data calls ext4_prepare_inline_data, pos + =
+len
+> will be truncated, leading to ext4_prepare_inline_data parameter to be =
+6
+> instead of 0x10000000006.
+>=20
+> Then, later when write_end is called, we hit:
+>=20
+>        BUG_ON(pos + len > EXT4_I(inode)->i_inline_size);
+>=20
+> at ext4_write_inline_data.
+>=20
+> Fix it by using a loff_t type for the len parameter in
+> ext4_prepare_inline_data instead of an unsigned int.
+
+Thanks for the patch. Looks good.
+
+Reviewed-by: Andreas Dilger <adilger@dilger.ca>
+
+>=20
+> [   44.545164] ------------[ cut here ]------------
+> [   44.545530] kernel BUG at fs/ext4/inline.c:240!
+> [   44.545834] Oops: invalid opcode: 0000 [#1] SMP NOPTI
+> [   44.546172] CPU: 3 UID: 0 PID: 343 Comm: test Not tainted =
+6.15.0-rc2-00003-g9080916f4863 #45 PREEMPT(full)  =
+112853fcebfdb93254270a7959841d2c6aa2c8bb
+> [   44.546523] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), =
+BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> [   44.546523] RIP: 0010:ext4_write_inline_data+0xfe/0x100
+> [   44.546523] Code: 3c 0e 48 83 c7 48 48 89 de 5b 41 5c 41 5d 41 5e =
+41 5f 5d e9 e4 fa 43 01 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc =
+0f 0b <0f> 0b 0f 1f 44 00 00 55 41 57 41 56 41 55 41 54 53 48 83 ec 20 =
+49
+> [   44.546523] RSP: 0018:ffffb342008b79a8 EFLAGS: 00010216
+> [   44.546523] RAX: 0000000000000001 RBX: ffff9329c579c000 RCX: =
+0000010000000006
+> [   44.546523] RDX: 000000000000003c RSI: ffffb342008b79f0 RDI: =
+ffff9329c158e738
+> [   44.546523] RBP: 0000000000000001 R08: 0000000000000001 R09: =
+0000000000000000
+> [   44.546523] R10: 00007ffffffff000 R11: ffffffff9bd0d910 R12: =
+0000006210000000
+> [   44.546523] R13: fffffc7e4015e700 R14: 0000010000000005 R15: =
+ffff9329c158e738
+> [   44.546523] FS:  00007f4299934740(0000) GS:ffff932a60179000(0000) =
+knlGS:0000000000000000
+> [   44.546523] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   44.546523] CR2: 00007f4299a1ec90 CR3: 0000000002886002 CR4: =
+0000000000770eb0
+> [   44.546523] PKRU: 55555554
+> [   44.546523] Call Trace:
+> [   44.546523]  <TASK>
+> [   44.546523]  ext4_write_inline_data_end+0x126/0x2d0
+> [   44.546523]  generic_perform_write+0x17e/0x270
+> [   44.546523]  ext4_buffered_write_iter+0xc8/0x170
+> [   44.546523]  vfs_write+0x2be/0x3e0
+> [   44.546523]  __x64_sys_pwrite64+0x6d/0xc0
+> [   44.546523]  do_syscall_64+0x6a/0xf0
+> [   44.546523]  ? __wake_up+0x89/0xb0
+> [   44.546523]  ? xas_find+0x72/0x1c0
+> [   44.546523]  ? next_uptodate_folio+0x317/0x330
+> [   44.546523]  ? set_pte_range+0x1a6/0x270
+> [   44.546523]  ? filemap_map_pages+0x6ee/0x840
+> [   44.546523]  ? ext4_setattr+0x2fa/0x750
+> [   44.546523]  ? do_pte_missing+0x128/0xf70
+> [   44.546523]  ? security_inode_post_setattr+0x3e/0xd0
+> [   44.546523]  ? ___pte_offset_map+0x19/0x100
+> [   44.546523]  ? handle_mm_fault+0x721/0xa10
+> [   44.546523]  ? do_user_addr_fault+0x197/0x730
+> [   44.546523]  ? do_syscall_64+0x76/0xf0
+> [   44.546523]  ? arch_exit_to_user_mode_prepare+0x1e/0x60
+> [   44.546523]  ? irqentry_exit_to_user_mode+0x79/0x90
+> [   44.546523]  entry_SYSCALL_64_after_hwframe+0x55/0x5d
+> [   44.546523] RIP: 0033:0x7f42999c6687
+> [   44.546523] Code: 48 89 fa 4c 89 df e8 58 b3 00 00 8b 93 08 03 00 =
+00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 =
+0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff =
+ff
+> [   44.546523] RSP: 002b:00007ffeae4a7930 EFLAGS: 00000202 ORIG_RAX: =
+0000000000000012
+> [   44.546523] RAX: ffffffffffffffda RBX: 00007f4299934740 RCX: =
+00007f42999c6687
+> [   44.546523] RDX: 0000000000000001 RSI: 000055ea6149200f RDI: =
+0000000000000003
+> [   44.546523] RBP: 00007ffeae4a79a0 R08: 0000000000000000 R09: =
+0000000000000000
+> [   44.546523] R10: 0000010000000005 R11: 0000000000000202 R12: =
+0000000000000000
+> [   44.546523] R13: 00007ffeae4a7ac8 R14: 00007f4299b86000 R15: =
+000055ea61493dd8
+> [   44.546523]  </TASK>
+> [   44.546523] Modules linked in:
+> [   44.568501] ---[ end trace 0000000000000000 ]---
+> [   44.568889] RIP: 0010:ext4_write_inline_data+0xfe/0x100
+> [   44.569328] Code: 3c 0e 48 83 c7 48 48 89 de 5b 41 5c 41 5d 41 5e =
+41 5f 5d e9 e4 fa 43 01 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc =
+0f 0b <0f> 0b 0f 1f 44 00 00 55 41 57 41 56 41 55 41 54 53 48 83 ec 20 =
+49
+> [   44.570931] RSP: 0018:ffffb342008b79a8 EFLAGS: 00010216
+> [   44.571356] RAX: 0000000000000001 RBX: ffff9329c579c000 RCX: =
+0000010000000006
+> [   44.571959] RDX: 000000000000003c RSI: ffffb342008b79f0 RDI: =
+ffff9329c158e738
+> [   44.572571] RBP: 0000000000000001 R08: 0000000000000001 R09: =
+0000000000000000
+> [   44.573148] R10: 00007ffffffff000 R11: ffffffff9bd0d910 R12: =
+0000006210000000
+> [   44.573748] R13: fffffc7e4015e700 R14: 0000010000000005 R15: =
+ffff9329c158e738
+> [   44.574335] FS:  00007f4299934740(0000) GS:ffff932a60179000(0000) =
+knlGS:0000000000000000
+> [   44.575027] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   44.575520] CR2: 00007f4299a1ec90 CR3: 0000000002886002 CR4: =
+0000000000770eb0
+> [   44.576112] PKRU: 55555554
+> [   44.576338] Kernel panic - not syncing: Fatal exception
+> [   44.576517] Kernel Offset: 0x1a600000 from 0xffffffff81000000 =
+(relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+>=20
+> Reported-by: syzbot+fe2a25dae02a207717a0@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3Dfe2a25dae02a207717a0
+> Fixes: f19d5870cbf7 ("ext4: add normal write support for inline data")
+> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-
-Looks good. Feel free to add:
-
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
 > ---
-> Changes in v3:
-> - Rebase onto block/block-6.15
-> - Drop already applied patch "loop: properly send KOBJ_CHANGED uevent for disk device"
-> - Add patch to fix partition uevents for LOOP_SET_FD
-> - Link to v2: https://lore.kernel.org/r/20250415-loop-uevent-changed-v2-1-0c4e6a923b2a@linutronix.de
-> 
-> Changes in v2:
-> - Use correct Fixes tag
-> - Rework commit message slightly
-> - Rebase onto v6.15-rc1
-> - Link to v1: https://lore.kernel.org/r/20250317-loop-uevent-changed-v1-1-cb29cb91b62d@linutronix.de
+> fs/ext4/inline.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
+> index =
+2c9b762925c72f2ff5a402b02500370bc1eb0eb1..e5e6bf0d338b965a885fb99581f9ed5e=
+51c5257c 100644
+> --- a/fs/ext4/inline.c
+> +++ b/fs/ext4/inline.c
+> @@ -397,7 +397,7 @@ static int ext4_update_inline_data(handle_t =
+*handle, struct inode *inode,
+> }
+>=20
+> static int ext4_prepare_inline_data(handle_t *handle, struct inode =
+*inode,
+> -				    unsigned int len)
+> +				    loff_t len)
+> {
+> 	int ret, size, no_expand;
+> 	struct ext4_inode_info *ei =3D EXT4_I(inode);
+>=20
 > ---
->  drivers/block/loop.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-> index 3be7f00e7fc740da2745ffbccfcebe53eef2ddaa..e9ec7a45f3f2d1dd2a82b3506f3740089a20ae05 100644
-> --- a/drivers/block/loop.c
-> +++ b/drivers/block/loop.c
-> @@ -662,12 +662,12 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
->  	 * dependency.
->  	 */
->  	fput(old_file);
-> +	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
->  	if (partscan)
->  		loop_reread_partitions(lo);
->  
->  	error = 0;
->  done:
-> -	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
->  	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
->  	return error;
->  
-> @@ -675,6 +675,7 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
->  	loop_global_unlock(lo, is_loop);
->  out_putf:
->  	fput(file);
-> +	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
->  	goto done;
->  }
->  
-> 
-> ---
-> base-commit: 7ed2a771b5fb3edee9c4608181235c30b40bb042
-> change-id: 20250307-loop-uevent-changed-aa3690f43e03
-> 
+> base-commit: 8ffd015db85fea3e15a77027fda6c02ced4d2444
+> change-id: 20250415-ext4-prepare-inline-overflow-8db0e747cb16
+>=20
 > Best regards,
-> -- 
-> Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> --
+> Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+>=20
+
+
+Cheers, Andreas
+
+
+
+
+
+
+--Apple-Mail=_BCC47921-4CA5-490E-973D-1DCFA8BB70C3
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+	filename=signature.asc
+Content-Type: application/pgp-signature;
+	name=signature.asc
+Content-Description: Message signed with OpenPGP
+
+-----BEGIN PGP SIGNATURE-----
+Comment: GPGTools - http://gpgtools.org
+
+iQIzBAEBCAAdFiEEDb73u6ZejP5ZMprvcqXauRfMH+AFAmf+kD4ACgkQcqXauRfM
+H+BgTw/7BfgemHBt7vu6OuQBunmjB1Aa7t+RzuO4FDwCbFAPgpjlM6jbt2QH1a4w
+xOhOnGI7EFBlk5eCM0UTHNKNUYgFzJsXcb+oeE3MsyxVqWNLpK2wbt7hvLs9B70L
+PZxzAL41zfLVs26PrnEZqkqdGKw+70QkRcFTBr5r08bdoOL5W3BTcgbPa/MG/vPm
+5CeTZS/zvtW/7k+tSCeEkngKi/1GwHCdGsKFMdODWbt79HYOvtHzs3CToWjBUp43
+N8WcpIswAjaFFKdWipYOcispwCoVEIOf/wbp+M1B4G/HIfvkrPe7f9IXfRnggtbH
+tCxjWjGANJciRjBbDcUXWBP+iKEO8Ktp+qhihNY5L+RrCAKNHW2aVJA9XtoXw6bk
+ODErmXLSByTsrZJ4NUuIYbv0+aIwmdlvov94jYOu1snQK2Kkh2Gg+1RArO9LXxe9
+czW5EFlGCFnpi7NVU2it2IQ1+roTnZPPOJG+mTFt/2Wynn9MH4zZihAAnerXvi16
+fycpifTXKXggDdaw3D/XUAW7OwSJB4zLWWa9jFys+oZi4Kqy2Ov3TbvfI8zTTrjg
+uc3UfOi0qdo67KvASOUuOLc9w4H/wEG+tR17/NfF5GJ+U71IPg5OB12VS5/ZWbCZ
+rK0rSVuX+d7ERfQdY2jttJEbHnu0K724CmQYowq1CQtEIvA2Hu8=
+=6gMn
+-----END PGP SIGNATURE-----
+
+--Apple-Mail=_BCC47921-4CA5-490E-973D-1DCFA8BB70C3--
 
