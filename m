@@ -1,145 +1,88 @@
-Return-Path: <stable+bounces-132752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BCA8A8A20A
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 16:56:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D52A2A8A240
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 17:01:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A75F440F05
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 14:56:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C61271901071
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 15:01:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7292BD598;
-	Tue, 15 Apr 2025 14:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5B1529E049;
+	Tue, 15 Apr 2025 14:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="K8+bYXci";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nMroUl67"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1hNI3GnO"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F052D29E042;
-	Tue, 15 Apr 2025 14:55:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A59297A7A;
+	Tue, 15 Apr 2025 14:57:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744728923; cv=none; b=MKkhsz5dHWjS44GKR1nNXqaGQcScrrCG5Uldl1SwHoRTzmnVwb7A/GA9kxxPkRVHKNCV9t62ATraSIoR4g7yF8CpE+13z8WQcnoIwpCZ5rcuj3g7t/lnS1Gi56jZS5p9fbuOENJieybiuK8lOVR5I4ZGRUa1BC3+HZnLWS1D7JQ=
+	t=1744729068; cv=none; b=ofn8AbLxuHLHXH3GoATtTve7FIW+0k2BtW+0rGJyBcaLUYj4ORAAB/nwp9ewpOqZQKpX/Ix3B7EAJkEGwBtUUlfuzZkNHN67pGhb3Vr0jw051N7fKuCJsGAwkT1M613KLCseNW9wHtg1SqmepEgjaatQ+BilwfAsrxIZDb69A3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744728923; c=relaxed/simple;
-	bh=/4fQKNG7ZThRdPS8W+NDfn4K1XtNr/N3er3BGwyb5c4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=leGP9UvuENSzAP+i+BX6LVUajNI2FILgoqj5591jsD1nb+p1ThFz5aAeAqkGhFpSGrFkfb9DW0q6FP0Opb3fQeXTKvnpXpE8pUitDuhmatOSu+o6oH0jumHK2Z8zn3wDvnJIw++YaoUWCOCsA3SmJn1FRf+tqZKhj2Va6i2OVRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=K8+bYXci; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nMroUl67; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744728918;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=sORXXgGo11q0HFoO8JqYEm1slEujioCF3YjA6xNqDKM=;
-	b=K8+bYXciJEz5Iw/bePoOe/OIy3GPJB3CQy2dpV5LNTiDQvghqJEjxi8mpoIH9V9KaVwfkd
-	g6Uu0VPwNMggC/JKjsDt97BB5nk5YTqmSxBa+GHM9N/nDhxkDQ7O0v6SvVaThsvjsCwtpt
-	YQOiGiLkoL+POAAxByOhH8FSRrwBSrmZqiWWFKYSH3SM8ko4kqR24/cjHoAbYlUvdK10GG
-	M8pINRIhammQ8LUmvM+DG/5ImX3OAFK3LOCw2Sp1V7jgzejWI3+uCuGelg3dCGcWT/AU6g
-	g61d663tT9uyAQHsa+1NvwxaTQwMBExMKr5ajUaoEmIEWkQFWPVk3UHWpXTcsA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744728918;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=sORXXgGo11q0HFoO8JqYEm1slEujioCF3YjA6xNqDKM=;
-	b=nMroUl67uXF1Ps8M0XqyNxolTM3e2/EIzmcH2SJ4Wh1xWVyVp5JPyV7B9FBVJljVK5obfE
-	j/cmk+ypky4txQBQ==
-Date: Tue, 15 Apr 2025 16:55:06 +0200
-Subject: [PATCH v3] loop: LOOP_SET_FD: send uevents for partitions
+	s=arc-20240116; t=1744729068; c=relaxed/simple;
+	bh=Xu0Lfj3qVS490qwXsrOvCFELI/PgRTiNfF9fLZfjkzw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tKERleCsYY4I3Jjszul2E4IMvxdkZwpFTESL8BVXOSk2+cV4s0hyyNFicmLFpNh4Ao70LsGhtoRd2ebmXi6qz85f6IC9u1q1OwqA78lXl6NxsxZNHr+Z6s+6IGQ4alSQZALL++a6nPfJbLMRIuqjLnk4gm/QL1HnjCr9HJ7FXV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1hNI3GnO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48216C4CEEB;
+	Tue, 15 Apr 2025 14:57:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1744729067;
+	bh=Xu0Lfj3qVS490qwXsrOvCFELI/PgRTiNfF9fLZfjkzw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=1hNI3GnOkhzVmzLkPxnYfQGia7kt7cuxGPj7wZHxorvojkfPOA7vKN2R19WVqU2Hc
+	 k0eusGy9+P7caDG59NrOnXjnVOtb6TwlJq8qV3sqJVuzL6HiqcYlDHqiySZv0dUOuD
+	 Eo7WCWCFUiKKAhaDhTmuzFsvoxVVE/KFJLJJCjw0=
+Date: Tue, 15 Apr 2025 16:57:45 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Christian Schrefl <chrisi.schrefl@gmail.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Russ Weight <russ.weight@linux.dev>,
+	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3] rust: Use `ffi::c_char` type in firmware abstraction
+ `FwFunc`
+Message-ID: <2025041537-refusal-suspense-3e7b@gregkh>
+References: <20250413-rust_arm_fix_fw_abstaction-v3-1-8dd7c0bbcd47@gmail.com>
+ <CANiq72kJ+tv-P6+Yq7Bg+J73q93m+EKV_4E-GR=sdY5KRgCs6w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250415-loop-uevent-changed-v3-1-60ff69ac6088@linutronix.de>
-X-B4-Tracking: v=1; b=H4sIAElz/mcC/32OQQqDMBBFryJZNyWZGEu66j1KF1HHGpBEEg0W8
- e6NuihIkVn9Yd6bP5OA3mAg92wmHqMJxtkUxCUjVavtG6mpUybAQDLBbrRzrqcjRrQD3S9qqrU
- oFGtygUyQRPYeGzNt1ucr5daEwfnP9iTydXvui5ymQSWlBqFykI/O2HHwzprpWuP6Yuf5CV+Vo
- KpS8bKA+sCvnSL8euRc/vdA8rAqx0IrECXoo2dZli8SSwIjQgEAAA==
-X-Change-ID: 20250307-loop-uevent-changed-aa3690f43e03
-To: Jens Axboe <axboe@kernel.dk>, Martijn Coenen <maco@android.com>, 
- Alyssa Ross <hi@alyssa.is>, Christoph Hellwig <hch@lst.de>, 
- Greg KH <greg@kroah.com>, Jan Kara <jack@suse.cz>
-Cc: John Ogness <john.ogness@linutronix.de>, linux-block@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1744728915; l=2155;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=/4fQKNG7ZThRdPS8W+NDfn4K1XtNr/N3er3BGwyb5c4=;
- b=HmkGcARamVEmalVkorOr2+8ny2ewAEsxjZcDfIp1Z0eg/XCmgnnIlCRgoHeIMVz7WYsMbOhvJ
- Nnl14SRj1o3ApFT1TZ0C07+AHyfDowD7rMaHaMKa36rrk3O6vkReG3H
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+In-Reply-To: <CANiq72kJ+tv-P6+Yq7Bg+J73q93m+EKV_4E-GR=sdY5KRgCs6w@mail.gmail.com>
 
-Remove the suppression of the uevents before scanning for partitions.
-The partitions inherit their suppression settings from their parent device,
-which lead to the uevents being dropped.
+On Sun, Apr 13, 2025 at 10:21:01PM +0200, Miguel Ojeda wrote:
+> On Sun, Apr 13, 2025 at 9:27 PM Christian Schrefl
+> <chrisi.schrefl@gmail.com> wrote:
+> >
+> > The `FwFunc` struct contains an function with a char pointer argument,
+> > for which a `*const u8` pointer was used. This is not really the
+> > "proper" type for this, so use a `*const kernel::ffi::c_char` pointer
+> > instead.
+> 
+> If I don't take it:
+> 
+> Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
-This is similar to the same changes for LOOP_CONFIGURE done in
-commit bb430b694226 ("loop: LOOP_CONFIGURE: send uevents for partitions").
+Thanks, I'll take it now.
 
-Fixes: 498ef5c777d9 ("loop: suppress uevents while reconfiguring the device")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
----
-Changes in v3:
-- Rebase onto block/block-6.15
-- Drop already applied patch "loop: properly send KOBJ_CHANGED uevent for disk device"
-- Add patch to fix partition uevents for LOOP_SET_FD
-- Link to v2: https://lore.kernel.org/r/20250415-loop-uevent-changed-v2-1-0c4e6a923b2a@linutronix.de
-
-Changes in v2:
-- Use correct Fixes tag
-- Rework commit message slightly
-- Rebase onto v6.15-rc1
-- Link to v1: https://lore.kernel.org/r/20250317-loop-uevent-changed-v1-1-cb29cb91b62d@linutronix.de
----
- drivers/block/loop.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index 3be7f00e7fc740da2745ffbccfcebe53eef2ddaa..e9ec7a45f3f2d1dd2a82b3506f3740089a20ae05 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -662,12 +662,12 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
- 	 * dependency.
- 	 */
- 	fput(old_file);
-+	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
- 	if (partscan)
- 		loop_reread_partitions(lo);
- 
- 	error = 0;
- done:
--	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
- 	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
- 	return error;
- 
-@@ -675,6 +675,7 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
- 	loop_global_unlock(lo, is_loop);
- out_putf:
- 	fput(file);
-+	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
- 	goto done;
- }
- 
-
----
-base-commit: 7ed2a771b5fb3edee9c4608181235c30b40bb042
-change-id: 20250307-loop-uevent-changed-aa3690f43e03
-
-Best regards,
--- 
-Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-
+greg k-h
 
