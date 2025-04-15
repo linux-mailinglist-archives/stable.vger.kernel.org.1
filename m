@@ -1,133 +1,91 @@
-Return-Path: <stable+bounces-132675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CB51A890EE
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 02:56:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 380DBA890F3
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 03:00:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1E853B3D0F
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 00:56:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61ABC189BBAC
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 01:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D1C483CC7;
-	Tue, 15 Apr 2025 00:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F497FBA1;
+	Tue, 15 Apr 2025 01:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="SpJ/LxEZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q5L1SXAF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39881798F;
-	Tue, 15 Apr 2025 00:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A7324B28;
+	Tue, 15 Apr 2025 01:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744678596; cv=none; b=luZICPU91qEXB4w/VkJH0rsx95o1IIa1WhNvUP2ibFZknB64NisvOyk0kKn9ur25kv4Sn0Le5esrI56KKE93yYYbkbgWpYHIA44iUbVF24euvuv1hHVlB1AUJHmo5KBxxOc3F7h7M35yaVvX9HftK6GKJOhPw1Pnh0TE/QjRq4M=
+	t=1744678828; cv=none; b=Z494IC9i/pMmNG8WOGbSBGdnOYLOyUpJoa8dM4osIPP9Q73dH3dOqgZladhBMYxXjpY11gfjOYStY94Ku5Jh8l3E1R6NZsj/opwrxeZqOwqG8iwLkDKkIl9Csu72mYloKAS4slRk3yTmY1vl67NKwx/5CTQwXtqyw5xs/y/LzgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744678596; c=relaxed/simple;
-	bh=/Wc6oQUod1c2d6lmQ9OJETs0bul6yPCDW7rKDnqzlvQ=;
-	h=Date:To:From:Subject:Message-Id; b=kve9Gr+TKEQBFScjdmMzn0mQ0hf/o9iAlA4c7rgXObGxY67sGsbeQjnqluRanUOEM8KTBwFaikVmAfTHGlVnHtR9m/+Fo/N8T60H6OLU9/3KAS48pu8OPLYaTFXJPSeP70Yd/i9TU/tg5hWckd988heAxXoWlIJcaFfopB1rO4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=SpJ/LxEZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D730C4CEE2;
-	Tue, 15 Apr 2025 00:56:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1744678595;
-	bh=/Wc6oQUod1c2d6lmQ9OJETs0bul6yPCDW7rKDnqzlvQ=;
-	h=Date:To:From:Subject:From;
-	b=SpJ/LxEZvEAJEztIIdMvCYY9Pc4fGDhWHoiJS5o3GGKhGRXDDJNH2ElqSmxMFZv/6
-	 hceQTp3aI0KGEVr5bheNK9r2SL8YLF1TFlOjFKX8IN0oR/IqhYdwb4/n0ic7Es//9/
-	 EOu/paeg782Bbm0ESFZIUNwhqKOTYP67dGIx217c=
-Date: Mon, 14 Apr 2025 17:56:34 -0700
-To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,gechangwei@live.cn,mark.tinguely@oracle.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + v2-ocfs2-fix-panic-in-failed-foilio-allocation.patch added to mm-nonmm-unstable branch
-Message-Id: <20250415005635.0D730C4CEE2@smtp.kernel.org>
+	s=arc-20240116; t=1744678828; c=relaxed/simple;
+	bh=K6PEbgnqPaBOxBJLSMKaz5HtTYWkiTxoA1qXO2+0VO4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=H83hLo241zSonzGohecNsZSxiYj+w12XA3z2xKX+QOMqqv3GSEaRAMqDTEEMEH0s9ZQkJp4cx6WXLT5ttOpg15iiY8hvnyVxR2cTXKqh+xam90L+X0tZ74lKLK1D1myhFLUtRDq8u/kiyZj0HKM3K4ys6nNWkFcqCkGVCYnM+PE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q5L1SXAF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F352C4AF09;
+	Tue, 15 Apr 2025 01:00:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744678827;
+	bh=K6PEbgnqPaBOxBJLSMKaz5HtTYWkiTxoA1qXO2+0VO4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=q5L1SXAFkvcr54C9yevqkwlPY2fIbFuCYTpQBfzFIJkd7FSiXwaeCRjwlB6BOtLVD
+	 zQSg6sM+xVxC0mPUSQkLMhz/KpjRPt4mRvNZxL07XBUTRZwRGH7jP5xu/5KBaJOT4E
+	 Lil5YujLxp86yDzSBQJ7af9A1R9YwqtwRsltxhXsfgAJgypkRgQeHTW5I8tfRzZiZX
+	 9I0UeMXzba5uSuw5Yeo2m6ZKYeYet2gr7QN6RNbpMHRm8jTG/cdlsWBVvLZpDOA6FN
+	 7uby+hXFXNBdH4ETcG3sXBz0bemTYW0ozI/JDYVcSlK8UHZwZgH4cZOz/Qgr4UNeqR
+	 SxRioPv/W2w5A==
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-6041e84715eso3466376eaf.1;
+        Mon, 14 Apr 2025 18:00:27 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV8Zu9NSJpO4TinwGzQA1dm83jd5LzZqUswvpRpC0zxvEMmpfoaw/ZFnXHMGVS64x3ilX4kZTE9HSpl@vger.kernel.org, AJvYcCVLh3UnymAaZLYIL5lyQdRBbcZ3dWj0Prxu8AZ21Q6vfKMgQ54+7kLB6fevNT1XUfJbAyGLSbxV@vger.kernel.org, AJvYcCVQEck7YtzaXhfPx7qHNfpcxP7WF174+WQB7+ZVMooHsznmN8mP5Gg7KyEYORmLKPBI8dSImhVip6NFR/6H@vger.kernel.org
+X-Gm-Message-State: AOJu0YyS4liaBIvallNGQPust4m5a2XU1Alkr/O0bPXLEND9a1z6Ep3J
+	raLktIwYWAVXtXUjo1nKH+LGckwxbimzuymQadD9tLqKXXP97f5QS8PvmSrZ6uCLrB3VWnOIuKw
+	gJy+y52ExUJooE6KkpdsnkrIHlm0=
+X-Google-Smtp-Source: AGHT+IHUMpNbLrVf6vnhveIpcR9pzlxuWln2jN1xHsGdwGfAZK24npjOSma5eyLz98up0FYceSc+owKpOeYv2AaVwFo=
+X-Received: by 2002:a05:6830:6285:b0:72b:9674:93ed with SMTP id
+ 46e09a7af769-72e863c0294mr10325319a34.24.1744678826906; Mon, 14 Apr 2025
+ 18:00:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20250409090450.7952-1-arefev@swemel.ru>
+In-Reply-To: <20250409090450.7952-1-arefev@swemel.ru>
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Tue, 15 Apr 2025 10:00:14 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd-3HeFKhtdOnXWqf=TXqY6-oYb23Cpqwugjb=mGuY9Bvg@mail.gmail.com>
+X-Gm-Features: ATxdqUE1y7AdLkJadVp98zaY6hXCz7gfEeGqKwgRAitSLBZGUVH71iEKBSODd40
+Message-ID: <CAKYAXd-3HeFKhtdOnXWqf=TXqY6-oYb23Cpqwugjb=mGuY9Bvg@mail.gmail.com>
+Subject: Re: [PATCH] ksmbd: Prevent integer overflow in calculation of deadtime
+To: Denis Arefev <arefev@swemel.ru>
+Cc: Steve French <smfrench@gmail.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Tom Talpey <tom@talpey.com>, Ronnie Sahlberg <lsahlber@redhat.com>, Hyunchul Lee <hyc.lee@gmail.com>, 
+	linux-cifs@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	lvc-project@linuxtesting.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-The patch titled
-     Subject: ocfs2: fix panic in failed foilio allocation
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     v2-ocfs2-fix-panic-in-failed-foilio-allocation.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/v2-ocfs2-fix-panic-in-failed-foilio-allocation.patch
-
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Mark Tinguely <mark.tinguely@oracle.com>
-Subject: ocfs2: fix panic in failed foilio allocation
-Date: Fri, 11 Apr 2025 11:31:24 -0500
-
-In the page to order 0 folio conversion series, commits 7e119cff9d0a
-("ocfs2: convert w_pages to w_folios") and 9a5e08652dc4 ("ocfs2: use an
-array of folios instead of an array of pages") save -ENOMEM in the folio
-array upon allocation failure and call the folio array free code.
-
-The folio array free code expects either valid folio pointers or NULL. 
-Finding the -ENOMEM will result in a panic.  Fix by NULLing the error
-folio entry.
-
-Link: https://lkml.kernel.org/r/c879a52b-835c-4fa0-902b-8b2e9196dcbd@oracle.com
-Fixes: 7e119cff9d0a ("ocfs2: convert w_pages to w_folios")
-FIxes: 9a5e08652dc4 ("ocfs2: use an array of folios instead of an array of pages")
-Signed-off-by: Mark Tinguely <mark.tinguely@oracle.com>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/ocfs2/alloc.c |    1 +
- fs/ocfs2/aops.c  |    1 +
- 2 files changed, 2 insertions(+)
-
---- a/fs/ocfs2/alloc.c~v2-ocfs2-fix-panic-in-failed-foilio-allocation
-+++ a/fs/ocfs2/alloc.c
-@@ -6918,6 +6918,7 @@ static int ocfs2_grab_folios(struct inod
- 		if (IS_ERR(folios[numfolios])) {
- 			ret = PTR_ERR(folios[numfolios]);
- 			mlog_errno(ret);
-+			folios[numfolios] = NULL;
- 			goto out;
- 		}
- 
---- a/fs/ocfs2/aops.c~v2-ocfs2-fix-panic-in-failed-foilio-allocation
-+++ a/fs/ocfs2/aops.c
-@@ -1071,6 +1071,7 @@ static int ocfs2_grab_folios_for_write(s
- 			if (IS_ERR(wc->w_folios[i])) {
- 				ret = PTR_ERR(wc->w_folios[i]);
- 				mlog_errno(ret);
-+				wc->w_folios[i] = NULL;
- 				goto out;
- 			}
- 		}
-_
-
-Patches currently in -mm which might be from mark.tinguely@oracle.com are
-
-v2-ocfs2-fix-panic-in-failed-foilio-allocation.patch
-
+On Wed, Apr 9, 2025 at 6:05=E2=80=AFPM Denis Arefev <arefev@swemel.ru> wrot=
+e:
+>
+> The user can set any value for 'deadtime'. This affects the arithmetic
+> expression 'req->deadtime * SMB_ECHO_INTERVAL', which is subject to
+> overflow. The added check makes the server behavior more predictable.
+>
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+>
+> Fixes: 0626e6641f6b ("cifsd: add server handler for central processing an=
+d tranport layers")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Applied it to #ksmbd-for-next-next.
+Thanks!
 
