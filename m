@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-132751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB05EA8A1E8
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 16:53:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BCA8A8A20A
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 16:56:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B16819003E8
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 14:53:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A75F440F05
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 14:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FDBA28BA8D;
-	Tue, 15 Apr 2025 14:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7292BD598;
+	Tue, 15 Apr 2025 14:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="J1Xjwsfk"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="K8+bYXci";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nMroUl67"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FB12DFA56;
-	Tue, 15 Apr 2025 14:53:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F052D29E042;
+	Tue, 15 Apr 2025 14:55:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744728816; cv=none; b=Y83v8ItnnAzqJ+Fx+pbwEZ9n7+5KlSsjCCl7srCMwVKqW5tqseJYKM2tSHBPbKNw26Bpmqg9c/95GBhuGGUt/3P07316E1fJASt/G4ycoAjoxAeXr1mCrVhxLW6lMtJUm7zR5aTjt/U0NFYGt3ViXnRn04A9zOyxrmcPkFglPXs=
+	t=1744728923; cv=none; b=MKkhsz5dHWjS44GKR1nNXqaGQcScrrCG5Uldl1SwHoRTzmnVwb7A/GA9kxxPkRVHKNCV9t62ATraSIoR4g7yF8CpE+13z8WQcnoIwpCZ5rcuj3g7t/lnS1Gi56jZS5p9fbuOENJieybiuK8lOVR5I4ZGRUa1BC3+HZnLWS1D7JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744728816; c=relaxed/simple;
-	bh=YGwRxGwbrpuUevoI0RjmwEDzdtCQcZOdUfqlW6kdsYE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=e9+HEi6+z1BeeErEiusQCg9wk5rv/ljZZIol8BVhmPOA20NZfQoIlPcsfuY/NZQIGTdJiPhzYU5FplOVxI6vUR1krH1REJvJjEBCVOA+NYoUvftD11GvCUqPZcDHLzCjIO+vNxfBq8iNMRaa5xIh1kg5ngRoMMgXdR7EnWsSZMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=J1Xjwsfk; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:Content-Description
-	:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=mF6vRbR4S90qv8/I2/dPptY8vGJP6bDRNJYyBJahYEI=; b=J1XjwsfkWPkuErmsaCLEHKVVjl
-	GKReg5c8aOEdOpLY3GlUKJhFjCQ1416mDZI7vaFT2w/zFKVlGRMLwS3POp2hB1C54cUWbCJV5k5Gm
-	h/XHTGGtgWpruImSfI4h9/5l5imoUoUwDkjCNKr2XCTtZMXLVgtSYKR/RwwojUsR8OCvT5SxL/sBO
-	gPNXwxK4A+o+f7f9SpeBcN9TCgfQ79Be1CGrTucDC/vEBY35/Uf1VrYZIkCKiQUGbzm7B5tvzydIx
-	a8HtFHtr8IPFPrqKpCRCJKRRzevx/sw43nQDQ5WXPpfuNglKZqz1v9oUbX3nMlWJqSrjL5b4zg/r9
-	DeLoLJSA==;
-Received: from 179-125-92-204-dinamico.pombonet.net.br ([179.125.92.204] helo=[192.168.67.187])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1u4hfC-00Gyg0-Nw; Tue, 15 Apr 2025 16:53:27 +0200
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Date: Tue, 15 Apr 2025 11:53:04 -0300
-Subject: [PATCH] ext4: inline: fix len overflow in ext4_prepare_inline_data
+	s=arc-20240116; t=1744728923; c=relaxed/simple;
+	bh=/4fQKNG7ZThRdPS8W+NDfn4K1XtNr/N3er3BGwyb5c4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=leGP9UvuENSzAP+i+BX6LVUajNI2FILgoqj5591jsD1nb+p1ThFz5aAeAqkGhFpSGrFkfb9DW0q6FP0Opb3fQeXTKvnpXpE8pUitDuhmatOSu+o6oH0jumHK2Z8zn3wDvnJIw++YaoUWCOCsA3SmJn1FRf+tqZKhj2Va6i2OVRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=K8+bYXci; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nMroUl67; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1744728918;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=sORXXgGo11q0HFoO8JqYEm1slEujioCF3YjA6xNqDKM=;
+	b=K8+bYXciJEz5Iw/bePoOe/OIy3GPJB3CQy2dpV5LNTiDQvghqJEjxi8mpoIH9V9KaVwfkd
+	g6Uu0VPwNMggC/JKjsDt97BB5nk5YTqmSxBa+GHM9N/nDhxkDQ7O0v6SvVaThsvjsCwtpt
+	YQOiGiLkoL+POAAxByOhH8FSRrwBSrmZqiWWFKYSH3SM8ko4kqR24/cjHoAbYlUvdK10GG
+	M8pINRIhammQ8LUmvM+DG/5ImX3OAFK3LOCw2Sp1V7jgzejWI3+uCuGelg3dCGcWT/AU6g
+	g61d663tT9uyAQHsa+1NvwxaTQwMBExMKr5ajUaoEmIEWkQFWPVk3UHWpXTcsA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1744728918;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=sORXXgGo11q0HFoO8JqYEm1slEujioCF3YjA6xNqDKM=;
+	b=nMroUl67uXF1Ps8M0XqyNxolTM3e2/EIzmcH2SJ4Wh1xWVyVp5JPyV7B9FBVJljVK5obfE
+	j/cmk+ypky4txQBQ==
+Date: Tue, 15 Apr 2025 16:55:06 +0200
+Subject: [PATCH v3] loop: LOOP_SET_FD: send uevents for partitions
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,137 +60,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250415-ext4-prepare-inline-overflow-v1-1-f4c13d900967@igalia.com>
-X-B4-Tracking: v=1; b=H4sIANBy/mcC/x2MzQqDMBAGX0X23IVEopa+ivTgz2e7IIlsRAXx3
- V08DjPMSRkqyPQpTlJskiVFA/8qaPh38QeW0ZhKV1Yu+IpxrIEXxdKpuThLBKcNOs1p5/fYOzS
- hGXpfky2sm+R49u33um5Darg9bgAAAA==
-X-Change-ID: 20250415-ext4-prepare-inline-overflow-8db0e747cb16
-To: Theodore Ts'o <tytso@mit.edu>, 
- Andreas Dilger <adilger.kernel@dilger.ca>, Tao Ma <boyu.mt@taobao.com>, 
- Jan Kara <jack@suse.com>
-Cc: linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- linux-kernel@vger.kernel.org, kernel-dev@igalia.com, 
- syzbot+fe2a25dae02a207717a0@syzkaller.appspotmail.com, 
- Thadeu Lima de Souza Cascardo <cascardo@igalia.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250415-loop-uevent-changed-v3-1-60ff69ac6088@linutronix.de>
+X-B4-Tracking: v=1; b=H4sIAElz/mcC/32OQQqDMBBFryJZNyWZGEu66j1KF1HHGpBEEg0W8
+ e6NuihIkVn9Yd6bP5OA3mAg92wmHqMJxtkUxCUjVavtG6mpUybAQDLBbrRzrqcjRrQD3S9qqrU
+ oFGtygUyQRPYeGzNt1ucr5daEwfnP9iTydXvui5ymQSWlBqFykI/O2HHwzprpWuP6Yuf5CV+Vo
+ KpS8bKA+sCvnSL8euRc/vdA8rAqx0IrECXoo2dZli8SSwIjQgEAAA==
+X-Change-ID: 20250307-loop-uevent-changed-aa3690f43e03
+To: Jens Axboe <axboe@kernel.dk>, Martijn Coenen <maco@android.com>, 
+ Alyssa Ross <hi@alyssa.is>, Christoph Hellwig <hch@lst.de>, 
+ Greg KH <greg@kroah.com>, Jan Kara <jack@suse.cz>
+Cc: John Ogness <john.ogness@linutronix.de>, linux-block@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1744728915; l=2155;
+ i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
+ bh=/4fQKNG7ZThRdPS8W+NDfn4K1XtNr/N3er3BGwyb5c4=;
+ b=HmkGcARamVEmalVkorOr2+8ny2ewAEsxjZcDfIp1Z0eg/XCmgnnIlCRgoHeIMVz7WYsMbOhvJ
+ Nnl14SRj1o3ApFT1TZ0C07+AHyfDowD7rMaHaMKa36rrk3O6vkReG3H
+X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
+ pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 
-When running the following code on an ext4 filesystem with inline_data
-feature enabled, it will lead to the bug below.
+Remove the suppression of the uevents before scanning for partitions.
+The partitions inherit their suppression settings from their parent device,
+which lead to the uevents being dropped.
 
-        fd = open("file1", O_RDWR | O_CREAT | O_TRUNC, 0666);
-        ftruncate(fd, 30);
-        pwrite(fd, "a", 1, (1UL << 40) + 5UL);
+This is similar to the same changes for LOOP_CONFIGURE done in
+commit bb430b694226 ("loop: LOOP_CONFIGURE: send uevents for partitions").
 
-That happens because write_begin will succeed as when
-ext4_generic_write_inline_data calls ext4_prepare_inline_data, pos + len
-will be truncated, leading to ext4_prepare_inline_data parameter to be 6
-instead of 0x10000000006.
-
-Then, later when write_end is called, we hit:
-
-        BUG_ON(pos + len > EXT4_I(inode)->i_inline_size);
-
-at ext4_write_inline_data.
-
-Fix it by using a loff_t type for the len parameter in
-ext4_prepare_inline_data instead of an unsigned int.
-
-[   44.545164] ------------[ cut here ]------------
-[   44.545530] kernel BUG at fs/ext4/inline.c:240!
-[   44.545834] Oops: invalid opcode: 0000 [#1] SMP NOPTI
-[   44.546172] CPU: 3 UID: 0 PID: 343 Comm: test Not tainted 6.15.0-rc2-00003-g9080916f4863 #45 PREEMPT(full)  112853fcebfdb93254270a7959841d2c6aa2c8bb
-[   44.546523] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   44.546523] RIP: 0010:ext4_write_inline_data+0xfe/0x100
-[   44.546523] Code: 3c 0e 48 83 c7 48 48 89 de 5b 41 5c 41 5d 41 5e 41 5f 5d e9 e4 fa 43 01 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc 0f 0b <0f> 0b 0f 1f 44 00 00 55 41 57 41 56 41 55 41 54 53 48 83 ec 20 49
-[   44.546523] RSP: 0018:ffffb342008b79a8 EFLAGS: 00010216
-[   44.546523] RAX: 0000000000000001 RBX: ffff9329c579c000 RCX: 0000010000000006
-[   44.546523] RDX: 000000000000003c RSI: ffffb342008b79f0 RDI: ffff9329c158e738
-[   44.546523] RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000000
-[   44.546523] R10: 00007ffffffff000 R11: ffffffff9bd0d910 R12: 0000006210000000
-[   44.546523] R13: fffffc7e4015e700 R14: 0000010000000005 R15: ffff9329c158e738
-[   44.546523] FS:  00007f4299934740(0000) GS:ffff932a60179000(0000) knlGS:0000000000000000
-[   44.546523] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   44.546523] CR2: 00007f4299a1ec90 CR3: 0000000002886002 CR4: 0000000000770eb0
-[   44.546523] PKRU: 55555554
-[   44.546523] Call Trace:
-[   44.546523]  <TASK>
-[   44.546523]  ext4_write_inline_data_end+0x126/0x2d0
-[   44.546523]  generic_perform_write+0x17e/0x270
-[   44.546523]  ext4_buffered_write_iter+0xc8/0x170
-[   44.546523]  vfs_write+0x2be/0x3e0
-[   44.546523]  __x64_sys_pwrite64+0x6d/0xc0
-[   44.546523]  do_syscall_64+0x6a/0xf0
-[   44.546523]  ? __wake_up+0x89/0xb0
-[   44.546523]  ? xas_find+0x72/0x1c0
-[   44.546523]  ? next_uptodate_folio+0x317/0x330
-[   44.546523]  ? set_pte_range+0x1a6/0x270
-[   44.546523]  ? filemap_map_pages+0x6ee/0x840
-[   44.546523]  ? ext4_setattr+0x2fa/0x750
-[   44.546523]  ? do_pte_missing+0x128/0xf70
-[   44.546523]  ? security_inode_post_setattr+0x3e/0xd0
-[   44.546523]  ? ___pte_offset_map+0x19/0x100
-[   44.546523]  ? handle_mm_fault+0x721/0xa10
-[   44.546523]  ? do_user_addr_fault+0x197/0x730
-[   44.546523]  ? do_syscall_64+0x76/0xf0
-[   44.546523]  ? arch_exit_to_user_mode_prepare+0x1e/0x60
-[   44.546523]  ? irqentry_exit_to_user_mode+0x79/0x90
-[   44.546523]  entry_SYSCALL_64_after_hwframe+0x55/0x5d
-[   44.546523] RIP: 0033:0x7f42999c6687
-[   44.546523] Code: 48 89 fa 4c 89 df e8 58 b3 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
-[   44.546523] RSP: 002b:00007ffeae4a7930 EFLAGS: 00000202 ORIG_RAX: 0000000000000012
-[   44.546523] RAX: ffffffffffffffda RBX: 00007f4299934740 RCX: 00007f42999c6687
-[   44.546523] RDX: 0000000000000001 RSI: 000055ea6149200f RDI: 0000000000000003
-[   44.546523] RBP: 00007ffeae4a79a0 R08: 0000000000000000 R09: 0000000000000000
-[   44.546523] R10: 0000010000000005 R11: 0000000000000202 R12: 0000000000000000
-[   44.546523] R13: 00007ffeae4a7ac8 R14: 00007f4299b86000 R15: 000055ea61493dd8
-[   44.546523]  </TASK>
-[   44.546523] Modules linked in:
-[   44.568501] ---[ end trace 0000000000000000 ]---
-[   44.568889] RIP: 0010:ext4_write_inline_data+0xfe/0x100
-[   44.569328] Code: 3c 0e 48 83 c7 48 48 89 de 5b 41 5c 41 5d 41 5e 41 5f 5d e9 e4 fa 43 01 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc 0f 0b <0f> 0b 0f 1f 44 00 00 55 41 57 41 56 41 55 41 54 53 48 83 ec 20 49
-[   44.570931] RSP: 0018:ffffb342008b79a8 EFLAGS: 00010216
-[   44.571356] RAX: 0000000000000001 RBX: ffff9329c579c000 RCX: 0000010000000006
-[   44.571959] RDX: 000000000000003c RSI: ffffb342008b79f0 RDI: ffff9329c158e738
-[   44.572571] RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000000
-[   44.573148] R10: 00007ffffffff000 R11: ffffffff9bd0d910 R12: 0000006210000000
-[   44.573748] R13: fffffc7e4015e700 R14: 0000010000000005 R15: ffff9329c158e738
-[   44.574335] FS:  00007f4299934740(0000) GS:ffff932a60179000(0000) knlGS:0000000000000000
-[   44.575027] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   44.575520] CR2: 00007f4299a1ec90 CR3: 0000000002886002 CR4: 0000000000770eb0
-[   44.576112] PKRU: 55555554
-[   44.576338] Kernel panic - not syncing: Fatal exception
-[   44.576517] Kernel Offset: 0x1a600000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
-
-Reported-by: syzbot+fe2a25dae02a207717a0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=fe2a25dae02a207717a0
-Fixes: f19d5870cbf7 ("ext4: add normal write support for inline data")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Fixes: 498ef5c777d9 ("loop: suppress uevents while reconfiguring the device")
 Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
- fs/ext4/inline.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v3:
+- Rebase onto block/block-6.15
+- Drop already applied patch "loop: properly send KOBJ_CHANGED uevent for disk device"
+- Add patch to fix partition uevents for LOOP_SET_FD
+- Link to v2: https://lore.kernel.org/r/20250415-loop-uevent-changed-v2-1-0c4e6a923b2a@linutronix.de
 
-diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
-index 2c9b762925c72f2ff5a402b02500370bc1eb0eb1..e5e6bf0d338b965a885fb99581f9ed5e51c5257c 100644
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -397,7 +397,7 @@ static int ext4_update_inline_data(handle_t *handle, struct inode *inode,
+Changes in v2:
+- Use correct Fixes tag
+- Rework commit message slightly
+- Rebase onto v6.15-rc1
+- Link to v1: https://lore.kernel.org/r/20250317-loop-uevent-changed-v1-1-cb29cb91b62d@linutronix.de
+---
+ drivers/block/loop.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index 3be7f00e7fc740da2745ffbccfcebe53eef2ddaa..e9ec7a45f3f2d1dd2a82b3506f3740089a20ae05 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -662,12 +662,12 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
+ 	 * dependency.
+ 	 */
+ 	fput(old_file);
++	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
+ 	if (partscan)
+ 		loop_reread_partitions(lo);
+ 
+ 	error = 0;
+ done:
+-	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
+ 	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
+ 	return error;
+ 
+@@ -675,6 +675,7 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
+ 	loop_global_unlock(lo, is_loop);
+ out_putf:
+ 	fput(file);
++	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
+ 	goto done;
  }
  
- static int ext4_prepare_inline_data(handle_t *handle, struct inode *inode,
--				    unsigned int len)
-+				    loff_t len)
- {
- 	int ret, size, no_expand;
- 	struct ext4_inode_info *ei = EXT4_I(inode);
 
 ---
-base-commit: 8ffd015db85fea3e15a77027fda6c02ced4d2444
-change-id: 20250415-ext4-prepare-inline-overflow-8db0e747cb16
+base-commit: 7ed2a771b5fb3edee9c4608181235c30b40bb042
+change-id: 20250307-loop-uevent-changed-aa3690f43e03
 
 Best regards,
 -- 
-Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
 
