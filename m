@@ -1,115 +1,247 @@
-Return-Path: <stable+bounces-132731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4DE6A89C4C
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 13:28:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B531EA89CAB
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 13:40:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BE333B9BAE
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 11:27:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 951BA3B7AC3
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 11:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B922A2750F6;
-	Tue, 15 Apr 2025 11:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85AF8291169;
+	Tue, 15 Apr 2025 11:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="Vv4PXsdL"
+	dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b="DgubTRi2"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF6002973BD;
-	Tue, 15 Apr 2025 11:21:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72AAB28E61D
+	for <stable@vger.kernel.org>; Tue, 15 Apr 2025 11:40:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744716100; cv=none; b=J+yfT2P+TtCEzk+FXc1c1RVVzVTNeZYH6/ohA3kMOhFRbcQ89UG2HgxcrmbUe1WNjlSRTJR84XgQ2ZfWTeEnr2v2ls8HOaRXho96GDrM828JfZAp07pwBTsTbqoEQrnfaMuaF2bvuDiINEcUPLhhMU8RQUV/tCWVuI674uDvWHM=
+	t=1744717222; cv=none; b=lfQpVq9Ifmw1I10t54DL0F/nqfi8//aIUAwRIF+au8t9sih5FG0EQcLHkGIZxmMl+14vNE7ickdMG1pE1J5eZpSizVZS7j6gcY11VABuEKCnCRh89MWb6yCL/tMkiCMVCSeMs73z5VKz27Ji4nXb4F/AHPTK+f9Z5YymufkpPi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744716100; c=relaxed/simple;
-	bh=swlEp5ONWnOjBUXTr3HxuyUXycsO0Zbkbf91UmbdTJo=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=qz2u4DN5MUR0RnUfpCIR9QB0BX3VSQRhhS1/jtf/eqz4npPvBmbunC4nkW6RZSoc0bJ4EqyQJR/0IFEJFLhMOv3qJFaRzPyuMACK+61t5XeJWk3q9mTBZgfBhBNiBufrZHJ0MDu2e58lIuKTBfuBUBPkJpHSMU4NwWArSOKQXpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=Vv4PXsdL; arc=none smtp.client-ip=212.227.15.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1744716085; x=1745320885; i=markus.elfring@web.de;
-	bh=swlEp5ONWnOjBUXTr3HxuyUXycsO0Zbkbf91UmbdTJo=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=Vv4PXsdLsO2S1Lxta+qqtrwGNUYct4sGg1j00001ylcTg6DNlmi8TwSdOumaP2Bw
-	 jjg6DO3ZDHU2EkLAmdNrFrY4fBBro+5VJ9bAf2Xb9X8cPdwUC4aRc2XPsyuzDjdHg
-	 +w7CndTRBv5lokAS3x3tBqVrXH50GqJm/sod2B1+HaRoCKqcYbFNypO/lTAqLmzoH
-	 3m93xZTYNi/Ztg6UZKDUxNPBD8wMwblmlqntJcXD2fhTS0hEhsAQpmwMH5YSK6Hf3
-	 MSGsO939wjn0Nnb5+c7bBk611LmvzVcMbOy9UlrFGy/kG5Sm379sQav1KpAF7FLQw
-	 DsC8N/XUeZ0IlR0eag==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.70.24]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MTfon-1tbCjR3zEj-00PNiJ; Tue, 15
- Apr 2025 13:21:25 +0200
-Message-ID: <af72dff7-8ad1-476f-81f2-6f7d76761b12@web.de>
-Date: Tue, 15 Apr 2025 13:21:23 +0200
+	s=arc-20240116; t=1744717222; c=relaxed/simple;
+	bh=O/rT8+I9mTT1hvtVqcKe/fjxb+s+XOn8MkeEF7/UclI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HkrEOOgz0Afw6JNUuUVonLNQqAsraB7nBAQ5wohCo73wg31B2z5QTYMynEKs1uOZ9mQWZ/JBZWyRjcqViEh4uOqS0AJSdH6P7rsm7OtkpkICzLLA1hAT81z4B68/OV/Zs7e0aHJUqWm4XPiUIWEiMJ1KbkYEcvph8uUL65Npqjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com; spf=pass smtp.mailfrom=mvista.com; dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b=DgubTRi2; arc=none smtp.client-ip=209.85.214.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mvista.com
+Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-227aaa82fafso42845285ad.2
+        for <stable@vger.kernel.org>; Tue, 15 Apr 2025 04:40:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mvista.com; s=google; t=1744717217; x=1745322017; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aev0NKrAlcg9mgeOUSYkPy9/PBVFtBme5rActlatexo=;
+        b=DgubTRi2CjCvf/OMQDWR4F1rIUepe1UIQy+Zlzzp2g4KtxOmIFwFaNeY0NI9Zbmk84
+         8EFyscGNfQFUrAzopoDrgOSp8yQaq1d2dQ17ELMow8wrmu00TpJV2CQcUGl0A1Ulqfnj
+         53SsiIaJV/zQIPou88ZvjxO3rGa6DMbpD+Qqg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744717217; x=1745322017;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aev0NKrAlcg9mgeOUSYkPy9/PBVFtBme5rActlatexo=;
+        b=j9l1dxNJOmmeeB4owGfvFKXzCnkdlPk8WAj8CP/fWWH1YTw1vvRj5ATPx+lt9jSKun
+         tFLqa7zz5qF7Sru/eT8RUIbeHdQd6EnMZ3u7nJzXXGnVm+J0oxwhMBdCnoxZQ2ppqUN2
+         UaeEwJj/FR8UGl5osOIBq29dz+MJ6nNYrvoeKKE6kAa/iEIzXlIN8GSb1vMtwyij0THT
+         iID0ip/w70OjZtFWo7asEL7wfGcOWkFunwkk9YJdLYbDJtgmnmgQyaenJrjKqjTHoc4b
+         5Qz7Yc6PMmxqQYzeIYBj5qccurQhWf6guc9iHcQ7FX2uwOPFieTxiYlbRa7LFExWvy/I
+         oEPw==
+X-Gm-Message-State: AOJu0YyJnbfj8flmzpEI76BB55IWJ5MvO9dL/d8mzC4233OrKdpKnLk2
+	Ebrkpq9TkdZwKU+ayy+zEo9JYcJBgUv6jcjonqbhE4AZflOCzBlvgnnf3uDTajlXXndbukYuJp8
+	UtrCS/mn+
+X-Gm-Gg: ASbGnctK2D/y38nnMKpR9z8Dda47sHBay7d24IlJahvAJdujGvzoKs9YqPMclJTMNmI
+	azoLzNlWGJL/J2Ug3vCjgs0/ejdgdqPCzyx1AkYAONICqpCEhDjjxp0IG4KMkOpEtQ27ENnYi3V
+	Er0NpHjxFWhu051lgsUx1YoylfKVdimjOvOiFzzbRrLP1ToOxCueI+52w+Ki3tj2UG4HTYw0Ps9
+	bGK7LRt+wTsfKAcCRyH7DUtAGgYOQWlMIImwogNiYwIbLiiZ0Xa2t2IO359VtMVkFLk7Ss8cy29
+	ki6nnC07aZl1Ss6dXbstJTh3y1cMv0OO8fOiVym2HId3RjsLQlku/Npn
+X-Google-Smtp-Source: AGHT+IH7crPf+qwLzPI4w3eOrxW6iChDBV2CDgTRlXrgZfjm8Atec9trgc/njYSLmtbuVdbEstoRxQ==
+X-Received: by 2002:a17:902:f54f:b0:21f:61a9:be7d with SMTP id d9443c01a7336-22bea4fddfamr188923395ad.49.1744717217403;
+        Tue, 15 Apr 2025 04:40:17 -0700 (PDT)
+Received: from testing.mvista.com ([182.74.28.237])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-306df07dcfasm14299971a91.14.2025.04.15.04.40.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Apr 2025 04:40:17 -0700 (PDT)
+From: Hardik Gohil <hgohil@mvista.com>
+To: stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org,
+	Yu Chen <chenyu56@huawei.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Ferry Toth <fntoth@gmail.com>,
+	Wesley Cheng <wcheng@codeaurora.org>,
+	John Stultz <john.stultz@linaro.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Hardik Gohil <hgohil@mvista.com>
+Subject: [PATCH v5.4.y] usb: dwc3: core: Do core softreset when switch mode
+Date: Tue, 15 Apr 2025 11:39:52 +0000
+Message-Id: <20250415113952.1847695-1-hgohil@mvista.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: vulab@iscas.ac.cn, brcm80211-dev-list.pdl@broadcom.com,
- brcm80211@lists.linux.dev, linux-wireless@vger.kernel.org
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Arend van Spriel <arend.vanspriel@broadcom.com>,
- Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
- Erick Archer <erick.archer@outlook.com>, Jacobe Zang
- <jacobe.zang@wesion.com>, Kalle Valo <kvalo@kernel.org>,
- Sebastian Reichel <sebastian.reichel@collabora.com>
-References: <20250415072048.2629-1-vulab@iscas.ac.cn>
-Subject: Re: [PATCH v2] brcm80211: fmac: Add error handling
- forbrcmf_usb_dl_writeimage()
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20250415072048.2629-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Dhz2nwlJ5aVsbY/GDkK3rbaI8ZhD37Qt48RXdwBTSD9VIDEvvgZ
- osoYzVB1fp7HFEopYGEezs2tavB91d23PZ0nnZTCO12lhBPpkwHYJaVkEJqWJ8i1hn8Z2IR
- GOiDlVP61W/+/rHppIelVe3Mgjj+fkCAYXLayyXsn3b0GyjNXNBpXJsKQrXzXPk4t6xgyLN
- M7hzES+Y9WaUAiNPPTujg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:CAYibJvv6NM=;SqoCF8okJXN5n36Sry04u1pUXkf
- GfQH/HLyOkq4Y0lczLsGu/bO85zjjesl1uiMGLnV/cq2J1tX2pRkpxH28C0PdRLvrr7kaCy3m
- k5znkezQYYKufXTYHaJnyqyfQmY+4wbifDcH6wflPirtxFDg9QObKH+/anZ3G078x4Lb+ON8H
- RBf+4Ia0MdofphvDx1aG6qzD7enjaqOByu7MVQg+1Mzm8aFcfY9jn+IgIyeKqs4M7VX1EWOHx
- AVEPiym/FbzTNXGc8wp7ajwmNSz1br4ss/7VZGZKG2DyScKHPUKYKZhLKNaYYAKLfikTHm76J
- a2G8xqZ5/ojG8b+ZSJI4bmcPrrAZlNMsCMcRAydmTNNo+ZhNLc2a25K0U/CGh2MpILMAQmfsb
- bjolYOBGBb0Zz8+FbAdwDccyhwup7k8XItjH610zz9ZPir5Lp3KA6SG/o2vMhUwGKTtrXTMAO
- EtZgRRc5AKPHkjKJLDPaCsBMjJSvNpYtb/p8ITVh3xMmRe9nXSngEgUm3FoZYX4VWOv42po4v
- GbBEjmNPhPeJbh9esc/3fxEXep1+kl75sXkHpWhUusK9TKZp9ine9SRXxBVPEO0IkEmQtqMrN
- 63FOQX++0gq/MpWkhRkpaDVwPJitBBaI0cpt0G8wR3PLrlJVCsba03spVFgpzZnWshzcEqE/o
- M5r/jMqmDKj9CQdc14NAAjSyKV38wMtPm/KfnYyrF1tQ3Of8WCGv2MYaao5h1WehVZ4dkpvKr
- ZCodSewaBu/RMOBpy08QORn9VsyiEInishTFFKywJjwHJnTDDhDypUFbQRqISyuBU/mjEyKtk
- udUK14SQzRC1dVuMRjiRunHKDkdnWPEGIAirgVvLZu6URMem/xNpdedooA8k1Mvs/KipOYHv9
- +jvlkIxTMqzDdu9K8QDnhzp32p89/bWjpopIosgqALhn/f2+bBTRcVMst5kWfUt8J8KfUhEHY
- iFyGNLa7cZugPsNhGOG9BO1Yo5eMFBoqAxuOTxBeLJaS/niHaL4EznVygjtdiPDtw1RYsnCgg
- BTCP35RmH8+T+l+NfNYiaqz93Bswp3Z5ljZoY9isnLxM5reFFcWQEwaRZbQxEKYvF2OQ8ctMy
- DOPzSTLUEWZZ+nHwOMZOOLr0QWLd6JIiBBuNmyelhPW7w4KlTg4g0ZU19A2hSD2WCTI4+Dbam
- edw6FFwuPX5Ibh9m7Oz0kPWphxmX4kp+RxV2hPT87QlNJrPTcNFTXliIDKiNe7/sCnJHJ3DZz
- NXaP/UJa12j9xU5rjkt5kf8WIYqOTExxiOI9U+FkD3QxsUXd1Ab6oqu6mi2dJSFmXFAy7GgRy
- 8UTWr+OzYFXHnt4B1Oq4zOZsxdPT4FHhjBzc27Sg7uav2YYVsoUvkxISnzw7UQC5nsCnAezoB
- OXfwEEP8TmWjTIAiS3kjY1vEoVwwgKaOmeW9q8brasz5iHk/Z0L302v288GhWSjKCx8DXliol
- T19XdeX/AiF3xu7qchhQf23fIa/94HCTp5AcbM5RkEmtb9ni1glVObu8Ltf7t+wjbcDU+fA==
+Content-Transfer-Encoding: 8bit
 
-=E2=80=A6
-> brcmf_usb_dl_cmd() but dose not check its return value. The
-> 'state.state' and the 'state.bytes' are uninitialized if the
-=E2=80=A6
+From: Yu Chen <chenyu56@huawei.com>
 
-Would you ever like to benefit any more from change descriptions
-which may contain text lines that would occasionally be longer
-than 60 characters?
+commit f88359e1588b85cf0e8209ab7d6620085f3441d9 upstream.
 
-Regards,
-Markus
+From: John Stultz <john.stultz@linaro.org>
+
+According to the programming guide, to switch mode for DRD controller,
+the driver needs to do the following.
+
+To switch from device to host:
+1. Reset controller with GCTL.CoreSoftReset
+2. Set GCTL.PrtCapDir(host mode)
+3. Reset the host with USBCMD.HCRESET
+4. Then follow up with the initializing host registers sequence
+
+To switch from host to device:
+1. Reset controller with GCTL.CoreSoftReset
+2. Set GCTL.PrtCapDir(device mode)
+3. Reset the device with DCTL.CSftRst
+4. Then follow up with the initializing registers sequence
+
+Currently we're missing step 1) to do GCTL.CoreSoftReset and step 3) of
+switching from host to device. John Stult reported a lockup issue seen
+with HiKey960 platform without these steps[1]. Similar issue is observed
+with Ferry's testing platform[2].
+
+So, apply the required steps along with some fixes to Yu Chen's and John
+Stultz's version. The main fixes to their versions are the missing wait
+for clocks synchronization before clearing GCTL.CoreSoftReset and only
+apply DCTL.CSftRst when switching from host to device.
+
+[1] https://lore.kernel.org/linux-usb/20210108015115.27920-1-john.stultz@linaro.org/
+[2] https://lore.kernel.org/linux-usb/0ba7a6ba-e6a7-9cd4-0695-64fc927e01f1@gmail.com/
+
+Fixes: 41ce1456e1db ("usb: dwc3: core: make dwc3_set_mode() work properly")
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Ferry Toth <fntoth@gmail.com>
+Cc: Wesley Cheng <wcheng@codeaurora.org>
+Cc: <stable@vger.kernel.org>
+Tested-by: John Stultz <john.stultz@linaro.org>
+Tested-by: Wesley Cheng <wcheng@codeaurora.org>
+Signed-off-by: Yu Chen <chenyu56@huawei.com>
+Signed-off-by: John Stultz <john.stultz@linaro.org>
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/374440f8dcd4f06c02c2caf4b1efde86774e02d9.1618521663.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hardik Gohil <hgohil@mvista.com>
+---
+this fix is missing in v5.4.y stable version
+
+apply the following dependend patch before applying this patch
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v5.10.236&id=c2cd3452d5f8b66d49a73138fba5baadd5b489bd
+
+ drivers/usb/dwc3/core.c | 25 +++++++++++++++++++++++++
+ drivers/usb/dwc3/core.h |  5 +++++
+ 2 files changed, 30 insertions(+)
+
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 1a420c00d6ca..650eb4f735f9 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -122,6 +122,8 @@ static void __dwc3_set_mode(struct work_struct *work)
+ 	if (dwc->dr_mode != USB_DR_MODE_OTG)
+ 		return;
+ 
++	mutex_lock(&dwc->mutex);
++
+ 	pm_runtime_get_sync(dwc->dev);
+ 
+ 	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_OTG)
+@@ -155,6 +157,25 @@ static void __dwc3_set_mode(struct work_struct *work)
+ 		break;
+ 	}
+ 
++	/* For DRD host or device mode only */
++	if (dwc->desired_dr_role != DWC3_GCTL_PRTCAP_OTG) {
++		reg = dwc3_readl(dwc->regs, DWC3_GCTL);
++		reg |= DWC3_GCTL_CORESOFTRESET;
++		dwc3_writel(dwc->regs, DWC3_GCTL, reg);
++
++		/*
++		 * Wait for internal clocks to synchronized. DWC_usb31 and
++		 * DWC_usb32 may need at least 50ms (less for DWC_usb3). To
++		 * keep it consistent across different IPs, let's wait up to
++		 * 100ms before clearing GCTL.CORESOFTRESET.
++		 */
++		msleep(100);
++
++		reg = dwc3_readl(dwc->regs, DWC3_GCTL);
++		reg &= ~DWC3_GCTL_CORESOFTRESET;
++		dwc3_writel(dwc->regs, DWC3_GCTL, reg);
++	}
++
+ 	spin_lock_irqsave(&dwc->lock, flags);
+ 
+ 	dwc3_set_prtcap(dwc, dwc->desired_dr_role);
+@@ -179,6 +200,8 @@ static void __dwc3_set_mode(struct work_struct *work)
+ 		}
+ 		break;
+ 	case DWC3_GCTL_PRTCAP_DEVICE:
++		dwc3_core_soft_reset(dwc);
++
+ 		dwc3_event_buffers_setup(dwc);
+ 
+ 		if (dwc->usb2_phy)
+@@ -201,6 +224,7 @@ static void __dwc3_set_mode(struct work_struct *work)
+ out:
+ 	pm_runtime_mark_last_busy(dwc->dev);
+ 	pm_runtime_put_autosuspend(dwc->dev);
++	mutex_unlock(&dwc->mutex);
+ }
+ 
+ void dwc3_set_mode(struct dwc3 *dwc, u32 mode)
+@@ -1511,6 +1535,7 @@ static int dwc3_probe(struct platform_device *pdev)
+ 	dwc3_cache_hwparams(dwc);
+ 
+ 	spin_lock_init(&dwc->lock);
++	mutex_init(&dwc->mutex);
+ 
+ 	pm_runtime_get_noresume(dev);
+ 	pm_runtime_set_active(dev);
+diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
+index 34f3fbba391b..44b0239676a1 100644
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -13,6 +13,7 @@
+ 
+ #include <linux/device.h>
+ #include <linux/spinlock.h>
++#include <linux/mutex.h>
+ #include <linux/ioport.h>
+ #include <linux/list.h>
+ #include <linux/bitops.h>
+@@ -929,6 +930,7 @@ struct dwc3_scratchpad_array {
+  * @scratch_addr: dma address of scratchbuf
+  * @ep0_in_setup: one control transfer is completed and enter setup phase
+  * @lock: for synchronizing
++ * @mutex: for mode switching
+  * @dev: pointer to our struct device
+  * @sysdev: pointer to the DMA-capable device
+  * @xhci: pointer to our xHCI child
+@@ -1061,6 +1063,9 @@ struct dwc3 {
+ 	/* device lock */
+ 	spinlock_t		lock;
+ 
++	/* mode switching lock */
++	struct mutex		mutex;
++
+ 	struct device		*dev;
+ 	struct device		*sysdev;
+ 
+-- 
+2.25.1
+
 
