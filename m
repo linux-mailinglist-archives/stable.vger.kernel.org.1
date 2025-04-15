@@ -1,120 +1,100 @@
-Return-Path: <stable+bounces-132776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2F2DA8A79D
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 21:16:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA63CA8A91A
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 22:18:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B6001901DAC
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 19:16:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 498137A5159
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 20:17:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03330242913;
-	Tue, 15 Apr 2025 19:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D1FD2522AF;
+	Tue, 15 Apr 2025 20:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="hQM8uGmf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GLag4aO+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855B823536C
-	for <stable@vger.kernel.org>; Tue, 15 Apr 2025 19:16:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F1A23F296;
+	Tue, 15 Apr 2025 20:18:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744744564; cv=none; b=AcjwK1XqHj8Rm+L+6CQECqIWJKT91C5LJSR8r+1nhfnkXhW7kd+gOZ3zDAJdjHr+jjrdhQODmYSKpY1KEqWaCICBFPneArupFFgXMwwtb/F+RnAb/pqDP9/pjBPNP0d5mjsrfIRE7MecPU769ErHrxsWR7NCPx8NVFoIW3ctKPo=
+	t=1744748305; cv=none; b=G4ogX23xhWp7tAGXaONGUly8Z9LgNz3oJMANVCQtNurtQmEak4CnjwQ4xHhXISZE7DVUvP72qIGgl3XVjUO3T5onD2jV4T6DYE9wFxKgbG+GDzmDaZfBfD6XptUgVnYKTLWnFhikvshzBeaGhatkoMEOuc0rH4Vj1r6hJ1rVUto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744744564; c=relaxed/simple;
-	bh=9LhhQK7SYYoB04N4KaGT0jYG3IqgAZMjCvvz8yGafZQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=pqceIKhScwpxtIr1HvHjPoKSlbR6XWWmdIJ7pzk36SGUDTIetTs8WMTWMYW6t6vzCxEkLV2euR5Lo0e/P+Y5ex6+BCFyAj1N4A7KD6gbsJJO5Zy7R1Kczm2YvHfcOkXUt2/HhXjMjGh3lIhU9jOYfIXjDp4dxCSQkXElqZtGhQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=hQM8uGmf; arc=none smtp.client-ip=209.85.166.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-3d8020ba858so17415775ab.0
-        for <stable@vger.kernel.org>; Tue, 15 Apr 2025 12:16:02 -0700 (PDT)
+	s=arc-20240116; t=1744748305; c=relaxed/simple;
+	bh=HUCgCm5eBLHBStR2O91yMADuZKW/BMOxTb52gGuSDa0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=V7ctYfixT37IZ4B3KMrtiIghHH3mEkwriklorC3hA2XrH1aqr/00enyUq0m1dBOorVRRxmDuaPNkFkydUpNR3VxUJofSt1cSXa26iNl4eYUIIAhGApDt8SNIgF7Ul/AtNtxv6fxoEGmgRkdI4xFImT9IDGt9TViLoA4JvnoiOoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GLag4aO+; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2264aefc45dso89559065ad.0;
+        Tue, 15 Apr 2025 13:18:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1744744560; x=1745349360; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=asgUBCNF1/3nLCqRhE9iKUJT9+CZgW2jKMxY6rpof5I=;
-        b=hQM8uGmfyz4swHbASYgN+i4lx/0vQUFmxTVp9Xhtx5IkAKkj/ND1pauID0cwBnZLkB
-         jGVHvwX76whYhJ8NKHlIg1yYYq0N+f9X1zu2uxkvWMYTGE5m+jkIL++iFUzcAcLBl+2x
-         7xQksbzZpbJllk23ktXAJJaq06GcqMTxAyG+FeOz+hxfsm8+4r5KJOjUtDtgzqCyM4Hh
-         g0BsrtMxmE/fOgTXrO9EhVCH8nMHZAy5zBqq4KHKQvs8qHClK/Sg/5pYS4aJIdqZiRZ6
-         +69iBbcThAo3u9qbh/DIHZEdYdYHcyJeUVUXMvF5P0F+uDGPnxyXIn97C2rCHhKgg1VE
-         qyvA==
+        d=gmail.com; s=20230601; t=1744748303; x=1745353103; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=HUCgCm5eBLHBStR2O91yMADuZKW/BMOxTb52gGuSDa0=;
+        b=GLag4aO+oa2SaAmfyhtFFdHG//MwR4hGaDOemRYWlZu1fKKP9R4K5HvcbJD9e0mAlV
+         sDGM78Wpm2dJAMzbm8jtXkuFPGIeZmgxo48JMKXg6NULiMPV3932xhDnEXelmPiFtrA9
+         KoNGjS4U/s91wJIzFqU1Hhot69q7dBgXIm1WtkciCMRkEi3Bta5xzCPeyC17NhQXm4e3
+         8IrJ0dMr8l/A4oLlrPJljx7DUbQ5j06droaOEPLlyhMGeCCQCDUUKiNX2Q4lH5hQMBOZ
+         uMtP6Aht4336jg2Snbo+y/t8OAxdbd7ZzKx/ZcO+4UJ7YF0c2fHqfCRnBwMJ2d8b5P6D
+         pCgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744744560; x=1745349360;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=asgUBCNF1/3nLCqRhE9iKUJT9+CZgW2jKMxY6rpof5I=;
-        b=tw9cKreojHtAY8F9v1FgF6m3UineuicZcjHk4J+8dxQw0A9cNHTVCDIkG1REi/99cv
-         DwzVyLf/FT84Uwql5zp2/2iUlXqHTrXIOi8vtd/9AH56rcyudiNwPJJV05stCcaSeGQV
-         yVLs8Nj08Kq6/rzFj+jH3aTDKQzr1dMfR5H1JjKDpXc+LrIC0boiP3Luz1+o9HHJ/HuP
-         QGwVhDJ2dHUgG/irtrOrb5JLhhXPBun0BWSx9E+Y0kJUYU/FHUusEujQddI6fNJEAi+w
-         4yUoxXTDM2Uz5dImRgL8xIJmkKHzyDfCCR0VXdCsbIyHx0CqOpzm0F42iz4Ejy/el/69
-         MzVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWXI1E5yonXV86x2zXR2foA6HGBoXbnMhcUIiwqHImn6umf257cnJJ0wYacRW5cHARUwvw2a+U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhXSfPXUzeQ8iCyQJqxhTbb2FPV9nh6PFEZdDW0gEpzjdeVzLB
-	jnpeWt2aBstszutHv3l9iKW8ttvuqkseF624E7ATxvjqp0HQ2gfTHysxvpLDaiwG7FrUjnTQwo9
-	T
-X-Gm-Gg: ASbGnctchhgjAi9yO1pmcMv+NTWsmGqJrNl7X24KNItiC3r+O/BeDTkjzz51xA07V/6
-	SLlSJpdZsEEM/XFE20w2pcwAaptHf2h5i9xkqnCsbek/TZZP5r2ovnic2xjwfe4mo2yZJIKjrsc
-	2GE4iIr1neHH1v6khsTAQJ+rFKgsVU46PxU+gh3OMYxy5TMKlPcE84Q52doCJRsJpcLNcv23TXT
-	Yaxz490vImsCxUlWZQhAR3JptyFkUOewTtNoUQjdQZS2R+bte28Aakfy1h449Kc9gx8Mr5cbhyN
-	M5+OkSwgJrq1Ylyfflk6GPMgxH8Oy/X20PV8n7pCkWY=
-X-Google-Smtp-Source: AGHT+IFJPt64kBMbP+3d+i4X9X/L5HM104ENBBE+s5Z3gjU9DWZ68WPXVZk2YmxhXWiQnU/bD44xZQ==
-X-Received: by 2002:a05:6e02:339e:b0:3d6:d145:3002 with SMTP id e9e14a558f8ab-3d8125a9e0amr7085535ab.20.1744744559647;
-        Tue, 15 Apr 2025 12:15:59 -0700 (PDT)
-Received: from [127.0.0.1] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3d80b6b0392sm4898535ab.63.2025.04.15.12.15.58
+        d=1e100.net; s=20230601; t=1744748303; x=1745353103;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HUCgCm5eBLHBStR2O91yMADuZKW/BMOxTb52gGuSDa0=;
+        b=QCSnurKDofQUMVE2yRjyFC7aPzfzvCnYaEl56gHJJFuYkj/jRGrB6KxLMo1Y3S/6qL
+         phmZRIqV6aGL9So9DVPUQ9MsvJe4qdsVhZGl+UoabYB+1OtYW/+g8wX0DBIK7m9Kogft
+         D3ByCtzcOcSkiBc0rffj0YjkCsG9yK5lkMcXOvC1+IDe2wVhu7lMT86Z03Mq0OLY8Vxw
+         Jh0FCfheUCXrOhIL6ybv4BLt1N74XIpXZopu1fNMygIuSFaYafpo1/UgwY+sR2NOqA6c
+         QhiqlpgXfTnV/Yxh0swLqd7/UotMuKTjIbFbk48+YxL0tSfUQ7rOmdG2tific/dtSVvM
+         GY4g==
+X-Forwarded-Encrypted: i=1; AJvYcCXRzk3yObeG+cvytsI9XZUY/CPnM0UzLiSpWN0DX9kS9Evrmy5cdZ2EC50GuBq8aKHeVvlGjWr/dLpJQIs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwohbvBrOpLjqmYlT+/MMn3/hbX9jyc4ObQgTwsmpxpjIC+BvYG
+	R8s62P+sld4ZpFsWg2WK9vTQE8inzWmU2inbm8P18Ry+dQfq8PHJ6eN1kzioB9A=
+X-Gm-Gg: ASbGnctWNGyqPaXfWqVJbQ2yKZ8u565X7N/PA5ZrhYhcUGyz1k+iNicpUsY+Yt/nWEs
+	FcezAO7a6wKoMP6YWu0ayQ4+tXqgaI8WmSUITzX1vuBuNmo2e1wtvkh2JQjYhX+I9+JhkquRXQq
+	zxnZ93xsf2uLbUNH6mN4EVagAFx0MKDcJAS+AqbZIIXka/vf9D8OCojQ721k+OAqYALMMavy+dl
+	shuQs2tmGYlF/VTLNDQbMtWdZEY8sCd51SWGiEOZKZeVQ3yvEnc2m58n9qwwdNxjGm98AYWc2QX
+	4kAiZk4NNB2HCpFfyYxbYdb22F9nt4ydJjVJvH5mVE+ykAQ21e0=
+X-Google-Smtp-Source: AGHT+IH/ytHBXGU5OM/n668fjd1qsrWG9AAAgNczpgx3aah4xfC2RHe6JCsWXKntuyYTDtniSeWVWA==
+X-Received: by 2002:a17:903:bd0:b0:224:192a:9154 with SMTP id d9443c01a7336-22c319f6538mr5544235ad.26.1744748303103;
+        Tue, 15 Apr 2025 13:18:23 -0700 (PDT)
+Received: from [192.168.68.119] ([49.207.215.199])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bd21c5e8dsm9219018b3a.59.2025.04.15.13.18.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Apr 2025 12:15:59 -0700 (PDT)
-From: Jens Axboe <axboe@kernel.dk>
-To: Martijn Coenen <maco@android.com>, Alyssa Ross <hi@alyssa.is>, 
- Christoph Hellwig <hch@lst.de>, Greg KH <greg@kroah.com>, 
- Jan Kara <jack@suse.cz>, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: John Ogness <john.ogness@linutronix.de>, linux-block@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20250415-loop-uevent-changed-v3-1-60ff69ac6088@linutronix.de>
-References: <20250415-loop-uevent-changed-v3-1-60ff69ac6088@linutronix.de>
-Subject: Re: [PATCH v3] loop: LOOP_SET_FD: send uevents for partitions
-Message-Id: <174474455866.197229.13564340998714651621.b4-ty@kernel.dk>
-Date: Tue, 15 Apr 2025 13:15:58 -0600
+        Tue, 15 Apr 2025 13:18:22 -0700 (PDT)
+Message-ID: <672c16c5896fb2ce73c9fab62853230164b99629.camel@gmail.com>
+Subject: Re: [PATCH 5.15.y] jfs: define xtree root and page independently
+From: Aditya Dutt <duttaditya18@gmail.com>
+To: stable@vger.kernel.org
+Cc: Dave Kleikamp <dave.kleikamp@oracle.com>, Dave Kleikamp
+ <shaggy@kernel.org>,  linux-kernel@vger.kernel.org,
+ linux-kernel-mentees@lists.linux.dev, 
+ jfs-discussion@lists.sourceforge.net, skhan@linuxfoundation.org, Manas
+ Ghandat <ghandatmanas@gmail.com>
+Date: Wed, 16 Apr 2025 01:48:18 +0530
+In-Reply-To: <20250415180939.397586-1-duttaditya18@gmail.com>
+References: <20250415180939.397586-1-duttaditya18@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.14.3-dev-7b9b9
 
-
-On Tue, 15 Apr 2025 16:55:06 +0200, Thomas Weißschuh wrote:
-> Remove the suppression of the uevents before scanning for partitions.
-> The partitions inherit their suppression settings from their parent device,
-> which lead to the uevents being dropped.
-> 
-> This is similar to the same changes for LOOP_CONFIGURE done in
-> commit bb430b694226 ("loop: LOOP_CONFIGURE: send uevents for partitions").
-> 
-> [...]
-
-Applied, thanks!
-
-[1/1] loop: LOOP_SET_FD: send uevents for partitions
-      commit: 0dba7a05b9e47d8b546399117b0ddf2426dc6042
-
-Best regards,
--- 
-Jens Axboe
-
-
-
+syzbot checked the patch against 5.15.y and confirmed that the
+reproducer did not trigger any issues. check here:
+https://lore.kernel.org/lkml/67fea0bf.050a0220.186b78.0006.GAE@google.com/
 
