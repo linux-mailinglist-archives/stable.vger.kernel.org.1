@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-132784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 199DAA8AA3D
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 23:43:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C3CA8AA3E
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 23:43:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23ABE169DDC
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 21:43:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06B671902D9E
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 21:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F1225744B;
-	Tue, 15 Apr 2025 21:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465F7257ACA;
+	Tue, 15 Apr 2025 21:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tiIZYNWs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uFrKsF4h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC64C253357
-	for <stable@vger.kernel.org>; Tue, 15 Apr 2025 21:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053C5253357
+	for <stable@vger.kernel.org>; Tue, 15 Apr 2025 21:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744753391; cv=none; b=fBMAtQGDtMLF+ODfPTESeNFPvdHisefbZ+iEBuRlCh29IBu+vhWMgm45G5xTT367+2A9qSwcNeovtMa0fCU8HJ05VLxnTioTUKUUB/RNLj8QjYQLbN52+X278AAFpf+kIc98n6drdmx4XFMFeWw1KtTOgVSEpbgKVMOniLf5oIQ=
+	t=1744753394; cv=none; b=LnB33vrYKWuAUArgTH9DpeNEd1izLYzFXI5PVHsZ5rh8cBhZo7LhgBgto/Y3+71xbi1RNcTFRqAQqp348HxG0ebiIlqa4Yh9iV6upWlqj129j41V6f8/HgsJ/RnIMa+tJGqCJD4vGsyOSf66aDtXKSJ4IsE5GDH4zVzgNFfpU+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744753391; c=relaxed/simple;
-	bh=TLUBCZeV8AGAabZewf+CpME5gWVMwINl+Gt7HuddyjI=;
+	s=arc-20240116; t=1744753394; c=relaxed/simple;
+	bh=Ey0S1NX9kvDKmgJ8/eCBH3U9DlLW9eSJPsJ27WYvpVA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a90aELPwYjjPWLJ7ghG/nGzEhDG+Z/0mUe5s7LMH620FLi1Ee2yIzlwvgdr07LlZPcVh7UsLT6YvTbujntxgLgu4BzdySrICLEMM9MkmYZcezrFd4l+xa3sn7GA4MPx/LdPmi3czB0LV8CQhZMI/iKf3pevDwDwfDMo0qDu1KR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tiIZYNWs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33BDC4CEE9;
-	Tue, 15 Apr 2025 21:43:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=baEzPApzW8Yfe2DTNt/T5OfJsrU3xO2OkoKnuNNui2fv/khaebArHqqaJpiAd0t7xe3E8Jj0Z4oZW4hUMJdb+KupxXpgBlXc8/tAWOj3Q+BoJvkTCGDyF0bS9YSnNXeHMdfY/enMM/fzMXJiq1yILzOpxcS+P/32hWi/bCWcnwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uFrKsF4h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02559C4CEE7;
+	Tue, 15 Apr 2025 21:43:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744753391;
-	bh=TLUBCZeV8AGAabZewf+CpME5gWVMwINl+Gt7HuddyjI=;
+	s=k20201202; t=1744753393;
+	bh=Ey0S1NX9kvDKmgJ8/eCBH3U9DlLW9eSJPsJ27WYvpVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tiIZYNWsqZBlMi0x8u2o7sQfq7O5U8YbQ6xrAOISzMtmadHqD9osLo+A4Q7fwULp5
-	 VzaSbhBGrddV6PNH5dr+FFT4y6uGFppPYOKKl2O/9l5WqllbozF4cKw1gzKQI3pZ5V
-	 qbf9TWBFacVMV/pB6A1jRrFokVEmGOxabGk/CrW949imF/Ty/W3hhA7joYR+VMtdPT
-	 9dDJdxFnPZwJkqtvylXCiKMV7+7gMqCZdA1/NYrPsr523sFDs9RA4ffAl0vemHjmH4
-	 P5SxCo2/FAgWyCrXJg80/InMF3EWKksRkI3K3mmAM/EcqmP2ROCChb1jVXYifVRE9b
-	 Hs+7x+DZoUw/g==
+	b=uFrKsF4hqNUKAirMUuCgG6ou49NIlp3H0IxuvZQtuhUEPK2Wcs5TPaMQeqJUZukkP
+	 MXLGA2UxS9I3B1Gwm//kw7jc0QWp40Re7pH/4pCWIESlFQB6qKKfUn1hrfACDI3bhU
+	 DkBu50HQsZss98lTNkJvZGJpPVftSZ5QFVYaomXIaWWbPQQjoFHVqjmuVR1PRcylet
+	 3GK7/A8jKJSMY3lgdFs0j5Tm5olvIzzpck0pUNesaXds7snzEWs3nN8TXPgTPw0nv8
+	 FI4RJC6+LPJuehW8xaXNHp4D7B1KlSMySVIwqzwevELgVeOXoB5Ok+TCS4S/iink8T
+	 aL0FnR3Gy4PHA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	jianqi.ren.cn@windriver.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y] btrfs: fix qgroup reserve leaks in cow_file_range
-Date: Tue, 15 Apr 2025 17:43:09 -0400
-Message-Id: <20250415130158-29c6b6cda8bfccb9@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15.y 4/6] net: fix crash when config small gso_max_size/gso_ipv4_max_size
+Date: Tue, 15 Apr 2025 17:43:11 -0400
+Message-Id: <20250415124015-bfc23e13b0e7cdb2@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250415055123.3683832-1-jianqi.ren.cn@windriver.com>
+In-Reply-To:  <20250414185023.2165422-5-harshit.m.mogalapalli@oracle.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,32 +64,64 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-⚠️ Found follow-up fixes in mainline
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 30479f31d44d47ed00ae0c7453d9b253537005b2
+The upstream commit SHA1 provided is correct: 9ab5cf19fb0e4680f95e506d6c544259bf1111c4
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: <jianqi.ren.cn@windriver.com>
-Commit author: Boris Burkov<boris@bur.io>
+Backport author: Harshit Mogalapalli<harshit.m.mogalapalli@oracle.com>
+Commit author: Wang Liang<wangliang74@huawei.com>
 
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
 6.13.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
-
-Found fixes commits:
-2b084d820594 btrfs: fix the length of reserved qgroup to free
+6.6.y | Present (different SHA1: ac5977001eee)
+6.1.y | Present (different SHA1: e9365368b483)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  30479f31d44d4 < -:  ------------- btrfs: fix qgroup reserve leaks in cow_file_range
--:  ------------- > 1:  76fcd18539b6b btrfs: fix qgroup reserve leaks in cow_file_range
+1:  9ab5cf19fb0e4 ! 1:  92a2aab3e8a99 net: fix crash when config small gso_max_size/gso_ipv4_max_size
+    @@ Metadata
+      ## Commit message ##
+         net: fix crash when config small gso_max_size/gso_ipv4_max_size
+     
+    +    [ Upstream commit 9ab5cf19fb0e4680f95e506d6c544259bf1111c4 ]
+    +
+         Config a small gso_max_size/gso_ipv4_max_size will lead to an underflow
+         in sk_dst_gso_max_size(), which may trigger a BUG_ON crash,
+         because sk->sk_gso_max_size would be much bigger than device limits.
+    @@ Commit message
+         Reviewed-by: Eric Dumazet <edumazet@google.com>
+         Link: https://patch.msgid.link/20241023035213.517386-1-wangliang74@huawei.com
+         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    +    [ Resolve minor conflicts to fix CVE-2024-50258 ]
+    +    Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+    +    Signed-off-by: Sasha Levin <sashal@kernel.org>
+    +    [Harshit: Clean cherrypick from 6.1.y commit]
+    +    Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+     
+      ## net/core/rtnetlink.c ##
+     @@ net/core/rtnetlink.c: static const struct nla_policy ifla_policy[IFLA_MAX+1] = {
+    @@ net/core/rtnetlink.c: static const struct nla_policy ifla_policy[IFLA_MAX+1] = {
+      	[IFLA_PHYS_PORT_ID]	= { .type = NLA_BINARY, .len = MAX_PHYS_ITEM_ID_LEN },
+      	[IFLA_CARRIER_CHANGES]	= { .type = NLA_U32 },  /* ignored */
+      	[IFLA_PHYS_SWITCH_ID]	= { .type = NLA_BINARY, .len = MAX_PHYS_ITEM_ID_LEN },
+    -@@ net/core/rtnetlink.c: static const struct nla_policy ifla_policy[IFLA_MAX+1] = {
+    - 	[IFLA_TSO_MAX_SIZE]	= { .type = NLA_REJECT },
+    - 	[IFLA_TSO_MAX_SEGS]	= { .type = NLA_REJECT },
+    - 	[IFLA_ALLMULTI]		= { .type = NLA_REJECT },
+    --	[IFLA_GSO_IPV4_MAX_SIZE]	= { .type = NLA_U32 },
+    -+	[IFLA_GSO_IPV4_MAX_SIZE]	= NLA_POLICY_MIN(NLA_U32, MAX_TCP_HEADER + 1),
+    - 	[IFLA_GRO_IPV4_MAX_SIZE]	= { .type = NLA_U32 },
+    - };
+    - 
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
