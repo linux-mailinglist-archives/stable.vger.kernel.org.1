@@ -1,253 +1,277 @@
-Return-Path: <stable+bounces-132713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B28F8A8997C
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 12:07:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1040A8997E
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 12:08:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8BCE7A4A76
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 10:06:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A37A317D328
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 10:08:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE3228466C;
-	Tue, 15 Apr 2025 10:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D0601F3BBC;
+	Tue, 15 Apr 2025 10:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="cRFVk8FA"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="n0lbMLyC"
 X-Original-To: stable@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964A728B514;
-	Tue, 15 Apr 2025 10:07:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2345A79B;
+	Tue, 15 Apr 2025 10:07:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744711638; cv=none; b=iF60/46cANVgdAXut8r/BL/vYUuHmfgzcDlqn3RMoWTRCvWG9cPtfvU0CvbMCWVbTWZldVTtisE96g8GpA1tNvpXkxf3uRv6DJxubJiA4G+aMds+BPXIhEpRddHDXU+jP9/O2CWKbriiq5cRTqq9tXDm3c9v5kNdc1fO+kRCm6k=
+	t=1744711666; cv=none; b=qzFob0SA8W0Of6x2+y3lFPBeapBRntGDtRKbpTnJLgCuNSC+ib/XANqc9ecqKSfIjq/aRIaVqrqqn1GtCDnYsed732HfOOID0KPsjzSOfJJiYwXU1BCgXS1CtT6krrA+2nTpuUkueb91rTvS5kvAMBSWYw76+0iRDWZnn/nhXns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744711638; c=relaxed/simple;
-	bh=Xmw2n34HTb4CmV0vYYOlRSSM14jMZD0l23aArEVN+To=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sqdhYFijEIWdBaqheT5009mhPuUOlXT/nrQsbTI5iTkgf6fZEsllNWyPKyVDZt7V6CiRs0JHMX+ghcFJnH2aNnFQY/+6LxwKuQq0Fjd6aX+3U5vNWu3ZmGGNZsUodXsMCobWgghv3PZXpIteFVFouLGTmXMOuT9lRMpjMUIk6vA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=cRFVk8FA; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=AZx5onmI2NQY1J9fzQquw1HQjvetCCNAmNg5YhmLvG0=; b=cRFVk8FAvR3TLw0wem5NBg9fc5
-	0giSMILFqUVkLFz5GEowmWoN5gMmzmKHA29MvegxhIuFr/jeqQ1iOr4JjTzp6yyjzzhnWWTgvfayN
-	Nay/NK2b6A7sSlTjphAfUCubdyb37WVUYmjTOIPiBF9ZsWctlBAdMKm8oUTeNe8V9pQr+Mx2G+owS
-	ZF4D2tozr6XLUIhNTWbVyXhdcl8mGmleQOUqfszq6EDaWCfkrLQgozJcu2mDyqnd/N8dmKzmsfQMu
-	MFfnKdkpeSxMOZyg/2mQyqsLw0XkXFdzYlpAGoQiccbhiqIqrCLw49Ctr4Ywb1zT/KK0Ty0qX1NoG
-	OxEHQY8w==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u4dC6-00000009qsv-24qo;
-	Tue, 15 Apr 2025 10:07:06 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id ADAD2300619; Tue, 15 Apr 2025 12:07:05 +0200 (CEST)
-Date: Tue, 15 Apr 2025 12:07:05 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Chris Mason <clm@meta.com>
-Cc: Rik van Riel <riel@surriel.com>, Pat Cody <pat@patcody.io>,
-	mingo@redhat.com, juri.lelli@redhat.com, vincent.guittot@linaro.org,
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
-	mgorman@suse.de, vschneid@redhat.com, linux-kernel@vger.kernel.org,
-	patcody@meta.com, kernel-team@meta.com, stable@vger.kernel.org,
-	Breno Leitao <leitao@debian.org>
-Subject: Re: [PATCH] sched/fair: Add null pointer check to pick_next_entity()
-Message-ID: <20250415100705.GL5600@noisy.programming.kicks-ass.net>
-References: <20250320205310.779888-1-pat@patcody.io>
- <20250324115613.GD14944@noisy.programming.kicks-ass.net>
- <9d38c61098b426777c1a748cf1baf8e57c41c334.camel@surriel.com>
- <20250402180734.GX5880@noisy.programming.kicks-ass.net>
- <b40f830845f1f97aa4b686c5c1333ff1bf5d59b3.camel@surriel.com>
- <20250409152703.GL9833@noisy.programming.kicks-ass.net>
- <20250411105134.1f316982@fangorn>
- <20250414090823.GB5600@noisy.programming.kicks-ass.net>
- <0049c6a0-8802-416c-9618-9d714c22af49@meta.com>
+	s=arc-20240116; t=1744711666; c=relaxed/simple;
+	bh=PRa/dH9p8ZidJruhQ+47fsS/a2MLpzOjHTQByEXXWUE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ShHefO+roCTioS9ZmpDZxFn3xg9INKCVbq/OopcEi7Kl+2Dso6AdDxPfOvHADKeDWmTAAUOIsGMzMddpZBjML/kXTGrHI5St6+CjdrB+htsg8t83LIFl+cLsRkXojfb5IiM4K2qD/9XxJ9XNA5dUh17GUfW3AJIWc89yW3KhhSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=n0lbMLyC; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=vlK0Dri62mGNQqlwhnFyUcr4Z53lx2/utirBchiSPQk=; b=n0lbMLyCyPBW5L12MKsE+9Fdau
+	zeTIKDPA3rcAVYyr1VM4FvZh1LCWGdGBIeyXjl3p7RFi9O9ip7bucIQqTKZXwZqct0JwCm0RkonPU
+	izOQl8Dy2rzDbx4NYaHlSIchvVPabaUy7+n3HkeIkseg5kiAFA/yB0dMJK7jHGVNDE2gvLa8rA1du
+	oRCYRnalyT8b1xjP7PcYf4gXMMX8dGZPC1JrtK8qLTvknUzxXjQqltjaEdH9+Yw31Y6o/YF4cn/FJ
+	fiPowjR21wyHFcWCPDIZ7HHHSJs7v8nzf6/thGntL4P9Mli6lgzfjbFtTeLpBWTtvoHZwyZLfm6Pr
+	yvjzt4YQ==;
+Received: from 27-53-107-160.adsl.fetnet.net ([27.53.107.160] helo=[192.168.220.43])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1u4dCD-00GtGI-OH; Tue, 15 Apr 2025 12:07:14 +0200
+Message-ID: <83629774-981b-44cb-a106-d549f1a43db9@igalia.com>
+Date: Tue, 15 Apr 2025 18:07:05 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0049c6a0-8802-416c-9618-9d714c22af49@meta.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/huge_memory: fix dereferencing invalid pmd migration
+ entry
+To: Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, willy@infradead.org,
+ linmiaohe@huawei.com, hughd@google.com, revest@google.com,
+ kernel-dev@igalia.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>
+References: <20250414072737.1698513-1-gavinguo@igalia.com>
+ <A049A15F-1287-4943-8EE4-833CEEC4F988@nvidia.com>
+Content-Language: en-US
+From: Gavin Guo <gavinguo@igalia.com>
+In-Reply-To: <A049A15F-1287-4943-8EE4-833CEEC4F988@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Apr 14, 2025 at 11:38:15AM -0400, Chris Mason wrote:
+Hi Zi-Yan,
+
+Thank you for the comment!
+
+On 4/15/25 00:50, Zi Yan wrote:
+> On 14 Apr 2025, at 3:27, Gavin Guo wrote:
 > 
+>> When migrating a THP, concurrent access to the PMD migration entry
+>> during a deferred split scan can lead to a page fault, as illustrated
 > 
-> On 4/14/25 5:08 AM, Peter Zijlstra wrote:
+> It is an access violation, right? Because pmd_folio(*pmd_migration_entry)
+> does not return a folio address. Page fault made this sounded like not
+> a big issue.
+
+Right, pmd_folio(*pmd_migration_entry) is defined with the following
+macro:
+
+#define pmd_folio(pmd) page_folio(pmd_page(pmd))
+
+page_folio will eventually access compound_head:
+
+static __always_inline unsigned long _compound_head(const struct page *page)
+{
+         unsigned long head = READ_ONCE(page->compound_head);
+         ...
+}
+
+However, given the invalid access address starting with 0xffffea
+(ffffea60001db008) which is the base address of the struct page. It
+indicates that the page address calculated from pmd_page is invalid
+during the THP migration where the pmd migration entry has been set up
+in set_pmd_migration_entry, for example:
+
+do_mbind
+   migrate_pages
+     migrate_pages_sync
+       migration_pages_batch
+         migrate_folio_unmap
+           try_to_migrate
+             try_to_migrate_one
+               rmap_walk_anon
+                 set_pmd_migration_entry
+                   set_pmd_at
+
 > 
-> [ math and such ]
+>> below. To prevent this page fault, it is necessary to check the PMD
+>> migration entry and return early. In this context, there is no need to
+>> use pmd_to_swp_entry and pfn_swap_entry_to_page to verify the equality
+>> of the target folio. Since the PMD migration entry is locked, it cannot
+>> be served as the target.
 > 
+> You mean split_huge_pmd_address() locks the PMD page table, so that
+> page migration cannot proceed, or the THP is locked by migration,
+> so that it cannot be split? The sentence is a little confusing to me.
+
+During the THP migration, the THP folio is locked (folio_trylock). When
+this THP folio is identified as partially-mapped and inserted into the
+deferred split queue, the system then scans the queue and attempts to
+split the folio when memory is under pressure or through the sysfs debug
+interface. Since the migrated folio remained locked, during the
+deferred_split_scan, the folio_trylock fails with the migrated folio. As
+a result, the folio passed to split_huge_pmd_locked ends up being
+unequal to the folio referenced by the pmd migration entry, indicating
+the pmd migration folio cannot be the target for splitting and needs to
+return.
+
+An alternative approach is similar to the following:
+
++       swp_entry_t entry;
++       struct folio *dst;
+         if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd) ||
+             is_pmd_migration_entry(*pmd)) {
+-               if (folio && folio != pmd_folio(*pmd))
+-                       return;
++               if (folio) {
++                       if (is_pmd_migration_entry(*pmd)) {
++                               entry = pmd_to_swp_entry(*pmd);
++                               dst = pfn_swap_entry_folio(entry);
++                       } else
++                               dst = pmd_folio(*pmd);
++
++                       if (folio != dst)
++                               return
++               }
+                 __split_huge_pmd_locked(vma, pmd, address, freeze);
+
+However, this extra effort to translate the pmd migration folio is
+unnecessary. Any ideas of exceptions?
+
 > 
-> > The zero_vruntime patch I gave earlier should avoid this particular
-> > issue.
+>>
+>> BUG: unable to handle page fault for address: ffffea60001db008
+>> CPU: 0 UID: 0 PID: 2199114 Comm: tee Not tainted 6.14.0+ #4 NONE
+>> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+>> RIP: 0010:split_huge_pmd_locked+0x3b5/0x2b60
+>> Call Trace:
+>> <TASK>
+>> try_to_migrate_one+0x28c/0x3730
+>> rmap_walk_anon+0x4f6/0x770
+>> unmap_folio+0x196/0x1f0
+>> split_huge_page_to_list_to_order+0x9f6/0x1560
+>> deferred_split_scan+0xac5/0x12a0
+>> shrinker_debugfs_scan_write+0x376/0x470
+>> full_proxy_write+0x15c/0x220
+>> vfs_write+0x2fc/0xcb0
+>> ksys_write+0x146/0x250
+>> do_syscall_64+0x6a/0x120
+>> entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>>
+>> The bug is found by syzkaller on an internal kernel, then confirmed on
+>> upstream.
+>>
+>> Fixes: 84c3fc4e9c56 ("mm: thp: check pmd migration entry in common path")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Gavin Guo <gavinguo@igalia.com>
+>> ---
+>>   mm/huge_memory.c | 18 ++++++++++++++----
+>>   1 file changed, 14 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index 2a47682d1ab7..0cb9547dcff2 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -3075,6 +3075,8 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+>>   void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
+>>   			   pmd_t *pmd, bool freeze, struct folio *folio)
+>>   {
+>> +	bool pmd_migration = is_pmd_migration_entry(*pmd);
+>> +
+>>   	VM_WARN_ON_ONCE(folio && !folio_test_pmd_mappable(folio));
+>>   	VM_WARN_ON_ONCE(!IS_ALIGNED(address, HPAGE_PMD_SIZE));
+>>   	VM_WARN_ON_ONCE(folio && !folio_test_locked(folio));
+>> @@ -3085,10 +3087,18 @@ void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
+>>   	 * require a folio to check the PMD against. Otherwise, there
+>>   	 * is a risk of replacing the wrong folio.
+>>   	 */
+>> -	if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd) ||
+>> -	    is_pmd_migration_entry(*pmd)) {
+>> -		if (folio && folio != pmd_folio(*pmd))
+>> -			return;
+>> +	if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd) || pmd_migration) {
+>> +		if (folio) {
+>> +			/*
+>> +			 * Do not apply pmd_folio() to a migration entry; and
+>> +			 * folio lock guarantees that it must be of the wrong
+>> +			 * folio anyway.
 > 
-> Here's a crash with the zero runtime patch. 
+> Why does the folio lock imply it is a wrong folio?
 
-And indeed it doesn't have these massive (negative) avg_vruntime values.
+As explained above.
 
-> I'm trying to reproduce
-> this outside of prod so we can crank up the iteration speed a bit.
-
-Thanks.
-
-Could you add which pick went boom for the next dump?
-
-
-
-I am however, slightly confused by this output format.
-
-It looks like it dumps the cfs_rq the first time it encounters it,
-either through curr or through the tree.
-
-So if I read this correct the root is something like:
-
-> nr_running = 2
-> zero_vruntime = 19194347104893960
-> avg_vruntime = 6044054790
-> avg_load = 2
-> curr = {
->   cgroup urgent
->   vruntime = 24498183812106172
->   weight = 3561684 => 3478
+> 
+>> +			 */
+>> +			if (pmd_migration)
+>> +				return;
+>> +			if (folio != pmd_folio(*pmd))
+>> +				return;
+>> +		}
+> 
+> Why not just
+> 
+> if (folio && pmd_migration)
+> 	return;
+> 
+> if (pmd_trans_huge() …) {
+> 	…
 > }
-> tasks_timeline = [
->   {
->     cgroup optional
->     vruntime = 19194350126921355
->     weight = 1168 => 2
->   },
-> ]
+> ?
 
-group  19194347104893960
-curr   24498183812106172 3561684
-entity 19194350126921355 1168
+Do you mean to implement as follows?
 
-But if I run those numbers, I get avg_load == 1, seeing how 1168/1024 =
-1. But the thing says it should be 2.
+if (folio && pmd_migration)
+         return;
 
-Similarly, my avg_vruntime is exactly half of what it says.
+if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd)) {
+         if (folio && folio != pmd_folio(*pmd))
+                 return;
+}
 
-avg_vruntime: 3022027395
-avg_load: 1
+if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd) || pmd_migration)
+         __split_huge_pmd_locked(vma, pmd, address, freeze);
 
-(seeing how 19194350126921355-19194347104893960 = 3022027395)
+To match the current upstream logic, when folio is null, no matter the
+condition is either pmd_trans_huge, pmd_devmap, or pmd_migration, the
+__split_huge_pmd_locked must be always executed. Given that, the
+__split_huge_pmd_locked cannot be put inside if condition for trans_huge
+and devmap. Likewise, the __split_huge_pmd_locked cannot be called
+directly without wrapping the if condition checks. What happens if this
+is not a pmd entry? This will be invoked unconditionally.
 
-Anyway, with curr being significantly to the right of that, the 0-lag
-point is well right of where optional sits. So this pick should be fine,
-and result in 'optional' getting selected (curr is no longer eligible).
+The original implementation consolidates all the logic into one large if
+statement with nested if condition check. However, it's more robust and
+clear. The second one simplifies the structure and can rule out the
+pmd_migration earlier and doesn't have the big if condition. However,
+it's trickier and needs extra care and maintenance.
 
-All the urgent/* groups have nr_running == 0, so are not interesting,
-we'll not pick there.
+> 
+> Thanks.
+> 
+> Best Regards,
+> Yan, Zi
 
-NOTE: I'm inferring curr is on_rq, because nr_running == 2 and the tree
-only has 1 entity in it. 
-
-NOTE: if we ignore curr, then optional sits at exactly the 0-lag point,
-with either sets of numbers and so should be eligible.
-
-
-This then leaves us the optional/* groups.
-
->     cgroup optional
->     rq = {
->       nr_running = 2
->       zero_vruntime = 440280059357029
->       avg_vruntime = 476
->       avg_load = 688
->       tasks_timeline = [
->         {
->           cgroup optional/-610613050111295488
->           vruntime = 440280059333960
->           weight = 291271 => 284
->         },
->         {
->           cgroup optional/-610609318858457088
->           vruntime = 440280059373247
->           weight = 413911 => 404
->         },
-
-group 440280059357029
-entity 440280059333960 291271
-entity 440280059373247 413911
-
-Which gives:
-
-avg_vruntime: 476
-avg_load: 688
-
-And that matches.
-
-Next we have:
-
->           cgroup optional/-610613050111295488
->           rq = {
->             nr_running = 5
->             zero_vruntime = 65179829005
->             avg_vruntime = 0
->             avg_load = 75
->             tasks_timeline = [
->               {
->                 task = 261672 (fc0)
->                 vruntime = 65189926507
->                 weight = 15360 => 15
->               },
->               {
->                 task = 261332 (fc0)
->                 vruntime = 65189480962
->                 weight = 15360 => 15
->               },
->               {
->                 task = 261329 (enc1:0:vp9_fbv)
->                 vruntime = 65165843516
->                 weight = 15360 => 15
->               },
->               {
->                 task = 261334 (dec0:0:hevc_fbv)
->                 vruntime = 65174065035
->                 weight = 15360 => 15
->               },
->               {
->                 task = 261868 (fc0)
->                 vruntime = 65179829005
->                 weight = 15360 => 15
->               },
->             ]
->           }
-
-
-avg_vruntime: 0
-avg_load: 75
-
-This again matches, leaving the bottom 3 tasks eligible.
-
-And finally:
-
->           cgroup optional/-610609318858457088
->           rq = {
->             nr_running = 1
->             zero_vruntime = 22819875784
->             avg_vruntime = 0
->             avg_load = 15
->             tasks_timeline = [
->               {
->                 task = 273291 (fc0)
->                 vruntime = 22819875784
->                 weight = 15360 => 15
->               },
->             ]
->           }
-
-Rather boring indeed, but the numbers appear correct.
-
-
-So I'm not immediately seeing where it would go boom, but seeing how the
-root group is the one with dodgy numbers, I would suspect that -- but
-I'm not immediately seeing how... :-(
+Thanks!
 
