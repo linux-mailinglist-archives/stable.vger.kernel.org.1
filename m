@@ -1,178 +1,120 @@
-Return-Path: <stable+bounces-132775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95025A8A772
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 21:08:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2F2DA8A79D
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 21:16:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD0D37A7302
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 19:07:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B6001901DAC
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 19:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18DA23D285;
-	Tue, 15 Apr 2025 19:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03330242913;
+	Tue, 15 Apr 2025 19:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="jB0Rttd4"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="hQM8uGmf"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C4423C8AE;
-	Tue, 15 Apr 2025 19:08:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855B823536C
+	for <stable@vger.kernel.org>; Tue, 15 Apr 2025 19:16:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744744109; cv=none; b=tSwj7wDM/fDrGpKcw+UGw9L1FDL4uGkY22aom19uzLjBLX1vDGnlNHJr5vPc9/iSnR7MSB9Z4qYySxgf2VSsB5kbsgxB+OdbEJ6+CgpNrXCFOWhQqFVOQZUnXuSjHHG+p5yfwuw1rLDUnGm1fJMRItII9tv5uTwxbG/bSPbTEiU=
+	t=1744744564; cv=none; b=AcjwK1XqHj8Rm+L+6CQECqIWJKT91C5LJSR8r+1nhfnkXhW7kd+gOZ3zDAJdjHr+jjrdhQODmYSKpY1KEqWaCICBFPneArupFFgXMwwtb/F+RnAb/pqDP9/pjBPNP0d5mjsrfIRE7MecPU769ErHrxsWR7NCPx8NVFoIW3ctKPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744744109; c=relaxed/simple;
-	bh=uQg0J23GmUp0Ec4YiSpIXFRZPvwUmduTRyP5990SQVo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I7ZsZpRi1Fm7ZOnLnffGfzqdm6qBpZYKaCOQ0m+31Ythkyf8xGNZbXRduLhWZJhj8oLeWtlAeN0akdiYLZSYzKjWd/aVCOgTHYSCVP2k7djdqtjAqw8cIMBM4TB43X0xQCJX04x9fcSfC91UdOW6Sbtwu/rB25UBurut+TZGecU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=jB0Rttd4; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=FCCLR5AQbfuKec16T4Z93Z+tygMuvFkccFhZdHp8QIQ=; b=jB0Rttd4vsFJvqMQ4UO+lemXYR
-	w+edNdq8Xza6S/skam4hFAl4CXl1COOhZOqPqv0JgNlQQp68xLjgILf3FVz9EU28luEVwGjO6Lwfv
-	lS5qlCNHqn9WMTjTlhRpmUqLCg9izRXOTMSBJIH6jeDStUwYDY1hzdpEpsc+8gYCLMW/mzcQ56CwL
-	TcNf20XGOxylrY+pvzPG9Bc3BlSfxrchxsWvX1zmdVywn6D6awLMcNRs/a3d1mrjj8FXJ+Zx84xzq
-	Nr08JdmdMw3ZcXZ3lMWfqDbtQG22MMGq14roEIL8zhj9Ov4Wn2MhHprTBE37/VsbV9YHPPPlIhtt2
-	OcC4p97g==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <carnil@debian.org>)
-	id 1u4ldN-0046eE-U3; Tue, 15 Apr 2025 19:07:50 +0000
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id ABFF8BE2DE0; Tue, 15 Apr 2025 21:07:48 +0200 (CEST)
-Date: Tue, 15 Apr 2025 21:07:48 +0200
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: David Howells <dhowells@redhat.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lstoakes@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jens Axboe <axboe@kernel.dk>, Al Viro <viro@zeniv.linux.org.uk>,
-	Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
-	Jeff Layton <jlayton@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Hillf Danton <hdanton@sina.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	regressions@lists.linux.dev, stable@vger.kernel.org,
-	Bernd Rinn <bb@rinn.ch>,
-	Karri =?iso-8859-1?Q?H=E4m=E4l=E4inen?= <kh.bugreport@outlook.com>,
-	Milan Broz <gmazyland@gmail.com>,
-	Cameron Davidson <bugs@davidsoncj.id.au>, Markus <markus@fritz.box>
-Subject: Re: [regression 6.1.y] Regression from 476c1dfefab8 ("mm: Don't pin
- ZERO_PAGE in pin_user_pages()") with pci-passthrough for both KVM VMs and
- booting in xen DomU
-Message-ID: <Z_6uhLQjJ7SSzI13@eldamar.lan>
-References: <Z_6sh7Byddqdk1Z-@eldamar.lan>
+	s=arc-20240116; t=1744744564; c=relaxed/simple;
+	bh=9LhhQK7SYYoB04N4KaGT0jYG3IqgAZMjCvvz8yGafZQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=pqceIKhScwpxtIr1HvHjPoKSlbR6XWWmdIJ7pzk36SGUDTIetTs8WMTWMYW6t6vzCxEkLV2euR5Lo0e/P+Y5ex6+BCFyAj1N4A7KD6gbsJJO5Zy7R1Kczm2YvHfcOkXUt2/HhXjMjGh3lIhU9jOYfIXjDp4dxCSQkXElqZtGhQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=hQM8uGmf; arc=none smtp.client-ip=209.85.166.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-3d8020ba858so17415775ab.0
+        for <stable@vger.kernel.org>; Tue, 15 Apr 2025 12:16:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1744744560; x=1745349360; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=asgUBCNF1/3nLCqRhE9iKUJT9+CZgW2jKMxY6rpof5I=;
+        b=hQM8uGmfyz4swHbASYgN+i4lx/0vQUFmxTVp9Xhtx5IkAKkj/ND1pauID0cwBnZLkB
+         jGVHvwX76whYhJ8NKHlIg1yYYq0N+f9X1zu2uxkvWMYTGE5m+jkIL++iFUzcAcLBl+2x
+         7xQksbzZpbJllk23ktXAJJaq06GcqMTxAyG+FeOz+hxfsm8+4r5KJOjUtDtgzqCyM4Hh
+         g0BsrtMxmE/fOgTXrO9EhVCH8nMHZAy5zBqq4KHKQvs8qHClK/Sg/5pYS4aJIdqZiRZ6
+         +69iBbcThAo3u9qbh/DIHZEdYdYHcyJeUVUXMvF5P0F+uDGPnxyXIn97C2rCHhKgg1VE
+         qyvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744744560; x=1745349360;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=asgUBCNF1/3nLCqRhE9iKUJT9+CZgW2jKMxY6rpof5I=;
+        b=tw9cKreojHtAY8F9v1FgF6m3UineuicZcjHk4J+8dxQw0A9cNHTVCDIkG1REi/99cv
+         DwzVyLf/FT84Uwql5zp2/2iUlXqHTrXIOi8vtd/9AH56rcyudiNwPJJV05stCcaSeGQV
+         yVLs8Nj08Kq6/rzFj+jH3aTDKQzr1dMfR5H1JjKDpXc+LrIC0boiP3Luz1+o9HHJ/HuP
+         QGwVhDJ2dHUgG/irtrOrb5JLhhXPBun0BWSx9E+Y0kJUYU/FHUusEujQddI6fNJEAi+w
+         4yUoxXTDM2Uz5dImRgL8xIJmkKHzyDfCCR0VXdCsbIyHx0CqOpzm0F42iz4Ejy/el/69
+         MzVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWXI1E5yonXV86x2zXR2foA6HGBoXbnMhcUIiwqHImn6umf257cnJJ0wYacRW5cHARUwvw2a+U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhXSfPXUzeQ8iCyQJqxhTbb2FPV9nh6PFEZdDW0gEpzjdeVzLB
+	jnpeWt2aBstszutHv3l9iKW8ttvuqkseF624E7ATxvjqp0HQ2gfTHysxvpLDaiwG7FrUjnTQwo9
+	T
+X-Gm-Gg: ASbGnctchhgjAi9yO1pmcMv+NTWsmGqJrNl7X24KNItiC3r+O/BeDTkjzz51xA07V/6
+	SLlSJpdZsEEM/XFE20w2pcwAaptHf2h5i9xkqnCsbek/TZZP5r2ovnic2xjwfe4mo2yZJIKjrsc
+	2GE4iIr1neHH1v6khsTAQJ+rFKgsVU46PxU+gh3OMYxy5TMKlPcE84Q52doCJRsJpcLNcv23TXT
+	Yaxz490vImsCxUlWZQhAR3JptyFkUOewTtNoUQjdQZS2R+bte28Aakfy1h449Kc9gx8Mr5cbhyN
+	M5+OkSwgJrq1Ylyfflk6GPMgxH8Oy/X20PV8n7pCkWY=
+X-Google-Smtp-Source: AGHT+IFJPt64kBMbP+3d+i4X9X/L5HM104ENBBE+s5Z3gjU9DWZ68WPXVZk2YmxhXWiQnU/bD44xZQ==
+X-Received: by 2002:a05:6e02:339e:b0:3d6:d145:3002 with SMTP id e9e14a558f8ab-3d8125a9e0amr7085535ab.20.1744744559647;
+        Tue, 15 Apr 2025 12:15:59 -0700 (PDT)
+Received: from [127.0.0.1] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3d80b6b0392sm4898535ab.63.2025.04.15.12.15.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Apr 2025 12:15:59 -0700 (PDT)
+From: Jens Axboe <axboe@kernel.dk>
+To: Martijn Coenen <maco@android.com>, Alyssa Ross <hi@alyssa.is>, 
+ Christoph Hellwig <hch@lst.de>, Greg KH <greg@kroah.com>, 
+ Jan Kara <jack@suse.cz>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+Cc: John Ogness <john.ogness@linutronix.de>, linux-block@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20250415-loop-uevent-changed-v3-1-60ff69ac6088@linutronix.de>
+References: <20250415-loop-uevent-changed-v3-1-60ff69ac6088@linutronix.de>
+Subject: Re: [PATCH v3] loop: LOOP_SET_FD: send uevents for partitions
+Message-Id: <174474455866.197229.13564340998714651621.b4-ty@kernel.dk>
+Date: Tue, 15 Apr 2025 13:15:58 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z_6sh7Byddqdk1Z-@eldamar.lan>
-X-Debian-User: carnil
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.14.3-dev-7b9b9
 
-[resent with correct stable@vger.kernel.org list]
 
-On Tue, Apr 15, 2025 at 08:59:19PM +0200, Salvatore Bonaccorso wrote:
-> Hi
+On Tue, 15 Apr 2025 16:55:06 +0200, Thomas Weißschuh wrote:
+> Remove the suppression of the uevents before scanning for partitions.
+> The partitions inherit their suppression settings from their parent device,
+> which lead to the uevents being dropped.
 > 
-> [Apologies if this has been reported already but I have not found an
-> already filled corresponding report]
+> This is similar to the same changes for LOOP_CONFIGURE done in
+> commit bb430b694226 ("loop: LOOP_CONFIGURE: send uevents for partitions").
 > 
-> After updating from the 6.1.129 based version to 6.1.133, various
-> users have reported that their VMs do not boot anymore up (both KVM
-> and under Xen) if pci-passthrough is involved. The reports are at:
-> 
-> https://bugs.debian.org/1102889
-> https://bugs.debian.org/1102914
-> https://bugs.debian.org/1103153
-> 
-> Milan Broz bisected the issues and found that the commit introducing
-> the problems can be tracked down to backport of c8070b787519 ("mm:
-> Don't pin ZERO_PAGE in pin_user_pages()") from 6.5-rc1 which got
-> backported as 476c1dfefab8 ("mm: Don't pin ZERO_PAGE in
-> pin_user_pages()") in 6.1.130. See https://bugs.debian.org/1102914#60
-> 
-> #regzbot introduced: 476c1dfefab8b98ae9c3e3ad283c2ac10d30c774
-> 
-> 476c1dfefab8b98ae9c3e3ad283c2ac10d30c774 is the first bad commit
-> commit 476c1dfefab8b98ae9c3e3ad283c2ac10d30c774
-> Author: David Howells <dhowells@redhat.com>
-> Date:   Fri May 26 22:41:40 2023 +0100
-> 
->     mm: Don't pin ZERO_PAGE in pin_user_pages()
-> 
->     [ Upstream commit c8070b78751955e59b42457b974bea4a4fe00187 ]
-> 
->     Make pin_user_pages*() leave a ZERO_PAGE unpinned if it extracts a pointer
->     to it from the page tables and make unpin_user_page*() correspondingly
->     ignore a ZERO_PAGE when unpinning.  We don't want to risk overrunning a
->     zero page's refcount as we're only allowed ~2 million pins on it -
->     something that userspace can conceivably trigger.
-> 
->     Add a pair of functions to test whether a page or a folio is a ZERO_PAGE.
-> 
->     Signed-off-by: David Howells <dhowells@redhat.com>
->     cc: Christoph Hellwig <hch@infradead.org>
->     cc: David Hildenbrand <david@redhat.com>
->     cc: Lorenzo Stoakes <lstoakes@gmail.com>
->     cc: Andrew Morton <akpm@linux-foundation.org>
->     cc: Jens Axboe <axboe@kernel.dk>
->     cc: Al Viro <viro@zeniv.linux.org.uk>
->     cc: Matthew Wilcox <willy@infradead.org>
->     cc: Jan Kara <jack@suse.cz>
->     cc: Jeff Layton <jlayton@kernel.org>
->     cc: Jason Gunthorpe <jgg@nvidia.com>
->     cc: Logan Gunthorpe <logang@deltatee.com>
->     cc: Hillf Danton <hdanton@sina.com>
->     cc: Christian Brauner <brauner@kernel.org>
->     cc: Linus Torvalds <torvalds@linux-foundation.org>
->     cc: linux-fsdevel@vger.kernel.org
->     cc: linux-block@vger.kernel.org
->     cc: linux-kernel@vger.kernel.org
->     cc: linux-mm@kvack.org
->     Reviewed-by: Lorenzo Stoakes <lstoakes@gmail.com>
->     Reviewed-by: Christoph Hellwig <hch@lst.de>
->     Acked-by: David Hildenbrand <david@redhat.com>
->     Link: https://lore.kernel.org/r/20230526214142.958751-2-dhowells@redhat.com
->     Signed-off-by: Jens Axboe <axboe@kernel.dk>
->     Stable-dep-of: bddf10d26e6e ("uprobes: Reject the shared zeropage in uprobe_write_opcode()")
->     Signed-off-by: Sasha Levin <sashal@kernel.org>
-> 
->  Documentation/core-api/pin_user_pages.rst |  6 ++++++
->  include/linux/mm.h                        | 26 ++++++++++++++++++++++++--
->  mm/gup.c                                  | 31 ++++++++++++++++++++++++++++++-
->  3 files changed, 60 insertions(+), 3 deletions(-)
-> 
-> Milan verified that the issue persists in 6.1.134 so far and the patch
-> itself cannot be just reverted.
-> 
-> The failures all have a similar pattern, when pci-passthrough is used
-> for a pci devide, for instance under qemu the bootup will fail with:
-> 
-> qemu-system-x86_64: -device {"driver":"vfio-pci","host":"0000:03:00.0","id":"hostdev0","bus":"pci.3","addr":"0x0"}: VFIO_MAP_DMA failed: Cannot allocate memory
-> qemu-system-x86_64: -device {"driver":"vfio-pci","host":"0000:03:00.0","id":"hostdev0","bus":"pci.3","addr":"0x0"}: vfio 0000:03:00.0: failed to setup container
-> 
-> (in the case as reported by Milan).
-> 
-> Any ideas here?
-> 
-> Regards,
-> Salvatore
+> [...]
+
+Applied, thanks!
+
+[1/1] loop: LOOP_SET_FD: send uevents for partitions
+      commit: 0dba7a05b9e47d8b546399117b0ddf2426dc6042
+
+Best regards,
+-- 
+Jens Axboe
+
+
+
 
