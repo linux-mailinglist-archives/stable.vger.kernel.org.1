@@ -1,78 +1,78 @@
-Return-Path: <stable+bounces-132700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15F24A894DF
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 09:24:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 565A0A894E6
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 09:26:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EEF31895E65
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 07:24:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA11D3AAFC0
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 07:26:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349EC27991D;
-	Tue, 15 Apr 2025 07:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41673274FC7;
+	Tue, 15 Apr 2025 07:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KsjWuSGo"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="s+soWiVh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6BC274FC7
-	for <stable@vger.kernel.org>; Tue, 15 Apr 2025 07:24:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B224275105
+	for <stable@vger.kernel.org>; Tue, 15 Apr 2025 07:26:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744701873; cv=none; b=VAl6n/7xLPiznzUv/bUKr+WfC/Jr8qzeoP5npwl1VQ1k5gn/v2NoxeNn6VyVxLFOEhYTXazu4pq1xjeJcsxc8MNCMWjZ5DMGjJjbTItX1R0Fb6XigaKqEF33V4B8ZHa9TxAaHyzwiegf+QD36TbsTxX2JhTDad3FxZMrezXLZsM=
+	t=1744702010; cv=none; b=qLxG9sQgqj9b1lK6estlpIve64imZL41Ljxmq7nhqZ2x6WwnOPIWb0EN47FLyBCfMq2ox4kBFIqiyCJmpy1FFk67F2QXVuWmdm56A5CdrbO7cCsjOWNhx+Up0WsDH0ajQYQKNoaueAytg0FC0r2slVr48QPv8+56iEl5VZfS2yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744701873; c=relaxed/simple;
-	bh=au6q9Tu2dUAZ4s8DofqOWQ5I3CRvyrypPI+uPHden64=;
+	s=arc-20240116; t=1744702010; c=relaxed/simple;
+	bh=ndmBc8dT+YUFbZUh8JSUskzkgEjtafSmthf85hpWieE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V+eB6h56yzqdK3u1pjbDjvFS2kg/bdXUVNZk8YC1ZnaI9gJ++mCEDMZkne0rf/hFGxXSgWhv1eWlYuJtFQPpd0aIA0sgrdhzZPtMMtcG9HTPOHGlkSlz/+LFE8Sv4y9r45fTSfvOdKWEmhSo1jp3aADOgeOYAk5kEukbWXdeWVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KsjWuSGo; arc=none smtp.client-ip=209.85.214.179
+	 Content-Type:Content-Disposition:In-Reply-To; b=uyW+MBd4zBFuo4myPbveiX+Pb1n2K2LXHZuAFG0D4PVINdi3DDzDI1MX8iNvDIuezVTWAm0BSfBUqRFA8abTxtN89kK+nAXGAIrd2YrOLDG/cKqFOcSYqo05XyOY7gf7IvzTd0+Ps5PPpllD1aL+VUkWLApy+JTn/AeGraAygyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=s+soWiVh; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-224191d92e4so50058305ad.3
-        for <stable@vger.kernel.org>; Tue, 15 Apr 2025 00:24:31 -0700 (PDT)
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-227b650504fso50027095ad.0
+        for <stable@vger.kernel.org>; Tue, 15 Apr 2025 00:26:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744701871; x=1745306671; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1744702008; x=1745306808; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=qu8kD86AXuKJZy4HIshJdpK/xBfLXn4kgIsnyKTrc7I=;
-        b=KsjWuSGoO9RHeu2vKaj1xW+H/U8w7dKS3afNqRRriNwFwtNQJSlewIoS4K4K8cvcR3
-         PPC4u47YwHLP+ttjIkjPXR49f0xxYtfEm+oDRIFH/o+aAqQCMht+n93oVq0HOG8IoJOI
-         kQMJtNubdalcQww90VDwzM2T+u0JNZMBHNXtESx6sHf7lKOGGpXDXYbZGM9/GsYeh6o4
-         1xUYVoxGiGmtDs6+ARdXkLc+bzFw8Gh2ZWBPUkZY8MigaYsZLcEdtx3/h+asHSRLXI7U
-         XR2XkHRf1IqiXZeOWjxD73kTywlZB/yQeTdRXdbJOmX1uyFO0gLsMBS+2aHHJ4cx+CM9
-         TVNw==
+        bh=fCJNaeHH0qeNbjhZ4y2YJBf4Ih9X6gqwUBqd6D7xbtk=;
+        b=s+soWiVhFQrvqTx0PlOvSWQB0LYI6Dkq5xgIaduyCsfnVJa13I13EqbaI4VC6PcBl3
+         XjNA8/BCKPVDBzf5YW3dvfaAb/yI31loHO61jR8cOy1YgDB0/EI6wlfQ4cGvlf9kFBET
+         rt6szD6Qh4uanOiCoab3ZWaE08xdAyXTcaL0gPZPMEQ38AWbCgEUQ2dl1HB9MXNGVfQ6
+         NUcdpdNo3jFORAKu+xvPntisZSk8qhKJhcGLbsIkFvz4kKyYrSNxPmDyhfIlLVki3J8f
+         /yJ/LGPRZdTnh8BC+PeXpyfWlIxRetl1g27htSY8jMg8/5b4/UoAkR15iYWbpcmHhA3g
+         kfYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744701871; x=1745306671;
+        d=1e100.net; s=20230601; t=1744702008; x=1745306808;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qu8kD86AXuKJZy4HIshJdpK/xBfLXn4kgIsnyKTrc7I=;
-        b=KJK80q4UtvqHT+4+dyqHrR1qYozMhlce4oV635iLVno2dh4aTVrP1wjPIx2Mpmwp4V
-         8fR7I2kP9cVtxP/k8IoJ8/OH11ufgSge6zPtUPdMFvpJXyWztDsH+G45XCOJtRGOSmQL
-         9qPNVUgwumZLOyPYdqiRbhyCD42Anf50qsdNRjzOgVl5Wx3Z8mRjfcBrZh0YgmV5sCnr
-         kz6ORDlCPozNCu/U6B+hGxObRgJdLY9VoMwHNE8Oyqnz7kR/eUV363V7ndHaXZfs9Jzq
-         qma+cTsLJ2IrhDHzUlZGukA2FvsCu2XlL/4prQjA7pClyVOGURKDvuIwkv5PIvE07pWa
-         Zseg==
-X-Forwarded-Encrypted: i=1; AJvYcCXIWpIRJs+E/rtTV+IUZIC6DqcEnY084NUTDnnve4jGrE0ktJFLSECQFm4j6EYFhoDzPkA20LA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvIveqSi1oU3MSUc957hAfCMxlpYzW8UmkFLeO/bj4g/PeaOpe
-	ZmQBdL0qTtVbZlBxD10guKRB+UNGbJm721cQ+JYZes9vAW/7uicM3umroMjRYQ==
-X-Gm-Gg: ASbGncsB7jJvATBkMnkipphePKTjnFSgX5bkXwYk8OBiXnCYaapcvh+cSc8yOvI6b2T
-	jPcrE3KF0OFo/oBwptHuyf2F5jcjbI/UC1n+WdDaxjk13PxeZJxInHn+Ih6Ty7bt3lLH+6uDNoA
-	7cqHULwPLrkIJqNzDtMpqRBBc+shyqK8EOWAN4I+quK2J5pE5ZKsusZRbLpHKlcKq5Fz1qIYnfr
-	7agjo2zrTdr1/aQ76xPwidNMjzsCF6zpuNUMyRMBpbq1wJ2wOAsCNN1AR4tf8TlfLOwiqGglPNx
-	9SLhJzDes3fUIw7oV+ljvwa8tGDCc2OemgIGli0k5dneW8CpMw==
-X-Google-Smtp-Source: AGHT+IGdiWkQMkaHTsiVcI4z3x+X4VzKPfKH5y/vEQa4WjmVHEMVpLvUUGLit5iWi2cXVeIM/nOIpA==
-X-Received: by 2002:a17:903:41c2:b0:224:3db:a296 with SMTP id d9443c01a7336-22bea49e9e4mr204502495ad.2.1744701870704;
-        Tue, 15 Apr 2025 00:24:30 -0700 (PDT)
+        bh=fCJNaeHH0qeNbjhZ4y2YJBf4Ih9X6gqwUBqd6D7xbtk=;
+        b=cn/5NMFRoq0fNIRKLrj/Y58JRfoaYCccs9gNYlcAzEu+t2Atjnp49wXcqu8Nmor5KV
+         Mzvi7MoI0ZlsnYmQRvjnbDrM1bLPFUFhBPNmB6yEttG+hz9D2E/4xfnOlliLz8T4aoXy
+         g5WyYD4nQWy/yStA7VuougTTbBg/H+VRfiX/3BdJJfGnj0VuW07nri1BnVmSDCie3HYB
+         tXcEZdRszGiC4MGEQ2pCcTKmdtrnGKABZkSGPUcxHmAZ908Vxa3FQjIiDpRDQrOQ7906
+         AphuVgOJqs9SGNSj7KPN4FkEdO/vQ0AYfsAu8d92rCVy6EaqUQDUwDLFwAXGlNbVABzY
+         8HEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVh7pHNjkt0nvP5J1sOynQKuisx2uMA2ECOxpWFISUCWhzL5FEQIpnIrKXFWVIdrj6Xv78Pbe8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxEXv2KfJmDbAXGUV/BGvkEriJw49b/IPiz14+vPiqRkfricIhv
+	LqLh4kx75yqUPLdpQVAw7er7PCfR/GBvRLKxOE5z2CDSe/lQ9BXYEpzqvk+wzQ==
+X-Gm-Gg: ASbGncuQPod1Al0lKX9Ddg8sSToFZvzPSOILulNxtHJYvWDUe9oNLPu+v7m3uY9QVcO
+	hLHojgnclAsT8rjn54wx4TWvqBPfilHeqqUyRke5MjyBgbxv4gcyHaX1KTRXrHtBZ3IJO9xOXt9
+	xz/6b2yX6vrPvKzz3Xm9jQu75MQyv24OnpMlDr96pTPi5Up7ReMWOcNcBoLnz6VLxgX3W7egfHI
+	EJP5Q2vMRPuifhvLhM1UTyfOR9x1GyWo/77JoBLDdfBevMZ6u3+bYBUBuo6N53cvmo1pjxiK0Sj
+	FqP+n3WP9bOrD+0P5ydQRPwvq7kekvyKnslAzz13W2XNtOzPCw==
+X-Google-Smtp-Source: AGHT+IHguLmuMIGRBsFlyspehfjQDN2w8AskD61wkAT+OvpAWkCdIa3KMt+LNv9RjQaYs4JZBwB+yQ==
+X-Received: by 2002:a17:903:904:b0:227:ac2a:1dcf with SMTP id d9443c01a7336-22bea4bd870mr208246955ad.23.1744702007792;
+        Tue, 15 Apr 2025 00:26:47 -0700 (PDT)
 Received: from thinkpad ([120.60.71.35])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22ac7c993a7sm110714665ad.146.2025.04.15.00.24.26
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22ac7c93aa3sm110866935ad.149.2025.04.15.00.26.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Apr 2025 00:24:30 -0700 (PDT)
-Date: Tue, 15 Apr 2025 12:54:24 +0530
+        Tue, 15 Apr 2025 00:26:47 -0700 (PDT)
+Date: Tue, 15 Apr 2025 12:56:41 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Sumit Kumar <quic_sumk@quicinc.com>
 Cc: Alex Elder <elder@kernel.org>, 
@@ -82,7 +82,7 @@ Cc: Alex Elder <elder@kernel.org>,
 	Youssef Samir <quic_yabdulra@quicinc.com>
 Subject: Re: [PATCH] bus: mhi: ep: Update read pointer only after buffer is
  written
-Message-ID: <74azjehrnf57ruhrkcqonuakm2iro5ehdvtudolcbrlrcjfvj4@ylqmug3wqdhs>
+Message-ID: <gq4s5je4grjjqwhrmrqrurglm4kctnsslwr4kllxdyphy4re4d@kzacgpg7k3xj>
 References: <20250409-rp_fix-v1-1-8cf1fa22ed28@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -105,19 +105,13 @@ On Wed, Apr 09, 2025 at 04:17:43PM +0530, Sumit Kumar wrote:
 > Invoke the buffer write before updating rd_offset to ensure the element
 > is fully written before signaling its availability.
 > 
-
-Hmm. I was under assumption that the host wouldn't access the rd_offset before
-raising the interrupt.
-
-But anyway, the fix looks legitimate irrespective of that.
-
 > Fixes: bbdcba57a1a2 ("bus: mhi: ep: Add support for ring management")
 > cc: stable@vger.kernel.org
 > Co-developed-by: Youssef Samir <quic_yabdulra@quicinc.com>
 > Signed-off-by: Youssef Samir <quic_yabdulra@quicinc.com>
 > Signed-off-by: Sumit Kumar <quic_sumk@quicinc.com>
 
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Applied to mhi-fixes!
 
 - Mani
 
