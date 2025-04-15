@@ -1,219 +1,111 @@
-Return-Path: <stable+bounces-132717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 650CFA899EC
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 12:25:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC172A89A48
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 12:33:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A70D7189E779
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 10:25:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C146D7A51A8
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 10:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E881F3BBC;
-	Tue, 15 Apr 2025 10:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D3A28BA92;
+	Tue, 15 Apr 2025 10:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="x/x0o6zP";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="hujRY87b";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="x/x0o6zP";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="hujRY87b"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V1KuR5Hu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3110727A127
-	for <stable@vger.kernel.org>; Tue, 15 Apr 2025 10:25:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F3C28E604;
+	Tue, 15 Apr 2025 10:31:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744712714; cv=none; b=eJaTNzbyy/LSPlwVk7FWaH6g4vuQ1wgmGjOVGUXsOBj2kwVYEafd8IXEvbepBuptka5dfL9TCf7YAhZe19cpqSt8VIp9UHXbrk9K6tsj+xrSXWcY9lb+mSmmP+nsd3qoG1vo35EGfxc9EygdyEzKQ/Tq1w4yJehNoGm5rJWDXEE=
+	t=1744713092; cv=none; b=E0lmzdG83dfiOt2Q5zFnWmuBzJBm8MdbLSlotb3UANY7BgWzQznAhTz/krnwlsrpJ4nLxkTP1+W2gSjokcv0q2GMCiCBP+lHFmRGS1WIYivgRws0O2UQYmnEY1u87jnPb9fZyn59cRsa93yH1WRMUJrlZxLWxYEGoK5TWz8Kc1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744712714; c=relaxed/simple;
-	bh=TJRgZdxP99DFlfc8ZhBkSmhdCwYr+dFZne62wSeOQhk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qcPsKASIo5v5dpcsVk3micg6mLMhepGzVB1svaLqxu4rzku1r0e4Os7+5zynWc3BTdxcNaPuIiOSSMXRTh2zIcMVjc83G0O+ehGEOYqrDj/SRaXc4CCc5KI9D2l7sopoR+8zyvr3Rg4F0fJl37pZIy2Z4Gs1W6wnNEiFZSdAvTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=x/x0o6zP; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=hujRY87b; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=x/x0o6zP; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=hujRY87b; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 2E9601F38A;
-	Tue, 15 Apr 2025 10:25:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1744712711; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yNVApuVII9pfaOeKMoDkV9qafu5t1tFv6hF1DzoBwcA=;
-	b=x/x0o6zPkvFOd19+AxQVHjUxT1n3yxkRkiQMCmzi+DqV7I2JlU9F+/rXo+UhTsijRoiukm
-	uAZQP6knbV+zGwcRCcFq6VZ8cpAY93LJQK/QXHztXUAooBGIKAAE2TbSduShwsxm3/wbmC
-	EqnHSm+9ZMqm64UvrPMPL3dK3Si3kUM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1744712711;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yNVApuVII9pfaOeKMoDkV9qafu5t1tFv6hF1DzoBwcA=;
-	b=hujRY87bJvWnh8zH9L2kwQkx1I1nWVxDwwJzF8ZE8iH+7q3b7RvseFrzSKrfKRkMdMzWs/
-	EvoQ9oITxmJmfxAw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="x/x0o6zP";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hujRY87b
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1744712711; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yNVApuVII9pfaOeKMoDkV9qafu5t1tFv6hF1DzoBwcA=;
-	b=x/x0o6zPkvFOd19+AxQVHjUxT1n3yxkRkiQMCmzi+DqV7I2JlU9F+/rXo+UhTsijRoiukm
-	uAZQP6knbV+zGwcRCcFq6VZ8cpAY93LJQK/QXHztXUAooBGIKAAE2TbSduShwsxm3/wbmC
-	EqnHSm+9ZMqm64UvrPMPL3dK3Si3kUM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1744712711;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yNVApuVII9pfaOeKMoDkV9qafu5t1tFv6hF1DzoBwcA=;
-	b=hujRY87bJvWnh8zH9L2kwQkx1I1nWVxDwwJzF8ZE8iH+7q3b7RvseFrzSKrfKRkMdMzWs/
-	EvoQ9oITxmJmfxAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2129B139A1;
-	Tue, 15 Apr 2025 10:25:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id FssTCAc0/mduaQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 15 Apr 2025 10:25:11 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id CD2D2A0947; Tue, 15 Apr 2025 12:24:55 +0200 (CEST)
-Date: Tue, 15 Apr 2025 12:24:55 +0200
-From: Jan Kara <jack@suse.cz>
-To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Jens Axboe <axboe@kernel.dk>, Martijn Coenen <maco@android.com>, 
-	Alyssa Ross <hi@alyssa.is>, Christoph Hellwig <hch@lst.de>, Greg KH <greg@kroah.com>, 
-	Jan Kara <jack@suse.cz>, John Ogness <john.ogness@linutronix.de>, 
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] loop: properly send KOBJ_CHANGED uevent for disk
- device
-Message-ID: <tbypgsknfpqyx3xbrpz7jlpthlybcdxhr7b3oz4vq5u6izwdqp@q3wo6zpqicp7>
-References: <20250415-loop-uevent-changed-v2-1-0c4e6a923b2a@linutronix.de>
+	s=arc-20240116; t=1744713092; c=relaxed/simple;
+	bh=lMvtUhyunUffiD8LsXcEpY9VpvDraBR5jc0+GJGjPQ8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dqyngQPulGHYIf1Ta9lTQQWqAnvwRRoql5bLX7bYcHzR3OhqXUdhKlhj8z/3R0CzGB4bweFccSgumkOiTkbxdOJddJ8USnQk0WUA8/kdnZRIwQNGk9OWNYYKTW/W4vh24yMqRM9OnDFtCzABKn/9vSvT+FWqmisxaHMqUT6BHkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V1KuR5Hu; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-736a7e126c7so4573373b3a.3;
+        Tue, 15 Apr 2025 03:31:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744713089; x=1745317889; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nQMUncuMXTk+rXouvBKfkfVKDnIZqhYDB6eRjO5Il1Y=;
+        b=V1KuR5Hueww+/xl6ThGjbIkavaqL5OAF21TPWPDhpqty3hLEpiv4W9g1x8mtgf99f1
+         EN9lpvfrPfzwwYwFTHc54WI7iCkBRWzjr1tlV9aklmxVMYJVD64Vp7ZuwC8hluRjJu68
+         /jw9CVlyoDp1hp32mek0s62vcujguq9ICKciVDuXa0bZ1RbzUYXxfXvnMfK46OJ4oXSn
+         lF/r584ryuaQB5Qv7T2iqYviV5oAkVRbqTokhh65eNis+1jF2Foak9w79fb/Z0v2zNwl
+         ESuCsl7T6tZzDD3glHReFtqz5QFzPCOAF11ROKy/ERsbJS9PVcWIwjdopW3au9Kg2/bs
+         v58A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744713089; x=1745317889;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nQMUncuMXTk+rXouvBKfkfVKDnIZqhYDB6eRjO5Il1Y=;
+        b=OZPWo7wXHo2xj3QJB2XFmJXVLgsUcjOCYVA5Uf/aw5zmjqbDWJYwUvp3hvEaK+yyGr
+         pHdL1TwHMFT0HsHsA1wSJ9On5qsqHfz5ABSN3K96oN9XS3C4z2Jw+hlUmm7cDbp+sRj9
+         /J6otekdhneVDx4hubqKabXGwGp9Ei9/HvRCyxa3CJdmrBjz97z20ytOp/+MD3YltYR1
+         +aHyFjd/FT/MLRrS3iJqFWnEfRUiJq1ZShjQUA1DA5UjB+i26ZNRq9xNH1V2Ux9Dqhdv
+         bZ4WkYzY4y7Uvy7vZgnJEeu5wIKLwwcBQxvGXsD0jcfbzdOa+IQgN9VvqKUcnSrUYKew
+         GrDQ==
+X-Gm-Message-State: AOJu0YxCn0ew/efyiJy8CEMuauDazNoDzUeN5gvZEOgMR3hbfP0UZ8lm
+	lrDNApKk4tFxhEkFGMvL1Jw/FKBp6gGuv20KAX1hTNa6D1pqrwjCLVhRb85L
+X-Gm-Gg: ASbGncs5sPPXDUTnUBqqIBAquTKenIdw1hMS/BNKqxvGQgSTNwh9ykEezrPLhoJVm3F
+	zsRsZABPlMEbAu7AsP1SvwGVylECHzVBBcVr2lfAIC/zkg+EGNZq5ayp5iTaDlstF6pQcEVPHga
+	gYvu8h6xRRXCO1GAuJOLjG7GusbcHmQMSheYL7S3Vbc98t2UFHo/hkhgKwbkJnLFFZbcUknKIju
+	ByZf1exNxrW8FYvD9UZvX904oTq1SeIDaBHEa7qwL4h+p9W0wrIH1cZqyO0Vnzv/qSUtDH2UDkT
+	l89Dp9u0DY8MI9+XWToexfN/7adqfejdquCgC51o+JNWPQXX6D0CCk8JWrZmQiDLXgBnCEsmR3z
+	fvBmz03Ui8ZvxOhM=
+X-Google-Smtp-Source: AGHT+IFilmJYMoF4ocsaJ1kPXOuHx66bpEJBkxY8auQ1ntN8UeOmd2v/NOcKngFt/WaVus719/5grQ==
+X-Received: by 2002:a05:6a00:2e29:b0:736:7a00:e522 with SMTP id d2e1a72fcca58-73bd1193913mr20201189b3a.2.1744713089307;
+        Tue, 15 Apr 2025 03:31:29 -0700 (PDT)
+Received: from localhost.localdomain (118-232-8-190.dynamic.kbronet.com.tw. [118.232.8.190])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-73bd21df771sm8158292b3a.76.2025.04.15.03.31.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Apr 2025 03:31:28 -0700 (PDT)
+From: Zenm Chen <zenmchen@gmail.com>
+To: stable@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org,
+	pkshih@realtek.com,
+	zenmchen@gmail.com
+Subject: [PATCH v2 6.6.y 0/2] wifi: rtw89: RTL8852BE: Fix a shutdown issue
+Date: Tue, 15 Apr 2025 18:31:23 +0800
+Message-ID: <20250415103125.15782-1-zenmchen@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250415-loop-uevent-changed-v2-1-0c4e6a923b2a@linutronix.de>
-X-Rspamd-Queue-Id: 2E9601F38A
-X-Spam-Score: -4.01
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	ARC_NA(0.00)[];
-	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.com:email,linutronix.de:email];
-	RCVD_COUNT_THREE(0.00)[3];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Level: 
 
-On Tue 15-04-25 10:51:47, Thomas Weiﬂschuh wrote:
-> The original commit message and the wording "uncork" in the code comment
-> indicate that it is expected that the suppressed event instances are
-> automatically sent after unsuppressing.
-> This is not the case, instead they are discarded.
-> In effect this means that no "changed" events are emitted on the device
-> itself by default.
-> While each discovered partition does trigger a changed event on the
-> device, devices without partitions don't have any event emitted.
-> 
-> This makes udev miss the device creation and prompted workarounds in
-> userspace. See the linked util-linux/losetup bug.
-> 
-> Explicitly emit the events and drop the confusingly worded comments.
-> 
-> Link: https://github.com/util-linux/util-linux/issues/2434
-> Fixes: 498ef5c777d9 ("loop: suppress uevents while reconfiguring the device")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+This patch series addresses a shutdown issue reported in [1].
 
-Thanks for the fix! When reading the code, I'm a bit curious: What is
-actually generating events for partitions with loop_change_fd() call?
-Because there loop_reread_partitions() still happens with uevents
-supressed... I suspect event supressing there should be shorter.
+This problem has been fixed on kernel 6.12 and later, kernel 6.6 is 
+the last kernel these upstream patches should go to because the Realtek 
+RTL8852BE chip supported by kernel since v6.2 is the only chip known to 
+have this problem.
 
-								Honza
+[1] https://github.com/lwfinger/rtw89/issues/372
 
-> ---
-> Changes in v2:
-> - Use correct Fixes tag
-> - Rework commit message slightly
-> - Rebase onto v6.15-rc1
-> - Link to v1: https://lore.kernel.org/r/20250317-loop-uevent-changed-v1-1-cb29cb91b62d@linutronix.de
-> ---
->  drivers/block/loop.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-> index 674527d770dc669e982a2b441af1171559aa427c..09a725710a21171e0adf5888f929ccaf94e98992 100644
-> --- a/drivers/block/loop.c
-> +++ b/drivers/block/loop.c
-> @@ -667,8 +667,8 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
->  
->  	error = 0;
->  done:
-> -	/* enable and uncork uevent now that we are done */
->  	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
-> +	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
->  	return error;
->  
->  out_err:
-> @@ -1129,8 +1129,8 @@ static int loop_configure(struct loop_device *lo, blk_mode_t mode,
->  	if (partscan)
->  		clear_bit(GD_SUPPRESS_PART_SCAN, &lo->lo_disk->state);
->  
-> -	/* enable and uncork uevent now that we are done */
->  	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
-> +	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
->  
->  	loop_global_unlock(lo, is_loop);
->  	if (partscan)
-> 
-> ---
-> base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
-> change-id: 20250307-loop-uevent-changed-aa3690f43e03
-> 
-> Best regards,
-> -- 
-> Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> 
+Zenm Chen (2):
+  wifi: rtw89: pci: add pre_deinit to be called after probe complete
+  wifi: rtw89: pci: disable PCIE wake bit when PCIE deinit
+
+ drivers/net/wireless/realtek/rtw89/core.c |  2 ++
+ drivers/net/wireless/realtek/rtw89/core.h |  6 ++++++
+ drivers/net/wireless/realtek/rtw89/pci.c  | 10 ++++++++++
+ 3 files changed, 18 insertions(+)
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.49.0
+
 
