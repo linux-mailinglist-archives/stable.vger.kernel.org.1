@@ -1,133 +1,158 @@
-Return-Path: <stable+bounces-132673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E538A88FDC
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 00:57:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA45EA89055
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 02:11:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B42DF3A555C
-	for <lists+stable@lfdr.de>; Mon, 14 Apr 2025 22:57:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 817463B0C25
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 00:10:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 420141F3BBB;
-	Mon, 14 Apr 2025 22:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 763724C83;
+	Tue, 15 Apr 2025 00:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iwZEtazG"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="RDxAbgs5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0088F201100;
-	Mon, 14 Apr 2025 22:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C691361;
+	Tue, 15 Apr 2025 00:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744671421; cv=none; b=baLuPyJKyu7AZQrjbfcobxWdFSlPbmCfGet4S6NL5EufZvRElyfLVn+cfxhH7sYbRtQgG8dqcT2mokAcxLBtktOcf7kVodYotJxUOS+qVWAmJDwMt7jxF6tAofBAsCaZBSVkQ8QLfK9LlnphX9z4kjy5gah7upsuKXs2jctXhzg=
+	t=1744675869; cv=none; b=L4Sdvac4oxlMx+Qf4ZH8jMYGeQclUTDK0cmH/vzW7enZ/HpTJZkCOQWgvdaOi2BUqi6guufnzeZ2jd/T+8UQwn3dEzOhg3jesrAax1aIxNkwF3OZ5YXWsVX76C6/dvA8APQWGjKovRlPVIWlW/TM1zepZDCBmCqLz/GLlzIF6jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744671421; c=relaxed/simple;
-	bh=O8Cg+UG/jr/Kl6PFms4D8O0Iw2r6nd/5sC7AS9OipL0=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=JP72UpS5fL2+Jq8sNBRU6ABU+auRyhvLR/e59PrZ2uWLgTpOn0xu1zu9z1USuszg9Fed0uxY4aLkzGFOM9lfyW6vjntzZZzgGW88Amd8xZgZb0qF3sneZQd9KfN7kv1HhLX0lTc2IYrzsZFoDdCRASgILj0e6Wc2/iBtwh8JLxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iwZEtazG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4E61C4CEE2;
-	Mon, 14 Apr 2025 22:57:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744671420;
-	bh=O8Cg+UG/jr/Kl6PFms4D8O0Iw2r6nd/5sC7AS9OipL0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=iwZEtazGwIwnf1+eHRLraxUGavhdd4vcGyb8TYMUBGZfsBMB8wbyxPlDn/Q2yDUqy
-	 uKBCdLCOo5CwKKS+pJ0xwdj8qOKiU9C6+wretJqKCIlCSs3fKIS5HuMCgpwFQXSoWc
-	 ROkB1Ut0j5PH98ZDCw1i/p+VGpZiEuwd+lBTsW0Zs1GWqhte2mKR3BOqmkM4pcP34H
-	 JW5zzIofKiNKPTKT5gN1DMKeaHej35mmuH+S73f9ebdU+rLdhkSJP73d82nFh3BnwE
-	 NZrigqBcvLgtBsvEwq0iZ/0o8HhwSs9rsvlNBlWkSs6aR5edT1ogEr13LwtctB20yY
-	 cmwAftB3zhbDQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAD6E3822D1A;
-	Mon, 14 Apr 2025 22:57:39 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1744675869; c=relaxed/simple;
+	bh=KQUKYquf80Jjc7PCKVNEqJWzgQ+LkrCovnf84LnvUo8=;
+	h=Date:To:From:Subject:Message-Id; b=sJ3escaVOTum3ag6GvQcC9dgO7Gitt6BBNbDUj/zkMY4sCg1JN6ymKk2YaZLvQYcVsplvj4/kZZ265Zo0Ax/HOM1kNjXMOCzaVItrrpKz4TtLfvU5MEEuLkL5HAxPInSFmfEbnUiU92vp6MI82OnRGz0I6F+oxIAv+SZscGNGyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=RDxAbgs5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E0BC4CEE2;
+	Tue, 15 Apr 2025 00:11:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1744675868;
+	bh=KQUKYquf80Jjc7PCKVNEqJWzgQ+LkrCovnf84LnvUo8=;
+	h=Date:To:From:Subject:From;
+	b=RDxAbgs5HuVDvjyjUvfEjWl0aWHc/ibfgASWIRtuvBVRw7/JdNAc03rEgzyTbhGYp
+	 F12WZZTlzJLio8oztHwH8WqGVSM8t0P0wcrqTNYxBub1MS4omL5kNxDZrMzEw68B4M
+	 cX5KCcTdqEoqJ6m26Ylj2VjA6cqVw/DZ2IsQ+wvY=
+Date: Mon, 14 Apr 2025 17:11:07 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,ryabinin.a.a@gmail.com,kees@kernel.org,elver@google.com,andreyknvl@gmail.com,smostafa@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + lib-test_ubsanc-fix-panic-from-test_ubsan_out_of_bounds.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250415001108.79E0BC4CEE2@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [f2fs-dev] [PATCH] f2fs: prevent kernel warning due to negative
- i_nlink from corrupted image
-From: patchwork-bot+f2fs@kernel.org
-Message-Id: 
- <174467145850.2060374.10714533632161359459.git-patchwork-notify@kernel.org>
-Date: Mon, 14 Apr 2025 22:57:38 +0000
-References: <20250412214226.2907676-1-jaegeuk@kernel.org>
-In-Reply-To: <20250412214226.2907676-1-jaegeuk@kernel.org>
-To: Jaegeuk Kim <jaegeuk@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
- stable@vger.kernel.org
 
-Hello:
 
-This patch was applied to jaegeuk/f2fs.git (dev)
-by Jaegeuk Kim <jaegeuk@kernel.org>:
+The patch titled
+     Subject: lib/test_ubsan.c: fix panic from test_ubsan_out_of_bounds
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     lib-test_ubsanc-fix-panic-from-test_ubsan_out_of_bounds.patch
 
-On Sat, 12 Apr 2025 21:42:26 +0000 you wrote:
-> WARNING: CPU: 1 PID: 9426 at fs/inode.c:417 drop_nlink+0xac/0xd0
-> home/cc/linux/fs/inode.c:417
-> Modules linked in:
-> CPU: 1 UID: 0 PID: 9426 Comm: syz-executor568 Not tainted
-> 6.14.0-12627-g94d471a4f428 #2 PREEMPT(full)
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-> 1.13.0-1ubuntu1.1 04/01/2014
-> RIP: 0010:drop_nlink+0xac/0xd0 home/cc/linux/fs/inode.c:417
-> Code: 48 8b 5d 28 be 08 00 00 00 48 8d bb 70 07 00 00 e8 f9 67 e6 ff
-> f0 48 ff 83 70 07 00 00 5b 5d e9 9a 12 82 ff e8 95 12 82 ff 90
-> &lt;0f&gt; 0b 90 c7 45 48 ff ff ff ff 5b 5d e9 83 12 82 ff e8 fe 5f e6
-> ff
-> RSP: 0018:ffffc900026b7c28 EFLAGS: 00010293
-> RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff8239710f
-> RDX: ffff888041345a00 RSI: ffffffff8239717b RDI: 0000000000000005
-> RBP: ffff888054509ad0 R08: 0000000000000005 R09: 0000000000000000
-> R10: 0000000000000000 R11: ffffffff9ab36f08 R12: ffff88804bb40000
-> R13: ffff8880545091e0 R14: 0000000000008000 R15: ffff8880545091e0
-> FS:  000055555d0c5880(0000) GS:ffff8880eb3e3000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00007f915c55b178 CR3: 0000000050d20000 CR4: 0000000000352ef0
-> Call Trace:
->  <task>
->  f2fs_i_links_write home/cc/linux/fs/f2fs/f2fs.h:3194 [inline]
->  f2fs_drop_nlink+0xd1/0x3c0 home/cc/linux/fs/f2fs/dir.c:845
->  f2fs_delete_entry+0x542/0x1450 home/cc/linux/fs/f2fs/dir.c:909
->  f2fs_unlink+0x45c/0x890 home/cc/linux/fs/f2fs/namei.c:581
->  vfs_unlink+0x2fb/0x9b0 home/cc/linux/fs/namei.c:4544
->  do_unlinkat+0x4c5/0x6a0 home/cc/linux/fs/namei.c:4608
->  __do_sys_unlink home/cc/linux/fs/namei.c:4654 [inline]
->  __se_sys_unlink home/cc/linux/fs/namei.c:4652 [inline]
->  __x64_sys_unlink+0xc5/0x110 home/cc/linux/fs/namei.c:4652
->  do_syscall_x64 home/cc/linux/arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0xc7/0x250 home/cc/linux/arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7fb3d092324b
-> Code: 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01 48 83 c8 ff c3 66
-> 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 57 00 00 00 0f 05
-> &lt;48&gt; 3d 01 f0 ff ff 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01
-> 48
-> RSP: 002b:00007ffdc232d938 EFLAGS: 00000206 ORIG_RAX: 0000000000000057
-> RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fb3d092324b
-> RDX: 00007ffdc232d960 RSI: 00007ffdc232d960 RDI: 00007ffdc232d9f0
-> RBP: 00007ffdc232d9f0 R08: 0000000000000001 R09: 00007ffdc232d7c0
-> R10: 00000000fffffffd R11: 0000000000000206 R12: 00007ffdc232eaf0
-> R13: 000055555d0cebb0 R14: 00007ffdc232d958 R15: 0000000000000001
->  </task>
-> 
-> [...]
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/lib-test_ubsanc-fix-panic-from-test_ubsan_out_of_bounds.patch
 
-Here is the summary with links:
-  - [f2fs-dev] f2fs: prevent kernel warning due to negative i_nlink from corrupted image
-    https://git.kernel.org/jaegeuk/f2fs/c/42cb74a92ada
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Mostafa Saleh <smostafa@google.com>
+Subject: lib/test_ubsan.c: fix panic from test_ubsan_out_of_bounds
+Date: Mon, 14 Apr 2025 21:36:48 +0000
+
+Running lib_ubsan.ko on arm64 (without CONFIG_UBSAN_TRAP) panics the
+kernel
+
+[   31.616546] Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: test_ubsan_out_of_bounds+0x158/0x158 [test_ubsan]
+[   31.646817] CPU: 3 UID: 0 PID: 179 Comm: insmod Not tainted 6.15.0-rc2 #1 PREEMPT
+[   31.648153] Hardware name: linux,dummy-virt (DT)
+[   31.648970] Call trace:
+[   31.649345]  show_stack+0x18/0x24 (C)
+[   31.650960]  dump_stack_lvl+0x40/0x84
+[   31.651559]  dump_stack+0x18/0x24
+[   31.652264]  panic+0x138/0x3b4
+[   31.652812]  __ktime_get_real_seconds+0x0/0x10
+[   31.653540]  test_ubsan_load_invalid_value+0x0/0xa8 [test_ubsan]
+[   31.654388]  init_module+0x24/0xff4 [test_ubsan]
+[   31.655077]  do_one_initcall+0xd4/0x280
+[   31.655680]  do_init_module+0x58/0x2b4
+
+That happens because the test corrupts other data in the stack:
+400:   d5384108        mrs     x8, sp_el0
+404:   f9426d08        ldr     x8, [x8, #1240]
+408:   f85f83a9        ldur    x9, [x29, #-8]
+40c:   eb09011f        cmp     x8, x9
+410:   54000301        b.ne    470 <test_ubsan_out_of_bounds+0x154>  // b.any
+
+As there is no guarantee the compiler will order the local variables
+as declared in the module:
+	volatile char above[4] = { }; /* Protect surrounding memory. */
+	volatile int arr[4];
+	volatile char below[4] = { }; /* Protect surrounding memory. */
+
+So, instead of writing out-of-bound, we can read out-of-bound which
+still triggers UBSAN but doesn't corrupt the stack.
+
+Link: https://lkml.kernel.org/r/20250414213648.2660150-1-smostafa@google.com
+Fixes: 4a26f49b7b3d ubsan: ("expand tests and reporting")
+Signed-off-by: Mostafa Saleh <smostafa@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Macro Elver <elver@google.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ lib/test_ubsan.c |   11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
+
+--- a/lib/test_ubsan.c~lib-test_ubsanc-fix-panic-from-test_ubsan_out_of_bounds
++++ a/lib/test_ubsan.c
+@@ -77,18 +77,15 @@ static void test_ubsan_shift_out_of_boun
+ 
+ static void test_ubsan_out_of_bounds(void)
+ {
+-	volatile int i = 4, j = 5, k = -1;
+-	volatile char above[4] = { }; /* Protect surrounding memory. */
++	volatile int j = 5, k = -1;
++	volatile int scratch[4] = { };
+ 	volatile int arr[4];
+-	volatile char below[4] = { }; /* Protect surrounding memory. */
+-
+-	above[0] = below[0];
+ 
+ 	UBSAN_TEST(CONFIG_UBSAN_BOUNDS, "above");
+-	arr[j] = i;
++	scratch[1] = arr[j];
+ 
+ 	UBSAN_TEST(CONFIG_UBSAN_BOUNDS, "below");
+-	arr[k] = i;
++	scratch[2] = arr[k];
+ }
+ 
+ enum ubsan_test_enum {
+_
+
+Patches currently in -mm which might be from smostafa@google.com are
+
+lib-test_ubsanc-fix-panic-from-test_ubsan_out_of_bounds.patch
 
 
