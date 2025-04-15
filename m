@@ -1,145 +1,83 @@
-Return-Path: <stable+bounces-132801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8A5BA8AA4E
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 23:44:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC48A8AAF7
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 00:11:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C8AC19032EE
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 21:44:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 232BE176249
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 22:11:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE70B258CF3;
-	Tue, 15 Apr 2025 21:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE8FE27467D;
+	Tue, 15 Apr 2025 22:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sAcYFzrp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bIz78YEW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520C0258CE8
-	for <stable@vger.kernel.org>; Tue, 15 Apr 2025 21:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F20274666;
+	Tue, 15 Apr 2025 22:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744753443; cv=none; b=WAV1Kvof1drVB7UdU/0Yp/vFzmJlsXZKrbCRijlb1MxcEuFj5ENnUOia1t4FrrJAtMFn3GLN+0lSiOEzYnpERUsh2HnksicOV4TndJ9FIxF30BOf7Ms1ZKMGdDAniayj6CC2i4aj5TpMbPRWeoxwOqJG2AoMy2b8okmRSLBo4Rg=
+	t=1744755066; cv=none; b=qf7GDYEsXAmZgRI0jSsz8nQhlvoBlB3tTa+VYWMojg3eG3qmsChOfEY/m7Qfcf2nzJLIcheezR8acEsFWGPHT7boBWNkZiHeau/8+Yuz0BggDtmzE8+lmXlC/f+ZxoxTvL/lZUFI0cHVy4V/MeA6Fs/+a+viWXU7YParItcIQRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744753443; c=relaxed/simple;
-	bh=fseorZ6vv1QSUJUmivRsxtIRpS8R+lHFEc66XRwFtcE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o6LeOxhBGiN8ehruQJVjOAMHwpC2ZcnkwiaYPl8WN2oj6lipCqK+JsgPE1vbuSgNrHIiHVpUa97vQy6iTgWsZXaAjkjDldaBuaZyLIUUn9NQy/ggMA2u7kHQb/KCyhJ1SfU2wrUMh2iFvrNU815XkEuI/nkQO4vV2rNUvK9+glk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sAcYFzrp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E2AC4CEE9;
-	Tue, 15 Apr 2025 21:44:02 +0000 (UTC)
+	s=arc-20240116; t=1744755066; c=relaxed/simple;
+	bh=DJt3/Gcb4vgPCwXb7e++ID1PnmPHDBl88OMt95revsQ=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=WcIKB/N7SHcbASkgSkFa0DYbJqhxmgOKoPF0TIquKQiZ9Q3bcjsNWBbCA+IiCj+nTdydU+JSomFo5Iy0hRugUIYfAoxRYx5dG5ABDmjDu1mJZ2CF8d/Pmn+qiTQOuRHCnHzackPumzyieqPOnQKscgjhANa6tmeM+MfsK67q8nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bIz78YEW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF74C4CEE9;
+	Tue, 15 Apr 2025 22:11:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744753442;
-	bh=fseorZ6vv1QSUJUmivRsxtIRpS8R+lHFEc66XRwFtcE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sAcYFzrph5CaAb9xB+79FMePs6P8CzOk+lKIekHbeceGX6H1xsXdWjIoS5JKpArfK
-	 36QVsLx+nu4cY4kvczn1KyFjIaRD8/N6pivJs278+HmlvowctmTk3O+N4vmFD4IFlJ
-	 lhp6hPt7A0NLWmg3d6BJZbjGWo7p4Tb6l22vvmb4GQor6jAe1Y/0h/4TtyIgeADYls
-	 L0k/p6+YvbYYlEpGAJ8/HOhMpX2OrP4hEXj6IlxbShKuAa4LZ3KP2BhW+05zjI8HDj
-	 I8ItKQveoDx+Hvf0AGKKJ8sQ/sB6wf6VW8iNYCcryIZx/GWG3JnxF2nCqPv4HwxWGS
-	 GOFOqgL7+3CKw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15.y 6/6] ipv6: release nexthop on device removal
-Date: Tue, 15 Apr 2025 17:44:01 -0400
-Message-Id: <20250415124744-17ef78c88445aa68@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250414185023.2165422-7-harshit.m.mogalapalli@oracle.com>
-References: 
+	s=k20201202; t=1744755065;
+	bh=DJt3/Gcb4vgPCwXb7e++ID1PnmPHDBl88OMt95revsQ=;
+	h=Date:To:Cc:From:Subject:From;
+	b=bIz78YEWeP3AWvJfw4q6rsupqpa5/4ukrzQ7KVNLRKoLdYMzqXxjwect+IJ8YtElV
+	 zmK1KGH9kPQRv1EZASmJ5/PiJ7rv8GIdrhOsfRbKBLOrlIy30+HlAuszrMNz3dQ2cU
+	 zgfXsHghqNzsuVdrpiHGk+3VU5xN86Pgb+20cazT3DEb9R3NecJmhuKUNtDi6LJ5jx
+	 BfU58jdMQer+e5t65MIfY0VH0Gc8DY7H5jTbtQQ4/+M8As/KGLUKtFwBA4HZQLBc9O
+	 5iIM8D/PNAxJM2wOnRviRYf3QU/Bxs/6Tui2TX8+eMgEnShUhiwkgiBCv4piVLDRRZ
+	 wEDVBiGThszNQ==
+Message-ID: <cab8e07a-84fa-48f3-ac6f-382148b20744@kernel.org>
+Date: Tue, 15 Apr 2025 17:11:04 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Cc: Matthew Schwartz <matthew.schwartz@linux.dev>,
+ Linux kernel regressions list <regressions@lists.linux.dev>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+From: Mario Limonciello <superm1@kernel.org>
+Subject: 6.14.y regression in ath11k
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-[ Sasha's backport helper bot ]
+Hello,
 
-Hi,
+Matt Schwartz (cc) found a regression in 6.14.2 that the Steam Deck OLED 
+took 45s to find a network after suspend/resume waiting for a timeout.
+This was a regression from 6.14.1.
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+The regression happened because:
 
-The upstream commit SHA1 provided is correct: eb02688c5c45c3e7af7e71f036a7144f5639cbfe
+commit 933ab187e679 ("wifi: ath11k: update channel list in reg notifier 
+instead reg worker")
+was backported to 6.14.y without the other commit in the series:
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Harshit Mogalapalli<harshit.m.mogalapalli@oracle.com>
-Commit author: Paolo Abeni<pabeni@redhat.com>
+commit 02aae8e2f957 ("wifi: ath11k: update channel list in worker when 
+wait flag is set")
 
-Status in newer kernel trees:
-6.14.y | Present (exact SHA1)
-6.13.y | Present (exact SHA1)
-6.12.y | Present (different SHA1: 0e4c6faaef8a)
-6.6.y | Present (different SHA1: 43e25adc8026)
-6.1.y | Present (different SHA1: b2f26a27ea3f)
+Backporting commit 02aae8e2f957 ("wifi: ath11k: update channel list in 
+worker when wait flag is set") to 6.14.2 fixes the regression.
 
-Note: The patch differs from the upstream commit:
----
-1:  eb02688c5c45c ! 1:  47cc8122c9644 ipv6: release nexthop on device removal
-    @@ Metadata
-      ## Commit message ##
-         ipv6: release nexthop on device removal
-     
-    +    [ Upstream commit eb02688c5c45c3e7af7e71f036a7144f5639cbfe ]
-    +
-         The CI is hitting some aperiodic hangup at device removal time in the
-         pmtu.sh self-test:
-     
-    @@ Commit message
-         Reviewed-by: David Ahern <dsahern@kernel.org>
-         Link: https://patch.msgid.link/604c45c188c609b732286b47ac2a451a40f6cf6d.1730828007.git.pabeni@redhat.com
-         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    (cherry picked from commit eb02688c5c45c3e7af7e71f036a7144f5639cbfe)
-    +    [Harshit: Resolved conflict due to missing commit: e5f80fcf869a ("ipv6:
-    +    give an IPv6 dev to blackhole_netdev") and commit: b4cb4a1391dc ("net:
-    +    use unrcu_pointer() helper") in linux-5.15.y]
-    +    Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-     
-      ## net/ipv6/route.c ##
-    -@@ net/ipv6/route.c: static void ip6_dst_ifdown(struct dst_entry *dst, struct net_device *dev)
-    - {
-    - 	struct rt6_info *rt = dst_rt6_info(dst);
-    +@@ net/ipv6/route.c: static void ip6_dst_ifdown(struct dst_entry *dst, struct net_device *dev,
-      	struct inet6_dev *idev = rt->rt6i_idev;
-    + 	struct net_device *loopback_dev =
-    + 		dev_net(dev)->loopback_dev;
-     +	struct fib6_info *from;
-      
-    - 	if (idev && idev->dev != blackhole_netdev) {
-    - 		struct inet6_dev *blackhole_idev = in6_dev_get(blackhole_netdev);
-    -@@ net/ipv6/route.c: static void ip6_dst_ifdown(struct dst_entry *dst, struct net_device *dev)
-    + 	if (idev && idev->dev != loopback_dev) {
-    + 		struct inet6_dev *loopback_idev = in6_dev_get(loopback_dev);
-    +@@ net/ipv6/route.c: static void ip6_dst_ifdown(struct dst_entry *dst, struct net_device *dev,
-      			in6_dev_put(idev);
-      		}
-      	}
-    -+	from = unrcu_pointer(xchg(&rt->from, NULL));
-    ++	from = xchg((__force struct fib6_info **)&rt->from, NULL);
-     +	fib6_info_release(from);
-      }
-      
-    @@ net/ipv6/route.c: static void rt6_remove_exception(struct rt6_exception_bucket *
-      	/* purge completely the exception to allow releasing the held resources:
-      	 * some [sk] cache may keep the dst around for unlimited time
-      	 */
-    --	from = unrcu_pointer(xchg(&rt6_ex->rt6i->from, NULL));
-    +-	from = xchg((__force struct fib6_info **)&rt6_ex->rt6i->from, NULL);
-     -	fib6_info_release(from);
-      	dst_dev_put(&rt6_ex->rt6i->dst);
-      
----
+Can you please take this commit back to stable too?
 
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+Thanks!
 
