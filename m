@@ -1,82 +1,95 @@
-Return-Path: <stable+bounces-132744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4726AA89F3C
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 15:19:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E440A89F62
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 15:26:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BA3B16F117
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 13:19:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1713E444889
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 13:26:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C48EF297A57;
-	Tue, 15 Apr 2025 13:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6990E29A3E5;
+	Tue, 15 Apr 2025 13:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsa+x95C"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sudt9UFk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFB22973A0;
-	Tue, 15 Apr 2025 13:19:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45D52DFA2F;
+	Tue, 15 Apr 2025 13:25:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744723169; cv=none; b=WnhZnks6lEZsgwkCcO9tHBJz6k+xzULuuV5R3jthrHvGG0NnRoTBq44IgsQ0ocKVScZwVbeYxCve0x+wMQNAvFUhof1OtcL+3gyYP69FOPyJw46ooLudOwhLh49SkLHSYLwvR706WlOO2J0aw8lTtiJM3n8m0XM1nGI2vuEugRA=
+	t=1744723543; cv=none; b=gQ6cdLxW4YlcNsDzXVO/7uBqG8N7eFUNIxQpLFZGsfBaimkKMnh7uxpWyTtOCv0e1c0/hil3o4e6uJBsPHIS+q862AQqhLeyA+tyNVY1gwF3mIJTbeDSm4yrd4AWvFrfv/kHX6ttCK2UoFgq9gHp4MBT3PhCrB30C1kF9IeHW00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744723169; c=relaxed/simple;
-	bh=dUTm412+K/VmHkyZw+CmlWzv4zckQvZAia5fbSEQNn4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=apSLqOO2TcpOftTe7biOp3Lf373d5DgkqKNBtv51ypqbfCoT6WumqgwsCnG8ZaTFL5Q5u37tRijxWX4aMoirAU+xUmxtYewgg6UlM1K9ixoiL0JO6JHRrAHNaDCfn5i8Axi2NI9JJkBcrsAxyVy4bRqW5bU4trJZZOPMbY6P998=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsa+x95C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B29EC4CEDD;
-	Tue, 15 Apr 2025 13:19:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744723168;
-	bh=dUTm412+K/VmHkyZw+CmlWzv4zckQvZAia5fbSEQNn4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bsa+x95CEBNUO6b4gx8SCg5V/g6rbLU/TUMfQaDLQ1SXJZlNiLTN85TIQw4vtBxyu
-	 KqXMXtvGZ67Laj0y/0BHqw1DGEoVAGsGvMwAvXwnIDQYkoOTqX8TtVH4g9nSbV3iy7
-	 lsA5r+Z56NYTEmNzQMCEOUs/mfIrK9MtKcQMWYbw=
-Date: Tue, 15 Apr 2025 15:19:25 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Devaansh Kumar <devaanshk840@gmail.com>
-Cc: sashal@kernel.org, stable@vger.kernel.org, ast@kernel.org,
-	daniel@iogearbox.net, bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
-	linux-kernel-mentees@lists.linuxfoundation.org,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>
-Subject: Re: [PATCH] bpf: Remove tracing program restriction on map types
-Message-ID: <2025041517-semicolon-aloft-9910@gregkh>
-References: <20250415130910.2326537-1-devaanshk840@gmail.com>
+	s=arc-20240116; t=1744723543; c=relaxed/simple;
+	bh=UYUxPCQcFjA73UAxP9WXueMfGm86K1IfqKd8pR+K0JM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=j2NtYJ8zZ+BQjqdM6BGlhbUN/8wvYx+F52/Lhw0Sp+7kv0qYtwNScl+HmZjtWtmhrzVd5sN0VXXLneOB37NTw31MNRCMRvT0XgSSX6qgiQSPVzjJxAVlm2A2dlod3pzgtNmsPzpG+/7WCU6KE1VgdgcZeSzGvMSd+8CHGWtcxAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sudt9UFk; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7c58974ed57so517868885a.2;
+        Tue, 15 Apr 2025 06:25:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744723540; x=1745328340; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=UYUxPCQcFjA73UAxP9WXueMfGm86K1IfqKd8pR+K0JM=;
+        b=Sudt9UFkwOm3iC6+0xFtcz5wyp1qXSzlMEe/5DOwGNUiTfdmjKVgRmPMaOicE0JgZf
+         qzUH/Mplas2/Pm2M+Gj7dB0ouRTOk6pxOqk87r9XjF4IXNWYWCauc3s+ilJAuSYLVv6m
+         DfceQ5jWRF5SgK64UrnGQXD3CTSgqCz1La9aO0oZqHdsS0Mgzvp55W5/YY9HLPQix+XQ
+         TjJeTsIZaZ+FhwFKYjxIC9rUX5I4v/v1Uah7ZyStIYk/ko1udApYMBaP2vz+v09MjP2Y
+         6JMzln2A53JHOlqHKsO4QtQCjSSyGl0PdwgL0p+F3cvp3v6AsANCqVYoUfBsRSDSvr3G
+         4Njw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744723540; x=1745328340;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UYUxPCQcFjA73UAxP9WXueMfGm86K1IfqKd8pR+K0JM=;
+        b=D7QDiNpkpUlOlHBByU4MeoCUzvyc+8BIvUGspYRVw6Ab5TV1rSFe+Whan7jix5pbqQ
+         QkpFgY2yghKR6BpY2uwrww9PY4vPJv+iBwLnsTqfwOcCNoU0DkrVw6sSv17XXECJxylE
+         6JTvc+t109k/+kUqhlMmhH5geqwFOHOE7jW68ELuxMeGg8M7EJnj7lj6z0VKlhjEWJEo
+         u5Yz6t5Ua5Z3ctVTNd684HoVg6Ocsjw00/aIp/RFlz7/cwTVySUQKHV2MpXaYG4kzo4A
+         zUFkNARRIIganKe6Nxukl4RMTyuR/bJNgmBaVvUFf5KQ4ekxfR7ebn8HRoz3no6koZNx
+         FtIw==
+X-Forwarded-Encrypted: i=1; AJvYcCUDWCoXp4FJpAY6i4wPOscGZe8kT1HLfJRO/cuuIC626F8DjFomtt/OnE5CXOIhNqH8kqzZcAh9@vger.kernel.org, AJvYcCX4MWdpsOy8Ic2GfnUTfHU/toIz45Km/6A1DeTBiKmBpLVV3x9cvGPvTmDqEJ3STa/kgIvwvvFYJLr8m0iL@vger.kernel.org, AJvYcCXV0PREWSz/wzT27adM+Q3KcGiiI9JiDWMbj47F/V5xXIYOEAijhP+u2W6dQgdBNH5tdAE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzu22IoYl54cHYd2SprVDKaiz5KJ++IDpLO6M3geN/uSo5eqEhH
+	rIRn5TIMshtb8hp62sBalzzQvtc4I/OtNtxu8hDgGbZ4NhphgFHUCTE7hNpoLfF1K0CtD9CY4bW
+	/YWw8cUHNNiXZAZpm80VgN5VTJHk=
+X-Gm-Gg: ASbGncvGs/0TuSts9Jtnrd1JRKLPZaH3D9owQyBQyzb8hmQHEJ1nzQyNP0gDczHrVBX
+	P4oid/aEMKhBmOjRBBMSP1TmoaUOYMLFeiWVWqxlupmbSVIaiC4eLmBgNIZQRNEm2YyPJ/8npq5
+	W4oUjLhW1sK6y+AFei0ZBy9QVuRBs6AFKvIvbpjCyE
+X-Google-Smtp-Source: AGHT+IENUN3q9zUEpgp0yO+rQb1K6OiXAS8mHfuVjSa2hIIBeaF+kQ/tbXuTPbB9DLJpwa+uw5WeJlKVWmA3cg4aR3k=
+X-Received: by 2002:a05:6214:23cd:b0:6e8:fb8c:e6dd with SMTP id
+ 6a1803df08f44-6f230d55533mr226917916d6.5.1744723540626; Tue, 15 Apr 2025
+ 06:25:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250415130910.2326537-1-devaanshk840@gmail.com>
+References: <20250415130910.2326537-1-devaanshk840@gmail.com> <2025041517-semicolon-aloft-9910@gregkh>
+In-Reply-To: <2025041517-semicolon-aloft-9910@gregkh>
+From: Devaansh Kumar <devaanshk840@gmail.com>
+Date: Tue, 15 Apr 2025 18:55:28 +0530
+X-Gm-Features: ATxdqUE4dS_DLldbw8HBu898mJglnFnspTU3D7RHe1XAP46zEEX3kVq6zmxadGs
+Message-ID: <CA+RTe_hfdgPTwVX_pizHVnsDDFJoEOQD=dH3KuBXuDbycU0yXQ@mail.gmail.com>
+Subject: Re: [PATCH] bpf: Remove tracing program restriction on map types
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: sashal@kernel.org, stable@vger.kernel.org, ast@kernel.org, 
+	daniel@iogearbox.net, bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	skhan@linuxfoundation.org, linux-kernel-mentees@lists.linuxfoundation.org, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Andrii Nakryiko <andrii@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Apr 15, 2025 at 06:39:07PM +0530, Devaansh Kumar wrote:
-> [ Upstream commit 96da3f7d489d11b43e7c1af90d876b9a2492cca8 ]
-> 
-> The hash map is now fully converted to bpf_mem_alloc. Its implementation is not
-> allocating synchronously and not calling call_rcu() directly. It's now safe to
-> use non-preallocated hash maps in all types of tracing programs including
-> BPF_PROG_TYPE_PERF_EVENT that runs out of NMI context.
-> 
-> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-> Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-> Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-> Acked-by: Andrii Nakryiko <andrii@kernel.org>
-> Link: https://lore.kernel.org/bpf/20220902211058.60789-13-alexei.starovoitov@gmail.com
-> Signed-off-by: Devaansh Kumar <devaanshk840@gmail.com>
-> ---
->  kernel/bpf/verifier.c | 29 -----------------------------
->  1 file changed, 29 deletions(-)
+On Tue, 15 Apr 2025 at 18:49, Greg KH <gregkh@linuxfoundation.org> wrote:
+> what kernel tree(s) is this for?
 
-what kernel tree(s) is this for?
+This backport is for v5.15.y stable version. My bad, I should have
+mentioned it in the subject.
 
