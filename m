@@ -1,127 +1,145 @@
-Return-Path: <stable+bounces-132706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26F4EA896DF
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 10:37:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15DDCA89720
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 10:52:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A25A3BB45C
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 08:35:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D4CC188ED73
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 08:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA2C27A118;
-	Tue, 15 Apr 2025 08:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8780527A119;
+	Tue, 15 Apr 2025 08:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XbTM3J1u"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3C+0xkhw";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+P38YhTz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7141DAC92;
-	Tue, 15 Apr 2025 08:35:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD13A1DDC18;
+	Tue, 15 Apr 2025 08:51:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744706148; cv=none; b=nIq0VJUjGZGE1mgCo11L0ciGfuJNevdR5/jzUn9ttiixQY/b1+8a/sw3Kkou/E7DQVwq/Rg+ftpijyzMoyy3Mjw6wi++6D+l+ATvizOINEE7OkticwWpchfW1zPCJzrT9Uvc+bm16sPEGGzF0DCt1xEssuQ0WS5Q40VcuLirmS8=
+	t=1744707115; cv=none; b=eD+4+NxsnHeOewkZsBiKd8LsCw3X6TI7U+Fb14faPvmxXBlfaMHRuc9hNsOPqXqq3EOfMe89+e3EcpiZDaG7FMAbwcHsvtYwo/3ROIF6azqx6nscACyNlUpwzh8cJDboMi+0HP2gBu45tSbbCCyvrlDhVPQ9EKmP7EGB9+fKYjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744706148; c=relaxed/simple;
-	bh=V1699VeLw28LsYN0B5Q7I8KcWdg2NFRLB5qafh9m23o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DZQwAkAdB/vvrV9isFHDmI6o6XLZTOmaR7V8xBkAB6ORXRwg4EoNsbYs9kl206zvpItDOc95bMnXlVYdmD0JazZlQ2jbbwXSP3KeB3E9gPw66Gx78wyWmG7Pzj3tLf0Gt8ja1dsS+bBO5jfNIMm9ovKsBxt7Up6vhcMWT/W7zos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XbTM3J1u; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2ff85fec403so5878481a91.1;
-        Tue, 15 Apr 2025 01:35:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744706146; x=1745310946; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=b7wgcoQf1HXs+uoKapVgaPIMG7HIkBdUZKlvUkkaF2E=;
-        b=XbTM3J1u1sO1pdUZLlZBisqxqKrSwetbgrSeJ+n0u4LN4OkexflhLGQLk1CKCQ7l53
-         23hNxxieBobh8cAEaCqMUPccbrah7UDj0T/+/UPhj0NIpSE02M/6HGi/naOkiTbzeBFH
-         h1xJyll3O5m335CFQrQi8w7S985VofkJN55Pxaui6mLMgqETCugU6bhoz3ODrEKjqcjj
-         jj9WeX7+3/w6EPnKEDf62NMe0JL4xk65hYL7dm6FlLyERShyr7w5DZFu/OoRS3CFVSk3
-         3eWFkeiKRIHsi1t3hLq2gYPh2xI5ktiPfD26L6gE5FNx6TO4h4J8sHFcURFlIwXdwPPr
-         CM3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744706146; x=1745310946;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=b7wgcoQf1HXs+uoKapVgaPIMG7HIkBdUZKlvUkkaF2E=;
-        b=v9D6uHviGwtkx7NQWTsazWge9nEDaJ5uM8ZQr7Q+csnQYME8iCjlblCQbSAQ4YODm8
-         qTJPxb6Gy03q8kFWMLCGH47ICJx5khVp16BtaU2u958ZZgvsd8zA/VpgBfLTu36MJh3s
-         UoPcql3ksganAv4MOjGqt4lT6RLpRXKYukcxz8MnON/n0bkFVuBQu7GyC8bhWkWech+5
-         Zr7ngfXc689nZNqs9+LdAq7NeDQ+pPnuKBG/+ZJTrAceViAORPw9LwiWQqeCWddpr959
-         Y3dJtH2rohip5yL/rl05SA3LBXzGSnZghgSAavibMz+Jf5XSu4q/JLr2jRj6bbWB0bCl
-         O9vw==
-X-Forwarded-Encrypted: i=1; AJvYcCUA351BYpsyB0qw8tXgeZvFSsCSzE4oFi7tYbh9Z3W1Ai8xGTV+oZWKCtO4A1xJNqO9u/5Rty5yZA8gLac=@vger.kernel.org, AJvYcCUy+B7IgrvtHvxuvPnVdXQFr9cijODGpF+WTnkccfs96K3+IQcfn3oJglgy2a4Lm9B6dGs0G1fa@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzWdzdMwthZhCdAJV+JMY/OYVvKhm8x0V5oXVwrvyiIMSr+xK8
-	aREtl3abaFGUjhy/soVU0NvRIOsOSq9yb4z2mNn3vjLWGbygh7Np
-X-Gm-Gg: ASbGncsMe8EXQ3UfSZPnNfMGZiRJWKCoQs2oyDJnvTN4yujU/uuNMLOno7G60qU7xTf
-	4z5ItseyLNjVd8Z5Sd0ZMIg4k0yIhKvsKcHf7TAUOWqo70eQapd37hZZa+OQeY3lLrMUjgHIH2/
-	K6YazmrfZc/vSXC2YjdzBgYLYW/vw19Z6Mv54BmxkxkmWbap7TzAQvyy4Fol5jrUL9vyofxXzTN
-	QyGHFsq0qjnz1AnQ5uFVNqG/UZBalfui6NVxQ56YZ0TcOzv+FPOJTdyCKlRXS4GrEE75Hm3X+Xk
-	HFv/rf13dj38RMY5FNCd/3t8Uv6ckdGWcUJW3/I5/6QgNGw5O2MkQw29V4wl5Q==
-X-Google-Smtp-Source: AGHT+IEtyDE/Rk+/GYGCjbdmJSJYIY9LwLisO4zjpojtftfoG8bs61Cw1ghB546bQODnjkT/w+EpWA==
-X-Received: by 2002:a17:90b:58c5:b0:2fc:aaf:74d3 with SMTP id 98e67ed59e1d1-3084f2fbb88mr3594703a91.4.1744706145908;
-        Tue, 15 Apr 2025 01:35:45 -0700 (PDT)
-Received: from VM-16-38-fedora.. ([43.135.149.86])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-306df06a767sm13973871a91.6.2025.04.15.01.35.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Apr 2025 01:35:45 -0700 (PDT)
-From: alexjlzheng@gmail.com
-X-Google-Original-From: alexjlzheng@tencent.com
-To: willy@infradead.org,
-	akpm@linux-foundation.org,
-	andrea@betterlinux.com,
-	fengguang.wu@intel.com
-Cc: linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	mengensun@tencent.com,
-	Jinliang Zheng <alexjlzheng@tencent.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm: fix ratelimit_pages update error in dirty_ratio_handler()
-Date: Tue, 15 Apr 2025 16:35:42 +0800
-Message-ID: <20250415083542.6946-1-alexjlzheng@tencent.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1744707115; c=relaxed/simple;
+	bh=l6EgTfG/rNsxzj7YblsFEs3VRkJDgFjjSVvMIbcaSIM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ICCQUW5t4yzmDOIIo7TYAA/yNN4I+IG21qf2H14qvdSMoxbkz4niRqVdXPS6ub3z6LvJvNhWE11w3uXascMxQezaT74vxJ6/tHAXphQu19Zd2IBMI2SFrefJODsdrTIVEjg7L45XqlCC3bd9Ce9gKUaKLs7fhka1uN9sckVTbmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3C+0xkhw; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+P38YhTz; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1744707110;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=PH6MVwxzLv8eF6loMN8LTTQbGVnttpn8SLDX1xC+Qgo=;
+	b=3C+0xkhwu9H2ovaJRCfJTMtbdFS7iCD2T4FpT9OJGXFsPq/iLIkH0PqAZreWqL5FMOAb+N
+	oG3T6qoACEytO6vKHY4CMSDNryYfgXO38RkI+7Mt8gPaqoPK6k4sjsT8TEXCFOSTz4eKH+
+	hHNLebtwTopStnDrX+vkK/Qd7v7Cc5jfSGi9kYi2CVL1ZzON0/sZEbXh/C2Gl3ZUyUHfGt
+	nDZ6ed2xg7262wzHPTOZJ6MjfkEXQWJrYNS28LurtZv4w6kyA/lDr/QLTij1z2+MMWLzGk
+	kF6TEJX7x4UA0fJfxDCoiVAai7fQAxCPaVM85HHI3Ge2VOMyEPnRQQtkCifpag==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1744707110;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=PH6MVwxzLv8eF6loMN8LTTQbGVnttpn8SLDX1xC+Qgo=;
+	b=+P38YhTzlVHayzy4c8rI89g2bBdDxGSgZljqDHmgDLArlQpeWoCpZmeBSOhdrBHmHBIRaZ
+	GZYS2M0YJwyVOHCQ==
+Date: Tue, 15 Apr 2025 10:51:47 +0200
+Subject: [PATCH v2] loop: properly send KOBJ_CHANGED uevent for disk device
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Message-Id: <20250415-loop-uevent-changed-v2-1-0c4e6a923b2a@linutronix.de>
+X-B4-Tracking: v=1; b=H4sIACIe/mcC/32NywqDMBBFf0WybkoexpKu+h/FRTRjHZBEEg0W8
+ d8bddeFzOoM99y7kggBIZJnsZIACSN6l0HcCtL2xn2Aos1MBBOKSfagg/cjnSGBm+iZsNQYWWn
+ WlRKYJNkcA3S4HK3vOnOPcfLhe4wkvn+v+xKn+UArZYTUpVCvAd08Be9wuVvYJ06fX/htI3Tba
+ N5Uwv759bZtP8wS5cz6AAAA
+X-Change-ID: 20250307-loop-uevent-changed-aa3690f43e03
+To: Jens Axboe <axboe@kernel.dk>, Martijn Coenen <maco@android.com>, 
+ Alyssa Ross <hi@alyssa.is>, Christoph Hellwig <hch@lst.de>, 
+ Greg KH <greg@kroah.com>, Jan Kara <jack@suse.cz>
+Cc: John Ogness <john.ogness@linutronix.de>, linux-block@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1744707109; l=2327;
+ i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
+ bh=l6EgTfG/rNsxzj7YblsFEs3VRkJDgFjjSVvMIbcaSIM=;
+ b=f16o4dJg2nliQLGkEQn1igGREQ/SBPg0rQ+5p2AI7Bx/+OeMl6YOVVVsFs3xLBUycq/uUH9WA
+ YIUJ6Uobe/+AaKmVyFyCbbkVVnpvahZfF1NfVp2x4dyAGyKPZ7kfwtH
+X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
+ pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 
-From: Jinliang Zheng <alexjlzheng@tencent.com>
+The original commit message and the wording "uncork" in the code comment
+indicate that it is expected that the suppressed event instances are
+automatically sent after unsuppressing.
+This is not the case, instead they are discarded.
+In effect this means that no "changed" events are emitted on the device
+itself by default.
+While each discovered partition does trigger a changed event on the
+device, devices without partitions don't have any event emitted.
 
-In the dirty_ratio_handler() function, vm_dirty_bytes must be set to
-zero before calling writeback_set_ratelimit(), as global_dirty_limits()
-always prioritizes the value of vm_dirty_bytes.
+This makes udev miss the device creation and prompted workarounds in
+userspace. See the linked util-linux/losetup bug.
 
-Fixes: 9d823e8f6b1b ("writeback: per task dirty rate limit")
-Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
+Explicitly emit the events and drop the confusingly worded comments.
+
+Link: https://github.com/util-linux/util-linux/issues/2434
+Fixes: 498ef5c777d9 ("loop: suppress uevents while reconfiguring the device")
 Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
- mm/page-writeback.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v2:
+- Use correct Fixes tag
+- Rework commit message slightly
+- Rebase onto v6.15-rc1
+- Link to v1: https://lore.kernel.org/r/20250317-loop-uevent-changed-v1-1-cb29cb91b62d@linutronix.de
+---
+ drivers/block/loop.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-index c81624bc3969..20e1d76f1eba 100644
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -520,8 +520,8 @@ static int dirty_ratio_handler(const struct ctl_table *table, int write, void *b
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index 674527d770dc669e982a2b441af1171559aa427c..09a725710a21171e0adf5888f929ccaf94e98992 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -667,8 +667,8 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
  
- 	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
- 	if (ret == 0 && write && vm_dirty_ratio != old_ratio) {
--		writeback_set_ratelimit();
- 		vm_dirty_bytes = 0;
-+		writeback_set_ratelimit();
- 	}
- 	return ret;
- }
+ 	error = 0;
+ done:
+-	/* enable and uncork uevent now that we are done */
+ 	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
++	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
+ 	return error;
+ 
+ out_err:
+@@ -1129,8 +1129,8 @@ static int loop_configure(struct loop_device *lo, blk_mode_t mode,
+ 	if (partscan)
+ 		clear_bit(GD_SUPPRESS_PART_SCAN, &lo->lo_disk->state);
+ 
+-	/* enable and uncork uevent now that we are done */
+ 	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
++	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
+ 
+ 	loop_global_unlock(lo, is_loop);
+ 	if (partscan)
+
+---
+base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+change-id: 20250307-loop-uevent-changed-aa3690f43e03
+
+Best regards,
 -- 
-2.49.0
+Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
 
