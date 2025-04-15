@@ -1,111 +1,100 @@
-Return-Path: <stable+bounces-132736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AABB4A89DD4
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 14:23:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9349BA89E32
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 14:35:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78F7617FED5
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 12:21:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4C654411FB
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 12:35:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA7C2973CC;
-	Tue, 15 Apr 2025 12:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C5628469B;
+	Tue, 15 Apr 2025 12:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JfH7XsGA"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="tCRIccV9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from outbound.pv.icloud.com (p-west1-cluster5-host6-snip4-10.eps.apple.com [57.103.66.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908A82973AF;
-	Tue, 15 Apr 2025 12:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9011C6FF5
+	for <stable@vger.kernel.org>; Tue, 15 Apr 2025 12:34:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.66.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744719553; cv=none; b=uVD3OfqY8o3KGOwg21lHDnhDs27hQXTmOw7Xf5S8DGAu5eP2HiUva41kwcWdmRn3vyhInPOx4Jc2PFhdHXEN3MKJQ/4+ddrnJcVay0j2VjK5S/dTiiWYzXjX7bzBj2sX0N+T0jrBpWP3AvMNd8yxvmjYpuBY91CHrmjDd1EuvvA=
+	t=1744720495; cv=none; b=KEIecIPx/HCRHUguYPCs71OQbCunmQzN0Bl6dhaeFrUbyB3pAWwv5pGiI9tUFoCaGIYIdcTp23QJMLPqYtktMXkOCGaaE5bBLjkdsH7z3fsvGcVKGtn8rM8B+CSxHVTE+le5+J+WNSD+YgY17QlXY/mlBlCwTxX0nBvNehlqsME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744719553; c=relaxed/simple;
-	bh=COvRNNF786kYGi8CjZYmPlrfxrjGI6tMrD6MDqpsP14=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TaxGRDy0z9dFZU/NHRuNzdOTlFVK1Pyovc/LgubX+h+tdA0uYd1y3FD9kK54qD36w3DKqXchVNqHoxYJrrHiSIGDC50UgEUlTVOIJyXtPalzn+NkP56SyhBCvdyXhdk7uXPsmbc5AuCpU+1gYgfb20EzsjhJXLwZJS5S8EyNfSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JfH7XsGA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85831C4CEE5;
-	Tue, 15 Apr 2025 12:19:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744719553;
-	bh=COvRNNF786kYGi8CjZYmPlrfxrjGI6tMrD6MDqpsP14=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JfH7XsGAmFx5ngYrAkEkA4JmaHVN3Q3GYrKKTkmVqE+yulpJOGRvsLOkobdtTwOVS
-	 uvHIr9FJU29TknobKd5XqDD+pKl3CCQPzzKUUe9E0xsAId0XOFEIshjFAAqV+XKAsR
-	 6EKtG+VarvyUJxfaVtifWWOeUScsthvHRxnzEfeEKesk3Oq+jPIPQOW6HRdjnZUgAz
-	 /xaDvFrFPPr+40qGFcG+ZA64FKIuLuoSkNOkeTijdo/1og3emz7Yj9GSEklD0eynkh
-	 EuQes8WKSAlKkDirHIta+vQrePOjKBHqKPVkrWXfVQbG9cLTyn9DjhogJ4K7+9KRbG
-	 jaLBYOACSBWcA==
-From: Philipp Stanner <phasta@kernel.org>
-To: Lyude Paul <lyude@redhat.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: dri-devel@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org,
-	Philipp Stanner <phasta@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 1/2] drm/nouveau: Fix WARN_ON in nouveau_fence_context_kill()
-Date: Tue, 15 Apr 2025 14:19:00 +0200
-Message-ID: <20250415121900.55719-3-phasta@kernel.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250415121900.55719-2-phasta@kernel.org>
-References: <20250415121900.55719-2-phasta@kernel.org>
+	s=arc-20240116; t=1744720495; c=relaxed/simple;
+	bh=nuqkopAoN0+cSyqxLSqp0fYvmosXYHX5j4WUMF7BKPc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=RXBBXvO2Icg4mjM+avLqd9Ti3oOnwf4EatU9yXwCKjqxUiF2q3cYgcMBkDU4YvybncRxtehPURdi7fk0or17HWIswZX/Mw6fawdZiISCEnN1l2BULmtgHrMwuBAQ7zOBaqWJB0NjJGXzqthQFT7+wKrIltzeu84ZXHe6S8kxDco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=tCRIccV9; arc=none smtp.client-ip=57.103.66.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; bh=vpZUU7X3KJcG9DmlOmJn8NgYD5L7M5AxAF5Ev3NBqhw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:x-icloud-hme;
+	b=tCRIccV9QpOykH79Lv+lFk/1CIqE+jTyxvhVmNaP+fTqclyBHRVb3muYK+QRUfMFw
+	 L6c4LYKOPFv/PtcMpXNnKzkmttQaaVdEe0RuVTrN4l7Lrl0L0GGqSyTe4LpvBBlgcG
+	 xS2hZzStjdSaGXLk4yStcP7zjAGIwz1KSX08AQig23QlPmenFVjdkSggu+XANpPQAC
+	 USln3yEB2I1OvdlAh2haxj55erKLemlYv5vZherpCSMOfjnhRguXUnqa8Ya8Hj37qi
+	 o6LacvaL1fDKSIwboJJP6f9iKhvW8mFPWar513zRUt1Ke1J8TDWjzH6PArW0vdodxD
+	 gU1mK2zWgtVPw==
+Received: from [192.168.1.26] (pv-asmtp-me-k8s.p00.prod.me.com [17.56.9.36])
+	by outbound.pv.icloud.com (Postfix) with ESMTPSA id F19F11800413;
+	Tue, 15 Apr 2025 12:34:48 +0000 (UTC)
+From: Zijun Hu <zijun_hu@icloud.com>
+Subject: [PATCH v2 0/3] configfs: fix bugs
+Date: Tue, 15 Apr 2025 20:34:24 +0800
+Message-Id: <20250415-fix_configfs-v2-0-fcd527dd1824@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFBS/mcC/3WMwQ7CIBAFf6XZsxiglFJP/odpTLOFdg+CghJNw
+ 7+LvXuc9zKzQbKRbIJTs0G0mRIFX0EeGsB18otlNFcGyWXHFTfM0fuKwTtaXGJ6GHrVCt2iVlC
+ Ve7T133OXsfJK6RniZ69n8Vv/hLJgnHWTQmMM72bXnx8vQvJ4xHCDsZTyBWDS/rCqAAAA
+X-Change-ID: 20250408-fix_configfs-699743163c64
+To: Joel Becker <jlbec@evilplan.org>, 
+ Pantelis Antoniou <pantelis.antoniou@konsulko.com>, 
+ Al Viro <viro@zeniv.linux.org.uk>
+Cc: Zijun Hu <zijun_hu@icloud.com>, linux-kernel@vger.kernel.org, 
+ Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Proofpoint-ORIG-GUID: MewdRiODxh5n0wb68w9Lv8FrFx8KUekX
+X-Proofpoint-GUID: MewdRiODxh5n0wb68w9Lv8FrFx8KUekX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-15_05,2025-04-10_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 adultscore=0 spamscore=0
+ clxscore=1015 bulkscore=0 suspectscore=0 phishscore=0 mlxlogscore=874
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2504150089
 
-Nouveau is mostly designed in a way that it's expected that fences only
-ever get signaled through nouveau_fence_signal(). However, in at least
-one other place, nouveau_fence_done(), can signal fences, too. If that
-happens (race) a signaled fence remains in the pending list for a while,
-until it gets removed by nouveau_fence_update().
-
-Should nouveau_fence_context_kill() run in the meantime, this would be
-a bug because the function would attempt to set an error code on an
-already signaled fence.
-
-Have nouveau_fence_context_kill() check for a fence being signaled.
-
-Cc: <stable@vger.kernel.org> # v5.10+
-Fixes: ea13e5abf807 ("drm/nouveau: signal pending fences when channel has been killed")
-Suggested-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
 ---
- drivers/gpu/drm/nouveau/nouveau_fence.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v2:
+- Drop the last patch which seems wrong.
+- Link to v1: https://lore.kernel.org/r/20250408-fix_configfs-v1-0-5a4c88805df7@quicinc.com
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_fence.c b/drivers/gpu/drm/nouveau/nouveau_fence.c
-index 7622587f149e..6ded8c2b6d3b 100644
---- a/drivers/gpu/drm/nouveau/nouveau_fence.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_fence.c
-@@ -90,7 +90,7 @@ nouveau_fence_context_kill(struct nouveau_fence_chan *fctx, int error)
- 	while (!list_empty(&fctx->pending)) {
- 		fence = list_entry(fctx->pending.next, typeof(*fence), head);
- 
--		if (error)
-+		if (error && !dma_fence_is_signaled_locked(&fence->base))
- 			dma_fence_set_error(&fence->base, error);
- 
- 		if (nouveau_fence_signal(fence))
+---
+Zijun Hu (3):
+      configfs: Delete semicolon from macro type_print() definition
+      configfs: Do not override creating attribute file failure in populate_attrs()
+      configfs: Correct error value returned by API config_item_set_name()
+
+ fs/configfs/dir.c  | 4 ++--
+ fs/configfs/item.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+---
+base-commit: 38fec10eb60d687e30c8c6b5420d86e8149f7557
+change-id: 20250408-fix_configfs-699743163c64
+
+Best regards,
 -- 
-2.48.1
+Zijun Hu <quic_zijuhu@quicinc.com>
 
 
