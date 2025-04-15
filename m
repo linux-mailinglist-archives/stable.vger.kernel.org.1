@@ -1,56 +1,91 @@
-Return-Path: <stable+bounces-132705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E19C2A89699
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 10:30:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26F4EA896DF
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 10:37:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 761BE3B8FDF
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 08:30:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A25A3BB45C
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 08:35:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4C128934D;
-	Tue, 15 Apr 2025 08:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA2C27A118;
+	Tue, 15 Apr 2025 08:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="kWlRrhmT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XbTM3J1u"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA63E279913;
-	Tue, 15 Apr 2025 08:27:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7141DAC92;
+	Tue, 15 Apr 2025 08:35:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744705657; cv=none; b=gQWTcmgTblkuQafyMgzptFkZ5AAfb54GFNDAXWVpHoT+ChKK7Hao04ghsP/wWPW8anTTUWPdQjE+/SZZ0GAq8eLLiOhYsONSgMWLqw2K/1Meex9FJKt9MYOQ2PSzCdGIV65C4sbnMK/VKy6x0I6Vm3/UG7OW+uYOCkgbFDDTtQw=
+	t=1744706148; cv=none; b=nIq0VJUjGZGE1mgCo11L0ciGfuJNevdR5/jzUn9ttiixQY/b1+8a/sw3Kkou/E7DQVwq/Rg+ftpijyzMoyy3Mjw6wi++6D+l+ATvizOINEE7OkticwWpchfW1zPCJzrT9Uvc+bm16sPEGGzF0DCt1xEssuQ0WS5Q40VcuLirmS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744705657; c=relaxed/simple;
-	bh=/YTIOL4HC+RV4Q8BA5tWZBttbOx9E192dFHIl2r7BUA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FthaYytlWdWouZl73pDnRtrWhQCCylC1Ie6ReC7fTRbWSt6sK3SDW2O91jBnc04muxYrJRbII37/jjKqQ6f95XeNWPm6H5iGgbSR1QFqLSTRIH0sZ/hNe9trf+kGoKuynPSrYN+Kw/HXrEgGyXPz56UdCIE2m0QQqDrfNLpH89s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=kWlRrhmT; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1744705643;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=qcj60WxuwxsCiblOzqs/zQo+ybf28ZZc3VeFKLoGV8o=;
-	b=kWlRrhmTdidWZqcxNP17QkSx6dOBMXurK0Wq0U61FzTR9abGfMfKTQlAyaHn7JWKKZ4Kkb
-	fOdAo9wn9+vRrve0W9vpGZ7kymDoKWnD1bVzfjFnKq04wqCvT9GiE5qR2IFVnO1qotzkKq
-	afZLevazB7GVQlPCW/6zF3oM0GszP9c=
-To: Hans Verkuil <hverkuil@xs4all.nl>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Liu Shixin <liushixin2@huawei.com>,
-	linux-media@vger.kernel.org,
+	s=arc-20240116; t=1744706148; c=relaxed/simple;
+	bh=V1699VeLw28LsYN0B5Q7I8KcWdg2NFRLB5qafh9m23o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DZQwAkAdB/vvrV9isFHDmI6o6XLZTOmaR7V8xBkAB6ORXRwg4EoNsbYs9kl206zvpItDOc95bMnXlVYdmD0JazZlQ2jbbwXSP3KeB3E9gPw66Gx78wyWmG7Pzj3tLf0Gt8ja1dsS+bBO5jfNIMm9ovKsBxt7Up6vhcMWT/W7zos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XbTM3J1u; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2ff85fec403so5878481a91.1;
+        Tue, 15 Apr 2025 01:35:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744706146; x=1745310946; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=b7wgcoQf1HXs+uoKapVgaPIMG7HIkBdUZKlvUkkaF2E=;
+        b=XbTM3J1u1sO1pdUZLlZBisqxqKrSwetbgrSeJ+n0u4LN4OkexflhLGQLk1CKCQ7l53
+         23hNxxieBobh8cAEaCqMUPccbrah7UDj0T/+/UPhj0NIpSE02M/6HGi/naOkiTbzeBFH
+         h1xJyll3O5m335CFQrQi8w7S985VofkJN55Pxaui6mLMgqETCugU6bhoz3ODrEKjqcjj
+         jj9WeX7+3/w6EPnKEDf62NMe0JL4xk65hYL7dm6FlLyERShyr7w5DZFu/OoRS3CFVSk3
+         3eWFkeiKRIHsi1t3hLq2gYPh2xI5ktiPfD26L6gE5FNx6TO4h4J8sHFcURFlIwXdwPPr
+         CM3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744706146; x=1745310946;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=b7wgcoQf1HXs+uoKapVgaPIMG7HIkBdUZKlvUkkaF2E=;
+        b=v9D6uHviGwtkx7NQWTsazWge9nEDaJ5uM8ZQr7Q+csnQYME8iCjlblCQbSAQ4YODm8
+         qTJPxb6Gy03q8kFWMLCGH47ICJx5khVp16BtaU2u958ZZgvsd8zA/VpgBfLTu36MJh3s
+         UoPcql3ksganAv4MOjGqt4lT6RLpRXKYukcxz8MnON/n0bkFVuBQu7GyC8bhWkWech+5
+         Zr7ngfXc689nZNqs9+LdAq7NeDQ+pPnuKBG/+ZJTrAceViAORPw9LwiWQqeCWddpr959
+         Y3dJtH2rohip5yL/rl05SA3LBXzGSnZghgSAavibMz+Jf5XSu4q/JLr2jRj6bbWB0bCl
+         O9vw==
+X-Forwarded-Encrypted: i=1; AJvYcCUA351BYpsyB0qw8tXgeZvFSsCSzE4oFi7tYbh9Z3W1Ai8xGTV+oZWKCtO4A1xJNqO9u/5Rty5yZA8gLac=@vger.kernel.org, AJvYcCUy+B7IgrvtHvxuvPnVdXQFr9cijODGpF+WTnkccfs96K3+IQcfn3oJglgy2a4Lm9B6dGs0G1fa@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzWdzdMwthZhCdAJV+JMY/OYVvKhm8x0V5oXVwrvyiIMSr+xK8
+	aREtl3abaFGUjhy/soVU0NvRIOsOSq9yb4z2mNn3vjLWGbygh7Np
+X-Gm-Gg: ASbGncsMe8EXQ3UfSZPnNfMGZiRJWKCoQs2oyDJnvTN4yujU/uuNMLOno7G60qU7xTf
+	4z5ItseyLNjVd8Z5Sd0ZMIg4k0yIhKvsKcHf7TAUOWqo70eQapd37hZZa+OQeY3lLrMUjgHIH2/
+	K6YazmrfZc/vSXC2YjdzBgYLYW/vw19Z6Mv54BmxkxkmWbap7TzAQvyy4Fol5jrUL9vyofxXzTN
+	QyGHFsq0qjnz1AnQ5uFVNqG/UZBalfui6NVxQ56YZ0TcOzv+FPOJTdyCKlRXS4GrEE75Hm3X+Xk
+	HFv/rf13dj38RMY5FNCd/3t8Uv6ckdGWcUJW3/I5/6QgNGw5O2MkQw29V4wl5Q==
+X-Google-Smtp-Source: AGHT+IEtyDE/Rk+/GYGCjbdmJSJYIY9LwLisO4zjpojtftfoG8bs61Cw1ghB546bQODnjkT/w+EpWA==
+X-Received: by 2002:a17:90b:58c5:b0:2fc:aaf:74d3 with SMTP id 98e67ed59e1d1-3084f2fbb88mr3594703a91.4.1744706145908;
+        Tue, 15 Apr 2025 01:35:45 -0700 (PDT)
+Received: from VM-16-38-fedora.. ([43.135.149.86])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-306df06a767sm13973871a91.6.2025.04.15.01.35.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Apr 2025 01:35:45 -0700 (PDT)
+From: alexjlzheng@gmail.com
+X-Google-Original-From: alexjlzheng@tencent.com
+To: willy@infradead.org,
+	akpm@linux-foundation.org,
+	andrea@betterlinux.com,
+	fengguang.wu@intel.com
+Cc: linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org,
-	syzbot+365005005522b70a36f2@syzkaller.appspotmail.com
-Subject: [PATCH] media: vivid: Change the siize of the composing
-Date: Tue, 15 Apr 2025 11:27:21 +0300
-Message-ID: <20250415082722.18022-1-arefev@swemel.ru>
+	mengensun@tencent.com,
+	Jinliang Zheng <alexjlzheng@tencent.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] mm: fix ratelimit_pages update error in dirty_ratio_handler()
+Date: Tue, 15 Apr 2025 16:35:42 +0800
+Message-ID: <20250415083542.6946-1-alexjlzheng@tencent.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,61 +94,34 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-syzkaller found a bug:
+From: Jinliang Zheng <alexjlzheng@tencent.com>
 
-BUG: KASAN: vmalloc-out-of-bounds in tpg_fill_plane_pattern drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2608 [inline]
-BUG: KASAN: vmalloc-out-of-bounds in tpg_fill_plane_buffer+0x1a9c/0x5af0 drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2705
-Write of size 1440 at addr ffffc9000d0ffda0 by task vivid-000-vid-c/5304
+In the dirty_ratio_handler() function, vm_dirty_bytes must be set to
+zero before calling writeback_set_ratelimit(), as global_dirty_limits()
+always prioritizes the value of vm_dirty_bytes.
 
-CPU: 0 UID: 0 PID: 5304 Comm: vivid-000-vid-c Not tainted 6.14.0-rc2-syzkaller-00039-g09fbf3d50205 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0x169/0x550 mm/kasan/report.c:489
- kasan_report+0x143/0x180 mm/kasan/report.c:602
- kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
- __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
- tpg_fill_plane_pattern drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2608 [inline]
- tpg_fill_plane_buffer+0x1a9c/0x5af0 drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2705
- vivid_fillbuff drivers/media/test-drivers/vivid/vivid-kthread-cap.c:470 [inline]
- vivid_thread_vid_cap_tick+0xf8e/0x60d0 drivers/media/test-drivers/vivid/vivid-kthread-cap.c:629
- vivid_thread_vid_cap+0x8aa/0xf30 drivers/media/test-drivers/vivid/vivid-kthread-cap.c:767
- kthread+0x7a9/0x920 kernel/kthread.c:464
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-
-The composition size cannot be larger than the size of fmt_cap_rect.
-So execute v4l2_rect_map_inside() even if has_compose_cap == 0.
-
-Fixes: 94a7ad928346 ("media: vivid: fix compose size exceed boundary")
+Fixes: 9d823e8f6b1b ("writeback: per task dirty rate limit")
+Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
 Cc: stable@vger.kernel.org
-Reported-by: syzbot+365005005522b70a36f2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?id=8ed8e8cc30cbe0d86c9a25bd1d6a5775129b8ea3
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
 ---
- drivers/media/test-drivers/vivid/vivid-vid-cap.c | 2 +-
+ mm/page-writeback.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/test-drivers/vivid/vivid-vid-cap.c b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-index b166d90177c6..df5d1c2a42ef 100644
---- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-+++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-@@ -946,8 +946,8 @@ int vivid_vid_cap_s_selection(struct file *file, void *fh, struct v4l2_selection
- 			if (dev->has_compose_cap) {
- 				v4l2_rect_set_min_size(compose, &min_rect);
- 				v4l2_rect_set_max_size(compose, &max_rect);
--				v4l2_rect_map_inside(compose, &fmt);
- 			}
-+			v4l2_rect_map_inside(compose, &fmt);
- 			dev->fmt_cap_rect = fmt;
- 			tpg_s_buf_height(&dev->tpg, fmt.height);
- 		} else if (dev->has_compose_cap) {
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index c81624bc3969..20e1d76f1eba 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -520,8 +520,8 @@ static int dirty_ratio_handler(const struct ctl_table *table, int write, void *b
+ 
+ 	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
+ 	if (ret == 0 && write && vm_dirty_ratio != old_ratio) {
+-		writeback_set_ratelimit();
+ 		vm_dirty_bytes = 0;
++		writeback_set_ratelimit();
+ 	}
+ 	return ret;
+ }
 -- 
-2.43.0
+2.49.0
 
 
