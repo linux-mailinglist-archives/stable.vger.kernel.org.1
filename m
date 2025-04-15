@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-132789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C34B5A8AA41
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 23:43:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABCAAA8AA42
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 23:43:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D672517FDF3
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 21:43:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFA464413A5
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 21:43:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F8C725745F;
-	Tue, 15 Apr 2025 21:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D48B256C60;
+	Tue, 15 Apr 2025 21:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DqiijMU2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rrZGEMEY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A92256C60
-	for <stable@vger.kernel.org>; Tue, 15 Apr 2025 21:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F53253357
+	for <stable@vger.kernel.org>; Tue, 15 Apr 2025 21:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744753401; cv=none; b=FgcwrmZzVX2LfJrsBEp1nkvvTN/LGNRRybMqK5iw6si0ZG07rBcXlJVJ/NHO4z/vinqdKrVXjH8gcoDLuTuuKfHtJyTXiqAvBTVHLX2QvMVB1GpdX67StRVqpc/J0vItEbd090+06SfRwwarNSMSuouKNd3osMEktOGkvTrhATc=
+	t=1744753403; cv=none; b=LXCKb4DxrAIiV52BgJHV5/XHI8pgBIN+IAMED6XvvW12jsWBqDppxIwkJ2Nnxt6/hEdD5wOtw07nKbfljU8iPGs3guDzAzVZ7IbUAVsVuGzXSBre/2KZH5FTcenAPHq/TWwTMFpcvmxwCQjRYZOFMzPbgwbXKqAmtE1BoNYtMbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744753401; c=relaxed/simple;
-	bh=aTYh5nKCz6WpDqdV8eVpPWS1UKzSyr/KLg4M/MyNYGw=;
+	s=arc-20240116; t=1744753403; c=relaxed/simple;
+	bh=kE+aPT5wvJ58RaJ7LPHwfUb7icFh7pmNSidIrc174ds=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KJzTpHijSNkdVkUUnomGT8LJnk5Hqu1NOeh04HvSbi3TmOf09OMWL8Q5rNP9DntYDJRy0pAPnAN4vBucKZpwDb8eaz7y/BWtaqHOu33asrA6ObqLoNvuV2c+ifkHQ/0KCIJ35OZ7K0dRpsGly8Qydxx81ZfongWgvWX65Dh5qNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DqiijMU2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDAC5C4CEE7;
-	Tue, 15 Apr 2025 21:43:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YBd/rRhhicWMweNWUMCqoDdIrja/OG++Iu7FxU3kqeWJoSn2BnzKxOpbzvzIe2tE/tmmC16Crb98DZCWZsfr5pUnI/+XWRO3NhR1iF3q8zq1vAWRUjrNABDP6ygj7+i/zuY2vDaohmzVTRHSUEKMViO5V12qjZWDa8cZ1RUYWVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rrZGEMEY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8AB7C4CEE7;
+	Tue, 15 Apr 2025 21:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744753401;
-	bh=aTYh5nKCz6WpDqdV8eVpPWS1UKzSyr/KLg4M/MyNYGw=;
+	s=k20201202; t=1744753403;
+	bh=kE+aPT5wvJ58RaJ7LPHwfUb7icFh7pmNSidIrc174ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DqiijMU2orks2W7DTX3OUWr9n0Ua4m2+M8ZbnU/+cZYQ7Rfd/ovO8u8Uw5NFKQQei
-	 9B1TRmt4g/zohBxNSO0p54t2MIf2u03hKty2S1emvg/RWu83koG/0t9rBUkwrIEDje
-	 /pFGQnxZ5MHiIvdgoQn4SdrTHCprdw2rwqD+0DJvdAKYaNIbVGxUEXzYo+NKTEE8Lf
-	 fEb8UnFAddZhpCGUNZUexSD0WGLehaXNKeEDRhzoWeT6odUOP8xJlleCVfi7kV4xx1
-	 TiafFmder0XoX0/V2fTEJZjQkcMnCd2uDsWQg6WolGqt4mvWldyzZe3Yb5OYeDpNeE
-	 9yQjM4vNs93qw==
+	b=rrZGEMEYC3KbdKkEZHbDBTA35gFcPmSOCkythyai4AhyJWNX3qA5G/4pxJjiSi8nP
+	 v+dNzx1lutCslyq3FMTrLrlRtFcmnkejkWzjYxgzkGdgWEph2MQ06WXdRykEhyx7SU
+	 tdvPEgk0o/k25WvY6AbZ+ME3/tcZSo9I8GohZbeCJV27mqrimy8RTjxxDd/BQO8FUh
+	 ZTZstQZWYwzuA2oToEGpme/EN9GYwsLHdneLHWB6JR/BJ0GnUKvzXwYhlLVFFCYHYj
+	 Bs8GfsquHHZUYdWTTpqhBi/gCyKf4dm80KLiECWnttj/Xnykvr8D2U1LDeVFg92wt6
+	 Znny206/KbPTA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	anshuman.khandual@arm.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH V2 6.12.y 2/7] arm64/sysreg: Add register fields for HDFGRTR2_EL2
-Date: Tue, 15 Apr 2025 17:43:19 -0400
-Message-Id: <20250415114447-0f6fee68a3ca54c9@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15.y 1/6] net: mana: Fix error handling in mana_create_txq/rxq's NAPI cleanup
+Date: Tue, 15 Apr 2025 17:43:21 -0400
+Message-Id: <20250415122901-6bfa14a44451aef9@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250415045728.2248935-3-anshuman.khandual@arm.com>
+In-Reply-To:  <20250414185023.2165422-2-harshit.m.mogalapalli@oracle.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,44 +64,98 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-ℹ️ This is part 2/7 of a series
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Found matching upstream commit: 44844551670cff70a8aa5c1cde27ad1e0367e009
+The upstream commit SHA1 provided is correct: b6ecc662037694488bfff7c9fd21c405df8411f2
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Harshit Mogalapalli<harshit.m.mogalapalli@oracle.com>
+Commit author: Souradeep Chakrabarti<schakrabarti@linux.microsoft.com>
 
 Status in newer kernel trees:
-6.14.y | Not found
-6.13.y | Not found
+6.14.y | Present (exact SHA1)
+6.13.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 9e0bff4900b5)
+6.1.y | Present (different SHA1: 9178eb8ebcd8)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  44844551670cf ! 1:  1ebb6e8b25516 arm64/sysreg: Add register fields for HDFGRTR2_EL2
-    @@ Commit message
-         Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-         Link: https://lore.kernel.org/r/20250203050828.1049370-3-anshuman.khandual@arm.com
-         Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-    +    (cherry picked from commit 44844551670cff70a8aa5c1cde27ad1e0367e009)
-    +    Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+1:  b6ecc66203769 ! 1:  63ebacf9b41b2 net: mana: Fix error handling in mana_create_txq/rxq's NAPI cleanup
+    @@ Metadata
+      ## Commit message ##
+         net: mana: Fix error handling in mana_create_txq/rxq's NAPI cleanup
      
-      ## arch/arm64/tools/sysreg ##
-    -@@ arch/arm64/tools/sysreg: Field	0	E0HTRE
-    +@@ arch/arm64/tools/sysreg: Field	1	ICIALLU
-    + Field	0	ICIALLUIS
-      EndSysreg
+    +    [ Upstream commit b6ecc662037694488bfff7c9fd21c405df8411f2 ]
+    +
+         Currently napi_disable() gets called during rxq and txq cleanup,
+         even before napi is enabled and hrtimer is initialized. It causes
+         kernel panic.
+    @@ Commit message
+         Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+         Reviewed-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+         Signed-off-by: David S. Miller <davem@davemloft.net>
+    +    (cherry picked from commit b6ecc662037694488bfff7c9fd21c405df8411f2)
+    +    [Harshit: conflicts resolved due to missing commit: ed5356b53f07 ("net:
+    +    mana: Add XDP support") and commit: d356abb95b98 ("net: mana: Add
+    +    counter for XDP_TX") in 5.15.y]
+    +    Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+    +
+    + ## drivers/net/ethernet/microsoft/mana/mana.h ##
+    +@@ drivers/net/ethernet/microsoft/mana/mana.h: struct mana_txq {
+    + 
+    + 	atomic_t pending_sends;
+    + 
+    ++	bool napi_initialized;
+    ++
+    + 	struct mana_stats stats;
+    + };
+    + 
+     
+      ## drivers/net/ethernet/microsoft/mana/mana_en.c ##
+     @@ drivers/net/ethernet/microsoft/mana/mana_en.c: static void mana_destroy_txq(struct mana_port_context *apc)
+    @@ drivers/net/ethernet/microsoft/mana/mana_en.c: static int mana_create_txq(struct
+      		memset(&spec, 0, sizeof(spec));
+     @@ drivers/net/ethernet/microsoft/mana/mana_en.c: static int mana_create_txq(struct mana_port_context *apc,
       
+    - 		netif_napi_add_tx(net, &cq->napi, mana_poll);
+    + 		netif_tx_napi_add(net, &cq->napi, mana_poll, NAPI_POLL_WEIGHT);
+      		napi_enable(&cq->napi);
+     +		txq->napi_initialized = true;
+      
+    @@ drivers/net/ethernet/microsoft/mana/mana_en.c: static void mana_destroy_rxq(stru
+      		napi_synchronize(napi);
+      
+     -	napi_disable(napi);
+    +-	netif_napi_del(napi);
+     +		napi_disable(napi);
+      
+     +		netif_napi_del(napi);
+     +	}
+    - 	xdp_rxq_info_unreg(&rxq->xdp_rxq);
     - 
-     +Sysreg HDFGRTR2_EL2	3	4	3	1	0
-     +Res0	63:25
-     +Field	24	nPMBMAR_EL1
+    --	netif_napi_del(napi);
+    --
+      	mana_destroy_wq_obj(apc, GDMA_RQ, rxq->rxobj);
+      
+      	mana_deinit_cq(apc, &rxq->rx_cq);
+    -
+    - ## include/net/mana/mana.h ##
+    -@@ include/net/mana/mana.h: struct mana_txq {
+    - 
+    - 	atomic_t pending_sends;
+    - 
+    -+	bool napi_initialized;
+    -+
+    - 	struct mana_stats_tx stats;
+    - };
+    - 
 ---
-
-NOTE: These results are for this patch alone. Full series testing will be
-performed when all parts are received.
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.13.y       |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
