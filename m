@@ -1,90 +1,108 @@
-Return-Path: <stable+bounces-132754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43E24A8A24C
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 17:02:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59DEFA8A255
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 17:03:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C91A319011B5
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 15:02:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BD7B442D15
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 15:03:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E702BE119;
-	Tue, 15 Apr 2025 14:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D35523D2A6;
+	Tue, 15 Apr 2025 15:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NXfOtEg5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LKaasSAX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FFD12BE10B;
-	Tue, 15 Apr 2025 14:59:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D23136349;
+	Tue, 15 Apr 2025 15:02:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744729143; cv=none; b=AANoE9ADUZC/M066R4aSUogTJEwnf6DhvF5o6jbtG2r8BOaVEw2ViaH+1TMIimoCA+MD4MXoNziK+zq7npOOaru6pnMNGaUHGG6S5qJCtqjkYASxJcoEdV/POHvm8s3G+BYsaJMitMDGUhHCU1LtmfMo2hKmCHtEfyKodGQSMU0=
+	t=1744729325; cv=none; b=qusMk+hNjKkMvslH0ygfV0ezv09d7pspOXu2J3XrJ3JRJmkJ61ibEq+9BRPYLSV1hMO06Ef6N7ZzHn/CagvWPzbs8G0JedQgAUStkjrz5jHLa/g067kQDZUURsqh3fqspONNi16ICTFdBa1XEDR54WE/M8zVky5d2nrzW4jEMcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744729143; c=relaxed/simple;
-	bh=TBOwh/hCuJxSGzWw0YDqV+Q0VUxiPOw6ohSLltySmJs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h/BSkgAZB+c8Q7k1OZCLZrpJYsqXhxnae968LyPKTrsADzt/T1IjMtD/RVUbMg2M5Mz23HFLujtS0L5n8RPzwZBv6eLfN844EdAvXf9HYe0zSPXVAoG2tBIAlF7cYw9HA5gunVJmBdOgIbz5JqD83RcLUHSs2LUcCaRyXJ5Q33A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NXfOtEg5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1DEEC4CEEC;
-	Tue, 15 Apr 2025 14:59:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744729143;
-	bh=TBOwh/hCuJxSGzWw0YDqV+Q0VUxiPOw6ohSLltySmJs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NXfOtEg5tjAsnTrT2t7RidtiBmknkimF3OsXWMRNC8fm5bPZX+GyfOvaxZ8FDbLaT
-	 9F2gFacDgd6vrn1vSx3j57ThxJ69l+oKXfbksw46pyOHClWF/Ddp+vN9+NsMMD4zhL
-	 u558xskXB2297+G31sv9dyyd6L9QzGstS32s/FJU=
-Date: Tue, 15 Apr 2025 16:59:00 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Christian Schrefl <chrisi.schrefl@gmail.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Russ Weight <russ.weight@linux.dev>,
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] rust: Use `ffi::c_char` type in firmware abstraction
- `FwFunc`
-Message-ID: <2025041551-cadillac-refutable-637a@gregkh>
-References: <20250413-rust_arm_fix_fw_abstaction-v3-1-8dd7c0bbcd47@gmail.com>
- <CANiq72kJ+tv-P6+Yq7Bg+J73q93m+EKV_4E-GR=sdY5KRgCs6w@mail.gmail.com>
- <2025041537-refusal-suspense-3e7b@gregkh>
+	s=arc-20240116; t=1744729325; c=relaxed/simple;
+	bh=GsenEpf9zvk5P2NHlMMGuoKKYYE9yPtrUU9/iOPSsZw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FtYokKqgWfOIzwftRKtBqAA+jHJBgPZVHx79Sn1O4JA11Pzg21HpgJvSXeZIw0S6sI/ryczIcDfJ+I7S91ijhKNcrSYz3BAamGIThokNqsM8+ukA+GZ7WcSlE9DphwfIQFsGnV1gwoFEmgX6Neo2o0oMsh/cKC0NZJ0oyz0tcGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LKaasSAX; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43cf58eea0fso29249685e9.0;
+        Tue, 15 Apr 2025 08:02:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744729322; x=1745334122; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GsenEpf9zvk5P2NHlMMGuoKKYYE9yPtrUU9/iOPSsZw=;
+        b=LKaasSAXYYJqNFACIKOiULXkiFaxhBiUOAa2r8nqCgWOCGtnFrpZI7rpu5/9IC67UU
+         24qXJRE/LEEOwAYKibK3bXJXmSAgfaEsW00J9npcYPtlaAyO1RwrzMlukVKaQGfx9s0G
+         dn07asAW0uNMUiofaZipPNEgO7gv3iFumJboIF1EgO1ZfbT04EOhxrzeWjcFFgbodYjt
+         YLgBSEVDA1xoYmhNfQtepwIEGgeCK3kMvyaehs0epn55D2KsotsKXlzuPXPfgZ+CDRyu
+         yHBxHz3IEparpTY2poKIEgbRxlTJMfBcGjo8bmtAYx6dQZYiWER+URxv7PWAjsoxb7yL
+         GrfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744729322; x=1745334122;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GsenEpf9zvk5P2NHlMMGuoKKYYE9yPtrUU9/iOPSsZw=;
+        b=hmwnouogNwqvOwkLmqfn6nbvW5FXbBqDK7KDgeOcTQk97p39+B1mj07t1b29xgVOgf
+         TzxPyd/Ave4Wbepb9pBjPL62x1JALHGfaxClXnai7PhycBjCv2tdgSrA7G/K18Xx/MaJ
+         gKqYkuAsiqLRsIJqHXJ/m3J8eCodMgeMhUDaZw3aOkVvBOopPvx/g3gYbmyo/efK2y3X
+         CWjnmqwzF7LZIE1hGKnjBf7mzud3f8zkG3MDWKuVJDf1HkUhQ4aWLfN2xttWH/wa0r79
+         2V6bxMcZlOK3FFmgxKWO4L0v34/fZ4lGWL24vmRj6LC1Upgxtwd01paTmPbr2++tBxfT
+         QVig==
+X-Forwarded-Encrypted: i=1; AJvYcCUUdAlCyrut+3mezjr8fricmyI/z8OHqV8fhFZISwIsQPvc7lUtZasuG2CWWRIpoQ8mJck=@vger.kernel.org, AJvYcCWMBGsR+boeRCGn9+PyuFxeXnTh6ODsuhLMeu2FCUrpcf4MP4u6xAOiT4brbttgIgQAJQayNCwAXPtLclbK@vger.kernel.org, AJvYcCWQQogQmzhXt4An/IlXNuFDMIfdGZDmw8ixRcuOeqSie11cVUJNBe/Dgpi04hZqbK0JAsHPQEiQ@vger.kernel.org
+X-Gm-Message-State: AOJu0YyA6nbeHsHgKDuIMeJ2TYQFO2R1eQIm6po14/S6wVGOtYittskm
+	gr5ZkzggaN2HXC/iBgxR7Il/9tfQB9uxC36DtFxmr1fbTt6u13ugmPgxrShu5tXEjb5tfyo694F
+	Ftkao0YWanRtcglMbkfaWFs0sfqA=
+X-Gm-Gg: ASbGnct7kC5Ua11Mzd/h/6Ki/IMOUjw6Vnl1APu9EmHY6t1O1NZnr3Hnn5BtP9sfBCu
+	bdQbqpBvaiYFd/ua5ywQQC9ZY34p1n16hlc0U+a07YaHxNH+jMeDkd9yihdQiub3352wgxDqLAS
+	mwh7GL/V1TtqnJxWfR2e5k8Qn6itLyg/y7lsdm
+X-Google-Smtp-Source: AGHT+IEEhlDJ89C3taeDQubyKWfbYArOMdjq8xhOrlVTpBQsoWre14ibe31rWsDsbwAwV9z2K2Ku82lM0PdbZnwrGCM=
+X-Received: by 2002:a05:600c:502a:b0:43c:e6d1:efe7 with SMTP id
+ 5b1f17b1804b1-43f3a9a70famr126994785e9.26.1744729321032; Tue, 15 Apr 2025
+ 08:02:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2025041537-refusal-suspense-3e7b@gregkh>
+References: <20250415130910.2326537-1-devaanshk840@gmail.com>
+ <2025041517-semicolon-aloft-9910@gregkh> <CA+RTe_hfdgPTwVX_pizHVnsDDFJoEOQD=dH3KuBXuDbycU0yXQ@mail.gmail.com>
+In-Reply-To: <CA+RTe_hfdgPTwVX_pizHVnsDDFJoEOQD=dH3KuBXuDbycU0yXQ@mail.gmail.com>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Tue, 15 Apr 2025 08:01:49 -0700
+X-Gm-Features: ATxdqUGwfpjQ3TEoIluDDdRzEK7VnkQJBv8D-i6PQJaXxr2L8ySLffMkEFa_6W4
+Message-ID: <CAADnVQK=z2eWgcH2duiwkkVC-4RctPVZ+fqdC9KYiV7HUy0i8g@mail.gmail.com>
+Subject: Re: [PATCH] bpf: Remove tracing program restriction on map types
+To: Devaansh Kumar <devaanshk840@gmail.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, 
+	stable <stable@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, bpf <bpf@vger.kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, 
+	linux-kernel-mentees@lists.linuxfoundation.org, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Andrii Nakryiko <andrii@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 15, 2025 at 04:57:45PM +0200, Greg Kroah-Hartman wrote:
-> On Sun, Apr 13, 2025 at 10:21:01PM +0200, Miguel Ojeda wrote:
-> > On Sun, Apr 13, 2025 at 9:27 PM Christian Schrefl
-> > <chrisi.schrefl@gmail.com> wrote:
-> > >
-> > > The `FwFunc` struct contains an function with a char pointer argument,
-> > > for which a `*const u8` pointer was used. This is not really the
-> > > "proper" type for this, so use a `*const kernel::ffi::c_char` pointer
-> > > instead.
-> > 
-> > If I don't take it:
-> > 
-> > Acked-by: Miguel Ojeda <ojeda@kernel.org>
-> 
-> Thanks, I'll take it now.
+On Tue, Apr 15, 2025 at 6:25=E2=80=AFAM Devaansh Kumar <devaanshk840@gmail.=
+com> wrote:
+>
+> On Tue, 15 Apr 2025 at 18:49, Greg KH <gregkh@linuxfoundation.org> wrote:
+> > what kernel tree(s) is this for?
+>
+> This backport is for v5.15.y stable version. My bad, I should have
+> mentioned it in the subject.
 
-Oops, it's already in the driver-core tree :)
+Nack.
+
+5.15 doesn't have bpf_mem_alloc.
+This backport makes no sense.
 
