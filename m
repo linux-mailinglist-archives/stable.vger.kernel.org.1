@@ -1,109 +1,105 @@
-Return-Path: <stable+bounces-132765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D14AA8A434
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 18:33:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3342AA8A464
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 18:43:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B655A3A8AE1
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 16:33:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B11293B0649
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 16:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 357D427A93C;
-	Tue, 15 Apr 2025 16:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF87629A3ED;
+	Tue, 15 Apr 2025 16:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="pN8pQGqt";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="dtg/nwUi";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="pN8pQGqt";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="dtg/nwUi"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="sFtX3Hjl";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="iMqvCkzi";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="sFtX3Hjl";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="iMqvCkzi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715952185A0
-	for <stable@vger.kernel.org>; Tue, 15 Apr 2025 16:33:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B991B274667
+	for <stable@vger.kernel.org>; Tue, 15 Apr 2025 16:42:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744734796; cv=none; b=PMrXUGci9ZCbWYvNClzw7W2/7p7Nxqtq+VPwF6cRvtgXPEQwx1c1ugvtshya7fsn95oSygopwQPrTLUK7SWbIWgoXXFNAhPjkJWC4cCyNB5Zg5y+k6MpWR7lczcxhGA5Kvw8bRjCC4P2qkBCSCQpmAIF1xUDA4TK0kUE8nXt5qk=
+	t=1744735367; cv=none; b=b80SYnc/cn1UZCcAVd6AlST1HgB9O0WbUq9FU0PS3bj1+yZN7wdgPpWvT8f3dbzSgiIgtqo0xNAhzG6K/O4v31zPO8dD41u868C+80I/h1QaIGnv1MKAMQ620E+mT/H/QLFogGpPR0a9VrO42lodUSELoBAnV2/jL2mkBdht3o0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744734796; c=relaxed/simple;
-	bh=NcKZdTFgPpAHYhGg6icLRMkDea4aMWpVJTFpfQLtglw=;
+	s=arc-20240116; t=1744735367; c=relaxed/simple;
+	bh=7guA22Z/jVIhTId3TiU3XjIQwgyWBjZKeRgCg5KS4MA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kTxhLx8dECtM36BOy7QlGrI3JkrV7AFc7A9IJnrBdoKRMz9olxYrHgR6ZZK7PVhXci3fPII9uVfbGUmzdB40sO9MWyQ/rpz2trBV8PUfTTHzbr8DbVo6X4Lvn7UhoQQ88m3MqLo+OSK3Ina061CHRVIkr0TGUwKE5VR/eDZo/TY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=pN8pQGqt; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=dtg/nwUi; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=pN8pQGqt; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=dtg/nwUi; arc=none smtp.client-ip=195.135.223.130
+	 Content-Type:Content-Disposition:In-Reply-To; b=II/oqtXDmgHSLsZsyhzX/XogawRj+1FCPxYHSpZ2l4hKisEi6EG8/q52J2e5rPx/8KczVUhQeWGB9o6clvkNhs+2ttKM+6aC/EJRbfxKq1RSKARYKFPqFDXb1vz9YCc9TJN9eVismbyEuyvUcUspKCP3dN6ZK8jfXn9zdyRvIFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=sFtX3Hjl; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=iMqvCkzi; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=sFtX3Hjl; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=iMqvCkzi; arc=none smtp.client-ip=195.135.223.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7DB252119B;
-	Tue, 15 Apr 2025 16:33:12 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C02BB1F461;
+	Tue, 15 Apr 2025 16:42:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1744734792; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1744735362; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7vyQVkPMPIFV0Bio9cYTBDXUryYhBLLO3CPZt9suiTo=;
-	b=pN8pQGqti/nDIZNtUA6L8XbiSeliWpDMicYH+APatsRTSxmOQfWtFCCB5ekCBe5K/EiZmR
-	phQ6JLnPtme+qP7ymYe0e7W454XM6Fo0YBESL+vUJsZ4vBFcy1Riy9rZ872hySwF63RvCI
-	xhqQ7pzW05z9SO9XUIXZjvo0qFaI4RY=
+	bh=uYXbDnEVw6T3gFBR1xGBJ2FVAU/2FayUDTj0+2zKHis=;
+	b=sFtX3Hjlx1wOA1FTuoTIpaVVg+kPH1ZDX/PiG2f5KPK2R0WOWf3i0d+6ZGvERhAUFyTauW
+	sKpMtvqWfTWyQoC+C+tqyH8Sbl8yD5IgoJ+9mb8C6KOHW0nFnlgBn4o2Skrrlv1A3h25H9
+	5cxWdGxrV/h58/r7z7+ZDLGoYMXuG/Y=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1744734792;
+	s=susede2_ed25519; t=1744735362;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7vyQVkPMPIFV0Bio9cYTBDXUryYhBLLO3CPZt9suiTo=;
-	b=dtg/nwUisXdJxhEmgI1AVlEGYK93r0NVQ/k+1E62FSLW6M+koTe0nQ9WIGMjOTKw4MdSi8
-	K/LpplUL3xBKWMBg==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pN8pQGqt;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="dtg/nwUi"
+	bh=uYXbDnEVw6T3gFBR1xGBJ2FVAU/2FayUDTj0+2zKHis=;
+	b=iMqvCkziOv6yRDVxHSqu2D65vGD1SOJL+/mbf57m7xxMKydTRf63ng8sVgHtnhD6xbMf+W
+	avZl3LJdSRIvoQCQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1744734792; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1744735362; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7vyQVkPMPIFV0Bio9cYTBDXUryYhBLLO3CPZt9suiTo=;
-	b=pN8pQGqti/nDIZNtUA6L8XbiSeliWpDMicYH+APatsRTSxmOQfWtFCCB5ekCBe5K/EiZmR
-	phQ6JLnPtme+qP7ymYe0e7W454XM6Fo0YBESL+vUJsZ4vBFcy1Riy9rZ872hySwF63RvCI
-	xhqQ7pzW05z9SO9XUIXZjvo0qFaI4RY=
+	bh=uYXbDnEVw6T3gFBR1xGBJ2FVAU/2FayUDTj0+2zKHis=;
+	b=sFtX3Hjlx1wOA1FTuoTIpaVVg+kPH1ZDX/PiG2f5KPK2R0WOWf3i0d+6ZGvERhAUFyTauW
+	sKpMtvqWfTWyQoC+C+tqyH8Sbl8yD5IgoJ+9mb8C6KOHW0nFnlgBn4o2Skrrlv1A3h25H9
+	5cxWdGxrV/h58/r7z7+ZDLGoYMXuG/Y=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1744734792;
+	s=susede2_ed25519; t=1744735362;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7vyQVkPMPIFV0Bio9cYTBDXUryYhBLLO3CPZt9suiTo=;
-	b=dtg/nwUisXdJxhEmgI1AVlEGYK93r0NVQ/k+1E62FSLW6M+koTe0nQ9WIGMjOTKw4MdSi8
-	K/LpplUL3xBKWMBg==
+	bh=uYXbDnEVw6T3gFBR1xGBJ2FVAU/2FayUDTj0+2zKHis=;
+	b=iMqvCkziOv6yRDVxHSqu2D65vGD1SOJL+/mbf57m7xxMKydTRf63ng8sVgHtnhD6xbMf+W
+	avZl3LJdSRIvoQCQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 72BF2137A5;
-	Tue, 15 Apr 2025 16:33:12 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B1BBF137A5;
+	Tue, 15 Apr 2025 16:42:42 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id LzsCHEiK/mekYwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 15 Apr 2025 16:33:12 +0000
+	id yqxZK4KM/mdeZgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 15 Apr 2025 16:42:42 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 2A3B0A0947; Tue, 15 Apr 2025 18:33:08 +0200 (CEST)
-Date: Tue, 15 Apr 2025 18:33:08 +0200
+	id 3A5D5A0947; Tue, 15 Apr 2025 18:42:42 +0200 (CEST)
+Date: Tue, 15 Apr 2025 18:42:42 +0200
 From: Jan Kara <jack@suse.cz>
 To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>, 
-	Martijn Coenen <maco@android.com>, Alyssa Ross <hi@alyssa.is>, Christoph Hellwig <hch@lst.de>, 
-	Greg KH <greg@kroah.com>, John Ogness <john.ogness@linutronix.de>, 
+Cc: Jens Axboe <axboe@kernel.dk>, Martijn Coenen <maco@android.com>, 
+	Alyssa Ross <hi@alyssa.is>, Christoph Hellwig <hch@lst.de>, Greg KH <greg@kroah.com>, 
+	Jan Kara <jack@suse.cz>, John Ogness <john.ogness@linutronix.de>, 
 	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] loop: properly send KOBJ_CHANGED uevent for disk
- device
-Message-ID: <fzi7oikkjqedbhfi57c2rc6z3icvwra3uoqk5pgz7rmiqczfcj@w33zdcy6d3ax>
-References: <20250415-loop-uevent-changed-v2-1-0c4e6a923b2a@linutronix.de>
- <tbypgsknfpqyx3xbrpz7jlpthlybcdxhr7b3oz4vq5u6izwdqp@q3wo6zpqicp7>
- <20250415130006-9a17e592-fc7a-4150-bc7c-e0c6d8da4b72@linutronix.de>
+Subject: Re: [PATCH v3] loop: LOOP_SET_FD: send uevents for partitions
+Message-ID: <2wzcj4odajfsvubribqetasj26pp5u3wnusnowwwjiwy4lj5p5@vpa7vwwseyq2>
+References: <20250415-loop-uevent-changed-v3-1-60ff69ac6088@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -113,84 +109,100 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250415130006-9a17e592-fc7a-4150-bc7c-e0c6d8da4b72@linutronix.de>
-X-Rspamd-Queue-Id: 7DB252119B
-X-Spam-Score: -4.01
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.01 / 50.00];
+In-Reply-To: <20250415-loop-uevent-changed-v3-1-60ff69ac6088@linutronix.de>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.80 / 50.00];
 	BAYES_HAM(-3.00)[100.00%];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
 	MID_RHS_NOT_FQDN(0.50)[];
 	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
 	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	MISSING_XM_UA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.cz:email,suse.cz:dkim]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+	ARC_NA(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_COUNT_THREE(0.00)[3];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.cz:email]
+X-Spam-Score: -3.80
 X-Spam-Flag: NO
-X-Spam-Level: 
 
-On Tue 15-04-25 13:07:48, Thomas Weiﬂschuh wrote:
-> On Tue, Apr 15, 2025 at 12:24:55PM +0200, Jan Kara wrote:
-> > On Tue 15-04-25 10:51:47, Thomas Weiﬂschuh wrote:
-> > > The original commit message and the wording "uncork" in the code comment
-> > > indicate that it is expected that the suppressed event instances are
-> > > automatically sent after unsuppressing.
-> > > This is not the case, instead they are discarded.
-> > > In effect this means that no "changed" events are emitted on the device
-> > > itself by default.
-> > > While each discovered partition does trigger a changed event on the
-> > > device, devices without partitions don't have any event emitted.
-> > > 
-> > > This makes udev miss the device creation and prompted workarounds in
-> > > userspace. See the linked util-linux/losetup bug.
-> > > 
-> > > Explicitly emit the events and drop the confusingly worded comments.
-> > > 
-> > > Link: https://github.com/util-linux/util-linux/issues/2434
-> > > Fixes: 498ef5c777d9 ("loop: suppress uevents while reconfiguring the device")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> > 
-> > Thanks for the fix! When reading the code, I'm a bit curious: What is
-> > actually generating events for partitions with loop_change_fd() call?
-> > Because there loop_reread_partitions() still happens with uevents
-> > supressed... I suspect event supressing there should be shorter.
+On Tue 15-04-25 16:55:06, Thomas Weiﬂschuh wrote:
+> Remove the suppression of the uevents before scanning for partitions.
+> The partitions inherit their suppression settings from their parent device,
+> which lead to the uevents being dropped.
 > 
-> Makes sense.
-> For loop_configure() this was fixed in
+> This is similar to the same changes for LOOP_CONFIGURE done in
 > commit bb430b694226 ("loop: LOOP_CONFIGURE: send uevents for partitions").
-> I guess we need the same for loop_change_fd().
 > 
-> I'm not entirely sure on how to order the commits or if they should be
-> folded together.
-> My current preference is to first have the current patch under discussion and
-> then the fix for loop_change_fd().
+> Fixes: 498ef5c777d9 ("loop: suppress uevents while reconfiguring the device")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
 
-Yeah, whatever. I was asking mainly to make sure my understanding of the
-current code is correct :). With this one feel free to add:
+Looks good. Feel free to add:
 
 Reviewed-by: Jan Kara <jack@suse.cz>
 
 								Honza
+
+> ---
+> Changes in v3:
+> - Rebase onto block/block-6.15
+> - Drop already applied patch "loop: properly send KOBJ_CHANGED uevent for disk device"
+> - Add patch to fix partition uevents for LOOP_SET_FD
+> - Link to v2: https://lore.kernel.org/r/20250415-loop-uevent-changed-v2-1-0c4e6a923b2a@linutronix.de
+> 
+> Changes in v2:
+> - Use correct Fixes tag
+> - Rework commit message slightly
+> - Rebase onto v6.15-rc1
+> - Link to v1: https://lore.kernel.org/r/20250317-loop-uevent-changed-v1-1-cb29cb91b62d@linutronix.de
+> ---
+>  drivers/block/loop.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+> index 3be7f00e7fc740da2745ffbccfcebe53eef2ddaa..e9ec7a45f3f2d1dd2a82b3506f3740089a20ae05 100644
+> --- a/drivers/block/loop.c
+> +++ b/drivers/block/loop.c
+> @@ -662,12 +662,12 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
+>  	 * dependency.
+>  	 */
+>  	fput(old_file);
+> +	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
+>  	if (partscan)
+>  		loop_reread_partitions(lo);
+>  
+>  	error = 0;
+>  done:
+> -	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
+>  	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
+>  	return error;
+>  
+> @@ -675,6 +675,7 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
+>  	loop_global_unlock(lo, is_loop);
+>  out_putf:
+>  	fput(file);
+> +	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
+>  	goto done;
+>  }
+>  
+> 
+> ---
+> base-commit: 7ed2a771b5fb3edee9c4608181235c30b40bb042
+> change-id: 20250307-loop-uevent-changed-aa3690f43e03
+> 
+> Best regards,
+> -- 
+> Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+> 
 -- 
 Jan Kara <jack@suse.com>
 SUSE Labs, CR
