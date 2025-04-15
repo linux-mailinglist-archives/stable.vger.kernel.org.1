@@ -1,134 +1,119 @@
-Return-Path: <stable+bounces-132715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89D5DA8998B
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 12:09:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D326A899B7
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 12:19:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05A8916F39C
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 10:09:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BCEF7AB330
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 10:18:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F1728BABF;
-	Tue, 15 Apr 2025 10:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4E128B4E3;
+	Tue, 15 Apr 2025 10:18:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040141F3BA6;
-	Tue, 15 Apr 2025 10:08:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB97288C96;
+	Tue, 15 Apr 2025 10:18:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744711732; cv=none; b=hQeZWRHp8vVWe/uT/vF3szuxIpBM1N4mOK5kv01eHX66gQHkcymByRCumGA86DoDAcDzj90KsuudpGg03uSesSHPL/RscnG3QA+g8FEBl1NLG38NQvr10DCiLq75sfddj8btr7Ej/URFh1KtGaA59jwPMY4FAj6JSpqdvePbMF0=
+	t=1744712339; cv=none; b=A4exmcYAoO1xXz1Je0J7/F8JfEPkRrsRT8U1gSm2dmFq+/pkxkqoY79ausLbD8rqyrI38r1/35KGimKCYcJ9IUfbfVxHyj/Wq8Fp0P8heCrU0/GZrBSq13x6u94nXLCSFG7eDZTHYgi7cP5axvGslaiS9ZxmJlrG4frqEHdUo30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744711732; c=relaxed/simple;
-	bh=Mq0cAN0e4sfbovaCgX5JgEk71yxOSGxpLEewHavF5cg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b3DFqd/y7UPTmlrBXhlJbqjvryn+CbOU5pTg4XFJFhOGQQSUddg3nb2M1hKT2uii6av8mu+voYPEfaKeAhmk5pwWzYnskNLst/BT1lqloj7tdgkO1HTyjmJ0LCnojAuXIzMHkhN3ygtgJYdoycPQiSOw8dFf2I0u3zLkC2tWh3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-03 (Coremail) with SMTP id rQCowACnUD0gMP5nO6j8CA--.18963S2;
-	Tue, 15 Apr 2025 18:08:33 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: kenneth.feng@amd.com,
-	alexander.deucher@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	simona@ffwll.ch
-Cc: amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
+	s=arc-20240116; t=1744712339; c=relaxed/simple;
+	bh=8k9HyLOQVX2DKJes33OnB1ZdwzaKh2WQzdSqAfqGrUY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ooVvomOvwrmcTXy3cvshcuMnwaNnxOjuCUxC7e/tiHzxmGWTAU9cwjCREatOwV4f7gOm8+Xez3zw15kpsempBmqpJB8Tu0ldaqE7q27ebkadOOk7N8NsGStUOcMuybCBMn/XJiztfRRHTMgGhnLyv7RE9SQg7yBu+fNiAkZJVUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0674C4CEDD;
+	Tue, 15 Apr 2025 10:18:57 +0000 (UTC)
+Date: Tue, 15 Apr 2025 12:18:55 +0200
+From: Greg KH <greg@kroah.com>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+Cc: Jens Axboe <axboe@kernel.dk>, Martijn Coenen <maco@android.com>,
+	Alyssa Ross <hi@alyssa.is>, Christoph Hellwig <hch@lst.de>,
+	Jan Kara <jack@suse.cz>, John Ogness <john.ogness@linutronix.de>,
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v2] drm/amd/pm/powerplay/smumgr/fiji_smumgr: Add error check in fiji_populate_smc_boot_level()
-Date: Tue, 15 Apr 2025 18:08:13 +0800
-Message-ID: <20250415100813.3071-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+Subject: Re: [PATCH v2] loop: properly send KOBJ_CHANGED uevent for disk
+ device
+Message-ID: <2025041548-preplan-reaffirm-510a@gregkh>
+References: <20250415-loop-uevent-changed-v2-1-0c4e6a923b2a@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowACnUD0gMP5nO6j8CA--.18963S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7uw4xCr1kAr1rKw13CrW7Arb_yoW5JrWrpr
-	9xXrZIv395tanxJrnrtan2qr4S9Fy8JFWUCay7C34rXw1jqryUZr40ya4aya18GFyIkwsa
-	q3ZFga4UCr4Ik3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
-	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
-	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
-	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
-	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
-	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
-	nIWIevJa73UjIFyTuYvjfU52NtDUUUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRENA2f+IlI5yQAAsP
+In-Reply-To: <20250415-loop-uevent-changed-v2-1-0c4e6a923b2a@linutronix.de>
 
-The return value of fiji_populate_smc_boot_level() is needs to be checked.
-An error handling is also needed to phm_find_boot_level() to reset the
-boot level when the function fails. A proper implementation can be found
-in tonga_populate_smc_boot_level().
+On Tue, Apr 15, 2025 at 10:51:47AM +0200, Thomas Weiﬂschuh wrote:
+> The original commit message and the wording "uncork" in the code comment
+> indicate that it is expected that the suppressed event instances are
+> automatically sent after unsuppressing.
+> This is not the case, instead they are discarded.
+> In effect this means that no "changed" events are emitted on the device
+> itself by default.
+> While each discovered partition does trigger a changed event on the
+> device, devices without partitions don't have any event emitted.
+> 
+> This makes udev miss the device creation and prompted workarounds in
+> userspace. See the linked util-linux/losetup bug.
+> 
+> Explicitly emit the events and drop the confusingly worded comments.
+> 
+> Link: https://github.com/util-linux/util-linux/issues/2434
+> Fixes: 498ef5c777d9 ("loop: suppress uevents while reconfiguring the device")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+> ---
+> Changes in v2:
+> - Use correct Fixes tag
+> - Rework commit message slightly
+> - Rebase onto v6.15-rc1
+> - Link to v1: https://lore.kernel.org/r/20250317-loop-uevent-changed-v1-1-cb29cb91b62d@linutronix.de
+> ---
+>  drivers/block/loop.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+> index 674527d770dc669e982a2b441af1171559aa427c..09a725710a21171e0adf5888f929ccaf94e98992 100644
+> --- a/drivers/block/loop.c
+> +++ b/drivers/block/loop.c
+> @@ -667,8 +667,8 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
+>  
+>  	error = 0;
+>  done:
+> -	/* enable and uncork uevent now that we are done */
+>  	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
+> +	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
+>  	return error;
+>  
+>  out_err:
+> @@ -1129,8 +1129,8 @@ static int loop_configure(struct loop_device *lo, blk_mode_t mode,
+>  	if (partscan)
+>  		clear_bit(GD_SUPPRESS_PART_SCAN, &lo->lo_disk->state);
+>  
+> -	/* enable and uncork uevent now that we are done */
+>  	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
+> +	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
+>  
+>  	loop_global_unlock(lo, is_loop);
+>  	if (partscan)
+> 
+> ---
+> base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+> change-id: 20250307-loop-uevent-changed-aa3690f43e03
+> 
+> Best regards,
+> -- 
+> Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+> 
 
-Fixes: dcaf3483ae46 ("drm/amd/pm/powerplay/smumgr/fiji_smumgr: Remove unused variable 'result'")
-Cc: stable@vger.kernel.org # v5.11+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
-v2: Fix error code.
-
- .../drm/amd/pm/powerplay/smumgr/fiji_smumgr.c | 23 ++++++++++++++-----
- 1 file changed, 17 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/fiji_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/fiji_smumgr.c
-index 5e43ad2b2956..78ba22f249b2 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/fiji_smumgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/fiji_smumgr.c
-@@ -1600,19 +1600,30 @@ static int fiji_populate_smc_uvd_level(struct pp_hwmgr *hwmgr,
- static int fiji_populate_smc_boot_level(struct pp_hwmgr *hwmgr,
- 		struct SMU73_Discrete_DpmTable *table)
- {
-+	int result = 0;
- 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
- 
- 	table->GraphicsBootLevel = 0;
- 	table->MemoryBootLevel = 0;
- 
- 	/* find boot level from dpm table */
--	phm_find_boot_level(&(data->dpm_table.sclk_table),
--			    data->vbios_boot_state.sclk_bootup_value,
--			    (uint32_t *)&(table->GraphicsBootLevel));
-+	result = phm_find_boot_level(&(data->dpm_table.sclk_table),
-+				     data->vbios_boot_state.sclk_bootup_value,
-+				     (uint32_t *)&(table->GraphicsBootLevel));
-+	if (result != 0) {
-+		table->GraphicsBootLevel = 0;
-+		pr_err("VBIOS did not find boot engine clock value in dependency table. Using Graphics DPM level 0!\n");
-+		result = 0;
-+	}
- 
--	phm_find_boot_level(&(data->dpm_table.mclk_table),
--			    data->vbios_boot_state.mclk_bootup_value,
--			    (uint32_t *)&(table->MemoryBootLevel));
-+	result = phm_find_boot_level(&(data->dpm_table.mclk_table),
-+				     data->vbios_boot_state.mclk_bootup_value,
-+				     (uint32_t *)&(table->MemoryBootLevel));
-+	if (result != 0) {
-+		table->MemoryBootLevel = 0;
-+		pr_err("VBIOS did not find boot engine clock value in dependency table. Using Memory DPM level 0!\n");
-+		result = 0;
-+	}
- 
- 	table->BootVddc  = data->vbios_boot_state.vddc_bootup_value *
- 			VOLTAGE_SCALE;
--- 
-2.42.0.windows.2
-
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
