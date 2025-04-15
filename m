@@ -1,120 +1,119 @@
-Return-Path: <stable+bounces-132704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D994A895E3
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 10:00:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E19C2A89699
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 10:30:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3863F1899F08
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 08:00:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 761BE3B8FDF
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 08:30:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C8227B4ED;
-	Tue, 15 Apr 2025 08:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4C128934D;
+	Tue, 15 Apr 2025 08:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HO/S8o+h"
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="kWlRrhmT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8DEB24C68D
-	for <stable@vger.kernel.org>; Tue, 15 Apr 2025 08:00:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA63E279913;
+	Tue, 15 Apr 2025 08:27:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744704014; cv=none; b=K4NJOHhSiiXT3P1ST1XHwP63Io90oherWIgRW6w2QYq4yehOJw0ueUWSrhaaoX9336R+6L3TzvqJ7Voq0t67FegKQNXKzSJYULg+vY8gHl1fJIkMKUv7PcHFWGFYkw+TncxfyDQVaELjHLjRTKPfXARpkmXU8JY3myoQKT0DMrc=
+	t=1744705657; cv=none; b=gQWTcmgTblkuQafyMgzptFkZ5AAfb54GFNDAXWVpHoT+ChKK7Hao04ghsP/wWPW8anTTUWPdQjE+/SZZ0GAq8eLLiOhYsONSgMWLqw2K/1Meex9FJKt9MYOQ2PSzCdGIV65C4sbnMK/VKy6x0I6Vm3/UG7OW+uYOCkgbFDDTtQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744704014; c=relaxed/simple;
-	bh=QuiknlKiSA+WD7K8fGty1GjBqI96wU/H/9BL6EACW14=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AebiivWb3C8K805dLSCrRjZdjlNZ2zbTLP9291PfsUrPXZDQLGbE83wRNsJvqEUPaAZvxCKhKy8BbzDsk/ZsGMwo6jpWVMCIIJjCW+mq/qNx9NQ+FW8iRDcsiivAE9HGpQyFeuqa/Y/e/u37+85360dbDW9PpXkORp8CCunJHx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HO/S8o+h; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-548409cd2a8so6817271e87.3
-        for <stable@vger.kernel.org>; Tue, 15 Apr 2025 01:00:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744704011; x=1745308811; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QuiknlKiSA+WD7K8fGty1GjBqI96wU/H/9BL6EACW14=;
-        b=HO/S8o+hH//VO4PFiDPmLKyG6tre9uFK5KG7a3Q8ouystAPkpSCL6JoA+2aE/u3H/O
-         k8G3KxIdrof/Ml/SXK5gGXtk0S6gTqHExciAgXGIzWQcdg3JrTn/ORzHBm3pl/Tx6iqI
-         bcTNuQka4j3ilQIy9lpGppcaY+kv9pTlhBlc/o7FFRWbSkKDew2eNzRPpuTHzQubyak9
-         YjFhnF4StgMZTjpAHQ/DK3O9NyqJd7UeLkdy0MoNNXIh0vil3TsTtuBp+gU1F5TtLVH2
-         3J2m9nnyckQXPGe2SafxAJsW1E4bKMhz3FvCF0ft59hpIs/rThokKGvTcOPnsjLBCPof
-         6olg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744704011; x=1745308811;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QuiknlKiSA+WD7K8fGty1GjBqI96wU/H/9BL6EACW14=;
-        b=ls4I9c3F9o42X5Sy0bavU/JyzXfvhK86vNjgm/ZOwtg2CRKfGc3jMcyojyWGT8OrxO
-         v2NdC0SN1IkjmsWxygevwwVmi8464SwN+N4ruALhXX+2PooDf9ZxETaSH8bFynN3KfgJ
-         SR5Bw++0jR/eMLPJNdOgmnyXQaO3uWuIQsE1S2zSbZ2a2RfJoP3t4fZZJr3+Frxf4hct
-         kjrVk8MYyLkzJZaBRbOQ/WAab7rgp2dyyMvMoQqmt5KqnZkJGyYNi8/o+3i3dc/N5H6W
-         rz8zl+whwXzKx+mYZlcxgcEDftHNa1mJGWceVnRyaGGCP6xwN6oN7DmSF6LcNaz4F1tn
-         +B2A==
-X-Forwarded-Encrypted: i=1; AJvYcCVLoJKldydDxFzdzoaBSxLv5+ydoLpTTnSp6LWEq7biUfmz+Xl0wy3FGD1Fiwc5Z90eqJmLYNA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQBbSeFrxjFY1yFulQy+gwkicj+zaxQw0xoG0FdhHc2nZx69yl
-	wgmwjZEZ/HDQHxl5W887Ufg+385txeex05OijPaEVW2aAhwqQZFLDBrvNEzWcisRaviVK96owl3
-	E+5O9a6coQN9g5Luj1ztygptZkOgJhcunqMl6aA==
-X-Gm-Gg: ASbGncufsKWDvk6l0U9L+XPpD5COHvXzpBgQf5PhmuL8WHos0MmEatuwhxlvC/RmOmD
-	qix5Uy7FeZAcABiI133h4cmtzA+yQefOiynTl2CKGlLQwamUhCGzobx3zmswxkcDIXMlXZca92O
-	sQTA+bzMkmP5nspUWPFPCWlA==
-X-Google-Smtp-Source: AGHT+IHnxXKT+pyd9gBpYCbMyVQZAO7XqVpYGkBSNYSVfaaSRz2f0QOsZvZ5bl34m2PPRdwZD5oWN80iP0qENOxIShY=
-X-Received: by 2002:a2e:b8d3:0:b0:308:eb34:103a with SMTP id
- 38308e7fff4ca-31049a7ff11mr54687661fa.28.1744704010562; Tue, 15 Apr 2025
- 01:00:10 -0700 (PDT)
+	s=arc-20240116; t=1744705657; c=relaxed/simple;
+	bh=/YTIOL4HC+RV4Q8BA5tWZBttbOx9E192dFHIl2r7BUA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FthaYytlWdWouZl73pDnRtrWhQCCylC1Ie6ReC7fTRbWSt6sK3SDW2O91jBnc04muxYrJRbII37/jjKqQ6f95XeNWPm6H5iGgbSR1QFqLSTRIH0sZ/hNe9trf+kGoKuynPSrYN+Kw/HXrEgGyXPz56UdCIE2m0QQqDrfNLpH89s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=kWlRrhmT; arc=none smtp.client-ip=95.143.211.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
+From: Denis Arefev <arefev@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+	t=1744705643;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=qcj60WxuwxsCiblOzqs/zQo+ybf28ZZc3VeFKLoGV8o=;
+	b=kWlRrhmTdidWZqcxNP17QkSx6dOBMXurK0Wq0U61FzTR9abGfMfKTQlAyaHn7JWKKZ4Kkb
+	fOdAo9wn9+vRrve0W9vpGZ7kymDoKWnD1bVzfjFnKq04wqCvT9GiE5qR2IFVnO1qotzkKq
+	afZLevazB7GVQlPCW/6zF3oM0GszP9c=
+To: Hans Verkuil <hverkuil@xs4all.nl>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Liu Shixin <liushixin2@huawei.com>,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org,
+	syzbot+365005005522b70a36f2@syzkaller.appspotmail.com
+Subject: [PATCH] media: vivid: Change the siize of the composing
+Date: Tue, 15 Apr 2025 11:27:21 +0300
+Message-ID: <20250415082722.18022-1-arefev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250401135026.18018-1-ansuelsmth@gmail.com>
-In-Reply-To: <20250401135026.18018-1-ansuelsmth@gmail.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 15 Apr 2025 09:59:59 +0200
-X-Gm-Features: ATxdqUE1-4C5Fb1JmQvyH7hBozN_RXpvZiZvSLKiPhH1VCoFIEKXbvFQJXlM6ls
-Message-ID: <CACRpkdZdFhpixdhsmN=oCEmdAuabUpXtQ9RRh0cFRuxfYXJ0Ng@mail.gmail.com>
-Subject: Re: [PATCH v2] pinctrl: airoha: fix wrong PHY LED mapping and PHY2
- LED defines
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Benjamin Larsson <benjamin.larsson@genexis.eu>, linux-mediatek@lists.infradead.org, 
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 1, 2025 at 3:50=E2=80=AFPM Christian Marangi <ansuelsmth@gmail.=
-com> wrote:
+syzkaller found a bug:
 
-> The current PHY2 LED define are wrong and actually set BITs outside the
-> related mask. Fix it and set the correct value. While at it, also use
-> FIELD_PREP_CONST macro to make it simple to understand what values are
-> actually applied for the mask.
->
-> Also fix wrong PHY LED mapping. The SoC Switch supports up to 4 port but
-> the register define mapping for 5 PHY port, starting from 0. The mapping
-> was wrongly defined starting from PHY1. Reorder the function group to
-> start from PHY0. PHY4 is actually never supported as we don't have a
-> GPIO pin to assign.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 1c8ace2d0725 ("pinctrl: airoha: Add support for EN7581 SoC")
-> Reviewed-by: Benjamin Larsson <benjamin.larsson@genexis.eu>
-> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+BUG: KASAN: vmalloc-out-of-bounds in tpg_fill_plane_pattern drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2608 [inline]
+BUG: KASAN: vmalloc-out-of-bounds in tpg_fill_plane_buffer+0x1a9c/0x5af0 drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2705
+Write of size 1440 at addr ffffc9000d0ffda0 by task vivid-000-vid-c/5304
 
-Patch applied for fixes.
+CPU: 0 UID: 0 PID: 5304 Comm: vivid-000-vid-c Not tainted 6.14.0-rc2-syzkaller-00039-g09fbf3d50205 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
 
-Sorry for the delay!
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:489
+ kasan_report+0x143/0x180 mm/kasan/report.c:602
+ kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
+ __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
+ tpg_fill_plane_pattern drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2608 [inline]
+ tpg_fill_plane_buffer+0x1a9c/0x5af0 drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2705
+ vivid_fillbuff drivers/media/test-drivers/vivid/vivid-kthread-cap.c:470 [inline]
+ vivid_thread_vid_cap_tick+0xf8e/0x60d0 drivers/media/test-drivers/vivid/vivid-kthread-cap.c:629
+ vivid_thread_vid_cap+0x8aa/0xf30 drivers/media/test-drivers/vivid/vivid-kthread-cap.c:767
+ kthread+0x7a9/0x920 kernel/kthread.c:464
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
 
-Yours,
-Linus Walleij
+The composition size cannot be larger than the size of fmt_cap_rect.
+So execute v4l2_rect_map_inside() even if has_compose_cap == 0.
+
+Fixes: 94a7ad928346 ("media: vivid: fix compose size exceed boundary")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+365005005522b70a36f2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?id=8ed8e8cc30cbe0d86c9a25bd1d6a5775129b8ea3
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+---
+ drivers/media/test-drivers/vivid/vivid-vid-cap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/media/test-drivers/vivid/vivid-vid-cap.c b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
+index b166d90177c6..df5d1c2a42ef 100644
+--- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
++++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
+@@ -946,8 +946,8 @@ int vivid_vid_cap_s_selection(struct file *file, void *fh, struct v4l2_selection
+ 			if (dev->has_compose_cap) {
+ 				v4l2_rect_set_min_size(compose, &min_rect);
+ 				v4l2_rect_set_max_size(compose, &max_rect);
+-				v4l2_rect_map_inside(compose, &fmt);
+ 			}
++			v4l2_rect_map_inside(compose, &fmt);
+ 			dev->fmt_cap_rect = fmt;
+ 			tpg_s_buf_height(&dev->tpg, fmt.height);
+ 		} else if (dev->has_compose_cap) {
+-- 
+2.43.0
+
 
