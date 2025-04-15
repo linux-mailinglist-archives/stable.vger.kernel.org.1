@@ -1,123 +1,175 @@
-Return-Path: <stable+bounces-132699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC2A3A894D1
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 09:22:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F24A894DF
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 09:24:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB37E1895C5E
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 07:22:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EEF31895E65
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 07:24:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D65827A126;
-	Tue, 15 Apr 2025 07:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349EC27991D;
+	Tue, 15 Apr 2025 07:24:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KsjWuSGo"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CEBE20DF4;
-	Tue, 15 Apr 2025 07:21:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6BC274FC7
+	for <stable@vger.kernel.org>; Tue, 15 Apr 2025 07:24:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744701703; cv=none; b=dYeFsz7qmK8FTBfe5bOEIk0Uj67hFuWIr+yJ1Wb3wA1i8NEvXeGNaOVQyC6A27bwKf/1NhrxCv+OZ/xOtzA7hGBiSe5y1ZgsTp3o42JhU8SWh8QOAX2sBVdDTbuEC6QAM7VomLcTOcDScTsPXtFq2hqmvwNMA8V/IoIrZOJan+Q=
+	t=1744701873; cv=none; b=VAl6n/7xLPiznzUv/bUKr+WfC/Jr8qzeoP5npwl1VQ1k5gn/v2NoxeNn6VyVxLFOEhYTXazu4pq1xjeJcsxc8MNCMWjZ5DMGjJjbTItX1R0Fb6XigaKqEF33V4B8ZHa9TxAaHyzwiegf+QD36TbsTxX2JhTDad3FxZMrezXLZsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744701703; c=relaxed/simple;
-	bh=2o6j5omeEkA4JCWhDM9N80NVkPESG6qQso4cQHUzBdk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LAj38dxEWZ7cFgLS9Dc+spEaGktn5QJu/lXunnPuTpTLY8lFm8aie45tHPfgI77e4okv4xR4L7MakjIgcfnZQsBOSjgsYpcDZek61nlohFcK8ABbvPZsXJERpnjXrapojf0bz2Jmkrf44JdfIVW18MR7ujfuSWTc2PcdKKLhRLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-01 (Coremail) with SMTP id qwCowAAn0gLoCP5nVCb1CA--.103S2;
-	Tue, 15 Apr 2025 15:21:18 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: arend.vanspriel@broadcom.com,
-	kvalo@kernel.org
-Cc: jacobe.zang@wesion.com,
-	sebastian.reichel@collabora.com,
-	christophe.jaillet@wanadoo.fr,
-	erick.archer@outlook.com,
-	linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] brcm80211: fmac: Add error handling forbrcmf_usb_dl_writeimage()
-Date: Tue, 15 Apr 2025 15:20:48 +0800
-Message-ID: <20250415072048.2629-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	s=arc-20240116; t=1744701873; c=relaxed/simple;
+	bh=au6q9Tu2dUAZ4s8DofqOWQ5I3CRvyrypPI+uPHden64=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V+eB6h56yzqdK3u1pjbDjvFS2kg/bdXUVNZk8YC1ZnaI9gJ++mCEDMZkne0rf/hFGxXSgWhv1eWlYuJtFQPpd0aIA0sgrdhzZPtMMtcG9HTPOHGlkSlz/+LFE8Sv4y9r45fTSfvOdKWEmhSo1jp3aADOgeOYAk5kEukbWXdeWVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KsjWuSGo; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-224191d92e4so50058305ad.3
+        for <stable@vger.kernel.org>; Tue, 15 Apr 2025 00:24:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1744701871; x=1745306671; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=qu8kD86AXuKJZy4HIshJdpK/xBfLXn4kgIsnyKTrc7I=;
+        b=KsjWuSGoO9RHeu2vKaj1xW+H/U8w7dKS3afNqRRriNwFwtNQJSlewIoS4K4K8cvcR3
+         PPC4u47YwHLP+ttjIkjPXR49f0xxYtfEm+oDRIFH/o+aAqQCMht+n93oVq0HOG8IoJOI
+         kQMJtNubdalcQww90VDwzM2T+u0JNZMBHNXtESx6sHf7lKOGGpXDXYbZGM9/GsYeh6o4
+         1xUYVoxGiGmtDs6+ARdXkLc+bzFw8Gh2ZWBPUkZY8MigaYsZLcEdtx3/h+asHSRLXI7U
+         XR2XkHRf1IqiXZeOWjxD73kTywlZB/yQeTdRXdbJOmX1uyFO0gLsMBS+2aHHJ4cx+CM9
+         TVNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744701871; x=1745306671;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qu8kD86AXuKJZy4HIshJdpK/xBfLXn4kgIsnyKTrc7I=;
+        b=KJK80q4UtvqHT+4+dyqHrR1qYozMhlce4oV635iLVno2dh4aTVrP1wjPIx2Mpmwp4V
+         8fR7I2kP9cVtxP/k8IoJ8/OH11ufgSge6zPtUPdMFvpJXyWztDsH+G45XCOJtRGOSmQL
+         9qPNVUgwumZLOyPYdqiRbhyCD42Anf50qsdNRjzOgVl5Wx3Z8mRjfcBrZh0YgmV5sCnr
+         kz6ORDlCPozNCu/U6B+hGxObRgJdLY9VoMwHNE8Oyqnz7kR/eUV363V7ndHaXZfs9Jzq
+         qma+cTsLJ2IrhDHzUlZGukA2FvsCu2XlL/4prQjA7pClyVOGURKDvuIwkv5PIvE07pWa
+         Zseg==
+X-Forwarded-Encrypted: i=1; AJvYcCXIWpIRJs+E/rtTV+IUZIC6DqcEnY084NUTDnnve4jGrE0ktJFLSECQFm4j6EYFhoDzPkA20LA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvIveqSi1oU3MSUc957hAfCMxlpYzW8UmkFLeO/bj4g/PeaOpe
+	ZmQBdL0qTtVbZlBxD10guKRB+UNGbJm721cQ+JYZes9vAW/7uicM3umroMjRYQ==
+X-Gm-Gg: ASbGncsB7jJvATBkMnkipphePKTjnFSgX5bkXwYk8OBiXnCYaapcvh+cSc8yOvI6b2T
+	jPcrE3KF0OFo/oBwptHuyf2F5jcjbI/UC1n+WdDaxjk13PxeZJxInHn+Ih6Ty7bt3lLH+6uDNoA
+	7cqHULwPLrkIJqNzDtMpqRBBc+shyqK8EOWAN4I+quK2J5pE5ZKsusZRbLpHKlcKq5Fz1qIYnfr
+	7agjo2zrTdr1/aQ76xPwidNMjzsCF6zpuNUMyRMBpbq1wJ2wOAsCNN1AR4tf8TlfLOwiqGglPNx
+	9SLhJzDes3fUIw7oV+ljvwa8tGDCc2OemgIGli0k5dneW8CpMw==
+X-Google-Smtp-Source: AGHT+IGdiWkQMkaHTsiVcI4z3x+X4VzKPfKH5y/vEQa4WjmVHEMVpLvUUGLit5iWi2cXVeIM/nOIpA==
+X-Received: by 2002:a17:903:41c2:b0:224:3db:a296 with SMTP id d9443c01a7336-22bea49e9e4mr204502495ad.2.1744701870704;
+        Tue, 15 Apr 2025 00:24:30 -0700 (PDT)
+Received: from thinkpad ([120.60.71.35])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22ac7c993a7sm110714665ad.146.2025.04.15.00.24.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Apr 2025 00:24:30 -0700 (PDT)
+Date: Tue, 15 Apr 2025 12:54:24 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Sumit Kumar <quic_sumk@quicinc.com>
+Cc: Alex Elder <elder@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, quic_krichai@quicinc.com, quic_akhvin@quicinc.com, 
+	quic_skananth@quicinc.com, quic_vbadigan@quicinc.com, stable@vger.kernel.org, 
+	Youssef Samir <quic_yabdulra@quicinc.com>
+Subject: Re: [PATCH] bus: mhi: ep: Update read pointer only after buffer is
+ written
+Message-ID: <74azjehrnf57ruhrkcqonuakm2iro5ehdvtudolcbrlrcjfvj4@ylqmug3wqdhs>
+References: <20250409-rp_fix-v1-1-8cf1fa22ed28@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAAn0gLoCP5nVCb1CA--.103S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJryfCw43Aw4DWw43uF18Grg_yoW8Aw1fp3
-	Z7XasrurykW3yakw47JFs7AFykKa4rta4kCFW8ZwnxXF4kCw1vkrs8KFyFkw4DCFWxAa47
-	JFs8Ary7Jrs8KFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
-	1j6rxdM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
-	6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr
-	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
-	8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwVW8CwCF04k20xvY0x0EwI
-	xGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
-	Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7
-	IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k2
-	6cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
-	AFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUGFAJUUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ4NA2f95GqL6QAAs-
+In-Reply-To: <20250409-rp_fix-v1-1-8cf1fa22ed28@quicinc.com>
 
-The function brcmf_usb_dl_writeimage() calls the function
-brcmf_usb_dl_cmd() but dose not check its return value. The
-'state.state' and the 'state.bytes' are uninitialized if the
-function brcmf_usb_dl_cmd() fails. It is dangerous to use
-uninitialized variables in the conditions.
+On Wed, Apr 09, 2025 at 04:17:43PM +0530, Sumit Kumar wrote:
+> Inside mhi_ep_ring_add_element, the read pointer (rd_offset) is updated
+> before the buffer is written, potentially causing race conditions where
+> the host sees an updated read pointer before the buffer is actually
+> written. Updating rd_offset prematurely can lead to the host accessing
+> an uninitialized or incomplete element, resulting in data corruption.
+> 
+> Invoke the buffer write before updating rd_offset to ensure the element
+> is fully written before signaling its availability.
+> 
 
-Add error handling for brcmf_usb_dl_cmd() to jump to error
-handling path if the brcmf_usb_dl_cmd() fails and the
-'state.state' and the 'state.bytes' are uninitialized.
+Hmm. I was under assumption that the host wouldn't access the rd_offset before
+raising the interrupt.
 
-Improve the error message to report more detailed error
-information.
+But anyway, the fix looks legitimate irrespective of that.
 
-Fixes: 71bb244ba2fd ("brcm80211: fmac: add USB support for bcm43235/6/8 chipsets")
-Cc: stable@vger.kernel.org # v3.4+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+> Fixes: bbdcba57a1a2 ("bus: mhi: ep: Add support for ring management")
+> cc: stable@vger.kernel.org
+> Co-developed-by: Youssef Samir <quic_yabdulra@quicinc.com>
+> Signed-off-by: Youssef Samir <quic_yabdulra@quicinc.com>
+> Signed-off-by: Sumit Kumar <quic_sumk@quicinc.com>
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-index 2821c27f317e..d06c724f63d9 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-@@ -896,14 +896,16 @@ brcmf_usb_dl_writeimage(struct brcmf_usbdev_info *devinfo, u8 *fw, int fwlen)
- 	}
- 
- 	/* 1) Prepare USB boot loader for runtime image */
--	brcmf_usb_dl_cmd(devinfo, DL_START, &state, sizeof(state));
-+	err = brcmf_usb_dl_cmd(devinfo, DL_START, &state, sizeof(state));
-+	if (err)
-+		goto fail;
- 
- 	rdlstate = le32_to_cpu(state.state);
- 	rdlbytes = le32_to_cpu(state.bytes);
- 
- 	/* 2) Check we are in the Waiting state */
- 	if (rdlstate != DL_WAITING) {
--		brcmf_err("Failed to DL_START\n");
-+		brcmf_err("Invalid DL state: %u\n", rdlstate);
- 		err = -EINVAL;
- 		goto fail;
- 	}
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+
+- Mani
+
+> ---
+> ---
+>  drivers/bus/mhi/ep/ring.c | 16 ++++++++++------
+>  1 file changed, 10 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/bus/mhi/ep/ring.c b/drivers/bus/mhi/ep/ring.c
+> index aeb53b2c34a8cd859393529d0c8860462bc687ed..26357ee68dee984d70ae5bf39f8f09f2cbcafe30 100644
+> --- a/drivers/bus/mhi/ep/ring.c
+> +++ b/drivers/bus/mhi/ep/ring.c
+> @@ -131,19 +131,23 @@ int mhi_ep_ring_add_element(struct mhi_ep_ring *ring, struct mhi_ring_element *e
+>  	}
+>  
+>  	old_offset = ring->rd_offset;
+> -	mhi_ep_ring_inc_index(ring);
+>  
+>  	dev_dbg(dev, "Adding an element to ring at offset (%zu)\n", ring->rd_offset);
+> +	buf_info.host_addr = ring->rbase + (old_offset * sizeof(*el));
+> +	buf_info.dev_addr = el;
+> +	buf_info.size = sizeof(*el);
+> +
+> +	ret = mhi_cntrl->write_sync(mhi_cntrl, &buf_info);
+> +	if (ret)
+> +		return ret;
+> +
+> +	mhi_ep_ring_inc_index(ring);
+>  
+>  	/* Update rp in ring context */
+>  	rp = cpu_to_le64(ring->rd_offset * sizeof(*el) + ring->rbase);
+>  	memcpy_toio((void __iomem *) &ring->ring_ctx->generic.rp, &rp, sizeof(u64));
+>  
+> -	buf_info.host_addr = ring->rbase + (old_offset * sizeof(*el));
+> -	buf_info.dev_addr = el;
+> -	buf_info.size = sizeof(*el);
+> -
+> -	return mhi_cntrl->write_sync(mhi_cntrl, &buf_info);
+> +	return ret;
+>  }
+>  
+>  void mhi_ep_ring_init(struct mhi_ep_ring *ring, enum mhi_ep_ring_type type, u32 id)
+> 
+> ---
+> base-commit: 1e26c5e28ca5821a824e90dd359556f5e9e7b89f
+> change-id: 20250328-rp_fix-d7ebc18bc3be
+> 
+> Best regards,
+> -- 
+> Sumit Kumar <quic_sumk@quicinc.com>
+> 
+
 -- 
-2.42.0.windows.2
-
+மணிவண்ணன் சதாசிவம்
 
