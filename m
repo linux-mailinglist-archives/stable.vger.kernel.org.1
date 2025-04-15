@@ -1,137 +1,90 @@
-Return-Path: <stable+bounces-132739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A630A89EA5
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 14:54:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E2DFA89EE2
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 15:01:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C11F16740A
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 12:54:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FB2D165DB7
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 13:01:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C7A296D25;
-	Tue, 15 Apr 2025 12:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C0E291160;
+	Tue, 15 Apr 2025 13:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="XCrIF9p3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0l9gbBRf"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5A828E61D;
-	Tue, 15 Apr 2025 12:54:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14EAB76026;
+	Tue, 15 Apr 2025 13:01:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744721686; cv=none; b=dWffxiNf1rZxrjtRBIvRjc+nGLMXoVS+ITg7lPri5qf0+OaP92llF/RIqMmEkbnyDAkmkw3PkCR1n5+tWymjH3D1QPt2oKdTm2TLMV0dHa5NYefm2etAPygzQuKbkROGdGAPAWmzqb0ag/44eU2Z/LZyiHF2qqEOT8FRkulYfg0=
+	t=1744722109; cv=none; b=lX8qj99Jq+3ptaogPLPZNP0nEJXeYU1KcfR6Oov6BU0K5FGtNrxLkLKBWYJDgvxWD4iOJlNHQzct8ssp9TZbEVQXVVqT0wNoVZwX5PRgZt2TSrxGms8txZA6cYyZ2kPcws9A8L2lQAijXx+i9UOr1fLlkakl0h0FsXw8k9WAkwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744721686; c=relaxed/simple;
-	bh=K/FjfTvH1QRy7+t7pKsVPI8IS+WdkLH8SmEYGjRagwA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LC9YJBBVsclhF1ROoJTih43Q5NCOiCtaD3cfYS4NKgv6KkAKxhgbFPBrNgo54hBxqEbTMqKjVuqo2BlXM61m/HrHFkmtOOuvWPqVxyotse8nhhSe213ZmhNXfiRIb9As+FlnqdyKxT3WjDHSov9kH3Gh4RRejPlN5BKN2Xk3cAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=XCrIF9p3; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4ZcPJ012q5z9sWs;
-	Tue, 15 Apr 2025 14:54:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1744721680; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K/FjfTvH1QRy7+t7pKsVPI8IS+WdkLH8SmEYGjRagwA=;
-	b=XCrIF9p3qYjPKTa32Gt7lp4HeMkDbm5dXf4RLEonFk06uMtAbMgwWXkjqIR46XbE713xqz
-	fE+SUU+xAn8sk/b6kuU1QEsyKqCPGFGcf6BTCFUdf8HSZp+Mp9hdtWimDXXroOW1Mq2AjZ
-	6jpgBk+8cNhNmmeUcj389vv5NY/mtZS/M49hR3sJDMwWdOajQ1vJgMQMIfi7puukA2q1fk
-	5oE+49W2M17Uw4RWT+8aoaPjxvUsqm1RjXc1dXF84SCY/AYVTESxoXiWFzmNmy0ti3MLW2
-	eUDUqZCbc4KMM3sxTi53SRCABrFe7asAgwL0ryWhoWQ3NNP7zA++k90ukumh0A==
-Message-ID: <573a616a5270d97f421a380e2e41c7e35d2f03e3.camel@mailbox.org>
-Subject: Re: [PATCH 1/3] drm/nouveau: Prevent signaled fences in pending list
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Danilo
- Krummrich <dakr@kernel.org>, phasta@kernel.org
-Cc: Lyude Paul <lyude@redhat.com>, David Airlie <airlied@gmail.com>, Simona
- Vetter <simona@ffwll.ch>, Sabrina Dubroca <sd@queasysnail.net>, Sumit
- Semwal <sumit.semwal@linaro.org>, dri-devel@lists.freedesktop.org, 
- nouveau@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- netdev@vger.kernel.org, linux-media@vger.kernel.org, 
- linaro-mm-sig@lists.linaro.org, stable@vger.kernel.org
-Date: Tue, 15 Apr 2025 14:54:36 +0200
-In-Reply-To: <2dba3077-a770-4e00-9a7a-c744096ae876@amd.com>
-References: <8583665a-6886-4245-be49-fd8839cfe212@amd.com>
-	 <c737c89c7ce9174e349c61ab4e5712eee8946f13.camel@mailbox.org>
-	 <50c9530d-e274-4f89-8620-16afe0981239@amd.com>
-	 <1a73e5fe4350d6ee4b7d807612264eb637c4f2a9.camel@mailbox.org>
-	 <d3dee321cd6b70d6ca98768fbcf6f1e6134c43a1.camel@mailbox.org>
-	 <81a70ba6-94b1-4bb3-a0b2-9e8890f90b33@amd.com>
-	 <aca00cb25b813da4fd2f215829f02337f05642f3.camel@mailbox.org>
-	 <45d66ca4-5390-42e9-869a-f5f9125d05b6@amd.com>
-	 <1127db242503055b2e5e8d07db3aeae46cfb7a24.camel@mailbox.org>
-	 <6e4628c3cfc7e0d1e4ea9af510ce0b09b34a8cf8.camel@mailbox.org>
-	 <Z_0bOgTBkkRH9jib@cassiopeiae>
-	 <2dba3077-a770-4e00-9a7a-c744096ae876@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1744722109; c=relaxed/simple;
+	bh=/ZyBKPl+icr/iZKTjKYPQMSt0pK3OLsfxPbLuRV69C0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CBTSn3qXnihKPF7Lq4MBIisFJHCHZLQ5Et/GLol0iXk0LtRMjYfESzCGzIgf5dTvxQ3GZs5J0yCXTHQVhl1KFhJXm8QGlm2TroXPqD55bqH9NU6oDn5feMcYC/BQ8eB4P+f8SmDeQQ8MHpa3qYT5XkfFUqtrJHpA+ohDCnNXi08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0l9gbBRf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B09C4CEEB;
+	Tue, 15 Apr 2025 13:01:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1744722108;
+	bh=/ZyBKPl+icr/iZKTjKYPQMSt0pK3OLsfxPbLuRV69C0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=0l9gbBRfHQmR20aOfLQek8OGsdLTxshocNS09YwsRMYoZohhkpxFLhX+DPE79qJHw
+	 vkzFLmOi9P2nM/MEdhjyYpFBrwTrj3zn3h632fAWfFxoJuRmmAhvDEQljIoYEOYl7c
+	 ZiISFCKL73Wc+8uuDkUS4k0jMvUo5Wy5dqyubuDU=
+Date: Tue, 15 Apr 2025 15:01:45 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Wentao Liang <vulab@iscas.ac.cn>
+Cc: "philipp.g.hortmann@gmail.com" <philipp.g.hortmann@gmail.com>,
+	"linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH v7] staging: rtl8723bs: Add error handling for sd_read()
+Message-ID: <2025041557-recollect-livable-a959@gregkh>
+References: <20250408044152.3009-1-vulab@iscas.ac.cn>
+ <2025040814-curtsy-overrule-1caf@gregkh>
+ <67FE50E2.043FCA.23966@cstnet.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-META: 8it8cuy3unipa6fs4gcxd9fju5nkgkz1
-X-MBO-RS-ID: 9a0b51d9a94caabfc13
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <67FE50E2.043FCA.23966@cstnet.cn>
 
-On Tue, 2025-04-15 at 11:56 +0200, Christian K=C3=B6nig wrote:
-> Am 14.04.25 um 16:27 schrieb Danilo Krummrich:
-> > On Mon, Apr 14, 2025 at 10:54:25AM +0200, Philipp Stanner wrote:
-> > > @Danilo:
-> > > We have now 2 possible solutions for the firing WARN_ON floating.
-> > >=20
-> > > Version A (Christian)
-> > > Check in nouveau_fence_context_kill() whether a fence is already
-> > > signaled before setting an error.
-> > >=20
-> > > Version B (Me)
-> > > This patch series here. Make sure that in Nouveau, only
-> > > nouveau_fence_signal() signals fences.
-> > >=20
-> > >=20
-> > > Both should do the trick. Please share a maintainer-preference so
-> > > I can
-> > > move on here.
-> > Thanks for working on this Philipp.
-> >=20
-> > If you don't want to rework things entirely, A seems to be
-> > superior, since it
-> > also catches the case when someone else would call
-> > dma_fence_is_signaled() on a
-> > nouveau fence (which could happen at any time). This doesn't seem
-> > to be caught
-> > by B, right?
->=20
-> Correct, yes. I would also keep it as simple as possible for
-> backporting this bug fix.
->=20
-> On the other hand a rework is certainly appropriate including both
-> nouveau as well as the DMA-fence calling rules. Especially that the
-> DMA-fence framework calls the signaled callback with inconsistent
-> locking is something we should fix.
+On Tue, Apr 15, 2025 at 08:28:18PM +0800, Wentao Liang wrote:
+> >Again, I think this whole "hal wrapper" should be removed instead, and
+> >not papered over like this.  If you dig deep enough, it all boils down
+> >to a call to sdio_readb(), which is an 8 bit read, so the alignment
+> >issues are not a problem, and if an error happens the proper error value>
+> >is returned from that saying what happened.  Why not work on that like I
+> >recommended?  That would allow for at least 3, if not more, layers of
+> >indirection to be removed from this driver, making it more easy to
+> >understand and maintain over time.
+> 
+> Thanks for the guidance and detailed suggestion. But remove the whole 
+> "hal wrapper" layer is beyond my capability. Perhaps this refactoring 
+> work would be better handled by someone with deeper knowledge of the 
+> driver codebase. The changes would ripple through several layers, and 
+> I'm not entirely confident about implementing them correctly. The 
+> current patch might serve as a reasonable stopgap solution. 
 
-Do you have a suggestion where to start?
+Try it, it should be a "one step at a time" of unwinding the mess that
+the codebase is in.  Shouldn't be that hard, and will give you lots of
+good things to work on.
 
-I btw would still be interested in adding some sort of centralized
-mechanism in dma_fence that the driver could use to do some cleanup
-stuff once a fence gets signaled ^_^
+I don't want to take a "stopgap solution", sorry, I would rather take
+the real solution, for obvious reasons.
 
-P.
+thanks,
 
->=20
-> Regards,
-> Christian.
-
+greg k-h
 
