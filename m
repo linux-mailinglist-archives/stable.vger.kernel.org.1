@@ -1,102 +1,116 @@
-Return-Path: <stable+bounces-132733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8350A89CBD
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 13:43:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8AFFA89CED
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 13:55:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 550E2165210
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 11:43:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00D3D1700AF
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 11:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E08E2918CF;
-	Tue, 15 Apr 2025 11:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554D3291151;
+	Tue, 15 Apr 2025 11:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wP5Owd+z"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="srIJkOjM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.web.de (mout.web.de [212.227.15.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2852B9A7;
-	Tue, 15 Apr 2025 11:43:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8574A8633F;
+	Tue, 15 Apr 2025 11:55:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744717396; cv=none; b=FByT9avgoI80y/mYsbXoFHjbcejNNUIb6rPqj5ulfLPtgi3EjIx5PASRHLsHF5iCFsrkTBPC38OadSiqmcqPrBvKi/sG3nB8VqyzsiZ/nUM4rFq8XpQIhIZ/2M9w4dDDZt9ZpiHWTM5ox4e2jmPRvk4YTaQmeCWz6r+jBWPgVE4=
+	t=1744718137; cv=none; b=KwuAhogvYbEQ4aqylwfADjD4Fuu6E0ZSyCrWg/Co5/SKpxRdgNHD2t/kGGEwUrBuYqMpfFFh6StO6a/dWrbxK5VKRG6AxzYorSiL30CbhAIkgQHKrsL6OfM3xsVROOcwML/bIEi8w/EJsYjQAt1JkFXVBJUZKXqHvkG8dX+DgVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744717396; c=relaxed/simple;
-	bh=trG5DdsOiG8NeThA812fgykRNksnpDmhYLcOXxGaqGs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O9oIahXXfLFMqqY8v44GVSfLhBagLb4mkC0LnmHz0QPk/ibArSnSfwzIwb56sQFgnRy2qgJaqRRg1FPpR3+POm4I+dHGrYbfhd64A7MdBtYyEROb1V0/K1A+c7zNJNvnZpNmDFhQ2EWQrVImPpJPV+IkbY17tDT6Me0pr0wpwRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wP5Owd+z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ADCDC4CEDD;
-	Tue, 15 Apr 2025 11:43:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744717396;
-	bh=trG5DdsOiG8NeThA812fgykRNksnpDmhYLcOXxGaqGs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=wP5Owd+zjv497is2T2hpPymcDdeNsHMTU7TaEX0bI31pqzumlXFjw3izhest8gx00
-	 7AjefdryygCNGgEYbzz8Kb2+fI8nE6BN4MDBuq9K9GMoENep8FxawgJLk8DhYk3ll1
-	 bmets7KsVJqTCmeb1OXJ3dmHC3UiR+iJGy1Re4kc=
-Date: Tue, 15 Apr 2025 13:43:13 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: vulab@iscas.ac.cn, brcm80211-dev-list.pdl@broadcom.com,
-	brcm80211@lists.linux.dev, linux-wireless@vger.kernel.org,
-	stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
-	Erick Archer <erick.archer@outlook.com>,
-	Jacobe Zang <jacobe.zang@wesion.com>, Kalle Valo <kvalo@kernel.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: Re: [PATCH v2] brcm80211: fmac: Add error handling
- forbrcmf_usb_dl_writeimage()
-Message-ID: <2025041507-proclaim-frigidity-da8c@gregkh>
-References: <20250415072048.2629-1-vulab@iscas.ac.cn>
- <af72dff7-8ad1-476f-81f2-6f7d76761b12@web.de>
+	s=arc-20240116; t=1744718137; c=relaxed/simple;
+	bh=UvsCuSDHYInrelqa0vP4LiwOooLTqAXXZ/velEhZj6Y=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=WUsD6R7joexvpfkuBxzmyPUcNOLkRrW2RkyW3upMESGbMJ3pyh26C1sUFrfNpZ8AMgIJ/IvN/bXgbHSumtaLhsEa3wHr+x7zjMlXnQaw191m06aAGsEKIIMhOJLJfssX6yWlxCV9ss6G/oR2u/4dnjdvNiGCbH+KuFxsauYXsec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=srIJkOjM; arc=none smtp.client-ip=212.227.15.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1744718106; x=1745322906; i=markus.elfring@web.de;
+	bh=7vJwDbjhhUUleO+YsM2fphJAvcNc8PwwTfNeKp67nKU=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=srIJkOjMJWaD7i/GUniCujRPiO5MLuTjxNVRTjC6MCcAC0NcrQ0kelACtuoCF4TR
+	 Ptgy8Fi5Xrj2htF3lo1v6P2XyhDg1rKvR+TQXq7+EJpatl4lmk68sJnrmzj7XVJji
+	 tPc3I4h8ZUOBAjkeRiKNSimiXxJ/d/5/z8llQSrtQl0zKB1mVRtt0DO/UlyH0kdZk
+	 5UD+eR47z43chlA7hiNgvc35dNc4u+jRjX7k7KSmpLNdtrC3u4hrb4pSqS9gQzh40
+	 A+5XHF4YxyjdK9qrvqfju2lTv8SMiRu7qdxHPwOZvowggd3QY1OQ8IS57NZr5ajfs
+	 zGRBcde5VWFnUcUgKQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.70.24]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MuFD7-1tAtvj2X9h-017YGo; Tue, 15
+ Apr 2025 13:55:06 +0200
+Message-ID: <777983bf-08d2-4ccd-aa92-4791c8f9195d@web.de>
+Date: Tue, 15 Apr 2025 13:55:05 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <af72dff7-8ad1-476f-81f2-6f7d76761b12@web.de>
+User-Agent: Mozilla Thunderbird
+To: vulab@iscas.ac.cn, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ David Airlie <airlied@gmail.com>, Kenneth Feng <kenneth.feng@amd.com>,
+ Simona Vetter <simona@ffwll.ch>, Xinhui Pan <Xinhui.Pan@amd.com>
+References: <20250415100813.3071-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH v2] drm/amd/pm/powerplay/smumgr/fiji_smumgr: Add error
+ check in fiji_populate_smc_boot_level()
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250415100813.3071-1-vulab@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:j95cmp4iIHJldfBrtlJ3dqRgSUtrCjG/E336CB1WJIsSKZJCTSr
+ QfSBc24kCx/pYxQqM4Nm0fduoBgsUwyJyYQKeXPm5LuEy604pfnbdARzdSzh43U6aih94mo
+ A267dXnnWmXXgybTVGZXTwApcn5GAgtn1bTpyP/8pDG82/YAEewmRvqiTmm6ZVosHZ7EIRO
+ d6C/NkUKTYYahRlDPNFig==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:ci3YOdjsLss=;IEKbIWfFHAoKltwaFh0/d4So4zt
+ xUUcNirA8UGA4vkj1cLZ8a8+J6yARIThOsgVSOv0WsFaY6zDSmCxwPchfrT3CQtNckDq6zqin
+ LZ+aGDXty6nUWvjCzLUoMNIgaB5NDChhfQVk0bT7KjxbxOi6FYWear1/fxrIKHC5Jj+ECKOVM
+ PWR5w82031Eax+VY112aAEZhLDEd3O9Brw5aZHqCMoxp2MGxw7VYs0Sgy1Noqo64FOuIi8Ojb
+ SbjRDYQatCad2t2KYAJcwE2zmg8/isGt4aH0BMPqCE/Jm0M4McfJDK0Vn0fMozAa1xinx97NS
+ pPUk5iJsjh8p3E+dnlPaBjpFmBLHB4vokcLCBXNPHf0FZ9M/Rx3mo8O4P3bneJNs1FYMyVqe7
+ aD1bMBqg57LiIqVFo8PqTIQXBtBQbwQz9uOh2HghVecw4NUi5+pzqrbSida/ioxT7/nSLY3dT
+ xJb6b83566fiz5V9Z5/rzW8V88YBGTbUofYPSoM24veseVEqaYIEFIBk4DXdRHJqNkv2K9DOC
+ ucfxyFhnfwhV1qv1glXFWmzmK9uyy4WYBuM5N0Jha4DO6wYnSzfbHQQQ3DOn1Ym2tv5LgYXGw
+ ORBBaMZbWGtXEO8ZNXlHf/QRKpiD6551ArvsStwsT3DfhhfLWbpweHIrA9pR4ItliRW6V2j7E
+ HuMCkAFid+7/mTKKBtPfCM5P6Juv2cSH70+Tix0PAcfWGV15yfk0diXmYJQu4/d5nxm59LjM5
+ 232EY+OleqV9QDI+nrj1giiKbI4dHr7K5/zb49cuLKQY7q0ST1lUf7IfQzemo2pat6ItOCm5a
+ ELNKYX4o20kVVk/tcDC1gzH80Y8mQTCZBNgdUxeK7cc3QJ7OWJbY7TFdLYNfbkSULuEvFoxnO
+ wZt1nVOIuI473sllLkJTjo+Bk1a2V5UsXQXbUMBkBRqUoGDGlRF+VFWJjAJth6ISO8gjpUuTp
+ I6MCiaj/mWrk8gWajQnVNKpYV3k1eLwO/daZatWBOs3m+pTRWuHq44rvWMM/mlHzHfpNopQIi
+ sc3DEYfUhW5CduIM5Atfi6JDN1Sh3Oib8UotLjCOXASYmrtvUNi0Bg5SxA8X5sxYywCqfa27y
+ qJu2goJ8NSc71QD29ldgYeR6cxr5BIC5oalos3AOEK9vOMvo/AzfFpqUvbyRFB5RqP7DPKN/u
+ A1c71vNT31yfuUsEgbAtq5N+9W++oA3jVpid2QZgrLaQm5CTdIPqPBuog9Wpp4147WzZXufGL
+ kgzJ3JE1fQt5h8+InF83UJYM7p0PfYIPo7CNwmP96YwwZ/R2mkKADoqYlfMWCXlH1DoAg/wwm
+ Wf7bYfaPBMjJw7d9YjrUVkbSc5j1z4U7IFh4684A93Iw4khKxO4mFziWfyFtd8DaXYcGVThRr
+ 1DWBl7Jr6QAtin8S9Q/s69hnWOT5pPdCWq4kKJhpc+ttRsNjDTIfKUz6OQ4jRXVxaUTfyCTFo
+ UuJm6av/ts38/D79SvmNQYfC8rj1RQAXOmEfStyhcHx5sqsYGNhK7M7F/dOW6Hcg16WNL4Q==
 
-On Tue, Apr 15, 2025 at 01:21:23PM +0200, Markus Elfring wrote:
-> …
-> > brcmf_usb_dl_cmd() but dose not check its return value. The
-> > 'state.state' and the 'state.bytes' are uninitialized if the
-> …
-> 
-> Would you ever like to benefit any more from change descriptions
-> which may contain text lines that would occasionally be longer
-> than 60 characters?
-> 
-> Regards,
-> Markus
-> 
+> The return value of fiji_populate_smc_boot_level() is needs to be checked.
 
-Hi,
+                                                     should?
 
-This is the semi-friendly patch-bot of Greg Kroah-Hartman.
 
-Markus, you seem to have sent a nonsensical or otherwise pointless
-review comment to a patch submission on a Linux kernel developer mailing
-list.  I strongly suggest that you not do this anymore.  Please do not
-bother developers who are actively working to produce patches and
-features with comments that, in the end, are a waste of time.
+> An error handling is also needed to phm_find_boot_level() to reset the
+> boot level when the function fails. A proper implementation can be found
+> in tonga_populate_smc_boot_level().
 
-Patch submitter, please ignore Markus's suggestion; you do not need to
-follow it at all.  The person/bot/AI that sent it is being ignored by
-almost all Linux kernel maintainers for having a persistent pattern of
-behavior of producing distracting and pointless commentary, and
-inability to adapt to feedback.  Please feel free to also ignore emails
-from them.
+Can you propose in a nicer way to complete the error handling?
 
-thanks,
-
-greg k-h's patch email bot
+Regards,
+Markus
 
