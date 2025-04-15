@@ -1,229 +1,192 @@
-Return-Path: <stable+bounces-132750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEE2AA8A114
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 16:30:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB05EA8A1E8
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 16:53:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2CB1168FBB
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 14:30:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B16819003E8
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 14:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026312918C7;
-	Tue, 15 Apr 2025 14:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FDBA28BA8D;
+	Tue, 15 Apr 2025 14:53:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="J1Xjwsfk"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B4EC1B0434;
-	Tue, 15 Apr 2025 14:30:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FB12DFA56;
+	Tue, 15 Apr 2025 14:53:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744727411; cv=none; b=nktMPkC74HeaEBrLvTgBalrh/VFgpC1ZiSksLKfpyjV0o89A3ORZb9+VYPGp7Pye6W+m4rI4O0Z+d0qusZaBHTk0AO0VuAqXTXbwTcwlexGf8RJj48fMJxTraNwZKJ6+Y7TaUVaA+Rs1UDrhZK1ChiXPcw2XAVD0ktwzLwltLQs=
+	t=1744728816; cv=none; b=Y83v8ItnnAzqJ+Fx+pbwEZ9n7+5KlSsjCCl7srCMwVKqW5tqseJYKM2tSHBPbKNw26Bpmqg9c/95GBhuGGUt/3P07316E1fJASt/G4ycoAjoxAeXr1mCrVhxLW6lMtJUm7zR5aTjt/U0NFYGt3ViXnRn04A9zOyxrmcPkFglPXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744727411; c=relaxed/simple;
-	bh=2mD5L5mLgBED0q8FXEIKxUdCbRXJ6s+ze57Y0Ayovbo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=spl6Ox63R3hc0/4qBjvZyiflOKoU5TMVbIjeEen6b8xRqQ36UGXfMuiu2CYpySfOmtKnAZgLtshZvkrZ160ZlUkP0G93Mb0FkHl4CkuMgb339o6DND0uqN1+75YHiQz2R+NKuCUfAADTVrrYqYx6YcCPJwDY836m+NV42OR9YXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F2EDF1756;
-	Tue, 15 Apr 2025 07:30:06 -0700 (PDT)
-Received: from pluto.guest.local (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 44F843F694;
-	Tue, 15 Apr 2025 07:30:06 -0700 (PDT)
-From: Cristian Marussi <cristian.marussi@arm.com>
-To: linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	arm-scmi@vger.kernel.org
-Cc: sudeep.holla@arm.com,
-	james.quinlan@broadcom.com,
-	f.fainelli@gmail.com,
-	vincent.guittot@linaro.org,
-	peng.fan@oss.nxp.com,
-	michal.simek@amd.com,
-	quic_sibis@quicinc.com,
-	dan.carpenter@linaro.org,
-	maz@kernel.org,
-	johan@kernel.org,
-	stable@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Cristian Marussi <cristian.marussi@arm.com>
-Subject: [PATCH 1/4] firmware: arm_scmi: Ensure that the message-id supports fastchannel
-Date: Tue, 15 Apr 2025 15:29:30 +0100
-Message-ID: <20250415142933.1746249-2-cristian.marussi@arm.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20250415142933.1746249-1-cristian.marussi@arm.com>
-References: <20250415142933.1746249-1-cristian.marussi@arm.com>
+	s=arc-20240116; t=1744728816; c=relaxed/simple;
+	bh=YGwRxGwbrpuUevoI0RjmwEDzdtCQcZOdUfqlW6kdsYE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=e9+HEi6+z1BeeErEiusQCg9wk5rv/ljZZIol8BVhmPOA20NZfQoIlPcsfuY/NZQIGTdJiPhzYU5FplOVxI6vUR1krH1REJvJjEBCVOA+NYoUvftD11GvCUqPZcDHLzCjIO+vNxfBq8iNMRaa5xIh1kg5ngRoMMgXdR7EnWsSZMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=J1Xjwsfk; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:Content-Description
+	:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=mF6vRbR4S90qv8/I2/dPptY8vGJP6bDRNJYyBJahYEI=; b=J1XjwsfkWPkuErmsaCLEHKVVjl
+	GKReg5c8aOEdOpLY3GlUKJhFjCQ1416mDZI7vaFT2w/zFKVlGRMLwS3POp2hB1C54cUWbCJV5k5Gm
+	h/XHTGGtgWpruImSfI4h9/5l5imoUoUwDkjCNKr2XCTtZMXLVgtSYKR/RwwojUsR8OCvT5SxL/sBO
+	gPNXwxK4A+o+f7f9SpeBcN9TCgfQ79Be1CGrTucDC/vEBY35/Uf1VrYZIkCKiQUGbzm7B5tvzydIx
+	a8HtFHtr8IPFPrqKpCRCJKRRzevx/sw43nQDQ5WXPpfuNglKZqz1v9oUbX3nMlWJqSrjL5b4zg/r9
+	DeLoLJSA==;
+Received: from 179-125-92-204-dinamico.pombonet.net.br ([179.125.92.204] helo=[192.168.67.187])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1u4hfC-00Gyg0-Nw; Tue, 15 Apr 2025 16:53:27 +0200
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Date: Tue, 15 Apr 2025 11:53:04 -0300
+Subject: [PATCH] ext4: inline: fix len overflow in ext4_prepare_inline_data
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250415-ext4-prepare-inline-overflow-v1-1-f4c13d900967@igalia.com>
+X-B4-Tracking: v=1; b=H4sIANBy/mcC/x2MzQqDMBAGX0X23IVEopa+ivTgz2e7IIlsRAXx3
+ V08DjPMSRkqyPQpTlJskiVFA/8qaPh38QeW0ZhKV1Yu+IpxrIEXxdKpuThLBKcNOs1p5/fYOzS
+ hGXpfky2sm+R49u33um5Darg9bgAAAA==
+X-Change-ID: 20250415-ext4-prepare-inline-overflow-8db0e747cb16
+To: Theodore Ts'o <tytso@mit.edu>, 
+ Andreas Dilger <adilger.kernel@dilger.ca>, Tao Ma <boyu.mt@taobao.com>, 
+ Jan Kara <jack@suse.com>
+Cc: linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, kernel-dev@igalia.com, 
+ syzbot+fe2a25dae02a207717a0@syzkaller.appspotmail.com, 
+ Thadeu Lima de Souza Cascardo <cascardo@igalia.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
 
-From: Sibi Sankar <quic_sibis@quicinc.com>
+When running the following code on an ext4 filesystem with inline_data
+feature enabled, it will lead to the bug below.
 
-Currently the perf and powercap protocol relies on the protocol domain
-attributes, which just ensures that one fastchannel per domain, before
-instantiating fastchannels for all possible message-ids. Fix this by
-ensuring that each message-id supports fastchannel before initialization.
+        fd = open("file1", O_RDWR | O_CREAT | O_TRUNC, 0666);
+        ftruncate(fd, 30);
+        pwrite(fd, "a", 1, (1UL << 40) + 5UL);
 
-Logs:
-scmi: Failed to get FC for protocol 13 [MSG_ID:6 / RES_ID:0] - ret:-95. Using regular messaging.
-scmi: Failed to get FC for protocol 13 [MSG_ID:6 / RES_ID:1] - ret:-95. Using regular messaging.
-scmi: Failed to get FC for protocol 13 [MSG_ID:6 / RES_ID:2] - ret:-95. Using regular messaging.
+That happens because write_begin will succeed as when
+ext4_generic_write_inline_data calls ext4_prepare_inline_data, pos + len
+will be truncated, leading to ext4_prepare_inline_data parameter to be 6
+instead of 0x10000000006.
 
-CC: stable@vger.kernel.org
-Reported-by: Johan Hovold <johan+linaro@kernel.org>
-Closes: https://lore.kernel.org/lkml/ZoQjAWse2YxwyRJv@hovoldconsulting.com/
-Fixes: 6f9ea4dabd2d ("firmware: arm_scmi: Generalize the fast channel support")
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
-[Cristian: Modified the condition checked to establish support or not]
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Then, later when write_end is called, we hit:
+
+        BUG_ON(pos + len > EXT4_I(inode)->i_inline_size);
+
+at ext4_write_inline_data.
+
+Fix it by using a loff_t type for the len parameter in
+ext4_prepare_inline_data instead of an unsigned int.
+
+[   44.545164] ------------[ cut here ]------------
+[   44.545530] kernel BUG at fs/ext4/inline.c:240!
+[   44.545834] Oops: invalid opcode: 0000 [#1] SMP NOPTI
+[   44.546172] CPU: 3 UID: 0 PID: 343 Comm: test Not tainted 6.15.0-rc2-00003-g9080916f4863 #45 PREEMPT(full)  112853fcebfdb93254270a7959841d2c6aa2c8bb
+[   44.546523] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   44.546523] RIP: 0010:ext4_write_inline_data+0xfe/0x100
+[   44.546523] Code: 3c 0e 48 83 c7 48 48 89 de 5b 41 5c 41 5d 41 5e 41 5f 5d e9 e4 fa 43 01 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc 0f 0b <0f> 0b 0f 1f 44 00 00 55 41 57 41 56 41 55 41 54 53 48 83 ec 20 49
+[   44.546523] RSP: 0018:ffffb342008b79a8 EFLAGS: 00010216
+[   44.546523] RAX: 0000000000000001 RBX: ffff9329c579c000 RCX: 0000010000000006
+[   44.546523] RDX: 000000000000003c RSI: ffffb342008b79f0 RDI: ffff9329c158e738
+[   44.546523] RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000000
+[   44.546523] R10: 00007ffffffff000 R11: ffffffff9bd0d910 R12: 0000006210000000
+[   44.546523] R13: fffffc7e4015e700 R14: 0000010000000005 R15: ffff9329c158e738
+[   44.546523] FS:  00007f4299934740(0000) GS:ffff932a60179000(0000) knlGS:0000000000000000
+[   44.546523] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   44.546523] CR2: 00007f4299a1ec90 CR3: 0000000002886002 CR4: 0000000000770eb0
+[   44.546523] PKRU: 55555554
+[   44.546523] Call Trace:
+[   44.546523]  <TASK>
+[   44.546523]  ext4_write_inline_data_end+0x126/0x2d0
+[   44.546523]  generic_perform_write+0x17e/0x270
+[   44.546523]  ext4_buffered_write_iter+0xc8/0x170
+[   44.546523]  vfs_write+0x2be/0x3e0
+[   44.546523]  __x64_sys_pwrite64+0x6d/0xc0
+[   44.546523]  do_syscall_64+0x6a/0xf0
+[   44.546523]  ? __wake_up+0x89/0xb0
+[   44.546523]  ? xas_find+0x72/0x1c0
+[   44.546523]  ? next_uptodate_folio+0x317/0x330
+[   44.546523]  ? set_pte_range+0x1a6/0x270
+[   44.546523]  ? filemap_map_pages+0x6ee/0x840
+[   44.546523]  ? ext4_setattr+0x2fa/0x750
+[   44.546523]  ? do_pte_missing+0x128/0xf70
+[   44.546523]  ? security_inode_post_setattr+0x3e/0xd0
+[   44.546523]  ? ___pte_offset_map+0x19/0x100
+[   44.546523]  ? handle_mm_fault+0x721/0xa10
+[   44.546523]  ? do_user_addr_fault+0x197/0x730
+[   44.546523]  ? do_syscall_64+0x76/0xf0
+[   44.546523]  ? arch_exit_to_user_mode_prepare+0x1e/0x60
+[   44.546523]  ? irqentry_exit_to_user_mode+0x79/0x90
+[   44.546523]  entry_SYSCALL_64_after_hwframe+0x55/0x5d
+[   44.546523] RIP: 0033:0x7f42999c6687
+[   44.546523] Code: 48 89 fa 4c 89 df e8 58 b3 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
+[   44.546523] RSP: 002b:00007ffeae4a7930 EFLAGS: 00000202 ORIG_RAX: 0000000000000012
+[   44.546523] RAX: ffffffffffffffda RBX: 00007f4299934740 RCX: 00007f42999c6687
+[   44.546523] RDX: 0000000000000001 RSI: 000055ea6149200f RDI: 0000000000000003
+[   44.546523] RBP: 00007ffeae4a79a0 R08: 0000000000000000 R09: 0000000000000000
+[   44.546523] R10: 0000010000000005 R11: 0000000000000202 R12: 0000000000000000
+[   44.546523] R13: 00007ffeae4a7ac8 R14: 00007f4299b86000 R15: 000055ea61493dd8
+[   44.546523]  </TASK>
+[   44.546523] Modules linked in:
+[   44.568501] ---[ end trace 0000000000000000 ]---
+[   44.568889] RIP: 0010:ext4_write_inline_data+0xfe/0x100
+[   44.569328] Code: 3c 0e 48 83 c7 48 48 89 de 5b 41 5c 41 5d 41 5e 41 5f 5d e9 e4 fa 43 01 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc 0f 0b <0f> 0b 0f 1f 44 00 00 55 41 57 41 56 41 55 41 54 53 48 83 ec 20 49
+[   44.570931] RSP: 0018:ffffb342008b79a8 EFLAGS: 00010216
+[   44.571356] RAX: 0000000000000001 RBX: ffff9329c579c000 RCX: 0000010000000006
+[   44.571959] RDX: 000000000000003c RSI: ffffb342008b79f0 RDI: ffff9329c158e738
+[   44.572571] RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000000
+[   44.573148] R10: 00007ffffffff000 R11: ffffffff9bd0d910 R12: 0000006210000000
+[   44.573748] R13: fffffc7e4015e700 R14: 0000010000000005 R15: ffff9329c158e738
+[   44.574335] FS:  00007f4299934740(0000) GS:ffff932a60179000(0000) knlGS:0000000000000000
+[   44.575027] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   44.575520] CR2: 00007f4299a1ec90 CR3: 0000000002886002 CR4: 0000000000770eb0
+[   44.576112] PKRU: 55555554
+[   44.576338] Kernel panic - not syncing: Fatal exception
+[   44.576517] Kernel Offset: 0x1a600000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+
+Reported-by: syzbot+fe2a25dae02a207717a0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=fe2a25dae02a207717a0
+Fixes: f19d5870cbf7 ("ext4: add normal write support for inline data")
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Cc: stable@vger.kernel.org
 ---
-RFC -> V1
- - picked up a few tags
+ fs/ext4/inline.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Since PROTOCOL_MESSAGE_ATTRIBUTES, used to check if message_id is supported,
-is a mandatory command, it cannot fail so we must bail-out NOT only if FC was
-not supported for that command but also if the query fails as a whole; so the
-condition checked for bailing out is modified to:
-
-	if (ret || !MSG_SUPPORTS_FASTCHANNEL(attributes)) {
-
-Removed also Tested-by and Reviewed-by tags since I modified the logic.
----
- drivers/firmware/arm_scmi/driver.c    | 76 +++++++++++++++------------
- drivers/firmware/arm_scmi/protocols.h |  2 +
- 2 files changed, 45 insertions(+), 33 deletions(-)
-
-diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
-index 1cf18cc8e63f..0e281fca0a38 100644
---- a/drivers/firmware/arm_scmi/driver.c
-+++ b/drivers/firmware/arm_scmi/driver.c
-@@ -1738,6 +1738,39 @@ static int scmi_common_get_max_msg_size(const struct scmi_protocol_handle *ph)
- 	return info->desc->max_msg_size;
+diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
+index 2c9b762925c72f2ff5a402b02500370bc1eb0eb1..e5e6bf0d338b965a885fb99581f9ed5e51c5257c 100644
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -397,7 +397,7 @@ static int ext4_update_inline_data(handle_t *handle, struct inode *inode,
  }
  
-+/**
-+ * scmi_protocol_msg_check  - Check protocol message attributes
-+ *
-+ * @ph: A reference to the protocol handle.
-+ * @message_id: The ID of the message to check.
-+ * @attributes: A parameter to optionally return the retrieved message
-+ *		attributes, in case of Success.
-+ *
-+ * An helper to check protocol message attributes for a specific protocol
-+ * and message pair.
-+ *
-+ * Return: 0 on SUCCESS
-+ */
-+static int scmi_protocol_msg_check(const struct scmi_protocol_handle *ph,
-+				   u32 message_id, u32 *attributes)
-+{
-+	int ret;
-+	struct scmi_xfer *t;
-+
-+	ret = xfer_get_init(ph, PROTOCOL_MESSAGE_ATTRIBUTES,
-+			    sizeof(__le32), 0, &t);
-+	if (ret)
-+		return ret;
-+
-+	put_unaligned_le32(message_id, t->tx.buf);
-+	ret = do_xfer(ph, t);
-+	if (!ret && attributes)
-+		*attributes = get_unaligned_le32(t->rx.buf);
-+	xfer_put(ph, t);
-+
-+	return ret;
-+}
-+
- /**
-  * struct scmi_iterator  - Iterator descriptor
-  * @msg: A reference to the message TX buffer; filled by @prepare_message with
-@@ -1879,6 +1912,7 @@ scmi_common_fastchannel_init(const struct scmi_protocol_handle *ph,
- 	int ret;
- 	u32 flags;
- 	u64 phys_addr;
-+	u32 attributes;
- 	u8 size;
- 	void __iomem *addr;
- 	struct scmi_xfer *t;
-@@ -1887,6 +1921,15 @@ scmi_common_fastchannel_init(const struct scmi_protocol_handle *ph,
- 	struct scmi_msg_resp_desc_fc *resp;
- 	const struct scmi_protocol_instance *pi = ph_to_pi(ph);
- 
-+	/* Check if the MSG_ID supports fastchannel */
-+	ret = scmi_protocol_msg_check(ph, message_id, &attributes);
-+	if (ret || !MSG_SUPPORTS_FASTCHANNEL(attributes)) {
-+		dev_dbg(ph->dev,
-+			"Skip FC init for 0x%02X/%d  domain:%d - ret:%d\n",
-+			pi->proto->id, message_id, domain, ret);
-+		return;
-+	}
-+
- 	if (!p_addr) {
- 		ret = -EINVAL;
- 		goto err_out;
-@@ -2004,39 +2047,6 @@ static void scmi_common_fastchannel_db_ring(struct scmi_fc_db_info *db)
- 		SCMI_PROTO_FC_RING_DB(64);
- }
- 
--/**
-- * scmi_protocol_msg_check  - Check protocol message attributes
-- *
-- * @ph: A reference to the protocol handle.
-- * @message_id: The ID of the message to check.
-- * @attributes: A parameter to optionally return the retrieved message
-- *		attributes, in case of Success.
-- *
-- * An helper to check protocol message attributes for a specific protocol
-- * and message pair.
-- *
-- * Return: 0 on SUCCESS
-- */
--static int scmi_protocol_msg_check(const struct scmi_protocol_handle *ph,
--				   u32 message_id, u32 *attributes)
--{
--	int ret;
--	struct scmi_xfer *t;
--
--	ret = xfer_get_init(ph, PROTOCOL_MESSAGE_ATTRIBUTES,
--			    sizeof(__le32), 0, &t);
--	if (ret)
--		return ret;
--
--	put_unaligned_le32(message_id, t->tx.buf);
--	ret = do_xfer(ph, t);
--	if (!ret && attributes)
--		*attributes = get_unaligned_le32(t->rx.buf);
--	xfer_put(ph, t);
--
--	return ret;
--}
--
- static const struct scmi_proto_helpers_ops helpers_ops = {
- 	.extended_name_get = scmi_common_extended_name_get,
- 	.get_max_msg_size = scmi_common_get_max_msg_size,
-diff --git a/drivers/firmware/arm_scmi/protocols.h b/drivers/firmware/arm_scmi/protocols.h
-index aaee57cdcd55..d62c4469d1fd 100644
---- a/drivers/firmware/arm_scmi/protocols.h
-+++ b/drivers/firmware/arm_scmi/protocols.h
-@@ -31,6 +31,8 @@
- 
- #define SCMI_PROTOCOL_VENDOR_BASE	0x80
- 
-+#define MSG_SUPPORTS_FASTCHANNEL(x)	((x) & BIT(0))
-+
- enum scmi_common_cmd {
- 	PROTOCOL_VERSION = 0x0,
- 	PROTOCOL_ATTRIBUTES = 0x1,
+ static int ext4_prepare_inline_data(handle_t *handle, struct inode *inode,
+-				    unsigned int len)
++				    loff_t len)
+ {
+ 	int ret, size, no_expand;
+ 	struct ext4_inode_info *ei = EXT4_I(inode);
+
+---
+base-commit: 8ffd015db85fea3e15a77027fda6c02ced4d2444
+change-id: 20250415-ext4-prepare-inline-overflow-8db0e747cb16
+
+Best regards,
 -- 
-2.47.0
+Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
 
