@@ -1,108 +1,108 @@
-Return-Path: <stable+bounces-132757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59DEFA8A255
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 17:03:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0713CA8A26D
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 17:09:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BD7B442D15
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 15:03:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 350703BB641
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 15:09:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D35523D2A6;
-	Tue, 15 Apr 2025 15:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7055C21D3F4;
+	Tue, 15 Apr 2025 15:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LKaasSAX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHOxRdVZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D23136349;
-	Tue, 15 Apr 2025 15:02:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF091A3160;
+	Tue, 15 Apr 2025 15:09:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744729325; cv=none; b=qusMk+hNjKkMvslH0ygfV0ezv09d7pspOXu2J3XrJ3JRJmkJ61ibEq+9BRPYLSV1hMO06Ef6N7ZzHn/CagvWPzbs8G0JedQgAUStkjrz5jHLa/g067kQDZUURsqh3fqspONNi16ICTFdBa1XEDR54WE/M8zVky5d2nrzW4jEMcM=
+	t=1744729782; cv=none; b=qzDekq2qYheOFrK8m1z33oAeCGlpO0bdB7wf/DTAcAABlm5APYzJpRa9cyLbtRIxl3hMW1mu4U2sxt4RLVRd8MHRKUtogosxYeYGZ8+PR5582l/UXNbzWbpNfte5uFMhSNYwjdrJdbeF2IZ1iS6VFBu6EdCkCse+NeDUe3+I07U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744729325; c=relaxed/simple;
-	bh=GsenEpf9zvk5P2NHlMMGuoKKYYE9yPtrUU9/iOPSsZw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FtYokKqgWfOIzwftRKtBqAA+jHJBgPZVHx79Sn1O4JA11Pzg21HpgJvSXeZIw0S6sI/ryczIcDfJ+I7S91ijhKNcrSYz3BAamGIThokNqsM8+ukA+GZ7WcSlE9DphwfIQFsGnV1gwoFEmgX6Neo2o0oMsh/cKC0NZJ0oyz0tcGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LKaasSAX; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43cf58eea0fso29249685e9.0;
-        Tue, 15 Apr 2025 08:02:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744729322; x=1745334122; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GsenEpf9zvk5P2NHlMMGuoKKYYE9yPtrUU9/iOPSsZw=;
-        b=LKaasSAXYYJqNFACIKOiULXkiFaxhBiUOAa2r8nqCgWOCGtnFrpZI7rpu5/9IC67UU
-         24qXJRE/LEEOwAYKibK3bXJXmSAgfaEsW00J9npcYPtlaAyO1RwrzMlukVKaQGfx9s0G
-         dn07asAW0uNMUiofaZipPNEgO7gv3iFumJboIF1EgO1ZfbT04EOhxrzeWjcFFgbodYjt
-         YLgBSEVDA1xoYmhNfQtepwIEGgeCK3kMvyaehs0epn55D2KsotsKXlzuPXPfgZ+CDRyu
-         yHBxHz3IEparpTY2poKIEgbRxlTJMfBcGjo8bmtAYx6dQZYiWER+URxv7PWAjsoxb7yL
-         GrfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744729322; x=1745334122;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GsenEpf9zvk5P2NHlMMGuoKKYYE9yPtrUU9/iOPSsZw=;
-        b=hmwnouogNwqvOwkLmqfn6nbvW5FXbBqDK7KDgeOcTQk97p39+B1mj07t1b29xgVOgf
-         TzxPyd/Ave4Wbepb9pBjPL62x1JALHGfaxClXnai7PhycBjCv2tdgSrA7G/K18Xx/MaJ
-         gKqYkuAsiqLRsIJqHXJ/m3J8eCodMgeMhUDaZw3aOkVvBOopPvx/g3gYbmyo/efK2y3X
-         CWjnmqwzF7LZIE1hGKnjBf7mzud3f8zkG3MDWKuVJDf1HkUhQ4aWLfN2xttWH/wa0r79
-         2V6bxMcZlOK3FFmgxKWO4L0v34/fZ4lGWL24vmRj6LC1Upgxtwd01paTmPbr2++tBxfT
-         QVig==
-X-Forwarded-Encrypted: i=1; AJvYcCUUdAlCyrut+3mezjr8fricmyI/z8OHqV8fhFZISwIsQPvc7lUtZasuG2CWWRIpoQ8mJck=@vger.kernel.org, AJvYcCWMBGsR+boeRCGn9+PyuFxeXnTh6ODsuhLMeu2FCUrpcf4MP4u6xAOiT4brbttgIgQAJQayNCwAXPtLclbK@vger.kernel.org, AJvYcCWQQogQmzhXt4An/IlXNuFDMIfdGZDmw8ixRcuOeqSie11cVUJNBe/Dgpi04hZqbK0JAsHPQEiQ@vger.kernel.org
-X-Gm-Message-State: AOJu0YyA6nbeHsHgKDuIMeJ2TYQFO2R1eQIm6po14/S6wVGOtYittskm
-	gr5ZkzggaN2HXC/iBgxR7Il/9tfQB9uxC36DtFxmr1fbTt6u13ugmPgxrShu5tXEjb5tfyo694F
-	Ftkao0YWanRtcglMbkfaWFs0sfqA=
-X-Gm-Gg: ASbGnct7kC5Ua11Mzd/h/6Ki/IMOUjw6Vnl1APu9EmHY6t1O1NZnr3Hnn5BtP9sfBCu
-	bdQbqpBvaiYFd/ua5ywQQC9ZY34p1n16hlc0U+a07YaHxNH+jMeDkd9yihdQiub3352wgxDqLAS
-	mwh7GL/V1TtqnJxWfR2e5k8Qn6itLyg/y7lsdm
-X-Google-Smtp-Source: AGHT+IEEhlDJ89C3taeDQubyKWfbYArOMdjq8xhOrlVTpBQsoWre14ibe31rWsDsbwAwV9z2K2Ku82lM0PdbZnwrGCM=
-X-Received: by 2002:a05:600c:502a:b0:43c:e6d1:efe7 with SMTP id
- 5b1f17b1804b1-43f3a9a70famr126994785e9.26.1744729321032; Tue, 15 Apr 2025
- 08:02:01 -0700 (PDT)
+	s=arc-20240116; t=1744729782; c=relaxed/simple;
+	bh=T37Q0J3bd0JMMsOeZO3GhpdNsQhLsqE74NKeURsaiF0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BlNjfKU+ffclDom/Uc510oQW9tQtFRd9/jdo6Pf3Sjnu82l8zFsIYW8jEM+9aKeno2vj0CIC/p8yZmfAraRWWf8l8tycMm+Fm61VDdwIZ/5O3Jtl207jBT6YxmCbgP7yHH4zF0AgYzqsoHfheIBji6tg8wihqPspJaPwZC10d6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHOxRdVZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE13C4CEEB;
+	Tue, 15 Apr 2025 15:09:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1744729780;
+	bh=T37Q0J3bd0JMMsOeZO3GhpdNsQhLsqE74NKeURsaiF0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XHOxRdVZgDNKnOpafFd+ALkdGhTZnKG/Xukb4L0c86fNL4juLqYjX3+9swCL3qra8
+	 VzkPpIsm4X7KaRuSEF6wPY5i+f7xScmAbWdzpza9hdYhBSfIMdmlSc4AR23gG8oc+a
+	 gsZ4uK2Jbx0s7fUME8nlWxEE7P6bn1lMg8/CqWTI=
+Date: Tue, 15 Apr 2025 17:09:37 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Henry Martin <bsdhenrymartin@gmail.com>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3] uio: uio_fsl_elbc_gpcm: Add NULL check in the
+ uio_fsl_elbc_gpcm_probe()
+Message-ID: <2025041531-trousers-saga-ecb2@gregkh>
+References: <20250401101602.24589-1-bsdhenrymartin@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250415130910.2326537-1-devaanshk840@gmail.com>
- <2025041517-semicolon-aloft-9910@gregkh> <CA+RTe_hfdgPTwVX_pizHVnsDDFJoEOQD=dH3KuBXuDbycU0yXQ@mail.gmail.com>
-In-Reply-To: <CA+RTe_hfdgPTwVX_pizHVnsDDFJoEOQD=dH3KuBXuDbycU0yXQ@mail.gmail.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Tue, 15 Apr 2025 08:01:49 -0700
-X-Gm-Features: ATxdqUGwfpjQ3TEoIluDDdRzEK7VnkQJBv8D-i6PQJaXxr2L8ySLffMkEFa_6W4
-Message-ID: <CAADnVQK=z2eWgcH2duiwkkVC-4RctPVZ+fqdC9KYiV7HUy0i8g@mail.gmail.com>
-Subject: Re: [PATCH] bpf: Remove tracing program restriction on map types
-To: Devaansh Kumar <devaanshk840@gmail.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, 
-	stable <stable@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, bpf <bpf@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, 
-	linux-kernel-mentees@lists.linuxfoundation.org, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Andrii Nakryiko <andrii@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250401101602.24589-1-bsdhenrymartin@gmail.com>
 
-On Tue, Apr 15, 2025 at 6:25=E2=80=AFAM Devaansh Kumar <devaanshk840@gmail.=
-com> wrote:
->
-> On Tue, 15 Apr 2025 at 18:49, Greg KH <gregkh@linuxfoundation.org> wrote:
-> > what kernel tree(s) is this for?
->
-> This backport is for v5.15.y stable version. My bad, I should have
-> mentioned it in the subject.
+On Tue, Apr 01, 2025 at 06:16:02PM +0800, Henry Martin wrote:
+> devm_kasprintf() returns NULL when memory allocation fails. Currently,
+> uio_fsl_elbc_gpcm_probe() does not check for this case, which results in a
+> NULL pointer dereference.
+> 
+> Add NULL check after devm_kasprintf() to prevent this issue and ensuring
+> no resources are left allocated.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: d57801c45f53 ("uio: uio_fsl_elbc_gpcm: use device-managed allocators")
+> Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+> ---
+> V2 -> V3: Add Cc: stable@vger.kernel.org
+> V1 -> V2: Remove printk after memory failure and add proper resource
+> cleanup.
+> 
+>  drivers/uio/uio_fsl_elbc_gpcm.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/uio/uio_fsl_elbc_gpcm.c b/drivers/uio/uio_fsl_elbc_gpcm.c
+> index 81454c3e2484..26be556d956c 100644
+> --- a/drivers/uio/uio_fsl_elbc_gpcm.c
+> +++ b/drivers/uio/uio_fsl_elbc_gpcm.c
+> @@ -384,6 +384,10 @@ static int uio_fsl_elbc_gpcm_probe(struct platform_device *pdev)
+>  
+>  	/* set all UIO data */
+>  	info->mem[0].name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%pOFn", node);
+> +	if (!info->mem[0].name) {
+> +		ret = -ENOMEM;
+> +		goto out_err3;
+> +	}
+>  	info->mem[0].addr = res.start;
+>  	info->mem[0].size = resource_size(&res);
+>  	info->mem[0].memtype = UIO_MEM_PHYS;
+> @@ -423,6 +427,7 @@ static int uio_fsl_elbc_gpcm_probe(struct platform_device *pdev)
+>  out_err2:
+>  	if (priv->shutdown)
+>  		priv->shutdown(info, true);
+> +out_err3:
+>  	iounmap(info->mem[0].internal_addr);
+>  	return ret;
+>  }
+> -- 
+> 2.34.1
+> 
+> 
 
-Nack.
+How was this tested?
 
-5.15 doesn't have bpf_mem_alloc.
-This backport makes no sense.
 
