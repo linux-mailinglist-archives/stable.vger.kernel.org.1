@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-132798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0ED9A8AA4B
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 23:44:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D972A8AA4C
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 23:44:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50A7117C53B
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 21:44:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 623571756DE
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 21:44:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CABD025744B;
-	Tue, 15 Apr 2025 21:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B762580C6;
+	Tue, 15 Apr 2025 21:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dyQt+s6p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="etjkRLYR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CE4253357
-	for <stable@vger.kernel.org>; Tue, 15 Apr 2025 21:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64AEE2580FB
+	for <stable@vger.kernel.org>; Tue, 15 Apr 2025 21:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744753438; cv=none; b=KckKXUGg+8cTrEYA/BK+Zyzr1kj/1MWjTVAq7Ug1yposLDn6/mlmcky4TxLa9Ni2EsNckBAdJRPvAOE5NgyvyxX1gkUp+rOU0TM8ynzGWGCxKR0wJ0zG//1ySY4dinf5uG2bLSi4Uc1hnLUzlgdaB2islbjWY+P4ZJaHCC4J+MI=
+	t=1744753439; cv=none; b=XlW5t+SNtRVCiwfOLq/sOMfgtNo/A5WUjy9f4CV6oNg/HDIvRUvmAacpjvvvUNq9meATrq2WnOW+Vicspt/nK4gsbTCy7bIrf8IBo5jiJro9KSlmMEpj0lHqgyI9DjRf+JzczXHB5lCQrianxTI/NdKOMy4exSdYUeNsB7ClAdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744753438; c=relaxed/simple;
-	bh=otHeMbwBsCNLPld6vbnYH4NDHyO4h9R8r/nNCs6zmZA=;
+	s=arc-20240116; t=1744753439; c=relaxed/simple;
+	bh=0yUCnHJMr5OzTfaLLf2HRhWSPGvUOTrjXXXmrMN7zVE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DBnO/teD+CdAu45bI0hIQLPHSj+RXmikidCUVJWK8ydkRYMeoa5uCkfaF1drQCS/566wwMulNE22OXAFHN3grJArfwkio79t2ePwddhYr1MUTcj4DfakRSi8HfO+3Z4sa7gxCd4/2DUsGbqbSrHFZKiCuLBS3UX+l5QpmP8/yMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dyQt+s6p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85A4FC4CEE7;
-	Tue, 15 Apr 2025 21:43:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OvRXqjP/JSK+VuehLa2ECWQvzv6B6vjQc8vdlgkj4pMdz/T0OfcN2AxJXlImmwoi3YyStbJM7epSkBiOzml/W+d3hNAem1/xMh5nf3ZFKO8IGj/MKpMiY6a3JCIzoRwFWbmmzsmDukn6i5GYsV/VyYOsEQMJOUdcX7viE29taXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=etjkRLYR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76235C4CEE9;
+	Tue, 15 Apr 2025 21:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744753437;
-	bh=otHeMbwBsCNLPld6vbnYH4NDHyO4h9R8r/nNCs6zmZA=;
+	s=k20201202; t=1744753438;
+	bh=0yUCnHJMr5OzTfaLLf2HRhWSPGvUOTrjXXXmrMN7zVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dyQt+s6p8KDhwodrDlKS59MBhNP7WxTSl4+9ZN66ZXFFhOzAJMNLp35aWcwzngBZG
-	 s6FcPloIpf70sO0ieavHEWBI8fMcMrLrBPunowYYaRuOKBlBoo5POVha1Chc5ZgAQM
-	 oyCWNw/NtjjTTOlbTVmx5apEdnAxwbQT1XSQNYExNQssEQtSAqZKlmJJ2gElkHI3NH
-	 v6Vof1tXARVUJV1Q98PN9MsayNW2uP8SJ65odIc9iC+nur/0sUCmyN9i0E+cOoCBWT
-	 SKG2AF0iCRM3bqDWsB9AYuo4fDhUCRkHFNl+OAwwk6RSnaEyjdACN47pImTo412RVr
-	 e2Q1PikbjrSXQ==
+	b=etjkRLYR7kpWrUszv3hwNHarmZSoeUf4sT64JIAkpsCf1zVuY/wy3gftrPixgQ/nB
+	 Xg0QCfycHAH7TpjVZ3mVjDAMlwQ5xLPHvUBSKGZsHXb9rGEng9zNozPAH5OTY5iM+0
+	 CWg3SSMfJvyVn/UEdqNCeNwuRgK8XGn0RUnNog4Ry4fQtG9lr3tQudj1CXnr4NIIEe
+	 3JcMMuLIH3Ok5rF2naeeLr27ksz6eHs31AZKIZHABFLLgmdoi+lueZMUHmOkZ18QIg
+	 kGVuqIaAU+29DuNy4W/ag+KHZzoKqMn7lfGtmeIEOXMUr+vocmIUzZS+/eDd60W39h
+	 RmeiTAhEh3bGg==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	anshuman.khandual@arm.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH V2 6.12.y 1/7] arm64/sysreg: Update register fields for ID_AA64MMFR0_EL1
-Date: Tue, 15 Apr 2025 17:43:55 -0400
-Message-Id: <20250415113643-c60685948e4b9ba8@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15.y 3/6] phonet/pep: fix racy skb_queue_empty() use
+Date: Tue, 15 Apr 2025 17:43:57 -0400
+Message-Id: <20250415123629-b75e987cf5b3b7d2@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250415045728.2248935-2-anshuman.khandual@arm.com>
+In-Reply-To:  <20250414185023.2165422-4-harshit.m.mogalapalli@oracle.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,32 +64,80 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Found matching upstream commit: cc15f548cc77574bcd68425ae01a796659bd3705
+The upstream commit SHA1 provided is correct: 7d2a894d7f487dcb894df023e9d3014cf5b93fe5
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Harshit Mogalapalli<harshit.m.mogalapalli@oracle.com>
+Commit author: Rémi Denis-Courmont<courmisch@gmail.com>
 
 Status in newer kernel trees:
-6.14.y | Not found
-6.13.y | Not found
+6.14.y | Present (exact SHA1)
+6.13.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 0a9f558c72c4)
+6.1.y | Present (different SHA1: 9d5523e065b5)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  cc15f548cc775 ! 1:  25eca6f65b94d arm64/sysreg: Update register fields for ID_AA64MMFR0_EL1
-    @@ Commit message
-         Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-         Link: https://lore.kernel.org/r/20250203050828.1049370-2-anshuman.khandual@arm.com
-         Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-    +    (cherry picked from commit cc15f548cc77574bcd68425ae01a796659bd3705)
-    +    Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+1:  7d2a894d7f487 ! 1:  cf507fe643590 phonet/pep: fix racy skb_queue_empty() use
+    @@ Metadata
+      ## Commit message ##
+         phonet/pep: fix racy skb_queue_empty() use
      
-      ## arch/arm64/tools/sysreg ##
-     @@ arch/arm64/tools/sysreg: EndEnum
+    +    [ Upstream commit 7d2a894d7f487dcb894df023e9d3014cf5b93fe5 ]
+    +
+         The receive queues are protected by their respective spin-lock, not
+         the socket lock. This could lead to skb_peek() unexpectedly
+         returning NULL or a pointer to an already dequeued socket buffer.
+    @@ Commit message
+         Signed-off-by: Rémi Denis-Courmont <courmisch@gmail.com>
+         Link: https://lore.kernel.org/r/20240218081214.4806-2-remi@remlab.net
+         Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+    +    Signed-off-by: Sasha Levin <sashal@kernel.org>
+    +    [Harshit: backport to 5.15.y, clean cherrypick from 6.1.y commit]
+    +    Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+     
+      ## net/phonet/pep.c ##
+     @@ net/phonet/pep.c: static int pep_sock_enable(struct sock *sk, struct sockaddr *addr, int len)
+    @@ net/phonet/pep.c: static int pep_sock_enable(struct sock *sk, struct sockaddr *a
+     +	return len;
+     +}
+     +
+    - static int pep_ioctl(struct sock *sk, int cmd, int *karg)
+    + static int pep_ioctl(struct sock *sk, int cmd, unsigned long arg)
+      {
+      	struct pep_sock *pn = pep_sk(sk);
+    -@@ net/phonet/pep.c: static int pep_ioctl(struct sock *sk, int cmd, int *karg)
+    +@@ net/phonet/pep.c: static int pep_ioctl(struct sock *sk, int cmd, unsigned long arg)
+      			break;
+      		}
+      
+     -		lock_sock(sk);
+     -		if (sock_flag(sk, SOCK_URGINLINE) &&
+     -		    !skb_queue_empty(&pn->ctrlreq_queue))
+    --			*karg = skb_peek(&pn->ctrlreq_queue)->len;
+    +-			answ = skb_peek(&pn->ctrlreq_queue)->len;
+     -		else if (!skb_queue_empty(&sk->sk_receive_queue))
+    --			*karg = skb_peek(&sk->sk_receive_queue)->len;
+    +-			answ = skb_peek(&sk->sk_receive_queue)->len;
+     -		else
+    --			*karg = 0;
+    +-			answ = 0;
+     -		release_sock(sk);
+    -+		*karg = pep_first_packet_length(sk);
+    - 		ret = 0;
+    ++		answ = pep_first_packet_length(sk);
+    + 		ret = put_user(answ, (int __user *)arg);
+      		break;
+      
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
