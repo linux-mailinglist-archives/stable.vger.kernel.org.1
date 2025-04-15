@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-132763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F54A8A3EC
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 18:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A57CBA8A41E
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 18:29:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6868E189FF20
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 16:19:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DBB9189914D
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 16:29:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E2E20FA90;
-	Tue, 15 Apr 2025 16:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D42E23496F;
+	Tue, 15 Apr 2025 16:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J37axF8I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RC3prLA1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74DD1F4188;
-	Tue, 15 Apr 2025 16:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B95619F11F;
+	Tue, 15 Apr 2025 16:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744733966; cv=none; b=U4LfdMSCc1lQNAN4vcayZ9IZRjxvB1LAc8Hc/IgQvXQN8RUodEdiyUOGK2U5LnaO9QouoS79YBFcK9dycumkuhu0XJUxt+gPeSTH41ZxiG+PAzRlH3qeNDTceO54aZXW88LFqnUu6g+XOrjbHDTC62PdzZfme1B3CxtCaecqoKs=
+	t=1744734572; cv=none; b=fADH3iGzmMEgmmoeb85I2GKOkUBMhlCi7s6eSB6uWa5trm1R4GdvHIZ/aSsCvKb6n9K9XmalJfKc86qQ3g7vIJDkZHW//toKH080Sm8G3iGx5NPu6HmFilJRdIeTHBsuuUHNqecvxWq+kksl8lKlAOSf372Y1yLEBeqSH8i9DDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744733966; c=relaxed/simple;
-	bh=ZZU+HEFLzUVha5RjZfYMMSbZbRdTihiRbwfO8ZnjQRc=;
+	s=arc-20240116; t=1744734572; c=relaxed/simple;
+	bh=N0EmEElYpU/e4cDljzDCDa5v6XT89r7iNvCAZRNdzxU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a8Rtj5j1BFj8JtsbxaZLApPrND+4jRAnmQEtgl4P/vpqanRm9eb20j+6lWmwMRKfs4Wpg5kBWEktN64UBY43COy5UExdEatxvv3KxhvX8DHVsMXtG9/pRBDjiMj/ZoVnU4zqcgDEM+IUaI1V6Y/d/1teIcGHLMFx2ADSBS5F4tY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J37axF8I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B589FC4CEEB;
-	Tue, 15 Apr 2025 16:19:22 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=IUwzydBirpHeqHDFyxmBOaV2P81qiN4pk88WqTQjRcyeMxp+JiYTC6GDQfDJxUBShKWtXwTTt1auK0mdZUvFDfcFPjSs+ID4aMTfF6u/b9OawBDVYHPqhPYqHS7CS8PvFjf6Zpy7aMiVhwQlTr69Q8MQ4be/2TpFLWlqM9BR9vE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RC3prLA1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253D8C4CEEB;
+	Tue, 15 Apr 2025 16:29:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744733965;
-	bh=ZZU+HEFLzUVha5RjZfYMMSbZbRdTihiRbwfO8ZnjQRc=;
+	s=k20201202; t=1744734571;
+	bh=N0EmEElYpU/e4cDljzDCDa5v6XT89r7iNvCAZRNdzxU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J37axF8IBClP0d4y3lbEAVnpkI6azRXPAkNhp150ui/OB9JZKA3ohLd/rrCRV3IXs
-	 0PfbDyVx8yV4IijBEfZMInp4i+w4X0e+N0h+FyR0DPwI1IJftyEQ7sOMFIvh2OKkTW
-	 ly9nNNfYKyqtG+8lNYtlBPVpRE7cWE6LLXXI0qLb6AFwtoX7fD0tzBnCOjYf4FEaG+
-	 2EBMYGhTRnT9vo++GDixpmBkS76/CVKlTJLMYRUw5qyVD1lnqT7cUPRBxjMYKfMRrA
-	 xZ9Bctw9/VJmLDHSdB+HA+iY5qwuRzjxqgFA+kgLTj/A7NkFPXaW+u0VRuCcj6YgQc
-	 OABCwj77wO8gQ==
-Date: Tue, 15 Apr 2025 09:19:20 -0700
-From: Nathan Chancellor <nathan@kernel.org>
+	b=RC3prLA1Icp60GmlzXhlHlvfG5Fymk6EJ53q7SPjTFO91Ik/XUglo8irNzn4yJ/I/
+	 jdbjLAGb3OX6NJ3t6I4aGZF/GSm+OVfQoDYhiSPzylt+c4whDAIUdWgyiS3IMFH+e2
+	 V4kOm1pEbTBp4H3I8QXuwJuMnpCZ0subL8hJGbYxE0ZlB0KGPPLdSSWUow3bPNXUME
+	 KQYATuYAbrjdbWCWGWZE9J7zEY3nz5U1JME3MfNExXDOQJYciTFxwV3J5a4sUxa6qu
+	 F5Vc7Ye0Bc7qTcs33nVHGWWo7Li4GoZ9hjEACJK+PhQMty8KU5G6q65Zui4BS9Gw8y
+	 ohZvlKC+/y9jQ==
+Date: Tue, 15 Apr 2025 09:29:29 -0700
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 To: Kees Cook <kees@kernel.org>
-Cc: stable@vger.kernel.org, kernel test robot <lkp@intel.com>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	linux-bluetooth@vger.kernel.org, Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Manish Mandlik <mmandlik@google.com>, linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev, linux-hardening@vger.kernel.org
+Cc: stable@vger.kernel.org, kernel test robot <lkp@intel.com>, 
+	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	linux-bluetooth@vger.kernel.org, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Manish Mandlik <mmandlik@google.com>, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, linux-hardening@vger.kernel.org
 Subject: Re: [PATCH] Bluetooth: vhci: Avoid needless snprintf() calls
-Message-ID: <20250415161920.GA1692211@ax162>
+Message-ID: <5b2vwh4a2gp25wovqx26rbeveo7q6nbwg7c5pnsbsddyg434yc@ug6zgdwg5xel>
 References: <20250415161518.work.889-kees@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,7 +59,7 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 In-Reply-To: <20250415161518.work.889-kees@kernel.org>
 
@@ -80,48 +77,10 @@ On Tue, Apr 15, 2025 at 09:15:19AM -0700, Kees Cook wrote:
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Kees Cook <kees@kernel.org>
 
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Thanks!
 
-> ---
-> Cc: Marcel Holtmann <marcel@holtmann.org>
-> Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-> Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-> Cc: Nathan Chancellor <nathan@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: linux-bluetooth@vger.kernel.org
-> ---
->  drivers/bluetooth/hci_vhci.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/bluetooth/hci_vhci.c b/drivers/bluetooth/hci_vhci.c
-> index 7651321d351c..9ac22e4a070b 100644
-> --- a/drivers/bluetooth/hci_vhci.c
-> +++ b/drivers/bluetooth/hci_vhci.c
-> @@ -289,18 +289,18 @@ static void vhci_coredump(struct hci_dev *hdev)
->  
->  static void vhci_coredump_hdr(struct hci_dev *hdev, struct sk_buff *skb)
->  {
-> -	char buf[80];
-> +	const char *buf;
->  
-> -	snprintf(buf, sizeof(buf), "Controller Name: vhci_ctrl\n");
-> +	buf = "Controller Name: vhci_ctrl\n";
->  	skb_put_data(skb, buf, strlen(buf));
->  
-> -	snprintf(buf, sizeof(buf), "Firmware Version: vhci_fw\n");
-> +	buf = "Firmware Version: vhci_fw\n";
->  	skb_put_data(skb, buf, strlen(buf));
->  
-> -	snprintf(buf, sizeof(buf), "Driver: vhci_drv\n");
-> +	buf = "Driver: vhci_drv\n";
->  	skb_put_data(skb, buf, strlen(buf));
->  
-> -	snprintf(buf, sizeof(buf), "Vendor: vhci\n");
-> +	buf = "Vendor: vhci\n";
->  	skb_put_data(skb, buf, strlen(buf));
->  }
->  
-> -- 
-> 2.34.1
-> 
+Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
+
+-- 
+Josh
 
