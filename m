@@ -1,126 +1,123 @@
-Return-Path: <stable+bounces-132698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F23F9A894B1
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 09:17:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC2A3A894D1
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 09:22:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BDFF3AADE5
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 07:17:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB37E1895C5E
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 07:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A45961F0E47;
-	Tue, 15 Apr 2025 07:17:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dCHtd7iK"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D65827A126;
+	Tue, 15 Apr 2025 07:21:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028FA2556E
-	for <stable@vger.kernel.org>; Tue, 15 Apr 2025 07:17:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CEBE20DF4;
+	Tue, 15 Apr 2025 07:21:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744701433; cv=none; b=RJSGM39iEx/2azXsqAN3SN6NeVO89/phec2sTLCCf95QNgTDc1kitcryUJPQFMW+HpCj0WWgHUEXDDIv3Wjtggm7qZVoHTGvrs3rrA80Vazou5ykkebmodjWDFkmsMrOArV8OgkT+MOG3xaleB4ArGt5KVt+ZT+AoZJCn6wBvrs=
+	t=1744701703; cv=none; b=dYeFsz7qmK8FTBfe5bOEIk0Uj67hFuWIr+yJ1Wb3wA1i8NEvXeGNaOVQyC6A27bwKf/1NhrxCv+OZ/xOtzA7hGBiSe5y1ZgsTp3o42JhU8SWh8QOAX2sBVdDTbuEC6QAM7VomLcTOcDScTsPXtFq2hqmvwNMA8V/IoIrZOJan+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744701433; c=relaxed/simple;
-	bh=SfqplkzMKHmvAml6eQ8xHN2tknxcnoULWNX6BN16ZbE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=JxI1pd3Ac+wp9v1jMBOYoFrzzNN2BejKIirOGVoHo1pSICLYZFtcf2/Tx1XFKtjs+nBjTR1YK5wg5aY0a4XguxCDnW58OQ+3UBDh/QGfhUdpDgcvYe5LR3RIzW9JRyJfDAyseSlJZZ3XITcSqGx1YDYSMGkWiuGyqftdCt9m7mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dCHtd7iK; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744701431; x=1776237431;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=SfqplkzMKHmvAml6eQ8xHN2tknxcnoULWNX6BN16ZbE=;
-  b=dCHtd7iK8m5+nmTy75n3WhKi5xd5nC5nqMeZ0IaqeBDGYHC40GUz3HF8
-   8Lm9r96DNpItR8n6zTTej9i3M8YOh1R0JiO/Iu81y+ioJHw9XrUmlbR0P
-   I9TXEiWKwzcXZfe8C5VD4vwdRfAvOzlX6/EPGS82rwzr2coblWnX28IGf
-   75uc/Oy4qY6SoJxTvNdfZw/Y9usr4BtIbCJ6XR/5dTk05KSO9/9Fwk4Zc
-   Yk2YLE1YCgaZzPEGUsxwXQlQmKMoiLi0rqucDBCfivnbZk0JUM2EZ0kiE
-   00fBpEDZ/Nkd2ZAu17tqfajLunlXxtQoPgH/y6/I0NroUIczaj5P4ovdN
-   w==;
-X-CSE-ConnectionGUID: KgVtEnDhTrCARBoNa7fwQA==
-X-CSE-MsgGUID: w2q9UBYlS1KOSL8z3c7Odw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="45428706"
-X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; 
-   d="scan'208";a="45428706"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2025 00:17:10 -0700
-X-CSE-ConnectionGUID: T8Acfdg3SrOmB5Ed2zeN5w==
-X-CSE-MsgGUID: RGlFWzX+T5KB9x6RrIw8rA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; 
-   d="scan'208";a="130363869"
-Received: from ncintean-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.249])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2025 00:17:07 -0700
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
- intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org
-Cc: suraj.kandpal@intel.com, stable@vger.kernel.org, ankit.k.nautiyal@intel.com
-Subject: Re: [PATCH 1/2] drm/i915/display: Add macro for checking 3 DSC engines
-In-Reply-To: <20250414085701.2802374-1-ankit.k.nautiyal@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20250414024256.2782702-2-ankit.k.nautiyal@intel.com>
- <20250414085701.2802374-1-ankit.k.nautiyal@intel.com>
-Date: Tue, 15 Apr 2025 10:17:04 +0300
-Message-ID: <87y0w1sxlb.fsf@intel.com>
+	s=arc-20240116; t=1744701703; c=relaxed/simple;
+	bh=2o6j5omeEkA4JCWhDM9N80NVkPESG6qQso4cQHUzBdk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LAj38dxEWZ7cFgLS9Dc+spEaGktn5QJu/lXunnPuTpTLY8lFm8aie45tHPfgI77e4okv4xR4L7MakjIgcfnZQsBOSjgsYpcDZek61nlohFcK8ABbvPZsXJERpnjXrapojf0bz2Jmkrf44JdfIVW18MR7ujfuSWTc2PcdKKLhRLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.245])
+	by APP-01 (Coremail) with SMTP id qwCowAAn0gLoCP5nVCb1CA--.103S2;
+	Tue, 15 Apr 2025 15:21:18 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: arend.vanspriel@broadcom.com,
+	kvalo@kernel.org
+Cc: jacobe.zang@wesion.com,
+	sebastian.reichel@collabora.com,
+	christophe.jaillet@wanadoo.fr,
+	erick.archer@outlook.com,
+	linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] brcm80211: fmac: Add error handling forbrcmf_usb_dl_writeimage()
+Date: Tue, 15 Apr 2025 15:20:48 +0800
+Message-ID: <20250415072048.2629-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAAn0gLoCP5nVCb1CA--.103S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxJryfCw43Aw4DWw43uF18Grg_yoW8Aw1fp3
+	Z7XasrurykW3yakw47JFs7AFykKa4rta4kCFW8ZwnxXF4kCw1vkrs8KFyFkw4DCFWxAa47
+	JFs8Ary7Jrs8KFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
+	1j6rxdM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+	6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr
+	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
+	8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwVW8CwCF04k20xvY0x0EwI
+	xGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
+	Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7
+	IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k2
+	6cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
+	AFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUGFAJUUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ4NA2f95GqL6QAAs-
 
-On Mon, 14 Apr 2025, Ankit Nautiyal <ankit.k.nautiyal@intel.com> wrote:
-> 3 DSC engines per pipe is currently supported only for BMG.
-> Add a macro to check whether a platform supports 3 DSC engines per pipe.
+The function brcmf_usb_dl_writeimage() calls the function
+brcmf_usb_dl_cmd() but dose not check its return value. The
+'state.state' and the 'state.bytes' are uninitialized if the
+function brcmf_usb_dl_cmd() fails. It is dangerous to use
+uninitialized variables in the conditions.
 
-Nitpick, feels like a macro returning the number of DSC engines per pipe
-would be more generic. Like, would you also add HAS_DSC_2ENGINES() and
-HAS_DSC_4ENGINES() if you needed to know that? But I guess we can go
-with what you have for the immediate fix.
+Add error handling for brcmf_usb_dl_cmd() to jump to error
+handling path if the brcmf_usb_dl_cmd() fails and the
+'state.state' and the 'state.bytes' are uninitialized.
 
-However, adding the tiniest macro and its only user in separate patches,
-for something that needs to be backported to stable, seems like erring
-on the side of splitting up patches too much.
+Improve the error message to report more detailed error
+information.
 
-BR,
-Jani.
+Fixes: 71bb244ba2fd ("brcm80211: fmac: add USB support for bcm43235/6/8 chipsets")
+Cc: stable@vger.kernel.org # v3.4+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-
->
-> v2:Fix Typo in macro argument. (Suraj).
-> Added fixes tag.
->
-> Bspec: 50175
-> Fixes: be7f5fcdf4a0 ("drm/i915/dp: Enable 3 DSC engines for 12 slices")
-> Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-> Cc: Suraj Kandpal <suraj.kandpal@intel.com>
-> Cc: <stable@vger.kernel.org> # v6.14+
-> Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-> ---
->  drivers/gpu/drm/i915/display/intel_display_device.h | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/gpu/drm/i915/display/intel_display_device.h b/drivers/gpu/drm/i915/display/intel_display_device.h
-> index 368b0d3417c2..87c666792c0d 100644
-> --- a/drivers/gpu/drm/i915/display/intel_display_device.h
-> +++ b/drivers/gpu/drm/i915/display/intel_display_device.h
-> @@ -163,6 +163,7 @@ struct intel_display_platforms {
->  #define HAS_DP_MST(__display)		(DISPLAY_INFO(__display)->has_dp_mst)
->  #define HAS_DSB(__display)		(DISPLAY_INFO(__display)->has_dsb)
->  #define HAS_DSC(__display)		(DISPLAY_RUNTIME_INFO(__display)->has_dsc)
-> +#define HAS_DSC_3ENGINES(__display)	(DISPLAY_VERx100(__display) == 1401 && HAS_DSC(__display))
->  #define HAS_DSC_MST(__display)		(DISPLAY_VER(__display) >= 12 && HAS_DSC(__display))
->  #define HAS_FBC(__display)		(DISPLAY_RUNTIME_INFO(__display)->fbc_mask != 0)
->  #define HAS_FBC_DIRTY_RECT(__display)	(DISPLAY_VER(__display) >= 30)
-
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+index 2821c27f317e..d06c724f63d9 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+@@ -896,14 +896,16 @@ brcmf_usb_dl_writeimage(struct brcmf_usbdev_info *devinfo, u8 *fw, int fwlen)
+ 	}
+ 
+ 	/* 1) Prepare USB boot loader for runtime image */
+-	brcmf_usb_dl_cmd(devinfo, DL_START, &state, sizeof(state));
++	err = brcmf_usb_dl_cmd(devinfo, DL_START, &state, sizeof(state));
++	if (err)
++		goto fail;
+ 
+ 	rdlstate = le32_to_cpu(state.state);
+ 	rdlbytes = le32_to_cpu(state.bytes);
+ 
+ 	/* 2) Check we are in the Waiting state */
+ 	if (rdlstate != DL_WAITING) {
+-		brcmf_err("Failed to DL_START\n");
++		brcmf_err("Invalid DL state: %u\n", rdlstate);
+ 		err = -EINVAL;
+ 		goto fail;
+ 	}
 -- 
-Jani Nikula, Intel
+2.42.0.windows.2
+
 
