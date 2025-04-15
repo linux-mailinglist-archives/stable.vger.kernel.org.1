@@ -1,145 +1,135 @@
-Return-Path: <stable+bounces-132707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15DDCA89720
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 10:52:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09348A89754
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 11:02:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D4CC188ED73
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 08:52:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BBB1189B1C5
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 09:02:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8780527A119;
-	Tue, 15 Apr 2025 08:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 350411EDA24;
+	Tue, 15 Apr 2025 09:02:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3C+0xkhw";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+P38YhTz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZZgU+Y4A"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD13A1DDC18;
-	Tue, 15 Apr 2025 08:51:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867171D9A5D;
+	Tue, 15 Apr 2025 09:02:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744707115; cv=none; b=eD+4+NxsnHeOewkZsBiKd8LsCw3X6TI7U+Fb14faPvmxXBlfaMHRuc9hNsOPqXqq3EOfMe89+e3EcpiZDaG7FMAbwcHsvtYwo/3ROIF6azqx6nscACyNlUpwzh8cJDboMi+0HP2gBu45tSbbCCyvrlDhVPQ9EKmP7EGB9+fKYjk=
+	t=1744707758; cv=none; b=LG8eCGZga8UXrIQYQs57bTX2zSrunUJvQyKfx3Ipb3I21XtrjkjcHbs3jQ2sMPCCyWUREEVKiwhCSGX4TAOBQ/RRbQl2BvX9UPcC+CIYmOLgVkWf5A3Zc9n7Gu0RO56n3cJgFVcHSnlQwPmavKmX+AR6N4owufDvVi2sk0avgjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744707115; c=relaxed/simple;
-	bh=l6EgTfG/rNsxzj7YblsFEs3VRkJDgFjjSVvMIbcaSIM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ICCQUW5t4yzmDOIIo7TYAA/yNN4I+IG21qf2H14qvdSMoxbkz4niRqVdXPS6ub3z6LvJvNhWE11w3uXascMxQezaT74vxJ6/tHAXphQu19Zd2IBMI2SFrefJODsdrTIVEjg7L45XqlCC3bd9Ce9gKUaKLs7fhka1uN9sckVTbmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3C+0xkhw; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+P38YhTz; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744707110;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=PH6MVwxzLv8eF6loMN8LTTQbGVnttpn8SLDX1xC+Qgo=;
-	b=3C+0xkhwu9H2ovaJRCfJTMtbdFS7iCD2T4FpT9OJGXFsPq/iLIkH0PqAZreWqL5FMOAb+N
-	oG3T6qoACEytO6vKHY4CMSDNryYfgXO38RkI+7Mt8gPaqoPK6k4sjsT8TEXCFOSTz4eKH+
-	hHNLebtwTopStnDrX+vkK/Qd7v7Cc5jfSGi9kYi2CVL1ZzON0/sZEbXh/C2Gl3ZUyUHfGt
-	nDZ6ed2xg7262wzHPTOZJ6MjfkEXQWJrYNS28LurtZv4w6kyA/lDr/QLTij1z2+MMWLzGk
-	kF6TEJX7x4UA0fJfxDCoiVAai7fQAxCPaVM85HHI3Ge2VOMyEPnRQQtkCifpag==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744707110;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=PH6MVwxzLv8eF6loMN8LTTQbGVnttpn8SLDX1xC+Qgo=;
-	b=+P38YhTzlVHayzy4c8rI89g2bBdDxGSgZljqDHmgDLArlQpeWoCpZmeBSOhdrBHmHBIRaZ
-	GZYS2M0YJwyVOHCQ==
-Date: Tue, 15 Apr 2025 10:51:47 +0200
-Subject: [PATCH v2] loop: properly send KOBJ_CHANGED uevent for disk device
+	s=arc-20240116; t=1744707758; c=relaxed/simple;
+	bh=caGUz9Z8pMCIDjkF3v8pjmkkhq4UL43aYLIpbMAOENU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UAa4MYlXRZ13Jk6dg6dLcMxZot03beCVLfNUHUkWL9c/pNSDHzdvB2DaDBC8mcha7ThT3p3mdaXEOf0sgQv5Zwb/juKmwhBoOM9LCYcaN2hcTkBEiTAMtwjXP68YyoKb0CwQ6Mr5NdzixPUWaG8YuZsbRpmK0IWRla5u/eBRooo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZZgU+Y4A; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b074d908e56so1637169a12.2;
+        Tue, 15 Apr 2025 02:02:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744707756; x=1745312556; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dJDZbBMdv2ZAA+6dcm0km5N4IHnAcIL7BZj1NiKeJs8=;
+        b=ZZgU+Y4A9vhtEpgp1A6YxvRSCR6A8UeVQFtJbOpq+Gbz3zR0wI3zoq118/8gbL/+hX
+         AAroQb5uxKwswIh6aZU0fqLAGw+Rhi6zWF0d6vo4wHoif3Z95DnSRrt0ZbxpD9WvQimf
+         PHPlG2FyX/of35y/JXBIUi422DYYFSrqR+y9WEmEc7RrLCCw/PBQn+1vWRUpXGAD1NIY
+         FbhQclHUJjs1zy0PnTTdzaL61q96De7RJfgP29wPEyvdCB0r8Ls3Fw21yZyS1Ujl8jUj
+         0tSlUXNWe+dMkgOqG7zkBR6V7YxghUceFE/d7zbU9shz3lwY9BDo3GAa7UihEIyjd4ZR
+         DU+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744707756; x=1745312556;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dJDZbBMdv2ZAA+6dcm0km5N4IHnAcIL7BZj1NiKeJs8=;
+        b=hHwe6LMordJZHTyO+t7NiRagqwHdnFqNhGlx5lTsiEZ274IyWVwhNHUCV39YLJWL9J
+         aImAOMbsT7q1xBsSgJM6EhEvI8SDjWpzw2B7dOMwu0j0qefXTru6D9ECa/SzfNJyxxay
+         cPCJNcZ4mwoaFntEuoMxrFu2Ne/lpZDtZo0poXnUUDQHHsbFisQTIocsYPZGaIGOE0AH
+         ORS4v4oD76sslT7+kGasNzo0KQJf3cx3VCxrVVAriYq+oq8jPE3DoNJUR5vs0ABvs7SY
+         1g6JI54hE+7XBI3djM+gdRBP4b6wOAwZzJ42xL7Y65OlZJQj7fIMYHdxEsGC2rGEhpit
+         lZlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWJAZ1w0CggwGMZyC+eFsn1we5O7Fie7ipukddwC17JL5+kI7Lmfd4eg1fpZABBEGy9Ptl1DL5D@vger.kernel.org, AJvYcCX18F/zSpR1MwzMGzooZ3/okU/y6PfkxWySRFaEC0qoi1S/2wiTYy7RzowQg0uxK0QOs+VAIa0ryWN3YGY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsPCVF+HxmP1FtKFa/66nY+cD+6COeN/1SXLiZ2gSbosc2VZ9H
+	16an6ZU8eWy2BbUID3462YE5AUHIb4FZr5ONPzaRYE1Pi8lth+Vc
+X-Gm-Gg: ASbGnct9dspIeTcBPkbrJE5gu1TTa189swwHqbTFQe4fpyXz1eMTtgRok9vU9eOrKrR
+	XqfmRvv6F4CydpWEer765qBliLrmsaA0yWDXqxlsprJ8Mkl6Y/urGrldkiATsUeih6o2USZOmJ+
+	AeO1SQH+pdvPDrEYokG0va2eJQSVYxJaa75kHeV/dNhu2I+yrRcyPknXyiAvqQ4QRIGZfYDpk56
+	kfAd9gFsxd8Tqd/YoWDdoGtyXz4KXh/jnImzoMKRvjbEhbmpM5cd58L8GEL6eYLumvk0VvR1QAp
+	cH8oCpu/BMbQsQd79/JBlIcwrnq3Ud/ONeIA/6UjYV39Fa8W3e4=
+X-Google-Smtp-Source: AGHT+IEYjhNLxP37l8aYl1C4a7w6JsueacI5kZw35bhUqMjZzpBVZqyJDMJHUDXI3VVXAEqDHa7Rmg==
+X-Received: by 2002:a17:90b:5190:b0:2ee:f22a:61dd with SMTP id 98e67ed59e1d1-30823680c10mr18676118a91.32.1744707755652;
+        Tue, 15 Apr 2025 02:02:35 -0700 (PDT)
+Received: from VM-16-38-fedora.. ([43.135.149.86])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22ac7ccc98csm112424215ad.253.2025.04.15.02.02.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Apr 2025 02:02:35 -0700 (PDT)
+From: alexjlzheng@gmail.com
+X-Google-Original-From: alexjlzheng@tencent.com
+To: willy@infradead.org,
+	akpm@linux-foundation.org,
+	andrea@betterlinux.com,
+	fengguang.wu@intel.com
+Cc: linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	mengensun@tencent.com,
+	Jinliang Zheng <alexjlzheng@tencent.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] mm: fix ratelimit_pages update error in dirty_ratio_handler()
+Date: Tue, 15 Apr 2025 17:02:32 +0800
+Message-ID: <20250415090232.7544-1-alexjlzheng@tencent.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250415-loop-uevent-changed-v2-1-0c4e6a923b2a@linutronix.de>
-X-B4-Tracking: v=1; b=H4sIACIe/mcC/32NywqDMBBFf0WybkoexpKu+h/FRTRjHZBEEg0W8
- d8bddeFzOoM99y7kggBIZJnsZIACSN6l0HcCtL2xn2Aos1MBBOKSfagg/cjnSGBm+iZsNQYWWn
- WlRKYJNkcA3S4HK3vOnOPcfLhe4wkvn+v+xKn+UArZYTUpVCvAd08Be9wuVvYJ06fX/htI3Tba
- N5Uwv759bZtP8wS5cz6AAAA
-X-Change-ID: 20250307-loop-uevent-changed-aa3690f43e03
-To: Jens Axboe <axboe@kernel.dk>, Martijn Coenen <maco@android.com>, 
- Alyssa Ross <hi@alyssa.is>, Christoph Hellwig <hch@lst.de>, 
- Greg KH <greg@kroah.com>, Jan Kara <jack@suse.cz>
-Cc: John Ogness <john.ogness@linutronix.de>, linux-block@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1744707109; l=2327;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=l6EgTfG/rNsxzj7YblsFEs3VRkJDgFjjSVvMIbcaSIM=;
- b=f16o4dJg2nliQLGkEQn1igGREQ/SBPg0rQ+5p2AI7Bx/+OeMl6YOVVVsFs3xLBUycq/uUH9WA
- YIUJ6Uobe/+AaKmVyFyCbbkVVnpvahZfF1NfVp2x4dyAGyKPZ7kfwtH
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 
-The original commit message and the wording "uncork" in the code comment
-indicate that it is expected that the suppressed event instances are
-automatically sent after unsuppressing.
-This is not the case, instead they are discarded.
-In effect this means that no "changed" events are emitted on the device
-itself by default.
-While each discovered partition does trigger a changed event on the
-device, devices without partitions don't have any event emitted.
+From: Jinliang Zheng <alexjlzheng@tencent.com>
 
-This makes udev miss the device creation and prompted workarounds in
-userspace. See the linked util-linux/losetup bug.
+In the dirty_ratio_handler() function, vm_dirty_bytes must be set to
+zero before calling writeback_set_ratelimit(), as global_dirty_limits()
+always prioritizes the value of vm_dirty_bytes.
 
-Explicitly emit the events and drop the confusingly worded comments.
+That causes ratelimit_pages to still use the value calculated based on
+vm_dirty_bytes, which is wrong now.
 
-Link: https://github.com/util-linux/util-linux/issues/2434
-Fixes: 498ef5c777d9 ("loop: suppress uevents while reconfiguring the device")
+Fixes: 9d823e8f6b1b ("writeback: per task dirty rate limit")
+Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
+Reviewed-by: MengEn Sun <mengensun@tencent.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
-Changes in v2:
-- Use correct Fixes tag
-- Rework commit message slightly
-- Rebase onto v6.15-rc1
-- Link to v1: https://lore.kernel.org/r/20250317-loop-uevent-changed-v1-1-cb29cb91b62d@linutronix.de
+Changelog:
+v2: A more detailed description
+v1: https://lore.kernel.org/linux-fsdevel/20250415083542.6946-1-alexjlzheng@tencent.com/T/#u
 ---
- drivers/block/loop.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/page-writeback.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index 674527d770dc669e982a2b441af1171559aa427c..09a725710a21171e0adf5888f929ccaf94e98992 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -667,8 +667,8 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index c81624bc3969..20e1d76f1eba 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -520,8 +520,8 @@ static int dirty_ratio_handler(const struct ctl_table *table, int write, void *b
  
- 	error = 0;
- done:
--	/* enable and uncork uevent now that we are done */
- 	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
-+	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
- 	return error;
- 
- out_err:
-@@ -1129,8 +1129,8 @@ static int loop_configure(struct loop_device *lo, blk_mode_t mode,
- 	if (partscan)
- 		clear_bit(GD_SUPPRESS_PART_SCAN, &lo->lo_disk->state);
- 
--	/* enable and uncork uevent now that we are done */
- 	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
-+	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
- 
- 	loop_global_unlock(lo, is_loop);
- 	if (partscan)
-
----
-base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
-change-id: 20250307-loop-uevent-changed-aa3690f43e03
-
-Best regards,
+ 	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
+ 	if (ret == 0 && write && vm_dirty_ratio != old_ratio) {
+-		writeback_set_ratelimit();
+ 		vm_dirty_bytes = 0;
++		writeback_set_ratelimit();
+ 	}
+ 	return ret;
+ }
 -- 
-Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+2.49.0
 
 
