@@ -1,110 +1,229 @@
-Return-Path: <stable+bounces-132749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B732A8A0B6
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 16:13:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEE2AA8A114
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 16:30:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D9E017A96A
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 14:13:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2CB1168FBB
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 14:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 272D21F3BB4;
-	Tue, 15 Apr 2025 14:12:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eHgBPy63"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026312918C7;
+	Tue, 15 Apr 2025 14:30:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3262413AA53;
-	Tue, 15 Apr 2025 14:12:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B4EC1B0434;
+	Tue, 15 Apr 2025 14:30:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744726375; cv=none; b=OBviH2To+vAfzdyiOrKawCP2Ian1A6/9xKRCOzeAGIswf0nYGp6q+VkzXA/u94ORBFtp0xQ/DoRjfG2ciqtUMK6ZzjRRDOp/FEoZ5XdC05r1EchH3zQFSoF+7RzEoUSBGlPdYEviEtGFcB1OYAwIf8sj7eAK219yrdVZUscQB/8=
+	t=1744727411; cv=none; b=nktMPkC74HeaEBrLvTgBalrh/VFgpC1ZiSksLKfpyjV0o89A3ORZb9+VYPGp7Pye6W+m4rI4O0Z+d0qusZaBHTk0AO0VuAqXTXbwTcwlexGf8RJj48fMJxTraNwZKJ6+Y7TaUVaA+Rs1UDrhZK1ChiXPcw2XAVD0ktwzLwltLQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744726375; c=relaxed/simple;
-	bh=tPsF5KmvU8YLuirrBM+XJ6P5LFS3RlhTuzc6LYXAh6E=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=VprsxCiZGzYMERyj3eUb6v/i4bGP4P4xi+mvrmX1T9shAGPXs4O7O/LPP4OOIscpY0PTAZeYXbjj8jIDGodSGYhAY5eRc4AWDsJVy5B4SPLikCPL/0kXvRQnWXwdSSu7EMFQoBgZeL7SfruSKiRBhm8kpLfauy+Xhb/LFT8uppY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eHgBPy63; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744726374; x=1776262374;
-  h=from:to:cc:in-reply-to:references:subject:message-id:
-   date:mime-version:content-transfer-encoding;
-  bh=tPsF5KmvU8YLuirrBM+XJ6P5LFS3RlhTuzc6LYXAh6E=;
-  b=eHgBPy63c6YkOMaX2GCamIgVBOFDiKfLPuqOCnrZKfup+0BDUQSA4NDI
-   CWReIpvD6+Vi8xXxDdKFW/u6s9FRMyWf7/8H9v8vKgLiOzOqQKkSZGl3p
-   9TNyetljXa6ppsFVQn4ZmEa0YYdUUcMGXrvNJNFC1+EF3aBM6AiKPFpiW
-   yBxGjTLhCWUFBwUiNhfu8n0hTl76pQuVuxCbf4aUkbEY7x6STMeqT4P7b
-   IeSCEtanjJF0sPeargjVx+QX8yrGlzSgT0fWHJT5DX4+m3X9id+VCmEoB
-   xuURaTGr8iW8wsdkW+e/z4VpByvQ4yffEfA9BXXnFcH04AFhNvN2dhVJS
-   A==;
-X-CSE-ConnectionGUID: 1YFjE3jXSGygYEMFtaVi/A==
-X-CSE-MsgGUID: BHvqSi3aT92LAAVLcc1xkw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11404"; a="45950321"
-X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; 
-   d="scan'208";a="45950321"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2025 07:08:49 -0700
-X-CSE-ConnectionGUID: GMRC9y8OTLW/T6cjFAE8dQ==
-X-CSE-MsgGUID: 87LF8UZRRJOt69b1SMku4w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; 
-   d="scan'208";a="130156434"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.140])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2025 07:08:46 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Hans de Goede <hdegoede@redhat.com>, Armin Wolf <W_Armin@gmx.de>, 
- Kurt Borja <kuurtb@gmail.com>
-Cc: platform-driver-x86@vger.kernel.org, Dell.Client.Kernel@dell.com, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20250411-awcc-support-v1-0-09a130ec4560@gmail.com>
-References: <20250411-awcc-support-v1-0-09a130ec4560@gmail.com>
-Subject: Re: [PATCH 0/2] platform/x86: alienware-wmi-wmax: Extend support
- to more laptops
-Message-Id: <174472612155.1885.731492109641946522.b4-ty@linux.intel.com>
-Date: Tue, 15 Apr 2025 17:08:41 +0300
+	s=arc-20240116; t=1744727411; c=relaxed/simple;
+	bh=2mD5L5mLgBED0q8FXEIKxUdCbRXJ6s+ze57Y0Ayovbo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=spl6Ox63R3hc0/4qBjvZyiflOKoU5TMVbIjeEen6b8xRqQ36UGXfMuiu2CYpySfOmtKnAZgLtshZvkrZ160ZlUkP0G93Mb0FkHl4CkuMgb339o6DND0uqN1+75YHiQz2R+NKuCUfAADTVrrYqYx6YcCPJwDY836m+NV42OR9YXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F2EDF1756;
+	Tue, 15 Apr 2025 07:30:06 -0700 (PDT)
+Received: from pluto.guest.local (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 44F843F694;
+	Tue, 15 Apr 2025 07:30:06 -0700 (PDT)
+From: Cristian Marussi <cristian.marussi@arm.com>
+To: linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	arm-scmi@vger.kernel.org
+Cc: sudeep.holla@arm.com,
+	james.quinlan@broadcom.com,
+	f.fainelli@gmail.com,
+	vincent.guittot@linaro.org,
+	peng.fan@oss.nxp.com,
+	michal.simek@amd.com,
+	quic_sibis@quicinc.com,
+	dan.carpenter@linaro.org,
+	maz@kernel.org,
+	johan@kernel.org,
+	stable@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Cristian Marussi <cristian.marussi@arm.com>
+Subject: [PATCH 1/4] firmware: arm_scmi: Ensure that the message-id supports fastchannel
+Date: Tue, 15 Apr 2025 15:29:30 +0100
+Message-ID: <20250415142933.1746249-2-cristian.marussi@arm.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20250415142933.1746249-1-cristian.marussi@arm.com>
+References: <20250415142933.1746249-1-cristian.marussi@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.13.0
 
-On Fri, 11 Apr 2025 11:14:34 -0300, Kurt Borja wrote:
+From: Sibi Sankar <quic_sibis@quicinc.com>
 
-> This two patches are based on the pdx86/fixes branch.
-> 
-> To: Hans de Goede <hdegoede@redhat.com>
-> To: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> To: Armin Wolf <W_Armin@gmx.de>
-> Cc: platform-driver-x86@vger.kernel.org
-> Cc: Dell.Client.Kernel@dell.com
-> Cc: linux-kernel@vger.kernel.org
-> 
-> [...]
+Currently the perf and powercap protocol relies on the protocol domain
+attributes, which just ensures that one fastchannel per domain, before
+instantiating fastchannels for all possible message-ids. Fix this by
+ensuring that each message-id supports fastchannel before initialization.
 
+Logs:
+scmi: Failed to get FC for protocol 13 [MSG_ID:6 / RES_ID:0] - ret:-95. Using regular messaging.
+scmi: Failed to get FC for protocol 13 [MSG_ID:6 / RES_ID:1] - ret:-95. Using regular messaging.
+scmi: Failed to get FC for protocol 13 [MSG_ID:6 / RES_ID:2] - ret:-95. Using regular messaging.
 
-Thank you for your contribution, it has been applied to my local
-review-ilpo-fixes branch. Note it will show up in the public
-platform-drivers-x86/review-ilpo-fixes branch only once I've pushed my
-local branch there, which might take a while.
+CC: stable@vger.kernel.org
+Reported-by: Johan Hovold <johan+linaro@kernel.org>
+Closes: https://lore.kernel.org/lkml/ZoQjAWse2YxwyRJv@hovoldconsulting.com/
+Fixes: 6f9ea4dabd2d ("firmware: arm_scmi: Generalize the fast channel support")
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
+[Cristian: Modified the condition checked to establish support or not]
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+---
+RFC -> V1
+ - picked up a few tags
 
-The list of commits applied:
-[1/2] platform/x86: alienware-wmi-wmax: Add G-Mode support to Alienware m16 R1
-      commit: 5ff79cabb23a2f14d2ed29e9596aec908905a0e6
-[2/2] platform/x86: alienware-wmi-wmax: Extend support to more laptops
-      commit: 202a861205905629c5f10ce0a8358623485e1ae9
+Since PROTOCOL_MESSAGE_ATTRIBUTES, used to check if message_id is supported,
+is a mandatory command, it cannot fail so we must bail-out NOT only if FC was
+not supported for that command but also if the query fails as a whole; so the
+condition checked for bailing out is modified to:
 
---
- i.
+	if (ret || !MSG_SUPPORTS_FASTCHANNEL(attributes)) {
+
+Removed also Tested-by and Reviewed-by tags since I modified the logic.
+---
+ drivers/firmware/arm_scmi/driver.c    | 76 +++++++++++++++------------
+ drivers/firmware/arm_scmi/protocols.h |  2 +
+ 2 files changed, 45 insertions(+), 33 deletions(-)
+
+diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
+index 1cf18cc8e63f..0e281fca0a38 100644
+--- a/drivers/firmware/arm_scmi/driver.c
++++ b/drivers/firmware/arm_scmi/driver.c
+@@ -1738,6 +1738,39 @@ static int scmi_common_get_max_msg_size(const struct scmi_protocol_handle *ph)
+ 	return info->desc->max_msg_size;
+ }
+ 
++/**
++ * scmi_protocol_msg_check  - Check protocol message attributes
++ *
++ * @ph: A reference to the protocol handle.
++ * @message_id: The ID of the message to check.
++ * @attributes: A parameter to optionally return the retrieved message
++ *		attributes, in case of Success.
++ *
++ * An helper to check protocol message attributes for a specific protocol
++ * and message pair.
++ *
++ * Return: 0 on SUCCESS
++ */
++static int scmi_protocol_msg_check(const struct scmi_protocol_handle *ph,
++				   u32 message_id, u32 *attributes)
++{
++	int ret;
++	struct scmi_xfer *t;
++
++	ret = xfer_get_init(ph, PROTOCOL_MESSAGE_ATTRIBUTES,
++			    sizeof(__le32), 0, &t);
++	if (ret)
++		return ret;
++
++	put_unaligned_le32(message_id, t->tx.buf);
++	ret = do_xfer(ph, t);
++	if (!ret && attributes)
++		*attributes = get_unaligned_le32(t->rx.buf);
++	xfer_put(ph, t);
++
++	return ret;
++}
++
+ /**
+  * struct scmi_iterator  - Iterator descriptor
+  * @msg: A reference to the message TX buffer; filled by @prepare_message with
+@@ -1879,6 +1912,7 @@ scmi_common_fastchannel_init(const struct scmi_protocol_handle *ph,
+ 	int ret;
+ 	u32 flags;
+ 	u64 phys_addr;
++	u32 attributes;
+ 	u8 size;
+ 	void __iomem *addr;
+ 	struct scmi_xfer *t;
+@@ -1887,6 +1921,15 @@ scmi_common_fastchannel_init(const struct scmi_protocol_handle *ph,
+ 	struct scmi_msg_resp_desc_fc *resp;
+ 	const struct scmi_protocol_instance *pi = ph_to_pi(ph);
+ 
++	/* Check if the MSG_ID supports fastchannel */
++	ret = scmi_protocol_msg_check(ph, message_id, &attributes);
++	if (ret || !MSG_SUPPORTS_FASTCHANNEL(attributes)) {
++		dev_dbg(ph->dev,
++			"Skip FC init for 0x%02X/%d  domain:%d - ret:%d\n",
++			pi->proto->id, message_id, domain, ret);
++		return;
++	}
++
+ 	if (!p_addr) {
+ 		ret = -EINVAL;
+ 		goto err_out;
+@@ -2004,39 +2047,6 @@ static void scmi_common_fastchannel_db_ring(struct scmi_fc_db_info *db)
+ 		SCMI_PROTO_FC_RING_DB(64);
+ }
+ 
+-/**
+- * scmi_protocol_msg_check  - Check protocol message attributes
+- *
+- * @ph: A reference to the protocol handle.
+- * @message_id: The ID of the message to check.
+- * @attributes: A parameter to optionally return the retrieved message
+- *		attributes, in case of Success.
+- *
+- * An helper to check protocol message attributes for a specific protocol
+- * and message pair.
+- *
+- * Return: 0 on SUCCESS
+- */
+-static int scmi_protocol_msg_check(const struct scmi_protocol_handle *ph,
+-				   u32 message_id, u32 *attributes)
+-{
+-	int ret;
+-	struct scmi_xfer *t;
+-
+-	ret = xfer_get_init(ph, PROTOCOL_MESSAGE_ATTRIBUTES,
+-			    sizeof(__le32), 0, &t);
+-	if (ret)
+-		return ret;
+-
+-	put_unaligned_le32(message_id, t->tx.buf);
+-	ret = do_xfer(ph, t);
+-	if (!ret && attributes)
+-		*attributes = get_unaligned_le32(t->rx.buf);
+-	xfer_put(ph, t);
+-
+-	return ret;
+-}
+-
+ static const struct scmi_proto_helpers_ops helpers_ops = {
+ 	.extended_name_get = scmi_common_extended_name_get,
+ 	.get_max_msg_size = scmi_common_get_max_msg_size,
+diff --git a/drivers/firmware/arm_scmi/protocols.h b/drivers/firmware/arm_scmi/protocols.h
+index aaee57cdcd55..d62c4469d1fd 100644
+--- a/drivers/firmware/arm_scmi/protocols.h
++++ b/drivers/firmware/arm_scmi/protocols.h
+@@ -31,6 +31,8 @@
+ 
+ #define SCMI_PROTOCOL_VENDOR_BASE	0x80
+ 
++#define MSG_SUPPORTS_FASTCHANNEL(x)	((x) & BIT(0))
++
+ enum scmi_common_cmd {
+ 	PROTOCOL_VERSION = 0x0,
+ 	PROTOCOL_ATTRIBUTES = 0x1,
+-- 
+2.47.0
 
 
