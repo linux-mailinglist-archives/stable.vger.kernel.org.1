@@ -1,203 +1,158 @@
-Return-Path: <stable+bounces-132741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC3A7A89EF6
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 15:08:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B028BA89F02
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 15:10:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 632FC3A8206
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 13:08:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA0001757B3
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 13:10:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446F32973BE;
-	Tue, 15 Apr 2025 13:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BBCF2973D6;
+	Tue, 15 Apr 2025 13:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b="g1vL/jWZ";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="AIsj/ITX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BDcm8UIN"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92402949F9;
-	Tue, 15 Apr 2025 13:08:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80EC9201017;
+	Tue, 15 Apr 2025 13:09:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744722505; cv=none; b=qH6Uudy82Gn29vngm/MAyb6dDQH4f3jxu33QW4QNbDMv8hV9ZkbqzjQtM6J49cAInmL9qmtN+0lH2Yq71w3LWQdbBO3aXcLyWfEvnplPmwXZaK01DWMREsxofv6FxwKcFhorRx5F9886Aejjfcxhqm2xAvNt2OjE84NdSX3XA5s=
+	t=1744722599; cv=none; b=JP5xTPMYj32PeKHVjjloFB940OB8kE/tsnTGb+8N5aDK/rM37NlufUD2wdhXx++B2/k2NLSUtpT9Qjra8S9Wc+L8a8Z5Qjtxz8AlORC7WX6jK4WvfrGJ60tQTTocf5bqxFAQDxb7SQuI7yRidXTn71SbQ1/sXKh/U6cQ3mW3xqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744722505; c=relaxed/simple;
-	bh=LFHHOdKIEHi28QunVdPZ/PA6tBElS1oeV9WZk8dvqyM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mIv99LA8wXECliyc76d7zqTvtEHbcwQ5sKscvwEABkR4OCTZchTxZjboryf2XzkoVErUQWGHwcAqCzOUWuW6KsjfoGZyVnodqlXfhBvOKIDY/0iC+uXlKi8i/yLhAdadzYin6BF7OC9jwMf1vUA9uuAprvSoxD5aSxr1cCw2rqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com; spf=pass smtp.mailfrom=invisiblethingslab.com; dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b=g1vL/jWZ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=AIsj/ITX; arc=none smtp.client-ip=103.168.172.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=invisiblethingslab.com
-Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 8197111403AB;
-	Tue, 15 Apr 2025 09:08:21 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Tue, 15 Apr 2025 09:08:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	invisiblethingslab.com; h=cc:cc:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1744722501;
-	 x=1744808901; bh=xA9Xlxmq09ENSXnxA5kYNDInLOQ3lpFIKckJl2wyvaY=; b=
-	g1vL/jWZr3xkJdvosSFyNpaQEwlrs+73YlTa3DGoJ2K8qE590Lt91C94eIJMLP4n
-	mUVT2QcuGomlo3bJj+WQLpgj7WEVx32qa4KdeVg/K92WRUBVnP53Sfx/Yi2HXmIw
-	ik276X+c91Pr3B41mjTN5lS4QLuG5f0PtIm8d4vqte0MBWCKvDh+REjWPpDvtKoF
-	WOZNa6YPJ9YysE+Bu8ncET9aQCO0+ekCJn9hiBjkZkUhMoDrhOJNcC8dJ88UTq4x
-	hOtSNSf5+rK+l60VjoRS/IyWLkvvpdZsYTWwuN5GyMEaA8ThMidbI/WfgicsT/ai
-	vR9v/h8iRuEc4SjYxBQOjQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1744722501; x=1744808901; bh=xA9Xlxmq09ENSXnxA5kYNDInLOQ3lpFIKck
-	Jl2wyvaY=; b=AIsj/ITXRvXP8HSHn5v7D5jPmeFus07tcwjNZBQe9WOR8Eydwrt
-	99gZsQ98cQPRaJribXXIorfYekWjutv1qkUsR6BFTjpTiCRVcgCJg/aqBlviH1a6
-	pliO51bpkBn+uGCTR7n6kNSBaYY+5gwUWO3nqNzLrKxO3SkmuRcxWu4uKhiNWapv
-	KSuabtdmi0R/bCnZAbLYLt7IHJIX2YVEg3Wzy5IQwhrifMertSCu53Y/1UGozSdV
-	tLHACvQB7lP0oRw6PWrj8bhDOQgL2EPjfirqNgUwhXSTHGtGJ9z7UWIiiCL/MDCe
-	nUqrd1q++ZWSzg6JGHGE+5s1+jO8ct2h/Hg==
-X-ME-Sender: <xms:RVr-Z2-TPWDoW7h1aJm1kaX8KOYgu_zF_AKnW949Oa_m86QTnWG3_Q>
-    <xme:RVr-Z2uc98BzCabdwRI6zn-I81OIKdBgoZxXUvX7OtNxz2Jp0ydNYYV_VTnejz7F_
-    sQjSuIn-6tofg>
-X-ME-Received: <xmr:RVr-Z8AT-pO4Y-BlwPRB88Yb9X6ziy9NkJhtPWoVdOcD2e9Wu7PpmNqepUsHnc5QSJv8iY16lp3Ot97cDJ2ZPwfAA4332Juptg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvvdefheejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesghdtreertddt
-    jeenucfhrhhomhepofgrrhgvkhcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuc
-    eomhgrrhhmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecu
-    ggftrfgrthhtvghrnhepieeluddvkeejueekhfffteegfeeiffefjeejvdeijedvgfejhe
-    etuddvkeffudeinecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghr
-    ufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmrghrmhgrrhgvkhesihhnvh
-    hishhisghlvghthhhinhhgshhlrggsrdgtohhmpdhnsggprhgtphhtthhopeekpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlh
-    drohhrghdprhgtphhtthhopehrjhifsehrjhifhihsohgtkhhirdhnvghtpdhrtghpthht
-    oheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplh
-    hinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
-    vhhirhgvshhhrdhkuhhmrghrsehlihhnrghrohdrohhrghdprhgtphhtthhopehsrhhinh
-    hivhgrshdrphgrnhgurhhuvhgruggrsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghp
-    thhtohepmhgrrhhiohdrlhhimhhonhgtihgvlhhlohesrghmugdrtghomhdprhgtphhtth
-    hopehsuhguvggvphdrhhholhhlrgesrghrmhdrtghomh
-X-ME-Proxy: <xmx:RVr-Z-dUHKnSdf-w9rXPpVuPNkRVVpQJEE9PBrK8bL6P674zxAsDXA>
-    <xmx:RVr-Z7N0j0hzCIdyd9hMv5sUfen1276k32BuET95lKPOK6IejgL3Vw>
-    <xmx:RVr-Z4ke2BfIe0JpTytFypMnrqV1X4H-leQJURJnr0Yg_f0BzEd8rw>
-    <xmx:RVr-Z9unXbn7phtJyIj_NwqtMhc9b-CscMtKd30cLMZt0NH9IppzEw>
-    <xmx:RVr-Z2szoRQdYP3IO5AIgkOfuvltUKW3bn65M2OMWwaZZTLkQWaJGPap>
-Feedback-ID: i1568416f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 15 Apr 2025 09:08:19 -0400 (EDT)
-Date: Tue, 15 Apr 2025 15:08:17 +0200
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: stable@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Linux PM <linux-pm@vger.kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Sudeep Holla <sudeep.holla@arm.com>
-Subject: Re: [PATCH v1 01/10] cpufreq: Reference count policy in
- cpufreq_update_limits()
-Message-ID: <Z_5aQdqYJCFkcHLi@mail-itl>
-References: <4651448.LvFx2qVVIh@rjwysocki.net>
- <1928789.tdWV9SEqCh@rjwysocki.net>
+	s=arc-20240116; t=1744722599; c=relaxed/simple;
+	bh=1MnuAkRdhCY1WfObz2NT8vubDqZjZ18y0GbOgq9+SWQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WTunjmnx7tZ83t7O01/QRzr6s2F7BBsU4VVSDpYGIa/FQNIEnEQn6JLYTfG8EY5JoUFC8/9UMks/LX+r495KgcdZUnbOYMojyJTtM++nr5MHPR722TfAkgzvNJizTGcwZ1oJ4Ho3z4WWZ9J/wwHTTalXblP/R7AqVJ5WX0d9dDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BDcm8UIN; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-306b6ae4fb2so5437616a91.3;
+        Tue, 15 Apr 2025 06:09:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744722597; x=1745327397; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ROffXuJEF8DX7Dlw1Sl0/VWDxHt96RQSrGxvBnC8v/I=;
+        b=BDcm8UINpjEhFe27ASFYbp48saamQdLKaGjD6oSy+Gqtk0t2mX7INj/tK8m5Z5BtZQ
+         ou4ZSRD+kFBKEjQkc3EaUQCZiCZKYDFIqKviQ4wkaMdMt0eQh/bg5v9uAr7dzOReUjf0
+         xPAJVCpzEUTwBTd9jqFgeYRBcgCr9lAMzF0GtK9rzYdWUAIhFf+weMKaAYL6CnaImXUu
+         TSlFm8dq6FhGm1xi5SuXmUJLk7ioX+GgSTKpD2Kgc1zE9Um826Rh1ojYkrJW5lFCcus0
+         RA/xPGlME8ufILx6Xp5yMEkafa+PD1HyrDNydI9TGj6fIquy/Yh3ENd9JAS9erVHOg6q
+         C5yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744722597; x=1745327397;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ROffXuJEF8DX7Dlw1Sl0/VWDxHt96RQSrGxvBnC8v/I=;
+        b=AnOAzzf2WuxxAbi5M76QIbVMZOUET0WDpvyXoss1cvyMMkP6htIBS4wgaihS+kFQMg
+         gyN8kgo/K//NX5677HMxbEU1CNpkpJKdYbHUdKkiz4wchIa2Gae8aQyyWuodFpYA/PYq
+         bnfsGqY/akC95Jm56WOc4b1YdQP/fmDj7ZKiKCPMECis/g/Z/ztUw03SSc5IlYQXp6sZ
+         8SJeDbbtFQxxYDazuMUwmxi5skKfbMmyulxLhLPXKdArmzGZc293zs8SZc/iH7GGDG4S
+         vtq7XesJ4fYE3TxfGPGU4FRQ1FfhfyusZtHGObIotNk8KxuC7blfpePnPtkRQU7U0vs5
+         OBvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU11zhXxiRxiPlk7cYl6u2rxISAoJPPkX7RUBjj58OkqeECTETHHrZdOPGYjgkXmFqZnCQHNZVshpEG+5cR@vger.kernel.org, AJvYcCUSFdDsxOdSvGj8U1pOfJYOrjZjCTafePrYfkbxgaCb3KTC4+4MWLlOWgnj5u6NPcid0nJAUF7L@vger.kernel.org, AJvYcCX0Md82/w5c9aDoD/WlbomDPPkwKVU3R+fCXi+JIZRs8OdSbwe512uwAbS4Po7Qy7CLRqE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUPOAEktlrlSMlFj+ABYgiqDkPhmJvtBdsqHDSu4+4FC7v/dZs
+	pPQ+3JKt9pum/KJlinAe8NcakwK1jQ3gnHzogGHP1x38Uuilfl4C
+X-Gm-Gg: ASbGncvIUpe7/ZlQsVYv5FsK79C1cEzHF2u0t6dk6fV/nKkq16J/vLpAheQi3/3+Hu8
+	E4lKY12BVzb6Ct7/xpx7HqT/2a4MuJxxzDqnMpErhPx4wNSBZrRWsa4qulYp7BCJEr4k38pCK+e
+	Ar2ycrPqnRozCVIZ5aTkyVi3g5fMdXtrcPLMBFBd291VhkrJ/oR9WMlLaTs98fb076pdqldBmYZ
+	ngvSTS/Xt+4N/gCEakR0lS3MaCQDGyi9pzOC9MHitUOlxLTTUocuuOwyIgLn+c4LC0tvscGqGjZ
+	fnuiX0kizi2benA+CewTJ+EW423RRDcidQKMtMt1
+X-Google-Smtp-Source: AGHT+IGrbakp3gdJT5engsJp7bS+mmyQ7Q/b+yLZmtwIiI2SeohFbA98WC/ZpRR+orkfQ0nPSrONVQ==
+X-Received: by 2002:a17:90b:5190:b0:2ff:4bac:6fba with SMTP id 98e67ed59e1d1-3082367ccebmr25337882a91.24.1744722596523;
+        Tue, 15 Apr 2025 06:09:56 -0700 (PDT)
+Received: from fedora.nitk.ac.in ([2a09:bac5:3d50:16b4::243:2a])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-306dd10dc4bsm13165254a91.1.2025.04.15.06.09.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Apr 2025 06:09:55 -0700 (PDT)
+From: Devaansh Kumar <devaanshk840@gmail.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org,
+	ast@kernel.org,
+	daniel@iogearbox.net
+Cc: Devaansh Kumar <devaanshk840@gmail.com>,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	skhan@linuxfoundation.org,
+	linux-kernel-mentees@lists.linuxfoundation.org,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>
+Subject: [PATCH] bpf: Remove tracing program restriction on map types
+Date: Tue, 15 Apr 2025 18:39:07 +0530
+Message-ID: <20250415130910.2326537-1-devaanshk840@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="eMX8NdoxMYxrK7da"
-Content-Disposition: inline
-In-Reply-To: <1928789.tdWV9SEqCh@rjwysocki.net>
+Content-Transfer-Encoding: 8bit
 
+[ Upstream commit 96da3f7d489d11b43e7c1af90d876b9a2492cca8 ]
 
---eMX8NdoxMYxrK7da
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 15 Apr 2025 15:08:17 +0200
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: stable@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Linux PM <linux-pm@vger.kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Sudeep Holla <sudeep.holla@arm.com>
-Subject: Re: [PATCH v1 01/10] cpufreq: Reference count policy in
- cpufreq_update_limits()
+The hash map is now fully converted to bpf_mem_alloc. Its implementation is not
+allocating synchronously and not calling call_rcu() directly. It's now safe to
+use non-preallocated hash maps in all types of tracing programs including
+BPF_PROG_TYPE_PERF_EVENT that runs out of NMI context.
 
-On Fri, Mar 28, 2025 at 09:39:08PM +0100, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->=20
-> Since acpi_processor_notify() can be called before registering a cpufreq
-> driver or even in cases when a cpufreq driver is not registered at all,
-> cpufreq_update_limits() needs to check if a cpufreq driver is present
-> and prevent it from being unregistered.
->=20
-> For this purpose, make it call cpufreq_cpu_get() to obtain a cpufreq
-> policy pointer for the given CPU and reference count the corresponding
-> policy object, if present.
->=20
-> Fixes: 5a25e3f7cc53 ("cpufreq: intel_pstate: Driver-specific handling of =
-_PPC updates")
-> Closes: https://lore.kernel.org/linux-acpi/Z-ShAR59cTow0KcR@mail-itl
-> Reporetd-by: Marek Marczykowski-G=C3=B3recki <marmarek@invisiblethingslab=
-=2Ecom>=20
-> Cc: All applicable <stable@vger.kernel.org>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20220902211058.60789-13-alexei.starovoitov@gmail.com
+Signed-off-by: Devaansh Kumar <devaanshk840@gmail.com>
+---
+ kernel/bpf/verifier.c | 29 -----------------------------
+ 1 file changed, 29 deletions(-)
 
-It looks like this patch is missing in stable branches.
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 7049a85a78ab..77a75ccaae5e 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -11700,35 +11700,6 @@ static int check_map_prog_compatibility(struct bpf_verifier_env *env,
+ 
+ {
+ 	enum bpf_prog_type prog_type = resolve_prog_type(prog);
+-	/*
+-	 * Validate that trace type programs use preallocated hash maps.
+-	 *
+-	 * For programs attached to PERF events this is mandatory as the
+-	 * perf NMI can hit any arbitrary code sequence.
+-	 *
+-	 * All other trace types using preallocated hash maps are unsafe as
+-	 * well because tracepoint or kprobes can be inside locked regions
+-	 * of the memory allocator or at a place where a recursion into the
+-	 * memory allocator would see inconsistent state.
+-	 *
+-	 * On RT enabled kernels run-time allocation of all trace type
+-	 * programs is strictly prohibited due to lock type constraints. On
+-	 * !RT kernels it is allowed for backwards compatibility reasons for
+-	 * now, but warnings are emitted so developers are made aware of
+-	 * the unsafety and can fix their programs before this is enforced.
+-	 */
+-	if (is_tracing_prog_type(prog_type) && !is_preallocated_map(map)) {
+-		if (prog_type == BPF_PROG_TYPE_PERF_EVENT) {
+-			verbose(env, "perf_event programs can only use preallocated hash map\n");
+-			return -EINVAL;
+-		}
+-		if (IS_ENABLED(CONFIG_PREEMPT_RT)) {
+-			verbose(env, "trace type programs can only use preallocated hash map\n");
+-			return -EINVAL;
+-		}
+-		WARN_ONCE(1, "trace type BPF program uses run-time allocation\n");
+-		verbose(env, "trace type programs with run-time allocated hash maps are unsafe. Switch to preallocated hash maps.\n");
+-	}
+ 
+ 	if (map_value_has_spin_lock(map)) {
+ 		if (prog_type == BPF_PROG_TYPE_SOCKET_FILTER) {
+-- 
+2.49.0
 
-> ---
->  drivers/cpufreq/cpufreq.c |    6 ++++++
->  1 file changed, 6 insertions(+)
->=20
-> --- a/drivers/cpufreq/cpufreq.c
-> +++ b/drivers/cpufreq/cpufreq.c
-> @@ -2781,6 +2781,12 @@
->   */
->  void cpufreq_update_limits(unsigned int cpu)
->  {
-> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
-> +
-> +	policy =3D cpufreq_cpu_get(cpu);
-> +	if (!policy)
-> +		return;
-> +
->  	if (cpufreq_driver->update_limits)
->  		cpufreq_driver->update_limits(cpu);
->  	else
->=20
->=20
->=20
-
---=20
-Best Regards,
-Marek Marczykowski-G=C3=B3recki
-Invisible Things Lab
-
---eMX8NdoxMYxrK7da
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmf+WkEACgkQ24/THMrX
-1yz5hgf/S6i//LIDY5LglLWFfkwReDhT9lIsdeaE8WVCNsUbsduRvWJoSRduxa2f
-ZvLbGwAxs5KMdrp9/3iW/1g8lC/OP15/U+yEXnAl3aSt4Qp+xOmizbSSPe8pPU+R
-G738/u7TNhAekKTEG4+AFs+H6ezuBf2nflDvjmMO7jzk9MhfMeJV26maKWYTedEc
-NKVUTHWVMpfqMb/gS3HGCg7gHiX3uHcnkaiOJb4oejWQziq12IPxVwtsfjecbGRR
-T/NyBFVJcfuAGQa2n8H19oxAPQJqK/AQdSiXJh8hZ8qBRfHkQViTzWC4ocLu639B
-i3p9StmI2FwzJhmmutWgP0D1UxK1BQ==
-=BhXG
------END PGP SIGNATURE-----
-
---eMX8NdoxMYxrK7da--
 
