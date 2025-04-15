@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-132797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B47F9A8AA4A
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 23:44:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0ED9A8AA4B
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 23:44:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADB9D178290
-	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 21:43:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50A7117C53B
+	for <lists+stable@lfdr.de>; Tue, 15 Apr 2025 21:44:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4709257AD1;
-	Tue, 15 Apr 2025 21:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CABD025744B;
+	Tue, 15 Apr 2025 21:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TKf36TB7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dyQt+s6p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95630253357
-	for <stable@vger.kernel.org>; Tue, 15 Apr 2025 21:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CE4253357
+	for <stable@vger.kernel.org>; Tue, 15 Apr 2025 21:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744753435; cv=none; b=LuCBL5l89IPaEkeIlaVUOd8s7oL4zNnhpFdsS1I6+t9zqy87jLIomvG61lrpbd7CBXmgjTy9lX6iHzjNRlKslh9ZB9pKqzwU9kWOZkLiivdx8+UeUqkr5xXcxFxQN4o/VBAVEwQeGkoJx9kGsLBGOlFXnXghXVmmJXdcnqnF3XA=
+	t=1744753438; cv=none; b=KckKXUGg+8cTrEYA/BK+Zyzr1kj/1MWjTVAq7Ug1yposLDn6/mlmcky4TxLa9Ni2EsNckBAdJRPvAOE5NgyvyxX1gkUp+rOU0TM8ynzGWGCxKR0wJ0zG//1ySY4dinf5uG2bLSi4Uc1hnLUzlgdaB2islbjWY+P4ZJaHCC4J+MI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744753435; c=relaxed/simple;
-	bh=BSMlUWczqKWE9u7gT1yz13CE+tclL8/9kPYVGvSRy4Q=;
+	s=arc-20240116; t=1744753438; c=relaxed/simple;
+	bh=otHeMbwBsCNLPld6vbnYH4NDHyO4h9R8r/nNCs6zmZA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KPl+VLR8vm3tVtkqxpfEqx0as9CVlHSyxjlF1FWuInspXtBAejS6HNGpvYMMUjty3bKelHzZrEPq62Ja2WEEN7ldhZgZQG0NG3RrS4DX09cn5mOKWWAu2tyxIOg+rHS1GgqynoTakXkRSw/CG7tl3NhMtE6ODxpVb43Hy3LPjug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TKf36TB7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94335C4CEE7;
-	Tue, 15 Apr 2025 21:43:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DBnO/teD+CdAu45bI0hIQLPHSj+RXmikidCUVJWK8ydkRYMeoa5uCkfaF1drQCS/566wwMulNE22OXAFHN3grJArfwkio79t2ePwddhYr1MUTcj4DfakRSi8HfO+3Z4sa7gxCd4/2DUsGbqbSrHFZKiCuLBS3UX+l5QpmP8/yMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dyQt+s6p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85A4FC4CEE7;
+	Tue, 15 Apr 2025 21:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744753435;
-	bh=BSMlUWczqKWE9u7gT1yz13CE+tclL8/9kPYVGvSRy4Q=;
+	s=k20201202; t=1744753437;
+	bh=otHeMbwBsCNLPld6vbnYH4NDHyO4h9R8r/nNCs6zmZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TKf36TB7cRwd95d9VSNZGgiinf3SJuAGCURNS4GBq+wYnrVuwktiPC6T+q498dzTc
-	 q+WlOSqKyo0qNdTmAJ1IWZQJqwKqMsXco7Pexi2qMN7cT1Blog4LjzzgkueLk0ZrZ+
-	 UpjFHb/8w5DtBKnUUDZ4oHEixq/6ZxVXFNGzEnnyX48+KdOwuJmd5U3QfXsbtvc/Nw
-	 tgrDLsqGHCean3cnnrtz/szZXz3qif93dU/Y/gHxROsjKuO3mIGXFUIQAtGQNebqS2
-	 1ZRYACSQm8+RSokRHkk7D75Y67cjjqnviHWymc/7U8sDMxHjPKHS/sHnVWopBRb+oY
-	 A3Xx+xpWNyPHg==
+	b=dyQt+s6p8KDhwodrDlKS59MBhNP7WxTSl4+9ZN66ZXFFhOzAJMNLp35aWcwzngBZG
+	 s6FcPloIpf70sO0ieavHEWBI8fMcMrLrBPunowYYaRuOKBlBoo5POVha1Chc5ZgAQM
+	 oyCWNw/NtjjTTOlbTVmx5apEdnAxwbQT1XSQNYExNQssEQtSAqZKlmJJ2gElkHI3NH
+	 v6Vof1tXARVUJV1Q98PN9MsayNW2uP8SJ65odIc9iC+nur/0sUCmyN9i0E+cOoCBWT
+	 SKG2AF0iCRM3bqDWsB9AYuo4fDhUCRkHFNl+OAwwk6RSnaEyjdACN47pImTo412RVr
+	 e2Q1PikbjrSXQ==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Zenm Chen <zenmchen@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v2 6.6.y 2/2] wifi: rtw89: pci: disable PCIE wake bit when PCIE deinit
-Date: Tue, 15 Apr 2025 17:43:53 -0400
-Message-Id: <20250415125600-d073171a9448951a@stable.kernel.org>
+To: stable@vger.kernel.org,
+	anshuman.khandual@arm.com
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH V2 6.12.y 1/7] arm64/sysreg: Update register fields for ID_AA64MMFR0_EL1
+Date: Tue, 15 Apr 2025 17:43:55 -0400
+Message-Id: <20250415113643-c60685948e4b9ba8@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250415103125.15782-3-zenmchen@gmail.com>
+In-Reply-To:  <20250415045728.2248935-2-anshuman.khandual@arm.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,24 +64,27 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-The upstream commit SHA1 provided is correct: 9c1df813e08832c3836c254bc8a2f83ff22dbc06
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Zenm Chen<zenmchen@gmail.com>
-Commit author: Ping-Ke Shih<pkshih@realtek.com>
+Found matching upstream commit: cc15f548cc77574bcd68425ae01a796659bd3705
 
 Status in newer kernel trees:
-6.14.y | Present (exact SHA1)
-6.13.y | Present (different SHA1: bf1aaf8eb546)
-6.12.y | Present (different SHA1: e5aeac73ab04)
+6.14.y | Not found
+6.13.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  9c1df813e0883 < -:  ------------- wifi: rtw89: pci: disable PCIE wake bit when PCIE deinit
--:  ------------- > 1:  ecfa2677556ed wifi: rtw89: pci: disable PCIE wake bit when PCIE deinit
+1:  cc15f548cc775 ! 1:  25eca6f65b94d arm64/sysreg: Update register fields for ID_AA64MMFR0_EL1
+    @@ Commit message
+         Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+         Link: https://lore.kernel.org/r/20250203050828.1049370-2-anshuman.khandual@arm.com
+         Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+    +    (cherry picked from commit cc15f548cc77574bcd68425ae01a796659bd3705)
+    +    Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+     
+      ## arch/arm64/tools/sysreg ##
+     @@ arch/arm64/tools/sysreg: EndEnum
 ---
 
 Results of testing on various branches:
