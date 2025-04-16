@@ -1,221 +1,116 @@
-Return-Path: <stable+bounces-132876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41340A90928
-	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 18:43:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96F9DA9096E
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 18:56:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8AE73A9CCD
-	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 16:43:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE7E616FFA3
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 16:56:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56484212FA6;
-	Wed, 16 Apr 2025 16:43:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="VuhR9Glj";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Lx+jL9ek";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dXTfJT1T";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="uBn9yeFS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB00214A7C;
+	Wed, 16 Apr 2025 16:56:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from animx.eu.org (tn-76-7-174-50.sta.embarqhsd.net [76.7.174.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCC01A08A0
-	for <stable@vger.kernel.org>; Wed, 16 Apr 2025 16:43:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2072144D4
+	for <stable@vger.kernel.org>; Wed, 16 Apr 2025 16:56:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=76.7.174.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744821803; cv=none; b=OT1U/at0G8Wm4xqkaiexfmN1jHGyzNE+xiYhFGxdGBMxyixFla+anys9dq2jhnXOBLK3wU8nh9FDmmAxWhJ9sgJJFSVN1rY7YiE5sYYiqABAhkZDtXg4geg37MXssuCa7Pf/2/yB9rhpSybhWHc0/H5z7XNStXCFf6AzqS4kzoU=
+	t=1744822596; cv=none; b=mqDMpIvpU0z5+hs6i0O1Xcpomg1QKZ3SwWRkFpShsmSoRauAxtnVBN5cRhqqlOKsbdc17BYcQvAmJstuTM9A+0jUfsGcwsl2chYyZOgnv7PllWm3WjcwSMVIBe/FXJ7e2IDNlRBWYY5M3Xgqylc4UAY1ENJrCnDAku8n0NpL3Sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744821803; c=relaxed/simple;
-	bh=NWdH/y//YcgEZEu4G7pFiwa0TtO11dII0omDMafEDpg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RiQoE+WALexaffPuym9beCA7JkOtn1g9OKNMj1vh1r3TKrekl58MpOlfOhWpPCtOvTojifZ7JLzWbt+LuJV9Zt/IcLbmvhjIZvTkoswZ5MeVi7JCVyCn23ds7Kc4jOGJDArkuONVTOLHGkshP2IKm7YG/Dvw4eLWQYpgzqGGJ50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=VuhR9Glj; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Lx+jL9ek; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dXTfJT1T; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=uBn9yeFS; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 55E8C1F6E6;
-	Wed, 16 Apr 2025 16:43:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1744821799; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=sH6tqkuIbVmMnGLObyM7CPuPJs33hqGUofGqwo3vqGI=;
-	b=VuhR9Glj05Oy0YiwdkfEQ/R5uOYOtaOP2KWB89fJQaToYwEb4m9rl+Vta83IWWpX64PZIu
-	DeHlpa25iqx7uXA+0O9pCXttmEbjXPyGrPuWR54PqfTTtDPZiODQP/Dm5hh3ezpZrBmYdn
-	7GT5R3ygnuaFdsj2fijW/TWJ3PFVK3A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1744821799;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=sH6tqkuIbVmMnGLObyM7CPuPJs33hqGUofGqwo3vqGI=;
-	b=Lx+jL9ekyZOcG3bs/HFyXxMSY4KG2rhLukbYlcqf3fJ3/iV5MWuZB5DAd+JgIgMwli2Eft
-	2hONRF+TDeMXuJBg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1744821798; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=sH6tqkuIbVmMnGLObyM7CPuPJs33hqGUofGqwo3vqGI=;
-	b=dXTfJT1TQmg0EP7zsjz6cHQOcZs5K1pv9W5QT4g+1nUILlBJE4Dn31lP7pS4onL0JpoJol
-	Mse0pcjKOXai9W0RfDjtUNIJYrVrEDqfSQjUOa7oQ9lFr3M9av6oa+1rFSZpfDMAdIRxGj
-	QFdbJm2yS9/2dBZ6HcztxurmUStJVkU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1744821798;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=sH6tqkuIbVmMnGLObyM7CPuPJs33hqGUofGqwo3vqGI=;
-	b=uBn9yeFSfW5rchVg3xttM6i5WmZIqregT0iNKWRLA/qu6jwGOwwQpiCTmbODDBGATanfyh
-	0giJk30eg+TxSJCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 28AF7139A1;
-	Wed, 16 Apr 2025 16:43:18 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id sgCRCCbe/2dRdQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 16 Apr 2025 16:43:18 +0000
-Message-ID: <568a359c-e096-4486-84b3-95b37b2de7a6@suse.de>
-Date: Wed, 16 Apr 2025 18:43:17 +0200
+	s=arc-20240116; t=1744822596; c=relaxed/simple;
+	bh=ybUMujgIyXopRC32WVafznt+z7HjXgKb7kwIFlscb10=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Yn0N/UqFOR2NyAUMQA4Fq8KEm2g9p5drt25cNH7TrgP9KHL/0o09dUhBHuVBq113IvFI4bTZgGPXGPvTlcy7d5fvk2R1ZN22QDPaMUfV39ueiSXEgZPRfgtxkLmY+jFBlBW8rY+h5OVLFhWIesSMaCpNhJ5HkI+dygN+nluCBlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=animx.eu.org; spf=pass smtp.mailfrom=animx.eu.org; arc=none smtp.client-ip=76.7.174.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=animx.eu.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=animx.eu.org
+Received: from wakko by animx.eu.org with local 
+	id 1u563n-0003pT-Hd;
+	Wed, 16 Apr 2025 12:56:27 -0400
+Date: Wed, 16 Apr 2025 12:56:27 -0400
+From: Wakko Warner <wakko@animx.eu.org>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: airlied@redhat.com, jfalempe@redhat.com,
+	dri-devel@lists.freedesktop.org, ???????????? <afmerlord@gmail.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] drm/mgag200: Fix value in <VBLKSTR> register
+Message-ID: <Z//hO7ol4nED5UiH@animx.eu.org>
+References: <20250416083847.51764-1-tzimmermann@suse.de>
+ <Z//LSBwuoc6Hf3zG@animx.eu.org>
+ <568a359c-e096-4486-84b3-95b37b2de7a6@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/mgag200: Fix value in <VBLKSTR> register
-To: Wakko Warner <wakko@animx.eu.org>
-Cc: airlied@redhat.com, jfalempe@redhat.com, dri-devel@lists.freedesktop.org,
- ???????????? <afmerlord@gmail.com>, stable@vger.kernel.org
-References: <20250416083847.51764-1-tzimmermann@suse.de>
- <Z//LSBwuoc6Hf3zG@animx.eu.org>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <Z//LSBwuoc6Hf3zG@animx.eu.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[redhat.com,lists.freedesktop.org,gmail.com,vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email]
-X-Spam-Flag: NO
-X-Spam-Level: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <568a359c-e096-4486-84b3-95b37b2de7a6@suse.de>
 
-Hi
+Thomas Zimmermann wrote:
+> Hi
+> 
+> Am 16.04.25 um 17:22 schrieb Wakko Warner:
+> > Thomas Zimmermann wrote:
+> > > Fix an off-by-one error when setting the vblanking start in
+> > > <VBLKSTR>. Commit d6460bd52c27 ("drm/mgag200: Add dedicated
+> > > variables for blanking fields") switched the value from
+> > > crtc_vdisplay to crtc_vblank_start, which DRM helpers copy
+> > > from the former. The commit missed to subtract one though.
+> > Applied to 6.14.2.  BMC and external monitor works as expected.
+> 
+> Great. Thanks for testing. Can I add your Tested-by tag to the commit?
 
-Am 16.04.25 um 17:22 schrieb Wakko Warner:
-> Thomas Zimmermann wrote:
->> Fix an off-by-one error when setting the vblanking start in
->> <VBLKSTR>. Commit d6460bd52c27 ("drm/mgag200: Add dedicated
->> variables for blanking fields") switched the value from
->> crtc_vdisplay to crtc_vblank_start, which DRM helpers copy
->> from the former. The commit missed to subtract one though.
-> Applied to 6.14.2.  BMC and external monitor works as expected.
+You may.
 
-Great. Thanks for testing. Can I add your Tested-by tag to the commit?
-
-Best regards
-Thomas
-
->
-> Thank you.
->
->> Reported-by: Wakko Warner <wakko@animx.eu.org>
->> Closes: https://lore.kernel.org/dri-devel/CAMwc25rKPKooaSp85zDq2eh-9q4UPZD=RqSDBRp1fAagDnmRmA@mail.gmail.com/
->> Reported-by: ???????????? <afmerlord@gmail.com>
->> Closes: https://lore.kernel.org/all/5b193b75-40b1-4342-a16a-ae9fc62f245a@gmail.com/
->> Closes: https://bbs.archlinux.org/viewtopic.php?id=303819
->> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->> Fixes: d6460bd52c27 ("drm/mgag200: Add dedicated variables for blanking fields")
->> Cc: Thomas Zimmermann <tzimmermann@suse.de>
->> Cc: Jocelyn Falempe <jfalempe@redhat.com>
->> Cc: Dave Airlie <airlied@redhat.com>
->> Cc: dri-devel@lists.freedesktop.org
->> Cc: <stable@vger.kernel.org> # v6.12+
->> ---
->>   drivers/gpu/drm/mgag200/mgag200_mode.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/gpu/drm/mgag200/mgag200_mode.c b/drivers/gpu/drm/mgag200/mgag200_mode.c
->> index fb71658c3117..6067d08aeee3 100644
->> --- a/drivers/gpu/drm/mgag200/mgag200_mode.c
->> +++ b/drivers/gpu/drm/mgag200/mgag200_mode.c
->> @@ -223,7 +223,7 @@ void mgag200_set_mode_regs(struct mga_device *mdev, const struct drm_display_mod
->>   	vsyncstr = mode->crtc_vsync_start - 1;
->>   	vsyncend = mode->crtc_vsync_end - 1;
->>   	vtotal = mode->crtc_vtotal - 2;
->> -	vblkstr = mode->crtc_vblank_start;
->> +	vblkstr = mode->crtc_vblank_start - 1;
->>   	vblkend = vtotal + 1;
->>   
->>   	linecomp = vdispend;
->> -- 
->> 2.49.0
->>
-
+> > > Reported-by: Wakko Warner <wakko@animx.eu.org>
+> > > Closes: https://lore.kernel.org/dri-devel/CAMwc25rKPKooaSp85zDq2eh-9q4UPZD=RqSDBRp1fAagDnmRmA@mail.gmail.com/
+> > > Reported-by: ???????????? <afmerlord@gmail.com>
+> > > Closes: https://lore.kernel.org/all/5b193b75-40b1-4342-a16a-ae9fc62f245a@gmail.com/
+> > > Closes: https://bbs.archlinux.org/viewtopic.php?id=303819
+> > > Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> > > Fixes: d6460bd52c27 ("drm/mgag200: Add dedicated variables for blanking fields")
+> > > Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> > > Cc: Jocelyn Falempe <jfalempe@redhat.com>
+> > > Cc: Dave Airlie <airlied@redhat.com>
+> > > Cc: dri-devel@lists.freedesktop.org
+> > > Cc: <stable@vger.kernel.org> # v6.12+
+> > > ---
+> > >   drivers/gpu/drm/mgag200/mgag200_mode.c | 2 +-
+> > >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/gpu/drm/mgag200/mgag200_mode.c b/drivers/gpu/drm/mgag200/mgag200_mode.c
+> > > index fb71658c3117..6067d08aeee3 100644
+> > > --- a/drivers/gpu/drm/mgag200/mgag200_mode.c
+> > > +++ b/drivers/gpu/drm/mgag200/mgag200_mode.c
+> > > @@ -223,7 +223,7 @@ void mgag200_set_mode_regs(struct mga_device *mdev, const struct drm_display_mod
+> > >   	vsyncstr = mode->crtc_vsync_start - 1;
+> > >   	vsyncend = mode->crtc_vsync_end - 1;
+> > >   	vtotal = mode->crtc_vtotal - 2;
+> > > -	vblkstr = mode->crtc_vblank_start;
+> > > +	vblkstr = mode->crtc_vblank_start - 1;
+> > >   	vblkend = vtotal + 1;
+> > >   	linecomp = vdispend;
+> > > -- 
+> > > 2.49.0
+> > > 
+> 
+> -- 
+> --
+> Thomas Zimmermann
+> Graphics Driver Developer
+> SUSE Software Solutions Germany GmbH
+> Frankenstrasse 146, 90461 Nuernberg, Germany
+> GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+> HRB 36809 (AG Nuernberg)
+> 
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
-
+ Microsoft has beaten Volkswagen's world record.  Volkswagen only created 22
+ million bugs.
 
