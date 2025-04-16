@@ -1,155 +1,146 @@
-Return-Path: <stable+bounces-132887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FAE9A90F31
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 01:11:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 442B2A90FA4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 01:34:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 096747AF69A
-	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 23:09:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B26743BA5DE
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 23:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C64DD2459E5;
-	Wed, 16 Apr 2025 23:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12EDC2356C3;
+	Wed, 16 Apr 2025 23:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mplO/pAV"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="POSLl4gc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A03028E3F;
-	Wed, 16 Apr 2025 23:10:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E59230D3D;
+	Wed, 16 Apr 2025 23:34:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744845054; cv=none; b=rT7c+ZnfSN37D785yL+p/8T216OjIz82G01rQTW9hqjvwe2qxr4KW7t5e/sPxCFx4NWjJ8Hm69QhnVrN5LIS8SnFsJFcIuqxkb3BBNvfKJRxSC4OOSUwbmgR9x9OBUueAuxutFqFZH5WXllrO9/uOQS25G9WSgiY9M6SFNYIxlM=
+	t=1744846443; cv=none; b=jnE4Q5rbYd0r6stIikvD73h1kMbCrs3zcLLqID2KutLlSvrDhaCQeZIPhSqUYGk8RK/8K0gYw7hYDHeH91GfnCarvWMO6SsxVqPQ7anqWR6BEqauaoD2Rx4MLG80APO82NDSCclaLRSR/+m6mFtcMnN7BGVSIvyboH/m6TzD4iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744845054; c=relaxed/simple;
-	bh=cWDm7bL+onZiFIl6IPHOaW5+F4xdkLXaV2ZQY9KRSeY=;
-	h=Date:To:From:Subject:Message-Id; b=UYdQlf/tLhDje0OUANnRntVeqHdXF+ytWlG55zYJGPhHWQO7KvDBQMtRydNZl3mewvzPiA6DR9vItr+oHnm686dfdiEjaKTWqFLu6z2UO2rPLHh/DQxa0F6BzQPXcX7GTauoKoiJPnZwrFbinJviXjRW+rf4VjEw4ML8w4d58qM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mplO/pAV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F99C4CEE2;
-	Wed, 16 Apr 2025 23:10:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1744845053;
-	bh=cWDm7bL+onZiFIl6IPHOaW5+F4xdkLXaV2ZQY9KRSeY=;
-	h=Date:To:From:Subject:From;
-	b=mplO/pAVE+sAk9kmCnBMxEj5fm9fY2MApnmEXwWdQYsdQviorpcS2TkfIkM/sc951
-	 434wLdlADb7kS2NTNQ6nsIhMCMG7nRVKfYInqeygU+6poevA0waS0+CsSI9aknYtfA
-	 8a+PYV/quqYS2swqsQti8R95oygzMEYpO7hycjh8=
-Date: Wed, 16 Apr 2025 16:10:53 -0700
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,mhocko@suse.com,jackmanb@google.com,hannes@cmpxchg.org,zhangtianyang@loongson.cn,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-page_allocc-avoid-infinite-retries-caused-by-cpuset-race.patch added to mm-new branch
-Message-Id: <20250416231053.B4F99C4CEE2@smtp.kernel.org>
+	s=arc-20240116; t=1744846443; c=relaxed/simple;
+	bh=g2NU8wZf7ov7zeW75JbUxhAYPOAgNEyPYBnsaU7lHY4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=JpqkchovfTZXg7QEJ3JswJkLqJntsAhLMQJ2NEPMaDIPqQkeOhfo/yXOQke4g4XthkxqHkieYNen6BDl6ETFgVDGMDTUvXQyT853lLLceA6GGUyluZiUIXl0bUQFNiyHC7sHgAJCvcQ7fMOpX9P8feA4XFs8p6+eLWyBsJ2pS0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=POSLl4gc; arc=none smtp.client-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1744846431;
+	bh=g2NU8wZf7ov7zeW75JbUxhAYPOAgNEyPYBnsaU7lHY4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=POSLl4gcH2AgoWTwaTKyZEidtqqKTBpgE+Fchxnbed1zy6wFTPiYor/JTmotv2SP3
+	 rekBMtSioc15RyR4WLPWA7P/8uXdNE+jorg4464rDkxvN2ZRW2AzZjxygpADCQfMWN
+	 Xo/o643/dOOJbIekDOFLM7ylVo7YLw59+fH9KWfuvlb4XSRQj1y5U6n0fg9wc1tAp5
+	 uypoe/gm5LkArnzPmsgfQAcHz5I0B7qyIgjPlLnn3L7mRu3gWbp2atdV0CPk7uyYeD
+	 P34xVqzZSpoJJJzQVNW9gpQQUAI/TtZdWvGkGfnAlR9tpc++gtThvBypbOnCTbiQ4Z
+	 UZWiJABXp8uPA==
+Received: from [192.168.68.112] (unknown [180.150.112.225])
+	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id D187564323;
+	Thu, 17 Apr 2025 07:33:49 +0800 (AWST)
+Message-ID: <6f01162ca2024c8bc4f22e0be2f33e8724238f80.camel@codeconstruct.com.au>
+Subject: Re: [PATCH 2/7] soc: aspeed: lpc-snoop: Don't disable channels that
+ aren't enabled
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
+To: Jean Delvare <jdelvare@suse.de>
+Cc: Joel Stanley <joel@jms.id.au>, Henry Martin <bsdhenrymartin@gmail.com>, 
+ Patrick Rudolph <patrick.rudolph@9elements.com>, Andrew Geissler
+ <geissonator@yahoo.com>, Ninad Palsule <ninad@linux.ibm.com>, Patrick
+ Venture <venture@google.com>, Robert Lippert <roblip@gmail.com>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Thu, 17 Apr 2025 09:03:45 +0930
+In-Reply-To: <20250416141506.2d910334@endymion>
+References: 
+	<20250411-aspeed-lpc-snoop-fixes-v1-0-64f522e3ad6f@codeconstruct.com.au>
+	 <20250411-aspeed-lpc-snoop-fixes-v1-2-64f522e3ad6f@codeconstruct.com.au>
+	 <20250416141506.2d910334@endymion>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
 
-
-The patch titled
-     Subject: mm/page_alloc.c: avoid infinite retries caused by cpuset race
-has been added to the -mm mm-new branch.  Its filename is
-     mm-page_allocc-avoid-infinite-retries-caused-by-cpuset-race.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-page_allocc-avoid-infinite-retries-caused-by-cpuset-race.patch
-
-This patch will later appear in the mm-new branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Tianyang Zhang <zhangtianyang@loongson.cn>
-Subject: mm/page_alloc.c: avoid infinite retries caused by cpuset race
-Date: Wed, 16 Apr 2025 16:24:05 +0800
-
-__alloc_pages_slowpath has no change detection for ac->nodemask in the
-part of retry path, while cpuset can modify it in parallel.  For some
-processes that set mempolicy as MPOL_BIND, this results ac->nodemask
-changes, and then the should_reclaim_retry will judge based on the latest
-nodemask and jump to retry, while the get_page_from_freelist only
-traverses the zonelist from ac->preferred_zoneref, which selected by a
-expired nodemask and may cause infinite retries in some cases
-
-cpu 64:
-__alloc_pages_slowpath {
-        /* ..... */
-retry:
-        /* ac->nodemask = 0x1, ac->preferred->zone->nid = 1 */
-        if (alloc_flags & ALLOC_KSWAPD)
-                wake_all_kswapds(order, gfp_mask, ac);
-        /* cpu 1:
-        cpuset_write_resmask
-            update_nodemask
-                update_nodemasks_hier
-                    update_tasks_nodemask
-                        mpol_rebind_task
-                         mpol_rebind_policy
-                          mpol_rebind_nodemask
-		// mempolicy->nodes has been modified,
-		// which ac->nodemask point to
-
-        */
-        /* ac->nodemask = 0x3, ac->preferred->zone->nid = 1 */
-        if (should_reclaim_retry(gfp_mask, order, ac, alloc_flags,
-                                 did_some_progress > 0, &no_progress_loops))
-                goto retry;
-}
-
-Simultaneously starting multiple cpuset01 from LTP can quickly reproduce
-this issue on a multi node server when the maximum memory pressure is
-reached and the swap is enabled
-
-Link: https://lkml.kernel.org/r/20250416082405.20988-1-zhangtianyang@loongson.cn
-Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/page_alloc.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
-
---- a/mm/page_alloc.c~mm-page_allocc-avoid-infinite-retries-caused-by-cpuset-race
-+++ a/mm/page_alloc.c
-@@ -4555,6 +4555,14 @@ restart:
- 	}
- 
- retry:
-+	/*
-+	 * Deal with possible cpuset update races or zonelist updates to avoid
-+	 * infinite retries.
-+	 */
-+	if (check_retry_cpuset(cpuset_mems_cookie, ac) ||
-+	    check_retry_zonelist(zonelist_iter_cookie))
-+		goto restart;
-+
- 	/* Ensure kswapd doesn't accidentally go to sleep as long as we loop */
- 	if (alloc_flags & ALLOC_KSWAPD)
- 		wake_all_kswapds(order, gfp_mask, ac);
-_
-
-Patches currently in -mm which might be from zhangtianyang@loongson.cn are
-
-mm-page_allocc-avoid-infinite-retries-caused-by-cpuset-race.patch
+T24gV2VkLCAyMDI1LTA0LTE2IGF0IDE0OjE1ICswMjAwLCBKZWFuIERlbHZhcmUgd3JvdGU6Cj4g
+T24gRnJpLCAxMSBBcHIgMjAyNSAxMDozODozMiArMDkzMCwgQW5kcmV3IEplZmZlcnkgd3JvdGU6
+Cj4gPiBNaXRpZ2F0ZSBlLmcuIHRoZSBmb2xsb3dpbmc6Cj4gPiAKPiA+IMKgwqDCoCAjIGVjaG8g
+MWU3ODkwODAubHBjLXNub29wID4gL3N5cy9idXMvcGxhdGZvcm0vZHJpdmVycy9hc3BlZWQtCj4g
+PiBscGMtc25vb3AvdW5iaW5kCj4gPiDCoMKgwqAgLi4uCj4gPiDCoMKgwqAgW8KgIDEyMC4zNjM1
+OTRdIFVuYWJsZSB0byBoYW5kbGUga2VybmVsIE5VTEwgcG9pbnRlciBkZXJlZmVyZW5jZQo+ID4g
+YXQgdmlydHVhbCBhZGRyZXNzIDAwMDAwMDA0IHdoZW4gd3JpdGUKPiA+IMKgwqDCoCBbwqAgMTIw
+LjM3Mzg2Nl0gWzAwMDAwMDA0XSAqcGdkPTAwMDAwMDAwCj4gPiDCoMKgwqAgW8KgIDEyMC4zNzc5
+MTBdIEludGVybmFsIGVycm9yOiBPb3BzOiA4MDUgWyMxXSBTTVAgQVJNCj4gPiDCoMKgwqAgW8Kg
+IDEyMC4zODMzMDZdIENQVTogMSBVSUQ6IDAgUElEOiAzMTUgQ29tbTogc2ggTm90IHRhaW50ZWQK
+PiA+IDYuMTUuMC1yYzEtMDAwMDktZzkyNjIxN2JjN2Q3ZC1kaXJ0eSAjMjAgTk9ORQo+ID4gwqDC
+oMKgIC4uLgo+ID4gwqDCoMKgIFvCoCAxMjAuNjc5NTQzXSBDYWxsIHRyYWNlOgo+ID4gwqDCoMKg
+IFvCoCAxMjAuNjc5NTU5XcKgIG1pc2NfZGVyZWdpc3RlciBmcm9tCj4gPiBhc3BlZWRfbHBjX3Nu
+b29wX3JlbW92ZSsweDg0LzB4YWMKPiA+IMKgwqDCoCBbwqAgMTIwLjY5MjQ2Ml3CoCBhc3BlZWRf
+bHBjX3Nub29wX3JlbW92ZSBmcm9tCj4gPiBwbGF0Zm9ybV9yZW1vdmUrMHgyOC8weDM4Cj4gPiDC
+oMKgwqAgW8KgIDEyMC43MDA5OTZdwqAgcGxhdGZvcm1fcmVtb3ZlIGZyb20KPiA+IGRldmljZV9y
+ZWxlYXNlX2RyaXZlcl9pbnRlcm5hbCsweDE4OC8weDIwMAo+ID4gwqDCoMKgIC4uLgo+ID4gCj4g
+PiBGaXhlczogOWY0ZjlhZTgxZDBhICgiZHJpdmVycy9taXNjOiBhZGQgQXNwZWVkIExQQyBzbm9v
+cCBkcml2ZXIiKQo+ID4gQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcKPiA+IENjOiBKZWFuIERl
+bHZhcmUgPGpkZWx2YXJlQHN1c2UuZGU+Cj4gPiBTaWduZWQtb2ZmLWJ5OiBBbmRyZXcgSmVmZmVy
+eSA8YW5kcmV3QGNvZGVjb25zdHJ1Y3QuY29tLmF1Pgo+ID4gLS0tCj4gPiDCoGRyaXZlcnMvc29j
+L2FzcGVlZC9hc3BlZWQtbHBjLXNub29wLmMgfCAxMSArKysrKysrKysrKwo+ID4gwqAxIGZpbGUg
+Y2hhbmdlZCwgMTEgaW5zZXJ0aW9ucygrKQo+ID4gCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9z
+b2MvYXNwZWVkL2FzcGVlZC1scGMtc25vb3AuYwo+ID4gYi9kcml2ZXJzL3NvYy9hc3BlZWQvYXNw
+ZWVkLWxwYy1zbm9vcC5jCj4gPiBpbmRleAo+ID4gYmZhNzcwZWM1MWE4ODkyNjBkMTFjMjZlNjc1
+ZjMzMjBiZjcxMGE1NC4uZTlkOWE4ZTYwYTZmMDYyYzBiNTNjOWMwMgo+ID4gZTVkNzM3Njg0NTM5
+OThkIDEwMDY0NAo+ID4gLS0tIGEvZHJpdmVycy9zb2MvYXNwZWVkL2FzcGVlZC1scGMtc25vb3Au
+Ywo+ID4gKysrIGIvZHJpdmVycy9zb2MvYXNwZWVkL2FzcGVlZC1scGMtc25vb3AuYwo+ID4gQEAg
+LTU4LDYgKzU4LDcgQEAgc3RydWN0IGFzcGVlZF9scGNfc25vb3BfbW9kZWxfZGF0YSB7Cj4gPiDC
+oH07Cj4gPiDCoAo+ID4gwqBzdHJ1Y3QgYXNwZWVkX2xwY19zbm9vcF9jaGFubmVsIHsKPiA+ICvC
+oMKgwqDCoMKgwqDCoGJvb2wgZW5hYmxlZDsKPiA+IMKgwqDCoMKgwqDCoMKgwqBzdHJ1Y3Qga2Zp
+Zm/CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBmaWZvOwo+ID4gwqDCoMKgwqDCoMKgwqDCoHdhaXRf
+cXVldWVfaGVhZF90wqDCoMKgwqDCoMKgwqB3cTsKPiA+IMKgwqDCoMKgwqDCoMKgwqBzdHJ1Y3Qg
+bWlzY2RldmljZcKgwqDCoMKgwqDCoMKgbWlzY2RldjsKPiA+IEBAIC0xOTAsNiArMTkxLDkgQEAg
+c3RhdGljIGludCBhc3BlZWRfbHBjX2VuYWJsZV9zbm9vcChzdHJ1Y3QKPiA+IGFzcGVlZF9scGNf
+c25vb3AgKmxwY19zbm9vcCwKPiA+IMKgwqDCoMKgwqDCoMKgwqBjb25zdCBzdHJ1Y3QgYXNwZWVk
+X2xwY19zbm9vcF9tb2RlbF9kYXRhICptb2RlbF9kYXRhID0KPiA+IMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgb2ZfZGV2aWNlX2dldF9tYXRjaF9kYXRhKGRldik7Cj4gPiDCoAo+ID4g
+K8KgwqDCoMKgwqDCoMKgaWYgKGxwY19zbm9vcC0+Y2hhbltjaGFubmVsXS5lbmFibGVkKQo+ID4g
+K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybiAtRUJVU1k7Cj4gCj4gVGhpcyBp
+c24ndCBzdXBwb3NlZCB0byBoYXBwZW4sIHJpZ2h0P8KgCgpObywgbm90IHN1cHBvc2VkIHRvIGhh
+cHBlbi4KCj4gV0FSTl9PTigpIG1heSBiZSBhcHByb3ByaWF0ZS4KCkFjay4KCj4gCj4gPiArCj4g
+PiDCoMKgwqDCoMKgwqDCoMKgaW5pdF93YWl0cXVldWVfaGVhZCgmbHBjX3Nub29wLT5jaGFuW2No
+YW5uZWxdLndxKTsKPiA+IMKgwqDCoMKgwqDCoMKgwqAvKiBDcmVhdGUgRklGTyBkYXRhc3RydWN0
+dXJlICovCj4gPiDCoMKgwqDCoMKgwqDCoMKgcmMgPSBrZmlmb19hbGxvYygmbHBjX3Nub29wLT5j
+aGFuW2NoYW5uZWxdLmZpZm8sCj4gPiBAQCAtMjM2LDYgKzI0MCw4IEBAIHN0YXRpYyBpbnQgYXNw
+ZWVkX2xwY19lbmFibGVfc25vb3Aoc3RydWN0Cj4gPiBhc3BlZWRfbHBjX3Nub29wICpscGNfc25v
+b3AsCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJlZ21hcF91cGRhdGVfYml0
+cyhscGNfc25vb3AtPnJlZ21hcCwgSElDUkIsCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaGljcmJfZW4sIGhpY3JiX2Vu
+KTsKPiA+IMKgCj4gPiArwqDCoMKgwqDCoMKgwqBscGNfc25vb3AtPmNoYW5bY2hhbm5lbF0uZW5h
+YmxlZCA9IHRydWU7Cj4gPiArCj4gPiDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIDA7Cj4gPiDCoAo+
+ID4gwqBlcnJfbWlzY19kZXJlZ2lzdGVyOgo+ID4gQEAgLTI0OCw2ICsyNTQsOSBAQCBzdGF0aWMg
+aW50IGFzcGVlZF9scGNfZW5hYmxlX3Nub29wKHN0cnVjdAo+ID4gYXNwZWVkX2xwY19zbm9vcCAq
+bHBjX3Nub29wLAo+ID4gwqBzdGF0aWMgdm9pZCBhc3BlZWRfbHBjX2Rpc2FibGVfc25vb3Aoc3Ry
+dWN0IGFzcGVlZF9scGNfc25vb3AKPiA+ICpscGNfc25vb3AsCj4gPiDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
+aW50IGNoYW5uZWwpCj4gPiDCoHsKPiA+ICvCoMKgwqDCoMKgwqDCoGlmICghbHBjX3Nub29wLT5j
+aGFuW2NoYW5uZWxdLmVuYWJsZWQpCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+cmV0dXJuOwo+ID4gKwo+ID4gwqDCoMKgwqDCoMKgwqDCoHN3aXRjaCAoY2hhbm5lbCkgewo+ID4g
+wqDCoMKgwqDCoMKgwqDCoGNhc2UgMDoKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgcmVnbWFwX3VwZGF0ZV9iaXRzKGxwY19zbm9vcC0+cmVnbWFwLCBISUNSNSwKPiA+IEBAIC0y
+NjMsNiArMjcyLDggQEAgc3RhdGljIHZvaWQgYXNwZWVkX2xwY19kaXNhYmxlX3Nub29wKHN0cnVj
+dAo+ID4gYXNwZWVkX2xwY19zbm9vcCAqbHBjX3Nub29wLAo+ID4gwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqByZXR1cm47Cj4gPiDCoMKgwqDCoMKgwqDCoMKgfQo+ID4gwqAKPiA+ICvC
+oMKgwqDCoMKgwqDCoGxwY19zbm9vcC0+Y2hhbltjaGFubmVsXS5lbmFibGVkID0gZmFsc2U7Cj4g
+PiArwqDCoMKgwqDCoMKgwqAvKiBDb25zaWRlciBpbXByb3Zpbmcgc2FmZXR5IHdydCBjb25jdXJy
+ZW50IHJlYWRlcihzKSAqLwo+ID4gwqDCoMKgwqDCoMKgwqDCoG1pc2NfZGVyZWdpc3RlcigmbHBj
+X3Nub29wLT5jaGFuW2NoYW5uZWxdLm1pc2NkZXYpOwo+ID4gwqDCoMKgwqDCoMKgwqDCoGtmaWZv
+X2ZyZWUoJmxwY19zbm9vcC0+Y2hhbltjaGFubmVsXS5maWZvKTsKPiA+IMKgfQo+ID4gCj4gCj4g
+QWNrZWQtYnk6IEplYW4gRGVsdmFyZSA8amRlbHZhcmVAc3VzZS5kZT4KPiAKClRoYW5rcywKCkFu
+ZHJldwo=
 
 
