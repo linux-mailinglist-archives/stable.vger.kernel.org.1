@@ -1,141 +1,136 @@
-Return-Path: <stable+bounces-132827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1D71A8AFD0
-	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 07:42:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48B53A8B049
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 08:28:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C46D217E81B
-	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 05:42:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 807BB189B2A9
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 06:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87BA822A4FC;
-	Wed, 16 Apr 2025 05:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD50D22A4E2;
+	Wed, 16 Apr 2025 06:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Wyb/aJui"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="vpEwgBMm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215DE20C492;
-	Wed, 16 Apr 2025 05:42:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3637F224248;
+	Wed, 16 Apr 2025 06:27:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744782126; cv=none; b=ecPgfPP2unaVo8E/Gi9NDHyo4ltCdTyLHVsLG8mhw6vpbzERj+qcDdCwq3G+3NS0TcJ76eBGZkt5Z34CyF9uUxUI29pAvY/VTiOeLe5aq4AVleMqxMUgc2zBl6TnLDjHie9R7KNSn+sbchWbuHE7b6US2rXPVj3Sd9ZyVB/koj0=
+	t=1744784868; cv=none; b=hI28JPkFrhNco62/phUObzAc/793OXWQpFFNOb3w/ePA0BpSqV/Of/27Uc0eeil2GQHibuu3tJeinnS5Ckg4FaMgZqWDbaYWqrzXXSd8CnC7ZBCWJ+knaTuEFhsvTZYQ1ytcceIKUqK0prXKrUKqZMCNlGh30fbgn5kAeFbQV0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744782126; c=relaxed/simple;
-	bh=FIIrc2KpQ0cUSt8kyBynHnGfa3z8ZUAagEBwf0wnyhE=;
-	h=Date:To:From:Subject:Message-Id; b=noGyEBqtodzIEx3KVKAs/wFQWSo5CnRBddG0eGrQ0FI+yWNaBXUBwZ6G+oKr9wXSPjVZbJ0MLYrqsc9bMnMWu4kT4lqrd/61MV6wO7nBrCMV/Rez7dQuD0Of5jiAxE/Lw//U8R47mHhl/Msu3NslZYsncfL3++A8DLge3TDcsBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Wyb/aJui; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B6CDC4CEE2;
-	Wed, 16 Apr 2025 05:42:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1744782125;
-	bh=FIIrc2KpQ0cUSt8kyBynHnGfa3z8ZUAagEBwf0wnyhE=;
-	h=Date:To:From:Subject:From;
-	b=Wyb/aJui3fhSWD7QVB++IplidciUNWSGjimUrqU0tAI6mb0cblTXSh6MOyB6rF9Qn
-	 nElKgx7eX6dDA9PxSmmKFN96bdxju1+wnu0TZyKakE2SqG6JRKBFO1akVzUB+pz4hW
-	 qqlPeniqbBOMelIGxabYow4ZnSOapp7iqPj04GQI=
-Date: Tue, 15 Apr 2025 22:42:04 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,ryabinin.a.a@gmail.com,kees@kernel.org,elver@google.com,andreyknvl@gmail.com,smostafa@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [alternative-merged] lib-test_ubsanc-fix-panic-from-test_ubsan_out_of_bounds.patch removed from -mm tree
-Message-Id: <20250416054205.4B6CDC4CEE2@smtp.kernel.org>
+	s=arc-20240116; t=1744784868; c=relaxed/simple;
+	bh=Ap6/+0KHHh+q6CqcyV+gDin1cpK0+dTas08L0z0+Ei0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=dzlfN7h1UG7VFtWafIlVfpL+Ej5gWMCMhkgR6hbZXVGsgwWTfHanugqwT6cYZqAJpMNfxTQGZQgRAa544HpqW+B41J+d7fXCo9lMWtpsjNKRGp4hgRtABqHxKjPqkl36oBJINEx9rWImZrubXz4FTyDIEsQa2jw/+P0WvaafYcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=vpEwgBMm; arc=none smtp.client-ip=198.47.23.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53G6RXpK242939
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 16 Apr 2025 01:27:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1744784853;
+	bh=dI3QsCpStO6SjD3RhAtaXcoaJDV5dLorEuip9Lnv4PI=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=vpEwgBMmkvzZpGXsRKj7VxMbZpku6q8A/x/OcTO2vQAd+qE+W3nvNnQ9VQi9E/HOt
+	 l61aA9jVEbtmK22cN9WqgTBrtJIKNDpstxleynucIYeXuUukTQhGPVok3FrN/VRUSD
+	 dP+2bDlKk3y7LCdoEg0Pcd/ET4gxoWIGrAHlTDo4=
+Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53G6RXmW080365
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 16 Apr 2025 01:27:33 -0500
+Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 16
+ Apr 2025 01:27:32 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Wed, 16 Apr 2025 01:27:32 -0500
+Received: from [10.249.141.75] ([10.249.141.75])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53G6ROxk104616;
+	Wed, 16 Apr 2025 01:27:25 -0500
+Message-ID: <9464ac11-ba45-4238-9628-51864067d3e9@ti.com>
+Date: Wed, 16 Apr 2025 11:57:23 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/7] arm64: dts: ti: j721e-sk: Add DT nodes for power
+ regulators
+To: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>, <nm@ti.com>,
+        <vigneshr@ti.com>
+CC: <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+        <conor+dt@kernel.org>, <vaishnav.a@ti.com>, <jai.luthra@linux.dev>,
+        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
+        <imx@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>, <u-kumar1@ti.com>
+References: <20250415111328.3847502-1-y-abhilashchandra@ti.com>
+ <20250415111328.3847502-2-y-abhilashchandra@ti.com>
+Content-Language: en-US
+From: "Kumar, Udit" <u-kumar1@ti.com>
+In-Reply-To: <20250415111328.3847502-2-y-abhilashchandra@ti.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+
+Abhilash Thanks ,
+
+On 4/15/2025 4:43 PM, Yemike Abhilash Chandra wrote:
+> Add device tree nodes for two power regulators on the J721E SK board.
+> vsys_5v0: A fixed regulator representing the 5V supply output from the
+> LM61460 and vdd_sd_dv: A GPIO-controlled TLV71033 regulator.
+>
+> J721E-SK schematics: https://www.ti.com/lit/zip/sprr438
+> Fixes: 1bfda92a3a36 ("arm64: dts: ti: Add support for J721E SK")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+> ---
+>
+> Changelog:
+> Changes in v3:
+> - Change the PIN_INPUT to PIN_OUTPUT to control the regulator.
+>
+>   arch/arm64/boot/dts/ti/k3-j721e-sk.dts | 31 ++++++++++++++++++++++++++
+>   1 file changed, 31 insertions(+)
+>
+> diff --git a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+> index 440ef57be294..ffef3d1cfd55 100644
+> --- a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+> +++ b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+> @@ -184,6 +184,17 @@ vsys_3v3: fixedregulator-vsys3v3 {
+>   		regulator-boot-on;
+>   	};
+>   
+> [..]
+>   	transceiver1: can-phy1 {
+>   		compatible = "ti,tcan1042";
+>   		#phy-cells = <0>;
+> @@ -613,6 +638,12 @@ J721E_WKUP_IOPAD(0xd4, PIN_OUTPUT, 7) /* (G26) WKUP_GPIO0_9 */
+>   		>;
+>   	};
+>   
+> +	vdd_sd_dv_pins_default: vdd-sd-dv-default-pins {
+> +		pinctrl-single,pins = <
+> +			J721E_IOPAD(0x1dc, PIN_OUTPUT, 7) /* (Y1) SPI1_CLK.GPIO0_118 */
+> +		>;
+> +	};
+> +
+
+Reviewed-by: Udit Kumar <u-kumar1@ti.com>
 
 
-The quilt patch titled
-     Subject: lib/test_ubsan.c: fix panic from test_ubsan_out_of_bounds
-has been removed from the -mm tree.  Its filename was
-     lib-test_ubsanc-fix-panic-from-test_ubsan_out_of_bounds.patch
-
-This patch was dropped because an alternative patch was or shall be merged
-
-------------------------------------------------------
-From: Mostafa Saleh <smostafa@google.com>
-Subject: lib/test_ubsan.c: fix panic from test_ubsan_out_of_bounds
-Date: Mon, 14 Apr 2025 21:36:48 +0000
-
-Running lib_ubsan.ko on arm64 (without CONFIG_UBSAN_TRAP) panics the
-kernel
-
-[   31.616546] Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: test_ubsan_out_of_bounds+0x158/0x158 [test_ubsan]
-[   31.646817] CPU: 3 UID: 0 PID: 179 Comm: insmod Not tainted 6.15.0-rc2 #1 PREEMPT
-[   31.648153] Hardware name: linux,dummy-virt (DT)
-[   31.648970] Call trace:
-[   31.649345]  show_stack+0x18/0x24 (C)
-[   31.650960]  dump_stack_lvl+0x40/0x84
-[   31.651559]  dump_stack+0x18/0x24
-[   31.652264]  panic+0x138/0x3b4
-[   31.652812]  __ktime_get_real_seconds+0x0/0x10
-[   31.653540]  test_ubsan_load_invalid_value+0x0/0xa8 [test_ubsan]
-[   31.654388]  init_module+0x24/0xff4 [test_ubsan]
-[   31.655077]  do_one_initcall+0xd4/0x280
-[   31.655680]  do_init_module+0x58/0x2b4
-
-That happens because the test corrupts other data in the stack:
-400:   d5384108        mrs     x8, sp_el0
-404:   f9426d08        ldr     x8, [x8, #1240]
-408:   f85f83a9        ldur    x9, [x29, #-8]
-40c:   eb09011f        cmp     x8, x9
-410:   54000301        b.ne    470 <test_ubsan_out_of_bounds+0x154>  // b.any
-
-As there is no guarantee the compiler will order the local variables
-as declared in the module:
-	volatile char above[4] = { }; /* Protect surrounding memory. */
-	volatile int arr[4];
-	volatile char below[4] = { }; /* Protect surrounding memory. */
-
-So, instead of writing out-of-bound, we can read out-of-bound which
-still triggers UBSAN but doesn't corrupt the stack.
-
-Link: https://lkml.kernel.org/r/20250414213648.2660150-1-smostafa@google.com
-Fixes: 4a26f49b7b3d ubsan: ("expand tests and reporting")
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Macro Elver <elver@google.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- lib/test_ubsan.c |   11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
-
---- a/lib/test_ubsan.c~lib-test_ubsanc-fix-panic-from-test_ubsan_out_of_bounds
-+++ a/lib/test_ubsan.c
-@@ -77,18 +77,15 @@ static void test_ubsan_shift_out_of_boun
- 
- static void test_ubsan_out_of_bounds(void)
- {
--	volatile int i = 4, j = 5, k = -1;
--	volatile char above[4] = { }; /* Protect surrounding memory. */
-+	volatile int j = 5, k = -1;
-+	volatile int scratch[4] = { };
- 	volatile int arr[4];
--	volatile char below[4] = { }; /* Protect surrounding memory. */
--
--	above[0] = below[0];
- 
- 	UBSAN_TEST(CONFIG_UBSAN_BOUNDS, "above");
--	arr[j] = i;
-+	scratch[1] = arr[j];
- 
- 	UBSAN_TEST(CONFIG_UBSAN_BOUNDS, "below");
--	arr[k] = i;
-+	scratch[2] = arr[k];
- }
- 
- enum ubsan_test_enum {
-_
-
-Patches currently in -mm which might be from smostafa@google.com are
-
-
+>   	wkup_uart0_pins_default: wkup-uart0-default-pins {
+>   		pinctrl-single,pins = <
+>   			J721E_WKUP_IOPAD(0xa0, PIN_INPUT, 0) /* (J29) WKUP_UART0_RXD */
 
