@@ -1,100 +1,130 @@
-Return-Path: <stable+bounces-132872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A54A90798
-	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 17:23:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8590CA90833
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 18:02:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7ADBF190748F
-	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 15:23:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D48D118886AB
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 16:02:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CA2189BB5;
-	Wed, 16 Apr 2025 15:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E4121146F;
+	Wed, 16 Apr 2025 16:01:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from animx.eu.org (tn-76-7-174-50.sta.embarqhsd.net [76.7.174.50])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B695E207A06
-	for <stable@vger.kernel.org>; Wed, 16 Apr 2025 15:23:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=76.7.174.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78741C1AB4
+	for <stable@vger.kernel.org>; Wed, 16 Apr 2025 16:01:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744816990; cv=none; b=ownvTuGmY28mpVU4BBkVZwXjeNI20l7ob4y4hFGerOSOxoECKPEDcEssbYTkMJ/WxKVIv2BiETP8rq4UVhuhFNIs2YbLetdMn/uZba2cPkO/KVnykaKxMC3jBOS7HDoi2P7QZ++AKWA4aIzdO4nTmNiRtLwoUkbsRvO67rNK8Sg=
+	t=1744819301; cv=none; b=gxkSl0i50gw6xxvD5xohREvxbDIdkdBn5mfmIILrcByJDgpV3E0NkxXWrJISuDpzcGYgGeEm6gMbpBWw38jUCRtm3EbzIEZnmVySSaGsqizG61aYJHfbK32snBGUcd5SkXoM/asE0oM+QfN8CPDSLylb/QL8V1jogXuREs8UO6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744816990; c=relaxed/simple;
-	bh=Ky5tr0vp97oSEY3lXlimmD9kzeH9ixC1EB/Dv9GqclI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D4choZAqgXivgbbSd3PS/fcfVTaemzDdJe9aXl5d2o9lcWgggA3mgMO4gGtB6d4u7RW7L4e4uxS80wj1XcOHR5GyGzOOpJn60m3/16KNFg0ShfeYMJMyq2nK+ZgXblMQp4eq6CtuOgIBhBlebVMSPqV41EG0sU7BjMr/gNi7HYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=animx.eu.org; spf=pass smtp.mailfrom=animx.eu.org; arc=none smtp.client-ip=76.7.174.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=animx.eu.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=animx.eu.org
-Received: from wakko by animx.eu.org with local 
-	id 1u54bA-0002oe-I5;
-	Wed, 16 Apr 2025 11:22:48 -0400
-Date: Wed, 16 Apr 2025 11:22:48 -0400
-From: Wakko Warner <wakko@animx.eu.org>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: airlied@redhat.com, jfalempe@redhat.com,
-	dri-devel@lists.freedesktop.org, ???????????? <afmerlord@gmail.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] drm/mgag200: Fix value in <VBLKSTR> register
-Message-ID: <Z//LSBwuoc6Hf3zG@animx.eu.org>
-References: <20250416083847.51764-1-tzimmermann@suse.de>
+	s=arc-20240116; t=1744819301; c=relaxed/simple;
+	bh=zkeuqcHTaXh8e07BhXhQC4nCiGMSr4a3k1xy1bL+/UA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=h8jmZXrJzSEZHS6rbVjuB2v5FguVoPW3i5RcOMo4z2+xphfvNeBDYD/b2X63JPVwo5sppvnNbRWevShLbAqSDCzyWl1/IUpvguQ9PIcswL4JeMMvfSs1bnmJ23R8JXi2lUXsqcZDkbg4+CTVKtZEkrh5hys3rGIKbosYuGCqheg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1u55Ca-0005My-6K; Wed, 16 Apr 2025 18:01:28 +0200
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1u55CY-000bs2-38;
+	Wed, 16 Apr 2025 18:01:26 +0200
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1u55CY-00CEFz-2s;
+	Wed, 16 Apr 2025 18:01:26 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	stable@vger.kernel.org,
+	kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: [PATCH net v1 1/1] net: selftests: initialize TCP header and skb payload with zero
+Date: Wed, 16 Apr 2025 18:01:25 +0200
+Message-Id: <20250416160125.2914724-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250416083847.51764-1-tzimmermann@suse.de>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-Thomas Zimmermann wrote:
-> Fix an off-by-one error when setting the vblanking start in
-> <VBLKSTR>. Commit d6460bd52c27 ("drm/mgag200: Add dedicated
-> variables for blanking fields") switched the value from
-> crtc_vdisplay to crtc_vblank_start, which DRM helpers copy
-> from the former. The commit missed to subtract one though.
+Zero-initialize TCP header via memset() to avoid garbage values that
+may affect checksum or behavior during test transmission.
 
-Applied to 6.14.2.  BMC and external monitor works as expected.
+Also zero-fill allocated payload and padding regions using memset()
+after skb_put(), ensuring deterministic content for all outgoing
+test packets.
 
-Thank you.
+Fixes: 3e1e58d64c3d ("net: add generic selftest support")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: stable@vger.kernel.org
+---
+ net/core/selftests.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-> Reported-by: Wakko Warner <wakko@animx.eu.org>
-> Closes: https://lore.kernel.org/dri-devel/CAMwc25rKPKooaSp85zDq2eh-9q4UPZD=RqSDBRp1fAagDnmRmA@mail.gmail.com/
-> Reported-by: ???????????? <afmerlord@gmail.com>
-> Closes: https://lore.kernel.org/all/5b193b75-40b1-4342-a16a-ae9fc62f245a@gmail.com/
-> Closes: https://bbs.archlinux.org/viewtopic.php?id=303819
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Fixes: d6460bd52c27 ("drm/mgag200: Add dedicated variables for blanking fields")
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Jocelyn Falempe <jfalempe@redhat.com>
-> Cc: Dave Airlie <airlied@redhat.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v6.12+
-> ---
->  drivers/gpu/drm/mgag200/mgag200_mode.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/mgag200/mgag200_mode.c b/drivers/gpu/drm/mgag200/mgag200_mode.c
-> index fb71658c3117..6067d08aeee3 100644
-> --- a/drivers/gpu/drm/mgag200/mgag200_mode.c
-> +++ b/drivers/gpu/drm/mgag200/mgag200_mode.c
-> @@ -223,7 +223,7 @@ void mgag200_set_mode_regs(struct mga_device *mdev, const struct drm_display_mod
->  	vsyncstr = mode->crtc_vsync_start - 1;
->  	vsyncend = mode->crtc_vsync_end - 1;
->  	vtotal = mode->crtc_vtotal - 2;
-> -	vblkstr = mode->crtc_vblank_start;
-> +	vblkstr = mode->crtc_vblank_start - 1;
->  	vblkend = vtotal + 1;
->  
->  	linecomp = vdispend;
-> -- 
-> 2.49.0
-> 
+diff --git a/net/core/selftests.c b/net/core/selftests.c
+index e99ae983fca9..35f807ea9952 100644
+--- a/net/core/selftests.c
++++ b/net/core/selftests.c
+@@ -100,10 +100,10 @@ static struct sk_buff *net_test_get_skb(struct net_device *ndev,
+ 	ehdr->h_proto = htons(ETH_P_IP);
+ 
+ 	if (attr->tcp) {
++		memset(thdr, 0, sizeof(*thdr));
+ 		thdr->source = htons(attr->sport);
+ 		thdr->dest = htons(attr->dport);
+ 		thdr->doff = sizeof(struct tcphdr) / 4;
+-		thdr->check = 0;
+ 	} else {
+ 		uhdr->source = htons(attr->sport);
+ 		uhdr->dest = htons(attr->dport);
+@@ -144,10 +144,18 @@ static struct sk_buff *net_test_get_skb(struct net_device *ndev,
+ 	attr->id = net_test_next_id;
+ 	shdr->id = net_test_next_id++;
+ 
+-	if (attr->size)
+-		skb_put(skb, attr->size);
+-	if (attr->max_size && attr->max_size > skb->len)
+-		skb_put(skb, attr->max_size - skb->len);
++	if (attr->size) {
++		void *payload = skb_put(skb, attr->size);
++
++		memset(payload, 0, attr->size);
++	}
++
++	if (attr->max_size && attr->max_size > skb->len) {
++		size_t pad_len = attr->max_size - skb->len;
++		void *pad = skb_put(skb, pad_len);
++
++		memset(pad, 0, pad_len);
++	}
+ 
+ 	skb->csum = 0;
+ 	skb->ip_summed = CHECKSUM_PARTIAL;
 -- 
- Microsoft has beaten Volkswagen's world record.  Volkswagen only created 22
- million bugs.
+2.39.5
+
 
