@@ -1,141 +1,117 @@
-Return-Path: <stable+bounces-132832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B42FA8B2EC
-	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 10:04:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 405EDA8B2F5
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 10:08:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6890177211
-	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 08:04:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F0DD4433A0
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 08:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409B81F94C;
-	Wed, 16 Apr 2025 08:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD60622F15C;
+	Wed, 16 Apr 2025 08:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Iqfc4Vws"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tQTIoTgN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE76121D3F4;
-	Wed, 16 Apr 2025 08:04:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CD31DB34E
+	for <stable@vger.kernel.org>; Wed, 16 Apr 2025 08:08:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744790641; cv=none; b=plZb6Xc/0kut0hQ0GxeJthT+GrqrFGJf+Zrz5O5kpmMqiprBshagAPS4d8+SPnFwNRjiQNnfgM4AAlSuNTnxkQiTYt4MPby/085QLGS2mwryq+mpq6KGUtEgT+jg3gwsc/Oxxu2U098+08XSdUEhmfnWBTI/k08QKZL9lKWwj4s=
+	t=1744790908; cv=none; b=DudrItH9IHFuQZadpRGMh1B3avFkm1b0F3H2uH1wEMb4jLxPpcR+9oRpHSyU6Yr8HqsZpiDh9fFNz4tv27GMrTA2U/1k3Rhy1qe5r8E4Mmr8FDMYpEkAiUTme/7kQDraScOi/CzTOlv8HmUE35gytbl40aXvNRT2N/sCdHkrmsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744790641; c=relaxed/simple;
-	bh=JT9l4Jl1wI4T/2pqAQ3DuScdSsfZ0ZSp7ieiNhHjuw8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Bm5UPOWqCpvL0jTxdM+p+rfib/kODwdWVdtnJqUS0ax9qQGTWzKplngqK+wwtTGkZF0m1UNQqWql4YtdL8VGpXDrefS8Zki5GUV/KxVhou7X2QFNoP738OHqFoD5Md68m6lfmMd3sJCLh1CwAKGm4QazhLAKKuPy/14YuuBYGB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Iqfc4Vws; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 948C6C4CEE2;
-	Wed, 16 Apr 2025 08:03:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744790640;
-	bh=JT9l4Jl1wI4T/2pqAQ3DuScdSsfZ0ZSp7ieiNhHjuw8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Iqfc4VwsoS4BVOQgBVs1+gKjiIQP51i4i8taMtbZxocIESjsley94r+7M51aQyWn+
-	 BClQDpRQZb3zDfC82VJrzl6OlKcviXLs9s57d8mq0+KKg8NXryCbZRsab0tv0Nn4bQ
-	 9rWQzc20ju6ZvIIusqtYOKbMWWbcyelfQLGWlzDxagb5JFtN1FnEgdcu9HRsH3QUlK
-	 TNkuRhTjVw1KilTNJKRgXKbKZJ46L3JcXI5M04cYX0nv6/FSb2fLulysdU9RWU4Prf
-	 Qb7I0D6BCjzu9q3lo6TZ9mgihFz/DQNs8LZr07Emy2HlQ7lc9DvKog7RMDERZKVmgE
-	 xK6XWF8yIqPHQ==
-Message-ID: <ff6d7143-33e3-4df5-ada2-df8c99d1993d@kernel.org>
-Date: Wed, 16 Apr 2025 10:03:56 +0200
+	s=arc-20240116; t=1744790908; c=relaxed/simple;
+	bh=cISqzIV2rgmQuFECu6naEw6ahnHMaxpCS8NBxarpuTc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tI3a/DjG3Rt9EpcL8DigUju9ztvrLroq6LWB52IX5cdreCX8/xj4aJsK/c8mEALLZ5xops1ZWnTT9jW/YqodPDo/NnO1RZlI7ZPDfi65/md2ZZ41pikBqyAnzOJd8JpwFvYajIu5SbNZgMtpNnzWOJuGmq3UA7ipnH1qe0/3UWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tQTIoTgN; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-22435603572so61950715ad.1
+        for <stable@vger.kernel.org>; Wed, 16 Apr 2025 01:08:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1744790906; x=1745395706; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kmSfwQ+4oMYT6Kcqo2GkIzn25RS/V98reH2HMxWJJ1E=;
+        b=tQTIoTgNqAXrldVnYkxogF62Z+ZlQyDqc2J0yfJ4ymfY0EKOxKgkWd5Ry7DLfvbBEj
+         2Qvzkzc/SeNL82IPXzfPMNOdnJX+bKPJRaDCM8V6VJEN5Miw3hNYaHH2RkIVFNG5F1ct
+         BLckGogd3SidOrpGdqs8bOuFTJMgkyUrbyCx2iEZoHQaLc8WFxuZBQxIpSjXAMXLWWO8
+         Hf1uepXj5lFF6C78eh0NjPYu9wxZKWwTZEl5LtRxhwjnpNnls+8moRRBcaWpuwtG1Jkl
+         K2hzK13e9RGBV7WfgnRW23jrTlcbRCBVMjRDDuWuv1JQOGcBsoVgP63V0UgF3LSLZuH5
+         pq8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744790906; x=1745395706;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kmSfwQ+4oMYT6Kcqo2GkIzn25RS/V98reH2HMxWJJ1E=;
+        b=e1PTiG34Ox94ggczMm0rVK+lNSVSIYDc1+8e9bVRmBDHmqWAceCLT0uEeLE3WVjG5T
+         8atoO1spQnlQe9sTmn+cGQaOrEMMaONhFrWvsx/7djCpFiPcUkWCGsr2w3t0yCw+OdnE
+         VSs8s2Vn26ZQcgqJSeGIjzb8d4EBf2uN/Q3jg1GNmI4gKf5StfzGdANtIg0Z2jjxOa7H
+         +jCduD2i/Kts7H+pS0Azl/P+lYTFB67xsnmUZzmKH5ZaFacD44Rnes9Rm/dx9Xn33spq
+         aAhrE3thtqkbIECpxBmcNA/DgnKLeCD0N9nL7OVTfyQ/eHPP0lrNO29IUGgCkRMYBhN6
+         QVuA==
+X-Forwarded-Encrypted: i=1; AJvYcCW0b74zmKqFOFtdPo/g6sx7rHPPXqE8HPApthvU6F+PvmNN1SrC+DMm+fNR4HpYRigLyXR2dV0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDFSYiPgXGhWvtDUeZsHgvjuOQt8S8h4iEHgziuV8zgdBfGjNQ
+	4nsiEGh9y2LhydNZAZAmbtgDdHvlKP16A/76iDf+6KqHGGTQlJ4Phb4phdenA4M=
+X-Gm-Gg: ASbGncu++zLlI/V4jbR3CVjXVkooCRRwZ1ESfc6lBfk0UPhVtjYmoCvHKQFAsWbewix
+	w9VKspy2Z5p0TEiSUfWdmG3wsbtyMYi2OOBDUY1Y4YYCUcwHoNZAStLu4wlqgH2LJsyhuw3EU7F
+	DYD8muhiwsg3XiwCAvdVInTUxnaw9Uf9KGk3mrVXTlZkmgAi1oUsAIdiU/Fy26bLyWXfc4NYXJj
+	SqDSJ3pRTKogMqhw5hXVd84K8UX8YDxnlXQ23wCOALib9l++gyKCVR7Xm4nHrg2xgO8z9uJzR0+
+	wgzNmWlVxO4w/dWTM2mIeaO9dQL8qcWDqxi8oqbwBw==
+X-Google-Smtp-Source: AGHT+IE6TlfbDAIcOi0+kKiF9dSLIx1avDG6iWMigbvyHt10Iqv0HYIjEVBLNqGX+RGWKXXryiaNag==
+X-Received: by 2002:a17:902:f643:b0:223:44c5:4eb8 with SMTP id d9443c01a7336-22c35964dc7mr16617625ad.32.1744790906135;
+        Wed, 16 Apr 2025 01:08:26 -0700 (PDT)
+Received: from localhost ([122.172.83.32])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c33fa5f4dsm8011945ad.121.2025.04.16.01.08.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Apr 2025 01:08:25 -0700 (PDT)
+Date: Wed, 16 Apr 2025 13:38:23 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: "zhenglifeng (A)" <zhenglifeng1@huawei.com>
+Cc: Marc Zyngier <maz@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org, stable@vger.kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [PATCH] cpufreq: cppc: Fix invalid return value in .get()
+ callback
+Message-ID: <20250416080823.o6urglwgm4qdx263@vireshk-i7>
+References: <20250413101142.125173-1-maz@kernel.org>
+ <23466140-5d0c-435f-8e73-d1c4826930ec@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.14 084/731] wifi: ath11k: update channel list in reg
- notifier instead reg worker
-To: Kang Yang <kang.yang@oss.qualcomm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Aditya Kumar Singh <quic_adisi@quicinc.com>,
- Jeff Johnson <jeff.johnson@oss.qualcomm.com>, Sasha Levin
- <sashal@kernel.org>, Jilao He <jilao@qti.qualcomm.com>,
- quic_bqiang@quicinc.com
-References: <20250408104914.247897328@linuxfoundation.org>
- <20250408104916.224926328@linuxfoundation.org>
- <5cd9db3f-4abf-4b66-b401-633508e905ac@kernel.org>
- <49b98882-6a69-48b8-af0c-01f78373d0ef@quicinc.com>
- <4c5f9d38-ae5d-4599-bd9d-785f6eff48f9@oss.qualcomm.com>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <4c5f9d38-ae5d-4599-bd9d-785f6eff48f9@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <23466140-5d0c-435f-8e73-d1c4826930ec@huawei.com>
 
-On 16. 04. 25, 9:31, Kang Yang wrote:
->>> Ah, what about:
->>> commit 02aae8e2f957adc1b15b6b8055316f8a154ac3f5
->>> Author: Wen Gong <quic_wgong@quicinc.com>
->>> Date:   Fri Jan 17 14:17:37 2025 +0800
->>>
->>>      wifi: ath11k: update channel list in worker when wait flag is set
->>>
->>> ?
->>
->>
->> Yes, please add this patch. It will minimize the occupation time of 
->> rtnl_lock.
->>
->> You can retry and check if this warning will show again.
->>
->>
+On 14-04-25, 09:35, zhenglifeng (A) wrote:
+> On 2025/4/13 18:11, Marc Zyngier wrote:
+> > diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+> > index b3d74f9adcf0b..cb93f00bafdba 100644
+> > --- a/drivers/cpufreq/cppc_cpufreq.c
+> > +++ b/drivers/cpufreq/cppc_cpufreq.c
+> > @@ -747,7 +747,7 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+> >  	int ret;
+> >  
+> >  	if (!policy)
+> > -		return -ENODEV;
+> > +		return 0;
+> >  
+> >  	cpu_data = policy->driver_data;
+> >  
 > 
-> Hi, Jiri, Greg:
-> 
->      Have you added this patch and verified it?
+> Reviewed-by: Lifeng Zheng <zhenglifeng1@huawei.com>
 
-Yes, it works for me for a couple of days already.
+Applied. Thanks.
 
 -- 
-js
-suse labs
+viresh
 
