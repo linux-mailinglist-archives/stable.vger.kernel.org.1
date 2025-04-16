@@ -1,116 +1,172 @@
-Return-Path: <stable+bounces-132877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96F9DA9096E
-	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 18:56:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F087AA90C00
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 21:13:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE7E616FFA3
-	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 16:56:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2363447373
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 19:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB00214A7C;
-	Wed, 16 Apr 2025 16:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE9121B905;
+	Wed, 16 Apr 2025 19:12:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="pdkOfOEv"
 X-Original-To: stable@vger.kernel.org
-Received: from animx.eu.org (tn-76-7-174-50.sta.embarqhsd.net [76.7.174.50])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2072144D4
-	for <stable@vger.kernel.org>; Wed, 16 Apr 2025 16:56:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=76.7.174.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF3B1DC9A8;
+	Wed, 16 Apr 2025 19:12:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744822596; cv=none; b=mqDMpIvpU0z5+hs6i0O1Xcpomg1QKZ3SwWRkFpShsmSoRauAxtnVBN5cRhqqlOKsbdc17BYcQvAmJstuTM9A+0jUfsGcwsl2chYyZOgnv7PllWm3WjcwSMVIBe/FXJ7e2IDNlRBWYY5M3Xgqylc4UAY1ENJrCnDAku8n0NpL3Sk=
+	t=1744830778; cv=none; b=lVofmbo/1eN70DUkzcjY3hE4e9ud9593DUOodTQVAviX1AN5kgqdY7e1O3Fuw7W+wNABBO5diSvdKoV5kAAXUPDaUtbZUpAdqcpnszlY4ElWgN58Ckga3+CuY9csBlNNVOoP+pHqtE7p7bfogsEHgtrRugWl9WCfxCvkuFKFOEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744822596; c=relaxed/simple;
-	bh=ybUMujgIyXopRC32WVafznt+z7HjXgKb7kwIFlscb10=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Yn0N/UqFOR2NyAUMQA4Fq8KEm2g9p5drt25cNH7TrgP9KHL/0o09dUhBHuVBq113IvFI4bTZgGPXGPvTlcy7d5fvk2R1ZN22QDPaMUfV39ueiSXEgZPRfgtxkLmY+jFBlBW8rY+h5OVLFhWIesSMaCpNhJ5HkI+dygN+nluCBlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=animx.eu.org; spf=pass smtp.mailfrom=animx.eu.org; arc=none smtp.client-ip=76.7.174.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=animx.eu.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=animx.eu.org
-Received: from wakko by animx.eu.org with local 
-	id 1u563n-0003pT-Hd;
-	Wed, 16 Apr 2025 12:56:27 -0400
-Date: Wed, 16 Apr 2025 12:56:27 -0400
-From: Wakko Warner <wakko@animx.eu.org>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: airlied@redhat.com, jfalempe@redhat.com,
-	dri-devel@lists.freedesktop.org, ???????????? <afmerlord@gmail.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] drm/mgag200: Fix value in <VBLKSTR> register
-Message-ID: <Z//hO7ol4nED5UiH@animx.eu.org>
-References: <20250416083847.51764-1-tzimmermann@suse.de>
- <Z//LSBwuoc6Hf3zG@animx.eu.org>
- <568a359c-e096-4486-84b3-95b37b2de7a6@suse.de>
+	s=arc-20240116; t=1744830778; c=relaxed/simple;
+	bh=iatlY8Otc7jUlJCI6WWtmoQI1SPoqEcsrg7uf98UOS8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bAjx94+jjRDkOVM40T95BysoWzMarhmKiameqzuC41Qzodaj0P7glc02+D8EfH1zLn1QCZ6tvdCwL7WIW/2IDb1+jIBP3RKOp/Pc6c0JR2m9BRptGER3k9L9szYUdOaUEN8dWX5/6Af3MECN9LAqV4SgS7Q3LleekTlbsOJvm5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pdkOfOEv; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53GFqcZe027027;
+	Wed, 16 Apr 2025 19:12:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=5bVoQhRxSHkGr6TY9+5f66L5dBMTDsjOME//X7Hjj
+	KU=; b=pdkOfOEvN62aqrT7Hkd7s9tauuRJkc/949fzZgteMXnB1bQy70XneVpoS
+	Py5SQEv2sOADQaHzOj89pC5Hji55F5LKas1gGXNoUe0Y5fUQwSBl20+yNaeMQV+W
+	uIaHUFiGifdL5xtKSB4W/u4thi7axj6YNf4A9Lo3PhGDwbOSAws85nrRAOI5oS9u
+	dBMVUjQZcuJMM5cmFBoZ3kK/3f58poY9jxpmtAz6nu7sO6msfuUVdW1BADcMPphQ
+	Nt2oW+X+bFMumzty5P9n7SE0YHF+0FDs9dqv0NlKg9Hfdn9qSXGhxae5I/bQlCoY
+	IxYjN3fQ04ms4JKVw5XYc8tnfJ5CA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 461ykt5fvu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 16 Apr 2025 19:12:34 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 53GJ4jNR011645;
+	Wed, 16 Apr 2025 19:12:34 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 461ykt5fvs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 16 Apr 2025 19:12:34 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53GGeLCC001308;
+	Wed, 16 Apr 2025 19:12:33 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4602w024dp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 16 Apr 2025 19:12:33 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53GJCV1D52691280
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 16 Apr 2025 19:12:31 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8872720043;
+	Wed, 16 Apr 2025 19:12:31 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DB8D220040;
+	Wed, 16 Apr 2025 19:12:28 +0000 (GMT)
+Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.ibm.com.com (unknown [9.43.31.13])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 16 Apr 2025 19:12:28 +0000 (GMT)
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-trace-kernel@vger.kernel.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Naveen N. Rao" <naveen@kernel.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>, Viktor Malik <vmalik@redhat.com>,
+        stable@vger.kernel.org
+Subject: [PATCH] powerpc64/ftrace: fix clobbered r15 during livepatching
+Date: Thu, 17 Apr 2025 00:42:27 +0530
+Message-ID: <20250416191227.201146-1-hbathini@linux.ibm.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <568a359c-e096-4486-84b3-95b37b2de7a6@suse.de>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: RExilqnc7muosd1G7WgmXGXtFx9G8IzB
+X-Proofpoint-ORIG-GUID: 7BFbAqo1ZZtZryXpjuDeAOot7P7BB71v
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-16_07,2025-04-15_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
+ suspectscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 adultscore=0
+ priorityscore=1501 phishscore=0 mlxlogscore=281 clxscore=1011
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2504160155
 
-Thomas Zimmermann wrote:
-> Hi
-> 
-> Am 16.04.25 um 17:22 schrieb Wakko Warner:
-> > Thomas Zimmermann wrote:
-> > > Fix an off-by-one error when setting the vblanking start in
-> > > <VBLKSTR>. Commit d6460bd52c27 ("drm/mgag200: Add dedicated
-> > > variables for blanking fields") switched the value from
-> > > crtc_vdisplay to crtc_vblank_start, which DRM helpers copy
-> > > from the former. The commit missed to subtract one though.
-> > Applied to 6.14.2.  BMC and external monitor works as expected.
-> 
-> Great. Thanks for testing. Can I add your Tested-by tag to the commit?
+While r15 is clobbered always with PPC_FTRACE_OUT_OF_LINE, it is
+not restored in livepatch sequence leading to not so obvious fails
+like below:
 
-You may.
+  BUG: Unable to handle kernel data access on write at 0xc0000000000f9078
+  Faulting instruction address: 0xc0000000018ff958
+  Oops: Kernel access of bad area, sig: 11 [#1]
+  ...
+  NIP:  c0000000018ff958 LR: c0000000018ff930 CTR: c0000000009c0790
+  REGS: c00000005f2e7790 TRAP: 0300   Tainted: G              K      (6.14.0+)
+  MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 2822880b  XER: 20040000
+  CFAR: c0000000008addc0 DAR: c0000000000f9078 DSISR: 0a000000 IRQMASK: 1
+  GPR00: c0000000018f2584 c00000005f2e7a30 c00000000280a900 c000000017ffa488
+  GPR04: 0000000000000008 0000000000000000 c0000000018f24fc 000000000000000d
+  GPR08: fffffffffffe0000 000000000000000d 0000000000000000 0000000000008000
+  GPR12: c0000000009c0790 c000000017ffa480 c00000005f2e7c78 c0000000000f9070
+  GPR16: c00000005f2e7c90 0000000000000000 0000000000000000 0000000000000000
+  GPR20: 0000000000000000 c00000005f3efa80 c00000005f2e7c60 c00000005f2e7c88
+  GPR24: c00000005f2e7c60 0000000000000001 c0000000000f9078 0000000000000000
+  GPR28: 00007fff97960000 c000000017ffa480 0000000000000000 c0000000000f9078
+  ...
+  Call Trace:
+    check_heap_object+0x34/0x390 (unreliable)
+  __mutex_unlock_slowpath.isra.0+0xe4/0x230
+  seq_read_iter+0x430/0xa90
+  proc_reg_read_iter+0xa4/0x200
+  vfs_read+0x41c/0x510
+  ksys_read+0xa4/0x190
+  system_call_exception+0x1d0/0x440
+  system_call_vectored_common+0x15c/0x2ec
 
-> > > Reported-by: Wakko Warner <wakko@animx.eu.org>
-> > > Closes: https://lore.kernel.org/dri-devel/CAMwc25rKPKooaSp85zDq2eh-9q4UPZD=RqSDBRp1fAagDnmRmA@mail.gmail.com/
-> > > Reported-by: ???????????? <afmerlord@gmail.com>
-> > > Closes: https://lore.kernel.org/all/5b193b75-40b1-4342-a16a-ae9fc62f245a@gmail.com/
-> > > Closes: https://bbs.archlinux.org/viewtopic.php?id=303819
-> > > Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> > > Fixes: d6460bd52c27 ("drm/mgag200: Add dedicated variables for blanking fields")
-> > > Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> > > Cc: Jocelyn Falempe <jfalempe@redhat.com>
-> > > Cc: Dave Airlie <airlied@redhat.com>
-> > > Cc: dri-devel@lists.freedesktop.org
-> > > Cc: <stable@vger.kernel.org> # v6.12+
-> > > ---
-> > >   drivers/gpu/drm/mgag200/mgag200_mode.c | 2 +-
-> > >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/gpu/drm/mgag200/mgag200_mode.c b/drivers/gpu/drm/mgag200/mgag200_mode.c
-> > > index fb71658c3117..6067d08aeee3 100644
-> > > --- a/drivers/gpu/drm/mgag200/mgag200_mode.c
-> > > +++ b/drivers/gpu/drm/mgag200/mgag200_mode.c
-> > > @@ -223,7 +223,7 @@ void mgag200_set_mode_regs(struct mga_device *mdev, const struct drm_display_mod
-> > >   	vsyncstr = mode->crtc_vsync_start - 1;
-> > >   	vsyncend = mode->crtc_vsync_end - 1;
-> > >   	vtotal = mode->crtc_vtotal - 2;
-> > > -	vblkstr = mode->crtc_vblank_start;
-> > > +	vblkstr = mode->crtc_vblank_start - 1;
-> > >   	vblkend = vtotal + 1;
-> > >   	linecomp = vdispend;
-> > > -- 
-> > > 2.49.0
-> > > 
-> 
-> -- 
-> --
-> Thomas Zimmermann
-> Graphics Driver Developer
-> SUSE Software Solutions Germany GmbH
-> Frankenstrasse 146, 90461 Nuernberg, Germany
-> GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-> HRB 36809 (AG Nuernberg)
-> 
+Fix it by restoring r15 always.
+
+Fixes: eec37961a56a ("powerpc64/ftrace: Move ftrace sequence out of line")
+Reported-by: Viktor Malik <vmalik@redhat.com>
+Closes: https://lore.kernel.org/lkml/1aec4a9a-a30b-43fd-b303-7a351caeccb7@redhat.com
+Cc: stable@vger.kernel.org # v6.13+
+Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+---
+ arch/powerpc/kernel/trace/ftrace_entry.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kernel/trace/ftrace_entry.S b/arch/powerpc/kernel/trace/ftrace_entry.S
+index 2c1b24100eca..3565c67fc638 100644
+--- a/arch/powerpc/kernel/trace/ftrace_entry.S
++++ b/arch/powerpc/kernel/trace/ftrace_entry.S
+@@ -212,10 +212,10 @@
+ 	bne-	1f
+ 
+ 	mr	r3, r15
++1:	mtlr	r3
+ 	.if \allregs == 0
+ 	REST_GPR(15, r1)
+ 	.endif
+-1:	mtlr	r3
+ #endif
+ 
+ 	/* Restore gprs */
 -- 
- Microsoft has beaten Volkswagen's world record.  Volkswagen only created 22
- million bugs.
+2.49.0
+
 
