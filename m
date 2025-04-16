@@ -1,135 +1,141 @@
-Return-Path: <stable+bounces-132826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F077A8AF96
-	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 07:17:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1D71A8AFD0
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 07:42:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 344893AB134
-	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 05:16:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C46D217E81B
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 05:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE72A2288F4;
-	Wed, 16 Apr 2025 05:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87BA822A4FC;
+	Wed, 16 Apr 2025 05:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mmtxktPk"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Wyb/aJui"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A6020FA94;
-	Wed, 16 Apr 2025 05:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215DE20C492;
+	Wed, 16 Apr 2025 05:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744780619; cv=none; b=QcupcE8pcRC5P54ZI1VnwWyhA+7h/oVKljencH3OrAOT4eOWXZLP9DX5WMEjm/5vjSqP45ytgN9hEG/doh+Vs2FX4PJ+5LSPsckOgN42Ok2vMxsyhWcm3dcpUDljjKQyXbRh/e9qEsh/UJ4ROdWtBFftlpKow++cWUdhtSw0o1s=
+	t=1744782126; cv=none; b=ecPgfPP2unaVo8E/Gi9NDHyo4ltCdTyLHVsLG8mhw6vpbzERj+qcDdCwq3G+3NS0TcJ76eBGZkt5Z34CyF9uUxUI29pAvY/VTiOeLe5aq4AVleMqxMUgc2zBl6TnLDjHie9R7KNSn+sbchWbuHE7b6US2rXPVj3Sd9ZyVB/koj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744780619; c=relaxed/simple;
-	bh=oofoOEhspfX/nuwUOt+gYtgRHS8ackKen21AtuBz0jM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mvV11UQBuBq3hG10VZcSBH2dEFUfJdPBilCvghIM0A41MdxQ4jot60o5ZFOTMTtRmwND5vj1/uFw1GOEiyownmEwHqrte0DMQP+tuW9gHj07RtRo57HupvYT0/PWusR5nQbj2I2DbdpeZcrC4l+oTkdc8fRSWEjogcJ4x0DZzxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mmtxktPk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0107C4CEE2;
-	Wed, 16 Apr 2025 05:16:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744780618;
-	bh=oofoOEhspfX/nuwUOt+gYtgRHS8ackKen21AtuBz0jM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mmtxktPk94CX9YSXqA5IWOmIIeLwjrSUfMs0X1N9A4xcuK2V8IcRwedXPg3HGCUIP
-	 uHJ03/KfBzDBOd7PGkA/T0DfW/MgP84g9V7NUBwJ9pwU5kNrjf3Vb8VhpUGXyUfMBz
-	 bbqBwZ367BhhKUrnhfqK/g5AHmVLXv02SAxTW6QgTeGIS/Pq+Cfj4P6FbSQAogEB6M
-	 7i8xGer6f/ESqtccsscTOIjzTpcwHCIKqXc/6f4Vulgl1oISVAJ5vl66nbgu2dTc4/
-	 vkl1XhmHYpjLzDk8Bki4B57fcNF10WnifvOJ4filfe55IG2eDALC6YiLTJ2zwrWke+
-	 mGULWPBTeQp7Q==
-Message-ID: <19b07fe9-0811-4644-a975-13f9aba6af18@kernel.org>
-Date: Wed, 16 Apr 2025 07:16:55 +0200
+	s=arc-20240116; t=1744782126; c=relaxed/simple;
+	bh=FIIrc2KpQ0cUSt8kyBynHnGfa3z8ZUAagEBwf0wnyhE=;
+	h=Date:To:From:Subject:Message-Id; b=noGyEBqtodzIEx3KVKAs/wFQWSo5CnRBddG0eGrQ0FI+yWNaBXUBwZ6G+oKr9wXSPjVZbJ0MLYrqsc9bMnMWu4kT4lqrd/61MV6wO7nBrCMV/Rez7dQuD0Of5jiAxE/Lw//U8R47mHhl/Msu3NslZYsncfL3++A8DLge3TDcsBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Wyb/aJui; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B6CDC4CEE2;
+	Wed, 16 Apr 2025 05:42:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1744782125;
+	bh=FIIrc2KpQ0cUSt8kyBynHnGfa3z8ZUAagEBwf0wnyhE=;
+	h=Date:To:From:Subject:From;
+	b=Wyb/aJui3fhSWD7QVB++IplidciUNWSGjimUrqU0tAI6mb0cblTXSh6MOyB6rF9Qn
+	 nElKgx7eX6dDA9PxSmmKFN96bdxju1+wnu0TZyKakE2SqG6JRKBFO1akVzUB+pz4hW
+	 qqlPeniqbBOMelIGxabYow4ZnSOapp7iqPj04GQI=
+Date: Tue, 15 Apr 2025 22:42:04 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,ryabinin.a.a@gmail.com,kees@kernel.org,elver@google.com,andreyknvl@gmail.com,smostafa@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [alternative-merged] lib-test_ubsanc-fix-panic-from-test_ubsan_out_of_bounds.patch removed from -mm tree
+Message-Id: <20250416054205.4B6CDC4CEE2@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: 6.14.y regression in ath11k
-To: Mario Limonciello <superm1@kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-Cc: Matthew Schwartz <matthew.schwartz@linux.dev>,
- Linux kernel regressions list <regressions@lists.linux.dev>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <cab8e07a-84fa-48f3-ac6f-382148b20744@kernel.org>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <cab8e07a-84fa-48f3-ac6f-382148b20744@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-
-On 16. 04. 25, 0:11, Mario Limonciello wrote:
-> Hello,
-> 
-> Matt Schwartz (cc) found a regression in 6.14.2 that the Steam Deck OLED 
-> took 45s to find a network after suspend/resume waiting for a timeout.
-> This was a regression from 6.14.1.
-> 
-> The regression happened because:
-> 
-> commit 933ab187e679 ("wifi: ath11k: update channel list in reg notifier 
-> instead reg worker")
-> was backported to 6.14.y without the other commit in the series:
-> 
-> commit 02aae8e2f957 ("wifi: ath11k: update channel list in worker when 
-> wait flag is set")
-> 
-> Backporting commit 02aae8e2f957 ("wifi: ath11k: update channel list in 
-> worker when wait flag is set") to 6.14.2 fixes the regression.
-
-Agreed, this is the same as:
-https://lore.kernel.org/all/5cd9db3f-4abf-4b66-b401-633508e905ac@kernel.org/
 
 
--- 
-js
-suse labs
+The quilt patch titled
+     Subject: lib/test_ubsan.c: fix panic from test_ubsan_out_of_bounds
+has been removed from the -mm tree.  Its filename was
+     lib-test_ubsanc-fix-panic-from-test_ubsan_out_of_bounds.patch
+
+This patch was dropped because an alternative patch was or shall be merged
+
+------------------------------------------------------
+From: Mostafa Saleh <smostafa@google.com>
+Subject: lib/test_ubsan.c: fix panic from test_ubsan_out_of_bounds
+Date: Mon, 14 Apr 2025 21:36:48 +0000
+
+Running lib_ubsan.ko on arm64 (without CONFIG_UBSAN_TRAP) panics the
+kernel
+
+[   31.616546] Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: test_ubsan_out_of_bounds+0x158/0x158 [test_ubsan]
+[   31.646817] CPU: 3 UID: 0 PID: 179 Comm: insmod Not tainted 6.15.0-rc2 #1 PREEMPT
+[   31.648153] Hardware name: linux,dummy-virt (DT)
+[   31.648970] Call trace:
+[   31.649345]  show_stack+0x18/0x24 (C)
+[   31.650960]  dump_stack_lvl+0x40/0x84
+[   31.651559]  dump_stack+0x18/0x24
+[   31.652264]  panic+0x138/0x3b4
+[   31.652812]  __ktime_get_real_seconds+0x0/0x10
+[   31.653540]  test_ubsan_load_invalid_value+0x0/0xa8 [test_ubsan]
+[   31.654388]  init_module+0x24/0xff4 [test_ubsan]
+[   31.655077]  do_one_initcall+0xd4/0x280
+[   31.655680]  do_init_module+0x58/0x2b4
+
+That happens because the test corrupts other data in the stack:
+400:   d5384108        mrs     x8, sp_el0
+404:   f9426d08        ldr     x8, [x8, #1240]
+408:   f85f83a9        ldur    x9, [x29, #-8]
+40c:   eb09011f        cmp     x8, x9
+410:   54000301        b.ne    470 <test_ubsan_out_of_bounds+0x154>  // b.any
+
+As there is no guarantee the compiler will order the local variables
+as declared in the module:
+	volatile char above[4] = { }; /* Protect surrounding memory. */
+	volatile int arr[4];
+	volatile char below[4] = { }; /* Protect surrounding memory. */
+
+So, instead of writing out-of-bound, we can read out-of-bound which
+still triggers UBSAN but doesn't corrupt the stack.
+
+Link: https://lkml.kernel.org/r/20250414213648.2660150-1-smostafa@google.com
+Fixes: 4a26f49b7b3d ubsan: ("expand tests and reporting")
+Signed-off-by: Mostafa Saleh <smostafa@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Macro Elver <elver@google.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ lib/test_ubsan.c |   11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
+
+--- a/lib/test_ubsan.c~lib-test_ubsanc-fix-panic-from-test_ubsan_out_of_bounds
++++ a/lib/test_ubsan.c
+@@ -77,18 +77,15 @@ static void test_ubsan_shift_out_of_boun
+ 
+ static void test_ubsan_out_of_bounds(void)
+ {
+-	volatile int i = 4, j = 5, k = -1;
+-	volatile char above[4] = { }; /* Protect surrounding memory. */
++	volatile int j = 5, k = -1;
++	volatile int scratch[4] = { };
+ 	volatile int arr[4];
+-	volatile char below[4] = { }; /* Protect surrounding memory. */
+-
+-	above[0] = below[0];
+ 
+ 	UBSAN_TEST(CONFIG_UBSAN_BOUNDS, "above");
+-	arr[j] = i;
++	scratch[1] = arr[j];
+ 
+ 	UBSAN_TEST(CONFIG_UBSAN_BOUNDS, "below");
+-	arr[k] = i;
++	scratch[2] = arr[k];
+ }
+ 
+ enum ubsan_test_enum {
+_
+
+Patches currently in -mm which might be from smostafa@google.com are
+
 
 
