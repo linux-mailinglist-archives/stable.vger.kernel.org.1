@@ -1,172 +1,153 @@
-Return-Path: <stable+bounces-132878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F087AA90C00
-	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 21:13:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2B7CA90C16
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 21:16:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2363447373
-	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 19:13:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73B555A30BB
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 19:16:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE9121B905;
-	Wed, 16 Apr 2025 19:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75208224230;
+	Wed, 16 Apr 2025 19:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="pdkOfOEv"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KFZkJa/R";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4ZLfOZk8"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF3B1DC9A8;
-	Wed, 16 Apr 2025 19:12:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0722222B0;
+	Wed, 16 Apr 2025 19:16:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744830778; cv=none; b=lVofmbo/1eN70DUkzcjY3hE4e9ud9593DUOodTQVAviX1AN5kgqdY7e1O3Fuw7W+wNABBO5diSvdKoV5kAAXUPDaUtbZUpAdqcpnszlY4ElWgN58Ckga3+CuY9csBlNNVOoP+pHqtE7p7bfogsEHgtrRugWl9WCfxCvkuFKFOEU=
+	t=1744830999; cv=none; b=NZH4q9vcvBjvwHbgTPAV6+2E+hTr1Kj0BKYIz0gW6th4H6YfZ/JyUTAd/Z7L89Yk/CHn1dUQOvAUtULHFVqeZIcU3qwAr445Ps10NQiiujkpwsDJnl1bvjl/8IQlZVtPa3llfzaX859CUTKFJDqEPu1jkVVTO/L//P0hOwlzLoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744830778; c=relaxed/simple;
-	bh=iatlY8Otc7jUlJCI6WWtmoQI1SPoqEcsrg7uf98UOS8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bAjx94+jjRDkOVM40T95BysoWzMarhmKiameqzuC41Qzodaj0P7glc02+D8EfH1zLn1QCZ6tvdCwL7WIW/2IDb1+jIBP3RKOp/Pc6c0JR2m9BRptGER3k9L9szYUdOaUEN8dWX5/6Af3MECN9LAqV4SgS7Q3LleekTlbsOJvm5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pdkOfOEv; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53GFqcZe027027;
-	Wed, 16 Apr 2025 19:12:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=5bVoQhRxSHkGr6TY9+5f66L5dBMTDsjOME//X7Hjj
-	KU=; b=pdkOfOEvN62aqrT7Hkd7s9tauuRJkc/949fzZgteMXnB1bQy70XneVpoS
-	Py5SQEv2sOADQaHzOj89pC5Hji55F5LKas1gGXNoUe0Y5fUQwSBl20+yNaeMQV+W
-	uIaHUFiGifdL5xtKSB4W/u4thi7axj6YNf4A9Lo3PhGDwbOSAws85nrRAOI5oS9u
-	dBMVUjQZcuJMM5cmFBoZ3kK/3f58poY9jxpmtAz6nu7sO6msfuUVdW1BADcMPphQ
-	Nt2oW+X+bFMumzty5P9n7SE0YHF+0FDs9dqv0NlKg9Hfdn9qSXGhxae5I/bQlCoY
-	IxYjN3fQ04ms4JKVw5XYc8tnfJ5CA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 461ykt5fvu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Apr 2025 19:12:34 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 53GJ4jNR011645;
-	Wed, 16 Apr 2025 19:12:34 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 461ykt5fvs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Apr 2025 19:12:34 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53GGeLCC001308;
-	Wed, 16 Apr 2025 19:12:33 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4602w024dp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Apr 2025 19:12:33 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53GJCV1D52691280
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 16 Apr 2025 19:12:31 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8872720043;
-	Wed, 16 Apr 2025 19:12:31 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DB8D220040;
-	Wed, 16 Apr 2025 19:12:28 +0000 (GMT)
-Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.ibm.com.com (unknown [9.43.31.13])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 16 Apr 2025 19:12:28 +0000 (GMT)
-From: Hari Bathini <hbathini@linux.ibm.com>
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: linux-trace-kernel@vger.kernel.org,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Naveen N. Rao" <naveen@kernel.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>, Viktor Malik <vmalik@redhat.com>,
-        stable@vger.kernel.org
-Subject: [PATCH] powerpc64/ftrace: fix clobbered r15 during livepatching
-Date: Thu, 17 Apr 2025 00:42:27 +0530
-Message-ID: <20250416191227.201146-1-hbathini@linux.ibm.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1744830999; c=relaxed/simple;
+	bh=y8EOh2IdpQ87rvbk7rRX/EubUhmNFfJVyiYaxHETmIc=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=ed3KhQQFQsW0a4duUGeP1snsDX8kY8Ojl5Zcpfrk6gYlXfY0yzXmt+vwftW8oNOIdB7cQ2iPGLwFVaL+HRw/bkejhjBb7GKepmJjxapiqyn1nNRR3Au0EchBeROvOWqHStxgwf94jOf/DsVi6fXCPuVvK04mU1EYMkqpHvIf79M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KFZkJa/R; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4ZLfOZk8; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 16 Apr 2025 19:16:29 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1744830995;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dhAbYJ1PgRLBViX+3M7BU4iyIZEx4zWLuUMil1spSoA=;
+	b=KFZkJa/Ru350YaFaUbC6xAEeKYugb48wdMfiHmyjfPrGaNCWM8UT4dv9d482ojktbgpKjB
+	vdwvd9GGXZrmuyCOrqw9lmuxKB7MqjdNTix+eaRu9VHwxN1vCwx+uWLB00m2k7rPudCANr
+	NTGrU3XyhIEmhmYmOi3BHOYHRr4oXgtwzZSUA3qeR9ZEx9KfeZy0fUCshlIDH3ERdKp8/F
+	IQWhOztlCg5QBmPlClfWlTo+EeSNqRoMj8rV6xvGFpH3hvz4Ox+yxXtup/yXl9hI7nonvc
+	hpR+2sVpScQXj9mB4pDTNzUgOR9hQfXWwjASBEnWqJOkyJUgEBmLw8w4ChM2xg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1744830995;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dhAbYJ1PgRLBViX+3M7BU4iyIZEx4zWLuUMil1spSoA=;
+	b=4ZLfOZk8j3NxDKqGszV1MJrjsDosAaCsGixs1+NUlIwhuXvASr3mX3s+D1V5RGmbZZ2X3U
+	IhM7yTeqaXVLcEBw==
+From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: sched/core] sched/fair: Adhere to place_entity() constraints
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Mike Galbraith <efault@gmx.de>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <c216eb4ef0e0e0029c600aefc69d56681cee5581.camel@gmx.de>
+References: <c216eb4ef0e0e0029c600aefc69d56681cee5581.camel@gmx.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: RExilqnc7muosd1G7WgmXGXtFx9G8IzB
-X-Proofpoint-ORIG-GUID: 7BFbAqo1ZZtZryXpjuDeAOot7P7BB71v
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-16_07,2025-04-15_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
- suspectscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 adultscore=0
- priorityscore=1501 phishscore=0 mlxlogscore=281 clxscore=1011
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2504160155
+Message-ID: <174483098990.31282.10026690550502878428.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-While r15 is clobbered always with PPC_FTRACE_OUT_OF_LINE, it is
-not restored in livepatch sequence leading to not so obvious fails
-like below:
+The following commit has been merged into the sched/core branch of tip:
 
-  BUG: Unable to handle kernel data access on write at 0xc0000000000f9078
-  Faulting instruction address: 0xc0000000018ff958
-  Oops: Kernel access of bad area, sig: 11 [#1]
-  ...
-  NIP:  c0000000018ff958 LR: c0000000018ff930 CTR: c0000000009c0790
-  REGS: c00000005f2e7790 TRAP: 0300   Tainted: G              K      (6.14.0+)
-  MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 2822880b  XER: 20040000
-  CFAR: c0000000008addc0 DAR: c0000000000f9078 DSISR: 0a000000 IRQMASK: 1
-  GPR00: c0000000018f2584 c00000005f2e7a30 c00000000280a900 c000000017ffa488
-  GPR04: 0000000000000008 0000000000000000 c0000000018f24fc 000000000000000d
-  GPR08: fffffffffffe0000 000000000000000d 0000000000000000 0000000000008000
-  GPR12: c0000000009c0790 c000000017ffa480 c00000005f2e7c78 c0000000000f9070
-  GPR16: c00000005f2e7c90 0000000000000000 0000000000000000 0000000000000000
-  GPR20: 0000000000000000 c00000005f3efa80 c00000005f2e7c60 c00000005f2e7c88
-  GPR24: c00000005f2e7c60 0000000000000001 c0000000000f9078 0000000000000000
-  GPR28: 00007fff97960000 c000000017ffa480 0000000000000000 c0000000000f9078
-  ...
-  Call Trace:
-    check_heap_object+0x34/0x390 (unreliable)
-  __mutex_unlock_slowpath.isra.0+0xe4/0x230
-  seq_read_iter+0x430/0xa90
-  proc_reg_read_iter+0xa4/0x200
-  vfs_read+0x41c/0x510
-  ksys_read+0xa4/0x190
-  system_call_exception+0x1d0/0x440
-  system_call_vectored_common+0x15c/0x2ec
+Commit-ID:     c70fc32f44431bb30f9025ce753ba8be25acbba3
+Gitweb:        https://git.kernel.org/tip/c70fc32f44431bb30f9025ce753ba8be25acbba3
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Tue, 28 Jan 2025 15:39:49 +01:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 16 Apr 2025 21:09:12 +02:00
 
-Fix it by restoring r15 always.
+sched/fair: Adhere to place_entity() constraints
 
-Fixes: eec37961a56a ("powerpc64/ftrace: Move ftrace sequence out of line")
-Reported-by: Viktor Malik <vmalik@redhat.com>
-Closes: https://lore.kernel.org/lkml/1aec4a9a-a30b-43fd-b303-7a351caeccb7@redhat.com
-Cc: stable@vger.kernel.org # v6.13+
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+Mike reports that commit 6d71a9c61604 ("sched/fair: Fix EEVDF entity
+placement bug causing scheduling lag") relies on commit 4423af84b297
+("sched/fair: optimize the PLACE_LAG when se->vlag is zero") to not
+trip a WARN in place_entity().
+
+What happens is that the lag of the very last entity is 0 per
+definition -- the average of one element matches the value of that
+element. Therefore place_entity() will match the condition skipping
+the lag adjustment:
+
+  if (sched_feat(PLACE_LAG) && cfs_rq->nr_queued && se->vlag) {
+
+Without the 'se->vlag' condition -- it will attempt to adjust the zero
+lag even though we're inserting into an empty tree.
+
+Notably, we should have failed the 'cfs_rq->nr_queued' condition, but
+don't because they didn't get updated.
+
+Additionally, move update_load_add() after placement() as is
+consistent with other place_entity() users -- this change is
+non-functional, place_entity() does not use cfs_rq->load.
+
+Fixes: 6d71a9c61604 ("sched/fair: Fix EEVDF entity placement bug causing scheduling lag")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reported-by: Mike Galbraith <efault@gmx.de>
+Signed-off-by: "Peter Zijlstra (Intel)" <peterz@infradead.org>
+Signed-off-by: Mike Galbraith <efault@gmx.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/c216eb4ef0e0e0029c600aefc69d56681cee5581.camel@gmx.de
 ---
- arch/powerpc/kernel/trace/ftrace_entry.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/fair.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/trace/ftrace_entry.S b/arch/powerpc/kernel/trace/ftrace_entry.S
-index 2c1b24100eca..3565c67fc638 100644
---- a/arch/powerpc/kernel/trace/ftrace_entry.S
-+++ b/arch/powerpc/kernel/trace/ftrace_entry.S
-@@ -212,10 +212,10 @@
- 	bne-	1f
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 5e1bd9e..eb5a257 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3795,6 +3795,7 @@ static void reweight_entity(struct cfs_rq *cfs_rq, struct sched_entity *se,
+ 		update_entity_lag(cfs_rq, se);
+ 		se->deadline -= se->vruntime;
+ 		se->rel_deadline = 1;
++		cfs_rq->nr_queued--;
+ 		if (!curr)
+ 			__dequeue_entity(cfs_rq, se);
+ 		update_load_sub(&cfs_rq->load, se->load.weight);
+@@ -3821,10 +3822,11 @@ static void reweight_entity(struct cfs_rq *cfs_rq, struct sched_entity *se,
  
- 	mr	r3, r15
-+1:	mtlr	r3
- 	.if \allregs == 0
- 	REST_GPR(15, r1)
- 	.endif
--1:	mtlr	r3
- #endif
+ 	enqueue_load_avg(cfs_rq, se);
+ 	if (se->on_rq) {
+-		update_load_add(&cfs_rq->load, se->load.weight);
+ 		place_entity(cfs_rq, se, 0);
++		update_load_add(&cfs_rq->load, se->load.weight);
+ 		if (!curr)
+ 			__enqueue_entity(cfs_rq, se);
++		cfs_rq->nr_queued++;
  
- 	/* Restore gprs */
--- 
-2.49.0
-
+ 		/*
+ 		 * The entity's vruntime has been adjusted, so let's check
 
