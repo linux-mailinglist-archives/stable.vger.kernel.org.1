@@ -1,92 +1,78 @@
-Return-Path: <stable+bounces-132858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 801F2A90629
-	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 16:23:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BF2AA90683
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 16:32:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29E467A3B2E
-	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 14:21:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E94F8A4A56
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 14:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6891DA2E5;
-	Wed, 16 Apr 2025 14:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA92B1B0414;
+	Wed, 16 Apr 2025 14:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R6ubCROK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lpLhiQQz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016BA1C5D67;
-	Wed, 16 Apr 2025 14:22:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B49156F20;
+	Wed, 16 Apr 2025 14:24:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744813361; cv=none; b=uVgavE4ScMLjuiiK7KYaiKhsnZ7ZMT5LsGy6mGv5aY5NME1u+j8WHGO2wJNbHmG/k2vBz/eD2cauE7bO1dlp83XgU4yXrJOlBIbSfeIUZLiCTAmrQGY1vISHNAQkshn1det5S/Hkk8RGrQKYBOXeQaFpZrcaSlLBzqL3tzt2olI=
+	t=1744813498; cv=none; b=bnV94kBqx8+0I0oQSA24f/P0fm85SrEQoka/iy3U+INCDX7/SvLXx1npZrOkzpxpGMrz3NiKi+g8seNfLPRRT4kW/WbvD6nEFQ3pGrMTsCsWFqQmcB2/mOWrA2uRUQ02a7DepG7BHkAskPq9QKrX1z6fAazEjYgGRz4jRnB1zkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744813361; c=relaxed/simple;
-	bh=XZsuHRStzxgMBNJSgZNeSiXFlRaHY2fp/H0igW2RWPk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hQ4bKz862rIRtf7+Z8dBZxBu59j7verGGnP1slZwuoJ5d6PBtUziYvULCOoQ6xXnPK79rO7p1ItOyC12ThXOjqLFhmJqYu2KXOQ1mPmvlxcrH3F9ftFBh/EIL1iCzK3AAT4I9jQ/BnVCg70Ip1pbWCe+h8+kwueM4fd7vadiwLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R6ubCROK; arc=none smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4769f3e19a9so42883121cf.0;
-        Wed, 16 Apr 2025 07:22:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744813359; x=1745418159; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=EvGQzRQZa4QQ8HT7sQpSMDihfEbd4TOYSrjVJqZvxUo=;
-        b=R6ubCROK3G/0Wt0/HXMZHC7uA6m6Vi/GB6MclK9pQn33WgpxLojGIpukIRe3du8Xcc
-         yIdVA+VazsT9PPJu/sCkkcxXa573qSidBPtt7GK9ifE7G42lXXShwsUF9YZVVxZb51jL
-         dIf4ZynXPPpY4HBVhTrC6x5FPOfJRP5lmczmZ3BQwo1fo05EcNJr6I+ohvSf1IueVOdo
-         VNSjIhrHgUiUP/HdiyzTKDOTjUCG6qY+c+7dy6j6XNwQk+C0FILig0CN8HySr2d1WLX3
-         K0lMzRUk/ybX9lGeLCvazhJSJuMaCFagXjm8x4YMVU2lJr+Y8JmMFfXn1tloeUHfOFWS
-         3jOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744813359; x=1745418159;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EvGQzRQZa4QQ8HT7sQpSMDihfEbd4TOYSrjVJqZvxUo=;
-        b=ptcCW9jFjEKH3Cq+I2tlRUExk7JCxGtxiwO9fNPHFCiBIfJN5G0ZWa7ZqewpzgrRwi
-         Zf9Wug3nbomxUTib++S8Htm++2Zw/MxtPRz5jAdHgiCohWeXVS8gePEqZ6Bwlir8d4XH
-         VbmC73RapWrtSrP+q9Umxoaaqn55Xiau4yPTwsNwns8eUNHnHfVxLml/j16SeMhGesZo
-         loHMXxMwRkyuxB/l8pZTRRcI0CQRlQCAgyzdvC0V6qBwOpS6v3yhu5cSkSE8aQz+d5Os
-         r+1+0Wt+ote9D/DA5jMd7tLwT4i05hdr4KP3ujbY22ZPynoKzq00v3PetBf5GeQ5PTve
-         offA==
-X-Forwarded-Encrypted: i=1; AJvYcCUR+08nV6JZVlNsaleOH+GNGQcG1cPJNBncBZuIK8RkNioiOKWM7FhsTeRzlWBTlh2wXwjmCRZHUJeGbGZV@vger.kernel.org, AJvYcCWZ+o3K0sKuvO6UgVikwivaYtqC/Y12i/jI5kj0T0B+L19+OzTxtKVGviZpJOaXTMvmRe6lUheQ/TQ=@vger.kernel.org, AJvYcCWh+1/+s7jzfiBA7JmxVf/nF5gWRapOUfhcjc2mrHWP30iTg8xcRtohOJUO237oPzwVHwDlijnz@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyg41NKv8VP9LiTUrfIm1hwREOiUle5mnXf//Sz6o6OEtiFEFCf
-	vP7seHb3uWuLvEICjHcYWNp8fREGKKJ+/M3j8Dbyx+T/b/Rk9Zzb
-X-Gm-Gg: ASbGncvBVFl1IyRBkplVEks5AggN1F4EnAGxGAX/OQQNq+dXQUF8NjkEE3sxua83Bi/
-	PwrjXsiSgs+0qn6jwshb57TXtnrEWpVR+CLyUfSTKFQkLPLT/V0Kl2ze9miYf5c1JbTmhllcvId
-	Z8fPcCBlmlGg3EeY9xzAZTXjxkhL0GSKTb3uBVHw0529fkdyJA/nnzm2qt2ZJhWMYqlPhQm7kj+
-	fw9u7/Uc061lDjY389WQelIhMYRmEVgB9URMxl8PMEkGXwGA3CI+sVMqqMrFn4t8S0q05Q+QSgw
-	0RTeiOJ/UgaRwNWkORhd6PiLExbZcgnrEGhE7vACcn82K3ulSbpTqlOZYDvYnCsUGlqCAa3Zu6d
-	KdP8OsYVSWEduRlj1FGw=
-X-Google-Smtp-Source: AGHT+IEcAZ9IgLpYeEER0BEL2UCmb2z3SLd7boWdJice9lo1bjTqV2QSQw7nCpJwiFqqE8SK51WOGA==
-X-Received: by 2002:ac8:59c6:0:b0:477:704a:a580 with SMTP id d75a77b69052e-47ad80b41b5mr34553521cf.13.1744813358827;
-        Wed, 16 Apr 2025 07:22:38 -0700 (PDT)
-Received: from theriatric.mshome.net (c-73-123-232-110.hsd1.ma.comcast.net. [73.123.232.110])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4796edc20aesm108741971cf.78.2025.04.16.07.22.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Apr 2025 07:22:38 -0700 (PDT)
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-To: gregkh@linuxfoundation.org,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	linux-iio@vger.kernel.org,
+	s=arc-20240116; t=1744813498; c=relaxed/simple;
+	bh=tA8sXd4VE4qWzGSwlTA/nW94dwKfR/DWTKT7Z8ahn1s=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SSl3D7LBkGDNgGnPgOwRRSY6q2oNZh6hsh7qS+uMyZzTvV6DwdoLZD92qyemPMXFOv+ReM+0M1sBJ6XEQkuSiIVbDKgoiOv/LqoiWdO25BNBukmL996yrKhrjoUQNqnpJmdMm/WTuuoNgNBAcaGxJAGvJUI1EgbZLqTNA1ACyiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lpLhiQQz; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744813497; x=1776349497;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=tA8sXd4VE4qWzGSwlTA/nW94dwKfR/DWTKT7Z8ahn1s=;
+  b=lpLhiQQzBIih/o3Lnep7T6JLCQDd0wECeMmLhkTKJji3JtuGlUurJO2B
+   v3WMdZJBU4Pandnbk7UxGwtnDJsbsFTeir1BPLM+iNlO8PbxII+EElBdq
+   Zni9M7Ea4XcvlhxI8nrSg1Y9Ick9hpCZioeEar9chdIYvoISdfH0LqxAr
+   GEZwUlGzRNzgRibswR8fzWhbDY8taFK1BJ0jSk3pui+KpowNKSA6q3oO9
+   zfu7eFvlmSb2IAQYVEn7vz1zVdv+YFdNmEtMXck1KLNJbfxK/3p6wOy3q
+   ZVm6MU8BmDR3xUdpqsaAy3DYHxBb4QOjTjhsuwKbE/0ApM9fsOx8p+hrL
+   g==;
+X-CSE-ConnectionGUID: mcbSyu3bQOWInbuZBESZmA==
+X-CSE-MsgGUID: GhXN/oiYRsKfsvi0vz332Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="46529290"
+X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; 
+   d="scan'208";a="46529290"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2025 07:24:56 -0700
+X-CSE-ConnectionGUID: BoS7IenlQLqQpcDv6hKlew==
+X-CSE-MsgGUID: WYDzFqC3SqqdEZGlmM4AwA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; 
+   d="scan'208";a="131402414"
+Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
+  by fmviesa009.fm.intel.com with ESMTP; 16 Apr 2025 07:24:56 -0700
+From: kan.liang@linux.intel.com
+To: peterz@infradead.org,
+	mingo@redhat.com,
+	acme@kernel.org,
+	namhyung@kernel.org,
+	irogers@google.com,
 	linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	Michael.Hennerich@analog.com
-Cc: gshahrouzi@gmail.com,
-	skhan@linuxfoundation.org,
-	kernelmentees@lists.linuxfoundation.org,
+	linux-perf-users@vger.kernel.org
+Cc: eranian@google.com,
+	ak@linux.intel.com,
+	Kan Liang <kan.liang@linux.intel.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] iio: ad5933: Correct settling cycles encoding per datasheet
-Date: Wed, 16 Apr 2025 10:22:19 -0400
-Message-ID: <20250416142219.554938-1-gshahrouzi@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Subject: [PATCH 1/3] perf/x86/intel/uncore: Fix the scale of IIO free running counters on SNR
+Date: Wed, 16 Apr 2025 07:24:24 -0700
+Message-Id: <20250416142426.3933977-1-kan.liang@linux.intel.com>
+X-Mailer: git-send-email 2.38.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -95,86 +81,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Implement the settling cycles encoding as specified in the AD5933
-datasheet, Table 13 ("Number of Settling Times Cycles Register"). The
-previous logic did not correctly translate the user-requested effective
-cycle count into the required 9-bit base + 2-bit multiplier format
-(D10..D0) for values exceeding 511.
+From: Kan Liang <kan.liang@linux.intel.com>
 
-Clamp the user input for out_altvoltage0_settling_cycles to the
-maximum effective value of 2044 cycles (511 * 4x multiplier).
+There was a mistake in the SNR uncore spec. The counter increments for
+every 32 bytes of data sent from the IO agent to the SOC, not 4 bytes
+which was documented in the spec.
 
-Fixes: f94aa354d676 ("iio: impedance-analyzer: New driver for AD5933/4 Impedance Converter, Network Analyzer")
+The event list has been updated.
+"EventName": "UNC_IIO_BANDWIDTH_IN.PART0_FREERUN",
+"BriefDescription": "Free running counter that increments for every 32
+		     bytes of data sent from the IO agent to the SOC",
+
+Update the scale of the IIO bandwidth in free running counters as well.
+
+Fixes: 210cc5f9db7a ("perf/x86/intel/uncore: Add uncore support for Snow Ridge server")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
 ---
- .../staging/iio/impedance-analyzer/ad5933.c   | 21 ++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ arch/x86/events/intel/uncore_snbep.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/staging/iio/impedance-analyzer/ad5933.c
-index d5544fc2fe989..5a8c5039bb159 100644
---- a/drivers/staging/iio/impedance-analyzer/ad5933.c
-+++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
-@@ -28,7 +28,7 @@
- #define AD5933_REG_FREQ_START		0x82	/* R/W, 3 bytes */
- #define AD5933_REG_FREQ_INC		0x85	/* R/W, 3 bytes */
- #define AD5933_REG_INC_NUM		0x88	/* R/W, 2 bytes, 9 bit */
--#define AD5933_REG_SETTLING_CYCLES	0x8A	/* R/W, 2 bytes */
-+#define AD5933_REG_SETTLING_CYCLES	0x8A	/* R/W, 2 bytes, 11+2 bit */
- #define AD5933_REG_STATUS		0x8F	/* R, 1 byte */
- #define AD5933_REG_TEMP_DATA		0x92	/* R, 2 bytes*/
- #define AD5933_REG_REAL_DATA		0x94	/* R, 2 bytes*/
-@@ -71,6 +71,8 @@
- #define AD5933_INT_OSC_FREQ_Hz		16776000
- #define AD5933_MAX_OUTPUT_FREQ_Hz	100000
- #define AD5933_MAX_RETRIES		100
-+#define AD5933_MAX_FREQ_POINTS		511
-+#define AD5933_MAX_SETTLING_CYCLES	2044 /* 511 * 4 */
- 
- #define AD5933_OUT_RANGE		1
- #define AD5933_OUT_RANGE_AVAIL		2
-@@ -82,6 +84,10 @@
- #define AD5933_POLL_TIME_ms		10
- #define AD5933_INIT_EXCITATION_TIME_ms	100
- 
-+/* Settling cycles multiplier bits D10, D9 */
-+#define AD5933_SETTLE_MUL_2X		BIT(9)
-+#define AD5933_SETTLE_MUL_4X		(BIT(9) | BIT(10))
-+
- struct ad5933_state {
- 	struct i2c_client		*client;
- 	struct clk			*mclk;
-@@ -411,14 +417,15 @@ static ssize_t ad5933_store(struct device *dev,
- 		ret = ad5933_cmd(st, 0);
- 		break;
- 	case AD5933_OUT_SETTLING_CYCLES:
--		val = clamp(val, (u16)0, (u16)0x7FF);
-+		val = clamp(val, (u16)0, (u16)AD5933_MAX_SETTLING_CYCLES);
- 		st->settling_cycles = val;
- 
--		/* 2x, 4x handling, see datasheet */
-+		/* Encode value for register: D10..D0 */
-+		/* Datasheet Table 13: If cycles > 1022 -> val/4, set bits D10=1, D9=1 */
- 		if (val > 1022)
--			val = (val >> 2) | (3 << 9);
--		else if (val > 511)
--			val = (val >> 1) | BIT(9);
-+			val = (val >> 2) | AD5933_SETTLE_MUL_4X;
-+		else if (val > 511) /* Datasheet: If cycles > 511 -> val/2, set bit D9=1 */
-+			val = (val >> 1) | AD5933_SETTLE_MUL_2X;
- 
- 		dat = cpu_to_be16(val);
- 		ret = ad5933_i2c_write(st->client,
-@@ -426,7 +433,7 @@ static ssize_t ad5933_store(struct device *dev,
- 				       2, (u8 *)&dat);
- 		break;
- 	case AD5933_FREQ_POINTS:
--		val = clamp(val, (u16)0, (u16)511);
-+		val = clamp(val, (u16)0, (u16)AD5933_MAX_FREQ_POINTS);
- 		st->freq_points = val;
- 
- 		dat = cpu_to_be16(val);
+diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
+index 60973c209c0e..35da2c486e8d 100644
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -4891,28 +4891,28 @@ static struct uncore_event_desc snr_uncore_iio_freerunning_events[] = {
+ 	INTEL_UNCORE_EVENT_DESC(ioclk,			"event=0xff,umask=0x10"),
+ 	/* Free-Running IIO BANDWIDTH IN Counters */
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port0,		"event=0xff,umask=0x20"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port0.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port1,		"event=0xff,umask=0x21"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port1.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port2,		"event=0xff,umask=0x22"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port2.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port3,		"event=0xff,umask=0x23"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port3.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port4,		"event=0xff,umask=0x24"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port4.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port5,		"event=0xff,umask=0x25"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port5.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port6,		"event=0xff,umask=0x26"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port6.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port7,		"event=0xff,umask=0x27"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port7.unit,	"MiB"),
+ 	{ /* end: all zeroes */ },
+ };
 -- 
-2.43.0
+2.38.1
 
 
