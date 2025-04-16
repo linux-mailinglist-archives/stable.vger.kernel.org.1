@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-132865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51F20A9067F
-	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 16:31:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E050A90682
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 16:31:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D31B88E0F2E
-	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 14:24:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62FB68E2A8F
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 14:25:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC9B31DDA20;
-	Wed, 16 Apr 2025 14:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83AB01EDA0F;
+	Wed, 16 Apr 2025 14:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nNLiHxHr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O1gaiKP4"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5221ADC67;
-	Wed, 16 Apr 2025 14:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C0F1C3306;
+	Wed, 16 Apr 2025 14:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744813500; cv=none; b=N1pSPCMldd6RR5TNYFSnEMJ/svn4k9Gt24hkuFkikZmutyJYJ8nrB/TidKkfT2AhAFk6c/xA+mKY9Oe4AnVRgrV6AdhJCnZnHQ0ed/SMv+anEc5XU3VdW75D0AZURCjwoSd/mrR1Zv5RDlgJZiVbt+mMVRU+dIWBj1cYD3cZwtU=
+	t=1744813501; cv=none; b=ipg1eUPG37cjChQYtZjdJRgaT153RY32d3o+3HuHm/jVbKcrxLQWhxlNluSu6dXVRY8CwSI4DSSyPXG5TMXWotwRC7bDOVgFEY2Ma9rIuu9H8M+MIEtFolvsA+BnYQGLWjVqFWKIoswQ8aStM5+tIIC68yc1t0pyZG7K4D/jGrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744813500; c=relaxed/simple;
-	bh=kn1g39GdXS13OVM6b/fCmN3vpP6Hgt6ltfzF4jPhBtc=;
+	s=arc-20240116; t=1744813501; c=relaxed/simple;
+	bh=xqXRyOgULnMajaP4A2rC8+QlBaZIK6c9CiY+vsOTu1k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qUFR42eGFAvOiPD7TLcO1luJMCZA3kLZiyjQr2LConNfDLbluAoKs8e5vWHUoLqBbVLEJiPD/G4HvlZpspvK1Klg5XJUb9PaVSetSoBVpSXVywWM32C5DZhYL/uUntRKMfPfiL1XZG2H9rF6C3FA7Btf+NWqrKq8xCh7bQAUZMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nNLiHxHr; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=p2NDVmtYFAeOg6nMiESKGk6DBqUxOci/P/iCkf4zbzmz+DBqOweeLYiisuTI7BBN5PIhAPTCXqtdg/X8MQjOeAZqsbsetFYGd8JeRJJC52FIesaLZQ89em6gPlSj3EJeW7ZfbhhsdwCxFe3F9q2DiI0IlHH5Q3YvFi3pmLhvWpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O1gaiKP4; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744813499; x=1776349499;
+  t=1744813500; x=1776349500;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=kn1g39GdXS13OVM6b/fCmN3vpP6Hgt6ltfzF4jPhBtc=;
-  b=nNLiHxHrxOEDP/YH9+/FyZ7bVn4+Dr47fyPb/gXMRNqadfQpYncvAhwz
-   FXyVgrBBpwRRusuf4sKscvgGp2MpuJg368VTjnBkCMLxAZGrVX2ABGIZ5
-   zcZwQF/+cwElpIEC2XZ3r+foFAG7QC26Nm1bM+Yw0O5Ag8X6Ag290uT9A
-   dyuI72ygUGhw8IjVWAqXefDFvNG6NLxZfQ4TwwGmN5fZYrKrVsAAk6bJI
-   vlyHvQNTSSGzXHys9SlSLZC730pAk+X/zMERfYbLGAt7tjGC3IqBz9v7E
-   s0j9ym0kQm6Gx3ysGlPcv1y0/UfIsXsFDYdJEbr2k4cm7ELqd8omYI2w1
-   g==;
-X-CSE-ConnectionGUID: DZ/oK+6yQvWy+8ND0kvx/A==
-X-CSE-MsgGUID: FnIuPmGQRJiFSESWpy44aA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="46529293"
+  bh=xqXRyOgULnMajaP4A2rC8+QlBaZIK6c9CiY+vsOTu1k=;
+  b=O1gaiKP4RNAyqkxgQJcCXkNVEz5kKwq6RQisw28YugBa3VHaTY3fuZwP
+   F/HLXIfY+6jHJ5YHZrr6ln2AY6llGUeGW7ammo7UwL7ZZSjlU05GPgSNc
+   8RiPvQwhPWuTas41jICAnarQXBzv2wkRGDnPlY3/xDL0HW7BtLX813Dpj
+   pOMZWq0mvGCHYR6VcLxOR6hxBQ9LQ6qo52TN4OHmpH9MWIkSXYtV7S/Qt
+   cDp3uGH4uteB1kfy/bxBYiCoiLr+pflzDzbThj6novgbbr8rK6FYMZtn2
+   GHnPy8Mjtxjg3erzTbOjyjqoIH9kvQFaaYJ6t92BQ1eh07cFBbz1/srsN
+   A==;
+X-CSE-ConnectionGUID: z4yf2PnnQOKP3nZmoUilHA==
+X-CSE-MsgGUID: +Klfds7qTUC1TUm6m+yvoQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="46529302"
 X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; 
-   d="scan'208";a="46529293"
+   d="scan'208";a="46529302"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2025 07:24:56 -0700
-X-CSE-ConnectionGUID: EcZlW1zwS3OlsHhJf4+zxQ==
-X-CSE-MsgGUID: /1akn4zVRCG+46nxrolDEw==
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2025 07:24:57 -0700
+X-CSE-ConnectionGUID: S70D+KlvTjq9TEL6VfMG3g==
+X-CSE-MsgGUID: 6ZdsmjGnS+KRS3MA0eGEog==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; 
-   d="scan'208";a="131402418"
+   d="scan'208";a="131402420"
 Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
   by fmviesa009.fm.intel.com with ESMTP; 16 Apr 2025 07:24:57 -0700
 From: kan.liang@linux.intel.com
@@ -71,9 +71,9 @@ Cc: eranian@google.com,
 	Kan Liang <kan.liang@linux.intel.com>,
 	Tang Jun <dukang.tj@alibaba-inc.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 2/3] perf/x86/intel/uncore: Fix the scale of IIO free running counters on ICX
-Date: Wed, 16 Apr 2025 07:24:25 -0700
-Message-Id: <20250416142426.3933977-2-kan.liang@linux.intel.com>
+Subject: [PATCH 3/3] perf/x86/intel/uncore: Fix the scale of IIO free running counters on SPR
+Date: Wed, 16 Apr 2025 07:24:26 -0700
+Message-Id: <20250416142426.3933977-3-kan.liang@linux.intel.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20250416142426.3933977-1-kan.liang@linux.intel.com>
 References: <20250416142426.3933977-1-kan.liang@linux.intel.com>
@@ -87,29 +87,30 @@ Content-Transfer-Encoding: 8bit
 
 From: Kan Liang <kan.liang@linux.intel.com>
 
-There was a mistake in the ICX uncore spec too. The counter increments
-for every 32 bytes rather than 4 bytes.
+The scale of IIO bandwidth in free running counters is inherited from
+the ICX. The counter increments for every 32 bytes rather than 4 bytes.
 
-The same as SNR, there are 1 ioclk and 8 IIO bandwidth in free running
-counters. Reuse the snr_uncore_iio_freerunning_events().
+The IIO bandwidth out free running counters don't increment with a
+consistent size. The increment depends on the requested size. It's
+impossible to find a fixed increment. Remove it from the event_descs.
 
-Fixes: 2b3b76b5ec67 ("perf/x86/intel/uncore: Add Ice Lake server uncore support")
+Fixes: 0378c93a92e2 ("perf/x86/intel/uncore: Support IIO free-running counters on Sapphire Rapids server")
 Reported-by: Tang Jun <dukang.tj@alibaba-inc.com>
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Cc: stable@vger.kernel.org
 ---
- arch/x86/events/intel/uncore_snbep.c | 33 +---------------------------
- 1 file changed, 1 insertion(+), 32 deletions(-)
+ arch/x86/events/intel/uncore_snbep.c | 58 +---------------------------
+ 1 file changed, 1 insertion(+), 57 deletions(-)
 
 diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
-index 35da2c486e8d..fb08911a1cf6 100644
+index fb08911a1cf6..76d96df1475a 100644
 --- a/arch/x86/events/intel/uncore_snbep.c
 +++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -5485,37 +5485,6 @@ static struct freerunning_counters icx_iio_freerunning[] = {
- 	[ICX_IIO_MSR_BW_IN]	= { 0xaa0, 0x1, 0x10, 8, 48, icx_iio_bw_freerunning_box_offsets },
+@@ -6289,69 +6289,13 @@ static struct freerunning_counters spr_iio_freerunning[] = {
+ 	[SPR_IIO_MSR_BW_OUT]	= { 0x3808, 0x1, 0x10, 8, 48 },
  };
  
--static struct uncore_event_desc icx_uncore_iio_freerunning_events[] = {
+-static struct uncore_event_desc spr_uncore_iio_freerunning_events[] = {
 -	/* Free-Running IIO CLOCKS Counter */
 -	INTEL_UNCORE_EVENT_DESC(ioclk,			"event=0xff,umask=0x10"),
 -	/* Free-Running IIO BANDWIDTH IN Counters */
@@ -137,17 +138,41 @@ index 35da2c486e8d..fb08911a1cf6 100644
 -	INTEL_UNCORE_EVENT_DESC(bw_in_port7,		"event=0xff,umask=0x27"),
 -	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.814697266e-6"),
 -	INTEL_UNCORE_EVENT_DESC(bw_in_port7.unit,	"MiB"),
+-	/* Free-Running IIO BANDWIDTH OUT Counters */
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port0,		"event=0xff,umask=0x30"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port0.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port0.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port1,		"event=0xff,umask=0x31"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port1.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port1.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port2,		"event=0xff,umask=0x32"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port2.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port2.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port3,		"event=0xff,umask=0x33"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port3.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port3.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port4,		"event=0xff,umask=0x34"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port4.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port4.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port5,		"event=0xff,umask=0x35"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port5.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port5.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port6,		"event=0xff,umask=0x36"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port6.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port6.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port7,		"event=0xff,umask=0x37"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port7.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port7.unit,	"MiB"),
 -	{ /* end: all zeroes */ },
 -};
 -
- static struct intel_uncore_type icx_uncore_iio_free_running = {
+ static struct intel_uncore_type spr_uncore_iio_free_running = {
  	.name			= "iio_free_running",
- 	.num_counters		= 9,
-@@ -5523,7 +5492,7 @@ static struct intel_uncore_type icx_uncore_iio_free_running = {
- 	.num_freerunning_types	= ICX_IIO_FREERUNNING_TYPE_MAX,
- 	.freerunning		= icx_iio_freerunning,
+ 	.num_counters		= 17,
+ 	.num_freerunning_types	= SPR_IIO_FREERUNNING_TYPE_MAX,
+ 	.freerunning		= spr_iio_freerunning,
  	.ops			= &skx_uncore_iio_freerunning_ops,
--	.event_descs		= icx_uncore_iio_freerunning_events,
+-	.event_descs		= spr_uncore_iio_freerunning_events,
 +	.event_descs		= snr_uncore_iio_freerunning_events,
  	.format_group		= &skx_uncore_iio_freerunning_format_group,
  };
