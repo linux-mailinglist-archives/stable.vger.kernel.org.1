@@ -1,232 +1,300 @@
-Return-Path: <stable+bounces-132829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55EFDA8B0E2
-	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 08:46:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45CDAA8B228
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 09:31:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6AE45A088A
-	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 06:45:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95F63190511E
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 07:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D999622E41C;
-	Wed, 16 Apr 2025 06:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A3C418C03F;
+	Wed, 16 Apr 2025 07:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b="c1iZErt1"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="i3g3f6Ia"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f194.google.com (mail-pf1-f194.google.com [209.85.210.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F01239066
-	for <stable@vger.kernel.org>; Wed, 16 Apr 2025 06:44:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E551B6CEF
+	for <stable@vger.kernel.org>; Wed, 16 Apr 2025 07:31:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744785851; cv=none; b=JBoSDodTJ3ivJF1UxyTWC4euv8NVVzFCfMCr/ErpFci3HO9In0oc/SjnP0Xk1XyAFDU6YJ60qNu3nr0ogRSEThgmseZ6QOuhP5v9jfqVC/P3QTJ2oOaXXBP85mbk3+bXFEeH6iLdTFM3Aw0CZ3wJUqSuCAr0+2Wn3mKTv5Uu5MU=
+	t=1744788678; cv=none; b=HuUrwdqKjblikbrIrrDZJbT94a9fC24VGmrlF0ZzMTWIgF+wnHBPkUC9srDdaxs+hQo7chcoxEXSK5BETaKHskeT/Gh1H7c90r3sllClXKFHuJAxF8d2laAkKKWvaXR7jCtk3lbPrQLNHQnPm/FF8vIZS318mC5YZFs2QXHE+6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744785851; c=relaxed/simple;
-	bh=ZsgW43t9Zq+y0UBxbO0wiFH7+4N/t/EsQC3UZ1eFldc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=stizu+Lx01k6EDiUrCtnkFONA75uLROKt75e79Y+qapWOAZaw02K3jaeBGNRHhI5JL12Y+V59zCPwC5E5gi0o0Oyh3V7cBy+C1pYrM0D90Al+3tzqkb9BwPUm179+sXRobVYnZWekKrVlAa83f82wkV7ZQkaHWpxniHwIYutVVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com; spf=pass smtp.mailfrom=mvista.com; dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b=c1iZErt1; arc=none smtp.client-ip=209.85.210.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mvista.com
-Received: by mail-pf1-f194.google.com with SMTP id d2e1a72fcca58-7399a2dc13fso8474766b3a.2
-        for <stable@vger.kernel.org>; Tue, 15 Apr 2025 23:44:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mvista.com; s=google; t=1744785848; x=1745390648; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ShXdLlJyHOq//Y0gSmV/d4FkJhqGFJTU5M4C26XQC4M=;
-        b=c1iZErt1ZMch2+Fu1XPtor3qy17dC9y5OgN/Ta4FlbfhUWNTA/d//Btggx0Rth6bRh
-         9/c59jZI9/tpr+OF8fqnZjTtRZpIbjv17yIlyxv4Z/1omwOpi0Pm0zXraRsCUA2eKDcT
-         A/3urRlQ5YOz8cEvrn9yk5rTA0cwdY3I4W+BE=
+	s=arc-20240116; t=1744788678; c=relaxed/simple;
+	bh=52tobB9aVR3Qsia5hFyH/RC5H9SHG3yCX/cPEM3UW84=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=PO9V4lOb0k0BKaB4UaFlvsW/kCRu5U/ly55+bWSyi8tvirmcpnHtWHD1Y54WAR6X+BrlMqev3W7HfbUEs+MuzVJWuwQ8Cdr4p6oGEiN/wh6qwfrXzFbVud2Cby60996U/9Ri9O/xaC6g7/QjPME8AbJanm/27TRh69+oK2tGDvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=i3g3f6Ia; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53G7JPTg002366
+	for <stable@vger.kernel.org>; Wed, 16 Apr 2025 07:31:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	2w89vGpkfTEaljX2/r8/RTQfbplPGmagWgiqCDEol00=; b=i3g3f6Ia+TrArJ7S
+	z3y3sibx8dorZJ3Ywglctq7o1q8wltOu6au/8ZnawazYSoVChwOPI3/eXdwkH5xT
+	J4Q/5xkq45H8ZllN3M8xAUKLrDhUqaArYfq1JwKwaha36EnuVS0gP4yKqAcWfXky
+	Y8DKIRjyDJlBEGJT+644+ylLNFgqL1e/YJ3cpMHaHqhUCM7zH88VQuQR490vTPIp
+	35e6V8jUTERq554T6fj+v9W5EevASpdQJkI+SZebqQuJB7yQtioExqIPKpB11tob
+	foNbnRwwE9wsgIHxeIaJuY3O15SCKbB2GAvwlRnp2Vx919XFD2M6QkPw96KI0i4P
+	G/TvJQ==
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45yhbptgsw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 16 Apr 2025 07:31:15 +0000 (GMT)
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-af423fb4f0eso4033820a12.0
+        for <stable@vger.kernel.org>; Wed, 16 Apr 2025 00:31:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744785848; x=1745390648;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ShXdLlJyHOq//Y0gSmV/d4FkJhqGFJTU5M4C26XQC4M=;
-        b=aiLjw9OZ4wQAw1Uidyrzr1lq+R2HPLLm6Dht5OF75kLAWstGkS13bqwTSUUFKxAE+I
-         XTFJPs5bTD/M2w3VpRaSYFbRVyruL/RyMiQuh6X+9Hm1ryEwPOd9UlEwngjHILKJf2Tf
-         g2iyDjma+m3xHP/SsVkPjKvOzuATn2O6VAY7xUTNOYW9dlw6GXajxYbVfQPgD4gl3EYN
-         rdhxUpJXinc3+B/JS4WPOheQ3yguzx1lSX+Ho8mAY9+UnaXdRKYJfZ3U2M30PK5W86VD
-         CErPHv6AGoe7eS+sbKZm3EOGten1FQqfc+/b/tf8vhX+AdbSwBgPYI/0fwTO2h/9yZIn
-         +6JA==
-X-Gm-Message-State: AOJu0YxzukZOlezy6agmWfJF2NUnAQ+1nTmK36hpr49jlica4BrYM5I1
-	aa9KBZhW79YfpfthgAI4ASYLkEanCjMR2/gMKsTm55Icc/rS8vbZ/vUVw686ry8YVJjRicrpsTv
-	MH3/o5lbi
-X-Gm-Gg: ASbGnctBaukCHqwV564l8qDjj49DMnXa24m5AMas7uhAh+gRyFW5IRsEhHWi6P8VMPR
-	URxe9TNcT9LiCcvaIZXGYqssQbQOxkxVrADI1c6o5iJUeDxKPc21xCG/i4e6etNKQaPkjT2iKV+
-	VppjjGgxYsP0XqjJF8Ve2JtYQkP25yOeDG6wjuusVZwwEH9Rj5XzokF03A+lcg3QZNd6QFgTcD8
-	rL2EPcGKjm27UMf9yy/WQr6OGbbwrgPo0XY27HibBE6taPaquD+z9Z1M0yUEEKL2hiWKZieTrdX
-	P5VGtxDo4hr0fxKtY93RW99oU4+XZWLmOkd1ccytVLmEGw==
-X-Google-Smtp-Source: AGHT+IGJ+CI5dy4HasZ/L0xjkr4sJjqq6e5PehyCbu3l7M0Nfl4Z1HzgLlsFV9g8n7NLunF7bPXr7Q==
-X-Received: by 2002:a05:6a00:801b:b0:736:5545:5b84 with SMTP id d2e1a72fcca58-73c266beee1mr1227408b3a.3.1744785848518;
-        Tue, 15 Apr 2025 23:44:08 -0700 (PDT)
-Received: from testing.mvista.com ([182.74.28.237])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bd1fe6b4esm9662581b3a.0.2025.04.15.23.44.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Apr 2025 23:44:08 -0700 (PDT)
-From: Hardik Gohil <hgohil@mvista.com>
-To: stable@vger.kernel.org
-Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Hardik Gohil <hgohil@mvista.com>
-Subject: [PATCH 1/3 v5.4.y] dmaengine: ti: edma: Add support for handling reserved channels
-Date: Wed, 16 Apr 2025 06:43:25 +0000
-Message-Id: <20250416064325.1979211-1-hgohil@mvista.com>
-X-Mailer: git-send-email 2.25.1
+        d=1e100.net; s=20230601; t=1744788675; x=1745393475;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2w89vGpkfTEaljX2/r8/RTQfbplPGmagWgiqCDEol00=;
+        b=nbJv41he4lsSLrW/06/6xoSXfmifX2EsJKGyk+AozpiDJzUKH73KVuG02o4ApsyorP
+         dpZBb2ulBrP6Y3zpNATN2lj8LZB+k3qnoo70hgTkqjS9GI+/ZoW4UCrybpb0MwrxZUKL
+         JDwTiwLfQkvAPPNg5/ujIlN3ChxCcApXTISh77lZvQtKXWHW1uS76aRwVTuf6j/ILxRM
+         QBX7PmRHnRnuQL03RbVaCcQ+lavj10EdwJ2mn21H6eFQDU3x6eT6hHanDHJzEL9Env7v
+         zzu8zL2SjL5qt99N0ERbvbWmKPZ6OTEUcvW5UupdWcsn82cFWtaQ9WkHJIV3bdKHeA7N
+         NgGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUgEK2Og9RxHHkiyGPYGvRXI7XrGzNgWD41/JkSxwjTH5+sGEXIsUjvUzD0J7MzWJP/QCq/5Lg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwijeLsUqAnHiYSpVosfirCVjiJytz1D2yZTsy29JG6s/zRD3MX
+	JhvtOLU2u2HTnUjN3jxa9lEYoTDBeCfqGakqu92te3DMBuS9JrQjLnfe9ZFkURw1dP/EDa8gJF7
+	6QBFWRCrar3pf3IHnoOqmN2wsWZn9Tr6WoTkW3zSVbRycj8Uf/pVP57Q=
+X-Gm-Gg: ASbGncsf/P2v2SggcLvSZkTlXbJMcz/TAa1MYyV3OVsas9O+k1MZqNjPJJM0GF0gS/l
+	o7myQIP5IIapd8h7MFYkHaSU+eq3Fs7tEzvzHZSsGIUSCX8rydFXDjG8EHghruBAhLlqKGaV8A6
+	HunfYdN5tSqH6N+6PSbWCBnCXKz5LY50vAtazPq95j0dapAPlJyVDV3ka9AiAWS4tQtYpZdXFS6
+	6BzMq8y4sbQtvxVHkR+qZfzjJGjEvEapj6Ceak7zhq+4iqq7xk6vSemeyHeff+1dpg4Oa2LV6Sn
+	JQdYlnXB0rfmEfD4KK008wuJu070U3WbDAUrtmctIEK8kSZ6Jyw6EYmq9bvV0zCkt+xrd2OpefU
+	=
+X-Received: by 2002:a17:903:8c5:b0:224:2201:84da with SMTP id d9443c01a7336-22c358bfac3mr11304535ad.6.1744788674956;
+        Wed, 16 Apr 2025 00:31:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFDuibO2JKTCT3Kz4ZJmNuPGdoj9ujKAJsdhPJYkAl5Fe3ro1Bmm2ILzr9fr30xpZSFqRyeew==
+X-Received: by 2002:a17:903:8c5:b0:224:2201:84da with SMTP id d9443c01a7336-22c358bfac3mr11304235ad.6.1744788674524;
+        Wed, 16 Apr 2025 00:31:14 -0700 (PDT)
+Received: from [10.133.33.156] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c33fc93f1sm7334045ad.192.2025.04.16.00.31.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Apr 2025 00:31:14 -0700 (PDT)
+Message-ID: <4c5f9d38-ae5d-4599-bd9d-785f6eff48f9@oss.qualcomm.com>
+Date: Wed, 16 Apr 2025 15:31:11 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.14 084/731] wifi: ath11k: update channel list in reg
+ notifier instead reg worker
+From: Kang Yang <kang.yang@oss.qualcomm.com>
+To: Jiri Slaby <jirislaby@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Aditya Kumar Singh <quic_adisi@quicinc.com>,
+        Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+        Sasha Levin
+ <sashal@kernel.org>, Jilao He <jilao@qti.qualcomm.com>,
+        quic_bqiang@quicinc.com
+References: <20250408104914.247897328@linuxfoundation.org>
+ <20250408104916.224926328@linuxfoundation.org>
+ <5cd9db3f-4abf-4b66-b401-633508e905ac@kernel.org>
+ <49b98882-6a69-48b8-af0c-01f78373d0ef@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <49b98882-6a69-48b8-af0c-01f78373d0ef@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: gXgJ9TUy7QZP0tikhCqd3Ockr4UHaoSh
+X-Proofpoint-GUID: gXgJ9TUy7QZP0tikhCqd3Ockr4UHaoSh
+X-Authority-Analysis: v=2.4 cv=I+plRMgg c=1 sm=1 tr=0 ts=67ff5cc3 cx=c_pps a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=bC-a23v3AAAA:8 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8
+ a=R9OM0nUHbm-oojPVeEMA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=-FEs8UIgK8oA:10 a=x9snwWr2DeNwDh03kgHS:22 a=FO4_E8m0qiDe52t0p3_H:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-16_03,2025-04-15_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
+ phishscore=0 adultscore=0 priorityscore=1501 mlxscore=0 lowpriorityscore=0
+ bulkscore=0 mlxlogscore=999 clxscore=1011 impostorscore=0 malwarescore=0
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504160059
 
-From: Peter Ujfalusi <peter.ujfalusi@ti.com>
 
-Like paRAM slots, channels could be used by other cores and in this case
-we need to make sure that the driver do not alter these channels.
+On 4/15/2025 10:55 AM, Kang Yang wrote:
+>
+>
+> On 4/14/2025 1:59 PM, Jiri Slaby wrote:
+>> On 08. 04. 25, 12:39, Greg Kroah-Hartman wrote:
+>>> 6.14-stable review patch.  If anyone has any objections, please let 
+>>> me know.
+>>>
+>>> ------------------
+>>>
+>>> From: Wen Gong <quic_wgong@quicinc.com>
+>>>
+>>> [ Upstream commit 933ab187e679e6fbdeea1835ae39efcc59c022d2 ]
+>>>
+>>> Currently when ath11k gets a new channel list, it will be processed
+>>> according to the following steps:
+>>> 1. update new channel list to cfg80211 and queue reg_work.
+>>> 2. cfg80211 handles new channel list during reg_work.
+>>> 3. update cfg80211's handled channel list to firmware by
+>>> ath11k_reg_update_chan_list().
+>>>
+>>> But ath11k will immediately execute step 3 after reg_work is just
+>>> queued. Since step 2 is asynchronous, cfg80211 may not have completed
+>>> handling the new channel list, which may leading to an out-of-bounds
+>>> write error:
+>>> BUG: KASAN: slab-out-of-bounds in ath11k_reg_update_chan_list
+>>> Call Trace:
+>>>      ath11k_reg_update_chan_list+0xbfe/0xfe0 [ath11k]
+>>>      kfree+0x109/0x3a0
+>>>      ath11k_regd_update+0x1cf/0x350 [ath11k]
+>>>      ath11k_regd_update_work+0x14/0x20 [ath11k]
+>>>      process_one_work+0xe35/0x14c0
+>>>
+>>> Should ensure step 2 is completely done before executing step 3. Thus
+>>> Wen raised patch[1]. When flag NL80211_REGDOM_SET_BY_DRIVER is set,
+>>> cfg80211 will notify ath11k after step 2 is done.
+>>>
+>>> So enable the flag NL80211_REGDOM_SET_BY_DRIVER then cfg80211 will
+>>> notify ath11k after step 2 is done. At this time, there will be no
+>>> KASAN bug during the execution of the step 3.
+>>>
+>>> [1] https://patchwork.kernel.org/project/linux-wireless/ 
+>>> patch/20230201065313.27203-1-quic_wgong@quicinc.com/
+>>>
+>>> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125- 
+>>> QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
+>>>
+>>> Fixes: f45cb6b29cd3 ("wifi: ath11k: avoid deadlock during regulatory 
+>>> update in ath11k_regd_update()")
+>>> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+>>> Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
+>>> Reviewed-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
+>>> Link: https://patch.msgid.link/20250117061737.1921-2- 
+>>> quic_kangyang@quicinc.com
+>>> Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+>>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>> ---
+>>>   drivers/net/wireless/ath/ath11k/reg.c | 22 +++++++++++++++-------
+>>>   1 file changed, 15 insertions(+), 7 deletions(-)
+>>>
+>>> diff --git a/drivers/net/wireless/ath/ath11k/reg.c b/drivers/net/ 
+>>> wireless/ath/ath11k/reg.c
+>>> index b0f289784dd3a..7bfe47ad62a07 100644
+>>> --- a/drivers/net/wireless/ath/ath11k/reg.c
+>>> +++ b/drivers/net/wireless/ath/ath11k/reg.c
+>>> @@ -1,7 +1,7 @@
+>>>   // SPDX-License-Identifier: BSD-3-Clause-Clear
+>>>   /*
+>>>    * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
+>>> - * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All 
+>>> rights reserved.
+>>> + * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All 
+>>> rights reserved.
+>>>    */
+>>>   #include <linux/rtnetlink.h>
+>>> @@ -55,6 +55,19 @@ ath11k_reg_notifier(struct wiphy *wiphy, struct 
+>>> regulatory_request *request)
+>>>       ath11k_dbg(ar->ab, ATH11K_DBG_REG,
+>>>              "Regulatory Notification received for %s\n", 
+>>> wiphy_name(wiphy));
+>>> +    if (request->initiator == NL80211_REGDOM_SET_BY_DRIVER) {
+>>> +        ath11k_dbg(ar->ab, ATH11K_DBG_REG,
+>>> +               "driver initiated regd update\n");
+>>> +        if (ar->state != ATH11K_STATE_ON)
+>>> +            return;
+>>> +
+>>> +        ret = ath11k_reg_update_chan_list(ar, true);
+>>> +        if (ret)
+>>> +            ath11k_warn(ar->ab, "failed to update channel list: 
+>>> %d\n", ret);
+>>> +
+>>> +        return;
+>>> +    }
+>>
+>> I suspect this causes stalls for me.
+>>
+>> Workqueues are waiting for rtnl_lock:
+>>> Showing busy workqueues and worker pools:
+>>> workqueue events_unbound: flags=0x2
+>>>   pwq 64: cpus=0-15 flags=0x4 nice=0 active=1 refcnt=2
+>>>     in-flight: 107692:linkwatch_event
+>>> workqueue netns: flags=0x6000a
+>>>   pwq 64: cpus=0-15 flags=0x4 nice=0 active=1 refcnt=18
+>>>     in-flight: 107676:cleanup_net workqueue pm: flags=0x4
+>>>   pwq 2: cpus=0 node=0 flags=0x0 nice=0 active=5 refcnt=6
+>>>     in-flight: 107843:pm_runtime_work ,100179:pm_runtime_work 
+>>> ,50846:pm_runtime_work ,107845:pm_runtime_work ,107652:pm_runtime_work
+>>> workqueue ipv6_addrconf: flags=0x6000a
+>>>   pwq 64: cpus=0-15 flags=0x4 nice=0 active=1 refcnt=18
+>>>     in-flight: 107705:addrconf_dad_work
+>>
+>> While the above reg_notifier is stuck too:
+>>
+>>  > workqueue events: flags=0x0
+>>  >   pwq 14: cpus=3 node=0 flags=0x0 nice=0 active=1 refcnt=2
+>>  >     in-flight: 107807:reg_todo [cfg80211]
+>>
+>> waiting for:
+>>> Workqueue: events reg_todo [cfg80211]
+>>> Call Trace:
+>>>  <TASK>
+>>>  __schedule+0x437/0x1470
+>>>  schedule+0x27/0xf0
+>>>  schedule_timeout+0x73/0xe0
+>>>  __wait_for_common+0x8e/0x1c0
+>>>  ath11k_reg_update_chan_list+0x23c/0x290 [ath11k 
+>>> 30c4a145118dc3331f552d6275ec7d6272671444]
+>>>  ath11k_reg_notifier+0x5a/0x80 [ath11k 
+>>> 30c4a145118dc3331f552d6275ec7d6272671444]
+>>>  reg_process_self_managed_hint+0x170/0x1b0 [cfg80211 
+>>> 2571f504aa68d55c11440c869062c668de1a2dce]
+>>>  reg_process_self_managed_hints+0x47/0xf0 [cfg80211 
+>>> 2571f504aa68d55c11440c869062c668de1a2dce]
+>>>  reg_todo+0x207/0x290 [cfg80211 
+>>> 2571f504aa68d55c11440c869062c668de1a2dce]
+>>>  process_one_work+0x17b/0x330
+>>>  worker_thread+0x2ce/0x3f0
+>>
+>>
+>> Is stable missing some backport or is this a problem in 6.15-rc too?
+>>
+>> /me looking...
+>>
+>> Ah, what about:
+>> commit 02aae8e2f957adc1b15b6b8055316f8a154ac3f5
+>> Author: Wen Gong <quic_wgong@quicinc.com>
+>> Date:   Fri Jan 17 14:17:37 2025 +0800
+>>
+>>      wifi: ath11k: update channel list in worker when wait flag is set
+>>
+>> ?
+>
+>
+> Yes, please add this patch. It will minimize the occupation time of 
+> rtnl_lock.
+>
+> You can retry and check if this warning will show again.
+>
+>
 
-Handle the generic dma-channel-mask property to mark channels in a bitmap
-which can not be used by Linux and convert the legacy rsv_chans if it is
-provided by platform_data.
+Hi, Jiri, Greg:
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Link: https://lore.kernel.org/r/20191025073056.25450-4-peter.ujfalusi@ti.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Hardik Gohil <hgohil@mvista.com>
----
-The patch [dmaengine: ti: edma: Add some null pointer checks to the edma_probe] fix for CVE-2024-26771                                   needs to be backported to v5.4.y kernel.
+     Have you added this patch and verified it?
 
-patch 2/3 
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v5.10.235&id=2a03c1314506557277829562dd2ec5c11a6ea914 
-patch 3/3
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-5.10.y&id=c432094aa7c9970f2fa10d2305d550d3810657ce
+     May i know when this patch will be merged into 6.14 if everything 
+is OK?
 
-patch 2 and 3 are cleanly applicable to v5.4.y, build test was sucessful.
 
- drivers/dma/ti/edma.c | 59 ++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 53 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
-index 01089e5c565f..47423bbd7bc7 100644
---- a/drivers/dma/ti/edma.c
-+++ b/drivers/dma/ti/edma.c
-@@ -259,6 +259,13 @@ struct edma_cc {
- 	 */
- 	unsigned long *slot_inuse;
- 
-+	/*
-+	 * For tracking reserved channels used by DSP.
-+	 * If the bit is cleared, the channel is allocated to be used by DSP
-+	 * and Linux must not touch it.
-+	 */
-+	unsigned long *channels_mask;
-+
- 	struct dma_device		dma_slave;
- 	struct dma_device		*dma_memcpy;
- 	struct edma_chan		*slave_chans;
-@@ -715,6 +722,12 @@ static int edma_alloc_channel(struct edma_chan *echan,
- 	struct edma_cc *ecc = echan->ecc;
- 	int channel = EDMA_CHAN_SLOT(echan->ch_num);
- 
-+	if (!test_bit(echan->ch_num, ecc->channels_mask)) {
-+		dev_err(ecc->dev, "Channel%d is reserved, can not be used!\n",
-+			echan->ch_num);
-+		return -EINVAL;
-+	}
-+
- 	/* ensure access through shadow region 0 */
- 	edma_or_array2(ecc, EDMA_DRAE, 0, EDMA_REG_ARRAY_INDEX(channel),
- 		       EDMA_CHANNEL_BIT(channel));
-@@ -2249,7 +2262,7 @@ static int edma_probe(struct platform_device *pdev)
- 	struct edma_soc_info	*info = pdev->dev.platform_data;
- 	s8			(*queue_priority_mapping)[2];
- 	int			i, off;
--	const s16		(*rsv_slots)[2];
-+	const s16               (*reserved)[2];
- 	const s16		(*xbar_chans)[2];
- 	int			irq;
- 	char			*irq_name;
-@@ -2330,15 +2343,32 @@ static int edma_probe(struct platform_device *pdev)
- 	if (!ecc->slot_inuse)
- 		return -ENOMEM;
- 
-+	ecc->channels_mask = devm_kcalloc(dev,
-+					   BITS_TO_LONGS(ecc->num_channels),
-+					   sizeof(unsigned long), GFP_KERNEL);
-+	if (!ecc->channels_mask)
-+		return -ENOMEM;
-+
-+	/* Mark all channels available initially */
-+	bitmap_fill(ecc->channels_mask, ecc->num_channels);
-+
- 	ecc->default_queue = info->default_queue;
- 
- 	if (info->rsv) {
- 		/* Set the reserved slots in inuse list */
--		rsv_slots = info->rsv->rsv_slots;
--		if (rsv_slots) {
--			for (i = 0; rsv_slots[i][0] != -1; i++)
--				bitmap_set(ecc->slot_inuse, rsv_slots[i][0],
--					   rsv_slots[i][1]);
-+		reserved = info->rsv->rsv_slots;
-+		if (reserved) {
-+			for (i = 0; reserved[i][0] != -1; i++)
-+				bitmap_set(ecc->slot_inuse, reserved[i][0],
-+					   reserved[i][1]);
-+		}
-+
-+		/* Clear channels not usable for Linux */
-+		reserved = info->rsv->rsv_chans;
-+		if (reserved) {
-+			for (i = 0; reserved[i][0] != -1; i++)
-+				bitmap_clear(ecc->channels_mask, reserved[i][0],
-+					     reserved[i][1]);
- 		}
- 	}
- 
-@@ -2398,6 +2428,7 @@ static int edma_probe(struct platform_device *pdev)
- 
- 	if (!ecc->legacy_mode) {
- 		int lowest_priority = 0;
-+		unsigned int array_max;
- 		struct of_phandle_args tc_args;
- 
- 		ecc->tc_list = devm_kcalloc(dev, ecc->num_tc,
-@@ -2421,6 +2452,18 @@ static int edma_probe(struct platform_device *pdev)
- 			}
- 			of_node_put(tc_args.np);
- 		}
-+
-+		/* See if we have optional dma-channel-mask array */
-+		array_max = DIV_ROUND_UP(ecc->num_channels, BITS_PER_TYPE(u32));
-+		ret = of_property_read_variable_u32_array(node,
-+						"dma-channel-mask",
-+						(u32 *)ecc->channels_mask,
-+						1, array_max);
-+		if (ret > 0 && ret != array_max)
-+			dev_warn(dev, "dma-channel-mask is not complete.\n");
-+		else if (ret == -EOVERFLOW || ret == -ENODATA)
-+			dev_warn(dev,
-+				 "dma-channel-mask is out of range or empty\n");
- 	}
- 
- 	/* Event queue priority mapping */
-@@ -2438,6 +2481,10 @@ static int edma_probe(struct platform_device *pdev)
- 	edma_dma_init(ecc, legacy_mode);
- 
- 	for (i = 0; i < ecc->num_channels; i++) {
-+		/* Do not touch reserved channels */
-+		if (!test_bit(i, ecc->channels_mask))
-+			continue;
-+
- 		/* Assign all channels to the default queue */
- 		edma_assign_channel_eventq(&ecc->slave_chans[i],
- 					   info->default_queue);
--- 
-2.25.1
-
+>
+>>
+>> thanks,
+>
 
