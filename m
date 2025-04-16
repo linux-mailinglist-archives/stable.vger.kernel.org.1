@@ -1,157 +1,135 @@
-Return-Path: <stable+bounces-132825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7A39A8AF0C
-	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 06:31:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F077A8AF96
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 07:17:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF2E8440DE9
-	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 04:31:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 344893AB134
+	for <lists+stable@lfdr.de>; Wed, 16 Apr 2025 05:16:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C72A228C92;
-	Wed, 16 Apr 2025 04:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE72A2288F4;
+	Wed, 16 Apr 2025 05:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y5nvrMgx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mmtxktPk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2A34A1A;
-	Wed, 16 Apr 2025 04:31:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A6020FA94;
+	Wed, 16 Apr 2025 05:16:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744777912; cv=none; b=bMZAC5xkUGe9YFZcFBiBJ1ftCXb3whS8VOAY+aS3w/JkCGldRXg1T5iBDpcofyiokV9klxbxxGBAzolQggyz+mwDKO6atG5r35j6fZpkdTAkxQDEKm2O5QpumYqLCvd7DqLu+a1jbX+U45vMWiqeQ7+dXix+enPoHgJBBbxdKLc=
+	t=1744780619; cv=none; b=QcupcE8pcRC5P54ZI1VnwWyhA+7h/oVKljencH3OrAOT4eOWXZLP9DX5WMEjm/5vjSqP45ytgN9hEG/doh+Vs2FX4PJ+5LSPsckOgN42Ok2vMxsyhWcm3dcpUDljjKQyXbRh/e9qEsh/UJ4ROdWtBFftlpKow++cWUdhtSw0o1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744777912; c=relaxed/simple;
-	bh=ID3mgG/yq3/csCj1uKnjg/LaU6bBse9jTIXuE9Q5spk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gn18l6V5mUDarXmwPpuPfVpNj7li+8M3TR+UfCZsq73stG2+5elCeoCY+Nyw/b4HBVKVsgROToNTAGGdKqlprJU84drVWC0Go4xx7M/K4pcTnhCd8lHTrEWdEB9uADD1PMTxXpSoL0rwgCUWfhYdkj+iuTtw+/RoWMQc8YgI3Yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y5nvrMgx; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-736b98acaadso5780065b3a.1;
-        Tue, 15 Apr 2025 21:31:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744777909; x=1745382709; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=URvhPy/oV2vL/75NuZBpcrmjoqkq3rW0UHgJpR5E4JE=;
-        b=Y5nvrMgx99J07RrP9Gs3rxrMEKMim6ywTAfoAI4iNV8xnhLDMwFZ94R5EY4j6p7Par
-         r/FXTJXeMPKj0WfEonZp8Mah/wPT2s5vpzM4mqyUC6QgfkugHfrb3M9aEpPpxw68bLN1
-         JMAVWIZxNBZq67nzcVBvEnad2dwIEEoeKEqRxCMiqyj6H+3i0KChagDaosiD4tz5AhTf
-         ByFhlPb5wfXMaQHplneesbQkml3hZUGleDLBUCqECc6i47t5ka7yMgF51ifDdY2WGHK2
-         jmQfOWQfJzLdN0pAtUiUl1ruKRJ1ZdNmBzS8IJfHl0A+iLayuroZg7nPoUeIXKdVJxxK
-         v4fA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744777909; x=1745382709;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=URvhPy/oV2vL/75NuZBpcrmjoqkq3rW0UHgJpR5E4JE=;
-        b=VECizaGHiion6hnnl6lTEqK6dduWpkBouIgO2XJln+elnyFrGOTRnH0+AFUVLGTVpN
-         +TMsyWGJU3FiWSW+igwNfxE6LJp7M5TBHTRD7HTJ+01Sm5LalwX/uo0kZayCE+JjqcqW
-         3ss/b0nN2Z1aSRgIiQ1+OLLsOhxGztPTPYGPT/YEe/q4dTasVcblG9FnR0hgbSwlRPCi
-         GdRad7TjVIqB3BmpVWMxBurlrB2obv8RlJ3iQUeaKafZvqpjfI3fGvd8Ku/vV5TlAwtt
-         xLOrz76uqFxm8PH6TcvJiU+gE9bq1HxW/C61AFRSRR7ENrjX/Pk6/NS8agCSWLdhrWiZ
-         4DVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVz26c1mrzzY2gfh++kfcBZkuPAJDc8mOTbCq/XJG5pyZw4jea2PzlMPISv8CYo+4iS0ry1IZOt@vger.kernel.org, AJvYcCXmuEDzSwiJMjXxJ3pkOwt3cJixTdEvnHQ3T+WvIpGnXRoPHFYWg5V0yqS+rqO5OWoVOVmiFcUntjTogKPU@vger.kernel.org, AJvYcCXs8yJcqVN7loUm5tgduUYFVnKRUgrORTVvxDBYXhrQtazehNCb9oa05mS5aaXaGjkbkOubquyXM8jNFqdR@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDDE0mDlmacKGrKs56357A1K6dZs17JN/0dljbvZ5mlFgqvhkD
-	aaNpshmuT+ZDr3UYofa6OSyX0mZPzMObUEJaBiGVYRa75jpaASrqQnOUtkHQ
-X-Gm-Gg: ASbGncvwvMgyv8x7YVUo95aVIkBxQ632kVpmeIITt9BreEF8jxeC2rVn4S04TDuFWGU
-	aNXBCtLlTEUKmddcHbNEhTNR/VuXat+/qPsFQDDVt06xgeO4iKigUvIeaTPOxDMrG04kui94kwA
-	cFufMJcKB+dAz7usb1vd6Q0UC8U/jvVmsu9gYcw6iAyBqXzrSYsUPSEk1VGvV43U1o0slqK8UyJ
-	gZc+SZHudAsyG8Ar1uzrV+JkKxqxGX7QSx13zW5BLeYjhcIXdGxW++Vbdgm30JEpHbd27ud4vZa
-	COatst7cvHtRp48nZaHa1Mswe0KIVno6KkVm9geyEeR1OWtWTWCxe/ntBJAweQ==
-X-Google-Smtp-Source: AGHT+IHFgMxReC+YG32Dd+BwllhMqIBI2ZO2sqm0vk18CB7ElHOpAOiE8Lq9VRJv61eZzLm7um2j+Q==
-X-Received: by 2002:a05:6a21:789d:b0:1f3:345e:4054 with SMTP id adf61e73a8af0-203b3ea0252mr318052637.14.1744777909525;
-        Tue, 15 Apr 2025 21:31:49 -0700 (PDT)
-Received: from VM-16-38-fedora.. ([43.135.149.86])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bd230d697sm9396676b3a.123.2025.04.15.21.31.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Apr 2025 21:31:49 -0700 (PDT)
-From: Jinliang Zheng <alexjlzheng@gmail.com>
-X-Google-Original-From: Jinliang Zheng <alexjlzheng@tencent.com>
-To: akpm@linux-foundation.org
-Cc: alexjlzheng@gmail.com,
-	alexjlzheng@tencent.com,
-	andrea@betterlinux.com,
-	fengguang.wu@intel.com,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	mengensun@tencent.com,
-	stable@vger.kernel.org,
-	willy@infradead.org
-Subject: Re: [PATCH v2] mm: fix ratelimit_pages update error in dirty_ratio_handler()
-Date: Wed, 16 Apr 2025 12:31:47 +0800
-Message-ID: <20250416043147.31208-1-alexjlzheng@tencent.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250415185851.e8d632f60ec5049f734ac2a8@linux-foundation.org>
-References: <20250415185851.e8d632f60ec5049f734ac2a8@linux-foundation.org>
+	s=arc-20240116; t=1744780619; c=relaxed/simple;
+	bh=oofoOEhspfX/nuwUOt+gYtgRHS8ackKen21AtuBz0jM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mvV11UQBuBq3hG10VZcSBH2dEFUfJdPBilCvghIM0A41MdxQ4jot60o5ZFOTMTtRmwND5vj1/uFw1GOEiyownmEwHqrte0DMQP+tuW9gHj07RtRo57HupvYT0/PWusR5nQbj2I2DbdpeZcrC4l+oTkdc8fRSWEjogcJ4x0DZzxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mmtxktPk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0107C4CEE2;
+	Wed, 16 Apr 2025 05:16:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744780618;
+	bh=oofoOEhspfX/nuwUOt+gYtgRHS8ackKen21AtuBz0jM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=mmtxktPk94CX9YSXqA5IWOmIIeLwjrSUfMs0X1N9A4xcuK2V8IcRwedXPg3HGCUIP
+	 uHJ03/KfBzDBOd7PGkA/T0DfW/MgP84g9V7NUBwJ9pwU5kNrjf3Vb8VhpUGXyUfMBz
+	 bbqBwZ367BhhKUrnhfqK/g5AHmVLXv02SAxTW6QgTeGIS/Pq+Cfj4P6FbSQAogEB6M
+	 7i8xGer6f/ESqtccsscTOIjzTpcwHCIKqXc/6f4Vulgl1oISVAJ5vl66nbgu2dTc4/
+	 vkl1XhmHYpjLzDk8Bki4B57fcNF10WnifvOJ4filfe55IG2eDALC6YiLTJ2zwrWke+
+	 mGULWPBTeQp7Q==
+Message-ID: <19b07fe9-0811-4644-a975-13f9aba6af18@kernel.org>
+Date: Wed, 16 Apr 2025 07:16:55 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: 6.14.y regression in ath11k
+To: Mario Limonciello <superm1@kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+Cc: Matthew Schwartz <matthew.schwartz@linux.dev>,
+ Linux kernel regressions list <regressions@lists.linux.dev>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <cab8e07a-84fa-48f3-ac6f-382148b20744@kernel.org>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <cab8e07a-84fa-48f3-ac6f-382148b20744@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, 15 Apr 2025 18:58:51 -0700, akpm@linux-foundation.org wrote:
-> On Tue, 15 Apr 2025 17:02:32 +0800 alexjlzheng@gmail.com wrote:
+On 16. 04. 25, 0:11, Mario Limonciello wrote:
+> Hello,
 > 
-> > From: Jinliang Zheng <alexjlzheng@tencent.com>
-> > 
-> > In the dirty_ratio_handler() function, vm_dirty_bytes must be set to
-> > zero before calling writeback_set_ratelimit(), as global_dirty_limits()
-> > always prioritizes the value of vm_dirty_bytes.
+> Matt Schwartz (cc) found a regression in 6.14.2 that the Steam Deck OLED 
+> took 45s to find a network after suspend/resume waiting for a timeout.
+> This was a regression from 6.14.1.
 > 
-> Can you please tell us precisely where global_dirty_limits()
-> prioritizes vm_dirty_bytes?  I spent a while chasing code and didn't
-> see how global_dirty_limits() gets to node_dirty_ok()(?).
-
-Thank you for your reply.
-
-It's domain_dirty_limits() that's relevant here, not node_dirty_ok:
-
-  dirty_ratio_handler
-    writeback_set_ratelimit
-      global_dirty_limits(&dirty_thresh)           <- ratelimit_pages based on dirty_thresh
-        domain_dirty_limits
-          if (bytes)                               <- bytes = vm_dirty_bytes <--------+
-            thresh = f1(bytes)                     <- prioritizes vm_dirty_bytes      |
-          else                                                                        |
-            thresh = f2(ratio)                                                        |
-      ratelimit_pages = f3(dirty_thresh)                                              |
-    vm_dirty_bytes = 0                             <- it's late! ---------------------+
-
+> The regression happened because:
 > 
-> > That causes ratelimit_pages to still use the value calculated based on
-> > vm_dirty_bytes, which is wrong now.
-> > 
-> > Fixes: 9d823e8f6b1b ("writeback: per task dirty rate limit")
-> > Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
-> > Reviewed-by: MengEn Sun <mengensun@tencent.com>
-> > Cc: stable@vger.kernel.org
+> commit 933ab187e679 ("wifi: ath11k: update channel list in reg notifier 
+> instead reg worker")
+> was backported to 6.14.y without the other commit in the series:
 > 
-> Please, as always, provide a description of the userspace-visible
-> effects of this bug?
+> commit 02aae8e2f957 ("wifi: ath11k: update channel list in worker when 
+> wait flag is set")
+> 
+> Backporting commit 02aae8e2f957 ("wifi: ath11k: update channel list in 
+> worker when wait flag is set") to 6.14.2 fixes the regression.
 
-The impact visible to userspace is difficult to capture directly because there is no
-procfs/sysfs interface exported to user space. However, it will have a real impact
-on the balance of dirty pages.
+Agreed, this is the same as:
+https://lore.kernel.org/all/5cd9db3f-4abf-4b66-b401-633508e905ac@kernel.org/
 
-For example:
-1. On default, we have vm_dirty_ratio=40, vm_dirty_bytes=0
-2. echo 8192 > dirty_bytes, then vm_dirty_bytes=8192, vm_dirty_ratio=0, and ratelimit_pages
-   is calculated based on vm_dirty_bytes now.
-3. echo 20 > dirty_ratio, then since vm_dirty_bytes is not reset to zero when
-   writeback_set_ratelimit() -> global_dirty_limits() -> domain_dirty_limits() is called,
-   reallimit_pages is still calculated based on vm_dirty_bytes instead of vm_dirty_ratio.
-   This does not conform to the actual intention of the user.
 
-thanks,
-Jinliang Zheng :)
+-- 
+js
+suse labs
+
 
