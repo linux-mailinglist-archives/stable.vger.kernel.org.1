@@ -1,78 +1,109 @@
-Return-Path: <stable+bounces-133027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B204A91A77
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 13:18:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55003A91A80
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 13:19:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BD4A462546
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 11:18:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BE155A6928
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 11:18:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB349239597;
-	Thu, 17 Apr 2025 11:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1874F23A986;
+	Thu, 17 Apr 2025 11:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i1+Zt5km"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Uzrf8IgZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1C7239595
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 11:18:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED06023A988;
+	Thu, 17 Apr 2025 11:18:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744888699; cv=none; b=TP6CImZxsyDWroAvOvQv9ovvqHNUu+bqymRF4QAyKEqNAqAnlsLd1FYqTp2wWejUWHtxxAMORpiNdfdCbQxs/leGr7B9ktax1YGcQfE57JrV9tIlFZhsJ3lMhnmrAhZ9BYNenDH2+hPsoYSVwZmfTQxZoFS/muNtKb53JoSs9wg=
+	t=1744888715; cv=none; b=B7hf7ogQL7Y0Pxg1pe/gja5VcT8mkSyf9BfScBIxqGPdI3rwduvRqur7FfrhGdJgjyFF73wQH6H9sZLvUpUjOi6kpQWQAByy18YdSKnPuZmLktnTdUy0bvu5SLg1/m54heSsKkPnMTs5d10o6MABu/Qp1kOzVLKTdFHYsblmwJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744888699; c=relaxed/simple;
-	bh=W73QhjPJp97HuGVCKiT6ONt+AmUOO7DxHiZh5k/bZbI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PGO3IuhFCpYk13vbdwQSQlmJ5FC45OHygSJYNPPShWPqgNZ9IMDtu9POct6/rwkVctL1hxeFHLJhaZwFaOGh2fyQcqfx1GOqktiyiRaUm2yKSiDdPGc85aF9WS7ici8KqOyHkMWpBJCqoynLrz2kEuGKTjeMv0TeqyJ0wvbF4QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i1+Zt5km; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF3DC4CEE4;
-	Thu, 17 Apr 2025 11:18:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744888699;
-	bh=W73QhjPJp97HuGVCKiT6ONt+AmUOO7DxHiZh5k/bZbI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=i1+Zt5kmsd0AY1Fec0T0VkQGc1WaHxgQPI/pbJikhrh15d16v3FnQNOVj1IQcGOdl
-	 yeTxXdTctroLSZPsE/3KJmIMKEYLMDoVJyie9Z+qVXyJU86yXAYm+x4YGcyj0428yw
-	 mLe9nLbXA3A5Wr1i20UY1Sj91k1kEO0xjzcsAMWYPvz6ZtbexE8l3dybd9mbUOZClD
-	 tqoGqmVXt1EFfJGdvtti8ftzDu1ugWo/wVCgP+sb4F3cc1LBIOylOgKtM4JyPb25WA
-	 KgjoCakLpuPn4SvBptBbf9Pkglb5QXb8M7L/xu60fK82j8Hh6ORVYVwnF1ntcE5yls
-	 pKj4WhthQFfFw==
-Date: Thu, 17 Apr 2025 12:18:13 +0100
-From: Will Deacon <will@kernel.org>
-To: gregkh@linuxfoundation.org
-Cc: pjaroszynski@nvidia.com, apopple@nvidia.com, catalin.marinas@arm.com,
-	jgg@nvidia.com, jhubbard@nvidia.com, nicolinc@nvidia.com,
-	rananta@google.com, robin.murphy@arm.com, sj@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] Fix mmu notifiers for range-based
- invalidates" failed to apply to 6.6-stable tree
-Message-ID: <20250417111812.GA12231@willie-the-truck>
-References: <2025031650-yarn-arrogant-2584@gregkh>
+	s=arc-20240116; t=1744888715; c=relaxed/simple;
+	bh=tBsxo/PDtpgeu7MYr3/jGImFHyNDSg/NlgywZf6lq0U=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=oVYNwi1RRi458e+LGBuFgEtwILeEfXjjPPm7Ydgz5MBJEknxbKZ4mPH0r3+8gN0sk5fAcEQ0dMkUk+EG8L9djOThUFDzkImk96QwTonjrKDykuv+MIth/nz7Ed7uh3T78DE4Ide19qfMEHCLt4FkwxN0ouYDoYclSbfbceqFDyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Uzrf8IgZ; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744888714; x=1776424714;
+  h=from:to:cc:in-reply-to:references:subject:message-id:
+   date:mime-version:content-transfer-encoding;
+  bh=tBsxo/PDtpgeu7MYr3/jGImFHyNDSg/NlgywZf6lq0U=;
+  b=Uzrf8IgZf2FZBzxxkxFtkr6++L8rPtGgEJtVIiNUOD5BkCuRCmor6KCq
+   vNkUxp5cXCz5jyh9Z40yU4aJTdeXer1VgzNvp8w2+GzAY7WdPh03qudFS
+   rOaLvFTYcl7ktcw+hl76a8SO9jpJ8R+vlsnjQjgFVkZ+2CIpURyAh/31g
+   rSAEJ0PXOYOMUDIcBwo4x2Iv199v/gyYdAR24YCKGc0+85GlitE7qPQal
+   FzL1oNonPsFdXKjzdE+Vg+hT1Rmrrhe7QPk+Dmo91FdrCRVeLzzP8a9tn
+   /lMwjpWui7xXEUuc+hF2GRt3ON3APoKr2ktRC6PM6hxD7I6rkknlspyqx
+   Q==;
+X-CSE-ConnectionGUID: jIkonNNXRsGDVjOxuk6RLg==
+X-CSE-MsgGUID: G86/o+AqSRyAfyxLpnV4Dw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="46366544"
+X-IronPort-AV: E=Sophos;i="6.15,218,1739865600"; 
+   d="scan'208";a="46366544"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 04:18:33 -0700
+X-CSE-ConnectionGUID: Mycypb18TImK2GkSbrDrjQ==
+X-CSE-MsgGUID: S0m2TVWaT9SMGi/+NHUHZg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,218,1739865600"; 
+   d="scan'208";a="131677616"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.144])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 04:18:31 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: mario.limonciello@amd.com, Shyam-sundar.S-k@amd.com, 
+ hdegoede@redhat.com, Mario Limonciello <superm1@kernel.org>
+Cc: stable@vger.kernel.org, platform-driver-x86@vger.kernel.org
+In-Reply-To: <20250414162446.3853194-1-superm1@kernel.org>
+References: <20250414162446.3853194-1-superm1@kernel.org>
+Subject: Re: [PATCH] platform/x86/amd: pmc: Require at least 2.5 seconds
+ between HW sleep cycles
+Message-Id: <174488870627.2548.9797657945749595062.b4-ty@linux.intel.com>
+Date: Thu, 17 Apr 2025 14:18:26 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025031650-yarn-arrogant-2584@gregkh>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
 
-On Sun, Mar 16, 2025 at 08:23:50AM +0100, gregkh@linuxfoundation.org wrote:
+On Mon, 14 Apr 2025 11:24:00 -0500, Mario Limonciello wrote:
+
+> When an APU exits HW sleep with no active wake sources the Linux kernel will
+> rapidly assert that the APU can enter back into HW sleep. This happens in a
+> few ms. Contrasting this to Windows, Windows can take 10s of seconds to
+> enter back into the resiliency phase for Modern Standby.
 > 
-> The patch below does not apply to the 6.6-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
+> For some situations this can be problematic because it can cause leakage
+> from VDDCR_SOC to VDD_MISC and force VDD_MISC outside of the electrical
+> design guide specifications. On some designs this will trip the over
+> voltage protection feature (OVP) of the voltage regulator module, but it
+> could cause APU damage as well.
+> 
+> [...]
 
-I sent a backport here:
 
-https://lore.kernel.org/r/20250411172804.6014-1-will@kernel.org
+Thank you for your contribution, it has been applied to my local
+review-ilpo-fixes branch. Note it will show up in the public
+platform-drivers-x86/review-ilpo-fixes branch only once I've pushed my
+local branch there, which might take a while.
 
-Will
+The list of commits applied:
+[1/1] platform/x86/amd: pmc: Require at least 2.5 seconds between HW sleep cycles
+      commit: 9f5595d5f03fd4dc640607a71e89a1daa68fd19d
+
+--
+ i.
+
 
