@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-133802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89EC3A927DB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:29:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F392A92989
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:43:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A2A43B53DD
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:27:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6E48188C4AA
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C1072571CF;
-	Thu, 17 Apr 2025 18:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D375325A2A2;
+	Thu, 17 Apr 2025 18:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JWkvgWzl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KGA8ZqXs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE154256C9C;
-	Thu, 17 Apr 2025 18:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB6D257AD8;
+	Thu, 17 Apr 2025 18:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914183; cv=none; b=Lzz4X6oYwRmmSPoP789a2KXtDG0lXTdQhFGWFFYxD0FRj1rpVpedbVG2GtHZ+wiqZuOOph93FaFDUuAuuDZltjXnJadD1t6qUp/gi+Y05j+uy/Ylbo/TE3kxsYnOfeGvFOrHogoQDlH28ALpaVQLC14hFEl4AkSw6y22nkqOAjE=
+	t=1744915299; cv=none; b=a2nFqD+b1Ud6ynchLd74a9nCNfDtKSE1x3V+ZNn1XL7cCUBnx4FIx9+eykktL8xnbqGftwtvJ8C6DeddSAs7Rw3P/fLQp+TzhvKcSVtaTw1f7VyVIG5RSakD/bwANiSy8qCOhtL1+p9ZsZ4opuLrdYokqJ3SntLe0Uh0UqFkqBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914183; c=relaxed/simple;
-	bh=nbg4YNegVJGaP8xyNyNtgHvdnuxjrVMU9LsWEjDenK0=;
+	s=arc-20240116; t=1744915299; c=relaxed/simple;
+	bh=0EQyVak/WzP068viSD5xyTWwRgfdHhEUGAh434o/BCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oZvH5LKiH+OsJ3yKCyLH06EMIIj5YlPR3AI1hf9aSbFRsWlYdIGI0/08l8Y7acqnd/Nx84oCXi3zMSlGkgcz/S+7a/P1QbBgxM+Ge36IPEXQY2vkyKbk6PCzeX8cwfpT70RK9i7nH6n9RjunvR08VZ4FxtG+lbt1LAv9LluBefk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JWkvgWzl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFA23C4CEE4;
-	Thu, 17 Apr 2025 18:23:02 +0000 (UTC)
+	 MIME-Version; b=cCY9rqGTsIiVwGMRqc+L9BJ3YTpiI7LHgojZx1CzzwyWO7+U7tefELC6wklDME2jCSvoQFlS6MAdKC/KY4rjnVN/Ptmtdl6aEsjkOg4m5I4P0BjLKPWjXBWTIcsiSnYXr3iUJVG68aTzcgIz3kmsvny83RXPH0Xk6c9Su9zvJsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KGA8ZqXs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199D5C4CEE4;
+	Thu, 17 Apr 2025 18:41:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914183;
-	bh=nbg4YNegVJGaP8xyNyNtgHvdnuxjrVMU9LsWEjDenK0=;
+	s=korg; t=1744915299;
+	bh=0EQyVak/WzP068viSD5xyTWwRgfdHhEUGAh434o/BCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JWkvgWzlEawHrAaLL0ccBXieUSzduwGEjrDumFRjXWj7hswFGlHjoEOvgjFMJBWgA
-	 Hi7yqCiC6WztYo0mIYrfr4JZxnTli7WuV4nNx7bqtpO/7G4ugkaGx3zeHXW24EPJhB
-	 xDAxDXQI00Kh8tsAhS+FEYZqlS0XUyKMyHEnlf/4=
+	b=KGA8ZqXsEpBMv5cuquelNEN8IQzYCxQN/drBv92tf1yanVedLmpd7EdIpLlZBG4iK
+	 s+FuCv1ByxiQmcMCTzhz20lZpx5UA6I3Q7TTZvgMXT/rw6HThuiMKwSceokYO0g2Kh
+	 3aozNUqU1b9onqF3X4wV33RguuWOpPPLobfTadHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Zhikai Zhai <zhikai.zhai@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Miaoqing Pan <quic_miaoqing@quicinc.com>,
+	Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 133/414] drm/amd/display: Update Cursor request mode to the beginning prefetch always
-Date: Thu, 17 Apr 2025 19:48:11 +0200
-Message-ID: <20250417175116.780771897@linuxfoundation.org>
+Subject: [PATCH 6.12 083/393] wifi: ath11k: fix memory leak in ath11k_xxx_remove()
+Date: Thu, 17 Apr 2025 19:48:12 +0200
+Message-ID: <20250417175110.942197510@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,97 +63,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhikai Zhai <zhikai.zhai@amd.com>
+From: Miaoqing Pan <quic_miaoqing@quicinc.com>
 
-[ Upstream commit 4a4077b4b63a8404efd6d37fc2926f03fb25bace ]
+[ Upstream commit efb24b1f0d29537714dd3cc46fb335ac27855251 ]
 
-[Why]
-The double buffer cursor registers is updated by the cursor
-vupdate event. There is a gap between vupdate and cursor data
-fetch if cursor fetch data reletive to cursor position.
-Cursor corruption will happen if we update the cursor surface
-in this gap.
+The firmware memory was allocated in ath11k_pci_probe() or
+ath11k_ahb_probe(), but not freed in ath11k_xxx_remove() in case
+ATH11K_FLAG_QMI_FAIL bit is set. So call ath11k_fw_destroy() to
+free the memory.
 
-[How]
-Modify the cursor request mode to the beginning prefetch always
-and avoid wraparound calculation issues.
+Found while fixing the same problem in ath12k:
+https://lore.kernel.org/linux-wireless/20240314012746.2729101-1-quic_miaoqing@quicinc.com
 
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Zhikai Zhai <zhikai.zhai@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-04546-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
+
+Signed-off-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
+Reviewed-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250123084948.1124357-1-quic_miaoqing@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/hubp/dcn31/dcn31_hubp.c    |  2 +-
- .../amd/display/dc/hwss/dcn10/dcn10_hwseq.c   | 22 ++++++++-----------
- 2 files changed, 10 insertions(+), 14 deletions(-)
+ drivers/net/wireless/ath/ath11k/ahb.c  | 4 +++-
+ drivers/net/wireless/ath/ath11k/core.c | 3 +--
+ drivers/net/wireless/ath/ath11k/fw.c   | 3 ++-
+ drivers/net/wireless/ath/ath11k/pci.c  | 3 ++-
+ 4 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hubp/dcn31/dcn31_hubp.c b/drivers/gpu/drm/amd/display/dc/hubp/dcn31/dcn31_hubp.c
-index a65a0ddee6467..c671908ba7d06 100644
---- a/drivers/gpu/drm/amd/display/dc/hubp/dcn31/dcn31_hubp.c
-+++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn31/dcn31_hubp.c
-@@ -44,7 +44,7 @@ void hubp31_set_unbounded_requesting(struct hubp *hubp, bool enable)
- 	struct dcn20_hubp *hubp2 = TO_DCN20_HUBP(hubp);
+diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
+index 97b12f51ef28c..9389dc5f4a3da 100644
+--- a/drivers/net/wireless/ath/ath11k/ahb.c
++++ b/drivers/net/wireless/ath/ath11k/ahb.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2022-2025 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
  
- 	REG_UPDATE(DCHUBP_CNTL, HUBP_UNBOUNDED_REQ_MODE, enable);
--	REG_UPDATE(CURSOR_CONTROL, CURSOR_REQ_MODE, enable);
-+	REG_UPDATE(CURSOR_CONTROL, CURSOR_REQ_MODE, 1);
+ #include <linux/module.h>
+@@ -1290,6 +1290,7 @@ static void ath11k_ahb_remove(struct platform_device *pdev)
+ 	ath11k_core_deinit(ab);
+ 
+ qmi_fail:
++	ath11k_fw_destroy(ab);
+ 	ath11k_ahb_free_resources(ab);
  }
  
- void hubp31_soft_reset(struct hubp *hubp, bool reset)
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-index 44e405e9bc971..13f9e9b439f6a 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-@@ -1992,20 +1992,11 @@ static void delay_cursor_until_vupdate(struct dc *dc, struct pipe_ctx *pipe_ctx)
- 	dc->hwss.get_position(&pipe_ctx, 1, &position);
- 	vpos = position.vertical_count;
+@@ -1309,6 +1310,7 @@ static void ath11k_ahb_shutdown(struct platform_device *pdev)
+ 	ath11k_core_deinit(ab);
  
--	/* Avoid wraparound calculation issues */
--	vupdate_start += stream->timing.v_total;
--	vupdate_end += stream->timing.v_total;
--	vpos += stream->timing.v_total;
--
- 	if (vpos <= vupdate_start) {
- 		/* VPOS is in VACTIVE or back porch. */
- 		lines_to_vupdate = vupdate_start - vpos;
--	} else if (vpos > vupdate_end) {
--		/* VPOS is in the front porch. */
--		return;
- 	} else {
--		/* VPOS is in VUPDATE. */
--		lines_to_vupdate = 0;
-+		lines_to_vupdate = stream->timing.v_total - vpos + vupdate_start;
- 	}
- 
- 	/* Calculate time until VUPDATE in microseconds. */
-@@ -2013,13 +2004,18 @@ static void delay_cursor_until_vupdate(struct dc *dc, struct pipe_ctx *pipe_ctx)
- 		stream->timing.h_total * 10000u / stream->timing.pix_clk_100hz;
- 	us_to_vupdate = lines_to_vupdate * us_per_line;
- 
-+	/* Stall out until the cursor update completes. */
-+	if (vupdate_end < vupdate_start)
-+		vupdate_end += stream->timing.v_total;
-+
-+	/* Position is in the range of vupdate start and end*/
-+	if (lines_to_vupdate > stream->timing.v_total - vupdate_end + vupdate_start)
-+		us_to_vupdate = 0;
-+
- 	/* 70 us is a conservative estimate of cursor update time*/
- 	if (us_to_vupdate > 70)
- 		return;
- 
--	/* Stall out until the cursor update completes. */
--	if (vupdate_end < vupdate_start)
--		vupdate_end += stream->timing.v_total;
- 	us_vupdate = (vupdate_end - vupdate_start + 1) * us_per_line;
- 	udelay(us_to_vupdate + us_vupdate);
+ free_resources:
++	ath11k_fw_destroy(ab);
+ 	ath11k_ahb_free_resources(ab);
  }
+ 
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index ccf4ad35fdc33..7eba6ee054ffe 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ 
+ #include <linux/module.h>
+@@ -2214,7 +2214,6 @@ void ath11k_core_deinit(struct ath11k_base *ab)
+ 	ath11k_hif_power_down(ab);
+ 	ath11k_mac_destroy(ab);
+ 	ath11k_core_soc_destroy(ab);
+-	ath11k_fw_destroy(ab);
+ }
+ EXPORT_SYMBOL(ath11k_core_deinit);
+ 
+diff --git a/drivers/net/wireless/ath/ath11k/fw.c b/drivers/net/wireless/ath/ath11k/fw.c
+index 4e36292a79db8..cbbd8e57119f2 100644
+--- a/drivers/net/wireless/ath/ath11k/fw.c
++++ b/drivers/net/wireless/ath/ath11k/fw.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+- * Copyright (c) 2022-2023, Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2022-2025 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ 
+ #include "core.h"
+@@ -166,3 +166,4 @@ void ath11k_fw_destroy(struct ath11k_base *ab)
+ {
+ 	release_firmware(ab->fw.fw);
+ }
++EXPORT_SYMBOL(ath11k_fw_destroy);
+diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
+index be9d2c69cc413..6ebfa5d02e2e5 100644
+--- a/drivers/net/wireless/ath/ath11k/pci.c
++++ b/drivers/net/wireless/ath/ath11k/pci.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2019-2020 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ 
+ #include <linux/module.h>
+@@ -981,6 +981,7 @@ static void ath11k_pci_remove(struct pci_dev *pdev)
+ 	ath11k_core_deinit(ab);
+ 
+ qmi_fail:
++	ath11k_fw_destroy(ab);
+ 	ath11k_mhi_unregister(ab_pci);
+ 
+ 	ath11k_pcic_free_irq(ab);
 -- 
 2.39.5
 
