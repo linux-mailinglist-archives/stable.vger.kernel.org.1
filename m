@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-133730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09AE1A92716
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:19:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA286A9297D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C39117CD3A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:19:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00C5D3BAB86
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B9925525D;
-	Thu, 17 Apr 2025 18:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B309025743E;
+	Thu, 17 Apr 2025 18:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9GAe0vc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXkSc1nv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1759B255241;
-	Thu, 17 Apr 2025 18:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E19C2550C2;
+	Thu, 17 Apr 2025 18:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913968; cv=none; b=JLDCSne0DaaBOncCT8lL4RjRyCIaL4NxzU/A1o9SWl+2h0G8av4jPIZbnPZkhCWsqQXbNxOtaL7a1xXv8VyOvoSpwkYsfHyJ/U7xP+N5//AKi4Bizp3OUvj1Ky4KeXtf8cmTzW2BZeZZ4slEK05OwmNp3Kp7M7UAEy6h9G0/qKA=
+	t=1744915076; cv=none; b=Hsbcwj0x0z5Q+tyv18Ylqgt+vL3PUxh69S0BlEdAePgsZQ2wsCb4VKTbOKJceN36N1BS61FI6q5lAx+gbFOcVKZ+XRnG474V63aXSHPNdRzFNDU35NbUA8KFgM/8+3PnkzyfoduS8JJTmxvfH/oiYo1it6ffDtDAMPOpX2vMpMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913968; c=relaxed/simple;
-	bh=qoHtoAXrjtm5q8tYeXNIlXknDTo7mlAIrs5OXYR52j4=;
+	s=arc-20240116; t=1744915076; c=relaxed/simple;
+	bh=XsRMaTsUBAeIxgWOnT2y4Sacw9f992us87dMQx1FtQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uOjRJ7NqZE48ArlDmGk60mjpDW0cnXxofKC0bwpVtbbNZO9Q0NYvrphHkZBuRJ2pWemmV4iDPHarkX9RjotbXFFs3BmuJ0DqrGkIL/mqWrYIQBhcUQzmLOhLWYTD7EtZ8EhIK2MOZTkEukSgJvPu/VGJbNDaT5xwBDysiXC0R1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9GAe0vc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B4A9C4CEE4;
-	Thu, 17 Apr 2025 18:19:27 +0000 (UTC)
+	 MIME-Version; b=uh93SmxBEx4I+QBmWs2YWPyHoOtxVphJed4ESNIaZMD0Zq0gvUBhkUk5lC1oKce3OAtbGsUgiffH3lOkeDeBTpZlnL2kBwtJfkG+ouoQfyDpx2VmWevzvgFlvDJKcVvHeTT35fIpa6e0xqEdijLOIj+yqnr6/wvA/CbFi7Jc1Bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXkSc1nv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1F43C4CEE4;
+	Thu, 17 Apr 2025 18:37:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913967;
-	bh=qoHtoAXrjtm5q8tYeXNIlXknDTo7mlAIrs5OXYR52j4=;
+	s=korg; t=1744915076;
+	bh=XsRMaTsUBAeIxgWOnT2y4Sacw9f992us87dMQx1FtQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o9GAe0vcLCPR6Q4feZ+We3E8fd3nMRUqtrYEVsuqHr6FOE+idCzuoIod7wEdZXXAI
-	 hnCC/jY6yhqAkFOpeggdDw7QPNyM8p4hw/cn37aazC+nOnbQ59uYDRc+Biosd8TXvY
-	 o0pl9sOhC9Gj7CxhUnINPEcZ9SgtA2sim+4i/E84=
+	b=YXkSc1nv0Gx27/ZVLa1hcwfji3VqfbYcs+m9rh1jO2qiZuMN5l0WwVOF/0hIyeITk
+	 6kNhIe2/xG5d+FMQ6xuI9WjV/GohcKWBkxCbgNnmWp+xEs/kb+kIPDAYHlsbvs/V4w
+	 pa+Ip7yjKL6iMnPa3RAb8QEujbk/HT10whszp6OQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 062/414] HID: pidff: Do not send effect envelope if its empty
+Subject: [PATCH 6.12 011/393] ublk: fix handling recovery & reissue in ublk_abort_queue()
 Date: Thu, 17 Apr 2025 19:47:00 +0200
-Message-ID: <20250417175113.907481628@linuxfoundation.org>
+Message-ID: <20250417175108.032872142@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,126 +61,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 8876fc1884f5b39550c8387ff3176396c988541d ]
+[ Upstream commit 6ee6bd5d4fce502a5b5a2ea805e9ff16e6aa890f ]
 
-Envelope struct is always initialized, but the envelope itself is
-optional as described in USB PID Device class definition 1.0.
+Commit 8284066946e6 ("ublk: grab request reference when the request is handled
+by userspace") doesn't grab request reference in case of recovery reissue.
+Then the request can be requeued & re-dispatch & failed when canceling
+uring command.
 
-5.1.1.1 Type Specific Block Offsets
-...
-4) Effects that do not use Condition Blocks use 1 Parameter Block and
-an *optional* Envelope Block.
+If it is one zc request, the request can be freed before io_uring
+returns the zc buffer back, then cause kernel panic:
 
-Sending out "empty" envelope breaks force feedback on some devices with
-games that use SINE effect + offset to emulate constant force effect, as
-well as generally breaking Constant/Periodic effects. One of the affected
-brands is Moza Racing.
+[  126.773061] BUG: kernel NULL pointer dereference, address: 00000000000000c8
+[  126.773657] #PF: supervisor read access in kernel mode
+[  126.774052] #PF: error_code(0x0000) - not-present page
+[  126.774455] PGD 0 P4D 0
+[  126.774698] Oops: Oops: 0000 [#1] SMP NOPTI
+[  126.775034] CPU: 13 UID: 0 PID: 1612 Comm: kworker/u64:55 Not tainted 6.14.0_blk+ #182 PREEMPT(full)
+[  126.775676] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-1.fc39 04/01/2014
+[  126.776275] Workqueue: iou_exit io_ring_exit_work
+[  126.776651] RIP: 0010:ublk_io_release+0x14/0x130 [ublk_drv]
 
-This change prevents the envelope from being sent if it contains all
-0 values while keeping the old behavior of only sending it, if it differs
-from the old one.
+Fixes it by always grabbing request reference for aborting the request.
 
-Changes in v6:
-- Simplify the checks to make them clearer
-- Fix possible null pointer dereference while calling
-  pidff_needs_set_envelope
-
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Reported-by: Caleb Sander Mateos <csander@purestorage.com>
+Closes: https://lore.kernel.org/linux-block/CADUfDZodKfOGUeWrnAxcZiLT+puaZX8jDHoj_sfHZCOZwhzz6A@mail.gmail.com/
+Fixes: 8284066946e6 ("ublk: grab request reference when the request is handled by userspace")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20250409011444.2142010-2-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 42 +++++++++++++++++++---------------
- 1 file changed, 24 insertions(+), 18 deletions(-)
+ drivers/block/ublk_drv.c | 30 ++++++++++++++++++++++++++----
+ 1 file changed, 26 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index 5fe4422bb5bad..a01c1b2ab2f4c 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -262,10 +262,22 @@ static void pidff_set_envelope_report(struct pidff_device *pidff,
- static int pidff_needs_set_envelope(struct ff_envelope *envelope,
- 				    struct ff_envelope *old)
- {
--	return envelope->attack_level != old->attack_level ||
--	       envelope->fade_level != old->fade_level ||
-+	bool needs_new_envelope;
-+	needs_new_envelope = envelope->attack_level  != 0 ||
-+			     envelope->fade_level    != 0 ||
-+			     envelope->attack_length != 0 ||
-+			     envelope->fade_length   != 0;
-+
-+	if (!needs_new_envelope)
-+		return false;
-+
-+	if (!old)
-+		return needs_new_envelope;
-+
-+	return envelope->attack_level  != old->attack_level  ||
-+	       envelope->fade_level    != old->fade_level    ||
- 	       envelope->attack_length != old->attack_length ||
--	       envelope->fade_length != old->fade_length;
-+	       envelope->fade_length   != old->fade_length;
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index dd328d40c7de5..38b9e485e520d 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -1081,6 +1081,25 @@ static void ublk_complete_rq(struct kref *ref)
+ 	__ublk_complete_rq(req);
  }
  
++static void ublk_do_fail_rq(struct request *req)
++{
++	struct ublk_queue *ubq = req->mq_hctx->driver_data;
++
++	if (ublk_nosrv_should_reissue_outstanding(ubq->dev))
++		blk_mq_requeue_request(req, false);
++	else
++		__ublk_complete_rq(req);
++}
++
++static void ublk_fail_rq_fn(struct kref *ref)
++{
++	struct ublk_rq_data *data = container_of(ref, struct ublk_rq_data,
++			ref);
++	struct request *req = blk_mq_rq_from_pdu(data);
++
++	ublk_do_fail_rq(req);
++}
++
  /*
-@@ -580,11 +592,9 @@ static int pidff_upload_effect(struct input_dev *dev, struct ff_effect *effect,
- 			pidff_set_effect_report(pidff, effect);
- 		if (!old || pidff_needs_set_constant(effect, old))
- 			pidff_set_constant_force_report(pidff, effect);
--		if (!old ||
--		    pidff_needs_set_envelope(&effect->u.constant.envelope,
--					&old->u.constant.envelope))
--			pidff_set_envelope_report(pidff,
--					&effect->u.constant.envelope);
-+		if (pidff_needs_set_envelope(&effect->u.constant.envelope,
-+					old ? &old->u.constant.envelope : NULL))
-+			pidff_set_envelope_report(pidff, &effect->u.constant.envelope);
- 		break;
+  * Since __ublk_rq_task_work always fails requests immediately during
+  * exiting, __ublk_fail_req() is only called from abort context during
+@@ -1094,10 +1113,13 @@ static void __ublk_fail_req(struct ublk_queue *ubq, struct ublk_io *io,
+ {
+ 	WARN_ON_ONCE(io->flags & UBLK_IO_FLAG_ACTIVE);
  
- 	case FF_PERIODIC:
-@@ -619,11 +629,9 @@ static int pidff_upload_effect(struct input_dev *dev, struct ff_effect *effect,
- 			pidff_set_effect_report(pidff, effect);
- 		if (!old || pidff_needs_set_periodic(effect, old))
- 			pidff_set_periodic_report(pidff, effect);
--		if (!old ||
--		    pidff_needs_set_envelope(&effect->u.periodic.envelope,
--					&old->u.periodic.envelope))
--			pidff_set_envelope_report(pidff,
--					&effect->u.periodic.envelope);
-+		if (pidff_needs_set_envelope(&effect->u.periodic.envelope,
-+					old ? &old->u.periodic.envelope : NULL))
-+			pidff_set_envelope_report(pidff, &effect->u.periodic.envelope);
- 		break;
+-	if (ublk_nosrv_should_reissue_outstanding(ubq->dev))
+-		blk_mq_requeue_request(req, false);
+-	else
+-		ublk_put_req_ref(ubq, req);
++	if (ublk_need_req_ref(ubq)) {
++		struct ublk_rq_data *data = blk_mq_rq_to_pdu(req);
++
++		kref_put(&data->ref, ublk_fail_rq_fn);
++	} else {
++		ublk_do_fail_rq(req);
++	}
+ }
  
- 	case FF_RAMP:
-@@ -637,11 +645,9 @@ static int pidff_upload_effect(struct input_dev *dev, struct ff_effect *effect,
- 			pidff_set_effect_report(pidff, effect);
- 		if (!old || pidff_needs_set_ramp(effect, old))
- 			pidff_set_ramp_force_report(pidff, effect);
--		if (!old ||
--		    pidff_needs_set_envelope(&effect->u.ramp.envelope,
--					&old->u.ramp.envelope))
--			pidff_set_envelope_report(pidff,
--					&effect->u.ramp.envelope);
-+		if (pidff_needs_set_envelope(&effect->u.ramp.envelope,
-+					old ? &old->u.ramp.envelope : NULL))
-+			pidff_set_envelope_report(pidff, &effect->u.ramp.envelope);
- 		break;
- 
- 	case FF_SPRING:
+ static void ubq_complete_io_cmd(struct ublk_io *io, int res,
 -- 
 2.39.5
 
