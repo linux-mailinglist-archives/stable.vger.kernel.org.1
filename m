@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-133539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6110A92610
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:10:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E78EA9293E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE09D466F2C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12DF07B8736
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:35:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C161DE3A8;
-	Thu, 17 Apr 2025 18:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA91525DAF9;
+	Thu, 17 Apr 2025 18:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YIF3QOiz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KPPICO1s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026CE18C034;
-	Thu, 17 Apr 2025 18:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786C9253333;
+	Thu, 17 Apr 2025 18:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913382; cv=none; b=pCizqp+LMeYmMDvMLSN3Mb32gEFrH9NY7EGtT+Q8DNOfQYImSKKPOGOvTRUwKhFlE9xVlgxlyWVLxFzJjQH7fK9repXNHKEzegzrnt3iChuV969OI1D1FpRHIjwXqVFuU/67np6ROQXz1p4VslaVD/LhWrC/LToR9If6CArT7ns=
+	t=1744914634; cv=none; b=SPt6BC1+JzwRKA8PhxLqoZeKweQWioOneyf/gEjDChOyEeD/rCs/4jK0HaZxYvmnLAZWBnEynE0PTgW/Ev5TPEufhsnvAMEvzMLhwJ+D3+ycwi+Kl9fz39O4jhoMvh9iiU4r8yJU11VwvHRgy3ZCXaUx48JeFX3/KW+JbaE7ys0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913382; c=relaxed/simple;
-	bh=2+RWFI0nDeZdSts0VrUaV9sOZkXSB0PbXwlHwyZCFxs=;
+	s=arc-20240116; t=1744914634; c=relaxed/simple;
+	bh=bdOSsFAk9Z+6LIfofYlRggDgF1Au7ZCHAo12hFoHLko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F6ynQ+BhAo9yppZ6+64PydwckmdDERPGSZBvdZAL4sjATN6xFzJXLXOFcAKI3Sx57B/0M1fRv0KCkSpGq6T7TZvx8KDbTMNbNdeedTZJSu6Wm1ouDRPgFcHY4vc9lzhraY3tZmuzeQljHA+zgWzEAVREFiJZbHhyhaCCa545NdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YIF3QOiz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DAD7C4CEE4;
-	Thu, 17 Apr 2025 18:09:41 +0000 (UTC)
+	 MIME-Version; b=eGDOB4pTR3/tLAhd4BJZ/v9S6Hkuma0XV7cirAdlHirZyKHh7e+KRxA1DZPbDc8Q3xSbs87ALJHvGHmStx9uMkFcT86g01fHSGJmf0GFR3nBEoiAtxz013jBqXtn28NcxyBo34fDZGj3DDGo6xvh3zyxhAUZR06xUC1INbUWZa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KPPICO1s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA698C4CEE4;
+	Thu, 17 Apr 2025 18:30:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913381;
-	bh=2+RWFI0nDeZdSts0VrUaV9sOZkXSB0PbXwlHwyZCFxs=;
+	s=korg; t=1744914634;
+	bh=bdOSsFAk9Z+6LIfofYlRggDgF1Au7ZCHAo12hFoHLko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YIF3QOizH56yrWLcUutMuK/G+zFquG9okt2XDjouyluX6rq5/yQM7eqpfiHHpqQMI
-	 2KkdPjhUlN2KSHJGvuXbSk3hjJsQ3Umq+N/Rrlg95Vrt9lHMg2SF+ShJyjpLXoA8nA
-	 JP3STT7MXV6DPOKYwiTODM+Hy4xq/c43JeGHJnSU=
+	b=KPPICO1sV5VZIvp4Wp70HyPu7ygI4eOWnGTpJMHYiQWWrrF+pkp/k4x1eCOr2c0SP
+	 XAE6n/6bS7HEy+QFUxjAsIHJMVyI4LIdmBAwwGvB5WCaGAbE02sYLAmooKBCDZy/lR
+	 0hQm2BNeWtd9/oLNnuRIiVdPa7cZMmaSex+FbfQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.14 320/449] jbd2: remove wrong sb->s_sequence check
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.13 250/414] mtd: Add check for devm_kcalloc()
 Date: Thu, 17 Apr 2025 19:50:08 +0200
-Message-ID: <20250417175131.001707011@linuxfoundation.org>
+Message-ID: <20250417175121.475046227@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-commit e6eff39dd0fe4190c6146069cc16d160e71d1148 upstream.
+commit 2aee30bb10d7bad0a60255059c9ce1b84cf0130e upstream.
 
-Journal emptiness is not determined by sb->s_sequence == 0 but rather by
-sb->s_start == 0 (which is set a few lines above). Furthermore 0 is a
-valid transaction ID so the check can spuriously trigger. Remove the
-invalid WARN_ON.
+Add a check for devm_kcalloc() to ensure successful allocation.
 
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20250206094657.20865-3-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 78c08247b9d3 ("mtd: Support kmsg dumper based on pstore/blk")
+Cc: stable@vger.kernel.org # v5.10+
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/journal.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/mtd/mtdpstore.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -1879,7 +1879,6 @@ int jbd2_journal_update_sb_log_tail(jour
+--- a/drivers/mtd/mtdpstore.c
++++ b/drivers/mtd/mtdpstore.c
+@@ -423,6 +423,9 @@ static void mtdpstore_notify_add(struct
+ 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, mtd->erasesize));
+ 	cxt->badmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
  
- 	/* Log is no longer empty */
- 	write_lock(&journal->j_state_lock);
--	WARN_ON(!sb->s_sequence);
- 	journal->j_flags &= ~JBD2_FLUSHED;
- 	write_unlock(&journal->j_state_lock);
- 
++	if (!cxt->rmmap || !cxt->usedmap || !cxt->badmap)
++		return;
++
+ 	/* just support dmesg right now */
+ 	cxt->dev.flags = PSTORE_FLAGS_DMESG;
+ 	cxt->dev.zone.read = mtdpstore_read;
 
 
 
