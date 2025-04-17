@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-133533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF5A0A92609
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:09:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C360DA92A4C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:49:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CAB9465B79
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88D58176AD2
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE8AD25487B;
-	Thu, 17 Apr 2025 18:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04BF3253340;
+	Thu, 17 Apr 2025 18:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVrQzi73"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sNAK3lMa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B77C18C034;
-	Thu, 17 Apr 2025 18:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52D219ABC6;
+	Thu, 17 Apr 2025 18:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913364; cv=none; b=HlslwVeBuBW2j9MH0UXJOm7ooSBKKEL4G8+Jdf24P672R0gIMe+F4X1/vpp7YBBUAX9DFzzEnAW0k2fRh1R4DD6PSdJfaVC57gNW85Wnz1Kb85m7VVzwUm2t7+BCWbylYolGXGjvh81+AyYKhC/+diL4E3rEw2Li85/rN5RE2l0=
+	t=1744915736; cv=none; b=pbSP984S80NpnzNl9Cpd8RvvpEy65W3f8UADkkKK8dt27ipA3bwxkMK0unc/4HRKLuQV1z450+ncU8Y9k0OxbniCfeEEs1KTXxs3R0H4472NnZ1tFnaeFV/N7bbFnjmtRhPZ01OqKeNEpnjsqYay7Jwtyo4JbGQJDavSI9AwvLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913364; c=relaxed/simple;
-	bh=GeUizqc88Yt5na6IKmRHw8eOqhLFXGMLV1m7EtBBpQY=;
+	s=arc-20240116; t=1744915736; c=relaxed/simple;
+	bh=gWn4mnb+1f/BQ2QT/0IY8obW+SUroLcCqz3bCOqRNZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q8K0WEdzoX4DUk3Btf6LUJZgNuOLa3Xs6bgmlfOVA8EiTMYIv25GPQi8hmYSXH8BdHPYgCj+OZhbqx2PHue9/+LkCov1TyHuWhtDZfBqgcZ1tAr3cEwzCHkp2UzgLijwSSrSEql72z/ZG8ZoAf/SDiZDYC9dscM+h8nDCan/470=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVrQzi73; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C19B7C4CEE4;
-	Thu, 17 Apr 2025 18:09:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RZsEq13WJO+1ro6G4PwisnrOcTqIcwFd5OuMS3/o2/tJZMPd1U8+bOKBb+CreON/LjsqpxjgWv4z9I1VpTZtUTAT20uDPCMbT1/sZG7qBu/pmZjZa6h8BUKJlNPE8cfj8rOyh/hK47kYD/w9AR591ohT9SNEeDjLxsvk8EVQok0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sNAK3lMa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE29C4CEE4;
+	Thu, 17 Apr 2025 18:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913364;
-	bh=GeUizqc88Yt5na6IKmRHw8eOqhLFXGMLV1m7EtBBpQY=;
+	s=korg; t=1744915736;
+	bh=gWn4mnb+1f/BQ2QT/0IY8obW+SUroLcCqz3bCOqRNZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aVrQzi73vb9ZfddVebALTAW+P2BcQbBvewMdCDlj4FpTnWDRFDZPMD9Y+reSmtHOT
-	 yFGQAKYxtQvuM1+EoagS0G//bJyLGJ2HRV1916Flu9Z+u21Tz95+JI9x71wmWuoeo5
-	 ZlLZ6fMXsIeJsvZ1bEQ+ar5C9ahvonIZGJdtbKi8=
+	b=sNAK3lMaNukyJhKSUJMg3HoKEXjsMKAcqh8iliDqK3ty4XbcXKSAVx0ewsss1elj9
+	 E1TxHGtovnK6bcy3RpKKUqz/a4RMoeqqclW/izJKzEcbmt3gU9rN9qtdjdDFO8W49K
+	 RPpbqy2RCdPgX/MgFO434kOUeXnMdjmWIUhgtiXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.14 314/449] smb311 client: fix missing tcon check when mounting with linux/posix extensions
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 193/393] media: i2c: adv748x: Fix test pattern selection mask
 Date: Thu, 17 Apr 2025 19:50:02 +0200
-Message-ID: <20250417175130.752876068@linuxfoundation.org>
+Message-ID: <20250417175115.351985890@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,42 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-commit b365b9d404b7376c60c91cd079218bfef11b7822 upstream.
+commit 9e38acacb9d809b97a0bdc5c76e725355a47158a upstream.
 
-When mounting the same share twice, once with the "linux" mount parameter
-(or equivalently "posix") and then once without (or e.g. with "nolinux"),
-we were incorrectly reusing the same tree connection for both mounts.
-This meant that the first mount of the share on the client, would
-cause subsequent mounts of that same share on the same client to
-ignore that mount parm ("linux" vs. "nolinux") and incorrectly reuse
-the same tcon.
+The mask to select the test-pattern in register ADV748X_SDP_FRP is
+incorrect, it's the lower 3 bits which controls the pattern. The
+GENMASK() macro is used incorrectly and the generated mask is 0x0e
+instead of 0x07.
 
+The result is that not all test patterns are selectable, and that in
+some cases the wrong test pattern is activated. Fix this by correcting
+the GENMASK().
+
+Fixes: 3e89586a64df ("media: i2c: adv748x: add adv748x driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+[hverkuil: fixed tiny typo in commit log: my -> by]
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/connect.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/i2c/adv748x/adv748x.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -2455,6 +2455,8 @@ static int match_tcon(struct cifs_tcon *
- 		return 0;
- 	if (tcon->nodelete != ctx->nodelete)
- 		return 0;
-+	if (tcon->posix_extensions != ctx->linux_ext)
-+		return 0;
- 	return 1;
- }
+--- a/drivers/media/i2c/adv748x/adv748x.h
++++ b/drivers/media/i2c/adv748x/adv748x.h
+@@ -320,7 +320,7 @@ struct adv748x_state {
  
+ /* Free run pattern select */
+ #define ADV748X_SDP_FRP			0x14
+-#define ADV748X_SDP_FRP_MASK		GENMASK(3, 1)
++#define ADV748X_SDP_FRP_MASK		GENMASK(2, 0)
+ 
+ /* Saturation */
+ #define ADV748X_SDP_SD_SAT_U		0xe3	/* user_map_rw_reg_e3 */
 
 
 
