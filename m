@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-134017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9171A928EE
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:39:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0341A92698
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:14:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84E021B61388
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BAAC188CC59
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D5C264609;
-	Thu, 17 Apr 2025 18:34:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC48D25525A;
+	Thu, 17 Apr 2025 18:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+IJYser"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HK/IMXAr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 928E625A64D;
-	Thu, 17 Apr 2025 18:34:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796E91E832C;
+	Thu, 17 Apr 2025 18:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914842; cv=none; b=TIjF+PtutEmK49wn45SOlOuGJNwRsn8qTnVjcDhqCxtuCQPql2LhaKOzuEtABvRv9CASO1EcPiVZaC0qHX8xkiusCI1vprUSaQ+a6LZ9PEAsGF2dOuAX+bu572DdzYcJDVuOwcvhrJxS74R81qIABXb6VlsokhUZ53HNp53NEIA=
+	t=1744913688; cv=none; b=W0NoOtvr8Pzy8rhE9MfYPLKCX0qJz5IL5UFuBjj1KDJhBzYqmmth8eGqD/pmfCVpxGbRLEi+vb3awdinrMQIwT9v6pOm3PQPgYW1L95yNpXsGff5pUO6S5vAGtXfHjTdsz8uZN3cGMFhPx2UDB4n+dIATUTx8lGg+6Bet4OXFcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914842; c=relaxed/simple;
-	bh=dORX8P6aiiy1jJCpwrhdaXuOP93D+dsTwtcQWVAkrr4=;
+	s=arc-20240116; t=1744913688; c=relaxed/simple;
+	bh=xYz4n43qOz4K1oP3Ko+6h8lTLO5yWw382HQFKQbMVZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rp4cXbgrJJwP4GGxsyKPypYaEGeRI9riof706/zBZfML4xaDXH8jnKghObE+KPWLIxSm8AeWAXlxxAmvBmQ6+3dvAuCEfiF+5uBFDrbTT+P72175jEE/zN3rJlNJyO/aSiRxd1uh7K7Ilvc4Nsru4Fg7XSBzJzJANa20++QDKhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+IJYser; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D73C4CEE4;
-	Thu, 17 Apr 2025 18:34:01 +0000 (UTC)
+	 MIME-Version; b=BkoTVtHo93o2FAfPWJjDZIposk4hWyIZiCOJHBQibMUmGg9ACBN7QQivBsZhn6TQndmWysRUFThct6yPtD0FJUrMURgTtIdh2Cmrqj97JyDfq7C+cCTF+UQTw3Q74kVdoKha4biDbgMpFzQxsfF2Mxi7e2kE7al6cNA3z5CW7JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HK/IMXAr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C4EC4CEE4;
+	Thu, 17 Apr 2025 18:14:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914842;
-	bh=dORX8P6aiiy1jJCpwrhdaXuOP93D+dsTwtcQWVAkrr4=;
+	s=korg; t=1744913688;
+	bh=xYz4n43qOz4K1oP3Ko+6h8lTLO5yWw382HQFKQbMVZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T+IJYsernQMvoIKgucAFxfI9uKVjvGAU2gZv9jwn2kmyHcDvV4Q0U6jsdZ2+kHP8r
-	 75I5Wc3/LrpDRONFXs5JCcma3KhAU9jtnCxWhlcU6qBhzIPjwUvJI9rQA9mRCdIn4i
-	 MiVO86Fs0+BHx+G9hbV+kzbCH1BWCtCNYzK3xYWk=
+	b=HK/IMXArt3z7J0fC6VSobWwAeqy8DyKgIljswKU3OFOxKzS8st8fByUomhDd0ICX2
+	 3dAwOzJmazTnuw9X9ombxTx9hhMuKpTC5OvaS/l6ozV0wO+JlXqnskxi1q6nzC7X2y
+	 yCrUWChOiaKQIV0MeI4jfK1uEh8Db/T3I7XbRzI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.13 349/414] crypto: ccp - Fix check for the primary ASP device
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.14 419/449] of/irq: Fix device node refcount leakage in API of_irq_parse_raw()
 Date: Thu, 17 Apr 2025 19:51:47 +0200
-Message-ID: <20250417175125.471895934@linuxfoundation.org>
+Message-ID: <20250417175135.157483320@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Lendacky <thomas.lendacky@amd.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 07bb097b92b987db518e72525b515d77904e966e upstream.
+commit ff93e7213d6cc8d9a7b0bc64f70ed26094e168f3 upstream.
 
-Currently, the ASP primary device check does not have support for PCI
-domains, and, as a result, when the system is configured with PCI domains
-(PCI segments) the wrong device can be selected as primary. This results
-in commands submitted to the device timing out and failing. The device
-check also relies on specific device and function assignments that may
-not hold in the future.
+if the node @out_irq->np got by of_irq_parse_raw() is a combo node which
+consists of both controller and nexus, namely, of_irq_parse_raw() returns
+due to condition (@ipar == @newpar), then the node's refcount was increased
+twice, hence causes refcount leakage.
 
-Fix the primary ASP device check to include support for PCI domains and
-to perform proper checking of the Bus/Device/Function positions.
+Fix by putting @out_irq->np refcount before returning due to the condition.
+Also add comments about refcount of node @out_irq->np got by the API.
 
-Fixes: 2a6170dfe755 ("crypto: ccp: Add Platform Security Processor (PSP) device support")
+Fixes: 041284181226 ("of/irq: Allow matching of an interrupt-map local to an interrupt controller")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-4-93e3a2659aa7@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/ccp/sp-pci.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/of/irq.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/crypto/ccp/sp-pci.c
-+++ b/drivers/crypto/ccp/sp-pci.c
-@@ -189,14 +189,17 @@ static bool sp_pci_is_master(struct sp_d
- 	pdev_new = to_pci_dev(dev_new);
- 	pdev_cur = to_pci_dev(dev_cur);
+--- a/drivers/of/irq.c
++++ b/drivers/of/irq.c
+@@ -166,6 +166,8 @@ const __be32 *of_irq_parse_imap_parent(c
+  * the specifier for each map, and then returns the translated map.
+  *
+  * Return: 0 on success and a negative number on error
++ *
++ * Note: refcount of node @out_irq->np is increased by 1 on success.
+  */
+ int of_irq_parse_raw(const __be32 *addr, struct of_phandle_args *out_irq)
+ {
+@@ -311,6 +313,12 @@ int of_irq_parse_raw(const __be32 *addr,
+ 		addrsize = (imap - match_array) - intsize;
  
--	if (pdev_new->bus->number < pdev_cur->bus->number)
--		return true;
-+	if (pci_domain_nr(pdev_new->bus) != pci_domain_nr(pdev_cur->bus))
-+		return pci_domain_nr(pdev_new->bus) < pci_domain_nr(pdev_cur->bus);
- 
--	if (PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn))
--		return true;
-+	if (pdev_new->bus->number != pdev_cur->bus->number)
-+		return pdev_new->bus->number < pdev_cur->bus->number;
- 
--	if (PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn))
--		return true;
-+	if (PCI_SLOT(pdev_new->devfn) != PCI_SLOT(pdev_cur->devfn))
-+		return PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn);
-+
-+	if (PCI_FUNC(pdev_new->devfn) != PCI_FUNC(pdev_cur->devfn))
-+		return PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn);
- 
- 	return false;
- }
+ 		if (ipar == newpar) {
++			/*
++			 * We got @ipar's refcount, but the refcount was
++			 * gotten again by of_irq_parse_imap_parent() via its
++			 * alias @newpar.
++			 */
++			of_node_put(ipar);
+ 			pr_debug("%pOF interrupt-map entry to self\n", ipar);
+ 			return 0;
+ 		}
 
 
 
