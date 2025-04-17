@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-133797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33E2A927A7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:28:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02726A9263C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:11:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D9817B46FB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:26:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE09A7B74FB
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A4825E839;
-	Thu, 17 Apr 2025 18:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7588B257AF3;
+	Thu, 17 Apr 2025 18:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iyUq+Gox"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMdYyUkd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04842571AE;
-	Thu, 17 Apr 2025 18:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31509257AC6;
+	Thu, 17 Apr 2025 18:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914168; cv=none; b=uUrg5W4svEUQVLDVZX6T3C1Mh9qSbdjIoRt4ta3xLn/NkouXrTV4oak4s47HUw2rOZ/IiW+jW2z2kQKC2BNN1Im6EsOcnxdiPkdSFteoftHiOThWWl8wb1n7HV9OE5RNI8fjp71RYzXnXYfwC5JIkoki9ewPlgQrxFlfvwr5Hjk=
+	t=1744913111; cv=none; b=JEdwcazr7OIGNYZ9bm6dEfZUrNxJE/EZ1Frog9iaS+wLj7cJxVpRHS9qdj+eXEDq4dsxv5GI9OZ4IW2Z6oJpcXs+tLWH0itFz3sCrpH1NWsFvqhmUctZuaVTIQ+lA4CFEz5PT7j8YXZhXENDZfAMk7MJ+m9uqVJgDEYY8yg4zig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914168; c=relaxed/simple;
-	bh=HdJozvPYl7+K3Eqx2B8UPaQr0K71773uLJqyqLHS5e8=;
+	s=arc-20240116; t=1744913111; c=relaxed/simple;
+	bh=QZ5/BU9z1VFHsQTZbj/7SfPifCNIkaxu7nboxC17XB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z4XVqCNkiUU6nZ8JHq0EznK32GEaPTDHjzoUk7frlwfWgjTxnM9mPl3pG5yYAdmpkT+Lgu58gZMQBvVfsAINvqHcU3zdb/P0qfBu+pQMpurX1FW2v9884A1mlr7hUUxMVrvwWy0uhdSN/dMSglanJz3ZIsz5Xj3MvzbuLCCVmVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iyUq+Gox; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B3FC4CEE4;
-	Thu, 17 Apr 2025 18:22:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=chYW3RYQMHM/quEAvELtJ8VZMKX4C/Etz5Dz8iOaXA/qi4rZs+NpdGQIKFbg0APfOEoLxjsqHNhU8sVa1EAKCTOTRRdkZGUfNvNbg3NjyMjf4Nk951hrorMHLx/e8ROR2xpztnR+1z1DfF1GsMXJ8BTBj9xE4HnT2oV0PzlQs/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMdYyUkd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45DBEC4CEE4;
+	Thu, 17 Apr 2025 18:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914168;
-	bh=HdJozvPYl7+K3Eqx2B8UPaQr0K71773uLJqyqLHS5e8=;
+	s=korg; t=1744913110;
+	bh=QZ5/BU9z1VFHsQTZbj/7SfPifCNIkaxu7nboxC17XB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iyUq+Gox8O/wAyoNBKSw05r3MKhoNSLZtt2g+Z9C37lt4/fvtxwxSjjwVzfn2Dxl3
-	 umfBn3hs+7H65T8X8S18NwFRO0A7/8YzSAOiEADIl4bWhtQ4oQvk+mHqMCMUbe2lT4
-	 rGuc//QNTZuF3/FLG5r+08IEuUWXKrhUPYN4g13s=
+	b=qMdYyUkdunrAwu4/49Uo6gzjTl+EXkAye0ubHqfPdwqvWL0UAEUg3bknl7S8s1ZBC
+	 n16cHBn3QQbmrrIj3FE/94rhdtjA/iaUHRQeY90ThkdhTpGnwNyB+jJfE/TjtVgApJ
+	 K+VF8SXlKGYiuQkBbOQlaIimeMo18x2le21idmdM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 129/414] drm: allow encoder mode_set even when connectors change for crtc
-Date: Thu, 17 Apr 2025 19:48:07 +0200
-Message-ID: <20250417175116.620692156@linuxfoundation.org>
+Subject: [PATCH 6.14 200/449] HID: pidff: Define values used in pidff_find_special_fields
+Date: Thu, 17 Apr 2025 19:48:08 +0200
+Message-ID: <20250417175126.022565691@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +64,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit 7e182cb4f5567f53417b762ec0d679f0b6f0039d ]
+[ Upstream commit 1c12f136891cf4d2d4e6aa202d671a9d2171a716 ]
 
-In certain use-cases, a CRTC could switch between two encoders
-and because the mode being programmed on the CRTC remains
-the same during this switch, the CRTC's mode_changed remains false.
-In such cases, the encoder's mode_set also gets skipped.
+Makes it clear where did these values came from
 
-Skipping mode_set on the encoder for such cases could cause an issue
-because even though the same CRTC mode was being used, the encoder
-type could have changed like the CRTC could have switched from a
-real time encoder to a writeback encoder OR vice-versa.
-
-Allow encoder's mode_set to happen even when connectors changed on a
-CRTC and not just when the mode changed.
-
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241211-abhinavk-modeset-fix-v3-1-0de4bf3e7c32@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_atomic_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/usbhid/hid-pidff.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
-index 5186d2114a503..32902f77f00dd 100644
---- a/drivers/gpu/drm/drm_atomic_helper.c
-+++ b/drivers/gpu/drm/drm_atomic_helper.c
-@@ -1376,7 +1376,7 @@ crtc_set_mode(struct drm_device *dev, struct drm_atomic_state *old_state)
- 		mode = &new_crtc_state->mode;
- 		adjusted_mode = &new_crtc_state->adjusted_mode;
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 42c951a1d65bf..bd913d57e4d75 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -48,6 +48,14 @@ static const u8 pidff_reports[] = {
+ /* device_control is really 0x95, but 0x96 specified as it is the usage of
+ the only field in that report */
  
--		if (!new_crtc_state->mode_changed)
-+		if (!new_crtc_state->mode_changed && !new_crtc_state->connectors_changed)
- 			continue;
++/* PID special fields */
++
++#define PID_EFFECT_TYPE			0x25
++#define PID_DIRECTION			0x57
++#define PID_EFFECT_OPERATION_ARRAY	0x78
++#define PID_BLOCK_LOAD_STATUS		0x8b
++#define PID_DEVICE_CONTROL_ARRAY	0x96
++
+ /* Value usage tables used to put fields and values into arrays */
  
- 		drm_dbg_atomic(dev, "modeset on [ENCODER:%d:%s]\n",
+ #define PID_EFFECT_BLOCK_INDEX	0
+@@ -1056,23 +1064,24 @@ static int pidff_find_special_fields(struct pidff_device *pidff)
+ 
+ 	pidff->create_new_effect_type =
+ 		pidff_find_special_field(pidff->reports[PID_CREATE_NEW_EFFECT],
+-					 0x25, 1);
++					 PID_EFFECT_TYPE, 1);
+ 	pidff->set_effect_type =
+ 		pidff_find_special_field(pidff->reports[PID_SET_EFFECT],
+-					 0x25, 1);
++					 PID_EFFECT_TYPE, 1);
+ 	pidff->effect_direction =
+ 		pidff_find_special_field(pidff->reports[PID_SET_EFFECT],
+-					 0x57, 0);
++					 PID_DIRECTION, 0);
+ 	pidff->device_control =
+ 		pidff_find_special_field(pidff->reports[PID_DEVICE_CONTROL],
+-			0x96, !(pidff->quirks & HID_PIDFF_QUIRK_PERMISSIVE_CONTROL));
++			PID_DEVICE_CONTROL_ARRAY,
++			!(pidff->quirks & HID_PIDFF_QUIRK_PERMISSIVE_CONTROL));
+ 
+ 	pidff->block_load_status =
+ 		pidff_find_special_field(pidff->reports[PID_BLOCK_LOAD],
+-					 0x8b, 1);
++					 PID_BLOCK_LOAD_STATUS, 1);
+ 	pidff->effect_operation_status =
+ 		pidff_find_special_field(pidff->reports[PID_EFFECT_OPERATION],
+-					 0x78, 1);
++					 PID_EFFECT_OPERATION_ARRAY, 1);
+ 
+ 	hid_dbg(pidff->hid, "search done\n");
+ 
 -- 
 2.39.5
 
