@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-133544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC463A92615
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:10:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 345B0A92A3D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:48:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CC8A8A4ECD
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87FF91B64485
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:48:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D0782566E8;
-	Thu, 17 Apr 2025 18:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D13F1DE885;
+	Thu, 17 Apr 2025 18:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XTz3VxrN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLmM3lOU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF282566ED;
-	Thu, 17 Apr 2025 18:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E7F25525D;
+	Thu, 17 Apr 2025 18:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913397; cv=none; b=Qwl6I0J4l18DiBWHUoslkX+cjQjU9MZFBwVWwXAStZ8OfG3rewaVNgb8n+NGnSo2/Uf23M1WMOlWrtvRaSebpwcnTPHlgY5++bMfffqPODBt+LJGa7BQ6g2Ya76/aXzOuxxdqIdptPD9o4alwxVhE2jZBCcBAIxRQu6h0X6oXDE=
+	t=1744915671; cv=none; b=tVudYn67/uuNMDa8vOvjWQOeuMITAZ96YrvKB1iphspX8KXE4667pbMgiC9rsjDvHSlyJahwZaeyZCZ3ThO0lPKv6U6FYzb5ae6QDLVpm/M/IPB91bG0fkh8b62VIcP8A60pZLGrgS0+qHWIp8hW4QtHFf1vXOCpZj59+CNTVrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913397; c=relaxed/simple;
-	bh=HlRKEtzgAyTW5NQxm/wsCvcJqOqtpPDzN22+d4gZde0=;
+	s=arc-20240116; t=1744915671; c=relaxed/simple;
+	bh=FaMW+HeeNahPb0IIxjAcKAHd4/wYNtOdMzFMWJAAFWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b0dgxWY4fCQOBAsh9yYh4E+6LdKgPHueb7dH4cWp1XGKFY6pa89vSypeS0J1/P3L9lb9TLzpwTBsYOtBhSmgbl2svs2ZhkmHgLxExWvlc6bpWyUZiL+fduQaqGWj0aIUcztVftxHimJNKQq9ZncqW620gFn5sEA7HudC0DLHdhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XTz3VxrN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69BAC4CEEA;
-	Thu, 17 Apr 2025 18:09:56 +0000 (UTC)
+	 MIME-Version; b=BAQeF0i6tFUxDD8Vcx2/Oq41bthlGFRobg6PxfQrF8eDP33+LndZT9tSJ2B18rIqJV2UQxGvKpf8jjT2jUN5WgVZ6Oly4JEfEnoF7WK1MOaFdNpkl30btC4Y9RIc4FkjK+MlGuHRbWfkfHrD1hDoBlQoCj05E9PZhcr7wJQDA7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLmM3lOU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5D56C4CEE4;
+	Thu, 17 Apr 2025 18:47:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913397;
-	bh=HlRKEtzgAyTW5NQxm/wsCvcJqOqtpPDzN22+d4gZde0=;
+	s=korg; t=1744915671;
+	bh=FaMW+HeeNahPb0IIxjAcKAHd4/wYNtOdMzFMWJAAFWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XTz3VxrNEEKtHySPe/iTgjz1gwx9SlAUDAvrjWKUxlgD58BtSBANIEaDcwqePHH1d
-	 2O0nIXH5HFDYuIrRpe4kORUOZgNTFtten8Hflt+U5tkwzqh+2NRtDKNGjhqAsPHPKn
-	 goRxPjJvUV5jBrKGoRZtKLOTh8v/pW5lQrfEEMFI=
+	b=CLmM3lOU2Jz1f3W0jZDRxxA9uAU9Qq22JnhZuCX4NNYIsD1e4HBZXAyhTNl0enTlq
+	 f3MuOskNnXK4cmrLU9tSv1exDIxMqriv9nbk/ycw6G9AowtAyvDFjO9oNqYeatrzgM
+	 p6la8BAXB0fLLcdpl8enytyV1rf40eWulDPqln1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Sebastian Reichel <sre@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.14 324/449] leds: rgb: leds-qcom-lpg: Fix calculation of best period Hi-Res PWMs
+	Scott Bauer <sbauer@quicinc.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Trilok Soni <quic_tsoni@quicinc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.12 203/393] arm64: errata: Add QCOM_KRYO_4XX_GOLD to the spectre_bhb_k24_list
 Date: Thu, 17 Apr 2025 19:50:12 +0200
-Message-ID: <20250417175131.169512491@linuxfoundation.org>
+Message-ID: <20250417175115.749862448@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit 2528eec7da0ec58fcae6d12cfa79a622c933d86b upstream.
+commit ed1ce841245d8febe3badf51c57e81c3619d0a1d upstream.
 
-When determining the actual best period by looping through all
-possible PWM configs, the resolution currently used is based on
-bit shift value which is off-by-one above the possible maximum
-PWM value allowed.
+Qualcomm Kryo 400-series Gold cores have a derivative of an ARM Cortex
+A76 in them. Since A76 needs Spectre mitigation via looping then the
+Kyro 400-series Gold cores also need Spectre mitigation via looping.
 
-So subtract one from the resolution before determining the best
-period so that the maximum duty cycle requested by the PWM user
-won't result in a value above the maximum allowed by the selected
-resolution.
+Qualcomm has confirmed that the proper "k" value for Kryo 400-series
+Gold cores is 24.
 
-Cc: stable@vger.kernel.org    # 6.4
-Fixes: b00d2ed37617 ("leds: rgb: leds-qcom-lpg: Add support for high resolution PWM")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Sebastian Reichel <sre@kernel.org>
-Link: https://lore.kernel.org/r/20250305-leds-qcom-lpg-fix-max-pwm-on-hi-res-v4-3-bfe124a53a9f@linaro.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 558c303c9734 ("arm64: Mitigate spectre style branch history side channels")
+Cc: stable@vger.kernel.org
+Cc: Scott Bauer <sbauer@quicinc.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Acked-by: Trilok Soni <quic_tsoni@quicinc.com>
+Link: https://lore.kernel.org/r/20250107120555.v4.1.Ie4ef54abe02e7eb0eee50f830575719bf23bda48@changeid
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/rgb/leds-qcom-lpg.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/kernel/proton-pack.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/leds/rgb/leds-qcom-lpg.c
-+++ b/drivers/leds/rgb/leds-qcom-lpg.c
-@@ -461,7 +461,7 @@ static int lpg_calc_freq(struct lpg_chan
- 		max_res = LPG_RESOLUTION_9BIT;
- 	}
- 
--	min_period = div64_u64((u64)NSEC_PER_SEC * (1 << pwm_resolution_arr[0]),
-+	min_period = div64_u64((u64)NSEC_PER_SEC * ((1 << pwm_resolution_arr[0]) - 1),
- 			       clk_rate_arr[clk_len - 1]);
- 	if (period <= min_period)
- 		return -EINVAL;
-@@ -482,7 +482,7 @@ static int lpg_calc_freq(struct lpg_chan
- 	 */
- 
- 	for (i = 0; i < pwm_resolution_count; i++) {
--		resolution = 1 << pwm_resolution_arr[i];
-+		resolution = (1 << pwm_resolution_arr[i]) - 1;
- 		for (clk_sel = 1; clk_sel < clk_len; clk_sel++) {
- 			u64 numerator = period * clk_rate_arr[clk_sel];
- 
-@@ -1291,7 +1291,7 @@ static int lpg_pwm_get_state(struct pwm_
- 		if (ret)
- 			return ret;
- 
--		state->period = DIV_ROUND_UP_ULL((u64)NSEC_PER_SEC * (1 << resolution) *
-+		state->period = DIV_ROUND_UP_ULL((u64)NSEC_PER_SEC * ((1 << resolution) - 1) *
- 						 pre_div * (1 << m), refclk);
- 		state->duty_cycle = DIV_ROUND_UP_ULL((u64)NSEC_PER_SEC * pwm_value * pre_div * (1 << m), refclk);
- 	} else {
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -866,6 +866,7 @@ u8 spectre_bhb_loop_affected(int scope)
+ 			MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
+ 			MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
+ 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
++			MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_GOLD),
+ 			{},
+ 		};
+ 		static const struct midr_range spectre_bhb_k11_list[] = {
 
 
 
