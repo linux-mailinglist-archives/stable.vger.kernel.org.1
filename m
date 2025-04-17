@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-134113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 847EEA9293C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 284BDA92713
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:19:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 240261B6301C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:41:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A90884670F6
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4560225EFAE;
-	Thu, 17 Apr 2025 18:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2565A2550C8;
+	Thu, 17 Apr 2025 18:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXqrlIot"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kbkcDvI1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00133254AF0;
-	Thu, 17 Apr 2025 18:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43A32550C2;
+	Thu, 17 Apr 2025 18:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915134; cv=none; b=uJasskNIp5j8EJdqM8qacPwu0b3FgwlgZIBWhKg1HKnDOTTWYLcrodN3c1710lqISiPaxyuXwQOnuO8zLVnxkKOWrRPmiNRNAajRZFYZYt7Hhfo/d4iFM4fojdWuDZFDR0dluZHRfo7qkGBnoeuc4GbbqPxSwGOkUMHhBfrOJG8=
+	t=1744913961; cv=none; b=tEVNs7xFGR27AbeMGlX0pdPnaacK0iAw/hBxKq1z+WgqGTDq61U+LdXA2q4z+ajMllenj7szk/PCyWHp6yCtb+HsDn5uCW6KDuk8CfKVRVUoa/e4NPrxFAxSzVPETWB3ZlmQjzeprSrDsVBD4cvaZloXFDzb2RnFfsA7kt7Urm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915134; c=relaxed/simple;
-	bh=59SZm7j4Q/nPefdzmO+oIrHwZ/mo8sNSX+4SRqilqjM=;
+	s=arc-20240116; t=1744913961; c=relaxed/simple;
+	bh=dBP2u0AXKiOYMHBVlhy1F0EQu8orzZqHWx4T7YhnD1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HO5mSGurRH3X3tk72wR7awF70GkgwL0l8aznZN0U28tn09n+v0PzQ33o6u1cGLZbg0GRqOjC/NtcOMP4qzEdHWBBHv9vuHWAeuvkZXIaOw9AU5KKOXffhIwnvCd/s+BmzrZKzoMrgH1qvxje81CVl4XR6tycW1H9PGHnQg+Gyl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXqrlIot; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C65BC4CEE4;
-	Thu, 17 Apr 2025 18:38:53 +0000 (UTC)
+	 MIME-Version; b=r3uptuIAKaVFGOTldwyTvM6xVDilqn/KAKBEmhGXeaS02tPDx5m/S/lmjKwGTFsHqhuZaDag+RjhYFHXbuc7/aguMx7fSGs2FBCcPwiBLyZ/jz3Jbff68p+AfgIFMLbRv2/3+KBc3PiF9GN6KhKUZSLly5KJCaBksC1dX8Rgsig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kbkcDvI1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67FB8C4CEE4;
+	Thu, 17 Apr 2025 18:19:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915133;
-	bh=59SZm7j4Q/nPefdzmO+oIrHwZ/mo8sNSX+4SRqilqjM=;
+	s=korg; t=1744913961;
+	bh=dBP2u0AXKiOYMHBVlhy1F0EQu8orzZqHWx4T7YhnD1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SXqrlIotQpc1z8zM/CLyE3K0lFepBGXebHgs/54xub3xc9/H+W/+oVk3wsqoug/0+
-	 s9xHCWMkzbDl/I1+OiGX2Rp5GdQhU4nPb8B0ekLyVzuRf5yEnKb/9T8U6Ht1JGwr3G
-	 eJMJzOTxv5udh/v4jXqvTz4k+kL/Ajn+SNnynZAE=
+	b=kbkcDvI14ZOQDwG/5F8LlJn4238GvlqtQXUD8Gxd/WFv3QTZg2Qnei345JDifcXUo
+	 iYFtgsPWlE4XYfBVakD8Huw/3F5YW4cHutxxzJY+CwDwnfee6H8BBzW4XtUPWRg5nv
+	 XYoQeXg7cXgMZ/9WhPg/fJVUUgJAK4CtBNdwS0Cw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Liaw <edliaw@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	=?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Zhang Heng <zhangheng@kylinos.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 009/393] selftests/futex: futex_waitv wouldblock test should fail
+Subject: [PATCH 6.13 060/414] ASoC: SOF: topology: Use krealloc_array() to replace krealloc()
 Date: Thu, 17 Apr 2025 19:46:58 +0200
-Message-ID: <20250417175107.951100863@linuxfoundation.org>
+Message-ID: <20250417175113.826382215@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Liaw <edliaw@google.com>
+From: Zhang Heng <zhangheng@kylinos.cn>
 
-[ Upstream commit 7d50e00fef2832e98d7e06bbfc85c1d66ee110ca ]
+[ Upstream commit a05143a8f713d9ae6abc41141dac52c66fca8b06 ]
 
-Testcase should fail if -EWOULDBLOCK is not returned when expected value
-differs from actual value from the waiter.
+Use krealloc_array() to replace krealloc() with multiplication.
+krealloc_array() has multiply overflow check, which will be safer.
 
-Link: https://lore.kernel.org/r/20250404221225.1596324-1-edliaw@google.com
-Fixes: 9d57f7c79748920636f8293d2f01192d702fe390 ("selftests: futex: Test sys_futex_waitv() wouldblock")
-Signed-off-by: Edward Liaw <edliaw@google.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: André Almeida <andrealmeid@igalia.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
+Link: https://patch.msgid.link/20250117014343.451503-1-zhangheng@kylinos.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/futex/functional/futex_wait_wouldblock.c  | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/sof/topology.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/futex/functional/futex_wait_wouldblock.c b/tools/testing/selftests/futex/functional/futex_wait_wouldblock.c
-index 7d7a6a06cdb75..2d8230da90642 100644
---- a/tools/testing/selftests/futex/functional/futex_wait_wouldblock.c
-+++ b/tools/testing/selftests/futex/functional/futex_wait_wouldblock.c
-@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
- 	info("Calling futex_waitv on f1: %u @ %p with val=%u\n", f1, &f1, f1+1);
- 	res = futex_waitv(&waitv, 1, 0, &to, CLOCK_MONOTONIC);
- 	if (!res || errno != EWOULDBLOCK) {
--		ksft_test_result_pass("futex_waitv returned: %d %s\n",
-+		ksft_test_result_fail("futex_waitv returned: %d %s\n",
- 				      res ? errno : res,
- 				      res ? strerror(errno) : "");
- 		ret = RET_FAIL;
+diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
+index b3fca5fd87d68..37ca15cc5728c 100644
+--- a/sound/soc/sof/topology.c
++++ b/sound/soc/sof/topology.c
+@@ -1269,8 +1269,8 @@ static int sof_widget_parse_tokens(struct snd_soc_component *scomp, struct snd_s
+ 			struct snd_sof_tuple *new_tuples;
+ 
+ 			num_tuples += token_list[object_token_list[i]].count * (num_sets - 1);
+-			new_tuples = krealloc(swidget->tuples,
+-					      sizeof(*new_tuples) * num_tuples, GFP_KERNEL);
++			new_tuples = krealloc_array(swidget->tuples,
++						    num_tuples, sizeof(*new_tuples), GFP_KERNEL);
+ 			if (!new_tuples) {
+ 				ret = -ENOMEM;
+ 				goto err;
 -- 
 2.39.5
 
