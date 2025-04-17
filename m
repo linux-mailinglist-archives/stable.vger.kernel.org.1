@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-133506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C7FEA925F0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:09:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DDF4A92885
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E63AA3AE39A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E3F119E33A0
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22182571AC;
-	Thu, 17 Apr 2025 18:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB45257436;
+	Thu, 17 Apr 2025 18:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s6QnoYMp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6tWkbYL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6C61EB1BF;
-	Thu, 17 Apr 2025 18:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7072522AC;
+	Thu, 17 Apr 2025 18:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913283; cv=none; b=OjxcJI3clWRU6b8vd/2A+NjQkqb3vJuWQnpcm/i/FaFgxu6qZr9s64sfcASX1+AcKlT/vKRtVpryePNGP1flHmfVXqDInuPPFShsZ9OmQUcaTpsf7u3Vd+r5puXiNqKtDwFCJqsQ4AVeQa2vxMtRH1brsegWi2OMCUTSP+QVdbE=
+	t=1744914535; cv=none; b=VrAwBqE4dfDyPeN/1ZTmYmCq6sq54ip/32CXGL88nFLftowJTu/fcbItfefHVrpKcr6g+zqvQ3A452NAbTYrxe1w15K2pQjMol7IUJqkfJb8TGgBrCC7IQbd4pXyMSGlcv2T/1XTTDOOgOOB9IwHGcWzdLYNX6VMFqFiyzC0YSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913283; c=relaxed/simple;
-	bh=WDjwvFkgt9TXGAugwzDI2/FxUhAewtIWwvdWcjz4Bc0=;
+	s=arc-20240116; t=1744914535; c=relaxed/simple;
+	bh=F8Vt1l1qFsq3Y59HuncRHZMozWL58ejDRBXYx7yH4eU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=treAnoQQQxsa8P3wN1MnnWC9qSYaSzUdOk/puhOsjg5jISKbOmdpkHctLJXjsw7JIZ4cAoZFAT/iojn7F7tnfUVYPZWckIjRpLNgkWc4EP4pLQqPu5yI/vFVwpcMfzZxhAVYh3t7EK66MkhOB3bDnKwMm/nufeg9DJzGQuhnG44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s6QnoYMp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 938E7C4CEE4;
-	Thu, 17 Apr 2025 18:08:02 +0000 (UTC)
+	 MIME-Version; b=BqQtLC5FJhZYmjupR/KBqJ1fl5x3fnmeIcXwYKV73Gxc/Wh/SRd0fDypy6VW6zR9m+8jPPpuINYx6yIJFnBv6YjzidvT9FwZKrfthPzdoaNfo8ZU8xwWyd24d7SlFJ71wTmxdjtQKFjLpHwuROaeZAzN1eFYtUa6A+D6sLZL5UE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6tWkbYL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC18AC4CEE7;
+	Thu, 17 Apr 2025 18:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913283;
-	bh=WDjwvFkgt9TXGAugwzDI2/FxUhAewtIWwvdWcjz4Bc0=;
+	s=korg; t=1744914535;
+	bh=F8Vt1l1qFsq3Y59HuncRHZMozWL58ejDRBXYx7yH4eU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s6QnoYMp8QvQ/0/8/XGTH68F0ZUqStb2YJX0t6bU+BxAMkuUAVXNwycO3ww5MujGb
-	 V7fTKpGYsxawC9oozrdSwoA9Yiy5OT8ReY5oPYSufO8QGF40UNMSthWK+ZSdlNXOPj
-	 9z1SEYjo9qjYM3oemGAXpnzusZ+YMeIaixJtf06w=
+	b=O6tWkbYLgjGXZtgzLdUAORrtCiYos7aq1+X1BFXLOvCK/kxXt5TuKIwfR8pJ2w6e8
+	 u/2KOpx7wukxm+7dnhaJhJZfJCIz4Mu+iKGppgXd5IKmneGxsK3T6QjCh3PL+v60td
+	 QiuUoXFrzayOcZUyWFAZ1VhymZJhoKfskAL1T3oQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Wang <sean.wang@mediatek.com>,
-	Caleb Jorden <cjorden@gmail.com>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.14 287/449] wifi: mt76: mt7925: update the power-saving flow
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.13 217/414] spi: cadence-qspi: Fix probe on AM62A LP SK
 Date: Thu, 17 Apr 2025 19:49:35 +0200
-Message-ID: <20250417175129.632861137@linuxfoundation.org>
+Message-ID: <20250417175120.162552291@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,215 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit 276a568832577c81ec90b62dc506bbdc3781ca46 upstream.
+commit b8665a1b49f5498edb7b21d730030c06b7348a3c upstream.
 
-After joining MLO, ensure that all links are setup before
-enabling power-saving.
+In 2020, there's been an unnoticed change which rightfully attempted to
+report probe deferrals upon DMA absence by checking the return value of
+dma_request_chan_by_mask(). By doing so, it also reported errors which
+were simply ignored otherwise, likely on purpose.
 
-Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
+This change actually turned a void return into an error code. Hence, not
+only the -EPROBE_DEFER error codes but all error codes got reported to
+the callers, now failing to probe in the absence of Rx DMA channel,
+despite the fact that DMA seems to not be supported natively by many
+implementations.
+
+Looking at the history, this change probably led to:
+ad2775dc3fc5 ("spi: cadence-quadspi: Disable the DAC for Intel LGM SoC")
+f724c296f2f2 ("spi: cadence-quadspi: fix Direct Access Mode disable for SoCFPGA")
+
+In my case, the AM62A LP SK core octo-SPI node from TI does not
+advertise any DMA channel, hinting that there is likely no support for
+it, but yet when the support for the am654 compatible was added, DMA
+seemed to be used, so just discarding its use with the
+CQSPI_DISABLE_DAC_MODE quirk for this compatible does not seem the
+correct approach.
+
+Let's get change the return condition back to:
+- return a probe deferral error if we get one
+- ignore the return value otherwise
+The "error" log level was however likely too high for something that is
+expected to fail, so let's lower it arbitrarily to the info level.
+
+Fixes: 935da5e5100f ("mtd: spi-nor: cadence-quadspi: Handle probe deferral while requesting DMA channel")
 Cc: stable@vger.kernel.org
-Co-developed-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Tested-by: Caleb Jorden <cjorden@gmail.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20250305000851.493671-6-sean.wang@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/20250305200933.2512925-2-miquel.raynal@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/init.c   |    1 
- drivers/net/wireless/mediatek/mt76/mt7925/main.c   |   68 +++++++++++++++++----
- drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h |    1 
- drivers/net/wireless/mediatek/mt76/mt792x.h        |    9 ++
- 4 files changed, 68 insertions(+), 11 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-@@ -244,6 +244,7 @@ int mt7925_register_device(struct mt792x
- 	dev->mt76.tx_worker.fn = mt792x_tx_worker;
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1634,6 +1634,12 @@ static int cqspi_request_mmap_dma(struct
+ 		int ret = PTR_ERR(cqspi->rx_chan);
  
- 	INIT_DELAYED_WORK(&dev->pm.ps_work, mt792x_pm_power_save_work);
-+	INIT_DELAYED_WORK(&dev->mlo_pm_work, mt7925_mlo_pm_work);
- 	INIT_WORK(&dev->pm.wake_work, mt792x_pm_wake_work);
- 	spin_lock_init(&dev->pm.wake.lock);
- 	mutex_init(&dev->pm.mutex);
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -427,6 +427,7 @@ mt7925_add_interface(struct ieee80211_hw
- 	mvif->bss_conf.vif = mvif;
- 	mvif->sta.vif = mvif;
- 	mvif->deflink_id = IEEE80211_LINK_UNSPECIFIED;
-+	mvif->mlo_pm_state = MT792x_MLO_LINK_DISASSOC;
- 
- 	ret = mt7925_mac_link_bss_add(dev, &vif->bss_conf, &mvif->sta.deflink);
- 	if (ret < 0)
-@@ -1242,6 +1243,7 @@ void mt7925_mac_sta_remove(struct mt76_d
- {
- 	struct mt792x_dev *dev = container_of(mdev, struct mt792x_dev, mt76);
- 	struct mt792x_sta *msta = (struct mt792x_sta *)sta->drv_priv;
-+	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
- 	unsigned long rem;
- 
- 	rem = ieee80211_vif_is_mld(vif) ? msta->valid_links : BIT(0);
-@@ -1252,11 +1254,11 @@ void mt7925_mac_sta_remove(struct mt76_d
- 		mt7925_mcu_del_dev(mdev, vif);
- 
- 	if (vif->type == NL80211_IFTYPE_STATION) {
--		struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
--
- 		mvif->wep_sta = NULL;
- 		ewma_rssi_init(&mvif->bss_conf.rssi);
+ 		cqspi->rx_chan = NULL;
++		if (ret == -ENODEV) {
++			/* DMA support is not mandatory */
++			dev_info(&cqspi->pdev->dev, "No Rx DMA available\n");
++			return 0;
++		}
++
+ 		return dev_err_probe(&cqspi->pdev->dev, ret, "No Rx DMA available\n");
  	}
-+
-+	mvif->mlo_pm_state = MT792x_MLO_LINK_DISASSOC;
- }
- EXPORT_SYMBOL_GPL(mt7925_mac_sta_remove);
- 
-@@ -1328,6 +1330,38 @@ mt7925_ampdu_action(struct ieee80211_hw
- 	return ret;
- }
- 
-+static void
-+mt7925_mlo_pm_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
-+{
-+	struct mt792x_dev *dev = priv;
-+	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
-+	unsigned long valid = ieee80211_vif_is_mld(vif) ?
-+				    mvif->valid_links : BIT(0);
-+	struct ieee80211_bss_conf *bss_conf;
-+	int i;
-+
-+	if (mvif->mlo_pm_state != MT792x_MLO_CHANGED_PS)
-+		return;
-+
-+	mt792x_mutex_acquire(dev);
-+	for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
-+		bss_conf = mt792x_vif_to_bss_conf(vif, i);
-+		mt7925_mcu_uni_bss_ps(dev, bss_conf);
-+	}
-+	mt792x_mutex_release(dev);
-+}
-+
-+void mt7925_mlo_pm_work(struct work_struct *work)
-+{
-+	struct mt792x_dev *dev = container_of(work, struct mt792x_dev,
-+					      mlo_pm_work.work);
-+	struct ieee80211_hw *hw = mt76_hw(dev);
-+
-+	ieee80211_iterate_active_interfaces(hw,
-+					    IEEE80211_IFACE_ITER_RESUME_ALL,
-+					    mt7925_mlo_pm_iter, dev);
-+}
-+
- static bool is_valid_alpha2(const char *alpha2)
- {
- 	if (!alpha2)
-@@ -1877,6 +1911,9 @@ static void mt7925_vif_cfg_changed(struc
- 		mt7925_mcu_sta_update(dev, NULL, vif, true,
- 				      MT76_STA_INFO_STATE_ASSOC);
- 		mt7925_mcu_set_beacon_filter(dev, vif, vif->cfg.assoc);
-+
-+		if (ieee80211_vif_is_mld(vif))
-+			mvif->mlo_pm_state = MT792x_MLO_LINK_ASSOC;
- 	}
- 
- 	if (changed & BSS_CHANGED_ARP_FILTER) {
-@@ -1887,9 +1924,19 @@ static void mt7925_vif_cfg_changed(struc
- 	}
- 
- 	if (changed & BSS_CHANGED_PS) {
--		for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
--			bss_conf = mt792x_vif_to_bss_conf(vif, i);
-+		if (hweight16(mvif->valid_links) < 2) {
-+			/* legacy */
-+			bss_conf = &vif->bss_conf;
- 			mt7925_mcu_uni_bss_ps(dev, bss_conf);
-+		} else {
-+			if (mvif->mlo_pm_state == MT792x_MLO_LINK_ASSOC) {
-+				mvif->mlo_pm_state = MT792x_MLO_CHANGED_PS_PENDING;
-+			} else if (mvif->mlo_pm_state == MT792x_MLO_CHANGED_PS) {
-+				for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
-+					bss_conf = mt792x_vif_to_bss_conf(vif, i);
-+					mt7925_mcu_uni_bss_ps(dev, bss_conf);
-+				}
-+			}
- 		}
- 	}
- 
-@@ -1940,11 +1987,12 @@ static void mt7925_link_info_changed(str
- 	if (changed & (BSS_CHANGED_QOS | BSS_CHANGED_BEACON_ENABLED))
- 		mt7925_mcu_set_tx(dev, info);
- 
--	if (changed & BSS_CHANGED_BSSID) {
--		if (ieee80211_vif_is_mld(vif) &&
--		    hweight16(mvif->valid_links) == 2)
--			/* Indicate the secondary setup done */
--			mt7925_mcu_uni_bss_bcnft(dev, info, true);
-+	if (mvif->mlo_pm_state == MT792x_MLO_CHANGED_PS_PENDING) {
-+		/* Indicate the secondary setup done */
-+		mt7925_mcu_uni_bss_bcnft(dev, info, true);
-+
-+		ieee80211_queue_delayed_work(hw, &dev->mlo_pm_work, 5 * HZ);
-+		mvif->mlo_pm_state = MT792x_MLO_CHANGED_PS;
- 	}
- 
- 	mt792x_mutex_release(dev);
-@@ -2028,8 +2076,6 @@ mt7925_change_vif_links(struct ieee80211
- 			goto free;
- 
- 		if (mconf != &mvif->bss_conf) {
--			mt7925_mcu_set_bss_pm(dev, link_conf, true);
--
- 			err = mt7925_set_mlo_roc(phy, &mvif->bss_conf,
- 						 vif->active_links);
- 			if (err < 0)
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-@@ -268,6 +268,7 @@ int mt7925_mcu_uni_tx_ba(struct mt792x_d
- int mt7925_mcu_uni_rx_ba(struct mt792x_dev *dev,
- 			 struct ieee80211_ampdu_params *params,
- 			 bool enable);
-+void mt7925_mlo_pm_work(struct work_struct *work);
- void mt7925_scan_work(struct work_struct *work);
- void mt7925_roc_work(struct work_struct *work);
- int mt7925_mcu_uni_bss_ps(struct mt792x_dev *dev,
---- a/drivers/net/wireless/mediatek/mt76/mt792x.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
-@@ -81,6 +81,13 @@ enum mt792x_reg_power_type {
- 	MT_AP_VLP,
- };
- 
-+enum mt792x_mlo_pm_state {
-+	MT792x_MLO_LINK_DISASSOC,
-+	MT792x_MLO_LINK_ASSOC,
-+	MT792x_MLO_CHANGED_PS_PENDING,
-+	MT792x_MLO_CHANGED_PS,
-+};
-+
- DECLARE_EWMA(avg_signal, 10, 8)
- 
- struct mt792x_link_sta {
-@@ -134,6 +141,7 @@ struct mt792x_vif {
- 	struct mt792x_phy *phy;
- 	u16 valid_links;
- 	u8 deflink_id;
-+	enum mt792x_mlo_pm_state mlo_pm_state;
- 
- 	struct work_struct csa_work;
- 	struct timer_list csa_timer;
-@@ -239,6 +247,7 @@ struct mt792x_dev {
- 	const struct mt792x_irq_map *irq_map;
- 
- 	struct work_struct ipv6_ns_work;
-+	struct delayed_work mlo_pm_work;
- 	/* IPv6 addresses for WoWLAN */
- 	struct sk_buff_head ipv6_ns_list;
- 
+ 	init_completion(&cqspi->rx_dma_complete);
 
 
 
