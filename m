@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-134274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB1EA92A21
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4372A9267B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:13:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FD1B1B61D0B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:47:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDECC7B6358
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:07:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC03F253340;
-	Thu, 17 Apr 2025 18:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9800223710;
+	Thu, 17 Apr 2025 18:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bEGbVs1u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7WHnqHT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8CF1DB148;
-	Thu, 17 Apr 2025 18:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662162561DA;
+	Thu, 17 Apr 2025 18:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915628; cv=none; b=CAVZBnmVMQuO9hA98Gg9LNK5EV/yHGQ3og4YjYYLNJrQdA+up/I08Z8dRSyMKZdUupdWqIKyOuVipY7cBana4VuD1A0uwD/u6fkaMZNIeRXGL6TUEy/g9fhdE0Opo4avvd7yE/udd5actUL75E9k3qlyC3kBJ3NlTtAsOZ+aUqg=
+	t=1744913255; cv=none; b=F+z2cBksaDsHh43ud60JDJTRYaDJ3p4966hzeYT22Po7w1WYUh1izr4TBuW3UhnAQqfMKV60cfgoqotdvOKt3WzHgoQEL81lu3zkSRUUl04i4h9YkR3nsriMD6lieBzPaj/UfsSvA08abGBm+CQrsqCchshI2hkiASe/NK9P1es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915628; c=relaxed/simple;
-	bh=/Z10qwmnwJG9aOnMp5p4+xdnyD5QEw2wLxgYM10i6dQ=;
+	s=arc-20240116; t=1744913255; c=relaxed/simple;
+	bh=aDKtB1Yt7J31a3TmgFNWNv3gENugMK0Ha0a0NMCwIj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YmWsI+pi9eCHRK0VCP3RUDDmQ87CKpMSf2pVrX+cDJPGEoVOfKxXuLcYI6kMY42/2pIrbgaGRYB3e/hMbZOC5BLmljmfg859cCcswYq6yxpjwa8njWrUFD+jcYFlV0H9ioF+/AM+5fcxl+mo2UvMhT5IfVrufBKjQlepqriNqX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bEGbVs1u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4657C4CEE4;
-	Thu, 17 Apr 2025 18:47:07 +0000 (UTC)
+	 MIME-Version; b=eEuZVPPeNISAhKPwotA3vwGu4CY5MHM/Ul9Uapjap743X4aikSDSXJ9XRKBGl72+c2Gq4NXbSl6sJZEj8wJWKOk9N4CzdFAOPybN1ddBDGh5NWfXzl5R5r7lq4EVddoE5VyR24tGeh3k/MCSlXDgFf2xt1YXzpm/ypAkWul4VM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7WHnqHT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE4AFC4CEE4;
+	Thu, 17 Apr 2025 18:07:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915628;
-	bh=/Z10qwmnwJG9aOnMp5p4+xdnyD5QEw2wLxgYM10i6dQ=;
+	s=korg; t=1744913255;
+	bh=aDKtB1Yt7J31a3TmgFNWNv3gENugMK0Ha0a0NMCwIj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bEGbVs1u+51i4rDCHX0RsJl6fFwPlR5/PoTWQra8/az6a7cruwsBpFplXXZ3JnSs9
-	 mtmMOztuz5sH4w78VLIBoLp6D7AR40dvimHArfE1kz8z4jmPuVyY7SvCnJtWe2MZxP
-	 XA/BWedIco+RkYPedJXPxwH9rESYBSNuZTSyL9Os=
+	b=Z7WHnqHTajPQWoBhmNTBKqwrdJ97lYn2SDbCLEpOfVFKgndn6SW4IhRSO5JuHJvmU
+	 qQ2DyVjwyvLJ0bZqPNa1sf/Q5LaLv4VgjuqSlrCuTZ7WOl7n7Qa1wuO1SBv27W8Gv9
+	 Nn//cU0Pl7/ggMjODYYWRGSZbYNyPZLWMjARi1zM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan McDowell <noodles@meta.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 158/393] tpm: End any active auth session before shutdown
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.14 279/449] wifi: mt76: mt792x: re-register CHANCTX_STA_CSA only for the mt7921 series
 Date: Thu, 17 Apr 2025 19:49:27 +0200
-Message-ID: <20250417175113.939900813@linuxfoundation.org>
+Message-ID: <20250417175129.295008672@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,74 +59,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan McDowell <noodles@meta.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit 1dbf74e00a5f882b04b398399b6def65cd51ef21 ]
+commit 06e70003d88218675c566584dd76867fcb39706d upstream.
 
-Lazy flushing of TPM auth sessions can interact badly with IMA + kexec,
-resulting in loaded session handles being leaked across the kexec and
-not cleaned up. Fix by ensuring any active auth session is ended before
-the TPM is told about the shutdown, matching what is done when
-suspending.
+CSA is currently not supported on mt7925, so CSA is only registered for
+the mt7921 series
 
-Before:
-
-root@debian-qemu-efi:~# tpm2_getcap handles-loaded-session
-root@debian-qemu-efi:~# tpm2_getcap handles-saved-session
-root@debian-qemu-efi:~# kexec --load --kexec-file-syscall …
-root@debian-qemu-efi:~# systemctl kexec
-…
-root@debian-qemu-efi:~# tpm2_getcap handles-loaded-session
-- 0x2000000
-root@debian-qemu-efi:~# tpm2_getcap handles-saved-session
-root@debian-qemu-efi:~#
-(repeat kexec steps)
-root@debian-qemu-efi:~# tpm2_getcap handles-loaded-session
-- 0x2000000
-- 0x2000001
-root@debian-qemu-efi:~# tpm2_getcap handles-saved-session
-root@debian-qemu-efi:~#
-
-After:
-
-root@debian-qemu-efi:~# tpm2_getcap handles-loaded-session
-root@debian-qemu-efi:~# tpm2_getcap handles-saved-session
-root@debian-qemu-efi:~# kexec --load --kexec-file-syscall …
-root@debian-qemu-efi:~# systemctl kexec
-…
-root@debian-qemu-efi:~# tpm2_getcap handles-loaded-session
-root@debian-qemu-efi:~# tpm2_getcap handles-saved-session
-root@debian-qemu-efi:~#
-
-Signed-off-by: Jonathan McDowell <noodles@meta.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 8aa2f59260eb ("wifi: mt76: mt7921: introduce CSA support")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20250313054044.2638837-1-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm-chip.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/mediatek/mt76/mt792x_core.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
-index 7df7abaf3e526..87f01269b9b53 100644
---- a/drivers/char/tpm/tpm-chip.c
-+++ b/drivers/char/tpm/tpm-chip.c
-@@ -300,6 +300,7 @@ int tpm_class_shutdown(struct device *dev)
- 	down_write(&chip->ops_sem);
- 	if (chip->flags & TPM_CHIP_FLAG_TPM2) {
- 		if (!tpm_chip_start(chip)) {
-+			tpm2_end_auth_session(chip);
- 			tpm2_shutdown(chip, TPM2_SU_CLEAR);
- 			tpm_chip_stop(chip);
- 		}
--- 
-2.39.5
-
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+@@ -665,7 +665,8 @@ int mt792x_init_wiphy(struct ieee80211_h
+ 	ieee80211_hw_set(hw, SUPPORTS_DYNAMIC_PS);
+ 	ieee80211_hw_set(hw, SUPPORTS_VHT_EXT_NSS_BW);
+ 	ieee80211_hw_set(hw, CONNECTION_MONITOR);
+-	ieee80211_hw_set(hw, CHANCTX_STA_CSA);
++	if (is_mt7921(&dev->mt76))
++		ieee80211_hw_set(hw, CHANCTX_STA_CSA);
+ 
+ 	if (dev->pm.enable)
+ 		ieee80211_hw_set(hw, CONNECTION_MONITOR);
 
 
 
