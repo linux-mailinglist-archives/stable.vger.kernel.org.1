@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-134132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40EA3A929B5
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:44:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FB4EA92760
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:24:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F8E68E4BC5
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:41:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 914B1162E0E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E57B2571AE;
-	Thu, 17 Apr 2025 18:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F70257420;
+	Thu, 17 Apr 2025 18:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sqe7qSoL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aYN2RYj/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE480256C9C;
-	Thu, 17 Apr 2025 18:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D62925743E;
+	Thu, 17 Apr 2025 18:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915194; cv=none; b=dEw9+umSWGHry0irODAfWbLmXeyfM4312iRrEig/LtoUGJGDRjPK5/lz8yE2G5uD20/DDuTLlVF8Qm3XYuZjCSgLX9hZ9WIf1ZI1jClnyBzhL+0613uJ/FCLlY+Iy1pabeYL+NoLY9DDuQTQrdx+8M/1rf0S710nr/IE1Llry2E=
+	t=1744914081; cv=none; b=ALYEbAIglrysfKxHjEacCRV3mbQbLd/LUWEhO8EOOoC1fH7jtWv2Trr9TOga19yeeJT0ekoH9lz9+COenSmGIZJeMI2V7lFzDA1KmEcKI+tzNTfxSTeAGIi/g+fzcKRwmBSMS0YZwPyrt4VOjt7tMJhjTnP+Tr+SUiIlmvGKbs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915194; c=relaxed/simple;
-	bh=HIAkBZnexgkYmTy52IWDgQ+3vTQZyrlAA8Vy9Gy/rfk=;
+	s=arc-20240116; t=1744914081; c=relaxed/simple;
+	bh=ovsDVeUgyU9/bDrzYpHPoJaSCgvYLoHq79l4MsY5p6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S3KHt60mV/MWmsBdq4xuQo/5YjUf+MKjXTHlw2ZP0wTYpEX+nQsTKQMrvxD7RecniIENIXTYqIDhHyxx6FWNcR2pOzfOpVjQOQVZ67VKNRFD8R/60RAlE3uvqKFCGJxFThACez6YKXfeMzHREx1o5NTYxKZJ4pcObbYtiMM7N9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sqe7qSoL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D571C4CEE4;
-	Thu, 17 Apr 2025 18:39:54 +0000 (UTC)
+	 MIME-Version; b=JAbnmGrajsLVDXKPzQELNz+glW5i2gXWfrjr/4HEOsHEs/wj77kUAOlaF6wwhT5RS0MromODhZuOXSCxcIt8DqIClc+fXAe1t3halYlOIfNinZGONvJzbFu/CrV3mYh1+HFW0FSNBfnNsf60q54FdLe2RSzY8GygZYPdsZ7nWRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aYN2RYj/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D043C4CEE4;
+	Thu, 17 Apr 2025 18:21:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915194;
-	bh=HIAkBZnexgkYmTy52IWDgQ+3vTQZyrlAA8Vy9Gy/rfk=;
+	s=korg; t=1744914081;
+	bh=ovsDVeUgyU9/bDrzYpHPoJaSCgvYLoHq79l4MsY5p6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sqe7qSoL8By7C1iQjK5wTdXmUxH5ZjjAAy642GkIoKcMOpA/wV71oT9QLG6PpvoGU
-	 Dugw0WvTbd5yNo9i7IPybu37VuPET8Pj5XsNvXu0YwltNoNUQzprNDhLLJKCprfusQ
-	 O0Zu1Kd1EWb9z3H0Fv5bV4vanwZi/ALjn3EXEYeY=
+	b=aYN2RYj/SYbiwo6nR7Jz0RTUR96R8jkztmoTuE5wFYVKyMzXKtE0sW0vnXTjnqMCT
+	 ECXZyxWeSLcf3NkmvbrjwNeFCtV3nPhP9dUXxJQT1YKTWDKn+127TEz5LY7GtI/A8t
+	 MNnlG/lrfLyqRLTT9qgL/3NOFSA8LJfOZpQJ07lM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Zhongqiu Han <quic_zhonhan@quicinc.com>,
+	syzbot+df6cdcb35904203d2b6d@syzkaller.appspotmail.com,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 048/393] x86/mm: Clear _PAGE_DIRTY for kernel mappings when we clear _PAGE_RW
+Subject: [PATCH 6.13 099/414] jfs: Fix uninit-value access of imap allocated in the diMount() function
 Date: Thu, 17 Apr 2025 19:47:37 +0200
-Message-ID: <20250417175109.523866525@linuxfoundation.org>
+Message-ID: <20250417175115.421971198@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Zhongqiu Han <quic_zhonhan@quicinc.com>
 
-[ Upstream commit c1fcf41cf37f7a3fd3bbf6f0c04aba3ea4258888 ]
+[ Upstream commit 9629d7d66c621671d9a47afe27ca9336bfc8a9ea ]
 
-The bit pattern of _PAGE_DIRTY set and _PAGE_RW clear is used to mark
-shadow stacks.  This is currently checked for in mk_pte() but not
-pfn_pte().  If we add the check to pfn_pte(), it catches vfree()
-calling set_direct_map_invalid_noflush() which calls
-__change_page_attr() which loads the old protection bits from the
-PTE, clears the specified bits and uses pfn_pte() to construct the
-new PTE.
+syzbot reports that hex_dump_to_buffer is using uninit-value:
 
-We should, therefore, for kernel mappings, clear the _PAGE_DIRTY bit
-consistently whenever we clear _PAGE_RW.  I opted to do it in the
-callers in case we want to use __change_page_attr() to create shadow
-stacks inside the kernel at some point in the future.  Arguably, we
-might also want to clear _PAGE_ACCESSED here.
+=====================================================
+BUG: KMSAN: uninit-value in hex_dump_to_buffer+0x888/0x1100 lib/hexdump.c:171
+hex_dump_to_buffer+0x888/0x1100 lib/hexdump.c:171
+print_hex_dump+0x13d/0x3e0 lib/hexdump.c:276
+diFree+0x5ba/0x4350 fs/jfs/jfs_imap.c:876
+jfs_evict_inode+0x510/0x550 fs/jfs/inode.c:156
+evict+0x723/0xd10 fs/inode.c:796
+iput_final fs/inode.c:1946 [inline]
+iput+0x97b/0xdb0 fs/inode.c:1972
+txUpdateMap+0xf3e/0x1150 fs/jfs/jfs_txnmgr.c:2367
+txLazyCommit fs/jfs/jfs_txnmgr.c:2664 [inline]
+jfs_lazycommit+0x627/0x11d0 fs/jfs/jfs_txnmgr.c:2733
+kthread+0x6b9/0xef0 kernel/kthread.c:464
+ret_from_fork+0x6d/0x90 arch/x86/kernel/process.c:148
+ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
 
-Note that the 3 functions involved:
+Uninit was created at:
+slab_post_alloc_hook mm/slub.c:4121 [inline]
+slab_alloc_node mm/slub.c:4164 [inline]
+__kmalloc_cache_noprof+0x8e3/0xdf0 mm/slub.c:4320
+kmalloc_noprof include/linux/slab.h:901 [inline]
+diMount+0x61/0x7f0 fs/jfs/jfs_imap.c:105
+jfs_mount+0xa8e/0x11d0 fs/jfs/jfs_mount.c:176
+jfs_fill_super+0xa47/0x17c0 fs/jfs/super.c:523
+get_tree_bdev_flags+0x6ec/0x910 fs/super.c:1636
+get_tree_bdev+0x37/0x50 fs/super.c:1659
+jfs_get_tree+0x34/0x40 fs/jfs/super.c:635
+vfs_get_tree+0xb1/0x5a0 fs/super.c:1814
+do_new_mount+0x71f/0x15e0 fs/namespace.c:3560
+path_mount+0x742/0x1f10 fs/namespace.c:3887
+do_mount fs/namespace.c:3900 [inline]
+__do_sys_mount fs/namespace.c:4111 [inline]
+__se_sys_mount+0x71f/0x800 fs/namespace.c:4088
+__x64_sys_mount+0xe4/0x150 fs/namespace.c:4088
+x64_sys_call+0x39bf/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:166
+do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe+0x77/0x7f
+=====================================================
 
-  __set_pages_np()
-  kernel_map_pages_in_pgd()
-  kernel_unmap_pages_in_pgd()
+The reason is that imap is not properly initialized after memory
+allocation. It will cause the snprintf() function to write uninitialized
+data into linebuf within hex_dump_to_buffer().
 
-Only ever manipulate non-swappable kernel mappings, so maintaining
-the DIRTY:1|RW:0 special pattern for shadow stacks and DIRTY:0
-pattern for non-shadow-stack entries can be maintained consistently
-and doesn't result in the unintended clearing of a live dirty bit
-that could corrupt (destroy) dirty bit information for user mappings.
+Fix this by using kzalloc instead of kmalloc to clear its content at the
+beginning in diMount().
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/174051422675.10177.13226545170101706336.tip-bot2@tip-bot2
-Closes: https://lore.kernel.org/oe-lkp/202502241646.719f4651-lkp@intel.com
+Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
+Reported-by: syzbot+df6cdcb35904203d2b6d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/lkml/67b5d07e.050a0220.14d86d.00e6.GAE@google.com/
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/pat/set_memory.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/jfs/jfs_imap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 44f7b2ea6a073..69ceb967d73e9 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -2422,7 +2422,7 @@ static int __set_pages_np(struct page *page, int numpages)
- 				.pgd = NULL,
- 				.numpages = numpages,
- 				.mask_set = __pgprot(0),
--				.mask_clr = __pgprot(_PAGE_PRESENT | _PAGE_RW),
-+				.mask_clr = __pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY),
- 				.flags = CPA_NO_CHECK_ALIAS };
- 
- 	/*
-@@ -2501,7 +2501,7 @@ int __init kernel_map_pages_in_pgd(pgd_t *pgd, u64 pfn, unsigned long address,
- 		.pgd = pgd,
- 		.numpages = numpages,
- 		.mask_set = __pgprot(0),
--		.mask_clr = __pgprot(~page_flags & (_PAGE_NX|_PAGE_RW)),
-+		.mask_clr = __pgprot(~page_flags & (_PAGE_NX|_PAGE_RW|_PAGE_DIRTY)),
- 		.flags = CPA_NO_CHECK_ALIAS,
- 	};
- 
-@@ -2544,7 +2544,7 @@ int __init kernel_unmap_pages_in_pgd(pgd_t *pgd, unsigned long address,
- 		.pgd		= pgd,
- 		.numpages	= numpages,
- 		.mask_set	= __pgprot(0),
--		.mask_clr	= __pgprot(_PAGE_PRESENT | _PAGE_RW),
-+		.mask_clr	= __pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY),
- 		.flags		= CPA_NO_CHECK_ALIAS,
- 	};
+diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
+index a360b24ed320c..cf16655cd26ba 100644
+--- a/fs/jfs/jfs_imap.c
++++ b/fs/jfs/jfs_imap.c
+@@ -102,7 +102,7 @@ int diMount(struct inode *ipimap)
+ 	 * allocate/initialize the in-memory inode map control structure
+ 	 */
+ 	/* allocate the in-memory inode map control structure. */
+-	imap = kmalloc(sizeof(struct inomap), GFP_KERNEL);
++	imap = kzalloc(sizeof(struct inomap), GFP_KERNEL);
+ 	if (imap == NULL)
+ 		return -ENOMEM;
  
 -- 
 2.39.5
