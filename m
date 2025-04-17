@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-134333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D117A92A8E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:52:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F72EA928C1
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:37:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08E4F7A991B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:51:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D624F1895D69
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837CC257AD3;
-	Thu, 17 Apr 2025 18:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D1226158D;
+	Thu, 17 Apr 2025 18:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wlEE6U5r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vMrFLLgE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4111B2566DE;
-	Thu, 17 Apr 2025 18:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B13F261576;
+	Thu, 17 Apr 2025 18:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915810; cv=none; b=sQUEm7rRf2P5hufv7dQHcUdjlweI2yBMfpDZeTFVx++X/+xOdLI2iLuCJHMO5jqOkm+Ra1JJfGIGBeas1+FMikckO3lIGdDBXyuR+tDQG4wp+mY7ei14Q+hzV4oouXeM7EzFbp9AXbkJ2h1Kxpyn6nvCl0yrdANHd50pRhAVicw=
+	t=1744914688; cv=none; b=tzPV6v2j2QCi5xW0n9u/mBtx0xvMwJsXdIuoMV/R07s4qpETpVwkDLxEIY69GmaW8q34lpHqx/Y0RJ3UEpZl65IlCOeRu5/qavVKnc+WIE3iTRCqI4uv34m7xcRqiRwiXNBSXj2AYTAqdNKk3RhvChjgkpPcTzBFI3Gv/VA2kGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915810; c=relaxed/simple;
-	bh=4GRpzLjJK6kJK7qddnQRiVa/TywQdytI5JXp+42zzFg=;
+	s=arc-20240116; t=1744914688; c=relaxed/simple;
+	bh=Fzl5GccslGeE0j+xS4vAwHUhPtQHaJXa18YSiMxRbdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D4Ym2XOoy3MEqzK6p4ozz+fbq87eX2oVWR9eHiOjs2nNuBgfepDcbrzg6AAA+6c7oKSYjjUwysjBxxbeUYBHSo66bSHeGbJKVf8ZCcxx3yDpD6jKLne1ugGNE65namNKLZ/0Ehe9UIhvxtguUe6niuuaQuP+A/uG1ygfNF+wveU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wlEE6U5r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB86FC4CEE4;
-	Thu, 17 Apr 2025 18:50:09 +0000 (UTC)
+	 MIME-Version; b=KTZVd8nA7ZE01AwuaHXtGGmMFG5aDw8OcG6aS4bQJPQVm92DA7ecAlmp6p0mWZjX2DApLdQaYNbLm3U78A9X77DgdhGeTRADBwTrz26sR3LULYW1jmR3BAsST1K+4Vxg7pPC5R+ztN6TTG2krZwGWctOnbtT6IYM0sFs6E2hv0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vMrFLLgE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFCE4C4CEE4;
+	Thu, 17 Apr 2025 18:31:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915810;
-	bh=4GRpzLjJK6kJK7qddnQRiVa/TywQdytI5JXp+42zzFg=;
+	s=korg; t=1744914688;
+	bh=Fzl5GccslGeE0j+xS4vAwHUhPtQHaJXa18YSiMxRbdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wlEE6U5r/GaIgJDMflgoILqtSSSx8evLWoxC8n9hypV+xx2M+XivLXih2t/5TkIkl
-	 u+ebGORqKcb0/KydgNYDyudnwIybWrd9mtgZEvFDmOjoIOXeroHo9aMpvIoKOCE4/9
-	 arawv36pb+ZNt+mijcgq68NFGVQaZmqQ6m/IyPPw=
+	b=vMrFLLgEEb5T7PGZJBiu2FcbH2JXttsLQEmc+o8Ga0O6d7ZA1MfMUOXbOXCEAetit
+	 ONM0TTC0V7mL57NO7tCnEJukD3ypwmWt0BYwRH8yjcEW1RHHeh89domAr2k5iRqPZW
+	 q0uRN35vog0G+YiF8VGyUJY1Qgd9KNnAxyB21oJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 247/393] io_uring/net: fix io_req_post_cqe abuse by send bundle
+	T Pratham <t-pratham@ti.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Jens Axboe <axboe@kernel.dk>,
+	Kamlesh Gurudasani <kamlesh@ti.com>,
+	Praneeth Bajjuri <praneeth@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.13 298/414] lib: scatterlist: fix sg_split_phys to preserve original scatterlist offsets
 Date: Thu, 17 Apr 2025 19:50:56 +0200
-Message-ID: <20250417175117.526510363@linuxfoundation.org>
+Message-ID: <20250417175123.419060786@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +66,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: T Pratham <t-pratham@ti.com>
 
-commit 6889ae1b4df1579bcdffef023e2ea9a982565dff upstream.
+commit 8b46fdaea819a679da176b879e7b0674a1161a5e upstream.
 
-[  114.987980][ T5313] WARNING: CPU: 6 PID: 5313 at io_uring/io_uring.c:872 io_req_post_cqe+0x12e/0x4f0
-[  114.991597][ T5313] RIP: 0010:io_req_post_cqe+0x12e/0x4f0
-[  115.001880][ T5313] Call Trace:
-[  115.002222][ T5313]  <TASK>
-[  115.007813][ T5313]  io_send+0x4fe/0x10f0
-[  115.009317][ T5313]  io_issue_sqe+0x1a6/0x1740
-[  115.012094][ T5313]  io_wq_submit_work+0x38b/0xed0
-[  115.013223][ T5313]  io_worker_handle_work+0x62a/0x1600
-[  115.013876][ T5313]  io_wq_worker+0x34f/0xdf0
+The split_sg_phys function was incorrectly setting the offsets of all
+scatterlist entries (except the first) to 0.  Only the first scatterlist
+entry's offset and length needs to be modified to account for the skip.
+Setting the rest entries' offsets to 0 could lead to incorrect data
+access.
 
-As the comment states, io_req_post_cqe() should only be used by
-multishot requests, i.e. REQ_F_APOLL_MULTISHOT, which bundled sends are
-not. Add a flag signifying whether a request wants to post multiple
-CQEs. Eventually REQ_F_APOLL_MULTISHOT should imply the new flag, but
-that's left out for simplicity.
+I am using this function in a crypto driver that I'm currently developing
+(not yet sent to mailing list).  During testing, it was observed that the
+output scatterlists (except the first one) contained incorrect garbage
+data.
 
-Cc: stable@vger.kernel.org
-Fixes: a05d1f625c7aa ("io_uring/net: support bundles for send")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/8b611dbb54d1cd47a88681f5d38c84d0c02bc563.1743067183.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+I narrowed this issue down to the call of sg_split().  Upon debugging
+inside this function, I found that this resetting of offset is the cause
+of the problem, causing the subsequent scatterlists to point to incorrect
+memory locations in a page.  By removing this code, I am obtaining
+expected data in all the split output scatterlists.  Thus, this was indeed
+causing observable runtime effects!
+
+This patch removes the offending code, ensuring that the page offsets in
+the input scatterlist are preserved in the output scatterlist.
+
+Link: https://lkml.kernel.org/r/20250319111437.1969903-1-t-pratham@ti.com
+Fixes: f8bcbe62acd0 ("lib: scatterlist: add sg splitting function")
+Signed-off-by: T Pratham <t-pratham@ti.com>
+Cc: Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Kamlesh Gurudasani <kamlesh@ti.com>
+Cc: Praneeth Bajjuri <praneeth@ti.com>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/io_uring_types.h |    3 +++
- io_uring/io_uring.c            |    4 ++--
- io_uring/net.c                 |    1 +
- 3 files changed, 6 insertions(+), 2 deletions(-)
+ lib/sg_split.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/include/linux/io_uring_types.h
-+++ b/include/linux/io_uring_types.h
-@@ -457,6 +457,7 @@ enum {
- 	REQ_F_SKIP_LINK_CQES_BIT,
- 	REQ_F_SINGLE_POLL_BIT,
- 	REQ_F_DOUBLE_POLL_BIT,
-+	REQ_F_MULTISHOT_BIT,
- 	REQ_F_APOLL_MULTISHOT_BIT,
- 	REQ_F_CLEAR_POLLIN_BIT,
- 	REQ_F_HASH_LOCKED_BIT,
-@@ -530,6 +531,8 @@ enum {
- 	REQ_F_SINGLE_POLL	= IO_REQ_FLAG(REQ_F_SINGLE_POLL_BIT),
- 	/* double poll may active */
- 	REQ_F_DOUBLE_POLL	= IO_REQ_FLAG(REQ_F_DOUBLE_POLL_BIT),
-+	/* request posts multiple completions, should be set at prep time */
-+	REQ_F_MULTISHOT		= IO_REQ_FLAG(REQ_F_MULTISHOT_BIT),
- 	/* fast poll multishot mode */
- 	REQ_F_APOLL_MULTISHOT	= IO_REQ_FLAG(REQ_F_APOLL_MULTISHOT_BIT),
- 	/* recvmsg special flag, clear EPOLLIN */
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -1821,7 +1821,7 @@ fail:
- 	 * Don't allow any multishot execution from io-wq. It's more restrictive
- 	 * than necessary and also cleaner.
- 	 */
--	if (req->flags & REQ_F_APOLL_MULTISHOT) {
-+	if (req->flags & (REQ_F_MULTISHOT|REQ_F_APOLL_MULTISHOT)) {
- 		err = -EBADFD;
- 		if (!io_file_can_poll(req))
- 			goto fail;
-@@ -1832,7 +1832,7 @@ fail:
- 				goto fail;
- 			return;
- 		} else {
--			req->flags &= ~REQ_F_APOLL_MULTISHOT;
-+			req->flags &= ~(REQ_F_APOLL_MULTISHOT|REQ_F_MULTISHOT);
- 		}
- 	}
- 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -435,6 +435,7 @@ int io_sendmsg_prep(struct io_kiocb *req
- 		sr->msg_flags |= MSG_WAITALL;
- 		sr->buf_group = req->buf_index;
- 		req->buf_list = NULL;
-+		req->flags |= REQ_F_MULTISHOT;
- 	}
- 
- #ifdef CONFIG_COMPAT
+--- a/lib/sg_split.c
++++ b/lib/sg_split.c
+@@ -88,8 +88,6 @@ static void sg_split_phys(struct sg_spli
+ 			if (!j) {
+ 				out_sg->offset += split->skip_sg0;
+ 				out_sg->length -= split->skip_sg0;
+-			} else {
+-				out_sg->offset = 0;
+ 			}
+ 			sg_dma_address(out_sg) = 0;
+ 			sg_dma_len(out_sg) = 0;
 
 
 
