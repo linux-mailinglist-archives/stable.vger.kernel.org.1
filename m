@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-133439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25205A925B7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:06:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52149A929FF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:46:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4385A467797
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D24C63A7A30
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D1A257432;
-	Thu, 17 Apr 2025 18:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 138D9253F22;
+	Thu, 17 Apr 2025 18:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XWkFmMVZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H7tiEIt2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E6B257424;
-	Thu, 17 Apr 2025 18:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39CB24169C;
+	Thu, 17 Apr 2025 18:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913080; cv=none; b=aFMlzrAvd45GmYX6NsUmh404Sykh2fBllhC2lIKmdiHCiE6PpOMDfLXqZxBm0qUYllEeNuBlpaC2MuQq9Gklt6tejtV00Gpro9mEEMda0956+5xnuqAxX7vPLaf3Sbb46+l4ubEsMsWbcmlF61vYhHnwIl4H/4SMDlkKvBaHzYs=
+	t=1744915346; cv=none; b=CD8WN+NU9oFRby71Wm9QMqD6kjCQHrn/mHC76bp7/o0+o9WggoW7dnELJKqURZmoqC3NKk1SZ9szigrNmVlNwuM8sHm0xT0UBdLhfZT3rPKAQP7w6Fr5a8ywTVEx/ZXUPGv+lc3q/jxPerwaX3Gi0VGD5l/hFT05EZXf9BvgGno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913080; c=relaxed/simple;
-	bh=71xHpXDQmfEy8t4tmkAmoCMv77qL7fDONiX/S/piC+0=;
+	s=arc-20240116; t=1744915346; c=relaxed/simple;
+	bh=AHHmT4MNanPseVVB2cNxbpGA37SxpfoyuBlNrrEVF1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sffnmUvn4n+29pqameQHzrvKZzDLHk+eai97FxzJNg9rDvf5N08/WRawTTK/FZ0EtHzDdjP9bxaDDTAVJOqnyd4TrbeRyN7bpHiiaKHZcOZUePZEG3Iw+PTSLP6nN0omtpPOAVoEww5rpfknz4FZnk3JxXva18paArdaRDkOs2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XWkFmMVZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E16C4CEE4;
-	Thu, 17 Apr 2025 18:04:39 +0000 (UTC)
+	 MIME-Version; b=VKFtN2TdTiZ4y6ScARjAPEIki94dg2PaENZzWNI57zZaVWs8EYCi2wEnpJiOGqO9Qw2mHyoJF6sN82kvQHdPBNfXlJCwo/97V4Ewyma8mawzaYDHjDDRh7WDBqJUqZuV5ESAyk4LS0IcSWBwyYlIh/pS+5zGd4ptv9qaZGdwAW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H7tiEIt2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49109C4CEE4;
+	Thu, 17 Apr 2025 18:42:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913080;
-	bh=71xHpXDQmfEy8t4tmkAmoCMv77qL7fDONiX/S/piC+0=;
+	s=korg; t=1744915346;
+	bh=AHHmT4MNanPseVVB2cNxbpGA37SxpfoyuBlNrrEVF1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XWkFmMVZu2omNpcc8Lk+FDFDYh9OIzx+byAHRLtSNq20iSs4fESm9Bmr3rVmpBpqH
-	 EhzITFgvSAp/pQEgip9H01nIMMHoSugaAlg+CH0ExVG2gBn3zPRLXg2YeY4QfjH8Ae
-	 TrsSmpLhp+tHkPcgk8payUY19EfNu8dzqIOBLWGk=
+	b=H7tiEIt27DKbgxK0zsQF7R8gEoPUh9piklUjOQH6WbEYPJyYBvRZ6hMDzW0hlcOgQ
+	 0ZglXEw/9cLepqPsH0IIfz33pOb7aojmkQExQc0qmbnx50zIN2SiX6Vm6BK6jV9+lL
+	 Xd+WRBb2fJILJY+a/M4u4byyi1rT0LiFMiuGbqL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Alexandre Courbot <acourbot@google.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.14 220/449] media: mtk-vcodec: venc: avoid -Wenum-compare-conditional warning
+	Rand Deeb <rand.sec96@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 099/393] fs/jfs: cast inactags to s64 to prevent potential overflow
 Date: Thu, 17 Apr 2025 19:48:28 +0200
-Message-ID: <20250417175126.824848313@linuxfoundation.org>
+Message-ID: <20250417175111.573246044@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Rand Deeb <rand.sec96@gmail.com>
 
-commit 07df4f23ef3ffe6fee697cd2e03623ad27108843 upstream.
+[ Upstream commit 70ca3246ad201b53a9f09380b3f29d8bac320383 ]
 
-This is one of three clang warnings about incompatible enum types
-in a conditional expression:
+The expression "inactags << bmp->db_agl2size" in the function
+dbFinalizeBmap() is computed using int operands. Although the
+values (inactags and db_agl2size) are derived from filesystem
+parameters and are usually small, there is a theoretical risk that
+the shift could overflow a 32-bit int if extreme values occur.
 
-drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c:597:29: error: conditional expression between different enumeration types ('enum scp_ipi_id' and 'enum ipi_id') [-Werror,-Wenum-compare-conditional]
-  597 |         inst->vpu_inst.id = is_ext ? SCP_IPI_VENC_H264 : IPI_VENC_H264;
-      |                                    ^ ~~~~~~~~~~~~~~~~~   ~~~~~~~~~~~~~
+According to the C standard, shifting a signed 32-bit int can lead
+to undefined behavior if the result exceeds its range. In our
+case, an overflow could miscalculate free blocks, potentially
+leading to erroneous filesystem accounting.
 
-The code is correct, so just rework it to avoid the warning.
+To ensure the arithmetic is performed in 64-bit space, we cast
+"inactags" to s64 before shifting. This defensive fix prevents any
+risk of overflow and complies with kernel coding best practices.
 
-Fixes: 0dc4b3286125 ("media: mtk-vcodec: venc: support SCP firmware")
-Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Alexandre Courbot <acourbot@google.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/jfs/jfs_dmap.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c
-@@ -594,7 +594,11 @@ static int h264_enc_init(struct mtk_vcod
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index f9009e4f9ffd8..f89f07c9580ea 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -3666,8 +3666,8 @@ void dbFinalizeBmap(struct inode *ipbmap)
+ 	 * system size is not a multiple of the group size).
+ 	 */
+ 	inactfree = (inactags && ag_rem) ?
+-	    ((inactags - 1) << bmp->db_agl2size) + ag_rem
+-	    : inactags << bmp->db_agl2size;
++	    (((s64)inactags - 1) << bmp->db_agl2size) + ag_rem
++	    : ((s64)inactags << bmp->db_agl2size);
  
- 	inst->ctx = ctx;
- 	inst->vpu_inst.ctx = ctx;
--	inst->vpu_inst.id = is_ext ? SCP_IPI_VENC_H264 : IPI_VENC_H264;
-+	if (is_ext)
-+		inst->vpu_inst.id = SCP_IPI_VENC_H264;
-+	else
-+		inst->vpu_inst.id = IPI_VENC_H264;
-+
- 	inst->hw_base = mtk_vcodec_get_reg_addr(inst->ctx->dev->reg_base, VENC_SYS);
- 
- 	ret = vpu_enc_init(&inst->vpu_inst);
+ 	/* determine how many free blocks are in the active
+ 	 * allocation groups plus the average number of free blocks
+-- 
+2.39.5
+
 
 
 
