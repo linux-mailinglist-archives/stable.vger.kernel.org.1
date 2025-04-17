@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-134389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 594E4A92ACD
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:54:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CBA0A92933
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 121451B6066F
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C12E08A3E94
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EAAD256C65;
-	Thu, 17 Apr 2025 18:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 614A32641FC;
+	Thu, 17 Apr 2025 18:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0KmsB9bF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vLBsESN6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23052255246;
-	Thu, 17 Apr 2025 18:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFDA264630;
+	Thu, 17 Apr 2025 18:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915980; cv=none; b=I7RLM2dhTLJt+amd7aOrOdPzWdnaEajvTvo32AW9CJEJG9SUtaMtnmiTC/wBtjfvjNxt4DGOJNR5jeR3I1R4aftgGCkRjQ/XwmzLFLrNVx9/e3k+OXijiMowEZKS9/ZZzq3RNcgt19WK59BueUor50rT4rbpwE1Hyp5mkgUa3zg=
+	t=1744914861; cv=none; b=ILT979BmkgPzW9QIB/gctM7ntZpA3DPSDJkiqtYryyuavxAnIhsZ55kInad8HVF4XdKtP2d6oipiAElqVcKl2WMHQD1naCJUpHTLjRFP2Pz2MSbfMFcnC/hmNQ7ijKmDrF0Lj1f5ZHM4H7VZXhDNB4nZ5nitLlu1QM2dsB3xbOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915980; c=relaxed/simple;
-	bh=IH9GAb9gRQi9+IZCvfQ4Nl+kYwJD65V/pEk/F3sRRfQ=;
+	s=arc-20240116; t=1744914861; c=relaxed/simple;
+	bh=dae+mgDISWfSWAhCFAaVi0qdpCFqJ3JW5Ez2wHFBYy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tn2wWPkqnxUuQOhx/6vDEqI67lTK3XfdmIKrv86qtbeTep1HLqV3nyCw/fdlR3CaYKWjVAOpyn3rCMt/AtDFdrXlM4GE4FfuZ9BSB/72N7yXNRKXRnMRD/oLIZ5XzuPs8RrFsIHsUZocillqtJt/gEkmwqbk8JO5KVPEVurjh30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0KmsB9bF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9516EC4CEE4;
-	Thu, 17 Apr 2025 18:52:59 +0000 (UTC)
+	 MIME-Version; b=Q44AZO+ElaL38ONh3iAUQ8cRk0UZXBasuFAT+c6pY3lCpMidKxg3OQ/jC98MR9F508xU+6gevgrK69mlqSAT5667TBMaEcXFW9JXubP86i0tDJikLbvYGxdWwASof+3gbPiR62boy3DIh1saI1YLPm5az4AYYnvAogzofNA05MA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vLBsESN6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FBE3C4CEE4;
+	Thu, 17 Apr 2025 18:34:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915980;
-	bh=IH9GAb9gRQi9+IZCvfQ4Nl+kYwJD65V/pEk/F3sRRfQ=;
+	s=korg; t=1744914857;
+	bh=dae+mgDISWfSWAhCFAaVi0qdpCFqJ3JW5Ez2wHFBYy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0KmsB9bFdo9aP3gHYTI2DGLi+6zscVhUgefTOGNv8/gDkM3P009VIzx8CqeG+RSdr
-	 yR+DYnzUzs6aNzkMSFP48OlNUVDAyG9DkJ7EOlNM71NhpGnBSFV3X88pW4KlDXeL53
-	 Fkjb2rly0fgqhCa4S3omu2rjCzqllNmWFjcxi4/g=
+	b=vLBsESN6qFFuqTufbU4dae0gHU6KYv97LwhoLe+N0LgGzBESCODaWoEeXJTbZKqVi
+	 v4kRLf8hduWyFy5qYxMQA/fPn6S8BCTOXg8yjb9TZjXXCeGDgWQi/A9OwYOfwjVkBJ
+	 2pItFSbWY51PeTcgRsTed/JTd4fyxMoae9FlLxP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Usama Arif <usamaarif642@gmail.com>,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 303/393] mm/damon/ops: have damon_get_folio return folio even for tail pages
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.13 354/414] dm-integrity: set ti->error on memory allocation failure
 Date: Thu, 17 Apr 2025 19:51:52 +0200
-Message-ID: <20250417175119.798662739@linuxfoundation.org>
+Message-ID: <20250417175125.691518181@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,145 +60,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Usama Arif <usamaarif642@gmail.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 3a06696305e757f652dd0dcf4dfa2272eda39434 upstream.
+commit 00204ae3d6712ee053353920e3ce2b00c35ef75b upstream.
 
-Patch series "mm/damon/paddr: fix large folios access and schemes handling".
+The dm-integrity target didn't set the error string when memory
+allocation failed. This patch fixes it.
 
-DAMON operations set for physical address space, namely 'paddr', treats
-tail pages as unaccessed always.  It can also apply DAMOS action to a
-large folio multiple times within single DAMOS' regions walking.  As a
-result, the monitoring output has poor quality and DAMOS works in
-unexpected ways when large folios are being used.  Fix those.
-
-The patches were parts of Usama's hugepage_size DAMOS filter patch
-series[1].  The first fix has collected from there with a slight commit
-message change for the subject prefix.  The second fix is re-written by SJ
-and posted as an RFC before this series.  The second one also got a slight
-commit message change for the subject prefix.
-
-[1] https://lore.kernel.org/20250203225604.44742-1-usamaarif642@gmail.com
-[2] https://lore.kernel.org/20250206231103.38298-1-sj@kernel.org
-
-
-This patch (of 2):
-
-This effectively adds support for large folios in damon for paddr, as
-damon_pa_mkold/young won't get a null folio from this function and won't
-ignore it, hence access will be checked and reported.  This also means
-that larger folios will be considered for different DAMOS actions like
-pageout, prioritization and migration.  As these DAMOS actions will
-consider larger folios, iterate through the region at folio_size and not
-PAGE_SIZE intervals.  This should not have an affect on vaddr, as
-damon_young_pmd_entry considers pmd entries.
-
-Link: https://lkml.kernel.org/r/20250207212033.45269-1-sj@kernel.org
-Link: https://lkml.kernel.org/r/20250207212033.45269-2-sj@kernel.org
-Fixes: a28397beb55b ("mm/damon: implement primitives for physical address space monitoring")
-Signed-off-by: Usama Arif <usamaarif642@gmail.com>
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/ops-common.c |    2 +-
- mm/damon/paddr.c      |   24 ++++++++++++++++++------
- 2 files changed, 19 insertions(+), 7 deletions(-)
+ drivers/md/dm-integrity.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/mm/damon/ops-common.c
-+++ b/mm/damon/ops-common.c
-@@ -24,7 +24,7 @@ struct folio *damon_get_folio(unsigned l
- 	struct page *page = pfn_to_online_page(pfn);
- 	struct folio *folio;
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -5081,16 +5081,19 @@ try_smaller_buffer:
  
--	if (!page || PageTail(page))
-+	if (!page)
- 		return NULL;
- 
- 	folio = page_folio(page);
---- a/mm/damon/paddr.c
-+++ b/mm/damon/paddr.c
-@@ -264,11 +264,14 @@ static unsigned long damon_pa_pageout(st
- 		damos_add_filter(s, filter);
- 	}
- 
--	for (addr = r->ar.start; addr < r->ar.end; addr += PAGE_SIZE) {
-+	addr = r->ar.start;
-+	while (addr < r->ar.end) {
- 		struct folio *folio = damon_get_folio(PHYS_PFN(addr));
- 
--		if (!folio)
-+		if (!folio) {
-+			addr += PAGE_SIZE;
- 			continue;
-+		}
- 
- 		if (damos_pa_filter_out(s, folio))
- 			goto put_folio;
-@@ -282,6 +285,7 @@ static unsigned long damon_pa_pageout(st
- 		else
- 			list_add(&folio->lru, &folio_list);
- put_folio:
-+		addr += folio_size(folio);
- 		folio_put(folio);
- 	}
- 	if (install_young_filter)
-@@ -296,11 +300,14 @@ static inline unsigned long damon_pa_mar
- {
- 	unsigned long addr, applied = 0;
- 
--	for (addr = r->ar.start; addr < r->ar.end; addr += PAGE_SIZE) {
-+	addr = r->ar.start;
-+	while (addr < r->ar.end) {
- 		struct folio *folio = damon_get_folio(PHYS_PFN(addr));
- 
--		if (!folio)
-+		if (!folio) {
-+			addr += PAGE_SIZE;
- 			continue;
-+		}
- 
- 		if (damos_pa_filter_out(s, folio))
- 			goto put_folio;
-@@ -311,6 +318,7 @@ static inline unsigned long damon_pa_mar
- 			folio_deactivate(folio);
- 		applied += folio_nr_pages(folio);
- put_folio:
-+		addr += folio_size(folio);
- 		folio_put(folio);
- 	}
- 	return applied * PAGE_SIZE;
-@@ -454,11 +462,14 @@ static unsigned long damon_pa_migrate(st
- 	unsigned long addr, applied;
- 	LIST_HEAD(folio_list);
- 
--	for (addr = r->ar.start; addr < r->ar.end; addr += PAGE_SIZE) {
-+	addr = r->ar.start;
-+	while (addr < r->ar.end) {
- 		struct folio *folio = damon_get_folio(PHYS_PFN(addr));
- 
--		if (!folio)
-+		if (!folio) {
-+			addr += PAGE_SIZE;
- 			continue;
-+		}
- 
- 		if (damos_pa_filter_out(s, folio))
- 			goto put_folio;
-@@ -467,6 +478,7 @@ static unsigned long damon_pa_migrate(st
- 			goto put_folio;
- 		list_add(&folio->lru, &folio_list);
- put_folio:
-+		addr += folio_size(folio);
- 		folio_put(folio);
- 	}
- 	applied = damon_pa_migrate_pages(&folio_list, s->target_nid);
+ 		ic->recalc_bitmap = dm_integrity_alloc_page_list(n_bitmap_pages);
+ 		if (!ic->recalc_bitmap) {
++			ti->error = "Could not allocate memory for bitmap";
+ 			r = -ENOMEM;
+ 			goto bad;
+ 		}
+ 		ic->may_write_bitmap = dm_integrity_alloc_page_list(n_bitmap_pages);
+ 		if (!ic->may_write_bitmap) {
++			ti->error = "Could not allocate memory for bitmap";
+ 			r = -ENOMEM;
+ 			goto bad;
+ 		}
+ 		ic->bbs = kvmalloc_array(ic->n_bitmap_blocks, sizeof(struct bitmap_block_status), GFP_KERNEL);
+ 		if (!ic->bbs) {
++			ti->error = "Could not allocate memory for bitmap";
+ 			r = -ENOMEM;
+ 			goto bad;
+ 		}
 
 
 
