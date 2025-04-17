@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-133891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B492DA9288E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18565A92A53
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:49:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61BAA3B72CA
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:35:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19A1A3C0011
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BA5267399;
-	Thu, 17 Apr 2025 18:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE265256C7C;
+	Thu, 17 Apr 2025 18:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y9WwVxZY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A58EsrNi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD442571AD;
-	Thu, 17 Apr 2025 18:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4112561D9;
+	Thu, 17 Apr 2025 18:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914459; cv=none; b=ZLzWHtmiS+hAaLselvfQEKSgHdtdHv+I2e5kbjsZvctk/WvtJNbvP4y3Vha+AgqLelkOEJ46NThN0Q3BUDE359LtlD3UtyjKAtKmTV1ZwQYRgj/NWpv3DOR0eQIAT4AUm0pnnADxCvvQ8ZNV/iqm2h8gPDFF2olzXirRH3m/OXs=
+	t=1744915576; cv=none; b=TEICYElIRSNYE3SlA4Ghtev8DUGUjtEWDCXE+fHsfFtiw4V1EjpN+axbrWhHXPZvjDoK0xNpNCsjFu1U1S6hOPJADdhgdHHdxfjd4uzJGKp/wXnOaYGPR6Xksb7RecFM4U7mWGB2bVEaCBWVzmZmxlqqbtiiGzBdZ7jyOsqhGbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914459; c=relaxed/simple;
-	bh=EtLOGR6MVcKVbjwsx0V3+LnAhbq8j+B0UGeOvbpLyFc=;
+	s=arc-20240116; t=1744915576; c=relaxed/simple;
+	bh=LtkL16jemO5+lOxcVu28w/NzDX17ZhuxlQEzq2PKucM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sV24koHUoAlkjP6iybzFjakLWRjb5+sCJvIW796H5jputZXQCN2EAz0Yqjh0xWMvlR9qrcKCaV4XshtCeJYIYudOkLFuSCHvr0Et2CPit3z7X+rEZtURhA/vcRgcqLiyjraLIiSEKjHyoLCVeBgdCcOEYGlzHXMj4SnDi4b6ZDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y9WwVxZY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1968C4CEE7;
-	Thu, 17 Apr 2025 18:27:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZHDW49mvaKpzrxCyHtJj3s9Q01r8+SDaiVJmhC5pr1z4fxlj4Jyz9e9DmQHTz1EqZg2uVrWRnDwldERtNv/DiWk6PyDEhrQ/ppR/duHOL7aPiSp/5fRa0gW37GGar0d0jlZEMhpfxI+yWixt/a1ZuNPDPXtZShkueVcE+fYsEWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A58EsrNi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16522C4CEE4;
+	Thu, 17 Apr 2025 18:46:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914459;
-	bh=EtLOGR6MVcKVbjwsx0V3+LnAhbq8j+B0UGeOvbpLyFc=;
+	s=korg; t=1744915576;
+	bh=LtkL16jemO5+lOxcVu28w/NzDX17ZhuxlQEzq2PKucM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y9WwVxZY2Kqnw9rB19Q0icD/C6M9GhF7dTI3CsbETLKxiVIAVfmiC8u8dNeIeyGrK
-	 PVMQDrIJe92eap1tzXglLsQjqcrMZFwngVl0yGg4Po5NsKbynioDyrRCgmdqWMzIUL
-	 Z/4w1ZSigBVijgR30sP/sCGXuAfxZ/FZZkMdbD9Y=
+	b=A58EsrNipcfKGSAhKUp+TJzqFUqkYOo1fxDnLZL2PsLl2L5IZIAKiYM10VSg6zoMS
+	 JpmZBNWddmCom6Mv1IfCzFTNvyxxpTHfg0IY7eCg+D6a9iCohI/eSkzfEuWm+WHF1Q
+	 dBIGSu7k2yPJCWHoNCun8Ze2qKN63aZ6cmSy7FcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.13 223/414] media: hi556: Fix memory leak (on error) in hi556_check_hwcfg()
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 172/393] HID: pidff: Factor out code for setting gain
 Date: Thu, 17 Apr 2025 19:49:41 +0200
-Message-ID: <20250417175120.405148267@linuxfoundation.org>
+Message-ID: <20250417175114.517011344@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +64,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-commit ed554da65abd0c561e40d35272d1a61d030fe977 upstream.
+[ Upstream commit f7ebf0b11b9e04bf59c438ad14f0115b12aa2f44 ]
 
-Commit 7d968b5badfc ("media: hi556: Return -EPROBE_DEFER if no endpoint is
-found") moved the v4l2_fwnode_endpoint_alloc_parse() call in
-hi556_check_hwcfg() up, but it did not make the error-exit paths between
-the old and new call-site use "goto check_hwcfg_error;" to free the bus_cfg
-on errors.
+Makes it possible to easily set gain from inside hid-pidff.c
 
-Add the missing "goto check_hwcfg_error;" statements to fix a memleak on
-early error-exits from hi556_check_hwcfg().
+Changes in v7:
+- Check if device gain field exists before setting device gain
 
-Fixes: 7d968b5badfc ("media: hi556: Return -EPROBE_DEFER if no endpoint is found")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/hi556.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/hid/usbhid/hid-pidff.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
---- a/drivers/media/i2c/hi556.c
-+++ b/drivers/media/i2c/hi556.c
-@@ -1230,12 +1230,13 @@ static int hi556_check_hwcfg(struct devi
- 	ret = fwnode_property_read_u32(fwnode, "clock-frequency", &mclk);
- 	if (ret) {
- 		dev_err(dev, "can't get clock frequency");
--		return ret;
-+		goto check_hwcfg_error;
- 	}
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 180b2cf66e4c7..ac6f940abd901 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -539,6 +539,19 @@ static int pidff_needs_set_ramp(struct ff_effect *effect, struct ff_effect *old)
+ 	       effect->u.ramp.end_level != old->u.ramp.end_level;
+ }
  
- 	if (mclk != HI556_MCLK) {
- 		dev_err(dev, "external clock %d is not supported", mclk);
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto check_hwcfg_error;
- 	}
++/*
++ * Set device gain
++ */
++static void pidff_set_gain_report(struct pidff_device *pidff, u16 gain)
++{
++	if (!pidff->device_gain[PID_DEVICE_GAIN_FIELD].field)
++		return;
++
++	pidff_set(&pidff->device_gain[PID_DEVICE_GAIN_FIELD], gain);
++	hid_hw_request(pidff->hid, pidff->reports[PID_DEVICE_GAIN],
++			HID_REQ_SET_REPORT);
++}
++
+ /*
+  * Clear device control report
+  */
+@@ -865,11 +878,7 @@ static int pidff_upload_effect(struct input_dev *dev, struct ff_effect *effect,
+  */
+ static void pidff_set_gain(struct input_dev *dev, u16 gain)
+ {
+-	struct pidff_device *pidff = dev->ff->private;
+-
+-	pidff_set(&pidff->device_gain[PID_DEVICE_GAIN_FIELD], gain);
+-	hid_hw_request(pidff->hid, pidff->reports[PID_DEVICE_GAIN],
+-			HID_REQ_SET_REPORT);
++	pidff_set_gain_report(dev->ff->private, gain);
+ }
  
- 	if (bus_cfg.bus.mipi_csi2.num_data_lanes != 2) {
+ static void pidff_autocenter(struct pidff_device *pidff, u16 magnitude)
+@@ -1414,12 +1423,7 @@ int hid_pidff_init_with_quirks(struct hid_device *hid, __u32 initial_quirks)
+ 	if (error)
+ 		goto fail;
+ 
+-	if (test_bit(FF_GAIN, dev->ffbit)) {
+-		pidff_set(&pidff->device_gain[PID_DEVICE_GAIN_FIELD], 0xffff);
+-		hid_hw_request(hid, pidff->reports[PID_DEVICE_GAIN],
+-				     HID_REQ_SET_REPORT);
+-	}
+-
++	pidff_set_gain_report(pidff, 0xffff);
+ 	error = pidff_check_autocenter(pidff, dev);
+ 	if (error)
+ 		goto fail;
+-- 
+2.39.5
+
 
 
 
