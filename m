@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-134093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8A57A92924
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:40:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09AE1A92716
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:19:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 426631B62C34
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C39117CD3A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE79D255241;
-	Thu, 17 Apr 2025 18:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B9925525D;
+	Thu, 17 Apr 2025 18:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cPNIcvR7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9GAe0vc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AEE61DF246;
-	Thu, 17 Apr 2025 18:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1759B255241;
+	Thu, 17 Apr 2025 18:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915073; cv=none; b=SODm0nC7TP2XZFrEcwdxNS5lEe5eO58XwjE8gWQj3XW2JR6ZecvAA+JJZLaYZT98Ir2Dt2bHEFrCub9YpmwEiozpfrueHmMs83OJ6ruD2UWs4/e/xRd7p+haL+nadGp4LytSth90ZfrPeSkTFOm4YvdTRl1ME4UsE94jrPmXzFI=
+	t=1744913968; cv=none; b=JLDCSne0DaaBOncCT8lL4RjRyCIaL4NxzU/A1o9SWl+2h0G8av4jPIZbnPZkhCWsqQXbNxOtaL7a1xXv8VyOvoSpwkYsfHyJ/U7xP+N5//AKi4Bizp3OUvj1Ky4KeXtf8cmTzW2BZeZZ4slEK05OwmNp3Kp7M7UAEy6h9G0/qKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915073; c=relaxed/simple;
-	bh=9qDmeIVQf7rOqxZp5e+oqHlEpSJIUsy8XJEy0zhVon4=;
+	s=arc-20240116; t=1744913968; c=relaxed/simple;
+	bh=qoHtoAXrjtm5q8tYeXNIlXknDTo7mlAIrs5OXYR52j4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZQrnbTiaa3C8Gdlu7yoYDopMJdqF6PGWCkZpTQn8R8+I7nxKQXJVHiKWLp9zJfiUUSFVesJ47VGEZ7JNI/iNQTFkFv6uJ+D6fGJbO9T8k2FZv/FTd8DggQ/Fv5UaBc1WvbXzAvSmxvhZ9OB1k6H/YKUk/5il2CaqOZE5Pk5Q/7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPNIcvR7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A93C4CEE4;
-	Thu, 17 Apr 2025 18:37:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uOjRJ7NqZE48ArlDmGk60mjpDW0cnXxofKC0bwpVtbbNZO9Q0NYvrphHkZBuRJ2pWemmV4iDPHarkX9RjotbXFFs3BmuJ0DqrGkIL/mqWrYIQBhcUQzmLOhLWYTD7EtZ8EhIK2MOZTkEukSgJvPu/VGJbNDaT5xwBDysiXC0R1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9GAe0vc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B4A9C4CEE4;
+	Thu, 17 Apr 2025 18:19:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915073;
-	bh=9qDmeIVQf7rOqxZp5e+oqHlEpSJIUsy8XJEy0zhVon4=;
+	s=korg; t=1744913967;
+	bh=qoHtoAXrjtm5q8tYeXNIlXknDTo7mlAIrs5OXYR52j4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cPNIcvR7WINNlKLSj9IzSdDjegZORqP2gqw3EPQCe11aYy1IAE6e2T3NXlqABvxPC
-	 7+IcZLOKWNpDJneYhpCyKv6XsuHTaqtg/jEWtD4IzPegNSd9TMnV5tyNO/goFf4AD/
-	 U2jAm9gqehWKBw7x7rrlC5ziWQoeDOyiembZZueE=
+	b=o9GAe0vcLCPR6Q4feZ+We3E8fd3nMRUqtrYEVsuqHr6FOE+idCzuoIod7wEdZXXAI
+	 hnCC/jY6yhqAkFOpeggdDw7QPNyM8p4hw/cn37aazC+nOnbQ59uYDRc+Biosd8TXvY
+	 o0pl9sOhC9Gj7CxhUnINPEcZ9SgtA2sim+4i/E84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uday Shankar <ushankar@purestorage.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 010/393] ublk: refactor recovery configuration flag helpers
-Date: Thu, 17 Apr 2025 19:46:59 +0200
-Message-ID: <20250417175107.992794917@linuxfoundation.org>
+Subject: [PATCH 6.13 062/414] HID: pidff: Do not send effect envelope if its empty
+Date: Thu, 17 Apr 2025 19:47:00 +0200
+Message-ID: <20250417175113.907481628@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,193 +64,126 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uday Shankar <ushankar@purestorage.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit 3b939b8f715e014adcc48f7827fe9417252f0833 ]
+[ Upstream commit 8876fc1884f5b39550c8387ff3176396c988541d ]
 
-ublk currently supports the following behaviors on ublk server exit:
+Envelope struct is always initialized, but the envelope itself is
+optional as described in USB PID Device class definition 1.0.
 
-A: outstanding I/Os get errors, subsequently issued I/Os get errors
-B: outstanding I/Os get errors, subsequently issued I/Os queue
-C: outstanding I/Os get reissued, subsequently issued I/Os queue
+5.1.1.1 Type Specific Block Offsets
+...
+4) Effects that do not use Condition Blocks use 1 Parameter Block and
+an *optional* Envelope Block.
 
-and the following behaviors for recovery of preexisting block devices by
-a future incarnation of the ublk server:
+Sending out "empty" envelope breaks force feedback on some devices with
+games that use SINE effect + offset to emulate constant force effect, as
+well as generally breaking Constant/Periodic effects. One of the affected
+brands is Moza Racing.
 
-1: ublk devices stopped on ublk server exit (no recovery possible)
-2: ublk devices are recoverable using start/end_recovery commands
+This change prevents the envelope from being sent if it contains all
+0 values while keeping the old behavior of only sending it, if it differs
+from the old one.
 
-The userspace interface allows selection of combinations of these
-behaviors using flags specified at device creation time, namely:
+Changes in v6:
+- Simplify the checks to make them clearer
+- Fix possible null pointer dereference while calling
+  pidff_needs_set_envelope
 
-default behavior: A + 1
-UBLK_F_USER_RECOVERY: B + 2
-UBLK_F_USER_RECOVERY|UBLK_F_USER_RECOVERY_REISSUE: C + 2
-
-We can't easily change the userspace interface to allow independent
-selection of one of {A, B, C} and one of {1, 2}, but we can refactor the
-internal helpers which test for the flags. Replace the existing helpers
-with the following set:
-
-ublk_nosrv_should_reissue_outstanding: tests for behavior C
-ublk_nosrv_[dev_]should_queue_io: tests for behavior B
-ublk_nosrv_should_stop_dev: tests for behavior 1
-
-Signed-off-by: Uday Shankar <ushankar@purestorage.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20241007182419.3263186-3-ushankar@purestorage.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 6ee6bd5d4fce ("ublk: fix handling recovery & reissue in ublk_abort_queue()")
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/ublk_drv.c | 62 +++++++++++++++++++++++++++-------------
- 1 file changed, 42 insertions(+), 20 deletions(-)
+ drivers/hid/usbhid/hid-pidff.c | 42 +++++++++++++++++++---------------
+ 1 file changed, 24 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-index 79b7bd8bfd458..dd328d40c7de5 100644
---- a/drivers/block/ublk_drv.c
-+++ b/drivers/block/ublk_drv.c
-@@ -681,22 +681,44 @@ static int ublk_max_cmd_buf_size(void)
- 	return __ublk_queue_cmd_buf_size(UBLK_MAX_QUEUE_DEPTH);
- }
- 
--static inline bool ublk_queue_can_use_recovery_reissue(
--		struct ublk_queue *ubq)
-+/*
-+ * Should I/O outstanding to the ublk server when it exits be reissued?
-+ * If not, outstanding I/O will get errors.
-+ */
-+static inline bool ublk_nosrv_should_reissue_outstanding(struct ublk_device *ub)
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 5fe4422bb5bad..a01c1b2ab2f4c 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -262,10 +262,22 @@ static void pidff_set_envelope_report(struct pidff_device *pidff,
+ static int pidff_needs_set_envelope(struct ff_envelope *envelope,
+ 				    struct ff_envelope *old)
  {
--	return (ubq->flags & UBLK_F_USER_RECOVERY) &&
--			(ubq->flags & UBLK_F_USER_RECOVERY_REISSUE);
-+	return (ub->dev_info.flags & UBLK_F_USER_RECOVERY) &&
-+	       (ub->dev_info.flags & UBLK_F_USER_RECOVERY_REISSUE);
- }
- 
--static inline bool ublk_queue_can_use_recovery(
--		struct ublk_queue *ubq)
-+/*
-+ * Should I/O issued while there is no ublk server queue? If not, I/O
-+ * issued while there is no ublk server will get errors.
-+ */
-+static inline bool ublk_nosrv_dev_should_queue_io(struct ublk_device *ub)
-+{
-+	return ub->dev_info.flags & UBLK_F_USER_RECOVERY;
-+}
+-	return envelope->attack_level != old->attack_level ||
+-	       envelope->fade_level != old->fade_level ||
++	bool needs_new_envelope;
++	needs_new_envelope = envelope->attack_level  != 0 ||
++			     envelope->fade_level    != 0 ||
++			     envelope->attack_length != 0 ||
++			     envelope->fade_length   != 0;
 +
-+/*
-+ * Same as ublk_nosrv_dev_should_queue_io, but uses a queue-local copy
-+ * of the device flags for smaller cache footprint - better for fast
-+ * paths.
-+ */
-+static inline bool ublk_nosrv_should_queue_io(struct ublk_queue *ubq)
- {
- 	return ubq->flags & UBLK_F_USER_RECOVERY;
++	if (!needs_new_envelope)
++		return false;
++
++	if (!old)
++		return needs_new_envelope;
++
++	return envelope->attack_level  != old->attack_level  ||
++	       envelope->fade_level    != old->fade_level    ||
+ 	       envelope->attack_length != old->attack_length ||
+-	       envelope->fade_length != old->fade_length;
++	       envelope->fade_length   != old->fade_length;
  }
  
--static inline bool ublk_can_use_recovery(struct ublk_device *ub)
-+/*
-+ * Should ublk devices be stopped (i.e. no recovery possible) when the
-+ * ublk server exits? If not, devices can be used again by a future
-+ * incarnation of a ublk server via the start_recovery/end_recovery
-+ * commands.
-+ */
-+static inline bool ublk_nosrv_should_stop_dev(struct ublk_device *ub)
- {
--	return ub->dev_info.flags & UBLK_F_USER_RECOVERY;
-+	return !(ub->dev_info.flags & UBLK_F_USER_RECOVERY);
- }
+ /*
+@@ -580,11 +592,9 @@ static int pidff_upload_effect(struct input_dev *dev, struct ff_effect *effect,
+ 			pidff_set_effect_report(pidff, effect);
+ 		if (!old || pidff_needs_set_constant(effect, old))
+ 			pidff_set_constant_force_report(pidff, effect);
+-		if (!old ||
+-		    pidff_needs_set_envelope(&effect->u.constant.envelope,
+-					&old->u.constant.envelope))
+-			pidff_set_envelope_report(pidff,
+-					&effect->u.constant.envelope);
++		if (pidff_needs_set_envelope(&effect->u.constant.envelope,
++					old ? &old->u.constant.envelope : NULL))
++			pidff_set_envelope_report(pidff, &effect->u.constant.envelope);
+ 		break;
  
- static void ublk_free_disk(struct gendisk *disk)
-@@ -1072,7 +1094,7 @@ static void __ublk_fail_req(struct ublk_queue *ubq, struct ublk_io *io,
- {
- 	WARN_ON_ONCE(io->flags & UBLK_IO_FLAG_ACTIVE);
+ 	case FF_PERIODIC:
+@@ -619,11 +629,9 @@ static int pidff_upload_effect(struct input_dev *dev, struct ff_effect *effect,
+ 			pidff_set_effect_report(pidff, effect);
+ 		if (!old || pidff_needs_set_periodic(effect, old))
+ 			pidff_set_periodic_report(pidff, effect);
+-		if (!old ||
+-		    pidff_needs_set_envelope(&effect->u.periodic.envelope,
+-					&old->u.periodic.envelope))
+-			pidff_set_envelope_report(pidff,
+-					&effect->u.periodic.envelope);
++		if (pidff_needs_set_envelope(&effect->u.periodic.envelope,
++					old ? &old->u.periodic.envelope : NULL))
++			pidff_set_envelope_report(pidff, &effect->u.periodic.envelope);
+ 		break;
  
--	if (ublk_queue_can_use_recovery_reissue(ubq))
-+	if (ublk_nosrv_should_reissue_outstanding(ubq->dev))
- 		blk_mq_requeue_request(req, false);
- 	else
- 		ublk_put_req_ref(ubq, req);
-@@ -1100,7 +1122,7 @@ static inline void __ublk_abort_rq(struct ublk_queue *ubq,
- 		struct request *rq)
- {
- 	/* We cannot process this rq so just requeue it. */
--	if (ublk_queue_can_use_recovery(ubq))
-+	if (ublk_nosrv_dev_should_queue_io(ubq->dev))
- 		blk_mq_requeue_request(rq, false);
- 	else
- 		blk_mq_end_request(rq, BLK_STS_IOERR);
-@@ -1245,10 +1267,10 @@ static enum blk_eh_timer_return ublk_timeout(struct request *rq)
- 		struct ublk_device *ub = ubq->dev;
+ 	case FF_RAMP:
+@@ -637,11 +645,9 @@ static int pidff_upload_effect(struct input_dev *dev, struct ff_effect *effect,
+ 			pidff_set_effect_report(pidff, effect);
+ 		if (!old || pidff_needs_set_ramp(effect, old))
+ 			pidff_set_ramp_force_report(pidff, effect);
+-		if (!old ||
+-		    pidff_needs_set_envelope(&effect->u.ramp.envelope,
+-					&old->u.ramp.envelope))
+-			pidff_set_envelope_report(pidff,
+-					&effect->u.ramp.envelope);
++		if (pidff_needs_set_envelope(&effect->u.ramp.envelope,
++					old ? &old->u.ramp.envelope : NULL))
++			pidff_set_envelope_report(pidff, &effect->u.ramp.envelope);
+ 		break;
  
- 		if (ublk_abort_requests(ub, ubq)) {
--			if (ublk_can_use_recovery(ub))
--				schedule_work(&ub->quiesce_work);
--			else
-+			if (ublk_nosrv_should_stop_dev(ub))
- 				schedule_work(&ub->stop_work);
-+			else
-+				schedule_work(&ub->quiesce_work);
- 		}
- 		return BLK_EH_DONE;
- 	}
-@@ -1277,7 +1299,7 @@ static blk_status_t ublk_queue_rq(struct blk_mq_hw_ctx *hctx,
- 	 * Note: force_abort is guaranteed to be seen because it is set
- 	 * before request queue is unqiuesced.
- 	 */
--	if (ublk_queue_can_use_recovery(ubq) && unlikely(ubq->force_abort))
-+	if (ublk_nosrv_should_queue_io(ubq) && unlikely(ubq->force_abort))
- 		return BLK_STS_IOERR;
- 
- 	if (unlikely(ubq->canceling)) {
-@@ -1517,10 +1539,10 @@ static void ublk_uring_cmd_cancel_fn(struct io_uring_cmd *cmd,
- 	ublk_cancel_cmd(ubq, io, issue_flags);
- 
- 	if (need_schedule) {
--		if (ublk_can_use_recovery(ub))
--			schedule_work(&ub->quiesce_work);
--		else
-+		if (ublk_nosrv_should_stop_dev(ub))
- 			schedule_work(&ub->stop_work);
-+		else
-+			schedule_work(&ub->quiesce_work);
- 	}
- }
- 
-@@ -1640,7 +1662,7 @@ static void ublk_stop_dev(struct ublk_device *ub)
- 	mutex_lock(&ub->mutex);
- 	if (ub->dev_info.state == UBLK_S_DEV_DEAD)
- 		goto unlock;
--	if (ublk_can_use_recovery(ub)) {
-+	if (ublk_nosrv_dev_should_queue_io(ub)) {
- 		if (ub->dev_info.state == UBLK_S_DEV_LIVE)
- 			__ublk_quiesce_dev(ub);
- 		ublk_unquiesce_dev(ub);
-@@ -2738,7 +2760,7 @@ static int ublk_ctrl_start_recovery(struct ublk_device *ub,
- 	int i;
- 
- 	mutex_lock(&ub->mutex);
--	if (!ublk_can_use_recovery(ub))
-+	if (ublk_nosrv_should_stop_dev(ub))
- 		goto out_unlock;
- 	if (!ub->nr_queues_ready)
- 		goto out_unlock;
-@@ -2791,7 +2813,7 @@ static int ublk_ctrl_end_recovery(struct ublk_device *ub,
- 			__func__, ub->dev_info.nr_hw_queues, header->dev_id);
- 
- 	mutex_lock(&ub->mutex);
--	if (!ublk_can_use_recovery(ub))
-+	if (ublk_nosrv_should_stop_dev(ub))
- 		goto out_unlock;
- 
- 	if (ub->dev_info.state != UBLK_S_DEV_QUIESCED) {
+ 	case FF_SPRING:
 -- 
 2.39.5
 
