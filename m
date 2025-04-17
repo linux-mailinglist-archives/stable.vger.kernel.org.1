@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-133629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A18A92692
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:14:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C01A92AEB
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B946176E55
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:14:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21A981B64AD4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F692566D2;
-	Thu, 17 Apr 2025 18:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D402586CA;
+	Thu, 17 Apr 2025 18:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HDyO6QJ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EMEx5ZsV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54AFA22E3E6;
-	Thu, 17 Apr 2025 18:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91FF25744F;
+	Thu, 17 Apr 2025 18:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913658; cv=none; b=HksKgpdzKvhtXU9bwzqxE4NYN+Zf5W/sKmgXKT8iQTB5rDRLzSS5Xx0s9o/P2izgWsft8xqV+wRORoMDI9g00w7FYp6QbzvNTBbDelyWtk6taKO9lfTY1kpYSCtnrR9LyNoj4pZgPwg0rQAuJsFxUw7N+hXgVk2CWLdynfDxFs8=
+	t=1744916025; cv=none; b=W2ZE0Je8cJnse0GLsOj9OEK/Ezby3AcaPJZLbUW4oAk/OZnhiGl8UYfwEHbj8q0BW+Y7i9DZNtyP2dg98PujPbadFEhY0Wb1Pq2EcgTVdL1nTGhkQ4dSQZUQFBkLz/+c/cwaLEN7jXa6VwsII0ulxcaiFpAFrV/U4Xc3TMiRG2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913658; c=relaxed/simple;
-	bh=nUGJCoia7ACftgXrLhlZ98RAdTikjG8iQYMwIqf2xZ4=;
+	s=arc-20240116; t=1744916025; c=relaxed/simple;
+	bh=Rc1dbDmTu8XmwQ3fsQplFCvR1KyEwx/89Wnbqpe8BkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lrmqvsL7wWgSyO1mVD/qg0gTfC95WW7JbiD5igSYSjchhywMiF4szJ8Vh1Sc3ns0+4ex7Anl+YnrJwkFFRbaCY3JyOG/xCYEA9A5RibTrYLMoeDs/w3zjKAybdn40grgfvMiUUcX8rbNsJknKpH1WEvqWWTZOPT2fYY/0bPphN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HDyO6QJ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4719C4CEE4;
-	Thu, 17 Apr 2025 18:14:17 +0000 (UTC)
+	 MIME-Version; b=XsMYbWroSD2tbX4CWcJ8jHR8APGPNaTmj8lzrxrLp4BGTzY5rQaIVVaWDdqp1GcCHGCef2yZA25ocMUlYHMgk/l6Cy0438EpSriv41mKHw6H1LgHX3zwAjj/cFjOVp59QGczyaOTHjBUxOOdgm5IWStcrsSEik79uXYtk1GHyyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EMEx5ZsV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFB03C4CEE4;
+	Thu, 17 Apr 2025 18:53:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913658;
-	bh=nUGJCoia7ACftgXrLhlZ98RAdTikjG8iQYMwIqf2xZ4=;
+	s=korg; t=1744916025;
+	bh=Rc1dbDmTu8XmwQ3fsQplFCvR1KyEwx/89Wnbqpe8BkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HDyO6QJ6neO7VznXEc0NAxseVMoplTh1nRugE9C2fa2tHxbCF2p6Uaao+1+Pcawzi
-	 LfAHM71mPx7Z/MzPccZlYabtbRaJNpoBLJiv8uciRY4GIInciOLS8tRJcLlxP085in
-	 9OFfmK2b3BysD0VP8TZXw5T/kWWeZQhsXlHe4+LI=
+	b=EMEx5ZsVNHurnil5tLP2ims+RvpTDnKx8VvDdUtTGITDOWMZcTNWelWIZu/Whcg1T
+	 3W8TZHM/EaOBp8fN0Hq9IH891VSWN9Kotu7Ar5aihJBr5pLuPexRkfX7VY8SEwkvVF
+	 nG4Kn5ivgXvr7pIbIB8f39Q8wD4LXv8y1g/lVWZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-Subject: [PATCH 6.14 410/449] landlock: Prepare to add second errata
+	Herve Codina <herve.codina@bootlin.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.12 289/393] backlight: led_bl: Hold led_access lock when calling led_sysfs_disable()
 Date: Thu, 17 Apr 2025 19:51:38 +0200
-Message-ID: <20250417175134.783136027@linuxfoundation.org>
+Message-ID: <20250417175119.238374146@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,56 +59,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Herve Codina <herve.codina@bootlin.com>
 
-commit 6d9ac5e4d70eba3e336f9809ba91ab2c49de6d87 upstream.
+commit 276822a00db3c1061382b41e72cafc09d6a0ec30 upstream.
 
-Potentially include errata for Landlock ABI v5 (Linux 6.10) and v6
-(Linux 6.12).  That will be useful for the following signal scoping
-erratum.
+Lockdep detects the following issue on led-backlight removal:
+  [  142.315935] ------------[ cut here ]------------
+  [  142.315954] WARNING: CPU: 2 PID: 292 at drivers/leds/led-core.c:455 led_sysfs_enable+0x54/0x80
+  ...
+  [  142.500725] Call trace:
+  [  142.503176]  led_sysfs_enable+0x54/0x80 (P)
+  [  142.507370]  led_bl_remove+0x80/0xa8 [led_bl]
+  [  142.511742]  platform_remove+0x30/0x58
+  [  142.515501]  device_remove+0x54/0x90
+  ...
 
-As explained in errata.h, this commit should be backportable without
-conflict down to ABI v5.  It must then not include the errata/abi-6.h
-file.
+Indeed, led_sysfs_enable() has to be called with the led_access
+lock held.
 
-Fixes: 54a6e6bbf3be ("landlock: Add signal scoping")
-Cc: Günther Noack <gnoack@google.com>
+Hold the lock when calling led_sysfs_disable().
+
+Fixes: ae232e45acf9 ("backlight: add led-backlight driver")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250318161443.279194-5-mic@digikod.net
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Link: https://lore.kernel.org/r/20250122091914.309533-1-herve.codina@bootlin.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/landlock/errata.h |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/video/backlight/led_bl.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/security/landlock/errata.h
-+++ b/security/landlock/errata.h
-@@ -63,6 +63,18 @@ static const struct landlock_erratum lan
- #endif
- #undef LANDLOCK_ERRATA_ABI
+--- a/drivers/video/backlight/led_bl.c
++++ b/drivers/video/backlight/led_bl.c
+@@ -229,8 +229,11 @@ static void led_bl_remove(struct platfor
+ 	backlight_device_unregister(bl);
  
-+#define LANDLOCK_ERRATA_ABI 5
-+#if __has_include("errata/abi-5.h")
-+#include "errata/abi-5.h"
-+#endif
-+#undef LANDLOCK_ERRATA_ABI
-+
-+#define LANDLOCK_ERRATA_ABI 6
-+#if __has_include("errata/abi-6.h")
-+#include "errata/abi-6.h"
-+#endif
-+#undef LANDLOCK_ERRATA_ABI
-+
- /*
-  * For each new erratum, we need to include all the ABI files up to the impacted
-  * ABI to make all potential future intermediate errata easy to backport.
+ 	led_bl_power_off(priv);
+-	for (i = 0; i < priv->nb_leds; i++)
++	for (i = 0; i < priv->nb_leds; i++) {
++		mutex_lock(&priv->leds[i]->led_access);
+ 		led_sysfs_enable(priv->leds[i]);
++		mutex_unlock(&priv->leds[i]->led_access);
++	}
+ }
+ 
+ static const struct of_device_id led_bl_of_match[] = {
 
 
 
