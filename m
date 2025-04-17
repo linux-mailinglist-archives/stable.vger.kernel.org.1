@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-134119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0ADBA92950
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12287A92742
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:22:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D53FE188BD70
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:41:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 198428A6F1E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A738425F970;
-	Thu, 17 Apr 2025 18:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E1D256C9F;
+	Thu, 17 Apr 2025 18:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EU7j+cW5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQYVC1Q6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632BC154430;
-	Thu, 17 Apr 2025 18:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5FC256C99;
+	Thu, 17 Apr 2025 18:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915154; cv=none; b=YKqakbTwzhhA3Zyfum3IjXVu2/ABrlFB+Nod8TqtZX4RL7NGI165J8Mf8Nax5aY3s+Q6x+0GHnwh0oTgAu9YDQlA0fbwTKV+K7Rc/fymTerJrnec7kh8JJcKrebjQLI+2uOppyWUiisSGoyuF0nWD/Ps66Ohf4SkY/EyNqzS79A=
+	t=1744914046; cv=none; b=ECh/xh6ZIZIew4K5y9VSTgopcas4qzT0R2J7+5UAA3ZjBmpn1NctHBJCjnmLa2rF2OMkl2LCJ7ubytRnvP14O9bqYF4DijXtrsfA3tCc/wdUOJfLOGmSScij1zy6MyW69QNaLIntGbWzURwPKXHSUk+zUAHePPiIX5DnNbpLlcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915154; c=relaxed/simple;
-	bh=Ky6oS5aSbYFFxFoIx9vt5QhqfFaLFzHpFMU4Qj7bNuA=;
+	s=arc-20240116; t=1744914046; c=relaxed/simple;
+	bh=wGf2KDlYF5GDV+J2OFU/QpmXM5A3FaSPzlhKZk1irXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uPnmMvM+40+SzV0Ms/YE5UtvQdLfrH1QmfAuCzdW1oaX/vEZZ2+H7vt1jtHmSPukhGH6zJHxSD+0sL4HxUzP3fE0QPzb+k8DjA0Rr76hJVlzn3Jg4PQMrvWFXQ8nwF0QPtbxM5ATZhdE+vi85Y5JcYdlnNIZfF1GOtw59kdjeIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EU7j+cW5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9387DC4CEE4;
-	Thu, 17 Apr 2025 18:39:13 +0000 (UTC)
+	 MIME-Version; b=pvo0RGSvN1GoZ/wg4bm0DQxkJsSwLl206y3zg5nIsNEAVyioKcrh+O0A9stlihDxFGk9ZdoAvcoi0MYMUFFaP/e3EXEoKvis+gMLnqDk7tkKdyC3r4kfGHmgNEgIr3irl8hQq+9T3Ty+CswhGof6iXhEoR4LPI9FLR5JdGk8Dkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQYVC1Q6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9451C4CEE7;
+	Thu, 17 Apr 2025 18:20:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915154;
-	bh=Ky6oS5aSbYFFxFoIx9vt5QhqfFaLFzHpFMU4Qj7bNuA=;
+	s=korg; t=1744914046;
+	bh=wGf2KDlYF5GDV+J2OFU/QpmXM5A3FaSPzlhKZk1irXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EU7j+cW5Xz/JnEwc70glRxYq9xKWadBzfnBIzv6KAd6GnUbm+zEv/3ktu2KXvyzRv
-	 eQRUFFizezsRQf4wF1rjvgQc4//KPCC99ZqHtN7KUpEW6XuXZJrZ/BJZvY14bbLOmd
-	 APtzb4E1x0zfWfvIoWD3wwO0kLNTFpIb8Xfma+gs=
+	b=nQYVC1Q6dxJ/wrKA48QBZ8xfdOaVz7uVifHmHMnqjXJxg3VGwdL4Kf+GvKFOJ/5kM
+	 FZ9BUuSmm2Sm2MeEVRXR7Q+jifPAjWXQMd6f97173lGXEHPiNodCppuDYsnCa9VaSM
+	 TWlAiMp3Br70m+RFV+nJQwmDO8rU2J0AbwGVSzDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sumit Saxena <sumit.saxena@broadcom.com>,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 036/393] net: phy: allow MDIO bus PM ops to start/stop state machine for phylink-controlled PHY
-Date: Thu, 17 Apr 2025 19:47:25 +0200
-Message-ID: <20250417175109.048018275@linuxfoundation.org>
+Subject: [PATCH 6.13 088/414] scsi: mpi3mr: Avoid reply queue full condition
+Date: Thu, 17 Apr 2025 19:47:26 +0200
+Message-ID: <20250417175114.980877506@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,164 +63,225 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-[ Upstream commit fc75ea20ffb452652f0d4033f38fe88d7cfdae35 ]
+[ Upstream commit f08b24d82749117ce779cc66689e8594341130d3 ]
 
-DSA has 2 kinds of drivers:
+To avoid reply queue full condition, update the driver to check IOCFacts
+capabilities for qfull.
 
-1. Those who call dsa_switch_suspend() and dsa_switch_resume() from
-   their device PM ops: qca8k-8xxx, bcm_sf2, microchip ksz
-2. Those who don't: all others. The above methods should be optional.
+Update the operational reply queue's Consumer Index after processing 100
+replies. If pending I/Os on a reply queue exceeds a threshold
+(reply_queue_depth - 200), then return I/O back to OS to retry.
 
-For type 1, dsa_switch_suspend() calls dsa_user_suspend() -> phylink_stop(),
-and dsa_switch_resume() calls dsa_user_resume() -> phylink_start().
-These seem good candidates for setting mac_managed_pm = true because
-that is essentially its definition [1], but that does not seem to be the
-biggest problem for now, and is not what this change focuses on.
+Also increase default admin reply queue size to 2K.
 
-Talking strictly about the 2nd category of DSA drivers here (which
-do not have MAC managed PM, meaning that for their attached PHYs,
-mdio_bus_phy_suspend() and mdio_bus_phy_resume() should run in full),
-I have noticed that the following warning from mdio_bus_phy_resume() is
-triggered:
-
-	WARN_ON(phydev->state != PHY_HALTED && phydev->state != PHY_READY &&
-		phydev->state != PHY_UP);
-
-because the PHY state machine is running.
-
-It's running as a result of a previous dsa_user_open() -> ... ->
-phylink_start() -> phy_start() having been initiated by the user.
-
-The previous mdio_bus_phy_suspend() was supposed to have called
-phy_stop_machine(), but it didn't. So this is why the PHY is in state
-PHY_NOLINK by the time mdio_bus_phy_resume() runs.
-
-mdio_bus_phy_suspend() did not call phy_stop_machine() because for
-phylink, the phydev->adjust_link function pointer is NULL. This seems a
-technicality introduced by commit fddd91016d16 ("phylib: fix PAL state
-machine restart on resume"). That commit was written before phylink
-existed, and was intended to avoid crashing with consumer drivers which
-don't use the PHY state machine - phylink always does, when using a PHY.
-But phylink itself has historically not been developed with
-suspend/resume in mind, and apparently not tested too much in that
-scenario, allowing this bug to exist unnoticed for so long. Plus, prior
-to the WARN_ON(), it would have likely been invisible.
-
-This issue is not in fact restricted to type 2 DSA drivers (according to
-the above ad-hoc classification), but can be extrapolated to any MAC
-driver with phylink and MDIO-bus-managed PHY PM ops. DSA is just where
-the issue was reported. Assuming mac_managed_pm is set correctly, a
-quick search indicates the following other drivers might be affected:
-
-$ grep -Zlr PHYLINK_NETDEV drivers/ | xargs -0 grep -L mac_managed_pm
-drivers/net/ethernet/atheros/ag71xx.c
-drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c
-drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
-drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-drivers/net/ethernet/freescale/ucc_geth.c
-drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-drivers/net/ethernet/marvell/mvneta.c
-drivers/net/ethernet/marvell/prestera/prestera_main.c
-drivers/net/ethernet/mediatek/mtk_eth_soc.c
-drivers/net/ethernet/altera/altera_tse_main.c
-drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-drivers/net/ethernet/meta/fbnic/fbnic_phylink.c
-drivers/net/ethernet/tehuti/tn40_phy.c
-drivers/net/ethernet/mscc/ocelot_net.c
-
-Make the existing conditions dependent on the PHY device having a
-phydev->phy_link_change() implementation equal to the default
-phy_link_change() provided by phylib. Otherwise, we implicitly know that
-the phydev has the phylink-provided phylink_phy_change() callback, and
-when phylink is used, the PHY state machine always needs to be stopped/
-started on the suspend/resume path. The code is structured as such that
-if phydev->phy_link_change() is absent, it is a matter of time until the
-kernel will crash - no need to further complicate the test.
-
-Thus, for the situation where the PM is not managed by the MAC, we will
-make the MDIO bus PM ops treat identically the phylink-controlled PHYs
-with the phylib-controlled PHYs where an adjust_link() callback is
-supplied. In both cases, the MDIO bus PM ops should stop and restart the
-PHY state machine.
-
-[1] https://lore.kernel.org/netdev/Z-1tiW9zjcoFkhwc@shell.armlinux.org.uk/
-
-Fixes: 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
-Reported-by: Wei Fang <wei.fang@nxp.com>
-Tested-by: Wei Fang <wei.fang@nxp.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250407094042.2155633-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sumit Saxena <sumit.saxena@broadcom.com>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20250129100850.25430-2-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy_device.c | 31 +++++++++++++++++++++++++++++--
- 1 file changed, 29 insertions(+), 2 deletions(-)
+ drivers/scsi/mpi3mr/mpi3mr.h     | 12 +++++++++++-
+ drivers/scsi/mpi3mr/mpi3mr_app.c | 24 ++++++++++++++++++++++++
+ drivers/scsi/mpi3mr/mpi3mr_fw.c  | 32 ++++++++++++++++++++++++++++----
+ 3 files changed, 63 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 44aa67fd544dc..8af44224480f1 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -302,6 +302,33 @@ static void phy_link_change(struct phy_device *phydev, bool up)
- 		phydev->mii_ts->link_state(phydev->mii_ts, phydev);
- }
+diff --git a/drivers/scsi/mpi3mr/mpi3mr.h b/drivers/scsi/mpi3mr/mpi3mr.h
+index 0c3e1ac076b5f..3c7fd4582c0d6 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr.h
++++ b/drivers/scsi/mpi3mr/mpi3mr.h
+@@ -81,13 +81,14 @@ extern atomic64_t event_counter;
+ 
+ /* Admin queue management definitions */
+ #define MPI3MR_ADMIN_REQ_Q_SIZE		(2 * MPI3MR_PAGE_SIZE_4K)
+-#define MPI3MR_ADMIN_REPLY_Q_SIZE	(4 * MPI3MR_PAGE_SIZE_4K)
++#define MPI3MR_ADMIN_REPLY_Q_SIZE	(8 * MPI3MR_PAGE_SIZE_4K)
+ #define MPI3MR_ADMIN_REQ_FRAME_SZ	128
+ #define MPI3MR_ADMIN_REPLY_FRAME_SZ	16
+ 
+ /* Operational queue management definitions */
+ #define MPI3MR_OP_REQ_Q_QD		512
+ #define MPI3MR_OP_REP_Q_QD		1024
++#define MPI3MR_OP_REP_Q_QD2K		2048
+ #define MPI3MR_OP_REP_Q_QD4K		4096
+ #define MPI3MR_OP_REQ_Q_SEG_SIZE	4096
+ #define MPI3MR_OP_REP_Q_SEG_SIZE	4096
+@@ -329,6 +330,7 @@ enum mpi3mr_reset_reason {
+ #define MPI3MR_RESET_REASON_OSTYPE_SHIFT	28
+ #define MPI3MR_RESET_REASON_IOCNUM_SHIFT	20
+ 
++
+ /* Queue type definitions */
+ enum queue_type {
+ 	MPI3MR_DEFAULT_QUEUE = 0,
+@@ -388,6 +390,7 @@ struct mpi3mr_ioc_facts {
+ 	u16 max_msix_vectors;
+ 	u8 personality;
+ 	u8 dma_mask;
++	bool max_req_limit;
+ 	u8 protocol_flags;
+ 	u8 sge_mod_mask;
+ 	u8 sge_mod_value;
+@@ -457,6 +460,8 @@ struct op_req_qinfo {
+  * @enable_irq_poll: Flag to indicate polling is enabled
+  * @in_use: Queue is handled by poll/ISR
+  * @qtype: Type of queue (types defined in enum queue_type)
++ * @qfull_watermark: Watermark defined in reply queue to avoid
++ *                    reply queue full
+  */
+ struct op_reply_qinfo {
+ 	u16 ci;
+@@ -472,6 +477,7 @@ struct op_reply_qinfo {
+ 	bool enable_irq_poll;
+ 	atomic_t in_use;
+ 	enum queue_type qtype;
++	u16 qfull_watermark;
+ };
+ 
+ /**
+@@ -1154,6 +1160,8 @@ struct scmd_priv {
+  * @snapdump_trigger_active: Snapdump trigger active flag
+  * @pci_err_recovery: PCI error recovery in progress
+  * @block_on_pci_err: Block IO during PCI error recovery
++ * @reply_qfull_count: Occurences of reply queue full avoidance kicking-in
++ * @prevent_reply_qfull: Enable reply queue prevention
+  */
+ struct mpi3mr_ioc {
+ 	struct list_head list;
+@@ -1352,6 +1360,8 @@ struct mpi3mr_ioc {
+ 	bool fw_release_trigger_active;
+ 	bool pci_err_recovery;
+ 	bool block_on_pci_err;
++	atomic_t reply_qfull_count;
++	bool prevent_reply_qfull;
+ };
+ 
+ /**
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_app.c b/drivers/scsi/mpi3mr/mpi3mr_app.c
+index 7589f48aebc80..1532436f0f3af 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_app.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_app.c
+@@ -3060,6 +3060,29 @@ reply_queue_count_show(struct device *dev, struct device_attribute *attr,
+ 
+ static DEVICE_ATTR_RO(reply_queue_count);
  
 +/**
-+ * phy_uses_state_machine - test whether consumer driver uses PAL state machine
-+ * @phydev: the target PHY device structure
++ * reply_qfull_count_show - Show reply qfull count
++ * @dev: class device
++ * @attr: Device attributes
++ * @buf: Buffer to copy
 + *
-+ * Ultimately, this aims to indirectly determine whether the PHY is attached
-+ * to a consumer which uses the state machine by calling phy_start() and
-+ * phy_stop().
++ * Retrieves the current value of the reply_qfull_count from the mrioc structure and
++ * formats it as a string for display.
 + *
-+ * When the PHY driver consumer uses phylib, it must have previously called
-+ * phy_connect_direct() or one of its derivatives, so that phy_prepare_link()
-+ * has set up a hook for monitoring state changes.
-+ *
-+ * When the PHY driver is used by the MAC driver consumer through phylink (the
-+ * only other provider of a phy_link_change() method), using the PHY state
-+ * machine is not optional.
-+ *
-+ * Return: true if consumer calls phy_start() and phy_stop(), false otherwise.
++ * Return: sysfs_emit() return
 + */
-+static bool phy_uses_state_machine(struct phy_device *phydev)
++static ssize_t
++reply_qfull_count_show(struct device *dev, struct device_attribute *attr,
++			char *buf)
 +{
-+	if (phydev->phy_link_change == phy_link_change)
-+		return phydev->attached_dev && phydev->adjust_link;
++	struct Scsi_Host *shost = class_to_shost(dev);
++	struct mpi3mr_ioc *mrioc = shost_priv(shost);
 +
-+	/* phydev->phy_link_change is implicitly phylink_phy_change() */
-+	return true;
++	return sysfs_emit(buf, "%u\n", atomic_read(&mrioc->reply_qfull_count));
 +}
 +
- static bool mdio_bus_phy_may_suspend(struct phy_device *phydev)
- {
- 	struct device_driver *drv = phydev->mdio.dev.driver;
-@@ -368,7 +395,7 @@ static __maybe_unused int mdio_bus_phy_suspend(struct device *dev)
- 	 * may call phy routines that try to grab the same lock, and that may
- 	 * lead to a deadlock.
- 	 */
--	if (phydev->attached_dev && phydev->adjust_link)
-+	if (phy_uses_state_machine(phydev))
- 		phy_stop_machine(phydev);
- 
- 	if (!mdio_bus_phy_may_suspend(phydev))
-@@ -422,7 +449,7 @@ static __maybe_unused int mdio_bus_phy_resume(struct device *dev)
- 		}
++static DEVICE_ATTR_RO(reply_qfull_count);
++
+ /**
+  * logging_level_show - Show controller debug level
+  * @dev: class device
+@@ -3152,6 +3175,7 @@ static struct attribute *mpi3mr_host_attrs[] = {
+ 	&dev_attr_fw_queue_depth.attr,
+ 	&dev_attr_op_req_q_count.attr,
+ 	&dev_attr_reply_queue_count.attr,
++	&dev_attr_reply_qfull_count.attr,
+ 	&dev_attr_logging_level.attr,
+ 	&dev_attr_adp_state.attr,
+ 	NULL,
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+index 5ed31fe57474a..656108dd2ee30 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -2104,15 +2104,22 @@ static int mpi3mr_create_op_reply_q(struct mpi3mr_ioc *mrioc, u16 qidx)
  	}
  
--	if (phydev->attached_dev && phydev->adjust_link)
-+	if (phy_uses_state_machine(phydev))
- 		phy_start_machine(phydev);
+ 	reply_qid = qidx + 1;
+-	op_reply_q->num_replies = MPI3MR_OP_REP_Q_QD;
+-	if ((mrioc->pdev->device == MPI3_MFGPAGE_DEVID_SAS4116) &&
+-		!mrioc->pdev->revision)
+-		op_reply_q->num_replies = MPI3MR_OP_REP_Q_QD4K;
++
++	if (mrioc->pdev->device == MPI3_MFGPAGE_DEVID_SAS4116) {
++		if (mrioc->pdev->revision)
++			op_reply_q->num_replies = MPI3MR_OP_REP_Q_QD;
++		else
++			op_reply_q->num_replies = MPI3MR_OP_REP_Q_QD4K;
++	} else
++		op_reply_q->num_replies = MPI3MR_OP_REP_Q_QD2K;
++
+ 	op_reply_q->ci = 0;
+ 	op_reply_q->ephase = 1;
+ 	atomic_set(&op_reply_q->pend_ios, 0);
+ 	atomic_set(&op_reply_q->in_use, 0);
+ 	op_reply_q->enable_irq_poll = false;
++	op_reply_q->qfull_watermark =
++		op_reply_q->num_replies - (MPI3MR_THRESHOLD_REPLY_COUNT * 2);
  
- 	return 0;
+ 	if (!op_reply_q->q_segments) {
+ 		retval = mpi3mr_alloc_op_reply_q_segments(mrioc, qidx);
+@@ -2416,8 +2423,10 @@ int mpi3mr_op_request_post(struct mpi3mr_ioc *mrioc,
+ 	void *segment_base_addr;
+ 	u16 req_sz = mrioc->facts.op_req_sz;
+ 	struct segments *segments = op_req_q->q_segments;
++	struct op_reply_qinfo *op_reply_q = NULL;
+ 
+ 	reply_qidx = op_req_q->reply_qid - 1;
++	op_reply_q = mrioc->op_reply_qinfo + reply_qidx;
+ 
+ 	if (mrioc->unrecoverable)
+ 		return -EFAULT;
+@@ -2448,6 +2457,15 @@ int mpi3mr_op_request_post(struct mpi3mr_ioc *mrioc,
+ 		goto out;
+ 	}
+ 
++	/* Reply queue is nearing to get full, push back IOs to SML */
++	if ((mrioc->prevent_reply_qfull == true) &&
++		(atomic_read(&op_reply_q->pend_ios) >
++	     (op_reply_q->qfull_watermark))) {
++		atomic_inc(&mrioc->reply_qfull_count);
++		retval = -EAGAIN;
++		goto out;
++	}
++
+ 	segment_base_addr = segments[pi / op_req_q->segment_qd].segment;
+ 	req_entry = (u8 *)segment_base_addr +
+ 	    ((pi % op_req_q->segment_qd) * req_sz);
+@@ -3091,6 +3109,9 @@ static void mpi3mr_process_factsdata(struct mpi3mr_ioc *mrioc,
+ 	mrioc->facts.dma_mask = (facts_flags &
+ 	    MPI3_IOCFACTS_FLAGS_DMA_ADDRESS_WIDTH_MASK) >>
+ 	    MPI3_IOCFACTS_FLAGS_DMA_ADDRESS_WIDTH_SHIFT;
++	mrioc->facts.dma_mask = (facts_flags &
++	    MPI3_IOCFACTS_FLAGS_DMA_ADDRESS_WIDTH_MASK) >>
++	    MPI3_IOCFACTS_FLAGS_DMA_ADDRESS_WIDTH_SHIFT;
+ 	mrioc->facts.protocol_flags = facts_data->protocol_flags;
+ 	mrioc->facts.mpi_version = le32_to_cpu(facts_data->mpi_version.word);
+ 	mrioc->facts.max_reqs = le16_to_cpu(facts_data->max_outstanding_requests);
+@@ -4214,6 +4235,9 @@ int mpi3mr_init_ioc(struct mpi3mr_ioc *mrioc)
+ 		mrioc->shost->transportt = mpi3mr_transport_template;
+ 	}
+ 
++	if (mrioc->facts.max_req_limit)
++		mrioc->prevent_reply_qfull = true;
++
+ 	mrioc->reply_sz = mrioc->facts.reply_sz;
+ 
+ 	retval = mpi3mr_check_reset_dma_mask(mrioc);
 -- 
 2.39.5
 
