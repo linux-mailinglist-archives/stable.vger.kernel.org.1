@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-134226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF5FAA92A35
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 447F0A9281B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:31:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D10A63B0386
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:44:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3BC23BFF12
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A382528FA;
-	Thu, 17 Apr 2025 18:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56FC4261586;
+	Thu, 17 Apr 2025 18:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSafiyAW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9SQljRn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626EC8462;
-	Thu, 17 Apr 2025 18:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139CD261576;
+	Thu, 17 Apr 2025 18:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915482; cv=none; b=f+emC/uzkxwVA1mLWaNqGDzygJigXMmjLyFbT8DRZJ1KqNTVBMjMIewYPwnUV/EIqx09D6gMBx18qK5s99r6cvKBg14mzXozwFR7juBNgfzlV31qq1t/GvSmYgb25XX+Kw+FWdrUA81eCd9bPVZeXWduj6YAMu1gleF2ujJa5WA=
+	t=1744914367; cv=none; b=b9SyG742R5+xlWFz64QbtEzYzv4fb08YLbSBYd2GwWGOxtrsVQ/eaccIx3YabdymcWsqCZ2VuTofooQyRKkmbqtFjfcmdmw/XwAYCBHz/9t6uTuFYwQHJ/TrjeNDLv571Feq9ip8gxOji5tueHZfDlIhme3UzihAcMNy67smV8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915482; c=relaxed/simple;
-	bh=6mIYMEFjL4d91HpgZYsOB5sB4qLlrdkuTsxN6xdMYHo=;
+	s=arc-20240116; t=1744914367; c=relaxed/simple;
+	bh=1JO5i/LDXS2Z+Fz16a+zdqj+JFLuZDK/BZ0Ku60SB2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C/0X7QY17BwlHP1VUKnG8A4NH986s/eN6chk8Kj1ln3h0d7NsS2k2qbGRLxZjikIuCFuuAo048AkKIp505ucY0g310uvVvDUmaSKnEuKrnTB7+i+4VTc0LwNNFwKNfH6B10D0mxtL4agAlUU9nLoTc7UbMoYHFhPNeyndOGsRrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSafiyAW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D68BAC4CEEA;
-	Thu, 17 Apr 2025 18:44:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=C4TkA8ZS1YW9Ab9Qqm6psonvkFLHBF9cmcYOymY+FvszYLfk0mbDQsZRsYBy73m4HMxw4W90ZZDaxfTIOeXBnAsqc75UVzXUmW1IcnERkSL3VtIi5WKhAv2+2tJLgBbHkYj8RBhZJaNRfK00Ecjd5gT0/ZCipB3faqslRMEP2M0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9SQljRn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A0ECC4CEE4;
+	Thu, 17 Apr 2025 18:26:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915482;
-	bh=6mIYMEFjL4d91HpgZYsOB5sB4qLlrdkuTsxN6xdMYHo=;
+	s=korg; t=1744914367;
+	bh=1JO5i/LDXS2Z+Fz16a+zdqj+JFLuZDK/BZ0Ku60SB2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cSafiyAWBDcngpcfD2FK0qsOEd/BN9bCPlXgWYuTQFCrZ9ROwJNbgKlnLpFAlWv2l
-	 Lp5TmSv1JXSYS7zeoOS7r8heIJZpt+gaxNr0sXK5JZHoWCVzTAR2tUF8ds4/6L+w3V
-	 8fnNAvCKHtyAdhADtGeJOHMEwkZ4T+9cB8YEHXIE=
+	b=R9SQljRnm4e+57nKa6U0SzM/GbfUPSHrPa9xmwjzrmORCY4eplaBa4qczatI75nrS
+	 outH2W+bwnuJexO1BfcCpNFxfThFxB2DzyT3FxMRMUiNDKfiKpzXWWkxuMuByIcdz9
+	 W/bRV25FFrZNwF0IMQY9n0kq+WH6/vH4JOkK4qSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Yang <Philip.Yang@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 141/393] drm/amdkfd: Fix mode1 reset crash issue
+Subject: [PATCH 6.13 192/414] HID: pidff: Compute INFINITE value instead of using hardcoded 0xffff
 Date: Thu, 17 Apr 2025 19:49:10 +0200
-Message-ID: <20250417175113.258394413@linuxfoundation.org>
+Message-ID: <20250417175119.162714827@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit f0b4440cdc1807bb6ec3dce0d6de81170803569b ]
+[ Upstream commit 1a575044d516972a1d036d54c0180b9085e21dc6 ]
 
-If HW scheduler hangs and mode1 reset is used to recover GPU, KFD signal
-user space to abort the processes. After process abort exit, user queues
-still use the GPU to access system memory before h/w is reset while KFD
-cleanup worker free system memory and free VRAM.
+As per USB PID standard:
+INFINITE - Referrers to the maximum value of a range. i.e. if in an 8
+bit unsigned field the value of 255 would indicate INFINITE.
 
-There is use-after-free race bug that KFD allocate and reuse the freed
-system memory, and user queue write to the same system memory to corrupt
-the data structure and cause driver crash.
+Detecting 0xffff (U16_MAX) is still important as we MIGHT get this value
+as infinite from some native software as 0 was never actually defined
+in Linux' FF api as the infinite value. I'm working on it though.
 
-To fix this race, KFD cleanup worker terminate user queues, then flush
-reset_domain wq to wait for any GPU ongoing reset complete, and then
-free outstanding BOs.
-
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_process.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/hid/usbhid/hid-pidff.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-index 264bd764f6f27..0ec8b457494bd 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-@@ -35,6 +35,7 @@
- #include <linux/pm_runtime.h>
- #include "amdgpu_amdkfd.h"
- #include "amdgpu.h"
-+#include "amdgpu_reset.h"
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 74b033a4ac1b8..a614438e43bd8 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -283,8 +283,9 @@ static void pidff_set_duration(struct pidff_usage *usage, u16 duration)
+ 	if (duration == FF_INFINITE)
+ 		duration = PID_INFINITE;
  
- struct mm_struct;
++	/* PID defines INFINITE as the max possible value for duration field */
+ 	if (duration == PID_INFINITE) {
+-		usage->value[0] = PID_INFINITE;
++		usage->value[0] = (1U << usage->field->report_size) - 1;
+ 		return;
+ 	}
  
-@@ -1140,6 +1141,17 @@ static void kfd_process_remove_sysfs(struct kfd_process *p)
- 	p->kobj = NULL;
- }
- 
-+/*
-+ * If any GPU is ongoing reset, wait for reset complete.
-+ */
-+static void kfd_process_wait_gpu_reset_complete(struct kfd_process *p)
-+{
-+	int i;
-+
-+	for (i = 0; i < p->n_pdds; i++)
-+		flush_workqueue(p->pdds[i]->dev->adev->reset_domain->wq);
-+}
-+
- /* No process locking is needed in this function, because the process
-  * is not findable any more. We must assume that no other thread is
-  * using it any more, otherwise we couldn't safely free the process
-@@ -1154,6 +1166,11 @@ static void kfd_process_wq_release(struct work_struct *work)
- 	kfd_process_dequeue_from_all_devices(p);
- 	pqm_uninit(&p->pqm);
- 
-+	/*
-+	 * If GPU in reset, user queues may still running, wait for reset complete.
-+	 */
-+	kfd_process_wait_gpu_reset_complete(p);
-+
- 	/* Signal the eviction fence after user mode queues are
- 	 * destroyed. This allows any BOs to be freed without
- 	 * triggering pointless evictions or waiting for fences.
 -- 
 2.39.5
 
