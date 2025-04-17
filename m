@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-134147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D08FA92994
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:43:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D933DA92724
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:20:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EA254A5AC7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4241B3B0562
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130422566DB;
-	Thu, 17 Apr 2025 18:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A45C255246;
+	Thu, 17 Apr 2025 18:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXyLMale"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TO2kWllE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42CB253B57;
-	Thu, 17 Apr 2025 18:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9ED1A3178;
+	Thu, 17 Apr 2025 18:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915237; cv=none; b=QJEuyk0DutsQGQqOC9J8fiyEI2h6emxg8a1Znq8ZiNm562KtTKVCNQTEnuKvdhrmha/hznWovGI/zoWJRxVEr+3Rim2QMXj7qX6DjcA+Uqt4U8MKAxa/94DfdAWIxoM07z7HOPHLh/R6RrlUDReGJgmyKlhK+yj9nbLoKGkxQ7c=
+	t=1744914010; cv=none; b=CvSpG6NcgwyjQZiJzLUwzn0+tquiMhwhNmVAS9i7k6TZ7+MeHIJZC3WNbGULNCek0N7xiN9dwhxFF1mNGBg8CGETiOw1xD7qaghN9vAC9YaHXs0UQxVYAmqT7ld0zrgi6DaP5Px4DXEIk31THezouOwLuuc2+teJDCJBtRmyqRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915237; c=relaxed/simple;
-	bh=6gcVLLn75hDHoZEsqKvfhukLoCx0taUxTzcRI3fzmUk=;
+	s=arc-20240116; t=1744914010; c=relaxed/simple;
+	bh=YQJSU4Z5nP07hxHrIPkSaZ5jBsfCTyFebRg3E0lsVJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qc3T6mn8aiKpA9mLkTh0A7E/ahVo0Axa8HKQp3E26cCZnnzmhUbVoXo0BG0kXMExJL0uQvt2yGiQy1Rj6v99ZGlqhrxAPpL+2jA2gV/kiWLjkWQZ7k/UY1okxMOD+Fk8RxebVkxt4xJem4eS9mD8mrFiZ0xqlZ9WllF6ePS4+Eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXyLMale; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B354C4CEE4;
-	Thu, 17 Apr 2025 18:40:37 +0000 (UTC)
+	 MIME-Version; b=fXpfJN++ujCVJioh22GWDZJktlfeI5Rjcfy/qtBv38nAZxyki44VQeKlhvx6uW7Ti7wsgTk7BH77HZHN0cASZo6+ljilZ1I35svXHQya/TisKepnZ7IRe6F8GLX8V2qC8QfQ+hIsuIuINoCevVT0YOZ3anyxZqwmgZ7sQSdjADI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TO2kWllE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C31C4CEE7;
+	Thu, 17 Apr 2025 18:20:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915237;
-	bh=6gcVLLn75hDHoZEsqKvfhukLoCx0taUxTzcRI3fzmUk=;
+	s=korg; t=1744914009;
+	bh=YQJSU4Z5nP07hxHrIPkSaZ5jBsfCTyFebRg3E0lsVJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AXyLMale01vUYjFbpF6ADwZJtkWrH9WCr+T97e1bhFsrL4tYeVBdm6EGBwO4Ej2q7
-	 BY01IbetW6ss9/VUXw0ky6H4r7W1bvCnXJJTpyDk494ks0tTlGthwZponpiSuBtWSs
-	 Q1G79MaIYQSfWnC2oWOMzq3vVkJ7blbpE+pL172E=
+	b=TO2kWllEsZl0mUAmb2orVZPDrAPRmZcbPan2+ZZh8hkFUGKlV+6Y2h79LQ2MZlZC5
+	 ITgKsoRx+NjtGEUrBJWqe9IoOXayXy2r+gB54RyNbKXyBk9jvdAuh2bcglSeilmwkH
+	 1RZADgFMljWLoqvB2JFpAw3/JGi/was2Jy75lT8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Stanner <phasta@mailbox.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Maxime Ripard <mripard@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 023/393] drm/tests: modeset: Fix drm_display_mode memory leak
-Date: Thu, 17 Apr 2025 19:47:12 +0200
-Message-ID: <20250417175108.523048528@linuxfoundation.org>
+Subject: [PATCH 6.13 075/414] ASoC: fsl_audmix: register card device depends on dais property
+Date: Thu, 17 Apr 2025 19:47:13 +0200
+Message-ID: <20250417175114.461420642@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Ripard <mripard@kernel.org>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit dacafdcc7789cfeb0f0552716db56f210238225d ]
+[ Upstream commit 294a60e5e9830045c161181286d44ce669f88833 ]
 
-drm_mode_find_dmt() returns a drm_display_mode that needs to be
-destroyed later one. The drm_test_pick_cmdline_res_1920_1080_60() test
-never does however, which leads to a memory leak.
+In order to make the audmix device linked by audio graph card, make
+'dais' property to be optional.
 
-Let's make sure it's freed.
+If 'dais' property exists, then register the imx-audmix card driver.
+otherwise, it should be linked by audio graph card.
 
-Reported-by: Philipp Stanner <phasta@mailbox.org>
-Closes: https://lore.kernel.org/dri-devel/a7655158a6367ac46194d57f4b7433ef0772a73e.camel@mailbox.org/
-Fixes: 8fc0380f6ba7 ("drm/client: Add some tests for drm_connector_pick_cmdline_mode()")
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://lore.kernel.org/r/20250408-drm-kunit-drm-display-mode-memleak-v1-2-996305a2e75a@kernel.org
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20250226100508.2352568-5-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tests/drm_client_modeset_test.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/fsl/fsl_audmix.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/tests/drm_client_modeset_test.c b/drivers/gpu/drm/tests/drm_client_modeset_test.c
-index 7516f6cb36e4e..3e9518d7b8b7e 100644
---- a/drivers/gpu/drm/tests/drm_client_modeset_test.c
-+++ b/drivers/gpu/drm/tests/drm_client_modeset_test.c
-@@ -95,6 +95,9 @@ static void drm_test_pick_cmdline_res_1920_1080_60(struct kunit *test)
- 	expected_mode = drm_mode_find_dmt(priv->drm, 1920, 1080, 60, false);
- 	KUNIT_ASSERT_NOT_NULL(test, expected_mode);
+diff --git a/sound/soc/fsl/fsl_audmix.c b/sound/soc/fsl/fsl_audmix.c
+index 3cd9a66b70a15..7981d598ba139 100644
+--- a/sound/soc/fsl/fsl_audmix.c
++++ b/sound/soc/fsl/fsl_audmix.c
+@@ -488,11 +488,17 @@ static int fsl_audmix_probe(struct platform_device *pdev)
+ 		goto err_disable_pm;
+ 	}
  
-+	ret = drm_kunit_add_mode_destroy_action(test, expected_mode);
-+	KUNIT_ASSERT_EQ(test, ret, 0);
-+
- 	KUNIT_ASSERT_TRUE(test,
- 			  drm_mode_parse_command_line_for_connector(cmdline,
- 								    connector,
+-	priv->pdev = platform_device_register_data(dev, "imx-audmix", 0, NULL, 0);
+-	if (IS_ERR(priv->pdev)) {
+-		ret = PTR_ERR(priv->pdev);
+-		dev_err(dev, "failed to register platform: %d\n", ret);
+-		goto err_disable_pm;
++	/*
++	 * If dais property exist, then register the imx-audmix card driver.
++	 * otherwise, it should be linked by audio graph card.
++	 */
++	if (of_find_property(pdev->dev.of_node, "dais", NULL)) {
++		priv->pdev = platform_device_register_data(dev, "imx-audmix", 0, NULL, 0);
++		if (IS_ERR(priv->pdev)) {
++			ret = PTR_ERR(priv->pdev);
++			dev_err(dev, "failed to register platform: %d\n", ret);
++			goto err_disable_pm;
++		}
+ 	}
+ 
+ 	return 0;
 -- 
 2.39.5
 
