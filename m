@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-133773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2CD7A9276E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:25:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D289A9298A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:43:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C06F4A1F9D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:24:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 413584A4BE5
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A0AD263F47;
-	Thu, 17 Apr 2025 18:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A648462;
+	Thu, 17 Apr 2025 18:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lhB+6O3B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eJoX+Frj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569F6263F41;
-	Thu, 17 Apr 2025 18:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24FD1DF733;
+	Thu, 17 Apr 2025 18:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914096; cv=none; b=hGphgaImh5jToO/ysHkSPlaUcW6iQpLKl2TLd0T2wSiXqP3GxsnRYpFweZN47aCdwFhmMtm9x1ak+LtLHprJMqsyHOPRJXwLE/s3kxLnGRRNIqIWZvUvzytZ3eO24Y0wDAZpZ1f6eaneRfG4FtldHkDAfJuuga1PHtFcUJPtRPw=
+	t=1744915213; cv=none; b=fzG2+ZoO9YBZIj3cc8fcd7+CuEoNOgbhUvEr3my/fSS1yjtnMJepxmPfMUL/LG3/6IdY8lUny9vu+DWHe+2QtW+cI0TURx3XrFZEoKGLPa6juOomqfFzLtYtzzYsa0GqxrpmvPNqym+8ISHfXJ0wuBkP+dDlF0Dt89nMSIqhe5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914096; c=relaxed/simple;
-	bh=i+5fjN8hZ45rnlRku1ShGBnJUeAK16Brt88r+sCTqAc=;
+	s=arc-20240116; t=1744915213; c=relaxed/simple;
+	bh=AbDtE8omXKrlF3mBTu6vY2y7j7ZFYnAvSFSkIAJNHag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dAyF2d0zSVKnO1x8+v7jqY2HBgrtM1fkMD4p3BOsjPyluWlelirB5PVN9indwTl0YDx9Y6Ocx0Xewp27XdUkr86l8uazZonmt9HJhKJr6+Yw/vZY95WiK29k6LTSy3VqJeefVSyiA/XXT4eGT1D94hcgnNi4T143knatnKZ2v1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lhB+6O3B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76177C4CEEC;
-	Thu, 17 Apr 2025 18:21:35 +0000 (UTC)
+	 MIME-Version; b=I7t9HBgV67m5QhDev3pe1hqyIXJzs7Os/0RQysuBwL7Fq0KNetM4zVoq6Zc9NxXUIxYocmkxgZz9/tJYIFd2QoQmwNh/9w6gaA53Gbv9ReChYHF84wut5zfceEGhJvheyh+POA6/b9m8LpYT5NIdtwnt8158tpVCr/YlqydjSZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eJoX+Frj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B63CC4CEE4;
+	Thu, 17 Apr 2025 18:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914095;
-	bh=i+5fjN8hZ45rnlRku1ShGBnJUeAK16Brt88r+sCTqAc=;
+	s=korg; t=1744915213;
+	bh=AbDtE8omXKrlF3mBTu6vY2y7j7ZFYnAvSFSkIAJNHag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lhB+6O3B9VTeQ+P7lECJAjbT9QJQO8yyT0jteN3yqHN2a6gmkTStslSSWyIuqGnub
-	 oQXSXNvGDCEIGKtzrwy/vArHhFxWaR2CoWv37v5ZHu1/IUAh7BFDK3kGAVe26I2eyL
-	 Xp+KiCyeFjZ1cdAf6Abe1Gy4dIKv/2PtJCza0P1g=
+	b=eJoX+FrjhvGQAztxEWWEfnhnSfTn0o+n6mggFr17L7JuihhGc/2qfCv5a669yqNOx
+	 ptVaxY9Q20Ep02KbOpVfmChdptlN+UTMJOqGAUrwiKG6sV9T8XbEi6EegxIBQxceDK
+	 zTAd4Hp5A/1yQ9R54ITkGTzuF78M6jBH2N2KBTfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Pemberton <lists@philpem.me.uk>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
+	Yunhui Cui <cuiyunhui@bytedance.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 104/414] ata: libata-eh: Do not use ATAPI DMA for a device limited to PIO mode
+Subject: [PATCH 6.12 053/393] perf/dwc_pcie: fix some unreleased resources
 Date: Thu, 17 Apr 2025 19:47:42 +0200
-Message-ID: <20250417175115.622714060@linuxfoundation.org>
+Message-ID: <20250417175109.719623150@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Yunhui Cui <cuiyunhui@bytedance.com>
 
-[ Upstream commit 91ec84f8eaddbc93d7c62e363d68aeb7b89879c7 ]
+[ Upstream commit 6eb1e8ef586ac4a3dcdc20248f9cb45e4ceb141f ]
 
-atapi_eh_request_sense() currently uses ATAPI DMA if the SATA controller
-has ATA_FLAG_PIO_DMA (PIO cmds via DMA) set.
+Release leaked resources, such as plat_dev and dev_info.
 
-However, ATA_FLAG_PIO_DMA is a flag that can be set by a low-level driver
-on a port at initialization time, before any devices are scanned.
-
-If a controller detects a connected device that only supports PIO, we set
-the flag ATA_DFLAG_PIO.
-
-Modify atapi_eh_request_sense() to not use ATAPI DMA if the connected
-device only supports PIO.
-
-Reported-by: Philip Pemberton <lists@philpem.me.uk>
-Closes: https://lore.kernel.org/linux-ide/c6722ee8-5e21-4169-af59-cbbae9edc02f@philpem.me.uk/
-Tested-by: Philip Pemberton <lists@philpem.me.uk>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20250221015422.20687-2-cassel@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+Reviewed-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250220121716.50324-2-cuiyunhui@bytedance.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-eh.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/perf/dwc_pcie_pmu.c | 33 ++++++++++++++++++++++-----------
+ 1 file changed, 22 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
-index 3b303d4ae37a0..16cd676eae1f9 100644
---- a/drivers/ata/libata-eh.c
-+++ b/drivers/ata/libata-eh.c
-@@ -1542,8 +1542,15 @@ unsigned int atapi_eh_request_sense(struct ata_device *dev,
- 	tf.flags |= ATA_TFLAG_ISADDR | ATA_TFLAG_DEVICE;
- 	tf.command = ATA_CMD_PACKET;
+diff --git a/drivers/perf/dwc_pcie_pmu.c b/drivers/perf/dwc_pcie_pmu.c
+index 4ca50f9b6dfed..7dbda36884c8d 100644
+--- a/drivers/perf/dwc_pcie_pmu.c
++++ b/drivers/perf/dwc_pcie_pmu.c
+@@ -567,8 +567,10 @@ static int dwc_pcie_register_dev(struct pci_dev *pdev)
+ 		return PTR_ERR(plat_dev);
  
--	/* is it pointless to prefer PIO for "safety reasons"? */
--	if (ap->flags & ATA_FLAG_PIO_DMA) {
-+	/*
-+	 * Do not use DMA if the connected device only supports PIO, even if the
-+	 * port prefers PIO commands via DMA.
-+	 *
-+	 * Ideally, we should call atapi_check_dma() to check if it is safe for
-+	 * the LLD to use DMA for REQUEST_SENSE, but we don't have a qc.
-+	 * Since we can't check the command, perhaps we should only use pio?
-+	 */
-+	if ((ap->flags & ATA_FLAG_PIO_DMA) && !(dev->flags & ATA_DFLAG_PIO)) {
- 		tf.protocol = ATAPI_PROT_DMA;
- 		tf.feature |= ATAPI_PKT_DMA;
- 	} else {
+ 	dev_info = kzalloc(sizeof(*dev_info), GFP_KERNEL);
+-	if (!dev_info)
++	if (!dev_info) {
++		platform_device_unregister(plat_dev);
+ 		return -ENOMEM;
++	}
+ 
+ 	/* Cache platform device to handle pci device hotplug */
+ 	dev_info->plat_dev = plat_dev;
+@@ -724,6 +726,15 @@ static struct platform_driver dwc_pcie_pmu_driver = {
+ 	.driver = {.name = "dwc_pcie_pmu",},
+ };
+ 
++static void dwc_pcie_cleanup_devices(void)
++{
++	struct dwc_pcie_dev_info *dev_info, *tmp;
++
++	list_for_each_entry_safe(dev_info, tmp, &dwc_pcie_dev_info_head, dev_node) {
++		dwc_pcie_unregister_dev(dev_info);
++	}
++}
++
+ static int __init dwc_pcie_pmu_init(void)
+ {
+ 	struct pci_dev *pdev = NULL;
+@@ -736,7 +747,7 @@ static int __init dwc_pcie_pmu_init(void)
+ 		ret = dwc_pcie_register_dev(pdev);
+ 		if (ret) {
+ 			pci_dev_put(pdev);
+-			return ret;
++			goto err_cleanup;
+ 		}
+ 	}
+ 
+@@ -745,35 +756,35 @@ static int __init dwc_pcie_pmu_init(void)
+ 				      dwc_pcie_pmu_online_cpu,
+ 				      dwc_pcie_pmu_offline_cpu);
+ 	if (ret < 0)
+-		return ret;
++		goto err_cleanup;
+ 
+ 	dwc_pcie_pmu_hp_state = ret;
+ 
+ 	ret = platform_driver_register(&dwc_pcie_pmu_driver);
+ 	if (ret)
+-		goto platform_driver_register_err;
++		goto err_remove_cpuhp;
+ 
+ 	ret = bus_register_notifier(&pci_bus_type, &dwc_pcie_pmu_nb);
+ 	if (ret)
+-		goto platform_driver_register_err;
++		goto err_unregister_driver;
+ 	notify = true;
+ 
+ 	return 0;
+ 
+-platform_driver_register_err:
++err_unregister_driver:
++	platform_driver_unregister(&dwc_pcie_pmu_driver);
++err_remove_cpuhp:
+ 	cpuhp_remove_multi_state(dwc_pcie_pmu_hp_state);
+-
++err_cleanup:
++	dwc_pcie_cleanup_devices();
+ 	return ret;
+ }
+ 
+ static void __exit dwc_pcie_pmu_exit(void)
+ {
+-	struct dwc_pcie_dev_info *dev_info, *tmp;
+-
+ 	if (notify)
+ 		bus_unregister_notifier(&pci_bus_type, &dwc_pcie_pmu_nb);
+-	list_for_each_entry_safe(dev_info, tmp, &dwc_pcie_dev_info_head, dev_node)
+-		dwc_pcie_unregister_dev(dev_info);
++	dwc_pcie_cleanup_devices();
+ 	platform_driver_unregister(&dwc_pcie_pmu_driver);
+ 	cpuhp_remove_multi_state(dwc_pcie_pmu_hp_state);
+ }
 -- 
 2.39.5
 
