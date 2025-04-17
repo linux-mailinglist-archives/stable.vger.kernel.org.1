@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-134102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3673EA92953
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44DB4A9271F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:19:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 442A74A5117
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9F051906E79
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:20:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB954258CE1;
-	Thu, 17 Apr 2025 18:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 724C9255241;
+	Thu, 17 Apr 2025 18:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bIT83DCS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gpnxD62c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2861CAA99;
-	Thu, 17 Apr 2025 18:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC7C1A3178;
+	Thu, 17 Apr 2025 18:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915100; cv=none; b=JEzZj9unKIvKKU/tRQ2QYS4QKCvML5mvUbjtZP/Fc7nAuXKFMQn43dpwMWEY/VjE26aKD/pIn5Z+AzY8iTP3AV/HcjVz95WWfiuiplHxG7QbzW5zY95ITq2EScsI+L7uwUo2vTNmzZh3L1nSdOp7onWymVSliOAsvqSeXmW5SEU=
+	t=1744913995; cv=none; b=qlQgxfxNQQyxQCgKLFkIqJ9/uB8dVUtX0NGXh/u367QjE+MMSjkeDmUPGYEUpDq1QWoEZWdrayP8VR5iczxhJRonF1tQmQ+cbzW4EDsHaJo7e75Uq/PhheZ2Q3uZIDLIWzXLgtP3UA4BRpnP05cKLjHYhvg1Duldqz6EsJYNqy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915100; c=relaxed/simple;
-	bh=P4/hOjCawxl1b0cLJ5R45DMJJotnQjvVCU4Wy89mpDw=;
+	s=arc-20240116; t=1744913995; c=relaxed/simple;
+	bh=/KCim2kQpmyjdtUc/1c3mSqVidQeWdvHE1lBPWS0Vu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q49+5pCijBq2RIlwEcDkN9XoRfZLFCqSk3P9Zca0JlUqBYN91WRpWNPUxdTe50QYEN8vEOpnb1u6JFRAkijkWdoYs+oeEbO6W3ogeciLtEUm7JY7Brbb3nvycwPy+fqzedWqQolNdC26Qj6MCaXgEpKlXceyyOHwfmK7kTfRpdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bIT83DCS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF12C4CEE4;
-	Thu, 17 Apr 2025 18:38:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=D3y3QarsdU4leUkqPmFLqDtHStaXVY7FBgAJHN5jEQcUOud3jZAMBuZzH0KJwWMLGBlSRMOQehdGdYHqo9Z3ROURHpSuof3fupmfsZ/hpsLkJ55BKPxyH9riSrsgwZ53/gflU8iXhj6+JLPVmBWQZrHcC5kbNR4/ZJZQ0HOvPHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gpnxD62c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6ADC4CEE4;
+	Thu, 17 Apr 2025 18:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915100;
-	bh=P4/hOjCawxl1b0cLJ5R45DMJJotnQjvVCU4Wy89mpDw=;
+	s=korg; t=1744913995;
+	bh=/KCim2kQpmyjdtUc/1c3mSqVidQeWdvHE1lBPWS0Vu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bIT83DCSFwpUtVQUaDQonvFRFPd86F4F7WW07M1rRRRQNJtB3gaXOvdu5lV7EPzAB
-	 HfsQJcB0lF63M3DW4iD7CCEajqEbkb5Ks7uKTHexJpGLOpI4BqrfLVsRPwtl83tO6h
-	 ZsLRcqmYWE9XrPlhxDFeMSSEyecDYP38Bw4LRxXw=
+	b=gpnxD62cGl0wwRlsmNKpt7fAatDXD+OV+QgvJJRiLctjz3sFcr0onqMe/pWjDX7ZF
+	 wfvuKHAKvWOn4fIFig5c8idRhLK1Fd/ofm8c2tTJXj/lkmZiLaqzFmCdyqaSEhZxmj
+	 3HpsoctFV3FQMop1XHPkv7ibprPYyWF1jZb1XaZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b4cd76826045a1eb93c1@syzkaller.appspotmail.com,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Nolan Nicholson <nolananicholson@gmail.com>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 019/393] net: tls: explicitly disallow disconnect
+Subject: [PATCH 6.13 070/414] HID: pidff: Fix null pointer dereference in pidff_find_fields
 Date: Thu, 17 Apr 2025 19:47:08 +0200
-Message-ID: <20250417175108.367286448@linuxfoundation.org>
+Message-ID: <20250417175114.248111884@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +65,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Tomasz Pakuła <forest10pl@gmail.com>
 
-[ Upstream commit 5071a1e606b30c0c11278d3c6620cd6a24724cf6 ]
+[ Upstream commit 22a05462c3d0eee15154faf8d13c49e6295270a5 ]
 
-syzbot discovered that it can disconnect a TLS socket and then
-run into all sort of unexpected corner cases. I have a vague
-recollection of Eric pointing this out to us a long time ago.
-Supporting disconnect is really hard, for one thing if offload
-is enabled we'd need to wait for all packets to be _acked_.
-Disconnect is not commonly used, disallow it.
+This function triggered a null pointer dereference if used to search for
+a report that isn't implemented on the device. This happened both for
+optional and required reports alike.
 
-The immediate problem syzbot run into is the warning in the strp,
-but that's just the easiest bug to trigger:
+The same logic was applied to pidff_find_special_field and although
+pidff_init_fields should return an error earlier if one of the required
+reports is missing, future modifications could change this logic and
+resurface this possible null pointer dereference again.
 
-  WARNING: CPU: 0 PID: 5834 at net/tls/tls_strp.c:486 tls_strp_msg_load+0x72e/0xa80 net/tls/tls_strp.c:486
-  RIP: 0010:tls_strp_msg_load+0x72e/0xa80 net/tls/tls_strp.c:486
-  Call Trace:
-   <TASK>
-   tls_rx_rec_wait+0x280/0xa60 net/tls/tls_sw.c:1363
-   tls_sw_recvmsg+0x85c/0x1c30 net/tls/tls_sw.c:2043
-   inet6_recvmsg+0x2c9/0x730 net/ipv6/af_inet6.c:678
-   sock_recvmsg_nosec net/socket.c:1023 [inline]
-   sock_recvmsg+0x109/0x280 net/socket.c:1045
-   __sys_recvfrom+0x202/0x380 net/socket.c:2237
+LKML bug report:
+https://lore.kernel.org/all/CAL-gK7f5=R0nrrQdPtaZZr1fd-cdAMbDMuZ_NLA8vM0SX+nGSw@mail.gmail.com
 
-Fixes: 3c4d7559159b ("tls: kernel TLS support")
-Reported-by: syzbot+b4cd76826045a1eb93c1@syzkaller.appspotmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20250404180334.3224206-1-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reported-by: Nolan Nicholson <nolananicholson@gmail.com>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_main.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/hid/usbhid/hid-pidff.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
-index 6b4b9f2749a6f..0acf313deb01f 100644
---- a/net/tls/tls_main.c
-+++ b/net/tls/tls_main.c
-@@ -809,6 +809,11 @@ static int tls_setsockopt(struct sock *sk, int level, int optname,
- 	return do_tls_setsockopt(sk, optname, optval, optlen);
- }
- 
-+static int tls_disconnect(struct sock *sk, int flags)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- struct tls_context *tls_ctx_create(struct sock *sk)
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 4c94d8cbac43a..25dbed076f530 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -793,6 +793,11 @@ static void pidff_set_autocenter(struct input_dev *dev, u16 magnitude)
+ static int pidff_find_fields(struct pidff_usage *usage, const u8 *table,
+ 			     struct hid_report *report, int count, int strict)
  {
- 	struct inet_connection_sock *icsk = inet_csk(sk);
-@@ -904,6 +909,7 @@ static void build_protos(struct proto prot[TLS_NUM_CONFIG][TLS_NUM_CONFIG],
- 	prot[TLS_BASE][TLS_BASE] = *base;
- 	prot[TLS_BASE][TLS_BASE].setsockopt	= tls_setsockopt;
- 	prot[TLS_BASE][TLS_BASE].getsockopt	= tls_getsockopt;
-+	prot[TLS_BASE][TLS_BASE].disconnect	= tls_disconnect;
- 	prot[TLS_BASE][TLS_BASE].close		= tls_sk_proto_close;
++	if (!report) {
++		pr_debug("pidff_find_fields, null report\n");
++		return -1;
++	}
++
+ 	int i, j, k, found;
+ 	int return_value = 0;
  
- 	prot[TLS_SW][TLS_BASE] = prot[TLS_BASE][TLS_BASE];
+@@ -917,6 +922,11 @@ static int pidff_reports_ok(struct pidff_device *pidff)
+ static struct hid_field *pidff_find_special_field(struct hid_report *report,
+ 						  int usage, int enforce_min)
+ {
++	if (!report) {
++		pr_debug("pidff_find_special_field, null report\n");
++		return NULL;
++	}
++
+ 	int i;
+ 
+ 	for (i = 0; i < report->maxfield; i++) {
 -- 
 2.39.5
 
