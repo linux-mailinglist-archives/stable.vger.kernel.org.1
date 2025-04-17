@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-133498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35D7CA925E9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:08:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF5FAA92A35
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92EE58A5702
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D10A63B0386
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA50E257430;
-	Thu, 17 Apr 2025 18:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A382528FA;
+	Thu, 17 Apr 2025 18:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vaxm3/YW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSafiyAW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876512561DA;
-	Thu, 17 Apr 2025 18:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626EC8462;
+	Thu, 17 Apr 2025 18:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913258; cv=none; b=npjGtEoKPcHIfMplVxJ1QK4emj3VNvAwQWL59ewD63qWkVEtSg22WVWrf28vrXA1ZjIpQ6eXAo7ou6AfMEgLLqxo/NBV9yEqXSjRlbrsa94dgTky0xTJIr3AHhEQXsBL0RW+aRynEa1nahjDk0oBGFUgwnf2OGVWPY6Ob0edGpw=
+	t=1744915482; cv=none; b=f+emC/uzkxwVA1mLWaNqGDzygJigXMmjLyFbT8DRZJ1KqNTVBMjMIewYPwnUV/EIqx09D6gMBx18qK5s99r6cvKBg14mzXozwFR7juBNgfzlV31qq1t/GvSmYgb25XX+Kw+FWdrUA81eCd9bPVZeXWduj6YAMu1gleF2ujJa5WA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913258; c=relaxed/simple;
-	bh=62ATGSAmYNUaazbMnEXO35rAG5WU9K2V27KH9ondkoc=;
+	s=arc-20240116; t=1744915482; c=relaxed/simple;
+	bh=6mIYMEFjL4d91HpgZYsOB5sB4qLlrdkuTsxN6xdMYHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eBgIx58bFpcU5DJh1NdzUcB+y4QKjdSKSl1aRFmuWsnEnD3CT7wffHXJw60wNp/8nAsHl69xDrL/Zmhjn6+NtSSM31YciVUQAxbjdLaFGVku3ZD4o0NNjnY0yWNw5vyWcRAiivz0+hzqAQYEw3YtxDCgoM7v7cDjDi6sOtKRmgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vaxm3/YW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 074EBC4CEE4;
-	Thu, 17 Apr 2025 18:07:37 +0000 (UTC)
+	 MIME-Version; b=C/0X7QY17BwlHP1VUKnG8A4NH986s/eN6chk8Kj1ln3h0d7NsS2k2qbGRLxZjikIuCFuuAo048AkKIp505ucY0g310uvVvDUmaSKnEuKrnTB7+i+4VTc0LwNNFwKNfH6B10D0mxtL4agAlUU9nLoTc7UbMoYHFhPNeyndOGsRrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSafiyAW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D68BAC4CEEA;
+	Thu, 17 Apr 2025 18:44:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913258;
-	bh=62ATGSAmYNUaazbMnEXO35rAG5WU9K2V27KH9ondkoc=;
+	s=korg; t=1744915482;
+	bh=6mIYMEFjL4d91HpgZYsOB5sB4qLlrdkuTsxN6xdMYHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vaxm3/YWLwXDcCMdXHj7qnMwOwKZricideT2ya2/gtS9mBiwMelQyoMyT9eK4bw88
-	 qnL6nXUxqE86JtU/qQ5Vrwx5zuJO5ezThLETUDoix+6kKftGEhMoQcMjfv/Baj0V2z
-	 8vmnpRhAT30FwoNhAoHDvEVI6+9l8AAGdh1MjqU0=
+	b=cSafiyAWBDcngpcfD2FK0qsOEd/BN9bCPlXgWYuTQFCrZ9ROwJNbgKlnLpFAlWv2l
+	 Lp5TmSv1JXSYS7zeoOS7r8heIJZpt+gaxNr0sXK5JZHoWCVzTAR2tUF8ds4/6L+w3V
+	 8fnNAvCKHtyAdhADtGeJOHMEwkZ4T+9cB8YEHXIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	=?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.14 262/449] media: i2c: imx214: Rectify probe error handling related to runtime PM
+	Philip Yang <Philip.Yang@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 141/393] drm/amdkfd: Fix mode1 reset crash issue
 Date: Thu, 17 Apr 2025 19:49:10 +0200
-Message-ID: <20250417175128.560854639@linuxfoundation.org>
+Message-ID: <20250417175113.258394413@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,105 +62,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-commit ccc888d1698b6f42d52ddf5cecfe50fe925c95e5 upstream.
+[ Upstream commit f0b4440cdc1807bb6ec3dce0d6de81170803569b ]
 
-There were multiple issues in the driver's probe function related to
-error handling:
+If HW scheduler hangs and mode1 reset is used to recover GPU, KFD signal
+user space to abort the processes. After process abort exit, user queues
+still use the GPU to access system memory before h/w is reset while KFD
+cleanup worker free system memory and free VRAM.
 
-- Device's PM runtime status wasn't reverted to suspended on some errors
-  in probe.
+There is use-after-free race bug that KFD allocate and reuse the freed
+system memory, and user queue write to the same system memory to corrupt
+the data structure and cause driver crash.
 
-- Runtime PM was left enabled for the device on some probe errors.
+To fix this race, KFD cleanup worker terminate user queues, then flush
+reset_domain wq to wait for any GPU ongoing reset complete, and then
+free outstanding BOs.
 
-- Device was left powered on if a probe failure happened or when it
-  was removed when it was powered on.
-
-- An extra pm_runtime_set_suspended() was issued in driver's remove
-  function when the device was suspended.
-
-Fix these bugs.
-
-Fixes: 436190596241 ("media: imx214: Add imx214 camera sensor driver")
-Cc: stable@vger.kernel.org # for >= v6.12
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Acked-by: André Apitzsch <git@apitzsch.eu>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/imx214.c |   24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/drivers/media/i2c/imx214.c
-+++ b/drivers/media/i2c/imx214.c
-@@ -1075,10 +1075,6 @@ static int imx214_probe(struct i2c_clien
- 	 */
- 	imx214_power_on(imx214->dev);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+index 264bd764f6f27..0ec8b457494bd 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+@@ -35,6 +35,7 @@
+ #include <linux/pm_runtime.h>
+ #include "amdgpu_amdkfd.h"
+ #include "amdgpu.h"
++#include "amdgpu_reset.h"
  
--	pm_runtime_set_active(imx214->dev);
--	pm_runtime_enable(imx214->dev);
--	pm_runtime_idle(imx214->dev);
--
- 	ret = imx214_ctrls_init(imx214);
- 	if (ret < 0)
- 		goto error_power_off;
-@@ -1099,21 +1095,30 @@ static int imx214_probe(struct i2c_clien
+ struct mm_struct;
  
- 	imx214_entity_init_state(&imx214->sd, NULL);
- 
-+	pm_runtime_set_active(imx214->dev);
-+	pm_runtime_enable(imx214->dev);
-+
- 	ret = v4l2_async_register_subdev_sensor(&imx214->sd);
- 	if (ret < 0) {
- 		dev_err(dev, "could not register v4l2 device\n");
- 		goto free_entity;
- 	}
- 
-+	pm_runtime_idle(imx214->dev);
-+
- 	return 0;
- 
- free_entity:
-+	pm_runtime_disable(imx214->dev);
-+	pm_runtime_set_suspended(&client->dev);
- 	media_entity_cleanup(&imx214->sd.entity);
-+
- free_ctrl:
- 	mutex_destroy(&imx214->mutex);
- 	v4l2_ctrl_handler_free(&imx214->ctrls);
-+
- error_power_off:
--	pm_runtime_disable(imx214->dev);
-+	imx214_power_off(imx214->dev);
- 
- 	return ret;
- }
-@@ -1126,11 +1131,12 @@ static void imx214_remove(struct i2c_cli
- 	v4l2_async_unregister_subdev(&imx214->sd);
- 	media_entity_cleanup(&imx214->sd.entity);
- 	v4l2_ctrl_handler_free(&imx214->ctrls);
--
--	pm_runtime_disable(&client->dev);
--	pm_runtime_set_suspended(&client->dev);
--
- 	mutex_destroy(&imx214->mutex);
-+	pm_runtime_disable(&client->dev);
-+	if (!pm_runtime_status_suspended(&client->dev)) {
-+		imx214_power_off(imx214->dev);
-+		pm_runtime_set_suspended(&client->dev);
-+	}
+@@ -1140,6 +1141,17 @@ static void kfd_process_remove_sysfs(struct kfd_process *p)
+ 	p->kobj = NULL;
  }
  
- static const struct of_device_id imx214_of_match[] = {
++/*
++ * If any GPU is ongoing reset, wait for reset complete.
++ */
++static void kfd_process_wait_gpu_reset_complete(struct kfd_process *p)
++{
++	int i;
++
++	for (i = 0; i < p->n_pdds; i++)
++		flush_workqueue(p->pdds[i]->dev->adev->reset_domain->wq);
++}
++
+ /* No process locking is needed in this function, because the process
+  * is not findable any more. We must assume that no other thread is
+  * using it any more, otherwise we couldn't safely free the process
+@@ -1154,6 +1166,11 @@ static void kfd_process_wq_release(struct work_struct *work)
+ 	kfd_process_dequeue_from_all_devices(p);
+ 	pqm_uninit(&p->pqm);
+ 
++	/*
++	 * If GPU in reset, user queues may still running, wait for reset complete.
++	 */
++	kfd_process_wait_gpu_reset_complete(p);
++
+ 	/* Signal the eviction fence after user mode queues are
+ 	 * destroyed. This allows any BOs to be freed without
+ 	 * triggering pointless evictions or waiting for fences.
+-- 
+2.39.5
+
 
 
 
