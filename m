@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-133778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90463A92778
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:26:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0BAFA929D6
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:45:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 737EE7B3BEC
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:24:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F003A8E3D04
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98FA8264F90;
-	Thu, 17 Apr 2025 18:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9221D5CD9;
+	Thu, 17 Apr 2025 18:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NPxhC9/w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="awdEebjj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54DDB258CD4;
-	Thu, 17 Apr 2025 18:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B8A254AF0;
+	Thu, 17 Apr 2025 18:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914110; cv=none; b=fcY5GinlaA5WXTyC3pm4nCXtfV5Gbc2GPcmBEUXvOahm/Qqd//FUOGYXtBB2R09Cb4Mku3M+UuQrKmRs+LntaZ6PW75qkvSXs7FyE++VbIbIgDTnisZjUkndeU4OcLdJuUMu6yd605yQsb2sACjE0ldQeSfqPO47NyG2UePVQSI=
+	t=1744915273; cv=none; b=Tpa0Hq04gKuBL5kiUSaB08P1HSpDzVNQv0vkg/42gLv/1Fizb7IiWMuLnY9aX2zdncpucEgqOWymbV72WCv/LSLvfucZb3nVG1SSHA6E16u8DU2x+0t2T80RTMxrudQ18hIos0aLJfpr0ZrcRJxiiSout0i4eu4aHyjc7cypZM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914110; c=relaxed/simple;
-	bh=EEVUOpaTPcp6V8u2UPjJvA2vqY/3yGU3JRCIH93jPnU=;
+	s=arc-20240116; t=1744915273; c=relaxed/simple;
+	bh=rKoW00D4NBEEOYkxUCE4vnUn5yxrioEpk/o3/TB3uAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R+756o1GkHCZyJNUsVDxMyGyl62MwfbA5aqotHG+x1svNzb/ZA/kN+Fuk7u2rJ3Zrddt9glEWbw1do/uUjqqUJqimNHli2ybfj12vR3LafpcmHD31KMblU+cMGVek9AqrP0XPDbau+f7cPEYGHoRxV4RtzpLm/sv8WG+z+jKT+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NPxhC9/w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCFA6C4CEE4;
-	Thu, 17 Apr 2025 18:21:49 +0000 (UTC)
+	 MIME-Version; b=iBaRfI2MOKJJYRelAmNFayCVhcV0WW3MF/l+8n3YdObZXDp7Z3jWjp+77WUKwN+YIiwMYHuVTfgrHDSCt+4kFppyg/O7KNzCIRYDEgr1RFKEA07tItR4z9CiFtR4/rizXuQn8WYIE9cWIFvQNxS6DXQT9oVkNmzEkkjqErDx6ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=awdEebjj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A966C4CEE4;
+	Thu, 17 Apr 2025 18:41:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914110;
-	bh=EEVUOpaTPcp6V8u2UPjJvA2vqY/3yGU3JRCIH93jPnU=;
+	s=korg; t=1744915273;
+	bh=rKoW00D4NBEEOYkxUCE4vnUn5yxrioEpk/o3/TB3uAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NPxhC9/wwDdOt+96D+U7qWMtLksig8f302NrXfg0pfgJdFlZpSH6JponRTVCkltIN
-	 vM5/yIsfpZpfVMJizAu3s3nhZcTgEU+hstXRGWFdMk9tSYguWaMWg0RE9cT4LjmkhS
-	 rOggF0MQjJM2i8AKK0lpsv1q3vBv5Vw+/Rr4EYeo=
+	b=awdEebjjlmpEsa6sp62s+7Q3BzcI8BCogxDTARxRHcWlPwT3wddQ/1gkAAkp/5X8C
+	 0nA2MYbqrJ7ylG9PXuo9Ii32LfOZ8FgslzklSs7cz4/JCfQAMbsR/LB5qlvKnslucY
+	 qID6CDLwOdWLNy6fKVdrRpReX8bcldTwBLFeHaVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Schiller <ms@dev.tdt.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	xen-devel@lists.xenproject.org,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 108/414] net: sfp: add quirk for FS SFP-10GM-T copper SFP+ module
+Subject: [PATCH 6.12 057/393] xen/mcelog: Add __nonstring annotations for unterminated strings
 Date: Thu, 17 Apr 2025 19:47:46 +0200
-Message-ID: <20250417175115.786348867@linuxfoundation.org>
+Message-ID: <20250417175109.882985709@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Schiller <ms@dev.tdt.de>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 05ec5c085eb7ae044d49e04a3cff194a0b2a3251 ]
+[ Upstream commit 1c3dfc7c6b0f551fdca3f7c1f1e4c73be8adb17d ]
 
-Add quirk for a copper SFP that identifies itself as "FS" "SFP-10GM-T".
-It uses RollBall protocol to talk to the PHY and needs 4 sec wait before
-probing the PHY.
+When a character array without a terminating NUL character has a static
+initializer, GCC 15's -Wunterminated-string-initialization will only
+warn if the array lacks the "nonstring" attribute[1]. Mark the arrays
+with __nonstring to and correctly identify the char array as "not a C
+string" and thereby eliminate the warning.
 
-Signed-off-by: Martin Schiller <ms@dev.tdt.de>
-Link: https://patch.msgid.link/20250227071058.1520027-1-ms@dev.tdt.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=117178 [1]
+Cc: Juergen Gross <jgross@suse.com>
+Cc: Stefano Stabellini <sstabellini@kernel.org>
+Cc: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Cc: xen-devel@lists.xenproject.org
+Signed-off-by: Kees Cook <kees@kernel.org>
+Acked-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250310222234.work.473-kees@kernel.org>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/sfp.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ include/xen/interface/xen-mca.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index 9369f52977694..c88217af44a14 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -385,7 +385,7 @@ static void sfp_fixup_rollball(struct sfp *sfp)
- 	sfp->phy_t_retry = msecs_to_jiffies(1000);
- }
+diff --git a/include/xen/interface/xen-mca.h b/include/xen/interface/xen-mca.h
+index 464aa6b3a5f92..1c9afbe8cc260 100644
+--- a/include/xen/interface/xen-mca.h
++++ b/include/xen/interface/xen-mca.h
+@@ -372,7 +372,7 @@ struct xen_mce {
+ #define XEN_MCE_LOG_LEN 32
  
--static void sfp_fixup_fs_2_5gt(struct sfp *sfp)
-+static void sfp_fixup_rollball_wait4s(struct sfp *sfp)
- {
- 	sfp_fixup_rollball(sfp);
- 
-@@ -399,7 +399,7 @@ static void sfp_fixup_fs_2_5gt(struct sfp *sfp)
- static void sfp_fixup_fs_10gt(struct sfp *sfp)
- {
- 	sfp_fixup_10gbaset_30m(sfp);
--	sfp_fixup_fs_2_5gt(sfp);
-+	sfp_fixup_rollball_wait4s(sfp);
- }
- 
- static void sfp_fixup_halny_gsfp(struct sfp *sfp)
-@@ -479,9 +479,10 @@ static const struct sfp_quirk sfp_quirks[] = {
- 	// PHY.
- 	SFP_QUIRK_F("FS", "SFP-10G-T", sfp_fixup_fs_10gt),
- 
--	// Fiberstore SFP-2.5G-T uses Rollball protocol to talk to the PHY and
--	// needs 4 sec wait before probing the PHY.
--	SFP_QUIRK_F("FS", "SFP-2.5G-T", sfp_fixup_fs_2_5gt),
-+	// Fiberstore SFP-2.5G-T and SFP-10GM-T uses Rollball protocol to talk
-+	// to the PHY and needs 4 sec wait before probing the PHY.
-+	SFP_QUIRK_F("FS", "SFP-2.5G-T", sfp_fixup_rollball_wait4s),
-+	SFP_QUIRK_F("FS", "SFP-10GM-T", sfp_fixup_rollball_wait4s),
- 
- 	// Fiberstore GPON-ONU-34-20BI can operate at 2500base-X, but report 1.2GBd
- 	// NRZ in their EEPROM
+ struct xen_mce_log {
+-	char signature[12]; /* "MACHINECHECK" */
++	char signature[12] __nonstring; /* "MACHINECHECK" */
+ 	unsigned len;	    /* = XEN_MCE_LOG_LEN */
+ 	unsigned next;
+ 	unsigned flags;
 -- 
 2.39.5
 
