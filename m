@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-133885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 539D9A92884
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:35:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01277A92894
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88A778E1CD9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:34:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF5108A1974
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF0F02741D9;
-	Thu, 17 Apr 2025 18:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820E025B678;
+	Thu, 17 Apr 2025 18:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DD3xZdpu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZ8rY7bR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79BD52741CB;
-	Thu, 17 Apr 2025 18:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9182571BA;
+	Thu, 17 Apr 2025 18:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914441; cv=none; b=GfY+KZHmlWU8wcR3rH/ZBfp6lQcn87iK2fCc/m8S79Rj94weVmVsTthYpP7l66ZtHUDrJlFTB+Tv1MqI2th98d2UbUBFUj0gLo2WX/3QnwRXlYBxHWiEhjaTIkm2wHJgXnrgVp662igjKJsDkKOOG2LHzcngY2ds33RlTgiXd9g=
+	t=1744914475; cv=none; b=hFYfbDoXs2AsrFNIlNWgL3TAizgM4FsNw0b8aun4oaOguiuTw7N/GSCpV5MNcxn0Jh6+BpBeBe0cldwVxB5VXnE24soLeZxrULTyRA2XHsMDR1/1Tr23ph32xo3GJf23ENPKN2cNLM52U3nmqs5mRnlX/a6SNxszky4/9XSpdJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914441; c=relaxed/simple;
-	bh=biZnd5/WNjVef1o93NFEnmkbs5EQenIY7kmHAeq2U68=;
+	s=arc-20240116; t=1744914475; c=relaxed/simple;
+	bh=QIReCUEVHXFzR3QZ2JIviRSm93SJoLQA661ox/ZltzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V92XXNIU4XdXL8lCFsOZNh+/zRireVWuUwJo3gNDJgIwm1cZcZSJuHgCixYDSG0+/vQuux4KWjdvyhd+ozl0Y2Wa9R8Z+rGT5ylVSeRPUSeASzj0N0faveBWtVDL95cWeM2gK2fPzd4+UDgJMOp3wV9ZWOxqgZNZUtPRkN0Qe4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DD3xZdpu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74C9FC4CEE7;
-	Thu, 17 Apr 2025 18:27:19 +0000 (UTC)
+	 MIME-Version; b=mNpQbUCpCEqsOFdkNs/Q9HKIxwHcRK9IHWVjdiY3QGcZOoNN1ZDj1mJiUPP+m/lXoyCOOFiXrOi6pRts8pHSvZuJrjb0Ayu5d/CVBZsk+MJ0RgptZOZQrYwkMbuSQ0K9LiHRIfofQInBWM8SJaU/Mc+ILvp6OsPTA98M9YiGNeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZ8rY7bR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E74C4CEEA;
+	Thu, 17 Apr 2025 18:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914440;
-	bh=biZnd5/WNjVef1o93NFEnmkbs5EQenIY7kmHAeq2U68=;
+	s=korg; t=1744914475;
+	bh=QIReCUEVHXFzR3QZ2JIviRSm93SJoLQA661ox/ZltzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DD3xZdpu+E2OcB+qfxwxQW87wPsYFTfAl/2JJwpWmEg8E61WB8luXQ0C8Aidw4BnJ
-	 M3n+jnFlT+nuBaXRst3b+c8YHMPf10rEdPCVmuTWG2A+12dA3zRpO6/7/FGvtvviWt
-	 zhd+etM62cAfVO5ZOPTdGL+a4q7oohlnFgxUCfH8=
+	b=JZ8rY7bRUTM0tmX5XTr3QueLH2vh7LvSWT9wgnCtAuNC7I9a9t5t3qkPM8NgZ68oI
+	 6jB2q0rf/ZDznH29cfiAUm8W/sOuKtI2nS3z1haTABdnvM6v1kkfaydHN+MgmREsVR
+	 zE0jzRDuVEMnamO2GnjPW/BRA//Hj2/XmE15Pd6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jan Beulich <jbeulich@suse.com>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 6.13 209/414] xenfs/xensyms: respect hypervisors "next" indication
-Date: Thu, 17 Apr 2025 19:49:27 +0200
-Message-ID: <20250417175119.847644315@linuxfoundation.org>
+	Akihiko Odaki <akihiko.odaki@daynix.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.13 210/414] KVM: arm64: PMU: Set raw values from user to PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}
+Date: Thu, 17 Apr 2025 19:49:28 +0200
+Message-ID: <20250417175119.886663147@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
 References: <20250417175111.386381660@linuxfoundation.org>
@@ -66,49 +66,70 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jan Beulich <jbeulich@suse.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-commit 5c4e79e29a9fe4ea132118ac40c2bc97cfe23077 upstream.
+commit f2aeb7bbd5745fbcf7f0769e29a184e24924b9a9 upstream.
 
-The interface specifies the symnum field as an input and output; the
-hypervisor sets it to the next sequential symbol's index. xensyms_next()
-incrementing the position explicitly (and xensyms_next_sym()
-decrementing it to "rewind") is only correct as long as the sequence of
-symbol indexes is non-sparse. Use the hypervisor-supplied value instead
-to update the position in xensyms_next(), and use the saved incoming
-index in xensyms_next_sym().
+Commit a45f41d754e0 ("KVM: arm64: Add {get,set}_user for
+PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}") changed KVM_SET_ONE_REG to update
+the mentioned registers in a way matching with the behavior of guest
+register writes. This is a breaking change of a UAPI though the new
+semantics looks cleaner and VMMs are not prepared for this.
 
-Cc: stable@kernel.org
-Fixes: a11f4f0a4e18 ("xen: xensyms support")
-Signed-off-by: Jan Beulich <jbeulich@suse.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Message-ID: <15d5e7fa-ec5d-422f-9319-d28bed916349@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Firecracker, QEMU, and crosvm perform migration by listing registers
+with KVM_GET_REG_LIST, getting their values with KVM_GET_ONE_REG and
+setting them with KVM_SET_ONE_REG. This algorithm assumes
+KVM_SET_ONE_REG restores the values retrieved with KVM_GET_ONE_REG
+without any alteration. However, bit operations added by the earlier
+commit do not preserve the values retried with KVM_GET_ONE_REG and
+potentially break migration.
+
+Remove the bit operations that alter the values retrieved with
+KVM_GET_ONE_REG.
+
+Cc: stable@vger.kernel.org
+Fixes: a45f41d754e0 ("KVM: arm64: Add {get,set}_user for PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}")
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20250315-pmc-v5-1-ecee87dab216@daynix.com
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/xen/xenfs/xensyms.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/kvm/sys_regs.c |   21 ++-------------------
+ 1 file changed, 2 insertions(+), 19 deletions(-)
 
---- a/drivers/xen/xenfs/xensyms.c
-+++ b/drivers/xen/xenfs/xensyms.c
-@@ -48,7 +48,7 @@ static int xensyms_next_sym(struct xensy
- 			return -ENOMEM;
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -1166,26 +1166,9 @@ static bool access_pmu_evtyper(struct kv
  
- 		set_xen_guest_handle(symdata->name, xs->name);
--		symdata->symnum--; /* Rewind */
-+		symdata->symnum = symnum; /* Rewind */
- 
- 		ret = HYPERVISOR_platform_op(&xs->op);
- 		if (ret < 0)
-@@ -78,7 +78,7 @@ static void *xensyms_next(struct seq_fil
+ static int set_pmreg(struct kvm_vcpu *vcpu, const struct sys_reg_desc *r, u64 val)
  {
- 	struct xensyms *xs = m->private;
+-	bool set;
+-
+-	val &= kvm_pmu_accessible_counter_mask(vcpu);
+-
+-	switch (r->reg) {
+-	case PMOVSSET_EL0:
+-		/* CRm[1] being set indicates a SET register, and CLR otherwise */
+-		set = r->CRm & 2;
+-		break;
+-	default:
+-		/* Op2[0] being set indicates a SET register, and CLR otherwise */
+-		set = r->Op2 & 1;
+-		break;
+-	}
+-
+-	if (set)
+-		__vcpu_sys_reg(vcpu, r->reg) |= val;
+-	else
+-		__vcpu_sys_reg(vcpu, r->reg) &= ~val;
++	u64 mask = kvm_pmu_accessible_counter_mask(vcpu);
  
--	xs->op.u.symdata.symnum = ++(*pos);
-+	*pos = xs->op.u.symdata.symnum;
++	__vcpu_sys_reg(vcpu, r->reg) = val & mask;
+ 	return 0;
+ }
  
- 	if (xensyms_next_sym(xs))
- 		return NULL;
 
 
 
