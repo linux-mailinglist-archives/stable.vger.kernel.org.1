@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-134298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6DE7A92A77
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:51:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FDA2A926B2
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:15:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B740C8A01E1
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:48:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C46A87B6C9D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47E3253340;
-	Thu, 17 Apr 2025 18:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4321E25E1;
+	Thu, 17 Apr 2025 18:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R1ro7Xcg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nylzSogV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7125019ABC6;
-	Thu, 17 Apr 2025 18:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584EB152532;
+	Thu, 17 Apr 2025 18:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915702; cv=none; b=OyG8pV8tRs/Pd+oiMl9xaeOKaY8jaAomqOIy09NLejb57vj5KLmBUGXRDXcI/GzGPJMhEHeruIE28hnZPDmHYntIxhiTjFBABPgYhPuId3BdulAQbhYtYMH6IgmhTBK/Vtj/7eIXH4hanpveXwbMRG6TGhZWAlxWC+ZrTzTKuQc=
+	t=1744913505; cv=none; b=GElktQWLT3ZZ5DqkkSTFhtMR7ggPdiNLLrsdDbjYO+HeGzgrw8by9FYohrTLytSFhIlfIoC3Uv+ZqD4T6PqVJVdf0AlqG+pBUDfA5nvEevpkEpwg/BbMH8nb3+OCMxeR1sRADmlDHZvaNKzFviYAzppIXQ/z5wk45D8ftH4OYYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915702; c=relaxed/simple;
-	bh=hnT2zxNTstPr+HqK4bFziUfbwcPkGZAUqEqSSs60Ako=;
+	s=arc-20240116; t=1744913505; c=relaxed/simple;
+	bh=2ZJecF/TyxZ7BdGdQGXHA+hTtz4G/uj5r+Dx0af6nsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UJz4B39Z376QY6m10GrQKi9V3pJREsp5IJGFEQZ+bREIz0FQfFuRhME5G1TlgFeMei9Q72TjdcaPmUvrjUvwJdmJ0X6VmtCWTP5hVEqh8ltCQQ3HZgVRjnTeKB/Be6FLHJ4XGATbDpgqTyeA+vSyZu52UGN9OyykiOVYFnVIq1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R1ro7Xcg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD24C4CEE4;
-	Thu, 17 Apr 2025 18:48:21 +0000 (UTC)
+	 MIME-Version; b=Cov3itMU2zfMR5bWaXrXoEKAP9KQ3cKRQtkOKysWT9z7ISimAnC2jj1UbzeEUUJ0856PvEZif9mk7BJLBBQr4aC+BY5TQqp+ql+yKgrtqMirxYppHM9muqxrbg4vBsNll5WFa7m/BcaTtVothvMW1LRPYChEaleK+GlR41E3vPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nylzSogV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77548C4CEE4;
+	Thu, 17 Apr 2025 18:11:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915702;
-	bh=hnT2zxNTstPr+HqK4bFziUfbwcPkGZAUqEqSSs60Ako=;
+	s=korg; t=1744913504;
+	bh=2ZJecF/TyxZ7BdGdQGXHA+hTtz4G/uj5r+Dx0af6nsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R1ro7XcgCCbU0Jhbi3tFc1k8q3u+eRjs0WgC8Ziu8031Xl0en106OIS86sJYURzUX
-	 KZYvGyZMvb6o4ptOGZLaXSL6aOif9WlSNXdUCCzEG1TBVQADsPm+LQyBpAUeL3ffAq
-	 gVAZzozTV2Z+lgBJ88tXfrfJtEjTgU932Zbhs1D8=
+	b=nylzSogV5G4QRG/zFxm6KQuUI2FcAW35XENAlF4SnG42WpzgfYaWQi86qNQZmm1ub
+	 xER5nL+/4kPmZch8PZq/2aYy5ug1QwujsJzfa7iYx+Exgs9CoFdh1loPgP2+9AM98R
+	 TlicjeaMttx2Xe4eR3siy2QDIq1JNY9NTkJE4VIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 212/393] media: hi556: Fix memory leak (on error) in hi556_check_hwcfg()
+	kernel test robot <lkp@intel.com>,
+	Jean Delvare <jdelvare@suse.de>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.14 333/449] mtd: spinand: Fix build with gcc < 7.5
 Date: Thu, 17 Apr 2025 19:50:21 +0200
-Message-ID: <20250417175116.107796130@linuxfoundation.org>
+Message-ID: <20250417175131.577587692@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit ed554da65abd0c561e40d35272d1a61d030fe977 upstream.
+commit 1c1fd374a2fe72b8a6dde62d3c3a9fd153e7581c upstream.
 
-Commit 7d968b5badfc ("media: hi556: Return -EPROBE_DEFER if no endpoint is
-found") moved the v4l2_fwnode_endpoint_alloc_parse() call in
-hi556_check_hwcfg() up, but it did not make the error-exit paths between
-the old and new call-site use "goto check_hwcfg_error;" to free the bus_cfg
-on errors.
+__VA_OPT__ is a macro that is useful when some arguments can be present
+or not to entirely skip some part of a definition. Unfortunately, it
+is a too recent addition that some of the still supported old GCC
+versions do not know about, and is anyway not part of C11 that is the
+version used in the kernel.
 
-Add the missing "goto check_hwcfg_error;" statements to fix a memleak on
-early error-exits from hi556_check_hwcfg().
+Find a trick to remove this macro, typically '__VA_ARGS__ + 0' is a
+workaround used in netlink.h which works very well here, as we either
+expect:
+- 0
+- A positive value
+- No value, which means the field should be 0.
 
-Fixes: 7d968b5badfc ("media: hi556: Return -EPROBE_DEFER if no endpoint is found")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202503181330.YcDXGy7F-lkp@intel.com/
+Fixes: 7ce0d16d5802 ("mtd: spinand: Add an optional frequency to read from cache macros")
 Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Tested-by: Jean Delvare <jdelvare@suse.de>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/hi556.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/linux/mtd/spinand.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/i2c/hi556.c
-+++ b/drivers/media/i2c/hi556.c
-@@ -1230,12 +1230,13 @@ static int hi556_check_hwcfg(struct devi
- 	ret = fwnode_property_read_u32(fwnode, "clock-frequency", &mclk);
- 	if (ret) {
- 		dev_err(dev, "can't get clock frequency");
--		return ret;
-+		goto check_hwcfg_error;
- 	}
+--- a/include/linux/mtd/spinand.h
++++ b/include/linux/mtd/spinand.h
+@@ -67,7 +67,7 @@
+ 		   SPI_MEM_OP_ADDR(2, addr, 1),				\
+ 		   SPI_MEM_OP_DUMMY(ndummy, 1),				\
+ 		   SPI_MEM_OP_DATA_IN(len, buf, 1),			\
+-		   __VA_OPT__(SPI_MEM_OP_MAX_FREQ(__VA_ARGS__)))
++		   SPI_MEM_OP_MAX_FREQ(__VA_ARGS__ + 0))
  
- 	if (mclk != HI556_MCLK) {
- 		dev_err(dev, "external clock %d is not supported", mclk);
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto check_hwcfg_error;
- 	}
- 
- 	if (bus_cfg.bus.mipi_csi2.num_data_lanes != 2) {
+ #define SPINAND_PAGE_READ_FROM_CACHE_FAST_OP(addr, ndummy, buf, len) \
+ 	SPI_MEM_OP(SPI_MEM_OP_CMD(0x0b, 1),			\
 
 
 
