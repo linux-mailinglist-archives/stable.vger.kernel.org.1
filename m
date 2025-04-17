@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-134285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 094ACA92A34
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88AFEA92611
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:10:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0358C17A0B9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:47:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28C954670C5
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5926F256C95;
-	Thu, 17 Apr 2025 18:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9661C1E25E1;
+	Thu, 17 Apr 2025 18:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TfyunCxZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CRiRORoS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E4B256C7B;
-	Thu, 17 Apr 2025 18:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230751D8DF6;
+	Thu, 17 Apr 2025 18:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915662; cv=none; b=mcP1OMZjTcwjtvJDxOCMnDyh/30I8TPVi8GN3yJ6IVACjUdPz46ZyiRLbN427g3XYLYIs++haH/Ru4ixEEbZFr8Kisis4t6a1aiBqO6p6Kr4fF+Y9EtEgro9bgqcm0uSGaEzyTQ4GA8Ic/n2/pIXDKLbanXyfCdzMboAsKVOPPM=
+	t=1744913385; cv=none; b=h4jzpfw+a1+gu3651NppWw8s3j28j67Yyo86CSACQudSXKvE3BKAljfLwR4g1F5fcMqLBOWn6bNSC3WXtndEien8TsNT1KQr2iJ6GGuZeN0nb29UtY9Z5yBunNltvCb6aan7NHtGwZGzdLOk+Rra74fgp7jLWvvG7KUIgUeMsBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915662; c=relaxed/simple;
-	bh=SRHO5g19/Dp6ez5Pvn4NPf5npocqNpZ7DwdHV7+1SJc=;
+	s=arc-20240116; t=1744913385; c=relaxed/simple;
+	bh=KGmwicy5h9yETk1exKxq6/AVpvAl/zLVTCA4i1DMn10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SXCb0CmNbiRXOHAYnWaEIQCKVS5fQyekIoV7lpgMSsNETYTVUCv0gvfigFuVNKXXs7KQMR/PBV9UratTNU0V0ymu2uPyBjK/Y7/XvpSNCporAyLr4HSn/t34niPeEXFumXlfTekKgCy5WtlQGI0nC2cwxFoC7rSd5vYnxO5n2Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TfyunCxZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7820AC4CEEA;
-	Thu, 17 Apr 2025 18:47:41 +0000 (UTC)
+	 MIME-Version; b=Mcf30XXvnvsdTFulYUPDlKNl0c4kU7bYmf5VRFMuDhtdUG8VEYntfurvFhfBqF0wro+7DTxWDnqp4w6dVnqBCuOdW/bqEHu3QpI2hTgPotxI7fhrDu0G/H6oxba1ct5C7kPid1kfEDoPSjh2KONm5ofz00P3fkJnMhATh+3/eiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CRiRORoS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA697C4CEE4;
+	Thu, 17 Apr 2025 18:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915662;
-	bh=SRHO5g19/Dp6ez5Pvn4NPf5npocqNpZ7DwdHV7+1SJc=;
+	s=korg; t=1744913385;
+	bh=KGmwicy5h9yETk1exKxq6/AVpvAl/zLVTCA4i1DMn10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TfyunCxZOJZPPWI4LenftArdpXatG5v7fhzsHV1kbE+vu4wLcUwrjxt5ClGGJQyKW
-	 DAO+nKmX/B/agYMNV/uNHqSZtvb0vApe3UIJFWNgWWRqsdl9LFF29Q98dXw1juujE2
-	 HdmaG4WF+u1zaaSLwjAn/VdaQWkcXvGGWOrSo9kE=
+	b=CRiRORoSyReUhyKKiHodsEwvdxy7emS9QGcX8LgtnyiErcWivmfhsjcJSn37SY2i6
+	 fGCo9dz1iHYhNzbYd35fDMzv4nSOsVUvevqIbFceqhzsH7ICvCjzRYvgG/Eq76VZIh
+	 HeGm4CoQ4aWjwFlPFXo8i1Y73YXG6xWvJ3SRWpIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Keeping <jkeeping@inmusicbrands.com>,
-	Michael Tretter <m.tretter@pengutronix.de>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 200/393] media: rockchip: rga: fix rga offset lookup
+	Kris Van Hees <kris.van.hees@oracle.com>,
+	Jack Vogel <jack.vogel@oracle.com>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.14 321/449] kbuild: exclude .rodata.(cst|str)* when building ranges
 Date: Thu, 17 Apr 2025 19:50:09 +0200
-Message-ID: <20250417175115.631918859@linuxfoundation.org>
+Message-ID: <20250417175131.044237460@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Keeping <jkeeping@inmusicbrands.com>
+From: Kris Van Hees <kris.van.hees@oracle.com>
 
-commit 11de3582675cc0b7136e12f3971f1da3e5a05382 upstream.
+commit 87bb368d0637c466a8a77433837056f981d01991 upstream.
 
-The arguments to rga_lookup_draw_pos() are passed in the wrong order,
-rotate mode should be before mirror mode.
+The .rodata.(cst|str)* sections are often resized during the final
+linking and since these sections do not cover actual symbols there is
+no need to include them in the modules.builtin.ranges data.
 
-Fixes: 558c248f930e6 ("media: rockchip: rga: split src and dst buffer setup")
+When these sections were included in processing and resizing occurred,
+modules were reported with ranges that extended beyond their true end,
+causing subsequent symbols (in address order) to be associated with
+the wrong module.
+
+Fixes: 5f5e7344322f ("kbuild: generate offset range data for builtin modules")
 Cc: stable@vger.kernel.org
-Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
-Reviewed-by: Michael Tretter <m.tretter@pengutronix.de>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Kris Van Hees <kris.van.hees@oracle.com>
+Reviewed-by: Jack Vogel <jack.vogel@oracle.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/rockchip/rga/rga-hw.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/generate_builtin_ranges.awk |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/media/platform/rockchip/rga/rga-hw.c
-+++ b/drivers/media/platform/rockchip/rga/rga-hw.c
-@@ -376,7 +376,7 @@ static void rga_cmd_set_dst_info(struct
- 	 * Configure the dest framebuffer base address with pixel offset.
- 	 */
- 	offsets = rga_get_addr_offset(&ctx->out, offset, dst_x, dst_y, dst_w, dst_h);
--	dst_offset = rga_lookup_draw_pos(&offsets, mir_mode, rot_mode);
-+	dst_offset = rga_lookup_draw_pos(&offsets, rot_mode, mir_mode);
+--- a/scripts/generate_builtin_ranges.awk
++++ b/scripts/generate_builtin_ranges.awk
+@@ -282,6 +282,11 @@ ARGIND == 2 && !anchor && NF == 2 && $1
+ # section.
+ #
+ ARGIND == 2 && sect && NF == 4 && /^ [^ \*]/ && !($1 in sect_addend) {
++	# There are a few sections with constant data (without symbols) that
++	# can get resized during linking, so it is best to ignore them.
++	if ($1 ~ /^\.rodata\.(cst|str)[0-9]/)
++		next;
++
+ 	if (!($1 in sect_base)) {
+ 		sect_base[$1] = base;
  
- 	dest[(RGA_DST_Y_RGB_BASE_ADDR - RGA_MODE_BASE_REG) >> 2] =
- 		dst_offset->y_off;
 
 
 
