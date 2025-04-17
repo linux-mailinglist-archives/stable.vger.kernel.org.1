@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-133921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C96FA9288A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B174A92A6F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:51:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D45219E5716
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 178D23ADACF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:47:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12A2256C6D;
-	Thu, 17 Apr 2025 18:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932CD256C65;
+	Thu, 17 Apr 2025 18:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bljnm9sI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7z1Jvjp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2881D07BA;
-	Thu, 17 Apr 2025 18:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4421DB148;
+	Thu, 17 Apr 2025 18:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914550; cv=none; b=MH6k1bCiJzX1YJRVAJj9u+wPAiqe6YjOwyS6fvFOYAyS9LKxlYL2oWiomPH7g/UefOtrcGA1ZnqIiGtjV69z99Q8ltv60s1E7GSvJOIHXSrAiBWWh4UBsg0kXWTYUG5iQo6DImp3/XspMPl1FiKLHc2f32gB5oiDDCMWE0enVrU=
+	t=1744915668; cv=none; b=AfYCa8XUxnz8HCxNfzw9CeV05VCv70MgUq/7K64XWohVwHZOIZ2mgSQ4OPd/WYHwjZwz3jpgiJDomQWkEGsnrZOE15o6TqzZGa5D9DImdIsR8ycwJbu4RgHenTsz8jQIZGtXxrV1sJY/WQGp/LOg01XEX71IuDc5HpFBatiMlLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914550; c=relaxed/simple;
-	bh=kYuS51iF8wCyNEfBd306ZUPTi3kqwBFZAihWN9RQWnI=;
+	s=arc-20240116; t=1744915668; c=relaxed/simple;
+	bh=8h+BFpkDHOIylD+kN0zeHX0uEJ6AUbhavQREOXszgYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gsl/S57pQr4PMzJIbYysPcyS2SEYx/ONCPQ7PijC+gO9zViyZT7gzIlJMNBEyUahldx6/KZdJHjHrWrx/suNy618Nk4brfpHCzCZyXI6ljkMQ/78iqlHKnd62XvnDZ6ITZqB27VHCep6oELDzel6kOIliVfndDU3ciYJ7o80I/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bljnm9sI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08338C4CEE4;
-	Thu, 17 Apr 2025 18:29:09 +0000 (UTC)
+	 MIME-Version; b=FZjU+djCUy+6feUGiv9a23P0so9L9TRvrjuHSbIjPDbCIExKh1o35T6hxMQGG+ECGWUpr5AcKniMyEvBrgjzGUqoRUICkR1V0LbGyEkZKOb/UgRy6l/BjF3jlmj6O0VLadWqjrqCv40CYrtyPDp3b5vZ+FIo2irifL18LyBOP4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7z1Jvjp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B472FC4CEE4;
+	Thu, 17 Apr 2025 18:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914550;
-	bh=kYuS51iF8wCyNEfBd306ZUPTi3kqwBFZAihWN9RQWnI=;
+	s=korg; t=1744915668;
+	bh=8h+BFpkDHOIylD+kN0zeHX0uEJ6AUbhavQREOXszgYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bljnm9sIyPsufaRf5bP40rRMCgNeAyu8VJ8DID2TWX/aRikDSxzXj3yOy4+wW+tpL
-	 d8Y0J3WKeakICvuHyAAxQULqt4fOZtmA9txTGu+ZTX43prvt4PE/Ah6Mb8fIkfVOLZ
-	 IdKwUAXat+TsfXamdK6yLgGbKdMYxNZ+vCrh1oVc=
+	b=J7z1JvjpVfmVPCKsiz4bifim2Cj9ftlzAKCzQkCl8s2a74uS3/5BvbC3yNbKhcRgt
+	 PIDHlj7a8KEANK3PXGniySbKwZEpawLMnXOo3eioh3+uZsPkQkQ+4uiulz8Rh+qarY
+	 CVtktzrBIqe5kYGqgmQ9E0GlHYKdSM/3NB8U9GFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.13 253/414] mtd: Replace kcalloc() with devm_kcalloc()
+	Douglas Anderson <dianders@chromium.org>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.12 202/393] arm64: cputype: Add MIDR_CORTEX_A76AE
 Date: Thu, 17 Apr 2025 19:50:11 +0200
-Message-ID: <20250417175121.596739252@linuxfoundation.org>
+Message-ID: <20250417175115.710314520@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit 1b61a59876f0eafc19b23007c522ee407f55dbec upstream.
+commit a9b5bd81b294d30a747edd125e9f6aef2def7c79 upstream.
 
-Replace kcalloc() with devm_kcalloc() to prevent memory leaks in case of
-errors.
+>From the TRM, MIDR_CORTEX_A76AE has a partnum of 0xDOE and an
+implementor of 0x41 (ARM). Add the values.
 
-Fixes: 78c08247b9d3 ("mtd: Support kmsg dumper based on pstore/blk")
-Cc: stable@vger.kernel.org # v5.10+
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: stable@vger.kernel.org # dependency of the next fix in the series
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20250107120555.v4.4.I151f3b7ee323bcc3082179b8c60c3cd03308aa94@changeid
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/mtdpstore.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ arch/arm64/include/asm/cputype.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/mtd/mtdpstore.c
-+++ b/drivers/mtd/mtdpstore.c
-@@ -417,11 +417,11 @@ static void mtdpstore_notify_add(struct
- 	}
- 
- 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, info->kmsg_size));
--	cxt->rmmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
--	cxt->usedmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
-+	cxt->rmmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
-+	cxt->usedmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
- 
- 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, mtd->erasesize));
--	cxt->badmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
-+	cxt->badmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
- 
- 	if (!cxt->rmmap || !cxt->usedmap || !cxt->badmap)
- 		return;
-@@ -530,9 +530,6 @@ static void mtdpstore_notify_remove(stru
- 	mtdpstore_flush_removed(cxt);
- 
- 	unregister_pstore_device(&cxt->dev);
--	kfree(cxt->badmap);
--	kfree(cxt->usedmap);
--	kfree(cxt->rmmap);
- 	cxt->mtd = NULL;
- 	cxt->index = -1;
- }
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -75,6 +75,7 @@
+ #define ARM_CPU_PART_CORTEX_A76		0xD0B
+ #define ARM_CPU_PART_NEOVERSE_N1	0xD0C
+ #define ARM_CPU_PART_CORTEX_A77		0xD0D
++#define ARM_CPU_PART_CORTEX_A76AE	0xD0E
+ #define ARM_CPU_PART_NEOVERSE_V1	0xD40
+ #define ARM_CPU_PART_CORTEX_A78		0xD41
+ #define ARM_CPU_PART_CORTEX_A78AE	0xD42
+@@ -159,6 +160,7 @@
+ #define MIDR_CORTEX_A76	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A76)
+ #define MIDR_NEOVERSE_N1 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N1)
+ #define MIDR_CORTEX_A77	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A77)
++#define MIDR_CORTEX_A76AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A76AE)
+ #define MIDR_NEOVERSE_V1	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V1)
+ #define MIDR_CORTEX_A78	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78)
+ #define MIDR_CORTEX_A78AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78AE)
 
 
 
