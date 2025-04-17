@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-133722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11170A9270D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:19:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B39C7A926E3
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:17:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4F4F1906A63
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:19:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A72448A6964
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:17:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C402566F7;
-	Thu, 17 Apr 2025 18:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EFE21DB148;
+	Thu, 17 Apr 2025 18:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8ZXeDCP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gr9DXUnd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B69253B57;
-	Thu, 17 Apr 2025 18:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3E1256C6B;
+	Thu, 17 Apr 2025 18:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913943; cv=none; b=t+DkCIbh8MnGPIft3sjG4704A8FAUL+7AleNeRCCoA8rNDKC9UMmxNqQwI4U1PeI48grbx+EKxFyIDMUwbOT0WpK34tsi4OJTBTB0UDe8TIsVgqitcQK0tztIQ5tZbMnrQNlXoy/4z1BxuPcgSjiQgf8OUKS+bd8ygFQL0Mr74c=
+	t=1744913846; cv=none; b=hz0TTCKfK9fSLPYwMiiNzqlZCJsJD2qPI75ltBV/CvshbwdMt/FcQtJqJ94G1IDiu+62bUDuaQ7ZInJyVPiFusow+0Af5dZ6Icjhrhqxa5LjCXYhwUfnjL21btdTskEZ9B3l8VCo/vhDKlmP0PhEzGuALCDv/LL/k+KWsqJpbDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913943; c=relaxed/simple;
-	bh=SPH+I3MZGJHU8XS2U/IE/M2ziWO+G2ITARJ6fHkzRNU=;
+	s=arc-20240116; t=1744913846; c=relaxed/simple;
+	bh=pDd9tI3Sjjzc3ndZp5j6rlGImX1O5HsjQWOtiTcq76E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OQmlEaTx+AuIEzb5pIJe16WGTyeVvyTHWDMXhz3emmnCZsqmUIu1pUg7ti0FeWwMB8fBjytFeedRn40hAVu5Uq9ZybQDZ7CvgBqW+jKx/8DyX+0Wo8wIW9TWFVw1PedzIZxISTOUb4euEyYOvRTxOExrEOSkx//RotZQRaaC7xI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8ZXeDCP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03716C4CEEC;
-	Thu, 17 Apr 2025 18:19:02 +0000 (UTC)
+	 MIME-Version; b=FMRSoEuw+P/xdg+nx8i1McuVi3z7+NS+/M1VYfZEoXqKgScw2lfMZycqPVAjhBX/l8QKoiuA5g4eIAlWgav/q1fpja/vuBiU0+0GXEwavH+gJehtR+qvgBGE8Dl333uThWkdC4t79ltFUWasxj3GS+IcUM7oyZGIwH751YzW2Eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gr9DXUnd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5193CC4CEEA;
+	Thu, 17 Apr 2025 18:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913943;
-	bh=SPH+I3MZGJHU8XS2U/IE/M2ziWO+G2ITARJ6fHkzRNU=;
+	s=korg; t=1744913846;
+	bh=pDd9tI3Sjjzc3ndZp5j6rlGImX1O5HsjQWOtiTcq76E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w8ZXeDCPJv3x+48hAIegAEcvPOoPKIb1mvAu5ZHNcJa/YSwwYCu2Axx4XGv8exE9i
-	 WBoiuXlvWl6ql850pmroLDQ3Pbtgj3B+IXtNpguRmJ3EmES5+sdc7Cq1fS9/3X3wtR
-	 X5MXLC/g5LFNzbLg+Wo/3uDY651il+U5t3Dpbbi0=
+	b=Gr9DXUnduJJGa2uaa6KsCnlqhckWkiV43k68AbALxCxODXc8MrfIYzDJ5ovp4WWlj
+	 Lib39TMX8AqYdgNaT2Xqlv4dx/BZTfu+gp8hx7FH+mhTEUP9Xm5Rm8Sl2tnhTo7Y9W
+	 YgEHvIKu6ZSDgVU2NlBAyZqhRr23RDh2kMH9Ztl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 013/414] objtool: Fix INSN_CONTEXT_SWITCH handling in validate_unret()
-Date: Thu, 17 Apr 2025 19:46:11 +0200
-Message-ID: <20250417175111.939075753@linuxfoundation.org>
+Subject: [PATCH 6.13 014/414] tipc: fix memory leak in tipc_link_xmit
+Date: Thu, 17 Apr 2025 19:46:12 +0200
+Message-ID: <20250417175111.979491165@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
 References: <20250417175111.386381660@linuxfoundation.org>
@@ -68,51 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Tung Nguyen <tung.quang.nguyen@est.tech>
 
-[ Upstream commit a8df7d0ef92eca28c610206c6748daf537ac0586 ]
+[ Upstream commit 69ae94725f4fc9e75219d2d69022029c5b24bc9a ]
 
-The !CONFIG_IA32_EMULATION version of xen_entry_SYSCALL_compat() ends
-with a SYSCALL instruction which is classified by objtool as
-INSN_CONTEXT_SWITCH.
+In case the backlog transmit queue for system-importance messages is overloaded,
+tipc_link_xmit() returns -ENOBUFS but the skb list is not purged. This leads to
+memory leak and failure when a skb is allocated.
 
-Unlike validate_branch(), validate_unret() doesn't consider
-INSN_CONTEXT_SWITCH in a non-function to be a dead end, so it keeps
-going past the end of xen_entry_SYSCALL_compat(), resulting in the
-following warning:
+This commit fixes this issue by purging the skb list before tipc_link_xmit()
+returns.
 
-  vmlinux.o: warning: objtool: xen_reschedule_interrupt+0x2a: RET before UNTRAIN
-
-Fix that by adding INSN_CONTEXT_SWITCH handling to validate_unret() to
-match what validate_branch() is already doing.
-
-Fixes: a09a6e2399ba ("objtool: Add entry UNRET validation")
-Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/f5eda46fd09f15b1f5cde3d9ae3b92b958342add.1744095216.git.jpoimboe@kernel.org
+Fixes: 365ad353c256 ("tipc: reduce risk of user starvation during link congestion")
+Signed-off-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+Link: https://patch.msgid.link/20250403092431.514063-1-tung.quang.nguyen@est.tech
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/objtool/check.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/tipc/link.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 9c7e60f71327d..94b46f1effce7 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -3990,6 +3990,11 @@ static int validate_unret(struct objtool_file *file, struct instruction *insn)
- 			WARN_INSN(insn, "RET before UNTRAIN");
- 			return 1;
- 
-+		case INSN_CONTEXT_SWITCH:
-+			if (insn_func(insn))
-+				break;
-+			return 0;
-+
- 		case INSN_NOP:
- 			if (insn->retpoline_safe)
- 				return 0;
+diff --git a/net/tipc/link.c b/net/tipc/link.c
+index 5c2088a469cea..5689e1f485479 100644
+--- a/net/tipc/link.c
++++ b/net/tipc/link.c
+@@ -1046,6 +1046,7 @@ int tipc_link_xmit(struct tipc_link *l, struct sk_buff_head *list,
+ 	if (unlikely(l->backlog[imp].len >= l->backlog[imp].limit)) {
+ 		if (imp == TIPC_SYSTEM_IMPORTANCE) {
+ 			pr_warn("%s<%s>, link overflow", link_rst_msg, l->name);
++			__skb_queue_purge(list);
+ 			return -ENOBUFS;
+ 		}
+ 		rc = link_schedule_user(l, hdr);
 -- 
 2.39.5
 
