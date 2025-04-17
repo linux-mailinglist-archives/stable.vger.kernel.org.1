@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-134137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E37E4A92988
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:43:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF968A92727
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:20:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 177A416C0FB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A8508A5D01
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:20:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAC2B1D5CCD;
-	Thu, 17 Apr 2025 18:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57BFE255241;
+	Thu, 17 Apr 2025 18:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EN3LKfru"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvEzcMMJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796048462;
-	Thu, 17 Apr 2025 18:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150FD1A3178;
+	Thu, 17 Apr 2025 18:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915210; cv=none; b=MWDg9JmIABLKiHAYR0E0eN1egGJwmuQgxAXL7s3yW9xCCBBiwUaF6WF2bfh/Et5y2Ajf7fgX+Qp/EA2pbGUHX9WY7Jassznoh7hXGyU07Fnd67hj6DXXbTO/dNablET4JeW9/NSq6es1adh0g6O70h3ioLCtxt9LprsmctKD0mY=
+	t=1744914019; cv=none; b=RvuZ8q6iglTpVGIkJaAS46tnHqaRrasbohLxaMPaN8GUp2VZ8tEDKRulnXWuiLX7Nxo4UGDJ6lcnPbuCHE4OX7rmP19egtdofCQjOMWx0c2wKoipOo68ZS/AVxJWCO/74MhjEj4Ki7YW0M8Gy21e6RZRxj0pSh8z/XP4qKjD70Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915210; c=relaxed/simple;
-	bh=tkUViCoUAXEiqqBkNenO5l9wG/9Lhr10TKzA2Lt+8bc=;
+	s=arc-20240116; t=1744914019; c=relaxed/simple;
+	bh=p3RhVkGaZcnr8XkMEcFxS8ezsz1yjnIakicDHj1R1DU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=daJ0UEcTUHx05iYVxLuWid3K3bUtG/M1Zx5hKQNUJqWM9C+NkG8U8e4qLAhHrPExLqWgz/XDt77X7k2yGZu5cSw7+X0cHPVMvnD+Sv1PVsaBOA5wAhdhCUgafXy6L+PtkqpMAVk13t1GjpzTcfI5WHEiY2aTKFd81/aLvtKhG4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EN3LKfru; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00EDDC4CEE4;
-	Thu, 17 Apr 2025 18:40:09 +0000 (UTC)
+	 MIME-Version; b=a+OTGKxaK78WDZYUgR71PyFVY43p5zbtRtJPTuzw1piXMUpbYeyWd0AeaqDrQQ5jfov2b6XyAWr+xsPHZSGj+iUQ+nSj7APNzeUv4vOz9memMEazjiHpVLvhJp7s6CLEJRsWxMpuabqKx8GBSQffCYugS1XgbcXV+x/+dZRWD9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvEzcMMJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898AFC4CEE7;
+	Thu, 17 Apr 2025 18:20:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915210;
-	bh=tkUViCoUAXEiqqBkNenO5l9wG/9Lhr10TKzA2Lt+8bc=;
+	s=korg; t=1744914018;
+	bh=p3RhVkGaZcnr8XkMEcFxS8ezsz1yjnIakicDHj1R1DU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EN3LKfruKnxTED7vE220OgfgldySQwQiL6sqlbaa9nrQK9mmFulXsDX2OuSlB/Ci1
-	 lGZ0l9MhPCaNYhTTeZ6jJHVbd8ulG4OVlv+btcXtjfD/ecnEhUs+D/lLrelZkbLB52
-	 JZj1cJCfsiC0I4kiGJC43QJ316VJU12ZHTkS3zRU=
+	b=AvEzcMMJAMSQQ9USrHHP31/zskyTK/iuGusnLd9qWfm98C/cQ5RPgfAXhO7TlHN+U
+	 43bYBI5BYIE/c7E5uZWV/9o3E8b2VsLxDhpdu0GivDjyQXcU631ujXr/9t1kbzw2f2
+	 EiH6VzVjOUthV7Wxnpub2jetqanL9AfOEDUxbPG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Stanner <phasta@mailbox.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Maxime Ripard <mripard@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Aakarsh Jain <aakarsh.jain@samsung.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 026/393] drm/tests: modes: Fix drm_display_mode memory leak
+Subject: [PATCH 6.13 077/414] media: s5p-mfc: Corrected NV12M/NV21M plane-sizes
 Date: Thu, 17 Apr 2025 19:47:15 +0200
-Message-ID: <20250417175108.643506021@linuxfoundation.org>
+Message-ID: <20250417175114.541808021@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Ripard <mripard@kernel.org>
+From: Aakarsh Jain <aakarsh.jain@samsung.com>
 
-[ Upstream commit d34146340f95cd9bf06d4ce71cca72127dc0b7cd ]
+[ Upstream commit 7d0d0b2342bebc47a46499cdf21257ed1e58c4aa ]
 
-drm_analog_tv_mode() and its variants return a drm_display_mode that
-needs to be destroyed later one. The drm_modes_analog_tv tests never
-do however, which leads to a memory leak.
+There is a possibility of getting page fault if the overall
+buffer size is not aligned to 256bytes. Since MFC does read
+operation only and it won't corrupt the data values even if
+it reads the extra bytes.
+Corrected luma and chroma plane sizes for V4L2_PIX_FMT_NV12M
+and V4L2_PIX_FMT_NV21M pixel format.
 
-Let's make sure it's freed.
-
-Reported-by: Philipp Stanner <phasta@mailbox.org>
-Closes: https://lore.kernel.org/dri-devel/a7655158a6367ac46194d57f4b7433ef0772a73e.camel@mailbox.org/
-Fixes: 4fcd238560ee ("drm/modes: Add a function to generate analog display modes")
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://lore.kernel.org/r/20250408-drm-kunit-drm-display-mode-memleak-v1-5-996305a2e75a@kernel.org
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Suggested-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Aakarsh Jain <aakarsh.jain@samsung.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tests/drm_modes_test.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/media/platform/samsung/s5p-mfc/s5p_mfc_opr_v6.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/tests/drm_modes_test.c b/drivers/gpu/drm/tests/drm_modes_test.c
-index 6ed51f99e133c..7ba646d87856f 100644
---- a/drivers/gpu/drm/tests/drm_modes_test.c
-+++ b/drivers/gpu/drm/tests/drm_modes_test.c
-@@ -40,6 +40,7 @@ static void drm_test_modes_analog_tv_ntsc_480i(struct kunit *test)
- {
- 	struct drm_test_modes_priv *priv = test->priv;
- 	struct drm_display_mode *mode;
-+	int ret;
- 
- 	mode = drm_analog_tv_mode(priv->drm,
- 				  DRM_MODE_TV_MODE_NTSC,
-@@ -47,6 +48,9 @@ static void drm_test_modes_analog_tv_ntsc_480i(struct kunit *test)
- 				  true);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
- 
-+	ret = drm_kunit_add_mode_destroy_action(test, mode);
-+	KUNIT_ASSERT_EQ(test, ret, 0);
-+
- 	KUNIT_EXPECT_EQ(test, drm_mode_vrefresh(mode), 60);
- 	KUNIT_EXPECT_EQ(test, mode->hdisplay, 720);
- 
-@@ -70,6 +74,7 @@ static void drm_test_modes_analog_tv_ntsc_480i_inlined(struct kunit *test)
- {
- 	struct drm_test_modes_priv *priv = test->priv;
- 	struct drm_display_mode *expected, *mode;
-+	int ret;
- 
- 	expected = drm_analog_tv_mode(priv->drm,
- 				      DRM_MODE_TV_MODE_NTSC,
-@@ -77,9 +82,15 @@ static void drm_test_modes_analog_tv_ntsc_480i_inlined(struct kunit *test)
- 				      true);
- 	KUNIT_ASSERT_NOT_NULL(test, expected);
- 
-+	ret = drm_kunit_add_mode_destroy_action(test, expected);
-+	KUNIT_ASSERT_EQ(test, ret, 0);
-+
- 	mode = drm_mode_analog_ntsc_480i(priv->drm);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
- 
-+	ret = drm_kunit_add_mode_destroy_action(test, mode);
-+	KUNIT_ASSERT_EQ(test, ret, 0);
-+
- 	KUNIT_EXPECT_TRUE(test, drm_mode_equal(expected, mode));
- }
- 
-@@ -87,6 +98,7 @@ static void drm_test_modes_analog_tv_pal_576i(struct kunit *test)
- {
- 	struct drm_test_modes_priv *priv = test->priv;
- 	struct drm_display_mode *mode;
-+	int ret;
- 
- 	mode = drm_analog_tv_mode(priv->drm,
- 				  DRM_MODE_TV_MODE_PAL,
-@@ -94,6 +106,9 @@ static void drm_test_modes_analog_tv_pal_576i(struct kunit *test)
- 				  true);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
- 
-+	ret = drm_kunit_add_mode_destroy_action(test, mode);
-+	KUNIT_ASSERT_EQ(test, ret, 0);
-+
- 	KUNIT_EXPECT_EQ(test, drm_mode_vrefresh(mode), 50);
- 	KUNIT_EXPECT_EQ(test, mode->hdisplay, 720);
- 
-@@ -117,6 +132,7 @@ static void drm_test_modes_analog_tv_pal_576i_inlined(struct kunit *test)
- {
- 	struct drm_test_modes_priv *priv = test->priv;
- 	struct drm_display_mode *expected, *mode;
-+	int ret;
- 
- 	expected = drm_analog_tv_mode(priv->drm,
- 				      DRM_MODE_TV_MODE_PAL,
-@@ -124,9 +140,15 @@ static void drm_test_modes_analog_tv_pal_576i_inlined(struct kunit *test)
- 				      true);
- 	KUNIT_ASSERT_NOT_NULL(test, expected);
- 
-+	ret = drm_kunit_add_mode_destroy_action(test, expected);
-+	KUNIT_ASSERT_EQ(test, ret, 0);
-+
- 	mode = drm_mode_analog_pal_576i(priv->drm);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
- 
-+	ret = drm_kunit_add_mode_destroy_action(test, mode);
-+	KUNIT_ASSERT_EQ(test, ret, 0);
-+
- 	KUNIT_EXPECT_TRUE(test, drm_mode_equal(expected, mode));
- }
- 
+diff --git a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_opr_v6.c b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_opr_v6.c
+index 73f7af674c01b..0c636090d723d 100644
+--- a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_opr_v6.c
++++ b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_opr_v6.c
+@@ -549,8 +549,9 @@ static void s5p_mfc_enc_calc_src_size_v6(struct s5p_mfc_ctx *ctx)
+ 		case V4L2_PIX_FMT_NV21M:
+ 			ctx->stride[0] = ALIGN(ctx->img_width, S5P_FIMV_NV12M_HALIGN_V6);
+ 			ctx->stride[1] = ALIGN(ctx->img_width, S5P_FIMV_NV12M_HALIGN_V6);
+-			ctx->luma_size = ctx->stride[0] * ALIGN(ctx->img_height, 16);
+-			ctx->chroma_size =  ctx->stride[0] * ALIGN(ctx->img_height / 2, 16);
++			ctx->luma_size = ALIGN(ctx->stride[0] * ALIGN(ctx->img_height, 16), 256);
++			ctx->chroma_size = ALIGN(ctx->stride[0] * ALIGN(ctx->img_height / 2, 16),
++					256);
+ 			break;
+ 		case V4L2_PIX_FMT_YUV420M:
+ 		case V4L2_PIX_FMT_YVU420M:
 -- 
 2.39.5
 
