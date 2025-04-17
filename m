@@ -1,115 +1,172 @@
-Return-Path: <stable+bounces-133209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 495F7A9212F
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 17:19:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B442A921AC
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 17:32:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39C6A460195
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 15:19:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90098175C8B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 15:31:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BF68253F11;
-	Thu, 17 Apr 2025 15:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB53253F22;
+	Thu, 17 Apr 2025 15:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BZekauNp"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JaGsPXR6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8A9253923;
-	Thu, 17 Apr 2025 15:18:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3351253B64
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 15:31:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744903117; cv=none; b=h6cLEl9g1oaWtTl+EGo26EMMFJw5bGdW9UMOJrLo4NoMQiyzcrTRnIuWukEcSuiJxrbZVdwNvazB6zl7Ytk8dFGfKnTDMVAEI9kL4Wz/dOvJBEYT/ZdaZFbDqM8XjG1MXFbXryB7sXMluw9gtRgXCqxm07kWhFRLh0SXvjg68hM=
+	t=1744903893; cv=none; b=HlicpUcRFbk2nIIziDpjqK+j6wA4L2wVDVVesF/v80iH+Mgw3p5JBDougPsmv94DQCSRQ5okMMc1roLo7JsKZerRGiETedjMhvGY6zUYrtAdpsv2bd0SP30OAP9mUsXo9SDnBt0zyEAxob0NM/FTqW14hXcfTL8qGF/FWVI+c9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744903117; c=relaxed/simple;
-	bh=/nOcNn8EezHvH1nww4P/jymAn/3bvvpqzZOb8XA/XIM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=iLx1KIEw7Jrt7vso1SkJ5s7s/XH+SIAWcxIKa/0FRtAShl3tmdSkW4R0gGHWMjDA2ErThaPGSS7MNyKdwzCg5rmdUzcf9lzSicCu78N7NcIPnoO4mJRoproiwj7DHoRkbSqmSMQaaNvPljNO737TVlYIkjGR0Pfw2WEfBzraEck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BZekauNp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C12C4CEE4;
-	Thu, 17 Apr 2025 15:18:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744903116;
-	bh=/nOcNn8EezHvH1nww4P/jymAn/3bvvpqzZOb8XA/XIM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=BZekauNpbUPo1U4jRnMG2Vq/tfDgjhDYT0kiH/wP2zYsyc63bp/DqKoX+uaWckxvw
-	 Di0zyqnp56DUm1WhWFOo2mmfV3rHKSYM/Lj4FYBG1JgEEIoQATfV9BDUE9mRFR3CO3
-	 /z4O8fqjgl9f9KvPJW1mg5qHwM9kLsGo/ZfYb4ZfBN1vEtr0wKBu34bF9bvc/L2/X9
-	 U9WKI7COjUgj2DfLbJ5rDnrwYpMb0IhjAjAdy4/cOGwhpW5nrPTpARQglemuhQZReR
-	 pqwBlC5mSihE9q5+2Kfn5ND/GWLL2/Z5E9o/6L4eso3ofEeOtP5PJDVsO8oSnpGBwp
-	 nEaFy9XNFxZPg==
-From: Vinod Koul <vkoul@kernel.org>
-To: linux-kernel@vger.kernel.org, Ronald Wahl <rwahl@gmx.de>
-Cc: Ronald Wahl <ronald.wahl@legrand.com>, 
- Peter Ujfalusi <peter.ujfalusi@gmail.com>, 
- Vignesh Raghavendra <vigneshr@ti.com>, dmaengine@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <20250414173113.80677-1-rwahl@gmx.de>
-References: <20250414173113.80677-1-rwahl@gmx.de>
-Subject: Re: [PATCH RESEND] dmaengine: ti: k3-udma: Add missing locking
-Message-Id: <174490311416.238609.6695864107940746884.b4-ty@kernel.org>
-Date: Thu, 17 Apr 2025 20:48:34 +0530
+	s=arc-20240116; t=1744903893; c=relaxed/simple;
+	bh=LZEPpejIfFxYDDGNK0bRJuD+hdjnNFo5RREyMTxXYqM=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=jmJJN74s18ROOFZ+/MZWucSWWWV3fn1YdEl8kbq8oNdpUxM98Ti+mKuQcwsKTU/mJfbNtbBBnwnmpfwRkSZYi5AOt5krkPggQL/TXjfMBp6Yn+Quet0cgOTZFHKeyhT7fUgz6Kaj9doWCIqg0Z7iV2TOsBO49elv//D6t3lHDuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JaGsPXR6; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-43cf06eabdaso9462565e9.2
+        for <stable@vger.kernel.org>; Thu, 17 Apr 2025 08:31:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1744903889; x=1745508689; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GabpQFM6FHZHsv6ak2pU2BPX+s6Z3k+bnrJDF1aRDfE=;
+        b=JaGsPXR6wlyt8B1JMr+RgC+J3OX/Q2zw3eCenvKtnycuRWz9HP3xuV47yT+DxZBayn
+         gDDU8TdaG0MYd9EEepLiyqWHKCbkzvJOslPc0NLu9Po0dimnMIq9c2UqxBML0/Gy08q3
+         7L2IlVD9AbWGFszianCz3E5gDSxDeptS7Ie9PyoprK4eslQ2C5QQBN4OYEK+8amNU9pw
+         WLguYfB/qoyj/BMT1GwdzLTagNFdUfEoNQlltm1XpybiduJMSCWycCGQ1VQ5XAF3U+cS
+         x0I52jH90sdgUVKt1MHO25LDpSrJ3dLJLkFCrxPV+NhmqwX6cbH1Thd+cLaMmfA8v1Kc
+         nYWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744903889; x=1745508689;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=GabpQFM6FHZHsv6ak2pU2BPX+s6Z3k+bnrJDF1aRDfE=;
+        b=uxLuOKZGYh2jRVBc43eLp3EMw03hOg1ZeV2fj7ZC3qBygnAtNLWzfCtFxdKNoKht7v
+         379dM2sjFAJ1HWhhCpfoJwFEGwpV6rDKfwgey5pxZO+pyrPLQiDQjWrhuc6eGx2B9pT8
+         Mv1u1yDW5sXA/cPfJDTNgTltvRAMpJ7ADEmGmphAnwnhRO2J+kTC98Owww8rnV9Ea7aI
+         Zgp6IwjlPt4PfZv+roYviElI4JGYiM4xUOgX3YltDgNiMdVud+GKHWgYSqki2C+b7Mmr
+         gThB0u9WA4T/kiA6b0wE3jK4n3lwKkywMdrx3vxlZ6BOcQ1zbrHrXEztm06FnCiB0nC5
+         lEgg==
+X-Forwarded-Encrypted: i=1; AJvYcCXL3u95+e6UCxDwh180AJVukel2zzIKvcZMELuw8/gO+mEUlKA1VQwwfhNK/yCdYab9rRnmUX4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2tiKndnvWEY4GHBG+Y/oQfKCFMrb3Sd3LdznB0Ojurt3IX3Kz
+	nVtv+N1EQGz3JUSfrrInXtS5dRmUaRbyquBtSPhym7hB8ZAiB0k/vLIpr4F9pgw=
+X-Gm-Gg: ASbGncva82EsrsKyeVYJLvj5F7F+4D5lU1XPpMQ/KQ8C5tu8BSFdI1YE6blBV78LazV
+	aRCrX+wcgKzpTJJS8VEYZLPcmLzZ3fVPN1wXzay3ylky5AYcmu6LPCBP/MRD2c2CfDJunG7PUY6
+	T4/PQnYPmxmODd+XELvRb0GodLn0KHmBZYoxdQptH8WNQ/GopUDVIOXpcKxsR+c+KY9WEA8whUc
+	ECRKkn8v/sRwMpd1wLtJfDeZ7DJsPO3QpYXMUqEj97zFS1xVIoe3832rZKZpDKEohD+/1dlsPmD
+	N/Qp/9+dyS2deDnzidUqQqUr6Zx7HDBgNkyrF1MiE19KYHLh1LaAmFh/b5O3jX6yuBnYOmiuAFg
+	xW2c8CDDeU32AahQ=
+X-Google-Smtp-Source: AGHT+IEXc2yZ84OQzIxc27xjxj+s0MRjzbSsN1SkSFfY0y63NTO2TgOX8V5f9KQrjAvVEdjTrXopHA==
+X-Received: by 2002:a5d:64ae:0:b0:39a:c9b3:e1d7 with SMTP id ffacd0b85a97d-39ee5b35fc8mr5056045f8f.29.1744903888828;
+        Thu, 17 Apr 2025 08:31:28 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:3d9:2080:a7f9:634b:42d:1546? ([2a01:e0a:3d9:2080:a7f9:634b:42d:1546])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39eae979663sm21247275f8f.51.2025.04.17.08.31.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Apr 2025 08:31:28 -0700 (PDT)
+Message-ID: <969b474b-b154-466b-87a1-3ae16c45af26@linaro.org>
+Date: Thu, 17 Apr 2025 17:31:27 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: neil.armstrong@linaro.org
+Subject: Re: [PATCH v3 2/3] drm/panel: simple: Tianma TM070JDHG34-00: add
+ delays
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Jessica Zhang <quic_jesszhan@quicinc.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Thierry Reding
+ <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ "Pu, Hui" <Hui.Pu@gehealthcare.com>, dri-devel@lists.freedesktop.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250411-tianma-p0700wxf1mbaa-v3-0-acbefe9ea669@bootlin.com>
+ <20250411-tianma-p0700wxf1mbaa-v3-2-acbefe9ea669@bootlin.com>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <20250411-tianma-p0700wxf1mbaa-v3-2-acbefe9ea669@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
 
-
-On Mon, 14 Apr 2025 19:31:13 +0200, Ronald Wahl wrote:
-> Recent kernels complain about a missing lock in k3-udma.c when the lock
-> validator is enabled:
+On 11/04/2025 21:19, Luca Ceresoli wrote:
+> Add power on/off delays for the Tianma TM070JDHG34-00.
 > 
-> [    4.128073] WARNING: CPU: 0 PID: 746 at drivers/dma/ti/../virt-dma.h:169 udma_start.isra.0+0x34/0x238
-> [    4.137352] CPU: 0 UID: 0 PID: 746 Comm: kworker/0:3 Not tainted 6.12.9-arm64 #28
-> [    4.144867] Hardware name: pp-v12 (DT)
-> [    4.148648] Workqueue: events udma_check_tx_completion
-> [    4.153841] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> [    4.160834] pc : udma_start.isra.0+0x34/0x238
-> [    4.165227] lr : udma_start.isra.0+0x30/0x238
-> [    4.169618] sp : ffffffc083cabcf0
-> [    4.172963] x29: ffffffc083cabcf0 x28: 0000000000000000 x27: ffffff800001b005
-> [    4.180167] x26: ffffffc0812f0000 x25: 0000000000000000 x24: 0000000000000000
-> [    4.187370] x23: 0000000000000001 x22: 00000000e21eabe9 x21: ffffff8000fa0670
-> [    4.194571] x20: ffffff8001b6bf00 x19: ffffff8000fa0430 x18: ffffffc083b95030
-> [    4.201773] x17: 0000000000000000 x16: 00000000f0000000 x15: 0000000000000048
-> [    4.208976] x14: 0000000000000048 x13: 0000000000000000 x12: 0000000000000001
-> [    4.216179] x11: ffffffc08151a240 x10: 0000000000003ea1 x9 : ffffffc08046ab68
-> [    4.223381] x8 : ffffffc083cabac0 x7 : ffffffc081df3718 x6 : 0000000000029fc8
-> [    4.230583] x5 : ffffffc0817ee6d8 x4 : 0000000000000bc0 x3 : 0000000000000000
-> [    4.237784] x2 : 0000000000000000 x1 : 00000000001fffff x0 : 0000000000000000
-> [    4.244986] Call trace:
-> [    4.247463]  udma_start.isra.0+0x34/0x238
-> [    4.251509]  udma_check_tx_completion+0xd0/0xdc
-> [    4.256076]  process_one_work+0x244/0x3fc
-> [    4.260129]  process_scheduled_works+0x6c/0x74
-> [    4.264610]  worker_thread+0x150/0x1dc
-> [    4.268398]  kthread+0xd8/0xe8
-> [    4.271492]  ret_from_fork+0x10/0x20
-> [    4.275107] irq event stamp: 220
-> [    4.278363] hardirqs last  enabled at (219): [<ffffffc080a27c7c>] _raw_spin_unlock_irq+0x38/0x50
-> [    4.287183] hardirqs last disabled at (220): [<ffffffc080a1c154>] el1_dbg+0x24/0x50
-> [    4.294879] softirqs last  enabled at (182): [<ffffffc080037e68>] handle_softirqs+0x1c0/0x3cc
-> [    4.303437] softirqs last disabled at (177): [<ffffffc080010170>] __do_softirq+0x1c/0x28
-> [    4.311559] ---[ end trace 0000000000000000 ]---
+> Fixes: bf6daaa281f7 ("drm/panel: simple: Add Tianma TM070JDHG34-00 panel support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 > 
-> [...]
+> ---
+> 
+> Changed in v3:
+> - add Fixes: and Cc:
+> - remove regulator delay
+> ---
+>   drivers/gpu/drm/panel/panel-simple.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+> index df718c4a86cb7dc0cd126e807d33306e5a21d8a0..fd7ee5d1ca280be306620def30d3b423106b4304 100644
+> --- a/drivers/gpu/drm/panel/panel-simple.c
+> +++ b/drivers/gpu/drm/panel/panel-simple.c
+> @@ -4452,6 +4452,12 @@ static const struct panel_desc tianma_tm070jdhg34_00 = {
+>   		.width = 150, /* 149.76 */
+>   		.height = 94, /* 93.60 */
+>   	},
+> +	.delay = {
+> +		.prepare = 15,		/* Tp1 */
+> +		.enable = 150,		/* Tp2 */
+> +		.disable = 150,		/* Tp4 */
+> +		.unprepare = 120,	/* Tp3 */
+> +	},
+>   	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
+>   	.connector_type = DRM_MODE_CONNECTOR_LVDS,
+>   };
+> 
 
-Applied, thanks!
-
-[1/1] dmaengine: ti: k3-udma: Add missing locking
-      commit: fca280992af8c2fbd511bc43f65abb4a17363f2f
-
-Best regards,
--- 
-~Vinod
-
-
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 
