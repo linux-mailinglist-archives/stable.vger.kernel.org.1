@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-134223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77ADBA929CB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:44:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65A3FA925FF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:09:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 140441B63DB6
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:44:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65448466FB1
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE7E253954;
-	Thu, 17 Apr 2025 18:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC81518C034;
+	Thu, 17 Apr 2025 18:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HoJsARms"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pSo9zIoE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1138462;
-	Thu, 17 Apr 2025 18:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979D8256C61;
+	Thu, 17 Apr 2025 18:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915473; cv=none; b=jEZWP2bKOqK2yTk4c8HlbFQEMu+9Jhg5uAYP8uRnDetqRTT5FGMlpe2u+oUqGXTM6v86ZgZ6z4LYxgoHWN5QOAut7rpB418BsO+8FlPeFNtQxn3aeeJdhw1er225nqoBq1GX0XJu4ts/NMheT/YQw0/OJTLacFIEORcMf2nHLlI=
+	t=1744913322; cv=none; b=EbWVzws1g3UMe659fk4suon0W4Ak190GsFQg/jI+JaNZMi1t3zhA619CYUM1cUEB0bwXhG6UYmiI2jmZhdx5jb/qmG+w5z/MS+ci32OzkyO7FeL/PeK925BbB/LTEfaNTBHl08ubMgqvZXZH5eFciT37zjaQsB6VOsVsZrKGPpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915473; c=relaxed/simple;
-	bh=KdyJtsDs8id/FHlLD6b/1QVZnZeBnddPAZPc8epvwr4=;
+	s=arc-20240116; t=1744913322; c=relaxed/simple;
+	bh=0To7sJ91rBwZp7lpdSuBFMhypy8JeXsUcvcY3DoqXLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i8g3qFObNsxfE4h39J/3YdtqAj4oMeft4+6986BjSm2YqBQaKkf8g4dps3Pz/fcqn64hXdrh5llnm3QuoTJ5RPYUfZvO3iSzMrVMyp1FZ/pOIKoMIu8z4duwhTQBrMJdODXrkXYFXJkNrYwUoNbdjBElKIUjt2GCkMH7jy088YE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HoJsARms; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D48FFC4CEE4;
-	Thu, 17 Apr 2025 18:44:32 +0000 (UTC)
+	 MIME-Version; b=U/0mq95UL5rOxEzDu4fuoqJmZkAfNZNYCFvttFZkIGyvnnRFZlAFge1e5PBm2TVCHdLlZ+ZP6EnEUzfs2e4KcANJsBNKR510AROyUfPtQZZbNlhicnx9mmD2ZvhLGH8jSOWBJo0n97zqG63NvxgxsxNEcPqxBJDEOVCBgugKvQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pSo9zIoE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E91C4CEE4;
+	Thu, 17 Apr 2025 18:08:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915473;
-	bh=KdyJtsDs8id/FHlLD6b/1QVZnZeBnddPAZPc8epvwr4=;
+	s=korg; t=1744913322;
+	bh=0To7sJ91rBwZp7lpdSuBFMhypy8JeXsUcvcY3DoqXLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HoJsARmszOb/X7vIF4UeI7IMN4/WU0fOsvJ9SFVyOhvm9+biDgTal4buKqDsRn8Za
-	 u/vlvpBKZEu+/XDI25aasuYc2634SHaX48S5UHF6Vafa8yKXCimcqrZP3Y+aSqRtvv
-	 nrpQ/CbWgccG6Y8Cqne2NMBO9SDb090c22kPu7cc=
+	b=pSo9zIoEgsbw822XwWE5esZ04CL+FFJjhnKUdhTp60ZbooB546kPFQir21OQglvtd
+	 su/bjdnsI6ScGf9BM2cYEIvIZxGsWmsDeTQlkioRB4QNy5SJTH/qOlHjGqQX1ezoKK
+	 hvIB2bBuqKmOTes4K8nHTd3QiJQaOS77eNdTuSms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 139/393] drivers: base: devres: Allow to release group on device release
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.14 260/449] media: i2c: imx319: Rectify runtime PM handling probe and remove
 Date: Thu, 17 Apr 2025 19:49:08 +0200
-Message-ID: <20250417175113.179297536@linuxfoundation.org>
+Message-ID: <20250417175128.474572810@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas De Marchi <lucas.demarchi@intel.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 8e1ddfada4530939a8cb64ee9251aef780474274 ]
+commit 5f5ffd3bc62b2e6c478061918b10473d8b90ac2d upstream.
 
-When releasing a device, if the release action causes a group to be
-released, a warning is emitted because it can't find the group. This
-happens because devres_release_all() moves the entire list to a todo
-list and also move the group markers. Considering r* normal resource
-nodes and g1 a group resource node:
+Idle the device only after the async sub-device has been successfully
+registered. In error handling, set the device's runtime PM status to
+suspended only if it has been set to active previously in probe.
 
-		    g1 -----------.
-		    v		  v
-	r1 -> r2 -> g1[0] -> r3-> g[1] -> r4
+Also set the device's runtime PM status to suspended in remove only if it
+wasn't so already.
 
-After devres_release_all(), dev->devres_head becomes empty and the todo
-list it iterates on becomes:
-
-			       g1
-			       v
-	r1 -> r2 -> r3-> r4 -> g1[0]
-
-When a call to component_del() is made and takes down the aggregate
-device, a warning like this happen:
-
-	RIP: 0010:devres_release_group+0x362/0x530
-	...
-	Call Trace:
-	 <TASK>
-	 component_unbind+0x156/0x380
-	 component_unbind_all+0x1d0/0x270
-	 mei_component_master_unbind+0x28/0x80 [mei_hdcp]
-	 take_down_aggregate_device+0xc1/0x160
-	 component_del+0x1c6/0x3e0
-	 intel_hdcp_component_fini+0xf1/0x170 [xe]
-	 xe_display_fini+0x1e/0x40 [xe]
-
-Because the devres group corresponding to the hdcp component cannot be
-found. Just ignore this corner case: if the dev->devres_head is empty
-and the caller is trying to remove a group, it's likely in the process
-of device cleanup so just ignore it instead of warning.
-
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250222001051.3012936-2-lucas.demarchi@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8a89dc62f28c ("media: add imx319 camera sensor driver")
+Cc: stable@vger.kernel.org # for >= v6.12
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/devres.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/media/i2c/imx319.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/base/devres.c b/drivers/base/devres.c
-index 2152eec0c1352..68224f2f83fff 100644
---- a/drivers/base/devres.c
-+++ b/drivers/base/devres.c
-@@ -687,6 +687,13 @@ int devres_release_group(struct device *dev, void *id)
- 		spin_unlock_irqrestore(&dev->devres_lock, flags);
+--- a/drivers/media/i2c/imx319.c
++++ b/drivers/media/i2c/imx319.c
+@@ -2442,17 +2442,19 @@ static int imx319_probe(struct i2c_clien
+ 	if (full_power)
+ 		pm_runtime_set_active(&client->dev);
+ 	pm_runtime_enable(&client->dev);
+-	pm_runtime_idle(&client->dev);
  
- 		release_nodes(dev, &todo);
-+	} else if (list_empty(&dev->devres_head)) {
-+		/*
-+		 * dev is probably dying via devres_release_all(): groups
-+		 * have already been removed and are on the process of
-+		 * being released - don't touch and don't warn.
-+		 */
-+		spin_unlock_irqrestore(&dev->devres_lock, flags);
- 	} else {
- 		WARN_ON(1);
- 		spin_unlock_irqrestore(&dev->devres_lock, flags);
--- 
-2.39.5
-
+ 	ret = v4l2_async_register_subdev_sensor(&imx319->sd);
+ 	if (ret < 0)
+ 		goto error_media_entity_pm;
+ 
++	pm_runtime_idle(&client->dev);
++
+ 	return 0;
+ 
+ error_media_entity_pm:
+ 	pm_runtime_disable(&client->dev);
+-	pm_runtime_set_suspended(&client->dev);
++	if (full_power)
++		pm_runtime_set_suspended(&client->dev);
+ 	media_entity_cleanup(&imx319->sd.entity);
+ 
+ error_handler_free:
+@@ -2474,7 +2476,8 @@ static void imx319_remove(struct i2c_cli
+ 	v4l2_ctrl_handler_free(sd->ctrl_handler);
+ 
+ 	pm_runtime_disable(&client->dev);
+-	pm_runtime_set_suspended(&client->dev);
++	if (!pm_runtime_status_suspended(&client->dev))
++		pm_runtime_set_suspended(&client->dev);
+ 
+ 	mutex_destroy(&imx319->mutex);
+ }
 
 
 
