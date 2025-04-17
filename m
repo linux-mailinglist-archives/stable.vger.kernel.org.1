@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-134397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C960A92AE1
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17F59A928F4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:39:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0363B462068
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACF811B62165
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67664257450;
-	Thu, 17 Apr 2025 18:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816F525B675;
+	Thu, 17 Apr 2025 18:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdOdKpWn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUFxB14u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257F02571AD;
-	Thu, 17 Apr 2025 18:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361CE264A78;
+	Thu, 17 Apr 2025 18:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916005; cv=none; b=YiDN9O8fMXXo2Y7aGMUkGalhdjEJEmSa1U3tZ+mM7LF8KDiMYl05P7/Rhxy/b+h47HGsR1HeCYdxxulUBWTU9dK7I8cXOnFSNZFuN6lBUblMKwVI3R9DICJ/r34A/vjLlpJhsRrWT6Bhm0bZGv1J3Xdo+guv8ixc1R9NubWmL6Q=
+	t=1744914888; cv=none; b=EjevggeGlHzOeUh6Qre30LlrwUpajVkZ5MDh00ZVA6k2IEjqBpFohakNoTnNBXMYi6CKeDchs5/GzpVp7VP39zrsOntONSHxqjIixj6sVMaKrf/P73qynInLsKzBjNlq05BWWAdLlDkB9UT9jeogpMTANc6j73go6l3zbWiPVNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916005; c=relaxed/simple;
-	bh=DoSDaHg4cU7+I2/BO9aO9Xsl61jeyEWiBK3uAuOGC/g=;
+	s=arc-20240116; t=1744914888; c=relaxed/simple;
+	bh=yQWS5hhy4l8S9NDUwQEcluM5FHecDEkQU0kbp4/ScVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aehuKXncrvXv/+KPmYrHlJSltisi2s5a+cyKfs21AucGplC6fNACWEgvTP0UJ+IS6V7sW6SUcPmJTMJkNoXRtyik0WFI3LrEtTsDQVbeupi61mALL0i/hjWdq68ZAvqql8CctWHF9ARfM4DlxYrIi6N2SK7lSq3U94VKoaiDTs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RdOdKpWn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F66AC4CEE4;
-	Thu, 17 Apr 2025 18:53:23 +0000 (UTC)
+	 MIME-Version; b=PCQNis46Q7VdSVuDET+KIEU1mSyVtwM20K6BE75LW+ocTwsCd1LYDixYHK1qAPPTEbNv/e7d+KRmkBiQVr+ClUuWAv3ADJADT8ah63gvPy1UbcG8qUkFL7gQH514MjCIRaGx7j/eevTn3z6nH8tQlnCfdxybBzyWkbFVG7oUqxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TUFxB14u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADDEAC4CEE4;
+	Thu, 17 Apr 2025 18:34:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916004;
-	bh=DoSDaHg4cU7+I2/BO9aO9Xsl61jeyEWiBK3uAuOGC/g=;
+	s=korg; t=1744914888;
+	bh=yQWS5hhy4l8S9NDUwQEcluM5FHecDEkQU0kbp4/ScVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RdOdKpWn3EUgu1YcIqsw5LmBzu5mrb1/mEYD9dIWC4yM7atOny0HRWEnlEgqkK976
-	 YAaC31SNW6SitTqSiRWcLIO/OvVf9tIbObiUfqdc9ArDmx2P7Z/jUKe28VCef8uvzh
-	 Jk99Uouu4cs4vodIE6ajFYFwY4FBPi+n+clJdlvo=
+	b=TUFxB14uDV/QCO/ZhbjIIE8z42FviMxrAi1JPqBkUo4nyEAeTD5DyfpdGt9dwe4fA
+	 CRg99Af4HERasuUPRS0jvyMDS37EAv9dvQGyT/10qzQo977AP9cYpLceG31P8m2kRl
+	 Xr6ydOdMabB2M0+GGh1fVjncCTXXdOVsSilEj954=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Herbert <Marc.Herbert@linux.intel.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 311/393] mm/hugetlb: move hugetlb_sysctl_init() to the __init section
-Date: Thu, 17 Apr 2025 19:52:00 +0200
-Message-ID: <20250417175120.120169802@linuxfoundation.org>
+	Joshua Washington <joshwash@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.13 363/414] gve: handle overflow when reporting TX consumed descriptors
+Date: Thu, 17 Apr 2025 19:52:01 +0200
+Message-ID: <20250417175126.059035340@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Herbert <Marc.Herbert@linux.intel.com>
+From: Joshua Washington <joshwash@google.com>
 
-commit 1ca77ff1837249701053a7fcbdedabc41f4ae67c upstream.
+commit 15970e1b23f5c25db88c613fddf9131de086f28e upstream.
 
-hugetlb_sysctl_init() is only invoked once by an __init function and is
-merely a wrapper around another __init function so there is not reason to
-keep it.
+When the tx tail is less than the head (in cases of wraparound), the TX
+consumed descriptor statistic in DQ will be reported as
+UINT32_MAX - head + tail, which is incorrect. Mask the difference of
+head and tail according to the ring size when reporting the statistic.
 
-Fixes the following warning when toning down some GCC inline options:
-
- WARNING: modpost: vmlinux: section mismatch in reference:
-   hugetlb_sysctl_init+0x1b (section: .text) ->
-     __register_sysctl_init (section: .init.text)
-
-Link: https://lkml.kernel.org/r/20250319060041.2737320-1-marc.herbert@linux.intel.com
-Signed-off-by: Marc Herbert <Marc.Herbert@linux.intel.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 2c9198356d56 ("gve: Add consumed counts to ethtool stats")
+Signed-off-by: Joshua Washington <joshwash@google.com>
+Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250402001037.2717315-1-hramamurthy@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/hugetlb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/google/gve/gve_ethtool.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -4863,7 +4863,7 @@ static struct ctl_table hugetlb_table[]
- 	},
- };
- 
--static void hugetlb_sysctl_init(void)
-+static void __init hugetlb_sysctl_init(void)
- {
- 	register_sysctl_init("vm", hugetlb_table);
- }
+--- a/drivers/net/ethernet/google/gve/gve_ethtool.c
++++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
+@@ -392,7 +392,9 @@ gve_get_ethtool_stats(struct net_device
+ 				 */
+ 				data[i++] = 0;
+ 				data[i++] = 0;
+-				data[i++] = tx->dqo_tx.tail - tx->dqo_tx.head;
++				data[i++] =
++					(tx->dqo_tx.tail - tx->dqo_tx.head) &
++					tx->mask;
+ 			}
+ 			do {
+ 				start =
 
 
 
