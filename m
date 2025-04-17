@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-134233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5780A92A3E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:48:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5936A925DC
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:08:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC3428E07BC
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:44:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4113C8A24F1
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D3EB24EF6F;
-	Thu, 17 Apr 2025 18:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88902256C7A;
+	Thu, 17 Apr 2025 18:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bhYAuUb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V1SrqtBA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB4F2566FB;
-	Thu, 17 Apr 2025 18:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BEB256C6D;
+	Thu, 17 Apr 2025 18:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915505; cv=none; b=Wo8ELAve7mRXQuxaSyRGnp847GDxohBzwTDrJvtjaNuEOss4E/kVp+M+vFHUm2Q0AHvoqiudNzlX4pEQPls709a9BLy6MQaw9ZeKxfemoyvjJff1i1ANbf3xf9/Tfp/ocRkMHhCaRZj7T8qN2bWOR2/BPT+Xmj8Zk56DV9BoWBs=
+	t=1744913228; cv=none; b=vEB1HX86aduDtReBA9SPXvVkhNnSxwqLgWrR/4KgHx6w/vrPngfKSLOll0rQfbU1alG/cQY7TNgjrymlJ7/JXidXYgKistoPzAXVO25fQGU9BgTetDW4ydHTcWs+ZFtcSwJil8DHFhd8/PNpSVJ3prDtTAtRQl0hoUQv4XA0HWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915505; c=relaxed/simple;
-	bh=EWbU5w1KODgLSbIlxXU9NxI5MLrsaHgH9uz/w5AwE/g=;
+	s=arc-20240116; t=1744913228; c=relaxed/simple;
+	bh=gbEwHBpLdIKmWPQqXEbEvXfEYvO/n5cBZ91WFTrg/Ds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hmURBdREe7YaZEGlj9PaKHvYqPMAGCvsv621qW2onAin+eZX/XqF6khkitK5hdjgsvPgKndmrylFg0vC66iStHWZ68kdX0534dtGvIaAuDEWKxaKl3ACh1rq6QFWFAnWb9UJyFTDd/8h0b4f0bHga42ag9HoNfnM8G8C/qjdyYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bhYAuUb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B10EC4CEE4;
-	Thu, 17 Apr 2025 18:45:04 +0000 (UTC)
+	 MIME-Version; b=kbdWTAfTwR38eMx0KCcRQWWHX0iG4aSrX3Q2BUupuMEXgFrzN0Bv8KPs7nCS6OzzcUvMqvFnukPoiAU/Oor8o9HMjdRjT7Z35+f1jkG0cki3SluK9qRJhLNR6HwBVpTxzmZJhhkP8GH/1qUGw+0nPQSe1zSuYZqg/qyMJ8k6wPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V1SrqtBA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFA46C4CEE4;
+	Thu, 17 Apr 2025 18:07:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915504;
-	bh=EWbU5w1KODgLSbIlxXU9NxI5MLrsaHgH9uz/w5AwE/g=;
+	s=korg; t=1744913228;
+	bh=gbEwHBpLdIKmWPQqXEbEvXfEYvO/n5cBZ91WFTrg/Ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0bhYAuUbIORY5gE+kle/PihVicN1rJaG0s9RAjYj4+sCitbNNJataKM8FOqY2UmtV
-	 I0b3q2CG0PAcubgzbB+32byW/4H8rf8J8rUDqob2DU/bUgDKpFWkkXOpxEFLX9gi15
-	 xqeS1n81pTTH8Afm4wreDKdJhYzooxUezNB2zqo4=
+	b=V1SrqtBAHK3AhlMyZOvmomTdM2wHHZc94EaTw98f7B5ahPA0m6qTkn14Nllua9MSW
+	 yeFDodvCVF/VwoIf20tqic9Fh2lOFPWd0M6X9X+d4MLTP38MUrecQVYdqpjwXI0pys
+	 r9Mr5OmzAeGYqWpQbs4P+3RMuVk64R6zs6Ur/tLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 148/393] drm/amdgpu: handle amdgpu_cgs_create_device() errors in amd_powerplay_create()
-Date: Thu, 17 Apr 2025 19:49:17 +0200
-Message-ID: <20250417175113.534048869@linuxfoundation.org>
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.14 270/449] mptcp: sockopt: fix getting freebind & transparent
+Date: Thu, 17 Apr 2025 19:49:18 +0200
+Message-ID: <20250417175128.908871626@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 1435e895d4fc967d64e9f5bf81e992ac32f5ac76 ]
+commit e2f4ac7bab2205d3c4dd9464e6ffd82502177c51 upstream.
 
-Add error handling to propagate amdgpu_cgs_create_device() failures
-to the caller. When amdgpu_cgs_create_device() fails, release hwmgr
-and return -ENOMEM to prevent null pointer dereference.
+When adding a socket option support in MPTCP, both the get and set parts
+are supposed to be implemented.
 
-[v1]->[v2]: Change error code from -EINVAL to -ENOMEM. Free hwmgr.
+IP(V6)_FREEBIND and IP(V6)_TRANSPARENT support for the setsockopt part
+has been added a while ago, but it looks like the get part got
+forgotten. It should have been present as a way to verify a setting has
+been set as expected, and not to act differently from TCP or any other
+socket types.
 
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Everything was in place to expose it, just the last step was missing.
+Only new code is added to cover these specific getsockopt(), that seems
+safe.
+
+Fixes: c9406a23c116 ("mptcp: sockopt: add SOL_IP freebind & transparent options")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-3-122dbb249db3@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/mptcp/sockopt.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
-index a71c6117d7e54..0115d26b5af92 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
-@@ -51,6 +51,11 @@ static int amd_powerplay_create(struct amdgpu_device *adev)
- 	hwmgr->adev = adev;
- 	hwmgr->not_vf = !amdgpu_sriov_vf(adev);
- 	hwmgr->device = amdgpu_cgs_create_device(adev);
-+	if (!hwmgr->device) {
-+		kfree(hwmgr);
-+		return -ENOMEM;
-+	}
-+
- 	mutex_init(&hwmgr->msg_lock);
- 	hwmgr->chip_family = adev->family;
- 	hwmgr->chip_id = adev->asic_type;
--- 
-2.39.5
-
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -1419,6 +1419,12 @@ static int mptcp_getsockopt_v4(struct mp
+ 	switch (optname) {
+ 	case IP_TOS:
+ 		return mptcp_put_int_option(msk, optval, optlen, READ_ONCE(inet_sk(sk)->tos));
++	case IP_FREEBIND:
++		return mptcp_put_int_option(msk, optval, optlen,
++				inet_test_bit(FREEBIND, sk));
++	case IP_TRANSPARENT:
++		return mptcp_put_int_option(msk, optval, optlen,
++				inet_test_bit(TRANSPARENT, sk));
+ 	case IP_BIND_ADDRESS_NO_PORT:
+ 		return mptcp_put_int_option(msk, optval, optlen,
+ 				inet_test_bit(BIND_ADDRESS_NO_PORT, sk));
+@@ -1439,6 +1445,12 @@ static int mptcp_getsockopt_v6(struct mp
+ 	case IPV6_V6ONLY:
+ 		return mptcp_put_int_option(msk, optval, optlen,
+ 					    sk->sk_ipv6only);
++	case IPV6_TRANSPARENT:
++		return mptcp_put_int_option(msk, optval, optlen,
++					    inet_test_bit(TRANSPARENT, sk));
++	case IPV6_FREEBIND:
++		return mptcp_put_int_option(msk, optval, optlen,
++					    inet_test_bit(FREEBIND, sk));
+ 	}
+ 
+ 	return -EOPNOTSUPP;
 
 
 
