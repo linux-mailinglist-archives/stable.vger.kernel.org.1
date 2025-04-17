@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-133477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB4E7A925E5
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:08:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 627E5A92A31
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86F1F1B62342
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 810E68A08C6
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 561C61E25E1;
-	Thu, 17 Apr 2025 18:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8675D227EB1;
+	Thu, 17 Apr 2025 18:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F3fEVQee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jd2dTiyP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E6B4253F1A;
-	Thu, 17 Apr 2025 18:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C0C1D07BA;
+	Thu, 17 Apr 2025 18:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913196; cv=none; b=Ir+35QW3ZIo3MtTzU/nEBXQEK2xpSy8gF+g/kCuMmUoS5k0Mwgp7zhyVOeR0IAZUR7wf4T3xEdScG6Gd4/6H30aGQj6uR4vJrWw4Rg+1himyKlqh2yk3pWkGd+JTxX5zxkpEd+9jmE8V1Y0QdfZcR5iM0QyQOV1mK/woq0kFkto=
+	t=1744915467; cv=none; b=rmTWZEelu3TKiR8B6MJSW4y5C7Qdw1GE6zjIbA7hwgEtKsU1pDqCr+TrPT63ZgJRwH4D4AU1eiiXIc8KZmqmHXoE2EhOTLsHOGQ/gER5a71M2rbBdhzvrUlxx9Pqagqy9WnODjtGzVNztTlOjr5JuRrd1YTlP1ZIKYMZ8NwOa30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913196; c=relaxed/simple;
-	bh=NTY5VgkDaK8hpgTrLQxFGtcuWtV4OhhhtnqnHzVjMZQ=;
+	s=arc-20240116; t=1744915467; c=relaxed/simple;
+	bh=YZFeUeo8uyNDUxZhj29D1jLUIwLfZAEhx1ugkNVRMfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rc/Zbnfis9xKIxFLgtP3o9wv038WSyDNXvNMbULc/7PVuOX9X9mMUiUk6IrYB5eewfiXRShP6rOeEBrcYVC9bqQcHoVwBJB4vSUacF/HirmHtCMb+b/gLpNe5U81SXRmgUa9t+P6wzu5IvoQCBte7VavTUUVB+SHepdEaZat/EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F3fEVQee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94847C4CEE4;
-	Thu, 17 Apr 2025 18:06:35 +0000 (UTC)
+	 MIME-Version; b=sVUgxCLGYekUmIUgGD+zl5POEGwx9WHUadn1KofyUIREN4j29MHMnUzR563Eqe4xW85u7t8SBaj2IRxMGny5l1KqXM/Zprjv+8Dga8satdHYGIR9qn6c/IhTUbDSmZ5qxTkcUPm+1kyyIWOPwumUnZHGzmDOmsKF6+R8cPf7A3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jd2dTiyP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22590C4CEE4;
+	Thu, 17 Apr 2025 18:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913195;
-	bh=NTY5VgkDaK8hpgTrLQxFGtcuWtV4OhhhtnqnHzVjMZQ=;
+	s=korg; t=1744915466;
+	bh=YZFeUeo8uyNDUxZhj29D1jLUIwLfZAEhx1ugkNVRMfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F3fEVQeeeaFDx8ID4xTO3WQz5pOPZyHdrW0WuyWL3C0p4AWl+xd/SU2+qGx5kQkLm
-	 dG1ScUZdC0RoQQz2PqYQZuOWC4ou7u0X6xcp9UQAQf3UON+J/wkQRBY/UBBJc8tpsl
-	 jsvSH9y+pNGUkuRiPVUcJFvhRIE72i1q8d7sWRok=
+	b=jd2dTiyPoVSOoaDimL1ToHUbmC9yqBjwoE34SWlv6yuUQINb/aRrQTm1dkSzIuG6+
+	 edIobqAE+i0dMBOIsHB9NatoxbTArFBzlB2052Oa5oIycgCuteP5OxtxlTB5NksciR
+	 0nolszsxJMnvOMzKpBh+7tjmnaEDGja7yLpFfHew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.14 257/449] media: nuvoton: Fix reference handling of ece_pdev
-Date: Thu, 17 Apr 2025 19:49:05 +0200
-Message-ID: <20250417175128.345612733@linuxfoundation.org>
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Robert Foss <rfoss@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 137/393] drm/bridge: panel: forbid initializing a panel with unknown connector type
+Date: Thu, 17 Apr 2025 19:49:06 +0200
+Message-ID: <20250417175113.095468941@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-commit 453d5cadab1bde8e6fdd5bd05f4200338cb21e72 upstream.
+[ Upstream commit b296955b3a740ecc8b3b08e34fd64f1ceabb8fb4 ]
 
-When we obtain a reference to of a platform_device, we need to release
-it via put_device.
+Having an DRM_MODE_CONNECTOR_Unknown connector type is considered bad, and
+drm_panel_bridge_add_typed() and derivatives are deprecated for this.
 
-Found by cocci:
-./platform/nuvoton/npcm-video.c:1677:3-9: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
-./platform/nuvoton/npcm-video.c:1684:3-9: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
-./platform/nuvoton/npcm-video.c:1690:3-9: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
-./platform/nuvoton/npcm-video.c:1694:1-7: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
+drm_panel_init() won't prevent initializing a panel with a
+DRM_MODE_CONNECTOR_Unknown connector type. Luckily there are no in-tree
+users doing it, so take this as an opportinuty to document a valid
+connector type must be passed.
 
-Instead of manually calling put_device, use the __free macros.
+Returning an error if this rule is violated is not possible because
+drm_panel_init() is a void function. Add at least a warning to make any
+violations noticeable, especially to non-upstream drivers.
 
-Cc: stable@vger.kernel.org
-Fixes: 46c15a4ff1f4 ("media: nuvoton: Add driver for NPCM video capture and encoding engine")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250214-drm-assorted-cleanups-v7-5-88ca5827d7af@bootlin.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/nuvoton/npcm-video.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/drm_panel.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/media/platform/nuvoton/npcm-video.c
-+++ b/drivers/media/platform/nuvoton/npcm-video.c
-@@ -1669,6 +1669,7 @@ static int npcm_video_ece_init(struct np
- 			dev_err(dev, "Failed to find ECE device\n");
- 			return -ENODEV;
- 		}
-+		struct device *ece_dev __free(put_device) = &ece_pdev->dev;
- 
- 		regs = devm_platform_ioremap_resource(ece_pdev, 0);
- 		if (IS_ERR(regs)) {
-@@ -1683,7 +1684,7 @@ static int npcm_video_ece_init(struct np
- 			return PTR_ERR(video->ece.regmap);
- 		}
- 
--		video->ece.reset = devm_reset_control_get(&ece_pdev->dev, NULL);
-+		video->ece.reset = devm_reset_control_get(ece_dev, NULL);
- 		if (IS_ERR(video->ece.reset)) {
- 			dev_err(dev, "Failed to get ECE reset control in DTS\n");
- 			return PTR_ERR(video->ece.reset);
+diff --git a/drivers/gpu/drm/drm_panel.c b/drivers/gpu/drm/drm_panel.c
+index 19ab0a794add3..fd8fa2e0ef6fa 100644
+--- a/drivers/gpu/drm/drm_panel.c
++++ b/drivers/gpu/drm/drm_panel.c
+@@ -49,7 +49,7 @@ static LIST_HEAD(panel_list);
+  * @dev: parent device of the panel
+  * @funcs: panel operations
+  * @connector_type: the connector type (DRM_MODE_CONNECTOR_*) corresponding to
+- *	the panel interface
++ *	the panel interface (must NOT be DRM_MODE_CONNECTOR_Unknown)
+  *
+  * Initialize the panel structure for subsequent registration with
+  * drm_panel_add().
+@@ -57,6 +57,9 @@ static LIST_HEAD(panel_list);
+ void drm_panel_init(struct drm_panel *panel, struct device *dev,
+ 		    const struct drm_panel_funcs *funcs, int connector_type)
+ {
++	if (connector_type == DRM_MODE_CONNECTOR_Unknown)
++		DRM_WARN("%s: %s: a valid connector type is required!\n", __func__, dev_name(dev));
++
+ 	INIT_LIST_HEAD(&panel->list);
+ 	INIT_LIST_HEAD(&panel->followers);
+ 	mutex_init(&panel->follower_lock);
+-- 
+2.39.5
+
 
 
 
