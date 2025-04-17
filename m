@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-134270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAF4AA92A1C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA704A92678
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:13:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CF571B62F09
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:47:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A20D97B26D5
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF9B9253340;
-	Thu, 17 Apr 2025 18:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84606256C77;
+	Thu, 17 Apr 2025 18:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtbuGBaF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVByaHnW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1261A3178;
-	Thu, 17 Apr 2025 18:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410FF1DF756;
+	Thu, 17 Apr 2025 18:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915616; cv=none; b=cMHiuRmhhkPb41csixcYKbKy2WnAni4CldXj7y5JOpGIwB3w+dVLCGCihNZ9HgKK3OdLN1ga9xSvYtP1c40Sf3CPHrlgka80b4ayBJIVBZdySUXHVyrUwqQQ8nOpa+8P+yDjtw7VSd+nliPQZJkzylKXSo72p6Hal5xWRhsX5yU=
+	t=1744913331; cv=none; b=QzAKmrer5bes037Qlfb/+BiMx0nBClYLtd0OnI87hunp2Yb2TjvvIStsNcg6o4vQ6yKSI7TTx9y7ZyNDlyXOJHc3xw9y8QyZ3YQ5zIn9N4Vcxra61C1uVWZG0d7w3CtdEawWFB/BXKnuoy+lK96Tl6XnU+ftOLXh5RywTX6/c5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915616; c=relaxed/simple;
-	bh=e/0P4zVR/Nb4cv9pW7QjvT9jFCbhTjGV5CtK0pd8pPM=;
+	s=arc-20240116; t=1744913331; c=relaxed/simple;
+	bh=5MpKETK9BltOfOXz8L5OVv2chD9Enulz1AZsbml4LJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BSSH8VHNqLaOisZ9rlCoN3nSP/mPBUjEQa6+IObeOQTeAsZEXXRpiHtaeHB0Sf7fHdrtXAwARfO9bGefTVFDMsd1kWpKumv55fBv339KkfeE5uLisNXFUSRaSgZ/u2n8G2YfLWVrLllb2CY1hfyC8m4sa+WAVhUWACtcNpK2J6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtbuGBaF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F3DC4CEEC;
-	Thu, 17 Apr 2025 18:46:55 +0000 (UTC)
+	 MIME-Version; b=ldW6nN5CtLkN3ZYBqb8/EzSqjXwjcDJUofjk2MmMHqpgvUnXJ/dXBTbuD2hqHUT//T9vPNv0EunSmqbUOMMPqHkvi6oDtcmyopGddiNVAqn5m82TcG+qlh6ahnDmW/L2xgHbfXHI4r1pgW3LMi/JKiuVTnusmYsrEqg9mFe0j5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVByaHnW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAAABC4CEE4;
+	Thu, 17 Apr 2025 18:08:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915616;
-	bh=e/0P4zVR/Nb4cv9pW7QjvT9jFCbhTjGV5CtK0pd8pPM=;
+	s=korg; t=1744913331;
+	bh=5MpKETK9BltOfOXz8L5OVv2chD9Enulz1AZsbml4LJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KtbuGBaFlts8xgpkPUZGnA8xTzBIQ77F/uSvUyR5iKosvmC0BK6p7Dpfptl7x2L2Y
-	 6A1mBYtusOkAWBfdyx7+JXWOhO+Qk0mScQFGxfytmQTwyQUMyNGvgJsw5gnLLxASnM
-	 tXfQR8ZQHoKIHu3ru+f53HjYZ5oWYBeD9Bx/OrIc=
+	b=wVByaHnWay2fPvUal7EL3q0jPvhavtDAzvfs6fFTMijQXuMUncwZVzRnnHgIKQxq7
+	 hC2WPpulGwvyz25B5h5QWzWvhyrPHZJQQIld3RumpeAZRUC4JcimrErJSBmGmo9kjt
+	 Y2h5U+IadrtyMuG5ferpTQkY5rnbjsnKTEhJsglE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 183/393] HID: pidff: Clamp effect playback LOOP_COUNT value
+	David Binderman <dcb314@hotmail.com>,
+	Eric Biggers <ebiggers@google.com>
+Subject: [PATCH 6.14 304/449] arm64/crc-t10dif: fix use of out-of-scope array in crc_t10dif_arch()
 Date: Thu, 17 Apr 2025 19:49:52 +0200
-Message-ID: <20250417175114.954668009@linuxfoundation.org>
+Message-ID: <20250417175130.337401876@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +59,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Eric Biggers <ebiggers@google.com>
 
-[ Upstream commit 0c6673e3d17b258b8c5c7331d28bf6c49f25ed30 ]
+commit d48b663f410f8b35b8ba9bd597bafaa00f53293b upstream.
 
-Ensures the loop count will never exceed the logical_maximum.
+Fix a silly bug where an array was used outside of its scope.
 
-Fixes implementation errors happening when applications use the max
-value of int32/DWORD as the effect iterations. This could be observed
-when running software both native and in wine.
-
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2051da858534 ("arm64/crc-t10dif: expose CRC-T10DIF function through lib")
+Cc: stable@vger.kernel.org
+Reported-by: David Binderman <dcb314@hotmail.com>
+Closes: https://lore.kernel.org/r/AS8PR02MB102170568EAE7FFDF93C8D1ED9CA62@AS8PR02MB10217.eurprd02.prod.outlook.com
+Link: https://lore.kernel.org/r/20250326200918.125743-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/lib/crc-t10dif-glue.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index ffecc712be003..74b033a4ac1b8 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -690,7 +690,8 @@ static void pidff_playback_pid(struct pidff_device *pidff, int pid_id, int n)
- 	} else {
- 		pidff->effect_operation_status->value[0] =
- 			pidff->operation_id[PID_EFFECT_START];
--		pidff->effect_operation[PID_LOOP_COUNT].value[0] = n;
-+		pidff->effect_operation[PID_LOOP_COUNT].value[0] =
-+			pidff_clamp(n, pidff->effect_operation[PID_LOOP_COUNT].field);
- 	}
+diff --git a/arch/arm64/lib/crc-t10dif-glue.c b/arch/arm64/lib/crc-t10dif-glue.c
+index a007d0c5f3fe..bacd18f23168 100644
+--- a/arch/arm64/lib/crc-t10dif-glue.c
++++ b/arch/arm64/lib/crc-t10dif-glue.c
+@@ -45,9 +45,7 @@ u16 crc_t10dif_arch(u16 crc, const u8 *data, size_t length)
+ 			crc_t10dif_pmull_p8(crc, data, length, buf);
+ 			kernel_neon_end();
  
- 	hid_hw_request(pidff->hid, pidff->reports[PID_EFFECT_OPERATION],
+-			crc = 0;
+-			data = buf;
+-			length = sizeof(buf);
++			return crc_t10dif_generic(0, buf, sizeof(buf));
+ 		}
+ 	}
+ 	return crc_t10dif_generic(crc, data, length);
 -- 
-2.39.5
+2.49.0
 
 
 
