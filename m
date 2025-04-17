@@ -1,99 +1,149 @@
-Return-Path: <stable+bounces-133206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A4F3A92057
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 16:57:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E969A92114
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 17:15:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B12E51895F6B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 14:57:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DD46462592
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 15:15:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42AE2522AC;
-	Thu, 17 Apr 2025 14:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F32E25333D;
+	Thu, 17 Apr 2025 15:15:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ma7rPRNI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F2D251786;
-	Thu, 17 Apr 2025 14:57:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F4824EA85;
+	Thu, 17 Apr 2025 15:15:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744901840; cv=none; b=jfQHSA8vpSgRZtvSFeERnLOQuo0saOEKipSHtjAZSDWjLx18n5XOHdfRd33fdKLgiqLOPSv/0RasMgfMcLdwkBaOQyaBg382UekJLwWkMVq6kG99sESrVoYXOJtwbdW13WqaPYiALmb5bdxHQF4/1EyVOhar0zGcE1q3mpx94ws=
+	t=1744902924; cv=none; b=ZkSg+1ELnV029B5FkB1e5vTdWvNCdhjAyAji5FVtv81Ppufaorwi+pO/08EhzDU8jND7NF+XrJbF5MIFc6XvnqjVGvwwYmKcx9dv8Z/FcXIyJryOZUG9oHtloXdayeVv2Xy8G+T+EUFlWr5hM++l/yh6HiAUDXrFyeIVZavaHzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744901840; c=relaxed/simple;
-	bh=43cUQQ/POxVEKEcRqV9oLopGE8Kgw8pdLeBHNd36ifI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RW83PkwUZKo0gE48Lc1Y5USXnsvz66pXSKBNfbpPf8UT9fHjRP/aurP+cc1KbhPpz89ZqUmrcXqz7ieFdUNPBK6JsJ3TMof7O8ZG8wDCjfD4x2NxrhOSNiQ8xUk19OvFU5BQGaOLEVMY6wcQRvuvVwVmbYnBo4K6Gx4tNyPAMow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5e6ff035e9aso1659592a12.0;
-        Thu, 17 Apr 2025 07:57:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744901837; x=1745506637;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/Gh8ITy2Mj96Xjqahpd8oLt4VUflwK2+491DCvx2k3Q=;
-        b=N1n8NCnoBw+8o2GynNK7P2T7yjKCGRllF11j6707zHqyY5sodPg7RENf0VoMr3ospR
-         i1+B8JX9pb4bncUDYSpSf94lnRy/WSI1QHECFk8RZeMbxXZEOiG9hGGRL/1r8JAvq025
-         At6Ep7BMs81kTfddkDzzkCqq/w8qhjbRsd0U8rv99RxYyUfE9chzxaGZjzXn/6jsSUuF
-         ONfNjgxJfdQomXmk8xvplRNmhQBew5IcBUxt6Yv1Urdhp3Jv2bqwnwytR071wrsoWtPs
-         7tkjK6uLWC4yiEo3iNyIUyEw9BH46HHOflR5qHucqSh6lfRUuTVKqux/WwwON7DjSI2y
-         iSYw==
-X-Forwarded-Encrypted: i=1; AJvYcCUrHTXRFrkrFBgIVZxBSxtw4VEPNr309EoOjPcLk3BGpcTHh8hZTngAG+vDVSOoDu262bJJ/3Qj1f5owLY=@vger.kernel.org, AJvYcCW839B3Fp3lsPdPLexLGbyhkjYu5sC7ZG6xOx1fGT/ZuNeSmg5+QxNUEU0Xqc5z5sErRG+NiK2/@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9Jfzg4ILfUnjts+O2kvg3cTd4lF83/K0M8bqmVqBPbguWDqa5
-	bSaRpZ9N6iW9Wu52FeqfvsxsOEIz8GUdVq/IzpbU8l8gMTLw+JB8
-X-Gm-Gg: ASbGncuJjVtGoZ/x9PbdfF5ywH0kcSpGT22q4pYMnxThkl9T35nh5q656dQyQsydYKJ
-	ORKVLGfUI6sV6wc01tryiEHfQlfsnxmtr6RUhub9TQXbND4GEzVU5b+6nsQ1ClniT4QySHLcfV5
-	9rSv+cn6OHW3CO4RX1gHrh+ceLEmPtrXFrvDup8VLX8rXx2xm48nxaZec2c60kEnnPuh3qVyBgr
-	DZgFWt05IaXwmEn8J9QUOUliXpBkHuXsFMom+M102b1Rcq/doEg4pduG25aH4vIjITgq5FfaAIQ
-	a3FVjkMd+RJbVdE0Vn1aLvi2Rlv8UkDN
-X-Google-Smtp-Source: AGHT+IGqdqJQMW/wgBjDlEpytEBW10F78/AG6/4JNZVA/ep0S0U5EGtsIhUifPI41ynA+pSlNbUNTQ==
-X-Received: by 2002:a17:907:3cd5:b0:ac3:8896:416f with SMTP id a640c23a62f3a-acb428ef9b9mr607447966b.15.1744901837010;
-        Thu, 17 Apr 2025 07:57:17 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:30ff:74::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acb6ec0b389sm5227966b.20.2025.04.17.07.57.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Apr 2025 07:57:16 -0700 (PDT)
-Date: Thu, 17 Apr 2025 07:57:14 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Zijun Hu <zijun_hu@icloud.com>
-Cc: Joel Becker <jlbec@evilplan.org>,
-	Pantelis Antoniou <pantelis.antoniou@konsulko.com>,
-	Al Viro <viro@zeniv.linux.org.uk>, linux-kernel@vger.kernel.org,
-	Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] configfs: Do not override creating attribute file
- failure in populate_attrs()
-Message-ID: <aAEWyoqVFEknPSbH@gmail.com>
-References: <20250415-fix_configfs-v2-0-fcd527dd1824@quicinc.com>
- <20250415-fix_configfs-v2-2-fcd527dd1824@quicinc.com>
+	s=arc-20240116; t=1744902924; c=relaxed/simple;
+	bh=pKnMnJj1EfCmuCEJlWFsiLNEI7k9bPfDRKKgLsaEFH4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nw+h/W/bNV8YqO1nm877EyH5/dDKG9rUmdW2uxcFXW8yZMgkf1w0i+JTlXRU6AhsI4d/sIoCuEopiaiytrN3kx+lyI5Rw2SmUHV6NvEjzeAE8dYdNAhjY4d1C3P0VOlCTkgp/uhRtLdtHR1zJRJ5mMxudlG5Hj/7WSCNYUFg2xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ma7rPRNI; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744902924; x=1776438924;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=pKnMnJj1EfCmuCEJlWFsiLNEI7k9bPfDRKKgLsaEFH4=;
+  b=Ma7rPRNIqaHNgdWOQ1nZk0jOcrVnrrVVFuJ4LCsLg2PWI4kr/HchbEce
+   /g+mtvX0skYIM8s8USPsglBeJsv2GXodLFo+w/0guolzsQSqxid8bMEw1
+   7v4Z1LdNqeEyFBwJEkGUFnRg8p+z1yzcmOcEXXEZ1zgq4K+ofr0tiQjT/
+   520cjek8LTWctg+5nm/4rEzX6xg+Oyv0m4B//yOFkEBE7U1/sYKagEHdz
+   R/IB1EozF7lIHKLbheM0p+RvD5dPNmEI0FIE98LWwKnSVfU3p54ldunQt
+   WdRWV/0dCVoaNUFyvhzAfR2uTWcEQjQ6IBqy5QGrQ7pJn8ZbTTE7BqHjm
+   A==;
+X-CSE-ConnectionGUID: EPYqEcCAQSWo1z4DLXlPdQ==
+X-CSE-MsgGUID: Glsj+gxFQuKBtD8CMXcrMw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11406"; a="46624596"
+X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; 
+   d="scan'208";a="46624596"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 08:15:23 -0700
+X-CSE-ConnectionGUID: VABpUDnXS7yZnoj9FjlKBg==
+X-CSE-MsgGUID: zCqzXVuLR0GJz2xA2rqbdg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; 
+   d="scan'208";a="130689480"
+Received: from tfalcon-desk.amr.corp.intel.com (HELO [10.124.223.103]) ([10.124.223.103])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 08:15:22 -0700
+Message-ID: <7950cbd5-d254-4e67-81fa-ab2194f9dbc4@intel.com>
+Date: Thu, 17 Apr 2025 08:15:21 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250415-fix_configfs-v2-2-fcd527dd1824@quicinc.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/mm: fix _pgd_alloc() for Xen PV mode
+To: Juergen Gross <jgross@suse.com>, linux-kernel@vger.kernel.org,
+ x86@kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, =?UTF-8?Q?Petr_Van=C4=9Bk?=
+ <arkamar@atlas.cz>, stable@vger.kernel.org
+References: <20250417144808.22589-1-jgross@suse.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20250417144808.22589-1-jgross@suse.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Apr 15, 2025 at 08:34:26PM +0800, Zijun Hu wrote:
-> From: Zijun Hu <quic_zijuhu@quicinc.com>
-> 
-> populate_attrs() may override failure for creating attribute files
-> by success for creating subsequent bin attribute files, and have
-> wrong return value.
-> 
-> Fix by creating bin attribute files under successfully creating
-> attribute files.
-> 
-> Fixes: 03607ace807b ("configfs: implement binary attributes")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Joel Becker <jlbec@evilplan.org>
-> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+On 4/17/25 07:48, Juergen Gross wrote:
+> -#define PGD_ALLOCATION_ORDER 1
+> +#define PGD_ALLOCATION_ORDER pgd_allocation_order
+> +extern unsigned int pgd_allocation_order;
+>  #else
+>  #define PGD_ALLOCATION_ORDER 0
+>  #endif
 
-Reviewed-by: Breno Leitao <leitao@debian.org>
+Instead of hiding a variable behind a macro-looking name and a bunch of
+#ifdefs, can we please fix this properly?
+
+static inline pgd_allocation_order(void)
+{
+	if (cpu_feature_enabled(X86_FEATURE_PTI))
+		return 1;
+	return 0;
+}
+
+and then s/PGD_ALLOCATION_ORDER/pgd_allocation_order()/.
+
+Wouldn't that be a billion times better?
 
