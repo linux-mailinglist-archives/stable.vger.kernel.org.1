@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-133807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 732ACA927B7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:28:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98BDDA925A4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:06:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CC7B4A29BC
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01DCF3A8FE0
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A85C2566FE;
-	Thu, 17 Apr 2025 18:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F4912571DB;
+	Thu, 17 Apr 2025 18:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j8kf0Laa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1cfZW6Rw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583892566F7;
-	Thu, 17 Apr 2025 18:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC892571C6;
+	Thu, 17 Apr 2025 18:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914198; cv=none; b=deNfASQhUv240xF0tUTn6ES8Ph2Cp58BjLxzUFa/06Weo5qD6KN1bzxLVDQjAEB0gv0QSA5xKyAfezhTaFpiAtNqDbfLIA58ume25RWO3Uoczh6zjUdE2WKdioI67g9ibogQfnI8enRUIxnR6p40vbsiNv9bGhklE9u+pIocPkM=
+	t=1744913041; cv=none; b=tkSJJXQPLfLqIrz87HHwJ9ZQ3psxNSIrv3kOOXuw/go99GF4kNb4v/6n998SY6KObKCNZ2hl6cbSgD15r9SAPp9fR9bhOscU4BKwZKYye7Nlh+FvOxdOZ12ywI8vzhBtJFCcxMWLS3rNFier0cTO98jz6vlhnjX2Q3VVVWiPREg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914198; c=relaxed/simple;
-	bh=Bchjme8NrHtbWaQh9iBJXOGfj8jGRJZDMPzjLIF+8kU=;
+	s=arc-20240116; t=1744913041; c=relaxed/simple;
+	bh=yoXtX/Kd38sALJXJ/aNAp0dsdEkjtQ/kgoDY91PXoEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eM3zXLGelYgdjk0bqBja5HWpZ78BUgHVJSYbC78sqsB1XaoTcyLMAH0Dkn/TBPoa2hnj8GCi9Vknihv/YWE4qJxy878veS+EFMIhqv1epqT47/0OWozXrwF+HjYRCBq953FHwZVezvo81bMaJ+zKFlf6GqPMDeUpiLB4oRKEZQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j8kf0Laa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7549C4CEE4;
-	Thu, 17 Apr 2025 18:23:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DkGrKI8sWZX0WUHr84BzYdlQwEHt+kxxPp3uuDIsLEjehzFtFcaKU6NuUkI4Trok++oUBFg4281Vea7mXipAaPqN6KUfQbyQf813YXuvvOxiAqL3UAqrsk4XbsAhZVfyWejVMQRuCFWgCbIJbjrgB3M/XuyaB4R1abXvAGhXhYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1cfZW6Rw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A54C4CEE4;
+	Thu, 17 Apr 2025 18:04:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914198;
-	bh=Bchjme8NrHtbWaQh9iBJXOGfj8jGRJZDMPzjLIF+8kU=;
+	s=korg; t=1744913041;
+	bh=yoXtX/Kd38sALJXJ/aNAp0dsdEkjtQ/kgoDY91PXoEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j8kf0LaaQAY8h+gopekMkO7MDoUqo0+z/hFIbNXDaxflYy04z0aSOWGBNtPCha67Y
-	 L0I8SOGQMIjWSKpUnfynw2feMWXdu5E0ertHQro8u3mdAHbxd/8O/j5hRfrFZ+5kCV
-	 gkdjNOKXQDqAyi0CbImH5s6xMXSkdRRc7smNg7eo=
+	b=1cfZW6RwwKY7wIcRiCC6uXMRmZwaP34iMPbKR3zb2z8UR4Iw2gZE3EY11wFeBj2UM
+	 ph9KEraLV9a9oJjEa4U4hgiMmBc5YlDBETgDo9GJ4Gli9V3MrJbPWy6AZUiu/mcUsf
+	 BGmfZYAqMndBsfJN7m/ZRdzLiky+xh0nsjDQl06M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Wyatt <fewtarius@steamfork.org>,
-	John Edwards <uejji@uejji.net>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 138/414] drm: panel-orientation-quirks: Add quirk for AYA NEO Slide
+Subject: [PATCH 6.14 208/449] HID: hid-universal-pidff: Add Asetek wheelbases support
 Date: Thu, 17 Apr 2025 19:48:16 +0200
-Message-ID: <20250417175116.984179531@linuxfoundation.org>
+Message-ID: <20250417175126.345188287@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +60,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Wyatt <fewtarius@steamfork.org>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit 132c89ef8872e602cfb909377815111d121fe8d7 ]
+[ Upstream commit c385f61108d403633e8cfbdae15b35ccf7cee686 ]
 
-The AYANEO Slide uses a 1080x1920 portrait LCD panel.  This is the same
-panel used on the AYANEO Air Plus, but the DMI data is too different to
-match both with one entry.
+Adds Asetek vendor id and product ids for:
+- Invicta
+- Forte
+- La Prima
+- Tony Kanaan
 
-Add a DMI match to correctly rotate the panel on the AYANEO Slide.
+v2:
+- Misc spelling fix in driver loaded info
 
-This also covers the Antec Core HS, which is a rebranded AYANEO Slide with
-the exact same hardware and DMI strings.
+v3:
+- Chanage Oleg's name order
 
-Signed-off-by: Andrew Wyatt <fewtarius@steamfork.org>
-Signed-off-by: John Edwards <uejji@uejji.net>
-Tested-by: John Edwards <uejji@uejji.net>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250213222455.93533-4-uejji@uejji.net
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/hid/hid-ids.h             |  6 ++++++
+ drivers/hid/hid-universal-pidff.c | 10 +++++++---
+ 2 files changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index b5f6ae0459459..b57078cfdd80f 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -244,6 +244,12 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_MATCH(DMI_BOARD_NAME, "KUN"),
- 		},
- 		.driver_data = (void *)&lcd1600x2560_rightside_up,
-+	}, {	/* AYA NEO SLIDE */
-+		.matches = {
-+		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
-+		  DMI_MATCH(DMI_PRODUCT_NAME, "SLIDE"),
-+		},
-+		.driver_data = (void *)&lcd1080x1920_leftside_up,
- 	}, {    /* AYN Loki Max */
- 		.matches = {
- 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ayn"),
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index d54b2b302ad7b..288a2b864cc41 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -190,6 +190,12 @@
+ #define USB_DEVICE_ID_APPLE_TOUCHBAR_BACKLIGHT 0x8102
+ #define USB_DEVICE_ID_APPLE_TOUCHBAR_DISPLAY 0x8302
+ 
++#define USB_VENDOR_ID_ASETEK			0x2433
++#define USB_DEVICE_ID_ASETEK_INVICTA		0xf300
++#define USB_DEVICE_ID_ASETEK_FORTE		0xf301
++#define USB_DEVICE_ID_ASETEK_LA_PRIMA		0xf303
++#define USB_DEVICE_ID_ASETEK_TONY_KANAAN	0xf306
++
+ #define USB_VENDOR_ID_ASUS		0x0486
+ #define USB_DEVICE_ID_ASUS_T91MT	0x0185
+ #define USB_DEVICE_ID_ASUSTEK_MULTITOUCH_YFO	0x0186
+diff --git a/drivers/hid/hid-universal-pidff.c b/drivers/hid/hid-universal-pidff.c
+index 1b713b741d192..5b89ec7b5c26c 100644
+--- a/drivers/hid/hid-universal-pidff.c
++++ b/drivers/hid/hid-universal-pidff.c
+@@ -4,7 +4,7 @@
+  * hid-pidff wrapper for PID-enabled devices
+  * Handles device reports, quirks and extends usable button range
+  *
+- * Copyright (c) 2024, 2025 Makarenko Oleg
++ * Copyright (c) 2024, 2025 Oleg Makarenko
+  * Copyright (c) 2024, 2025 Tomasz Pakuła
+  */
+ 
+@@ -104,7 +104,7 @@ static int universal_pidff_probe(struct hid_device *hdev,
+ 		goto err;
+ 	}
+ 
+-	hid_info(hdev, "Universal pidff driver loaded sucesfully!");
++	hid_info(hdev, "Universal pidff driver loaded sucessfully!");
+ 
+ 	return 0;
+ err:
+@@ -179,6 +179,10 @@ static const struct hid_device_id universal_pidff_devices[] = {
+ 		.driver_data = HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_LITE_STAR, USB_DEVICE_LITE_STAR_GT987_FF),
+ 		.driver_data = HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ASETEK, USB_DEVICE_ID_ASETEK_INVICTA) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ASETEK, USB_DEVICE_ID_ASETEK_FORTE) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ASETEK, USB_DEVICE_ID_ASETEK_LA_PRIMA) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ASETEK, USB_DEVICE_ID_ASETEK_TONY_KANAAN) },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(hid, universal_pidff_devices);
+@@ -194,5 +198,5 @@ module_hid_driver(universal_pidff);
+ 
+ MODULE_DESCRIPTION("Universal driver for USB PID Force Feedback devices");
+ MODULE_LICENSE("GPL");
+-MODULE_AUTHOR("Makarenko Oleg <oleg@makarenk.ooo>");
++MODULE_AUTHOR("Oleg Makarenko <oleg@makarenk.ooo>");
+ MODULE_AUTHOR("Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>");
 -- 
 2.39.5
 
