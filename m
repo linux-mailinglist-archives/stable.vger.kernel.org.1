@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-134411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7F81A92B23
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:57:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 030B8A926C1
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:16:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 121763AE147
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60FF38A661B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A6E3594D;
-	Thu, 17 Apr 2025 18:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 680DA1CAA81;
+	Thu, 17 Apr 2025 18:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I8jkZL0c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgHUI8qa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021CE185920;
-	Thu, 17 Apr 2025 18:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268E03594D;
+	Thu, 17 Apr 2025 18:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916047; cv=none; b=ZsgtaBP4snkPYfACMGeqfbE+UNp79yaOve4akyNxRAxl3XZ1omEbQMHO1Fda+h320MIOyhGUxEO8zTXt6b0Zif1QeDuvbBG31iqhlmlO8tBpRUCbE68SNWFdSnuBtq2TvxCVxefq2GASJt4jn8B4mRJGImvLCWHb1QxXSukdVMU=
+	t=1744913773; cv=none; b=jjAvOn7cAebOw9Mzlj4kQrvwUo4+Y3M+vh1DMAMUjyuKuexMf9+/zeX0dyx6pf4tdWhfNuGqxccNvGtWSZqL9MPkCAdi2gfDJJxZXoJtmfiCJ8c4rk7sCrc2Hidj+PksUHNeMqRQhCqmOZza//y/00IMFcO0dKgz/vic1+xSPhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916047; c=relaxed/simple;
-	bh=Q2r6NcTuz8M9UxuHJuKclAg0opC++HbkkG7C31cG+FI=;
+	s=arc-20240116; t=1744913773; c=relaxed/simple;
+	bh=OKBSvp1V/yfHIIXZPBrcWTbSMQ0K7fBO2KiNO1QSgJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=obYWY1FpUOn4NrVuksLvtDct6vIyuowggnVPs+dg/azHhkKA3y/dgVAxZA0wSaxiYIuEllC1DceUOYzIjlqRzhz+hgX8csiMK1Fsivv7vcHU52UIm6xoWrCzNnZFxU1JO/wu91H+hqymgSgKMJ9FuiFXAgOo8+pQ63XXqvaDzBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I8jkZL0c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F9C4C4CEE4;
-	Thu, 17 Apr 2025 18:54:06 +0000 (UTC)
+	 MIME-Version; b=LtQedLcjPjI8J7ZYP1A2psUcR9nhpHWNC6jfWC2EfVFB2yDMpBO+X+oyIC26Oub3MEFyD2iDI2awffrVKxkJIxs9u/zxEmfcNbjVz8GC15FJgtSROJuV8iSjdKjtrhSVk2Reu4Ze04kJJFxpgcYQQELXZvWCOeStwWhZ0uyoAHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgHUI8qa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99135C4CEE4;
+	Thu, 17 Apr 2025 18:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916046;
-	bh=Q2r6NcTuz8M9UxuHJuKclAg0opC++HbkkG7C31cG+FI=;
+	s=korg; t=1744913773;
+	bh=OKBSvp1V/yfHIIXZPBrcWTbSMQ0K7fBO2KiNO1QSgJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I8jkZL0catBagoNSWLJo6ncKtdnKAaUQ87/38zBaZAjSCN7QHVG9SvO+sAtUHXdSz
-	 0ksyLgKpWq5GKQLEzqDdfyqJxqxMcHJxqB+EGn0H215jSo+KblwwKUbvhQkeX/M3Hb
-	 aDRzXs+jSgytDY+yeqc90ArVD/ASzG0X3sfBDk1Q=
+	b=xgHUI8qaMDDlD2vucc25tIV+cboCIySzEKLOjSIr0tKiIgl5M4VLqrerUt0zhWH6N
+	 By2kzWxV9tTJqMHqhkHoUH0h7iWtJDWtUWzudQe47ntoXxaFmG9C5Sx2Xcbf/Xqc1y
+	 w5gd3N3VqqXLPVCfHxLJgngvWldaxrwA43BJWSgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Imran Shaik <quic_imrashai@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 326/393] clk: qcom: gdsc: Set retain_ff before moving to HW CTRL
-Date: Thu, 17 Apr 2025 19:52:15 +0200
-Message-ID: <20250417175120.723081522@linuxfoundation.org>
+	Roberto Ricci <io@r-ricci.it>,
+	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Kees Cook <keescook@chromium.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Len Brown <len.brown@intel.com>
+Subject: [PATCH 6.14 448/449] x86/e820: Fix handling of subpage regions when calculating nosave ranges in e820__register_nosave_regions()
+Date: Thu, 17 Apr 2025 19:52:16 +0200
+Message-ID: <20250417175136.356059933@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +69,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taniya Das <quic_tdas@quicinc.com>
+From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
 
-commit 25708f73ff171bb4171950c9f4be5aa8504b8459 upstream.
+commit f2f29da9f0d4367f6ff35e0d9d021257bb53e273 upstream.
 
-Enable the retain_ff_enable bit of GDSCR only if the GDSC is already ON.
-Once the GDSCR moves to HW control, SW no longer can determine the state
-of the GDSCR and setting the retain_ff bit could destroy all the register
-contents we intended to save.
-Therefore, move the retain_ff configuration before switching the GDSC to
-HW trigger mode.
+While debugging kexec/hibernation hangs and crashes, it turned out that
+the current implementation of e820__register_nosave_regions() suffers from
+multiple serious issues:
 
+ - The end of last region is tracked by PFN, causing it to find holes
+   that aren't there if two consecutive subpage regions are present
+
+ - The nosave PFN ranges derived from holes are rounded out (instead of
+   rounded in) which makes it inconsistent with how explicitly reserved
+   regions are handled
+
+Fix this by:
+
+ - Treating reserved regions as if they were holes, to ensure consistent
+   handling (rounding out nosave PFN ranges is more correct as the
+   kernel does not use partial pages)
+
+ - Tracking the end of the last RAM region by address instead of pages
+   to detect holes more precisely
+
+These bugs appear to have been introduced about ~18 years ago with the very
+first version of e820_mark_nosave_regions(), and its flawed assumptions were
+carried forward uninterrupted through various waves of rewrites and renames.
+
+[ mingo: Added Git archeology details, for kicks and giggles. ]
+
+Fixes: e8eff5ac294e ("[PATCH] Make swsusp avoid memory holes and reserved memory regions on x86_64")
+Reported-by: Roberto Ricci <io@r-ricci.it>
+Tested-by: Roberto Ricci <io@r-ricci.it>
+Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: David Woodhouse <dwmw@amazon.co.uk>
+Cc: Len Brown <len.brown@intel.com>
 Cc: stable@vger.kernel.org
-Fixes: 173722995cdb ("clk: qcom: gdsc: Add support to enable retention of GSDCR")
-Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
-Reviewed-by: Imran Shaik <quic_imrashai@quicinc.com>
-Tested-by: Imran Shaik <quic_imrashai@quicinc.com> # on QCS8300
-Link: https://lore.kernel.org/r/20250214-gdsc_fixes-v1-1-73e56d68a80f@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20250406-fix-e820-nosave-v3-1-f3787bc1ee1d@qtmlabs.xyz
+Closes: https://lore.kernel.org/all/Z4WFjBVHpndct7br@desktop0a/
+Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gdsc.c |   21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ arch/x86/kernel/e820.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
---- a/drivers/clk/qcom/gdsc.c
-+++ b/drivers/clk/qcom/gdsc.c
-@@ -292,6 +292,9 @@ static int gdsc_enable(struct generic_pm
- 	 */
- 	udelay(1);
+--- a/arch/x86/kernel/e820.c
++++ b/arch/x86/kernel/e820.c
+@@ -754,22 +754,21 @@ void __init e820__memory_setup_extended(
+ void __init e820__register_nosave_regions(unsigned long limit_pfn)
+ {
+ 	int i;
+-	unsigned long pfn = 0;
++	u64 last_addr = 0;
  
-+	if (sc->flags & RETAIN_FF_ENABLE)
-+		gdsc_retain_ff_on(sc);
-+
- 	/* Turn on HW trigger mode if supported */
- 	if (sc->flags & HW_CTRL) {
- 		ret = gdsc_hwctrl(sc, true);
-@@ -308,9 +311,6 @@ static int gdsc_enable(struct generic_pm
- 		udelay(1);
- 	}
+ 	for (i = 0; i < e820_table->nr_entries; i++) {
+ 		struct e820_entry *entry = &e820_table->entries[i];
  
--	if (sc->flags & RETAIN_FF_ENABLE)
--		gdsc_retain_ff_on(sc);
+-		if (pfn < PFN_UP(entry->addr))
+-			register_nosave_region(pfn, PFN_UP(entry->addr));
 -
- 	return 0;
+-		pfn = PFN_DOWN(entry->addr + entry->size);
+-
+ 		if (entry->type != E820_TYPE_RAM && entry->type != E820_TYPE_RESERVED_KERN)
+-			register_nosave_region(PFN_UP(entry->addr), pfn);
++			continue;
+ 
+-		if (pfn >= limit_pfn)
+-			break;
++		if (last_addr < entry->addr)
++			register_nosave_region(PFN_DOWN(last_addr), PFN_UP(entry->addr));
++
++		last_addr = entry->addr + entry->size;
+ 	}
++
++	register_nosave_region(PFN_DOWN(last_addr), limit_pfn);
  }
  
-@@ -457,13 +457,6 @@ static int gdsc_init(struct gdsc *sc)
- 				goto err_disable_supply;
- 		}
- 
--		/* Turn on HW trigger mode if supported */
--		if (sc->flags & HW_CTRL) {
--			ret = gdsc_hwctrl(sc, true);
--			if (ret < 0)
--				goto err_disable_supply;
--		}
--
- 		/*
- 		 * Make sure the retain bit is set if the GDSC is already on,
- 		 * otherwise we end up turning off the GDSC and destroying all
-@@ -471,6 +464,14 @@ static int gdsc_init(struct gdsc *sc)
- 		 */
- 		if (sc->flags & RETAIN_FF_ENABLE)
- 			gdsc_retain_ff_on(sc);
-+
-+		/* Turn on HW trigger mode if supported */
-+		if (sc->flags & HW_CTRL) {
-+			ret = gdsc_hwctrl(sc, true);
-+			if (ret < 0)
-+				goto err_disable_supply;
-+		}
-+
- 	} else if (sc->flags & ALWAYS_ON) {
- 		/* If ALWAYS_ON GDSCs are not ON, turn them ON */
- 		gdsc_enable(&sc->pd);
+ #ifdef CONFIG_ACPI
 
 
 
