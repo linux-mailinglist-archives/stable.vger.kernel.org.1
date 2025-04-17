@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-134235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CBC5A929D8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:45:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57D94A927EC
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:29:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 481DC1B64014
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:45:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EDFD16DD51
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07FD254878;
-	Thu, 17 Apr 2025 18:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1DD2566E9;
+	Thu, 17 Apr 2025 18:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RwvrSo/f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AkDKBl3/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F26E2561D7;
-	Thu, 17 Apr 2025 18:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46CC9256C6D;
+	Thu, 17 Apr 2025 18:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915511; cv=none; b=GxkBySggcDtuJZNJoV5fICzYUKEk5ZnLqBqP+M+DEg9aWZcaSm1VbQI1HNjpUmjB6y8Q6fcJpFgWzwIkVVMtTDTsGjXTL3hYCaJBDcuKMARKzvKnoIhrM/5fqHNoAjo4UOoRpZpuc4FmRen0MwdByMO9gWL457Tjhtm+DJ0wDB8=
+	t=1744914315; cv=none; b=AlBeVbPBNEi66gt5qKP61aqmXVktrplZ78WWuzpbgbObZFCBNHKqkD1aqFrxC3XSUbNexYsp7zIFmfqBsOXad2pHmPFhH6rbqKaf6TKz92j+3q8ggh9O57WM6EKLTerF6itSBTiFlAI3n6xbdYgsaX+g+Q/WwBL5LwriFURwy7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915511; c=relaxed/simple;
-	bh=B70s7R1kyWKAB7hGOAeS3AI69hcyzDhHxwWxLJtd0ho=;
+	s=arc-20240116; t=1744914315; c=relaxed/simple;
+	bh=paPMSmV5y4U9C/fzERxVLpXR4e5GHrhWDO2D71PxfQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aMeoAQcg1qm1qJxbxGa+rb63X2DUssc4Iwu5NBtjUxv5OvxcGf9Absz3Y8+sFzGuqGFqqzz8DbLnqkraLT7uMmaoiGr54J0T+sYtiUyuIjwUl/EfyvuhtHVDYrPjDMUqIjpS15xbAwoBHVw6aR5pnH3rWSAxWapcWt+63C/IZoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RwvrSo/f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871EEC4CEEC;
-	Thu, 17 Apr 2025 18:45:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gtNoGCjIs26zJJMbEK+rH+5KiLTkNnsfLo/Fya/H4c15gYB1g+wxXOZhqEU/CCLL7wXuEhCBOLeW8ovk4daPvPs2ECKAOfyjqgNxgseN+XVwoocLBmR1+SCUjjGG5Mz8xQEyulwNcXflzo5ZvEJTgtew4vBOPFYxQAca/RdoBcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AkDKBl3/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B9BC4CEE4;
+	Thu, 17 Apr 2025 18:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915510;
-	bh=B70s7R1kyWKAB7hGOAeS3AI69hcyzDhHxwWxLJtd0ho=;
+	s=korg; t=1744914314;
+	bh=paPMSmV5y4U9C/fzERxVLpXR4e5GHrhWDO2D71PxfQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RwvrSo/fIyetNGviHdv8e1AnGtReVDu2B1goS5f1as3qdO22zfXIr1gUI/75T1Xko
-	 WGUnpOQonHn0W8s5LWzT/3Vnhr7Xhf4c/zZOrfixj/3I0j26r/Zslngd7ZobjYLL05
-	 viCFxZovsv/QIeaRyBVra5t4OFvDWgkNPPEd7jiA=
+	b=AkDKBl3/rgptdB+cbpVGruyw68OM6g/R+zf5g8xz8GZsRvaFn7rc1x/5v863FQ5t7
+	 ProZIVOe9JUz89Btwxd8O2GrIpidb/M/Sg58pO7k5lwuiuY159q4TsPJyVwVQTEIAJ
+	 HEbMMHXS6XvtAKTimrKUAJS/GwYABEzYzxh5nD5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 123/393] Bluetooth: qca: simplify WCN399x NVM loading
+Subject: [PATCH 6.13 174/414] HID: pidff: Clamp PERIODIC effect period to devices logical range
 Date: Thu, 17 Apr 2025 19:48:52 +0200
-Message-ID: <20250417175112.544185448@linuxfoundation.org>
+Message-ID: <20250417175118.434891212@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +64,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit 1cc41b5092e3aa511454ec882c525af311bee631 ]
+[ Upstream commit f538183e997a9fb6087e94e71e372de967b9e56a ]
 
-The WCN399x code has two separate cases for loading the NVM data. In
-preparation to adding support for WCN3950, which also requires similar
-quirk, split the "variant" to be specified explicitly and merge two
-snprintfs into a single one.
+This ensures the effect can actually be played on the connected force
+feedback device. Adds clamping functions used instead of rescaling, as we
+don't want to change the characteristics of the periodic effects.
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes edge cases found on Moza Racing and some other hardware where
+the effects would not play if the period is outside the defined
+logical range.
+
+Changes in v6:
+- Use in-kernel clamp macro instead of a custom solution
+
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btqca.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/hid/usbhid/hid-pidff.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
-index 04d02c746ec0f..dd2c0485b9848 100644
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -785,6 +785,7 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 		   const char *firmware_name)
- {
- 	struct qca_fw_config config = {};
-+	const char *variant = "";
- 	int err;
- 	u8 rom_ver = 0;
- 	u32 soc_ver;
-@@ -879,13 +880,11 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 		case QCA_WCN3990:
- 		case QCA_WCN3991:
- 		case QCA_WCN3998:
--			if (le32_to_cpu(ver.soc_id) == QCA_WCN3991_SOC_ID) {
--				snprintf(config.fwname, sizeof(config.fwname),
--					 "qca/crnv%02xu.bin", rom_ver);
--			} else {
--				snprintf(config.fwname, sizeof(config.fwname),
--					 "qca/crnv%02x.bin", rom_ver);
--			}
-+			if (le32_to_cpu(ver.soc_id) == QCA_WCN3991_SOC_ID)
-+				variant = "u";
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 25dbed076f530..6b55345ce75ac 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -15,10 +15,9 @@
+ #include <linux/input.h>
+ #include <linux/slab.h>
+ #include <linux/usb.h>
+-
+ #include <linux/hid.h>
++#include <linux/minmax.h>
+ 
+-#include "usbhid.h"
+ 
+ #define	PID_EFFECTS_MAX		64
+ #define	PID_INFINITE		0xffff
+@@ -192,6 +191,16 @@ struct pidff_device {
+ 	u32 quirks;
+ };
+ 
++/*
++ * Clamp value for a given field
++ */
++static s32 pidff_clamp(s32 i, struct hid_field *field)
++{
++	s32 clamped = clamp(i, field->logical_minimum, field->logical_maximum);
++	pr_debug("clamped from %d to %d", i, clamped);
++	return clamped;
++}
 +
-+			snprintf(config.fwname, sizeof(config.fwname),
-+				 "qca/crnv%02x%s.bin", rom_ver, variant);
- 			break;
- 		case QCA_WCN3988:
- 			snprintf(config.fwname, sizeof(config.fwname),
+ /*
+  * Scale an unsigned value with range 0..max for the given field
+  */
+@@ -372,7 +381,11 @@ static void pidff_set_periodic_report(struct pidff_device *pidff,
+ 	pidff_set_signed(&pidff->set_periodic[PID_OFFSET],
+ 			 effect->u.periodic.offset);
+ 	pidff_set(&pidff->set_periodic[PID_PHASE], effect->u.periodic.phase);
+-	pidff->set_periodic[PID_PERIOD].value[0] = effect->u.periodic.period;
++
++	/* Clamp period to ensure the device can play the effect */
++	pidff->set_periodic[PID_PERIOD].value[0] =
++		pidff_clamp(effect->u.periodic.period,
++			pidff->set_periodic[PID_PERIOD].field);
+ 
+ 	hid_hw_request(pidff->hid, pidff->reports[PID_SET_PERIODIC],
+ 			HID_REQ_SET_REPORT);
 -- 
 2.39.5
 
