@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-133257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9497A924EB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 19:59:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33F29A924F4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 19:59:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A56E8A005A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 17:58:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AD1D7AE952
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 17:58:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29016259C9F;
-	Thu, 17 Apr 2025 17:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B8C25EFAE;
+	Thu, 17 Apr 2025 17:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qLGD0TNG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UeSj+8Na"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95E92566FB;
-	Thu, 17 Apr 2025 17:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38C225EF93;
+	Thu, 17 Apr 2025 17:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744912536; cv=none; b=Uo2U+9cpIAUGKMrAUZl7sG91iLOxsgPmYE2QdA9svSlu11b+7BjYuDbEH4/aw1RrGGFrHhyY9w4A+ixSvex7Xi+6P21YznDvYSdnI1X1dx5xOjlQn5+qoRcZIr5EjbTJttA7JjIpWk6+cTYCnNENWAxBTWOwVuj3ONI34ODDrmA=
+	t=1744912569; cv=none; b=EM7P8dWFReJo6+9MMXSK1DSZThJh9osMSzHB604Qer77K3EPuxmuhCX90ZZFpAvdSfXnLxbhQncAlhkVLiOpIKpUzl5um1WdbereIGIESEzQ/l8qgueurU4vA+fClALA5CU2VEF92Orr62IhhDKkZKw+L7OGcM7e5jdOe1E5RT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744912536; c=relaxed/simple;
-	bh=VL3ggW7T44mzf1v19Jo/s20CbvY7c4THsWuHhR2jvZ8=;
+	s=arc-20240116; t=1744912569; c=relaxed/simple;
+	bh=2a0mnXXBMeD5mB9h+FrEn1PrkpJU810zyQafx2lGxQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kN3TUz0M+/fumZDTi3YYPmPlcqgbrCPzaHxPGUQNMs9ZWvlmf/pWdAWJmItOgVRrF84zEStKPKS72AqbBCroAE/S9gg6aIQvNBtnm6q9RedQWDeRaQ5fr51LvRpi492Xfp8/yaq+RsSbwc+nkP2IaiBJazL3pu9VCky2fnnYVBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qLGD0TNG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60FCBC4CEE4;
-	Thu, 17 Apr 2025 17:55:36 +0000 (UTC)
+	 MIME-Version; b=TcOxpBWy4i434CTzEkOSLQpwtf6Y2hGwgUZws/iCknQ81BgZb7mSMmy4pmmVbFMA9LPiGEaCJh+XPuY8sDTigBrfR2XmN0O0pebjahJLpLsWwisS9Rhz9PaQoBTmTjKaULwecYmEpF5akQTo84oV8ZBu/uDcjrGR5fIeW0rWUsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UeSj+8Na; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F1CC4CEE4;
+	Thu, 17 Apr 2025 17:56:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744912536;
-	bh=VL3ggW7T44mzf1v19Jo/s20CbvY7c4THsWuHhR2jvZ8=;
+	s=korg; t=1744912569;
+	bh=2a0mnXXBMeD5mB9h+FrEn1PrkpJU810zyQafx2lGxQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qLGD0TNGpsgiQ7659/nrcOCaUe5HmoTmomvip6FVBWOX4N3VTsXunCQhhVFaGogLU
-	 SiMjmjWGera/7tzm86GyDA0ijW4dGJUJ5rIdU8R1j5R+twZ1W3pPb9moxutd35u6mk
-	 RJGdSeIGWhV/UG7HAGUfsoXgw+XuFuyzLLFTsiJA=
+	b=UeSj+8NayPh1eZvM5Ny16BegQsTzCKjH7lc7VkoxYPK9sNGteAyE3UP9XKYjx2uB0
+	 tSGyx4WRWW00T8ASPqM1cmKzjalEWkXGZ97mmYQANKoTDTJo+vrUopChyNlWKsch+1
+	 Nt2cVYuCfnlEN3biRdhoG2LhyDKzKuDbRc3HZaVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Octavian Purdila <tavip@google.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 035/449] net_sched: sch_sfq: move the limit validation
-Date: Thu, 17 Apr 2025 19:45:23 +0200
-Message-ID: <20250417175119.407859595@linuxfoundation.org>
+Subject: [PATCH 6.14 036/449] x86/cpu: Avoid running off the end of an AMD erratum table
+Date: Thu, 17 Apr 2025 19:45:24 +0200
+Message-ID: <20250417175119.447311944@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
 References: <20250417175117.964400335@linuxfoundation.org>
@@ -68,83 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Octavian Purdila <tavip@google.com>
+From: Dave Hansen <dave.hansen@linux.intel.com>
 
-[ Upstream commit b3bf8f63e6179076b57c9de660c9f80b5abefe70 ]
+[ Upstream commit f0df00ebc57f803603f2a2e0df197e51f06fbe90 ]
 
-It is not sufficient to directly validate the limit on the data that
-the user passes as it can be updated based on how the other parameters
-are changed.
+The NULL array terminator at the end of erratum_1386_microcode was
+removed during the switch from x86_cpu_desc to x86_cpu_id. This
+causes readers to run off the end of the array.
 
-Move the check at the end of the configuration update process to also
-catch scenarios where the limit is indirectly updated, for example
-with the following configurations:
+Replace the NULL.
 
-tc qdisc add dev dummy0 handle 1: root sfq limit 2 flows 1 depth 1
-tc qdisc add dev dummy0 handle 1: root sfq limit 2 flows 1 divisor 1
-
-This fixes the following syzkaller reported crash:
-
-------------[ cut here ]------------
-UBSAN: array-index-out-of-bounds in net/sched/sch_sfq.c:203:6
-index 65535 is out of range for type 'struct sfq_head[128]'
-CPU: 1 UID: 0 PID: 3037 Comm: syz.2.16 Not tainted 6.14.0-rc2-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 12/27/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x201/0x300 lib/dump_stack.c:120
- ubsan_epilogue lib/ubsan.c:231 [inline]
- __ubsan_handle_out_of_bounds+0xf5/0x120 lib/ubsan.c:429
- sfq_link net/sched/sch_sfq.c:203 [inline]
- sfq_dec+0x53c/0x610 net/sched/sch_sfq.c:231
- sfq_dequeue+0x34e/0x8c0 net/sched/sch_sfq.c:493
- sfq_reset+0x17/0x60 net/sched/sch_sfq.c:518
- qdisc_reset+0x12e/0x600 net/sched/sch_generic.c:1035
- tbf_reset+0x41/0x110 net/sched/sch_tbf.c:339
- qdisc_reset+0x12e/0x600 net/sched/sch_generic.c:1035
- dev_reset_queue+0x100/0x1b0 net/sched/sch_generic.c:1311
- netdev_for_each_tx_queue include/linux/netdevice.h:2590 [inline]
- dev_deactivate_many+0x7e5/0xe70 net/sched/sch_generic.c:1375
-
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Fixes: 10685681bafc ("net_sched: sch_sfq: don't allow 1 packet limit")
-Signed-off-by: Octavian Purdila <tavip@google.com>
-Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: f3f325152673 ("x86/cpu: Move AMD erratum 1386 table over to 'x86_cpu_id'")
+Reported-by: Jiri Slaby <jirislaby@kernel.org>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_sfq.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/x86/kernel/cpu/amd.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
-index 7714ae94e0521..58b42dcf8f201 100644
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -661,10 +661,6 @@ static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
- 		if (!p)
- 			return -ENOMEM;
- 	}
--	if (ctl->limit == 1) {
--		NL_SET_ERR_MSG_MOD(extack, "invalid limit");
--		return -EINVAL;
--	}
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index 54194f5995de3..ce71f49654ee3 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -803,6 +803,7 @@ static void init_amd_bd(struct cpuinfo_x86 *c)
+ static const struct x86_cpu_id erratum_1386_microcode[] = {
+ 	X86_MATCH_VFM_STEPS(VFM_MAKE(X86_VENDOR_AMD, 0x17, 0x01), 0x2, 0x2, 0x0800126e),
+ 	X86_MATCH_VFM_STEPS(VFM_MAKE(X86_VENDOR_AMD, 0x17, 0x31), 0x0, 0x0, 0x08301052),
++	{}
+ };
  
- 	sch_tree_lock(sch);
- 
-@@ -705,6 +701,12 @@ static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
- 		limit = min_t(u32, ctl->limit, maxdepth * maxflows);
- 		maxflows = min_t(u32, maxflows, limit);
- 	}
-+	if (limit == 1) {
-+		sch_tree_unlock(sch);
-+		kfree(p);
-+		NL_SET_ERR_MSG_MOD(extack, "invalid limit");
-+		return -EINVAL;
-+	}
- 
- 	/* commit configuration */
- 	q->limit = limit;
+ static void fix_erratum_1386(struct cpuinfo_x86 *c)
 -- 
 2.39.5
 
