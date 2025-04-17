@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-133933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFC4AA9294E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F899A9264A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:12:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A07807ACBFA
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:35:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB8074A06D3
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:12:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1044D256C95;
-	Thu, 17 Apr 2025 18:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35753254B12;
+	Thu, 17 Apr 2025 18:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aj65jaTN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="faPhu5nN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27071E98ED;
-	Thu, 17 Apr 2025 18:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43F118C034;
+	Thu, 17 Apr 2025 18:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914586; cv=none; b=twKvJlaU+r5DVnlG/KeskusKfqMKTspnu4oY36s00IhP1ttaf43LEsZYwGMieCm3+FnFLy/+k+IOezUC3FunVph2ykIe61GF8W3MvnK9SL3vc5BZA77qdBcR6UG8AmliTZVPTWeRm+hsoqIBlQ2uIP831EXsi38uUFgglqAR1VY=
+	t=1744913508; cv=none; b=cYz7AMSj2WTHrgLTJmBlhuh9NN3KhGCB1W71CVKRriUPeoMuOQvcTp0F0sEhLP4ueN17cswgd/LTQUcHyYRVgGHEvxU5UTl93JknB2S4k3ypKpoBGBDtiD7VLaYCdUkevRHdaMTEHtG06lTVemat/9jz+hQJ+CTkfSq6HgpWuWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914586; c=relaxed/simple;
-	bh=ftLJXzx7oae0qHcUynudvKEg1ewyspXs0kIFg112EMQ=;
+	s=arc-20240116; t=1744913508; c=relaxed/simple;
+	bh=zjTSJ4UbahFBPGP3XIE1YUa9rhtY28HUKqxCD830BNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZQJjJNV9Ey1mImIiegZ/GFAYqWyOA2R8uk0MI6DMIpvS4LdHnF1TA5/9RAFA2NmDmFI3EnhfOO8ig3P/VeBKFENdlV2vhaPPGwPPdFB8LBtVylojawagad9lVScL2Iy0lNgTtOayKt7MrPo1LR4ZuMX34R348XFSLM6XdXiZmAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aj65jaTN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44317C4CEEA;
-	Thu, 17 Apr 2025 18:29:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q+kfG/QiRZBnlPPRDANsGy3lbcIZgbJc5E46zCJgyUOrK7s/VjBAiXt/md/wUXX365SSgbuQTGTHusujC94LpjYJgyqL5/dwJPvBNvo1z7L73xWtQX6brNPLnW3oeddliFdIm5Z/YzFsnRcemn4RrZCDhlAvBxLNX8o9oyj92LA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=faPhu5nN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7552EC4CEE4;
+	Thu, 17 Apr 2025 18:11:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914586;
-	bh=ftLJXzx7oae0qHcUynudvKEg1ewyspXs0kIFg112EMQ=;
+	s=korg; t=1744913507;
+	bh=zjTSJ4UbahFBPGP3XIE1YUa9rhtY28HUKqxCD830BNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aj65jaTN4K7L+6f8L3k0G1KLeuEsZ+CTBeUYg8KYdqRjOeRfyP4m9XZRYcT3Sn+fK
-	 0jzw34avyJ0hTBS6ST24Sl5c+VgVaKP+4G7hFTc+JzlCxynf71lMP6pDe5+Z/VOElk
-	 f7QUtI73MubibzJoBLsD3/weVqVxYmvirAlf7VbI=
+	b=faPhu5nNNflAuIIVddBW4OVvS4fYyqEZ7Jp1JFDkWGzCJshd4ucpmGlzEcj5IVepo
+	 14pIdiEJi+1XR12xwShZ1nKTYVL4sl7QCya2OvGX90Lk+UI7VJg5L0j4d6RLSFeeLE
+	 gvNSU6YSs7UNOhpGQ49I/UptuwhA7/TEBqeW9pcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.13 264/414] io_uring/net: fix io_req_post_cqe abuse by send bundle
+	Kristina Martsenko <kristina.martsenko@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Keir Fraser <keirf@google.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.14 334/449] arm64: mops: Do not dereference src reg for a set operation
 Date: Thu, 17 Apr 2025 19:50:22 +0200
-Message-ID: <20250417175122.048822861@linuxfoundation.org>
+Message-ID: <20250417175131.621070704@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,93 +63,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Keir Fraser <keirf@google.com>
 
-commit 6889ae1b4df1579bcdffef023e2ea9a982565dff upstream.
+commit a13bfa4fe0d6949cea14718df2d1fe84c38cd113 upstream.
 
-[  114.987980][ T5313] WARNING: CPU: 6 PID: 5313 at io_uring/io_uring.c:872 io_req_post_cqe+0x12e/0x4f0
-[  114.991597][ T5313] RIP: 0010:io_req_post_cqe+0x12e/0x4f0
-[  115.001880][ T5313] Call Trace:
-[  115.002222][ T5313]  <TASK>
-[  115.007813][ T5313]  io_send+0x4fe/0x10f0
-[  115.009317][ T5313]  io_issue_sqe+0x1a6/0x1740
-[  115.012094][ T5313]  io_wq_submit_work+0x38b/0xed0
-[  115.013223][ T5313]  io_worker_handle_work+0x62a/0x1600
-[  115.013876][ T5313]  io_wq_worker+0x34f/0xdf0
+The source register is not used for SET* and reading it can result in
+a UBSAN out-of-bounds array access error, specifically when the MOPS
+exception is taken from a SET* sequence with XZR (reg 31) as the
+source. Architecturally this is the only case where a src/dst/size
+field in the ESR can be reported as 31.
 
-As the comment states, io_req_post_cqe() should only be used by
-multishot requests, i.e. REQ_F_APOLL_MULTISHOT, which bundled sends are
-not. Add a flag signifying whether a request wants to post multiple
-CQEs. Eventually REQ_F_APOLL_MULTISHOT should imply the new flag, but
-that's left out for simplicity.
+Prior to 2de451a329cf662b the code in do_el0_mops() was benign as the
+use of pt_regs_read_reg() prevented the out-of-bounds access.
 
+Fixes: 2de451a329cf ("KVM: arm64: Add handler for MOPS exceptions")
+Cc: <stable@vger.kernel.org> # 6.12.x
+Cc: Kristina Martsenko <kristina.martsenko@arm.com>
+Cc: Will Deacon <will@kernel.org>
 Cc: stable@vger.kernel.org
-Fixes: a05d1f625c7aa ("io_uring/net: support bundles for send")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/8b611dbb54d1cd47a88681f5d38c84d0c02bc563.1743067183.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Keir Fraser <keirf@google.com>
+Reviewed-by: Kristina Martšenko <kristina.martsenko@arm.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20250326110448.3792396-1-keirf@google.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/io_uring_types.h |    3 +++
- io_uring/io_uring.c            |    4 ++--
- io_uring/net.c                 |    1 +
- 3 files changed, 6 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/traps.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/include/linux/io_uring_types.h
-+++ b/include/linux/io_uring_types.h
-@@ -470,6 +470,7 @@ enum {
- 	REQ_F_SKIP_LINK_CQES_BIT,
- 	REQ_F_SINGLE_POLL_BIT,
- 	REQ_F_DOUBLE_POLL_BIT,
-+	REQ_F_MULTISHOT_BIT,
- 	REQ_F_APOLL_MULTISHOT_BIT,
- 	REQ_F_CLEAR_POLLIN_BIT,
- 	/* keep async read/write and isreg together and in order */
-@@ -545,6 +546,8 @@ enum {
- 	REQ_F_SINGLE_POLL	= IO_REQ_FLAG(REQ_F_SINGLE_POLL_BIT),
- 	/* double poll may active */
- 	REQ_F_DOUBLE_POLL	= IO_REQ_FLAG(REQ_F_DOUBLE_POLL_BIT),
-+	/* request posts multiple completions, should be set at prep time */
-+	REQ_F_MULTISHOT		= IO_REQ_FLAG(REQ_F_MULTISHOT_BIT),
- 	/* fast poll multishot mode */
- 	REQ_F_APOLL_MULTISHOT	= IO_REQ_FLAG(REQ_F_APOLL_MULTISHOT_BIT),
- 	/* recvmsg special flag, clear EPOLLIN */
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -1818,7 +1818,7 @@ fail:
- 	 * Don't allow any multishot execution from io-wq. It's more restrictive
- 	 * than necessary and also cleaner.
- 	 */
--	if (req->flags & REQ_F_APOLL_MULTISHOT) {
-+	if (req->flags & (REQ_F_MULTISHOT|REQ_F_APOLL_MULTISHOT)) {
- 		err = -EBADFD;
- 		if (!io_file_can_poll(req))
- 			goto fail;
-@@ -1829,7 +1829,7 @@ fail:
- 				goto fail;
- 			return;
- 		} else {
--			req->flags &= ~REQ_F_APOLL_MULTISHOT;
-+			req->flags &= ~(REQ_F_APOLL_MULTISHOT|REQ_F_MULTISHOT);
+--- a/arch/arm64/include/asm/traps.h
++++ b/arch/arm64/include/asm/traps.h
+@@ -109,10 +109,9 @@ static inline void arm64_mops_reset_regs
+ 	int dstreg = ESR_ELx_MOPS_ISS_DESTREG(esr);
+ 	int srcreg = ESR_ELx_MOPS_ISS_SRCREG(esr);
+ 	int sizereg = ESR_ELx_MOPS_ISS_SIZEREG(esr);
+-	unsigned long dst, src, size;
++	unsigned long dst, size;
+ 
+ 	dst = regs->regs[dstreg];
+-	src = regs->regs[srcreg];
+ 	size = regs->regs[sizereg];
+ 
+ 	/*
+@@ -129,6 +128,7 @@ static inline void arm64_mops_reset_regs
  		}
- 	}
- 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -441,6 +441,7 @@ int io_sendmsg_prep(struct io_kiocb *req
- 		sr->msg_flags |= MSG_WAITALL;
- 		sr->buf_group = req->buf_index;
- 		req->buf_list = NULL;
-+		req->flags |= REQ_F_MULTISHOT;
- 	}
- 
- #ifdef CONFIG_COMPAT
+ 	} else {
+ 		/* CPY* instruction */
++		unsigned long src = regs->regs[srcreg];
+ 		if (!(option_a ^ wrong_option)) {
+ 			/* Format is from Option B */
+ 			if (regs->pstate & PSR_N_BIT) {
 
 
 
