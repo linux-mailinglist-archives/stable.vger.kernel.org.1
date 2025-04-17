@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-134419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53CE6A92AD2
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03DEBA92AF7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:56:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37B167B22FA
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:53:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B3AB1728A9
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:55:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7350625525A;
-	Thu, 17 Apr 2025 18:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A0C256C67;
+	Thu, 17 Apr 2025 18:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMhknN7M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4pIhRal"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FAC68462;
-	Thu, 17 Apr 2025 18:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0186B1DF246;
+	Thu, 17 Apr 2025 18:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916072; cv=none; b=TLQqoH/+0dzgbW7H7eldImQ7kNV8VbMhz2RMZz3oaeMBnhpFmOeWxIcdIKVoevI3pilOgHv+v7UICPzRk0lhJGpVm4ErC++lRKWb9k+RflsDozGJHnxePlkTL3w1v6ckqB4d64OEokyHwNi3vtR24Q1mJ3yDd2Nf1A0wD/o8fYY=
+	t=1744916078; cv=none; b=mVezxqUKJuUBFyFYl56zs2aXhREHYsGuDJ8K9QUPQdsaBSG/F9P9jpSuKovMpl7tEGxWCCfEwnTcinaNcEOObQ0LNQ9efrUrKVFNrl3MFUF8k45oypjTjyFOSpNhNi4XkHG5mOhSo7IuhW4wVJLWLRknSlDwIDB/Izd8ceEJNvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916072; c=relaxed/simple;
-	bh=5ei4Urceerb7+ogEkt2cQ6A3lOp7tyFzJoR8m8EO7/w=;
+	s=arc-20240116; t=1744916078; c=relaxed/simple;
+	bh=Ju3hj7ZrgYXPBG0tdNnnQNypy8dZbd8t4rPY69PAzCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QI+08qyMhxJ3K/K1pOZCus3FGg/LvWOD3SPfoSL3+F4yXfNcGFpb5lRsfNI3OlBKHfpku+P4uMBP+inQD/fAPetAy6JeIVSWMW/PqU6JYBGFObbXq2ySYbgveQp8jzljvTvpsElJ0lESdsVHuLzJ4fAo4X57sIfAl+bQbeQwCBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMhknN7M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95916C4CEE4;
-	Thu, 17 Apr 2025 18:54:31 +0000 (UTC)
+	 MIME-Version; b=htVmUB2NVre0KmhPQWZmDC8gVdc1Q5GP/i4WFkTCp3XWreh4tZ/ZzcB7yIaAfPFd6Lw3uuRVZk46Ff2RgS41w8PkCUKlHGe4ufZhWnKlHPcbBdXDQchc2uYJdqTRZlivDEJfYtZHPlgNGlMgp/carP/JJ7AU9FoIe87Txnf+UZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4pIhRal; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82663C4CEE4;
+	Thu, 17 Apr 2025 18:54:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916072;
-	bh=5ei4Urceerb7+ogEkt2cQ6A3lOp7tyFzJoR8m8EO7/w=;
+	s=korg; t=1744916077;
+	bh=Ju3hj7ZrgYXPBG0tdNnnQNypy8dZbd8t4rPY69PAzCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rMhknN7MprG3ujE01SE8fiX6eQXNkMq15zvwIaHEH7i59G9VMnjcQkmIDPg8b9IGt
-	 7zRZvUGwkMP3UijHQtTvlES4bgXbERZ+OAW//EbT0MhuShZZC2wHNRuLxliZxtP0P9
-	 +P8yCJBYqCdZqbrwUkTeAWSmkWHGR7sYQXJGRqYs=
+	b=f4pIhRalsAEEzQxkTpgQsi416G4jGOTYguQj4OdJfzQR4P9H7vSedzriCQqf6VTTp
+	 4eeWSWjvvS03YMG2Z951rSBAelkV2hx3wjlGHrRB+2ul5K/zI9rxKCwYwV253oStj8
+	 DiKN7T8IT07HL1UBoNABn/8jpaZbOngiNyTWcCG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.12 334/393] dm-verity: fix prefetch-vs-suspend race
-Date: Thu, 17 Apr 2025 19:52:23 +0200
-Message-ID: <20250417175121.037954749@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>
+Subject: [PATCH 6.12 335/393] dt-bindings: coresight: qcom,coresight-tpda: Fix too many reg
+Date: Thu, 17 Apr 2025 19:52:24 +0200
+Message-ID: <20250417175121.076832113@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
 References: <20250417175107.546547190@linuxfoundation.org>
@@ -64,46 +65,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 2de510fccbca3d1906b55f4be5f1de83fa2424ef upstream.
+commit d72deaf05ac18e421d7e52a6be8966fd6ee185f4 upstream.
 
-There's a possible race condition in dm-verity - the prefetch work item
-may race with suspend and it is possible that prefetch continues to run
-while the device is suspended. Fix this by calling flush_workqueue and
-dm_bufio_client_reset in the postsuspend hook.
+Binding listed variable number of IO addresses without defining them,
+however example DTS code, all in-tree DTS and Linux kernel driver
+mention only one address space, so drop the second to make binding
+precise and correctly describe the hardware.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: a8fbe1442c2b ("dt-bindings: arm: Adds CoreSight TPDA hardware definitions")
 Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250226112914.94361-1-krzysztof.kozlowski@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-verity-target.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ Documentation/devicetree/bindings/arm/qcom,coresight-tpda.yaml |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/md/dm-verity-target.c
-+++ b/drivers/md/dm-verity-target.c
-@@ -796,6 +796,13 @@ static int verity_map(struct dm_target *
- 	return DM_MAPIO_SUBMITTED;
- }
+--- a/Documentation/devicetree/bindings/arm/qcom,coresight-tpda.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom,coresight-tpda.yaml
+@@ -55,8 +55,7 @@ properties:
+       - const: arm,primecell
  
-+static void verity_postsuspend(struct dm_target *ti)
-+{
-+	struct dm_verity *v = ti->private;
-+	flush_workqueue(v->verify_wq);
-+	dm_bufio_client_reset(v->bufio);
-+}
-+
- /*
-  * Status: V (valid) or C (corruption found)
-  */
-@@ -1766,6 +1773,7 @@ static struct target_type verity_target
- 	.ctr		= verity_ctr,
- 	.dtr		= verity_dtr,
- 	.map		= verity_map,
-+	.postsuspend	= verity_postsuspend,
- 	.status		= verity_status,
- 	.prepare_ioctl	= verity_prepare_ioctl,
- 	.iterate_devices = verity_iterate_devices,
+   reg:
+-    minItems: 1
+-    maxItems: 2
++    maxItems: 1
+ 
+   clocks:
+     maxItems: 1
 
 
 
