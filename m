@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-134014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09BCDA92900
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:39:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F8EA92AAD
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:53:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5BFE16D59B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9668E7A5B1F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E32622333D;
-	Thu, 17 Apr 2025 18:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F412254B1F;
+	Thu, 17 Apr 2025 18:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ihhbsmaL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j+ieQXtB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E2B264600;
-	Thu, 17 Apr 2025 18:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEED2571BD;
+	Thu, 17 Apr 2025 18:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914834; cv=none; b=DH5JqxHLQHL/t3JadtPevvESmOAkpoF/Yb6fOiyXvaOhIGDCWfKDmFqE0Ovo8Xvj1lez2eJ8xQ5qc07cP2uhB5AulMiwWW5/vQAJUhNGQ7jZlLkcw45BXgD5WeXxlYV4LvVi9E80M40NHFS2txSdnWX4CtnvphB1DJHGYhWLmyQ=
+	t=1744915925; cv=none; b=SqROwy9/bmeQ2D3jim4an71fhYLxSE+QOQJFBkr+nA4e/YBsCfSyW35jvXsQLWUZQFl8WvXBPryUnQr8Ki4eLYUgOsb/ceY706OAjYzXyaYK3MA+J+OLi7cmLu0TIxGutnLLfRHiFNSXJno9crecm7wFlQloYbI9uY2B9E2IaOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914834; c=relaxed/simple;
-	bh=lcd4zo8lOK36pCVSw7GMs9dlFzjjhH1NOTIM+tYQ3yM=;
+	s=arc-20240116; t=1744915925; c=relaxed/simple;
+	bh=ApsQm/fCTTzw/aJC2vU+b/In+LtVyujkbGVsaK5sNe0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sIjT5vMLGzS+hE/fIrOJpnrst7oxrrEZ7Ln8BdLajxHxQ8Y/0/RKnkvxPofvf0ZaMbHWdmk/H0JXUQbgFskh/QiX1hby/sdL5W1ZgcFap6bLkr1H+xeM9yatDAQBqTHejJlP6ArCxbH3v/tSRuveVSJl8Z1oQ1DiJqMWwZK1JPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ihhbsmaL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A66AFC4CEE4;
-	Thu, 17 Apr 2025 18:33:53 +0000 (UTC)
+	 MIME-Version; b=e9p/OVwDeBXPLXrzYGUzTl0CEn5jmJ0zaBPzBgppS5eTxxC7zkXbvQEdiLKFeE2kYwgLYumP3zS09sqO+NMOM5EUa/wXBtO+n3hEYBvV8qKSVXXQUSWPXsKOgOoe554Q05DxbY9WYW7VvJJlZjulLfHPpF8yAkNOa63TakmHTEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j+ieQXtB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57650C4CEE4;
+	Thu, 17 Apr 2025 18:52:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914834;
-	bh=lcd4zo8lOK36pCVSw7GMs9dlFzjjhH1NOTIM+tYQ3yM=;
+	s=korg; t=1744915924;
+	bh=ApsQm/fCTTzw/aJC2vU+b/In+LtVyujkbGVsaK5sNe0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ihhbsmaLqHEqO2iVE9SKfTvqQqVv3eDO+sI3QpbMO/BpW6U9Khbqxoen1AmwH01vk
-	 g9XheVgYoi14z19dFrszsr15v0JAqemL74v++RYY55RMdV3P6B6NbhW2QxRLbNuLHp
-	 EJ4HGPEweBxhe8eAw9QXxFJdu97uLxFUbQdrZmJ8=
+	b=j+ieQXtBGQJjXMnOmtqBYeAXiBpV5ZCR09YThQtij0OOgviT3djLTxdocM/abSaR0
+	 yH1Oqgdor9S0Jg1X5ycvaMeIkHnCbnsZI0wD3BSngLYQtWutVaxeoRP6Z/GoamAAN+
+	 jgJI+tSzUvjneyIOe9jKXO2xrSq+mC29hgCIGLwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Subject: [PATCH 6.13 307/414] arm64: dts: ti: k3-j784s4-j742s2-main-common: Fix serdes_ln_ctrl reg-masks
+	Sharan Kumar M <sharweshraajan@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 256/393] ALSA: hda/realtek: Enable Mute LED on HP OMEN 16 Laptop xd000xx
 Date: Thu, 17 Apr 2025 19:51:05 +0200
-Message-ID: <20250417175123.783839663@linuxfoundation.org>
+Message-ID: <20250417175117.891158860@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Sharan Kumar M <sharweshraajan@gmail.com>
 
-commit 38e7f9092efbbf2a4a67e4410b55b797f8d1e184 upstream.
+commit e5182305a5199246dbcb4053299dcb1c8867b6ff upstream.
 
-Commit under Fixes added the 'idle-states' property for SERDES4 lane muxes
-without defining the corresponding register offsets and masks for it in the
-'mux-reg-masks' property within the 'serdes_ln_ctrl' node.
+This patch adds the HP OMEN 16 Laptop xd000xx to enable mute led.
+it uses ALC245_FIXUP_HP_MUTE_LED_COEFBIT with a slight modification
+setting mute_led_coef.off to 0(it was set to 4 i guess
+in that function) which i referred to your previous patch disscusion
+https://bugzilla.kernel.org/show_bug.cgi?id=214735 .
+i am not sure whether i can modify the current working function so i
+added another version calling
+ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT. and both works for me.
 
-Fix this.
+Tested on 6.13.4-arch1-1 to 6.14.0-arch1-1
 
-Fixes: 7287d423f138 ("arm64: dts: ti: k3-j784s4-main: Add system controller and SERDES lane mux")
-Cc: stable@vger.kernel.org
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Link: https://lore.kernel.org/r/20250228053850.506028-1-s-vadapalli@ti.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Sharan Kumar M <sharweshraajan@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250329154105.7618-2-sharweshraajan@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |   22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
---- a/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
-@@ -84,7 +84,9 @@
- 					<0x10 0x3>, <0x14 0x3>, /* SERDES1 lane0/1 select */
- 					<0x18 0x3>, <0x1c 0x3>, /* SERDES1 lane2/3 select */
- 					<0x20 0x3>, <0x24 0x3>, /* SERDES2 lane0/1 select */
--					<0x28 0x3>, <0x2c 0x3>; /* SERDES2 lane2/3 select */
-+					<0x28 0x3>, <0x2c 0x3>, /* SERDES2 lane2/3 select */
-+					<0x40 0x3>, <0x44 0x3>, /* SERDES4 lane0/1 select */
-+					<0x48 0x3>, <0x4c 0x3>; /* SERDES4 lane2/3 select */
- 			idle-states = <J784S4_SERDES0_LANE0_PCIE1_LANE0>,
- 				      <J784S4_SERDES0_LANE1_PCIE1_LANE1>,
- 				      <J784S4_SERDES0_LANE2_IP3_UNUSED>,
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -4744,6 +4744,22 @@ static void alc245_fixup_hp_mute_led_coe
+ 	}
+ }
+ 
++static void alc245_fixup_hp_mute_led_v1_coefbit(struct hda_codec *codec,
++					  const struct hda_fixup *fix,
++					  int action)
++{
++	struct alc_spec *spec = codec->spec;
++
++	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
++		spec->mute_led_polarity = 0;
++		spec->mute_led_coef.idx = 0x0b;
++		spec->mute_led_coef.mask = 1 << 3;
++		spec->mute_led_coef.on = 1 << 3;
++		spec->mute_led_coef.off = 0;
++		snd_hda_gen_add_mute_led_cdev(codec, coef_mute_led_set);
++	}
++}
++
+ /* turn on/off mic-mute LED per capture hook by coef bit */
+ static int coef_micmute_led_set(struct led_classdev *led_cdev,
+ 				enum led_brightness brightness)
+@@ -7851,6 +7867,7 @@ enum {
+ 	ALC287_FIXUP_TAS2781_I2C,
+ 	ALC287_FIXUP_YOGA7_14ARB7_I2C,
+ 	ALC245_FIXUP_HP_MUTE_LED_COEFBIT,
++	ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT,
+ 	ALC245_FIXUP_HP_X360_MUTE_LEDS,
+ 	ALC287_FIXUP_THINKPAD_I2S_SPK,
+ 	ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD,
+@@ -10084,6 +10101,10 @@ static const struct hda_fixup alc269_fix
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc245_fixup_hp_mute_led_coefbit,
+ 	},
++	[ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc245_fixup_hp_mute_led_v1_coefbit,
++	},
+ 	[ALC245_FIXUP_HP_X360_MUTE_LEDS] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc245_fixup_hp_mute_led_coefbit,
+@@ -10569,6 +10590,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x103c, 0x8b97, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8bb3, "HP Slim OMEN", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8bb4, "HP Slim OMEN", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x103c, 0x8bcd, "HP Omen 16-xd0xxx", ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8bdd, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8bde, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8bdf, "HP Envy 15", ALC287_FIXUP_CS35L41_I2C_2),
 
 
 
