@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-134158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81D2BA92984
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E749A925AD
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:06:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EA0F1B63A79
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C26801B61E30
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FFCF2586C4;
-	Thu, 17 Apr 2025 18:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F6B2571BA;
+	Thu, 17 Apr 2025 18:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQoRjMw7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dHfkI6q7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C81C2566DF;
-	Thu, 17 Apr 2025 18:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B84712522AC;
+	Thu, 17 Apr 2025 18:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915270; cv=none; b=tMiMlfxuZDrOO+Xzys7OzFz5bmQmnVT4tn+WOeUivwoUJVG9RaeT2+MwbLOsfOF+B6UzvzSpmf0V2hqN0556gBmZeSo+ap49+JjAobI7Wum8rbxcvUzQrM+ETk9BxzIo3EUIFvybsVKIXEVY4fJAiiSymcQL0ac7tFR56qs9bIk=
+	t=1744913025; cv=none; b=UfKio51tYSr5Y/6KoOd+4Gr23UoTIorRyfMYW28JKigRBGrtq4BJEY9GPJSM9eKiN/rYgxHL9T96qhsO3S8RSPNFdXAfIwNvOkkm/NFVcsUM3nis7Q8OVX9FjlbkS+Nie72JdwOEb5JIolJxWjByyrxPotc7xQMgAvYlci/XY3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915270; c=relaxed/simple;
-	bh=pEY2zQUq4pZo+pRfxcp1w2BGzAk2xSLeorBfqQFfLcg=;
+	s=arc-20240116; t=1744913025; c=relaxed/simple;
+	bh=de+bX9HrYaNNNPnUz9nXrcNmnml31pS87lmK1Lakxm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cC5pX4YNON+Z2bJsW8dKUMheQjjvAqKlToa2WTA784g3Uw8b2QBBUgjHGSCHVN46nryXBPo40i6Mdwm+w9m8vjRKeL62M/zLiq3zlIw6DW29LhXTN1SPGZjkbfaKp50hU5cjaNUuCBafwh54kW37fEPBwm84uwDpo9jMztT3yhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQoRjMw7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC47EC4CEE7;
-	Thu, 17 Apr 2025 18:41:09 +0000 (UTC)
+	 MIME-Version; b=K4Zostb1dFM+/vqa4v9cyv4YuXtRrgjiW1iDkUvCXETEEJBM3CW/SELWrsFj38mU5zNSJdS52jLP6KefRKuuLf44Eh2janLeKpAQkGuwbrgF9K5Y//bmFdUMgXfgK/Az3+XplNxpwQwuGHzhAO+LuHm99U+1RwKWuQcNKzO7RJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dHfkI6q7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 292DCC4CEE4;
+	Thu, 17 Apr 2025 18:03:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915270;
-	bh=pEY2zQUq4pZo+pRfxcp1w2BGzAk2xSLeorBfqQFfLcg=;
+	s=korg; t=1744913025;
+	bh=de+bX9HrYaNNNPnUz9nXrcNmnml31pS87lmK1Lakxm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xQoRjMw7rheQ/ivb94CJkvCG2X/O1PlHh9UIXzvvFNsvyU90DbqK8PkaaK+c7ZEbc
-	 prElXxNQ5eHWE9Cf+VnnOy16roE2rOEEZvA6v4DkMhm3vKhox0DFlVXOw456ab86ko
-	 MG9dObU9QikFfJNgOHmng/3Ks997mvPCKU620D0c=
+	b=dHfkI6q72VaINYaPb78hY6fsCKcxEOB0g8vQVgL/WTFWVKsm2JxL0LgjZeYGOSMJ6
+	 2m8UtNZui5Tr3sr7Gv3Lr+WKCSuvxJKhjg8Zx+gCoNQNXZbV5obUja3h3WCs3Z+wUX
+	 v/qKlyZQnP5r4nUWluNaTkpzdrzFCMn3eRupmXbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 074/393] ASoC: fsl_audmix: register card device depends on dais property
+Subject: [PATCH 6.14 195/449] s390/pci: Fix s390_mmio_read/write syscall page fault handling
 Date: Thu, 17 Apr 2025 19:48:03 +0200
-Message-ID: <20250417175110.571090146@linuxfoundation.org>
+Message-ID: <20250417175125.826396519@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit 294a60e5e9830045c161181286d44ce669f88833 ]
+[ Upstream commit 41a0926e82f4963046876ed9a1b5f681be8087a8 ]
 
-In order to make the audmix device linked by audio graph card, make
-'dais' property to be optional.
+The s390 MMIO syscalls when using the classic PCI instructions do not
+cause a page fault when follow_pfnmap_start() fails due to the page not
+being present. Besides being a general deficiency this breaks vfio-pci's
+mmap() handling once VFIO_PCI_MMAP gets enabled as this lazily maps on
+first access. Fix this by following a failed follow_pfnmap_start() with
+fixup_user_page() and retrying the follow_pfnmap_start(). Also fix
+a VM_READ vs VM_WRITE mixup in the read syscall.
 
-If 'dais' property exists, then register the imx-audmix card driver.
-otherwise, it should be linked by audio graph card.
-
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20250226100508.2352568-5-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20250226-vfio_pci_mmap-v7-1-c5c0f1d26efd@linux.ibm.com
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_audmix.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ arch/s390/pci/pci_mmio.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_audmix.c b/sound/soc/fsl/fsl_audmix.c
-index 3cd9a66b70a15..7981d598ba139 100644
---- a/sound/soc/fsl/fsl_audmix.c
-+++ b/sound/soc/fsl/fsl_audmix.c
-@@ -488,11 +488,17 @@ static int fsl_audmix_probe(struct platform_device *pdev)
- 		goto err_disable_pm;
- 	}
+diff --git a/arch/s390/pci/pci_mmio.c b/arch/s390/pci/pci_mmio.c
+index 46f99dc164ade..1997d9b7965df 100644
+--- a/arch/s390/pci/pci_mmio.c
++++ b/arch/s390/pci/pci_mmio.c
+@@ -175,8 +175,12 @@ SYSCALL_DEFINE3(s390_pci_mmio_write, unsigned long, mmio_addr,
+ 	args.address = mmio_addr;
+ 	args.vma = vma;
+ 	ret = follow_pfnmap_start(&args);
+-	if (ret)
+-		goto out_unlock_mmap;
++	if (ret) {
++		fixup_user_fault(current->mm, mmio_addr, FAULT_FLAG_WRITE, NULL);
++		ret = follow_pfnmap_start(&args);
++		if (ret)
++			goto out_unlock_mmap;
++	}
  
--	priv->pdev = platform_device_register_data(dev, "imx-audmix", 0, NULL, 0);
--	if (IS_ERR(priv->pdev)) {
--		ret = PTR_ERR(priv->pdev);
--		dev_err(dev, "failed to register platform: %d\n", ret);
--		goto err_disable_pm;
-+	/*
-+	 * If dais property exist, then register the imx-audmix card driver.
-+	 * otherwise, it should be linked by audio graph card.
-+	 */
-+	if (of_find_property(pdev->dev.of_node, "dais", NULL)) {
-+		priv->pdev = platform_device_register_data(dev, "imx-audmix", 0, NULL, 0);
-+		if (IS_ERR(priv->pdev)) {
-+			ret = PTR_ERR(priv->pdev);
-+			dev_err(dev, "failed to register platform: %d\n", ret);
-+			goto err_disable_pm;
-+		}
- 	}
+ 	io_addr = (void __iomem *)((args.pfn << PAGE_SHIFT) |
+ 			(mmio_addr & ~PAGE_MASK));
+@@ -315,14 +319,18 @@ SYSCALL_DEFINE3(s390_pci_mmio_read, unsigned long, mmio_addr,
+ 	if (!(vma->vm_flags & (VM_IO | VM_PFNMAP)))
+ 		goto out_unlock_mmap;
+ 	ret = -EACCES;
+-	if (!(vma->vm_flags & VM_WRITE))
++	if (!(vma->vm_flags & VM_READ))
+ 		goto out_unlock_mmap;
  
- 	return 0;
+ 	args.vma = vma;
+ 	args.address = mmio_addr;
+ 	ret = follow_pfnmap_start(&args);
+-	if (ret)
+-		goto out_unlock_mmap;
++	if (ret) {
++		fixup_user_fault(current->mm, mmio_addr, 0, NULL);
++		ret = follow_pfnmap_start(&args);
++		if (ret)
++			goto out_unlock_mmap;
++	}
+ 
+ 	io_addr = (void __iomem *)((args.pfn << PAGE_SHIFT) |
+ 			(mmio_addr & ~PAGE_MASK));
 -- 
 2.39.5
 
