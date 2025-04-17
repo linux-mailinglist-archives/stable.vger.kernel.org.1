@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-134179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D99CAA929BD
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:44:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C47AEA925CF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:07:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9EC74A602C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:43:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3659C7B5E6E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:03:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC7D2550C8;
-	Thu, 17 Apr 2025 18:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B51D6256C70;
+	Thu, 17 Apr 2025 18:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XCV4xczU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lzzj5T/d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFBD925335A;
-	Thu, 17 Apr 2025 18:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EE418C034;
+	Thu, 17 Apr 2025 18:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915333; cv=none; b=NnqXXP8XYW6oo+2NJ0wUa0UXMTdYRAms9XE3bvDuceoXeL4yEq6U5B3b0fxrLp3Qka1xe4u6AEVgbCmdJx/jxqkTQ3apyjMtwlMs9Vi9kspRHUg9hUyUclhAVfE4bDjzBgUO4T6ScQQo/5AdtjlvCEKVhZJczGNgEt2vArYIoPk=
+	t=1744912974; cv=none; b=dbr3FsoT5xnuzRhW9rt4b+Ek6L3KUNV6fSyqfT/i8eonzPpuVlomZExUOb4hlSPMIYOjGmhNIPBUqKg92qHCY2LW9G8c04Yn5OrqmIww8oILIYgFJaxDv1sT/bbNKHkQIsP0m5VQQSCeWSiEkVGh5y+r2RED7nM6ZuTgQSCaGJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915333; c=relaxed/simple;
-	bh=RrhIQ5V060P+dGLNKuETgeQFsELmtLZ/MVIf6im3Jf4=;
+	s=arc-20240116; t=1744912974; c=relaxed/simple;
+	bh=tddZTNag4BhFs6OwvqCOa0EYJ1+2GF3x13mx7ncwsck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t+TF2S7RKJzsjoGWdKO+XyYtfIwQT0Uz89gtU4OxPHHB1ZTCQFJ7Y494F1Tv7oXOf54ZAnMxnoFZr6KgGoyD7kCNhTUjK1p5RhiUovWh4k2EOEJSr3XVKSNIWbBGVHngMnkTqiJsDTePQXyAC/p0/rjojXH8izWrjt/628McneU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XCV4xczU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EDD4C4CEE4;
-	Thu, 17 Apr 2025 18:42:12 +0000 (UTC)
+	 MIME-Version; b=qn5n0Ueja5G/cyU/BDZoCfJintcAq0oXiydJngXoINoblsYDi2UwGAFOdZkr70ZUoyeSuCBe1eOkuYWd8mNsAyhOOGp+nLTVZ1QEHQzEv54Oki7Pkzic/6xfEaU1F4gamZ5UGGuVjiVNrMGasqo8LpYj5HGwUL/dAebDJOdys/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lzzj5T/d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A39C4CEE4;
+	Thu, 17 Apr 2025 18:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915333;
-	bh=RrhIQ5V060P+dGLNKuETgeQFsELmtLZ/MVIf6im3Jf4=;
+	s=korg; t=1744912973;
+	bh=tddZTNag4BhFs6OwvqCOa0EYJ1+2GF3x13mx7ncwsck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XCV4xczUSWmmjonPvLzaod+ECy0Dj8ur8qAfvNAyHQi26Ry0N34GYQVc3MuBMhklX
-	 6T2O7XG23rYJuFPnIt9+33vqegllkaFHupwkcSiB7vaupN3KnZGRbxERxIO5ehWPcc
-	 DFI9Q1YaFMmoQz7B0nqVBk05mqs2nQ+K56KbDmOc=
+	b=Lzzj5T/d7efF3tHxTJm3u53WedxgVcLW0U3ppVTC6VKdesnKt0G8QyFAlYfVJlprH
+	 EyFJf0TMjgn3odCOvVcNkeopTWb6JA5RexsvzJAsHrbXihCPg1x3fNSgEjHsO60LBR
+	 ZmANsxhjv7tWvuumlkkyTk5i2RmhrrpMDQ6WwzVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Makarenko Oleg <oleg@makarenk.ooo>,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	warthog9@eaglescrag.net,
+	Ayush Jain <Ayush.jain3@amd.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 064/393] HID: pidff: Add MISSING_PBO quirk and its detection
+Subject: [PATCH 6.14 185/449] ktest: Fix Test Failures Due to Missing LOG_FILE Directories
 Date: Thu, 17 Apr 2025 19:47:53 +0200
-Message-ID: <20250417175110.169226075@linuxfoundation.org>
+Message-ID: <20250417175125.420368915@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,150 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Ayush Jain <Ayush.jain3@amd.com>
 
-[ Upstream commit fc7c154e9bb3c2b98875cfc565406f4787e3b7a4 ]
+[ Upstream commit 5a1bed232781d356f842576daacc260f0d0c8d2e ]
 
-Some devices with only one axis are missing PARAMETER_BLOCK_OFFSET field
-for conditional effects. They can only have one axis, so we're limiting
-the max_axis when setting the report for those effects.
+Handle missing parent directories for LOG_FILE path to prevent test
+failures. If the parent directories don't exist, create them to ensure
+the tests proceed successfully.
 
-Automatic detection ensures compatibility even if such device won't be
-explicitly defined in the kernel.
-
-Fixes initialization of VRS DirectForce PRO and possibly other devices.
-
-Changes in v6:
-- Fixed NULL pointer dereference. When PBO is missing, make sure not
-  to set it anyway
-
-Co-developed-by: Makarenko Oleg <oleg@makarenk.ooo>
-Signed-off-by: Makarenko Oleg <oleg@makarenk.ooo>
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Cc: <warthog9@eaglescrag.net>
+Link: https://lore.kernel.org/20250307043854.2518539-1-Ayush.jain3@amd.com
+Signed-off-by: Ayush Jain <Ayush.jain3@amd.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 47 +++++++++++++++++++++-------------
- include/linux/hid.h            |  1 +
- 2 files changed, 30 insertions(+), 18 deletions(-)
+ tools/testing/ktest/ktest.pl | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index 929f5967e7cb1..503b22feacdbb 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -391,13 +391,19 @@ static int pidff_needs_set_periodic(struct ff_effect *effect,
- static void pidff_set_condition_report(struct pidff_device *pidff,
- 				       struct ff_effect *effect)
- {
--	int i;
-+	int i, max_axis;
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index 8c8da966c641b..a5f7fdd0c1fbb 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -4303,6 +4303,14 @@ if (defined($opt{"LOG_FILE"})) {
+     if ($opt{"CLEAR_LOG"}) {
+ 	unlink $opt{"LOG_FILE"};
+     }
 +
-+	/* Devices missing Parameter Block Offset can only have one axis */
-+	max_axis = pidff->quirks & HID_PIDFF_QUIRK_MISSING_PBO ? 1 : 2;
- 
- 	pidff->set_condition[PID_EFFECT_BLOCK_INDEX].value[0] =
- 		pidff->block_load[PID_EFFECT_BLOCK_INDEX].value[0];
- 
--	for (i = 0; i < 2; i++) {
--		pidff->set_condition[PID_PARAM_BLOCK_OFFSET].value[0] = i;
-+	for (i = 0; i < max_axis; i++) {
-+		/* Omit Parameter Block Offset if missing */
-+		if (!(pidff->quirks & HID_PIDFF_QUIRK_MISSING_PBO))
-+			pidff->set_condition[PID_PARAM_BLOCK_OFFSET].value[0] = i;
-+
- 		pidff_set_signed(&pidff->set_condition[PID_CP_OFFSET],
- 				 effect->u.condition[i].center);
- 		pidff_set_signed(&pidff->set_condition[PID_POS_COEFFICIENT],
-@@ -809,6 +815,11 @@ static int pidff_find_fields(struct pidff_usage *usage, const u8 *table,
- 			pr_debug("Setting MISSING_DELAY quirk\n");
- 			return_value |= HID_PIDFF_QUIRK_MISSING_DELAY;
- 		}
-+		else if (!found && table[k] == pidff_set_condition[PID_PARAM_BLOCK_OFFSET]) {
-+			pr_debug("PBO field not found, but that's OK\n");
-+			pr_debug("Setting MISSING_PBO quirk\n");
-+			return_value |= HID_PIDFF_QUIRK_MISSING_PBO;
-+		}
- 		else if (!found && strict) {
- 			pr_debug("failed to locate %d\n", k);
- 			return -1;
-@@ -1088,7 +1099,6 @@ static int pidff_find_effects(struct pidff_device *pidff,
-  */
- static int pidff_init_fields(struct pidff_device *pidff, struct input_dev *dev)
- {
--	int envelope_ok = 0;
- 	int status = 0;
- 
- 	/* Save info about the device not having the DELAY ffb field. */
-@@ -1119,13 +1129,10 @@ static int pidff_init_fields(struct pidff_device *pidff, struct input_dev *dev)
- 		return -ENODEV;
- 	}
- 
--	if (!PIDFF_FIND_FIELDS(set_envelope, PID_SET_ENVELOPE, 1))
--		envelope_ok = 1;
--
- 	if (pidff_find_special_fields(pidff) || pidff_find_effects(pidff, dev))
- 		return -ENODEV;
- 
--	if (!envelope_ok) {
-+	if (PIDFF_FIND_FIELDS(set_envelope, PID_SET_ENVELOPE, 1)) {
- 		if (test_and_clear_bit(FF_CONSTANT, dev->ffbit))
- 			hid_warn(pidff->hid,
- 				 "has constant effect but no envelope\n");
-@@ -1150,16 +1157,20 @@ static int pidff_init_fields(struct pidff_device *pidff, struct input_dev *dev)
- 		clear_bit(FF_RAMP, dev->ffbit);
- 	}
- 
--	if ((test_bit(FF_SPRING, dev->ffbit) ||
--	     test_bit(FF_DAMPER, dev->ffbit) ||
--	     test_bit(FF_FRICTION, dev->ffbit) ||
--	     test_bit(FF_INERTIA, dev->ffbit)) &&
--	    PIDFF_FIND_FIELDS(set_condition, PID_SET_CONDITION, 1)) {
--		hid_warn(pidff->hid, "unknown condition effect layout\n");
--		clear_bit(FF_SPRING, dev->ffbit);
--		clear_bit(FF_DAMPER, dev->ffbit);
--		clear_bit(FF_FRICTION, dev->ffbit);
--		clear_bit(FF_INERTIA, dev->ffbit);
-+	if (test_bit(FF_SPRING, dev->ffbit) ||
-+	    test_bit(FF_DAMPER, dev->ffbit) ||
-+	    test_bit(FF_FRICTION, dev->ffbit) ||
-+	    test_bit(FF_INERTIA, dev->ffbit)) {
-+		status = PIDFF_FIND_FIELDS(set_condition, PID_SET_CONDITION, 1);
-+
-+		if (status < 0) {
-+			hid_warn(pidff->hid, "unknown condition effect layout\n");
-+			clear_bit(FF_SPRING, dev->ffbit);
-+			clear_bit(FF_DAMPER, dev->ffbit);
-+			clear_bit(FF_FRICTION, dev->ffbit);
-+			clear_bit(FF_INERTIA, dev->ffbit);
-+		}
-+		pidff->quirks |= status;
- 	}
- 
- 	if (test_bit(FF_PERIODIC, dev->ffbit) &&
-diff --git a/include/linux/hid.h b/include/linux/hid.h
-index 42e4111f43e76..088c6688c3f98 100644
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -1229,6 +1229,7 @@ int hid_pidff_init(struct hid_device *hid);
- 
- /* HID PIDFF quirks */
- #define HID_PIDFF_QUIRK_MISSING_DELAY	BIT(0)
-+#define HID_PIDFF_QUIRK_MISSING_PBO	BIT(1)
- 
- #define dbg_hid(fmt, ...) pr_debug("%s: " fmt, __FILE__, ##__VA_ARGS__)
- 
++    if (! -e $opt{"LOG_FILE"} && $opt{"LOG_FILE"} =~ m,^(.*/),) {
++        my $dir = $1;
++        if (! -d $dir) {
++            mkpath($dir) or die "Failed to create directories '$dir': $!";
++            print "\nThe log directory $dir did not exist, so it was created.\n";
++        }
++    }
+     open(LOG, ">> $opt{LOG_FILE}") or die "Can't write to $opt{LOG_FILE}";
+     LOG->autoflush(1);
+ }
 -- 
 2.39.5
 
