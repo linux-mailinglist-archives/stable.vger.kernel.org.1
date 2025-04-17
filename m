@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-134206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B53AA929D1
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:44:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64E2BA925A7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:06:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D33A14A46E2
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:43:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C19323ADD5E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D8131DF756;
-	Thu, 17 Apr 2025 18:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10BC255E4C;
+	Thu, 17 Apr 2025 18:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPIOv6jz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvc6VzUh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6F83770B;
-	Thu, 17 Apr 2025 18:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE575254B12;
+	Thu, 17 Apr 2025 18:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915419; cv=none; b=N1xqE3vt0tu9bLfJeHLl7NS20Zi0x1MmOtruxK0Q8nmAO7ajXbpMkfhDfsdhwUUlS7e4bth7WSjGC6xfV4sGXvmqnpkYywNIlmu/TuYIbUT/ScBhGZCALBeGBjUtIKIYoZVgTxbTc5jNtJZXU6oROeqmvp89MGFCM0gyMYkSmts=
+	t=1744913055; cv=none; b=bkgcEh6CEmfvz8iPqOUqmUxJK68eDBNIA07R0KHlvxyKSNzT7uDCw3+lKAAiK/nRGUgBW8UG0ZCQiref65hWPmzGTSoqybc9J2jj07ss7OLl9OpjThDOyioW5SmGMVFn4TdYLj6UsefEB39GNdQaT8INViWYp+PO7U6CuNvoqwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915419; c=relaxed/simple;
-	bh=23Nf/etwXumzRwqbpK5MKAzs1Fn+YmiHI2CdSDqAXnE=;
+	s=arc-20240116; t=1744913055; c=relaxed/simple;
+	bh=RL6jupWRXHjJGQ0KnKb5j95MYnlhbnzfbGOn0Ms6AU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FoKgHlokGNkhLoZuIIrylriftuMV71XHrSeYE9jCnXkMDUbeuPKNjOVGy1XmMIwo5TH8swpucvlOxXwj83ROnJm4Sv7U9bML2AkD3gA4jORbh5z/WfIpmfrzDt5/S58myB68OJFsdwlnt9zlldRxUmkaou+ovh5QZxa2asWkIb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPIOv6jz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA76C4CEE4;
-	Thu, 17 Apr 2025 18:43:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IF1pjgPc7KA3tdtcL749X4Y2yVj698h0OF4V910cZF/f+8w+/bCJ8sivLlYSP9oBdi/4DzTkSTOtf5z9mLC0GPaGkygWAIPjbWRx4lDSvk1piVLI/zBBdyfeyRQp0HI4cXRTjEL2NIPLBkcQVJDhvgVV1u491vGN2l81usXTm30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvc6VzUh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3196EC4CEE4;
+	Thu, 17 Apr 2025 18:04:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915419;
-	bh=23Nf/etwXumzRwqbpK5MKAzs1Fn+YmiHI2CdSDqAXnE=;
+	s=korg; t=1744913055;
+	bh=RL6jupWRXHjJGQ0KnKb5j95MYnlhbnzfbGOn0Ms6AU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LPIOv6jzn7aY83ffq5yTXvaogcuokoJLix5Wj1dfzRJFDyXvtjkJPi+j5mYaaKL4D
-	 M9tI083hzC/gsAqRfaBMIUcn87oSN/ZTGTVwJmUN3eqiM1riyYbjeNBLbB88TPjhoN
-	 kV+jsveye52hr3hzcWPfIltUhFYbnisJFIrIlFYw=
+	b=vvc6VzUh/Y25gguXFo9JqF32sZd89h1akAS5tUjxslMI+eC/KPdM6MWzOj1C2nnB+
+	 uaApadBiHnjvD9FRtwHEYZRQMloSCV5rpHe/ofZjuPWSv3DFfXf8DJwzb0Ve6XfZ3m
+	 NmHx6Fk953KHtZ8pjGLHkBbqbHWr6oXsz4Mp3aAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 092/393] wifi: mac80211: ensure sdata->work is canceled before initialized.
+Subject: [PATCH 6.14 213/449] HID: pidff: Clamp effect playback LOOP_COUNT value
 Date: Thu, 17 Apr 2025 19:48:21 +0200
-Message-ID: <20250417175111.295202764@linuxfoundation.org>
+Message-ID: <20250417175126.551755350@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit 6c93fd502023dd919b5987ccbe990735410edd49 ]
+[ Upstream commit 0c6673e3d17b258b8c5c7331d28bf6c49f25ed30 ]
 
-This wiphy work is canceled when the iface is stopped,
-and shouldn't be queued for a non-running iface.
-If it happens to be queued for a non-running iface (due to a bug)
-it can cause a corruption of wiphy_work_list when ieee80211_setup_sdata
-is called. Make sure to cancel it in this case and warn on.
+Ensures the loop count will never exceed the logical_maximum.
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://patch.msgid.link/20250205110958.99204c767c10.I84ce27a239059f6009cee197b252549a11426046@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes implementation errors happening when applications use the max
+value of int32/DWORD as the effect iterations. This could be observed
+when running software both native and in wine.
+
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/iface.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/hid/usbhid/hid-pidff.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 8bbfa45e1796d..dbcd75c5d778e 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -8,7 +8,7 @@
-  * Copyright 2008, Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright (c) 2016        Intel Deutschland GmbH
-- * Copyright (C) 2018-2024 Intel Corporation
-+ * Copyright (C) 2018-2025 Intel Corporation
-  */
- #include <linux/slab.h>
- #include <linux/kernel.h>
-@@ -812,6 +812,9 @@ static void ieee80211_set_multicast_list(struct net_device *dev)
-  */
- static void ieee80211_teardown_sdata(struct ieee80211_sub_if_data *sdata)
- {
-+	if (WARN_ON(!list_empty(&sdata->work.entry)))
-+		wiphy_work_cancel(sdata->local->hw.wiphy, &sdata->work);
-+
- 	/* free extra data */
- 	ieee80211_free_keys(sdata, false);
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index ffecc712be003..74b033a4ac1b8 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -690,7 +690,8 @@ static void pidff_playback_pid(struct pidff_device *pidff, int pid_id, int n)
+ 	} else {
+ 		pidff->effect_operation_status->value[0] =
+ 			pidff->operation_id[PID_EFFECT_START];
+-		pidff->effect_operation[PID_LOOP_COUNT].value[0] = n;
++		pidff->effect_operation[PID_LOOP_COUNT].value[0] =
++			pidff_clamp(n, pidff->effect_operation[PID_LOOP_COUNT].field);
+ 	}
  
+ 	hid_hw_request(pidff->hid, pidff->reports[PID_EFFECT_OPERATION],
 -- 
 2.39.5
 
