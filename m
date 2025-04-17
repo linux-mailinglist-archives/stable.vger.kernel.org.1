@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-134348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF0D8A92A96
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:53:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1098BA929C3
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:44:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B16C7B036C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:51:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53FB77B9453
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AA7D24BBFD;
-	Thu, 17 Apr 2025 18:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2A62641EC;
+	Thu, 17 Apr 2025 18:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yg1uAFPS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G60B3Q9h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46236258CC2;
-	Thu, 17 Apr 2025 18:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF846254B18;
+	Thu, 17 Apr 2025 18:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915858; cv=none; b=ZV4IVzf+5dSNracWAoR9eXLzhwlAYfO+D8FYVVz4H3mBjrpeDO7IB2kStM7olmqFjzg1OMnG6OQFRxb5/TVQsou2ZzmgdbVaNvu/5jY3Yikl20UlesdShe4HgwpAQs8Lvmsji+36orCu3yTXdECxmUBZcg7ouX+pbl8u4eftmEo=
+	t=1744914824; cv=none; b=M9vITN4jGKvxrmRt9UnoZgaL5kevhsssbCziqQqEucfUT1twO+ixB6SffKlKuMPeavs+IWGcb6maOM0MpL+xa7peoIku9GaOy0KhAUH8krbGBTJIQxbOkVBY0HMhscWAbAYTyW77OA7i6g2z/7EGhrV84gMZcrlApXzDGwQF+yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915858; c=relaxed/simple;
-	bh=mT1A4+fCA15O2MUkqD2cSm1MQuwbS5SAkkjUKjRsjAk=;
+	s=arc-20240116; t=1744914824; c=relaxed/simple;
+	bh=NuyAaFu5/1XdbCjDlmyjweW3C+nR0vejL8e/yy4d1nU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F3nOMffwgV6NZ30HW7etLslL0LrLHsIGxvOtNiQgWvpxaXj/HWoDx7Rhe3pcIlxi56mPHBFPNGCgeXOocYrBSJ8RcTf3OQ6zTjhUpHxbBtCMAfXA4Gxa/DbTXDMfMYRS6dA+GnF58wgR/XtU9mcCT1//QAj1pkLGgWh+x0jazj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yg1uAFPS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A94BAC4CEE4;
-	Thu, 17 Apr 2025 18:50:57 +0000 (UTC)
+	 MIME-Version; b=STSfNJFEaR5sZFCKV8XYaoc7EEG5mkBrggXNBv23tlsqtYSwCOzFqdTmYtYhkiXiDqvMx7aMRgKRLBYo2GlXaoy6rQzZvCoMCZ2PPNTxuAlhkN8qNImt6YTrnHVngHkOuEV5G6z1kPbierAudcwQQ+F0OoCu0CStOfaNJfV+3Qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G60B3Q9h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F5DDC4CEE4;
+	Thu, 17 Apr 2025 18:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915858;
-	bh=mT1A4+fCA15O2MUkqD2cSm1MQuwbS5SAkkjUKjRsjAk=;
+	s=korg; t=1744914824;
+	bh=NuyAaFu5/1XdbCjDlmyjweW3C+nR0vejL8e/yy4d1nU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yg1uAFPSlX7HMiZ+b5kXZwwZ+T43wGSWfllvfvJBrrOm5LyDHm6b+SPJNUZAluc/0
-	 aYzH9JFQaVH+cy4cOYr+z3IK7rlTBW9FZWGaxpGj7JhdUVjk0DdOIzgN/pfmKoYca6
-	 AWoSVnwNLzFN6nU/lOm0HmwR0ma4a4DRVaXB6cYM=
+	b=G60B3Q9hjI2R4yq/2SBhaKUJNqaUZzemVQvyGHEFgMYHtsKZqEpPSQ+YU93PmkQCn
+	 ekO9rWB74e+hUQuCpq3RJemmyrqlTJ11+vteaymiRHJG3gMRoOjqcWrinWCny+G9d6
+	 9SREsO58TUGJ5pvqiXb/DOIJeq3hj5rxVNUV8Mpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Carlos Maiolino <cmaiolino@redhat.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.12 263/393] udf: Fix inode_getblk() return value
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	Anand Jain <anand.jain@oracle.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.13 314/414] btrfs: zoned: fix zone activation with missing devices
 Date: Thu, 17 Apr 2025 19:51:12 +0200
-Message-ID: <20250417175118.182865300@linuxfoundation.org>
+Message-ID: <20250417175124.061870123@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-commit 6afdc60ec30b0a9390d11b7cebed79c857ce82aa upstream.
+commit 2bbc4a45e5eb6b868357c1045bf6f38f6ba576e0 upstream.
 
-Smatch noticed that inode_getblk() can return 1 on successful mapping of
-a block instead of expected 0 after commit b405c1e58b73 ("udf: refactor
-udf_next_aext() to handle error"). This could confuse some of the
-callers and lead to strange failures (although the one reported by
-Smatch in udf_mkdir() is impossible to trigger in practice). Fix the
-return value of inode_getblk().
+If btrfs_zone_activate() is called with a filesystem that has missing
+devices (e.g. a RAID file system mounted in degraded mode) it is accessing
+the btrfs_device::zone_info pointer, which will not be set if the device in
+question is missing.
 
-Link: https://lore.kernel.org/all/cb514af7-bbe0-435b-934f-dd1d7a16d2cd@stanley.mountain
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
-Fixes: b405c1e58b73 ("udf: refactor udf_next_aext() to handle error")
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
+Check if the device is present (by checking if it has a valid block
+device pointer associated) and if not, skip zone activation for it.
+
+Fixes: f9a912a3c45f ("btrfs: zoned: make zone activation multi stripe capable")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/inode.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/zoned.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/udf/inode.c
-+++ b/fs/udf/inode.c
-@@ -810,6 +810,7 @@ static int inode_getblk(struct inode *in
- 		}
- 		map->oflags = UDF_BLK_MAPPED;
- 		map->pblk = udf_get_lb_pblock(inode->i_sb, &eloc, offset);
-+		ret = 0;
- 		goto out_free;
- 	}
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -2111,6 +2111,9 @@ bool btrfs_zone_activate(struct btrfs_bl
+ 		physical = map->stripes[i].physical;
+ 		zinfo = device->zone_info;
+ 
++		if (!device->bdev)
++			continue;
++
+ 		if (zinfo->max_active_zones == 0)
+ 			continue;
  
 
 
