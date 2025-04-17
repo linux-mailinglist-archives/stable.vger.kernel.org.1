@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-134083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E132A92940
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A0C3A92B47
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:59:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0734116934D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBEBF1889481
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155FB257443;
-	Thu, 17 Apr 2025 18:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70532256C9B;
+	Thu, 17 Apr 2025 18:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HhrvGgex"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zkr8wkxb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D9C2571CF;
-	Thu, 17 Apr 2025 18:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A871DE885;
+	Thu, 17 Apr 2025 18:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915043; cv=none; b=tU0bT0cWoBcE6j1KwSXQJD+GgwfTDxCz55o8t+08VffMVLVvcqAZCljKVgZmVZnRapn7xzTVlfSpMZcZ2iMpfTmMUIGn2YoO8w7mtnwY2IIsyhgGV17Y5Rj98V5sV7ys7h6OFeWLWzzHo+35exDCWFa7AM0AcXjIFRsSuUlDAN4=
+	t=1744916219; cv=none; b=Zx9g491/G/t0OpJnhKOJH26baXeOpgZHe2xXtoiyqmzb5owGsiAHCAMccnQD7XX20Aa5LX4Nhr21vEGChjNwJ5EBl6iLsZNr9xDHmSJJFKaT8ApUSAu2fJJAlOZZ4cwJpmV2f4lRxRaE31q7iSE6uD/oCwfD7Nm6sG0t7Ley3p4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915043; c=relaxed/simple;
-	bh=yz7uD3dVWR1XK+Rb8S1V0d7k3RdZ8SWaKvUr6mYinjw=;
+	s=arc-20240116; t=1744916219; c=relaxed/simple;
+	bh=Wevpoh2fZ+DFCjLHlLVCUsaRnVVGx7DafZ4KdyoR3wA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=syAKe9xosTkf4TuisWKBayTDlxScEUpXJCcBqFqj/jf5Z6eGTtpjcBiTAKkBlqkhBgL/7WAfxiQCehjyWJXn1qeIJYUq4SUvf0sQDsFED5aOeEMpUWHfTRRGUmw7j8WbWD4ZdHr/xt4UKp5dlDXi+Cexq55HsIqHIyqpksbf76I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HhrvGgex; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B11F5C4CEEA;
-	Thu, 17 Apr 2025 18:37:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=I98KOqIaR2UAAczGifwQ67SslFMu/lu0VmTFVSGnS/Eo0FENHjiESu8BgjBbm2gSj7OZA/EbRywkT0w7AfjH/b8zGZTC0v5To3v2BrontbNk+MnuVmYbkqQQxp7ilHs93q1Gq+E0FMhqHxoiMdRZZqFopg7fmG40wsyM4AUE+wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zkr8wkxb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA24CC4CEE4;
+	Thu, 17 Apr 2025 18:56:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915043;
-	bh=yz7uD3dVWR1XK+Rb8S1V0d7k3RdZ8SWaKvUr6mYinjw=;
+	s=korg; t=1744916219;
+	bh=Wevpoh2fZ+DFCjLHlLVCUsaRnVVGx7DafZ4KdyoR3wA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HhrvGgexpj9YXzAoxLxSpIJ5ClpobkgSC3GpTbsC+h2ALIv7wkCii7xLoRRtSVzA8
-	 /hcDpFzgJ9HarjMVYqA1jfOMp4NuvXEtHM0gxd1wvjkPIyph2OVKhHs4WRA++tNklO
-	 YWLARk4TJgkbIntMx+OY8HFMV5CYmcM8SO5OU3bY=
+	b=zkr8wkxbaZcoEb2Ux+gHvuM7baZtIlnQeXXw6JXoKUxsYEjQeqRAOpm6s6kpoJDHh
+	 MtcJFWoBFPQwUW6Dg+gTInL33N+hCWfdsJovGHhtiKyhIe3Mrt5LSP3dAzNSMs20rM
+	 V1Ch8Jij83/vugfFnEHX8qRNusSmqEUDs86vby+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.13 405/414] iommufd: Make attach_handle generic than fault specific
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 6.12 354/393] misc: pci_endpoint_test: Fix displaying irq_type after request_irq error
 Date: Thu, 17 Apr 2025 19:52:43 +0200
-Message-ID: <20250417175127.771220332@linuxfoundation.org>
+Message-ID: <20250417175121.837996807@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,226 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-commit fb21b1568adaa76af7a8c853f37c60fba8b28661 upstream.
+commit 919d14603dab6a9cf03ebbeb2cfa556df48737c8 upstream.
 
-"attach_handle" was added exclusively for the iommufd_fault_iopf_handler()
-used by IOPF/PRI use cases. Now, both the MSI and PASID series require to
-reuse the attach_handle for non-fault cases.
+There are two variables that indicate the interrupt type to be used
+in the next test execution, global "irq_type" and "test->irq_type".
 
-Add a set of new attach/detach/replace helpers that does the attach_handle
-allocation/releasing/replacement in the common path and also handles those
-fault specific routines such as iopf enabling/disabling and auto response.
+The former is referenced from pci_endpoint_test_get_irq() to preserve
+the current type for ioctl(PCITEST_GET_IRQTYPE).
 
-This covers both non-fault and fault cases in a clean way, replacing those
-inline helpers in the header. The following patch will clean up those old
-helpers in the fault.c file.
+In the pci_endpoint_test_request_irq(), since this global variable
+is referenced when an error occurs, the unintended error message is
+displayed.
 
-Link: https://patch.msgid.link/r/32687df01c02291d89986a9fca897bbbe2b10987.1738645017.git.nicolinc@nvidia.com
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+For example, after running "pcitest -i 2", the following message
+shows "MSI 3" even if the current IRQ type becomes "MSI-X":
+
+  pci-endpoint-test 0000:01:00.0: Failed to request IRQ 30 for MSI 3
+  SET IRQ TYPE TO MSI-X:          NOT OKAY
+
+Fix this issue by using "test->irq_type" instead of global "irq_type".
+
+Cc: stable@vger.kernel.org
+Fixes: b2ba9225e031 ("misc: pci_endpoint_test: Avoid using module parameter to determine irqtype")
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Link: https://lore.kernel.org/r/20250225110252.28866-4-hayashi.kunihiko@socionext.com
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/iommufd/device.c          |  105 ++++++++++++++++++++++++++++++++
- drivers/iommu/iommufd/fault.c           |    8 +-
- drivers/iommu/iommufd/iommufd_private.h |   33 +---------
- 3 files changed, 113 insertions(+), 33 deletions(-)
+ drivers/misc/pci_endpoint_test.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iommu/iommufd/device.c
-+++ b/drivers/iommu/iommufd/device.c
-@@ -352,6 +352,111 @@ iommufd_device_attach_reserved_iova(stru
- 	return 0;
- }
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -234,7 +234,7 @@ static bool pci_endpoint_test_request_ir
+ 	return true;
  
-+/* The device attach/detach/replace helpers for attach_handle */
-+
-+static int iommufd_hwpt_attach_device(struct iommufd_hw_pagetable *hwpt,
-+				      struct iommufd_device *idev)
-+{
-+	struct iommufd_attach_handle *handle;
-+	int rc;
-+
-+	lockdep_assert_held(&idev->igroup->lock);
-+
-+	handle = kzalloc(sizeof(*handle), GFP_KERNEL);
-+	if (!handle)
-+		return -ENOMEM;
-+
-+	if (hwpt->fault) {
-+		rc = iommufd_fault_iopf_enable(idev);
-+		if (rc)
-+			goto out_free_handle;
-+	}
-+
-+	handle->idev = idev;
-+	rc = iommu_attach_group_handle(hwpt->domain, idev->igroup->group,
-+				       &handle->handle);
-+	if (rc)
-+		goto out_disable_iopf;
-+
-+	return 0;
-+
-+out_disable_iopf:
-+	if (hwpt->fault)
-+		iommufd_fault_iopf_disable(idev);
-+out_free_handle:
-+	kfree(handle);
-+	return rc;
-+}
-+
-+static struct iommufd_attach_handle *
-+iommufd_device_get_attach_handle(struct iommufd_device *idev)
-+{
-+	struct iommu_attach_handle *handle;
-+
-+	lockdep_assert_held(&idev->igroup->lock);
-+
-+	handle =
-+		iommu_attach_handle_get(idev->igroup->group, IOMMU_NO_PASID, 0);
-+	if (IS_ERR(handle))
-+		return NULL;
-+	return to_iommufd_handle(handle);
-+}
-+
-+static void iommufd_hwpt_detach_device(struct iommufd_hw_pagetable *hwpt,
-+				       struct iommufd_device *idev)
-+{
-+	struct iommufd_attach_handle *handle;
-+
-+	handle = iommufd_device_get_attach_handle(idev);
-+	iommu_detach_group_handle(hwpt->domain, idev->igroup->group);
-+	if (hwpt->fault) {
-+		iommufd_auto_response_faults(hwpt, handle);
-+		iommufd_fault_iopf_disable(idev);
-+	}
-+	kfree(handle);
-+}
-+
-+static int iommufd_hwpt_replace_device(struct iommufd_device *idev,
-+				       struct iommufd_hw_pagetable *hwpt,
-+				       struct iommufd_hw_pagetable *old)
-+{
-+	struct iommufd_attach_handle *handle, *old_handle =
-+		iommufd_device_get_attach_handle(idev);
-+	int rc;
-+
-+	handle = kzalloc(sizeof(*handle), GFP_KERNEL);
-+	if (!handle)
-+		return -ENOMEM;
-+
-+	if (hwpt->fault && !old->fault) {
-+		rc = iommufd_fault_iopf_enable(idev);
-+		if (rc)
-+			goto out_free_handle;
-+	}
-+
-+	handle->idev = idev;
-+	rc = iommu_replace_group_handle(idev->igroup->group, hwpt->domain,
-+					&handle->handle);
-+	if (rc)
-+		goto out_disable_iopf;
-+
-+	if (old->fault) {
-+		iommufd_auto_response_faults(hwpt, old_handle);
-+		if (!hwpt->fault)
-+			iommufd_fault_iopf_disable(idev);
-+	}
-+	kfree(old_handle);
-+
-+	return 0;
-+
-+out_disable_iopf:
-+	if (hwpt->fault && !old->fault)
-+		iommufd_fault_iopf_disable(idev);
-+out_free_handle:
-+	kfree(handle);
-+	return rc;
-+}
-+
- int iommufd_hw_pagetable_attach(struct iommufd_hw_pagetable *hwpt,
- 				struct iommufd_device *idev)
- {
---- a/drivers/iommu/iommufd/fault.c
-+++ b/drivers/iommu/iommufd/fault.c
-@@ -17,7 +17,7 @@
- #include "../iommu-priv.h"
- #include "iommufd_private.h"
- 
--static int iommufd_fault_iopf_enable(struct iommufd_device *idev)
-+int iommufd_fault_iopf_enable(struct iommufd_device *idev)
- {
- 	struct device *dev = idev->dev;
- 	int ret;
-@@ -50,7 +50,7 @@ static int iommufd_fault_iopf_enable(str
- 	return ret;
- }
- 
--static void iommufd_fault_iopf_disable(struct iommufd_device *idev)
-+void iommufd_fault_iopf_disable(struct iommufd_device *idev)
- {
- 	mutex_lock(&idev->iopf_lock);
- 	if (!WARN_ON(idev->iopf_enabled == 0)) {
-@@ -98,8 +98,8 @@ int iommufd_fault_domain_attach_dev(stru
- 	return ret;
- }
- 
--static void iommufd_auto_response_faults(struct iommufd_hw_pagetable *hwpt,
--					 struct iommufd_attach_handle *handle)
-+void iommufd_auto_response_faults(struct iommufd_hw_pagetable *hwpt,
-+				  struct iommufd_attach_handle *handle)
- {
- 	struct iommufd_fault *fault = hwpt->fault;
- 	struct iopf_group *group, *next;
---- a/drivers/iommu/iommufd/iommufd_private.h
-+++ b/drivers/iommu/iommufd/iommufd_private.h
-@@ -504,35 +504,10 @@ int iommufd_fault_domain_replace_dev(str
- 				     struct iommufd_hw_pagetable *hwpt,
- 				     struct iommufd_hw_pagetable *old);
- 
--static inline int iommufd_hwpt_attach_device(struct iommufd_hw_pagetable *hwpt,
--					     struct iommufd_device *idev)
--{
--	if (hwpt->fault)
--		return iommufd_fault_domain_attach_dev(hwpt, idev);
--
--	return iommu_attach_group(hwpt->domain, idev->igroup->group);
--}
--
--static inline void iommufd_hwpt_detach_device(struct iommufd_hw_pagetable *hwpt,
--					      struct iommufd_device *idev)
--{
--	if (hwpt->fault) {
--		iommufd_fault_domain_detach_dev(hwpt, idev);
--		return;
--	}
--
--	iommu_detach_group(hwpt->domain, idev->igroup->group);
--}
--
--static inline int iommufd_hwpt_replace_device(struct iommufd_device *idev,
--					      struct iommufd_hw_pagetable *hwpt,
--					      struct iommufd_hw_pagetable *old)
--{
--	if (old->fault || hwpt->fault)
--		return iommufd_fault_domain_replace_dev(idev, hwpt, old);
--
--	return iommu_group_replace_domain(idev->igroup->group, hwpt->domain);
--}
-+int iommufd_fault_iopf_enable(struct iommufd_device *idev);
-+void iommufd_fault_iopf_disable(struct iommufd_device *idev);
-+void iommufd_auto_response_faults(struct iommufd_hw_pagetable *hwpt,
-+				  struct iommufd_attach_handle *handle);
- 
- static inline struct iommufd_viommu *
- iommufd_get_viommu(struct iommufd_ucmd *ucmd, u32 id)
+ fail:
+-	switch (irq_type) {
++	switch (test->irq_type) {
+ 	case IRQ_TYPE_INTX:
+ 		dev_err(dev, "Failed to request IRQ %d for Legacy\n",
+ 			pci_irq_vector(pdev, i));
 
 
 
