@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-134317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6DF2A92A8B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:52:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C93A928C2
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:37:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B723B1B63784
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 361758E17F0
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03954257449;
-	Thu, 17 Apr 2025 18:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A03C225F968;
+	Thu, 17 Apr 2025 18:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ns/1P3e+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b649+cE2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B8D2638AF;
-	Thu, 17 Apr 2025 18:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E98725F962;
+	Thu, 17 Apr 2025 18:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915761; cv=none; b=BVUBbFIkyew1t2LFAPUsjE2epK+Cxgfj3JK3114UrEIDlb4XajPQjOtEqufxnbP1a/dLhkeq3XBSGIsz4Jy9oPB1jaXalrtjN/u3vXcgFfB9j2E28RnR5QD6J6wK02It4hwVfXMWsYvh6ianE24SIdG0Rh7z0wcs/MbZf0GkOQk=
+	t=1744914644; cv=none; b=s+EuwQnDPYU/a+CvY0OnqMk29eDxMedOnBCLv/doTEgycWGGYfzqZ2c6l7VXUXu4b4nK4xLFMdfTGR5/XBshEU4asnJHloWTq3gHheTn1oG72V3I1fywUZ3DI+MG4ATWyPwP+2D6QnMwf4d/bAzNFfqQZ95wRaAtPpaMrtizCDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915761; c=relaxed/simple;
-	bh=gP2kbhyeT4Q0qJPI4/4aHSjZ6WIaoF/KRkYKFvnRtEk=;
+	s=arc-20240116; t=1744914644; c=relaxed/simple;
+	bh=pCEsjaM8TZOiEUDakTtyf8wGY5W5pVFOgwOZjDY1dPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mkE1cxL4afCNJGVoE5cDhst3/CDY7fo1T8rmwyDjt6za/P4yF/nnadXBpgUTTjjBSmYNt3HLIgtgRiV1yr+FEwH4JQClVE91dAxy1vS1EJn+dSGan3HH1qeF1r84zBybmf/6HwsjaCW4AsrGXI7ohA9opVlKJ/x7e5Z9cmgau74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ns/1P3e+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7BBFC4CEEC;
-	Thu, 17 Apr 2025 18:49:20 +0000 (UTC)
+	 MIME-Version; b=puXrj8aleiz1W4+zCBWuAY5a9JNSbq8wgbENN83agSKXJsbsqNmm/tDbvXlxRy6vz+9ohtG7nDYOYtB54V+GMHl6HHxNLtrTnok94JRCsq3kqewrtIrbzPGF9DqgYkpJqC8mM9Yjs3d6vZ5pDSd2w13Tkn8ml6531kPbrPHTOGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b649+cE2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4DFFC4CEE4;
+	Thu, 17 Apr 2025 18:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915761;
-	bh=gP2kbhyeT4Q0qJPI4/4aHSjZ6WIaoF/KRkYKFvnRtEk=;
+	s=korg; t=1744914644;
+	bh=pCEsjaM8TZOiEUDakTtyf8wGY5W5pVFOgwOZjDY1dPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ns/1P3e+K3LDncyNKodJxzuO1XXay7WPhB9dwmCEBnmueTVXvAnQZ1cs8PbdAJZ4Q
-	 hrlwz6kI2qTrI8XJaLpBIs9s8vDeZwWPAgKCvaAh1+oeQawtM4Fkfa+Yu6Wb/ZXTmv
-	 QxPL7kK7zD4jIQJNHx/uwWLFBLEBBajmKOeWolYE=
+	b=b649+cE25tMKB1ZuwRBjdKZXOieWgUWZzNQ3LmCl1UC0zH7rPczzxGxcJElaXXmgA
+	 ZjCOdgZeg/NZkrT+gkx+K+Y0P7BnuyjwZaI4iV37kRXeKJRmp+3nr5p4Q9kMN5QrUN
+	 zONCJvm0JcwCKkAuH3HOWPgMZJc74KrnbmJXh42M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jackson.lee" <jackson.lee@chipsnmedia.com>,
-	Nas Chung <nas.chung@chipsnmedia.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 232/393] media: chips-media: wave5: Fix timeout while testing 10bit hevc fluster
-Date: Thu, 17 Apr 2025 19:50:41 +0200
-Message-ID: <20250417175116.920686601@linuxfoundation.org>
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.13 284/414] soc: samsung: exynos-chipid: Add NULL pointer check in exynos_chipid_probe()
+Date: Thu, 17 Apr 2025 19:50:42 +0200
+Message-ID: <20250417175122.851471230@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jackson.lee <jackson.lee@chipsnmedia.com>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-commit 035371c9e5098018b8512efc6a8812912469480c upstream.
+commit c8222ef6cf29dd7cad21643228f96535cc02b327 upstream.
 
-The Wave5 521C variant does not support 10 bit decoding. When 10 bit
-decoding support was added for the 515 variant, a section of the code
-was removed which returned an error. This removal causes a timeout for
-the 521 variant, which was discovered during HEVC 10-bit decoding tests.
+soc_dev_attr->revision could be NULL, thus,
+a pointer check is added to prevent potential NULL pointer dereference.
+This is similar to the fix in commit 3027e7b15b02
+("ice: Fix some null pointer dereference issues in ice_ptp.c").
 
-Fixes: 143e7ab4d9a0 ("media: chips-media: wave5: support decoding HEVC Main10 profile")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jackson.lee <jackson.lee@chipsnmedia.com>
-Signed-off-by: Nas Chung <nas.chung@chipsnmedia.com>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+This issue is found by our static analysis tool.
+
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Link: https://lore.kernel.org/r/20250212213518.69432-1-chenyuan0y@gmail.com
+Fixes: 3253b7b7cd44 ("soc: samsung: Add exynos chipid driver support")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/soc/samsung/exynos-chipid.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c
-+++ b/drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c
-@@ -1424,10 +1424,24 @@ static int wave5_vpu_dec_start_streaming
- 		if (ret)
- 			goto free_bitstream_vbuf;
- 	} else if (q->type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE) {
-+		struct dec_initial_info *initial_info =
-+			&inst->codec_info->dec_info.initial_info;
-+
- 		if (inst->state == VPU_INST_STATE_STOP)
- 			ret = switch_state(inst, VPU_INST_STATE_INIT_SEQ);
- 		if (ret)
- 			goto return_buffers;
-+
-+		if (inst->state == VPU_INST_STATE_INIT_SEQ &&
-+		    inst->dev->product_code == WAVE521C_CODE) {
-+			if (initial_info->luma_bitdepth != 8) {
-+				dev_info(inst->dev->dev, "%s: no support for %d bit depth",
-+					 __func__, initial_info->luma_bitdepth);
-+				ret = -EINVAL;
-+				goto return_buffers;
-+			}
-+		}
-+
- 	}
+--- a/drivers/soc/samsung/exynos-chipid.c
++++ b/drivers/soc/samsung/exynos-chipid.c
+@@ -134,6 +134,8 @@ static int exynos_chipid_probe(struct pl
  
- 	return ret;
+ 	soc_dev_attr->revision = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+ 						"%x", soc_info.revision);
++	if (!soc_dev_attr->revision)
++		return -ENOMEM;
+ 	soc_dev_attr->soc_id = product_id_to_soc_id(soc_info.product_id);
+ 	if (!soc_dev_attr->soc_id) {
+ 		pr_err("Unknown SoC\n");
 
 
 
