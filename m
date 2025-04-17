@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-133976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1C70A928C8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:38:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41912A92AB5
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:54:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD16A1B614CA
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FD1B163702
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7F1257AD3;
-	Thu, 17 Apr 2025 18:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749AE25EF9B;
+	Thu, 17 Apr 2025 18:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EXXwQtdh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tLVf6GWx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2F1252915;
-	Thu, 17 Apr 2025 18:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2112725525D;
+	Thu, 17 Apr 2025 18:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914715; cv=none; b=FESCTU6GEZCe3Wyf01+oXhyxQVwVsHXvRswuNiXgr5xt9Ispy5AeUMjOZTTo6+CGTkdsJv3OGy4YWXlXbrW3GO12OIGGU4I6JVps/nIBN8XxGj9/Nny/rfn+l6qjelM9Xu7Qxa9uIWLWMs/3wAlmUTlyP/wxqT+FzKRu5k8KmS0=
+	t=1744915922; cv=none; b=cq1Fh2Og273+YD7t4RVP4t3Pc2C6cOOOVh72pWwu6T5DNbMlEF9tPjm/ClfhWeGaarD08PeqcngdID2PjW94vG8yPkQnUOkKw2EsYjqIsrSIKY4WLYO6CzNIIeexMpM7PKIYNjDuLINpCfJVCETnrBiC6eU9lSrekM5wPdkHV8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914715; c=relaxed/simple;
-	bh=aQQkbhzmIlP2TkSlBpxQZ8thyQ2Nx1qfvkp4fPMby1c=;
+	s=arc-20240116; t=1744915922; c=relaxed/simple;
+	bh=sBDSBR9q6sdq6oPMDNpKNUqRWDpe3d+Pg7LivMS0xUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lSEH78JrECPxSj5IN2vegqTLyPZTQIhscLxECTSSP2AJAzApzKhLkJoQ7tqGekYWm6s89yD9XjkT/TaGcrxVlTmkfeJ0TQ5hnVSS7ra4VHXwc/IX69rfvOoUfI2nYLLlRjc1OhMm6NhpoRlT194ZTZ3hgtFUCVO4F6EibpyP9Ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EXXwQtdh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C5AC4CEE4;
-	Thu, 17 Apr 2025 18:31:54 +0000 (UTC)
+	 MIME-Version; b=dxxgUBUdQU0mP2fZpeMATFyZK/nrNihtGBK+Er3RQCPEGAwwuUEsA7dtwC8tYM6Z8h/7wYiwKASGjLd9bAA9xirzuLNjZakb9BFvH9vXBvInMRLuIHmpLr+M4jvrlJ4DvVeOAN7moMkbCzJ3g94lM4JXH2OtOFH4wbyVeStddpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tLVf6GWx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F9CC4CEE4;
+	Thu, 17 Apr 2025 18:52:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914714;
-	bh=aQQkbhzmIlP2TkSlBpxQZ8thyQ2Nx1qfvkp4fPMby1c=;
+	s=korg; t=1744915922;
+	bh=sBDSBR9q6sdq6oPMDNpKNUqRWDpe3d+Pg7LivMS0xUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EXXwQtdhuVRGcZoeut1VFn/cWSnzJrvWGZ66B0VAG7NoHGVkkc7XqRLj/M31GN1Mw
-	 LA+tVQQ3o2oEcDjCQ7Rb0ENItY7b2sn1po80Uee3a3RTK92uTRtmDBbLEJhuz31I1w
-	 CLEgrqRb8ztbSBPMKXfYfGnerlXRZO56vHbuZSng=
+	b=tLVf6GWxaddVF7EoxgtRH5FaPCeRGBbVbex5DqP7xiiDfZ4pJTeY8QTbTAd1Zv33D
+	 zLuxULcopO+WC+vDsXEJ96VAjSpg7A40B5ZhwpGH8vkVIgLlpknXYbIHqF4PiqqkSM
+	 yn9JyMEi5Gmg/bW2qSMDebw+lLrYymP2TtulfvhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keerthy <j-keerthy@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Subject: [PATCH 6.13 306/414] arm64: dts: ti: k3-j784s4-j742s2-main-common: Correct the GICD size
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 255/393] ASoC: qdsp6: q6asm-dai: fix q6asm_dai_compr_set_params error path
 Date: Thu, 17 Apr 2025 19:51:04 +0200
-Message-ID: <20250417175123.739025829@linuxfoundation.org>
+Message-ID: <20250417175117.849099069@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +64,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keerthy <j-keerthy@ti.com>
+From: Alexey Klimov <alexey.klimov@linaro.org>
 
-commit 398898f9cca1a19a83184430c675562680e57c7b upstream.
+commit 7eccc86e90f04a0d758d16c08627a620ac59604d upstream.
 
-Currently we get the warning:
+In case of attempts to compress playback something, for instance,
+when audio routing is not set up correctly, the audio DSP is left in
+inconsistent state because we are not doing the correct things in
+the error path of q6asm_dai_compr_set_params().
 
-"GICv3: [Firmware Bug]: GICR region 0x0000000001900000 has
-overlapping address"
+So, when routing is not set up and compress playback is attempted
+the following errors are present (simplified log):
 
-As per TRM GICD is 64 KB. Fix it by correcting the size of GICD.
+q6routing routing: Routing not setup for MultiMedia-1 Session
+q6asm-dai dais: Stream reg failed ret:-22
+q6asm-dai dais: ASoC error (-22): at snd_soc_component_compr_set_params()
+on 17300000.remoteproc:glink-edge:apr:service@7:dais
+
+After setting the correct routing the compress playback will always fail:
+
+q6asm-dai dais: cmd = 0x10db3 returned error = 0x9
+q6asm-dai dais: DSP returned error[9]
+q6asm-dai dais: q6asm_open_write failed
+q6asm-dai dais: ASoC error (-22): at snd_soc_component_compr_set_params()
+on 17300000.remoteproc:glink-edge:apr:service@7:dais
+
+0x9 here means "Operation is already processed". The CMD_OPEN here was
+sent the second time hence DSP responds that it was already done.
+
+Turns out the CMD_CLOSE should be sent after the q6asm_open_write()
+succeeded but something failed after that, for instance, routing
+setup.
+
+Fix this by slightly reworking the error path in
+q6asm_dai_compr_set_params().
+
+Tested on QRB5165 RB5 and SDM845 RB3 boards.
 
 Cc: stable@vger.kernel.org
-Fixes: 9cc161a4509c ("arm64: dts: ti: Refactor J784s4 SoC files to a common file")
-Link: https://lore.kernel.org/r/20250218052248.4734-1-j-keerthy@ti.com
-Signed-off-by: Keerthy <j-keerthy@ti.com>
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Fixes: 5b39363e54cc ("ASoC: q6asm-dai: prepare set params to accept profile change")
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Cc: Vinod Koul <vkoul@kernel.org>
+Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://patch.msgid.link/20250327154650.337404-1-alexey.klimov@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/qcom/qdsp6/q6asm-dai.c |   19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi b/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
-index 83bbf94b58d1..3b72fca158ad 100644
---- a/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
-@@ -193,7 +193,7 @@ gic500: interrupt-controller@1800000 {
- 		ranges;
- 		#interrupt-cells = <3>;
- 		interrupt-controller;
--		reg = <0x00 0x01800000 0x00 0x200000>, /* GICD */
-+		reg = <0x00 0x01800000 0x00 0x10000>, /* GICD */
- 		      <0x00 0x01900000 0x00 0x100000>, /* GICR */
- 		      <0x00 0x6f000000 0x00 0x2000>,   /* GICC */
- 		      <0x00 0x6f010000 0x00 0x1000>,   /* GICH */
--- 
-2.49.0
-
+--- a/sound/soc/qcom/qdsp6/q6asm-dai.c
++++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
+@@ -892,9 +892,7 @@ static int q6asm_dai_compr_set_params(st
+ 
+ 		if (ret < 0) {
+ 			dev_err(dev, "q6asm_open_write failed\n");
+-			q6asm_audio_client_free(prtd->audio_client);
+-			prtd->audio_client = NULL;
+-			return ret;
++			goto open_err;
+ 		}
+ 	}
+ 
+@@ -903,7 +901,7 @@ static int q6asm_dai_compr_set_params(st
+ 			      prtd->session_id, dir);
+ 	if (ret) {
+ 		dev_err(dev, "Stream reg failed ret:%d\n", ret);
+-		return ret;
++		goto q6_err;
+ 	}
+ 
+ 	ret = __q6asm_dai_compr_set_codec_params(component, stream,
+@@ -911,7 +909,7 @@ static int q6asm_dai_compr_set_params(st
+ 						 prtd->stream_id);
+ 	if (ret) {
+ 		dev_err(dev, "codec param setup failed ret:%d\n", ret);
+-		return ret;
++		goto q6_err;
+ 	}
+ 
+ 	ret = q6asm_map_memory_regions(dir, prtd->audio_client, prtd->phys,
+@@ -920,12 +918,21 @@ static int q6asm_dai_compr_set_params(st
+ 
+ 	if (ret < 0) {
+ 		dev_err(dev, "Buffer Mapping failed ret:%d\n", ret);
+-		return -ENOMEM;
++		ret = -ENOMEM;
++		goto q6_err;
+ 	}
+ 
+ 	prtd->state = Q6ASM_STREAM_RUNNING;
+ 
+ 	return 0;
++
++q6_err:
++	q6asm_cmd(prtd->audio_client, prtd->stream_id, CMD_CLOSE);
++
++open_err:
++	q6asm_audio_client_free(prtd->audio_client);
++	prtd->audio_client = NULL;
++	return ret;
+ }
+ 
+ static int q6asm_dai_compr_set_metadata(struct snd_soc_component *component,
 
 
 
