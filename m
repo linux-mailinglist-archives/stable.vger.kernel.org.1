@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-133956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF1B7A928B8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:37:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A980A92AC4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:54:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04DD01B611A9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F336C8A4B56
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AFCF25FA07;
-	Thu, 17 Apr 2025 18:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C7D257435;
+	Thu, 17 Apr 2025 18:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GWlE7fDM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CeAlk+M+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD01A1CAA99;
-	Thu, 17 Apr 2025 18:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2500825742E;
+	Thu, 17 Apr 2025 18:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914655; cv=none; b=DicHWBixE538qTxssozNvu2arAwLtC94517tuPKx2eywChMbQW08fp+kUmR5U9QfnfgIS3+8riqAAnbdmW92ISgvwa+frsErJ8QkZevuL67AyOEK/OXZEpoYBBwHMkt5QLRj8WMJ/cBOpP5F6q4L4Ugof3VNFAcjZ1lW6Jg6Unk=
+	t=1744915781; cv=none; b=naSm+eDJj4oabWYOR1E4m0UOjHN5QXE1ZkvYNEnpvl1Eurb++EM3LNwEwFp1rqxUdgYGAC2lgI3LYgd+2zGeuCUsMVk0zPu4wM2vqIiai1TBoArb0R9eHFfU5Z/yZi/9X23jilWpQvF8U/TU9q3yjBhCmh8mFV4rEm29I/Dif+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914655; c=relaxed/simple;
-	bh=SRVB5KvJx455FKkaguFPk9PtefkwcgQEek8bhlqkMqg=;
+	s=arc-20240116; t=1744915781; c=relaxed/simple;
+	bh=aWoaM0QPyxs4pmapIIU2UUoKLsxqE5UBfO76uZZpK5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YqODS2bY127+SIuEL4VP6zssLn6mHtYIzMmeGyEpxO8EJ75cj/y9aZIpUyHiwDioPaG/M4UjhLGbyEtQTMutKLqr90VRLGTMCQvQbrFCQbFH83/S3R5Yd469Dhxp/kl1h7Yc2sAoM36Zmb+DJoCX0olcn227zcFTFHBLtJrRZAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWlE7fDM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D6DC4CEE4;
-	Thu, 17 Apr 2025 18:30:54 +0000 (UTC)
+	 MIME-Version; b=ALPsGbrcR81VGFMhVDePhbIk3IHdOzBfhRUUcRUlEFrROTPXHtTDI5a0ICj20D4CCbmAjSYTWwn4gCtBxtneTq1tGrBC8nPu4nbAfEqKNy5tVW+fg2fgaTXMxmb6O5dxy0MjGXZlOY6NQanJSxTpRkJhHo7p2t2mcM13R5WPH/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CeAlk+M+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342FCC4CEE4;
+	Thu, 17 Apr 2025 18:49:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914655;
-	bh=SRVB5KvJx455FKkaguFPk9PtefkwcgQEek8bhlqkMqg=;
+	s=korg; t=1744915779;
+	bh=aWoaM0QPyxs4pmapIIU2UUoKLsxqE5UBfO76uZZpK5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GWlE7fDMDv3hzxnYzOwYbRI9UbYw7gVm24LLDv6G2KxThdiQj+KOi7iVHsnKQZ1aJ
-	 fb1ojFTqkAglcTpleeo7MmhKFnVy0ysLW4V/w4CJEM3BX6OPignuKcsW74T6gqYKTM
-	 GYtUIspH6ECpcKi9yQ61DJbHzoM0uQ/Yiz40rCGk=
+	b=CeAlk+M+3XU1g5tGXkqgwQcWntiarwgtIFiZoVb8uL+PkfCCs6wLCv+ZVJNOWcBCp
+	 9FTtHr6V4OQB66jLY0W7JsuiITP/b3Zncs3yULjj8nLP02waft3icI01NftGKjSiAR
+	 rMWtbanExYEfzvMf5Khju3Cb+Rkf7qPNRfMlxU10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Stanley Chu <yschu@nuvoton.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.13 288/414] i3c: master: svc: Use readsb helper for reading MDB
-Date: Thu, 17 Apr 2025 19:50:46 +0200
-Message-ID: <20250417175123.011199274@linuxfoundation.org>
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.12 238/393] mtd: Replace kcalloc() with devm_kcalloc()
+Date: Thu, 17 Apr 2025 19:50:47 +0200
+Message-ID: <20250417175117.174565851@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanley Chu <yschu@nuvoton.com>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-commit c06acf7143bddaa3c0f7bedd8b99e48f6acb85c3 upstream.
+commit 1b61a59876f0eafc19b23007c522ee407f55dbec upstream.
 
-The target can send the MDB byte followed by additional data bytes.
-The readl on MRDATAB reads one actual byte, but the readsl advances
-the destination pointer by 4 bytes. This causes the subsequent payload
-to be copied to wrong position in the destination buffer.
+Replace kcalloc() with devm_kcalloc() to prevent memory leaks in case of
+errors.
 
-Cc: stable@kernel.org
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-Signed-off-by: Stanley Chu <yschu@nuvoton.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250318053606.3087121-3-yschu@nuvoton.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 78c08247b9d3 ("mtd: Support kmsg dumper based on pstore/blk")
+Cc: stable@vger.kernel.org # v5.10+
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/mtdpstore.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -378,7 +378,7 @@ static int svc_i3c_master_handle_ibi(str
- 	       slot->len < SVC_I3C_FIFO_SIZE) {
- 		mdatactrl = readl(master->regs + SVC_I3C_MDATACTRL);
- 		count = SVC_I3C_MDATACTRL_RXCOUNT(mdatactrl);
--		readsl(master->regs + SVC_I3C_MRDATAB, buf, count);
-+		readsb(master->regs + SVC_I3C_MRDATAB, buf, count);
- 		slot->len += count;
- 		buf += count;
+--- a/drivers/mtd/mtdpstore.c
++++ b/drivers/mtd/mtdpstore.c
+@@ -417,11 +417,11 @@ static void mtdpstore_notify_add(struct
  	}
+ 
+ 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, info->kmsg_size));
+-	cxt->rmmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
+-	cxt->usedmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
++	cxt->rmmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
++	cxt->usedmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
+ 
+ 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, mtd->erasesize));
+-	cxt->badmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
++	cxt->badmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
+ 
+ 	if (!cxt->rmmap || !cxt->usedmap || !cxt->badmap)
+ 		return;
+@@ -530,9 +530,6 @@ static void mtdpstore_notify_remove(stru
+ 	mtdpstore_flush_removed(cxt);
+ 
+ 	unregister_pstore_device(&cxt->dev);
+-	kfree(cxt->badmap);
+-	kfree(cxt->usedmap);
+-	kfree(cxt->rmmap);
+ 	cxt->mtd = NULL;
+ 	cxt->index = -1;
+ }
 
 
 
