@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-133622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4EC9A92686
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:14:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 494ECA92ABE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:54:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78E7A8A653C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:13:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B03EE168954
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:53:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF1B2561D5;
-	Thu, 17 Apr 2025 18:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C57A25F78D;
+	Thu, 17 Apr 2025 18:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ciN65E4x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7UTeGO7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A894D256C6D;
-	Thu, 17 Apr 2025 18:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C7E2571DE;
+	Thu, 17 Apr 2025 18:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913636; cv=none; b=hrxtQnAvsfOFP2Ab8h1HWrdyPZ/CCxM1QEtpqhxp5gqnLlLtHBNxVLRWjIdF1x/o464Wc3WuIuL/AQfbtIShAKVo5eUOJJGmCdIWObLDP2JI2kNyFAUPOSMwcPqxm17tVOhZnxEYmWE1T+l3jrdguqz+96Q8RLWhp+43EeErTRs=
+	t=1744915943; cv=none; b=hGUBGNY3XjXsDR8Pv0/9dmsoW38FLBo0fCnYOasJoLrKcTBnUfVF/NU4FzaPBR03A7OkjZ0vGtRL8U39K8sZUx6G11AZ+3naKo9mmqIQdhbd6kTzDP40tGjWyHZWbVMaNebgO/gf5MXBym4lwQ0b0ZDOItcMsKGTYu9Gkgc5SJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913636; c=relaxed/simple;
-	bh=BFfIWSSJVhBFNRNlbGvBV0Nt6hmlrA6noDpmQ34Yr7s=;
+	s=arc-20240116; t=1744915943; c=relaxed/simple;
+	bh=INkbw7bu2Bb+ERSTOnOvubQ7zCygHBA66TdHnqpQBNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DbXkE2lNG9tcpSWzWa/TrEJUizhej7l3b6iR/jH+0bnzzTXZbRDR/naHEpb2Y6KthqUPE3iw9bc5pMyZv+Tf1S7wQCnwXBxgBgXfTQmDuWcqVIHnF7bb8cDI4yQ5E6uwLaLrnBvf7BcMoIidrkeZtfrZaSO9FCRvSlnztjXrD/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ciN65E4x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30478C4CEE4;
-	Thu, 17 Apr 2025 18:13:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aHO04xPxtUuMeETwzmMSXHvaiL2e8emD7cv/Nl+o3H0LsXZURNOATg6i1r2y9yDD7kRrHZxpFBY8RH/PsZd3NVWKhoAycTMeIXq6Lj9jFPPHobT8WkVV4g849vgfOLj2eYHhrFcecUACPIRo5aXwaLe0dvt3k+c6pBpqxKKbtCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7UTeGO7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA93C4CEE4;
+	Thu, 17 Apr 2025 18:52:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913636;
-	bh=BFfIWSSJVhBFNRNlbGvBV0Nt6hmlrA6noDpmQ34Yr7s=;
+	s=korg; t=1744915943;
+	bh=INkbw7bu2Bb+ERSTOnOvubQ7zCygHBA66TdHnqpQBNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ciN65E4xoBPGxo4iWAGP1GUiolWP7mtGadEw+ylcbrPOAWvHgM/7AyRgm2vfneAgb
-	 FIH4nRl0gciel2x2PpLzunX1jmDjaAcMk4mfIg5os1VcEOFW6cc7zl7giTj2C36NM2
-	 7Pjd6m5/KCW4SotqaWUwNfUoLaA0JFwqdQhf5Rus=
+	b=p7UTeGO7+/B56DxqaUIHo581ZxAi7BiIrPMAqo2UguB0Dc25PnCgW7Mgec1PkLi+I
+	 /ntkvyXHVM7wlo/SJajyPlgOfxyrmOLFsTsPIjI3Ei5YgYLPS1Kl3XlKX1Tddl2l+k
+	 +9/XifITCP76wa2wgDR43VajvYzWu9+mEYgArW2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.14 404/449] KVM: x86: Acquire SRCU in KVM_GET_MP_STATE to protect guest memory accesses
-Date: Thu, 17 Apr 2025 19:51:32 +0200
-Message-ID: <20250417175134.528964318@linuxfoundation.org>
+	Kristina Martsenko <kristina.martsenko@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Keir Fraser <keirf@google.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.12 284/393] arm64: mops: Do not dereference src reg for a set operation
+Date: Thu, 17 Apr 2025 19:51:33 +0200
+Message-ID: <20250417175119.032182140@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,89 +63,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Keir Fraser <keirf@google.com>
 
-commit ef01cac401f18647d62720cf773d7bb0541827da upstream.
+commit a13bfa4fe0d6949cea14718df2d1fe84c38cd113 upstream.
 
-Acquire a lock on kvm->srcu when userspace is getting MP state to handle a
-rather extreme edge case where "accepting" APIC events, i.e. processing
-pending INIT or SIPI, can trigger accesses to guest memory.  If the vCPU
-is in L2 with INIT *and* a TRIPLE_FAULT request pending, then getting MP
-state will trigger a nested VM-Exit by way of ->check_nested_events(), and
-emuating the nested VM-Exit can access guest memory.
+The source register is not used for SET* and reading it can result in
+a UBSAN out-of-bounds array access error, specifically when the MOPS
+exception is taken from a SET* sequence with XZR (reg 31) as the
+source. Architecturally this is the only case where a src/dst/size
+field in the ESR can be reported as 31.
 
-The splat was originally hit by syzkaller on a Google-internal kernel, and
-reproduced on an upstream kernel by hacking the triple_fault_event_test
-selftest to stuff a pending INIT, store an MSR on VM-Exit (to generate a
-memory access on VMX), and do vcpu_mp_state_get() to trigger the scenario.
+Prior to 2de451a329cf662b the code in do_el0_mops() was benign as the
+use of pt_regs_read_reg() prevented the out-of-bounds access.
 
-  =============================
-  WARNING: suspicious RCU usage
-  6.14.0-rc3-b112d356288b-vmx/pi_lockdep_false_pos-lock #3 Not tainted
-  -----------------------------
-  include/linux/kvm_host.h:1058 suspicious rcu_dereference_check() usage!
-
-  other info that might help us debug this:
-
-  rcu_scheduler_active = 2, debug_locks = 1
-  1 lock held by triple_fault_ev/1256:
-   #0: ffff88810df5a330 (&vcpu->mutex){+.+.}-{4:4}, at: kvm_vcpu_ioctl+0x8b/0x9a0 [kvm]
-
-  stack backtrace:
-  CPU: 11 UID: 1000 PID: 1256 Comm: triple_fault_ev Not tainted 6.14.0-rc3-b112d356288b-vmx #3
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x7f/0x90
-   lockdep_rcu_suspicious+0x144/0x190
-   kvm_vcpu_gfn_to_memslot+0x156/0x180 [kvm]
-   kvm_vcpu_read_guest+0x3e/0x90 [kvm]
-   read_and_check_msr_entry+0x2e/0x180 [kvm_intel]
-   __nested_vmx_vmexit+0x550/0xde0 [kvm_intel]
-   kvm_check_nested_events+0x1b/0x30 [kvm]
-   kvm_apic_accept_events+0x33/0x100 [kvm]
-   kvm_arch_vcpu_ioctl_get_mpstate+0x30/0x1d0 [kvm]
-   kvm_vcpu_ioctl+0x33e/0x9a0 [kvm]
-   __x64_sys_ioctl+0x8b/0xb0
-   do_syscall_64+0x6c/0x170
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-   </TASK>
-
+Fixes: 2de451a329cf ("KVM: arm64: Add handler for MOPS exceptions")
+Cc: <stable@vger.kernel.org> # 6.12.x
+Cc: Kristina Martsenko <kristina.martsenko@arm.com>
+Cc: Will Deacon <will@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20250401150504.829812-1-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Keir Fraser <keirf@google.com>
+Reviewed-by: Kristina Martšenko <kristina.martsenko@arm.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20250326110448.3792396-1-keirf@google.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/x86.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/include/asm/traps.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -11773,6 +11773,8 @@ int kvm_arch_vcpu_ioctl_get_mpstate(stru
- 	if (kvm_mpx_supported())
- 		kvm_load_guest_fpu(vcpu);
+diff --git a/arch/arm64/include/asm/traps.h b/arch/arm64/include/asm/traps.h
+index d780d1bd2eac..82cf1f879c61 100644
+--- a/arch/arm64/include/asm/traps.h
++++ b/arch/arm64/include/asm/traps.h
+@@ -109,10 +109,9 @@ static inline void arm64_mops_reset_regs(struct user_pt_regs *regs, unsigned lon
+ 	int dstreg = ESR_ELx_MOPS_ISS_DESTREG(esr);
+ 	int srcreg = ESR_ELx_MOPS_ISS_SRCREG(esr);
+ 	int sizereg = ESR_ELx_MOPS_ISS_SIZEREG(esr);
+-	unsigned long dst, src, size;
++	unsigned long dst, size;
  
-+	kvm_vcpu_srcu_read_lock(vcpu);
-+
- 	r = kvm_apic_accept_events(vcpu);
- 	if (r < 0)
- 		goto out;
-@@ -11786,6 +11788,8 @@ int kvm_arch_vcpu_ioctl_get_mpstate(stru
- 		mp_state->mp_state = vcpu->arch.mp_state;
+ 	dst = regs->regs[dstreg];
+-	src = regs->regs[srcreg];
+ 	size = regs->regs[sizereg];
  
- out:
-+	kvm_vcpu_srcu_read_unlock(vcpu);
-+
- 	if (kvm_mpx_supported())
- 		kvm_put_guest_fpu(vcpu);
- 	vcpu_put(vcpu);
+ 	/*
+@@ -129,6 +128,7 @@ static inline void arm64_mops_reset_regs(struct user_pt_regs *regs, unsigned lon
+ 		}
+ 	} else {
+ 		/* CPY* instruction */
++		unsigned long src = regs->regs[srcreg];
+ 		if (!(option_a ^ wrong_option)) {
+ 			/* Format is from Option B */
+ 			if (regs->pstate & PSR_N_BIT) {
+-- 
+2.49.0
+
 
 
 
