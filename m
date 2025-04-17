@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-133973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D7F5A928C5
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:37:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0222DA92631
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:11:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F39BC1B6129E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 066168A5CCB
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:11:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 831FC259489;
-	Thu, 17 Apr 2025 18:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8929B1A3178;
+	Thu, 17 Apr 2025 18:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjXLxHzQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2vz5fEtc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF34256C93;
-	Thu, 17 Apr 2025 18:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4745325525F;
+	Thu, 17 Apr 2025 18:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914706; cv=none; b=MX6P0g66RHkY5VHSDw9B8ZMMT+JlaYJ7eDaA3zR1YlhCKDxSIhAn1ZK8moV4oEBAzakRIOcMmQ4BPyShs2dS/bxXOZbf2ioZ9CKzMnI1DFc/WEeytzKM3qaUVcGNoZttbWVQ9ao8UE/3Ur7RfHbjzyRBe1/XCjtpRIPp9mr/DTY=
+	t=1744913464; cv=none; b=sIpl3Vz51axIQphznm950S7Ih9veyLp8Bs2Mo5Lm6fxtLMaz4r7j6nxo2aQ6FH2bVrMuctLJX2PbWTZuN7NWk3orLtbG9SMkRhamwyja3v7y1qvslY6c8k/cRfw5lt1oK/PLvqYkyBHFnJS0w+mS417RoE545dCbvfQUcF/RAOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914706; c=relaxed/simple;
-	bh=BXyWZLqmlqmmDb61wI352U/8NAYU89/9VlPpuBADENc=;
+	s=arc-20240116; t=1744913464; c=relaxed/simple;
+	bh=UetYPQ8pPalSj9wRfXCN1TgZotCUgJvBG+CoXvYllZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PLSBysOgyeGpzCTjlhgPGdg2p9Yq7Gz0QWyC0qaX00p2Nir1pgbSHHvIvPv7p+iQiW/3BJ8qQ4AmqyhIGK5lWQ4rHzEgZI5aQlxZws4kd2z0OTbzEz4fy3nOr3j4u95xpTxg3arlSHBhZ4nRIqEITBJGqeER95zvMRHLsQsgPqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjXLxHzQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4758C4CEE4;
-	Thu, 17 Apr 2025 18:31:45 +0000 (UTC)
+	 MIME-Version; b=sxe+708HD5b/QQ2GxFjVJ0JlSLZp8pYVtKHU4I17sefPGy96xSBXc8s9nVrRuUHW4G1Ij1/aU6DtPtUA6FQ7mJMpcROZXdrA3OjCVLAx4C3UVTiCQhYsArel0MzPox8vMm0FNNXwrpq9oWV/x1pxm8nlBc8/nQJ2RIS13G2QGnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2vz5fEtc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53418C4CEE4;
+	Thu, 17 Apr 2025 18:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914706;
-	bh=BXyWZLqmlqmmDb61wI352U/8NAYU89/9VlPpuBADENc=;
+	s=korg; t=1744913463;
+	bh=UetYPQ8pPalSj9wRfXCN1TgZotCUgJvBG+CoXvYllZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xjXLxHzQ8rDhf8JUt+y0EgLYGy0I7uUtMiRT8IJN6qOkly0WhnSpRzWlH0yb+psyD
-	 7igbim2zrcHHWHVkEI0r6uEzuWBXszJznzIGp7U9vuhUMwHFgJoANBlE32RpyQWKMe
-	 mFhgQ0eHVSyHcsieuKKQFcF/4AppfssE8dWjMFlU=
+	b=2vz5fEtcb5J388TWYUe0Oagxf8frVM05A3k1Sxx8TQRPYYBojXvr/pukulPmm6/Ma
+	 ZqS/JQd6nbuar9WeZSI1amSJb33MY1QTt0fsWHgXcoBPw2IV9bjQ+8TWVzNiqpx0bd
+	 yeOLhanLCuZGFDNIjMY3g7BeFgpuZ8VmhKetbHX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artem Sadovnikov <a.sadovnikov@ispras.ru>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.13 277/414] ext4: fix off-by-one error in do_split
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <error27@gmail.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 6.14 347/449] iommufd: Fix uninitialized rc in iommufd_access_rw()
 Date: Thu, 17 Apr 2025 19:50:35 +0200
-Message-ID: <20250417175122.572381507@linuxfoundation.org>
+Message-ID: <20250417175132.189816352@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Sadovnikov <a.sadovnikov@ispras.ru>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-commit 94824ac9a8aaf2fb3c54b4bdde842db80ffa555d upstream.
+commit a05df03a88bc1088be8e9d958f208d6484691e43 upstream.
 
-Syzkaller detected a use-after-free issue in ext4_insert_dentry that was
-caused by out-of-bounds access due to incorrect splitting in do_split.
+Reported by smatch:
+drivers/iommu/iommufd/device.c:1392 iommufd_access_rw() error: uninitialized symbol 'rc'.
 
-BUG: KASAN: use-after-free in ext4_insert_dentry+0x36a/0x6d0 fs/ext4/namei.c:2109
-Write of size 251 at addr ffff888074572f14 by task syz-executor335/5847
-
-CPU: 0 UID: 0 PID: 5847 Comm: syz-executor335 Not tainted 6.12.0-rc6-syzkaller-00318-ga9cda7c0ffed #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/30/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0x169/0x550 mm/kasan/report.c:488
- kasan_report+0x143/0x180 mm/kasan/report.c:601
- kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
- __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
- ext4_insert_dentry+0x36a/0x6d0 fs/ext4/namei.c:2109
- add_dirent_to_buf+0x3d9/0x750 fs/ext4/namei.c:2154
- make_indexed_dir+0xf98/0x1600 fs/ext4/namei.c:2351
- ext4_add_entry+0x222a/0x25d0 fs/ext4/namei.c:2455
- ext4_add_nondir+0x8d/0x290 fs/ext4/namei.c:2796
- ext4_symlink+0x920/0xb50 fs/ext4/namei.c:3431
- vfs_symlink+0x137/0x2e0 fs/namei.c:4615
- do_symlinkat+0x222/0x3a0 fs/namei.c:4641
- __do_sys_symlink fs/namei.c:4662 [inline]
- __se_sys_symlink fs/namei.c:4660 [inline]
- __x64_sys_symlink+0x7a/0x90 fs/namei.c:4660
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
-
-The following loop is located right above 'if' statement.
-
-for (i = count-1; i >= 0; i--) {
-	/* is more than half of this entry in 2nd half of the block? */
-	if (size + map[i].size/2 > blocksize/2)
-		break;
-	size += map[i].size;
-	move++;
-}
-
-'i' in this case could go down to -1, in which case sum of active entries
-wouldn't exceed half the block size, but previous behaviour would also do
-split in half if sum would exceed at the very last block, which in case of
-having too many long name files in a single block could lead to
-out-of-bounds access and following use-after-free.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
+Fixes: 8d40205f6093 ("iommufd: Add kAPI toward external drivers for kernel access")
+Link: https://patch.msgid.link/r/20250227200729.85030-1-nicolinc@nvidia.com
 Cc: stable@vger.kernel.org
-Fixes: 5872331b3d91 ("ext4: fix potential negative array index in do_split()")
-Signed-off-by: Artem Sadovnikov <a.sadovnikov@ispras.ru>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250404082804.2567-3-a.sadovnikov@ispras.ru
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/r/202502271339.a2nWr9UA-lkp@intel.com/
+[nicolinc: can't find an original report but only in "old smatch warnings"]
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/namei.c |    2 +-
+ drivers/iommu/iommufd/device.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/namei.c
-+++ b/fs/ext4/namei.c
-@@ -1995,7 +1995,7 @@ static struct ext4_dir_entry_2 *do_split
- 	 * split it in half by count; each resulting block will have at least
- 	 * half the space free.
- 	 */
--	if (i > 0)
-+	if (i >= 0)
- 		split = count - move;
- 	else
- 		split = count/2;
+--- a/drivers/iommu/iommufd/device.c
++++ b/drivers/iommu/iommufd/device.c
+@@ -1127,7 +1127,7 @@ int iommufd_access_rw(struct iommufd_acc
+ 	struct io_pagetable *iopt;
+ 	struct iopt_area *area;
+ 	unsigned long last_iova;
+-	int rc;
++	int rc = -EINVAL;
+ 
+ 	if (!length)
+ 		return -EINVAL;
 
 
 
