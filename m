@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-133965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44CA1A928C0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:37:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1109EA92A9E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:53:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 289281B60C32
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 868DF1B64D8B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461D426157A;
-	Thu, 17 Apr 2025 18:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA8D257AD5;
+	Thu, 17 Apr 2025 18:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPpUD5X6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HohrwHU1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003DF261573;
-	Thu, 17 Apr 2025 18:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC96F2566DE;
+	Thu, 17 Apr 2025 18:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914682; cv=none; b=lhE2yliQJ9HY1/ijeHTNlC5D468RAgsXCurWjYTIEUHkQt1eX843uz+EvK38xNq9moCMh0U7l3reJEyAniYZdWcPpjxSUZPBHns+2qEa7UdoPNWzJU4ds5NXLIKVBXo1cFhot16pwKl1dZnmpYwaS9VmSlCLZgsCgSnkjvO86Eo=
+	t=1744915804; cv=none; b=lObdOVfvCdI88e3TrZQS/N/2IiUGp4nz5ZVZRewvVyyhuJjBO9LLdfaiUj4gqDUtiO4u6nR2Ouzno8cD+S1setJIEGHcaBZc6TNEZNOM3ZO4IFGThY0J/to8DebHlgWijMtUdMysVSYazypnloYDoStZZkZUaKvGxu7ucDa8HU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914682; c=relaxed/simple;
-	bh=opoGHBCVSV2olQuWh5DOgRLNJvuvA5Nudq97nLOZhdo=;
+	s=arc-20240116; t=1744915804; c=relaxed/simple;
+	bh=QNiY/afF4cKZeoeF2pIqN9O2Fk2JuyUIWkuu9lJRpjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SPyS32lUhp6lJe/4K+lMwpVjPenwLEC5/rphe/zU0+eAhulOB0goX6Ez0IdwaSxxV//dlIxDcv1RV2hOLU56lnNM4MD9v9eWm8jmLOSMgdo/Mp2jx6djVMWqp2j/B5yVBpOaZZhGv7vzF9iKDEsbeUd+xYfECxzTw6QxBuctURg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iPpUD5X6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E4D1C4CEE4;
-	Thu, 17 Apr 2025 18:31:21 +0000 (UTC)
+	 MIME-Version; b=fN8jAPfiwrHGb0Azn9oMUKHnWe8s8QkHWy6npI2cjAul9Qn1K+v3HErnpqfLwvIox3S60p+e/GIZ12+QP4JyIw7RFi7dZVBiVPBBu68HQQX7+2QHUvpl2m+KvkxIJH4iT3h1bz/XQeCAlTG7v+pvfktJ25nI6juC0t5TzCxVz1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HohrwHU1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6449C4CEF0;
+	Thu, 17 Apr 2025 18:50:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914681;
-	bh=opoGHBCVSV2olQuWh5DOgRLNJvuvA5Nudq97nLOZhdo=;
+	s=korg; t=1744915804;
+	bh=QNiY/afF4cKZeoeF2pIqN9O2Fk2JuyUIWkuu9lJRpjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iPpUD5X6srBvvha4uJWWpg4snxneNNS+jn6F1eWitICnGTgvsX6HKui+nPSAmQFrV
-	 BNXauzaUzeEmNlKiA39liLuewZ9PtPTWVR9Y0ih1rbO8ABh970Hta6IWKRjhyS6ZoS
-	 cdPof/0TTjaGj9EBR/cMcwOFN33ERq54tnqZjFq8=
+	b=HohrwHU1VcKWfcmovJAinCXP7kCG11ann2kKCIXq3qm9m9EpReB1TbsPQ5V3+cJRH
+	 yz37ZYYcnt9h04NIViopfKoUe+OR3/qtphqjhFQSq9Rb85BylrsGo6HnG2sPfyBk8r
+	 zZiiKrJuygzAtSeuEN8Z+D877Ejt2tbABHP3JJiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kartik Rajput <kkartik@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>
-Subject: [PATCH 6.13 296/414] mailbox: tegra-hsp: Define dimensioning masks in SoC data
+	Sean Wang <sean.wang@mediatek.com>,
+	Caleb Jorden <cjorden@gmail.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.12 245/393] wifi: mt76: mt7925: fix the wrong simultaneous cap for MLO
 Date: Thu, 17 Apr 2025 19:50:54 +0200
-Message-ID: <20250417175123.336682261@linuxfoundation.org>
+Message-ID: <20250417175117.447912743@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,165 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kartik Rajput <kkartik@nvidia.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-commit bf0c9fb462038815f5f502653fb6dba06e6af415 upstream.
+commit 7dcea6fe33ee3d7cbb65baee0dd7adc76d1c9ddc upstream.
 
-Tegra264 has updated HSP_INT_DIMENSIONING register as follows:
-	* nSI is now BIT17:BIT21.
-	* nDB is now BIT12:BIT16.
+The mt7925 chip is only support a single radio, so the maximum
+number of simultaneous should be 0.
 
-Currently, we are using a static macro HSP_nINT_MASK to get the values
-from HSP_INT_DIMENSIONING register. This results in wrong values for nSI
-for HSP instances that supports 16 shared interrupts.
-
-Define dimensioning masks in soc data and use them to parse nSI, nDB,
-nAS, nSS & nSM values.
-
-Fixes: 602dbbacc3ef ("mailbox: tegra: add support for Tegra264")
+Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
 Cc: stable@vger.kernel.org
-Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Acked-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Co-developed-by: Sean Wang <sean.wang@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Tested-by: Caleb Jorden <cjorden@gmail.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20250305000851.493671-3-sean.wang@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mailbox/tegra-hsp.c |   72 ++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 60 insertions(+), 12 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mailbox/tegra-hsp.c
-+++ b/drivers/mailbox/tegra-hsp.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * Copyright (c) 2016-2023, NVIDIA CORPORATION.  All rights reserved.
-+ * Copyright (c) 2016-2025, NVIDIA CORPORATION.  All rights reserved.
-  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index 676882f3928e..dd886b39f550 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -256,7 +256,7 @@ int mt7925_init_mlo_caps(struct mt792x_phy *phy)
  
- #include <linux/delay.h>
-@@ -28,12 +28,6 @@
- #define HSP_INT_FULL_MASK	0xff
+ 	ext_capab[0].eml_capabilities = phy->eml_cap;
+ 	ext_capab[0].mld_capa_and_ops =
+-		u16_encode_bits(1, IEEE80211_MLD_CAP_OP_MAX_SIMUL_LINKS);
++		u16_encode_bits(0, IEEE80211_MLD_CAP_OP_MAX_SIMUL_LINKS);
  
- #define HSP_INT_DIMENSIONING	0x380
--#define HSP_nSM_SHIFT		0
--#define HSP_nSS_SHIFT		4
--#define HSP_nAS_SHIFT		8
--#define HSP_nDB_SHIFT		12
--#define HSP_nSI_SHIFT		16
--#define HSP_nINT_MASK		0xf
- 
- #define HSP_DB_TRIGGER	0x0
- #define HSP_DB_ENABLE	0x4
-@@ -97,6 +91,20 @@ struct tegra_hsp_soc {
- 	bool has_per_mb_ie;
- 	bool has_128_bit_mb;
- 	unsigned int reg_stride;
-+
-+	/* Shifts for dimensioning register. */
-+	unsigned int si_shift;
-+	unsigned int db_shift;
-+	unsigned int as_shift;
-+	unsigned int ss_shift;
-+	unsigned int sm_shift;
-+
-+	/* Masks for dimensioning register. */
-+	unsigned int si_mask;
-+	unsigned int db_mask;
-+	unsigned int as_mask;
-+	unsigned int ss_mask;
-+	unsigned int sm_mask;
- };
- 
- struct tegra_hsp {
-@@ -747,11 +755,11 @@ static int tegra_hsp_probe(struct platfo
- 		return PTR_ERR(hsp->regs);
- 
- 	value = tegra_hsp_readl(hsp, HSP_INT_DIMENSIONING);
--	hsp->num_sm = (value >> HSP_nSM_SHIFT) & HSP_nINT_MASK;
--	hsp->num_ss = (value >> HSP_nSS_SHIFT) & HSP_nINT_MASK;
--	hsp->num_as = (value >> HSP_nAS_SHIFT) & HSP_nINT_MASK;
--	hsp->num_db = (value >> HSP_nDB_SHIFT) & HSP_nINT_MASK;
--	hsp->num_si = (value >> HSP_nSI_SHIFT) & HSP_nINT_MASK;
-+	hsp->num_sm = (value >> hsp->soc->sm_shift) & hsp->soc->sm_mask;
-+	hsp->num_ss = (value >> hsp->soc->ss_shift) & hsp->soc->ss_mask;
-+	hsp->num_as = (value >> hsp->soc->as_shift) & hsp->soc->as_mask;
-+	hsp->num_db = (value >> hsp->soc->db_shift) & hsp->soc->db_mask;
-+	hsp->num_si = (value >> hsp->soc->si_shift) & hsp->soc->si_mask;
- 
- 	err = platform_get_irq_byname_optional(pdev, "doorbell");
- 	if (err >= 0)
-@@ -915,6 +923,16 @@ static const struct tegra_hsp_soc tegra1
- 	.has_per_mb_ie = false,
- 	.has_128_bit_mb = false,
- 	.reg_stride = 0x100,
-+	.si_shift = 16,
-+	.db_shift = 12,
-+	.as_shift = 8,
-+	.ss_shift = 4,
-+	.sm_shift = 0,
-+	.si_mask = 0xf,
-+	.db_mask = 0xf,
-+	.as_mask = 0xf,
-+	.ss_mask = 0xf,
-+	.sm_mask = 0xf,
- };
- 
- static const struct tegra_hsp_soc tegra194_hsp_soc = {
-@@ -922,6 +940,16 @@ static const struct tegra_hsp_soc tegra1
- 	.has_per_mb_ie = true,
- 	.has_128_bit_mb = false,
- 	.reg_stride = 0x100,
-+	.si_shift = 16,
-+	.db_shift = 12,
-+	.as_shift = 8,
-+	.ss_shift = 4,
-+	.sm_shift = 0,
-+	.si_mask = 0xf,
-+	.db_mask = 0xf,
-+	.as_mask = 0xf,
-+	.ss_mask = 0xf,
-+	.sm_mask = 0xf,
- };
- 
- static const struct tegra_hsp_soc tegra234_hsp_soc = {
-@@ -929,6 +957,16 @@ static const struct tegra_hsp_soc tegra2
- 	.has_per_mb_ie = false,
- 	.has_128_bit_mb = true,
- 	.reg_stride = 0x100,
-+	.si_shift = 16,
-+	.db_shift = 12,
-+	.as_shift = 8,
-+	.ss_shift = 4,
-+	.sm_shift = 0,
-+	.si_mask = 0xf,
-+	.db_mask = 0xf,
-+	.as_mask = 0xf,
-+	.ss_mask = 0xf,
-+	.sm_mask = 0xf,
- };
- 
- static const struct tegra_hsp_soc tegra264_hsp_soc = {
-@@ -936,6 +974,16 @@ static const struct tegra_hsp_soc tegra2
- 	.has_per_mb_ie = false,
- 	.has_128_bit_mb = true,
- 	.reg_stride = 0x1000,
-+	.si_shift = 17,
-+	.db_shift = 12,
-+	.as_shift = 8,
-+	.ss_shift = 4,
-+	.sm_shift = 0,
-+	.si_mask = 0x1f,
-+	.db_mask = 0x1f,
-+	.as_mask = 0xf,
-+	.ss_mask = 0xf,
-+	.sm_mask = 0xf,
- };
- 
- static const struct of_device_id tegra_hsp_match[] = {
+ 	wiphy->flags |= WIPHY_FLAG_SUPPORTS_MLO;
+ 	wiphy->iftype_ext_capab = ext_capab;
+-- 
+2.49.0
+
 
 
 
