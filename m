@@ -1,56 +1,67 @@
-Return-Path: <stable+bounces-134015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF4E9A9292D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:40:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F1C3A92AE8
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 978E18A13C9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF1C64A61AE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1C1264608;
-	Thu, 17 Apr 2025 18:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4ED8257420;
+	Thu, 17 Apr 2025 18:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ip57VXo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lDPlYaBA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEEA52641F6;
-	Thu, 17 Apr 2025 18:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6989925525C;
+	Thu, 17 Apr 2025 18:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914837; cv=none; b=WFrHvhqlDGDN3UPhOZH0HrRhCwNfkERn/dzznq+q3+KoZLRWoOX0N2mvM6YOz3LXIE/KFRzTkkZWPJG0svk2hDP0a/ebAs5FCfABWeW2nwvCsAENLwxEUg7u38dZirzmj+M2cWexQY2dWWegMmSGET4Dk22p7/C2nuTmICqHMNM=
+	t=1744916022; cv=none; b=US3Ikgnd2qFs34vF/YrKoSlEk0J9MlzpH/orp2onu0DRfBelgofAYSJKFWkTHoOHfuSUq4nT97ZXKaSp9FZ8L7PrMcPlvufVQclZOHaRt7dZJFoXuCg/rBFpsSjNa/IOFh9pZg3+7x+Cvi55K6UCctdAyhA5nY4onAFOs5xw5XE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914837; c=relaxed/simple;
-	bh=uWljd9yY2jO1xB9Zb9t8RpTtlDBjeGpyGvYdkCm8w1M=;
+	s=arc-20240116; t=1744916022; c=relaxed/simple;
+	bh=3y3PMm0tVQAUjU/Xvmx+6nF/hzWgLIoEsPBnM6eDK2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LfJ5ZB+9FUByCAK/Wg8i0HZxxGSfD+aIj9O/TxjpQL8ifFvatODqtG+jkYBuOmASOgC1Zjy1C95OTakP0fcWkX1+kxCCCoFSaM77LdTXygQx09j053k9hsuFX9FeINyno5ZIuKczzwYiHOlVUJBWD66cvuVGdU09O1Ft79jJM6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ip57VXo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7549CC4CEE4;
-	Thu, 17 Apr 2025 18:33:56 +0000 (UTC)
+	 MIME-Version; b=m4CVPOCBhWxEWHbfOqUnEkn0BsFAoKHCOEIyuySQMLHjiGsfK1TaQpyGskcir5RyoDD/1wGT554t4TOHjHaEfLy5IINJybvyXzDd0P6Z1hLLxYVn8NnvoOVcoMEUuP/vhwnY2pYay/vZRbw0gXb4imP8+jRjEqcdBilCvEkMENc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lDPlYaBA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F6BC4CEE4;
+	Thu, 17 Apr 2025 18:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914836;
-	bh=uWljd9yY2jO1xB9Zb9t8RpTtlDBjeGpyGvYdkCm8w1M=;
+	s=korg; t=1744916022;
+	bh=3y3PMm0tVQAUjU/Xvmx+6nF/hzWgLIoEsPBnM6eDK2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ip57VXo/N2d6Vi3cn1qWroFd96fXYn2I6EwVqA6PkXzBl/Dzujqd2nUXn0ESs1Mv
-	 5/mL5CFGJyYuWuDLxSuRxc0lRuPOAA/BzFAb7K0raIKzJzeMdWI2mdmljZZNaeEdQm
-	 DkaAuH5PkeYcEjviCt0ajS/VwJySjE8kGJC+2NI4=
+	b=lDPlYaBAIXnnGU6aorURM3OEqnYWj54w5J3kUByi8NL/MiwdRd62JrxKXcrluBUFW
+	 vGmz+Ht0U2ysCjNOjK+njeXPRy2DpoKwjeJmsCRRFYxiyILxbGg+xXrLzBH7kL8Cfe
+	 uJuPxd3qD3LvujnbM235bR8OG7kP5AbNZoYp2Xtk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trevor Woerner <twoerner@gmail.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 6.13 339/414] thermal/drivers/rockchip: Add missing rk3328 mapping entry
+	Peter Griffin <peter.griffin@linaro.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	tudor.ambarus@linaro.org,
+	andre.draszik@linaro.org,
+	kernel-team@android.com,
+	willmcvicker@google.com,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.12 288/393] arm64: dts: exynos: gs101: disable pinctrl_gsacore node
 Date: Thu, 17 Apr 2025 19:51:37 +0200
-Message-ID: <20250417175125.066351217@linuxfoundation.org>
+Message-ID: <20250417175119.199687812@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +73,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trevor Woerner <twoerner@gmail.com>
+From: Peter Griffin <peter.griffin@linaro.org>
 
-commit ee022e5cae052e0c67ca7c5fec0f2e7bc897c70e upstream.
+commit 168e24966f10ff635b0ec9728aa71833bf850ee5 upstream.
 
-The mapping table for the rk3328 is missing the entry for -25C which is
-found in the TRM section 9.5.2 "Temperature-to-code mapping".
+gsacore registers are not accessible from normal world.
 
-NOTE: the kernel uses the tsadc_q_sel=1'b1 mode which is defined as:
-      4096-<code in table>. Whereas the table in the TRM gives the code
-      "3774" for -25C, the kernel uses 4096-3774=322.
+Disable this node, so that the suspend/resume callbacks
+in the pinctrl driver don't cause a Serror attempting to
+access the registers.
 
-[Dragan Simic] : "After going through the RK3308 and RK3328 TRMs, as
-  well as through the downstream kernel code, it seems we may have
-  some troubles at our hands.  Let me explain, please.
-
-  To sum it up, part 1 of the RK3308 TRM v1.1 says on page 538 that
-  the equation for the output when tsadc_q_sel equals 1 is (4096 -
-  tsadc_q), while part 1 of the RK3328 TRM v1.2 says that the output
-  equation is (1024 - tsadc_q) in that case.
-
-  The downstream kernel code, however, treats the RK3308 and RK3328
-  tables and their values as being the same.  It even mentions 1024 as
-  the "offset" value in a comment block for the rk_tsadcv3_control()
-  function, just like the upstream code does, which is obviously wrong
-  "offset" value when correlated with the table on page 544 of part 1
-  of the RK3308 TRM v1.1.
-
-  With all this in mind, it's obvious that more work is needed to make
-  it clear where's the actual mistake (it could be that the TRM is
-  wrong), which I'll volunteer for as part of the SoC binning project.
-  In the meantime, this patch looks fine as-is to me, by offering
-  what's a clear improvement to the current state of the upstream
-  code"
-
-Link: https://opensource.rock-chips.com/images/9/97/Rockchip_RK3328TRM_V1.1-Part1-20170321.pdf
+Fixes: ea89fdf24fd9 ("arm64: dts: exynos: google: Add initial Google gs101 SoC support")
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: Alim Akhtar <alim.akhtar@samsung.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-samsung-soc@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: tudor.ambarus@linaro.org
+Cc: andre.draszik@linaro.org
+Cc: kernel-team@android.com
+Cc: willmcvicker@google.com
 Cc: stable@vger.kernel.org
-Fixes: eda519d5f73e ("thermal: rockchip: Support the RK3328 SOC in thermal driver")
-Signed-off-by: Trevor Woerner <twoerner@gmail.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://lore.kernel.org/r/20250207175048.35959-1-twoerner@gmail.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20250106-contrib-pg-pinctrl_gsacore_disable-v1-1-d3fc88a48aed@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/rockchip_thermal.c |    1 +
+ arch/arm64/boot/dts/exynos/google/gs101.dtsi |    1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/thermal/rockchip_thermal.c
-+++ b/drivers/thermal/rockchip_thermal.c
-@@ -386,6 +386,7 @@ static const struct tsadc_table rk3328_c
- 	{296, -40000},
- 	{304, -35000},
- 	{313, -30000},
-+	{322, -25000},
- 	{331, -20000},
- 	{340, -15000},
- 	{349, -10000},
+--- a/arch/arm64/boot/dts/exynos/google/gs101.dtsi
++++ b/arch/arm64/boot/dts/exynos/google/gs101.dtsi
+@@ -1451,6 +1451,7 @@
+ 			/* TODO: update once support for this CMU exists */
+ 			clocks = <0>;
+ 			clock-names = "pclk";
++			status = "disabled";
+ 		};
+ 
+ 		cmu_top: clock-controller@1e080000 {
 
 
 
