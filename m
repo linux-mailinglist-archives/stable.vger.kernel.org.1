@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-133677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C92D9A926CF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:16:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C15CEA926D9
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:17:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3321B8A67C5
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:16:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1214E4A11E9
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:17:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0740C3594D;
-	Thu, 17 Apr 2025 18:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57BDB2550C8;
+	Thu, 17 Apr 2025 18:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iGap+EZd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMRAsXL5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68E18462;
-	Thu, 17 Apr 2025 18:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144E31DB148;
+	Thu, 17 Apr 2025 18:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913803; cv=none; b=i7fKW5byVdsLQwqikO5EymHevOaFlLDw6LmtqbeF9beyA3MRpDmpphVuldtU0zs/2viEC5I8Q9MRGHMUAFRO1TxjDVKDhBVrvJVwRSsLDNJ2qZO2O94vjdC//KMrHI0BIjZUNebb28rbAYUsK5gRCmKvieDKn186DUv0Lm6eeHM=
+	t=1744913815; cv=none; b=ftG0iOJBXi0O2Wn0C7E5+rPWjBeUdy4pZOv01sJiRf/uNyNwX6D2VgEs55L41K0VkCBHaquROdd93IkpE65rnrxsLWr0GzH3APzuHeWWUDbGdKFXcKdNlMmQkilqZqpvF7PWPgbYufguFH5yJ995RhLmqAUB085ZUo0S8G3QHxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913803; c=relaxed/simple;
-	bh=salkEvi1JN5bxh+k55ppazByJ4gWLY3aEtFErNACHC0=;
+	s=arc-20240116; t=1744913815; c=relaxed/simple;
+	bh=3LAkob1DvaTTbV8Is9XRCyoyb5I7Epdi035+nzb/ASs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mORKWBraCaMbYVXv0nHbIOhUgfZoZrA8dCvO8bg6Hzt7ezUTcvBlE6G0gSHGNt+vT9wBYBZFrpXHr6OG2sW8nW6RwOoHmr1hahOmt7kHC9lUKRKUjb1WdQd2vUdx8iKTCudHoqqRm4NTtqjCo3lD9PTw7+3NC3XuuQ6Od2LZzHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iGap+EZd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B7A1C4CEE7;
-	Thu, 17 Apr 2025 18:16:42 +0000 (UTC)
+	 MIME-Version; b=UUcFfDU7sjA3BZZVePOHNBsXw4BtFz6E/43I5xyzGi/8505mEOo8Uu3l/6Dz+4nirucTbwDC3ofSM5ZF0nlzlVNv+WmxPxMuMX+Jq1ZdE6SfCD44JD2NSYMnWg0ZtoOqKpBL/DKaVdNC8fxGGKlimuvMV9OGNItqyZI+ICDfKKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMRAsXL5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99749C4CEE4;
+	Thu, 17 Apr 2025 18:16:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913803;
-	bh=salkEvi1JN5bxh+k55ppazByJ4gWLY3aEtFErNACHC0=;
+	s=korg; t=1744913815;
+	bh=3LAkob1DvaTTbV8Is9XRCyoyb5I7Epdi035+nzb/ASs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iGap+EZdEmDYVjIZLo2uOlVmPhny8/qPnqADS0txm7KbmMW8cMz/s4K+bWCG5NNC4
-	 ZEItFXZ37An30X4ryKwa0zE+cCIE5us3WKMAuShx1mFtqz7R+m1U1aX4k5izx47vGQ
-	 Uf56ETbGBm47huAvaGccaeVE04WhTLlgba8r7FtI=
+	b=kMRAsXL5ti04hrUDvdICe5pgr7a1Mhmftg/W6bIhDfCPLOzltIAre446l4ZBXJ8tP
+	 xar22nD4a5OJvCm/szttfxHS7cMEZFzJLvPaCu6VUURRMyS0QiE+tgE3Bjp1xKwGvv
+	 12FcIbj21d6IHirXl0AT9eL55w1e+CqfONmcBXXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.13 001/414] ASoC: Intel: adl: add 2xrt1316 audio configuration
-Date: Thu, 17 Apr 2025 19:45:59 +0200
-Message-ID: <20250417175111.451233991@linuxfoundation.org>
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 002/414] cgroup/cpuset: Fix incorrect isolated_cpus update in update_parent_effective_cpumask()
+Date: Thu, 17 Apr 2025 19:46:00 +0200
+Message-ID: <20250417175111.495767196@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
 References: <20250417175111.386381660@linuxfoundation.org>
@@ -61,81 +60,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bard Liao <yung-chuan.liao@linux.intel.com>
+From: Waiman Long <longman@redhat.com>
 
-commit 8b36447c9ae102539d82d6278971b23b20d87629 upstream.
+[ Upstream commit 668e041662e92ab3ebcb9eb606d3ec01884546ab ]
 
-That is a speaker only configuration and 2 rt1316 are on link 0 and 2.
+Before commit f0af1bfc27b5 ("cgroup/cpuset: Relax constraints to
+partition & cpus changes"), a cpuset partition cannot be enabled if not
+all the requested CPUs can be granted from the parent cpuset. After
+that commit, a cpuset partition can be created even if the requested
+exclusive CPUs contain CPUs not allowed its parent.  The delmask
+containing exclusive CPUs to be removed from its parent wasn't
+adjusted accordingly.
 
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://patch.msgid.link/20250305135443.201884-2-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+That is not a problem until the introduction of a new isolated_cpus
+mask in commit 11e5f407b64a ("cgroup/cpuset: Keep track of CPUs in
+isolated partitions") as the CPUs in the delmask may be added directly
+into isolated_cpus.
+
+As a result, isolated_cpus may incorrectly contain CPUs that are not
+isolated leading to incorrect data reporting. Fix this by adjusting
+the delmask to reflect the actual exclusive CPUs for the creation of
+the partition.
+
+Fixes: 11e5f407b64a ("cgroup/cpuset: Keep track of CPUs in isolated partitions")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/common/soc-acpi-intel-adl-match.c |   29 ++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ kernel/cgroup/cpuset.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/sound/soc/intel/common/soc-acpi-intel-adl-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-adl-match.c
-@@ -214,6 +214,15 @@ static const struct snd_soc_acpi_adr_dev
- 	}
- };
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 0f910c828973a..02f3e9d076894 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -1680,9 +1680,9 @@ static int update_parent_effective_cpumask(struct cpuset *cs, int cmd,
+ 		if (nocpu)
+ 			return PERR_NOCPUS;
  
-+static const struct snd_soc_acpi_adr_device rt1316_2_group2_adr[] = {
-+	{
-+		.adr = 0x000232025D131601ull,
-+		.num_endpoints = 1,
-+		.endpoints = &spk_r_endpoint,
-+		.name_prefix = "rt1316-2"
-+	}
-+};
-+
- static const struct snd_soc_acpi_adr_device rt1316_1_single_adr[] = {
- 	{
- 		.adr = 0x000130025D131601ull,
-@@ -547,6 +556,20 @@ static const struct snd_soc_acpi_link_ad
- 	{}
- };
- 
-+static const struct snd_soc_acpi_link_adr adl_sdw_rt1316_link02[] = {
-+	{
-+		.mask = BIT(0),
-+		.num_adr = ARRAY_SIZE(rt1316_0_group2_adr),
-+		.adr_d = rt1316_0_group2_adr,
-+	},
-+	{
-+		.mask = BIT(2),
-+		.num_adr = ARRAY_SIZE(rt1316_2_group2_adr),
-+		.adr_d = rt1316_2_group2_adr,
-+	},
-+	{}
-+};
-+
- static const struct snd_soc_acpi_codecs adl_max98357a_amp = {
- 	.num_codecs = 1,
- 	.codecs = {"MX98357A"}
-@@ -749,6 +772,12 @@ struct snd_soc_acpi_mach snd_soc_acpi_in
- 		.drv_name = "sof_sdw",
- 		.sof_tplg_filename = "sof-adl-sdw-max98373-rt5682.tplg",
- 	},
-+	{
-+		.link_mask = BIT(0) | BIT(2),
-+		.links = adl_sdw_rt1316_link02,
-+		.drv_name = "sof_sdw",
-+		.sof_tplg_filename = "sof-adl-rt1316-l02.tplg",
-+	},
- 	{},
- };
- EXPORT_SYMBOL_GPL(snd_soc_acpi_intel_adl_sdw_machines);
+-		cpumask_copy(tmp->delmask, xcpus);
+-		deleting = true;
+-		subparts_delta++;
++		deleting = cpumask_and(tmp->delmask, xcpus, parent->effective_xcpus);
++		if (deleting)
++			subparts_delta++;
+ 		new_prs = (cmd == partcmd_enable) ? PRS_ROOT : PRS_ISOLATED;
+ 	} else if (cmd == partcmd_disable) {
+ 		/*
+-- 
+2.39.5
+
 
 
 
