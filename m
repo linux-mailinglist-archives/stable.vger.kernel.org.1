@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-133525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92E62A9260E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:10:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD145A92A7E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:52:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E66DD1B62D46
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B5548A22B9
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D1C2561D9;
-	Thu, 17 Apr 2025 18:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DB4625525D;
+	Thu, 17 Apr 2025 18:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUhZltI/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IiWn542O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5309A1DB148;
-	Thu, 17 Apr 2025 18:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC8619ABC6;
+	Thu, 17 Apr 2025 18:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913340; cv=none; b=V/XMFPzR1/OKAweIW5LLL0XkMYxYMdGuYkvUSaZ+1AphmDJBGPP2Lu2vzEc8XUFhJUrr2GrJLArnHSkiDncFJmts4+IY2v5sxqM2XW92dVXCTQCqaBkkwBT/xXDXmufPHUCQy8Uy/mBek6GvRuvucDTyGCWKOY8ADmqCR7YO/9Q=
+	t=1744915746; cv=none; b=MVV3LtFMYabHyDGxripMx1kf7nKARCLUT+wIUQd1yGoxcqwL9aAZmmD+j+3z25uRxlgQKCkvOJMKesIZzda2A714mv2jolmo2N0a14Ph6ufgjN237HXcOwtv5I30C4KslJnBtfjqpr61smjfA2YmZntY76zumo3fsJNHnP/a3Yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913340; c=relaxed/simple;
-	bh=aVsnTL71g05JmXAneNWW6TH1Qk0nI8n9eQqvohNkcxs=;
+	s=arc-20240116; t=1744915746; c=relaxed/simple;
+	bh=9++g2dztjblfgwyjJ8I6FqBIGUwwOE/Gwf6C6bFmc0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YPFF1REhicW65nYCswZzysZWiai37rKOVfXS+ZyoRgIbI9N4I8TrOJRIQwAsMa2yDuGwy4FvC1QlXikBwz+MOCwrjuxi3kDwc2GYymUC/LB/fwd+w8LUgBiK7XO+ErYqziMHH2nlcHDZb1qu92hI4A9KL35Y5YPygecG2KOH504=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TUhZltI/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB37C4CEE4;
-	Thu, 17 Apr 2025 18:08:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gzxsAKzrrmtj3LTljlPj75MKW+lx2pyZOVDhiRyC2mL05HfVc4xXqfcX9kNYrrDgqmDpceLyR766UracrGgbMDkBCcdYR94Kh5/tVI5/uqU5JJY30jboLLP8kKk0GqyjFc7Fyg6ycT4ONITkfVl8CvQkXqVFAfRSMaQNpxgfjv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IiWn542O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A310CC4CEE4;
+	Thu, 17 Apr 2025 18:49:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913340;
-	bh=aVsnTL71g05JmXAneNWW6TH1Qk0nI8n9eQqvohNkcxs=;
+	s=korg; t=1744915746;
+	bh=9++g2dztjblfgwyjJ8I6FqBIGUwwOE/Gwf6C6bFmc0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TUhZltI/r147wgev087PcXelfC9/aPevd1KNIVHfu9fuS+PJPNvgkot8P2k83wRqN
-	 Lr/rtPREVcboItPh9AcXT6Esyz6bxi0LMej1lVKuadMF82jLxDC6zDnXKKrkijvkJ9
-	 KM9wjL0O8dYqe1bzecL/0F9NrAJ+YIHK9FQUrnoI=
+	b=IiWn542O4t86CoRo+9DREZ5qNr2Rg0e6nlT84XjLctiWGPyE9Rzk/pmyqfcx4urGA
+	 sLY1v1pV/SPE2eUdnobFn9ifrTzhVRh2XR5eSyAUubQbcB/WHNSZXs6bA8U7nwIMJQ
+	 Lhj1lOyZJH28HMUbkIvsmJ5AAeZ8A8kDu6UzS19w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.14 307/449] f2fs: fix the missing write pointer correction
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 186/393] HID: pidff: Fix set_device_control()
 Date: Thu, 17 Apr 2025 19:49:55 +0200
-Message-ID: <20250417175130.466861770@linuxfoundation.org>
+Message-ID: <20250417175115.072691518@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +59,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-commit 201e07aec617b10360df09090651dea9d0d4f7d3 upstream.
+[ Upstream commit e2fa0bdf08a70623f24ed52f2037a330999d9800 ]
 
-If checkpoint was disabled, we missed to fix the write pointers.
+As the search for Device Control report is permissive, make sure the
+desired field was actually found, before trying to set it.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 1015035609e4 ("f2fs: fix changing cursegs if recovery fails on zoned device")
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix bitmask clearing as it was erronously using index instead of
+index - 1 (HID arrays index is 1-based).
+
+Add last two missing Device Control usages to the defined array.
+PID_PAUSE and PID_CONTINUE.
+
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/super.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/hid/usbhid/hid-pidff.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -4749,8 +4749,10 @@ try_onemore:
- 	if (err)
- 		goto free_meta;
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 6eb7934c8f53b..8dfd2c554a276 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -118,7 +118,9 @@ static const u8 pidff_pool[] = { 0x80, 0x83, 0xa9 };
+ #define PID_DISABLE_ACTUATORS	1
+ #define PID_STOP_ALL_EFFECTS	2
+ #define PID_RESET		3
+-static const u8 pidff_device_control[] = { 0x97, 0x98, 0x99, 0x9a };
++#define PID_PAUSE		4
++#define PID_CONTINUE		5
++static const u8 pidff_device_control[] = { 0x97, 0x98, 0x99, 0x9a, 0x9b, 0x9c };
  
--	if (unlikely(is_set_ckpt_flags(sbi, CP_DISABLED_FLAG)))
-+	if (unlikely(is_set_ckpt_flags(sbi, CP_DISABLED_FLAG))) {
-+		skip_recovery = true;
- 		goto reset_checkpoint;
-+	}
+ #define PID_CONSTANT	0
+ #define PID_RAMP	1
+@@ -551,21 +553,29 @@ static void pidff_set_gain_report(struct pidff_device *pidff, u16 gain)
+ }
  
- 	/* recover fsynced data */
- 	if (!test_opt(sbi, DISABLE_ROLL_FORWARD) &&
+ /*
+- * Clear device control report
++ * Send device control report to the device
+  */
+ static void pidff_set_device_control(struct pidff_device *pidff, int field)
+ {
+-	int i, tmp;
++	int i, index;
+ 	int field_index = pidff->control_id[field];
+ 
++	if (field_index < 1)
++		return;
++
+ 	/* Detect if the field is a bitmask variable or an array */
+ 	if (pidff->device_control->flags & HID_MAIN_ITEM_VARIABLE) {
+ 		hid_dbg(pidff->hid, "DEVICE_CONTROL is a bitmask\n");
++
+ 		/* Clear current bitmask */
+ 		for(i = 0; i < sizeof(pidff_device_control); i++) {
+-			tmp = pidff->control_id[i];
+-			pidff->device_control->value[tmp] = 0;
++			index = pidff->control_id[i];
++			if (index < 1)
++				continue;
++
++			pidff->device_control->value[index - 1] = 0;
+ 		}
++
+ 		pidff->device_control->value[field_index - 1] = 1;
+ 	} else {
+ 		hid_dbg(pidff->hid, "DEVICE_CONTROL is an array\n");
+-- 
+2.39.5
+
 
 
 
