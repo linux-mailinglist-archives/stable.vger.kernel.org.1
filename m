@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-134092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D43CA9294B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63839A9272F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:20:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B6714A4793
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 587FA8A6EA0
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:20:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D5892566CF;
-	Thu, 17 Apr 2025 18:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF5842571BA;
+	Thu, 17 Apr 2025 18:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gduf59FB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wxhVne20"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495621DF246;
-	Thu, 17 Apr 2025 18:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A977A2571AE;
+	Thu, 17 Apr 2025 18:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915070; cv=none; b=pdgepZ7vRPXYeBAYqY7l1vm4T2d6Fha5HHRNETAIRLH9ipIoL6/LmPFs/KDZ0sWGJP7clgY6+Dx8QLTZindDIJp/M9yioBJGNFbHH36tWPLcyeggtUa7RXQGoX4XwkBe4DLU7l+LS1R+8lWIhaAD4MWMd7+a6fypRGPScr4/Cxc=
+	t=1744914027; cv=none; b=ZdQJJcxEkf2PvuznzWpCN7gtUkXeMyArDAl8K4Xf6fTcicvJYvNcmAYHJa2YGZgCL2dGVFUr3qaB1bWiucJHFFDBXHL46nOqQBOfPytkJqxRi44Ih2pLnUcp4vpQvYGfe4nlvye4TGKswzz5m8zNZMKvxXWwXgdbC8vK/4W632c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915070; c=relaxed/simple;
-	bh=R1UFjg35tOwP0pjfqm3MSluy10ghpLPXICaZr8O5cSI=;
+	s=arc-20240116; t=1744914027; c=relaxed/simple;
+	bh=Gp0OPBs5jmxOHXoiu8rMjipHDq3u4dex7CPw3olmUvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tuzI4qB0/koRBr2KRtsssgbinjTMoyPsnvJH5CGZD484tgqf1H9oE4vPWamjKh6WqP6WjQCjpux9YlAwx0rHHl6gw0Xs4qy+LPBDPfacmrFSvbBwidSAUW/gO/SSlVAzeCxzb0HbK/YJsHAY0yAxDpPu8/s0ew4UQN1RrdaxoWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gduf59FB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD74EC4CEE4;
-	Thu, 17 Apr 2025 18:37:49 +0000 (UTC)
+	 MIME-Version; b=mm4msAySBZckmvRgsB2HDCiliRZzg6w9lYc2McwbPKrhog2Hl+BMz2NOgvGqCfrNFczbpCNfrbEfVlJeUiqXiWm9dWoXFhw0zwP7Pom7RVEMAAdtPkV2/Cp6PFWEyqeyQ+ZaGN3sJJut6mAPu5begnXJlzuzjUucq8SK67qOt1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wxhVne20; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE364C4CEE4;
+	Thu, 17 Apr 2025 18:20:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915070;
-	bh=R1UFjg35tOwP0pjfqm3MSluy10ghpLPXICaZr8O5cSI=;
+	s=korg; t=1744914027;
+	bh=Gp0OPBs5jmxOHXoiu8rMjipHDq3u4dex7CPw3olmUvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gduf59FBtvrV+grVNZcUw5JEb7AAbN/n7CeIm3UJWWgDLRAZL6T6lHk9AGopVZPBI
-	 lLAEGHdlBG2wd5jl5ScgN/uiWuEJOldHayslDkCbGNFeljSOx7orSKqwzNpL3O43DD
-	 juXMWy+ETxNbeORV7P/wJhD63FFy0xqsDSN4+i4Y=
+	b=wxhVne20ahijjkW8CTJZwMuepQCvA0Ypn/NIoVIpyiiVlF6depqzPCgNvss4VMRXI
+	 QYCn4SXAJ9pe6RwJdaR8vENe/4EbnM+p4+cZ0hATVJeIBMKz+qRBNI66Hd1cqK8uZp
+	 uEJRD0voouhVrhxLAM8KecWVcJE57NyC5kB0K1tc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 001/393] ASoC: Intel: adl: add 2xrt1316 audio configuration
+	Yunhui Cui <cuiyunhui@bytedance.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 052/414] perf/dwc_pcie: fix some unreleased resources
 Date: Thu, 17 Apr 2025 19:46:50 +0200
-Message-ID: <20250417175107.611790718@linuxfoundation.org>
+Message-ID: <20250417175113.504949921@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +61,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bard Liao <yung-chuan.liao@linux.intel.com>
+From: Yunhui Cui <cuiyunhui@bytedance.com>
 
-commit 8b36447c9ae102539d82d6278971b23b20d87629 upstream.
+[ Upstream commit 6eb1e8ef586ac4a3dcdc20248f9cb45e4ceb141f ]
 
-That is a speaker only configuration and 2 rt1316 are on link 0 and 2.
+Release leaked resources, such as plat_dev and dev_info.
 
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://patch.msgid.link/20250305135443.201884-2-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+Reviewed-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250220121716.50324-2-cuiyunhui@bytedance.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/common/soc-acpi-intel-adl-match.c |   29 ++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ drivers/perf/dwc_pcie_pmu.c | 33 ++++++++++++++++++++++-----------
+ 1 file changed, 22 insertions(+), 11 deletions(-)
 
---- a/sound/soc/intel/common/soc-acpi-intel-adl-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-adl-match.c
-@@ -214,6 +214,15 @@ static const struct snd_soc_acpi_adr_dev
- 	}
- };
+diff --git a/drivers/perf/dwc_pcie_pmu.c b/drivers/perf/dwc_pcie_pmu.c
+index 9cbea9675e21a..a7e7864e73a8e 100644
+--- a/drivers/perf/dwc_pcie_pmu.c
++++ b/drivers/perf/dwc_pcie_pmu.c
+@@ -567,8 +567,10 @@ static int dwc_pcie_register_dev(struct pci_dev *pdev)
+ 		return PTR_ERR(plat_dev);
  
-+static const struct snd_soc_acpi_adr_device rt1316_2_group2_adr[] = {
-+	{
-+		.adr = 0x000232025D131601ull,
-+		.num_endpoints = 1,
-+		.endpoints = &spk_r_endpoint,
-+		.name_prefix = "rt1316-2"
+ 	dev_info = kzalloc(sizeof(*dev_info), GFP_KERNEL);
+-	if (!dev_info)
++	if (!dev_info) {
++		platform_device_unregister(plat_dev);
+ 		return -ENOMEM;
 +	}
-+};
-+
- static const struct snd_soc_acpi_adr_device rt1316_1_single_adr[] = {
- 	{
- 		.adr = 0x000130025D131601ull,
-@@ -547,6 +556,20 @@ static const struct snd_soc_acpi_link_ad
- 	{}
+ 
+ 	/* Cache platform device to handle pci device hotplug */
+ 	dev_info->plat_dev = plat_dev;
+@@ -724,6 +726,15 @@ static struct platform_driver dwc_pcie_pmu_driver = {
+ 	.driver = {.name = "dwc_pcie_pmu",},
  };
  
-+static const struct snd_soc_acpi_link_adr adl_sdw_rt1316_link02[] = {
-+	{
-+		.mask = BIT(0),
-+		.num_adr = ARRAY_SIZE(rt1316_0_group2_adr),
-+		.adr_d = rt1316_0_group2_adr,
-+	},
-+	{
-+		.mask = BIT(2),
-+		.num_adr = ARRAY_SIZE(rt1316_2_group2_adr),
-+		.adr_d = rt1316_2_group2_adr,
-+	},
-+	{}
-+};
++static void dwc_pcie_cleanup_devices(void)
++{
++	struct dwc_pcie_dev_info *dev_info, *tmp;
 +
- static const struct snd_soc_acpi_codecs adl_max98357a_amp = {
- 	.num_codecs = 1,
- 	.codecs = {"MX98357A"}
-@@ -749,6 +772,12 @@ struct snd_soc_acpi_mach snd_soc_acpi_in
- 		.drv_name = "sof_sdw",
- 		.sof_tplg_filename = "sof-adl-sdw-max98373-rt5682.tplg",
- 	},
-+	{
-+		.link_mask = BIT(0) | BIT(2),
-+		.links = adl_sdw_rt1316_link02,
-+		.drv_name = "sof_sdw",
-+		.sof_tplg_filename = "sof-adl-rt1316-l02.tplg",
-+	},
- 	{},
- };
- EXPORT_SYMBOL_GPL(snd_soc_acpi_intel_adl_sdw_machines);
++	list_for_each_entry_safe(dev_info, tmp, &dwc_pcie_dev_info_head, dev_node) {
++		dwc_pcie_unregister_dev(dev_info);
++	}
++}
++
+ static int __init dwc_pcie_pmu_init(void)
+ {
+ 	struct pci_dev *pdev = NULL;
+@@ -736,7 +747,7 @@ static int __init dwc_pcie_pmu_init(void)
+ 		ret = dwc_pcie_register_dev(pdev);
+ 		if (ret) {
+ 			pci_dev_put(pdev);
+-			return ret;
++			goto err_cleanup;
+ 		}
+ 	}
+ 
+@@ -745,35 +756,35 @@ static int __init dwc_pcie_pmu_init(void)
+ 				      dwc_pcie_pmu_online_cpu,
+ 				      dwc_pcie_pmu_offline_cpu);
+ 	if (ret < 0)
+-		return ret;
++		goto err_cleanup;
+ 
+ 	dwc_pcie_pmu_hp_state = ret;
+ 
+ 	ret = platform_driver_register(&dwc_pcie_pmu_driver);
+ 	if (ret)
+-		goto platform_driver_register_err;
++		goto err_remove_cpuhp;
+ 
+ 	ret = bus_register_notifier(&pci_bus_type, &dwc_pcie_pmu_nb);
+ 	if (ret)
+-		goto platform_driver_register_err;
++		goto err_unregister_driver;
+ 	notify = true;
+ 
+ 	return 0;
+ 
+-platform_driver_register_err:
++err_unregister_driver:
++	platform_driver_unregister(&dwc_pcie_pmu_driver);
++err_remove_cpuhp:
+ 	cpuhp_remove_multi_state(dwc_pcie_pmu_hp_state);
+-
++err_cleanup:
++	dwc_pcie_cleanup_devices();
+ 	return ret;
+ }
+ 
+ static void __exit dwc_pcie_pmu_exit(void)
+ {
+-	struct dwc_pcie_dev_info *dev_info, *tmp;
+-
+ 	if (notify)
+ 		bus_unregister_notifier(&pci_bus_type, &dwc_pcie_pmu_nb);
+-	list_for_each_entry_safe(dev_info, tmp, &dwc_pcie_dev_info_head, dev_node)
+-		dwc_pcie_unregister_dev(dev_info);
++	dwc_pcie_cleanup_devices();
+ 	platform_driver_unregister(&dwc_pcie_pmu_driver);
+ 	cpuhp_remove_multi_state(dwc_pcie_pmu_hp_state);
+ }
+-- 
+2.39.5
+
 
 
 
