@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-134400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94D20A92ADD
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EC27A926AB
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:15:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A453B1B6498E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADE978A475C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2177256C67;
-	Thu, 17 Apr 2025 18:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA6E1E834D;
+	Thu, 17 Apr 2025 18:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tS+h1ezT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tinVHIro"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3A1256C61;
-	Thu, 17 Apr 2025 18:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5AD1A3178;
+	Thu, 17 Apr 2025 18:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916013; cv=none; b=PLq1yS1+dWCTx8s2em6X+aSYmy6cW5EL0q05x4HoDuiq/1IH23EgkupFseEd5GuMDPpXWx2D7DQ3OW+vE+1yCdqMFl37j0qzNLL4TOjCbeTlbW0HMj82333zJa4T10ix+vMR6AyAw9ZnNDegfM92K1yPWVwQ7SwQDmQxappVaZo=
+	t=1744913727; cv=none; b=IogutPvZIBXHrdVopoMcX4pfHBcQm6qCvkUu+h373Jz90xXNxGr0uXZxJBVB+97rlr9uYpIua8KfMxKlhqJQvP+Ndg4B84TU+/CdVkteCJsOfkoUAQ6enycfYvnh3m0SmBaCWtbSKKz5DonJVA3JZF763KUupGmnmgIlBHtQTlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916013; c=relaxed/simple;
-	bh=husRY6FR7KPLS9hZwRepBRrRDXV4pcU1wOLqXlqmVoA=;
+	s=arc-20240116; t=1744913727; c=relaxed/simple;
+	bh=v24IT946we8cLvvr5e0bMh/koE7ulOSXkOfEh/qIDwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NNFpAoFjUPWf/w85fbxyZyZkt5UNnh/LokaX6LNCxQ/3ZPoPtGjDBCmlY7tQb5IpKrUPjUPOwZ3ey1dRTynUC7espZ0EhnAswBZFrvf8SHjByyPbcFnIDrjMprxTglmixbbZ3Fms8dGKaEVG64ibIHs1uE2WqfpCETZ4oIfkBDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tS+h1ezT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E49C4CEE4;
-	Thu, 17 Apr 2025 18:53:32 +0000 (UTC)
+	 MIME-Version; b=mMSGceMuoLOobc55u5BRjAuXXDXe+IbdiwPiNKKuIembY0sgp1d4YO9kxZFz/IVvsm8QlMnulB/fbu0Wa09d60ebc8EVy2OlX4hXs77DaP5HH/G0Agr3zbLo6rJmXvhHfAXfySWDFFvSQ16SEp49wj3bQgauGmm8i06rEQuWmKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tinVHIro; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0993C4CEE4;
+	Thu, 17 Apr 2025 18:15:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916013;
-	bh=husRY6FR7KPLS9hZwRepBRrRDXV4pcU1wOLqXlqmVoA=;
+	s=korg; t=1744913727;
+	bh=v24IT946we8cLvvr5e0bMh/koE7ulOSXkOfEh/qIDwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tS+h1ezTiXG7RllVXw9w50OJoPdS/ngNhmyms0nrotGFf5w49AAWoEWCODAjjAGKe
-	 UBf+1sHdXvMHUkk3pAvaaqfeAfbtcR6Aje+BLqDGshfAQsJ1iO1+SlMoj2ddnr+ehr
-	 6auoQaiS1WshO/1Pcf9XTTlBkpSzw7SzdYcJ+zjA=
+	b=tinVHIro844fGE2zljZjuMmlfiYD7OZYrCpic0NlQAeqBp9Ayj0mPuyPKUVLUf8MN
+	 X1egS3Gp/rv3Z9T9uGNRESZMASDd8KoayPslbpJTaOKt4fVoL8cCEU2vF0QZSKRqJG
+	 WaAGyNojK0kmBbr6sIx61Tc1UV/BHkF7VqQWvONs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Long <lucien.xin@gmail.com>,
-	=?UTF-8?q?Ricardo=20Ca=C3=B1uelo=20Navarro?= <rcn@igalia.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 313/393] sctp: detect and prevent references to a freed transport in sendmsg
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.14 434/449] s390/pci: Fix zpci_bus_is_isolated_vf() for non-VFs
 Date: Thu, 17 Apr 2025 19:52:02 +0200
-Message-ID: <20250417175120.198512673@linuxfoundation.org>
+Message-ID: <20250417175135.768555448@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,164 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Cañuelo Navarro <rcn@igalia.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-commit f1a69a940de58b16e8249dff26f74c8cc59b32be upstream.
+commit 8691abd3afaadd816a298503ec1a759df1305d2e upstream.
 
-sctp_sendmsg() re-uses associations and transports when possible by
-doing a lookup based on the socket endpoint and the message destination
-address, and then sctp_sendmsg_to_asoc() sets the selected transport in
-all the message chunks to be sent.
+For non-VFs, zpci_bus_is_isolated_vf() should return false because they
+aren't VFs. While zpci_iov_find_parent_pf() specifically checks if
+a function is a VF, it then simply returns that there is no parent. The
+simplistic check for a parent then leads to these functions being
+confused with isolated VFs and isolating them on their own domain even
+if sibling PFs should share the domain.
 
-There's a possible race condition if another thread triggers the removal
-of that selected transport, for instance, by explicitly unbinding an
-address with setsockopt(SCTP_SOCKOPT_BINDX_REM), after the chunks have
-been set up and before the message is sent. This can happen if the send
-buffer is full, during the period when the sender thread temporarily
-releases the socket lock in sctp_wait_for_sndbuf().
+Fix this by explicitly checking if a function is not a VF. Note also
+that at this point the case where RIDs are ignored is already handled
+and in this case all PCI functions get isolated by being detected in
+zpci_bus_is_multifunction_root().
 
-This causes the access to the transport data in
-sctp_outq_select_transport(), when the association outqueue is flushed,
-to result in a use-after-free read.
-
-This change avoids this scenario by having sctp_transport_free() signal
-the freeing of the transport, tagging it as "dead". In order to do this,
-the patch restores the "dead" bit in struct sctp_transport, which was
-removed in
-commit 47faa1e4c50e ("sctp: remove the dead field of sctp_transport").
-
-Then, in the scenario where the sender thread has released the socket
-lock in sctp_wait_for_sndbuf(), the bit is checked again after
-re-acquiring the socket lock to detect the deletion. This is done while
-holding a reference to the transport to prevent it from being freed in
-the process.
-
-If the transport was deleted while the socket lock was relinquished,
-sctp_sendmsg_to_asoc() will return -EAGAIN to let userspace retry the
-send.
-
-The bug was found by a private syzbot instance (see the error report [1]
-and the C reproducer that triggers it [2]).
-
-Link: https://people.igalia.com/rcn/kernel_logs/20250402__KASAN_slab-use-after-free_Read_in_sctp_outq_select_transport.txt [1]
-Link: https://people.igalia.com/rcn/kernel_logs/20250402__KASAN_slab-use-after-free_Read_in_sctp_outq_select_transport__repro.c [2]
 Cc: stable@vger.kernel.org
-Fixes: df132eff4638 ("sctp: clear the transport of some out_chunk_list chunks in sctp_assoc_rm_peer")
-Suggested-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20250404-kasan_slab-use-after-free_read_in_sctp_outq_select_transport__20250404-v1-1-5ce4a0b78ef2@igalia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 2844ddbd540f ("s390/pci: Fix handling of isolated VFs")
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/sctp/structs.h |    3 ++-
- net/sctp/socket.c          |   22 ++++++++++++++--------
- net/sctp/transport.c       |    2 ++
- 3 files changed, 18 insertions(+), 9 deletions(-)
+ arch/s390/pci/pci_bus.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/include/net/sctp/structs.h
-+++ b/include/net/sctp/structs.h
-@@ -775,6 +775,7 @@ struct sctp_transport {
- 
- 	/* Reference counting. */
- 	refcount_t refcnt;
-+	__u32	dead:1,
- 		/* RTO-Pending : A flag used to track if one of the DATA
- 		 *		chunks sent to this address is currently being
- 		 *		used to compute a RTT. If this flag is 0,
-@@ -784,7 +785,7 @@ struct sctp_transport {
- 		 *		calculation completes (i.e. the DATA chunk
- 		 *		is SACK'd) clear this flag.
- 		 */
--	__u32	rto_pending:1,
-+		rto_pending:1,
- 
- 		/*
- 		 * hb_sent : a flag that signals that we have a pending
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -72,8 +72,9 @@
- /* Forward declarations for internal helper functions. */
- static bool sctp_writeable(const struct sock *sk);
- static void sctp_wfree(struct sk_buff *skb);
--static int sctp_wait_for_sndbuf(struct sctp_association *asoc, long *timeo_p,
--				size_t msg_len);
-+static int sctp_wait_for_sndbuf(struct sctp_association *asoc,
-+				struct sctp_transport *transport,
-+				long *timeo_p, size_t msg_len);
- static int sctp_wait_for_packet(struct sock *sk, int *err, long *timeo_p);
- static int sctp_wait_for_connect(struct sctp_association *, long *timeo_p);
- static int sctp_wait_for_accept(struct sock *sk, long timeo);
-@@ -1828,7 +1829,7 @@ static int sctp_sendmsg_to_asoc(struct s
- 
- 	if (sctp_wspace(asoc) <= 0 || !sk_wmem_schedule(sk, msg_len)) {
- 		timeo = sock_sndtimeo(sk, msg->msg_flags & MSG_DONTWAIT);
--		err = sctp_wait_for_sndbuf(asoc, &timeo, msg_len);
-+		err = sctp_wait_for_sndbuf(asoc, transport, &timeo, msg_len);
- 		if (err)
- 			goto err;
- 		if (unlikely(sinfo->sinfo_stream >= asoc->stream.outcnt)) {
-@@ -9214,8 +9215,9 @@ void sctp_sock_rfree(struct sk_buff *skb
- 
- 
- /* Helper function to wait for space in the sndbuf.  */
--static int sctp_wait_for_sndbuf(struct sctp_association *asoc, long *timeo_p,
--				size_t msg_len)
-+static int sctp_wait_for_sndbuf(struct sctp_association *asoc,
-+				struct sctp_transport *transport,
-+				long *timeo_p, size_t msg_len)
+--- a/arch/s390/pci/pci_bus.c
++++ b/arch/s390/pci/pci_bus.c
+@@ -335,6 +335,9 @@ static bool zpci_bus_is_isolated_vf(stru
  {
- 	struct sock *sk = asoc->base.sk;
- 	long current_timeo = *timeo_p;
-@@ -9225,7 +9227,9 @@ static int sctp_wait_for_sndbuf(struct s
- 	pr_debug("%s: asoc:%p, timeo:%ld, msg_len:%zu\n", __func__, asoc,
- 		 *timeo_p, msg_len);
+ 	struct pci_dev *pdev;
  
--	/* Increment the association's refcnt.  */
-+	/* Increment the transport and association's refcnt. */
-+	if (transport)
-+		sctp_transport_hold(transport);
- 	sctp_association_hold(asoc);
- 
- 	/* Wait on the association specific sndbuf space. */
-@@ -9234,7 +9238,7 @@ static int sctp_wait_for_sndbuf(struct s
- 					  TASK_INTERRUPTIBLE);
- 		if (asoc->base.dead)
- 			goto do_dead;
--		if (!*timeo_p)
-+		if ((!*timeo_p) || (transport && transport->dead))
- 			goto do_nonblock;
- 		if (sk->sk_err || asoc->state >= SCTP_STATE_SHUTDOWN_PENDING)
- 			goto do_error;
-@@ -9259,7 +9263,9 @@ static int sctp_wait_for_sndbuf(struct s
- out:
- 	finish_wait(&asoc->wait, &wait);
- 
--	/* Release the association's refcnt.  */
-+	/* Release the transport and association's refcnt. */
-+	if (transport)
-+		sctp_transport_put(transport);
- 	sctp_association_put(asoc);
- 
- 	return err;
---- a/net/sctp/transport.c
-+++ b/net/sctp/transport.c
-@@ -117,6 +117,8 @@ fail:
-  */
- void sctp_transport_free(struct sctp_transport *transport)
- {
-+	transport->dead = 1;
++	if (!zdev->vfn)
++		return false;
 +
- 	/* Try to delete the heartbeat timer.  */
- 	if (del_timer(&transport->hb_timer))
- 		sctp_transport_put(transport);
+ 	pdev = zpci_iov_find_parent_pf(zbus, zdev);
+ 	if (!pdev)
+ 		return true;
 
 
 
