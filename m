@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-133574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69097A9265B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:12:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E89FA928AB
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:37:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F6B2188B801
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:11:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3068A3B4956
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A348F2566D2;
-	Thu, 17 Apr 2025 18:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFDB257AC3;
+	Thu, 17 Apr 2025 18:29:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jyXJg4L0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xPWywUwu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D03D2561B3;
-	Thu, 17 Apr 2025 18:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC84825744D;
+	Thu, 17 Apr 2025 18:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913487; cv=none; b=NTyMYIFfDBJROIRqmINEDwz+LgP+zEgLN0OBiuWUPsXxqyM4YP/sCng2XJIpJzKopMaYyhQ3JI3Latc2NaZeuoNxT9NKPzHSHh1KFeWY7EBDUQkgH87ds0wq4bNOX7q1Tou6UvUr9JrF0mKe1QZT1nJ92F229pIZ+vA0TmxRIzQ=
+	t=1744914565; cv=none; b=a6jpx5a8nV0Ac1GiSO3P9y/iHO/vLXuZGmxejehCl00Pa46V9KsVVo0CBCgAK5WsVml6P0H4b4yofYgeYWGkJBaeIChA2X95ppDZbUpuuAohWmU0DPIjwEcjuk3dAaf6meDta6DSefjtyNRUFdLw/9ha/hQrLj7vYQYr8OyrGpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913487; c=relaxed/simple;
-	bh=VunoKxkUY1WitWyEl5CnfUA8Pd72N1tAWCHaFuFzjzo=;
+	s=arc-20240116; t=1744914565; c=relaxed/simple;
+	bh=BK1my3XYBV8dAoHZ8GSWValDxwVQo9F1bguQ943OB7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tmNdQBdjiBTtRtuoOv7ZiA/uKbzmKOXuiyR/s7jWEeKaLYcOXaM2Ri9AW2tIa9HAeZdYBjTH1xH5zwceeYjPwELazuqGgWqSCTsuOS/n+obfx3WXwTwrroBH3CO74F2OlSk/aPokqOyJFdszQVEKRhhLj1VIuOiqq4aorpLv5Ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jyXJg4L0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB061C4CEE4;
-	Thu, 17 Apr 2025 18:11:26 +0000 (UTC)
+	 MIME-Version; b=TOLh7RHhB3xFD7I02cDr0jsBYBWss3DI4kBZL/pvN0Cyb/vFeg9ckkSOAplrja1eoKaHcnaP92VdFwKv9TjwR1pb3gtxbJydbpAj6Mn/iAOVtFSMrAEttF29EKtZmO26oU9Ksb2jISB+pKWNDzebP9r1yNau3NOGXRXrwZBSHkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xPWywUwu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46492C4CEE4;
+	Thu, 17 Apr 2025 18:29:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913487;
-	bh=VunoKxkUY1WitWyEl5CnfUA8Pd72N1tAWCHaFuFzjzo=;
+	s=korg; t=1744914565;
+	bh=BK1my3XYBV8dAoHZ8GSWValDxwVQo9F1bguQ943OB7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jyXJg4L0VZNBkUbBAEXXGAHJ1uccEssU/sVa9MlU0Db+Z0Z53FXtL6FTmQ5hNcsc/
-	 noPubw6LpJj2bxyXjURQQPi82VEw66xiDnIsxnRA1Zgqofy1KuOvG8zv/OoHPt1xOi
-	 qye3zT8pGPABAelBgXagoEgIl4c6rzRb16970m4c=
+	b=xPWywUwuHj4AXzzRtFvwD63hi7o6b/Lk4z0QxGcFCcJURECV5hyyYP6JiFzflqmaA
+	 RuEyHjG4tQHzM10uIr2XyAmFy6nbJhl+H6l5iqnwhANxDSG2zQ31qm3bSdWv9GbfV/
+	 uby/EGTPQch7yJtcC4GNpe5r7ksx4C3ZgG5sWSR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	T Pratham <t-pratham@ti.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Jens Axboe <axboe@kernel.dk>,
-	Kamlesh Gurudasani <kamlesh@ti.com>,
-	Praneeth Bajjuri <praneeth@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.14 328/449] lib: scatterlist: fix sg_split_phys to preserve original scatterlist offsets
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.13 258/414] wifi: mt76: mt7925: fix country count limitation for CLC
 Date: Thu, 17 Apr 2025 19:50:16 +0200
-Message-ID: <20250417175131.336051109@linuxfoundation.org>
+Message-ID: <20250417175121.808467621@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,61 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: T Pratham <t-pratham@ti.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-commit 8b46fdaea819a679da176b879e7b0674a1161a5e upstream.
+commit 6458d760a0c0afd2fda11e83ed3e1125a252432f upstream.
 
-The split_sg_phys function was incorrectly setting the offsets of all
-scatterlist entries (except the first) to 0.  Only the first scatterlist
-entry's offset and length needs to be modified to account for the skip.
-Setting the rest entries' offsets to 0 could lead to incorrect data
-access.
+Due to the increase in the number of power tables for 6Ghz on CLC,
+the variable nr_country is no longer sufficient to represent the
+total quantity. Therefore, we have switched to calculating the
+length of clc buf to obtain the correct power table.
 
-I am using this function in a crypto driver that I'm currently developing
-(not yet sent to mailing list).  During testing, it was observed that the
-output scatterlists (except the first one) contained incorrect garbage
-data.
-
-I narrowed this issue down to the call of sg_split().  Upon debugging
-inside this function, I found that this resetting of offset is the cause
-of the problem, causing the subsequent scatterlists to point to incorrect
-memory locations in a page.  By removing this code, I am obtaining
-expected data in all the split output scatterlists.  Thus, this was indeed
-causing observable runtime effects!
-
-This patch removes the offending code, ensuring that the page offsets in
-the input scatterlist are preserved in the output scatterlist.
-
-Link: https://lkml.kernel.org/r/20250319111437.1969903-1-t-pratham@ti.com
-Fixes: f8bcbe62acd0 ("lib: scatterlist: add sg splitting function")
-Signed-off-by: T Pratham <t-pratham@ti.com>
-Cc: Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Kamlesh Gurudasani <kamlesh@ti.com>
-Cc: Praneeth Bajjuri <praneeth@ti.com>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20250116062131.3860198-1-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/sg_split.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/lib/sg_split.c
-+++ b/lib/sg_split.c
-@@ -88,8 +88,6 @@ static void sg_split_phys(struct sg_spli
- 			if (!j) {
- 				out_sg->offset += split->skip_sg0;
- 				out_sg->length -= split->skip_sg0;
--			} else {
--				out_sg->offset = 0;
- 			}
- 			sg_dma_address(out_sg) = 0;
- 			sg_dma_len(out_sg) = 0;
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -3119,13 +3119,14 @@ __mt7925_mcu_set_clc(struct mt792x_dev *
+ 		.env = env_cap,
+ 	};
+ 	int ret, valid_cnt = 0;
+-	u8 i, *pos;
++	u8 *pos, *last_pos;
+ 
+ 	if (!clc)
+ 		return 0;
+ 
+ 	pos = clc->data + sizeof(*seg) * clc->nr_seg;
+-	for (i = 0; i < clc->nr_country; i++) {
++	last_pos = clc->data + le32_to_cpu(*(__le32 *)(clc->data + 4));
++	while (pos < last_pos) {
+ 		struct mt7925_clc_rule *rule = (struct mt7925_clc_rule *)pos;
+ 
+ 		pos += sizeof(*rule);
 
 
 
