@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-134312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD145A92A7E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:52:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E907EA928EC
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:38:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B5548A22B9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:48:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13CA77B7A36
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:34:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DB4625525D;
-	Thu, 17 Apr 2025 18:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9276B257422;
+	Thu, 17 Apr 2025 18:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IiWn542O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BoOvs9T7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC8619ABC6;
-	Thu, 17 Apr 2025 18:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A21D2566D7;
+	Thu, 17 Apr 2025 18:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915746; cv=none; b=MVV3LtFMYabHyDGxripMx1kf7nKARCLUT+wIUQd1yGoxcqwL9aAZmmD+j+3z25uRxlgQKCkvOJMKesIZzda2A714mv2jolmo2N0a14Ph6ufgjN237HXcOwtv5I30C4KslJnBtfjqpr61smjfA2YmZntY76zumo3fsJNHnP/a3Yc=
+	t=1744914505; cv=none; b=aLs+TA2PqwFhiVV53hCFedE+EPJO1kA/Avxf8p+zijhwRSATj0MZJe4vRQP0svKnzYW5R61fy7Y4ZLWcxaJxOtd23xoi5VZ3PwwVN8OBUHsC1ulM0P1K2TVxXlmR2+n2h9JGH9IpKtCgWcxmQ3vuCWhB5QW9MtKdTNaEdONX88k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915746; c=relaxed/simple;
-	bh=9++g2dztjblfgwyjJ8I6FqBIGUwwOE/Gwf6C6bFmc0A=;
+	s=arc-20240116; t=1744914505; c=relaxed/simple;
+	bh=ygygodG4lgLnfHy848z2Uinp10dXvmMng8MsmYmo6KM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gzxsAKzrrmtj3LTljlPj75MKW+lx2pyZOVDhiRyC2mL05HfVc4xXqfcX9kNYrrDgqmDpceLyR766UracrGgbMDkBCcdYR94Kh5/tVI5/uqU5JJY30jboLLP8kKk0GqyjFc7Fyg6ycT4ONITkfVl8CvQkXqVFAfRSMaQNpxgfjv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IiWn542O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A310CC4CEE4;
-	Thu, 17 Apr 2025 18:49:05 +0000 (UTC)
+	 MIME-Version; b=UfsscC1VEH9eld/4yjh4aOOkBlxHuPB0rsVMhRGtnIISGn2Edgd7h6gt+SYThVBfh2iJ/TaQQGmAQ81Zom72J3f/Ix+DX1h13KkGFxmuFpjw5Gfj77OTrsn/syHbyfZfSfUnmUeZvD+x1aUfhMvYNUtKPyavVLf4sqt9ni+q7Bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BoOvs9T7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D455BC4CEE4;
+	Thu, 17 Apr 2025 18:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915746;
-	bh=9++g2dztjblfgwyjJ8I6FqBIGUwwOE/Gwf6C6bFmc0A=;
+	s=korg; t=1744914505;
+	bh=ygygodG4lgLnfHy848z2Uinp10dXvmMng8MsmYmo6KM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IiWn542O4t86CoRo+9DREZ5qNr2Rg0e6nlT84XjLctiWGPyE9Rzk/pmyqfcx4urGA
-	 sLY1v1pV/SPE2eUdnobFn9ifrTzhVRh2XR5eSyAUubQbcB/WHNSZXs6bA8U7nwIMJQ
-	 Lhj1lOyZJH28HMUbkIvsmJ5AAeZ8A8kDu6UzS19w=
+	b=BoOvs9T7TRGVoVhZkD2YINCpoooRA4hdKg9bEJOMxZEBlGI6UQGLFymv/bwp9GbK7
+	 qX7lYtU/4VURIvOIkfHIW6qmFiR3s7bGPd55JvYaobU2hxFeO+owXqZrGEKcXrhtle
+	 GQ45kgVX9q9IHtqLhHlhmvk6+zcl+uFHiq6wpQCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 186/393] HID: pidff: Fix set_device_control()
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.13 237/414] media: venus: hfi_parser: refactor hfi packet parsing logic
 Date: Thu, 17 Apr 2025 19:49:55 +0200
-Message-ID: <20250417175115.072691518@linuxfoundation.org>
+Message-ID: <20250417175120.959074901@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,84 +60,277 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
 
-[ Upstream commit e2fa0bdf08a70623f24ed52f2037a330999d9800 ]
+commit 9edaaa8e3e15aab1ca413ab50556de1975bcb329 upstream.
 
-As the search for Device Control report is permissive, make sure the
-desired field was actually found, before trying to set it.
+words_count denotes the number of words in total payload, while data
+points to payload of various property within it. When words_count
+reaches last word, data can access memory beyond the total payload. This
+can lead to OOB access. With this patch, the utility api for handling
+individual properties now returns the size of data consumed. Accordingly
+remaining bytes are calculated before parsing the payload, thereby
+eliminates the OOB access possibilities.
 
-Fix bitmask clearing as it was erronously using index instead of
-index - 1 (HID arrays index is 1-based).
-
-Add last two missing Device Control usages to the defined array.
-PID_PAUSE and PID_CONTINUE.
-
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/media/platform/qcom/venus/hfi_parser.c |   98 ++++++++++++++++++-------
+ 1 file changed, 72 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index 6eb7934c8f53b..8dfd2c554a276 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -118,7 +118,9 @@ static const u8 pidff_pool[] = { 0x80, 0x83, 0xa9 };
- #define PID_DISABLE_ACTUATORS	1
- #define PID_STOP_ALL_EFFECTS	2
- #define PID_RESET		3
--static const u8 pidff_device_control[] = { 0x97, 0x98, 0x99, 0x9a };
-+#define PID_PAUSE		4
-+#define PID_CONTINUE		5
-+static const u8 pidff_device_control[] = { 0x97, 0x98, 0x99, 0x9a, 0x9b, 0x9c };
- 
- #define PID_CONSTANT	0
- #define PID_RAMP	1
-@@ -551,21 +553,29 @@ static void pidff_set_gain_report(struct pidff_device *pidff, u16 gain)
+--- a/drivers/media/platform/qcom/venus/hfi_parser.c
++++ b/drivers/media/platform/qcom/venus/hfi_parser.c
+@@ -64,7 +64,7 @@ fill_buf_mode(struct hfi_plat_caps *cap,
+ 		cap->cap_bufs_mode_dynamic = true;
  }
  
- /*
-- * Clear device control report
-+ * Send device control report to the device
-  */
- static void pidff_set_device_control(struct pidff_device *pidff, int field)
+-static void
++static int
+ parse_alloc_mode(struct venus_core *core, u32 codecs, u32 domain, void *data)
  {
--	int i, tmp;
-+	int i, index;
- 	int field_index = pidff->control_id[field];
+ 	struct hfi_buffer_alloc_mode_supported *mode = data;
+@@ -72,7 +72,7 @@ parse_alloc_mode(struct venus_core *core
+ 	u32 *type;
  
-+	if (field_index < 1)
-+		return;
+ 	if (num_entries > MAX_ALLOC_MODE_ENTRIES)
+-		return;
++		return -EINVAL;
+ 
+ 	type = mode->data;
+ 
+@@ -84,6 +84,8 @@ parse_alloc_mode(struct venus_core *core
+ 
+ 		type++;
+ 	}
 +
- 	/* Detect if the field is a bitmask variable or an array */
- 	if (pidff->device_control->flags & HID_MAIN_ITEM_VARIABLE) {
- 		hid_dbg(pidff->hid, "DEVICE_CONTROL is a bitmask\n");
++	return sizeof(*mode);
+ }
+ 
+ static void fill_profile_level(struct hfi_plat_caps *cap, const void *data,
+@@ -98,7 +100,7 @@ static void fill_profile_level(struct hf
+ 	cap->num_pl += num;
+ }
+ 
+-static void
++static int
+ parse_profile_level(struct venus_core *core, u32 codecs, u32 domain, void *data)
+ {
+ 	struct hfi_profile_level_supported *pl = data;
+@@ -106,12 +108,14 @@ parse_profile_level(struct venus_core *c
+ 	struct hfi_profile_level pl_arr[HFI_MAX_PROFILE_COUNT] = {};
+ 
+ 	if (pl->profile_count > HFI_MAX_PROFILE_COUNT)
+-		return;
++		return -EINVAL;
+ 
+ 	memcpy(pl_arr, proflevel, pl->profile_count * sizeof(*proflevel));
+ 
+ 	for_each_codec(core->caps, ARRAY_SIZE(core->caps), codecs, domain,
+ 		       fill_profile_level, pl_arr, pl->profile_count);
 +
- 		/* Clear current bitmask */
- 		for(i = 0; i < sizeof(pidff_device_control); i++) {
--			tmp = pidff->control_id[i];
--			pidff->device_control->value[tmp] = 0;
-+			index = pidff->control_id[i];
-+			if (index < 1)
-+				continue;
++	return pl->profile_count * sizeof(*proflevel) + sizeof(u32);
+ }
+ 
+ static void
+@@ -126,7 +130,7 @@ fill_caps(struct hfi_plat_caps *cap, con
+ 	cap->num_caps += num;
+ }
+ 
+-static void
++static int
+ parse_caps(struct venus_core *core, u32 codecs, u32 domain, void *data)
+ {
+ 	struct hfi_capabilities *caps = data;
+@@ -135,12 +139,14 @@ parse_caps(struct venus_core *core, u32
+ 	struct hfi_capability caps_arr[MAX_CAP_ENTRIES] = {};
+ 
+ 	if (num_caps > MAX_CAP_ENTRIES)
+-		return;
++		return -EINVAL;
+ 
+ 	memcpy(caps_arr, cap, num_caps * sizeof(*cap));
+ 
+ 	for_each_codec(core->caps, ARRAY_SIZE(core->caps), codecs, domain,
+ 		       fill_caps, caps_arr, num_caps);
 +
-+			pidff->device_control->value[index - 1] = 0;
++	return sizeof(*caps);
+ }
+ 
+ static void fill_raw_fmts(struct hfi_plat_caps *cap, const void *fmts,
+@@ -155,7 +161,7 @@ static void fill_raw_fmts(struct hfi_pla
+ 	cap->num_fmts += num_fmts;
+ }
+ 
+-static void
++static int
+ parse_raw_formats(struct venus_core *core, u32 codecs, u32 domain, void *data)
+ {
+ 	struct hfi_uncompressed_format_supported *fmt = data;
+@@ -164,7 +170,8 @@ parse_raw_formats(struct venus_core *cor
+ 	struct raw_formats rawfmts[MAX_FMT_ENTRIES] = {};
+ 	u32 entries = fmt->format_entries;
+ 	unsigned int i = 0;
+-	u32 num_planes;
++	u32 num_planes = 0;
++	u32 size;
+ 
+ 	while (entries) {
+ 		num_planes = pinfo->num_planes;
+@@ -174,7 +181,7 @@ parse_raw_formats(struct venus_core *cor
+ 		i++;
+ 
+ 		if (i >= MAX_FMT_ENTRIES)
+-			return;
++			return -EINVAL;
+ 
+ 		if (pinfo->num_planes > MAX_PLANES)
+ 			break;
+@@ -186,9 +193,13 @@ parse_raw_formats(struct venus_core *cor
+ 
+ 	for_each_codec(core->caps, ARRAY_SIZE(core->caps), codecs, domain,
+ 		       fill_raw_fmts, rawfmts, i);
++	size = fmt->format_entries * (sizeof(*constr) * num_planes + 2 * sizeof(u32))
++		+ 2 * sizeof(u32);
++
++	return size;
+ }
+ 
+-static void parse_codecs(struct venus_core *core, void *data)
++static int parse_codecs(struct venus_core *core, void *data)
+ {
+ 	struct hfi_codec_supported *codecs = data;
+ 
+@@ -200,21 +211,27 @@ static void parse_codecs(struct venus_co
+ 		core->dec_codecs &= ~HFI_VIDEO_CODEC_SPARK;
+ 		core->enc_codecs &= ~HFI_VIDEO_CODEC_HEVC;
+ 	}
++
++	return sizeof(*codecs);
+ }
+ 
+-static void parse_max_sessions(struct venus_core *core, const void *data)
++static int parse_max_sessions(struct venus_core *core, const void *data)
+ {
+ 	const struct hfi_max_sessions_supported *sessions = data;
+ 
+ 	core->max_sessions_supported = sessions->max_sessions;
++
++	return sizeof(*sessions);
+ }
+ 
+-static void parse_codecs_mask(u32 *codecs, u32 *domain, void *data)
++static int parse_codecs_mask(u32 *codecs, u32 *domain, void *data)
+ {
+ 	struct hfi_codec_mask_supported *mask = data;
+ 
+ 	*codecs = mask->codecs;
+ 	*domain = mask->video_domains;
++
++	return sizeof(*mask);
+ }
+ 
+ static void parser_init(struct venus_inst *inst, u32 *codecs, u32 *domain)
+@@ -283,8 +300,9 @@ static int hfi_platform_parser(struct ve
+ u32 hfi_parser(struct venus_core *core, struct venus_inst *inst, void *buf,
+ 	       u32 size)
+ {
+-	unsigned int words_count = size >> 2;
+-	u32 *word = buf, *data, codecs = 0, domain = 0;
++	u32 *words = buf, *payload, codecs = 0, domain = 0;
++	u32 *frame_size = buf + size;
++	u32 rem_bytes = size;
+ 	int ret;
+ 
+ 	ret = hfi_platform_parser(core, inst);
+@@ -301,38 +319,66 @@ u32 hfi_parser(struct venus_core *core,
+ 		memset(core->caps, 0, sizeof(core->caps));
+ 	}
+ 
+-	while (words_count) {
+-		data = word + 1;
++	while (words < frame_size) {
++		payload = words + 1;
+ 
+-		switch (*word) {
++		switch (*words) {
+ 		case HFI_PROPERTY_PARAM_CODEC_SUPPORTED:
+-			parse_codecs(core, data);
++			if (rem_bytes <= sizeof(struct hfi_codec_supported))
++				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
++
++			ret = parse_codecs(core, payload);
++			if (ret < 0)
++				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
++
+ 			init_codecs(core);
+ 			break;
+ 		case HFI_PROPERTY_PARAM_MAX_SESSIONS_SUPPORTED:
+-			parse_max_sessions(core, data);
++			if (rem_bytes <= sizeof(struct hfi_max_sessions_supported))
++				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
++
++			ret = parse_max_sessions(core, payload);
+ 			break;
+ 		case HFI_PROPERTY_PARAM_CODEC_MASK_SUPPORTED:
+-			parse_codecs_mask(&codecs, &domain, data);
++			if (rem_bytes <= sizeof(struct hfi_codec_mask_supported))
++				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
++
++			ret = parse_codecs_mask(&codecs, &domain, payload);
+ 			break;
+ 		case HFI_PROPERTY_PARAM_UNCOMPRESSED_FORMAT_SUPPORTED:
+-			parse_raw_formats(core, codecs, domain, data);
++			if (rem_bytes <= sizeof(struct hfi_uncompressed_format_supported))
++				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
++
++			ret = parse_raw_formats(core, codecs, domain, payload);
+ 			break;
+ 		case HFI_PROPERTY_PARAM_CAPABILITY_SUPPORTED:
+-			parse_caps(core, codecs, domain, data);
++			if (rem_bytes <= sizeof(struct hfi_capabilities))
++				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
++
++			ret = parse_caps(core, codecs, domain, payload);
+ 			break;
+ 		case HFI_PROPERTY_PARAM_PROFILE_LEVEL_SUPPORTED:
+-			parse_profile_level(core, codecs, domain, data);
++			if (rem_bytes <= sizeof(struct hfi_profile_level_supported))
++				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
++
++			ret = parse_profile_level(core, codecs, domain, payload);
+ 			break;
+ 		case HFI_PROPERTY_PARAM_BUFFER_ALLOC_MODE_SUPPORTED:
+-			parse_alloc_mode(core, codecs, domain, data);
++			if (rem_bytes <= sizeof(struct hfi_buffer_alloc_mode_supported))
++				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
++
++			ret = parse_alloc_mode(core, codecs, domain, payload);
+ 			break;
+ 		default:
++			ret = sizeof(u32);
+ 			break;
  		}
+ 
+-		word++;
+-		words_count--;
++		if (ret < 0)
++			return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
 +
- 		pidff->device_control->value[field_index - 1] = 1;
- 	} else {
- 		hid_dbg(pidff->hid, "DEVICE_CONTROL is an array\n");
--- 
-2.39.5
-
++		words += ret / sizeof(u32);
++		rem_bytes -= ret;
+ 	}
+ 
+ 	if (!core->max_sessions_supported)
 
 
 
