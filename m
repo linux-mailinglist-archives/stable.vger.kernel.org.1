@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-134042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57997A92944
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C97E6A92ABD
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:54:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D1A93A53CC
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 905A31B64F47
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C416264FA4;
-	Thu, 17 Apr 2025 18:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5DB253340;
+	Thu, 17 Apr 2025 18:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yj7CrXJs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aBGvVf9b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A15725B67A;
-	Thu, 17 Apr 2025 18:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B0E13594D;
+	Thu, 17 Apr 2025 18:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914920; cv=none; b=RUmi/xbIYbWWrSNX89+nlQe2H+UPZj9qKzDAw0bwvFaxZNYh5/3Jiaq3we7TiDNcjtBpv3ecabPEG9gc0g+HpQbcKVnB9Lt3CU1XSDd/P5dBvlWfUkp7DvW67yqNLkx0Tkqn8uJ0kQR/BIyOK6WMnzgC9ON21WMon3Fz+tVRug4=
+	t=1744915946; cv=none; b=NNBZ7ay+9CSFMbrWOpKxBU5R8H9v/8IKGp0mLQcXzj/XnuPCqCVmVKdXObUvMqJFU25kKFQXxImH9/tfzDF1/Ga0MOc7nhZWl8kWpysg0O+uwgEyqdvk5sO8mNlequ9m1hdoZqDxpXdMu+uRnA6ziLB9oOIkIUVW9BhBSpiLa9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914920; c=relaxed/simple;
-	bh=hjdChA63qo8qNkIBXq0+jLPCW3+MN02wZ21kRtyYOao=;
+	s=arc-20240116; t=1744915946; c=relaxed/simple;
+	bh=e5R4Q9EG7HOHhJjwmzAv3fMy4OtAjN5djD0AsHoyI5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HTY3Wbq0pzBzoo8c5TNC9Cs5IddW+04ki3HDJEO/sv4hwdLxxUPvAP0499viAt28QvfRDEAG+O8qA2zXymCi75K+7xsqJg2kCUywy8Oo9C1V8XiRaJ6f4W9t9xQJDXb2SecrCm3I1rJC8/TV86RTugQMolWNxjH72Bg5z07ZEQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yj7CrXJs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CBB0C4CEEA;
-	Thu, 17 Apr 2025 18:35:18 +0000 (UTC)
+	 MIME-Version; b=shJ0SLD142Z06erKotQAwXtjwiC711xBGU/EjzbpzNwchtQ8fNOtZ5x5oK9gVKOuob4LmiaRucHwIirNHkMaHNTkZ1R9io/0VwMYIpypSSgKA6Id6s8OdHiv2XCkl4OS69KP7Hn3OrR97pAjIEQWvOPCseXxeH9hq5bWPnF+2mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aBGvVf9b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87314C4CEE4;
+	Thu, 17 Apr 2025 18:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914919;
-	bh=hjdChA63qo8qNkIBXq0+jLPCW3+MN02wZ21kRtyYOao=;
+	s=korg; t=1744915946;
+	bh=e5R4Q9EG7HOHhJjwmzAv3fMy4OtAjN5djD0AsHoyI5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yj7CrXJs0JAtOJ89wky7FhTI/mdLiEqsmSKXx8Ygcl0WPcdG2K/tLnfwrBciL02Hh
-	 kA0ehz0a8Rn2PseHPGe2kyZLZWK6QIJcsH1jIXGWEIjwM46PFVIxmRD/bu1Pud2Vm6
-	 Qfox+2N3TMi+sv8k/JB6s8fRf3ELgxOLlwTzy8MY=
+	b=aBGvVf9b7/Vf0Y+/U8l+gJTnKAkmEAhXRNNzBYNb1NdfRj+IWoQQb3pGoyDqNoKzs
+	 NrpkBRkz0ORoFrPEjWFwjNITefurw7Ce3tf2WlatJGSbqJDUxZO46pkEjZ0TxsUrOe
+	 m5V4dGlE+eRITmttilvZGU+sZOVCU30b6uxAj98U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junwen Sun <sunjw8888@gmail.com>,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.13 343/414] cifs: Ensure that all non-client-specific reparse points are processed by the server
-Date: Thu, 17 Apr 2025 19:51:41 +0200
-Message-ID: <20250417175125.223629647@linuxfoundation.org>
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	Anand Jain <anand.jain@oracle.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 293/393] btrfs: zoned: fix zone finishing with missing devices
+Date: Thu, 17 Apr 2025 19:51:42 +0200
+Message-ID: <20250417175119.400084856@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,90 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-commit 6f8a394aa952257575910d57cf0a63627fa949a2 upstream.
+commit 35fec1089ebb5617f85884d3fa6a699ce6337a75 upstream.
 
-Fix regression in mounts to e.g. onedrive shares.
+If do_zone_finish() is called with a filesystem that has missing devices
+(e.g. a RAID file system mounted in degraded mode) it is accessing the
+btrfs_device::zone_info pointer, which will not be set if the device
+in question is missing.
 
-Generally, reparse points are processed by the SMB server during the
-SMB OPEN request, but there are few reparse points which do not have
-OPEN-like meaning for the SMB server and has to be processed by the SMB
-client. Those are symlinks and special files (fifo, socket, block, char).
+Check if the device is present (by checking if it has a valid block device
+pointer associated) and if not, skip zone finishing for it.
 
-For Linux SMB client, it is required to process also name surrogate reparse
-points as they represent another entity on the SMB server system. Linux
-client will mark them as separate mount points. Examples of name surrogate
-reparse points are NTFS junction points (e.g. created by the "mklink" tool
-on Windows servers).
-
-So after processing the name surrogate reparse points, clear the
--EOPNOTSUPP error code returned from the parse_reparse_point() to let SMB
-server to process reparse points.
-
-And remove printing misleading error message "unhandled reparse tag:" as
-reparse points are handled by SMB server and hence unhandled fact is normal
-operation.
-
-Fixes: cad3fc0a4c8c ("cifs: Throw -EOPNOTSUPP error on unsupported reparse point type from parse_reparse_point()")
-Fixes: b587fd128660 ("cifs: Treat unhandled directory name surrogate reparse points as mount directory nodes")
-Cc: stable@vger.kernel.org
-Reported-by: Junwen Sun <sunjw8888@gmail.com>
-Tested-by: Junwen Sun <sunjw8888@gmail.com>
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 4dcbb8ab31c1 ("btrfs: zoned: make zone finishing multi stripe capable")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/inode.c   |   10 ++++++++++
- fs/smb/client/reparse.c |    4 ----
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ fs/btrfs/zoned.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -1228,6 +1228,16 @@ static int reparse_info_to_fattr(struct
- 				cifs_create_junction_fattr(fattr, sb);
- 				goto out;
- 			}
-+			/*
-+			 * If the reparse point is unsupported by the Linux SMB
-+			 * client then let it process by the SMB server. So mask
-+			 * the -EOPNOTSUPP error code. This will allow Linux SMB
-+			 * client to send SMB OPEN request to server. If server
-+			 * does not support this reparse point too then server
-+			 * will return error during open the path.
-+			 */
-+			if (rc == -EOPNOTSUPP)
-+				rc = 0;
- 		}
- 		break;
- 	}
---- a/fs/smb/client/reparse.c
-+++ b/fs/smb/client/reparse.c
-@@ -698,8 +698,6 @@ int parse_reparse_point(struct reparse_d
- 			const char *full_path,
- 			bool unicode, struct cifs_open_info_data *data)
- {
--	struct cifs_tcon *tcon = cifs_sb_master_tcon(cifs_sb);
--
- 	data->reparse.buf = buf;
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -2271,6 +2271,9 @@ static int do_zone_finish(struct btrfs_b
+ 		struct btrfs_zoned_device_info *zinfo = device->zone_info;
+ 		unsigned int nofs_flags;
  
- 	/* See MS-FSCC 2.1.2 */
-@@ -726,8 +724,6 @@ int parse_reparse_point(struct reparse_d
- 		}
- 		return 0;
- 	default:
--		cifs_tcon_dbg(VFS | ONCE, "unhandled reparse tag: 0x%08x\n",
--			      le32_to_cpu(buf->ReparseTag));
- 		return -EOPNOTSUPP;
- 	}
- }
++		if (!device->bdev)
++			continue;
++
+ 		if (zinfo->max_active_zones == 0)
+ 			continue;
+ 
 
 
 
