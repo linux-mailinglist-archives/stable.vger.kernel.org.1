@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-134217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D65A929C2
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:44:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05C35A92842
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:32:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C862D189775C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:44:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CC408E009A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:31:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ADC2253954;
-	Thu, 17 Apr 2025 18:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60CEB26656A;
+	Thu, 17 Apr 2025 18:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lo+L8rEM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VEZi7+DG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC30D1D5CD9;
-	Thu, 17 Apr 2025 18:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C53265CA6;
+	Thu, 17 Apr 2025 18:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915453; cv=none; b=k7Mg4ibpCAVz1KipbMJCh2cfbwuNj3dsazmJoNCHvGI8mhIE8jk9VziSB1SAFnTngOFsJocfvgHEQ6xz0WU55BPllkKoN0bG3GSnfl4cYppq1i2zdMig+a6TlTNd67ZUG/OX7NnY0qPHlnHkVcXUpe4576hyPx2unvyJGLd1caY=
+	t=1744914431; cv=none; b=X0kzac9O1dNGaGWpHAjG9VtkNY1HmKash5l9MLRYulVbjhQLsfHVxrYn1welEu6mAAulpEuVm3pdN2WWmdj3/iLUA3CssQeDuEFtn1/8nlW5r6JMXJ+nHqrckGWoNZjClLnXYSuNViQ9N8zi/+30fBG+z9y2d+0UL3Xk9lanBzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915453; c=relaxed/simple;
-	bh=FOXCeWbyV2086ZXA+9SS8Q37z5GHdaTW5zR4jSQSvec=;
+	s=arc-20240116; t=1744914431; c=relaxed/simple;
+	bh=U8oEMVN0xeQd8UkBYE24jHVIeazrhHBUzpCRpqTimcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fr8TaYYvxxfNSaT8WNcYrXQzT5dr5O5FrANRQAWKO0O2DDM3pNp3i88nwbXNWURbwzx5/eZHC/GpJdAb9ymojzE4b5EPp0sndVgSljDm2X5NvFzYm336cXDbfAzKO0T7fc1FpGjC7Vf59vIkzeY9+/5tzlW2DvUEhBGgEC2grx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lo+L8rEM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13BF2C4CEE4;
-	Thu, 17 Apr 2025 18:44:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KdDf84GFKQY8R0NOU3l+NPMElWPq/BsU8IRsEepEMQgkQ8DCi9svWWAybxJmVxczMbfIE7+3rqgqT93/LQXkWEJeD9bLpbLwVAqsBPt22a8FY/sXV7P++eFWLsQmPtLEUxOQD2LKeauKaMKIJz8Sk5FgPx6xpjtEjWjLpIXychE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VEZi7+DG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF00C4CEE4;
+	Thu, 17 Apr 2025 18:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915452;
-	bh=FOXCeWbyV2086ZXA+9SS8Q37z5GHdaTW5zR4jSQSvec=;
+	s=korg; t=1744914430;
+	bh=U8oEMVN0xeQd8UkBYE24jHVIeazrhHBUzpCRpqTimcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lo+L8rEMIoR1qVE+EQUQf6/XMk+mrFdNb26QNxEA7XjKljNlyrMLkgG1QCzApBCbX
-	 BpIFPTXg4FcCJEyrJUtq1dsfjnxvlE8suI47wNuywZfThmlglHoy9uZ0HsPbwvwNX7
-	 SEZT2p15pFDr/v/ilkXaBA2WZRjt8WZwhZDpuQl8=
+	b=VEZi7+DG79eTSZQUWHUbBo5bQn7H9BiGHC+2gzn+KIt9dn8Dvc0Wz1VeFsu3x3rRf
+	 clHLV8alLZwVEt3glMJu41pAcXQwJdsGTZCe8z4ct2YMZYKG+HAbGlxQOljUk8r39M
+	 70/OUgQHWupiyYhJxBmBx+kuScDHeZTO/9BdD1RE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Wyatt <fewtarius@steamfork.org>,
-	John Edwards <uejji@uejji.net>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 133/393] drm: panel-orientation-quirks: Add quirk for AYA NEO Slide
+Subject: [PATCH 6.13 184/414] HID: pidff: Factor out pool report fetch and remove excess declaration
 Date: Thu, 17 Apr 2025 19:49:02 +0200
-Message-ID: <20250417175112.937710175@linuxfoundation.org>
+Message-ID: <20250417175118.850551192@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +64,118 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Wyatt <fewtarius@steamfork.org>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit 132c89ef8872e602cfb909377815111d121fe8d7 ]
+[ Upstream commit 5d98079b2d0186e1f586301a9c00144a669416a8 ]
 
-The AYANEO Slide uses a 1080x1920 portrait LCD panel.  This is the same
-panel used on the AYANEO Air Plus, but the DMI data is too different to
-match both with one entry.
+We only want to refetch the pool report during device init. Reset
+function is now called when uploading effects to an empty device so
+extract pool fetch to separate function and call it from init before
+autocenter check (autocenter check triggered reset during init).
 
-Add a DMI match to correctly rotate the panel on the AYANEO Slide.
+Remove a superfluous pointer declaration and assigment as well.
 
-This also covers the Antec Core HS, which is a rebranded AYANEO Slide with
-the exact same hardware and DMI strings.
-
-Signed-off-by: Andrew Wyatt <fewtarius@steamfork.org>
-Signed-off-by: John Edwards <uejji@uejji.net>
-Tested-by: John Edwards <uejji@uejji.net>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250213222455.93533-4-uejji@uejji.net
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/hid/usbhid/hid-pidff.c | 45 ++++++++++++++++++----------------
+ 1 file changed, 24 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index b5f6ae0459459..b57078cfdd80f 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -244,6 +244,12 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_MATCH(DMI_BOARD_NAME, "KUN"),
- 		},
- 		.driver_data = (void *)&lcd1600x2560_rightside_up,
-+	}, {	/* AYA NEO SLIDE */
-+		.matches = {
-+		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
-+		  DMI_MATCH(DMI_PRODUCT_NAME, "SLIDE"),
-+		},
-+		.driver_data = (void *)&lcd1080x1920_leftside_up,
- 	}, {    /* AYN Loki Max */
- 		.matches = {
- 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ayn"),
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index b21e844f5f3a3..f23381b6e3447 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -591,12 +591,9 @@ static void pidff_modify_actuators_state(struct pidff_device *pidff, bool enable
+ 
+ /*
+  * Reset the device, stop all effects, enable actuators
+- * Refetch pool report
+  */
+ static void pidff_reset(struct pidff_device *pidff)
+ {
+-	int i = 0;
+-
+ 	/* We reset twice as sometimes hid_wait_io isn't waiting long enough */
+ 	pidff_send_device_control(pidff, PID_RESET);
+ 	pidff_send_device_control(pidff, PID_RESET);
+@@ -604,23 +601,29 @@ static void pidff_reset(struct pidff_device *pidff)
+ 
+ 	pidff_send_device_control(pidff, PID_STOP_ALL_EFFECTS);
+ 	pidff_modify_actuators_state(pidff, 1);
++}
+ 
+-	/* pool report is sometimes messed up, refetch it */
+-	hid_hw_request(pidff->hid, pidff->reports[PID_POOL], HID_REQ_GET_REPORT);
+-	hid_hw_wait(pidff->hid);
++/*
++ * Refetch pool report
++ */
++static void pidff_fetch_pool(struct pidff_device *pidff)
++{
++	if (!pidff->pool[PID_SIMULTANEOUS_MAX].value)
++		return;
+ 
+-	if (pidff->pool[PID_SIMULTANEOUS_MAX].value) {
+-		while (pidff->pool[PID_SIMULTANEOUS_MAX].value[0] < 2) {
+-			if (i++ > 20) {
+-				hid_warn(pidff->hid,
+-					 "device reports %d simultaneous effects\n",
+-					 pidff->pool[PID_SIMULTANEOUS_MAX].value[0]);
+-				break;
+-			}
+-			hid_dbg(pidff->hid, "pid_pool requested again\n");
+-			hid_hw_request(pidff->hid, pidff->reports[PID_POOL],
+-					  HID_REQ_GET_REPORT);
+-			hid_hw_wait(pidff->hid);
++	int i = 0;
++	while (pidff->pool[PID_SIMULTANEOUS_MAX].value[0] < 2) {
++		hid_dbg(pidff->hid, "pid_pool requested again\n");
++		hid_hw_request(pidff->hid, pidff->reports[PID_POOL],
++				HID_REQ_GET_REPORT);
++		hid_hw_wait(pidff->hid);
++
++		/* break after 20 tries with SIMULTANEOUS_MAX < 2 */
++		if (i++ > 20) {
++			hid_warn(pidff->hid,
++				 "device reports %d simultaneous effects\n",
++				 pidff->pool[PID_SIMULTANEOUS_MAX].value[0]);
++			break;
+ 		}
+ 	}
+ }
+@@ -916,9 +919,7 @@ static void pidff_autocenter(struct pidff_device *pidff, u16 magnitude)
+  */
+ static void pidff_set_autocenter(struct input_dev *dev, u16 magnitude)
+ {
+-	struct pidff_device *pidff = dev->ff->private;
+-
+-	pidff_autocenter(pidff, magnitude);
++	pidff_autocenter(dev->ff->private, magnitude);
+ }
+ 
+ /*
+@@ -1424,6 +1425,8 @@ int hid_pidff_init_with_quirks(struct hid_device *hid, u32 initial_quirks)
+ 	if (error)
+ 		goto fail;
+ 
++	/* pool report is sometimes messed up, refetch it */
++	pidff_fetch_pool(pidff);
+ 	pidff_set_gain_report(pidff, U16_MAX);
+ 	error = pidff_check_autocenter(pidff, dev);
+ 	if (error)
 -- 
 2.39.5
 
