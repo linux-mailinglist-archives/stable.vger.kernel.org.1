@@ -1,52 +1,63 @@
-Return-Path: <stable+bounces-133192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77CD8A91F34
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 16:12:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EACBA91F47
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 16:16:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16A4D7ACE5C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 14:11:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABB26463476
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 14:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE53924EF82;
-	Thu, 17 Apr 2025 14:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37FE02512F0;
+	Thu, 17 Apr 2025 14:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/YMLiyt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRiGRkfD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1582628D
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 14:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52B12512EE;
+	Thu, 17 Apr 2025 14:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744899150; cv=none; b=bVvuN541cnSDvXZKjanhp2onPYsZoVsqMnPukfYwgqAtQmmD+hwsXOkAaDkE0P8LKML4xAJ6fpob6uIhZpPER+tV5ZHYCPvkpUH4O/aF7to+zSrx3xigOu0OuVP1OKVvVLKgBdMAfHZ7iQ+eaTLpwWvQu1V7YkvSHM3nP/n1JZk=
+	t=1744899385; cv=none; b=Kj9E7z2uQtEHhpDbOtWR9o2jc+qZXtXm4FuvOz01w69MggpKzbdA7rb3vTeNAwtSDPXZlC1qkquePONWGS2UJgIt+7ZuabjKM3uqG2NZquGIxK2geP32qD+qTt2381pYvfvWNktZ2MT5cSKsyFC9RWtE5JhletjjFpsc2MkMSwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744899150; c=relaxed/simple;
-	bh=uK1SQy4R4rqc5WSDshmNwowC0n4tD4Sh+TRwb3Ng/ls=;
+	s=arc-20240116; t=1744899385; c=relaxed/simple;
+	bh=R33j6OK7a2RpqS6JYnEkK/3Da6JWsAHn975GfgwiU7k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M3n20T3XUh87+6JXHor8h/G8XndCcWvex1prltCC9EUB6D6OObEMY92mRrakV6Oa6FZ4xIuE+Tg8kZHAXkcpnm1UVqzzjfZY/IuEiuAQC93HcYSnt6DfDeaS4La9GjnyjREWexDueLtQgI0wZdQnGhbKs6FtBRA2yBsmlhq33NI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/YMLiyt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 310A3C4CEE4;
-	Thu, 17 Apr 2025 14:12:30 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=e68ERHljMY8nx0RiHSovLwR5U2lCSFIZJLODRvUrpJ1egcidptzHoOqAzPUfsslfK3+Ul0d8mteAYhC5atYMdsyVCjmrR2tqvTzU5N07APdn/JHJmrrD39QtNJk5yuizgPONFJPF46Qy3oZ5UrcBnutvU2O8yzShDtREC8vhggU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cRiGRkfD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94BEFC4CEEA;
+	Thu, 17 Apr 2025 14:16:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744899150;
-	bh=uK1SQy4R4rqc5WSDshmNwowC0n4tD4Sh+TRwb3Ng/ls=;
+	s=korg; t=1744899385;
+	bh=R33j6OK7a2RpqS6JYnEkK/3Da6JWsAHn975GfgwiU7k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=q/YMLiyttmBmbWbeHpn4xdrzn5yIcHwo+EoBxNABYqCoh+reU0oJoiUJ0t5lh7EZd
-	 tlZbFtdRA/XDHe7q7O3Q6kHDa7BmPxmOvxBELp3F10qEUIL8sb91GemsgIIwK5SnRP
-	 9NB83sDeSrlgpSom5eXK9VYw00BjoW/0CQTB+zks=
-Date: Thu, 17 Apr 2025 16:12:20 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Yi Liu <yi.l.liu@intel.com>
-Cc: jgg@nvidia.com, kevin.tian@intel.com, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] iommufd: Fail replace if device has not
- been attached" failed to apply to 6.14-stable tree
-Message-ID: <2025041711-handwash-sleep-09d0@gregkh>
-References: <2025041759-knee-unearned-530e@gregkh>
- <9160a4eb-fc69-4a0b-8bd9-5b9d5f4f5bc7@intel.com>
+	b=cRiGRkfDh9Ei+yQvg/3DuHwDc+9ZyMQX/3jALk/g8L2nrGDiNoNsOPm+SxisddNMV
+	 XMu93JFdmw/weV52gztpZQ8Q43tb6TFjEJnQ6C+D3demHQzsFqJ87/++N0zEM2+b2l
+	 7IAzBLvy8nPeuDyHLTwSeYekPVCMv0h9Fp9xxUvs=
+Date: Thu, 17 Apr 2025 16:16:22 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Vishal Annapurve <vannapurve@google.com>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Ingo Molnar <mingo@kernel.org>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Ryan Afranji <afranji@google.com>,
+	Andy Lutomirski <luto@kernel.org>, Brian Gerst <brgerst@gmail.com>,
+	Juergen Gross <jgross@suse.com>, "H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
+	Marcus Seyfarth <m.seyfarth@gmail.com>
+Subject: Re: [PATCH 6.13 444/499] x86/tdx: Fix arch_safe_halt() execution for
+ TDX VMs
+Message-ID: <2025041717-italicize-trickily-5a74@gregkh>
+References: <20250408104851.256868745@linuxfoundation.org>
+ <20250408104902.301772019@linuxfoundation.org>
+ <CAGtprH_Sm7ycECq_p+Qz3tMK0y10qenJ=DFiw-kKNn3d9YwPaQ@mail.gmail.com>
+ <2025040829-surgical-saddlebag-56fa@gregkh>
+ <20250410180423.GA3430900@ax162>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,76 +66,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9160a4eb-fc69-4a0b-8bd9-5b9d5f4f5bc7@intel.com>
+In-Reply-To: <20250410180423.GA3430900@ax162>
 
-On Thu, Apr 17, 2025 at 08:52:16PM +0800, Yi Liu wrote:
-> On 2025/4/17 19:42, gregkh@linuxfoundation.org wrote:
+On Thu, Apr 10, 2025 at 11:04:23AM -0700, Nathan Chancellor wrote:
+> Hi Greg,
+> 
+> On Tue, Apr 08, 2025 at 05:15:46PM +0200, Greg Kroah-Hartman wrote:
+> > On Tue, Apr 08, 2025 at 05:55:57AM -0700, Vishal Annapurve wrote:
+> > > Hi Greg,
+> > > 
+> > > This patch depends on commit 22cc5ca5de52 ("x86/paravirt: Move halt
+> > > paravirt calls under CONFIG_PARAVIRT"). I will respond to the other
+> > > thread with a patch for commit 22cc5ca5de52 after resolving conflicts.
 > > 
-> > The patch below does not apply to the 6.14-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> > 
-> > To reproduce the conflict and resubmit, you may use the following commands:
-> > 
-> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.14.y
-> > git checkout FETCH_HEAD
-> > git cherry-pick -x 55c85fa7579dc2e3f5399ef5bad67a44257c1a48
-> > # <resolve conflicts, build, test, etc.>
-> > git commit -s
-> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041759-knee-unearned-530e@gregkh' --subject-prefix 'PATCH 6.14.y' HEAD^..
-> > 
-> > Possible dependencies:
+> > That commit is already in this series, do I need to add it again? :)
 > 
-> I think the possible dependency is the below commit. This patch adds a
-> helper before iommufd_hwpt_attach_device() which is added by below commit.
+> Is it? I don't see it in the stable review on lore and it does not look
+> like it made it into 6.13.11 final because the build errors if
+> CONFIG_PARAVIRT_XXL is disabled (for example, allmodconfig with
+> CONFIG_XEN_PV disabled):
 > 
-> commit fb21b1568adaa76af7a8c853f37c60fba8b28661
-> Author: Nicolin Chen <nicolinc@nvidia.com>
-> Date:   Mon Feb 3 21:00:54 2025 -0800
+>   arch/x86/coco/tdx/tdx.c: In function 'tdx_early_init':
+>   arch/x86/coco/tdx/tdx.c:1107:19: error: 'struct pv_irq_ops' has no member named 'safe_halt'
+>    1107 |         pv_ops.irq.safe_halt = tdx_safe_halt;
+>         |                   ^
+>   arch/x86/coco/tdx/tdx.c:1108:19: error: 'struct pv_irq_ops' has no member named 'halt'
+>    1108 |         pv_ops.irq.halt = tdx_halt;
+>         |                   ^
 > 
->     iommufd: Make attach_handle generic than fault specific
-> 
->     "attach_handle" was added exclusively for the iommufd_fault_iopf_handler()
->     used by IOPF/PRI use cases. Now, both the MSI and PASID series require to
->     reuse the attach_handle for non-fault cases.
-> 
->     Add a set of new attach/detach/replace helpers that does the attach_handle
->     allocation/releasing/replacement in the common path and also handles those
->     fault specific routines such as iopf enabling/disabling and auto response.
-> 
->     This covers both non-fault and fault cases in a clean way, replacing those
->     inline helpers in the header. The following patch will clean up those old
->     helpers in the fault.c file.
-> 
->     Link: https://patch.msgid.link/r/32687df01c02291d89986a9fca897bbbe2b10987.1738645017.git.nicolinc@nvidia.com
->     Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
->     Reviewed-by: Yi Liu <yi.l.liu@intel.com>
->     Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> 
-> diff --git a/drivers/iommu/iommufd/device.c b/drivers/iommu/iommufd/device.c
-> index dfd0898fb6c1..0786290b4056 100644
-> --- a/drivers/iommu/iommufd/device.c
-> +++ b/drivers/iommu/iommufd/device.c
-> @@ -352,6 +352,111 @@ iommufd_device_attach_reserved_iova(struct
-> iommufd_device *idev,
->         return 0;
->  }
-> 
-> +/* The device attach/detach/replace helpers for attach_handle */
-> +
-> +static int iommufd_hwpt_attach_device(struct iommufd_hw_pagetable *hwpt,
-> +                                     struct iommufd_device *idev)
-> +{
-> +       struct iommufd_attach_handle *handle;
-> +       int rc;
-> +
-> +       lockdep_assert_held(&idev->igroup->lock);
-> 
-> 
-> @Greg, anything I need to do here?
+> This was initially reported downstream by Marcus:
+> https://github.com/ClangBuiltLinux/linux/issues/2081
 
-That should be it, thanks!
+Now queued up, thanks.
 
 greg k-h
 
