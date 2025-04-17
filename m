@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-133589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74514A926B7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:15:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19DC4A928C3
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:37:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D88037A179B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:11:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A95C1B60F35
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 535A5255249;
-	Thu, 17 Apr 2025 18:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 558F4256C70;
+	Thu, 17 Apr 2025 18:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K+s1LDbt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JOecQBOX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F153223710;
-	Thu, 17 Apr 2025 18:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1350B253B57;
+	Thu, 17 Apr 2025 18:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913533; cv=none; b=G8hbv/R7UXZ9W6bi/JhwrdyO95FcCeRdrNZ/yVP0s16B4T51TsKJbzBNwioawXTHsUKAJoTx9iqlPtZCSFmGJbdTWcxPQedQU5kISbpg3Tqe7Jwm971PB2jfdcKA7MyKjIpD+g0F+7YySxzSRn/8FM5vjT6PUeGmPwd0GgjjRfo=
+	t=1744914698; cv=none; b=atlXlRh9zYdIzo/MkU8ZXqrXY36XJXaIrs1jGL0T7pWcla4/YMF6K07TI/udqvL4q+12bwh1BgNQXpqVJ8/4L6AVJM1qk+61Ww10V2G1iEySb4JEp2cstW764iM2iXqMlK5eGtKUThikDl1Hg9w4oKBYiwmE67Rl3be8hzpmy0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913533; c=relaxed/simple;
-	bh=ty6cm4sLquDd5bC4ObbOJBwpmOAgLd5DLE8DaaGWVgk=;
+	s=arc-20240116; t=1744914698; c=relaxed/simple;
+	bh=3UfAuVej/DS2aw4tOBVbrRnLTW7/ba4FYs3SeGlif54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cpsKMWz8erk3snAYbuHcPyK28wukMRAvP2LQ+S6cpa9sO1ZfmKTfArDuUYS8zoxmwipUtD58zAM/gyVBF6X5k8wvmiJ81bgAmkvooeUCtEnNLwngFArWOFWScY+3eW6NDaPZHCY96kPJ0inQNCxpi28Z2XBLFlQJeTgUPOTaeIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+s1LDbt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68797C4CEE4;
-	Thu, 17 Apr 2025 18:12:12 +0000 (UTC)
+	 MIME-Version; b=fbKpfdxiPx9wj7i20N+CerRZDKhdPL84XLvoKlll0cOVrX/7kp3WFPVXyzpwkr3/YkmuXUzHVKmmJDo2ogej3B5PV9wFlMSyn727P7XnQtkfhGL3WBx2xG48wRBiiiOlp+QRImJmBeNLhvhv/L0x8irLoD6ns4hwO42V0uNdcV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JOecQBOX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A40C4CEE4;
+	Thu, 17 Apr 2025 18:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913532;
-	bh=ty6cm4sLquDd5bC4ObbOJBwpmOAgLd5DLE8DaaGWVgk=;
+	s=korg; t=1744914698;
+	bh=3UfAuVej/DS2aw4tOBVbrRnLTW7/ba4FYs3SeGlif54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K+s1LDbtpuN8KxPs3NhgmZOiQ8TsrHFITNTfWMKj7EMvR7fPzu6IfU+oAvquDhjYp
-	 bTVQEhGquwRW7uhny2uzxnTyMo1MoU2X3q6lXHpovj2gXgTcEw7NSmEISPHzcgEMIr
-	 ZVTbGOgihBk5FyoEGyxEb/k4cbXMdzaPMkKvW1Po=
+	b=JOecQBOX/Kk8UEY6NYpVbb9mHn5/1DNid6nwRfQYvY+GZZ6XtADHFuKwhbQze6ySl
+	 8CC0J2vDAj7Y9PBRnXjma/o0RMAkdgBQYDFMLsavVADB7JaE+ZyCcGZbrdP23ecIcy
+	 Dto1LP34SDQvPxyrwevhgvEX310b8oLcozGxsJrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.14 371/449] tracing: fprobe events: Fix possible UAF on modules
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.13 301/414] mtd: inftlcore: Add error check for inftl_read_oob()
 Date: Thu, 17 Apr 2025 19:50:59 +0200
-Message-ID: <20250417175133.188496845@linuxfoundation.org>
+Message-ID: <20250417175123.535959713@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,91 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit dd941507a9486252d6fcf11814387666792020f3 upstream.
+commit d027951dc85cb2e15924c980dc22a6754d100c7c upstream.
 
-Commit ac91052f0ae5 ("tracing: tprobe-events: Fix leakage of module
-refcount") moved try_module_get() from __find_tracepoint_module_cb()
-to find_tracepoint() caller, but that introduced a possible UAF
-because the module can be unloaded before try_module_get(). In this
-case, the module object should be freed too. Thus, try_module_get()
-does not only fail but may access to the freed object.
+In INFTL_findwriteunit(), the return value of inftl_read_oob()
+need to be checked. A proper implementation can be
+found in INFTL_deleteblock(). The status will be set as
+SECTOR_IGNORE to break from the while-loop correctly
+if the inftl_read_oob() fails.
 
-To avoid that, try_module_get() in __find_tracepoint_module_cb()
-again.
-
-Link: https://lore.kernel.org/all/174342990779.781946.9138388479067729366.stgit@devnote2/
-
-Fixes: ac91052f0ae5 ("tracing: tprobe-events: Fix leakage of module refcount")
-Cc: stable@vger.kernel.org
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 8593fbc68b0d ("[MTD] Rework the out of band handling completely")
+Cc: stable@vger.kernel.org # v2.6+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_fprobe.c |   26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ drivers/mtd/inftlcore.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/kernel/trace/trace_fprobe.c
-+++ b/kernel/trace/trace_fprobe.c
-@@ -919,9 +919,15 @@ static void __find_tracepoint_module_cb(
- 	struct __find_tracepoint_cb_data *data = priv;
+--- a/drivers/mtd/inftlcore.c
++++ b/drivers/mtd/inftlcore.c
+@@ -482,10 +482,11 @@ static inline u16 INFTL_findwriteunit(st
+ 		silly = MAX_LOOPS;
  
- 	if (!data->tpoint && !strcmp(data->tp_name, tp->name)) {
--		data->tpoint = tp;
--		if (!data->mod)
-+		/* If module is not specified, try getting module refcount. */
-+		if (!data->mod && mod) {
-+			/* If failed to get refcount, ignore this tracepoint. */
-+			if (!try_module_get(mod))
-+				return;
-+
- 			data->mod = mod;
-+		}
-+		data->tpoint = tp;
- 	}
- }
+ 		while (thisEUN <= inftl->lastEUN) {
+-			inftl_read_oob(mtd, (thisEUN * inftl->EraseSize) +
+-				       blockofs, 8, &retlen, (char *)&bci);
+-
+-			status = bci.Status | bci.Status1;
++			if (inftl_read_oob(mtd, (thisEUN * inftl->EraseSize) +
++				       blockofs, 8, &retlen, (char *)&bci) < 0)
++				status = SECTOR_IGNORE;
++			else
++				status = bci.Status | bci.Status1;
+ 			pr_debug("INFTL: status of block %d in EUN %d is %x\n",
+ 					block , writeEUN, status);
  
-@@ -933,7 +939,11 @@ static void __find_tracepoint_cb(struct
- 		data->tpoint = tp;
- }
- 
--/* Find a tracepoint from kernel and module. */
-+/*
-+ * Find a tracepoint from kernel and module. If the tracepoint is on the module,
-+ * the module's refcount is incremented and returned as *@tp_mod. Thus, if it is
-+ * not NULL, caller must call module_put(*tp_mod) after used the tracepoint.
-+ */
- static struct tracepoint *find_tracepoint(const char *tp_name,
- 					  struct module **tp_mod)
- {
-@@ -962,7 +972,10 @@ static void reenable_trace_fprobe(struct
- 	}
- }
- 
--/* Find a tracepoint from specified module. */
-+/*
-+ * Find a tracepoint from specified module. In this case, this does not get the
-+ * module's refcount. The caller must ensure the module is not freed.
-+ */
- static struct tracepoint *find_tracepoint_in_module(struct module *mod,
- 						    const char *tp_name)
- {
-@@ -1169,11 +1182,6 @@ static int trace_fprobe_create_internal(
- 	if (is_tracepoint) {
- 		ctx->flags |= TPARG_FL_TPOINT;
- 		tpoint = find_tracepoint(symbol, &tp_mod);
--		/* lock module until register this tprobe. */
--		if (tp_mod && !try_module_get(tp_mod)) {
--			tpoint = NULL;
--			tp_mod = NULL;
--		}
- 		if (tpoint) {
- 			ctx->funcname = kallsyms_lookup(
- 				(unsigned long)tpoint->probestub,
 
 
 
