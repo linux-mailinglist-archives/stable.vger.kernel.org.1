@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-134340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C80DA92A91
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:52:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1B15A928BE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:37:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 054D34A680D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74E831B60EFA
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E47212586F6;
-	Thu, 17 Apr 2025 18:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE153261390;
+	Thu, 17 Apr 2025 18:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+rSNIAO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+4+iHj3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBBB257450;
-	Thu, 17 Apr 2025 18:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA68B261388;
+	Thu, 17 Apr 2025 18:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915831; cv=none; b=RAzCe5DQqfZGLDDmRk0xKoklDMTMd3T9JFgBMpRusKexj4ihljQSEPHT3ItTcPXQ4gdJC0LIo/pjED1iEnQoRFQGjdKprwl46xxkAk2YPkPfF7bspSbv+JXSWkI3VAz81zvj/RjLmFaxtrQ5cQlkhC7xxlHld+tiP7vZHaiku+k=
+	t=1744914673; cv=none; b=Vh9GKI/NH9t2C4G9TPGdo7J+/5wr3jhjFJmRGVh/bESP1jdAKfzSbDrpR/E7jT4T3R/cvjacSk40C1dtOwrrEHpGMEdrTTRwaFsWnda0EzAkaj73nGPPFdpsqAnZa2z08rxUxkEX+dlXg++gF4Sk6A8M2ngNJ3Rey3R0ipDQ4WA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915831; c=relaxed/simple;
-	bh=fmOfPtle/oA9WL4wg36MHeq1LhrI4tbYNqp6kvXlWL8=;
+	s=arc-20240116; t=1744914673; c=relaxed/simple;
+	bh=1KprZBp084yJx9Rb1E3lPke7/D+9Pdtimi/c07wmMXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c5UraPg7Y0TpDVBIWKqZR8boaTFMmkxMNbZjA0/67GzU7BwfMUir7E1qqcr0Dbuc0BJOZyrhALiIJKjq2Drn+FWtv7wA45G6yg7dlM7xcn/nRvsu50hjnBeSURvwUIooPzpLV2prPFxCg/DDgyZYQBEjqJ0b8/keaFzIQe7+bQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+rSNIAO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A484C4CEE4;
-	Thu, 17 Apr 2025 18:50:30 +0000 (UTC)
+	 MIME-Version; b=twtJM+yG7ljZPXA+51lgf/cnScerLPcU06Zi6uPAI8ju08MUkOmgWeyCUagy8KhEofy2HtY1oBYsGlRwl+CZjs9Y1/rRFx4xx0XHPc1nx6J0swO+Ed1XpXbiNh9Uz23elRX3fSM3A8pVcEAudcuMT/G1gbgMOPmCyw77VnuwglM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+4+iHj3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02C6C4CEE4;
+	Thu, 17 Apr 2025 18:31:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915831;
-	bh=fmOfPtle/oA9WL4wg36MHeq1LhrI4tbYNqp6kvXlWL8=;
+	s=korg; t=1744914673;
+	bh=1KprZBp084yJx9Rb1E3lPke7/D+9Pdtimi/c07wmMXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v+rSNIAOul9d6AXGJdmRCUFHcTFM+H9swsmyd0q5YSWtLT7hJq+gi5a55lZ/LJh9a
-	 HDqdtdZZPyU1mQ2Vl+vGUB6uYk7S+ALam7QKiULr2Vk5yVEBrWXLn18IeCBq0d/niQ
-	 icX581DoxaIoyPMWEZEhuew0SGktkwigbF4OEqlI=
+	b=N+4+iHj31AiyqS951PJ/vIVgmIdvt1aHGR/UB/t6gJQMu+jma9PKoEUcJCmyctvnh
+	 +qLMZLcLwkHZbAx+L4y35mS37OhbdXjm4lku2a8E3Lt8nT5bWfAa4GjYpBO8GgqVrQ
+	 YOTc4YWXaWPqx8liOqLmULR82JRgBSPSb9EdJtcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 225/393] media: venus: hfi_parser: refactor hfi packet parsing logic
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+	Youssef Samir <quic_yabdulra@quicinc.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Troy Hanson <quic_thanson@quicinc.com>
+Subject: [PATCH 6.13 276/414] bus: mhi: host: Fix race between unprepare and queue_buf
 Date: Thu, 17 Apr 2025 19:50:34 +0200
-Message-ID: <20250417175116.634553304@linuxfoundation.org>
+Message-ID: <20250417175122.529116473@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,275 +65,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
+From: Jeff Hugo <quic_jhugo@quicinc.com>
 
-commit 9edaaa8e3e15aab1ca413ab50556de1975bcb329 upstream.
+commit 0686a818d77a431fc3ba2fab4b46bbb04e8c9380 upstream.
 
-words_count denotes the number of words in total payload, while data
-points to payload of various property within it. When words_count
-reaches last word, data can access memory beyond the total payload. This
-can lead to OOB access. With this patch, the utility api for handling
-individual properties now returns the size of data consumed. Accordingly
-remaining bytes are calculated before parsing the payload, thereby
-eliminates the OOB access possibilities.
+A client driver may use mhi_unprepare_from_transfer() to quiesce
+incoming data during the client driver's tear down. The client driver
+might also be processing data at the same time, resulting in a call to
+mhi_queue_buf() which will invoke mhi_gen_tre(). If mhi_gen_tre() runs
+after mhi_unprepare_from_transfer() has torn down the channel, a panic
+will occur due to an invalid dereference leading to a page fault.
 
-Cc: stable@vger.kernel.org
-Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+This occurs because mhi_gen_tre() does not verify the channel state
+after locking it. Fix this by having mhi_gen_tre() confirm the channel
+state is valid, or return error to avoid accessing deinitialized data.
+
+Cc: stable@vger.kernel.org # 6.8
+Fixes: b89b6a863dd5 ("bus: mhi: host: Add spinlock to protect WP access when queueing TREs")
+Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Reviewed-by: Youssef Samir <quic_yabdulra@quicinc.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Troy Hanson <quic_thanson@quicinc.com>
+Link: https://lore.kernel.org/r/20250306172913.856982-1-jeff.hugo@oss.qualcomm.com
+[mani: added stable tag]
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/hfi_parser.c |   98 ++++++++++++++++++-------
- 1 file changed, 72 insertions(+), 26 deletions(-)
+ drivers/bus/mhi/host/main.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_parser.c
-+++ b/drivers/media/platform/qcom/venus/hfi_parser.c
-@@ -64,7 +64,7 @@ fill_buf_mode(struct hfi_plat_caps *cap,
- 		cap->cap_bufs_mode_dynamic = true;
- }
+--- a/drivers/bus/mhi/host/main.c
++++ b/drivers/bus/mhi/host/main.c
+@@ -1207,11 +1207,16 @@ int mhi_gen_tre(struct mhi_controller *m
+ 	struct mhi_ring_element *mhi_tre;
+ 	struct mhi_buf_info *buf_info;
+ 	int eot, eob, chain, bei;
+-	int ret;
++	int ret = 0;
  
--static void
-+static int
- parse_alloc_mode(struct venus_core *core, u32 codecs, u32 domain, void *data)
- {
- 	struct hfi_buffer_alloc_mode_supported *mode = data;
-@@ -72,7 +72,7 @@ parse_alloc_mode(struct venus_core *core
- 	u32 *type;
+ 	/* Protect accesses for reading and incrementing WP */
+ 	write_lock_bh(&mhi_chan->lock);
  
- 	if (num_entries > MAX_ALLOC_MODE_ENTRIES)
--		return;
-+		return -EINVAL;
- 
- 	type = mode->data;
- 
-@@ -84,6 +84,8 @@ parse_alloc_mode(struct venus_core *core
- 
- 		type++;
- 	}
++	if (mhi_chan->ch_state != MHI_CH_STATE_ENABLED) {
++		ret = -ENODEV;
++		goto out;
++	}
 +
-+	return sizeof(*mode);
- }
+ 	buf_ring = &mhi_chan->buf_ring;
+ 	tre_ring = &mhi_chan->tre_ring;
  
- static void fill_profile_level(struct hfi_plat_caps *cap, const void *data,
-@@ -98,7 +100,7 @@ static void fill_profile_level(struct hf
- 	cap->num_pl += num;
- }
+@@ -1229,10 +1234,8 @@ int mhi_gen_tre(struct mhi_controller *m
  
--static void
-+static int
- parse_profile_level(struct venus_core *core, u32 codecs, u32 domain, void *data)
- {
- 	struct hfi_profile_level_supported *pl = data;
-@@ -106,12 +108,14 @@ parse_profile_level(struct venus_core *c
- 	struct hfi_profile_level pl_arr[HFI_MAX_PROFILE_COUNT] = {};
- 
- 	if (pl->profile_count > HFI_MAX_PROFILE_COUNT)
--		return;
-+		return -EINVAL;
- 
- 	memcpy(pl_arr, proflevel, pl->profile_count * sizeof(*proflevel));
- 
- 	for_each_codec(core->caps, ARRAY_SIZE(core->caps), codecs, domain,
- 		       fill_profile_level, pl_arr, pl->profile_count);
-+
-+	return pl->profile_count * sizeof(*proflevel) + sizeof(u32);
- }
- 
- static void
-@@ -126,7 +130,7 @@ fill_caps(struct hfi_plat_caps *cap, con
- 	cap->num_caps += num;
- }
- 
--static void
-+static int
- parse_caps(struct venus_core *core, u32 codecs, u32 domain, void *data)
- {
- 	struct hfi_capabilities *caps = data;
-@@ -135,12 +139,14 @@ parse_caps(struct venus_core *core, u32
- 	struct hfi_capability caps_arr[MAX_CAP_ENTRIES] = {};
- 
- 	if (num_caps > MAX_CAP_ENTRIES)
--		return;
-+		return -EINVAL;
- 
- 	memcpy(caps_arr, cap, num_caps * sizeof(*cap));
- 
- 	for_each_codec(core->caps, ARRAY_SIZE(core->caps), codecs, domain,
- 		       fill_caps, caps_arr, num_caps);
-+
-+	return sizeof(*caps);
- }
- 
- static void fill_raw_fmts(struct hfi_plat_caps *cap, const void *fmts,
-@@ -155,7 +161,7 @@ static void fill_raw_fmts(struct hfi_pla
- 	cap->num_fmts += num_fmts;
- }
- 
--static void
-+static int
- parse_raw_formats(struct venus_core *core, u32 codecs, u32 domain, void *data)
- {
- 	struct hfi_uncompressed_format_supported *fmt = data;
-@@ -164,7 +170,8 @@ parse_raw_formats(struct venus_core *cor
- 	struct raw_formats rawfmts[MAX_FMT_ENTRIES] = {};
- 	u32 entries = fmt->format_entries;
- 	unsigned int i = 0;
--	u32 num_planes;
-+	u32 num_planes = 0;
-+	u32 size;
- 
- 	while (entries) {
- 		num_planes = pinfo->num_planes;
-@@ -174,7 +181,7 @@ parse_raw_formats(struct venus_core *cor
- 		i++;
- 
- 		if (i >= MAX_FMT_ENTRIES)
--			return;
-+			return -EINVAL;
- 
- 		if (pinfo->num_planes > MAX_PLANES)
- 			break;
-@@ -186,9 +193,13 @@ parse_raw_formats(struct venus_core *cor
- 
- 	for_each_codec(core->caps, ARRAY_SIZE(core->caps), codecs, domain,
- 		       fill_raw_fmts, rawfmts, i);
-+	size = fmt->format_entries * (sizeof(*constr) * num_planes + 2 * sizeof(u32))
-+		+ 2 * sizeof(u32);
-+
-+	return size;
- }
- 
--static void parse_codecs(struct venus_core *core, void *data)
-+static int parse_codecs(struct venus_core *core, void *data)
- {
- 	struct hfi_codec_supported *codecs = data;
- 
-@@ -200,21 +211,27 @@ static void parse_codecs(struct venus_co
- 		core->dec_codecs &= ~HFI_VIDEO_CODEC_SPARK;
- 		core->enc_codecs &= ~HFI_VIDEO_CODEC_HEVC;
- 	}
-+
-+	return sizeof(*codecs);
- }
- 
--static void parse_max_sessions(struct venus_core *core, const void *data)
-+static int parse_max_sessions(struct venus_core *core, const void *data)
- {
- 	const struct hfi_max_sessions_supported *sessions = data;
- 
- 	core->max_sessions_supported = sessions->max_sessions;
-+
-+	return sizeof(*sessions);
- }
- 
--static void parse_codecs_mask(u32 *codecs, u32 *domain, void *data)
-+static int parse_codecs_mask(u32 *codecs, u32 *domain, void *data)
- {
- 	struct hfi_codec_mask_supported *mask = data;
- 
- 	*codecs = mask->codecs;
- 	*domain = mask->video_domains;
-+
-+	return sizeof(*mask);
- }
- 
- static void parser_init(struct venus_inst *inst, u32 *codecs, u32 *domain)
-@@ -283,8 +300,9 @@ static int hfi_platform_parser(struct ve
- u32 hfi_parser(struct venus_core *core, struct venus_inst *inst, void *buf,
- 	       u32 size)
- {
--	unsigned int words_count = size >> 2;
--	u32 *word = buf, *data, codecs = 0, domain = 0;
-+	u32 *words = buf, *payload, codecs = 0, domain = 0;
-+	u32 *frame_size = buf + size;
-+	u32 rem_bytes = size;
- 	int ret;
- 
- 	ret = hfi_platform_parser(core, inst);
-@@ -301,38 +319,66 @@ u32 hfi_parser(struct venus_core *core,
- 		memset(core->caps, 0, sizeof(core->caps));
+ 	if (!info->pre_mapped) {
+ 		ret = mhi_cntrl->map_single(mhi_cntrl, buf_info);
+-		if (ret) {
+-			write_unlock_bh(&mhi_chan->lock);
+-			return ret;
+-		}
++		if (ret)
++			goto out;
  	}
  
--	while (words_count) {
--		data = word + 1;
-+	while (words < frame_size) {
-+		payload = words + 1;
+ 	eob = !!(flags & MHI_EOB);
+@@ -1250,9 +1253,10 @@ int mhi_gen_tre(struct mhi_controller *m
+ 	mhi_add_ring_element(mhi_cntrl, tre_ring);
+ 	mhi_add_ring_element(mhi_cntrl, buf_ring);
  
--		switch (*word) {
-+		switch (*words) {
- 		case HFI_PROPERTY_PARAM_CODEC_SUPPORTED:
--			parse_codecs(core, data);
-+			if (rem_bytes <= sizeof(struct hfi_codec_supported))
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
-+			ret = parse_codecs(core, payload);
-+			if (ret < 0)
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
- 			init_codecs(core);
- 			break;
- 		case HFI_PROPERTY_PARAM_MAX_SESSIONS_SUPPORTED:
--			parse_max_sessions(core, data);
-+			if (rem_bytes <= sizeof(struct hfi_max_sessions_supported))
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
-+			ret = parse_max_sessions(core, payload);
- 			break;
- 		case HFI_PROPERTY_PARAM_CODEC_MASK_SUPPORTED:
--			parse_codecs_mask(&codecs, &domain, data);
-+			if (rem_bytes <= sizeof(struct hfi_codec_mask_supported))
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
-+			ret = parse_codecs_mask(&codecs, &domain, payload);
- 			break;
- 		case HFI_PROPERTY_PARAM_UNCOMPRESSED_FORMAT_SUPPORTED:
--			parse_raw_formats(core, codecs, domain, data);
-+			if (rem_bytes <= sizeof(struct hfi_uncompressed_format_supported))
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
-+			ret = parse_raw_formats(core, codecs, domain, payload);
- 			break;
- 		case HFI_PROPERTY_PARAM_CAPABILITY_SUPPORTED:
--			parse_caps(core, codecs, domain, data);
-+			if (rem_bytes <= sizeof(struct hfi_capabilities))
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
-+			ret = parse_caps(core, codecs, domain, payload);
- 			break;
- 		case HFI_PROPERTY_PARAM_PROFILE_LEVEL_SUPPORTED:
--			parse_profile_level(core, codecs, domain, data);
-+			if (rem_bytes <= sizeof(struct hfi_profile_level_supported))
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
-+			ret = parse_profile_level(core, codecs, domain, payload);
- 			break;
- 		case HFI_PROPERTY_PARAM_BUFFER_ALLOC_MODE_SUPPORTED:
--			parse_alloc_mode(core, codecs, domain, data);
-+			if (rem_bytes <= sizeof(struct hfi_buffer_alloc_mode_supported))
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
-+			ret = parse_alloc_mode(core, codecs, domain, payload);
- 			break;
- 		default:
-+			ret = sizeof(u32);
- 			break;
- 		}
++out:
+ 	write_unlock_bh(&mhi_chan->lock);
  
--		word++;
--		words_count--;
-+		if (ret < 0)
-+			return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
-+		words += ret / sizeof(u32);
-+		rem_bytes -= ret;
- 	}
+-	return 0;
++	return ret;
+ }
  
- 	if (!core->max_sessions_supported)
+ int mhi_queue_buf(struct mhi_device *mhi_dev, enum dma_data_direction dir,
 
 
 
