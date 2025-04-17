@@ -1,67 +1,57 @@
-Return-Path: <stable+bounces-133997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F37A2A928DF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:38:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58212A92AA6
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:53:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29FE11B61A33
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FCF57B1010
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18D19257426;
-	Thu, 17 Apr 2025 18:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F6F2566E9;
+	Thu, 17 Apr 2025 18:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kems5nmJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLxB7cxw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9714263C6C;
-	Thu, 17 Apr 2025 18:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0060325525C;
+	Thu, 17 Apr 2025 18:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914782; cv=none; b=HbL/dQqAvIjz7igdNC9x2KdSh650vs2Tr8SxkImgum8fHyAGKZIZNuSfYULZfllquYGPcNULZtVH9VQhjWrDQqdwynZ8nIUbu/zUKzCHmIlP4P8z2YDgyeAyRjaWvxc1fuvh8Vp7S/aDakurYAEVwSz+lWRHn3Nylj7dgNgRW0I=
+	t=1744915902; cv=none; b=jZ+XWMuiLbs4Yr5dZRIXM7UEXZWXD2rOcRXL1wWrOvg3aIj1hJ/DZPY2nni/Z+WCn4j9amKnFjnrkhiIU9mN+y0Dki2oUJCRLdGLCYAHKesn6UXhG7sujGjFlv8rfkHmeUh5HErNhWo/KxpIO2zu0PSpOvarA04Eegbxuy2qa7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914782; c=relaxed/simple;
-	bh=I4AmL69d0/OTqKqnzBRabh6iV8TSeqkeG/hvumrUtZU=;
+	s=arc-20240116; t=1744915902; c=relaxed/simple;
+	bh=/295lFogW39KqCvpD3SxiH0yR8xGP5IVJfUYpQUYBDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OBXEFdxsXuzLbA1HtjiE+YMS+yM0m0YoQxW9VB+KDhFonDxe8xoyL9xUqTBq8hZQKGViNNeQ9YETuf+h8fIAiO/IItZsX9I7z1tHbc8us8DEhk06eWuYidRnOIJKCLtrhYev0GIK5M2+XSWpju7uGkDSjCYMVNzrp38jGOEW000=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kems5nmJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB2EC4CEE4;
-	Thu, 17 Apr 2025 18:33:01 +0000 (UTC)
+	 MIME-Version; b=IZRt0v9QUKcxJDii1+Jp/B7j99fCK9bE2rEuuirj4TDCJXao7X0p+1Pf6pWrtxkQKZv8UMlmRfBbKJGSiWkpm3UgDugXbPwKRb6nEiZA4NSuEgVwPrPUnZofshG/u/uAoxwFfIGceUO6OelPDuA/mdGek9H4S0HCowIUr+rBHZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLxB7cxw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85A23C4CEE4;
+	Thu, 17 Apr 2025 18:51:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914782;
-	bh=I4AmL69d0/OTqKqnzBRabh6iV8TSeqkeG/hvumrUtZU=;
+	s=korg; t=1744915901;
+	bh=/295lFogW39KqCvpD3SxiH0yR8xGP5IVJfUYpQUYBDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kems5nmJoTA9R8zYH679HQhTG3tMv6UezA5hCKWXSpiMMcI1kvJxmwB/35fNhM2GS
-	 HFCJHacRlNUp27JV6cn8vtmIg2bZxpMXw+XhKVzkyCRysmMhevatfUhnkx25ZFECMc
-	 9x1aqzQ7AkU1j6Yg2CtHUtWmz6aSemHBEp1e39tE=
+	b=XLxB7cxw1yTcAeGzN1s7mVDHhQnXwu4kehoDDkghnvNkmDQl2/BeNs0fm8Cz6ge1o
+	 GYoem201vxPrDhRWJwh/123kloUFeavyPMV44eihITk629gfg+j4DVDbhkALcDDO/H
+	 uRzSkiFAhkvfqx4YVJ7TaysVqwKG4Haxpu86+iCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Juergen Gross <jgross@suse.com>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Borislav Betkov <bp@alien8.de>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
-	Thomas Gleinxer <tglx@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.13 328/414] mm: fix lazy mmu docs and usage
+	Kartik Rajput <kkartik@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>
+Subject: [PATCH 6.12 277/393] mailbox: tegra-hsp: Define dimensioning masks in SoC data
 Date: Thu, 17 Apr 2025 19:51:26 +0200
-Message-ID: <20250417175124.626145750@linuxfoundation.org>
+Message-ID: <20250417175118.753199736@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,153 +63,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Kartik Rajput <kkartik@nvidia.com>
 
-commit 691ee97e1a9de0cdb3efb893c1f180e3f4a35e32 upstream.
+commit bf0c9fb462038815f5f502653fb6dba06e6af415 upstream.
 
-Patch series "Fix lazy mmu mode", v2.
+Tegra264 has updated HSP_INT_DIMENSIONING register as follows:
+	* nSI is now BIT17:BIT21.
+	* nDB is now BIT12:BIT16.
 
-I'm planning to implement lazy mmu mode for arm64 to optimize vmalloc.  As
-part of that, I will extend lazy mmu mode to cover kernel mappings in
-vmalloc table walkers.  While lazy mmu mode is already used for kernel
-mappings in a few places, this will extend it's use significantly.
+Currently, we are using a static macro HSP_nINT_MASK to get the values
+from HSP_INT_DIMENSIONING register. This results in wrong values for nSI
+for HSP instances that supports 16 shared interrupts.
 
-Having reviewed the existing lazy mmu implementations in powerpc, sparc
-and x86, it looks like there are a bunch of bugs, some of which may be
-more likely to trigger once I extend the use of lazy mmu.  So this series
-attempts to clarify the requirements and fix all the bugs in advance of
-that series.  See patch #1 commit log for all the details.
+Define dimensioning masks in soc data and use them to parse nSI, nDB,
+nAS, nSS & nSM values.
 
-
-This patch (of 5):
-
-The docs, implementations and use of arch_[enter|leave]_lazy_mmu_mode() is
-a bit of a mess (to put it politely).  There are a number of issues
-related to nesting of lazy mmu regions and confusion over whether the
-task, when in a lazy mmu region, is preemptible or not.  Fix all the
-issues relating to the core-mm.  Follow up commits will fix the
-arch-specific implementations.  3 arches implement lazy mmu; powerpc,
-sparc and x86.
-
-When arch_[enter|leave]_lazy_mmu_mode() was first introduced by commit
-6606c3e0da53 ("[PATCH] paravirt: lazy mmu mode hooks.patch"), it was
-expected that lazy mmu regions would never nest and that the appropriate
-page table lock(s) would be held while in the region, thus ensuring the
-region is non-preemptible.  Additionally lazy mmu regions were only used
-during manipulation of user mappings.
-
-Commit 38e0edb15bd0 ("mm/apply_to_range: call pte function with lazy
-updates") started invoking the lazy mmu mode in apply_to_pte_range(),
-which is used for both user and kernel mappings.  For kernel mappings the
-region is no longer protected by any lock so there is no longer any
-guarantee about non-preemptibility.  Additionally, for RT configs, the
-holding the PTL only implies no CPU migration, it doesn't prevent
-preemption.
-
-Commit bcc6cc832573 ("mm: add default definition of set_ptes()") added
-arch_[enter|leave]_lazy_mmu_mode() to the default implementation of
-set_ptes(), used by x86.  So after this commit, lazy mmu regions can be
-nested.  Additionally commit 1a10a44dfc1d ("sparc64: implement the new
-page table range API") and commit 9fee28baa601 ("powerpc: implement the
-new page table range API") did the same for the sparc and powerpc
-set_ptes() overrides.
-
-powerpc couldn't deal with preemption so avoids it in commit b9ef323ea168
-("powerpc/64s: Disable preemption in hash lazy mmu mode"), which
-explicitly disables preemption for the whole region in its implementation.
-x86 can support preemption (or at least it could until it tried to add
-support nesting; more on this below).  Sparc looks to be totally broken in
-the face of preemption, as far as I can tell.
-
-powerpc can't deal with nesting, so avoids it in commit 47b8def9358c
-("powerpc/mm: Avoid calling arch_enter/leave_lazy_mmu() in set_ptes"),
-which removes the lazy mmu calls from its implementation of set_ptes().
-x86 attempted to support nesting in commit 49147beb0ccb ("x86/xen: allow
-nesting of same lazy mode") but as far as I can tell, this breaks its
-support for preemption.
-
-In short, it's all a mess; the semantics for
-arch_[enter|leave]_lazy_mmu_mode() are not clearly defined and as a result
-the implementations all have different expectations, sticking plasters and
-bugs.
-
-arm64 is aiming to start using these hooks, so let's clean everything up
-before adding an arm64 implementation.  Update the documentation to state
-that lazy mmu regions can never be nested, must not be called in interrupt
-context and preemption may or may not be enabled for the duration of the
-region.  And fix the generic implementation of set_ptes() to avoid
-nesting.
-
-arch-specific fixes to conform to the new spec will proceed this one.
-
-These issues were spotted by code review and I have no evidence of issues
-being reported in the wild.
-
-Link: https://lkml.kernel.org/r/20250303141542.3371656-1-ryan.roberts@arm.com
-Link: https://lkml.kernel.org/r/20250303141542.3371656-2-ryan.roberts@arm.com
-Fixes: bcc6cc832573 ("mm: add default definition of set_ptes()")
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Juergen Gross <jgross@suse.com>
-Cc: Andreas Larsson <andreas@gaisler.com>
-Cc: Borislav Betkov <bp@alien8.de>
-Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Juegren Gross <jgross@suse.com>
-Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 602dbbacc3ef ("mailbox: tegra: add support for Tegra264")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Acked-by: Jon Hunter <jonathanh@nvidia.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/pgtable.h |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/mailbox/tegra-hsp.c |   72 ++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 60 insertions(+), 12 deletions(-)
 
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -222,10 +222,14 @@ static inline int pmd_dirty(pmd_t pmd)
-  * hazard could result in the direct mode hypervisor case, since the actual
-  * write to the page tables may not yet have taken place, so reads though
-  * a raw PTE pointer after it has been modified are not guaranteed to be
-- * up to date.  This mode can only be entered and left under the protection of
-- * the page table locks for all page tables which may be modified.  In the UP
-- * case, this is required so that preemption is disabled, and in the SMP case,
-- * it must synchronize the delayed page table writes properly on other CPUs.
-+ * up to date.
-+ *
-+ * In the general case, no lock is guaranteed to be held between entry and exit
-+ * of the lazy mode. So the implementation must assume preemption may be enabled
-+ * and cpu migration is possible; it must take steps to be robust against this.
-+ * (In practice, for user PTE updates, the appropriate page table lock(s) are
-+ * held, but for kernel PTE updates, no lock is held). Nesting is not permitted
-+ * and the mode cannot be used in interrupt context.
+--- a/drivers/mailbox/tegra-hsp.c
++++ b/drivers/mailbox/tegra-hsp.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+- * Copyright (c) 2016-2023, NVIDIA CORPORATION.  All rights reserved.
++ * Copyright (c) 2016-2025, NVIDIA CORPORATION.  All rights reserved.
   */
- #ifndef __HAVE_ARCH_ENTER_LAZY_MMU_MODE
- #define arch_enter_lazy_mmu_mode()	do {} while (0)
-@@ -287,7 +291,6 @@ static inline void set_ptes(struct mm_st
- {
- 	page_table_check_ptes_set(mm, ptep, pte, nr);
  
--	arch_enter_lazy_mmu_mode();
- 	for (;;) {
- 		set_pte(ptep, pte);
- 		if (--nr == 0)
-@@ -295,7 +298,6 @@ static inline void set_ptes(struct mm_st
- 		ptep++;
- 		pte = pte_next_pfn(pte);
- 	}
--	arch_leave_lazy_mmu_mode();
- }
- #endif
- #define set_pte_at(mm, addr, ptep, pte) set_ptes(mm, addr, ptep, pte, 1)
+ #include <linux/delay.h>
+@@ -28,12 +28,6 @@
+ #define HSP_INT_FULL_MASK	0xff
+ 
+ #define HSP_INT_DIMENSIONING	0x380
+-#define HSP_nSM_SHIFT		0
+-#define HSP_nSS_SHIFT		4
+-#define HSP_nAS_SHIFT		8
+-#define HSP_nDB_SHIFT		12
+-#define HSP_nSI_SHIFT		16
+-#define HSP_nINT_MASK		0xf
+ 
+ #define HSP_DB_TRIGGER	0x0
+ #define HSP_DB_ENABLE	0x4
+@@ -97,6 +91,20 @@ struct tegra_hsp_soc {
+ 	bool has_per_mb_ie;
+ 	bool has_128_bit_mb;
+ 	unsigned int reg_stride;
++
++	/* Shifts for dimensioning register. */
++	unsigned int si_shift;
++	unsigned int db_shift;
++	unsigned int as_shift;
++	unsigned int ss_shift;
++	unsigned int sm_shift;
++
++	/* Masks for dimensioning register. */
++	unsigned int si_mask;
++	unsigned int db_mask;
++	unsigned int as_mask;
++	unsigned int ss_mask;
++	unsigned int sm_mask;
+ };
+ 
+ struct tegra_hsp {
+@@ -747,11 +755,11 @@ static int tegra_hsp_probe(struct platfo
+ 		return PTR_ERR(hsp->regs);
+ 
+ 	value = tegra_hsp_readl(hsp, HSP_INT_DIMENSIONING);
+-	hsp->num_sm = (value >> HSP_nSM_SHIFT) & HSP_nINT_MASK;
+-	hsp->num_ss = (value >> HSP_nSS_SHIFT) & HSP_nINT_MASK;
+-	hsp->num_as = (value >> HSP_nAS_SHIFT) & HSP_nINT_MASK;
+-	hsp->num_db = (value >> HSP_nDB_SHIFT) & HSP_nINT_MASK;
+-	hsp->num_si = (value >> HSP_nSI_SHIFT) & HSP_nINT_MASK;
++	hsp->num_sm = (value >> hsp->soc->sm_shift) & hsp->soc->sm_mask;
++	hsp->num_ss = (value >> hsp->soc->ss_shift) & hsp->soc->ss_mask;
++	hsp->num_as = (value >> hsp->soc->as_shift) & hsp->soc->as_mask;
++	hsp->num_db = (value >> hsp->soc->db_shift) & hsp->soc->db_mask;
++	hsp->num_si = (value >> hsp->soc->si_shift) & hsp->soc->si_mask;
+ 
+ 	err = platform_get_irq_byname_optional(pdev, "doorbell");
+ 	if (err >= 0)
+@@ -915,6 +923,16 @@ static const struct tegra_hsp_soc tegra1
+ 	.has_per_mb_ie = false,
+ 	.has_128_bit_mb = false,
+ 	.reg_stride = 0x100,
++	.si_shift = 16,
++	.db_shift = 12,
++	.as_shift = 8,
++	.ss_shift = 4,
++	.sm_shift = 0,
++	.si_mask = 0xf,
++	.db_mask = 0xf,
++	.as_mask = 0xf,
++	.ss_mask = 0xf,
++	.sm_mask = 0xf,
+ };
+ 
+ static const struct tegra_hsp_soc tegra194_hsp_soc = {
+@@ -922,6 +940,16 @@ static const struct tegra_hsp_soc tegra1
+ 	.has_per_mb_ie = true,
+ 	.has_128_bit_mb = false,
+ 	.reg_stride = 0x100,
++	.si_shift = 16,
++	.db_shift = 12,
++	.as_shift = 8,
++	.ss_shift = 4,
++	.sm_shift = 0,
++	.si_mask = 0xf,
++	.db_mask = 0xf,
++	.as_mask = 0xf,
++	.ss_mask = 0xf,
++	.sm_mask = 0xf,
+ };
+ 
+ static const struct tegra_hsp_soc tegra234_hsp_soc = {
+@@ -929,6 +957,16 @@ static const struct tegra_hsp_soc tegra2
+ 	.has_per_mb_ie = false,
+ 	.has_128_bit_mb = true,
+ 	.reg_stride = 0x100,
++	.si_shift = 16,
++	.db_shift = 12,
++	.as_shift = 8,
++	.ss_shift = 4,
++	.sm_shift = 0,
++	.si_mask = 0xf,
++	.db_mask = 0xf,
++	.as_mask = 0xf,
++	.ss_mask = 0xf,
++	.sm_mask = 0xf,
+ };
+ 
+ static const struct tegra_hsp_soc tegra264_hsp_soc = {
+@@ -936,6 +974,16 @@ static const struct tegra_hsp_soc tegra2
+ 	.has_per_mb_ie = false,
+ 	.has_128_bit_mb = true,
+ 	.reg_stride = 0x1000,
++	.si_shift = 17,
++	.db_shift = 12,
++	.as_shift = 8,
++	.ss_shift = 4,
++	.sm_shift = 0,
++	.si_mask = 0x1f,
++	.db_mask = 0x1f,
++	.as_mask = 0xf,
++	.ss_mask = 0xf,
++	.sm_mask = 0xf,
+ };
+ 
+ static const struct of_device_id tegra_hsp_match[] = {
 
 
 
