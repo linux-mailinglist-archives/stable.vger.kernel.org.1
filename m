@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-133783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5018FA9278A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:27:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04456A92942
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C67514A08B0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:26:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B7DF1B630E0
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:41:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCCF9259C8D;
-	Thu, 17 Apr 2025 18:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A6325F7A7;
+	Thu, 17 Apr 2025 18:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QetVqP5V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gHvAm+N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A400266572;
-	Thu, 17 Apr 2025 18:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119DC25F7A3;
+	Thu, 17 Apr 2025 18:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914125; cv=none; b=igYhHd8nsavxKyd5TKvXJ/kuorA6RaxfArFsrkElL/TqTI1DXmBMQc4INVm3cE+DxV75AY/gwUsGywWtlAB0/mK3npGrpbE7H8cSWeL7uwA6Jh2nlFONT2jUJd325BiIwoDTnyzGchAAU8gcFF/aExdYEbQWDku6FA6T0DnRc64=
+	t=1744915148; cv=none; b=rYlLwqo752U5G3Xlww6QBRZ2LlqmZZ9qmIMMreYXoHBRHFWyk+jH/2Nz0wNWlUDpfA+vRBC1addlAfVS+t9fEoWe8nAqwatLV/usTOrpkTuo6wq9g4y/G1t7uEGyMIAN6tgmhMbi103ZxQXWb5kafjKowUx4H6T0Opv0Awoh3Ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914125; c=relaxed/simple;
-	bh=B12zFFBM/mgHBwwc0bWEGqmz5sAMFfrGvo+dacHQ7RI=;
+	s=arc-20240116; t=1744915148; c=relaxed/simple;
+	bh=6TWPBeFBgPNZ1S4IV+c61MBzMtBJpy2IQqNorf7+Phc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cksaBKO0AlmOMtzqFu/XNN2YakJ2V0jhwrR14KLcRbcYCkpFBxmRki54FpBUrTKvhCIfrvwCss3othuwjK6n2hFvafL7rfeF/9Wlp0cdYln24hE2hJrcc5W9fCU0GXzSKv5YaYylV1Vx8ONBkP2LklWV9t9BwxzJhl90ZTH0a2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QetVqP5V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8835CC4CEE7;
-	Thu, 17 Apr 2025 18:22:04 +0000 (UTC)
+	 MIME-Version; b=Inbm2BcNANkTnbjtg+vDeV2xjmoAHTztUP4QzDlyeFXk4lKkAWUd3ZWJCHC9O6vgTR2vVdHcOw+ZKPGpx8ZXvPcBlkbEWYgeeeNtgFQtNmtECsqLqrHbUDigr7VWzRP81QIKS+Zx821hk7stnM2pa1QlHLuw8MBnaHulnsC5LeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2gHvAm+N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AEB1C4CEE4;
+	Thu, 17 Apr 2025 18:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914125;
-	bh=B12zFFBM/mgHBwwc0bWEGqmz5sAMFfrGvo+dacHQ7RI=;
+	s=korg; t=1744915147;
+	bh=6TWPBeFBgPNZ1S4IV+c61MBzMtBJpy2IQqNorf7+Phc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QetVqP5VItmj5HQnRQr7bo5W7Ql2UkjMPDDQ9L8plzWP9xsIUzv5qS/Y2MfsiREYj
-	 mL4CzxUgySERNFEqtppfdPfKdy7ajZu7HumL+e4ajz6fDqMgHwXSaj2vKCleaeICci
-	 EC8M1RpW0xuv9+RlOaYokonYVc/lA5Pn/MYjmApY=
+	b=2gHvAm+Nw5L0J5SVvAVoMqz/LELJ3BPlS56Dcsco3cIT70mRqcFrcZ5MkM0lAABWh
+	 cAl63P1x6OjYTT1QTUu12VTvFTJ62f4wVTyM3fmhd9EtF5YNpTV1T+Qp17n7JzEBP+
+	 iPn/px/F6irwUSF62T6+OzC1AmJZkrWfnC5Ydjwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqing Pan <quic_miaoqing@quicinc.com>,
-	Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	David Howells <dhowells@redhat.com>,
+	Steve French <stfrench@microsoft.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 085/414] wifi: ath12k: fix memory leak in ath12k_pci_remove()
+Subject: [PATCH 6.12 034/393] smb: client: fix UAF in decryption with multichannel
 Date: Thu, 17 Apr 2025 19:47:23 +0200
-Message-ID: <20250417175114.860855489@linuxfoundation.org>
+Message-ID: <20250417175108.969454614@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqing Pan <quic_miaoqing@quicinc.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 1b24394ed5c8a8d8f7b9e3aa9044c31495d46f2e ]
+[ Upstream commit 9502dd5c7029902f4a425bf959917a5a9e7c0e50 ]
 
-Kmemleak reported this error:
+After commit f7025d861694 ("smb: client: allocate crypto only for
+primary server") and commit b0abcd65ec54 ("smb: client: fix UAF in
+async decryption"), the channels started reusing AEAD TFM from primary
+channel to perform synchronous decryption, but that can't done as
+there could be multiple cifsd threads (one per channel) simultaneously
+accessing it to perform decryption.
 
-  unreferenced object 0xffff1c165cec3060 (size 32):
-    comm "insmod", pid 560, jiffies 4296964570 (age 235.596s)
-    backtrace:
-      [<000000005434db68>] __kmem_cache_alloc_node+0x1f4/0x2c0
-      [<000000001203b155>] kmalloc_trace+0x40/0x88
-      [<0000000028adc9c8>] _request_firmware+0xb8/0x608
-      [<00000000cad1aef7>] firmware_request_nowarn+0x50/0x80
-      [<000000005011a682>] local_pci_probe+0x48/0xd0
-      [<00000000077cd295>] pci_device_probe+0xb4/0x200
-      [<0000000087184c94>] really_probe+0x150/0x2c0
+This fixes the following KASAN splat when running fstest generic/249
+with 'vers=3.1.1,multichannel,max_channels=4,seal' against Windows
+Server 2022:
 
-The firmware memory was allocated in ath12k_pci_probe(), but not
-freed in ath12k_pci_remove() in case ATH12K_FLAG_QMI_FAIL bit is
-set. So call ath12k_fw_unmap() to free the memory.
+BUG: KASAN: slab-use-after-free in gf128mul_4k_lle+0xba/0x110
+Read of size 8 at addr ffff8881046c18a0 by task cifsd/986
+CPU: 3 UID: 0 PID: 986 Comm: cifsd Not tainted 6.15.0-rc1 #1
+PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-3.fc41
+04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x5d/0x80
+ print_report+0x156/0x528
+ ? gf128mul_4k_lle+0xba/0x110
+ ? __virt_addr_valid+0x145/0x300
+ ? __phys_addr+0x46/0x90
+ ? gf128mul_4k_lle+0xba/0x110
+ kasan_report+0xdf/0x1a0
+ ? gf128mul_4k_lle+0xba/0x110
+ gf128mul_4k_lle+0xba/0x110
+ ghash_update+0x189/0x210
+ shash_ahash_update+0x295/0x370
+ ? __pfx_shash_ahash_update+0x10/0x10
+ ? __pfx_shash_ahash_update+0x10/0x10
+ ? __pfx_extract_iter_to_sg+0x10/0x10
+ ? ___kmalloc_large_node+0x10e/0x180
+ ? __asan_memset+0x23/0x50
+ crypto_ahash_update+0x3c/0xc0
+ gcm_hash_assoc_remain_continue+0x93/0xc0
+ crypt_message+0xe09/0xec0 [cifs]
+ ? __pfx_crypt_message+0x10/0x10 [cifs]
+ ? _raw_spin_unlock+0x23/0x40
+ ? __pfx_cifs_readv_from_socket+0x10/0x10 [cifs]
+ decrypt_raw_data+0x229/0x380 [cifs]
+ ? __pfx_decrypt_raw_data+0x10/0x10 [cifs]
+ ? __pfx_cifs_read_iter_from_socket+0x10/0x10 [cifs]
+ smb3_receive_transform+0x837/0xc80 [cifs]
+ ? __pfx_smb3_receive_transform+0x10/0x10 [cifs]
+ ? __pfx___might_resched+0x10/0x10
+ ? __pfx_smb3_is_transform_hdr+0x10/0x10 [cifs]
+ cifs_demultiplex_thread+0x692/0x1570 [cifs]
+ ? __pfx_cifs_demultiplex_thread+0x10/0x10 [cifs]
+ ? rcu_is_watching+0x20/0x50
+ ? rcu_lockdep_current_cpu_online+0x62/0xb0
+ ? find_held_lock+0x32/0x90
+ ? kvm_sched_clock_read+0x11/0x20
+ ? local_clock_noinstr+0xd/0xd0
+ ? trace_irq_enable.constprop.0+0xa8/0xe0
+ ? __pfx_cifs_demultiplex_thread+0x10/0x10 [cifs]
+ kthread+0x1fe/0x380
+ ? kthread+0x10f/0x380
+ ? __pfx_kthread+0x10/0x10
+ ? local_clock_noinstr+0xd/0xd0
+ ? ret_from_fork+0x1b/0x60
+ ? local_clock+0x15/0x30
+ ? lock_release+0x29b/0x390
+ ? rcu_is_watching+0x20/0x50
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x31/0x60
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.2.0-02280-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
-
-Signed-off-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
-Reviewed-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250123080226.1116479-1-quic_miaoqing@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Tested-by: David Howells <dhowells@redhat.com>
+Reported-by: Steve French <stfrench@microsoft.com>
+Closes: https://lore.kernel.org/r/CAH2r5mu6Yc0-RJXM3kFyBYUB09XmXBrNodOiCVR4EDrmxq5Szg@mail.gmail.com
+Fixes: f7025d861694 ("smb: client: allocate crypto only for primary server")
+Fixes: b0abcd65ec54 ("smb: client: fix UAF in async decryption")
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/client/cifsencrypt.c | 16 +++++-----------
+ fs/smb/client/smb2ops.c     |  6 +++---
+ fs/smb/client/smb2pdu.c     | 11 ++---------
+ 3 files changed, 10 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
-index cf907550e6a4a..67cbf78ad9134 100644
---- a/drivers/net/wireless/ath/ath12k/pci.c
-+++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -1727,6 +1727,7 @@ static void ath12k_pci_remove(struct pci_dev *pdev)
- 	ath12k_core_deinit(ab);
+diff --git a/fs/smb/client/cifsencrypt.c b/fs/smb/client/cifsencrypt.c
+index 7a43daacc8159..7c61c1e944c7a 100644
+--- a/fs/smb/client/cifsencrypt.c
++++ b/fs/smb/client/cifsencrypt.c
+@@ -702,18 +702,12 @@ cifs_crypto_secmech_release(struct TCP_Server_Info *server)
+ 	cifs_free_hash(&server->secmech.md5);
+ 	cifs_free_hash(&server->secmech.sha512);
  
- qmi_fail:
-+	ath12k_fw_unmap(ab);
- 	ath12k_mhi_unregister(ab_pci);
+-	if (!SERVER_IS_CHAN(server)) {
+-		if (server->secmech.enc) {
+-			crypto_free_aead(server->secmech.enc);
+-			server->secmech.enc = NULL;
+-		}
+-
+-		if (server->secmech.dec) {
+-			crypto_free_aead(server->secmech.dec);
+-			server->secmech.dec = NULL;
+-		}
+-	} else {
++	if (server->secmech.enc) {
++		crypto_free_aead(server->secmech.enc);
+ 		server->secmech.enc = NULL;
++	}
++	if (server->secmech.dec) {
++		crypto_free_aead(server->secmech.dec);
+ 		server->secmech.dec = NULL;
+ 	}
+ }
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index 516be8c0b2a9b..590b70d71694b 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -4576,9 +4576,9 @@ decrypt_raw_data(struct TCP_Server_Info *server, char *buf,
+ 			return rc;
+ 		}
+ 	} else {
+-		if (unlikely(!server->secmech.dec))
+-			return -EIO;
+-
++		rc = smb3_crypto_aead_allocate(server);
++		if (unlikely(rc))
++			return rc;
+ 		tfm = server->secmech.dec;
+ 	}
  
- 	ath12k_pci_free_irq(ab);
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index 75b13175a2e78..1a7b82664255a 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -1269,15 +1269,8 @@ SMB2_negotiate(const unsigned int xid,
+ 			cifs_server_dbg(VFS, "Missing expected negotiate contexts\n");
+ 	}
+ 
+-	if (server->cipher_type && !rc) {
+-		if (!SERVER_IS_CHAN(server)) {
+-			rc = smb3_crypto_aead_allocate(server);
+-		} else {
+-			/* For channels, just reuse the primary server crypto secmech. */
+-			server->secmech.enc = server->primary_server->secmech.enc;
+-			server->secmech.dec = server->primary_server->secmech.dec;
+-		}
+-	}
++	if (server->cipher_type && !rc)
++		rc = smb3_crypto_aead_allocate(server);
+ neg_exit:
+ 	free_rsp_buf(resp_buftype, rsp);
+ 	return rc;
 -- 
 2.39.5
 
