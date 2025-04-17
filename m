@@ -1,126 +1,78 @@
-Return-Path: <stable+bounces-133048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01732A91ABC
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 13:24:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B204A91A77
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 13:18:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15508444C31
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 11:24:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BD4A462546
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 11:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B46A623C8A5;
-	Thu, 17 Apr 2025 11:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB349239597;
+	Thu, 17 Apr 2025 11:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yG+Aefu8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i1+Zt5km"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754932397B4
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 11:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1C7239595
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 11:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744889082; cv=none; b=Uob7Xv9AAs8GAhIdWyFfvgq6B0taPVnVgPN4Sn/9oY8k9VRM/GgrOhkX1Jx5hr8v/PsSW6FXhXHTCPb0G+iAT4kEZMQ3y/yrs4j/xgEXXVeJM+LxnJQpcW6oNG0rc6p01TV4ZzcZ7tBA/SHVbRe88pZXBA+9ZkznJEYm26wLZmQ=
+	t=1744888699; cv=none; b=TP6CImZxsyDWroAvOvQv9ovvqHNUu+bqymRF4QAyKEqNAqAnlsLd1FYqTp2wWejUWHtxxAMORpiNdfdCbQxs/leGr7B9ktax1YGcQfE57JrV9tIlFZhsJ3lMhnmrAhZ9BYNenDH2+hPsoYSVwZmfTQxZoFS/muNtKb53JoSs9wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744889082; c=relaxed/simple;
-	bh=Mv8TZtwk5yDG6ueEGuNBjGKMSEi62U0pW8+AGV7Ydbs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CbKmbhGTjSIhUSg4NARLUVGAIySZtNUThqA3fc2jsnpJXXyst10ucAysrxtWhMJoqlUuiqVg3kMmoqBwH7Xl3COrJwKFvF8JRcrxCOtSWTOfJsiL7eaFdpSf0uyEUxHbDGbVsoKbMRuR2Iv6V88JIqhbW75H7NGWvbfQFeUM6CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yG+Aefu8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D584CC4CEEA;
-	Thu, 17 Apr 2025 11:24:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744889082;
-	bh=Mv8TZtwk5yDG6ueEGuNBjGKMSEi62U0pW8+AGV7Ydbs=;
-	h=Subject:To:Cc:From:Date:From;
-	b=yG+Aefu8rAhy6FCP2z1f/nShGg7ye0fN76AAcEvtcQk5J/TqrBnfOBinloOON7cbD
-	 0gX8EO4cuK1W6/ukjRWSxjQGFxFt/9l4HeHNoCp8HfwXwJO1xn3nvWtBssaNvYfAFy
-	 fNEH1CRlqxePwATVAEEYF6MyfsLqjiJxyOo07BsA=
-Subject: FAILED: patch "[PATCH] backlight: led_bl: Hold led_access lock when calling" failed to apply to 5.15-stable tree
-To: herve.codina@bootlin.com,lee@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 17 Apr 2025 13:12:44 +0200
-Message-ID: <2025041744-kite-tasty-461a@gregkh>
+	s=arc-20240116; t=1744888699; c=relaxed/simple;
+	bh=W73QhjPJp97HuGVCKiT6ONt+AmUOO7DxHiZh5k/bZbI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PGO3IuhFCpYk13vbdwQSQlmJ5FC45OHygSJYNPPShWPqgNZ9IMDtu9POct6/rwkVctL1hxeFHLJhaZwFaOGh2fyQcqfx1GOqktiyiRaUm2yKSiDdPGc85aF9WS7ici8KqOyHkMWpBJCqoynLrz2kEuGKTjeMv0TeqyJ0wvbF4QA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i1+Zt5km; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF3DC4CEE4;
+	Thu, 17 Apr 2025 11:18:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744888699;
+	bh=W73QhjPJp97HuGVCKiT6ONt+AmUOO7DxHiZh5k/bZbI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=i1+Zt5kmsd0AY1Fec0T0VkQGc1WaHxgQPI/pbJikhrh15d16v3FnQNOVj1IQcGOdl
+	 yeTxXdTctroLSZPsE/3KJmIMKEYLMDoVJyie9Z+qVXyJU86yXAYm+x4YGcyj0428yw
+	 mLe9nLbXA3A5Wr1i20UY1Sj91k1kEO0xjzcsAMWYPvz6ZtbexE8l3dybd9mbUOZClD
+	 tqoGqmVXt1EFfJGdvtti8ftzDu1ugWo/wVCgP+sb4F3cc1LBIOylOgKtM4JyPb25WA
+	 KgjoCakLpuPn4SvBptBbf9Pkglb5QXb8M7L/xu60fK82j8Hh6ORVYVwnF1ntcE5yls
+	 pKj4WhthQFfFw==
+Date: Thu, 17 Apr 2025 12:18:13 +0100
+From: Will Deacon <will@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: pjaroszynski@nvidia.com, apopple@nvidia.com, catalin.marinas@arm.com,
+	jgg@nvidia.com, jhubbard@nvidia.com, nicolinc@nvidia.com,
+	rananta@google.com, robin.murphy@arm.com, sj@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] Fix mmu notifiers for range-based
+ invalidates" failed to apply to 6.6-stable tree
+Message-ID: <20250417111812.GA12231@willie-the-truck>
+References: <2025031650-yarn-arrogant-2584@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025031650-yarn-arrogant-2584@gregkh>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
+On Sun, Mar 16, 2025 at 08:23:50AM +0100, gregkh@linuxfoundation.org wrote:
+> 
+> The patch below does not apply to the 6.6-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+I sent a backport here:
 
-To reproduce the conflict and resubmit, you may use the following commands:
+https://lore.kernel.org/r/20250411172804.6014-1-will@kernel.org
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 276822a00db3c1061382b41e72cafc09d6a0ec30
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041744-kite-tasty-461a@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 276822a00db3c1061382b41e72cafc09d6a0ec30 Mon Sep 17 00:00:00 2001
-From: Herve Codina <herve.codina@bootlin.com>
-Date: Wed, 22 Jan 2025 10:19:14 +0100
-Subject: [PATCH] backlight: led_bl: Hold led_access lock when calling
- led_sysfs_disable()
-
-Lockdep detects the following issue on led-backlight removal:
-  [  142.315935] ------------[ cut here ]------------
-  [  142.315954] WARNING: CPU: 2 PID: 292 at drivers/leds/led-core.c:455 led_sysfs_enable+0x54/0x80
-  ...
-  [  142.500725] Call trace:
-  [  142.503176]  led_sysfs_enable+0x54/0x80 (P)
-  [  142.507370]  led_bl_remove+0x80/0xa8 [led_bl]
-  [  142.511742]  platform_remove+0x30/0x58
-  [  142.515501]  device_remove+0x54/0x90
-  ...
-
-Indeed, led_sysfs_enable() has to be called with the led_access
-lock held.
-
-Hold the lock when calling led_sysfs_disable().
-
-Fixes: ae232e45acf9 ("backlight: add led-backlight driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Link: https://lore.kernel.org/r/20250122091914.309533-1-herve.codina@bootlin.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-
-diff --git a/drivers/video/backlight/led_bl.c b/drivers/video/backlight/led_bl.c
-index ae34d1ecbfbe..d2db157b2c29 100644
---- a/drivers/video/backlight/led_bl.c
-+++ b/drivers/video/backlight/led_bl.c
-@@ -229,8 +229,11 @@ static void led_bl_remove(struct platform_device *pdev)
- 	backlight_device_unregister(bl);
- 
- 	led_bl_power_off(priv);
--	for (i = 0; i < priv->nb_leds; i++)
-+	for (i = 0; i < priv->nb_leds; i++) {
-+		mutex_lock(&priv->leds[i]->led_access);
- 		led_sysfs_enable(priv->leds[i]);
-+		mutex_unlock(&priv->leds[i]->led_access);
-+	}
- }
- 
- static const struct of_device_id led_bl_of_match[] = {
-
+Will
 
