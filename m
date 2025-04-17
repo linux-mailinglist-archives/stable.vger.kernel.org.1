@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-133877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF336A92815
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B66CAA92A5F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:49:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6168C4A370C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:30:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 316038E6069
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:46:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0BB425A2D6;
-	Thu, 17 Apr 2025 18:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E05381E98ED;
+	Thu, 17 Apr 2025 18:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yK68MhVh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E/KnRkMS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2F9259C8D;
-	Thu, 17 Apr 2025 18:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9EB4502F;
+	Thu, 17 Apr 2025 18:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914416; cv=none; b=eXO9m5Cjk48/+Y8tyoHqLB/Q+XTxPzQxe/vO5nb9lvX2pYwoZ6qGJ9VpYcGcc05dkURqZFQij4xcREFCUmDTA6YcMVnx5EnKzL/bmHKhE0X72+pieQj6KzFwUZa/7/OxUySRAU+LcDHcmb3jWberdYEyA4JjBEJS6+Xy9zu0HEE=
+	t=1744915613; cv=none; b=c5/XbgWdUDGgi8iyP2GjfLV+lETe0yIZj7EffHrzDZnPFjMR9aMMC83ZXMTFkBout6yCHKCA2eMUK9Byd/gCicF/kOw9Xr3eoFeqspKgVzDS6UstlWpUXdxSpYgXphAfyRmyOlsdBR0RlbizVBcTtDGR2PT1df72oI74r++n6nM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914416; c=relaxed/simple;
-	bh=1XclEZB8O/6+UvvfPvFRjV5N51AWffIFR1odE26T0Ow=;
+	s=arc-20240116; t=1744915613; c=relaxed/simple;
+	bh=dvdxbMuGwSf8w9qSWPQY1Tl4/XlpiLO6gtW1wPTQBxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VcEgXHBsW+6p0TsnUKXI/5EGn6NPPGI6sG7VbYzoj84u2KL8o3He7aJ8429XGwEDcouv0c4ZdV+HQdlByioKpJNx/rAtMMZ7fphlyOSrnQebUGpmrZPh5Wr5ij8A0DhhUeS+jTmCyDuwmS/sPG7U9eJr0ncrvD7PatOUv0VAbeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yK68MhVh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15220C4CEE4;
-	Thu, 17 Apr 2025 18:26:55 +0000 (UTC)
+	 MIME-Version; b=Q7wiZQs4fCiaD9sSTMPhWWTD+zEf/G42nMQtUOIgBEU/AEnaOV+zj/CDEuNM0RLyLYZ+yfs8QOBMu9DGiuAx8HpunMF/r0BQVVekSWmWQ6UrceWay9KQvXjhRjPQ1o8WcnAUXYEH6DmyVz25DvEkArUDA2LEnoVP6dIs9IMl6EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E/KnRkMS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DDA5C4CEE4;
+	Thu, 17 Apr 2025 18:46:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914416;
-	bh=1XclEZB8O/6+UvvfPvFRjV5N51AWffIFR1odE26T0Ow=;
+	s=korg; t=1744915613;
+	bh=dvdxbMuGwSf8w9qSWPQY1Tl4/XlpiLO6gtW1wPTQBxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yK68MhVhyJyv5yB7/LyHVEAtuq2h3AuUMY4NlzdgXQgnvOuW62t8tonkJzDTrHoWZ
-	 6REz5nV9So4IG52Uf/WMrtcEumBn3hFnvEvkyeOcOSvNy4ieB3Pihswvsg0QDEhG7M
-	 vZfKwfaTzsJLvQxos4XR+dJnxP5UHjRzyti8S0sE=
+	b=E/KnRkMSWvwvdw9IJESc2HAd8Uy5/5e86WBGumjN3YnhozkXt1ORCdDRPVUoBWbsI
+	 5lvsadcumjq2VE49dnYwsE6LSAWcCWscZxYzJtirCKO+UH4nLU0+K5gpsGBzXU7IPh
+	 cHheJ/oSmIxpD9O+EX2OXphVTY8xiA04WZnkDtws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Can <yuancan@huawei.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.13 207/414] media: siano: Fix error handling in smsdvb_module_init()
+	warthog9@eaglescrag.net,
+	Ayush Jain <Ayush.jain3@amd.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 156/393] ktest: Fix Test Failures Due to Missing LOG_FILE Directories
 Date: Thu, 17 Apr 2025 19:49:25 +0200
-Message-ID: <20250417175119.769181414@linuxfoundation.org>
+Message-ID: <20250417175113.859633174@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Can <yuancan@huawei.com>
+From: Ayush Jain <Ayush.jain3@amd.com>
 
-commit 734ac57e47b3bdd140a1119e2c4e8e6f8ef8b33d upstream.
+[ Upstream commit 5a1bed232781d356f842576daacc260f0d0c8d2e ]
 
-The smsdvb_module_init() returns without checking the retval from
-smscore_register_hotplug().
-If the smscore_register_hotplug() failed, the module failed to install,
-leaving the smsdvb_debugfs not unregistered.
+Handle missing parent directories for LOG_FILE path to prevent test
+failures. If the parent directories don't exist, create them to ensure
+the tests proceed successfully.
 
-Fixes: 3f6b87cff66b ("[media] siano: allow showing the complete statistics via debugfs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Acked-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: <warthog9@eaglescrag.net>
+Link: https://lore.kernel.org/20250307043854.2518539-1-Ayush.jain3@amd.com
+Signed-off-by: Ayush Jain <Ayush.jain3@amd.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/common/siano/smsdvb-main.c |    2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/ktest/ktest.pl | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/media/common/siano/smsdvb-main.c
-+++ b/drivers/media/common/siano/smsdvb-main.c
-@@ -1243,6 +1243,8 @@ static int __init smsdvb_module_init(voi
- 	smsdvb_debugfs_register();
- 
- 	rc = smscore_register_hotplug(smsdvb_hotplug);
-+	if (rc)
-+		smsdvb_debugfs_unregister();
- 
- 	pr_debug("\n");
- 
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index c76ad0be54e2e..7e524601e01ad 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -4303,6 +4303,14 @@ if (defined($opt{"LOG_FILE"})) {
+     if ($opt{"CLEAR_LOG"}) {
+ 	unlink $opt{"LOG_FILE"};
+     }
++
++    if (! -e $opt{"LOG_FILE"} && $opt{"LOG_FILE"} =~ m,^(.*/),) {
++        my $dir = $1;
++        if (! -d $dir) {
++            mkpath($dir) or die "Failed to create directories '$dir': $!";
++            print "\nThe log directory $dir did not exist, so it was created.\n";
++        }
++    }
+     open(LOG, ">> $opt{LOG_FILE}") or die "Can't write to $opt{LOG_FILE}";
+     LOG->autoflush(1);
+ }
+-- 
+2.39.5
+
 
 
 
