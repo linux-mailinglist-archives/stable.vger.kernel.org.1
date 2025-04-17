@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-133518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5468FA92608
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:09:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55DE8A9281F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:31:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D8C419E4F18
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 366DE3ADF94
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5719256C63;
-	Thu, 17 Apr 2025 18:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35A8258CEB;
+	Thu, 17 Apr 2025 18:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uykc0Vxc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opthEdpR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFD2256C61;
-	Thu, 17 Apr 2025 18:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B9F252915;
+	Thu, 17 Apr 2025 18:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913319; cv=none; b=IQ+6ZgHc71bJn8LIEUD8w7wAtYAFDV9gvob5LdZ4lIx0af+SaeC1UM3lXsx07L7alLYlWs7iU0EO7FhIXdbIaI33W2ENJw0EbXagYKVHQwIVf/daQ2zobbl2u6cDcKOI5vTsy+9sLmDMO5Mk4aSSbT8RLbrqHezzK1PEcNkIZQE=
+	t=1744914390; cv=none; b=HO6LMiFkkhzH/2ydlmmBUFYpBRUxUW/Eg6NPx1Ax4WevbwmPt2JI+gFmMwUxBhr4UpU06JvOVKRTplDEFFUoLBziEYhwI+Q4Z5h721QlQ3WOXmiR6NftHWOUGdLbbiUcZErO44VfzggXrezQnsZ0yA0E5CwLuHSeJvML4uSS5Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913319; c=relaxed/simple;
-	bh=X/X1NTWEljxarnAAQ6APEXHgpPKnzXkrNm0foR3POO0=;
+	s=arc-20240116; t=1744914390; c=relaxed/simple;
+	bh=x79pE/8h2SV5YXZkp/YfCe3fHdJqTHnnjAVj5th5xgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E+MMNMp3wXEh4eVIfpW4n6GvZnT0gtzHlMjMUiVCtRfDYw1BuPX1Ej3FgJ8aulynV+dLul4pe4a2x2i5yRwes3PapR6kPcvwairyd0AVjjE6bgaLTLdjdUxM1p69ewmM9R/v2xEI1HnXkCdALlpMQNhfglfvc4aRcEmMNATcj+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uykc0Vxc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C48C4CEE4;
-	Thu, 17 Apr 2025 18:08:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PxBP/6PRYFnfLpsBgvKkexxv3lN219wHISWZr8289hSM+BJl4az65YfB48aqtQjVH2bjkl0s0FLrJOi84JL1ZRqZK9yeG6w+dsHVBNAc1RPajDcxnVLCuzKmQzFqGRryCZQgUZz9ifqfITkNU5oS00+/hdd4NTI8t3U++y+lLRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opthEdpR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF78C4CEE4;
+	Thu, 17 Apr 2025 18:26:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913319;
-	bh=X/X1NTWEljxarnAAQ6APEXHgpPKnzXkrNm0foR3POO0=;
+	s=korg; t=1744914390;
+	bh=x79pE/8h2SV5YXZkp/YfCe3fHdJqTHnnjAVj5th5xgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uykc0VxccDrXox/2MUc2xxn4PuSFRVowqghXJCUMdi+FNUL7Ccgbc/3Kns4IaOxaU
-	 uR095p68ONsEX6A2bmLcQqCe76qh/rIE3hQOc+Z+V1WKF1ChtDI5EtUshp8p1QCS6K
-	 j/ObasFwu11X7uv8chiwdT4ueB/3Su0l6XE4zsK0=
+	b=opthEdpRxG5BmG1raTOlpOKJ+E0zoZHXkxsZ1OqWlMQGzXSxdcSHoWRCt1962C8+E
+	 suzeZ6g9450b5HBte22hL67pcNQkPikKBiyCsbUWPGJ5StwX30eqySFnRDCk9/7M07
+	 Lu65GAxrKmBAl51LtRsmi/iqm3eNFjLTGnegINEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.14 269/449] mptcp: sockopt: fix getting IPV6_V6ONLY
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.13 199/414] media: uapi: rkisp1-config: Fix typo in extensible params example
 Date: Thu, 17 Apr 2025 19:49:17 +0200
-Message-ID: <20250417175128.859265914@linuxfoundation.org>
+Message-ID: <20250417175119.447370763@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-commit 8c39633759885b6ff85f6d96cf445560e74df5e8 upstream.
+commit 7b0ee2de7c76e5518e2235a927fd211bc785d320 upstream.
 
-When adding a socket option support in MPTCP, both the get and set parts
-are supposed to be implemented.
+The define used for the version in the example diagram does not match what
+is defined in enum rksip1_ext_param_buffer_version, nor the description
+above it. Correct the typo to make it clear which define to use.
 
-IPV6_V6ONLY support for the setsockopt part has been added a while ago,
-but it looks like the get part got forgotten. It should have been
-present as a way to verify a setting has been set as expected, and not
-to act differently from TCP or any other socket types.
-
-Not supporting this getsockopt(IPV6_V6ONLY) blocks some apps which want
-to check the default value, before doing extra actions. On Linux, the
-default value is 0, but this can be changed with the net.ipv6.bindv6only
-sysctl knob. On Windows, it is set to 1 by default. So supporting the
-get part, like for all other socket options, is important.
-
-Everything was in place to expose it, just the last step was missing.
-Only new code is added to cover this specific getsockopt(), that seems
-safe.
-
-Fixes: c9b95a135987 ("mptcp: support IPV6_V6ONLY setsockopt")
+Fixes: e9d05e9d5db1 ("media: uapi: rkisp1-config: Add extensible params format")
 Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/550
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-2-122dbb249db3@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/sockopt.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ include/uapi/linux/rkisp1-config.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/sockopt.c
-+++ b/net/mptcp/sockopt.c
-@@ -1430,6 +1430,20 @@ static int mptcp_getsockopt_v4(struct mp
- 	return -EOPNOTSUPP;
- }
- 
-+static int mptcp_getsockopt_v6(struct mptcp_sock *msk, int optname,
-+			       char __user *optval, int __user *optlen)
-+{
-+	struct sock *sk = (void *)msk;
-+
-+	switch (optname) {
-+	case IPV6_V6ONLY:
-+		return mptcp_put_int_option(msk, optval, optlen,
-+					    sk->sk_ipv6only);
-+	}
-+
-+	return -EOPNOTSUPP;
-+}
-+
- static int mptcp_getsockopt_sol_mptcp(struct mptcp_sock *msk, int optname,
- 				      char __user *optval, int __user *optlen)
- {
-@@ -1469,6 +1483,8 @@ int mptcp_getsockopt(struct sock *sk, in
- 
- 	if (level == SOL_IP)
- 		return mptcp_getsockopt_v4(msk, optname, optval, option);
-+	if (level == SOL_IPV6)
-+		return mptcp_getsockopt_v6(msk, optname, optval, option);
- 	if (level == SOL_TCP)
- 		return mptcp_getsockopt_sol_tcp(msk, optname, optval, option);
- 	if (level == SOL_MPTCP)
+--- a/include/uapi/linux/rkisp1-config.h
++++ b/include/uapi/linux/rkisp1-config.h
+@@ -1528,7 +1528,7 @@ enum rksip1_ext_param_buffer_version {
+  * The expected memory layout of the parameters buffer is::
+  *
+  *	+-------------------- struct rkisp1_ext_params_cfg -------------------+
+- *	| version = RKISP_EXT_PARAMS_BUFFER_V1;                               |
++ *	| version = RKISP1_EXT_PARAM_BUFFER_V1;                               |
+  *	| data_size = sizeof(struct rkisp1_ext_params_bls_config)             |
+  *	|           + sizeof(struct rkisp1_ext_params_dpcc_config);           |
+  *	| +------------------------- data  ---------------------------------+ |
 
 
 
