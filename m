@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-133784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11C77A92798
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:27:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E86CA9294A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30F318A61DA
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:26:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AF0D188858F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:41:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D83266599;
-	Thu, 17 Apr 2025 18:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7354925F968;
+	Thu, 17 Apr 2025 18:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ks+cT6tj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zwF59Ucf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 733BE2571A2;
-	Thu, 17 Apr 2025 18:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBF125F963;
+	Thu, 17 Apr 2025 18:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914128; cv=none; b=JyLChlTDhfHkdtkw0QpuEcMvfuEf8QCvD4LruVBuC2kisA5/qpZxZWNVwuXMbh7XUImkunRbTw7xojWbPGttYrMVmgINMC9xWAlbxiAQVqB7JhDMJvi0NkLiP2urK2PwWXZ+nZWeUjQgfmTKk7M52Vf++80C/MqeZeiPlYvGyUs=
+	t=1744915151; cv=none; b=MKeZV3oPRiSt1JkSurIcohbejb//PTWLh/5JQByM+UXk41qsHdq8cruVg6Yrfa1C3+lMB8eC2VGN1OkaWPDcO5JdyA6wus/VOdNtoKjqShmApv9q6mJJ/8CXDYNdt2wTlCFxr0NapEivP8bbu29OjNBe7ZLkt/xSILcuTAAGLk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914128; c=relaxed/simple;
-	bh=FO0fk/PEsns2J5juiQTGTfmDoJpynr09PWkXW5aetBY=;
+	s=arc-20240116; t=1744915151; c=relaxed/simple;
+	bh=mQlHhTR9w+r37Qvzx84myt6KRGHdPw/ywlYMY0WYTYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kcT1+s9zygYCQHDSZLeNYiSrXM9uVejWV9KPODbqkedNRvG7t82kyfsmQPlsRyEzoxiQ38sKZG+0atV8LQZNUj7qhQaAS7TqqMwg4oM2q1o+NeYRwfv0yG2dDcO0j9E/0wF079MXJxKd26IVGZltA5gm+McnOd5vmM8qnR4hZ7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ks+cT6tj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E404C4CEE7;
-	Thu, 17 Apr 2025 18:22:07 +0000 (UTC)
+	 MIME-Version; b=dHmpgO/dyW81fZmGWik1aPOZHkaS5Td8iyKR9arYOkWDB5Gj737O47YwF0xgSD7kgdLgP38LP3vyebgQjbAVlybEM4QNe3CO4IQf9eyDq7DdPHg5ITy3lHp6PtdEuvYZIzlyKCWQECs/4uCWo4pvDJTx8p1H9bHJOp4mOekD7To=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zwF59Ucf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BED4C4CEE4;
+	Thu, 17 Apr 2025 18:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914127;
-	bh=FO0fk/PEsns2J5juiQTGTfmDoJpynr09PWkXW5aetBY=;
+	s=korg; t=1744915151;
+	bh=mQlHhTR9w+r37Qvzx84myt6KRGHdPw/ywlYMY0WYTYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ks+cT6tjhscHmmHh+oq2j5gyHthtiJUH0PCUraWKSUdKUGwbJ1+fC12NThYy52wPD
-	 M6GHjcoWTNN0aG9vSRjCWYM+gv6XqVcCVxuvsFrVG0FAQDH/sySywfDx5uNzd/87OO
-	 fEs0ngb/jdVQVoo+I7tZXELArrZylZSQrafY6Res=
+	b=zwF59UcfyaTgjdhCXLVR3mQpObHhpiKCSmrbd1rX7PH8tIVA2791P8Z1lbDW46R6H
+	 sML5JUx7DvipsvF0qXD9r948YAOipNAoLSqomiXM0I5C13cAtTTzCtAKdKTVSq3H5/
+	 vciHv8OjPFBGJTv+6cNOjNQoJVXjO48u8YhmexFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	P Praneesh <quic_ppranees@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 086/414] wifi: ath12k: Fix invalid entry fetch in ath12k_dp_mon_srng_process
+Subject: [PATCH 6.12 035/393] net: phy: move phy_link_change() prior to mdio_bus_phy_may_suspend()
 Date: Thu, 17 Apr 2025 19:47:24 +0200
-Message-ID: <20250417175114.900824006@linuxfoundation.org>
+Message-ID: <20250417175109.008780263@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: P Praneesh <quic_ppranees@quicinc.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 63fdc4509bcf483e79548de6bc08bf3c8e504bb3 ]
+[ Upstream commit f40a673d6b4a128fe95dd9b8c3ed02da50a6a862 ]
 
-Currently, ath12k_dp_mon_srng_process uses ath12k_hal_srng_src_get_next_entry
-to fetch the next entry from the destination ring. This is incorrect because
-ath12k_hal_srng_src_get_next_entry is intended for source rings, not destination
-rings. This leads to invalid entry fetches, causing potential data corruption or
-crashes due to accessing incorrect memory locations. This happens because the
-source ring and destination ring have different handling mechanisms and using
-the wrong function results in incorrect pointer arithmetic and ring management.
+In an upcoming change, mdio_bus_phy_may_suspend() will need to
+distinguish a phylib-based PHY client from a phylink PHY client.
+For that, it will need to compare the phydev->phy_link_change() function
+pointer with the eponymous phy_link_change() provided by phylib.
 
-To fix this issue, replace the call to ath12k_hal_srng_src_get_next_entry with
-ath12k_hal_srng_dst_get_next_entry in ath12k_dp_mon_srng_process. This ensures
-that the correct function is used for fetching entries from the destination
-ring, preventing invalid memory accesses.
+To avoid forward function declarations, the default PHY link state
+change method should be moved upwards. There is no functional change
+associated with this patch, it is only to reduce the noise from a real
+bug fix.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-Link: https://patch.msgid.link/20241223060132.3506372-7-quic_ppranees@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/20250407093900.2155112-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: fc75ea20ffb4 ("net: phy: allow MDIO bus PM ops to start/stop state machine for phylink-controlled PHY")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_mon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/phy_device.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-index 494984133a919..a168640c27625 100644
---- a/drivers/net/wireless/ath/ath12k/dp_mon.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-@@ -2545,7 +2545,7 @@ int ath12k_dp_mon_rx_process_stats(struct ath12k *ar, int mac_id,
- 		dest_idx = 0;
- move_next:
- 		ath12k_dp_mon_buf_replenish(ab, buf_ring, 1);
--		ath12k_hal_srng_src_get_next_entry(ab, srng);
-+		ath12k_hal_srng_dst_get_next_entry(ab, srng);
- 		num_buffs_reaped++;
- 	}
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 119dfa2d6643a..44aa67fd544dc 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -289,6 +289,19 @@ static bool phy_drv_wol_enabled(struct phy_device *phydev)
+ 	return wol.wolopts != 0;
+ }
  
++static void phy_link_change(struct phy_device *phydev, bool up)
++{
++	struct net_device *netdev = phydev->attached_dev;
++
++	if (up)
++		netif_carrier_on(netdev);
++	else
++		netif_carrier_off(netdev);
++	phydev->adjust_link(netdev);
++	if (phydev->mii_ts && phydev->mii_ts->link_state)
++		phydev->mii_ts->link_state(phydev->mii_ts, phydev);
++}
++
+ static bool mdio_bus_phy_may_suspend(struct phy_device *phydev)
+ {
+ 	struct device_driver *drv = phydev->mdio.dev.driver;
+@@ -1101,19 +1114,6 @@ struct phy_device *phy_find_first(struct mii_bus *bus)
+ }
+ EXPORT_SYMBOL(phy_find_first);
+ 
+-static void phy_link_change(struct phy_device *phydev, bool up)
+-{
+-	struct net_device *netdev = phydev->attached_dev;
+-
+-	if (up)
+-		netif_carrier_on(netdev);
+-	else
+-		netif_carrier_off(netdev);
+-	phydev->adjust_link(netdev);
+-	if (phydev->mii_ts && phydev->mii_ts->link_state)
+-		phydev->mii_ts->link_state(phydev->mii_ts, phydev);
+-}
+-
+ /**
+  * phy_prepare_link - prepares the PHY layer to monitor link status
+  * @phydev: target phy_device struct
 -- 
 2.39.5
 
