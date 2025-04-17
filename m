@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-133928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEAB7A92899
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8632A92A3F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:48:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EA79460744
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2B294A5DE9
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:48:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7675257AD5;
-	Thu, 17 Apr 2025 18:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F6CF19ABC6;
+	Thu, 17 Apr 2025 18:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uTnaMulZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tz3wI9WX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B0D257AD1;
-	Thu, 17 Apr 2025 18:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6A11B3934;
+	Thu, 17 Apr 2025 18:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914571; cv=none; b=NYI5PEnky4Zvgvzmm6alIadGwWccQPgoD0a+syzkr9F0rMzXhChyPEwxEp0BygeU5gFqWPiv3Tg0xgAmJ5CUaIAWGZ0vd9durt6ZY3w0xt5yQCDD6v6sxZnack/Yb22msiMVDM+ZblRO+uhGWgN10GEGrOL7PJt4h7lekowS9Cs=
+	t=1744915696; cv=none; b=RHCma3oet3y8ykzmy2tR89BG0HDA5rqvUuDx4+OLMSnBB2TGpnIURuyytw+jcao/dlYmnfgaqY6bEDGqFMhqjB0uHPyduFZce5UiBKa8iOOuKKBab+PA6/0iaRxY2PiT8TmHY86OQG+YJeAbbqA6I/U0Q2DxOOElDs67yvBGpeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914571; c=relaxed/simple;
-	bh=nHtdbpFmrzlldKDMmLez1YZ6cwnIsRv5+cTmHWl/ISI=;
+	s=arc-20240116; t=1744915696; c=relaxed/simple;
+	bh=v8qn1jFbKij4WBzRnQKo4ZRnlF0BbStZwaCAy2b1N48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gdm7pXqN1Dr7ZW4RCCtVmReW1+71lxhNRefToH8jarJQ19ImrR0OnQDUi7nVsX7d/Ve9wYFb3ytkMA7WQqRGdKQT7isftXjIk54EdZy1hn+LmFysPf5OCKC2hCtZbqmgzzjqvGl7Z1LiCyhvNKMit0ut2AZWlH0rPREifBW6EbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uTnaMulZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 374AEC4CEE4;
-	Thu, 17 Apr 2025 18:29:31 +0000 (UTC)
+	 MIME-Version; b=BRa7WqAoJ3PTbVrcIBh6Lk5v9CxP6uTrtlM+vBddgpdN/WOi7Q541+9fLMJfGwN/znHd7DRiQx3/EnqlTvDu1UPg2fm4WA66rlrBoqp6Uba7B91gNsG4Dmr0LFXPhLpaVlNGJsCFRI345Ddqx5AeNA2hbcq1HOIU7NKCRUjAoFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tz3wI9WX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E9FC4CEE4;
+	Thu, 17 Apr 2025 18:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914571;
-	bh=nHtdbpFmrzlldKDMmLez1YZ6cwnIsRv5+cTmHWl/ISI=;
+	s=korg; t=1744915696;
+	bh=v8qn1jFbKij4WBzRnQKo4ZRnlF0BbStZwaCAy2b1N48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uTnaMulZ30ucz65QTloXt89Yus9U0QWr1mITTrRYQ5DiszNz/LukBnBbYg543mnj6
-	 7HJVnWca3ZEku+9YNkrmNVK9RN50x6R1DJh5AM/xBpLqEZRZlmgfkghUjYGJYisDzj
-	 rYPCnuo8CslFrs72Xw3+UzTFoNDyRxFnsAZ2/q4s=
+	b=tz3wI9WXQOncv3AlL9mmYoDUSMWBOnv1NJDgcJbC5STQrd1azYyvwtp1aZ0FKixG6
+	 gylWC5S89ISrmsDlEOsS8XoC/nQmGp46EK0z6hHlVWMAwMqFKXkRKduXheOK9GqxXd
+	 xwQO6FK3foejfOQCxop4APeB25ez4Uw2zWgVHWHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Wang <sean.wang@mediatek.com>,
-	Caleb Jorden <cjorden@gmail.com>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.13 260/414] wifi: mt76: mt7925: fix the wrong simultaneous cap for MLO
-Date: Thu, 17 Apr 2025 19:50:18 +0200
-Message-ID: <20250417175121.888034915@linuxfoundation.org>
+	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
+	Lizhi Hou <lizhi.hou@amd.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Subject: [PATCH 6.12 210/393] accel/ivpu: Fix PM related deadlocks in MS IOCTLs
+Date: Thu, 17 Apr 2025 19:50:19 +0200
+Message-ID: <20250417175116.025992601@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 
-commit 7dcea6fe33ee3d7cbb65baee0dd7adc76d1c9ddc upstream.
+commit d893da85e06edf54737bb80648bb58ba8fd56d9f upstream.
 
-The mt7925 chip is only support a single radio, so the maximum
-number of simultaneous should be 0.
+Prevent runtime resume/suspend while MS IOCTLs are in progress.
+Failed suspend will call ivpu_ms_cleanup() that would try to acquire
+file_priv->ms_lock, which is already held by the IOCTLs.
 
-Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
-Cc: stable@vger.kernel.org
-Co-developed-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Tested-by: Caleb Jorden <cjorden@gmail.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20250305000851.493671-3-sean.wang@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: cdfad4db7756 ("accel/ivpu: Add NPU profiling support")
+Cc: stable@vger.kernel.org # v6.11+
+Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
+Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Link: https://lore.kernel.org/r/20250325114306.3740022-3-maciej.falkowski@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/main.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/accel/ivpu/ivpu_debugfs.c |    4 ++--
+ drivers/accel/ivpu/ivpu_ms.c      |   18 ++++++++++++++++++
+ 2 files changed, 20 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -256,7 +256,7 @@ int mt7925_init_mlo_caps(struct mt792x_p
+--- a/drivers/accel/ivpu/ivpu_debugfs.c
++++ b/drivers/accel/ivpu/ivpu_debugfs.c
+@@ -331,7 +331,7 @@ ivpu_force_recovery_fn(struct file *file
+ 		return -EINVAL;
  
- 	ext_capab[0].eml_capabilities = phy->eml_cap;
- 	ext_capab[0].mld_capa_and_ops =
--		u16_encode_bits(1, IEEE80211_MLD_CAP_OP_MAX_SIMUL_LINKS);
-+		u16_encode_bits(0, IEEE80211_MLD_CAP_OP_MAX_SIMUL_LINKS);
+ 	ret = ivpu_rpm_get(vdev);
+-	if (ret)
++	if (ret < 0)
+ 		return ret;
  
- 	wiphy->flags |= WIPHY_FLAG_SUPPORTS_MLO;
- 	wiphy->iftype_ext_capab = ext_capab;
+ 	ivpu_pm_trigger_recovery(vdev, "debugfs");
+@@ -408,7 +408,7 @@ static int dct_active_set(void *data, u6
+ 		return -EINVAL;
+ 
+ 	ret = ivpu_rpm_get(vdev);
+-	if (ret)
++	if (ret < 0)
+ 		return ret;
+ 
+ 	if (active_percent)
+--- a/drivers/accel/ivpu/ivpu_ms.c
++++ b/drivers/accel/ivpu/ivpu_ms.c
+@@ -44,6 +44,10 @@ int ivpu_ms_start_ioctl(struct drm_devic
+ 	    args->sampling_period_ns < MS_MIN_SAMPLE_PERIOD_NS)
+ 		return -EINVAL;
+ 
++	ret = ivpu_rpm_get(vdev);
++	if (ret < 0)
++		return ret;
++
+ 	mutex_lock(&file_priv->ms_lock);
+ 
+ 	if (get_instance_by_mask(file_priv, args->metric_group_mask)) {
+@@ -96,6 +100,8 @@ err_free_ms:
+ 	kfree(ms);
+ unlock:
+ 	mutex_unlock(&file_priv->ms_lock);
++
++	ivpu_rpm_put(vdev);
+ 	return ret;
+ }
+ 
+@@ -160,6 +166,10 @@ int ivpu_ms_get_data_ioctl(struct drm_de
+ 	if (!args->metric_group_mask)
+ 		return -EINVAL;
+ 
++	ret = ivpu_rpm_get(vdev);
++	if (ret < 0)
++		return ret;
++
+ 	mutex_lock(&file_priv->ms_lock);
+ 
+ 	ms = get_instance_by_mask(file_priv, args->metric_group_mask);
+@@ -187,6 +197,7 @@ int ivpu_ms_get_data_ioctl(struct drm_de
+ unlock:
+ 	mutex_unlock(&file_priv->ms_lock);
+ 
++	ivpu_rpm_put(vdev);
+ 	return ret;
+ }
+ 
+@@ -204,11 +215,17 @@ int ivpu_ms_stop_ioctl(struct drm_device
+ {
+ 	struct ivpu_file_priv *file_priv = file->driver_priv;
+ 	struct drm_ivpu_metric_streamer_stop *args = data;
++	struct ivpu_device *vdev = file_priv->vdev;
+ 	struct ivpu_ms_instance *ms;
++	int ret;
+ 
+ 	if (!args->metric_group_mask)
+ 		return -EINVAL;
+ 
++	ret = ivpu_rpm_get(vdev);
++	if (ret < 0)
++		return ret;
++
+ 	mutex_lock(&file_priv->ms_lock);
+ 
+ 	ms = get_instance_by_mask(file_priv, args->metric_group_mask);
+@@ -217,6 +234,7 @@ int ivpu_ms_stop_ioctl(struct drm_device
+ 
+ 	mutex_unlock(&file_priv->ms_lock);
+ 
++	ivpu_rpm_put(vdev);
+ 	return ms ? 0 : -EINVAL;
+ }
+ 
 
 
 
