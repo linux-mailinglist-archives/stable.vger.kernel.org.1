@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-133603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB232A92662
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:12:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF0D8A92A96
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:53:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 163B84A0712
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:12:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B16C7B036C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5727A1CAA7D;
-	Thu, 17 Apr 2025 18:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AA7D24BBFD;
+	Thu, 17 Apr 2025 18:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CIZT/I+o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yg1uAFPS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157B4223710;
-	Thu, 17 Apr 2025 18:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46236258CC2;
+	Thu, 17 Apr 2025 18:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913576; cv=none; b=flVBaMToIw7wu9EjZGVB5DTTW8U79ZJdgtj8CFpEBosgGVxVhzou6l5wFj7zDFtmeQvnI1lOyXckK+tYCHvii+8fQtsaBNHGOM8XH8bKtSPFUsx5/EAZJjIS5Es0sB1ImjOfzUbBEIiPQdxpjtS2Xd+HpxR13xv4o0m1qgEGQvU=
+	t=1744915858; cv=none; b=ZV4IVzf+5dSNracWAoR9eXLzhwlAYfO+D8FYVVz4H3mBjrpeDO7IB2kStM7olmqFjzg1OMnG6OQFRxb5/TVQsou2ZzmgdbVaNvu/5jY3Yikl20UlesdShe4HgwpAQs8Lvmsji+36orCu3yTXdECxmUBZcg7ouX+pbl8u4eftmEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913576; c=relaxed/simple;
-	bh=T+wi5MuiKygieo/Y4XYIP7kJKq8ZmOM2nk8NBY7Dg0U=;
+	s=arc-20240116; t=1744915858; c=relaxed/simple;
+	bh=mT1A4+fCA15O2MUkqD2cSm1MQuwbS5SAkkjUKjRsjAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jKks8KT7IegNmAjgsH3tYf+aXezsbNgRw2Lz1wJKMqim+GZGm6590XDPhf0oYEknM/v3UyEIIY7eH2O4GkVtmwvCaelA13PgDQlL4fYWa85zVuZp/n4W0qeVthZhsF2DUC0GBIWfD1rjnP47lSdlXwIy6syoOYR+jpK60ZdoKXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CIZT/I+o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7320BC4CEE4;
-	Thu, 17 Apr 2025 18:12:55 +0000 (UTC)
+	 MIME-Version; b=F3nOMffwgV6NZ30HW7etLslL0LrLHsIGxvOtNiQgWvpxaXj/HWoDx7Rhe3pcIlxi56mPHBFPNGCgeXOocYrBSJ8RcTf3OQ6zTjhUpHxbBtCMAfXA4Gxa/DbTXDMfMYRS6dA+GnF58wgR/XtU9mcCT1//QAj1pkLGgWh+x0jazj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yg1uAFPS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A94BAC4CEE4;
+	Thu, 17 Apr 2025 18:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913575;
-	bh=T+wi5MuiKygieo/Y4XYIP7kJKq8ZmOM2nk8NBY7Dg0U=;
+	s=korg; t=1744915858;
+	bh=mT1A4+fCA15O2MUkqD2cSm1MQuwbS5SAkkjUKjRsjAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CIZT/I+o5lNWBma6R9ly8MpFHbTD/9LyDOnbYcvC5UflRD7kkdd3lmU9j4zBqysjG
-	 1Ao81L6NbeN6VB8/NmvWU7miK9iHL5jJH3xhf2VGunygfGVgpbrOth1ebOIBExLK7b
-	 uymQ5Ht6Wbbtvu1HaPeqNVwAs83R/lUBNOBakQ5w=
+	b=yg1uAFPSlX7HMiZ+b5kXZwwZ+T43wGSWfllvfvJBrrOm5LyDHm6b+SPJNUZAluc/0
+	 aYzH9JFQaVH+cy4cOYr+z3IK7rlTBW9FZWGaxpGj7JhdUVjk0DdOIzgN/pfmKoYca6
+	 AWoSVnwNLzFN6nU/lOm0HmwR0ma4a4DRVaXB6cYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dionna Glaze <dionnaglaze@google.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.14 384/449] crypto: ccp - Fix uAPI definitions of PSP errors
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Carlos Maiolino <cmaiolino@redhat.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.12 263/393] udf: Fix inode_getblk() return value
 Date: Thu, 17 Apr 2025 19:51:12 +0200
-Message-ID: <20250417175133.714440176@linuxfoundation.org>
+Message-ID: <20250417175118.182865300@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dionna Glaze <dionnaglaze@google.com>
+From: Jan Kara <jack@suse.cz>
 
-commit b949f55644a6d1645c0a71f78afabf12aec7c33b upstream.
+commit 6afdc60ec30b0a9390d11b7cebed79c857ce82aa upstream.
 
-Additions to the error enum after explicit 0x27 setting for
-SEV_RET_INVALID_KEY leads to incorrect value assignments.
+Smatch noticed that inode_getblk() can return 1 on successful mapping of
+a block instead of expected 0 after commit b405c1e58b73 ("udf: refactor
+udf_next_aext() to handle error"). This could confuse some of the
+callers and lead to strange failures (although the one reported by
+Smatch in udf_mkdir() is impossible to trigger in practice). Fix the
+return value of inode_getblk().
 
-Use explicit values to match the manufacturer specifications more
-clearly.
-
-Fixes: 3a45dc2b419e ("crypto: ccp: Define the SEV-SNP commands")
+Link: https://lore.kernel.org/all/cb514af7-bbe0-435b-934f-dd1d7a16d2cd@stanley.mountain
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
+Fixes: b405c1e58b73 ("udf: refactor udf_next_aext() to handle error")
 CC: stable@vger.kernel.org
-Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/psp-sev.h |   21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ fs/udf/inode.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/uapi/linux/psp-sev.h
-+++ b/include/uapi/linux/psp-sev.h
-@@ -73,13 +73,20 @@ typedef enum {
- 	SEV_RET_INVALID_PARAM,
- 	SEV_RET_RESOURCE_LIMIT,
- 	SEV_RET_SECURE_DATA_INVALID,
--	SEV_RET_INVALID_KEY = 0x27,
--	SEV_RET_INVALID_PAGE_SIZE,
--	SEV_RET_INVALID_PAGE_STATE,
--	SEV_RET_INVALID_MDATA_ENTRY,
--	SEV_RET_INVALID_PAGE_OWNER,
--	SEV_RET_INVALID_PAGE_AEAD_OFLOW,
--	SEV_RET_RMP_INIT_REQUIRED,
-+	SEV_RET_INVALID_PAGE_SIZE          = 0x0019,
-+	SEV_RET_INVALID_PAGE_STATE         = 0x001A,
-+	SEV_RET_INVALID_MDATA_ENTRY        = 0x001B,
-+	SEV_RET_INVALID_PAGE_OWNER         = 0x001C,
-+	SEV_RET_AEAD_OFLOW                 = 0x001D,
-+	SEV_RET_EXIT_RING_BUFFER           = 0x001F,
-+	SEV_RET_RMP_INIT_REQUIRED          = 0x0020,
-+	SEV_RET_BAD_SVN                    = 0x0021,
-+	SEV_RET_BAD_VERSION                = 0x0022,
-+	SEV_RET_SHUTDOWN_REQUIRED          = 0x0023,
-+	SEV_RET_UPDATE_FAILED              = 0x0024,
-+	SEV_RET_RESTORE_REQUIRED           = 0x0025,
-+	SEV_RET_RMP_INITIALIZATION_FAILED  = 0x0026,
-+	SEV_RET_INVALID_KEY                = 0x0027,
- 	SEV_RET_MAX,
- } sev_ret_code;
+--- a/fs/udf/inode.c
++++ b/fs/udf/inode.c
+@@ -810,6 +810,7 @@ static int inode_getblk(struct inode *in
+ 		}
+ 		map->oflags = UDF_BLK_MAPPED;
+ 		map->pblk = udf_get_lb_pblock(inode->i_sb, &eloc, offset);
++		ret = 0;
+ 		goto out_free;
+ 	}
  
 
 
