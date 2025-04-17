@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-132955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C431A918AA
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 12:03:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFB58A918AD
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 12:04:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65F0E5A1F22
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 10:03:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8749919E2AF4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 10:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12EE22A1D5;
-	Thu, 17 Apr 2025 10:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0402022CBE5;
+	Thu, 17 Apr 2025 10:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ARqMLgty"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="naZ9cm7P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812DD22576A
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 10:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B021898FB
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 10:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744884221; cv=none; b=CE3M+Iws+QnMgjQRa/ei1lf49q3SbAvs/tU+5xZ6R5VsZ3UNcKo1TN9rgGtLrFk78+sTBV74DN/zs3vF1l6Fs4+2ZZcG1OuOGEOzE25aECBNHJIykI9Hmf0ONliYrjPEYL/0sQAqdreISLrVxVcL4E0pD7Bkrg8pN4VRukBXsgM=
+	t=1744884235; cv=none; b=UMkr4S9vE3f/U7MAkBcqKGU1wTmzqcWfcJ865GZ2TNjWr3kiuXR5prigJv76G3iSclCBG+EXwNzCcXwLYcJLoIP5eUirmgAUWh/3EqTuh9EOoHycT3Fjh3Ax6I/+vsN/jmkpmoH40KZ/dIZIEG7R6g9ZvZ52oTynQmHta1Yy1FY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744884221; c=relaxed/simple;
-	bh=u40YTOg8yvSnF5adFso7wSa2mcMXNhbgBz3ikic+Tfw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EDpPPwZDVNcCQzig9jkxR4QsvXvJqTrYItFrMVlOkhWIxbhkj9C+8hJp9mUUu819m3/tn1g8TDVOBbDkjPmTFXf0zPWE6poVaqVdDKlu9vHCqMFIACXs/TfWINfnJhaFLhmRsMK/rysA7ZQo7VgJD4tImvEb1QcFGS6cEjCrfpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ARqMLgty; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D71DFC4CEE7;
-	Thu, 17 Apr 2025 10:03:40 +0000 (UTC)
+	s=arc-20240116; t=1744884235; c=relaxed/simple;
+	bh=2D/UaCxtuSBtvhvYMF0yVB70j/fAZZRPLDLidUJWNPE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ixSqwCFBxAQ7MXSqn5B4yT0PAOIA3LUuHaDb+1tM2NBqXB3wO3R1v9pDx+7RVaU5PQKaxQ25OHFIkYoN6BYAyDNUgk4z/ickHyJioCyiTy6eNF/4ypZr2Vz+PRDVpQ8+KhQHRQDpguDWKquh4XERrDSTbVghOKrpsa/Xh/fiJ/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=naZ9cm7P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D48CEC4CEE4;
+	Thu, 17 Apr 2025 10:03:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744884221;
-	bh=u40YTOg8yvSnF5adFso7wSa2mcMXNhbgBz3ikic+Tfw=;
+	s=korg; t=1744884235;
+	bh=2D/UaCxtuSBtvhvYMF0yVB70j/fAZZRPLDLidUJWNPE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ARqMLgty54rIa72d7vbaxfJnthgXF+6N3n7Zq+vaN5YUjGod7vv7CjqWeIPXJup0T
-	 eU1tn9ZYz+J6VXzuOb6yucoBUXWUyeB/AYcCwo6t8+1JcT2LbZ9oVT8V8fCdibt3Rp
-	 ehxfvKrTIkxGe0iL5znUgj1R5hxLWrqHdOEsGDyI=
-Subject: FAILED: patch "[PATCH] KVM: arm64: Set HCR_EL2.TID1 unconditionally" failed to apply to 6.1-stable tree
-To: oliver.upton@linux.dev,broonie@kernel.org,maz@kernel.org
+	b=naZ9cm7PB+cROvGPMQf61DK3ilM5UMVLLOF9bia4jR9LzYfVUwxE9PwrwOuHEILvg
+	 qPtFRqvwEw4UtqO3Ao32YOeQmtNqzBLStGrR9EWs1X5fuTDe8gEer17einZt7dJ85D
+	 PFMzC1K+tDOoe61orF9Vg4O4NGj2O0E4BGSxmIuY=
+Subject: FAILED: patch "[PATCH] spi: cadence-qspi: Fix probe on AM62A LP SK" failed to apply to 5.4-stable tree
+To: miquel.raynal@bootlin.com,broonie@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 17 Apr 2025 12:03:27 +0200
-Message-ID: <2025041727-cozy-manual-7575@gregkh>
+Date: Thu, 17 Apr 2025 12:03:52 +0200
+Message-ID: <2025041752-harmless-scoring-d983@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 4cd48565b0e5df398e7253c0d2d8c0403d69e7bf
+git cherry-pick -x b8665a1b49f5498edb7b21d730030c06b7348a3c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041727-cozy-manual-7575@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041752-harmless-scoring-d983@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,330 +77,61 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4cd48565b0e5df398e7253c0d2d8c0403d69e7bf Mon Sep 17 00:00:00 2001
-From: Oliver Upton <oliver.upton@linux.dev>
-Date: Mon, 24 Feb 2025 16:53:57 -0800
-Subject: [PATCH] KVM: arm64: Set HCR_EL2.TID1 unconditionally
+From b8665a1b49f5498edb7b21d730030c06b7348a3c Mon Sep 17 00:00:00 2001
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+Date: Wed, 5 Mar 2025 21:09:32 +0100
+Subject: [PATCH] spi: cadence-qspi: Fix probe on AM62A LP SK
 
-commit 90807748ca3a ("KVM: arm64: Hide SME system registers from
-guests") added trap handling for SMIDR_EL1, treating it as UNDEFINED as
-KVM does not support SME. This is right for the most part, however KVM
-needs to set HCR_EL2.TID1 to _actually_ trap the register.
+In 2020, there's been an unnoticed change which rightfully attempted to
+report probe deferrals upon DMA absence by checking the return value of
+dma_request_chan_by_mask(). By doing so, it also reported errors which
+were simply ignored otherwise, likely on purpose.
 
-Unfortunately, this comes with some collateral damage as TID1 forces
-REVIDR_EL1 and AIDR_EL1 to trap as well. KVM has long treated these
-registers as "invariant" which is an awful term for the following:
+This change actually turned a void return into an error code. Hence, not
+only the -EPROBE_DEFER error codes but all error codes got reported to
+the callers, now failing to probe in the absence of Rx DMA channel,
+despite the fact that DMA seems to not be supported natively by many
+implementations.
 
- - Userspace sees the boot CPU values on all vCPUs
+Looking at the history, this change probably led to:
+ad2775dc3fc5 ("spi: cadence-quadspi: Disable the DAC for Intel LGM SoC")
+f724c296f2f2 ("spi: cadence-quadspi: fix Direct Access Mode disable for SoCFPGA")
 
- - The guest sees the hardware values of the CPU on which a vCPU is
-   scheduled
+In my case, the AM62A LP SK core octo-SPI node from TI does not
+advertise any DMA channel, hinting that there is likely no support for
+it, but yet when the support for the am654 compatible was added, DMA
+seemed to be used, so just discarding its use with the
+CQSPI_DISABLE_DAC_MODE quirk for this compatible does not seem the
+correct approach.
 
-Keep the plates spinning by adding trap handling for the affected
-registers and repaint all of the "invariant" crud into terms of
-identifying an implementation. Yes, at this point we only need to
-set TID1 on SME hardware, but REVIDR_EL1 and AIDR_EL1 are about to
-become mutable anyway.
+Let's get change the return condition back to:
+- return a probe deferral error if we get one
+- ignore the return value otherwise
+The "error" log level was however likely too high for something that is
+expected to fail, so let's lower it arbitrarily to the info level.
 
-Cc: Mark Brown <broonie@kernel.org>
+Fixes: 935da5e5100f ("mtd: spi-nor: cadence-quadspi: Handle probe deferral while requesting DMA channel")
 Cc: stable@vger.kernel.org
-Fixes: 90807748ca3a ("KVM: arm64: Hide SME system registers from guests")
-[maz: handle traps from 32bit]
-Co-developed-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20250225005401.679536-2-oliver.upton@linux.dev
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/20250305200933.2512925-2-miquel.raynal@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 
-diff --git a/arch/arm64/include/asm/kvm_arm.h b/arch/arm64/include/asm/kvm_arm.h
-index 8d94a6c0ed5c..b01c01e55de5 100644
---- a/arch/arm64/include/asm/kvm_arm.h
-+++ b/arch/arm64/include/asm/kvm_arm.h
-@@ -92,12 +92,12 @@
-  * SWIO:	Turn set/way invalidates into set/way clean+invalidate
-  * PTW:		Take a stage2 fault if a stage1 walk steps in device memory
-  * TID3:	Trap EL1 reads of group 3 ID registers
-- * TID2:	Trap CTR_EL0, CCSIDR2_EL1, CLIDR_EL1, and CSSELR_EL1
-+ * TID1:	Trap REVIDR_EL1, AIDR_EL1, and SMIDR_EL1
-  */
- #define HCR_GUEST_FLAGS (HCR_TSC | HCR_TSW | HCR_TWE | HCR_TWI | HCR_VM | \
- 			 HCR_BSU_IS | HCR_FB | HCR_TACR | \
- 			 HCR_AMO | HCR_SWIO | HCR_TIDCP | HCR_RW | HCR_TLOR | \
--			 HCR_FMO | HCR_IMO | HCR_PTW | HCR_TID3)
-+			 HCR_FMO | HCR_IMO | HCR_PTW | HCR_TID3 | HCR_TID1)
- #define HCR_HOST_NVHE_FLAGS (HCR_RW | HCR_API | HCR_APK | HCR_ATA)
- #define HCR_HOST_NVHE_PROTECTED_FLAGS (HCR_HOST_NVHE_FLAGS | HCR_TSC)
- #define HCR_HOST_VHE_FLAGS (HCR_RW | HCR_TGE | HCR_E2H)
-diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-index 82430c1e1dd0..57e945d6b715 100644
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -2493,6 +2493,93 @@ static bool access_mdcr(struct kvm_vcpu *vcpu,
- 	return true;
- }
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 0cd37a7436d5..c90462783b3f 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1658,6 +1658,12 @@ static int cqspi_request_mmap_dma(struct cqspi_st *cqspi)
+ 		int ret = PTR_ERR(cqspi->rx_chan);
  
-+/*
-+ * For historical (ahem ABI) reasons, KVM treated MIDR_EL1, REVIDR_EL1, and
-+ * AIDR_EL1 as "invariant" registers, meaning userspace cannot change them.
-+ * The values made visible to userspace were the register values of the boot
-+ * CPU.
-+ *
-+ * At the same time, reads from these registers at EL1 previously were not
-+ * trapped, allowing the guest to read the actual hardware value. On big-little
-+ * machines, this means the VM can see different values depending on where a
-+ * given vCPU got scheduled.
-+ *
-+ * These registers are now trapped as collateral damage from SME, and what
-+ * follows attempts to give a user / guest view consistent with the existing
-+ * ABI.
-+ */
-+static bool access_imp_id_reg(struct kvm_vcpu *vcpu,
-+			      struct sys_reg_params *p,
-+			      const struct sys_reg_desc *r)
-+{
-+	if (p->is_write)
-+		return write_to_read_only(vcpu, p, r);
+ 		cqspi->rx_chan = NULL;
++		if (ret == -ENODEV) {
++			/* DMA support is not mandatory */
++			dev_info(&cqspi->pdev->dev, "No Rx DMA available\n");
++			return 0;
++		}
 +
-+	switch (reg_to_encoding(r)) {
-+	case SYS_REVIDR_EL1:
-+		p->regval = read_sysreg(revidr_el1);
-+		break;
-+	case SYS_AIDR_EL1:
-+		p->regval = read_sysreg(aidr_el1);
-+		break;
-+	default:
-+		WARN_ON_ONCE(1);
-+	}
-+
-+	return true;
-+}
-+
-+static u64 __ro_after_init boot_cpu_midr_val;
-+static u64 __ro_after_init boot_cpu_revidr_val;
-+static u64 __ro_after_init boot_cpu_aidr_val;
-+
-+static void init_imp_id_regs(void)
-+{
-+	boot_cpu_midr_val = read_sysreg(midr_el1);
-+	boot_cpu_revidr_val = read_sysreg(revidr_el1);
-+	boot_cpu_aidr_val = read_sysreg(aidr_el1);
-+}
-+
-+static int get_imp_id_reg(struct kvm_vcpu *vcpu, const struct sys_reg_desc *r,
-+			  u64 *val)
-+{
-+	switch (reg_to_encoding(r)) {
-+	case SYS_MIDR_EL1:
-+		*val = boot_cpu_midr_val;
-+		break;
-+	case SYS_REVIDR_EL1:
-+		*val = boot_cpu_revidr_val;
-+		break;
-+	case SYS_AIDR_EL1:
-+		*val = boot_cpu_aidr_val;
-+		break;
-+	default:
-+		WARN_ON_ONCE(1);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int set_imp_id_reg(struct kvm_vcpu *vcpu, const struct sys_reg_desc *r,
-+			  u64 val)
-+{
-+	u64 expected;
-+	int ret;
-+
-+	ret = get_imp_id_reg(vcpu, r, &expected);
-+	if (ret)
-+		return ret;
-+
-+	return (expected == val) ? 0 : -EINVAL;
-+}
-+
-+#define IMPLEMENTATION_ID(reg) {			\
-+	SYS_DESC(SYS_##reg),				\
-+	.access = access_imp_id_reg,			\
-+	.get_user = get_imp_id_reg,			\
-+	.set_user = set_imp_id_reg,			\
-+}
- 
- /*
-  * Architected system registers.
-@@ -2542,7 +2629,9 @@ static const struct sys_reg_desc sys_reg_descs[] = {
- 
- 	{ SYS_DESC(SYS_DBGVCR32_EL2), undef_access, reset_val, DBGVCR32_EL2, 0 },
- 
-+	IMPLEMENTATION_ID(MIDR_EL1),
- 	{ SYS_DESC(SYS_MPIDR_EL1), NULL, reset_mpidr, MPIDR_EL1 },
-+	IMPLEMENTATION_ID(REVIDR_EL1),
- 
- 	/*
- 	 * ID regs: all ID_SANITISED() entries here must have corresponding
-@@ -2814,6 +2903,7 @@ static const struct sys_reg_desc sys_reg_descs[] = {
- 	  .set_user = set_clidr, .val = ~CLIDR_EL1_RES0 },
- 	{ SYS_DESC(SYS_CCSIDR2_EL1), undef_access },
- 	{ SYS_DESC(SYS_SMIDR_EL1), undef_access },
-+	IMPLEMENTATION_ID(AIDR_EL1),
- 	{ SYS_DESC(SYS_CSSELR_EL1), access_csselr, reset_unknown, CSSELR_EL1 },
- 	ID_FILTERED(CTR_EL0, ctr_el0,
- 		    CTR_EL0_DIC_MASK |
-@@ -4272,9 +4362,13 @@ int kvm_handle_cp15_32(struct kvm_vcpu *vcpu)
- 	 * Certain AArch32 ID registers are handled by rerouting to the AArch64
- 	 * system register table. Registers in the ID range where CRm=0 are
- 	 * excluded from this scheme as they do not trivially map into AArch64
--	 * system register encodings.
-+	 * system register encodings, except for AIDR/REVIDR.
- 	 */
--	if (params.Op1 == 0 && params.CRn == 0 && params.CRm)
-+	if (params.Op1 == 0 && params.CRn == 0 &&
-+	    (params.CRm || params.Op2 == 6 /* REVIDR */))
-+		return kvm_emulate_cp15_id_reg(vcpu, &params);
-+	if (params.Op1 == 1 && params.CRn == 0 &&
-+	    params.CRm == 0 && params.Op2 == 7 /* AIDR */)
- 		return kvm_emulate_cp15_id_reg(vcpu, &params);
- 
- 	return kvm_handle_cp_32(vcpu, &params, cp15_regs, ARRAY_SIZE(cp15_regs));
-@@ -4578,65 +4672,6 @@ id_to_sys_reg_desc(struct kvm_vcpu *vcpu, u64 id,
- 	return r;
- }
- 
--/*
-- * These are the invariant sys_reg registers: we let the guest see the
-- * host versions of these, so they're part of the guest state.
-- *
-- * A future CPU may provide a mechanism to present different values to
-- * the guest, or a future kvm may trap them.
-- */
--
--#define FUNCTION_INVARIANT(reg)						\
--	static u64 reset_##reg(struct kvm_vcpu *v,			\
--			       const struct sys_reg_desc *r)		\
--	{								\
--		((struct sys_reg_desc *)r)->val = read_sysreg(reg);	\
--		return ((struct sys_reg_desc *)r)->val;			\
--	}
--
--FUNCTION_INVARIANT(midr_el1)
--FUNCTION_INVARIANT(revidr_el1)
--FUNCTION_INVARIANT(aidr_el1)
--
--/* ->val is filled in by kvm_sys_reg_table_init() */
--static struct sys_reg_desc invariant_sys_regs[] __ro_after_init = {
--	{ SYS_DESC(SYS_MIDR_EL1), NULL, reset_midr_el1 },
--	{ SYS_DESC(SYS_REVIDR_EL1), NULL, reset_revidr_el1 },
--	{ SYS_DESC(SYS_AIDR_EL1), NULL, reset_aidr_el1 },
--};
--
--static int get_invariant_sys_reg(u64 id, u64 __user *uaddr)
--{
--	const struct sys_reg_desc *r;
--
--	r = get_reg_by_id(id, invariant_sys_regs,
--			  ARRAY_SIZE(invariant_sys_regs));
--	if (!r)
--		return -ENOENT;
--
--	return put_user(r->val, uaddr);
--}
--
--static int set_invariant_sys_reg(u64 id, u64 __user *uaddr)
--{
--	const struct sys_reg_desc *r;
--	u64 val;
--
--	r = get_reg_by_id(id, invariant_sys_regs,
--			  ARRAY_SIZE(invariant_sys_regs));
--	if (!r)
--		return -ENOENT;
--
--	if (get_user(val, uaddr))
--		return -EFAULT;
--
--	/* This is what we mean by invariant: you can't change it. */
--	if (r->val != val)
--		return -EINVAL;
--
--	return 0;
--}
--
- static int demux_c15_get(struct kvm_vcpu *vcpu, u64 id, void __user *uaddr)
- {
- 	u32 val;
-@@ -4718,15 +4753,10 @@ int kvm_sys_reg_get_user(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg,
- int kvm_arm_sys_reg_get_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
- {
- 	void __user *uaddr = (void __user *)(unsigned long)reg->addr;
--	int err;
- 
- 	if ((reg->id & KVM_REG_ARM_COPROC_MASK) == KVM_REG_ARM_DEMUX)
- 		return demux_c15_get(vcpu, reg->id, uaddr);
- 
--	err = get_invariant_sys_reg(reg->id, uaddr);
--	if (err != -ENOENT)
--		return err;
--
- 	return kvm_sys_reg_get_user(vcpu, reg,
- 				    sys_reg_descs, ARRAY_SIZE(sys_reg_descs));
- }
-@@ -4762,15 +4792,10 @@ int kvm_sys_reg_set_user(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg,
- int kvm_arm_sys_reg_set_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
- {
- 	void __user *uaddr = (void __user *)(unsigned long)reg->addr;
--	int err;
- 
- 	if ((reg->id & KVM_REG_ARM_COPROC_MASK) == KVM_REG_ARM_DEMUX)
- 		return demux_c15_set(vcpu, reg->id, uaddr);
- 
--	err = set_invariant_sys_reg(reg->id, uaddr);
--	if (err != -ENOENT)
--		return err;
--
- 	return kvm_sys_reg_set_user(vcpu, reg,
- 				    sys_reg_descs, ARRAY_SIZE(sys_reg_descs));
- }
-@@ -4859,23 +4884,14 @@ static int walk_sys_regs(struct kvm_vcpu *vcpu, u64 __user *uind)
- 
- unsigned long kvm_arm_num_sys_reg_descs(struct kvm_vcpu *vcpu)
- {
--	return ARRAY_SIZE(invariant_sys_regs)
--		+ num_demux_regs()
-+	return num_demux_regs()
- 		+ walk_sys_regs(vcpu, (u64 __user *)NULL);
- }
- 
- int kvm_arm_copy_sys_reg_indices(struct kvm_vcpu *vcpu, u64 __user *uindices)
- {
--	unsigned int i;
- 	int err;
- 
--	/* Then give them all the invariant registers' indices. */
--	for (i = 0; i < ARRAY_SIZE(invariant_sys_regs); i++) {
--		if (put_user(sys_reg_to_index(&invariant_sys_regs[i]), uindices))
--			return -EFAULT;
--		uindices++;
--	}
--
- 	err = walk_sys_regs(vcpu, uindices);
- 	if (err < 0)
- 		return err;
-@@ -5101,15 +5117,12 @@ int __init kvm_sys_reg_table_init(void)
- 	valid &= check_sysreg_table(cp14_64_regs, ARRAY_SIZE(cp14_64_regs), true);
- 	valid &= check_sysreg_table(cp15_regs, ARRAY_SIZE(cp15_regs), true);
- 	valid &= check_sysreg_table(cp15_64_regs, ARRAY_SIZE(cp15_64_regs), true);
--	valid &= check_sysreg_table(invariant_sys_regs, ARRAY_SIZE(invariant_sys_regs), false);
- 	valid &= check_sysreg_table(sys_insn_descs, ARRAY_SIZE(sys_insn_descs), false);
- 
- 	if (!valid)
- 		return -EINVAL;
- 
--	/* We abuse the reset function to overwrite the table itself. */
--	for (i = 0; i < ARRAY_SIZE(invariant_sys_regs); i++)
--		invariant_sys_regs[i].reset(NULL, &invariant_sys_regs[i]);
-+	init_imp_id_regs();
- 
- 	ret = populate_nv_trap_config();
- 
+ 		return dev_err_probe(&cqspi->pdev->dev, ret, "No Rx DMA available\n");
+ 	}
+ 	init_completion(&cqspi->rx_dma_complete);
 
 
