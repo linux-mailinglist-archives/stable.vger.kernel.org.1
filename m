@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F028BA927E6
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:29:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1FCCA92A18
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9835A167437
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 535143B5C55
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C15D6257AF3;
-	Thu, 17 Apr 2025 18:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B97C1D07BA;
+	Thu, 17 Apr 2025 18:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SY1YqEyP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I3tEUDDy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC9E257AC3;
-	Thu, 17 Apr 2025 18:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5FF3594D;
+	Thu, 17 Apr 2025 18:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914292; cv=none; b=qqfqRHRV2vPk9tKSx7m9Gqhv9Ip/5JNm4yel9/DxlANcSAg3QIp6n3XGYcq/Qsmv4AEIB93yWPJ23KUL4X3Ol43ovSWc2EC69GwHYubyn4YjjUUKe7m6qUVGPtL5zTRa3xT5WzseTUrkfFrh5o9ICKfbVCVXhSRY6YoH1BIGE+0=
+	t=1744915412; cv=none; b=NlhIZaYw46jkJMCe0/cdb9F2Bi68s6MeCo2HjOUu/6oqVN1tpaXc6bhRZkeDabZSWD/+OxXLAuDMqPV7uTFtXV8BneVChzgeb2BLh+63XaCshchj22aA5I5kCpZ2gVLMARF4ju9nGROQ7X6kcAtm1ZkjGhROc5bBrAChlZk7048=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914292; c=relaxed/simple;
-	bh=nVZsMctnSlNnPRS9/4IUrz+xwj6nFJ5Zkpl68LSBewQ=;
+	s=arc-20240116; t=1744915412; c=relaxed/simple;
+	bh=v3xE9U8Ps8oovsdvcW9PlNb+VeoZIlxXd/S5JXo3dcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k7Xo26Xmsh24u1VNRSEuOC7r8EUyfouxMA3ucbrRG854gVdP1efH1fvg+zYZJPOyKKEhmOiZIdyMzDZJQ49SF+zr7lbPrV6DHzxnQV6Jr8E83HzrtBPFotB0uDa2g2L0i5SePoUYiHms1LCtjq7SqHacEMj/xeSl+89L0jVyZr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SY1YqEyP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FEECC4CEEA;
-	Thu, 17 Apr 2025 18:24:51 +0000 (UTC)
+	 MIME-Version; b=gE4gBLEvRP5TEXfX3KharEpF3IU2niyUJSftxbzDYuOuMQLFUjPid0LHgzuyunp/Bk9vwkfgzMj5n/CcDkq5Cjj3SxGcy1A3+snTOyaxpwFDWixE4lgmkIGa5pRYkWc3G5wqb/dAnUrkrpBGUypzbSGGZ+SYy0qkdYKsqfJM4+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I3tEUDDy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CAE6C4CEE4;
+	Thu, 17 Apr 2025 18:43:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914291;
-	bh=nVZsMctnSlNnPRS9/4IUrz+xwj6nFJ5Zkpl68LSBewQ=;
+	s=korg; t=1744915412;
+	bh=v3xE9U8Ps8oovsdvcW9PlNb+VeoZIlxXd/S5JXo3dcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SY1YqEyP0/SvcAHlR3k6yUjwvNORRlTTwGw+duXOIMNcxDDtUawJSG70nu1754AvG
-	 H7gO3fv9VVJxzBLhqSQXuj0ZUae4h9ZxUdHdv2PK+7K6JFuo6QaJPtnzyXJgEQbiqQ
-	 XFCMLQvMuyNswoRGNS2rm996VX4SIa7k1WwYyYXo=
+	b=I3tEUDDyTR77FBhrvnD0427z3PkAFPEZNWW4FiSgthIhSbUauFnSKeEvStE1k3iOQ
+	 VRaktm4Hw75YY7Smgm6mql3vdN9YFmgJul1bIUonH59PSgis8+N3CBDiz9f9i5uBC/
+	 CafHCLOCRT/beLpRuTT5AkaQ/3u0kQh9GBnPGpFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Gabriele Paoloni <gpaoloni@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 168/414] pwm: fsl-ftm: Handle clk_get_rate() returning 0
-Date: Thu, 17 Apr 2025 19:48:46 +0200
-Message-ID: <20250417175118.195581405@linuxfoundation.org>
+Subject: [PATCH 6.12 118/393] tracing: fix return value in __ftrace_event_enable_disable for TRACE_REG_UNREGISTER
+Date: Thu, 17 Apr 2025 19:48:47 +0200
+Message-ID: <20250417175112.342590023@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Gabriele Paoloni <gpaoloni@redhat.com>
 
-[ Upstream commit 928446a5302eee30ebb32075c0db5dda5a138fb7 ]
+[ Upstream commit 0c588ac0ca6c22b774d9ad4a6594681fdfa57d9d ]
 
-Considering that the driver doesn't enable the used clocks (and also
-that clk_get_rate() returns 0 if CONFIG_HAVE_CLK is unset) better check
-the return value of clk_get_rate() for being non-zero before dividing by
-it.
+When __ftrace_event_enable_disable invokes the class callback to
+unregister the event, the return value is not reported up to the
+caller, hence leading to event unregister failures being silently
+ignored.
 
-Fixes: 3479bbd1e1f8 ("pwm: fsl-ftm: More relaxed permissions for updating period")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/b68351a51017035651bc62ad3146afcb706874f0.1743501688.git.u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+This patch assigns the ret variable to the invocation of the
+event unregister callback, so that its return value is stored
+and reported to the caller, and it raises a warning in case
+of error.
+
+Link: https://lore.kernel.org/20250321170821.101403-1-gpaoloni@redhat.com
+Signed-off-by: Gabriele Paoloni <gpaoloni@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-fsl-ftm.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/trace/trace_events.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pwm/pwm-fsl-ftm.c b/drivers/pwm/pwm-fsl-ftm.c
-index 2510c10ca4730..c45a5fca4cbbd 100644
---- a/drivers/pwm/pwm-fsl-ftm.c
-+++ b/drivers/pwm/pwm-fsl-ftm.c
-@@ -118,6 +118,9 @@ static unsigned int fsl_pwm_ticks_to_ns(struct fsl_pwm_chip *fpc,
- 	unsigned long long exval;
+diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
+index 29eba68e07859..11dea25ef880a 100644
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -790,7 +790,9 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
+ 				clear_bit(EVENT_FILE_FL_RECORDED_TGID_BIT, &file->flags);
+ 			}
  
- 	rate = clk_get_rate(fpc->clk[fpc->period.clk_select]);
-+	if (rate >> fpc->period.clk_ps == 0)
-+		return 0;
+-			call->class->reg(call, TRACE_REG_UNREGISTER, file);
++			ret = call->class->reg(call, TRACE_REG_UNREGISTER, file);
 +
- 	exval = ticks;
- 	exval *= 1000000000UL;
- 	do_div(exval, rate >> fpc->period.clk_ps);
-@@ -190,6 +193,9 @@ static unsigned int fsl_pwm_calculate_duty(struct fsl_pwm_chip *fpc,
- 	unsigned int period = fpc->period.mod_period + 1;
- 	unsigned int period_ns = fsl_pwm_ticks_to_ns(fpc, period);
- 
-+	if (!period_ns)
-+		return 0;
-+
- 	duty = (unsigned long long)duty_ns * period;
- 	do_div(duty, period_ns);
- 
++			WARN_ON_ONCE(ret);
+ 		}
+ 		/* If in SOFT_MODE, just set the SOFT_DISABLE_BIT, else clear it */
+ 		if (file->flags & EVENT_FILE_FL_SOFT_MODE)
 -- 
 2.39.5
 
