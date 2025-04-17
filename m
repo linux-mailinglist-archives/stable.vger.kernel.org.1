@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-133496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 167B4A925ED
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:08:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB1EA92A21
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D81416BD7F
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FD1B1B61D0B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84F7257428;
-	Thu, 17 Apr 2025 18:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC03F253340;
+	Thu, 17 Apr 2025 18:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n+km1Lxj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bEGbVs1u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852FD223710;
-	Thu, 17 Apr 2025 18:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8CF1DB148;
+	Thu, 17 Apr 2025 18:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913252; cv=none; b=uVnFLJ3HmreruPzW7JGUCpOWjJ1tP85iK2TbYcAQbNxE60jxpUqALu8f2ivikhO+Pb5ivwEirDLrvvoPC7ZY5wAK83m0JWJ6YNO1biyg02chzPoUOlmF9ugOYVAxp4dHP9ZguiPTk2L4zDnkBF4mLHyK2aRHEDVbcTwiTvIUrCM=
+	t=1744915628; cv=none; b=CAVZBnmVMQuO9hA98Gg9LNK5EV/yHGQ3og4YjYYLNJrQdA+up/I08Z8dRSyMKZdUupdWqIKyOuVipY7cBana4VuD1A0uwD/u6fkaMZNIeRXGL6TUEy/g9fhdE0Opo4avvd7yE/udd5actUL75E9k3qlyC3kBJ3NlTtAsOZ+aUqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913252; c=relaxed/simple;
-	bh=YBfHONti5YJblOwD8/7wiDFzhr6NNu3pEnXKME9IHjo=;
+	s=arc-20240116; t=1744915628; c=relaxed/simple;
+	bh=/Z10qwmnwJG9aOnMp5p4+xdnyD5QEw2wLxgYM10i6dQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VnmQpW4Z/aJ+Mzj32cUDIamTPICdBiy7Dfur+gSLaDMwbdo6JZeqaI2wbu2XARaVSbUv3QsDP4rnJ5IdsxnDm/U5SeGfeeXHNJeuJIf6aXGVjZPHEv3HAQQOs1Wdrrkqo+YxSXceDPkRLt9tK5sl81/VZwQDm/SV8S5QBobqy94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n+km1Lxj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1677FC4CEE7;
-	Thu, 17 Apr 2025 18:07:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YmWsI+pi9eCHRK0VCP3RUDDmQ87CKpMSf2pVrX+cDJPGEoVOfKxXuLcYI6kMY42/2pIrbgaGRYB3e/hMbZOC5BLmljmfg859cCcswYq6yxpjwa8njWrUFD+jcYFlV0H9ioF+/AM+5fcxl+mo2UvMhT5IfVrufBKjQlepqriNqX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bEGbVs1u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4657C4CEE4;
+	Thu, 17 Apr 2025 18:47:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913252;
-	bh=YBfHONti5YJblOwD8/7wiDFzhr6NNu3pEnXKME9IHjo=;
+	s=korg; t=1744915628;
+	bh=/Z10qwmnwJG9aOnMp5p4+xdnyD5QEw2wLxgYM10i6dQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n+km1LxjsYd6vSpgLa7IL5z59v03z+pSMf6VdPQ5Nu9MOkfbcewywT3lf3osbUT1D
-	 BlJHO4tzn7yLEAuPXGiRydUL1JVt8795tzyp3jDBU4ClE9Jj9uT/HSv3MaWbqjJv7k
-	 yfiuDezBAuQau6uKDR7vYuQsR+Ob89FvWYFLNdc8=
+	b=bEGbVs1u+51i4rDCHX0RsJl6fFwPlR5/PoTWQra8/az6a7cruwsBpFplXXZ3JnSs9
+	 mtmMOztuz5sH4w78VLIBoLp6D7AR40dvimHArfE1kz8z4jmPuVyY7SvCnJtWe2MZxP
+	 XA/BWedIco+RkYPedJXPxwH9rESYBSNuZTSyL9Os=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.14 278/449] wifi: mt76: Add check for devm_kstrdup()
-Date: Thu, 17 Apr 2025 19:49:26 +0200
-Message-ID: <20250417175129.250311268@linuxfoundation.org>
+	Jonathan McDowell <noodles@meta.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 158/393] tpm: End any active auth session before shutdown
+Date: Thu, 17 Apr 2025 19:49:27 +0200
+Message-ID: <20250417175113.939900813@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +60,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Jonathan McDowell <noodles@meta.com>
 
-commit 4bc1da524b502999da28d287de4286c986a1af57 upstream.
+[ Upstream commit 1dbf74e00a5f882b04b398399b6def65cd51ef21 ]
 
-Add check for the return value of devm_kstrdup() in
-mt76_get_of_data_from_mtd() to catch potential exception.
+Lazy flushing of TPM auth sessions can interact badly with IMA + kexec,
+resulting in loaded session handles being leaked across the kexec and
+not cleaned up. Fix by ensuring any active auth session is ended before
+the TPM is told about the shutdown, matching what is done when
+suspending.
 
-Fixes: e7a6a044f9b9 ("mt76: testmode: move mtd part to mt76_dev")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Link: https://patch.msgid.link/20250219033645.2594753-1-haoxiang_li2024@163.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Before:
+
+root@debian-qemu-efi:~# tpm2_getcap handles-loaded-session
+root@debian-qemu-efi:~# tpm2_getcap handles-saved-session
+root@debian-qemu-efi:~# kexec --load --kexec-file-syscall …
+root@debian-qemu-efi:~# systemctl kexec
+…
+root@debian-qemu-efi:~# tpm2_getcap handles-loaded-session
+- 0x2000000
+root@debian-qemu-efi:~# tpm2_getcap handles-saved-session
+root@debian-qemu-efi:~#
+(repeat kexec steps)
+root@debian-qemu-efi:~# tpm2_getcap handles-loaded-session
+- 0x2000000
+- 0x2000001
+root@debian-qemu-efi:~# tpm2_getcap handles-saved-session
+root@debian-qemu-efi:~#
+
+After:
+
+root@debian-qemu-efi:~# tpm2_getcap handles-loaded-session
+root@debian-qemu-efi:~# tpm2_getcap handles-saved-session
+root@debian-qemu-efi:~# kexec --load --kexec-file-syscall …
+root@debian-qemu-efi:~# systemctl kexec
+…
+root@debian-qemu-efi:~# tpm2_getcap handles-loaded-session
+root@debian-qemu-efi:~# tpm2_getcap handles-saved-session
+root@debian-qemu-efi:~#
+
+Signed-off-by: Jonathan McDowell <noodles@meta.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/eeprom.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/char/tpm/tpm-chip.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/wireless/mediatek/mt76/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
-@@ -95,6 +95,10 @@ int mt76_get_of_data_from_mtd(struct mt7
- 
- #ifdef CONFIG_NL80211_TESTMODE
- 	dev->test_mtd.name = devm_kstrdup(dev->dev, part, GFP_KERNEL);
-+	if (!dev->test_mtd.name) {
-+		ret = -ENOMEM;
-+		goto out_put_node;
-+	}
- 	dev->test_mtd.offset = offset;
- #endif
- 
+diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
+index 7df7abaf3e526..87f01269b9b53 100644
+--- a/drivers/char/tpm/tpm-chip.c
++++ b/drivers/char/tpm/tpm-chip.c
+@@ -300,6 +300,7 @@ int tpm_class_shutdown(struct device *dev)
+ 	down_write(&chip->ops_sem);
+ 	if (chip->flags & TPM_CHIP_FLAG_TPM2) {
+ 		if (!tpm_chip_start(chip)) {
++			tpm2_end_auth_session(chip);
+ 			tpm2_shutdown(chip, TPM2_SU_CLEAR);
+ 			tpm_chip_stop(chip);
+ 		}
+-- 
+2.39.5
+
 
 
 
