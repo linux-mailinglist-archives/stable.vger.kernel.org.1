@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-134160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28F9EA929D7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:45:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 011E8A925A9
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:06:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF5AD8E5315
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A02ED467833
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AF072586EC;
-	Thu, 17 Apr 2025 18:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE167255249;
+	Thu, 17 Apr 2025 18:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGL2BDi9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fL+9bBOR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060B522333D;
-	Thu, 17 Apr 2025 18:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A579254B12;
+	Thu, 17 Apr 2025 18:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915276; cv=none; b=iZ4S/gy1yQl84grH1z4SFqvPqsHQ60PJQ4T7PSdCD1LQ0SNak5BNUL5fiITgukSpr4vDSUhwEWhnI/ASwZejjwYyj8p5i4B3bvrC6LUaGX+GeJ7P8SQTpAX58ze2IGEKG+ih7MWbCXVRPYX+kHU5ufW/qgB+jB+L2nD3V7RjxTM=
+	t=1744913058; cv=none; b=Ga9wN9l7OdRctQcRIbzzS2WfD9bn/xg6XULjNprAOb4vjDxkP1VwHGSOUoR1kYKbotxRLhfUm92hKRSm33PAJgj5hfbMqDP27fpCDN/E+6/kGE5rPYvhwXsIbYEgaexuXdqm5uSC3jXUB5/5SqNq4l3gXf99+pahz/CrjpuayeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915276; c=relaxed/simple;
-	bh=UwAc3DHzhNJV0nyIZ0pfAtSAkIdTaYaunr+d7Baneao=;
+	s=arc-20240116; t=1744913058; c=relaxed/simple;
+	bh=QojGqnTTsIys1ToEr97av0kIN6lB6WYAXfN9vkQ/hvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iERDez1sZzZkIhQW39QctjLXPywsCofQQz3/2/e8gl54JNA7UMZ/ggzbOOX7SyRHo9dw8YVb755IlsTzNDp8FCmb9k+ZYImM5k7QLTMe8q8mLNAF6eOphFyCJITx0GUcO/BGZtR3ifI1kJdCEIHcY2bTYqWOpwYYk2wAKf799PU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGL2BDi9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 803EBC4CEE4;
-	Thu, 17 Apr 2025 18:41:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hNuKBvBkZh9mJXVPcfUbgIRMwoxXKx0X5jkcgFqsJG0c2J9TIhdrLsFrUMLMSyHuX+ML9rkcOdJfcr3q0xV9ZaB4voGqJIYA5yPlcfGF2FrvR7BmlQrQVqCmmFMOS7gTXiFQuAVZP6WfNwqVZSkZltcJhLklRTM39kGTPjBuJ8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fL+9bBOR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22AABC4CEE4;
+	Thu, 17 Apr 2025 18:04:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915275;
-	bh=UwAc3DHzhNJV0nyIZ0pfAtSAkIdTaYaunr+d7Baneao=;
+	s=korg; t=1744913058;
+	bh=QojGqnTTsIys1ToEr97av0kIN6lB6WYAXfN9vkQ/hvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wGL2BDi98mF66LPj+dPTyEbzaWOJimGFNyGknGMwY15/WEl7qupyrL3rARE8tk/+M
-	 4YSwt6AyPY9Nqn4B627Ef/gIuP5HobXYrdLTniE4MS6vuVywg4BhVPmjRNzDwpoGTU
-	 qdy6CXNqoAYPO85Yrgyd4p3COPW8Aie8eFqwr0H0=
+	b=fL+9bBORTATRZTXdpNcX+uuO3u6LBr46ooiUpNYVlmDI20da/NRTOWb6ZdqHECcSK
+	 xpPru1M/6OlYuc2yp8NeO8BAgJ4SZ6zFcM5NGIoTybSzRJDlh/XvA6KAMK+WNOKcH/
+	 FQ+ibEvxuKbmd6oTsTvEJbF1n56t4v7ml5VGkKaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 075/393] media: uvcvideo: Add quirk for Actions UVC05
+Subject: [PATCH 6.14 196/449] HID: pidff: Clamp PERIODIC effect period to devices logical range
 Date: Thu, 17 Apr 2025 19:48:04 +0200
-Message-ID: <20250417175110.610862942@linuxfoundation.org>
+Message-ID: <20250417175125.865089754@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +64,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit 8c54e58f94ed3ff28643aefd2c0c2c98313ee770 ]
+[ Upstream commit f538183e997a9fb6087e94e71e372de967b9e56a ]
 
-Actions UVC05 is a HDMI to USB dongle that implements the UVC protocol.
+This ensures the effect can actually be played on the connected force
+feedback device. Adds clamping functions used instead of rescaling, as we
+don't want to change the characteristics of the periodic effects.
 
-When the device suspends, its firmware seems to enter a weird mode when it
-does not produce more frames.
+Fixes edge cases found on Moza Racing and some other hardware where
+the effects would not play if the period is outside the defined
+logical range.
 
-Add the device to the quirk list to disable autosuspend.
+Changes in v6:
+- Use in-kernel clamp macro instead of a custom solution
 
-Bus 001 Device 007: ID 1de1:f105 Actions Microelectronics Co. Display
- capture-UVC05
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               2.00
-  bDeviceClass          239 Miscellaneous Device
-  bDeviceSubClass         2 [unknown]
-  bDeviceProtocol         1 Interface Association
-  bMaxPacketSize0        64
-  idVendor           0x1de1 Actions Microelectronics Co.
-  idProduct          0xf105 Display capture-UVC05
-  bcdDevice            4.09
-  iManufacturer           1 Actions Micro
-  iProduct                2 Display capture-UVC05
-  iSerial                 3 -1005308387
-  bNumConfigurations      1
-
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20241210-uvc-hdmi-suspend-v1-1-01f5dec023ea@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/hid/usbhid/hid-pidff.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index 4d8e00b425f44..a0d683d266471 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -3039,6 +3039,15 @@ static const struct usb_device_id uvc_ids[] = {
- 	  .bInterfaceProtocol	= 0,
- 	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_PROBE_MINMAX
- 					| UVC_QUIRK_IGNORE_SELECTOR_UNIT) },
-+	/* Actions Microelectronics Co. Display capture-UVC05 */
-+	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-+				| USB_DEVICE_ID_MATCH_INT_INFO,
-+	  .idVendor		= 0x1de1,
-+	  .idProduct		= 0xf105,
-+	  .bInterfaceClass	= USB_CLASS_VIDEO,
-+	  .bInterfaceSubClass	= 1,
-+	  .bInterfaceProtocol	= 0,
-+	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_DISABLE_AUTOSUSPEND) },
- 	/* NXP Semiconductors IR VIDEO */
- 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
- 				| USB_DEVICE_ID_MATCH_INT_INFO,
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 25dbed076f530..6b55345ce75ac 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -15,10 +15,9 @@
+ #include <linux/input.h>
+ #include <linux/slab.h>
+ #include <linux/usb.h>
+-
+ #include <linux/hid.h>
++#include <linux/minmax.h>
+ 
+-#include "usbhid.h"
+ 
+ #define	PID_EFFECTS_MAX		64
+ #define	PID_INFINITE		0xffff
+@@ -192,6 +191,16 @@ struct pidff_device {
+ 	u32 quirks;
+ };
+ 
++/*
++ * Clamp value for a given field
++ */
++static s32 pidff_clamp(s32 i, struct hid_field *field)
++{
++	s32 clamped = clamp(i, field->logical_minimum, field->logical_maximum);
++	pr_debug("clamped from %d to %d", i, clamped);
++	return clamped;
++}
++
+ /*
+  * Scale an unsigned value with range 0..max for the given field
+  */
+@@ -372,7 +381,11 @@ static void pidff_set_periodic_report(struct pidff_device *pidff,
+ 	pidff_set_signed(&pidff->set_periodic[PID_OFFSET],
+ 			 effect->u.periodic.offset);
+ 	pidff_set(&pidff->set_periodic[PID_PHASE], effect->u.periodic.phase);
+-	pidff->set_periodic[PID_PERIOD].value[0] = effect->u.periodic.period;
++
++	/* Clamp period to ensure the device can play the effect */
++	pidff->set_periodic[PID_PERIOD].value[0] =
++		pidff_clamp(effect->u.periodic.period,
++			pidff->set_periodic[PID_PERIOD].field);
+ 
+ 	hid_hw_request(pidff->hid, pidff->reports[PID_SET_PERIODIC],
+ 			HID_REQ_SET_REPORT);
 -- 
 2.39.5
 
