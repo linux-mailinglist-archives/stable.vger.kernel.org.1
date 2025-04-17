@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-133781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9644A92782
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:26:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4849A9293F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C05C27B3FF4
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:25:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EB091B630B1
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5FF826563F;
-	Thu, 17 Apr 2025 18:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20BF725A64D;
+	Thu, 17 Apr 2025 18:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0uvbiyU6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wEBLxZbP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C08265CA2;
-	Thu, 17 Apr 2025 18:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0EE125F78C;
+	Thu, 17 Apr 2025 18:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914119; cv=none; b=YkqfkMP8xUc4/vwArNC+MjwjCtDV/RtL+MTfr6HEcj5NpEGU2+F2nMpOwRC8jlByWqrhNS1+BLfcffIusfDCK3LHgA/fQf0RFg5K4dVIsqdXYPnoSOgW9uJot3Cn0p2QgcVWLt29QY9d02z1AQSpwo+3KlnVYMot6LlGmRdEsMs=
+	t=1744915144; cv=none; b=aZ+mTdEeFeLwW+ZH5QimBWJ+XIexRxzhkeIOcCWGmSV7CAG8LSQgcrqVoeO80GQtq8e5DrvRanWXirofVwnfPqsuTNFCwKOrjAipQja1XvvLLgaF6LdtKLr1pQZ6NCrM/IXreLwKvEzwqgdLi/Jqp5VeqerAByWMJRqJEDg/kMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914119; c=relaxed/simple;
-	bh=Xj+UiUqX+0eFQeDI09z3G4pE1FR5JNC/C44pAGVBikU=;
+	s=arc-20240116; t=1744915144; c=relaxed/simple;
+	bh=lSDh7ApWsV1xxYlc5/OuHGtL+XQD4y9y+7iPtbjeFV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JwPBpToigxr2eOD7sL9b9Q0uIFiN4Svh0TNEsOT0ppK0tKj9D5/SwRKCM8aQMWr9//jPw9cyzizYVkAiVk5cisuGPCvh2bXayIan8xULkqwflFVviLu2Ukg7bGPGw0oof9BLpEKXRe913407t8E7PvgTOrMBVDvxZY2paOFok4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0uvbiyU6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE52AC4CEEC;
-	Thu, 17 Apr 2025 18:21:58 +0000 (UTC)
+	 MIME-Version; b=QmwVWXbpqLnkZarJyCPD4qQ2i8szyiigX9SLLyqtQBqx4blKJLGrsh5hCuYQ6+jdIqPFuh9QluxZlXpo5DLiJ35uE9z+whrHcc/5M0bZfenMT10hDgMlt0de2Th2Chw33v9mbCqXo2re01GCpdAtgEpxkFHHldNHS0U2YTzl+gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wEBLxZbP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A21C4CEE4;
+	Thu, 17 Apr 2025 18:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914119;
-	bh=Xj+UiUqX+0eFQeDI09z3G4pE1FR5JNC/C44pAGVBikU=;
+	s=korg; t=1744915144;
+	bh=lSDh7ApWsV1xxYlc5/OuHGtL+XQD4y9y+7iPtbjeFV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0uvbiyU61UEMXMXjdGOapyPlbopJz/qCLIRe+Z3+tsq5z67Him6lgFXJNgjIj/9nY
-	 WC44CPdEOhqI8I7dbT99+mzQ+QfrD438GoLnSgOp8D7HeNPcq/cEC9OMj5qJcvHh2C
-	 zfB9zzULI6WkGdr7lsV0vryeuJCzPzbcuTIXb6s4=
+	b=wEBLxZbPq1/Byiu+KfJOCNCoqkbAoXCTz/26Jymj9NKDfQzXP2O2cD2P9mlMT5yOf
+	 MSp/qwsgKXu17B3qbRfA4fBhP602yfkCsYZhmqKSyK3WAffevxkFMD7Qv4ogrYlFnA
+	 8NgEMF3mLvyDEsI6O9Az6vzoRb9ApneP3b61g5IY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Harvey <tharvey@gateworks.com>,
-	P Praneesh <quic_ppranees@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	syzbot <syzkaller@googlegroups.com>,
+	Octavian Purdila <tavip@google.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 083/414] wifi: ath11k: Fix DMA buffer allocation to resolve SWIOTLB issues
-Date: Thu, 17 Apr 2025 19:47:21 +0200
-Message-ID: <20250417175114.783245983@linuxfoundation.org>
+Subject: [PATCH 6.12 033/393] net_sched: sch_sfq: move the limit validation
+Date: Thu, 17 Apr 2025 19:47:22 +0200
+Message-ID: <20250417175108.929821146@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +64,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: P Praneesh <quic_ppranees@quicinc.com>
+From: Octavian Purdila <tavip@google.com>
 
-[ Upstream commit 1bcd20981834928ccc5d981aacb806bb523d8b29 ]
+[ Upstream commit b3bf8f63e6179076b57c9de660c9f80b5abefe70 ]
 
-Currently, the driver allocates cacheable DMA buffers for rings like
-HAL_REO_DST and HAL_WBM2SW_RELEASE. The buffers for HAL_WBM2SW_RELEASE
-are large (1024 KiB), exceeding the SWIOTLB slot size of 256 KiB. This
-leads to "swiotlb buffer is full" error messages on systems without an
-IOMMU that use SWIOTLB, causing driver initialization failures. The driver
-calls dma_map_single() with these large buffers obtained from kzalloc(),
-resulting in ring initialization errors on systems without an IOMMU that
-use SWIOTLB.
+It is not sufficient to directly validate the limit on the data that
+the user passes as it can be updated based on how the other parameters
+are changed.
 
-To address these issues, replace the flawed buffer allocation mechanism
-with the appropriate DMA API. Specifically, use dma_alloc_noncoherent()
-for cacheable DMA buffers, ensuring proper freeing of buffers with
-dma_free_noncoherent().
+Move the check at the end of the configuration update process to also
+catch scenarios where the limit is indirectly updated, for example
+with the following configurations:
 
-Error log:
-[   10.194343] ath11k_pci 0000:04:00.0: swiotlb buffer is full (sz:1048583 bytes), total 32768 (slots), used 2529 (slots)
-[   10.194406] ath11k_pci 0000:04:00.0: failed to set up tcl_comp ring (0) :-12
-[   10.194781] ath11k_pci 0000:04:00.0: failed to init DP: -12
+tc qdisc add dev dummy0 handle 1: root sfq limit 2 flows 1 depth 1
+tc qdisc add dev dummy0 handle 1: root sfq limit 2 flows 1 divisor 1
 
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
+This fixes the following syzkaller reported crash:
 
-Reported-by: Tim Harvey <tharvey@gateworks.com>
-Closes: https://lore.kernel.org/all/20241210041133.GA17116@lst.de/
-Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-Tested-by: Tim Harvey <tharvey@gateworks.com>
-Link: https://patch.msgid.link/20250119164219.647059-2-quic_ppranees@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+------------[ cut here ]------------
+UBSAN: array-index-out-of-bounds in net/sched/sch_sfq.c:203:6
+index 65535 is out of range for type 'struct sfq_head[128]'
+CPU: 1 UID: 0 PID: 3037 Comm: syz.2.16 Not tainted 6.14.0-rc2-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 12/27/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x201/0x300 lib/dump_stack.c:120
+ ubsan_epilogue lib/ubsan.c:231 [inline]
+ __ubsan_handle_out_of_bounds+0xf5/0x120 lib/ubsan.c:429
+ sfq_link net/sched/sch_sfq.c:203 [inline]
+ sfq_dec+0x53c/0x610 net/sched/sch_sfq.c:231
+ sfq_dequeue+0x34e/0x8c0 net/sched/sch_sfq.c:493
+ sfq_reset+0x17/0x60 net/sched/sch_sfq.c:518
+ qdisc_reset+0x12e/0x600 net/sched/sch_generic.c:1035
+ tbf_reset+0x41/0x110 net/sched/sch_tbf.c:339
+ qdisc_reset+0x12e/0x600 net/sched/sch_generic.c:1035
+ dev_reset_queue+0x100/0x1b0 net/sched/sch_generic.c:1311
+ netdev_for_each_tx_queue include/linux/netdevice.h:2590 [inline]
+ dev_deactivate_many+0x7e5/0xe70 net/sched/sch_generic.c:1375
+
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Fixes: 10685681bafc ("net_sched: sch_sfq: don't allow 1 packet limit")
+Signed-off-by: Octavian Purdila <tavip@google.com>
+Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/dp.c | 35 +++++++++-------------------
- 1 file changed, 11 insertions(+), 24 deletions(-)
+ net/sched/sch_sfq.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp.c b/drivers/net/wireless/ath/ath11k/dp.c
-index fbf666d0ecf1d..f124b7329e1ac 100644
---- a/drivers/net/wireless/ath/ath11k/dp.c
-+++ b/drivers/net/wireless/ath/ath11k/dp.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #include <crypto/hash.h>
-@@ -104,14 +104,12 @@ void ath11k_dp_srng_cleanup(struct ath11k_base *ab, struct dp_srng *ring)
- 	if (!ring->vaddr_unaligned)
- 		return;
- 
--	if (ring->cached) {
--		dma_unmap_single(ab->dev, ring->paddr_unaligned, ring->size,
--				 DMA_FROM_DEVICE);
--		kfree(ring->vaddr_unaligned);
--	} else {
-+	if (ring->cached)
-+		dma_free_noncoherent(ab->dev, ring->size, ring->vaddr_unaligned,
-+				     ring->paddr_unaligned, DMA_FROM_DEVICE);
-+	else
- 		dma_free_coherent(ab->dev, ring->size, ring->vaddr_unaligned,
- 				  ring->paddr_unaligned);
+diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
+index 7714ae94e0521..58b42dcf8f201 100644
+--- a/net/sched/sch_sfq.c
++++ b/net/sched/sch_sfq.c
+@@ -661,10 +661,6 @@ static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
+ 		if (!p)
+ 			return -ENOMEM;
+ 	}
+-	if (ctl->limit == 1) {
+-		NL_SET_ERR_MSG_MOD(extack, "invalid limit");
+-		return -EINVAL;
 -	}
  
- 	ring->vaddr_unaligned = NULL;
- }
-@@ -249,25 +247,14 @@ int ath11k_dp_srng_setup(struct ath11k_base *ab, struct dp_srng *ring,
- 		default:
- 			cached = false;
- 		}
--
--		if (cached) {
--			ring->vaddr_unaligned = kzalloc(ring->size, GFP_KERNEL);
--			if (!ring->vaddr_unaligned)
--				return -ENOMEM;
--
--			ring->paddr_unaligned = dma_map_single(ab->dev,
--							       ring->vaddr_unaligned,
--							       ring->size,
--							       DMA_FROM_DEVICE);
--			if (dma_mapping_error(ab->dev, ring->paddr_unaligned)) {
--				kfree(ring->vaddr_unaligned);
--				ring->vaddr_unaligned = NULL;
--				return -ENOMEM;
--			}
--		}
- 	}
+ 	sch_tree_lock(sch);
  
--	if (!cached)
-+	if (cached)
-+		ring->vaddr_unaligned = dma_alloc_noncoherent(ab->dev, ring->size,
-+							      &ring->paddr_unaligned,
-+							      DMA_FROM_DEVICE,
-+							      GFP_KERNEL);
-+	else
- 		ring->vaddr_unaligned = dma_alloc_coherent(ab->dev, ring->size,
- 							   &ring->paddr_unaligned,
- 							   GFP_KERNEL);
+@@ -705,6 +701,12 @@ static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
+ 		limit = min_t(u32, ctl->limit, maxdepth * maxflows);
+ 		maxflows = min_t(u32, maxflows, limit);
+ 	}
++	if (limit == 1) {
++		sch_tree_unlock(sch);
++		kfree(p);
++		NL_SET_ERR_MSG_MOD(extack, "invalid limit");
++		return -EINVAL;
++	}
+ 
+ 	/* commit configuration */
+ 	q->limit = limit;
 -- 
 2.39.5
 
