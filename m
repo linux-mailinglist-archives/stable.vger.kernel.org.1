@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-133534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DA6AA9267C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:13:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E9A2A92A49
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:49:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65E8E7B67EF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3CD91B6454C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:49:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49071A3178;
-	Thu, 17 Apr 2025 18:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F23D253954;
+	Thu, 17 Apr 2025 18:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ngY758w1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHVlR1Iy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9302722E3E6;
-	Thu, 17 Apr 2025 18:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25E919ABC6;
+	Thu, 17 Apr 2025 18:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913367; cv=none; b=Y7bRApJ4mRiraLAPzBDdgKXFHmEN49uCltaCf61yvZx2/bpJHqQgP2guSueACMVAoaUUSf/LDSjsasTft8d/pVtJ3ro1UF6Q4yRMDqwU21Wu+aQC42t1af0h3gI2ouPPYQn5WHMt/Vc2RadPDXUzi7oIsnbZLhwbrGcxHpkVSeU=
+	t=1744915739; cv=none; b=aKlIBYsDrQ9jjQivvCmQSB+zLArByKy1xrLMQd59G7UBE23G3uwFwL4eKD5yElkoTVXUlX+37GBN4yz14WJ6hBBPuH/HxuXpWTb+PtUq1xsk6Be9OkOY2qtTLO07iVZYpBgka8aI396fir7UzwUY7mdK86WPza5s/iA5D9GSzDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913367; c=relaxed/simple;
-	bh=hq8MDOqBywcnxHFmQ0cM2b5mFrssDb9XQcEl5agL56k=;
+	s=arc-20240116; t=1744915739; c=relaxed/simple;
+	bh=pK981CXH4fJafBIEhCviBEPt9AOIxvBIBxMFHAmVbKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CeLopTUbeUaHS9++tIxwnwsiQKcHdH7dC9TMIFAzSesZZAd0jrKc3l697fzf98W+uw7nwxVmFGoL3dVKj5bydbt4chVZkjTt+WtS/OzbmYAJRnVPGDYmlwRmmDA3h/kGG3BrpwzBdp5kEgpgmaEffweudxP1YeqJeTcoxI1tGdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ngY758w1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACBC7C4CEE4;
-	Thu, 17 Apr 2025 18:09:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rrUidQ05hL9u1R1v1k+ya8Cmy32Ob2HvJM5y77yCC8fDLpxXMBwHeHqsimM8xiXA8iT4j64hcpaypCcAmIf/CF8nFgq5Px72LZbuaTapHACCsNs66LqpSxIJKzXU9TVqqKlId0V1lo30MeVlz34Nw8KEw/Zidp8IfJbWUuhMGH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHVlR1Iy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DD3FC4CEE4;
+	Thu, 17 Apr 2025 18:48:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913367;
-	bh=hq8MDOqBywcnxHFmQ0cM2b5mFrssDb9XQcEl5agL56k=;
+	s=korg; t=1744915739;
+	bh=pK981CXH4fJafBIEhCviBEPt9AOIxvBIBxMFHAmVbKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ngY758w1rMK2hFNvxHkcs+wv/7OPtdkfzU7TdFIEn1PzCd7T9DuzYdzqB0AR2msor
-	 dNvssi5dksysZnRKD9XuBSn6gjYxBUsEtSUPd3ybnH35oWhgoWDXianNBnSglSVB2x
-	 p7u0H32cWKYUDgQbJd+BS9+pvvRI3rF+TMiP0oOI=
+	b=bHVlR1IyEfCEk+cVfH36FF2TddNWz2/8Fb2ukiyDHeC7feumUPZ2dDtKs3sKb8x8L
+	 mpc/HIeY+DFa/DX9l9gk6wOTZHu41Ol7uxIdGyGjhcd2wfiaCRCbyBzpQoCv49ex/W
+	 slE7BAMWVFDMx/uKJcgfKNA8r6VBFpgiCRRD6mhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Petr Vorel <pvorel@suse.cz>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Mimi Zohar <zohar@linux.ibm.com>
-Subject: [PATCH 6.14 315/449] ima: limit the number of open-writers integrity violations
+	=?UTF-8?q?Martin=20T=C5=AFma?= <martin.tuma@digiteqautomotive.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 194/393] media: mgb4: Fix switched CMT frequency range "magic values" sets
 Date: Thu, 17 Apr 2025 19:50:03 +0200
-Message-ID: <20250417175130.793357080@linuxfoundation.org>
+Message-ID: <20250417175115.392694992@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +59,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mimi Zohar <zohar@linux.ibm.com>
+From: Martin Tůma <martin.tuma@digiteqautomotive.com>
 
-commit 5b3cd801155f0b34b0b95942a5b057c9b8cad33e upstream.
+commit 450acf0840232eaf6eb7a80da11cf492e57498e8 upstream.
 
-Each time a file in policy, that is already opened for write, is opened
-for read, an open-writers integrity violation audit message is emitted
-and a violation record is added to the IMA measurement list. This
-occurs even if an open-writers violation has already been recorded.
+The reason why this passed unnoticed is that most infotainment systems
+use frequencies near enough the middle (50MHz) where both sets work.
 
-Limit the number of open-writers integrity violations for an existing
-file open for write to one.  After the existing file open for write
-closes (__fput), subsequent open-writers integrity violations may be
-emitted.
-
-Cc: stable@vger.kernel.org # applies cleanly up to linux-6.6
-Tested-by: Stefan Berger <stefanb@linux.ibm.com>
-Reviewed-by: Petr Vorel <pvorel@suse.cz>
-Tested-by: Petr Vorel <pvorel@suse.cz>
-Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Fixes: 0ab13674a9bd ("media: pci: mgb4: Added Digiteq Automotive MGB4 driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Martin Tůma <martin.tuma@digiteqautomotive.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/integrity/ima/ima.h      |    1 +
- security/integrity/ima/ima_main.c |   11 +++++++++--
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ drivers/media/pci/mgb4/mgb4_cmt.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/security/integrity/ima/ima.h
-+++ b/security/integrity/ima/ima.h
-@@ -182,6 +182,7 @@ struct ima_kexec_hdr {
- #define IMA_CHANGE_ATTR		2
- #define IMA_DIGSIG		3
- #define IMA_MUST_MEASURE	4
-+#define IMA_EMITTED_OPENWRITERS	5
+--- a/drivers/media/pci/mgb4/mgb4_cmt.c
++++ b/drivers/media/pci/mgb4/mgb4_cmt.c
+@@ -135,8 +135,8 @@ static const u16 cmt_vals_out[][15] = {
+ };
  
- /* IMA integrity metadata associated with an inode */
- struct ima_iint_cache {
---- a/security/integrity/ima/ima_main.c
-+++ b/security/integrity/ima/ima_main.c
-@@ -137,8 +137,13 @@ static void ima_rdwr_violation_check(str
- 	} else {
- 		if (must_measure)
- 			set_bit(IMA_MUST_MEASURE, &iint->atomic_flags);
--		if (inode_is_open_for_write(inode) && must_measure)
--			send_writers = true;
-+
-+		/* Limit number of open_writers violations */
-+		if (inode_is_open_for_write(inode) && must_measure) {
-+			if (!test_and_set_bit(IMA_EMITTED_OPENWRITERS,
-+					      &iint->atomic_flags))
-+				send_writers = true;
-+		}
- 	}
+ static const u16 cmt_vals_in[][13] = {
+-	{0x1082, 0x0000, 0x5104, 0x0000, 0x11C7, 0x0000, 0x1041, 0x02BC, 0x7C01, 0xFFE9, 0x9900, 0x9908, 0x8100},
+ 	{0x1104, 0x0000, 0x9208, 0x0000, 0x138E, 0x0000, 0x1041, 0x015E, 0x7C01, 0xFFE9, 0x0100, 0x0908, 0x1000},
++	{0x1082, 0x0000, 0x5104, 0x0000, 0x11C7, 0x0000, 0x1041, 0x02BC, 0x7C01, 0xFFE9, 0x9900, 0x9908, 0x8100},
+ };
  
- 	if (!send_tomtou && !send_writers)
-@@ -167,6 +172,8 @@ static void ima_check_last_writer(struct
- 	if (atomic_read(&inode->i_writecount) == 1) {
- 		struct kstat stat;
- 
-+		clear_bit(IMA_EMITTED_OPENWRITERS, &iint->atomic_flags);
-+
- 		update = test_and_clear_bit(IMA_UPDATE_XATTR,
- 					    &iint->atomic_flags);
- 		if ((iint->flags & IMA_NEW_FILE) ||
+ static const u32 cmt_addrs_out[][15] = {
 
 
 
