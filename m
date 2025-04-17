@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-134194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C372A929A2
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:43:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51E48A927C9
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:28:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2C5F1B63DFA
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:43:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9AC6A7B4A35
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A751D07BA;
-	Thu, 17 Apr 2025 18:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E8225F978;
+	Thu, 17 Apr 2025 18:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpa/zrNo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b3t+jOwP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8523770B;
-	Thu, 17 Apr 2025 18:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9510A256C77;
+	Thu, 17 Apr 2025 18:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915382; cv=none; b=Z5IMGT8b03VHOTLt1ziZHFKoeX5XENfWwbFqC/TKiirO5S+BoPewHxOzBcXCzj8/+SKP9TU80blJI+XV2mOVVt69448yUYdMi1fhOS2OY8uDdZYMKiQWjVU2IMz2q3lp5XZLyY9Ss5pLsuutQlWjzOI3T1asWDGeQ45R6aWP3Bc=
+	t=1744914264; cv=none; b=SVBOZJBr3wteNOSN+zow5seVqpf4Ix+Q3SoEEdSUjLwvc+eTkqvcoVQag9FTXqvjvd9pEQPLIxzbKnSOL8kwPquMslYfdo7UKi8/4HVhWxBZp5vWRE0zwE+7en5h/q3KJxW/iYsfXtnFQBW6btdUn8BYuBEsibmRYX7ismJlD1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915382; c=relaxed/simple;
-	bh=85NLhwv/U7RZtapRhyJ3N/gvuxa8fnSZqa8T8cOTI6Y=;
+	s=arc-20240116; t=1744914264; c=relaxed/simple;
+	bh=l6cM5aegzrWbE5XLIoF6lZBeyk92a4YKW1e8uMEzEdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JKMZofScxWsvwy+/Ss8pCFrQxdk5MFlnOEvq9sWD1O0LMeRpXYpdx22juvdLFiw8KVJ+4khxPTDnwQYiTzjJ0fBFbSR/GucQYdoK0jhGzXFfV1ALCkZUrfs0R45/Z3kMZjHeupOjLIdb1EeDLf3Dpb5qTyf4LXYgjJArs42bsQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpa/zrNo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B4A9C4CEF4;
-	Thu, 17 Apr 2025 18:43:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=J6xP5Ps+/hynd0PBRgQ7MXocpDVakQHEwOO0yA3b0ZbT5ptqVCG9lY/FQbfbrULqRghRIpzDZNJ1uOEC8KP8LRptpasu6viPVzAE1I0dr4ODN0GdUgb19ep+/wUguvIiH77+lJBWDQygsR13nDrVFE/Y1CGWCEHS2Pf2TyaPQ8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b3t+jOwP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05817C4CEE4;
+	Thu, 17 Apr 2025 18:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915382;
-	bh=85NLhwv/U7RZtapRhyJ3N/gvuxa8fnSZqa8T8cOTI6Y=;
+	s=korg; t=1744914264;
+	bh=l6cM5aegzrWbE5XLIoF6lZBeyk92a4YKW1e8uMEzEdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wpa/zrNobd3fOESHGt78wjRQ7y+9DQvp2DVlclva+ShsNcqAV0rZ2Qg1TdtJIDlQG
-	 8J1MmYDTMjiQG+LNQIzWcWZ/pAc7hl1nQLTV5XlySm/0eCdH6dW//IXd1TlKomuHb0
-	 mvdHHnwKGmRB1XL7CGBRXm6xp8wdKAPmQSzX2Y5w=
+	b=b3t+jOwPz3qVo4IIwaZNYmjtCpoSTn9+UHPI4m04o0QtkdD1qrFA4YqANsIYLIc01
+	 nQ34qUzQg6FSigrx9I8Yw8ojIF6BU9iMTVt3JBB6aeJ36nGc/lPlFS8D86oSq9jzXR
+	 /ZTyvHcNIeIRQHAeCFhHaDQ9siM23PAYbH/WEKKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 109/393] ext4: protect ext4_release_dquot against freezing
+Subject: [PATCH 6.13 160/414] drm/amdgpu: grab an additional reference on the gang fence v2
 Date: Thu, 17 Apr 2025 19:48:38 +0200
-Message-ID: <20250417175111.974774357@linuxfoundation.org>
+Message-ID: <20250417175117.873676815@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit 530fea29ef82e169cd7fe048c2b7baaeb85a0028 ]
+[ Upstream commit 0d9a95099dcb05b5f4719c830d15bf4fdcad0dc2 ]
 
-Protect ext4_release_dquot against freezing so that we
-don't try to start a transaction when FS is frozen, leading
-to warnings.
+We keep the gang submission fence around in adev, make sure that it
+stays alive.
 
-Further, avoid taking the freeze protection if a transaction
-is already running so that we don't need end up in a deadlock
-as described in
+v2: fix memory leak on retry
 
-  46e294efc355 ext4: fix deadlock with fs freezing and EA inodes
-
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20241121123855.645335-3-ojaswin@linux.ibm.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Acked-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index d3795c6c0a9d8..4291ab3c20be6 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -6906,12 +6906,25 @@ static int ext4_release_dquot(struct dquot *dquot)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index cb9e627b407d9..d29c6716af31a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -6707,18 +6707,26 @@ struct dma_fence *amdgpu_device_switch_gang(struct amdgpu_device *adev,
  {
- 	int ret, err;
- 	handle_t *handle;
-+	bool freeze_protected = false;
-+
+ 	struct dma_fence *old = NULL;
+ 
++	dma_fence_get(gang);
+ 	do {
+ 		dma_fence_put(old);
+ 		old = amdgpu_device_get_gang(adev);
+ 		if (old == gang)
+ 			break;
+ 
+-		if (!dma_fence_is_signaled(old))
++		if (!dma_fence_is_signaled(old)) {
++			dma_fence_put(gang);
+ 			return old;
++		}
+ 
+ 	} while (cmpxchg((struct dma_fence __force **)&adev->gang_submit,
+ 			 old, gang) != old);
+ 
 +	/*
-+	 * Trying to sb_start_intwrite() in a running transaction
-+	 * can result in a deadlock. Further, running transactions
-+	 * are already protected from freezing.
++	 * Drop it once for the exchanged reference in adev and once for the
++	 * thread local reference acquired in amdgpu_device_get_gang().
 +	 */
-+	if (!ext4_journal_current_handle()) {
-+		sb_start_intwrite(dquot->dq_sb);
-+		freeze_protected = true;
-+	}
- 
- 	handle = ext4_journal_start(dquot_to_inode(dquot), EXT4_HT_QUOTA,
- 				    EXT4_QUOTA_DEL_BLOCKS(dquot->dq_sb));
- 	if (IS_ERR(handle)) {
- 		/* Release dquot anyway to avoid endless cycle in dqput() */
- 		dquot_release(dquot);
-+		if (freeze_protected)
-+			sb_end_intwrite(dquot->dq_sb);
- 		return PTR_ERR(handle);
- 	}
- 	ret = dquot_release(dquot);
-@@ -6922,6 +6935,10 @@ static int ext4_release_dquot(struct dquot *dquot)
- 	err = ext4_journal_stop(handle);
- 	if (!ret)
- 		ret = err;
-+
-+	if (freeze_protected)
-+		sb_end_intwrite(dquot->dq_sb);
-+
- 	return ret;
++	dma_fence_put(old);
+ 	dma_fence_put(old);
+ 	return NULL;
  }
- 
 -- 
 2.39.5
 
