@@ -1,145 +1,164 @@
-Return-Path: <stable+bounces-133074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 771E5A91BD0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 14:21:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79EDBA91C25
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 14:30:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 500BA17F80E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 12:21:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E01F37AD674
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 12:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86EEF21C168;
-	Thu, 17 Apr 2025 12:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9165123ED5B;
+	Thu, 17 Apr 2025 12:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="JnGWkbr1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pH8tImRL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC1739851
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 12:21:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB43246327
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 12:27:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744892510; cv=none; b=iMDrigIKlXByfmes58IKNf76LLo3kxUMw9gAm0Iyoc9YBi1IJs+QAjP/COA3jHldMI7sw9m+6PEtbC8AxQOFMoXVpfwv4/ETP+l1zA6bXcOFYap7XT7TRzpCOBQvgzeupITfdYn4gQ2/dr09Q7+mWiReWGbkZehJ5s1iN0YMTW8=
+	t=1744892830; cv=none; b=LTAEEzdhdGnmV8OHPMm9X+eel0A6N+rPV5Ff/4R4Q+anDr8HRqjHt8IU9bprcR9W07GbKUiiCgMjKc4qYXPC6zhEdAaXcfUfO30AjP/1GdXZuEu4soD0iwWaQMDlWbhX4HMrZCMZd7aczk6AqhaO+GQVbm2GdnvN5PpIQC2BDpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744892510; c=relaxed/simple;
-	bh=yim53aUfLmVou/JvqKYODc4xwB/wJ3VFd3Zy7HjYysY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jc0zAUsk/kSw5+XnXe5cGorgq0GRNjN0erQLRyU/TlO2WVkJqSbtbyUjYetqRBFhQffnyC+s4OxfWtSLrAYwvG9pFYu37vbei7szmpSh+bugNhfF2+ee736GVH0EQOyxNV9mAZQBOTG3BOfaK6Mq+sI2MGMFnqoQrJCRIMUSWFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=JnGWkbr1; arc=none smtp.client-ip=195.133.245.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
-Received: from mail.nppct.ru (localhost [127.0.0.1])
-	by mail.nppct.ru (Postfix) with ESMTP id B71211C0E87
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 15:21:39 +0300 (MSK)
-Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
-	reason="pass (just generated, assumed good)" header.d=nppct.ru
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
-	content-transfer-encoding:mime-version:x-mailer:message-id:date
-	:date:subject:subject:to:from:from; s=dkim; t=1744892499; x=
-	1745756500; bh=yim53aUfLmVou/JvqKYODc4xwB/wJ3VFd3Zy7HjYysY=; b=J
-	nGWkbr1xEf1KsxCBwjcBkNnV6b0TZ0wYOB79+mVs6613x4wVR5biKfe2737V48jn
-	9kD0F8vDRWriqLbbaZv/eecuR5ktq3lCTsVdCHVio6HPs40lv01JASYlM5moySGp
-	pgbzZ+/GM5pG0iMY5EorbRIoeqTP5MR1ZFVilWFuH0=
-X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
-Received: from mail.nppct.ru ([127.0.0.1])
-	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id WfbNzFaATr8Q for <stable@vger.kernel.org>;
-	Thu, 17 Apr 2025 15:21:39 +0300 (MSK)
-Received: from localhost.localdomain (unknown [87.249.24.51])
-	by mail.nppct.ru (Postfix) with ESMTPSA id B90721C08D8;
-	Thu, 17 Apr 2025 15:21:30 +0300 (MSK)
-From: Alexey Nepomnyashih <sdl@nppct.ru>
-To: Juergen Gross <jgross@suse.com>
-Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	xen-devel@lists.xenproject.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] xen-netfront: handle NULL returned by xdp_convert_buff_to_frame()
-Date: Thu, 17 Apr 2025 12:21:17 +0000
-Message-ID: <20250417122118.1009824-1-sdl@nppct.ru>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1744892830; c=relaxed/simple;
+	bh=D8Tob8ZyfFZK8OCnI1zoG44GeZUdPzAulRWOCiqndXk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dIpQdU0NtZQIOtHoA810LFlEN+rYW0RYi8+SeIMK3Lnvv66C6xGGf5JyXAbnAfD1bfhc4JfGfzqt3k4Aqnr4ORGi9tOEzJ51Ph3ZOpyxFl7J+Btd67ndPgzxBCtmg7I5YwOptUhYeygmygnArgYd4ig0x2amdI9xdPGaIuMRxcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pH8tImRL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702DBC4CEE4;
+	Thu, 17 Apr 2025 12:27:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1744892829;
+	bh=D8Tob8ZyfFZK8OCnI1zoG44GeZUdPzAulRWOCiqndXk=;
+	h=Subject:To:Cc:From:Date:From;
+	b=pH8tImRL+ChL2YPTccVD2qaegYH/6CE+6x1RsVlvsOm+P5CuSYd0Z1GwszFwnuwfx
+	 UJJ2ptyYg5bWX69/fZnY6dVvoK4ZmbScCGYf14osYvfdwBJuG2WkcfDOgvqtt4SbNI
+	 ONNVyxBrIwE/h3YXhj4kLhIQe4kmYw8ogEz3diOs=
+Subject: FAILED: patch "[PATCH] x86/e820: Fix handling of subpage regions when calculating" failed to apply to 6.14-stable tree
+To: myrrhperiwinkle@qtmlabs.xyz,ardb@kernel.org,dwmw@amazon.co.uk,hpa@zytor.com,io@r-ricci.it,keescook@chromium.org,len.brown@intel.com,mingo@kernel.org,rafael.j.wysocki@intel.com,torvalds@linux-foundation.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 17 Apr 2025 14:24:26 +0200
+Message-ID: <2025041726-raft-annotate-af34@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-The function xdp_convert_buff_to_frame() may return NULL if it fails
-to correctly convert the XDP buffer into an XDP frame due to memory
-constraints, internal errors, or invalid data. Failing to check for NULL
-may lead to a NULL pointer dereference if the result is used later in
-processing, potentially causing crashes, data corruption, or undefined
-behavior.
 
-On XDP redirect failure, the associated page must be released explicitly
-if it was previously retained via get_page(). Failing to do so may result
-in a memory leak, as the pages reference count is not decremented.
+The patch below does not apply to the 6.14-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Cc: stable@vger.kernel.org # v5.9+
-Fixes: 6c5aa6fc4def ("xen networking: add basic XDP support for xen-netfront")
-Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
----
- drivers/net/xen-netfront.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.14.y
+git checkout FETCH_HEAD
+git cherry-pick -x f2f29da9f0d4367f6ff35e0d9d021257bb53e273
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041726-raft-annotate-af34@gregkh' --subject-prefix 'PATCH 6.14.y' HEAD^..
 
-diff --git a/drivers/net/xen-netfront.c b/drivers/net/xen-netfront.c
-index 63fe51d0e64d..1d3ff57a6125 100644
---- a/drivers/net/xen-netfront.c
-+++ b/drivers/net/xen-netfront.c
-@@ -985,20 +985,27 @@ static u32 xennet_run_xdp(struct netfront_queue *queue, struct page *pdata,
- 	act = bpf_prog_run_xdp(prog, xdp);
- 	switch (act) {
- 	case XDP_TX:
--		get_page(pdata);
- 		xdpf = xdp_convert_buff_to_frame(xdp);
--		err = xennet_xdp_xmit(queue->info->netdev, 1, &xdpf, 0);
--		if (unlikely(!err))
--			xdp_return_frame_rx_napi(xdpf);
--		else if (unlikely(err < 0))
-+		if (unlikely(!xdpf)) {
- 			trace_xdp_exception(queue->info->netdev, prog, act);
-+			break;
-+		}
-+		get_page(pdata);
-+		err = xennet_xdp_xmit(queue->info->netdev, 1, &xdpf, 0);
-+		if (unlikely(err <= 0)) {
-+			if (err < 0)
-+				trace_xdp_exception(queue->info->netdev, prog, act);
-+			xdp_return_frame_rx_napi(xdpf);
-+		}
- 		break;
- 	case XDP_REDIRECT:
- 		get_page(pdata);
- 		err = xdp_do_redirect(queue->info->netdev, xdp, prog);
- 		*need_xdp_flush = true;
--		if (unlikely(err))
-+		if (unlikely(err)) {
- 			trace_xdp_exception(queue->info->netdev, prog, act);
-+			xdp_return_buff(xdp);
-+		}
- 		break;
- 	case XDP_PASS:
- 	case XDP_DROP:
--- 
-2.43.0
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From f2f29da9f0d4367f6ff35e0d9d021257bb53e273 Mon Sep 17 00:00:00 2001
+From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+Date: Sun, 6 Apr 2025 11:45:22 +0700
+Subject: [PATCH] x86/e820: Fix handling of subpage regions when calculating
+ nosave ranges in e820__register_nosave_regions()
+
+While debugging kexec/hibernation hangs and crashes, it turned out that
+the current implementation of e820__register_nosave_regions() suffers from
+multiple serious issues:
+
+ - The end of last region is tracked by PFN, causing it to find holes
+   that aren't there if two consecutive subpage regions are present
+
+ - The nosave PFN ranges derived from holes are rounded out (instead of
+   rounded in) which makes it inconsistent with how explicitly reserved
+   regions are handled
+
+Fix this by:
+
+ - Treating reserved regions as if they were holes, to ensure consistent
+   handling (rounding out nosave PFN ranges is more correct as the
+   kernel does not use partial pages)
+
+ - Tracking the end of the last RAM region by address instead of pages
+   to detect holes more precisely
+
+These bugs appear to have been introduced about ~18 years ago with the very
+first version of e820_mark_nosave_regions(), and its flawed assumptions were
+carried forward uninterrupted through various waves of rewrites and renames.
+
+[ mingo: Added Git archeology details, for kicks and giggles. ]
+
+Fixes: e8eff5ac294e ("[PATCH] Make swsusp avoid memory holes and reserved memory regions on x86_64")
+Reported-by: Roberto Ricci <io@r-ricci.it>
+Tested-by: Roberto Ricci <io@r-ricci.it>
+Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: David Woodhouse <dwmw@amazon.co.uk>
+Cc: Len Brown <len.brown@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250406-fix-e820-nosave-v3-1-f3787bc1ee1d@qtmlabs.xyz
+Closes: https://lore.kernel.org/all/Z4WFjBVHpndct7br@desktop0a/
+
+diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+index 57120f0749cc..9d8dd8deb2a7 100644
+--- a/arch/x86/kernel/e820.c
++++ b/arch/x86/kernel/e820.c
+@@ -753,22 +753,21 @@ void __init e820__memory_setup_extended(u64 phys_addr, u32 data_len)
+ void __init e820__register_nosave_regions(unsigned long limit_pfn)
+ {
+ 	int i;
+-	unsigned long pfn = 0;
++	u64 last_addr = 0;
+ 
+ 	for (i = 0; i < e820_table->nr_entries; i++) {
+ 		struct e820_entry *entry = &e820_table->entries[i];
+ 
+-		if (pfn < PFN_UP(entry->addr))
+-			register_nosave_region(pfn, PFN_UP(entry->addr));
+-
+-		pfn = PFN_DOWN(entry->addr + entry->size);
+-
+ 		if (entry->type != E820_TYPE_RAM)
+-			register_nosave_region(PFN_UP(entry->addr), pfn);
++			continue;
+ 
+-		if (pfn >= limit_pfn)
+-			break;
++		if (last_addr < entry->addr)
++			register_nosave_region(PFN_DOWN(last_addr), PFN_UP(entry->addr));
++
++		last_addr = entry->addr + entry->size;
+ 	}
++
++	register_nosave_region(PFN_DOWN(last_addr), limit_pfn);
+ }
+ 
+ #ifdef CONFIG_ACPI
 
 
