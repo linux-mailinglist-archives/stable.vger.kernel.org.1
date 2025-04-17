@@ -1,144 +1,417 @@
-Return-Path: <stable+bounces-133124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 112EFA91E2A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 15:36:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D255A91E5F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 15:44:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A01A119E4B0E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 13:37:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 214BA443F29
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 13:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C6402459CA;
-	Thu, 17 Apr 2025 13:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C9F924E014;
+	Thu, 17 Apr 2025 13:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ARAWV7FH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AzTGwvC9"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F7D24502A
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 13:36:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0AC424E008
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 13:44:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744897009; cv=none; b=jLTchP1j15FKXw/fzB7IsJwYCJ1z4hv2HrLz4gU6NLhKLkmqvU2C8Sqfgq/pnZaI1KFYVxA/MOCsKubp25B7tICIf6CgqArCEjMsTvbERuCUUvP0szECjHnVlyGYrtK5g6rRycs76N2sxJzQJsgDQbb6xMomXAvOlt//emwEvPw=
+	t=1744897471; cv=none; b=UMWJ0P4RwWEsuOA2j8pXNeOoCG8K02ha+Cwi11eEyQNoksbGEMh5HZTaAeIRR4G32fHenXKY8NGUAx4NP4h518+UawSK1tuEQ3zzsJBoLCZlODC7q+u3h3nBcoNj4OKbL659nCdmv0wPF3g9AAPFuwMn/D8PChNcwa29OgEJdWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744897009; c=relaxed/simple;
-	bh=PSSLQ+xVdoyYzzUWbxxN7g3bR0QModSiIopcoEwJ5Tg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bAyxLtY3k3pyeZ2RO12THu/gQFenceO1L3/925C2cgUIoykIP/Ug8fZQRhbOycEBFWGMZKCHGKmlE2/HhiKfWPRJO/92QSXepQb5oBqyUkHY3YJKJXZedSN6kirU1ALB40CrKEdJg51RXKYdsLDd+J85pR3Uw5vLa4q5ZP08640=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ARAWV7FH; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744897006; x=1776433006;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=PSSLQ+xVdoyYzzUWbxxN7g3bR0QModSiIopcoEwJ5Tg=;
-  b=ARAWV7FHAgnN2pzg1BL++qjiEQKQGuqULUQe0OOtj4AZ1skXk9h2sHNX
-   g0GNHB2h6N7olo8IWYG+FtoHzT2YvY03gDftFPrZ9X3vPKgdR7Ag66XRc
-   hv38NQslUVTt365fRF4JQibe9/BCXUEZCpiywTosMT4R15XCzc8mbJaJq
-   md/DNMMTmFbcdUoHngqkEnPo9r2sAL9s8yMA4JKdrdzm770zXzJHLoIKB
-   TqCyM/PzEYZLB5z6QGRwP1OykAdQ0XK8IX2n3TTO4vyy0/O41CCoj60kS
-   RIbKFnDa7Wx+4sEun04QfGmFvMjVJX5lXPxh7GNhrbR7IZ0t+AtV1LsfT
-   g==;
-X-CSE-ConnectionGUID: vP58JaQ4SPSo24ojTmVLWw==
-X-CSE-MsgGUID: YBCiehgITe2BLyKYvKjq0Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="46368020"
-X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; 
-   d="scan'208";a="46368020"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 06:36:45 -0700
-X-CSE-ConnectionGUID: suDKmtLhRPuj0GpbA4xDJg==
-X-CSE-MsgGUID: +CGHp8XJTqCH1jGda6nYVw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; 
-   d="scan'208";a="130566502"
-Received: from 984fee00a4c6.jf.intel.com ([10.165.58.231])
-  by orviesa009.jf.intel.com with ESMTP; 17 Apr 2025 06:36:45 -0700
-From: Yi Liu <yi.l.liu@intel.com>
-To: stable@vger.kernel.org
-Cc: Yi Liu <yi.l.liu@intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.6.y] iommufd: Fail replace if device has not been attached
-Date: Thu, 17 Apr 2025 06:36:38 -0700
-Message-Id: <20250417133638.115407-1-yi.l.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2025041701-immovable-patio-2e75@gregkh>
-References: <2025041701-immovable-patio-2e75@gregkh>
+	s=arc-20240116; t=1744897471; c=relaxed/simple;
+	bh=jhGmw8eIsTFbpVIjYV6Mxd9WYk74Zthhf2k/8whrmHY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NGdDe6GMOxVVKuqcXSkJlKC7bMvTMHlr8VHMQp60dq9ARyXMkeW3TjKxS7nh8LtyHgWzFmB1kzlOGZVDiSsqxTfQneLDALxZVnwycvmeozwbfFMhyvsH7OR7foig4gagS2kfGi04s94fhgVPlcYMXEwyf++dhugcFBOCobeJRMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AzTGwvC9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61074C4CEEA;
+	Thu, 17 Apr 2025 13:44:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1744897470;
+	bh=jhGmw8eIsTFbpVIjYV6Mxd9WYk74Zthhf2k/8whrmHY=;
+	h=Subject:To:Cc:From:Date:From;
+	b=AzTGwvC93DbXfDFFciGxpHdMyZgr6ojKPx9fP1+7xdi87R65onvEjraDBKWlQvL/6
+	 3Qn2gInRhpqlkv40cDr69SpXYimNj9g5JxGrgAHH00wMXVB5IN65Db172oyqdruMdG
+	 BZrYrZylWeyrt4xtzdyqlMtZRc8NDjxiWseNTd2s=
+Subject: FAILED: patch "[PATCH] landlock: Add the errata interface" failed to apply to 6.6-stable tree
+To: mic@digikod.net,gnoack@google.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 17 Apr 2025 15:39:11 +0200
+Message-ID: <2025041711-awoke-petted-a885@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The current implementation of iommufd_device_do_replace() implicitly
-assumes that the input device has already been attached. However, there
-is no explicit check to verify this assumption. If another device within
-the same group has been attached, the replace operation might succeed,
-but the input device itself may not have been attached yet.
 
-As a result, the input device might not be tracked in the
-igroup->device_list, and its reserved IOVA might not be added. Despite
-this, the caller might incorrectly assume that the device has been
-successfully replaced, which could lead to unexpected behavior or errors.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-To address this issue, add a check to ensure that the input device has
-been attached before proceeding with the replace operation. This check
-will help maintain the integrity of the device tracking system and prevent
-potential issues arising from incorrect assumptions about the device's
-attachment status.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Fixes: e88d4ec154a8 ("iommufd: Add iommufd_device_replace()")
-Link: https://patch.msgid.link/r/20250306034842.5950-1-yi.l.liu@intel.com
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 15383a0d63dbcd63dc7e8d9ec1bf3a0f7ebf64ac
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041711-awoke-petted-a885@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 15383a0d63dbcd63dc7e8d9ec1bf3a0f7ebf64ac Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+Date: Tue, 18 Mar 2025 17:14:37 +0100
+Subject: [PATCH] landlock: Add the errata interface
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Some fixes may require user space to check if they are applied on the
+running kernel before using a specific feature.  For instance, this
+applies when a restriction was previously too restrictive and is now
+getting relaxed (e.g. for compatibility reasons).  However, non-visible
+changes for legitimate use (e.g. security fixes) do not require an
+erratum.
+
+Because fixes are backported down to a specific Landlock ABI, we need a
+way to avoid cherry-pick conflicts.  The solution is to only update a
+file related to the lower ABI impacted by this issue.  All the ABI files
+are then used to create a bitmask of fixes.
+
+The new errata interface is similar to the one used to get the supported
+Landlock ABI version, but it returns a bitmask instead because the order
+of fixes may not match the order of versions, and not all fixes may
+apply to all versions.
+
+The actual errata will come with dedicated commits.  The description is
+not actually used in the code but serves as documentation.
+
+Create the landlock_abi_version symbol and use its value to check errata
+consistency.
+
+Update test_base's create_ruleset_checks_ordering tests and add errata
+tests.
+
+This commit is backportable down to the first version of Landlock.
+
+Fixes: 3532b0b4352c ("landlock: Enable user space to infer supported features")
+Cc: Günther Noack <gnoack@google.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
----
- drivers/iommu/iommufd/device.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+Link: https://lore.kernel.org/r/20250318161443.279194-3-mic@digikod.net
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 
-diff --git a/drivers/iommu/iommufd/device.c b/drivers/iommu/iommufd/device.c
-index ce78c3671539..55866c29fb57 100644
---- a/drivers/iommu/iommufd/device.c
-+++ b/drivers/iommu/iommufd/device.c
-@@ -407,6 +407,17 @@ iommufd_device_do_attach(struct iommufd_device *idev,
- 	return NULL;
- }
+diff --git a/include/uapi/linux/landlock.h b/include/uapi/linux/landlock.h
+index e1d2c27533b4..8806a132d7b8 100644
+--- a/include/uapi/linux/landlock.h
++++ b/include/uapi/linux/landlock.h
+@@ -57,9 +57,11 @@ struct landlock_ruleset_attr {
+  *
+  * - %LANDLOCK_CREATE_RULESET_VERSION: Get the highest supported Landlock ABI
+  *   version.
++ * - %LANDLOCK_CREATE_RULESET_ERRATA: Get a bitmask of fixed issues.
+  */
+ /* clang-format off */
+ #define LANDLOCK_CREATE_RULESET_VERSION			(1U << 0)
++#define LANDLOCK_CREATE_RULESET_ERRATA			(1U << 1)
+ /* clang-format on */
  
-+/* Check if idev is attached to igroup->hwpt */
-+static bool iommufd_device_is_attached(struct iommufd_device *idev)
-+{
-+	struct iommufd_device *cur;
+ /**
+diff --git a/security/landlock/errata.h b/security/landlock/errata.h
+new file mode 100644
+index 000000000000..f26b28b9873d
+--- /dev/null
++++ b/security/landlock/errata.h
+@@ -0,0 +1,87 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Landlock - Errata information
++ *
++ * Copyright © 2025 Microsoft Corporation
++ */
 +
-+	list_for_each_entry(cur, &idev->igroup->device_list, group_item)
-+		if (cur == idev)
-+			return true;
-+	return false;
++#ifndef _SECURITY_LANDLOCK_ERRATA_H
++#define _SECURITY_LANDLOCK_ERRATA_H
++
++#include <linux/init.h>
++
++struct landlock_erratum {
++	const int abi;
++	const u8 number;
++};
++
++/* clang-format off */
++#define LANDLOCK_ERRATUM(NUMBER) \
++	{ \
++		.abi = LANDLOCK_ERRATA_ABI, \
++		.number = NUMBER, \
++	},
++/* clang-format on */
++
++/*
++ * Some fixes may require user space to check if they are applied on the running
++ * kernel before using a specific feature.  For instance, this applies when a
++ * restriction was previously too restrictive and is now getting relaxed (for
++ * compatibility or semantic reasons).  However, non-visible changes for
++ * legitimate use (e.g. security fixes) do not require an erratum.
++ */
++static const struct landlock_erratum landlock_errata_init[] __initconst = {
++
++/*
++ * Only Sparse may not implement __has_include.  If a compiler does not
++ * implement __has_include, a warning will be printed at boot time (see
++ * setup.c).
++ */
++#ifdef __has_include
++
++#define LANDLOCK_ERRATA_ABI 1
++#if __has_include("errata/abi-1.h")
++#include "errata/abi-1.h"
++#endif
++#undef LANDLOCK_ERRATA_ABI
++
++#define LANDLOCK_ERRATA_ABI 2
++#if __has_include("errata/abi-2.h")
++#include "errata/abi-2.h"
++#endif
++#undef LANDLOCK_ERRATA_ABI
++
++#define LANDLOCK_ERRATA_ABI 3
++#if __has_include("errata/abi-3.h")
++#include "errata/abi-3.h"
++#endif
++#undef LANDLOCK_ERRATA_ABI
++
++#define LANDLOCK_ERRATA_ABI 4
++#if __has_include("errata/abi-4.h")
++#include "errata/abi-4.h"
++#endif
++#undef LANDLOCK_ERRATA_ABI
++
++/*
++ * For each new erratum, we need to include all the ABI files up to the impacted
++ * ABI to make all potential future intermediate errata easy to backport.
++ *
++ * If such change involves more than one ABI addition, then it must be in a
++ * dedicated commit with the same Fixes tag as used for the actual fix.
++ *
++ * Each commit creating a new security/landlock/errata/abi-*.h file must have a
++ * Depends-on tag to reference the commit that previously added the line to
++ * include this new file, except if the original Fixes tag is enough.
++ *
++ * Each erratum must be documented in its related ABI file, and a dedicated
++ * commit must update Documentation/userspace-api/landlock.rst to include this
++ * erratum.  This commit will not be backported.
++ */
++
++#endif
++
++	{}
++};
++
++#endif /* _SECURITY_LANDLOCK_ERRATA_H */
+diff --git a/security/landlock/setup.c b/security/landlock/setup.c
+index c71832a8e369..0c85ea27e409 100644
+--- a/security/landlock/setup.c
++++ b/security/landlock/setup.c
+@@ -6,12 +6,14 @@
+  * Copyright © 2018-2020 ANSSI
+  */
+ 
++#include <linux/bits.h>
+ #include <linux/init.h>
+ #include <linux/lsm_hooks.h>
+ #include <uapi/linux/lsm.h>
+ 
+ #include "common.h"
+ #include "cred.h"
++#include "errata.h"
+ #include "fs.h"
+ #include "net.h"
+ #include "setup.h"
+@@ -31,8 +33,36 @@ struct lsm_blob_sizes landlock_blob_sizes __ro_after_init = {
+ 	.lbs_superblock = sizeof(struct landlock_superblock_security),
+ };
+ 
++int landlock_errata __ro_after_init;
++
++static void __init compute_errata(void)
++{
++	size_t i;
++
++#ifndef __has_include
++	/*
++	 * This is a safeguard to make sure the compiler implements
++	 * __has_include (see errata.h).
++	 */
++	WARN_ON_ONCE(1);
++	return;
++#endif
++
++	for (i = 0; landlock_errata_init[i].number; i++) {
++		const int prev_errata = landlock_errata;
++
++		if (WARN_ON_ONCE(landlock_errata_init[i].abi >
++				 landlock_abi_version))
++			continue;
++
++		landlock_errata |= BIT(landlock_errata_init[i].number - 1);
++		WARN_ON_ONCE(prev_errata == landlock_errata);
++	}
 +}
 +
- static struct iommufd_hw_pagetable *
- iommufd_device_do_replace(struct iommufd_device *idev,
- 			  struct iommufd_hw_pagetable *hwpt)
-@@ -424,6 +435,11 @@ iommufd_device_do_replace(struct iommufd_device *idev,
- 		goto err_unlock;
+ static int __init landlock_init(void)
+ {
++	compute_errata();
+ 	landlock_add_cred_hooks();
+ 	landlock_add_task_hooks();
+ 	landlock_add_fs_hooks();
+diff --git a/security/landlock/setup.h b/security/landlock/setup.h
+index c4252d46d49d..fca307c35fee 100644
+--- a/security/landlock/setup.h
++++ b/security/landlock/setup.h
+@@ -11,7 +11,10 @@
+ 
+ #include <linux/lsm_hooks.h>
+ 
++extern const int landlock_abi_version;
++
+ extern bool landlock_initialized;
++extern int landlock_errata;
+ 
+ extern struct lsm_blob_sizes landlock_blob_sizes;
+ extern const struct lsm_id landlock_lsmid;
+diff --git a/security/landlock/syscalls.c b/security/landlock/syscalls.c
+index a9760d252fc2..cf9e0483e542 100644
+--- a/security/landlock/syscalls.c
++++ b/security/landlock/syscalls.c
+@@ -160,7 +160,9 @@ static const struct file_operations ruleset_fops = {
+  *        the new ruleset.
+  * @size: Size of the pointed &struct landlock_ruleset_attr (needed for
+  *        backward and forward compatibility).
+- * @flags: Supported value: %LANDLOCK_CREATE_RULESET_VERSION.
++ * @flags: Supported value:
++ *         - %LANDLOCK_CREATE_RULESET_VERSION
++ *         - %LANDLOCK_CREATE_RULESET_ERRATA
+  *
+  * This system call enables to create a new Landlock ruleset, and returns the
+  * related file descriptor on success.
+@@ -169,6 +171,10 @@ static const struct file_operations ruleset_fops = {
+  * 0, then the returned value is the highest supported Landlock ABI version
+  * (starting at 1).
+  *
++ * If @flags is %LANDLOCK_CREATE_RULESET_ERRATA and @attr is NULL and @size is
++ * 0, then the returned value is a bitmask of fixed issues for the current
++ * Landlock ABI version.
++ *
+  * Possible returned errors are:
+  *
+  * - %EOPNOTSUPP: Landlock is supported by the kernel but disabled at boot time;
+@@ -192,9 +198,15 @@ SYSCALL_DEFINE3(landlock_create_ruleset,
+ 		return -EOPNOTSUPP;
+ 
+ 	if (flags) {
+-		if ((flags == LANDLOCK_CREATE_RULESET_VERSION) && !attr &&
+-		    !size)
+-			return LANDLOCK_ABI_VERSION;
++		if (attr || size)
++			return -EINVAL;
++
++		if (flags == LANDLOCK_CREATE_RULESET_VERSION)
++			return landlock_abi_version;
++
++		if (flags == LANDLOCK_CREATE_RULESET_ERRATA)
++			return landlock_errata;
++
+ 		return -EINVAL;
  	}
  
-+	if (!iommufd_device_is_attached(idev)) {
-+		rc = -EINVAL;
-+		goto err_unlock;
-+	}
+@@ -235,6 +247,8 @@ SYSCALL_DEFINE3(landlock_create_ruleset,
+ 	return ruleset_fd;
+ }
+ 
++const int landlock_abi_version = LANDLOCK_ABI_VERSION;
 +
- 	if (hwpt == igroup->hwpt) {
- 		mutex_unlock(&idev->igroup->lock);
- 		return NULL;
--- 
-2.34.1
+ /*
+  * Returns an owned ruleset from a FD. It is thus needed to call
+  * landlock_put_ruleset() on the return value.
+diff --git a/tools/testing/selftests/landlock/base_test.c b/tools/testing/selftests/landlock/base_test.c
+index 1bc16fde2e8a..4766f8fec9f6 100644
+--- a/tools/testing/selftests/landlock/base_test.c
++++ b/tools/testing/selftests/landlock/base_test.c
+@@ -98,10 +98,54 @@ TEST(abi_version)
+ 	ASSERT_EQ(EINVAL, errno);
+ }
+ 
++/*
++ * Old source trees might not have the set of Kselftest fixes related to kernel
++ * UAPI headers.
++ */
++#ifndef LANDLOCK_CREATE_RULESET_ERRATA
++#define LANDLOCK_CREATE_RULESET_ERRATA (1U << 1)
++#endif
++
++TEST(errata)
++{
++	const struct landlock_ruleset_attr ruleset_attr = {
++		.handled_access_fs = LANDLOCK_ACCESS_FS_READ_FILE,
++	};
++	int errata;
++
++	errata = landlock_create_ruleset(NULL, 0,
++					 LANDLOCK_CREATE_RULESET_ERRATA);
++	/* The errata bitmask will not be backported to tests. */
++	ASSERT_LE(0, errata);
++	TH_LOG("errata: 0x%x", errata);
++
++	ASSERT_EQ(-1, landlock_create_ruleset(&ruleset_attr, 0,
++					      LANDLOCK_CREATE_RULESET_ERRATA));
++	ASSERT_EQ(EINVAL, errno);
++
++	ASSERT_EQ(-1, landlock_create_ruleset(NULL, sizeof(ruleset_attr),
++					      LANDLOCK_CREATE_RULESET_ERRATA));
++	ASSERT_EQ(EINVAL, errno);
++
++	ASSERT_EQ(-1,
++		  landlock_create_ruleset(&ruleset_attr, sizeof(ruleset_attr),
++					  LANDLOCK_CREATE_RULESET_ERRATA));
++	ASSERT_EQ(EINVAL, errno);
++
++	ASSERT_EQ(-1, landlock_create_ruleset(
++			      NULL, 0,
++			      LANDLOCK_CREATE_RULESET_VERSION |
++				      LANDLOCK_CREATE_RULESET_ERRATA));
++	ASSERT_EQ(-1, landlock_create_ruleset(NULL, 0,
++					      LANDLOCK_CREATE_RULESET_ERRATA |
++						      1 << 31));
++	ASSERT_EQ(EINVAL, errno);
++}
++
+ /* Tests ordering of syscall argument checks. */
+ TEST(create_ruleset_checks_ordering)
+ {
+-	const int last_flag = LANDLOCK_CREATE_RULESET_VERSION;
++	const int last_flag = LANDLOCK_CREATE_RULESET_ERRATA;
+ 	const int invalid_flag = last_flag << 1;
+ 	int ruleset_fd;
+ 	const struct landlock_ruleset_attr ruleset_attr = {
 
 
