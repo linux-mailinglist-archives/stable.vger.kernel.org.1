@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-132905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF74AA914C2
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 09:10:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68383A914C9
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 09:12:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30D4B3A471A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 07:10:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8319189AF8B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 07:12:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F765217F32;
-	Thu, 17 Apr 2025 07:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7BD2218589;
+	Thu, 17 Apr 2025 07:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XAWCdDVX"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="UPa6NJiv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6797A1DE2DB
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 07:10:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FB62153DA
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 07:12:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744873815; cv=none; b=T4Atu3SO0ekxUJw286eKjZ1UIG+APmcqYmq21LX+5MLbU8uH9ct8hAGHiSX7NrfzRUDCxYXmagHoOwNsGf9eR20OC6sqCMuM/Jr+wN3CrESMB58w4kUGhmXjppZeuW+uPqhJp07fuV4h5+gOrvh1pe81EwayGpnjRZKhjJUjfiE=
+	t=1744873927; cv=none; b=oiurOX5H6Ld3oSSkVMdfkSkB3OcGOrcf6AS1Ra2X4ZLfA9q/CjfB/UhHuS3cF/zrnoGD9DIZv6RDXWRZce9lYCSEHYBkzlTRv5JKPqThe6K4Lkw9lfyJBBWAWuyl7VvtPf8OroP+OW/gI1Y6uXvN5J5MAZJhQ34YkPRTWOuxWQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744873815; c=relaxed/simple;
-	bh=BGdRhUgbz6IHnB/5nKa0J0kWtQyqH6AfunEBxs/BTZY=;
+	s=arc-20240116; t=1744873927; c=relaxed/simple;
+	bh=50nDBr7HaO/nY8PAFZfWpFIIsI4FE6ZxFeiR9zseHMo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k1Xs01ipPHvR6zia7VQ57voyfXQOYOPBtZDmsjQHd4Lq8U9iqL7325Uv4K6AqWUEw3P2QrZqSUkmDYLmTgQusMFqJ7nTssGtWj8DwG55AEbE9p7OBR2H/pwrFyP5BVmx7AonRlV93IfvUUz3S3TlxRiDqswEeF8leDtXildkQ+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XAWCdDVX; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3913290f754so78250f8f.1
-        for <stable@vger.kernel.org>; Thu, 17 Apr 2025 00:10:13 -0700 (PDT)
+	 In-Reply-To:Content-Type; b=oo3t6624rlzivdOwVviR9xPlanLblW2bSvWybcZFhriUeJW8xAijwsnTKWe3/+f8YnAqJtbGQ8prP1WUq+hpTdNrdiBdT8XFMzEPBVWwkSM81hKu+Ir56OrZARuSX05VqgnuBqauIr61odkoOf7XnCSw45mMUR3pIclUUC17Dz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=UPa6NJiv; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-aaecf50578eso62080466b.2
+        for <stable@vger.kernel.org>; Thu, 17 Apr 2025 00:12:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744873812; x=1745478612; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Lul/GSjYvkQhSC1y0UnqH61paijsP+u/iqsJV8tyjv0=;
-        b=XAWCdDVXgpKatlPIid94vVmURDztfJ9ogiKlj+MtrQXOzNaU6poGhIGZToBy8e2RBm
-         0Q6NWcmFC/aNAb+R3t7JalUxneRJDFj8JqwQ40G48Y+/GNXYp78tN3xUK26wz4O+b97C
-         mizCyKi8gkBaxEEHOwaH4HCXaIAt+KBR/VfzTlTulrJuEWCU7aaRbzDnqQf/gXWiDHgs
-         URhC57fIzEz0XctCBwQmdRcfzOhJ/qDN0pw5kJQ7YNxT4u41Oe0P4Q+UhWeYToAqqCFZ
-         iZkB+XGOb4Imujk7eXKsnY2Estwd20VPYOfR3NVDAQFa3gQf8LCLrgSimQ+YBUpNwN1V
-         TjRA==
+        d=suse.com; s=google; t=1744873924; x=1745478724; darn=vger.kernel.org;
+        h=in-reply-to:autocrypt:from:content-language:references:cc:to
+         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=50nDBr7HaO/nY8PAFZfWpFIIsI4FE6ZxFeiR9zseHMo=;
+        b=UPa6NJivp5trF1vpq4oFQA7aSDst/tIWTj9seLE9NbCrU3yRtVQjiTy1DKm7UuCRKm
+         mCTL7qsDc8AMsWVOe9IhijfRZyEzijhIJ+L1meEcglJxh181FDBzJPsstfkuI89kbP3b
+         p2sE4ty4oewryVMQpAzoCnC/LgkEOMqlwwWo+Z4m2hmSAlVTGOVlOeQYMrhJGZf9Ksdf
+         Zf+vrLO68O+dFXLwSMdEasktJI7v6YRvgSL/05d6dwgzM87g3t5tkvwazTV23JPEbgIn
+         HhEb60ftUOKacb053jCQD7dGpStpPU7iKhNzTEQ5SueKDhjR9XWH8rlI4v7I8i/KVEyt
+         o1oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744873812; x=1745478612;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Lul/GSjYvkQhSC1y0UnqH61paijsP+u/iqsJV8tyjv0=;
-        b=JNfPkugq0sW/zdEC04rE8NDJFClpW6NR+jz6SOSHPZbtVuC6yu9XRMQRs9IyexUE42
-         DUH85zGh2RsfB/ZeWiDym583P512PAeqP+Aha0lTa1+6ngHn3YZliMc80usyUHgviAGI
-         ESnEPCxYn05+OqPHDqWMoReFTuiEyBNugLAB9WCIR7NCWXdYYsyZwl+KhFz0yMjSx6VK
-         3Db24N0ebUpGv9HvHgF3y5EqigMa9EfXYylWXU0QrlTzYtSkTgnU7o96FGHa0tdWF2Yk
-         5E5LoxcFjWgUYXzSNzFCnqY8WLDqRDaVRPEx+goYF+vkZ+5XajDLmu5fctOFTZMNG4V9
-         Ut/w==
-X-Forwarded-Encrypted: i=1; AJvYcCUJZ+1KOsRybMS+/tEMghja5XVdkEwiqfbYSO4nXJYIAEUCCLrC2JkW0WSZUUsR5R1dudNzCr8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0EDJAGXiOlrBV3SJ8Qebss2P92IBtVGYf/p8r/DgRhPRX1+ze
-	AG7153309QHeat9XGOvtS7dk+7rGubAsyDD+/PuJtaJmiPb9qxpStIku4Fox9+0=
-X-Gm-Gg: ASbGncu2lgZD/GyLSGiEKXwPp1jNF4vH9fx0FyOfYxRpR8GOrvgxHqnj6Hg0FxpaTds
-	H0pQEoNs+vNoOs9qD7B+C4j3kdDWqV9V9KL8TMD1jce14ZMaPldhRRFMcG/jre+ijmRIupjVCW9
-	7n9Jbn7E3Jjp6Q4MgvzyCSRAl7ezWp9sQPuBrRckK0GBU3QteVf6AS/OuQ8Kxm/G+AvWVXMp4yQ
-	nZQ3p/cT6QKCet1gdy76+Z8BR62FjLXztH//J93VGhc+fmgVUWCA1nuIexiJ93k8DNmPTrh8xM2
-	jEmyYZWEkKtB9Qf+Ay+c0ZB+zxL4XVMu5t0+Z0vzmrJFcbTFH4Ltvut21KkM/ue/bmYaGvQ2/kr
-	e66KgW0QW3jkSKtOG
-X-Google-Smtp-Source: AGHT+IFP74Dcw2ePTB8XNvlZG/LBO0dpD3C8vJ/rqjSdpc2m1Zh0504XVQwpY7FgGs0ERlglDXTGMA==
-X-Received: by 2002:a05:6000:1886:b0:391:277e:c400 with SMTP id ffacd0b85a97d-39ee8fde03bmr689110f8f.13.1744873811586;
-        Thu, 17 Apr 2025 00:10:11 -0700 (PDT)
-Received: from [192.168.0.101] (46.150.74.144.lvv.nat.volia.net. [46.150.74.144])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4405b50b8ccsm42434875e9.28.2025.04.17.00.10.10
+        d=1e100.net; s=20230601; t=1744873924; x=1745478724;
+        h=in-reply-to:autocrypt:from:content-language:references:cc:to
+         :subject:user-agent:mime-version:date:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=50nDBr7HaO/nY8PAFZfWpFIIsI4FE6ZxFeiR9zseHMo=;
+        b=rzyoL/ldTBbMKqhBmDNAT2DlABLpx2FKHlNQ3Lo1f6fqRO7HLerAfDjWl6JItmgE0h
+         pzsp02gpi3CqmH93q72P2x+kwxPzqFpI78iJYGXR929vovuqm9RBWKaTdkxgeOsrZuKi
+         7UAmX4DZNiB1wrL/uUTHeAQdEDiPG08ajPgPyf4oBA4/vBy4XJo1KgRqykiRia8x6cwe
+         GegaGeXM8I9VrRax0KMmAFJQohyDTRVEzYsnclPBdrbrP+WpjSvfOX2sAvDne9iRQA4l
+         gxtzBkLMW6bx5OOAi1j6rnYMrjAEgT3SEgh83vgM/g9SSlmIvn7yOE0xTT+3X05JlF8V
+         gg1w==
+X-Forwarded-Encrypted: i=1; AJvYcCXxUEWbxViGzfSAvXAP1GYkycvEIxSUVh7gTlekn/uc9jTrzKoUcFljRevulJmVWhRJaARA6Go=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhlM41G/G3a6DOCyiB4WPL+y+SdFZSaHoKEasP+RCPVpSl0JNK
+	vZhlSngNWRdPLs79Il5cKbIyz/ydVf/qpDrsrXvOFlF8xi6TrEOwO5fwVngzCAU=
+X-Gm-Gg: ASbGncs+nINT8wZCVee2p0ejAk6CsiGe0rFmgKJzGSSI2xCy5hY9d/mAdkO1AprIPD3
+	vB6LvfCFk+Q7XiyO3m7X1M7Pn1TwaZMZZfZjJjRCdYOQShAZJRug0sx2+sJ5CmKlgwR7Qj9wUYd
+	mTHn7+/jWDjsGG5x+obU24ONCZbT3bxFNXIiSHAtQ0wCgu+XC5fW0wvTAIJRlR4eCI/iZziRRgh
+	WucYxJA+XzVKG9w3eofZ0hDk8y3OtQiP4AgJvpqAX9xE4lB0SoJ0a5hSLlvH80FMOzqn/G1Rh8j
+	pF8CjAU3Idp/uFF9dDsiBjuy0Nm2NHpxWRUtSMGtIRFhyBwt2YmXdkLQgVW0bw12mIbGzqpN9+S
+	GvcjpE61qLAZBXNtuF+fD22lEp3HHqburRGZT8P8VxSBAwwNjOzjlJhTMxoTytQs/tDB332QF38
+	xp
+X-Google-Smtp-Source: AGHT+IGN17Jla2vA+Rc2I0KCBT5Gabe2J463zV01EJ+NRwJL4xDEPQ+kEyFWGVBbFKYG3sPp/od4mw==
+X-Received: by 2002:a17:907:608f:b0:ac3:8516:9cf2 with SMTP id a640c23a62f3a-acb42c2fcacmr391294266b.55.1744873923529;
+        Thu, 17 Apr 2025 00:12:03 -0700 (PDT)
+Received: from ?IPV6:2003:e5:873d:1a00:8e99:ce06:aa4a:2e7b? (p200300e5873d1a008e99ce06aa4a2e7b.dip0.t-ipconnect.de. [2003:e5:873d:1a00:8e99:ce06:aa4a:2e7b])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5f36ee54d8fsm9692478a12.12.2025.04.17.00.12.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Apr 2025 00:10:11 -0700 (PDT)
-Message-ID: <a0739b6b-b043-47f1-8044-f6ed68d39f2c@linaro.org>
-Date: Thu, 17 Apr 2025 09:10:09 +0200
+        Thu, 17 Apr 2025 00:12:03 -0700 (PDT)
+Message-ID: <0c29a3f9-9e22-4e44-892d-431f06555600@suse.com>
+Date: Thu, 17 Apr 2025 09:12:01 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,115 +83,185 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] cpufreq: fix compile-test defaults
-To: Johan Hovold <johan+linaro@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>
-Cc: "Rob Herring (Arm)" <robh@kernel.org>, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250417065535.21358-1-johan+linaro@kernel.org>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH] xen-netfront: handle NULL returned by
+ xdp_convert_buff_to_frame()
+To: Alexey <sdl@nppct.ru>, Jakub Kicinski <kuba@kernel.org>
+Cc: Stefano Stabellini <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>, xen-devel@lists.xenproject.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ lvc-project@linuxtesting.org, stable@vger.kernel.org
+References: <20250414183403.265943-1-sdl@nppct.ru>
+ <20250416175835.687a5872@kernel.org>
+ <fa91aad9-f8f3-4b27-81b3-4c963e2e64aa@nppct.ru>
 Content-Language: en-US
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20250417065535.21358-1-johan+linaro@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+Autocrypt: addr=jgross@suse.com; keydata=
+ xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
+ ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
+ dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
+ NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
+ XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
+ AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
+ CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
+ mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
+ G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
+ kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
+ Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
+ RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
+ vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
+ sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
+ aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
+ w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
+ auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
+ 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
+ fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
+ HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
+ QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
+ ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
+In-Reply-To: <fa91aad9-f8f3-4b27-81b3-4c963e2e64aa@nppct.ru>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------d0C2m0JpY0HKG0p0HCAJyozK"
 
-On 17/04/2025 08:55, Johan Hovold wrote:
-> Commit 3f66425a4fc8 ("cpufreq: Enable COMPILE_TEST on Arm drivers")
-> enabled compile testing of most Arm CPUFreq drivers but left the
-> existing default values unchanged so that many drivers are enabled by
-> default whenever COMPILE_TEST is selected.
-> 
-> This specifically results in the S3C64XX CPUFreq driver being enabled
-> and initialised during boot of non-S3C64XX platforms with the following
-> error logged:
-> 
-> 	cpufreq: Unable to obtain ARMCLK: -2
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------d0C2m0JpY0HKG0p0HCAJyozK
+Content-Type: multipart/mixed; boundary="------------RSZrBREXB0vBHBFnA0obN3v4";
+ protected-headers="v1"
+From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+To: Alexey <sdl@nppct.ru>, Jakub Kicinski <kuba@kernel.org>
+Cc: Stefano Stabellini <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>, xen-devel@lists.xenproject.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ lvc-project@linuxtesting.org, stable@vger.kernel.org
+Message-ID: <0c29a3f9-9e22-4e44-892d-431f06555600@suse.com>
+Subject: Re: [PATCH] xen-netfront: handle NULL returned by
+ xdp_convert_buff_to_frame()
+References: <20250414183403.265943-1-sdl@nppct.ru>
+ <20250416175835.687a5872@kernel.org>
+ <fa91aad9-f8f3-4b27-81b3-4c963e2e64aa@nppct.ru>
+In-Reply-To: <fa91aad9-f8f3-4b27-81b3-4c963e2e64aa@nppct.ru>
 
-But isn't this fixed by my commit (d4f610a9bafd)? How is it possible to
-reproduce above error when you are NOT test compiling?
+--------------RSZrBREXB0vBHBFnA0obN3v4
+Content-Type: multipart/mixed; boundary="------------WPzaECcOaD250uqrDoIyhJN6"
 
-> 
-> Commit d4f610a9bafd ("cpufreq: Do not enable by default during compile
-> testing") recently fixed most of the default values, but two entries
-> were missed
+--------------WPzaECcOaD250uqrDoIyhJN6
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-That's not really a bug to be fixed. No things got worse by missing two
-entries, so how this part could be called something needing fixing?
+T24gMTcuMDQuMjUgMDk6MDAsIEFsZXhleSB3cm90ZToNCj4gDQo+IE9uIDE3LjA0LjIwMjUg
+MDM6NTgsIEpha3ViIEtpY2luc2tpIHdyb3RlOg0KPj4gT24gTW9uLCAxNCBBcHIgMjAyNSAx
+ODozNDowMSArMDAwMCBBbGV4ZXkgTmVwb21ueWFzaGloIHdyb3RlOg0KPj4+IMKgwqDCoMKg
+wqDCoMKgwqDCoCBnZXRfcGFnZShwZGF0YSk7DQo+PiBQbGVhc2Ugbm90aWNlIHRoaXMgZ2V0
+X3BhZ2UoKSBoZXJlLg0KPj4NCj4+PiDCoMKgwqDCoMKgwqDCoMKgwqAgeGRwZiA9IHhkcF9j
+b252ZXJ0X2J1ZmZfdG9fZnJhbWUoeGRwKTsNCj4+PiArwqDCoMKgwqDCoMKgwqAgaWYgKHVu
+bGlrZWx5KCF4ZHBmKSkgew0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHRyYWNlX3hk
+cF9leGNlcHRpb24ocXVldWUtPmluZm8tPm5ldGRldiwgcHJvZywgYWN0KTsNCj4+PiArwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCBicmVhazsNCj4+PiArwqDCoMKgwqDCoMKgwqAgfQ0KPiBE
+byB5b3UgbWVhbiB0aGF0IGl0IHdvdWxkIGJlIGJldHRlciB0byBtb3ZlIHRoZSBnZXRfcGFn
+ZShwZGF0YSkgY2FsbCBsb3dlciwNCj4gYWZ0ZXIgY2hlY2tpbmcgZm9yIE5VTEwgaW4geGRw
+Ziwgc28gdGhhdCB0aGUgcmVmZXJlbmNlIGNvdW50IGlzIG9ubHkgaW5jcmVhc2VkDQo+IGFm
+dGVyIGEgc3VjY2Vzc2Z1bCBjb252ZXJzaW9uPw0KDQpJIHRoaW5rIHRoZSBlcnJvciBoYW5k
+bGluZyBoZXJlIGlzIGdlbmVyYWxseSBicm9rZW4gKG9yIGF0IGxlYXN0IHZlcnkNCnF1ZXN0
+aW9uYWJsZSkuDQoNCkkgc3VzcGVjdCB0aGF0IGluIGNhc2Ugb2YgYXQgbGVhc3Qgc29tZSBl
+cnJvcnMgdGhlIGdldF9wYWdlKCkgaXMgbGVha2luZw0KZXZlbiB3aXRob3V0IHRoaXMgbmV3
+IHBhdGNoLg0KDQpJbiBjYXNlIEknbSB3cm9uZyBhIGNvbW1lbnQgcmVhc29uaW5nIHdoeSB0
+aGVyZSBpcyBubyBsZWFrIHNob3VsZCBiZQ0KYWRkZWQuDQoNCg0KSnVlcmdlbg0K
+--------------WPzaECcOaD250uqrDoIyhJN6
+Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Description: OpenPGP public key
+Content-Transfer-Encoding: quoted-printable
 
->  and two could use a more specific default condition.
+-----BEGIN PGP PUBLIC KEY BLOCK-----
 
-Two entries for more specific default - before they were ALWAYS default,
-so again I narrowed it from wide default. Nothing to fix here. You can
-narrow it further but claiming that my commit made something worse looks
-like a stretch - and that's a meaning of fixing someone's commit.
+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
+kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
+=3DeeAB
+-----END PGP PUBLIC KEY BLOCK-----
 
-> 
-> Fix the default values for drivers that can be compile tested and that
-> should be enabled by default when not compile testing.
-> 
-> Fixes: 3f66425a4fc8 ("cpufreq: Enable COMPILE_TEST on Arm drivers")
+--------------WPzaECcOaD250uqrDoIyhJN6--
 
+--------------RSZrBREXB0vBHBFnA0obN3v4--
 
-> Fixes: d4f610a9bafd ("cpufreq: Do not enable by default during compile testing")
+--------------d0C2m0JpY0HKG0p0HCAJyozK
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
-That's not correct tag - it introduced no new issues, did not make
-things worse, so nothing to fix there, if I understand correctly.
+-----BEGIN PGP SIGNATURE-----
 
-> Cc: stable@vger.kernel.org	# 6.12
-> Cc: Rob Herring (Arm) <robh@kernel.org>
-> Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> ---
-> 
-> Changes in v2:
->  - rebase on commit d4f610a9bafd ("cpufreq: Do not enable by default
->    during compile testing")
-> 
-Best regards,
-Krzysztof
+wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmgAqcIFAwAAAAAACgkQsN6d1ii/Ey9s
+zgf+LywK5tRw1pt3A75AZkpDPjXyAy+HTSV/CVvkluaNPsqNM5Yg2+iYZZZKp+C2omR4jCFUNDUn
+EU5EnIclpZzA3Ox0JZrqjlrjknY4cD8QKits78CTlfr5aHrB7qPj3yRgvh/XxXS3Vz5v97yc/2YW
+e4p+YULttX7frz3a9ygzgz6TbtLLLw19HxCgTGvA2upI43v+abbnowNz/NOagJQ6WD4WmPpUBCRS
+4Yu1Z/NjKO+IbvAuX01hVdNedc+pN2lztOrK6GkjDE6HUAgyNqdQTEZrhOl9N/tysDDOEdkUxexg
+XsVZt0ZcfKPyAIhgRW3SVID/G2LiUiH7KO5QEmr2/w==
+=uCI0
+-----END PGP SIGNATURE-----
+
+--------------d0C2m0JpY0HKG0p0HCAJyozK--
 
