@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-133154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53EDBA91E88
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 15:46:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E1FA91E8A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 15:46:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BA828A1747
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 13:45:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 952308A17FD
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 13:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A551E84D2B;
-	Thu, 17 Apr 2025 13:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CC417995E;
+	Thu, 17 Apr 2025 13:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQfyl8PT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LgFwu+L2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6599F4206B
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 13:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91422628D
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 13:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744897557; cv=none; b=LmYi+8gPIaQjs2XBbFrLHZUCmEa0mj6twDS3pB1FFVNVZZaFZ0jX2NuPD9W6bp9O4Y1MV711zPWqQsdGrbACmoj+R3IxHYDwF5VWzktb0ri8N4PeevLCOa/XywXa7BO8D2iaGOLnQNESS66X8PkobhB79RhNyk2AZ4BmCQDMmVs=
+	t=1744897570; cv=none; b=bk62J6N+0A96WfTs1xJSUwXK2fYZHJV5zi5DvC9WaYW5JPsdzKBtHjE69YkMIYEyyExkhZJmW4aDDRn/wQIXRg79K6DvdmsiY6bwN9b6e0IdPf7Fx+W0b3W3H5aW43Ba1nEJTNFblLuxTqF4jmiHb+Z7C0GCwsLlC9Qn4lo5URg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744897557; c=relaxed/simple;
-	bh=Ad3IXshUrscq0a16XbaFXDSCelEvSTXw1DfXtnIL06w=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pKhZ7SnLrOq6GiXuLJnuYDzcl1lHZWEXkOG7ITDFOBh+hfku8t7w6taqDRACkzBYgF51ATLabsMC33NR052Y+SsQXjS7vPtUQbcTkY59y8tPvN+G9f4pmOl9knpthuJgEmDqADotPSgK5SosDsss9rlTccuscw7lAtoltJazxyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQfyl8PT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24B09C4CEEA;
-	Thu, 17 Apr 2025 13:45:55 +0000 (UTC)
+	s=arc-20240116; t=1744897570; c=relaxed/simple;
+	bh=9IWEM+CZLxh21nbHhJEE8rMccv9lBxg9vlhph5U5pAk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SGWkgpZDa9xMxz/Yv78oeUB5sIS1/GKcCYwzaskHKxrlPbPME1HvJLCKP75n3IBNvmE/o/yiUYqiAqdjydjyMQDdprc41YUEOT7fl60i8b2iirO7mRcDYgkRxr60X0YpqliMc+ocgHuCbsZaBtT2YcrX2nCRnzkBTgcZ6SEya0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LgFwu+L2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52487C4CEEA;
+	Thu, 17 Apr 2025 13:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744897557;
-	bh=Ad3IXshUrscq0a16XbaFXDSCelEvSTXw1DfXtnIL06w=;
+	s=korg; t=1744897570;
+	bh=9IWEM+CZLxh21nbHhJEE8rMccv9lBxg9vlhph5U5pAk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=lQfyl8PTgaFBLdlW/oAvVVuhph1HW79iuTCN+HoRg2l0rO3VGoYcSfWhVrHFxKjpD
-	 aA2D7xctlg8qRa7uThbUrVe4pQ8iUd6SzH2TsryNUPSfnROpxa+9sHrbm09z4rq7BH
-	 Aym2AcbZw1UTaDZaMrSKEFienYoU6p8X2QWkGilU=
-Subject: FAILED: patch "[PATCH] PCI: Fix reference leak in pci_register_host_bridge()" failed to apply to 5.10-stable tree
-To: make24@iscas.ac.cn,bhelgaas@google.com
+	b=LgFwu+L2AuqZJayqlAtOZhLkSsQRB+fgylDvGoDio3hKhHBay0L4zOu8wIYOdoy+f
+	 gmanFA00/WRZe7sjkWo4OjIIiABadcfONjEgrog/u5kDYyiSaR+M47qlG7r5axcGzA
+	 lJAlxiMwF9e7j8K6CEWzTYQN1honnMg5c3SRyKZQ=
+Subject: FAILED: patch "[PATCH] s390/virtio_ccw: Don't allocate/assign airqs for non-existing" failed to apply to 6.6-stable tree
+To: david@redhat.com,borntraeger@linux.ibm.com,cmerla@redhat.com,cohuck@redhat.com,hca@linux.ibm.com,mst@redhat.com,thuth@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 17 Apr 2025 15:44:11 +0200
-Message-ID: <2025041711-zoom-wheat-a870@gregkh>
+Date: Thu, 17 Apr 2025 15:45:31 +0200
+Message-ID: <2025041731-release-charity-8e70@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 804443c1f27883926de94c849d91f5b7d7d696e9
+git cherry-pick -x 2ccd42b959aaf490333dbd3b9b102eaf295c036a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041711-zoom-wheat-a870@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041731-release-charity-8e70@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,61 +77,140 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 804443c1f27883926de94c849d91f5b7d7d696e9 Mon Sep 17 00:00:00 2001
-From: Ma Ke <make24@iscas.ac.cn>
-Date: Tue, 25 Feb 2025 10:14:40 +0800
-Subject: [PATCH] PCI: Fix reference leak in pci_register_host_bridge()
+From 2ccd42b959aaf490333dbd3b9b102eaf295c036a Mon Sep 17 00:00:00 2001
+From: David Hildenbrand <david@redhat.com>
+Date: Wed, 2 Apr 2025 22:36:21 +0200
+Subject: [PATCH] s390/virtio_ccw: Don't allocate/assign airqs for non-existing
+ queues
 
-If device_register() fails, call put_device() to give up the reference to
-avoid a memory leak, per the comment at device_register().
+If we finds a vq without a name in our input array in
+virtio_ccw_find_vqs(), we treat it as "non-existing" and set the vq pointer
+to NULL; we will not call virtio_ccw_setup_vq() to allocate/setup a vq.
 
-Found by code review.
+Consequently, we create only a queue if it actually exists (name != NULL)
+and assign an incremental queue index to each such existing queue.
 
-Link: https://lore.kernel.org/r/20250225021440.3130264-1-make24@iscas.ac.cn
-Fixes: 37d6a0a6f470 ("PCI: Add pci_register_host_bridge() interface")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-[bhelgaas: squash Dan Carpenter's double free fix from
-https://lore.kernel.org/r/db806a6c-a91b-4e5a-a84b-6b7e01bdac85@stanley.mountain]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+However, in virtio_ccw_register_adapter_ind()->get_airq_indicator() we
+will not ignore these "non-existing queues", but instead assign an airq
+indicator to them.
+
+Besides never releasing them in virtio_ccw_drop_indicators() (because
+there is no virtqueue), the bigger issue seems to be that there will be a
+disagreement between the device and the Linux guest about the airq
+indicator to be used for notifying a queue, because the indicator bit
+for adapter I/O interrupt is derived from the queue index.
+
+The virtio spec states under "Setting Up Two-Stage Queue Indicators":
+
+	... indicator contains the guest address of an area wherein the
+	indicators for the devices are contained, starting at bit_nr, one
+	bit per virtqueue of the device.
+
+And further in "Notification via Adapter I/O Interrupts":
+
+	For notifying the driver of virtqueue buffers, the device sets the
+	bit in the guest-provided indicator area at the corresponding
+	offset.
+
+For example, QEMU uses in virtio_ccw_notify() the queue index (passed as
+"vector") to select the relevant indicator bit. If a queue does not exist,
+it does not have a corresponding indicator bit assigned, because it
+effectively doesn't have a queue index.
+
+Using a virtio-balloon-ccw device under QEMU with free-page-hinting
+disabled ("free-page-hint=off") but free-page-reporting enabled
+("free-page-reporting=on") will result in free page reporting
+not working as expected: in the virtio_balloon driver, we'll be stuck
+forever in virtballoon_free_page_report()->wait_event(), because the
+waitqueue will not be woken up as the notification from the device is
+lost: it would use the wrong indicator bit.
+
+Free page reporting stops working and we get splats (when configured to
+detect hung wqs) like:
+
+ INFO: task kworker/1:3:463 blocked for more than 61 seconds.
+       Not tainted 6.14.0 #4
+ "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+ task:kworker/1:3 [...]
+ Workqueue: events page_reporting_process
+ Call Trace:
+  [<000002f404e6dfb2>] __schedule+0x402/0x1640
+  [<000002f404e6f22e>] schedule+0x3e/0xe0
+  [<000002f3846a88fa>] virtballoon_free_page_report+0xaa/0x110 [virtio_balloon]
+  [<000002f40435c8a4>] page_reporting_process+0x2e4/0x740
+  [<000002f403fd3ee2>] process_one_work+0x1c2/0x400
+  [<000002f403fd4b96>] worker_thread+0x296/0x420
+  [<000002f403fe10b4>] kthread+0x124/0x290
+  [<000002f403f4e0dc>] __ret_from_fork+0x3c/0x60
+  [<000002f404e77272>] ret_from_fork+0xa/0x38
+
+There was recently a discussion [1] whether the "holes" should be
+treated differently again, effectively assigning also non-existing
+queues a queue index: that should also fix the issue, but requires other
+workarounds to not break existing setups.
+
+Let's fix it without affecting existing setups for now by properly ignoring
+the non-existing queues, so the indicator bits will match the queue
+indexes.
+
+[1] https://lore.kernel.org/all/cover.1720611677.git.mst@redhat.com/
+
+Fixes: a229989d975e ("virtio: don't allocate vqs when names[i] = NULL")
+Reported-by: Chandra Merla <cmerla@redhat.com>
 Cc: stable@vger.kernel.org
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Cornelia Huck <cohuck@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250402203621.940090-1-david@redhat.com
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 5f04b8d9c736..dc37a3c0a977 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -953,6 +953,7 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
- 	resource_size_t offset, next_offset;
- 	LIST_HEAD(resources);
- 	struct resource *res, *next_res;
-+	bool bus_registered = false;
- 	char addr[64], *fmt;
- 	const char *name;
- 	int err;
-@@ -1017,6 +1018,7 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
- 	name = dev_name(&bus->dev);
+diff --git a/drivers/s390/virtio/virtio_ccw.c b/drivers/s390/virtio/virtio_ccw.c
+index 21fa7ac849e5..4904b831c0a7 100644
+--- a/drivers/s390/virtio/virtio_ccw.c
++++ b/drivers/s390/virtio/virtio_ccw.c
+@@ -302,11 +302,17 @@ static struct airq_info *new_airq_info(int index)
+ static unsigned long *get_airq_indicator(struct virtqueue *vqs[], int nvqs,
+ 					 u64 *first, void **airq_info)
+ {
+-	int i, j;
++	int i, j, queue_idx, highest_queue_idx = -1;
+ 	struct airq_info *info;
+ 	unsigned long *indicator_addr = NULL;
+ 	unsigned long bit, flags;
  
- 	err = device_register(&bus->dev);
-+	bus_registered = true;
- 	if (err)
- 		goto unregister;
- 
-@@ -1103,12 +1105,15 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
- unregister:
- 	put_device(&bridge->dev);
- 	device_del(&bridge->dev);
--
- free:
- #ifdef CONFIG_PCI_DOMAINS_GENERIC
- 	pci_bus_release_domain_nr(parent, bus->domain_nr);
- #endif
--	kfree(bus);
-+	if (bus_registered)
-+		put_device(&bus->dev);
-+	else
-+		kfree(bus);
++	/* Array entries without an actual queue pointer must be ignored. */
++	for (i = 0; i < nvqs; i++) {
++		if (vqs[i])
++			highest_queue_idx++;
++	}
 +
- 	return err;
- }
- 
+ 	for (i = 0; i < MAX_AIRQ_AREAS && !indicator_addr; i++) {
+ 		mutex_lock(&airq_areas_lock);
+ 		if (!airq_areas[i])
+@@ -316,7 +322,7 @@ static unsigned long *get_airq_indicator(struct virtqueue *vqs[], int nvqs,
+ 		if (!info)
+ 			return NULL;
+ 		write_lock_irqsave(&info->lock, flags);
+-		bit = airq_iv_alloc(info->aiv, nvqs);
++		bit = airq_iv_alloc(info->aiv, highest_queue_idx + 1);
+ 		if (bit == -1UL) {
+ 			/* Not enough vacancies. */
+ 			write_unlock_irqrestore(&info->lock, flags);
+@@ -325,8 +331,10 @@ static unsigned long *get_airq_indicator(struct virtqueue *vqs[], int nvqs,
+ 		*first = bit;
+ 		*airq_info = info;
+ 		indicator_addr = info->aiv->vector;
+-		for (j = 0; j < nvqs; j++) {
+-			airq_iv_set_ptr(info->aiv, bit + j,
++		for (j = 0, queue_idx = 0; j < nvqs; j++) {
++			if (!vqs[j])
++				continue;
++			airq_iv_set_ptr(info->aiv, bit + queue_idx++,
+ 					(unsigned long)vqs[j]);
+ 		}
+ 		write_unlock_irqrestore(&info->lock, flags);
 
 
