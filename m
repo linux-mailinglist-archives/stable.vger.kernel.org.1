@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-133612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CBEFA9266C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:13:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A50AAA92A89
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:52:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A3DD3B5953
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:13:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5241C4A6639
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 862362550DD;
-	Thu, 17 Apr 2025 18:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B14825743F;
+	Thu, 17 Apr 2025 18:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O244eDLs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1EUTHcL2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43ED51A3178;
-	Thu, 17 Apr 2025 18:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A392571C6;
+	Thu, 17 Apr 2025 18:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913604; cv=none; b=txhUnxNUt6eQzU8UMMPFawFRk69NgbGfbOAjffi3MX/tWshCe3kZGNMwr1r+fuCnHLGxL5hM00eWRWdHEb1I2JC7ot7A624RvoXfpAWRV4N44ZYRSJeyEZZvGi42TREeldSnM3XKrt14Ajv2saMeejNcoGei/ZkVoqdPSlvyyNk=
+	t=1744915795; cv=none; b=urH0J5uklEalISmY12dvFiOgC3tGepq+Im/YJq0mA6s7jpIJEEhC07HYtQG8+Rrf2XhYewW2/9c+5seZhfywnDtbXJBr+9MQIrS24mea1EPMVG/R5ZYFat2Fxph31r9JFAspICeXnOsi2Wo93mGMtb0eF3mGouKOooBLTrjcops=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913604; c=relaxed/simple;
-	bh=tRtVbjDWEytR56w8SZ2tvElUCkhf/GOdVVYXtrZukVY=;
+	s=arc-20240116; t=1744915795; c=relaxed/simple;
+	bh=8HXhN67fvWv8oJj4QOm0vHuHygiROitPMvL9CSmXSP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hRuec1c4y3O06Xr0cA7DI0WWoLq/38jWUURx2VxK6iFjogPKhsB55+QE6uCzGE8aexM61iPtcFoNvdL1PEJMvKdgsn+mVNdkTVXmKiAoeeRn7zJweLuhoOIsHGerkKJitdkm0+ebSoBjLE5QSK/r/z2kowPFllBSFqwxU8jtDQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O244eDLs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A5D1C4CEE4;
-	Thu, 17 Apr 2025 18:13:23 +0000 (UTC)
+	 MIME-Version; b=GtM8IefjtSNbCWhQZ0HYDJcVgryBjjrEjDcs+iQ4UCszj6aCEazOSbIuqOA94dyPlbg84NdacKBhQu9ANIGrs5IcAc42C93Zx1OrfvG+FvzvC0e2R+q3DCd1VtA+3QqonBBR1HdqbXkJO1Cr03BZmU0q8SRZfdBTN+mfDxbWBw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1EUTHcL2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B26C3C4CEE4;
+	Thu, 17 Apr 2025 18:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913604;
-	bh=tRtVbjDWEytR56w8SZ2tvElUCkhf/GOdVVYXtrZukVY=;
+	s=korg; t=1744915795;
+	bh=8HXhN67fvWv8oJj4QOm0vHuHygiROitPMvL9CSmXSP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O244eDLsxCi1ZNnrRHibMCmUhe5nbTrplIxJ/2yOCO89sHSVYvu+w5oX1jyA6giJx
-	 c97hJn5gLqMkfNr5Wc0TpEYeQWmklQcTtwCiZxU7nzeC1zdSUWXypAq6ZHxicfm+jA
-	 qQugwuUmSCKYjRpvqfIZryn+FzpV+Jz5Nx/8EOR0=
+	b=1EUTHcL2uZnEZcSW/xepvXyTVc0amzgKFgJu8v0TkQHGx00Gyswy95UovqCF79jYx
+	 c55NXY8JP3OIK/oDlZ5KEEOirqrx1GEKcr3gMnHf3o06iWb676rcV5yelO5VkzUEKE
+	 4RFHBpNTlUgj8D+m/fd1nFX56FIPo+NOpLOud06U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Xu <peterx@redhat.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	Dimitris Siakavaras <jimsiak@cslab.ece.ntua.gr>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.14 363/449] mm/userfaultfd: fix release hang over concurrent GUP
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.12 242/393] wifi: mt76: mt7925: ensure wow pattern command align fw format
 Date: Thu, 17 Apr 2025 19:50:51 +0200
-Message-ID: <20250417175132.843680527@linuxfoundation.org>
+Message-ID: <20250417175117.330734078@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,125 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Xu <peterx@redhat.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-commit fe4cdc2c4e248f48de23bc778870fd71e772a274 upstream.
+commit 8ae45b1f699bbc27ea8647093f794f671e77410b upstream.
 
-This patch should fix a possible userfaultfd release() hang during
-concurrent GUP.
+Align the format of "struct mt7925_wow_pattern_tlv" with
+firmware to ensure proper functionality.
 
-This problem was initially reported by Dimitris Siakavaras in July 2023
-[1] in a firecracker use case.  Firecracker has a separate process
-handling page faults remotely, and when the process releases the
-userfaultfd it can race with a concurrent GUP from KVM trying to fault in
-a guest page during the secondary MMU page fault process.
-
-A similar problem was reported recently again by Jinjiang Tu in March 2025
-[2], even though the race happened this time with a mlockall() operation,
-which does GUP in a similar fashion.
-
-In 2017, commit 656710a60e36 ("userfaultfd: non-cooperative: closing the
-uffd without triggering SIGBUS") was trying to fix this issue.  AFAIU,
-that fixes well the fault paths but may not work yet for GUP.  In GUP, the
-issue is NOPAGE will be almost treated the same as "page fault resolved"
-in faultin_page(), then the GUP will follow page again, seeing page
-missing, and it'll keep going into a live lock situation as reported.
-
-This change makes core mm return RETRY instead of NOPAGE for both the GUP
-and fault paths, proactively releasing the mmap read lock.  This should
-guarantee the other release thread make progress on taking the write lock
-and avoid the live lock even for GUP.
-
-When at it, rearrange the comments to make sure it's uptodate.
-
-[1] https://lore.kernel.org/r/79375b71-db2e-3e66-346b-254c90d915e2@cslab.ece.ntua.gr
-[2] https://lore.kernel.org/r/20250307072133.3522652-1-tujinjiang@huawei.com
-
-Link: https://lkml.kernel.org/r/20250312145131.1143062-1-peterx@redhat.com
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: Dimitris Siakavaras <jimsiak@cslab.ece.ntua.gr>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20250116055925.3856856-1-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/userfaultfd.c |   51 +++++++++++++++++++++++++--------------------------
- 1 file changed, 25 insertions(+), 26 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/userfaultfd.c
-+++ b/fs/userfaultfd.c
-@@ -396,32 +396,6 @@ vm_fault_t handle_userfault(struct vm_fa
- 		goto out;
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+@@ -566,8 +566,8 @@ struct mt7925_wow_pattern_tlv {
+ 	u8 offset;
+ 	u8 mask[MT76_CONNAC_WOW_MASK_MAX_LEN];
+ 	u8 pattern[MT76_CONNAC_WOW_PATTEN_MAX_LEN];
+-	u8 rsv[7];
+-} __packed;
++	u8 rsv[4];
++};
  
- 	/*
--	 * If it's already released don't get it. This avoids to loop
--	 * in __get_user_pages if userfaultfd_release waits on the
--	 * caller of handle_userfault to release the mmap_lock.
--	 */
--	if (unlikely(READ_ONCE(ctx->released))) {
--		/*
--		 * Don't return VM_FAULT_SIGBUS in this case, so a non
--		 * cooperative manager can close the uffd after the
--		 * last UFFDIO_COPY, without risking to trigger an
--		 * involuntary SIGBUS if the process was starting the
--		 * userfaultfd while the userfaultfd was still armed
--		 * (but after the last UFFDIO_COPY). If the uffd
--		 * wasn't already closed when the userfault reached
--		 * this point, that would normally be solved by
--		 * userfaultfd_must_wait returning 'false'.
--		 *
--		 * If we were to return VM_FAULT_SIGBUS here, the non
--		 * cooperative manager would be instead forced to
--		 * always call UFFDIO_UNREGISTER before it can safely
--		 * close the uffd.
--		 */
--		ret = VM_FAULT_NOPAGE;
--		goto out;
--	}
--
--	/*
- 	 * Check that we can return VM_FAULT_RETRY.
- 	 *
- 	 * NOTE: it should become possible to return VM_FAULT_RETRY
-@@ -457,6 +431,31 @@ vm_fault_t handle_userfault(struct vm_fa
- 	if (vmf->flags & FAULT_FLAG_RETRY_NOWAIT)
- 		goto out;
- 
-+	if (unlikely(READ_ONCE(ctx->released))) {
-+		/*
-+		 * If a concurrent release is detected, do not return
-+		 * VM_FAULT_SIGBUS or VM_FAULT_NOPAGE, but instead always
-+		 * return VM_FAULT_RETRY with lock released proactively.
-+		 *
-+		 * If we were to return VM_FAULT_SIGBUS here, the non
-+		 * cooperative manager would be instead forced to
-+		 * always call UFFDIO_UNREGISTER before it can safely
-+		 * close the uffd, to avoid involuntary SIGBUS triggered.
-+		 *
-+		 * If we were to return VM_FAULT_NOPAGE, it would work for
-+		 * the fault path, in which the lock will be released
-+		 * later.  However for GUP, faultin_page() does nothing
-+		 * special on NOPAGE, so GUP would spin retrying without
-+		 * releasing the mmap read lock, causing possible livelock.
-+		 *
-+		 * Here only VM_FAULT_RETRY would make sure the mmap lock
-+		 * be released immediately, so that the thread concurrently
-+		 * releasing the userfault would always make progress.
-+		 */
-+		release_fault_lock(vmf);
-+		goto out;
-+	}
-+
- 	/* take the reference before dropping the mmap_lock */
- 	userfaultfd_ctx_get(ctx);
- 
+ struct roc_acquire_tlv {
+ 	__le16 tag;
 
 
 
