@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-133541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B4B6A9261C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:10:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E5CFA928A8
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CE0A1B615EF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:10:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8DA83A7107
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:35:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6710F1DF756;
-	Thu, 17 Apr 2025 18:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A8518C034;
+	Thu, 17 Apr 2025 18:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lROa/bQP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fisRIPiS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E9F18C034;
-	Thu, 17 Apr 2025 18:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE0825335A;
+	Thu, 17 Apr 2025 18:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913388; cv=none; b=ZnURym82MUBQErDEVhVI7l8JpKFdAWU+xoSeKYAwDPBzExj1AYGqaOgYLMr7qJ3F0Edd6gWDgNTw6B7MD7oxY+DYygbtI4eqaa+0kOIpycOEBi2jVAjVoaFVVBnxUswPAFfuhekydmNXndTAG2YSWMFFGBVdJudm0HJ1Cqe2rQ4=
+	t=1744914547; cv=none; b=eXsZ8P7r3FL9yS5M0cJA/RQhtk6CNi8rI6kY2qm8rp1EDVjNg7clEa/obuNBqVKgEU9/FJJCTwzt2/5G2MjU5c+AEuwdExmuXhkCP+u8isWPbuELEmVQn5vU23bVJiAHEyHgFHBYU6iKVp4opXpS4O9lPPOUZkwvGbaag18hdVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913388; c=relaxed/simple;
-	bh=mPbOFYJX82+JQjI5woCTlwS9ixZlR++14FGBiBFUc/A=;
+	s=arc-20240116; t=1744914547; c=relaxed/simple;
+	bh=Djksj07bEC+L3xTTkPvIp5aYGxbOq3LSVcLZ8MnEzKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qa6HtOlbZRS/A3lAq1YRFEXhIQCKE8fLa0FBBBC0a2//LxouXN9TPotPj7bzEvXUMrlEHU1EQf0k13Bt9fqm2f8NVcl4LqlVUhNTzsyjc4W1gvkSYtpVhrJAPsxxj610bg+WaqkzLt0KsCWtU6sogQjG6VxfPWbR/xxpis5YDxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lROa/bQP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993E8C4CEE4;
-	Thu, 17 Apr 2025 18:09:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=c4P6/EavoMbdSBADWUL82AYlm2hfxiiNGHrQWZYn7khiq9J2j+OEjNocDnPVKAPiZFtwzuexkGTwz+GQQrMJ4UNSWyjJTXT9qyfQq920zctLfUxgFytJLpp0FISxqprvsBW1P4APd/oUYbn99WGhIO+ux8xcZlQotcfY4JlrAv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fisRIPiS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D06C7C4CEE4;
+	Thu, 17 Apr 2025 18:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913388;
-	bh=mPbOFYJX82+JQjI5woCTlwS9ixZlR++14FGBiBFUc/A=;
+	s=korg; t=1744914547;
+	bh=Djksj07bEC+L3xTTkPvIp5aYGxbOq3LSVcLZ8MnEzKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lROa/bQPbj/LH0qvAze10caZKQ8Za8nzrvAvAnEpt7pEHd+DiKXpRYPnGG7H1BqQO
-	 gbAyYLWaFKEQ/XAn795QJE8rx/5BNpM9Tp5vvOmnZwiLhXIcowVBXgNJKb+ZCZX5Vm
-	 +Q8EAf+r5SLgq5Blvuu7e45MXAt/2E+CUtISByCQ=
+	b=fisRIPiSduxr3FZveSbsgnO88a0jZx2J1q9H/wHN+MBeO7bgGmq3CB9LNePoeFd6r
+	 noiJpyHlbvTbultiblYnusYv+yYdMfgJb7HcFLjcMg/pe1CBWIvo6FLk+oJdgRoZp6
+	 8SArMGS6YNrWd9flN8rogtAlvu8e2eyLuXTgGiio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.14 322/449] kbuild: Add -fno-builtin-wcslen
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.13 252/414] net: dsa: mv88e6xxx: fix internal PHYs for 6320 family
 Date: Thu, 17 Apr 2025 19:50:10 +0200
-Message-ID: <20250417175131.084137416@linuxfoundation.org>
+Message-ID: <20250417175121.556105921@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,64 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Marek Behún <kabel@kernel.org>
 
-commit 84ffc79bfbf70c779e60218563f2f3ad45288671 upstream.
+commit 52fdc41c3278c981066a461d03d5477ebfcf270c upstream.
 
-A recent optimization change in LLVM [1] aims to transform certain loop
-idioms into calls to strlen() or wcslen(). This change transforms the
-first while loop in UniStrcat() into a call to wcslen(), breaking the
-build when UniStrcat() gets inlined into alloc_path_with_tree_prefix():
+Fix internal PHYs definition for the 6320 family, which has only 2
+internal PHYs (on ports 3 and 4).
 
-  ld.lld: error: undefined symbol: wcslen
-  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
-  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
-  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
-  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
-
-Disable this optimization with '-fno-builtin-wcslen', which prevents the
-compiler from assuming that wcslen() is available in the kernel's C
-library.
-
-[ More to the point - it's not that we couldn't implement wcslen(), it's
-  that this isn't an optimization at all in the context of the kernel.
-
-  Replacing a simple inlined loop with a function call to the same loop
-  is just stupid and pointless if you don't have long strings and fancy
-  libraries with vectorization support etc.
-
-  For the regular 'strlen()' cases, we want the compiler to do this in
-  order to handle the trivial case of constant strings. And we do have
-  optimized versions of 'strlen()' on some architectures. But for
-  wcslen? Just no.    - Linus ]
-
-Cc: stable@vger.kernel.org
-Link: https://github.com/llvm/llvm-project/commit/9694844d7e36fd5e01011ab56b64f27b867aa72d [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: bc3931557d1d ("net: dsa: mv88e6xxx: Add number of internal PHYs")
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.6.x
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250317173250.28780-7-kabel@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Makefile |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/dsa/mv88e6xxx/chip.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/Makefile
-+++ b/Makefile
-@@ -1065,6 +1065,9 @@ ifdef CONFIG_CC_IS_GCC
- KBUILD_CFLAGS   += -fconserve-stack
- endif
- 
-+# Ensure compilers do not transform certain loops into calls to wcslen()
-+KBUILD_CFLAGS += -fno-builtin-wcslen
-+
- # change __FILE__ to the relative path to the source directory
- ifdef building_out_of_srctree
- KBUILD_CPPFLAGS += $(call cc-option,-fmacro-prefix-map=$(srcroot)/=)
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -6174,7 +6174,8 @@ static const struct mv88e6xxx_info mv88e
+ 		.num_databases = 4096,
+ 		.num_macs = 8192,
+ 		.num_ports = 7,
+-		.num_internal_phys = 5,
++		.num_internal_phys = 2,
++		.internal_phys_offset = 3,
+ 		.num_gpio = 15,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+@@ -6368,7 +6369,8 @@ static const struct mv88e6xxx_info mv88e
+ 		.num_databases = 4096,
+ 		.num_macs = 8192,
+ 		.num_ports = 7,
+-		.num_internal_phys = 5,
++		.num_internal_phys = 2,
++		.internal_phys_offset = 3,
+ 		.num_gpio = 15,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
 
 
 
