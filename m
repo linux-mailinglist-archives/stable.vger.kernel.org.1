@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-133419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E2B9A925AA
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:06:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36D8AA9297C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EC081B61C43
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 004214A50D4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF2E2571B4;
-	Thu, 17 Apr 2025 18:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568A3253954;
+	Thu, 17 Apr 2025 18:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ELIjGaef"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ja/5Iz9y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640EA256C9F;
-	Thu, 17 Apr 2025 18:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124DE1A3178;
+	Thu, 17 Apr 2025 18:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913019; cv=none; b=AiDZ+C41u6JcLQIaO0t5WmoMZgoTG7KUesf7C8WuiYfyqqML5theWEibE8k00yfOz6YbSXKar/PMKhrav4hsfaow86mNRUUuQdMFGkHaUo7iecoXKX4IDtg6r4Fj+VM+9fbUR2wQWJuSVLoAX9rKJghKuG4AO0ljypmIw1PVLAY=
+	t=1744915201; cv=none; b=tK/5O7U0ceDIsfCnbqimQkUpm4lbQyQyFc5ZHIPK+grY/a4NHeqTHdiM85wcdCU5JN1pL/Q8MQ5S6jPTZTeUDP8/Q90KKS3Ib0Rq/WLuDU6EOZohfaZn/gehx2DMwZY4KmIvuADeC0nKe9+NzugwNJhZlrEbSh0c7T9y+RUQ4Ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913019; c=relaxed/simple;
-	bh=L3ZrZ0a4pVR4ZN2q7Sgjufdnqu9ZfGsye4TBh1phpQA=;
+	s=arc-20240116; t=1744915201; c=relaxed/simple;
+	bh=08vhaarHIrdSVA9BKg6ePkOfRC/OeMQ83ehj2gnZfss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MHOdZGOYfQYoYe5/lMbKVMrJvqW22JfElhcTU7eYvZC9EtjMRwxCLz5y5KXGR9xe1ps7qowdJiEDi+rec8gSboFlDa6WsEsD3ZRB5IeTGD+ed3+GoNHacGyx4z1LFMLYtipHGqGb5U6NCQHBkEKpH1iVHRTwexQD1Y4fo1QKolw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ELIjGaef; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A35C4CEE4;
-	Thu, 17 Apr 2025 18:03:38 +0000 (UTC)
+	 MIME-Version; b=i8aZTjNJRXsKJ6oiwOX6JkEcSb4BLD8zdo/kE+sBP0V/7QctvVGGZKFdv1RWNwvb+tffgXW7DmeNL0lUsTVF0GtIqBqykVXIVvV7xcLOEX6jrllDmljQoUskZynR+SJgtaqMwqSmNbbeYj9rcytO2Ztzmrs5+jBCVtR13Ti5QUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ja/5Iz9y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DFACC4CEE4;
+	Thu, 17 Apr 2025 18:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913019;
-	bh=L3ZrZ0a4pVR4ZN2q7Sgjufdnqu9ZfGsye4TBh1phpQA=;
+	s=korg; t=1744915200;
+	bh=08vhaarHIrdSVA9BKg6ePkOfRC/OeMQ83ehj2gnZfss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ELIjGaefWh2AM8MiHbq4U87mbpcWC5Fcmbb9YlgVb1lW7+gbkIPA6lrb8uXWohyXZ
-	 HDCMOZ0hUKIrIt4NHpkJTSSbfF3xZFEau+Xpk54lWA+YMH0u1YtXdDD4M0oQv7d9oq
-	 SxQrVm7OpmwGUiWI4rqe+GF4B8AzRZ8jSm+vHg7g=
+	b=Ja/5Iz9yqEx3UGCQWoiZg7QIAOD4w4m9er4rD0QK2ss3+RMYIuid7dKGANh1VhkpU
+	 7jE9I6Wui3WQOa1EVxolAD/AVuyDGOJUrDnOtjZ7h1povHOhOdmAAIrtO208lC3LNe
+	 x+d8shjakmKJewvokHHr+Ifhlb8MIOMD+7k32/vc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	"Xin Li (Intel)" <xin@zytor.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 171/449] drm/mediatek: mtk_dpi: Explicitly manage TVD clock in power on/off
+Subject: [PATCH 6.12 050/393] x86/ia32: Leave NULL selector values 0~3 unchanged
 Date: Thu, 17 Apr 2025 19:47:39 +0200
-Message-ID: <20250417175124.867372313@linuxfoundation.org>
+Message-ID: <20250417175109.601959598@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +67,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Xin Li (Intel) <xin@zytor.com>
 
-[ Upstream commit 473c33f5ce651365468503c76f33158aaa1c7dd2 ]
+[ Upstream commit ad546940b5991d3e141238cd80a6d1894b767184 ]
 
-In preparation for adding support for MT8195's HDMI reserved
-DPI, add calls to clk_prepare_enable() / clk_disable_unprepare()
-for the TVD clock: in this particular case, the aforementioned
-clock is not (and cannot be) parented to neither pixel or engine
-clocks hence it won't get enabled automatically by the clock
-framework.
+The first GDT descriptor is reserved as 'NULL descriptor'.  As bits 0
+and 1 of a segment selector, i.e., the RPL bits, are NOT used to index
+GDT, selector values 0~3 all point to the NULL descriptor, thus values
+0, 1, 2 and 3 are all valid NULL selector values.
 
-Please note that on all of the currently supported MediaTek
-platforms, the TVD clock is always a parent of either pixel or
-engine clocks, and this means that the common clock framework
-is already enabling this clock before the children.
-On such platforms, this commit will only increase the refcount
-of the TVD clock without any functional change.
+When a NULL selector value is to be loaded into a segment register,
+reload_segments() sets its RPL bits.  Later IRET zeros ES, FS, GS, and
+DS segment registers if any of them is found to have any nonzero NULL
+selector value.  The two operations offset each other to actually effect
+a nop.
 
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20250217154836.108895-10-angelogioacchino.delregno@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Besides, zeroing of RPL in NULL selector values is an information leak
+in pre-FRED systems as userspace can spot any interrupt/exception by
+loading a nonzero NULL selector, and waiting for it to become zero.
+But there is nothing software can do to prevent it before FRED.
+
+ERETU, the only legit instruction to return to userspace from kernel
+under FRED, by design does NOT zero any segment register to avoid this
+problem behavior.
+
+As such, leave NULL selector values 0~3 unchanged and close the leak.
+
+Do the same on 32-bit kernel as well.
+
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20241126184529.1607334-1-xin@zytor.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dpi.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/x86/kernel/signal_32.c | 62 +++++++++++++++++++++++++------------
+ 1 file changed, 43 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c b/drivers/gpu/drm/mediatek/mtk_dpi.c
-index c3fc85764c973..a12ef24c77423 100644
---- a/drivers/gpu/drm/mediatek/mtk_dpi.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
-@@ -471,6 +471,7 @@ static void mtk_dpi_power_off(struct mtk_dpi *dpi)
+diff --git a/arch/x86/kernel/signal_32.c b/arch/x86/kernel/signal_32.c
+index ef654530bf5a9..98123ff10506c 100644
+--- a/arch/x86/kernel/signal_32.c
++++ b/arch/x86/kernel/signal_32.c
+@@ -33,25 +33,55 @@
+ #include <asm/smap.h>
+ #include <asm/gsseg.h>
  
- 	mtk_dpi_disable(dpi);
- 	clk_disable_unprepare(dpi->pixel_clk);
-+	clk_disable_unprepare(dpi->tvd_clk);
- 	clk_disable_unprepare(dpi->engine_clk);
++/*
++ * The first GDT descriptor is reserved as 'NULL descriptor'.  As bits 0
++ * and 1 of a segment selector, i.e., the RPL bits, are NOT used to index
++ * GDT, selector values 0~3 all point to the NULL descriptor, thus values
++ * 0, 1, 2 and 3 are all valid NULL selector values.
++ *
++ * However IRET zeros ES, FS, GS, and DS segment registers if any of them
++ * is found to have any nonzero NULL selector value, which can be used by
++ * userspace in pre-FRED systems to spot any interrupt/exception by loading
++ * a nonzero NULL selector and waiting for it to become zero.  Before FRED
++ * there was nothing software could do to prevent such an information leak.
++ *
++ * ERETU, the only legit instruction to return to userspace from kernel
++ * under FRED, by design does NOT zero any segment register to avoid this
++ * problem behavior.
++ *
++ * As such, leave NULL selector values 0~3 unchanged.
++ */
++static inline u16 fixup_rpl(u16 sel)
++{
++	return sel <= 3 ? sel : sel | 3;
++}
++
+ #ifdef CONFIG_IA32_EMULATION
+ #include <asm/unistd_32_ia32.h>
+ 
+ static inline void reload_segments(struct sigcontext_32 *sc)
+ {
+-	unsigned int cur;
++	u16 cur;
+ 
++	/*
++	 * Reload fs and gs if they have changed in the signal
++	 * handler.  This does not handle long fs/gs base changes in
++	 * the handler, but does not clobber them at least in the
++	 * normal case.
++	 */
+ 	savesegment(gs, cur);
+-	if ((sc->gs | 0x03) != cur)
+-		load_gs_index(sc->gs | 0x03);
++	if (fixup_rpl(sc->gs) != cur)
++		load_gs_index(fixup_rpl(sc->gs));
+ 	savesegment(fs, cur);
+-	if ((sc->fs | 0x03) != cur)
+-		loadsegment(fs, sc->fs | 0x03);
++	if (fixup_rpl(sc->fs) != cur)
++		loadsegment(fs, fixup_rpl(sc->fs));
++
+ 	savesegment(ds, cur);
+-	if ((sc->ds | 0x03) != cur)
+-		loadsegment(ds, sc->ds | 0x03);
++	if (fixup_rpl(sc->ds) != cur)
++		loadsegment(ds, fixup_rpl(sc->ds));
+ 	savesegment(es, cur);
+-	if ((sc->es | 0x03) != cur)
+-		loadsegment(es, sc->es | 0x03);
++	if (fixup_rpl(sc->es) != cur)
++		loadsegment(es, fixup_rpl(sc->es));
  }
  
-@@ -487,6 +488,12 @@ static int mtk_dpi_power_on(struct mtk_dpi *dpi)
- 		goto err_refcount;
- 	}
+ #define sigset32_t			compat_sigset_t
+@@ -105,18 +135,12 @@ static bool ia32_restore_sigcontext(struct pt_regs *regs,
+ 	regs->orig_ax = -1;
  
-+	ret = clk_prepare_enable(dpi->tvd_clk);
-+	if (ret) {
-+		dev_err(dpi->dev, "Failed to enable tvd pll: %d\n", ret);
-+		goto err_engine;
-+	}
-+
- 	ret = clk_prepare_enable(dpi->pixel_clk);
- 	if (ret) {
- 		dev_err(dpi->dev, "Failed to enable pixel clock: %d\n", ret);
-@@ -496,6 +503,8 @@ static int mtk_dpi_power_on(struct mtk_dpi *dpi)
- 	return 0;
+ #ifdef CONFIG_IA32_EMULATION
+-	/*
+-	 * Reload fs and gs if they have changed in the signal
+-	 * handler.  This does not handle long fs/gs base changes in
+-	 * the handler, but does not clobber them at least in the
+-	 * normal case.
+-	 */
+ 	reload_segments(&sc);
+ #else
+-	loadsegment(gs, sc.gs);
+-	regs->fs = sc.fs;
+-	regs->es = sc.es;
+-	regs->ds = sc.ds;
++	loadsegment(gs, fixup_rpl(sc.gs));
++	regs->fs = fixup_rpl(sc.fs);
++	regs->es = fixup_rpl(sc.es);
++	regs->ds = fixup_rpl(sc.ds);
+ #endif
  
- err_pixel:
-+	clk_disable_unprepare(dpi->tvd_clk);
-+err_engine:
- 	clk_disable_unprepare(dpi->engine_clk);
- err_refcount:
- 	dpi->refcount--;
+ 	return fpu__restore_sig(compat_ptr(sc.fpstate), 1);
 -- 
 2.39.5
 
