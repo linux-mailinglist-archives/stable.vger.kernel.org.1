@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-134420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CC25A92AF6
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17623A926B3
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:15:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 321C51B63BEA
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:55:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7613F8A63F4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6761E14B092;
-	Thu, 17 Apr 2025 18:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6874D1EB1BF;
+	Thu, 17 Apr 2025 18:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHn/GCnN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VdCDzMbA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259591DF246;
-	Thu, 17 Apr 2025 18:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D158462;
+	Thu, 17 Apr 2025 18:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916075; cv=none; b=i/CDGJF68Xjoev5EIJjdDocLC0aUkuBSAqGRKLxR5j8qQOBp2oSQKM4CmlEdp44a8Oalo80EetUvrpfNZ57ZTn0/NlkSNLg4TT2KoZmr5TLQ8C7yVlhttdSqme4Np5S4+M1Bz3pJJoqJY6qmBpHJ8sZMjXStHZEh/x5dX5I1U94=
+	t=1744913743; cv=none; b=ro8pHnNusl8S9sZ/f+6kFQOqF7AAcVpYPLj41o8r+WAagb7nb5qitm9sBA6wYD4Wav7n7s4A1pzq6+6cfgCz9PNVTuSUyV6QTvMxqy6qx6lqxWwad+SYe6DniI+nocpf644qFTUHuZ7UJ7I8mts9Ae+DBlnd9/Iu6b+fXViS/ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916075; c=relaxed/simple;
-	bh=6412YSp7ASNX0H49DauwDEqiGv/XhKRn3APJXvhP5iM=;
+	s=arc-20240116; t=1744913743; c=relaxed/simple;
+	bh=rp2XpYGNtLN7v/61RR7Qwr0m120ePQJzLxQM1ZUv+Go=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q6e1aa4FXIznRqj10tiTdgZR6YMP69dOmlJ6Qkrzr0aMSdyRono424yFLKVfeGaGvMKYbpspdkDMxewc5cq+D6v5K2P/UBWkJPszVIcBrCr37qg1moeZaLZlmz2Xmkqal/KE576l4dGy5O0I8xyGBg0OwwkWHIAto3KQ7FjqEFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHn/GCnN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A669EC4CEE4;
-	Thu, 17 Apr 2025 18:54:34 +0000 (UTC)
+	 MIME-Version; b=ctzpMozsPJxInrycC7cHHPGAJQnPu8qeOi5H57JfevUJUlbZVVOMvmXtmfxwopXZ7OWgyyoWQYXOEgC0of41HSmAa5TIqW6sobkuuU8Pb5iJvcBbBTmFIH9abyK/Va9oeEDA1l72zPQKyDbpSLktrPrR2HZp6i/o7GmH+GT9ts8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VdCDzMbA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 392DBC4CEE4;
+	Thu, 17 Apr 2025 18:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916075;
-	bh=6412YSp7ASNX0H49DauwDEqiGv/XhKRn3APJXvhP5iM=;
+	s=korg; t=1744913743;
+	bh=rp2XpYGNtLN7v/61RR7Qwr0m120ePQJzLxQM1ZUv+Go=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bHn/GCnNC0opTGeAUroITWrg/iaAQLgH01ahb3bjyc6zQ0JXJplFYGcaM2y5IKGeD
-	 Kh2+hsE3Xq5fUnm6OOUIhN1CJX16VNvlrUpmtuEY6B3llNwlhA76z7ctigeIcr45pu
-	 GRP0idzUDRBhJ7REihKPAiHCDEKjuyOplByo0DDM=
+	b=VdCDzMbAQKv4PWeDLP0AVMuOpqAJgJZy6iMrECgYS0YK+RCraT9xb7CqkTBKKGe4L
+	 3MWi6vpz0kdCKquUpBGnkOIp3LVavJzJxxlRJ0hZbq4AKxquG0pgbknF/3YR2eoLGy
+	 lF6gzuEB++qlASIAu+riVio1UKCKgdAvFd44bVmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trevor Woerner <twoerner@gmail.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 6.12 317/393] thermal/drivers/rockchip: Add missing rk3328 mapping entry
-Date: Thu, 17 Apr 2025 19:52:06 +0200
-Message-ID: <20250417175120.358324586@linuxfoundation.org>
+	Geliang Tang <geliang@kernel.org>,
+	Cong Liu <liucong2@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.14 439/449] selftests: mptcp: fix incorrect fd checks in main_loop
+Date: Thu, 17 Apr 2025 19:52:07 +0200
+Message-ID: <20250417175135.986647366@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trevor Woerner <twoerner@gmail.com>
+From: Cong Liu <liucong2@kylinos.cn>
 
-commit ee022e5cae052e0c67ca7c5fec0f2e7bc897c70e upstream.
+commit 7335d4ac812917c16e04958775826d12d481c92d upstream.
 
-The mapping table for the rk3328 is missing the entry for -25C which is
-found in the TRM section 9.5.2 "Temperature-to-code mapping".
+Fix a bug where the code was checking the wrong file descriptors
+when opening the input files. The code was checking 'fd' instead
+of 'fd_in', which could lead to incorrect error handling.
 
-NOTE: the kernel uses the tsadc_q_sel=1'b1 mode which is defined as:
-      4096-<code in table>. Whereas the table in the TRM gives the code
-      "3774" for -25C, the kernel uses 4096-3774=322.
-
-[Dragan Simic] : "After going through the RK3308 and RK3328 TRMs, as
-  well as through the downstream kernel code, it seems we may have
-  some troubles at our hands.  Let me explain, please.
-
-  To sum it up, part 1 of the RK3308 TRM v1.1 says on page 538 that
-  the equation for the output when tsadc_q_sel equals 1 is (4096 -
-  tsadc_q), while part 1 of the RK3328 TRM v1.2 says that the output
-  equation is (1024 - tsadc_q) in that case.
-
-  The downstream kernel code, however, treats the RK3308 and RK3328
-  tables and their values as being the same.  It even mentions 1024 as
-  the "offset" value in a comment block for the rk_tsadcv3_control()
-  function, just like the upstream code does, which is obviously wrong
-  "offset" value when correlated with the table on page 544 of part 1
-  of the RK3308 TRM v1.1.
-
-  With all this in mind, it's obvious that more work is needed to make
-  it clear where's the actual mistake (it could be that the TRM is
-  wrong), which I'll volunteer for as part of the SoC binning project.
-  In the meantime, this patch looks fine as-is to me, by offering
-  what's a clear improvement to the current state of the upstream
-  code"
-
-Link: https://opensource.rock-chips.com/images/9/97/Rockchip_RK3328TRM_V1.1-Part1-20170321.pdf
+Fixes: 05be5e273c84 ("selftests: mptcp: add disconnect tests")
 Cc: stable@vger.kernel.org
-Fixes: eda519d5f73e ("thermal: rockchip: Support the RK3328 SOC in thermal driver")
-Signed-off-by: Trevor Woerner <twoerner@gmail.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://lore.kernel.org/r/20250207175048.35959-1-twoerner@gmail.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Fixes: ca7ae8916043 ("selftests: mptcp: mptfo Initiator/Listener")
+Co-developed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Cong Liu <liucong2@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250328-net-mptcp-misc-fixes-6-15-v1-2-34161a482a7f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/rockchip_thermal.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/net/mptcp/mptcp_connect.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/thermal/rockchip_thermal.c
-+++ b/drivers/thermal/rockchip_thermal.c
-@@ -386,6 +386,7 @@ static const struct tsadc_table rk3328_c
- 	{296, -40000},
- 	{304, -35000},
- 	{313, -30000},
-+	{322, -25000},
- 	{331, -20000},
- 	{340, -15000},
- 	{349, -10000},
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
+@@ -1270,7 +1270,7 @@ int main_loop(void)
+ 
+ 	if (cfg_input && cfg_sockopt_types.mptfo) {
+ 		fd_in = open(cfg_input, O_RDONLY);
+-		if (fd < 0)
++		if (fd_in < 0)
+ 			xerror("can't open %s:%d", cfg_input, errno);
+ 	}
+ 
+@@ -1293,7 +1293,7 @@ again:
+ 
+ 	if (cfg_input && !cfg_sockopt_types.mptfo) {
+ 		fd_in = open(cfg_input, O_RDONLY);
+-		if (fd < 0)
++		if (fd_in < 0)
+ 			xerror("can't open %s:%d", cfg_input, errno);
+ 	}
+ 
 
 
 
