@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F48A92812
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4E33A925E4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:08:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8BB44A3614
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE5378A4ED4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 496D72620E8;
-	Thu, 17 Apr 2025 18:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8162571DB;
+	Thu, 17 Apr 2025 18:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WeYUI9lh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZtATAsk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC14253B5E;
-	Thu, 17 Apr 2025 18:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1392571CE;
+	Thu, 17 Apr 2025 18:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914405; cv=none; b=H1jEBIEGcR84/rlXZ7hNLRocgwFZY5n1mI5En3aHxBWp7y2wDKSSbgdJnR0AoH0zHId+FXP0HYXbl0mRMmmbw9EKx2sOHRahGgFL/2ZHeI5qPhz5A+vzdhyj5iZJe4emN8J/O1DPa3W1gLAyT9dlTjUYB+mG5JhJesLuePiK0Z0=
+	t=1744913240; cv=none; b=AA5oSB/Ybqi4GURpAm//6ksXBDOX5FZTDrvZIuLASQOhAplid+VsCm4G6C1ERGGai7u0acz6VCV9c0Hw9DUTFkptvZGkdFwrL7gE5w+9k/EPtB9RKFq6thP/d5dmjOQmTk7WLQUyggiNpKpI//mF2gIAIhUEpHUaK1NImK9z1jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914405; c=relaxed/simple;
-	bh=lyfkRhoyrzgcQGzrFtzZiYzhQ6DGaCeWAF+pzgHOBn4=;
+	s=arc-20240116; t=1744913240; c=relaxed/simple;
+	bh=p/4XBzDTM33a/Ve3Y1w4yGLOomzNNAPlma9QXIxywvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GiYzcIhME5NyCPNA4nk5KIMuzEisFXk0zFWNWa/IAfHx5s+7to2E54kxxYLXaWpS666I1unqI0zq2hF5Eku7fRcPK0jgzpofUmwPY7RYQF9u9V24nnhc2JJZQ9CKhu35l03Ab05QjVHL5SlmhAtbK7+YIrWJgJyFWHsXp7NEHKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WeYUI9lh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7015EC4CEE4;
-	Thu, 17 Apr 2025 18:26:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=X1dSaHIKlgVQMh3Q5OmSrEp/JOD8h4VSzHLg1QzgP6pQeGFWPbSLn6o7//XNzxMV0Z3rhmFdp5oV7p2NKEpJBNU2S9Q1c7h0ehuK1Wu+35fPVazJADfdA465U6QIQwgI2eopBKwUGZjHa+dxmGyXBG6q2wFsbAZgrXqwCY7VPis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZtATAsk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20EE7C4CEE4;
+	Thu, 17 Apr 2025 18:07:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914404;
-	bh=lyfkRhoyrzgcQGzrFtzZiYzhQ6DGaCeWAF+pzgHOBn4=;
+	s=korg; t=1744913240;
+	bh=p/4XBzDTM33a/Ve3Y1w4yGLOomzNNAPlma9QXIxywvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WeYUI9lhXlZFP3F9l8pqQpxQJ+tIWtKvLNzKS8WDEJDnJMI5SAX+zjeDgR2YfU/LW
-	 Yuvofq6efU03ABPDD2DLjUVzm8gNNW5A+YvPnRO73nmqZMLyfRb1sjZ53ROn1aA4v/
-	 ITHmfTYxa6EQD1KZi8cNyH9UNRKStbR7Y1G0CWjI=
+	b=XZtATAskp/rrF/aV0sn30et1hgfH3r92qJ5OBQFqv8N296I6CUYEUf7dy2sKYWyGj
+	 gcmPGu0iKENFHQ+1tGthuHnFrXKJxWGyZtnlny7yp6A+sagNIraMDX/LD3rwjMjmT/
+	 3/x/5xkpjxAtBXVuKJ8TE0dZNhMirGtcLj7yCmaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.13 204/414] media: venus: hfi: add a check to handle OOB in sfr region
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.14 274/449] net: dsa: mv88e6xxx: fix internal PHYs for 6320 family
 Date: Thu, 17 Apr 2025 19:49:22 +0200
-Message-ID: <20250417175119.643331207@linuxfoundation.org>
+Message-ID: <20250417175129.085786836@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
+From: Marek Behún <kabel@kernel.org>
 
-commit f4b211714bcc70effa60c34d9fa613d182e3ef1e upstream.
+commit 52fdc41c3278c981066a461d03d5477ebfcf270c upstream.
 
-sfr->buf_size is in shared memory and can be modified by malicious user.
-OOB write is possible when the size is made higher than actual sfr data
-buffer. Cap the size to allocated size for such cases.
+Fix internal PHYs definition for the 6320 family, which has only 2
+internal PHYs (on ports 3 and 4).
 
-Cc: stable@vger.kernel.org
-Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: bc3931557d1d ("net: dsa: mv88e6xxx: Add number of internal PHYs")
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.6.x
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250317173250.28780-7-kabel@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/hfi_venus.c |   12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/net/dsa/mv88e6xxx/chip.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -1035,18 +1035,26 @@ static void venus_sfr_print(struct venus
- {
- 	struct device *dev = hdev->core->dev;
- 	struct hfi_sfr *sfr = hdev->sfr.kva;
-+	u32 size;
- 	void *p;
- 
- 	if (!sfr)
- 		return;
- 
--	p = memchr(sfr->data, '\0', sfr->buf_size);
-+	size = sfr->buf_size;
-+	if (!size)
-+		return;
-+
-+	if (size > ALIGNED_SFR_SIZE)
-+		size = ALIGNED_SFR_SIZE;
-+
-+	p = memchr(sfr->data, '\0', size);
- 	/*
- 	 * SFR isn't guaranteed to be NULL terminated since SYS_ERROR indicates
- 	 * that Venus is in the process of crashing.
- 	 */
- 	if (!p)
--		sfr->data[sfr->buf_size - 1] = '\0';
-+		sfr->data[size - 1] = '\0';
- 
- 	dev_err_ratelimited(dev, "SFR message from FW: %s\n", sfr->data);
- }
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -6259,7 +6259,8 @@ static const struct mv88e6xxx_info mv88e
+ 		.num_databases = 4096,
+ 		.num_macs = 8192,
+ 		.num_ports = 7,
+-		.num_internal_phys = 5,
++		.num_internal_phys = 2,
++		.internal_phys_offset = 3,
+ 		.num_gpio = 15,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+@@ -6286,7 +6287,8 @@ static const struct mv88e6xxx_info mv88e
+ 		.num_databases = 4096,
+ 		.num_macs = 8192,
+ 		.num_ports = 7,
+-		.num_internal_phys = 5,
++		.num_internal_phys = 2,
++		.internal_phys_offset = 3,
+ 		.num_gpio = 15,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
 
 
 
