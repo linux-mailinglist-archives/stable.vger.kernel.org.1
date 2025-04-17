@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-133786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 990FAA92795
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:27:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEBBAA9298E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:43:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B06C4A21A4
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:27:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D45A464B91
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57EED25A659;
-	Thu, 17 Apr 2025 18:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ABBE2571A1;
+	Thu, 17 Apr 2025 18:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZBImDzs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iscpoUGI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFFD266B78;
-	Thu, 17 Apr 2025 18:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173073594D;
+	Thu, 17 Apr 2025 18:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914134; cv=none; b=Km4kDJaSgFwhNHm5hNMTZ1MlibXHiU6dz0oIdkU21heHLutVPoum5Wvy+TxR+BJt0MnuCXYqs5I0zd+RlvsLT3rg7zGf91nDjdMx6v8yLPtPEIaNM40qXuEGoyyxqm/ysxvCYw5R3rKjpwoIZmeG8ulozocZhhchJPybsdUtq0g=
+	t=1744915223; cv=none; b=uP6SfAzLn8v0t97KIxrvUJtR/2GnJA14RgMqt2l/zcuNbv34QlEzt3+gkaw2Hf8nvC5P5jKISGwwTUiN9xrESAbaxhj4jHswAwPckJiUbY2IlYxJfDH+0EDb3t1UBa1AG+aV43Ubd160OcwlSOXPkkLG+0Lnz2Xeo7DGzgWxVOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914134; c=relaxed/simple;
-	bh=2xq58B7Q37m+Zip4dhKDlSNVjMudGDdx3uWa+VlmFlI=;
+	s=arc-20240116; t=1744915223; c=relaxed/simple;
+	bh=JDg/L1j6BAjcc9oSkhbiRuOWyNgH+xr4mBR29Tq7+jE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X2m3tIshvDZpyJ7HIlh8KWpiM+lZGmXHSHx4pUVtKhFKsZiifSnrFAzwvrRvb0h+veAha68gx+pKzx06J05vR2CxClQbUvpw5SpTowUiDwf1tzx7gJuB+XwH+hBuQV9MI+1J9dtpgP9S2JLNuB8m7MFaoYrgFjP90y5XLfIAR4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZBImDzs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A3F8C4CEE4;
-	Thu, 17 Apr 2025 18:22:13 +0000 (UTC)
+	 MIME-Version; b=TwCXKI88DLZqrtyzVY8e2bOZnCgDdDkWjSTiYxFiVsGOv8S+7T1Y65OIvUv4j5Rkm+407o+EpJSVUQKicKHx9ypVyPST1v0TiFPSyC1y5kVKCON5g/jKY/pAfhoj0OqQRHPYuO35fp+HHMVAgwaZujB24KM27CeiLhXSJ3Q+QHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iscpoUGI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6030EC4CEE7;
+	Thu, 17 Apr 2025 18:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914133;
-	bh=2xq58B7Q37m+Zip4dhKDlSNVjMudGDdx3uWa+VlmFlI=;
+	s=korg; t=1744915222;
+	bh=JDg/L1j6BAjcc9oSkhbiRuOWyNgH+xr4mBR29Tq7+jE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sZBImDzsweNAK+XTOYOXqphAYn56d9wZlGNH+0f8gVm/FXCjEebjT/j/75sNKERzZ
-	 A0Gout2pqQNXKWqP7DThX1FqK91B1xQq/dDPXZkMMIvl7i0YR2rh4cxyxjz7nXzlfz
-	 p7s5N/zQgGCblznK5QjeLYOL2cjWIxShAnSpNSUg=
+	b=iscpoUGIzc3ztvWPk7S+/pzLVzBU7acRTNYVdbOSAeX/Ux8nzYdKizUwNAb9buX1B
+	 eVWs9wuKEazSkjZ9zgCHCaOPsWUoLOI67bDepAxY8pdsoEnyeSJUs13l5HhKL3+tBZ
+	 7hxGeIwpESVHwk9QBlyWb08mpBvYiTpQ8Dk3f/rA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaustabh Chakraborty <kauschluss@disroot.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Joe Damato <jdamato@fastly.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 078/414] mmc: dw_mmc: add a quirk for accessing 64-bit FIFOs in two halves
-Date: Thu, 17 Apr 2025 19:47:16 +0200
-Message-ID: <20250417175114.582108314@linuxfoundation.org>
+Subject: [PATCH 6.12 028/393] net: libwx: handle page_pool_dev_alloc_pages error
+Date: Thu, 17 Apr 2025 19:47:17 +0200
+Message-ID: <20250417175108.725434729@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,185 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit 57c0902f8bec51add5a1eb908d8b876592725d81 ]
+[ Upstream commit 7f1ff1b38a7c8b872382b796023419d87d78c47e ]
 
-In certain DW MMC implementations (such as in some Exynos7870
-controllers), 64-bit read/write is not allowed from a 64-bit FIFO.
-Add a quirk which facilitates accessing the 64-bit FIFO registers in two
-32-bit halves.
+page_pool_dev_alloc_pages could return NULL. There was a WARN_ON(!page)
+but it would still proceed to use the NULL pointer and then crash.
 
-Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
-Link: https://lore.kernel.org/r/20250219-exynos7870-mmc-v2-2-b4255a3e39ed@disroot.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+This is similar to commit 001ba0902046
+("net: fec: handle page_pool_dev_alloc_pages error").
+
+This is found by our static analysis tool KNighter.
+
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Fixes: 3c47e8ae113a ("net: libwx: Support to receive packets in NAPI")
+Reviewed-by: Joe Damato <jdamato@fastly.com>
+Link: https://patch.msgid.link/20250407184952.2111299-1-chenyuan0y@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/dw_mmc.c | 94 ++++++++++++++++++++++++++++++++++++++-
- drivers/mmc/host/dw_mmc.h | 27 +++++++++++
- 2 files changed, 119 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
-index 3cbda98d08d28..74f224647bf1e 100644
---- a/drivers/mmc/host/dw_mmc.c
-+++ b/drivers/mmc/host/dw_mmc.c
-@@ -2579,6 +2579,91 @@ static void dw_mci_pull_data64(struct dw_mci *host, void *buf, int cnt)
- 	}
- }
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+index 2b3d6586f44a5..71c891d14fb62 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+@@ -309,7 +309,8 @@ static bool wx_alloc_mapped_page(struct wx_ring *rx_ring,
+ 		return true;
  
-+static void dw_mci_push_data64_32(struct dw_mci *host, void *buf, int cnt)
-+{
-+	struct mmc_data *data = host->data;
-+	int init_cnt = cnt;
-+
-+	/* try and push anything in the part_buf */
-+	if (unlikely(host->part_buf_count)) {
-+		int len = dw_mci_push_part_bytes(host, buf, cnt);
-+
-+		buf += len;
-+		cnt -= len;
-+
-+		if (host->part_buf_count == 8) {
-+			mci_fifo_l_writeq(host->fifo_reg, host->part_buf);
-+			host->part_buf_count = 0;
-+		}
-+	}
-+#ifndef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
-+	if (unlikely((unsigned long)buf & 0x7)) {
-+		while (cnt >= 8) {
-+			u64 aligned_buf[16];
-+			int len = min(cnt & -8, (int)sizeof(aligned_buf));
-+			int items = len >> 3;
-+			int i;
-+			/* memcpy from input buffer into aligned buffer */
-+			memcpy(aligned_buf, buf, len);
-+			buf += len;
-+			cnt -= len;
-+			/* push data from aligned buffer into fifo */
-+			for (i = 0; i < items; ++i)
-+				mci_fifo_l_writeq(host->fifo_reg, aligned_buf[i]);
-+		}
-+	} else
-+#endif
-+	{
-+		u64 *pdata = buf;
-+
-+		for (; cnt >= 8; cnt -= 8)
-+			mci_fifo_l_writeq(host->fifo_reg, *pdata++);
-+		buf = pdata;
-+	}
-+	/* put anything remaining in the part_buf */
-+	if (cnt) {
-+		dw_mci_set_part_bytes(host, buf, cnt);
-+		/* Push data if we have reached the expected data length */
-+		if ((data->bytes_xfered + init_cnt) ==
-+		    (data->blksz * data->blocks))
-+			mci_fifo_l_writeq(host->fifo_reg, host->part_buf);
-+	}
-+}
-+
-+static void dw_mci_pull_data64_32(struct dw_mci *host, void *buf, int cnt)
-+{
-+#ifndef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
-+	if (unlikely((unsigned long)buf & 0x7)) {
-+		while (cnt >= 8) {
-+			/* pull data from fifo into aligned buffer */
-+			u64 aligned_buf[16];
-+			int len = min(cnt & -8, (int)sizeof(aligned_buf));
-+			int items = len >> 3;
-+			int i;
-+
-+			for (i = 0; i < items; ++i)
-+				aligned_buf[i] = mci_fifo_l_readq(host->fifo_reg);
-+
-+			/* memcpy from aligned buffer into output buffer */
-+			memcpy(buf, aligned_buf, len);
-+			buf += len;
-+			cnt -= len;
-+		}
-+	} else
-+#endif
-+	{
-+		u64 *pdata = buf;
-+
-+		for (; cnt >= 8; cnt -= 8)
-+			*pdata++ = mci_fifo_l_readq(host->fifo_reg);
-+		buf = pdata;
-+	}
-+	if (cnt) {
-+		host->part_buf = mci_fifo_l_readq(host->fifo_reg);
-+		dw_mci_pull_final_bytes(host, buf, cnt);
-+	}
-+}
-+
- static void dw_mci_pull_data(struct dw_mci *host, void *buf, int cnt)
- {
- 	int len;
-@@ -3379,8 +3464,13 @@ int dw_mci_probe(struct dw_mci *host)
- 		width = 16;
- 		host->data_shift = 1;
- 	} else if (i == 2) {
--		host->push_data = dw_mci_push_data64;
--		host->pull_data = dw_mci_pull_data64;
-+		if ((host->quirks & DW_MMC_QUIRK_FIFO64_32)) {
-+			host->push_data = dw_mci_push_data64_32;
-+			host->pull_data = dw_mci_pull_data64_32;
-+		} else {
-+			host->push_data = dw_mci_push_data64;
-+			host->pull_data = dw_mci_pull_data64;
-+		}
- 		width = 64;
- 		host->data_shift = 3;
- 	} else {
-diff --git a/drivers/mmc/host/dw_mmc.h b/drivers/mmc/host/dw_mmc.h
-index 6447b916990dc..5463392dc8110 100644
---- a/drivers/mmc/host/dw_mmc.h
-+++ b/drivers/mmc/host/dw_mmc.h
-@@ -281,6 +281,8 @@ struct dw_mci_board {
+ 	page = page_pool_dev_alloc_pages(rx_ring->page_pool);
+-	WARN_ON(!page);
++	if (unlikely(!page))
++		return false;
+ 	dma = page_pool_get_dma_addr(page);
  
- /* Support for longer data read timeout */
- #define DW_MMC_QUIRK_EXTENDED_TMOUT            BIT(0)
-+/* Force 32-bit access to the FIFO */
-+#define DW_MMC_QUIRK_FIFO64_32                 BIT(1)
- 
- #define DW_MMC_240A		0x240a
- #define DW_MMC_280A		0x280a
-@@ -472,6 +474,31 @@ struct dw_mci_board {
- #define mci_fifo_writel(__value, __reg)	__raw_writel(__reg, __value)
- #define mci_fifo_writeq(__value, __reg)	__raw_writeq(__reg, __value)
- 
-+/*
-+ * Some dw_mmc devices have 64-bit FIFOs, but expect them to be
-+ * accessed using two 32-bit accesses. If such controller is used
-+ * with a 64-bit kernel, this has to be done explicitly.
-+ */
-+static inline u64 mci_fifo_l_readq(void __iomem *addr)
-+{
-+	u64 ans;
-+	u32 proxy[2];
-+
-+	proxy[0] = mci_fifo_readl(addr);
-+	proxy[1] = mci_fifo_readl(addr + 4);
-+	memcpy(&ans, proxy, 8);
-+	return ans;
-+}
-+
-+static inline void mci_fifo_l_writeq(void __iomem *addr, u64 value)
-+{
-+	u32 proxy[2];
-+
-+	memcpy(proxy, &value, 8);
-+	mci_fifo_writel(addr, proxy[0]);
-+	mci_fifo_writel(addr + 4, proxy[1]);
-+}
-+
- /* Register access macros */
- #define mci_readl(dev, reg)			\
- 	readl_relaxed((dev)->regs + SDMMC_##reg)
+ 	bi->page_dma = dma;
 -- 
 2.39.5
 
