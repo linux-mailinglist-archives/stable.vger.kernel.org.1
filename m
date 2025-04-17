@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-133607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFBE7A92667
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:13:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7990BA928D4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:38:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 496BA3AF959
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:12:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D9A81B61614
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51416223710;
-	Thu, 17 Apr 2025 18:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E3BF256C93;
+	Thu, 17 Apr 2025 18:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k0B4FRpI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ij/hx61b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104361A3178;
-	Thu, 17 Apr 2025 18:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE052DFA4B;
+	Thu, 17 Apr 2025 18:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913589; cv=none; b=IrmGtxYEnv7MTImoIEvx115Nw9zQ70j65PrNhetgDELFhFI5fOxKISNWVFLknWewskwaeNmYXas/kGRfrk3XgaO7z26KGDQPTzIXFb1LSPBZokk/OzRUiZSgD+WuVqTBZ1MAQkRewNbQauO9zlAg0C2flsDHRj/sUsutw8WppuE=
+	t=1744914747; cv=none; b=dUJDUDG3n6bhfV0ulLzN4xftLZrFUY83j27oVio8ythMo3PFiK9ww8941fll380TvYjoZkyDOWC3EbLwR/D+SOc5nuMI4Syw/ymzW8BHiRVzLgb9gBmWONEEq5Z53olWlS6OEQkKZph4dCqCkhU3No7gkqEk6tL9TUSbNOVD1HQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913589; c=relaxed/simple;
-	bh=zd1OCTRbJtIPt0bva3hGARU+wDOl2uGqXPiU8HIsFEk=;
+	s=arc-20240116; t=1744914747; c=relaxed/simple;
+	bh=MlChsecDT03DsM+zCSKJ0loByjDC0G2oJVUrwAJJj5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TD4N5YQ3VR3BLBS5aOdD+trMvGi02mTSJ0Z/6unFXUHKTz+oteKAy8TxTU5fsgdtSUGU87o6N7mbGO8k0jJnlVaX1LhyLyCIwGEVnpk8bBKNEkUpd5ObagzTgbkoY3i0iiTXxdTwFcYH/8Fql8efiNvM3trE+EzNLvzYXZnxcO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k0B4FRpI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951DDC4CEE4;
-	Thu, 17 Apr 2025 18:13:08 +0000 (UTC)
+	 MIME-Version; b=tW+6l6GqB61KGynqbL2oqYfCSAag6d5VlFEcNFCZjmirbhA87vzHgVAOouN5HdfBWl6K2M+mAbIR5l6Nv9QGanNJ2eYPZ8xKQmBFyiIsu4Y4ttmzett7iHzamjVv7GzWzEn+Lwabr5J1I0QJSVK4wnLksP5i1Pi5slYsaKtjJLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ij/hx61b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102F5C4CEE4;
+	Thu, 17 Apr 2025 18:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913588;
-	bh=zd1OCTRbJtIPt0bva3hGARU+wDOl2uGqXPiU8HIsFEk=;
+	s=korg; t=1744914747;
+	bh=MlChsecDT03DsM+zCSKJ0loByjDC0G2oJVUrwAJJj5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k0B4FRpIGQTu4Ba43ygimWEYXA/K1PEBjP0nDL1u5SzVl7DZEHySHLwPU9SRGV8j7
-	 WkNlX0bAgR206iDD+d7SVd5XuRDz1pVKM5gjLmpR7NWw0y+UVLF7B7rd+mQQ6rAxUD
-	 pEa9we7toxbbFBlBKf1d3mvZFy+IHImeUjPOm3RY=
+	b=ij/hx61bSf3hI/9skEl0k5E69GGsWN7nahFIxUuHfqW8O4/pJgAdWvdvNh4tixUdn
+	 blUdvI4WHHjCDvP8KV5ggLId0H1VDkZq5jMQ0+hsDOzz6Iy+OgJU5BGniYUN6z39U6
+	 tEkAp/TB78Y6LY1SSIJUcA3zWUuQ1iLiIRbOiCn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.14 387/449] dm-ebs: fix prefetch-vs-suspend race
-Date: Thu, 17 Apr 2025 19:51:15 +0200
-Message-ID: <20250417175133.842413429@linuxfoundation.org>
+	Thomas Gleixner <tglx@linutronix.de>,
+	Jacob Pan <jacob.jun.pan@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 6.13 318/414] iommu/vt-d: Put IRTE back into posted MSI mode if vCPU posting is disabled
+Date: Thu, 17 Apr 2025 19:51:16 +0200
+Message-ID: <20250417175124.224973683@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 9c565428788fb9b49066f94ab7b10efc686a0a4c upstream.
+commit 2454823e97a63d85a6b215905f71e5a06324eab7 upstream.
 
-There's a possible race condition in dm-ebs - dm bufio prefetch may be in
-progress while the device is suspended. Fix this by calling
-dm_bufio_client_reset in the postsuspend hook.
+Add a helper to take care of reconfiguring an IRTE to deliver IRQs to the
+host, i.e. not to a vCPU, and use the helper when an IRTE's vCPU affinity
+is nullified, i.e. when KVM puts an IRTE back into "host" mode.  Because
+posted MSIs use an ephemeral IRTE, using modify_irte() puts the IRTE into
+full remapped mode, i.e. unintentionally disables posted MSIs on the IRQ.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: ed1e48ea4370 ("iommu/vt-d: Enable posted mode for device MSIs")
 Cc: stable@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Jacob Pan <jacob.jun.pan@linux.intel.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/r/20250315025135.2365846-2-seanjc@google.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-ebs-target.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/iommu/intel/irq_remapping.c |   19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
---- a/drivers/md/dm-ebs-target.c
-+++ b/drivers/md/dm-ebs-target.c
-@@ -390,6 +390,12 @@ static int ebs_map(struct dm_target *ti,
- 	return DM_MAPIO_REMAPPED;
- }
+--- a/drivers/iommu/intel/irq_remapping.c
++++ b/drivers/iommu/intel/irq_remapping.c
+@@ -1173,7 +1173,17 @@ static void intel_ir_reconfigure_irte_po
+ static inline void intel_ir_reconfigure_irte_posted(struct irq_data *irqd) {}
+ #endif
  
-+static void ebs_postsuspend(struct dm_target *ti)
+-static void intel_ir_reconfigure_irte(struct irq_data *irqd, bool force)
++static void __intel_ir_reconfigure_irte(struct irq_data *irqd, bool force_host)
 +{
-+	struct ebs_c *ec = ti->private;
-+	dm_bufio_client_reset(ec->bufio);
++	struct intel_ir_data *ir_data = irqd->chip_data;
++
++	if (ir_data->irq_2_iommu.posted_msi)
++		intel_ir_reconfigure_irte_posted(irqd);
++	else if (force_host || ir_data->irq_2_iommu.mode == IRQ_REMAPPING)
++		modify_irte(&ir_data->irq_2_iommu, &ir_data->irte_entry);
 +}
 +
- static void ebs_status(struct dm_target *ti, status_type_t type,
- 		       unsigned int status_flags, char *result, unsigned int maxlen)
++static void intel_ir_reconfigure_irte(struct irq_data *irqd, bool force_host)
  {
-@@ -447,6 +453,7 @@ static struct target_type ebs_target = {
- 	.ctr		 = ebs_ctr,
- 	.dtr		 = ebs_dtr,
- 	.map		 = ebs_map,
-+	.postsuspend	 = ebs_postsuspend,
- 	.status		 = ebs_status,
- 	.io_hints	 = ebs_io_hints,
- 	.prepare_ioctl	 = ebs_prepare_ioctl,
+ 	struct intel_ir_data *ir_data = irqd->chip_data;
+ 	struct irte *irte = &ir_data->irte_entry;
+@@ -1186,10 +1196,7 @@ static void intel_ir_reconfigure_irte(st
+ 	irte->vector = cfg->vector;
+ 	irte->dest_id = IRTE_DEST(cfg->dest_apicid);
+ 
+-	if (ir_data->irq_2_iommu.posted_msi)
+-		intel_ir_reconfigure_irte_posted(irqd);
+-	else if (force || ir_data->irq_2_iommu.mode == IRQ_REMAPPING)
+-		modify_irte(&ir_data->irq_2_iommu, irte);
++	__intel_ir_reconfigure_irte(irqd, force_host);
+ }
+ 
+ /*
+@@ -1244,7 +1251,7 @@ static int intel_ir_set_vcpu_affinity(st
+ 
+ 	/* stop posting interrupts, back to the default mode */
+ 	if (!vcpu_pi_info) {
+-		modify_irte(&ir_data->irq_2_iommu, &ir_data->irte_entry);
++		__intel_ir_reconfigure_irte(data, true);
+ 	} else {
+ 		struct irte irte_pi;
+ 
 
 
 
