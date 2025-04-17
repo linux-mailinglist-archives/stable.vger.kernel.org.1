@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-134244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7706A92A44
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:48:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15809A92A2B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6600B8E2A63
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:45:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0E363BDC75
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:43:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ABE82517AF;
-	Thu, 17 Apr 2025 18:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C59C227EB1;
+	Thu, 17 Apr 2025 18:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MPQPCbiu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5rac7Nk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259972566CE;
-	Thu, 17 Apr 2025 18:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A54719ABC6;
+	Thu, 17 Apr 2025 18:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915541; cv=none; b=UT+u8CjUA+/z5LuutaX3uKVJ/XyVT92yWYzp7FYLhdpW11qE3+vgsnTOt6k2lRGXxL/vUtPm4JNCc+0bF9Jr/J3EQug2F64EQYMyXDfAZ/TLppDlJRMYFZVHal7Mbr4Xx8exdUoDuIq+WFYU5O96RrzJ5vwMvKa7HZBDgzRsDQU=
+	t=1744915444; cv=none; b=TeOU1NCKfv5QR90hW24ByjBEZLp9+R7tbS8qDUWv9korCCcEaVqmPQ8I18BomaP1+ndiGJfq4fjYNWNInTSPfzbLZc27wE7bkpCXHYkuIA6y6SerkbWA4OpA7WZ/x32PUA7JHQj5yCj6rLFoUzHr4rLsqQX1kFd9stdkLHfDRZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915541; c=relaxed/simple;
-	bh=BQG94n+IjYgNdf+RV3CqwVZdvDOxQIHe1dEwDGVmDq4=;
+	s=arc-20240116; t=1744915444; c=relaxed/simple;
+	bh=h84wUcQyejpJnc1xHvPdZmZUWhbe4ROZzx2lIaU23ks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ByN0NPDzQ4h2cnPLLnwpf7LMcu4Wzuh3D9TR/t3x9myDauObFdq0aXEHGAppjAf7NflsGcS7BL1fuDNKdT2l0aRqhCPHM4Eg1hLzHANHQFKhpvZm4XBMtx6dUnffO48+x/3Tfu1xWY8oYNSeB9TGl/u1LR9SpYHKDGX2FVSErrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MPQPCbiu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A4DC4CEEF;
-	Thu, 17 Apr 2025 18:45:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QwELXiuhTTBo0/dT7cqxs3pfSFM4H9T/idwSVh5hhMVYSZ/UNk//XoGbjkVs1hzUjLv5dkNuF1W0YGgDbP6EO89DvrZqCmj8xdrqe5BXi1SnYcPahGHrHdF3236Md4af++womCK9uoC4fXIdFZfDLpSG3CFvDwkueuhYH9/+0JU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5rac7Nk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4696EC4CEE4;
+	Thu, 17 Apr 2025 18:44:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915540;
-	bh=BQG94n+IjYgNdf+RV3CqwVZdvDOxQIHe1dEwDGVmDq4=;
+	s=korg; t=1744915443;
+	bh=h84wUcQyejpJnc1xHvPdZmZUWhbe4ROZzx2lIaU23ks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MPQPCbiuS33XGbwdEiMxzl6wicwINrKwihbl4viG1skVnup3Z47oQltjhY4X/MpBh
-	 ZVpq7wtLp+0TCvNiZF9gp4DllTjP+JkWqY8xgwfNvZQwkocMxD7mmpnAhssKwoH/+o
-	 kUmn0iuUxRc3rUfd8idWPYUDrEwBTus6+QosLek0=
+	b=l5rac7Nk5Dx9UZMSYNP3O6Q+4Pp/02Xd5qtMQyWE8Q3mildshIxs6HIxU/GxZjubm
+	 zksS5FTWZOGiV/NXKzr9vV2iM9HFzEygPt+d9Cvp2a7+Spo25Q9naUYhiUI/ncaqA6
+	 Ap7xdJvrFwqvrG6v/I9EnCQsXk4hz8A0KbCa8+ps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Zhikai Zhai <zhikai.zhai@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 129/393] drm/amd/display: Update Cursor request mode to the beginning prefetch always
-Date: Thu, 17 Apr 2025 19:48:58 +0200
-Message-ID: <20250417175112.777630024@linuxfoundation.org>
+Subject: [PATCH 6.12 130/393] drm/amdgpu: Unlocked unmap only clear page table leaves
+Date: Thu, 17 Apr 2025 19:48:59 +0200
+Message-ID: <20250417175112.818985260@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
 References: <20250417175107.546547190@linuxfoundation.org>
@@ -63,99 +61,153 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhikai Zhai <zhikai.zhai@amd.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-[ Upstream commit 4a4077b4b63a8404efd6d37fc2926f03fb25bace ]
+[ Upstream commit 23b645231eeffdaf44021debac881d2f26824150 ]
 
-[Why]
-The double buffer cursor registers is updated by the cursor
-vupdate event. There is a gap between vupdate and cursor data
-fetch if cursor fetch data reletive to cursor position.
-Cursor corruption will happen if we update the cursor surface
-in this gap.
+SVM migration unmap pages from GPU and then update mapping to GPU to
+recover page fault. Currently unmap clears the PDE entry for range
+length >= huge page and free PTB bo, update mapping to alloc new PT bo.
+There is race bug that the freed entry bo maybe still on the pt_free
+list, reused when updating mapping and then freed, leave invalid PDE
+entry and cause GPU page fault.
 
-[How]
-Modify the cursor request mode to the beginning prefetch always
-and avoid wraparound calculation issues.
+By setting the update to clear only one PDE entry or clear PTB, to
+avoid unmap to free PTE bo. This fixes the race bug and improve the
+unmap and map to GPU performance. Update mapping to huge page will
+still free the PTB bo.
 
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Zhikai Zhai <zhikai.zhai@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+With this change, the vm->pt_freed list and work is not needed. Add
+WARN_ON(unlocked) in amdgpu_vm_pt_free_dfs to catch if unmap to free the
+PTB.
+
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/hubp/dcn31/dcn31_hubp.c    |  2 +-
- .../amd/display/dc/hwss/dcn10/dcn10_hwseq.c   | 22 ++++++++-----------
- 2 files changed, 10 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c    |  4 ---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h    |  4 ---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c | 43 +++++++----------------
+ 3 files changed, 13 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hubp/dcn31/dcn31_hubp.c b/drivers/gpu/drm/amd/display/dc/hubp/dcn31/dcn31_hubp.c
-index a65a0ddee6467..c671908ba7d06 100644
---- a/drivers/gpu/drm/amd/display/dc/hubp/dcn31/dcn31_hubp.c
-+++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn31/dcn31_hubp.c
-@@ -44,7 +44,7 @@ void hubp31_set_unbounded_requesting(struct hubp *hubp, bool enable)
- 	struct dcn20_hubp *hubp2 = TO_DCN20_HUBP(hubp);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+index 73e02141a6e21..37d53578825b3 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -2434,8 +2434,6 @@ int amdgpu_vm_init(struct amdgpu_device *adev, struct amdgpu_vm *vm,
+ 	spin_lock_init(&vm->status_lock);
+ 	INIT_LIST_HEAD(&vm->freed);
+ 	INIT_LIST_HEAD(&vm->done);
+-	INIT_LIST_HEAD(&vm->pt_freed);
+-	INIT_WORK(&vm->pt_free_work, amdgpu_vm_pt_free_work);
+ 	INIT_KFIFO(vm->faults);
  
- 	REG_UPDATE(DCHUBP_CNTL, HUBP_UNBOUNDED_REQ_MODE, enable);
--	REG_UPDATE(CURSOR_CONTROL, CURSOR_REQ_MODE, enable);
-+	REG_UPDATE(CURSOR_CONTROL, CURSOR_REQ_MODE, 1);
+ 	r = amdgpu_vm_init_entities(adev, vm);
+@@ -2607,8 +2605,6 @@ void amdgpu_vm_fini(struct amdgpu_device *adev, struct amdgpu_vm *vm)
+ 
+ 	amdgpu_amdkfd_gpuvm_destroy_cb(adev, vm);
+ 
+-	flush_work(&vm->pt_free_work);
+-
+ 	root = amdgpu_bo_ref(vm->root.bo);
+ 	amdgpu_bo_reserve(root, true);
+ 	amdgpu_vm_put_task_info(vm->task_info);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
+index 52dd7cdfdc814..ee893527a4f1d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
+@@ -360,10 +360,6 @@ struct amdgpu_vm {
+ 	/* BOs which are invalidated, has been updated in the PTs */
+ 	struct list_head        done;
+ 
+-	/* PT BOs scheduled to free and fill with zero if vm_resv is not hold */
+-	struct list_head	pt_freed;
+-	struct work_struct	pt_free_work;
+-
+ 	/* contains the page directory */
+ 	struct amdgpu_vm_bo_base     root;
+ 	struct dma_fence	*last_update;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c
+index f78a0434a48fa..54ae0e9bc6d77 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c
+@@ -546,27 +546,6 @@ static void amdgpu_vm_pt_free(struct amdgpu_vm_bo_base *entry)
+ 	amdgpu_bo_unref(&entry->bo);
  }
  
- void hubp31_soft_reset(struct hubp *hubp, bool reset)
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-index fd0530251c6e5..d725af14af371 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-@@ -1992,20 +1992,11 @@ static void delay_cursor_until_vupdate(struct dc *dc, struct pipe_ctx *pipe_ctx)
- 	dc->hwss.get_position(&pipe_ctx, 1, &position);
- 	vpos = position.vertical_count;
- 
--	/* Avoid wraparound calculation issues */
--	vupdate_start += stream->timing.v_total;
--	vupdate_end += stream->timing.v_total;
--	vpos += stream->timing.v_total;
+-void amdgpu_vm_pt_free_work(struct work_struct *work)
+-{
+-	struct amdgpu_vm_bo_base *entry, *next;
+-	struct amdgpu_vm *vm;
+-	LIST_HEAD(pt_freed);
 -
- 	if (vpos <= vupdate_start) {
- 		/* VPOS is in VACTIVE or back porch. */
- 		lines_to_vupdate = vupdate_start - vpos;
--	} else if (vpos > vupdate_end) {
--		/* VPOS is in the front porch. */
--		return;
- 	} else {
--		/* VPOS is in VUPDATE. */
--		lines_to_vupdate = 0;
-+		lines_to_vupdate = stream->timing.v_total - vpos + vupdate_start;
- 	}
+-	vm = container_of(work, struct amdgpu_vm, pt_free_work);
+-
+-	spin_lock(&vm->status_lock);
+-	list_splice_init(&vm->pt_freed, &pt_freed);
+-	spin_unlock(&vm->status_lock);
+-
+-	/* flush_work in amdgpu_vm_fini ensure vm->root.bo is valid. */
+-	amdgpu_bo_reserve(vm->root.bo, true);
+-
+-	list_for_each_entry_safe(entry, next, &pt_freed, vm_status)
+-		amdgpu_vm_pt_free(entry);
+-
+-	amdgpu_bo_unreserve(vm->root.bo);
+-}
+-
+ /**
+  * amdgpu_vm_pt_free_list - free PD/PT levels
+  *
+@@ -579,19 +558,15 @@ void amdgpu_vm_pt_free_list(struct amdgpu_device *adev,
+ 			    struct amdgpu_vm_update_params *params)
+ {
+ 	struct amdgpu_vm_bo_base *entry, *next;
+-	struct amdgpu_vm *vm = params->vm;
+ 	bool unlocked = params->unlocked;
  
- 	/* Calculate time until VUPDATE in microseconds. */
-@@ -2013,13 +2004,18 @@ static void delay_cursor_until_vupdate(struct dc *dc, struct pipe_ctx *pipe_ctx)
- 		stream->timing.h_total * 10000u / stream->timing.pix_clk_100hz;
- 	us_to_vupdate = lines_to_vupdate * us_per_line;
- 
-+	/* Stall out until the cursor update completes. */
-+	if (vupdate_end < vupdate_start)
-+		vupdate_end += stream->timing.v_total;
-+
-+	/* Position is in the range of vupdate start and end*/
-+	if (lines_to_vupdate > stream->timing.v_total - vupdate_end + vupdate_start)
-+		us_to_vupdate = 0;
-+
- 	/* 70 us is a conservative estimate of cursor update time*/
- 	if (us_to_vupdate > 70)
+ 	if (list_empty(&params->tlb_flush_waitlist))
  		return;
  
--	/* Stall out until the cursor update completes. */
--	if (vupdate_end < vupdate_start)
--		vupdate_end += stream->timing.v_total;
- 	us_vupdate = (vupdate_end - vupdate_start + 1) * us_per_line;
- 	udelay(us_to_vupdate + us_vupdate);
- }
+-	if (unlocked) {
+-		spin_lock(&vm->status_lock);
+-		list_splice_init(&params->tlb_flush_waitlist, &vm->pt_freed);
+-		spin_unlock(&vm->status_lock);
+-		schedule_work(&vm->pt_free_work);
+-		return;
+-	}
++	/*
++	 * unlocked unmap clear page table leaves, warning to free the page entry.
++	 */
++	WARN_ON(unlocked);
+ 
+ 	list_for_each_entry_safe(entry, next, &params->tlb_flush_waitlist, vm_status)
+ 		amdgpu_vm_pt_free(entry);
+@@ -899,7 +874,15 @@ int amdgpu_vm_ptes_update(struct amdgpu_vm_update_params *params,
+ 		incr = (uint64_t)AMDGPU_GPU_PAGE_SIZE << shift;
+ 		mask = amdgpu_vm_pt_entries_mask(adev, cursor.level);
+ 		pe_start = ((cursor.pfn >> shift) & mask) * 8;
+-		entry_end = ((uint64_t)mask + 1) << shift;
++
++		if (cursor.level < AMDGPU_VM_PTB && params->unlocked)
++			/*
++			 * MMU notifier callback unlocked unmap huge page, leave is PDE entry,
++			 * only clear one entry. Next entry search again for PDE or PTE leave.
++			 */
++			entry_end = 1ULL << shift;
++		else
++			entry_end = ((uint64_t)mask + 1) << shift;
+ 		entry_end += cursor.pfn & ~(entry_end - 1);
+ 		entry_end = min(entry_end, end);
+ 
 -- 
 2.39.5
 
