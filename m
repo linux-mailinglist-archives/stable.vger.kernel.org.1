@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-134234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B869AA92A00
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:46:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 204E5A9280D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A00AD467510
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:45:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7810216D1B6
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530D2256C84;
-	Thu, 17 Apr 2025 18:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083312620EE;
+	Thu, 17 Apr 2025 18:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1li4KDTP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rEaZmYSZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D312566ED;
-	Thu, 17 Apr 2025 18:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71C725335D;
+	Thu, 17 Apr 2025 18:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915508; cv=none; b=Lt6TC2yo3FEcr/yFMR9V/s6PkPiARXtadVD2FqHsN2dimKpHct3spXhDBXCM3FPvATFfYqnmogCymSW/jz0Dg8rnHcSyJZFDoeWZcH9jw5wfYzTqT0qQwQi+pOMrBHlwDeHdf8eLfyvohzqDUZ/Za9IBUi/RQ6dlItrPoiwDdWI=
+	t=1744914396; cv=none; b=mHSxjEZoQS3l3g5Qvz1cCpLSoXm0F9GcAaDOxBIIDL3Wi0ya+U/GnJUPCx8i6LWa5TLoLqqjLBS8wgCdpFnoz71Ww8Ijwo/pVkiYtx+5z0A+7S9/4aC5IaWqlxYhEwf7az2v4YFfg3l/IOVpUQdl0xeUiRA9NZgQS4To4Vr4cPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915508; c=relaxed/simple;
-	bh=wMeSOvgMyGw28DkYOhNwjGou8s35bw2RSlhMhFDa1dI=;
+	s=arc-20240116; t=1744914396; c=relaxed/simple;
+	bh=Z5DZ5NwE2OBLxKOYB9VZLqz04vCbXHCl/7Cyg6Qbml0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ORRhcQAAcHtSKxqawfShPqgD0BW1dbL7sDtBWFwowKTmKq+XsKMyPGyDlV9UQZVS5du4wnkQkMz/w9zbuIbILjJIOhKTLLg4XsxNugurYU5hHxtWnyv9rGLWkbe5wE5kU7Fz20RldFTRRDefjHom2A6KEaDUPPJWT7/cLT42qAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1li4KDTP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A8EC4CEE4;
-	Thu, 17 Apr 2025 18:45:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=M5Yn0d5qzw2/3RAg4kKbNTQEO1Ymxs8Os/O6aZmUQEe0PbQt/DEcZY8dxRwGXm0lYGLlVZOFEAwQUxX6CArzv/SEmv0NkLVG4OMgCSTVpWTTCT9RhsZqxnr9+hlc9OX59jCn6MMSC3LPlb6x/G2mAKUD4DJWCqCKphMIAHJd8GQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rEaZmYSZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6118C4CEE4;
+	Thu, 17 Apr 2025 18:26:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915507;
-	bh=wMeSOvgMyGw28DkYOhNwjGou8s35bw2RSlhMhFDa1dI=;
+	s=korg; t=1744914396;
+	bh=Z5DZ5NwE2OBLxKOYB9VZLqz04vCbXHCl/7Cyg6Qbml0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1li4KDTP1wj0sG4s9g7Vgl10ANPJamDuBXkhqVzERGFph/6tbImsQf7yVtm/EKDEl
-	 2ZJCDPxhRfvQpJWbiRQPg5VgSArCqiduDHB/3hq3gnuu2g3N7ePXTJDt+h8wHzgL66
-	 1aCTP9xsSAy0+hdkakWY478UytYUhDZHwW3vq2Do=
+	b=rEaZmYSZT9TskZiaxjAY5Rv1V/26MpvsmnOa33/J1LW8RBajbrZpQuwNcHAfRBUh5
+	 2ynXoWrlL73ufwJ+tlnpWunGBwcZUou4yyi9icHK6AQNrSEBLmeW6NHEeJB3aBtlcE
+	 DG1DOyMTH2fzWhVFWDAX45c/ne/sBfeUEbc4LKqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 149/393] PCI: Enable Configuration RRS SV early
-Date: Thu, 17 Apr 2025 19:49:18 +0200
-Message-ID: <20250417175113.573580807@linuxfoundation.org>
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.13 201/414] media: i2c: adv748x: Fix test pattern selection mask
+Date: Thu, 17 Apr 2025 19:49:19 +0200
+Message-ID: <20250417175119.527837420@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,73 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-[ Upstream commit 3f8c4959fc18e477801386a625e726c59f52a2c4 ]
+commit 9e38acacb9d809b97a0bdc5c76e725355a47158a upstream.
 
-Following a reset, a Function may respond to Config Requests with Request
-Retry Status (RRS) Completion Status to indicate that it is temporarily
-unable to process the Request, but will be able to process the Request in
-the future (PCIe r6.0, sec 2.3.1).
+The mask to select the test-pattern in register ADV748X_SDP_FRP is
+incorrect, it's the lower 3 bits which controls the pattern. The
+GENMASK() macro is used incorrectly and the generated mask is 0x0e
+instead of 0x07.
 
-If the Configuration RRS Software Visibility feature is enabled and a Root
-Complex receives RRS for a config read of the Vendor ID, the Root Complex
-completes the Request to the host by returning PCI_VENDOR_ID_PCI_SIG,
-0x0001 (sec 2.3.2).
+The result is that not all test patterns are selectable, and that in
+some cases the wrong test pattern is activated. Fix this by correcting
+the GENMASK().
 
-The Config RRS SV feature applies only to Root Ports and is not directly
-related to pci_scan_bridge_extend().  Move the RRS SV enable to
-set_pcie_port_type() where we handle other PCIe-specific configuration.
-
-Link: https://lore.kernel.org/r/20250303210217.199504-1-helgaas@kernel.org
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3e89586a64df ("media: i2c: adv748x: add adv748x driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+[hverkuil: fixed tiny typo in commit log: my -> by]
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/probe.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/media/i2c/adv748x/adv748x.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 0e757b23a09f0..80dcfb72ea121 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -1327,8 +1327,6 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
- 	pci_write_config_word(dev, PCI_BRIDGE_CONTROL,
- 			      bctl & ~PCI_BRIDGE_CTL_MASTER_ABORT);
+--- a/drivers/media/i2c/adv748x/adv748x.h
++++ b/drivers/media/i2c/adv748x/adv748x.h
+@@ -320,7 +320,7 @@ struct adv748x_state {
  
--	pci_enable_rrs_sv(dev);
--
- 	if ((secondary || subordinate) && !pcibios_assign_all_busses() &&
- 	    !is_cardbus && !broken) {
- 		unsigned int cmax, buses;
-@@ -1569,6 +1567,11 @@ void set_pcie_port_type(struct pci_dev *pdev)
- 	pdev->pcie_cap = pos;
- 	pci_read_config_word(pdev, pos + PCI_EXP_FLAGS, &reg16);
- 	pdev->pcie_flags_reg = reg16;
-+
-+	type = pci_pcie_type(pdev);
-+	if (type == PCI_EXP_TYPE_ROOT_PORT)
-+		pci_enable_rrs_sv(pdev);
-+
- 	pci_read_config_dword(pdev, pos + PCI_EXP_DEVCAP, &pdev->devcap);
- 	pdev->pcie_mpss = FIELD_GET(PCI_EXP_DEVCAP_PAYLOAD, pdev->devcap);
+ /* Free run pattern select */
+ #define ADV748X_SDP_FRP			0x14
+-#define ADV748X_SDP_FRP_MASK		GENMASK(3, 1)
++#define ADV748X_SDP_FRP_MASK		GENMASK(2, 0)
  
-@@ -1585,7 +1588,6 @@ void set_pcie_port_type(struct pci_dev *pdev)
- 	 * correctly so detect impossible configurations here and correct
- 	 * the port type accordingly.
- 	 */
--	type = pci_pcie_type(pdev);
- 	if (type == PCI_EXP_TYPE_DOWNSTREAM) {
- 		/*
- 		 * If pdev claims to be downstream port but the parent
--- 
-2.39.5
-
+ /* Saturation */
+ #define ADV748X_SDP_SD_SAT_U		0xe3	/* user_map_rw_reg_e3 */
 
 
 
