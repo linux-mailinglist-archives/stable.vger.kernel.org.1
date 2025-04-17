@@ -1,53 +1,62 @@
-Return-Path: <stable+bounces-132908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10DDAA914D0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 09:13:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8169BA9150A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 09:22:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8486C3AAEDC
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 07:12:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 942BE446045
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 07:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D6464A98;
-	Thu, 17 Apr 2025 07:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FC752192FE;
+	Thu, 17 Apr 2025 07:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGmBKRfj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b7a58EL2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A342CCC0
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 07:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0C0217F36;
+	Thu, 17 Apr 2025 07:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744873989; cv=none; b=F5EhZaACaRV2QrvV7Nev2FGqjqWeB7/JOqlJ8xdiu+gppkbvtcdczuCuFEyGD5oN2EtTv6tOVEhxQSpGnjZL26aMbUvMXMxHKFj4NdNXzmlOQvSfgkJ0djsrhVh6YlKrcu6KYfOxhQLlM/vslyE0YbmzBotrUAdBEcKqr/A4688=
+	t=1744874562; cv=none; b=GD9SYXd2GGAo3032z7o6+1n3ERdZdA9QCOXakFcfpdKosVumOM/UDyifmmXsiIQjv3qZjhQpxqHSqI2Ya6M0MjPbdIpZEA5qUCB4np8XahseXM1N6IsR+jwl4VvvCmb2AS+Yts+30buldP9NZvmrSUEfWwiKezSWuGZGxPkiCL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744873989; c=relaxed/simple;
-	bh=O6DlfjqnP0070ngD/TcPIrplBj7JXPe3liaquP63p/c=;
+	s=arc-20240116; t=1744874562; c=relaxed/simple;
+	bh=0S+KpR1ZAK42RiiHVxB5z5tMzy93HJ/YyCYV0Oi7ty0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lQaoqISB3f8Z0B9rnRwHGmELaMiZW+IVm3gbTVAGR9LWVkuPxf04XAdrQ9IaJAdmOHthDE4hW3Ae5MAvJ6DFOuKvkBnk2/vmV3rf2OZp8o3QuxB03YpNV3gGKyQmIWLJcsSv/TNbJzABrMt5Rlu2hap1csPmncsHk89K3K3/XsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGmBKRfj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C98C4CEE4;
-	Thu, 17 Apr 2025 07:13:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744873988;
-	bh=O6DlfjqnP0070ngD/TcPIrplBj7JXPe3liaquP63p/c=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=dz+aL7wVd6feq8VRVtx9fSAgR5QUdvjLLdb5hPlGzitjKrvfL4ot4ARzoc20G09VELlY5sOSP8KapPCAs1Qril0VDe9ZY28gZJKQAKVgqrXjlzXqVwG/TOEd4t7e03ao+zFShYL7jHsGyHRYcqs3WV5L75cFT6oD+JBer0GU7es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b7a58EL2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD22AC4CEE7;
+	Thu, 17 Apr 2025 07:22:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744874561;
+	bh=0S+KpR1ZAK42RiiHVxB5z5tMzy93HJ/YyCYV0Oi7ty0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=wGmBKRfjmNrDPmOwVkCTGgA1P7xpYxU2qOw7mhuNAuy9jqjH3vVnES72W3tzwESTQ
-	 kb1Z9qF1f1UcN1r7X0r63KsGfmlgXvB59Mac8NfmhHa0XUtsvLkpmcgs7Y40CDagnC
-	 CpeNloQgkq67rAiC7003AUJIzGbt8u/XVSHL3csQ=
-Date: Thu, 17 Apr 2025 09:13:05 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Cliff Liu <donghua.liu@windriver.com>
-Cc: huangchenghai2@huawei.com, herbert@gondor.apana.org.au,
-	davem@davemloft.net, stable@vger.kernel.org
-Subject: Re: Question about back-porting '8be091338971 crypto:
- hisilicon/debugfs - Fix debugfs uninit process issue'
-Message-ID: <2025041727-crushable-unbend-6e6c@gregkh>
-References: <767571bc-1a59-4f7c-a9c7-fb23b79303a9@windriver.com>
- <4725f8e8-7f46-48f6-9869-8bf16eca6f1a@windriver.com>
+	b=b7a58EL2fd9RmleKNHO/3n0vOEeE2AToG5GTLnbZ+uQDI+I+GAEgnl5fma+849t7E
+	 Wk/SrtOMNdJkJTI0mU7/7NMLONooC7su6n24L+zNIPdB2pb6GmIPzFwUW6AY/ynsM6
+	 MqIfFhyvp3VJSBap/7NrfI2e/P2UiCTbG4HksW1AJQn1gD6xuN/1pRTMIYG0hoAmCE
+	 yM4btPDfx/MOnTswdBGOUX8OqrS6r2LWn7HvigUj0aGJqjwz2oI//fXDUkMW6vakFp
+	 beh08dViYlr3gdkTRyywfLs56wu34GTvdf4R4BJLgYL6LoeknZKKr/qGvp+kvBB8W0
+	 FuuqAPGNVfyzg==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1u5Ja5-000000008O2-1v5L;
+	Thu, 17 Apr 2025 09:22:41 +0200
+Date: Thu, 17 Apr 2025 09:22:41 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Johan Hovold <johan+linaro@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>, linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] cpufreq: fix compile-test defaults
+Message-ID: <aACsQUADxYHTQDi1@hovoldconsulting.com>
+References: <20250417065535.21358-1-johan+linaro@kernel.org>
+ <a0739b6b-b043-47f1-8044-f6ed68d39f2c@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,32 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4725f8e8-7f46-48f6-9869-8bf16eca6f1a@windriver.com>
+In-Reply-To: <a0739b6b-b043-47f1-8044-f6ed68d39f2c@linaro.org>
 
-On Thu, Apr 17, 2025 at 02:51:05PM +0800, Cliff Liu wrote:
-> Hi,
+On Thu, Apr 17, 2025 at 09:10:09AM +0200, Krzysztof Kozlowski wrote:
+> On 17/04/2025 08:55, Johan Hovold wrote:
+> > Commit 3f66425a4fc8 ("cpufreq: Enable COMPILE_TEST on Arm drivers")
+> > enabled compile testing of most Arm CPUFreq drivers but left the
+> > existing default values unchanged so that many drivers are enabled by
+> > default whenever COMPILE_TEST is selected.
+> > 
+> > This specifically results in the S3C64XX CPUFreq driver being enabled
+> > and initialised during boot of non-S3C64XX platforms with the following
+> > error logged:
+> > 
+> > 	cpufreq: Unable to obtain ARMCLK: -2
 > 
-> I think this patch is not applicable for 5.15 and 5.10.
+> But isn't this fixed by my commit (d4f610a9bafd)? How is it possible to
+> reproduce above error when you are NOT test compiling?
 
-Then why are you trying to apply it there?  Do you have the bug that is
-being reported here on those kernel versions?  If not, why is this an
-issue?  If so, find the files that are affected in those releases and
-apply the change there.
+Correct, but this was how I found the issue and motivation for
+backporting the fixes including yours which was not marked for stable.
+ 
+> > Commit d4f610a9bafd ("cpufreq: Do not enable by default during compile
+> > testing") recently fixed most of the default values, but two entries
+> > were missed
+> 
+> That's not really a bug to be fixed. No things got worse by missing two
+> entries, so how this part could be called something needing fixing?
 
-> Could you give me any opinions?
+I'm not saying it's buggy, I'm explaining that the identified issue was
+recently fixed partially.
+ 
+> >  and two could use a more specific default condition.
+> 
+> Two entries for more specific default - before they were ALWAYS default,
+> so again I narrowed it from wide default. Nothing to fix here. You can
+> narrow it further but claiming that my commit made something worse looks
+> like a stretch - and that's a meaning of fixing someone's commit.
 
-It is your responsibility, if you want to backport changes to older
-versions, to do the work.  It is NOT the original developer's
-responsibility at all.  The first rule of the stable kernels is "this
-will cause NO extra work for kernel developers" so if they don't want to
-do this, they do not have to at all.
+Relax. I'm not blaming you for doing anything wrong here.
 
-> Any helps from maintainers are very appreciated.
+I sent a fix for the same issues you addressed and Viresh let me know
+that he had already merged a fix for most of the issues:
 
-But not required or even expected.  Please work with your management to
-understand exactly how the community works here.
+	https://lore.kernel.org/lkml/20250416134331.7604-1-johan+linaro@kernel.org/
+ 
+> > Fix the default values for drivers that can be compile tested and that
+> > should be enabled by default when not compile testing.
+> > 
+> > Fixes: 3f66425a4fc8 ("cpufreq: Enable COMPILE_TEST on Arm drivers")
+> 
+> 
+> > Fixes: d4f610a9bafd ("cpufreq: Do not enable by default during compile testing")
+> 
+> That's not correct tag - it introduced no new issues, did not make
+> things worse, so nothing to fix there, if I understand correctly.
 
-thanks,
+Fair enough, I could have used dependency notation for this one.
 
-greg k-h
+Let me do that in v3.
+
+> > Changes in v2:
+> >  - rebase on commit d4f610a9bafd ("cpufreq: Do not enable by default
+> >    during compile testing")
+
+Johan
 
