@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C3DCA925D7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:08:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 766EDA92982
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCC5F7B5006
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:03:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3264B1B6343C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A721125742C;
-	Thu, 17 Apr 2025 18:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F123A25525C;
+	Thu, 17 Apr 2025 18:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VCRL1uey"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tBSNDs12"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6608D1DE3A8;
-	Thu, 17 Apr 2025 18:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D59257426;
+	Thu, 17 Apr 2025 18:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744912998; cv=none; b=mtKQA2gELVrfq0mbcn2I3TMa/oLIpd5N9Ukmhz+/AkSVYRJEAP3/2DzLww3LdFNaMvhJDm0tjCQEzE8QvajBNWt2IMBJNV67Sx50zrsKqufU3o4i6GMuHtkg7oWJRDQLlkkAnXePAy5Q2onpx1cRmZ7hWtIOC9D4Gexr4v7aSi0=
+	t=1744915264; cv=none; b=RZr/Kp6J4IpV5iotS8naUzgWa6IqW4B0vw8IGtjGUoWsyG9Vi+fS0E+U+r8Q48PygAeHmBtKKwRMxrNSRK4r84OljUJgsNsdfP58UO507/n8U1k7IA1a8cLTq0bRrNekFWVqU/7H9Y0jWrqfiztUGQdejSr4b5HXYjHJWXwXDF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744912998; c=relaxed/simple;
-	bh=l0U5HaVcMbWbgzrO52W6OdsrrqQADDEA/IA/3dJwCPQ=;
+	s=arc-20240116; t=1744915264; c=relaxed/simple;
+	bh=0Mxn+8Y8QWcJXiV4mzsjR1Na0uDDSwugEx2F9UIRf08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TjVUAYU+ZaU2sK4IO2hXku3w4eHt2ceIegz1OHWTYF6bZnIe9OPIqSKlS0jJOxP50ybFeMtLrvAlOyry3AwdT9/TR4rIbrWv7nqqx2jlhn2SE7ru1oLmegqFjYc5cH/cHQd+O34iQrbUyLAaOvbQwu1q89YEVqllEFOmvnUKdy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VCRL1uey; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1DA4C4CEE4;
-	Thu, 17 Apr 2025 18:03:17 +0000 (UTC)
+	 MIME-Version; b=e26u1pWdEjg9onI9rqXiFHrV/IyMUyNb7jvCKzbcTME1UsDxhyseAyf7dfERKISFjn1OyjW8/JSwSJhz7hvvcpe51C8TSEP711xYKNfmRVQFjCJsoSzRIgOBONEN6P8B0M1Re6MwjI5qVDsNUSs0PdRHquFYY2UBvWB11bFyaYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tBSNDs12; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAEECC4CEE4;
+	Thu, 17 Apr 2025 18:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744912998;
-	bh=l0U5HaVcMbWbgzrO52W6OdsrrqQADDEA/IA/3dJwCPQ=;
+	s=korg; t=1744915264;
+	bh=0Mxn+8Y8QWcJXiV4mzsjR1Na0uDDSwugEx2F9UIRf08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VCRL1uey1m1Pm0irPoERKRq/DASCK1SPu3Xnu1nLYQgamOiCaX0vfbMM96Bjo+wQh
-	 8A7tcjcN0wACNPX2MJm926jucY+5ee6Gf/fykGuPNAZm64I0YpqNH9+Ylr2Ej2CxI0
-	 pPvptNNGVf+GgFhcV3/qU4fDMApU6B1PPc3bh4YM=
+	b=tBSNDs12ZyTBY+jonb18p59/jFOl+F7FGMLDJkOvf7Jp5m3mTgJxWfLVpNFUvL378
+	 4bz+PykGdl3kVq3ZaPE9IpDrqfUdOCQpPebnYallu3GjzFqOM9aA/V/s1nUUguL3tf
+	 MchunlgpRgqjvojMY8lCz79U5JnNbjWEZjV84MoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sheng Yong <shengyong1@xiaomi.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Maxim Mikityanskiy <maxtram95@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 192/449] erofs: set error to bio if file-backed IO fails
-Date: Thu, 17 Apr 2025 19:48:00 +0200
-Message-ID: <20250417175125.702364389@linuxfoundation.org>
+Subject: [PATCH 6.12 072/393] ALSA: hda: intel: Fix Optimus when GPU has no sound
+Date: Thu, 17 Apr 2025 19:48:01 +0200
+Message-ID: <20250417175110.490397719@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sheng Yong <shengyong1@xiaomi.com>
+From: Maxim Mikityanskiy <maxtram95@gmail.com>
 
-[ Upstream commit 1595f15391b81815e4ef91c339991913d556c1b6 ]
+[ Upstream commit 2b360ba9a4936486380bc30d1eabceb40a714d98 ]
 
-If a file-backed IO fails before submitting the bio to the lower
-filesystem, an error is returned, but the bio->bi_status is not
-marked as an error. However, the error information should be passed
-to the end_io handler. Otherwise, the IO request will be treated as
-successful.
+quirk_nvidia_hda() forcefully enables HDA controller on all NVIDIA GPUs,
+because some buggy BIOSes leave it disabled. However, some dual-GPU
+laptops do not have a functional HDA controller in DGPU, and BIOS
+disables it on purpose. After quirk_nvidia_hda() reenables this dummy
+HDA controller, attempting to probe it fails at azx_first_init(), which
+is too late to cancel the probe, as it happens in azx_probe_continue().
 
-Fixes: 283213718f5d ("erofs: support compressed inodes for fileio")
-Signed-off-by: Sheng Yong <shengyong1@xiaomi.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250408122351.2104507-1-shengyong1@xiaomi.com
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+The sna_hda_intel driver calls azx_free() and stops the chip, however,
+it stays probed, and from the runtime PM point of view, the device
+remains active (it was set as active by the PCI subsystem on probe). It
+prevents vga_switcheroo from turning off the DGPU, because
+pci_create_device_link() syncs power management for video and audio
+devices.
+
+Affected devices should be added to driver_denylist to prevent them from
+probing early. This patch helps identify such devices by printing a
+warning, and also forces the device to the suspended state to allow
+vga_switcheroo turn off DGPU.
+
+Signed-off-by: Maxim Mikityanskiy <maxtram95@gmail.com>
+Link: https://patch.msgid.link/20250208214602.39607-2-maxtram95@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/fileio.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/hda/hda_intel.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/fs/erofs/fileio.c b/fs/erofs/fileio.c
-index 0ffd1c63beeb9..abb9c6d3b1aa2 100644
---- a/fs/erofs/fileio.c
-+++ b/fs/erofs/fileio.c
-@@ -32,6 +32,8 @@ static void erofs_fileio_ki_complete(struct kiocb *iocb, long ret)
- 		ret = 0;
+diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
+index cb9925948175f..b511563bbb6ba 100644
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -1360,8 +1360,21 @@ static void azx_free(struct azx *chip)
+ 	if (use_vga_switcheroo(hda)) {
+ 		if (chip->disabled && hda->probe_continued)
+ 			snd_hda_unlock_devices(&chip->bus);
+-		if (hda->vga_switcheroo_registered)
++		if (hda->vga_switcheroo_registered) {
+ 			vga_switcheroo_unregister_client(chip->pci);
++
++			/* Some GPUs don't have sound, and azx_first_init fails,
++			 * leaving the device probed but non-functional. As long
++			 * as it's probed, the PCI subsystem keeps its runtime
++			 * PM status as active. Force it to suspended (as we
++			 * actually stop the chip) to allow GPU to suspend via
++			 * vga_switcheroo, and print a warning.
++			 */
++			dev_warn(&pci->dev, "GPU sound probed, but not operational: please add a quirk to driver_denylist\n");
++			pm_runtime_disable(&pci->dev);
++			pm_runtime_set_suspended(&pci->dev);
++			pm_runtime_enable(&pci->dev);
++		}
  	}
- 	if (rq->bio.bi_end_io) {
-+		if (ret < 0 && !rq->bio.bi_status)
-+			rq->bio.bi_status = errno_to_blk_status(ret);
- 		rq->bio.bi_end_io(&rq->bio);
- 	} else {
- 		bio_for_each_folio_all(fi, &rq->bio) {
+ 
+ 	if (bus->chip_init) {
 -- 
 2.39.5
 
