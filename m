@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-133621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 194E1A92681
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:14:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F151A92B02
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:56:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCCAC177782
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:13:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 970CD3A5766
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC3A2566D2;
-	Thu, 17 Apr 2025 18:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A230025EFB6;
+	Thu, 17 Apr 2025 18:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KhsvfeWb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofmS71Jr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB252561C7;
-	Thu, 17 Apr 2025 18:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F02E257449;
+	Thu, 17 Apr 2025 18:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913632; cv=none; b=TLxOI7Lvca1Q2OAOppEWtIhzPuYSUpZVPsaWF6OIJX1Jb0aa7uuzpz1KAw+YIe2EC5BMtdBapK3grBnE/Kn3qC45EjSyk5/HoA8i1o46YwKrTTp0xWZ4igG1A/HHQh/hQIH+N6WYkDaWUwSCHfxpLW0Y/i2tPUR9/tHGsGgQ250=
+	t=1744915919; cv=none; b=cYcBMsqSeiYIxKHBZmSdqruSFzuEWBFDOp8Vd3cIIKz7FXY48RCR4VE9LykCDIYhO25XWjebSrTwaxzlCvg/4sPkkdDEjd0eAE25+xm+ROJI6L7fq48sAbx9SgWAKnMKGR0RdTWiEK3NAhD2y6NnN3BQHIlrcS8FNUbGXIHwOJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913632; c=relaxed/simple;
-	bh=W4Gz+6YWP8jm8AA8kESS5UiZCddEfYDk5pYHmX09O6w=;
+	s=arc-20240116; t=1744915919; c=relaxed/simple;
+	bh=0d2ApT0JIAqwISTV5jJ+RgrZRbkAojXaTS2ImQitPMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oPR051MMPZ4V1lXXZxuiPgWbi6JAvBP/M/3NqGC86cPu5OkzZyGD7F0G1aVbFkioPn98KR1SNMkdJnw52O2xe8MqmIJqJ56sI3k+4jzYGKtkqQTjwbtQKJCKPtfRro9r9JXULtTIaePTxv1ig5aJDsn/Cl+ZEf0XhER3r0SDzmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KhsvfeWb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CB4AC4CEE4;
-	Thu, 17 Apr 2025 18:13:52 +0000 (UTC)
+	 MIME-Version; b=uot2SbNA9nx3eWAstqEZXrTVHVMlN7vInfNqOHMMUQ8m+jHj871phIHuqJfay1DqQt/9HXS0QFZx7LvMNRsFkdhOsVd6IYCAYZK5LXIHg69hH5nJyG+VUBCy0HVRAMWwWLY5nH+wFsAKay14KT3s/2NLBe7DT9bRyhize2w+yrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofmS71Jr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA20AC4CEE4;
+	Thu, 17 Apr 2025 18:51:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913632;
-	bh=W4Gz+6YWP8jm8AA8kESS5UiZCddEfYDk5pYHmX09O6w=;
+	s=korg; t=1744915919;
+	bh=0d2ApT0JIAqwISTV5jJ+RgrZRbkAojXaTS2ImQitPMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KhsvfeWbCaC+9/EHsuWMWOJWQpgLDRweHEFbePbDnAg5QG13KpIgLtTUfhNPoxrJr
-	 Ay/tiIC9ZxsA0p8sNzGTzghv8G5GVeJorj8dJEsPbCxEIR3U2PkD/0ZyLbgiyrdMDw
-	 9RXB+9/aty9KtW62OrVX1d2ncoHRYlopQo1CtWFc=
+	b=ofmS71JryIrsBTOLYxX64vq9aKcZH8H3SfePw65CdtwFaKGVMm8QO699ETGXicDpu
+	 sQVWLmb0LV4p3JZqgSdqSteSCC4WN+hh45k/8zLaI2iwhBLlClZFBfWHEcV1NYge8h
+	 zvAfRM9YjQRvC23c8saEmUKiLcuW538eLisgjGA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Jim Mattson <jmattson@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.14 403/449] KVM: x86: Explicitly zero-initialize on-stack CPUID unions
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.12 282/393] mtd: inftlcore: Add error check for inftl_read_oob()
 Date: Thu, 17 Apr 2025 19:51:31 +0200
-Message-ID: <20250417175134.489347050@linuxfoundation.org>
+Message-ID: <20250417175118.948640223@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit bc52ae0a708cb6fa3926d11c88e3c55e1171b4a1 upstream.
+commit d027951dc85cb2e15924c980dc22a6754d100c7c upstream.
 
-Explicitly zero/empty-initialize the unions used for PMU related CPUID
-entries, instead of manually zeroing all fields (hopefully), or in the
-case of 0x80000022, relying on the compiler to clobber the uninitialized
-bitfields.
+In INFTL_findwriteunit(), the return value of inftl_read_oob()
+need to be checked. A proper implementation can be
+found in INFTL_deleteblock(). The status will be set as
+SECTOR_IGNORE to break from the while-loop correctly
+if the inftl_read_oob() fails.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Jim Mattson <jmattson@google.com>
-Message-ID: <20250315024102.2361628-1-seanjc@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Fixes: 8593fbc68b0d ("[MTD] Rework the out of band handling completely")
+Cc: stable@vger.kernel.org # v2.6+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/cpuid.c |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/mtd/inftlcore.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -1423,8 +1423,8 @@ static inline int __do_cpuid_func(struct
- 		}
- 		break;
- 	case 0xa: { /* Architectural Performance Monitoring */
--		union cpuid10_eax eax;
--		union cpuid10_edx edx;
-+		union cpuid10_eax eax = { };
-+		union cpuid10_edx edx = { };
+--- a/drivers/mtd/inftlcore.c
++++ b/drivers/mtd/inftlcore.c
+@@ -482,10 +482,11 @@ static inline u16 INFTL_findwriteunit(st
+ 		silly = MAX_LOOPS;
  
- 		if (!enable_pmu || !static_cpu_has(X86_FEATURE_ARCH_PERFMON)) {
- 			entry->eax = entry->ebx = entry->ecx = entry->edx = 0;
-@@ -1440,8 +1440,6 @@ static inline int __do_cpuid_func(struct
+ 		while (thisEUN <= inftl->lastEUN) {
+-			inftl_read_oob(mtd, (thisEUN * inftl->EraseSize) +
+-				       blockofs, 8, &retlen, (char *)&bci);
+-
+-			status = bci.Status | bci.Status1;
++			if (inftl_read_oob(mtd, (thisEUN * inftl->EraseSize) +
++				       blockofs, 8, &retlen, (char *)&bci) < 0)
++				status = SECTOR_IGNORE;
++			else
++				status = bci.Status | bci.Status1;
+ 			pr_debug("INFTL: status of block %d in EUN %d is %x\n",
+ 					block , writeEUN, status);
  
- 		if (kvm_pmu_cap.version)
- 			edx.split.anythread_deprecated = 1;
--		edx.split.reserved1 = 0;
--		edx.split.reserved2 = 0;
- 
- 		entry->eax = eax.full;
- 		entry->ebx = kvm_pmu_cap.events_mask;
-@@ -1759,7 +1757,7 @@ static inline int __do_cpuid_func(struct
- 		break;
- 	/* AMD Extended Performance Monitoring and Debug */
- 	case 0x80000022: {
--		union cpuid_0x80000022_ebx ebx;
-+		union cpuid_0x80000022_ebx ebx = { };
- 
- 		entry->ecx = entry->edx = 0;
- 		if (!enable_pmu || !kvm_cpu_cap_has(X86_FEATURE_PERFMON_V2)) {
 
 
 
