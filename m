@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-134111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62FFEA9293A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6D80A92712
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:19:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D04291B62FA9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:41:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54077466728
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:19:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8F9F25D8FB;
-	Thu, 17 Apr 2025 18:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 229A225523E;
+	Thu, 17 Apr 2025 18:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BkUtKELA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1thBZNLs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7565D2566DF;
-	Thu, 17 Apr 2025 18:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47EF1A3178;
+	Thu, 17 Apr 2025 18:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915128; cv=none; b=sySp8Rh4WxqHqvNw7D0oHfyCLfu47nnWYHrbhAG47Yotp2nBSpfpuK21VbhU74yGSbfFwF0hzXFfUNHhqkMc94YkQdH1XMdZkEB9MYftV943X6O6YlI0aICr/xkO31pkVYBtjr9BiOeV2FlsIb8049bWwhvT4qik1dwo1HQo9+0=
+	t=1744913955; cv=none; b=mZM7FYtQdzIYOF9p/1FjFi6O3hzmezVDalXE4XjzqRkaUfYrf1oacV18ssMyglJe9mfg+HSOmU2lba+v1IE+QVmro+YgCQgBoYlKEeDLpSbzaRR+Sp4hqRDDYqLghdfxWur/knqEDha3rFCw4/6CQvjsl1fmNuFS/olQY8z0EbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915128; c=relaxed/simple;
-	bh=kBjkSqS4I3W5CKK1ZUNWUpKztVA7rNz+1pLIq32WkqY=;
+	s=arc-20240116; t=1744913955; c=relaxed/simple;
+	bh=RUKXBA1wz8VGL6haMfROPBFESdf5DILy1fBuJ5mrdp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cwDwgl6RNpsdQZtPqqcC89Q5fKaKqzmA9vgq/hOMBfyqHOxteuqVSftEf4coZOwXG9HuU57kEHlCxlKUfeeurvgFU+eiKZKQ5Dqefpy/oQx7beLKwpephpwHOJ3kaUm3udWfjE6I6+in8mLWK/l8VJZ29yt2CGBaNTi84VAlkQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BkUtKELA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E8FC4CEE4;
-	Thu, 17 Apr 2025 18:38:47 +0000 (UTC)
+	 MIME-Version; b=FCrojcQFU/5Kaew9DN4uzUBj3SJ0guDfr4HnwZSn5pbUiTx22JZ8wViGBm6XUwgO36urL5TNk1S1QlQXsE6FVthSOu2Z2k+rjg+SGwqabHy4HOWZByZ4Fi6jRJm1/GHF8kmaCHEuYHQFuVYwroGfrUmoWtpVe6Q+p58XNkU+X6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1thBZNLs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B361C4CEE4;
+	Thu, 17 Apr 2025 18:19:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915127;
-	bh=kBjkSqS4I3W5CKK1ZUNWUpKztVA7rNz+1pLIq32WkqY=;
+	s=korg; t=1744913955;
+	bh=RUKXBA1wz8VGL6haMfROPBFESdf5DILy1fBuJ5mrdp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BkUtKELA+AJSwzZLuxf/jVJymm4RzBqkuRZJzUFfd5ohqXalOeohsQ/kUxsNO6JPm
-	 XDWLD+3y3aNJiX05FyOoAj8NKX1uY6YkDIiyCx2QH91hb0KtMQjuYpAkaeuU6AmSDw
-	 T99849BXKLk4/mqIgGMu13/2MpHtUf/FTBub81qw=
+	b=1thBZNLs6ao6c5s1lgUUSUg+aQlo+VzRDuy+EkpYOhuDJ7SxXxNdIaK5LnVPbahlz
+	 5INi3FsSRNfzXCWKTnobAy8mZ9iqbpfI3jEXCWPx/KSUq0ixG+sM4qIQBHFXfmb5Yp
+	 63EI8GiUrjjgR11deqcMUsCnTNvjZHh4LirZUHzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 007/393] cgroup/cpuset: Fix race between newly created partition and dying one
+Subject: [PATCH 6.13 058/414] tracing: Disable branch profiling in noinstr code
 Date: Thu, 17 Apr 2025 19:46:56 +0200
-Message-ID: <20250417175107.865000223@linuxfoundation.org>
+Message-ID: <20250417175113.749097076@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,146 +65,238 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit a22b3d54de94f82ca057cc2ebf9496fa91ebf698 ]
+[ Upstream commit 2cbb20b008dba39893f0e296dc8ca312f40a9a0e ]
 
-There is a possible race between removing a cgroup diectory that is
-a partition root and the creation of a new partition.  The partition
-to be removed can be dying but still online, it doesn't not currently
-participate in checking for exclusive CPUs conflict, but the exclusive
-CPUs are still there in subpartitions_cpus and isolated_cpus. These
-two cpumasks are global states that affect the operation of cpuset
-partitions. The exclusive CPUs in dying cpusets will only be removed
-when cpuset_css_offline() function is called after an RCU delay.
+CONFIG_TRACE_BRANCH_PROFILING inserts a call to ftrace_likely_update()
+for each use of likely() or unlikely().  That breaks noinstr rules if
+the affected function is annotated as noinstr.
 
-As a result, it is possible that a new partition can be created with
-exclusive CPUs that overlap with those of a dying one. When that dying
-partition is finally offlined, it removes those overlapping exclusive
-CPUs from subpartitions_cpus and maybe isolated_cpus resulting in an
-incorrect CPU configuration.
+Disable branch profiling for files with noinstr functions.  In addition
+to some individual files, this also includes the entire arch/x86
+subtree, as well as the kernel/entry, drivers/cpuidle, and drivers/idle
+directories, all of which are noinstr-heavy.
 
-This bug was found when a warning was triggered in
-remote_partition_disable() during testing because the subpartitions_cpus
-mask was empty.
+Due to the nature of how sched binaries are built by combining multiple
+.c files into one, branch profiling is disabled more broadly across the
+sched code than would otherwise be needed.
 
-One possible way to fix this is to iterate the dying cpusets as well and
-avoid using the exclusive CPUs in those dying cpusets. However, this
-can still cause random partition creation failures or other anomalies
-due to racing. A better way to fix this race is to reset the partition
-state at the moment when a cpuset is being killed.
+This fixes many warnings like the following:
 
-Introduce a new css_killed() CSS function pointer and call it, if
-defined, before setting CSS_DYING flag in kill_css(). Also update the
-css_is_dying() helper to use the CSS_DYING flag introduced by commit
-33c35aa48178 ("cgroup: Prevent kill_css() from being called more than
-once") for proper synchronization.
+  vmlinux.o: warning: objtool: do_syscall_64+0x40: call to ftrace_likely_update() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: __rdgsbase_inactive+0x33: call to ftrace_likely_update() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: handle_bug.isra.0+0x198: call to ftrace_likely_update() leaves .noinstr.text section
+  ...
 
-Add a new cpuset_css_killed() function to reset the partition state of
-a valid partition root if it is being killed.
-
-Fixes: ee8dde0cd2ce ("cpuset: Add new v2 cpuset.sched.partition flag")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Reported-by: Ingo Molnar <mingo@kernel.org>
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/fb94fc9303d48a5ed370498f54500cc4c338eb6d.1742586676.git.jpoimboe@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/cgroup-defs.h |  1 +
- include/linux/cgroup.h      |  2 +-
- kernel/cgroup/cgroup.c      |  6 ++++++
- kernel/cgroup/cpuset.c      | 20 +++++++++++++++++---
- 4 files changed, 25 insertions(+), 4 deletions(-)
+ arch/x86/Kbuild                    | 4 ++++
+ arch/x86/kernel/head64.c           | 2 --
+ arch/x86/mm/kasan_init_64.c        | 1 -
+ arch/x86/mm/mem_encrypt_amd.c      | 2 --
+ arch/x86/mm/mem_encrypt_identity.c | 2 --
+ drivers/acpi/Makefile              | 4 ++++
+ drivers/cpuidle/Makefile           | 3 +++
+ drivers/idle/Makefile              | 5 ++++-
+ kernel/Makefile                    | 5 +++++
+ kernel/entry/Makefile              | 3 +++
+ kernel/sched/Makefile              | 5 +++++
+ kernel/time/Makefile               | 6 ++++++
+ lib/Makefile                       | 5 +++++
+ 13 files changed, 39 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/cgroup-defs.h b/include/linux/cgroup-defs.h
-index 38b2af336e4a0..252eed781a6e9 100644
---- a/include/linux/cgroup-defs.h
-+++ b/include/linux/cgroup-defs.h
-@@ -711,6 +711,7 @@ struct cgroup_subsys {
- 	void (*css_released)(struct cgroup_subsys_state *css);
- 	void (*css_free)(struct cgroup_subsys_state *css);
- 	void (*css_reset)(struct cgroup_subsys_state *css);
-+	void (*css_killed)(struct cgroup_subsys_state *css);
- 	void (*css_rstat_flush)(struct cgroup_subsys_state *css, int cpu);
- 	int (*css_extra_stat_show)(struct seq_file *seq,
- 				   struct cgroup_subsys_state *css);
-diff --git a/include/linux/cgroup.h b/include/linux/cgroup.h
-index f8ef47f8a634d..fc1324ed597d6 100644
---- a/include/linux/cgroup.h
-+++ b/include/linux/cgroup.h
-@@ -343,7 +343,7 @@ static inline u64 cgroup_id(const struct cgroup *cgrp)
+diff --git a/arch/x86/Kbuild b/arch/x86/Kbuild
+index cf0ad89f5639d..f7fb3d88c57bd 100644
+--- a/arch/x86/Kbuild
++++ b/arch/x86/Kbuild
+@@ -1,4 +1,8 @@
+ # SPDX-License-Identifier: GPL-2.0
++
++# Branch profiling isn't noinstr-safe.  Disable it for arch/x86/*
++subdir-ccflags-$(CONFIG_TRACE_BRANCH_PROFILING) += -DDISABLE_BRANCH_PROFILING
++
+ obj-$(CONFIG_ARCH_HAS_CC_PLATFORM) += coco/
+ 
+ obj-y += entry/
+diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
+index 4b9d4557fc94a..bab68feef0e8f 100644
+--- a/arch/x86/kernel/head64.c
++++ b/arch/x86/kernel/head64.c
+@@ -5,8 +5,6 @@
+  *  Copyright (C) 2000 Andrea Arcangeli <andrea@suse.de> SuSE
   */
- static inline bool css_is_dying(struct cgroup_subsys_state *css)
- {
--	return !(css->flags & CSS_NO_REF) && percpu_ref_is_dying(&css->refcnt);
-+	return css->flags & CSS_DYING;
- }
  
- static inline void cgroup_get(struct cgroup *cgrp)
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 216535e055e11..4378f3eff25d2 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -5909,6 +5909,12 @@ static void kill_css(struct cgroup_subsys_state *css)
- 	if (css->flags & CSS_DYING)
- 		return;
- 
-+	/*
-+	 * Call css_killed(), if defined, before setting the CSS_DYING flag
-+	 */
-+	if (css->ss->css_killed)
-+		css->ss->css_killed(css);
-+
- 	css->flags |= CSS_DYING;
- 
- 	/*
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 07ea3a563150b..839f88ba17f7d 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -3479,9 +3479,6 @@ static void cpuset_css_offline(struct cgroup_subsys_state *css)
- 	cpus_read_lock();
- 	mutex_lock(&cpuset_mutex);
- 
--	if (is_partition_valid(cs))
--		update_prstate(cs, 0);
+-#define DISABLE_BRANCH_PROFILING
 -
- 	if (!cpuset_v2() && is_sched_load_balance(cs))
- 		cpuset_update_flag(CS_SCHED_LOAD_BALANCE, cs, 0);
+ /* cpu_feature_enabled() cannot be used this early */
+ #define USE_EARLY_PGTABLE_L5
  
-@@ -3492,6 +3489,22 @@ static void cpuset_css_offline(struct cgroup_subsys_state *css)
- 	cpus_read_unlock();
- }
+diff --git a/arch/x86/mm/kasan_init_64.c b/arch/x86/mm/kasan_init_64.c
+index 9dddf19a55716..0539efd0d216b 100644
+--- a/arch/x86/mm/kasan_init_64.c
++++ b/arch/x86/mm/kasan_init_64.c
+@@ -1,5 +1,4 @@
+ // SPDX-License-Identifier: GPL-2.0
+-#define DISABLE_BRANCH_PROFILING
+ #define pr_fmt(fmt) "kasan: " fmt
  
-+static void cpuset_css_killed(struct cgroup_subsys_state *css)
-+{
-+	struct cpuset *cs = css_cs(css);
+ /* cpu_feature_enabled() cannot be used this early */
+diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
+index 774f9677458f2..8dfc584be40c3 100644
+--- a/arch/x86/mm/mem_encrypt_amd.c
++++ b/arch/x86/mm/mem_encrypt_amd.c
+@@ -7,8 +7,6 @@
+  * Author: Tom Lendacky <thomas.lendacky@amd.com>
+  */
+ 
+-#define DISABLE_BRANCH_PROFILING
+-
+ #include <linux/linkage.h>
+ #include <linux/init.h>
+ #include <linux/mm.h>
+diff --git a/arch/x86/mm/mem_encrypt_identity.c b/arch/x86/mm/mem_encrypt_identity.c
+index 9fce5b87b8c50..5eecdd92da105 100644
+--- a/arch/x86/mm/mem_encrypt_identity.c
++++ b/arch/x86/mm/mem_encrypt_identity.c
+@@ -7,8 +7,6 @@
+  * Author: Tom Lendacky <thomas.lendacky@amd.com>
+  */
+ 
+-#define DISABLE_BRANCH_PROFILING
+-
+ /*
+  * Since we're dealing with identity mappings, physical and virtual
+  * addresses are the same, so override these defines which are ultimately
+diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+index 40208a0f5dfb5..797070fc9a3f4 100644
+--- a/drivers/acpi/Makefile
++++ b/drivers/acpi/Makefile
+@@ -5,6 +5,10 @@
+ 
+ ccflags-$(CONFIG_ACPI_DEBUG)	+= -DACPI_DEBUG_OUTPUT
+ 
++ifdef CONFIG_TRACE_BRANCH_PROFILING
++CFLAGS_processor_idle.o += -DDISABLE_BRANCH_PROFILING
++endif
 +
-+	cpus_read_lock();
-+	mutex_lock(&cpuset_mutex);
+ #
+ # ACPI Boot-Time Table Parsing
+ #
+diff --git a/drivers/cpuidle/Makefile b/drivers/cpuidle/Makefile
+index d103342b7cfc2..1de9e92c5b0fc 100644
+--- a/drivers/cpuidle/Makefile
++++ b/drivers/cpuidle/Makefile
+@@ -3,6 +3,9 @@
+ # Makefile for cpuidle.
+ #
+ 
++# Branch profiling isn't noinstr-safe
++ccflags-$(CONFIG_TRACE_BRANCH_PROFILING) += -DDISABLE_BRANCH_PROFILING
 +
-+	/* Reset valid partition back to member */
-+	if (is_partition_valid(cs))
-+		update_prstate(cs, PRS_MEMBER);
+ obj-y += cpuidle.o driver.o governor.o sysfs.o governors/
+ obj-$(CONFIG_ARCH_NEEDS_CPU_IDLE_COUPLED) += coupled.o
+ obj-$(CONFIG_DT_IDLE_STATES)		  += dt_idle_states.o
+diff --git a/drivers/idle/Makefile b/drivers/idle/Makefile
+index 0a3c375100797..a34af1ba09bdb 100644
+--- a/drivers/idle/Makefile
++++ b/drivers/idle/Makefile
+@@ -1,3 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-obj-$(CONFIG_INTEL_IDLE)			+= intel_idle.o
+ 
++# Branch profiling isn't noinstr-safe
++ccflags-$(CONFIG_TRACE_BRANCH_PROFILING) += -DDISABLE_BRANCH_PROFILING
 +
-+	mutex_unlock(&cpuset_mutex);
-+	cpus_read_unlock();
++obj-$(CONFIG_INTEL_IDLE)			+= intel_idle.o
+diff --git a/kernel/Makefile b/kernel/Makefile
+index 87866b037fbed..434929de17ef2 100644
+--- a/kernel/Makefile
++++ b/kernel/Makefile
+@@ -21,6 +21,11 @@ ifdef CONFIG_FUNCTION_TRACER
+ CFLAGS_REMOVE_irq_work.o = $(CC_FLAGS_FTRACE)
+ endif
+ 
++# Branch profiling isn't noinstr-safe
++ifdef CONFIG_TRACE_BRANCH_PROFILING
++CFLAGS_context_tracking.o += -DDISABLE_BRANCH_PROFILING
++endif
 +
-+}
+ # Prevents flicker of uninteresting __do_softirq()/__local_bh_disable_ip()
+ # in coverage traces.
+ KCOV_INSTRUMENT_softirq.o := n
+diff --git a/kernel/entry/Makefile b/kernel/entry/Makefile
+index 095c775e001e2..d4b8bd0af79b0 100644
+--- a/kernel/entry/Makefile
++++ b/kernel/entry/Makefile
+@@ -6,6 +6,9 @@ KASAN_SANITIZE := n
+ UBSAN_SANITIZE := n
+ KCOV_INSTRUMENT := n
+ 
++# Branch profiling isn't noinstr-safe
++ccflags-$(CONFIG_TRACE_BRANCH_PROFILING) += -DDISABLE_BRANCH_PROFILING
 +
- static void cpuset_css_free(struct cgroup_subsys_state *css)
- {
- 	struct cpuset *cs = css_cs(css);
-@@ -3613,6 +3626,7 @@ struct cgroup_subsys cpuset_cgrp_subsys = {
- 	.css_alloc	= cpuset_css_alloc,
- 	.css_online	= cpuset_css_online,
- 	.css_offline	= cpuset_css_offline,
-+	.css_killed	= cpuset_css_killed,
- 	.css_free	= cpuset_css_free,
- 	.can_attach	= cpuset_can_attach,
- 	.cancel_attach	= cpuset_cancel_attach,
+ CFLAGS_REMOVE_common.o	 = -fstack-protector -fstack-protector-strong
+ CFLAGS_common.o		+= -fno-stack-protector
+ 
+diff --git a/kernel/sched/Makefile b/kernel/sched/Makefile
+index 976092b7bd452..8ae86371ddcdd 100644
+--- a/kernel/sched/Makefile
++++ b/kernel/sched/Makefile
+@@ -22,6 +22,11 @@ ifneq ($(CONFIG_SCHED_OMIT_FRAME_POINTER),y)
+ CFLAGS_core.o := $(PROFILING) -fno-omit-frame-pointer
+ endif
+ 
++# Branch profiling isn't noinstr-safe
++ifdef CONFIG_TRACE_BRANCH_PROFILING
++CFLAGS_build_policy.o += -DDISABLE_BRANCH_PROFILING
++CFLAGS_build_utility.o += -DDISABLE_BRANCH_PROFILING
++endif
+ #
+ # Build efficiency:
+ #
+diff --git a/kernel/time/Makefile b/kernel/time/Makefile
+index fe0ae82124fe7..e6e9b85d4db5f 100644
+--- a/kernel/time/Makefile
++++ b/kernel/time/Makefile
+@@ -1,4 +1,10 @@
+ # SPDX-License-Identifier: GPL-2.0
++
++# Branch profiling isn't noinstr-safe
++ifdef CONFIG_TRACE_BRANCH_PROFILING
++CFLAGS_sched_clock.o += -DDISABLE_BRANCH_PROFILING
++endif
++
+ obj-y += time.o timer.o hrtimer.o sleep_timeout.o
+ obj-y += timekeeping.o ntp.o clocksource.o jiffies.o timer_list.o
+ obj-y += timeconv.o timecounter.o alarmtimer.o
+diff --git a/lib/Makefile b/lib/Makefile
+index a8155c972f028..6041cb0ef1588 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -5,6 +5,11 @@
+ 
+ ccflags-remove-$(CONFIG_FUNCTION_TRACER) += $(CC_FLAGS_FTRACE)
+ 
++# Branch profiling isn't noinstr-safe
++ifdef CONFIG_TRACE_BRANCH_PROFILING
++CFLAGS_smp_processor_id.o += -DDISABLE_BRANCH_PROFILING
++endif
++
+ # These files are disabled because they produce lots of non-interesting and/or
+ # flaky coverage that is not a function of syscall inputs. For example,
+ # rbtree can be global and individual rotations don't correlate with inputs.
 -- 
 2.39.5
 
