@@ -1,55 +1,72 @@
-Return-Path: <stable+bounces-133619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBC39A926CB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:16:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC19A928E0
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:38:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 233207A3F63
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:12:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C0444A3CE4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F552550DD;
-	Thu, 17 Apr 2025 18:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0056263C92;
+	Thu, 17 Apr 2025 18:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hTENdxqw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nR5LrZEV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0606D223710;
-	Thu, 17 Apr 2025 18:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5EA263C6C;
+	Thu, 17 Apr 2025 18:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913627; cv=none; b=dST2BwlriY8IVxN5NKKO1GkoSMlqO7iso5CCsfRbulOK1TsGNAlUxeKSc8/fC6Ecbm/OBmMWFGUIofYn1etP0IYBvOz2wFfxt3U5ERskIDLivv3A5G/FHmGDy9CvBY3VG4U0a0GUfiJeqZZmpyq8SecbLQC1m3Z+ZMO68T5fLEg=
+	t=1744914795; cv=none; b=ifZBlTLZealjL57FLnWzKRGzSw7G0xaK35FGguzgd2iBNbrQ2b/9j3zbmHzJLCv2sFAxmbDF3+s5FSW9/qexI8uWazCRSrBEf5CxWcTUprw/YWaKhCMjrHOWYpvkqKcYwHDhl1/KFLMa34I8m5STsQuMhaajmC7BKONVJMhuzjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913627; c=relaxed/simple;
-	bh=8nISZTD5G96xnMtDOTWhi1I5ZQPT4T42Zc1BR4j9bHM=;
+	s=arc-20240116; t=1744914795; c=relaxed/simple;
+	bh=YjYImiMEN0Nnpnrh+xMjGEpDCdy6ShSTTPuteyfzKak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I8/6880ErtDt0kKTseQICZ7qaKcZWcSfRd7XNvwj+Z0SWRhi1OqZZoMhRD3XhhVUcqSomHlhHx93TyRR4eLp7a7V5dzrO3dZ7XWMGuPrXboUqhp7LGb/SQ8VFPAR+GAqkMLp+Kq/DTMZt620zTBAFqjBIDGueTlYhqVkMbh6Wnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hTENdxqw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB0DC4CEE4;
-	Thu, 17 Apr 2025 18:13:46 +0000 (UTC)
+	 MIME-Version; b=AOh47MdHAR0H7YLQyvbiY2YSySXHPq3UtLwHxQv6lB0488Ij1pj7kDK+qUq43oWMDsSF61MTFU5Ro0I75qpqjC9rcUhN93F8YHPwE2rJQzIrzYLQRDL9lsbidVkq5DkHRe9EBl91hTtHmtMk7y4C50RHaDQ+mH0GDVUZTxHWazY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nR5LrZEV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B694C4CEE4;
+	Thu, 17 Apr 2025 18:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913626;
-	bh=8nISZTD5G96xnMtDOTWhi1I5ZQPT4T42Zc1BR4j9bHM=;
+	s=korg; t=1744914793;
+	bh=YjYImiMEN0Nnpnrh+xMjGEpDCdy6ShSTTPuteyfzKak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hTENdxqw7NGshaCGff8fGzuM14MWte2HNs91YhN9g3HWcgoGj//TLkJordlEXV73V
-	 CEYA3Nz1x/gZnfsbDsuJUKiY/OJh9XCqVKmxw2hmA7ukv+Ort+/Qn3oVbVNoMv7yYz
-	 OMtzXfU0X+RXcB7atrjw7sfSdcuqsJ/l1loOtCY0=
+	b=nR5LrZEVm2bMcoaCFiCpV6nln/bYO0dTI1vta5zn3lbQ7MymgD1Ycs165TS2vllEJ
+	 4PZynf/lpa6ZSnATci1e37spVJzW62froVBj/UlyylpanoS0RMClyT4yMDBepnQsta
+	 sXQ8vWCGCVEKhPspOYJRFzLt6SbO0jvxNsj/nO/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.14 401/449] KVM: Allow building irqbypass.ko as as module when kvm.ko is a module
-Date: Thu, 17 Apr 2025 19:51:29 +0200
-Message-ID: <20250417175134.409418119@linuxfoundation.org>
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Borislav Betkov <bp@alien8.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ruidong Tian <tianruidong@linux.alibaba.com>,
+	Thomas Gleinxer <tglx@linutronix.de>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.13 332/414] mm/hwpoison: do not send SIGBUS to processes with recovered clean pages
+Date: Thu, 17 Apr 2025 19:51:30 +0200
+Message-ID: <20250417175124.783197420@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,102 +78,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-commit 459a35111b0a890172a78d51c01b204e13a34a18 upstream.
+commit aaf99ac2ceb7c974f758a635723eeaf48596388e upstream.
 
-Convert HAVE_KVM_IRQ_BYPASS into a tristate so that selecting
-IRQ_BYPASS_MANAGER follows KVM={m,y}, i.e. doesn't force irqbypass.ko to
-be built-in.
+When an uncorrected memory error is consumed there is a race between the
+CMCI from the memory controller reporting an uncorrected error with a UCNA
+signature, and the core reporting and SRAR signature machine check when
+the data is about to be consumed.
 
-Note, PPC allows building KVM as a module, but selects HAVE_KVM_IRQ_BYPASS
-from a boolean Kconfig, i.e. KVM PPC unnecessarily forces irqbpass.ko to
-be built-in.  But that flaw is a longstanding PPC specific issue.
+- Background: why *UN*corrected errors tied to *C*MCI in Intel platform [1]
 
-Fixes: 61df71ee992d ("kvm: move "select IRQ_BYPASS_MANAGER" to common code")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20250315024623.2363994-1-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Prior to Icelake memory controllers reported patrol scrub events that
+detected a previously unseen uncorrected error in memory by signaling a
+broadcast machine check with an SRAO (Software Recoverable Action
+Optional) signature in the machine check bank.  This was overkill because
+it's not an urgent problem that no core is on the verge of consuming that
+bad data.  It's also found that multi SRAO UCE may cause nested MCE
+interrupts and finally become an IERR.
+
+Hence, Intel downgrades the machine check bank signature of patrol scrub
+from SRAO to UCNA (Uncorrected, No Action required), and signal changed to
+#CMCI.  Just to add to the confusion, Linux does take an action (in
+uc_decode_notifier()) to try to offline the page despite the UC*NA*
+signature name.
+
+- Background: why #CMCI and #MCE race when poison is consuming in Intel platform [1]
+
+Having decided that CMCI/UCNA is the best action for patrol scrub errors,
+the memory controller uses it for reads too.  But the memory controller is
+executing asynchronously from the core, and can't tell the difference
+between a "real" read and a speculative read.  So it will do CMCI/UCNA if
+an error is found in any read.
+
+Thus:
+
+1) Core is clever and thinks address A is needed soon, issues a speculative read.
+2) Core finds it is going to use address A soon after sending the read request
+3) The CMCI from the memory controller is in a race with MCE from the core
+   that will soon try to retire the load from address A.
+
+Quite often (because speculation has got better) the CMCI from the memory
+controller is delivered before the core is committed to the instruction
+reading address A, so the interrupt is taken, and Linux offlines the page
+(marking it as poison).
+
+- Why user process is killed for instr case
+
+Commit 046545a661af ("mm/hwpoison: fix error page recovered but reported
+"not recovered"") tries to fix noise message "Memory error not recovered"
+and skips duplicate SIGBUSs due to the race.  But it also introduced a bug
+that kill_accessing_process() return -EHWPOISON for instr case, as result,
+kill_me_maybe() send a SIGBUS to user process.
+
+If the CMCI wins that race, the page is marked poisoned when
+uc_decode_notifier() calls memory_failure().  For dirty pages,
+memory_failure() invokes try_to_unmap() with the TTU_HWPOISON flag,
+converting the PTE to a hwpoison entry.  As a result,
+kill_accessing_process():
+
+- call walk_page_range() and return 1 regardless of whether
+  try_to_unmap() succeeds or fails,
+- call kill_proc() to make sure a SIGBUS is sent
+- return -EHWPOISON to indicate that SIGBUS is already sent to the
+  process and kill_me_maybe() doesn't have to send it again.
+
+However, for clean pages, the TTU_HWPOISON flag is cleared, leaving the
+PTE unchanged and not converted to a hwpoison entry.  Conversely, for
+clean pages where PTE entries are not marked as hwpoison,
+kill_accessing_process() returns -EFAULT, causing kill_me_maybe() to send
+a SIGBUS.
+
+Console log looks like this:
+
+    Memory failure: 0x827ca68: corrupted page was clean: dropped without side effects
+    Memory failure: 0x827ca68: recovery action for clean LRU page: Recovered
+    Memory failure: 0x827ca68: already hardware poisoned
+    mce: Memory error not recovered
+
+To fix it, return 0 for "corrupted page was clean", preventing an
+unnecessary SIGBUS to user process.
+
+[1] https://lore.kernel.org/lkml/20250217063335.22257-1-xueshuai@linux.alibaba.com/T/#mba94f1305b3009dd340ce4114d3221fe810d1871
+Link: https://lkml.kernel.org/r/20250312112852.82415-3-xueshuai@linux.alibaba.com
+Fixes: 046545a661af ("mm/hwpoison: fix error page recovered but reported "not recovered"")
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Tested-by: Tony Luck <tony.luck@intel.com>
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Borislav Betkov <bp@alien8.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jane Chu <jane.chu@oracle.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ruidong Tian <tianruidong@linux.alibaba.com>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: Yazen Ghannam <yazen.ghannam@amd.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/kvm_host.h |    2 +-
- virt/kvm/Kconfig         |    2 +-
- virt/kvm/eventfd.c       |   10 +++++-----
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ mm/memory-failure.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2382,7 +2382,7 @@ static inline bool kvm_is_visible_memslo
- struct kvm_vcpu *kvm_get_running_vcpu(void);
- struct kvm_vcpu * __percpu *kvm_get_running_vcpus(void);
- 
--#ifdef CONFIG_HAVE_KVM_IRQ_BYPASS
-+#if IS_ENABLED(CONFIG_HAVE_KVM_IRQ_BYPASS)
- bool kvm_arch_has_irq_bypass(void);
- int kvm_arch_irq_bypass_add_producer(struct irq_bypass_consumer *,
- 			   struct irq_bypass_producer *);
---- a/virt/kvm/Kconfig
-+++ b/virt/kvm/Kconfig
-@@ -75,7 +75,7 @@ config KVM_COMPAT
-        depends on KVM && COMPAT && !(S390 || ARM64 || RISCV)
- 
- config HAVE_KVM_IRQ_BYPASS
--       bool
-+       tristate
-        select IRQ_BYPASS_MANAGER
- 
- config HAVE_KVM_VCPU_ASYNC_IOCTL
---- a/virt/kvm/eventfd.c
-+++ b/virt/kvm/eventfd.c
-@@ -149,7 +149,7 @@ irqfd_shutdown(struct work_struct *work)
- 	/*
- 	 * It is now safe to release the object's resources
- 	 */
--#ifdef CONFIG_HAVE_KVM_IRQ_BYPASS
-+#if IS_ENABLED(CONFIG_HAVE_KVM_IRQ_BYPASS)
- 	irq_bypass_unregister_consumer(&irqfd->consumer);
- #endif
- 	eventfd_ctx_put(irqfd->eventfd);
-@@ -274,7 +274,7 @@ static void irqfd_update(struct kvm *kvm
- 	write_seqcount_end(&irqfd->irq_entry_sc);
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -881,12 +881,17 @@ static int kill_accessing_process(struct
+ 	mmap_read_lock(p->mm);
+ 	ret = walk_page_range(p->mm, 0, TASK_SIZE, &hwpoison_walk_ops,
+ 			      (void *)&priv);
++	/*
++	 * ret = 1 when CMCI wins, regardless of whether try_to_unmap()
++	 * succeeds or fails, then kill the process with SIGBUS.
++	 * ret = 0 when poison page is a clean page and it's dropped, no
++	 * SIGBUS is needed.
++	 */
+ 	if (ret == 1 && priv.tk.addr)
+ 		kill_proc(&priv.tk, pfn, flags);
+-	else
+-		ret = 0;
+ 	mmap_read_unlock(p->mm);
+-	return ret > 0 ? -EHWPOISON : -EFAULT;
++
++	return ret > 0 ? -EHWPOISON : 0;
  }
  
--#ifdef CONFIG_HAVE_KVM_IRQ_BYPASS
-+#if IS_ENABLED(CONFIG_HAVE_KVM_IRQ_BYPASS)
- void __attribute__((weak)) kvm_arch_irq_bypass_stop(
- 				struct irq_bypass_consumer *cons)
- {
-@@ -424,7 +424,7 @@ kvm_irqfd_assign(struct kvm *kvm, struct
- 	if (events & EPOLLIN)
- 		schedule_work(&irqfd->inject);
- 
--#ifdef CONFIG_HAVE_KVM_IRQ_BYPASS
-+#if IS_ENABLED(CONFIG_HAVE_KVM_IRQ_BYPASS)
- 	if (kvm_arch_has_irq_bypass()) {
- 		irqfd->consumer.token = (void *)irqfd->eventfd;
- 		irqfd->consumer.add_producer = kvm_arch_irq_bypass_add_producer;
-@@ -609,14 +609,14 @@ void kvm_irq_routing_update(struct kvm *
- 	spin_lock_irq(&kvm->irqfds.lock);
- 
- 	list_for_each_entry(irqfd, &kvm->irqfds.items, list) {
--#ifdef CONFIG_HAVE_KVM_IRQ_BYPASS
-+#if IS_ENABLED(CONFIG_HAVE_KVM_IRQ_BYPASS)
- 		/* Under irqfds.lock, so can read irq_entry safely */
- 		struct kvm_kernel_irq_routing_entry old = irqfd->irq_entry;
- #endif
- 
- 		irqfd_update(kvm, irqfd);
- 
--#ifdef CONFIG_HAVE_KVM_IRQ_BYPASS
-+#if IS_ENABLED(CONFIG_HAVE_KVM_IRQ_BYPASS)
- 		if (irqfd->producer &&
- 		    kvm_arch_irqfd_route_changed(&old, &irqfd->irq_entry)) {
- 			int ret = kvm_arch_update_irqfd_routing(
+ /*
 
 
 
