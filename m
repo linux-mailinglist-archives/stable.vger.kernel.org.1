@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-134272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE9FDA92A25
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E62A9260E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:10:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 351B9176F1A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:47:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E66DD1B62D46
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2C601EB1BF;
-	Thu, 17 Apr 2025 18:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D1C2561D9;
+	Thu, 17 Apr 2025 18:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdMRqbQ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUhZltI/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5D41DB148;
-	Thu, 17 Apr 2025 18:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5309A1DB148;
+	Thu, 17 Apr 2025 18:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915622; cv=none; b=JTHYHv2HXkqHtn74wzTWQ1rqVKDog52xgdrHL6MTZOgwHBtLlQOHtOpW9NJUyYXiLt1zZi6Wf68fHjtbVfvqUbx36Xvr+RQANKTAxg/vjZMwS+TvRryo7P+MfURmt9Q6rFCEFN6Cx3eGDdeMUuou9xJlPNKRftE7LzfFn0+kw2w=
+	t=1744913340; cv=none; b=V/XMFPzR1/OKAweIW5LLL0XkMYxYMdGuYkvUSaZ+1AphmDJBGPP2Lu2vzEc8XUFhJUrr2GrJLArnHSkiDncFJmts4+IY2v5sxqM2XW92dVXCTQCqaBkkwBT/xXDXmufPHUCQy8Uy/mBek6GvRuvucDTyGCWKOY8ADmqCR7YO/9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915622; c=relaxed/simple;
-	bh=9vC/NYAPYJ4ZZV1WpETnhWhPQ+7awIpdcYKMDgFJoQQ=;
+	s=arc-20240116; t=1744913340; c=relaxed/simple;
+	bh=aVsnTL71g05JmXAneNWW6TH1Qk0nI8n9eQqvohNkcxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N7Ivw7TBhQe5MfNS3layk7OniGFniXLSzoin9MwYG8sgYK/G5UaPYg6JXWnZ4vIdDo7anEdu4bxtXw+bte/27UkwF5zofk6Y57bFP4SGRMmmMZlRymG0hdKvtMQ2lMYijyhsk7rKp76bSuZCdOSKzBInF10LqbmoD7DOYZWTwxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdMRqbQ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B999DC4CEE4;
-	Thu, 17 Apr 2025 18:47:01 +0000 (UTC)
+	 MIME-Version; b=YPFF1REhicW65nYCswZzysZWiai37rKOVfXS+ZyoRgIbI9N4I8TrOJRIQwAsMa2yDuGwy4FvC1QlXikBwz+MOCwrjuxi3kDwc2GYymUC/LB/fwd+w8LUgBiK7XO+ErYqziMHH2nlcHDZb1qu92hI4A9KL35Y5YPygecG2KOH504=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TUhZltI/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB37C4CEE4;
+	Thu, 17 Apr 2025 18:08:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915622;
-	bh=9vC/NYAPYJ4ZZV1WpETnhWhPQ+7awIpdcYKMDgFJoQQ=;
+	s=korg; t=1744913340;
+	bh=aVsnTL71g05JmXAneNWW6TH1Qk0nI8n9eQqvohNkcxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QdMRqbQ/9I5z3Vj26MX5uQSvkqNQkKRJmLCkoNyfssuYMOQjJcK3q5NdzNOiOLrlF
-	 gHKoOKxTd6F5e1Gv8UuIeNzHDlpIpte7JQwJR6wY/VKnnnsjyEf1mS4M8aKREENjRQ
-	 YLlTtBtsRYZNY6mdPXuzbeoWibAcu1wHZtT0bhsM=
+	b=TUhZltI/r147wgev087PcXelfC9/aPevd1KNIVHfu9fuS+PJPNvgkot8P2k83wRqN
+	 Lr/rtPREVcboItPh9AcXT6Esyz6bxi0LMej1lVKuadMF82jLxDC6zDnXKKrkijvkJ9
+	 KM9wjL0O8dYqe1bzecL/0F9NrAJ+YIHK9FQUrnoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 185/393] HID: pidff: Fix 90 degrees direction name North -> East
-Date: Thu, 17 Apr 2025 19:49:54 +0200
-Message-ID: <20250417175115.034509181@linuxfoundation.org>
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.14 307/449] f2fs: fix the missing write pointer correction
+Date: Thu, 17 Apr 2025 19:49:55 +0200
+Message-ID: <20250417175130.466861770@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,39 +59,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-[ Upstream commit f98ecedbeca34a8df1460c3a03cce32639c99a9d ]
+commit 201e07aec617b10360df09090651dea9d0d4f7d3 upstream.
 
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If checkpoint was disabled, we missed to fix the write pointers.
+
+Cc: <stable@vger.kernel.org>
+Fixes: 1015035609e4 ("f2fs: fix changing cursegs if recovery fails on zoned device")
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/super.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index a614438e43bd8..6eb7934c8f53b 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -145,7 +145,7 @@ static const u8 pidff_block_load_status[] = { 0x8c, 0x8d, 0x8e};
- #define PID_EFFECT_STOP		1
- static const u8 pidff_effect_operation_status[] = { 0x79, 0x7b };
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -4749,8 +4749,10 @@ try_onemore:
+ 	if (err)
+ 		goto free_meta;
  
--/* Polar direction 90 degrees (North) */
-+/* Polar direction 90 degrees (East) */
- #define PIDFF_FIXED_WHEEL_DIRECTION	0x4000
+-	if (unlikely(is_set_ckpt_flags(sbi, CP_DISABLED_FLAG)))
++	if (unlikely(is_set_ckpt_flags(sbi, CP_DISABLED_FLAG))) {
++		skip_recovery = true;
+ 		goto reset_checkpoint;
++	}
  
- struct pidff_usage {
--- 
-2.39.5
-
+ 	/* recover fsynced data */
+ 	if (!test_opt(sbi, DISABLE_ROLL_FORWARD) &&
 
 
 
