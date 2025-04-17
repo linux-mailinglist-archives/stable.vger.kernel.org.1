@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-133959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58589A928BB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:37:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28BE0A92A88
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:52:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB897189E364
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F24154A66A0
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BFA261381;
-	Thu, 17 Apr 2025 18:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606BB2571DD;
+	Thu, 17 Apr 2025 18:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hu4qNbUA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="op2t8FJ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C545261370;
-	Thu, 17 Apr 2025 18:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D538185920;
+	Thu, 17 Apr 2025 18:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914664; cv=none; b=cyCxYBseD9X+kUMEhT/eEzSkrvB0hrv1ni8QjoGlZvVQEibtRyGkJZmN2TwSgupxul2c531IGDrSdSoEqj+BDIOiwqm55la7I10tBeEmK+38PYBOBTTXAUiMwEeahJT1L7em9xknBqwAq2S5ps1azYUAm0R37lncgYDqRr5+cR0=
+	t=1744915789; cv=none; b=S58DH0C+WLfMNoJYksfyO9nJDgIu96Apm55p1KmD3gGPk9wR7ThZfO4NSQ/fjzHUrk4h4clw1DiGeFJw5tO96SIrlkQz+s+Wruduz7/rq97RJsJ9ddbg4j/s32o+YrggyI3qRpa0ODEFzVrJSz+nxp8zBJGg4rhASGU7QleeL+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914664; c=relaxed/simple;
-	bh=d0vNHh+eIguGOU4o8MIi1FkQx8UVJyxeN5YF0UeDZJs=;
+	s=arc-20240116; t=1744915789; c=relaxed/simple;
+	bh=dsU0U1RubQV+AjTjHelxXnhubCeV64R7vM3EeY1jr1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pjdifRqIVstJwsJaOqk8FdwbK7JZI2urUMN+gjpTV5FFeb58TGdAaWbPwp9QCkQxw7B4siFflvNmJr0NwU7DMkcBW36CmYSNLVhJBBLPwHh0hAYv+lHbMc4gCbSRnsZbqdVJjKGYJWELC7OARtGk1nP974DccsFUV6I4spmPiYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hu4qNbUA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63BEBC4CEE4;
-	Thu, 17 Apr 2025 18:31:03 +0000 (UTC)
+	 MIME-Version; b=EYU7WqFDaiTqR8lgxIz+PzEhyRBlbCw2D18RBdS4gfZaC68LTJEJtthGPD1sO4l6ZzjmPw7jqi+RkvfOe7VC9d4Np60anqfAoZu+O3KepMf79Fi97JGjPAHbVDRRIx+dI9b+QF4kbLGTPXTyb5XDWVZtiG7sQfGYLTeZyzCCZqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=op2t8FJ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B38FC4CEE7;
+	Thu, 17 Apr 2025 18:49:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914663;
-	bh=d0vNHh+eIguGOU4o8MIi1FkQx8UVJyxeN5YF0UeDZJs=;
+	s=korg; t=1744915789;
+	bh=dsU0U1RubQV+AjTjHelxXnhubCeV64R7vM3EeY1jr1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hu4qNbUACS8UA2lTdUhUWwyEDIzuFU+629Vj6ypVcPZoyMfq7Pr27esVaFqoBtuZl
-	 uVlYjA59WwhL3Y8+cAJJ+ngcvWjk/en9mse488HimgsqhBlmwltbbmy0a7e0JbisQ5
-	 OaGzatvaXkZ7+o6Fgt4H3nuGfcImqryTyNkHowHg=
+	b=op2t8FJ5LzrKpsvk4Stpij3/cd79qQK26uhvtpj7TM7qY0rnFOpXABpMNY8D3jcmg
+	 sQW5JMmjjor2HmarA1BYvjPNSejkMPmlYjBfvskzwn7Q7EgRyvkFrYAee3epjnySBS
+	 Gr6MNhXwoezNPb/tIsiB5d4mrJ0L1mmQw/IhIwF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kris Van Hees <kris.van.hees@oracle.com>,
-	Jack Vogel <jack.vogel@oracle.com>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 6.13 291/414] kbuild: exclude .rodata.(cst|str)* when building ranges
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.12 240/393] wifi: mt76: Add check for devm_kstrdup()
 Date: Thu, 17 Apr 2025 19:50:49 +0200
-Message-ID: <20250417175123.130687864@linuxfoundation.org>
+Message-ID: <20250417175117.253098781@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kris Van Hees <kris.van.hees@oracle.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-commit 87bb368d0637c466a8a77433837056f981d01991 upstream.
+commit 4bc1da524b502999da28d287de4286c986a1af57 upstream.
 
-The .rodata.(cst|str)* sections are often resized during the final
-linking and since these sections do not cover actual symbols there is
-no need to include them in the modules.builtin.ranges data.
+Add check for the return value of devm_kstrdup() in
+mt76_get_of_data_from_mtd() to catch potential exception.
 
-When these sections were included in processing and resizing occurred,
-modules were reported with ranges that extended beyond their true end,
-causing subsequent symbols (in address order) to be associated with
-the wrong module.
-
-Fixes: 5f5e7344322f ("kbuild: generate offset range data for builtin modules")
+Fixes: e7a6a044f9b9 ("mt76: testmode: move mtd part to mt76_dev")
 Cc: stable@vger.kernel.org
-Signed-off-by: Kris Van Hees <kris.van.hees@oracle.com>
-Reviewed-by: Jack Vogel <jack.vogel@oracle.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Link: https://patch.msgid.link/20250219033645.2594753-1-haoxiang_li2024@163.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/generate_builtin_ranges.awk |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/wireless/mediatek/mt76/eeprom.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/scripts/generate_builtin_ranges.awk
-+++ b/scripts/generate_builtin_ranges.awk
-@@ -282,6 +282,11 @@ ARGIND == 2 && !anchor && NF == 2 && $1
- # section.
- #
- ARGIND == 2 && sect && NF == 4 && /^ [^ \*]/ && !($1 in sect_addend) {
-+	# There are a few sections with constant data (without symbols) that
-+	# can get resized during linking, so it is best to ignore them.
-+	if ($1 ~ /^\.rodata\.(cst|str)[0-9]/)
-+		next;
-+
- 	if (!($1 in sect_base)) {
- 		sect_base[$1] = base;
+--- a/drivers/net/wireless/mediatek/mt76/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
+@@ -95,6 +95,10 @@ int mt76_get_of_data_from_mtd(struct mt7
+ 
+ #ifdef CONFIG_NL80211_TESTMODE
+ 	dev->test_mtd.name = devm_kstrdup(dev->dev, part, GFP_KERNEL);
++	if (!dev->test_mtd.name) {
++		ret = -ENOMEM;
++		goto out_put_node;
++	}
+ 	dev->test_mtd.offset = offset;
+ #endif
  
 
 
