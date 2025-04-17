@@ -1,66 +1,117 @@
-Return-Path: <stable+bounces-133105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A5E6A91DF8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 15:27:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2745EA91E07
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 15:29:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E66C33A8055
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 13:27:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F107A7A9D35
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 13:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDDF724729B;
-	Thu, 17 Apr 2025 13:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1B4223320;
+	Thu, 17 Apr 2025 13:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XBW204p0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rK/IoPci"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BA024503A
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 13:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929E32376E6
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 13:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744896421; cv=none; b=QkaC/bC8ZInkgtGre8lz0STFNWVEYgbR6RQ5dI/EkSFX8G2edzyC8e2DIBMp1sWRAt32SWF3OlnWrZRnUbNwskztXnMaZ4LI6/H2CM7tTvdC1sa3iCdlS6uBGB7JaAwcndeI8UNsAgADj3PTnuTaXf6Cf/7dONFEGpBoQClbD+E=
+	t=1744896432; cv=none; b=K8Lk50bpemLV7fxXMdLTKDsFGICKum3CPiDPRxxGUrcjxSQvbGeJtPMXeOFfIP7OkX0fjJhK/sHz8mEVBjNpbAR2zJky5iXidxBbrTNmeWpS2UUMhFujpKkqwE40tf4//b7o45ihuHHNvp5JaWromWFSFbetl5XwPcwZ/jWcdJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744896421; c=relaxed/simple;
-	bh=cobK7OBKxPZbEQA3jr13nGMXOOYbZuNKd3Pp5bzkph4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IAYU/d1nuIWrjTLj6lD6KFkgDisQt9rDMm7kvXOcp1FO78yu9ps7m9lbHwSufa0C36178FsZkj7xBXu7+ybA2pgRchYzFRe/VWDCdVjSkDz55NcXP/gaJ0UScRP3Ub+DZ5nP4Q04nXocHE46EsK3BbqNrALdH4ZxIT1YNStiyNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XBW204p0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73347C4CEEE;
-	Thu, 17 Apr 2025 13:27:00 +0000 (UTC)
+	s=arc-20240116; t=1744896432; c=relaxed/simple;
+	bh=f9SJAVtXTSonB8QOqi2INDTvErAjfZ53w+E62ZvJaeo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=g7GVZowCufi68n6t8fr3GEupUb2LFXQOhd3rileM7igXVGNUmknRzUFgt2O/GPVn2iCgCNFL4R0mhBSqMtNnc7RDK6GSXhUwas0euQsNCnfu7UGw4/pOR+RV9uJLHh7IkwbFMys5f4RRijXiA+J7lBUHYvrGC1csQTW94WgpLFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rK/IoPci; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A608C4CEE4;
+	Thu, 17 Apr 2025 13:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744896421;
-	bh=cobK7OBKxPZbEQA3jr13nGMXOOYbZuNKd3Pp5bzkph4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XBW204p0X8gSgliUHb/KBPGrIj3xcCPvJABbQ9QH3aa/mTPhG42lMI1YQtcV8jyOX
-	 hpcXYutkd+5q1tBY3jDrhh5SIdosThxjp8PbFBlwgV11C3NnBn14kGShtedUo9woD6
-	 D4gRsUcmTRDpkEMH7CEdoJctv/xrvycLNIi9sleA=
-Date: Thu, 17 Apr 2025 15:19:09 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: He Zhe <zhe.he@windriver.com>
-Cc: cve@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH vulns] scripts: Correct kernel tree variable name
-Message-ID: <2025041758-stimulus-timothy-2e99@gregkh>
-References: <20250417113641.273565-1-zhe.he@windriver.com>
+	s=korg; t=1744896432;
+	bh=f9SJAVtXTSonB8QOqi2INDTvErAjfZ53w+E62ZvJaeo=;
+	h=Subject:To:Cc:From:Date:From;
+	b=rK/IoPcitb41nj06VLe8PjVpz5L44hgqcI6GduwgGOJ8469ZdKC6GDa7/vx7lPHFP
+	 fun5L+zGUoXRK8S72HKNougbYL2iVu5Vhz/OvcODLFpzgdlpIAN/eNJQ8av2cg2S1i
+	 xemKkEDj1VDYyH6fpQvgeaH0OtQeZ1d+bWtzHrrQ=
+Subject: FAILED: patch "[PATCH] cifs: avoid NULL pointer dereference in dbg call" failed to apply to 5.15-stable tree
+To: adiupina@astralinux.ru,stfrench@microsoft.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 17 Apr 2025 15:20:39 +0200
+Message-ID: <2025041739-swivel-handball-0839@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250417113641.273565-1-zhe.he@windriver.com>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Thu, Apr 17, 2025 at 07:36:41PM +0800, He Zhe wrote:
-> Signed-off-by: He Zhe <zhe.he@windriver.com>
 
-Again, more words are better :)
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x b4885bd5935bb26f0a414ad55679a372e53f9b9b
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041739-swivel-handball-0839@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+
 
 thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From b4885bd5935bb26f0a414ad55679a372e53f9b9b Mon Sep 17 00:00:00 2001
+From: Alexandra Diupina <adiupina@astralinux.ru>
+Date: Wed, 19 Mar 2025 17:28:58 +0300
+Subject: [PATCH] cifs: avoid NULL pointer dereference in dbg call
+
+cifs_server_dbg() implies server to be non-NULL so
+move call under condition to avoid NULL pointer dereference.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: e79b0332ae06 ("cifs: ignore cached share root handle closing errors")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+
+diff --git a/fs/smb/client/smb2misc.c b/fs/smb/client/smb2misc.c
+index f3c4b70b77b9..cddf273c14ae 100644
+--- a/fs/smb/client/smb2misc.c
++++ b/fs/smb/client/smb2misc.c
+@@ -816,11 +816,12 @@ smb2_handle_cancelled_close(struct cifs_tcon *tcon, __u64 persistent_fid,
+ 		WARN_ONCE(tcon->tc_count < 0, "tcon refcount is negative");
+ 		spin_unlock(&cifs_tcp_ses_lock);
+ 
+-		if (tcon->ses)
++		if (tcon->ses) {
+ 			server = tcon->ses->server;
+-
+-		cifs_server_dbg(FYI, "tid=0x%x: tcon is closing, skipping async close retry of fid %llu %llu\n",
+-				tcon->tid, persistent_fid, volatile_fid);
++			cifs_server_dbg(FYI,
++					"tid=0x%x: tcon is closing, skipping async close retry of fid %llu %llu\n",
++					tcon->tid, persistent_fid, volatile_fid);
++		}
+ 
+ 		return 0;
+ 	}
+
 
