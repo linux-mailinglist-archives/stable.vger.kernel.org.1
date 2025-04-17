@@ -1,326 +1,208 @@
-Return-Path: <stable+bounces-133214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DF69A9234B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 19:01:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E75FA92383
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 19:09:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 645A1464D5E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 17:01:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8680046653F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 17:09:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603BC253F30;
-	Thu, 17 Apr 2025 17:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB2392550D6;
+	Thu, 17 Apr 2025 17:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hsSm4LF6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KKmwGtAX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F12522371B;
-	Thu, 17 Apr 2025 17:01:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE45919DF9A;
+	Thu, 17 Apr 2025 17:09:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744909278; cv=none; b=j64bznkXdghki4pMdGhoBZg5PKDosBMQhRzjwy8qIlHLeC4AfrIk2jeeyJpJOgrqrbNEtlt/ienllO7lYs8csPvx8vRnTvoVCvPPTzzOzZjgYd81Hsd+WsLlWDUBMrdAMLqUyYQLYM4VuzZq9y26zL/wk07cxuJuQPb0LkpIwzQ=
+	t=1744909755; cv=none; b=KQCJWpeH5um9s0UOfkMcFmtT2C1PUa8orxSdmQnOodLtm6ZPdQ+rEdwBDw1MH9bknax2twdu2GRn/ndvtjmOQh8UvVgYBYMDru3er7SW76nYnZpZdEt8tgrAZzZnwml87muCwwdLZThOHrnmzHPWvXjugjP27oPxz6JZyPQrosw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744909278; c=relaxed/simple;
-	bh=9oEB2dkP3S7X/B2dnDJe2lnfHeb3jiQQLugvRc19tac=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o/GQ1h75UNkm6bcKbsxgyBfEq/QkdwRYvCm9vqPNRTG4k8gxSRctMoYuCqKyGx/1FOJWHbtgG/MttI+VTa8U5sEouk5ImglukKzH84++TIA+5q+OpnC3SaDultlSd6Kq0csSMHnvOlJWEtRRLSIZBkdU48BYivs+1N9gNFsxvzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hsSm4LF6; arc=none smtp.client-ip=209.85.219.47
+	s=arc-20240116; t=1744909755; c=relaxed/simple;
+	bh=cL8O9si/E+RgkCImblOqbPznISwWiwgiE1yb1CY5L44=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pCFtBwU5YIdUywv62PP/dY8Eow3qhGRiskrYDImYilo2WQx27M03918hTTUnJNQM2n4DWIiKeMiiyuTotkmJBOkg3eFq+G+Z/KmJnrcxaq9Vuagfy797teeW6N10MNets0Iig6o8J6DQ1TORRQ8zq5Qk/FQzKZaFDSDfFyEuuz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KKmwGtAX; arc=none smtp.client-ip=209.85.219.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6e8f05acc13so11900386d6.2;
-        Thu, 17 Apr 2025 10:01:14 -0700 (PDT)
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-6e8efefec89so9521746d6.3;
+        Thu, 17 Apr 2025 10:09:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744909274; x=1745514074; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=SXWRs1cTjol07xpBkUHs8BYxQsZJt8nnKpT27OeCG9Q=;
-        b=hsSm4LF6AL1k/+6YYBwQOlDkLQ08Auwz/rOpsApiPnElsUIM8I3SaBHu+egHMz0my+
-         Ou8RARSI3/PmQ12BINHhRNkSPKYT4ooqVYSdnx2Ahy/46gh934uZY2F+MzQflLv8m9Fe
-         CMQPCVDfQzRgSkaW7jWV1kIrq6Q5nHo6Sjyhcu1vw8REcBa1/mOB1cbizifPjUWK9qSu
-         G2PEngVpwN3ezFRim9bj4XnJ6m0iqOnSZAUvOJFdBcg7/f2WS7ySpZ9Q4Qb+wpUA3Xlb
-         3HGn8y44l8B+atYULs0pVh9rHJfI4YsGOjJ5CeSyAdTpKidzZPLphDhhHbrODTMfkSaG
-         +bbA==
+        d=gmail.com; s=20230601; t=1744909753; x=1745514553; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YVRsxMaaoRzI3A0BHWMdKaDAL/C7tvFz+AMzRlmVe60=;
+        b=KKmwGtAXjGUjDbLF0hmMsez/t03bAU/wnieHt3MnJvrtNytSuRxMxBaXysYJk60NV+
+         JmsET0UDxd6qa5bqyHgOpWn3qEG2zvn5zeDjiGiEdzpJXWBaGP158qxB6DwpxLoV3dl4
+         05AtF6bw2VBE9NdSR86SbEq5z2ybRwNZ1LHcM3HAM/0krQEvkXShxfYD0fxh0Y1+pZYy
+         eNlTjqmKDKs+ZAUUpvOLwjk62SUGlQkNP6nMJFl7WFYzzXGfovrLApXBHow5sSeugQU8
+         XF0Ry1kMl3MyT9UfRX3f6vMqVjYc+/w8SweYUNmC0MN2D5ZApuuOzgaV4F3dD5UVqiQ3
+         IxqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744909274; x=1745514074;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SXWRs1cTjol07xpBkUHs8BYxQsZJt8nnKpT27OeCG9Q=;
-        b=ampN679vmhOfrZeUU7EO/zT8luwdTc3wQDT9TuIoHuWupHBn8Ls+d0GRwlKIfExwIA
-         T9mZnoQvb3sxTaExXFzbBNJdJZ18WqCWT7Xj4EmCj8pzNCWqaZkt8Ao+9MaGomKjFoow
-         QLhlPRVAGlvARRo1pmxM5fDAFa1yWPgl3q0BNv69EcpKUyttzvvx1GqUYEDdQf2Nexg/
-         CN0QGT2c98V+lLKLM8Sbd4QgEzrLNiMf0sngEiXVH1NJaHQZtlKL7c9fPgB5DU8e7tfO
-         VWqmS01c6eJRYe8nZzvMh5Eu9vgwKnxSHgXHRR7C3ZPWMjkrTQQFM4CsKZKHlQfFVBdB
-         hCLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUAzBOmh33sy0xKIFvRER44PuzW3v/DRWwbxb3tGpD1neLN6r8NimJ5VMvgyBUY5giGfgFnbcnb@vger.kernel.org, AJvYcCUaevvTuKJKB1KXzXNrKS1LRuMQiQuH9Npi1F5xxMv9VN1Ubn9/5SwDdvATW7JO3DEiMu20DZ9BShD262Wt@vger.kernel.org, AJvYcCXOFgcNT8q72CkIcv1C5hvQzOoVIQnZBgPtEk0JzCAG/A24DAhPgvZgdLUzVFJ76i8M2MaN0U4bs9E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzR4eXBRH8MBdIW7mV1XBvGmDXrBAs1dt5L9y6M8DWsA6pbx8FW
-	kDvEP7zsTcS4Vw30Spc8aPcoTdY86cyGp+ATrtnZ4ebeMLnuEz4q
-X-Gm-Gg: ASbGnctd1/NykRIk3qytMokluVlv/uuqxWF2SQieCIWGuaUYoO68ajmvKhWQZ5W+4FD
-	2lfFuY2dIFkngfGQbIpVkN9jIhYZcca1H6MInvzkwnlPQWY7/les72qBMqSPvFC/swkcT9xA2MX
-	Jv/11cj7xftnxw9vhCX/IwZa0p4YiZxjoTWCHnrLMt5Ee4Bkf0P0MQr/d6tvJI0LBZ6f0lFkTHg
-	mF3I/uhIwzlmnk0pkMTp8iLQazUH9daiSmFfuuOarXNIQfxAzvBRK2VqRWM1+M9jaOL8+Ky0pkS
-	9afW4kBvxo7FDizj71LsLAylu6+1FQUVbhEG9qJSaIvBgtRLbOObSVk=
-X-Google-Smtp-Source: AGHT+IHYzgvyals3Cpf2qth3nNDQ//h870rA/XXk4zzkO6uy9etL5tq59U7gkjqSLQAvzlKJg1Ozaw==
-X-Received: by 2002:a0c:ed52:0:b0:6f2:bcbf:101d with SMTP id 6a1803df08f44-6f2bcbf11f5mr39617326d6.38.1744909273730;
-        Thu, 17 Apr 2025 10:01:13 -0700 (PDT)
-Received: from theriatric.mshome.net ([73.123.232.110])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f2c2bfcc26sm1082906d6.92.2025.04.17.10.01.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Apr 2025 10:01:13 -0700 (PDT)
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-To: gregkh@linuxfoundation.org,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	Michael.Hennerich@analog.com,
-	sonic.zhang@analog.com,
-	vapier@gentoo.org
-Cc: gshahrouzi@gmail.com,
-	skhan@linuxfoundation.org,
-	linux-kernel-mentees@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH v2] iio: adc: Include valid channel for channel selection
-Date: Thu, 17 Apr 2025 13:01:09 -0400
-Message-ID: <20250417170109.602659-1-gshahrouzi@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1744909753; x=1745514553;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YVRsxMaaoRzI3A0BHWMdKaDAL/C7tvFz+AMzRlmVe60=;
+        b=KkCTVGuKnfIW6I/WY/8nXRjRc/bdOX+8x9P7k3ncE/eaxapenPMSlr4wWMNCcYZqWg
+         61LKcDQW+DJ47U3PGR7O2RaRIRFIjLB+v+1C+P77t/rUFXwUkAoe6ynlw5W5/rQET0cA
+         QnPynghCdFnn50BEwylCENwboZyA7h68ngtRQE+SRvSvtHWDhWhtpPoe41dIRB82/Wj4
+         KHYXbBFiDjXddUFkyelIFvfQFU1LgBx2BQzhaefK6ZhM1mY9b9fj7mz/3akCGwjC2rJ5
+         qmiV/aFzQ1e6GMG5Y/krGErghgz7k/L5/KWc/PXhS4jA+NHXDFT/a42ax+fc33lATGFc
+         am1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCULBZuTKEONeEJT436HudJJKyQuHb5714iGxurZV9N71eyIsp5VsInMQeZM+WN4YYbHHXD1Q1El4+0h2LUU@vger.kernel.org, AJvYcCUO5XbttCM8Uml7O/+KgfmSa3+pmObmV4Nx3sBNafAFYn1dKhowtA5JEUYr+rYBd1qwokgL6tGQQYc=@vger.kernel.org, AJvYcCW2eO2GeWcyZpeeAwkT+3AXX9NiRasjSgl3t37Tlbbj9XL9Xz+Ck+8DC2IqUDxYqG2H2Qijv/Lb@vger.kernel.org
+X-Gm-Message-State: AOJu0YxE364O54bOrnNOO8rRzlPHjoN8/cBR03XmPwAdOc6L3Hg58CYS
+	+SV/xSYeC5yNxouf5PSMPKVEahsvQRilHvkZod5SxqA6quz0M50jBjTXnehh+slTwjYMK5B6h3y
+	NHsJiV/21f8dN3uwDRD3BLvfU9RvmRp+sBGM=
+X-Gm-Gg: ASbGncvJwbg23mrr2JqpF0UfKflVbpEgTvTmT3Yp5rZgfJH+30Z2/h2XzOLgW6NxxB3
+	gXgxMsdYerxlJJyFdRQk88NKTkiJTD4xFkgfnRmkD3EparzDaGQE8i+HcQwnQY2E7LVS8jxt1RP
+	5yvIiC5yVFH7mHHc3HViq/BF3doveOvmDbC4jycLr2kFYdjMoaEY8+zg==
+X-Google-Smtp-Source: AGHT+IH3sgWNRxjJ7ML6vojQwEfQKL7ty9akA1LDmRGoufnBtH8OXUnb5G1KQUGP7NM/X1dbIaA6SvGTj/qLhpHImwk=
+X-Received: by 2002:a05:622a:15d4:b0:476:8825:99bf with SMTP id
+ d75a77b69052e-47ae9e5fcb5mr6420891cf.27.1744909752744; Thu, 17 Apr 2025
+ 10:09:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250415182038.523186-1-gshahrouzi@gmail.com> <fb712c034eda0d5d711a90a00b6382315fb5f929.camel@gmail.com>
+ <CAKUZ0zL88AyuRxzhoAv2iZO7N7qOMy1G3yKscqG3rQiiOS0gog@mail.gmail.com> <e8b24cf22c87e5b5ce0cc8919eca79f6e60ab6e3.camel@gmail.com>
+In-Reply-To: <e8b24cf22c87e5b5ce0cc8919eca79f6e60ab6e3.camel@gmail.com>
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Date: Thu, 17 Apr 2025 13:08:00 -0400
+X-Gm-Features: ATxdqUG5PIHgIXbjSs34LLkZR6qQAIThR_w05scHyE-4Vxq0gd7frAOFZ8J-594
+Message-ID: <CAKUZ0z+FKxHcYTYiGvrZ3RLiMKT1P4gtTdq8d7=+ZFC0RMQzqA@mail.gmail.com>
+Subject: Re: [PATCH] iio: adc: Revoke valid channel for error path
+To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
+Cc: gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-staging@lists.linux.dev, Michael.Hennerich@analog.com, 
+	sonic.zhang@analog.com, vapier@gentoo.org, skhan@linuxfoundation.org, 
+	kernelmentees@lists.linuxfoundation.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-According to the datasheet on page 9 under the channel selection table,
-all devices (AD7816/7/8) are able to use the channel marked as 7. This
-channel is used for diagnostic purposes by routing the internal 1.23V
-bandgap source through the MUX to the input of the ADC.
+On Thu, Apr 17, 2025 at 10:02=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.co=
+m> wrote:
+>
+> On Thu, 2025-04-17 at 08:53 -0400, Gabriel Shahrouzi wrote:
+> > On Thu, Apr 17, 2025 at 6:06=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail=
+.com> wrote:
+> > >
+> > > On Tue, 2025-04-15 at 14:20 -0400, Gabriel Shahrouzi wrote:
+> > > > According to the datasheet on page 9 under the channel selection ta=
+ble,
+> > > > all devices (AD7816/7/8) are able to use the channel marked as 7. T=
+his
+> > > > channel is used for diagnostic purposes by routing the internal 1.2=
+3V
+> > > > bandgap source through the MUX to the input of the ADC.
+> > > >
+> > > > Replace checking for string equality with checking for the same chi=
+p ID
+> > > > to reduce time complexity.
+> > > >
+> > > > Group invalid channels for all devices together because they are
+> > > > processed the same way.
+> > > >
+> > > > Fixes: 7924425db04a ("staging: iio: adc: new driver for AD7816 devi=
+ces")
+> > > > Cc: stable@vger.kernel.org
+> > > > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+> > > > ---
+> > > >  drivers/staging/iio/adc/ad7816.c | 15 +++++----------
+> > > >  1 file changed, 5 insertions(+), 10 deletions(-)
+> > > >
+> > > > diff --git a/drivers/staging/iio/adc/ad7816.c
+> > > > b/drivers/staging/iio/adc/ad7816.c
+> > > > index 6c14d7bcdd675..d880fe0257697 100644
+> > > > --- a/drivers/staging/iio/adc/ad7816.c
+> > > > +++ b/drivers/staging/iio/adc/ad7816.c
+> > > > @@ -186,17 +186,12 @@ static ssize_t ad7816_store_channel(struct de=
+vice
+> > > > *dev,
+> > > >       if (ret)
+> > > >               return ret;
+> > > >
+> > > > -     if (data > AD7816_CS_MAX && data !=3D AD7816_CS_MASK) {
+> > > > -             dev_err(&chip->spi_dev->dev, "Invalid channel id %lu =
+for
+> > > > %s.\n",
+> > > > -                     data, indio_dev->name);
+> > > > -             return -EINVAL;
+> > > > -     } else if (strcmp(indio_dev->name, "ad7818") =3D=3D 0 && data=
+ > 1) {
+> > > > -             dev_err(&chip->spi_dev->dev,
+> > > > -                     "Invalid channel id %lu for ad7818.\n", data)=
+;
+> > > > -             return -EINVAL;
+> > > > -     } else if (strcmp(indio_dev->name, "ad7816") =3D=3D 0 && data=
+ > 0) {
+> > > > +     if (data !=3D AD7816_CS_MASK &&
+> > > > +         (data > AD7816_CS_MAX ||
+> > > > +         (chip->id =3D=3D ID_AD7818 && data > 1) ||
+> > > > +         (chip->id =3D=3D ID_AD7816 && data > 0))) {
+> > > >               dev_err(&chip->spi_dev->dev,
+> > > > -                     "Invalid channel id %lu for ad7816.\n", data)=
+;
+> > > > +                     "Invalid channel id %lu for %s.\n", data, ind=
+io_dev-
+> > > > > name);
+> > > >               return -EINVAL;
+> > > >       }
+> > >
+> > > Hmm, maybe I'm missing something but the code just looks the same as =
+before
+> > > (from a functionality point of view)? I'm really not seeing any fix..=
+.
+> > I might have to change it for readability. From my understanding, if
+> > channel 7 is selected (AD7816_CS_MASK), it never enters the error path
+> > whereas in the old code, if the chip were either ad7816 or ad7818, it w=
+ould
+> > end up returning an error because it skips all channels above either 0
+> > or 1.
+>
+> Ahh, right!
+>
+> One good refactor is to add a chip_info struct (renaming the existing one=
+) with
+> let's say a name and max_channels. Then, the condition could be reduced t=
+o:
+>
+> if (data > st->chip->max_channel && data !=3D AD7816_CS_MASK {
+>         dev_err(...);
+>         return -EINVAL;
+> }
+Makes sense. I sent a V2 with the updates. Also included enum
+ad7816_type as a member for chip_info but not sure if it is necessary.
+Renamed the existing one to ad7816_state.
+>
+> Being this in staging, I guess we don't care much about having the fix as=
+ the
+> first patch to make it easier to backport.
+In other words, combining the refactoring and fix into one patch is
+fine but normally they would be split?
 
-Replace checking for string equality with checking for the same chip ID
-to reduce time complexity.
-
-Group invalid channels for all devices together because they are
-processed the same way.
-
-Fixes: 7924425db04a ("staging: iio: adc: new driver for AD7816 devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
----
-Changes since v2:
-	- Refactor by adding chip_info struct which simplifies
-	  condtional logic.
----
- drivers/staging/iio/adc/ad7816.c | 68 ++++++++++++++++++--------------
- 1 file changed, 38 insertions(+), 30 deletions(-)
-
-diff --git a/drivers/staging/iio/adc/ad7816.c b/drivers/staging/iio/adc/ad7816.c
-index 6c14d7bcdd675..ec955cbf06c17 100644
---- a/drivers/staging/iio/adc/ad7816.c
-+++ b/drivers/staging/iio/adc/ad7816.c
-@@ -41,8 +41,20 @@
-  * struct ad7816_chip_info - chip specific information
-  */
- 
-+enum ad7816_type {
-+	ID_AD7816,
-+	ID_AD7817,
-+	ID_AD7818,
-+};
-+
- struct ad7816_chip_info {
--	kernel_ulong_t id;
-+	const char *name;
-+	enum ad7816_type type;
-+	u8 max_channels;
-+};
-+
-+struct ad7816_state {
-+	const struct ad7816_chip_info *chip_info;
- 	struct spi_device *spi_dev;
- 	struct gpio_desc *rdwr_pin;
- 	struct gpio_desc *convert_pin;
-@@ -52,16 +64,11 @@ struct ad7816_chip_info {
- 	u8  mode;
- };
- 
--enum ad7816_type {
--	ID_AD7816,
--	ID_AD7817,
--	ID_AD7818,
--};
- 
- /*
-  * ad7816 data access by SPI
-  */
--static int ad7816_spi_read(struct ad7816_chip_info *chip, u16 *data)
-+static int ad7816_spi_read(struct ad7816_state *chip, u16 *data)
- {
- 	struct spi_device *spi_dev = chip->spi_dev;
- 	int ret;
-@@ -84,7 +91,7 @@ static int ad7816_spi_read(struct ad7816_chip_info *chip, u16 *data)
- 		gpiod_set_value(chip->convert_pin, 1);
- 	}
- 
--	if (chip->id == ID_AD7816 || chip->id == ID_AD7817) {
-+	if (chip->chip_info->type == ID_AD7816 || chip->chip_info->type == ID_AD7817) {
- 		while (gpiod_get_value(chip->busy_pin))
- 			cpu_relax();
- 	}
-@@ -102,7 +109,7 @@ static int ad7816_spi_read(struct ad7816_chip_info *chip, u16 *data)
- 	return ret;
- }
- 
--static int ad7816_spi_write(struct ad7816_chip_info *chip, u8 data)
-+static int ad7816_spi_write(struct ad7816_state *chip, u8 data)
- {
- 	struct spi_device *spi_dev = chip->spi_dev;
- 	int ret;
-@@ -121,7 +128,7 @@ static ssize_t ad7816_show_mode(struct device *dev,
- 				char *buf)
- {
- 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
--	struct ad7816_chip_info *chip = iio_priv(indio_dev);
-+	struct ad7816_state *chip = iio_priv(indio_dev);
- 
- 	if (chip->mode)
- 		return sprintf(buf, "power-save\n");
-@@ -134,7 +141,7 @@ static ssize_t ad7816_store_mode(struct device *dev,
- 				 size_t len)
- {
- 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
--	struct ad7816_chip_info *chip = iio_priv(indio_dev);
-+	struct ad7816_state *chip = iio_priv(indio_dev);
- 
- 	if (strcmp(buf, "full")) {
- 		gpiod_set_value(chip->rdwr_pin, 1);
-@@ -167,7 +174,7 @@ static ssize_t ad7816_show_channel(struct device *dev,
- 				   char *buf)
- {
- 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
--	struct ad7816_chip_info *chip = iio_priv(indio_dev);
-+	struct ad7816_state *chip = iio_priv(indio_dev);
- 
- 	return sprintf(buf, "%d\n", chip->channel_id);
- }
-@@ -178,7 +185,7 @@ static ssize_t ad7816_store_channel(struct device *dev,
- 				    size_t len)
- {
- 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
--	struct ad7816_chip_info *chip = iio_priv(indio_dev);
-+	struct ad7816_state *chip = iio_priv(indio_dev);
- 	unsigned long data;
- 	int ret;
- 
-@@ -186,17 +193,10 @@ static ssize_t ad7816_store_channel(struct device *dev,
- 	if (ret)
- 		return ret;
- 
--	if (data > AD7816_CS_MAX && data != AD7816_CS_MASK) {
--		dev_err(&chip->spi_dev->dev, "Invalid channel id %lu for %s.\n",
--			data, indio_dev->name);
--		return -EINVAL;
--	} else if (strcmp(indio_dev->name, "ad7818") == 0 && data > 1) {
-+	if (data > chip->chip_info->max_channels && data != AD7816_CS_MASK) {
- 		dev_err(&chip->spi_dev->dev,
--			"Invalid channel id %lu for ad7818.\n", data);
--		return -EINVAL;
--	} else if (strcmp(indio_dev->name, "ad7816") == 0 && data > 0) {
--		dev_err(&chip->spi_dev->dev,
--			"Invalid channel id %lu for ad7816.\n", data);
-+			"Invalid channel id %lu for %s (max regular: %u).\n", data,
-+			chip->chip_info->name, chip->chip_info->max_channels);
- 		return -EINVAL;
- 	}
- 
-@@ -215,7 +215,7 @@ static ssize_t ad7816_show_value(struct device *dev,
- 				 char *buf)
- {
- 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
--	struct ad7816_chip_info *chip = iio_priv(indio_dev);
-+	struct ad7816_state *chip = iio_priv(indio_dev);
- 	u16 data;
- 	s8 value;
- 	int ret;
-@@ -271,7 +271,7 @@ static ssize_t ad7816_show_oti(struct device *dev,
- 			       char *buf)
- {
- 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
--	struct ad7816_chip_info *chip = iio_priv(indio_dev);
-+	struct ad7816_state *chip = iio_priv(indio_dev);
- 	int value;
- 
- 	if (chip->channel_id > AD7816_CS_MAX) {
-@@ -292,7 +292,7 @@ static inline ssize_t ad7816_set_oti(struct device *dev,
- 				     size_t len)
- {
- 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
--	struct ad7816_chip_info *chip = iio_priv(indio_dev);
-+	struct ad7816_state *chip = iio_priv(indio_dev);
- 	long value;
- 	u8 data;
- 	int ret;
-@@ -345,14 +345,22 @@ static const struct iio_info ad7816_info = {
- 	.event_attrs = &ad7816_event_attribute_group,
- };
- 
-+static const struct ad7816_chip_info ad7816_chip_infos[] = {
-+	[ID_AD7816] = { .name = "ad7816", .max_channels = 0, .type = ID_AD7816 },
-+	[ID_AD7817] = { .name = "ad7817", .max_channels = 3, .type = ID_AD7817 },
-+	[ID_AD7818] = { .name = "ad7818", .max_channels = 1, .type = ID_AD7818 },
-+};
-+
- /*
-  * device probe and remove
-  */
- 
- static int ad7816_probe(struct spi_device *spi_dev)
- {
--	struct ad7816_chip_info *chip;
-+	struct ad7816_state *chip;
- 	struct iio_dev *indio_dev;
-+	const struct spi_device_id *id = spi_get_device_id(spi_dev);
-+	enum ad7816_type chip_type = (enum ad7816_type)id->driver_data;
- 	int i, ret;
- 
- 	indio_dev = devm_iio_device_alloc(&spi_dev->dev, sizeof(*chip));
-@@ -361,12 +369,12 @@ static int ad7816_probe(struct spi_device *spi_dev)
- 	chip = iio_priv(indio_dev);
- 	/* this is only used for device removal purposes */
- 	dev_set_drvdata(&spi_dev->dev, indio_dev);
-+	chip->chip_info = &ad7816_chip_infos[chip_type];
- 
- 	chip->spi_dev = spi_dev;
- 	for (i = 0; i <= AD7816_CS_MAX; i++)
- 		chip->oti_data[i] = 203;
- 
--	chip->id = spi_get_device_id(spi_dev)->driver_data;
- 	chip->rdwr_pin = devm_gpiod_get(&spi_dev->dev, "rdwr", GPIOD_OUT_HIGH);
- 	if (IS_ERR(chip->rdwr_pin)) {
- 		ret = PTR_ERR(chip->rdwr_pin);
-@@ -382,7 +390,7 @@ static int ad7816_probe(struct spi_device *spi_dev)
- 			ret);
- 		return ret;
- 	}
--	if (chip->id == ID_AD7816 || chip->id == ID_AD7817) {
-+	if (chip->chip_info->type == ID_AD7816 || chip->chip_info->type == ID_AD7817) {
- 		chip->busy_pin = devm_gpiod_get(&spi_dev->dev, "busy",
- 						GPIOD_IN);
- 		if (IS_ERR(chip->busy_pin)) {
-@@ -393,7 +401,7 @@ static int ad7816_probe(struct spi_device *spi_dev)
- 		}
- 	}
- 
--	indio_dev->name = spi_get_device_id(spi_dev)->name;
-+	indio_dev->name = chip->chip_info->name;
- 	indio_dev->info = &ad7816_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 
--- 
-2.43.0
-
+>
+> - Nuno S=C3=A1
+>
+> >
+> > >
+> > > Having said the above, not sure if grouping helps with readability. B=
+ut I do
+> > > agree with moving from string comparison to use chip->id. And we also=
+ have
+> > > redundants 'else'
+> > >
+> > > - Nuno S=C3=A1
+> > >
 
