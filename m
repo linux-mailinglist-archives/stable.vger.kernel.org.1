@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-134122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 679FCA929AA
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:43:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D003CA92747
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:22:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7F248E49F8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:41:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEBD14A19C8
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B864C25F97E;
-	Thu, 17 Apr 2025 18:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A550025DCE5;
+	Thu, 17 Apr 2025 18:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wm7bXEuz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RiY4B3Xm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76BBE25A654;
-	Thu, 17 Apr 2025 18:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620202571BA;
+	Thu, 17 Apr 2025 18:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915164; cv=none; b=FZWJEAkEaVfceNODVNMlJZqdXXPVeV1XRgp4y8RfD2q54ZZQsGtGOn9xFCT/NBx6Vi9WN3gD/idMSDKnYBO0nxf5G8KRFiHJ9DJhiMaZ18Xf2rlbBvuoWkG5rH63BrDKgdKQLXYVzk7P4fq3uw/P/wnGxBCjRiXVu9Qxk2/alYY=
+	t=1744914052; cv=none; b=chhMzjBfTT/6nn9oTQ7e5qH9LdixyWudQNKyRn5/8zpAUYjSbtWVuDHXRVbaEbuVTlGk8WnBhQZVOYUU1y9SFX2sMoaCdOT0oy+wRXZxTrH3YaZZ/+9Xc6IhguwjcclMo6UykbspaTrpdO8CLjqp2GUo7G9ytLGrjbMHuWFP96g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915164; c=relaxed/simple;
-	bh=6GT5cmM6Wnu2NNnkeQrM05FophqaaFuOgRckPt2yt38=;
+	s=arc-20240116; t=1744914052; c=relaxed/simple;
+	bh=ZgNh3j4MPJt9WGEH6NI7+mcdUtJ42g/V7lk7B0Ep0GU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RIv0qnq18i2m1AZjkJOYbXvHr86rgXzXOR5G61T55D8/oEhliN7HIY6zjMKbSaG2LJev7G2hSBUZzbNdXqPs26ERxLBT2KbUXaYf8ARwR+JunXeNzmaBBiHwnVBB9dtM3XszjkdbSq4v0Aaej+QEzjnP9/aTiSXcDcueACpWiKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wm7bXEuz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88034C4CEE7;
-	Thu, 17 Apr 2025 18:39:23 +0000 (UTC)
+	 MIME-Version; b=j6W4A+SWVHjch10eXMi4c4MCJMAojDedW5+3eQ3asyDYNmD/Fyb1aFm24xn6fm+e0RS/Pu5UjzTXORiYzXJ848sMVYU/XHysAaPwD8KXMK4lOhHQQ60eEQZNdNJmyZtINOdpMUVt8EaXchgfKT2FoaduaEIsFLaWfJKVde/TF9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RiY4B3Xm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B6F9C4CEEA;
+	Thu, 17 Apr 2025 18:20:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915163;
-	bh=6GT5cmM6Wnu2NNnkeQrM05FophqaaFuOgRckPt2yt38=;
+	s=korg; t=1744914051;
+	bh=ZgNh3j4MPJt9WGEH6NI7+mcdUtJ42g/V7lk7B0Ep0GU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wm7bXEuzX1MPzVT4gvKvXOucDPaMsquzyDhB5/NN2XaeZeTQhmpM1t8bP9BNWGWen
-	 lQmjpgXMMEuQImQFWPptdZtYa/TQhODuSgmmOMnJ57QILSCiZabwELHAHlOUVy0UgK
-	 7Tw9G0233XGnvberkVr9wOv8ZkCsaAWOdRlsWPHA=
+	b=RiY4B3Xmn1LhSXd/0qscCQhGyOQ0TE28zAqqPZEwtKLJWtfDiwOtn6uiOx3CIUL1/
+	 1QG9k4OccbBP+XeG4NgfV2YOwk/kU9X7S4vVbbhMgiGSBNsWrh00CJh7X2tuhmK39b
+	 bLZUtgpaM3p43KGN1T3L0lt5X/W90yFBvWaZDRLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	sontu mazumdar <sontu21@gmail.com>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Mina Almasry <almasrymina@google.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	David Wei <dw@davidwei.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 039/393] nft_set_pipapo: fix incorrect avx2 match of 5th field octet
+Subject: [PATCH 6.13 090/414] net: page_pool: dont cast mp param to devmem
 Date: Thu, 17 Apr 2025 19:47:28 +0200
-Message-ID: <20250417175109.166093133@linuxfoundation.org>
+Message-ID: <20250417175115.061500882@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit e042ed950d4e176379ba4c0722146cd96fb38aa2 ]
+[ Upstream commit 8d522566ae9cb3f0609ddb2a6ce3f4f39988043c ]
 
-Given a set element like:
+page_pool_check_memory_provider() is a generic path and shouldn't assume
+anything about the actual type of the memory provider argument. It's
+fine while devmem is the only provider, but cast away the devmem
+specific binding types to avoid confusion.
 
-	icmpv6 . dead:beef:00ff::1
-
-The value of 'ff' is irrelevant, any address will be matched
-as long as the other octets are the same.
-
-This is because of too-early register clobbering:
-ymm7 is reloaded with new packet data (pkt[9])  but it still holds data
-of an earlier load that wasn't processed yet.
-
-The existing tests in nft_concat_range.sh selftests do exercise this code
-path, but do not trigger incorrect matching due to the network prefix
-limitation.
-
-Fixes: 7400b063969b ("nft_set_pipapo: Introduce AVX2-based lookup implementation")
-Reported-by: sontu mazumdar <sontu21@gmail.com>
-Closes: https://lore.kernel.org/netfilter/CANgxkqwnMH7fXra+VUfODT-8+qFLgskq3set1cAzqqJaV4iEZg@mail.gmail.com/T/#t
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: David Wei <dw@davidwei.uk>
+Link: https://patch.msgid.link/20250204215622.695511-2-dw@davidwei.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo_avx2.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/core/page_pool_user.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
-index b8d3c3213efee..c15db28c5ebc4 100644
---- a/net/netfilter/nft_set_pipapo_avx2.c
-+++ b/net/netfilter/nft_set_pipapo_avx2.c
-@@ -994,8 +994,9 @@ static int nft_pipapo_avx2_lookup_8b_16(unsigned long *map, unsigned long *fill,
- 		NFT_PIPAPO_AVX2_BUCKET_LOAD8(5, lt,  8,  pkt[8], bsize);
+diff --git a/net/core/page_pool_user.c b/net/core/page_pool_user.c
+index 6677e0c2e2565..d5e214c30c310 100644
+--- a/net/core/page_pool_user.c
++++ b/net/core/page_pool_user.c
+@@ -356,7 +356,7 @@ void page_pool_unlist(struct page_pool *pool)
+ int page_pool_check_memory_provider(struct net_device *dev,
+ 				    struct netdev_rx_queue *rxq)
+ {
+-	struct net_devmem_dmabuf_binding *binding = rxq->mp_params.mp_priv;
++	void *binding = rxq->mp_params.mp_priv;
+ 	struct page_pool *pool;
+ 	struct hlist_node *n;
  
- 		NFT_PIPAPO_AVX2_AND(6, 2, 3);
-+		NFT_PIPAPO_AVX2_AND(3, 4, 7);
- 		NFT_PIPAPO_AVX2_BUCKET_LOAD8(7, lt,  9,  pkt[9], bsize);
--		NFT_PIPAPO_AVX2_AND(0, 4, 5);
-+		NFT_PIPAPO_AVX2_AND(0, 3, 5);
- 		NFT_PIPAPO_AVX2_BUCKET_LOAD8(1, lt, 10, pkt[10], bsize);
- 		NFT_PIPAPO_AVX2_AND(2, 6, 7);
- 		NFT_PIPAPO_AVX2_BUCKET_LOAD8(3, lt, 11, pkt[11], bsize);
 -- 
 2.39.5
 
