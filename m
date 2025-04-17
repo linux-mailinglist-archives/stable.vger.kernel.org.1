@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-134356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA09A92AB6
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:54:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69A22A928F7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:39:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8194F1B63C4A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:53:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 260583A3B69
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6C625DB1B;
-	Thu, 17 Apr 2025 18:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9978C2620C2;
+	Thu, 17 Apr 2025 18:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CUFtGTHc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p2JZjkXy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79822571A1;
-	Thu, 17 Apr 2025 18:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C14256C93;
+	Thu, 17 Apr 2025 18:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915882; cv=none; b=RX0r+dJUsOniDKtmfs8ULSNx3rCZQymCV8pDH7ozRFogC8t3xovDXxmJsfHHwQ/eLcRIvh9y/0EqbfHrS9y915di6asXW4DKmgm5SgjWsH39naAxxcYbJ40cqjMkGA6AghpSrQ2xq6MjSx/r/DeF9yYZFUNfVAx+1oo90rEpl6Y=
+	t=1744914712; cv=none; b=OeaxMV9ZUAl5Q+j0MjEwEbUqFyZzco1PDA/cdm82vT8Vrc1fiU+mzMo6aaG3rTpvIGb8BcH5t5eyAvOb/GzTPTg4x9MzBBSizU9ofxaEZx2PTeS+qHeFF5cquG8g4o7bZbHHk8NhdXh0nDIkcf2xk+v6o+J1Wzdz9utbV/RqlxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915882; c=relaxed/simple;
-	bh=vwSushnc2LJXyU4LluxoboyZyvLOc+MQrh+YkeX36O8=;
+	s=arc-20240116; t=1744914712; c=relaxed/simple;
+	bh=u/uMPi6y+7kcfrp4REnV1AFmzF1DLiDChOPBFNmfmSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ld0EsZTSXyisMkTxLswKduiIgfOsrsIEUSp9ErQSb+9SWV3yGFZXtBQVxDi/XjxdNlePkrZ8oz39UsGGAL50h8ao8wvvQdOlPO4XlLb1MdvFi3x/3YLVffUjTnyad8fal2dOYO9c+TR5M68uVPo6G3Q+rbx3v2PWj1hCEQrbTHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CUFtGTHc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA97AC4CEE4;
-	Thu, 17 Apr 2025 18:51:21 +0000 (UTC)
+	 MIME-Version; b=ol/1DH7Ih0IBX3DjWTrh8WqP+6PgpJ1+eK0EvWxDy8YivuT+WanFEj3E0jHEsMhD/NuzBegTsmiZvrJ7G7nmUtuFzSS7+ULYoL3sUxgeoEbKZ+1jLly3tdqUL78LceqZNNDhSBqS3HWh1JRRX0SLmUUh/FmOZhXCf5+ieiNlwD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p2JZjkXy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6440AC4CEE4;
+	Thu, 17 Apr 2025 18:31:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915882;
-	bh=vwSushnc2LJXyU4LluxoboyZyvLOc+MQrh+YkeX36O8=;
+	s=korg; t=1744914711;
+	bh=u/uMPi6y+7kcfrp4REnV1AFmzF1DLiDChOPBFNmfmSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CUFtGTHc45lmxT0iaLF9bJ7lA0ivmNoy9UMmyYdTIJG/s3vVwL5wOL6+FsMjXpTT+
-	 xkGrcivXT76qEjDDqevgdZuoMC/l3ODHom1A0K3Uq6VWnja5Ko5IHmb1BG31EHIWCD
-	 M4yKZIiwP98+I0rKvPNG1B4i1deR6H0LgQSK5/uI=
+	b=p2JZjkXyYPT+V3mF+x6x9uDwGXrkT2oaBR9/Ifxr52uJ5kSxCPf2lPmWmQMv3ZwM9
+	 xzB58/YnAohavhtf4uTJeUlTP/C/GQ3YGzKp1nvSzhNZBPfsxHgOl3pCqe1Gq3y0Yd
+	 tqy+WVnFczcMc97+eKf/A+JTG0junDiYe9GaurnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 253/393] ASoC: qdsp6: q6apm-dai: set 10 ms period and buffer alignment.
-Date: Thu, 17 Apr 2025 19:51:02 +0200
-Message-ID: <20250417175117.764631357@linuxfoundation.org>
+	Zhenhua Huang <quic_zhenhuah@quicinc.com>,
+	David Hildenbrand <david@redhat.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.13 305/414] arm64: mm: Correct the update of max_pfn
+Date: Thu, 17 Apr 2025 19:51:03 +0200
+Message-ID: <20250417175123.698570587@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+From: Zhenhua Huang <quic_zhenhuah@quicinc.com>
 
-commit 3107019501842c27334554ba9d6583b1f200f61f upstream.
+commit 89f43e1ce6f60d4f44399059595ac47f7a90a393 upstream.
 
-DSP expects the periods to be aligned to fragment sizes, currently
-setting up to hw constriants on periods bytes is not going to work
-correctly as we can endup with periods sizes aligned to 32 bytes however
-not aligned to fragment size.
+Hotplugged memory can be smaller than the original memory. For example,
+on my target:
 
-Update the constriants to use fragment size, and also set at step of
-10ms for period size to accommodate DSP requirements of 10ms latency.
+root@genericarmv8:~# cat /sys/kernel/debug/memblock/memory
+   0: 0x0000000064005000..0x0000000064023fff    0 NOMAP
+   1: 0x0000000064400000..0x00000000647fffff    0 NOMAP
+   2: 0x0000000068000000..0x000000006fffffff    0 DRV_MNG
+   3: 0x0000000088800000..0x0000000094ffefff    0 NONE
+   4: 0x0000000094fff000..0x0000000094ffffff    0 NOMAP
+max_pfn will affect read_page_owner. Therefore, it should first compare and
+then select the larger value for max_pfn.
 
-Fixes: 9b4fe0f1cd79 ("ASoC: qdsp6: audioreach: add q6apm-dai support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://patch.msgid.link/20250314174800.10142-5-srinivas.kandagatla@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 8fac67ca236b ("arm64: mm: update max_pfn after memory hotplug")
+Cc: <stable@vger.kernel.org> # 6.1.x
+Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Link: https://lore.kernel.org/r/20250321070019.1271859-1-quic_zhenhuah@quicinc.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6apm-dai.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/arm64/mm/mmu.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/sound/soc/qcom/qdsp6/q6apm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6apm-dai.c
-@@ -385,13 +385,14 @@ static int q6apm_dai_open(struct snd_soc
- 		}
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1360,7 +1360,8 @@ int arch_add_memory(int nid, u64 start,
+ 		__remove_pgd_mapping(swapper_pg_dir,
+ 				     __phys_to_virt(start), size);
+ 	else {
+-		max_pfn = PFN_UP(start + size);
++		/* Address of hotplugged memory can be smaller */
++		max_pfn = max(max_pfn, PFN_UP(start + size));
+ 		max_low_pfn = max_pfn;
  	}
  
--	ret = snd_pcm_hw_constraint_step(runtime, 0, SNDRV_PCM_HW_PARAM_PERIOD_BYTES, 32);
-+	/* setup 10ms latency to accommodate DSP restrictions */
-+	ret = snd_pcm_hw_constraint_step(runtime, 0, SNDRV_PCM_HW_PARAM_PERIOD_SIZE, 480);
- 	if (ret < 0) {
- 		dev_err(dev, "constraint for period bytes step ret = %d\n", ret);
- 		goto err;
- 	}
- 
--	ret = snd_pcm_hw_constraint_step(runtime, 0, SNDRV_PCM_HW_PARAM_BUFFER_BYTES, 32);
-+	ret = snd_pcm_hw_constraint_step(runtime, 0, SNDRV_PCM_HW_PARAM_BUFFER_SIZE, 480);
- 	if (ret < 0) {
- 		dev_err(dev, "constraint for buffer bytes step ret = %d\n", ret);
- 		goto err;
 
 
 
