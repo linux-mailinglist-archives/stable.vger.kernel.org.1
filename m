@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-133794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC173A927A2
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:28:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28F9EA929D7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:45:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A0D07B4656
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:26:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF5AD8E5315
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 491E1267729;
-	Thu, 17 Apr 2025 18:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AF072586EC;
+	Thu, 17 Apr 2025 18:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wV1qT+zb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGL2BDi9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF6A25E808;
-	Thu, 17 Apr 2025 18:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060B522333D;
+	Thu, 17 Apr 2025 18:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914159; cv=none; b=QiP8xVBEG+dCeTF9GPRz+o0WUxqkPxWMwgnaDAsaFzle2+RQf7YfoqoTOHRQrFChH8cdhwVz7sIvpb5RY/4CHHWOoidKqhB2+eQUumTEwgaXDIm8OqPLYP4aVuTUwIYGzT9LZCbxWv5datzdAtdNDK+jukN8rsCKVNChZ5gZKek=
+	t=1744915276; cv=none; b=iZ4S/gy1yQl84grH1z4SFqvPqsHQ60PJQ4T7PSdCD1LQ0SNak5BNUL5fiITgukSpr4vDSUhwEWhnI/ASwZejjwYyj8p5i4B3bvrC6LUaGX+GeJ7P8SQTpAX58ze2IGEKG+ih7MWbCXVRPYX+kHU5ufW/qgB+jB+L2nD3V7RjxTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914159; c=relaxed/simple;
-	bh=CD+AW2c3k/Oi2qMRrh/mc2Q0c/eG1YBHPr7YcK0RgL4=;
+	s=arc-20240116; t=1744915276; c=relaxed/simple;
+	bh=UwAc3DHzhNJV0nyIZ0pfAtSAkIdTaYaunr+d7Baneao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dfpjv8GNE6g5cM6R1SjAMxwtfvcOBzkRpXa4fvOoX/XtZosz0dzs5Gf3tVVTdnSbXkeH3dvyJP+pBGd8KWDbOVxPfXiXOqtcaxHETjKVGotxUZjLQtoveYNU/zCmQstg8hAy2irNfDSRJ6wN7MFwcm972R3rVBwSrRgHNmYo7b0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wV1qT+zb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12FCEC4CEE7;
-	Thu, 17 Apr 2025 18:22:37 +0000 (UTC)
+	 MIME-Version; b=iERDez1sZzZkIhQW39QctjLXPywsCofQQz3/2/e8gl54JNA7UMZ/ggzbOOX7SyRHo9dw8YVb755IlsTzNDp8FCmb9k+ZYImM5k7QLTMe8q8mLNAF6eOphFyCJITx0GUcO/BGZtR3ifI1kJdCEIHcY2bTYqWOpwYYk2wAKf799PU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGL2BDi9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 803EBC4CEE4;
+	Thu, 17 Apr 2025 18:41:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914158;
-	bh=CD+AW2c3k/Oi2qMRrh/mc2Q0c/eG1YBHPr7YcK0RgL4=;
+	s=korg; t=1744915275;
+	bh=UwAc3DHzhNJV0nyIZ0pfAtSAkIdTaYaunr+d7Baneao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wV1qT+zb4+4lxx9OFd4o+qNFe3yQNHCpoK7OofNgNIpjkJn0UVQhcNj+wui7Rqmwq
-	 R4zhw+6kLRy4s+MVwFcW8ZpMcKBrT9Z0BNWjphdFL4M32MDEAnEYY/eabKlbEq+Dim
-	 Z+bKiCtK4qG5qqkeyug5rI35rfdw9MOLVX7sCO5g=
+	b=wGL2BDi98mF66LPj+dPTyEbzaWOJimGFNyGknGMwY15/WEl7qupyrL3rARE8tk/+M
+	 4YSwt6AyPY9Nqn4B627Ef/gIuP5HobXYrdLTniE4MS6vuVywg4BhVPmjRNzDwpoGTU
+	 qdy6CXNqoAYPO85Yrgyd4p3COPW8Aie8eFqwr0H0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 126/414] Bluetooth: qca: simplify WCN399x NVM loading
+Subject: [PATCH 6.12 075/393] media: uvcvideo: Add quirk for Actions UVC05
 Date: Thu, 17 Apr 2025 19:48:04 +0200
-Message-ID: <20250417175116.502106700@linuxfoundation.org>
+Message-ID: <20250417175110.610862942@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 1cc41b5092e3aa511454ec882c525af311bee631 ]
+[ Upstream commit 8c54e58f94ed3ff28643aefd2c0c2c98313ee770 ]
 
-The WCN399x code has two separate cases for loading the NVM data. In
-preparation to adding support for WCN3950, which also requires similar
-quirk, split the "variant" to be specified explicitly and merge two
-snprintfs into a single one.
+Actions UVC05 is a HDMI to USB dongle that implements the UVC protocol.
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+When the device suspends, its firmware seems to enter a weird mode when it
+does not produce more frames.
+
+Add the device to the quirk list to disable autosuspend.
+
+Bus 001 Device 007: ID 1de1:f105 Actions Microelectronics Co. Display
+ capture-UVC05
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.00
+  bDeviceClass          239 Miscellaneous Device
+  bDeviceSubClass         2 [unknown]
+  bDeviceProtocol         1 Interface Association
+  bMaxPacketSize0        64
+  idVendor           0x1de1 Actions Microelectronics Co.
+  idProduct          0xf105 Display capture-UVC05
+  bcdDevice            4.09
+  iManufacturer           1 Actions Micro
+  iProduct                2 Display capture-UVC05
+  iSerial                 3 -1005308387
+  bNumConfigurations      1
+
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20241210-uvc-hdmi-suspend-v1-1-01f5dec023ea@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btqca.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/media/usb/uvc/uvc_driver.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
-index 04d02c746ec0f..dd2c0485b9848 100644
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -785,6 +785,7 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 		   const char *firmware_name)
- {
- 	struct qca_fw_config config = {};
-+	const char *variant = "";
- 	int err;
- 	u8 rom_ver = 0;
- 	u32 soc_ver;
-@@ -879,13 +880,11 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 		case QCA_WCN3990:
- 		case QCA_WCN3991:
- 		case QCA_WCN3998:
--			if (le32_to_cpu(ver.soc_id) == QCA_WCN3991_SOC_ID) {
--				snprintf(config.fwname, sizeof(config.fwname),
--					 "qca/crnv%02xu.bin", rom_ver);
--			} else {
--				snprintf(config.fwname, sizeof(config.fwname),
--					 "qca/crnv%02x.bin", rom_ver);
--			}
-+			if (le32_to_cpu(ver.soc_id) == QCA_WCN3991_SOC_ID)
-+				variant = "u";
-+
-+			snprintf(config.fwname, sizeof(config.fwname),
-+				 "qca/crnv%02x%s.bin", rom_ver, variant);
- 			break;
- 		case QCA_WCN3988:
- 			snprintf(config.fwname, sizeof(config.fwname),
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index 4d8e00b425f44..a0d683d266471 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -3039,6 +3039,15 @@ static const struct usb_device_id uvc_ids[] = {
+ 	  .bInterfaceProtocol	= 0,
+ 	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_PROBE_MINMAX
+ 					| UVC_QUIRK_IGNORE_SELECTOR_UNIT) },
++	/* Actions Microelectronics Co. Display capture-UVC05 */
++	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
++				| USB_DEVICE_ID_MATCH_INT_INFO,
++	  .idVendor		= 0x1de1,
++	  .idProduct		= 0xf105,
++	  .bInterfaceClass	= USB_CLASS_VIDEO,
++	  .bInterfaceSubClass	= 1,
++	  .bInterfaceProtocol	= 0,
++	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_DISABLE_AUTOSUSPEND) },
+ 	/* NXP Semiconductors IR VIDEO */
+ 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
+ 				| USB_DEVICE_ID_MATCH_INT_INFO,
 -- 
 2.39.5
 
