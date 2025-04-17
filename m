@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-134332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F349FA92ACF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:54:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E8AA9298C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:43:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ACA48A7C2F
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0B767B8CEC
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D3B257AE4;
-	Thu, 17 Apr 2025 18:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966F8261573;
+	Thu, 17 Apr 2025 18:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wX43ES8+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ItIE9rfP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E882566DE;
-	Thu, 17 Apr 2025 18:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5464B26137F;
+	Thu, 17 Apr 2025 18:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915807; cv=none; b=GYNo0rT/znsfTngAwQSt5PAhAmpIn5zy3ss06FoC0rcUANBWaPAdHQX5/jIOkIruvzvy7yA9BaBZ17C0e7O2bMsSK393K0YVlaXruQcuXxtVRW0g2OEk2+R3ETS2hF+S/sPGfMUQEg2PsbOVzdZ926q+OG1tBhYYMvmLAUXtcNw=
+	t=1744914685; cv=none; b=pvTerJ+dF4BmkrZVBR763Ary75cPtg8biMD47Ff/D0THsm3wEfSdIduElHOONjMxvdiRL1/xtCOttnnLddKx4MrIYqtY5xAZFoee6NWjaEsmJMWvd2nBNj6gKzLPg6MzHxeNdejkHDYkHIt56QLL+PHlGwLefN6hjhyN6Ny4eyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915807; c=relaxed/simple;
-	bh=TsKmtBUI8Em/aDBBEIyTtjplMwwVtLu8X9AvKQd0hGw=;
+	s=arc-20240116; t=1744914685; c=relaxed/simple;
+	bh=6P4Bdm95peDnwc8aleYAuj58SDkD8sjyE0wdR40zL6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gmnOKmUJbEImF4DkDMUd/Mw/sfrDRPasS2lBwPDIQ52t4QtEKzUUd9N6ZXPTXf88aR4LdxW2rjUSVe45EhXaw7TKwK90K3iepOrB069b5vR91o+A4i2Mme3ocJAHybbdGOPfk5g3RkX4ZCGqByA39G3SukJ5VgtVds25wkhvROM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wX43ES8+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC0EC4CEE4;
-	Thu, 17 Apr 2025 18:50:06 +0000 (UTC)
+	 MIME-Version; b=PCON2m4Kv1GAgyzJMpWj+uDo1+9elaIvzVEaDriu8ujgC/GLCdImnj8MRLB6BLPOBaujLvCr1bk0CHCfV1HLXwyvxV0V3trrfAYVD6f21sXEhpx4mStrmB60kCrYAH+gfKM5wb+J1Rpv+rsRL379v8cB9cgx6MzxPRg+V35Y30E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ItIE9rfP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D16C4CEE7;
+	Thu, 17 Apr 2025 18:31:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915807;
-	bh=TsKmtBUI8Em/aDBBEIyTtjplMwwVtLu8X9AvKQd0hGw=;
+	s=korg; t=1744914685;
+	bh=6P4Bdm95peDnwc8aleYAuj58SDkD8sjyE0wdR40zL6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wX43ES8+1S3sjLcRthvhrB2tS0l4iCcO5boZ+5Kg1hXWpMQ5qIWqbG/19uHsr2HtU
-	 Jbexf1oW9l1MOej2+s/QAU5chrXeFGMaOoUHq9ur8BD8HxKytdD9o9AlhXoaOc4HRu
-	 Xz03FvT4m+AI4FpKJZyTcaOK7bscKQ12bgx51reI=
+	b=ItIE9rfPhTmYXNCi71QJEPNdC8A4zXuajCgHd3KT96BoY3TdC1B4DVqjIIKXOPfkz
+	 hz3XP6YSoy/HEtZTWbsG0qyFxgY8GquspavYKlr3UHKTPt0X7kSU/TFXMAG2B1mB30
+	 ZMQHL3t3sVwwKEBn4fpxs6ND45XNTVepFQeLmHow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 246/393] io_uring/net: fix accept multishot handling
+	Boqun Feng <boqun.feng@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Waiman Long <longman@redhat.com>
+Subject: [PATCH 6.13 297/414] locking/lockdep: Decrease nr_unused_locks if lock unused in zap_class()
 Date: Thu, 17 Apr 2025 19:50:55 +0200
-Message-ID: <20250417175117.486705946@linuxfoundation.org>
+Message-ID: <20250417175123.374637040@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Boqun Feng <boqun.feng@gmail.com>
 
-commit f6a89bf5278d6e15016a736db67043560d1b50d5 upstream.
+commit 495f53d5cca0f939eaed9dca90b67e7e6fb0e30c upstream.
 
-REQ_F_APOLL_MULTISHOT doesn't guarantee it's executed from the multishot
-context, so a multishot accept may get executed inline, fail
-io_req_post_cqe(), and ask the core code to kill the request with
--ECANCELED by returning IOU_STOP_MULTISHOT even when a socket has been
-accepted and installed.
+Currently, when a lock class is allocated, nr_unused_locks will be
+increased by 1, until it gets used: nr_unused_locks will be decreased by
+1 in mark_lock(). However, one scenario is missed: a lock class may be
+zapped without even being used once. This could result into a situation
+that nr_unused_locks != 0 but no unused lock class is active in the
+system, and when `cat /proc/lockdep_stats`, a WARN_ON() will
+be triggered in a CONFIG_DEBUG_LOCKDEP=y kernel:
 
+  [...] DEBUG_LOCKS_WARN_ON(debug_atomic_read(nr_unused_locks) != nr_unused)
+  [...] WARNING: CPU: 41 PID: 1121 at kernel/locking/lockdep_proc.c:283 lockdep_stats_show+0xba9/0xbd0
+
+And as a result, lockdep will be disabled after this.
+
+Therefore, nr_unused_locks needs to be accounted correctly at
+zap_class() time.
+
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Waiman Long <longman@redhat.com>
 Cc: stable@vger.kernel.org
-Fixes: 390ed29b5e425 ("io_uring: add IORING_ACCEPT_MULTISHOT for accept")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/51c6deb01feaa78b08565ca8f24843c017f5bc80.1740331076.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://lore.kernel.org/r/20250326180831.510348-1-boqun.feng@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/net.c |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/locking/lockdep.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -1616,6 +1616,8 @@ retry:
- 	}
- 
- 	io_req_set_res(req, ret, cflags);
-+	if (!(issue_flags & IO_URING_F_MULTISHOT))
-+		return IOU_OK;
- 	return IOU_STOP_MULTISHOT;
- }
- 
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -6247,6 +6247,9 @@ static void zap_class(struct pending_fre
+ 		hlist_del_rcu(&class->hash_entry);
+ 		WRITE_ONCE(class->key, NULL);
+ 		WRITE_ONCE(class->name, NULL);
++		/* Class allocated but not used, -1 in nr_unused_locks */
++		if (class->usage_mask == 0)
++			debug_atomic_dec(nr_unused_locks);
+ 		nr_lock_classes--;
+ 		__clear_bit(class - lock_classes, lock_classes_in_use);
+ 		if (class - lock_classes == max_lock_class_idx)
 
 
 
