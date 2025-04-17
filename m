@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-134153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44F18A9297B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 712AEA9279C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:27:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 211AB1B633AA
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEDF14A27E3
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:27:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF309257AC7;
-	Thu, 17 Apr 2025 18:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D6B2673AF;
+	Thu, 17 Apr 2025 18:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQLohXo6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1XQEWKG4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD87254AED;
-	Thu, 17 Apr 2025 18:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15BDA25C708;
+	Thu, 17 Apr 2025 18:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915255; cv=none; b=psexwq0A15u+YdnuTl0pkYpk1+2ehfMlTNROTiVBKxS+0Z7sPic+inZ920nGoa0K1MBqZDghiuIi/B1vSsO3j1LCb2UUDynmelJPTDzUsuaTxBfyeZEchmi0vBXPzjwxyRR76Qquqg1jQg59/DhgUqdWZfD3MsUDAltFUNqziWU=
+	t=1744914140; cv=none; b=jmtaOZNMtfuPZO2e0La/Q3Q/um8JZa+Op1rfTiNu4W6AmJ5m/OWYyu3kgUiZ83VBmv1L4SUG2wY/65K4F+LaROo39W9M27FpCJp3YJYituup8wiFNUNaOj0Ae70ID3w7JTlFOUqvoFwsFclR7OjdaJnJZT0kDZ/TqcrsVOb+uug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915255; c=relaxed/simple;
-	bh=QOWkFvejMagVYYEKSK6SUrcAyAlSqdVwGUepVE/uI/c=;
+	s=arc-20240116; t=1744914140; c=relaxed/simple;
+	bh=o0tvf6p2m/JnU5hOccPyZonNaQEIGX5yBwA28u6dfIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rhzd40L23MjUTaZkjYBD4sY5GOHP02ymIpcsfyE1t7LfDj86KWKFEbdRs3JdEfe6Ko5P+CmVP1vgbJcA8mKO9W/9nx2zU7vu3RWfEDRJZfRYj8HL7ZTAy5zjpCdBL6ZHK+wR8xGzHqJn0eQm04kFaIdvWeepf4lSx8XrX7G0Z9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQLohXo6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9F73C4CEE4;
-	Thu, 17 Apr 2025 18:40:54 +0000 (UTC)
+	 MIME-Version; b=PmqmN130aVak+1qqhMfGpBQ4LUn68Lzys9lCNBSS8jQ2HEGMFZJPwzjy8/mt5PL6dNZ5zF46Y17JuS7yJm41bdPDV8iUHp/KZI47OoCUC2V34d+xfQgk2hkpM8H+WSc6d73ltpUP4nTo0PUIsnTWztbVildEnApY+chiCaYO+8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1XQEWKG4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B76C4CEE4;
+	Thu, 17 Apr 2025 18:22:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915255;
-	bh=QOWkFvejMagVYYEKSK6SUrcAyAlSqdVwGUepVE/uI/c=;
+	s=korg; t=1744914140;
+	bh=o0tvf6p2m/JnU5hOccPyZonNaQEIGX5yBwA28u6dfIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KQLohXo67sFEvGG964O5tkMt/rWwWqSLCWZUQOuUGvkCXZGgdtCMvEdFkxcioF254
-	 tNYyCGxomt3YgjJnlk3ES2vQX/8j8V+b+GPhzNzkJRiJFUR40zlqxFdqYbBLTvFGgr
-	 hb5a1xIZ0hg4VSnJkNLOBWJ8zF4NTi23w4oiDssc=
+	b=1XQEWKG4lCdb8gBrsN0MnN2zin3JFGzuYydJkwAKPyxe9iHRHknSvBXMmc2avtH68
+	 bAecpywnRhRBtzeOBDH/rlUvD+0hSTmkRjK1tgEEesxLGoCtP5UZ9hxXaG92h9PZJ6
+	 rPbZJlhNn6rHIgJZ1caEkTdClwH10tEdhawtfnGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Dorian Cruveiller <doriancruveiller@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 069/393] HID: pidff: Add PERIODIC_SINE_ONLY quirk
+Subject: [PATCH 6.13 120/414] Bluetooth: btusb: Add new VID/PID for WCN785x
 Date: Thu, 17 Apr 2025 19:47:58 +0200
-Message-ID: <20250417175110.369349301@linuxfoundation.org>
+Message-ID: <20250417175116.263046382@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +60,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Dorian Cruveiller <doriancruveiller@gmail.com>
 
-[ Upstream commit abdbf8764f4962af2a910abb3a213ecf304a73d3 ]
+[ Upstream commit c7629ccfa175e16bb44a60c469214e1a6051f63d ]
 
-Some devices only support SINE periodic effect although they advertise
-support for all PERIODIC effect in their HID descriptor. Some just do
-nothing when trying to play such an effect (upload goes fine), some express
-undefined behavior like turning to one side.
+Add VID 0489 & PID e10d for Qualcomm WCN785x USB Bluetooth chip.
 
-This quirk forces all the periodic effects to be uploaded as SINE. This is
-acceptable as all these effects are similar in nature and are mostly used as
-rumble. SINE is the most popular with others seldom used (especially SAW_UP
-and SAW_DOWN).
+The information in /sys/kernel/debug/usb/devices about the Bluetooth
+device is listed as the below.
 
-Fixes periodic effects for PXN and LITE STAR wheels
+T:  Bus=01 Lev=01 Prnt=01 Port=03 Cnt=03 Dev#=  4 Spd=12   MxCh= 0
+D:  Ver= 1.10 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0489 ProdID=e10d Rev= 0.01
+C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=100mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+I:  If#= 1 Alt= 7 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  65 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  65 Ivl=1ms
 
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Dorian Cruveiller <doriancruveiller@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-universal-pidff.c | 15 ++++++++++-----
- drivers/hid/usbhid/hid-pidff.c    |  3 +++
- include/linux/hid.h               |  1 +
- 3 files changed, 14 insertions(+), 5 deletions(-)
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hid/hid-universal-pidff.c b/drivers/hid/hid-universal-pidff.c
-index 55aad2e4ac1b8..7ef5ab9146b1c 100644
---- a/drivers/hid/hid-universal-pidff.c
-+++ b/drivers/hid/hid-universal-pidff.c
-@@ -168,11 +168,16 @@ static const struct hid_device_id universal_pidff_devices[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_FFBEAST, USB_DEVICE_ID_FFBEAST_JOYSTICK), },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_FFBEAST, USB_DEVICE_ID_FFBEAST_RUDDER), },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_FFBEAST, USB_DEVICE_ID_FFBEAST_WHEEL) },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_LITE_STAR, USB_DEVICE_ID_PXN_V10) },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_LITE_STAR, USB_DEVICE_ID_PXN_V12) },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_LITE_STAR, USB_DEVICE_ID_PXN_V12_LITE) },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_LITE_STAR, USB_DEVICE_ID_PXN_V12_LITE_2) },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_LITE_STAR, USB_DEVICE_LITE_STAR_GT987_FF) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_LITE_STAR, USB_DEVICE_ID_PXN_V10),
-+		.driver_data = HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_LITE_STAR, USB_DEVICE_ID_PXN_V12),
-+		.driver_data = HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_LITE_STAR, USB_DEVICE_ID_PXN_V12_LITE),
-+		.driver_data = HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_LITE_STAR, USB_DEVICE_ID_PXN_V12_LITE_2),
-+		.driver_data = HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_LITE_STAR, USB_DEVICE_LITE_STAR_GT987_FF),
-+		.driver_data = HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY },
- 	{ }
- };
- MODULE_DEVICE_TABLE(hid, universal_pidff_devices);
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index a37cf852a2836..4c94d8cbac43a 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -637,6 +637,9 @@ static int pidff_upload_effect(struct input_dev *dev, struct ff_effect *effect,
- 				return -EINVAL;
- 			}
- 
-+			if (pidff->quirks & HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY)
-+				type_id = PID_SINE;
-+
- 			error = pidff_request_effect_upload(pidff,
- 					pidff->type_id[type_id]);
- 			if (error)
-diff --git a/include/linux/hid.h b/include/linux/hid.h
-index c2927e3854a6e..495b5b3b2cb80 100644
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -1234,6 +1234,7 @@ int hid_pidff_init_with_quirks(struct hid_device *hid, __u32 initial_quirks);
- #define HID_PIDFF_QUIRK_MISSING_PBO		BIT(1)
- #define HID_PIDFF_QUIRK_PERMISSIVE_CONTROL	BIT(2)
- #define HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION	BIT(3)
-+#define HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY	BIT(4)
- 
- #define dbg_hid(fmt, ...) pr_debug("%s: " fmt, __FILE__, ##__VA_ARGS__)
- 
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 75dbe07e07e21..cf15e18521607 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -375,6 +375,8 @@ static const struct usb_device_id quirks_table[] = {
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0489, 0xe0f3), .driver_info = BTUSB_QCA_WCN6855 |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x0489, 0xe10d), .driver_info = BTUSB_QCA_WCN6855 |
++						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x13d3, 0x3623), .driver_info = BTUSB_QCA_WCN6855 |
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x2c7c, 0x0130), .driver_info = BTUSB_QCA_WCN6855 |
 -- 
 2.39.5
 
