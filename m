@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-133969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 829B0A928DE
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:38:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74514A926B7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:15:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA4843A42AD
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D88037A179B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:11:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE0D2620C3;
-	Thu, 17 Apr 2025 18:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 535A5255249;
+	Thu, 17 Apr 2025 18:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PlMgkuVW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K+s1LDbt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B192261576;
-	Thu, 17 Apr 2025 18:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F153223710;
+	Thu, 17 Apr 2025 18:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914695; cv=none; b=sKCV1kB9d37L7O9wjfrm+t9BhhsNs2RKrVSleV9a1N4+52im8VskGjflzEBFKdLMCS7cQcgrM/zh0mmK6e3t2oXZo0y0bOMQVCmxYSVNY18Pc8b/rIRUwgSZQJkZ8Ytp79t6anY5KQwEMwt4bJ8j61b9G0ll/vGa3dI5FB9dBco=
+	t=1744913533; cv=none; b=G8hbv/R7UXZ9W6bi/JhwrdyO95FcCeRdrNZ/yVP0s16B4T51TsKJbzBNwioawXTHsUKAJoTx9iqlPtZCSFmGJbdTWcxPQedQU5kISbpg3Tqe7Jwm971PB2jfdcKA7MyKjIpD+g0F+7YySxzSRn/8FM5vjT6PUeGmPwd0GgjjRfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914695; c=relaxed/simple;
-	bh=97xUqS45uDIBVsVZ0KMjF4N48gQ/OwZOB3RG+nU+xuY=;
+	s=arc-20240116; t=1744913533; c=relaxed/simple;
+	bh=ty6cm4sLquDd5bC4ObbOJBwpmOAgLd5DLE8DaaGWVgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cZIwarqMwn5hDlNDuJ2fFAuvl4hfRBe7tZlXdh125yzIaMSRLVEzrCsqgE1+nUxWrEmfGTaXqqM6fdUfwhJmUI7lZYO3EUXoVbmQ98OfFAG0koAgWcqwlhHgxwGu0sdlwCOeKY7dWru53FXgqZHfZy5SedpVw/06zsnNyDcUdiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PlMgkuVW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96417C4CEE4;
-	Thu, 17 Apr 2025 18:31:34 +0000 (UTC)
+	 MIME-Version; b=cpsKMWz8erk3snAYbuHcPyK28wukMRAvP2LQ+S6cpa9sO1ZfmKTfArDuUYS8zoxmwipUtD58zAM/gyVBF6X5k8wvmiJ81bgAmkvooeUCtEnNLwngFArWOFWScY+3eW6NDaPZHCY96kPJ0inQNCxpi28Z2XBLFlQJeTgUPOTaeIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+s1LDbt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68797C4CEE4;
+	Thu, 17 Apr 2025 18:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914695;
-	bh=97xUqS45uDIBVsVZ0KMjF4N48gQ/OwZOB3RG+nU+xuY=;
+	s=korg; t=1744913532;
+	bh=ty6cm4sLquDd5bC4ObbOJBwpmOAgLd5DLE8DaaGWVgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PlMgkuVWtgNjuP5XneRgpagzotjJhRlwm/TseAcTeQcJl+frV/izSPpsd8X61jjSU
-	 Ny/a5ny3pZztksYxA98vtw3wAwWMWGYRXXSfhNNNHgYg4RRGb1dIRNQzM3m46HKa4L
-	 7s4Ww89rNla83xJ/y6Qkig/nnMviKXLtOjObrJlY=
+	b=K+s1LDbtpuN8KxPs3NhgmZOiQ8TsrHFITNTfWMKj7EMvR7fPzu6IfU+oAvquDhjYp
+	 bTVQEhGquwRW7uhny2uzxnTyMo1MoU2X3q6lXHpovj2gXgTcEw7NSmEISPHzcgEMIr
+	 ZVTbGOgihBk5FyoEGyxEb/k4cbXMdzaPMkKvW1Po=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.13 300/414] mptcp: only inc MPJoinAckHMacFailure for HMAC failures
-Date: Thu, 17 Apr 2025 19:50:58 +0200
-Message-ID: <20250417175123.498034504@linuxfoundation.org>
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 6.14 371/449] tracing: fprobe events: Fix possible UAF on modules
+Date: Thu, 17 Apr 2025 19:50:59 +0200
+Message-ID: <20250417175133.188496845@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +60,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit 21c02e8272bc95ba0dd44943665c669029b42760 upstream.
+commit dd941507a9486252d6fcf11814387666792020f3 upstream.
 
-Recently, during a debugging session using local MPTCP connections, I
-noticed MPJoinAckHMacFailure was not zero on the server side. The
-counter was in fact incremented when the PM rejected new subflows,
-because the 'subflow' limit was reached.
+Commit ac91052f0ae5 ("tracing: tprobe-events: Fix leakage of module
+refcount") moved try_module_get() from __find_tracepoint_module_cb()
+to find_tracepoint() caller, but that introduced a possible UAF
+because the module can be unloaded before try_module_get(). In this
+case, the module object should be freed too. Thus, try_module_get()
+does not only fail but may access to the freed object.
 
-The fix is easy, simply dissociating the two cases: only the HMAC
-validation check should increase MPTCP_MIB_JOINACKMAC counter.
+To avoid that, try_module_get() in __find_tracepoint_module_cb()
+again.
 
-Fixes: 4cf8b7e48a09 ("subflow: introduce and use mptcp_can_accept_new_subflow()")
+Link: https://lore.kernel.org/all/174342990779.781946.9138388479067729366.stgit@devnote2/
+
+Fixes: ac91052f0ae5 ("tracing: tprobe-events: Fix leakage of module refcount")
 Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250407-net-mptcp-hmac-failure-mib-v1-1-3c9ecd0a3a50@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/subflow.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ kernel/trace/trace_fprobe.c |   26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -902,12 +902,16 @@ create_child:
- 				goto dispose_child;
- 			}
+--- a/kernel/trace/trace_fprobe.c
++++ b/kernel/trace/trace_fprobe.c
+@@ -919,9 +919,15 @@ static void __find_tracepoint_module_cb(
+ 	struct __find_tracepoint_cb_data *data = priv;
  
--			if (!subflow_hmac_valid(req, &mp_opt) ||
--			    !mptcp_can_accept_new_subflow(subflow_req->msk)) {
-+			if (!subflow_hmac_valid(req, &mp_opt)) {
- 				SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
- 				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
- 				goto dispose_child;
- 			}
+ 	if (!data->tpoint && !strcmp(data->tp_name, tp->name)) {
+-		data->tpoint = tp;
+-		if (!data->mod)
++		/* If module is not specified, try getting module refcount. */
++		if (!data->mod && mod) {
++			/* If failed to get refcount, ignore this tracepoint. */
++			if (!try_module_get(mod))
++				return;
 +
-+			if (!mptcp_can_accept_new_subflow(owner)) {
-+				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
-+				goto dispose_child;
-+			}
+ 			data->mod = mod;
++		}
++		data->tpoint = tp;
+ 	}
+ }
  
- 			/* move the msk reference ownership to the subflow */
- 			subflow_req->msk = NULL;
+@@ -933,7 +939,11 @@ static void __find_tracepoint_cb(struct
+ 		data->tpoint = tp;
+ }
+ 
+-/* Find a tracepoint from kernel and module. */
++/*
++ * Find a tracepoint from kernel and module. If the tracepoint is on the module,
++ * the module's refcount is incremented and returned as *@tp_mod. Thus, if it is
++ * not NULL, caller must call module_put(*tp_mod) after used the tracepoint.
++ */
+ static struct tracepoint *find_tracepoint(const char *tp_name,
+ 					  struct module **tp_mod)
+ {
+@@ -962,7 +972,10 @@ static void reenable_trace_fprobe(struct
+ 	}
+ }
+ 
+-/* Find a tracepoint from specified module. */
++/*
++ * Find a tracepoint from specified module. In this case, this does not get the
++ * module's refcount. The caller must ensure the module is not freed.
++ */
+ static struct tracepoint *find_tracepoint_in_module(struct module *mod,
+ 						    const char *tp_name)
+ {
+@@ -1169,11 +1182,6 @@ static int trace_fprobe_create_internal(
+ 	if (is_tracepoint) {
+ 		ctx->flags |= TPARG_FL_TPOINT;
+ 		tpoint = find_tracepoint(symbol, &tp_mod);
+-		/* lock module until register this tprobe. */
+-		if (tp_mod && !try_module_get(tp_mod)) {
+-			tpoint = NULL;
+-			tp_mod = NULL;
+-		}
+ 		if (tpoint) {
+ 			ctx->funcname = kallsyms_lookup(
+ 				(unsigned long)tpoint->probestub,
 
 
 
