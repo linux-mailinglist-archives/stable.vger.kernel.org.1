@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-134330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB206A92ACC
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:54:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3289AA928D9
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:38:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07D1F8E03A3
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CA4F8E1621
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D381E834D;
-	Thu, 17 Apr 2025 18:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6593E1DF246;
+	Thu, 17 Apr 2025 18:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sSjr3rHt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RfW6ZBAI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F822566DE;
-	Thu, 17 Apr 2025 18:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BA626137F;
+	Thu, 17 Apr 2025 18:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915801; cv=none; b=taEGJP82ditw+wtd1utUe6TXziEQJjuyZ7Owahy1cKAXdeLMYCPUBClDEETgvQQb4+Kn2Z0Y8QvVme1Cj6ILCO4ffZIaqNrmqcSryHbyh1jQc+uWt9efLRabb5FK5pyhJGj4bkKo4xlArylhDQDEhLnHD9aThTjge1e9mNXrfz0=
+	t=1744914679; cv=none; b=CrgpIQWRe3syNP5cK58AvjMCYJFCBe1KYbapj6t1CNwIcPZ9Fd6fJpv4q+kBgWTcTG5hUyaWGjsHK+5Ygr723HC3vvsPckUQW22ypLXnDE3KqcQk0Z8baIyL6yyF3jtiZFl8gfDfQJp6o+CI0xQysnKrz0NxxqS5xZYSBtBEYTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915801; c=relaxed/simple;
-	bh=d+0uS8YYd54ZFY9oghqRqhkkcniJhF/DPt62AuwrskE=;
+	s=arc-20240116; t=1744914679; c=relaxed/simple;
+	bh=icEA0vu/1CNPOsz2cNw4TFmXLsgQ9OgGC/uaO97D1GI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cip7CkQ8u+Kkrd3hWuM1519b3Hj22Bd3U4+86EAQQliHQ9xOQAkwZdGru/3RSBK2lOWj1bLXLilvfVcJgePAJ+JdpbGORkVVlGj6sBJhJeU7jltoUZe48nQ/VjQ61UxQRwpeJHHNZIejERejbjEUEHeZ998cpe3+2im/k8OvQ7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sSjr3rHt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27AEC4CEE4;
-	Thu, 17 Apr 2025 18:50:00 +0000 (UTC)
+	 MIME-Version; b=c+n8UJGSDBzLLaSNT4Fmq5VIByoAiguguiqbGIszuMGqzX+rFw5L957HMDNhrf8/UHdkYoWb9dGX9SIjnwoP1bl32vxTxD0wXAOaQLyQOyGfvVVpyM9JLBAwZZOgIHizQlQYg8s02kROGF4Epd+og8xE6n0ZVwMQQTx93SNCkhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RfW6ZBAI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EDDC4CEE4;
+	Thu, 17 Apr 2025 18:31:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915801;
-	bh=d+0uS8YYd54ZFY9oghqRqhkkcniJhF/DPt62AuwrskE=;
+	s=korg; t=1744914679;
+	bh=icEA0vu/1CNPOsz2cNw4TFmXLsgQ9OgGC/uaO97D1GI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sSjr3rHt7DbJa9A2HEFHJM4bbkHBzS/tFJZJ/DQ5dAC3GxGA0w7ehUBByCbNH7iUB
-	 Y5Pn1y5D1Cl/orKApd44FKIBDotE4f+D7T0Xr5uq2wfgKR4U8pbgg5Z4PSESzh5Htk
-	 7dolOF8nI7SKyPXB2QAdiJ8KCaqp/B0siJ5Zhw4k=
+	b=RfW6ZBAIfd4lGZwATk/Ub2Q2jafT/8H1aS9mzrZXGPPlWmUl7vkQkFH9CBZtP3qOr
+	 bXOMWSqYNmGoWPMiQAwYjl5fhYz02a//35fKOnEK/hdxu8ZHUl2SmS3dSYdwtRWifL
+	 xBvFG+bfimiXRdeKvN2UmTZc0ukVLIFPXZRB5vzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Wang <sean.wang@mediatek.com>,
-	Caleb Jorden <cjorden@gmail.com>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.12 244/393] wifi: mt76: mt7925: fix the wrong link_idx when a p2p_device is present
+	Lee Jones <lee@kernel.org>,
+	Chenyuan Yang <chenyuan0y@gmail.com>
+Subject: [PATCH 6.13 295/414] mfd: ene-kb3930: Fix a potential NULL pointer dereference
 Date: Thu, 17 Apr 2025 19:50:53 +0200
-Message-ID: <20250417175117.409327538@linuxfoundation.org>
+Message-ID: <20250417175123.297527320@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-commit 4bada9b0a29c185d45cc9512509edd6069fbfa79 upstream.
+commit 4cdf1d2a816a93fa02f7b6b5492dc7f55af2a199 upstream.
 
-When the p2p device and MLO station are running concurrently, the p2p device
-will occupy the wrong link_idx when the MLO secondary link is added.
+The off_gpios could be NULL. Add missing check in the kb3930_probe().
+This is similar to the issue fixed in commit b1ba8bcb2d1f
+("backlight: hx8357: Fix potential NULL pointer dereference").
 
-Fixes: 9e4c3a007f01 ("wifi: mt76: connac: Extend mt76_connac_mcu_uni_add_dev for MLO")
+This was detected by our static analysis tool.
+
 Cc: stable@vger.kernel.org
-Co-developed-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Tested-by: Caleb Jorden <cjorden@gmail.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20250305000851.493671-2-sean.wang@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: ede6b2d1dfc0 ("mfd: ene-kb3930: Add driver for ENE KB3930 Embedded Controller")
+Suggested-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Link: https://lore.kernel.org/r/20250224233736.1919739-1-chenyuan0y@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76.h            |    1 +
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c |    4 ++--
- drivers/net/wireless/mediatek/mt76/mt7925/main.c     |   14 ++++++++++----
- 3 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/mfd/ene-kb3930.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -755,6 +755,7 @@ struct mt76_testmode_data {
- 
- struct mt76_vif {
- 	u8 idx;
-+	u8 link_idx;
- 	u8 omac_idx;
- 	u8 band_idx;
- 	u8 wmm_idx;
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -1164,7 +1164,7 @@ int mt76_connac_mcu_uni_add_dev(struct m
- 			.tag = cpu_to_le16(DEV_INFO_ACTIVE),
- 			.len = cpu_to_le16(sizeof(struct req_tlv)),
- 			.active = enable,
--			.link_idx = mvif->idx,
-+			.link_idx = mvif->link_idx,
- 		},
- 	};
- 	struct {
-@@ -1187,7 +1187,7 @@ int mt76_connac_mcu_uni_add_dev(struct m
- 			.bmc_tx_wlan_idx = cpu_to_le16(wcid->idx),
- 			.sta_idx = cpu_to_le16(wcid->idx),
- 			.conn_state = 1,
--			.link_idx = mvif->idx,
-+			.link_idx = mvif->link_idx,
- 		},
- 	};
- 	int err, idx, cmd, len;
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -356,10 +356,15 @@ static int mt7925_mac_link_bss_add(struc
- 	struct mt76_txq *mtxq;
- 	int idx, ret = 0;
- 
--	mconf->mt76.idx = __ffs64(~dev->mt76.vif_mask);
--	if (mconf->mt76.idx >= MT792x_MAX_INTERFACES) {
--		ret = -ENOSPC;
--		goto out;
-+	if (vif->type == NL80211_IFTYPE_P2P_DEVICE) {
-+		mconf->mt76.idx = MT792x_MAX_INTERFACES;
-+	} else {
-+		mconf->mt76.idx = __ffs64(~dev->mt76.vif_mask);
-+
-+		if (mconf->mt76.idx >= MT792x_MAX_INTERFACES) {
-+			ret = -ENOSPC;
-+			goto out;
-+		}
- 	}
- 
- 	mconf->mt76.omac_idx = ieee80211_vif_is_mld(vif) ?
-@@ -367,6 +372,7 @@ static int mt7925_mac_link_bss_add(struc
- 	mconf->mt76.band_idx = 0xff;
- 	mconf->mt76.wmm_idx = ieee80211_vif_is_mld(vif) ?
- 			      0 : mconf->mt76.idx % MT76_CONNAC_MAX_WMM_SETS;
-+	mconf->mt76.link_idx = hweight16(mvif->valid_links);
- 
- 	if (mvif->phy->mt76->chandef.chan->band != NL80211_BAND_2GHZ)
- 		mconf->mt76.basic_rates_idx = MT792x_BASIC_RATES_TBL + 4;
+--- a/drivers/mfd/ene-kb3930.c
++++ b/drivers/mfd/ene-kb3930.c
+@@ -162,7 +162,7 @@ static int kb3930_probe(struct i2c_clien
+ 			devm_gpiod_get_array_optional(dev, "off", GPIOD_IN);
+ 		if (IS_ERR(ddata->off_gpios))
+ 			return PTR_ERR(ddata->off_gpios);
+-		if (ddata->off_gpios->ndescs < 2) {
++		if (ddata->off_gpios && ddata->off_gpios->ndescs < 2) {
+ 			dev_err(dev, "invalid off-gpios property\n");
+ 			return -EINVAL;
+ 		}
 
 
 
