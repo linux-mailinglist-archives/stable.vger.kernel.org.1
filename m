@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-134291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B04EA92A70
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:51:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67F17A92883
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:35:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B8DB3B460B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:47:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07501189F470
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2583E2566DB;
-	Thu, 17 Apr 2025 18:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C236257425;
+	Thu, 17 Apr 2025 18:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/JzCV8t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L5PQ0Vvn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D800719ABC6;
-	Thu, 17 Apr 2025 18:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07561255E20;
+	Thu, 17 Apr 2025 18:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915680; cv=none; b=QZCWMFskxCCGIoR14LlsTRWLGFOiujUIUvp7VXMl2M+hEj0cEpASiQV2W6Ju85u7ke9ikeqVyOiv4MFwg4hJO/mPo/lYoa/aPk4dcD9VVGX1VYU2JuXoSd3ZXKtg35z6oyqYlJf+zBgSTgDB+aqgwgYyIeVtO6DdQ/FWpKC1kxs=
+	t=1744914514; cv=none; b=bN2ykPG5PiiaRUrWt4i8fdsoLlT65V08V+Z7dN4OriP60MDC7+vio24fLToE0FKokZnycPvjByQilf8Nvyq4MNQh91v3oRuzlM2W8c6QXZggDCgbKlmMgDvYyG4R8kb0v3z5YmPSosbbE422BA9ojfE2G3Ws72hsjDXEXPiIXCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915680; c=relaxed/simple;
-	bh=uwqLWvZKTDi11E2Ij+8M+FKnUDK633RBKZNPhrn6fag=;
+	s=arc-20240116; t=1744914514; c=relaxed/simple;
+	bh=6Da2r0PdnAMI75EtRa6yjobM5YCC8esAvIm7uD1EDy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kaOZW4PjY3aqb8ducXfymzH8yNJzqjfiUAehJIBtDqlIjwRZpCTxpHrgDLcw5ZC2YLP440BcEVUl9b65yogR3LhRG5GM1IEEJhhHQtuZbaEeJ+nrAO2zEllf7uAN1XX1xkk87kCDn0TASVUc8Pd4ildqEwRLr4nlEtfM/h4ztag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/JzCV8t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E26CDC4CEE4;
-	Thu, 17 Apr 2025 18:47:59 +0000 (UTC)
+	 MIME-Version; b=FryhqBTKbRIQrpHhZWBZl8ZIpivBQEnF6EOWI/5U3d69Te+FxWOEwBKP7bfyqGHKsYpx8IpwbXjqRNGgbw3YJ1QlKEqOgUkYX88CBVDPq/Hhy8rXN6LK1fo9z8h0JqhNDffIgTEZY2UrmysHvbPLn0jUJPpPqbF/z2i+Si9hWS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L5PQ0Vvn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B90C4CEE4;
+	Thu, 17 Apr 2025 18:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915680;
-	bh=uwqLWvZKTDi11E2Ij+8M+FKnUDK633RBKZNPhrn6fag=;
+	s=korg; t=1744914513;
+	bh=6Da2r0PdnAMI75EtRa6yjobM5YCC8esAvIm7uD1EDy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r/JzCV8t66RKWrjHW/yKVtnCVBDEH10yp6P0ls6V8NyzRpU/sYChaRPb24+2WR5pg
-	 5z6uNYpbwQj4VP8qYoysvk69u1AzH5qIogYiL1Tkas/61nanMu3IY3/AMVczzGxF6/
-	 POEFnykb7NeR1iW9YGXdNTufN7V1ipg/2piEmcc8=
+	b=L5PQ0VvnVFt22U8wMx44rJOfbwc319U9h3la/nCoyGmAVH9c/AkjOFy+IgFvoquYa
+	 qXGMZUGZ79BaWQpwiEiZT7qd11tcCvkcTbpwS7Pnu1wgWZNcJal5lbSKrQdLUeXEdM
+	 npsvFhM2yKeL+GIJLJsmUfCT2en1MysbUhpjLzek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 188/393] dt-bindings: media: st,stmipid02: correct lane-polarities maxItems
+Subject: [PATCH 6.13 239/414] media: i2c: imx219: Rectify runtime PM handling in probe and remove
 Date: Thu, 17 Apr 2025 19:49:57 +0200
-Message-ID: <20250417175115.151211389@linuxfoundation.org>
+Message-ID: <20250417175121.037608101@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alain Volmat <alain.volmat@foss.st.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit 3a544a39e0a4c492e3026dfbed018321d2bd6caa upstream.
+commit 42eceae9793566d0df53d509be3e416465c347f5 upstream.
 
-The MIPID02 can use up to 2 data lanes which leads to having a maximum
-item number of 3 for the lane-polarities since this also contains the
-clock lane.
+Set the device's runtime PM status and enable runtime PM before
+registering the async sub-device. This is needed to avoid the case where
+the device is runtime PM resumed while runtime PM has not been enabled
+yet.
 
-CC: stable@vger.kernel.org
-Fixes: c2741cbe7f8a ("dt-bindings: media: st,stmipid02: Convert the text bindings to YAML")
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Also set the device's runtime PM status to suspended in remove only if it
+wasn't so already.
+
+Fixes: 1283b3b8f82b ("media: i2c: Add driver for Sony IMX219 sensor")
+Cc: stable@vger.kernel.org # for >= v6.6
+Reviewed-by: Bingbu Cao <bingbu.cao@intel.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/media/i2c/st,st-mipid02.yaml |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/imx219.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/Documentation/devicetree/bindings/media/i2c/st,st-mipid02.yaml
-+++ b/Documentation/devicetree/bindings/media/i2c/st,st-mipid02.yaml
-@@ -71,7 +71,7 @@ properties:
-                 description:
-                   Any lane can be inverted or not.
-                 minItems: 1
--                maxItems: 2
-+                maxItems: 3
+--- a/drivers/media/i2c/imx219.c
++++ b/drivers/media/i2c/imx219.c
+@@ -1223,6 +1223,9 @@ static int imx219_probe(struct i2c_clien
+ 		goto error_media_entity;
+ 	}
  
-             required:
-               - data-lanes
++	pm_runtime_set_active(dev);
++	pm_runtime_enable(dev);
++
+ 	ret = v4l2_async_register_subdev_sensor(&imx219->sd);
+ 	if (ret < 0) {
+ 		dev_err_probe(dev, ret,
+@@ -1230,15 +1233,14 @@ static int imx219_probe(struct i2c_clien
+ 		goto error_subdev_cleanup;
+ 	}
+ 
+-	/* Enable runtime PM and turn off the device */
+-	pm_runtime_set_active(dev);
+-	pm_runtime_enable(dev);
+ 	pm_runtime_idle(dev);
+ 
+ 	return 0;
+ 
+ error_subdev_cleanup:
+ 	v4l2_subdev_cleanup(&imx219->sd);
++	pm_runtime_disable(dev);
++	pm_runtime_set_suspended(dev);
+ 
+ error_media_entity:
+ 	media_entity_cleanup(&imx219->sd.entity);
+@@ -1263,9 +1265,10 @@ static void imx219_remove(struct i2c_cli
+ 	imx219_free_controls(imx219);
+ 
+ 	pm_runtime_disable(&client->dev);
+-	if (!pm_runtime_status_suspended(&client->dev))
++	if (!pm_runtime_status_suspended(&client->dev)) {
+ 		imx219_power_off(&client->dev);
+-	pm_runtime_set_suspended(&client->dev);
++		pm_runtime_set_suspended(&client->dev);
++	}
+ }
+ 
+ static const struct of_device_id imx219_dt_ids[] = {
 
 
 
