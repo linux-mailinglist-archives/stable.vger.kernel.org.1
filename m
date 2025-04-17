@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-134082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4717A92974
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0987A92B1A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:57:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E33B8E3B48
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 738124A7E56
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:56:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59ED125743C;
-	Thu, 17 Apr 2025 18:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26D11257428;
+	Thu, 17 Apr 2025 18:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uEAWwY6q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="We66HxMn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167162571CF;
-	Thu, 17 Apr 2025 18:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F852566FE;
+	Thu, 17 Apr 2025 18:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915040; cv=none; b=onLcv7uXSFUkdSWt7MzdlyRj20MU2OEZLS+vSnDWgiqOZPzkAAVbN5pyVoJF/jKGZm+JR4rrnKDQaRiS+IBI1EmJ+3PN2leEsGT8GTVFqKMQLBntumiy3HhJtp/qHgoPQlgSKbuwI6CnAqKlSmMg3p7ftraFkX/SyKhU0G4r0TY=
+	t=1744916159; cv=none; b=ODXMzzc2NNEQ0SU64qZBdiIf83/wOyGmM+OeA/kDQI4gJ8QXjYz3X8fttHCid8Hxv1wfTIEUku4guLazqyJkO8nHSWPWmTUq52q/AKLmhkVIkdewKkfeU0qAx7+hcU0p/xggJrAOZjAhH0+VC5hsvoTOmKQMQl3kKhjY9hqokuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915040; c=relaxed/simple;
-	bh=GQ7GhfViYU97pSutEyqTfYQ27UCFaKIDCY8Upi7tM2E=;
+	s=arc-20240116; t=1744916159; c=relaxed/simple;
+	bh=8nO8QSPp1xd5qMlRfkH3l2dVZlh9WpVlpuri3x3tvFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IZnxL7zbNEy6MRcyxiuKDcJjwwS3xyzfec/iQSlc71JzwIahc3+YKFR8m3CmXlZB/12w+eo8TcsFF2wMgFNqKtxzJQDeFfEnTXZJhpsqpuDZXXj5oWrvbDsYNo4z61TuVLa9bLzc9eB8f7/h+tY3GHkocBZouoQZVt4/S0q6B/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uEAWwY6q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94516C4CEE7;
-	Thu, 17 Apr 2025 18:37:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DYYu06WAPDvhj547ahGfhN9Lwc+JO8xhvBO9F2YityGxFaY+YeDKbmF6wuXmoTJb+Ugwpl1MvHY7aOM8lsn1G5uRAXFg3H1uRgKttEZ4JjVhS2oEU3llAqghLxv5EZqL9rsitIUe0YlkhUC1Ni/uSH6iVa4X04LKlaGW9sBWLRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=We66HxMn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52EAEC4CEEA;
+	Thu, 17 Apr 2025 18:55:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915040;
-	bh=GQ7GhfViYU97pSutEyqTfYQ27UCFaKIDCY8Upi7tM2E=;
+	s=korg; t=1744916159;
+	bh=8nO8QSPp1xd5qMlRfkH3l2dVZlh9WpVlpuri3x3tvFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uEAWwY6qEXUNs5ubueT2x3SsCMGrj33/2rOlCY5QlRAPvTCm/XpjjPRc7CXXUB3jO
-	 UDS3eHNsAPWuPIOrQXy43jitCsHWq1BBuUjhbh3kGf+5cn38APA0a4DwT7Pm1ksiZ4
-	 doXbhNaNI0Uz+atA9yKyyB+3E9zi7JnD8jvhuHN8=
+	b=We66HxMnlTdD5tO+rboSuStQgB6DA40Pa8LKI/jMtJk0It24J1W9polY6yQLf/nxu
+	 NlCJQrSvv29qzCyseYEXT4moVaAUViV5bsX024A3Wl/tje74NufZ9qQQdiwpZf24JL
+	 fSfudb6JW1ZeK6ZsxQ9M0rC4RCu+uS80ebsDARWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.13 414/414] s390/cpumf: Fix double free on error in cpumf_pmu_event_init()
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 6.12 363/393] PCI: j721e: Fix the value of .linkdown_irq_regfield for J784S4
 Date: Thu, 17 Apr 2025 19:52:52 +0200
-Message-ID: <20250417175128.137880077@linuxfoundation.org>
+Message-ID: <20250417175122.203340289@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,125 +59,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-commit aa1ac98268cd1f380c713f07e39b1fa1d5c7650c upstream.
+commit d66b5b336245b91681c2042e7eedf63ef7c2f6db upstream.
 
-In PMU event initialization functions
- - cpumsf_pmu_event_init()
- - cpumf_pmu_event_init()
- - cfdiag_event_init()
-the partially created event had to be removed when an error was detected.
-The event::event_init() member function had to release all resources
-it allocated in case of error. event::destroy() had to be called
-on freeing an event after it was successfully created and
-event::event_init() returned success.
+Commit e49ad667815d ("PCI: j721e: Add TI J784S4 PCIe configuration")
+assigned the value of .linkdown_irq_regfield for the J784S4 SoC as the
+"LINK_DOWN" macro corresponding to BIT(1), and as a result, the Link
+Down interrupts on J784S4 SoC are missed.
 
-With
+According to the Technical Reference Manual and Register Documentation
+for the J784S4 SoC[1], BIT(1) corresponds to "ENABLE_SYS_EN_PCIE_DPA_1",
+which is not the correct field for the link-state interrupt. Instead, it
+is BIT(10) of the "PCIE_INTD_ENABLE_REG_SYS_2" register that corresponds
+to the link-state field named as "ENABLE_SYS_EN_PCIE_LINK_STATE".
 
-commit c70ca298036c ("perf/core: Simplify the perf_event_alloc() error path")
+Thus, set .linkdown_irq_regfield to the macro "J7200_LINK_DOWN", which
+expands to BIT(10) and was first defined for the J7200 SoC. Other SoCs
+already reuse this macro since it accurately represents the "link-state"
+field in their respective "PCIE_INTD_ENABLE_REG_SYS_2" register.
 
-this is not necessary anymore. The performance subsystem common
-code now always calls event::destroy() to clean up the allocated
-resources created during event initialization.
+1: https://www.ti.com/lit/zip/spruj52
 
-Remove the event::destroy() invocation in PMU event initialization
-or that function is called twice for each event that runs into an
-error condition in event creation.
-
-This is the kernel log entry which shows up without the fix:
-
-------------[ cut here ]------------
-refcount_t: underflow; use-after-free.
-WARNING: CPU: 0 PID: 43388 at lib/refcount.c:87	refcount_dec_not_one+0x74/0x90
-CPU: 0 UID: 0 PID: 43388 Comm: perf Not tainted 6.15.0-20250407.rc1.git0.300.fc41.s390x+git #1 NONE
-Hardware name: IBM 3931 A01 704 (LPAR)
-Krnl PSW : 0704c00180000000 00000209cb2c1b88 (refcount_dec_not_one+0x78/0x90)
-           R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
-Krnl GPRS: 0000020900000027 0000020900000023 0000000000000026 0000018900000000
-           00000004a2200a00 0000000000000000 0000000000000057 ffffffffffffffea
-           00000002b386c600 00000002b3f5b3e0 00000209cc51f140 00000209cc7fc550
-           0000000001449d38 ffffffffffffffff 00000209cb2c1b84 00000189d67dfb80
-Krnl Code: 00000209cb2c1b78: c02000506727	larl	%r2,00000209cbcce9c6
-           00000209cb2c1b7e: c0e5ffbd4431	brasl	%r14,00000209caa6a3e0
-          #00000209cb2c1b84: af000000		mc	0,0
-          >00000209cb2c1b88: a7480001		lhi	%r4,1
-           00000209cb2c1b8c: ebeff0a00004	lmg	%r14,%r15,160(%r15)
-           00000209cb2c1b92: ec243fbf0055	risbg	%r2,%r4,63,191,0
-           00000209cb2c1b98: 07fe		bcr	15,%r14
-           00000209cb2c1b9a: 47000700		bc	0,1792
-Call Trace:
- [<00000209cb2c1b88>] refcount_dec_not_one+0x78/0x90
- [<00000209cb2c1dc4>] refcount_dec_and_mutex_lock+0x24/0x90
- [<00000209caa3c29e>] hw_perf_event_destroy+0x2e/0x80
- [<00000209cacaf8b4>] __free_event+0x74/0x270
- [<00000209cacb47c4>] perf_event_alloc.part.0+0x4a4/0x730
- [<00000209cacbf3e8>] __do_sys_perf_event_open+0x248/0xc20
- [<00000209cacc14a4>] __s390x_sys_perf_event_open+0x44/0x50
- [<00000209cb8114de>] __do_syscall+0x12e/0x260
- [<00000209cb81ce34>] system_call+0x74/0x98
-Last Breaking-Event-Address:
- [<00000209caa6a4d2>] __warn_printk+0xf2/0x100
----[ end trace 0000000000000000 ]---
-
-Fixes: c70ca298036c ("perf/core: Simplify the perf_event_alloc() error path")
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Reviewed-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: e49ad667815d ("PCI: j721e: Add TI J784S4 PCIe configuration")
+Cc: stable@vger.kernel.org
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+[kwilczynski: commit log, add a missing .linkdown_irq_regfield member
+set to the J7200_LINK_DOWN macro to struct j7200_pcie_ep_data]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Link: https://lore.kernel.org/r/20250305132018.2260771-1-s-vadapalli@ti.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/perf_cpum_cf.c |    9 +--------
- arch/s390/kernel/perf_cpum_sf.c |    3 ---
- 2 files changed, 1 insertion(+), 11 deletions(-)
+ drivers/pci/controller/cadence/pci-j721e.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/s390/kernel/perf_cpum_cf.c
-+++ b/arch/s390/kernel/perf_cpum_cf.c
-@@ -858,18 +858,13 @@ static int cpumf_pmu_event_type(struct p
- static int cpumf_pmu_event_init(struct perf_event *event)
- {
- 	unsigned int type = event->attr.type;
--	int err;
-+	int err = -ENOENT;
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -355,6 +355,7 @@ static const struct j721e_pcie_data j720
+ static const struct j721e_pcie_data j7200_pcie_ep_data = {
+ 	.mode = PCI_MODE_EP,
+ 	.quirk_detect_quiet_flag = true,
++	.linkdown_irq_regfield = J7200_LINK_DOWN,
+ 	.quirk_disable_flr = true,
+ 	.max_lanes = 2,
+ };
+@@ -376,13 +377,13 @@ static const struct j721e_pcie_data j784
+ 	.mode = PCI_MODE_RC,
+ 	.quirk_retrain_flag = true,
+ 	.byte_access_allowed = false,
+-	.linkdown_irq_regfield = LINK_DOWN,
++	.linkdown_irq_regfield = J7200_LINK_DOWN,
+ 	.max_lanes = 4,
+ };
  
- 	if (type == PERF_TYPE_HARDWARE || type == PERF_TYPE_RAW)
- 		err = __hw_perf_event_init(event, type);
- 	else if (event->pmu->type == type)
- 		/* Registered as unknown PMU */
- 		err = __hw_perf_event_init(event, cpumf_pmu_event_type(event));
--	else
--		return -ENOENT;
--
--	if (unlikely(err) && event->destroy)
--		event->destroy(event);
- 
- 	return err;
- }
-@@ -1819,8 +1814,6 @@ static int cfdiag_event_init(struct perf
- 	event->destroy = hw_perf_event_destroy;
- 
- 	err = cfdiag_event_init2(event);
--	if (unlikely(err))
--		event->destroy(event);
- out:
- 	return err;
- }
---- a/arch/s390/kernel/perf_cpum_sf.c
-+++ b/arch/s390/kernel/perf_cpum_sf.c
-@@ -885,9 +885,6 @@ static int cpumsf_pmu_event_init(struct
- 		event->attr.exclude_idle = 0;
- 
- 	err = __hw_perf_event_init(event);
--	if (unlikely(err))
--		if (event->destroy)
--			event->destroy(event);
- 	return err;
- }
+ static const struct j721e_pcie_data j784s4_pcie_ep_data = {
+ 	.mode = PCI_MODE_EP,
+-	.linkdown_irq_regfield = LINK_DOWN,
++	.linkdown_irq_regfield = J7200_LINK_DOWN,
+ 	.max_lanes = 4,
+ };
  
 
 
