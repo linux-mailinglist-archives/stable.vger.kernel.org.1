@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-133938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3EE6A928EF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:39:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF349A92AA4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:53:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E82ED7B84E3
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:35:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37EA818861D8
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:53:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8062586E2;
-	Thu, 17 Apr 2025 18:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1955D257427;
+	Thu, 17 Apr 2025 18:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cuq82Y0/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pttB9FFR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C502580F6;
-	Thu, 17 Apr 2025 18:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA90D256C9B;
+	Thu, 17 Apr 2025 18:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914602; cv=none; b=s5XhwTRBDRK5HH0oT5zTnrZFWmkrquDVIMMzsn78449b/icGrix90I9lNUArL9MA2fzmUMzzoCKxw1mj30yBCS2+rLdb1/4DrrE5ZEK0QbwhEHMvYv4fwSijpUwLGy5te9MkiHzF5IEUQdkfTbUZBs0y2AltfIHbk9N2MMDB8Bw=
+	t=1744915845; cv=none; b=BA2ATPvwcDB7nsDOB01svW5vSA74MSJJ0BU+RqgSK0HUl0/V59e1HWU0BfmT9zTBztYK3BMCphAVlxq3BSCBT2864bRwBe61SnvIy2e1mz7EY+pO+RZCnCPHurisKaodGtfsPgn80JQ0WhUApoHpLIGiK+YyOuJzZV6HjdtrAHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914602; c=relaxed/simple;
-	bh=B6XXU9omsz5SY/MyZkCs1OfNA+4FZNZA9vvsaZxZeiQ=;
+	s=arc-20240116; t=1744915845; c=relaxed/simple;
+	bh=FkQ0pwnbJ/nKIQ+9THFWAyTdokJmpgv5C4UHPuy3cbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HYC8n9xfcR0313cGeoNX+Ilba+kHi2Rba4/51ruKiAMcWsOWCls779qtyHUlLzAI0O4D0BJW9w/ZfY/XELatv4wxIQ0W7UAzLRCeGT7TF5gXDGS6qcmcWwC5zVTuHWN/FV330XPnGnOByYvphXkMW4KAj55Ixd1F+CqEMzmMykc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cuq82Y0/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4DCDC4CEE4;
-	Thu, 17 Apr 2025 18:30:01 +0000 (UTC)
+	 MIME-Version; b=FbZyWeDjrmZXuRYXDL+g3eIzlKG4JBO4NScX4jicGGOROLqGgFt2kdjo589mjyCAx6I82O0DiY4BxnVijmYfpS1nJAf0TbekztqjoFYnTgojivZ53IEY1p9+VJ4KMlmu9I1p4G0Cfkey/8kt9gHRZeb/8rFQ4Xtf31DzuNZYfqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pttB9FFR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51C1EC4CEE7;
+	Thu, 17 Apr 2025 18:50:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914602;
-	bh=B6XXU9omsz5SY/MyZkCs1OfNA+4FZNZA9vvsaZxZeiQ=;
+	s=korg; t=1744915845;
+	bh=FkQ0pwnbJ/nKIQ+9THFWAyTdokJmpgv5C4UHPuy3cbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cuq82Y0/8g1ISp/W3gc8Qvp/m8bf5WO8rkqwhDsG3EiPbf+yx9OvIl3gDN4+83BaR
-	 xs/M56YCBRFEhQk/+3+UTwFS9iO7RAEEkl2nAcqriCSjSpa1rIa0JWMpQHmoQj9RIJ
-	 9wc+CErxPpEFgSxhv0ef73TvQDDUZBpG6lp9R7g0=
+	b=pttB9FFRy9DAWfdDPVAq5o5/6PgQ5ozpUn+MDw3WrjTl29tbfEZuga9ubSfXIsey7
+	 kWYDo//D2evRY4GwRFEZ2wYBLWwEZaZwL+1bpTpw42lidIZS4zqnCr6HHMNzPdhiHa
+	 WSuyjiEwCi6pTaogUbsTfOudYCQzukp7PTbD1G1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.13 269/414] ASoC: q6apm-dai: make use of q6apm_get_hw_pointer
-Date: Thu, 17 Apr 2025 19:50:27 +0200
-Message-ID: <20250417175122.247780795@linuxfoundation.org>
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 219/393] media: i2c: ccs: Set the devices runtime PM status correctly in probe
+Date: Thu, 17 Apr 2025 19:50:28 +0200
+Message-ID: <20250417175116.393588519@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit a93dad6f4e6a04a5943f6ee5686585f24abf7063 upstream.
+commit 80704d14f1bd3628f578510e0a88b66824990ef6 upstream.
 
-With the existing code, the buffer position is only reset in pointer
-callback, which leaves the possiblity of it going over the size of
-buffer size and reporting incorrect position to userspace.
+Set the device's runtime PM status to suspended in probe error paths where
+it was previously set to active.
 
-Without this patch, its possible to see errors like:
-snd-x1e80100 sound: invalid position: pcmC0D0p:0, pos = 12288, buffer size = 12288, period size = 1536
-snd-x1e80100 sound: invalid position: pcmC0D0p:0, pos = 12288, buffer size = 12288, period size = 1536
-
-Fixes: 9b4fe0f1cd791 ("ASoC: qdsp6: audioreach: add q6apm-dai support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://patch.msgid.link/20250314174800.10142-4-srinivas.kandagatla@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 9447082ae666 ("[media] smiapp: Implement power-on and power-off sequences without runtime PM")
+Cc: stable@vger.kernel.org # for >= v5.15
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6apm-dai.c |   23 ++++-------------------
- 1 file changed, 4 insertions(+), 19 deletions(-)
+ drivers/media/i2c/ccs/ccs-core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/soc/qcom/qdsp6/q6apm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6apm-dai.c
-@@ -64,7 +64,6 @@ struct q6apm_dai_rtd {
- 	phys_addr_t phys;
- 	unsigned int pcm_size;
- 	unsigned int pcm_count;
--	unsigned int pos;       /* Buffer position */
- 	unsigned int periods;
- 	unsigned int bytes_sent;
- 	unsigned int bytes_received;
-@@ -124,23 +123,16 @@ static void event_handler(uint32_t opcod
- {
- 	struct q6apm_dai_rtd *prtd = priv;
- 	struct snd_pcm_substream *substream = prtd->substream;
--	unsigned long flags;
+--- a/drivers/media/i2c/ccs/ccs-core.c
++++ b/drivers/media/i2c/ccs/ccs-core.c
+@@ -3562,6 +3562,7 @@ static int ccs_probe(struct i2c_client *
+ out_disable_runtime_pm:
+ 	pm_runtime_put_noidle(&client->dev);
+ 	pm_runtime_disable(&client->dev);
++	pm_runtime_set_suspended(&client->dev);
  
- 	switch (opcode) {
- 	case APM_CLIENT_EVENT_CMD_EOS_DONE:
- 		prtd->state = Q6APM_STREAM_STOPPED;
- 		break;
- 	case APM_CLIENT_EVENT_DATA_WRITE_DONE:
--		spin_lock_irqsave(&prtd->lock, flags);
--		prtd->pos += prtd->pcm_count;
--		spin_unlock_irqrestore(&prtd->lock, flags);
- 		snd_pcm_period_elapsed(substream);
- 
- 		break;
- 	case APM_CLIENT_EVENT_DATA_READ_DONE:
--		spin_lock_irqsave(&prtd->lock, flags);
--		prtd->pos += prtd->pcm_count;
--		spin_unlock_irqrestore(&prtd->lock, flags);
- 		snd_pcm_period_elapsed(substream);
- 		if (prtd->state == Q6APM_STREAM_RUNNING)
- 			q6apm_read(prtd->graph);
-@@ -247,7 +239,6 @@ static int q6apm_dai_prepare(struct snd_
- 	}
- 
- 	prtd->pcm_count = snd_pcm_lib_period_bytes(substream);
--	prtd->pos = 0;
- 	/* rate and channels are sent to audio driver */
- 	ret = q6apm_graph_media_format_shmem(prtd->graph, &cfg);
- 	if (ret < 0) {
-@@ -445,16 +436,12 @@ static snd_pcm_uframes_t q6apm_dai_point
- 	struct snd_pcm_runtime *runtime = substream->runtime;
- 	struct q6apm_dai_rtd *prtd = runtime->private_data;
- 	snd_pcm_uframes_t ptr;
--	unsigned long flags;
- 
--	spin_lock_irqsave(&prtd->lock, flags);
--	if (prtd->pos == prtd->pcm_size)
--		prtd->pos = 0;
--
--	ptr =  bytes_to_frames(runtime, prtd->pos);
--	spin_unlock_irqrestore(&prtd->lock, flags);
-+	ptr = q6apm_get_hw_pointer(prtd->graph, substream->stream) * runtime->period_size;
-+	if (ptr)
-+		return ptr - 1;
- 
--	return ptr;
-+	return 0;
- }
- 
- static int q6apm_dai_hw_params(struct snd_soc_component *component,
-@@ -669,8 +656,6 @@ static int q6apm_dai_compr_set_params(st
- 	prtd->pcm_size = runtime->fragments * runtime->fragment_size;
- 	prtd->bits_per_sample = 16;
- 
--	prtd->pos = 0;
--
- 	if (prtd->next_track != true) {
- 		memcpy(&prtd->codec, codec, sizeof(*codec));
- 
+ out_cleanup:
+ 	ccs_cleanup(sensor);
 
 
 
