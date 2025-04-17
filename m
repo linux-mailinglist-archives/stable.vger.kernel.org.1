@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-133667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 030B8A926C1
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:16:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F5CA92ACA
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:54:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60FF38A661B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:15:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C805F7B20EB
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:53:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 680DA1CAA81;
-	Thu, 17 Apr 2025 18:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C73C2566DE;
+	Thu, 17 Apr 2025 18:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgHUI8qa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khy2uCK0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268E03594D;
-	Thu, 17 Apr 2025 18:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED335185920;
+	Thu, 17 Apr 2025 18:54:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913773; cv=none; b=jjAvOn7cAebOw9Mzlj4kQrvwUo4+Y3M+vh1DMAMUjyuKuexMf9+/zeX0dyx6pf4tdWhfNuGqxccNvGtWSZqL9MPkCAdi2gfDJJxZXoJtmfiCJ8c4rk7sCrc2Hidj+PksUHNeMqRQhCqmOZza//y/00IMFcO0dKgz/vic1+xSPhc=
+	t=1744916050; cv=none; b=BGmy3gLK9n1ZnV4Y3qwmWkygt0huxAfaa1+9do6DSKJFDQXMP6mNetVieoy+urwIJwD/4CcEPRFc0QVKZoBfpWRPktpOJNS9WZXxXXas5OiN7kN1dY740IfssEEcYkGDd5BtLntKAcRy7wGbTKEq7HQGIaKya11MQSQKPatkXOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913773; c=relaxed/simple;
-	bh=OKBSvp1V/yfHIIXZPBrcWTbSMQ0K7fBO2KiNO1QSgJw=;
+	s=arc-20240116; t=1744916050; c=relaxed/simple;
+	bh=xL+uAQC/PphQLNqixM0W5FjxPiZQUUkUMHiX02JzsrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LtQedLcjPjI8J7ZYP1A2psUcR9nhpHWNC6jfWC2EfVFB2yDMpBO+X+oyIC26Oub3MEFyD2iDI2awffrVKxkJIxs9u/zxEmfcNbjVz8GC15FJgtSROJuV8iSjdKjtrhSVk2Reu4Ze04kJJFxpgcYQQELXZvWCOeStwWhZ0uyoAHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgHUI8qa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99135C4CEE4;
-	Thu, 17 Apr 2025 18:16:12 +0000 (UTC)
+	 MIME-Version; b=T2H/R5QK4kS11dAcEXV2B7byJQ+ftcLLar7AT2TuLAd65gAv3jvDn+aMwr5wiGsOGLzjzRj+relY+B3bZv/1EDAVwg0HUd97V20the0EqeScNnnoxNzw3UOLgmxt2CcIgBh/A1dgXdUPxy41tW3Pr5vJ/9WN8VbP93guyz0G+CA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khy2uCK0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6089AC4CEE4;
+	Thu, 17 Apr 2025 18:54:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913773;
-	bh=OKBSvp1V/yfHIIXZPBrcWTbSMQ0K7fBO2KiNO1QSgJw=;
+	s=korg; t=1744916049;
+	bh=xL+uAQC/PphQLNqixM0W5FjxPiZQUUkUMHiX02JzsrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xgHUI8qaMDDlD2vucc25tIV+cboCIySzEKLOjSIr0tKiIgl5M4VLqrerUt0zhWH6N
-	 By2kzWxV9tTJqMHqhkHoUH0h7iWtJDWtUWzudQe47ntoXxaFmG9C5Sx2Xcbf/Xqc1y
-	 w5gd3N3VqqXLPVCfHxLJgngvWldaxrwA43BJWSgs=
+	b=khy2uCK0diUyZI0sAXqKXqXkkbT/EhI1XxRdC0tG2VtrPQef/Ykd4a6XvBven2boP
+	 LaZdaWqmHnvVoydXKuHoSElAJSEb17Niljf6gz/1E1WQWPWH54zwwruV/dy+eoSgsL
+	 d3v5dG5uBcRb7hR55Jkp/+3Qtvne9ZtGByKxWkwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roberto Ricci <io@r-ricci.it>,
-	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Kees Cook <keescook@chromium.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Len Brown <len.brown@intel.com>
-Subject: [PATCH 6.14 448/449] x86/e820: Fix handling of subpage regions when calculating nosave ranges in e820__register_nosave_regions()
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.12 327/393] crypto: ccp - Fix check for the primary ASP device
 Date: Thu, 17 Apr 2025 19:52:16 +0200
-Message-ID: <20250417175136.356059933@linuxfoundation.org>
+Message-ID: <20250417175120.763515726@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,94 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+From: Tom Lendacky <thomas.lendacky@amd.com>
 
-commit f2f29da9f0d4367f6ff35e0d9d021257bb53e273 upstream.
+commit 07bb097b92b987db518e72525b515d77904e966e upstream.
 
-While debugging kexec/hibernation hangs and crashes, it turned out that
-the current implementation of e820__register_nosave_regions() suffers from
-multiple serious issues:
+Currently, the ASP primary device check does not have support for PCI
+domains, and, as a result, when the system is configured with PCI domains
+(PCI segments) the wrong device can be selected as primary. This results
+in commands submitted to the device timing out and failing. The device
+check also relies on specific device and function assignments that may
+not hold in the future.
 
- - The end of last region is tracked by PFN, causing it to find holes
-   that aren't there if two consecutive subpage regions are present
+Fix the primary ASP device check to include support for PCI domains and
+to perform proper checking of the Bus/Device/Function positions.
 
- - The nosave PFN ranges derived from holes are rounded out (instead of
-   rounded in) which makes it inconsistent with how explicitly reserved
-   regions are handled
-
-Fix this by:
-
- - Treating reserved regions as if they were holes, to ensure consistent
-   handling (rounding out nosave PFN ranges is more correct as the
-   kernel does not use partial pages)
-
- - Tracking the end of the last RAM region by address instead of pages
-   to detect holes more precisely
-
-These bugs appear to have been introduced about ~18 years ago with the very
-first version of e820_mark_nosave_regions(), and its flawed assumptions were
-carried forward uninterrupted through various waves of rewrites and renames.
-
-[ mingo: Added Git archeology details, for kicks and giggles. ]
-
-Fixes: e8eff5ac294e ("[PATCH] Make swsusp avoid memory holes and reserved memory regions on x86_64")
-Reported-by: Roberto Ricci <io@r-ricci.it>
-Tested-by: Roberto Ricci <io@r-ricci.it>
-Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: David Woodhouse <dwmw@amazon.co.uk>
-Cc: Len Brown <len.brown@intel.com>
+Fixes: 2a6170dfe755 ("crypto: ccp: Add Platform Security Processor (PSP) device support")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250406-fix-e820-nosave-v3-1-f3787bc1ee1d@qtmlabs.xyz
-Closes: https://lore.kernel.org/all/Z4WFjBVHpndct7br@desktop0a/
-Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/e820.c |   17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ drivers/crypto/ccp/sp-pci.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/arch/x86/kernel/e820.c
-+++ b/arch/x86/kernel/e820.c
-@@ -754,22 +754,21 @@ void __init e820__memory_setup_extended(
- void __init e820__register_nosave_regions(unsigned long limit_pfn)
- {
- 	int i;
--	unsigned long pfn = 0;
-+	u64 last_addr = 0;
+--- a/drivers/crypto/ccp/sp-pci.c
++++ b/drivers/crypto/ccp/sp-pci.c
+@@ -189,14 +189,17 @@ static bool sp_pci_is_master(struct sp_d
+ 	pdev_new = to_pci_dev(dev_new);
+ 	pdev_cur = to_pci_dev(dev_cur);
  
- 	for (i = 0; i < e820_table->nr_entries; i++) {
- 		struct e820_entry *entry = &e820_table->entries[i];
+-	if (pdev_new->bus->number < pdev_cur->bus->number)
+-		return true;
++	if (pci_domain_nr(pdev_new->bus) != pci_domain_nr(pdev_cur->bus))
++		return pci_domain_nr(pdev_new->bus) < pci_domain_nr(pdev_cur->bus);
  
--		if (pfn < PFN_UP(entry->addr))
--			register_nosave_region(pfn, PFN_UP(entry->addr));
--
--		pfn = PFN_DOWN(entry->addr + entry->size);
--
- 		if (entry->type != E820_TYPE_RAM && entry->type != E820_TYPE_RESERVED_KERN)
--			register_nosave_region(PFN_UP(entry->addr), pfn);
-+			continue;
+-	if (PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn))
+-		return true;
++	if (pdev_new->bus->number != pdev_cur->bus->number)
++		return pdev_new->bus->number < pdev_cur->bus->number;
  
--		if (pfn >= limit_pfn)
--			break;
-+		if (last_addr < entry->addr)
-+			register_nosave_region(PFN_DOWN(last_addr), PFN_UP(entry->addr));
+-	if (PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn))
+-		return true;
++	if (PCI_SLOT(pdev_new->devfn) != PCI_SLOT(pdev_cur->devfn))
++		return PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn);
 +
-+		last_addr = entry->addr + entry->size;
- 	}
-+
-+	register_nosave_region(PFN_DOWN(last_addr), limit_pfn);
++	if (PCI_FUNC(pdev_new->devfn) != PCI_FUNC(pdev_cur->devfn))
++		return PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn);
+ 
+ 	return false;
  }
- 
- #ifdef CONFIG_ACPI
 
 
 
