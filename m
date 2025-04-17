@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-134303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83856A92A7A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:51:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE765A92621
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:10:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD4958A0E9A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:48:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D9248A5C3F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA456253324;
-	Thu, 17 Apr 2025 18:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65D51DE3A8;
+	Thu, 17 Apr 2025 18:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/f2CjHx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sKEE0eXo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660701B3934;
-	Thu, 17 Apr 2025 18:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846DF18C034;
+	Thu, 17 Apr 2025 18:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915717; cv=none; b=bh9J0RdP3/32ezmaJmAcqkA7EbP6+tbTQ/TgORM3KpzVGow/vkyBXlXLgU+8mLseeS93MOWh2hL/CJj0PE43Qn/e6cGPS+/zWD3lQUm5V4OXOkzLy+ikBIQEcwzgRMMTJ3fOSuiv4l1CVhjiWrcY/28qvvYQoQvurt2qe17tNtU=
+	t=1744913433; cv=none; b=sbW52AxvuxRh7msscI2qzdsSiHGvfgLRFj+0lpdwUNJok7kMcmbTvuDKjBRvs1KdCzz3YpXqEvxB9rSDEL5ZMZXiO+rHFQnKJU2Fyuixtsx8uXm89Ur3VzW3wHcVMptsAm8UaLnsDL52d0bukoqZenMNruU9NN3DW/M4h+wVIXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915717; c=relaxed/simple;
-	bh=aKx6ziFuTBRBkO9whNTECMyvjtJJl3R2KEsWVQHaEZE=;
+	s=arc-20240116; t=1744913433; c=relaxed/simple;
+	bh=pghpc3BLkKfOVzKB8bG8aM1sYSH69kiMmwJdpsoHZmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sKbV2wg+X4rPL38ido/qFwj6qXzJgOUfcj8Zs2YnjKAE4IefqwkI6ICgtp5MYcq3NNRL59WyCIuGH6SJOtOD6AoKqw6CNx2gkT61d2uZJmb10o1nUlCk/F/xGzf2tUvMtqU9HdkjHFSod//L9eqg8tHnlPGuC/PAgEQc7mPBtbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/f2CjHx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFCBFC4CEE4;
-	Thu, 17 Apr 2025 18:48:36 +0000 (UTC)
+	 MIME-Version; b=WCoCQMkVxwIvT/JzkWq6QtQm2FNYVRtOWYi1TdL4rBjBmF5kfD5Fgb4ldmBP41sajr/9yBIMjayzEL5B7+fjDXAdjxji4WphOTVfaaWLAPoQxfmqvyzn6UyS3zNzOMpTnrAQiG7pNpCa9yz7U+VMk+OiqVWoWsWhttyUgmaADMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sKEE0eXo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA2CC4CEEA;
+	Thu, 17 Apr 2025 18:10:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915717;
-	bh=aKx6ziFuTBRBkO9whNTECMyvjtJJl3R2KEsWVQHaEZE=;
+	s=korg; t=1744913433;
+	bh=pghpc3BLkKfOVzKB8bG8aM1sYSH69kiMmwJdpsoHZmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L/f2CjHx/dxNBbyl9qsl7wVRUqXlUWQGty8GoJn83HrEH2qhvI9FMomTYuOE5RGKF
-	 1vdXB8C7vgx2zIKJHVJONl8WRDe+mMVqWmCKWM+FgUROMMa05KLL5vZ6J6IH03jXLA
-	 LUol1JJfJ/sr2eX+AoMpIreZklt5Wv5CbNCA5IOI=
+	b=sKEE0eXojd3uWVQ7nXh5vTHYw0sruMN0dmhV53G0sV6CHnynKDTLVBHLTqtFRS5Dw
+	 Jxb8oB3hCjljNmcOuGJXRKF/9mcOAMZnPMVepbn7g8S132OfrgontVsGl4i+2YIQ1k
+	 TQ3fk3DcEXBesFh/w84CXi9zyKQdDH5v2fRc7Pqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karina Yankevich <k.yankevich@omp.ru>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 216/393] media: v4l2-dv-timings: prevent possible overflow in v4l2_detect_gtf()
-Date: Thu, 17 Apr 2025 19:50:25 +0200
-Message-ID: <20250417175116.273493853@linuxfoundation.org>
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Subject: [PATCH 6.14 338/449] arm64: dts: ti: k3-j784s4-j742s2-main-common: Fix serdes_ln_ctrl reg-masks
+Date: Thu, 17 Apr 2025 19:50:26 +0200
+Message-ID: <20250417175131.796762382@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karina Yankevich <k.yankevich@omp.ru>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-commit 3edd1fc48d2c045e8259561797c89fe78f01717e upstream.
+commit 38e7f9092efbbf2a4a67e4410b55b797f8d1e184 upstream.
 
-In v4l2_detect_gtf(), it seems safer to cast the 32-bit image_width
-variable to the 64-bit type u64 before multiplying to avoid
-a possible overflow. The resulting object code even seems to
-look better, at least on x86_64.
+Commit under Fixes added the 'idle-states' property for SERDES4 lane muxes
+without defining the corresponding register offsets and masks for it in the
+'mux-reg-masks' property within the 'serdes_ln_ctrl' node.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
+Fix this.
 
-[Sergey: rewrote the patch subject/descripition]
-
-Fixes: c9bc9f50753d ("[media] v4l2-dv-timings: fix overflow in gtf timings calculation")
+Fixes: 7287d423f138 ("arm64: dts: ti: k3-j784s4-main: Add system controller and SERDES lane mux")
 Cc: stable@vger.kernel.org
-Signed-off-by: Karina Yankevich <k.yankevich@omp.ru>
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Link: https://lore.kernel.org/r/20250228053850.506028-1-s-vadapalli@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/v4l2-core/v4l2-dv-timings.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/media/v4l2-core/v4l2-dv-timings.c
-+++ b/drivers/media/v4l2-core/v4l2-dv-timings.c
-@@ -764,7 +764,7 @@ bool v4l2_detect_gtf(unsigned int frame_
- 		u64 num;
- 		u32 den;
- 
--		num = ((image_width * GTF_D_C_PRIME * (u64)hfreq) -
-+		num = (((u64)image_width * GTF_D_C_PRIME * hfreq) -
- 		      ((u64)image_width * GTF_D_M_PRIME * 1000));
- 		den = (hfreq * (100 - GTF_D_C_PRIME) + GTF_D_M_PRIME * 1000) *
- 		      (2 * GTF_CELL_GRAN);
-@@ -774,7 +774,7 @@ bool v4l2_detect_gtf(unsigned int frame_
- 		u64 num;
- 		u32 den;
- 
--		num = ((image_width * GTF_S_C_PRIME * (u64)hfreq) -
-+		num = (((u64)image_width * GTF_S_C_PRIME * hfreq) -
- 		      ((u64)image_width * GTF_S_M_PRIME * 1000));
- 		den = (hfreq * (100 - GTF_S_C_PRIME) + GTF_S_M_PRIME * 1000) *
- 		      (2 * GTF_CELL_GRAN);
+--- a/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
+@@ -84,7 +84,9 @@
+ 					<0x10 0x3>, <0x14 0x3>, /* SERDES1 lane0/1 select */
+ 					<0x18 0x3>, <0x1c 0x3>, /* SERDES1 lane2/3 select */
+ 					<0x20 0x3>, <0x24 0x3>, /* SERDES2 lane0/1 select */
+-					<0x28 0x3>, <0x2c 0x3>; /* SERDES2 lane2/3 select */
++					<0x28 0x3>, <0x2c 0x3>, /* SERDES2 lane2/3 select */
++					<0x40 0x3>, <0x44 0x3>, /* SERDES4 lane0/1 select */
++					<0x48 0x3>, <0x4c 0x3>; /* SERDES4 lane2/3 select */
+ 			idle-states = <J784S4_SERDES0_LANE0_PCIE1_LANE0>,
+ 				      <J784S4_SERDES0_LANE1_PCIE1_LANE1>,
+ 				      <J784S4_SERDES0_LANE2_IP3_UNUSED>,
 
 
 
