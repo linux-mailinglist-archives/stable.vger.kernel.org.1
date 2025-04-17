@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-133855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2365A927E0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:29:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB4E7A925E5
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:08:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA8EF18842D9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86F1F1B62342
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E24F325FA1D;
-	Thu, 17 Apr 2025 18:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 561C61E25E1;
+	Thu, 17 Apr 2025 18:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEjF8802"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F3fEVQee"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9B225FA0F;
-	Thu, 17 Apr 2025 18:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E6B4253F1A;
+	Thu, 17 Apr 2025 18:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914351; cv=none; b=HdPmQnYZKmVbN3q92Y9ujxHVvfXu+kvXg69RqPlKmPOa0W2DEOHMdaFH87b9oTcgn6KT6zvxDMrMz2+tpBxQl4BgecTDKzAnGMuilQuprOxj48iannnCxDugowQ92rap5fHqPcT8AePHQHRQZLAXJsMEZ/HSgPR0Zxz0PZuXWro=
+	t=1744913196; cv=none; b=Ir+35QW3ZIo3MtTzU/nEBXQEK2xpSy8gF+g/kCuMmUoS5k0Mwgp7zhyVOeR0IAZUR7wf4T3xEdScG6Gd4/6H30aGQj6uR4vJrWw4Rg+1himyKlqh2yk3pWkGd+JTxX5zxkpEd+9jmE8V1Y0QdfZcR5iM0QyQOV1mK/woq0kFkto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914351; c=relaxed/simple;
-	bh=62hrYhTh0JZL/T2hXM26lIbIQmdXb07D1TTtiutvKDA=;
+	s=arc-20240116; t=1744913196; c=relaxed/simple;
+	bh=NTY5VgkDaK8hpgTrLQxFGtcuWtV4OhhhtnqnHzVjMZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q4OKPDJcDXnGl8TgWxwI8Gy93omNRyuXCR22CSaRYdEkNFWT+N3HKWmO3XI87XI0jvOcy8p0BnvOw8t/wHGV1+4z9sHXDn/Pavf2LGJpR++mxDPfPN9+iSyHoOq97Ah9LIUefKw3mQdbwBN97R9e1KvykABIkp4ocjf8XDif0zQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEjF8802; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14CD0C4CEE4;
-	Thu, 17 Apr 2025 18:25:50 +0000 (UTC)
+	 MIME-Version; b=rc/Zbnfis9xKIxFLgtP3o9wv038WSyDNXvNMbULc/7PVuOX9X9mMUiUk6IrYB5eewfiXRShP6rOeEBrcYVC9bqQcHoVwBJB4vSUacF/HirmHtCMb+b/gLpNe5U81SXRmgUa9t+P6wzu5IvoQCBte7VavTUUVB+SHepdEaZat/EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F3fEVQee; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94847C4CEE4;
+	Thu, 17 Apr 2025 18:06:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914351;
-	bh=62hrYhTh0JZL/T2hXM26lIbIQmdXb07D1TTtiutvKDA=;
+	s=korg; t=1744913195;
+	bh=NTY5VgkDaK8hpgTrLQxFGtcuWtV4OhhhtnqnHzVjMZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tEjF8802CZFODdEs+o8yHfv/gE63s0UyEdV4bVe0sha6ml8rKr+exTRF+x8qBoEsD
-	 XWBXUHkIgYY7Dupv1YGuE/JuNrtwWLHjav1vCd5mF2IDlT6o4ibaZZPMvxGO9IVbcX
-	 Nm5elO+S7/B06nIZmU/ogoBXgURQYuYlvjr4tfyc=
+	b=F3fEVQeeeaFDx8ID4xTO3WQz5pOPZyHdrW0WuyWL3C0p4AWl+xd/SU2+qGx5kQkLm
+	 dG1ScUZdC0RoQQz2PqYQZuOWC4ou7u0X6xcp9UQAQf3UON+J/wkQRBY/UBBJc8tpsl
+	 jsvSH9y+pNGUkuRiPVUcJFvhRIE72i1q8d7sWRok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 187/414] HID: pidff: Comment and code style update
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.14 257/449] media: nuvoton: Fix reference handling of ece_pdev
 Date: Thu, 17 Apr 2025 19:49:05 +0200
-Message-ID: <20250417175118.966621184@linuxfoundation.org>
+Message-ID: <20250417175128.345612733@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,198 +59,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit e19675c2477491401b236ed939ad5a43ddc339af ]
+commit 453d5cadab1bde8e6fdd5bd05f4200338cb21e72 upstream.
 
-Update comments to fully conform to the Linux comment styling.
-Define Linux infinite effect duration (0) as FF_INFINITE
+When we obtain a reference to of a platform_device, we need to release
+it via put_device.
 
-Chanage Oleg's name order
+Found by cocci:
+./platform/nuvoton/npcm-video.c:1677:3-9: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
+./platform/nuvoton/npcm-video.c:1684:3-9: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
+./platform/nuvoton/npcm-video.c:1690:3-9: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
+./platform/nuvoton/npcm-video.c:1694:1-7: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
 
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Instead of manually calling put_device, use the __free macros.
+
+Cc: stable@vger.kernel.org
+Fixes: 46c15a4ff1f4 ("media: nuvoton: Add driver for NPCM video capture and encoding engine")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 57 +++++++++++++++-------------------
- 1 file changed, 25 insertions(+), 32 deletions(-)
+ drivers/media/platform/nuvoton/npcm-video.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index 503f643b59cad..e2508a4d754d3 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -3,13 +3,9 @@
-  *  Force feedback driver for USB HID PID compliant devices
-  *
-  *  Copyright (c) 2005, 2006 Anssi Hannula <anssi.hannula@gmail.com>
-+ *  Upgraded 2025 by Oleg Makarenko and Tomasz Pakuła
-  */
+--- a/drivers/media/platform/nuvoton/npcm-video.c
++++ b/drivers/media/platform/nuvoton/npcm-video.c
+@@ -1669,6 +1669,7 @@ static int npcm_video_ece_init(struct np
+ 			dev_err(dev, "Failed to find ECE device\n");
+ 			return -ENODEV;
+ 		}
++		struct device *ece_dev __free(put_device) = &ece_pdev->dev;
  
--/*
-- */
--
--/* #define DEBUG */
--
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 		regs = devm_platform_ioremap_resource(ece_pdev, 0);
+ 		if (IS_ERR(regs)) {
+@@ -1683,7 +1684,7 @@ static int npcm_video_ece_init(struct np
+ 			return PTR_ERR(video->ece.regmap);
+ 		}
  
- #include "hid-pidff.h"
-@@ -25,9 +21,9 @@
- 
- /* Linux Force Feedback API uses miliseconds as time unit */
- #define FF_TIME_EXPONENT	-3
-+#define FF_INFINITE		0
- 
- /* Report usage table used to put reports into an array */
--
- #define PID_SET_EFFECT		0
- #define PID_EFFECT_OPERATION	1
- #define PID_DEVICE_GAIN		2
-@@ -48,12 +44,12 @@ static const u8 pidff_reports[] = {
- 	0x21, 0x77, 0x7d, 0x7f, 0x89, 0x90, 0x96, 0xab,
- 	0x5a, 0x5f, 0x6e, 0x73, 0x74
- };
--
--/* device_control is really 0x95, but 0x96 specified as it is the usage of
--the only field in that report */
-+/*
-+ * device_control is really 0x95, but 0x96 specified
-+ * as it is the usage of the only field in that report.
-+ */
- 
- /* PID special fields */
--
- #define PID_EFFECT_TYPE			0x25
- #define PID_DIRECTION			0x57
- #define PID_EFFECT_OPERATION_ARRAY	0x78
-@@ -61,7 +57,6 @@ the only field in that report */
- #define PID_DEVICE_CONTROL_ARRAY	0x96
- 
- /* Value usage tables used to put fields and values into arrays */
--
- #define PID_EFFECT_BLOCK_INDEX	0
- 
- #define PID_DURATION		1
-@@ -119,7 +114,6 @@ static const u8 pidff_device_gain[] = { 0x7e };
- static const u8 pidff_pool[] = { 0x80, 0x83, 0xa9 };
- 
- /* Special field key tables used to put special field keys into arrays */
--
- #define PID_ENABLE_ACTUATORS	0
- #define PID_DISABLE_ACTUATORS	1
- #define PID_STOP_ALL_EFFECTS	2
-@@ -176,8 +170,10 @@ struct pidff_device {
- 	struct pidff_usage effect_operation[sizeof(pidff_effect_operation)];
- 	struct pidff_usage block_free[sizeof(pidff_block_free)];
- 
--	/* Special field is a field that is not composed of
--	   usage<->value pairs that pidff_usage values are */
-+	/*
-+	 * Special field is a field that is not composed of
-+	 * usage<->value pairs that pidff_usage values are
-+	 */
- 
- 	/* Special field in create_new_effect */
- 	struct hid_field *create_new_effect_type;
-@@ -222,7 +218,7 @@ static s32 pidff_clamp(s32 i, struct hid_field *field)
- static int pidff_rescale(int i, int max, struct hid_field *field)
- {
- 	return i * (field->logical_maximum - field->logical_minimum) / max +
--	    field->logical_minimum;
-+		field->logical_minimum;
- }
- 
- /*
-@@ -282,9 +278,8 @@ static void pidff_set_time(struct pidff_usage *usage, u16 time)
- 
- static void pidff_set_duration(struct pidff_usage *usage, u16 duration)
- {
--	/* Convert infinite length from Linux API (0)
--	   to PID standard (NULL) if needed */
--	if (duration == 0)
-+	/* Infinite value conversion from Linux API -> PID */
-+	if (duration == FF_INFINITE)
- 		duration = PID_INFINITE;
- 
- 	if (duration == PID_INFINITE) {
-@@ -302,16 +297,16 @@ static void pidff_set_envelope_report(struct pidff_device *pidff,
- 				      struct ff_envelope *envelope)
- {
- 	pidff->set_envelope[PID_EFFECT_BLOCK_INDEX].value[0] =
--	    pidff->block_load[PID_EFFECT_BLOCK_INDEX].value[0];
-+		pidff->block_load[PID_EFFECT_BLOCK_INDEX].value[0];
- 
- 	pidff->set_envelope[PID_ATTACK_LEVEL].value[0] =
--	    pidff_rescale(envelope->attack_level >
--			  S16_MAX ? S16_MAX : envelope->attack_level, S16_MAX,
--			  pidff->set_envelope[PID_ATTACK_LEVEL].field);
-+		pidff_rescale(envelope->attack_level >
-+			S16_MAX ? S16_MAX : envelope->attack_level, S16_MAX,
-+			pidff->set_envelope[PID_ATTACK_LEVEL].field);
- 	pidff->set_envelope[PID_FADE_LEVEL].value[0] =
--	    pidff_rescale(envelope->fade_level >
--			  S16_MAX ? S16_MAX : envelope->fade_level, S16_MAX,
--			  pidff->set_envelope[PID_FADE_LEVEL].field);
-+		pidff_rescale(envelope->fade_level >
-+			S16_MAX ? S16_MAX : envelope->fade_level, S16_MAX,
-+			pidff->set_envelope[PID_FADE_LEVEL].field);
- 
- 	pidff_set_time(&pidff->set_envelope[PID_ATTACK_TIME],
- 			envelope->attack_length);
-@@ -702,9 +697,7 @@ static void pidff_playback_pid(struct pidff_device *pidff, int pid_id, int n)
- static int pidff_playback(struct input_dev *dev, int effect_id, int value)
- {
- 	struct pidff_device *pidff = dev->ff->private;
--
- 	pidff_playback_pid(pidff, pidff->pid_id[effect_id], value);
--
- 	return 0;
- }
- 
-@@ -732,8 +725,11 @@ static int pidff_erase_effect(struct input_dev *dev, int effect_id)
- 
- 	hid_dbg(pidff->hid, "starting to erase %d/%d\n",
- 		effect_id, pidff->pid_id[effect_id]);
--	/* Wait for the queue to clear. We do not want a full fifo to
--	   prevent the effect removal. */
-+
-+	/*
-+	 * Wait for the queue to clear. We do not want
-+	 * a full fifo to prevent the effect removal.
-+	 */
- 	hid_hw_wait(pidff->hid);
- 	pidff_playback_pid(pidff, pid_id, 0);
- 	pidff_erase_pid(pidff, pid_id);
-@@ -1239,7 +1235,6 @@ static int pidff_find_effects(struct pidff_device *pidff,
- 		set_bit(FF_FRICTION, dev->ffbit);
- 
- 	return 0;
--
- }
- 
- #define PIDFF_FIND_FIELDS(name, report, strict) \
-@@ -1370,12 +1365,10 @@ static int pidff_check_autocenter(struct pidff_device *pidff,
- 		hid_notice(pidff->hid,
- 			   "device has unknown autocenter control method\n");
- 	}
--
- 	pidff_erase_pid(pidff,
- 			pidff->block_load[PID_EFFECT_BLOCK_INDEX].value[0]);
- 
- 	return 0;
--
- }
- 
- /*
--- 
-2.39.5
-
+-		video->ece.reset = devm_reset_control_get(&ece_pdev->dev, NULL);
++		video->ece.reset = devm_reset_control_get(ece_dev, NULL);
+ 		if (IS_ERR(video->ece.reset)) {
+ 			dev_err(dev, "Failed to get ECE reset control in DTS\n");
+ 			return PTR_ERR(video->ece.reset);
 
 
 
