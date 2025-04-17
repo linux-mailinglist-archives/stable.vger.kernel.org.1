@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-134370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41912A92AB5
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:54:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09BCDA92900
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:39:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FD1B163702
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:53:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5BFE16D59B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749AE25EF9B;
-	Thu, 17 Apr 2025 18:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E32622333D;
+	Thu, 17 Apr 2025 18:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tLVf6GWx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ihhbsmaL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2112725525D;
-	Thu, 17 Apr 2025 18:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E2B264600;
+	Thu, 17 Apr 2025 18:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915922; cv=none; b=cq1Fh2Og273+YD7t4RVP4t3Pc2C6cOOOVh72pWwu6T5DNbMlEF9tPjm/ClfhWeGaarD08PeqcngdID2PjW94vG8yPkQnUOkKw2EsYjqIsrSIKY4WLYO6CzNIIeexMpM7PKIYNjDuLINpCfJVCETnrBiC6eU9lSrekM5wPdkHV8g=
+	t=1744914834; cv=none; b=DH5JqxHLQHL/t3JadtPevvESmOAkpoF/Yb6fOiyXvaOhIGDCWfKDmFqE0Ovo8Xvj1lez2eJ8xQ5qc07cP2uhB5AulMiwWW5/vQAJUhNGQ7jZlLkcw45BXgD5WeXxlYV4LvVi9E80M40NHFS2txSdnWX4CtnvphB1DJHGYhWLmyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915922; c=relaxed/simple;
-	bh=sBDSBR9q6sdq6oPMDNpKNUqRWDpe3d+Pg7LivMS0xUA=;
+	s=arc-20240116; t=1744914834; c=relaxed/simple;
+	bh=lcd4zo8lOK36pCVSw7GMs9dlFzjjhH1NOTIM+tYQ3yM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dxxgUBUdQU0mP2fZpeMATFyZK/nrNihtGBK+Er3RQCPEGAwwuUEsA7dtwC8tYM6Z8h/7wYiwKASGjLd9bAA9xirzuLNjZakb9BFvH9vXBvInMRLuIHmpLr+M4jvrlJ4DvVeOAN7moMkbCzJ3g94lM4JXH2OtOFH4wbyVeStddpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tLVf6GWx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F9CC4CEE4;
-	Thu, 17 Apr 2025 18:52:01 +0000 (UTC)
+	 MIME-Version; b=sIjT5vMLGzS+hE/fIrOJpnrst7oxrrEZ7Ln8BdLajxHxQ8Y/0/RKnkvxPofvf0ZaMbHWdmk/H0JXUQbgFskh/QiX1hby/sdL5W1ZgcFap6bLkr1H+xeM9yatDAQBqTHejJlP6ArCxbH3v/tSRuveVSJl8Z1oQ1DiJqMWwZK1JPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ihhbsmaL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A66AFC4CEE4;
+	Thu, 17 Apr 2025 18:33:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915922;
-	bh=sBDSBR9q6sdq6oPMDNpKNUqRWDpe3d+Pg7LivMS0xUA=;
+	s=korg; t=1744914834;
+	bh=lcd4zo8lOK36pCVSw7GMs9dlFzjjhH1NOTIM+tYQ3yM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tLVf6GWxaddVF7EoxgtRH5FaPCeRGBbVbex5DqP7xiiDfZ4pJTeY8QTbTAd1Zv33D
-	 zLuxULcopO+WC+vDsXEJ96VAjSpg7A40B5ZhwpGH8vkVIgLlpknXYbIHqF4PiqqkSM
-	 yn9JyMEi5Gmg/bW2qSMDebw+lLrYymP2TtulfvhE=
+	b=ihhbsmaLqHEqO2iVE9SKfTvqQqVv3eDO+sI3QpbMO/BpW6U9Khbqxoen1AmwH01vk
+	 g9XheVgYoi14z19dFrszsr15v0JAqemL74v++RYY55RMdV3P6B6NbhW2QxRLbNuLHp
+	 EJ4HGPEweBxhe8eAw9QXxFJdu97uLxFUbQdrZmJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 255/393] ASoC: qdsp6: q6asm-dai: fix q6asm_dai_compr_set_params error path
-Date: Thu, 17 Apr 2025 19:51:04 +0200
-Message-ID: <20250417175117.849099069@linuxfoundation.org>
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Subject: [PATCH 6.13 307/414] arm64: dts: ti: k3-j784s4-j742s2-main-common: Fix serdes_ln_ctrl reg-masks
+Date: Thu, 17 Apr 2025 19:51:05 +0200
+Message-ID: <20250417175123.783839663@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Klimov <alexey.klimov@linaro.org>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-commit 7eccc86e90f04a0d758d16c08627a620ac59604d upstream.
+commit 38e7f9092efbbf2a4a67e4410b55b797f8d1e184 upstream.
 
-In case of attempts to compress playback something, for instance,
-when audio routing is not set up correctly, the audio DSP is left in
-inconsistent state because we are not doing the correct things in
-the error path of q6asm_dai_compr_set_params().
+Commit under Fixes added the 'idle-states' property for SERDES4 lane muxes
+without defining the corresponding register offsets and masks for it in the
+'mux-reg-masks' property within the 'serdes_ln_ctrl' node.
 
-So, when routing is not set up and compress playback is attempted
-the following errors are present (simplified log):
+Fix this.
 
-q6routing routing: Routing not setup for MultiMedia-1 Session
-q6asm-dai dais: Stream reg failed ret:-22
-q6asm-dai dais: ASoC error (-22): at snd_soc_component_compr_set_params()
-on 17300000.remoteproc:glink-edge:apr:service@7:dais
-
-After setting the correct routing the compress playback will always fail:
-
-q6asm-dai dais: cmd = 0x10db3 returned error = 0x9
-q6asm-dai dais: DSP returned error[9]
-q6asm-dai dais: q6asm_open_write failed
-q6asm-dai dais: ASoC error (-22): at snd_soc_component_compr_set_params()
-on 17300000.remoteproc:glink-edge:apr:service@7:dais
-
-0x9 here means "Operation is already processed". The CMD_OPEN here was
-sent the second time hence DSP responds that it was already done.
-
-Turns out the CMD_CLOSE should be sent after the q6asm_open_write()
-succeeded but something failed after that, for instance, routing
-setup.
-
-Fix this by slightly reworking the error path in
-q6asm_dai_compr_set_params().
-
-Tested on QRB5165 RB5 and SDM845 RB3 boards.
-
+Fixes: 7287d423f138 ("arm64: dts: ti: k3-j784s4-main: Add system controller and SERDES lane mux")
 Cc: stable@vger.kernel.org
-Fixes: 5b39363e54cc ("ASoC: q6asm-dai: prepare set params to accept profile change")
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Cc: Vinod Koul <vkoul@kernel.org>
-Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://patch.msgid.link/20250327154650.337404-1-alexey.klimov@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Link: https://lore.kernel.org/r/20250228053850.506028-1-s-vadapalli@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6asm-dai.c |   19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/sound/soc/qcom/qdsp6/q6asm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
-@@ -892,9 +892,7 @@ static int q6asm_dai_compr_set_params(st
- 
- 		if (ret < 0) {
- 			dev_err(dev, "q6asm_open_write failed\n");
--			q6asm_audio_client_free(prtd->audio_client);
--			prtd->audio_client = NULL;
--			return ret;
-+			goto open_err;
- 		}
- 	}
- 
-@@ -903,7 +901,7 @@ static int q6asm_dai_compr_set_params(st
- 			      prtd->session_id, dir);
- 	if (ret) {
- 		dev_err(dev, "Stream reg failed ret:%d\n", ret);
--		return ret;
-+		goto q6_err;
- 	}
- 
- 	ret = __q6asm_dai_compr_set_codec_params(component, stream,
-@@ -911,7 +909,7 @@ static int q6asm_dai_compr_set_params(st
- 						 prtd->stream_id);
- 	if (ret) {
- 		dev_err(dev, "codec param setup failed ret:%d\n", ret);
--		return ret;
-+		goto q6_err;
- 	}
- 
- 	ret = q6asm_map_memory_regions(dir, prtd->audio_client, prtd->phys,
-@@ -920,12 +918,21 @@ static int q6asm_dai_compr_set_params(st
- 
- 	if (ret < 0) {
- 		dev_err(dev, "Buffer Mapping failed ret:%d\n", ret);
--		return -ENOMEM;
-+		ret = -ENOMEM;
-+		goto q6_err;
- 	}
- 
- 	prtd->state = Q6ASM_STREAM_RUNNING;
- 
- 	return 0;
-+
-+q6_err:
-+	q6asm_cmd(prtd->audio_client, prtd->stream_id, CMD_CLOSE);
-+
-+open_err:
-+	q6asm_audio_client_free(prtd->audio_client);
-+	prtd->audio_client = NULL;
-+	return ret;
- }
- 
- static int q6asm_dai_compr_set_metadata(struct snd_soc_component *component,
+--- a/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
+@@ -84,7 +84,9 @@
+ 					<0x10 0x3>, <0x14 0x3>, /* SERDES1 lane0/1 select */
+ 					<0x18 0x3>, <0x1c 0x3>, /* SERDES1 lane2/3 select */
+ 					<0x20 0x3>, <0x24 0x3>, /* SERDES2 lane0/1 select */
+-					<0x28 0x3>, <0x2c 0x3>; /* SERDES2 lane2/3 select */
++					<0x28 0x3>, <0x2c 0x3>, /* SERDES2 lane2/3 select */
++					<0x40 0x3>, <0x44 0x3>, /* SERDES4 lane0/1 select */
++					<0x48 0x3>, <0x4c 0x3>; /* SERDES4 lane2/3 select */
+ 			idle-states = <J784S4_SERDES0_LANE0_PCIE1_LANE0>,
+ 				      <J784S4_SERDES0_LANE1_PCIE1_LANE1>,
+ 				      <J784S4_SERDES0_LANE2_IP3_UNUSED>,
 
 
 
