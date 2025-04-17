@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-132958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AB27A918B1
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 12:04:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1156A918B2
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 12:04:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09F5E19E2ADD
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 10:04:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2301219E2B27
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 10:04:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93F022A7E3;
-	Thu, 17 Apr 2025 10:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B3CA22838F;
+	Thu, 17 Apr 2025 10:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGA65Q6j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LUeAkMKa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E2820DD50
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 10:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F5F1D63D6
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 10:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744884261; cv=none; b=GpOzxuxHeKzhIJRYLSebop3DRn0tr3mqGsYNT6oNIcbTTFwr3WlNpFxp/e/MeigrqOojS5uuHYVHL5j2PL0HraEkOFUzP4SJdI9EdtS5/QmrXUze2oJ0CG3tp6F7ceBvuDV+40AUuZ9GlHwBj9VzOgypWJ2gWJYwRApxXXYOM7Y=
+	t=1744884265; cv=none; b=h18WZfWS9baWAYgfvrLftFtwUI9uKv8BvH2tZNE0LFwfhf+IR8mLYdPYyn/ESy0jGxGLkiiv0tw33px3fynDwhSQqVJJLLNevIX6Ht4k8HPereCcaDLF4hi9h63g4FjJ41aRMOvZuVafM9Rw52Zy8nScmDgiVsQl1P4NTr+WCBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744884261; c=relaxed/simple;
-	bh=LR/RXEyhR85/O4NRxnDl6y0VNqkGr0OnYt6FxxqeCJc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=noTq+rQBOyCBmIZ2JyYVChsntHe+QG7G/KYG/RjKuXPAzEwjo0Bu/rV9rvbASXIAWa1Tqg5PK6ILcvJ4KuAYnIVobk+/bDIxCW7JRXH/rctDqMGfKTOj+xI8eZKcarP86u1Z6GinsnuLkudAJzs3FB4cMJhNBYmtz8vhH9lwbL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGA65Q6j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103B2C4CEE4;
-	Thu, 17 Apr 2025 10:04:20 +0000 (UTC)
+	s=arc-20240116; t=1744884265; c=relaxed/simple;
+	bh=ikxKv3UBaOUXVyvJ4WXIYL/R5DTC1XAma8pfhAgjjmc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Z25qC4rc29v1m3wt+34d5DcI/8WomZdQjYF1/OaAYYnCQwdrrSmCE/6ZcyqZ524UjirmipP3LJz+gQ/EAA/FbX8/+KyG6irDktEbVxIF8vFwRZBueVx8z3o/sgcyUhhs20DsVRA9SBl7Wdjxj25d9BLZLJsrh0ugw41gqarXFq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LUeAkMKa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4961BC4CEE7;
+	Thu, 17 Apr 2025 10:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744884261;
-	bh=LR/RXEyhR85/O4NRxnDl6y0VNqkGr0OnYt6FxxqeCJc=;
+	s=korg; t=1744884265;
+	bh=ikxKv3UBaOUXVyvJ4WXIYL/R5DTC1XAma8pfhAgjjmc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=HGA65Q6jR6+h1nQZZtJaRKh744Qk3dac4Pd7/Q9fCpxaTCZLP+Gka0f1+1/DB+hrD
-	 ElB+2RYzpRvqqSEkZ5wm4ayss7jI/fUBKgOO4r3EwX1zKGGF8NTDx7GRnpOjU8TYai
-	 pmGdSDyq/POMGuwPM38NV6Wy6waen0ISJT6VtDSM=
-Subject: FAILED: patch "[PATCH] PM: EM: Address RCU-related sparse warnings" failed to apply to 6.13-stable tree
+	b=LUeAkMKaHC1rDJSt0zVWSnJFT5ZDLlrcJq9SxcWxIEsHCyBaS0qFRb8hHRu8Er4qq
+	 V5NgE8yLbse8SZL1ReMVwnq0DmdU6GUKt0atuVjxI+nR3arLsxlX5jPXSKspNpeLy9
+	 ZoLP1GpgDUtOxfRAxdY2UAMmnO3CnqeWB+EyLeoM=
+Subject: FAILED: patch "[PATCH] PM: EM: Address RCU-related sparse warnings" failed to apply to 6.12-stable tree
 To: rafael.j.wysocki@intel.com,lukasz.luba@arm.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 17 Apr 2025 12:04:16 +0200
-Message-ID: <2025041716-stack-slacking-56df@gregkh>
+Date: Thu, 17 Apr 2025 12:04:18 +0200
+Message-ID: <2025041718-uncolored-uncurled-4619@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.13-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.13.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
 git cherry-pick -x 3ee7be9e10dd5f79448788b899591d4bd2bf0c19
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041716-stack-slacking-56df@gregkh' --subject-prefix 'PATCH 6.13.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041718-uncolored-uncurled-4619@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
