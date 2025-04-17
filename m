@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-134366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8123A92ABA
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:54:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBC39A926CB
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:16:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 688C9188A733
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:53:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 233207A3F63
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1BF6259C98;
-	Thu, 17 Apr 2025 18:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F552550DD;
+	Thu, 17 Apr 2025 18:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwxGdtIk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hTENdxqw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B063D2571BC;
-	Thu, 17 Apr 2025 18:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0606D223710;
+	Thu, 17 Apr 2025 18:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915910; cv=none; b=fIYnW1xY1XuVi/mbCnoZXqVllIrgeVuchNSHZd73vAw2Oy+BIvzRkWu321Azv7DiUSE93xi9Tl+BUFKsTjnWPKDR1+kAntVjc/od/GFwQarbANTROxfQK4aPOrObG2ZUeX/2g9nVgCp2DK3EHJAYorbFSSpvUtyIttAxPBaCHb8=
+	t=1744913627; cv=none; b=dST2BwlriY8IVxN5NKKO1GkoSMlqO7iso5CCsfRbulOK1TsGNAlUxeKSc8/fC6Ecbm/OBmMWFGUIofYn1etP0IYBvOz2wFfxt3U5ERskIDLivv3A5G/FHmGDy9CvBY3VG4U0a0GUfiJeqZZmpyq8SecbLQC1m3Z+ZMO68T5fLEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915910; c=relaxed/simple;
-	bh=zk/05IpoP+ft2XWNYjUNFXSBQp5I8qFkELWqS1DPjrY=;
+	s=arc-20240116; t=1744913627; c=relaxed/simple;
+	bh=8nISZTD5G96xnMtDOTWhi1I5ZQPT4T42Zc1BR4j9bHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZW+RRZg1zlDbtt4xJplS5AXyYT6DzXB1LSTwyLvszwhFJ3whq6+VoDIp6M8bT/PuvsJEjLSZq8LysrCRjdHS7CYkG9rIZ9IvH6U1XgO3MBd8pKbODSsNnZ1sIfGBC1GwCXkQ6YdLTHU1OWZ5v8xFGDwvmhXw3QcCcj3v9iMYbGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZwxGdtIk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37602C4CEE4;
-	Thu, 17 Apr 2025 18:51:50 +0000 (UTC)
+	 MIME-Version; b=I8/6880ErtDt0kKTseQICZ7qaKcZWcSfRd7XNvwj+Z0SWRhi1OqZZoMhRD3XhhVUcqSomHlhHx93TyRR4eLp7a7V5dzrO3dZ7XWMGuPrXboUqhp7LGb/SQ8VFPAR+GAqkMLp+Kq/DTMZt620zTBAFqjBIDGueTlYhqVkMbh6Wnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hTENdxqw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB0DC4CEE4;
+	Thu, 17 Apr 2025 18:13:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915910;
-	bh=zk/05IpoP+ft2XWNYjUNFXSBQp5I8qFkELWqS1DPjrY=;
+	s=korg; t=1744913626;
+	bh=8nISZTD5G96xnMtDOTWhi1I5ZQPT4T42Zc1BR4j9bHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZwxGdtIkFaT7C7YizKOQmwLjolX99zQ3d4xRRBIDeFClI7VwNyJOFihtiqjXZUMWY
-	 Q8hgLZw+HKOd0Mg9wCkKK6F47PWBEsr9dZOq2tzphSTNgBTLDSyVdSYk2fK7UiZ2IN
-	 8zZAxIzbvQGHFCgenYfY9CTQn+Qc3XvKoXMCtel0=
+	b=hTENdxqw7NGshaCGff8fGzuM14MWte2HNs91YhN9g3HWcgoGj//TLkJordlEXV73V
+	 CEYA3Nz1x/gZnfsbDsuJUKiY/OJh9XCqVKmxw2hmA7ukv+Ort+/Qn3oVbVNoMv7yYz
+	 OMtzXfU0X+RXcB7atrjw7sfSdcuqsJ/l1loOtCY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Gang Yan <yangang@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 280/393] mptcp: fix NULL pointer in can_accept_new_subflow
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.14 401/449] KVM: Allow building irqbypass.ko as as module when kvm.ko is a module
 Date: Thu, 17 Apr 2025 19:51:29 +0200
-Message-ID: <20250417175118.870006283@linuxfoundation.org>
+Message-ID: <20250417175134.409418119@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +61,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gang Yan <yangang@kylinos.cn>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 443041deb5ef6a1289a99ed95015ec7442f141dc upstream.
+commit 459a35111b0a890172a78d51c01b204e13a34a18 upstream.
 
-When testing valkey benchmark tool with MPTCP, the kernel panics in
-'mptcp_can_accept_new_subflow' because subflow_req->msk is NULL.
+Convert HAVE_KVM_IRQ_BYPASS into a tristate so that selecting
+IRQ_BYPASS_MANAGER follows KVM={m,y}, i.e. doesn't force irqbypass.ko to
+be built-in.
 
-Call trace:
+Note, PPC allows building KVM as a module, but selects HAVE_KVM_IRQ_BYPASS
+from a boolean Kconfig, i.e. KVM PPC unnecessarily forces irqbpass.ko to
+be built-in.  But that flaw is a longstanding PPC specific issue.
 
-  mptcp_can_accept_new_subflow (./net/mptcp/subflow.c:63 (discriminator 4)) (P)
-  subflow_syn_recv_sock (./net/mptcp/subflow.c:854)
-  tcp_check_req (./net/ipv4/tcp_minisocks.c:863)
-  tcp_v4_rcv (./net/ipv4/tcp_ipv4.c:2268)
-  ip_protocol_deliver_rcu (./net/ipv4/ip_input.c:207)
-  ip_local_deliver_finish (./net/ipv4/ip_input.c:234)
-  ip_local_deliver (./net/ipv4/ip_input.c:254)
-  ip_rcv_finish (./net/ipv4/ip_input.c:449)
-  ...
-
-According to the debug log, the same req received two SYN-ACK in a very
-short time, very likely because the client retransmits the syn ack due
-to multiple reasons.
-
-Even if the packets are transmitted with a relevant time interval, they
-can be processed by the server on different CPUs concurrently). The
-'subflow_req->msk' ownership is transferred to the subflow the first,
-and there will be a risk of a null pointer dereference here.
-
-This patch fixes this issue by moving the 'subflow_req->msk' under the
-`own_req == true` conditional.
-
-Note that the !msk check in subflow_hmac_valid() can be dropped, because
-the same check already exists under the own_req mpj branch where the
-code has been moved to.
-
-Fixes: 9466a1ccebbe ("mptcp: enable JOIN requests even if cookies are in use")
+Fixes: 61df71ee992d ("kvm: move "select IRQ_BYPASS_MANAGER" to common code")
 Cc: stable@vger.kernel.org
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250328-net-mptcp-misc-fixes-6-15-v1-1-34161a482a7f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250315024623.2363994-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/subflow.c |   15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ include/linux/kvm_host.h |    2 +-
+ virt/kvm/Kconfig         |    2 +-
+ virt/kvm/eventfd.c       |   10 +++++-----
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -754,8 +754,6 @@ static bool subflow_hmac_valid(const str
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -2382,7 +2382,7 @@ static inline bool kvm_is_visible_memslo
+ struct kvm_vcpu *kvm_get_running_vcpu(void);
+ struct kvm_vcpu * __percpu *kvm_get_running_vcpus(void);
  
- 	subflow_req = mptcp_subflow_rsk(req);
- 	msk = subflow_req->msk;
--	if (!msk)
--		return false;
+-#ifdef CONFIG_HAVE_KVM_IRQ_BYPASS
++#if IS_ENABLED(CONFIG_HAVE_KVM_IRQ_BYPASS)
+ bool kvm_arch_has_irq_bypass(void);
+ int kvm_arch_irq_bypass_add_producer(struct irq_bypass_consumer *,
+ 			   struct irq_bypass_producer *);
+--- a/virt/kvm/Kconfig
++++ b/virt/kvm/Kconfig
+@@ -75,7 +75,7 @@ config KVM_COMPAT
+        depends on KVM && COMPAT && !(S390 || ARM64 || RISCV)
  
- 	subflow_generate_hmac(READ_ONCE(msk->remote_key),
- 			      READ_ONCE(msk->local_key),
-@@ -853,12 +851,8 @@ static struct sock *subflow_syn_recv_soc
+ config HAVE_KVM_IRQ_BYPASS
+-       bool
++       tristate
+        select IRQ_BYPASS_MANAGER
  
- 	} else if (subflow_req->mp_join) {
- 		mptcp_get_options(skb, &mp_opt);
--		if (!(mp_opt.suboptions & OPTION_MPTCP_MPJ_ACK) ||
--		    !subflow_hmac_valid(req, &mp_opt) ||
--		    !mptcp_can_accept_new_subflow(subflow_req->msk)) {
--			SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
-+		if (!(mp_opt.suboptions & OPTION_MPTCP_MPJ_ACK))
- 			fallback = true;
--		}
- 	}
+ config HAVE_KVM_VCPU_ASYNC_IOCTL
+--- a/virt/kvm/eventfd.c
++++ b/virt/kvm/eventfd.c
+@@ -149,7 +149,7 @@ irqfd_shutdown(struct work_struct *work)
+ 	/*
+ 	 * It is now safe to release the object's resources
+ 	 */
+-#ifdef CONFIG_HAVE_KVM_IRQ_BYPASS
++#if IS_ENABLED(CONFIG_HAVE_KVM_IRQ_BYPASS)
+ 	irq_bypass_unregister_consumer(&irqfd->consumer);
+ #endif
+ 	eventfd_ctx_put(irqfd->eventfd);
+@@ -274,7 +274,7 @@ static void irqfd_update(struct kvm *kvm
+ 	write_seqcount_end(&irqfd->irq_entry_sc);
+ }
  
- create_child:
-@@ -907,6 +901,13 @@ create_child:
- 				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
- 				goto dispose_child;
- 			}
-+
-+			if (!subflow_hmac_valid(req, &mp_opt) ||
-+			    !mptcp_can_accept_new_subflow(subflow_req->msk)) {
-+				SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
-+				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
-+				goto dispose_child;
-+			}
+-#ifdef CONFIG_HAVE_KVM_IRQ_BYPASS
++#if IS_ENABLED(CONFIG_HAVE_KVM_IRQ_BYPASS)
+ void __attribute__((weak)) kvm_arch_irq_bypass_stop(
+ 				struct irq_bypass_consumer *cons)
+ {
+@@ -424,7 +424,7 @@ kvm_irqfd_assign(struct kvm *kvm, struct
+ 	if (events & EPOLLIN)
+ 		schedule_work(&irqfd->inject);
  
- 			/* move the msk reference ownership to the subflow */
- 			subflow_req->msk = NULL;
+-#ifdef CONFIG_HAVE_KVM_IRQ_BYPASS
++#if IS_ENABLED(CONFIG_HAVE_KVM_IRQ_BYPASS)
+ 	if (kvm_arch_has_irq_bypass()) {
+ 		irqfd->consumer.token = (void *)irqfd->eventfd;
+ 		irqfd->consumer.add_producer = kvm_arch_irq_bypass_add_producer;
+@@ -609,14 +609,14 @@ void kvm_irq_routing_update(struct kvm *
+ 	spin_lock_irq(&kvm->irqfds.lock);
+ 
+ 	list_for_each_entry(irqfd, &kvm->irqfds.items, list) {
+-#ifdef CONFIG_HAVE_KVM_IRQ_BYPASS
++#if IS_ENABLED(CONFIG_HAVE_KVM_IRQ_BYPASS)
+ 		/* Under irqfds.lock, so can read irq_entry safely */
+ 		struct kvm_kernel_irq_routing_entry old = irqfd->irq_entry;
+ #endif
+ 
+ 		irqfd_update(kvm, irqfd);
+ 
+-#ifdef CONFIG_HAVE_KVM_IRQ_BYPASS
++#if IS_ENABLED(CONFIG_HAVE_KVM_IRQ_BYPASS)
+ 		if (irqfd->producer &&
+ 		    kvm_arch_irqfd_route_changed(&old, &irqfd->irq_entry)) {
+ 			int ret = kvm_arch_update_irqfd_routing(
 
 
 
