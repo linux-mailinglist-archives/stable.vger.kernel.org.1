@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-133581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F899A9264A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:12:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35C0EA92691
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:14:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB8074A06D3
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:12:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5652B7A786B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35753254B12;
-	Thu, 17 Apr 2025 18:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B631A3178;
+	Thu, 17 Apr 2025 18:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="faPhu5nN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C14qtQuS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43F118C034;
-	Thu, 17 Apr 2025 18:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C271CAA7D;
+	Thu, 17 Apr 2025 18:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913508; cv=none; b=cYz7AMSj2WTHrgLTJmBlhuh9NN3KhGCB1W71CVKRriUPeoMuOQvcTp0F0sEhLP4ueN17cswgd/LTQUcHyYRVgGHEvxU5UTl93JknB2S4k3ypKpoBGBDtiD7VLaYCdUkevRHdaMTEHtG06lTVemat/9jz+hQJ+CTkfSq6HgpWuWs=
+	t=1744913424; cv=none; b=Ixu2AwKUsczwmc+HauZAX4pbB37yZYzrXc1OM5LaQwTPS1NZtSVNwhLRg2NNSkhIZmUvCs0S3Mdzhqf2VEjsgNkHMni5yyFYWiJ2AA5xGKltnixuma9FwI/czT9taY4vsPfPDvg3qCDywbUBX8H/mdlH6SPueBus0KdnpE2P/VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913508; c=relaxed/simple;
-	bh=zjTSJ4UbahFBPGP3XIE1YUa9rhtY28HUKqxCD830BNA=;
+	s=arc-20240116; t=1744913424; c=relaxed/simple;
+	bh=YeRP/gX0L6AzsFd6akOLoMRw5Ul42vpJiOznNkxrz/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q+kfG/QiRZBnlPPRDANsGy3lbcIZgbJc5E46zCJgyUOrK7s/VjBAiXt/md/wUXX365SSgbuQTGTHusujC94LpjYJgyqL5/dwJPvBNvo1z7L73xWtQX6brNPLnW3oeddliFdIm5Z/YzFsnRcemn4RrZCDhlAvBxLNX8o9oyj92LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=faPhu5nN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7552EC4CEE4;
-	Thu, 17 Apr 2025 18:11:47 +0000 (UTC)
+	 MIME-Version; b=Jh7Zy4O14d4/oYYbE+Aa1kK27kT2OMtql2uduiMsJdfxzAniKfCZ9WK4C7jAv7t1N77kb8IfL7F11yOGaLW+C9i2/0FpBwQE8B8DSNhvshqpnEWYmSLxXX2N5ekjIXYehKAfFz6sS2TldFE7f4iaCUr0Kln023uuWA2kngdNUUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C14qtQuS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC4BEC4CEE4;
+	Thu, 17 Apr 2025 18:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913507;
-	bh=zjTSJ4UbahFBPGP3XIE1YUa9rhtY28HUKqxCD830BNA=;
+	s=korg; t=1744913424;
+	bh=YeRP/gX0L6AzsFd6akOLoMRw5Ul42vpJiOznNkxrz/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=faPhu5nNNflAuIIVddBW4OVvS4fYyqEZ7Jp1JFDkWGzCJshd4ucpmGlzEcj5IVepo
-	 14pIdiEJi+1XR12xwShZ1nKTYVL4sl7QCya2OvGX90Lk+UI7VJg5L0j4d6RLSFeeLE
-	 gvNSU6YSs7UNOhpGQ49I/UptuwhA7/TEBqeW9pcI=
+	b=C14qtQuS0xgrqqe0Dj1Gr+Qhwk8ZQEhymmYHXKUwTkkQsexRpwgSu8/SCF24tRPgj
+	 qdFBPkFLZGKe7PQYx4ZUPIjM3f5/fpr22YloGcaeSuARNWaW2ytN5T9rADT80P0hY7
+	 2InXmpyRyvZSGwqieOWfF81dCHLJ50fA/osGPZKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kristina Martsenko <kristina.martsenko@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Keir Fraser <keirf@google.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.14 334/449] arm64: mops: Do not dereference src reg for a set operation
-Date: Thu, 17 Apr 2025 19:50:22 +0200
-Message-ID: <20250417175131.621070704@linuxfoundation.org>
+	Ninad Malwade <nmalwade@nvidia.com>,
+	Ivy Huang <yijuh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>
+Subject: [PATCH 6.14 335/449] arm64: tegra: Remove the Orin NX/Nano suspend key
+Date: Thu, 17 Apr 2025 19:50:23 +0200
+Message-ID: <20250417175131.665814998@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
 References: <20250417175117.964400335@linuxfoundation.org>
@@ -63,64 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keir Fraser <keirf@google.com>
+From: Ninad Malwade <nmalwade@nvidia.com>
 
-commit a13bfa4fe0d6949cea14718df2d1fe84c38cd113 upstream.
+commit bb8a3ad25f098b6ea9b1d0f522427b4ad53a7bba upstream.
 
-The source register is not used for SET* and reading it can result in
-a UBSAN out-of-bounds array access error, specifically when the MOPS
-exception is taken from a SET* sequence with XZR (reg 31) as the
-source. Architecturally this is the only case where a src/dst/size
-field in the ESR can be reported as 31.
+As per the Orin Nano Dev Kit schematic, GPIO_G.02 is not available
+on this device family. It should not be used at all on Orin NX/Nano.
+Having this unused pin mapped as the suspend key can lead to
+unpredictable behavior for low power modes.
 
-Prior to 2de451a329cf662b the code in do_el0_mops() was benign as the
-use of pt_regs_read_reg() prevented the out-of-bounds access.
+Orin NX/Nano uses GPIO_EE.04 as both a "power" button and a "suspend"
+button. However, we cannot have two gpio-keys mapped to the same
+GPIO. Therefore remove the "suspend" key.
 
-Fixes: 2de451a329cf ("KVM: arm64: Add handler for MOPS exceptions")
-Cc: <stable@vger.kernel.org> # 6.12.x
-Cc: Kristina Martsenko <kristina.martsenko@arm.com>
-Cc: Will Deacon <will@kernel.org>
 Cc: stable@vger.kernel.org
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Keir Fraser <keirf@google.com>
-Reviewed-by: Kristina Martšenko <kristina.martsenko@arm.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20250326110448.3792396-1-keirf@google.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: e63472eda5ea ("arm64: tegra: Support Jetson Orin NX reference platform")
+Signed-off-by: Ninad Malwade <nmalwade@nvidia.com>
+Signed-off-by: Ivy Huang <yijuh@nvidia.com>
+Link: https://lore.kernel.org/r/20250206224034.3691397-1-yijuh@nvidia.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/traps.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/nvidia/tegra234-p3768-0000+p3767.dtsi |    7 -------
+ 1 file changed, 7 deletions(-)
 
---- a/arch/arm64/include/asm/traps.h
-+++ b/arch/arm64/include/asm/traps.h
-@@ -109,10 +109,9 @@ static inline void arm64_mops_reset_regs
- 	int dstreg = ESR_ELx_MOPS_ISS_DESTREG(esr);
- 	int srcreg = ESR_ELx_MOPS_ISS_SRCREG(esr);
- 	int sizereg = ESR_ELx_MOPS_ISS_SIZEREG(esr);
--	unsigned long dst, src, size;
-+	unsigned long dst, size;
+--- a/arch/arm64/boot/dts/nvidia/tegra234-p3768-0000+p3767.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra234-p3768-0000+p3767.dtsi
+@@ -227,13 +227,6 @@
+ 			wakeup-event-action = <EV_ACT_ASSERTED>;
+ 			wakeup-source;
+ 		};
+-
+-		key-suspend {
+-			label = "Suspend";
+-			gpios = <&gpio TEGRA234_MAIN_GPIO(G, 2) GPIO_ACTIVE_LOW>;
+-			linux,input-type = <EV_KEY>;
+-			linux,code = <KEY_SLEEP>;
+-		};
+ 	};
  
- 	dst = regs->regs[dstreg];
--	src = regs->regs[srcreg];
- 	size = regs->regs[sizereg];
- 
- 	/*
-@@ -129,6 +128,7 @@ static inline void arm64_mops_reset_regs
- 		}
- 	} else {
- 		/* CPY* instruction */
-+		unsigned long src = regs->regs[srcreg];
- 		if (!(option_a ^ wrong_option)) {
- 			/* Format is from Option B */
- 			if (regs->pstate & PSR_N_BIT) {
+ 	fan: pwm-fan {
 
 
 
