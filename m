@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-134417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B56FA92AF4
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9E97A92901
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:39:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 886671B65039
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:55:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A6C51B6253D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB981B4153;
-	Thu, 17 Apr 2025 18:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3DB02571B5;
+	Thu, 17 Apr 2025 18:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NjBwFImn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s2vptTFw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D2C1DEFEC;
-	Thu, 17 Apr 2025 18:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B17C4253954;
+	Thu, 17 Apr 2025 18:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916066; cv=none; b=U1cGEJNMT/qO6kQ5WlwEpimYOV3Vdhduuy5WuNIzOkEJkyra6rwxlpT9WPtabB/QJy7dPZ1HmuJ0gJ9t9FWy15FLfiouG1dm4vT84BMr/OLmdWAkP2+fGLL+8f1ADnZ/ycrin1EalnXV0hH0oAik96hZpZkIsWxKgV/jxlj88ME=
+	t=1744914945; cv=none; b=RFy5wls6HMRq3FEmunyumE/HRByJszOGBHHKUpS5jfvhA4NdvcCK+Ej5M1DF0IZYFpWHcHKhICOQ30cFlYfr9EXi4TS8O+TPNwAwJSwcPMu5bEQ/RWyU3HzHi7hu5APSKLKDbOZWxiy7AqCdHpDLO3Pc0/Y3XIsocdbsTxQnfPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916066; c=relaxed/simple;
-	bh=ewdJnLLN9/b4J2L03vMlJh4camPBFa/LDuo45oiUe0Q=;
+	s=arc-20240116; t=1744914945; c=relaxed/simple;
+	bh=cPFWz1nzLDj9ozLXP+1MV8eB1aXmBex7nglPLF39z4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oMaj/eS5LNmNfoExpx3GGtDctrqgcwjjuGQT4eMuq4rkBz2YDThvWfLvalzokzhvH9KvdJSVOwivolg58cNuP/Gf+4KLeoAbMdkOmEx/UxicgtYPon0M1AGiya5qRjnawhR2VWC/fIfXxdJ9vfHJURckmy3qqqXbP0Zu1zLHk1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NjBwFImn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AFF9C4CEE4;
-	Thu, 17 Apr 2025 18:54:25 +0000 (UTC)
+	 MIME-Version; b=bnUg5w2cppxFmYkfXRhnZozhSqUJY/BOeLII0Mmb/Reqkspf9/12EXziJpqob2fxdaFNW4V+F9W9Pwtikab/9bxSUzpuj+drFlOYMdi865L18XD1I6UgYGhK5UhJrIBn8ERzSN4N/mE4TW6G00eVL5etQ8164oEmjj+An6Ll+6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s2vptTFw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E73C4CEE4;
+	Thu, 17 Apr 2025 18:35:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916066;
-	bh=ewdJnLLN9/b4J2L03vMlJh4camPBFa/LDuo45oiUe0Q=;
+	s=korg; t=1744914945;
+	bh=cPFWz1nzLDj9ozLXP+1MV8eB1aXmBex7nglPLF39z4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NjBwFImnHjhnSkbBcLtdhojDH25ugKfZlti/zH/ZeU/mwG3kF8KG7q6YPSwsIzdB5
-	 vpkoalbcc2RMtm4Htc43w9FWQc5cCpUitS5UYrqlI6qtecL3w2o939i4XpZPo7QrQg
-	 qzvDopKKRPHBuTiVy6oUZJb5R/zL75U/M2QvAKCY=
+	b=s2vptTFwW9hVmlnNJUAWwzXxvzHBPiSntgNd0pfzcoJ5Q+APcteL3epIgw++vcP3E
+	 9kvyPAC37QyiXALrSME5aIj1NHdqtDXGF8GEABGMAWa/0xPg+tBo3LPbaJG7YyKuBf
+	 BHt65SfjJfq/iz+sXXu3wf74WmcJ/REBd2Yy6TWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.12 332/393] dm-integrity: set ti->error on memory allocation failure
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.13 383/414] of/irq: Fix device node refcount leakages in of_irq_init()
 Date: Thu, 17 Apr 2025 19:52:21 +0200
-Message-ID: <20250417175120.959437239@linuxfoundation.org>
+Message-ID: <20250417175126.861989478@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 00204ae3d6712ee053353920e3ce2b00c35ef75b upstream.
+commit 708124d9e6e7ac5ebf927830760679136b23fdf0 upstream.
 
-The dm-integrity target didn't set the error string when memory
-allocation failed. This patch fixes it.
+of_irq_init() will leak interrupt controller device node refcounts
+in two places as explained below:
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+1) Leak refcounts of both @desc->dev and @desc->interrupt_parent when
+   suffers @desc->irq_init_cb() failure.
+2) Leak refcount of @desc->interrupt_parent when cleans up list
+   @intc_desc_list in the end.
+
+Refcounts of both @desc->dev and @desc->interrupt_parent were got in
+the first loop, but of_irq_init() does not put them before kfree(@desc)
+in places mentioned above, so causes refcount leakages.
+
+Fix by putting refcounts involved before kfree(@desc).
+
+Fixes: 8363ccb917c6 ("of/irq: add missing of_node_put")
+Fixes: c71a54b08201 ("of/irq: introduce of_irq_init")
 Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-7-93e3a2659aa7@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-integrity.c |    3 +++
+ drivers/of/irq.c |    3 +++
  1 file changed, 3 insertions(+)
 
---- a/drivers/md/dm-integrity.c
-+++ b/drivers/md/dm-integrity.c
-@@ -5081,16 +5081,19 @@ try_smaller_buffer:
- 
- 		ic->recalc_bitmap = dm_integrity_alloc_page_list(n_bitmap_pages);
- 		if (!ic->recalc_bitmap) {
-+			ti->error = "Could not allocate memory for bitmap";
- 			r = -ENOMEM;
- 			goto bad;
- 		}
- 		ic->may_write_bitmap = dm_integrity_alloc_page_list(n_bitmap_pages);
- 		if (!ic->may_write_bitmap) {
-+			ti->error = "Could not allocate memory for bitmap";
- 			r = -ENOMEM;
- 			goto bad;
- 		}
- 		ic->bbs = kvmalloc_array(ic->n_bitmap_blocks, sizeof(struct bitmap_block_status), GFP_KERNEL);
- 		if (!ic->bbs) {
-+			ti->error = "Could not allocate memory for bitmap";
- 			r = -ENOMEM;
- 			goto bad;
- 		}
+--- a/drivers/of/irq.c
++++ b/drivers/of/irq.c
+@@ -632,6 +632,8 @@ void __init of_irq_init(const struct of_
+ 				       __func__, desc->dev, desc->dev,
+ 				       desc->interrupt_parent);
+ 				of_node_clear_flag(desc->dev, OF_POPULATED);
++				of_node_put(desc->interrupt_parent);
++				of_node_put(desc->dev);
+ 				kfree(desc);
+ 				continue;
+ 			}
+@@ -662,6 +664,7 @@ void __init of_irq_init(const struct of_
+ err:
+ 	list_for_each_entry_safe(desc, temp_desc, &intc_desc_list, list) {
+ 		list_del(&desc->list);
++		of_node_put(desc->interrupt_parent);
+ 		of_node_put(desc->dev);
+ 		kfree(desc);
+ 	}
 
 
 
