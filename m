@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-132968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD94EA918D0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 12:09:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20F94A918D5
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 12:11:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B91D5A265D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 10:09:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87DBD19E2E35
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 10:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48FF522A7E3;
-	Thu, 17 Apr 2025 10:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9729322A7FE;
+	Thu, 17 Apr 2025 10:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rVeGw1Yx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8XyvtfJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093471D63D6
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 10:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DAC1D63D6
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 10:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744884586; cv=none; b=ASPWu/viSO4F2z2Yx+dokacSo6wCEqxzA6zKHHlFJeuJ+gj+FVtwJyU+YKMW30HNygS35I8UFtDfn9rfkqt0qBRs13feluTZ/heJD5z043PiJ5trprnhKaXeYfQhiHFEtQO75bzDVfKBqeZDbJKaO58zUFegksuGDytbHb2mGWc=
+	t=1744884673; cv=none; b=ap85jwk0ygCxrQrhtfj2GXAXDu/5bDoD0k58Z9L0yv70r5hV6ORxBmGTMLtf057iwyGHkm+ZKaU1TSwgkoiSssKV6WnLZlTulu//tP0MmilpIYMIdQS+wrN623EptLtU8ILvV1uLE2pSoGPlMSz5eYgqEpIyt8XFWiMruTH4WvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744884586; c=relaxed/simple;
-	bh=IVGHcfXooeP2+9NvvatfWiOK03F9YuXDJZuJXyRtnoo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qRo49p5dPJ56TLsi0SzhR5yjk8BlP6wyBMMAeR25r9RQ00wA2h8kvDZDNTxLw7A68+ZSpOA7jZXPSWUYVK+LC/3P7jT8vzERzR4ydxunj3ltV5z+3DTsv9I5X59wBb2znrhHjGtFVppmizEcWXS1OSxpSnOM6IyKIwiGX54IZUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rVeGw1Yx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3099C4CEE4;
-	Thu, 17 Apr 2025 10:09:43 +0000 (UTC)
+	s=arc-20240116; t=1744884673; c=relaxed/simple;
+	bh=H83vnoav25rLnnbgUV7mRZTuJD0uYdiWEbf3Xon8bgk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=V+H3+q9eJFCxdPpCXF42xLkIEhUk8+J1+AQ22UzjVz2MzQKwkdsikcmqy2fTEhW0hw8tH2FuDSqXNXn0+s2GCOS0uT4s8sBGvaiA4zNGjmL5stFjxuFT3yylFTU1dniNb34IjCxnd4VxJjNfvcvXRT2Y6aMX0t8KgP47gir5HVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K8XyvtfJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73764C4CEE4;
+	Thu, 17 Apr 2025 10:11:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744884584;
-	bh=IVGHcfXooeP2+9NvvatfWiOK03F9YuXDJZuJXyRtnoo=;
+	s=korg; t=1744884672;
+	bh=H83vnoav25rLnnbgUV7mRZTuJD0uYdiWEbf3Xon8bgk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=rVeGw1YxY445clGTONcEIE22z/wGM9KhBl/ZLwx/CfdwMTa9Ol1u4W1YPw/8U3mDg
-	 G7zrfuEdV6jsKfeNWiIvDhMTT/FKIkE15bPCw3ogU01+jm+5L9TALrnK8HcdWXzULH
-	 pvKADwZeVwXDHrjGsXvYYlpgB3OIAgDTGHuwpVxw=
-Subject: FAILED: patch "[PATCH] media: venus: hfi_parser: refactor hfi packet parsing logic" failed to apply to 5.4-stable tree
-To: quic_vgarodia@quicinc.com,bryan.odonoghue@linaro.org,hverkuil@xs4all.nl
+	b=K8XyvtfJBl9HfhHJu+CbdEWMOCYzwolMH/EfFwc0eHpuWoOSqE0WgwkKQyXfiAvDt
+	 YTe8qyu5y4U8ogbJtgc0XNEGrXtHIVDSYJ+doGejX+Oe70MiMb37rpr4EXsQeHGq5G
+	 8JTE91th8yKwAXM/get5ew4VayRCDyEXFJNYLyuE=
+Subject: FAILED: patch "[PATCH] media: i2c: imx214: Fix link frequency validation" failed to apply to 6.14-stable tree
+To: git@apitzsch.eu,hverkuil@xs4all.nl,ribalda@chromium.org,sakari.ailus@linux.intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 17 Apr 2025 12:09:28 +0200
-Message-ID: <2025041728-discard-unify-a301@gregkh>
+Date: Thu, 17 Apr 2025 12:11:09 +0200
+Message-ID: <2025041709-skied-impish-e2eb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.14.y
 git checkout FETCH_HEAD
-git cherry-pick -x 9edaaa8e3e15aab1ca413ab50556de1975bcb329
+git cherry-pick -x acc294519f1749041e1b8c74d46bbf6c57d8b061
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041728-discard-unify-a301@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041709-skied-impish-e2eb@gregkh' --subject-prefix 'PATCH 6.14.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,269 +77,88 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9edaaa8e3e15aab1ca413ab50556de1975bcb329 Mon Sep 17 00:00:00 2001
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
-Date: Thu, 20 Feb 2025 22:50:09 +0530
-Subject: [PATCH] media: venus: hfi_parser: refactor hfi packet parsing logic
+From acc294519f1749041e1b8c74d46bbf6c57d8b061 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>
+Date: Fri, 20 Dec 2024 14:26:12 +0100
+Subject: [PATCH] media: i2c: imx214: Fix link frequency validation
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-words_count denotes the number of words in total payload, while data
-points to payload of various property within it. When words_count
-reaches last word, data can access memory beyond the total payload. This
-can lead to OOB access. With this patch, the utility api for handling
-individual properties now returns the size of data consumed. Accordingly
-remaining bytes are calculated before parsing the payload, thereby
-eliminates the OOB access possibilities.
+The driver defines IMX214_DEFAULT_LINK_FREQ 480000000, and then
+IMX214_DEFAULT_PIXEL_RATE ((IMX214_DEFAULT_LINK_FREQ * 8LL) / 10),
+which works out as 384MPix/s. (The 8 is 4 lanes and DDR.)
 
+Parsing the PLL registers with the defined 24MHz input. We're in single
+PLL mode, so MIPI frequency is directly linked to pixel rate.  VTCK ends
+up being 1200MHz, and VTPXCK and OPPXCK both are 120MHz.  Section 5.3
+"Frame rate calculation formula" says "Pixel rate
+[pixels/s] = VTPXCK [MHz] * 4", so 120 * 4 = 480MPix/s, which basically
+agrees with my number above.
+
+3.1.4. MIPI global timing setting says "Output bitrate = OPPXCK * reg
+0x113[7:0]", so 120MHz * 10, or 1200Mbit/s. That would be a link
+frequency of 600MHz due to DDR.
+That also matches to 480MPix/s * 10bpp / 4 lanes / 2 for DDR.
+
+Keep the previous link frequency for backward compatibility.
+
+Acked-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
+Fixes: 436190596241 ("media: imx214: Add imx214 camera sensor driver")
 Cc: stable@vger.kernel.org
-Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 
-diff --git a/drivers/media/platform/qcom/venus/hfi_parser.c b/drivers/media/platform/qcom/venus/hfi_parser.c
-index 1425c69d9006..1b3db2caa99f 100644
---- a/drivers/media/platform/qcom/venus/hfi_parser.c
-+++ b/drivers/media/platform/qcom/venus/hfi_parser.c
-@@ -64,7 +64,7 @@ fill_buf_mode(struct hfi_plat_caps *cap, const void *data, unsigned int num)
- 		cap->cap_bufs_mode_dynamic = true;
- }
+diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
+index 4d7044cd9b7f..6c3f6f3c8b1f 100644
+--- a/drivers/media/i2c/imx214.c
++++ b/drivers/media/i2c/imx214.c
+@@ -31,7 +31,9 @@
+ #define IMX214_REG_FAST_STANDBY_CTRL	CCI_REG8(0x0106)
  
--static void
-+static int
- parse_alloc_mode(struct venus_core *core, u32 codecs, u32 domain, void *data)
- {
- 	struct hfi_buffer_alloc_mode_supported *mode = data;
-@@ -72,7 +72,7 @@ parse_alloc_mode(struct venus_core *core, u32 codecs, u32 domain, void *data)
- 	u32 *type;
+ #define IMX214_DEFAULT_CLK_FREQ	24000000
+-#define IMX214_DEFAULT_LINK_FREQ 480000000
++#define IMX214_DEFAULT_LINK_FREQ	600000000
++/* Keep wrong link frequency for backward compatibility */
++#define IMX214_DEFAULT_LINK_FREQ_LEGACY	480000000
+ #define IMX214_DEFAULT_PIXEL_RATE ((IMX214_DEFAULT_LINK_FREQ * 8LL) / 10)
+ #define IMX214_FPS 30
  
- 	if (num_entries > MAX_ALLOC_MODE_ENTRIES)
--		return;
-+		return -EINVAL;
- 
- 	type = mode->data;
- 
-@@ -84,6 +84,8 @@ parse_alloc_mode(struct venus_core *core, u32 codecs, u32 domain, void *data)
- 
- 		type++;
- 	}
-+
-+	return sizeof(*mode);
- }
- 
- static void fill_profile_level(struct hfi_plat_caps *cap, const void *data,
-@@ -98,7 +100,7 @@ static void fill_profile_level(struct hfi_plat_caps *cap, const void *data,
- 	cap->num_pl += num;
- }
- 
--static void
-+static int
- parse_profile_level(struct venus_core *core, u32 codecs, u32 domain, void *data)
- {
- 	struct hfi_profile_level_supported *pl = data;
-@@ -106,12 +108,14 @@ parse_profile_level(struct venus_core *core, u32 codecs, u32 domain, void *data)
- 	struct hfi_profile_level pl_arr[HFI_MAX_PROFILE_COUNT] = {};
- 
- 	if (pl->profile_count > HFI_MAX_PROFILE_COUNT)
--		return;
-+		return -EINVAL;
- 
- 	memcpy(pl_arr, proflevel, pl->profile_count * sizeof(*proflevel));
- 
- 	for_each_codec(core->caps, ARRAY_SIZE(core->caps), codecs, domain,
- 		       fill_profile_level, pl_arr, pl->profile_count);
-+
-+	return pl->profile_count * sizeof(*proflevel) + sizeof(u32);
- }
- 
- static void
-@@ -126,7 +130,7 @@ fill_caps(struct hfi_plat_caps *cap, const void *data, unsigned int num)
- 	cap->num_caps += num;
- }
- 
--static void
-+static int
- parse_caps(struct venus_core *core, u32 codecs, u32 domain, void *data)
- {
- 	struct hfi_capabilities *caps = data;
-@@ -135,12 +139,14 @@ parse_caps(struct venus_core *core, u32 codecs, u32 domain, void *data)
- 	struct hfi_capability caps_arr[MAX_CAP_ENTRIES] = {};
- 
- 	if (num_caps > MAX_CAP_ENTRIES)
--		return;
-+		return -EINVAL;
- 
- 	memcpy(caps_arr, cap, num_caps * sizeof(*cap));
- 
- 	for_each_codec(core->caps, ARRAY_SIZE(core->caps), codecs, domain,
- 		       fill_caps, caps_arr, num_caps);
-+
-+	return sizeof(*caps);
- }
- 
- static void fill_raw_fmts(struct hfi_plat_caps *cap, const void *fmts,
-@@ -155,7 +161,7 @@ static void fill_raw_fmts(struct hfi_plat_caps *cap, const void *fmts,
- 	cap->num_fmts += num_fmts;
- }
- 
--static void
-+static int
- parse_raw_formats(struct venus_core *core, u32 codecs, u32 domain, void *data)
- {
- 	struct hfi_uncompressed_format_supported *fmt = data;
-@@ -164,7 +170,8 @@ parse_raw_formats(struct venus_core *core, u32 codecs, u32 domain, void *data)
- 	struct raw_formats rawfmts[MAX_FMT_ENTRIES] = {};
- 	u32 entries = fmt->format_entries;
- 	unsigned int i = 0;
--	u32 num_planes;
-+	u32 num_planes = 0;
-+	u32 size;
- 
- 	while (entries) {
- 		num_planes = pinfo->num_planes;
-@@ -174,7 +181,7 @@ parse_raw_formats(struct venus_core *core, u32 codecs, u32 domain, void *data)
- 		i++;
- 
- 		if (i >= MAX_FMT_ENTRIES)
--			return;
-+			return -EINVAL;
- 
- 		if (pinfo->num_planes > MAX_PLANES)
- 			break;
-@@ -186,9 +193,13 @@ parse_raw_formats(struct venus_core *core, u32 codecs, u32 domain, void *data)
- 
- 	for_each_codec(core->caps, ARRAY_SIZE(core->caps), codecs, domain,
- 		       fill_raw_fmts, rawfmts, i);
-+	size = fmt->format_entries * (sizeof(*constr) * num_planes + 2 * sizeof(u32))
-+		+ 2 * sizeof(u32);
-+
-+	return size;
- }
- 
--static void parse_codecs(struct venus_core *core, void *data)
-+static int parse_codecs(struct venus_core *core, void *data)
- {
- 	struct hfi_codec_supported *codecs = data;
- 
-@@ -200,21 +211,27 @@ static void parse_codecs(struct venus_core *core, void *data)
- 		core->dec_codecs &= ~HFI_VIDEO_CODEC_SPARK;
- 		core->enc_codecs &= ~HFI_VIDEO_CODEC_HEVC;
- 	}
-+
-+	return sizeof(*codecs);
- }
- 
--static void parse_max_sessions(struct venus_core *core, const void *data)
-+static int parse_max_sessions(struct venus_core *core, const void *data)
- {
- 	const struct hfi_max_sessions_supported *sessions = data;
- 
- 	core->max_sessions_supported = sessions->max_sessions;
-+
-+	return sizeof(*sessions);
- }
- 
--static void parse_codecs_mask(u32 *codecs, u32 *domain, void *data)
-+static int parse_codecs_mask(u32 *codecs, u32 *domain, void *data)
- {
- 	struct hfi_codec_mask_supported *mask = data;
- 
- 	*codecs = mask->codecs;
- 	*domain = mask->video_domains;
-+
-+	return sizeof(*mask);
- }
- 
- static void parser_init(struct venus_inst *inst, u32 *codecs, u32 *domain)
-@@ -283,8 +300,9 @@ static int hfi_platform_parser(struct venus_core *core, struct venus_inst *inst)
- u32 hfi_parser(struct venus_core *core, struct venus_inst *inst, void *buf,
- 	       u32 size)
- {
--	unsigned int words_count = size >> 2;
--	u32 *word = buf, *data, codecs = 0, domain = 0;
-+	u32 *words = buf, *payload, codecs = 0, domain = 0;
-+	u32 *frame_size = buf + size;
-+	u32 rem_bytes = size;
- 	int ret;
- 
- 	ret = hfi_platform_parser(core, inst);
-@@ -301,38 +319,66 @@ u32 hfi_parser(struct venus_core *core, struct venus_inst *inst, void *buf,
- 		memset(core->caps, 0, sizeof(core->caps));
+@@ -1225,18 +1227,26 @@ static int imx214_parse_fwnode(struct device *dev)
+ 		goto done;
  	}
  
--	while (words_count) {
--		data = word + 1;
-+	while (words < frame_size) {
-+		payload = words + 1;
- 
--		switch (*word) {
-+		switch (*words) {
- 		case HFI_PROPERTY_PARAM_CODEC_SUPPORTED:
--			parse_codecs(core, data);
-+			if (rem_bytes <= sizeof(struct hfi_codec_supported))
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
+-	for (i = 0; i < bus_cfg.nr_of_link_frequencies; i++)
++	if (bus_cfg.nr_of_link_frequencies != 1)
++		dev_warn(dev, "Only one link-frequency supported, please review your DT. Continuing anyway\n");
 +
-+			ret = parse_codecs(core, payload);
-+			if (ret < 0)
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
- 			init_codecs(core);
++	for (i = 0; i < bus_cfg.nr_of_link_frequencies; i++) {
+ 		if (bus_cfg.link_frequencies[i] == IMX214_DEFAULT_LINK_FREQ)
  			break;
- 		case HFI_PROPERTY_PARAM_MAX_SESSIONS_SUPPORTED:
--			parse_max_sessions(core, data);
-+			if (rem_bytes <= sizeof(struct hfi_max_sessions_supported))
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
-+			ret = parse_max_sessions(core, payload);
- 			break;
- 		case HFI_PROPERTY_PARAM_CODEC_MASK_SUPPORTED:
--			parse_codecs_mask(&codecs, &domain, data);
-+			if (rem_bytes <= sizeof(struct hfi_codec_mask_supported))
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
-+			ret = parse_codecs_mask(&codecs, &domain, payload);
- 			break;
- 		case HFI_PROPERTY_PARAM_UNCOMPRESSED_FORMAT_SUPPORTED:
--			parse_raw_formats(core, codecs, domain, data);
-+			if (rem_bytes <= sizeof(struct hfi_uncompressed_format_supported))
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
-+			ret = parse_raw_formats(core, codecs, domain, payload);
- 			break;
- 		case HFI_PROPERTY_PARAM_CAPABILITY_SUPPORTED:
--			parse_caps(core, codecs, domain, data);
-+			if (rem_bytes <= sizeof(struct hfi_capabilities))
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
-+			ret = parse_caps(core, codecs, domain, payload);
- 			break;
- 		case HFI_PROPERTY_PARAM_PROFILE_LEVEL_SUPPORTED:
--			parse_profile_level(core, codecs, domain, data);
-+			if (rem_bytes <= sizeof(struct hfi_profile_level_supported))
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
-+			ret = parse_profile_level(core, codecs, domain, payload);
- 			break;
- 		case HFI_PROPERTY_PARAM_BUFFER_ALLOC_MODE_SUPPORTED:
--			parse_alloc_mode(core, codecs, domain, data);
-+			if (rem_bytes <= sizeof(struct hfi_buffer_alloc_mode_supported))
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
-+			ret = parse_alloc_mode(core, codecs, domain, payload);
- 			break;
- 		default:
-+			ret = sizeof(u32);
- 			break;
- 		}
- 
--		word++;
--		words_count--;
-+		if (ret < 0)
-+			return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
-+		words += ret / sizeof(u32);
-+		rem_bytes -= ret;
+-
+-	if (i == bus_cfg.nr_of_link_frequencies) {
+-		dev_err_probe(dev, -EINVAL,
+-			      "link-frequencies %d not supported, Please review your DT\n",
+-			      IMX214_DEFAULT_LINK_FREQ);
+-		ret = -EINVAL;
+-		goto done;
++		if (bus_cfg.link_frequencies[i] ==
++		    IMX214_DEFAULT_LINK_FREQ_LEGACY) {
++			dev_warn(dev,
++				 "link-frequencies %d not supported, please review your DT. Continuing anyway\n",
++				 IMX214_DEFAULT_LINK_FREQ);
++			break;
++		}
  	}
  
- 	if (!core->max_sessions_supported)
++	if (i == bus_cfg.nr_of_link_frequencies)
++		ret = dev_err_probe(dev, -EINVAL,
++				    "link-frequencies %d not supported, please review your DT\n",
++				    IMX214_DEFAULT_LINK_FREQ);
++
+ done:
+ 	v4l2_fwnode_endpoint_free(&bus_cfg);
+ 	fwnode_handle_put(endpoint);
 
 
