@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-133907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E6FCA9289E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0012EA925EC
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:08:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBF613A3F30
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:35:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 502878A56B3
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605402571D5;
-	Thu, 17 Apr 2025 18:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3720625743C;
+	Thu, 17 Apr 2025 18:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbq3A6Lo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vkgeO5oV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3C21EB1BF;
-	Thu, 17 Apr 2025 18:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E682C2566FF;
+	Thu, 17 Apr 2025 18:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914508; cv=none; b=n6+qUDFYyKQEW4Z1wouGdy9mquRIsoqKGAc38TxnBcw7wCL3IJTyFyKUtkeZbSrKUc0kdG/z0Mo8qAIqVq8XGp/chle46LGSGiMOZHFRQR8x6lRHI4/T1rrd+IaH7+FVV+NUNEDYnW3kMEl0Q9tb1Bp0+Ut0Cj8Huhyem6D+XKE=
+	t=1744913265; cv=none; b=ZjH/4EmOqbUEUKtFz//W/q64HOP8IHc4NdvX9h8Pk1m4phQFmyzhLOFsv23G/CUniBLuo+IvuLKSUjJ3iQgBHbSPAtKQ4AnivRYhxOyaT/lfNJEBs2NmuxXS0zbe/sTUs5kOpt0nW5ulmUuDj8X90I2WFuy514B62bGzpJxzh3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914508; c=relaxed/simple;
-	bh=npPQsfDjH9KOevjN0CSVOQVNe32Qea5WIKqOo6lu4iw=;
+	s=arc-20240116; t=1744913265; c=relaxed/simple;
+	bh=sQ82n1zxTn+H1o3EQO2wniuev7I3wmT1IxHvD8W5z+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O5ixtPCuj7tygAGY+BgHdMyS5loXqhJvVd4PRod0Jnv5xinR7wp/bGLdZN2UzdsKQA1qL4OHhRLzDuRxrr6NBEn5UNtv6P5z6RphxYnQo3K0H9y+ML++Aqx7XL2CnNUUdO1B8wc5VyXzJizE5Oj58wkikVr9alZJpFrRPLrt3cA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbq3A6Lo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E9AC4CEE4;
-	Thu, 17 Apr 2025 18:28:27 +0000 (UTC)
+	 MIME-Version; b=kSibY/5CUeKQDie36m0+UWigt5BziH46dWQY+JqDTZOnzyPU3onsBHyaN/8YXcUx3fLSN/MCwJXa632a31c1QJ8oy0QMRzry8AnikBHxmj7SBUDbKEmNkqxBIgfarVXAb9fQHNchXioC+dbLx9Z716ASKnJQGUIGtEajN2MWOvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vkgeO5oV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EAC5C4CEE4;
+	Thu, 17 Apr 2025 18:07:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914508;
-	bh=npPQsfDjH9KOevjN0CSVOQVNe32Qea5WIKqOo6lu4iw=;
+	s=korg; t=1744913264;
+	bh=sQ82n1zxTn+H1o3EQO2wniuev7I3wmT1IxHvD8W5z+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gbq3A6LormNIlSSFCDtH/5WoqGzgIYO+LDGy7egrJsAZ0e3S87U0AQZkKdHG2u4tw
-	 MxTVsuUH5nJPIWj+TSxLU+aAU4xqtgvjAcaDTd0MFCcUx93z2MxfRsY5rK0yZIXNQR
-	 THbLnxSvVo1Zw9ZVQ2SMK2Aej+Vzvr7NwBDb/Gy4=
+	b=vkgeO5oVUS5IGOrC3iKpINLgsJT4ZKYDxlnD9u2Jx//nM1nYwZtGIwJtGGuyN9mMj
+	 xAyGRJMV9CfbcGUErMzAbytHby2KQ2HYcWRi/rrzgSAz22Qc1/wNOUj3D7XKcAXWB4
+	 WXOBO1oDaGlRyvZg8zyuxyNOZH46K9P4yarxLFSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.13 211/414] arm64: cputype: Add MIDR_CORTEX_A76AE
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.14 281/449] wifi: mt76: mt7925: ensure wow pattern command align fw format
 Date: Thu, 17 Apr 2025 19:49:29 +0200
-Message-ID: <20250417175119.926250244@linuxfoundation.org>
+Message-ID: <20250417175129.378649539@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-commit a9b5bd81b294d30a747edd125e9f6aef2def7c79 upstream.
+commit 8ae45b1f699bbc27ea8647093f794f671e77410b upstream.
 
->From the TRM, MIDR_CORTEX_A76AE has a partnum of 0xDOE and an
-implementor of 0x41 (ARM). Add the values.
+Align the format of "struct mt7925_wow_pattern_tlv" with
+firmware to ensure proper functionality.
 
-Cc: stable@vger.kernel.org # dependency of the next fix in the series
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20250107120555.v4.4.I151f3b7ee323bcc3082179b8c60c3cd03308aa94@changeid
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: stable@vger.kernel.org
+Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20250116055925.3856856-1-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -75,6 +75,7 @@
- #define ARM_CPU_PART_CORTEX_A76		0xD0B
- #define ARM_CPU_PART_NEOVERSE_N1	0xD0C
- #define ARM_CPU_PART_CORTEX_A77		0xD0D
-+#define ARM_CPU_PART_CORTEX_A76AE	0xD0E
- #define ARM_CPU_PART_NEOVERSE_V1	0xD40
- #define ARM_CPU_PART_CORTEX_A78		0xD41
- #define ARM_CPU_PART_CORTEX_A78AE	0xD42
-@@ -159,6 +160,7 @@
- #define MIDR_CORTEX_A76	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A76)
- #define MIDR_NEOVERSE_N1 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N1)
- #define MIDR_CORTEX_A77	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A77)
-+#define MIDR_CORTEX_A76AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A76AE)
- #define MIDR_NEOVERSE_V1	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V1)
- #define MIDR_CORTEX_A78	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78)
- #define MIDR_CORTEX_A78AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78AE)
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+@@ -566,8 +566,8 @@ struct mt7925_wow_pattern_tlv {
+ 	u8 offset;
+ 	u8 mask[MT76_CONNAC_WOW_MASK_MAX_LEN];
+ 	u8 pattern[MT76_CONNAC_WOW_PATTEN_MAX_LEN];
+-	u8 rsv[7];
+-} __packed;
++	u8 rsv[4];
++};
+ 
+ struct roc_acquire_tlv {
+ 	__le16 tag;
 
 
 
