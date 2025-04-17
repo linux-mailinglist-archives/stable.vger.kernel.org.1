@@ -1,350 +1,168 @@
-Return-Path: <stable+bounces-133093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2602A91CB5
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 14:46:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A605FA91D00
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 14:53:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 254E817C649
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 12:46:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E3F2447A1A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 12:53:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F136136;
-	Thu, 17 Apr 2025 12:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6994C24290F;
+	Thu, 17 Apr 2025 12:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I1ZNrUwt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h0najXf6"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5CC360
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 12:46:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744893985; cv=fail; b=uzi4zkTdL+ky4YaVpd9wd+fZPij/H9/SU6Lyo149OZx79eKbemK9pc7COZXGYIupG2CjKfRCgVNj4Rnn6yOoI2g6/NHJkF1fiTJ+MXDf9/ufq3yoeLn21CGkamOPQ+Y5+Y96ZjabWM5IchKRF2uZ4JyOIYUXD+GXb1EDam9gEew=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744893985; c=relaxed/simple;
-	bh=Iabxwtc4xAsIVzp0nmAeD0o6PcNt31n81VclSXcVHi0=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=WTA2C4WQvq9S6ixHWGAgRnQD/EsBD7kmC8eWcl4K7aQdelFIBcf3NwWioe0CKFPaHMun80MITyLjbXaeHVGQbDsKwm+/WNT/p+oeh5XwYIs1KRb8ChO7CNMpGhLXDXWdwXraXlnP/BASZcY68gtuJD/Afs0ZGA+ZcNyO9tu9mmA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I1ZNrUwt; arc=fail smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744893983; x=1776429983;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=Iabxwtc4xAsIVzp0nmAeD0o6PcNt31n81VclSXcVHi0=;
-  b=I1ZNrUwt5vRjNj5VdfYITABJmZMWrMd9/6Evz3dzUtSNojOy1WpuYBcB
-   lQzJGNIY9hpybZNuFovhuYsktEl1g4CLXfPcBGM9kyVpW1zoFqiOEouQn
-   MdEdL7MM55vICIoJfsbYEhNx8HU+go4vQM+3fcbAxkk9tRVicnSmnCxrv
-   TjYw/0d6x3FEyVtaNjp0XM0rVv1hgnq3EUvaixHAFZVPFuxMgSNWp0mj4
-   FBu58ePxUVE+HwNPpyRE9W579cc1Mq4NBBECfk/SgLnvreXxUwHLpAHV+
-   ItT66GB6WwNZEmyseaFxAKj71kgtNvMNccFIdQv+hAKiAS2icFGmqU1tV
-   A==;
-X-CSE-ConnectionGUID: z2TaOuyqS0+DB5UY1abW/A==
-X-CSE-MsgGUID: bDIL8MQvSImSDQ5vW086pw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="57863029"
-X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; 
-   d="scan'208";a="57863029"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 05:46:23 -0700
-X-CSE-ConnectionGUID: ywUWPcy5T1u9ub7t4n0L7Q==
-X-CSE-MsgGUID: BmpNc4CcTw6FQWnYx+o5nw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; 
-   d="scan'208";a="161748813"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 05:46:22 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Thu, 17 Apr 2025 05:46:22 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Thu, 17 Apr 2025 05:46:22 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.48) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Thu, 17 Apr 2025 05:46:22 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ARqbccsIfAzevRuGDH+weDPvl8cAKjVjwS4d+xlS57H6N7y7bROI4vS/M8dOhDOhfO/U+sWR4aNH+H7qW+5VZLntwoa7XaFq+YVno03+vu2553h1rWOXKYse85xiTjiuq4CRbWHlTHR6NETRkdRdHTPC/i48dvQHQRBlugXciYtCDonHkitvoSEXW9XI7ffliS19ajHKiQ3kv5voza6B7sS/0uTTs5OGLDAhNz6UDyrGevOt3DI1wdpD3M71gSgsHJkyyalo9A8Zg6W9T97roMROyBXf1k03LRqizypXSR9yBIE1dVEG1gzHl2/yx3S1x9+UL0OekifyIYSffStbiQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YpVY0Iiw+dN+pqwTxru5TNVh91NyqxRciGXn16P50R8=;
- b=FfaUFvQ+BRe/P7uNCFMa82f71DBDIiyTvc4c1DOexfYAHZnbDS8Qc0A2cw405GBBdFc2AFckDvPGFN0R1UivomjwL6ljKZhVByESx5DlkGQVTDlejW6AHOO2O/mxraBpkXQiGNzJJ2clbd3bjIEHsy6zEK1Kw+rw92sRvmg3eVEMtro/AYdv1XNOPRGA7H4QYVh4nm9VuGBUnLJF2bjorwERIf6ElMcN+VBr5C7jMrnQTObwySpo+84UCLeftktI+ykjJt154H9qXiSuuuSBuuDlBipxQIZW92h3K2DeWElk4qXcSXorOLt8BJFVN1TBdyDpTiQx0TPRR6AFPvM8Lg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7529.namprd11.prod.outlook.com (2603:10b6:8:141::20)
- by SN7PR11MB8109.namprd11.prod.outlook.com (2603:10b6:806:2e0::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.33; Thu, 17 Apr
- 2025 12:46:20 +0000
-Received: from DS0PR11MB7529.namprd11.prod.outlook.com
- ([fe80::d244:15cd:1060:941a]) by DS0PR11MB7529.namprd11.prod.outlook.com
- ([fe80::d244:15cd:1060:941a%3]) with mapi id 15.20.8655.021; Thu, 17 Apr 2025
- 12:46:20 +0000
-Message-ID: <9160a4eb-fc69-4a0b-8bd9-5b9d5f4f5bc7@intel.com>
-Date: Thu, 17 Apr 2025 20:52:16 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] iommufd: Fail replace if device has not
- been attached" failed to apply to 6.14-stable tree
-To: <gregkh@linuxfoundation.org>, <jgg@nvidia.com>, <kevin.tian@intel.com>
-CC: <stable@vger.kernel.org>
-References: <2025041759-knee-unearned-530e@gregkh>
-Content-Language: en-US
-From: Yi Liu <yi.l.liu@intel.com>
-In-Reply-To: <2025041759-knee-unearned-530e@gregkh>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: KL1P15301CA0027.APCP153.PROD.OUTLOOK.COM
- (2603:1096:820:6::15) To DS0PR11MB7529.namprd11.prod.outlook.com
- (2603:10b6:8:141::20)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2E1199384;
+	Thu, 17 Apr 2025 12:53:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744894413; cv=none; b=dRDOsVDoLQS47Od7mgnwy1SHHWQaOc2N+oyzRwWCkapU+DRL6Ln3ZQKFJFQbFOrn1ssvtTCSkSgC+Qd0BJp/9yPPM56edhTN3oyhRtVkGLdurIzajoRW2yH8x96L0PZrGayk9GD3Y9EBj11t/IpHNxq3ZColmGAmHcOpQda0X9w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744894413; c=relaxed/simple;
+	bh=V6B+8U2UFhneiRVOZyseKWoyXNpM1iYOpJRLd/qajmM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HjaM9kRltaLdQdOngT14sq/8ASSvzlBQT3w+Pt7XkyK+/1PAHaw02A3yF7PLDsztWKRndaabuG3OWw8uFaPUZxF/6ZpCzWxX4NscOAsJFv1Pm8heeR1MgWLRd2jviSrAiD6C/ff+3pDo9tVBA5ynktvNfMdxhuG4FQofdRKw38s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h0najXf6; arc=none smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-476805acddaso7472061cf.1;
+        Thu, 17 Apr 2025 05:53:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744894410; x=1745499210; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZlVLziAvMwY2q0tZP9ngpJkek12c6+IDEyw24UOz9aY=;
+        b=h0najXf68VlUGTkMQxh39+bXc91IKSqFuCF3x2pK+TQ7icgmGu5FQdLRC3PxDKkOCv
+         HSN2tn82f810tTRFLh4rJnGG+AJELNig/QI8pXoZSu+k3prDr/mWh+JatRvxrYg04DJi
+         RTYefCf0n6GZifYMd6+ba6O/Z10Xn9I2MfOARd21vfeSNNvZNo9/7IVtZi/zwCQ5qvo4
+         9HZEWgwx2d2ER26YvgN4jTcas1oIMBw9YW0BWJlawWGy/EhJQZ1EkuITnFWufLhIsn+l
+         /F3RlJ0Cet2uHS9xOm8+9c8CcNYtw/1fXRneADhLVG/fv9shWJhIvcNdQwVkOYmxfH1K
+         t1WA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744894410; x=1745499210;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZlVLziAvMwY2q0tZP9ngpJkek12c6+IDEyw24UOz9aY=;
+        b=o1qxUtzthzAu+rV0AYUgxwjvSaZqUPmFx0ZdyVH72hXWIWUmzJuUBIJdklV1ZkqCPG
+         Er3kUQuPtHRWHX1a6rsantUvC3QcKTkA0//fmTDrMYpyUysak8U4sbzT6F+M0uFQd0K4
+         NtTsSXPZT7BSfg75Lsn5y5Anfg7cQE8kbZWd1E9Bt7dgMY5wXtMUKxYCCK8cwZZVAsmj
+         fPXOI0F8guUlp4c4H/nL5N/bwoxbSmYrDysI7DsWS0XqJ+beUhkBuWuu2aH7Qs5W2rqL
+         +CS50DglB7tzbNgc6cAv4Q+y6/TtO35KlmPH2DtddnhyptmMKcH8z1Er1zNcF90kgcR7
+         Fm9g==
+X-Forwarded-Encrypted: i=1; AJvYcCUHIgClcsEHEMMkQh8zsE2sbwIiPZS9LKKWmQb/IH09FLuZiSga/SwLHVMpDAK9q8yQZYQsASceR40=@vger.kernel.org, AJvYcCV6raE+G2RuxEAW1U/963YlL5CtNe5G1EE5SuVcIHcVLfyqBXlN3UR2wowrADi2seXc/5rKl8S3pcv3Rygp@vger.kernel.org, AJvYcCXYMJdrI11JvTKZnM0XceJ8pDRs7O3R8d/oDzHh85KHr5RJuAI/GBf0wYsEPsgzbZcPgAYx5WFv@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvGZehucTyS/tdMD4vzN4yl87Xuk/ThB8H8wZG14dbHKMs2O1D
+	gP1TEPqnGVllP9EPXZSAnjigIC+vCa91qmCMl1sfNFMv7Ni9VcG//YqGwvb0iLEsXsDUR+Gtqxa
+	YU8AM9zPSdR6GJT2SpxgA7Yx3njo=
+X-Gm-Gg: ASbGncvTw0TxNSLyJXhal25KstJxKheWVO8Pzto58ATK0vm4NezybNIKL88J6gUQrtn
+	RVStamCzyrzqpFJnZd1psdsaQ7P6N5zrwyI6kVQNuqUSoKh7IZdwOLQqHOT3h6toa9I1GQ0NSA5
+	6JB1jFdbD6nS+/+QYkkPKlxySXQhFvMetKdB3sHxwLLvF/TUNkx23xJH8mi3KqD5c=
+X-Google-Smtp-Source: AGHT+IFEjAoQPgnXW6t27//O1W+0o+CbqBiAp3geF0MsUU262k2xourjdT/yrRcBHz1zdq4ge4SLOhinWOa3F/k2BeI=
+X-Received: by 2002:a05:622a:1349:b0:476:af18:239d with SMTP id
+ d75a77b69052e-47ad813ba57mr76197351cf.51.1744894410435; Thu, 17 Apr 2025
+ 05:53:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7529:EE_|SN7PR11MB8109:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9291c82d-f5e8-484f-48a4-08dd7dadda0e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?MWNUdmZ3SnZCUXp2clRxOGx1NTFYSStaUkh5anIwQWxXOUdFUGNGWVBlYnlw?=
- =?utf-8?B?YjNGcGU1SXdFb21NRXpKKzgxMTErMkFTM2hKQVR4Z2tMbGJQTisrbEIzTEEv?=
- =?utf-8?B?SlQ5QjVrVXZjbnNPSnVGSGFqeFJTRFZJb2ZGb3dXMythUFVpRVVxckQvc041?=
- =?utf-8?B?dkkwODBreEdXWlljUkFGTTN4UlZXeE5ZbFQ3c3lDbXBGc1o2WDVxTWRoTGhr?=
- =?utf-8?B?Rk5EUzNJbWZoS21oQ2Q1M3lxK1VGNlkrK3A3ZGdiaWdncTNhM3NuamxrcVJU?=
- =?utf-8?B?WW1Xd1lIN3BJNGkzd2ZLbVhiS2RxTWxLRDRKTFlwWWNnWlJ3WWhIYkxHSFRX?=
- =?utf-8?B?Q3FLRFRqTmxWS1pMWHp6SjQ1Ymd1N1pMSC9CM0tidE8yWUNSYzVwcGN3VUp2?=
- =?utf-8?B?WGFhak1HejVZNEx3OGFhbDNIc2ZEdDBQU2NrTTRnSUt5MklheXJIQXRFUWNC?=
- =?utf-8?B?Z3MwR1BoeUltQ1BFb0NpeXhIVTRiaU4vWUN2dEtUTzlMRS9KNXNCQm1JY0J3?=
- =?utf-8?B?MHNTMEpEVWUydXRHWTRjaHlwWGFpTmpmMWVUQ3h5QjhkM2xJazd6VWhBUDM0?=
- =?utf-8?B?UXpjVWtrVUgyWFR1L3RYbDlqVnJQNlB4d0RsZm9IV0dPNnZwclA5bTlmNTZn?=
- =?utf-8?B?MW1zWVE0ellvbnh5T3Rib2ZlZEI2Nk5EL0pqNFRDUUFtVHJpVUFtQUN4aEtL?=
- =?utf-8?B?cnN5Qml0R2o0UU0zN0I2SktkSnkwSWRZYTRLZDRLK1FhcHBhMk5JenB6VEhL?=
- =?utf-8?B?UENQRVp2WHllL3MxNEdXU2picFo2ZTlzR2RVSUNSdm9FV1hjcG5YbUFacVBL?=
- =?utf-8?B?OWhvSUdUaXJSNFAwcTlFdjdzazN0SjVRYmwzeUVsOG1TOHJkSDJBelF5cEhk?=
- =?utf-8?B?d2NCQmpmN0RUZitqMm5aUTNUZkpiZzlCQlRPMVNDMXA3K21LWFJMSjhtZWVT?=
- =?utf-8?B?Ykw3eUF4YzR2cVN0eHg3cUl1cm1hby9XNHFLWkNNeGZnWFo3c1Q2SkZ2Y1RE?=
- =?utf-8?B?R05JTTNxZU91N1NHbnBOYmxsc0hpRnptVzdPWVVGOXZ2OEdFK2hZY1JoQUNB?=
- =?utf-8?B?eUt6bEE5alJhUW5zZkp1R09XUXNZTkFMb240RkRaUWJYWGhSNjRaWndTYVR0?=
- =?utf-8?B?MjZzTkZLNUZSMWpFRjZ6QjF5MzdiWHVYUy8wM3M1TVhFc0NkQkJ0QnluT0pL?=
- =?utf-8?B?MStoNmo2NEgxdlkvN2k4VlhvcUlZYUcvck0xeDVIQzZiSWROVm1ucVFRSGpq?=
- =?utf-8?B?UVEvVTVGUWJ0ZHdHWjQ4anRrNlRHTGYzVytzTndkSXJreTROYkIwdmd6OVcv?=
- =?utf-8?B?dnpjeDdFRTZYZXZlZXR1YTNOR3ZFbXRUd3lUVzJVOW9GMHpSY0sxMUpodUdw?=
- =?utf-8?B?aU9IY1h1a2pPTi90aW5WRHlGVmhqZlVYSmZyTTlqSTdPYm1OVU1VTFJxaUEy?=
- =?utf-8?B?MXIweEdWOGs2Yzk3QWJhYzN3Q1RjdVhJY3lmdm1GWmMxc0NScnB4TW5hcFdw?=
- =?utf-8?B?RW1Tb0RuR21hU0hGL2JibFBnTUYxdCtIblZCQWFPSUMrKy9tTHd1SVNuVCtp?=
- =?utf-8?B?eWNaelJvcXd4QmZOK2tlQkVST2E3YThCT083LzJPWXAwRlRtUUltQndGMEta?=
- =?utf-8?B?VXI4TjdncnludUxqVDFXNFhEek45WDA1ZWpVNVhmQ01UNUxCdjgweFNpQUcv?=
- =?utf-8?B?QXRvMm1Hb0k2N2JhdTU3Ym11UDRTcU9BWFZMbVRiaXVLd1FJRVRzd3ZtWTUw?=
- =?utf-8?B?dHZwVDB5aGxRdDZOeGxTNVB1ZVJ3cGJSUCt6SzJIRFpsUjIzUFRRdzlCQXMx?=
- =?utf-8?B?RDBGdVhHSTVZZVVDNjZOR28yczVWMEYrTmlrOWlhWlFCSnREWURJR1FhNDR2?=
- =?utf-8?Q?ZzvXA/Dt4lqqL?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7529.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UzZ6cEZRVFlWU0MwdlpVRnBjSSttdndzdWpLR2pmU0drWjJyNUdReGwxM1lk?=
- =?utf-8?B?S3duSmRpeXZwQnNrWWlNaWx0TTlmYkdLSG1SQkZ3dGJpa0lla1RibDIwOExP?=
- =?utf-8?B?b1BlUUl4bldhUGlvbWJTbUNVZjFEZklBbjVXQzNOYWtuZEtscXErcDk2QlpZ?=
- =?utf-8?B?MVUwS0loN0FvdThqZzJDQ2FPSlZhQVU3QmNTOExUcnF2SVFlZ1h3aDZFSDVz?=
- =?utf-8?B?ZEdTS3dIR0EvbHBDZHFuUHhXNTFWK2p3UHluSDZQSytabStPcHJpYldCVGZO?=
- =?utf-8?B?QnBMUjMwOTVSODFtWTlESTNpNURDeUE0eDE0M2xockZNa0dXcmY1QlFlYkds?=
- =?utf-8?B?cVRaM0FWZXJqbllpTlFHZWJOQ3hwYjlIeW9reTd6Tlk0UlFiZUFtZHo3T014?=
- =?utf-8?B?K3BOeEc2T21RWkN6SlFOd01vZmh5Q2hGK0craS95VTQrcEE3dUFmOTl1SlE2?=
- =?utf-8?B?ZklhcU9vUzg3ZnVTYXlSQ1pBS0FxT3piQXVieFhMUCsrNG42NUQrcGxYNTdD?=
- =?utf-8?B?QWV0T0VtUVB6V1gvdzJyZGUwLzNUS3g0WW8xdkhRSzR4c2F5NGw4NldZU1Iz?=
- =?utf-8?B?VzN1eXI3V1I0Q216cDg1Q25qRko4azIyVUlubGVpMlMvQTAxMzc4a3dzU0lo?=
- =?utf-8?B?T0dSM2xGaGRQU2d0T0hXNE5NQUQ2WUNQZCtsYWZLQ2RUbUZIUGF6VlFocVRZ?=
- =?utf-8?B?S0JZMEgxQmFhR2RWS0xuVkJsKzdPUWVodUZVNkJUY0wxTWJabjkyVzIxWUg1?=
- =?utf-8?B?c2FTTXUvZTdxNGs4STNiUkVGYWE3RFZwZmRxQkpjdDUwWGs1RGwxMTlXemNt?=
- =?utf-8?B?WHI3MUdCZEp6RHhCaUxLWVZpODc0UFV3YWtMSjBxUTZZQWZqVk92aStHSDZO?=
- =?utf-8?B?OXFvMFpaRG1hZmdMSFlKQktUbDdlSjJQb3M4bGVseExYK2VZd0lKQk4vMFk1?=
- =?utf-8?B?ZzNvalRlZjFKSHF0MmNIb2F6YVFlZHlRdkNxTnhVaURrL2NLeVYxSDJOVW1Z?=
- =?utf-8?B?Ri9QZGJBYkg2OXI1QVFtNzd4cVVUd2UyM2RBdmhOcGhpbE5lTjBaSkw4dTVw?=
- =?utf-8?B?eHVweDllN2xTVVltYVZNMXQ5MmxFd25mUTNFemJiMTFCMzNTZldwN1RPVE9E?=
- =?utf-8?B?ZW9rM1VMSi9IRU0xa0xCaDZ6NExWV0xMYjBDWUJZRUx4YUZodUxJOWlYVytX?=
- =?utf-8?B?NFBOU1BUVkhWOHlHK0JHK3E2Y2lONVRnNkFKSWNPbEJiRzk1R0IzWXFEUytE?=
- =?utf-8?B?SWp1VnhrTnFLNHVsallsbklPTEhsOUdSb3p0ODZPTnZmZytEWVhxSk1GSHk5?=
- =?utf-8?B?WlN3c3BxTEtrZ25SZjFBcmVXUEpYemNrUlcxUnR2bnkxNVBudzVpc1cvV2lK?=
- =?utf-8?B?b0pCUVRiTG81TmNsV3VMZEZZRkUwd1lXQkxxVS9QNi9CRXZmbDhVUStjUlY0?=
- =?utf-8?B?ZkQ4LzVVWWNtYjFzV0VzTDlENGw5V094ZGpoLzFjYzFQdTRHYkNoTFFWYVlW?=
- =?utf-8?B?bXJSZUhBOStjWC9vWlJnaWRhVUhFU25wYzI5TDEyWFhiay90c2w2L2gwR29j?=
- =?utf-8?B?TWlRUTFscHIxNFBXSjRreWhUYldnODdxRW9CMWRnNlJtZ1M1OU1QQnNIWFFa?=
- =?utf-8?B?YW9OT3RJVVJXYm5VL01MZ3NhNVcwV05oMFQ0V1V5T0JvZ3lxdGx5YlZ2UHk2?=
- =?utf-8?B?VzhHbnZjVWxCK2QxWjZpWGwxTi9aSHhPaDUyRC9Wd2oxaUYxRFAzNjFCRkFr?=
- =?utf-8?B?NzRzOE9idkx3MWlWcXlSRWxRaHlPTzBFS0p6ajdYaGVPcVV4aTRJckhsNG9n?=
- =?utf-8?B?bW4wSnk4Y1dTdzU2c0Y5RUNVNk9JNldONzFRV2FOaG1TV2N6NExXS2hNblZs?=
- =?utf-8?B?ZjZvbzdOUEJJbzRkamZPN2ZhVkVkZXp4VUpXRkV0K093VTJYMjlObU9vWFpC?=
- =?utf-8?B?Q2ZJS2FacDZNcnNuMkVaWGY1Y0d4QWJUVEk1QTl2Ym5GeTVrazRDOTQzejNh?=
- =?utf-8?B?ZzIrMEFaeUsyeERDa1UvVFFNU3p5SFFJdnhDY2toc0Q3ZTErd1AvcFFNcHJO?=
- =?utf-8?B?cVpla0RhdVhqWTY1enZEN1l0Z0pyT2FpZjV4NmdoWVA5ZldFNXFQVit1Y1pN?=
- =?utf-8?Q?oFHaoZD2zvSPv1Pd38skrl4Hy?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9291c82d-f5e8-484f-48a4-08dd7dadda0e
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7529.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2025 12:46:20.0998
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WvCvdCKnKGA7LxV3esS0cVEuOmyAcIxggKi1/1Kq2L+NFZhzRpoPNe7p1BIOJyCGQf7yrm84fXd9ah6OXagl2A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB8109
-X-OriginatorOrg: intel.com
+References: <20250415182038.523186-1-gshahrouzi@gmail.com> <fb712c034eda0d5d711a90a00b6382315fb5f929.camel@gmail.com>
+In-Reply-To: <fb712c034eda0d5d711a90a00b6382315fb5f929.camel@gmail.com>
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Date: Thu, 17 Apr 2025 08:53:00 -0400
+X-Gm-Features: ATxdqUGK6KuhhM7Fj61ixiHKA90df-58_gkHsmQfZaA-QhOIG8h5HdACWar_0Fk
+Message-ID: <CAKUZ0zL88AyuRxzhoAv2iZO7N7qOMy1G3yKscqG3rQiiOS0gog@mail.gmail.com>
+Subject: Re: [PATCH] iio: adc: Revoke valid channel for error path
+To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
+Cc: gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-staging@lists.linux.dev, Michael.Hennerich@analog.com, 
+	sonic.zhang@analog.com, vapier@gentoo.org, skhan@linuxfoundation.org, 
+	kernelmentees@lists.linuxfoundation.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2025/4/17 19:42, gregkh@linuxfoundation.org wrote:
-> 
-> The patch below does not apply to the 6.14-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-> 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.14.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 55c85fa7579dc2e3f5399ef5bad67a44257c1a48
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041759-knee-unearned-530e@gregkh' --subject-prefix 'PATCH 6.14.y' HEAD^..
-> 
-> Possible dependencies:
+On Thu, Apr 17, 2025 at 6:06=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.com=
+> wrote:
+>
+> On Tue, 2025-04-15 at 14:20 -0400, Gabriel Shahrouzi wrote:
+> > According to the datasheet on page 9 under the channel selection table,
+> > all devices (AD7816/7/8) are able to use the channel marked as 7. This
+> > channel is used for diagnostic purposes by routing the internal 1.23V
+> > bandgap source through the MUX to the input of the ADC.
+> >
+> > Replace checking for string equality with checking for the same chip ID
+> > to reduce time complexity.
+> >
+> > Group invalid channels for all devices together because they are
+> > processed the same way.
+> >
+> > Fixes: 7924425db04a ("staging: iio: adc: new driver for AD7816 devices"=
+)
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+> > ---
+> >  drivers/staging/iio/adc/ad7816.c | 15 +++++----------
+> >  1 file changed, 5 insertions(+), 10 deletions(-)
+> >
+> > diff --git a/drivers/staging/iio/adc/ad7816.c
+> > b/drivers/staging/iio/adc/ad7816.c
+> > index 6c14d7bcdd675..d880fe0257697 100644
+> > --- a/drivers/staging/iio/adc/ad7816.c
+> > +++ b/drivers/staging/iio/adc/ad7816.c
+> > @@ -186,17 +186,12 @@ static ssize_t ad7816_store_channel(struct device=
+ *dev,
+> >       if (ret)
+> >               return ret;
+> >
+> > -     if (data > AD7816_CS_MAX && data !=3D AD7816_CS_MASK) {
+> > -             dev_err(&chip->spi_dev->dev, "Invalid channel id %lu for
+> > %s.\n",
+> > -                     data, indio_dev->name);
+> > -             return -EINVAL;
+> > -     } else if (strcmp(indio_dev->name, "ad7818") =3D=3D 0 && data > 1=
+) {
+> > -             dev_err(&chip->spi_dev->dev,
+> > -                     "Invalid channel id %lu for ad7818.\n", data);
+> > -             return -EINVAL;
+> > -     } else if (strcmp(indio_dev->name, "ad7816") =3D=3D 0 && data > 0=
+) {
+> > +     if (data !=3D AD7816_CS_MASK &&
+> > +         (data > AD7816_CS_MAX ||
+> > +         (chip->id =3D=3D ID_AD7818 && data > 1) ||
+> > +         (chip->id =3D=3D ID_AD7816 && data > 0))) {
+> >               dev_err(&chip->spi_dev->dev,
+> > -                     "Invalid channel id %lu for ad7816.\n", data);
+> > +                     "Invalid channel id %lu for %s.\n", data, indio_d=
+ev-
+> > >name);
+> >               return -EINVAL;
+> >       }
+>
+> Hmm, maybe I'm missing something but the code just looks the same as befo=
+re
+> (from a functionality point of view)? I'm really not seeing any fix...
+I might have to change it for readability. From my understanding, if
+channel 7 is selected (AD7816_CS_MASK), it never enters the error path
+whereas in the old code, if the chip were either ad7816 or ad7818, it would
+end up returning an error because it skips all channels above either 0
+or 1.
 
-I think the possible dependency is the below commit. This patch adds a
-helper before iommufd_hwpt_attach_device() which is added by below commit.
-
-commit fb21b1568adaa76af7a8c853f37c60fba8b28661
-Author: Nicolin Chen <nicolinc@nvidia.com>
-Date:   Mon Feb 3 21:00:54 2025 -0800
-
-     iommufd: Make attach_handle generic than fault specific
-
-     "attach_handle" was added exclusively for the iommufd_fault_iopf_handler()
-     used by IOPF/PRI use cases. Now, both the MSI and PASID series require to
-     reuse the attach_handle for non-fault cases.
-
-     Add a set of new attach/detach/replace helpers that does the attach_handle
-     allocation/releasing/replacement in the common path and also handles those
-     fault specific routines such as iopf enabling/disabling and auto response.
-
-     This covers both non-fault and fault cases in a clean way, replacing those
-     inline helpers in the header. The following patch will clean up those old
-     helpers in the fault.c file.
-
-     Link: 
-https://patch.msgid.link/r/32687df01c02291d89986a9fca897bbbe2b10987.1738645017.git.nicolinc@nvidia.com
-     Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-     Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-     Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-
-diff --git a/drivers/iommu/iommufd/device.c b/drivers/iommu/iommufd/device.c
-index dfd0898fb6c1..0786290b4056 100644
---- a/drivers/iommu/iommufd/device.c
-+++ b/drivers/iommu/iommufd/device.c
-@@ -352,6 +352,111 @@ iommufd_device_attach_reserved_iova(struct 
-iommufd_device *idev,
-         return 0;
-  }
-
-+/* The device attach/detach/replace helpers for attach_handle */
-+
-+static int iommufd_hwpt_attach_device(struct iommufd_hw_pagetable *hwpt,
-+                                     struct iommufd_device *idev)
-+{
-+       struct iommufd_attach_handle *handle;
-+       int rc;
-+
-+       lockdep_assert_held(&idev->igroup->lock);
-
-
-@Greg, anything I need to do here?
-
-Regards,
-Yi Liu
-
-> 
-> 
-> thanks,
-> 
-> greg k-h
-> 
-> ------------------ original commit in Linus's tree ------------------
-> 
->  From 55c85fa7579dc2e3f5399ef5bad67a44257c1a48 Mon Sep 17 00:00:00 2001
-> From: Yi Liu <yi.l.liu@intel.com>
-> Date: Wed, 5 Mar 2025 19:48:42 -0800
-> Subject: [PATCH] iommufd: Fail replace if device has not been attached
-> 
-> The current implementation of iommufd_device_do_replace() implicitly
-> assumes that the input device has already been attached. However, there
-> is no explicit check to verify this assumption. If another device within
-> the same group has been attached, the replace operation might succeed,
-> but the input device itself may not have been attached yet.
-> 
-> As a result, the input device might not be tracked in the
-> igroup->device_list, and its reserved IOVA might not be added. Despite
-> this, the caller might incorrectly assume that the device has been
-> successfully replaced, which could lead to unexpected behavior or errors.
-> 
-> To address this issue, add a check to ensure that the input device has
-> been attached before proceeding with the replace operation. This check
-> will help maintain the integrity of the device tracking system and prevent
-> potential issues arising from incorrect assumptions about the device's
-> attachment status.
-> 
-> Fixes: e88d4ec154a8 ("iommufd: Add iommufd_device_replace()")
-> Link: https://patch.msgid.link/r/20250306034842.5950-1-yi.l.liu@intel.com
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> 
-> diff --git a/drivers/iommu/iommufd/device.c b/drivers/iommu/iommufd/device.c
-> index b2f0cb909e6d..bd50146e2ad0 100644
-> --- a/drivers/iommu/iommufd/device.c
-> +++ b/drivers/iommu/iommufd/device.c
-> @@ -471,6 +471,17 @@ iommufd_device_attach_reserved_iova(struct iommufd_device *idev,
->   
->   /* The device attach/detach/replace helpers for attach_handle */
->   
-> +/* Check if idev is attached to igroup->hwpt */
-> +static bool iommufd_device_is_attached(struct iommufd_device *idev)
-> +{
-> +	struct iommufd_device *cur;
-> +
-> +	list_for_each_entry(cur, &idev->igroup->device_list, group_item)
-> +		if (cur == idev)
-> +			return true;
-> +	return false;
-> +}
-> +
->   static int iommufd_hwpt_attach_device(struct iommufd_hw_pagetable *hwpt,
->   				      struct iommufd_device *idev)
->   {
-> @@ -710,6 +721,11 @@ iommufd_device_do_replace(struct iommufd_device *idev,
->   		goto err_unlock;
->   	}
->   
-> +	if (!iommufd_device_is_attached(idev)) {
-> +		rc = -EINVAL;
-> +		goto err_unlock;
-> +	}
-> +
->   	if (hwpt == igroup->hwpt) {
->   		mutex_unlock(&idev->igroup->lock);
->   		return NULL;
-> 
-
--- 
-Regards,
-Yi Liu
+>
+> Having said the above, not sure if grouping helps with readability. But I=
+ do
+> agree with moving from string comparison to use chip->id. And we also hav=
+e
+> redundants 'else'
+>
+> - Nuno S=C3=A1
+>
 
