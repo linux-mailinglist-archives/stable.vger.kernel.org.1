@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-133577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92FA8A92661
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:12:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C43FEA92A75
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:51:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21C77189F018
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:12:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06E953BAA9A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:47:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 614B3255E31;
-	Thu, 17 Apr 2025 18:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2FD9253340;
+	Thu, 17 Apr 2025 18:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ospCr6q6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyOfWCX/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D56D256C60;
-	Thu, 17 Apr 2025 18:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A271DE885;
+	Thu, 17 Apr 2025 18:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913496; cv=none; b=uSJDbeJ2XLZLVPaNL0ROdBesOUdfu0C9ClQ1BfhEFB6OVPB5VINbqHCEx+kVSpMtTvpfpssQp3J8A0uztDZzNuC25OE9b3S4Azcsi7kgly/cxhJ2fXJpyjp4XEFX+snENjQtJMWTpZNCWRAyPHjZuY5DdI9cy4q9xIFlYazsCQw=
+	t=1744915692; cv=none; b=o9OlTUexRZ/pnJduKZ/E5NawDxcgAGtgW2WISV/Z9KY2FTLYFmC/I2JNukRWle//O8qn5Sho2aMJgQzAmr7O3IPGAu/iH0RfTs3WVu5WbpQ6In7RCZIUWkxnWO/JEFy7wcS1UMb2VXkbWulNRszAJ5nYvqdoPyM/Fx2e5zZ7y8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913496; c=relaxed/simple;
-	bh=HPuH+H4fv22XoxRVtycbnHGRE8+aGeKd/5iLOpWIey4=;
+	s=arc-20240116; t=1744915692; c=relaxed/simple;
+	bh=Nnl9iSOPl9AZdB5YDdF25k4Yn+NeBY7qEHWs4l9yTQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EpRzWbzbQlFpgeAHHf8S4sAp8yxIf4es63oMHTK1l0DYIb6XHlJq2eCszOAnX1kGPVcIUD+k1sIQymeio65pBCRlKp5Vv0IjHhwDqrVS2+O2EgwzyCaBHPohR7LceiKAw8KS5rBKNkervbkPUDWUFpAGjr/BFk0ih6YYtrAJlq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ospCr6q6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79CC0C4CEE4;
-	Thu, 17 Apr 2025 18:11:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b04lCpKb7XPZHXAvfQ1rMfrrbVfew8BVNnoJGJuw27OfT68aSnEhQV8dEoUHZILjK2jEyhjHykx6iGbSLfOGCS7AYYb1xtty5+CA3FuIEq6SBwTNONshHu7Aoshetb1KrhgeTneCdGUmp0I2scP0Y2Vpeer/YYCYCYcKwKIzzNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyOfWCX/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDEC3C4CEE4;
+	Thu, 17 Apr 2025 18:48:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913496;
-	bh=HPuH+H4fv22XoxRVtycbnHGRE8+aGeKd/5iLOpWIey4=;
+	s=korg; t=1744915692;
+	bh=Nnl9iSOPl9AZdB5YDdF25k4Yn+NeBY7qEHWs4l9yTQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ospCr6q6HO0ck+wJNX1agSUEZRH39xBpKX0v9odD9f+FSzWrWv95RNZeRQj6zumgK
-	 SO3R7mlsndyf/Lq635l9FfaEO5+4KCfM2fTsCDJmQucGbH8aLwoW8r80BB3/oLiaV6
-	 FXQNZvUVnEtJIqvIStL7+JHV7q7JvkCr/ubk8xDA=
+	b=dyOfWCX/QvYZbgdlFM3iTn/n+LckqWyVgTagAWrtzCzfZO59O3qtfr0f+ii6XLuG/
+	 iqP7FRHFQ2YsWfI3CFj4A1le7MNmt1Hpk3i1Q/htZ1USv4Qf6hXbGWNaUA49T77jD5
+	 gq0rskpIXV1661DXgSI4LO8PMsNOvK9F/qDlbVBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.14 330/449] mptcp: only inc MPJoinAckHMacFailure for HMAC failures
+	Jonathan McDowell <noodles@meta.com>,
+	=?UTF-8?q?Michal=20Such=C3=A1nek?= <msuchanek@suse.de>,
+	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.12 209/393] tpm, tpm_tis: Fix timeout handling when waiting for TPM status
 Date: Thu, 17 Apr 2025 19:50:18 +0200
-Message-ID: <20250417175131.426909658@linuxfoundation.org>
+Message-ID: <20250417175115.985393680@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Jonathan McDowell <noodles@meta.com>
 
-commit 21c02e8272bc95ba0dd44943665c669029b42760 upstream.
+commit 7146dffa875cd00e7a7f918e1fce79c7593ac1fa upstream.
 
-Recently, during a debugging session using local MPTCP connections, I
-noticed MPJoinAckHMacFailure was not zero on the server side. The
-counter was in fact incremented when the PM rejected new subflows,
-because the 'subflow' limit was reached.
+The change to only use interrupts to handle supported status changes
+introduced an issue when it is necessary to poll for the status. Rather
+than checking for the status after sleeping the code now sleeps after
+the check. This means a correct, but slower, status change on the part
+of the TPM can be missed, resulting in a spurious timeout error,
+especially on a more loaded system. Switch back to sleeping *then*
+checking. An up front check of the status has been done at the start of
+the function, so this does not cause an additional delay when the status
+is already what we're looking for.
 
-The fix is easy, simply dissociating the two cases: only the HMAC
-validation check should increase MPTCP_MIB_JOINACKMAC counter.
-
-Fixes: 4cf8b7e48a09 ("subflow: introduce and use mptcp_can_accept_new_subflow()")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250407-net-mptcp-hmac-failure-mib-v1-1-3c9ecd0a3a50@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org # v6.4+
+Fixes: e87fcf0dc2b4 ("tpm, tpm_tis: Only handle supported interrupts")
+Signed-off-by: Jonathan McDowell <noodles@meta.com>
+Reviewed-by: Michal Suchánek <msuchanek@suse.de>
+Reviewed-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/subflow.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/char/tpm/tpm_tis_core.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -902,12 +902,16 @@ create_child:
- 				goto dispose_child;
- 			}
- 
--			if (!subflow_hmac_valid(req, &mp_opt) ||
--			    !mptcp_can_accept_new_subflow(subflow_req->msk)) {
-+			if (!subflow_hmac_valid(req, &mp_opt)) {
- 				SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
- 				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
- 				goto dispose_child;
- 			}
-+
-+			if (!mptcp_can_accept_new_subflow(owner)) {
-+				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
-+				goto dispose_child;
-+			}
- 
- 			/* move the msk reference ownership to the subflow */
- 			subflow_req->msk = NULL;
+--- a/drivers/char/tpm/tpm_tis_core.c
++++ b/drivers/char/tpm/tpm_tis_core.c
+@@ -114,11 +114,10 @@ again:
+ 		return 0;
+ 	/* process status changes without irq support */
+ 	do {
++		usleep_range(priv->timeout_min, priv->timeout_max);
+ 		status = chip->ops->status(chip);
+ 		if ((status & mask) == mask)
+ 			return 0;
+-		usleep_range(priv->timeout_min,
+-			     priv->timeout_max);
+ 	} while (time_before(jiffies, stop));
+ 	return -ETIME;
+ }
 
 
 
