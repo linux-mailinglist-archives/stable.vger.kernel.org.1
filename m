@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-133476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BB7DA925D6
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:08:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4A40A925E8
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:08:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD5323B13E8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:07:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B34151B6249B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DFCC2566D7;
-	Thu, 17 Apr 2025 18:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D779D2566CE;
+	Thu, 17 Apr 2025 18:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uABfc3sl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QeNVi2Uy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218021E25E1;
-	Thu, 17 Apr 2025 18:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961342550DD;
+	Thu, 17 Apr 2025 18:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913193; cv=none; b=FA0esBCnyVGQtzFNrqCEFpfFCtU2vOGMv8z9P08MT04k4qli27HI5r4v/CpaQyLYjpT+MbH5qIHjKlnL2LHyA13a9TzCZsPG/IEmo5MXZMqUolC9aS/xOyFOQoANKfUPoY98Pg/eJjqWatKs4UtyGbmxumkbh8e5hfSnLgTwXLY=
+	t=1744913204; cv=none; b=Pu6Tvw3HhV2O+MpB9qNHa2gl+BITsChiee4WaaE3FnBR6IGJftsxg8eM7sT1UPr6Md3bewbUfFQIv37C63rd/l0x4Ecyj4URkce6EmWVhSLtM/BF+430h0xWgJwkkWIHQCdz5SSibcqsbwxVGns3tZdx8yg97d1TAW5TGfdPCWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913193; c=relaxed/simple;
-	bh=+ef4bc7Oj+HCIX23fvwyQvnx5jM3MCerFzmePUwRzlo=;
+	s=arc-20240116; t=1744913204; c=relaxed/simple;
+	bh=EqxtXN5dtpzLTvCZtK1byL1xhTgea4nti74FCBdmj+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GuSd6uFClQqsm/Ts5FH0Zoxh2fY9w8vF5r/kY+v+ENtZ4rnhLFDeVO08cmLCxT9PWwKHlw+vkFtgaId0OzNVvzTzhdMnIbBUpM0hcWOCTEwVavgYtI2K4+1keDeN4GcBEtsSAVehf5Z1rmlGxoKzrkcl58o7MPaIhhmjO1BYvhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uABfc3sl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96DCFC4CEE4;
-	Thu, 17 Apr 2025 18:06:32 +0000 (UTC)
+	 MIME-Version; b=qv9T9jCA+8uWCtdRxbygYv3ScLTujNtXaphukFrfm3/PU040w95yP0nsadu1asKqryfvMfmWezQPqQ46chiBTZJxsvTS3YjDXaPg+x73Ysjn9Pu9EhCE5pIs5re+rP9NAXRPHYQkFM7OsR89fEG8em2pY8IOFzpjhxVggezSzII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QeNVi2Uy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E4BC4CEE4;
+	Thu, 17 Apr 2025 18:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913193;
-	bh=+ef4bc7Oj+HCIX23fvwyQvnx5jM3MCerFzmePUwRzlo=;
+	s=korg; t=1744913204;
+	bh=EqxtXN5dtpzLTvCZtK1byL1xhTgea4nti74FCBdmj+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uABfc3slbmfnb8aWmH9ww+Ayl/DyD4J0LrLqxORXtkbKEINvWqzE9WJk7BtgcLKNX
-	 rcc/4JDgZ4W1gOQoPLSbOPwLMOa8KDxOT9Fm60pEZvmT53+P4QSk3Elw+KVgG4VJ1H
-	 hmlg5HBkgzYc2EXGzYb263F2BdIO4632invBZxAw=
+	b=QeNVi2UyVxVAluqT3OKSk9ytJS9diwpm0mw2VmkGVSaAnS/r3TPh3i8YYOmViOrZQ
+	 ZswHE5pxOC6BsMtrTFWUEyBa3SYB/mc/r2ptLEjMCaivZMA6ajDDXtuo8KApHoLw07
+	 PorEJuFZVu7ax/zdDUDFsqVMgyf37ZriufJ9U72s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Keeping <jkeeping@inmusicbrands.com>,
-	Michael Tretter <m.tretter@pengutronix.de>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.14 230/449] media: rockchip: rga: fix rga offset lookup
-Date: Thu, 17 Apr 2025 19:48:38 +0200
-Message-ID: <20250417175127.255133066@linuxfoundation.org>
+	stable@kernel.org,
+	Jan Beulich <jbeulich@suse.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.14 231/449] xenfs/xensyms: respect hypervisors "next" indication
+Date: Thu, 17 Apr 2025 19:48:39 +0200
+Message-ID: <20250417175127.296702482@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
 References: <20250417175117.964400335@linuxfoundation.org>
@@ -66,34 +66,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: John Keeping <jkeeping@inmusicbrands.com>
+From: Jan Beulich <jbeulich@suse.com>
 
-commit 11de3582675cc0b7136e12f3971f1da3e5a05382 upstream.
+commit 5c4e79e29a9fe4ea132118ac40c2bc97cfe23077 upstream.
 
-The arguments to rga_lookup_draw_pos() are passed in the wrong order,
-rotate mode should be before mirror mode.
+The interface specifies the symnum field as an input and output; the
+hypervisor sets it to the next sequential symbol's index. xensyms_next()
+incrementing the position explicitly (and xensyms_next_sym()
+decrementing it to "rewind") is only correct as long as the sequence of
+symbol indexes is non-sparse. Use the hypervisor-supplied value instead
+to update the position in xensyms_next(), and use the saved incoming
+index in xensyms_next_sym().
 
-Fixes: 558c248f930e6 ("media: rockchip: rga: split src and dst buffer setup")
-Cc: stable@vger.kernel.org
-Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
-Reviewed-by: Michael Tretter <m.tretter@pengutronix.de>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Cc: stable@kernel.org
+Fixes: a11f4f0a4e18 ("xen: xensyms support")
+Signed-off-by: Jan Beulich <jbeulich@suse.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Message-ID: <15d5e7fa-ec5d-422f-9319-d28bed916349@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/rockchip/rga/rga-hw.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/xen/xenfs/xensyms.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/platform/rockchip/rga/rga-hw.c
-+++ b/drivers/media/platform/rockchip/rga/rga-hw.c
-@@ -376,7 +376,7 @@ static void rga_cmd_set_dst_info(struct
- 	 * Configure the dest framebuffer base address with pixel offset.
- 	 */
- 	offsets = rga_get_addr_offset(&ctx->out, offset, dst_x, dst_y, dst_w, dst_h);
--	dst_offset = rga_lookup_draw_pos(&offsets, mir_mode, rot_mode);
-+	dst_offset = rga_lookup_draw_pos(&offsets, rot_mode, mir_mode);
+--- a/drivers/xen/xenfs/xensyms.c
++++ b/drivers/xen/xenfs/xensyms.c
+@@ -48,7 +48,7 @@ static int xensyms_next_sym(struct xensy
+ 			return -ENOMEM;
  
- 	dest[(RGA_DST_Y_RGB_BASE_ADDR - RGA_MODE_BASE_REG) >> 2] =
- 		dst_offset->y_off;
+ 		set_xen_guest_handle(symdata->name, xs->name);
+-		symdata->symnum--; /* Rewind */
++		symdata->symnum = symnum; /* Rewind */
+ 
+ 		ret = HYPERVISOR_platform_op(&xs->op);
+ 		if (ret < 0)
+@@ -78,7 +78,7 @@ static void *xensyms_next(struct seq_fil
+ {
+ 	struct xensyms *xs = m->private;
+ 
+-	xs->op.u.symdata.symnum = ++(*pos);
++	*pos = xs->op.u.symdata.symnum;
+ 
+ 	if (xensyms_next_sym(xs))
+ 		return NULL;
 
 
 
