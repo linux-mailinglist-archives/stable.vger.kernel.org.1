@@ -1,166 +1,484 @@
-Return-Path: <stable+bounces-133216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86DF1A92387
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 19:10:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41678A92388
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 19:10:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31AA87AA3CC
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 17:09:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52C2817B1D8
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 17:10:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582BE254AF9;
-	Thu, 17 Apr 2025 17:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E6CB254AEC;
+	Thu, 17 Apr 2025 17:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cknow.org header.i=@cknow.org header.b="xRrOkl+q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OI+Vzy2w"
 X-Original-To: stable@vger.kernel.org
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E966117A30E
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 17:10:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 595E317A30E;
+	Thu, 17 Apr 2025 17:10:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744909810; cv=none; b=bUgfRWGNF5nYVDE92EcTqEzG9+v+s4xbopvNHEVSXfA0/zdHTC2PwnxfQX/rKetcSk2BoDqKSG0gsJL/x0/vylEOaEj/wdsg87cfmZfuyhV3Q2IqBSQ5cwKNwO4AuCp57VLAulmSvpXtV/Ifcd+FH+SjqJCklB/TBZQCKRZmgN0=
+	t=1744909829; cv=none; b=gANkaQGRgivZX+J7SKqL3Em3TMAhy/JXQ+0rt0CBWplG5ZutAKHEIOuy6x+jhw2U0dfYFRz7ou1OZKZKwjcxCCO2GMQ3s/H4VCpCaBkgsu64b9uRq3yZBXGxOp0hhhwVE6H2GoMyVu/6V19PphokdH1x7TImcplWTsM10mlje4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744909810; c=relaxed/simple;
-	bh=+KCwB4S1lB26w346UYpwjYOn/QTHi7mLnh8nbljjSZI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=qnvGSnDEzXl1+Yj7UU03tSEcPDKOsIEyuCbAUQCZdxecY6vKQ48DGiUhHDgp29/4MeHa33YTNGTl7EGpYgSVwZyex6eer0fG5QnXKj39jp52z0MhjJflauFmx3ktGJ5h7YLFBW+RbdncM+Su5hiZ5tflYFIDvATK5p/ki9CPd/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow.org; spf=pass smtp.mailfrom=cknow.org; dkim=pass (2048-bit key) header.d=cknow.org header.i=@cknow.org header.b=xRrOkl+q; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cknow.org
+	s=arc-20240116; t=1744909829; c=relaxed/simple;
+	bh=mffokTJI7z6+Mowkpq78KjCNltdAs9MFi5sKUscpmew=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=P2Ocnpba8j9GtkQvPoecAwXJvZMEUAe2BofbhTBglU1E6BgCJs68QGur8Fnx78oXLEVRuBkM1O8obTcRE5fJpK4BtHK0SaxYEPtqiM+MlFXzqEIhFihVLxk2usapBvdP2/OSvm8JLJC7viNJx/92bzTjwwBlktJCdpSCRp/CGGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OI+Vzy2w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE2EDC4CEE4;
+	Thu, 17 Apr 2025 17:10:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744909828;
+	bh=mffokTJI7z6+Mowkpq78KjCNltdAs9MFi5sKUscpmew=;
+	h=Date:From:To:Cc:Subject:From;
+	b=OI+Vzy2wpXQxYqtJlBZDcsO/lMgINZ72KzniiWMd2uTG1rjVUB2RTMBpPNsZP/9Pd
+	 EIml6a/Hl/wVf/cF1XfweLVRgTS188Uo5/NxhVHTebSsQLZv7TkG/GypXzBQosh+wI
+	 o5HsPpgoXzbWsa94UDbmA1JX7HuuERsLswwZFG7cDYiFfvEUDattzqJvEHcpsstd+i
+	 wNMnvQYyMiFCR4BzQrywL7t0eW+0Hm7ZaNTq9UJeHuYbW0emQk374GZrdIFi1ylzVY
+	 7WjORqcmwq05a+YM45PMoaePQFKoTOocgt+cwOpZrfpPCZvXWbHBm5BkEQHKqQQi79
+	 M+rO2p9iVSr4A==
+Date: Thu, 17 Apr 2025 10:10:24 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, llvm@lists.linux.dev
+Subject: Backports of 84ffc79bfbf7 for 6.12 and earlier
+Message-ID: <20250417171024.GA171175@ax162>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cknow.org; s=key1;
-	t=1744909795;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6U4ILFAnnROWvWpXm91/wKuzpauoiAfG10LJOtDhws0=;
-	b=xRrOkl+qGnYLA+AOqsbB9LjK1LWPYQy1oz8Y+rZWCD7iABshDYz1KUdZGcAdgbdurKya1R
-	CmI/fAI+abH5jKptTBlaXXuXzSzy6WA+8jcjmfT+qaoYMFx0A0F2590ib3Hghb/4DXHC1a
-	x++yxn2UC73tCT1BpT6bXu0j5HzYItmFsvENg9YCryIlHXRk6Fg7QnpXXpzvYxs6IxVc7W
-	c8sXsnDjKc4Bov2fkxDKx03WqPOEpfKUFS6Ak0zhV8nC0c2fEoLWUtuyP4rJPeFaeL0Hlf
-	VFVppXokdY6+zL3p+ey2gDqA+uAtsN12AQMFYGmk3QCLVkMdtAfVm2vN+mo5Tg==
-Content-Type: multipart/signed;
- boundary=9beec6f5477ababb2ae9d3e4220a4e06ab7f2fafa941ec7e9fa069b1c762;
- micalg=pgp-sha512; protocol="application/pgp-signature"
-Date: Thu, 17 Apr 2025 19:09:46 +0200
-Message-Id: <D992W9V9ZH2J.2Z2OLK00N0FIU@cknow.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Diederik de Haas" <didi.debian@cknow.org>
-To: "Dragan Simic" <dsimic@manjaro.org>
-Cc: "Lorenzo Pieralisi" <lpieralisi@kernel.org>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, "Bjorn Helgaas"
- <bhelgaas@google.com>, "Heiko Stuebner" <heiko@sntech.de>, "Manivannan
- Sadhasivam" <manivannan.sadhasivam@linaro.org>, "Rob Herring"
- <robh@kernel.org>, "Shawn Lin" <shawn.lin@rock-chips.com>, "Niklas Cassel"
- <cassel@kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-arm-kernel@lists.infradead.org>,
- <linux-rockchip@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
- <stable@vger.kernel.org>
-Subject: Re: [PATCH] PCI: dw-rockchip: Fix function call sequence in
- rockchip_pcie_phy_deinit
-References: <20250417142138.1377451-1-didi.debian@cknow.org>
- <3e000468679b4371a7942a3e07d99894@manjaro.org>
-In-Reply-To: <3e000468679b4371a7942a3e07d99894@manjaro.org>
-X-Migadu-Flow: FLOW_OUT
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="ECo7AUNvGO56DH5W"
+Content-Disposition: inline
 
---9beec6f5477ababb2ae9d3e4220a4e06ab7f2fafa941ec7e9fa069b1c762
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
 
-Hi Dragan,
+--ECo7AUNvGO56DH5W
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Thu Apr 17, 2025 at 6:20 PM CEST, Dragan Simic wrote:
-> On 2025-04-17 16:21, Diederik de Haas wrote:
->> The documentation for the phy_power_off() function explicitly says
->>=20
->>   Must be called before phy_exit().
->>=20
->> So let's follow that instruction.
->>=20
->> Fixes: 0e898eb8df4e ("PCI: rockchip-dwc: Add Rockchip RK356X host
->> controller driver")
->> Cc: stable@vger.kernel.org	# v5.15+
->> Signed-off-by: Diederik de Haas <didi.debian@cknow.org>
->> ---
->>  drivers/pci/controller/dwc/pcie-dw-rockchip.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>=20
->> diff --git a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
->> b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
->> index c624b7ebd118..4f92639650e3 100644
->> --- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
->> +++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
->> @@ -410,8 +410,8 @@ static int rockchip_pcie_phy_init(struct
->> rockchip_pcie *rockchip)
->>=20
->>  static void rockchip_pcie_phy_deinit(struct rockchip_pcie *rockchip)
->>  {
->> -	phy_exit(rockchip->phy);
->>  	phy_power_off(rockchip->phy);
->> +	phy_exit(rockchip->phy);
->>  }
->>=20
->>  static const struct dw_pcie_ops dw_pcie_ops =3D {
->
-> Thanks for the patch, it's looking good to me.  The current state
-> of the rockchip_pcie_phy_deinit() function might actually not cause
-> issues because the rockchip_pcie_phy_deinit() function is used only
-> in the error-handling path in the rockchip_pcie_probe() function,
-> so having no runtime errors leads to no possible issues.
->
-> However, it doesn't mean it shouldn't be fixed, and it would actually
-> be good to dissolve the rockchip_pcie_phy_deinit() function into the
-> above-mentioned error-handling path.  It's a short, two-line function
-> local to the compile unit, used in a single place only, so dissolving
-> it is safe and would actually improve the readability of the code.
+Hi Greg and Sasha,
 
-This patch came about while looking at [1] "PCI: dw-rockchip: Add system
-PM support", which would be the 2nd consumer of the
-rockchip_pcie_phy_deinit() function. That patch's commit message has the
-following: "tries to reuse possible exist(ing) code"
-
-Being a fan of the DRY principle, that sounds like an excellent idea :-)
-
-So while you're right if there would only be 1 consumer, which is the
-case *right now*, given that a 2nd consumer is in the works, I think
-it's better to keep it as I've done it now.
-Let me know if you disagree (including why).
-
-[1] https://lore.kernel.org/linux-rockchip/1744352048-178994-1-git-send-ema=
-il-shawn.lin@rock-chips.com/
-
-> Thus, please feel free to include
->
-> Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-
-Thanks :-)
+Please find attached backports for commit 84ffc79bfbf7 ("kbuild: Add
+'-fno-builtin-wcslen'") to 6.12 and earlier. It has already been queued
+for 6.13 and 6.14 since it applied cleanly. If there are any issues,
+please let me know.
 
 Cheers,
-  Diederik
+Nathan
 
-> and please consider dissolving the rockchip_pcie_phy_deinit() function
-> in the possible v2 of this patch, as suggested above.
+--ECo7AUNvGO56DH5W
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename=5.4-84ffc79bfbf7.patch
+
+From 5dc6f440b2309877ab27879fc327ef0dfc58b682 Mon Sep 17 00:00:00 2001
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Mon, 7 Apr 2025 16:22:12 -0700
+Subject: [PATCH 5.4] kbuild: Add '-fno-builtin-wcslen'
+
+commit 84ffc79bfbf70c779e60218563f2f3ad45288671 upstream.
+
+A recent optimization change in LLVM [1] aims to transform certain loop
+idioms into calls to strlen() or wcslen(). This change transforms the
+first while loop in UniStrcat() into a call to wcslen(), breaking the
+build when UniStrcat() gets inlined into alloc_path_with_tree_prefix():
+
+  ld.lld: error: undefined symbol: wcslen
+  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
+  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
+  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
+  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
+
+Disable this optimization with '-fno-builtin-wcslen', which prevents the
+compiler from assuming that wcslen() is available in the kernel's C
+library.
+
+[ More to the point - it's not that we couldn't implement wcslen(), it's
+  that this isn't an optimization at all in the context of the kernel.
+
+  Replacing a simple inlined loop with a function call to the same loop
+  is just stupid and pointless if you don't have long strings and fancy
+  libraries with vectorization support etc.
+
+  For the regular 'strlen()' cases, we want the compiler to do this in
+  order to handle the trivial case of constant strings. And we do have
+  optimized versions of 'strlen()' on some architectures. But for
+  wcslen? Just no.    - Linus ]
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/llvm/llvm-project/commit/9694844d7e36fd5e01011ab56b64f27b867aa72d [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+[nathan: Resolve small conflict in older trees]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ Makefile | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index 6cb965fe2cb3..05eed26d3e4b 100644
+--- a/Makefile
++++ b/Makefile
+@@ -930,6 +930,9 @@ KBUILD_CFLAGS   += $(call cc-option,-Werror=incompatible-pointer-types)
+ # Require designated initializers for all marked structures
+ KBUILD_CFLAGS   += $(call cc-option,-Werror=designated-init)
+ 
++# Ensure compilers do not transform certain loops into calls to wcslen()
++KBUILD_CFLAGS += -fno-builtin-wcslen
++
+ # change __FILE__ to the relative path from the srctree
+ KBUILD_CFLAGS	+= $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
+ 
+
+base-commit: 1b01d9c341770d4dab5a1a04a706a8eb6c389bb1
+-- 
+2.49.0
 
 
---9beec6f5477ababb2ae9d3e4220a4e06ab7f2fafa941ec7e9fa069b1c762
-Content-Type: application/pgp-signature; name="signature.asc"
+--ECo7AUNvGO56DH5W
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename=5.10-84ffc79bfbf7.patch
 
------BEGIN PGP SIGNATURE-----
+From b0f27298358b4b6f1b44a586fa0de88ce6ca74d0 Mon Sep 17 00:00:00 2001
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Mon, 7 Apr 2025 16:22:12 -0700
+Subject: [PATCH 5.10] kbuild: Add '-fno-builtin-wcslen'
 
-iHUEABYKAB0WIQT1sUPBYsyGmi4usy/XblvOeH7bbgUCaAE13QAKCRDXblvOeH7b
-buluAQCEIjcEnqtZwClOAqM8s1LvfqUaaPSSbkWDSy6SYsLWAwEAofWwHxa8G5nC
-MgjHBOJT/8MsTjFkhLaeM2uzEV2YXQE=
-=VbT8
------END PGP SIGNATURE-----
+commit 84ffc79bfbf70c779e60218563f2f3ad45288671 upstream.
 
---9beec6f5477ababb2ae9d3e4220a4e06ab7f2fafa941ec7e9fa069b1c762--
+A recent optimization change in LLVM [1] aims to transform certain loop
+idioms into calls to strlen() or wcslen(). This change transforms the
+first while loop in UniStrcat() into a call to wcslen(), breaking the
+build when UniStrcat() gets inlined into alloc_path_with_tree_prefix():
+
+  ld.lld: error: undefined symbol: wcslen
+  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
+  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
+  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
+  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
+
+Disable this optimization with '-fno-builtin-wcslen', which prevents the
+compiler from assuming that wcslen() is available in the kernel's C
+library.
+
+[ More to the point - it's not that we couldn't implement wcslen(), it's
+  that this isn't an optimization at all in the context of the kernel.
+
+  Replacing a simple inlined loop with a function call to the same loop
+  is just stupid and pointless if you don't have long strings and fancy
+  libraries with vectorization support etc.
+
+  For the regular 'strlen()' cases, we want the compiler to do this in
+  order to handle the trivial case of constant strings. And we do have
+  optimized versions of 'strlen()' on some architectures. But for
+  wcslen? Just no.    - Linus ]
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/llvm/llvm-project/commit/9694844d7e36fd5e01011ab56b64f27b867aa72d [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+[nathan: Resolve small conflict in older trees]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ Makefile | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index e13f8f8a9ea9..6f7a5e72bbb9 100644
+--- a/Makefile
++++ b/Makefile
+@@ -976,6 +976,9 @@ KBUILD_CFLAGS   += $(call cc-option,-Werror=incompatible-pointer-types)
+ # Require designated initializers for all marked structures
+ KBUILD_CFLAGS   += $(call cc-option,-Werror=designated-init)
+ 
++# Ensure compilers do not transform certain loops into calls to wcslen()
++KBUILD_CFLAGS += -fno-builtin-wcslen
++
+ # change __FILE__ to the relative path from the srctree
+ KBUILD_CPPFLAGS += $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
+ 
+
+base-commit: 7222a9d1c9246944d284902fb9aed25613dd0ece
+-- 
+2.49.0
+
+
+--ECo7AUNvGO56DH5W
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename=5.15-84ffc79bfbf7.patch
+
+From bc78bacca3f3f9f7367afc6dbf56a4733f47e3f6 Mon Sep 17 00:00:00 2001
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Mon, 7 Apr 2025 16:22:12 -0700
+Subject: [PATCH 5.15] kbuild: Add '-fno-builtin-wcslen'
+
+commit 84ffc79bfbf70c779e60218563f2f3ad45288671 upstream.
+
+A recent optimization change in LLVM [1] aims to transform certain loop
+idioms into calls to strlen() or wcslen(). This change transforms the
+first while loop in UniStrcat() into a call to wcslen(), breaking the
+build when UniStrcat() gets inlined into alloc_path_with_tree_prefix():
+
+  ld.lld: error: undefined symbol: wcslen
+  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
+  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
+  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
+  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
+
+Disable this optimization with '-fno-builtin-wcslen', which prevents the
+compiler from assuming that wcslen() is available in the kernel's C
+library.
+
+[ More to the point - it's not that we couldn't implement wcslen(), it's
+  that this isn't an optimization at all in the context of the kernel.
+
+  Replacing a simple inlined loop with a function call to the same loop
+  is just stupid and pointless if you don't have long strings and fancy
+  libraries with vectorization support etc.
+
+  For the regular 'strlen()' cases, we want the compiler to do this in
+  order to handle the trivial case of constant strings. And we do have
+  optimized versions of 'strlen()' on some architectures. But for
+  wcslen? Just no.    - Linus ]
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/llvm/llvm-project/commit/9694844d7e36fd5e01011ab56b64f27b867aa72d [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+[nathan: Resolve small conflict in older trees]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ Makefile | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index 619f4ec0f613..035578b9fafc 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1066,6 +1066,9 @@ KBUILD_CFLAGS   += $(call cc-option,-Werror=incompatible-pointer-types)
+ # Require designated initializers for all marked structures
+ KBUILD_CFLAGS   += $(call cc-option,-Werror=designated-init)
+ 
++# Ensure compilers do not transform certain loops into calls to wcslen()
++KBUILD_CFLAGS += -fno-builtin-wcslen
++
+ # change __FILE__ to the relative path from the srctree
+ KBUILD_CPPFLAGS += $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
+ 
+
+base-commit: f7347f4005727f3155551c0550f4deb9c40b56c2
+-- 
+2.49.0
+
+
+--ECo7AUNvGO56DH5W
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename=6.1-84ffc79bfbf7.patch
+
+From a87930300e5abe2d100b17d7941eb2a4357b88b6 Mon Sep 17 00:00:00 2001
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Mon, 7 Apr 2025 16:22:12 -0700
+Subject: [PATCH 6.1] kbuild: Add '-fno-builtin-wcslen'
+
+commit 84ffc79bfbf70c779e60218563f2f3ad45288671 upstream.
+
+A recent optimization change in LLVM [1] aims to transform certain loop
+idioms into calls to strlen() or wcslen(). This change transforms the
+first while loop in UniStrcat() into a call to wcslen(), breaking the
+build when UniStrcat() gets inlined into alloc_path_with_tree_prefix():
+
+  ld.lld: error: undefined symbol: wcslen
+  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
+  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
+  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
+  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
+
+Disable this optimization with '-fno-builtin-wcslen', which prevents the
+compiler from assuming that wcslen() is available in the kernel's C
+library.
+
+[ More to the point - it's not that we couldn't implement wcslen(), it's
+  that this isn't an optimization at all in the context of the kernel.
+
+  Replacing a simple inlined loop with a function call to the same loop
+  is just stupid and pointless if you don't have long strings and fancy
+  libraries with vectorization support etc.
+
+  For the regular 'strlen()' cases, we want the compiler to do this in
+  order to handle the trivial case of constant strings. And we do have
+  optimized versions of 'strlen()' on some architectures. But for
+  wcslen? Just no.    - Linus ]
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/llvm/llvm-project/commit/9694844d7e36fd5e01011ab56b64f27b867aa72d [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+[nathan: Resolve small conflict in older trees]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ Makefile | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index 50f1a283b67d..eae097d3db6c 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1075,6 +1075,9 @@ KBUILD_CFLAGS   += $(call cc-option,-Werror=incompatible-pointer-types)
+ # Require designated initializers for all marked structures
+ KBUILD_CFLAGS   += $(call cc-option,-Werror=designated-init)
+ 
++# Ensure compilers do not transform certain loops into calls to wcslen()
++KBUILD_CFLAGS += -fno-builtin-wcslen
++
+ # change __FILE__ to the relative path from the srctree
+ KBUILD_CPPFLAGS += $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
+ 
+
+base-commit: 420102835862f49ec15c545594278dc5d2712f42
+-- 
+2.49.0
+
+
+--ECo7AUNvGO56DH5W
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename=6.6-84ffc79bfbf7.patch
+
+From 1b9fbad11767ed56fdc7da1b252913e2f2a155e9 Mon Sep 17 00:00:00 2001
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Mon, 7 Apr 2025 16:22:12 -0700
+Subject: [PATCH 6.6] kbuild: Add '-fno-builtin-wcslen'
+
+commit 84ffc79bfbf70c779e60218563f2f3ad45288671 upstream.
+
+A recent optimization change in LLVM [1] aims to transform certain loop
+idioms into calls to strlen() or wcslen(). This change transforms the
+first while loop in UniStrcat() into a call to wcslen(), breaking the
+build when UniStrcat() gets inlined into alloc_path_with_tree_prefix():
+
+  ld.lld: error: undefined symbol: wcslen
+  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
+  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
+  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
+  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
+
+Disable this optimization with '-fno-builtin-wcslen', which prevents the
+compiler from assuming that wcslen() is available in the kernel's C
+library.
+
+[ More to the point - it's not that we couldn't implement wcslen(), it's
+  that this isn't an optimization at all in the context of the kernel.
+
+  Replacing a simple inlined loop with a function call to the same loop
+  is just stupid and pointless if you don't have long strings and fancy
+  libraries with vectorization support etc.
+
+  For the regular 'strlen()' cases, we want the compiler to do this in
+  order to handle the trivial case of constant strings. And we do have
+  optimized versions of 'strlen()' on some architectures. But for
+  wcslen? Just no.    - Linus ]
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/llvm/llvm-project/commit/9694844d7e36fd5e01011ab56b64f27b867aa72d [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+[nathan: Resolve small conflict in older trees]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ Makefile | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index 45f6b7d3d51e..18ca8d458fa4 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1004,6 +1004,9 @@ ifdef CONFIG_CC_IS_GCC
+ KBUILD_CFLAGS   += -fconserve-stack
+ endif
+ 
++# Ensure compilers do not transform certain loops into calls to wcslen()
++KBUILD_CFLAGS += -fno-builtin-wcslen
++
+ # change __FILE__ to the relative path from the srctree
+ KBUILD_CPPFLAGS += $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
+ 
+
+base-commit: 814637ca257f4faf57a73fd4e38888cce88b5911
+-- 
+2.49.0
+
+
+--ECo7AUNvGO56DH5W
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename=6.12-84ffc79bfbf7.patch
+
+From 99d01048fc148dc10471b67da642df190a9727bb Mon Sep 17 00:00:00 2001
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Mon, 7 Apr 2025 16:22:12 -0700
+Subject: [PATCH 6.12] kbuild: Add '-fno-builtin-wcslen'
+
+commit 84ffc79bfbf70c779e60218563f2f3ad45288671 upstream.
+
+A recent optimization change in LLVM [1] aims to transform certain loop
+idioms into calls to strlen() or wcslen(). This change transforms the
+first while loop in UniStrcat() into a call to wcslen(), breaking the
+build when UniStrcat() gets inlined into alloc_path_with_tree_prefix():
+
+  ld.lld: error: undefined symbol: wcslen
+  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
+  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
+  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
+  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
+
+Disable this optimization with '-fno-builtin-wcslen', which prevents the
+compiler from assuming that wcslen() is available in the kernel's C
+library.
+
+[ More to the point - it's not that we couldn't implement wcslen(), it's
+  that this isn't an optimization at all in the context of the kernel.
+
+  Replacing a simple inlined loop with a function call to the same loop
+  is just stupid and pointless if you don't have long strings and fancy
+  libraries with vectorization support etc.
+
+  For the regular 'strlen()' cases, we want the compiler to do this in
+  order to handle the trivial case of constant strings. And we do have
+  optimized versions of 'strlen()' on some architectures. But for
+  wcslen? Just no.    - Linus ]
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/llvm/llvm-project/commit/9694844d7e36fd5e01011ab56b64f27b867aa72d [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+[nathan: Resolve small conflict in older trees]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ Makefile | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index 6a2a60eb67a3..1e0ec6317c17 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1013,6 +1013,9 @@ ifdef CONFIG_CC_IS_GCC
+ KBUILD_CFLAGS   += -fconserve-stack
+ endif
+ 
++# Ensure compilers do not transform certain loops into calls to wcslen()
++KBUILD_CFLAGS += -fno-builtin-wcslen
++
+ # change __FILE__ to the relative path from the srctree
+ KBUILD_CPPFLAGS += $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
+ 
+
+base-commit: 83b4161a63b87ce40d9f24f09b5b006f63d95b7c
+-- 
+2.49.0
+
+
+--ECo7AUNvGO56DH5W--
 
