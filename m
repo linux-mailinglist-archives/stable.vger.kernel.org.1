@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B71DDA925EE
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:09:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A88F6A929EE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:45:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7B901B62747
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE31C7B8141
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90DB8256C65;
-	Thu, 17 Apr 2025 18:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B252566DA;
+	Thu, 17 Apr 2025 18:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNeV2I+r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSGfBrXv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D90725335A;
-	Thu, 17 Apr 2025 18:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18B71C84D4;
+	Thu, 17 Apr 2025 18:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913222; cv=none; b=B1L12xdwc+CUTyJ8nGysiHGSMVlSzeHYpiA8RBcPyNZjJ4Of1Z4ZyHOp2r2h3oIaJRX4dFqg2ha52PUqmW6DabAcVj/ynfxMvSomgPj8+NAxUjNjfUG42wQAvfc4GmYvC9LmoUEiR1t4htBKS0w8QaErex9fHD5k64+4fh1alQk=
+	t=1744915373; cv=none; b=je/Sywvvr53bvlIOD58KPLspR1royhBE5XuUpPSL3RIPGyKtuQN1gbl3vVU+4ngdGvbCf0O23znxol9V35y4zzxgluueZTpjsyJMkuWxp+ON6mRjNRjjR0ivPJ5uy4j1ZufqgxV78R9I2/zoKq2jaEZQNoI2aITvvWaH0GCN0z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913222; c=relaxed/simple;
-	bh=8/jd1y8JhiXhh5c5yx10s4CMpOG1tv6R60J08maU4DY=;
+	s=arc-20240116; t=1744915373; c=relaxed/simple;
+	bh=PN2TIWFV8mtHPotSWKJa0lT5zK4yuaWcVk8eNz4FeQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dRLIV2T/wHMO6N0XjQrMGcZkAeX7L65rKpqE4X/LOcln61uJdRfziUY8AoeAR3DmU0isQZT+poS9+oyzct28rsGV+TwL/pNJsuh2Q3Jqnld6KPgkWEs5kQ5F/3lLBoC/ECkFTIljIh4iDs3aG7mVocYZiUQ2CRX2NPW6x3vKmE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNeV2I+r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7347C4CEE4;
-	Thu, 17 Apr 2025 18:07:01 +0000 (UTC)
+	 MIME-Version; b=SLZ6PGzod6jwz/Pm7pgZGGhYCJEDva0txuD3pniXhXKWKRjzKkcPHrxjbO/4Dynl2CXQtaoPYg1eoNpNyuAOwrNvvaTqrcg300k1/L4zq4bXQtIqtINfiIuHM1YsoC3DohaadAXrA/Zhl3Awws3UaIz35DdtVnVvAKRTUnFp9X4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSGfBrXv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A1CBC4CEE4;
+	Thu, 17 Apr 2025 18:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913222;
-	bh=8/jd1y8JhiXhh5c5yx10s4CMpOG1tv6R60J08maU4DY=;
+	s=korg; t=1744915372;
+	bh=PN2TIWFV8mtHPotSWKJa0lT5zK4yuaWcVk8eNz4FeQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DNeV2I+r50DwTJZxXKv3iTHLIhSgQ+U0d4/7mGgVKLI1HzKzEfxEhizfYpOjfwrLr
-	 4Zibu5hpMdiSh67EEBct1nyO1E+BA/VP7Fr6hH4VK2hW2lKth0D8rI0Z3m3OeKUOEC
-	 8P0I16N/U3h9ateVUZSJOkRF/dL4w/Le4q/WhvXM=
+	b=NSGfBrXvxMBQbBQ5ejxbQ5owiT/Yld0Egyv9Opuwxv1k3KgqTDdk/X8ip6ARBNuCN
+	 JJSX7nFuooNoF47QIMTeniSzRFvpiUQJ7Ns8GbfPXZanBpu+TVJs4/RbMFqUxKsc+O
+	 Cd6vMJNhqE7ENv8Fizjz3RP8d8OzgXycFG8flKA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.14 227/449] media: venus: hfi: add check to handle incorrect queue size
-Date: Thu, 17 Apr 2025 19:48:35 +0200
-Message-ID: <20250417175127.131535264@linuxfoundation.org>
+	Martin Schiller <ms@dev.tdt.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 107/393] net: sfp: add quirk for FS SFP-10GM-T copper SFP+ module
+Date: Thu, 17 Apr 2025 19:48:36 +0200
+Message-ID: <20250417175111.895449661@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
+From: Martin Schiller <ms@dev.tdt.de>
 
-commit 69baf245b23e20efda0079238b27fc63ecf13de1 upstream.
+[ Upstream commit 05ec5c085eb7ae044d49e04a3cff194a0b2a3251 ]
 
-qsize represents size of shared queued between driver and video
-firmware. Firmware can modify this value to an invalid large value. In
-such situation, empty_space will be bigger than the space actually
-available. Since new_wr_idx is not checked, so the following code will
-result in an OOB write.
-...
-qsize = qhdr->q_size
+Add quirk for a copper SFP that identifies itself as "FS" "SFP-10GM-T".
+It uses RollBall protocol to talk to the PHY and needs 4 sec wait before
+probing the PHY.
 
-if (wr_idx >= rd_idx)
- empty_space = qsize - (wr_idx - rd_idx)
-....
-if (new_wr_idx < qsize) {
- memcpy(wr_ptr, packet, dwords << 2) --> OOB write
-
-Add check to ensure qsize is within the allocated size while
-reading and writing packets into the queue.
-
-Cc: stable@vger.kernel.org
-Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Martin Schiller <ms@dev.tdt.de>
+Link: https://patch.msgid.link/20250227071058.1520027-1-ms@dev.tdt.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/hfi_venus.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/phy/sfp.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -187,6 +187,9 @@ static int venus_write_queue(struct venu
- 	/* ensure rd/wr indices's are read from memory */
- 	rmb();
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index 9a5de80acd2f7..7b33993f7001e 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -385,7 +385,7 @@ static void sfp_fixup_rollball(struct sfp *sfp)
+ 	sfp->phy_t_retry = msecs_to_jiffies(1000);
+ }
  
-+	if (qsize > IFACEQ_QUEUE_SIZE / 4)
-+		return -EINVAL;
-+
- 	if (wr_idx >= rd_idx)
- 		empty_space = qsize - (wr_idx - rd_idx);
- 	else
-@@ -255,6 +258,9 @@ static int venus_read_queue(struct venus
- 	wr_idx = qhdr->write_idx;
- 	qsize = qhdr->q_size;
+-static void sfp_fixup_fs_2_5gt(struct sfp *sfp)
++static void sfp_fixup_rollball_wait4s(struct sfp *sfp)
+ {
+ 	sfp_fixup_rollball(sfp);
  
-+	if (qsize > IFACEQ_QUEUE_SIZE / 4)
-+		return -EINVAL;
-+
- 	/* make sure data is valid before using it */
- 	rmb();
+@@ -399,7 +399,7 @@ static void sfp_fixup_fs_2_5gt(struct sfp *sfp)
+ static void sfp_fixup_fs_10gt(struct sfp *sfp)
+ {
+ 	sfp_fixup_10gbaset_30m(sfp);
+-	sfp_fixup_fs_2_5gt(sfp);
++	sfp_fixup_rollball_wait4s(sfp);
+ }
  
+ static void sfp_fixup_halny_gsfp(struct sfp *sfp)
+@@ -479,9 +479,10 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 	// PHY.
+ 	SFP_QUIRK_F("FS", "SFP-10G-T", sfp_fixup_fs_10gt),
+ 
+-	// Fiberstore SFP-2.5G-T uses Rollball protocol to talk to the PHY and
+-	// needs 4 sec wait before probing the PHY.
+-	SFP_QUIRK_F("FS", "SFP-2.5G-T", sfp_fixup_fs_2_5gt),
++	// Fiberstore SFP-2.5G-T and SFP-10GM-T uses Rollball protocol to talk
++	// to the PHY and needs 4 sec wait before probing the PHY.
++	SFP_QUIRK_F("FS", "SFP-2.5G-T", sfp_fixup_rollball_wait4s),
++	SFP_QUIRK_F("FS", "SFP-10GM-T", sfp_fixup_rollball_wait4s),
+ 
+ 	// Fiberstore GPON-ONU-34-20BI can operate at 2500base-X, but report 1.2GBd
+ 	// NRZ in their EEPROM
+-- 
+2.39.5
+
 
 
 
