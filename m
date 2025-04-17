@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-133527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BF1AA925FD
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:09:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B04EA92A70
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:51:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C334A3AF454
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B8DB3B460B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAAA4256C80;
-	Thu, 17 Apr 2025 18:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2583E2566DB;
+	Thu, 17 Apr 2025 18:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UihfQeC+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/JzCV8t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760CD1DB148;
-	Thu, 17 Apr 2025 18:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D800719ABC6;
+	Thu, 17 Apr 2025 18:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913346; cv=none; b=dSufBtKfhyYGgH3kQsbyQKg/kzDlwqUKFJMwjQrgITmWWqVULAyIm4nNclb479YAmFbL0DykaxIiEgCBa6YQn5F9S0W1xcBrZljEL8Itt4+OKds+nZPUezxndJz6JBUUrpgB9D7NVfyuqZ8YutBk1OPJ+xaxG4MFovkJ5o7mIoY=
+	t=1744915680; cv=none; b=QZCWMFskxCCGIoR14LlsTRWLGFOiujUIUvp7VXMl2M+hEj0cEpASiQV2W6Ju85u7ke9ikeqVyOiv4MFwg4hJO/mPo/lYoa/aPk4dcD9VVGX1VYU2JuXoSd3ZXKtg35z6oyqYlJf+zBgSTgDB+aqgwgYyIeVtO6DdQ/FWpKC1kxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913346; c=relaxed/simple;
-	bh=O74An4/sZz+YRepuhM2bR2w3JnVnCT2sNP+vRy7az/s=;
+	s=arc-20240116; t=1744915680; c=relaxed/simple;
+	bh=uwqLWvZKTDi11E2Ij+8M+FKnUDK633RBKZNPhrn6fag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gPeBepcdVmTB59LHxwAfZeMdWO77E1OJkqewdMOnNq0D5k/ntav6kLCBEo2OmU6bTuWcHzqXgk3/qLtym3vbyaXn8MbF/MQ3CXKpcj8vEqOjrGvLqHJYhVrbIa6lYvVIEw/ztTtHBhcg+6CV8CMeEdKaHvM81uPn86fGskYiMD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UihfQeC+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF5C7C4CEE4;
-	Thu, 17 Apr 2025 18:09:05 +0000 (UTC)
+	 MIME-Version; b=kaOZW4PjY3aqb8ducXfymzH8yNJzqjfiUAehJIBtDqlIjwRZpCTxpHrgDLcw5ZC2YLP440BcEVUl9b65yogR3LhRG5GM1IEEJhhHQtuZbaEeJ+nrAO2zEllf7uAN1XX1xkk87kCDn0TASVUc8Pd4ildqEwRLr4nlEtfM/h4ztag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/JzCV8t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E26CDC4CEE4;
+	Thu, 17 Apr 2025 18:47:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913346;
-	bh=O74An4/sZz+YRepuhM2bR2w3JnVnCT2sNP+vRy7az/s=;
+	s=korg; t=1744915680;
+	bh=uwqLWvZKTDi11E2Ij+8M+FKnUDK633RBKZNPhrn6fag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UihfQeC+BHpo7Vkry9gl1HKkvV0jR9cwv5Uzn5pdkh7xDb9UX/psjAzpE+9huN5C7
-	 zxRXlx6+EAZFbd2fJjHdiUwxHSnLBywpOqpFMXz/Fa0ADWY4kC/2mLfF1+rB0Dt3zc
-	 cLyMZBTQ5lF1HApC5ZQXQHOHJIIl0SPNA9bMwWu4=
+	b=r/JzCV8t66RKWrjHW/yKVtnCVBDEH10yp6P0ls6V8NyzRpU/sYChaRPb24+2WR5pg
+	 5z6uNYpbwQj4VP8qYoysvk69u1AzH5qIogYiL1Tkas/61nanMu3IY3/AMVczzGxF6/
+	 POEFnykb7NeR1iW9YGXdNTufN7V1ipg/2piEmcc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cong Meng <cong.meng@oracle.com>,
-	Si-Wei Liu <si-wei.liu@oracle.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>
-Subject: [PATCH 6.14 309/449] vdpa/mlx5: Fix oversized null mkey longer than 32bit
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 188/393] dt-bindings: media: st,stmipid02: correct lane-polarities maxItems
 Date: Thu, 17 Apr 2025 19:49:57 +0200
-Message-ID: <20250417175130.548728458@linuxfoundation.org>
+Message-ID: <20250417175115.151211389@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Si-Wei Liu <si-wei.liu@oracle.com>
+From: Alain Volmat <alain.volmat@foss.st.com>
 
-commit a6097e0a54a5c24f8d577ffecbc35289ae281c2e upstream.
+commit 3a544a39e0a4c492e3026dfbed018321d2bd6caa upstream.
 
-create_user_mr() has correct code to count the number of null keys
-used to fill in a hole for the memory map. However, fill_indir()
-does not follow the same to cap the range up to the 1GB limit
-correspondingly. Fill in more null keys for the gaps in between,
-so that null keys are correctly populated.
+The MIPID02 can use up to 2 data lanes which leads to having a maximum
+item number of 3 for the lane-polarities since this also contains the
+clock lane.
 
-Fixes: 94abbccdf291 ("vdpa/mlx5: Add shared memory registration code")
-Cc: stable@vger.kernel.org
-Reported-by: Cong Meng <cong.meng@oracle.com>
-Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <20250220193732.521462-2-dtatulea@nvidia.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
+CC: stable@vger.kernel.org
+Fixes: c2741cbe7f8a ("dt-bindings: media: st,stmipid02: Convert the text bindings to YAML")
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vdpa/mlx5/core/mr.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/media/i2c/st,st-mipid02.yaml |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/vdpa/mlx5/core/mr.c
-+++ b/drivers/vdpa/mlx5/core/mr.c
-@@ -190,9 +190,12 @@ again:
- 			klm->bcount = cpu_to_be32(klm_bcount(dmr->end - dmr->start));
- 			preve = dmr->end;
- 		} else {
-+			u64 bcount = min_t(u64, dmr->start - preve, MAX_KLM_SIZE);
-+
- 			klm->key = cpu_to_be32(mvdev->res.null_mkey);
--			klm->bcount = cpu_to_be32(klm_bcount(dmr->start - preve));
--			preve = dmr->start;
-+			klm->bcount = cpu_to_be32(klm_bcount(bcount));
-+			preve += bcount;
-+
- 			goto again;
- 		}
- 	}
+--- a/Documentation/devicetree/bindings/media/i2c/st,st-mipid02.yaml
++++ b/Documentation/devicetree/bindings/media/i2c/st,st-mipid02.yaml
+@@ -71,7 +71,7 @@ properties:
+                 description:
+                   Any lane can be inverted or not.
+                 minItems: 1
+-                maxItems: 2
++                maxItems: 3
+ 
+             required:
+               - data-lanes
 
 
 
