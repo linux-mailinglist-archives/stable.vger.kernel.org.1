@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-134181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD903A929FC
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:46:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A748A925A5
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:06:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71E9B3A6D1B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79165467557
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67DCA256C6B;
-	Thu, 17 Apr 2025 18:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE4F2571DE;
+	Thu, 17 Apr 2025 18:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkWMJyea"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hSFh6kKK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8AB25335A;
-	Thu, 17 Apr 2025 18:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D912566E8;
+	Thu, 17 Apr 2025 18:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915340; cv=none; b=RuHavoO3UckYQ16Rp8qWyrQAUUDPHTrrX4SNjIcA8fjKAL0iJnLPrl5qv/ZhCA9pNs23mAMycmKdxTt7+hbjJ15egdyL/g65h3w8bD9ji25njZKr+tZk5Ceq/iU0QDi0sIDHQu8cFqHk+Bso5P/lo2AXuissT2yg8G1V3+NfJVc=
+	t=1744913047; cv=none; b=XgsCwUaLcKvd0KGs03mSrNcPj3d/nOS2mxr4wv0YFAc7f0tQRjvuqThDG+3TSU43qXGFqbYNgOKz/HwOG3fsMgSG3epoXvL9SDgQnxJdyZa84j/Pp/nyGFz0Ws85DGI3Gk9AxsFdWSn7weZLcL2zw8jHRb1KSPeLUlawRK1i+dI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915340; c=relaxed/simple;
-	bh=Pky979WpaWzgxXOe8o9ouWbFVkPai4HjmI40lUDIOY4=;
+	s=arc-20240116; t=1744913047; c=relaxed/simple;
+	bh=laOR+mHhtYlH+9WSK6wioK4oZjq9550ztWU1j4Tgaiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cb+01RAvCvGSw7vt772ykOLV21lxqQ34GzxqWHjc1SFz7z9yCdftRLC/0o52d5fwUgxpBrVR91OCIEp2T6+zYEOXdeM7BC4CMl70BDynKH3XJjysvvq5EIAV4LiKQ7j4V8zhwMfUEHiN3xJ8pybvr0/btve4mkj1ezxUI73Ohws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkWMJyea; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8488DC4CEE4;
-	Thu, 17 Apr 2025 18:42:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fUYQ9iyX/4FK0wnnCO9WQXyCp+254Jpea/uoG7LMbs3AvLXfWCbhQIskSwWs76miHh7ycDspYHDzq5J0rQlWGUaQlU7eSPJh7CzqztqlbXIe7yITW7oYu3y9Yx/3CB1H1VBrYBSwElu8WGq468th0OsuzU2g5IQyUWdGhkH9gp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hSFh6kKK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C679C4CEE4;
+	Thu, 17 Apr 2025 18:04:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915340;
-	bh=Pky979WpaWzgxXOe8o9ouWbFVkPai4HjmI40lUDIOY4=;
+	s=korg; t=1744913046;
+	bh=laOR+mHhtYlH+9WSK6wioK4oZjq9550ztWU1j4Tgaiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xkWMJyea7mHLAB7K0Q5xLAIKFQkKbaKC4zfPbCpUBM4iFl1y8POtTovjaAH4df2Bh
-	 pq2wHg0oZFxJdzsy6AgnZN6cLqujgB+onXnrviRHluwzcyMRWxQqtatsxzXwuwnSNR
-	 vcrrNVFDtJ06B4eKGdpuLtCaylMBEj4ttz6qfpys=
+	b=hSFh6kKKJLpEseF8NSUInQcWb6dNk4LvWME5qUX9RXSO5olizNZx3QS+5M3ZY14/d
+	 O49Lgz+QdTnBzOfdEwHOz3otpRLyWC8Z3u/oNk0SCvcbnI24zbiqqUDuzzhApNH3aO
+	 r368fkJJtO0dSXzmtUK1liBZyvYNm0JwtecOXI6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Mina Almasry <almasrymina@google.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	David Wei <dw@davidwei.uk>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 089/393] net: page_pool: dont cast mp param to devmem
+Subject: [PATCH 6.14 210/449] HID: pidff: Support device error response from PID_BLOCK_LOAD
 Date: Thu, 17 Apr 2025 19:48:18 +0200
-Message-ID: <20250417175111.174706611@linuxfoundation.org>
+Message-ID: <20250417175126.428664634@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit 8d522566ae9cb3f0609ddb2a6ce3f4f39988043c ]
+[ Upstream commit 9d4174dc4a234408d91fd83725e1899766cd1731 ]
 
-page_pool_check_memory_provider() is a generic path and shouldn't assume
-anything about the actual type of the memory provider argument. It's
-fine while devmem is the only provider, but cast away the devmem
-specific binding types to avoid confusion.
+If an error happens on the device, the driver will no longer fall
+into the trap of reading this status 60 times before it decides that
+this reply won't change to success/memory full.
 
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: David Wei <dw@davidwei.uk>
-Link: https://patch.msgid.link/20250204215622.695511-2-dw@davidwei.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Greatly reduces communication overhead during device error situation.
+
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/page_pool_user.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/usbhid/hid-pidff.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/page_pool_user.c b/net/core/page_pool_user.c
-index 48335766c1bfd..8d31c71bea1a3 100644
---- a/net/core/page_pool_user.c
-+++ b/net/core/page_pool_user.c
-@@ -353,7 +353,7 @@ void page_pool_unlist(struct page_pool *pool)
- int page_pool_check_memory_provider(struct net_device *dev,
- 				    struct netdev_rx_queue *rxq)
- {
--	struct net_devmem_dmabuf_binding *binding = rxq->mp_params.mp_priv;
-+	void *binding = rxq->mp_params.mp_priv;
- 	struct page_pool *pool;
- 	struct hlist_node *n;
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index e2508a4d754d3..d5734cbf745d1 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -138,7 +138,8 @@ static const u8 pidff_effect_types[] = {
  
+ #define PID_BLOCK_LOAD_SUCCESS	0
+ #define PID_BLOCK_LOAD_FULL	1
+-static const u8 pidff_block_load_status[] = { 0x8c, 0x8d };
++#define PID_BLOCK_LOAD_ERROR	2
++static const u8 pidff_block_load_status[] = { 0x8c, 0x8d, 0x8e};
+ 
+ #define PID_EFFECT_START	0
+ #define PID_EFFECT_STOP		1
+@@ -666,6 +667,11 @@ static int pidff_request_effect_upload(struct pidff_device *pidff, int efnum)
+ 				pidff->block_load[PID_RAM_POOL_AVAILABLE].value[0] : -1);
+ 			return -ENOSPC;
+ 		}
++		if (pidff->block_load_status->value[0] ==
++		    pidff->status_id[PID_BLOCK_LOAD_ERROR]) {
++			hid_dbg(pidff->hid, "device error during effect creation\n");
++			return -EREMOTEIO;
++		}
+ 	}
+ 	hid_err(pidff->hid, "pid_block_load failed 60 times\n");
+ 	return -EIO;
 -- 
 2.39.5
 
