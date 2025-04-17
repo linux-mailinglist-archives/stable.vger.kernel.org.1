@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-133916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DDF4A92885
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C2DCA92881
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:35:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E3F119E33A0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73E6B166FC1
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB45257436;
-	Thu, 17 Apr 2025 18:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2994D274649;
+	Thu, 17 Apr 2025 18:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6tWkbYL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7m6cAEk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7072522AC;
-	Thu, 17 Apr 2025 18:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D884626E17F;
+	Thu, 17 Apr 2025 18:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914535; cv=none; b=VrAwBqE4dfDyPeN/1ZTmYmCq6sq54ip/32CXGL88nFLftowJTu/fcbItfefHVrpKcr6g+zqvQ3A452NAbTYrxe1w15K2pQjMol7IUJqkfJb8TGgBrCC7IQbd4pXyMSGlcv2T/1XTTDOOgOOB9IwHGcWzdLYNX6VMFqFiyzC0YSM=
+	t=1744914443; cv=none; b=DX4HtkamB69XEkUs6CeclFWkzQb8/5XgYtTadu3x9wti1qHn7Y5ggMrGqCtYdriiDTi2fpCgSuC2u9p5ItvvtB4VP4/339mBNFd8RHJgTdMv1FBG3pEFJ5d27CQGun7OodfysY6bU9hr/YKN1Wqyvvu6Zw1ZWgBY7R6iDC2z1ZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914535; c=relaxed/simple;
-	bh=F8Vt1l1qFsq3Y59HuncRHZMozWL58ejDRBXYx7yH4eU=;
+	s=arc-20240116; t=1744914443; c=relaxed/simple;
+	bh=8qP5rC44pM2qOAOzYXn2oNCaYFLAWZ+NcMWQn5kz794=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BqQtLC5FJhZYmjupR/KBqJ1fl5x3fnmeIcXwYKV73Gxc/Wh/SRd0fDypy6VW6zR9m+8jPPpuINYx6yIJFnBv6YjzidvT9FwZKrfthPzdoaNfo8ZU8xwWyd24d7SlFJ71wTmxdjtQKFjLpHwuROaeZAzN1eFYtUa6A+D6sLZL5UE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6tWkbYL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC18AC4CEE7;
-	Thu, 17 Apr 2025 18:28:54 +0000 (UTC)
+	 MIME-Version; b=q6LRvFXMeu8dLdQs6XX5BoE+rPOa8T6pv5/TXFX598OLQx7cR6smdZOx/qXnMpHtw93UIbfkBijnrSTrEy8oQS1QYydwet4Kj8DvjtbpYP0/1aKDH+r3Yf44sT2by1++Z7mMcDnnDflW5o3NoWhG9j1m77jphE9hgQ0eEinT0+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7m6cAEk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BF21C4CEE4;
+	Thu, 17 Apr 2025 18:27:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914535;
-	bh=F8Vt1l1qFsq3Y59HuncRHZMozWL58ejDRBXYx7yH4eU=;
+	s=korg; t=1744914443;
+	bh=8qP5rC44pM2qOAOzYXn2oNCaYFLAWZ+NcMWQn5kz794=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O6tWkbYLgjGXZtgzLdUAORrtCiYos7aq1+X1BFXLOvCK/kxXt5TuKIwfR8pJ2w6e8
-	 u/2KOpx7wukxm+7dnhaJhJZfJCIz4Mu+iKGppgXd5IKmneGxsK3T6QjCh3PL+v60td
-	 QiuUoXFrzayOcZUyWFAZ1VhymZJhoKfskAL1T3oQ=
+	b=h7m6cAEk/OV2LMem+J18+zc85GiKHjCCA8qnWLJQK6CPK1/Emx7oKKA+TI1R/mmSM
+	 9GLYRcb2bJabwL59+lFWFh1yDH9REaqKY+kLp32PSWc94WZj6+SEx5oYDdEkjo7eN2
+	 Ga0u/c2JpkcrUvrQiYEOUD6KdCM1W5zDHzqDGN9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.13 217/414] spi: cadence-qspi: Fix probe on AM62A LP SK
-Date: Thu, 17 Apr 2025 19:49:35 +0200
-Message-ID: <20250417175120.162552291@linuxfoundation.org>
+	Kamal Dasu <kamal.dasu@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.13 218/414] mtd: rawnand: brcmnand: fix PM resume warning
+Date: Thu, 17 Apr 2025 19:49:36 +0200
+Message-ID: <20250417175120.201770072@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
 References: <20250417175111.386381660@linuxfoundation.org>
@@ -65,63 +66,99 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Kamal Dasu <kamal.dasu@broadcom.com>
 
-commit b8665a1b49f5498edb7b21d730030c06b7348a3c upstream.
+commit ddc210cf8b8a8be68051ad958bf3e2cef6b681c2 upstream.
 
-In 2020, there's been an unnoticed change which rightfully attempted to
-report probe deferrals upon DMA absence by checking the return value of
-dma_request_chan_by_mask(). By doing so, it also reported errors which
-were simply ignored otherwise, likely on purpose.
+Fixed warning on PM resume as shown below caused due to uninitialized
+struct nand_operation that checks chip select field :
+WARN_ON(op->cs >= nanddev_ntargets(&chip->base)
 
-This change actually turned a void return into an error code. Hence, not
-only the -EPROBE_DEFER error codes but all error codes got reported to
-the callers, now failing to probe in the absence of Rx DMA channel,
-despite the fact that DMA seems to not be supported natively by many
-implementations.
+[   14.588522] ------------[ cut here ]------------
+[   14.588529] WARNING: CPU: 0 PID: 1392 at drivers/mtd/nand/raw/internals.h:139 nand_reset_op+0x1e0/0x1f8
+[   14.588553] Modules linked in: bdc udc_core
+[   14.588579] CPU: 0 UID: 0 PID: 1392 Comm: rtcwake Tainted: G        W          6.14.0-rc4-g5394eea10651 #16
+[   14.588590] Tainted: [W]=WARN
+[   14.588593] Hardware name: Broadcom STB (Flattened Device Tree)
+[   14.588598] Call trace:
+[   14.588604]  dump_backtrace from show_stack+0x18/0x1c
+[   14.588622]  r7:00000009 r6:0000008b r5:60000153 r4:c0fa558c
+[   14.588625]  show_stack from dump_stack_lvl+0x70/0x7c
+[   14.588639]  dump_stack_lvl from dump_stack+0x18/0x1c
+[   14.588653]  r5:c08d40b0 r4:c1003cb0
+[   14.588656]  dump_stack from __warn+0x84/0xe4
+[   14.588668]  __warn from warn_slowpath_fmt+0x18c/0x194
+[   14.588678]  r7:c08d40b0 r6:c1003cb0 r5:00000000 r4:00000000
+[   14.588681]  warn_slowpath_fmt from nand_reset_op+0x1e0/0x1f8
+[   14.588695]  r8:70c40dff r7:89705f41 r6:36b4a597 r5:c26c9444 r4:c26b0048
+[   14.588697]  nand_reset_op from brcmnand_resume+0x13c/0x150
+[   14.588714]  r9:00000000 r8:00000000 r7:c24f8010 r6:c228a3f8 r5:c26c94bc r4:c26b0040
+[   14.588717]  brcmnand_resume from platform_pm_resume+0x34/0x54
+[   14.588735]  r5:00000010 r4:c0840a50
+[   14.588738]  platform_pm_resume from dpm_run_callback+0x5c/0x14c
+[   14.588757]  dpm_run_callback from device_resume+0xc0/0x324
+[   14.588776]  r9:c24f8054 r8:c24f80a0 r7:00000000 r6:00000000 r5:00000010 r4:c24f8010
+[   14.588779]  device_resume from dpm_resume+0x130/0x160
+[   14.588799]  r9:c22539e4 r8:00000010 r7:c22bebb0 r6:c24f8010 r5:c22539dc r4:c22539b0
+[   14.588802]  dpm_resume from dpm_resume_end+0x14/0x20
+[   14.588822]  r10:c2204e40 r9:00000000 r8:c228a3fc r7:00000000 r6:00000003 r5:c228a414
+[   14.588826]  r4:00000010
+[   14.588828]  dpm_resume_end from suspend_devices_and_enter+0x274/0x6f8
+[   14.588848]  r5:c228a414 r4:00000000
+[   14.588851]  suspend_devices_and_enter from pm_suspend+0x228/0x2bc
+[   14.588868]  r10:c3502910 r9:c3501f40 r8:00000004 r7:c228a438 r6:c0f95e18 r5:00000000
+[   14.588871]  r4:00000003
+[   14.588874]  pm_suspend from state_store+0x74/0xd0
+[   14.588889]  r7:c228a438 r6:c0f934c8 r5:00000003 r4:00000003
+[   14.588892]  state_store from kobj_attr_store+0x1c/0x28
+[   14.588913]  r9:00000000 r8:00000000 r7:f09f9f08 r6:00000004 r5:c3502900 r4:c0283250
+[   14.588916]  kobj_attr_store from sysfs_kf_write+0x40/0x4c
+[   14.588936]  r5:c3502900 r4:c0d92a48
+[   14.588939]  sysfs_kf_write from kernfs_fop_write_iter+0x104/0x1f0
+[   14.588956]  r5:c3502900 r4:c3501f40
+[   14.588960]  kernfs_fop_write_iter from vfs_write+0x250/0x420
+[   14.588980]  r10:c0e14b48 r9:00000000 r8:c25f5780 r7:00443398 r6:f09f9f68 r5:c34f7f00
+[   14.588983]  r4:c042a88c
+[   14.588987]  vfs_write from ksys_write+0x74/0xe4
+[   14.589005]  r10:00000004 r9:c25f5780 r8:c02002fA0 r7:00000000 r6:00000000 r5:c34f7f00
+[   14.589008]  r4:c34f7f00
+[   14.589011]  ksys_write from sys_write+0x10/0x14
+[   14.589029]  r7:00000004 r6:004421c0 r5:00443398 r4:00000004
+[   14.589032]  sys_write from ret_fast_syscall+0x0/0x5c
+[   14.589044] Exception stack(0xf09f9fa8 to 0xf09f9ff0)
+[   14.589050] 9fa0:                   00000004 00443398 00000004 00443398 00000004 00000001
+[   14.589056] 9fc0: 00000004 00443398 004421c0 00000004 b6ecbd58 00000008 bebfbc38 0043eb78
+[   14.589062] 9fe0: 00440eb0 bebfbaf8 b6de18a0 b6e579e8
+[   14.589065] ---[ end trace 0000000000000000 ]---
 
-Looking at the history, this change probably led to:
-ad2775dc3fc5 ("spi: cadence-quadspi: Disable the DAC for Intel LGM SoC")
-f724c296f2f2 ("spi: cadence-quadspi: fix Direct Access Mode disable for SoCFPGA")
+The fix uses the higher level nand_reset(chip, chipnr); where chipnr = 0, when
+doing PM resume operation in compliance with the controller support for single
+die nand chip. Switching from nand_reset_op() to nand_reset() implies more
+than just setting the cs field op->cs, it also reconfigures the data interface
+(ie. the timings). Tested and confirmed the NAND chip is in sync timing wise
+with host after the fix.
 
-In my case, the AM62A LP SK core octo-SPI node from TI does not
-advertise any DMA channel, hinting that there is likely no support for
-it, but yet when the support for the am654 compatible was added, DMA
-seemed to be used, so just discarding its use with the
-CQSPI_DISABLE_DAC_MODE quirk for this compatible does not seem the
-correct approach.
-
-Let's get change the return condition back to:
-- return a probe deferral error if we get one
-- ignore the return value otherwise
-The "error" log level was however likely too high for something that is
-expected to fail, so let's lower it arbitrarily to the info level.
-
-Fixes: 935da5e5100f ("mtd: spi-nor: cadence-quadspi: Handle probe deferral while requesting DMA channel")
+Fixes: 97d90da8a886 ("mtd: nand: provide several helpers to do common NAND operations")
 Cc: stable@vger.kernel.org
+Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://patch.msgid.link/20250305200933.2512925-2-miquel.raynal@bootlin.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-cadence-quadspi.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/mtd/nand/raw/brcmnand/brcmnand.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1634,6 +1634,12 @@ static int cqspi_request_mmap_dma(struct
- 		int ret = PTR_ERR(cqspi->rx_chan);
+--- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
++++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+@@ -3008,7 +3008,7 @@ static int brcmnand_resume(struct device
+ 		brcmnand_save_restore_cs_config(host, 1);
  
- 		cqspi->rx_chan = NULL;
-+		if (ret == -ENODEV) {
-+			/* DMA support is not mandatory */
-+			dev_info(&cqspi->pdev->dev, "No Rx DMA available\n");
-+			return 0;
-+		}
-+
- 		return dev_err_probe(&cqspi->pdev->dev, ret, "No Rx DMA available\n");
+ 		/* Reset the chip, required by some chips after power-up */
+-		nand_reset_op(chip);
++		nand_reset(chip, 0);
  	}
- 	init_completion(&cqspi->rx_dma_complete);
+ 
+ 	return 0;
 
 
 
