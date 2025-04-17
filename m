@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-133450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57CCAA925C0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:07:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71E21A927AF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:28:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69298467B9C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:07:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83787189375E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B8AF2571C6;
-	Thu, 17 Apr 2025 18:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA28F256C96;
+	Thu, 17 Apr 2025 18:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHyIYbER"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TaAL5lCU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B011DEFC5;
-	Thu, 17 Apr 2025 18:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B1A256C65;
+	Thu, 17 Apr 2025 18:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913113; cv=none; b=JpnoK3WFMTMjfHcmt2PaCYmZOi1Wqwp4Sku6VH/9447+WJKhz2sV5kEan8aOZsXyd/zpmMRf4Ac5TAGJ+V6vNzyXmRa8Phw4Eg5yZPe33LDAO41jE16G64zi99GjUOQcBoJ9yD6nnsvqxA8hriTHUcJWUA626xpFvpV51ulEHPA=
+	t=1744914180; cv=none; b=nQi9TcXx6blTfPPfsQ6+guCIt8rur4cEsnrRTRM92pPEKDlqiDzL27a9a829as0o3HxzMH/IVppYrxOYIXyzWGLMmB/CtAE08zFsxVwUHyBQ2XX1fN6LH6gBOkgo9e8EC20OCiOfvRnRqi2tTkX0bAhDj8kUlTfzouvMxIqJYCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913113; c=relaxed/simple;
-	bh=XxHfmoJ+MLq0yoI6Lk73yjBXU57M7+06cHXSI9jBERI=;
+	s=arc-20240116; t=1744914180; c=relaxed/simple;
+	bh=pgEB6TF//V9ckB8f5CtD5BKs2aTAXepp+GAIiUdoRNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nqHlW+MckUaJhGelu4vhWR/bgmmj26T76OSd/m4p5IEPk0zrMUHFLuZ/62xfJ3fIYXHO+LYYIklwDMryWlU8+i8rvuXoU74KE+mF5OXtupWD4QWNDsHGGNs6j0WpAGxgXNeG04O3u/CLEp4k6Juce8gleb01CDF/IVPncnJ4xrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHyIYbER; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524D2C4CEE4;
-	Thu, 17 Apr 2025 18:05:13 +0000 (UTC)
+	 MIME-Version; b=pAMct5KAtMRZQZM+hgbzMe3S0Qo+KsKq+iZFX370b4698hHk3dG/C6uuyPGc4TBZlIyNTzZNtRMMioRYaFvVjbF2FfJQG8tFbQwA3pq1X9YbGRWnyJx5uzxKccP+u/+6Fd+y0uYCeWxcU8WKmVJNsvJiyIgLnd6DpbMwXlfzeXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TaAL5lCU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08CBBC4CEE4;
+	Thu, 17 Apr 2025 18:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913113;
-	bh=XxHfmoJ+MLq0yoI6Lk73yjBXU57M7+06cHXSI9jBERI=;
+	s=korg; t=1744914180;
+	bh=pgEB6TF//V9ckB8f5CtD5BKs2aTAXepp+GAIiUdoRNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aHyIYbERNed2Pl/CPvsMBHkJOFtrnZB+ny+wRYlVy6W9FJVGWhFOiP9h/9sqgAnOy
-	 slrold7Z1u50Yu0hiaK6jtgN6eiQkcQITv/nARQ3zCfxVqgECcvGaXuzk349uMBLBE
-	 QaXGMwemY0TtdAFZAZIREB2KaCNMEpn4b+9q8YEM=
+	b=TaAL5lCUaW0XrwSYTB4iu/it22AQUstQLKbOTaB6qr+12O4iSjwuHexU+UN4BY1d1
+	 4xBLlizT9JGkD8fC/FnoC2sj/wJHzv4X+O4XcNbtAz0cjh0NMBsabkhyhgEFujDVsO
+	 5cC4Q9NwFnrtF8NK59xQyj1Tdkg1CCyRqki4I/PY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Makarenko Oleg <oleg@makarenk.ooo>,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 201/449] HID: pidff: Rescale time values to match field units
-Date: Thu, 17 Apr 2025 19:48:09 +0200
-Message-ID: <20250417175126.060257221@linuxfoundation.org>
+Subject: [PATCH 6.13 132/414] drm/xe/vf: Dont try to trigger a full GT reset if VF
+Date: Thu, 17 Apr 2025 19:48:10 +0200
+Message-ID: <20250417175116.741988543@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,169 +60,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-[ Upstream commit 8713107221a8ce4021ec5fa12bb50ecc8165cf08 ]
+[ Upstream commit 459777724d306315070d24608fcd89aea85516d6 ]
 
-PID devices can use different exponents for time fields, while Linux
-Force Feedback API only supports miliseconds.
+VFs don't have access to the GDRST(0x941c) register that driver
+uses to reset a GT. Attempt to trigger a reset using debugfs:
 
-Read the exponent of a given time field and scale its value accordingly.
+ $ cat /sys/kernel/debug/dri/0000:00:02.1/gt0/force_reset
 
-Changes in v7:
-- Rescale all time fields, not only period
+or due to a hang condition detected by the driver leads to:
 
-changes in v9:
-- Properly assign fade_lenght, not attack_length to PID_FADE_TIME
+ [ ] xe 0000:00:02.1: [drm] GT0: trying reset from force_reset [xe]
+ [ ] xe 0000:00:02.1: [drm] GT0: reset queued
+ [ ] xe 0000:00:02.1: [drm] GT0: reset started
+ [ ] ------------[ cut here ]------------
+ [ ] xe 0000:00:02.1: [drm] GT0: VF is trying to write 0x1 to an inaccessible register 0x941c+0x0
+ [ ] WARNING: CPU: 3 PID: 3069 at drivers/gpu/drm/xe/xe_gt_sriov_vf.c:996 xe_gt_sriov_vf_write32+0xc6/0x580 [xe]
+ [ ] RIP: 0010:xe_gt_sriov_vf_write32+0xc6/0x580 [xe]
+ [ ] Call Trace:
+ [ ]  <TASK>
+ [ ]  ? show_regs+0x6c/0x80
+ [ ]  ? __warn+0x93/0x1c0
+ [ ]  ? xe_gt_sriov_vf_write32+0xc6/0x580 [xe]
+ [ ]  ? report_bug+0x182/0x1b0
+ [ ]  ? handle_bug+0x6e/0xb0
+ [ ]  ? exc_invalid_op+0x18/0x80
+ [ ]  ? asm_exc_invalid_op+0x1b/0x20
+ [ ]  ? xe_gt_sriov_vf_write32+0xc6/0x580 [xe]
+ [ ]  ? xe_gt_sriov_vf_write32+0xc6/0x580 [xe]
+ [ ]  ? xe_gt_tlb_invalidation_reset+0xef/0x110 [xe]
+ [ ]  ? __mutex_unlock_slowpath+0x41/0x2e0
+ [ ]  xe_mmio_write32+0x64/0x150 [xe]
+ [ ]  do_gt_reset+0x2f/0xa0 [xe]
+ [ ]  gt_reset_worker+0x14e/0x1e0 [xe]
+ [ ]  process_one_work+0x21c/0x740
+ [ ]  worker_thread+0x1db/0x3c0
 
-Co-developed-by: Makarenko Oleg <oleg@makarenk.ooo>
-Signed-off-by: Makarenko Oleg <oleg@makarenk.ooo>
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fix that by sending H2G VF_RESET(0x5507) action instead.
+
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4078
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250131182502.852-1-michal.wajdeczko@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 69 ++++++++++++++++++++++++++--------
- 1 file changed, 54 insertions(+), 15 deletions(-)
+ drivers/gpu/drm/xe/xe_gt.c          |  4 ++++
+ drivers/gpu/drm/xe/xe_gt_sriov_vf.c | 16 ++++++++++++++++
+ drivers/gpu/drm/xe/xe_gt_sriov_vf.h |  1 +
+ 3 files changed, 21 insertions(+)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index bd913d57e4d75..180b2cf66e4c7 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -22,6 +22,9 @@
- #define	PID_EFFECTS_MAX		64
- #define	PID_INFINITE		0xffff
- 
-+/* Linux Force Feedback API uses miliseconds as time unit */
-+#define FF_TIME_EXPONENT	-3
-+
- /* Report usage table used to put reports into an array */
- 
- #define PID_SET_EFFECT		0
-@@ -231,6 +234,24 @@ static int pidff_rescale_signed(int i, struct hid_field *field)
- 	    field->logical_minimum / -0x8000;
- }
- 
-+/*
-+ * Scale time value from Linux default (ms) to field units
-+ */
-+static u32 pidff_rescale_time(u16 time, struct hid_field *field)
-+{
-+	u32 scaled_time = time;
-+	int exponent = field->unit_exponent;
-+	pr_debug("time field exponent: %d\n", exponent);
-+
-+	for (;exponent < FF_TIME_EXPONENT; exponent++)
-+		scaled_time *= 10;
-+	for (;exponent > FF_TIME_EXPONENT; exponent--)
-+		scaled_time /= 10;
-+
-+	pr_debug("time calculated from %d to %d\n", time, scaled_time);
-+	return scaled_time;
-+}
-+
- static void pidff_set(struct pidff_usage *usage, u16 value)
+diff --git a/drivers/gpu/drm/xe/xe_gt.c b/drivers/gpu/drm/xe/xe_gt.c
+index 560fb82f5dc40..adff1f44b3a62 100644
+--- a/drivers/gpu/drm/xe/xe_gt.c
++++ b/drivers/gpu/drm/xe/xe_gt.c
+@@ -32,6 +32,7 @@
+ #include "xe_gt_pagefault.h"
+ #include "xe_gt_printk.h"
+ #include "xe_gt_sriov_pf.h"
++#include "xe_gt_sriov_vf.h"
+ #include "xe_gt_sysfs.h"
+ #include "xe_gt_tlb_invalidation.h"
+ #include "xe_gt_topology.h"
+@@ -676,6 +677,9 @@ static int do_gt_reset(struct xe_gt *gt)
  {
- 	usage->value[0] = pidff_rescale(value, 0xffff, usage->field);
-@@ -252,6 +273,27 @@ static void pidff_set_signed(struct pidff_usage *usage, s16 value)
- 	pr_debug("calculated from %d to %d\n", value, usage->value[0]);
+ 	int err;
+ 
++	if (IS_SRIOV_VF(gt_to_xe(gt)))
++		return xe_gt_sriov_vf_reset(gt);
++
+ 	xe_gsc_wa_14015076503(gt, true);
+ 
+ 	xe_mmio_write32(&gt->mmio, GDRST, GRDOM_FULL);
+diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_vf.c b/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
+index d3baba50f0851..d331d3b0ec95b 100644
+--- a/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
++++ b/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
+@@ -57,6 +57,22 @@ static int vf_reset_guc_state(struct xe_gt *gt)
+ 	return err;
  }
  
-+static void pidff_set_time(struct pidff_usage *usage, u16 time)
++/**
++ * xe_gt_sriov_vf_reset - Reset GuC VF internal state.
++ * @gt: the &xe_gt
++ *
++ * It requires functional `GuC MMIO based communication`_.
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int xe_gt_sriov_vf_reset(struct xe_gt *gt)
 +{
-+	u32 modified_time = pidff_rescale_time(time, usage->field);
-+	usage->value[0] = pidff_clamp(modified_time, usage->field);
++	if (!xe_device_uc_enabled(gt_to_xe(gt)))
++		return -ENODEV;
++
++	return vf_reset_guc_state(gt);
 +}
 +
-+static void pidff_set_duration(struct pidff_usage *usage, u16 duration)
-+{
-+	/* Convert infinite length from Linux API (0)
-+	   to PID standard (NULL) if needed */
-+	if (duration == 0)
-+		duration = PID_INFINITE;
-+
-+	if (duration == PID_INFINITE) {
-+		usage->value[0] = PID_INFINITE;
-+		return;
-+	}
-+
-+	pidff_set_time(usage, duration);
-+}
-+
- /*
-  * Send envelope report to the device
-  */
-@@ -270,8 +312,10 @@ static void pidff_set_envelope_report(struct pidff_device *pidff,
- 			  0x7fff ? 0x7fff : envelope->fade_level, 0x7fff,
- 			  pidff->set_envelope[PID_FADE_LEVEL].field);
+ static int guc_action_match_version(struct xe_guc *guc,
+ 				    u32 wanted_branch, u32 wanted_major, u32 wanted_minor,
+ 				    u32 *branch, u32 *major, u32 *minor, u32 *patch)
+diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_vf.h b/drivers/gpu/drm/xe/xe_gt_sriov_vf.h
+index e541ce57bec24..576ff5e795a8b 100644
+--- a/drivers/gpu/drm/xe/xe_gt_sriov_vf.h
++++ b/drivers/gpu/drm/xe/xe_gt_sriov_vf.h
+@@ -12,6 +12,7 @@ struct drm_printer;
+ struct xe_gt;
+ struct xe_reg;
  
--	pidff->set_envelope[PID_ATTACK_TIME].value[0] = envelope->attack_length;
--	pidff->set_envelope[PID_FADE_TIME].value[0] = envelope->fade_length;
-+	pidff_set_time(&pidff->set_envelope[PID_ATTACK_TIME],
-+			envelope->attack_length);
-+	pidff_set_time(&pidff->set_envelope[PID_FADE_TIME],
-+			envelope->fade_length);
- 
- 	hid_dbg(pidff->hid, "attack %u => %d\n",
- 		envelope->attack_level,
-@@ -340,14 +384,12 @@ static void pidff_set_effect_report(struct pidff_device *pidff,
- 	pidff->set_effect_type->value[0] =
- 		pidff->create_new_effect_type->value[0];
- 
--	/* Convert infinite length from Linux API (0)
--	   to PID standard (NULL) if needed */
--	pidff->set_effect[PID_DURATION].value[0] =
--		effect->replay.length == 0 ? PID_INFINITE : effect->replay.length;
-+	pidff_set_duration(&pidff->set_effect[PID_DURATION],
-+		effect->replay.length);
- 
- 	pidff->set_effect[PID_TRIGGER_BUTTON].value[0] = effect->trigger.button;
--	pidff->set_effect[PID_TRIGGER_REPEAT_INT].value[0] =
--		effect->trigger.interval;
-+	pidff_set_time(&pidff->set_effect[PID_TRIGGER_REPEAT_INT],
-+			effect->trigger.interval);
- 	pidff->set_effect[PID_GAIN].value[0] =
- 		pidff->set_effect[PID_GAIN].field->logical_maximum;
- 	pidff->set_effect[PID_DIRECTION_ENABLE].value[0] = 1;
-@@ -360,7 +402,8 @@ static void pidff_set_effect_report(struct pidff_device *pidff,
- 
- 	/* Omit setting delay field if it's missing */
- 	if (!(pidff->quirks & HID_PIDFF_QUIRK_MISSING_DELAY))
--		pidff->set_effect[PID_START_DELAY].value[0] = effect->replay.delay;
-+		pidff_set_time(&pidff->set_effect[PID_START_DELAY],
-+				effect->replay.delay);
- 
- 	hid_hw_request(pidff->hid, pidff->reports[PID_SET_EFFECT],
- 			HID_REQ_SET_REPORT);
-@@ -392,15 +435,11 @@ static void pidff_set_periodic_report(struct pidff_device *pidff,
- 	pidff_set_signed(&pidff->set_periodic[PID_OFFSET],
- 			 effect->u.periodic.offset);
- 	pidff_set(&pidff->set_periodic[PID_PHASE], effect->u.periodic.phase);
--
--	/* Clamp period to ensure the device can play the effect */
--	pidff->set_periodic[PID_PERIOD].value[0] =
--		pidff_clamp(effect->u.periodic.period,
--			pidff->set_periodic[PID_PERIOD].field);
-+	pidff_set_time(&pidff->set_periodic[PID_PERIOD],
-+			effect->u.periodic.period);
- 
- 	hid_hw_request(pidff->hid, pidff->reports[PID_SET_PERIODIC],
- 			HID_REQ_SET_REPORT);
--
- }
- 
- /*
++int xe_gt_sriov_vf_reset(struct xe_gt *gt);
+ int xe_gt_sriov_vf_bootstrap(struct xe_gt *gt);
+ int xe_gt_sriov_vf_query_config(struct xe_gt *gt);
+ int xe_gt_sriov_vf_connect(struct xe_gt *gt);
 -- 
 2.39.5
 
