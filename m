@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-133849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57039A927DA
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:29:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25205A925B7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:06:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7EF87A75B8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4385A467797
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75B8525FA06;
-	Thu, 17 Apr 2025 18:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D1A257432;
+	Thu, 17 Apr 2025 18:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APhWBJI8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XWkFmMVZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30AC52566EC;
-	Thu, 17 Apr 2025 18:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E6B257424;
+	Thu, 17 Apr 2025 18:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914333; cv=none; b=hK+HX2nf+iEpmXJ/bhxpbtJ7wc1OXIlCx2r49BVKjCQuduCoEYKjaIKi4Bnymg3+ZTPiCBjDIRnpVhTZtDSZDcOFcYafYCFfC2btI9sHc6yYiH9SKb9ktl2TIh8At6BjXdx+WoGWj7QfVSrgFO005G6Bzr72SBpTI51WwPyH4i8=
+	t=1744913080; cv=none; b=aFMlzrAvd45GmYX6NsUmh404Sykh2fBllhC2lIKmdiHCiE6PpOMDfLXqZxBm0qUYllEeNuBlpaC2MuQq9Gklt6tejtV00Gpro9mEEMda0956+5xnuqAxX7vPLaf3Sbb46+l4ubEsMsWbcmlF61vYhHnwIl4H/4SMDlkKvBaHzYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914333; c=relaxed/simple;
-	bh=xmV0/BZvD+iwhy8f0L/fEw3VLgQJx/QWa5UEFjQ1wI8=;
+	s=arc-20240116; t=1744913080; c=relaxed/simple;
+	bh=71xHpXDQmfEy8t4tmkAmoCMv77qL7fDONiX/S/piC+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OtKeCDdwJgonmjkOgkFbUc122WbUoRRR4VwElCx+Goffyo+/Pjx/r+nfCdQ6j+tNn+O/UZ8HeaX9QqksyZq+oqR+X0D02qrsdDJHTQA3DaplhwyGvTgIKcWg7scIvIQNKNfnohR6QTkhVGpk0CLS2EAVrAWV7kSWM6zKQ+4sBdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APhWBJI8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6405BC4CEE7;
-	Thu, 17 Apr 2025 18:25:32 +0000 (UTC)
+	 MIME-Version; b=sffnmUvn4n+29pqameQHzrvKZzDLHk+eai97FxzJNg9rDvf5N08/WRawTTK/FZ0EtHzDdjP9bxaDDTAVJOqnyd4TrbeRyN7bpHiiaKHZcOZUePZEG3Iw+PTSLP6nN0omtpPOAVoEww5rpfknz4FZnk3JxXva18paArdaRDkOs2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XWkFmMVZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E16C4CEE4;
+	Thu, 17 Apr 2025 18:04:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914332;
-	bh=xmV0/BZvD+iwhy8f0L/fEw3VLgQJx/QWa5UEFjQ1wI8=;
+	s=korg; t=1744913080;
+	bh=71xHpXDQmfEy8t4tmkAmoCMv77qL7fDONiX/S/piC+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=APhWBJI8HDyPYhe92AEcOZgynAXNkiAhayRCJZsB/8pH6NPIg/DQENU49y5VpO52N
-	 3CGZS+MRr0MkpQ/N3ym47Y7BxLf6+zXRYNa/Fw6SeRbYxtcSvuy6dY+WJuyGJ8OtaZ
-	 Cs8y4QsoMnewNoPZjZMzKJ1xSnYwWD08qiz3Sjus=
+	b=XWkFmMVZu2omNpcc8Lk+FDFDYh9OIzx+byAHRLtSNq20iSs4fESm9Bmr3rVmpBpqH
+	 EhzITFgvSAp/pQEgip9H01nIMMHoSugaAlg+CH0ExVG2gBn3zPRLXg2YeY4QfjH8Ae
+	 TrsSmpLhp+tHkPcgk8payUY19EfNu8dzqIOBLWGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Gustavo Sousa <gustavo.sousa@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 150/414] drm/xe/xelp: Move Wa_16011163337 from tunings to workarounds
+	Arnd Bergmann <arnd@arndb.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Alexandre Courbot <acourbot@google.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.14 220/449] media: mtk-vcodec: venc: avoid -Wenum-compare-conditional warning
 Date: Thu, 17 Apr 2025 19:48:28 +0200
-Message-ID: <20250417175117.454982186@linuxfoundation.org>
+Message-ID: <20250417175126.824848313@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit d9b5d83c5a4d720af6ddbefe2825c78f0325a3fd ]
+commit 07df4f23ef3ffe6fee697cd2e03623ad27108843 upstream.
 
-Workaround database specifies 16011163337 as a workaround so lets move it
-there.
+This is one of three clang warnings about incompatible enum types
+in a conditional expression:
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: Gustavo Sousa <gustavo.sousa@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250227101304.46660-3-tvrtko.ursulin@igalia.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c:597:29: error: conditional expression between different enumeration types ('enum scp_ipi_id' and 'enum ipi_id') [-Werror,-Wenum-compare-conditional]
+  597 |         inst->vpu_inst.id = is_ext ? SCP_IPI_VENC_H264 : IPI_VENC_H264;
+      |                                    ^ ~~~~~~~~~~~~~~~~~   ~~~~~~~~~~~~~
+
+The code is correct, so just rework it to avoid the warning.
+
+Fixes: 0dc4b3286125 ("media: mtk-vcodec: venc: support SCP firmware")
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Alexandre Courbot <acourbot@google.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_tuning.c | 8 --------
- drivers/gpu/drm/xe/xe_wa.c     | 7 +++++++
- 2 files changed, 7 insertions(+), 8 deletions(-)
+ drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_tuning.c b/drivers/gpu/drm/xe/xe_tuning.c
-index d449de0fb6ecb..3c78f3d715591 100644
---- a/drivers/gpu/drm/xe/xe_tuning.c
-+++ b/drivers/gpu/drm/xe/xe_tuning.c
-@@ -97,14 +97,6 @@ static const struct xe_rtp_entry_sr engine_tunings[] = {
- };
+--- a/drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c
++++ b/drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c
+@@ -594,7 +594,11 @@ static int h264_enc_init(struct mtk_vcod
  
- static const struct xe_rtp_entry_sr lrc_tunings[] = {
--	{ XE_RTP_NAME("Tuning: ganged timer, also known as 16011163337"),
--	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(1200, 1210), ENGINE_CLASS(RENDER)),
--	  /* read verification is ignored due to 1608008084. */
--	  XE_RTP_ACTIONS(FIELD_SET_NO_READ_MASK(FF_MODE2,
--						FF_MODE2_GS_TIMER_MASK,
--						FF_MODE2_GS_TIMER_224))
--	},
--
- 	/* DG2 */
+ 	inst->ctx = ctx;
+ 	inst->vpu_inst.ctx = ctx;
+-	inst->vpu_inst.id = is_ext ? SCP_IPI_VENC_H264 : IPI_VENC_H264;
++	if (is_ext)
++		inst->vpu_inst.id = SCP_IPI_VENC_H264;
++	else
++		inst->vpu_inst.id = IPI_VENC_H264;
++
+ 	inst->hw_base = mtk_vcodec_get_reg_addr(inst->ctx->dev->reg_base, VENC_SYS);
  
- 	{ XE_RTP_NAME("Tuning: L3 cache"),
-diff --git a/drivers/gpu/drm/xe/xe_wa.c b/drivers/gpu/drm/xe/xe_wa.c
-index 02cf647f86d8e..da15af8093cae 100644
---- a/drivers/gpu/drm/xe/xe_wa.c
-+++ b/drivers/gpu/drm/xe/xe_wa.c
-@@ -612,6 +612,13 @@ static const struct xe_rtp_entry_sr engine_was[] = {
- };
- 
- static const struct xe_rtp_entry_sr lrc_was[] = {
-+	{ XE_RTP_NAME("16011163337"),
-+	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(1200, 1210), ENGINE_CLASS(RENDER)),
-+	  /* read verification is ignored due to 1608008084. */
-+	  XE_RTP_ACTIONS(FIELD_SET_NO_READ_MASK(FF_MODE2,
-+						FF_MODE2_GS_TIMER_MASK,
-+						FF_MODE2_GS_TIMER_224))
-+	},
- 	{ XE_RTP_NAME("1409342910, 14010698770, 14010443199, 1408979724, 1409178076, 1409207793, 1409217633, 1409252684, 1409347922, 1409142259"),
- 	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(1200, 1210)),
- 	  XE_RTP_ACTIONS(SET(COMMON_SLICE_CHICKEN3,
--- 
-2.39.5
-
+ 	ret = vpu_enc_init(&inst->vpu_inst);
 
 
 
