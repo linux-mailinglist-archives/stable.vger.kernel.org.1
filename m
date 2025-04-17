@@ -1,220 +1,291 @@
-Return-Path: <stable+bounces-132911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FE3FA91521
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 09:29:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE734A9153F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 09:31:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F20263B5D0F
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 07:28:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C33061887603
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 07:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB2B721C19A;
-	Thu, 17 Apr 2025 07:28:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DWcsisTX"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E8F121ABB3;
+	Thu, 17 Apr 2025 07:31:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04B921ADC4
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 07:28:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744874930; cv=none; b=cUIiffXq83o1VsFS1P5KzvHUvpHsURGrzTGm0kO8sqbmBxx+4Xn8v4djDLwZOWsS3LiGYnzhxz+rUuCDBMFD6Gf5h0jQUqXC291HlqiWhjNDkzDa5B+NQFte/KIc4/jmGedsuiscs/xsuFpUgySzYfc54hJSZL27d0j3y1HSfiA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744874930; c=relaxed/simple;
-	bh=Vfs3mItdj9KPrNQdqQNYQknOyD2oMo8MEhXAQ5nfREs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MjjwiF3g1h178CnFX3yiRnVOZMGHmFvb1NwWP05VOSDdD360KAWfx5E4Xz9YBur5vQqpHtcjDL6wPvuOmBAO4c046N5ErIpD9LmIDOSf7DywC+K9aDCHqptGbp76fNqKy8S0YE6wBVLSwiiWeIL2WfRWlJpflj0Ty/ngsvRf7M0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DWcsisTX; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3912387cf48so17842f8f.3
-        for <stable@vger.kernel.org>; Thu, 17 Apr 2025 00:28:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744874927; x=1745479727; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=xVUuqaTr/85bEp2vmjyLVKnqValaRXl23CqZa0ZHR/g=;
-        b=DWcsisTXwju7uFGnVICIrpKCw0w0sVF9FSo7DHFfei1qvS4WyVY6LIPEVh+IOTrHbN
-         fC/vG0bh2w8GolpbylcBhmX5CbhYUs6Ebh1PQwYq4zEdEDsMTtAS7sbDc//JOgYG9KLP
-         h5zjSl/zqxepciDVRySF/mo1lZXsd/VCLnBW1Edi+wCk/UJRMxUWFDexl54EKtCOBD3Y
-         l2VSZZ8eTrpcA2693+uZTwSOTonMHJeuFTwdKUt0SC1VRRmJOogV/kfuGjqC38Kz15g4
-         cieI2Tog9aeXPGW1oHJCSF115UT+Py/4Zx9tbZ28mkKVShriguVRmlxR9UoBSx3UXRAu
-         eVrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744874927; x=1745479727;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xVUuqaTr/85bEp2vmjyLVKnqValaRXl23CqZa0ZHR/g=;
-        b=pw2dU7QLzz1GALfGjRKPhx0cXcz70mrkDRzy1Lof0bBthFO1yFkHkOSuc+4Gjox4yw
-         8G48KQS3zBDWGUIdDndlO0qtbuuE9rxz33/3EK7bayuUUyTp+P5MOkdra4PGSUjP4DdL
-         pTGgidlpno/GWoCdDG84emAWgMssZBCpbf1F+K10XBgf31h/fKV6JwehQPMVKWwCjSHE
-         pFtoZvSOctOn3Ej0IRDu7BIiWKRP9VBP73vFaQUzzuHa84x5MpowcaxgFh+S/CmqFtsG
-         qrXr99AdVgpsyBH/OdErnSjJ1GqzgSSv8OtVsebJjQUuMphd11X9HUMd3h6t4A/DuoVb
-         S7gA==
-X-Forwarded-Encrypted: i=1; AJvYcCWW+KUsFbw1Gqa8KjFAUDjCEAhGQ2lemFRsSkiiNjkdGceBFo6m6Wb2V9A3PAFyPSI5Ii2NQlc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxn7UKMXjhoxPxwk8IAGyHk+5NUqhixT7vhD4NMMh5XfQ76ATP9
-	nPZpsgumajGxmufoxpUJg+MBvpVrUj6988zP63DqovCQxxENoCoVlDs4U5A9iE0=
-X-Gm-Gg: ASbGncu5BqWoggSD/KK4tvxvOUYYEHu/8TcXs6hoovEjgBf77/rmTldJzEAxRe/UI3V
-	FAG5Iu6klKUAeJEeqh293TLBen3yISXG6gwblLDLE7+OfEKyzO5BaFqk4SogTbAwD5E5t4AB2rn
-	L6jwd8Ncmk9CHcRZAiZqhdG+ZWWIUJWMJYdtSGvBZ+xSJCgU3Dh0vYxzzsNUeJnEXp6vx3uu1Mr
-	NxxzRMv70s3kviYaZA25xuw5Qj+IuH0iI3/FFTn9EAY4BfjWk41EEQcTF2qspMDN6TF6EkmS8hb
-	67+hRz+HE9/nXHe1vpbbF5k+ESX6g9ikIe5i6vJnz9hxCTlEZr554CTjP0iMc9S0PDjsz2CrlAB
-	+ym76O78DzVxa2ASz
-X-Google-Smtp-Source: AGHT+IE3Zzfxa2xFyAPrwj1JpkKzEGocwO0Z4hobPysDcfIP1i7yTyBis7baQC7iPuUdTJ/9/E9XkQ==
-X-Received: by 2002:a5d:47ac:0:b0:39c:30f1:beaa with SMTP id ffacd0b85a97d-39ee8fada0cmr628338f8f.7.1744874926948;
-        Thu, 17 Apr 2025 00:28:46 -0700 (PDT)
-Received: from [192.168.0.101] (46.150.74.144.lvv.nat.volia.net. [46.150.74.144])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4405b4f3bb0sm43455915e9.22.2025.04.17.00.28.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Apr 2025 00:28:45 -0700 (PDT)
-Message-ID: <f957e366-51e1-4447-982c-93374d0fde2e@linaro.org>
-Date: Thu, 17 Apr 2025 09:28:43 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A16019F133
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 07:31:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.238
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744875089; cv=fail; b=AfsopNsJxRj6/OypfESiEJopDUqRgCHB0QDGhiBJJACfhOC1QUxSsUmSanaSbGQIJlXZiH4omIfg34wTA8dFS0bN7Y1KuDdF6PsjwyY0Sc4vYh6XjxpG3YTXEQsgfBiebSak/aTAOCZPfHUQBfqmjW4eOgaWLwQJtZAlflrza1o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744875089; c=relaxed/simple;
+	bh=wHWZVvUOM+Ry0GgigpOJnZY3LQ9KOBpP1VT3erjhhz0=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=XNSKLrCsWpAF6vtsnN+DTCgbaJjwfKnz8FiIFSbfkM6LMvn9jLEitxHZMi8ENmjy3Jq8fQNBBSU4kUoubTjZ1dkvsuXEIycacW5a2PcQqIRfc7l0iYbjJIComYhhTAC4LP+RWZpjCLuXmwOJcp1PcVs5IgRQMhk8xEHR5axUrYQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53H602pR019651;
+	Thu, 17 Apr 2025 00:31:08 -0700
+Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2040.outbound.protection.outlook.com [104.47.66.40])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45yqpknngt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 17 Apr 2025 00:31:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BHiaFviQuh9n9cXY+jD1M0g2pWbgn6Mq1WjwBjmDEH50E441/RzfAmG8dTJuT88iCK7wmEou34JdQ3XnjjmLD8nBzCCx+hMrnzIgeH7WKoxmlwzJJcU5YqM1ZORcILSqlwVzz9EMDdmavfjBYV7PeFB838AWkE1Hbs9fNog8eY+yZt3yMWrPaNrnTMP7JmZUtDpilBAf8ito2OuC9yfra+CVs50Tyjs1KihvJmcNGUEW3KQm9jeVkLLMboLaBSQSea/W+6HRn3h6pI+lWdtJNCn1ZNdSz0JYzavt7GHl+DNi5EHIhetOKaq18bZm1Whn/Z35z5TBApgaLHyqZG73zw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MimKOVChc3fkGUsOu3d7LUDaMsepXda6R0nX375SXYo=;
+ b=wsQtjuEdZY3ql3dZUNtin+jCM0HI+JCkzi/0LkR8hEbEcf+KcNlKtR1Cq4KgUSG0gO/mWJYzZT9FGpDf4jIOHr2/FuxuM8Ds/6wy/GKBJgJtgh5SQBL5cVTKZ4o+n4RjuBiH0jm0tkX1qHoKxVUDccXhNvpTObeb/EgI1CgReivTZDI5Cj0B51atOZu0HVjHcxp9ctHVNWJ/hLjYXqjDgHYE+Nc40n4sNLC4CSFhuRan/E02kTTH/IeP3WIW1VxihuSmm2KFz7MlX8V/kbDB+fqv9u3kBEixtHK+pByeOTbMUA+Pm5GiRjDT5Ej49ybPyj/Cy7GJmBjxEI+K3Xzb7w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+Received: from CH3PR11MB8701.namprd11.prod.outlook.com (2603:10b6:610:1c8::10)
+ by SJ0PR11MB4957.namprd11.prod.outlook.com (2603:10b6:a03:2df::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.34; Thu, 17 Apr
+ 2025 07:31:03 +0000
+Received: from CH3PR11MB8701.namprd11.prod.outlook.com
+ ([fe80::5727:1867:fb60:69d0]) by CH3PR11MB8701.namprd11.prod.outlook.com
+ ([fe80::5727:1867:fb60:69d0%2]) with mapi id 15.20.8632.035; Thu, 17 Apr 2025
+ 07:31:02 +0000
+From: bin.lan.cn@windriver.com
+To: gregkh@linuxfoundation.org, stable@vger.kernel.org
+Cc: hch@lst.de, tj@kernel.org, axboe@kernel.dk, bin.lan.cn@windriver.com,
+        yukuai3@huawei.com
+Subject: [PATCH 6.1.y 1/2] blk-cgroup: support to track if policy is online
+Date: Thu, 17 Apr 2025 15:30:40 +0800
+Message-Id: <20250417073041.2670459-1-bin.lan.cn@windriver.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2P153CA0032.APCP153.PROD.OUTLOOK.COM
+ (2603:1096:4:190::23) To CH3PR11MB8701.namprd11.prod.outlook.com
+ (2603:10b6:610:1c8::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] cpufreq: fix compile-test defaults
-To: Johan Hovold <johan@kernel.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>, "Rob Herring (Arm)"
- <robh@kernel.org>, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250417065535.21358-1-johan+linaro@kernel.org>
- <a0739b6b-b043-47f1-8044-f6ed68d39f2c@linaro.org>
- <aACsQUADxYHTQDi1@hovoldconsulting.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Content-Language: en-US
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <aACsQUADxYHTQDi1@hovoldconsulting.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8701:EE_|SJ0PR11MB4957:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2bf4beb8-e82e-470a-89ec-08dd7d81ce63
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?C/gKD1oEn42inIfFMFJWCncfmdd/PGA2nIYq5e1kAmTPuyIn5Phn8C521cXc?=
+ =?us-ascii?Q?x8YI7aAhEClwAvTD6Z6fTzltqUTAZUo3smQ93tTyYTDE/uSUzZs6AyLFHY+t?=
+ =?us-ascii?Q?zjRrUbpCrDw4XqdWeSmQ1EtELWlqDlxfvRHsBB9eE3argAfwoEuDrUwVDcGM?=
+ =?us-ascii?Q?pvxmbkMRoR92PIl8RTGdVp5nxHOw+KQJTyvL38naBCU0xZOP+CDcWI75CILl?=
+ =?us-ascii?Q?FrJr+0AQm+AljA7u87cm54L6EUOtAMQPr6Wz4wPFZK7VnHqFkttAsNCSA+Nk?=
+ =?us-ascii?Q?XDiuA/vlKheO7y8SaMEMhXOsy8hlRIvFctkNKer1SMlrGnN2JpJ6LE+PPT9+?=
+ =?us-ascii?Q?hpqryEjPrpbP+/vuHF9bekwYq9xwQv6DGYQU1/4Uzbguq1YQtsll6VHmkagT?=
+ =?us-ascii?Q?gKJvVL327lqQp2VzVAYqkH3VQE7q6EvBz6FJjKSqmA+HhFGhGcQSDIB4lio2?=
+ =?us-ascii?Q?UJQamp/BdEqswj9VOiYLzu/dgByO08QGYtQbJrHLbiz3M1/0tbLPoWnhK+ZM?=
+ =?us-ascii?Q?vLCDb83uF5iHwg2M1Ipjnsyi3BZAok+3uaHukXHDPqDi5Ez9fa/c8Q3JdFwy?=
+ =?us-ascii?Q?+pBHwTDVwRHyBjNUhU++TWwPBqQN4r1Ai+yDi2OWd30xSXt+JQgz5NaBoNfN?=
+ =?us-ascii?Q?y7X07QpbnJ29kytIIKtBIf0ZmBd6kb2xBZ5lupZDayDMvjT9E3iAjYvURIev?=
+ =?us-ascii?Q?92i/Qd1PLWhKkLXiolMztl3xaSZDXOHOth+seCXIMiapinouLPVpPwffBO3Q?=
+ =?us-ascii?Q?9eE6BYuT30jKtr8QgmFNSa5JRUdoQEZCGEZ9QKWCepglG0kLB6JCwcA73eLO?=
+ =?us-ascii?Q?UPWN2MoMEl3DXsYuVqVeqJKWd73ldBtZxa7rJCCAEMrO2SxjEyDQF0LW5XgI?=
+ =?us-ascii?Q?6qaz5vT5vLtkmZw+W/nc2YRkv5cZt6Cq3yCWSE7F6+w1yfFVXTsHNnYxrMf/?=
+ =?us-ascii?Q?Mi4th+pKy5plAX2WRbG+spivCwrvEn9z5BmMZgmZjx9ys4G8+hWNu0tWDj9Q?=
+ =?us-ascii?Q?DEDMbqm9l7POgOEorSci7byTGFy3+laObs/Y2Dl2q/psTZF1MqdmGCSqFrzs?=
+ =?us-ascii?Q?DRMwqraxe/ygeSemgownGM5KbvqyybVk3ZxiS9wsAG6DEOovgrIyk23hgjIm?=
+ =?us-ascii?Q?UpMr6MSIgC/tjh4aBTvU+IPQByq2YOesen0Bjfg7wXM6pLim7UnbS9Pw1JwM?=
+ =?us-ascii?Q?XwvoVrR6ckgwD8rQzSNSdGFxA72T0vnkeDWtyTX6zjnP3xLZWXw/LSaW93NE?=
+ =?us-ascii?Q?gOTj/ZaZmMr4ZhLliSLuP72Kfhs1YTN751sNOiyqlXXZRYjohGV8t1LgJ31A?=
+ =?us-ascii?Q?bMW54FtEaE+qQ7SLA6DSmHrb//3fnBpw7JeW5D5/BB0dCYO71wzL4x3x0xcG?=
+ =?us-ascii?Q?BM1Vry5xybEk7hz/lZS0XXcXd3uHXKtSWiQV1wWQXWHRU42lMXlI4iljnZsc?=
+ =?us-ascii?Q?ME+k/XqqtxbsDSBtDtgXV+GuHkOHPT6QnyqeQgHiI6lx0mLJF7RmkoykLkAm?=
+ =?us-ascii?Q?LNzY+WvOj4+6Pbg=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8701.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?qeg0qTdmpEyur+uAg+rJGEr3KRafG3P/rtIWSrtfBsBNlb1nEtd7YS8NsMwu?=
+ =?us-ascii?Q?i+oKJNj9Pl4/IplVCjG1h1aB1Q6eKHI2Hk4eZ4PuRucnlzYvVN5WjCWE+zgz?=
+ =?us-ascii?Q?zBayxZttwdYdH6U40E6LwtUQTm4dAZ4WFKO9MhzEPHRA1+qynVQQpb27M4sI?=
+ =?us-ascii?Q?djbNbV8tf04HN2lGcAHOs2qepPVXUmBgcVtaxmQgswnl3S9Lw99rgCTm9YqJ?=
+ =?us-ascii?Q?fJorjyRX/fhBWOWvDa4Ba3uDB/Xlt78CKP7S1TIKcch/Rto41u5SrUhwedvN?=
+ =?us-ascii?Q?TZh8qY6ut9BcEjJ1/kZaGcnHf5Wy93GHBn1Byv/mqqA5i9lEGsKrY4Utrq+9?=
+ =?us-ascii?Q?6NKB2WRwX60fxJzvSB9fwMp3j8S1Noni7ThmZP7s3oTebBzDMloLjZX6Gu4r?=
+ =?us-ascii?Q?hDX3ZLNJcPr7rHxrk0pAJvO92eY1xC6HFc1AEele/cXydqjNmpOyCP6q6dN/?=
+ =?us-ascii?Q?Uavtv4Gp/VBX/hfY4xJc+FioWcr8DrNdsnuC302oAtSaBIATN1yqF8hL5IXM?=
+ =?us-ascii?Q?DtjNNISVtSZMAEf5zpIwGSwwih/X8o85eiCqFkscdpCc+HDxEJsbG9ayJS2F?=
+ =?us-ascii?Q?Qw9BlDtbIhaKswJ7JUm6yONVAekE6Z02oHsS3FLrUM1rEixwtzh2U/Rt6LMc?=
+ =?us-ascii?Q?oqPcc882Rryt2MjPdKRx6xfrZjzVOqdzs0Lq1gFkGvdduGefg89+X/5wEklM?=
+ =?us-ascii?Q?XolvBG4hTBwzjgmSAHjaiFn96KzUZGRPN8HTZ2mNrAyuWB1yjZwT7kVdayfB?=
+ =?us-ascii?Q?Z1cxEug/p91z7mPXgOv1p7R5upXGFGEGAkqAq7EYdc7osnFn+K27NN9GlLho?=
+ =?us-ascii?Q?T4p3jyYHHh8xEWK8kbMqMHd02sjuiU77UnHHhSbpjJ2PorrKyebwpiMW+mr1?=
+ =?us-ascii?Q?t10oEI1Mo4QFzCq8DZPiRR2AoCOSGn7iVrDZbbWT2MfOMJVwPtlxbYLWhiFK?=
+ =?us-ascii?Q?GzeNj/9zCBvk9MvE292ginr61z+yxzt8XGK4u+MHoX3s5PmJCHLg2DRltAy6?=
+ =?us-ascii?Q?7CronnbYHOGdmuSS9LsNh6HvocISwOHj1ZGiASAvf9GI9ubjuigf0OtR+Qra?=
+ =?us-ascii?Q?1cvQhnan8MByi+1p2x+jpJa9k58h6iIx97+uC6BOmfmAipwVb4xFLApZfBlb?=
+ =?us-ascii?Q?xW+c6hucKBHnZX5Ngkwx9X2Vw1/jsVMnv6lIXne0xmfF9lvqVFN+lHrurPJt?=
+ =?us-ascii?Q?zX6iLpLAqShP6PxZdaEtJSYCjjjjeGiE+eMdNW8Sgmtw0I792mKsQEeeFenE?=
+ =?us-ascii?Q?Z6Zw0U7TKAWq7yadwjSOW4CisVhvo/nAUJU+XV6i+CkvYLOootZ/UmGXaEvn?=
+ =?us-ascii?Q?k9+V+2IFxCxdPMJzQ+mAhlWyghju5D8HFfJecZGmgjNfm3184Oxfd02lYX4o?=
+ =?us-ascii?Q?2aYJUtc1UC2kqD9Y6PQdCFpBdBPhtypfVs2uThZz8l3kJy9y5A8p/zW4OvcC?=
+ =?us-ascii?Q?mgRdqDI9uaNCos31H27mMu4MwlycC52BrLolmnf1xUL2H3VLe9tcTWA5uEuX?=
+ =?us-ascii?Q?XfW48HKUyDYlt3SEKfnzH3AXr8Y7cPGfEMOQTnkeZVf579Wny6gCT0SGjECT?=
+ =?us-ascii?Q?3vXSV0sV8cVBr6pNxX7sxLuLgZ1ZGp8vh/UJzH1GjgS/6akhIvAv6NQle7IU?=
+ =?us-ascii?Q?Zw=3D=3D?=
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2bf4beb8-e82e-470a-89ec-08dd7d81ce63
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8701.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2025 07:31:02.6892
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2+7TrKNHUChhBPgeFf7DFbPHXnNyHegGafnp5k4wbjq494fbNQFNHlNmP54kvGlVwD6zxYWC2FecYzZ2twlYoztyAPmTpVmjH+iSCuRvF88=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4957
+X-Proofpoint-ORIG-GUID: S4j7dNUGvnXUNd9_G0oDDmnwxCkUBP2W
+X-Proofpoint-GUID: S4j7dNUGvnXUNd9_G0oDDmnwxCkUBP2W
+X-Authority-Analysis: v=2.4 cv=UZBRSLSN c=1 sm=1 tr=0 ts=6800ae3b cx=c_pps a=+kc2f53xTGsvuL7uaCOpcA==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=XR8D0OoHHMoA:10
+ a=VwQbUJbxAAAA:8 a=AiHppB-aAAAA:8 a=i0EeH86SAAAA:8 a=t7CeM3EgAAAA:8 a=Y5FjT8Dtfh1lRl98P_QA:9 a=FdTzh2GWekK77mhwV6Dw:22
+X-Sensitive_Customer_Information: Yes
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-17_01,2025-04-15_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1011
+ priorityscore=1501 mlxscore=0 impostorscore=0 phishscore=0 malwarescore=0
+ spamscore=0 adultscore=0 mlxlogscore=999 lowpriorityscore=0 bulkscore=0
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.21.0-2502280000
+ definitions=main-2504170057
 
-On 17/04/2025 09:22, Johan Hovold wrote:
-> On Thu, Apr 17, 2025 at 09:10:09AM +0200, Krzysztof Kozlowski wrote:
->> On 17/04/2025 08:55, Johan Hovold wrote:
->>> Commit 3f66425a4fc8 ("cpufreq: Enable COMPILE_TEST on Arm drivers")
->>> enabled compile testing of most Arm CPUFreq drivers but left the
->>> existing default values unchanged so that many drivers are enabled by
->>> default whenever COMPILE_TEST is selected.
->>>
->>> This specifically results in the S3C64XX CPUFreq driver being enabled
->>> and initialised during boot of non-S3C64XX platforms with the following
->>> error logged:
->>>
->>> 	cpufreq: Unable to obtain ARMCLK: -2
->>
->> But isn't this fixed by my commit (d4f610a9bafd)? How is it possible to
->> reproduce above error when you are NOT test compiling?
-> 
-> Correct, but this was how I found the issue and motivation for
-> backporting the fixes including yours which was not marked for stable.
+From: Yu Kuai <yukuai3@huawei.com>
 
-OK, just does not feel up to date anymore.
+[ Upstream commit dfd6200a095440b663099d8d42f1efb0175a1ce3 ]
 
->  
->>> Commit d4f610a9bafd ("cpufreq: Do not enable by default during compile
->>> testing") recently fixed most of the default values, but two entries
->>> were missed
->>
->> That's not really a bug to be fixed. No things got worse by missing two
->> entries, so how this part could be called something needing fixing?
-> 
-> I'm not saying it's buggy, I'm explaining that the identified issue was
-> recently fixed partially.
->  
->>>  and two could use a more specific default condition.
->>
->> Two entries for more specific default - before they were ALWAYS default,
->> so again I narrowed it from wide default. Nothing to fix here. You can
->> narrow it further but claiming that my commit made something worse looks
->> like a stretch - and that's a meaning of fixing someone's commit.
-> 
-> Relax. I'm not blaming you for doing anything wrong here.
-> 
-> I sent a fix for the same issues you addressed and Viresh let me know
-> that he had already merged a fix for most of the issues:
-> 
-> 	https://lore.kernel.org/lkml/20250416134331.7604-1-johan+linaro@kernel.org/
->  
->>> Fix the default values for drivers that can be compile tested and that
->>> should be enabled by default when not compile testing.
->>>
->>> Fixes: 3f66425a4fc8 ("cpufreq: Enable COMPILE_TEST on Arm drivers")
->>
->>
->>> Fixes: d4f610a9bafd ("cpufreq: Do not enable by default during compile testing")
->>
->> That's not correct tag - it introduced no new issues, did not make
->> things worse, so nothing to fix there, if I understand correctly.
-> 
-> Fair enough, I could have used dependency notation for this one.
-> 
-> Let me do that in v3.
+A new field 'online' is added to blkg_policy_data to fix following
+2 problem:
 
-OK. I have doubts that this should be marked as a fix in the first place
-- even skipping my commit. Some (several?) people were always
-considering COMPILE_TEST as enable everything, thus for them this was
-the intention, even if it causes such S3C64xx cpufreq warnings:
+1) In blkcg_activate_policy(), if pd_alloc_fn() with 'GFP_NOWAIT'
+   failed, 'queue_lock' will be dropped and pd_alloc_fn() will try again
+   without 'GFP_NOWAIT'. In the meantime, remove cgroup can race with
+   it, and pd_offline_fn() will be called without pd_init_fn() and
+   pd_online_fn(). This way null-ptr-deference can be triggered.
 
-https://lore.kernel.org/all/8b6ede05-281a-4fb1-bcdc-457e6f2610ff@roeck-us.net/
+2) In order to synchronize pd_free_fn() from blkg_free_workfn() and
+   blkcg_deactivate_policy(), 'list_del_init(&blkg->q_node)' will be
+   delayed to blkg_free_workfn(), hence pd_offline_fn() can be called
+   first in blkg_destroy(), and then blkcg_deactivate_policy() will
+   call it again, we must prevent it.
 
-I had also talks about this in the past that one should never boot
-compile test kernel.
+The new field 'online' will be set after pd_online_fn() and will be
+cleared after pd_offline_fn(), in the meantime pd_offline_fn() will only
+be called if 'online' is set.
 
-Best regards,
-Krzysztof
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20230119110350.2287325-3-yukuai1@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+---
+Build test passed.
+---
+ block/blk-cgroup.c | 24 +++++++++++++++++-------
+ block/blk-cgroup.h |  1 +
+ 2 files changed, 18 insertions(+), 7 deletions(-)
+
+diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+index cced5a2d5fb6..ef596fc10465 100644
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -255,6 +255,7 @@ static struct blkcg_gq *blkg_alloc(struct blkcg *blkcg, struct gendisk *disk,
+ 		blkg->pd[i] = pd;
+ 		pd->blkg = blkg;
+ 		pd->plid = i;
++		pd->online = false;
+ 	}
+ 
+ 	return blkg;
+@@ -326,8 +327,11 @@ static struct blkcg_gq *blkg_create(struct blkcg *blkcg, struct gendisk *disk,
+ 		for (i = 0; i < BLKCG_MAX_POLS; i++) {
+ 			struct blkcg_policy *pol = blkcg_policy[i];
+ 
+-			if (blkg->pd[i] && pol->pd_online_fn)
+-				pol->pd_online_fn(blkg->pd[i]);
++			if (blkg->pd[i]) {
++				if (pol->pd_online_fn)
++					pol->pd_online_fn(blkg->pd[i]);
++				blkg->pd[i]->online = true;
++			}
+ 		}
+ 	}
+ 	blkg->online = true;
+@@ -432,8 +436,11 @@ static void blkg_destroy(struct blkcg_gq *blkg)
+ 	for (i = 0; i < BLKCG_MAX_POLS; i++) {
+ 		struct blkcg_policy *pol = blkcg_policy[i];
+ 
+-		if (blkg->pd[i] && pol->pd_offline_fn)
+-			pol->pd_offline_fn(blkg->pd[i]);
++		if (blkg->pd[i] && blkg->pd[i]->online) {
++			if (pol->pd_offline_fn)
++				pol->pd_offline_fn(blkg->pd[i]);
++			blkg->pd[i]->online = false;
++		}
+ 	}
+ 
+ 	blkg->online = false;
+@@ -1422,6 +1429,7 @@ int blkcg_activate_policy(struct request_queue *q,
+ 		blkg->pd[pol->plid] = pd;
+ 		pd->blkg = blkg;
+ 		pd->plid = pol->plid;
++		pd->online = false;
+ 	}
+ 
+ 	/* all allocated, init in the same order */
+@@ -1429,9 +1437,11 @@ int blkcg_activate_policy(struct request_queue *q,
+ 		list_for_each_entry_reverse(blkg, &q->blkg_list, q_node)
+ 			pol->pd_init_fn(blkg->pd[pol->plid]);
+ 
+-	if (pol->pd_online_fn)
+-		list_for_each_entry_reverse(blkg, &q->blkg_list, q_node)
++	list_for_each_entry_reverse(blkg, &q->blkg_list, q_node) {
++		if (pol->pd_online_fn)
+ 			pol->pd_online_fn(blkg->pd[pol->plid]);
++		blkg->pd[pol->plid]->online = true;
++	}
+ 
+ 	__set_bit(pol->plid, q->blkcg_pols);
+ 	ret = 0;
+@@ -1493,7 +1503,7 @@ void blkcg_deactivate_policy(struct request_queue *q,
+ 
+ 		spin_lock(&blkcg->lock);
+ 		if (blkg->pd[pol->plid]) {
+-			if (pol->pd_offline_fn)
++			if (blkg->pd[pol->plid]->online && pol->pd_offline_fn)
+ 				pol->pd_offline_fn(blkg->pd[pol->plid]);
+ 			pol->pd_free_fn(blkg->pd[pol->plid]);
+ 			blkg->pd[pol->plid] = NULL;
+diff --git a/block/blk-cgroup.h b/block/blk-cgroup.h
+index aa2b286bc825..59815b269a20 100644
+--- a/block/blk-cgroup.h
++++ b/block/blk-cgroup.h
+@@ -125,6 +125,7 @@ struct blkg_policy_data {
+ 	/* the blkg and policy id this per-policy data belongs to */
+ 	struct blkcg_gq			*blkg;
+ 	int				plid;
++	bool				online;
+ };
+ 
+ /*
+-- 
+2.34.1
+
 
