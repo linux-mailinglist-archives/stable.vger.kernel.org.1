@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-133374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B118A9259B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:05:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5018FA9278A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:27:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 376977B4686
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:01:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C67514A08B0
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:26:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F5A4257AE7;
-	Thu, 17 Apr 2025 18:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCCF9259C8D;
+	Thu, 17 Apr 2025 18:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZZ5vvwK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QetVqP5V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF5A257AD3;
-	Thu, 17 Apr 2025 18:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A400266572;
+	Thu, 17 Apr 2025 18:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744912881; cv=none; b=Ii7b329c5JTGJOE3rqjU2ESd85+WVIKvxXCBOTM1IETpg/6EA3k4haQnZJl8DXpZJDLp8bbotue4BnbKN7tGUwEc+nVQbkN7ept+cckiQNatWVZhWFo3UW2ttmKNQPEmk/dCOtJqZwaRXp82RW0KHULuS8PgWxf4F1KIhSxQ0TM=
+	t=1744914125; cv=none; b=igYhHd8nsavxKyd5TKvXJ/kuorA6RaxfArFsrkElL/TqTI1DXmBMQc4INVm3cE+DxV75AY/gwUsGywWtlAB0/mK3npGrpbE7H8cSWeL7uwA6Jh2nlFONT2jUJd325BiIwoDTnyzGchAAU8gcFF/aExdYEbQWDku6FA6T0DnRc64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744912881; c=relaxed/simple;
-	bh=eSWhk1v+saS/WHieN+815GnqO1wWPs2vpvPcZeyoTa8=;
+	s=arc-20240116; t=1744914125; c=relaxed/simple;
+	bh=B12zFFBM/mgHBwwc0bWEGqmz5sAMFfrGvo+dacHQ7RI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G14dIB3+3TQjSTd7DjdE79WyDJVBJz8KoRHzPmgHJAnJbdqq53HOOySOwKE+jlNmOYIqQYIqtD2LJ37hL89Ct4dCMb0qkPd5qnUMtY5f4qsfJnCn/NVtahbcroWBySrK0C4l0g02UWhE2Y5iOO1DxOuGZdomTSiTZh+uUYF9miw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZZ5vvwK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEAEBC4CEEA;
-	Thu, 17 Apr 2025 18:01:20 +0000 (UTC)
+	 MIME-Version; b=cksaBKO0AlmOMtzqFu/XNN2YakJ2V0jhwrR14KLcRbcYCkpFBxmRki54FpBUrTKvhCIfrvwCss3othuwjK6n2hFvafL7rfeF/9Wlp0cdYln24hE2hJrcc5W9fCU0GXzSKv5YaYylV1Vx8ONBkP2LklWV9t9BwxzJhl90ZTH0a2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QetVqP5V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8835CC4CEE7;
+	Thu, 17 Apr 2025 18:22:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744912881;
-	bh=eSWhk1v+saS/WHieN+815GnqO1wWPs2vpvPcZeyoTa8=;
+	s=korg; t=1744914125;
+	bh=B12zFFBM/mgHBwwc0bWEGqmz5sAMFfrGvo+dacHQ7RI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vZZ5vvwK5WXSoZnz4u1u+3ftjqffEnk9MAiRTX2P5dq76A0y1AeqbpmYgPAagED8R
-	 WVRYW0ojsUXkcayWlf3vvaBLpFfGno4iezv3mD0T9Jr5zPqkZv6IcTkV62SAdnDijF
-	 FWerQ3gYbrtNLCCpF+8K57O84tq7AOL9CQZnZRns=
+	b=QetVqP5VItmj5HQnRQr7bo5W7Ql2UkjMPDDQ9L8plzWP9xsIUzv5qS/Y2MfsiREYj
+	 mL4CzxUgySERNFEqtppfdPfKdy7ajZu7HumL+e4ajz6fDqMgHwXSaj2vKCleaeICci
+	 EC8M1RpW0xuv9+RlOaYokonYVc/lA5Pn/MYjmApY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Wyatt <fewtarius@steamfork.org>,
-	John Edwards <uejji@uejji.net>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Miaoqing Pan <quic_miaoqing@quicinc.com>,
+	Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 155/449] drm: panel-orientation-quirks: Add support for AYANEO 2S
+Subject: [PATCH 6.13 085/414] wifi: ath12k: fix memory leak in ath12k_pci_remove()
 Date: Thu, 17 Apr 2025 19:47:23 +0200
-Message-ID: <20250417175124.216836838@linuxfoundation.org>
+Message-ID: <20250417175114.860855489@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Wyatt <fewtarius@steamfork.org>
+From: Miaoqing Pan <quic_miaoqing@quicinc.com>
 
-[ Upstream commit eb8f1e3e8ee10cff591d4a47437dfd34d850d454 ]
+[ Upstream commit 1b24394ed5c8a8d8f7b9e3aa9044c31495d46f2e ]
 
-AYANEO 2S uses the same panel and orientation as the AYANEO 2.
+Kmemleak reported this error:
 
-Update the AYANEO 2 DMI match to also match AYANEO 2S.
+  unreferenced object 0xffff1c165cec3060 (size 32):
+    comm "insmod", pid 560, jiffies 4296964570 (age 235.596s)
+    backtrace:
+      [<000000005434db68>] __kmem_cache_alloc_node+0x1f4/0x2c0
+      [<000000001203b155>] kmalloc_trace+0x40/0x88
+      [<0000000028adc9c8>] _request_firmware+0xb8/0x608
+      [<00000000cad1aef7>] firmware_request_nowarn+0x50/0x80
+      [<000000005011a682>] local_pci_probe+0x48/0xd0
+      [<00000000077cd295>] pci_device_probe+0xb4/0x200
+      [<0000000087184c94>] really_probe+0x150/0x2c0
 
-Signed-off-by: Andrew Wyatt <fewtarius@steamfork.org>
-Signed-off-by: John Edwards <uejji@uejji.net>
-Tested-by: John Edwards <uejji@uejji.net>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250213222455.93533-2-uejji@uejji.net
+The firmware memory was allocated in ath12k_pci_probe(), but not
+freed in ath12k_pci_remove() in case ATH12K_FLAG_QMI_FAIL bit is
+set. So call ath12k_fw_unmap() to free the memory.
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.2.0-02280-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
+
+Signed-off-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
+Reviewed-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250123080226.1116479-1-quic_miaoqing@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index 4a73821b81f6f..f9c975338fc9e 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -184,10 +184,10 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "T103HAF"),
- 		},
- 		.driver_data = (void *)&lcd800x1280_rightside_up,
--	}, {	/* AYA NEO AYANEO 2 */
-+	}, {	/* AYA NEO AYANEO 2/2S */
- 		.matches = {
- 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
--		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "AYANEO 2"),
-+		  DMI_MATCH(DMI_PRODUCT_NAME, "AYANEO 2"),
- 		},
- 		.driver_data = (void *)&lcd1200x1920_rightside_up,
- 	}, {	/* AYA NEO 2021 */
+diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
+index cf907550e6a4a..67cbf78ad9134 100644
+--- a/drivers/net/wireless/ath/ath12k/pci.c
++++ b/drivers/net/wireless/ath/ath12k/pci.c
+@@ -1727,6 +1727,7 @@ static void ath12k_pci_remove(struct pci_dev *pdev)
+ 	ath12k_core_deinit(ab);
+ 
+ qmi_fail:
++	ath12k_fw_unmap(ab);
+ 	ath12k_mhi_unregister(ab_pci);
+ 
+ 	ath12k_pci_free_irq(ab);
 -- 
 2.39.5
 
