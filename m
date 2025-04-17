@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-133767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A88F3A92759
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:24:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40EA3A929B5
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:44:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52B9619E0BFF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:24:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F8E68E4BC5
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:41:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F36F0261381;
-	Thu, 17 Apr 2025 18:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E57B2571AE;
+	Thu, 17 Apr 2025 18:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fOjYVHmI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sqe7qSoL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2B57256C63;
-	Thu, 17 Apr 2025 18:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE480256C9C;
+	Thu, 17 Apr 2025 18:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914078; cv=none; b=QFiZTv8YLLQLi9He/IBrGLianGZtgHDI47Z9BonchX7tg+9ChtZKcX7dxzs3kZwr1g/C+RZ18wH11fcRcbQGD0Nc8XsFfdgQ1BRovmBFqzcq9TE+k2t8Mvu2RGmbEarQ9lAGPApFXoKhPkzyljQlVNRe2yFVEhWbIc44Im2K3pE=
+	t=1744915194; cv=none; b=dEw9+umSWGHry0irODAfWbLmXeyfM4312iRrEig/LtoUGJGDRjPK5/lz8yE2G5uD20/DDuTLlVF8Qm3XYuZjCSgLX9hZ9WIf1ZI1jClnyBzhL+0613uJ/FCLlY+Iy1pabeYL+NoLY9DDuQTQrdx+8M/1rf0S710nr/IE1Llry2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914078; c=relaxed/simple;
-	bh=YccjeAQ4tmzrOnjc/XKjPZuF4T0Y1F5v1rODbtZFTcs=;
+	s=arc-20240116; t=1744915194; c=relaxed/simple;
+	bh=HIAkBZnexgkYmTy52IWDgQ+3vTQZyrlAA8Vy9Gy/rfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e3KixhHrOxu3Z5cXp82oQ+EH7x14pQkPi0egTSVMjI5HhRWxFHCtpZr7S+r7sOg+erufANggFGCkWkDmd8GFyriI/JbrpfIi5c9yzukAaven699AGoCursLuOTWhrXJl+cXe+uDWzlJ2fsp0ZGljY1+4uvJXbak7Ncay3eurMMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fOjYVHmI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2749EC4CEE4;
-	Thu, 17 Apr 2025 18:21:17 +0000 (UTC)
+	 MIME-Version; b=S3KHt60mV/MWmsBdq4xuQo/5YjUf+MKjXTHlw2ZP0wTYpEX+nQsTKQMrvxD7RecniIENIXTYqIDhHyxx6FWNcR2pOzfOpVjQOQVZ67VKNRFD8R/60RAlE3uvqKFCGJxFThACez6YKXfeMzHREx1o5NTYxKZJ4pcObbYtiMM7N9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sqe7qSoL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D571C4CEE4;
+	Thu, 17 Apr 2025 18:39:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914078;
-	bh=YccjeAQ4tmzrOnjc/XKjPZuF4T0Y1F5v1rODbtZFTcs=;
+	s=korg; t=1744915194;
+	bh=HIAkBZnexgkYmTy52IWDgQ+3vTQZyrlAA8Vy9Gy/rfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fOjYVHmIhEn6Px26EQGwK0x7T56iQwwBk8PHAhh9Cglb4v/qXzUp3Mjg34PDOphRR
-	 LxGxkxkGVz8cgQb1KbUoKd0k0b6Jx2I2d8aK4+A+T2UxYnYNwPQuT2S6PZOYb290Ua
-	 hDhEC1cYE2ZRp0f1Ly1zPSB4Qs/Z7hjWzo5eKzKg=
+	b=sqe7qSoL8By7C1iQjK5wTdXmUxH5ZjjAAy642GkIoKcMOpA/wV71oT9QLG6PpvoGU
+	 Dugw0WvTbd5yNo9i7IPybu37VuPET8Pj5XsNvXu0YwltNoNUQzprNDhLLJKCprfusQ
+	 O0Zu1Kd1EWb9z3H0Fv5bV4vanwZi/ALjn3EXEYeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	kernel test robot <oliver.sang@intel.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 098/414] can: flexcan: add NXP S32G2/S32G3 SoC support
-Date: Thu, 17 Apr 2025 19:47:36 +0200
-Message-ID: <20250417175115.382161622@linuxfoundation.org>
+Subject: [PATCH 6.12 048/393] x86/mm: Clear _PAGE_DIRTY for kernel mappings when we clear _PAGE_RW
+Date: Thu, 17 Apr 2025 19:47:37 +0200
+Message-ID: <20250417175109.523866525@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +64,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit 8503a4b1a24d32e95f3a233062e8f1dc0b2052bd ]
+[ Upstream commit c1fcf41cf37f7a3fd3bbf6f0c04aba3ea4258888 ]
 
-Add device type data for S32G2/S32G3 SoC.
+The bit pattern of _PAGE_DIRTY set and _PAGE_RW clear is used to mark
+shadow stacks.  This is currently checked for in mk_pte() but not
+pfn_pte().  If we add the check to pfn_pte(), it catches vfree()
+calling set_direct_map_invalid_noflush() which calls
+__change_page_attr() which loads the old protection bits from the
+PTE, clears the specified bits and uses pfn_pte() to construct the
+new PTE.
 
-FlexCAN module from S32G2/S32G3 is similar with i.MX SoCs, but interrupt
-management is different.
+We should, therefore, for kernel mappings, clear the _PAGE_DIRTY bit
+consistently whenever we clear _PAGE_RW.  I opted to do it in the
+callers in case we want to use __change_page_attr() to create shadow
+stacks inside the kernel at some point in the future.  Arguably, we
+might also want to clear _PAGE_ACCESSED here.
 
-On S32G2/S32G3 SoC, there are separate interrupts for state change, bus
-errors, Mailboxes 0-7 and Mailboxes 8-127 respectively.
-In order to handle this FlexCAN hardware particularity, first reuse the
-'FLEXCAN_QUIRK_NR_IRQ_3' quirk provided by mcf5441x's irq handling
-support. Secondly, use the newly introduced
-'FLEXCAN_QUIRK_SECONDARY_MB_IRQ' quirk which handles the case where two
-separate mailbox ranges are controlled by independent hardware interrupt
-lines.
+Note that the 3 functions involved:
 
-Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-Link: https://patch.msgid.link/20250113120704.522307-4-ciprianmarian.costea@oss.nxp.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+  __set_pages_np()
+  kernel_map_pages_in_pgd()
+  kernel_unmap_pages_in_pgd()
+
+Only ever manipulate non-swappable kernel mappings, so maintaining
+the DIRTY:1|RW:0 special pattern for shadow stacks and DIRTY:0
+pattern for non-shadow-stack entries can be maintained consistently
+and doesn't result in the unintended clearing of a live dirty bit
+that could corrupt (destroy) dirty bit information for user mappings.
+
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/174051422675.10177.13226545170101706336.tip-bot2@tip-bot2
+Closes: https://lore.kernel.org/oe-lkp/202502241646.719f4651-lkp@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/flexcan/flexcan-core.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/x86/mm/pat/set_memory.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
-index 1a94586cbd11e..fca290afb5329 100644
---- a/drivers/net/can/flexcan/flexcan-core.c
-+++ b/drivers/net/can/flexcan/flexcan-core.c
-@@ -386,6 +386,16 @@ static const struct flexcan_devtype_data fsl_lx2160a_r1_devtype_data = {
- 		FLEXCAN_QUIRK_SUPPORT_RX_MAILBOX_RTR,
- };
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index 44f7b2ea6a073..69ceb967d73e9 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -2422,7 +2422,7 @@ static int __set_pages_np(struct page *page, int numpages)
+ 				.pgd = NULL,
+ 				.numpages = numpages,
+ 				.mask_set = __pgprot(0),
+-				.mask_clr = __pgprot(_PAGE_PRESENT | _PAGE_RW),
++				.mask_clr = __pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY),
+ 				.flags = CPA_NO_CHECK_ALIAS };
  
-+static const struct flexcan_devtype_data nxp_s32g2_devtype_data = {
-+	.quirks = FLEXCAN_QUIRK_DISABLE_RXFG | FLEXCAN_QUIRK_ENABLE_EACEN_RRS |
-+		FLEXCAN_QUIRK_DISABLE_MECR | FLEXCAN_QUIRK_BROKEN_PERR_STATE |
-+		FLEXCAN_QUIRK_USE_RX_MAILBOX | FLEXCAN_QUIRK_SUPPORT_FD |
-+		FLEXCAN_QUIRK_SUPPORT_ECC | FLEXCAN_QUIRK_NR_IRQ_3 |
-+		FLEXCAN_QUIRK_SUPPORT_RX_MAILBOX |
-+		FLEXCAN_QUIRK_SUPPORT_RX_MAILBOX_RTR |
-+		FLEXCAN_QUIRK_SECONDARY_MB_IRQ,
-+};
-+
- static const struct can_bittiming_const flexcan_bittiming_const = {
- 	.name = DRV_NAME,
- 	.tseg1_min = 4,
-@@ -2055,6 +2065,7 @@ static const struct of_device_id flexcan_of_match[] = {
- 	{ .compatible = "fsl,vf610-flexcan", .data = &fsl_vf610_devtype_data, },
- 	{ .compatible = "fsl,ls1021ar2-flexcan", .data = &fsl_ls1021a_r2_devtype_data, },
- 	{ .compatible = "fsl,lx2160ar1-flexcan", .data = &fsl_lx2160a_r1_devtype_data, },
-+	{ .compatible = "nxp,s32g2-flexcan", .data = &nxp_s32g2_devtype_data, },
- 	{ /* sentinel */ },
- };
- MODULE_DEVICE_TABLE(of, flexcan_of_match);
+ 	/*
+@@ -2501,7 +2501,7 @@ int __init kernel_map_pages_in_pgd(pgd_t *pgd, u64 pfn, unsigned long address,
+ 		.pgd = pgd,
+ 		.numpages = numpages,
+ 		.mask_set = __pgprot(0),
+-		.mask_clr = __pgprot(~page_flags & (_PAGE_NX|_PAGE_RW)),
++		.mask_clr = __pgprot(~page_flags & (_PAGE_NX|_PAGE_RW|_PAGE_DIRTY)),
+ 		.flags = CPA_NO_CHECK_ALIAS,
+ 	};
+ 
+@@ -2544,7 +2544,7 @@ int __init kernel_unmap_pages_in_pgd(pgd_t *pgd, unsigned long address,
+ 		.pgd		= pgd,
+ 		.numpages	= numpages,
+ 		.mask_set	= __pgprot(0),
+-		.mask_clr	= __pgprot(_PAGE_PRESENT | _PAGE_RW),
++		.mask_clr	= __pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY),
+ 		.flags		= CPA_NO_CHECK_ALIAS,
+ 	};
+ 
 -- 
 2.39.5
 
