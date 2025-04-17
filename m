@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-134412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87F5CA92ACA
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:54:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 676FCA9293B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C805F7B20EB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:53:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 935804A4D63
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C73C2566DE;
-	Thu, 17 Apr 2025 18:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF402571DA;
+	Thu, 17 Apr 2025 18:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khy2uCK0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AqkpJa0o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED335185920;
-	Thu, 17 Apr 2025 18:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5832C2571B4;
+	Thu, 17 Apr 2025 18:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916050; cv=none; b=BGmy3gLK9n1ZnV4Y3qwmWkygt0huxAfaa1+9do6DSKJFDQXMP6mNetVieoy+urwIJwD/4CcEPRFc0QVKZoBfpWRPktpOJNS9WZXxXXas5OiN7kN1dY740IfssEEcYkGDd5BtLntKAcRy7wGbTKEq7HQGIaKya11MQSQKPatkXOI=
+	t=1744915019; cv=none; b=tUyKykUknaKOmbnqMgh6Alc7KapZ+XKcY04guVerFmpqcoIRvQJch685edoGoCKgE+AWDYXNfmnwCZQKOU7HtZOFZLpd0byNAvw1zaNwX6MOC2vZCn+V9DkK3nTu/koyjYBEbQnJYTZwirHAAy8Bkb/Nr4whk7GXV8bsqW/+RZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916050; c=relaxed/simple;
-	bh=xL+uAQC/PphQLNqixM0W5FjxPiZQUUkUMHiX02JzsrQ=;
+	s=arc-20240116; t=1744915019; c=relaxed/simple;
+	bh=1g9ou7Kk6+F2jNMIAg3+VqWnqksFlH7/qlpArKXsADY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T2H/R5QK4kS11dAcEXV2B7byJQ+ftcLLar7AT2TuLAd65gAv3jvDn+aMwr5wiGsOGLzjzRj+relY+B3bZv/1EDAVwg0HUd97V20the0EqeScNnnoxNzw3UOLgmxt2CcIgBh/A1dgXdUPxy41tW3Pr5vJ/9WN8VbP93guyz0G+CA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khy2uCK0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6089AC4CEE4;
-	Thu, 17 Apr 2025 18:54:09 +0000 (UTC)
+	 MIME-Version; b=HZLbvQRD92o/Bvo3Se4DSgbMjiWFLs9vNm8PvEyss/Db5pITlEdyvW0U743kru6/og1HyXzvlBrIBsDgHRlMSlcefD7Pvp7yrhV+5TZ6b/vbzyzb3f30kAOoHrUCMW9JupwK2TF59jRn/BSOfXxQjz1ZXFi50U6zUQl05yjFJwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AqkpJa0o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75E6C4CEE4;
+	Thu, 17 Apr 2025 18:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916049;
-	bh=xL+uAQC/PphQLNqixM0W5FjxPiZQUUkUMHiX02JzsrQ=;
+	s=korg; t=1744915019;
+	bh=1g9ou7Kk6+F2jNMIAg3+VqWnqksFlH7/qlpArKXsADY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=khy2uCK0diUyZI0sAXqKXqXkkbT/EhI1XxRdC0tG2VtrPQef/Ykd4a6XvBven2boP
-	 LaZdaWqmHnvVoydXKuHoSElAJSEb17Niljf6gz/1E1WQWPWH54zwwruV/dy+eoSgsL
-	 d3v5dG5uBcRb7hR55Jkp/+3Qtvne9ZtGByKxWkwo=
+	b=AqkpJa0o+FBh3E02L4eyBVHnw/JZI2ohAy4UsU0WsBe469bvMjGywmLKybjWjRFf9
+	 KJJTGi9WbgsW17BOlXmTfK3ppp38q7fHkwFcdqod0limi22iMma3N7/Ao1Tt3Up+Mi
+	 lvD90XhkZTtq+Hl4u/iBFeStmIYg51R+jIiBFu9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.12 327/393] crypto: ccp - Fix check for the primary ASP device
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Jon Mason <jdmason@kudzu.us>
+Subject: [PATCH 6.13 378/414] ntb: use 64-bit arithmetic for the MSI doorbell mask
 Date: Thu, 17 Apr 2025 19:52:16 +0200
-Message-ID: <20250417175120.763515726@linuxfoundation.org>
+Message-ID: <20250417175126.662428198@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Lendacky <thomas.lendacky@amd.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit 07bb097b92b987db518e72525b515d77904e966e upstream.
+commit fd5625fc86922f36bedee5846fefd647b7e72751 upstream.
 
-Currently, the ASP primary device check does not have support for PCI
-domains, and, as a result, when the system is configured with PCI domains
-(PCI segments) the wrong device can be selected as primary. This results
-in commands submitted to the device timing out and failing. The device
-check also relies on specific device and function assignments that may
-not hold in the future.
+msi_db_mask is of type 'u64', still the standard 'int' arithmetic is
+performed to compute its value.
 
-Fix the primary ASP device check to include support for PCI domains and
-to perform proper checking of the Bus/Device/Function positions.
+While most of the ntb_hw drivers actually don't utilize the higher 32
+bits of the doorbell mask now, this may be the case for Switchtec - see
+switchtec_ntb_init_db().
 
-Fixes: 2a6170dfe755 ("crypto: ccp: Add Platform Security Processor (PSP) device support")
+Found by Linux Verification Center (linuxtesting.org) with SVACE static
+analysis tool.
+
+Fixes: 2b0569b3b7e6 ("NTB: Add MSI interrupt support to ntb_transport")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/ccp/sp-pci.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/ntb/ntb_transport.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/crypto/ccp/sp-pci.c
-+++ b/drivers/crypto/ccp/sp-pci.c
-@@ -189,14 +189,17 @@ static bool sp_pci_is_master(struct sp_d
- 	pdev_new = to_pci_dev(dev_new);
- 	pdev_cur = to_pci_dev(dev_cur);
+--- a/drivers/ntb/ntb_transport.c
++++ b/drivers/ntb/ntb_transport.c
+@@ -1353,7 +1353,7 @@ static int ntb_transport_probe(struct nt
+ 	qp_count = ilog2(qp_bitmap);
+ 	if (nt->use_msi) {
+ 		qp_count -= 1;
+-		nt->msi_db_mask = 1 << qp_count;
++		nt->msi_db_mask = BIT_ULL(qp_count);
+ 		ntb_db_clear_mask(ndev, nt->msi_db_mask);
+ 	}
  
--	if (pdev_new->bus->number < pdev_cur->bus->number)
--		return true;
-+	if (pci_domain_nr(pdev_new->bus) != pci_domain_nr(pdev_cur->bus))
-+		return pci_domain_nr(pdev_new->bus) < pci_domain_nr(pdev_cur->bus);
- 
--	if (PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn))
--		return true;
-+	if (pdev_new->bus->number != pdev_cur->bus->number)
-+		return pdev_new->bus->number < pdev_cur->bus->number;
- 
--	if (PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn))
--		return true;
-+	if (PCI_SLOT(pdev_new->devfn) != PCI_SLOT(pdev_cur->devfn))
-+		return PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn);
-+
-+	if (PCI_FUNC(pdev_new->devfn) != PCI_FUNC(pdev_cur->devfn))
-+		return PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn);
- 
- 	return false;
- }
 
 
 
