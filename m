@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-133978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9A73A928FD
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:39:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00B14A92A5D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:49:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C1BE3A8489
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21DED1B646A7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:49:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8601C2620D1;
-	Thu, 17 Apr 2025 18:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C82DA257AC7;
+	Thu, 17 Apr 2025 18:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NWlE+WVX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bm+T6TnM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C1C252915;
-	Thu, 17 Apr 2025 18:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E34E257436;
+	Thu, 17 Apr 2025 18:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914721; cv=none; b=fAtQvi9vQ1Y2MY8A0nZ3kWif2seRydUjYLnVVXRuMlI28ygQEmin9N2EOoL++wFHNu+BOZEjTgf+JZUSK3OWsa/EGL9LDWK3H7lpnyCxB+aPKqOXSZavHdBSttAH5WhJcqg9idUmMOTXzkbwxEsl0Z45zWJeURXHwvr8wwXYU5Y=
+	t=1744915752; cv=none; b=UTo+NjQRC3w6mTL5ScPIpa7V3RGgDwtG6sz2ZweTg7IKRm6+J9uL/1aI3XnVT6tfE9xDOP6mT2vzEMkS/7WJYSY0bLK1qX1BO6VxsxZJIca6r8Y27uJf8PDJwmxesh1PIcvQzGiD2FAclRPTJwMH/X9CYwR/MmteENEf9GzgLhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914721; c=relaxed/simple;
-	bh=wakJW9kOky6N0wLwuALUWSanBiUJoS5yL3LX4lFOKnk=;
+	s=arc-20240116; t=1744915752; c=relaxed/simple;
+	bh=zFA1i4wG+vuzZLdapb5PvXZ+3o75PCkGPyBUETM1CdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rizdW1zOSNDKTCUlfXagz9lrgRJA4ms3iBkbSJFSAIZHzv+WAVnK+MQPiV0ZtX43BGtjrBifBammq+okYSzf5sQqBpVE4w1f+oB7C9/jMQ4OP/x+g/x2THNQOI2JQU6XxUMFASOrzQkpPihgLeobkw9VC/fqA8PZsnOkfucg/+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NWlE+WVX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B21D0C4CEE4;
-	Thu, 17 Apr 2025 18:32:00 +0000 (UTC)
+	 MIME-Version; b=mZbfn/t9CBPW9n+47U5/lnZHUKaJ7EVPCatBjt82RUgixm5VpOJhcdDMXCMghLf7zIr0uckrNj/4uuWrYjzXHIFnQvV6xWpVJvDEOen7m1CFwx+qXEyVoL9qXfyW6qcTZHSOTOFgtq9MkfLOIbycDTMG+VZVcyAOgE35eHVbgWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bm+T6TnM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00E3C4CEF0;
+	Thu, 17 Apr 2025 18:49:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914721;
-	bh=wakJW9kOky6N0wLwuALUWSanBiUJoS5yL3LX4lFOKnk=;
+	s=korg; t=1744915752;
+	bh=zFA1i4wG+vuzZLdapb5PvXZ+3o75PCkGPyBUETM1CdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NWlE+WVXJN7vCYypcka5MUtzQFdwvsBiLwLqU/l/ONu5dO/ZqzMQGquDmoqcpK7hN
-	 2Jk3s5UNWs0rt5U7UwX7QdF64fs0LI9bk0o2kcx1k7rWs2LQqn7JOR/yzDpfIN7i8v
-	 SkjOkxzJNEZeM5lsYShldW+AVqGwJSc3PouDWpFg=
+	b=bm+T6TnM3ySfFV3X34mPclR3nBmH6o8zLralSUk1XfHZPvJWNdgYN1iKpDdmlfUdk
+	 D+wk8URWdkqW2qIb5c03ybydQP/pboFF4vYj5JWg8u0xhoWY2QdArTWHChWiaGm14/
+	 8wRfHm3jTXfxsvv3WbiGnMidIELtVi9MILw+pIlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Sunmin Jeong <s_min.jeong@samsung.com>,
-	Yeongjin Gil <youngjin.gil@samsung.com>,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.13 279/414] f2fs: fix to avoid atomicity corruption of atomic file
-Date: Thu, 17 Apr 2025 19:50:37 +0200
-Message-ID: <20250417175122.650714399@linuxfoundation.org>
+	"Jackson.lee" <jackson.lee@chipsnmedia.com>,
+	Nas Chung <nas.chung@chipsnmedia.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 229/393] media: chips-media: wave5: Fix gray color on screen
+Date: Thu, 17 Apr 2025 19:50:38 +0200
+Message-ID: <20250417175116.798365940@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,73 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yeongjin Gil <youngjin.gil@samsung.com>
+From: Jackson.lee <jackson.lee@chipsnmedia.com>
 
-commit f098aeba04c9328571567dca45159358a250240c upstream.
+commit 6bae4d5053da634eecb611118e7cd91a677a4bbf upstream.
 
-In the case of the following call stack for an atomic file,
-FI_DIRTY_INODE is set, but FI_ATOMIC_DIRTIED is not subsequently set.
+When a decoder instance is created, the W5_CMD_ERR_CONCEAL register
+should be initialized to 0. Otherwise, gray color is occasionally
+displayed on the screen while decoding.
 
-f2fs_file_write_iter
-  f2fs_map_blocks
-    f2fs_reserve_new_blocks
-      inc_valid_block_count
-        __mark_inode_dirty(dquot)
-          f2fs_dirty_inode
-
-If FI_ATOMIC_DIRTIED is not set, atomic file can encounter corruption
-due to a mismatch between old file size and new data.
-
-To resolve this issue, I changed to set FI_ATOMIC_DIRTIED when
-FI_DIRTY_INODE is set. This ensures that FI_DIRTY_INODE, which was
-previously cleared by the Writeback thread during the commit atomic, is
-set and i_size is updated.
-
-Cc: <stable@vger.kernel.org>
-Fixes: fccaa81de87e ("f2fs: prevent atomic file from being dirtied before commit")
-Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
-Reviewed-by: Sunmin Jeong <s_min.jeong@samsung.com>
-Signed-off-by: Yeongjin Gil <youngjin.gil@samsung.com>
-Reviewed-by: Daeho Jeong <daehojeong@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 45d1a2b93277 ("media: chips-media: wave5: Add vpuapi layer")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jackson.lee <jackson.lee@chipsnmedia.com>
+Signed-off-by: Nas Chung <nas.chung@chipsnmedia.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/inode.c |    4 +---
- fs/f2fs/super.c |    4 ++++
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ drivers/media/platform/chips-media/wave5/wave5-hw.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -34,10 +34,8 @@ void f2fs_mark_inode_dirty_sync(struct i
- 	if (f2fs_inode_dirtied(inode, sync))
- 		return;
- 
--	if (f2fs_is_atomic_file(inode)) {
--		set_inode_flag(inode, FI_ATOMIC_DIRTIED);
-+	if (f2fs_is_atomic_file(inode))
- 		return;
--	}
- 
- 	mark_inode_dirty_sync(inode);
- }
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1527,6 +1527,10 @@ int f2fs_inode_dirtied(struct inode *ino
- 		inc_page_count(sbi, F2FS_DIRTY_IMETA);
+--- a/drivers/media/platform/chips-media/wave5/wave5-hw.c
++++ b/drivers/media/platform/chips-media/wave5/wave5-hw.c
+@@ -576,7 +576,7 @@ int wave5_vpu_build_up_dec_param(struct
+ 		vpu_write_reg(inst->dev, W5_CMD_NUM_CQ_DEPTH_M1,
+ 			      WAVE521_COMMAND_QUEUE_DEPTH - 1);
  	}
- 	spin_unlock(&sbi->inode_lock[DIRTY_META]);
-+
-+	if (!ret && f2fs_is_atomic_file(inode))
-+		set_inode_flag(inode, FI_ATOMIC_DIRTIED);
-+
- 	return ret;
- }
- 
+-
++	vpu_write_reg(inst->dev, W5_CMD_ERR_CONCEAL, 0);
+ 	ret = send_firmware_command(inst, W5_CREATE_INSTANCE, true, NULL, NULL);
+ 	if (ret) {
+ 		wave5_vdi_free_dma_memory(vpu_dev, &p_dec_info->vb_work);
 
 
 
