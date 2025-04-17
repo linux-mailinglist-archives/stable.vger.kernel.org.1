@@ -1,127 +1,109 @@
-Return-Path: <stable+bounces-133212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C3BCA922A6
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:26:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45F90A922E9
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 227CC461C41
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 16:26:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3EA7188A165
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 16:42:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 266E2253B5C;
-	Thu, 17 Apr 2025 16:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68662254B11;
+	Thu, 17 Apr 2025 16:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="kucmAJQr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b4LNlipi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E60522371B;
-	Thu, 17 Apr 2025 16:26:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA3035973;
+	Thu, 17 Apr 2025 16:42:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744907194; cv=none; b=B/0Cb4rQeaISUGiUKESVafzUbQdmLYZfPO3B8By9MHDfYY6fjMZR/lniEH4b0Jv/IoW+qhS058/uSigNSvZVRvRENcUjXmm79AKOsnegwt30zNpLzAvUU06tLFjxywJEsJMZ1zArpWl9NJIjkGhHWCayfjWSJ0mRGKHdpI42WRU=
+	t=1744908139; cv=none; b=Uzl19JD61WLu1iZ5aidbnI9OXBvsYQGCVfLqescDyLC7VmtNDH0ObxB7oj1aiET3dIlrNHtNn7R61PaaUqgSfTFGvKpQs9GgWvZe8orAQwbWXmXlYwse5ED05+gdZY8whcQ1Ur7hb6rmdgtyu6edo4SfHka7WnI+vUzgz3Huwhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744907194; c=relaxed/simple;
-	bh=P9TfWspJnGRbKrqwgptzUFFwYuCKwBJHpoIuQk7N6ZE=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=AXfbqHW2cb0drf0Lvp4XtUfbXnBVBfN49FmEPXiGLQ6k479kvceCM0Nt59t5QiREqOUR15y5UDRCfJrcmmV5xpqbYucD63f8isJTVjJ0BLxJWMYeaBVmN0sXH9wp9UiCn7fSB02p3GDXQ/7FRwEAlwjO7UynmbeVq8RibODzsqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=kucmAJQr; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+	s=arc-20240116; t=1744908139; c=relaxed/simple;
+	bh=9Z7zBFITen5PF+y8xcxXkcjNm2Fxh2599HAlAnQpbdc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=lFwFQOM3Gsad8mWEYCyAPgIKPcudkJzemMmofI25MOoYXSmdGNl81/k3mJjEw447hCBHv/tk0MA1cJRWX8px8qV3lm9zggkcv1sMaM3AcMfWX4hw0MwbA6LICl4VLneSOTDlBha4UnUO6ThdgSJf7Uy7MG2DfEQgQx/meUCdrEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b4LNlipi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C792AC4CEE4;
+	Thu, 17 Apr 2025 16:42:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744908138;
+	bh=9Z7zBFITen5PF+y8xcxXkcjNm2Fxh2599HAlAnQpbdc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=b4LNlipiHMvrWTAjLoHe+ZwMoIeK2hjXpW23gk4aIrdi/420f1KjZFYcMbrCsxsYA
+	 NbizB1LwKEPz7s1osOFZogR2ovTj02RQBC1VhE+Z5u8A3jntOBYK8auHEmqk2fLrcD
+	 zP0JTHvRL9CILuHpJb1h6E4kDv2D8I7XSqSoNtov3mtMriQht3xUFEd7lJ4Jkirblw
+	 +MzdZRPREZcem9JGuLXoKYCwqtLAUt/WDzJ6KdDYnVUBbOa1QLujt669Gw0ea/fkCO
+	 Y1pBv7Y77WZQ3mU+df3USCgk3DneWDn7cmZ4DaFfyCT2WV397zrdGUICKq/TGsgRXg
+	 SHGc0Od+wJ/rQ==
+Date: Thu, 17 Apr 2025 11:42:17 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
+Cc: Shuah Khan <shuah@kernel.org>, Yi Lai <yi1.lai@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] selftests/pcie_bwctrl: Fix test progs list
+Message-ID: <20250417164217.GA114940@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1744906855;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Jy2VD4whmMy3I5b19h40sBNvZxMXt8NVw/R9fRE1Af8=;
-	b=kucmAJQrSj8aUR00+fmsRWYFWXrdis+l+pkpy7eT+bl5PW6okRBsgCADav+upAPx4S45Y1
-	tYW7KOY+/bYi5K/Zum3EHUBzuo+UUY5OfhFzZYHPWbreCDulpkssrW2F97Ntm4wEtZR5TF
-	TXZkPLvb5jCQpShxvhmYug0jRjCBF9uMhzRBZnX46krzzo+tV1ICtyvpzF5oWG0Zjvoi40
-	kb+a4AH2paAwi9GFeL9VhedE46AbQOYl8EJLXZL6LldB154YqoCZmbfQIEWn1ci6th90EU
-	JxzIVwGlVolMa57URgVAmnnXd1OKhHPXI8NVuCkalXnOScMy1wr2FM3m5LTZKg==
-Date: Thu, 17 Apr 2025 18:20:54 +0200
-From: Dragan Simic <dsimic@manjaro.org>
-To: Diederik de Haas <didi.debian@cknow.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>, =?UTF-8?Q?Krzysztof_Wilczy?=
- =?UTF-8?Q?=C5=84ski?= <kw@linux.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Heiko Stuebner <heiko@sntech.de>, Manivannan Sadhasivam
- <manivannan.sadhasivam@linaro.org>, Rob Herring <robh@kernel.org>, Shawn Lin
- <shawn.lin@rock-chips.com>, Niklas Cassel <cassel@kernel.org>,
- linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH] PCI: dw-rockchip: Fix function call sequence in
- rockchip_pcie_phy_deinit
-In-Reply-To: <20250417142138.1377451-1-didi.debian@cknow.org>
-References: <20250417142138.1377451-1-didi.debian@cknow.org>
-Message-ID: <3e000468679b4371a7942a3e07d99894@manjaro.org>
-X-Sender: dsimic@manjaro.org
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250417124529.11391-1-ilpo.jarvinen@linux.intel.com>
 
-Hello Diederik,
+On Thu, Apr 17, 2025 at 03:45:29PM +0300, Ilpo Järvinen wrote:
+> The commit df6f8c4d72ae ("selftests/pcie_bwctrl: Add
+> 'set_pcie_speed.sh' to TEST_PROGS") added set_pcie_speed.sh into
+> TEST_PROGS but that script is a helper that is only being called by
+> set_pcie_cooling_state.sh, not a test case itself. When
+> set_pcie_speed.sh is in TEST_PROGS, selftest harness will execute also
+> it leading to bwctrl selftest errors:
+> 
+>   # selftests: pcie_bwctrl: set_pcie_speed.sh
+>   # cat: /cur_state: No such file or directory
+>   not ok 2 selftests: pcie_bwctrl: set_pcie_speed.sh # exit=1
+> 
+> Place set_pcie_speed.sh into TEST_FILES instead to have it included
+> into installed test files but not execute it from the test harness.
+> 
+> Fixes: df6f8c4d72ae ("selftests/pcie_bwctrl: Add 'set_pcie_speed.sh' to TEST_PROGS")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-On 2025-04-17 16:21, Diederik de Haas wrote:
-> The documentation for the phy_power_off() function explicitly says
-> 
->   Must be called before phy_exit().
-> 
-> So let's follow that instruction.
-> 
-> Fixes: 0e898eb8df4e ("PCI: rockchip-dwc: Add Rockchip RK356X host
-> controller driver")
-> Cc: stable@vger.kernel.org	# v5.15+
-> Signed-off-by: Diederik de Haas <didi.debian@cknow.org>
+Applied to pci/for-linus for v6.15, thanks, Ilpo!
+
 > ---
->  drivers/pci/controller/dwc/pcie-dw-rockchip.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-> b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-> index c624b7ebd118..4f92639650e3 100644
-> --- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-> +++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-> @@ -410,8 +410,8 @@ static int rockchip_pcie_phy_init(struct
-> rockchip_pcie *rockchip)
+> I'm sorry I didn't realize this while the fix was submitted, I'm not that
+> familiar with all the kselftest harness variables and the justification
+> given for the fix sounded valid enough to raise any alarm bells in my
+> mind that something would be off with the approach the fix patch used.
 > 
->  static void rockchip_pcie_phy_deinit(struct rockchip_pcie *rockchip)
->  {
-> -	phy_exit(rockchip->phy);
->  	phy_power_off(rockchip->phy);
-> +	phy_exit(rockchip->phy);
->  }
+>  tools/testing/selftests/pcie_bwctrl/Makefile | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
->  static const struct dw_pcie_ops dw_pcie_ops = {
-
-Thanks for the patch, it's looking good to me.  The current state
-of the rockchip_pcie_phy_deinit() function might actually not cause
-issues because the rockchip_pcie_phy_deinit() function is used only
-in the error-handling path in the rockchip_pcie_probe() function,
-so having no runtime errors leads to no possible issues.
-
-However, it doesn't mean it shouldn't be fixed, and it would actually
-be good to dissolve the rockchip_pcie_phy_deinit() function into the
-above-mentioned error-handling path.  It's a short, two-line function
-local to the compile unit, used in a single place only, so dissolving
-it is safe and would actually improve the readability of the code.
-
-Thus, please feel free to include
-
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-
-and please consider dissolving the rockchip_pcie_phy_deinit() function
-in the possible v2 of this patch, as suggested above.
+> diff --git a/tools/testing/selftests/pcie_bwctrl/Makefile b/tools/testing/selftests/pcie_bwctrl/Makefile
+> index 48ec048f47af..277f92f9d753 100644
+> --- a/tools/testing/selftests/pcie_bwctrl/Makefile
+> +++ b/tools/testing/selftests/pcie_bwctrl/Makefile
+> @@ -1,2 +1,3 @@
+> -TEST_PROGS = set_pcie_cooling_state.sh set_pcie_speed.sh
+> +TEST_PROGS = set_pcie_cooling_state.sh
+> +TEST_FILES = set_pcie_speed.sh
+>  include ../lib.mk
+> 
+> base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+> -- 
+> 2.39.5
+> 
 
