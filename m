@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-133624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F4239A92688
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:14:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6292CA928E4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:38:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BE198A64E9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:14:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 743404A3D80
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BCB62561D9;
-	Thu, 17 Apr 2025 18:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD42B263F3E;
+	Thu, 17 Apr 2025 18:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nyZmituU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGUk4a+W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59ADE2561A2;
-	Thu, 17 Apr 2025 18:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1F0263F2B;
+	Thu, 17 Apr 2025 18:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913643; cv=none; b=G9lpksSwQIdNiC7xap6DxbAlfHs2CNzZdKtiuPK9dSEVeELaWKFZvkb4jHNSkaqThECnbHuYw5GLiLzbRfRXREPo5uW6vlyxFMsPJ1SHKUUOb7B9EFznmu9a0Vltu6RSJz/OkVoapAFqADJgbOKA65l4+lghlxRTeM1FKaWJ3RA=
+	t=1744914806; cv=none; b=H3OYgePaAzOSzDQxNyfFFs2vcMIaPof+wViE98hylaqM95jWCUe/b1LN/FjkX/KJLBGUwfQRzDg2VYCcyR7d9yfE3rL/0jdiZ7/vHYu4s5p7qF/Ja10iHIjXJNJQjRsPdlLe3QEwwYuUfqSdKrfXiv7YWoBx0bUUfk6v/UbE034=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913643; c=relaxed/simple;
-	bh=7DIqei8Zn1AAYT35msUF+paRpcc0aPrOXadE5nPO1PE=;
+	s=arc-20240116; t=1744914806; c=relaxed/simple;
+	bh=yd2H795xnt/4FlRUccg43w3V20r+gN90zPiZ2wrjPXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SUvQQ8JiPAZGv5YehsDueRIZJybavhCoUAI+FP7cioMiM8Qr/jbjJl4MgiF7B5+fECjbdYOnXLJdWibffsts5DQ1OeUIs7fddK09ZoBGtg2qxnXlZFczO++30fLzcv6ICEkPNrD5DPqjLI01/2DJTR/Wp9tmHql+bTqHPvSbEE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nyZmituU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C28CC4CEE4;
-	Thu, 17 Apr 2025 18:14:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HkVdarYtKipgW5peSHzHdAhv8f2wHUjWoJ0cNzoboYGR2FLUd5zVtQ8+B6OeTF5oRqjPjxO+X3gtLTsmXNE/6Qh96yG3vJJbRI1ZtAGsMD0rMKQF467pg4VPB0HziSmBi5NzupuJyTX3nVVq4HEMzA0mzDZW8XtnBNSpVC7P0Os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGUk4a+W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C77C4CEE4;
+	Thu, 17 Apr 2025 18:33:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913642;
-	bh=7DIqei8Zn1AAYT35msUF+paRpcc0aPrOXadE5nPO1PE=;
+	s=korg; t=1744914806;
+	bh=yd2H795xnt/4FlRUccg43w3V20r+gN90zPiZ2wrjPXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nyZmituUL6nXff7zMDobvkF+R+jOUn+CKNMORABx5/gdGTZMtqVO4lRUrZ3hv71P9
-	 4ghSBkhfVVddNGEry17zoy9Ym6r1trtPvKNeM62QWhLMUrbuyLLfbP3An6zTXHpkmR
-	 9xouB3J72PPXbbil/uRhtEZ8H0EjrBAeiPKzA1co=
+	b=eGUk4a+W7ANtFBog9qbCAxZNGNgJB2x4hx0K/WHA97v2aOJSp/vZHXsdiA0oDhcwM
+	 RLpRo2TDtKKR2EEf0XAQYhpW9D4zcmSPsEwqnfw7gp6iYwwIKSxPdp2W0IfUzlBEMl
+	 lq1heLTsCn37Fjm2NxVNHEa5rOnryRQYicpsdGYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-Subject: [PATCH 6.14 406/449] landlock: Move code to ease future backports
+	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.13 336/414] x86/xen: fix balloon target initialization for PVH dom0
 Date: Thu, 17 Apr 2025 19:51:34 +0200
-Message-ID: <20250417175134.616668558@linuxfoundation.org>
+Message-ID: <20250417175124.946408601@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,164 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Roger Pau Monne <roger.pau@citrix.com>
 
-commit 624f177d8f62032b4f3343c289120269645cec37 upstream.
+commit 87af633689ce16ddb166c80f32b120e50b1295de upstream.
 
-To ease backports in setup.c, let's group changes from
-__lsm_ro_after_init to __ro_after_init with commit f22f9aaf6c3d
-("selinux: remove the runtime disable functionality"), and the
-landlock_lsmid addition with commit f3b8788cde61 ("LSM: Identify modules
-by more than name").
+PVH dom0 re-uses logic from PV dom0, in which RAM ranges not assigned to
+dom0 are re-used as scratch memory to map foreign and grant pages.  Such
+logic relies on reporting those unpopulated ranges as RAM to Linux, and
+mark them as reserved.  This way Linux creates the underlying page
+structures required for metadata management.
 
-That will help to backport the following errata.
+Such approach works fine on PV because the initial balloon target is
+calculated using specific Xen data, that doesn't take into account the
+memory type changes described above.  However on HVM and PVH the initial
+balloon target is calculated using get_num_physpages(), and that function
+does take into account the unpopulated RAM regions used as scratch space
+for remote domain mappings.
 
-Cc: Günther Noack <gnoack@google.com>
+This leads to PVH dom0 having an incorrect initial balloon target, which
+causes malfunction (excessive memory freeing) of the balloon driver if the
+dom0 memory target is later adjusted from the toolstack.
+
+Fix this by using xen_released_pages to account for any pages that are part
+of the memory map, but are already unpopulated when the balloon driver is
+initialized.  This accounts for any regions used for scratch remote
+mappings.  Note on x86 xen_released_pages definition is moved to
+enlighten.c so it's uniformly available for all Xen-enabled builds.
+
+Take the opportunity to unify PV with PVH/HVM guests regarding the usage of
+get_num_physpages(), as that avoids having to add different logic for PV vs
+PVH in both balloon_add_regions() and arch_xen_unpopulated_init().
+
+Much like a6aa4eb994ee, the code in this changeset should have been part of
+38620fc4e893.
+
+Fixes: a6aa4eb994ee ('xen/x86: add extra pages to unpopulated-alloc if available')
+Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250318161443.279194-2-mic@digikod.net
-Fixes: f3b8788cde61 ("LSM: Identify modules by more than name")
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250407082838.65495-1-roger.pau@citrix.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/landlock/setup.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/x86/xen/enlighten.c |   10 ++++++++++
+ arch/x86/xen/setup.c     |    3 ---
+ drivers/xen/balloon.c    |   34 ++++++++++++++++++++++++----------
+ 3 files changed, 34 insertions(+), 13 deletions(-)
 
---- a/security/landlock/setup.c
-+++ b/security/landlock/setup.c
-@@ -19,6 +19,11 @@
+--- a/arch/x86/xen/enlighten.c
++++ b/arch/x86/xen/enlighten.c
+@@ -70,6 +70,9 @@ EXPORT_SYMBOL(xen_start_flags);
+  */
+ struct shared_info *HYPERVISOR_shared_info = &xen_dummy_shared_info;
  
- bool landlock_initialized __ro_after_init = false;
- 
-+const struct lsm_id landlock_lsmid = {
-+	.name = LANDLOCK_NAME,
-+	.id = LSM_ID_LANDLOCK,
-+};
++/* Number of pages released from the initial allocation. */
++unsigned long xen_released_pages;
 +
- struct lsm_blob_sizes landlock_blob_sizes __ro_after_init = {
- 	.lbs_cred = sizeof(struct landlock_cred_security),
- 	.lbs_file = sizeof(struct landlock_file_security),
-@@ -26,11 +31,6 @@ struct lsm_blob_sizes landlock_blob_size
- 	.lbs_superblock = sizeof(struct landlock_superblock_security),
- };
- 
--const struct lsm_id landlock_lsmid = {
--	.name = LANDLOCK_NAME,
--	.id = LSM_ID_LANDLOCK,
--};
--
- static int __init landlock_init(void)
+ static __ref void xen_get_vendor(void)
  {
- 	landlock_add_cred_hooks();
+ 	init_cpu_devs();
+@@ -466,6 +469,13 @@ int __init arch_xen_unpopulated_init(str
+ 			xen_free_unpopulated_pages(1, &pg);
+ 		}
+ 
++		/*
++		 * Account for the region being in the physmap but unpopulated.
++		 * The value in xen_released_pages is used by the balloon
++		 * driver to know how much of the physmap is unpopulated and
++		 * set an accurate initial memory target.
++		 */
++		xen_released_pages += xen_extra_mem[i].n_pfns;
+ 		/* Zero so region is not also added to the balloon driver. */
+ 		xen_extra_mem[i].n_pfns = 0;
+ 	}
+--- a/arch/x86/xen/setup.c
++++ b/arch/x86/xen/setup.c
+@@ -37,9 +37,6 @@
+ 
+ #define GB(x) ((uint64_t)(x) * 1024 * 1024 * 1024)
+ 
+-/* Number of pages released from the initial allocation. */
+-unsigned long xen_released_pages;
+-
+ /* Memory map would allow PCI passthrough. */
+ bool xen_pv_pci_possible;
+ 
+--- a/drivers/xen/balloon.c
++++ b/drivers/xen/balloon.c
+@@ -675,7 +675,7 @@ void xen_free_ballooned_pages(unsigned i
+ }
+ EXPORT_SYMBOL(xen_free_ballooned_pages);
+ 
+-static void __init balloon_add_regions(void)
++static int __init balloon_add_regions(void)
+ {
+ 	unsigned long start_pfn, pages;
+ 	unsigned long pfn, extra_pfn_end;
+@@ -698,26 +698,38 @@ static void __init balloon_add_regions(v
+ 		for (pfn = start_pfn; pfn < extra_pfn_end; pfn++)
+ 			balloon_append(pfn_to_page(pfn));
+ 
+-		balloon_stats.total_pages += extra_pfn_end - start_pfn;
++		/*
++		 * Extra regions are accounted for in the physmap, but need
++		 * decreasing from current_pages to balloon down the initial
++		 * allocation, because they are already accounted for in
++		 * total_pages.
++		 */
++		if (extra_pfn_end - start_pfn >= balloon_stats.current_pages) {
++			WARN(1, "Extra pages underflow current target");
++			return -ERANGE;
++		}
++		balloon_stats.current_pages -= extra_pfn_end - start_pfn;
+ 	}
++
++	return 0;
+ }
+ 
+ static int __init balloon_init(void)
+ {
+ 	struct task_struct *task;
++	int rc;
+ 
+ 	if (!xen_domain())
+ 		return -ENODEV;
+ 
+ 	pr_info("Initialising balloon driver\n");
+ 
+-#ifdef CONFIG_XEN_PV
+-	balloon_stats.current_pages = xen_pv_domain()
+-		? min(xen_start_info->nr_pages - xen_released_pages, max_pfn)
+-		: get_num_physpages();
+-#else
+-	balloon_stats.current_pages = get_num_physpages();
+-#endif
++	if (xen_released_pages >= get_num_physpages()) {
++		WARN(1, "Released pages underflow current target");
++		return -ERANGE;
++	}
++
++	balloon_stats.current_pages = get_num_physpages() - xen_released_pages;
+ 	balloon_stats.target_pages  = balloon_stats.current_pages;
+ 	balloon_stats.balloon_low   = 0;
+ 	balloon_stats.balloon_high  = 0;
+@@ -734,7 +746,9 @@ static int __init balloon_init(void)
+ 	register_sysctl_init("xen/balloon", balloon_table);
+ #endif
+ 
+-	balloon_add_regions();
++	rc = balloon_add_regions();
++	if (rc)
++		return rc;
+ 
+ 	task = kthread_run(balloon_thread, NULL, "xen-balloon");
+ 	if (IS_ERR(task)) {
 
 
 
