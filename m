@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-133766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3A2AA92765
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:24:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AD2DA92971
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87CD23B5F14
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:23:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F1DB1B636B8
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50DBE2620D5;
-	Thu, 17 Apr 2025 18:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CBC12566D7;
+	Thu, 17 Apr 2025 18:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l2U7sOnI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KO5saMhw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA3A256C63;
-	Thu, 17 Apr 2025 18:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 287F51DB148;
+	Thu, 17 Apr 2025 18:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914078; cv=none; b=QRLteKRIXQV7s6l5WDiSWoUWOxvhYbpXhg9ZrISVNdE3mwyVDiSiMgm2o26HaSXkWpSx3OV+tBrm5qA09tcWttZYiiykjXVteTyhqCNJ1YJynhQas0bzClpA2p47fkG+1o4BYpSyV3QgIVtKY8Gy7PSi3j42LN0AJZekWBCsP0A=
+	t=1744915226; cv=none; b=dua0p5zIZHXS2svt3oUAi353569lCz63tnLgevryy+vQnXMOSqb64qYdupR3f1vxnxyMJrhkn4BopKmtCd9sv2XHaNJ5jCLcvEiQejIxXr48tW2QE/G21K6DIrqMeSnf4TDHvkphFihIGY70sd5hrS5y0EK50M671lmh+NKAU4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914078; c=relaxed/simple;
-	bh=iGjudG2J+46mkIsHwyrN2lqrXu/7L2dJshSJvzwAp1s=;
+	s=arc-20240116; t=1744915226; c=relaxed/simple;
+	bh=M7h24trbW5UDEbJbcTXt/pbcnFi8gDuV9mgJB765Wwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qsZUQwRNjxnPN31IWBnKacekJ32QcRdV4tyTAj8ZhRHPqnxZnq0FWre6BoySfcFeVndn5SEFyOcO0ZHIuM3ED5ZOGTARpZby24Cs7WbpuSL3sdDtm8Z2ZM7uFDbsb+nTPv3gCG4+KJHucETu8924qRG8TeSV0I7WchnFF+7YaYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l2U7sOnI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C669C4CEEE;
-	Thu, 17 Apr 2025 18:21:15 +0000 (UTC)
+	 MIME-Version; b=SmgYjqrmdE9qQgJ2yibynhH7nPPBAgDyN9jXgYYom5PG1AgZJHpWoGylxLoRRoLK6RgSzExaut+CjdmI3EnqmcIjtdSlnIIqRLnBh17ypexfdtFxN2yNowSHGUCAeEFuxM6FMY7qGg/O3cC4Zq5mHU2CAE01jD06UTwgoX/adfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KO5saMhw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B64CC4CEE4;
+	Thu, 17 Apr 2025 18:40:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914075;
-	bh=iGjudG2J+46mkIsHwyrN2lqrXu/7L2dJshSJvzwAp1s=;
+	s=korg; t=1744915226;
+	bh=M7h24trbW5UDEbJbcTXt/pbcnFi8gDuV9mgJB765Wwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l2U7sOnIgvQLQQrBbX4xXMrI9m8uZMvxZUH6Gq620mxPYQOzbqdQ5ec/o70cKzObI
-	 fxNIj0JlQfUihTOKS/Z8toUFJuncatEVgxQaP1eMze++bXIWb+2P3oqcm7YDWJ/cXR
-	 49SQKqsMPOa5vt0A8KWk/thCUvWIi1PMN4pKBz6U=
+	b=KO5saMhw1mlT2oY/WhkJ36B/NQXYhVR7j1fJsl/yBUAyuKIJ4l3WDWXsYO4JSyHQ3
+	 egpUjnYb1NztbdRtjav2vYOMoJXJascGz/b65ChEolu8v8NVNuKm5RblDwrvWaTaa8
+	 uDyb3qQEvGnFpW1xfJvGxO/s1TgDPA+oW20mTWsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	keenplify <keenplify@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Niklas Cassel <cassel@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 080/414] ASoC: amd: Add DMI quirk for ACP6X mic support
+Subject: [PATCH 6.12 029/393] ata: sata_sx4: Add error handling in pdc20621_i2c_read()
 Date: Thu, 17 Apr 2025 19:47:18 +0200
-Message-ID: <20250417175114.664264341@linuxfoundation.org>
+Message-ID: <20250417175108.764950417@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: keenplify <keenplify@gmail.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit 309b367eafc8e162603cd29189da6db770411fea ]
+[ Upstream commit 8d46a27085039158eb5e253ab8a35a0e33b5e864 ]
 
-Some AMD laptops with ACP6X do not expose the DMIC properly on Linux.
-Adding a DMI quirk enables mic functionality.
+The function pdc20621_prog_dimm0() calls the function pdc20621_i2c_read()
+but does not handle the error if the read fails. This could lead to
+process with invalid data. A proper implementation can be found in
+/source/drivers/ata/sata_sx4.c, pdc20621_prog_dimm_global(). As mentioned
+in its commit: bb44e154e25125bef31fa956785e90fccd24610b, the variable spd0
+might be used uninitialized when pdc20621_i2c_read() fails.
 
-Similar to Bugzilla #218402, this issue affects multiple users.
+Add error handling to pdc20621_i2c_read(). If a read operation fails,
+an error message is logged via dev_err(), and return a negative error
+code.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219853
-Signed-off-by: keenplify <keenplify@gmail.com>
-Link: https://patch.msgid.link/20250315111617.12194-1-keenplify@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Add error handling to pdc20621_prog_dimm0() in pdc20621_dimm_init(), and
+return a negative error code if pdc20621_prog_dimm0() fails.
+
+Fixes: 4447d3515616 ("libata: convert the remaining SATA drivers to new init model")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/ata/sata_sx4.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index a7637056972aa..bd3808f98ec9e 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -584,6 +584,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_VERSION, "pang13"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "Micro-Star International Co., Ltd."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 15 C7UCX"),
-+		}
-+	},
- 	{}
- };
+diff --git a/drivers/ata/sata_sx4.c b/drivers/ata/sata_sx4.c
+index a482741eb181f..c3042eca6332d 100644
+--- a/drivers/ata/sata_sx4.c
++++ b/drivers/ata/sata_sx4.c
+@@ -1117,9 +1117,14 @@ static int pdc20621_prog_dimm0(struct ata_host *host)
+ 	mmio += PDC_CHIP0_OFS;
  
+ 	for (i = 0; i < ARRAY_SIZE(pdc_i2c_read_data); i++)
+-		pdc20621_i2c_read(host, PDC_DIMM0_SPD_DEV_ADDRESS,
+-				  pdc_i2c_read_data[i].reg,
+-				  &spd0[pdc_i2c_read_data[i].ofs]);
++		if (!pdc20621_i2c_read(host, PDC_DIMM0_SPD_DEV_ADDRESS,
++				       pdc_i2c_read_data[i].reg,
++				       &spd0[pdc_i2c_read_data[i].ofs])) {
++			dev_err(host->dev,
++				"Failed in i2c read at index %d: device=%#x, reg=%#x\n",
++				i, PDC_DIMM0_SPD_DEV_ADDRESS, pdc_i2c_read_data[i].reg);
++			return -EIO;
++		}
+ 
+ 	data |= (spd0[4] - 8) | ((spd0[21] != 0) << 3) | ((spd0[3]-11) << 4);
+ 	data |= ((spd0[17] / 4) << 6) | ((spd0[5] / 2) << 7) |
+@@ -1284,6 +1289,8 @@ static unsigned int pdc20621_dimm_init(struct ata_host *host)
+ 
+ 	/* Programming DIMM0 Module Control Register (index_CID0:80h) */
+ 	size = pdc20621_prog_dimm0(host);
++	if (size < 0)
++		return size;
+ 	dev_dbg(host->dev, "Local DIMM Size = %dMB\n", size);
+ 
+ 	/* Programming DIMM Module Global Control Register (index_CID0:88h) */
 -- 
 2.39.5
 
