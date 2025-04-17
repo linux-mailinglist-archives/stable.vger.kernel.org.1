@@ -1,81 +1,88 @@
-Return-Path: <stable+bounces-132906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68383A914C9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 09:12:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68777A914CE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 09:12:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8319189AF8B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 07:12:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29A823BF4F3
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 07:12:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7BD2218589;
-	Thu, 17 Apr 2025 07:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8D51DDA0C;
+	Thu, 17 Apr 2025 07:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="UPa6NJiv"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cVu7Qa0l"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FB62153DA
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 07:12:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD59E2153CD
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 07:12:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744873927; cv=none; b=oiurOX5H6Ld3oSSkVMdfkSkB3OcGOrcf6AS1Ra2X4ZLfA9q/CjfB/UhHuS3cF/zrnoGD9DIZv6RDXWRZce9lYCSEHYBkzlTRv5JKPqThe6K4Lkw9lfyJBBWAWuyl7VvtPf8OroP+OW/gI1Y6uXvN5J5MAZJhQ34YkPRTWOuxWQA=
+	t=1744873945; cv=none; b=onRk6cGJrzjb7l8m2LHG/5Bmx2NH6E9TThse6pb6miqi9aSJ9QSgpPWpNXtwPJbf4lpIz0sg+0hiCwOSfT2JymUiY7MDgbzcRof17tQyRm84n/SiO+XFMVcHquN1Z2gYcTHOBOkM1ZqL6Egcijsga7QuaGHZVf2N8P9cu7vElnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744873927; c=relaxed/simple;
-	bh=50nDBr7HaO/nY8PAFZfWpFIIsI4FE6ZxFeiR9zseHMo=;
+	s=arc-20240116; t=1744873945; c=relaxed/simple;
+	bh=tY/DIk2rzj7OpRJyN1f+M/77PeLyklmL5pXwGb0RQiM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oo3t6624rlzivdOwVviR9xPlanLblW2bSvWybcZFhriUeJW8xAijwsnTKWe3/+f8YnAqJtbGQ8prP1WUq+hpTdNrdiBdT8XFMzEPBVWwkSM81hKu+Ir56OrZARuSX05VqgnuBqauIr61odkoOf7XnCSw45mMUR3pIclUUC17Dz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=UPa6NJiv; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-aaecf50578eso62080466b.2
-        for <stable@vger.kernel.org>; Thu, 17 Apr 2025 00:12:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1744873924; x=1745478724; darn=vger.kernel.org;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=50nDBr7HaO/nY8PAFZfWpFIIsI4FE6ZxFeiR9zseHMo=;
-        b=UPa6NJivp5trF1vpq4oFQA7aSDst/tIWTj9seLE9NbCrU3yRtVQjiTy1DKm7UuCRKm
-         mCTL7qsDc8AMsWVOe9IhijfRZyEzijhIJ+L1meEcglJxh181FDBzJPsstfkuI89kbP3b
-         p2sE4ty4oewryVMQpAzoCnC/LgkEOMqlwwWo+Z4m2hmSAlVTGOVlOeQYMrhJGZf9Ksdf
-         Zf+vrLO68O+dFXLwSMdEasktJI7v6YRvgSL/05d6dwgzM87g3t5tkvwazTV23JPEbgIn
-         HhEb60ftUOKacb053jCQD7dGpStpPU7iKhNzTEQ5SueKDhjR9XWH8rlI4v7I8i/KVEyt
-         o1oQ==
+	 In-Reply-To:Content-Type; b=Ptmois5adL3VFp8V8ja9ODXAbqBEhXR7QSW5uwhF+k7Q/1S1rMiphRsv40VRmOfDtWmqJIUaD7WJuGXj6Mmg0ty/1cXQEtygltrKP96rZB4/H41b9X08/XSdGj13RH9pVygxlnkJ3Z/lJrwyGn50Vk9AicjEXmNlHhDoh6RxnJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cVu7Qa0l; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744873942;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=RS87iO4jmfjt13fRTdwJjBQzE4yIkbYOnPPbfZ4bwRA=;
+	b=cVu7Qa0l1AAehz0y6kvx77YTeyoE3phGF7tjK0galdkG3qZ6CJ6u4a1aIFCSUSn/v5/KPb
+	F3QD5WreUHxi5PXIYcKGY+kLgZbK36cndNMudEwEjcFHh32FOtICY1JBBMW10jZ7LEQ+Hx
+	DRLj78FxAXBmgYN97gEq/PJdVUXeokY=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-145-zqVCXEToOaqIlG0DJsAzRw-1; Thu, 17 Apr 2025 03:12:21 -0400
+X-MC-Unique: zqVCXEToOaqIlG0DJsAzRw-1
+X-Mimecast-MFC-AGG-ID: zqVCXEToOaqIlG0DJsAzRw_1744873940
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43cfda30a3cso2196175e9.3
+        for <stable@vger.kernel.org>; Thu, 17 Apr 2025 00:12:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744873924; x=1745478724;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=50nDBr7HaO/nY8PAFZfWpFIIsI4FE6ZxFeiR9zseHMo=;
-        b=rzyoL/ldTBbMKqhBmDNAT2DlABLpx2FKHlNQ3Lo1f6fqRO7HLerAfDjWl6JItmgE0h
-         pzsp02gpi3CqmH93q72P2x+kwxPzqFpI78iJYGXR929vovuqm9RBWKaTdkxgeOsrZuKi
-         7UAmX4DZNiB1wrL/uUTHeAQdEDiPG08ajPgPyf4oBA4/vBy4XJo1KgRqykiRia8x6cwe
-         GegaGeXM8I9VrRax0KMmAFJQohyDTRVEzYsnclPBdrbrP+WpjSvfOX2sAvDne9iRQA4l
-         gxtzBkLMW6bx5OOAi1j6rnYMrjAEgT3SEgh83vgM/g9SSlmIvn7yOE0xTT+3X05JlF8V
-         gg1w==
-X-Forwarded-Encrypted: i=1; AJvYcCXxUEWbxViGzfSAvXAP1GYkycvEIxSUVh7gTlekn/uc9jTrzKoUcFljRevulJmVWhRJaARA6Go=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhlM41G/G3a6DOCyiB4WPL+y+SdFZSaHoKEasP+RCPVpSl0JNK
-	vZhlSngNWRdPLs79Il5cKbIyz/ydVf/qpDrsrXvOFlF8xi6TrEOwO5fwVngzCAU=
-X-Gm-Gg: ASbGncs+nINT8wZCVee2p0ejAk6CsiGe0rFmgKJzGSSI2xCy5hY9d/mAdkO1AprIPD3
-	vB6LvfCFk+Q7XiyO3m7X1M7Pn1TwaZMZZfZjJjRCdYOQShAZJRug0sx2+sJ5CmKlgwR7Qj9wUYd
-	mTHn7+/jWDjsGG5x+obU24ONCZbT3bxFNXIiSHAtQ0wCgu+XC5fW0wvTAIJRlR4eCI/iZziRRgh
-	WucYxJA+XzVKG9w3eofZ0hDk8y3OtQiP4AgJvpqAX9xE4lB0SoJ0a5hSLlvH80FMOzqn/G1Rh8j
-	pF8CjAU3Idp/uFF9dDsiBjuy0Nm2NHpxWRUtSMGtIRFhyBwt2YmXdkLQgVW0bw12mIbGzqpN9+S
-	GvcjpE61qLAZBXNtuF+fD22lEp3HHqburRGZT8P8VxSBAwwNjOzjlJhTMxoTytQs/tDB332QF38
-	xp
-X-Google-Smtp-Source: AGHT+IGN17Jla2vA+Rc2I0KCBT5Gabe2J463zV01EJ+NRwJL4xDEPQ+kEyFWGVBbFKYG3sPp/od4mw==
-X-Received: by 2002:a17:907:608f:b0:ac3:8516:9cf2 with SMTP id a640c23a62f3a-acb42c2fcacmr391294266b.55.1744873923529;
-        Thu, 17 Apr 2025 00:12:03 -0700 (PDT)
-Received: from ?IPV6:2003:e5:873d:1a00:8e99:ce06:aa4a:2e7b? (p200300e5873d1a008e99ce06aa4a2e7b.dip0.t-ipconnect.de. [2003:e5:873d:1a00:8e99:ce06:aa4a:2e7b])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5f36ee54d8fsm9692478a12.12.2025.04.17.00.12.02
+        d=1e100.net; s=20230601; t=1744873940; x=1745478740;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=RS87iO4jmfjt13fRTdwJjBQzE4yIkbYOnPPbfZ4bwRA=;
+        b=Yy21mr/fO2GYBcmGVIBiYPYH6jRubEwndXBVBE6j8ad2paOGWUrmOllFSYGsqdxpYT
+         F9hfMr+1imzKxrFo06ObJjxx/MzCnBs5tzrcVoW4XKcpWSey1jBNipQ2/nlxRDb0TmK2
+         CX3nY6MM7uXO/rfx4FtL9DS+hZ3JO9HlUOI/8zsMCgPqpfWnyue8MoCmeKcercS5rc5T
+         fqURsymSHB0dPUd/53n01zs68vrL5KHMw/6kckLJm8xetTlXNSQpFvLM+8QcrLcQZmLn
+         MHeacD2ctAuSAHZYvUGXTC04Ln38hwOhix8RYE47jIkBZzXJwtEbxdVfO3sy8Ez5QwKb
+         +FeA==
+X-Forwarded-Encrypted: i=1; AJvYcCVeYisrJGzB0jeZJqrIWRLrmYIMP0wpiP+mn5reP+CVKO/piN1opYYw1v9Y6wkj7e36x54FptQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVqALZ9g12tvhC74F70MVe65pWSYtr6J/Psvluk75rDCYONbMZ
+	WUbZt8SRQGdoNQOAO2YLqiX6JCuNla9+e47kybiZi0yPCCkj/NQnAJsK4TGxV0Ylp9K0UfBigqM
+	A0eLHXERObjPkWyK94AgVnSE9ZSjssTFpP7uU/+RPDK090pfIzxHKnQ==
+X-Gm-Gg: ASbGncsMJsoYkbPvgJ54PO6qvNLi8OxOt9ukIF94GDHF9AQeYhSTpwxBAhmIJbbNf8r
+	sl7DP+k5erWsfN/9eQBydUSslsYrQW5JRRdxRsuPxywhEPc0SoX/wjcXw3ITBty0BN7Z6D10RlY
+	3g/GgK1iLMRmpokctploYB5Ty6OCpkP3PoQpREbLjRpK0OruGbhJlD4Pdo/FsOPbQ5xQxaHCRqp
+	T/FXB4QgJoBr0KMe7lTuACazVFhDOwlFZ/BR6TWhuGfAYH7old8PjquZmHgmH6UKSBlgPmZsOVk
+	AnC0wprxc0F9LRda+bTxMVrOlk+3Q1r8vh4hDqZm//siaq9pILtapAusV5IhW6tCDxSOHjSQipC
+	7k5b3jOR2TsRk0K0j+A0Te84LM36JeVGD+R2LHyU=
+X-Received: by 2002:a5d:64ef:0:b0:39c:30d8:f104 with SMTP id ffacd0b85a97d-39ee5b132f7mr3851744f8f.6.1744873940046;
+        Thu, 17 Apr 2025 00:12:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEkzP25I+9dronHGl5AxgAxlFz8k24329bxCBjViqDkpRbnKh4svhpFKfbn/WpzKU6KDTAyFA==
+X-Received: by 2002:a5d:64ef:0:b0:39c:30d8:f104 with SMTP id ffacd0b85a97d-39ee5b132f7mr3851719f8f.6.1744873939699;
+        Thu, 17 Apr 2025 00:12:19 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c706:2700:abf9:4eac:588c:adab? (p200300cbc7062700abf94eac588cadab.dip0.t-ipconnect.de. [2003:cb:c706:2700:abf9:4eac:588c:adab])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39eae963f62sm18853738f8f.5.2025.04.17.00.12.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Apr 2025 00:12:03 -0700 (PDT)
-Message-ID: <0c29a3f9-9e22-4e44-892d-431f06555600@suse.com>
-Date: Thu, 17 Apr 2025 09:12:01 +0200
+        Thu, 17 Apr 2025 00:12:19 -0700 (PDT)
+Message-ID: <1eb021d5-3472-4a47-8a3f-d5bae83b8391@redhat.com>
+Date: Thu, 17 Apr 2025 09:12:18 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,185 +90,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] xen-netfront: handle NULL returned by
- xdp_convert_buff_to_frame()
-To: Alexey <sdl@nppct.ru>, Jakub Kicinski <kuba@kernel.org>
-Cc: Stefano Stabellini <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, xen-devel@lists.xenproject.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- lvc-project@linuxtesting.org, stable@vger.kernel.org
-References: <20250414183403.265943-1-sdl@nppct.ru>
- <20250416175835.687a5872@kernel.org>
- <fa91aad9-f8f3-4b27-81b3-4c963e2e64aa@nppct.ru>
+Subject: Re: [PATCH stable 6.1] mm: Fix is_zero_page() usage in
+ try_grab_page()
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: Salvatore Bonaccorso <carnil@debian.org>, Milan Broz
+ <gmazyland@gmail.com>, stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Sasha Levin <sashal@kernel.org>
+References: <20250416202441.3911142-1-alex.williamson@redhat.com>
+From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-Autocrypt: addr=jgross@suse.com; keydata=
- xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
- ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
- dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
- NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
- XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
- AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
- mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
- G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
- kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
- Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
- RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
- vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
- sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
- aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
- w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
- auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
- 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
- fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
- HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
- QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
- ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
-In-Reply-To: <fa91aad9-f8f3-4b27-81b3-4c963e2e64aa@nppct.ru>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------d0C2m0JpY0HKG0p0HCAJyozK"
-
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------d0C2m0JpY0HKG0p0HCAJyozK
-Content-Type: multipart/mixed; boundary="------------RSZrBREXB0vBHBFnA0obN3v4";
- protected-headers="v1"
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-To: Alexey <sdl@nppct.ru>, Jakub Kicinski <kuba@kernel.org>
-Cc: Stefano Stabellini <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, xen-devel@lists.xenproject.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- lvc-project@linuxtesting.org, stable@vger.kernel.org
-Message-ID: <0c29a3f9-9e22-4e44-892d-431f06555600@suse.com>
-Subject: Re: [PATCH] xen-netfront: handle NULL returned by
- xdp_convert_buff_to_frame()
-References: <20250414183403.265943-1-sdl@nppct.ru>
- <20250416175835.687a5872@kernel.org>
- <fa91aad9-f8f3-4b27-81b3-4c963e2e64aa@nppct.ru>
-In-Reply-To: <fa91aad9-f8f3-4b27-81b3-4c963e2e64aa@nppct.ru>
-
---------------RSZrBREXB0vBHBFnA0obN3v4
-Content-Type: multipart/mixed; boundary="------------WPzaECcOaD250uqrDoIyhJN6"
-
---------------WPzaECcOaD250uqrDoIyhJN6
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20250416202441.3911142-1-alex.williamson@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
 
-T24gMTcuMDQuMjUgMDk6MDAsIEFsZXhleSB3cm90ZToNCj4gDQo+IE9uIDE3LjA0LjIwMjUg
-MDM6NTgsIEpha3ViIEtpY2luc2tpIHdyb3RlOg0KPj4gT24gTW9uLCAxNCBBcHIgMjAyNSAx
-ODozNDowMSArMDAwMCBBbGV4ZXkgTmVwb21ueWFzaGloIHdyb3RlOg0KPj4+IMKgwqDCoMKg
-wqDCoMKgwqDCoCBnZXRfcGFnZShwZGF0YSk7DQo+PiBQbGVhc2Ugbm90aWNlIHRoaXMgZ2V0
-X3BhZ2UoKSBoZXJlLg0KPj4NCj4+PiDCoMKgwqDCoMKgwqDCoMKgwqAgeGRwZiA9IHhkcF9j
-b252ZXJ0X2J1ZmZfdG9fZnJhbWUoeGRwKTsNCj4+PiArwqDCoMKgwqDCoMKgwqAgaWYgKHVu
-bGlrZWx5KCF4ZHBmKSkgew0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHRyYWNlX3hk
-cF9leGNlcHRpb24ocXVldWUtPmluZm8tPm5ldGRldiwgcHJvZywgYWN0KTsNCj4+PiArwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoCBicmVhazsNCj4+PiArwqDCoMKgwqDCoMKgwqAgfQ0KPiBE
-byB5b3UgbWVhbiB0aGF0IGl0IHdvdWxkIGJlIGJldHRlciB0byBtb3ZlIHRoZSBnZXRfcGFn
-ZShwZGF0YSkgY2FsbCBsb3dlciwNCj4gYWZ0ZXIgY2hlY2tpbmcgZm9yIE5VTEwgaW4geGRw
-Ziwgc28gdGhhdCB0aGUgcmVmZXJlbmNlIGNvdW50IGlzIG9ubHkgaW5jcmVhc2VkDQo+IGFm
-dGVyIGEgc3VjY2Vzc2Z1bCBjb252ZXJzaW9uPw0KDQpJIHRoaW5rIHRoZSBlcnJvciBoYW5k
-bGluZyBoZXJlIGlzIGdlbmVyYWxseSBicm9rZW4gKG9yIGF0IGxlYXN0IHZlcnkNCnF1ZXN0
-aW9uYWJsZSkuDQoNCkkgc3VzcGVjdCB0aGF0IGluIGNhc2Ugb2YgYXQgbGVhc3Qgc29tZSBl
-cnJvcnMgdGhlIGdldF9wYWdlKCkgaXMgbGVha2luZw0KZXZlbiB3aXRob3V0IHRoaXMgbmV3
-IHBhdGNoLg0KDQpJbiBjYXNlIEknbSB3cm9uZyBhIGNvbW1lbnQgcmVhc29uaW5nIHdoeSB0
-aGVyZSBpcyBubyBsZWFrIHNob3VsZCBiZQ0KYWRkZWQuDQoNCg0KSnVlcmdlbg0K
---------------WPzaECcOaD250uqrDoIyhJN6
-Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
+On 16.04.25 22:24, Alex Williamson wrote:
+> The backport of upstream commit c8070b787519 ("mm: Don't pin ZERO_PAGE
+> in pin_user_pages()") into v6.1.130 noted below in Fixes does not
+> account for commit 0f0892356fa1 ("mm: allow multiple error returns in
+> try_grab_page()"), which changed the return value of try_grab_page()
+> from bool to int.  Therefore returning 0, success in the upstream
+> version, becomes an error here.  Fix the return value.
+> 
+> Fixes: 476c1dfefab8 ("mm: Don't pin ZERO_PAGE in pin_user_pages()")
+> Link: https://lore.kernel.org/all/Z_6uhLQjJ7SSzI13@eldamar.lan
+> Reported-by: Salvatore Bonaccorso <carnil@debian.org>
+> Reported-by: Milan Broz <gmazyland@gmail.com>
+> Cc: stable@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> Cc: Sasha Levin <sashal@kernel.org>
+> Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+> ---
+>   mm/gup.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/gup.c b/mm/gup.c
+> index b1daaa9d89aa..76a2b0943e2d 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -232,7 +232,7 @@ bool __must_check try_grab_page(struct page *page, unsigned int flags)
+>   		 * and it is used in a *lot* of places.
+>   		 */
+>   		if (is_zero_page(page))
+> -			return 0;
+> +			return true;
+>   
+>   		/*
+>   		 * Similar to try_grab_folio(): be sure to *also*
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
-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
-kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
-=3DeeAB
------END PGP PUBLIC KEY BLOCK-----
+-- 
+Cheers,
 
---------------WPzaECcOaD250uqrDoIyhJN6--
+David / dhildenb
 
---------------RSZrBREXB0vBHBFnA0obN3v4--
-
---------------d0C2m0JpY0HKG0p0HCAJyozK
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmgAqcIFAwAAAAAACgkQsN6d1ii/Ey9s
-zgf+LywK5tRw1pt3A75AZkpDPjXyAy+HTSV/CVvkluaNPsqNM5Yg2+iYZZZKp+C2omR4jCFUNDUn
-EU5EnIclpZzA3Ox0JZrqjlrjknY4cD8QKits78CTlfr5aHrB7qPj3yRgvh/XxXS3Vz5v97yc/2YW
-e4p+YULttX7frz3a9ygzgz6TbtLLLw19HxCgTGvA2upI43v+abbnowNz/NOagJQ6WD4WmPpUBCRS
-4Yu1Z/NjKO+IbvAuX01hVdNedc+pN2lztOrK6GkjDE6HUAgyNqdQTEZrhOl9N/tysDDOEdkUxexg
-XsVZt0ZcfKPyAIhgRW3SVID/G2LiUiH7KO5QEmr2/w==
-=uCI0
------END PGP SIGNATURE-----
-
---------------d0C2m0JpY0HKG0p0HCAJyozK--
 
