@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-133546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 405E2A9261B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:10:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E386A92895
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCCA746819F
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:10:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D9CA8A31BF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:35:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5642A1CAA7D;
-	Thu, 17 Apr 2025 18:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D942566D3;
+	Thu, 17 Apr 2025 18:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pkUGyR1F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KTOdHaed"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 146221A3178;
-	Thu, 17 Apr 2025 18:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8328C2571BD;
+	Thu, 17 Apr 2025 18:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913403; cv=none; b=eFkyQZV906cFDqL9kghMJ3cgmIb55X98xfyI4CqdW0G5uwFwwVq3ZFPJK7I0c4kbuloTT0rnHxQq0+Jy8Pkv8dKLCZtY9wR6sxOUoSd5QX0n7wdMcTD/dIGj1GvmT2bBrJqVADzgo743VF0qXJc/oyHjZ4JhPtDHiaVX2O1qBVk=
+	t=1744914478; cv=none; b=FawkxnJXFJiXV8yuwtIem7ZBbQrYKSQFDMq/Cqrg9Xa7rJaXOzFStIQwiW2nh2wAHaU3IFFsu2er3wzltj0t028P93Is0VLKKknN5XF08BFFx6N9Wl5s2wKZsEy8NsltzNgZxQvOd+qNPrpvwuBnUjIPHnytkW3fZn5r4f5yu2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913403; c=relaxed/simple;
-	bh=8Gt+9fae2OlSvJWHkvbQa6dsTP5cuUeuYiqiDJlhN3g=;
+	s=arc-20240116; t=1744914478; c=relaxed/simple;
+	bh=oilpsKq+K0Xh7eTQKGmuRVAiBzMYYoh53zH2t3dkAtU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BRoneDGX94YEAqeT01V6XJnIiC5WhCiTRvqNZBSRh23hgF5D5sglLOGCMgM7vzzfT81f0VQg4k87wnyRAjwiPcFk/ceG7fJVFtpAeXn9d5UdFMu/31UH/x3Is79VBjFzFpUMpdeaZDBFIUPTHektV4VeuKGQu07U03jXq4J0k58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pkUGyR1F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97950C4CEE4;
-	Thu, 17 Apr 2025 18:10:02 +0000 (UTC)
+	 MIME-Version; b=TcaZmPcvtrtbHDi+bNwN//prh036lwCwxqcB2wN1hRhBs5YBZe9tuEstzbaud6yRLxufHvCZO6OSj/zlrDCBF1+oe6VB5l8QFi2RBZTqZvkiyMKvyf87PxTxsuPYIAFPb/5UaHGw5B7zs2FsPFdcOFMujkxKMHBZE2MlSAb5/0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KTOdHaed; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB6CC4CEE4;
+	Thu, 17 Apr 2025 18:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913402;
-	bh=8Gt+9fae2OlSvJWHkvbQa6dsTP5cuUeuYiqiDJlhN3g=;
+	s=korg; t=1744914478;
+	bh=oilpsKq+K0Xh7eTQKGmuRVAiBzMYYoh53zH2t3dkAtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pkUGyR1FEVROslq5w4bAEfTPMGEQ8HY5EprfvnxW63cCwohpQUmpv9PMoASmARjzY
-	 Ai6Iv6I07jhXWERz0xtha+tKKCdXhBJnu7MBAvCsGeXSAu/Xc4Pe20lcBH+Urzk+Pb
-	 I4KrIPQDYRJt6KuAJpmYaO3UmORQlF9yHFGP4gwU=
+	b=KTOdHaedVOa+K6KA8Q0Nek9I3R0E6FEL6Q0B+XHYytscS/HHg/NKajD9LAXr2jgpP
+	 4rs4ZezKCoKk0/StWQoKPdAjrwK0asYfpC+htqBhTB0x4VzDakHNPMqhIFIAGpCozx
+	 bmTO/Frc5tJjOvNAxnSbhOVIfypRqyuAHrSLxDhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.14 298/449] ASoC: qdsp6: q6apm-dai: fix capture pipeline overruns.
+	Karina Yankevich <k.yankevich@omp.ru>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.13 228/414] media: v4l2-dv-timings: prevent possible overflow in v4l2_detect_gtf()
 Date: Thu, 17 Apr 2025 19:49:46 +0200
-Message-ID: <20250417175130.090858117@linuxfoundation.org>
+Message-ID: <20250417175120.604612617@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+From: Karina Yankevich <k.yankevich@omp.ru>
 
-commit 5d01ed9b9939b4c726be74db291a982bc984c584 upstream.
+commit 3edd1fc48d2c045e8259561797c89fe78f01717e upstream.
 
-Period sizes less than 6k for capture path triggers overruns in the
-dsp capture pipeline.
+In v4l2_detect_gtf(), it seems safer to cast the 32-bit image_width
+variable to the 64-bit type u64 before multiplying to avoid
+a possible overflow. The resulting object code even seems to
+look better, at least on x86_64.
 
-Change the period size and number of periods to value which DSP is happy with.
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-Fixes: 9b4fe0f1cd79 ("ASoC: qdsp6: audioreach: add q6apm-dai support")
+[Sergey: rewrote the patch subject/descripition]
+
+Fixes: c9bc9f50753d ("[media] v4l2-dv-timings: fix overflow in gtf timings calculation")
 Cc: stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://patch.msgid.link/20250314174800.10142-6-srinivas.kandagatla@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Karina Yankevich <k.yankevich@omp.ru>
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6apm-dai.c |    4 ++--
+ drivers/media/v4l2-core/v4l2-dv-timings.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/soc/qcom/qdsp6/q6apm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6apm-dai.c
-@@ -24,8 +24,8 @@
- #define PLAYBACK_MIN_PERIOD_SIZE	128
- #define CAPTURE_MIN_NUM_PERIODS		2
- #define CAPTURE_MAX_NUM_PERIODS		8
--#define CAPTURE_MAX_PERIOD_SIZE		4096
--#define CAPTURE_MIN_PERIOD_SIZE		320
-+#define CAPTURE_MAX_PERIOD_SIZE		65536
-+#define CAPTURE_MIN_PERIOD_SIZE		6144
- #define BUFFER_BYTES_MAX (PLAYBACK_MAX_NUM_PERIODS * PLAYBACK_MAX_PERIOD_SIZE)
- #define BUFFER_BYTES_MIN (PLAYBACK_MIN_NUM_PERIODS * PLAYBACK_MIN_PERIOD_SIZE)
- #define COMPR_PLAYBACK_MAX_FRAGMENT_SIZE (128 * 1024)
+--- a/drivers/media/v4l2-core/v4l2-dv-timings.c
++++ b/drivers/media/v4l2-core/v4l2-dv-timings.c
+@@ -764,7 +764,7 @@ bool v4l2_detect_gtf(unsigned int frame_
+ 		u64 num;
+ 		u32 den;
+ 
+-		num = ((image_width * GTF_D_C_PRIME * (u64)hfreq) -
++		num = (((u64)image_width * GTF_D_C_PRIME * hfreq) -
+ 		      ((u64)image_width * GTF_D_M_PRIME * 1000));
+ 		den = (hfreq * (100 - GTF_D_C_PRIME) + GTF_D_M_PRIME * 1000) *
+ 		      (2 * GTF_CELL_GRAN);
+@@ -774,7 +774,7 @@ bool v4l2_detect_gtf(unsigned int frame_
+ 		u64 num;
+ 		u32 den;
+ 
+-		num = ((image_width * GTF_S_C_PRIME * (u64)hfreq) -
++		num = (((u64)image_width * GTF_S_C_PRIME * hfreq) -
+ 		      ((u64)image_width * GTF_S_M_PRIME * 1000));
+ 		den = (hfreq * (100 - GTF_S_C_PRIME) + GTF_S_M_PRIME * 1000) *
+ 		      (2 * GTF_CELL_GRAN);
 
 
 
