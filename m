@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-133811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A5F7A927BE
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:28:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64E97A925B8
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:06:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2B9B16DF44
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4AA918824E3
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E88625F7A3;
-	Thu, 17 Apr 2025 18:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C5C255248;
+	Thu, 17 Apr 2025 18:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k5dR0GYb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGgb+NVC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376432571D2;
-	Thu, 17 Apr 2025 18:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B17255E4C;
+	Thu, 17 Apr 2025 18:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914211; cv=none; b=eyebcukOMAMFyosXZ8gnvlMUljUU26ZjpgNKAcvnkrisFSocaVm9gIRJbIfwulSog5z3mAzB6tn6VoRqpZ7o4YKy+DE+0SX0xOQXCPDx6o1OB03lDyEvIUBp1lzY4Pp983L1bMFb6dle05Eq6WCbboJT2yO9m6Nn425pygXHINg=
+	t=1744913052; cv=none; b=YGThugMAvkSwD1h/SU22ROB751zrmFNTXR9Kcbs4XnHQLQdcAVKcKSs3/RRBWBGG5jg/qcxtPVvNgWAs95mARqYh72MeKAlNumUzrD2tOmAX5qgNFfu2psTx+OjGCQ/WJerAXJTgzGi/6d91639bjtUPl/2VmkAvTafOUFJ6ULM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914211; c=relaxed/simple;
-	bh=10XTPfm8i5htyJoQ1IDvrbNR7XJL/jfSay4xFXuahlQ=;
+	s=arc-20240116; t=1744913052; c=relaxed/simple;
+	bh=7Y6R9bSlDbjAy33+EBEiPSpajgZrGV58WjvhE1JZVsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MfCMQ1c8yrhX/oQB2F0HrZ6RGRoKbEekt0XmcxbCEWRXxL5TRzvilgAHq3YdJu5UsIkmD4STognvv9U3yz9bnMvBb2HxdjDm4fwyW/ts74D+YjxIHJJBI6fKQyuuQVMohmM/ZZRFull+KPf66qkSiIA6wIAXwBYi9m4Kd6GvyWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k5dR0GYb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCE76C4CEEA;
-	Thu, 17 Apr 2025 18:23:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tP+Owjy+Hxm7Ts5FKe/8MrlvMcOG9ymXyEi251BqrpGyn/r2UocNIO1m+d1yMOFKL1FIbTWfOu2Q9D6E6N+m24jFEDHxtAAmrVDsMOKjFGg/K1Meb7KjA94qJbkpv5QLrWcfZnjvIZXP+5R5p9N2iC41vsd1augTBgEI2J9DWtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGgb+NVC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42848C4CEE4;
+	Thu, 17 Apr 2025 18:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914211;
-	bh=10XTPfm8i5htyJoQ1IDvrbNR7XJL/jfSay4xFXuahlQ=;
+	s=korg; t=1744913052;
+	bh=7Y6R9bSlDbjAy33+EBEiPSpajgZrGV58WjvhE1JZVsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k5dR0GYbpFRacKL8LBZK8lw1twHuNbVAGxEgyjK6WEV8trt/CpyKJdZQR+W3TAIGj
-	 dpG6w1r0wmORtpmWIEIY2YqZEA0OfuXTWxP53hYFLb+vHcsFh9K1ZCC6YXUiEpwiXp
-	 LgxDM3L+MbZQPc+eqI9TMVfL2iBsZK+gLghpmY7Q=
+	b=BGgb+NVCUfLOsYvrijTkBBdknFhEH2W2soDMiq2pJsCdbNKvzoprJs3pYFpTDLY4P
+	 +/VFrMxo75gKOg8yZgGNhwdAUuI60po7lz4/7ESP9QhKtcLEEXX8fjFiDQSwKpiP47
+	 SW0IjhLGI/Ld4H77neU8UXIB6M+oX6yluReZL+Ks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Robert Foss <rfoss@kernel.org>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 141/414] drm/debugfs: fix printk format for bridge index
-Date: Thu, 17 Apr 2025 19:48:19 +0200
-Message-ID: <20250417175117.103061935@linuxfoundation.org>
+Subject: [PATCH 6.14 212/449] HID: pidff: Rename two functions to align them with naming convention
+Date: Thu, 17 Apr 2025 19:48:20 +0200
+Message-ID: <20250417175126.511540756@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +60,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit 72443c730b7a7b5670a921ea928e17b9b99bd934 ]
+[ Upstream commit bbeface1051142bcb0473fdcc89102ea5b31607d ]
 
-idx is an unsigned int, use %u for printk-style strings.
+Driver uses "set" everywhere to indicate setting report values and
+requesting HID_REQ_SET_REPORT
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250214-drm-assorted-cleanups-v7-1-88ca5827d7af@bootlin.com
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/usbhid/hid-pidff.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_debugfs.c b/drivers/gpu/drm/drm_debugfs.c
-index 536409a35df40..6b2178864c7ee 100644
---- a/drivers/gpu/drm/drm_debugfs.c
-+++ b/drivers/gpu/drm/drm_debugfs.c
-@@ -748,7 +748,7 @@ static int bridges_show(struct seq_file *m, void *data)
- 	unsigned int idx = 0;
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 6f6c47bd57eaa..ffecc712be003 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -552,7 +552,7 @@ static void pidff_set_gain_report(struct pidff_device *pidff, u16 gain)
+ /*
+  * Clear device control report
+  */
+-static void pidff_send_device_control(struct pidff_device *pidff, int field)
++static void pidff_set_device_control(struct pidff_device *pidff, int field)
+ {
+ 	int i, tmp;
+ 	int field_index = pidff->control_id[field];
+@@ -578,10 +578,10 @@ static void pidff_send_device_control(struct pidff_device *pidff, int field)
+ /*
+  * Modify actuators state
+  */
+-static void pidff_modify_actuators_state(struct pidff_device *pidff, bool enable)
++static void pidff_set_actuators(struct pidff_device *pidff, bool enable)
+ {
+ 	hid_dbg(pidff->hid, "%s actuators\n", enable ? "Enable" : "Disable");
+-	pidff_send_device_control(pidff,
++	pidff_set_device_control(pidff,
+ 		enable ? PID_ENABLE_ACTUATORS : PID_DISABLE_ACTUATORS);
+ }
  
- 	drm_for_each_bridge_in_chain(encoder, bridge) {
--		drm_printf(&p, "bridge[%d]: %ps\n", idx++, bridge->funcs);
-+		drm_printf(&p, "bridge[%u]: %ps\n", idx++, bridge->funcs);
- 		drm_printf(&p, "\ttype: [%d] %s\n",
- 			   bridge->type,
- 			   drm_get_connector_type_name(bridge->type));
+@@ -591,12 +591,12 @@ static void pidff_modify_actuators_state(struct pidff_device *pidff, bool enable
+ static void pidff_reset(struct pidff_device *pidff)
+ {
+ 	/* We reset twice as sometimes hid_wait_io isn't waiting long enough */
+-	pidff_send_device_control(pidff, PID_RESET);
+-	pidff_send_device_control(pidff, PID_RESET);
++	pidff_set_device_control(pidff, PID_RESET);
++	pidff_set_device_control(pidff, PID_RESET);
+ 	pidff->effect_count = 0;
+ 
+-	pidff_send_device_control(pidff, PID_STOP_ALL_EFFECTS);
+-	pidff_modify_actuators_state(pidff, 1);
++	pidff_set_device_control(pidff, PID_STOP_ALL_EFFECTS);
++	pidff_set_actuators(pidff, 1);
+ }
+ 
+ /*
 -- 
 2.39.5
 
