@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-134282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0009EA92A65
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:50:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47043A9261A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:10:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2F843AAD67
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:47:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 813631B62E66
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32801A3178;
-	Thu, 17 Apr 2025 18:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745CB1DE3A8;
+	Thu, 17 Apr 2025 18:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q0P1y3xD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GGAXMeFu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6984502F;
-	Thu, 17 Apr 2025 18:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D491CAA7D;
+	Thu, 17 Apr 2025 18:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915652; cv=none; b=FjF2/WWiaqwOVqgS679UqIRubaO4jx6c/sKH0oTavrQec0n0m5YA6nv529BTAJ4XtZ7wxOC3CJQVdf78OTi+YXUJ1G1mdPBSmIbYaSpDNf/vJruhbvauHmGt2WzmbkML13tb5htxxf0m6Qx5pGPd4F9fbMHnnwQt7CnUXI/k7Ck=
+	t=1744913376; cv=none; b=dBTyOgsYOWZHiVCkpNpWS3SDOVFEK8lzQpj0OaxYiDQWyEPtH65KrhLWtDdWepEE5epvvvbAWsCM5JqdSv4+9kPNBX5RgyVhEQd2Uw4P++PyZq71Yxvps+7ombTmorxEg/lX/e6qMGWGArjAXEHnxdos5e0qhs5/n0lUYNAXHio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915652; c=relaxed/simple;
-	bh=wgVbUH9KoFQcc7ion4FVfpsn6LlP4368x8hiREnGUFk=;
+	s=arc-20240116; t=1744913376; c=relaxed/simple;
+	bh=JSAWCUTukdjnqySd/4D+IcQNpto2lUZE2lXaOoD8XeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jmHl5FKIMc24McjL2s8OfuKG75ow8RpNLTF5gW+oaA3XYdIojSbzMo8nVjmALH3ymNXCJEodNh+THMUtDETK3KgpuawXldHnQ1q/cNvlA8dCkEztQ7SgmkJ7iw3Tr9FSgI/X0FfEA6N6Z+A7MRYn1cfsx/Ub4dKWtD2hcemL35Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q0P1y3xD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA16C4CEE4;
-	Thu, 17 Apr 2025 18:47:31 +0000 (UTC)
+	 MIME-Version; b=RKLVzen4fHP0iVwBrlRVS9iyW7/XdJZq2kPIArOaZVf+BZSoFRspBbJGEUgp6meKRM9cFFDJ/upAruXgDSuEj4G/HXPEu2hZlNFKsi8Nc5MJ5j9D/sBqW5iFLm16GLpAKP5c1a5Mt3Y9w6uw+yI54lGmDNb4OIZQGBcnsg1ZUNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GGAXMeFu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C38AC4CEE4;
+	Thu, 17 Apr 2025 18:09:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915652;
-	bh=wgVbUH9KoFQcc7ion4FVfpsn6LlP4368x8hiREnGUFk=;
+	s=korg; t=1744913375;
+	bh=JSAWCUTukdjnqySd/4D+IcQNpto2lUZE2lXaOoD8XeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q0P1y3xD5fMznWj73++t5ogThI2wr7a6AoIhuopeGyY9uEHmWQCtQgTSMXY4uML4o
-	 R6FlvQ6dBAzCZ5kRuNLjNkyDOdCtZSye8B0CsFj144lLISNnivjnftpBesZnOy99VU
-	 A5hk7lCEtQh1rW9ZngNM6azanMLjEzfYr+l6YHGM=
+	b=GGAXMeFu5edDNMBmOGl+ZNlrOo9NixnyLFlPDTmJkkURoBEgkYKelvDblDKgmogYv
+	 TjKnC9rR4drTGGkH2nvBlUcF2ebMpM5VH03zJs8btQ/4t2Frf9vjYunz5ZkyyO+fNe
+	 EBpM9uilcV5dhlxMJepo+MlN9Jd4bu7pJJLBM0lc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 197/393] media: venus: hfi: add check to handle incorrect queue size
+	stable@kernel.org,
+	Stanley Chu <yschu@nuvoton.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.14 318/449] i3c: master: svc: Use readsb helper for reading MDB
 Date: Thu, 17 Apr 2025 19:50:06 +0200
-Message-ID: <20250417175115.511203347@linuxfoundation.org>
+Message-ID: <20250417175130.915997278@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
+From: Stanley Chu <yschu@nuvoton.com>
 
-commit 69baf245b23e20efda0079238b27fc63ecf13de1 upstream.
+commit c06acf7143bddaa3c0f7bedd8b99e48f6acb85c3 upstream.
 
-qsize represents size of shared queued between driver and video
-firmware. Firmware can modify this value to an invalid large value. In
-such situation, empty_space will be bigger than the space actually
-available. Since new_wr_idx is not checked, so the following code will
-result in an OOB write.
-...
-qsize = qhdr->q_size
+The target can send the MDB byte followed by additional data bytes.
+The readl on MRDATAB reads one actual byte, but the readsl advances
+the destination pointer by 4 bytes. This causes the subsequent payload
+to be copied to wrong position in the destination buffer.
 
-if (wr_idx >= rd_idx)
- empty_space = qsize - (wr_idx - rd_idx)
-....
-if (new_wr_idx < qsize) {
- memcpy(wr_ptr, packet, dwords << 2) --> OOB write
-
-Add check to ensure qsize is within the allocated size while
-reading and writing packets into the queue.
-
-Cc: stable@vger.kernel.org
-Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Cc: stable@kernel.org
+Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
+Signed-off-by: Stanley Chu <yschu@nuvoton.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250318053606.3087121-3-yschu@nuvoton.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/hfi_venus.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/i3c/master/svc-i3c-master.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -187,6 +187,9 @@ static int venus_write_queue(struct venu
- 	/* ensure rd/wr indices's are read from memory */
- 	rmb();
- 
-+	if (qsize > IFACEQ_QUEUE_SIZE / 4)
-+		return -EINVAL;
-+
- 	if (wr_idx >= rd_idx)
- 		empty_space = qsize - (wr_idx - rd_idx);
- 	else
-@@ -255,6 +258,9 @@ static int venus_read_queue(struct venus
- 	wr_idx = qhdr->write_idx;
- 	qsize = qhdr->q_size;
- 
-+	if (qsize > IFACEQ_QUEUE_SIZE / 4)
-+		return -EINVAL;
-+
- 	/* make sure data is valid before using it */
- 	rmb();
- 
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -378,7 +378,7 @@ static int svc_i3c_master_handle_ibi(str
+ 	       slot->len < SVC_I3C_FIFO_SIZE) {
+ 		mdatactrl = readl(master->regs + SVC_I3C_MDATACTRL);
+ 		count = SVC_I3C_MDATACTRL_RXCOUNT(mdatactrl);
+-		readsl(master->regs + SVC_I3C_MRDATAB, buf, count);
++		readsb(master->regs + SVC_I3C_MRDATAB, buf, count);
+ 		slot->len += count;
+ 		buf += count;
+ 	}
 
 
 
