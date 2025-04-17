@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-133967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F72EA928C1
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:37:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA381A92A8D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:52:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D624F1895D69
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 025BA4A67F4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D1226158D;
-	Thu, 17 Apr 2025 18:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79AE8257AF2;
+	Thu, 17 Apr 2025 18:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vMrFLLgE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oKzzd0R0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B13F261576;
-	Thu, 17 Apr 2025 18:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3801A257451;
+	Thu, 17 Apr 2025 18:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914688; cv=none; b=tzPV6v2j2QCi5xW0n9u/mBtx0xvMwJsXdIuoMV/R07s4qpETpVwkDLxEIY69GmaW8q34lpHqx/Y0RJ3UEpZl65IlCOeRu5/qavVKnc+WIE3iTRCqI4uv34m7xcRqiRwiXNBSXj2AYTAqdNKk3RhvChjgkpPcTzBFI3Gv/VA2kGI=
+	t=1744915813; cv=none; b=Mm+GMpHbYPBacd+610Ict38F4tI0VuB9t2QwmFKpdsGXs56R6QO9svl79J3j80XCOLqPPf9TRDol+12s7a2449rS+HPzMGOxnLFaoz2oPXMU2XeMrH4nR0TL81/nNSD6mZfxD4Y99TTxiuXWs4mcR/Rp9Rgx7zxbajt0maK1hwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914688; c=relaxed/simple;
-	bh=Fzl5GccslGeE0j+xS4vAwHUhPtQHaJXa18YSiMxRbdw=;
+	s=arc-20240116; t=1744915813; c=relaxed/simple;
+	bh=0KGsQlZ6RuS+B7anEAwebb+UIG34mYkR+Bxv2S8eH/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KTZVd8nA7ZE01AwuaHXtGGmMFG5aDw8OcG6aS4bQJPQVm92DA7ecAlmp6p0mWZjX2DApLdQaYNbLm3U78A9X77DgdhGeTRADBwTrz26sR3LULYW1jmR3BAsST1K+4Vxg7pPC5R+ztN6TTG2krZwGWctOnbtT6IYM0sFs6E2hv0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vMrFLLgE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFCE4C4CEE4;
-	Thu, 17 Apr 2025 18:31:27 +0000 (UTC)
+	 MIME-Version; b=kQ2PWx6Nv4ulNHlt83iEyXgQ72J2cSnvhnSUaehaUXljN5KsmPOhbHSTR1oefqxsDp8aYGKKUocQQiko2rhlzC3pFlHDsBPqt+U7cmIEEUHi82gf2RgA4XOmgTqpAwjErTWe8cnxBy1o7WuA+ScAUBljmtTFI8nAmuPCTM4ifNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oKzzd0R0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B2CC4CEE4;
+	Thu, 17 Apr 2025 18:50:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914688;
-	bh=Fzl5GccslGeE0j+xS4vAwHUhPtQHaJXa18YSiMxRbdw=;
+	s=korg; t=1744915813;
+	bh=0KGsQlZ6RuS+B7anEAwebb+UIG34mYkR+Bxv2S8eH/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vMrFLLgEEb5T7PGZJBiu2FcbH2JXttsLQEmc+o8Ga0O6d7ZA1MfMUOXbOXCEAetit
-	 ONM0TTC0V7mL57NO7tCnEJukD3ypwmWt0BYwRH8yjcEW1RHHeh89domAr2k5iRqPZW
-	 q0uRN35vog0G+YiF8VGyUJY1Qgd9KNnAxyB21oJ8=
+	b=oKzzd0R0kuRoEtcbKujKNmNtThQ75DL1hZKmeocolMnSXe8a3kT5fdGp+hjGg/NfF
+	 us7Z4imCGgdiH5n3A58Rmwn12TA4xNrWLctHA72hlXJYEgUAfHQ9pcsqn4/J3mCv3u
+	 wn6Ojk3xrGYWg2VCFozdCTn9bNj6Tw3NB5i9F/80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	T Pratham <t-pratham@ti.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Jens Axboe <axboe@kernel.dk>,
-	Kamlesh Gurudasani <kamlesh@ti.com>,
-	Praneeth Bajjuri <praneeth@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.13 298/414] lib: scatterlist: fix sg_split_phys to preserve original scatterlist offsets
-Date: Thu, 17 Apr 2025 19:50:56 +0200
-Message-ID: <20250417175123.419060786@linuxfoundation.org>
+	syzbot+58928048fd1416f1457c@syzkaller.appspotmail.com,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 248/393] io_uring/kbuf: reject zero sized provided buffers
+Date: Thu, 17 Apr 2025 19:50:57 +0200
+Message-ID: <20250417175117.566133000@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,61 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: T Pratham <t-pratham@ti.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 8b46fdaea819a679da176b879e7b0674a1161a5e upstream.
+commit cf960726eb65e8d0bfecbcce6cf95f47b1ffa6cc upstream.
 
-The split_sg_phys function was incorrectly setting the offsets of all
-scatterlist entries (except the first) to 0.  Only the first scatterlist
-entry's offset and length needs to be modified to account for the skip.
-Setting the rest entries' offsets to 0 could lead to incorrect data
-access.
+This isn't fixing a real issue, but there's also zero point in going
+through group and buffer setup, when the buffers are going to be
+rejected once attempted to get used.
 
-I am using this function in a crypto driver that I'm currently developing
-(not yet sent to mailing list).  During testing, it was observed that the
-output scatterlists (except the first one) contained incorrect garbage
-data.
-
-I narrowed this issue down to the call of sg_split().  Upon debugging
-inside this function, I found that this resetting of offset is the cause
-of the problem, causing the subsequent scatterlists to point to incorrect
-memory locations in a page.  By removing this code, I am obtaining
-expected data in all the split output scatterlists.  Thus, this was indeed
-causing observable runtime effects!
-
-This patch removes the offending code, ensuring that the page offsets in
-the input scatterlist are preserved in the output scatterlist.
-
-Link: https://lkml.kernel.org/r/20250319111437.1969903-1-t-pratham@ti.com
-Fixes: f8bcbe62acd0 ("lib: scatterlist: add sg splitting function")
-Signed-off-by: T Pratham <t-pratham@ti.com>
-Cc: Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Kamlesh Gurudasani <kamlesh@ti.com>
-Cc: Praneeth Bajjuri <praneeth@ti.com>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+58928048fd1416f1457c@syzkaller.appspotmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/sg_split.c |    2 --
- 1 file changed, 2 deletions(-)
+ io_uring/kbuf.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/lib/sg_split.c
-+++ b/lib/sg_split.c
-@@ -88,8 +88,6 @@ static void sg_split_phys(struct sg_spli
- 			if (!j) {
- 				out_sg->offset += split->skip_sg0;
- 				out_sg->length -= split->skip_sg0;
--			} else {
--				out_sg->offset = 0;
- 			}
- 			sg_dma_address(out_sg) = 0;
- 			sg_dma_len(out_sg) = 0;
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -484,6 +484,8 @@ int io_provide_buffers_prep(struct io_ki
+ 	p->nbufs = tmp;
+ 	p->addr = READ_ONCE(sqe->addr);
+ 	p->len = READ_ONCE(sqe->len);
++	if (!p->len)
++		return -EINVAL;
+ 
+ 	if (check_mul_overflow((unsigned long)p->len, (unsigned long)p->nbufs,
+ 				&size))
 
 
 
