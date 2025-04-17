@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-133926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E89FA928AB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:37:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9012A92A72
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:51:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3068A3B4956
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80E403B794D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFDB257AC3;
-	Thu, 17 Apr 2025 18:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76DD1A3178;
+	Thu, 17 Apr 2025 18:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xPWywUwu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMq1Gf32"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC84825744D;
-	Thu, 17 Apr 2025 18:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955A31DE885;
+	Thu, 17 Apr 2025 18:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914565; cv=none; b=a6jpx5a8nV0Ac1GiSO3P9y/iHO/vLXuZGmxejehCl00Pa46V9KsVVo0CBCgAK5WsVml6P0H4b4yofYgeYWGkJBaeIChA2X95ppDZbUpuuAohWmU0DPIjwEcjuk3dAaf6meDta6DSefjtyNRUFdLw/9ha/hQrLj7vYQYr8OyrGpg=
+	t=1744915686; cv=none; b=aC+uTSFZW5B7+sEiQ7rMp2ZUL2YmnuSo/uxtmxRNAD8nXdDkHxWKD3Ejk091Q/mLPiuuScJVgIAcB31QSWEfckcLyIJB1OJhJY4gPEF2dfvTh/fM5k4YrerMp/OAgppIRnK8fmxyy2xEy3UqW2VhscqCluHf8DwyzRwMjBHEUiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914565; c=relaxed/simple;
-	bh=BK1my3XYBV8dAoHZ8GSWValDxwVQo9F1bguQ943OB7o=;
+	s=arc-20240116; t=1744915686; c=relaxed/simple;
+	bh=H+bFoehqvL7TzmIzG1ZvOqjIMECpwHKFi3da2WDncH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TOLh7RHhB3xFD7I02cDr0jsBYBWss3DI4kBZL/pvN0Cyb/vFeg9ckkSOAplrja1eoKaHcnaP92VdFwKv9TjwR1pb3gtxbJydbpAj6Mn/iAOVtFSMrAEttF29EKtZmO26oU9Ksb2jISB+pKWNDzebP9r1yNau3NOGXRXrwZBSHkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xPWywUwu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46492C4CEE4;
-	Thu, 17 Apr 2025 18:29:25 +0000 (UTC)
+	 MIME-Version; b=k1QEtfRsov1VoDFRkQnsoC4puDuXs+OxEQ0jky7WKRPaloONRA83MlGe6WHIM4xsd2EW6nEk4lTkjvWo9iAiOUcJf8N7fErj1GrFqetkdgbEMVETdgbN6h0iPkwkM5zXZI3pBsclA3/wUqMtOvd5c7IJPeZUyGdAD6w1L6bbMpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMq1Gf32; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20214C4CEE4;
+	Thu, 17 Apr 2025 18:48:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914565;
-	bh=BK1my3XYBV8dAoHZ8GSWValDxwVQo9F1bguQ943OB7o=;
+	s=korg; t=1744915686;
+	bh=H+bFoehqvL7TzmIzG1ZvOqjIMECpwHKFi3da2WDncH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xPWywUwuHj4AXzzRtFvwD63hi7o6b/Lk4z0QxGcFCcJURECV5hyyYP6JiFzflqmaA
-	 RuEyHjG4tQHzM10uIr2XyAmFy6nbJhl+H6l5iqnwhANxDSG2zQ31qm3bSdWv9GbfV/
-	 uby/EGTPQch7yJtcC4GNpe5r7ksx4C3ZgG5sWSR0=
+	b=VMq1Gf32DGj5fqMnwK20zAx+Hzrpb302XDj56JUwU7Z6zY1lzXLRowcGcZsqEtHd0
+	 CaQ2U6B/Sz7clTKcoXiufIbp9So7FBQEaxcyi/7YeZp82YN/yjEl6DX3PZ6jsHqSk2
+	 +uUVF3rcDp2GgabO8HZRD2lXjd0ikxJA0iX6rs3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.13 258/414] wifi: mt76: mt7925: fix country count limitation for CLC
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 207/393] spi: cadence-qspi: Fix probe on AM62A LP SK
 Date: Thu, 17 Apr 2025 19:50:16 +0200
-Message-ID: <20250417175121.808467621@linuxfoundation.org>
+Message-ID: <20250417175115.907813923@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit 6458d760a0c0afd2fda11e83ed3e1125a252432f upstream.
+commit b8665a1b49f5498edb7b21d730030c06b7348a3c upstream.
 
-Due to the increase in the number of power tables for 6Ghz on CLC,
-the variable nr_country is no longer sufficient to represent the
-total quantity. Therefore, we have switched to calculating the
-length of clc buf to obtain the correct power table.
+In 2020, there's been an unnoticed change which rightfully attempted to
+report probe deferrals upon DMA absence by checking the return value of
+dma_request_chan_by_mask(). By doing so, it also reported errors which
+were simply ignored otherwise, likely on purpose.
 
+This change actually turned a void return into an error code. Hence, not
+only the -EPROBE_DEFER error codes but all error codes got reported to
+the callers, now failing to probe in the absence of Rx DMA channel,
+despite the fact that DMA seems to not be supported natively by many
+implementations.
+
+Looking at the history, this change probably led to:
+ad2775dc3fc5 ("spi: cadence-quadspi: Disable the DAC for Intel LGM SoC")
+f724c296f2f2 ("spi: cadence-quadspi: fix Direct Access Mode disable for SoCFPGA")
+
+In my case, the AM62A LP SK core octo-SPI node from TI does not
+advertise any DMA channel, hinting that there is likely no support for
+it, but yet when the support for the am654 compatible was added, DMA
+seemed to be used, so just discarding its use with the
+CQSPI_DISABLE_DAC_MODE quirk for this compatible does not seem the
+correct approach.
+
+Let's get change the return condition back to:
+- return a probe deferral error if we get one
+- ignore the return value otherwise
+The "error" log level was however likely too high for something that is
+expected to fail, so let's lower it arbitrarily to the info level.
+
+Fixes: 935da5e5100f ("mtd: spi-nor: cadence-quadspi: Handle probe deferral while requesting DMA channel")
 Cc: stable@vger.kernel.org
-Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20250116062131.3860198-1-mingyen.hsieh@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/20250305200933.2512925-2-miquel.raynal@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -3119,13 +3119,14 @@ __mt7925_mcu_set_clc(struct mt792x_dev *
- 		.env = env_cap,
- 	};
- 	int ret, valid_cnt = 0;
--	u8 i, *pos;
-+	u8 *pos, *last_pos;
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1634,6 +1634,12 @@ static int cqspi_request_mmap_dma(struct
+ 		int ret = PTR_ERR(cqspi->rx_chan);
  
- 	if (!clc)
- 		return 0;
- 
- 	pos = clc->data + sizeof(*seg) * clc->nr_seg;
--	for (i = 0; i < clc->nr_country; i++) {
-+	last_pos = clc->data + le32_to_cpu(*(__le32 *)(clc->data + 4));
-+	while (pos < last_pos) {
- 		struct mt7925_clc_rule *rule = (struct mt7925_clc_rule *)pos;
- 
- 		pos += sizeof(*rule);
+ 		cqspi->rx_chan = NULL;
++		if (ret == -ENODEV) {
++			/* DMA support is not mandatory */
++			dev_info(&cqspi->pdev->dev, "No Rx DMA available\n");
++			return 0;
++		}
++
+ 		return dev_err_probe(&cqspi->pdev->dev, ret, "No Rx DMA available\n");
+ 	}
+ 	init_completion(&cqspi->rx_dma_complete);
 
 
 
