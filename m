@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-133548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35671A9268D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:14:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FF79A92A1F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B8A67B488B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36A3B16B8F4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:46:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68AE325525F;
-	Thu, 17 Apr 2025 18:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762431EB1BF;
+	Thu, 17 Apr 2025 18:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUMdnIEq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bJEcGnVj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AAB21DE3A8;
-	Thu, 17 Apr 2025 18:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33EB04502F;
+	Thu, 17 Apr 2025 18:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913409; cv=none; b=dDDX09DpRnJZI+G+Hci1iaCZNksRd1NLXXR+qy/kkJ/cwdtqgGZWU+NZvOUHUQPcW3bQyx/P+BSLLS0CIZ4vFsiFS/MiLU7dVNmY3+1O5axXTd9Xoo9pmXFbz1ANNzIZXtzEon8H/OOVtF6RubV0ImA7GU+4a1x4ccAA9vUG1zM=
+	t=1744915601; cv=none; b=V9e1L2Ddmigul1shn4SfCRzSbbtvNu/NNSVhSwX/CYv8CrLhuiDaCUk0lHJnDXOlirH7V/3K0MlgHktVvERSlbtlg6sDP611GNbFwMN81x22oipzeNHsRZNBwygoHhbDvCfw4ib+iEG6WgzsP2KAJffFFkleYdYPk0isZ/NIHsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913409; c=relaxed/simple;
-	bh=Quxl/Ojp+aKmo5TbrVvgbj7E4LQIPInQqV4hOvNhnuc=;
+	s=arc-20240116; t=1744915601; c=relaxed/simple;
+	bh=TiXXvLWtzUI7XjG9+Y/YhUmVdHngS2pVqRl4deOeqks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kp9kZQzPEhkgVtVSLGUgMIDtjq+2WFze3ioyTZfGG4OovpedZMyeFVYvUZu4XJqLhdTpNWE4HDbfzG8dRN2VQmNNKk8o8czXDxmOvb88Q3GhpjCmRlVpHB8CCz2nMwWR3RrgV+6K3wt/K1Wgx6ME7A2ktN0/CBHN8YACSFcMqg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUMdnIEq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 884EFC4CEE4;
-	Thu, 17 Apr 2025 18:10:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=k+z225ldmOpG9NCzMLZg6v+VlV0Wo70KQo0OsWdI/hgt490m0Jt6oMUBsh7zYhDvIz7WTYptZpVkBBoxLbOUfmfGody9rqf5D3u0bxtlduPPuYVEPUl7iKP7h/aLNyfyS2/Wh+70cgKSP5WvBgTkwm7ocFy1s5boMYy4mMaTf4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bJEcGnVj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB887C4CEE4;
+	Thu, 17 Apr 2025 18:46:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913409;
-	bh=Quxl/Ojp+aKmo5TbrVvgbj7E4LQIPInQqV4hOvNhnuc=;
+	s=korg; t=1744915601;
+	bh=TiXXvLWtzUI7XjG9+Y/YhUmVdHngS2pVqRl4deOeqks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yUMdnIEqcpyd5aQ7eCkP3KQb0F+SEvDWhT23Gv0skuJ14aPS9yNx76a9MnljUA9SU
-	 v7wKUXpra/rhDzfW0pDcGFE6YsYZNGJ1QSWBoljAew60/lVdtJVGtaughYFfRs/mVY
-	 o7R2b7qn5KVOqDWujxkttbFAGU27QdH2PyOj1eCo=
+	b=bJEcGnVjtG7LRp2HjtB7vwkjOL/mvGdYXdmEMtWC+Zm37w05ctOCjIZeKgX0V6lsM
+	 xy/JHFvNBZNj24qADAzu4d2pBA90p4P4hB4k4y9MX1Vz3z/QyTHDRCJLSDmZFwf/1/
+	 sR20P+VBTWojWs+Vf4/8bAcXGhPZeaAbQkj6haHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sharan Kumar M <sharweshraajan@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.14 300/449] ALSA: hda/realtek: Enable Mute LED on HP OMEN 16 Laptop xd000xx
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 179/393] HID: pidff: Comment and code style update
 Date: Thu, 17 Apr 2025 19:49:48 +0200
-Message-ID: <20250417175130.169760445@linuxfoundation.org>
+Message-ID: <20250417175114.799312847@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,88 +60,198 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sharan Kumar M <sharweshraajan@gmail.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-commit e5182305a5199246dbcb4053299dcb1c8867b6ff upstream.
+[ Upstream commit e19675c2477491401b236ed939ad5a43ddc339af ]
 
-This patch adds the HP OMEN 16 Laptop xd000xx to enable mute led.
-it uses ALC245_FIXUP_HP_MUTE_LED_COEFBIT with a slight modification
-setting mute_led_coef.off to 0(it was set to 4 i guess
-in that function) which i referred to your previous patch disscusion
-https://bugzilla.kernel.org/show_bug.cgi?id=214735 .
-i am not sure whether i can modify the current working function so i
-added another version calling
-ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT. and both works for me.
+Update comments to fully conform to the Linux comment styling.
+Define Linux infinite effect duration (0) as FF_INFINITE
 
-Tested on 6.13.4-arch1-1 to 6.14.0-arch1-1
+Chanage Oleg's name order
 
-Signed-off-by: Sharan Kumar M <sharweshraajan@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250329154105.7618-2-sharweshraajan@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |   22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/hid/usbhid/hid-pidff.c | 57 +++++++++++++++-------------------
+ 1 file changed, 25 insertions(+), 32 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -4742,6 +4742,22 @@ static void alc245_fixup_hp_mute_led_coe
- 	}
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 503f643b59cad..e2508a4d754d3 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -3,13 +3,9 @@
+  *  Force feedback driver for USB HID PID compliant devices
+  *
+  *  Copyright (c) 2005, 2006 Anssi Hannula <anssi.hannula@gmail.com>
++ *  Upgraded 2025 by Oleg Makarenko and Tomasz Pakuła
+  */
+ 
+-/*
+- */
+-
+-/* #define DEBUG */
+-
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
+ #include "hid-pidff.h"
+@@ -25,9 +21,9 @@
+ 
+ /* Linux Force Feedback API uses miliseconds as time unit */
+ #define FF_TIME_EXPONENT	-3
++#define FF_INFINITE		0
+ 
+ /* Report usage table used to put reports into an array */
+-
+ #define PID_SET_EFFECT		0
+ #define PID_EFFECT_OPERATION	1
+ #define PID_DEVICE_GAIN		2
+@@ -48,12 +44,12 @@ static const u8 pidff_reports[] = {
+ 	0x21, 0x77, 0x7d, 0x7f, 0x89, 0x90, 0x96, 0xab,
+ 	0x5a, 0x5f, 0x6e, 0x73, 0x74
+ };
+-
+-/* device_control is really 0x95, but 0x96 specified as it is the usage of
+-the only field in that report */
++/*
++ * device_control is really 0x95, but 0x96 specified
++ * as it is the usage of the only field in that report.
++ */
+ 
+ /* PID special fields */
+-
+ #define PID_EFFECT_TYPE			0x25
+ #define PID_DIRECTION			0x57
+ #define PID_EFFECT_OPERATION_ARRAY	0x78
+@@ -61,7 +57,6 @@ the only field in that report */
+ #define PID_DEVICE_CONTROL_ARRAY	0x96
+ 
+ /* Value usage tables used to put fields and values into arrays */
+-
+ #define PID_EFFECT_BLOCK_INDEX	0
+ 
+ #define PID_DURATION		1
+@@ -119,7 +114,6 @@ static const u8 pidff_device_gain[] = { 0x7e };
+ static const u8 pidff_pool[] = { 0x80, 0x83, 0xa9 };
+ 
+ /* Special field key tables used to put special field keys into arrays */
+-
+ #define PID_ENABLE_ACTUATORS	0
+ #define PID_DISABLE_ACTUATORS	1
+ #define PID_STOP_ALL_EFFECTS	2
+@@ -176,8 +170,10 @@ struct pidff_device {
+ 	struct pidff_usage effect_operation[sizeof(pidff_effect_operation)];
+ 	struct pidff_usage block_free[sizeof(pidff_block_free)];
+ 
+-	/* Special field is a field that is not composed of
+-	   usage<->value pairs that pidff_usage values are */
++	/*
++	 * Special field is a field that is not composed of
++	 * usage<->value pairs that pidff_usage values are
++	 */
+ 
+ 	/* Special field in create_new_effect */
+ 	struct hid_field *create_new_effect_type;
+@@ -222,7 +218,7 @@ static s32 pidff_clamp(s32 i, struct hid_field *field)
+ static int pidff_rescale(int i, int max, struct hid_field *field)
+ {
+ 	return i * (field->logical_maximum - field->logical_minimum) / max +
+-	    field->logical_minimum;
++		field->logical_minimum;
  }
  
-+static void alc245_fixup_hp_mute_led_v1_coefbit(struct hda_codec *codec,
-+					  const struct hda_fixup *fix,
-+					  int action)
-+{
-+	struct alc_spec *spec = codec->spec;
+ /*
+@@ -282,9 +278,8 @@ static void pidff_set_time(struct pidff_usage *usage, u16 time)
+ 
+ static void pidff_set_duration(struct pidff_usage *usage, u16 duration)
+ {
+-	/* Convert infinite length from Linux API (0)
+-	   to PID standard (NULL) if needed */
+-	if (duration == 0)
++	/* Infinite value conversion from Linux API -> PID */
++	if (duration == FF_INFINITE)
+ 		duration = PID_INFINITE;
+ 
+ 	if (duration == PID_INFINITE) {
+@@ -302,16 +297,16 @@ static void pidff_set_envelope_report(struct pidff_device *pidff,
+ 				      struct ff_envelope *envelope)
+ {
+ 	pidff->set_envelope[PID_EFFECT_BLOCK_INDEX].value[0] =
+-	    pidff->block_load[PID_EFFECT_BLOCK_INDEX].value[0];
++		pidff->block_load[PID_EFFECT_BLOCK_INDEX].value[0];
+ 
+ 	pidff->set_envelope[PID_ATTACK_LEVEL].value[0] =
+-	    pidff_rescale(envelope->attack_level >
+-			  S16_MAX ? S16_MAX : envelope->attack_level, S16_MAX,
+-			  pidff->set_envelope[PID_ATTACK_LEVEL].field);
++		pidff_rescale(envelope->attack_level >
++			S16_MAX ? S16_MAX : envelope->attack_level, S16_MAX,
++			pidff->set_envelope[PID_ATTACK_LEVEL].field);
+ 	pidff->set_envelope[PID_FADE_LEVEL].value[0] =
+-	    pidff_rescale(envelope->fade_level >
+-			  S16_MAX ? S16_MAX : envelope->fade_level, S16_MAX,
+-			  pidff->set_envelope[PID_FADE_LEVEL].field);
++		pidff_rescale(envelope->fade_level >
++			S16_MAX ? S16_MAX : envelope->fade_level, S16_MAX,
++			pidff->set_envelope[PID_FADE_LEVEL].field);
+ 
+ 	pidff_set_time(&pidff->set_envelope[PID_ATTACK_TIME],
+ 			envelope->attack_length);
+@@ -702,9 +697,7 @@ static void pidff_playback_pid(struct pidff_device *pidff, int pid_id, int n)
+ static int pidff_playback(struct input_dev *dev, int effect_id, int value)
+ {
+ 	struct pidff_device *pidff = dev->ff->private;
+-
+ 	pidff_playback_pid(pidff, pidff->pid_id[effect_id], value);
+-
+ 	return 0;
+ }
+ 
+@@ -732,8 +725,11 @@ static int pidff_erase_effect(struct input_dev *dev, int effect_id)
+ 
+ 	hid_dbg(pidff->hid, "starting to erase %d/%d\n",
+ 		effect_id, pidff->pid_id[effect_id]);
+-	/* Wait for the queue to clear. We do not want a full fifo to
+-	   prevent the effect removal. */
 +
-+	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
-+		spec->mute_led_polarity = 0;
-+		spec->mute_led_coef.idx = 0x0b;
-+		spec->mute_led_coef.mask = 1 << 3;
-+		spec->mute_led_coef.on = 1 << 3;
-+		spec->mute_led_coef.off = 0;
-+		snd_hda_gen_add_mute_led_cdev(codec, coef_mute_led_set);
-+	}
-+}
-+
- /* turn on/off mic-mute LED per capture hook by coef bit */
- static int coef_micmute_led_set(struct led_classdev *led_cdev,
- 				enum led_brightness brightness)
-@@ -7885,6 +7901,7 @@ enum {
- 	ALC245_FIXUP_TAS2781_SPI_2,
- 	ALC287_FIXUP_YOGA7_14ARB7_I2C,
- 	ALC245_FIXUP_HP_MUTE_LED_COEFBIT,
-+	ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT,
- 	ALC245_FIXUP_HP_X360_MUTE_LEDS,
- 	ALC287_FIXUP_THINKPAD_I2S_SPK,
- 	ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD,
-@@ -10132,6 +10149,10 @@ static const struct hda_fixup alc269_fix
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc245_fixup_hp_mute_led_coefbit,
- 	},
-+	[ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc245_fixup_hp_mute_led_v1_coefbit,
-+	},
- 	[ALC245_FIXUP_HP_X360_MUTE_LEDS] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc245_fixup_hp_mute_led_coefbit,
-@@ -10626,6 +10647,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x103c, 0x8b97, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8bb3, "HP Slim OMEN", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8bb4, "HP Slim OMEN", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x103c, 0x8bcd, "HP Omen 16-xd0xxx", ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8bdd, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8bde, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8bdf, "HP Envy 15", ALC287_FIXUP_CS35L41_I2C_2),
++	/*
++	 * Wait for the queue to clear. We do not want
++	 * a full fifo to prevent the effect removal.
++	 */
+ 	hid_hw_wait(pidff->hid);
+ 	pidff_playback_pid(pidff, pid_id, 0);
+ 	pidff_erase_pid(pidff, pid_id);
+@@ -1239,7 +1235,6 @@ static int pidff_find_effects(struct pidff_device *pidff,
+ 		set_bit(FF_FRICTION, dev->ffbit);
+ 
+ 	return 0;
+-
+ }
+ 
+ #define PIDFF_FIND_FIELDS(name, report, strict) \
+@@ -1370,12 +1365,10 @@ static int pidff_check_autocenter(struct pidff_device *pidff,
+ 		hid_notice(pidff->hid,
+ 			   "device has unknown autocenter control method\n");
+ 	}
+-
+ 	pidff_erase_pid(pidff,
+ 			pidff->block_load[PID_EFFECT_BLOCK_INDEX].value[0]);
+ 
+ 	return 0;
+-
+ }
+ 
+ /*
+-- 
+2.39.5
+
 
 
 
