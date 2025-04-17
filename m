@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-133627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8873A92690
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:14:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92A11A92AA0
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:53:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30BE54A0E86
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:14:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92F1F4A6C77
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBDD81A3178;
-	Thu, 17 Apr 2025 18:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86BBA25DAFD;
+	Thu, 17 Apr 2025 18:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yj8vbipU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uxT67EpQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B5E1EB1BF;
-	Thu, 17 Apr 2025 18:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442472571A1;
+	Thu, 17 Apr 2025 18:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913652; cv=none; b=cDoK5UOKv6RSdOT86B+6B59ZJclXZ9LVI+FXQ+ORz0sWi/Ms19WyNUy7MzP7mfUYTd1v2EWoVmMJ7aTRmCrfOHrhI0tgW1Yel4reYaoJQjRWlHCEY2bdot/R5I0Fws2rdI3PGFK4PlmtiYpSRR8tpW6EKIxiBzCZqaZD+3ExT8c=
+	t=1744915879; cv=none; b=QZWndYQkUgymQx+LqsdpQQqgJ7EJjoSi8CrKdotnzYmEeis7krAiwkkk8cEE3Xi6mAWjZuXumdXB9kpOzmJMFgaw59Il/r/xl/pioufMrBJb4TLPfJX1rX1k4MVR7LazQnwKw8FwmLcib44FZwBMKLfsGKTcn8NZjEGVHKIzv/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913652; c=relaxed/simple;
-	bh=Q8BtpwQRTZ7RJqfnd5EdGZc2Isqe6T2gqAn63g338AM=;
+	s=arc-20240116; t=1744915879; c=relaxed/simple;
+	bh=v8RmElVOyv28pmxJzlLWB/LtirL85tVG5/92maRHqqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ifKUB9mvB7Pcwg/8g81Cl3PA4gu885fDG77S+eFMA5r7VNbdf7SpdYBf1hH/4sqb92Uq4eGOMLCkk9vQRcJ62igvArFhN+XPTej+MDE88Ygp2aavVrb/d3mdcy/jG7a0jyxbW78lY6XzkH+E64/Yu0Mm4L3KaZn8rNUlpnD7G+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yj8vbipU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4AFFC4CEE4;
-	Thu, 17 Apr 2025 18:14:11 +0000 (UTC)
+	 MIME-Version; b=ppIgetkuJduS9LIsm2h6Rt7eifGY3i/X0gcA8GKHWCNdckKW/AiOIKZm1F6s2e15iSM7e60o/o6pmHim5iat0u2dO5nRO184NvCTeU8juljZiUNZGokpA/u7fEeNGuDdJzoyOS9/aSr12xWjUkIU7KKsBny7+qIVkMIEM2T7wf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uxT67EpQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05DFC4CEE4;
+	Thu, 17 Apr 2025 18:51:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913652;
-	bh=Q8BtpwQRTZ7RJqfnd5EdGZc2Isqe6T2gqAn63g338AM=;
+	s=korg; t=1744915879;
+	bh=v8RmElVOyv28pmxJzlLWB/LtirL85tVG5/92maRHqqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yj8vbipUXGDYP6ENjf3mRkNEOqDUlAS44xBz89sJGyKQVbR7EB/Ee4zvNxQDpWm5y
-	 lKtqonxvy5H94D84DiOpwD65yiQ+47yt69Gl+1oWpwaeN74KcWOAU+IArBlRitpqpb
-	 uZ0BbcbdlQSuVKteRCLTaNBUty+Z9aRjaNhVJL6c=
+	b=uxT67EpQPVO4ftyG+u3x/BvLuD/fx7pbUmM/51HIS77/CB5cFa483AACaVoBxodQh
+	 pJgPPTWjIGaMrrOq4Xuq8eOBC9XUL2n0qYdSqEvs+JN1gnmAiHb5hDiUMCxVcrYc6k
+	 YzQrOWoW7Hr8rpzTfAWg0erlq0iIGAF2vJuxccFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: [PATCH 6.14 391/449] dt-bindings: coresight: qcom,coresight-tpda: Fix too many reg
+	stable@kernel.org,
+	Stanley Chu <yschu@nuvoton.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.12 270/393] i3c: master: svc: Use readsb helper for reading MDB
 Date: Thu, 17 Apr 2025 19:51:19 +0200
-Message-ID: <20250417175134.007394378@linuxfoundation.org>
+Message-ID: <20250417175118.465417200@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Stanley Chu <yschu@nuvoton.com>
 
-commit d72deaf05ac18e421d7e52a6be8966fd6ee185f4 upstream.
+commit c06acf7143bddaa3c0f7bedd8b99e48f6acb85c3 upstream.
 
-Binding listed variable number of IO addresses without defining them,
-however example DTS code, all in-tree DTS and Linux kernel driver
-mention only one address space, so drop the second to make binding
-precise and correctly describe the hardware.
+The target can send the MDB byte followed by additional data bytes.
+The readl on MRDATAB reads one actual byte, but the readsl advances
+the destination pointer by 4 bytes. This causes the subsequent payload
+to be copied to wrong position in the destination buffer.
 
-Fixes: a8fbe1442c2b ("dt-bindings: arm: Adds CoreSight TPDA hardware definitions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250226112914.94361-1-krzysztof.kozlowski@linaro.org
+Cc: stable@kernel.org
+Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
+Signed-off-by: Stanley Chu <yschu@nuvoton.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250318053606.3087121-3-yschu@nuvoton.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/arm/qcom,coresight-tpda.yaml |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Documentation/devicetree/bindings/arm/qcom,coresight-tpda.yaml
-+++ b/Documentation/devicetree/bindings/arm/qcom,coresight-tpda.yaml
-@@ -55,8 +55,7 @@ properties:
-       - const: arm,primecell
- 
-   reg:
--    minItems: 1
--    maxItems: 2
-+    maxItems: 1
- 
-   clocks:
-     maxItems: 1
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -378,7 +378,7 @@ static int svc_i3c_master_handle_ibi(str
+ 	       slot->len < SVC_I3C_FIFO_SIZE) {
+ 		mdatactrl = readl(master->regs + SVC_I3C_MDATACTRL);
+ 		count = SVC_I3C_MDATACTRL_RXCOUNT(mdatactrl);
+-		readsl(master->regs + SVC_I3C_MRDATAB, buf, count);
++		readsb(master->regs + SVC_I3C_MRDATAB, buf, count);
+ 		slot->len += count;
+ 		buf += count;
+ 	}
 
 
 
