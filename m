@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-133863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE0F4A927E8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:29:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02F62A925FB
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:09:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF93B19E633D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8301465962
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E660E256C9F;
-	Thu, 17 Apr 2025 18:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A91A52561D5;
+	Thu, 17 Apr 2025 18:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PlLvgNaH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0GjRuuIV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FBF256C7C;
-	Thu, 17 Apr 2025 18:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AE31DB148;
+	Thu, 17 Apr 2025 18:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914375; cv=none; b=ai09zCRnS+4xhX0QBvCEqFT9/AsPbbNyt6VtZQqXryq/izAp59msgjeReUq8mISku3CYTTeBqEA83ZjLRlOdrSY1E/j6Z6UwqT8GyYTBZrCWZgzNyTolnV4Igtax2/5cBYwqRVChiwBsB4hPeMTI5W+N6rbiP7iYxYw6pzvm86k=
+	t=1744913307; cv=none; b=K52yQ+hBvPTOLEx2exeIzrnKatg4yWmCMpB5qJo6v1p9f+WLi3bhBNd7LCg9B5rynKUsW/7BgMsA8MSRqbdIhfgaLzHs+AOjeDimnVx6CENOXE49sSLu0+rAbFLUdt8W775TfvUnaKibYMv1YSddk0biHX4IkJRhGubXEBpNtLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914375; c=relaxed/simple;
-	bh=c5Ci5tSbR7G5t7fbK1PcCKo3yaz8Zk0uaMHmzCeZfuU=;
+	s=arc-20240116; t=1744913307; c=relaxed/simple;
+	bh=je6ty7ChTIH8R2jlh4nUOD4hI+D5aslCov8d1fwxnT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FqyH5nTwOs+Nk9dyhPyvdjkqY3DxD/Dck0Iup5T9dCqZIF9cDcda5G4wGUyZvDlFtle1kWro/Oue9wAU5rRhKu1trCsTAJiH7mdDg7Oa306/Rqd5mHvj6OU9+wO+KhftZ3I8qTB2otD9Jc7h6HYpJIF9ZkFRrgO6N8JL+4mgkpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PlLvgNaH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369C4C4CEE4;
-	Thu, 17 Apr 2025 18:26:15 +0000 (UTC)
+	 MIME-Version; b=H4Z1l1ApfQk4J8Nui3AtNe98QpEl/nP+Vgu8O4JRhjsmAGm3e0MPZR3/Gab+9dEWZrBVbVs5R7rus7U37uX0jbD0FnZ3gf6nAZ8FoOy7sQcsw9dArVro80pFbdmrK6StyViS4Feq1EkG7muw2qN3RcNNx2SkRS+n6irAxeEh+cM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0GjRuuIV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC55BC4CEE4;
+	Thu, 17 Apr 2025 18:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914375;
-	bh=c5Ci5tSbR7G5t7fbK1PcCKo3yaz8Zk0uaMHmzCeZfuU=;
+	s=korg; t=1744913307;
+	bh=je6ty7ChTIH8R2jlh4nUOD4hI+D5aslCov8d1fwxnT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PlLvgNaHG7V9Nrg1Lje7WKft2GZ+XtoYoPJDkQYiTbmMnaD16jPmSxwthqI0mNscO
-	 t06wUiflR38sMr5UUpK9IbYorTYL4pBHiZOaewYiSIFVNnxzXS5bY68R4Ov7vjVzAo
-	 KfLESKJybOp/kwXXOT80DZxxEYdloptZqMpN3ry4=
+	b=0GjRuuIVawerINPYCAh6ZdrdPahYhG4HeoeSJyDHvAWSGoMoTWtKUyDb+mpKUucc5
+	 AhQdz5+ySp7iFnk7C8Dyd8gTE9VdmpcF6pqn8oZa6n2lJr+YeHnpOEeokuj+LwFN2x
+	 9fI+KV4ytWDAdN4aFDIg/xaQ5sizzxWFtj2JJEXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 6.13 195/414] auxdisplay: hd44780: Fix an API misuse in hd44780.c
+	"Jackson.lee" <jackson.lee@chipsnmedia.com>,
+	Nas Chung <nas.chung@chipsnmedia.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.14 265/449] media: chips-media: wave5: Fix a hang after seeking
 Date: Thu, 17 Apr 2025 19:49:13 +0200
-Message-ID: <20250417175119.284081024@linuxfoundation.org>
+Message-ID: <20250417175128.689150510@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Jackson.lee <jackson.lee@chipsnmedia.com>
 
-commit 9b98a7d2e5f4e2beeff88f6571da0cdc5883c7fb upstream.
+commit a2c75e964e51b096e9fe6adfa3eaed53594a668b upstream.
 
-Variable allocated by charlcd_alloc() should be released
-by charlcd_free(). The following patch changed kfree() to
-charlcd_free() to fix an API misuse.
+While seeking, the driver calls the flush command. Before the flush
+command is sent to the VPU, the driver should handle the display buffer
+flags and should get all decoded information from the VPU if the VCORE
+is running.
 
-Fixes: 718e05ed92ec ("auxdisplay: Introduce hd44780_common.[ch]")
+Fixes: 9707a6254a8a ("media: chips-media: wave5: Add the v4l2 layer")
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Jackson.lee <jackson.lee@chipsnmedia.com>
+Signed-off-by: Nas Chung <nas.chung@chipsnmedia.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/auxdisplay/hd44780.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c |   17 ++++++++++++++-
+ drivers/media/platform/chips-media/wave5/wave5-vpuapi.c  |   10 ++++++++
+ 2 files changed, 26 insertions(+), 1 deletion(-)
 
---- a/drivers/auxdisplay/hd44780.c
-+++ b/drivers/auxdisplay/hd44780.c
-@@ -313,7 +313,7 @@ static int hd44780_probe(struct platform
- fail3:
- 	kfree(hd);
- fail2:
--	kfree(lcd);
-+	charlcd_free(lcd);
- fail1:
- 	kfree(hdc);
- 	return ret;
-@@ -328,7 +328,7 @@ static void hd44780_remove(struct platfo
- 	kfree(hdc->hd44780);
- 	kfree(lcd->drvdata);
+--- a/drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c
++++ b/drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c
+@@ -1369,6 +1369,16 @@ static int streamoff_output(struct vb2_q
+ 	struct vb2_v4l2_buffer *buf;
+ 	int ret;
+ 	dma_addr_t new_rd_ptr;
++	struct dec_output_info dec_info;
++	unsigned int i;
++
++	for (i = 0; i < v4l2_m2m_num_dst_bufs_ready(m2m_ctx); i++) {
++		ret = wave5_vpu_dec_set_disp_flag(inst, i);
++		if (ret)
++			dev_dbg(inst->dev->dev,
++				"%s: Setting display flag of buf index: %u, fail: %d\n",
++				__func__, i, ret);
++	}
  
--	kfree(lcd);
-+	charlcd_free(lcd);
- }
+ 	while ((buf = v4l2_m2m_src_buf_remove(m2m_ctx))) {
+ 		dev_dbg(inst->dev->dev, "%s: (Multiplanar) buf type %4u | index %4u\n",
+@@ -1376,6 +1386,11 @@ static int streamoff_output(struct vb2_q
+ 		v4l2_m2m_buf_done(buf, VB2_BUF_STATE_ERROR);
+ 	}
  
- static const struct of_device_id hd44780_of_match[] = {
++	while (wave5_vpu_dec_get_output_info(inst, &dec_info) == 0) {
++		if (dec_info.index_frame_display >= 0)
++			wave5_vpu_dec_set_disp_flag(inst, dec_info.index_frame_display);
++	}
++
+ 	ret = wave5_vpu_flush_instance(inst);
+ 	if (ret)
+ 		return ret;
+@@ -1459,7 +1474,7 @@ static void wave5_vpu_dec_stop_streaming
+ 			break;
+ 
+ 		if (wave5_vpu_dec_get_output_info(inst, &dec_output_info))
+-			dev_dbg(inst->dev->dev, "Getting decoding results from fw, fail\n");
++			dev_dbg(inst->dev->dev, "there is no output info\n");
+ 	}
+ 
+ 	v4l2_m2m_update_stop_streaming_state(m2m_ctx, q);
+--- a/drivers/media/platform/chips-media/wave5/wave5-vpuapi.c
++++ b/drivers/media/platform/chips-media/wave5/wave5-vpuapi.c
+@@ -75,6 +75,16 @@ int wave5_vpu_flush_instance(struct vpu_
+ 				 inst->type == VPU_INST_TYPE_DEC ? "DECODER" : "ENCODER", inst->id);
+ 			mutex_unlock(&inst->dev->hw_lock);
+ 			return -ETIMEDOUT;
++		} else if (ret == -EBUSY) {
++			struct dec_output_info dec_info;
++
++			mutex_unlock(&inst->dev->hw_lock);
++			wave5_vpu_dec_get_output_info(inst, &dec_info);
++			ret = mutex_lock_interruptible(&inst->dev->hw_lock);
++			if (ret)
++				return ret;
++			if (dec_info.index_frame_display > 0)
++				wave5_vpu_dec_set_disp_flag(inst, dec_info.index_frame_display);
+ 		}
+ 	} while (ret != 0);
+ 	mutex_unlock(&inst->dev->hw_lock);
 
 
 
