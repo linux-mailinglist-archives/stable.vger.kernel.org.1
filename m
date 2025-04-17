@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-134382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7491DA92AC2
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:54:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9171A928EE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:39:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 787361B64B7B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84E021B61388
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ACA62571C6;
-	Thu, 17 Apr 2025 18:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D5C264609;
+	Thu, 17 Apr 2025 18:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwmrxXRu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+IJYser"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE333594D;
-	Thu, 17 Apr 2025 18:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 928E625A64D;
+	Thu, 17 Apr 2025 18:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915959; cv=none; b=bVwdcFzazBrsDO+sNqknPQusvC/Lc1SeIRxexID0VKT7ok4qQ+wSME1kWaUUPkZeTCt1P2hA55oQunm2OSUXIor+2lHEwioOLUBUAvEuzzsKigCVbokrdAs8zpkT2uo0WULL5EpNzgbzLWHKi08OyeMqCCUAyJa67HOQ0scj2pc=
+	t=1744914842; cv=none; b=TIjF+PtutEmK49wn45SOlOuGJNwRsn8qTnVjcDhqCxtuCQPql2LhaKOzuEtABvRv9CASO1EcPiVZaC0qHX8xkiusCI1vprUSaQ+a6LZ9PEAsGF2dOuAX+bu572DdzYcJDVuOwcvhrJxS74R81qIABXb6VlsokhUZ53HNp53NEIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915959; c=relaxed/simple;
-	bh=5V/PnGc9wUgSP9/OPj5CvNHtJyF/+0PL9lYdI+3xGDo=;
+	s=arc-20240116; t=1744914842; c=relaxed/simple;
+	bh=dORX8P6aiiy1jJCpwrhdaXuOP93D+dsTwtcQWVAkrr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HeUf+rn2yZNc48z4KcGUOg2EMgKxoxoNXKW89JtAZHurDzIQNXkkwhIzsp0hMhjE+hay54MNlM0BMA2aVivU2pMg6SArfZ3QiW8cpDOhPVkhQcseIoD39vJJBUrDPSazR/zQslW+y/tRAOVQdtlV6qG8+pVi1IOHE5GwKhkKD9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZwmrxXRu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 772A7C4CEE7;
-	Thu, 17 Apr 2025 18:52:38 +0000 (UTC)
+	 MIME-Version; b=rp4cXbgrJJwP4GGxsyKPypYaEGeRI9riof706/zBZfML4xaDXH8jnKghObE+KPWLIxSm8AeWAXlxxAmvBmQ6+3dvAuCEfiF+5uBFDrbTT+P72175jEE/zN3rJlNJyO/aSiRxd1uh7K7Ilvc4Nsru4Fg7XSBzJzJANa20++QDKhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+IJYser; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D73C4CEE4;
+	Thu, 17 Apr 2025 18:34:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915958;
-	bh=5V/PnGc9wUgSP9/OPj5CvNHtJyF/+0PL9lYdI+3xGDo=;
+	s=korg; t=1744914842;
+	bh=dORX8P6aiiy1jJCpwrhdaXuOP93D+dsTwtcQWVAkrr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZwmrxXRuBmIa9RQthBeozln9ZJ/3K0/etQ9OL+Fye3iqKEIpc/eFYCFM34+lmTPKn
-	 JYqudTxwybnErgeMwMotcowXY4GyeP21YKB7MPydHWT9tC13tjNwnKGTIakHfBp/jl
-	 8hAgS7yb4gy3w5pBANUuSvheQaoR3s9oIwfz+SV0=
+	b=T+IJYsernQMvoIKgucAFxfI9uKVjvGAU2gZv9jwn2kmyHcDvV4Q0U6jsdZ2+kHP8r
+	 75I5Wc3/LrpDRONFXs5JCcma3KhAU9jtnCxWhlcU6qBhzIPjwUvJI9rQA9mRCdIn4i
+	 MiVO86Fs0+BHx+G9hbV+kzbCH1BWCtCNYzK3xYWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jacob Pan <jacob.jun.pan@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 6.12 297/393] iommu/vt-d: Dont clobber posted vCPU IRTE when host IRQ affinity changes
-Date: Thu, 17 Apr 2025 19:51:46 +0200
-Message-ID: <20250417175119.561592788@linuxfoundation.org>
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.13 349/414] crypto: ccp - Fix check for the primary ASP device
+Date: Thu, 17 Apr 2025 19:51:47 +0200
+Message-ID: <20250417175125.471895934@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Tom Lendacky <thomas.lendacky@amd.com>
 
-commit 688124cc541f60d26a7547f45637b23dada4e527 upstream.
+commit 07bb097b92b987db518e72525b515d77904e966e upstream.
 
-Don't overwrite an IRTE that is posting IRQs to a vCPU with a posted MSI
-entry if the host IRQ affinity happens to change.  If/when the IRTE is
-reverted back to "host mode", it will be reconfigured as a posted MSI or
-remapped entry as appropriate.
+Currently, the ASP primary device check does not have support for PCI
+domains, and, as a result, when the system is configured with PCI domains
+(PCI segments) the wrong device can be selected as primary. This results
+in commands submitted to the device timing out and failing. The device
+check also relies on specific device and function assignments that may
+not hold in the future.
 
-Drop the "mode" field, which doesn't differentiate between posted MSIs and
-posted vCPUs, in favor of a dedicated posted_vcpu flag.  Note!  The two
-posted_{msi,vcpu} flags are intentionally not mutually exclusive; an IRTE
-can transition between posted MSI and posted vCPU.
+Fix the primary ASP device check to include support for PCI domains and
+to perform proper checking of the Bus/Device/Function positions.
 
-Fixes: ed1e48ea4370 ("iommu/vt-d: Enable posted mode for device MSIs")
+Fixes: 2a6170dfe755 ("crypto: ccp: Add Platform Security Processor (PSP) device support")
 Cc: stable@vger.kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Jacob Pan <jacob.jun.pan@linux.intel.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/r/20250315025135.2365846-3-seanjc@google.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/irq_remapping.c |   25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ drivers/crypto/ccp/sp-pci.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/drivers/iommu/intel/irq_remapping.c
-+++ b/drivers/iommu/intel/irq_remapping.c
-@@ -26,11 +26,6 @@
- #include "../iommu-pages.h"
- #include "cap_audit.h"
+--- a/drivers/crypto/ccp/sp-pci.c
++++ b/drivers/crypto/ccp/sp-pci.c
+@@ -189,14 +189,17 @@ static bool sp_pci_is_master(struct sp_d
+ 	pdev_new = to_pci_dev(dev_new);
+ 	pdev_cur = to_pci_dev(dev_cur);
  
--enum irq_mode {
--	IRQ_REMAPPING,
--	IRQ_POSTING,
--};
--
- struct ioapic_scope {
- 	struct intel_iommu *iommu;
- 	unsigned int id;
-@@ -50,8 +45,8 @@ struct irq_2_iommu {
- 	u16 irte_index;
- 	u16 sub_handle;
- 	u8  irte_mask;
--	enum irq_mode mode;
- 	bool posted_msi;
-+	bool posted_vcpu;
- };
+-	if (pdev_new->bus->number < pdev_cur->bus->number)
+-		return true;
++	if (pci_domain_nr(pdev_new->bus) != pci_domain_nr(pdev_cur->bus))
++		return pci_domain_nr(pdev_new->bus) < pci_domain_nr(pdev_cur->bus);
  
- struct intel_ir_data {
-@@ -139,7 +134,6 @@ static int alloc_irte(struct intel_iommu
- 		irq_iommu->irte_index =  index;
- 		irq_iommu->sub_handle = 0;
- 		irq_iommu->irte_mask = mask;
--		irq_iommu->mode = IRQ_REMAPPING;
- 	}
- 	raw_spin_unlock_irqrestore(&irq_2_ir_lock, flags);
+-	if (PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn))
+-		return true;
++	if (pdev_new->bus->number != pdev_cur->bus->number)
++		return pdev_new->bus->number < pdev_cur->bus->number;
  
-@@ -194,8 +188,6 @@ static int modify_irte(struct irq_2_iomm
- 
- 	rc = qi_flush_iec(iommu, index, 0);
- 
--	/* Update iommu mode according to the IRTE mode */
--	irq_iommu->mode = irte->pst ? IRQ_POSTING : IRQ_REMAPPING;
- 	raw_spin_unlock_irqrestore(&irq_2_ir_lock, flags);
- 
- 	return rc;
-@@ -1177,9 +1169,18 @@ static void __intel_ir_reconfigure_irte(
- {
- 	struct intel_ir_data *ir_data = irqd->chip_data;
- 
-+	/*
-+	 * Don't modify IRTEs for IRQs that are being posted to vCPUs if the
-+	 * host CPU affinity changes.
-+	 */
-+	if (ir_data->irq_2_iommu.posted_vcpu && !force_host)
-+		return;
+-	if (PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn))
+-		return true;
++	if (PCI_SLOT(pdev_new->devfn) != PCI_SLOT(pdev_cur->devfn))
++		return PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn);
 +
-+	ir_data->irq_2_iommu.posted_vcpu = false;
-+
- 	if (ir_data->irq_2_iommu.posted_msi)
- 		intel_ir_reconfigure_irte_posted(irqd);
--	else if (force_host || ir_data->irq_2_iommu.mode == IRQ_REMAPPING)
-+	else
- 		modify_irte(&ir_data->irq_2_iommu, &ir_data->irte_entry);
- }
++	if (PCI_FUNC(pdev_new->devfn) != PCI_FUNC(pdev_cur->devfn))
++		return PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn);
  
-@@ -1274,6 +1275,7 @@ static int intel_ir_set_vcpu_affinity(st
- 		irte_pi.pda_h = (vcpu_pi_info->pi_desc_addr >> 32) &
- 				~(-1UL << PDA_HIGH_BIT);
- 
-+		ir_data->irq_2_iommu.posted_vcpu = true;
- 		modify_irte(&ir_data->irq_2_iommu, &irte_pi);
- 	}
- 
-@@ -1501,6 +1503,9 @@ static void intel_irq_remapping_deactiva
- 	struct intel_ir_data *data = irq_data->chip_data;
- 	struct irte entry;
- 
-+	WARN_ON_ONCE(data->irq_2_iommu.posted_vcpu);
-+	data->irq_2_iommu.posted_vcpu = false;
-+
- 	memset(&entry, 0, sizeof(entry));
- 	modify_irte(&data->irq_2_iommu, &entry);
+ 	return false;
  }
 
 
