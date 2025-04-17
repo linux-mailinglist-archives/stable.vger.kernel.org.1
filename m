@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-133566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0222DA92631
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:11:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4D27A92AE4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 066168A5CCB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:11:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B21133A17A2
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8929B1A3178;
-	Thu, 17 Apr 2025 18:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06CD91B4153;
+	Thu, 17 Apr 2025 18:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2vz5fEtc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UzXHymW6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4745325525F;
-	Thu, 17 Apr 2025 18:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B1B2586EC;
+	Thu, 17 Apr 2025 18:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913464; cv=none; b=sIpl3Vz51axIQphznm950S7Ih9veyLp8Bs2Mo5Lm6fxtLMaz4r7j6nxo2aQ6FH2bVrMuctLJX2PbWTZuN7NWk3orLtbG9SMkRhamwyja3v7y1qvslY6c8k/cRfw5lt1oK/PLvqYkyBHFnJS0w+mS417RoE545dCbvfQUcF/RAOY=
+	t=1744915837; cv=none; b=tTaeDr6zjgl2P10z4/s8g1vK79Y6nwAOBifL3r4XD9+D0kmSYPntQyPYoVDqrwJSKKMLSgaThIyVxqNHJrpuk6lTqky2RgkUv3XhvdZjOnarF9MI9CdFScjH/nfgGvIVLXf4ansfAzpBwqGGm+QRi/LNDZaOgdzcy4qNGbtwZoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913464; c=relaxed/simple;
-	bh=UetYPQ8pPalSj9wRfXCN1TgZotCUgJvBG+CoXvYllZI=;
+	s=arc-20240116; t=1744915837; c=relaxed/simple;
+	bh=R8zSC7fPvg9NWYhQEcqCjtkDHmSCjotqSI7x9EGcLTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sxe+708HD5b/QQ2GxFjVJ0JlSLZp8pYVtKHU4I17sefPGy96xSBXc8s9nVrRuUHW4G1Ij1/aU6DtPtUA6FQ7mJMpcROZXdrA3OjCVLAx4C3UVTiCQhYsArel0MzPox8vMm0FNNXwrpq9oWV/x1pxm8nlBc8/nQJ2RIS13G2QGnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2vz5fEtc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53418C4CEE4;
-	Thu, 17 Apr 2025 18:11:03 +0000 (UTC)
+	 MIME-Version; b=SZ8tXdm0+ywjlDNri48QtMTFw5y4N3ItqoW/k5VkPtKCYwdtJsNiOfi61OoiKydGdrG4u13xd/UafDBDoWYkh/4Zuawr0q7XP2k1qKtWJ0QpY/L5T0xd6NNs1ymDWPS7ZUpNxXwjhvJhUL7h/j31R1J0gi86CbVj3j687L3r/m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UzXHymW6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20DE4C4CEE4;
+	Thu, 17 Apr 2025 18:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913463;
-	bh=UetYPQ8pPalSj9wRfXCN1TgZotCUgJvBG+CoXvYllZI=;
+	s=korg; t=1744915837;
+	bh=R8zSC7fPvg9NWYhQEcqCjtkDHmSCjotqSI7x9EGcLTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2vz5fEtcb5J388TWYUe0Oagxf8frVM05A3k1Sxx8TQRPYYBojXvr/pukulPmm6/Ma
-	 ZqS/JQd6nbuar9WeZSI1amSJb33MY1QTt0fsWHgXcoBPw2IV9bjQ+8TWVzNiqpx0bd
-	 yeOLhanLCuZGFDNIjMY3g7BeFgpuZ8VmhKetbHX8=
+	b=UzXHymW6KZnfjnEYkfbR9vpTCuudPhEyJe0iQqLdTK7Q8wefhuFdh5jyYcbQaLy6+
+	 Q+p78yWxD4tusIFrBdf9P4enoQIq3dkXvri0hx4Zkel1jAuNwRiZ+nOSer22oOLb7S
+	 +Dil/2HSLK6z7ziiEihTrPUfrIZ8N6ISTBTw6lW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.14 347/449] iommufd: Fix uninitialized rc in iommufd_access_rw()
-Date: Thu, 17 Apr 2025 19:50:35 +0200
-Message-ID: <20250417175132.189816352@linuxfoundation.org>
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 227/393] media: i2c: imx219: Rectify runtime PM handling in probe and remove
+Date: Thu, 17 Apr 2025 19:50:36 +0200
+Message-ID: <20250417175116.718256671@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit a05df03a88bc1088be8e9d958f208d6484691e43 upstream.
+commit 42eceae9793566d0df53d509be3e416465c347f5 upstream.
 
-Reported by smatch:
-drivers/iommu/iommufd/device.c:1392 iommufd_access_rw() error: uninitialized symbol 'rc'.
+Set the device's runtime PM status and enable runtime PM before
+registering the async sub-device. This is needed to avoid the case where
+the device is runtime PM resumed while runtime PM has not been enabled
+yet.
 
-Fixes: 8d40205f6093 ("iommufd: Add kAPI toward external drivers for kernel access")
-Link: https://patch.msgid.link/r/20250227200729.85030-1-nicolinc@nvidia.com
-Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202502271339.a2nWr9UA-lkp@intel.com/
-[nicolinc: can't find an original report but only in "old smatch warnings"]
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Also set the device's runtime PM status to suspended in remove only if it
+wasn't so already.
+
+Fixes: 1283b3b8f82b ("media: i2c: Add driver for Sony IMX219 sensor")
+Cc: stable@vger.kernel.org # for >= v6.6
+Reviewed-by: Bingbu Cao <bingbu.cao@intel.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/iommufd/device.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/imx219.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/iommu/iommufd/device.c
-+++ b/drivers/iommu/iommufd/device.c
-@@ -1127,7 +1127,7 @@ int iommufd_access_rw(struct iommufd_acc
- 	struct io_pagetable *iopt;
- 	struct iopt_area *area;
- 	unsigned long last_iova;
--	int rc;
-+	int rc = -EINVAL;
+--- a/drivers/media/i2c/imx219.c
++++ b/drivers/media/i2c/imx219.c
+@@ -1231,6 +1231,9 @@ static int imx219_probe(struct i2c_clien
+ 		goto error_media_entity;
+ 	}
  
- 	if (!length)
- 		return -EINVAL;
++	pm_runtime_set_active(dev);
++	pm_runtime_enable(dev);
++
+ 	ret = v4l2_async_register_subdev_sensor(&imx219->sd);
+ 	if (ret < 0) {
+ 		dev_err_probe(dev, ret,
+@@ -1238,15 +1241,14 @@ static int imx219_probe(struct i2c_clien
+ 		goto error_subdev_cleanup;
+ 	}
+ 
+-	/* Enable runtime PM and turn off the device */
+-	pm_runtime_set_active(dev);
+-	pm_runtime_enable(dev);
+ 	pm_runtime_idle(dev);
+ 
+ 	return 0;
+ 
+ error_subdev_cleanup:
+ 	v4l2_subdev_cleanup(&imx219->sd);
++	pm_runtime_disable(dev);
++	pm_runtime_set_suspended(dev);
+ 
+ error_media_entity:
+ 	media_entity_cleanup(&imx219->sd.entity);
+@@ -1271,9 +1273,10 @@ static void imx219_remove(struct i2c_cli
+ 	imx219_free_controls(imx219);
+ 
+ 	pm_runtime_disable(&client->dev);
+-	if (!pm_runtime_status_suspended(&client->dev))
++	if (!pm_runtime_status_suspended(&client->dev)) {
+ 		imx219_power_off(&client->dev);
+-	pm_runtime_set_suspended(&client->dev);
++		pm_runtime_set_suspended(&client->dev);
++	}
+ }
+ 
+ static const struct of_device_id imx219_dt_ids[] = {
 
 
 
