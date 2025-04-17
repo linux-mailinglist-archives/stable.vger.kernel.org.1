@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-133648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C42B8A926A8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:15:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE69BA926B6
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:15:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EC323BA028
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:15:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D191190139D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C858F2566FB;
-	Thu, 17 Apr 2025 18:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D66311B3934;
+	Thu, 17 Apr 2025 18:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcDKrlzV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fg37jD0y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846D12566D3;
-	Thu, 17 Apr 2025 18:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C138462;
+	Thu, 17 Apr 2025 18:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913715; cv=none; b=P6o7f3Wstnn5zSswBrIc8WQBzz+j1qBb/p92RlMSgyPaqfDJkPKCXWMzHPG54uUZZQysyY4IlJjz+Kpyg5HEaanaDhJLaL486go+hgw2LpmgIlhJPlxDuXABGbjHiwev5MxybWCU/ndG3kXcC2F4qc2VCqRI9VHhu6AC3rs9kK8=
+	t=1744913748; cv=none; b=Osm3pSpBeFCW3zrd7KcakCHgyeVOWr/RGCZgwVJZ9VKjxGPI4XFNBcj9AWnKpwEvSWyBnGKUtuYM5r6eXrkrGJuFlcAlhvoVCYSE06VAmGPkjweErMzrPFX2sP+rGKfihQmM3rixnFZvwVIViiPZotj2Ypb/r1A8Uvxy9rFXkf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913715; c=relaxed/simple;
-	bh=74ZTHkEg/Sla4pvUPvf6VPM6YKIUiSG77ZlXq8UML4s=;
+	s=arc-20240116; t=1744913748; c=relaxed/simple;
+	bh=jmhP5z0WEJPgG0yz+7cTzquxfic+tmmsKVPoUu5viik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ElxBqSvC2hjaToy++5vv1DXo5CCigfq7VSjw7mG6K+CLXHBel5NJ8g9pIltpKs5mCVdGffbAstQMqmQ8bUa/zg6HRStKcskVA+WFphmGrIkF4NTGVaUVgBkRwIrv9Pls/v19nFXNfaYlLOq1hCCJiVMglxyV0cp+Q1LIxmi2lBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CcDKrlzV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0C05C4CEE4;
-	Thu, 17 Apr 2025 18:15:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qIJuVi5CW0Qk6nw0Mb/37ZVyvQN7CcqtnrSBW49gx0Dycs8KbU9tvyqD+FLsfsbZ3tBUf48HfH95x4GWJhJXhNexlV0HNU+qXIyZ4L7uUCoSYzCnwn4Sn4tkQ6bgIA9GSZ+yMo7fVme9meoP0UXy7IDPMPw6X/PybipWtAb5lGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fg37jD0y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA76C4CEE4;
+	Thu, 17 Apr 2025 18:15:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913715;
-	bh=74ZTHkEg/Sla4pvUPvf6VPM6YKIUiSG77ZlXq8UML4s=;
+	s=korg; t=1744913748;
+	bh=jmhP5z0WEJPgG0yz+7cTzquxfic+tmmsKVPoUu5viik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CcDKrlzVKL2RTyWQCl2dhgPx94XrsZec/Olsj0LvocThamt1QCvhDlzvjC3fif0FV
-	 78/QET4ogtBHYm5cFDMt8cgotTKnzVwRDq5puZFd5x3Dxe8tZwZzWw0TnSdMonnydq
-	 rKr1/UPxLDLc0NsPszA1ETYAeY1i5evxq18XRVQg=
+	b=fg37jD0yuooS8Ftl23rHRvs+95L/gHNsv9WGls1kezepniddD32g7uMFZgWzrEQHa
+	 y+TzWwXUXNws/PIcaY97qJeqeus8sZRJR4Gql2bpIaCMJ3/+Dssrr+dgoaQ/vSllo7
+	 1ckl+tdyUqjPk6q8xAmYsOafIvYADBMImOQxojBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.14 422/449] of/irq: Fix device node refcount leakages in of_irq_init()
-Date: Thu, 17 Apr 2025 19:51:50 +0200
-Message-ID: <20250417175135.278271961@linuxfoundation.org>
+	Stanimir Varbanov <svarbanov@suse.de>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 6.14 423/449] PCI: brcmstb: Fix missing of_node_put() in brcm_pcie_probe()
+Date: Thu, 17 Apr 2025 19:51:51 +0200
+Message-ID: <20250417175135.317541971@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
 References: <20250417175117.964400335@linuxfoundation.org>
@@ -59,60 +61,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Stanimir Varbanov <svarbanov@suse.de>
 
-commit 708124d9e6e7ac5ebf927830760679136b23fdf0 upstream.
+commit 2df181e1aea4628a8fd257f866026625d0519627 upstream.
 
-of_irq_init() will leak interrupt controller device node refcounts
-in two places as explained below:
+A call to of_parse_phandle() is incrementing the refcount, and as such,
+the of_node_put() must be called when the reference is no longer needed.
 
-1) Leak refcounts of both @desc->dev and @desc->interrupt_parent when
-   suffers @desc->irq_init_cb() failure.
-2) Leak refcount of @desc->interrupt_parent when cleans up list
-   @intc_desc_list in the end.
+Thus, refactor the existing code and add a missing of_node_put() call
+following the check to ensure that "msi_np" matches "pcie->np" and after
+MSI initialization, but only if the MSI support is enabled system-wide.
 
-Refcounts of both @desc->dev and @desc->interrupt_parent were got in
-the first loop, but of_irq_init() does not put them before kfree(@desc)
-in places mentioned above, so causes refcount leakages.
-
-Fix by putting refcounts involved before kfree(@desc).
-
-Fixes: 8363ccb917c6 ("of/irq: add missing of_node_put")
-Fixes: c71a54b08201 ("of/irq: introduce of_irq_init")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-7-93e3a2659aa7@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Cc: stable@vger.kernel.org # v5.10+
+Fixes: 40ca1bf580ef ("PCI: brcmstb: Add MSI support")
+Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20250122222955.1752778-1-svarbanov@suse.de
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/irq.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pci/controller/pcie-brcmstb.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -632,6 +632,8 @@ void __init of_irq_init(const struct of_
- 				       __func__, desc->dev, desc->dev,
- 				       desc->interrupt_parent);
- 				of_node_clear_flag(desc->dev, OF_POPULATED);
-+				of_node_put(desc->interrupt_parent);
-+				of_node_put(desc->dev);
- 				kfree(desc);
- 				continue;
- 			}
-@@ -662,6 +664,7 @@ void __init of_irq_init(const struct of_
- err:
- 	list_for_each_entry_safe(desc, temp_desc, &intc_desc_list, list) {
- 		list_del(&desc->list);
-+		of_node_put(desc->interrupt_parent);
- 		of_node_put(desc->dev);
- 		kfree(desc);
+--- a/drivers/pci/controller/pcie-brcmstb.c
++++ b/drivers/pci/controller/pcie-brcmstb.c
+@@ -1786,7 +1786,7 @@ static struct pci_ops brcm7425_pcie_ops
+ 
+ static int brcm_pcie_probe(struct platform_device *pdev)
+ {
+-	struct device_node *np = pdev->dev.of_node, *msi_np;
++	struct device_node *np = pdev->dev.of_node;
+ 	struct pci_host_bridge *bridge;
+ 	const struct pcie_cfg_data *data;
+ 	struct brcm_pcie *pcie;
+@@ -1890,9 +1890,14 @@ static int brcm_pcie_probe(struct platfo
+ 		goto fail;
  	}
+ 
+-	msi_np = of_parse_phandle(pcie->np, "msi-parent", 0);
+-	if (pci_msi_enabled() && msi_np == pcie->np) {
+-		ret = brcm_pcie_enable_msi(pcie);
++	if (pci_msi_enabled()) {
++		struct device_node *msi_np = of_parse_phandle(pcie->np, "msi-parent", 0);
++
++		if (msi_np == pcie->np)
++			ret = brcm_pcie_enable_msi(pcie);
++
++		of_node_put(msi_np);
++
+ 		if (ret) {
+ 			dev_err(pcie->dev, "probe of internal MSI failed");
+ 			goto fail;
 
 
 
