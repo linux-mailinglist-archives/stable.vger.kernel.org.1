@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-134165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E035A929DD
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:45:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57CCAA925C0
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:07:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37A2D8E3FB9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69298467B9C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C778259C9E;
-	Thu, 17 Apr 2025 18:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B8AF2571C6;
+	Thu, 17 Apr 2025 18:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eMlYQcrX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHyIYbER"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7131A5BBB;
-	Thu, 17 Apr 2025 18:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B011DEFC5;
+	Thu, 17 Apr 2025 18:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915291; cv=none; b=ndLQk1P6dMs7Pbn7DEIyuZV1Cdlxe2viCRiEWRAI7k1L4cz/YB65WI1yp7AkLjCwHvSgqR/Vsb90fqyEtOID3b7OeEQEQEk4lzKpXt03dfcyfH5ZV2x4c5OfEm1gPvrXs922db6/SiSprFQtOlDO/waihD/EcrDFOSFqBy/sLoI=
+	t=1744913113; cv=none; b=JpnoK3WFMTMjfHcmt2PaCYmZOi1Wqwp4Sku6VH/9447+WJKhz2sV5kEan8aOZsXyd/zpmMRf4Ac5TAGJ+V6vNzyXmRa8Phw4Eg5yZPe33LDAO41jE16G64zi99GjUOQcBoJ9yD6nnsvqxA8hriTHUcJWUA626xpFvpV51ulEHPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915291; c=relaxed/simple;
-	bh=afvn3Whe0Bny62VMHGQhdvnDl/5lRD35L0OnDJ/llQQ=;
+	s=arc-20240116; t=1744913113; c=relaxed/simple;
+	bh=XxHfmoJ+MLq0yoI6Lk73yjBXU57M7+06cHXSI9jBERI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HlONRPJF1gVidSrT9AUpcUv27hv6z6B6dbE5ES3SPLFZRigHKU4GOaRq1VAzx2LGOLGvWHsTJdHHl0TqLoPIOxlS0kis4XQpnF1J2XjocYUH+0gIKJYWL622EAVedJ6VjHvBucvyekrcH8kJpZnWrHYLM/WjA9c5B8dWTlKuPDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eMlYQcrX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E67AC4CEE4;
-	Thu, 17 Apr 2025 18:41:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nqHlW+MckUaJhGelu4vhWR/bgmmj26T76OSd/m4p5IEPk0zrMUHFLuZ/62xfJ3fIYXHO+LYYIklwDMryWlU8+i8rvuXoU74KE+mF5OXtupWD4QWNDsHGGNs6j0WpAGxgXNeG04O3u/CLEp4k6Juce8gleb01CDF/IVPncnJ4xrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHyIYbER; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524D2C4CEE4;
+	Thu, 17 Apr 2025 18:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915290;
-	bh=afvn3Whe0Bny62VMHGQhdvnDl/5lRD35L0OnDJ/llQQ=;
+	s=korg; t=1744913113;
+	bh=XxHfmoJ+MLq0yoI6Lk73yjBXU57M7+06cHXSI9jBERI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eMlYQcrXi73zegxFTgmBKWk4dcZU9BwKJdxsfPu8J81GJVuiUiv950ucIZS+mpc+C
-	 XruXBRf8UtJvmGOtfDD1ONv3xhDT9/tki/47QZ3dj14XIN2QKua6LMS0S8JRg7fNuw
-	 ew01JkQK36FEg0uYDxKm9SLm5XiT2cwrbKC8raNg=
+	b=aHyIYbERNed2Pl/CPvsMBHkJOFtrnZB+ny+wRYlVy6W9FJVGWhFOiP9h/9sqgAnOy
+	 slrold7Z1u50Yu0hiaK6jtgN6eiQkcQITv/nARQ3zCfxVqgECcvGaXuzk349uMBLBE
+	 QaXGMwemY0TtdAFZAZIREB2KaCNMEpn4b+9q8YEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Syed Saba kareem <syed.sabakareem@amd.com>,
-	Reiner <Reiner.Proels@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mark Brown <broonie@kernel.org>,
+	Makarenko Oleg <oleg@makarenk.ooo>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 080/393] ASoC: amd: yc: update quirk data for new Lenovo model
+Subject: [PATCH 6.14 201/449] HID: pidff: Rescale time values to match field units
 Date: Thu, 17 Apr 2025 19:48:09 +0200
-Message-ID: <20250417175110.819373733@linuxfoundation.org>
+Message-ID: <20250417175126.060257221@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +65,169 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Syed Saba kareem <syed.sabakareem@amd.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit 5a4dd520ef8a94ecf81ac77b90d6a03e91c100a9 ]
+[ Upstream commit 8713107221a8ce4021ec5fa12bb50ecc8165cf08 ]
 
-Update Quirk data for new Lenovo model 83J2 for YC platform.
+PID devices can use different exponents for time fields, while Linux
+Force Feedback API only supports miliseconds.
 
-Signed-off-by: Syed Saba kareem <syed.sabakareem@amd.com>
-Link: https://patch.msgid.link/20250321122507.190193-1-syed.sabakareem@amd.com
-Reported-by: Reiner <Reiner.Proels@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219887
-Tested-by: Reiner <Reiner.Proels@gmail.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Read the exponent of a given time field and scale its value accordingly.
+
+Changes in v7:
+- Rescale all time fields, not only period
+
+changes in v9:
+- Properly assign fade_lenght, not attack_length to PID_FADE_TIME
+
+Co-developed-by: Makarenko Oleg <oleg@makarenk.ooo>
+Signed-off-by: Makarenko Oleg <oleg@makarenk.ooo>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/hid/usbhid/hid-pidff.c | 69 ++++++++++++++++++++++++++--------
+ 1 file changed, 54 insertions(+), 15 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index bd3808f98ec9e..e632f16c91025 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -339,6 +339,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "83Q3"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83J2"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index bd913d57e4d75..180b2cf66e4c7 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -22,6 +22,9 @@
+ #define	PID_EFFECTS_MAX		64
+ #define	PID_INFINITE		0xffff
+ 
++/* Linux Force Feedback API uses miliseconds as time unit */
++#define FF_TIME_EXPONENT	-3
++
+ /* Report usage table used to put reports into an array */
+ 
+ #define PID_SET_EFFECT		0
+@@ -231,6 +234,24 @@ static int pidff_rescale_signed(int i, struct hid_field *field)
+ 	    field->logical_minimum / -0x8000;
+ }
+ 
++/*
++ * Scale time value from Linux default (ms) to field units
++ */
++static u32 pidff_rescale_time(u16 time, struct hid_field *field)
++{
++	u32 scaled_time = time;
++	int exponent = field->unit_exponent;
++	pr_debug("time field exponent: %d\n", exponent);
++
++	for (;exponent < FF_TIME_EXPONENT; exponent++)
++		scaled_time *= 10;
++	for (;exponent > FF_TIME_EXPONENT; exponent--)
++		scaled_time /= 10;
++
++	pr_debug("time calculated from %d to %d\n", time, scaled_time);
++	return scaled_time;
++}
++
+ static void pidff_set(struct pidff_usage *usage, u16 value)
+ {
+ 	usage->value[0] = pidff_rescale(value, 0xffff, usage->field);
+@@ -252,6 +273,27 @@ static void pidff_set_signed(struct pidff_usage *usage, s16 value)
+ 	pr_debug("calculated from %d to %d\n", value, usage->value[0]);
+ }
+ 
++static void pidff_set_time(struct pidff_usage *usage, u16 time)
++{
++	u32 modified_time = pidff_rescale_time(time, usage->field);
++	usage->value[0] = pidff_clamp(modified_time, usage->field);
++}
++
++static void pidff_set_duration(struct pidff_usage *usage, u16 duration)
++{
++	/* Convert infinite length from Linux API (0)
++	   to PID standard (NULL) if needed */
++	if (duration == 0)
++		duration = PID_INFINITE;
++
++	if (duration == PID_INFINITE) {
++		usage->value[0] = PID_INFINITE;
++		return;
++	}
++
++	pidff_set_time(usage, duration);
++}
++
+ /*
+  * Send envelope report to the device
+  */
+@@ -270,8 +312,10 @@ static void pidff_set_envelope_report(struct pidff_device *pidff,
+ 			  0x7fff ? 0x7fff : envelope->fade_level, 0x7fff,
+ 			  pidff->set_envelope[PID_FADE_LEVEL].field);
+ 
+-	pidff->set_envelope[PID_ATTACK_TIME].value[0] = envelope->attack_length;
+-	pidff->set_envelope[PID_FADE_TIME].value[0] = envelope->fade_length;
++	pidff_set_time(&pidff->set_envelope[PID_ATTACK_TIME],
++			envelope->attack_length);
++	pidff_set_time(&pidff->set_envelope[PID_FADE_TIME],
++			envelope->fade_length);
+ 
+ 	hid_dbg(pidff->hid, "attack %u => %d\n",
+ 		envelope->attack_level,
+@@ -340,14 +384,12 @@ static void pidff_set_effect_report(struct pidff_device *pidff,
+ 	pidff->set_effect_type->value[0] =
+ 		pidff->create_new_effect_type->value[0];
+ 
+-	/* Convert infinite length from Linux API (0)
+-	   to PID standard (NULL) if needed */
+-	pidff->set_effect[PID_DURATION].value[0] =
+-		effect->replay.length == 0 ? PID_INFINITE : effect->replay.length;
++	pidff_set_duration(&pidff->set_effect[PID_DURATION],
++		effect->replay.length);
+ 
+ 	pidff->set_effect[PID_TRIGGER_BUTTON].value[0] = effect->trigger.button;
+-	pidff->set_effect[PID_TRIGGER_REPEAT_INT].value[0] =
+-		effect->trigger.interval;
++	pidff_set_time(&pidff->set_effect[PID_TRIGGER_REPEAT_INT],
++			effect->trigger.interval);
+ 	pidff->set_effect[PID_GAIN].value[0] =
+ 		pidff->set_effect[PID_GAIN].field->logical_maximum;
+ 	pidff->set_effect[PID_DIRECTION_ENABLE].value[0] = 1;
+@@ -360,7 +402,8 @@ static void pidff_set_effect_report(struct pidff_device *pidff,
+ 
+ 	/* Omit setting delay field if it's missing */
+ 	if (!(pidff->quirks & HID_PIDFF_QUIRK_MISSING_DELAY))
+-		pidff->set_effect[PID_START_DELAY].value[0] = effect->replay.delay;
++		pidff_set_time(&pidff->set_effect[PID_START_DELAY],
++				effect->replay.delay);
+ 
+ 	hid_hw_request(pidff->hid, pidff->reports[PID_SET_EFFECT],
+ 			HID_REQ_SET_REPORT);
+@@ -392,15 +435,11 @@ static void pidff_set_periodic_report(struct pidff_device *pidff,
+ 	pidff_set_signed(&pidff->set_periodic[PID_OFFSET],
+ 			 effect->u.periodic.offset);
+ 	pidff_set(&pidff->set_periodic[PID_PHASE], effect->u.periodic.phase);
+-
+-	/* Clamp period to ensure the device can play the effect */
+-	pidff->set_periodic[PID_PERIOD].value[0] =
+-		pidff_clamp(effect->u.periodic.period,
+-			pidff->set_periodic[PID_PERIOD].field);
++	pidff_set_time(&pidff->set_periodic[PID_PERIOD],
++			effect->u.periodic.period);
+ 
+ 	hid_hw_request(pidff->hid, pidff->reports[PID_SET_PERIODIC],
+ 			HID_REQ_SET_REPORT);
+-
+ }
+ 
+ /*
 -- 
 2.39.5
 
