@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-133870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 204E5A9280D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61501A925DD
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:08:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7810216D1B6
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90D148A372D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083312620EE;
-	Thu, 17 Apr 2025 18:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E98C2256C7B;
+	Thu, 17 Apr 2025 18:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rEaZmYSZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dr9wtbUL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71C725335D;
-	Thu, 17 Apr 2025 18:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B4D22E3E6;
+	Thu, 17 Apr 2025 18:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914396; cv=none; b=mHSxjEZoQS3l3g5Qvz1cCpLSoXm0F9GcAaDOxBIIDL3Wi0ya+U/GnJUPCx8i6LWa5TLoLqqjLBS8wgCdpFnoz71Ww8Ijwo/pVkiYtx+5z0A+7S9/4aC5IaWqlxYhEwf7az2v4YFfg3l/IOVpUQdl0xeUiRA9NZgQS4To4Vr4cPI=
+	t=1744913231; cv=none; b=c8D/8ZtBNZvHEoMu651CtlmeYRIR+bPmVXe84wDw86ut9koH04r3IQyyisfR3x4oRVoRdAb15UXMVIPP00I5O6lYKN6yxdcNkh3K3pAn1X3zg28FOtXfV4a1u19jMPv2ccgyatpp0rWBq5qqVBa0IKzHoVAbBJC7ObLAccBWA2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914396; c=relaxed/simple;
-	bh=Z5DZ5NwE2OBLxKOYB9VZLqz04vCbXHCl/7Cyg6Qbml0=;
+	s=arc-20240116; t=1744913231; c=relaxed/simple;
+	bh=dcRG8ytckGuETuoJKqWuysYlfWrc3lHsQbfYdbePmFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M5Yn0d5qzw2/3RAg4kKbNTQEO1Ymxs8Os/O6aZmUQEe0PbQt/DEcZY8dxRwGXm0lYGLlVZOFEAwQUxX6CArzv/SEmv0NkLVG4OMgCSTVpWTTCT9RhsZqxnr9+hlc9OX59jCn6MMSC3LPlb6x/G2mAKUD4DJWCqCKphMIAHJd8GQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rEaZmYSZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6118C4CEE4;
-	Thu, 17 Apr 2025 18:26:35 +0000 (UTC)
+	 MIME-Version; b=lzxUEDQzxSqKp0jxoJaRo87nkwveQ+IE+GYLW+ne/TYI5+DDmzyKAvGXPW93LSBplKsSTQa6ZT2b3qgljpKsWw1GbkI01T9m/Oa5y0Ni0fwTzbJSObV6Z02a88oYfAheyFvnojBC3r4MfXlqPpsI/gWn06xZAiLux6tDVpMDgJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dr9wtbUL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7DCFC4CEE4;
+	Thu, 17 Apr 2025 18:07:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914396;
-	bh=Z5DZ5NwE2OBLxKOYB9VZLqz04vCbXHCl/7Cyg6Qbml0=;
+	s=korg; t=1744913231;
+	bh=dcRG8ytckGuETuoJKqWuysYlfWrc3lHsQbfYdbePmFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rEaZmYSZT9TskZiaxjAY5Rv1V/26MpvsmnOa33/J1LW8RBajbrZpQuwNcHAfRBUh5
-	 2ynXoWrlL73ufwJ+tlnpWunGBwcZUou4yyi9icHK6AQNrSEBLmeW6NHEeJB3aBtlcE
-	 DG1DOyMTH2fzWhVFWDAX45c/ne/sBfeUEbc4LKqQ=
+	b=dr9wtbULBM1CNJE6oqyodaUR7yIO4mdeDKujGWoK5KhfFXJgX/TLkf4LJWnaroJ0G
+	 VHqjIh7nvmuODur6TWSKIyRueZnaGkE6g4r9gR8neliKEW9WPMygN5K/mUcFwXQBma
+	 O/0tldCp4p19rTFme0Wn5TsmwLgVZMPs1sMtBwnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.13 201/414] media: i2c: adv748x: Fix test pattern selection mask
+	Christoph Hellwig <hch@infradead.org>,
+	Ming Lei <ming.lei@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.14 271/449] block: make sure ->nr_integrity_segments is cloned in blk_rq_prep_clone
 Date: Thu, 17 Apr 2025 19:49:19 +0200
-Message-ID: <20250417175119.527837420@linuxfoundation.org>
+Message-ID: <20250417175128.954275476@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit 9e38acacb9d809b97a0bdc5c76e725355a47158a upstream.
+commit fc0e982b8a3a169b1c654d9a1aa45bf292943ef2 upstream.
 
-The mask to select the test-pattern in register ADV748X_SDP_FRP is
-incorrect, it's the lower 3 bits which controls the pattern. The
-GENMASK() macro is used incorrectly and the generated mask is 0x0e
-instead of 0x07.
+Make sure ->nr_integrity_segments is cloned in blk_rq_prep_clone(),
+otherwise requests cloned by device-mapper multipath will not have the
+proper nr_integrity_segments values set, then BUG() is hit from
+sg_alloc_table_chained().
 
-The result is that not all test patterns are selectable, and that in
-some cases the wrong test pattern is activated. Fix this by correcting
-the GENMASK().
-
-Fixes: 3e89586a64df ("media: i2c: adv748x: add adv748x driver")
+Fixes: b0fd271d5fba ("block: add request clone interface (v2)")
 Cc: stable@vger.kernel.org
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[hverkuil: fixed tiny typo in commit log: my -> by]
+Cc: Christoph Hellwig <hch@infradead.org>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250310115453.2271109-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/adv748x/adv748x.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/blk-mq.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/i2c/adv748x/adv748x.h
-+++ b/drivers/media/i2c/adv748x/adv748x.h
-@@ -320,7 +320,7 @@ struct adv748x_state {
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -3314,6 +3314,7 @@ int blk_rq_prep_clone(struct request *rq
+ 		rq->special_vec = rq_src->special_vec;
+ 	}
+ 	rq->nr_phys_segments = rq_src->nr_phys_segments;
++	rq->nr_integrity_segments = rq_src->nr_integrity_segments;
  
- /* Free run pattern select */
- #define ADV748X_SDP_FRP			0x14
--#define ADV748X_SDP_FRP_MASK		GENMASK(3, 1)
-+#define ADV748X_SDP_FRP_MASK		GENMASK(2, 0)
- 
- /* Saturation */
- #define ADV748X_SDP_SD_SAT_U		0xe3	/* user_map_rw_reg_e3 */
+ 	if (rq->bio && blk_crypto_rq_bio_prep(rq, rq->bio, gfp_mask) < 0)
+ 		goto free_and_out;
 
 
 
