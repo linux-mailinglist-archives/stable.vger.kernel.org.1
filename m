@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-134056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F3A8A9295D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7129A92AE5
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D8353A2993
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7583E7B26CD
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB802571DD;
-	Thu, 17 Apr 2025 18:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65311257453;
+	Thu, 17 Apr 2025 18:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O9yDXp28"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2PLaAEi8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E792566DA;
-	Thu, 17 Apr 2025 18:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C61D257448;
+	Thu, 17 Apr 2025 18:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914961; cv=none; b=ovUxQcbsuyJQmoY33x+o4KIGM5gGXTTjPC5CBQEMeUAcyPcOZgfYp+FQ67XyBY1aJJTvgVQZNaP6uPVovhmx0cqMy8JZYFgnphhn+/YtvbsQH7Atv5wK2leSgx76TCSpQVLPNKyXac3Fuf2LRGj2R1kPnxlF3FOQvewu+jhOAEk=
+	t=1744916084; cv=none; b=gOOdX6y+pQAJd9DW7Ygnst3e9jqQTVlmgljyuKCcFviY3EMQHErY/Xu9wpRMn+OIcr6V/SdEWwZmmPQYhUn9uNBytNTe9kgw1E+OCfyO1t5e3D5yiPbRIB/pg/VJ0jZqtvnS2TXfkWmMpH/sUNI4v4X/6jGlzIV4G/+wFBmx4tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914961; c=relaxed/simple;
-	bh=639gVSS1kDJIFpCa/AP61ENY7Jn5mcDOQpGdJx5gwwk=;
+	s=arc-20240116; t=1744916084; c=relaxed/simple;
+	bh=5esZfmXJvS8yYdlLk+W8IHVMzZ/I2KUKepSmMJw4ym0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W6Xbks1qRZa9Vy7DLA1x+Ft5vRIesA63/NSA2+HtpbVNBwLibEvp4xYr/TuUFtIOS0GhkW6Jl/85GehMMusETxK7DkYzKbAxUL2O3VqM6r/UFpqGHMJrbEz3jH00WupUhU4cFNKLXekzdiDKbl5VduoXRoTGFl4wIXFWMB0NnWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O9yDXp28; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23F65C4CEE4;
-	Thu, 17 Apr 2025 18:35:59 +0000 (UTC)
+	 MIME-Version; b=NZu4otOsaw5+N5BHQCJ7BxaIzh+sKvi1JvoqxKL832B0Um7/YU7GPSNB0WJky+bU2PyP/2OR543fIH37V9lXm/EDCY4xNS+fmkP2G9LFZKkGyEp2pUV9AKQ7vkIgqjm0L/IMKzs5i/e7peDNKXBzOjVLWxVuIe1R19jEt3ShLgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2PLaAEi8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 855C1C4CEE7;
+	Thu, 17 Apr 2025 18:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914960;
-	bh=639gVSS1kDJIFpCa/AP61ENY7Jn5mcDOQpGdJx5gwwk=;
+	s=korg; t=1744916083;
+	bh=5esZfmXJvS8yYdlLk+W8IHVMzZ/I2KUKepSmMJw4ym0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O9yDXp28CKrG0arTpDreIfx7uuvsWwrzlwny8xEvJ0kN9XY4zZve2FEDXl5o4UVnW
-	 TF0LgGJ8UxH3BauBySkFK5271smICi6g1IUYOIiEdmxkr7duNhmVj8xJalLsb9nN/X
-	 vh4z+v7fzbYeCVKQEVtcVh/IZa6d2ohwSQRoeIgo=
+	b=2PLaAEi8kmjqG2V7CniXiy3Q2tNAOdztFJkRip/Tnjy3K65XEgRrEl5BwY1ukyKtE
+	 HGa4fbZqKCJtca9XuafEVq3dX570Rkskd6mhy43MjP5C7BUrvtcS7biVB7x3r+qH9E
+	 0CghFFv++/u1lWgi6JCBNCjgAgIRw1oFmNUst6AQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.13 388/414] PCI: Fix reference leak in pci_register_host_bridge()
+	zhoumin <teczm@foxmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 337/393] ftrace: Add cond_resched() to ftrace_graph_set_hash()
 Date: Thu, 17 Apr 2025 19:52:26 +0200
-Message-ID: <20250417175127.089149455@linuxfoundation.org>
+Message-ID: <20250417175121.154118091@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: zhoumin <teczm@foxmail.com>
 
-commit 804443c1f27883926de94c849d91f5b7d7d696e9 upstream.
+commit 42ea22e754ba4f2b86f8760ca27f6f71da2d982c upstream.
 
-If device_register() fails, call put_device() to give up the reference to
-avoid a memory leak, per the comment at device_register().
+When the kernel contains a large number of functions that can be traced,
+the loop in ftrace_graph_set_hash() may take a lot of time to execute.
+This may trigger the softlockup watchdog.
 
-Found by code review.
+Add cond_resched() within the loop to allow the kernel to remain
+responsive even when processing a large number of functions.
 
-Link: https://lore.kernel.org/r/20250225021440.3130264-1-make24@iscas.ac.cn
-Fixes: 37d6a0a6f470 ("PCI: Add pci_register_host_bridge() interface")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-[bhelgaas: squash Dan Carpenter's double free fix from
-https://lore.kernel.org/r/db806a6c-a91b-4e5a-a84b-6b7e01bdac85@stanley.mountain]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+This matches the cond_resched() that is used in other locations of the
+code that iterates over all functions that can be traced.
+
 Cc: stable@vger.kernel.org
+Fixes: b9b0c831bed26 ("ftrace: Convert graph filter to use hash tables")
+Link: https://lore.kernel.org/tencent_3E06CE338692017B5809534B9C5C03DA7705@qq.com
+Signed-off-by: zhoumin <teczm@foxmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/probe.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ kernel/trace/ftrace.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -910,6 +910,7 @@ static int pci_register_host_bridge(stru
- 	resource_size_t offset, next_offset;
- 	LIST_HEAD(resources);
- 	struct resource *res, *next_res;
-+	bool bus_registered = false;
- 	char addr[64], *fmt;
- 	const char *name;
- 	int err;
-@@ -973,6 +974,7 @@ static int pci_register_host_bridge(stru
- 	name = dev_name(&bus->dev);
- 
- 	err = device_register(&bus->dev);
-+	bus_registered = true;
- 	if (err)
- 		goto unregister;
- 
-@@ -1059,12 +1061,15 @@ static int pci_register_host_bridge(stru
- unregister:
- 	put_device(&bridge->dev);
- 	device_del(&bridge->dev);
--
- free:
- #ifdef CONFIG_PCI_DOMAINS_GENERIC
- 	pci_bus_release_domain_nr(parent, bus->domain_nr);
- #endif
--	kfree(bus);
-+	if (bus_registered)
-+		put_device(&bus->dev);
-+	else
-+		kfree(bus);
-+
- 	return err;
- }
- 
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -6848,6 +6848,7 @@ ftrace_graph_set_hash(struct ftrace_hash
+ 				}
+ 			}
+ 		}
++		cond_resched();
+ 	} while_for_each_ftrace_rec();
+ out:
+ 	mutex_unlock(&ftrace_lock);
 
 
 
