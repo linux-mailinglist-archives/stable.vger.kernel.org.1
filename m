@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-133521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 360E5A9260A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:09:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75F37A92887
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61C581B629B3
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFD97178F57
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:35:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85E3256C70;
-	Thu, 17 Apr 2025 18:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F13C2571BA;
+	Thu, 17 Apr 2025 18:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zN2UlzP5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tubiA3Qw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749B31DF756;
-	Thu, 17 Apr 2025 18:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB642550C8;
+	Thu, 17 Apr 2025 18:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913328; cv=none; b=sWysvJI4ZiatEoCbMms2BjfX1RSn5ko3RQnQXszNth5bMpm+BdFluFTckTXoYIcIVh2dK+9JnfbPHiBNBNbEmrY0z9LsfDMRamcHD86Wm0w3Sshnmzelk5DRcV/7wDvYZJLDfM340CTxVk+jtuO0effctb50suN7gCtdZO8BQRE=
+	t=1744914493; cv=none; b=U0xvWC6sPdSpH2E+U8O7gHTjrQoS3nXFcJtRKO4wFT4DuIM2z3dpWzfQqnKYgS+t9b44mV543CHqxS/QgbAC1zpy1YGCszw3TjOivPg50zRZwEAtHJ4Iq4y0G13RNFQW9VnjWs0otOvi3HO9LGPuDXujt7Dw+RgDh75NsYpDPbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913328; c=relaxed/simple;
-	bh=yR4NC6rj2TJa72CQSyeHSYXKNF7tQRL83kAsUbLCbUQ=;
+	s=arc-20240116; t=1744914493; c=relaxed/simple;
+	bh=ANCYi6eMwv3IQMNsIBsgWY25xOntJYG+rJTvPXpCwT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MymHTuG6uoK4e1gn8QCcpnU6Difx9aaobmqSW3BFNy7xZEBCtExZyI8/mZJtx7FRgFjwW+fDN2JzhO2zv3QyEbRG8hhmn2/+vWCfum1jwRX47ZevkWMt0fSssgs0OAGJiXHK/YY+XduDWaHK+piB15X+y7Hc826cPlBqmjiJwEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zN2UlzP5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077B9C4CEE4;
-	Thu, 17 Apr 2025 18:08:47 +0000 (UTC)
+	 MIME-Version; b=L2XsU/bl7sUEuusU8UexppEuQDZ2KzXBRS9aT5rn6AasTF65DbZQ3e8c7M9hu5uaorxTAiQ8zMQ8Dn2ZtuzQV0xlw41rLya2wMgdqsl4ThuahMVheKm0LEE0oZes5tKbd2lRs6p7AU6X9Di43MEZHvkZW5lykv472Q9zz13MTu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tubiA3Qw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9261C4CEE4;
+	Thu, 17 Apr 2025 18:28:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913328;
-	bh=yR4NC6rj2TJa72CQSyeHSYXKNF7tQRL83kAsUbLCbUQ=;
+	s=korg; t=1744914493;
+	bh=ANCYi6eMwv3IQMNsIBsgWY25xOntJYG+rJTvPXpCwT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zN2UlzP5V8RobqTeE1gBG4KQAgYmtuFq1XQo0wsRbbnTZvPjBdsvhaND1JrsbhZlj
-	 V+9zYL/Mp9om4LrOCBS+ifXi0wrKm8ZF+EvQYTrU9AiAheyyEt3cd93hTl8M8FwZL0
-	 dfNP3P143/afRLnYRts9TFo+G8+crnsgcSRRx5pg=
+	b=tubiA3Qwq7VR1QJvgjRZTn5ZXd4FDRbIo/q9ktbuwHvZ6FPJHMIboiOA1nu99UmNZ
+	 Y2DOHMmlvjP+xfp0yMA2YSeA7PkJNW8UAree5NWLg/NdDMy7uxCmkEjUsZGWutSwW7
+	 QYymceM+r1pxCQNE5Ppc4rxnp20oroBfLhx+XrwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Binderman <dcb314@hotmail.com>,
-	Eric Biggers <ebiggers@google.com>
-Subject: [PATCH 6.14 303/449] arm/crc-t10dif: fix use of out-of-scope array in crc_t10dif_arch()
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.13 233/414] media: i2c: ov7251: Introduce 1 ms delay between regulators and en GPIO
 Date: Thu, 17 Apr 2025 19:49:51 +0200
-Message-ID: <20250417175130.296298308@linuxfoundation.org>
+Message-ID: <20250417175120.803622170@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit 3371f569223c4e8d36edbb0ba789ee5f5cb7316f upstream.
+commit 3d391292cdd53984ec1b9a1f6182a62a62751e03 upstream.
 
-Fix a silly bug where an array was used outside of its scope.
+Lift the xshutdown (enable) GPIO 1 ms after enabling the regulators, as
+required by the sensor's power-up sequence.
 
-Fixes: 1684e8293605 ("arm/crc-t10dif: expose CRC-T10DIF function through lib")
+Fixes: d30bb512da3d ("media: Add a driver for the ov7251 camera sensor")
 Cc: stable@vger.kernel.org
-Reported-by: David Binderman <dcb314@hotmail.com>
-Closes: https://lore.kernel.org/r/AS8PR02MB102170568EAE7FFDF93C8D1ED9CA62@AS8PR02MB10217.eurprd02.prod.outlook.com
-Link: https://lore.kernel.org/r/20250326200812.125574-1-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/lib/crc-t10dif-glue.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/media/i2c/ov7251.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/lib/crc-t10dif-glue.c b/arch/arm/lib/crc-t10dif-glue.c
-index f3584ba70e57..6efad3d78284 100644
---- a/arch/arm/lib/crc-t10dif-glue.c
-+++ b/arch/arm/lib/crc-t10dif-glue.c
-@@ -44,9 +44,7 @@ u16 crc_t10dif_arch(u16 crc, const u8 *data, size_t length)
- 			crc_t10dif_pmull8(crc, data, length, buf);
- 			kernel_neon_end();
- 
--			crc = 0;
--			data = buf;
--			length = sizeof(buf);
-+			return crc_t10dif_generic(0, buf, sizeof(buf));
- 		}
+--- a/drivers/media/i2c/ov7251.c
++++ b/drivers/media/i2c/ov7251.c
+@@ -922,6 +922,8 @@ static int ov7251_set_power_on(struct de
+ 		return ret;
  	}
- 	return crc_t10dif_generic(crc, data, length);
--- 
-2.49.0
-
+ 
++	usleep_range(1000, 1100);
++
+ 	gpiod_set_value_cansleep(ov7251->enable_gpio, 1);
+ 
+ 	/* wait at least 65536 external clock cycles */
 
 
 
