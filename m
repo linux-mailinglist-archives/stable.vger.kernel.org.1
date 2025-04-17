@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73D62A928C6
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:37:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F266A92655
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:12:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4786E1B60D25
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B86C84A061F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:12:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A4525DB05;
-	Thu, 17 Apr 2025 18:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC9E253B7B;
+	Thu, 17 Apr 2025 18:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZV/BYzF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hg1xXGJl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42CC1256C93;
-	Thu, 17 Apr 2025 18:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8FD1A3178;
+	Thu, 17 Apr 2025 18:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914709; cv=none; b=Hl9HC41bnwfT17I2TS5sByQYGXwLKeqE9xO0+Dc58ywrxTvK7uAC4JSQ8xZL6XueVtg7B62wZIe0d3pufO8xxx1QTVBRCwLZ3aJnNkj3q8ZqMm/UcVyZ38K7Up+E0ixl7roIX0R0mvaCclHaqzkc0eO7hZSqRarGyIK+3gRluDQ=
+	t=1744913542; cv=none; b=R/fclfmGArcsByR9aCJC65wZNm8IM5zHBC/BqZX4UXQG1Wo2rFoIP3CL6mjQOiuCU0eNxI8MGzAt61iwqkijELFHTW3MHGWKcL6WhRp+gQWVaJuPX9C7E2JqV0X+vNVPz2FLBwY8U03ZoMMqsyUpSdUNUJWrPSQ8UlFmMPdyWog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914709; c=relaxed/simple;
-	bh=N04x1S6TVSJhoDg1bY//NeyzpL0+zjbQxOdWVpjcRdo=;
+	s=arc-20240116; t=1744913542; c=relaxed/simple;
+	bh=oaESsoLqbDooQK8g0NEn8KQ3x2X+2qgrsA2vcI2ObbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H8qjZYtNwByOPCbp+bzRWVlzS3fX2OcKnxcdPagfFt5BlOUwlwcr1v3IAsBBezqQQAGqX87va/4dX2GGTRc/bQoDI8MJQavQpiNbrwu/6zxwjXLRSwUj8fVnbt+i4LENmWTTPFdh36nMgWwTZ+mU603iyk7555KbxvpDxX810cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZV/BYzF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 699EDC4CEE4;
-	Thu, 17 Apr 2025 18:31:48 +0000 (UTC)
+	 MIME-Version; b=acUajWUHwP50+TCQ7yffSBvQhCxOtXCwhXwiooBcBtSJN7VVL0s+fdvGbPXoNtWhMan5ksi5DIDCYE52VlkuYSdOLbsn3Tlh68k/V7jIYs28Z8RibSKA6ItrW84N+o9EFxDm4Vmb5Un5wwNNnX4HcaXFT046lw6vpyyv8lXN0jQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hg1xXGJl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F5FEC4CEE7;
+	Thu, 17 Apr 2025 18:12:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914708;
-	bh=N04x1S6TVSJhoDg1bY//NeyzpL0+zjbQxOdWVpjcRdo=;
+	s=korg; t=1744913542;
+	bh=oaESsoLqbDooQK8g0NEn8KQ3x2X+2qgrsA2vcI2ObbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CZV/BYzF0UZQI2jkZeVLuyPYKzixI7rc9koRdqL1M3J66F/CiCITvbQQ1nUi4maSE
-	 84ZZ4Rue7La6vXBpgTVKaGbHIdp8tN8RQcfmWHOozYtKBTHKKQEMJA9Ssu2evfxDzJ
-	 CzDY9a722z4+NOuUDmoTSp9bfMw54xd26gdlK6c0=
+	b=Hg1xXGJlsc5W2e2hVYOkBD0eMdVkKIy9D8mgHad73oUtf2vl8U9raYn5vZ9SKrTbL
+	 a4Y5OtNUZVBQvsgvXvZfTJe62WK98EHA1H3URoRXIAkdqNSOeLKTdvIDKVQA88QRRl
+	 DqjtzMEheXBiUr4R4stD5m1IODtOBRqsybPdy154=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ninad Malwade <nmalwade@nvidia.com>,
-	Ivy Huang <yijuh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 6.13 304/414] arm64: tegra: Remove the Orin NX/Nano suspend key
+	Aman <aman1@microsoft.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.14 374/449] CIFS: Propagate min offload along with other parameters from primary to secondary channels.
 Date: Thu, 17 Apr 2025 19:51:02 +0200
-Message-ID: <20250417175123.659500415@linuxfoundation.org>
+Message-ID: <20250417175133.310532608@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ninad Malwade <nmalwade@nvidia.com>
+From: Aman <aman1@microsoft.com>
 
-commit bb8a3ad25f098b6ea9b1d0f522427b4ad53a7bba upstream.
+commit 1821e90be08e7d4a54cd167dd818d80d06e064e9 upstream.
 
-As per the Orin Nano Dev Kit schematic, GPIO_G.02 is not available
-on this device family. It should not be used at all on Orin NX/Nano.
-Having this unused pin mapped as the suspend key can lead to
-unpredictable behavior for low power modes.
+In a multichannel setup, it was observed that a few fields were not being
+copied over to the secondary channels, which impacted performance in cases
+where these options were relevant but not properly synchronized. To address
+this, this patch introduces copying the following parameters from the
+primary channel to the secondary channels:
 
-Orin NX/Nano uses GPIO_EE.04 as both a "power" button and a "suspend"
-button. However, we cannot have two gpio-keys mapped to the same
-GPIO. Therefore remove the "suspend" key.
+- min_offload
+- compression.requested
+- dfs_conn
+- ignore_signature
+- leaf_fullpath
+- noblockcnt
+- retrans
+- sign
+
+By copying these parameters, we ensure consistency across channels and
+prevent performance degradation due to missing or outdated settings.
 
 Cc: stable@vger.kernel.org
-Fixes: e63472eda5ea ("arm64: tegra: Support Jetson Orin NX reference platform")
-Signed-off-by: Ninad Malwade <nmalwade@nvidia.com>
-Signed-off-by: Ivy Huang <yijuh@nvidia.com>
-Link: https://lore.kernel.org/r/20250206224034.3691397-1-yijuh@nvidia.com
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Aman <aman1@microsoft.com>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/nvidia/tegra234-p3768-0000+p3767.dtsi |    7 -------
- 1 file changed, 7 deletions(-)
+ fs/smb/client/connect.c |    1 +
+ fs/smb/client/sess.c    |    7 +++++++
+ 2 files changed, 8 insertions(+)
 
---- a/arch/arm64/boot/dts/nvidia/tegra234-p3768-0000+p3767.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra234-p3768-0000+p3767.dtsi
-@@ -227,13 +227,6 @@
- 			wakeup-event-action = <EV_ACT_ASSERTED>;
- 			wakeup-source;
- 		};
--
--		key-suspend {
--			label = "Suspend";
--			gpios = <&gpio TEGRA234_MAIN_GPIO(G, 2) GPIO_ACTIVE_LOW>;
--			linux,input-type = <EV_KEY>;
--			linux,code = <KEY_SLEEP>;
--		};
- 	};
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -1677,6 +1677,7 @@ cifs_get_tcp_session(struct smb3_fs_cont
+ 	/* Grab netns reference for this server. */
+ 	cifs_set_net_ns(tcp_ses, get_net(current->nsproxy->net_ns));
  
- 	fan: pwm-fan {
++	tcp_ses->sign = ctx->sign;
+ 	tcp_ses->conn_id = atomic_inc_return(&tcpSesNextId);
+ 	tcp_ses->noblockcnt = ctx->rootfs;
+ 	tcp_ses->noblocksnd = ctx->noblocksnd || ctx->rootfs;
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -522,6 +522,13 @@ cifs_ses_add_channel(struct cifs_ses *se
+ 	ctx->sockopt_tcp_nodelay = ses->server->tcp_nodelay;
+ 	ctx->echo_interval = ses->server->echo_interval / HZ;
+ 	ctx->max_credits = ses->server->max_credits;
++	ctx->min_offload = ses->server->min_offload;
++	ctx->compress = ses->server->compression.requested;
++	ctx->dfs_conn = ses->server->dfs_conn;
++	ctx->ignore_signature = ses->server->ignore_signature;
++	ctx->leaf_fullpath = ses->server->leaf_fullpath;
++	ctx->rootfs = ses->server->noblockcnt;
++	ctx->retrans = ses->server->retrans;
+ 
+ 	/*
+ 	 * This will be used for encoding/decoding user/domain/pw
 
 
 
