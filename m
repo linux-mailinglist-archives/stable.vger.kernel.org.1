@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-134286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DF3BA92A38
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:48:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C96FA9288A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F9F61B643B8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:48:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D45219E5716
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6435A2566DB;
-	Thu, 17 Apr 2025 18:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12A2256C6D;
+	Thu, 17 Apr 2025 18:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5U2T3U1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bljnm9sI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA3C2571BC;
-	Thu, 17 Apr 2025 18:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2881D07BA;
+	Thu, 17 Apr 2025 18:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915665; cv=none; b=DX1Wxh8Jcets031YpoLhiDY5f5kHuLlCV/0PcErh9xn5iptGU2S2N3RdMdEhBj+zpjWp31q24KVcdUPVb56pnRTfnzR7CH6KVqYmTHjbylSf0OmPaSBYuodcc8TfDsVV6SIUhpc3vlWwYjoxoe2pJUqQfMfqOAYaaVZXNoFmDJs=
+	t=1744914550; cv=none; b=MH6k1bCiJzX1YJRVAJj9u+wPAiqe6YjOwyS6fvFOYAyS9LKxlYL2oWiomPH7g/UefOtrcGA1ZnqIiGtjV69z99Q8ltv60s1E7GSvJOIHXSrAiBWWh4UBsg0kXWTYUG5iQo6DImp3/XspMPl1FiKLHc2f32gB5oiDDCMWE0enVrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915665; c=relaxed/simple;
-	bh=tmuR7LT/CnChGLP0IAxzH6Tp+l/su7xqYyAaautac3s=;
+	s=arc-20240116; t=1744914550; c=relaxed/simple;
+	bh=kYuS51iF8wCyNEfBd306ZUPTi3kqwBFZAihWN9RQWnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z6CpbbsotZP5N4pEJHUbTyE8ETOd2HUavothiMzY+IlRXwxFCuXYC3gB+J9YOhyzmwFOM+MnlyBbhhUVgp8daIDCenMMOmWLriQI5ooUCHZnxLABEeQ+6KJ/FO198ONtF9znxZu57IPmM0QfVyhNysyw143JERF//g7wwuFfGu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5U2T3U1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CEFEC4CEE4;
-	Thu, 17 Apr 2025 18:47:44 +0000 (UTC)
+	 MIME-Version; b=gsl/S57pQr4PMzJIbYysPcyS2SEYx/ONCPQ7PijC+gO9zViyZT7gzIlJMNBEyUahldx6/KZdJHjHrWrx/suNy618Nk4brfpHCzCZyXI6ljkMQ/78iqlHKnd62XvnDZ6ITZqB27VHCep6oELDzel6kOIliVfndDU3ciYJ7o80I/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bljnm9sI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08338C4CEE4;
+	Thu, 17 Apr 2025 18:29:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915665;
-	bh=tmuR7LT/CnChGLP0IAxzH6Tp+l/su7xqYyAaautac3s=;
+	s=korg; t=1744914550;
+	bh=kYuS51iF8wCyNEfBd306ZUPTi3kqwBFZAihWN9RQWnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i5U2T3U1iJt5v0WQHEoBeTnR69JPM6hK8GnL8CRsZ40ALCmvPf4SUVxGnAOx71lmZ
-	 MB0ly8IG453iGZgNP8EILG3k4yEoZMYdzUHw/yJZqswdwiEWgitJuLJdnJajsO6LK6
-	 v6gqwscLUlQ6xL1FUPgbokaZwxJxVcq1X3btfYHY=
+	b=Bljnm9sIyPsufaRf5bP40rRMCgNeAyu8VJ8DID2TWX/aRikDSxzXj3yOy4+wW+tpL
+	 d8Y0J3WKeakICvuHyAAxQULqt4fOZtmA9txTGu+ZTX43prvt4PE/Ah6Mb8fIkfVOLZ
+	 IdKwUAXat+TsfXamdK6yLgGbKdMYxNZ+vCrh1oVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jan Beulich <jbeulich@suse.com>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 6.12 201/393] xenfs/xensyms: respect hypervisors "next" indication
-Date: Thu, 17 Apr 2025 19:50:10 +0200
-Message-ID: <20250417175115.670641452@linuxfoundation.org>
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.13 253/414] mtd: Replace kcalloc() with devm_kcalloc()
+Date: Thu, 17 Apr 2025 19:50:11 +0200
+Message-ID: <20250417175121.596739252@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Beulich <jbeulich@suse.com>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-commit 5c4e79e29a9fe4ea132118ac40c2bc97cfe23077 upstream.
+commit 1b61a59876f0eafc19b23007c522ee407f55dbec upstream.
 
-The interface specifies the symnum field as an input and output; the
-hypervisor sets it to the next sequential symbol's index. xensyms_next()
-incrementing the position explicitly (and xensyms_next_sym()
-decrementing it to "rewind") is only correct as long as the sequence of
-symbol indexes is non-sparse. Use the hypervisor-supplied value instead
-to update the position in xensyms_next(), and use the saved incoming
-index in xensyms_next_sym().
+Replace kcalloc() with devm_kcalloc() to prevent memory leaks in case of
+errors.
 
-Cc: stable@kernel.org
-Fixes: a11f4f0a4e18 ("xen: xensyms support")
-Signed-off-by: Jan Beulich <jbeulich@suse.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Message-ID: <15d5e7fa-ec5d-422f-9319-d28bed916349@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Fixes: 78c08247b9d3 ("mtd: Support kmsg dumper based on pstore/blk")
+Cc: stable@vger.kernel.org # v5.10+
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/xen/xenfs/xensyms.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/mtdpstore.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/drivers/xen/xenfs/xensyms.c
-+++ b/drivers/xen/xenfs/xensyms.c
-@@ -48,7 +48,7 @@ static int xensyms_next_sym(struct xensy
- 			return -ENOMEM;
+--- a/drivers/mtd/mtdpstore.c
++++ b/drivers/mtd/mtdpstore.c
+@@ -417,11 +417,11 @@ static void mtdpstore_notify_add(struct
+ 	}
  
- 		set_xen_guest_handle(symdata->name, xs->name);
--		symdata->symnum--; /* Rewind */
-+		symdata->symnum = symnum; /* Rewind */
+ 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, info->kmsg_size));
+-	cxt->rmmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
+-	cxt->usedmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
++	cxt->rmmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
++	cxt->usedmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
  
- 		ret = HYPERVISOR_platform_op(&xs->op);
- 		if (ret < 0)
-@@ -78,7 +78,7 @@ static void *xensyms_next(struct seq_fil
- {
- 	struct xensyms *xs = m->private;
+ 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, mtd->erasesize));
+-	cxt->badmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
++	cxt->badmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
  
--	xs->op.u.symdata.symnum = ++(*pos);
-+	*pos = xs->op.u.symdata.symnum;
+ 	if (!cxt->rmmap || !cxt->usedmap || !cxt->badmap)
+ 		return;
+@@ -530,9 +530,6 @@ static void mtdpstore_notify_remove(stru
+ 	mtdpstore_flush_removed(cxt);
  
- 	if (xensyms_next_sym(xs))
- 		return NULL;
+ 	unregister_pstore_device(&cxt->dev);
+-	kfree(cxt->badmap);
+-	kfree(cxt->usedmap);
+-	kfree(cxt->rmmap);
+ 	cxt->mtd = NULL;
+ 	cxt->index = -1;
+ }
 
 
 
