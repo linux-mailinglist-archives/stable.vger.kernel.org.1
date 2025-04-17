@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-133654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FD37A926AE
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:15:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E84EA92B13
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:57:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD34D8A623A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:15:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E9064C0045
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:56:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C10A01E834D;
-	Thu, 17 Apr 2025 18:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE721D5CCD;
+	Thu, 17 Apr 2025 18:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UDd+rpUU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gi5AnYce"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2428462;
-	Thu, 17 Apr 2025 18:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6C8256C80;
+	Thu, 17 Apr 2025 18:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913733; cv=none; b=bkif8Lq0GgaPAT0yhjNEVNym6irWXxF1euQIJJ8QhEsDx4YjpCR99s569tEnnZQTFC11KgAZjc1dEc79Y+YxQACGvwBC5WPwJV2PxapRJ+24e07Sr7iIEtXlxq5zXzIIgX1hfK+cwswZCEU23nIW+KT6jocWJ/iMAH5iWoUxjtI=
+	t=1744916135; cv=none; b=Qgw/gAHSnE+tEVWt579jxpPB34lljrStBKK+7bTEC2e6uoM9K6BVd38Y+HObhbPJTD+L5maBExm+9DsWuBXSoPqlXnYJwdfTiC+lhKaZ4LeK7gdX7PWnAlX/jBmKe24H5m7CUtStUPfxRgjV28jMFaiz8w0sfaEWPRzlI/n67Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913733; c=relaxed/simple;
-	bh=nnPIXHB+2jfAwLfGZRlVEtNN+Rf+BHv64lIZSUgxL3c=;
+	s=arc-20240116; t=1744916135; c=relaxed/simple;
+	bh=U9AftH/FfblJgHwmfnDT8f2pK2Cb3nZXYMB7dvznl9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XCYGKWB2/9zzU+BX94SG3AuI8u+ykf8PZVwitiRv3BpnfM0avqFLio2gRxK1xsFaYRy94Wz3IAtjGXdJpUg3qrQWcfjJ7LFJsQxncRi0IzSwcy/smeAFWe6XipekxFDMv0yQUlDXZa1iFvONBa57Uyr8G/vYhU68IMZOOPA2wRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UDd+rpUU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 113ECC4CEE4;
-	Thu, 17 Apr 2025 18:15:32 +0000 (UTC)
+	 MIME-Version; b=UDCLYFImgiB+T+29os2+bNiU0JE8SKTdaYTq46kRptV0lELAcOYAanGgqZRZFlos3i9PbYfligndTwBuFcA57xrcHP4vAH1HXsNMJo8ICrPZCAYzUPi7HZMXli/J9mEh7CUCt9c4FpWEQt15MEQ/oBPChLU/WKN2PyrH5TswUQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gi5AnYce; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3286C4CEE4;
+	Thu, 17 Apr 2025 18:55:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913733;
-	bh=nnPIXHB+2jfAwLfGZRlVEtNN+Rf+BHv64lIZSUgxL3c=;
+	s=korg; t=1744916135;
+	bh=U9AftH/FfblJgHwmfnDT8f2pK2Cb3nZXYMB7dvznl9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UDd+rpUUg5MLaoDMyeZ6I/KRxAhTuV5mBlrO60kEk28W9A0+pt9Cst5pkJ7yX4KwC
-	 lxWk5v+92NQiMKDztCZWd2e8CvmGbdy06Q5Px5sE2m/+8U0ugug5+oKOnEX8rg5jJQ
-	 VUAlTv2nlLTVXhpFIzlVTBN2OqwjwaijVPeBCOFw=
+	b=gi5AnYcesgmONX4AVSZH6ODwYah4ENDY0wBY9gpnGnmg6N5XKTEXX9LypqgtCAd4D
+	 vCmQJarRwde/FsQg7KhY0p5AEElZSvVrY+l3hqHLVr7xFNLeu+GngL/c2L5FUcLceT
+	 WRd6bLqigykVYb4gZ0dIiwgWAYPHmktWB0HfphDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Jens Remus <jremus@linux.ibm.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 6.14 436/449] s390: Fix linker error when -no-pie option is unavailable
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 6.12 315/393] tracing: fprobe events: Fix possible UAF on modules
 Date: Thu, 17 Apr 2025 19:52:04 +0200
-Message-ID: <20250417175135.862214649@linuxfoundation.org>
+Message-ID: <20250417175120.276195339@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +60,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumanth Korikkar <sumanthk@linux.ibm.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit 991a20173a1fbafd9fc0df0c7e17bb62d44a4deb upstream.
+commit dd941507a9486252d6fcf11814387666792020f3 upstream.
 
-The kernel build may fail if the linker does not support -no-pie option,
-as it always included in LDFLAGS_vmlinux.
+Commit ac91052f0ae5 ("tracing: tprobe-events: Fix leakage of module
+refcount") moved try_module_get() from __find_tracepoint_module_cb()
+to find_tracepoint() caller, but that introduced a possible UAF
+because the module can be unloaded before try_module_get(). In this
+case, the module object should be freed too. Thus, try_module_get()
+does not only fail but may access to the freed object.
 
-Error log:
-s390-linux-ld: unable to disambiguate: -no-pie (did you mean --no-pie ?)
+To avoid that, try_module_get() in __find_tracepoint_module_cb()
+again.
 
-Although the GNU linker defaults to -no-pie, the ability to explicitly
-specify this option was introduced in binutils 2.36.
+Link: https://lore.kernel.org/all/174342990779.781946.9138388479067729366.stgit@devnote2/
 
-Hence, fix it by adding -no-pie to LDFLAGS_vmlinux only when it is
-available.
-
+Fixes: ac91052f0ae5 ("tracing: tprobe-events: Fix leakage of module refcount")
 Cc: stable@vger.kernel.org
-Fixes: 00cda11d3b2e ("s390: Compile kernel with -fPIC and link with -no-pie")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202503220342.T3fElO9L-lkp@intel.com/
-Suggested-by: Jens Remus <jremus@linux.ibm.com>
-Reviewed-by: Jens Remus <jremus@linux.ibm.com>
-Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/trace_fprobe.c |   26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
---- a/arch/s390/Makefile
-+++ b/arch/s390/Makefile
-@@ -15,7 +15,7 @@ KBUILD_CFLAGS_MODULE += -fPIC
- KBUILD_AFLAGS	+= -m64
- KBUILD_CFLAGS	+= -m64
- KBUILD_CFLAGS	+= -fPIC
--LDFLAGS_vmlinux	:= -no-pie --emit-relocs --discard-none
-+LDFLAGS_vmlinux	:= $(call ld-option,-no-pie) --emit-relocs --discard-none
- extra_tools	:= relocs
- aflags_dwarf	:= -Wa,-gdwarf-2
- KBUILD_AFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -D__ASSEMBLY__
+--- a/kernel/trace/trace_fprobe.c
++++ b/kernel/trace/trace_fprobe.c
+@@ -888,9 +888,15 @@ static void __find_tracepoint_module_cb(
+ 	struct __find_tracepoint_cb_data *data = priv;
+ 
+ 	if (!data->tpoint && !strcmp(data->tp_name, tp->name)) {
+-		data->tpoint = tp;
+-		if (!data->mod)
++		/* If module is not specified, try getting module refcount. */
++		if (!data->mod && mod) {
++			/* If failed to get refcount, ignore this tracepoint. */
++			if (!try_module_get(mod))
++				return;
++
+ 			data->mod = mod;
++		}
++		data->tpoint = tp;
+ 	}
+ }
+ 
+@@ -902,7 +908,11 @@ static void __find_tracepoint_cb(struct
+ 		data->tpoint = tp;
+ }
+ 
+-/* Find a tracepoint from kernel and module. */
++/*
++ * Find a tracepoint from kernel and module. If the tracepoint is on the module,
++ * the module's refcount is incremented and returned as *@tp_mod. Thus, if it is
++ * not NULL, caller must call module_put(*tp_mod) after used the tracepoint.
++ */
+ static struct tracepoint *find_tracepoint(const char *tp_name,
+ 					  struct module **tp_mod)
+ {
+@@ -931,7 +941,10 @@ static void reenable_trace_fprobe(struct
+ 	}
+ }
+ 
+-/* Find a tracepoint from specified module. */
++/*
++ * Find a tracepoint from specified module. In this case, this does not get the
++ * module's refcount. The caller must ensure the module is not freed.
++ */
+ static struct tracepoint *find_tracepoint_in_module(struct module *mod,
+ 						    const char *tp_name)
+ {
+@@ -1167,11 +1180,6 @@ static int __trace_fprobe_create(int arg
+ 	if (is_tracepoint) {
+ 		ctx.flags |= TPARG_FL_TPOINT;
+ 		tpoint = find_tracepoint(symbol, &tp_mod);
+-		/* lock module until register this tprobe. */
+-		if (tp_mod && !try_module_get(tp_mod)) {
+-			tpoint = NULL;
+-			tp_mod = NULL;
+-		}
+ 		if (tpoint) {
+ 			ctx.funcname = kallsyms_lookup(
+ 				(unsigned long)tpoint->probestub,
 
 
 
