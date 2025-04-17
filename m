@@ -1,67 +1,55 @@
-Return-Path: <stable+bounces-133991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1165A928D5
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:38:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5004DA926A2
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:15:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C10354A3B9E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C28218A35A5
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:14:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83D342638B4;
-	Thu, 17 Apr 2025 18:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982492561C7;
+	Thu, 17 Apr 2025 18:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ft4ViV59"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Zx9cNhK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357C0258CEB;
-	Thu, 17 Apr 2025 18:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC081EB1BF;
+	Thu, 17 Apr 2025 18:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914764; cv=none; b=Y3wPNk1+AkNOjBOxkJxo4l/mgDBfGb46TgmNx6vkgM4aEeMcw3j10K39KKchsHMzXWqdExr39yD1Ldn/CwvnXVpKJdBe7JbNOJTurx3SdibOBP1a2naEVhooFka7MpqmJ7GhA79/iB6V3bz7q00r1KnDuYkzYbFv+jDLOp0Q71o=
+	t=1744913697; cv=none; b=KkHa+xdg6aadFePjvNuGQVepv5uf/h07i+Qcwnjf9eUhVwY0d3E1YtFumOpbucofefb+/y5usOP2Ac2BlG4Zku1prX+l5YbM7UfYoaHVi1NTPd1ziV1HIRA5Egrig3z0eiK6/A4mw2pYeNB3g1+bjf8f2dlzo6CAlpEyoEQXptA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914764; c=relaxed/simple;
-	bh=MeSNjdoNH112e1adYdsV6wJiJMVpfOP0eB4vwOKqQR0=;
+	s=arc-20240116; t=1744913697; c=relaxed/simple;
+	bh=3f+1YgvHBI6hrTQ7Yh/YrO98nQoPkwBtydK7Hw7Ue/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mseY1yBaMvdMN8VsteiyMaseKANnMvA12g6nVAxY5N3i9tlS+qvfgbX0rIUqgmFU3sIg0iaxs4D9ExlIRUwDhL+KQGgmjQujViz2UKZqnZXQx1p5rwhGelnAJKZ2EunMGKm6jH5OoftgtGCxGmu3YsWbr5ONSN3dXkloHR8ixlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ft4ViV59; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85BA1C4CEE4;
-	Thu, 17 Apr 2025 18:32:43 +0000 (UTC)
+	 MIME-Version; b=g1bKaoM0+zKkLRHEtS4zd+NpI8OnWwTm8xkxEKyY5IY7LxHymbH70n8KYMWhbkX8oWpNPuZbSdJMg+IuYIfjP9F2N67A2ZH7JUxyX5dPCFi6bdXna0EufSK0lZ+EdQWOcwRDRfwmJeePaJjRThYyqBg10jLJxg1rnH0UCzzaPDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Zx9cNhK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF518C4CEE4;
+	Thu, 17 Apr 2025 18:14:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914764;
-	bh=MeSNjdoNH112e1adYdsV6wJiJMVpfOP0eB4vwOKqQR0=;
+	s=korg; t=1744913697;
+	bh=3f+1YgvHBI6hrTQ7Yh/YrO98nQoPkwBtydK7Hw7Ue/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ft4ViV59ueKqNKgghWshOIvlnkzmcVqW9UQ2UMIf0TU1VDw2IHfWrM3KxrwYVqTG2
-	 i0Tl8wI6qqSUbvaEm0LHVLpTncNbjny4OJiZkXhqjz5V863fP0qHDGBTjs4wJBMCpH
-	 00en7gyRWdyn3HnYSot9K1WBnK7dTqjgmL3USYTg=
+	b=1Zx9cNhKxBdH7BUBf8S2ooeNtAOGP3wtp9owPzGmMXVSm4ciiqYhu70FLkerbfPrt
+	 Phl6frhuAFEepDulfKniQj2QypCkPzUoFW+C1re+ZcmclLFSCCncBBeMp9zcRTbb71
+	 9BYCraXKP+oq8T18mwSm2MqfWdoZ/aRGwLfFiuMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Juergen Gross <jgross@suse.com>,
-	Borislav Betkov <bp@alien8.de>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
-	Thomas Gleinxer <tglx@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.13 323/414] sparc/mm: avoid calling arch_enter/leave_lazy_mmu() in set_ptes
-Date: Thu, 17 Apr 2025 19:51:21 +0200
-Message-ID: <20250417175124.424068626@linuxfoundation.org>
+	zhoumin <teczm@foxmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.14 394/449] ftrace: Add cond_resched() to ftrace_graph_set_hash()
+Date: Thu, 17 Apr 2025 19:51:22 +0200
+Message-ID: <20250417175134.124534964@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,75 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: zhoumin <teczm@foxmail.com>
 
-commit eb61ad14c459b54f71f76331ca35d12fa3eb8f98 upstream.
+commit 42ea22e754ba4f2b86f8760ca27f6f71da2d982c upstream.
 
-With commit 1a10a44dfc1d ("sparc64: implement the new page table range
-API") set_ptes was added to the sparc architecture.  The implementation
-included calling arch_enter/leave_lazy_mmu() calls.
+When the kernel contains a large number of functions that can be traced,
+the loop in ftrace_graph_set_hash() may take a lot of time to execute.
+This may trigger the softlockup watchdog.
 
-The patch removes the usage of arch_enter/leave_lazy_mmu() since this
-implies nesting of lazy mmu regions which is not supported.  Without this
-fix, lazy mmu mode is effectively disabled because we exit the mode after
-the first set_ptes:
+Add cond_resched() within the loop to allow the kernel to remain
+responsive even when processing a large number of functions.
 
-remap_pte_range()
-  -> arch_enter_lazy_mmu()
-  -> set_ptes()
-      -> arch_enter_lazy_mmu()
-      -> arch_leave_lazy_mmu()
-  -> arch_leave_lazy_mmu()
+This matches the cond_resched() that is used in other locations of the
+code that iterates over all functions that can be traced.
 
-Powerpc suffered the same problem and fixed it in a corresponding way with
-commit 47b8def9358c ("powerpc/mm: Avoid calling
-arch_enter/leave_lazy_mmu() in set_ptes").
-
-Link: https://lkml.kernel.org/r/20250303141542.3371656-5-ryan.roberts@arm.com
-Fixes: 1a10a44dfc1d ("sparc64: implement the new page table range API")
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Andreas Larsson <andreas@gaisler.com>
-Acked-by: Juergen Gross <jgross@suse.com>
-Cc: Borislav Betkov <bp@alien8.de>
-Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Juegren Gross <jgross@suse.com>
-Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: b9b0c831bed26 ("ftrace: Convert graph filter to use hash tables")
+Link: https://lore.kernel.org/tencent_3E06CE338692017B5809534B9C5C03DA7705@qq.com
+Signed-off-by: zhoumin <teczm@foxmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sparc/include/asm/pgtable_64.h |    2 --
- 1 file changed, 2 deletions(-)
+ kernel/trace/ftrace.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/sparc/include/asm/pgtable_64.h
-+++ b/arch/sparc/include/asm/pgtable_64.h
-@@ -936,7 +936,6 @@ static inline void __set_pte_at(struct m
- static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
- 		pte_t *ptep, pte_t pte, unsigned int nr)
- {
--	arch_enter_lazy_mmu_mode();
- 	for (;;) {
- 		__set_pte_at(mm, addr, ptep, pte, 0);
- 		if (--nr == 0)
-@@ -945,7 +944,6 @@ static inline void set_ptes(struct mm_st
- 		pte_val(pte) += PAGE_SIZE;
- 		addr += PAGE_SIZE;
- 	}
--	arch_leave_lazy_mmu_mode();
- }
- #define set_ptes set_ptes
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -6853,6 +6853,7 @@ ftrace_graph_set_hash(struct ftrace_hash
+ 				}
+ 			}
+ 		}
++		cond_resched();
+ 	} while_for_each_ftrace_rec();
  
+ 	return fail ? -EINVAL : 0;
 
 
 
