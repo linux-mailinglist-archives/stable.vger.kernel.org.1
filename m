@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-134180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C55F9A929FB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:46:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6486A929CE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:44:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B2CA3A6501
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9CDE8E3378
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20B812561D7;
-	Thu, 17 Apr 2025 18:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D18257435;
+	Thu, 17 Apr 2025 18:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P7wHeuKw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/gxqEHk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D118D25335A;
-	Thu, 17 Apr 2025 18:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BB925742B;
+	Thu, 17 Apr 2025 18:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915336; cv=none; b=NTdFgceN1t/po8aPs+ZMtchB0ex1jx+fFE+e1j5qWM2EEAVnyVJ9AyUEoyI3LYu+gn4O/i8ne6ytPDxkHx/BV4cj6MjM/iBLwBDeuw3T3HhDddZgtYXqc/t+PUbeto95xmtQCBYjC4BvACxdXBDlou1GlyFtlO5R6UN8TAfmigI=
+	t=1744915241; cv=none; b=kEU6qihble51BDsMncw8sH1Ag20oSFQLIxfGYCLezLWsE3AaVqGfcle+OoIk1hE7fHofjK5htab0sGyY8mp2BWsAyjSxzKeRtoTS3YCbJLBmGGAtzMuBKpX0mn+1HwOSmC7ToUJNyyT8pdMk3jl/OLKV4ki/ySXApEbQI/X7OQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915336; c=relaxed/simple;
-	bh=wVs5Tug8IwHp5IA5G4x0/MTv5d9ujipzCjehYYYhTVk=;
+	s=arc-20240116; t=1744915241; c=relaxed/simple;
+	bh=MeG7iVKjHhNh56tUyqx8mlmOQpJcDQL7f2wlSDd6iEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sH4w/YqSYCt+EeNZBAGYIODx17rBOzGz/ECwzaOPXJJPhp5hcyIkOP+ENQko4va0+Rzx2BGdt7oiD+i4WO+ub7tkDbg4Fgsm8b6mZhhNgJuaGQ/pVjJ5gmp4iISQo5lbFhHI3m62yzsN+sWmJZPxeyGOioS7WOZASsKNFG1BMkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P7wHeuKw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E96C4CEE4;
-	Thu, 17 Apr 2025 18:42:16 +0000 (UTC)
+	 MIME-Version; b=GzTjMnrOtD99uKfJLB7QYVl3gmc/z/W6TktaKMj/YJfIwHcy1Q1bPqfyn9jCZ7puWwHu1qKPbuQxPtl1J5z+IZ3yBat1ID7pCl/XiR4W+itKKlIcl24uSSdMNKnuiBnzH4br3QlPTZGykxezDnaBhNFS/DUa0xyAViY8Xh5phkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/gxqEHk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B63FC4CEE4;
+	Thu, 17 Apr 2025 18:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915336;
-	bh=wVs5Tug8IwHp5IA5G4x0/MTv5d9ujipzCjehYYYhTVk=;
+	s=korg; t=1744915240;
+	bh=MeG7iVKjHhNh56tUyqx8mlmOQpJcDQL7f2wlSDd6iEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P7wHeuKwTDtqK/Fbb/TZ7rFnb56JTiW+H9yC4C6/GrkYKHSH2DqPPqR2ry5G6zwat
-	 Os0g75aROtJLWoVIXuBbGcrTfIJfP2MR6pqTFtJOiEHEOtVVKLW1crFk4XzFp4cB4y
-	 O/vTsRZLIL1cPWfOj7A1w+nXRTRrKjRh9nNMvFGg=
+	b=w/gxqEHkmPyba+geVm0b9t869U8UepvIsaWm2d4jhK42JFNCGr+mbsvcMsV2t/xtS
+	 j02plxhcSdoDeQ3OFKLnN9JS/TO2JL5LHXY9cTRqFgYjpig+RNJIANOg1ESOad+nzd
+	 JQCYXqB/QwSelkXdrSB3zB8G2kj+R8KDfEw1FdEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	John Ogness <john.ogness@linutronix.de>,
-	Petr Mladek <pmladek@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Trilok Soni <quic_tsoni@quicinc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/393] Flush console log from kernel_power_off()
-Date: Thu, 17 Apr 2025 19:47:44 +0200
-Message-ID: <20250417175109.800339695@linuxfoundation.org>
+Subject: [PATCH 6.12 056/393] arm64: cputype: Add QCOM_CPU_PART_KRYO_3XX_GOLD
+Date: Thu, 17 Apr 2025 19:47:45 +0200
+Message-ID: <20250417175109.841953700@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
 References: <20250417175107.546547190@linuxfoundation.org>
@@ -70,98 +68,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 6ea9a1781c70a8be1fcdc49134fc1bf4baba8bca ]
+[ Upstream commit 401c3333bb2396aa52e4121887a6f6a6e2f040bc ]
 
-Kernels built with CONFIG_PREEMPT_RT=y can lose significant console output
-and shutdown time, which hides shutdown-time RCU issues from rcutorture.
-Therefore, make pr_flush() public and invoke it after then last print
-in kernel_power_off().
+Add a definition for the Qualcomm Kryo 300-series Gold cores.
 
-[ paulmck: Apply John Ogness feedback. ]
-[ paulmck: Appy Sebastian Andrzej Siewior feedback. ]
-[ paulmck: Apply kernel test robot feedback. ]
-
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Reviewed-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Link: https://lore.kernel.org/r/5f743488-dc2a-4f19-bdda-cf50b9314832@paulmck-laptop
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Acked-by: Trilok Soni <quic_tsoni@quicinc.com>
+Link: https://lore.kernel.org/r/20241219131107.v3.1.I18e0288742871393228249a768e5d56ea65d93dc@changeid
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/printk.h | 6 ++++++
- kernel/printk/printk.c | 4 +---
- kernel/reboot.c        | 1 +
- 3 files changed, 8 insertions(+), 3 deletions(-)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/printk.h b/include/linux/printk.h
-index eca9bb2ee637b..0cb647ecd77f5 100644
---- a/include/linux/printk.h
-+++ b/include/linux/printk.h
-@@ -204,6 +204,7 @@ void printk_legacy_allow_panic_sync(void);
- extern bool nbcon_device_try_acquire(struct console *con);
- extern void nbcon_device_release(struct console *con);
- void nbcon_atomic_flush_unsafe(void);
-+bool pr_flush(int timeout_ms, bool reset_on_progress);
- #else
- static inline __printf(1, 0)
- int vprintk(const char *s, va_list args)
-@@ -304,6 +305,11 @@ static inline void nbcon_atomic_flush_unsafe(void)
- {
- }
- 
-+static inline bool pr_flush(int timeout_ms, bool reset_on_progress)
-+{
-+	return true;
-+}
-+
- #endif
- 
- bool this_cpu_in_panic(void);
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 3b75f6e8410b9..881a26e18c658 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -2436,7 +2436,6 @@ asmlinkage __visible int _printk(const char *fmt, ...)
- }
- EXPORT_SYMBOL(_printk);
- 
--static bool pr_flush(int timeout_ms, bool reset_on_progress);
- static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progress);
- 
- #else /* CONFIG_PRINTK */
-@@ -2449,7 +2448,6 @@ static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progre
- 
- static u64 syslog_seq;
- 
--static bool pr_flush(int timeout_ms, bool reset_on_progress) { return true; }
- static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progress) { return true; }
- 
- #endif /* CONFIG_PRINTK */
-@@ -4436,7 +4434,7 @@ static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progre
-  * Context: Process context. May sleep while acquiring console lock.
-  * Return: true if all usable printers are caught up.
-  */
--static bool pr_flush(int timeout_ms, bool reset_on_progress)
-+bool pr_flush(int timeout_ms, bool reset_on_progress)
- {
- 	return __pr_flush(NULL, timeout_ms, reset_on_progress);
- }
-diff --git a/kernel/reboot.c b/kernel/reboot.c
-index f05dbde2c93fe..d6ee090eda943 100644
---- a/kernel/reboot.c
-+++ b/kernel/reboot.c
-@@ -697,6 +697,7 @@ void kernel_power_off(void)
- 	migrate_to_reboot_cpu();
- 	syscore_shutdown();
- 	pr_emerg("Power down\n");
-+	pr_flush(1000, true);
- 	kmsg_dump(KMSG_DUMP_SHUTDOWN);
- 	machine_power_off();
- }
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index 488f8e7513495..c8058f91a5bd3 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -119,6 +119,7 @@
+ #define QCOM_CPU_PART_KRYO		0x200
+ #define QCOM_CPU_PART_KRYO_2XX_GOLD	0x800
+ #define QCOM_CPU_PART_KRYO_2XX_SILVER	0x801
++#define QCOM_CPU_PART_KRYO_3XX_GOLD	0x802
+ #define QCOM_CPU_PART_KRYO_3XX_SILVER	0x803
+ #define QCOM_CPU_PART_KRYO_4XX_GOLD	0x804
+ #define QCOM_CPU_PART_KRYO_4XX_SILVER	0x805
+@@ -195,6 +196,7 @@
+ #define MIDR_QCOM_KRYO MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO)
+ #define MIDR_QCOM_KRYO_2XX_GOLD MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_2XX_GOLD)
+ #define MIDR_QCOM_KRYO_2XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_2XX_SILVER)
++#define MIDR_QCOM_KRYO_3XX_GOLD MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_3XX_GOLD)
+ #define MIDR_QCOM_KRYO_3XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_3XX_SILVER)
+ #define MIDR_QCOM_KRYO_4XX_GOLD MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_4XX_GOLD)
+ #define MIDR_QCOM_KRYO_4XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_4XX_SILVER)
 -- 
 2.39.5
 
