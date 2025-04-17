@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-133553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35C0EA92691
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:14:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6217A92A41
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:48:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5652B7A786B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB2564A5E1A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B631A3178;
-	Thu, 17 Apr 2025 18:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1057325525D;
+	Thu, 17 Apr 2025 18:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C14qtQuS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KJspsS+V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C271CAA7D;
-	Thu, 17 Apr 2025 18:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C067024BBFD;
+	Thu, 17 Apr 2025 18:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913424; cv=none; b=Ixu2AwKUsczwmc+HauZAX4pbB37yZYzrXc1OM5LaQwTPS1NZtSVNwhLRg2NNSkhIZmUvCs0S3Mdzhqf2VEjsgNkHMni5yyFYWiJ2AA5xGKltnixuma9FwI/czT9taY4vsPfPDvg3qCDywbUBX8H/mdlH6SPueBus0KdnpE2P/VU=
+	t=1744915708; cv=none; b=avO+SLC9lBHgw8IZ5zQbx/9Mssaeta9GKil63FVhUnsBf9qK3YrfG2PwXkhGa57rVICCabMKabmjEBm2Ee/VJQaqO+DQzntVOstcDblDbi/iHh7tX7KBy/HDtoPP0juwAwJTkFzbkX1jyZN4SpqihNI6ft1rZr6z1EFOypV77Ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913424; c=relaxed/simple;
-	bh=YeRP/gX0L6AzsFd6akOLoMRw5Ul42vpJiOznNkxrz/Q=;
+	s=arc-20240116; t=1744915708; c=relaxed/simple;
+	bh=oC1w8Jv94xhb7KQOsw9Ah998e+tockJpYr3HUmLYbW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jh7Zy4O14d4/oYYbE+Aa1kK27kT2OMtql2uduiMsJdfxzAniKfCZ9WK4C7jAv7t1N77kb8IfL7F11yOGaLW+C9i2/0FpBwQE8B8DSNhvshqpnEWYmSLxXX2N5ekjIXYehKAfFz6sS2TldFE7f4iaCUr0Kln023uuWA2kngdNUUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C14qtQuS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC4BEC4CEE4;
-	Thu, 17 Apr 2025 18:10:23 +0000 (UTC)
+	 MIME-Version; b=tqb10xP9Li+A9kQUaHV128ggd2py3iJ21ME94hWd/I6ltT85GL+A8SNVQDegLA11NeemBiz1Jp+6LR68WwFNqpYUwrQIk4dvJ8vvbadJYg0YgOjAOa9xnKOd/fXbs53JEftt2AVkEQRG09erJw0HBJZLQ++3rWtiWbrykJYlWRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KJspsS+V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E83CC4CEE4;
+	Thu, 17 Apr 2025 18:48:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913424;
-	bh=YeRP/gX0L6AzsFd6akOLoMRw5Ul42vpJiOznNkxrz/Q=;
+	s=korg; t=1744915708;
+	bh=oC1w8Jv94xhb7KQOsw9Ah998e+tockJpYr3HUmLYbW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C14qtQuS0xgrqqe0Dj1Gr+Qhwk8ZQEhymmYHXKUwTkkQsexRpwgSu8/SCF24tRPgj
-	 qdFBPkFLZGKe7PQYx4ZUPIjM3f5/fpr22YloGcaeSuARNWaW2ytN5T9rADT80P0hY7
-	 2InXmpyRyvZSGwqieOWfF81dCHLJ50fA/osGPZKg=
+	b=KJspsS+VxuB8uLJpBy46rx1J00DCF7tWw5sCHIv2WN7RRZW+EcWR/oKsZeAfgiD3s
+	 T5xMzKvHItsYb/LOCmELn1Gev5zIvOPWIK4lyTdU1/8l9Qoa5gJ42mLq2CwoO5maVb
+	 vxufQ0ty0vTRCIjli61WqbLJcANXTqoS0NZbiaNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ninad Malwade <nmalwade@nvidia.com>,
-	Ivy Huang <yijuh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 6.14 335/449] arm64: tegra: Remove the Orin NX/Nano suspend key
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 214/393] media: platform: stm32: Add check for clk_enable()
 Date: Thu, 17 Apr 2025 19:50:23 +0200
-Message-ID: <20250417175131.665814998@linuxfoundation.org>
+Message-ID: <20250417175116.186417769@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ninad Malwade <nmalwade@nvidia.com>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-commit bb8a3ad25f098b6ea9b1d0f522427b4ad53a7bba upstream.
+commit f883f34b6a46b1a09d44d7f94c3cd72fe0e8f93b upstream.
 
-As per the Orin Nano Dev Kit schematic, GPIO_G.02 is not available
-on this device family. It should not be used at all on Orin NX/Nano.
-Having this unused pin mapped as the suspend key can lead to
-unpredictable behavior for low power modes.
+Add check for the return value of clk_enable() to gurantee the success.
 
-Orin NX/Nano uses GPIO_EE.04 as both a "power" button and a "suspend"
-button. However, we cannot have two gpio-keys mapped to the same
-GPIO. Therefore remove the "suspend" key.
-
+Fixes: 002e8f0d5927 ("media: stm32-dma2d: STM32 DMA2D driver")
 Cc: stable@vger.kernel.org
-Fixes: e63472eda5ea ("arm64: tegra: Support Jetson Orin NX reference platform")
-Signed-off-by: Ninad Malwade <nmalwade@nvidia.com>
-Signed-off-by: Ivy Huang <yijuh@nvidia.com>
-Link: https://lore.kernel.org/r/20250206224034.3691397-1-yijuh@nvidia.com
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/nvidia/tegra234-p3768-0000+p3767.dtsi |    7 -------
- 1 file changed, 7 deletions(-)
+ drivers/media/platform/st/stm32/dma2d/dma2d.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/nvidia/tegra234-p3768-0000+p3767.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra234-p3768-0000+p3767.dtsi
-@@ -227,13 +227,6 @@
- 			wakeup-event-action = <EV_ACT_ASSERTED>;
- 			wakeup-source;
- 		};
--
--		key-suspend {
--			label = "Suspend";
--			gpios = <&gpio TEGRA234_MAIN_GPIO(G, 2) GPIO_ACTIVE_LOW>;
--			linux,input-type = <EV_KEY>;
--			linux,code = <KEY_SLEEP>;
--		};
- 	};
+--- a/drivers/media/platform/st/stm32/dma2d/dma2d.c
++++ b/drivers/media/platform/st/stm32/dma2d/dma2d.c
+@@ -492,7 +492,8 @@ static void device_run(void *prv)
+ 	dst->sequence = frm_cap->sequence++;
+ 	v4l2_m2m_buf_copy_metadata(src, dst, true);
  
- 	fan: pwm-fan {
+-	clk_enable(dev->gate);
++	if (clk_enable(dev->gate))
++		goto end;
+ 
+ 	dma2d_config_fg(dev, frm_out,
+ 			vb2_dma_contig_plane_dma_addr(&src->vb2_buf, 0));
 
 
 
