@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-133805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3D4CA927B3
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:28:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5CEDA929EF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:45:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 831CA4A1F96
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64E9D3A18AD
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B71BD25EFA3;
-	Thu, 17 Apr 2025 18:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D304256C60;
+	Thu, 17 Apr 2025 18:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HWNNqKhE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNP02n5q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745A825E837;
-	Thu, 17 Apr 2025 18:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F39254B12;
+	Thu, 17 Apr 2025 18:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914192; cv=none; b=Qf82kTRkgYGvxFPNmxjqSNBHUp6qhXBOqsFoOI5u3CBEl5y3oEVe9hgjUCiJ0AqRmwTMxYMAsZLG8+xUQTO4dUtk+0wj6h2CLvrMlNJEFEK4fOiZVI6pm/kh0LrvQbgyRuiBJVVX4c5wrU+flMOeowioIbYn2rTMo9UFdXwrMpI=
+	t=1744915309; cv=none; b=JnHxSSVtEiAwsVolS5tZ6sMMaMVNveWRiDoRTBh0o6y2joqrtIEj2Jpf05Z0GJ17RUlP7WAi1FrUtZ/pZY13UUbGTBxmeZfr9xjkMx9AFxOy8HzwoQcRMBl/BkXtJ2w3/GDHKC/OQgwR+airmrByI8gZ8EO06eGH2k/eT9yPZx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914192; c=relaxed/simple;
-	bh=tn1gQT/LV6bTS07AdlEs69GZn8Q6TmxFs9NQv7FDQCI=;
+	s=arc-20240116; t=1744915309; c=relaxed/simple;
+	bh=OsvkAwksqZzVKmy+tBjOHWiDw4KBtpfs3WmDliXnlVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OOIeUcLcrhpa8CH84KZ4hrSuxiC4jCrXlY8kBpqg3gtC1kPYlw2BIWkpIoZq0FyUUtMVdjTzYymPEAOGqvgq9k0RGjJyuqtX5z1Eh4LP/784tL/uDtNumbIHiKI+KbLqqd3teW2HMuZpNdusPqdM9bA+GStVUdAM0Ko0xxqrBZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HWNNqKhE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33E5C4CEE4;
-	Thu, 17 Apr 2025 18:23:11 +0000 (UTC)
+	 MIME-Version; b=dWdSZDm1SOIGby9eHU5VSNXlrTuFfeshtWZVuDfX74oUjHVXfOgfbnPyr0R01h4J62cxrimLVty80LFOOVFMvmCh7+52kFmR6h8kYaIaQuTIADNv66H97r7JoMBIVg0XLpIBm277jMrxJpLaj/DIfzWT19LyuHl40aCvhsf6gQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNP02n5q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 335DCC4CEE4;
+	Thu, 17 Apr 2025 18:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914192;
-	bh=tn1gQT/LV6bTS07AdlEs69GZn8Q6TmxFs9NQv7FDQCI=;
+	s=korg; t=1744915308;
+	bh=OsvkAwksqZzVKmy+tBjOHWiDw4KBtpfs3WmDliXnlVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HWNNqKhECfkj07YHkQHSfCPlPeft6Lw3VRs42jYQwqW7xHVjDYmOuA2c1oycccng+
-	 5hRMoKLSa9kcZwgVjyDUmsKrySeNH3wYBjcxT5qxHWejng2jtMKGQstNSdiPNmduUE
-	 QtMr8LPiEw+MR0BcW3fBvIW5F73L3u5umpNP+SLs=
+	b=QNP02n5qsFb1gZFydrUywICGCANzZm22pBldZ5mehQMpoZMkvZsssm5slr7VTJv1C
+	 UH0yvXsdn5eU13fuHOmWl68wU8CYV77vUAQPwyIlGNU5rYbUUJ8nAnKbCUoMpq9Gxo
+	 EgFAGLg4x8FdAnxuSj8BdhHnBq4cojnkjgtslZN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Wyatt <fewtarius@steamfork.org>,
-	John Edwards <uejji@uejji.net>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Hans de Goede <hdegoede@redhat.com>,
+	P Praneesh <quic_ppranees@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 136/414] drm: panel-orientation-quirks: Add support for AYANEO 2S
+Subject: [PATCH 6.12 085/393] wifi: ath12k: Fix invalid entry fetch in ath12k_dp_mon_srng_process
 Date: Thu, 17 Apr 2025 19:48:14 +0200
-Message-ID: <20250417175116.903514934@linuxfoundation.org>
+Message-ID: <20250417175111.019326590@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Wyatt <fewtarius@steamfork.org>
+From: P Praneesh <quic_ppranees@quicinc.com>
 
-[ Upstream commit eb8f1e3e8ee10cff591d4a47437dfd34d850d454 ]
+[ Upstream commit 63fdc4509bcf483e79548de6bc08bf3c8e504bb3 ]
 
-AYANEO 2S uses the same panel and orientation as the AYANEO 2.
+Currently, ath12k_dp_mon_srng_process uses ath12k_hal_srng_src_get_next_entry
+to fetch the next entry from the destination ring. This is incorrect because
+ath12k_hal_srng_src_get_next_entry is intended for source rings, not destination
+rings. This leads to invalid entry fetches, causing potential data corruption or
+crashes due to accessing incorrect memory locations. This happens because the
+source ring and destination ring have different handling mechanisms and using
+the wrong function results in incorrect pointer arithmetic and ring management.
 
-Update the AYANEO 2 DMI match to also match AYANEO 2S.
+To fix this issue, replace the call to ath12k_hal_srng_src_get_next_entry with
+ath12k_hal_srng_dst_get_next_entry in ath12k_dp_mon_srng_process. This ensures
+that the correct function is used for fetching entries from the destination
+ring, preventing invalid memory accesses.
 
-Signed-off-by: Andrew Wyatt <fewtarius@steamfork.org>
-Signed-off-by: John Edwards <uejji@uejji.net>
-Tested-by: John Edwards <uejji@uejji.net>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250213222455.93533-2-uejji@uejji.net
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+Link: https://patch.msgid.link/20241223060132.3506372-7-quic_ppranees@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/dp_mon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index 4a73821b81f6f..f9c975338fc9e 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -184,10 +184,10 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "T103HAF"),
- 		},
- 		.driver_data = (void *)&lcd800x1280_rightside_up,
--	}, {	/* AYA NEO AYANEO 2 */
-+	}, {	/* AYA NEO AYANEO 2/2S */
- 		.matches = {
- 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
--		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "AYANEO 2"),
-+		  DMI_MATCH(DMI_PRODUCT_NAME, "AYANEO 2"),
- 		},
- 		.driver_data = (void *)&lcd1200x1920_rightside_up,
- 	}, {	/* AYA NEO 2021 */
+diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
+index 5c6749bc4039d..1706ec27eb9c0 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_mon.c
++++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
+@@ -2533,7 +2533,7 @@ int ath12k_dp_mon_rx_process_stats(struct ath12k *ar, int mac_id,
+ 		dest_idx = 0;
+ move_next:
+ 		ath12k_dp_mon_buf_replenish(ab, buf_ring, 1);
+-		ath12k_hal_srng_src_get_next_entry(ab, srng);
++		ath12k_hal_srng_dst_get_next_entry(ab, srng);
+ 		num_buffs_reaped++;
+ 	}
+ 
 -- 
 2.39.5
 
