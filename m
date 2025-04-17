@@ -1,67 +1,55 @@
-Return-Path: <stable+bounces-134395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05034A92B17
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:57:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E70A6A928F3
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:39:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCB313B5314
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91FAD1B6205A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2550524BBFD;
-	Thu, 17 Apr 2025 18:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657ED264A70;
+	Thu, 17 Apr 2025 18:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBD/qU2U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h9E4PR2s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4EDD257435;
-	Thu, 17 Apr 2025 18:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22387264619;
+	Thu, 17 Apr 2025 18:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915998; cv=none; b=QGceX55n+Ofn1o08hNgv5llJA9EFdyLZGIkZdDFG78cPTCiW4SUVuUptIYSK/5vJNALb8DsNEH8iymQMHlUu9P0oeVnZ91rb8qpQbsRYZxSmG0NLEKmKr7tnfcUXkLKUIAP/Az/sLJc+3gG1jQwtb1eAOVqqH1r0S4s27CmJzL8=
+	t=1744914876; cv=none; b=OcYTt3wq3V3jgc7VICD7N0R4rJwkhzAu7/dCNtlX7y9KyQQNwDVTYN0dMvw+OK+H3UNBh/oCzxVfBaRdR4mksNo2LAJzNG4ouFjOquZUEJrYjn6nPfJjdISRGDyx4dv7+aRXxBSuKEGqHRhRrCpATc3MtcXAyrrcBb2c1moU4hE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915998; c=relaxed/simple;
-	bh=ymyKiixD/qJwusBzyY1eQ6ECIYhkdJC7G4KL+d6nuAY=;
+	s=arc-20240116; t=1744914876; c=relaxed/simple;
+	bh=ofhkt00YnWe7FXNm75tqyUeiFmNBCDnYLtq8PYVEJp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uk2ymhxYKe8z4LH5mtsYMfszg4GZmHDvHjzkj6+ZMCq5hscLSllhJ+wSKnlzsVc/rYQK2X9m0j/M0Zmqdk8rIyzr/I8vj8KkWxKAAdPYwyflrk3BGUEa41YhSdyAU6IkYSEKY52cXSALeFfNLsT2B5nilCJNXJOW2jhXM5svNn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBD/qU2U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFBA2C4CEE4;
-	Thu, 17 Apr 2025 18:53:14 +0000 (UTC)
+	 MIME-Version; b=pZ8wObODuJZIsJomXpibAehDTHdnJbtaEVjy5p/d1/EXhR4v73+IYssu42h9u94Ibjf+Y3KoMb6+pVLslnryqnL/Qx380/oOls1O/ucoW5vMCp3ZZvDnK62QD6TMeBrMuejdwnye7GB0S/0ZgctPVs+WcCSRq4HmO+yF4jqhwbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h9E4PR2s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A29F2C4CEE4;
+	Thu, 17 Apr 2025 18:34:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915995;
-	bh=ymyKiixD/qJwusBzyY1eQ6ECIYhkdJC7G4KL+d6nuAY=;
+	s=korg; t=1744914876;
+	bh=ofhkt00YnWe7FXNm75tqyUeiFmNBCDnYLtq8PYVEJp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nBD/qU2UMqnfLWw8EOuR4yReRYCSzwtNa4/sq+7RtG1nJlchswSsO0RTV+lYIj+MA
-	 y9JGLkWVfhxd+YvaEJG+KdW1/k1lfto8AGlXaQb+lrk3W39lmSsyv4gi5RLgoUYRoN
-	 21JURMpn3EI4Jf/2qw+lPG6ftFGudUOY7Qga35Fo=
+	b=h9E4PR2shp8NmEsz3Rr9rDt+FflSFPItvoGNRN5hUKoGWKz9P1HtWn2S537KhhUYi
+	 FOhcRLxrNWdtvgP88m2BMf4kp5JlLLz03Ssr5AX+FEEiXTlKSV3qYslx5duZcDdKJG
+	 zSjnk/EwRbUdfGreGT5PDTjeCv6W0/5qkGYR9110=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Andrea Parri <parri.andrea@gmail.com>,
-	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Jade Alglave <j.alglave@ucl.ac.uk>,
-	Luc Maranget <luc.maranget@inria.fr>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 308/393] mm: add missing release barrier on PGDAT_RECLAIM_LOCKED unlock
+	zhoumin <teczm@foxmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.13 359/414] ftrace: Add cond_resched() to ftrace_graph_set_hash()
 Date: Thu, 17 Apr 2025 19:51:57 +0200
-Message-ID: <20250417175119.999717499@linuxfoundation.org>
+Message-ID: <20250417175125.902755414@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,67 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+From: zhoumin <teczm@foxmail.com>
 
-commit c0ebbb3841e07c4493e6fe351698806b09a87a37 upstream.
+commit 42ea22e754ba4f2b86f8760ca27f6f71da2d982c upstream.
 
-The PGDAT_RECLAIM_LOCKED bit is used to provide mutual exclusion of node
-reclaim for struct pglist_data using a single bit.
+When the kernel contains a large number of functions that can be traced,
+the loop in ftrace_graph_set_hash() may take a lot of time to execute.
+This may trigger the softlockup watchdog.
 
-It is "locked" with a test_and_set_bit (similarly to a try lock) which
-provides full ordering with respect to loads and stores done within
-__node_reclaim().
+Add cond_resched() within the loop to allow the kernel to remain
+responsive even when processing a large number of functions.
 
-It is "unlocked" with clear_bit(), which does not provide any ordering
-with respect to loads and stores done before clearing the bit.
+This matches the cond_resched() that is used in other locations of the
+code that iterates over all functions that can be traced.
 
-The lack of clear_bit() memory ordering with respect to stores within
-__node_reclaim() can cause a subsequent CPU to fail to observe stores from
-a prior node reclaim.  This is not an issue in practice on TSO (e.g.
-x86), but it is an issue on weakly-ordered architectures (e.g.  arm64).
-
-Fix this by using clear_bit_unlock rather than clear_bit to clear
-PGDAT_RECLAIM_LOCKED with a release memory ordering semantic.
-
-This provides stronger memory ordering (release rather than relaxed).
-
-Link: https://lkml.kernel.org/r/20250312141014.129725-1-mathieu.desnoyers@efficios.com
-Fixes: d773ed6b856a ("mm: test and set zone reclaim lock before starting reclaim")
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Alan Stern <stern@rowland.harvard.edu>
-Cc: Andrea Parri <parri.andrea@gmail.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Jade Alglave <j.alglave@ucl.ac.uk>
-Cc: Luc Maranget <luc.maranget@inria.fr>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: b9b0c831bed26 ("ftrace: Convert graph filter to use hash tables")
+Link: https://lore.kernel.org/tencent_3E06CE338692017B5809534B9C5C03DA7705@qq.com
+Signed-off-by: zhoumin <teczm@foxmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/vmscan.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/ftrace.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -7557,7 +7557,7 @@ int node_reclaim(struct pglist_data *pgd
- 		return NODE_RECLAIM_NOSCAN;
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -6858,6 +6858,7 @@ ftrace_graph_set_hash(struct ftrace_hash
+ 				}
+ 			}
+ 		}
++		cond_resched();
+ 	} while_for_each_ftrace_rec();
  
- 	ret = __node_reclaim(pgdat, gfp_mask, order);
--	clear_bit(PGDAT_RECLAIM_LOCKED, &pgdat->flags);
-+	clear_bit_unlock(PGDAT_RECLAIM_LOCKED, &pgdat->flags);
- 
- 	if (ret)
- 		count_vm_event(PGSCAN_ZONE_RECLAIM_SUCCESS);
+ 	return fail ? -EINVAL : 0;
 
 
 
