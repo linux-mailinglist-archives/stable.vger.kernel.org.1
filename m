@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-134336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90B39A92AD4
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 829B0A928DE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:38:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFCB28E072D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA4843A42AD
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7CE0257451;
-	Thu, 17 Apr 2025 18:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE0D2620C3;
+	Thu, 17 Apr 2025 18:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKLWzt4G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PlMgkuVW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CBC92566DE;
-	Thu, 17 Apr 2025 18:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B192261576;
+	Thu, 17 Apr 2025 18:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915819; cv=none; b=Ns59ayLtPScQq2JpRfOtgYhB/qB3ebzoaRt2BlSHZNsMMvnc1dqxXb2R3fvAxnHXYU/IgUZrM69889HkTlV4gfqMDcQ4YIYLjs3t4Od0QZd4blPYXTxXww+Q0W0NLZFADUVX9c9dLrBn3tgTZYpkjwuEXWcUPuPXYDMbZU5b1dY=
+	t=1744914695; cv=none; b=sKCV1kB9d37L7O9wjfrm+t9BhhsNs2RKrVSleV9a1N4+52im8VskGjflzEBFKdLMCS7cQcgrM/zh0mmK6e3t2oXZo0y0bOMQVCmxYSVNY18Pc8b/rIRUwgSZQJkZ8Ytp79t6anY5KQwEMwt4bJ8j61b9G0ll/vGa3dI5FB9dBco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915819; c=relaxed/simple;
-	bh=EaOFcMxJsmUI+M9OGxZW1osap84Vg8BACBQ32xBhaaw=;
+	s=arc-20240116; t=1744914695; c=relaxed/simple;
+	bh=97xUqS45uDIBVsVZ0KMjF4N48gQ/OwZOB3RG+nU+xuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S39S53lZ9uZLX/IOooGhkWSDh7eeabtvdvU7s5aH0ZG7ucH37qf9OTy6gl1shftrsR+yu3MXNyXgLoBoJcEQK1/gY/3/L9AVlWGa0nU9LgGDRbqwkwoTlfZtreeChMutSQVDIgT6Zn/6qFX70vFuIrbRqG3fQkjrSh1c8HsKgk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKLWzt4G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF708C4CEE4;
-	Thu, 17 Apr 2025 18:50:18 +0000 (UTC)
+	 MIME-Version; b=cZIwarqMwn5hDlNDuJ2fFAuvl4hfRBe7tZlXdh125yzIaMSRLVEzrCsqgE1+nUxWrEmfGTaXqqM6fdUfwhJmUI7lZYO3EUXoVbmQ98OfFAG0koAgWcqwlhHgxwGu0sdlwCOeKY7dWru53FXgqZHfZy5SedpVw/06zsnNyDcUdiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PlMgkuVW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96417C4CEE4;
+	Thu, 17 Apr 2025 18:31:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915819;
-	bh=EaOFcMxJsmUI+M9OGxZW1osap84Vg8BACBQ32xBhaaw=;
+	s=korg; t=1744914695;
+	bh=97xUqS45uDIBVsVZ0KMjF4N48gQ/OwZOB3RG+nU+xuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dKLWzt4GYlnswLLJsYppr+UbhQCXoPNY/nf19X2td3VWa4zTP9KWTHKpYTAEVZ8kc
-	 Fxk158G3xi0x095lwhih6y7CxGvKv+www9aHg3XQ4JBN3csKkxJQ0rix0oDl1+Dzgf
-	 Ac83oYZIHVUkADQ+LKaHZwAOrzAWWputMYXVI5PE=
+	b=PlMgkuVWtgNjuP5XneRgpagzotjJhRlwm/TseAcTeQcJl+frV/izSPpsd8X61jjSU
+	 Ny/a5ny3pZztksYxA98vtw3wAwWMWGYRXXSfhNNNHgYg4RRGb1dIRNQzM3m46HKa4L
+	 7s4Ww89rNla83xJ/y6Qkig/nnMviKXLtOjObrJlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 249/393] ASoC: codecs: wcd937x: fix a potential memory leak in wcd937x_soc_codec_probe()
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.13 300/414] mptcp: only inc MPJoinAckHMacFailure for HMAC failures
 Date: Thu, 17 Apr 2025 19:50:58 +0200
-Message-ID: <20250417175117.606443633@linuxfoundation.org>
+Message-ID: <20250417175123.498034504@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 3e330acf4efd63876d673c046cd073a1d4ed57a8 upstream.
+commit 21c02e8272bc95ba0dd44943665c669029b42760 upstream.
 
-When snd_soc_dapm_new_controls() or snd_soc_dapm_add_routes() fails,
-wcd937x_soc_codec_probe() returns without releasing 'wcd937x->clsh_info',
-which is allocated by wcd_clsh_ctrl_alloc. Add wcd_clsh_ctrl_free()
-to prevent potential memory leak.
+Recently, during a debugging session using local MPTCP connections, I
+noticed MPJoinAckHMacFailure was not zero on the server side. The
+counter was in fact incremented when the PM rejected new subflows,
+because the 'subflow' limit was reached.
 
-Fixes: 313e978df7fc ("ASoC: codecs: wcd937x: add audio routing and Kconfig")
+The fix is easy, simply dissociating the two cases: only the HMAC
+validation check should increase MPTCP_MIB_JOINACKMAC counter.
+
+Fixes: 4cf8b7e48a09 ("subflow: introduce and use mptcp_can_accept_new_subflow()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Link: https://patch.msgid.link/20250226085050.3584898-1-haoxiang_li2024@163.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250407-net-mptcp-hmac-failure-mib-v1-1-3c9ecd0a3a50@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wcd937x.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/mptcp/subflow.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/sound/soc/codecs/wcd937x.c
-+++ b/sound/soc/codecs/wcd937x.c
-@@ -2564,6 +2564,7 @@ static int wcd937x_soc_codec_probe(struc
- 						ARRAY_SIZE(wcd9375_dapm_widgets));
- 		if (ret < 0) {
- 			dev_err(component->dev, "Failed to add snd_ctls\n");
-+			wcd_clsh_ctrl_free(wcd937x->clsh_info);
- 			return ret;
- 		}
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -902,12 +902,16 @@ create_child:
+ 				goto dispose_child;
+ 			}
  
-@@ -2571,6 +2572,7 @@ static int wcd937x_soc_codec_probe(struc
- 					      ARRAY_SIZE(wcd9375_audio_map));
- 		if (ret < 0) {
- 			dev_err(component->dev, "Failed to add routes\n");
-+			wcd_clsh_ctrl_free(wcd937x->clsh_info);
- 			return ret;
- 		}
- 	}
+-			if (!subflow_hmac_valid(req, &mp_opt) ||
+-			    !mptcp_can_accept_new_subflow(subflow_req->msk)) {
++			if (!subflow_hmac_valid(req, &mp_opt)) {
+ 				SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
+ 				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
+ 				goto dispose_child;
+ 			}
++
++			if (!mptcp_can_accept_new_subflow(owner)) {
++				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
++				goto dispose_child;
++			}
+ 
+ 			/* move the msk reference ownership to the subflow */
+ 			subflow_req->msk = NULL;
 
 
 
