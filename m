@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-133882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05C35A92842
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:32:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5220A9265D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:12:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CC408E009A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:31:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D464E7B5EFE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60CEB26656A;
-	Thu, 17 Apr 2025 18:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88A532571B5;
+	Thu, 17 Apr 2025 18:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VEZi7+DG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxjo/+0H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C53265CA6;
-	Thu, 17 Apr 2025 18:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FAC1A3178;
+	Thu, 17 Apr 2025 18:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914431; cv=none; b=X0kzac9O1dNGaGWpHAjG9VtkNY1HmKash5l9MLRYulVbjhQLsfHVxrYn1welEu6mAAulpEuVm3pdN2WWmdj3/iLUA3CssQeDuEFtn1/8nlW5r6JMXJ+nHqrckGWoNZjClLnXYSuNViQ9N8zi/+30fBG+z9y2d+0UL3Xk9lanBzY=
+	t=1744913184; cv=none; b=l5PAPRJWYwdUMAtyfbBlqNtcJrT1qxuosGhBz1b+ZQgSSpDgT/WN0o3ad6m6/Fr7R7uj8j2OlpLyxqkgPqqeOrOMkKAFMoDQ084qSDwjg+HfCCUFFf03EEtgbQB79wgOfPEAiB3z2IqxPFrjmVYKNMXl2o60AXI4jxU97mqj2vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914431; c=relaxed/simple;
-	bh=U8oEMVN0xeQd8UkBYE24jHVIeazrhHBUzpCRpqTimcQ=;
+	s=arc-20240116; t=1744913184; c=relaxed/simple;
+	bh=iSkOFRn2kRomzzcnOB6AezqAJu/QTEWE6JpZVxIW+WY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KdDf84GFKQY8R0NOU3l+NPMElWPq/BsU8IRsEepEMQgkQ8DCi9svWWAybxJmVxczMbfIE7+3rqgqT93/LQXkWEJeD9bLpbLwVAqsBPt22a8FY/sXV7P++eFWLsQmPtLEUxOQD2LKeauKaMKIJz8Sk5FgPx6xpjtEjWjLpIXychE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VEZi7+DG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF00C4CEE4;
-	Thu, 17 Apr 2025 18:27:10 +0000 (UTC)
+	 MIME-Version; b=OvCdWay3M6CSgyqmW6hEk48ZHKGnK8QIURy5t+0BMf4lI1bhJatJjwTIaRzmkz/PrIZF9vu3B9evvkCdIs5l7Na+vDrF+bnEkiQ2x/5gG5fgNRAvx5BlDohgLiz0W3g92Xrq68fYXxfU7tl7pH/f97G9MK0DhPg7oMiOwXgoeKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxjo/+0H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C88C4CEE4;
+	Thu, 17 Apr 2025 18:06:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914430;
-	bh=U8oEMVN0xeQd8UkBYE24jHVIeazrhHBUzpCRpqTimcQ=;
+	s=korg; t=1744913184;
+	bh=iSkOFRn2kRomzzcnOB6AezqAJu/QTEWE6JpZVxIW+WY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VEZi7+DG79eTSZQUWHUbBo5bQn7H9BiGHC+2gzn+KIt9dn8Dvc0Wz1VeFsu3x3rRf
-	 clHLV8alLZwVEt3glMJu41pAcXQwJdsGTZCe8z4ct2YMZYKG+HAbGlxQOljUk8r39M
-	 70/OUgQHWupiyYhJxBmBx+kuScDHeZTO/9BdD1RE=
+	b=lxjo/+0HD8LSyCMaN95OwAYqX/nlCXtuulI3ePT5Qhj1i7XwPELQvKBgAX2PaCegi
+	 iCG6ebIHMvx+iAW9q7iqfHSkV5tuca6JE0ZcSLy0lHI8ofzNcdXInFGwulZDlwSOE2
+	 77ci0leCMxZ6LS16kSgP60v8ZbC9VPZbR9a/GDdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 184/414] HID: pidff: Factor out pool report fetch and remove excess declaration
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.14 254/449] media: i2c: ov7251: Set enable GPIO low in probe
 Date: Thu, 17 Apr 2025 19:49:02 +0200
-Message-ID: <20250417175118.850551192@linuxfoundation.org>
+Message-ID: <20250417175128.219986514@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,121 +60,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 5d98079b2d0186e1f586301a9c00144a669416a8 ]
+commit a1963698d59cec83df640ded343af08b76c8e9c5 upstream.
 
-We only want to refetch the pool report during device init. Reset
-function is now called when uploading effects to an empty device so
-extract pool fetch to separate function and call it from init before
-autocenter check (autocenter check triggered reset during init).
+Set the enable GPIO low when acquiring it.
 
-Remove a superfluous pointer declaration and assigment as well.
-
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d30bb512da3d ("media: Add a driver for the ov7251 camera sensor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 45 ++++++++++++++++++----------------
- 1 file changed, 24 insertions(+), 21 deletions(-)
+ drivers/media/i2c/ov7251.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index b21e844f5f3a3..f23381b6e3447 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -591,12 +591,9 @@ static void pidff_modify_actuators_state(struct pidff_device *pidff, bool enable
- 
- /*
-  * Reset the device, stop all effects, enable actuators
-- * Refetch pool report
-  */
- static void pidff_reset(struct pidff_device *pidff)
- {
--	int i = 0;
--
- 	/* We reset twice as sometimes hid_wait_io isn't waiting long enough */
- 	pidff_send_device_control(pidff, PID_RESET);
- 	pidff_send_device_control(pidff, PID_RESET);
-@@ -604,23 +601,29 @@ static void pidff_reset(struct pidff_device *pidff)
- 
- 	pidff_send_device_control(pidff, PID_STOP_ALL_EFFECTS);
- 	pidff_modify_actuators_state(pidff, 1);
-+}
- 
--	/* pool report is sometimes messed up, refetch it */
--	hid_hw_request(pidff->hid, pidff->reports[PID_POOL], HID_REQ_GET_REPORT);
--	hid_hw_wait(pidff->hid);
-+/*
-+ * Refetch pool report
-+ */
-+static void pidff_fetch_pool(struct pidff_device *pidff)
-+{
-+	if (!pidff->pool[PID_SIMULTANEOUS_MAX].value)
-+		return;
- 
--	if (pidff->pool[PID_SIMULTANEOUS_MAX].value) {
--		while (pidff->pool[PID_SIMULTANEOUS_MAX].value[0] < 2) {
--			if (i++ > 20) {
--				hid_warn(pidff->hid,
--					 "device reports %d simultaneous effects\n",
--					 pidff->pool[PID_SIMULTANEOUS_MAX].value[0]);
--				break;
--			}
--			hid_dbg(pidff->hid, "pid_pool requested again\n");
--			hid_hw_request(pidff->hid, pidff->reports[PID_POOL],
--					  HID_REQ_GET_REPORT);
--			hid_hw_wait(pidff->hid);
-+	int i = 0;
-+	while (pidff->pool[PID_SIMULTANEOUS_MAX].value[0] < 2) {
-+		hid_dbg(pidff->hid, "pid_pool requested again\n");
-+		hid_hw_request(pidff->hid, pidff->reports[PID_POOL],
-+				HID_REQ_GET_REPORT);
-+		hid_hw_wait(pidff->hid);
-+
-+		/* break after 20 tries with SIMULTANEOUS_MAX < 2 */
-+		if (i++ > 20) {
-+			hid_warn(pidff->hid,
-+				 "device reports %d simultaneous effects\n",
-+				 pidff->pool[PID_SIMULTANEOUS_MAX].value[0]);
-+			break;
- 		}
+--- a/drivers/media/i2c/ov7251.c
++++ b/drivers/media/i2c/ov7251.c
+@@ -1696,7 +1696,7 @@ static int ov7251_probe(struct i2c_clien
+ 		return PTR_ERR(ov7251->analog_regulator);
  	}
- }
-@@ -916,9 +919,7 @@ static void pidff_autocenter(struct pidff_device *pidff, u16 magnitude)
-  */
- static void pidff_set_autocenter(struct input_dev *dev, u16 magnitude)
- {
--	struct pidff_device *pidff = dev->ff->private;
--
--	pidff_autocenter(pidff, magnitude);
-+	pidff_autocenter(dev->ff->private, magnitude);
- }
  
- /*
-@@ -1424,6 +1425,8 @@ int hid_pidff_init_with_quirks(struct hid_device *hid, u32 initial_quirks)
- 	if (error)
- 		goto fail;
- 
-+	/* pool report is sometimes messed up, refetch it */
-+	pidff_fetch_pool(pidff);
- 	pidff_set_gain_report(pidff, U16_MAX);
- 	error = pidff_check_autocenter(pidff, dev);
- 	if (error)
--- 
-2.39.5
-
+-	ov7251->enable_gpio = devm_gpiod_get(dev, "enable", GPIOD_OUT_HIGH);
++	ov7251->enable_gpio = devm_gpiod_get(dev, "enable", GPIOD_OUT_LOW);
+ 	if (IS_ERR(ov7251->enable_gpio)) {
+ 		dev_err(dev, "cannot get enable gpio\n");
+ 		return PTR_ERR(ov7251->enable_gpio);
 
 
 
