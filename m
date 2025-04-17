@@ -1,161 +1,158 @@
-Return-Path: <stable+bounces-132892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3496A911DF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 05:10:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE44FA911FE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 05:25:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DF7D3B764A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 03:10:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37E9A3B8224
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 03:24:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C7DEAE7;
-	Thu, 17 Apr 2025 03:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722981BEF7D;
+	Thu, 17 Apr 2025 03:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="UTfdMA9g"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MDHiRckF"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C21C1A5B97
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 03:10:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF689366;
+	Thu, 17 Apr 2025 03:24:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744859438; cv=none; b=d+cfbaQE94Nhv4a4LrnyQM1Q1zKtNREYxDsSh1kqmYin+RAMMyoE3gesjskRBstn4i7g6v2f8DAP4Q3N8xu+w15voxCU9V2cO29b3owYVMPqFyHHRWwNMPATvw8W0Q8fx3gjmT4V6MelE2OivYFFCfIC81TSjARVdD+MeiWXR08=
+	t=1744860300; cv=none; b=bLhtHs77sXY47dcmsLxXMbRORWn58sGemDgEtWVaxv/ls4ER7SLVfe5Dm3R/l0Acx4u+C2DB5R5lQg07NEEIaQk7AM3/JAc7J3dB6JJqrw/Dmyj1HBVqTDtTc3KAqHSkqSTOV+c/XcSYjOQ4RqXufrZmSR6Oi4vc/KCXdIPD5Zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744859438; c=relaxed/simple;
-	bh=o9y4FA3aNLZbyWWDp7aV1XEs6zzKYLSHjLT7Bv4PQUU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=q5DEYHBuJctF9KwtTueIeOGyo8RVkcGnvD8HoUgy5QWOI3ziRLxZeJViNC67pSJZH9dEeYly0EJiHEpddpZikdAddXK3kP0xn0uUEGc26YvsgOm2atqLeiIHSvzPbeCrXc555ZPxsHckBQ7r1JADj4xuxZ8WKTBmb1VOhODOsgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=UTfdMA9g; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53GLSF3g020861
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 03:10:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	B06cmnmKQ/e4lBuzsfgMOX3tkGNEqZOKRqnJxUEVdDQ=; b=UTfdMA9gYYxNVvnp
-	j+VtBxs1trH5eaLlmwBM+bUo93KQ+UuA2hvlz94sf4jKlYyDxg7Mu0C/P2JBe/8w
-	XfLrm7tYJ5PAqdHuOtJ7Jse5DVij6Bpe0/ag/G+pCs6rtQw31QP87ZXF3hPpHSkw
-	fd3CQ0a0qAXmKIiP9Jo/XlSskr1e61bkY4NdNGuvj/Z2YpUuOjAPn+v/cKKPsHBM
-	RozflIWv9DAeH3sITiZf7oGOjnuxe/x/1OC9HyS+VlEmc/kThbc6teX+R1QN8/xH
-	fy5ND06gNXH1mOUZPbbPgJb7ShL/cfO0YuLTay/cE2eOhKsXDH+pnyxNcwDlAYpB
-	qLah4w==
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45yg8wngbg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 03:10:35 +0000 (GMT)
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-73c2f5c284cso307191b3a.3
-        for <stable@vger.kernel.org>; Wed, 16 Apr 2025 20:10:35 -0700 (PDT)
+	s=arc-20240116; t=1744860300; c=relaxed/simple;
+	bh=fb3d8VX6ohYfanNtyOhFEEPPWcIA2WkivXA2C8+k5iU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lEA9HHB2UYqIh5dxuq/diNjC+W2cWvzW4RngbQ+II3hTX6S60F1PG7J0meTfNjemXwbR+f5B/MdFc667AkL9lt06RyqRmv8RpTm01i7QkxtsbrrC09zDZID/q+LvwFqarPLExSpiNfOlDdJzvj/5RB7+u65g4B3BrWWx6WknizM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MDHiRckF; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2ff64550991so162913a91.0;
+        Wed, 16 Apr 2025 20:24:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744860298; x=1745465098; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=R52UzM/+K9VKmjAtqNDjFGDJ0Wy7+MuhwjxN+bw4A+g=;
+        b=MDHiRckFaW+018fY/3VOP0lnQbW81qUcVL7w+bDo13lsz+tvfzhGbW1BAQxkTj5rq6
+         ieqcNeifHAxCuzuliZiKl7RtOIk6MV1xqmpDjGUvR/1Wf+cDpYwSdYd9MKZKa1jSkcsl
+         eMEjX0XeqtH2R3XeNOM3OZD8hQ30nn+qcQmCYk6MzYKycj4FeH2cO2UMwnB6kHp/oKAN
+         jaQ7RkhqV0Ves/LrHAV6zu9GguRtZ+0bcnxipVFV7GfAHat9LCKknnH1nVXa1szUgTjG
+         K2zdS8crluLsOa4rixwaOwoe/cTGhJLrO1t3O8ZyVsjDevk7OcYPBVjDIW/wVCf+ded8
+         UZzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744859434; x=1745464234;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=B06cmnmKQ/e4lBuzsfgMOX3tkGNEqZOKRqnJxUEVdDQ=;
-        b=BbfP3APELOEgDSzN+8f7XPiDOfW3NUPWotD/EVNtgPbEAGgOjrOR6sR6agYJOdBrPy
-         ohbomwh5Lo1L7Q1T8CQArErhAocFqha/cugC7U0QRMhHi9IjPQ0Jf1QSibiW6Zm3ZRT1
-         xeytYe3NEA2PylyGJFt9gCQHEGWPzMCeHVbIqrRS5p3XMosUpFRBV7NCZU3cybuvZX84
-         9J2Yrx6ufwg55ShY46TdRNxc4rM6/hThmMkRCpo8dSgWzWvE/2vy6RMK2aMPvwPcGGCv
-         Y6er/Bw5k0ff4L8PnHRcJClItHsfYENJDh26/d21akmmu8Me0h/HGZXHcNBbFEzfa9G1
-         1QkA==
-X-Forwarded-Encrypted: i=1; AJvYcCWZWEFqjltGnSxWcTyykmNBhiuoOZPQ4CPCPToCzvSgbH8xE70QeYpRycu54tBk4hPwINgxRQo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJmcsTxgo+XdjeEvPE1Q8GZ6mY2hp4d8AfxabmCTIS+hn33y5i
-	n84d78d2kDU+a24VtvXLZ0LFsfYZyhV1idFE29Tk+laYstxxWYuwM2rl1+JOsxIu5cu8aGjDlM/
-	59rB1n2qF9QiFUJ+kDhsnNlw+tZC1riEvhYtX9w5b+LstbBHX8dXRZtg=
-X-Gm-Gg: ASbGncuOqWjaTN2v1HBjgT3eW2gn3nTN2UGH4laWSEG9BL0Xf50t+KJDJ9N80cnZQBl
-	y8RoYzZUsa/TbN+8/RXOwjiObxgKAHQtSm/YWXIaA16go96pOgkmaiASM+Ywt2f0araCX3nPcD1
-	wUQy6uNDIvpzjgm/iwlnyl9V7iH6xejMBRiCK9I4ujP2N0XI0vuuu6fC3856e3+m7IssK/6NrBw
-	/JzxefH4bitf9h0HNHyY1jzI89PE/LDUij7NEFwvW6D1z278vGFLOjDPa8cmY01pkVBm2mz/f9l
-	QAF0bMmvqSXg+Yp4HsFmFnByQ65fQ88+/lmL404LpEHpdNsdakieFxzERfJgcYmjhnd0Ttj1QHw
-	=
-X-Received: by 2002:a05:6a00:aa8d:b0:736:5dc6:a14f with SMTP id d2e1a72fcca58-73c267f5570mr6280119b3a.23.1744859434526;
-        Wed, 16 Apr 2025 20:10:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH+DXP8JMSvGrHZjJsmoeGenB3qJ6DAEmao0itPYYQeugkAmnDao/XushMt4kTACYRmrh9dMw==
-X-Received: by 2002:a05:6a00:aa8d:b0:736:5dc6:a14f with SMTP id d2e1a72fcca58-73c267f5570mr6280079b3a.23.1744859434064;
-        Wed, 16 Apr 2025 20:10:34 -0700 (PDT)
-Received: from [10.133.33.156] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bd230ea65sm11240920b3a.154.2025.04.16.20.10.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Apr 2025 20:10:33 -0700 (PDT)
-Message-ID: <bb3248f1-3a7d-4a60-8e3a-68c0595ea50a@oss.qualcomm.com>
-Date: Thu, 17 Apr 2025 11:10:30 +0800
+        d=1e100.net; s=20230601; t=1744860298; x=1745465098;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=R52UzM/+K9VKmjAtqNDjFGDJ0Wy7+MuhwjxN+bw4A+g=;
+        b=HhKfCdfec7J62V1gKPIA1xYfcr7hrdBP9JD0ZlD6LKNzDUsR1touyq5RoyeksAn2Us
+         UZJfD+m0vn40lItnsew9DpT3D08JXHoLyvzvU0dfIAJMLy9L0nufZl200pC7zJXchjPP
+         DxlDyRtS31WwGE/8SN+XCR8fW9HZTBl8jGTaI7fh4GEjnlp1N7pOGlolE5aLcCBZ8HPf
+         cY7GptYZepYgLIqCzBYPL+4eaJCLa1S+IkUBg2OgUKT+rXj70DbzRaJatCw4PXu0cIp4
+         gYNFTXqswLDjUA740/pdxPxjA9I+pvPyPJx5uem+BzdiW6Bt9yTg/SAgy5f+trBOlXaO
+         r+Uw==
+X-Forwarded-Encrypted: i=1; AJvYcCW9ksYU00fcT7U8ma2X0uDAYD9nR2U+jKQHmU1fc68qbiQJ/nVWYriMtxk7maToglUuO2SsWFK6lUuIYtM=@vger.kernel.org, AJvYcCXt7HSL29fizAJ08gUIKKSFN9D4qIET11GCvSodwaZMxVhkWUMUgvV+/yXR5l22girc6AdPBod9@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9WfZ14bSgctGFtGpa/QTNiT4NB3Yd9ZIsrfAv4V1qgedfhjih
+	dQNN5LV4LxGI86u6mWnvrX+MSJ3+Z4lkV7fAbgElAeALvGGBgZXwcl75uGFKmf3W+XXf
+X-Gm-Gg: ASbGncvl6cL7pAAqiwwUmiuQgEK5+KN5FuLGtZeLxRrbrZtx84pKC9tmSsEUL3X/Wlm
+	55bQ9w7fJtADmEx0zWTtmKrO12cU5HfOXA/RB68+zU6N3GDE8myerjFAuuqAcuYdivdTQ5jftEM
+	9RxLTEnwUIKeAFbUIBOiEHmABjiFmX42I9blpW1IaZSdEI+1F/fNlwZjKsLFroDitxiRz7YD+0t
+	zS5LTzBxjBTpE8uHeiOLn3ME5w5dxerDdAW5phtv/jAnMfzLzw8vsQufuqnWZwnwd3oUpMBZh7G
+	4eQnahwhyK8OQ8JjTFbNbc/ZE+oJrb4UANFuJ/JNxD1RV2hH4tfjFDCupCcTyk/H1ONyKbMhMKh
+	2Bqc=
+X-Google-Smtp-Source: AGHT+IG4y8rKinLRtHLpPT6GEZmsIefCooQtcwjx3m0C6SxkQFiEk5lsiFMoBinpNlRHPxXuAzqo3A==
+X-Received: by 2002:a17:90b:2b4b:b0:2fe:dd2c:f8e7 with SMTP id 98e67ed59e1d1-30863f19154mr6673105a91.10.1744860297962;
+        Wed, 16 Apr 2025 20:24:57 -0700 (PDT)
+Received: from SHOUYELIU-MC0.tencent.com ([43.132.141.21])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30861212fa6sm2495710a91.27.2025.04.16.20.24.55
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 16 Apr 2025 20:24:57 -0700 (PDT)
+From: shouyeliu <shouyeliu@gmail.com>
+To: srinivas.pandruvada@linux.intel.com,
+	hdegoede@redhat.com,
+	ilpo.jarvinen@linux.intel.com
+Cc: platform-driver-x86@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Shouye Liu <shouyeliu@tencent.com>
+Subject: [PATCH v3] platform/x86/intel-uncore-freq: Fix missing uncore sysfs during CPU hotplug
+Date: Thu, 17 Apr 2025 11:23:21 +0800
+Message-Id: <20250417032321.75580-1-shouyeliu@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.14 084/731] wifi: ath11k: update channel list in reg
- notifier instead reg worker
-To: Jiri Slaby <jirislaby@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Aditya Kumar Singh <quic_adisi@quicinc.com>,
-        Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-        Sasha Levin
- <sashal@kernel.org>, quic_bqiang@quicinc.com
-References: <20250408104914.247897328@linuxfoundation.org>
- <20250408104916.224926328@linuxfoundation.org>
- <5cd9db3f-4abf-4b66-b401-633508e905ac@kernel.org>
- <49b98882-6a69-48b8-af0c-01f78373d0ef@quicinc.com>
- <4c5f9d38-ae5d-4599-bd9d-785f6eff48f9@oss.qualcomm.com>
- <ff6d7143-33e3-4df5-ada2-df8c99d1993d@kernel.org>
-Content-Language: en-US
-From: Kang Yang <kang.yang@oss.qualcomm.com>
-In-Reply-To: <ff6d7143-33e3-4df5-ada2-df8c99d1993d@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=E9TNpbdl c=1 sm=1 tr=0 ts=6800712b cx=c_pps a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=COk6AnOGAAAA:8 a=71oygjJcY_BwH7B_oqQA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=zc0IvFSfCIW2DFIPzwfm:22 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-ORIG-GUID: WyO1ttZ5UQxggP8UsvP5DR7FoqDnMCEb
-X-Proofpoint-GUID: WyO1ttZ5UQxggP8UsvP5DR7FoqDnMCEb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-17_01,2025-04-15_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 adultscore=0
- mlxscore=0 bulkscore=0 clxscore=1015 phishscore=0 lowpriorityscore=0
- suspectscore=0 mlxlogscore=999 spamscore=0 priorityscore=1501
- impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504170023
 
+From: Shouye Liu <shouyeliu@tencent.com>
 
-On 4/16/2025 4:03 PM, Jiri Slaby wrote:
-> On 16. 04. 25, 9:31, Kang Yang wrote:
->>>> Ah, what about:
->>>> commit 02aae8e2f957adc1b15b6b8055316f8a154ac3f5
->>>> Author: Wen Gong <quic_wgong@quicinc.com>
->>>> Date:   Fri Jan 17 14:17:37 2025 +0800
->>>>
->>>>      wifi: ath11k: update channel list in worker when wait flag is set
->>>>
->>>> ?
->>>
->>>
->>> Yes, please add this patch. It will minimize the occupation time of 
->>> rtnl_lock.
->>>
->>> You can retry and check if this warning will show again.
->>>
->>>
->>
->> Hi, Jiri, Greg:
->>
->>      Have you added this patch and verified it?
->
-> Yes, it works for me for a couple of days already.
+In certain situations, the sysfs for uncore may not be present when all
+CPUs in a package are offlined and then brought back online after boot.
 
+This issue can occur if there is an error in adding the sysfs entry due
+to a memory allocation failure. Retrying to bring the CPUs online will
+not resolve the issue, as the uncore_cpu_mask is already set for the
+package before the failure condition occurs.
 
-Got it. So do you know when they will backport this patch into 6.14?
+This issue does not occur if the failure happens during module
+initialization, as the module will fail to load in the event of any
+error.
 
-Do we need to do something?
+To address this, ensure that the uncore_cpu_mask is not set until the
+successful return of uncore_freq_add_entry().
 
+Fixes: dbce412a7733 ("platform/x86/intel-uncore-freq: Split common and enumeration part")
+Signed-off-by: Shouye Liu <shouyeliu@tencent.com>
+Cc: stable@vger.kernel.org
+---
+ .../x86/intel/uncore-frequency/uncore-frequency.c   | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-
+diff --git a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency.c b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency.c
+index 40bbf8e45fa4..bdee5d00f30b 100644
+--- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency.c
++++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency.c
+@@ -146,15 +146,13 @@ static int uncore_event_cpu_online(unsigned int cpu)
+ {
+ 	struct uncore_data *data;
+ 	int target;
++	int ret;
+ 
+ 	/* Check if there is an online cpu in the package for uncore MSR */
+ 	target = cpumask_any_and(&uncore_cpu_mask, topology_die_cpumask(cpu));
+ 	if (target < nr_cpu_ids)
+ 		return 0;
+ 
+-	/* Use this CPU on this die as a control CPU */
+-	cpumask_set_cpu(cpu, &uncore_cpu_mask);
+-
+ 	data = uncore_get_instance(cpu);
+ 	if (!data)
+ 		return 0;
+@@ -163,7 +161,14 @@ static int uncore_event_cpu_online(unsigned int cpu)
+ 	data->die_id = topology_die_id(cpu);
+ 	data->domain_id = UNCORE_DOMAIN_ID_INVALID;
+ 
+-	return uncore_freq_add_entry(data, cpu);
++	ret = uncore_freq_add_entry(data, cpu);
++	if (ret)
++		return ret;
++
++	/* Use this CPU on this die as a control CPU */
++	cpumask_set_cpu(cpu, &uncore_cpu_mask);
++
++	return 0;
+ }
+ 
+ static int uncore_event_cpu_offline(unsigned int cpu)
+-- 
+2.19.1
 
 
