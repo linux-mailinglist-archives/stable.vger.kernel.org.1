@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-134337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A3C4A92AD5
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0F6BA92650
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:12:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF6F83B2A72
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B5AA8A5F25
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:12:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B43132580F2;
-	Thu, 17 Apr 2025 18:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F08922E3E6;
+	Thu, 17 Apr 2025 18:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xUZGOcCW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RlBHu2i1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724222566DE;
-	Thu, 17 Apr 2025 18:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A58C1A3178;
+	Thu, 17 Apr 2025 18:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915822; cv=none; b=KBEZlOCjppJ0b8/ekHYeG7z7ro/XCMJq9DubDuLKdolrOfiI+pKhrvduj5VjA0ZrcxrB+GqGuBC44KeXeInrlddLRu5tvWeCzxKpA1fb44+9h1PSm+sPUOJLhzaGWqdHtgSMPYEK9QaCnpEHU2oWYYu5BtwIa6TRzGwEhMVsMHs=
+	t=1744913536; cv=none; b=LKCiOqYu9v2mw8IC2Q9POpb3pdSvHrZYRZBZYE7gbJLZqkZsQEx8JujHAzCLnuXCY2MZ/zEWvB7cxoA5/Y2z+pKlcdDEc5Xay3mKHn3/135eMYAAzknXT+eOcVmUbBonDI8wLQwsdNXMEVnkNhF8zl5NESFyKKKqOpkiWaFKqYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915822; c=relaxed/simple;
-	bh=cYRVmBayOERkik5ayiOvSWgX8wgDwfE6yD9o1VmEVfY=;
+	s=arc-20240116; t=1744913536; c=relaxed/simple;
+	bh=PmacY0gM9gJW+4lDX64xHZjCUQYRu4vqXHaR8PNbd+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eNlcYDBUR09cD9QBZ2p75iHFi4qByssRMjhI435Dd4CN/J7civJEHyBcAXgyLFue1gK8kP5/cQTv5aHpAKBrnYDvBl3IlCcq3VTP+gUQbP62lFwMoXhnH0v6XpSdYVAO6Ebqw7us58aKfN+9zwQfhk1wK+rTFsvkSk5YzahtR+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xUZGOcCW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A07C4CEE4;
-	Thu, 17 Apr 2025 18:50:21 +0000 (UTC)
+	 MIME-Version; b=r7tXMvMZtNzghfUZ6R7Iaz6SeXYIIHNYscFiauXKTZLiiTpR2KM713Vgiq2P4/sy9VimsCINHOLfiu5QsIy8u0q7zGB2JxdN49W9dPwFQdyDoh911CrlkFownkf0DjGoo1N2BSd7EcQpMCtKrtuSC8ClEb15EMSG+MxP5E0PmgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RlBHu2i1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B63C4CEE4;
+	Thu, 17 Apr 2025 18:12:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915822;
-	bh=cYRVmBayOERkik5ayiOvSWgX8wgDwfE6yD9o1VmEVfY=;
+	s=korg; t=1744913536;
+	bh=PmacY0gM9gJW+4lDX64xHZjCUQYRu4vqXHaR8PNbd+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xUZGOcCWODD/CjJMNqgn/phzex5SCtuAmPNm3StC3WV7/6xiDoqnQepFGkoq8eib+
-	 oPHondezifJxjlPu+NYEwtxcelRJYEN/zqpCbRSJ3HI5lpXipa2Jg/MZoEnDkLz+FK
-	 QbnCYPk6fUcxsx1LtFzpD97Of+WiDRHETCrn+1T8=
+	b=RlBHu2i1T2O9JZQEUYQV2VVF3u12dlbCe3StxZQbjmMGh0Cql7JVt+0uwKpuln7Oe
+	 qsHlcZZ4dlhaVf7YCdd962v7M2+sjqjO7hBXYDwebT87HRgn/2r+jmmOIfh5tayfLl
+	 yhFwkR4JgWI0uk+JqAreF4zYive/ICSgiXkQKj94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 250/393] ASoC: q6apm: add q6apm_get_hw_pointer helper
-Date: Thu, 17 Apr 2025 19:50:59 +0200
-Message-ID: <20250417175117.645177237@linuxfoundation.org>
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Tom Zanussi <zanussi@kernel.org>,
+	Douglas Raillard <douglas.raillard@arm.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.14 372/449] tracing: Do not add length to print format in synthetic events
+Date: Thu, 17 Apr 2025 19:51:00 +0200
+Message-ID: <20250417175133.229574074@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 0badb5432fd525a00db5630c459b635e9d47f445 upstream.
+commit e1a453a57bc76be678bd746f84e3d73f378a9511 upstream.
 
-Implement an helper function in q6apm to be able to read the current
-hardware pointer for both read and write buffers.
+The following causes a vsnprintf fault:
 
-This should help q6apm-dai to get the hardware pointer consistently
-without it doing manual calculation, which could go wrong in some race
-conditions.
+  # echo 's:wake_lat char[] wakee; u64 delta;' >> /sys/kernel/tracing/dynamic_events
+  # echo 'hist:keys=pid:ts=common_timestamp.usecs if !(common_flags & 0x18)' > /sys/kernel/tracing/events/sched/sched_waking/trigger
+  # echo 'hist:keys=next_pid:delta=common_timestamp.usecs-$ts:onmatch(sched.sched_waking).trace(wake_lat,next_comm,$delta)' > /sys/kernel/tracing/events/sched/sched_switch/trigger
 
-Fixes: 9b4fe0f1cd79 ("ASoC: qdsp6: audioreach: add q6apm-dai support")
+Because the synthetic event's "wakee" field is created as a dynamic string
+(even though the string copied is not). The print format to print the
+dynamic string changed from "%*s" to "%s" because another location
+(__set_synth_event_print_fmt()) exported this to user space, and user
+space did not need that. But it is still used in print_synth_event(), and
+the output looks like:
+
+          <idle>-0       [001] d..5.   193.428167: wake_lat: wakee=(efault)sshd-sessiondelta=155
+    sshd-session-879     [001] d..5.   193.811080: wake_lat: wakee=(efault)kworker/u34:5delta=58
+          <idle>-0       [002] d..5.   193.811198: wake_lat: wakee=(efault)bashdelta=91
+            bash-880     [002] d..5.   193.811371: wake_lat: wakee=(efault)kworker/u35:2delta=21
+          <idle>-0       [001] d..5.   193.811516: wake_lat: wakee=(efault)sshd-sessiondelta=129
+    sshd-session-879     [001] d..5.   193.967576: wake_lat: wakee=(efault)kworker/u34:5delta=50
+
+The length isn't needed as the string is always nul terminated. Just print
+the string and not add the length (which was hard coded to the max string
+length anyway).
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://patch.msgid.link/20250314174800.10142-3-srinivas.kandagatla@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Tom Zanussi <zanussi@kernel.org>
+Cc: Douglas Raillard <douglas.raillard@arm.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Link: https://lore.kernel.org/20250407154139.69955768@gandalf.local.home
+Fixes: 4d38328eb442d ("tracing: Fix synth event printk format for str fields");
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6apm.c |   18 +++++++++++++++++-
- sound/soc/qcom/qdsp6/q6apm.h |    3 +++
- 2 files changed, 20 insertions(+), 1 deletion(-)
+ kernel/trace/trace_events_synth.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/sound/soc/qcom/qdsp6/q6apm.c
-+++ b/sound/soc/qcom/qdsp6/q6apm.c
-@@ -494,6 +494,19 @@ int q6apm_read(struct q6apm_graph *graph
- }
- EXPORT_SYMBOL_GPL(q6apm_read);
+--- a/kernel/trace/trace_events_synth.c
++++ b/kernel/trace/trace_events_synth.c
+@@ -370,7 +370,6 @@ static enum print_line_t print_synth_eve
+ 				union trace_synth_field *data = &entry->fields[n_u64];
  
-+int q6apm_get_hw_pointer(struct q6apm_graph *graph, int dir)
-+{
-+	struct audioreach_graph_data *data;
-+
-+	if (dir == SNDRV_PCM_STREAM_PLAYBACK)
-+		data = &graph->rx_data;
-+	else
-+		data = &graph->tx_data;
-+
-+	return (int)atomic_read(&data->hw_ptr);
-+}
-+EXPORT_SYMBOL_GPL(q6apm_get_hw_pointer);
-+
- static int graph_callback(struct gpr_resp_pkt *data, void *priv, int op)
- {
- 	struct data_cmd_rsp_rd_sh_mem_ep_data_buffer_done_v2 *rd_done;
-@@ -520,7 +533,8 @@ static int graph_callback(struct gpr_res
- 		done = data->payload;
- 		phys = graph->rx_data.buf[token].phys;
- 		mutex_unlock(&graph->lock);
--
-+		/* token numbering starts at 0 */
-+		atomic_set(&graph->rx_data.hw_ptr, token + 1);
- 		if (lower_32_bits(phys) == done->buf_addr_lsw &&
- 		    upper_32_bits(phys) == done->buf_addr_msw) {
- 			graph->result.opcode = hdr->opcode;
-@@ -553,6 +567,8 @@ static int graph_callback(struct gpr_res
- 		rd_done = data->payload;
- 		phys = graph->tx_data.buf[hdr->token].phys;
- 		mutex_unlock(&graph->lock);
-+		/* token numbering starts at 0 */
-+		atomic_set(&graph->tx_data.hw_ptr, hdr->token + 1);
- 
- 		if (upper_32_bits(phys) == rd_done->buf_addr_msw &&
- 		    lower_32_bits(phys) == rd_done->buf_addr_lsw) {
---- a/sound/soc/qcom/qdsp6/q6apm.h
-+++ b/sound/soc/qcom/qdsp6/q6apm.h
-@@ -2,6 +2,7 @@
- #ifndef __Q6APM_H__
- #define __Q6APM_H__
- #include <linux/types.h>
-+#include <linux/atomic.h>
- #include <linux/slab.h>
- #include <linux/wait.h>
- #include <linux/kernel.h>
-@@ -77,6 +78,7 @@ struct audioreach_graph_data {
- 	uint32_t num_periods;
- 	uint32_t dsp_buf;
- 	uint32_t mem_map_handle;
-+	atomic_t hw_ptr;
- };
- 
- struct audioreach_graph {
-@@ -150,4 +152,5 @@ int q6apm_enable_compress_module(struct
- int q6apm_remove_initial_silence(struct device *dev, struct q6apm_graph *graph, uint32_t samples);
- int q6apm_remove_trailing_silence(struct device *dev, struct q6apm_graph *graph, uint32_t samples);
- int q6apm_set_real_module_id(struct device *dev, struct q6apm_graph *graph, uint32_t codec_id);
-+int q6apm_get_hw_pointer(struct q6apm_graph *graph, int dir);
- #endif /* __APM_GRAPH_ */
+ 				trace_seq_printf(s, print_fmt, se->fields[i]->name,
+-						 STR_VAR_LEN_MAX,
+ 						 (char *)entry + data->as_dynamic.offset,
+ 						 i == se->n_fields - 1 ? "" : " ");
+ 				n_u64++;
 
 
 
