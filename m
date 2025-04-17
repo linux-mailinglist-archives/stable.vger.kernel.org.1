@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-133637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2876A9269C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:14:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0752A928ED
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:38:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98D0C8A6855
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:14:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 315FD1B61DA8
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C422561DA;
-	Thu, 17 Apr 2025 18:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFDC5264606;
+	Thu, 17 Apr 2025 18:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r4MrzTLJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SM+uF0R+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A611EB1BF;
-	Thu, 17 Apr 2025 18:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE172641F6;
+	Thu, 17 Apr 2025 18:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913682; cv=none; b=NGjgpdOy49oP8n4dCv/GTGVNh/6WT17K66fElgMouKTNzXFsNEzNYWeffQxundK77L6MurBKJVbKgPMZBYVo860/GCswFX4IkG8Hi/QtOfMr+E8cowxwUX9adfg/ziOqge4lUh/qJwYlZ5IVxC85HFSSRaJXoLWR0gSH9pJ4+ts=
+	t=1744914839; cv=none; b=P2DsasznjRbZRwZsPlb6TzXr9opTJJSTy3eaK0eM7KJ3397ButO5ut2iVhUsgnpofY0IxB73CA5XxUUdhIkPh2l2hol1G+3OBZflYXe9Q09Ksy1UbOFmAISzBE76qnWRNpJ2D6JvD+526NjsChFkU0JZzqrIFOZE2bi8BTTroYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913682; c=relaxed/simple;
-	bh=rIy8xo5YPmbFVl1qkOnUE9jBoPZlTjSjJKTB62tfwMY=;
+	s=arc-20240116; t=1744914839; c=relaxed/simple;
+	bh=BZlcKotN4ScExUhQxm/eGuZibsxGI3Ru+Y+WCAYddTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CY5ao1UxfyNb/L3VudIxfYMrrl8m41q4cujE+QSBHtj1VJgb1VGRjalZrHQOl9wPXRes9TQHM0mLD5kBdwQ4dKG6R168cA5P7gwYsAr9sX/hm9HB9kFvVluxdH6pK/+liS1ZnEFVYAxAgp9ea9KofA1I0eJtTClK6uC6MyfTt7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r4MrzTLJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 347B9C4CEE4;
-	Thu, 17 Apr 2025 18:14:42 +0000 (UTC)
+	 MIME-Version; b=D/53BeJzJzfJD98plh1N13EoFDGrdT/Pzewk1leRYWWN237ZR8BMcjQc9CwLiw+W4AWiTyzxB5mcpP9U4ns5VaEN1JqPo/dVdsLKBKLeO7bLieP1MUwCiiV/EzYcgaLn0knCV2w4fXRK/hElLFVjfG3TTafjyM4it2Dg+a5RH3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SM+uF0R+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B9ACC4CEE4;
+	Thu, 17 Apr 2025 18:33:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913682;
-	bh=rIy8xo5YPmbFVl1qkOnUE9jBoPZlTjSjJKTB62tfwMY=;
+	s=korg; t=1744914839;
+	bh=BZlcKotN4ScExUhQxm/eGuZibsxGI3Ru+Y+WCAYddTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r4MrzTLJgs23VRBN5glrBeYG/JehLm4cuDiYDKjE/tyCtSUkm9laaj4SmyF5cMYbm
-	 uSHJCbU1rsnZPp2xyH9odwqYWjLIJfZeOTF+Szcjuo/zghnQSY6/2f3/Wp/gzsDHtO
-	 0e1ccptXB/c5/1QOMNZ3VRm1gKX5gIOdw6BKRP9c=
+	b=SM+uF0R+AOhgBeRrPTnyEQPK9uZ7sTpe/+ny/8jBYlPNZ71bGFP0mCl25nGPt76rb
+	 CmkUX3u+GIhKg+se3v6uNgIIWyI7uyPiHu4SafUns4KdedfHu4W6YFL8JIZgpi7u+5
+	 f898AOBDNT7WjsEc0CpO/OpSLU7LleNnB6/FVRGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.14 418/449] of/irq: Fix device node refcount leakage in API of_irq_parse_one()
+	Taniya Das <quic_tdas@quicinc.com>,
+	Imran Shaik <quic_imrashai@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.13 348/414] clk: qcom: gdsc: Set retain_ff before moving to HW CTRL
 Date: Thu, 17 Apr 2025 19:51:46 +0200
-Message-ID: <20250417175135.118358139@linuxfoundation.org>
+Message-ID: <20250417175125.429786673@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,131 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Taniya Das <quic_tdas@quicinc.com>
 
-commit 0cb58d6c7b558a69957fabe159bfb184196e1e8d upstream.
+commit 25708f73ff171bb4171950c9f4be5aa8504b8459 upstream.
 
-of_irq_parse_one(@int_gen_dev, i, ...) will leak refcount of @i_th_phandle
+Enable the retain_ff_enable bit of GDSCR only if the GDSC is already ON.
+Once the GDSCR moves to HW control, SW no longer can determine the state
+of the GDSCR and setting the retain_ff bit could destroy all the register
+contents we intended to save.
+Therefore, move the retain_ff configuration before switching the GDSC to
+HW trigger mode.
 
-int_gen_dev {
-    ...
-    interrupts-extended = ..., <&i_th_phandle ...>, ...;
-    ...
-};
-
-Refcount of @i_th_phandle is increased by of_parse_phandle_with_args()
-but is not decreased by API of_irq_parse_one() before return, so causes
-refcount leakage.
-
-Rework the refcounting to use __free() cleanup and simplify the code to
-have a single call to of_irq_parse_raw().
-
-Also add comments about refcount of node @out_irq->np got by the API.
-
-Fixes: 79d9701559a9 ("of/irq: create interrupts-extended property")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-2-93e3a2659aa7@quicinc.com
-[robh: Use __free() to do puts]
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Fixes: 173722995cdb ("clk: qcom: gdsc: Add support to enable retention of GSDCR")
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Reviewed-by: Imran Shaik <quic_imrashai@quicinc.com>
+Tested-by: Imran Shaik <quic_imrashai@quicinc.com> # on QCS8300
+Link: https://lore.kernel.org/r/20250214-gdsc_fixes-v1-1-73e56d68a80f@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/irq.c |   59 +++++++++++++++++++++++++------------------------------
- 1 file changed, 27 insertions(+), 32 deletions(-)
+ drivers/clk/qcom/gdsc.c |   21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -16,6 +16,7 @@
+--- a/drivers/clk/qcom/gdsc.c
++++ b/drivers/clk/qcom/gdsc.c
+@@ -292,6 +292,9 @@ static int gdsc_enable(struct generic_pm
+ 	 */
+ 	udelay(1);
  
- #define pr_fmt(fmt)	"OF: " fmt
- 
-+#include <linux/cleanup.h>
- #include <linux/device.h>
- #include <linux/errno.h>
- #include <linux/list.h>
-@@ -339,10 +340,12 @@ EXPORT_SYMBOL_GPL(of_irq_parse_raw);
-  * This function resolves an interrupt for a node by walking the interrupt tree,
-  * finding which interrupt controller node it is attached to, and returning the
-  * interrupt specifier that can be used to retrieve a Linux IRQ number.
-+ *
-+ * Note: refcount of node @out_irq->np is increased by 1 on success.
-  */
- int of_irq_parse_one(struct device_node *device, int index, struct of_phandle_args *out_irq)
- {
--	struct device_node *p;
-+	struct device_node __free(device_node) *p = NULL;
- 	const __be32 *addr;
- 	u32 intsize;
- 	int i, res, addr_len;
-@@ -367,41 +370,33 @@ int of_irq_parse_one(struct device_node
- 	/* Try the new-style interrupts-extended first */
- 	res = of_parse_phandle_with_args(device, "interrupts-extended",
- 					"#interrupt-cells", index, out_irq);
--	if (!res)
--		return of_irq_parse_raw(addr_buf, out_irq);
--
--	/* Look for the interrupt parent. */
--	p = of_irq_find_parent(device);
--	if (p == NULL)
--		return -EINVAL;
--
--	/* Get size of interrupt specifier */
--	if (of_property_read_u32(p, "#interrupt-cells", &intsize)) {
--		res = -EINVAL;
--		goto out;
--	}
--
--	pr_debug(" parent=%pOF, intsize=%d\n", p, intsize);
-+	if (!res) {
-+		p = out_irq->np;
-+	} else {
-+		/* Look for the interrupt parent. */
-+		p = of_irq_find_parent(device);
-+		/* Get size of interrupt specifier */
-+		if (!p || of_property_read_u32(p, "#interrupt-cells", &intsize))
-+			return -EINVAL;
++	if (sc->flags & RETAIN_FF_ENABLE)
++		gdsc_retain_ff_on(sc);
 +
-+		pr_debug(" parent=%pOF, intsize=%d\n", p, intsize);
-+
-+		/* Copy intspec into irq structure */
-+		out_irq->np = p;
-+		out_irq->args_count = intsize;
-+		for (i = 0; i < intsize; i++) {
-+			res = of_property_read_u32_index(device, "interrupts",
-+							(index * intsize) + i,
-+							out_irq->args + i);
-+			if (res)
-+				return res;
-+		}
- 
--	/* Copy intspec into irq structure */
--	out_irq->np = p;
--	out_irq->args_count = intsize;
--	for (i = 0; i < intsize; i++) {
--		res = of_property_read_u32_index(device, "interrupts",
--						 (index * intsize) + i,
--						 out_irq->args + i);
--		if (res)
--			goto out;
-+		pr_debug(" intspec=%d\n", *out_irq->args);
+ 	/* Turn on HW trigger mode if supported */
+ 	if (sc->flags & HW_CTRL) {
+ 		ret = gdsc_hwctrl(sc, true);
+@@ -308,9 +311,6 @@ static int gdsc_enable(struct generic_pm
+ 		udelay(1);
  	}
  
--	pr_debug(" intspec=%d\n", *out_irq->args);
+-	if (sc->flags & RETAIN_FF_ENABLE)
+-		gdsc_retain_ff_on(sc);
 -
--
- 	/* Check if there are any interrupt-map translations to process */
--	res = of_irq_parse_raw(addr_buf, out_irq);
-- out:
--	of_node_put(p);
--	return res;
-+	return of_irq_parse_raw(addr_buf, out_irq);
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(of_irq_parse_one);
  
+@@ -457,13 +457,6 @@ static int gdsc_init(struct gdsc *sc)
+ 				goto err_disable_supply;
+ 		}
+ 
+-		/* Turn on HW trigger mode if supported */
+-		if (sc->flags & HW_CTRL) {
+-			ret = gdsc_hwctrl(sc, true);
+-			if (ret < 0)
+-				goto err_disable_supply;
+-		}
+-
+ 		/*
+ 		 * Make sure the retain bit is set if the GDSC is already on,
+ 		 * otherwise we end up turning off the GDSC and destroying all
+@@ -471,6 +464,14 @@ static int gdsc_init(struct gdsc *sc)
+ 		 */
+ 		if (sc->flags & RETAIN_FF_ENABLE)
+ 			gdsc_retain_ff_on(sc);
++
++		/* Turn on HW trigger mode if supported */
++		if (sc->flags & HW_CTRL) {
++			ret = gdsc_hwctrl(sc, true);
++			if (ret < 0)
++				goto err_disable_supply;
++		}
++
+ 	} else if (sc->flags & ALWAYS_ON) {
+ 		/* If ALWAYS_ON GDSCs are not ON, turn them ON */
+ 		gdsc_enable(&sc->pd);
 
 
 
