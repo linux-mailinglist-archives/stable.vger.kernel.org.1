@@ -1,132 +1,176 @@
-Return-Path: <stable+bounces-133084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007B4A91C31
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 14:30:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84A8BA91C38
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 14:31:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 609C419E5126
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 12:30:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 860B0445075
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 12:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5148624168C;
-	Thu, 17 Apr 2025 12:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0DD2241122;
+	Thu, 17 Apr 2025 12:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jmO3hbbW"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Lq6Wc3pd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1164E248193
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 12:27:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E4224500E
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 12:30:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744892865; cv=none; b=VVXZxXa2/2T6jCPUcy8l9OIVCbxo7bZ25rES8v9/nUs8J5Pc5XXEfBAWyAY99MVxfaigmNeheK3N4t8j3veZnWtt6y9sb6BNU+jb6UnUDsMQDE/59QatG1IWg5sSETnq1X/N/BbawwP1W2ybtnMnzS6XmPatf38436N10F1nEIk=
+	t=1744893015; cv=none; b=KO50FCj2hRKt2GUBHnzg3y0s873858WW3KWy+F0doJGlnKyhYZ64zMvGvOGW1XP6VSJilQa28XAnYXnGTz6zVMQvm854cEGneNEcwj8uLiveQbxw2vhnzyIt7/UmXey+Yg1Yv3V02W+vIvujQW5Ay+iqBJmKoLiv/SUcbWyG1zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744892865; c=relaxed/simple;
-	bh=78nI6pp2XX8HLnT26eOrtpfSB6uX1VHUubTSTIWOqWY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Fj2rJLfYbSZPRceWURIRc8gL0pryDnx6Y6+mT5EQ25q3d/Ve0jsDp0aAwRJifBV4dVNUs/mBDil0D28yv0S922CZd0F9wnalnBmORZBO7CIq7eT2F02CTrxMq46tDxf+j9/Deu0y+Mw3KGeRGCYXlyPMNW9yMBNt0DMzDau58p4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jmO3hbbW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8509CC4CEE4;
-	Thu, 17 Apr 2025 12:27:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744892864;
-	bh=78nI6pp2XX8HLnT26eOrtpfSB6uX1VHUubTSTIWOqWY=;
-	h=Subject:To:Cc:From:Date:From;
-	b=jmO3hbbWUVPUKz/t8Ah/L5I6S3RIGB86bfnu/2rCFPdSzaQ+gOQ3+DnjEShyz4dYF
-	 k3mXYek31+DDa6cwvsaBdr1thX3AcWVSNLDflnVEM5qbKRkPco801M3z5FJkNM0tIs
-	 FKofutxpLq8ytc/GVt7Oma+9P8hYy1wU6kyL7BBI=
-Subject: FAILED: patch "[PATCH] tracing: Do not add length to print format in synthetic" failed to apply to 5.15-stable tree
-To: rostedt@goodmis.org,douglas.raillard@arm.com,mathieu.desnoyers@efficios.com,mhiramat@kernel.org,zanussi@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 17 Apr 2025 14:26:10 +0200
-Message-ID: <2025041710-herald-hardwood-63d1@gregkh>
+	s=arc-20240116; t=1744893015; c=relaxed/simple;
+	bh=nY0rq5mas9QDGLGuiBxaKLim9Mix5whLIwBPkgEx7rI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sDxyH4vMG8i7EZU+tqbAfwZ8mjmnGaIh04/T0iJGl75Ec94pg8uHiCvSYS5dj9OrIXyaht+Nc82VPSCJSM9HxwkCn7sZYJ9nTa8raAXy6E1vLikmkaTGqTiNZX4FrZrI339i9fHnV8fIJjsTQNbuRg5EsTu+3sPyvv9pn37VH9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Lq6Wc3pd; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744893012;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yhMyX45oy8j7OuPZBUX0GxcKvnTqCUj4i4UmRZNxPfY=;
+	b=Lq6Wc3pdUs+OD515yfFw2XXcUNEfBNX3V3Ea4YosJ75XQELTyK6g6APyCXr71MiGZqtUmz
+	f+e/Q0EouMnBEXcD3D0bxJNcB3chQNpqbOETW0Z4f7PbrWQSfCi5fSlkONheWWrsZ2GTyO
+	JvnWrmKI1gDzIUmbh7XMg8gWfAA+J9g=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-62-cW_DDEk_PWySYs5iEkUF4A-1; Thu, 17 Apr 2025 08:30:11 -0400
+X-MC-Unique: cW_DDEk_PWySYs5iEkUF4A-1
+X-Mimecast-MFC-AGG-ID: cW_DDEk_PWySYs5iEkUF4A_1744893010
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-391492acb59so401362f8f.3
+        for <stable@vger.kernel.org>; Thu, 17 Apr 2025 05:30:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744893009; x=1745497809;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yhMyX45oy8j7OuPZBUX0GxcKvnTqCUj4i4UmRZNxPfY=;
+        b=hxRGvN11MjAVBQSL3IjzMccb0QpiKe4lyrQUU3VYhsSw9jgPygocRwp6s1qWoINpcS
+         magPyZ2OYmf89+j8iPJbCvM2Gbp+K++aydY47+WkPC2gD5YJHUmjA/2ARqRc2rvPMka+
+         e/+OMELapDG83lmzywvRnn6DNcKZBpHEU4JjUOZp0/PCJJJjRaZ0A5/LL6zk2vOnHBnh
+         3182Ufh3qDga/xofYZdvOV4MUKXESbxzM4bdG3Q7Gzb6kGDN6Ra1UqNtMOxvCNwOic9v
+         LLhRFlemYXMt+RCWSs72lbi+rk1oQZ4xya/xDJ2c5O5gmvfEVR6NQ/T7L/5aQitxI3hw
+         I5Jw==
+X-Forwarded-Encrypted: i=1; AJvYcCVJxHZRGgIPFGvXW8VouM0q1DMb+YtJv1EBrAOPbrWJMGGGVQrIrfifUYVpz20RnmKr1EYLKJQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzny2vy7a6LYoE0kmLdAi2vc1AhdPr/cnugUr1wnhp8KAkjwUKu
+	Fh7Na3h5lMKTqOijUAHJM3Cf7Qaa174VFi8fUGKfoQdx16IyDcFJI4vhsmms2ABLAfK30K6Varm
+	j8jDTf4YvAD+q4wg8b2sf/1a51smFFgABWfq/7fZbGuLj+J60NDN/Azk6X/KJ2pA=
+X-Gm-Gg: ASbGncvCeJiOXtMUP0DM/A4VT24TrrZaFVoy0MGHILLL9oxbzIKxTzebu/SLj4Vr5Dq
+	yoVFWmMrNX5W2X4dFqTsYgEPNnTyLUjbQu1juRpMmoQ30Qk500bqKbniFkpQNVnBaMfU2uAGOQ6
+	HcWIW24e/mkQxoiWFszD3FcA8rK/UcYQvVOaR37lfdimMTaTcvv1HiAf2NP+UhTC2puBNkej5XD
+	/9lpaDARZnrIgefyojMSu/s9vkqj0S7YGuSNx8zUhD7DGDiKqbfTxUg1T2HDK+lLuraLp1lMdZc
+	k/phIvWUaf7ir8Gw6tjnv/vM0hRCIWU=
+X-Received: by 2002:a5d:64ae:0:b0:38b:d7d2:12f6 with SMTP id ffacd0b85a97d-39ee5b10eb7mr5582939f8f.2.1744893009614;
+        Thu, 17 Apr 2025 05:30:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGM+EJsa6GxQG1p+PKq+EFBpaq5Cqq9HZNJaYx3ETePAwU12QpiixwVwkoc85pVDuylnTVdww==
+X-Received: by 2002:a5d:64ae:0:b0:38b:d7d2:12f6 with SMTP id ffacd0b85a97d-39ee5b10eb7mr5582912f8f.2.1744893009131;
+        Thu, 17 Apr 2025 05:30:09 -0700 (PDT)
+Received: from [172.20.10.3] (37-48-9-64.nat.epc.tmcz.cz. [37.48.9.64])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39eaf43ce3bsm20457233f8f.66.2025.04.17.05.30.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Apr 2025 05:30:08 -0700 (PDT)
+Message-ID: <0a3e442f-339a-44ad-aad8-c21ec342c5a8@redhat.com>
+Date: Thu, 17 Apr 2025 14:30:06 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc64/ftrace: fix clobbered r15 during livepatching
+To: Hari Bathini <hbathini@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-trace-kernel@vger.kernel.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Michael Ellerman <mpe@ellerman.id.au>, "Naveen N. Rao" <naveen@kernel.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, stable@vger.kernel.org
+References: <20250416191227.201146-1-hbathini@linux.ibm.com>
+From: Viktor Malik <vmalik@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20250416191227.201146-1-hbathini@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 4/16/25 21:12, Hari Bathini wrote:
+> While r15 is clobbered always with PPC_FTRACE_OUT_OF_LINE, it is
+> not restored in livepatch sequence leading to not so obvious fails
+> like below:
+> 
+>   BUG: Unable to handle kernel data access on write at 0xc0000000000f9078
+>   Faulting instruction address: 0xc0000000018ff958
+>   Oops: Kernel access of bad area, sig: 11 [#1]
+>   ...
+>   NIP:  c0000000018ff958 LR: c0000000018ff930 CTR: c0000000009c0790
+>   REGS: c00000005f2e7790 TRAP: 0300   Tainted: G              K      (6.14.0+)
+>   MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 2822880b  XER: 20040000
+>   CFAR: c0000000008addc0 DAR: c0000000000f9078 DSISR: 0a000000 IRQMASK: 1
+>   GPR00: c0000000018f2584 c00000005f2e7a30 c00000000280a900 c000000017ffa488
+>   GPR04: 0000000000000008 0000000000000000 c0000000018f24fc 000000000000000d
+>   GPR08: fffffffffffe0000 000000000000000d 0000000000000000 0000000000008000
+>   GPR12: c0000000009c0790 c000000017ffa480 c00000005f2e7c78 c0000000000f9070
+>   GPR16: c00000005f2e7c90 0000000000000000 0000000000000000 0000000000000000
+>   GPR20: 0000000000000000 c00000005f3efa80 c00000005f2e7c60 c00000005f2e7c88
+>   GPR24: c00000005f2e7c60 0000000000000001 c0000000000f9078 0000000000000000
+>   GPR28: 00007fff97960000 c000000017ffa480 0000000000000000 c0000000000f9078
+>   ...
+>   Call Trace:
+>     check_heap_object+0x34/0x390 (unreliable)
+>   __mutex_unlock_slowpath.isra.0+0xe4/0x230
+>   seq_read_iter+0x430/0xa90
+>   proc_reg_read_iter+0xa4/0x200
+>   vfs_read+0x41c/0x510
+>   ksys_read+0xa4/0x190
+>   system_call_exception+0x1d0/0x440
+>   system_call_vectored_common+0x15c/0x2ec
+> 
+> Fix it by restoring r15 always.
+> 
+> Fixes: eec37961a56a ("powerpc64/ftrace: Move ftrace sequence out of line")
+> Reported-by: Viktor Malik <vmalik@redhat.com>
+> Closes: https://lore.kernel.org/lkml/1aec4a9a-a30b-43fd-b303-7a351caeccb7@redhat.com
+> Cc: stable@vger.kernel.org # v6.13+
+> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+After applying the patch, the panic doesn't happen anymore and livepatch
+works as expected.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Thanks!
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x e1a453a57bc76be678bd746f84e3d73f378a9511
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041710-herald-hardwood-63d1@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+Tested-by: Viktor Malik <vmalik@redhat.com>
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From e1a453a57bc76be678bd746f84e3d73f378a9511 Mon Sep 17 00:00:00 2001
-From: Steven Rostedt <rostedt@goodmis.org>
-Date: Mon, 7 Apr 2025 15:41:39 -0400
-Subject: [PATCH] tracing: Do not add length to print format in synthetic
- events
-
-The following causes a vsnprintf fault:
-
-  # echo 's:wake_lat char[] wakee; u64 delta;' >> /sys/kernel/tracing/dynamic_events
-  # echo 'hist:keys=pid:ts=common_timestamp.usecs if !(common_flags & 0x18)' > /sys/kernel/tracing/events/sched/sched_waking/trigger
-  # echo 'hist:keys=next_pid:delta=common_timestamp.usecs-$ts:onmatch(sched.sched_waking).trace(wake_lat,next_comm,$delta)' > /sys/kernel/tracing/events/sched/sched_switch/trigger
-
-Because the synthetic event's "wakee" field is created as a dynamic string
-(even though the string copied is not). The print format to print the
-dynamic string changed from "%*s" to "%s" because another location
-(__set_synth_event_print_fmt()) exported this to user space, and user
-space did not need that. But it is still used in print_synth_event(), and
-the output looks like:
-
-          <idle>-0       [001] d..5.   193.428167: wake_lat: wakee=(efault)sshd-sessiondelta=155
-    sshd-session-879     [001] d..5.   193.811080: wake_lat: wakee=(efault)kworker/u34:5delta=58
-          <idle>-0       [002] d..5.   193.811198: wake_lat: wakee=(efault)bashdelta=91
-            bash-880     [002] d..5.   193.811371: wake_lat: wakee=(efault)kworker/u35:2delta=21
-          <idle>-0       [001] d..5.   193.811516: wake_lat: wakee=(efault)sshd-sessiondelta=129
-    sshd-session-879     [001] d..5.   193.967576: wake_lat: wakee=(efault)kworker/u34:5delta=50
-
-The length isn't needed as the string is always nul terminated. Just print
-the string and not add the length (which was hard coded to the max string
-length anyway).
-
-Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Tom Zanussi <zanussi@kernel.org>
-Cc: Douglas Raillard <douglas.raillard@arm.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Link: https://lore.kernel.org/20250407154139.69955768@gandalf.local.home
-Fixes: 4d38328eb442d ("tracing: Fix synth event printk format for str fields");
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-
-diff --git a/kernel/trace/trace_events_synth.c b/kernel/trace/trace_events_synth.c
-index 969f48742d72..33cfbd4ed76d 100644
---- a/kernel/trace/trace_events_synth.c
-+++ b/kernel/trace/trace_events_synth.c
-@@ -370,7 +370,6 @@ static enum print_line_t print_synth_event(struct trace_iterator *iter,
- 				union trace_synth_field *data = &entry->fields[n_u64];
- 
- 				trace_seq_printf(s, print_fmt, se->fields[i]->name,
--						 STR_VAR_LEN_MAX,
- 						 (char *)entry + data->as_dynamic.offset,
- 						 i == se->n_fields - 1 ? "" : " ");
- 				n_u64++;
+> ---
+>  arch/powerpc/kernel/trace/ftrace_entry.S | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/kernel/trace/ftrace_entry.S b/arch/powerpc/kernel/trace/ftrace_entry.S
+> index 2c1b24100eca..3565c67fc638 100644
+> --- a/arch/powerpc/kernel/trace/ftrace_entry.S
+> +++ b/arch/powerpc/kernel/trace/ftrace_entry.S
+> @@ -212,10 +212,10 @@
+>  	bne-	1f
+>  
+>  	mr	r3, r15
+> +1:	mtlr	r3
+>  	.if \allregs == 0
+>  	REST_GPR(15, r1)
+>  	.endif
+> -1:	mtlr	r3
+>  #endif
+>  
+>  	/* Restore gprs */
 
 
