@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-133391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE8AA925BD
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:07:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08F23A929C4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:44:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A4717B4919
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:02:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BAD28E4CE6
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3FA12571B5;
-	Thu, 17 Apr 2025 18:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C794A2571DD;
+	Thu, 17 Apr 2025 18:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5fkaj1M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ek6iSG/V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A061E832C;
-	Thu, 17 Apr 2025 18:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839BD1D07BA;
+	Thu, 17 Apr 2025 18:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744912935; cv=none; b=h0IuP+rVMqDH3VbS6w+gRuuFaLYvnmtyb0EL07I+aImogDCCqsmvA0+e956gG+G14bkOWjen5a5LGwyY1WFlD5+Mgv5criIJALYKrNifnDD5aeBV4eDbmz+BF+xQ236aZ4/mFTnZrM+nSTnzF3ncB7bW/g2ykJISHynvOy8/akM=
+	t=1744915207; cv=none; b=YLo8u7UxvnU+vqQCZoGvoig/fG54tIgJ6MvPPiQ04/rMHUZm3ZKn1N1RXBl+ew+iqp16XL1D24/QqK0LVjmUDpPem3Pw6M75kXM7tYnrFBKvtRo9+r9A19kEnRUMMxoexTvEMtjOsmbexkp3J2mpTVOVB3Ur9TNEgLZYTnevHSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744912935; c=relaxed/simple;
-	bh=zQ8ZIr+33L8+IId3oY1UX3VgsK3qQiy/GKv6+ToiN3Y=;
+	s=arc-20240116; t=1744915207; c=relaxed/simple;
+	bh=9odaS8Oa+k7u7d9SEi0WKhYC7grzUViPd8pdVYO4we8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ck7Bb8vJaSxu52Iih6b/IP2jzFZKhqmPsd60LH9L0wOmC8rnpz7n6qFQcnaRN2qMUYvskLjPgsIdBgNwbipWd5FiLNP7C5pXJG1NG/AQmBKZs5l874yKpqfANjKvwmF66eJwHLR/+s4LrNBQoh1zFHTaqhBvDoMQjrWkczuqPwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5fkaj1M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B611FC4CEE4;
-	Thu, 17 Apr 2025 18:02:13 +0000 (UTC)
+	 MIME-Version; b=b1o+1Uyv/xYxjn494ONDxN3hNyPyez206rD0/Oz5dIzOW/6fVV5j+F4hvp/J+FuQqg88F8pCvjLmQ5mXaeG792E0x3vTvgacIUj1zg679VWwQjIzwF+gxUtLv5zZ6xw2TzrA2WCyhOc16fCOLKepMiXiPt3iwG/ZsXtsODmMgvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ek6iSG/V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB7FBC4CEE7;
+	Thu, 17 Apr 2025 18:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744912934;
-	bh=zQ8ZIr+33L8+IId3oY1UX3VgsK3qQiy/GKv6+ToiN3Y=;
+	s=korg; t=1744915207;
+	bh=9odaS8Oa+k7u7d9SEi0WKhYC7grzUViPd8pdVYO4we8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F5fkaj1MUcln7TaEpBaiSpluLrMioWhmU6Egz0ktnnzXdVf98XiYouRInA5ctVC9E
-	 fOKzOpKEX2WyV3m29xLC2Wf+amcErJ+fSzbg6FRJzWriQL1D+7B7nC0FbWhPehZUr6
-	 Gu6b3ojPNjqGt7UkzhHKeeHnH6wDiz8PwuBOp4rU=
+	b=Ek6iSG/V4QUDoo0w+ojTA8BHJOMNiVNOFJY99Z1TIkQ+8hNfPyF3Ofqa5+L9yEvGH
+	 KNZwebP1PkQ5o2kONO2xfUYnb/6YGTAE9yBs3bTAjvZ4tbfPVQccy6GHXw07sLshXz
+	 60Cq0gqRdrZU/MkZ3KXtzCFC60pNAMQ5t6z1cFZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 173/449] PCI: Add Rockchip Vendor ID
+Subject: [PATCH 6.12 052/393] perf: arm_pmu: Dont disable counter in armpmu_add()
 Date: Thu, 17 Apr 2025 19:47:41 +0200
-Message-ID: <20250417175124.945633526@linuxfoundation.org>
+Message-ID: <20250417175109.680896886@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +63,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 20bbb083bbc9d3f8db390f2e35e168f1b23dae8a ]
+[ Upstream commit dcca27bc1eccb9abc2552aab950b18a9742fb8e7 ]
 
-Move PCI_VENDOR_ID_ROCKCHIP from pci_endpoint_test.c to pci_ids.h and
-reuse it in pcie-rockchip-host.c.
+Currently armpmu_add() tries to handle a newly-allocated counter having
+a stale associated event, but this should not be possible, and if this
+were to happen the current mitigation is insufficient and potentially
+expensive. It would be better to warn if we encounter the impossible
+case.
 
-Link: https://lore.kernel.org/r/20250218092120.2322784-2-cassel@kernel.org
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Calls to pmu::add() and pmu::del() are serialized by the core perf code,
+and armpmu_del() clears the relevant slot in pmu_hw_events::events[]
+before clearing the bit in pmu_hw_events::used_mask such that the
+counter can be reallocated. Thus when armpmu_add() allocates a counter
+index from pmu_hw_events::used_mask, it should not be possible to observe
+a stale even in pmu_hw_events::events[] unless either
+pmu_hw_events::used_mask or pmu_hw_events::events[] have been corrupted.
+
+If this were to happen, we'd end up with two events with the same
+event->hw.idx, which would clash with each other during reprogramming,
+deletion, etc, and produce bogus results. Add a WARN_ON_ONCE() for this
+case so that we can detect if this ever occurs in practice.
+
+That possiblity aside, there's no need to call arm_pmu::disable(event)
+for the new event. The PMU reset code initialises the counter in a
+disabled state, and armpmu_del() will disable the counter before it can
+be reused. Remove the redundant disable.
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Tested-by: James Clark <james.clark@linaro.org>
+Link: https://lore.kernel.org/r/20250218-arm-brbe-v19-v20-2-4e9922fc2e8e@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/pci_endpoint_test.c            | 1 -
- drivers/pci/controller/pcie-rockchip-host.c | 2 +-
- drivers/pci/controller/pcie-rockchip.h      | 1 -
- include/linux/pci_ids.h                     | 2 ++
- 4 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/perf/arm_pmu.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
-index 9dac7cbe8748c..57e0f618fee5e 100644
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -88,7 +88,6 @@
- #define PCI_DEVICE_ID_RENESAS_R8A774E1		0x0025
- #define PCI_DEVICE_ID_RENESAS_R8A779F0		0x0031
+diff --git a/drivers/perf/arm_pmu.c b/drivers/perf/arm_pmu.c
+index 398cce3d76fc4..2f33e69a8caf2 100644
+--- a/drivers/perf/arm_pmu.c
++++ b/drivers/perf/arm_pmu.c
+@@ -342,12 +342,10 @@ armpmu_add(struct perf_event *event, int flags)
+ 	if (idx < 0)
+ 		return idx;
  
--#define PCI_VENDOR_ID_ROCKCHIP			0x1d87
- #define PCI_DEVICE_ID_ROCKCHIP_RK3588		0x3588
- 
- static DEFINE_IDA(pci_endpoint_test_ida);
-diff --git a/drivers/pci/controller/pcie-rockchip-host.c b/drivers/pci/controller/pcie-rockchip-host.c
-index 5adac6adc046f..6a46be17aa91b 100644
---- a/drivers/pci/controller/pcie-rockchip-host.c
-+++ b/drivers/pci/controller/pcie-rockchip-host.c
-@@ -367,7 +367,7 @@ static int rockchip_pcie_host_init_port(struct rockchip_pcie *rockchip)
- 		}
- 	}
- 
--	rockchip_pcie_write(rockchip, ROCKCHIP_VENDOR_ID,
-+	rockchip_pcie_write(rockchip, PCI_VENDOR_ID_ROCKCHIP,
- 			    PCIE_CORE_CONFIG_VENDOR);
- 	rockchip_pcie_write(rockchip,
- 			    PCI_CLASS_BRIDGE_PCI_NORMAL << 8,
-diff --git a/drivers/pci/controller/pcie-rockchip.h b/drivers/pci/controller/pcie-rockchip.h
-index 11def598534b2..14954f43e5e9a 100644
---- a/drivers/pci/controller/pcie-rockchip.h
-+++ b/drivers/pci/controller/pcie-rockchip.h
-@@ -200,7 +200,6 @@
- #define AXI_WRAPPER_NOR_MSG			0xc
- 
- #define PCIE_RC_SEND_PME_OFF			0x11960
--#define ROCKCHIP_VENDOR_ID			0x1d87
- #define PCIE_LINK_IS_L2(x) \
- 	(((x) & PCIE_CLIENT_DEBUG_LTSSM_MASK) == PCIE_CLIENT_DEBUG_LTSSM_L2)
- #define PCIE_LINK_TRAINING_DONE(x) \
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index 1a2594a38199f..2a9ca3dbaa0e9 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -2609,6 +2609,8 @@
- 
- #define PCI_VENDOR_ID_ZHAOXIN		0x1d17
- 
-+#define PCI_VENDOR_ID_ROCKCHIP		0x1d87
+-	/*
+-	 * If there is an event in the counter we are going to use then make
+-	 * sure it is disabled.
+-	 */
++	/* The newly-allocated counter should be empty */
++	WARN_ON_ONCE(hw_events->events[idx]);
 +
- #define PCI_VENDOR_ID_HYGON		0x1d94
+ 	event->hw.idx = idx;
+-	armpmu->disable(event);
+ 	hw_events->events[idx] = event;
  
- #define PCI_VENDOR_ID_META		0x1d9b
+ 	hwc->state = PERF_HES_STOPPED | PERF_HES_UPTODATE;
 -- 
 2.39.5
 
