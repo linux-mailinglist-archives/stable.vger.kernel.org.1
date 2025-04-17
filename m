@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-133869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AABEA927EB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:29:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B869AA92A00
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:46:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA03319E6269
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:30:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A00AD467510
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:45:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA556256C7C;
-	Thu, 17 Apr 2025 18:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530D2256C84;
+	Thu, 17 Apr 2025 18:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x3QmjUpx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1li4KDTP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82BD92620C3;
-	Thu, 17 Apr 2025 18:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D312566ED;
+	Thu, 17 Apr 2025 18:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914393; cv=none; b=Q+t/ML8rmUzQVCXTADhyCrU5EoUN5q2McPaBePDwAqTQj89/SV8FAysF/Z57/Y3Y691I/X5zPCAS8ioIhgDVBOVpHSbTkNGHFcbPXzyf57RRuy5Ho1p0tzYQ7MTf13RPujaaR+nlghBGTTCAnx5mqkFeboQS0HX8kTqG6Pf8stw=
+	t=1744915508; cv=none; b=Lt6TC2yo3FEcr/yFMR9V/s6PkPiARXtadVD2FqHsN2dimKpHct3spXhDBXCM3FPvATFfYqnmogCymSW/jz0Dg8rnHcSyJZFDoeWZcH9jw5wfYzTqT0qQwQi+pOMrBHlwDeHdf8eLfyvohzqDUZ/Za9IBUi/RQ6dlItrPoiwDdWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914393; c=relaxed/simple;
-	bh=y8QZjQ2bUrK27WG1FkUkYy4TrKUfntWSJnUjuSTauFQ=;
+	s=arc-20240116; t=1744915508; c=relaxed/simple;
+	bh=wMeSOvgMyGw28DkYOhNwjGou8s35bw2RSlhMhFDa1dI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hQ3+VpiCxGdHe/Wzzyk8ORTsDss2zdiz3pFQfO8oXOdsBjEO8KslQuI5+XhdIuy5SCTjJMQ29yt1f1HpEts1Ly55oy5oFcT+n1hLQ2IbQbXPABSLY7CW4j5cjLZHXzikCmZE9YbXHmH0C0rLF2X04v6eSg6khRT1FlbHU9EAmOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x3QmjUpx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C824C4CEE4;
-	Thu, 17 Apr 2025 18:26:32 +0000 (UTC)
+	 MIME-Version; b=ORRhcQAAcHtSKxqawfShPqgD0BW1dbL7sDtBWFwowKTmKq+XsKMyPGyDlV9UQZVS5du4wnkQkMz/w9zbuIbILjJIOhKTLLg4XsxNugurYU5hHxtWnyv9rGLWkbe5wE5kU7Fz20RldFTRRDefjHom2A6KEaDUPPJWT7/cLT42qAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1li4KDTP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A8EC4CEE4;
+	Thu, 17 Apr 2025 18:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914393;
-	bh=y8QZjQ2bUrK27WG1FkUkYy4TrKUfntWSJnUjuSTauFQ=;
+	s=korg; t=1744915507;
+	bh=wMeSOvgMyGw28DkYOhNwjGou8s35bw2RSlhMhFDa1dI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x3QmjUpxkHERWqBVa/d8kcr7bo5N5OSHpj7+P/lFXsMrqrNTZBRF398ztNLD5ETqj
-	 sxf7muJaGHyMkYr+PqpKR5uZuImvxx+HD216v0qm4VsfrfU6eIgTdr0mFmEPwASsgm
-	 Ujk8Ssgv2G65/TOheD7ko4PEPXVpHJ82waJxrwcY=
+	b=1li4KDTP1wj0sG4s9g7Vgl10ANPJamDuBXkhqVzERGFph/6tbImsQf7yVtm/EKDEl
+	 2ZJCDPxhRfvQpJWbiRQPg5VgSArCqiduDHB/3hq3gnuu2g3N7ePXTJDt+h8wHzgL66
+	 1aCTP9xsSAy0+hdkakWY478UytYUhDZHwW3vq2Do=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Martin=20T=C5=AFma?= <martin.tuma@digiteqautomotive.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.13 200/414] media: mgb4: Fix CMT registers update logic
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 149/393] PCI: Enable Configuration RRS SV early
 Date: Thu, 17 Apr 2025 19:49:18 +0200
-Message-ID: <20250417175119.487146430@linuxfoundation.org>
+Message-ID: <20250417175113.573580807@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,57 +59,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Tůma <martin.tuma@digiteqautomotive.com>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-commit dd05443189f9ae175dd806594b67bf55ddb6539e upstream.
+[ Upstream commit 3f8c4959fc18e477801386a625e726c59f52a2c4 ]
 
-The CMT "magic values" registers must be updated while the CMT reset
-registers are active.
+Following a reset, a Function may respond to Config Requests with Request
+Retry Status (RRS) Completion Status to indicate that it is temporarily
+unable to process the Request, but will be able to process the Request in
+the future (PCIe r6.0, sec 2.3.1).
 
-Fixes: 0ab13674a9bd ("media: pci: mgb4: Added Digiteq Automotive MGB4 driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Martin Tůma <martin.tuma@digiteqautomotive.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If the Configuration RRS Software Visibility feature is enabled and a Root
+Complex receives RRS for a config read of the Vendor ID, the Root Complex
+completes the Request to the host by returning PCI_VENDOR_ID_PCI_SIG,
+0x0001 (sec 2.3.2).
+
+The Config RRS SV feature applies only to Root Ports and is not directly
+related to pci_scan_bridge_extend().  Move the RRS SV enable to
+set_pcie_port_type() where we handle other PCIe-specific configuration.
+
+Link: https://lore.kernel.org/r/20250303210217.199504-1-helgaas@kernel.org
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/mgb4/mgb4_cmt.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/pci/probe.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/media/pci/mgb4/mgb4_cmt.c
-+++ b/drivers/media/pci/mgb4/mgb4_cmt.c
-@@ -206,10 +206,11 @@ u32 mgb4_cmt_set_vout_freq(struct mgb4_v
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 0e757b23a09f0..80dcfb72ea121 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -1327,8 +1327,6 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
+ 	pci_write_config_word(dev, PCI_BRIDGE_CONTROL,
+ 			      bctl & ~PCI_BRIDGE_CTL_MASTER_ABORT);
  
- 	mgb4_write_reg(video, regs->config, 0x1 | (config & ~0x3));
- 
-+	mgb4_mask_reg(video, regs->config, 0x100, 0x100);
+-	pci_enable_rrs_sv(dev);
+-
+ 	if ((secondary || subordinate) && !pcibios_assign_all_busses() &&
+ 	    !is_cardbus && !broken) {
+ 		unsigned int cmax, buses;
+@@ -1569,6 +1567,11 @@ void set_pcie_port_type(struct pci_dev *pdev)
+ 	pdev->pcie_cap = pos;
+ 	pci_read_config_word(pdev, pos + PCI_EXP_FLAGS, &reg16);
+ 	pdev->pcie_flags_reg = reg16;
 +
- 	for (i = 0; i < ARRAY_SIZE(cmt_addrs_out[0]); i++)
- 		mgb4_write_reg(&voutdev->mgbdev->cmt, addr[i], reg_set[i]);
- 
--	mgb4_mask_reg(video, regs->config, 0x100, 0x100);
- 	mgb4_mask_reg(video, regs->config, 0x100, 0x0);
- 
- 	mgb4_write_reg(video, regs->config, config & ~0x1);
-@@ -236,10 +237,11 @@ void mgb4_cmt_set_vin_freq_range(struct
- 
- 	mgb4_write_reg(video, regs->config, 0x1 | (config & ~0x3));
- 
-+	mgb4_mask_reg(video, regs->config, 0x1000, 0x1000);
++	type = pci_pcie_type(pdev);
++	if (type == PCI_EXP_TYPE_ROOT_PORT)
++		pci_enable_rrs_sv(pdev);
 +
- 	for (i = 0; i < ARRAY_SIZE(cmt_addrs_in[0]); i++)
- 		mgb4_write_reg(&vindev->mgbdev->cmt, addr[i], reg_set[i]);
+ 	pci_read_config_dword(pdev, pos + PCI_EXP_DEVCAP, &pdev->devcap);
+ 	pdev->pcie_mpss = FIELD_GET(PCI_EXP_DEVCAP_PAYLOAD, pdev->devcap);
  
--	mgb4_mask_reg(video, regs->config, 0x1000, 0x1000);
- 	mgb4_mask_reg(video, regs->config, 0x1000, 0x0);
- 
- 	mgb4_write_reg(video, regs->config, config & ~0x1);
+@@ -1585,7 +1588,6 @@ void set_pcie_port_type(struct pci_dev *pdev)
+ 	 * correctly so detect impossible configurations here and correct
+ 	 * the port type accordingly.
+ 	 */
+-	type = pci_pcie_type(pdev);
+ 	if (type == PCI_EXP_TYPE_DOWNSTREAM) {
+ 		/*
+ 		 * If pdev claims to be downstream port but the parent
+-- 
+2.39.5
+
 
 
 
