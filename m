@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-133601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89A6FA9265F
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:12:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65C24A92AEE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8C194A06F2
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:12:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B7E53A3008
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0D9255249;
-	Thu, 17 Apr 2025 18:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D87256C79;
+	Thu, 17 Apr 2025 18:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZcBz8d4T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sY3Yzspc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8D61A3178;
-	Thu, 17 Apr 2025 18:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D64925178E;
+	Thu, 17 Apr 2025 18:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913569; cv=none; b=EYiNHOB8Wgy7QH0GuSUOxfpq+R1sDR/kRQf+sGSqqIyG/Me75/cSmIwCd8k9mv17oekvt8P+nNieFoCm9LwhnIgqZUWnF/W4EGAFVlEL/mbuTpQXIXCq3TG7vDJIWZBDFZRek0Rt14toDme5lSoeaNz7gEl4z9RTwuHPfsj5Gow=
+	t=1744915852; cv=none; b=O8W9GUYqKHMqvY2kPISLQ+Ga0OfmvxjtK1khv6KK/X5iEQiSn6JIcLVTWKeWsd50kkn1kHU/j6NteamPIy2jn/3ri7mJPISKEsxdfR4Zch/LRtGJApMP0OXznlgnhYSz8l39cZUaXTZ3mI56Hb84F6HNrYHo6cCfxNoQ1ryyCnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913569; c=relaxed/simple;
-	bh=nAcWe2ksqKkeguwMEaUlV+X4bl/cuZV3Rswg31fxnq0=;
+	s=arc-20240116; t=1744915852; c=relaxed/simple;
+	bh=1n+7OxrsKkXxgoCtzYflI0jaevsuWqpU4pZ4HbxxbmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lYXo6JpEIx4RGpOYXXl5rskNZi5C/gpLCrCqC7U/vAHOY506r0FtlCxptsloclp3FPlR7o5ri9c2kyMUQxssHvyGXAE6qrGiKTYi/bF1zF27jNHkyiCoyM8HsAoPTAyUfZKsTCSbyaBv7K6cs3dmx5hwVwlr93169+7buEr2xp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZcBz8d4T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50432C4CEE4;
-	Thu, 17 Apr 2025 18:12:49 +0000 (UTC)
+	 MIME-Version; b=neiycxOcR5oaqWPaXgN3mv4xJ6k/Szbbhv4+mv0tlv5W2qQNc5xbt5ZcEGyInbCcQKs4T7L71pnjSYoBYxbgDe2tdZ3ZSNndHR5eZnkm0YI6wOsjb/TD4FFyumqUljCxd4uGmwSFkmaqeWlILuHjwtsibMLBXU0zD3yppttAoqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sY3Yzspc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C37C4CEE4;
+	Thu, 17 Apr 2025 18:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913569;
-	bh=nAcWe2ksqKkeguwMEaUlV+X4bl/cuZV3Rswg31fxnq0=;
+	s=korg; t=1744915852;
+	bh=1n+7OxrsKkXxgoCtzYflI0jaevsuWqpU4pZ4HbxxbmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZcBz8d4TlQrnbOV3vhSwn7aYfxsjqx1Y59FORNNFM113+SS3kjli0Gye2j+/1hMk1
-	 ARA79m3WbIpWRRjyvyR1y+gD4XO2hjtdNn/Olbs/Vw01WuZYgsWqxU/ZEWCZBB6Tkp
-	 ODxpl7YF6OSCEmgMo6MYz+8kZ6A6aijz+lgjHNX8=
+	b=sY3YzspcgiVAQA9rqE5kKejXhkJkqQ+Nv4EBRME7e6gVoS8ahM9LD7iDCJUMyEGPT
+	 193SpAHGWbVhEc0BePBaifAsUx+P+rbZl9u0//6sMMWih8/5Y5VkOFmaU6RVZRe2Vb
+	 /WzltFS5jjcmDlXg8OqxtdKeOIM1eXIshDStJoak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Imran Shaik <quic_imrashai@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.14 382/449] clk: qcom: gdsc: Set retain_ff before moving to HW CTRL
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Sunmin Jeong <s_min.jeong@samsung.com>,
+	Yeongjin Gil <youngjin.gil@samsung.com>,
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.12 261/393] f2fs: fix to avoid atomicity corruption of atomic file
 Date: Thu, 17 Apr 2025 19:51:10 +0200
-Message-ID: <20250417175133.634088098@linuxfoundation.org>
+Message-ID: <20250417175118.101036391@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +65,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taniya Das <quic_tdas@quicinc.com>
+From: Yeongjin Gil <youngjin.gil@samsung.com>
 
-commit 25708f73ff171bb4171950c9f4be5aa8504b8459 upstream.
+commit f098aeba04c9328571567dca45159358a250240c upstream.
 
-Enable the retain_ff_enable bit of GDSCR only if the GDSC is already ON.
-Once the GDSCR moves to HW control, SW no longer can determine the state
-of the GDSCR and setting the retain_ff bit could destroy all the register
-contents we intended to save.
-Therefore, move the retain_ff configuration before switching the GDSC to
-HW trigger mode.
+In the case of the following call stack for an atomic file,
+FI_DIRTY_INODE is set, but FI_ATOMIC_DIRTIED is not subsequently set.
 
-Cc: stable@vger.kernel.org
-Fixes: 173722995cdb ("clk: qcom: gdsc: Add support to enable retention of GSDCR")
-Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
-Reviewed-by: Imran Shaik <quic_imrashai@quicinc.com>
-Tested-by: Imran Shaik <quic_imrashai@quicinc.com> # on QCS8300
-Link: https://lore.kernel.org/r/20250214-gdsc_fixes-v1-1-73e56d68a80f@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+f2fs_file_write_iter
+  f2fs_map_blocks
+    f2fs_reserve_new_blocks
+      inc_valid_block_count
+        __mark_inode_dirty(dquot)
+          f2fs_dirty_inode
+
+If FI_ATOMIC_DIRTIED is not set, atomic file can encounter corruption
+due to a mismatch between old file size and new data.
+
+To resolve this issue, I changed to set FI_ATOMIC_DIRTIED when
+FI_DIRTY_INODE is set. This ensures that FI_DIRTY_INODE, which was
+previously cleared by the Writeback thread during the commit atomic, is
+set and i_size is updated.
+
+Cc: <stable@vger.kernel.org>
+Fixes: fccaa81de87e ("f2fs: prevent atomic file from being dirtied before commit")
+Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+Reviewed-by: Sunmin Jeong <s_min.jeong@samsung.com>
+Signed-off-by: Yeongjin Gil <youngjin.gil@samsung.com>
+Reviewed-by: Daeho Jeong <daehojeong@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gdsc.c |   21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ fs/f2fs/inode.c |    4 +---
+ fs/f2fs/super.c |    4 ++++
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/clk/qcom/gdsc.c
-+++ b/drivers/clk/qcom/gdsc.c
-@@ -292,6 +292,9 @@ static int gdsc_enable(struct generic_pm
- 	 */
- 	udelay(1);
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -34,10 +34,8 @@ void f2fs_mark_inode_dirty_sync(struct i
+ 	if (f2fs_inode_dirtied(inode, sync))
+ 		return;
  
-+	if (sc->flags & RETAIN_FF_ENABLE)
-+		gdsc_retain_ff_on(sc);
-+
- 	/* Turn on HW trigger mode if supported */
- 	if (sc->flags & HW_CTRL) {
- 		ret = gdsc_hwctrl(sc, true);
-@@ -308,9 +311,6 @@ static int gdsc_enable(struct generic_pm
- 		udelay(1);
+-	if (f2fs_is_atomic_file(inode)) {
+-		set_inode_flag(inode, FI_ATOMIC_DIRTIED);
++	if (f2fs_is_atomic_file(inode))
+ 		return;
+-	}
+ 
+ 	mark_inode_dirty_sync(inode);
+ }
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1515,6 +1515,10 @@ int f2fs_inode_dirtied(struct inode *ino
+ 		inc_page_count(sbi, F2FS_DIRTY_IMETA);
  	}
- 
--	if (sc->flags & RETAIN_FF_ENABLE)
--		gdsc_retain_ff_on(sc);
--
- 	return 0;
+ 	spin_unlock(&sbi->inode_lock[DIRTY_META]);
++
++	if (!ret && f2fs_is_atomic_file(inode))
++		set_inode_flag(inode, FI_ATOMIC_DIRTIED);
++
+ 	return ret;
  }
  
-@@ -457,13 +457,6 @@ static int gdsc_init(struct gdsc *sc)
- 				goto err_disable_supply;
- 		}
- 
--		/* Turn on HW trigger mode if supported */
--		if (sc->flags & HW_CTRL) {
--			ret = gdsc_hwctrl(sc, true);
--			if (ret < 0)
--				goto err_disable_supply;
--		}
--
- 		/*
- 		 * Make sure the retain bit is set if the GDSC is already on,
- 		 * otherwise we end up turning off the GDSC and destroying all
-@@ -471,6 +464,14 @@ static int gdsc_init(struct gdsc *sc)
- 		 */
- 		if (sc->flags & RETAIN_FF_ENABLE)
- 			gdsc_retain_ff_on(sc);
-+
-+		/* Turn on HW trigger mode if supported */
-+		if (sc->flags & HW_CTRL) {
-+			ret = gdsc_hwctrl(sc, true);
-+			if (ret < 0)
-+				goto err_disable_supply;
-+		}
-+
- 	} else if (sc->flags & ALWAYS_ON) {
- 		/* If ALWAYS_ON GDSCs are not ON, turn them ON */
- 		gdsc_enable(&sc->pd);
 
 
 
