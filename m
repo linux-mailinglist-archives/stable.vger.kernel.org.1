@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-133492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4E33A925E4
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:08:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8541DA92A26
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE5378A4ED4
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25362189A6BE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:47:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8162571DB;
-	Thu, 17 Apr 2025 18:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2FAF1EB1BF;
+	Thu, 17 Apr 2025 18:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZtATAsk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LqIh65Nx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1392571CE;
-	Thu, 17 Apr 2025 18:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5564502F;
+	Thu, 17 Apr 2025 18:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913240; cv=none; b=AA5oSB/Ybqi4GURpAm//6ksXBDOX5FZTDrvZIuLASQOhAplid+VsCm4G6C1ERGGai7u0acz6VCV9c0Hw9DUTFkptvZGkdFwrL7gE5w+9k/EPtB9RKFq6thP/d5dmjOQmTk7WLQUyggiNpKpI//mF2gIAIhUEpHUaK1NImK9z1jk=
+	t=1744915643; cv=none; b=OCYl3VP0ImsIXYsyy90z+DzvvDuS+jFdR5o3q844Srn+SPPpeMPVNhIIUoSMX3ryZMnX5hO3Imkae0YW+LeyiXzI+euh1XNbymPGt+RmFlGMl9WOpsC5ztasGjS9pG3UsSz1vTkMv9SAHnJtN2dUiaOKaZvnTpYJ4u7Hh9YHjYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913240; c=relaxed/simple;
-	bh=p/4XBzDTM33a/Ve3Y1w4yGLOomzNNAPlma9QXIxywvM=;
+	s=arc-20240116; t=1744915643; c=relaxed/simple;
+	bh=Pw5Ea5rXVtB3/Lpjx35RcCjFx/rCFKaeIFU+/lbNfFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X1dSaHIKlgVQMh3Q5OmSrEp/JOD8h4VSzHLg1QzgP6pQeGFWPbSLn6o7//XNzxMV0Z3rhmFdp5oV7p2NKEpJBNU2S9Q1c7h0ehuK1Wu+35fPVazJADfdA465U6QIQwgI2eopBKwUGZjHa+dxmGyXBG6q2wFsbAZgrXqwCY7VPis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZtATAsk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20EE7C4CEE4;
-	Thu, 17 Apr 2025 18:07:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rc1i/i4rGDMiTnwEKmGawoqASFOno2yUQG/h4hjVf8JrazN4p49HWBz3WICAvXLgXM+H87qAozsiVue18kBER+GcrOVIGo4mQLen6j/ziUGjjmXwMD2Tic70kfT3qTgcJhC/Y1noGPsyZUNL+wXzrBVX/SEDe0kDTIuAYGKzxfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LqIh65Nx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1619C4CEE4;
+	Thu, 17 Apr 2025 18:47:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913240;
-	bh=p/4XBzDTM33a/Ve3Y1w4yGLOomzNNAPlma9QXIxywvM=;
+	s=korg; t=1744915643;
+	bh=Pw5Ea5rXVtB3/Lpjx35RcCjFx/rCFKaeIFU+/lbNfFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZtATAskp/rrF/aV0sn30et1hgfH3r92qJ5OBQFqv8N296I6CUYEUf7dy2sKYWyGj
-	 gcmPGu0iKENFHQ+1tGthuHnFrXKJxWGyZtnlny7yp6A+sagNIraMDX/LD3rwjMjmT/
-	 3/x/5xkpjxAtBXVuKJ8TE0dZNhMirGtcLj7yCmaM=
+	b=LqIh65Nxy3pK02wLgpYm2zOVnmQLFOx6hkc/jSsc+RrM+my9MAphvXU2V6Pa2mNDX
+	 Tmc481MnhiUhJyC0FP9/FIke4Ipx33Zb3PEOO+3C6A7nUNZRst6TWoKjkgs0GeSSYM
+	 Gm0Aa5x0iXga8v9ZbwowUNjQ6prLsWwbW8ZwPtI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.14 274/449] net: dsa: mv88e6xxx: fix internal PHYs for 6320 family
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 153/393] drm/amdgpu: grab an additional reference on the gang fence v2
 Date: Thu, 17 Apr 2025 19:49:22 +0200
-Message-ID: <20250417175129.085786836@linuxfoundation.org>
+Message-ID: <20250417175113.741617806@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +64,62 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: Christian König <christian.koenig@amd.com>
 
-commit 52fdc41c3278c981066a461d03d5477ebfcf270c upstream.
+[ Upstream commit 0d9a95099dcb05b5f4719c830d15bf4fdcad0dc2 ]
 
-Fix internal PHYs definition for the 6320 family, which has only 2
-internal PHYs (on ports 3 and 4).
+We keep the gang submission fence around in adev, make sure that it
+stays alive.
 
-Fixes: bc3931557d1d ("net: dsa: mv88e6xxx: Add number of internal PHYs")
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.6.x
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250317173250.28780-7-kabel@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+v2: fix memory leak on retry
+
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Acked-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -6259,7 +6259,8 @@ static const struct mv88e6xxx_info mv88e
- 		.num_databases = 4096,
- 		.num_macs = 8192,
- 		.num_ports = 7,
--		.num_internal_phys = 5,
-+		.num_internal_phys = 2,
-+		.internal_phys_offset = 3,
- 		.num_gpio = 15,
- 		.max_vid = 4095,
- 		.max_sid = 63,
-@@ -6286,7 +6287,8 @@ static const struct mv88e6xxx_info mv88e
- 		.num_databases = 4096,
- 		.num_macs = 8192,
- 		.num_ports = 7,
--		.num_internal_phys = 5,
-+		.num_internal_phys = 2,
-+		.internal_phys_offset = 3,
- 		.num_gpio = 15,
- 		.max_vid = 4095,
- 		.max_sid = 63,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 96845541b2d25..31d4df9688981 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -6575,18 +6575,26 @@ struct dma_fence *amdgpu_device_switch_gang(struct amdgpu_device *adev,
+ {
+ 	struct dma_fence *old = NULL;
+ 
++	dma_fence_get(gang);
+ 	do {
+ 		dma_fence_put(old);
+ 		old = amdgpu_device_get_gang(adev);
+ 		if (old == gang)
+ 			break;
+ 
+-		if (!dma_fence_is_signaled(old))
++		if (!dma_fence_is_signaled(old)) {
++			dma_fence_put(gang);
+ 			return old;
++		}
+ 
+ 	} while (cmpxchg((struct dma_fence __force **)&adev->gang_submit,
+ 			 old, gang) != old);
+ 
++	/*
++	 * Drop it once for the exchanged reference in adev and once for the
++	 * thread local reference acquired in amdgpu_device_get_gang().
++	 */
++	dma_fence_put(old);
+ 	dma_fence_put(old);
+ 	return NULL;
+ }
+-- 
+2.39.5
+
 
 
 
