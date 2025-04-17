@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-133881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BA9EA92831
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:31:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD9A0A925D3
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:08:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1ABF48E11ED
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:30:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5BEC467E1C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623B82641C1;
-	Thu, 17 Apr 2025 18:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB4B2571B3;
+	Thu, 17 Apr 2025 18:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQrM8j0+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qo/EZciH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CCC263F28;
-	Thu, 17 Apr 2025 18:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A23E1A3178;
+	Thu, 17 Apr 2025 18:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914428; cv=none; b=iWT5Y7JFH/LFamZ90u9v6PLaUVCE5aQCjZKeUKd9YsAWuKpxAhp5mZWGxR/GIVVqWTwPvTE60vBdaBhTy3l9BzhgjUbRCCYkIa1GP0P9R8LcwZSycVCM0l+vR6/FNm84YTmpFZst/mNH9tBSZVShjxZWMl37IehtdajDR0T/+TQ=
+	t=1744913181; cv=none; b=qdcijhrP1bW1S857HuN/He427Lyq07eBWuafXGEGjqb/dTwc4zt2yq2BQNwUXjjTdvp/uMFfErOAmZXnHSMR5GXrQG9cmp64UeU9Xn32/TzhzSCRyHfqlejs8GAtUvjbzfP/Subyyo1d8gFtREaPZkQPppVXHKNkQbWywvZ9GUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914428; c=relaxed/simple;
-	bh=iFJIMSIZrzDBGv+rGTNbJ9hlIOFpIA6nHCRPVnNQVEs=;
+	s=arc-20240116; t=1744913181; c=relaxed/simple;
+	bh=vda4h3Lhw7wGcGQTfIftCF0qWBeNTdXNqFxVeHzT2YY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KozY2VJWk7czQj5NFlncpM08Xyr7rgCdZ4J9CJGVHfnECfJmZUU7dOjqwkN+Ymj7AIXXcHdnt4HsGmryUM1rsTFt22mE8X4H2UQLXPo1nBGl53dF5duG7tV/OraM84+yn0kKAXBHSpqC6CaXdfVjINj1wlxmh2AuaoKX5a3NqTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQrM8j0+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8824AC4CEE7;
-	Thu, 17 Apr 2025 18:27:07 +0000 (UTC)
+	 MIME-Version; b=Zh6yyo2v0v7rvi9N8MvMTfmH7thdO/ZX8m5rEEn8tfnwpN2quJljWEIFH5GlZVBXUc5jrXXoDgOsenhS6BKkxsgUuxur9tVl2/m1zXsKf1q5Cfv+L+8hwiauq92s74f0MYt5E6kQSEIF9Z+VCw5agYT6k5+lo3ZaMJh3NYtxuyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qo/EZciH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3917C4CEE4;
+	Thu, 17 Apr 2025 18:06:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914427;
-	bh=iFJIMSIZrzDBGv+rGTNbJ9hlIOFpIA6nHCRPVnNQVEs=;
+	s=korg; t=1744913181;
+	bh=vda4h3Lhw7wGcGQTfIftCF0qWBeNTdXNqFxVeHzT2YY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dQrM8j0+Xn+i0cuf5Pd6bK20eZs7vbedCW4CWCudjd6vaxbDRRrgvtVhOjI7I2KWA
-	 VlXpKC7vXklI8ad5Jvidabnooq1b1RLLccQdGsciM7p4AvNvF2IGa9QZpeQ0bx/jxq
-	 tPcpD/remgtVKFY0J3R2L4GdAjGJrkHC5aPP2kF4=
+	b=qo/EZciHVTUgdhjrZXQpihWOkBEoiDd3s/8Qrz1t2+LH6PZEpWiG+SFmS74/nG7HY
+	 6K1Hxs8JsevO/zP9LROt2yiBotDsVnBkgJ/bSfavGiOJlp5nHompdY/qMT+vEvI4Ek
+	 kKXx3IdqxJBHqUsn4wrWaWvYigCoRrcfLnL8bLPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 183/414] HID: pidff: Use macros instead of hardcoded min/max values for shorts
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.14 253/449] media: i2c: ccs: Set the devices runtime PM status correctly in probe
 Date: Thu, 17 Apr 2025 19:49:01 +0200
-Message-ID: <20250417175118.811855278@linuxfoundation.org>
+Message-ID: <20250417175128.179359262@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,127 +59,38 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 21755162456902998f8d9897086b8c980c540df5 ]
+commit 80704d14f1bd3628f578510e0a88b66824990ef6 upstream.
 
-Makes it obvious these magic values ARE in fact derived from min and
-max values for s16 and u16
+Set the device's runtime PM status to suspended in probe error paths where
+it was previously set to active.
 
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9447082ae666 ("[media] smiapp: Implement power-on and power-off sequences without runtime PM")
+Cc: stable@vger.kernel.org # for >= v5.15
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/media/i2c/ccs/ccs-core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index 8083eb7684e5e..b21e844f5f3a3 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -21,7 +21,7 @@
+--- a/drivers/media/i2c/ccs/ccs-core.c
++++ b/drivers/media/i2c/ccs/ccs-core.c
+@@ -3566,6 +3566,7 @@ static int ccs_probe(struct i2c_client *
+ out_disable_runtime_pm:
+ 	pm_runtime_put_noidle(&client->dev);
+ 	pm_runtime_disable(&client->dev);
++	pm_runtime_set_suspended(&client->dev);
  
- 
- #define	PID_EFFECTS_MAX		64
--#define	PID_INFINITE		0xffff
-+#define	PID_INFINITE		U16_MAX
- 
- /* Linux Force Feedback API uses miliseconds as time unit */
- #define FF_TIME_EXPONENT	-3
-@@ -226,12 +226,12 @@ static int pidff_rescale(int i, int max, struct hid_field *field)
- }
- 
- /*
-- * Scale a signed value in range -0x8000..0x7fff for the given field
-+ * Scale a signed value in range S16_MIN..S16_MAX for the given field
-  */
- static int pidff_rescale_signed(int i, struct hid_field *field)
- {
--	if (i > 0) return i * field->logical_maximum / 0x7fff;
--	if (i < 0) return i * field->logical_minimum / -0x8000;
-+	if (i > 0) return i * field->logical_maximum / S16_MAX;
-+	if (i < 0) return i * field->logical_minimum / S16_MIN;
- 	return 0;
- }
- 
-@@ -255,7 +255,7 @@ static u32 pidff_rescale_time(u16 time, struct hid_field *field)
- 
- static void pidff_set(struct pidff_usage *usage, u16 value)
- {
--	usage->value[0] = pidff_rescale(value, 0xffff, usage->field);
-+	usage->value[0] = pidff_rescale(value, U16_MAX, usage->field);
- 	pr_debug("calculated from %d to %d\n", value, usage->value[0]);
- }
- 
-@@ -266,10 +266,10 @@ static void pidff_set_signed(struct pidff_usage *usage, s16 value)
- 	else {
- 		if (value < 0)
- 			usage->value[0] =
--			    pidff_rescale(-value, 0x8000, usage->field);
-+			    pidff_rescale(-value, -S16_MIN, usage->field);
- 		else
- 			usage->value[0] =
--			    pidff_rescale(value, 0x7fff, usage->field);
-+			    pidff_rescale(value, S16_MAX, usage->field);
- 	}
- 	pr_debug("calculated from %d to %d\n", value, usage->value[0]);
- }
-@@ -306,11 +306,11 @@ static void pidff_set_envelope_report(struct pidff_device *pidff,
- 
- 	pidff->set_envelope[PID_ATTACK_LEVEL].value[0] =
- 	    pidff_rescale(envelope->attack_level >
--			  0x7fff ? 0x7fff : envelope->attack_level, 0x7fff,
-+			  S16_MAX ? S16_MAX : envelope->attack_level, S16_MAX,
- 			  pidff->set_envelope[PID_ATTACK_LEVEL].field);
- 	pidff->set_envelope[PID_FADE_LEVEL].value[0] =
- 	    pidff_rescale(envelope->fade_level >
--			  0x7fff ? 0x7fff : envelope->fade_level, 0x7fff,
-+			  S16_MAX ? S16_MAX : envelope->fade_level, S16_MAX,
- 			  pidff->set_envelope[PID_FADE_LEVEL].field);
- 
- 	pidff_set_time(&pidff->set_envelope[PID_ATTACK_TIME],
-@@ -399,7 +399,7 @@ static void pidff_set_effect_report(struct pidff_device *pidff,
- 	pidff->effect_direction->value[0] = pidff_rescale(
- 		pidff->quirks & HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION ?
- 		PIDFF_FIXED_WHEEL_DIRECTION : effect->direction,
--		0xffff, pidff->effect_direction);
-+		U16_MAX, pidff->effect_direction);
- 
- 	/* Omit setting delay field if it's missing */
- 	if (!(pidff->quirks & HID_PIDFF_QUIRK_MISSING_DELAY))
-@@ -1366,7 +1366,7 @@ static int pidff_check_autocenter(struct pidff_device *pidff,
- 
- 	if (pidff->block_load[PID_EFFECT_BLOCK_INDEX].value[0] ==
- 	    pidff->block_load[PID_EFFECT_BLOCK_INDEX].field->logical_minimum + 1) {
--		pidff_autocenter(pidff, 0xffff);
-+		pidff_autocenter(pidff, U16_MAX);
- 		set_bit(FF_AUTOCENTER, dev->ffbit);
- 	} else {
- 		hid_notice(pidff->hid,
-@@ -1424,7 +1424,7 @@ int hid_pidff_init_with_quirks(struct hid_device *hid, u32 initial_quirks)
- 	if (error)
- 		goto fail;
- 
--	pidff_set_gain_report(pidff, 0xffff);
-+	pidff_set_gain_report(pidff, U16_MAX);
- 	error = pidff_check_autocenter(pidff, dev);
- 	if (error)
- 		goto fail;
--- 
-2.39.5
-
+ out_cleanup:
+ 	ccs_cleanup(sensor);
 
 
 
