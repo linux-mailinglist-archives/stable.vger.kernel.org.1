@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-133557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FCCEA92624
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:10:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 611E9A92A46
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:48:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE1B58A5BF9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:10:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00EFA1B6444E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:48:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A22D7255249;
-	Thu, 17 Apr 2025 18:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A23253324;
+	Thu, 17 Apr 2025 18:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1vgHh65S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TuopsBPS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E126253B7B;
-	Thu, 17 Apr 2025 18:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DDC9185920;
+	Thu, 17 Apr 2025 18:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913436; cv=none; b=FkVoM7wjxFRAx+kyqgyporDehUqlUnrkRiFz6FPMGnH6v5oLKmruFAklG7Y+tCMrozktQX76C4HsjmYdKvRNUFyL81kyiAlH9LyuXo72+R8HV21GIeSxUixvT9I0dlpj3IqwuApvldqsk4X7i9E/DQSZaw4n6AsD0zNwhcpMYBI=
+	t=1744915724; cv=none; b=Kjf/oBbdJEgzTfPByM1hgzUqFuYl9grRJGHiu/KO3j6lnHY8kO502xSptZLFSxtngHXVr97RMrkg5x22H0ar8OLvi47YuPVhMvEvSQUhDWO+KSlZMDdiI7UtsOQrQV5TnLwkl+OmrRg35Xyf0K/L3ke/NPGBwylzylK+uRIFq64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913436; c=relaxed/simple;
-	bh=cQuP2FwL/dZmc47i1MO7CQIGFEESwmC5o8jwL6yhoW8=;
+	s=arc-20240116; t=1744915724; c=relaxed/simple;
+	bh=td73JABCtqTkudGwwXzdu0p0AJgkfLSnyjwDlWzQvm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V/JtNV/T8aAO4csuj4/zxfazfw4uY98TeKdBa1+5klhKM9NCsE41385UgeOqRvUEwL5xgiFnIdNIJFoopMrfCr5ELu0l3N7l3wyq7lLwJ3RhVbLDHh7mS8Ir32HkhnCiYVsVEQu/sfuKLZbfwT+UvveMlzmY3t7nsS0RRNbPNQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1vgHh65S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC89EC4AF09;
-	Thu, 17 Apr 2025 18:10:35 +0000 (UTC)
+	 MIME-Version; b=K7G2/P8pL6Bm/PE2nfueANwveeFGzCjyFF9gTtgTsyxvfhK7poV7qnUol0ZDfZnLikG0YQSCm5+FQQ8Ez5iddPv5q/RRhwDNyTOjcbIMdLzcOi7TqbZ+4jJdAKyXZZDeJaGt/h6oLHdwqyJa6jHUZbJZX6/kNHu200ToKozxrHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TuopsBPS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EBD3C4CEE4;
+	Thu, 17 Apr 2025 18:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913436;
-	bh=cQuP2FwL/dZmc47i1MO7CQIGFEESwmC5o8jwL6yhoW8=;
+	s=korg; t=1744915724;
+	bh=td73JABCtqTkudGwwXzdu0p0AJgkfLSnyjwDlWzQvm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1vgHh65Sgjf7rf2Wzk5elSQy0T4viR3GF3GlbTvdM4koAFhpJw824Pv1J9ydOZt0a
-	 pj3eo6pKUVkpw8q/WYkLgW1rpz9rivoRRZOarYVN/nwmQKxZbGZuhqiPtmDVyqUzDn
-	 PXgS1qKKQx6897E8kV1TEQjgbL4sMrPNq5/xjQCU=
+	b=TuopsBPSfwU77shpVu45IC4FgkMLyzrEoLRPEp4ax14xb+xtLlKVf3XSClKUJR+IN
+	 M6Qk6LOcTXLm9Ts0kq6X5VF+V0Ti2x95MHRAZaxmAJamGe+kqiun+nrjGTacd4aSD1
+	 737vVWDbNvCze8yRY0IXQTsHvAuBtP3oWA7t8DDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>
-Subject: [PATCH 6.14 339/449] arm64: dts: mediatek: mt8188: Assign apll1 clock as parent to avoid hang
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 218/393] media: i2c: ccs: Set the devices runtime PM status correctly in remove
 Date: Thu, 17 Apr 2025 19:50:27 +0200
-Message-ID: <20250417175131.838973803@linuxfoundation.org>
+Message-ID: <20250417175116.353682893@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,53 +59,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit a69d5795f12b06d07b6437cafdd08f929fff2706 upstream.
+commit e04604583095faf455b3490b004254a225fd60d4 upstream.
 
-Certain registers in the AFE IO space require the apll1 clock to be
-enabled in order to be read, otherwise the machine hangs (registers like
-0x280, 0x410 (AFE_GAIN1_CON0) and 0x830 (AFE_CONN0_5)). During AFE
-driver probe, when initializing the regmap for the AFE IO space those
-registers are read, resulting in a hang during boot.
+Set the device's runtime PM status to suspended in device removal only if
+it wasn't suspended already.
 
-This has been observed on the Genio 700 EVK, Genio 510 EVK and
-MT8188-Geralt-Ciri Chromebook, all of which are based on the MT8188 SoC.
-
-Assign CLK_TOP_APLL1_D4 as the parent for CLK_TOP_A1SYS_HP, which is
-enabled during register read and write, to make sure the apll1 is
-enabled during register operations and prevent the MT8188 machines from
-hanging during boot.
-
-Cc: stable@vger.kernel.org
-Fixes: bd568ce198b8 ("arm64: dts: mediatek: mt8188: Add audio support")
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Link: https://lore.kernel.org/r/20250207-mt8188-afe-fix-hang-disabled-apll1-clk-v2-1-a636d844c272@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 9447082ae666 ("[media] smiapp: Implement power-on and power-off sequences without runtime PM")
+Cc: stable@vger.kernel.org # for >= v5.15
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8188.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/ccs/ccs-core.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/mediatek/mt8188.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8188.dtsi
-@@ -1392,7 +1392,7 @@
- 			compatible = "mediatek,mt8188-afe";
- 			reg = <0 0x10b10000 0 0x10000>;
- 			assigned-clocks = <&topckgen CLK_TOP_A1SYS_HP>;
--			assigned-clock-parents =  <&clk26m>;
-+			assigned-clock-parents = <&topckgen CLK_TOP_APLL1_D4>;
- 			clocks = <&clk26m>,
- 				 <&apmixedsys CLK_APMIXED_APLL1>,
- 				 <&apmixedsys CLK_APMIXED_APLL2>,
+--- a/drivers/media/i2c/ccs/ccs-core.c
++++ b/drivers/media/i2c/ccs/ccs-core.c
+@@ -3591,9 +3591,10 @@ static void ccs_remove(struct i2c_client
+ 	v4l2_async_unregister_subdev(subdev);
+ 
+ 	pm_runtime_disable(&client->dev);
+-	if (!pm_runtime_status_suspended(&client->dev))
++	if (!pm_runtime_status_suspended(&client->dev)) {
+ 		ccs_power_off(&client->dev);
+-	pm_runtime_set_suspended(&client->dev);
++		pm_runtime_set_suspended(&client->dev);
++	}
+ 
+ 	for (i = 0; i < sensor->ssds_used; i++)
+ 		v4l2_device_unregister_subdev(&sensor->ssds[i].sd);
 
 
 
