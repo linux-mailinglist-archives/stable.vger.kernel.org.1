@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F9C7A9268E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:14:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF4E9A9292D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:40:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04D604A0D65
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:14:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 978E18A13C9
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D6F0255E31;
-	Thu, 17 Apr 2025 18:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1C1264608;
+	Thu, 17 Apr 2025 18:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dYxzKx2h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ip57VXo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEEC622E3E6;
-	Thu, 17 Apr 2025 18:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEEA52641F6;
+	Thu, 17 Apr 2025 18:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913649; cv=none; b=iNtUWgPFrLdGAEIJw1j10WCBLkFoXNBTuub9/EuKkl3Qu6stB/Z6ClwK9UTe5WRP3JBjKPoXLrHptbfUX22tI0+Kjgx2QJxrHrpP11XeNz+ts1DSfmrYu6xAjagR/++h2rRg6JWX7FUxnEJtjaWvkUErGGegJTwT3ozh4I48+Ck=
+	t=1744914837; cv=none; b=WFrHvhqlDGDN3UPhOZH0HrRhCwNfkERn/dzznq+q3+KoZLRWoOX0N2mvM6YOz3LXIE/KFRzTkkZWPJG0svk2hDP0a/ebAs5FCfABWeW2nwvCsAENLwxEUg7u38dZirzmj+M2cWexQY2dWWegMmSGET4Dk22p7/C2nuTmICqHMNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913649; c=relaxed/simple;
-	bh=8BpxlkHn4FrxDSIusNmemUJqbuXHZLzXQlsJ/ZKk7Hg=;
+	s=arc-20240116; t=1744914837; c=relaxed/simple;
+	bh=uWljd9yY2jO1xB9Zb9t8RpTtlDBjeGpyGvYdkCm8w1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qO0rIMOz+B0Meo3T0TAozz9bEiohLfMelnq64sgb1NkKhZ/uXt/WUGOsqLCmr9lvMwEA5bD0gh7A6vau341H4ueGXYCWWMIrGa+AWhRrqYy8J1lLHZXk/bSVEBXbp1ss9NOhOTxZj4DG4Vvmxualj37CtrWvOwkveuFfiOFDNSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dYxzKx2h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD53C4CEE4;
-	Thu, 17 Apr 2025 18:14:08 +0000 (UTC)
+	 MIME-Version; b=LfJ5ZB+9FUByCAK/Wg8i0HZxxGSfD+aIj9O/TxjpQL8ifFvatODqtG+jkYBuOmASOgC1Zjy1C95OTakP0fcWkX1+kxCCCoFSaM77LdTXygQx09j053k9hsuFX9FeINyno5ZIuKczzwYiHOlVUJBWD66cvuVGdU09O1Ft79jJM6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ip57VXo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7549CC4CEE4;
+	Thu, 17 Apr 2025 18:33:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913649;
-	bh=8BpxlkHn4FrxDSIusNmemUJqbuXHZLzXQlsJ/ZKk7Hg=;
+	s=korg; t=1744914836;
+	bh=uWljd9yY2jO1xB9Zb9t8RpTtlDBjeGpyGvYdkCm8w1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dYxzKx2hoZ5wgo0pSZLIitw1NuqfDFpt6W3cudfTFYXFde0IlehU3uUxnPeAVDYR7
-	 fHtSnuzJFEJTg6aHqeW6lGu4pO3n/RWTP7/jvp/IT9kvp4w4u0tmrW1JrYDpUYPuWy
-	 l6WE23MmYspfbiEcbfXZukF2HwIidtejGfrxuMwo=
+	b=2ip57VXo/N2d6Vi3cn1qWroFd96fXYn2I6EwVqA6PkXzBl/Dzujqd2nUXn0ESs1Mv
+	 5/mL5CFGJyYuWuDLxSuRxc0lRuPOAA/BzFAb7K0raIKzJzeMdWI2mdmljZZNaeEdQm
+	 DkaAuH5PkeYcEjviCt0ajS/VwJySjE8kGJC+2NI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-Subject: [PATCH 6.14 408/449] landlock: Add erratum for TCP fix
-Date: Thu, 17 Apr 2025 19:51:36 +0200
-Message-ID: <20250417175134.697680432@linuxfoundation.org>
+	Trevor Woerner <twoerner@gmail.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 6.13 339/414] thermal/drivers/rockchip: Add missing rk3328 mapping entry
+Date: Thu, 17 Apr 2025 19:51:37 +0200
+Message-ID: <20250417175125.066351217@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +60,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Trevor Woerner <twoerner@gmail.com>
 
-commit 48fce74fe209ba9e9b416d7100ccee546edc9fc6 upstream.
+commit ee022e5cae052e0c67ca7c5fec0f2e7bc897c70e upstream.
 
-Add erratum for the TCP socket identification fixed with commit
-854277e2cc8c ("landlock: Fix non-TCP sockets restriction").
+The mapping table for the rk3328 is missing the entry for -25C which is
+found in the TRM section 9.5.2 "Temperature-to-code mapping".
 
-Fixes: 854277e2cc8c ("landlock: Fix non-TCP sockets restriction")
-Cc: Günther Noack <gnoack@google.com>
-Cc: Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>
+NOTE: the kernel uses the tsadc_q_sel=1'b1 mode which is defined as:
+      4096-<code in table>. Whereas the table in the TRM gives the code
+      "3774" for -25C, the kernel uses 4096-3774=322.
+
+[Dragan Simic] : "After going through the RK3308 and RK3328 TRMs, as
+  well as through the downstream kernel code, it seems we may have
+  some troubles at our hands.  Let me explain, please.
+
+  To sum it up, part 1 of the RK3308 TRM v1.1 says on page 538 that
+  the equation for the output when tsadc_q_sel equals 1 is (4096 -
+  tsadc_q), while part 1 of the RK3328 TRM v1.2 says that the output
+  equation is (1024 - tsadc_q) in that case.
+
+  The downstream kernel code, however, treats the RK3308 and RK3328
+  tables and their values as being the same.  It even mentions 1024 as
+  the "offset" value in a comment block for the rk_tsadcv3_control()
+  function, just like the upstream code does, which is obviously wrong
+  "offset" value when correlated with the table on page 544 of part 1
+  of the RK3308 TRM v1.1.
+
+  With all this in mind, it's obvious that more work is needed to make
+  it clear where's the actual mistake (it could be that the TRM is
+  wrong), which I'll volunteer for as part of the SoC binning project.
+  In the meantime, this patch looks fine as-is to me, by offering
+  what's a clear improvement to the current state of the upstream
+  code"
+
+Link: https://opensource.rock-chips.com/images/9/97/Rockchip_RK3328TRM_V1.1-Part1-20170321.pdf
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250318161443.279194-4-mic@digikod.net
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Fixes: eda519d5f73e ("thermal: rockchip: Support the RK3328 SOC in thermal driver")
+Signed-off-by: Trevor Woerner <twoerner@gmail.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Link: https://lore.kernel.org/r/20250207175048.35959-1-twoerner@gmail.com
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/landlock/errata/abi-4.h |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
- create mode 100644 security/landlock/errata/abi-4.h
+ drivers/thermal/rockchip_thermal.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- /dev/null
-+++ b/security/landlock/errata/abi-4.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
-+/**
-+ * DOC: erratum_1
-+ *
-+ * Erratum 1: TCP socket identification
-+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ *
-+ * This fix addresses an issue where IPv4 and IPv6 stream sockets (e.g., SMC,
-+ * MPTCP, or SCTP) were incorrectly restricted by TCP access rights during
-+ * :manpage:`bind(2)` and :manpage:`connect(2)` operations. This change ensures
-+ * that only TCP sockets are subject to TCP access rights, allowing other
-+ * protocols to operate without unnecessary restrictions.
-+ */
-+LANDLOCK_ERRATUM(1)
+--- a/drivers/thermal/rockchip_thermal.c
++++ b/drivers/thermal/rockchip_thermal.c
+@@ -386,6 +386,7 @@ static const struct tsadc_table rk3328_c
+ 	{296, -40000},
+ 	{304, -35000},
+ 	{313, -30000},
++	{322, -25000},
+ 	{331, -20000},
+ 	{340, -15000},
+ 	{349, -10000},
 
 
 
