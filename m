@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31583A927D0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:29:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30AFAA92A19
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E06BC7B4AB0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:27:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9148E3B657A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1FC25F98F;
-	Thu, 17 Apr 2025 18:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A30318C034;
+	Thu, 17 Apr 2025 18:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0aUdFi1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uiTV2iny"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267C1257AE7;
-	Thu, 17 Apr 2025 18:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5398462;
+	Thu, 17 Apr 2025 18:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914298; cv=none; b=Bf0Iw4Kd+XUv5gqR5IPYKVBcLAJgPPDm+1B2V0Gxg4ooXETMrhp+l63lRagGDqlA+pxksMIFK6c48xPRRN3nkzGt7OLmZfYThmJ82s0twYivgtoTdKMXuNQDwe6j0VYTY19sbMTbU0NDcd37K0RYztdg4Q2KMUiL6w6ZVH/d9O4=
+	t=1744915416; cv=none; b=hpceQXXwjtsazCzvRuLbjJRvanZFQn9vTIBcAx4xcviUN0RJqZJfa/RPFm2lJ0ocPmucTDFCTRY/GpFZ4LSjlX6uybs89z61m02ES8o9yR2GYpEEGdMdEdxEMQvpGd+3h8WqS7XjuhEi0Vj2m+wZp6a8TugRFe1ephfPwvttaws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914298; c=relaxed/simple;
-	bh=xoe8twiu3Ai/vhawVZgcQHHK/+dpC19k2/6EJLcmgao=;
+	s=arc-20240116; t=1744915416; c=relaxed/simple;
+	bh=Y4hA6MvnvIO+r+0tK/ZJOYoilKaR8Xtcf27Xn+OphdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s4hGiLEWXXF5cx98Cp3933d7sYGmy0OBLNf65S3ohWTZlVTvDrfnkNiHzuVRjmy5pz8OYUfUAGUwu98TqWu9AJFhAz9D/mwOQhSJARQqva3kxC/xr6zlnUtg97AhAs+ExbUPYCghairYJEJxYWXtu2CnpQ/r2ra/1WqVy+soEtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0aUdFi1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20FACC4CEE7;
-	Thu, 17 Apr 2025 18:24:56 +0000 (UTC)
+	 MIME-Version; b=sy4qVmBwS1GFp1tgkal1+wrQ8kVl3rJ+6L+Xnkb7Whve21AMUrNS7KDrWqM4psDDJ/tkeFDBR58tnpyDruWM238hFzMBUn3bDbP5I3n6P5w91zGBW2m9H/rV+fr4Ci5dOgxrinojhUWdEGj7z1F/yY/iRE5HhlegD8VUsMwVIQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uiTV2iny; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67576C4CEE4;
+	Thu, 17 Apr 2025 18:43:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914297;
-	bh=xoe8twiu3Ai/vhawVZgcQHHK/+dpC19k2/6EJLcmgao=;
+	s=korg; t=1744915415;
+	bh=Y4hA6MvnvIO+r+0tK/ZJOYoilKaR8Xtcf27Xn+OphdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W0aUdFi1IrOZ3zMmMknOxzIXIx5XArCI7k1+j8eicp9uvbJUNJjRTDFJNSg9lerB6
-	 mwFy3dR+3xeQl81b9qgVnBwWQYbt5y+E1FBXIyuG4IUuZq/ORitMLPxSOdLV7NhMs1
-	 +o/gp2LzToQBHdMzUgAY5kCx1V5XoKN0V+uGrrgw=
+	b=uiTV2inyblxLrcEWoqykJhc/A84av0/KOiO9AhiYgTlmEq6UIBoww74mAXm+EMveY
+	 nloqDodmnl/RJKyzJptDc6eDaZY54hv753Y2qDqOBXmXqSrvui+MEGa/MTgycDDt7L
+	 lOWgYFcHxJseiwHcicHfCpFqEtvDFgIp2fgdJacM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sheng Yong <shengyong1@xiaomi.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Kiran K <kiran.k@intel.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 170/414] erofs: set error to bio if file-backed IO fails
+Subject: [PATCH 6.12 119/393] Bluetooth: btintel_pcie: Add device id of Whale Peak
 Date: Thu, 17 Apr 2025 19:48:48 +0200
-Message-ID: <20250417175118.277654833@linuxfoundation.org>
+Message-ID: <20250417175112.383030345@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sheng Yong <shengyong1@xiaomi.com>
+From: Kiran K <kiran.k@intel.com>
 
-[ Upstream commit 1595f15391b81815e4ef91c339991913d556c1b6 ]
+[ Upstream commit 6b8c05e52d66e4fe4ab1df4c6e15f339ecd9aa51 ]
 
-If a file-backed IO fails before submitting the bio to the lower
-filesystem, an error is returned, but the bio->bi_status is not
-marked as an error. However, the error information should be passed
-to the end_io handler. Otherwise, the IO request will be treated as
-successful.
+Add device of Whale Peak.
 
-Fixes: 283213718f5d ("erofs: support compressed inodes for fileio")
-Signed-off-by: Sheng Yong <shengyong1@xiaomi.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250408122351.2104507-1-shengyong1@xiaomi.com
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Output of sudo lspci -v  -s 00:14.7:
+
+00:14.7 Bluetooth: Intel Corporation Device e476
+        Subsystem: Intel Corporation Device 0011
+        Flags: bus master, fast devsel, latency 0, IRQ 16, IOMMU group 11
+        Memory at 11011c30000 (64-bit, non-prefetchable) [size=16K]
+        Capabilities: [c8] Power Management version 3
+        Capabilities: [d0] MSI: Enable- Count=1/1 Maskable- 64bit+
+        Capabilities: [40] Express Root Complex Integrated Endpoint, MSI 00
+        Capabilities: [80] MSI-X: Enable+ Count=32 Masked-
+        Capabilities: [100] Latency Tolerance Reporting
+        Kernel driver in use: btintel_pcie
+        Kernel modules: btintel_pcie
+
+Signed-off-by: Kiran K <kiran.k@intel.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/fileio.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/bluetooth/btintel_pcie.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/erofs/fileio.c b/fs/erofs/fileio.c
-index 33f8539dda4ae..17aed5f6c5490 100644
---- a/fs/erofs/fileio.c
-+++ b/fs/erofs/fileio.c
-@@ -32,6 +32,8 @@ static void erofs_fileio_ki_complete(struct kiocb *iocb, long ret)
- 		ret = 0;
- 	}
- 	if (rq->bio.bi_end_io) {
-+		if (ret < 0 && !rq->bio.bi_status)
-+			rq->bio.bi_status = errno_to_blk_status(ret);
- 		rq->bio.bi_end_io(&rq->bio);
- 	} else {
- 		bio_for_each_folio_all(fi, &rq->bio) {
+diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
+index 53f6b4f76bccd..ab465e13c1f60 100644
+--- a/drivers/bluetooth/btintel_pcie.c
++++ b/drivers/bluetooth/btintel_pcie.c
+@@ -36,6 +36,7 @@
+ /* Intel Bluetooth PCIe device id table */
+ static const struct pci_device_id btintel_pcie_table[] = {
+ 	{ BTINTEL_PCI_DEVICE(0xA876, PCI_ANY_ID) },
++	{ BTINTEL_PCI_DEVICE(0xE476, PCI_ANY_ID) },
+ 	{ 0 }
+ };
+ MODULE_DEVICE_TABLE(pci, btintel_pcie_table);
 -- 
 2.39.5
 
