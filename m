@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-134196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A71EA929A4
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:43:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 893F8A925EA
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:08:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 524F01B63450
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:43:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E77F91884E50
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08A8253B5E;
-	Thu, 17 Apr 2025 18:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7102566DF;
+	Thu, 17 Apr 2025 18:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lhPVBHI/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HotVhY4J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF383770B;
-	Thu, 17 Apr 2025 18:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38CD62550DD;
+	Thu, 17 Apr 2025 18:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915388; cv=none; b=fDIbpQdLrOA0NYHWIrvnFubEy3VcAek1gPMGcoPa73B7uq2FIis/oH1QlnvWZ9v+CqVbjt6JnM87u62/a2bO8D5IdujzHtyYOMN43GEAEIMot/rlIRUGS8Z0/6q1LovcTRCB81tx85Sa0mFIctPFuW4lAOCw3w04QLOx9waw4sA=
+	t=1744913208; cv=none; b=euq7hZQBj/WXEtTAVcP+27lv+CmPuWrl0eyJ25Jb06vzTeLlmsaRVWFQ9qU3yBgrbKUBEkhAp4X/tswblYs+ZxZZKULWS4Ktg1KcAWnu4lh8SLaehdyI5b9UDmhN8WsyQuNtG2uDrAJUNF4wTuSJl/H0SnU0RuiWJAqMOrLnFfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915388; c=relaxed/simple;
-	bh=zBfQMmSthvllHQK2rgAgRG7VIQz9gZdYHG4B9OOOwzE=;
+	s=arc-20240116; t=1744913208; c=relaxed/simple;
+	bh=110j60b3N878W2AGpRpg6RQCb/U1fNJJ9KFyDVH/4hU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YfrxQHEXJqtQD4uTmFCk+8KFfCsfEjrYTH0YjdxhVrND/cwB7UumNs3zFeglNBT8bEF9qw6o4iSEwbBJ1mI2NUU084HXgVafJ0HwACjGMk2BgUpnB06331BSGYo6xPInm/2Ym8cgaA28G1Oh8udU7+3MzIMzye8clLwupM73+x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lhPVBHI/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6044C4CEE4;
-	Thu, 17 Apr 2025 18:43:07 +0000 (UTC)
+	 MIME-Version; b=SyynR3VlDvWynNq10ANRGUCB7y2TuC5IWnjP9oMYoBBI9d+dvm5Qb6f7teKllaXmwHAObVqHRVrYhM4+NhHAo+iaVc6/8fg2TJLDNyeawdM35l6iKsvW1MGZ7YKi7H0HI6tmYKs53jksHZiS24Xny78K1F/dJJM0PmxR4tivhWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HotVhY4J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4636C4CEE4;
+	Thu, 17 Apr 2025 18:06:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915388;
-	bh=zBfQMmSthvllHQK2rgAgRG7VIQz9gZdYHG4B9OOOwzE=;
+	s=korg; t=1744913207;
+	bh=110j60b3N878W2AGpRpg6RQCb/U1fNJJ9KFyDVH/4hU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lhPVBHI/Xs4f130Xyct1zJVs3aF4zawOEVO0aDixGFrtWwnp/ffNt3clz0ygzrBSC
-	 DO/Z8hDiuONgxH/6JHvefB86CK8C0Pq6ZONoUYm4ynWZPkAajXjhUnTtIQObu5ntHc
-	 NOKo9FhD+2cfLMeDPQVKy4yGcoMWWPF9dKrlCRhs=
+	b=HotVhY4J/koe6uzsUoZL3ZFgxZlRX8weOnveTMF7+NgVZ4yW6mWZ+yZJ9SYgVnEGy
+	 AlYypJhIEbpLwxEGgletq2c0LzUGN+7rgkMgAkJ4ByzDW8nJIkaLG/swArFkXYqZgV
+	 Ml05V6SPqoQIkkrwYjpQr9CnShZ44AMsFiSKowz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b244bda78289b00204ed@syzkaller.appspotmail.com,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Bhupesh <bhupesh@igalia.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 111/393] ext4: ignore xattrs past end
+	Akihiko Odaki <akihiko.odaki@daynix.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.14 232/449] KVM: arm64: PMU: Set raw values from user to PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}
 Date: Thu, 17 Apr 2025 19:48:40 +0200
-Message-ID: <20250417175112.053157878@linuxfoundation.org>
+Message-ID: <20250417175127.334751220@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,151 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bhupesh <bhupesh@igalia.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-[ Upstream commit c8e008b60492cf6fd31ef127aea6d02fd3d314cd ]
+commit f2aeb7bbd5745fbcf7f0769e29a184e24924b9a9 upstream.
 
-Once inside 'ext4_xattr_inode_dec_ref_all' we should
-ignore xattrs entries past the 'end' entry.
+Commit a45f41d754e0 ("KVM: arm64: Add {get,set}_user for
+PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}") changed KVM_SET_ONE_REG to update
+the mentioned registers in a way matching with the behavior of guest
+register writes. This is a breaking change of a UAPI though the new
+semantics looks cleaner and VMMs are not prepared for this.
 
-This fixes the following KASAN reported issue:
+Firecracker, QEMU, and crosvm perform migration by listing registers
+with KVM_GET_REG_LIST, getting their values with KVM_GET_ONE_REG and
+setting them with KVM_SET_ONE_REG. This algorithm assumes
+KVM_SET_ONE_REG restores the values retrieved with KVM_GET_ONE_REG
+without any alteration. However, bit operations added by the earlier
+commit do not preserve the values retried with KVM_GET_ONE_REG and
+potentially break migration.
 
-==================================================================
-BUG: KASAN: slab-use-after-free in ext4_xattr_inode_dec_ref_all+0xb8c/0xe90
-Read of size 4 at addr ffff888012c120c4 by task repro/2065
+Remove the bit operations that alter the values retrieved with
+KVM_GET_ONE_REG.
 
-CPU: 1 UID: 0 PID: 2065 Comm: repro Not tainted 6.13.0-rc2+ #11
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x1fd/0x300
- ? tcp_gro_dev_warn+0x260/0x260
- ? _printk+0xc0/0x100
- ? read_lock_is_recursive+0x10/0x10
- ? irq_work_queue+0x72/0xf0
- ? __virt_addr_valid+0x17b/0x4b0
- print_address_description+0x78/0x390
- print_report+0x107/0x1f0
- ? __virt_addr_valid+0x17b/0x4b0
- ? __virt_addr_valid+0x3ff/0x4b0
- ? __phys_addr+0xb5/0x160
- ? ext4_xattr_inode_dec_ref_all+0xb8c/0xe90
- kasan_report+0xcc/0x100
- ? ext4_xattr_inode_dec_ref_all+0xb8c/0xe90
- ext4_xattr_inode_dec_ref_all+0xb8c/0xe90
- ? ext4_xattr_delete_inode+0xd30/0xd30
- ? __ext4_journal_ensure_credits+0x5f0/0x5f0
- ? __ext4_journal_ensure_credits+0x2b/0x5f0
- ? inode_update_timestamps+0x410/0x410
- ext4_xattr_delete_inode+0xb64/0xd30
- ? ext4_truncate+0xb70/0xdc0
- ? ext4_expand_extra_isize_ea+0x1d20/0x1d20
- ? __ext4_mark_inode_dirty+0x670/0x670
- ? ext4_journal_check_start+0x16f/0x240
- ? ext4_inode_is_fast_symlink+0x2f2/0x3a0
- ext4_evict_inode+0xc8c/0xff0
- ? ext4_inode_is_fast_symlink+0x3a0/0x3a0
- ? do_raw_spin_unlock+0x53/0x8a0
- ? ext4_inode_is_fast_symlink+0x3a0/0x3a0
- evict+0x4ac/0x950
- ? proc_nr_inodes+0x310/0x310
- ? trace_ext4_drop_inode+0xa2/0x220
- ? _raw_spin_unlock+0x1a/0x30
- ? iput+0x4cb/0x7e0
- do_unlinkat+0x495/0x7c0
- ? try_break_deleg+0x120/0x120
- ? 0xffffffff81000000
- ? __check_object_size+0x15a/0x210
- ? strncpy_from_user+0x13e/0x250
- ? getname_flags+0x1dc/0x530
- __x64_sys_unlinkat+0xc8/0xf0
- do_syscall_64+0x65/0x110
- entry_SYSCALL_64_after_hwframe+0x67/0x6f
-RIP: 0033:0x434ffd
-Code: 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 8
-RSP: 002b:00007ffc50fa7b28 EFLAGS: 00000246 ORIG_RAX: 0000000000000107
-RAX: ffffffffffffffda RBX: 00007ffc50fa7e18 RCX: 0000000000434ffd
-RDX: 0000000000000000 RSI: 0000000020000240 RDI: 0000000000000005
-RBP: 00007ffc50fa7be0 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
-R13: 00007ffc50fa7e08 R14: 00000000004bbf30 R15: 0000000000000001
- </TASK>
-
-The buggy address belongs to the object at ffff888012c12000
- which belongs to the cache filp of size 360
-The buggy address is located 196 bytes inside of
- freed 360-byte region [ffff888012c12000, ffff888012c12168)
-
-The buggy address belongs to the physical page:
-page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x12c12
-head: order:1 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-flags: 0x40(head|node=0|zone=0)
-page_type: f5(slab)
-raw: 0000000000000040 ffff888000ad7640 ffffea0000497a00 dead000000000004
-raw: 0000000000000000 0000000000100010 00000001f5000000 0000000000000000
-head: 0000000000000040 ffff888000ad7640 ffffea0000497a00 dead000000000004
-head: 0000000000000000 0000000000100010 00000001f5000000 0000000000000000
-head: 0000000000000001 ffffea00004b0481 ffffffffffffffff 0000000000000000
-head: 0000000000000002 0000000000000000 00000000ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff888012c11f80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffff888012c12000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> ffff888012c12080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                                           ^
- ffff888012c12100: fb fb fb fb fb fb fb fb fb fb fb fb fb fc fc fc
- ffff888012c12180: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-==================================================================
-
-Reported-by: syzbot+b244bda78289b00204ed@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b244bda78289b00204ed
-Suggested-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Bhupesh <bhupesh@igalia.com>
-Link: https://patch.msgid.link/20250128082751.124948-2-bhupesh@igalia.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: a45f41d754e0 ("KVM: arm64: Add {get,set}_user for PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}")
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20250315-pmc-v5-1-ecee87dab216@daynix.com
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/xattr.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ arch/arm64/kvm/sys_regs.c |   21 ++-------------------
+ 1 file changed, 2 insertions(+), 19 deletions(-)
 
-diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
-index 7647e9f6e1903..6ff94cdf1515c 100644
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -1176,15 +1176,24 @@ ext4_xattr_inode_dec_ref_all(handle_t *handle, struct inode *parent,
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -1051,26 +1051,9 @@ static bool access_pmu_evtyper(struct kv
+ 
+ static int set_pmreg(struct kvm_vcpu *vcpu, const struct sys_reg_desc *r, u64 val)
  {
- 	struct inode *ea_inode;
- 	struct ext4_xattr_entry *entry;
-+	struct ext4_iloc iloc;
- 	bool dirty = false;
- 	unsigned int ea_ino;
- 	int err;
- 	int credits;
-+	void *end;
-+
-+	if (block_csum)
-+		end = (void *)bh->b_data + bh->b_size;
-+	else {
-+		ext4_get_inode_loc(parent, &iloc);
-+		end = (void *)ext4_raw_inode(&iloc) + EXT4_SB(parent->i_sb)->s_inode_size;
-+	}
+-	bool set;
+-
+-	val &= kvm_pmu_accessible_counter_mask(vcpu);
+-
+-	switch (r->reg) {
+-	case PMOVSSET_EL0:
+-		/* CRm[1] being set indicates a SET register, and CLR otherwise */
+-		set = r->CRm & 2;
+-		break;
+-	default:
+-		/* Op2[0] being set indicates a SET register, and CLR otherwise */
+-		set = r->Op2 & 1;
+-		break;
+-	}
+-
+-	if (set)
+-		__vcpu_sys_reg(vcpu, r->reg) |= val;
+-	else
+-		__vcpu_sys_reg(vcpu, r->reg) &= ~val;
++	u64 mask = kvm_pmu_accessible_counter_mask(vcpu);
  
- 	/* One credit for dec ref on ea_inode, one for orphan list addition, */
- 	credits = 2 + extra_credits;
++	__vcpu_sys_reg(vcpu, r->reg) = val & mask;
+ 	return 0;
+ }
  
--	for (entry = first; !IS_LAST_ENTRY(entry);
-+	for (entry = first; (void *)entry < end && !IS_LAST_ENTRY(entry);
- 	     entry = EXT4_XATTR_NEXT(entry)) {
- 		if (!entry->e_value_inum)
- 			continue;
--- 
-2.39.5
-
 
 
 
