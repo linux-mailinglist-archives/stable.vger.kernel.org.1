@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-134228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 075F7A929F6
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:45:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D6DA927EF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4ACBF168ED5
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:44:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D3197AB988
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9802528FA;
-	Thu, 17 Apr 2025 18:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35404261577;
+	Thu, 17 Apr 2025 18:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vw5XBQES"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MlY4AKJV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499B78462;
-	Thu, 17 Apr 2025 18:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5964256C81;
+	Thu, 17 Apr 2025 18:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915488; cv=none; b=CoJ5u5OuEBkKztPpRAzmZ7Xd5q8AGGDZjuHh8uxvAJvmxZ+Oexr9RSDAT3FvsdQ8K85rYMSP8pTGt0PxDxmS7ANN6VWmXccTmMzA8CSZmT3Zkr2S5hOlJ0VUUbAdnGVTD3GvbUFQ+mU4m+OUG0TcZ9Eg8BaabgDaYNnnW8QhOV8=
+	t=1744914373; cv=none; b=BtfYmjrnH5jcX+qk64GIcNDCv24T3aqaBBjsQ1lgJPXahGBeRliz02pLWvbqfKds0sWsRZyHDL9wNfIgEEBG94kbr9212+IQ23NcQW42mI0UIF1NLRLZ9C5YuxDu2EloL0A3RrY9UuMlyF4ZkazdLthxLmYWkJ+rEd7ANDioYUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915488; c=relaxed/simple;
-	bh=N4+hZZd4TugklM3QatZpTSrnhhyYOXK/BFs+QkPFuXM=;
+	s=arc-20240116; t=1744914373; c=relaxed/simple;
+	bh=qUM+4TH0pRIMgB8uMUHgps+MEppWMT1et1xvhTOvCWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A5Ogq2JufZ+SZ573HY+7S3p6X1MD3CPPaWpJgmh3vkmOoI4VtDLoU3ee+xtjbi4zAVicPo841X1O74errqdcq3Fjol51N2cJ04FNVlFPFGuYc3MG9G+beooQqOgYtrlYB+QPTYbiQoiI4/GdpU9evLbR0mDvDrmiI8d6IbDuH+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vw5XBQES; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5192C4CEE7;
-	Thu, 17 Apr 2025 18:44:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ak/6L8+XQG4aqkQ8odDOmpnAjxPPjLy0BAzC/Wg38uhwty3xnMKrgcorVLSPLuw0rGrWAyicIMQkF/yPbib4j1KxkLD9f2nAIDBQBffP+N9I1fzD1u0qUeEqIhUVKcP+ttnCmDnAhMbu1xeazl1XPX+IzKIX05aOEoeJllKumpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MlY4AKJV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77057C4CEE4;
+	Thu, 17 Apr 2025 18:26:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915488;
-	bh=N4+hZZd4TugklM3QatZpTSrnhhyYOXK/BFs+QkPFuXM=;
+	s=korg; t=1744914372;
+	bh=qUM+4TH0pRIMgB8uMUHgps+MEppWMT1et1xvhTOvCWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vw5XBQESil3x/EtzFHPQ5ujZ8s2t+zaCvlW3B37hngqpTVwEBqaHfyXjOSZpQQ+F/
-	 NXczUujumdSgQNssucLU8okIANsStS1OHeF5MZ0DgQVg1xT/yLjep8HiQHzbegrLFT
-	 1Y6/5v18MMrIDjuB0IT58QxyKWJMIviZaeML+WcU=
+	b=MlY4AKJV/T2G4vhWkjEUvm/dKd1aUOdg44lHEaU7yK40vIYx+6hcVC/x63vvcpFXl
+	 q6Cln1nFYPwbY4IQB9DfdatS7lUApzLaQPD8/DTSVjCTVx6yMeOTRF2wl+59pZ7V0i
+	 HNkjOEhyZKbD0uk0L4VJiEO0OeRAjV0W6C5Xxthw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Yang <Philip.Yang@amd.com>,
-	Kent Russell <kent.russell@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 143/393] drm/amdkfd: debugfs hang_hws skip GPU with MES
+Subject: [PATCH 6.13 194/414] HID: pidff: Fix set_device_control()
 Date: Thu, 17 Apr 2025 19:49:12 +0200
-Message-ID: <20250417175113.337135082@linuxfoundation.org>
+Message-ID: <20250417175119.244244268@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +59,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit fe9d0061c413f8fb8c529b18b592b04170850ded ]
+[ Upstream commit e2fa0bdf08a70623f24ed52f2037a330999d9800 ]
 
-debugfs hang_hws is used by GPU reset test with HWS, for MES this crash
-the kernel with NULL pointer access because dqm->packet_mgr is not setup
-for MES path.
+As the search for Device Control report is permissive, make sure the
+desired field was actually found, before trying to set it.
 
-Skip GPU with MES for now, MES hang_hws debugfs interface will be
-supported later.
+Fix bitmask clearing as it was erronously using index instead of
+index - 1 (HID arrays index is 1-based).
 
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Kent Russell <kent.russell@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Add last two missing Device Control usages to the defined array.
+PID_PAUSE and PID_CONTINUE.
+
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_device.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/hid/usbhid/hid-pidff.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device.c b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-index d350c7ce35b3d..9186ef0bd2a32 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-@@ -1493,6 +1493,11 @@ int kfd_debugfs_hang_hws(struct kfd_node *dev)
- 		return -EINVAL;
- 	}
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 6eb7934c8f53b..8dfd2c554a276 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -118,7 +118,9 @@ static const u8 pidff_pool[] = { 0x80, 0x83, 0xa9 };
+ #define PID_DISABLE_ACTUATORS	1
+ #define PID_STOP_ALL_EFFECTS	2
+ #define PID_RESET		3
+-static const u8 pidff_device_control[] = { 0x97, 0x98, 0x99, 0x9a };
++#define PID_PAUSE		4
++#define PID_CONTINUE		5
++static const u8 pidff_device_control[] = { 0x97, 0x98, 0x99, 0x9a, 0x9b, 0x9c };
  
-+	if (dev->kfd->shared_resources.enable_mes) {
-+		dev_err(dev->adev->dev, "Inducing MES hang is not supported\n");
-+		return -EINVAL;
-+	}
-+
- 	return dqm_debugfs_hang_hws(dev->dqm);
+ #define PID_CONSTANT	0
+ #define PID_RAMP	1
+@@ -551,21 +553,29 @@ static void pidff_set_gain_report(struct pidff_device *pidff, u16 gain)
  }
  
+ /*
+- * Clear device control report
++ * Send device control report to the device
+  */
+ static void pidff_set_device_control(struct pidff_device *pidff, int field)
+ {
+-	int i, tmp;
++	int i, index;
+ 	int field_index = pidff->control_id[field];
+ 
++	if (field_index < 1)
++		return;
++
+ 	/* Detect if the field is a bitmask variable or an array */
+ 	if (pidff->device_control->flags & HID_MAIN_ITEM_VARIABLE) {
+ 		hid_dbg(pidff->hid, "DEVICE_CONTROL is a bitmask\n");
++
+ 		/* Clear current bitmask */
+ 		for(i = 0; i < sizeof(pidff_device_control); i++) {
+-			tmp = pidff->control_id[i];
+-			pidff->device_control->value[tmp] = 0;
++			index = pidff->control_id[i];
++			if (index < 1)
++				continue;
++
++			pidff->device_control->value[index - 1] = 0;
+ 		}
++
+ 		pidff->device_control->value[field_index - 1] = 1;
+ 	} else {
+ 		hid_dbg(pidff->hid, "DEVICE_CONTROL is an array\n");
 -- 
 2.39.5
 
