@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-133950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 608B5A928A9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EDDAA92888
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46A27163062
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CB0019E1832
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A63D25DCE5;
-	Thu, 17 Apr 2025 18:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8189D2571DE;
+	Thu, 17 Apr 2025 18:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMrS1tf1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asfQ4PZZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5ACF253333;
-	Thu, 17 Apr 2025 18:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9A02522AC;
+	Thu, 17 Apr 2025 18:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914637; cv=none; b=vEE/MHUGugABEIE/3AeCubk0cMj4nB7Hpm7e8OKlvas3PfpXszaYpzbpjqOB/J/0yljHycuOYtmkLU4H9OhqWeA5lrHGQcAv+3cXZuBB4f0TTMfh7Z7a8idENdNwJvNEpjTQFHt4C5fsbX5WwDT2PxE0Lt5tChq2DqJ6Psdd22I=
+	t=1744914541; cv=none; b=Jj6FSd3gvTYmTRFRoB7Q4LkF7W9C5QKHI7urEzIukQBlJ7OH3L2fTiZf2Wa+2CmGNrplCGmNy3vVayLfLJ6iXFL64h57mLgEfxjd4yLhKCQTl9bXab5rkdeSVIXC8LRd7Ao4nMKXpdry7jS0KnBhucYvWTtuEfxuoUIxIuGHXFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914637; c=relaxed/simple;
-	bh=jro/e9qEAn8B8vnP658cJ3DaqIRVtT+RaRwRWT1/UAg=;
+	s=arc-20240116; t=1744914541; c=relaxed/simple;
+	bh=oIE+TXZLokVQAnnhNeHk/juBtQQhV+AutG3oogbINWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aE/poIeD9qzVnO6s2c1ocK+8QqLfP0P7iKtZdP30qDzqtSPPhjCfF8EB+W6owjckSktKpnaOnXPEuDSfi9JeOU+Oz398L0T87HSDOoRjdLXk2R5qKXpFeOAi3csww/J4eHSSduA8tqbTQt40CBIXZP4ndpXPFabXDIFzNp3bwT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMrS1tf1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C23E6C4CEE4;
-	Thu, 17 Apr 2025 18:30:36 +0000 (UTC)
+	 MIME-Version; b=BRKx1nOdG9vcETxZiX/Dmu8fmD8h2MHU5yzQUzm4jucGz132eBtbHD6pU0zCHCUtHenWgjod5PftCjXdzfEtPJJBm6eRDK22GTz1wZF6nIYLxPacEc1mN0JG9B+FzbHtcq2BMObc1CwJ/C3DcuUncEk2Js0AKn2r/9f01+CbkMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=asfQ4PZZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD797C4CEE4;
+	Thu, 17 Apr 2025 18:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914637;
-	bh=jro/e9qEAn8B8vnP658cJ3DaqIRVtT+RaRwRWT1/UAg=;
+	s=korg; t=1744914541;
+	bh=oIE+TXZLokVQAnnhNeHk/juBtQQhV+AutG3oogbINWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uMrS1tf19q9hHE7xKXegr1uV1Ui3fW3/llAi8HlGMJL3rkd7T1Y6S8jMCaawDO4LD
-	 6O907mo+SOxugsrVMqSiD8qcQoBXoQJajWGNRosIv/AQsD+iFbQuSuLPJ7cL7CaV2A
-	 OXP6lbGPIOaOgmZxfhbCOCpckdkUxYEVAAKdp5Q8=
+	b=asfQ4PZZblCw37WtpX7Eo4ZD4kRSnZKL94gybYpDS9YLWPf+k/umwuXrowRgMPVtw
+	 59zf3Z56D50c1Fg/VSq72Z10ekGm1TT+th03y2JOQ1k3BaDOt4fGpUx2rlEe7T2BHx
+	 Xl7N3dVeQUZ+v+FgWSz5HpL1ZZT1A12nfV8xwV/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
 	Sebastian Fricke <sebastian.fricke@collabora.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.13 241/414] media: chips-media: wave5: Fix gray color on screen
-Date: Thu, 17 Apr 2025 19:49:59 +0200
-Message-ID: <20250417175121.118451967@linuxfoundation.org>
+Subject: [PATCH 6.13 242/414] media: chips-media: wave5: Avoid race condition in the interrupt handler
+Date: Thu, 17 Apr 2025 19:50:00 +0200
+Message-ID: <20250417175121.159904952@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
 References: <20250417175111.386381660@linuxfoundation.org>
@@ -70,13 +70,17 @@ Content-Transfer-Encoding: 8bit
 
 From: Jackson.lee <jackson.lee@chipsnmedia.com>
 
-commit 6bae4d5053da634eecb611118e7cd91a677a4bbf upstream.
+commit ac35f768986610480a1c01323d9cf9f5eaf3ee9b upstream.
 
-When a decoder instance is created, the W5_CMD_ERR_CONCEAL register
-should be initialized to 0. Otherwise, gray color is occasionally
-displayed on the screen while decoding.
+In case of multiple active instances, new interrupts can occur as soon
+as the current interrupt is cleared. If the driver reads the
+instance_info after clearing the interrupt, then there is no guarantee,
+that the instance_info is still valid for the current interrupt.
 
-Fixes: 45d1a2b93277 ("media: chips-media: wave5: Add vpuapi layer")
+Read the instance_info register for each interrupt before clearing the
+interrupt.
+
+Fixes: ed7276ed2fd0 ("media: chips-media: wave5: Add hrtimer based polling support")
 Cc: stable@vger.kernel.org
 Signed-off-by: Jackson.lee <jackson.lee@chipsnmedia.com>
 Signed-off-by: Nas Chung <nas.chung@chipsnmedia.com>
@@ -85,20 +89,26 @@ Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/chips-media/wave5/wave5-hw.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/chips-media/wave5/wave5-vpu.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/platform/chips-media/wave5/wave5-hw.c
-+++ b/drivers/media/platform/chips-media/wave5/wave5-hw.c
-@@ -585,7 +585,7 @@ int wave5_vpu_build_up_dec_param(struct
- 		vpu_write_reg(inst->dev, W5_CMD_NUM_CQ_DEPTH_M1,
- 			      WAVE521_COMMAND_QUEUE_DEPTH - 1);
- 	}
--
-+	vpu_write_reg(inst->dev, W5_CMD_ERR_CONCEAL, 0);
- 	ret = send_firmware_command(inst, W5_CREATE_INSTANCE, true, NULL, NULL);
- 	if (ret) {
- 		wave5_vdi_free_dma_memory(vpu_dev, &p_dec_info->vb_work);
+--- a/drivers/media/platform/chips-media/wave5/wave5-vpu.c
++++ b/drivers/media/platform/chips-media/wave5/wave5-vpu.c
+@@ -55,12 +55,12 @@ static void wave5_vpu_handle_irq(void *d
+ 	struct vpu_device *dev = dev_id;
+ 
+ 	irq_reason = wave5_vdi_read_register(dev, W5_VPU_VINT_REASON);
++	seq_done = wave5_vdi_read_register(dev, W5_RET_SEQ_DONE_INSTANCE_INFO);
++	cmd_done = wave5_vdi_read_register(dev, W5_RET_QUEUE_CMD_DONE_INST);
+ 	wave5_vdi_write_register(dev, W5_VPU_VINT_REASON_CLR, irq_reason);
+ 	wave5_vdi_write_register(dev, W5_VPU_VINT_CLEAR, 0x1);
+ 
+ 	list_for_each_entry(inst, &dev->instances, list) {
+-		seq_done = wave5_vdi_read_register(dev, W5_RET_SEQ_DONE_INSTANCE_INFO);
+-		cmd_done = wave5_vdi_read_register(dev, W5_RET_QUEUE_CMD_DONE_INST);
+ 
+ 		if (irq_reason & BIT(INT_WAVE5_INIT_SEQ) ||
+ 		    irq_reason & BIT(INT_WAVE5_ENC_SET_PARAM)) {
 
 
 
