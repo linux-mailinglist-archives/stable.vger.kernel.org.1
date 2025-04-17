@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E5CFA928A8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DF3BA92A38
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:48:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8DA83A7107
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:35:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F9F61B643B8
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A8518C034;
-	Thu, 17 Apr 2025 18:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6435A2566DB;
+	Thu, 17 Apr 2025 18:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fisRIPiS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5U2T3U1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE0825335A;
-	Thu, 17 Apr 2025 18:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA3C2571BC;
+	Thu, 17 Apr 2025 18:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914547; cv=none; b=eXsZ8P7r3FL9yS5M0cJA/RQhtk6CNi8rI6kY2qm8rp1EDVjNg7clEa/obuNBqVKgEU9/FJJCTwzt2/5G2MjU5c+AEuwdExmuXhkCP+u8isWPbuELEmVQn5vU23bVJiAHEyHgFHBYU6iKVp4opXpS4O9lPPOUZkwvGbaag18hdVU=
+	t=1744915665; cv=none; b=DX1Wxh8Jcets031YpoLhiDY5f5kHuLlCV/0PcErh9xn5iptGU2S2N3RdMdEhBj+zpjWp31q24KVcdUPVb56pnRTfnzR7CH6KVqYmTHjbylSf0OmPaSBYuodcc8TfDsVV6SIUhpc3vlWwYjoxoe2pJUqQfMfqOAYaaVZXNoFmDJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914547; c=relaxed/simple;
-	bh=Djksj07bEC+L3xTTkPvIp5aYGxbOq3LSVcLZ8MnEzKM=;
+	s=arc-20240116; t=1744915665; c=relaxed/simple;
+	bh=tmuR7LT/CnChGLP0IAxzH6Tp+l/su7xqYyAaautac3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c4P6/EavoMbdSBADWUL82AYlm2hfxiiNGHrQWZYn7khiq9J2j+OEjNocDnPVKAPiZFtwzuexkGTwz+GQQrMJ4UNSWyjJTXT9qyfQq920zctLfUxgFytJLpp0FISxqprvsBW1P4APd/oUYbn99WGhIO+ux8xcZlQotcfY4JlrAv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fisRIPiS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D06C7C4CEE4;
-	Thu, 17 Apr 2025 18:29:06 +0000 (UTC)
+	 MIME-Version; b=Z6CpbbsotZP5N4pEJHUbTyE8ETOd2HUavothiMzY+IlRXwxFCuXYC3gB+J9YOhyzmwFOM+MnlyBbhhUVgp8daIDCenMMOmWLriQI5ooUCHZnxLABEeQ+6KJ/FO198ONtF9znxZu57IPmM0QfVyhNysyw143JERF//g7wwuFfGu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5U2T3U1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CEFEC4CEE4;
+	Thu, 17 Apr 2025 18:47:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914547;
-	bh=Djksj07bEC+L3xTTkPvIp5aYGxbOq3LSVcLZ8MnEzKM=;
+	s=korg; t=1744915665;
+	bh=tmuR7LT/CnChGLP0IAxzH6Tp+l/su7xqYyAaautac3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fisRIPiSduxr3FZveSbsgnO88a0jZx2J1q9H/wHN+MBeO7bgGmq3CB9LNePoeFd6r
-	 noiJpyHlbvTbultiblYnusYv+yYdMfgJb7HcFLjcMg/pe1CBWIvo6FLk+oJdgRoZp6
-	 8SArMGS6YNrWd9flN8rogtAlvu8e2eyLuXTgGiio=
+	b=i5U2T3U1iJt5v0WQHEoBeTnR69JPM6hK8GnL8CRsZ40ALCmvPf4SUVxGnAOx71lmZ
+	 MB0ly8IG453iGZgNP8EILG3k4yEoZMYdzUHw/yJZqswdwiEWgitJuLJdnJajsO6LK6
+	 v6gqwscLUlQ6xL1FUPgbokaZwxJxVcq1X3btfYHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.13 252/414] net: dsa: mv88e6xxx: fix internal PHYs for 6320 family
+	stable@kernel.org,
+	Jan Beulich <jbeulich@suse.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.12 201/393] xenfs/xensyms: respect hypervisors "next" indication
 Date: Thu, 17 Apr 2025 19:50:10 +0200
-Message-ID: <20250417175121.556105921@linuxfoundation.org>
+Message-ID: <20250417175115.670641452@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: Jan Beulich <jbeulich@suse.com>
 
-commit 52fdc41c3278c981066a461d03d5477ebfcf270c upstream.
+commit 5c4e79e29a9fe4ea132118ac40c2bc97cfe23077 upstream.
 
-Fix internal PHYs definition for the 6320 family, which has only 2
-internal PHYs (on ports 3 and 4).
+The interface specifies the symnum field as an input and output; the
+hypervisor sets it to the next sequential symbol's index. xensyms_next()
+incrementing the position explicitly (and xensyms_next_sym()
+decrementing it to "rewind") is only correct as long as the sequence of
+symbol indexes is non-sparse. Use the hypervisor-supplied value instead
+to update the position in xensyms_next(), and use the saved incoming
+index in xensyms_next_sym().
 
-Fixes: bc3931557d1d ("net: dsa: mv88e6xxx: Add number of internal PHYs")
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.6.x
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250317173250.28780-7-kabel@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@kernel.org
+Fixes: a11f4f0a4e18 ("xen: xensyms support")
+Signed-off-by: Jan Beulich <jbeulich@suse.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Message-ID: <15d5e7fa-ec5d-422f-9319-d28bed916349@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/xen/xenfs/xensyms.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -6174,7 +6174,8 @@ static const struct mv88e6xxx_info mv88e
- 		.num_databases = 4096,
- 		.num_macs = 8192,
- 		.num_ports = 7,
--		.num_internal_phys = 5,
-+		.num_internal_phys = 2,
-+		.internal_phys_offset = 3,
- 		.num_gpio = 15,
- 		.max_vid = 4095,
- 		.max_sid = 63,
-@@ -6368,7 +6369,8 @@ static const struct mv88e6xxx_info mv88e
- 		.num_databases = 4096,
- 		.num_macs = 8192,
- 		.num_ports = 7,
--		.num_internal_phys = 5,
-+		.num_internal_phys = 2,
-+		.internal_phys_offset = 3,
- 		.num_gpio = 15,
- 		.max_vid = 4095,
- 		.max_sid = 63,
+--- a/drivers/xen/xenfs/xensyms.c
++++ b/drivers/xen/xenfs/xensyms.c
+@@ -48,7 +48,7 @@ static int xensyms_next_sym(struct xensy
+ 			return -ENOMEM;
+ 
+ 		set_xen_guest_handle(symdata->name, xs->name);
+-		symdata->symnum--; /* Rewind */
++		symdata->symnum = symnum; /* Rewind */
+ 
+ 		ret = HYPERVISOR_platform_op(&xs->op);
+ 		if (ret < 0)
+@@ -78,7 +78,7 @@ static void *xensyms_next(struct seq_fil
+ {
+ 	struct xensyms *xs = m->private;
+ 
+-	xs->op.u.symdata.symnum = ++(*pos);
++	*pos = xs->op.u.symdata.symnum;
+ 
+ 	if (xensyms_next_sym(xs))
+ 		return NULL;
 
 
 
