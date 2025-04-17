@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-133733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A916BA92719
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:19:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11868A92981
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA797466806
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:19:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E12D8E43DF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BEF12550C8;
-	Thu, 17 Apr 2025 18:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4A92586C4;
+	Thu, 17 Apr 2025 18:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SsYuLqkV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/hkEhI8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB5C1A3178;
-	Thu, 17 Apr 2025 18:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A781C1DF246;
+	Thu, 17 Apr 2025 18:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913977; cv=none; b=W5c3t1HxAcs1ehm1VlOTmkprTZVRkPyjCSciXwRlJkzEO78GiWeVOJ1VX+Imka8FPDT0imHdRtMxrmjhLnK/7k60FE1w3vYtJpByjBpe2Uh1hIvmoVqPhpVBDxqRLA6Q1B9HDDhDCnFbPDmLlEi1992glU1DatWVwXt1dz5XIYc=
+	t=1744915085; cv=none; b=SkJ+cjARot5Kn6pR+X77GjXDlFcYv6uWi0eyEOFpk1CK+NtefVdZlwRgTMubhxlZ7Vot5Qy3HZeYU/qCx5bAhxvUgJAY8JBblKcVkD32Pi2dLK9JjNvWZnVnr0/paJ53q92u0v8OlETCpXuudPeu76MxULJjB1H8pSQC9Ts1fo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913977; c=relaxed/simple;
-	bh=PlOElnruYEOD3i4wCJXI5hgiFB5ATazn3IBk3MbuCvA=;
+	s=arc-20240116; t=1744915085; c=relaxed/simple;
+	bh=lcbY9Q4GYfqKWYzcj4gKnMj02GSjusG1vtuzkZoX59o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jcakVz2cyNsRhjjiF0CySF+RAK4QHpS9Vtzj4+cQFnYF0RHUWxHvR7AjVwOhEdJPWlM8Q6iBruOXs6xVTNSFWEtS3v/8hXzpQo+kTX9DXtEYekco/eXOnJ2ySkG/aYgzU2FW6Gh4w+ir6a8INaZUZo0GDKBikE1S8nOl9yP73Rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SsYuLqkV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75959C4CEE4;
-	Thu, 17 Apr 2025 18:19:36 +0000 (UTC)
+	 MIME-Version; b=ugxnicbkiMVz5sorJW1Uom5s0ZqA56bjZ/ih4JX37oFkDhCWVVQFEiuvxOYYgnVV2e0JQcocUUn5va3wHq3MqV5jhlCQFpMat0oHZorzD9DOQ5qEyvaXmuTM1y2yUxJwYCuyE+IR9NMs3qMvyQx6f/+Ozmi2oU0boUHxZYaQqhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/hkEhI8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F310FC4CEE7;
+	Thu, 17 Apr 2025 18:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913976;
-	bh=PlOElnruYEOD3i4wCJXI5hgiFB5ATazn3IBk3MbuCvA=;
+	s=korg; t=1744915085;
+	bh=lcbY9Q4GYfqKWYzcj4gKnMj02GSjusG1vtuzkZoX59o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SsYuLqkVFl8cNkr4lrNuWpG+6ZYuidZFU8/gqVDlM+tehzmR58plv8g4CSkVo0+TT
-	 VDUKvZdxL0+smg5I1lee8LNJI3znKEz+WP7ERDkQSO2UGelCto5zRn6jAXW5e8z/GX
-	 9aOaFh3CDXhid2dl2nw3dtp6pKNIcztxyqMPcOp4=
+	b=V/hkEhI83yn7BWWx8OGUNumO55UgczY67u5euWCmzQrUnFfz7FPKvvEwl+/s5Q2S4
+	 RV/slmkCrKVTNEldVGBxjfgBLTb8RT3XwmgF3QUqdEIr6Jewh0+FPjzBx7pB31oQPb
+	 45SjCFanZ448o5L/yyRelwzLkiDqyrHKP/zDV4OU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Makarenko Oleg <oleg@makarenk.ooo>,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	Tejas Upadhyay <tejas.upadhyay@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 065/414] HID: pidff: Add PERMISSIVE_CONTROL quirk
+Subject: [PATCH 6.12 014/393] drm/xe/hw_engine: define sysfs_ops on all directories
 Date: Thu, 17 Apr 2025 19:47:03 +0200
-Message-ID: <20250417175114.028953604@linuxfoundation.org>
+Message-ID: <20250417175108.159519994@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +61,183 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Tejas Upadhyay <tejas.upadhyay@intel.com>
 
-[ Upstream commit a4119108d2530747e61c7cbf52e2affd089cb1f6 ]
+[ Upstream commit a5c71fd5b69b9da77e5e0b268e69e256932ba49c ]
 
-With this quirk, a PID device isn't required to have a strict
-logical_minimum of 1 for the the PID_DEVICE_CONTROL usage page.
+Sysfs_ops needs to be defined on all directories which
+can have attr files with set/get method. Add sysfs_ops
+to even those directories which is currently empty but
+would have attr files with set/get method in future.
+Leave .default with default sysfs_ops as it will never
+have setter method.
 
-Some devices come with weird values in their device descriptors and
-this quirk enables their initialization even if the logical minimum
-of the DEVICE_CONTROL page is not 1.
+V2(Himal/Rodrigo):
+ - use single sysfs_ops for all dir and attr with set/get
+ - add default ops as ./default does not need runtime pm at all
 
-Fixes initialization of VRS Direct Force Pro
-
-Changes in v6:
-- Change quirk name to better reflect it's intention
-
-Co-developed-by: Makarenko Oleg <oleg@makarenk.ooo>
-Signed-off-by: Makarenko Oleg <oleg@makarenk.ooo>
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 3f0e14651ab0 ("drm/xe: Runtime PM wake on every sysfs call")
+Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250327122647.886637-1-tejas.upadhyay@intel.com
+Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+(cherry picked from commit 40780b9760b561e093508d07b8b9b06c94ab201e)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 3 ++-
- include/linux/hid.h            | 5 +++--
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/xe/xe_hw_engine_class_sysfs.c | 108 +++++++++---------
+ 1 file changed, 52 insertions(+), 56 deletions(-)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index 503b22feacdbb..5a57ba0d7026a 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -969,7 +969,8 @@ static int pidff_find_special_fields(struct pidff_device *pidff)
- 					 0x57, 0);
- 	pidff->device_control =
- 		pidff_find_special_field(pidff->reports[PID_DEVICE_CONTROL],
--					 0x96, 1);
-+			0x96, !(pidff->quirks & HID_PIDFF_QUIRK_PERMISSIVE_CONTROL));
+diff --git a/drivers/gpu/drm/xe/xe_hw_engine_class_sysfs.c b/drivers/gpu/drm/xe/xe_hw_engine_class_sysfs.c
+index b53e8d2accdbd..a440442b4d727 100644
+--- a/drivers/gpu/drm/xe/xe_hw_engine_class_sysfs.c
++++ b/drivers/gpu/drm/xe/xe_hw_engine_class_sysfs.c
+@@ -32,14 +32,61 @@ bool xe_hw_engine_timeout_in_range(u64 timeout, u64 min, u64 max)
+ 	return timeout >= min && timeout <= max;
+ }
+ 
+-static void kobj_xe_hw_engine_release(struct kobject *kobj)
++static void xe_hw_engine_sysfs_kobj_release(struct kobject *kobj)
+ {
+ 	kfree(kobj);
+ }
+ 
++static ssize_t xe_hw_engine_class_sysfs_attr_show(struct kobject *kobj,
++						  struct attribute *attr,
++						  char *buf)
++{
++	struct xe_device *xe = kobj_to_xe(kobj);
++	struct kobj_attribute *kattr;
++	ssize_t ret = -EIO;
 +
- 	pidff->block_load_status =
- 		pidff_find_special_field(pidff->reports[PID_BLOCK_LOAD],
- 					 0x8b, 1);
-diff --git a/include/linux/hid.h b/include/linux/hid.h
-index ea7ba8e4bfe49..89a4dee377292 100644
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -1229,8 +1229,9 @@ int hid_pidff_init(struct hid_device *hid);
- #endif
++	kattr = container_of(attr, struct kobj_attribute, attr);
++	if (kattr->show) {
++		xe_pm_runtime_get(xe);
++		ret = kattr->show(kobj, kattr, buf);
++		xe_pm_runtime_put(xe);
++	}
++
++	return ret;
++}
++
++static ssize_t xe_hw_engine_class_sysfs_attr_store(struct kobject *kobj,
++						   struct attribute *attr,
++						   const char *buf,
++						   size_t count)
++{
++	struct xe_device *xe = kobj_to_xe(kobj);
++	struct kobj_attribute *kattr;
++	ssize_t ret = -EIO;
++
++	kattr = container_of(attr, struct kobj_attribute, attr);
++	if (kattr->store) {
++		xe_pm_runtime_get(xe);
++		ret = kattr->store(kobj, kattr, buf, count);
++		xe_pm_runtime_put(xe);
++	}
++
++	return ret;
++}
++
++static const struct sysfs_ops xe_hw_engine_class_sysfs_ops = {
++	.show = xe_hw_engine_class_sysfs_attr_show,
++	.store = xe_hw_engine_class_sysfs_attr_store,
++};
++
+ static const struct kobj_type kobj_xe_hw_engine_type = {
+-	.release = kobj_xe_hw_engine_release,
+-	.sysfs_ops = &kobj_sysfs_ops
++	.release = xe_hw_engine_sysfs_kobj_release,
++	.sysfs_ops = &xe_hw_engine_class_sysfs_ops,
++};
++
++static const struct kobj_type kobj_xe_hw_engine_type_def = {
++	.release = xe_hw_engine_sysfs_kobj_release,
++	.sysfs_ops = &kobj_sysfs_ops,
+ };
  
- /* HID PIDFF quirks */
--#define HID_PIDFF_QUIRK_MISSING_DELAY	BIT(0)
--#define HID_PIDFF_QUIRK_MISSING_PBO	BIT(1)
-+#define HID_PIDFF_QUIRK_MISSING_DELAY		BIT(0)
-+#define HID_PIDFF_QUIRK_MISSING_PBO		BIT(1)
-+#define HID_PIDFF_QUIRK_PERMISSIVE_CONTROL	BIT(2)
+ static ssize_t job_timeout_max_store(struct kobject *kobj,
+@@ -543,7 +590,7 @@ static int xe_add_hw_engine_class_defaults(struct xe_device *xe,
+ 	if (!kobj)
+ 		return -ENOMEM;
  
- #define dbg_hid(fmt, ...) pr_debug("%s: " fmt, __FILE__, ##__VA_ARGS__)
+-	kobject_init(kobj, &kobj_xe_hw_engine_type);
++	kobject_init(kobj, &kobj_xe_hw_engine_type_def);
+ 	err = kobject_add(kobj, parent, "%s", ".defaults");
+ 	if (err)
+ 		goto err_object;
+@@ -559,57 +606,6 @@ static int xe_add_hw_engine_class_defaults(struct xe_device *xe,
+ 	return err;
+ }
  
+-static void xe_hw_engine_sysfs_kobj_release(struct kobject *kobj)
+-{
+-	kfree(kobj);
+-}
+-
+-static ssize_t xe_hw_engine_class_sysfs_attr_show(struct kobject *kobj,
+-						  struct attribute *attr,
+-						  char *buf)
+-{
+-	struct xe_device *xe = kobj_to_xe(kobj);
+-	struct kobj_attribute *kattr;
+-	ssize_t ret = -EIO;
+-
+-	kattr = container_of(attr, struct kobj_attribute, attr);
+-	if (kattr->show) {
+-		xe_pm_runtime_get(xe);
+-		ret = kattr->show(kobj, kattr, buf);
+-		xe_pm_runtime_put(xe);
+-	}
+-
+-	return ret;
+-}
+-
+-static ssize_t xe_hw_engine_class_sysfs_attr_store(struct kobject *kobj,
+-						   struct attribute *attr,
+-						   const char *buf,
+-						   size_t count)
+-{
+-	struct xe_device *xe = kobj_to_xe(kobj);
+-	struct kobj_attribute *kattr;
+-	ssize_t ret = -EIO;
+-
+-	kattr = container_of(attr, struct kobj_attribute, attr);
+-	if (kattr->store) {
+-		xe_pm_runtime_get(xe);
+-		ret = kattr->store(kobj, kattr, buf, count);
+-		xe_pm_runtime_put(xe);
+-	}
+-
+-	return ret;
+-}
+-
+-static const struct sysfs_ops xe_hw_engine_class_sysfs_ops = {
+-	.show = xe_hw_engine_class_sysfs_attr_show,
+-	.store = xe_hw_engine_class_sysfs_attr_store,
+-};
+-
+-static const struct kobj_type xe_hw_engine_sysfs_kobj_type = {
+-	.release = xe_hw_engine_sysfs_kobj_release,
+-	.sysfs_ops = &xe_hw_engine_class_sysfs_ops,
+-};
+ 
+ static void hw_engine_class_sysfs_fini(void *arg)
+ {
+@@ -640,7 +636,7 @@ int xe_hw_engine_class_sysfs_init(struct xe_gt *gt)
+ 	if (!kobj)
+ 		return -ENOMEM;
+ 
+-	kobject_init(kobj, &xe_hw_engine_sysfs_kobj_type);
++	kobject_init(kobj, &kobj_xe_hw_engine_type);
+ 
+ 	err = kobject_add(kobj, gt->sysfs, "engines");
+ 	if (err)
 -- 
 2.39.5
 
