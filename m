@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-134367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C609A92B01
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:56:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D8A0A92656
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:12:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 380DA3AE630
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:53:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C31F4A03F8
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB22025EFAE;
-	Thu, 17 Apr 2025 18:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12E6D152532;
+	Thu, 17 Apr 2025 18:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yzxldklP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YwaK+Bou"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D3B25EFA3;
-	Thu, 17 Apr 2025 18:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54E21A3178;
+	Thu, 17 Apr 2025 18:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915913; cv=none; b=AlTkkHYTJvgSVYykauBJ/NZy7SX/+0l7E0EGyWD+h0j/jz0R69LZCc4jtq+W0kR/AHjRfFQDBVih0hKYwFLvYqWmHOkPHKCK7aNFJqt481Dnycf5egmeNXKlerv23QFk6J/s/uf8Nvm8N73uzTP03hbxeXaiSLHJf8Lad7J6EHI=
+	t=1744913545; cv=none; b=qTRLhzUyCMH6LvASxps6YRJ4taN+y0wO3fY0tHv1b1iI9iM2wBjxBb2zfNdqWU+mU5BCqbzmLOl+SJ6A+w6YmnO/+fF6sd93OeGOF/rB4jz+a4zSUTfYYgxUQ3hi7fgil3lRep+YoW3wZKh4HCZdtvK26SgbUcwqV6XJ8SZSkJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915913; c=relaxed/simple;
-	bh=oAZaxdpNcC7V/ZDenK4gRozi+V6Gr6KHqFqTh/VED1k=;
+	s=arc-20240116; t=1744913545; c=relaxed/simple;
+	bh=MHDXHLstKeG8SczJxQ+3M8HNP7+E/DBTpDNLq1w0fsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tHqezxXermJDXw98CCtZNgrMjhJuAbsk0iY09xtQ7OT8kY06xva3j5VgtQn5Z2KU9UwB7NWJu6w5mRre25MZ55MLV/suxcMrGFRCYZIjwXT7m4euYQcv4K2jQrT4tCtJin55cgTu3wESrbNKSTqlOOpk/TBmbguiGc2K7svqAo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yzxldklP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA72C4CEE4;
-	Thu, 17 Apr 2025 18:51:52 +0000 (UTC)
+	 MIME-Version; b=MS1xPcM27owV78Uqtc8ciQtcXa3a/n1Go+lKtfy03ZsqSkLSAILylIMh5xHdDPWQHFKQ1s2p7/PQQPM6qP90KWff2eFFj0GdVrfftyEkP7OK0acbCLjqR42FWlIaygqBVZR21MqtVg/QlYZRTSRCRdvQJ/El+99AIj1c9SLr3Jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YwaK+Bou; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50D01C4CEE4;
+	Thu, 17 Apr 2025 18:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915913;
-	bh=oAZaxdpNcC7V/ZDenK4gRozi+V6Gr6KHqFqTh/VED1k=;
+	s=korg; t=1744913545;
+	bh=MHDXHLstKeG8SczJxQ+3M8HNP7+E/DBTpDNLq1w0fsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yzxldklP2JSk2W5iQ/ixqMp8bILWzURKL9UguaSBiKcZLLHJHZ2rnYYCC2/4QEZig
-	 TWIDSAUpZbLs1cK8nMyqHE6Ty2q1hIDOk9TSV1Tyr0LlDdNajpbx05f/2kGvlcX8v0
-	 PDms+72a6cKf0j3Kkp88774QaQCaLNb9qO+3IwYI=
+	b=YwaK+BouTFkP6VGX5z4BKJQOgQ6WzFo1iy/AevsRIyv36wRqOswTr470nYhCZnPR8
+	 ur7lUz+0nVK2r0P+kvfeIol6o8d5jktEywDd0SMC42ehygnXaKky70jZtd2bhBIdkz
+	 y9+h68s+naVKQ7rILQoOLdJu+CicYEUS/Q8q/1Vs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 254/393] ASoC: qdsp6: q6apm-dai: fix capture pipeline overruns.
+	Alexandra Diupina <adiupina@astralinux.ru>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.14 375/449] cifs: avoid NULL pointer dereference in dbg call
 Date: Thu, 17 Apr 2025 19:51:03 +0200
-Message-ID: <20250417175117.803626429@linuxfoundation.org>
+Message-ID: <20250417175133.349934337@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+From: Alexandra Diupina <adiupina@astralinux.ru>
 
-commit 5d01ed9b9939b4c726be74db291a982bc984c584 upstream.
+commit b4885bd5935bb26f0a414ad55679a372e53f9b9b upstream.
 
-Period sizes less than 6k for capture path triggers overruns in the
-dsp capture pipeline.
+cifs_server_dbg() implies server to be non-NULL so
+move call under condition to avoid NULL pointer dereference.
 
-Change the period size and number of periods to value which DSP is happy with.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 9b4fe0f1cd79 ("ASoC: qdsp6: audioreach: add q6apm-dai support")
+Fixes: e79b0332ae06 ("cifs: ignore cached share root handle closing errors")
 Cc: stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://patch.msgid.link/20250314174800.10142-6-srinivas.kandagatla@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6apm-dai.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/client/smb2misc.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/sound/soc/qcom/qdsp6/q6apm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6apm-dai.c
-@@ -24,8 +24,8 @@
- #define PLAYBACK_MIN_PERIOD_SIZE	128
- #define CAPTURE_MIN_NUM_PERIODS		2
- #define CAPTURE_MAX_NUM_PERIODS		8
--#define CAPTURE_MAX_PERIOD_SIZE		4096
--#define CAPTURE_MIN_PERIOD_SIZE		320
-+#define CAPTURE_MAX_PERIOD_SIZE		65536
-+#define CAPTURE_MIN_PERIOD_SIZE		6144
- #define BUFFER_BYTES_MAX (PLAYBACK_MAX_NUM_PERIODS * PLAYBACK_MAX_PERIOD_SIZE)
- #define BUFFER_BYTES_MIN (PLAYBACK_MIN_NUM_PERIODS * PLAYBACK_MIN_PERIOD_SIZE)
- #define COMPR_PLAYBACK_MAX_FRAGMENT_SIZE (128 * 1024)
+--- a/fs/smb/client/smb2misc.c
++++ b/fs/smb/client/smb2misc.c
+@@ -816,11 +816,12 @@ smb2_handle_cancelled_close(struct cifs_
+ 		WARN_ONCE(tcon->tc_count < 0, "tcon refcount is negative");
+ 		spin_unlock(&cifs_tcp_ses_lock);
+ 
+-		if (tcon->ses)
++		if (tcon->ses) {
+ 			server = tcon->ses->server;
+-
+-		cifs_server_dbg(FYI, "tid=0x%x: tcon is closing, skipping async close retry of fid %llu %llu\n",
+-				tcon->tid, persistent_fid, volatile_fid);
++			cifs_server_dbg(FYI,
++					"tid=0x%x: tcon is closing, skipping async close retry of fid %llu %llu\n",
++					tcon->tid, persistent_fid, volatile_fid);
++		}
+ 
+ 		return 0;
+ 	}
 
 
 
