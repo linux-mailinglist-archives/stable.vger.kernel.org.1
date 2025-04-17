@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-134267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 797DBA92A1A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D45DEA9287F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:35:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0334119E7472
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:47:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7492F18968FD
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:35:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B8AC1EB1BF;
-	Thu, 17 Apr 2025 18:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9642571AE;
+	Thu, 17 Apr 2025 18:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZhDn8K9z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wm/IJ+sT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4819F1DB148;
-	Thu, 17 Apr 2025 18:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A472566D7;
+	Thu, 17 Apr 2025 18:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915607; cv=none; b=cRh8HqTNo9FDK7gjPRqFUS0QFLKE5qlGBoubLdv6VW/r6K5QBcz3m4EEaO5KRMpZ/rfYcUzHwuaVEX9ECEmVxwZiQJqTrukIUIFgJ3n8FES6JhYbFGxtAATm5JksVARwlvZDoZ0jI6hndbAad3kj741YIkMSBR00/zlWNjDjHpQ=
+	t=1744914490; cv=none; b=de2yMtnpf/hQD6DH8Eg/tFhE/XV7whLtIXmK8B2yxGTg+ax9dNobdL+T9ttyHlsgLpz6SzXfllLBV7oRde3T82YHzenBI4SP8IgaMU0ElOryu/EZv2A9Q5kcTBAsr/vm/YUW+SV/2yxYz71kL4qegLTKMHLlquTeetVWJs1Wkek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915607; c=relaxed/simple;
-	bh=/BAVWs2Q+6t95bwOKzeYud6at072q45gC7fzxZe32PE=;
+	s=arc-20240116; t=1744914490; c=relaxed/simple;
+	bh=Ehaj4S8EsWyYM8s0JpjWcQvvHk7gfF8CFennWGefKvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rv6StvQPb1JjT5cDSGxnBZ8APB3iLluoGaX4RmCmF78QB/XRoTC238nCZTza15PkIEgMIMhX62FMJkpoKa9gJ9/7PnlPY2/jThlrSv5OCMcZn0y1iwTELdU+JfFKsn7fPj+1S1hw7MEdWpFeITbi8foq7Jgglg7lazDHRzm7+W8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZhDn8K9z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACDF4C4CEE4;
-	Thu, 17 Apr 2025 18:46:46 +0000 (UTC)
+	 MIME-Version; b=OdwksySlhUi0qj1OLhzh8NidkX5ekIa9dl7D7tbGL/v4cvh3v5f5sOGjydls35dh2lcQf5lFDTAq1v6bqMPmcMAa2TEUnx6+NeQfA2/spkHhgtfrhHqawrmXSWZl1eq2k2Tj6ap+L4AiCeB3DYvsKvo+UB/racKexG6FUn+Q0ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wm/IJ+sT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C707FC4CEE7;
+	Thu, 17 Apr 2025 18:28:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915607;
-	bh=/BAVWs2Q+6t95bwOKzeYud6at072q45gC7fzxZe32PE=;
+	s=korg; t=1744914490;
+	bh=Ehaj4S8EsWyYM8s0JpjWcQvvHk7gfF8CFennWGefKvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZhDn8K9zmVZHdaVFHfIAOp3k9lXxDRy4BVBML+SLFUE65lfEOpyvwQhMyxTeOP3IK
-	 IEFvcy6yLoWBci5gtgvHJh9tupD1lXuiU+Yw8cK33AhDAaMuvDXZdQ0CucaUk/h12e
-	 x6TN+tD9XAaTU0KKe4ZsUDDTLHirZFk51wHw1M10=
+	b=wm/IJ+sTT9vdcJEgXw/+Yx+6hzVTVv39w4/wNVNkV0NsFcKCuUuKIrzoUnzFeR679
+	 1ZmZOLCF+jV6X0lbaE3JlJ2+XWfAI5S/HuvNJ//2TBrTWQXhF1eKBKX66Esw39Es+w
+	 mqpGVaklt1u8YjtbUPbRnbMhK1+G+oB2F32/CVo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 181/393] HID: pidff: Remove redundant call to pidff_find_special_keys
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.13 232/414] media: i2c: ov7251: Set enable GPIO low in probe
 Date: Thu, 17 Apr 2025 19:49:50 +0200
-Message-ID: <20250417175114.876274588@linuxfoundation.org>
+Message-ID: <20250417175120.764326790@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +60,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 1bd55e79cbc0ea2d6a65f51e06c891806359c2f2 ]
+commit a1963698d59cec83df640ded343af08b76c8e9c5 upstream.
 
-Probably left out as a mistake after Anssi created the helper macro
+Set the enable GPIO low when acquiring it.
 
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d30bb512da3d ("media: Add a driver for the ov7251 camera sensor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/media/i2c/ov7251.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index d5734cbf745d1..6f6c47bd57eaa 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -1159,10 +1159,6 @@ static int pidff_find_special_fields(struct pidff_device *pidff)
- 		return -1;
+--- a/drivers/media/i2c/ov7251.c
++++ b/drivers/media/i2c/ov7251.c
+@@ -1696,7 +1696,7 @@ static int ov7251_probe(struct i2c_clien
+ 		return PTR_ERR(ov7251->analog_regulator);
  	}
  
--	pidff_find_special_keys(pidff->control_id, pidff->device_control,
--				pidff_device_control,
--				sizeof(pidff_device_control));
--
- 	PIDFF_FIND_SPECIAL_KEYS(control_id, device_control, device_control);
- 
- 	if (!PIDFF_FIND_SPECIAL_KEYS(type_id, create_new_effect_type,
--- 
-2.39.5
-
+-	ov7251->enable_gpio = devm_gpiod_get(dev, "enable", GPIOD_OUT_HIGH);
++	ov7251->enable_gpio = devm_gpiod_get(dev, "enable", GPIOD_OUT_LOW);
+ 	if (IS_ERR(ov7251->enable_gpio)) {
+ 		dev_err(dev, "cannot get enable gpio\n");
+ 		return PTR_ERR(ov7251->enable_gpio);
 
 
 
