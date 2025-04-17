@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-134362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E088FA92AFF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:56:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 775B6A926A6
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:15:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EC713A9972
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:53:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3B608A38A6
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3CB91DF246;
-	Thu, 17 Apr 2025 18:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC4771A3178;
+	Thu, 17 Apr 2025 18:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ICwq+XCJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bJgu38BZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F411D5CCD;
-	Thu, 17 Apr 2025 18:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707F91DEFD4;
+	Thu, 17 Apr 2025 18:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915899; cv=none; b=MxKdk0pRz+N7HdFgkhAb6Xash5VVLkdHpQz+rwvf5Zav4CZuifhUl4sGeFKvtEFv6Z416Y2tImtLZnU6jowSkUxgYAC5BOFqHMDZzqpWImO7pjlyyg8Qvd+HYOXf2QqkvBSqEnnsWbKV2hjQaiLqpN3ncyJaRhyaHMIM/uZ4BAQ=
+	t=1744913709; cv=none; b=lLCkoTCGTuhqpbmhAUfydGWn5OLnqcrj7gWqIK4tSo3B5m1CrjcJGClDeqcvH6FKr+617QXkUDd74KQPJPfcSvSgZN7fnU9NgF61KGnSN62PV5xYyCEsMod0NWnifJsXoY6+DusRciB5UA30I6fsvYPnNLBh6z9w2+BdsHz5IEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915899; c=relaxed/simple;
-	bh=IqTVkdzl/A1f68/WVvJkAaC9jAZIMtSTnZlAye6CTfY=;
+	s=arc-20240116; t=1744913709; c=relaxed/simple;
+	bh=VXwkVUwbyPlYRYn3xDShkRI6CrWK9jvJeupRoQXz+48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DtlonjpWCb6fFx9DwEaAiC5trsVeOrQQs1A5TNso6CEBrz1wpYl+gRNE7ut/30pVwz2RjKfayDjMrtshcV0JS5FKVMyEzpjNj13lNa5ZyJM0O/sp1EpK4ol8zFksXQWE5FnoEdpRx26DlbBEw5by9DCDCs+7HPmy4qXKJnqVXu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ICwq+XCJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96171C4CEE7;
-	Thu, 17 Apr 2025 18:51:38 +0000 (UTC)
+	 MIME-Version; b=lATmetwCp1zzRhXAAnL4mjqwmh9Pc6lYtfupF34CVJWwlRqqWMOEEODIQRQyhTGukWerAAcWxvXQftdiLseY3hyztvThSdXQOTfFEkAuoqnB1GUVK4kud6sklA0QR81/bdKTBRYV5BuKLuTnuEVD2C2O79b9m5FfWhLVVLdFG4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bJgu38BZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCBD5C4CEE4;
+	Thu, 17 Apr 2025 18:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915899;
-	bh=IqTVkdzl/A1f68/WVvJkAaC9jAZIMtSTnZlAye6CTfY=;
+	s=korg; t=1744913709;
+	bh=VXwkVUwbyPlYRYn3xDShkRI6CrWK9jvJeupRoQXz+48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ICwq+XCJLoXkBEGxVA2Ex13ICgVL6uYHbBnyikjybTMoZAZgVhg5Uzps+gt5hYnTE
-	 pt1qVb2Gm8tqUMCN6x/71Ltt+jstR1fMve1mahFUVwRnr1Xbrl8SyCLNvEhcLs5pzl
-	 7Vf+xqunr6tAmJvthacb3hYnZqn0WY6jztQNKztE=
+	b=bJgu38BZIAx+ExFlr9o5SoXlBvorniYokupZ+9dfyOIesW6og7OlpopjbvEn+uL9b
+	 DHdKQESx4nypK9e234pQiFEAaDDn4GwR6MyZGhkkHOAPYnt4khYQVk1Y7HipaxmdTs
+	 LIzXdiOh/GfivgttJKtV5eTFUJJhsqylpiXrMaP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <lee@kernel.org>,
-	Chenyuan Yang <chenyuan0y@gmail.com>
-Subject: [PATCH 6.12 276/393] mfd: ene-kb3930: Fix a potential NULL pointer dereference
-Date: Thu, 17 Apr 2025 19:51:25 +0200
-Message-ID: <20250417175118.713066412@linuxfoundation.org>
+	Guixin Liu <kanie@linux.alibaba.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.14 398/449] gpio: tegra186: fix resource handling in ACPI probe path
+Date: Thu, 17 Apr 2025 19:51:26 +0200
+Message-ID: <20250417175134.288945766@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Guixin Liu <kanie@linux.alibaba.com>
 
-commit 4cdf1d2a816a93fa02f7b6b5492dc7f55af2a199 upstream.
+commit 8323f3a69de6f6e96bf22f32dd8e2920766050c2 upstream.
 
-The off_gpios could be NULL. Add missing check in the kb3930_probe().
-This is similar to the issue fixed in commit b1ba8bcb2d1f
-("backlight: hx8357: Fix potential NULL pointer dereference").
+When the Tegra186 GPIO controller is probed through ACPI matching,
+the driver emits two error messages during probing:
+  "tegra186-gpio NVDA0508:00: invalid resource (null)"
+  "tegra186-gpio NVDA0508:00: invalid resource (null)"
 
-This was detected by our static analysis tool.
+Fix this by getting resource first and then do the ioremap.
 
+Fixes: 2606e7c9f5fc ("gpio: tegra186: Add ACPI support")
 Cc: stable@vger.kernel.org
-Fixes: ede6b2d1dfc0 ("mfd: ene-kb3930: Add driver for ENE KB3930 Embedded Controller")
-Suggested-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Link: https://lore.kernel.org/r/20250224233736.1919739-1-chenyuan0y@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250327032349.78809-1-kanie@linux.alibaba.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/ene-kb3930.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpio-tegra186.c |   27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
---- a/drivers/mfd/ene-kb3930.c
-+++ b/drivers/mfd/ene-kb3930.c
-@@ -162,7 +162,7 @@ static int kb3930_probe(struct i2c_clien
- 			devm_gpiod_get_array_optional(dev, "off", GPIOD_IN);
- 		if (IS_ERR(ddata->off_gpios))
- 			return PTR_ERR(ddata->off_gpios);
--		if (ddata->off_gpios->ndescs < 2) {
-+		if (ddata->off_gpios && ddata->off_gpios->ndescs < 2) {
- 			dev_err(dev, "invalid off-gpios property\n");
- 			return -EINVAL;
- 		}
+--- a/drivers/gpio/gpio-tegra186.c
++++ b/drivers/gpio/gpio-tegra186.c
+@@ -823,6 +823,7 @@ static int tegra186_gpio_probe(struct pl
+ 	struct gpio_irq_chip *irq;
+ 	struct tegra_gpio *gpio;
+ 	struct device_node *np;
++	struct resource *res;
+ 	char **names;
+ 	int err;
+ 
+@@ -842,19 +843,19 @@ static int tegra186_gpio_probe(struct pl
+ 	gpio->num_banks++;
+ 
+ 	/* get register apertures */
+-	gpio->secure = devm_platform_ioremap_resource_byname(pdev, "security");
+-	if (IS_ERR(gpio->secure)) {
+-		gpio->secure = devm_platform_ioremap_resource(pdev, 0);
+-		if (IS_ERR(gpio->secure))
+-			return PTR_ERR(gpio->secure);
+-	}
+-
+-	gpio->base = devm_platform_ioremap_resource_byname(pdev, "gpio");
+-	if (IS_ERR(gpio->base)) {
+-		gpio->base = devm_platform_ioremap_resource(pdev, 1);
+-		if (IS_ERR(gpio->base))
+-			return PTR_ERR(gpio->base);
+-	}
++	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "security");
++	if (!res)
++		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	gpio->secure = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(gpio->secure))
++		return PTR_ERR(gpio->secure);
++
++	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "gpio");
++	if (!res)
++		res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
++	gpio->base = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(gpio->base))
++		return PTR_ERR(gpio->base);
+ 
+ 	err = platform_irq_count(pdev);
+ 	if (err < 0)
 
 
 
