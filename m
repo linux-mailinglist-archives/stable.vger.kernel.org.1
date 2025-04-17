@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-133586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0AB9A9264E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:12:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D117A92A8E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:52:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A4994A04E1
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:12:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08E4F7A991B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0352B1EB1BF;
-	Thu, 17 Apr 2025 18:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837CC257AD3;
+	Thu, 17 Apr 2025 18:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjyiDJFs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wlEE6U5r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4175152532;
-	Thu, 17 Apr 2025 18:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4111B2566DE;
+	Thu, 17 Apr 2025 18:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913523; cv=none; b=bSW7+eBRv8bkC3AUJEbHvVx72kWs/pX2Z6BP8gveGgVsXx3NFnFNn+FOB2CgTlD3Dhft5F9QZoOz7xPbbrDcXA7p5KWBkAzbFI/BTEGm/0GZL9ebTfrEFr7bIpuoDPjXs7ZWATLYThH6MKzjJdbRi3mVIs6TekLlDyAWyryGEmw=
+	t=1744915810; cv=none; b=sQUEm7rRf2P5hufv7dQHcUdjlweI2yBMfpDZeTFVx++X/+xOdLI2iLuCJHMO5jqOkm+Ra1JJfGIGBeas1+FMikckO3lIGdDBXyuR+tDQG4wp+mY7ei14Q+hzV4oouXeM7EzFbp9AXbkJ2h1Kxpyn6nvCl0yrdANHd50pRhAVicw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913523; c=relaxed/simple;
-	bh=r0GMHs2aA35tBTyKR+s3mMfuemWH2QJzD//8+HsI+/c=;
+	s=arc-20240116; t=1744915810; c=relaxed/simple;
+	bh=4GRpzLjJK6kJK7qddnQRiVa/TywQdytI5JXp+42zzFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=II9gOQtfSLrW/JP7uuh+tnl+iUZLGEK0+Q7cjaKzRKUFVBEwq0/Eso+G3/bu131654n27PfuBNbvLgemwTyWQ/14id9gZQ1objpZXR2FyN7e1r+SMLyh5ZDMLhR05uJ27Caq2qFe4pbba/p3e+nnZMN/AE7wAenNi6ZZdqN/kzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjyiDJFs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23663C4CEE4;
-	Thu, 17 Apr 2025 18:12:02 +0000 (UTC)
+	 MIME-Version; b=D4Ym2XOoy3MEqzK6p4ozz+fbq87eX2oVWR9eHiOjs2nNuBgfepDcbrzg6AAA+6c7oKSYjjUwysjBxxbeUYBHSo66bSHeGbJKVf8ZCcxx3yDpD6jKLne1ugGNE65namNKLZ/0Ehe9UIhvxtguUe6niuuaQuP+A/uG1ygfNF+wveU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wlEE6U5r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB86FC4CEE4;
+	Thu, 17 Apr 2025 18:50:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913523;
-	bh=r0GMHs2aA35tBTyKR+s3mMfuemWH2QJzD//8+HsI+/c=;
+	s=korg; t=1744915810;
+	bh=4GRpzLjJK6kJK7qddnQRiVa/TywQdytI5JXp+42zzFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EjyiDJFsrhD0FntyW/CrnpmMdjrsNFa8xUmTH8bVHpJ+7XSSXFAxxYtEDzpkRIwzy
-	 A3tXSUOijhWYJneMtWUR78Aq55yA71Ir/DUZgsFSEe6aNG13GC8H+VgzkNqUZ0XtxA
-	 5uj0kTS51ACXv41irvDups2tquvowL5TnP05LKnw=
+	b=wlEE6U5r/GaIgJDMflgoILqtSSSx8evLWoxC8n9hypV+xx2M+XivLXih2t/5TkIkl
+	 u+ebGORqKcb0/KydgNYDyudnwIybWrd9mtgZEvFDmOjoIOXeroHo9aMpvIoKOCE4/9
+	 arawv36pb+ZNt+mijcgq68NFGVQaZmqQ6m/IyPPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 6.14 368/449] x86/xen: fix balloon target initialization for PVH dom0
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 247/393] io_uring/net: fix io_req_post_cqe abuse by send bundle
 Date: Thu, 17 Apr 2025 19:50:56 +0200
-Message-ID: <20250417175133.053119761@linuxfoundation.org>
+Message-ID: <20250417175117.526510363@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,167 +59,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roger Pau Monne <roger.pau@citrix.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit 87af633689ce16ddb166c80f32b120e50b1295de upstream.
+commit 6889ae1b4df1579bcdffef023e2ea9a982565dff upstream.
 
-PVH dom0 re-uses logic from PV dom0, in which RAM ranges not assigned to
-dom0 are re-used as scratch memory to map foreign and grant pages.  Such
-logic relies on reporting those unpopulated ranges as RAM to Linux, and
-mark them as reserved.  This way Linux creates the underlying page
-structures required for metadata management.
+[  114.987980][ T5313] WARNING: CPU: 6 PID: 5313 at io_uring/io_uring.c:872 io_req_post_cqe+0x12e/0x4f0
+[  114.991597][ T5313] RIP: 0010:io_req_post_cqe+0x12e/0x4f0
+[  115.001880][ T5313] Call Trace:
+[  115.002222][ T5313]  <TASK>
+[  115.007813][ T5313]  io_send+0x4fe/0x10f0
+[  115.009317][ T5313]  io_issue_sqe+0x1a6/0x1740
+[  115.012094][ T5313]  io_wq_submit_work+0x38b/0xed0
+[  115.013223][ T5313]  io_worker_handle_work+0x62a/0x1600
+[  115.013876][ T5313]  io_wq_worker+0x34f/0xdf0
 
-Such approach works fine on PV because the initial balloon target is
-calculated using specific Xen data, that doesn't take into account the
-memory type changes described above.  However on HVM and PVH the initial
-balloon target is calculated using get_num_physpages(), and that function
-does take into account the unpopulated RAM regions used as scratch space
-for remote domain mappings.
+As the comment states, io_req_post_cqe() should only be used by
+multishot requests, i.e. REQ_F_APOLL_MULTISHOT, which bundled sends are
+not. Add a flag signifying whether a request wants to post multiple
+CQEs. Eventually REQ_F_APOLL_MULTISHOT should imply the new flag, but
+that's left out for simplicity.
 
-This leads to PVH dom0 having an incorrect initial balloon target, which
-causes malfunction (excessive memory freeing) of the balloon driver if the
-dom0 memory target is later adjusted from the toolstack.
-
-Fix this by using xen_released_pages to account for any pages that are part
-of the memory map, but are already unpopulated when the balloon driver is
-initialized.  This accounts for any regions used for scratch remote
-mappings.  Note on x86 xen_released_pages definition is moved to
-enlighten.c so it's uniformly available for all Xen-enabled builds.
-
-Take the opportunity to unify PV with PVH/HVM guests regarding the usage of
-get_num_physpages(), as that avoids having to add different logic for PV vs
-PVH in both balloon_add_regions() and arch_xen_unpopulated_init().
-
-Much like a6aa4eb994ee, the code in this changeset should have been part of
-38620fc4e893.
-
-Fixes: a6aa4eb994ee ('xen/x86: add extra pages to unpopulated-alloc if available')
-Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250407082838.65495-1-roger.pau@citrix.com>
+Fixes: a05d1f625c7aa ("io_uring/net: support bundles for send")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/8b611dbb54d1cd47a88681f5d38c84d0c02bc563.1743067183.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/xen/enlighten.c |   10 ++++++++++
- arch/x86/xen/setup.c     |    3 ---
- drivers/xen/balloon.c    |   34 ++++++++++++++++++++++++----------
- 3 files changed, 34 insertions(+), 13 deletions(-)
+ include/linux/io_uring_types.h |    3 +++
+ io_uring/io_uring.c            |    4 ++--
+ io_uring/net.c                 |    1 +
+ 3 files changed, 6 insertions(+), 2 deletions(-)
 
---- a/arch/x86/xen/enlighten.c
-+++ b/arch/x86/xen/enlighten.c
-@@ -70,6 +70,9 @@ EXPORT_SYMBOL(xen_start_flags);
-  */
- struct shared_info *HYPERVISOR_shared_info = &xen_dummy_shared_info;
- 
-+/* Number of pages released from the initial allocation. */
-+unsigned long xen_released_pages;
-+
- static __ref void xen_get_vendor(void)
- {
- 	init_cpu_devs();
-@@ -466,6 +469,13 @@ int __init arch_xen_unpopulated_init(str
- 			xen_free_unpopulated_pages(1, &pg);
+--- a/include/linux/io_uring_types.h
++++ b/include/linux/io_uring_types.h
+@@ -457,6 +457,7 @@ enum {
+ 	REQ_F_SKIP_LINK_CQES_BIT,
+ 	REQ_F_SINGLE_POLL_BIT,
+ 	REQ_F_DOUBLE_POLL_BIT,
++	REQ_F_MULTISHOT_BIT,
+ 	REQ_F_APOLL_MULTISHOT_BIT,
+ 	REQ_F_CLEAR_POLLIN_BIT,
+ 	REQ_F_HASH_LOCKED_BIT,
+@@ -530,6 +531,8 @@ enum {
+ 	REQ_F_SINGLE_POLL	= IO_REQ_FLAG(REQ_F_SINGLE_POLL_BIT),
+ 	/* double poll may active */
+ 	REQ_F_DOUBLE_POLL	= IO_REQ_FLAG(REQ_F_DOUBLE_POLL_BIT),
++	/* request posts multiple completions, should be set at prep time */
++	REQ_F_MULTISHOT		= IO_REQ_FLAG(REQ_F_MULTISHOT_BIT),
+ 	/* fast poll multishot mode */
+ 	REQ_F_APOLL_MULTISHOT	= IO_REQ_FLAG(REQ_F_APOLL_MULTISHOT_BIT),
+ 	/* recvmsg special flag, clear EPOLLIN */
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1821,7 +1821,7 @@ fail:
+ 	 * Don't allow any multishot execution from io-wq. It's more restrictive
+ 	 * than necessary and also cleaner.
+ 	 */
+-	if (req->flags & REQ_F_APOLL_MULTISHOT) {
++	if (req->flags & (REQ_F_MULTISHOT|REQ_F_APOLL_MULTISHOT)) {
+ 		err = -EBADFD;
+ 		if (!io_file_can_poll(req))
+ 			goto fail;
+@@ -1832,7 +1832,7 @@ fail:
+ 				goto fail;
+ 			return;
+ 		} else {
+-			req->flags &= ~REQ_F_APOLL_MULTISHOT;
++			req->flags &= ~(REQ_F_APOLL_MULTISHOT|REQ_F_MULTISHOT);
  		}
- 
-+		/*
-+		 * Account for the region being in the physmap but unpopulated.
-+		 * The value in xen_released_pages is used by the balloon
-+		 * driver to know how much of the physmap is unpopulated and
-+		 * set an accurate initial memory target.
-+		 */
-+		xen_released_pages += xen_extra_mem[i].n_pfns;
- 		/* Zero so region is not also added to the balloon driver. */
- 		xen_extra_mem[i].n_pfns = 0;
  	}
---- a/arch/x86/xen/setup.c
-+++ b/arch/x86/xen/setup.c
-@@ -37,9 +37,6 @@
  
- #define GB(x) ((uint64_t)(x) * 1024 * 1024 * 1024)
- 
--/* Number of pages released from the initial allocation. */
--unsigned long xen_released_pages;
--
- /* Memory map would allow PCI passthrough. */
- bool xen_pv_pci_possible;
- 
---- a/drivers/xen/balloon.c
-+++ b/drivers/xen/balloon.c
-@@ -675,7 +675,7 @@ void xen_free_ballooned_pages(unsigned i
- }
- EXPORT_SYMBOL(xen_free_ballooned_pages);
- 
--static void __init balloon_add_regions(void)
-+static int __init balloon_add_regions(void)
- {
- 	unsigned long start_pfn, pages;
- 	unsigned long pfn, extra_pfn_end;
-@@ -698,26 +698,38 @@ static void __init balloon_add_regions(v
- 		for (pfn = start_pfn; pfn < extra_pfn_end; pfn++)
- 			balloon_append(pfn_to_page(pfn));
- 
--		balloon_stats.total_pages += extra_pfn_end - start_pfn;
-+		/*
-+		 * Extra regions are accounted for in the physmap, but need
-+		 * decreasing from current_pages to balloon down the initial
-+		 * allocation, because they are already accounted for in
-+		 * total_pages.
-+		 */
-+		if (extra_pfn_end - start_pfn >= balloon_stats.current_pages) {
-+			WARN(1, "Extra pages underflow current target");
-+			return -ERANGE;
-+		}
-+		balloon_stats.current_pages -= extra_pfn_end - start_pfn;
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -435,6 +435,7 @@ int io_sendmsg_prep(struct io_kiocb *req
+ 		sr->msg_flags |= MSG_WAITALL;
+ 		sr->buf_group = req->buf_index;
+ 		req->buf_list = NULL;
++		req->flags |= REQ_F_MULTISHOT;
  	}
-+
-+	return 0;
- }
  
- static int __init balloon_init(void)
- {
- 	struct task_struct *task;
-+	int rc;
- 
- 	if (!xen_domain())
- 		return -ENODEV;
- 
- 	pr_info("Initialising balloon driver\n");
- 
--#ifdef CONFIG_XEN_PV
--	balloon_stats.current_pages = xen_pv_domain()
--		? min(xen_start_info->nr_pages - xen_released_pages, max_pfn)
--		: get_num_physpages();
--#else
--	balloon_stats.current_pages = get_num_physpages();
--#endif
-+	if (xen_released_pages >= get_num_physpages()) {
-+		WARN(1, "Released pages underflow current target");
-+		return -ERANGE;
-+	}
-+
-+	balloon_stats.current_pages = get_num_physpages() - xen_released_pages;
- 	balloon_stats.target_pages  = balloon_stats.current_pages;
- 	balloon_stats.balloon_low   = 0;
- 	balloon_stats.balloon_high  = 0;
-@@ -734,7 +746,9 @@ static int __init balloon_init(void)
- 	register_sysctl_init("xen/balloon", balloon_table);
- #endif
- 
--	balloon_add_regions();
-+	rc = balloon_add_regions();
-+	if (rc)
-+		return rc;
- 
- 	task = kthread_run(balloon_thread, NULL, "xen-balloon");
- 	if (IS_ERR(task)) {
+ #ifdef CONFIG_COMPAT
 
 
 
