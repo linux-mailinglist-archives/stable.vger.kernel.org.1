@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-134454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA6DA92B28
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:58:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E53EA92B20
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:57:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DCE31888CAC
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:56:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7210D4A702A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:56:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77CD52566DF;
-	Thu, 17 Apr 2025 18:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5274256C9F;
+	Thu, 17 Apr 2025 18:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iXO5dyBQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Do3rFx5i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3456E250C15;
-	Thu, 17 Apr 2025 18:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E60257448;
+	Thu, 17 Apr 2025 18:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916174; cv=none; b=KpbdYciA5fGtM8SP3rI85KbeKFrzbtQvkUlJJx6pgBtCyuPBMLkbG6HwYGSIjNB2cdqk1HSlK91IhkZhnCjM0uvfEyXOY2hYSgGpIMBeF+ZXXvpMkN5x6HTJ3eR5NFwPPD1e0ehe34VupYOhWu4xOBzNm/90nOW21Pdpdqzo3tQ=
+	t=1744916179; cv=none; b=brozNnwJG8AeVGdcb5ZcehwTAl1+vA/i9Eb7iZa7MImPxP03/vZPe4vlvb/UxnVdpWHSNG2TzElMrChHU8pjUAb7PxIcSKujKbOv9fIy1MCvY+72OcS+tBI169q6inVJWaVZf83grOgYkalYnjH3CAiWtgEk6xbOUnRHc0sMx2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916174; c=relaxed/simple;
-	bh=NWsMOZT17UhHO4WJ1HH4mj4kb4NPlmzyqPCoJMYvDIA=;
+	s=arc-20240116; t=1744916179; c=relaxed/simple;
+	bh=jK8u1G8y2ekS7ywgyF191cDrAyuXMlTj6AVB9zZtKpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hideXdjPunBD26CdseG/PlyBTVKeMlKDIdwu5WJ3+lDVjjY2gMaKCC5Frwwd67+6iABqqPbkQygYrvlpUx1UbhcyMxOaJk7KhaKxnUZNxGzrJMiUqcdTNaZ9y+WHaXkg1MiwuTcSLGB4+58ExAZ5xzcg2yVmXbv6cE9ngMyXYWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iXO5dyBQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 934C9C4CEE7;
-	Thu, 17 Apr 2025 18:56:13 +0000 (UTC)
+	 MIME-Version; b=Uipt1XNufvKMlj2LofFSFrmtQp/fP91zYd8U/giwEebk+tKOR1XnNFTeI+pe83ldPqhjFAxbbF4mdGZQpc5Xl8J+b3Tbg/ZOGOb+TpE96xORrhJXmT7KUUVVwNBE8OXU2DulshFTJdeiqao+si8XUdODOb8vgNtJNUFbWKI7t3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Do3rFx5i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D80C4CEEE;
+	Thu, 17 Apr 2025 18:56:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916174;
-	bh=NWsMOZT17UhHO4WJ1HH4mj4kb4NPlmzyqPCoJMYvDIA=;
+	s=korg; t=1744916176;
+	bh=jK8u1G8y2ekS7ywgyF191cDrAyuXMlTj6AVB9zZtKpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iXO5dyBQ2EpllOmZDfd07txp0VLd1qHBCsFqZa+aeLh/bhMEf9UhuhJNC333Rox6+
-	 4r6HIbfzu/aL511QT+CPO8blyCflKzBUlHJBB1eli1VnAJsmMamajxp1i+ij49d1fb
-	 42P8+sBIIp0V299a3yqANL1D54CuoWefVe9vhiDU=
+	b=Do3rFx5iwcYR6OoQUBAXd82u4wKQyRgSOTA2xUVQA7uekekh5D3/i7Fd8x5WWV45P
+	 +0/3o82jjG1BSP0hUKHx1fRmThzbzhDk4Moj4nT4huaXYbteW8Uho/qJpr/bK3HAgX
+	 tirgB7B5acf2nDK3eIR0NbdT0ZQ6oA49k9UuWDbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Stanner <phasta@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: [PATCH 6.12 367/393] PCI: Fix wrong length of devres array
-Date: Thu, 17 Apr 2025 19:52:56 +0200
-Message-ID: <20250417175122.364214374@linuxfoundation.org>
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 368/393] phy: freescale: imx8m-pcie: assert phy reset and perst in power off
+Date: Thu, 17 Apr 2025 19:52:57 +0200
+Message-ID: <20250417175122.403849972@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
 References: <20250417175107.546547190@linuxfoundation.org>
@@ -60,50 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Stanner <phasta@kernel.org>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-commit f09d3937d400433080d17982bd1a540da53a156d upstream.
+commit aecb63e88c5e5fb9afb782a1577264c76f179af9 upstream.
 
-The array for the iomapping cookie addresses has a length of
-PCI_STD_NUM_BARS. This constant, however, only describes standard BARs;
-while PCI can allow for additional, special BARs.
+Ensure the PHY reset and perst is asserted during power-off to
+guarantee it is in a reset state upon repeated power-on calls. This
+resolves an issue where the PHY may not properly initialize during
+subsequent power-on cycles. Power-on will deassert the reset at the
+appropriate time after tuning the PHY parameters.
 
-The total number of PCI resources is described by constant
-PCI_NUM_RESOURCES, which is also used in, e.g., pci_select_bars().
+During suspend/resume cycles, we observed that the PHY PLL failed to
+lock during resume when the CPU temperature increased from 65C to 75C.
+The observed errors were:
+  phy phy-32f00000.pcie-phy.3: phy poweron failed --> -110
+  imx6q-pcie 33800000.pcie: waiting for PHY ready timeout!
+  imx6q-pcie 33800000.pcie: PM: dpm_run_callback(): genpd_resume_noirq+0x0/0x80 returns -110
+  imx6q-pcie 33800000.pcie: PM: failed to resume noirq: error -110
 
-Thus, the devres array has so far been too small.
+This resulted in a complete CPU freeze, which is resolved by ensuring
+the PHY is in reset during power-on, thus preventing PHY PLL failures.
 
-Change the length of the devres array to PCI_NUM_RESOURCES.
-
-Link: https://lore.kernel.org/r/20250312080634.13731-3-phasta@kernel.org
-Fixes: bbaff68bf4a4 ("PCI: Add managed partial-BAR request and map infrastructure")
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Cc: stable@vger.kernel.org	# v6.11+
+Cc: stable@vger.kernel.org
+Fixes: 1aa97b002258 ("phy: freescale: pcie: Initialize the imx8 pcie standalone phy driver")
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250305144355.20364-3-eichest@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/devres.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/freescale/phy-fsl-imx8m-pcie.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/pci/devres.c
-+++ b/drivers/pci/devres.c
-@@ -40,7 +40,7 @@
-  * Legacy struct storing addresses to whole mapped BARs.
-  */
- struct pcim_iomap_devres {
--	void __iomem *table[PCI_STD_NUM_BARS];
-+	void __iomem *table[PCI_NUM_RESOURCES];
+--- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
++++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
+@@ -162,6 +162,16 @@ static int imx8_pcie_phy_power_on(struct
+ 	return ret;
+ }
+ 
++static int imx8_pcie_phy_power_off(struct phy *phy)
++{
++	struct imx8_pcie_phy *imx8_phy = phy_get_drvdata(phy);
++
++	reset_control_assert(imx8_phy->reset);
++	reset_control_assert(imx8_phy->perst);
++
++	return 0;
++}
++
+ static int imx8_pcie_phy_init(struct phy *phy)
+ {
+ 	struct imx8_pcie_phy *imx8_phy = phy_get_drvdata(phy);
+@@ -182,6 +192,7 @@ static const struct phy_ops imx8_pcie_ph
+ 	.init		= imx8_pcie_phy_init,
+ 	.exit		= imx8_pcie_phy_exit,
+ 	.power_on	= imx8_pcie_phy_power_on,
++	.power_off	= imx8_pcie_phy_power_off,
+ 	.owner		= THIS_MODULE,
  };
  
- /* Used to restore the old INTx state on driver detach. */
 
 
 
