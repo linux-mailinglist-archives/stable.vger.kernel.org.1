@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-134232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9A5DA929FE
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:46:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84AF2A9281E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:31:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D6E8462882
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:45:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4BBA3AD3AF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F2B25525D;
-	Thu, 17 Apr 2025 18:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 194BA2620E5;
+	Thu, 17 Apr 2025 18:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5x2Tn1D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vTvTEuh9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B791D86ED;
-	Thu, 17 Apr 2025 18:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79CF2620C3;
+	Thu, 17 Apr 2025 18:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915501; cv=none; b=BS9JToPkHjzTI20NYVYz68MBHAL2uyKbHX+TISLabrO7rdRO5gudteE15z/FA+Y7v59xcOpBjZlnRzQ+gScYFoFbVUfGndYWXuI8eA7a8bELWp0GypNF+kt45MnhCfv2bkEtZyeeAqtRjWiUWVIEQgaBK1mofAlMGry5dUgcPAA=
+	t=1744914387; cv=none; b=AYCopRx679lot/vPK++eUKOyoiCMqIXnpz70h090J0PBOlRxL8NKnLeGa/Wz1or2z8TDIzr7AAvwkT71ZDip3XOVUMGYHMEYPB6NkNkRn+Csw12tG77IpeuBVqG+OyN20pZh/K743GNcXyckf8H4BoHkVtrbxsIrviljcS3bw68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915501; c=relaxed/simple;
-	bh=gLd35BUzjPiz02ks6iXp6Vi7nYo5RvGIOpn9BZEB+p4=;
+	s=arc-20240116; t=1744914387; c=relaxed/simple;
+	bh=rEg83ntcxLl1JNWi7LhGaKCAlEvP5ZQB3XHyEqd3vMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DVCMFrGIc6AJktIFlwePbnqrq6z686kHKJSNlIBQ9mc7DjhEBchAyk7r0uP7NOlDGPkjGOXZTME5NaTpbN+EjWAfbadPExcMt3wl6SJ5e7Au2bubfKcCLtB4vTC1LU2IA7lyL51at8sjEHkxRDxn6Gnzat7zGhvBEmsUh7cTXFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5x2Tn1D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AD16C4CEE4;
-	Thu, 17 Apr 2025 18:45:01 +0000 (UTC)
+	 MIME-Version; b=ZL3cJNgfcH8upzocbJ782Ippkys3dNM3l7Vz+NbipgB88Zrv9QQZ0AQA+ONOR6veg8u6duAL2DbZMTj/GdKlNkUcG5qpLTEBxgrwDuxynVYruzKvu+b64Q+ud6qg48k5KAv6RtgPOUwf60w/HxFH9faO7xz5y/jdBMh1riow07w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vTvTEuh9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E014AC4CEE7;
+	Thu, 17 Apr 2025 18:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915501;
-	bh=gLd35BUzjPiz02ks6iXp6Vi7nYo5RvGIOpn9BZEB+p4=;
+	s=korg; t=1744914387;
+	bh=rEg83ntcxLl1JNWi7LhGaKCAlEvP5ZQB3XHyEqd3vMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H5x2Tn1DiZBC3RfmV1sR616yucZIzyuBu4szr23s823VPigvTkPTD/HFr78jOz8iU
-	 MBOEBkp3yxFm/pXAd9wjrJf4b3gUrPQqjyIXhXRgvetFhP/kJheA4i62jVsZUYAum6
-	 TJNHxm8VWwoPKWCk4ByRoJbdmMT5u6U+vjJ31mIE=
+	b=vTvTEuh9tDRl4gB+pzIZP5Xm71VPclkegLjnrSEvhnUH8XBc1y5NPyPnrhnHPmK61
+	 VQpHMCwwC8RycK3VXme7ebaquVTjm7kaMXjWQ6WVGF44IkizX/4M0DCS1cHhhQTf+m
+	 BTnqqZOqs7njQxNr9SF6zYvtHE9XiOSbxf2+XBy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 147/393] PCI: Add Rockchip Vendor ID
+	Arnd Bergmann <arnd@arndb.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Alexandre Courbot <acourbot@google.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.13 198/414] media: mtk-vcodec: venc: avoid -Wenum-compare-conditional warning
 Date: Thu, 17 Apr 2025 19:49:16 +0200
-Message-ID: <20250417175113.493174150@linuxfoundation.org>
+Message-ID: <20250417175119.408540330@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 20bbb083bbc9d3f8db390f2e35e168f1b23dae8a ]
+commit 07df4f23ef3ffe6fee697cd2e03623ad27108843 upstream.
 
-Move PCI_VENDOR_ID_ROCKCHIP from pci_endpoint_test.c to pci_ids.h and
-reuse it in pcie-rockchip-host.c.
+This is one of three clang warnings about incompatible enum types
+in a conditional expression:
 
-Link: https://lore.kernel.org/r/20250218092120.2322784-2-cassel@kernel.org
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c:597:29: error: conditional expression between different enumeration types ('enum scp_ipi_id' and 'enum ipi_id') [-Werror,-Wenum-compare-conditional]
+  597 |         inst->vpu_inst.id = is_ext ? SCP_IPI_VENC_H264 : IPI_VENC_H264;
+      |                                    ^ ~~~~~~~~~~~~~~~~~   ~~~~~~~~~~~~~
+
+The code is correct, so just rework it to avoid the warning.
+
+Fixes: 0dc4b3286125 ("media: mtk-vcodec: venc: support SCP firmware")
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Alexandre Courbot <acourbot@google.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/pci_endpoint_test.c            | 1 -
- drivers/pci/controller/pcie-rockchip-host.c | 2 +-
- drivers/pci/controller/pcie-rockchip.h      | 1 -
- include/linux/pci_ids.h                     | 2 ++
- 4 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
-index 3aaaf47fa4ee2..b5c8422fd2f04 100644
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -85,7 +85,6 @@
- #define PCI_DEVICE_ID_RENESAS_R8A774E1		0x0025
- #define PCI_DEVICE_ID_RENESAS_R8A779F0		0x0031
+--- a/drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c
++++ b/drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c
+@@ -594,7 +594,11 @@ static int h264_enc_init(struct mtk_vcod
  
--#define PCI_VENDOR_ID_ROCKCHIP			0x1d87
- #define PCI_DEVICE_ID_ROCKCHIP_RK3588		0x3588
- 
- static DEFINE_IDA(pci_endpoint_test_ida);
-diff --git a/drivers/pci/controller/pcie-rockchip-host.c b/drivers/pci/controller/pcie-rockchip-host.c
-index cbec711148253..481dcc476c556 100644
---- a/drivers/pci/controller/pcie-rockchip-host.c
-+++ b/drivers/pci/controller/pcie-rockchip-host.c
-@@ -367,7 +367,7 @@ static int rockchip_pcie_host_init_port(struct rockchip_pcie *rockchip)
- 		}
- 	}
- 
--	rockchip_pcie_write(rockchip, ROCKCHIP_VENDOR_ID,
-+	rockchip_pcie_write(rockchip, PCI_VENDOR_ID_ROCKCHIP,
- 			    PCIE_CORE_CONFIG_VENDOR);
- 	rockchip_pcie_write(rockchip,
- 			    PCI_CLASS_BRIDGE_PCI_NORMAL << 8,
-diff --git a/drivers/pci/controller/pcie-rockchip.h b/drivers/pci/controller/pcie-rockchip.h
-index 15ee949f2485e..688f51d9bde63 100644
---- a/drivers/pci/controller/pcie-rockchip.h
-+++ b/drivers/pci/controller/pcie-rockchip.h
-@@ -188,7 +188,6 @@
- #define AXI_WRAPPER_NOR_MSG			0xc
- 
- #define PCIE_RC_SEND_PME_OFF			0x11960
--#define ROCKCHIP_VENDOR_ID			0x1d87
- #define PCIE_LINK_IS_L2(x) \
- 	(((x) & PCIE_CLIENT_DEBUG_LTSSM_MASK) == PCIE_CLIENT_DEBUG_LTSSM_L2)
- #define PCIE_LINK_UP(x) \
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index c9dc15355f1ba..c395b3c5c05cf 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -2605,6 +2605,8 @@
- 
- #define PCI_VENDOR_ID_ZHAOXIN		0x1d17
- 
-+#define PCI_VENDOR_ID_ROCKCHIP		0x1d87
+ 	inst->ctx = ctx;
+ 	inst->vpu_inst.ctx = ctx;
+-	inst->vpu_inst.id = is_ext ? SCP_IPI_VENC_H264 : IPI_VENC_H264;
++	if (is_ext)
++		inst->vpu_inst.id = SCP_IPI_VENC_H264;
++	else
++		inst->vpu_inst.id = IPI_VENC_H264;
 +
- #define PCI_VENDOR_ID_HYGON		0x1d94
+ 	inst->hw_base = mtk_vcodec_get_reg_addr(inst->ctx->dev->reg_base, VENC_SYS);
  
- #define PCI_VENDOR_ID_META		0x1d9b
--- 
-2.39.5
-
+ 	ret = vpu_enc_init(&inst->vpu_inst);
 
 
 
