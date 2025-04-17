@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-133943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95D4BA928B2
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:37:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A10DA92A8F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:52:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD9A08A64B0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 352744A685D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39A2625A35A;
-	Thu, 17 Apr 2025 18:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72BB7257AF1;
+	Thu, 17 Apr 2025 18:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xwScvgNw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/x2T3Td"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D7F259CA8;
-	Thu, 17 Apr 2025 18:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7E2256C79;
+	Thu, 17 Apr 2025 18:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914617; cv=none; b=jiRl20HxCXJc/fUBtZ+bTiViNSuHmX3cLpmrz0wA4/Qvsz1yU79/xO6unTYeFelf+OZCJXjl5c8Y5Cqma5dCqncD0lQc2MXBE7hlhdF/+gWhIPQzgNLBfFeUkiAIdrp+PN/5dsR0azkkaTftJcMm6kN8xrZGfLAAxIpJUg/Oo5k=
+	t=1744915816; cv=none; b=Hi7Kxo1NzecH58bF6na85K8ARxE1rPBJM9p9o4a/kDbrZrzxTmsj/vfkCcW4m1iNT3n3mSkD26IGro0DtuQ1QHU/Z+rpZNjrRCergN8GF5nqn6RWxqx9TZowEofcrb6LGOU1+SDtqIoZKWyEGy3RIs/VfaBO2OU0AzPQUav/Q+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914617; c=relaxed/simple;
-	bh=ZFmOaTOnGBGtKXgqccBJoc2OzNjPX1SnWjLVu/fhjuk=;
+	s=arc-20240116; t=1744915816; c=relaxed/simple;
+	bh=2imkWe3GnjqIzu9hFkjrE5orcQ2FsbTSH0GAchxTgbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AmAdoLYlSbgbOiFi+0C7p3Wf1VXJDUGUNMHUQeMsjoUYdqQPG6l2rTy1TGcNy5tSJHhE8Yyixfq9okLkcZKT07qtTGDG3kHWA8GIT2ys9/7hyYLIxJTtbdAC+p24DqmoHFbW7SxUJ+JHHf3ECXUuD/1CImo4u3/I4OjLHWz8st8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xwScvgNw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D45C4CEE4;
-	Thu, 17 Apr 2025 18:30:16 +0000 (UTC)
+	 MIME-Version; b=TUV/dSweL1A/FIxxwUoXNa0RekffWcDUfgtOqcrFeXmRemh8x+8N1hLLDIpiNw7lfrI7KVS1OTDebI3OqGRAjtc79XiNIEDbM2r4IIkwuPqih8en3d6y0OLtDlzeCSjSmJC0HdybY47ZNKO1fWIOqBCyzNGNE+lc+DMBDAvw0Vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/x2T3Td; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD25DC4CEE4;
+	Thu, 17 Apr 2025 18:50:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914616;
-	bh=ZFmOaTOnGBGtKXgqccBJoc2OzNjPX1SnWjLVu/fhjuk=;
+	s=korg; t=1744915816;
+	bh=2imkWe3GnjqIzu9hFkjrE5orcQ2FsbTSH0GAchxTgbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xwScvgNwMBnK8KHIhOfIHHYpgeiT/rH6yTE63l1Tskwy0LlKlhfu6KRpiwzyal5Cz
-	 QJtwLv9LErVgnnUIjy4zGPJI7Ffw6wSC5Q6px16XX6VtMmPhyI+nxQFAkMTMPgJR53
-	 KL5lyMPy4BybH4TdFFhpaToEImyC/YNKCSdU2z3s=
+	b=O/x2T3Td+eUKSVgO4n2ZngvH2A6JEA8naxf00JgPk+8P9066ugV2X8ezIi9Hu4e2h
+	 BkZIO1cLKIkP6V8bX9YWYqbvxfGm0pR93zJUiLVgSZWtEcCV+sZjAlUs6mYJviyHRS
+	 jfxYz2rNcFkAk+Y0DdYRM/Sw0DiGVJBsK2VEOv00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sharan Kumar M <sharweshraajan@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.13 273/414] ALSA: hda/realtek: Enable Mute LED on HP OMEN 16 Laptop xd000xx
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 222/393] media: nuvoton: Fix reference handling of ece_node
 Date: Thu, 17 Apr 2025 19:50:31 +0200
-Message-ID: <20250417175122.408477992@linuxfoundation.org>
+Message-ID: <20250417175116.514134862@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sharan Kumar M <sharweshraajan@gmail.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit e5182305a5199246dbcb4053299dcb1c8867b6ff upstream.
+commit 8ba4ef40ad6ca62368292a69855324213181abfb upstream.
 
-This patch adds the HP OMEN 16 Laptop xd000xx to enable mute led.
-it uses ALC245_FIXUP_HP_MUTE_LED_COEFBIT with a slight modification
-setting mute_led_coef.off to 0(it was set to 4 i guess
-in that function) which i referred to your previous patch disscusion
-https://bugzilla.kernel.org/show_bug.cgi?id=214735 .
-i am not sure whether i can modify the current working function so i
-added another version calling
-ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT. and both works for me.
+Make sure all the code paths call of_node_put().
 
-Tested on 6.13.4-arch1-1 to 6.14.0-arch1-1
+Instead of manually calling of_node_put, use the __free macros/helpers.
 
-Signed-off-by: Sharan Kumar M <sharweshraajan@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250329154105.7618-2-sharweshraajan@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Cc: stable@vger.kernel.org
+Fixes: 46c15a4ff1f4 ("media: nuvoton: Add driver for NPCM video capture and encoding engine")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |   22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/media/platform/nuvoton/npcm-video.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -4744,6 +4744,22 @@ static void alc245_fixup_hp_mute_led_coe
- 	}
- }
+--- a/drivers/media/platform/nuvoton/npcm-video.c
++++ b/drivers/media/platform/nuvoton/npcm-video.c
+@@ -1650,8 +1650,8 @@ rel_ctrl_handler:
  
-+static void alc245_fixup_hp_mute_led_v1_coefbit(struct hda_codec *codec,
-+					  const struct hda_fixup *fix,
-+					  int action)
-+{
-+	struct alc_spec *spec = codec->spec;
-+
-+	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
-+		spec->mute_led_polarity = 0;
-+		spec->mute_led_coef.idx = 0x0b;
-+		spec->mute_led_coef.mask = 1 << 3;
-+		spec->mute_led_coef.on = 1 << 3;
-+		spec->mute_led_coef.off = 0;
-+		snd_hda_gen_add_mute_led_cdev(codec, coef_mute_led_set);
-+	}
-+}
-+
- /* turn on/off mic-mute LED per capture hook by coef bit */
- static int coef_micmute_led_set(struct led_classdev *led_cdev,
- 				enum led_brightness brightness)
-@@ -7871,6 +7887,7 @@ enum {
- 	ALC287_FIXUP_TAS2781_I2C,
- 	ALC287_FIXUP_YOGA7_14ARB7_I2C,
- 	ALC245_FIXUP_HP_MUTE_LED_COEFBIT,
-+	ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT,
- 	ALC245_FIXUP_HP_X360_MUTE_LEDS,
- 	ALC287_FIXUP_THINKPAD_I2S_SPK,
- 	ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD,
-@@ -10106,6 +10123,10 @@ static const struct hda_fixup alc269_fix
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc245_fixup_hp_mute_led_coefbit,
- 	},
-+	[ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc245_fixup_hp_mute_led_v1_coefbit,
-+	},
- 	[ALC245_FIXUP_HP_X360_MUTE_LEDS] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc245_fixup_hp_mute_led_coefbit,
-@@ -10600,6 +10621,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x103c, 0x8b97, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8bb3, "HP Slim OMEN", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8bb4, "HP Slim OMEN", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x103c, 0x8bcd, "HP Omen 16-xd0xxx", ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8bdd, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8bde, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8bdf, "HP Envy 15", ALC287_FIXUP_CS35L41_I2C_2),
+ static int npcm_video_ece_init(struct npcm_video *video)
+ {
++	struct device_node *ece_node __free(device_node) = NULL;
+ 	struct device *dev = video->dev;
+-	struct device_node *ece_node;
+ 	struct platform_device *ece_pdev;
+ 	void __iomem *regs;
+ 
+@@ -1671,7 +1671,6 @@ static int npcm_video_ece_init(struct np
+ 			dev_err(dev, "Failed to find ECE device\n");
+ 			return -ENODEV;
+ 		}
+-		of_node_put(ece_node);
+ 
+ 		regs = devm_platform_ioremap_resource(ece_pdev, 0);
+ 		if (IS_ERR(regs)) {
 
 
 
