@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-133453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B67A4A925C3
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:07:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E9EA92983
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E5468A2DD9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:07:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34ADF189344C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F622580F5;
-	Thu, 17 Apr 2025 18:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B06E2586CF;
+	Thu, 17 Apr 2025 18:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ytdHdd9l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Y+NeD5V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BA72580C6;
-	Thu, 17 Apr 2025 18:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CF12580F1;
+	Thu, 17 Apr 2025 18:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913123; cv=none; b=HNGho5llaukdjp2eUwYiizN3nPYxOPnlQwB/Ag7iW/HmYRz9bkAoJaXLC6zyniXRpWDZvz2CGszHVwgvw2W9wdCzbq2soR3qVUAshL89h1TsWcnW8No9D7O4eJPzRNHXwsNI6fqECrLppr5DW+wmHwR9Fcg/NXWl4MKic34ZFfA=
+	t=1744915267; cv=none; b=XS6fI1pGkNXRFEFJ8zmDY3+AErKHWhrVUUPwPahl0NrDhQFdLNVD9NN+dvQ7b3Qlb9HMftzGY8gjfUyiuTRA/sagsoYczpk0iA6dyW4lvUBCN3pDwYBVzYITg40sD3xz5FvJ+pDPN/+SHswwIH4Z2XL18OeRBoSdyNPyErBOi0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913123; c=relaxed/simple;
-	bh=MyXey4tijAOpR32/68EBpIUQpRRdkO6oZu5qQp044Yc=;
+	s=arc-20240116; t=1744915267; c=relaxed/simple;
+	bh=f6K5HyvHvaa13X5WOIlRql0tAmV8Xk8A+uBcGjadR6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oxtbT6c5tZ89ZoSX8pv3vxFIadAK0vB2yiO9IxeXfFslTeI4iw99zjzbvZu8eTxsRHmLTmQlD2xXTKWjMk7J5dMRY+47B3Wr66bdxME8CFZI9vNaO9gx2788xGv0EhCasA/MMIZAILZCqCh6YUUWCwqZUtd0a1KgYCVdgsDJK5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ytdHdd9l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F918C4CEE4;
-	Thu, 17 Apr 2025 18:05:22 +0000 (UTC)
+	 MIME-Version; b=etHWCqGrNyOr2tBgYklqfCKzWPgMrkAR6MJweyh554lT3JhXx9qx5q7kNd46HujKjAvCj47g7m2595vUR1BjKo935wWa1AiBjnzPBBZSeWziR4HgtwF9VEODSnwWj4hbHcodK89kWekTre9HFs4f4wAGsDeuB1vCsubIuXPdT08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Y+NeD5V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F47C4CEE4;
+	Thu, 17 Apr 2025 18:41:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913123;
-	bh=MyXey4tijAOpR32/68EBpIUQpRRdkO6oZu5qQp044Yc=;
+	s=korg; t=1744915267;
+	bh=f6K5HyvHvaa13X5WOIlRql0tAmV8Xk8A+uBcGjadR6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ytdHdd9ljR8agA2EXcBgUni2z5EEq0KYH4LvcjJxmZGawdNnOK+VPydDpU+9QVgkT
-	 aOVfA7vvKcys4XOu71ietU5vcxNfRvrmU81w0zWYeTDDZ05iZ3ikx+AajkRj7aunBz
-	 1NXRL7G1o3pkahrni0iHZ1jLsYFDoii0SI6gXS5A=
+	b=2Y+NeD5VzlNTG9eFcxV0jINbKjRDm7TRhMg/O/qzPIgFgYzcW984xkC78dQ3o/mYH
+	 pEATfc33qBacqAVnXeDOrc4A6ut12Ab3cYpaFYjXeZ4leY5hqBPp056DegKBPmIZ7W
+	 znm9BRD2g25HrSW2A9W95POG1tSy4ajFlRGDoQJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Maxim Mikityanskiy <maxtram95@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 194/449] ext4: dont treat fhandle lookup of ea_inode as FS corruption
+Subject: [PATCH 6.12 073/393] ALSA: hda: intel: Add Lenovo IdeaPad Z570 to probe denylist
 Date: Thu, 17 Apr 2025 19:48:02 +0200
-Message-ID: <20250417175125.786418913@linuxfoundation.org>
+Message-ID: <20250417175110.531780886@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,146 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Maxim Mikityanskiy <maxtram95@gmail.com>
 
-[ Upstream commit 642335f3ea2b3fd6dba03e57e01fa9587843a497 ]
+[ Upstream commit becc794c5e46f4dfca59f2385f78d83fc9e84700 ]
 
-A file handle that userspace provides to open_by_handle_at() can
-legitimately contain an outdated inode number that has since been reused
-for another purpose - that's why the file handle also contains a generation
-number.
+Lenovo IdeaPad Z570 with NVIDIA GeForce Ge 540M doesn't have sound on
+the discrete GPU. The HDA controller in DGPU is disabled by BIOS, but
+then reenabled by quirk_nvidia_hda(). The probe fails and ends up with
+the "GPU sound probed, but not operational" error.
 
-But if the inode number has been reused for an ea_inode, check_igot_inode()
-will notice, __ext4_iget() will go through ext4_error_inode(), and if the
-inode was newly created, it will also be marked as bad by iget_failed().
-This all happens before the point where the inode generation is checked.
+Add this laptop to DMI-based denylist to prevent probe early. DMI is
+used, because the audio device has zero subsystem IDs, and this entry
+would be too much, blocking all 540M chips:
+    PCI_DEVICE_SUB(0x10de, 0x0bea, 0x0000, 0x0000)
+Also, this laptop comes in a variety of modifications with different
+NVIDIA GPUs, so the DMI check will cover them all.
 
-ext4_error_inode() is supposed to only be used on filesystem corruption; it
-should not be used when userspace just got unlucky with a stale file
-handle. So when this happens, let __ext4_iget() just return an error.
-
-Fixes: b3e6bcb94590 ("ext4: add EA_INODE checking to ext4_iget()")
-Signed-off-by: Jann Horn <jannh@google.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20241129-ext4-ignore-ea-fhandle-v1-1-e532c0d1cee0@google.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Maxim Mikityanskiy <maxtram95@gmail.com>
+Link: https://patch.msgid.link/20250208214602.39607-3-maxtram95@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c | 68 ++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 48 insertions(+), 20 deletions(-)
+ sound/pci/hda/hda_intel.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index 4009f9017a0e9..4108b7d1696ff 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4710,22 +4710,43 @@ static inline void ext4_inode_set_iversion_queried(struct inode *inode, u64 val)
- 		inode_set_iversion_queried(inode, val);
- }
+diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
+index b511563bbb6ba..25b1984898ab2 100644
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -37,6 +37,7 @@
+ #include <linux/completion.h>
+ #include <linux/acpi.h>
+ #include <linux/pgtable.h>
++#include <linux/dmi.h>
  
--static const char *check_igot_inode(struct inode *inode, ext4_iget_flags flags)
--
-+static int check_igot_inode(struct inode *inode, ext4_iget_flags flags,
-+			    const char *function, unsigned int line)
+ #ifdef CONFIG_X86
+ /* for snoop control */
+@@ -2084,6 +2085,27 @@ static const struct pci_device_id driver_denylist[] = {
+ 	{}
+ };
+ 
++static struct pci_device_id driver_denylist_ideapad_z570[] = {
++	{ PCI_DEVICE_SUB(0x10de, 0x0bea, 0x0000, 0x0000) }, /* NVIDIA GF108 HDA */
++	{}
++};
++
++/* DMI-based denylist, to be used when:
++ *  - PCI subsystem IDs are zero, impossible to distinguish from valid sound cards.
++ *  - Different modifications of the same laptop use different GPU models.
++ */
++static const struct dmi_system_id driver_denylist_dmi[] = {
++	{
++		/* No HDA in NVIDIA DGPU. BIOS disables it, but quirk_nvidia_hda() reenables. */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_VERSION, "Ideapad Z570"),
++		},
++		.driver_data = &driver_denylist_ideapad_z570,
++	},
++	{}
++};
++
+ static const struct hda_controller_ops pci_hda_ops = {
+ 	.disable_msi_reset_irq = disable_msi_reset_irq,
+ 	.position_check = azx_position_check,
+@@ -2094,6 +2116,7 @@ static DECLARE_BITMAP(probed_devs, SNDRV_CARDS);
+ static int azx_probe(struct pci_dev *pci,
+ 		     const struct pci_device_id *pci_id)
  {
-+	const char *err_str;
-+
- 	if (flags & EXT4_IGET_EA_INODE) {
--		if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL))
--			return "missing EA_INODE flag";
-+		if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)) {
-+			err_str = "missing EA_INODE flag";
-+			goto error;
-+		}
- 		if (ext4_test_inode_state(inode, EXT4_STATE_XATTR) ||
--		    EXT4_I(inode)->i_file_acl)
--			return "ea_inode with extended attributes";
-+		    EXT4_I(inode)->i_file_acl) {
-+			err_str = "ea_inode with extended attributes";
-+			goto error;
-+		}
- 	} else {
--		if ((EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL))
--			return "unexpected EA_INODE flag";
-+		if ((EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)) {
-+			/*
-+			 * open_by_handle_at() could provide an old inode number
-+			 * that has since been reused for an ea_inode; this does
-+			 * not indicate filesystem corruption
-+			 */
-+			if (flags & EXT4_IGET_HANDLE)
-+				return -ESTALE;
-+			err_str = "unexpected EA_INODE flag";
-+			goto error;
-+		}
++	const struct dmi_system_id *dmi;
+ 	struct snd_card *card;
+ 	struct hda_intel *hda;
+ 	struct azx *chip;
+@@ -2106,6 +2129,12 @@ static int azx_probe(struct pci_dev *pci,
+ 		return -ENODEV;
+ 	}
+ 
++	dmi = dmi_first_match(driver_denylist_dmi);
++	if (dmi && pci_match_id(dmi->driver_data, pci)) {
++		dev_info(&pci->dev, "Skipping the device on the DMI denylist\n");
++		return -ENODEV;
 +	}
-+	if (is_bad_inode(inode) && !(flags & EXT4_IGET_BAD)) {
-+		err_str = "unexpected bad inode w/o EXT4_IGET_BAD";
-+		goto error;
- 	}
--	if (is_bad_inode(inode) && !(flags & EXT4_IGET_BAD))
--		return "unexpected bad inode w/o EXT4_IGET_BAD";
--	return NULL;
-+	return 0;
 +
-+error:
-+	ext4_error_inode(inode, function, line, 0, err_str);
-+	return -EFSCORRUPTED;
- }
- 
- struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
-@@ -4737,7 +4758,6 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
- 	struct ext4_inode_info *ei;
- 	struct ext4_super_block *es = EXT4_SB(sb)->s_es;
- 	struct inode *inode;
--	const char *err_str;
- 	journal_t *journal = EXT4_SB(sb)->s_journal;
- 	long ret;
- 	loff_t size;
-@@ -4766,10 +4786,10 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
- 	if (!inode)
- 		return ERR_PTR(-ENOMEM);
- 	if (!(inode->i_state & I_NEW)) {
--		if ((err_str = check_igot_inode(inode, flags)) != NULL) {
--			ext4_error_inode(inode, function, line, 0, err_str);
-+		ret = check_igot_inode(inode, flags, function, line);
-+		if (ret) {
- 			iput(inode);
--			return ERR_PTR(-EFSCORRUPTED);
-+			return ERR_PTR(ret);
- 		}
- 		return inode;
- 	}
-@@ -5050,13 +5070,21 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
- 		ret = -EFSCORRUPTED;
- 		goto bad_inode;
- 	}
--	if ((err_str = check_igot_inode(inode, flags)) != NULL) {
--		ext4_error_inode(inode, function, line, 0, err_str);
--		ret = -EFSCORRUPTED;
--		goto bad_inode;
-+	ret = check_igot_inode(inode, flags, function, line);
-+	/*
-+	 * -ESTALE here means there is nothing inherently wrong with the inode,
-+	 * it's just not an inode we can return for an fhandle lookup.
-+	 */
-+	if (ret == -ESTALE) {
-+		brelse(iloc.bh);
-+		unlock_new_inode(inode);
-+		iput(inode);
-+		return ERR_PTR(-ESTALE);
- 	}
--
-+	if (ret)
-+		goto bad_inode;
- 	brelse(iloc.bh);
-+
- 	unlock_new_inode(inode);
- 	return inode;
- 
+ 	dev = find_first_zero_bit(probed_devs, SNDRV_CARDS);
+ 	if (dev >= SNDRV_CARDS)
+ 		return -ENODEV;
 -- 
 2.39.5
 
