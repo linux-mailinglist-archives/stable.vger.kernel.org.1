@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-134343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56549A92A93
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:52:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7877AA9263B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:11:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AD684A6978
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E00798A5E5B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:11:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E527F2586C5;
-	Thu, 17 Apr 2025 18:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F263A2566FB;
+	Thu, 17 Apr 2025 18:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Km29RFqp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ks/fyWhg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885762566DE;
-	Thu, 17 Apr 2025 18:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1408256C97;
+	Thu, 17 Apr 2025 18:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915841; cv=none; b=DOEzt03O0DH6EijlFDQF42LkDUukZZlgPJMgSOz+hr0VlmiwyTH70ulxQn2ie/Tvav/YEJ4i/Hzb/zp5KO1nRTGiv64lSoKvZzK205fkscI4w+jxNUpoHk/CMf1sf3HtDefsKHcCprZXj14MHw3N7v+ALC/6RyXvuu63yxPDbto=
+	t=1744913469; cv=none; b=DQnPYAmpl8PAzdSm1mhi2x5HaJDSHJbomMNZlhmi6f6jRKv4rk/0WjwDR4AihYIbebhDFok1s8LE9UPNUbRaYMygUftHzE0OuJs7WpLYmfPTYhtYFoJV1vxJ6ZBmdp2PU7GPwz23gGRagR8DEcV8/ecuXuKla/Oa23Q2/RiRNp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915841; c=relaxed/simple;
-	bh=jj5QmpdnbynZK/rorXKhp89d+7cl+afOLheQ9VEyki0=;
+	s=arc-20240116; t=1744913469; c=relaxed/simple;
+	bh=R/DLT8OOVeDQ67qPSzew2I2c7OsrUUUyLSKHSSOgkdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MHhh5y3eOBmwaondtWTKv3JE3RVUjWtZMMlbudC5sazJdwgxO8yJAkCSHyaNMeU4BO6yFaVlenN8xKyW6oH6zgUOjMI1QBRD6gcjaLAJxjrnBHIikRkL0Ty4tYx4KHVYF4Aj5pGkNBYTzSSHErrGXR2gDenvhBGeTfX8Efl/Xhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Km29RFqp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DEB2C4CEEC;
-	Thu, 17 Apr 2025 18:50:40 +0000 (UTC)
+	 MIME-Version; b=WYbfA9lDqVF9sJvPhvSd0hdmlcCXAGVFuonfaa0WTnwBArmuvShMNyB+DOZuuxqAu/Ha4oVXKXsDsXKNyPDzBZoPqTYJaLPM/ODhV+LoOrkdKSlvZlDJH6pRFbN9ZXvguPlIgVa9VChJYijqoLWYD/Pak1BUscTwxFNGC+hPipc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ks/fyWhg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43594C4CEE7;
+	Thu, 17 Apr 2025 18:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915841;
-	bh=jj5QmpdnbynZK/rorXKhp89d+7cl+afOLheQ9VEyki0=;
+	s=korg; t=1744913469;
+	bh=R/DLT8OOVeDQ67qPSzew2I2c7OsrUUUyLSKHSSOgkdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Km29RFqpfA9nFmwRF7YES/dAlWhHRt6lqOqtyKvnqL6BjtSNP1B+XO/YCtqwmbvkA
-	 rHK/lYavSTUfm86ASLhCPJgMv08sls3kCb9wKryb5UOUgAvKXmOAz7FOIkUDR8L3Fo
-	 1ojq+kA1py2DAgAV+dzQmbc7+Mhk7xGjZcwG551k=
+	b=Ks/fyWhgGTzti4k2nz/D4jZBF9kRp7vAICBOskByBn5190qY3bTVpfnfMsciK3VKC
+	 eeVJ/8STswf7ebNRDdoLJpD0is3etjvEaSYqzdt8t5fp3sJ5DunrBv3l85Z9QFPRLC
+	 mGDVvBDrwfQ2NMdOdFEqvGD/B44KeX9vILbYOwvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	=?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 228/393] media: i2c: imx214: Rectify probe error handling related to runtime PM
+	Thomas Gleixner <tglx@linutronix.de>,
+	Jacob Pan <jacob.jun.pan@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 6.14 349/449] iommu/vt-d: Put IRTE back into posted MSI mode if vCPU posting is disabled
 Date: Thu, 17 Apr 2025 19:50:37 +0200
-Message-ID: <20250417175116.758900001@linuxfoundation.org>
+Message-ID: <20250417175132.270921836@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,105 +62,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit ccc888d1698b6f42d52ddf5cecfe50fe925c95e5 upstream.
+commit 2454823e97a63d85a6b215905f71e5a06324eab7 upstream.
 
-There were multiple issues in the driver's probe function related to
-error handling:
+Add a helper to take care of reconfiguring an IRTE to deliver IRQs to the
+host, i.e. not to a vCPU, and use the helper when an IRTE's vCPU affinity
+is nullified, i.e. when KVM puts an IRTE back into "host" mode.  Because
+posted MSIs use an ephemeral IRTE, using modify_irte() puts the IRTE into
+full remapped mode, i.e. unintentionally disables posted MSIs on the IRQ.
 
-- Device's PM runtime status wasn't reverted to suspended on some errors
-  in probe.
-
-- Runtime PM was left enabled for the device on some probe errors.
-
-- Device was left powered on if a probe failure happened or when it
-  was removed when it was powered on.
-
-- An extra pm_runtime_set_suspended() was issued in driver's remove
-  function when the device was suspended.
-
-Fix these bugs.
-
-Fixes: 436190596241 ("media: imx214: Add imx214 camera sensor driver")
-Cc: stable@vger.kernel.org # for >= v6.12
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Acked-by: André Apitzsch <git@apitzsch.eu>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: ed1e48ea4370 ("iommu/vt-d: Enable posted mode for device MSIs")
+Cc: stable@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Jacob Pan <jacob.jun.pan@linux.intel.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/r/20250315025135.2365846-2-seanjc@google.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/imx214.c |   24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ drivers/iommu/intel/irq_remapping.c |   19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
---- a/drivers/media/i2c/imx214.c
-+++ b/drivers/media/i2c/imx214.c
-@@ -1075,10 +1075,6 @@ static int imx214_probe(struct i2c_clien
- 	 */
- 	imx214_power_on(imx214->dev);
+--- a/drivers/iommu/intel/irq_remapping.c
++++ b/drivers/iommu/intel/irq_remapping.c
+@@ -1169,7 +1169,17 @@ static void intel_ir_reconfigure_irte_po
+ static inline void intel_ir_reconfigure_irte_posted(struct irq_data *irqd) {}
+ #endif
  
--	pm_runtime_set_active(imx214->dev);
--	pm_runtime_enable(imx214->dev);
--	pm_runtime_idle(imx214->dev);
--
- 	ret = imx214_ctrls_init(imx214);
- 	if (ret < 0)
- 		goto error_power_off;
-@@ -1099,21 +1095,30 @@ static int imx214_probe(struct i2c_clien
- 
- 	imx214_entity_init_state(&imx214->sd, NULL);
- 
-+	pm_runtime_set_active(imx214->dev);
-+	pm_runtime_enable(imx214->dev);
+-static void intel_ir_reconfigure_irte(struct irq_data *irqd, bool force)
++static void __intel_ir_reconfigure_irte(struct irq_data *irqd, bool force_host)
++{
++	struct intel_ir_data *ir_data = irqd->chip_data;
 +
- 	ret = v4l2_async_register_subdev_sensor(&imx214->sd);
- 	if (ret < 0) {
- 		dev_err(dev, "could not register v4l2 device\n");
- 		goto free_entity;
- 	}
- 
-+	pm_runtime_idle(imx214->dev);
++	if (ir_data->irq_2_iommu.posted_msi)
++		intel_ir_reconfigure_irte_posted(irqd);
++	else if (force_host || ir_data->irq_2_iommu.mode == IRQ_REMAPPING)
++		modify_irte(&ir_data->irq_2_iommu, &ir_data->irte_entry);
++}
 +
- 	return 0;
++static void intel_ir_reconfigure_irte(struct irq_data *irqd, bool force_host)
+ {
+ 	struct intel_ir_data *ir_data = irqd->chip_data;
+ 	struct irte *irte = &ir_data->irte_entry;
+@@ -1182,10 +1192,7 @@ static void intel_ir_reconfigure_irte(st
+ 	irte->vector = cfg->vector;
+ 	irte->dest_id = IRTE_DEST(cfg->dest_apicid);
  
- free_entity:
-+	pm_runtime_disable(imx214->dev);
-+	pm_runtime_set_suspended(&client->dev);
- 	media_entity_cleanup(&imx214->sd.entity);
-+
- free_ctrl:
- 	mutex_destroy(&imx214->mutex);
- 	v4l2_ctrl_handler_free(&imx214->ctrls);
-+
- error_power_off:
--	pm_runtime_disable(imx214->dev);
-+	imx214_power_off(imx214->dev);
- 
- 	return ret;
- }
-@@ -1126,11 +1131,12 @@ static void imx214_remove(struct i2c_cli
- 	v4l2_async_unregister_subdev(&imx214->sd);
- 	media_entity_cleanup(&imx214->sd.entity);
- 	v4l2_ctrl_handler_free(&imx214->ctrls);
--
--	pm_runtime_disable(&client->dev);
--	pm_runtime_set_suspended(&client->dev);
--
- 	mutex_destroy(&imx214->mutex);
-+	pm_runtime_disable(&client->dev);
-+	if (!pm_runtime_status_suspended(&client->dev)) {
-+		imx214_power_off(imx214->dev);
-+		pm_runtime_set_suspended(&client->dev);
-+	}
+-	if (ir_data->irq_2_iommu.posted_msi)
+-		intel_ir_reconfigure_irte_posted(irqd);
+-	else if (force || ir_data->irq_2_iommu.mode == IRQ_REMAPPING)
+-		modify_irte(&ir_data->irq_2_iommu, irte);
++	__intel_ir_reconfigure_irte(irqd, force_host);
  }
  
- static const struct of_device_id imx214_of_match[] = {
+ /*
+@@ -1240,7 +1247,7 @@ static int intel_ir_set_vcpu_affinity(st
+ 
+ 	/* stop posting interrupts, back to the default mode */
+ 	if (!vcpu_pi_info) {
+-		modify_irte(&ir_data->irq_2_iommu, &ir_data->irte_entry);
++		__intel_ir_reconfigure_irte(data, true);
+ 	} else {
+ 		struct irte irte_pi;
+ 
 
 
 
