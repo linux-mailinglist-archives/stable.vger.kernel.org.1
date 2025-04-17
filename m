@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-132952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C803A918A4
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 12:02:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C20CA918A8
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 12:03:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A783019E27DB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 10:02:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 857355A1719
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 10:03:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F79226D0E;
-	Thu, 17 Apr 2025 10:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F845229B1F;
+	Thu, 17 Apr 2025 10:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZYEBA9nB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qa8Z2rxS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD511898FB
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 10:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFF81898FB
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 10:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744884161; cv=none; b=k1PiBqfn7Fe8sUjdDa5q9X3tbLZwOOKyGuirt5hmhPzmLerTfEuqfMIsKHa50jKMXdQ42feTSc7Lr9FhXbxty3AEv1S3GF8Cy01O60lJlqzhupQuwmr2mq3BpMEnP28LQqtFBPSONrojFRAfpWFCbuQHy6uPKcJ+96fEgGUU6HY=
+	t=1744884209; cv=none; b=qOYWhwtOm4lNbdPHSzxX3/DDJoqk6QGAHhDOtpFbRrxrbNL3hyGyfo7zidOU4QL5IDSgZ3VTqmp39UVqswTfDOPsA6admVCa/lzHs5VQyYZFPlWhxQt3SesPTkoXeBWCrUIryTvYz2+y358ZlajuGL0i75TuyZ9rT/TFmO+NUKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744884161; c=relaxed/simple;
-	bh=x7Q8NPQo0yGD29zaaKzuRe6/1kWTxoWdRyA2/RdkSYg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PchEcwIxkfxrVxL+qhu8a8vR145Ee7/LQdOR3vmSDvbqpu3Ch8qi7zcCdgd0XV+S1ifbP2odX7LsUzsB7hylB9vjKAs+xGxvpJpEOHqpejhqCIjikC1m4c2kjHvEvaDYhuXMwJzhtr0o7jLKh4dCZq2ayXyzwn+1FyZ02NcQYPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZYEBA9nB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 581FAC4CEE7;
-	Thu, 17 Apr 2025 10:02:40 +0000 (UTC)
+	s=arc-20240116; t=1744884209; c=relaxed/simple;
+	bh=MX5U6WML8LP+wOLkXWEznLOSYZ0UpFn37hP/+BsdSdA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NEP2En4nuODurzKbV96IUbWE4iCxZYUP2QfpOBM2GPnrdesF3wtqTZygaUL/tiy2G5P1taHEvNKDrISGfoc5jynzN5dSwZfuXSZRPkORmkiqAVvNIlRAugiw9yfj2gxehlyxVopSUpqi4lkmQ5yweg9XW5dR7AAS+9MaNI+bEfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qa8Z2rxS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE9CC4CEE7;
+	Thu, 17 Apr 2025 10:03:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744884160;
-	bh=x7Q8NPQo0yGD29zaaKzuRe6/1kWTxoWdRyA2/RdkSYg=;
+	s=korg; t=1744884208;
+	bh=MX5U6WML8LP+wOLkXWEznLOSYZ0UpFn37hP/+BsdSdA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ZYEBA9nBFPKe0UiPSAtWF9Qaf+tIOfTbQFJB4ONLNTKUGeXGJURMNRVrclrGG5geF
-	 JnDHMNpCOkc5g4tJXpgsp6VaZ1AskOvh+10Wk9JNlzDLGX7V71kg3emU2Snx4Hxn2Y
-	 q2RhDaf/IjJL48B6Jwa5zLTy74ShfhykfqW8qvOo=
-Subject: FAILED: patch "[PATCH] arm64: errata: Assume that unknown CPUs _are_ vulnerable to" failed to apply to 5.4-stable tree
-To: dianders@chromium.org,catalin.marinas@arm.com,jwerner@chromium.org
+	b=qa8Z2rxSniMnU0s3EFAowGsypNgggHDonaq+s6oW1L7TNr8py5Pmg4w6Rs8AcUzQq
+	 3QnxrBvZ4FkgDbShZuuf/zbl+8fpcMHlsLOMi6lYHxZ1EaxrPqHaRPT5YzgJ8GuY/i
+	 kgjJH2FEcx4y5Vd4dVgXssWQBAprL9sqQKLD85JA=
+Subject: FAILED: patch "[PATCH] KVM: arm64: Set HCR_EL2.TID1 unconditionally" failed to apply to 6.12-stable tree
+To: oliver.upton@linux.dev,broonie@kernel.org,maz@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 17 Apr 2025 12:02:25 +0200
-Message-ID: <2025041725-shrapnel-dimmed-5c5e@gregkh>
+Date: Thu, 17 Apr 2025 12:03:26 +0200
+Message-ID: <2025041726-condiment-numeral-db82@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x e403e8538359d8580cbee1976ff71813e947101e
+git cherry-pick -x 4cd48565b0e5df398e7253c0d2d8c0403d69e7bf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041725-shrapnel-dimmed-5c5e@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041726-condiment-numeral-db82@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,331 +77,330 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e403e8538359d8580cbee1976ff71813e947101e Mon Sep 17 00:00:00 2001
-From: Douglas Anderson <dianders@chromium.org>
-Date: Tue, 7 Jan 2025 12:05:59 -0800
-Subject: [PATCH] arm64: errata: Assume that unknown CPUs _are_ vulnerable to
- Spectre BHB
+From 4cd48565b0e5df398e7253c0d2d8c0403d69e7bf Mon Sep 17 00:00:00 2001
+From: Oliver Upton <oliver.upton@linux.dev>
+Date: Mon, 24 Feb 2025 16:53:57 -0800
+Subject: [PATCH] KVM: arm64: Set HCR_EL2.TID1 unconditionally
 
-The code for detecting CPUs that are vulnerable to Spectre BHB was
-based on a hardcoded list of CPU IDs that were known to be affected.
-Unfortunately, the list mostly only contained the IDs of standard ARM
-cores. The IDs for many cores that are minor variants of the standard
-ARM cores (like many Qualcomm Kyro CPUs) weren't listed. This led the
-code to assume that those variants were not affected.
+commit 90807748ca3a ("KVM: arm64: Hide SME system registers from
+guests") added trap handling for SMIDR_EL1, treating it as UNDEFINED as
+KVM does not support SME. This is right for the most part, however KVM
+needs to set HCR_EL2.TID1 to _actually_ trap the register.
 
-Flip the code on its head and instead assume that a core is vulnerable
-if it doesn't have CSV2_3 but is unrecognized as being safe. This
-involves creating a "Spectre BHB safe" list.
+Unfortunately, this comes with some collateral damage as TID1 forces
+REVIDR_EL1 and AIDR_EL1 to trap as well. KVM has long treated these
+registers as "invariant" which is an awful term for the following:
 
-As of right now, the only CPU IDs added to the "Spectre BHB safe" list
-are ARM Cortex A35, A53, A55, A510, and A520. This list was created by
-looking for cores that weren't listed in ARM's list [1] as per review
-feedback on v2 of this patch [2]. Additionally Brahma A53 is added as
-per mailing list feedback [3].
+ - Userspace sees the boot CPU values on all vCPUs
 
-NOTE: this patch will not actually _mitigate_ anyone, it will simply
-cause them to report themselves as vulnerable. If any cores in the
-system are reported as vulnerable but not mitigated then the whole
-system will be reported as vulnerable though the system will attempt
-to mitigate with the information it has about the known cores.
+ - The guest sees the hardware values of the CPU on which a vCPU is
+   scheduled
 
-[1] https://developer.arm.com/Arm%20Security%20Center/Spectre-BHB
-[2] https://lore.kernel.org/r/20241219175128.GA25477@willie-the-truck
-[3] https://lore.kernel.org/r/18dbd7d1-a46c-4112-a425-320c99f67a8d@broadcom.com
+Keep the plates spinning by adding trap handling for the affected
+registers and repaint all of the "invariant" crud into terms of
+identifying an implementation. Yes, at this point we only need to
+set TID1 on SME hardware, but REVIDR_EL1 and AIDR_EL1 are about to
+become mutable anyway.
 
-Fixes: 558c303c9734 ("arm64: Mitigate spectre style branch history side channels")
+Cc: Mark Brown <broonie@kernel.org>
 Cc: stable@vger.kernel.org
-Reviewed-by: Julius Werner <jwerner@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20250107120555.v4.2.I2040fa004dafe196243f67ebcc647cbedbb516e6@changeid
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: 90807748ca3a ("KVM: arm64: Hide SME system registers from guests")
+[maz: handle traps from 32bit]
+Co-developed-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20250225005401.679536-2-oliver.upton@linux.dev
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 
-diff --git a/arch/arm64/include/asm/spectre.h b/arch/arm64/include/asm/spectre.h
-index 0c4d9045c31f..f1524cdeacf1 100644
---- a/arch/arm64/include/asm/spectre.h
-+++ b/arch/arm64/include/asm/spectre.h
-@@ -97,7 +97,6 @@ enum mitigation_state arm64_get_meltdown_state(void);
- 
- enum mitigation_state arm64_get_spectre_bhb_state(void);
- bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry, int scope);
--u8 spectre_bhb_loop_affected(int scope);
- void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *__unused);
- bool try_emulate_el1_ssbs(struct pt_regs *regs, u32 instr);
- 
-diff --git a/arch/arm64/kernel/proton-pack.c b/arch/arm64/kernel/proton-pack.c
-index e149efadff20..17aa836fe46d 100644
---- a/arch/arm64/kernel/proton-pack.c
-+++ b/arch/arm64/kernel/proton-pack.c
-@@ -845,53 +845,70 @@ static unsigned long system_bhb_mitigations;
-  * This must be called with SCOPE_LOCAL_CPU for each type of CPU, before any
-  * SCOPE_SYSTEM call will give the right answer.
+diff --git a/arch/arm64/include/asm/kvm_arm.h b/arch/arm64/include/asm/kvm_arm.h
+index 8d94a6c0ed5c..b01c01e55de5 100644
+--- a/arch/arm64/include/asm/kvm_arm.h
++++ b/arch/arm64/include/asm/kvm_arm.h
+@@ -92,12 +92,12 @@
+  * SWIO:	Turn set/way invalidates into set/way clean+invalidate
+  * PTW:		Take a stage2 fault if a stage1 walk steps in device memory
+  * TID3:	Trap EL1 reads of group 3 ID registers
+- * TID2:	Trap CTR_EL0, CCSIDR2_EL1, CLIDR_EL1, and CSSELR_EL1
++ * TID1:	Trap REVIDR_EL1, AIDR_EL1, and SMIDR_EL1
   */
--u8 spectre_bhb_loop_affected(int scope)
-+static bool is_spectre_bhb_safe(int scope)
+ #define HCR_GUEST_FLAGS (HCR_TSC | HCR_TSW | HCR_TWE | HCR_TWI | HCR_VM | \
+ 			 HCR_BSU_IS | HCR_FB | HCR_TACR | \
+ 			 HCR_AMO | HCR_SWIO | HCR_TIDCP | HCR_RW | HCR_TLOR | \
+-			 HCR_FMO | HCR_IMO | HCR_PTW | HCR_TID3)
++			 HCR_FMO | HCR_IMO | HCR_PTW | HCR_TID3 | HCR_TID1)
+ #define HCR_HOST_NVHE_FLAGS (HCR_RW | HCR_API | HCR_APK | HCR_ATA)
+ #define HCR_HOST_NVHE_PROTECTED_FLAGS (HCR_HOST_NVHE_FLAGS | HCR_TSC)
+ #define HCR_HOST_VHE_FLAGS (HCR_RW | HCR_TGE | HCR_E2H)
+diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+index 82430c1e1dd0..57e945d6b715 100644
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -2493,6 +2493,93 @@ static bool access_mdcr(struct kvm_vcpu *vcpu,
+ 	return true;
+ }
+ 
++/*
++ * For historical (ahem ABI) reasons, KVM treated MIDR_EL1, REVIDR_EL1, and
++ * AIDR_EL1 as "invariant" registers, meaning userspace cannot change them.
++ * The values made visible to userspace were the register values of the boot
++ * CPU.
++ *
++ * At the same time, reads from these registers at EL1 previously were not
++ * trapped, allowing the guest to read the actual hardware value. On big-little
++ * machines, this means the VM can see different values depending on where a
++ * given vCPU got scheduled.
++ *
++ * These registers are now trapped as collateral damage from SME, and what
++ * follows attempts to give a user / guest view consistent with the existing
++ * ABI.
++ */
++static bool access_imp_id_reg(struct kvm_vcpu *vcpu,
++			      struct sys_reg_params *p,
++			      const struct sys_reg_desc *r)
 +{
-+	static const struct midr_range spectre_bhb_safe_list[] = {
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A35),
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A53),
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A55),
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A510),
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A520),
-+		MIDR_ALL_VERSIONS(MIDR_BRAHMA_B53),
-+		{},
-+	};
-+	static bool all_safe = true;
++	if (p->is_write)
++		return write_to_read_only(vcpu, p, r);
 +
-+	if (scope != SCOPE_LOCAL_CPU)
-+		return all_safe;
++	switch (reg_to_encoding(r)) {
++	case SYS_REVIDR_EL1:
++		p->regval = read_sysreg(revidr_el1);
++		break;
++	case SYS_AIDR_EL1:
++		p->regval = read_sysreg(aidr_el1);
++		break;
++	default:
++		WARN_ON_ONCE(1);
++	}
 +
-+	if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_safe_list))
-+		return true;
-+
-+	all_safe = false;
-+
-+	return false;
++	return true;
 +}
 +
-+static u8 spectre_bhb_loop_affected(void)
- {
- 	u8 k = 0;
--	static u8 max_bhb_k;
- 
--	if (scope == SCOPE_LOCAL_CPU) {
--		static const struct midr_range spectre_bhb_k32_list[] = {
--			MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
--			MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
--			MIDR_ALL_VERSIONS(MIDR_CORTEX_A78C),
--			MIDR_ALL_VERSIONS(MIDR_CORTEX_X1),
--			MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
--			MIDR_ALL_VERSIONS(MIDR_CORTEX_X2),
--			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
--			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
--			{},
--		};
--		static const struct midr_range spectre_bhb_k24_list[] = {
--			MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
--			MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
--			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
--			MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_GOLD),
--			{},
--		};
--		static const struct midr_range spectre_bhb_k11_list[] = {
--			MIDR_ALL_VERSIONS(MIDR_AMPERE1),
--			{},
--		};
--		static const struct midr_range spectre_bhb_k8_list[] = {
--			MIDR_ALL_VERSIONS(MIDR_CORTEX_A72),
--			MIDR_ALL_VERSIONS(MIDR_CORTEX_A57),
--			{},
--		};
-+	static const struct midr_range spectre_bhb_k32_list[] = {
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78C),
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_X1),
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_X2),
-+		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
-+		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
-+		{},
-+	};
-+	static const struct midr_range spectre_bhb_k24_list[] = {
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
-+		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
-+		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_GOLD),
-+		{},
-+	};
-+	static const struct midr_range spectre_bhb_k11_list[] = {
-+		MIDR_ALL_VERSIONS(MIDR_AMPERE1),
-+		{},
-+	};
-+	static const struct midr_range spectre_bhb_k8_list[] = {
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A72),
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A57),
-+		{},
-+	};
- 
--		if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k32_list))
--			k = 32;
--		else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k24_list))
--			k = 24;
--		else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k11_list))
--			k = 11;
--		else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k8_list))
--			k =  8;
--
--		max_bhb_k = max(max_bhb_k, k);
--	} else {
--		k = max_bhb_k;
--	}
-+	if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k32_list))
-+		k = 32;
-+	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k24_list))
-+		k = 24;
-+	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k11_list))
-+		k = 11;
-+	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k8_list))
-+		k =  8;
- 
- 	return k;
- }
-@@ -917,29 +934,13 @@ static enum mitigation_state spectre_bhb_get_cpu_fw_mitigation_state(void)
- 	}
- }
- 
--static bool is_spectre_bhb_fw_affected(int scope)
-+static bool has_spectre_bhb_fw_mitigation(void)
- {
--	static bool system_affected;
- 	enum mitigation_state fw_state;
- 	bool has_smccc = arm_smccc_1_1_get_conduit() != SMCCC_CONDUIT_NONE;
--	static const struct midr_range spectre_bhb_firmware_mitigated_list[] = {
--		MIDR_ALL_VERSIONS(MIDR_CORTEX_A73),
--		MIDR_ALL_VERSIONS(MIDR_CORTEX_A75),
--		{},
--	};
--	bool cpu_in_list = is_midr_in_range_list(read_cpuid_id(),
--					 spectre_bhb_firmware_mitigated_list);
--
--	if (scope != SCOPE_LOCAL_CPU)
--		return system_affected;
- 
- 	fw_state = spectre_bhb_get_cpu_fw_mitigation_state();
--	if (cpu_in_list || (has_smccc && fw_state == SPECTRE_MITIGATED)) {
--		system_affected = true;
--		return true;
--	}
--
--	return false;
-+	return has_smccc && fw_state == SPECTRE_MITIGATED;
- }
- 
- static bool supports_ecbhb(int scope)
-@@ -955,6 +956,8 @@ static bool supports_ecbhb(int scope)
- 						    ID_AA64MMFR1_EL1_ECBHB_SHIFT);
- }
- 
-+static u8 max_bhb_k;
++static u64 __ro_after_init boot_cpu_midr_val;
++static u64 __ro_after_init boot_cpu_revidr_val;
++static u64 __ro_after_init boot_cpu_aidr_val;
 +
- bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry,
- 			     int scope)
- {
-@@ -963,16 +966,18 @@ bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry,
- 	if (supports_csv2p3(scope))
- 		return false;
++static void init_imp_id_regs(void)
++{
++	boot_cpu_midr_val = read_sysreg(midr_el1);
++	boot_cpu_revidr_val = read_sysreg(revidr_el1);
++	boot_cpu_aidr_val = read_sysreg(aidr_el1);
++}
++
++static int get_imp_id_reg(struct kvm_vcpu *vcpu, const struct sys_reg_desc *r,
++			  u64 *val)
++{
++	switch (reg_to_encoding(r)) {
++	case SYS_MIDR_EL1:
++		*val = boot_cpu_midr_val;
++		break;
++	case SYS_REVIDR_EL1:
++		*val = boot_cpu_revidr_val;
++		break;
++	case SYS_AIDR_EL1:
++		*val = boot_cpu_aidr_val;
++		break;
++	default:
++		WARN_ON_ONCE(1);
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int set_imp_id_reg(struct kvm_vcpu *vcpu, const struct sys_reg_desc *r,
++			  u64 val)
++{
++	u64 expected;
++	int ret;
++
++	ret = get_imp_id_reg(vcpu, r, &expected);
++	if (ret)
++		return ret;
++
++	return (expected == val) ? 0 : -EINVAL;
++}
++
++#define IMPLEMENTATION_ID(reg) {			\
++	SYS_DESC(SYS_##reg),				\
++	.access = access_imp_id_reg,			\
++	.get_user = get_imp_id_reg,			\
++	.set_user = set_imp_id_reg,			\
++}
  
--	if (supports_clearbhb(scope))
--		return true;
-+	if (is_spectre_bhb_safe(scope))
-+		return false;
+ /*
+  * Architected system registers.
+@@ -2542,7 +2629,9 @@ static const struct sys_reg_desc sys_reg_descs[] = {
  
--	if (spectre_bhb_loop_affected(scope))
--		return true;
-+	/*
-+	 * At this point the core isn't known to be "safe" so we're going to
-+	 * assume it's vulnerable. We still need to update `max_bhb_k` though,
-+	 * but only if we aren't mitigating with clearbhb though.
-+	 */
-+	if (scope == SCOPE_LOCAL_CPU && !supports_clearbhb(SCOPE_LOCAL_CPU))
-+		max_bhb_k = max(max_bhb_k, spectre_bhb_loop_affected());
+ 	{ SYS_DESC(SYS_DBGVCR32_EL2), undef_access, reset_val, DBGVCR32_EL2, 0 },
  
--	if (is_spectre_bhb_fw_affected(scope))
--		return true;
--
--	return false;
-+	return true;
++	IMPLEMENTATION_ID(MIDR_EL1),
+ 	{ SYS_DESC(SYS_MPIDR_EL1), NULL, reset_mpidr, MPIDR_EL1 },
++	IMPLEMENTATION_ID(REVIDR_EL1),
+ 
+ 	/*
+ 	 * ID regs: all ID_SANITISED() entries here must have corresponding
+@@ -2814,6 +2903,7 @@ static const struct sys_reg_desc sys_reg_descs[] = {
+ 	  .set_user = set_clidr, .val = ~CLIDR_EL1_RES0 },
+ 	{ SYS_DESC(SYS_CCSIDR2_EL1), undef_access },
+ 	{ SYS_DESC(SYS_SMIDR_EL1), undef_access },
++	IMPLEMENTATION_ID(AIDR_EL1),
+ 	{ SYS_DESC(SYS_CSSELR_EL1), access_csselr, reset_unknown, CSSELR_EL1 },
+ 	ID_FILTERED(CTR_EL0, ctr_el0,
+ 		    CTR_EL0_DIC_MASK |
+@@ -4272,9 +4362,13 @@ int kvm_handle_cp15_32(struct kvm_vcpu *vcpu)
+ 	 * Certain AArch32 ID registers are handled by rerouting to the AArch64
+ 	 * system register table. Registers in the ID range where CRm=0 are
+ 	 * excluded from this scheme as they do not trivially map into AArch64
+-	 * system register encodings.
++	 * system register encodings, except for AIDR/REVIDR.
+ 	 */
+-	if (params.Op1 == 0 && params.CRn == 0 && params.CRm)
++	if (params.Op1 == 0 && params.CRn == 0 &&
++	    (params.CRm || params.Op2 == 6 /* REVIDR */))
++		return kvm_emulate_cp15_id_reg(vcpu, &params);
++	if (params.Op1 == 1 && params.CRn == 0 &&
++	    params.CRm == 0 && params.Op2 == 7 /* AIDR */)
+ 		return kvm_emulate_cp15_id_reg(vcpu, &params);
+ 
+ 	return kvm_handle_cp_32(vcpu, &params, cp15_regs, ARRAY_SIZE(cp15_regs));
+@@ -4578,65 +4672,6 @@ id_to_sys_reg_desc(struct kvm_vcpu *vcpu, u64 id,
+ 	return r;
  }
  
- static void this_cpu_set_vectors(enum arm64_bp_harden_el1_vectors slot)
-@@ -1003,7 +1008,7 @@ early_param("nospectre_bhb", parse_spectre_bhb_param);
- void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *entry)
+-/*
+- * These are the invariant sys_reg registers: we let the guest see the
+- * host versions of these, so they're part of the guest state.
+- *
+- * A future CPU may provide a mechanism to present different values to
+- * the guest, or a future kvm may trap them.
+- */
+-
+-#define FUNCTION_INVARIANT(reg)						\
+-	static u64 reset_##reg(struct kvm_vcpu *v,			\
+-			       const struct sys_reg_desc *r)		\
+-	{								\
+-		((struct sys_reg_desc *)r)->val = read_sysreg(reg);	\
+-		return ((struct sys_reg_desc *)r)->val;			\
+-	}
+-
+-FUNCTION_INVARIANT(midr_el1)
+-FUNCTION_INVARIANT(revidr_el1)
+-FUNCTION_INVARIANT(aidr_el1)
+-
+-/* ->val is filled in by kvm_sys_reg_table_init() */
+-static struct sys_reg_desc invariant_sys_regs[] __ro_after_init = {
+-	{ SYS_DESC(SYS_MIDR_EL1), NULL, reset_midr_el1 },
+-	{ SYS_DESC(SYS_REVIDR_EL1), NULL, reset_revidr_el1 },
+-	{ SYS_DESC(SYS_AIDR_EL1), NULL, reset_aidr_el1 },
+-};
+-
+-static int get_invariant_sys_reg(u64 id, u64 __user *uaddr)
+-{
+-	const struct sys_reg_desc *r;
+-
+-	r = get_reg_by_id(id, invariant_sys_regs,
+-			  ARRAY_SIZE(invariant_sys_regs));
+-	if (!r)
+-		return -ENOENT;
+-
+-	return put_user(r->val, uaddr);
+-}
+-
+-static int set_invariant_sys_reg(u64 id, u64 __user *uaddr)
+-{
+-	const struct sys_reg_desc *r;
+-	u64 val;
+-
+-	r = get_reg_by_id(id, invariant_sys_regs,
+-			  ARRAY_SIZE(invariant_sys_regs));
+-	if (!r)
+-		return -ENOENT;
+-
+-	if (get_user(val, uaddr))
+-		return -EFAULT;
+-
+-	/* This is what we mean by invariant: you can't change it. */
+-	if (r->val != val)
+-		return -EINVAL;
+-
+-	return 0;
+-}
+-
+ static int demux_c15_get(struct kvm_vcpu *vcpu, u64 id, void __user *uaddr)
  {
- 	bp_hardening_cb_t cpu_cb;
--	enum mitigation_state fw_state, state = SPECTRE_VULNERABLE;
-+	enum mitigation_state state = SPECTRE_VULNERABLE;
- 	struct bp_hardening_data *data = this_cpu_ptr(&bp_hardening_data);
- 
- 	if (!is_spectre_bhb_affected(entry, SCOPE_LOCAL_CPU))
-@@ -1029,7 +1034,7 @@ void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *entry)
- 		this_cpu_set_vectors(EL1_VECTOR_BHB_CLEAR_INSN);
- 		state = SPECTRE_MITIGATED;
- 		set_bit(BHB_INSN, &system_bhb_mitigations);
--	} else if (spectre_bhb_loop_affected(SCOPE_LOCAL_CPU)) {
-+	} else if (spectre_bhb_loop_affected()) {
- 		/*
- 		 * Ensure KVM uses the indirect vector which will have the
- 		 * branchy-loop added. A57/A72-r0 will already have selected
-@@ -1042,32 +1047,29 @@ void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *entry)
- 		this_cpu_set_vectors(EL1_VECTOR_BHB_LOOP);
- 		state = SPECTRE_MITIGATED;
- 		set_bit(BHB_LOOP, &system_bhb_mitigations);
--	} else if (is_spectre_bhb_fw_affected(SCOPE_LOCAL_CPU)) {
--		fw_state = spectre_bhb_get_cpu_fw_mitigation_state();
--		if (fw_state == SPECTRE_MITIGATED) {
--			/*
--			 * Ensure KVM uses one of the spectre bp_hardening
--			 * vectors. The indirect vector doesn't include the EL3
--			 * call, so needs upgrading to
--			 * HYP_VECTOR_SPECTRE_INDIRECT.
--			 */
--			if (!data->slot || data->slot == HYP_VECTOR_INDIRECT)
--				data->slot += 1;
-+	} else if (has_spectre_bhb_fw_mitigation()) {
-+		/*
-+		 * Ensure KVM uses one of the spectre bp_hardening
-+		 * vectors. The indirect vector doesn't include the EL3
-+		 * call, so needs upgrading to
-+		 * HYP_VECTOR_SPECTRE_INDIRECT.
-+		 */
-+		if (!data->slot || data->slot == HYP_VECTOR_INDIRECT)
-+			data->slot += 1;
- 
--			this_cpu_set_vectors(EL1_VECTOR_BHB_FW);
-+		this_cpu_set_vectors(EL1_VECTOR_BHB_FW);
- 
--			/*
--			 * The WA3 call in the vectors supersedes the WA1 call
--			 * made during context-switch. Uninstall any firmware
--			 * bp_hardening callback.
--			 */
--			cpu_cb = spectre_v2_get_sw_mitigation_cb();
--			if (__this_cpu_read(bp_hardening_data.fn) != cpu_cb)
--				__this_cpu_write(bp_hardening_data.fn, NULL);
-+		/*
-+		 * The WA3 call in the vectors supersedes the WA1 call
-+		 * made during context-switch. Uninstall any firmware
-+		 * bp_hardening callback.
-+		 */
-+		cpu_cb = spectre_v2_get_sw_mitigation_cb();
-+		if (__this_cpu_read(bp_hardening_data.fn) != cpu_cb)
-+			__this_cpu_write(bp_hardening_data.fn, NULL);
- 
--			state = SPECTRE_MITIGATED;
--			set_bit(BHB_FW, &system_bhb_mitigations);
--		}
-+		state = SPECTRE_MITIGATED;
-+		set_bit(BHB_FW, &system_bhb_mitigations);
- 	}
- 
- 	update_mitigation_state(&spectre_bhb_state, state);
-@@ -1101,7 +1103,6 @@ void noinstr spectre_bhb_patch_loop_iter(struct alt_instr *alt,
+ 	u32 val;
+@@ -4718,15 +4753,10 @@ int kvm_sys_reg_get_user(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg,
+ int kvm_arm_sys_reg_get_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
  {
- 	u8 rd;
- 	u32 insn;
--	u16 loop_count = spectre_bhb_loop_affected(SCOPE_SYSTEM);
+ 	void __user *uaddr = (void __user *)(unsigned long)reg->addr;
+-	int err;
  
- 	BUG_ON(nr_inst != 1); /* MOV -> MOV */
+ 	if ((reg->id & KVM_REG_ARM_COPROC_MASK) == KVM_REG_ARM_DEMUX)
+ 		return demux_c15_get(vcpu, reg->id, uaddr);
  
-@@ -1110,7 +1111,7 @@ void noinstr spectre_bhb_patch_loop_iter(struct alt_instr *alt,
+-	err = get_invariant_sys_reg(reg->id, uaddr);
+-	if (err != -ENOENT)
+-		return err;
+-
+ 	return kvm_sys_reg_get_user(vcpu, reg,
+ 				    sys_reg_descs, ARRAY_SIZE(sys_reg_descs));
+ }
+@@ -4762,15 +4792,10 @@ int kvm_sys_reg_set_user(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg,
+ int kvm_arm_sys_reg_set_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
+ {
+ 	void __user *uaddr = (void __user *)(unsigned long)reg->addr;
+-	int err;
  
- 	insn = le32_to_cpu(*origptr);
- 	rd = aarch64_insn_decode_register(AARCH64_INSN_REGTYPE_RD, insn);
--	insn = aarch64_insn_gen_movewide(rd, loop_count, 0,
-+	insn = aarch64_insn_gen_movewide(rd, max_bhb_k, 0,
- 					 AARCH64_INSN_VARIANT_64BIT,
- 					 AARCH64_INSN_MOVEWIDE_ZERO);
- 	*updptr++ = cpu_to_le32(insn);
+ 	if ((reg->id & KVM_REG_ARM_COPROC_MASK) == KVM_REG_ARM_DEMUX)
+ 		return demux_c15_set(vcpu, reg->id, uaddr);
+ 
+-	err = set_invariant_sys_reg(reg->id, uaddr);
+-	if (err != -ENOENT)
+-		return err;
+-
+ 	return kvm_sys_reg_set_user(vcpu, reg,
+ 				    sys_reg_descs, ARRAY_SIZE(sys_reg_descs));
+ }
+@@ -4859,23 +4884,14 @@ static int walk_sys_regs(struct kvm_vcpu *vcpu, u64 __user *uind)
+ 
+ unsigned long kvm_arm_num_sys_reg_descs(struct kvm_vcpu *vcpu)
+ {
+-	return ARRAY_SIZE(invariant_sys_regs)
+-		+ num_demux_regs()
++	return num_demux_regs()
+ 		+ walk_sys_regs(vcpu, (u64 __user *)NULL);
+ }
+ 
+ int kvm_arm_copy_sys_reg_indices(struct kvm_vcpu *vcpu, u64 __user *uindices)
+ {
+-	unsigned int i;
+ 	int err;
+ 
+-	/* Then give them all the invariant registers' indices. */
+-	for (i = 0; i < ARRAY_SIZE(invariant_sys_regs); i++) {
+-		if (put_user(sys_reg_to_index(&invariant_sys_regs[i]), uindices))
+-			return -EFAULT;
+-		uindices++;
+-	}
+-
+ 	err = walk_sys_regs(vcpu, uindices);
+ 	if (err < 0)
+ 		return err;
+@@ -5101,15 +5117,12 @@ int __init kvm_sys_reg_table_init(void)
+ 	valid &= check_sysreg_table(cp14_64_regs, ARRAY_SIZE(cp14_64_regs), true);
+ 	valid &= check_sysreg_table(cp15_regs, ARRAY_SIZE(cp15_regs), true);
+ 	valid &= check_sysreg_table(cp15_64_regs, ARRAY_SIZE(cp15_64_regs), true);
+-	valid &= check_sysreg_table(invariant_sys_regs, ARRAY_SIZE(invariant_sys_regs), false);
+ 	valid &= check_sysreg_table(sys_insn_descs, ARRAY_SIZE(sys_insn_descs), false);
+ 
+ 	if (!valid)
+ 		return -EINVAL;
+ 
+-	/* We abuse the reset function to overwrite the table itself. */
+-	for (i = 0; i < ARRAY_SIZE(invariant_sys_regs); i++)
+-		invariant_sys_regs[i].reset(NULL, &invariant_sys_regs[i]);
++	init_imp_id_regs();
+ 
+ 	ret = populate_nv_trap_config();
+ 
 
 
