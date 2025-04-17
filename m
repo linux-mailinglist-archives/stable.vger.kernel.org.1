@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-134258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA0E0A92A55
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:49:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1899FA927F0
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C4733A98DC
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:46:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B399019E711A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:30:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63CCC2571BA;
-	Thu, 17 Apr 2025 18:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC008255E34;
+	Thu, 17 Apr 2025 18:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eyQcpftc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8fltnpq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067D52571A0;
-	Thu, 17 Apr 2025 18:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B96259C8D;
+	Thu, 17 Apr 2025 18:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915580; cv=none; b=fBHmvRbZDd9o1EfG+gpAOo/8WvMoVLsEycSrIz6SlNJ/XqzmGCpbF+53wr7VS6vQS+/gblff/KL2L48TjrsfD6yp/SPFmjSlrkygBa0A5BQw58bGDc877TCV5pxD8uQ8yD5UGB+X+2PL3w1HM5wzLa6nqz2eKuNvSBgkxVj93qA=
+	t=1744914413; cv=none; b=n2jz2dPNNp/kiAg2nrtmicAaNCWvbB7IgO+My0jw+sIe7mF3i6De1ek24x8LCgZK+z2NOhxvQxKHMIJKFDfnhaMRDIP0FYyZxz5l3Oxoebv1xLVpVhXoSfZhuQgzxamUnMYBQ5NouuL8eJlmPUFOCSRuKcvBxb3GhFiS2IxmIeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915580; c=relaxed/simple;
-	bh=8JaITGA134F6oUcSvVm9SW7TJnKWaD75GKE4SPucFks=;
+	s=arc-20240116; t=1744914413; c=relaxed/simple;
+	bh=HJLOsgiZFwrA9wGFtPPa3CMwj1U4JCqtSefZFF7BD7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c1/AwBU7onFImGk7URKB3zPOYDDTBYTK0Ud8u34bSVfcp/DuAdER5n1pn6VEcgKjvCyB8jqtSfLLkxX4DN44dMSh97uYtE5E98NYoHPHxl+AYaPyIWVfrs63leROYxYjrTSsEGrIFHcRcYLrMRg9ymIOeCXOn2u5+N6KjNUmRN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eyQcpftc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11F03C4CEE4;
-	Thu, 17 Apr 2025 18:46:18 +0000 (UTC)
+	 MIME-Version; b=rh8Nxu7bCfAwm+i68944rfvUSpV99HzfPePYlGsgWQiUyzWDmdPgYE69yyHYsiCfWZ0e84Awyb2gYmUFc8clYJP1zpIlkQzxU9qR/0F4ZgRjD3+H59cqvv2r+ZQFUsPJshBuFbjcuHq8p2bb7Dlc6snFjaQT7K5fFeTXgJ8nzH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8fltnpq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 033B2C4CEE4;
+	Thu, 17 Apr 2025 18:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915579;
-	bh=8JaITGA134F6oUcSvVm9SW7TJnKWaD75GKE4SPucFks=;
+	s=korg; t=1744914413;
+	bh=HJLOsgiZFwrA9wGFtPPa3CMwj1U4JCqtSefZFF7BD7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eyQcpftcRErZkRPf2fC8MK+pwXsXm4tYnxQbVaLiaKJGUbzzFkt3cjhhT2uvBvVyp
-	 8Fyoo3Kwn8UcoSEtoL1VZn14rlEDPWpSa9xmGgmUkZdvmSTyhDrArV103hNUO0zWQc
-	 miCee6hDDFRRQK0KqU3cYkX9pkEwq182UfZYPjFA=
+	b=A8fltnpqxiY+kDnmxrjEjbkZU3OeAKj0E8CXqtiT3rOxi67+YHx85sLfo0UW+ZkXs
+	 ANZ9o5bQEjJT1JzYgOEMaN/cp0CrmRpy54EMDEdtnxXl8zIHrwCyqAzC9VVTsVBBEj
+	 VeR+TFEriekJ4SmGOzMb13pNsW7p8EF63LfJLBFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Rostedt <rostedt@goodmis.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 155/393] tracing: probe-events: Add comments about entry data storing code
+	Matthew Majewski <mattwmajewski@gmail.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.13 206/414] media: vim2m: print device name after registering device
 Date: Thu, 17 Apr 2025 19:49:24 +0200
-Message-ID: <20250417175113.819868788@linuxfoundation.org>
+Message-ID: <20250417175119.730666089@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Matthew Majewski <mattwmajewski@gmail.com>
 
-[ Upstream commit bb9c6020f4c3a07a90dc36826cb5fbe83f09efd5 ]
+commit 143d75583f2427f3a97dba62413c4f0604867ebf upstream.
 
-Add comments about entry data storing code to __store_entry_arg() and
-traceprobe_get_entry_data_size(). These are a bit complicated because of
-building the entry data storing code and scanning it.
+Move the v4l2_info() call displaying the video device name after the
+device is actually registered.
 
-This just add comments, no behavior change.
+This fixes a bug where the driver was always displaying "/dev/video0"
+since it was reading from the vfd before it was registered.
 
-Link: https://lore.kernel.org/all/174061715004.501424.333819546601401102.stgit@devnote2/
-
-Reported-by: Steven Rostedt <rostedt@goodmis.org>
-Closes: https://lore.kernel.org/all/20250226102223.586d7119@gandalf.local.home/
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cf7f34777a5b ("media: vim2m: Register video device after setting up internals")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthew Majewski <mattwmajewski@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_probe.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/media/test-drivers/vim2m.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
-index 16a5e368e7b77..578919962e5df 100644
---- a/kernel/trace/trace_probe.c
-+++ b/kernel/trace/trace_probe.c
-@@ -770,6 +770,10 @@ static int check_prepare_btf_string_fetch(char *typename,
+--- a/drivers/media/test-drivers/vim2m.c
++++ b/drivers/media/test-drivers/vim2m.c
+@@ -1314,9 +1314,6 @@ static int vim2m_probe(struct platform_d
+ 	vfd->v4l2_dev = &dev->v4l2_dev;
  
- #ifdef CONFIG_HAVE_FUNCTION_ARG_ACCESS_API
+ 	video_set_drvdata(vfd, dev);
+-	v4l2_info(&dev->v4l2_dev,
+-		  "Device registered as /dev/video%d\n", vfd->num);
+-
+ 	platform_set_drvdata(pdev, dev);
  
-+/*
-+ * Add the entry code to store the 'argnum'th parameter and return the offset
-+ * in the entry data buffer where the data will be stored.
-+ */
- static int __store_entry_arg(struct trace_probe *tp, int argnum)
- {
- 	struct probe_entry_arg *earg = tp->entry_arg;
-@@ -793,6 +797,20 @@ static int __store_entry_arg(struct trace_probe *tp, int argnum)
- 		tp->entry_arg = earg;
+ 	dev->m2m_dev = v4l2_m2m_init(&m2m_ops);
+@@ -1343,6 +1340,9 @@ static int vim2m_probe(struct platform_d
+ 		goto error_m2m;
  	}
  
-+	/*
-+	 * The entry code array is repeating the pair of
-+	 * [FETCH_OP_ARG(argnum)][FETCH_OP_ST_EDATA(offset of entry data buffer)]
-+	 * and the rest of entries are filled with [FETCH_OP_END].
-+	 *
-+	 * To reduce the redundant function parameter fetching, we scan the entry
-+	 * code array to find the FETCH_OP_ARG which already fetches the 'argnum'
-+	 * parameter. If it doesn't match, update 'offset' to find the last
-+	 * offset.
-+	 * If we find the FETCH_OP_END without matching FETCH_OP_ARG entry, we
-+	 * will save the entry with FETCH_OP_ARG and FETCH_OP_ST_EDATA, and
-+	 * return data offset so that caller can find the data offset in the entry
-+	 * data buffer.
-+	 */
- 	offset = 0;
- 	for (i = 0; i < earg->size - 1; i++) {
- 		switch (earg->code[i].op) {
-@@ -826,6 +844,16 @@ int traceprobe_get_entry_data_size(struct trace_probe *tp)
- 	if (!earg)
- 		return 0;
- 
-+	/*
-+	 * earg->code[] array has an operation sequence which is run in
-+	 * the entry handler.
-+	 * The sequence stopped by FETCH_OP_END and each data stored in
-+	 * the entry data buffer by FETCH_OP_ST_EDATA. The FETCH_OP_ST_EDATA
-+	 * stores the data at the data buffer + its offset, and all data are
-+	 * "unsigned long" size. The offset must be increased when a data is
-+	 * stored. Thus we need to find the last FETCH_OP_ST_EDATA in the
-+	 * code array.
-+	 */
- 	for (i = 0; i < earg->size; i++) {
- 		switch (earg->code[i].op) {
- 		case FETCH_OP_END:
--- 
-2.39.5
-
++	v4l2_info(&dev->v4l2_dev,
++		  "Device registered as /dev/video%d\n", vfd->num);
++
+ #ifdef CONFIG_MEDIA_CONTROLLER
+ 	ret = v4l2_m2m_register_media_controller(dev->m2m_dev, vfd,
+ 						 MEDIA_ENT_F_PROC_VIDEO_SCALER);
 
 
 
