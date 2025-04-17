@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-134099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9A89A92951
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E020EA9271C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:19:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DB974A4969
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C0171906D87
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:19:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65B22580F3;
-	Thu, 17 Apr 2025 18:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22FB51EB1BF;
+	Thu, 17 Apr 2025 18:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LnYe95wW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WBiGrsO7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643721CAA99;
-	Thu, 17 Apr 2025 18:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D594F255246;
+	Thu, 17 Apr 2025 18:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915091; cv=none; b=r1hKZyh2BRzR/J4RnHIJfzuVrID5nMW9o4g2ofbaPDh44BAdibvVB04kTz7ID7Wk+uizhBQ7ZCvRq2l5wLcNppDNWKSgHnYUtULXHNvwSV3KtCJIpQKafuBXD3DR76yhEG1RpPl3yEa+LKURzTVXx38NdzAHZzad1x2SP5vOY+E=
+	t=1744913985; cv=none; b=M//r2pB37LG9hTQ4mMWsazMwe8CqCH35KGpzeodP1Gh/9EYQ1ij62F4mMlThShPMDSjaF97oyq9Jj5+By653dtmatN16WDHDoQ9InoLpqCwYUwDnOWBFxlcFiZBmPsKMyU633a8TOSJhm+MDtdjgw43vB9sBmyKTbe3f++DnJJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915091; c=relaxed/simple;
-	bh=ysvXi3Km1Q8gByeinX46wBdlU0Vu7+SYuE9qnfyF8ds=;
+	s=arc-20240116; t=1744913985; c=relaxed/simple;
+	bh=kLQx/BjNUFFIomQ+VIBZMUWld0rKM6+4q4mglXkKmSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CtDJucuAelTfuramDUJElP3oSc/bDyIgA+RogtHKGXGOPiZf8YaYaeg6ubIWM2rqw6/Rz1IqXqwyv5xfqG4oUBq5C02Iyhq/jP3DAK7+NPPDCyk0l4Xh/5zrsJW4PAc00XapYoBpHpzLLGL8c1l27oxhgNISZjiEl4A2F79sKec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LnYe95wW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA329C4CEE4;
-	Thu, 17 Apr 2025 18:38:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rZPU+fca3hA3tb/mDxyRL7LWDb4z8nQZ+h5FCeQpuB1pVPF+l69g7or8ew77ejFRRYzKGPUiog4EI/qSuZZOLd2QOL8VcvlUbl4S2bK42dIVCdtREQTGlkPbMQjH9P9f56BahIk6DccWXvx/fPI9W88QvznvMFIK6QSr/JG4eVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WBiGrsO7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45849C4CEE4;
+	Thu, 17 Apr 2025 18:19:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915091;
-	bh=ysvXi3Km1Q8gByeinX46wBdlU0Vu7+SYuE9qnfyF8ds=;
+	s=korg; t=1744913985;
+	bh=kLQx/BjNUFFIomQ+VIBZMUWld0rKM6+4q4mglXkKmSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LnYe95wWVYQFPjzc5t8jK4GIN2teqdW3BkhFa3sxLfq3oxQ7DBeO9t6M55kuOBu74
-	 BMZwuLujPL3KeO16gFLlqF6VP+HtQ9XPyOZro47lEg2LnSwyQEvScpCYSi2NEg+vu7
-	 atYSp/DxPZEnU2+ZTjtjHUP/nokHsqXwRm1zv4yM=
+	b=WBiGrsO7OiNHsu/aN272000S1nDwrzyEEM1hjAjhz5wHielbIs3ipmFugUWfqeHmM
+	 XltdtvT6bUPp/xH/rzweZW3NpEuZoHKCRTnEsAaMIA/RNC0sluNgNY+jtDKo1RghNJ
+	 pyUn+kA0gMhTzEBcQmFIi/8ZivuBad9itP6cdyZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 016/393] objtool: Fix INSN_CONTEXT_SWITCH handling in validate_unret()
+Subject: [PATCH 6.13 067/414] HID: pidff: Add FIX_WHEEL_DIRECTION quirk
 Date: Thu, 17 Apr 2025 19:47:05 +0200
-Message-ID: <20250417175108.248968342@linuxfoundation.org>
+Message-ID: <20250417175114.121303934@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit a8df7d0ef92eca28c610206c6748daf537ac0586 ]
+[ Upstream commit 3051bf5ec773b803c474ea556b57d678a8885be3 ]
 
-The !CONFIG_IA32_EMULATION version of xen_entry_SYSCALL_compat() ends
-with a SYSCALL instruction which is classified by objtool as
-INSN_CONTEXT_SWITCH.
+Most steering wheels simply ignore DIRECTION field, but some try to be
+compliant with the PID standard and use it in force calculations. Games
+often ignore setting this field properly and/or there can be issues with
+dinput8 -> wine -> SDL -> Linux API translation, and this value can be
+incorrect. This can lead to partial/complete loss of Force Feedback or
+even unexpected force reversal.
 
-Unlike validate_branch(), validate_unret() doesn't consider
-INSN_CONTEXT_SWITCH in a non-function to be a dead end, so it keeps
-going past the end of xen_entry_SYSCALL_compat(), resulting in the
-following warning:
+Sadly, this quirk can't be detected automatically without sending out
+effects that would move an axis.
 
-  vmlinux.o: warning: objtool: xen_reschedule_interrupt+0x2a: RET before UNTRAIN
+This fixes FFB on Moza Racing devices and others where effect direction
+is not simply ignored.
 
-Fix that by adding INSN_CONTEXT_SWITCH handling to validate_unret() to
-match what validate_branch() is already doing.
-
-Fixes: a09a6e2399ba ("objtool: Add entry UNRET validation")
-Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/f5eda46fd09f15b1f5cde3d9ae3b92b958342add.1744095216.git.jpoimboe@kernel.org
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/objtool/check.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/hid/usbhid/hid-pidff.c | 12 +++++++++---
+ include/linux/hid.h            |  1 +
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 286a2c0af02aa..127862fa05c61 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -3990,6 +3990,11 @@ static int validate_unret(struct objtool_file *file, struct instruction *insn)
- 			WARN_INSN(insn, "RET before UNTRAIN");
- 			return 1;
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index b8c2ba0a930c2..a37cf852a2836 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -137,6 +137,9 @@ static const u8 pidff_block_load_status[] = { 0x8c, 0x8d };
+ #define PID_EFFECT_STOP		1
+ static const u8 pidff_effect_operation_status[] = { 0x79, 0x7b };
  
-+		case INSN_CONTEXT_SWITCH:
-+			if (insn_func(insn))
-+				break;
-+			return 0;
++/* Polar direction 90 degrees (North) */
++#define PIDFF_FIXED_WHEEL_DIRECTION	0x4000
 +
- 		case INSN_NOP:
- 			if (insn->retpoline_safe)
- 				return 0;
+ struct pidff_usage {
+ 	struct hid_field *field;
+ 	s32 *value;
+@@ -328,9 +331,12 @@ static void pidff_set_effect_report(struct pidff_device *pidff,
+ 	pidff->set_effect[PID_GAIN].value[0] =
+ 		pidff->set_effect[PID_GAIN].field->logical_maximum;
+ 	pidff->set_effect[PID_DIRECTION_ENABLE].value[0] = 1;
+-	pidff->effect_direction->value[0] =
+-		pidff_rescale(effect->direction, 0xffff,
+-				pidff->effect_direction);
++
++	/* Use fixed direction if needed */
++	pidff->effect_direction->value[0] = pidff_rescale(
++		pidff->quirks & HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION ?
++		PIDFF_FIXED_WHEEL_DIRECTION : effect->direction,
++		0xffff, pidff->effect_direction);
+ 
+ 	/* Omit setting delay field if it's missing */
+ 	if (!(pidff->quirks & HID_PIDFF_QUIRK_MISSING_DELAY))
+diff --git a/include/linux/hid.h b/include/linux/hid.h
+index 31dfe9ed5394b..7a55accf689e0 100644
+--- a/include/linux/hid.h
++++ b/include/linux/hid.h
+@@ -1234,6 +1234,7 @@ int hid_pidff_init_with_quirks(struct hid_device *hid, __u32 initial_quirks);
+ #define HID_PIDFF_QUIRK_MISSING_DELAY		BIT(0)
+ #define HID_PIDFF_QUIRK_MISSING_PBO		BIT(1)
+ #define HID_PIDFF_QUIRK_PERMISSIVE_CONTROL	BIT(2)
++#define HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION	BIT(3)
+ 
+ #define dbg_hid(fmt, ...) pr_debug("%s: " fmt, __FILE__, ##__VA_ARGS__)
+ 
 -- 
 2.39.5
 
