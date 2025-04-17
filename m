@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-134088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE2E0A92946
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FDC7A92B39
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:59:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B373C1702A5
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66AE38E6C3B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:55:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2509257AF0;
-	Thu, 17 Apr 2025 18:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47EC3255E4C;
+	Thu, 17 Apr 2025 18:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a8zsc1qh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7ngCqR4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90101257452;
-	Thu, 17 Apr 2025 18:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0670C18C034;
+	Thu, 17 Apr 2025 18:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915058; cv=none; b=LRSSVrgXNVMVQIOHvRo8k6kx1Vxlln2ePmPYZoGdD8/qU3mctaEId6YZAWj3TIXPQeZmDL0WSrpcRGN+5X1KfU1f0jWcVNEZOUQ7G7z566zp1yq6IePhj9VWzMqHfs936V9CWRAgvcxHuCh8mZmPq0KRLxtzV5yUDVdo54FD8r8=
+	t=1744916150; cv=none; b=IGfURWUSdWCkt8lvDFkVgQyxgrkIuBdEUpN+WuQY6TVYuK2cLdgjXAQFkGHq0LNcKHoxVJrw4rodd8nNJi9htcEo8zoA6H+K5YX/+m/357xvQs027eP5IAy0aCnMgHBDdwBIIRHgBcJq8oqL6vNqW8xGZdKB58aGxX8MpmXrJk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915058; c=relaxed/simple;
-	bh=hGz4UTRzNZlbXIaZFYWlJSBMLzRLqfwZMFjclnF0fj0=;
+	s=arc-20240116; t=1744916150; c=relaxed/simple;
+	bh=ZAY287nr8tpLzL0iBuZQjIXpLypU9cvE/PpsNhjm8Lg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZfcTlsCMNJNuCspn2d3bTuHwFeAbu2VtdQkvmfY/ovDLEjAzHG0faqX9dClb2BtLc4B6wikyLliBZC/B7o/e1J8pA5NrQ36Tz8G4hFr8Sk3XWoCMRYJFqaiqSWHnXecooJ2JqjOTsR26CgIUS7B6NNRqVl9bwkw5V9pbnVsBqQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a8zsc1qh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED56C4CEE4;
-	Thu, 17 Apr 2025 18:37:37 +0000 (UTC)
+	 MIME-Version; b=eYIZElLUpcu3ZIZoySEP9fgDTJI375RvLQvU3CnGrKfeManh+OAoaCgNh0NhGgNJAf3jfZFpYzjoVQcA/LqbsfygoH8SiP1Qu4MG7l4ewxULwh/7PcrkopQHskNsD1FAffJym9VHWiM8gvxVNmKRCo6mZ8AN+0zdVxyM+M6svtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7ngCqR4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A990C4CEE7;
+	Thu, 17 Apr 2025 18:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915058;
-	bh=hGz4UTRzNZlbXIaZFYWlJSBMLzRLqfwZMFjclnF0fj0=;
+	s=korg; t=1744916149;
+	bh=ZAY287nr8tpLzL0iBuZQjIXpLypU9cvE/PpsNhjm8Lg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a8zsc1qh00K3XvZSD7Wk4Cpd24X/Cz/q73ZXEISbzJGSkJLZ+otn1iuN1nWOX/ONB
-	 eIjpbC7L+pnIrzUJTej15hHjZQLshQ653c16t67A38Jl8SZZ2BfI1wPMSO33Q/dp/5
-	 xYB3n3LKM+0VuoKpv04XobYi0vkJajX7wAT9IgNg=
+	b=F7ngCqR4jqlWFcITo+sRAwSzl9rw8xbXsqYt7kaTAkBcc+fi+CrTX9AeUAwMs3eX8
+	 qqVHQYLB40n51q7wNPjy0privwlkJ3+XPvrMnoWnQq0SJDfqz4AVI8QlWfROyIZfOP
+	 dUbFnDA8His3M6zDH/iWMX8elzvF4zWLUpvUp6GQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.13 410/414] NFSD: Fix CB_GETATTR status fix
-Date: Thu, 17 Apr 2025 19:52:48 +0200
-Message-ID: <20250417175127.973248496@linuxfoundation.org>
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.12 360/393] of/irq: Fix device node refcount leakage in API irq_of_parse_and_map()
+Date: Thu, 17 Apr 2025 19:52:49 +0200
+Message-ID: <20250417175122.077172844@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 4990d098433db18c854e75fb0f90d941eb7d479e upstream.
+commit 962a2805e47b933876ba0e4c488d9e89ced2dd29 upstream.
 
-Jeff says:
+In irq_of_parse_and_map(), refcount of device node @oirq.np was got
+by successful of_irq_parse_one() invocation, but it does not put the
+refcount before return, so causes @oirq.np refcount leakage.
 
-Now that I look, 1b3e26a5ccbf is wrong. The patch on the ml was correct, but
-the one that got committed is different. It should be:
+Fix by putting @oirq.np refcount before return.
 
-    status = decode_cb_op_status(xdr, OP_CB_GETATTR, &cb->cb_status);
-    if (unlikely(status || cb->cb_status))
-
-If "status" is non-zero, decoding failed (usu. BADXDR), but we also want to
-bail out and not decode the rest of the call if the decoded cb_status is
-non-zero. That's not happening here, cb_seq_status has already been checked and
-is non-zero, so this ends up trying to decode the rest of the CB_GETATTR reply
-when it doesn't exist.
-
-Reported-by: Jeff Layton <jlayton@kernel.org>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219737
-Fixes: 1b3e26a5ccbf ("NFSD: fix decoding in nfs4_xdr_dec_cb_getattr")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: e3873444990d ("of/irq: Move irq_of_parse_and_map() to common code")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-6-93e3a2659aa7@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4callback.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/of/irq.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/nfsd/nfs4callback.c
-+++ b/fs/nfsd/nfs4callback.c
-@@ -647,7 +647,7 @@ static int nfs4_xdr_dec_cb_getattr(struc
- 		return status;
+--- a/drivers/of/irq.c
++++ b/drivers/of/irq.c
+@@ -39,11 +39,15 @@
+ unsigned int irq_of_parse_and_map(struct device_node *dev, int index)
+ {
+ 	struct of_phandle_args oirq;
++	unsigned int ret;
  
- 	status = decode_cb_op_status(xdr, OP_CB_GETATTR, &cb->cb_status);
--	if (unlikely(status || cb->cb_seq_status))
-+	if (unlikely(status || cb->cb_status))
- 		return status;
- 	if (xdr_stream_decode_uint32_array(xdr, bitmap, 3) < 0)
- 		return -NFSERR_BAD_XDR;
+ 	if (of_irq_parse_one(dev, index, &oirq))
+ 		return 0;
+ 
+-	return irq_create_of_mapping(&oirq);
++	ret = irq_create_of_mapping(&oirq);
++	of_node_put(oirq.np);
++
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(irq_of_parse_and_map);
+ 
 
 
 
