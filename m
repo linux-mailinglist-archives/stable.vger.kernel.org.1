@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-133634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A622A9269A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:14:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63686A9291B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:40:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 711AF8A67E9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:14:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D8524A445E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5852561B3;
-	Thu, 17 Apr 2025 18:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A465D264FAB;
+	Thu, 17 Apr 2025 18:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rIeKJYe7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tvQdD03B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E5D22E3E6;
-	Thu, 17 Apr 2025 18:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F50264F9C;
+	Thu, 17 Apr 2025 18:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913673; cv=none; b=c1Y2/dYYKLMQx9esvqZMEaB0rhlvK8fK/hwF3jTtF0GyAmoqUnDZ45kBOXX+ZMQSd1xoQA1Fa4y7PlwIaFk38zJSH+voF9CxrD3nZujB8ro+RVAC16ECiDespfrCvP8koU6WIFxE3xuR3Sb6e5Kwo5PxLkHrklUqDiEHinpcViQ=
+	t=1744914925; cv=none; b=ll3B9DmFlrMZn2dpfPM7hV92jrldf4Bky/PIFcH0PexzvCc6W6QHcYHZ4EAhGXSwqOgxr7xAmrfNK7skcLMWnWZoy7kfLSj82vDnk0aBW7nx+W9NiNFHE+5Oyj92GE1obu+LgqkgrGCA7qKuLGdvwuVHhEw6C0p9yM97l6eSs1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913673; c=relaxed/simple;
-	bh=/ELY6GlMKjmJeoFJw9cl3lsC8ixyExFRCllVoZ7WfgI=;
+	s=arc-20240116; t=1744914925; c=relaxed/simple;
+	bh=a0Mu6yKpxtjNgIOBYKIj/AbCd106hk4BgXf3z6G0t28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NIlon7ZobQo1rq64otBjgdXIURkeUYup90VVqXpgnR3JynYK779MwS/AOmfqeCM9zu7Cu5VMQOYXhH4FgdfALMQ3hMirt2njJsQLzOfYIzrpN9X+XMcsho6AQInqgATiDYUxLxH0KnbCLjwwMkqhb9YgDUXnknUk4twEHKBkVBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rIeKJYe7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F6E6C4CEE4;
-	Thu, 17 Apr 2025 18:14:32 +0000 (UTC)
+	 MIME-Version; b=aMdHZlXOQja26jsoWQ+Kp1hxnpoElrEXCicxeZeyHAjzMH9+SwbNVIOTcmRXz4u0pcrU37I+Wj7Xt+rgcY4XxLZQ3QakuBNE0uynnMbLcKJRRVS7j3YhZLVSx8fyw/cxaVbaHNuk2VaRehGg9Byz1bvP+TH3KcvlWtB6BshuEcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tvQdD03B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3FCBC4CEE4;
+	Thu, 17 Apr 2025 18:35:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913673;
-	bh=/ELY6GlMKjmJeoFJw9cl3lsC8ixyExFRCllVoZ7WfgI=;
+	s=korg; t=1744914925;
+	bh=a0Mu6yKpxtjNgIOBYKIj/AbCd106hk4BgXf3z6G0t28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rIeKJYe7eczIyz3Xl1PRWHdjGZWpTilVUtT7sLpQJ5xDnz1xwDXn5IdMW6KQ4u7zQ
-	 yu9Z7uAkINMBz4suI+OP4ROFD1P7cdv8qeb1lUOilTZVKwXeoCyeLttbBJLwlzM7fi
-	 iN30597l3V2Ft4oNLS5vkCP9rtUjTsp9QWVQm6V0=
+	b=tvQdD03BwchNECsvBcY4f2HW0Jr4E5KKAQSKOiLoDMuFQ36LIKilB+xmWoGmZ/Fun
+	 c3FTZBoTkTF57ZODu/QyNBiYJX/OhXWTadbg9qi0fxtbZxDqerbQfVlX/ZzKlmhEfw
+	 WdH5wykC1v+9b7rGOQO/s9rsTWIEmnPobjuEaU5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.14 415/449] misc: pci_endpoint_test: Fix irq_type to convey the correct type
+	Ajit Pandey <quic_ajipan@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.13 345/414] clk: qcom: clk-branch: Fix invert halt status bit check for votable clocks
 Date: Thu, 17 Apr 2025 19:51:43 +0200
-Message-ID: <20250417175134.991515999@linuxfoundation.org>
+Message-ID: <20250417175125.304128544@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+From: Ajit Pandey <quic_ajipan@quicinc.com>
 
-commit baaef0a274cfb75f9b50eab3ef93205e604f662c upstream.
+commit 5eac348182d2b5ed1066459abedb7bc6b5466f81 upstream.
 
-There are two variables that indicate the interrupt type to be used
-in the next test execution, "irq_type" as global and "test->irq_type".
+BRANCH_HALT_ENABLE and BRANCH_HALT_ENABLE_VOTED flags are used to check
+halt status of branch clocks, which have an inverted logic for the halt
+bit in CBCR register. However, the current logic in the _check_halt()
+method only compares the BRANCH_HALT_ENABLE flags, ignoring the votable
+branch clocks.
 
-The global is referenced from pci_endpoint_test_get_irq() to preserve
-the current type for ioctl(PCITEST_GET_IRQTYPE).
+Update the logic to correctly handle the invert logic for votable clocks
+using the BRANCH_HALT_ENABLE_VOTED flags.
 
-The type set in this function isn't reflected in the global "irq_type",
-so ioctl(PCITEST_GET_IRQTYPE) returns the previous type.
-
-As a result, the wrong type is displayed in old version of "pcitest"
-as follows:
-
-  - Result of running "pcitest -i 0"
-
-      SET IRQ TYPE TO LEGACY:         OKAY
-
-  - Result of running "pcitest -I"
-
-      GET IRQ TYPE:           MSI
-
-Whereas running the new version of "pcitest" in kselftest results in an
-error as follows:
-
-  #  RUN           pci_ep_basic.LEGACY_IRQ_TEST ...
-  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Expected 0 (0) == ret (1)
-  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Can't get Legacy IRQ type
-
-Fix this issue by propagating the current type to the global "irq_type".
-
-Fixes: b2ba9225e031 ("misc: pci_endpoint_test: Avoid using module parameter to determine irqtype")
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Fixes: 9092d1083a62 ("clk: qcom: branch: Extend the invert logic for branch2 clocks")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250225110252.28866-5-hayashi.kunihiko@socionext.com
+Signed-off-by: Ajit Pandey <quic_ajipan@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20250128-push_fix-v1-1-fafec6747881@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/pci_endpoint_test.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/qcom/clk-branch.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -830,6 +830,7 @@ static int pci_endpoint_test_set_irq(str
- 		return ret;
- 	}
+--- a/drivers/clk/qcom/clk-branch.c
++++ b/drivers/clk/qcom/clk-branch.c
+@@ -28,7 +28,7 @@ static bool clk_branch_in_hwcg_mode(cons
  
-+	irq_type = test->irq_type;
- 	return 0;
- }
+ static bool clk_branch_check_halt(const struct clk_branch *br, bool enabling)
+ {
+-	bool invert = (br->halt_check == BRANCH_HALT_ENABLE);
++	bool invert = (br->halt_check & BRANCH_HALT_ENABLE);
+ 	u32 val;
  
+ 	regmap_read(br->clkr.regmap, br->halt_reg, &val);
+@@ -44,7 +44,7 @@ static bool clk_branch2_check_halt(const
+ {
+ 	u32 val;
+ 	u32 mask;
+-	bool invert = (br->halt_check == BRANCH_HALT_ENABLE);
++	bool invert = (br->halt_check & BRANCH_HALT_ENABLE);
+ 
+ 	mask = CBCR_NOC_FSM_STATUS;
+ 	mask |= CBCR_CLK_OFF;
 
 
 
