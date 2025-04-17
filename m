@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-134027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E03A92907
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:39:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEBACA926C9
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:16:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4504444598
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C969F4A10AC
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D04B264A69;
-	Thu, 17 Apr 2025 18:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 449B51E98ED;
+	Thu, 17 Apr 2025 18:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WtHxMX5X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/V6tcZm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D7A26463B;
-	Thu, 17 Apr 2025 18:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030978462;
+	Thu, 17 Apr 2025 18:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914873; cv=none; b=W7XfpeLsfRb5bPhYqhQgyv0fz6XLXLE9vCa5gMRw6MyHzUMGfO3+EQUYs8u4VwKEoHxgGFzvaqK887Im2JRXMuWvIrjSKhlKftziDlQZkaakI45R9l8L3ox1NjSy3BlmOMVKoEF3M3kp9vpLmBA0i324+aggUmrc3IbrllPqCOY=
+	t=1744913791; cv=none; b=tCUfpSrUVM0Uy7wNVZFYUp4cMrgaGwSd3PCGieqOfmNryxnN284J0h1UsXHMTm9fs/Hq4vORIVX4AsEXbMsr0upgIlQWRdheeoJYA5PWbxR/RLcqnLpAndTS0sxtPfaShcvEDuHJ1YyYqGXwe5WEd86rU9Y3nChD8MJLKN6GR4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914873; c=relaxed/simple;
-	bh=ppApMB80e2X8Xw8UDGqOp6p7Gx/1Bbmaik0niiUi1/I=;
+	s=arc-20240116; t=1744913791; c=relaxed/simple;
+	bh=oe5VXWt3RmQ6jg5ahHLe/hvJaaLIHMKRmYk/42HXeJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o9aqyPTW1Y47bKr/yebGEnK1jRTjrGPQSHMXvls8GHDSql+f1URNOe2kWQUi1D5HzO73TDd+PN+cFUcD2OKeQFomKER3mYGylsB8z/OK2yjCncyPzS7vsOk1PO4rUHSSAz02u8Sxg/XISsj6KQI1Kp6GVxYj4QuqgP2uQl0kVXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WtHxMX5X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99E0C4CEE4;
-	Thu, 17 Apr 2025 18:34:32 +0000 (UTC)
+	 MIME-Version; b=ZmNP9WDybkXgVbmwANGMCv4uvMFleoHM8BajTBFlqp9jW6gS223z/tM2jwG5EI3vvKfg6s8uIv2/GZBUKHTMI1LrYN41Q3xkj+p278zJvgJIKmv7f1UYT5gHlpeEIVhyH3vEnhMxbjyIBjn3HO2tJ0vi0nI5GNvc2NL5SVUdSG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/V6tcZm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E18BC4CEE4;
+	Thu, 17 Apr 2025 18:16:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914873;
-	bh=ppApMB80e2X8Xw8UDGqOp6p7Gx/1Bbmaik0niiUi1/I=;
+	s=korg; t=1744913790;
+	bh=oe5VXWt3RmQ6jg5ahHLe/hvJaaLIHMKRmYk/42HXeJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WtHxMX5XyubIfFsDWph7TmAELhz2Kj5yKUHEp3V+kFgPAMeuBwEhgGZ+C9VmZKFow
-	 z75aAy40PySFNF1+IJMdxTMDbhfIeJXU9aHyb0T9ZxHPak+xM7XeiDR8/CWIne+sEV
-	 MFyTq1q5TzQbObNVkSdPRHXhbAKvTQ8x9jQk2Kb8=
+	b=L/V6tcZmpj+jfQO8GYgNuGDzB5C8bMq1vtNYo00s/4ncSAX8xePTuin70g1aZXAX0
+	 6b+c4jJcQHmjy7uKG3PUuxugmdC6gI93wAdVdGWtMMOvFY5JcD4b2Kxhq2DCkzqO8Q
+	 zmz9f4Ol4OeGS2JZ2JOxsEQr9BusGK8xF2VdPF5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: [PATCH 6.13 358/414] dt-bindings: coresight: qcom,coresight-tpdm: Fix too many reg
+	Ma Ke <make24@iscas.ac.cn>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.14 428/449] PCI: Fix reference leak in pci_register_host_bridge()
 Date: Thu, 17 Apr 2025 19:51:56 +0200
-Message-ID: <20250417175125.862418771@linuxfoundation.org>
+Message-ID: <20250417175135.522122609@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 1e4e454223f770748775f211455513c79cb3121e upstream.
+commit 804443c1f27883926de94c849d91f5b7d7d696e9 upstream.
 
-Binding listed variable number of IO addresses without defining them,
-however example DTS code, all in-tree DTS and Linux kernel driver
-mention only one address space, so drop the second to make binding
-precise and correctly describe the hardware.
+If device_register() fails, call put_device() to give up the reference to
+avoid a memory leak, per the comment at device_register().
 
-Fixes: 6c781a35133d ("dt-bindings: arm: Add CoreSight TPDM hardware")
+Found by code review.
+
+Link: https://lore.kernel.org/r/20250225021440.3130264-1-make24@iscas.ac.cn
+Fixes: 37d6a0a6f470 ("PCI: Add pci_register_host_bridge() interface")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+[bhelgaas: squash Dan Carpenter's double free fix from
+https://lore.kernel.org/r/db806a6c-a91b-4e5a-a84b-6b7e01bdac85@stanley.mountain]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250226112914.94361-2-krzysztof.kozlowski@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/arm/qcom,coresight-tpdm.yaml |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/pci/probe.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/Documentation/devicetree/bindings/arm/qcom,coresight-tpdm.yaml
-+++ b/Documentation/devicetree/bindings/arm/qcom,coresight-tpdm.yaml
-@@ -41,8 +41,7 @@ properties:
-       - const: arm,primecell
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -954,6 +954,7 @@ static int pci_register_host_bridge(stru
+ 	resource_size_t offset, next_offset;
+ 	LIST_HEAD(resources);
+ 	struct resource *res, *next_res;
++	bool bus_registered = false;
+ 	char addr[64], *fmt;
+ 	const char *name;
+ 	int err;
+@@ -1017,6 +1018,7 @@ static int pci_register_host_bridge(stru
+ 	name = dev_name(&bus->dev);
  
-   reg:
--    minItems: 1
--    maxItems: 2
-+    maxItems: 1
+ 	err = device_register(&bus->dev);
++	bus_registered = true;
+ 	if (err)
+ 		goto unregister;
  
-   qcom,dsb-element-bits:
-     description:
+@@ -1103,12 +1105,15 @@ static int pci_register_host_bridge(stru
+ unregister:
+ 	put_device(&bridge->dev);
+ 	device_del(&bridge->dev);
+-
+ free:
+ #ifdef CONFIG_PCI_DOMAINS_GENERIC
+ 	pci_bus_release_domain_nr(parent, bus->domain_nr);
+ #endif
+-	kfree(bus);
++	if (bus_registered)
++		put_device(&bus->dev);
++	else
++		kfree(bus);
++
+ 	return err;
+ }
+ 
 
 
 
