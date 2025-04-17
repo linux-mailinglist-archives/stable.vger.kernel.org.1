@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-133441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880AAA925BA
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:07:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEAF4A9280A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A665A467A54
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:07:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 028618E077B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA5D257450;
-	Thu, 17 Apr 2025 18:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97C322580C0;
+	Thu, 17 Apr 2025 18:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DsniFzqD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QjjJIMYI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2B525742E;
-	Thu, 17 Apr 2025 18:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52735256C7A;
+	Thu, 17 Apr 2025 18:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913086; cv=none; b=kM+Kh4LUhb6KnY7D6/y8UhkmitEEymaSJWHUSn049/Wu3kA0dpxr7pXid2nJyJktbV4kljPS18IUsJpyyIzWFJv0CHGHTvdcoAO5PaLUMAWyhgLeGNXQcKFQJ7rGzf7DZkECLNzCjyaULdP5dKy4dm7BFiGp28SUhJeSpN5ioJQ=
+	t=1744914340; cv=none; b=FHzYsWn50/TE+a1QBfbtyY+cZsvmkiwdXiHgvnyZYXhGZKFMyaqpgpr1IaC6lDLgTjB49TqOVDTtV6Yo5opA7Vh6L8p5E95eClWmE7M2pv1LzLf/YwYYXM9gY00SbFFX/Ive64GaGm99Ftqv3OUiXL0tf7KTCNKsMfhi9UVmd8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913086; c=relaxed/simple;
-	bh=vD7Gkv5EOvhTgXX1LFgHUGc9E3HgFdVk2IL71MTZO4M=;
+	s=arc-20240116; t=1744914340; c=relaxed/simple;
+	bh=0vG9saATnphdHtubqMDbTbw4ZZHMaYe1i9YREcdG2cQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ggMao/QLAjtWUCpor5wGt9knGiKm0rOt70Kvbavf6Kid+aHZgV11L1GT6sro6Hdvb6Ykvdn3n76MH7swJCtrfP0q7Nh2xaizwn4v5U4G/PoWbaJI4sIJXIknmjs6sx/ETg1Ice/8eRs3Tf8bCkhsKmYL5nDHT6Ia66jgWxyXNN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DsniFzqD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D00FAC4CEE4;
-	Thu, 17 Apr 2025 18:04:45 +0000 (UTC)
+	 MIME-Version; b=Ls1tswQfuZx0voGALW/rDcbEDdE1Tktaiff1t0wuYmexGYGCTx2PuNHUpD3HfWIv48ClupGkOsmxY/M4FKqc7If1ZvezpXStaItzhrh65lG8Vlewl+ZsmRXfuj3mPvQFzsJeiAH4g0kQ1eSQEJUjPnPEkRdSxEakkVRhe72iPYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QjjJIMYI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E57C4CEE4;
+	Thu, 17 Apr 2025 18:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913086;
-	bh=vD7Gkv5EOvhTgXX1LFgHUGc9E3HgFdVk2IL71MTZO4M=;
+	s=korg; t=1744914339;
+	bh=0vG9saATnphdHtubqMDbTbw4ZZHMaYe1i9YREcdG2cQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DsniFzqDUzOJI2HUlsJq6rxuzOj35d6tHaApNfguTqYscYhH5kLZ0VORjGe0yQQWc
-	 n99WohGRE2+x2gPIfc75mJyK6qPsBbCGXjo7Rx1Wop1QzquEqENu9Pjd4AkiuK9rML
-	 /TrlhABLU7TT87hPaT37+5JDaYX5JfUPkM8FD8Z0=
+	b=QjjJIMYIz8De7wNhzJOuvjyrI6MUR6hLqJj0Avc7p2gIrjOCc7wTVlEAxT1ESIuxs
+	 piJiFDJUWMFwSjKKj/K+7z5clwT0p/5rq7TzgPGp2/STKYNqF50Mu5RzUjMXsTHAXr
+	 rFD+p1alLqmGLiDgmwilc+PFWj1XZ+1+jZWIDirQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Martin=20T=C5=AFma?= <martin.tuma@digiteqautomotive.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.14 222/449] media: mgb4: Fix CMT registers update logic
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 152/414] drm/mediatek: mtk_dpi: Explicitly manage TVD clock in power on/off
 Date: Thu, 17 Apr 2025 19:48:30 +0200
-Message-ID: <20250417175126.907334328@linuxfoundation.org>
+Message-ID: <20250417175117.539625395@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,57 +61,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Tůma <martin.tuma@digiteqautomotive.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-commit dd05443189f9ae175dd806594b67bf55ddb6539e upstream.
+[ Upstream commit 473c33f5ce651365468503c76f33158aaa1c7dd2 ]
 
-The CMT "magic values" registers must be updated while the CMT reset
-registers are active.
+In preparation for adding support for MT8195's HDMI reserved
+DPI, add calls to clk_prepare_enable() / clk_disable_unprepare()
+for the TVD clock: in this particular case, the aforementioned
+clock is not (and cannot be) parented to neither pixel or engine
+clocks hence it won't get enabled automatically by the clock
+framework.
 
-Fixes: 0ab13674a9bd ("media: pci: mgb4: Added Digiteq Automotive MGB4 driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Martin Tůma <martin.tuma@digiteqautomotive.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Please note that on all of the currently supported MediaTek
+platforms, the TVD clock is always a parent of either pixel or
+engine clocks, and this means that the common clock framework
+is already enabling this clock before the children.
+On such platforms, this commit will only increase the refcount
+of the TVD clock without any functional change.
+
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250217154836.108895-10-angelogioacchino.delregno@collabora.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/mgb4/mgb4_cmt.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_dpi.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/media/pci/mgb4/mgb4_cmt.c
-+++ b/drivers/media/pci/mgb4/mgb4_cmt.c
-@@ -206,10 +206,11 @@ u32 mgb4_cmt_set_vout_freq(struct mgb4_v
+diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c b/drivers/gpu/drm/mediatek/mtk_dpi.c
+index c3fc85764c973..a12ef24c77423 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dpi.c
++++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
+@@ -471,6 +471,7 @@ static void mtk_dpi_power_off(struct mtk_dpi *dpi)
  
- 	mgb4_write_reg(video, regs->config, 0x1 | (config & ~0x3));
+ 	mtk_dpi_disable(dpi);
+ 	clk_disable_unprepare(dpi->pixel_clk);
++	clk_disable_unprepare(dpi->tvd_clk);
+ 	clk_disable_unprepare(dpi->engine_clk);
+ }
  
-+	mgb4_mask_reg(video, regs->config, 0x100, 0x100);
+@@ -487,6 +488,12 @@ static int mtk_dpi_power_on(struct mtk_dpi *dpi)
+ 		goto err_refcount;
+ 	}
+ 
++	ret = clk_prepare_enable(dpi->tvd_clk);
++	if (ret) {
++		dev_err(dpi->dev, "Failed to enable tvd pll: %d\n", ret);
++		goto err_engine;
++	}
 +
- 	for (i = 0; i < ARRAY_SIZE(cmt_addrs_out[0]); i++)
- 		mgb4_write_reg(&voutdev->mgbdev->cmt, addr[i], reg_set[i]);
+ 	ret = clk_prepare_enable(dpi->pixel_clk);
+ 	if (ret) {
+ 		dev_err(dpi->dev, "Failed to enable pixel clock: %d\n", ret);
+@@ -496,6 +503,8 @@ static int mtk_dpi_power_on(struct mtk_dpi *dpi)
+ 	return 0;
  
--	mgb4_mask_reg(video, regs->config, 0x100, 0x100);
- 	mgb4_mask_reg(video, regs->config, 0x100, 0x0);
- 
- 	mgb4_write_reg(video, regs->config, config & ~0x1);
-@@ -236,10 +237,11 @@ void mgb4_cmt_set_vin_freq_range(struct
- 
- 	mgb4_write_reg(video, regs->config, 0x1 | (config & ~0x3));
- 
-+	mgb4_mask_reg(video, regs->config, 0x1000, 0x1000);
-+
- 	for (i = 0; i < ARRAY_SIZE(cmt_addrs_in[0]); i++)
- 		mgb4_write_reg(&vindev->mgbdev->cmt, addr[i], reg_set[i]);
- 
--	mgb4_mask_reg(video, regs->config, 0x1000, 0x1000);
- 	mgb4_mask_reg(video, regs->config, 0x1000, 0x0);
- 
- 	mgb4_write_reg(video, regs->config, config & ~0x1);
+ err_pixel:
++	clk_disable_unprepare(dpi->tvd_clk);
++err_engine:
+ 	clk_disable_unprepare(dpi->engine_clk);
+ err_refcount:
+ 	dpi->refcount--;
+-- 
+2.39.5
+
 
 
 
