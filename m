@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-134443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ED8FA92B14
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:57:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2B5BA92943
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5FA64A7C64
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:56:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A7314A4F46
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968F72571C6;
-	Thu, 17 Apr 2025 18:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567E8257AC7;
+	Thu, 17 Apr 2025 18:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E//sW6wN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bxGVWwR1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53684254B1F;
-	Thu, 17 Apr 2025 18:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C34257AD1;
+	Thu, 17 Apr 2025 18:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916141; cv=none; b=lxVslgPRLUudtbRUwrndntuqfIHiqn9sGlQ9Szc1oSBkDTRZgGSGEZp5NEJCE/a8k4hFblZ7WPaZqOlwg92WhE31k5KaYxgRIm5Eazi66L/atoMc9wu6v402xSt8jgyCDxYjDpCSKkjzr7ciRlT1IA5J70toM8OPIfyKdiIM3fk=
+	t=1744915052; cv=none; b=u0FkClMHjqATj5zxbXLIeIgxvs4Y6+NZgqcD5bT6H75AqBxVyd04RJowy6SULQCQ+UFLchfzbV1+yZETgOoI7LjXa2KUS8pJX/UNEnQzZ5gYnmk3AoyQr/A83b+MebSoc8FK/wrvHvKNr+ewzlOLWou1zaaq6FtSGOHTxQ6iyZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916141; c=relaxed/simple;
-	bh=XfimzIs7IM9iRjQKDjrBz2MZMTbtbpMV7PEKR8VyEZo=;
+	s=arc-20240116; t=1744915052; c=relaxed/simple;
+	bh=2QIS5hD702JQ8xlPvkPqXhxC/HSXpKTVrLNmKg39Ol4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q3xCazhJs3kThKw03qYUlw37a39cw3gboga+Ppw+GMzYgxP8MVXGAaK3qTbrOkT8Hjfl/vcd6Z/5zz7Y8/yL+MhVj8E+xjZz7HavaTmkCPVj+h4UdMf2s3ScBZc4s/n08I2oWR1JfYicWbzSg6AwnPzKlX4y0hRTlOGfXPosSEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E//sW6wN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA021C4CEE4;
-	Thu, 17 Apr 2025 18:55:40 +0000 (UTC)
+	 MIME-Version; b=Y+3kivMgTH2J/R+GWpu7PePNI4wXYGtuP0JBNUzmkF4ClcJJ2Rnf7bPFjDIjTiDR/cLyjjQ1DkBPEAo7y65+wE61Q/73/uuR/3X1Ov1ll5A/BJdGrPpICcS2RcUvP6rLQXfoC7hngA2wggUl2ci/DL3aYLEOAhK0USbMdzRiyCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bxGVWwR1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81EEAC4CEE4;
+	Thu, 17 Apr 2025 18:37:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916141;
-	bh=XfimzIs7IM9iRjQKDjrBz2MZMTbtbpMV7PEKR8VyEZo=;
+	s=korg; t=1744915051;
+	bh=2QIS5hD702JQ8xlPvkPqXhxC/HSXpKTVrLNmKg39Ol4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E//sW6wNas6HrNAmEFYUszz/IagoJwtoj687Pk0LMLjNedIwibxgHO0QgD+eI92G5
-	 zrG+FPQW2mTdYq9co2f0wlT4NTWLb4Bs+pKWTvVHdn2T6HH2TOOP9YLHo23zLOfqZW
-	 +izqidwQYO8FNm1sVIqMmm7AO2+jrowkmrutzIu0=
+	b=bxGVWwR1/2tDc5SNTviTpUbdKvys9qiFQJO17M7JUqGgPBA/c47eA1JNicKZcrrTe
+	 OpXzUtNi9M6Bks6eg7C87cY2JOTiD5jH9r2PhnUc0XWcT+bwfInE+9Xu2E4Pq7g1W1
+	 Z7BjMUNskm5AoRYN7WkOMIgDqwjGHhXVolyoJpB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.12 357/393] of/irq: Fix device node refcount leakage in API of_irq_parse_one()
+	John Rowley <lkml@johnrowley.me>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.13 408/414] ACPI: platform-profile: Fix CFI violation when accessing sysfs files
 Date: Thu, 17 Apr 2025 19:52:46 +0200
-Message-ID: <20250417175121.956660931@linuxfoundation.org>
+Message-ID: <20250417175127.891288859@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,130 +64,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 0cb58d6c7b558a69957fabe159bfb184196e1e8d upstream.
+commit dd4f730b557ce701a2cd4f604bf1e57667bd8b6e upstream.
 
-of_irq_parse_one(@int_gen_dev, i, ...) will leak refcount of @i_th_phandle
+When an attribute group is created with sysfs_create_group(), the
+->sysfs_ops() callback is set to kobj_sysfs_ops, which sets the ->show()
+and ->store() callbacks to kobj_attr_show() and kobj_attr_store()
+respectively. These functions use container_of() to get the respective
+callback from the passed attribute, meaning that these callbacks need to
+be of the same type as the callbacks in 'struct kobj_attribute'.
 
-int_gen_dev {
-    ...
-    interrupts-extended = ..., <&i_th_phandle ...>, ...;
-    ...
-};
+However, ->show() and ->store() in the platform_profile driver are
+defined for struct device_attribute with the help of DEVICE_ATTR_RO()
+and DEVICE_ATTR_RW(), which results in a CFI violation when accessing
+platform_profile or platform_profile_choices under /sys/firmware/acpi
+because the types do not match:
 
-Refcount of @i_th_phandle is increased by of_parse_phandle_with_args()
-but is not decreased by API of_irq_parse_one() before return, so causes
-refcount leakage.
+  CFI failure at kobj_attr_show+0x19/0x30 (target: platform_profile_choices_show+0x0/0x140; expected type: 0x7a69590c)
 
-Rework the refcounting to use __free() cleanup and simplify the code to
-have a single call to of_irq_parse_raw().
+There is no functional issue from the type mismatch because the layout
+of 'struct kobj_attribute' and 'struct device_attribute' are the same,
+so the container_of() cast does not break anything aside from CFI.
 
-Also add comments about refcount of node @out_irq->np got by the API.
+Change the type of platform_profile_choices_show() and
+platform_profile_{show,store}() to match the callbacks in
+'struct kobj_attribute' and update the attribute variables to
+match, which resolves the CFI violation.
 
-Fixes: 79d9701559a9 ("of/irq: create interrupts-extended property")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-2-93e3a2659aa7@quicinc.com
-[robh: Use __free() to do puts]
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Cc: All applicable <stable@vger.kernel.org>
+Fixes: a2ff95e018f1 ("ACPI: platform: Add platform profile support")
+Reported-by: John Rowley <lkml@johnrowley.me>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2047
+Tested-by: John Rowley <lkml@johnrowley.me>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Link: https://patch.msgid.link/20250210-acpi-platform_profile-fix-cfi-violation-v3-1-ed9e9901c33a@kernel.org
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+[nathan: Fix conflicts in older stable branches]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/irq.c |   59 +++++++++++++++++++++++++------------------------------
- 1 file changed, 27 insertions(+), 32 deletions(-)
+ drivers/acpi/platform_profile.c |   20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -16,6 +16,7 @@
+--- a/drivers/acpi/platform_profile.c
++++ b/drivers/acpi/platform_profile.c
+@@ -22,8 +22,8 @@ static const char * const profile_names[
+ };
+ static_assert(ARRAY_SIZE(profile_names) == PLATFORM_PROFILE_LAST);
  
- #define pr_fmt(fmt)	"OF: " fmt
- 
-+#include <linux/cleanup.h>
- #include <linux/device.h>
- #include <linux/errno.h>
- #include <linux/list.h>
-@@ -339,10 +340,12 @@ EXPORT_SYMBOL_GPL(of_irq_parse_raw);
-  * This function resolves an interrupt for a node by walking the interrupt tree,
-  * finding which interrupt controller node it is attached to, and returning the
-  * interrupt specifier that can be used to retrieve a Linux IRQ number.
-+ *
-+ * Note: refcount of node @out_irq->np is increased by 1 on success.
-  */
- int of_irq_parse_one(struct device_node *device, int index, struct of_phandle_args *out_irq)
+-static ssize_t platform_profile_choices_show(struct device *dev,
+-					struct device_attribute *attr,
++static ssize_t platform_profile_choices_show(struct kobject *kobj,
++					struct kobj_attribute *attr,
+ 					char *buf)
  {
--	struct device_node *p;
-+	struct device_node __free(device_node) *p = NULL;
- 	const __be32 *addr;
- 	u32 intsize;
- 	int i, res, addr_len;
-@@ -367,41 +370,33 @@ int of_irq_parse_one(struct device_node
- 	/* Try the new-style interrupts-extended first */
- 	res = of_parse_phandle_with_args(device, "interrupts-extended",
- 					"#interrupt-cells", index, out_irq);
--	if (!res)
--		return of_irq_parse_raw(addr_buf, out_irq);
--
--	/* Look for the interrupt parent. */
--	p = of_irq_find_parent(device);
--	if (p == NULL)
--		return -EINVAL;
--
--	/* Get size of interrupt specifier */
--	if (of_property_read_u32(p, "#interrupt-cells", &intsize)) {
--		res = -EINVAL;
--		goto out;
--	}
--
--	pr_debug(" parent=%pOF, intsize=%d\n", p, intsize);
-+	if (!res) {
-+		p = out_irq->np;
-+	} else {
-+		/* Look for the interrupt parent. */
-+		p = of_irq_find_parent(device);
-+		/* Get size of interrupt specifier */
-+		if (!p || of_property_read_u32(p, "#interrupt-cells", &intsize))
-+			return -EINVAL;
-+
-+		pr_debug(" parent=%pOF, intsize=%d\n", p, intsize);
-+
-+		/* Copy intspec into irq structure */
-+		out_irq->np = p;
-+		out_irq->args_count = intsize;
-+		for (i = 0; i < intsize; i++) {
-+			res = of_property_read_u32_index(device, "interrupts",
-+							(index * intsize) + i,
-+							out_irq->args + i);
-+			if (res)
-+				return res;
-+		}
- 
--	/* Copy intspec into irq structure */
--	out_irq->np = p;
--	out_irq->args_count = intsize;
--	for (i = 0; i < intsize; i++) {
--		res = of_property_read_u32_index(device, "interrupts",
--						 (index * intsize) + i,
--						 out_irq->args + i);
--		if (res)
--			goto out;
-+		pr_debug(" intspec=%d\n", *out_irq->args);
- 	}
- 
--	pr_debug(" intspec=%d\n", *out_irq->args);
--
--
- 	/* Check if there are any interrupt-map translations to process */
--	res = of_irq_parse_raw(addr_buf, out_irq);
-- out:
--	of_node_put(p);
--	return res;
-+	return of_irq_parse_raw(addr_buf, out_irq);
+ 	int len = 0;
+@@ -49,8 +49,8 @@ static ssize_t platform_profile_choices_
+ 	return len;
  }
- EXPORT_SYMBOL_GPL(of_irq_parse_one);
+ 
+-static ssize_t platform_profile_show(struct device *dev,
+-					struct device_attribute *attr,
++static ssize_t platform_profile_show(struct kobject *kobj,
++					struct kobj_attribute *attr,
+ 					char *buf)
+ {
+ 	enum platform_profile_option profile = PLATFORM_PROFILE_BALANCED;
+@@ -77,8 +77,8 @@ static ssize_t platform_profile_show(str
+ 	return sysfs_emit(buf, "%s\n", profile_names[profile]);
+ }
+ 
+-static ssize_t platform_profile_store(struct device *dev,
+-			    struct device_attribute *attr,
++static ssize_t platform_profile_store(struct kobject *kobj,
++			    struct kobj_attribute *attr,
+ 			    const char *buf, size_t count)
+ {
+ 	int err, i;
+@@ -115,12 +115,12 @@ static ssize_t platform_profile_store(st
+ 	return count;
+ }
+ 
+-static DEVICE_ATTR_RO(platform_profile_choices);
+-static DEVICE_ATTR_RW(platform_profile);
++static struct kobj_attribute attr_platform_profile_choices = __ATTR_RO(platform_profile_choices);
++static struct kobj_attribute attr_platform_profile = __ATTR_RW(platform_profile);
+ 
+ static struct attribute *platform_profile_attrs[] = {
+-	&dev_attr_platform_profile_choices.attr,
+-	&dev_attr_platform_profile.attr,
++	&attr_platform_profile_choices.attr,
++	&attr_platform_profile.attr,
+ 	NULL
+ };
  
 
 
