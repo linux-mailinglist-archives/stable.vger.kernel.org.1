@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-133404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C47AEA925CF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:07:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18698A927C2
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:28:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3659C7B5E6E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:03:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BBAB4A2B3B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B51D6256C70;
-	Thu, 17 Apr 2025 18:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39DFB257425;
+	Thu, 17 Apr 2025 18:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lzzj5T/d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0XY4JpT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EE418C034;
-	Thu, 17 Apr 2025 18:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90C3256C67;
+	Thu, 17 Apr 2025 18:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744912974; cv=none; b=dbr3FsoT5xnuzRhW9rt4b+Ek6L3KUNV6fSyqfT/i8eonzPpuVlomZExUOb4hlSPMIYOjGmhNIPBUqKg92qHCY2LW9G8c04Yn5OrqmIww8oILIYgFJaxDv1sT/bbNKHkQIsP0m5VQQSCeWSiEkVGh5y+r2RED7nM6ZuTgQSCaGJ4=
+	t=1744914224; cv=none; b=tl5T2V7tE0F4fHF5RFajDMyymHL3DzKBjXW3FRmFtZgUce1ex/9sGvtGQoZNcVMMCdV2nC4614lHY2Dy+sggjsL2hHzSSWYpVEtD/5yXa6hQCkdagE8eoP02/cEgf/gooAnWyFRTG6LZZfm5zGZz5iNaNjl+QDUTgJGQEWf3CfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744912974; c=relaxed/simple;
-	bh=tddZTNag4BhFs6OwvqCOa0EYJ1+2GF3x13mx7ncwsck=;
+	s=arc-20240116; t=1744914224; c=relaxed/simple;
+	bh=KJ81qr0h6ZuHP0pPExd+nnMVqkCycMo1b5NpBsJHzLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qn5n0Ueja5G/cyU/BDZoCfJintcAq0oXiydJngXoINoblsYDi2UwGAFOdZkr70ZUoyeSuCBe1eOkuYWd8mNsAyhOOGp+nLTVZ1QEHQzEv54Oki7Pkzic/6xfEaU1F4gamZ5UGGuVjiVNrMGasqo8LpYj5HGwUL/dAebDJOdys/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lzzj5T/d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A39C4CEE4;
-	Thu, 17 Apr 2025 18:02:53 +0000 (UTC)
+	 MIME-Version; b=A0VeJZQWlji+eyZFuB01JAu3nZjWPWZtW5vW9tdu0g4eoahirVBQRNjQfkACMpg0toma7xbHewupxN+XmAdJs5N7M2uE1ULQI4lZB/ac947k8cWc/s+AA2j8pLDNnF0yUnsh6yc8ltK8h23cKo4vMwGC+25WHiOGMB2oXphZL1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0XY4JpT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E3EFC4CEE4;
+	Thu, 17 Apr 2025 18:23:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744912973;
-	bh=tddZTNag4BhFs6OwvqCOa0EYJ1+2GF3x13mx7ncwsck=;
+	s=korg; t=1744914223;
+	bh=KJ81qr0h6ZuHP0pPExd+nnMVqkCycMo1b5NpBsJHzLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lzzj5T/d7efF3tHxTJm3u53WedxgVcLW0U3ppVTC6VKdesnKt0G8QyFAlYfVJlprH
-	 EyFJf0TMjgn3odCOvVcNkeopTWb6JA5RexsvzJAsHrbXihCPg1x3fNSgEjHsO60LBR
-	 ZmANsxhjv7tWvuumlkkyTk5i2RmhrrpMDQ6WwzVA=
+	b=E0XY4JpT/IJtqluiBSKlGFxv/9nNlmLRKJ92i2YBASNB+LM3qFbULlXEAET+cxwQH
+	 Ms4kYJS0lsgDY0uF3gISLSc68H3LAYJVUeaBOd4ksMi7wkVLv6Qw1/mTNeJuNNERJO
+	 j6aD5IYvgcwM+ouM5Yihj2TOstnaZLGKQFi9c69w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	warthog9@eaglescrag.net,
-	Ayush Jain <Ayush.jain3@amd.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 185/449] ktest: Fix Test Failures Due to Missing LOG_FILE Directories
-Date: Thu, 17 Apr 2025 19:47:53 +0200
-Message-ID: <20250417175125.420368915@linuxfoundation.org>
+Subject: [PATCH 6.13 116/414] btrfs: harden block_group::bg_list against list_del() races
+Date: Thu, 17 Apr 2025 19:47:54 +0200
+Message-ID: <20250417175116.099558284@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ayush Jain <Ayush.jain3@amd.com>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit 5a1bed232781d356f842576daacc260f0d0c8d2e ]
+[ Upstream commit 7511e29cf1355b2c47d0effb39e463119913e2f6 ]
 
-Handle missing parent directories for LOG_FILE path to prevent test
-failures. If the parent directories don't exist, create them to ensure
-the tests proceed successfully.
+As far as I can tell, these calls of list_del_init() on bg_list cannot
+run concurrently with btrfs_mark_bg_unused() or btrfs_mark_bg_to_reclaim(),
+as they are in transaction error paths and situations where the block
+group is readonly.
 
-Cc: <warthog9@eaglescrag.net>
-Link: https://lore.kernel.org/20250307043854.2518539-1-Ayush.jain3@amd.com
-Signed-off-by: Ayush Jain <Ayush.jain3@amd.com>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+However, if there is any chance at all of racing with mark_bg_unused(),
+or a different future user of bg_list, better to be safe than sorry.
+
+Otherwise we risk the following interleaving (bg_list refcount in parens)
+
+T1 (some random op)                       T2 (btrfs_mark_bg_unused)
+                                        !list_empty(&bg->bg_list); (1)
+list_del_init(&bg->bg_list); (1)
+                                        list_move_tail (1)
+btrfs_put_block_group (0)
+                                        btrfs_delete_unused_bgs
+                                             bg = list_first_entry
+                                             list_del_init(&bg->bg_list);
+                                             btrfs_put_block_group(bg); (-1)
+
+Ultimately, this results in a broken ref count that hits zero one deref
+early and the real final deref underflows the refcount, resulting in a WARNING.
+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/ktest/ktest.pl | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/btrfs/extent-tree.c |  8 ++++++++
+ fs/btrfs/transaction.c | 12 ++++++++++++
+ 2 files changed, 20 insertions(+)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index 8c8da966c641b..a5f7fdd0c1fbb 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -4303,6 +4303,14 @@ if (defined($opt{"LOG_FILE"})) {
-     if ($opt{"CLEAR_LOG"}) {
- 	unlink $opt{"LOG_FILE"};
-     }
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index 3c6f7fecbb9aa..840e7959b0772 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -2873,7 +2873,15 @@ int btrfs_finish_extent_commit(struct btrfs_trans_handle *trans)
+ 						   block_group->length,
+ 						   &trimmed);
+ 
++		/*
++		 * Not strictly necessary to lock, as the block_group should be
++		 * read-only from btrfs_delete_unused_bgs().
++		 */
++		ASSERT(block_group->ro);
++		spin_lock(&fs_info->unused_bgs_lock);
+ 		list_del_init(&block_group->bg_list);
++		spin_unlock(&fs_info->unused_bgs_lock);
 +
-+    if (! -e $opt{"LOG_FILE"} && $opt{"LOG_FILE"} =~ m,^(.*/),) {
-+        my $dir = $1;
-+        if (! -d $dir) {
-+            mkpath($dir) or die "Failed to create directories '$dir': $!";
-+            print "\nThe log directory $dir did not exist, so it was created.\n";
-+        }
-+    }
-     open(LOG, ">> $opt{LOG_FILE}") or die "Can't write to $opt{LOG_FILE}";
-     LOG->autoflush(1);
+ 		btrfs_unfreeze_block_group(block_group);
+ 		btrfs_put_block_group(block_group);
+ 
+diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
+index 914a22cc950b5..7c789b4b946b3 100644
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -160,7 +160,13 @@ void btrfs_put_transaction(struct btrfs_transaction *transaction)
+ 			cache = list_first_entry(&transaction->deleted_bgs,
+ 						 struct btrfs_block_group,
+ 						 bg_list);
++			/*
++			 * Not strictly necessary to lock, as no other task will be using a
++			 * block_group on the deleted_bgs list during a transaction abort.
++			 */
++			spin_lock(&transaction->fs_info->unused_bgs_lock);
+ 			list_del_init(&cache->bg_list);
++			spin_unlock(&transaction->fs_info->unused_bgs_lock);
+ 			btrfs_unfreeze_block_group(cache);
+ 			btrfs_put_block_group(cache);
+ 		}
+@@ -2097,7 +2103,13 @@ static void btrfs_cleanup_pending_block_groups(struct btrfs_trans_handle *trans)
+ 
+        list_for_each_entry_safe(block_group, tmp, &trans->new_bgs, bg_list) {
+                btrfs_dec_delayed_refs_rsv_bg_inserts(fs_info);
++		/*
++		* Not strictly necessary to lock, as no other task will be using a
++		* block_group on the new_bgs list during a transaction abort.
++		*/
++	       spin_lock(&fs_info->unused_bgs_lock);
+                list_del_init(&block_group->bg_list);
++	       spin_unlock(&fs_info->unused_bgs_lock);
+        }
  }
+ 
 -- 
 2.39.5
 
