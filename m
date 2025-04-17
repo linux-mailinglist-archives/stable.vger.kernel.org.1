@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-134259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36EB1A92A1B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6936A92600
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:09:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0A154A5425
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:46:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79173467177
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCDDE2566DE;
-	Thu, 17 Apr 2025 18:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7770256C6C;
+	Thu, 17 Apr 2025 18:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZvB2IL3Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qjen5bcx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E47253F22;
-	Thu, 17 Apr 2025 18:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22F21DB148;
+	Thu, 17 Apr 2025 18:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915582; cv=none; b=Xu9KiaotaLQMeC7EdfQFVnp5X/8NSPfIAvuXZhia9oljYFawvGvTq7PeEGfs/zPTuPKZ1HmWstp8BiXpif7lGm8rbkgJPgomcIe+CRQR5eywRq0UBd+Xz2GmjkxZH2R4x3joOpjE/9o4B8rIAF03+DnQRasz5OjQFxZRp85kpZA=
+	t=1744913325; cv=none; b=kHnGd67twYaOXm/nKKFAa5+brOsVq4HYv/FyNceo4Z1/t8thFlsKbK/aEMZzlqf8B+0F9IufWS0CGXaoL1tSBt6p0UsxweR0vcGQkNXMIug6SQ3LLzraxIFylIVQdcHr/4xulAX9t8eP5+3Bx6w2948nN0QDcCBsRoEU8kOXOgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915582; c=relaxed/simple;
-	bh=bie4sz8G8ZtkKjshKzEC2uaO50zRMsFSSaieHO191kE=;
+	s=arc-20240116; t=1744913325; c=relaxed/simple;
+	bh=yzlLD98Q06VDfIndt/iJeME4oXpXcDIPcTTepnoKRVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ewTSk9NTvV8Pj4/OloWxjoht7w5sAD6KDo74MX4tQGbAbkDVkFHRq7p4eD0YIlSSrQZle/OQ3PA90PK5HV2hYUpxvrWpWcHL6iaEThBtI/jnRC3+C9LpQyuuaCW9e3S8Nt91gOIPZSuRoQ7ZWoDTV/Jm2fxwwtAi7r/kaFk5u5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZvB2IL3Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F789C4CEE4;
-	Thu, 17 Apr 2025 18:46:21 +0000 (UTC)
+	 MIME-Version; b=nNr5Og6F/bbfntsWs/2GlISDOvBuB3S+GOp/T+149uf7MIyK4IuMx7fK+u17SfLFdtjZA8KnxuEoLj/5eC0cJj2Sx2zI9PQweeR7ZaZLH13tfiSEDyPHNIbd+u5mXg1inb7NViDNS6/Yez/lrOQP+cqJ36aoq6bnZzXglVVLK9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qjen5bcx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 193FEC4CEE4;
+	Thu, 17 Apr 2025 18:08:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915582;
-	bh=bie4sz8G8ZtkKjshKzEC2uaO50zRMsFSSaieHO191kE=;
+	s=korg; t=1744913325;
+	bh=yzlLD98Q06VDfIndt/iJeME4oXpXcDIPcTTepnoKRVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZvB2IL3ZINqIl6cG4l2vFnt9Rajpab5nQgaeVwq6n45LjapLLN+E5zUwEGvoWcFeN
-	 GO4AdPsTA+XpW4eQ8CJ0vCxmVkkMuf2pVVa5hXQasQMzEZnlT+tkyRu4/UTRyRBPP/
-	 tXnzH7l3mjI1CE3IxfEphX2UNASzXOWJIfUdvQbY=
+	b=qjen5bcxBjnPOcR87FEX19BGICJIiEn3eOVmB8UR647Ur7Oidz94hS3mYvkIhT/5J
+	 mnX8jtfZ3m4CsSO9JEW7tZdGGzGwgkTRAnnoFpFDyDvdahdy6huPJuOVOvENs+U3Da
+	 Y8ipFfGJ9nqjpQJyBy34gaBUrRokjbJwt4E0azD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 173/393] HID: pidff: Move all hid-pidff definitions to a dedicated header
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.14 294/449] ASoC: q6apm: add q6apm_get_hw_pointer helper
 Date: Thu, 17 Apr 2025 19:49:42 +0200
-Message-ID: <20250417175114.559077756@linuxfoundation.org>
+Message-ID: <20250417175129.916414061@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,159 +61,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-[ Upstream commit 0d24d4b1da96df9fc5ff36966f40f980ef864d46 ]
+commit 0badb5432fd525a00db5630c459b635e9d47f445 upstream.
 
-Do not clutter hid includes with stuff not needed outside of
-the kernel.
+Implement an helper function in q6apm to be able to read the current
+hardware pointer for both read and write buffers.
 
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This should help q6apm-dai to get the hardware pointer consistently
+without it doing manual calculation, which could go wrong in some race
+conditions.
+
+Fixes: 9b4fe0f1cd79 ("ASoC: qdsp6: audioreach: add q6apm-dai support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://patch.msgid.link/20250314174800.10142-3-srinivas.kandagatla@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-universal-pidff.c |  3 ++-
- drivers/hid/usbhid/hid-core.c     |  1 +
- drivers/hid/usbhid/hid-pidff.c    |  3 ++-
- drivers/hid/usbhid/hid-pidff.h    | 33 +++++++++++++++++++++++++++++++
- include/linux/hid.h               | 15 --------------
- 5 files changed, 38 insertions(+), 17 deletions(-)
- create mode 100644 drivers/hid/usbhid/hid-pidff.h
+ sound/soc/qcom/qdsp6/q6apm.c |   18 +++++++++++++++++-
+ sound/soc/qcom/qdsp6/q6apm.h |    3 +++
+ 2 files changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-universal-pidff.c b/drivers/hid/hid-universal-pidff.c
-index 7ef5ab9146b1c..1b713b741d192 100644
---- a/drivers/hid/hid-universal-pidff.c
-+++ b/drivers/hid/hid-universal-pidff.c
-@@ -13,6 +13,7 @@
- #include <linux/module.h>
- #include <linux/input-event-codes.h>
- #include "hid-ids.h"
-+#include "usbhid/hid-pidff.h"
+--- a/sound/soc/qcom/qdsp6/q6apm.c
++++ b/sound/soc/qcom/qdsp6/q6apm.c
+@@ -494,6 +494,19 @@ int q6apm_read(struct q6apm_graph *graph
+ }
+ EXPORT_SYMBOL_GPL(q6apm_read);
  
- #define JOY_RANGE (BTN_DEAD - BTN_JOYSTICK + 1)
- 
-@@ -89,7 +90,7 @@ static int universal_pidff_probe(struct hid_device *hdev,
- 	}
- 
- 	/* Check if HID_PID support is enabled */
--	int (*init_function)(struct hid_device *, __u32);
-+	int (*init_function)(struct hid_device *, u32);
- 	init_function = hid_pidff_init_with_quirks;
- 
- 	if (!init_function) {
-diff --git a/drivers/hid/usbhid/hid-core.c b/drivers/hid/usbhid/hid-core.c
-index a9e85bdd4cc65..bf0f51ef0149f 100644
---- a/drivers/hid/usbhid/hid-core.c
-+++ b/drivers/hid/usbhid/hid-core.c
-@@ -35,6 +35,7 @@
- #include <linux/hid-debug.h>
- #include <linux/hidraw.h>
- #include "usbhid.h"
-+#include "hid-pidff.h"
- 
- /*
-  * Version Information
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index ac6f940abd901..a8eaa77e80be3 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -12,6 +12,7 @@
- 
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
-+#include "hid-pidff.h"
- #include <linux/input.h>
- #include <linux/slab.h>
- #include <linux/usb.h>
-@@ -1383,7 +1384,7 @@ static int pidff_check_autocenter(struct pidff_device *pidff,
-  * Check if the device is PID and initialize it
-  * Set initial quirks
-  */
--int hid_pidff_init_with_quirks(struct hid_device *hid, __u32 initial_quirks)
-+int hid_pidff_init_with_quirks(struct hid_device *hid, u32 initial_quirks)
++int q6apm_get_hw_pointer(struct q6apm_graph *graph, int dir)
++{
++	struct audioreach_graph_data *data;
++
++	if (dir == SNDRV_PCM_STREAM_PLAYBACK)
++		data = &graph->rx_data;
++	else
++		data = &graph->tx_data;
++
++	return (int)atomic_read(&data->hw_ptr);
++}
++EXPORT_SYMBOL_GPL(q6apm_get_hw_pointer);
++
+ static int graph_callback(struct gpr_resp_pkt *data, void *priv, int op)
  {
- 	struct pidff_device *pidff;
- 	struct hid_input *hidinput = list_entry(hid->inputs.next,
-diff --git a/drivers/hid/usbhid/hid-pidff.h b/drivers/hid/usbhid/hid-pidff.h
-new file mode 100644
-index 0000000000000..dda571e0a5bd3
---- /dev/null
-+++ b/drivers/hid/usbhid/hid-pidff.h
-@@ -0,0 +1,33 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+#ifndef __HID_PIDFF_H
-+#define __HID_PIDFF_H
-+
-+#include <linux/hid.h>
-+
-+/* HID PIDFF quirks */
-+
-+/* Delay field (0xA7) missing. Skip it during set effect report upload */
-+#define HID_PIDFF_QUIRK_MISSING_DELAY		BIT(0)
-+
-+/* Missing Paramter block offset (0x23). Skip it during SET_CONDITION
-+   report upload */
-+#define HID_PIDFF_QUIRK_MISSING_PBO		BIT(1)
-+
-+/* Initialise device control field even if logical_minimum != 1 */
-+#define HID_PIDFF_QUIRK_PERMISSIVE_CONTROL	BIT(2)
-+
-+/* Use fixed 0x4000 direction during SET_EFFECT report upload */
-+#define HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION	BIT(3)
-+
-+/* Force all periodic effects to be uploaded as SINE */
-+#define HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY	BIT(4)
-+
-+#ifdef CONFIG_HID_PID
-+int hid_pidff_init(struct hid_device *hid);
-+int hid_pidff_init_with_quirks(struct hid_device *hid, u32 initial_quirks);
-+#else
-+#define hid_pidff_init NULL
-+#define hid_pidff_init_with_quirks NULL
-+#endif
-+
-+#endif
-diff --git a/include/linux/hid.h b/include/linux/hid.h
-index 495b5b3b2cb80..018de72505b07 100644
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -1221,21 +1221,6 @@ unsigned long hid_lookup_quirk(const struct hid_device *hdev);
- int hid_quirks_init(char **quirks_param, __u16 bus, int count);
- void hid_quirks_exit(__u16 bus);
- 
--#ifdef CONFIG_HID_PID
--int hid_pidff_init(struct hid_device *hid);
--int hid_pidff_init_with_quirks(struct hid_device *hid, __u32 initial_quirks);
--#else
--#define hid_pidff_init NULL
--#define hid_pidff_init_with_quirks NULL
--#endif
+ 	struct data_cmd_rsp_rd_sh_mem_ep_data_buffer_done_v2 *rd_done;
+@@ -520,7 +533,8 @@ static int graph_callback(struct gpr_res
+ 		done = data->payload;
+ 		phys = graph->rx_data.buf[token].phys;
+ 		mutex_unlock(&graph->lock);
 -
--/* HID PIDFF quirks */
--#define HID_PIDFF_QUIRK_MISSING_DELAY		BIT(0)
--#define HID_PIDFF_QUIRK_MISSING_PBO		BIT(1)
--#define HID_PIDFF_QUIRK_PERMISSIVE_CONTROL	BIT(2)
--#define HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION	BIT(3)
--#define HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY	BIT(4)
--
- #define dbg_hid(fmt, ...) pr_debug("%s: " fmt, __FILE__, ##__VA_ARGS__)
++		/* token numbering starts at 0 */
++		atomic_set(&graph->rx_data.hw_ptr, token + 1);
+ 		if (lower_32_bits(phys) == done->buf_addr_lsw &&
+ 		    upper_32_bits(phys) == done->buf_addr_msw) {
+ 			graph->result.opcode = hdr->opcode;
+@@ -553,6 +567,8 @@ static int graph_callback(struct gpr_res
+ 		rd_done = data->payload;
+ 		phys = graph->tx_data.buf[hdr->token].phys;
+ 		mutex_unlock(&graph->lock);
++		/* token numbering starts at 0 */
++		atomic_set(&graph->tx_data.hw_ptr, hdr->token + 1);
  
- #define hid_err(hid, fmt, ...)				\
--- 
-2.39.5
-
+ 		if (upper_32_bits(phys) == rd_done->buf_addr_msw &&
+ 		    lower_32_bits(phys) == rd_done->buf_addr_lsw) {
+--- a/sound/soc/qcom/qdsp6/q6apm.h
++++ b/sound/soc/qcom/qdsp6/q6apm.h
+@@ -2,6 +2,7 @@
+ #ifndef __Q6APM_H__
+ #define __Q6APM_H__
+ #include <linux/types.h>
++#include <linux/atomic.h>
+ #include <linux/slab.h>
+ #include <linux/wait.h>
+ #include <linux/kernel.h>
+@@ -77,6 +78,7 @@ struct audioreach_graph_data {
+ 	uint32_t num_periods;
+ 	uint32_t dsp_buf;
+ 	uint32_t mem_map_handle;
++	atomic_t hw_ptr;
+ };
+ 
+ struct audioreach_graph {
+@@ -150,4 +152,5 @@ int q6apm_enable_compress_module(struct
+ int q6apm_remove_initial_silence(struct device *dev, struct q6apm_graph *graph, uint32_t samples);
+ int q6apm_remove_trailing_silence(struct device *dev, struct q6apm_graph *graph, uint32_t samples);
+ int q6apm_set_real_module_id(struct device *dev, struct q6apm_graph *graph, uint32_t codec_id);
++int q6apm_get_hw_pointer(struct q6apm_graph *graph, int dir);
+ #endif /* __APM_GRAPH_ */
 
 
 
