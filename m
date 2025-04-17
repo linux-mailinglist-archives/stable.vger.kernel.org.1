@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-134323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A980A92AC4
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:54:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9271A928B4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:37:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F336C8A4B56
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46F264A272F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C7D257435;
-	Thu, 17 Apr 2025 18:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC73825FA12;
+	Thu, 17 Apr 2025 18:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CeAlk+M+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2EZtqNVx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2500825742E;
-	Thu, 17 Apr 2025 18:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA24125F98F;
+	Thu, 17 Apr 2025 18:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915781; cv=none; b=naSm+eDJj4oabWYOR1E4m0UOjHN5QXE1ZkvYNEnpvl1Eurb++EM3LNwEwFp1rqxUdgYGAC2lgI3LYgd+2zGeuCUsMVk0zPu4wM2vqIiai1TBoArb0R9eHFfU5Z/yZi/9X23jilWpQvF8U/TU9q3yjBhCmh8mFV4rEm29I/Dif+I=
+	t=1744914658; cv=none; b=npbhQGpzGgbWy65vkjhLIi3hGDhQTp1LFgtenKnjUFyuI8ek+8pdPs89lBaZJq/bSXYGSjGuZlPssF+xAk+LGib2/MQ8u1ZNNDBqxq/qzJKAQuXHVMKEHMvWZCwjUAfWk7Sf93Aykrf1n+Tz/vra96nMFPd376CxkLPLN6pEsss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915781; c=relaxed/simple;
-	bh=aWoaM0QPyxs4pmapIIU2UUoKLsxqE5UBfO76uZZpK5o=;
+	s=arc-20240116; t=1744914658; c=relaxed/simple;
+	bh=2ANiKC2EnCaOiG14s5bJmucSm1s7czOCNfffpBoHYbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ALPsGbrcR81VGFMhVDePhbIk3IHdOzBfhRUUcRUlEFrROTPXHtTDI5a0ICj20D4CCbmAjSYTWwn4gCtBxtneTq1tGrBC8nPu4nbAfEqKNy5tVW+fg2fgaTXMxmb6O5dxy0MjGXZlOY6NQanJSxTpRkJhHo7p2t2mcM13R5WPH/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CeAlk+M+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342FCC4CEE4;
-	Thu, 17 Apr 2025 18:49:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fnCvG3y2LrKnKvQjEve2HBDSxhOqU01SULh/s16D7yP3DJOUkYFKuHXCVP8eUPs/ogHCltOm3+3DWr+Adr1O6qxZggEtiSJtjAAfWgXMAX339PyFRtTgUMJby9ZnmDKcLvdGbsoIRKiS9TmtU97eXn8K5Vi07no1HorBTNIq9ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2EZtqNVx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D14A3C4CEE4;
+	Thu, 17 Apr 2025 18:30:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915779;
-	bh=aWoaM0QPyxs4pmapIIU2UUoKLsxqE5UBfO76uZZpK5o=;
+	s=korg; t=1744914658;
+	bh=2ANiKC2EnCaOiG14s5bJmucSm1s7czOCNfffpBoHYbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CeAlk+M+3XU1g5tGXkqgwQcWntiarwgtIFiZoVb8uL+PkfCCs6wLCv+ZVJNOWcBCp
-	 9FTtHr6V4OQB66jLY0W7JsuiITP/b3Zncs3yULjj8nLP02waft3icI01NftGKjSiAR
-	 rMWtbanExYEfzvMf5Khju3Cb+Rkf7qPNRfMlxU10=
+	b=2EZtqNVxTj0RU04Gk28udDLYMiki90mzKLu6kkvnUkcYSh3wXKF/1/0UHX/izX2L3
+	 V7Q7uNoPve/Zq+vAwTwZDYrQ9zMDhXFS97/coq+L/bxfj7UW6fUK8lP99oqzs3niAM
+	 61EqfR9uVvuItqIPHcG3HrCI8HHuC/LfLb8odZaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.12 238/393] mtd: Replace kcalloc() with devm_kcalloc()
+	Manjunatha Venkatesh <manjunatha.venkatesh@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.13 289/414] i3c: Add NULL pointer check in i3c_master_queue_ibi()
 Date: Thu, 17 Apr 2025 19:50:47 +0200
-Message-ID: <20250417175117.174565851@linuxfoundation.org>
+Message-ID: <20250417175123.049933158@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,54 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Manjunatha Venkatesh <manjunatha.venkatesh@nxp.com>
 
-commit 1b61a59876f0eafc19b23007c522ee407f55dbec upstream.
+commit bd496a44f041da9ef3afe14d1d6193d460424e91 upstream.
 
-Replace kcalloc() with devm_kcalloc() to prevent memory leaks in case of
-errors.
+The I3C master driver may receive an IBI from a target device that has not
+been probed yet. In such cases, the master calls `i3c_master_queue_ibi()`
+to queue an IBI work task, leading to "Unable to handle kernel read from
+unreadable memory" and resulting in a kernel panic.
 
-Fixes: 78c08247b9d3 ("mtd: Support kmsg dumper based on pstore/blk")
-Cc: stable@vger.kernel.org # v5.10+
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Typical IBI handling flow:
+1. The I3C master scans target devices and probes their respective drivers.
+2. The target device driver calls `i3c_device_request_ibi()` to enable IBI
+   and assigns `dev->ibi = ibi`.
+3. The I3C master receives an IBI from the target device and calls
+   `i3c_master_queue_ibi()` to queue the target device driver’s IBI
+   handler task.
+
+However, since target device events are asynchronous to the I3C probe
+sequence, step 3 may occur before step 2, causing `dev->ibi` to be `NULL`,
+leading to a kernel panic.
+
+Add a NULL pointer check in `i3c_master_queue_ibi()` to prevent accessing
+an uninitialized `dev->ibi`, ensuring stability.
+
+Fixes: 3a379bbcea0af ("i3c: Add core I3C infrastructure")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/lkml/Z9gjGYudiYyl3bSe@lizhi-Precision-Tower-5810/
+Signed-off-by: Manjunatha Venkatesh <manjunatha.venkatesh@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250326123047.2797946-1-manjunatha.venkatesh@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/mtdpstore.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/i3c/master.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/mtd/mtdpstore.c
-+++ b/drivers/mtd/mtdpstore.c
-@@ -417,11 +417,11 @@ static void mtdpstore_notify_add(struct
- 	}
- 
- 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, info->kmsg_size));
--	cxt->rmmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
--	cxt->usedmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
-+	cxt->rmmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
-+	cxt->usedmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
- 
- 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, mtd->erasesize));
--	cxt->badmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
-+	cxt->badmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
- 
- 	if (!cxt->rmmap || !cxt->usedmap || !cxt->badmap)
- 		return;
-@@ -530,9 +530,6 @@ static void mtdpstore_notify_remove(stru
- 	mtdpstore_flush_removed(cxt);
- 
- 	unregister_pstore_device(&cxt->dev);
--	kfree(cxt->badmap);
--	kfree(cxt->usedmap);
--	kfree(cxt->rmmap);
- 	cxt->mtd = NULL;
- 	cxt->index = -1;
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -2553,6 +2553,9 @@ static void i3c_master_unregister_i3c_de
+  */
+ void i3c_master_queue_ibi(struct i3c_dev_desc *dev, struct i3c_ibi_slot *slot)
+ {
++	if (!dev->ibi || !slot)
++		return;
++
+ 	atomic_inc(&dev->ibi->pending_ibis);
+ 	queue_work(dev->ibi->wq, &slot->work);
  }
 
 
