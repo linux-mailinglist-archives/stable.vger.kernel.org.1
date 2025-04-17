@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-134384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E08A92AD0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B499DA926A1
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:15:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 290781706D1
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 497D7443249
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FEC0257430;
-	Thu, 17 Apr 2025 18:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87B642561B3;
+	Thu, 17 Apr 2025 18:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XG979p5b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZTQRVMYV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF16B25742C;
-	Thu, 17 Apr 2025 18:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4261F1A3178;
+	Thu, 17 Apr 2025 18:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915964; cv=none; b=KV75r5oLOFNsW5PN6oJUIc/bkaieaFBRCdcyFmFYFMC1bhg+BwQD/dBwl0jR7hcT96Ts+ax78qXxSWFidHO9ojXtHbswiGioNez+GUswfmz0wIBOcpiiDsR13nhMyuPXn8p+vqzjA0wfqpnR1Y42fe+lARzcpDgnyNNZI+Xn20U=
+	t=1744913691; cv=none; b=ViwaoHljEk6/UaQjN4GXXKqRG8bAo9Y23CoX7Q0/vvlyOE8KIGwRgX5cm5PDBAfQf4dHF2m/bkqnaBDx+G4tsBUZOC8L+1E2Usp3KSlUhC372N+Oi3417kzpPadDmGWDuvZDBT+E2HEOTzd3wBQ6uq/aGFsXFVggDBOdALNgsQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915964; c=relaxed/simple;
-	bh=hm5osy8C38ZyqBJe6fOS4VWIpZm9R1Dizxy7D+lQ5O8=;
+	s=arc-20240116; t=1744913691; c=relaxed/simple;
+	bh=cvDFnpFfWrD0tmWZEF+5AdSWp30TcNBI8PTRFZIQtEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lQ+u0biAa9JSpAXjYVUEeAYUN6cVo2ELvDyzOvPjOcYcrIRlCay+Oxsaxz2XWpfv3pG0i1h9DVgzNTGkTi91p2mcg+efiaTqswUTdL/RNq+p2r3xr0FQTrNNGSvhLuSnWOUYzjqYf0ZXH9/63dS4I9isS4tetYNyMD9rThbDDqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XG979p5b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57094C4CEE4;
-	Thu, 17 Apr 2025 18:52:44 +0000 (UTC)
+	 MIME-Version; b=VY0+gEvxbgXSYA4h036hFVHHiXYd+1bQ4IbQdISM40Tir5bHw161kr7h6ohKh6hEMXa9izshtUA/9x1TkttEn/l1Zxbgtc/DSs8yY8YNkjjIMVQvBO8tDqILdF03/oRp6kBJPskNbRfaDI5tPt4mgGsB/5+CBQ3RhoTu6udKexA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZTQRVMYV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC386C4CEE4;
+	Thu, 17 Apr 2025 18:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915964;
-	bh=hm5osy8C38ZyqBJe6fOS4VWIpZm9R1Dizxy7D+lQ5O8=;
+	s=korg; t=1744913691;
+	bh=cvDFnpFfWrD0tmWZEF+5AdSWp30TcNBI8PTRFZIQtEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XG979p5bYSBgPmi/o7DgEb+rfblRCLrVmyMV/NF5/AoyFg9NxRyS7cBcaPVRHxCyi
-	 75FDVt4Ukmdw7bxcWEtIOWKOamJpLUAphLCFvoPerXysqtN4lqcdVFiLl2WDmJS+SG
-	 +hai44rq0dAWnVUv9wYZLsWTlaOpge7PiSUFxnW8=
+	b=ZTQRVMYV4YRLXPZXOPXypZAlnWxg7D1TM8XXvzESZq8QMt2RuBeWkwFV0Ayr/ZwKG
+	 dtITohOLHL7FRw3JCwqbEqBUhhs3FRE/WoOeDCiOuFSlAGomMccFxS/VGLKc+X89Mf
+	 iHoTMNBdFVKamCbzOx/sSKdfd5m9FXjeB5iC0on4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Lippert <rlippert@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Wentao Yang <wentaoyang@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 6.12 299/393] iommu/vt-d: Wire up irq_ack() to irq_move_irq() for posted MSIs
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.14 420/449] of/irq: Fix device node refcount leakages in of_irq_count()
 Date: Thu, 17 Apr 2025 19:51:48 +0200
-Message-ID: <20250417175119.639014255@linuxfoundation.org>
+Message-ID: <20250417175135.196121885@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,101 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 548183ea388c12b6d76d6982f3d72df3887af0da upstream.
+commit bbf71f44aaf241d853759a71de7e7ebcdb89be3d upstream.
 
-Set the posted MSI irq_chip's irq_ack() hook to irq_move_irq() instead of
-a dummy/empty callback so that posted MSIs process pending changes to the
-IRQ's SMP affinity.  Failure to honor a pending set-affinity results in
-userspace being unable to change the effective affinity of the IRQ, as
-IRQD_SETAFFINITY_PENDING is never cleared and so irq_set_affinity_locked()
-always defers moving the IRQ.
+of_irq_count() invokes of_irq_parse_one() to count IRQs, and successful
+invocation of the later will get device node @irq.np refcount, but the
+former does not put the refcount before next iteration invocation, hence
+causes device node refcount leakages.
 
-The issue is most easily reproducible by setting /proc/irq/xx/smp_affinity
-multiple times in quick succession, as only the first update is likely to
-be handled in process context.
+Fix by putting @irq.np refcount before the next iteration invocation.
 
-Fixes: ed1e48ea4370 ("iommu/vt-d: Enable posted mode for device MSIs")
-Cc: Robert Lippert <rlippert@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Reported-by: Wentao Yang <wentaoyang@google.com>
+Fixes: 3da5278727a8 ("of/irq: Rework of_irq_count()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20250321194249.1217961-1-seanjc@google.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-5-93e3a2659aa7@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/irq_remapping.c |   29 +++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
+ drivers/of/irq.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/iommu/intel/irq_remapping.c
-+++ b/drivers/iommu/intel/irq_remapping.c
-@@ -1291,43 +1291,44 @@ static struct irq_chip intel_ir_chip = {
- };
+--- a/drivers/of/irq.c
++++ b/drivers/of/irq.c
+@@ -508,8 +508,10 @@ int of_irq_count(struct device_node *dev
+ 	struct of_phandle_args irq;
+ 	int nr = 0;
  
- /*
-- * With posted MSIs, all vectors are multiplexed into a single notification
-- * vector. Devices MSIs are then dispatched in a demux loop where
-- * EOIs can be coalesced as well.
-+ * With posted MSIs, the MSI vectors are multiplexed into a single notification
-+ * vector, and only the notification vector is sent to the APIC IRR.  Device
-+ * MSIs are then dispatched in a demux loop that harvests the MSIs from the
-+ * CPU's Posted Interrupt Request bitmap.  I.e. Posted MSIs never get sent to
-+ * the APIC IRR, and thus do not need an EOI.  The notification handler instead
-+ * performs a single EOI after processing the PIR.
-  *
-- * "INTEL-IR-POST" IRQ chip does not do EOI on ACK, thus the dummy irq_ack()
-- * function. Instead EOI is performed by the posted interrupt notification
-- * handler.
-+ * Note!  Pending SMP/CPU affinity changes, which are per MSI, must still be
-+ * honored, only the APIC EOI is omitted.
-  *
-  * For the example below, 3 MSIs are coalesced into one CPU notification. Only
-- * one apic_eoi() is needed.
-+ * one apic_eoi() is needed, but each MSI needs to process pending changes to
-+ * its CPU affinity.
-  *
-  * __sysvec_posted_msi_notification()
-  *	irq_enter();
-  *		handle_edge_irq()
-  *			irq_chip_ack_parent()
-- *				dummy(); // No EOI
-+ *				irq_move_irq(); // No EOI
-  *			handle_irq_event()
-  *				driver_handler()
-  *		handle_edge_irq()
-  *			irq_chip_ack_parent()
-- *				dummy(); // No EOI
-+ *				irq_move_irq(); // No EOI
-  *			handle_irq_event()
-  *				driver_handler()
-  *		handle_edge_irq()
-  *			irq_chip_ack_parent()
-- *				dummy(); // No EOI
-+ *				irq_move_irq(); // No EOI
-  *			handle_irq_event()
-  *				driver_handler()
-  *	apic_eoi()
-  *	irq_exit()
-+ *
-  */
--
--static void dummy_ack(struct irq_data *d) { }
--
- static struct irq_chip intel_ir_chip_post_msi = {
- 	.name			= "INTEL-IR-POST",
--	.irq_ack		= dummy_ack,
-+	.irq_ack		= irq_move_irq,
- 	.irq_set_affinity	= intel_ir_set_affinity,
- 	.irq_compose_msi_msg	= intel_ir_compose_msi_msg,
- 	.irq_set_vcpu_affinity	= intel_ir_set_vcpu_affinity,
+-	while (of_irq_parse_one(dev, nr, &irq) == 0)
++	while (of_irq_parse_one(dev, nr, &irq) == 0) {
++		of_node_put(irq.np);
+ 		nr++;
++	}
+ 
+ 	return nr;
+ }
 
 
 
