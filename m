@@ -1,79 +1,106 @@
-Return-Path: <stable+bounces-133202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D6F6A91FEF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 16:38:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27573A92018
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 16:47:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FA54160DE3
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 14:38:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 544743BBE2C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 14:47:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04632252288;
-	Thu, 17 Apr 2025 14:37:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="BG7gUTR0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D751C2517A4;
+	Thu, 17 Apr 2025 14:47:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1A9325178D;
-	Thu, 17 Apr 2025 14:37:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744900669; cv=none; b=Atn+xEAQsejJ08Q2OHRjvsMXmcK0uB3sBMRl//HUSUtiVEEK0bIa9QZuQ2DBfotOG74eRebE0sw6449y5DQXt6d2eHJarMUuFDRdyJzo3p0BL3f15d8fXdr5841bPFnAmG/b9+iYE1HCkXsDxD1P1dYq2T3hhFuAgn43PbVAH3Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744900669; c=relaxed/simple;
-	bh=TUnWqrGCNuu0kp3HQLe+J7RkhciGbYiemq03Z4bFMzA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cpiK1nzhnivu5QLKa9Izz9bcThm5GnT0rMw5vTdSK5+P/ZHn/nYDb7rtjW5Shd3ozZeRG51yUi9v3jxTYx79gIEq0F3qiYjrpjFYp2Cl0xv5mTJ7KJD7Nmu1c+Cb6sog2W+O6TlTf0wj0L/wOQz9chkKfjllVmAgQjyZ/+1kLfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=BG7gUTR0; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Received: from 8bytes.org (p4ffe03ae.dip0.t-ipconnect.de [79.254.3.174])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id E58A648667;
-	Thu, 17 Apr 2025 16:37:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1744900667;
-	bh=TUnWqrGCNuu0kp3HQLe+J7RkhciGbYiemq03Z4bFMzA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BG7gUTR09SCxCajindITMjvEuNZ4CXxJdHqSfSMCjxaN/FQm0HgQKq1r+H7qcg9Se
-	 kzYfWcW7QkjpgTF0Cq1lYxy0V1BxzDQosNFwQ19E3SD/eTOHH0a+sOOnvlHpdyU+nM
-	 bfu1bBgsBiTmQPOjsb/rpRiwz7ywlCo2SaSCa4X2j7Qoh4+Djy/ek8VR+ruUThlM8B
-	 WFOypkOAuRdtwi+BVM3KTjIviNwcFvpDFXh7iLUFan7p/y0+kjpm3M4y4YC3qdklaV
-	 BW6wp5kAnSRM7gcEJ+48J3GUWS2SmMZ8q2o35dTTALhJD1k92IWbUX5cFk+fXxNN1F
-	 hdgAREQj1RGZA==
-Date: Thu, 17 Apr 2025 16:37:45 +0200
-From: Joerg Roedel <joro@8bytes.org>
-To: Pavel Paklov <Pavel.Paklov@cyberprotect.ru>
-Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Wan Zongshun <Vincent.Wan@amd.com>, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] iommu/amd: Fix potential buffer overflow in
- parse_ivrs_acpihid
-Message-ID: <aAESOQ5xlTZewgo5@8bytes.org>
-References: <20250325092259.392844-1-Pavel.Paklov@cyberprotect.ru>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49BC5251786
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 14:47:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744901230; cv=none; b=YPugVgTYXtfITjEYrDu3NwF6liVjeJGnkrrCkAKu1Xv5iqXVnZcGpT1zcJn+gbHERyzMyZAOgK+NSvK7SS4uMXm3vTkDABr0kKEcSZcuRiKbdrUmhz70JraC5fWf8vtQtAPZjaqnezy+LtWOhWEoCITJJ/Jup71w6koPrOV3O64=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744901230; c=relaxed/simple;
+	bh=4JCtk5cnw1LGOxz4JpBhwU49li4nzsGlhAMFrf1ax/A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=rmDmcP19O5rxfD2FPQSHr3ShH36525w8sCcaD5K2QfcpZWxKkjsOnfEJUE9sCUUnWA7r/kxnotofM3bcdo1ZdOS1Jim6HkQ/RJ3aTP+G8w6I9ZJVnbrXO0wr6H5Q8B0AZ7T2okJuMeTHO8596TmKnBpUJ2EjfrAcXzVCPYG4ESI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4ZdggB4X4nznfbn;
+	Thu, 17 Apr 2025 22:45:42 +0800 (CST)
+Received: from kwepemd200024.china.huawei.com (unknown [7.221.188.85])
+	by mail.maildlp.com (Postfix) with ESMTPS id C3F57180468;
+	Thu, 17 Apr 2025 22:47:04 +0800 (CST)
+Received: from [10.67.120.171] (10.67.120.171) by
+ kwepemd200024.china.huawei.com (7.221.188.85) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Thu, 17 Apr 2025 22:47:04 +0800
+Message-ID: <b74de255-9550-484b-9e1a-7adc23f77e7e@huawei.com>
+Date: Thu, 17 Apr 2025 22:47:03 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250325092259.392844-1-Pavel.Paklov@cyberprotect.ru>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Question about back-porting '8be091338971 crypto:
+ hisilicon/debugfs - Fix debugfs uninit process issue'
+To: Cliff Liu <donghua.liu@windriver.com>
+CC: <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+	<stable@vger.kernel.org>
+References: <767571bc-1a59-4f7c-a9c7-fb23b79303a9@windriver.com>
+ <4725f8e8-7f46-48f6-9869-8bf16eca6f1a@windriver.com>
+From: huangchenghai <huangchenghai2@huawei.com>
+In-Reply-To: <4725f8e8-7f46-48f6-9869-8bf16eca6f1a@windriver.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemd200024.china.huawei.com (7.221.188.85)
 
-On Tue, Mar 25, 2025 at 09:22:44AM +0000, Pavel Paklov wrote:
-> Fixes: ca3bf5d47cec ("iommu/amd: Introduces ivrs_acpihid kernel parameter")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Pavel Paklov <Pavel.Paklov@cyberprotect.ru>
-> ---
->  drivers/iommu/amd/init.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
+Hello，
 
-Applied for -rc, thanks.
+
+I'm not sure if the 5.10 branch has this problem, I remember the debugfs 
+function was not implemented in 5.10.
+
+I will take a check tomorrow.
+
+
+Thanks,
+
+ChengHai
+
+
+在 2025/4/17 14:51, Cliff Liu 写道:
+> Hi,
+>
+> I think this patch is not applicable for 5.15 and 5.10.
+> Could you give me any opinions?
+>
+> Any helps from maintainers are very appreciated.
+>
+> Thanks,
+>
+>   Cliff
+>
+> On 2025/4/8 15:45, Cliff Liu wrote:
+>> Hi Chenghai,
+>>
+>> I am trying to back-port commit  8be091338971 ("crypto: 
+>> hisilicon/debugfs - Fix debugfs uninit process issue") to 5.15.y and 
+>> 5.10.y.  After reviewed the patch and code context, I found there is 
+>> no "drivers/crypto/hisilicon/debugfs.c" on both 5.15 and 5.10. So I 
+>> think the fix is not suitable for 5.15 and 5.10.
+>>
+>> What do you think? Your opinion is very important to me.
+>>
+>> Thanks,
+>>
+>>  Cliff
+>>
 
