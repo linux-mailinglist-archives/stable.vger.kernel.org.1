@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-134315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 109BEA92AA7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:53:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E003A92643
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:11:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C0E48E700B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:50:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 218464A0568
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C00625F99C;
-	Thu, 17 Apr 2025 18:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C986E255E2B;
+	Thu, 17 Apr 2025 18:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dGhXQHEQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vH4+OJu+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382CA25F985;
-	Thu, 17 Apr 2025 18:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E941CAA7D;
+	Thu, 17 Apr 2025 18:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915758; cv=none; b=E+PScmBzP+lETmQ+vlX3HC2Re6WtT7d909OkhDG3W5ayw8KTO8N+TPkojQLeLR9cb+iiwG0fsthg1Be9CgNfC/iGAJsFuAeWcMszWCpoWiLDSHoutZ/Y3+RUz113ma9Zj2FMx3c4zgyXYE6cIQ35kjL5JltmZArxS8iqf29rVvM=
+	t=1744913478; cv=none; b=X2kreplpnwVtkgOwwvuLtSecpHG8wx/ctNXJRER4h407w5q5dneTpln4hgzx44tQFV4+NVe0RPEC5VN78mptSsfTBYNtKFBNtyfZLW1pZpoGWpnPAA+cBm+iI2GIDe0ELioV5xd4RZtqW282mqcY4WDI6PBCtN6qnayt3uTzsok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915758; c=relaxed/simple;
-	bh=PQoWSHkiOWjA89c1ocSf/VuZSZtt/16QCXQ7Rl5XDus=;
+	s=arc-20240116; t=1744913478; c=relaxed/simple;
+	bh=Oa6SPn2DzxjAJV9LPLaa6Yqokh71tlr+B8ARattUpkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bq9LFTXYYeSwyg7sk9yx/0BStwa+uAXyyNQ9GlFSSjR1TiuhGyViX/QzteCqteqYDTo1OQYzBdQ3B1cwyUZ6SVqJcB8Qgw/s43Rldir2oJI2WMh1H/+GHlBCu04OQqBZuBIEjnzAg4ImGbIPLPNRaYpwPrCWlCvVTPyRG8m4fJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dGhXQHEQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B72AFC4CEEA;
-	Thu, 17 Apr 2025 18:49:17 +0000 (UTC)
+	 MIME-Version; b=t8UTSY6AIbg4pZyigkezfrB5jAsJMapNuBzf7kHpcjPqBGoVjQa0W7HbI1eHINvgidjD1Dnj5AL4gtNfBnjp+e/sf6D4GeQhyNKQF4kTvNl0RcqIrL5j4AP+6n6UgLQQNudNPdbu4OmRYZyOdQOEyGeJ1BlMksVboJdCNxiAuvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vH4+OJu+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16248C4CEE4;
+	Thu, 17 Apr 2025 18:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915758;
-	bh=PQoWSHkiOWjA89c1ocSf/VuZSZtt/16QCXQ7Rl5XDus=;
+	s=korg; t=1744913478;
+	bh=Oa6SPn2DzxjAJV9LPLaa6Yqokh71tlr+B8ARattUpkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dGhXQHEQPQQ3zEc8oq3gZIdIfMMYJJTHLe//h0LJRLeZgc3MoGKsF8rTWxMWyjhJA
-	 dS/d+kXa0F9KJML0l1xeuxf4nhyECuVx6wdUKMPCU3cm11ChaCU3QcJiu8IVb3OwZC
-	 UBwhlO9s0w5173MLhLsGEpyPNkCgBFA0HQ1Y1K2k=
+	b=vH4+OJu+D5Y3O6tuA258PXnenBgqSzs5Z8tdpD5BDN6QlPkay1WMoKlQGO5VH44Q5
+	 GkbfJr8He4zfSlv+JoofR/oZ+WbcWv+PDu3SQskDUpGMr3D4EIxC5o0KVZTLaANt5V
+	 cPfBtOvIUSUrk71nvTqjue3q6aTmRAtPg62OZRwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jackson.lee" <jackson.lee@chipsnmedia.com>,
-	Nas Chung <nas.chung@chipsnmedia.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 231/393] media: chips-media: wave5: Fix a hang after seeking
+	Robert Lippert <rlippert@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Wentao Yang <wentaoyang@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 6.14 352/449] iommu/vt-d: Wire up irq_ack() to irq_move_irq() for posted MSIs
 Date: Thu, 17 Apr 2025 19:50:40 +0200
-Message-ID: <20250417175116.879439444@linuxfoundation.org>
+Message-ID: <20250417175132.392035605@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +65,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jackson.lee <jackson.lee@chipsnmedia.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit a2c75e964e51b096e9fe6adfa3eaed53594a668b upstream.
+commit 548183ea388c12b6d76d6982f3d72df3887af0da upstream.
 
-While seeking, the driver calls the flush command. Before the flush
-command is sent to the VPU, the driver should handle the display buffer
-flags and should get all decoded information from the VPU if the VCORE
-is running.
+Set the posted MSI irq_chip's irq_ack() hook to irq_move_irq() instead of
+a dummy/empty callback so that posted MSIs process pending changes to the
+IRQ's SMP affinity.  Failure to honor a pending set-affinity results in
+userspace being unable to change the effective affinity of the IRQ, as
+IRQD_SETAFFINITY_PENDING is never cleared and so irq_set_affinity_locked()
+always defers moving the IRQ.
 
-Fixes: 9707a6254a8a ("media: chips-media: wave5: Add the v4l2 layer")
+The issue is most easily reproducible by setting /proc/irq/xx/smp_affinity
+multiple times in quick succession, as only the first update is likely to
+be handled in process context.
+
+Fixes: ed1e48ea4370 ("iommu/vt-d: Enable posted mode for device MSIs")
+Cc: Robert Lippert <rlippert@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Reported-by: Wentao Yang <wentaoyang@google.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Jackson.lee <jackson.lee@chipsnmedia.com>
-Signed-off-by: Nas Chung <nas.chung@chipsnmedia.com>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20250321194249.1217961-1-seanjc@google.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c |   17 ++++++++++++++-
- drivers/media/platform/chips-media/wave5/wave5-vpuapi.c  |   10 ++++++++
- 2 files changed, 26 insertions(+), 1 deletion(-)
+ drivers/iommu/intel/irq_remapping.c |   29 +++++++++++++++--------------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
 
---- a/drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c
-+++ b/drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c
-@@ -1446,6 +1446,16 @@ static int streamoff_output(struct vb2_q
- 	struct vb2_v4l2_buffer *buf;
- 	int ret;
- 	dma_addr_t new_rd_ptr;
-+	struct dec_output_info dec_info;
-+	unsigned int i;
-+
-+	for (i = 0; i < v4l2_m2m_num_dst_bufs_ready(m2m_ctx); i++) {
-+		ret = wave5_vpu_dec_set_disp_flag(inst, i);
-+		if (ret)
-+			dev_dbg(inst->dev->dev,
-+				"%s: Setting display flag of buf index: %u, fail: %d\n",
-+				__func__, i, ret);
-+	}
+--- a/drivers/iommu/intel/irq_remapping.c
++++ b/drivers/iommu/intel/irq_remapping.c
+@@ -1287,43 +1287,44 @@ static struct irq_chip intel_ir_chip = {
+ };
  
- 	while ((buf = v4l2_m2m_src_buf_remove(m2m_ctx))) {
- 		dev_dbg(inst->dev->dev, "%s: (Multiplanar) buf type %4u | index %4u\n",
-@@ -1453,6 +1463,11 @@ static int streamoff_output(struct vb2_q
- 		v4l2_m2m_buf_done(buf, VB2_BUF_STATE_ERROR);
- 	}
- 
-+	while (wave5_vpu_dec_get_output_info(inst, &dec_info) == 0) {
-+		if (dec_info.index_frame_display >= 0)
-+			wave5_vpu_dec_set_disp_flag(inst, dec_info.index_frame_display);
-+	}
-+
- 	ret = wave5_vpu_flush_instance(inst);
- 	if (ret)
- 		return ret;
-@@ -1535,7 +1550,7 @@ static void wave5_vpu_dec_stop_streaming
- 			break;
- 
- 		if (wave5_vpu_dec_get_output_info(inst, &dec_output_info))
--			dev_dbg(inst->dev->dev, "Getting decoding results from fw, fail\n");
-+			dev_dbg(inst->dev->dev, "there is no output info\n");
- 	}
- 
- 	v4l2_m2m_update_stop_streaming_state(m2m_ctx, q);
---- a/drivers/media/platform/chips-media/wave5/wave5-vpuapi.c
-+++ b/drivers/media/platform/chips-media/wave5/wave5-vpuapi.c
-@@ -73,6 +73,16 @@ int wave5_vpu_flush_instance(struct vpu_
- 				 inst->type == VPU_INST_TYPE_DEC ? "DECODER" : "ENCODER", inst->id);
- 			mutex_unlock(&inst->dev->hw_lock);
- 			return -ETIMEDOUT;
-+		} else if (ret == -EBUSY) {
-+			struct dec_output_info dec_info;
-+
-+			mutex_unlock(&inst->dev->hw_lock);
-+			wave5_vpu_dec_get_output_info(inst, &dec_info);
-+			ret = mutex_lock_interruptible(&inst->dev->hw_lock);
-+			if (ret)
-+				return ret;
-+			if (dec_info.index_frame_display > 0)
-+				wave5_vpu_dec_set_disp_flag(inst, dec_info.index_frame_display);
- 		}
- 	} while (ret != 0);
- 	mutex_unlock(&inst->dev->hw_lock);
+ /*
+- * With posted MSIs, all vectors are multiplexed into a single notification
+- * vector. Devices MSIs are then dispatched in a demux loop where
+- * EOIs can be coalesced as well.
++ * With posted MSIs, the MSI vectors are multiplexed into a single notification
++ * vector, and only the notification vector is sent to the APIC IRR.  Device
++ * MSIs are then dispatched in a demux loop that harvests the MSIs from the
++ * CPU's Posted Interrupt Request bitmap.  I.e. Posted MSIs never get sent to
++ * the APIC IRR, and thus do not need an EOI.  The notification handler instead
++ * performs a single EOI after processing the PIR.
+  *
+- * "INTEL-IR-POST" IRQ chip does not do EOI on ACK, thus the dummy irq_ack()
+- * function. Instead EOI is performed by the posted interrupt notification
+- * handler.
++ * Note!  Pending SMP/CPU affinity changes, which are per MSI, must still be
++ * honored, only the APIC EOI is omitted.
+  *
+  * For the example below, 3 MSIs are coalesced into one CPU notification. Only
+- * one apic_eoi() is needed.
++ * one apic_eoi() is needed, but each MSI needs to process pending changes to
++ * its CPU affinity.
+  *
+  * __sysvec_posted_msi_notification()
+  *	irq_enter();
+  *		handle_edge_irq()
+  *			irq_chip_ack_parent()
+- *				dummy(); // No EOI
++ *				irq_move_irq(); // No EOI
+  *			handle_irq_event()
+  *				driver_handler()
+  *		handle_edge_irq()
+  *			irq_chip_ack_parent()
+- *				dummy(); // No EOI
++ *				irq_move_irq(); // No EOI
+  *			handle_irq_event()
+  *				driver_handler()
+  *		handle_edge_irq()
+  *			irq_chip_ack_parent()
+- *				dummy(); // No EOI
++ *				irq_move_irq(); // No EOI
+  *			handle_irq_event()
+  *				driver_handler()
+  *	apic_eoi()
+  *	irq_exit()
++ *
+  */
+-
+-static void dummy_ack(struct irq_data *d) { }
+-
+ static struct irq_chip intel_ir_chip_post_msi = {
+ 	.name			= "INTEL-IR-POST",
+-	.irq_ack		= dummy_ack,
++	.irq_ack		= irq_move_irq,
+ 	.irq_set_affinity	= intel_ir_set_affinity,
+ 	.irq_compose_msi_msg	= intel_ir_compose_msi_msg,
+ 	.irq_set_vcpu_affinity	= intel_ir_set_vcpu_affinity,
 
 
 
