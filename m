@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-133963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03131A928B9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:37:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08DAAA92A8A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:52:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFBAA17D0C8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7081D4A6690
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2DB26156F;
-	Thu, 17 Apr 2025 18:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBAA8257AC3;
+	Thu, 17 Apr 2025 18:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2GN3gEoq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PolqTj/X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4C0261388;
-	Thu, 17 Apr 2025 18:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63DA25178E;
+	Thu, 17 Apr 2025 18:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914676; cv=none; b=VMpwwTgNLnTt5dibvmf3mvWdG/JkoHlxLQwn1iA8xBPqxWn1M026+yNGxmEE+kDyS8dVsTIwgkv1/EjtvlGng27EGH0TXiQtqBvo2i/xY4wITxPk2dqWjH/Nys/WWr03XI/Wip9BuMKpp8KZxUDQLlkbRDCuW1daY9peqqRR92Y=
+	t=1744915799; cv=none; b=lvyLsN8pq0ZumuoCHSXRLDbIOWwosq98QfJRZGFikMKGq7eeo8pd73ntlmDdTTCedeW/rFLtoUy+M2hgE/SmmQxmKX9fIASd50k2rLpQx+dec1mNCTfKB5j8DNhY7WRD+nOAq6G/CEmEaUShxiJPyK6n1wetLTmYVZhyqb2w3q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914676; c=relaxed/simple;
-	bh=wVTaUveyjrJA2T6MYZd0ScTdNBiOiTqJAlaHax9gYkY=;
+	s=arc-20240116; t=1744915799; c=relaxed/simple;
+	bh=jSGbmUZ1BxqgCsNx4LP9qbJNRWpZPqh+DtSeXeeeNoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kknDXByUPDbe7MYeekjMIE57HZHhKhlYFsdOA34IpX/6C8dWZUUU6oU4+X6li5Dmk2IZqUNxE25aAel9Bo/F7PhyRsFIJO9vp+NozreTkvG2bRSLlm6ZunlZ3n9pDiODULBfM2EScQPG1eKxjBoQjAqAdLPdUKCeCCd+Q8wrub0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2GN3gEoq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B821C4CEE4;
-	Thu, 17 Apr 2025 18:31:15 +0000 (UTC)
+	 MIME-Version; b=HBVkI/ARJ2CI7XHaoLwz0fvhFjmuMfC1/B5+9KsVq8TJmTUgYCRr+JXLOk41lFwqe9YYLLOD2CCjXbwRt3LwFXmo/PHJSoYLBl7SJIOjjVZHNBNWlsNxATqeBE6c5jJYItWyp/iBoLfUvn8DZM9DeE6RqKcGWqJkMORW60G0+Sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PolqTj/X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA1B9C4CEE4;
+	Thu, 17 Apr 2025 18:49:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914676;
-	bh=wVTaUveyjrJA2T6MYZd0ScTdNBiOiTqJAlaHax9gYkY=;
+	s=korg; t=1744915798;
+	bh=jSGbmUZ1BxqgCsNx4LP9qbJNRWpZPqh+DtSeXeeeNoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2GN3gEoqS2ue/nrnC5CXj40DQZzwl+n4Hp4PkvBhscSEu+t82Tkcu0Mfm1H9J9Je0
-	 +YtnRCE1FxC9h2BQOwx1ZUi+yDBNab3MujxB033D12vNx529ti37kryGUXfYR0YOe9
-	 O6koKgFgXhx1O7iiZXOA8l4M3kzJCMMr7SRjeWnM=
+	b=PolqTj/XbyikUGybsMBYxzmJpT521L/aw41XDTCyEFc3FPdydtS1an8WIc49bwC0H
+	 yVKxkvzsLivufKTEdRwCffM6Z5Wm/BwCcJ/jTycxpT9XNsiILYsxyOvt8g/95oWYgV
+	 YX+kK93mqpCoYG9xKyeSDnHwhXEhScS2VMN1y0fE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Sebastian Reichel <sre@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.13 294/414] leds: rgb: leds-qcom-lpg: Fix calculation of best period Hi-Res PWMs
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.12 243/393] wifi: mt76: mt7925: fix country count limitation for CLC
 Date: Thu, 17 Apr 2025 19:50:52 +0200
-Message-ID: <20250417175123.255877305@linuxfoundation.org>
+Message-ID: <20250417175117.369304183@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-commit 2528eec7da0ec58fcae6d12cfa79a622c933d86b upstream.
+commit 6458d760a0c0afd2fda11e83ed3e1125a252432f upstream.
 
-When determining the actual best period by looping through all
-possible PWM configs, the resolution currently used is based on
-bit shift value which is off-by-one above the possible maximum
-PWM value allowed.
+Due to the increase in the number of power tables for 6Ghz on CLC,
+the variable nr_country is no longer sufficient to represent the
+total quantity. Therefore, we have switched to calculating the
+length of clc buf to obtain the correct power table.
 
-So subtract one from the resolution before determining the best
-period so that the maximum duty cycle requested by the PWM user
-won't result in a value above the maximum allowed by the selected
-resolution.
-
-Cc: stable@vger.kernel.org    # 6.4
-Fixes: b00d2ed37617 ("leds: rgb: leds-qcom-lpg: Add support for high resolution PWM")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Sebastian Reichel <sre@kernel.org>
-Link: https://lore.kernel.org/r/20250305-leds-qcom-lpg-fix-max-pwm-on-hi-res-v4-3-bfe124a53a9f@linaro.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20250116062131.3860198-1-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/rgb/leds-qcom-lpg.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/leds/rgb/leds-qcom-lpg.c
-+++ b/drivers/leds/rgb/leds-qcom-lpg.c
-@@ -461,7 +461,7 @@ static int lpg_calc_freq(struct lpg_chan
- 		max_res = LPG_RESOLUTION_9BIT;
- 	}
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -3119,13 +3119,14 @@ __mt7925_mcu_set_clc(struct mt792x_dev *
+ 		.env = env_cap,
+ 	};
+ 	int ret, valid_cnt = 0;
+-	u8 i, *pos;
++	u8 *pos, *last_pos;
  
--	min_period = div64_u64((u64)NSEC_PER_SEC * (1 << pwm_resolution_arr[0]),
-+	min_period = div64_u64((u64)NSEC_PER_SEC * ((1 << pwm_resolution_arr[0]) - 1),
- 			       clk_rate_arr[clk_len - 1]);
- 	if (period <= min_period)
- 		return -EINVAL;
-@@ -482,7 +482,7 @@ static int lpg_calc_freq(struct lpg_chan
- 	 */
+ 	if (!clc)
+ 		return 0;
  
- 	for (i = 0; i < pwm_resolution_count; i++) {
--		resolution = 1 << pwm_resolution_arr[i];
-+		resolution = (1 << pwm_resolution_arr[i]) - 1;
- 		for (clk_sel = 1; clk_sel < clk_len; clk_sel++) {
- 			u64 numerator = period * clk_rate_arr[clk_sel];
+ 	pos = clc->data + sizeof(*seg) * clc->nr_seg;
+-	for (i = 0; i < clc->nr_country; i++) {
++	last_pos = clc->data + le32_to_cpu(*(__le32 *)(clc->data + 4));
++	while (pos < last_pos) {
+ 		struct mt7925_clc_rule *rule = (struct mt7925_clc_rule *)pos;
  
-@@ -1291,7 +1291,7 @@ static int lpg_pwm_get_state(struct pwm_
- 		if (ret)
- 			return ret;
- 
--		state->period = DIV_ROUND_UP_ULL((u64)NSEC_PER_SEC * (1 << resolution) *
-+		state->period = DIV_ROUND_UP_ULL((u64)NSEC_PER_SEC * ((1 << resolution) - 1) *
- 						 pre_div * (1 << m), refclk);
- 		state->duty_cycle = DIV_ROUND_UP_ULL((u64)NSEC_PER_SEC * pwm_value * pre_div * (1 << m), refclk);
- 	} else {
+ 		pos += sizeof(*rule);
 
 
 
