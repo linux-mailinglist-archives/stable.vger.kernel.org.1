@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-133443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ACDDA925BC
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:07:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACC2CA927D4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:29:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C83653AF3C0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 640C53AF3B7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75FC25745A;
-	Thu, 17 Apr 2025 18:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC34325EFAE;
+	Thu, 17 Apr 2025 18:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uu4gboN6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVxR5jWu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B712571A0;
-	Thu, 17 Apr 2025 18:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88DED2676EB;
+	Thu, 17 Apr 2025 18:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913092; cv=none; b=RYd7UX3SCVlwM140kgOpsCY1OR++hMKa1qAlK7GdYOU+FPlTP3O54VK3iG4N58hwDvVth4p5jbp3/pOoi1xJycigZ5LcF/3EzFyaJIwmEg3LT5tG4PSWNQrWTZFFXUWSrKQM4vToxj28gsPVhDcaXW+49C5XvfZmKt6tXja9if4=
+	t=1744914161; cv=none; b=opwr1nAMa+Bhv00cGockzYww6SyKZ5fkaC2nzFOsetMJUYWvIiYY140vj8dmFPhX5o+jvk2GeutFgyy8cA4OiOVcTo0YAYNDIHL+9QbM5Qv7fUexPoZMGgRbezTMjfwtNHr2qQSGabeXTl9Jn+2wKH7iumIk4EgM1XK3+fsrXHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913092; c=relaxed/simple;
-	bh=zILOFMvdRgXPPB+TFI0v+kWMEN/PP+NLCzEfhASbdWE=;
+	s=arc-20240116; t=1744914161; c=relaxed/simple;
+	bh=L6hGGe5AmaTYLBZLxm8v0L0JiAlBJ8ciuJhqXjEVcOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eY3eOnosokHjfX8lwj1WfK8D5jnmei97bpQRviSp4tWdJevvvrijIgLrysUqgPmr8TP2GMXNat8zA8+xxHteph6DWx6b45Apbp3nedep9BPssePFp/GhyBPCe5hx3aOg3PQzhYAqRzWMTOkJFS0DlzqVuM71jIfDavgaTFVWLXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uu4gboN6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 076DCC4CEE4;
-	Thu, 17 Apr 2025 18:04:51 +0000 (UTC)
+	 MIME-Version; b=Yo2vIYMyADKADwSJUh2+6rmsZnABZ15ylLGBAjNdFkAJNgYuL9sEed7QSqFWUM0Yfot73u8kS2YyCZguzrSI9qoK6IuJibElWKeNA/WZL3ZOC88pJfO4EDtqMt9WwwG8Eg20te9wPWm6/A+/iotKsPwp0h4QgGgqUPYfE25s7Lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVxR5jWu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11290C4CEE4;
+	Thu, 17 Apr 2025 18:22:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913092;
-	bh=zILOFMvdRgXPPB+TFI0v+kWMEN/PP+NLCzEfhASbdWE=;
+	s=korg; t=1744914161;
+	bh=L6hGGe5AmaTYLBZLxm8v0L0JiAlBJ8ciuJhqXjEVcOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uu4gboN6sCdItN9OjQeATcBZCZ66niynLkE6ZoWW9jD4Cr2Kg+X03zu5t1EsleUVX
-	 toEmdJqEWErAt73EsjNn4l4zvZ9ZxlkBkeoxayTacAx0QUgHsmmelxhdsOgVRjS5yc
-	 L1FcQqYISwHfMQXkm8hFlfbSz9baPEp5WjLLAwkA=
+	b=oVxR5jWuux45PcpR2E9Crsn02SIcfK7N3iYVRpK36NWYKBza9O9zPxh1+cPwpLLWQ
+	 vpKyQRMU0XjS5gGzdHlYZ+SeL3Q5yq2wHqKd2wVs2Ur62OODSkjiW6+mk4jNRKA2yG
+	 LyEWpIePxp+3/z/vVIbtNi0NNhQIVbsFpkjsWRTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jules Noirant <jules.noirant@orange.fr>,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Pedro Nishiyama <nishiyama.pedro@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 197/449] HID: pidff: Stop all effects before enabling actuators
+Subject: [PATCH 6.13 127/414] Bluetooth: Add quirk for broken READ_VOICE_SETTING
 Date: Thu, 17 Apr 2025 19:48:05 +0200
-Message-ID: <20250417175125.905571035@linuxfoundation.org>
+Message-ID: <20250417175116.540544986@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +60,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Pedro Nishiyama <nishiyama.pedro@gmail.com>
 
-[ Upstream commit ce52c0c939fcb568d1abe454821d5623de38b424 ]
+[ Upstream commit ff26b2dd6568392f60fa67a4e58279938025c3af ]
 
-Some PID compliant devices automatically play effects after boot (i.e.
-autocenter spring) that prevent the rendering of other effects since
-it is done outside the kernel driver.
+Some fake controllers cannot be initialized because they return a smaller
+report than expected for READ_VOICE_SETTING.
 
-This makes sure all the effects currently played are stopped after
-resetting the device.
-It brings compatibility to the Brunner CLS-P joystick and others
-
-Reported-by: Jules Noirant <jules.noirant@orange.fr>
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Pedro Nishiyama <nishiyama.pedro@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ include/net/bluetooth/hci.h      | 8 ++++++++
+ include/net/bluetooth/hci_core.h | 4 ++++
+ net/bluetooth/hci_sync.c         | 3 +++
+ 3 files changed, 15 insertions(+)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index 6b55345ce75ac..635596a57c75d 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -109,8 +109,9 @@ static const u8 pidff_pool[] = { 0x80, 0x83, 0xa9 };
- /* Special field key tables used to put special field keys into arrays */
- 
- #define PID_ENABLE_ACTUATORS	0
--#define PID_RESET		1
--static const u8 pidff_device_control[] = { 0x97, 0x9a };
-+#define PID_STOP_ALL_EFFECTS	1
-+#define PID_RESET		2
-+static const u8 pidff_device_control[] = { 0x97, 0x99, 0x9a };
- 
- #define PID_CONSTANT	0
- #define PID_RAMP	1
-@@ -1235,6 +1236,10 @@ static void pidff_reset(struct pidff_device *pidff)
- 	hid_hw_request(hid, pidff->reports[PID_DEVICE_CONTROL], HID_REQ_SET_REPORT);
- 	hid_hw_wait(hid);
- 
-+	pidff->device_control->value[0] = pidff->control_id[PID_STOP_ALL_EFFECTS];
-+	hid_hw_request(hid, pidff->reports[PID_DEVICE_CONTROL], HID_REQ_SET_REPORT);
-+	hid_hw_wait(hid);
+diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
+index f2f69eb4295e1..be2aad0492b0d 100644
+--- a/include/net/bluetooth/hci.h
++++ b/include/net/bluetooth/hci.h
+@@ -354,6 +354,14 @@ enum {
+ 	 * during the hdev->setup vendor callback.
+ 	 */
+ 	HCI_QUIRK_FIXUP_LE_EXT_ADV_REPORT_PHY,
 +
- 	pidff->device_control->value[0] =
- 		pidff->control_id[PID_ENABLE_ACTUATORS];
- 	hid_hw_request(hid, pidff->reports[PID_DEVICE_CONTROL], HID_REQ_SET_REPORT);
++	/* When this quirk is set, the HCI_OP_READ_VOICE_SETTING command is
++	 * skipped. This is required for a subset of the CSR controller clones
++	 * which erroneously claim to support it.
++	 *
++	 * This quirk must be set before hci_register_dev is called.
++	 */
++	HCI_QUIRK_BROKEN_READ_VOICE_SETTING,
+ };
+ 
+ /* HCI device flags */
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index ea798f07c5a2d..71921367f0f06 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -1931,6 +1931,10 @@ void hci_conn_del_sysfs(struct hci_conn *conn);
+ 	((dev)->commands[20] & 0x10 && \
+ 	 !test_bit(HCI_QUIRK_BROKEN_READ_ENC_KEY_SIZE, &hdev->quirks))
+ 
++#define read_voice_setting_capable(dev) \
++	((dev)->commands[9] & 0x04 && \
++	 !test_bit(HCI_QUIRK_BROKEN_READ_VOICE_SETTING, &(dev)->quirks))
++
+ /* Use enhanced synchronous connection if command is supported and its quirk
+  * has not been set.
+  */
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 7b2b04d6b8563..bb455e96a715a 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -3720,6 +3720,9 @@ static int hci_read_local_name_sync(struct hci_dev *hdev)
+ /* Read Voice Setting */
+ static int hci_read_voice_setting_sync(struct hci_dev *hdev)
+ {
++	if (!read_voice_setting_capable(hdev))
++		return 0;
++
+ 	return __hci_cmd_sync_status(hdev, HCI_OP_READ_VOICE_SETTING,
+ 				     0, NULL, HCI_CMD_TIMEOUT);
+ }
 -- 
 2.39.5
 
