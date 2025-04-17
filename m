@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-133888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8D4BA928CD
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:38:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B6FEA92602
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:09:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DA387A716C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:34:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58A8F1B62597
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B652225C6FF;
-	Thu, 17 Apr 2025 18:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF3B253F23;
+	Thu, 17 Apr 2025 18:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w4w9NcfU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f8hDYFWy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731AD25C6F5;
-	Thu, 17 Apr 2025 18:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D183C1E25E1;
+	Thu, 17 Apr 2025 18:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914450; cv=none; b=Eiw1XUbYJ+3333UG8Ts/2StCnhdU5wmmNeENAzHO5rrDHFcHVbCabsLiseFINNg2AVcXoZxLaiZuH5N2G4QY7vmDVlN5AGJSmT+cQMYkf6bH3plgh6uAzN9oh/VFk/cARKd0xgV37jKm2Lor+kShZaAh1D4c9scWzSMdoOmGMw8=
+	t=1744913294; cv=none; b=bcZpaomikBfWopF5RD2ote2ZjuZibuUueAa/x2Kzt0mcv4qs54r7GH3AhHoHFUFeEpTeYrxbr35KluLbvX6XS32IpgMbDS6xzw+1Q/kG1OcublPwLBYT4llOQdfeZbct48DAg7Jzy9IulbDAF9jqSb/VKGIjIvb44mWNRM+02z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914450; c=relaxed/simple;
-	bh=DBGTUn1mGw3v2O3eeLp+CrOPkRDvRbTsyARI9TVbOcs=;
+	s=arc-20240116; t=1744913294; c=relaxed/simple;
+	bh=ivKoTg2jSEt19kWylGaSGpZAdRmrvQsqM+OmCiQA/bk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HQZiUkPec8BVwD6c21VpCLXXPwXjuwWOMv6UApD7q7ckHkDOKoCoGEjGj8yp0mcuW0+yEDrHRyUJWqsxdSkqZaEi12NhpwzzPR54iTpo9jFeIqdQj+j97nmZrcr3cBZ2fjtb1eFZCOgkSrC3nu+Jas37U0oBeUMID+Em5PU9RK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w4w9NcfU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7BB0C4CEE4;
-	Thu, 17 Apr 2025 18:27:29 +0000 (UTC)
+	 MIME-Version; b=ZIldqc5pO3wyiQhok5Z6YANfj7QEeIOqd6p/+jR0GwCQ9mEZbJ05ur7DtXbXFYPePivJsF08lhDxL4aeR3u7E/3xjYf9afrrxJmHpJbA+otprsKwqZGkjqTWHD+KUGwgLXr2jQ5/9OLWalj+iiwwJN/+ZDvsbTcpqX99Rs1amP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f8hDYFWy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55403C4CEE4;
+	Thu, 17 Apr 2025 18:08:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914450;
-	bh=DBGTUn1mGw3v2O3eeLp+CrOPkRDvRbTsyARI9TVbOcs=;
+	s=korg; t=1744913294;
+	bh=ivKoTg2jSEt19kWylGaSGpZAdRmrvQsqM+OmCiQA/bk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w4w9NcfUc9OyFZK28dJURNP8odtLRFqvTQ18AAqZiZM6CSdPHAdKFmhW4Ma3nPJCU
-	 pmofS/vZ6rSUIiKYqWhaSgCrVWUlJCMitXQFO+9ltjwlDGNGOgtRsUN49zXb7cERoV
-	 Q+/mzbwkAvK+DKwwOiwrEdF03tZcdvb6QUYdI0AQ=
+	b=f8hDYFWyunmA0qaVvgA19E1g9z6WJ9JPtrm5XHJYp0Xf8S5DJGxxXiW/x5ugtgVF+
+	 b2WDBSB4iv21JjEV2mAqkpgzzrvm/JacL60DqSlBev6e3m9pEFI+QanS5LOTZjcPgH
+	 0645XV9CO+pmVeH4W9toetepYF7worO7xp8ed9/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Subject: [PATCH 6.13 220/414] accel/ivpu: Fix PM related deadlocks in MS IOCTLs
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.14 290/449] io_uring/net: fix accept multishot handling
 Date: Thu, 17 Apr 2025 19:49:38 +0200
-Message-ID: <20250417175120.280023374@linuxfoundation.org>
+Message-ID: <20250417175129.755538565@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit d893da85e06edf54737bb80648bb58ba8fd56d9f upstream.
+commit f6a89bf5278d6e15016a736db67043560d1b50d5 upstream.
 
-Prevent runtime resume/suspend while MS IOCTLs are in progress.
-Failed suspend will call ivpu_ms_cleanup() that would try to acquire
-file_priv->ms_lock, which is already held by the IOCTLs.
+REQ_F_APOLL_MULTISHOT doesn't guarantee it's executed from the multishot
+context, so a multishot accept may get executed inline, fail
+io_req_post_cqe(), and ask the core code to kill the request with
+-ECANCELED by returning IOU_STOP_MULTISHOT even when a socket has been
+accepted and installed.
 
-Fixes: cdfad4db7756 ("accel/ivpu: Add NPU profiling support")
-Cc: stable@vger.kernel.org # v6.11+
-Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Link: https://lore.kernel.org/r/20250325114306.3740022-3-maciej.falkowski@linux.intel.com
+Cc: stable@vger.kernel.org
+Fixes: 390ed29b5e425 ("io_uring: add IORING_ACCEPT_MULTISHOT for accept")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/51c6deb01feaa78b08565ca8f24843c017f5bc80.1740331076.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accel/ivpu/ivpu_debugfs.c |    4 ++--
- drivers/accel/ivpu/ivpu_ms.c      |   18 ++++++++++++++++++
- 2 files changed, 20 insertions(+), 2 deletions(-)
+ io_uring/net.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/accel/ivpu/ivpu_debugfs.c
-+++ b/drivers/accel/ivpu/ivpu_debugfs.c
-@@ -331,7 +331,7 @@ ivpu_force_recovery_fn(struct file *file
- 		return -EINVAL;
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -1650,6 +1650,8 @@ retry:
+ 	}
  
- 	ret = ivpu_rpm_get(vdev);
--	if (ret)
-+	if (ret < 0)
- 		return ret;
- 
- 	ivpu_pm_trigger_recovery(vdev, "debugfs");
-@@ -382,7 +382,7 @@ static int dct_active_set(void *data, u6
- 		return -EINVAL;
- 
- 	ret = ivpu_rpm_get(vdev);
--	if (ret)
-+	if (ret < 0)
- 		return ret;
- 
- 	if (active_percent)
---- a/drivers/accel/ivpu/ivpu_ms.c
-+++ b/drivers/accel/ivpu/ivpu_ms.c
-@@ -44,6 +44,10 @@ int ivpu_ms_start_ioctl(struct drm_devic
- 	    args->sampling_period_ns < MS_MIN_SAMPLE_PERIOD_NS)
- 		return -EINVAL;
- 
-+	ret = ivpu_rpm_get(vdev);
-+	if (ret < 0)
-+		return ret;
-+
- 	mutex_lock(&file_priv->ms_lock);
- 
- 	if (get_instance_by_mask(file_priv, args->metric_group_mask)) {
-@@ -96,6 +100,8 @@ err_free_ms:
- 	kfree(ms);
- unlock:
- 	mutex_unlock(&file_priv->ms_lock);
-+
-+	ivpu_rpm_put(vdev);
- 	return ret;
- }
- 
-@@ -160,6 +166,10 @@ int ivpu_ms_get_data_ioctl(struct drm_de
- 	if (!args->metric_group_mask)
- 		return -EINVAL;
- 
-+	ret = ivpu_rpm_get(vdev);
-+	if (ret < 0)
-+		return ret;
-+
- 	mutex_lock(&file_priv->ms_lock);
- 
- 	ms = get_instance_by_mask(file_priv, args->metric_group_mask);
-@@ -187,6 +197,7 @@ int ivpu_ms_get_data_ioctl(struct drm_de
- unlock:
- 	mutex_unlock(&file_priv->ms_lock);
- 
-+	ivpu_rpm_put(vdev);
- 	return ret;
- }
- 
-@@ -204,11 +215,17 @@ int ivpu_ms_stop_ioctl(struct drm_device
- {
- 	struct ivpu_file_priv *file_priv = file->driver_priv;
- 	struct drm_ivpu_metric_streamer_stop *args = data;
-+	struct ivpu_device *vdev = file_priv->vdev;
- 	struct ivpu_ms_instance *ms;
-+	int ret;
- 
- 	if (!args->metric_group_mask)
- 		return -EINVAL;
- 
-+	ret = ivpu_rpm_get(vdev);
-+	if (ret < 0)
-+		return ret;
-+
- 	mutex_lock(&file_priv->ms_lock);
- 
- 	ms = get_instance_by_mask(file_priv, args->metric_group_mask);
-@@ -217,6 +234,7 @@ int ivpu_ms_stop_ioctl(struct drm_device
- 
- 	mutex_unlock(&file_priv->ms_lock);
- 
-+	ivpu_rpm_put(vdev);
- 	return ms ? 0 : -EINVAL;
+ 	io_req_set_res(req, ret, cflags);
++	if (!(issue_flags & IO_URING_F_MULTISHOT))
++		return IOU_OK;
+ 	return IOU_STOP_MULTISHOT;
  }
  
 
