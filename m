@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-133946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91E00A928A7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB062A92A29
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 081D618938B9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BA491B623BB
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA97253B5E;
-	Thu, 17 Apr 2025 18:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55A31EB1BF;
+	Thu, 17 Apr 2025 18:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnxlv4pV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HsOyzaQh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3851CAA99;
-	Thu, 17 Apr 2025 18:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744FE4502F;
+	Thu, 17 Apr 2025 18:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914625; cv=none; b=NgS18Xv5EPvhy9MUvJueXr/1LK0UVoV3hKO77JvVU0ixrIdcupP8ctN5tN3AX6n8X7E4I5BwHi1UPjMRHatMqpxlLttWGMPgFcGA68bd1WIuKqxGdf7oSTZiDcFQKLnvfyVXLJtu0hcR1d/6Aig/k+IeYfUYfm5+6t1U5J+dKDU=
+	t=1744915649; cv=none; b=dYWvxV+3VUjMtgHtTX/TyxQZzNNrLz2s+qt3pvXU7mDJ9WAqLiQIjE+GokDi7WhMtUP3BIaIMG/mPtudAUtf+SRPfeCYOzvR/Gp4bdSAIk5o+EQvu6qgFCpHX2KXBeVNqe5LNsp5baNgJhUaHyXxyz+ZDCZxfBYThtlMyKWMD7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914625; c=relaxed/simple;
-	bh=qj/Yhj9s3ldFahHaW4GEQEiG33lv0DOWuxJzLCgSWeQ=;
+	s=arc-20240116; t=1744915649; c=relaxed/simple;
+	bh=+wVPD4Uvn8zlGrDGfK6tmOz2ualGtL57fSUD7zUT080=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PeTEHYTcwoF0dhI5kGfubjGXvgoJEsigtmWNgC0t1DhD3FjR3p414soXZ5O+FJLbylyOIc+gz96uEulp/PJW+vsCc+2MH0xRrH61nYhLq5pY3TemvVFG7IV643jiNEaNKgvF7znvICW9NdvsihEAvX86FIa8WVfntPFtbRg4hPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lnxlv4pV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B720C4CEE4;
-	Thu, 17 Apr 2025 18:30:25 +0000 (UTC)
+	 MIME-Version; b=fbmdh2l61eKtA/EOL3835iqHrgPgkz4ER9E2ErVPHNIE+CEV0wfW2u9VP9wdVMiN8UzTD1WHAEr6Cc1mFnz2Ys93wWl19KIX25xRsyi/POvl8Ziq3oDiKeN6okUNd9uoCVD8xF3EZHeISYH7VI5v0oFUSwDIZVdSBm+stOcj+Uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HsOyzaQh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C22C4CEE4;
+	Thu, 17 Apr 2025 18:47:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914625;
-	bh=qj/Yhj9s3ldFahHaW4GEQEiG33lv0DOWuxJzLCgSWeQ=;
+	s=korg; t=1744915649;
+	bh=+wVPD4Uvn8zlGrDGfK6tmOz2ualGtL57fSUD7zUT080=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lnxlv4pVLAH1QzS0qoFR18x86ot9Y5FrldR2If3WaANpLupZiFTCcnfz59TmxMs7k
-	 RiQhds792V39mKn4Z+OmeOgQfpJ69yEszgC20o7uQWw+fpovGAfXfmBgz3jlqXS/3c
-	 ruuTD9JbqbpwTP9jPDGXa0U89k0QwC/DOkdYw/1A=
+	b=HsOyzaQhB4qq0Kdnffl8IbyFymYklpBXS+3sXleJZm2MkJnfI4IvZVI1D/OZWW7Fp
+	 9isNVOHe6rDsZxvj71Z5O4Q+CB/Boog27HFrAItfUapoWPR+9EXxQPrKoJPY6jGOUq
+	 lspuzei8CYIbJOw1KH827sj+Z12TitGoDL1ycWTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.13 247/414] mptcp: sockopt: fix getting IPV6_V6ONLY
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 196/393] media: venus: hfi: add a check to handle OOB in sfr region
 Date: Thu, 17 Apr 2025 19:50:05 +0200
-Message-ID: <20250417175121.357526465@linuxfoundation.org>
+Message-ID: <20250417175115.471619449@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
 
-commit 8c39633759885b6ff85f6d96cf445560e74df5e8 upstream.
+commit f4b211714bcc70effa60c34d9fa613d182e3ef1e upstream.
 
-When adding a socket option support in MPTCP, both the get and set parts
-are supposed to be implemented.
+sfr->buf_size is in shared memory and can be modified by malicious user.
+OOB write is possible when the size is made higher than actual sfr data
+buffer. Cap the size to allocated size for such cases.
 
-IPV6_V6ONLY support for the setsockopt part has been added a while ago,
-but it looks like the get part got forgotten. It should have been
-present as a way to verify a setting has been set as expected, and not
-to act differently from TCP or any other socket types.
-
-Not supporting this getsockopt(IPV6_V6ONLY) blocks some apps which want
-to check the default value, before doing extra actions. On Linux, the
-default value is 0, but this can be changed with the net.ipv6.bindv6only
-sysctl knob. On Windows, it is set to 1 by default. So supporting the
-get part, like for all other socket options, is important.
-
-Everything was in place to expose it, just the last step was missing.
-Only new code is added to cover this specific getsockopt(), that seems
-safe.
-
-Fixes: c9b95a135987 ("mptcp: support IPV6_V6ONLY setsockopt")
 Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/550
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-2-122dbb249db3@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/sockopt.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/media/platform/qcom/venus/hfi_venus.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/net/mptcp/sockopt.c
-+++ b/net/mptcp/sockopt.c
-@@ -1430,6 +1430,20 @@ static int mptcp_getsockopt_v4(struct mp
- 	return -EOPNOTSUPP;
- }
- 
-+static int mptcp_getsockopt_v6(struct mptcp_sock *msk, int optname,
-+			       char __user *optval, int __user *optlen)
-+{
-+	struct sock *sk = (void *)msk;
-+
-+	switch (optname) {
-+	case IPV6_V6ONLY:
-+		return mptcp_put_int_option(msk, optval, optlen,
-+					    sk->sk_ipv6only);
-+	}
-+
-+	return -EOPNOTSUPP;
-+}
-+
- static int mptcp_getsockopt_sol_mptcp(struct mptcp_sock *msk, int optname,
- 				      char __user *optval, int __user *optlen)
+--- a/drivers/media/platform/qcom/venus/hfi_venus.c
++++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+@@ -1035,18 +1035,26 @@ static void venus_sfr_print(struct venus
  {
-@@ -1469,6 +1483,8 @@ int mptcp_getsockopt(struct sock *sk, in
+ 	struct device *dev = hdev->core->dev;
+ 	struct hfi_sfr *sfr = hdev->sfr.kva;
++	u32 size;
+ 	void *p;
  
- 	if (level == SOL_IP)
- 		return mptcp_getsockopt_v4(msk, optname, optval, option);
-+	if (level == SOL_IPV6)
-+		return mptcp_getsockopt_v6(msk, optname, optval, option);
- 	if (level == SOL_TCP)
- 		return mptcp_getsockopt_sol_tcp(msk, optname, optval, option);
- 	if (level == SOL_MPTCP)
+ 	if (!sfr)
+ 		return;
+ 
+-	p = memchr(sfr->data, '\0', sfr->buf_size);
++	size = sfr->buf_size;
++	if (!size)
++		return;
++
++	if (size > ALIGNED_SFR_SIZE)
++		size = ALIGNED_SFR_SIZE;
++
++	p = memchr(sfr->data, '\0', size);
+ 	/*
+ 	 * SFR isn't guaranteed to be NULL terminated since SYS_ERROR indicates
+ 	 * that Venus is in the process of crashing.
+ 	 */
+ 	if (!p)
+-		sfr->data[sfr->buf_size - 1] = '\0';
++		sfr->data[size - 1] = '\0';
+ 
+ 	dev_err_ratelimited(dev, "SFR message from FW: %s\n", sfr->data);
+ }
 
 
 
