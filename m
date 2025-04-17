@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-133876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1899FA927F0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABE16A925E7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:08:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B399019E711A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:30:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9303E1684D2
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC008255E34;
-	Thu, 17 Apr 2025 18:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 045222571DC;
+	Thu, 17 Apr 2025 18:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8fltnpq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UtOmxPGz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B96259C8D;
-	Thu, 17 Apr 2025 18:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48D519F40A;
+	Thu, 17 Apr 2025 18:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914413; cv=none; b=n2jz2dPNNp/kiAg2nrtmicAaNCWvbB7IgO+My0jw+sIe7mF3i6De1ek24x8LCgZK+z2NOhxvQxKHMIJKFDfnhaMRDIP0FYyZxz5l3Oxoebv1xLVpVhXoSfZhuQgzxamUnMYBQ5NouuL8eJlmPUFOCSRuKcvBxb3GhFiS2IxmIeY=
+	t=1744913246; cv=none; b=TkVeC+++RjdpvDsI3Kr0ObrAxTh4K9b+hyJqEP+pK1zoGG8aC6giIydXh2JbjdHI3HYBzEqrsvUUnknRcOCR9N5DaSiZ1QzYxWOulZM3el4B2XitwvM7XUGe12vBXIxvas/uVgXU+Q/7hS5hioxNmpCYHzJakmHGgHloKMhb+2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914413; c=relaxed/simple;
-	bh=HJLOsgiZFwrA9wGFtPPa3CMwj1U4JCqtSefZFF7BD7w=;
+	s=arc-20240116; t=1744913246; c=relaxed/simple;
+	bh=qeclHQY1g17+sANKP/Zd/uTfwOqlOTnf7MgfWP1YvkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rh8Nxu7bCfAwm+i68944rfvUSpV99HzfPePYlGsgWQiUyzWDmdPgYE69yyHYsiCfWZ0e84Awyb2gYmUFc8clYJP1zpIlkQzxU9qR/0F4ZgRjD3+H59cqvv2r+ZQFUsPJshBuFbjcuHq8p2bb7Dlc6snFjaQT7K5fFeTXgJ8nzH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8fltnpq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 033B2C4CEE4;
-	Thu, 17 Apr 2025 18:26:52 +0000 (UTC)
+	 MIME-Version; b=BX8Alv3akNKg61MrRRWBGMdqrbv2Ngv/6LIFastioY1Y/xzMM//zg7XFOPujUpbV8jtFF6wlpBVR4uoJuEA0bWI8J5eFC+6Hjym7nxic0gOGTKP0ZmGvS9Xkggb0tLoUVnInnsc3tMgmMUxPpiFkol5FZNtLxPGJb12nZ+x9a7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UtOmxPGz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350C2C4CEE4;
+	Thu, 17 Apr 2025 18:07:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914413;
-	bh=HJLOsgiZFwrA9wGFtPPa3CMwj1U4JCqtSefZFF7BD7w=;
+	s=korg; t=1744913246;
+	bh=qeclHQY1g17+sANKP/Zd/uTfwOqlOTnf7MgfWP1YvkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A8fltnpqxiY+kDnmxrjEjbkZU3OeAKj0E8CXqtiT3rOxi67+YHx85sLfo0UW+ZkXs
-	 ANZ9o5bQEjJT1JzYgOEMaN/cp0CrmRpy54EMDEdtnxXl8zIHrwCyqAzC9VVTsVBBEj
-	 VeR+TFEriekJ4SmGOzMb13pNsW7p8EF63LfJLBFY=
+	b=UtOmxPGzdwL9lkZYnaaa+upHl4XbOsIV8Li7VVdSEgLnqZWvJYLz71Dq5+3eQTlQ/
+	 AT9cepIaJdEQIdtB0D+imMUoYxRY8h4Yy3GJh3canR9I+21QCUMygCd/IbZ6oVZgOm
+	 n3zvk0kwslTW8Z9548s5iSlT43mZCB8PlNt2SmnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Majewski <mattwmajewski@gmail.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.13 206/414] media: vim2m: print device name after registering device
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 6.14 276/449] clocksource/drivers/stm32-lptimer: Use wakeup capable instead of init wakeup
 Date: Thu, 17 Apr 2025 19:49:24 +0200
-Message-ID: <20250417175119.730666089@linuxfoundation.org>
+Message-ID: <20250417175129.169147724@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Majewski <mattwmajewski@gmail.com>
+From: Alexandre Torgue <alexandre.torgue@foss.st.com>
 
-commit 143d75583f2427f3a97dba62413c4f0604867ebf upstream.
+commit 96bf4b89a6ab22426ad83ef76e66c72a5a8daca0 upstream.
 
-Move the v4l2_info() call displaying the video device name after the
-device is actually registered.
+"wakeup-source" property describes a device which has wakeup capability
+but should not force this device as a wakeup source.
 
-This fixes a bug where the driver was always displaying "/dev/video0"
-since it was reading from the vfd before it was registered.
-
-Fixes: cf7f34777a5b ("media: vim2m: Register video device after setting up internals")
+Fixes: 48b41c5e2de6 ("clocksource: Add Low Power STM32 timers driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Matthew Majewski <mattwmajewski@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Rule: add
+Link: https://lore.kernel.org/stable/20250306083407.2374894-1-fabrice.gasnier%40foss.st.com
+Link: https://lore.kernel.org/r/20250306102501.2980153-1-fabrice.gasnier@foss.st.com
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/test-drivers/vim2m.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/clocksource/timer-stm32-lp.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/media/test-drivers/vim2m.c
-+++ b/drivers/media/test-drivers/vim2m.c
-@@ -1314,9 +1314,6 @@ static int vim2m_probe(struct platform_d
- 	vfd->v4l2_dev = &dev->v4l2_dev;
- 
- 	video_set_drvdata(vfd, dev);
--	v4l2_info(&dev->v4l2_dev,
--		  "Device registered as /dev/video%d\n", vfd->num);
--
- 	platform_set_drvdata(pdev, dev);
- 
- 	dev->m2m_dev = v4l2_m2m_init(&m2m_ops);
-@@ -1343,6 +1340,9 @@ static int vim2m_probe(struct platform_d
- 		goto error_m2m;
+--- a/drivers/clocksource/timer-stm32-lp.c
++++ b/drivers/clocksource/timer-stm32-lp.c
+@@ -168,9 +168,7 @@ static int stm32_clkevent_lp_probe(struc
  	}
  
-+	v4l2_info(&dev->v4l2_dev,
-+		  "Device registered as /dev/video%d\n", vfd->num);
-+
- #ifdef CONFIG_MEDIA_CONTROLLER
- 	ret = v4l2_m2m_register_media_controller(dev->m2m_dev, vfd,
- 						 MEDIA_ENT_F_PROC_VIDEO_SCALER);
+ 	if (of_property_read_bool(pdev->dev.parent->of_node, "wakeup-source")) {
+-		ret = device_init_wakeup(&pdev->dev, true);
+-		if (ret)
+-			goto out_clk_disable;
++		device_set_wakeup_capable(&pdev->dev, true);
+ 
+ 		ret = dev_pm_set_wake_irq(&pdev->dev, irq);
+ 		if (ret)
 
 
 
