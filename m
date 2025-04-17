@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-134214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15809A92A2B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDC72A927FF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0E363BDC75
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:43:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E6397AB5F3
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C59C227EB1;
-	Thu, 17 Apr 2025 18:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684F3262803;
+	Thu, 17 Apr 2025 18:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5rac7Nk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mSM8n4pW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A54719ABC6;
-	Thu, 17 Apr 2025 18:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E92B25A344;
+	Thu, 17 Apr 2025 18:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915444; cv=none; b=TeOU1NCKfv5QR90hW24ByjBEZLp9+R7tbS8qDUWv9korCCcEaVqmPQ8I18BomaP1+ndiGJfq4fjYNWNInTSPfzbLZc27wE7bkpCXHYkuIA6y6SerkbWA4OpA7WZ/x32PUA7JHQj5yCj6rLFoUzHr4rLsqQX1kFd9stdkLHfDRZg=
+	t=1744914422; cv=none; b=Xm9j3KhPifU660WNlgt3h6NzNXRw/7ZHzRxHN4wfaLrilTRuUs0jxYRVsZMCFW45acnbgoHn0gI6gVKpKLGTdgFNVz6TMeuFS7gzNa5yyoS/yJhr7USTQfy9q8vLu5x1isD08AF5E6jJQrCQfV68SN3eVr1Jn2x1w1h23FB091Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915444; c=relaxed/simple;
-	bh=h84wUcQyejpJnc1xHvPdZmZUWhbe4ROZzx2lIaU23ks=;
+	s=arc-20240116; t=1744914422; c=relaxed/simple;
+	bh=X9inGHsI0uVM8QY2RkavPOIhQmcjges1Zb9BPdBcdzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QwELXiuhTTBo0/dT7cqxs3pfSFM4H9T/idwSVh5hhMVYSZ/UNk//XoGbjkVs1hzUjLv5dkNuF1W0YGgDbP6EO89DvrZqCmj8xdrqe5BXi1SnYcPahGHrHdF3236Md4af++womCK9uoC4fXIdFZfDLpSG3CFvDwkueuhYH9/+0JU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5rac7Nk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4696EC4CEE4;
-	Thu, 17 Apr 2025 18:44:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CvE12dON7kPexfID4BKavZ2tVXu5Pk932ZQVSNsBT98WvxsAUxGBVCF8IaFTIs1ZmKbaLWxyysw+TT8omL1GZ0LKSYRNqkf5z+8pjflvNLz2TVfLEni9o1lwWb5KZT/VR9jRTV73raDCQRObqSdQmjPxWVCsoFgjyjeT7bI6sVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mSM8n4pW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A91C4CEE4;
+	Thu, 17 Apr 2025 18:27:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915443;
-	bh=h84wUcQyejpJnc1xHvPdZmZUWhbe4ROZzx2lIaU23ks=;
+	s=korg; t=1744914422;
+	bh=X9inGHsI0uVM8QY2RkavPOIhQmcjges1Zb9BPdBcdzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l5rac7Nk5Dx9UZMSYNP3O6Q+4Pp/02Xd5qtMQyWE8Q3mildshIxs6HIxU/GxZjubm
-	 zksS5FTWZOGiV/NXKzr9vV2iM9HFzEygPt+d9Cvp2a7+Spo25Q9naUYhiUI/ncaqA6
-	 Ap7xdJvrFwqvrG6v/I9EnCQsXk4hz8A0KbCa8+ps=
+	b=mSM8n4pWa7VUStkXvC9ieCnDrTIxbWJihhb4oCIXz4T7GIK9orC16PKLvTohrhjNt
+	 cZ6khJbuC7v0MVt37W+o8IZysxVaXY0q/7gw55rs1hyNLsbAyjz1aHsvPzvC6yTFwu
+	 k7ubpaJEONWbK3JC9s7eDAS5VjuaEq9zQMLbCXpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Yang <Philip.Yang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 130/393] drm/amdgpu: Unlocked unmap only clear page table leaves
+Subject: [PATCH 6.13 181/414] HID: pidff: Move all hid-pidff definitions to a dedicated header
 Date: Thu, 17 Apr 2025 19:48:59 +0200
-Message-ID: <20250417175112.818985260@linuxfoundation.org>
+Message-ID: <20250417175118.731974227@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,150 +67,153 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit 23b645231eeffdaf44021debac881d2f26824150 ]
+[ Upstream commit 0d24d4b1da96df9fc5ff36966f40f980ef864d46 ]
 
-SVM migration unmap pages from GPU and then update mapping to GPU to
-recover page fault. Currently unmap clears the PDE entry for range
-length >= huge page and free PTB bo, update mapping to alloc new PT bo.
-There is race bug that the freed entry bo maybe still on the pt_free
-list, reused when updating mapping and then freed, leave invalid PDE
-entry and cause GPU page fault.
+Do not clutter hid includes with stuff not needed outside of
+the kernel.
 
-By setting the update to clear only one PDE entry or clear PTB, to
-avoid unmap to free PTE bo. This fixes the race bug and improve the
-unmap and map to GPU performance. Update mapping to huge page will
-still free the PTB bo.
-
-With this change, the vm->pt_freed list and work is not needed. Add
-WARN_ON(unlocked) in amdgpu_vm_pt_free_dfs to catch if unmap to free the
-PTB.
-
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c    |  4 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h    |  4 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c | 43 +++++++----------------
- 3 files changed, 13 insertions(+), 38 deletions(-)
+ drivers/hid/hid-universal-pidff.c |  3 ++-
+ drivers/hid/usbhid/hid-core.c     |  1 +
+ drivers/hid/usbhid/hid-pidff.c    |  3 ++-
+ drivers/hid/usbhid/hid-pidff.h    | 33 +++++++++++++++++++++++++++++++
+ include/linux/hid.h               | 15 --------------
+ 5 files changed, 38 insertions(+), 17 deletions(-)
+ create mode 100644 drivers/hid/usbhid/hid-pidff.h
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-index 73e02141a6e21..37d53578825b3 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -2434,8 +2434,6 @@ int amdgpu_vm_init(struct amdgpu_device *adev, struct amdgpu_vm *vm,
- 	spin_lock_init(&vm->status_lock);
- 	INIT_LIST_HEAD(&vm->freed);
- 	INIT_LIST_HEAD(&vm->done);
--	INIT_LIST_HEAD(&vm->pt_freed);
--	INIT_WORK(&vm->pt_free_work, amdgpu_vm_pt_free_work);
- 	INIT_KFIFO(vm->faults);
+diff --git a/drivers/hid/hid-universal-pidff.c b/drivers/hid/hid-universal-pidff.c
+index 7ef5ab9146b1c..1b713b741d192 100644
+--- a/drivers/hid/hid-universal-pidff.c
++++ b/drivers/hid/hid-universal-pidff.c
+@@ -13,6 +13,7 @@
+ #include <linux/module.h>
+ #include <linux/input-event-codes.h>
+ #include "hid-ids.h"
++#include "usbhid/hid-pidff.h"
  
- 	r = amdgpu_vm_init_entities(adev, vm);
-@@ -2607,8 +2605,6 @@ void amdgpu_vm_fini(struct amdgpu_device *adev, struct amdgpu_vm *vm)
+ #define JOY_RANGE (BTN_DEAD - BTN_JOYSTICK + 1)
  
- 	amdgpu_amdkfd_gpuvm_destroy_cb(adev, vm);
+@@ -89,7 +90,7 @@ static int universal_pidff_probe(struct hid_device *hdev,
+ 	}
  
--	flush_work(&vm->pt_free_work);
--
- 	root = amdgpu_bo_ref(vm->root.bo);
- 	amdgpu_bo_reserve(root, true);
- 	amdgpu_vm_put_task_info(vm->task_info);
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
-index 52dd7cdfdc814..ee893527a4f1d 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
-@@ -360,10 +360,6 @@ struct amdgpu_vm {
- 	/* BOs which are invalidated, has been updated in the PTs */
- 	struct list_head        done;
+ 	/* Check if HID_PID support is enabled */
+-	int (*init_function)(struct hid_device *, __u32);
++	int (*init_function)(struct hid_device *, u32);
+ 	init_function = hid_pidff_init_with_quirks;
  
--	/* PT BOs scheduled to free and fill with zero if vm_resv is not hold */
--	struct list_head	pt_freed;
--	struct work_struct	pt_free_work;
--
- 	/* contains the page directory */
- 	struct amdgpu_vm_bo_base     root;
- 	struct dma_fence	*last_update;
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c
-index f78a0434a48fa..54ae0e9bc6d77 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c
-@@ -546,27 +546,6 @@ static void amdgpu_vm_pt_free(struct amdgpu_vm_bo_base *entry)
- 	amdgpu_bo_unref(&entry->bo);
- }
+ 	if (!init_function) {
+diff --git a/drivers/hid/usbhid/hid-core.c b/drivers/hid/usbhid/hid-core.c
+index a6eb6fe6130d1..44c2351b870fa 100644
+--- a/drivers/hid/usbhid/hid-core.c
++++ b/drivers/hid/usbhid/hid-core.c
+@@ -35,6 +35,7 @@
+ #include <linux/hid-debug.h>
+ #include <linux/hidraw.h>
+ #include "usbhid.h"
++#include "hid-pidff.h"
  
--void amdgpu_vm_pt_free_work(struct work_struct *work)
--{
--	struct amdgpu_vm_bo_base *entry, *next;
--	struct amdgpu_vm *vm;
--	LIST_HEAD(pt_freed);
--
--	vm = container_of(work, struct amdgpu_vm, pt_free_work);
--
--	spin_lock(&vm->status_lock);
--	list_splice_init(&vm->pt_freed, &pt_freed);
--	spin_unlock(&vm->status_lock);
--
--	/* flush_work in amdgpu_vm_fini ensure vm->root.bo is valid. */
--	amdgpu_bo_reserve(vm->root.bo, true);
--
--	list_for_each_entry_safe(entry, next, &pt_freed, vm_status)
--		amdgpu_vm_pt_free(entry);
--
--	amdgpu_bo_unreserve(vm->root.bo);
--}
--
- /**
-  * amdgpu_vm_pt_free_list - free PD/PT levels
-  *
-@@ -579,19 +558,15 @@ void amdgpu_vm_pt_free_list(struct amdgpu_device *adev,
- 			    struct amdgpu_vm_update_params *params)
+ /*
+  * Version Information
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index ac6f940abd901..a8eaa77e80be3 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -12,6 +12,7 @@
+ 
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include "hid-pidff.h"
+ #include <linux/input.h>
+ #include <linux/slab.h>
+ #include <linux/usb.h>
+@@ -1383,7 +1384,7 @@ static int pidff_check_autocenter(struct pidff_device *pidff,
+  * Check if the device is PID and initialize it
+  * Set initial quirks
+  */
+-int hid_pidff_init_with_quirks(struct hid_device *hid, __u32 initial_quirks)
++int hid_pidff_init_with_quirks(struct hid_device *hid, u32 initial_quirks)
  {
- 	struct amdgpu_vm_bo_base *entry, *next;
--	struct amdgpu_vm *vm = params->vm;
- 	bool unlocked = params->unlocked;
- 
- 	if (list_empty(&params->tlb_flush_waitlist))
- 		return;
- 
--	if (unlocked) {
--		spin_lock(&vm->status_lock);
--		list_splice_init(&params->tlb_flush_waitlist, &vm->pt_freed);
--		spin_unlock(&vm->status_lock);
--		schedule_work(&vm->pt_free_work);
--		return;
--	}
-+	/*
-+	 * unlocked unmap clear page table leaves, warning to free the page entry.
-+	 */
-+	WARN_ON(unlocked);
- 
- 	list_for_each_entry_safe(entry, next, &params->tlb_flush_waitlist, vm_status)
- 		amdgpu_vm_pt_free(entry);
-@@ -899,7 +874,15 @@ int amdgpu_vm_ptes_update(struct amdgpu_vm_update_params *params,
- 		incr = (uint64_t)AMDGPU_GPU_PAGE_SIZE << shift;
- 		mask = amdgpu_vm_pt_entries_mask(adev, cursor.level);
- 		pe_start = ((cursor.pfn >> shift) & mask) * 8;
--		entry_end = ((uint64_t)mask + 1) << shift;
+ 	struct pidff_device *pidff;
+ 	struct hid_input *hidinput = list_entry(hid->inputs.next,
+diff --git a/drivers/hid/usbhid/hid-pidff.h b/drivers/hid/usbhid/hid-pidff.h
+new file mode 100644
+index 0000000000000..dda571e0a5bd3
+--- /dev/null
++++ b/drivers/hid/usbhid/hid-pidff.h
+@@ -0,0 +1,33 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#ifndef __HID_PIDFF_H
++#define __HID_PIDFF_H
 +
-+		if (cursor.level < AMDGPU_VM_PTB && params->unlocked)
-+			/*
-+			 * MMU notifier callback unlocked unmap huge page, leave is PDE entry,
-+			 * only clear one entry. Next entry search again for PDE or PTE leave.
-+			 */
-+			entry_end = 1ULL << shift;
-+		else
-+			entry_end = ((uint64_t)mask + 1) << shift;
- 		entry_end += cursor.pfn & ~(entry_end - 1);
- 		entry_end = min(entry_end, end);
++#include <linux/hid.h>
++
++/* HID PIDFF quirks */
++
++/* Delay field (0xA7) missing. Skip it during set effect report upload */
++#define HID_PIDFF_QUIRK_MISSING_DELAY		BIT(0)
++
++/* Missing Paramter block offset (0x23). Skip it during SET_CONDITION
++   report upload */
++#define HID_PIDFF_QUIRK_MISSING_PBO		BIT(1)
++
++/* Initialise device control field even if logical_minimum != 1 */
++#define HID_PIDFF_QUIRK_PERMISSIVE_CONTROL	BIT(2)
++
++/* Use fixed 0x4000 direction during SET_EFFECT report upload */
++#define HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION	BIT(3)
++
++/* Force all periodic effects to be uploaded as SINE */
++#define HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY	BIT(4)
++
++#ifdef CONFIG_HID_PID
++int hid_pidff_init(struct hid_device *hid);
++int hid_pidff_init_with_quirks(struct hid_device *hid, u32 initial_quirks);
++#else
++#define hid_pidff_init NULL
++#define hid_pidff_init_with_quirks NULL
++#endif
++
++#endif
+diff --git a/include/linux/hid.h b/include/linux/hid.h
+index e180679ab284c..9ca7e26ac4e92 100644
+--- a/include/linux/hid.h
++++ b/include/linux/hid.h
+@@ -1222,21 +1222,6 @@ unsigned long hid_lookup_quirk(const struct hid_device *hdev);
+ int hid_quirks_init(char **quirks_param, __u16 bus, int count);
+ void hid_quirks_exit(__u16 bus);
  
+-#ifdef CONFIG_HID_PID
+-int hid_pidff_init(struct hid_device *hid);
+-int hid_pidff_init_with_quirks(struct hid_device *hid, __u32 initial_quirks);
+-#else
+-#define hid_pidff_init NULL
+-#define hid_pidff_init_with_quirks NULL
+-#endif
+-
+-/* HID PIDFF quirks */
+-#define HID_PIDFF_QUIRK_MISSING_DELAY		BIT(0)
+-#define HID_PIDFF_QUIRK_MISSING_PBO		BIT(1)
+-#define HID_PIDFF_QUIRK_PERMISSIVE_CONTROL	BIT(2)
+-#define HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION	BIT(3)
+-#define HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY	BIT(4)
+-
+ #define dbg_hid(fmt, ...) pr_debug("%s: " fmt, __FILE__, ##__VA_ARGS__)
+ 
+ #define hid_err(hid, fmt, ...)				\
 -- 
 2.39.5
 
