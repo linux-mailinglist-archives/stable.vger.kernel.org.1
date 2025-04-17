@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-133886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C2DCA92881
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:35:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D532A92A02
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:46:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73E6B166FC1
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:35:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B29F1B64134
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2994D274649;
-	Thu, 17 Apr 2025 18:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14AAF2571B2;
+	Thu, 17 Apr 2025 18:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7m6cAEk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/oiQ2hj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D884626E17F;
-	Thu, 17 Apr 2025 18:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DD6254878;
+	Thu, 17 Apr 2025 18:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914443; cv=none; b=DX4HtkamB69XEkUs6CeclFWkzQb8/5XgYtTadu3x9wti1qHn7Y5ggMrGqCtYdriiDTi2fpCgSuC2u9p5ItvvtB4VP4/339mBNFd8RHJgTdMv1FBG3pEFJ5d27CQGun7OodfysY6bU9hr/YKN1Wqyvvu6Zw1ZWgBY7R6iDC2z1ZE=
+	t=1744915561; cv=none; b=FZU4F4LASOToezpyQ6TZuz+6/EqomfM+6jFWz+oufznj1Wb9PeN41UW/JCl3nDYiljH5JfWMb0V7LXG1cqcV1//YQabyp6aJ5wF/Qi//mnVYhWA+u1jXRQ9G4+rLmcavuboy0nk+XBuvhpTzs2kxl+gBnrpKDEtxB9Z5CpEq5HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914443; c=relaxed/simple;
-	bh=8qP5rC44pM2qOAOzYXn2oNCaYFLAWZ+NcMWQn5kz794=;
+	s=arc-20240116; t=1744915561; c=relaxed/simple;
+	bh=eczCMvPnmS/UB8By0HAn5YaPpyA1a3n5YCs298rEE24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q6LRvFXMeu8dLdQs6XX5BoE+rPOa8T6pv5/TXFX598OLQx7cR6smdZOx/qXnMpHtw93UIbfkBijnrSTrEy8oQS1QYydwet4Kj8DvjtbpYP0/1aKDH+r3Yf44sT2by1++Z7mMcDnnDflW5o3NoWhG9j1m77jphE9hgQ0eEinT0+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7m6cAEk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BF21C4CEE4;
-	Thu, 17 Apr 2025 18:27:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hK8NeBxyPbC/3zDA1bfdOGDyb3JPmjv/Qp8qLnGTEn+jZ3f4FyB3LPfr4hzFBMg+lSeubgWx04+NS9Kn9ZCEUpCtghSyZ5kOYR20U3v2qGscfWvB7hYI15GFO3Y+0Eyz+zRIfl0wiQZoK9qCeAG3wRmiZe2WfCVm5fIQyPM5M5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/oiQ2hj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54191C4CEE4;
+	Thu, 17 Apr 2025 18:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914443;
-	bh=8qP5rC44pM2qOAOzYXn2oNCaYFLAWZ+NcMWQn5kz794=;
+	s=korg; t=1744915561;
+	bh=eczCMvPnmS/UB8By0HAn5YaPpyA1a3n5YCs298rEE24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h7m6cAEk/OV2LMem+J18+zc85GiKHjCCA8qnWLJQK6CPK1/Emx7oKKA+TI1R/mmSM
-	 9GLYRcb2bJabwL59+lFWFh1yDH9REaqKY+kLp32PSWc94WZj6+SEx5oYDdEkjo7eN2
-	 Ga0u/c2JpkcrUvrQiYEOUD6KdCM1W5zDHzqDGN9c=
+	b=y/oiQ2hjkYiOqkX7XsE9b62yHNyt6P58wS+H2tmO/8ZEJX1hfphia5B/BCGuCAoQz
+	 hQBn9GYEppLzU1EdyAIKP4qzsNdr3qVwdzEo6EVEf1PpU3PBaoE5NPXPs9MqUfqcS8
+	 8b6Ek5BPVOdS5gcFM87JStxJI6vAu6Yh2rlAuhL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kamal Dasu <kamal.dasu@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.13 218/414] mtd: rawnand: brcmnand: fix PM resume warning
+	Jules Noirant <jules.noirant@orange.fr>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 167/393] HID: pidff: Stop all effects before enabling actuators
 Date: Thu, 17 Apr 2025 19:49:36 +0200
-Message-ID: <20250417175120.201770072@linuxfoundation.org>
+Message-ID: <20250417175114.308857692@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,105 +65,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamal Dasu <kamal.dasu@broadcom.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-commit ddc210cf8b8a8be68051ad958bf3e2cef6b681c2 upstream.
+[ Upstream commit ce52c0c939fcb568d1abe454821d5623de38b424 ]
 
-Fixed warning on PM resume as shown below caused due to uninitialized
-struct nand_operation that checks chip select field :
-WARN_ON(op->cs >= nanddev_ntargets(&chip->base)
+Some PID compliant devices automatically play effects after boot (i.e.
+autocenter spring) that prevent the rendering of other effects since
+it is done outside the kernel driver.
 
-[   14.588522] ------------[ cut here ]------------
-[   14.588529] WARNING: CPU: 0 PID: 1392 at drivers/mtd/nand/raw/internals.h:139 nand_reset_op+0x1e0/0x1f8
-[   14.588553] Modules linked in: bdc udc_core
-[   14.588579] CPU: 0 UID: 0 PID: 1392 Comm: rtcwake Tainted: G        W          6.14.0-rc4-g5394eea10651 #16
-[   14.588590] Tainted: [W]=WARN
-[   14.588593] Hardware name: Broadcom STB (Flattened Device Tree)
-[   14.588598] Call trace:
-[   14.588604]  dump_backtrace from show_stack+0x18/0x1c
-[   14.588622]  r7:00000009 r6:0000008b r5:60000153 r4:c0fa558c
-[   14.588625]  show_stack from dump_stack_lvl+0x70/0x7c
-[   14.588639]  dump_stack_lvl from dump_stack+0x18/0x1c
-[   14.588653]  r5:c08d40b0 r4:c1003cb0
-[   14.588656]  dump_stack from __warn+0x84/0xe4
-[   14.588668]  __warn from warn_slowpath_fmt+0x18c/0x194
-[   14.588678]  r7:c08d40b0 r6:c1003cb0 r5:00000000 r4:00000000
-[   14.588681]  warn_slowpath_fmt from nand_reset_op+0x1e0/0x1f8
-[   14.588695]  r8:70c40dff r7:89705f41 r6:36b4a597 r5:c26c9444 r4:c26b0048
-[   14.588697]  nand_reset_op from brcmnand_resume+0x13c/0x150
-[   14.588714]  r9:00000000 r8:00000000 r7:c24f8010 r6:c228a3f8 r5:c26c94bc r4:c26b0040
-[   14.588717]  brcmnand_resume from platform_pm_resume+0x34/0x54
-[   14.588735]  r5:00000010 r4:c0840a50
-[   14.588738]  platform_pm_resume from dpm_run_callback+0x5c/0x14c
-[   14.588757]  dpm_run_callback from device_resume+0xc0/0x324
-[   14.588776]  r9:c24f8054 r8:c24f80a0 r7:00000000 r6:00000000 r5:00000010 r4:c24f8010
-[   14.588779]  device_resume from dpm_resume+0x130/0x160
-[   14.588799]  r9:c22539e4 r8:00000010 r7:c22bebb0 r6:c24f8010 r5:c22539dc r4:c22539b0
-[   14.588802]  dpm_resume from dpm_resume_end+0x14/0x20
-[   14.588822]  r10:c2204e40 r9:00000000 r8:c228a3fc r7:00000000 r6:00000003 r5:c228a414
-[   14.588826]  r4:00000010
-[   14.588828]  dpm_resume_end from suspend_devices_and_enter+0x274/0x6f8
-[   14.588848]  r5:c228a414 r4:00000000
-[   14.588851]  suspend_devices_and_enter from pm_suspend+0x228/0x2bc
-[   14.588868]  r10:c3502910 r9:c3501f40 r8:00000004 r7:c228a438 r6:c0f95e18 r5:00000000
-[   14.588871]  r4:00000003
-[   14.588874]  pm_suspend from state_store+0x74/0xd0
-[   14.588889]  r7:c228a438 r6:c0f934c8 r5:00000003 r4:00000003
-[   14.588892]  state_store from kobj_attr_store+0x1c/0x28
-[   14.588913]  r9:00000000 r8:00000000 r7:f09f9f08 r6:00000004 r5:c3502900 r4:c0283250
-[   14.588916]  kobj_attr_store from sysfs_kf_write+0x40/0x4c
-[   14.588936]  r5:c3502900 r4:c0d92a48
-[   14.588939]  sysfs_kf_write from kernfs_fop_write_iter+0x104/0x1f0
-[   14.588956]  r5:c3502900 r4:c3501f40
-[   14.588960]  kernfs_fop_write_iter from vfs_write+0x250/0x420
-[   14.588980]  r10:c0e14b48 r9:00000000 r8:c25f5780 r7:00443398 r6:f09f9f68 r5:c34f7f00
-[   14.588983]  r4:c042a88c
-[   14.588987]  vfs_write from ksys_write+0x74/0xe4
-[   14.589005]  r10:00000004 r9:c25f5780 r8:c02002fA0 r7:00000000 r6:00000000 r5:c34f7f00
-[   14.589008]  r4:c34f7f00
-[   14.589011]  ksys_write from sys_write+0x10/0x14
-[   14.589029]  r7:00000004 r6:004421c0 r5:00443398 r4:00000004
-[   14.589032]  sys_write from ret_fast_syscall+0x0/0x5c
-[   14.589044] Exception stack(0xf09f9fa8 to 0xf09f9ff0)
-[   14.589050] 9fa0:                   00000004 00443398 00000004 00443398 00000004 00000001
-[   14.589056] 9fc0: 00000004 00443398 004421c0 00000004 b6ecbd58 00000008 bebfbc38 0043eb78
-[   14.589062] 9fe0: 00440eb0 bebfbaf8 b6de18a0 b6e579e8
-[   14.589065] ---[ end trace 0000000000000000 ]---
+This makes sure all the effects currently played are stopped after
+resetting the device.
+It brings compatibility to the Brunner CLS-P joystick and others
 
-The fix uses the higher level nand_reset(chip, chipnr); where chipnr = 0, when
-doing PM resume operation in compliance with the controller support for single
-die nand chip. Switching from nand_reset_op() to nand_reset() implies more
-than just setting the cs field op->cs, it also reconfigures the data interface
-(ie. the timings). Tested and confirmed the NAND chip is in sync timing wise
-with host after the fix.
-
-Fixes: 97d90da8a886 ("mtd: nand: provide several helpers to do common NAND operations")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Jules Noirant <jules.noirant@orange.fr>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/brcmnand/brcmnand.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/usbhid/hid-pidff.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-+++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-@@ -3008,7 +3008,7 @@ static int brcmnand_resume(struct device
- 		brcmnand_save_restore_cs_config(host, 1);
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 6b55345ce75ac..635596a57c75d 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -109,8 +109,9 @@ static const u8 pidff_pool[] = { 0x80, 0x83, 0xa9 };
+ /* Special field key tables used to put special field keys into arrays */
  
- 		/* Reset the chip, required by some chips after power-up */
--		nand_reset_op(chip);
-+		nand_reset(chip, 0);
- 	}
+ #define PID_ENABLE_ACTUATORS	0
+-#define PID_RESET		1
+-static const u8 pidff_device_control[] = { 0x97, 0x9a };
++#define PID_STOP_ALL_EFFECTS	1
++#define PID_RESET		2
++static const u8 pidff_device_control[] = { 0x97, 0x99, 0x9a };
  
- 	return 0;
+ #define PID_CONSTANT	0
+ #define PID_RAMP	1
+@@ -1235,6 +1236,10 @@ static void pidff_reset(struct pidff_device *pidff)
+ 	hid_hw_request(hid, pidff->reports[PID_DEVICE_CONTROL], HID_REQ_SET_REPORT);
+ 	hid_hw_wait(hid);
+ 
++	pidff->device_control->value[0] = pidff->control_id[PID_STOP_ALL_EFFECTS];
++	hid_hw_request(hid, pidff->reports[PID_DEVICE_CONTROL], HID_REQ_SET_REPORT);
++	hid_hw_wait(hid);
++
+ 	pidff->device_control->value[0] =
+ 		pidff->control_id[PID_ENABLE_ACTUATORS];
+ 	hid_hw_request(hid, pidff->reports[PID_DEVICE_CONTROL], HID_REQ_SET_REPORT);
+-- 
+2.39.5
+
 
 
 
