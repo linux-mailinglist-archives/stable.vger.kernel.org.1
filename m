@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-134424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7129A92AE5
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31FD0A9290A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:39:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7583E7B26CD
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7BA71B62734
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65311257453;
-	Thu, 17 Apr 2025 18:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414162566FE;
+	Thu, 17 Apr 2025 18:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2PLaAEi8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJd+9zJR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C61D257448;
-	Thu, 17 Apr 2025 18:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23E62566DA;
+	Thu, 17 Apr 2025 18:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916084; cv=none; b=gOOdX6y+pQAJd9DW7Ygnst3e9jqQTVlmgljyuKCcFviY3EMQHErY/Xu9wpRMn+OIcr6V/SdEWwZmmPQYhUn9uNBytNTe9kgw1E+OCfyO1t5e3D5yiPbRIB/pg/VJ0jZqtvnS2TXfkWmMpH/sUNI4v4X/6jGlzIV4G/+wFBmx4tk=
+	t=1744914964; cv=none; b=CTdz8e1y7T0KJJoTvdRUoD+FEGQeRwXecjHfeDPdApZvSsJ+GpNiXuuT/uTJ/NzpPfkoKAtk9zbg+jrsLkYr/ZiFRjcGH+hl2DEely4BrVcnxAbhgbnmEdny/eLAV7JCk2NMq12OYWvmO/DwD9Twjf1GZ1r9DJjFpuik3PQZbMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916084; c=relaxed/simple;
-	bh=5esZfmXJvS8yYdlLk+W8IHVMzZ/I2KUKepSmMJw4ym0=;
+	s=arc-20240116; t=1744914964; c=relaxed/simple;
+	bh=uENVxNJBxcAo2QfiyAUbZXWIQ6AW8t+b3rfQdtfXafg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NZu4otOsaw5+N5BHQCJ7BxaIzh+sKvi1JvoqxKL832B0Um7/YU7GPSNB0WJky+bU2PyP/2OR543fIH37V9lXm/EDCY4xNS+fmkP2G9LFZKkGyEp2pUV9AKQ7vkIgqjm0L/IMKzs5i/e7peDNKXBzOjVLWxVuIe1R19jEt3ShLgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2PLaAEi8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 855C1C4CEE7;
-	Thu, 17 Apr 2025 18:54:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nIfaxfwTW7Mmz4Enfhf8JMGSPIe13u4ircHtlNqvXyhY65SFKvWhKvsIYHGX/DhJh78KP7b5Tcm8QBUCOrPHArStLbh6lOD/bmlgfEFvZd2jLx+Ep3JkhNIkIgVAof0DWbaRXSr0D1GEnxx01IT0k5HeGrrP2HeP/dX2HG3WAok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJd+9zJR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2603AC4CEE4;
+	Thu, 17 Apr 2025 18:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916083;
-	bh=5esZfmXJvS8yYdlLk+W8IHVMzZ/I2KUKepSmMJw4ym0=;
+	s=korg; t=1744914963;
+	bh=uENVxNJBxcAo2QfiyAUbZXWIQ6AW8t+b3rfQdtfXafg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2PLaAEi8kmjqG2V7CniXiy3Q2tNAOdztFJkRip/Tnjy3K65XEgRrEl5BwY1ukyKtE
-	 HGa4fbZqKCJtca9XuafEVq3dX570Rkskd6mhy43MjP5C7BUrvtcS7biVB7x3r+qH9E
-	 0CghFFv++/u1lWgi6JCBNCjgAgIRw1oFmNUst6AQ=
+	b=FJd+9zJRToDkoFA6wNDuc088/NW0V3+82c/XnRZlAERbP1jjAV/GkJW0PN647dsUR
+	 ugC2+0PjvolvN6GG7ddwDawjJssYl5OD2YlP9KpuonAObBaWost/HQumfRke23KfUW
+	 CVuNTVBSegRcNBShEZS0Bz7Ui+R6wjFnBOZvSPKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zhoumin <teczm@foxmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 337/393] ftrace: Add cond_resched() to ftrace_graph_set_hash()
-Date: Thu, 17 Apr 2025 19:52:26 +0200
-Message-ID: <20250417175121.154118091@linuxfoundation.org>
+	Philipp Stanner <phasta@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 6.13 389/414] PCI: Fix wrong length of devres array
+Date: Thu, 17 Apr 2025 19:52:27 +0200
+Message-ID: <20250417175127.130644570@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,46 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhoumin <teczm@foxmail.com>
+From: Philipp Stanner <phasta@kernel.org>
 
-commit 42ea22e754ba4f2b86f8760ca27f6f71da2d982c upstream.
+commit f09d3937d400433080d17982bd1a540da53a156d upstream.
 
-When the kernel contains a large number of functions that can be traced,
-the loop in ftrace_graph_set_hash() may take a lot of time to execute.
-This may trigger the softlockup watchdog.
+The array for the iomapping cookie addresses has a length of
+PCI_STD_NUM_BARS. This constant, however, only describes standard BARs;
+while PCI can allow for additional, special BARs.
 
-Add cond_resched() within the loop to allow the kernel to remain
-responsive even when processing a large number of functions.
+The total number of PCI resources is described by constant
+PCI_NUM_RESOURCES, which is also used in, e.g., pci_select_bars().
 
-This matches the cond_resched() that is used in other locations of the
-code that iterates over all functions that can be traced.
+Thus, the devres array has so far been too small.
 
-Cc: stable@vger.kernel.org
-Fixes: b9b0c831bed26 ("ftrace: Convert graph filter to use hash tables")
-Link: https://lore.kernel.org/tencent_3E06CE338692017B5809534B9C5C03DA7705@qq.com
-Signed-off-by: zhoumin <teczm@foxmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Change the length of the devres array to PCI_NUM_RESOURCES.
+
+Link: https://lore.kernel.org/r/20250312080634.13731-3-phasta@kernel.org
+Fixes: bbaff68bf4a4 ("PCI: Add managed partial-BAR request and map infrastructure")
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Cc: stable@vger.kernel.org	# v6.11+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ftrace.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/devres.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -6848,6 +6848,7 @@ ftrace_graph_set_hash(struct ftrace_hash
- 				}
- 			}
- 		}
-+		cond_resched();
- 	} while_for_each_ftrace_rec();
- out:
- 	mutex_unlock(&ftrace_lock);
+--- a/drivers/pci/devres.c
++++ b/drivers/pci/devres.c
+@@ -40,7 +40,7 @@
+  * Legacy struct storing addresses to whole mapped BARs.
+  */
+ struct pcim_iomap_devres {
+-	void __iomem *table[PCI_STD_NUM_BARS];
++	void __iomem *table[PCI_NUM_RESOURCES];
+ };
+ 
+ /* Used to restore the old INTx state on driver detach. */
 
 
 
