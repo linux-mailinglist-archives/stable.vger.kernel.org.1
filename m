@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-133564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F1AA9262F
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:11:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64AB5A92AD7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0A488A5D55
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:10:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 493A98E0C2E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DA652550DD;
-	Thu, 17 Apr 2025 18:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7452B2586C4;
+	Thu, 17 Apr 2025 18:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rtoNi35d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uUvxLqbK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01E81A3178;
-	Thu, 17 Apr 2025 18:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3296C256C97;
+	Thu, 17 Apr 2025 18:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913457; cv=none; b=MklHy9Odf/xmg9Dhqb+1JL7lbqnBc0YsEJoS4aDzC4D//et69EMkP0Ei6Dyc8fVFIAIXHd0Od3yJ3uPWgTB3s6/K8ithd2NuWeVpf6a9eDwmE2xzTkSF/t7TVGQw6eZgSe80UYZ7CqusZJu6PMJioEHOI+wLPtDzBNBMIqMpids=
+	t=1744915828; cv=none; b=NO/hAMWjomCqKgs70n6Ffkx6KE4IkkRkuNT6dFHyz9XUsaPbTWvxYHW5KVGyG2q3JufDBcG8/vFXCuiXAtVNBC3+vZMInxDoyKv9NU/PtgxZq6DrKlXiy7i2jxzs5Tuvnxe1L5D6Z37lG/+XnC8ZizMl01ibf58tF7KeatJpPF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913457; c=relaxed/simple;
-	bh=D+KpFOXqtVN4XTk1FdoRgSwg1xlRvH/b4M3pvjq7MWo=;
+	s=arc-20240116; t=1744915828; c=relaxed/simple;
+	bh=5h3BYgDNGvCd66C3A9z+ZYGG+YT1fTgof0dP3VblnRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DLXudmpaCsAelPRAeZmlMfOz3QlsUfUjQXmSvcQVvYIu4M5nt5AzRqkG4wC5R5S4jTo7r9lLaOtggGvBOZSsh0oMbFqHOACoS1UlDnrAD1MN/aCxPUNF3+0EY5GT1A8kxdQF0n3yixUTAeKKgTcNwRnT2zwyTtkpRcX00yPn5RQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rtoNi35d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48129C4CEE4;
-	Thu, 17 Apr 2025 18:10:57 +0000 (UTC)
+	 MIME-Version; b=BhhE47zBQFhsezR61++HcEIvMBwDaM7+MR7zh9rZnTW8s8DhGkTYoj5+D41R0kCCBcPtymAACyNP8T//GMCPY1I6LR1i1U5Y089JpKZG5gtYLgK94JFBEHg1nIiCv2wM4VSzrqG6iLe1Y0id64T6QB46QBejDMbO3RL7t0K4XF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uUvxLqbK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAEF1C4CEE4;
+	Thu, 17 Apr 2025 18:50:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913457;
-	bh=D+KpFOXqtVN4XTk1FdoRgSwg1xlRvH/b4M3pvjq7MWo=;
+	s=korg; t=1744915828;
+	bh=5h3BYgDNGvCd66C3A9z+ZYGG+YT1fTgof0dP3VblnRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rtoNi35dtsHzWHBP6DQQWPO6STkUfxA6izeefuuWFwfDWUSFlkITbuzyl2SST4Goo
-	 YX8IKZNFdrm1ho+6fuGnmg4xAHzDERrZdamrn5g6GZ0mlur0NrZeBjm84eqnd/iEqQ
-	 bDYvIRavW8hdeE6nRWveJrjrYg/DGV6MREjyPe+k=
+	b=uUvxLqbKq9gcKhA+7aIo3cua9+eE2ryi/vv0otK69L29nCnnsqf3IjuhbCrvgxtt2
+	 OJI5kn18XmkCt3T7vhS3NNZJt6aTjt7qRpaWU/JplnNlrRTjZOap+FweVhQ6IsimT3
+	 e5kTAUjtHBCcW5pRUaxMTDZQgtS9eJV6p2FqkFu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.14 345/449] btrfs: zoned: fix zone activation with missing devices
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 224/393] media: venus: hfi_parser: add check to avoid out of bound access
 Date: Thu, 17 Apr 2025 19:50:33 +0200
-Message-ID: <20250417175132.096471749@linuxfoundation.org>
+Message-ID: <20250417175116.594384730@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
 
-commit 2bbc4a45e5eb6b868357c1045bf6f38f6ba576e0 upstream.
+commit 172bf5a9ef70a399bb227809db78442dc01d9e48 upstream.
 
-If btrfs_zone_activate() is called with a filesystem that has missing
-devices (e.g. a RAID file system mounted in degraded mode) it is accessing
-the btrfs_device::zone_info pointer, which will not be set if the device in
-question is missing.
+There is a possibility that init_codecs is invoked multiple times during
+manipulated payload from video firmware. In such case, if codecs_count
+can get incremented to value more than MAX_CODEC_NUM, there can be OOB
+access. Reset the count so that it always starts from beginning.
 
-Check if the device is present (by checking if it has a valid block
-device pointer associated) and if not, skip zone activation for it.
-
-Fixes: f9a912a3c45f ("btrfs: zoned: make zone activation multi stripe capable")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: stable@vger.kernel.org
+Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/zoned.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/media/platform/qcom/venus/hfi_parser.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -2111,6 +2111,9 @@ bool btrfs_zone_activate(struct btrfs_bl
- 		physical = map->stripes[i].physical;
- 		zinfo = device->zone_info;
+--- a/drivers/media/platform/qcom/venus/hfi_parser.c
++++ b/drivers/media/platform/qcom/venus/hfi_parser.c
+@@ -19,6 +19,8 @@ static void init_codecs(struct venus_cor
+ 	struct hfi_plat_caps *caps = core->caps, *cap;
+ 	unsigned long bit;
  
-+		if (!device->bdev)
-+			continue;
++	core->codecs_count = 0;
 +
- 		if (zinfo->max_active_zones == 0)
- 			continue;
+ 	if (hweight_long(core->dec_codecs) + hweight_long(core->enc_codecs) > MAX_CODEC_NUM)
+ 		return;
  
 
 
