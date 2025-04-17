@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-133732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39937A92718
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:19:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA775A92980
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0407466806
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:19:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41ED18E4361
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9BF25523E;
-	Thu, 17 Apr 2025 18:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A302580C0;
+	Thu, 17 Apr 2025 18:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jL8Eu1FO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AOT0Ile0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F901DEFD4;
-	Thu, 17 Apr 2025 18:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91953257451;
+	Thu, 17 Apr 2025 18:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913973; cv=none; b=Ih7Ob1TRkZv3ZNkyTcB2xsb+dL9F/ODYjHc8vcGn0JNqA6gERQhbcryyExJnJu5jO35b1umxeQf/NJKyt5c28YJlLTwsv4artrvfK7jt4Zm0zR7rPNYIjMz+4jfxrolOdtVm3/e5bpd3MdKPznTmT+Ao/tEMTQDM3ccXMg28550=
+	t=1744915082; cv=none; b=iZGCZNpb/B0vEjh2n3QpOYyGd14ejtw+OjGeLng7OYk0swkkKKja3fEff0batPfyd02V0xvK1sLNymO0ImG1mWVEwnaKYI9+2wE2zfhlnlJW9X+J4wNu4e48ReOguCAzKs3usGL36nHvtrqfT69AMWJvDibKl49ceCJ+hqQq1Zc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913973; c=relaxed/simple;
-	bh=AWL2xShENpjRqt0LvQZOZOQg5do4Tc23+CM8yHCMKbU=;
+	s=arc-20240116; t=1744915082; c=relaxed/simple;
+	bh=qW9Ii6qJumcqxMwazZY6MYKaYQNjr7LtexvCsUKwiYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EWmbTMnyCEfJ8skSu9Vjeekp0P5hxYdldsbyYFdB/LKercABUZxskDDjtjrN3RbWmQI766dTB2ZyvMi/NsNLOmv7RTSK5Vw9JA8kPBtcDRSBEheaw4O4s4KyWjIhQ972qLhzFgVoAPmUdYCs+QYmEbS7UK+Grr5aqzQMpSVDXCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jL8Eu1FO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A22FC4CEE7;
-	Thu, 17 Apr 2025 18:19:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JunCQOYcl8aS2qQ/UstJJ6h43vNFTb3QfkOKQD/0IwxgbJn5o/Vko8q2WglY7+HT92CBUjNmS4BlrmLesK0xg6KNHQCVzaYAiVqu4cT415hHf78mrsSJbKQg0MJV8f/bQQO3Lr8Dw1vQB35J6jB+XVSdtziU0L1ilRS/0RlRpEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AOT0Ile0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD27C4CEE4;
+	Thu, 17 Apr 2025 18:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913973;
-	bh=AWL2xShENpjRqt0LvQZOZOQg5do4Tc23+CM8yHCMKbU=;
+	s=korg; t=1744915082;
+	bh=qW9Ii6qJumcqxMwazZY6MYKaYQNjr7LtexvCsUKwiYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jL8Eu1FOKAemWEOjbZpEbEsSuCELZYf0v0wWE1Yi3Q3VKQ5JJRnrn0ZssrxKTKBGh
-	 H+Wmgqek6rHv/WfMymNpo8y4Xu7RwY2OQL9VK3Q6eD7JF9cwZKKcGtBeY70cGENa7P
-	 LYpa9urt/bjyjsFKrucBtexHmJx0pwf2MyaWn7m8=
+	b=AOT0Ile0qJVn5PXLtz/iai3uWPb6rlcXPnxLqtpWFfb5J0hO07NZYf9uBplCru/eE
+	 A1prwHIX6WZPY8BfytfmZ+dQO3SV0UcyuzODro8YNcUJmlWWLHav0gXVdgBUnt6T2Z
+	 fwArt2dmo2LQ5h7gL7TjGTcD8XmgamzQ5/ICt9RA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Makarenko Oleg <oleg@makarenk.ooo>,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	=?UTF-8?q?Petr=20Van=C4=9Bk?= <arkamar@atlas.cz>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 064/414] HID: pidff: Add MISSING_PBO quirk and its detection
+Subject: [PATCH 6.12 013/393] x86/acpi: Dont limit CPUs to 1 for Xen PV guests due to disabled ACPI
 Date: Thu, 17 Apr 2025 19:47:02 +0200
-Message-ID: <20250417175113.987872816@linuxfoundation.org>
+Message-ID: <20250417175108.110989855@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,147 +63,65 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Petr Vaněk <arkamar@atlas.cz>
 
-[ Upstream commit fc7c154e9bb3c2b98875cfc565406f4787e3b7a4 ]
+[ Upstream commit 8b37357a78d7fa13d88ea822b35b40137da1c85e ]
 
-Some devices with only one axis are missing PARAMETER_BLOCK_OFFSET field
-for conditional effects. They can only have one axis, so we're limiting
-the max_axis when setting the report for those effects.
+Xen disables ACPI for PV guests in DomU, which causes acpi_mps_check() to
+return 1 when CONFIG_X86_MPPARSE is not set. As a result, the local APIC is
+disabled and the guest is later limited to a single vCPU, despite being
+configured with more.
 
-Automatic detection ensures compatibility even if such device won't be
-explicitly defined in the kernel.
+This regression was introduced in version 6.9 in commit 7c0edad3643f
+("x86/cpu/topology: Rework possible CPU management"), which added an
+early check that limits CPUs to 1 if apic_is_disabled.
 
-Fixes initialization of VRS DirectForce PRO and possibly other devices.
+Update the acpi_mps_check() logic to return 0 early when running as a Xen
+PV guest in DomU, preventing APIC from being disabled in this specific case
+and restoring correct multi-vCPU behaviour.
 
-Changes in v6:
-- Fixed NULL pointer dereference. When PBO is missing, make sure not
-  to set it anyway
-
-Co-developed-by: Makarenko Oleg <oleg@makarenk.ooo>
-Signed-off-by: Makarenko Oleg <oleg@makarenk.ooo>
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 7c0edad3643f ("x86/cpu/topology: Rework possible CPU management")
+Signed-off-by: Petr Vaněk <arkamar@atlas.cz>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20250407132445.6732-2-arkamar@atlas.cz
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 47 +++++++++++++++++++++-------------
- include/linux/hid.h            |  1 +
- 2 files changed, 30 insertions(+), 18 deletions(-)
+ arch/x86/kernel/acpi/boot.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index 929f5967e7cb1..503b22feacdbb 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -391,13 +391,19 @@ static int pidff_needs_set_periodic(struct ff_effect *effect,
- static void pidff_set_condition_report(struct pidff_device *pidff,
- 				       struct ff_effect *effect)
+diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+index c70b86f1f2954..63adda8a143f9 100644
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -23,6 +23,8 @@
+ #include <linux/serial_core.h>
+ #include <linux/pgtable.h>
+ 
++#include <xen/xen.h>
++
+ #include <asm/e820/api.h>
+ #include <asm/irqdomain.h>
+ #include <asm/pci_x86.h>
+@@ -1730,6 +1732,15 @@ int __init acpi_mps_check(void)
  {
--	int i;
-+	int i, max_axis;
+ #if defined(CONFIG_X86_LOCAL_APIC) && !defined(CONFIG_X86_MPPARSE)
+ /* mptable code is not built-in*/
 +
-+	/* Devices missing Parameter Block Offset can only have one axis */
-+	max_axis = pidff->quirks & HID_PIDFF_QUIRK_MISSING_PBO ? 1 : 2;
- 
- 	pidff->set_condition[PID_EFFECT_BLOCK_INDEX].value[0] =
- 		pidff->block_load[PID_EFFECT_BLOCK_INDEX].value[0];
- 
--	for (i = 0; i < 2; i++) {
--		pidff->set_condition[PID_PARAM_BLOCK_OFFSET].value[0] = i;
-+	for (i = 0; i < max_axis; i++) {
-+		/* Omit Parameter Block Offset if missing */
-+		if (!(pidff->quirks & HID_PIDFF_QUIRK_MISSING_PBO))
-+			pidff->set_condition[PID_PARAM_BLOCK_OFFSET].value[0] = i;
++	/*
++	 * Xen disables ACPI in PV DomU guests but it still emulates APIC and
++	 * supports SMP. Returning early here ensures that APIC is not disabled
++	 * unnecessarily and the guest is not limited to a single vCPU.
++	 */
++	if (xen_pv_domain() && !xen_initial_domain())
++		return 0;
 +
- 		pidff_set_signed(&pidff->set_condition[PID_CP_OFFSET],
- 				 effect->u.condition[i].center);
- 		pidff_set_signed(&pidff->set_condition[PID_POS_COEFFICIENT],
-@@ -809,6 +815,11 @@ static int pidff_find_fields(struct pidff_usage *usage, const u8 *table,
- 			pr_debug("Setting MISSING_DELAY quirk\n");
- 			return_value |= HID_PIDFF_QUIRK_MISSING_DELAY;
- 		}
-+		else if (!found && table[k] == pidff_set_condition[PID_PARAM_BLOCK_OFFSET]) {
-+			pr_debug("PBO field not found, but that's OK\n");
-+			pr_debug("Setting MISSING_PBO quirk\n");
-+			return_value |= HID_PIDFF_QUIRK_MISSING_PBO;
-+		}
- 		else if (!found && strict) {
- 			pr_debug("failed to locate %d\n", k);
- 			return -1;
-@@ -1088,7 +1099,6 @@ static int pidff_find_effects(struct pidff_device *pidff,
-  */
- static int pidff_init_fields(struct pidff_device *pidff, struct input_dev *dev)
- {
--	int envelope_ok = 0;
- 	int status = 0;
- 
- 	/* Save info about the device not having the DELAY ffb field. */
-@@ -1119,13 +1129,10 @@ static int pidff_init_fields(struct pidff_device *pidff, struct input_dev *dev)
- 		return -ENODEV;
- 	}
- 
--	if (!PIDFF_FIND_FIELDS(set_envelope, PID_SET_ENVELOPE, 1))
--		envelope_ok = 1;
--
- 	if (pidff_find_special_fields(pidff) || pidff_find_effects(pidff, dev))
- 		return -ENODEV;
- 
--	if (!envelope_ok) {
-+	if (PIDFF_FIND_FIELDS(set_envelope, PID_SET_ENVELOPE, 1)) {
- 		if (test_and_clear_bit(FF_CONSTANT, dev->ffbit))
- 			hid_warn(pidff->hid,
- 				 "has constant effect but no envelope\n");
-@@ -1150,16 +1157,20 @@ static int pidff_init_fields(struct pidff_device *pidff, struct input_dev *dev)
- 		clear_bit(FF_RAMP, dev->ffbit);
- 	}
- 
--	if ((test_bit(FF_SPRING, dev->ffbit) ||
--	     test_bit(FF_DAMPER, dev->ffbit) ||
--	     test_bit(FF_FRICTION, dev->ffbit) ||
--	     test_bit(FF_INERTIA, dev->ffbit)) &&
--	    PIDFF_FIND_FIELDS(set_condition, PID_SET_CONDITION, 1)) {
--		hid_warn(pidff->hid, "unknown condition effect layout\n");
--		clear_bit(FF_SPRING, dev->ffbit);
--		clear_bit(FF_DAMPER, dev->ffbit);
--		clear_bit(FF_FRICTION, dev->ffbit);
--		clear_bit(FF_INERTIA, dev->ffbit);
-+	if (test_bit(FF_SPRING, dev->ffbit) ||
-+	    test_bit(FF_DAMPER, dev->ffbit) ||
-+	    test_bit(FF_FRICTION, dev->ffbit) ||
-+	    test_bit(FF_INERTIA, dev->ffbit)) {
-+		status = PIDFF_FIND_FIELDS(set_condition, PID_SET_CONDITION, 1);
-+
-+		if (status < 0) {
-+			hid_warn(pidff->hid, "unknown condition effect layout\n");
-+			clear_bit(FF_SPRING, dev->ffbit);
-+			clear_bit(FF_DAMPER, dev->ffbit);
-+			clear_bit(FF_FRICTION, dev->ffbit);
-+			clear_bit(FF_INERTIA, dev->ffbit);
-+		}
-+		pidff->quirks |= status;
- 	}
- 
- 	if (test_bit(FF_PERIODIC, dev->ffbit) &&
-diff --git a/include/linux/hid.h b/include/linux/hid.h
-index 9c3a728786c3e..ea7ba8e4bfe49 100644
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -1230,6 +1230,7 @@ int hid_pidff_init(struct hid_device *hid);
- 
- /* HID PIDFF quirks */
- #define HID_PIDFF_QUIRK_MISSING_DELAY	BIT(0)
-+#define HID_PIDFF_QUIRK_MISSING_PBO	BIT(1)
- 
- #define dbg_hid(fmt, ...) pr_debug("%s: " fmt, __FILE__, ##__VA_ARGS__)
- 
+ 	if (acpi_disabled || acpi_noirq) {
+ 		pr_warn("MPS support code is not built-in, using acpi=off or acpi=noirq or pci=noacpi may have problem\n");
+ 		return 1;
 -- 
 2.39.5
 
