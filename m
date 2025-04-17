@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-133843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AD5FA927D8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:29:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E94DA929F0
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:45:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42FEB1904F62
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 747BA16C699
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:44:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CEC018C034;
-	Thu, 17 Apr 2025 18:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B3A253B5E;
+	Thu, 17 Apr 2025 18:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4aGW6hS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PjWrMws5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180E2257AE7;
-	Thu, 17 Apr 2025 18:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556928462;
+	Thu, 17 Apr 2025 18:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914312; cv=none; b=Ne+TPzNN8tvFeUitgOON9X+worXCsS1dzUUUL5KwAbM8CSsN+i0TyR9KzWYoGuzAZpz7VTsVryMce8W1wvdjlemj+XEXkKgBs99zvxs5CZrr8691OM8vffy+b+yPKPIS5KBFMw7jcAUavHGxHpcJKxoX8uCzE562gC+5vhTqtZ4=
+	t=1744915476; cv=none; b=g026vJ0UMcBDHB3ZXdkMyK7/5LuCSH7rifQIk48pqGGL55o5A6KuzfUt8+9U6QdR2qBgYFqyULidacBTDRuwMA/y+V93BSl3GT+afc6/2y8LwNTmmUcLkuCxP5bgereL4b/WBxKd0oTPnTWB64xu/+WlnaRFXTzNIGN5AGnhPKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914312; c=relaxed/simple;
-	bh=jXDlw44RLwCNsZCd4EfoEwe5jZIv7khC1Aa6cOuK7EE=;
+	s=arc-20240116; t=1744915476; c=relaxed/simple;
+	bh=KV1h+235WZ+AKCm26czZoB/V/zr48XH3HKtvMd4JbjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sAxssOYsXEQX4wOrf5+AkwJj5yUYvj2hxlagJnvVgru5UmBJVCII8FTm2BeJ95LP1Vc2dnJ5eLV5sfZRwWdsVx0HbLAZJvLsE1CVZ6EyeKE0HxeLVUx816a5BwJJQ87O1cVBcqHnOQxmQ4+hHN9lY9wsgXPAA29oDEnxt1+ce6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4aGW6hS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE17C4CEEA;
-	Thu, 17 Apr 2025 18:25:11 +0000 (UTC)
+	 MIME-Version; b=o6NEXpyag/iIuehb2B+pB4TPd82B561LLhDSnNuYndDgp+qKgzE65/7AJdA3U4Vu3zIgrpLCsb3Gx9W5KTWMwC7WbQQKjOMn+Pqb/OmuJH65XxI8C+G03G9QrIWQ3yzzgQUJB0VOhZqgDJpf70zPfqQ2Gff1ZUkJu1d6tf+Zq0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PjWrMws5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8EAFC4CEE4;
+	Thu, 17 Apr 2025 18:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914312;
-	bh=jXDlw44RLwCNsZCd4EfoEwe5jZIv7khC1Aa6cOuK7EE=;
+	s=korg; t=1744915476;
+	bh=KV1h+235WZ+AKCm26czZoB/V/zr48XH3HKtvMd4JbjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s4aGW6hSH09vA6IrJSaMV/TwSr3bimKmzkUhtswOiOVDs4Gn9+BAVU7WMcAmCElYM
-	 47v3LNBD0edhJgNLd/Rfym0QPfDCe+EtgYMqnAxwDPpRNncJLznXtCBtd5BFPOM9zz
-	 ILj2HdcQ5RbiD9JyTXYirzFRF4XSEtTgJIbAcSV4=
+	b=PjWrMws5lmIGh9Yzvv4Y0umRGoZ8iMUfVNkbPFFoXc9hSmVR7sQxHl3pOWh1M2Jn4
+	 cqRuzNSgZPPk+QCHLn6m8wgccy+Y7wRLlv7eK7PKgkGzkTub8VgZ9UHWTz6IdjNELN
+	 papOyi2quLpL/xNB5NOW87D4rBntxHV7xO2GjJXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Janaki Ramaiah Thota <quic_janathot@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 173/414] s390/pci: Fix s390_mmio_read/write syscall page fault handling
+Subject: [PATCH 6.12 122/393] Bluetooth: hci_qca: use the power sequencer for wcn6750
 Date: Thu, 17 Apr 2025 19:48:51 +0200
-Message-ID: <20250417175118.395526612@linuxfoundation.org>
+Message-ID: <20250417175112.505152337@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
 
-[ Upstream commit 41a0926e82f4963046876ed9a1b5f681be8087a8 ]
+[ Upstream commit 852cfdc7a5a5af54358325c1e0f490cc178d9664 ]
 
-The s390 MMIO syscalls when using the classic PCI instructions do not
-cause a page fault when follow_pfnmap_start() fails due to the page not
-being present. Besides being a general deficiency this breaks vfio-pci's
-mmap() handling once VFIO_PCI_MMAP gets enabled as this lazily maps on
-first access. Fix this by following a failed follow_pfnmap_start() with
-fixup_user_page() and retrying the follow_pfnmap_start(). Also fix
-a VM_READ vs VM_WRITE mixup in the read syscall.
+Older boards are having entry "enable-gpios" in dts, we can safely assume
+latest boards which are supporting PMU node enrty will support power
+sequencer.
 
-Link: https://lore.kernel.org/r/20250226-vfio_pci_mmap-v7-1-c5c0f1d26efd@linux.ibm.com
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Signed-off-by: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/pci/pci_mmio.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/bluetooth/hci_qca.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/pci/pci_mmio.c b/arch/s390/pci/pci_mmio.c
-index 46f99dc164ade..1997d9b7965df 100644
---- a/arch/s390/pci/pci_mmio.c
-+++ b/arch/s390/pci/pci_mmio.c
-@@ -175,8 +175,12 @@ SYSCALL_DEFINE3(s390_pci_mmio_write, unsigned long, mmio_addr,
- 	args.address = mmio_addr;
- 	args.vma = vma;
- 	ret = follow_pfnmap_start(&args);
--	if (ret)
--		goto out_unlock_mmap;
-+	if (ret) {
-+		fixup_user_fault(current->mm, mmio_addr, FAULT_FLAG_WRITE, NULL);
-+		ret = follow_pfnmap_start(&args);
-+		if (ret)
-+			goto out_unlock_mmap;
-+	}
- 
- 	io_addr = (void __iomem *)((args.pfn << PAGE_SHIFT) |
- 			(mmio_addr & ~PAGE_MASK));
-@@ -315,14 +319,18 @@ SYSCALL_DEFINE3(s390_pci_mmio_read, unsigned long, mmio_addr,
- 	if (!(vma->vm_flags & (VM_IO | VM_PFNMAP)))
- 		goto out_unlock_mmap;
- 	ret = -EACCES;
--	if (!(vma->vm_flags & VM_WRITE))
-+	if (!(vma->vm_flags & VM_READ))
- 		goto out_unlock_mmap;
- 
- 	args.vma = vma;
- 	args.address = mmio_addr;
- 	ret = follow_pfnmap_start(&args);
--	if (ret)
--		goto out_unlock_mmap;
-+	if (ret) {
-+		fixup_user_fault(current->mm, mmio_addr, 0, NULL);
-+		ret = follow_pfnmap_start(&args);
-+		if (ret)
-+			goto out_unlock_mmap;
-+	}
- 
- 	io_addr = (void __iomem *)((args.pfn << PAGE_SHIFT) |
- 			(mmio_addr & ~PAGE_MASK));
+diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+index 37fddf6055beb..1837622ea625a 100644
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -2353,6 +2353,7 @@ static int qca_serdev_probe(struct serdev_device *serdev)
+ 	switch (qcadev->btsoc_type) {
+ 	case QCA_WCN6855:
+ 	case QCA_WCN7850:
++	case QCA_WCN6750:
+ 		if (!device_property_present(&serdev->dev, "enable-gpios")) {
+ 			/*
+ 			 * Backward compatibility with old DT sources. If the
+@@ -2372,7 +2373,6 @@ static int qca_serdev_probe(struct serdev_device *serdev)
+ 	case QCA_WCN3990:
+ 	case QCA_WCN3991:
+ 	case QCA_WCN3998:
+-	case QCA_WCN6750:
+ 		qcadev->bt_power->dev = &serdev->dev;
+ 		err = qca_init_regulators(qcadev->bt_power, data->vregs,
+ 					  data->num_vregs);
 -- 
 2.39.5
 
