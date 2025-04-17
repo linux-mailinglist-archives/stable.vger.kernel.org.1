@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-133792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CDB3A927A3
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:28:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B67A4A925C3
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:07:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64B874A2763
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:27:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E5468A2DD9
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:07:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC90825D1E7;
-	Thu, 17 Apr 2025 18:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F622580F5;
+	Thu, 17 Apr 2025 18:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eXWqbjZy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ytdHdd9l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FDE2571B3;
-	Thu, 17 Apr 2025 18:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BA72580C6;
+	Thu, 17 Apr 2025 18:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914152; cv=none; b=oDvu5WVi9XjU4sR4AW2b1+M8sIQjsfPgythZdFRQPqb9oGJTe5Lzmg7Enb73tjDYCKj+XNAkpp2NQufJNJzv8V3rVM9RtMiNkufnxZeItgsyka2/DBpaGf9DINm1aXn0pGKW9uvhZCLhtd5EZtfgimWcGjPxgAJ7c3ncBFwnqqA=
+	t=1744913123; cv=none; b=HNGho5llaukdjp2eUwYiizN3nPYxOPnlQwB/Ag7iW/HmYRz9bkAoJaXLC6zyniXRpWDZvz2CGszHVwgvw2W9wdCzbq2soR3qVUAshL89h1TsWcnW8No9D7O4eJPzRNHXwsNI6fqECrLppr5DW+wmHwR9Fcg/NXWl4MKic34ZFfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914152; c=relaxed/simple;
-	bh=Q45N6U4S/7rLyrMxe9IfBqMFtkQ5FnLHS1NlLGvK8V8=;
+	s=arc-20240116; t=1744913123; c=relaxed/simple;
+	bh=MyXey4tijAOpR32/68EBpIUQpRRdkO6oZu5qQp044Yc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V2HR+QljkpkzYoR70niP+zhX2tFdFUPJ9SYLpWr7TavJSehtV0ZLJFVh6wwaohKsn/BJ0nnIulHCXdlpY56fEmt7JZ8Q7XEXj0PGkHMry/NPbPADYNH7adhxLu3Ewp4j3Qxp4dXaESmGHdjN7VMZGCURWkC5WifOH861SXX5JUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eXWqbjZy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09F9C4CEE4;
-	Thu, 17 Apr 2025 18:22:31 +0000 (UTC)
+	 MIME-Version; b=oxtbT6c5tZ89ZoSX8pv3vxFIadAK0vB2yiO9IxeXfFslTeI4iw99zjzbvZu8eTxsRHmLTmQlD2xXTKWjMk7J5dMRY+47B3Wr66bdxME8CFZI9vNaO9gx2788xGv0EhCasA/MMIZAILZCqCh6YUUWCwqZUtd0a1KgYCVdgsDJK5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ytdHdd9l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F918C4CEE4;
+	Thu, 17 Apr 2025 18:05:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914152;
-	bh=Q45N6U4S/7rLyrMxe9IfBqMFtkQ5FnLHS1NlLGvK8V8=;
+	s=korg; t=1744913123;
+	bh=MyXey4tijAOpR32/68EBpIUQpRRdkO6oZu5qQp044Yc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eXWqbjZyJ2qFXR25PJQFeU+DdPxyxQwOq4YYabblWVSpsa26p5dyXucoxaOzC0XqI
-	 CGOqIiBDjFlqM+dD/GQ4xCZFEtA9H1vOfKv4aAyB15WMYC+uFc+MZbaCv3o+jYcbz2
-	 Ja9HyVHE9tvB+e6OA1xOcWeXHv5PlXxan2uy5UlI=
+	b=ytdHdd9ljR8agA2EXcBgUni2z5EEq0KYH4LvcjJxmZGawdNnOK+VPydDpU+9QVgkT
+	 aOVfA7vvKcys4XOu71ietU5vcxNfRvrmU81w0zWYeTDDZ05iZ3ikx+AajkRj7aunBz
+	 1NXRL7G1o3pkahrni0iHZ1jLsYFDoii0SI6gXS5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiande Lu <jiande.lu@mediatek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Jann Horn <jannh@google.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 124/414] Bluetooth: btusb: Add 2 HWIDs for MT7922
+Subject: [PATCH 6.14 194/449] ext4: dont treat fhandle lookup of ea_inode as FS corruption
 Date: Thu, 17 Apr 2025 19:48:02 +0200
-Message-ID: <20250417175116.422909035@linuxfoundation.org>
+Message-ID: <20250417175125.786418913@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiande Lu <jiande.lu@mediatek.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit a88643b7e48506777e175e80c902c727ddd90851 ]
+[ Upstream commit 642335f3ea2b3fd6dba03e57e01fa9587843a497 ]
 
-Add below HWIDs for MediaTek MT7922 USB Bluetooth chip.
-VID 0x0489, PID 0xe152
-VID 0x0489, PID 0xe153
+A file handle that userspace provides to open_by_handle_at() can
+legitimately contain an outdated inode number that has since been reused
+for another purpose - that's why the file handle also contains a generation
+number.
 
-Patch has been tested successfully and controller is recognized
-device pair successfully.
+But if the inode number has been reused for an ea_inode, check_igot_inode()
+will notice, __ext4_iget() will go through ext4_error_inode(), and if the
+inode was newly created, it will also be marked as bad by iget_failed().
+This all happens before the point where the inode generation is checked.
 
-MT7922 module bring up message as below.
-Bluetooth: Core ver 2.22
-Bluetooth: HCI device and connection manager initialized
-Bluetooth: HCI socket layer initialized
-Bluetooth: L2CAP socket layer initialized
-Bluetooth: SCO socket layer initialized
-Bluetooth: hci0: HW/SW Version: 0x008a008a, Build Time: 20241106163512
-Bluetooth: hci0: Device setup in 2284925 usecs
-Bluetooth: hci0: HCI Enhanced Setup Synchronous Connection command is advertised, but not supported.
-Bluetooth: hci0: AOSP extensions version v1.00
-Bluetooth: BNEP (Ethernet Emulation) ver 1.3
-Bluetooth: BNEP filters: protocol multicast
-Bluetooth: BNEP socket layer initialized
-Bluetooth: MGMT ver 1.22
-Bluetooth: RFCOMM TTY layer initialized
-Bluetooth: RFCOMM socket layer initialized
-Bluetooth: RFCOMM ver 1.11
+ext4_error_inode() is supposed to only be used on filesystem corruption; it
+should not be used when userspace just got unlucky with a stale file
+handle. So when this happens, let __ext4_iget() just return an error.
 
-Signed-off-by: Jiande Lu <jiande.lu@mediatek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: b3e6bcb94590 ("ext4: add EA_INODE checking to ext4_iget()")
+Signed-off-by: Jann Horn <jannh@google.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20241129-ext4-ignore-ea-fhandle-v1-1-e532c0d1cee0@google.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/ext4/inode.c | 68 ++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 48 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 11005d7d9cc0f..842c71d445dc0 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -662,6 +662,10 @@ static const struct usb_device_id quirks_table[] = {
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe102), .driver_info = BTUSB_MEDIATEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe152), .driver_info = BTUSB_MEDIATEK |
-+						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe153), .driver_info = BTUSB_MEDIATEK |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x04ca, 0x3804), .driver_info = BTUSB_MEDIATEK |
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x04ca, 0x38e4), .driver_info = BTUSB_MEDIATEK |
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 4009f9017a0e9..4108b7d1696ff 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -4710,22 +4710,43 @@ static inline void ext4_inode_set_iversion_queried(struct inode *inode, u64 val)
+ 		inode_set_iversion_queried(inode, val);
+ }
+ 
+-static const char *check_igot_inode(struct inode *inode, ext4_iget_flags flags)
+-
++static int check_igot_inode(struct inode *inode, ext4_iget_flags flags,
++			    const char *function, unsigned int line)
+ {
++	const char *err_str;
++
+ 	if (flags & EXT4_IGET_EA_INODE) {
+-		if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL))
+-			return "missing EA_INODE flag";
++		if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)) {
++			err_str = "missing EA_INODE flag";
++			goto error;
++		}
+ 		if (ext4_test_inode_state(inode, EXT4_STATE_XATTR) ||
+-		    EXT4_I(inode)->i_file_acl)
+-			return "ea_inode with extended attributes";
++		    EXT4_I(inode)->i_file_acl) {
++			err_str = "ea_inode with extended attributes";
++			goto error;
++		}
+ 	} else {
+-		if ((EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL))
+-			return "unexpected EA_INODE flag";
++		if ((EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)) {
++			/*
++			 * open_by_handle_at() could provide an old inode number
++			 * that has since been reused for an ea_inode; this does
++			 * not indicate filesystem corruption
++			 */
++			if (flags & EXT4_IGET_HANDLE)
++				return -ESTALE;
++			err_str = "unexpected EA_INODE flag";
++			goto error;
++		}
++	}
++	if (is_bad_inode(inode) && !(flags & EXT4_IGET_BAD)) {
++		err_str = "unexpected bad inode w/o EXT4_IGET_BAD";
++		goto error;
+ 	}
+-	if (is_bad_inode(inode) && !(flags & EXT4_IGET_BAD))
+-		return "unexpected bad inode w/o EXT4_IGET_BAD";
+-	return NULL;
++	return 0;
++
++error:
++	ext4_error_inode(inode, function, line, 0, err_str);
++	return -EFSCORRUPTED;
+ }
+ 
+ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
+@@ -4737,7 +4758,6 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
+ 	struct ext4_inode_info *ei;
+ 	struct ext4_super_block *es = EXT4_SB(sb)->s_es;
+ 	struct inode *inode;
+-	const char *err_str;
+ 	journal_t *journal = EXT4_SB(sb)->s_journal;
+ 	long ret;
+ 	loff_t size;
+@@ -4766,10 +4786,10 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
+ 	if (!inode)
+ 		return ERR_PTR(-ENOMEM);
+ 	if (!(inode->i_state & I_NEW)) {
+-		if ((err_str = check_igot_inode(inode, flags)) != NULL) {
+-			ext4_error_inode(inode, function, line, 0, err_str);
++		ret = check_igot_inode(inode, flags, function, line);
++		if (ret) {
+ 			iput(inode);
+-			return ERR_PTR(-EFSCORRUPTED);
++			return ERR_PTR(ret);
+ 		}
+ 		return inode;
+ 	}
+@@ -5050,13 +5070,21 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
+ 		ret = -EFSCORRUPTED;
+ 		goto bad_inode;
+ 	}
+-	if ((err_str = check_igot_inode(inode, flags)) != NULL) {
+-		ext4_error_inode(inode, function, line, 0, err_str);
+-		ret = -EFSCORRUPTED;
+-		goto bad_inode;
++	ret = check_igot_inode(inode, flags, function, line);
++	/*
++	 * -ESTALE here means there is nothing inherently wrong with the inode,
++	 * it's just not an inode we can return for an fhandle lookup.
++	 */
++	if (ret == -ESTALE) {
++		brelse(iloc.bh);
++		unlock_new_inode(inode);
++		iput(inode);
++		return ERR_PTR(-ESTALE);
+ 	}
+-
++	if (ret)
++		goto bad_inode;
+ 	brelse(iloc.bh);
++
+ 	unlock_new_inode(inode);
+ 	return inode;
+ 
 -- 
 2.39.5
 
