@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-133823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71AD9A927CB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:28:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05EAEA929C6
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:44:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCE3D18979C7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CCDE4A51C5
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:43:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8CF257441;
-	Thu, 17 Apr 2025 18:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C303256C93;
+	Thu, 17 Apr 2025 18:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLe1xKAL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IOkdDvos"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8C0256C6A;
-	Thu, 17 Apr 2025 18:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB9225335A;
+	Thu, 17 Apr 2025 18:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914249; cv=none; b=tPL//IBQ9+VQ0tD/XUyjeKcN7L5crN08QZ0JkrCyThp3qY3xu7M2KO39w6/v890Qyt6xXCiRxm13FkiA0HQhWtWAaKsq2DeMI9MTtdXJ/OzsCUgbrRNdkrVhtwBnvLklpGERcs7QNmfv9V4TilvIgs6sauu+zS4mNdJ8/XAKBts=
+	t=1744915363; cv=none; b=HKPLXHbp/q7RjSTQk42TiWfubNVEANbrlCHm2QjpQA6GlRyC8iMnfF4uwyeK1b/NcE8P4xQ0yyChaDqVulpEXsXl6tMUthKEWAjm2i58h3j8qRp4qjhHp8zacz9Fh0azvErmL7M24WUlaD6Uo1W96mZc/7GkxgN30iyW1pnKd7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914249; c=relaxed/simple;
-	bh=apQDOrFOWUFZ5SIBfnEQM8ZvjabGNdZ57jXBsWR5WAE=;
+	s=arc-20240116; t=1744915363; c=relaxed/simple;
+	bh=vYH13eubK0GQJhAA4AoKWCozRTz1Rf/8WkIZZTcBXdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mprdqjxTV3snMoidsfCMzCEBUF/VWqKEN84VcoHrXeTqMBaAOfvKFhkPxXUh6GnSyPeTQxpheVkHKKFaDqHKLZxImdA9gRZZoXjL7xvdXCmF/m34pRUOSOrUE3Ilct52Ojq8fy0rFOZ2LYEZcrdDB8lhezR9gfwvcolirAmREqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BLe1xKAL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF6F5C4CEE4;
-	Thu, 17 Apr 2025 18:24:08 +0000 (UTC)
+	 MIME-Version; b=bWbzw5oJRKRts3BhMQA/zrg20djLRlFhrL+PPcVzxV7WICAT4W9q2pfyb/+yguHss2MfPcEqXqlYjm4AWgCpQ+kY3Q44tej5JvQ4HnZ/+f0+5Tw+PPZ9W7HOUC8CNYJ1Y87qUycr1h4+CqqiDedkjzCU2UCG+Oow9v0j8Bo+kcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IOkdDvos; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BEA2C4CEE4;
+	Thu, 17 Apr 2025 18:42:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914249;
-	bh=apQDOrFOWUFZ5SIBfnEQM8ZvjabGNdZ57jXBsWR5WAE=;
+	s=korg; t=1744915362;
+	bh=vYH13eubK0GQJhAA4AoKWCozRTz1Rf/8WkIZZTcBXdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BLe1xKALRTj/1+EAEfcthVEi6uB1F8ipEMoGLvwtZ9VNBSHBlWcjG/X0Vz6RDIH4S
-	 n8hHxklhtwLvBYit/IEwueU/Nc6/Vi7CdMwjj90lUQlM3GtZb78Usjh4DYkjVAWac/
-	 OxEVzmG7vPeNXwKDS+31pW+8gn/PBSlnwnY8Afhk=
+	b=IOkdDvosDMhQmxNVXKmMsz/egMyMmcnpk9Q1KqpoRoV6WKyVdlWebNPZPs0hINB92
+	 +5D4Gjvzn2JVUqjtxzLGZ0n3L2NJAGCc5AfGj2/6SOFmbre7p6Tv2rcJ08sXyif4Ys
+	 d3cWbyAAWVzztSbAr9AA1bxIwbuWwaTBN+SWbg1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dillon Varone <dillon.varone@amd.com>,
-	Ryan Seto <ryanseto@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Birger Koblitz <mail@birger-koblitz.de>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 155/414] drm/amd/display: Prevent VStartup Overflow
+Subject: [PATCH 6.12 104/393] net: sfp: add quirk for 2.5G OEM BX SFP
 Date: Thu, 17 Apr 2025 19:48:33 +0200
-Message-ID: <20250417175117.672563556@linuxfoundation.org>
+Message-ID: <20250417175111.777252944@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Seto <ryanseto@amd.com>
+From: Birger Koblitz <mail@birger-koblitz.de>
 
-[ Upstream commit 29c1c20496a7a9bafe2bc2f833d69aa52e0f2c2d ]
+[ Upstream commit a85035561025063125f81090e4f2bd65da368c83 ]
 
-[Why]
-For some VR headsets with large blanks, it's possible
-to overflow the OTG_VSTARTUP_PARAM:VSTARTUP_START
-register. This can lead to incorrect DML calculations
-and underflow downstream.
+The OEM SFP-2.5G-BX10-D/U SFP module pair is meant to operate with
+2500Base-X. However, in their EEPROM they incorrectly specify:
+Transceiver codes   : 0x00 0x12 0x00 0x00 0x12 0x00 0x01 0x05 0x00
+BR, Nominal         : 2500MBd
 
-[How]
-Min the calcualted max_vstartup_lines with the max
-value of the register.
+Use sfp_quirk_2500basex for this module to allow 2500Base-X mode anyway.
+Tested on BananaPi R3.
 
-Reviewed-by: Dillon Varone <dillon.varone@amd.com>
-Signed-off-by: Ryan Seto <ryanseto@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
+Reviewed-by: Daniel Golle <daniel@makrotopia.org>
+Link: https://patch.msgid.link/20250218-b4-lkmsub-v1-1-1e51dcabed90@birger-koblitz.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c  | 2 ++
+ drivers/net/phy/sfp.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
-index ecfa3c898e09d..4285cb7fcbe71 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
-@@ -12,6 +12,7 @@
- #define DML2_MAX_FMT_420_BUFFER_WIDTH 4096
- #define DML_MAX_NUM_OF_SLICES_PER_DSC 4
- #define ALLOW_SDPIF_RATE_LIMIT_PRE_CSTATE
-+#define DML_MAX_VSTARTUP_START 1023
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index dcec92625cf65..9a5de80acd2f7 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -515,6 +515,8 @@ static const struct sfp_quirk sfp_quirks[] = {
  
- const char *dml2_core_internal_bw_type_str(enum dml2_core_internal_bw_type bw_type)
- {
-@@ -3648,6 +3649,7 @@ static unsigned int CalculateMaxVStartup(
- 	dml2_printf("DML::%s: vblank_avail = %u\n", __func__, vblank_avail);
- 	dml2_printf("DML::%s: max_vstartup_lines = %u\n", __func__, max_vstartup_lines);
- #endif
-+	max_vstartup_lines = (unsigned int)math_min2(max_vstartup_lines, DML_MAX_VSTARTUP_START);
- 	return max_vstartup_lines;
- }
- 
+ 	SFP_QUIRK_F("OEM", "SFP-10G-T", sfp_fixup_rollball_cc),
+ 	SFP_QUIRK_M("OEM", "SFP-2.5G-T", sfp_quirk_oem_2_5g),
++	SFP_QUIRK_M("OEM", "SFP-2.5G-BX10-D", sfp_quirk_2500basex),
++	SFP_QUIRK_M("OEM", "SFP-2.5G-BX10-U", sfp_quirk_2500basex),
+ 	SFP_QUIRK_F("OEM", "RTSFP-10", sfp_fixup_rollball_cc),
+ 	SFP_QUIRK_F("OEM", "RTSFP-10G", sfp_fixup_rollball_cc),
+ 	SFP_QUIRK_F("Turris", "RTSFP-2.5G", sfp_fixup_rollball),
 -- 
 2.39.5
 
