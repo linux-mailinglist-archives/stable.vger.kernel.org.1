@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-133246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD0DEA924C8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 19:58:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABC55A924CB
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 19:58:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0EDD464486
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 17:58:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97109464347
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 17:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4B3A2580C2;
-	Thu, 17 Apr 2025 17:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A59E02580C6;
+	Thu, 17 Apr 2025 17:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRUD+R8y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RiSUfgOL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96BAB257AF3;
-	Thu, 17 Apr 2025 17:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600532571CA;
+	Thu, 17 Apr 2025 17:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744912503; cv=none; b=BsnFmbpXnSex6Nca6JNbx7g9Aw68mUIqN51VRI5PNGDlsbIBmQBxQNQ3EeZIKvDt8AVqvTfh/mRCM1nqpEpBLYYgg/3uZ6G9Ymn4EIffr3GR32Gz51+fgVs9ODbat+W6rt2nSUnFiZqLj33uJiDihcR5E5KA01KsOhNq5/6zPK4=
+	t=1744912515; cv=none; b=W+KrkE3ImuA2YT8i6OqAIHAuSQ2Gs7dYSog/7+B+xuWwrh8NjzqTepTkgF1TkaSj8D4sVG4CjgGnMWE8Sw1ieQX2hnxX2J2rnlNxp5+qa8JaQUV3ED5oW/dxhqNr9u09BUO5c4egC2MeG7bFDrW0aidqyl9bcYkDHMND7JzZqM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744912503; c=relaxed/simple;
-	bh=aox7SJpieXhrRe3MvkUvHUXkWTkWYzhLZxPKLFQ4Dwg=;
+	s=arc-20240116; t=1744912515; c=relaxed/simple;
+	bh=nUrRsklfUFzvfIBd+b7Ko80DbHeeqVuuWThiqQjjY8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VwoaIuBeTkmbY246Q5Zz0aPgxMh0P+ZEb3AXcu88qIOJNSJclH0eKBD1p9HkKXglqmq1zmx/nujGXKAH1+3V7EH0zsBb7X6TBNk1H5i/kNdUgPNpTwcd3VRH2worg4sgVJLQese4W4MNnqSQ2OYY62HCVyDdb1FsX0jzXCT8THk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRUD+R8y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2000BC4CEE4;
-	Thu, 17 Apr 2025 17:55:02 +0000 (UTC)
+	 MIME-Version; b=tNAEbJtrn2PUkgYRs9S4oTiorxqgstbgC4/fYg/ZHfe9uyZ6Fu/HAjewLYd3sBSfdsUnM7QQK/+eM90fxSnxJZ5oTGbTPfdKbAAqHpliTJZCtwPdSZK8YZoCMZ9Mq28xd4QkfwMtsCvpXem0EjzDL2nS+Yw975xTN0uoPkRqmko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RiSUfgOL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D58E0C4CEE4;
+	Thu, 17 Apr 2025 17:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744912503;
-	bh=aox7SJpieXhrRe3MvkUvHUXkWTkWYzhLZxPKLFQ4Dwg=;
+	s=korg; t=1744912515;
+	bh=nUrRsklfUFzvfIBd+b7Ko80DbHeeqVuuWThiqQjjY8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZRUD+R8yGYJQFsrGRFhdpgpFtfOZXJ5G4TXzbxtjaGDO4zn9RmUlXmxTHFeR/tX76
-	 9vqXSvLhyBUvi+z1ftBWOnEHiIH2tB8/KEWxXqMfgEgvyqaLBXF7+4IV0SCycSHA4O
-	 Hi8ZorrVVu7LHtGWki2Iw1sW0r1q1dK/e/ci1vuw=
+	b=RiSUfgOLicnNf+/ME8HIs9bhGJSQEvypzSBMB21iAGcw+NHn5MenT2idDR4h9Sz/7
+	 7zYvRiy3bllFoxdfcB+1Tl8WFElThUAjQSb2mMIADDiIQ1HeYomA8oghUV8BENAbGf
+	 K2hg7fm2RPHUzqhAg8+N1nYf2niZ2NEH57GpMLcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 004/449] cgroup/cpuset: Fix race between newly created partition and dying one
-Date: Thu, 17 Apr 2025 19:44:52 +0200
-Message-ID: <20250417175118.158171123@linuxfoundation.org>
+Subject: [PATCH 6.14 005/449] tracing: fprobe: Cleanup fprobe hash when module unloading
+Date: Thu, 17 Apr 2025 19:44:53 +0200
+Message-ID: <20250417175118.201795605@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
 References: <20250417175117.964400335@linuxfoundation.org>
@@ -66,142 +65,151 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit a22b3d54de94f82ca057cc2ebf9496fa91ebf698 ]
+[ Upstream commit a3dc2983ca7b90fd35f978502de6d4664d965cfb ]
 
-There is a possible race between removing a cgroup diectory that is
-a partition root and the creation of a new partition.  The partition
-to be removed can be dying but still online, it doesn't not currently
-participate in checking for exclusive CPUs conflict, but the exclusive
-CPUs are still there in subpartitions_cpus and isolated_cpus. These
-two cpumasks are global states that affect the operation of cpuset
-partitions. The exclusive CPUs in dying cpusets will only be removed
-when cpuset_css_offline() function is called after an RCU delay.
+Cleanup fprobe address hash table on module unloading because the
+target symbols will be disappeared when unloading module and not
+sure the same symbol is mapped on the same address.
 
-As a result, it is possible that a new partition can be created with
-exclusive CPUs that overlap with those of a dying one. When that dying
-partition is finally offlined, it removes those overlapping exclusive
-CPUs from subpartitions_cpus and maybe isolated_cpus resulting in an
-incorrect CPU configuration.
+Note that this is at least disables the fprobes if a part of target
+symbols on the unloaded modules. Unlike kprobes, fprobe does not
+re-enable the probe point by itself. To do that, the caller should
+take care register/unregister fprobe when loading/unloading modules.
+This simplifies the fprobe state managememt related to the module
+loading/unloading.
 
-This bug was found when a warning was triggered in
-remote_partition_disable() during testing because the subpartitions_cpus
-mask was empty.
+Link: https://lore.kernel.org/all/174343534473.843280.13988101014957210732.stgit@devnote2/
 
-One possible way to fix this is to iterate the dying cpusets as well and
-avoid using the exclusive CPUs in those dying cpusets. However, this
-can still cause random partition creation failures or other anomalies
-due to racing. A better way to fix this race is to reset the partition
-state at the moment when a cpuset is being killed.
-
-Introduce a new css_killed() CSS function pointer and call it, if
-defined, before setting CSS_DYING flag in kill_css(). Also update the
-css_is_dying() helper to use the CSS_DYING flag introduced by commit
-33c35aa48178 ("cgroup: Prevent kill_css() from being called more than
-once") for proper synchronization.
-
-Add a new cpuset_css_killed() function to reset the partition state of
-a valid partition root if it is being killed.
-
-Fixes: ee8dde0cd2ce ("cpuset: Add new v2 cpuset.sched.partition flag")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 4346ba160409 ("fprobe: Rewrite fprobe on function-graph tracer")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/cgroup-defs.h |  1 +
- include/linux/cgroup.h      |  2 +-
- kernel/cgroup/cgroup.c      |  6 ++++++
- kernel/cgroup/cpuset.c      | 20 +++++++++++++++++---
- 4 files changed, 25 insertions(+), 4 deletions(-)
+ kernel/trace/fprobe.c | 103 +++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 101 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/cgroup-defs.h b/include/linux/cgroup-defs.h
-index 17960a1e858db..d1aee2d3e189e 100644
---- a/include/linux/cgroup-defs.h
-+++ b/include/linux/cgroup-defs.h
-@@ -711,6 +711,7 @@ struct cgroup_subsys {
- 	void (*css_released)(struct cgroup_subsys_state *css);
- 	void (*css_free)(struct cgroup_subsys_state *css);
- 	void (*css_reset)(struct cgroup_subsys_state *css);
-+	void (*css_killed)(struct cgroup_subsys_state *css);
- 	void (*css_rstat_flush)(struct cgroup_subsys_state *css, int cpu);
- 	int (*css_extra_stat_show)(struct seq_file *seq,
- 				   struct cgroup_subsys_state *css);
-diff --git a/include/linux/cgroup.h b/include/linux/cgroup.h
-index f8ef47f8a634d..fc1324ed597d6 100644
---- a/include/linux/cgroup.h
-+++ b/include/linux/cgroup.h
-@@ -343,7 +343,7 @@ static inline u64 cgroup_id(const struct cgroup *cgrp)
-  */
- static inline bool css_is_dying(struct cgroup_subsys_state *css)
+diff --git a/kernel/trace/fprobe.c b/kernel/trace/fprobe.c
+index 33082c4e8154e..c4bf59d625f75 100644
+--- a/kernel/trace/fprobe.c
++++ b/kernel/trace/fprobe.c
+@@ -89,8 +89,11 @@ static bool delete_fprobe_node(struct fprobe_hlist_node *node)
  {
--	return !(css->flags & CSS_NO_REF) && percpu_ref_is_dying(&css->refcnt);
-+	return css->flags & CSS_DYING;
+ 	lockdep_assert_held(&fprobe_mutex);
+ 
+-	WRITE_ONCE(node->fp, NULL);
+-	hlist_del_rcu(&node->hlist);
++	/* Avoid double deleting */
++	if (READ_ONCE(node->fp) != NULL) {
++		WRITE_ONCE(node->fp, NULL);
++		hlist_del_rcu(&node->hlist);
++	}
+ 	return !!find_first_fprobe_node(node->addr);
  }
  
- static inline void cgroup_get(struct cgroup *cgrp)
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index afc665b7b1fe5..81f078c059e86 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -5909,6 +5909,12 @@ static void kill_css(struct cgroup_subsys_state *css)
- 	if (css->flags & CSS_DYING)
- 		return;
+@@ -411,6 +414,102 @@ static void fprobe_graph_remove_ips(unsigned long *addrs, int num)
+ 		ftrace_set_filter_ips(&fprobe_graph_ops.ops, addrs, num, 1, 0);
+ }
  
-+	/*
-+	 * Call css_killed(), if defined, before setting the CSS_DYING flag
-+	 */
-+	if (css->ss->css_killed)
-+		css->ss->css_killed(css);
++#ifdef CONFIG_MODULES
 +
- 	css->flags |= CSS_DYING;
- 
- 	/*
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index e8ab1a16076fb..d72f843d9feeb 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -3495,9 +3495,6 @@ static void cpuset_css_offline(struct cgroup_subsys_state *css)
- 	cpus_read_lock();
- 	mutex_lock(&cpuset_mutex);
- 
--	if (is_partition_valid(cs))
--		update_prstate(cs, 0);
--
- 	if (!cpuset_v2() && is_sched_load_balance(cs))
- 		cpuset_update_flag(CS_SCHED_LOAD_BALANCE, cs, 0);
- 
-@@ -3508,6 +3505,22 @@ static void cpuset_css_offline(struct cgroup_subsys_state *css)
- 	cpus_read_unlock();
- }
- 
-+static void cpuset_css_killed(struct cgroup_subsys_state *css)
++#define FPROBE_IPS_BATCH_INIT 8
++/* instruction pointer address list */
++struct fprobe_addr_list {
++	int index;
++	int size;
++	unsigned long *addrs;
++};
++
++static int fprobe_addr_list_add(struct fprobe_addr_list *alist, unsigned long addr)
 +{
-+	struct cpuset *cs = css_cs(css);
++	unsigned long *addrs;
 +
-+	cpus_read_lock();
-+	mutex_lock(&cpuset_mutex);
++	if (alist->index >= alist->size)
++		return -ENOMEM;
 +
-+	/* Reset valid partition back to member */
-+	if (is_partition_valid(cs))
-+		update_prstate(cs, PRS_MEMBER);
++	alist->addrs[alist->index++] = addr;
++	if (alist->index < alist->size)
++		return 0;
 +
-+	mutex_unlock(&cpuset_mutex);
-+	cpus_read_unlock();
++	/* Expand the address list */
++	addrs = kcalloc(alist->size * 2, sizeof(*addrs), GFP_KERNEL);
++	if (!addrs)
++		return -ENOMEM;
 +
++	memcpy(addrs, alist->addrs, alist->size * sizeof(*addrs));
++	alist->size *= 2;
++	kfree(alist->addrs);
++	alist->addrs = addrs;
++
++	return 0;
 +}
 +
- static void cpuset_css_free(struct cgroup_subsys_state *css)
++static void fprobe_remove_node_in_module(struct module *mod, struct hlist_head *head,
++					struct fprobe_addr_list *alist)
++{
++	struct fprobe_hlist_node *node;
++	int ret = 0;
++
++	hlist_for_each_entry_rcu(node, head, hlist) {
++		if (!within_module(node->addr, mod))
++			continue;
++		if (delete_fprobe_node(node))
++			continue;
++		/*
++		 * If failed to update alist, just continue to update hlist.
++		 * Therefore, at list user handler will not hit anymore.
++		 */
++		if (!ret)
++			ret = fprobe_addr_list_add(alist, node->addr);
++	}
++}
++
++/* Handle module unloading to manage fprobe_ip_table. */
++static int fprobe_module_callback(struct notifier_block *nb,
++				  unsigned long val, void *data)
++{
++	struct fprobe_addr_list alist = {.size = FPROBE_IPS_BATCH_INIT};
++	struct module *mod = data;
++	int i;
++
++	if (val != MODULE_STATE_GOING)
++		return NOTIFY_DONE;
++
++	alist.addrs = kcalloc(alist.size, sizeof(*alist.addrs), GFP_KERNEL);
++	/* If failed to alloc memory, we can not remove ips from hash. */
++	if (!alist.addrs)
++		return NOTIFY_DONE;
++
++	mutex_lock(&fprobe_mutex);
++	for (i = 0; i < FPROBE_IP_TABLE_SIZE; i++)
++		fprobe_remove_node_in_module(mod, &fprobe_ip_table[i], &alist);
++
++	if (alist.index < alist.size && alist.index > 0)
++		ftrace_set_filter_ips(&fprobe_graph_ops.ops,
++				      alist.addrs, alist.index, 1, 0);
++	mutex_unlock(&fprobe_mutex);
++
++	kfree(alist.addrs);
++
++	return NOTIFY_DONE;
++}
++
++static struct notifier_block fprobe_module_nb = {
++	.notifier_call = fprobe_module_callback,
++	.priority = 0,
++};
++
++static int __init init_fprobe_module(void)
++{
++	return register_module_notifier(&fprobe_module_nb);
++}
++early_initcall(init_fprobe_module);
++#endif
++
+ static int symbols_cmp(const void *a, const void *b)
  {
- 	struct cpuset *cs = css_cs(css);
-@@ -3629,6 +3642,7 @@ struct cgroup_subsys cpuset_cgrp_subsys = {
- 	.css_alloc	= cpuset_css_alloc,
- 	.css_online	= cpuset_css_online,
- 	.css_offline	= cpuset_css_offline,
-+	.css_killed	= cpuset_css_killed,
- 	.css_free	= cpuset_css_free,
- 	.can_attach	= cpuset_can_attach,
- 	.cancel_attach	= cpuset_cancel_attach,
+ 	const char **str_a = (const char **) a;
 -- 
 2.39.5
 
