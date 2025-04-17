@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-134467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C127A92B46
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:59:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E433A92923
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:40:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69AD11888C15
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:58:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 341441B62CEB
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A652D2571BC;
-	Thu, 17 Apr 2025 18:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1802580E0;
+	Thu, 17 Apr 2025 18:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JrwQ4H2C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b8Z4x7hm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A54625525C;
-	Thu, 17 Apr 2025 18:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A481DF246;
+	Thu, 17 Apr 2025 18:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916213; cv=none; b=bbXGPhf5MzQATM9Wd8T1z0eQXzGwzJhGYXXyQkJoJh6rycDkPLuMMxEHLsnXcEpNS5NaoRdbHtuI/81n48o3hyibPSv5CGCow4vLxNgwF04cHJljDMWYdTPSXjBHV6yTexdF7MYh+JZeSw1GJ8G8rQpqmDNAcBBEJoNvf4SOt7U=
+	t=1744915067; cv=none; b=ZDswPP3Exh/hft0UT97EcZoM4b6m8fIvyLSE6IwhERVcotWer769lprLKg3T5T3GPeOPK/UBi+26lW2MGGdtwiXT2V7pNx/9Q6eFA0ZcYlwU4iBW3PD2+F/uNpCIZiE/NXX5kii3Vv116miAYw/VYb4z/yBLRlNI0rh1n9fQfk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916213; c=relaxed/simple;
-	bh=UHkh0rsw7kV0uekzg2/7w6yw0t4W8rBM3JGbhod3VQw=;
+	s=arc-20240116; t=1744915067; c=relaxed/simple;
+	bh=ERsrcrVIZizj36XnMz4nR0qnR4Ew4BLqHGuWq5TD0kA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eTzt8+BJMRCi5wDqU/jAhRNBFCMucLnIQs6tKO838TNM3zC/RRjj/j8bTosGXcPHKbX8lQvN9zTYwzRJ/4k63sYNu6AOEmncCWei7oyrNGlRWc6ZDKJ/zeOHMMi0hbDl7/0g7Qb18znNtftpbeI+xeRaDfxlyXx9SwFPzllLnFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JrwQ4H2C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFD3C4CEE4;
-	Thu, 17 Apr 2025 18:56:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=exwVMiwdei6JVwHgv85QJdvyt3WpuAfrQO018UnYNJlVva27nLAqRB4irmvk8NRtBttQQ+VtLigeJ60d96TNJ3JI+SlVKW/qL9rZJWt3SoRWIsZ5kYuZqMBZHgAWFJUW7K+yBmjdboPuV4Iy/It6iQ+/2wxCglArW3yButYUASE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b8Z4x7hm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F21C4CEE4;
+	Thu, 17 Apr 2025 18:37:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916213;
-	bh=UHkh0rsw7kV0uekzg2/7w6yw0t4W8rBM3JGbhod3VQw=;
+	s=korg; t=1744915067;
+	bh=ERsrcrVIZizj36XnMz4nR0qnR4Ew4BLqHGuWq5TD0kA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JrwQ4H2CicdICuRmSiU7+GuCqVyY3+OHEjnBiAEuueq6dC1t3iKfXGcX48ExYHwkr
-	 eGVUoJIAVPZCtdx28922L1nFe/BbN1mRpXTzpXj5WJIvbLQFFiPyRrPTTYFGVrun/v
-	 jRGOy4Xr/7ueqh7vjp1xsQT1/SKlRxLIm7c6mLo8=
+	b=b8Z4x7hmGQ0nBVzEIt0LPz+EI3Gjfw9gMLXiaa2F5mETbzfIv+R6GVEiSMnT7p0M2
+	 RfNm0ZccqsASLFBOOeXVO5zWuau7ElIC2ghgt4+HW0/X9Xsn12FTn9KopoHixVkvqx
+	 5xSmabsmBb8Xou7auY0dXPdKy/CT66a9DGFQm/Uo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Tahera Fahimi <fahimitahera@gmail.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-Subject: [PATCH 6.12 352/393] selftests/landlock: Split signal_scoping_threads tests
+	Hsin-Te Yuan <yuanhsinte@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 6.13 403/414] thermal/drivers/mediatek/lvts: Disable Stage 3 thermal threshold
 Date: Thu, 17 Apr 2025 19:52:41 +0200
-Message-ID: <20250417175121.758849270@linuxfoundation.org>
+Message-ID: <20250417175127.688815108@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +64,106 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-commit bbe72274035a83159c8fff7d553b4a0b3c473690 upstream.
+commit c612cbcdf603aefb3358b2e3964dcd5aa3f827a0 upstream.
 
-Split signal_scoping_threads tests into signal_scoping_thread_before
-and signal_scoping_thread_after.
+The Stage 3 thermal threshold is currently configured during
+the controller initialization to 105 Celsius. From the kernel
+perspective, this configuration is harmful because:
+* The stage 3 interrupt that gets triggered when the threshold is
+  crossed is not handled in any way by the IRQ handler, it just gets
+  cleared. Besides, the temperature used for stage 3 comes from the
+  sensors, and the critical thermal trip points described in the
+  Devicetree will already cause a shutdown when crossed (at a lower
+  temperature, of 100 Celsius, for all SoCs currently using this
+  driver).
+* The only effect of crossing the stage 3 threshold that has been
+  observed is that it causes the machine to no longer be able to enter
+  suspend. Even if that was a result of a momentary glitch in the
+  temperature reading of a sensor (as has been observed on the
+  MT8192-based Chromebooks).
 
-Use local variables for thread synchronization.  Fix exported function.
-Replace some asserts with expects.
+For those reasons, disable the Stage 3 thermal threshold configuration.
 
-Fixes: c8994965013e ("selftests/landlock: Test signal scoping for threads")
-Cc: Günther Noack <gnoack@google.com>
-Cc: Tahera Fahimi <fahimitahera@gmail.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250318161443.279194-7-mic@digikod.net
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Reported-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
+Closes: https://lore.kernel.org/all/20241108-lvts-v1-1-eee339c6ca20@chromium.org/
+Fixes: f5f633b18234 ("thermal/drivers/mediatek: Add the Low Voltage Thermal Sensor driver")
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Link: https://lore.kernel.org/r/20250113-mt8192-lvts-filtered-suspend-fix-v2-2-07a25200c7c6@collabora.com
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../selftests/landlock/scoped_signal_test.c   | 49 +++++++++++++------
- 1 file changed, 34 insertions(+), 15 deletions(-)
+ drivers/thermal/mediatek/lvts_thermal.c |   16 ++--------------
+ 1 file changed, 2 insertions(+), 14 deletions(-)
 
-diff --git a/tools/testing/selftests/landlock/scoped_signal_test.c b/tools/testing/selftests/landlock/scoped_signal_test.c
-index 767f117703b7..d313cb626225 100644
---- a/tools/testing/selftests/landlock/scoped_signal_test.c
-+++ b/tools/testing/selftests/landlock/scoped_signal_test.c
-@@ -249,47 +249,66 @@ TEST_F(scoped_domains, check_access_signal)
- 		_metadata->exit_code = KSFT_FAIL;
- }
+--- a/drivers/thermal/mediatek/lvts_thermal.c
++++ b/drivers/thermal/mediatek/lvts_thermal.c
+@@ -65,7 +65,7 @@
+ #define LVTS_HW_FILTER				0x0
+ #define LVTS_TSSEL_CONF				0x13121110
+ #define LVTS_CALSCALE_CONF			0x300
+-#define LVTS_MONINT_CONF			0x8300318C
++#define LVTS_MONINT_CONF			0x0300318C
  
--static int thread_pipe[2];
+ #define LVTS_MONINT_OFFSET_SENSOR0		0xC
+ #define LVTS_MONINT_OFFSET_SENSOR1		0x180
+@@ -91,8 +91,6 @@
+ #define LVTS_MSR_READ_TIMEOUT_US	400
+ #define LVTS_MSR_READ_WAIT_US		(LVTS_MSR_READ_TIMEOUT_US / 2)
+ 
+-#define LVTS_HW_TSHUT_TEMP		105000
 -
- enum thread_return {
- 	THREAD_INVALID = 0,
- 	THREAD_SUCCESS = 1,
- 	THREAD_ERROR = 2,
- };
+ #define LVTS_MINIMUM_THRESHOLD		20000
  
--void *thread_func(void *arg)
-+static void *thread_sync(void *arg)
- {
-+	const int pipe_read = *(int *)arg;
- 	char buf;
+ static int golden_temp = LVTS_GOLDEN_TEMP_DEFAULT;
+@@ -145,7 +143,6 @@ struct lvts_ctrl {
+ 	struct lvts_sensor sensors[LVTS_SENSOR_MAX];
+ 	const struct lvts_data *lvts_data;
+ 	u32 calibration[LVTS_SENSOR_MAX];
+-	u32 hw_tshut_raw_temp;
+ 	u8 valid_sensor_mask;
+ 	int mode;
+ 	void __iomem *base;
+@@ -837,14 +834,6 @@ static int lvts_ctrl_init(struct device
+ 		 */
+ 		lvts_ctrl[i].mode = lvts_data->lvts_ctrl[i].mode;
  
--	if (read(thread_pipe[0], &buf, 1) != 1)
-+	if (read(pipe_read, &buf, 1) != 1)
- 		return (void *)THREAD_ERROR;
- 
- 	return (void *)THREAD_SUCCESS;
- }
- 
--TEST(signal_scoping_threads)
-+TEST(signal_scoping_thread_before)
- {
--	pthread_t no_sandbox_thread, scoped_thread;
-+	pthread_t no_sandbox_thread;
- 	enum thread_return ret = THREAD_INVALID;
-+	int thread_pipe[2];
- 
- 	drop_caps(_metadata);
- 	ASSERT_EQ(0, pipe2(thread_pipe, O_CLOEXEC));
- 
--	ASSERT_EQ(0,
--		  pthread_create(&no_sandbox_thread, NULL, thread_func, NULL));
-+	ASSERT_EQ(0, pthread_create(&no_sandbox_thread, NULL, thread_sync,
-+				    &thread_pipe[0]));
- 
--	/* Restricts the domain after creating the first thread. */
-+	/* Enforces restriction after creating the thread. */
- 	create_scoped_domain(_metadata, LANDLOCK_SCOPE_SIGNAL);
- 
--	ASSERT_EQ(0, pthread_kill(no_sandbox_thread, 0));
--	ASSERT_EQ(1, write(thread_pipe[1], ".", 1));
+-		/*
+-		 * The temperature to raw temperature must be done
+-		 * after initializing the calibration.
+-		 */
+-		lvts_ctrl[i].hw_tshut_raw_temp =
+-			lvts_temp_to_raw(LVTS_HW_TSHUT_TEMP,
+-					 lvts_data->temp_factor);
 -
--	ASSERT_EQ(0, pthread_create(&scoped_thread, NULL, thread_func, NULL));
--	ASSERT_EQ(0, pthread_kill(scoped_thread, 0));
--	ASSERT_EQ(1, write(thread_pipe[1], ".", 1));
-+	EXPECT_EQ(0, pthread_kill(no_sandbox_thread, 0));
-+	EXPECT_EQ(1, write(thread_pipe[1], ".", 1));
+ 		lvts_ctrl[i].low_thresh = INT_MIN;
+ 		lvts_ctrl[i].high_thresh = INT_MIN;
+ 	}
+@@ -919,7 +908,6 @@ static int lvts_irq_init(struct lvts_ctr
+ 	 *         10 : Selected sensor with bits 19-18
+ 	 *         11 : Reserved
+ 	 */
+-	writel(BIT(16), LVTS_PROTCTL(lvts_ctrl->base));
  
- 	EXPECT_EQ(0, pthread_join(no_sandbox_thread, (void **)&ret));
- 	EXPECT_EQ(THREAD_SUCCESS, ret);
-+
-+	EXPECT_EQ(0, close(thread_pipe[0]));
-+	EXPECT_EQ(0, close(thread_pipe[1]));
-+}
-+
-+TEST(signal_scoping_thread_after)
-+{
-+	pthread_t scoped_thread;
-+	enum thread_return ret = THREAD_INVALID;
-+	int thread_pipe[2];
-+
-+	drop_caps(_metadata);
-+	ASSERT_EQ(0, pipe2(thread_pipe, O_CLOEXEC));
-+
-+	/* Enforces restriction before creating the thread. */
-+	create_scoped_domain(_metadata, LANDLOCK_SCOPE_SIGNAL);
-+
-+	ASSERT_EQ(0, pthread_create(&scoped_thread, NULL, thread_sync,
-+				    &thread_pipe[0]));
-+
-+	EXPECT_EQ(0, pthread_kill(scoped_thread, 0));
-+	EXPECT_EQ(1, write(thread_pipe[1], ".", 1));
-+
- 	EXPECT_EQ(0, pthread_join(scoped_thread, (void **)&ret));
- 	EXPECT_EQ(THREAD_SUCCESS, ret);
+ 	/*
+ 	 * LVTS_PROTTA : Stage 1 temperature threshold
+@@ -932,8 +920,8 @@ static int lvts_irq_init(struct lvts_ctr
+ 	 *
+ 	 * writel(0x0, LVTS_PROTTA(lvts_ctrl->base));
+ 	 * writel(0x0, LVTS_PROTTB(lvts_ctrl->base));
++	 * writel(0x0, LVTS_PROTTC(lvts_ctrl->base));
+ 	 */
+-	writel(lvts_ctrl->hw_tshut_raw_temp, LVTS_PROTTC(lvts_ctrl->base));
  
--- 
-2.49.0
-
+ 	/*
+ 	 * LVTS_MONINT : Interrupt configuration register
 
 
 
