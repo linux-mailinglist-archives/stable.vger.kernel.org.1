@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D933DA92724
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:20:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63616A92968
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4241B3B0562
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:19:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B15C4A446F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:41:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A45C255246;
-	Thu, 17 Apr 2025 18:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBFC625F78D;
+	Thu, 17 Apr 2025 18:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TO2kWllE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3RTUWda"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9ED1A3178;
-	Thu, 17 Apr 2025 18:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B8C25F785;
+	Thu, 17 Apr 2025 18:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914010; cv=none; b=CvSpG6NcgwyjQZiJzLUwzn0+tquiMhwhNmVAS9i7k6TZ7+MeHIJZC3WNbGULNCek0N7xiN9dwhxFF1mNGBg8CGETiOw1xD7qaghN9vAC9YaHXs0UQxVYAmqT7ld0zrgi6DaP5Px4DXEIk31THezouOwLuuc2+teJDCJBtRmyqRg=
+	t=1744915141; cv=none; b=VQXywmOjYRzovljOwEkfqPggqHOI80QkSydUAn0itAF/1JCKKVuTZgzroofcCQbNuDDV+67CSPjskVj5mZVpnz+blYZQL3DOW8deymuzdbTmsjZPmVoLieJj/n5VNudP3IMfraFC8EjNUfw7cWtFG/CW5xggUKTtE+JpWBQNOkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914010; c=relaxed/simple;
-	bh=YQJSU4Z5nP07hxHrIPkSaZ5jBsfCTyFebRg3E0lsVJ8=;
+	s=arc-20240116; t=1744915141; c=relaxed/simple;
+	bh=6UHw0PuPEAPreJLm6QLmNiZqFRJ2P9HLbJOGWh7qp/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fXpfJN++ujCVJioh22GWDZJktlfeI5Rjcfy/qtBv38nAZxyki44VQeKlhvx6uW7Ti7wsgTk7BH77HZHN0cASZo6+ljilZ1I35svXHQya/TisKepnZ7IRe6F8GLX8V2qC8QfQ+hIsuIuINoCevVT0YOZ3anyxZqwmgZ7sQSdjADI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TO2kWllE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C31C4CEE7;
-	Thu, 17 Apr 2025 18:20:09 +0000 (UTC)
+	 MIME-Version; b=qF0bC3OWTGlwG+bTObcsm6H951FGd/T3peqQap7n/deiUltOdZKWUiqlOT+PF0MvCxa9mWN0Who6zz4BDkjAEoGVeHMQ+FG4hSOOGL0v0eEYfau0347kx2SCEpSd+0GGuCBp951ZxDnC1hZ5lnW/IueYLAs/Hh6OdRVaYfyl/pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3RTUWda; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D770CC4CEE4;
+	Thu, 17 Apr 2025 18:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914009;
-	bh=YQJSU4Z5nP07hxHrIPkSaZ5jBsfCTyFebRg3E0lsVJ8=;
+	s=korg; t=1744915141;
+	bh=6UHw0PuPEAPreJLm6QLmNiZqFRJ2P9HLbJOGWh7qp/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TO2kWllEsZl0mUAmb2orVZPDrAPRmZcbPan2+ZZh8hkFUGKlV+6Y2h79LQ2MZlZC5
-	 ITgKsoRx+NjtGEUrBJWqe9IoOXayXy2r+gB54RyNbKXyBk9jvdAuh2bcglSeilmwkH
-	 1RZADgFMljWLoqvB2JFpAw3/JGi/was2Jy75lT8I=
+	b=G3RTUWdav0Qjnl1m5TovozZvUpwj2wbeSNRtlYqYCnD7N8qY0GiTerAJ5NRIIiyQw
+	 FoekJW+C0gs2VEp9VzXVsRyeyhyhDuDlLgViKAd8BOwz+FS/I95vuUqGehYcy39QqN
+	 uXUC/dVob8umPHqWx369ZwuTturt5UL2QBblStRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 075/414] ASoC: fsl_audmix: register card device depends on dais property
+Subject: [PATCH 6.12 024/393] drm/tests: helpers: Create kunit helper to destroy a drm_display_mode
 Date: Thu, 17 Apr 2025 19:47:13 +0200
-Message-ID: <20250417175114.461420642@linuxfoundation.org>
+Message-ID: <20250417175108.563109293@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Maxime Ripard <mripard@kernel.org>
 
-[ Upstream commit 294a60e5e9830045c161181286d44ce669f88833 ]
+[ Upstream commit 13c1d5f3a7fa7b55a26e73bb9e95342374a489b2 ]
 
-In order to make the audmix device linked by audio graph card, make
-'dais' property to be optional.
+A number of test suites call functions that expect the returned
+drm_display_mode to be destroyed eventually.
 
-If 'dais' property exists, then register the imx-audmix card driver.
-otherwise, it should be linked by audio graph card.
+However, none of the tests called drm_mode_destroy, which results in a
+memory leak.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20250226100508.2352568-5-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Since drm_mode_destroy takes two pointers as argument, we can't use a
+kunit wrapper. Let's just create a helper every test suite can use.
+
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://lore.kernel.org/r/20250408-drm-kunit-drm-display-mode-memleak-v1-1-996305a2e75a@kernel.org
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Stable-dep-of: 70f29ca3117a ("drm/tests: cmdline: Fix drm_display_mode memory leak")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_audmix.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/tests/drm_kunit_helpers.c | 22 ++++++++++++++++++++++
+ include/drm/drm_kunit_helpers.h           |  3 +++
+ 2 files changed, 25 insertions(+)
 
-diff --git a/sound/soc/fsl/fsl_audmix.c b/sound/soc/fsl/fsl_audmix.c
-index 3cd9a66b70a15..7981d598ba139 100644
---- a/sound/soc/fsl/fsl_audmix.c
-+++ b/sound/soc/fsl/fsl_audmix.c
-@@ -488,11 +488,17 @@ static int fsl_audmix_probe(struct platform_device *pdev)
- 		goto err_disable_pm;
- 	}
+diff --git a/drivers/gpu/drm/tests/drm_kunit_helpers.c b/drivers/gpu/drm/tests/drm_kunit_helpers.c
+index 3c0b7824c0be3..922c4b6ed1dc9 100644
+--- a/drivers/gpu/drm/tests/drm_kunit_helpers.c
++++ b/drivers/gpu/drm/tests/drm_kunit_helpers.c
+@@ -319,6 +319,28 @@ static void kunit_action_drm_mode_destroy(void *ptr)
+ 	drm_mode_destroy(NULL, mode);
+ }
  
--	priv->pdev = platform_device_register_data(dev, "imx-audmix", 0, NULL, 0);
--	if (IS_ERR(priv->pdev)) {
--		ret = PTR_ERR(priv->pdev);
--		dev_err(dev, "failed to register platform: %d\n", ret);
--		goto err_disable_pm;
-+	/*
-+	 * If dais property exist, then register the imx-audmix card driver.
-+	 * otherwise, it should be linked by audio graph card.
-+	 */
-+	if (of_find_property(pdev->dev.of_node, "dais", NULL)) {
-+		priv->pdev = platform_device_register_data(dev, "imx-audmix", 0, NULL, 0);
-+		if (IS_ERR(priv->pdev)) {
-+			ret = PTR_ERR(priv->pdev);
-+			dev_err(dev, "failed to register platform: %d\n", ret);
-+			goto err_disable_pm;
-+		}
- 	}
++/**
++ * drm_kunit_add_mode_destroy_action() - Add a drm_destroy_mode kunit action
++ * @test: The test context object
++ * @mode: The drm_display_mode to destroy eventually
++ *
++ * Registers a kunit action that will destroy the drm_display_mode at
++ * the end of the test.
++ *
++ * If an error occurs, the drm_display_mode will be destroyed.
++ *
++ * Returns:
++ * 0 on success, an error code otherwise.
++ */
++int drm_kunit_add_mode_destroy_action(struct kunit *test,
++				      struct drm_display_mode *mode)
++{
++	return kunit_add_action_or_reset(test,
++					 kunit_action_drm_mode_destroy,
++					 mode);
++}
++EXPORT_SYMBOL_GPL(drm_kunit_add_mode_destroy_action);
++
+ /**
+  * drm_kunit_display_mode_from_cea_vic() - return a mode for CEA VIC for a KUnit test
+  * @test: The test context object
+diff --git a/include/drm/drm_kunit_helpers.h b/include/drm/drm_kunit_helpers.h
+index afdd46ef04f70..c835f113055dc 100644
+--- a/include/drm/drm_kunit_helpers.h
++++ b/include/drm/drm_kunit_helpers.h
+@@ -120,6 +120,9 @@ drm_kunit_helper_create_crtc(struct kunit *test,
+ 			     const struct drm_crtc_funcs *funcs,
+ 			     const struct drm_crtc_helper_funcs *helper_funcs);
  
- 	return 0;
++int drm_kunit_add_mode_destroy_action(struct kunit *test,
++				      struct drm_display_mode *mode);
++
+ struct drm_display_mode *
+ drm_kunit_display_mode_from_cea_vic(struct kunit *test, struct drm_device *dev,
+ 				    u8 video_code);
 -- 
 2.39.5
 
