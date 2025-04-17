@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-133890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA9D1A92879
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:35:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 176C7A925F9
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:09:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89CC4188CD58
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:35:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 943AC465561
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF4C266B77;
-	Thu, 17 Apr 2025 18:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D8B1EB1BF;
+	Thu, 17 Apr 2025 18:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kGjBpk3B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mjFm7+Ry"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B57258CDC;
-	Thu, 17 Apr 2025 18:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCD218C034;
+	Thu, 17 Apr 2025 18:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914456; cv=none; b=mggRJ2Y19ePhM3sX/llN359/4g3e+9yECL2e1imcCNlzkn7m54OXksp88ZeWFKH+EYSvhgjKQDDUlP2KOZh7rW/T9T/75+iaPHry9U6IBUureijVNBzY5UjOc7k+3A0a1+pMfFScSabODGTZ6wQkf1iW2lbxmfA1co7ayMjKZug=
+	t=1744913301; cv=none; b=eQw4nc+er+eDsUMk2lqtsByR7nsSE0S33QHqENLPkSvdKEfpQkNwE09dR2y9uVuwa9DiFGjsrglssOVeor9V/nYW+k1i3OUeZYyw1gGpTtrgCYePmBp05ea3rqlnppyhc2z2vLuoMzilfAkxPrEAYWeLtvf/Zv7ZrL2zLIn2ydg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914456; c=relaxed/simple;
-	bh=mzAQ4U9nO42eXIH+2XZMBaSb/zIxOtvtexxvEmLusYU=;
+	s=arc-20240116; t=1744913301; c=relaxed/simple;
+	bh=5sKGFIES6P5xYXtmahnoPL1jZpGMDfg74nIG4wg/dM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UkzJXG5jEX/mA1K8LjBdlhOHnSmtON8Oe9yhPR+BXvojeU2tzRyiqrE4aRou0GReMM9YAXTm+S4Htiza51ISmLGf/LWytOSHAxYhtqf87fTRhdVgdEf9qxzQLv+/G/8TTNDnHjksnhF7nao39yEqR118RQ3yxXTZbUsKNrZLjtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kGjBpk3B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF989C4CEE4;
-	Thu, 17 Apr 2025 18:27:35 +0000 (UTC)
+	 MIME-Version; b=IvAZF9ugCiJdErvpP/LZounrdBF75mla5/ne/kHx7BCDL9ihdUvXNDBq8VgaEcEOdUJ+Y6HTDaSEafSySn6ZfzSjBtU7ZyaJZPhP2iclRFz4hf8LWFIBcfBgI1j5Sn5fNA4jaaD0V60LUYdE+TQnTuD4dyIGW2jS2XxhRd5wc7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mjFm7+Ry; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67382C4CEE4;
+	Thu, 17 Apr 2025 18:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914456;
-	bh=mzAQ4U9nO42eXIH+2XZMBaSb/zIxOtvtexxvEmLusYU=;
+	s=korg; t=1744913300;
+	bh=5sKGFIES6P5xYXtmahnoPL1jZpGMDfg74nIG4wg/dM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kGjBpk3BWSLuScKFcqWNkUNshyJoAqoKXz2JlNLQFoyZkpLig9Ul6dPTIpdEkOXKb
-	 30lJFp7t5d2nafzS7dySwkCumbZS1vfIq0rHvpSaJG+GlIPjRxLkqycjc2y1JXI6jd
-	 6TiEneHiTbNEhXMzVsMy2R4J5Q9BuyfBYB1al0rI=
+	b=mjFm7+Ry8azQS75d/Kwbc0GpmTj2WdH/WHlViTVXJB/iIDPbOSilQii7z6/U/3Npw
+	 IJIDTyHAWL/NrKXxy9aDatNj+cg/9PFNe11QBXOP7BsaDsRFs4CuEmRhPcZAhhUM+Q
+	 UMCHRsDn7CuC1PneRa4jnZiAV8wiU75AOorwEOeg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.13 222/414] media: streamzap: prevent processing IR data on URB failure
+	syzbot+58928048fd1416f1457c@syzkaller.appspotmail.com,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.14 292/449] io_uring/kbuf: reject zero sized provided buffers
 Date: Thu, 17 Apr 2025 19:49:40 +0200
-Message-ID: <20250417175120.366601831@linuxfoundation.org>
+Message-ID: <20250417175129.833022963@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,121 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 549f6d348167fb2f7800ed7c8d4bce9630c74498 upstream.
+commit cf960726eb65e8d0bfecbcce6cf95f47b1ffa6cc upstream.
 
-If streamzap_callback() receives an urb with any non-critical error
-status, i.e. any error code other than -ECONNRESET, -ENOENT or -ESHUTDOWN,
-it will try to process IR data, ignoring a possible transfer failure.
+This isn't fixing a real issue, but there's also zero point in going
+through group and buffer setup, when the buffers are going to be
+rejected once attempted to get used.
 
-Make streamzap_callback() process IR data only when urb->status is 0.
-Move processing logic to a separate function to make code cleaner and
-more similar to the URB completion handlers in other RC drivers.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 19770693c354 ("V4L/DVB: staging/lirc: add lirc_streamzap driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reported-by: syzbot+58928048fd1416f1457c@syzkaller.appspotmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/streamzap.c |   68 ++++++++++++++++++++++++-------------------
- 1 file changed, 38 insertions(+), 30 deletions(-)
+ io_uring/kbuf.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/rc/streamzap.c
-+++ b/drivers/media/rc/streamzap.c
-@@ -138,39 +138,10 @@ static void sz_push_half_space(struct st
- 	sz_push_full_space(sz, value & SZ_SPACE_MASK);
- }
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -480,6 +480,8 @@ int io_provide_buffers_prep(struct io_ki
+ 	p->nbufs = tmp;
+ 	p->addr = READ_ONCE(sqe->addr);
+ 	p->len = READ_ONCE(sqe->len);
++	if (!p->len)
++		return -EINVAL;
  
--/*
-- * streamzap_callback - usb IRQ handler callback
-- *
-- * This procedure is invoked on reception of data from
-- * the usb remote.
-- */
--static void streamzap_callback(struct urb *urb)
-+static void sz_process_ir_data(struct streamzap_ir *sz, int len)
- {
--	struct streamzap_ir *sz;
- 	unsigned int i;
--	int len;
--
--	if (!urb)
--		return;
--
--	sz = urb->context;
--	len = urb->actual_length;
--
--	switch (urb->status) {
--	case -ECONNRESET:
--	case -ENOENT:
--	case -ESHUTDOWN:
--		/*
--		 * this urb is terminated, clean up.
--		 * sz might already be invalid at this point
--		 */
--		dev_err(sz->dev, "urb terminated, status: %d\n", urb->status);
--		return;
--	default:
--		break;
--	}
- 
--	dev_dbg(sz->dev, "%s: received urb, len %d\n", __func__, len);
- 	for (i = 0; i < len; i++) {
- 		dev_dbg(sz->dev, "sz->buf_in[%d]: %x\n",
- 			i, (unsigned char)sz->buf_in[i]);
-@@ -219,6 +190,43 @@ static void streamzap_callback(struct ur
- 	}
- 
- 	ir_raw_event_handle(sz->rdev);
-+}
-+
-+/*
-+ * streamzap_callback - usb IRQ handler callback
-+ *
-+ * This procedure is invoked on reception of data from
-+ * the usb remote.
-+ */
-+static void streamzap_callback(struct urb *urb)
-+{
-+	struct streamzap_ir *sz;
-+	int len;
-+
-+	if (!urb)
-+		return;
-+
-+	sz = urb->context;
-+	len = urb->actual_length;
-+
-+	switch (urb->status) {
-+	case 0:
-+		dev_dbg(sz->dev, "%s: received urb, len %d\n", __func__, len);
-+		sz_process_ir_data(sz, len);
-+		break;
-+	case -ECONNRESET:
-+	case -ENOENT:
-+	case -ESHUTDOWN:
-+		/*
-+		 * this urb is terminated, clean up.
-+		 * sz might already be invalid at this point
-+		 */
-+		dev_err(sz->dev, "urb terminated, status: %d\n", urb->status);
-+		return;
-+	default:
-+		break;
-+	}
-+
- 	usb_submit_urb(urb, GFP_ATOMIC);
- }
- 
+ 	if (check_mul_overflow((unsigned long)p->len, (unsigned long)p->nbufs,
+ 				&size))
 
 
 
