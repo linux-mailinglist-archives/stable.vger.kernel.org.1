@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-133760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56C6FA9274D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:22:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E375A92977
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA96E8A74E6
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:22:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FD35176372
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:41:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E210825EF93;
-	Thu, 17 Apr 2025 18:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5055C1B3934;
+	Thu, 17 Apr 2025 18:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zuMRDoLk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJJoEzPQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE612571C6;
-	Thu, 17 Apr 2025 18:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076582571A0;
+	Thu, 17 Apr 2025 18:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914058; cv=none; b=K92mcHo5VEfg57snVXfFnwJphs7zh6vqGeCtNbBJiBoEtmKjaGZt8QxL+9+gYYfAHIUCXZIDglGDp91ZLDipFIG6HkhEAGG5/xywJuaDKc2zQBuI/jcYTzKsAzPhpuJbr1PySzz3ldWCDd0MD25TzjdByFHjwee9zjL7Q4AnhvA=
+	t=1744915170; cv=none; b=DH0Pc8cW7cK776FNIUUbkG1h03Mr2wFRUWeGYrZ/e2ZHEyHHIZZUO318mL20O4S051H63jGd+QzvVV9sU0FA2a2W8qE6ygiNYuwJxMJQlt3IP23rtk3Zti7gfcfMfgFcp9MT4TNMbPuFe8/ZTeFVB3ZSPmSq+ZWXvjHuB0lr26Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914058; c=relaxed/simple;
-	bh=7+QbUaODbF9wJhlLHMeYo7dXlrWTrwyXuVCUzEzmkLg=;
+	s=arc-20240116; t=1744915170; c=relaxed/simple;
+	bh=NvYCh16aMkbL0ughi7TajFypcQQDwD+I7ApM2nhXYes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iv6Qr0qoZpNWyCFpJ8SrhII1GVoA/pUHWwiKwoyt6KEPLTXx2oP57ds5Pf+sE8B7TEE/EMkusJKPHVSJkAVH9T/13r+jZ8YiBGe7YYZoc8+EM2HiGd2+Tqzx/EWLyDaDLxNQTicBlWvhZoPTECa2dXLG0y4IEHnNzmH0/lGroiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zuMRDoLk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC0CC4CEE7;
-	Thu, 17 Apr 2025 18:20:57 +0000 (UTC)
+	 MIME-Version; b=PC58ZxoEjmIlxkoobptXZ9+/uJtY09V6Cp7v3fSOp+U3BTMv4/j8IThs0co0IacESE6pVFZSZ+5pdZqG+u4e9pCZUPSvQdRUEa0MQseBADpDADmfnTB59E7cYNuyKdXrgk0u87q6L1bmranuOivIw4tT4tfE+6wte9H/eTAiBQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJJoEzPQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B3C4C4CEE4;
+	Thu, 17 Apr 2025 18:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914058;
-	bh=7+QbUaODbF9wJhlLHMeYo7dXlrWTrwyXuVCUzEzmkLg=;
+	s=korg; t=1744915169;
+	bh=NvYCh16aMkbL0ughi7TajFypcQQDwD+I7ApM2nhXYes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zuMRDoLkcHAbBCa+SEbI4sc8GGzTDT0zh9nD4CzPPvTADIr9doW3Cc5dfF0p+vm9D
-	 8R71bjk8DFlbZ+lZ7bjbw8aFOL+NTn4WDlqAJhxzxIV5BqVta0v6Yrd/QMKmZw9yDn
-	 jpTHZGl5M1vg+mszAbY0w0/depj7EB1N8BLbe3EQ=
+	b=hJJoEzPQGLY8TzL9S5xiWogFyHEZurGxd+CYjsV9qOde6U2WCcEAZTnvzuUwYlajt
+	 PdLq4vZ4llXazM59zIoEYnkVI7hFoUj2deJmh6tRqDcP/VLaWeZhZWTmWrx2UmuwWT
+	 SVu5QlERfBR5UJH8oiPHqpaNnSAeWrQhnDFVp608=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 092/414] wifi: mac80211: add strict mode disabling workarounds
+	Yong Wu <yong.wu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Sasha Levin <sashal@kernel.org>,
+	Chen-Yu Tsai <wenst@chromium.org>
+Subject: [PATCH 6.12 041/393] iommu/mediatek: Fix NULL pointer deference in mtk_iommu_device_group
 Date: Thu, 17 Apr 2025 19:47:30 +0200
-Message-ID: <20250417175115.142579556@linuxfoundation.org>
+Message-ID: <20250417175109.246762028@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,254 +65,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 
-[ Upstream commit 3ad4fce66e4f9d82abfc366707757e29cc14a9d2 ]
+[ Upstream commit 38e8844005e6068f336a3ad45451a562a0040ca1 ]
 
-Add a strict mode where we disable certain workarounds and have
-additional checks such as, for now, that VHT capabilities from
-association response match those from beacon/probe response. We
-can extend the checks in the future.
+Currently, mtk_iommu calls during probe iommu_device_register before
+the hw_list from driver data is initialized. Since iommu probing issue
+fix, it leads to NULL pointer dereference in mtk_iommu_device_group when
+hw_list is accessed with list_first_entry (not null safe).
 
-Make it an opt-in setting by the driver so it can be set there
-in some driver-specific way, for example. Also allow setting
-this one hw flag through the hwflags debugfs, by writing a new
-strict=0 or strict=1 value.
+So, change the call order to ensure iommu_device_register is called
+after the driver data are initialized.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250205110958.5cecb0469479.I4a69617dc60ba0d6308416ffbc3102cfd08ba068@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 9e3a2a643653 ("iommu/mediatek: Adapt sharing and non-sharing pgtable case")
+Fixes: bcb81ac6ae3c ("iommu: Get DT/ACPI parsing into the proper probe path")
+Reviewed-by: Yong Wu <yong.wu@mediatek.com>
+Tested-by: Chen-Yu Tsai <wenst@chromium.org> # MT8183 Juniper, MT8186 Tentacruel
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+Link: https://lore.kernel.org/r/20250403-fix-mtk-iommu-error-v2-1-fe8b18f8b0a8@collabora.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/mac80211.h |  6 ++++++
- net/mac80211/debugfs.c | 44 +++++++++++++++++++++++++++++++++++++++--
- net/mac80211/mlme.c    | 45 +++++++++++++++++++++++++++++-------------
- 3 files changed, 79 insertions(+), 16 deletions(-)
+ drivers/iommu/mtk_iommu.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index ab8dce1f2c271..b33acea0f5258 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -2845,6 +2845,11 @@ struct ieee80211_txq {
-  *	implements MLO, so operation can continue on other links when one
-  *	link is switching.
-  *
-+ * @IEEE80211_HW_STRICT: strictly enforce certain things mandated by the spec
-+ *	but otherwise ignored/worked around for interoperability. This is a
-+ *	HW flag so drivers can opt in according to their own control, e.g. in
-+ *	testing.
-+ *
-  * @NUM_IEEE80211_HW_FLAGS: number of hardware flags, used for sizing arrays
-  */
- enum ieee80211_hw_flags {
-@@ -2905,6 +2910,7 @@ enum ieee80211_hw_flags {
- 	IEEE80211_HW_DISALLOW_PUNCTURING,
- 	IEEE80211_HW_DISALLOW_PUNCTURING_5GHZ,
- 	IEEE80211_HW_HANDLES_QUIET_CSA,
-+	IEEE80211_HW_STRICT,
+diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
+index 6a2707fe7a78c..32deab732209e 100644
+--- a/drivers/iommu/mtk_iommu.c
++++ b/drivers/iommu/mtk_iommu.c
+@@ -1371,15 +1371,6 @@ static int mtk_iommu_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, data);
+ 	mutex_init(&data->mutex);
  
- 	/* keep last, obviously */
- 	NUM_IEEE80211_HW_FLAGS
-diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
-index be2e486907f94..ac808702bc108 100644
---- a/net/mac80211/debugfs.c
-+++ b/net/mac80211/debugfs.c
-@@ -492,6 +492,7 @@ static const char *hw_flag_names[] = {
- 	FLAG(DISALLOW_PUNCTURING),
- 	FLAG(DISALLOW_PUNCTURING_5GHZ),
- 	FLAG(HANDLES_QUIET_CSA),
-+	FLAG(STRICT),
- #undef FLAG
- };
+-	ret = iommu_device_sysfs_add(&data->iommu, dev, NULL,
+-				     "mtk-iommu.%pa", &ioaddr);
+-	if (ret)
+-		goto out_link_remove;
+-
+-	ret = iommu_device_register(&data->iommu, &mtk_iommu_ops, dev);
+-	if (ret)
+-		goto out_sysfs_remove;
+-
+ 	if (MTK_IOMMU_HAS_FLAG(data->plat_data, SHARE_PGTABLE)) {
+ 		list_add_tail(&data->list, data->plat_data->hw_list);
+ 		data->hw_list = data->plat_data->hw_list;
+@@ -1389,19 +1380,28 @@ static int mtk_iommu_probe(struct platform_device *pdev)
+ 		data->hw_list = &data->hw_list_head;
+ 	}
  
-@@ -524,6 +525,46 @@ static ssize_t hwflags_read(struct file *file, char __user *user_buf,
- 	return rv;
- }
- 
-+static ssize_t hwflags_write(struct file *file, const char __user *user_buf,
-+			     size_t count, loff_t *ppos)
-+{
-+	struct ieee80211_local *local = file->private_data;
-+	char buf[100];
-+	int val;
++	ret = iommu_device_sysfs_add(&data->iommu, dev, NULL,
++				     "mtk-iommu.%pa", &ioaddr);
++	if (ret)
++		goto out_list_del;
 +
-+	if (count >= sizeof(buf))
-+		return -EINVAL;
++	ret = iommu_device_register(&data->iommu, &mtk_iommu_ops, dev);
++	if (ret)
++		goto out_sysfs_remove;
 +
-+	if (copy_from_user(buf, user_buf, count))
-+		return -EFAULT;
-+
-+	if (count && buf[count - 1] == '\n')
-+		buf[count - 1] = '\0';
-+	else
-+		buf[count] = '\0';
-+
-+	if (sscanf(buf, "strict=%d", &val) == 1) {
-+		switch (val) {
-+		case 0:
-+			ieee80211_hw_set(&local->hw, STRICT);
-+			return count;
-+		case 1:
-+			__clear_bit(IEEE80211_HW_STRICT, local->hw.flags);
-+			return count;
-+		default:
-+			return -EINVAL;
-+		}
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static const struct file_operations hwflags_ops = {
-+	.open = simple_open,
-+	.read = hwflags_read,
-+	.write = hwflags_write,
-+};
-+
- static ssize_t misc_read(struct file *file, char __user *user_buf,
- 			 size_t count, loff_t *ppos)
- {
-@@ -574,7 +615,6 @@ static ssize_t queues_read(struct file *file, char __user *user_buf,
- 	return simple_read_from_buffer(user_buf, count, ppos, buf, res);
- }
+ 	if (MTK_IOMMU_IS_TYPE(data->plat_data, MTK_IOMMU_TYPE_MM)) {
+ 		ret = component_master_add_with_match(dev, &mtk_iommu_com_ops, match);
+ 		if (ret)
+-			goto out_list_del;
++			goto out_device_unregister;
+ 	}
+ 	return ret;
  
--DEBUGFS_READONLY_FILE_OPS(hwflags);
- DEBUGFS_READONLY_FILE_OPS(queues);
- DEBUGFS_READONLY_FILE_OPS(misc);
- 
-@@ -651,7 +691,7 @@ void debugfs_hw_add(struct ieee80211_local *local)
- #ifdef CONFIG_PM
- 	DEBUGFS_ADD_MODE(reset, 0200);
- #endif
--	DEBUGFS_ADD(hwflags);
-+	DEBUGFS_ADD_MODE(hwflags, 0600);
- 	DEBUGFS_ADD(user_power);
- 	DEBUGFS_ADD(power);
- 	DEBUGFS_ADD(hw_conf);
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 0e3db0c2920bc..4153cfededb62 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -168,6 +168,9 @@ ieee80211_determine_ap_chan(struct ieee80211_sub_if_data *sdata,
- 	bool no_vht = false;
- 	u32 ht_cfreq;
- 
-+	if (ieee80211_hw_check(&sdata->local->hw, STRICT))
-+		ignore_ht_channel_mismatch = false;
-+
- 	*chandef = (struct cfg80211_chan_def) {
- 		.chan = channel,
- 		.width = NL80211_CHAN_WIDTH_20_NOHT,
-@@ -387,7 +390,7 @@ ieee80211_verify_peer_he_mcs_support(struct ieee80211_sub_if_data *sdata,
- 	 * zeroes, which is nonsense, and completely inconsistent with itself
- 	 * (it doesn't have 8 streams). Accept the settings in this case anyway.
- 	 */
--	if (!ap_min_req_set)
-+	if (!ieee80211_hw_check(&sdata->local->hw, STRICT) && !ap_min_req_set)
- 		return true;
- 
- 	/* make sure the AP is consistent with itself
-@@ -447,7 +450,7 @@ ieee80211_verify_sta_he_mcs_support(struct ieee80211_sub_if_data *sdata,
- 	 * zeroes, which is nonsense, and completely inconsistent with itself
- 	 * (it doesn't have 8 streams). Accept the settings in this case anyway.
- 	 */
--	if (!ap_min_req_set)
-+	if (!ieee80211_hw_check(&sdata->local->hw, STRICT) && !ap_min_req_set)
- 		return true;
- 
- 	/* Need to go over for 80MHz, 160MHz and for 80+80 */
-@@ -1214,13 +1217,15 @@ static bool ieee80211_add_vht_ie(struct ieee80211_sub_if_data *sdata,
- 	 * Some APs apparently get confused if our capabilities are better
- 	 * than theirs, so restrict what we advertise in the assoc request.
- 	 */
--	if (!(ap_vht_cap->vht_cap_info &
--			cpu_to_le32(IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE)))
--		cap &= ~(IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE |
--			 IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE);
--	else if (!(ap_vht_cap->vht_cap_info &
--			cpu_to_le32(IEEE80211_VHT_CAP_MU_BEAMFORMER_CAPABLE)))
--		cap &= ~IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE;
-+	if (!ieee80211_hw_check(&local->hw, STRICT)) {
-+		if (!(ap_vht_cap->vht_cap_info &
-+				cpu_to_le32(IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE)))
-+			cap &= ~(IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE |
-+				 IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE);
-+		else if (!(ap_vht_cap->vht_cap_info &
-+				cpu_to_le32(IEEE80211_VHT_CAP_MU_BEAMFORMER_CAPABLE)))
-+			cap &= ~IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE;
-+	}
- 
- 	/*
- 	 * If some other vif is using the MU-MIMO capability we cannot associate
-@@ -1262,14 +1267,16 @@ static bool ieee80211_add_vht_ie(struct ieee80211_sub_if_data *sdata,
- 	return mu_mimo_owner;
- }
- 
--static void ieee80211_assoc_add_rates(struct sk_buff *skb,
-+static void ieee80211_assoc_add_rates(struct ieee80211_local *local,
-+				      struct sk_buff *skb,
- 				      enum nl80211_chan_width width,
- 				      struct ieee80211_supported_band *sband,
- 				      struct ieee80211_mgd_assoc_data *assoc_data)
- {
- 	u32 rates;
- 
--	if (assoc_data->supp_rates_len) {
-+	if (assoc_data->supp_rates_len &&
-+	    !ieee80211_hw_check(&local->hw, STRICT)) {
- 		/*
- 		 * Get all rates supported by the device and the AP as
- 		 * some APs don't like getting a superset of their rates
-@@ -1483,7 +1490,7 @@ static size_t ieee80211_assoc_link_elems(struct ieee80211_sub_if_data *sdata,
- 		*capab |= WLAN_CAPABILITY_SPECTRUM_MGMT;
- 
- 	if (sband->band != NL80211_BAND_S1GHZ)
--		ieee80211_assoc_add_rates(skb, width, sband, assoc_data);
-+		ieee80211_assoc_add_rates(local, skb, width, sband, assoc_data);
- 
- 	if (*capab & WLAN_CAPABILITY_SPECTRUM_MGMT ||
- 	    *capab & WLAN_CAPABILITY_RADIO_MEASURE) {
-@@ -1927,7 +1934,8 @@ static int ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
- 	 * for some reason check it and want it to be set, set the bit for all
- 	 * pre-EHT connections as we used to do.
- 	 */
--	if (link->u.mgd.conn.mode < IEEE80211_CONN_MODE_EHT)
-+	if (link->u.mgd.conn.mode < IEEE80211_CONN_MODE_EHT &&
-+	    !ieee80211_hw_check(&local->hw, STRICT))
- 		capab |= WLAN_CAPABILITY_ESS;
- 
- 	/* add the elements for the assoc (main) link */
-@@ -4802,7 +4810,7 @@ static bool ieee80211_assoc_config_link(struct ieee80211_link_data *link,
- 	 * 2G/3G/4G wifi routers, reported models include the "Onda PN51T",
- 	 * "Vodafone PocketWiFi 2", "ZTE MF60" and a similar T-Mobile device.
- 	 */
--	if (!is_6ghz &&
-+	if (!ieee80211_hw_check(&local->hw, STRICT) && !is_6ghz &&
- 	    ((assoc_data->wmm && !elems->wmm_param) ||
- 	     (link->u.mgd.conn.mode >= IEEE80211_CONN_MODE_HT &&
- 	      (!elems->ht_cap_elem || !elems->ht_operation)) ||
-@@ -4938,6 +4946,15 @@ static bool ieee80211_assoc_config_link(struct ieee80211_link_data *link,
- 				bss_vht_cap = (const void *)elem->data;
- 		}
- 
-+		if (ieee80211_hw_check(&local->hw, STRICT) &&
-+		    (!bss_vht_cap || memcmp(bss_vht_cap, elems->vht_cap_elem,
-+					    sizeof(*bss_vht_cap)))) {
-+			rcu_read_unlock();
-+			ret = false;
-+			link_info(link, "VHT capabilities mismatch\n");
-+			goto out;
-+		}
-+
- 		ieee80211_vht_cap_ie_to_sta_vht_cap(sdata, sband,
- 						    elems->vht_cap_elem,
- 						    bss_vht_cap, link_sta);
+-out_list_del:
+-	list_del(&data->list);
++out_device_unregister:
+ 	iommu_device_unregister(&data->iommu);
+ out_sysfs_remove:
+ 	iommu_device_sysfs_remove(&data->iommu);
+-out_link_remove:
++out_list_del:
++	list_del(&data->list);
+ 	if (MTK_IOMMU_IS_TYPE(data->plat_data, MTK_IOMMU_TYPE_MM))
+ 		device_link_remove(data->smicomm_dev, dev);
+ out_runtime_disable:
 -- 
 2.39.5
 
