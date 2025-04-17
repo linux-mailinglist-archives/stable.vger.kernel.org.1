@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-134398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CA67A92AD8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A01B1A926AA
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:15:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 053251B6515E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BED4D17773A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:15:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56822257AD1;
-	Thu, 17 Apr 2025 18:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A89A3594D;
+	Thu, 17 Apr 2025 18:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PoW49vr3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FsnSZAYw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122A1257AC3;
-	Thu, 17 Apr 2025 18:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF721A3178;
+	Thu, 17 Apr 2025 18:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916008; cv=none; b=BCo9asZG6r52IreOlBg5y6g8ik/GEwQBkTwu/Z4Hb7XhDrK7awl8KacIN7NJYNa3c7Ow5XbF8L8qIzm3tuVdJNR06FsLzORQCe/D/NHgcbBGQE9uuIYY9xtGHAmW9NbussijPfu4GjbppKdoWQxPLfXqQX35Hio5jD7MrNy9Ejo=
+	t=1744913725; cv=none; b=Nx57vP5Rz+RDde4v51+PGo5cgyeSnLdzIVveHKovVof93PmA+8LsNW7RJUc/x0D6Vk4SgG/1mynP39ZLTxMYxPlSo6MXFkzM6nLNq/g4nicJrLLK3LCi9mqmWaU7rl8w+dbQtOhVm2iaZDZtI0PYoNOUaf43iJSKwFI7Dee9teU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916008; c=relaxed/simple;
-	bh=/ojVC2hHpfIM88fSFYbAqmu7J/u8J7+W6rRIjNqqDZc=;
+	s=arc-20240116; t=1744913725; c=relaxed/simple;
+	bh=z5nQHlbeRzKn+KgyXLVv5EQ24IpsOzGSAMFXokaELgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dhHJ6zDrtpAniezJomUeZepSDXoFuRbzVqwmqKxWpI+7Jpnerv0mh+SgUD/2HUjo4MI9hi5fkEvleWUgO8+w+axISgaU85PoYTVPLckic99HoBVACB90QkIywNYzuZ9OeWwW5zMo/BHK/frbvidcqMIfMFsgCIoeatFQcXbgjCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PoW49vr3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30FF9C4CEE4;
-	Thu, 17 Apr 2025 18:53:26 +0000 (UTC)
+	 MIME-Version; b=iR0IV10BXUz9wK9YECGFONz8f24Vhkrjx/9Vn5S8T8MbrPO8hmI0+SK4jk4TbtsocnfoY+4yYUf2NaxE3sFxoPymqZ/LW6j/HUldpE+OujTpRO8NBi2mbSmQXGfBZ4Y4skDlTFtR8LQDJHHMAQzASviRbQUvHvTZynLU+WbldAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FsnSZAYw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDB23C4CEE4;
+	Thu, 17 Apr 2025 18:15:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916007;
-	bh=/ojVC2hHpfIM88fSFYbAqmu7J/u8J7+W6rRIjNqqDZc=;
+	s=korg; t=1744913724;
+	bh=z5nQHlbeRzKn+KgyXLVv5EQ24IpsOzGSAMFXokaELgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PoW49vr36zQG8CXNioVfie2nvukwlmOjWvS7OutF33bxPxjd346mgalx6potglE05
-	 faxOEQOmfyQRX1OSaQsGBCtWCfHkwwNN95ruC9bfrBYjGWBaisisOy4rEAwTKaTeEW
-	 nvjHP9epRe7KPL2TPgL1wrUtAA7zi7DktoXDwC/4=
+	b=FsnSZAYwx7EPubtyI5cZ9lcnwqGn1dRCtUwzkWaqWgY7cDf6rjpaTB1CVmvMrxzv+
+	 T7MITewTGjfbEUNCgi31QzMgS1Mra7FGsP3HrvgySvjOTCOFHvcnk/+onmwKFfmFcE
+	 NHgX4uG+rbm4ieSdoONNpL1gM5IZI24DDQbzUxoA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	David Hildenbrand <david@redhat.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Nanyong Sun <sunnanyong@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 312/393] mm/hwpoison: introduce folio_contain_hwpoisoned_page() helper
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.14 433/449] ring-buffer: Use flush_kernel_vmap_range() over flush_dcache_folio()
 Date: Thu, 17 Apr 2025 19:52:01 +0200
-Message-ID: <20250417175120.159491062@linuxfoundation.org>
+Message-ID: <20250417175135.727650139@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,80 +69,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjiang Tu <tujinjiang@huawei.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 5f5ee52d4f58605330b09851273d6e56aaadd29e upstream.
+commit e4d4b8670c44cdd22212cab3c576e2d317efa67c upstream.
 
-Patch series "mm/vmscan: don't try to reclaim hwpoison folio".
+Some architectures do not have data cache coherency between user and
+kernel space. For these architectures, the cache needs to be flushed on
+both the kernel and user addresses so that user space can see the updates
+the kernel has made.
 
-Fix a bug during memory reclaim if folio is hwpoisoned.
+Instead of using flush_dcache_folio() and playing with virt_to_folio()
+within the call to that function, use flush_kernel_vmap_range() which
+takes the virtual address and does the work for those architectures that
+need it.
 
+This also fixes a bug where the flush of the reader page only flushed one
+page. If the sub-buffer order is 1 or more, where the sub-buffer size
+would be greater than a page, it would miss the rest of the sub-buffer
+content, as the "reader page" is not just a page, but the size of a
+sub-buffer.
 
-This patch (of 2):
+Link: https://lore.kernel.org/all/CAG48ez3w0my4Rwttbc5tEbNsme6tc0mrSN95thjXUFaJ3aQ6SA@mail.gmail.com/
 
-Introduce helper folio_contain_hwpoisoned_page() to check if the entire
-folio is hwpoisoned or it contains hwpoisoned pages.
-
-Link: https://lkml.kernel.org/r/20250318083939.987651-1-tujinjiang@huawei.com
-Link: https://lkml.kernel.org/r/20250318083939.987651-2-tujinjiang@huawei.com
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Nanyong Sun <sunnanyong@huawei.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Vincent Donnefort <vdonnefort@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Mike Rapoport <rppt@kernel.org>
+Link: https://lore.kernel.org/20250402144953.920792197@goodmis.org
+Fixes: 117c39200d9d7 ("ring-buffer: Introducing ring-buffer mapping functions");
+Suggested-by: Jann Horn <jannh@google.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/page-flags.h |    6 ++++++
- mm/memory_hotplug.c        |    3 +--
- mm/shmem.c                 |    3 +--
- 3 files changed, 8 insertions(+), 4 deletions(-)
+ kernel/trace/ring_buffer.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -1111,6 +1111,12 @@ static inline bool is_page_hwpoison(cons
- 	return folio_test_hugetlb(folio) && PageHWPoison(&folio->page);
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -5963,7 +5963,7 @@ static void rb_update_meta_page(struct r
+ 	meta->read = cpu_buffer->read;
+ 
+ 	/* Some archs do not have data cache coherency between kernel and user-space */
+-	flush_dcache_folio(virt_to_folio(cpu_buffer->meta_page));
++	flush_kernel_vmap_range(cpu_buffer->meta_page, PAGE_SIZE);
  }
  
-+static inline bool folio_contain_hwpoisoned_page(struct folio *folio)
-+{
-+	return folio_test_hwpoison(folio) ||
-+	    (folio_test_large(folio) && folio_test_has_hwpoisoned(folio));
-+}
-+
- bool is_free_buddy_page(const struct page *page);
+ static void
+@@ -7278,7 +7278,8 @@ consume:
  
- PAGEFLAG(Isolated, isolated, PF_ANY);
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1801,8 +1801,7 @@ static void do_migrate_range(unsigned lo
- 		if (unlikely(page_folio(page) != folio))
- 			goto put_folio;
+ out:
+ 	/* Some archs do not have data cache coherency between kernel and user-space */
+-	flush_dcache_folio(virt_to_folio(cpu_buffer->reader_page->page));
++	flush_kernel_vmap_range(cpu_buffer->reader_page->page,
++				buffer->subbuf_size + BUF_PAGE_HDR_SIZE);
  
--		if (folio_test_hwpoison(folio) ||
--		    (folio_test_large(folio) && folio_test_has_hwpoisoned(folio))) {
-+		if (folio_contain_hwpoisoned_page(folio)) {
- 			if (WARN_ON(folio_test_lru(folio)))
- 				folio_isolate_lru(folio);
- 			if (folio_mapped(folio)) {
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -3042,8 +3042,7 @@ shmem_write_begin(struct file *file, str
- 	if (ret)
- 		return ret;
+ 	rb_update_meta_page(cpu_buffer);
  
--	if (folio_test_hwpoison(folio) ||
--	    (folio_test_large(folio) && folio_test_has_hwpoisoned(folio))) {
-+	if (folio_contain_hwpoisoned_page(folio)) {
- 		folio_unlock(folio);
- 		folio_put(folio);
- 		return -EIO;
 
 
 
