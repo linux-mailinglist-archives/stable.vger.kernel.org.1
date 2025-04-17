@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-133983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4E57A92904
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:39:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30B40A92A90
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:52:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 256AE3A9E1B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADC144A6726
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA312627FC;
-	Thu, 17 Apr 2025 18:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05552580F1;
+	Thu, 17 Apr 2025 18:50:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQpz//lJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d5JOY4D+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A46E2627E9;
-	Thu, 17 Apr 2025 18:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE6F256C79;
+	Thu, 17 Apr 2025 18:50:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914737; cv=none; b=expD4dhbOV3aWa1ZzknghUOYRgKFS8w0hFRfcdOjG7yiDsvTWkpvZN+n/qcZv8V55ftpajM43HjLt6kVJUDrsrycGZ+BGxgFDrbXDwNWPZL839KkxaxTQ41YRQKp6/Lpufh2BBvc5kJ7HwRck5GxpnnsMPz7fdxaP9okjnh0pFY=
+	t=1744915825; cv=none; b=SIRdGmmp8tglLEoLXEU8xMvSFuR2k8bBKQuRbzb5/oL+qDAQkhvh8Gsc8SQWESjLag7TJUmc4/Q9HAPtmkf/kGUovSoH75LMDWlMnNHHmRDCLiWcHMyNcrZIvaYV23GCnFqfvNgs24iTKe10GRdSSHjC18A5T3OPu6Z/tcAyXzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914737; c=relaxed/simple;
-	bh=qfWGYuS5MDXRdwxnmHsCJBX76C+MfM1S1IUQtRdm9vo=;
+	s=arc-20240116; t=1744915825; c=relaxed/simple;
+	bh=Q90m5EDc/V900k092uWcOCcW7JYcjBLlK0tQ/fHQETQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V0Fxio4540ZN8jo9Nu04nzYk5Z/8QSQtFCsWgDDMpcN2ssipxOModjH3f14lUqCPaqFvujF3TveqZt+hkaPV/aOSJNmlhzIOpX6JiQ4p4pEorD0XCv541T7s9LpX5cjz7wF6cdTe2jZy3KA5moQegBW14s0AfUCao0gZtB4GRfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQpz//lJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE91FC4CEE4;
-	Thu, 17 Apr 2025 18:32:16 +0000 (UTC)
+	 MIME-Version; b=kl4QUIAUXfqNr4s4GSf9JM4al8gQsPpT/DOhTNeSE1nvlDAZejXClr8NxlZBRZ+M5aRJJo56BREGopqxk1M1gm3pwnUv7zXi8T7D1SyXxhtcMqM+A4p7Q5iKcM75QJuGPlTAYm4YyaHD+ziQzfpbatjLIi8NK9WBhMbusWvxguo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d5JOY4D+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB71C4CEE4;
+	Thu, 17 Apr 2025 18:50:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914737;
-	bh=qfWGYuS5MDXRdwxnmHsCJBX76C+MfM1S1IUQtRdm9vo=;
+	s=korg; t=1744915825;
+	bh=Q90m5EDc/V900k092uWcOCcW7JYcjBLlK0tQ/fHQETQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xQpz//lJQfla9JPVNsP4zRPl7sTeYHzS8zdfZ1x4UcYuh0uhvMIbDXJbHc3vSQ+s+
-	 NjHiGEqrosUln71wMMJeo4KJyQgr+qUXfscTMHZRRn63FrPsKQKWZlhjCgFi27isvT
-	 Tq1KMFtoCBVIle9S40+bLxZ95QAk9Uc2ACt5IDZE=
+	b=d5JOY4D+7qJDLQFUC2h1RThvOnPFjGmhj1kzCmL44FSvl8BgIn7Zm99OhOd32YEdZ
+	 k3FH4/o4KgZmx2kG3qrLLprpIsqikH8Idr1P84iYDN201ncaLQxHQelXeO7Af8+enB
+	 8RAHL7v/VwFUGNdMnf5m2RHGF4rJ7boDtIMR99Jk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Subject: [PATCH 6.13 274/414] accel/ivpu: Fix warning in ivpu_ipc_send_receive_internal()
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 223/393] media: nuvoton: Fix reference handling of ece_pdev
 Date: Thu, 17 Apr 2025 19:50:32 +0200
-Message-ID: <20250417175122.446064103@linuxfoundation.org>
+Message-ID: <20250417175116.553431631@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit 6b4568b675b14cf890c0c21779773c3e08e80ce5 upstream.
+commit 453d5cadab1bde8e6fdd5bd05f4200338cb21e72 upstream.
 
-Warn if device is suspended only when runtime PM is enabled.
-Runtime PM is disabled during reset/recovery and it is not an error
-to use ivpu_ipc_send_receive_internal() in such cases.
+When we obtain a reference to of a platform_device, we need to release
+it via put_device.
 
-Fixes: 5eaa49741119 ("accel/ivpu: Prevent recovery invocation during probe and resume")
-Cc: stable@vger.kernel.org # v6.13+
-Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Link: https://lore.kernel.org/r/20250325114219.3739951-1-maciej.falkowski@linux.intel.com
+Found by cocci:
+./platform/nuvoton/npcm-video.c:1677:3-9: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
+./platform/nuvoton/npcm-video.c:1684:3-9: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
+./platform/nuvoton/npcm-video.c:1690:3-9: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
+./platform/nuvoton/npcm-video.c:1694:1-7: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
+
+Instead of manually calling put_device, use the __free macros.
+
+Cc: stable@vger.kernel.org
+Fixes: 46c15a4ff1f4 ("media: nuvoton: Add driver for NPCM video capture and encoding engine")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accel/ivpu/ivpu_ipc.c |    3 ++-
+ drivers/media/platform/nuvoton/npcm-video.c |    3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/accel/ivpu/ivpu_ipc.c
-+++ b/drivers/accel/ivpu/ivpu_ipc.c
-@@ -302,7 +302,8 @@ ivpu_ipc_send_receive_internal(struct iv
- 	struct ivpu_ipc_consumer cons;
- 	int ret;
+--- a/drivers/media/platform/nuvoton/npcm-video.c
++++ b/drivers/media/platform/nuvoton/npcm-video.c
+@@ -1671,6 +1671,7 @@ static int npcm_video_ece_init(struct np
+ 			dev_err(dev, "Failed to find ECE device\n");
+ 			return -ENODEV;
+ 		}
++		struct device *ece_dev __free(put_device) = &ece_pdev->dev;
  
--	drm_WARN_ON(&vdev->drm, pm_runtime_status_suspended(vdev->drm.dev));
-+	drm_WARN_ON(&vdev->drm, pm_runtime_status_suspended(vdev->drm.dev) &&
-+		    pm_runtime_enabled(vdev->drm.dev));
+ 		regs = devm_platform_ioremap_resource(ece_pdev, 0);
+ 		if (IS_ERR(regs)) {
+@@ -1685,7 +1686,7 @@ static int npcm_video_ece_init(struct np
+ 			return PTR_ERR(video->ece.regmap);
+ 		}
  
- 	ivpu_ipc_consumer_add(vdev, &cons, channel, NULL);
- 
+-		video->ece.reset = devm_reset_control_get(&ece_pdev->dev, NULL);
++		video->ece.reset = devm_reset_control_get(ece_dev, NULL);
+ 		if (IS_ERR(video->ece.reset)) {
+ 			dev_err(dev, "Failed to get ECE reset control in DTS\n");
+ 			return PTR_ERR(video->ece.reset);
 
 
 
