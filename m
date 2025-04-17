@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FDA2A926B2
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:15:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABC10A92A78
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:51:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C46A87B6C9D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:10:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3450E8A06EF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:48:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4321E25E1;
-	Thu, 17 Apr 2025 18:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A33A253F22;
+	Thu, 17 Apr 2025 18:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nylzSogV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bfEzfFvw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584EB152532;
-	Thu, 17 Apr 2025 18:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5EF19ABC6;
+	Thu, 17 Apr 2025 18:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913505; cv=none; b=GElktQWLT3ZZ5DqkkSTFhtMR7ggPdiNLLrsdDbjYO+HeGzgrw8by9FYohrTLytSFhIlfIoC3Uv+ZqD4T6PqVJVdf0AlqG+pBUDfA5nvEevpkEpwg/BbMH8nb3+OCMxeR1sRADmlDHZvaNKzFviYAzppIXQ/z5wk45D8ftH4OYYY=
+	t=1744915706; cv=none; b=okzKGdUU8PRZyI2GrhfQ83EvnRJEfWJHhbZ4ls0flkDuWxcdo/PXsTYM6GIEAsim4wPQYvp/RMGwbV8odo92W/dKngm4jqnGdiJHL5xvAHLDXV/OdQnAV9nLPgvGAhsLNAqc+N4NHHTY3rP/lR79k2UiCEzn3kuGFp5U2VSLRKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913505; c=relaxed/simple;
-	bh=2ZJecF/TyxZ7BdGdQGXHA+hTtz4G/uj5r+Dx0af6nsw=;
+	s=arc-20240116; t=1744915706; c=relaxed/simple;
+	bh=kGPvkYKG6Diq53xVrj6MFHncb/c/Z6wpLKYoleZ2IbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cov3itMU2zfMR5bWaXrXoEKAP9KQ3cKRQtkOKysWT9z7ISimAnC2jj1UbzeEUUJ0856PvEZif9mk7BJLBBQr4aC+BY5TQqp+ql+yKgrtqMirxYppHM9muqxrbg4vBsNll5WFa7m/BcaTtVothvMW1LRPYChEaleK+GlR41E3vPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nylzSogV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77548C4CEE4;
-	Thu, 17 Apr 2025 18:11:44 +0000 (UTC)
+	 MIME-Version; b=tCzgj0IemA9p2RDDB+CiXExHSOhXN4+2LifY6aWhU8Y6DK2kl6yDVX2jdFzSEfTyaEwOI0Bd2SidRFNqT9s93XXAXSZJu8uHIyxCGUHTMlFkqLHxM3V59mu0nbbh7ajvQK7slEVP8tkzTf/eVqWuWocnXP96nHCqcopcvxSxzco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bfEzfFvw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0319CC4CEE4;
+	Thu, 17 Apr 2025 18:48:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913504;
-	bh=2ZJecF/TyxZ7BdGdQGXHA+hTtz4G/uj5r+Dx0af6nsw=;
+	s=korg; t=1744915705;
+	bh=kGPvkYKG6Diq53xVrj6MFHncb/c/Z6wpLKYoleZ2IbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nylzSogV5G4QRG/zFxm6KQuUI2FcAW35XENAlF4SnG42WpzgfYaWQi86qNQZmm1ub
-	 xER5nL+/4kPmZch8PZq/2aYy5ug1QwujsJzfa7iYx+Exgs9CoFdh1loPgP2+9AM98R
-	 TlicjeaMttx2Xe4eR3siy2QDIq1JNY9NTkJE4VIE=
+	b=bfEzfFvwpq6L5slKqzv0gqGKlp55SS5irLX2YXpLkS5TDmV4MiKoCJYVBTwitQR9i
+	 qu6YkpRNaoY90q/wWRLKhxK3obSUzY8jF9oPYf/qgIYVeK2Vxls6K5LynN9Yfaukod
+	 d4QN4yrkOXOi8AhG8NrAGBPlE1gpzFJ8aWoE6JN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Jean Delvare <jdelvare@suse.de>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.14 333/449] mtd: spinand: Fix build with gcc < 7.5
-Date: Thu, 17 Apr 2025 19:50:21 +0200
-Message-ID: <20250417175131.577587692@linuxfoundation.org>
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 213/393] media: visl: Fix ERANGE error when setting enum controls
+Date: Thu, 17 Apr 2025 19:50:22 +0200
+Message-ID: <20250417175116.147392308@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 
-commit 1c1fd374a2fe72b8a6dde62d3c3a9fd153e7581c upstream.
+commit d98e9213a768a3cc3a99f5e1abe09ad3baff2104 upstream.
 
-__VA_OPT__ is a macro that is useful when some arguments can be present
-or not to entirely skip some part of a definition. Unfortunately, it
-is a too recent addition that some of the still supported old GCC
-versions do not know about, and is anyway not part of C11 that is the
-version used in the kernel.
+The visl driver supports both frame and slice mode, with and without a
+start-code. But, the range and default for these enum controls was not
+set, which currently limits the decoder to enums with a value of 0. Fix
+this by setting the decoder mode and start code controls for both the
+H.264 and HEVC codecs.
 
-Find a trick to remove this macro, typically '__VA_ARGS__ + 0' is a
-workaround used in netlink.h which works very well here, as we either
-expect:
-- 0
-- A positive value
-- No value, which means the field should be 0.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202503181330.YcDXGy7F-lkp@intel.com/
-Fixes: 7ce0d16d5802 ("mtd: spinand: Add an optional frequency to read from cache macros")
+Fixes: 0c078e310b6d ("media: visl: add virtual stateless decoder driver")
 Cc: stable@vger.kernel.org
-Tested-by: Jean Delvare <jdelvare@suse.de>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/mtd/spinand.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/test-drivers/visl/visl-core.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/include/linux/mtd/spinand.h
-+++ b/include/linux/mtd/spinand.h
-@@ -67,7 +67,7 @@
- 		   SPI_MEM_OP_ADDR(2, addr, 1),				\
- 		   SPI_MEM_OP_DUMMY(ndummy, 1),				\
- 		   SPI_MEM_OP_DATA_IN(len, buf, 1),			\
--		   __VA_OPT__(SPI_MEM_OP_MAX_FREQ(__VA_ARGS__)))
-+		   SPI_MEM_OP_MAX_FREQ(__VA_ARGS__ + 0))
- 
- #define SPINAND_PAGE_READ_FROM_CACHE_FAST_OP(addr, ndummy, buf, len) \
- 	SPI_MEM_OP(SPI_MEM_OP_CMD(0x0b, 1),			\
+--- a/drivers/media/test-drivers/visl/visl-core.c
++++ b/drivers/media/test-drivers/visl/visl-core.c
+@@ -161,9 +161,15 @@ static const struct visl_ctrl_desc visl_
+ 	},
+ 	{
+ 		.cfg.id = V4L2_CID_STATELESS_H264_DECODE_MODE,
++		.cfg.min = V4L2_STATELESS_H264_DECODE_MODE_SLICE_BASED,
++		.cfg.max = V4L2_STATELESS_H264_DECODE_MODE_FRAME_BASED,
++		.cfg.def = V4L2_STATELESS_H264_DECODE_MODE_SLICE_BASED,
+ 	},
+ 	{
+ 		.cfg.id = V4L2_CID_STATELESS_H264_START_CODE,
++		.cfg.min = V4L2_STATELESS_H264_START_CODE_NONE,
++		.cfg.max = V4L2_STATELESS_H264_START_CODE_ANNEX_B,
++		.cfg.def = V4L2_STATELESS_H264_START_CODE_NONE,
+ 	},
+ 	{
+ 		.cfg.id = V4L2_CID_STATELESS_H264_SLICE_PARAMS,
+@@ -198,9 +204,15 @@ static const struct visl_ctrl_desc visl_
+ 	},
+ 	{
+ 		.cfg.id = V4L2_CID_STATELESS_HEVC_DECODE_MODE,
++		.cfg.min = V4L2_STATELESS_HEVC_DECODE_MODE_SLICE_BASED,
++		.cfg.max = V4L2_STATELESS_HEVC_DECODE_MODE_FRAME_BASED,
++		.cfg.def = V4L2_STATELESS_HEVC_DECODE_MODE_SLICE_BASED,
+ 	},
+ 	{
+ 		.cfg.id = V4L2_CID_STATELESS_HEVC_START_CODE,
++		.cfg.min = V4L2_STATELESS_HEVC_START_CODE_NONE,
++		.cfg.max = V4L2_STATELESS_HEVC_START_CODE_ANNEX_B,
++		.cfg.def = V4L2_STATELESS_HEVC_START_CODE_NONE,
+ 	},
+ 	{
+ 		.cfg.id = V4L2_CID_STATELESS_HEVC_ENTRY_POINT_OFFSETS,
 
 
 
