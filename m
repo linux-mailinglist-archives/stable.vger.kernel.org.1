@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-134473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D759FA92B3B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:59:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B15A92B51
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 21:00:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6FAE166FF9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:58:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD44F1B66A3C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:58:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F00255E4C;
-	Thu, 17 Apr 2025 18:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16A225742F;
+	Thu, 17 Apr 2025 18:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwUN7E+A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mSrYUHoK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374AA18C034;
-	Thu, 17 Apr 2025 18:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E783256C97;
+	Thu, 17 Apr 2025 18:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916231; cv=none; b=GSKRDU9dgdwpnSPwMY5w000OPH5XZSsaJnvIl+4g+TAoBd9bXvYpgAJJEmh+MzcJbdOCplRMveUGeM2SfaUwliAkAhUBUNvPJ5ezjQSFMZ06h8d+LXRHTn0brDv11H34JIjOVIZv2ZZuTrOkEzQgoQpqJ9dPHTjQVr1fQidGE54=
+	t=1744916252; cv=none; b=l9TEyTD4xLbKEhzOqF3QnEtg0J5m1Yjt72zYP1NDlnx0QZPpUQRa9Ibw1ZXuTdo8EwVTP4BbVB6FhMeVxmyLUUaszYVh/fGj6dOmZML+4bgQllnr6zN2u5H19+iEa6haqD7rLQBrl8Rsp102XF0uXqz1Q/TGL/pY1ykFboBM96U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916231; c=relaxed/simple;
-	bh=SQNTh6crpoPG1YOpEJcPuxJ01ALURyZdtFyWgI3S6s0=;
+	s=arc-20240116; t=1744916252; c=relaxed/simple;
+	bh=mBMTEnBEqmRf8OcfFpm8g2B0MSoFjKtTkgWOJW2N6kM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qo1rsAYwZigdFu9U50uGv+PqifEq78avA4RZRICGMmN3ggWnnkGASQK5UxujD7LA7Ocf4HEfpy0BcVhELZ8Gu76DSedfTEwquVszNmgTqm2kXOMkB/kWMjXrqyfTk44om4l8Pzbc+TpQyokC6xbKGOHMzT1uUa2DV8QhdIwlbC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwUN7E+A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1CE2C4CEE4;
-	Thu, 17 Apr 2025 18:57:10 +0000 (UTC)
+	 MIME-Version; b=upTKvlNg+xsoVqspGR0LjPgbOL0t+V8NVM6sgehh1plWJdXQbrSYcfiR0I6sNVpLXAjRbbJFFzWMmytqn+1asKxJUGhX9MDu/PWv3pQ9kuOGHijlNM4KANK3qGJHQPSRwuK9DGsMN10OqPsj5JYUHjmb1oSpnsjRhnw1E54sgCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mSrYUHoK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBD73C4CEE4;
+	Thu, 17 Apr 2025 18:57:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916231;
-	bh=SQNTh6crpoPG1YOpEJcPuxJ01ALURyZdtFyWgI3S6s0=;
+	s=korg; t=1744916252;
+	bh=mBMTEnBEqmRf8OcfFpm8g2B0MSoFjKtTkgWOJW2N6kM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JwUN7E+AR0MKCPgtF9ZjoHC27CGGBe9xpEkTpnsbm1J7nSeJjrBL900zfPbZte3IH
-	 FZ5iPBNoDS5yIGA1bDpeRa8o7SHh2AnU/Ws8bjaH2oKAdSob7SY9eJEVQ0yxH6wz3U
-	 rTY25u/YLivdXaWokVjFL4SFf4a1NhmU6oRqqhDw=
+	b=mSrYUHoKF4x8owVzOPs4f5nADZf/qEuhnBctnMX1CYmpHJJrZG2yKbiFSbtCiZDqK
+	 +MBOAmH+hg6YRBAdHNW/n+ejS9e7kJMo9n0Jwx0yCMA5cjAnMLnoF1nTzH4A7UAMWT
+	 nVOz8aJngSERdzMOpOzM6M4dejV3BYqC1CxRzBqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 6.12 379/393] thermal/drivers/mediatek/lvts: Disable Stage 3 thermal threshold
-Date: Thu, 17 Apr 2025 19:53:08 +0200
-Message-ID: <20250417175122.849221775@linuxfoundation.org>
+	Douglas Anderson <dianders@chromium.org>,
+	James Morse <james.morse@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.12 380/393] arm64: errata: Add newer ARM cores to the spectre_bhb_loop_affected() lists
+Date: Thu, 17 Apr 2025 19:53:09 +0200
+Message-ID: <20250417175122.887080855@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
 References: <20250417175107.546547190@linuxfoundation.org>
@@ -61,109 +60,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit c612cbcdf603aefb3358b2e3964dcd5aa3f827a0 upstream.
+commit a5951389e58d2e816eed3dbec5877de9327fd881 upstream.
 
-The Stage 3 thermal threshold is currently configured during
-the controller initialization to 105 Celsius. From the kernel
-perspective, this configuration is harmful because:
-* The stage 3 interrupt that gets triggered when the threshold is
-  crossed is not handled in any way by the IRQ handler, it just gets
-  cleared. Besides, the temperature used for stage 3 comes from the
-  sensors, and the critical thermal trip points described in the
-  Devicetree will already cause a shutdown when crossed (at a lower
-  temperature, of 100 Celsius, for all SoCs currently using this
-  driver).
-* The only effect of crossing the stage 3 threshold that has been
-  observed is that it causes the machine to no longer be able to enter
-  suspend. Even if that was a result of a momentary glitch in the
-  temperature reading of a sensor (as has been observed on the
-  MT8192-based Chromebooks).
+When comparing to the ARM list [1], it appears that several ARM cores
+were missing from the lists in spectre_bhb_loop_affected(). Add them.
 
-For those reasons, disable the Stage 3 thermal threshold configuration.
+NOTE: for some of these cores it may not matter since other ways of
+clearing the BHB may be used (like the CLRBHB instruction or ECBHB),
+but it still seems good to have all the info from ARM's whitepaper
+included.
 
+[1] https://developer.arm.com/Arm%20Security%20Center/Spectre-BHB
+
+Fixes: 558c303c9734 ("arm64: Mitigate spectre style branch history side channels")
 Cc: stable@vger.kernel.org
-Reported-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Closes: https://lore.kernel.org/all/20241108-lvts-v1-1-eee339c6ca20@chromium.org/
-Fixes: f5f633b18234 ("thermal/drivers/mediatek: Add the Low Voltage Thermal Sensor driver")
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Link: https://lore.kernel.org/r/20250113-mt8192-lvts-filtered-suspend-fix-v2-2-07a25200c7c6@collabora.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: James Morse <james.morse@arm.com>
+Link: https://lore.kernel.org/r/20250107120555.v4.5.I4a9a527e03f663040721c5401c41de587d015c82@changeid
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/mediatek/lvts_thermal.c |   16 ++--------------
- 1 file changed, 2 insertions(+), 14 deletions(-)
+ arch/arm64/kernel/proton-pack.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
---- a/drivers/thermal/mediatek/lvts_thermal.c
-+++ b/drivers/thermal/mediatek/lvts_thermal.c
-@@ -65,7 +65,7 @@
- #define LVTS_HW_FILTER				0x0
- #define LVTS_TSSEL_CONF				0x13121110
- #define LVTS_CALSCALE_CONF			0x300
--#define LVTS_MONINT_CONF			0x8300318C
-+#define LVTS_MONINT_CONF			0x0300318C
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -876,6 +876,14 @@ static u8 spectre_bhb_loop_affected(void
+ {
+ 	u8 k = 0;
  
- #define LVTS_MONINT_OFFSET_SENSOR0		0xC
- #define LVTS_MONINT_OFFSET_SENSOR1		0x180
-@@ -91,8 +91,6 @@
- #define LVTS_MSR_READ_TIMEOUT_US	400
- #define LVTS_MSR_READ_WAIT_US		(LVTS_MSR_READ_TIMEOUT_US / 2)
++	static const struct midr_range spectre_bhb_k132_list[] = {
++		MIDR_ALL_VERSIONS(MIDR_CORTEX_X3),
++		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
++	};
++	static const struct midr_range spectre_bhb_k38_list[] = {
++		MIDR_ALL_VERSIONS(MIDR_CORTEX_A715),
++		MIDR_ALL_VERSIONS(MIDR_CORTEX_A720),
++	};
+ 	static const struct midr_range spectre_bhb_k32_list[] = {
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
+@@ -889,6 +897,7 @@ static u8 spectre_bhb_loop_affected(void
+ 	};
+ 	static const struct midr_range spectre_bhb_k24_list[] = {
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
++		MIDR_ALL_VERSIONS(MIDR_CORTEX_A76AE),
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
+ 		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
+ 		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_GOLD),
+@@ -904,7 +913,11 @@ static u8 spectre_bhb_loop_affected(void
+ 		{},
+ 	};
  
--#define LVTS_HW_TSHUT_TEMP		105000
--
- #define LVTS_MINIMUM_THRESHOLD		20000
- 
- static int golden_temp = LVTS_GOLDEN_TEMP_DEFAULT;
-@@ -145,7 +143,6 @@ struct lvts_ctrl {
- 	struct lvts_sensor sensors[LVTS_SENSOR_MAX];
- 	const struct lvts_data *lvts_data;
- 	u32 calibration[LVTS_SENSOR_MAX];
--	u32 hw_tshut_raw_temp;
- 	u8 valid_sensor_mask;
- 	int mode;
- 	void __iomem *base;
-@@ -837,14 +834,6 @@ static int lvts_ctrl_init(struct device
- 		 */
- 		lvts_ctrl[i].mode = lvts_data->lvts_ctrl[i].mode;
- 
--		/*
--		 * The temperature to raw temperature must be done
--		 * after initializing the calibration.
--		 */
--		lvts_ctrl[i].hw_tshut_raw_temp =
--			lvts_temp_to_raw(LVTS_HW_TSHUT_TEMP,
--					 lvts_data->temp_factor);
--
- 		lvts_ctrl[i].low_thresh = INT_MIN;
- 		lvts_ctrl[i].high_thresh = INT_MIN;
- 	}
-@@ -919,7 +908,6 @@ static int lvts_irq_init(struct lvts_ctr
- 	 *         10 : Selected sensor with bits 19-18
- 	 *         11 : Reserved
- 	 */
--	writel(BIT(16), LVTS_PROTCTL(lvts_ctrl->base));
- 
- 	/*
- 	 * LVTS_PROTTA : Stage 1 temperature threshold
-@@ -932,8 +920,8 @@ static int lvts_irq_init(struct lvts_ctr
- 	 *
- 	 * writel(0x0, LVTS_PROTTA(lvts_ctrl->base));
- 	 * writel(0x0, LVTS_PROTTB(lvts_ctrl->base));
-+	 * writel(0x0, LVTS_PROTTC(lvts_ctrl->base));
- 	 */
--	writel(lvts_ctrl->hw_tshut_raw_temp, LVTS_PROTTC(lvts_ctrl->base));
- 
- 	/*
- 	 * LVTS_MONINT : Interrupt configuration register
+-	if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k32_list))
++	if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k132_list))
++		k = 132;
++	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k38_list))
++		k = 38;
++	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k32_list))
+ 		k = 32;
+ 	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k24_list))
+ 		k = 24;
 
 
 
