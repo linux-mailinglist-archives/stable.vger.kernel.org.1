@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-134472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CE0BA92B2E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:58:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7BE4A92912
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:40:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76DDC7B3F28
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:57:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 929441B628C7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69DBA257435;
-	Thu, 17 Apr 2025 18:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C21256C7C;
+	Thu, 17 Apr 2025 18:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u7OTlV12"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snX7ze2B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248741B3934;
-	Thu, 17 Apr 2025 18:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1679918C034;
+	Thu, 17 Apr 2025 18:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916228; cv=none; b=IL/4fMM555y0kN1ZWAkz4QANRcOO4IUH2JjVSXhZknKqpr0tUS0rkgiE8UN7LrigEVNZUt7IJbwzC775RHvgFK582G6MLd6tdMkKP2mtw1USaDlpEK1zNx03B/VxqEzLv92gVMpII9TwI2RMWfh/Vyq0lMyX74LNqHfl1AfpQeQ=
+	t=1744914993; cv=none; b=uhheko6x3tsJCF7WARGuDlvnvIiCi33c67N+O7xPKeJBE1rCOKImLT/5intSAIKXZ4TQgDR1/4UAY1xJzsIn1Rbkr7f0NqGvvxpnDLmhA2Fqo+9JQsJ0treapazrUZMW5Ku5jtuk25RiCrEX0qKbO108ZGUxqgYBCelHBeScfV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916228; c=relaxed/simple;
-	bh=cMReqLwKzv9xryihrxOEal1CTSsw5DbGU35rhDoPcxM=;
+	s=arc-20240116; t=1744914993; c=relaxed/simple;
+	bh=cw4vDsimlgD/PE7JYwUZjk1WIJm0PtCdP5HOQgyaalc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Eo3Ersm65v1vVZHzDyWa5b3cscA/kEcfD97vIwG1g96Xdjih3MwGRGOgu6EM3lzZub2XFoJXImurojM+cMYMXdvBgLweDmckY+2X437SBe8/P1Iko7Luhz9g9E3svCojI8vbiMrr0pSTqcaP11hHF5ySJ73KkoVLRpUCHovL2Qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u7OTlV12; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A5DC4CEE4;
-	Thu, 17 Apr 2025 18:57:07 +0000 (UTC)
+	 MIME-Version; b=PlvbUHIsMvDSR7nAI7zUGZ3RtaerjhCK/eD/weiFKiDfGdvnrr3jVAU575n1wIclU6Q9rICtM89QIXepQrGLZyA3RUDzemO3q7WovusSlXD0NPbYW85sWfxhNMl9mVRuoub46DlQ5Ira3RT8fZbl2yBD8X3FEx+6GJFIsk2R4j0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snX7ze2B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD36C4CEE4;
+	Thu, 17 Apr 2025 18:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916228;
-	bh=cMReqLwKzv9xryihrxOEal1CTSsw5DbGU35rhDoPcxM=;
+	s=korg; t=1744914993;
+	bh=cw4vDsimlgD/PE7JYwUZjk1WIJm0PtCdP5HOQgyaalc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u7OTlV12AEukwYwkfMwbwRrHXsAuIJU3DeLP0L/2Xjv5yfGIhM7I9nHUU3RLJjK6e
-	 bVlRyjyTw5iNJFmBmEBte1fDsxWS0OPOjdDravfnLPQkI4J7+Qm2OcAbkAUJ50nKTh
-	 HK/A4GGqmmoLDExe9aHTw5PpywZi43BUFqKY4cqw=
+	b=snX7ze2Bvn7mNYlM6jAACF0S4du64V96P87/uNNRn9FrJ5eJByPlIDt6RkEQDV30u
+	 VkJ7kstxQuIUNhsOTPSGB/xHZsN/PBDtKpRROhQ7Qw5vlDUVxa4z2dpYGYhtIfUYoX
+	 qSe+XnXrQpqxmtZnJcWJUt+kydq3/JMQ4KDEm9m4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-Subject: [PATCH 6.12 347/393] landlock: Move code to ease future backports
+	Cong Liu <liucong2@kylinos.cn>,
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.13 398/414] selftests: mptcp: close fd_in before returning in main_loop
 Date: Thu, 17 Apr 2025 19:52:36 +0200
-Message-ID: <20250417175121.559034641@linuxfoundation.org>
+Message-ID: <20250417175127.492606975@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,61 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-commit 624f177d8f62032b4f3343c289120269645cec37 upstream.
+commit c183165f87a486d5879f782c05a23c179c3794ab upstream.
 
-To ease backports in setup.c, let's group changes from
-__lsm_ro_after_init to __ro_after_init with commit f22f9aaf6c3d
-("selinux: remove the runtime disable functionality"), and the
-landlock_lsmid addition with commit f3b8788cde61 ("LSM: Identify modules
-by more than name").
+The file descriptor 'fd_in' is opened when cfg_input is configured, but
+not closed in main_loop(), this patch fixes it.
 
-That will help to backport the following errata.
-
-Cc: Günther Noack <gnoack@google.com>
+Fixes: 05be5e273c84 ("selftests: mptcp: add disconnect tests")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250318161443.279194-2-mic@digikod.net
-Fixes: f3b8788cde61 ("LSM: Identify modules by more than name")
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Co-developed-by: Cong Liu <liucong2@kylinos.cn>
+Signed-off-by: Cong Liu <liucong2@kylinos.cn>
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250328-net-mptcp-misc-fixes-6-15-v1-3-34161a482a7f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/landlock/setup.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_connect.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/security/landlock/setup.c
-+++ b/security/landlock/setup.c
-@@ -19,6 +19,11 @@
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
+@@ -1299,7 +1299,7 @@ again:
  
- bool landlock_initialized __ro_after_init = false;
+ 	ret = copyfd_io(fd_in, fd, 1, 0, &winfo);
+ 	if (ret)
+-		return ret;
++		goto out;
  
-+const struct lsm_id landlock_lsmid = {
-+	.name = LANDLOCK_NAME,
-+	.id = LSM_ID_LANDLOCK,
-+};
-+
- struct lsm_blob_sizes landlock_blob_sizes __ro_after_init = {
- 	.lbs_cred = sizeof(struct landlock_cred_security),
- 	.lbs_file = sizeof(struct landlock_file_security),
-@@ -26,11 +31,6 @@ struct lsm_blob_sizes landlock_blob_size
- 	.lbs_superblock = sizeof(struct landlock_superblock_security),
- };
+ 	if (cfg_truncate > 0) {
+ 		shutdown(fd, SHUT_WR);
+@@ -1320,7 +1320,10 @@ again:
+ 		close(fd);
+ 	}
  
--const struct lsm_id landlock_lsmid = {
--	.name = LANDLOCK_NAME,
--	.id = LSM_ID_LANDLOCK,
--};
--
- static int __init landlock_init(void)
- {
- 	landlock_add_cred_hooks();
+-	return 0;
++out:
++	if (cfg_input)
++		close(fd_in);
++	return ret;
+ }
+ 
+ int parse_proto(const char *proto)
 
 
 
