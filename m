@@ -1,126 +1,189 @@
-Return-Path: <stable+bounces-133043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D175A91AB5
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 13:24:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F2B8A91A12
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 13:09:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 893EE17E803
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 11:24:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C555619E4DA6
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 11:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FBC023C8AC;
-	Thu, 17 Apr 2025 11:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61922356CC;
+	Thu, 17 Apr 2025 11:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xP7A1A2S"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LYMjsHgV";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sUXvyNUi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F328223C385
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 11:24:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E785E282F5;
+	Thu, 17 Apr 2025 11:09:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744889066; cv=none; b=NqcErlhDn3dl/bSnSrJgwdOPH08j1Ad1ThwWA26C9HsOAIyVpWpAYhQlW3P/Q2hPfDoOpfmmw42Bu/GzU+pdzk3khqYHBHzGfVXUXQ/h5Efm7Fveyt8sah46V8SK408bZxtG2w3cOuHc5JEca/AGVRqTHpopnnH6C1c9pHMgTF4=
+	t=1744888150; cv=none; b=pRFLkk8BDpoFsHNu4bvLmZN9QPLogw9jio8MpFkrgADhGlOWOJybbMesI26JR2F4/j+MgscfHq7th0UjR4k1jwGdVV8xvOuI1R5iv25Vnyu1T+Dz0vz6ig3HE6lAvT2gCs2c+pew9lBENhRO654k0YFD/0LJ8S+MTaDA8tLhhFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744889066; c=relaxed/simple;
-	bh=A3jyd7Rcr/aWklF4tEuzt5MqigIvCV5OMSDBH/vR3VY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RhoVMPdBVjCK0+/M9eX2E1FpHzqci1hpw1DrTRdHP5FcqNuJIFK5/jN1vwPpICAfPZRcxcailycPeBY74rLJx2AoCVDPAX/7TF2kKaxxfEsmmfqcst/H8ou9XWWwOdjoU92p4QeJbOCI1Tr/7jq3Wif022LR3V05qDi2npycurQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xP7A1A2S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011E7C4CEE4;
-	Thu, 17 Apr 2025 11:24:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744889065;
-	bh=A3jyd7Rcr/aWklF4tEuzt5MqigIvCV5OMSDBH/vR3VY=;
-	h=Subject:To:Cc:From:Date:From;
-	b=xP7A1A2S+4APCH3TFsT7sjHLYJ/tQ8qKtupQ8m3VafH/iR3mb3PTCpCeWEc/L0261
-	 pws8HTme0oxne1c5z6ArIKZLs3SxPspPU501ChiLpDAMEnmqCqWtkXB28eLbn8OjQG
-	 p8QLU8/VoTpP7JKWGDN3nubRMTwxfBE4T/Fj5zPY=
-Subject: FAILED: patch "[PATCH] mptcp: only inc MPJoinAckHMacFailure for HMAC failures" failed to apply to 5.10-stable tree
-To: matttbe@kernel.org,geliang@kernel.org,horms@kernel.org,kuba@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 17 Apr 2025 13:08:52 +0200
-Message-ID: <2025041752-shortwave-buddhist-9b7d@gregkh>
+	s=arc-20240116; t=1744888150; c=relaxed/simple;
+	bh=DMRPs6Pg9YVDPOXdyTSZNoTtok8ps/JAKSlHPeisvoM=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=STD8sNGcnKWVWoIYCT5Krf0eI/75TLCqRnl0LZEYzW9bYY7Eu7e3B/eHXi+LSFrF9MkRHPF7e8ISY8XF5Vvg5+0CP+LL6Zl9QUBmbe0yMUkMKMtM/kAZOtLuXzM3kvpDL0sFn5Qv9OTw7URKmN2a8IfQ+q7tPIn33RebnHq16S4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LYMjsHgV; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sUXvyNUi; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 17 Apr 2025 11:09:03 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1744888147;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=h9xAsHwuZuHioxK7TNKzzVFd35a3MwUcAAl7xcFNIpc=;
+	b=LYMjsHgVfW9n+1M9o7SRzYWrcEScFC4KoJ8GEGZHaxEZbh82cufLBPKbU/YmJZdasb4OJ1
+	W7KYzSnxLzO18EJAq3f1TKDt2azSk0u7LGEu/q+S6NSuNVgzDlH48nBxugZZtcKVWRCEKt
+	rzzjAGwAEyHdoCCQK6Bkpmhm6RTeBE2YG9XKjAR3CBy54NljwJ9+ST+AhsSqvEj7ck5D30
+	GdU3QsShU1fEQlg0tLrgYq2AosI6e/uGsOz1lXbVyHgQqgV/0WvqWshAGse7CPx7NRXRa9
+	lWbzCk3SwcPh1KLxT/jydRzzQFhCFArbAnf0fW01dEXWvFpsLMAqpPCjc5+PJg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1744888147;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=h9xAsHwuZuHioxK7TNKzzVFd35a3MwUcAAl7xcFNIpc=;
+	b=sUXvyNUiyyhQ4yc0+aCtbdoV/jHToZu8+NhbJkgJI/iCKgh3iHOVR7WU05hPsprnQ99+RW
+	aWXFAeBh/rZd8oCQ==
+From: "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/urgent] perf/x86/intel/uncore: Fix the scale of IIO free
+ running counters on SPR
+Cc: Tang Jun <dukang.tj@alibaba-inc.com>,
+ Kan Liang <kan.liang@linux.intel.com>, Ingo Molnar <mingo@kernel.org>,
+ Peter Zijlstra <a.p.zijlstra@chello.nl>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250416142426.3933977-3-kan.liang@linux.intel.com>
+References: <20250416142426.3933977-3-kan.liang@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Message-ID: <174488814342.31282.6685848537217689272.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
+The following commit has been merged into the perf/urgent branch of tip:
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Commit-ID:     506f981ab40f0b03a11a640cfd77f48b09aff330
+Gitweb:        https://git.kernel.org/tip/506f981ab40f0b03a11a640cfd77f48b09aff330
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Wed, 16 Apr 2025 07:24:26 -07:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 17 Apr 2025 12:57:32 +02:00
 
-To reproduce the conflict and resubmit, you may use the following commands:
+perf/x86/intel/uncore: Fix the scale of IIO free running counters on SPR
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 21c02e8272bc95ba0dd44943665c669029b42760
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041752-shortwave-buddhist-9b7d@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+The scale of IIO bandwidth in free running counters is inherited from
+the ICX. The counter increments for every 32 bytes rather than 4 bytes.
 
-Possible dependencies:
+The IIO bandwidth out free running counters don't increment with a
+consistent size. The increment depends on the requested size. It's
+impossible to find a fixed increment. Remove it from the event_descs.
 
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 21c02e8272bc95ba0dd44943665c669029b42760 Mon Sep 17 00:00:00 2001
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Mon, 7 Apr 2025 20:26:32 +0200
-Subject: [PATCH] mptcp: only inc MPJoinAckHMacFailure for HMAC failures
-
-Recently, during a debugging session using local MPTCP connections, I
-noticed MPJoinAckHMacFailure was not zero on the server side. The
-counter was in fact incremented when the PM rejected new subflows,
-because the 'subflow' limit was reached.
-
-The fix is easy, simply dissociating the two cases: only the HMAC
-validation check should increase MPTCP_MIB_JOINACKMAC counter.
-
-Fixes: 4cf8b7e48a09 ("subflow: introduce and use mptcp_can_accept_new_subflow()")
+Fixes: 0378c93a92e2 ("perf/x86/intel/uncore: Support IIO free-running counters on Sapphire Rapids server")
+Reported-by: Tang Jun <dukang.tj@alibaba-inc.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
 Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250407-net-mptcp-hmac-failure-mib-v1-1-3c9ecd0a3a50@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/20250416142426.3933977-3-kan.liang@linux.intel.com
+---
+ arch/x86/events/intel/uncore_snbep.c | 58 +---------------------------
+ 1 file changed, 1 insertion(+), 57 deletions(-)
 
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 409bd415ef1d..24c2de1891bd 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -899,13 +899,17 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
- 				goto dispose_child;
- 			}
+diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
+index fb08911..76d96df 100644
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -6289,69 +6289,13 @@ static struct freerunning_counters spr_iio_freerunning[] = {
+ 	[SPR_IIO_MSR_BW_OUT]	= { 0x3808, 0x1, 0x10, 8, 48 },
+ };
  
--			if (!subflow_hmac_valid(req, &mp_opt) ||
--			    !mptcp_can_accept_new_subflow(subflow_req->msk)) {
-+			if (!subflow_hmac_valid(req, &mp_opt)) {
- 				SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
- 				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
- 				goto dispose_child;
- 			}
+-static struct uncore_event_desc spr_uncore_iio_freerunning_events[] = {
+-	/* Free-Running IIO CLOCKS Counter */
+-	INTEL_UNCORE_EVENT_DESC(ioclk,			"event=0xff,umask=0x10"),
+-	/* Free-Running IIO BANDWIDTH IN Counters */
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port0,		"event=0xff,umask=0x20"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port0.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port1,		"event=0xff,umask=0x21"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port1.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port2,		"event=0xff,umask=0x22"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port2.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port3,		"event=0xff,umask=0x23"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port3.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port4,		"event=0xff,umask=0x24"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port4.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port5,		"event=0xff,umask=0x25"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port5.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port6,		"event=0xff,umask=0x26"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port6.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port7,		"event=0xff,umask=0x27"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port7.unit,	"MiB"),
+-	/* Free-Running IIO BANDWIDTH OUT Counters */
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port0,		"event=0xff,umask=0x30"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port0.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port0.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port1,		"event=0xff,umask=0x31"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port1.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port1.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port2,		"event=0xff,umask=0x32"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port2.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port2.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port3,		"event=0xff,umask=0x33"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port3.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port3.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port4,		"event=0xff,umask=0x34"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port4.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port4.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port5,		"event=0xff,umask=0x35"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port5.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port5.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port6,		"event=0xff,umask=0x36"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port6.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port6.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port7,		"event=0xff,umask=0x37"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port7.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port7.unit,	"MiB"),
+-	{ /* end: all zeroes */ },
+-};
+-
+ static struct intel_uncore_type spr_uncore_iio_free_running = {
+ 	.name			= "iio_free_running",
+ 	.num_counters		= 17,
+ 	.num_freerunning_types	= SPR_IIO_FREERUNNING_TYPE_MAX,
+ 	.freerunning		= spr_iio_freerunning,
+ 	.ops			= &skx_uncore_iio_freerunning_ops,
+-	.event_descs		= spr_uncore_iio_freerunning_events,
++	.event_descs		= snr_uncore_iio_freerunning_events,
+ 	.format_group		= &skx_uncore_iio_freerunning_format_group,
+ };
  
-+			if (!mptcp_can_accept_new_subflow(owner)) {
-+				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
-+				goto dispose_child;
-+			}
-+
- 			/* move the msk reference ownership to the subflow */
- 			subflow_req->msk = NULL;
- 			ctx->conn = (struct sock *)owner;
-
 
