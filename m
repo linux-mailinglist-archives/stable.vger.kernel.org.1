@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-134003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFCD1A929D0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:44:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4EC9A92686
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:14:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAA357B9224
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78E7A8A653C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:13:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52A86263F27;
-	Thu, 17 Apr 2025 18:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF1B2561D5;
+	Thu, 17 Apr 2025 18:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYK3MxTk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ciN65E4x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11363263C7B;
-	Thu, 17 Apr 2025 18:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A894D256C6D;
+	Thu, 17 Apr 2025 18:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914800; cv=none; b=XpHE5Yshpitknr19j1P/DcxPXiWYBRZpLsnRFsxUs8gVm6HxoYKvUFKghvbYo6BmQe8ghWQll3U2Br8iRmUeOLriCy8TeK4skAD1wvywNAwY8luqpCbEblt3A2szmH+9BFXvn5lJtqDzNTl18jBVelNTJoZBixYeT/PvDEd3ezM=
+	t=1744913636; cv=none; b=hrxtQnAvsfOFP2Ab8h1HWrdyPZ/CCxM1QEtpqhxp5gqnLlLtHBNxVLRWjIdF1x/o464Wc3WuIuL/AQfbtIShAKVo5eUOJJGmCdIWObLDP2JI2kNyFAUPOSMwcPqxm17tVOhZnxEYmWE1T+l3jrdguqz+96Q8RLWhp+43EeErTRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914800; c=relaxed/simple;
-	bh=0ZAUjeYO82CfKGTKWDOBqjXHVKFHW1YQqvaB599+BbU=;
+	s=arc-20240116; t=1744913636; c=relaxed/simple;
+	bh=BFfIWSSJVhBFNRNlbGvBV0Nt6hmlrA6noDpmQ34Yr7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c9hSFcnLtUkoWmgXrfbm3S5fjZlZV/KMO9owalJAMqU2dK8H598HTWyJsQlK/198eOvctritCLKlWShevypyiCaLcFzUNpwssdTlpS5DDtTsTt0aUFr3rO47NBZ8tT11MYmxrtqBfhGbJMa9/P8GUectyrul4i1EBC0qGqp9Gr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYK3MxTk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD62C4CEE4;
-	Thu, 17 Apr 2025 18:33:19 +0000 (UTC)
+	 MIME-Version; b=DbXkE2lNG9tcpSWzWa/TrEJUizhej7l3b6iR/jH+0bnzzTXZbRDR/naHEpb2Y6KthqUPE3iw9bc5pMyZv+Tf1S7wQCnwXBxgBgXfTQmDuWcqVIHnF7bb8cDI4yQ5E6uwLaLrnBvf7BcMoIidrkeZtfrZaSO9FCRvSlnztjXrD/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ciN65E4x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30478C4CEE4;
+	Thu, 17 Apr 2025 18:13:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914799;
-	bh=0ZAUjeYO82CfKGTKWDOBqjXHVKFHW1YQqvaB599+BbU=;
+	s=korg; t=1744913636;
+	bh=BFfIWSSJVhBFNRNlbGvBV0Nt6hmlrA6noDpmQ34Yr7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QYK3MxTk7MS1D0yYaEkP/v2JKY6l3pFCJ1b2x2F/XuXQy10dJxvlxvdFJ4hlgtp0v
-	 WWtlXj7jmwbdyZRCajK+D+jPYeB5FdY34d+K7rlGHL/e/rCkVCJXn44Lt39Zx2mnQ/
-	 iE0ycf1x1kXvwwQiYpPndJHnCOAfq6LMtrsCFxTM=
+	b=ciN65E4xoBPGxo4iWAGP1GUiolWP7mtGadEw+ylcbrPOAWvHgM/7AyRgm2vfneAgb
+	 FIH4nRl0gciel2x2PpLzunX1jmDjaAcMk4mfIg5os1VcEOFW6cc7zl7giTj2C36NM2
+	 7Pjd6m5/KCW4SotqaWUwNfUoLaA0JFwqdQhf5Rus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	David Hildenbrand <david@redhat.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Nanyong Sun <sunnanyong@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.13 334/414] mm/hwpoison: introduce folio_contain_hwpoisoned_page() helper
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.14 404/449] KVM: x86: Acquire SRCU in KVM_GET_MP_STATE to protect guest memory accesses
 Date: Thu, 17 Apr 2025 19:51:32 +0200
-Message-ID: <20250417175124.866990206@linuxfoundation.org>
+Message-ID: <20250417175134.528964318@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,80 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjiang Tu <tujinjiang@huawei.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 5f5ee52d4f58605330b09851273d6e56aaadd29e upstream.
+commit ef01cac401f18647d62720cf773d7bb0541827da upstream.
 
-Patch series "mm/vmscan: don't try to reclaim hwpoison folio".
+Acquire a lock on kvm->srcu when userspace is getting MP state to handle a
+rather extreme edge case where "accepting" APIC events, i.e. processing
+pending INIT or SIPI, can trigger accesses to guest memory.  If the vCPU
+is in L2 with INIT *and* a TRIPLE_FAULT request pending, then getting MP
+state will trigger a nested VM-Exit by way of ->check_nested_events(), and
+emuating the nested VM-Exit can access guest memory.
 
-Fix a bug during memory reclaim if folio is hwpoisoned.
+The splat was originally hit by syzkaller on a Google-internal kernel, and
+reproduced on an upstream kernel by hacking the triple_fault_event_test
+selftest to stuff a pending INIT, store an MSR on VM-Exit (to generate a
+memory access on VMX), and do vcpu_mp_state_get() to trigger the scenario.
 
+  =============================
+  WARNING: suspicious RCU usage
+  6.14.0-rc3-b112d356288b-vmx/pi_lockdep_false_pos-lock #3 Not tainted
+  -----------------------------
+  include/linux/kvm_host.h:1058 suspicious rcu_dereference_check() usage!
 
-This patch (of 2):
+  other info that might help us debug this:
 
-Introduce helper folio_contain_hwpoisoned_page() to check if the entire
-folio is hwpoisoned or it contains hwpoisoned pages.
+  rcu_scheduler_active = 2, debug_locks = 1
+  1 lock held by triple_fault_ev/1256:
+   #0: ffff88810df5a330 (&vcpu->mutex){+.+.}-{4:4}, at: kvm_vcpu_ioctl+0x8b/0x9a0 [kvm]
 
-Link: https://lkml.kernel.org/r/20250318083939.987651-1-tujinjiang@huawei.com
-Link: https://lkml.kernel.org/r/20250318083939.987651-2-tujinjiang@huawei.com
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Nanyong Sun <sunnanyong@huawei.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+  stack backtrace:
+  CPU: 11 UID: 1000 PID: 1256 Comm: triple_fault_ev Not tainted 6.14.0-rc3-b112d356288b-vmx #3
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x7f/0x90
+   lockdep_rcu_suspicious+0x144/0x190
+   kvm_vcpu_gfn_to_memslot+0x156/0x180 [kvm]
+   kvm_vcpu_read_guest+0x3e/0x90 [kvm]
+   read_and_check_msr_entry+0x2e/0x180 [kvm_intel]
+   __nested_vmx_vmexit+0x550/0xde0 [kvm_intel]
+   kvm_check_nested_events+0x1b/0x30 [kvm]
+   kvm_apic_accept_events+0x33/0x100 [kvm]
+   kvm_arch_vcpu_ioctl_get_mpstate+0x30/0x1d0 [kvm]
+   kvm_vcpu_ioctl+0x33e/0x9a0 [kvm]
+   __x64_sys_ioctl+0x8b/0xb0
+   do_syscall_64+0x6c/0x170
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+   </TASK>
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250401150504.829812-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/page-flags.h |    6 ++++++
- mm/memory_hotplug.c        |    3 +--
- mm/shmem.c                 |    3 +--
- 3 files changed, 8 insertions(+), 4 deletions(-)
+ arch/x86/kvm/x86.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -1113,6 +1113,12 @@ static inline bool is_page_hwpoison(cons
- 	return folio_test_hugetlb(folio) && PageHWPoison(&folio->page);
- }
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -11773,6 +11773,8 @@ int kvm_arch_vcpu_ioctl_get_mpstate(stru
+ 	if (kvm_mpx_supported())
+ 		kvm_load_guest_fpu(vcpu);
  
-+static inline bool folio_contain_hwpoisoned_page(struct folio *folio)
-+{
-+	return folio_test_hwpoison(folio) ||
-+	    (folio_test_large(folio) && folio_test_has_hwpoisoned(folio));
-+}
++	kvm_vcpu_srcu_read_lock(vcpu);
 +
- bool is_free_buddy_page(const struct page *page);
+ 	r = kvm_apic_accept_events(vcpu);
+ 	if (r < 0)
+ 		goto out;
+@@ -11786,6 +11788,8 @@ int kvm_arch_vcpu_ioctl_get_mpstate(stru
+ 		mp_state->mp_state = vcpu->arch.mp_state;
  
- PAGEFLAG(Isolated, isolated, PF_ANY);
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1801,8 +1801,7 @@ static void do_migrate_range(unsigned lo
- 		if (unlikely(page_folio(page) != folio))
- 			goto put_folio;
- 
--		if (folio_test_hwpoison(folio) ||
--		    (folio_test_large(folio) && folio_test_has_hwpoisoned(folio))) {
-+		if (folio_contain_hwpoisoned_page(folio)) {
- 			if (WARN_ON(folio_test_lru(folio)))
- 				folio_isolate_lru(folio);
- 			if (folio_mapped(folio)) {
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -3121,8 +3121,7 @@ shmem_write_begin(struct file *file, str
- 	if (ret)
- 		return ret;
- 
--	if (folio_test_hwpoison(folio) ||
--	    (folio_test_large(folio) && folio_test_has_hwpoisoned(folio))) {
-+	if (folio_contain_hwpoisoned_page(folio)) {
- 		folio_unlock(folio);
- 		folio_put(folio);
- 		return -EIO;
+ out:
++	kvm_vcpu_srcu_read_unlock(vcpu);
++
+ 	if (kvm_mpx_supported())
+ 		kvm_put_guest_fpu(vcpu);
+ 	vcpu_put(vcpu);
 
 
 
