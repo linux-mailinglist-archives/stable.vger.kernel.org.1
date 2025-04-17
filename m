@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-134151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 183CFA929A0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:43:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D814A927C6
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:28:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E55184A464D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F28A19E641F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77CC825745A;
-	Thu, 17 Apr 2025 18:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B20FC257436;
+	Thu, 17 Apr 2025 18:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tfafUsfS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0r1jS0vt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345E42571A2;
-	Thu, 17 Apr 2025 18:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FCC2571D2;
+	Thu, 17 Apr 2025 18:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915250; cv=none; b=QOt2DDDGAUempCpmL0hwdL4Mr9OR1fOgfBxcQ0MpAXMT2Gdep/brUUv2nB1APrmKIFFyKSR0EDZrYuXGfa6KPDFasPyQl/bfqiUes05E6QhbDgQHTEspvn6A44r6VPAA4CjbG6LGXu6sIfZ9FwW4xgGxRzpWujsv0mdWQ/90UfQ=
+	t=1744914233; cv=none; b=Gq1OHHAPpuvuUXPlfFDR+2FqcuVNcNsrG+a/5oU5kso5MVjBrhqTmE6wkGaG+4jYobGC40Z7xYTYur4EdAaBmCCVb4wxZR8vMR9ypMTbhasIdiqc/msFvioYV97idea5dB36RK1KASEdlaowAPLlhDt5uHzk5wQT98qL9RAy4Hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915250; c=relaxed/simple;
-	bh=vtF4UBvfPa7PPCQfKHzRwSUMKjJtmVHDCZ88TZmA7iM=;
+	s=arc-20240116; t=1744914233; c=relaxed/simple;
+	bh=+BdZ2DZPeZfPvFgAy9XTuX2eExsh08VA9Lj8teOq/1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AX9t2EGV1M/vjfQNXxgpRPVr0YqcUinhXQQ+rZuaRLtoSd2VuhUpv8xvyhpOmiJjKV+qjqNU5WX1bRlRP3bzSPVCaO2WDqrKSGQ1jDgPqq/HtYVfKzDdq7i5+nBL1UfHr0hksrGjX33FrOiXfcOCVlGRxwsjets277AyI+9Rxro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tfafUsfS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A57CC4CEE4;
-	Thu, 17 Apr 2025 18:40:49 +0000 (UTC)
+	 MIME-Version; b=EnzvidIdnfHyDhDyrehM+MfEaIw66tvhZ9Kmfh02o5i2GzkJXi2cVXuko9XwinZ0Ror+hBP5BOasFYpcR8MxZ3MFnrcVw7cyMQ3CcqKdIicQtEJO72HEFixRwMLYDxKKxjM7CnnJST4vbX59hir7lq7FyyMnxcTgh+znprlz5jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0r1jS0vt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8FB2C4CEE4;
+	Thu, 17 Apr 2025 18:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915249;
-	bh=vtF4UBvfPa7PPCQfKHzRwSUMKjJtmVHDCZ88TZmA7iM=;
+	s=korg; t=1744914233;
+	bh=+BdZ2DZPeZfPvFgAy9XTuX2eExsh08VA9Lj8teOq/1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tfafUsfS1CQTXuf1IvzQ4D7IxoedKfeBiH4slTc3ZRy1tDRmNu3oapmDwE333JuYd
-	 07p3uj6IByKtXLyt1Ml5Ou33Mt+NtpG6xHMuBPKcVH2SCGoThqPelhpwFLzUCm9jOz
-	 LjXO8AsN8G93c6b5C69Qz2dk8HiZncBXG9VXGf34=
+	b=0r1jS0vtk0KPeob5BkC6e7JlGyAiRNA28ZrGg3E0nBdp66YgEFBvfUMaT5JfIqy2b
+	 rCZH8I53UpBfvauwyDv+2OAMwWQaCvs/dYJKMd31UuP3/2s3R8KXdGfSg3S+OuhE00
+	 STGjTxoE1aC8nJlqSrb8OV14/07TBHuiuMOf0aRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	Jiri Kosina <jkosina@suse.com>,
+	Gabriele Paoloni <gpaoloni@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 067/393] HID: pidff: Add FIX_WHEEL_DIRECTION quirk
-Date: Thu, 17 Apr 2025 19:47:56 +0200
-Message-ID: <20250417175110.290893310@linuxfoundation.org>
+Subject: [PATCH 6.13 119/414] tracing: fix return value in __ftrace_event_enable_disable for TRACE_REG_UNREGISTER
+Date: Thu, 17 Apr 2025 19:47:57 +0200
+Message-ID: <20250417175116.222865899@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Gabriele Paoloni <gpaoloni@redhat.com>
 
-[ Upstream commit 3051bf5ec773b803c474ea556b57d678a8885be3 ]
+[ Upstream commit 0c588ac0ca6c22b774d9ad4a6594681fdfa57d9d ]
 
-Most steering wheels simply ignore DIRECTION field, but some try to be
-compliant with the PID standard and use it in force calculations. Games
-often ignore setting this field properly and/or there can be issues with
-dinput8 -> wine -> SDL -> Linux API translation, and this value can be
-incorrect. This can lead to partial/complete loss of Force Feedback or
-even unexpected force reversal.
+When __ftrace_event_enable_disable invokes the class callback to
+unregister the event, the return value is not reported up to the
+caller, hence leading to event unregister failures being silently
+ignored.
 
-Sadly, this quirk can't be detected automatically without sending out
-effects that would move an axis.
+This patch assigns the ret variable to the invocation of the
+event unregister callback, so that its return value is stored
+and reported to the caller, and it raises a warning in case
+of error.
 
-This fixes FFB on Moza Racing devices and others where effect direction
-is not simply ignored.
-
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Link: https://lore.kernel.org/20250321170821.101403-1-gpaoloni@redhat.com
+Signed-off-by: Gabriele Paoloni <gpaoloni@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 12 +++++++++---
- include/linux/hid.h            |  1 +
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ kernel/trace/trace_events.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index b8c2ba0a930c2..a37cf852a2836 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -137,6 +137,9 @@ static const u8 pidff_block_load_status[] = { 0x8c, 0x8d };
- #define PID_EFFECT_STOP		1
- static const u8 pidff_effect_operation_status[] = { 0x79, 0x7b };
+diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
+index 44d8549522501..a1cf3dae9a62d 100644
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -797,7 +797,9 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
+ 				clear_bit(EVENT_FILE_FL_RECORDED_TGID_BIT, &file->flags);
+ 			}
  
-+/* Polar direction 90 degrees (North) */
-+#define PIDFF_FIXED_WHEEL_DIRECTION	0x4000
+-			call->class->reg(call, TRACE_REG_UNREGISTER, file);
++			ret = call->class->reg(call, TRACE_REG_UNREGISTER, file);
 +
- struct pidff_usage {
- 	struct hid_field *field;
- 	s32 *value;
-@@ -328,9 +331,12 @@ static void pidff_set_effect_report(struct pidff_device *pidff,
- 	pidff->set_effect[PID_GAIN].value[0] =
- 		pidff->set_effect[PID_GAIN].field->logical_maximum;
- 	pidff->set_effect[PID_DIRECTION_ENABLE].value[0] = 1;
--	pidff->effect_direction->value[0] =
--		pidff_rescale(effect->direction, 0xffff,
--				pidff->effect_direction);
-+
-+	/* Use fixed direction if needed */
-+	pidff->effect_direction->value[0] = pidff_rescale(
-+		pidff->quirks & HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION ?
-+		PIDFF_FIXED_WHEEL_DIRECTION : effect->direction,
-+		0xffff, pidff->effect_direction);
- 
- 	/* Omit setting delay field if it's missing */
- 	if (!(pidff->quirks & HID_PIDFF_QUIRK_MISSING_DELAY))
-diff --git a/include/linux/hid.h b/include/linux/hid.h
-index 818e07744c408..c2927e3854a6e 100644
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -1233,6 +1233,7 @@ int hid_pidff_init_with_quirks(struct hid_device *hid, __u32 initial_quirks);
- #define HID_PIDFF_QUIRK_MISSING_DELAY		BIT(0)
- #define HID_PIDFF_QUIRK_MISSING_PBO		BIT(1)
- #define HID_PIDFF_QUIRK_PERMISSIVE_CONTROL	BIT(2)
-+#define HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION	BIT(3)
- 
- #define dbg_hid(fmt, ...) pr_debug("%s: " fmt, __FILE__, ##__VA_ARGS__)
- 
++			WARN_ON_ONCE(ret);
+ 		}
+ 		/* If in SOFT_MODE, just set the SOFT_DISABLE_BIT, else clear it */
+ 		if (file->flags & EVENT_FILE_FL_SOFT_MODE)
 -- 
 2.39.5
 
