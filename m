@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-132967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FAE3A918CF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 12:09:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD94EA918D0
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 12:09:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D28625A25BB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 10:09:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B91D5A265D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 10:09:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D8E22A7E3;
-	Thu, 17 Apr 2025 10:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48FF522A7E3;
+	Thu, 17 Apr 2025 10:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ihi5/LsK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rVeGw1Yx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D3A1D63D6
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 10:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093471D63D6
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 10:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744884571; cv=none; b=c4To+qZE9JDfhIm8vakUFtUfYii23gn0dHnuF0J5gSQnzGb7dFr8BHwkHJIsQK5dAeWlg8mDsJlqG46UQmGHQ/ayzrJrGI8fdrYIOG5Hq4PIvLEkbFPdUW4cl33wUMg61MP4SwZy0Dmr2a5y1RBl/AuHLLCR2dGRk/c64Eo5jM8=
+	t=1744884586; cv=none; b=ASPWu/viSO4F2z2Yx+dokacSo6wCEqxzA6zKHHlFJeuJ+gj+FVtwJyU+YKMW30HNygS35I8UFtDfn9rfkqt0qBRs13feluTZ/heJD5z043PiJ5trprnhKaXeYfQhiHFEtQO75bzDVfKBqeZDbJKaO58zUFegksuGDytbHb2mGWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744884571; c=relaxed/simple;
-	bh=iS0VZ7RbKwniYzMGiVLD9WPIBx1t1feGxn0zOAFY6WQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Hyf6ybOaD/n725m24TL5Ua6X8XWPBibmduw+P/ZOWxgmtXYgBvYcm4/BoF/W1GlNNTYntrBsBj7c37C+cQXUEYFALss8xFa0d7i7hcOhE2aO0zhTMAtIELYbhhJWS6BYmibPWnh8ADus+Qdug2gIAxUIttLhpqDvjvyXL63tnFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ihi5/LsK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4373CC4CEE4;
-	Thu, 17 Apr 2025 10:09:30 +0000 (UTC)
+	s=arc-20240116; t=1744884586; c=relaxed/simple;
+	bh=IVGHcfXooeP2+9NvvatfWiOK03F9YuXDJZuJXyRtnoo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qRo49p5dPJ56TLsi0SzhR5yjk8BlP6wyBMMAeR25r9RQ00wA2h8kvDZDNTxLw7A68+ZSpOA7jZXPSWUYVK+LC/3P7jT8vzERzR4ydxunj3ltV5z+3DTsv9I5X59wBb2znrhHjGtFVppmizEcWXS1OSxpSnOM6IyKIwiGX54IZUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rVeGw1Yx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3099C4CEE4;
+	Thu, 17 Apr 2025 10:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744884570;
-	bh=iS0VZ7RbKwniYzMGiVLD9WPIBx1t1feGxn0zOAFY6WQ=;
+	s=korg; t=1744884584;
+	bh=IVGHcfXooeP2+9NvvatfWiOK03F9YuXDJZuJXyRtnoo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Ihi5/LsKulzwgakgplr4JOwHpZYFNt+oY2DXT3mabI7zKs6hCA2PozBahGgCpTlPp
-	 0xwZ2EK8fgx+S6rs8RJQG+qbVk25kvt3Rs99xp0cA93O6Tq+sYvq5Y+QzdUwS8D/+L
-	 amhZpLUWtTgfPPeg/G5pKW1sP/5x/VIA3UOLfy2k=
-Subject: FAILED: patch "[PATCH] media: venus: hfi_parser: refactor hfi packet parsing logic" failed to apply to 5.10-stable tree
+	b=rVeGw1YxY445clGTONcEIE22z/wGM9KhBl/ZLwx/CfdwMTa9Ol1u4W1YPw/8U3mDg
+	 G7zrfuEdV6jsKfeNWiIvDhMTT/FKIkE15bPCw3ogU01+jm+5L9TALrnK8HcdWXzULH
+	 pvKADwZeVwXDHrjGsXvYYlpgB3OIAgDTGHuwpVxw=
+Subject: FAILED: patch "[PATCH] media: venus: hfi_parser: refactor hfi packet parsing logic" failed to apply to 5.4-stable tree
 To: quic_vgarodia@quicinc.com,bryan.odonoghue@linaro.org,hverkuil@xs4all.nl
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 17 Apr 2025 12:09:27 +0200
-Message-ID: <2025041727-carbon-stereo-7047@gregkh>
+Date: Thu, 17 Apr 2025 12:09:28 +0200
+Message-ID: <2025041728-discard-unify-a301@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 9edaaa8e3e15aab1ca413ab50556de1975bcb329
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041727-carbon-stereo-7047@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041728-discard-unify-a301@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
