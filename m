@@ -1,149 +1,87 @@
-Return-Path: <stable+bounces-133207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E969A92114
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 17:15:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 628E8A92130
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 17:19:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DD46462592
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 15:15:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 548E85A5F83
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 15:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F32E25333D;
-	Thu, 17 Apr 2025 15:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF17F253B71;
+	Thu, 17 Apr 2025 15:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ma7rPRNI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ei5U8il0"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F4824EA85;
-	Thu, 17 Apr 2025 15:15:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D00253B6A;
+	Thu, 17 Apr 2025 15:18:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744902924; cv=none; b=ZkSg+1ELnV029B5FkB1e5vTdWvNCdhjAyAji5FVtv81Ppufaorwi+pO/08EhzDU8jND7NF+XrJbF5MIFc6XvnqjVGvwwYmKcx9dv8Z/FcXIyJryOZUG9oHtloXdayeVv2Xy8G+T+EUFlWr5hM++l/yh6HiAUDXrFyeIVZavaHzg=
+	t=1744903114; cv=none; b=pHxIVux7Q0hP1URhdW/oyJzhLCH9h2Kk6hiMmbWUJ2NBNOKIpvW5j7DAdNgYdlUcM3xAhEkg8zak85igTo7c0XNlwlivMgktPdM870HaIENVqrhdFLVMaI8uyYwwMOFGrkLuOmfixxfKVVlmOo2gDrnvFRMH07461a6Y+fvmByg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744902924; c=relaxed/simple;
-	bh=pKnMnJj1EfCmuCEJlWFsiLNEI7k9bPfDRKKgLsaEFH4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nw+h/W/bNV8YqO1nm877EyH5/dDKG9rUmdW2uxcFXW8yZMgkf1w0i+JTlXRU6AhsI4d/sIoCuEopiaiytrN3kx+lyI5Rw2SmUHV6NvEjzeAE8dYdNAhjY4d1C3P0VOlCTkgp/uhRtLdtHR1zJRJ5mMxudlG5Hj/7WSCNYUFg2xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ma7rPRNI; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744902924; x=1776438924;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=pKnMnJj1EfCmuCEJlWFsiLNEI7k9bPfDRKKgLsaEFH4=;
-  b=Ma7rPRNIqaHNgdWOQ1nZk0jOcrVnrrVVFuJ4LCsLg2PWI4kr/HchbEce
-   /g+mtvX0skYIM8s8USPsglBeJsv2GXodLFo+w/0guolzsQSqxid8bMEw1
-   7v4Z1LdNqeEyFBwJEkGUFnRg8p+z1yzcmOcEXXEZ1zgq4K+ofr0tiQjT/
-   520cjek8LTWctg+5nm/4rEzX6xg+Oyv0m4B//yOFkEBE7U1/sYKagEHdz
-   R/IB1EozF7lIHKLbheM0p+RvD5dPNmEI0FIE98LWwKnSVfU3p54ldunQt
-   WdRWV/0dCVoaNUFyvhzAfR2uTWcEQjQ6IBqy5QGrQ7pJn8ZbTTE7BqHjm
-   A==;
-X-CSE-ConnectionGUID: EPYqEcCAQSWo1z4DLXlPdQ==
-X-CSE-MsgGUID: Glsj+gxFQuKBtD8CMXcrMw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11406"; a="46624596"
-X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; 
-   d="scan'208";a="46624596"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 08:15:23 -0700
-X-CSE-ConnectionGUID: VABpUDnXS7yZnoj9FjlKBg==
-X-CSE-MsgGUID: zCqzXVuLR0GJz2xA2rqbdg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; 
-   d="scan'208";a="130689480"
-Received: from tfalcon-desk.amr.corp.intel.com (HELO [10.124.223.103]) ([10.124.223.103])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 08:15:22 -0700
-Message-ID: <7950cbd5-d254-4e67-81fa-ab2194f9dbc4@intel.com>
-Date: Thu, 17 Apr 2025 08:15:21 -0700
+	s=arc-20240116; t=1744903114; c=relaxed/simple;
+	bh=UuuP4g20z/t5ftBMRSWB0X8ubb330SPW/4gYaEaFvxU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=soiafwYqssIKHG5bEvtiYFSkTvGdoCWiI9ZXYPYXMfOnIcKphOHGkJVhwXAVlQOD/H3YazkmgdXDAT+NHxFZ9ieQ+Qu6742nvCDr5UjkcSk9VVoGOtF5eAgfeuU9cUbA3zwmvm/7fJVNmw3z/6bzDAgcOz0OyNbuidD8FBq1XiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ei5U8il0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A3DC4CEEC;
+	Thu, 17 Apr 2025 15:18:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744903114;
+	bh=UuuP4g20z/t5ftBMRSWB0X8ubb330SPW/4gYaEaFvxU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=ei5U8il0KSMZaUEY/ocPNMKw8kixUv9JfS2CmIc036GOLty2naWi400R3QNENNqbt
+	 G4qhS8MJH3lTFII/Ytnh3/CF4if4AZ66+ruJI6KMBjspXaLnyzNp7fXBGFDoH0nJPp
+	 cjrg+lUJaFFQfZTX0NnQ06f9ey5H9SfwCnV/LchMXD10hktpgFnO0tz3MmGUI9NWdJ
+	 rObuQwgbVbgNfJmMBScjx/X7twqT8aXvkfrrpM54U/gdU1glb5F1QrVx3DDULmtNjP
+	 mt/Sju+x8o99iLb9bNGMVDWdTk9WHdlxwjJCNZKHETl63Gx/ix2n7fcThhVfIxjyO5
+	 4tLvYaIiVb8pA==
+From: Vinod Koul <vkoul@kernel.org>
+To: peter.ujfalusi@gmail.com, grygorii.strashko@ti.com, 
+ Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+Cc: vaishnav.a@ti.com, u-kumar1@ti.com, dmaengine@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20250417075521.623651-1-y-abhilashchandra@ti.com>
+References: <20250417075521.623651-1-y-abhilashchandra@ti.com>
+Subject: Re: [PATCH RESEND] dmaengine: ti: k3-udma: Use cap_mask directly
+ from dma_device structure instead of a local copy
+Message-Id: <174490311144.238609.16715270633918698511.b4-ty@kernel.org>
+Date: Thu, 17 Apr 2025 20:48:31 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/mm: fix _pgd_alloc() for Xen PV mode
-To: Juergen Gross <jgross@suse.com>, linux-kernel@vger.kernel.org,
- x86@kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, =?UTF-8?Q?Petr_Van=C4=9Bk?=
- <arkamar@atlas.cz>, stable@vger.kernel.org
-References: <20250417144808.22589-1-jgross@suse.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20250417144808.22589-1-jgross@suse.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 
-On 4/17/25 07:48, Juergen Gross wrote:
-> -#define PGD_ALLOCATION_ORDER 1
-> +#define PGD_ALLOCATION_ORDER pgd_allocation_order
-> +extern unsigned int pgd_allocation_order;
->  #else
->  #define PGD_ALLOCATION_ORDER 0
->  #endif
 
-Instead of hiding a variable behind a macro-looking name and a bunch of
-#ifdefs, can we please fix this properly?
+On Thu, 17 Apr 2025 13:25:21 +0530, Yemike Abhilash Chandra wrote:
+> Currently, a local dma_cap_mask_t variable is used to store device
+> cap_mask within udma_of_xlate(). However, the DMA_PRIVATE flag in
+> the device cap_mask can get cleared when the last channel is released.
+> This can happen right after storing the cap_mask locally in
+> udma_of_xlate(), and subsequent dma_request_channel() can fail due to
+> mismatch in the cap_mask. Fix this by removing the local dma_cap_mask_t
+> variable and directly using the one from the dma_device structure.
+> 
+> [...]
 
-static inline pgd_allocation_order(void)
-{
-	if (cpu_feature_enabled(X86_FEATURE_PTI))
-		return 1;
-	return 0;
-}
+Applied, thanks!
 
-and then s/PGD_ALLOCATION_ORDER/pgd_allocation_order()/.
+[1/1] dmaengine: ti: k3-udma: Use cap_mask directly from dma_device structure instead of a local copy
+      commit: 8ca9590c39b69b55a8de63d2b21b0d44f523b43a
 
-Wouldn't that be a billion times better?
+Best regards,
+-- 
+~Vinod
+
+
 
