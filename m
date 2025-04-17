@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-134246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5912FA92A08
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:46:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38E1FA92676
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:13:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7D21169308
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:45:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 496677B8183
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:07:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331AB2566CF;
-	Thu, 17 Apr 2025 18:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3DDB257423;
+	Thu, 17 Apr 2025 18:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M7sED8tF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q2pttEru"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4269254878;
-	Thu, 17 Apr 2025 18:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F40819F40A;
+	Thu, 17 Apr 2025 18:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915547; cv=none; b=aUtMxD4Tet2Xs4kHFimWZRc4jsdJJyg8vt18sMdDPyccDN8grLkVzxnbNbHt/mLtVZabCd+j692e+Kvqpom/0rMQGtuu2xnaT8feGO/tqFAZ39BuWLx3/kgXKw8tCjrEMy9qo5psjiNfH0y6mXN3fi6hEgTSEwAkesPP48XX86g=
+	t=1744913243; cv=none; b=am1n5NqbUfe3RI8YzFFbm9XzkinOa68XO3xNBsu5Ssibp7/cH4D9BR3yY2y2uhDTP7WGiMb7IVrsQWtLwkCUSAoDxQSWozfeDRrNHoUOUVE+CfPIuwLPZz7s9NnI+08X//tu4tXd5s4Wmp4Z79ysL0aDslKxIShxn3z3jBMDF0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915547; c=relaxed/simple;
-	bh=ueLWeyCsz/tEa1yTDo3D+/zlkz+OyQ+rtR2uDBhCS9s=;
+	s=arc-20240116; t=1744913243; c=relaxed/simple;
+	bh=hDIhx/FB2w5Yr7GYU3sT6An52DH/lXeAxwW2YBymt9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tKB5kEXzY6HFCV1kQc2yYkWHd1fqpph4aHGESS+32MuFUCt+BI2mwWsDLGpXDfWEgb2pFG1up0FeaOlPyelUoE0Ns/Zde+bBtxPoe/lpPlwRY/LXJn57pUF0kbkfOZZp7oR5jeDWLFDNRKSQJ4SCT3LotiAPrOCXKx/nHKuyL4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7sED8tF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1545CC4CEE4;
-	Thu, 17 Apr 2025 18:45:45 +0000 (UTC)
+	 MIME-Version; b=s1H4jnTmIbzyfS/mlZ8szriK8fG6yjdIDA6CmbEzqZwspyEOtqjTIX+zDkD/A7LyvxXn1uslcnqCpL7/HcBmXInzEQn5VIvgB00RtFevG2aSf90OumlE3oqydIeKxGclqGr0CLFck3lQWylLXKG9qRdp9QPzPkiu1GFiLjqKh98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q2pttEru; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12E3BC4CEE4;
+	Thu, 17 Apr 2025 18:07:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915546;
-	bh=ueLWeyCsz/tEa1yTDo3D+/zlkz+OyQ+rtR2uDBhCS9s=;
+	s=korg; t=1744913243;
+	bh=hDIhx/FB2w5Yr7GYU3sT6An52DH/lXeAxwW2YBymt9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M7sED8tFV/DVEcRT6QoRVb4qZaxYSYQJNbpsLjVSw5NcFBfIr8kJ/SAy36MIh3uPS
-	 z7MkRjyrIZKaQh7aNoAAKffaZYuI/M0XuQW7eE9Mrq9I/9Z83Bk+UQzHCV5i82GQiW
-	 jDkQWkmsDJFC5Ur8K64Cs9efBM8cG2fZtW/gWoHs=
+	b=Q2pttEruQWDIYSA1CLkNEjsAjDWm1Z5CxkjTaaQduOMbhoS6AVlLJOgvHDUDhpi1E
+	 jZKTPGQDpJOMQ/E2AKNLRWIS9ANcPekm6tyo6kZ6DNQ09Z31LaonUlUtJAWwd8n98M
+	 DpvQDPogCKeet43q6K3OXf3/mORiTIC2SVgKIVU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leonid Arapov <arapovl839@gmail.com>,
-	Helge Deller <deller@gmx.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 154/393] fbdev: omapfb: Add plane value check
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.14 275/449] mtd: Replace kcalloc() with devm_kcalloc()
 Date: Thu, 17 Apr 2025 19:49:23 +0200
-Message-ID: <20250417175113.781044605@linuxfoundation.org>
+Message-ID: <20250417175129.129531997@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leonid Arapov <arapovl839@gmail.com>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-[ Upstream commit 3e411827f31db7f938a30a3c7a7599839401ec30 ]
+commit 1b61a59876f0eafc19b23007c522ee407f55dbec upstream.
 
-Function dispc_ovl_setup is not intended to work with the value OMAP_DSS_WB
-of the enum parameter plane.
+Replace kcalloc() with devm_kcalloc() to prevent memory leaks in case of
+errors.
 
-The value of this parameter is initialized in dss_init_overlays and in the
-current state of the code it cannot take this value so it's not a real
-problem.
-
-For the purposes of defensive coding it wouldn't be superfluous to check
-the parameter value, because some functions down the call stack process
-this value correctly and some not.
-
-For example, in dispc_ovl_setup_global_alpha it may lead to buffer
-overflow.
-
-Add check for this value.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE static
-analysis tool.
-
-Signed-off-by: Leonid Arapov <arapovl839@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 78c08247b9d3 ("mtd: Support kmsg dumper based on pstore/blk")
+Cc: stable@vger.kernel.org # v5.10+
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/omap2/omapfb/dss/dispc.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/mtd/mtdpstore.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-index 5832485ab998c..c29b6236952b3 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-@@ -2749,9 +2749,13 @@ int dispc_ovl_setup(enum omap_plane plane, const struct omap_overlay_info *oi,
- 		bool mem_to_mem)
- {
- 	int r;
--	enum omap_overlay_caps caps = dss_feat_get_overlay_caps(plane);
-+	enum omap_overlay_caps caps;
- 	enum omap_channel channel;
+--- a/drivers/mtd/mtdpstore.c
++++ b/drivers/mtd/mtdpstore.c
+@@ -417,11 +417,11 @@ static void mtdpstore_notify_add(struct
+ 	}
  
-+	if (plane == OMAP_DSS_WB)
-+		return -EINVAL;
-+
-+	caps = dss_feat_get_overlay_caps(plane);
- 	channel = dispc_ovl_get_channel_out(plane);
+ 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, info->kmsg_size));
+-	cxt->rmmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
+-	cxt->usedmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
++	cxt->rmmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
++	cxt->usedmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
  
- 	DSSDBG("dispc_ovl_setup %d, pa %pad, pa_uv %pad, sw %d, %d,%d, %dx%d ->"
--- 
-2.39.5
-
+ 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, mtd->erasesize));
+-	cxt->badmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
++	cxt->badmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
+ 
+ 	if (!cxt->rmmap || !cxt->usedmap || !cxt->badmap)
+ 		return;
+@@ -530,9 +530,6 @@ static void mtdpstore_notify_remove(stru
+ 	mtdpstore_flush_removed(cxt);
+ 
+ 	unregister_pstore_device(&cxt->dev);
+-	kfree(cxt->badmap);
+-	kfree(cxt->usedmap);
+-	kfree(cxt->rmmap);
+ 	cxt->mtd = NULL;
+ 	cxt->index = -1;
+ }
 
 
 
