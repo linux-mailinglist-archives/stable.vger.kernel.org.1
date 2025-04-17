@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-133820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AA4DA927C8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:28:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA96BA92A1D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADC8819E38B8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E5FB3B7A38
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:43:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1340625F971;
-	Thu, 17 Apr 2025 18:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11B622333D;
+	Thu, 17 Apr 2025 18:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W5oU7eFz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dcw5rUMQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F9F257434;
-	Thu, 17 Apr 2025 18:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD04F8462;
+	Thu, 17 Apr 2025 18:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914239; cv=none; b=mFmO6F21eN2fs/yrnlEfRtuBPDhix5YqTqoAuWMNZNuirT49YnHglu7vg+9TaOGZNwNgDhbKM4zgRRMyQwW6NCGLQBLn61bRA2EeUEjSlPRc9qkWfjEGDHOGAKoTGkieKWf35m2bM+Tm6TojAgIMBbMo5cipN7+MSXAYS1R0ung=
+	t=1744915422; cv=none; b=By+RvX/cz8PEBJ7MXu9FHlKtiWli0EfLt+EvNJzkQVEhNkDkvcd9ZpcSR2qdl9/TEDqOV8+hteKDTa5OlwR97Rf0xNHQpmqKFo012bKya3Zft8FSkDOJ2qxKkXgyGryq9iFYPs9Du6eycNAYkq/xTpQPrEOcU3e27EkblEXvIE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914239; c=relaxed/simple;
-	bh=wDRntvp5/p1IiIJy6yNMuYBbNtdxTCrYYdEygHAETU4=;
+	s=arc-20240116; t=1744915422; c=relaxed/simple;
+	bh=l2V+SjU8GiGSPyNuvFNu8fDG20c46xIBqP+GK3e97eA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C5txi9WJ7/y3/yOKP5/da8hbQCoGR/KIbDfSBjIHbKious+FJqHjSC74qEPEoOC8KwwvX7TRSVyh05kQKlENE1d1uTvkZ05XJ0tPxDnp1q34vaI+pwT+vD4+fcdHwTWSaxPx/rJef8McEnpH4glTI3PSzJvi2blJFFQ1qyPZZSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W5oU7eFz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C49C4CEEC;
-	Thu, 17 Apr 2025 18:23:59 +0000 (UTC)
+	 MIME-Version; b=ARVpaaZJUYwrtbejnzcUa5UGOBdiAUMaOdCDJWdrFzUqPvqzkG/VW2va5bWY8eQ70YPCYlQlCePsqtHyu8RJYanJq4ARzqBT8k+RPecq0Ly0nU6WjZu7/ykJg9YKKRR6/BKFeavdwzqLocZjgBuTJ6u4QnadSmt9GN+TcPb96mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dcw5rUMQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B1AC4CEE4;
+	Thu, 17 Apr 2025 18:43:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914239;
-	bh=wDRntvp5/p1IiIJy6yNMuYBbNtdxTCrYYdEygHAETU4=;
+	s=korg; t=1744915422;
+	bh=l2V+SjU8GiGSPyNuvFNu8fDG20c46xIBqP+GK3e97eA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W5oU7eFzgj6jXT54wMFbeB9Op3nk6TusTD64t7rDVa9Ps9c4g4p2/8lPy0U62uBHA
-	 6TyKcvXlCdfVo9LF/LdNq0/QG4g7tUQo4kmdpa0qyNrrKuCsW6hbDLOEvJ/jlUeoGj
-	 nri2Bfp/d3VGAfpW5qZt2ymjPtN5J2ZcqoLzN3s0=
+	b=dcw5rUMQCoE/90yv698ssxZli4qytiz8CtpquKBMu0tyu9kDiIjPhDLE6B0oJ91Aw
+	 38OetMjib+nBSEyNwjCFrt4IO+/0/XTgIbrb+80wq592X7aup/EvM6eqTzAAwEbHG/
+	 RayYxdRhmuybykjpRtoNQ0tpXAaLXhHwXI0IokUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Bunea <ovidiu.bunea@amd.com>,
-	Mike Katsnelson <mike.katsnelson@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Chaohai Chen <wdhh66@163.com>,
+	Dmitry Bogdanov <d.bogdanov@yadro.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 144/414] drm/amd/display: stop DML2 from removing pipes based on planes
+Subject: [PATCH 6.12 093/393] scsi: target: spc: Fix RSOC parameter data header size
 Date: Thu, 17 Apr 2025 19:48:22 +0200
-Message-ID: <20250417175117.218688749@linuxfoundation.org>
+Message-ID: <20250417175111.335628686@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Katsnelson <mike.katsnelson@amd.com>
+From: Chaohai Chen <wdhh66@163.com>
 
-[ Upstream commit 8adeff83a3b07fa6d0958ed51e1b38ba7469e448 ]
+[ Upstream commit b50532318793d28a7628c1ffc129a2226e83e495 ]
 
-[Why]
-Transitioning from low to high resolutions at high refresh rates caused grey corruption.
-During the transition state, there is a period where plane size is based on low resultion
-state and ODM slices are based on high resoultion state, causing the entire plane to be
-contained in one ODM slice. DML2 would turn off the pipe for the ODM slice with no plane,
-causing an underflow since the pixel rate for the higher resolution cannot be supported on
-one pipe. This change stops DML2 from turning off pipes that are mapped to an ODM slice
-with no plane. This is possible to do without negative consequences because pipes can now
-take the minimum viewport and draw with zero recout size, removing the need to have the
-pipe turned off.
+The SPC document states that "The COMMAND DATA LENGTH field indicates the
+length in bytes of the command descriptor list".
 
-[How]
-In map_pipes_from_plane(), remove "check" that skips ODM slices that are not covered by
-the plane. This prevents the pipes for those ODM slices from being freed.
+The length should be subtracted by 4 to represent the length of the
+description list, not 3.
 
-Reviewed-by: Ovidiu Bunea <ovidiu.bunea@amd.com>
-Signed-off-by: Mike Katsnelson <mike.katsnelson@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Chaohai Chen <wdhh66@163.com>
+Link: https://lore.kernel.org/r/20250115070739.216154-1-wdhh66@163.com
+Reviewed-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../display/dc/dml2/dml2_dc_resource_mgmt.c   | 26 -------------------
- 1 file changed, 26 deletions(-)
+ drivers/target/target_core_spc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_dc_resource_mgmt.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_dc_resource_mgmt.c
-index 1ed21c1b86a5b..a966abd407881 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_dc_resource_mgmt.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_dc_resource_mgmt.c
-@@ -532,26 +532,6 @@ static void calculate_odm_slices(const struct dc_stream_state *stream, unsigned
- 	odm_slice_end_x[odm_factor - 1] = stream->src.width - 1;
- }
- 
--static bool is_plane_in_odm_slice(const struct dc_plane_state *plane, unsigned int slice_index, unsigned int *odm_slice_end_x, unsigned int num_slices)
--{
--	unsigned int slice_start_x, slice_end_x;
--
--	if (slice_index == 0)
--		slice_start_x = 0;
--	else
--		slice_start_x = odm_slice_end_x[slice_index - 1] + 1;
--
--	slice_end_x = odm_slice_end_x[slice_index];
--
--	if (plane->clip_rect.x + plane->clip_rect.width < slice_start_x)
--		return false;
--
--	if (plane->clip_rect.x > slice_end_x)
--		return false;
--
--	return true;
--}
--
- static void add_odm_slice_to_odm_tree(struct dml2_context *ctx,
- 		struct dc_state *state,
- 		struct dc_pipe_mapping_scratch *scratch,
-@@ -791,12 +771,6 @@ static void map_pipes_for_plane(struct dml2_context *ctx, struct dc_state *state
- 	sort_pipes_for_splitting(&scratch->pipe_pool);
- 
- 	for (odm_slice_index = 0; odm_slice_index < scratch->odm_info.odm_factor; odm_slice_index++) {
--		// We build the tree for one ODM slice at a time.
--		// Each ODM slice shares a common OPP
--		if (!is_plane_in_odm_slice(plane, odm_slice_index, scratch->odm_info.odm_slice_end_x, scratch->odm_info.odm_factor)) {
--			continue;
--		}
--
- 		// Now we have a list of all pipes to be used for this plane/stream, now setup the tree.
- 		scratch->odm_info.next_higher_pipe_for_odm_slice[odm_slice_index] = add_plane_to_blend_tree(ctx, state,
- 				plane,
+diff --git a/drivers/target/target_core_spc.c b/drivers/target/target_core_spc.c
+index ea14a38356814..61c065702350e 100644
+--- a/drivers/target/target_core_spc.c
++++ b/drivers/target/target_core_spc.c
+@@ -2243,7 +2243,7 @@ spc_emulate_report_supp_op_codes(struct se_cmd *cmd)
+ 			response_length += spc_rsoc_encode_command_descriptor(
+ 					&buf[response_length], rctd, descr);
+ 		}
+-		put_unaligned_be32(response_length - 3, buf);
++		put_unaligned_be32(response_length - 4, buf);
+ 	} else {
+ 		response_length = spc_rsoc_encode_one_command_descriptor(
+ 				&buf[response_length], rctd, descr,
 -- 
 2.39.5
 
