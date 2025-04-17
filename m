@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABE16A925E7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:08:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF336A92815
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9303E1684D2
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6168C4A370C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:30:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 045222571DC;
-	Thu, 17 Apr 2025 18:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0BB425A2D6;
+	Thu, 17 Apr 2025 18:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UtOmxPGz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yK68MhVh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48D519F40A;
-	Thu, 17 Apr 2025 18:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2F9259C8D;
+	Thu, 17 Apr 2025 18:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913246; cv=none; b=TkVeC+++RjdpvDsI3Kr0ObrAxTh4K9b+hyJqEP+pK1zoGG8aC6giIydXh2JbjdHI3HYBzEqrsvUUnknRcOCR9N5DaSiZ1QzYxWOulZM3el4B2XitwvM7XUGe12vBXIxvas/uVgXU+Q/7hS5hioxNmpCYHzJakmHGgHloKMhb+2o=
+	t=1744914416; cv=none; b=eXO9m5Cjk48/+Y8tyoHqLB/Q+XTxPzQxe/vO5nb9lvX2pYwoZ6qGJ9VpYcGcc05dkURqZFQij4xcREFCUmDTA6YcMVnx5EnKzL/bmHKhE0X72+pieQj6KzFwUZa/7/OxUySRAU+LcDHcmb3jWberdYEyA4JjBEJS6+Xy9zu0HEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913246; c=relaxed/simple;
-	bh=qeclHQY1g17+sANKP/Zd/uTfwOqlOTnf7MgfWP1YvkU=;
+	s=arc-20240116; t=1744914416; c=relaxed/simple;
+	bh=1XclEZB8O/6+UvvfPvFRjV5N51AWffIFR1odE26T0Ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BX8Alv3akNKg61MrRRWBGMdqrbv2Ngv/6LIFastioY1Y/xzMM//zg7XFOPujUpbV8jtFF6wlpBVR4uoJuEA0bWI8J5eFC+6Hjym7nxic0gOGTKP0ZmGvS9Xkggb0tLoUVnInnsc3tMgmMUxPpiFkol5FZNtLxPGJb12nZ+x9a7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UtOmxPGz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350C2C4CEE4;
-	Thu, 17 Apr 2025 18:07:26 +0000 (UTC)
+	 MIME-Version; b=VcEgXHBsW+6p0TsnUKXI/5EGn6NPPGI6sG7VbYzoj84u2KL8o3He7aJ8429XGwEDcouv0c4ZdV+HQdlByioKpJNx/rAtMMZ7fphlyOSrnQebUGpmrZPh5Wr5ij8A0DhhUeS+jTmCyDuwmS/sPG7U9eJr0ncrvD7PatOUv0VAbeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yK68MhVh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15220C4CEE4;
+	Thu, 17 Apr 2025 18:26:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913246;
-	bh=qeclHQY1g17+sANKP/Zd/uTfwOqlOTnf7MgfWP1YvkU=;
+	s=korg; t=1744914416;
+	bh=1XclEZB8O/6+UvvfPvFRjV5N51AWffIFR1odE26T0Ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UtOmxPGzdwL9lkZYnaaa+upHl4XbOsIV8Li7VVdSEgLnqZWvJYLz71Dq5+3eQTlQ/
-	 AT9cepIaJdEQIdtB0D+imMUoYxRY8h4Yy3GJh3canR9I+21QCUMygCd/IbZ6oVZgOm
-	 n3zvk0kwslTW8Z9548s5iSlT43mZCB8PlNt2SmnQ=
+	b=yK68MhVhyJyv5yB7/LyHVEAtuq2h3AuUMY4NlzdgXQgnvOuW62t8tonkJzDTrHoWZ
+	 6REz5nV9So4IG52Uf/WMrtcEumBn3hFnvEvkyeOcOSvNy4ieB3Pihswvsg0QDEhG7M
+	 vZfKwfaTzsJLvQxos4XR+dJnxP5UHjRzyti8S0sE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 6.14 276/449] clocksource/drivers/stm32-lptimer: Use wakeup capable instead of init wakeup
-Date: Thu, 17 Apr 2025 19:49:24 +0200
-Message-ID: <20250417175129.169147724@linuxfoundation.org>
+	Yuan Can <yuancan@huawei.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.13 207/414] media: siano: Fix error handling in smsdvb_module_init()
+Date: Thu, 17 Apr 2025 19:49:25 +0200
+Message-ID: <20250417175119.769181414@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Torgue <alexandre.torgue@foss.st.com>
+From: Yuan Can <yuancan@huawei.com>
 
-commit 96bf4b89a6ab22426ad83ef76e66c72a5a8daca0 upstream.
+commit 734ac57e47b3bdd140a1119e2c4e8e6f8ef8b33d upstream.
 
-"wakeup-source" property describes a device which has wakeup capability
-but should not force this device as a wakeup source.
+The smsdvb_module_init() returns without checking the retval from
+smscore_register_hotplug().
+If the smscore_register_hotplug() failed, the module failed to install,
+leaving the smsdvb_debugfs not unregistered.
 
-Fixes: 48b41c5e2de6 ("clocksource: Add Low Power STM32 timers driver")
+Fixes: 3f6b87cff66b ("[media] siano: allow showing the complete statistics via debugfs")
 Cc: stable@vger.kernel.org
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Rule: add
-Link: https://lore.kernel.org/stable/20250306083407.2374894-1-fabrice.gasnier%40foss.st.com
-Link: https://lore.kernel.org/r/20250306102501.2980153-1-fabrice.gasnier@foss.st.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Acked-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clocksource/timer-stm32-lp.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/media/common/siano/smsdvb-main.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/clocksource/timer-stm32-lp.c
-+++ b/drivers/clocksource/timer-stm32-lp.c
-@@ -168,9 +168,7 @@ static int stm32_clkevent_lp_probe(struc
- 	}
+--- a/drivers/media/common/siano/smsdvb-main.c
++++ b/drivers/media/common/siano/smsdvb-main.c
+@@ -1243,6 +1243,8 @@ static int __init smsdvb_module_init(voi
+ 	smsdvb_debugfs_register();
  
- 	if (of_property_read_bool(pdev->dev.parent->of_node, "wakeup-source")) {
--		ret = device_init_wakeup(&pdev->dev, true);
--		if (ret)
--			goto out_clk_disable;
-+		device_set_wakeup_capable(&pdev->dev, true);
+ 	rc = smscore_register_hotplug(smsdvb_hotplug);
++	if (rc)
++		smsdvb_debugfs_unregister();
  
- 		ret = dev_pm_set_wake_irq(&pdev->dev, irq);
- 		if (ret)
+ 	pr_debug("\n");
+ 
 
 
 
