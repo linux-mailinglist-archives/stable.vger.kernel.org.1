@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-134257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18565A92A53
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:49:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D65EA9287B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:35:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19A1A3C0011
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:46:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D4891887702
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE265256C7C;
-	Thu, 17 Apr 2025 18:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98E525C70F;
+	Thu, 17 Apr 2025 18:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A58EsrNi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uz7UIY98"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4112561D9;
-	Thu, 17 Apr 2025 18:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888F625A64B;
+	Thu, 17 Apr 2025 18:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915576; cv=none; b=TEICYElIRSNYE3SlA4Ghtev8DUGUjtEWDCXE+fHsfFtiw4V1EjpN+axbrWhHXPZvjDoK0xNpNCsjFu1U1S6hOPJADdhgdHHdxfjd4uzJGKp/wXnOaYGPR6Xksb7RecFM4U7mWGB2bVEaCBWVzmZmxlqqbtiiGzBdZ7jyOsqhGbs=
+	t=1744914462; cv=none; b=uN+/LJqdhJN4oO6TvW/Xs2vFJNqoeXyGYzKWFS4JJ4dN2jpFftGfpn3I7uV7xcy31YumxiTVo6wLj7E63vWM2I+Whu7OtAft8Eh6deBTvUtBD68Co/9+19Za9H1FKcw5KQFQboMJEzZr3l0dePWcLRco22RyCzRhGeSkYv/YcDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915576; c=relaxed/simple;
-	bh=LtkL16jemO5+lOxcVu28w/NzDX17ZhuxlQEzq2PKucM=;
+	s=arc-20240116; t=1744914462; c=relaxed/simple;
+	bh=EgqmW9mHu9+ZXFwuXXVe0wT/DXPQ4Dw6yEjzYx73vRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZHDW49mvaKpzrxCyHtJj3s9Q01r8+SDaiVJmhC5pr1z4fxlj4Jyz9e9DmQHTz1EqZg2uVrWRnDwldERtNv/DiWk6PyDEhrQ/ppR/duHOL7aPiSp/5fRa0gW37GGar0d0jlZEMhpfxI+yWixt/a1ZuNPDPXtZShkueVcE+fYsEWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A58EsrNi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16522C4CEE4;
-	Thu, 17 Apr 2025 18:46:15 +0000 (UTC)
+	 MIME-Version; b=pbuo51ujFisG2LfkFjcxStCfywMzEdEWxAOa2VAcip3+Ao00iCQraNwbpiig5Hv6UxAO6c7efYX+os0/oUDcjycyB9btOrsC5QCjgOLtmIAmXmA2q8BwTQv975HzB159tmO3FWriOsj4GvwAMG7t+MWh6bE64d3oPG2LUtjKp/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uz7UIY98; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9DFC4CEE4;
+	Thu, 17 Apr 2025 18:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915576;
-	bh=LtkL16jemO5+lOxcVu28w/NzDX17ZhuxlQEzq2PKucM=;
+	s=korg; t=1744914462;
+	bh=EgqmW9mHu9+ZXFwuXXVe0wT/DXPQ4Dw6yEjzYx73vRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A58EsrNipcfKGSAhKUp+TJzqFUqkYOo1fxDnLZL2PsLl2L5IZIAKiYM10VSg6zoMS
-	 JpmZBNWddmCom6Mv1IfCzFTNvyxxpTHfg0IY7eCg+D6a9iCohI/eSkzfEuWm+WHF1Q
-	 dBIGSu7k2yPJCWHoNCun8Ze2qKN63aZ6cmSy7FcI=
+	b=Uz7UIY983Ck1y+18AYZUKEvXWbQgnMjXhsC65i3hpx4w87jaS1G1QRt4DeRRHTAAI
+	 xFQkFcXDC9OndzLXM0Va8bPqslW/AC6ydybKAOVU6oifaHgFKPRO8n3XwqjJedWHVv
+	 YtmyVReHfMc5OD2pR3PR2+L0QjHg3iTam/cW6nhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 172/393] HID: pidff: Factor out code for setting gain
-Date: Thu, 17 Apr 2025 19:49:41 +0200
-Message-ID: <20250417175114.517011344@linuxfoundation.org>
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.13 224/414] media: visl: Fix ERANGE error when setting enum controls
+Date: Thu, 17 Apr 2025 19:49:42 +0200
+Message-ID: <20250417175120.443973669@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +60,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 
-[ Upstream commit f7ebf0b11b9e04bf59c438ad14f0115b12aa2f44 ]
+commit d98e9213a768a3cc3a99f5e1abe09ad3baff2104 upstream.
 
-Makes it possible to easily set gain from inside hid-pidff.c
+The visl driver supports both frame and slice mode, with and without a
+start-code. But, the range and default for these enum controls was not
+set, which currently limits the decoder to enums with a value of 0. Fix
+this by setting the decoder mode and start code controls for both the
+H.264 and HEVC codecs.
 
-Changes in v7:
-- Check if device gain field exists before setting device gain
-
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0c078e310b6d ("media: visl: add virtual stateless decoder driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ drivers/media/test-drivers/visl/visl-core.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index 180b2cf66e4c7..ac6f940abd901 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -539,6 +539,19 @@ static int pidff_needs_set_ramp(struct ff_effect *effect, struct ff_effect *old)
- 	       effect->u.ramp.end_level != old->u.ramp.end_level;
- }
- 
-+/*
-+ * Set device gain
-+ */
-+static void pidff_set_gain_report(struct pidff_device *pidff, u16 gain)
-+{
-+	if (!pidff->device_gain[PID_DEVICE_GAIN_FIELD].field)
-+		return;
-+
-+	pidff_set(&pidff->device_gain[PID_DEVICE_GAIN_FIELD], gain);
-+	hid_hw_request(pidff->hid, pidff->reports[PID_DEVICE_GAIN],
-+			HID_REQ_SET_REPORT);
-+}
-+
- /*
-  * Clear device control report
-  */
-@@ -865,11 +878,7 @@ static int pidff_upload_effect(struct input_dev *dev, struct ff_effect *effect,
-  */
- static void pidff_set_gain(struct input_dev *dev, u16 gain)
- {
--	struct pidff_device *pidff = dev->ff->private;
--
--	pidff_set(&pidff->device_gain[PID_DEVICE_GAIN_FIELD], gain);
--	hid_hw_request(pidff->hid, pidff->reports[PID_DEVICE_GAIN],
--			HID_REQ_SET_REPORT);
-+	pidff_set_gain_report(dev->ff->private, gain);
- }
- 
- static void pidff_autocenter(struct pidff_device *pidff, u16 magnitude)
-@@ -1414,12 +1423,7 @@ int hid_pidff_init_with_quirks(struct hid_device *hid, __u32 initial_quirks)
- 	if (error)
- 		goto fail;
- 
--	if (test_bit(FF_GAIN, dev->ffbit)) {
--		pidff_set(&pidff->device_gain[PID_DEVICE_GAIN_FIELD], 0xffff);
--		hid_hw_request(hid, pidff->reports[PID_DEVICE_GAIN],
--				     HID_REQ_SET_REPORT);
--	}
--
-+	pidff_set_gain_report(pidff, 0xffff);
- 	error = pidff_check_autocenter(pidff, dev);
- 	if (error)
- 		goto fail;
--- 
-2.39.5
-
+--- a/drivers/media/test-drivers/visl/visl-core.c
++++ b/drivers/media/test-drivers/visl/visl-core.c
+@@ -161,9 +161,15 @@ static const struct visl_ctrl_desc visl_
+ 	},
+ 	{
+ 		.cfg.id = V4L2_CID_STATELESS_H264_DECODE_MODE,
++		.cfg.min = V4L2_STATELESS_H264_DECODE_MODE_SLICE_BASED,
++		.cfg.max = V4L2_STATELESS_H264_DECODE_MODE_FRAME_BASED,
++		.cfg.def = V4L2_STATELESS_H264_DECODE_MODE_SLICE_BASED,
+ 	},
+ 	{
+ 		.cfg.id = V4L2_CID_STATELESS_H264_START_CODE,
++		.cfg.min = V4L2_STATELESS_H264_START_CODE_NONE,
++		.cfg.max = V4L2_STATELESS_H264_START_CODE_ANNEX_B,
++		.cfg.def = V4L2_STATELESS_H264_START_CODE_NONE,
+ 	},
+ 	{
+ 		.cfg.id = V4L2_CID_STATELESS_H264_SLICE_PARAMS,
+@@ -198,9 +204,15 @@ static const struct visl_ctrl_desc visl_
+ 	},
+ 	{
+ 		.cfg.id = V4L2_CID_STATELESS_HEVC_DECODE_MODE,
++		.cfg.min = V4L2_STATELESS_HEVC_DECODE_MODE_SLICE_BASED,
++		.cfg.max = V4L2_STATELESS_HEVC_DECODE_MODE_FRAME_BASED,
++		.cfg.def = V4L2_STATELESS_HEVC_DECODE_MODE_SLICE_BASED,
+ 	},
+ 	{
+ 		.cfg.id = V4L2_CID_STATELESS_HEVC_START_CODE,
++		.cfg.min = V4L2_STATELESS_HEVC_START_CODE_NONE,
++		.cfg.max = V4L2_STATELESS_HEVC_START_CODE_ANNEX_B,
++		.cfg.def = V4L2_STATELESS_HEVC_START_CODE_NONE,
+ 	},
+ 	{
+ 		.cfg.id = V4L2_CID_STATELESS_HEVC_ENTRY_POINT_OFFSETS,
 
 
 
