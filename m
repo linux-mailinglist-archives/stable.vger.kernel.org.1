@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-134314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00B14A92A5D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:49:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B085DA928C7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:37:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21DED1B646A7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:49:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D03CB4A39BF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C82DA257AC7;
-	Thu, 17 Apr 2025 18:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD7B2620D5;
+	Thu, 17 Apr 2025 18:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bm+T6TnM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AKkZfNs1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E34E257436;
-	Thu, 17 Apr 2025 18:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18840257451;
+	Thu, 17 Apr 2025 18:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915752; cv=none; b=UTo+NjQRC3w6mTL5ScPIpa7V3RGgDwtG6sz2ZweTg7IKRm6+J9uL/1aI3XnVT6tfE9xDOP6mT2vzEMkS/7WJYSY0bLK1qX1BO6VxsxZJIca6r8Y27uJf8PDJwmxesh1PIcvQzGiD2FAclRPTJwMH/X9CYwR/MmteENEf9GzgLhI=
+	t=1744914724; cv=none; b=oAF1bUocBdggsP7nSBht9pHhYcOCmbU7sIy2Db8or9ryTlRSE12TSHrcZwWkpR+BeJPvkaEhDZlj1uNtVIfPDzsqttUFitqFpxKXMbOjVcg/1tmYi+vyqsgB+b9WiGJIK5cl8MBs/xEhAKoHkro5uumO/zkligZ6UQWjjQnsnkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915752; c=relaxed/simple;
-	bh=zFA1i4wG+vuzZLdapb5PvXZ+3o75PCkGPyBUETM1CdM=;
+	s=arc-20240116; t=1744914724; c=relaxed/simple;
+	bh=BouO+mNjkbHhYy9GNfPrwPx3Vjil7V2KOzekcNZeItY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mZbfn/t9CBPW9n+47U5/lnZHUKaJ7EVPCatBjt82RUgixm5VpOJhcdDMXCMghLf7zIr0uckrNj/4uuWrYjzXHIFnQvV6xWpVJvDEOen7m1CFwx+qXEyVoL9qXfyW6qcTZHSOTOFgtq9MkfLOIbycDTMG+VZVcyAOgE35eHVbgWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bm+T6TnM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00E3C4CEF0;
-	Thu, 17 Apr 2025 18:49:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ArQ8toP4lhho2GtU50RFpi0MrnK4LesGA42eDZ1QLZ1Q/4QNuoR1lVRZpt7AdXI5hOCyEQCEQ/bGbbaEiglIuEK2Bpy7Ws7N3fbLFQexclDryQ6ZgHbGSkmyMmexpWsKDkyN6HhjrLozLRFf22X04FAGAgVJsPcxhhGbgxPZvhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKkZfNs1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A16BDC4CEE4;
+	Thu, 17 Apr 2025 18:32:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915752;
-	bh=zFA1i4wG+vuzZLdapb5PvXZ+3o75PCkGPyBUETM1CdM=;
+	s=korg; t=1744914724;
+	bh=BouO+mNjkbHhYy9GNfPrwPx3Vjil7V2KOzekcNZeItY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bm+T6TnM3ySfFV3X34mPclR3nBmH6o8zLralSUk1XfHZPvJWNdgYN1iKpDdmlfUdk
-	 D+wk8URWdkqW2qIb5c03ybydQP/pboFF4vYj5JWg8u0xhoWY2QdArTWHChWiaGm14/
-	 8wRfHm3jTXfxsvv3WbiGnMidIELtVi9MILw+pIlU=
+	b=AKkZfNs1kN2xXw5UUN7JR2f1KFV7nkKy8cyEMR7drfoCC2rimHcoBH2iS5uKh2Q4d
+	 CvuwGWNkR54KHfOuDTqfqGYyZeGmpCBDYmU9gk/jLecLMAWQpIuZpoQv4N0utMXsVq
+	 Q58XaqbGzc2BcPCVnVnlmE8L3g0xcSbLTlvx/aAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jackson.lee" <jackson.lee@chipsnmedia.com>,
-	Nas Chung <nas.chung@chipsnmedia.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 229/393] media: chips-media: wave5: Fix gray color on screen
+	Cong Meng <cong.meng@oracle.com>,
+	Si-Wei Liu <si-wei.liu@oracle.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>
+Subject: [PATCH 6.13 280/414] vdpa/mlx5: Fix oversized null mkey longer than 32bit
 Date: Thu, 17 Apr 2025 19:50:38 +0200
-Message-ID: <20250417175116.798365940@linuxfoundation.org>
+Message-ID: <20250417175122.688697908@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jackson.lee <jackson.lee@chipsnmedia.com>
+From: Si-Wei Liu <si-wei.liu@oracle.com>
 
-commit 6bae4d5053da634eecb611118e7cd91a677a4bbf upstream.
+commit a6097e0a54a5c24f8d577ffecbc35289ae281c2e upstream.
 
-When a decoder instance is created, the W5_CMD_ERR_CONCEAL register
-should be initialized to 0. Otherwise, gray color is occasionally
-displayed on the screen while decoding.
+create_user_mr() has correct code to count the number of null keys
+used to fill in a hole for the memory map. However, fill_indir()
+does not follow the same to cap the range up to the 1GB limit
+correspondingly. Fill in more null keys for the gaps in between,
+so that null keys are correctly populated.
 
-Fixes: 45d1a2b93277 ("media: chips-media: wave5: Add vpuapi layer")
+Fixes: 94abbccdf291 ("vdpa/mlx5: Add shared memory registration code")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jackson.lee <jackson.lee@chipsnmedia.com>
-Signed-off-by: Nas Chung <nas.chung@chipsnmedia.com>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reported-by: Cong Meng <cong.meng@oracle.com>
+Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Message-Id: <20250220193732.521462-2-dtatulea@nvidia.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/chips-media/wave5/wave5-hw.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/vdpa/mlx5/core/mr.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/media/platform/chips-media/wave5/wave5-hw.c
-+++ b/drivers/media/platform/chips-media/wave5/wave5-hw.c
-@@ -576,7 +576,7 @@ int wave5_vpu_build_up_dec_param(struct
- 		vpu_write_reg(inst->dev, W5_CMD_NUM_CQ_DEPTH_M1,
- 			      WAVE521_COMMAND_QUEUE_DEPTH - 1);
+--- a/drivers/vdpa/mlx5/core/mr.c
++++ b/drivers/vdpa/mlx5/core/mr.c
+@@ -190,9 +190,12 @@ again:
+ 			klm->bcount = cpu_to_be32(klm_bcount(dmr->end - dmr->start));
+ 			preve = dmr->end;
+ 		} else {
++			u64 bcount = min_t(u64, dmr->start - preve, MAX_KLM_SIZE);
++
+ 			klm->key = cpu_to_be32(mvdev->res.null_mkey);
+-			klm->bcount = cpu_to_be32(klm_bcount(dmr->start - preve));
+-			preve = dmr->start;
++			klm->bcount = cpu_to_be32(klm_bcount(bcount));
++			preve += bcount;
++
+ 			goto again;
+ 		}
  	}
--
-+	vpu_write_reg(inst->dev, W5_CMD_ERR_CONCEAL, 0);
- 	ret = send_firmware_command(inst, W5_CREATE_INSTANCE, true, NULL, NULL);
- 	if (ret) {
- 		wave5_vdi_free_dma_memory(vpu_dev, &p_dec_info->vb_work);
 
 
 
