@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F266A92655
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:12:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AA09A92AB6
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:54:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B86C84A061F
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:12:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8194F1B63C4A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC9E253B7B;
-	Thu, 17 Apr 2025 18:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6C625DB1B;
+	Thu, 17 Apr 2025 18:51:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hg1xXGJl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CUFtGTHc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8FD1A3178;
-	Thu, 17 Apr 2025 18:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79822571A1;
+	Thu, 17 Apr 2025 18:51:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913542; cv=none; b=R/fclfmGArcsByR9aCJC65wZNm8IM5zHBC/BqZX4UXQG1Wo2rFoIP3CL6mjQOiuCU0eNxI8MGzAt61iwqkijELFHTW3MHGWKcL6WhRp+gQWVaJuPX9C7E2JqV0X+vNVPz2FLBwY8U03ZoMMqsyUpSdUNUJWrPSQ8UlFmMPdyWog=
+	t=1744915882; cv=none; b=RX0r+dJUsOniDKtmfs8ULSNx3rCZQymCV8pDH7ozRFogC8t3xovDXxmJsfHHwQ/eLcRIvh9y/0EqbfHrS9y915di6asXW4DKmgm5SgjWsH39naAxxcYbJ40cqjMkGA6AghpSrQ2xq6MjSx/r/DeF9yYZFUNfVAx+1oo90rEpl6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913542; c=relaxed/simple;
-	bh=oaESsoLqbDooQK8g0NEn8KQ3x2X+2qgrsA2vcI2ObbI=;
+	s=arc-20240116; t=1744915882; c=relaxed/simple;
+	bh=vwSushnc2LJXyU4LluxoboyZyvLOc+MQrh+YkeX36O8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=acUajWUHwP50+TCQ7yffSBvQhCxOtXCwhXwiooBcBtSJN7VVL0s+fdvGbPXoNtWhMan5ksi5DIDCYE52VlkuYSdOLbsn3Tlh68k/V7jIYs28Z8RibSKA6ItrW84N+o9EFxDm4Vmb5Un5wwNNnX4HcaXFT046lw6vpyyv8lXN0jQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hg1xXGJl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F5FEC4CEE7;
-	Thu, 17 Apr 2025 18:12:22 +0000 (UTC)
+	 MIME-Version; b=Ld0EsZTSXyisMkTxLswKduiIgfOsrsIEUSp9ErQSb+9SWV3yGFZXtBQVxDi/XjxdNlePkrZ8oz39UsGGAL50h8ao8wvvQdOlPO4XlLb1MdvFi3x/3YLVffUjTnyad8fal2dOYO9c+TR5M68uVPo6G3Q+rbx3v2PWj1hCEQrbTHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CUFtGTHc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA97AC4CEE4;
+	Thu, 17 Apr 2025 18:51:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913542;
-	bh=oaESsoLqbDooQK8g0NEn8KQ3x2X+2qgrsA2vcI2ObbI=;
+	s=korg; t=1744915882;
+	bh=vwSushnc2LJXyU4LluxoboyZyvLOc+MQrh+YkeX36O8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hg1xXGJlsc5W2e2hVYOkBD0eMdVkKIy9D8mgHad73oUtf2vl8U9raYn5vZ9SKrTbL
-	 a4Y5OtNUZVBQvsgvXvZfTJe62WK98EHA1H3URoRXIAkdqNSOeLKTdvIDKVQA88QRRl
-	 DqjtzMEheXBiUr4R4stD5m1IODtOBRqsybPdy154=
+	b=CUFtGTHc45lmxT0iaLF9bJ7lA0ivmNoy9UMmyYdTIJG/s3vVwL5wOL6+FsMjXpTT+
+	 xkGrcivXT76qEjDDqevgdZuoMC/l3ODHom1A0K3Uq6VWnja5Ko5IHmb1BG31EHIWCD
+	 M4yKZIiwP98+I0rKvPNG1B4i1deR6H0LgQSK5/uI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aman <aman1@microsoft.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.14 374/449] CIFS: Propagate min offload along with other parameters from primary to secondary channels.
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 253/393] ASoC: qdsp6: q6apm-dai: set 10 ms period and buffer alignment.
 Date: Thu, 17 Apr 2025 19:51:02 +0200
-Message-ID: <20250417175133.310532608@linuxfoundation.org>
+Message-ID: <20250417175117.764631357@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aman <aman1@microsoft.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-commit 1821e90be08e7d4a54cd167dd818d80d06e064e9 upstream.
+commit 3107019501842c27334554ba9d6583b1f200f61f upstream.
 
-In a multichannel setup, it was observed that a few fields were not being
-copied over to the secondary channels, which impacted performance in cases
-where these options were relevant but not properly synchronized. To address
-this, this patch introduces copying the following parameters from the
-primary channel to the secondary channels:
+DSP expects the periods to be aligned to fragment sizes, currently
+setting up to hw constriants on periods bytes is not going to work
+correctly as we can endup with periods sizes aligned to 32 bytes however
+not aligned to fragment size.
 
-- min_offload
-- compression.requested
-- dfs_conn
-- ignore_signature
-- leaf_fullpath
-- noblockcnt
-- retrans
-- sign
+Update the constriants to use fragment size, and also set at step of
+10ms for period size to accommodate DSP requirements of 10ms latency.
 
-By copying these parameters, we ensure consistency across channels and
-prevent performance degradation due to missing or outdated settings.
-
+Fixes: 9b4fe0f1cd79 ("ASoC: qdsp6: audioreach: add q6apm-dai support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Aman <aman1@microsoft.com>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://patch.msgid.link/20250314174800.10142-5-srinivas.kandagatla@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/connect.c |    1 +
- fs/smb/client/sess.c    |    7 +++++++
- 2 files changed, 8 insertions(+)
+ sound/soc/qcom/qdsp6/q6apm-dai.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -1677,6 +1677,7 @@ cifs_get_tcp_session(struct smb3_fs_cont
- 	/* Grab netns reference for this server. */
- 	cifs_set_net_ns(tcp_ses, get_net(current->nsproxy->net_ns));
+--- a/sound/soc/qcom/qdsp6/q6apm-dai.c
++++ b/sound/soc/qcom/qdsp6/q6apm-dai.c
+@@ -385,13 +385,14 @@ static int q6apm_dai_open(struct snd_soc
+ 		}
+ 	}
  
-+	tcp_ses->sign = ctx->sign;
- 	tcp_ses->conn_id = atomic_inc_return(&tcpSesNextId);
- 	tcp_ses->noblockcnt = ctx->rootfs;
- 	tcp_ses->noblocksnd = ctx->noblocksnd || ctx->rootfs;
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -522,6 +522,13 @@ cifs_ses_add_channel(struct cifs_ses *se
- 	ctx->sockopt_tcp_nodelay = ses->server->tcp_nodelay;
- 	ctx->echo_interval = ses->server->echo_interval / HZ;
- 	ctx->max_credits = ses->server->max_credits;
-+	ctx->min_offload = ses->server->min_offload;
-+	ctx->compress = ses->server->compression.requested;
-+	ctx->dfs_conn = ses->server->dfs_conn;
-+	ctx->ignore_signature = ses->server->ignore_signature;
-+	ctx->leaf_fullpath = ses->server->leaf_fullpath;
-+	ctx->rootfs = ses->server->noblockcnt;
-+	ctx->retrans = ses->server->retrans;
+-	ret = snd_pcm_hw_constraint_step(runtime, 0, SNDRV_PCM_HW_PARAM_PERIOD_BYTES, 32);
++	/* setup 10ms latency to accommodate DSP restrictions */
++	ret = snd_pcm_hw_constraint_step(runtime, 0, SNDRV_PCM_HW_PARAM_PERIOD_SIZE, 480);
+ 	if (ret < 0) {
+ 		dev_err(dev, "constraint for period bytes step ret = %d\n", ret);
+ 		goto err;
+ 	}
  
- 	/*
- 	 * This will be used for encoding/decoding user/domain/pw
+-	ret = snd_pcm_hw_constraint_step(runtime, 0, SNDRV_PCM_HW_PARAM_BUFFER_BYTES, 32);
++	ret = snd_pcm_hw_constraint_step(runtime, 0, SNDRV_PCM_HW_PARAM_BUFFER_SIZE, 480);
+ 	if (ret < 0) {
+ 		dev_err(dev, "constraint for buffer bytes step ret = %d\n", ret);
+ 		goto err;
 
 
 
