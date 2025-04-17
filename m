@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-134363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58212A92AA6
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:53:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82DE3A928DC
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:38:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FCF57B1010
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1E684A3C65
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F6F2566E9;
-	Thu, 17 Apr 2025 18:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4FF263C80;
+	Thu, 17 Apr 2025 18:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLxB7cxw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NwJQTcs4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0060325525C;
-	Thu, 17 Apr 2025 18:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B61F25525C;
+	Thu, 17 Apr 2025 18:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915902; cv=none; b=jZ+XWMuiLbs4Yr5dZRIXM7UEXZWXD2rOcRXL1wWrOvg3aIj1hJ/DZPY2nni/Z+WCn4j9amKnFjnrkhiIU9mN+y0Dki2oUJCRLdGLCYAHKesn6UXhG7sujGjFlv8rfkHmeUh5HErNhWo/KxpIO2zu0PSpOvarA04Eegbxuy2qa7M=
+	t=1744914785; cv=none; b=m40s2WZvsfvXVAXafLzliBvuDuzAvXs1GMf3CFQknSTSR+B3JBgRcjcUWHjVClO8z4qBRxCkSSxYLykiShBgIgYYAJODaJrW6/+O/vGVWx7YTr6Z/wxNB4CsEqawk7aKpc0JCCj/2y8YeZPccIhOAqXGv8uEqotz/l7Lull5hVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915902; c=relaxed/simple;
-	bh=/295lFogW39KqCvpD3SxiH0yR8xGP5IVJfUYpQUYBDU=;
+	s=arc-20240116; t=1744914785; c=relaxed/simple;
+	bh=FbwJ5kOnN2ZNQ1i4j7ohlil3q1DxJ6aCPocZqMbDojs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IZRt0v9QUKcxJDii1+Jp/B7j99fCK9bE2rEuuirj4TDCJXao7X0p+1Pf6pWrtxkQKZv8UMlmRfBbKJGSiWkpm3UgDugXbPwKRb6nEiZA4NSuEgVwPrPUnZofshG/u/uAoxwFfIGceUO6OelPDuA/mdGek9H4S0HCowIUr+rBHZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLxB7cxw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85A23C4CEE4;
-	Thu, 17 Apr 2025 18:51:41 +0000 (UTC)
+	 MIME-Version; b=AgGIpaWLb8eLXLN0pETdz82x70EU21VM7/i7N/P8J6u5D3wMI08eXHaGLIJhPaHCrCaPZS4S0BfjFg/ANJibIjay1LefUoSeAtzH0eFlaWEBIDQai1QsIj23+0OfKOnPS5o6CSmOuFEy/pwbgvgH2Yf1x7Xr9ItonqEkfp7Uiws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NwJQTcs4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9433DC4CEE4;
+	Thu, 17 Apr 2025 18:33:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915901;
-	bh=/295lFogW39KqCvpD3SxiH0yR8xGP5IVJfUYpQUYBDU=;
+	s=korg; t=1744914785;
+	bh=FbwJ5kOnN2ZNQ1i4j7ohlil3q1DxJ6aCPocZqMbDojs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XLxB7cxw1yTcAeGzN1s7mVDHhQnXwu4kehoDDkghnvNkmDQl2/BeNs0fm8Cz6ge1o
-	 GYoem201vxPrDhRWJwh/123kloUFeavyPMV44eihITk629gfg+j4DVDbhkALcDDO/H
-	 uRzSkiFAhkvfqx4YVJ7TaysVqwKG4Haxpu86+iCA=
+	b=NwJQTcs44uUKdQXpuCzDjTIdRnIQfd1TS9Pphl6+fi28j9lRCNX/otmWvynOCu3qK
+	 QQgktyiRwdP3a/2ax+1r08FPT32PqUqZIhRKoox/Jj4WB6km4MAhZaU5Dy+9OoQpvA
+	 xsm7ChYzzZVA6rICfV0eAP5k+zKdGHrXvNAwkYz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kartik Rajput <kkartik@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>
-Subject: [PATCH 6.12 277/393] mailbox: tegra-hsp: Define dimensioning masks in SoC data
-Date: Thu, 17 Apr 2025 19:51:26 +0200
-Message-ID: <20250417175118.753199736@linuxfoundation.org>
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.13 329/414] mm/mremap: correctly handle partial mremap() of VMA starting at 0
+Date: Thu, 17 Apr 2025 19:51:27 +0200
+Message-ID: <20250417175124.664661735@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,165 +64,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kartik Rajput <kkartik@nvidia.com>
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-commit bf0c9fb462038815f5f502653fb6dba06e6af415 upstream.
+commit 937582ee8e8d227c30ec147629a0179131feaa80 upstream.
 
-Tegra264 has updated HSP_INT_DIMENSIONING register as follows:
-	* nSI is now BIT17:BIT21.
-	* nDB is now BIT12:BIT16.
+Patch series "refactor mremap and fix bug", v3.
 
-Currently, we are using a static macro HSP_nINT_MASK to get the values
-from HSP_INT_DIMENSIONING register. This results in wrong values for nSI
-for HSP instances that supports 16 shared interrupts.
+The existing mremap() logic has grown organically over a very long period
+of time, resulting in code that is in many parts, very difficult to follow
+and full of subtleties and sources of confusion.
 
-Define dimensioning masks in soc data and use them to parse nSI, nDB,
-nAS, nSS & nSM values.
+In addition, it is difficult to thread state through the operation
+correctly, as function arguments have expanded, some parameters are
+expected to be temporarily altered during the operation, others are
+intended to remain static and some can be overridden.
 
-Fixes: 602dbbacc3ef ("mailbox: tegra: add support for Tegra264")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Acked-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+This series completely refactors the mremap implementation, sensibly
+separating functions, adding comments to explain the more subtle aspects
+of the implementation and making use of small structs to thread state
+through everything.
+
+The reason for doing so is to lay the groundwork for planned future
+changes to the mremap logic, changes which require the ability to easily
+pass around state.
+
+Additionally, it would be unhelpful to add yet more logic to code that is
+already difficult to follow without first refactoring it like this.
+
+The first patch in this series additionally fixes a bug when a VMA with
+start address zero is partially remapped.
+
+Tested on real hardware under heavy workload and all self tests are
+passing.
+
+
+This patch (of 3):
+
+Consider the case of a partial mremap() (that results in a VMA split) of
+an accountable VMA (i.e.  which has the VM_ACCOUNT flag set) whose start
+address is zero, with the MREMAP_MAYMOVE flag specified and a scenario
+where a move does in fact occur:
+
+       addr  end
+        |     |
+        v     v
+    |-------------|
+    |     vma     |
+    |-------------|
+    0
+
+This move is affected by unmapping the range [addr, end).  In order to
+prevent an incorrect decrement of accounted memory which has already been
+determined, the mremap() code in move_vma() clears VM_ACCOUNT from the VMA
+prior to doing so, before reestablishing it in each of the VMAs
+post-split:
+
+    addr  end
+     |     |
+     v     v
+ |---|     |---|
+ | A |     | B |
+ |---|     |---|
+
+Commit 6b73cff239e5 ("mm: change munmap splitting order and move_vma()")
+changed this logic such as to determine whether there is a need to do so
+by establishing account_start and account_end and, in the instance where
+such an operation is required, assigning them to vma->vm_start and
+vma->vm_end.
+
+Later the code checks if the operation is required for 'A' referenced
+above thusly:
+
+	if (account_start) {
+		...
+	}
+
+However, if the VMA described above has vma->vm_start == 0, which is now
+assigned to account_start, this branch will not be executed.
+
+As a result, the VMA 'A' above will remain stripped of its VM_ACCOUNT
+flag, incorrectly.
+
+The fix is to simply convert these variables to booleans and set them as
+required.
+
+Link: https://lkml.kernel.org/r/cover.1741639347.git.lorenzo.stoakes@oracle.com
+Link: https://lkml.kernel.org/r/dc55cb6db25d97c3d9e460de4986a323fa959676.1741639347.git.lorenzo.stoakes@oracle.com
+Fixes: 6b73cff239e5 ("mm: change munmap splitting order and move_vma()")
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mailbox/tegra-hsp.c |   72 ++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 60 insertions(+), 12 deletions(-)
+ mm/mremap.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/mailbox/tegra-hsp.c
-+++ b/drivers/mailbox/tegra-hsp.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * Copyright (c) 2016-2023, NVIDIA CORPORATION.  All rights reserved.
-+ * Copyright (c) 2016-2025, NVIDIA CORPORATION.  All rights reserved.
-  */
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -705,8 +705,8 @@ static unsigned long move_vma(struct vm_
+ 	unsigned long vm_flags = vma->vm_flags;
+ 	unsigned long new_pgoff;
+ 	unsigned long moved_len;
+-	unsigned long account_start = 0;
+-	unsigned long account_end = 0;
++	bool account_start = false;
++	bool account_end = false;
+ 	unsigned long hiwater_vm;
+ 	int err = 0;
+ 	bool need_rmap_locks;
+@@ -790,9 +790,9 @@ static unsigned long move_vma(struct vm_
+ 	if (vm_flags & VM_ACCOUNT && !(flags & MREMAP_DONTUNMAP)) {
+ 		vm_flags_clear(vma, VM_ACCOUNT);
+ 		if (vma->vm_start < old_addr)
+-			account_start = vma->vm_start;
++			account_start = true;
+ 		if (vma->vm_end > old_addr + old_len)
+-			account_end = vma->vm_end;
++			account_end = true;
+ 	}
  
- #include <linux/delay.h>
-@@ -28,12 +28,6 @@
- #define HSP_INT_FULL_MASK	0xff
+ 	/*
+@@ -832,7 +832,7 @@ static unsigned long move_vma(struct vm_
+ 		/* OOM: unable to split vma, just get accounts right */
+ 		if (vm_flags & VM_ACCOUNT && !(flags & MREMAP_DONTUNMAP))
+ 			vm_acct_memory(old_len >> PAGE_SHIFT);
+-		account_start = account_end = 0;
++		account_start = account_end = false;
+ 	}
  
- #define HSP_INT_DIMENSIONING	0x380
--#define HSP_nSM_SHIFT		0
--#define HSP_nSS_SHIFT		4
--#define HSP_nAS_SHIFT		8
--#define HSP_nDB_SHIFT		12
--#define HSP_nSI_SHIFT		16
--#define HSP_nINT_MASK		0xf
- 
- #define HSP_DB_TRIGGER	0x0
- #define HSP_DB_ENABLE	0x4
-@@ -97,6 +91,20 @@ struct tegra_hsp_soc {
- 	bool has_per_mb_ie;
- 	bool has_128_bit_mb;
- 	unsigned int reg_stride;
-+
-+	/* Shifts for dimensioning register. */
-+	unsigned int si_shift;
-+	unsigned int db_shift;
-+	unsigned int as_shift;
-+	unsigned int ss_shift;
-+	unsigned int sm_shift;
-+
-+	/* Masks for dimensioning register. */
-+	unsigned int si_mask;
-+	unsigned int db_mask;
-+	unsigned int as_mask;
-+	unsigned int ss_mask;
-+	unsigned int sm_mask;
- };
- 
- struct tegra_hsp {
-@@ -747,11 +755,11 @@ static int tegra_hsp_probe(struct platfo
- 		return PTR_ERR(hsp->regs);
- 
- 	value = tegra_hsp_readl(hsp, HSP_INT_DIMENSIONING);
--	hsp->num_sm = (value >> HSP_nSM_SHIFT) & HSP_nINT_MASK;
--	hsp->num_ss = (value >> HSP_nSS_SHIFT) & HSP_nINT_MASK;
--	hsp->num_as = (value >> HSP_nAS_SHIFT) & HSP_nINT_MASK;
--	hsp->num_db = (value >> HSP_nDB_SHIFT) & HSP_nINT_MASK;
--	hsp->num_si = (value >> HSP_nSI_SHIFT) & HSP_nINT_MASK;
-+	hsp->num_sm = (value >> hsp->soc->sm_shift) & hsp->soc->sm_mask;
-+	hsp->num_ss = (value >> hsp->soc->ss_shift) & hsp->soc->ss_mask;
-+	hsp->num_as = (value >> hsp->soc->as_shift) & hsp->soc->as_mask;
-+	hsp->num_db = (value >> hsp->soc->db_shift) & hsp->soc->db_mask;
-+	hsp->num_si = (value >> hsp->soc->si_shift) & hsp->soc->si_mask;
- 
- 	err = platform_get_irq_byname_optional(pdev, "doorbell");
- 	if (err >= 0)
-@@ -915,6 +923,16 @@ static const struct tegra_hsp_soc tegra1
- 	.has_per_mb_ie = false,
- 	.has_128_bit_mb = false,
- 	.reg_stride = 0x100,
-+	.si_shift = 16,
-+	.db_shift = 12,
-+	.as_shift = 8,
-+	.ss_shift = 4,
-+	.sm_shift = 0,
-+	.si_mask = 0xf,
-+	.db_mask = 0xf,
-+	.as_mask = 0xf,
-+	.ss_mask = 0xf,
-+	.sm_mask = 0xf,
- };
- 
- static const struct tegra_hsp_soc tegra194_hsp_soc = {
-@@ -922,6 +940,16 @@ static const struct tegra_hsp_soc tegra1
- 	.has_per_mb_ie = true,
- 	.has_128_bit_mb = false,
- 	.reg_stride = 0x100,
-+	.si_shift = 16,
-+	.db_shift = 12,
-+	.as_shift = 8,
-+	.ss_shift = 4,
-+	.sm_shift = 0,
-+	.si_mask = 0xf,
-+	.db_mask = 0xf,
-+	.as_mask = 0xf,
-+	.ss_mask = 0xf,
-+	.sm_mask = 0xf,
- };
- 
- static const struct tegra_hsp_soc tegra234_hsp_soc = {
-@@ -929,6 +957,16 @@ static const struct tegra_hsp_soc tegra2
- 	.has_per_mb_ie = false,
- 	.has_128_bit_mb = true,
- 	.reg_stride = 0x100,
-+	.si_shift = 16,
-+	.db_shift = 12,
-+	.as_shift = 8,
-+	.ss_shift = 4,
-+	.sm_shift = 0,
-+	.si_mask = 0xf,
-+	.db_mask = 0xf,
-+	.as_mask = 0xf,
-+	.ss_mask = 0xf,
-+	.sm_mask = 0xf,
- };
- 
- static const struct tegra_hsp_soc tegra264_hsp_soc = {
-@@ -936,6 +974,16 @@ static const struct tegra_hsp_soc tegra2
- 	.has_per_mb_ie = false,
- 	.has_128_bit_mb = true,
- 	.reg_stride = 0x1000,
-+	.si_shift = 17,
-+	.db_shift = 12,
-+	.as_shift = 8,
-+	.ss_shift = 4,
-+	.sm_shift = 0,
-+	.si_mask = 0x1f,
-+	.db_mask = 0x1f,
-+	.as_mask = 0xf,
-+	.ss_mask = 0xf,
-+	.sm_mask = 0xf,
- };
- 
- static const struct of_device_id tegra_hsp_match[] = {
+ 	if (vm_flags & VM_LOCKED) {
 
 
 
