@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-133908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29933A9297F
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94751A92605
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:09:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8DD87A4D5F
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:34:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 404A5468346
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E014257424;
-	Thu, 17 Apr 2025 18:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B75256C7C;
+	Thu, 17 Apr 2025 18:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obCvP6gb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pBIs7fed"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B19B255E20;
-	Thu, 17 Apr 2025 18:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E70C1DB148;
+	Thu, 17 Apr 2025 18:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914511; cv=none; b=SY/F3+sDowCfFD0uM/mhfofoQ93InFUeSiVNnpFsO0UDw04z+uGfGy+zffbjFmTAGKa+t3LIWxk1XVCQCjs00NF+Cojf6/GDq23CJQMclrIZ2/sxWMpaQynNRUO6QnnO/hd17FcwxwkN/sf8n0r1+3+xJtz8GTQloUEKQeP0hMQ=
+	t=1744913344; cv=none; b=kIuvYPAGPlqvr10dGNA2btaWEtiZB125gniC4ra62elXTqFA6wFy31z80yWFi6WKfWAAuDKx+4u3peQBTUwmsaXBxx0xoNSgYHiFAQAwI3F8aGGrrqHRlGx0pyq1FbLxdrvVexKHyj/sD07Ah9diEi0AejsGrZC+s6G1iS8DacY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914511; c=relaxed/simple;
-	bh=/1xj3wqTKZg9oJNLJJq5gHeCZHqamVV59ftOBQJ1tvU=;
+	s=arc-20240116; t=1744913344; c=relaxed/simple;
+	bh=r3OKVS48jjPsuwT3uMJoJ9qtQT9U9Y81zYjvsYEHD8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y9yMayeUun81k1JIpcASSeLVE5FT4hSPC7XZvCuW8xZYNMhVwCqiDsSW//SfJ2SwzLku2fRKcb6FolKTYR7n4fG9s3/bfsTOw7rVHrQhWCgX1vYcBdhOK4LZUNhC1TZcodbZZ96fA+QReA2GvgFRPzS21PYJVdF/Frnf8FmNBUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=obCvP6gb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80947C4CEE4;
-	Thu, 17 Apr 2025 18:28:30 +0000 (UTC)
+	 MIME-Version; b=hQL9cB+2x1NPglGzK8ncTHAWO8BRGfz+et3CJgWVo1YA6Mn1IQUve7RVzM6OLwmtKqVT6M3LDKV3FP+e7h+Bv4VeNqF1KS6yINwtQQDAFcLCoH4UlBIiK3q7axAPtvCmgPKMNUGg1oql1VXaVXA9+dwLq3TKFjmh9blcYKeTAbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pBIs7fed; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E072BC4CEE4;
+	Thu, 17 Apr 2025 18:09:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914510;
-	bh=/1xj3wqTKZg9oJNLJJq5gHeCZHqamVV59ftOBQJ1tvU=;
+	s=korg; t=1744913343;
+	bh=r3OKVS48jjPsuwT3uMJoJ9qtQT9U9Y81zYjvsYEHD8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=obCvP6gbPxfbyStf/rXBgkCQny/2IRNXzTwgA4gvz7TNG1a3ALId3nQHOW6/6bh4C
-	 hO972oTueOU85AdYZ0fObxub2sX2+RiBFtygG9Ft6IuuedgE6T/pNgqEnGH+e9g9XP
-	 mBnuTFXl4whKLIyVWAvT3eS1AhG7/kNWvWu70pjE=
+	b=pBIs7fedOE4ze6oZJo/14gfgEu67eFoCBYtmwW457e47SMvXfM3HLe1QCpoU6a6hs
+	 7tIvfcMDXL5lNiKKMAq+UQiZ43FfkbpyqBem16+vxbS0t5G4cO6EZe6NAjhK8uGqHn
+	 /nJk+9EA2oVrgQiqqNSj/8lBqB8UknLsaMmlX1h8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.13 238/414] media: i2c: imx319: Rectify runtime PM handling probe and remove
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Sunmin Jeong <s_min.jeong@samsung.com>,
+	Yeongjin Gil <youngjin.gil@samsung.com>,
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.14 308/449] f2fs: fix to avoid atomicity corruption of atomic file
 Date: Thu, 17 Apr 2025 19:49:56 +0200
-Message-ID: <20250417175120.998298332@linuxfoundation.org>
+Message-ID: <20250417175130.510396561@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +65,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Yeongjin Gil <youngjin.gil@samsung.com>
 
-commit 5f5ffd3bc62b2e6c478061918b10473d8b90ac2d upstream.
+commit f098aeba04c9328571567dca45159358a250240c upstream.
 
-Idle the device only after the async sub-device has been successfully
-registered. In error handling, set the device's runtime PM status to
-suspended only if it has been set to active previously in probe.
+In the case of the following call stack for an atomic file,
+FI_DIRTY_INODE is set, but FI_ATOMIC_DIRTIED is not subsequently set.
 
-Also set the device's runtime PM status to suspended in remove only if it
-wasn't so already.
+f2fs_file_write_iter
+  f2fs_map_blocks
+    f2fs_reserve_new_blocks
+      inc_valid_block_count
+        __mark_inode_dirty(dquot)
+          f2fs_dirty_inode
 
-Fixes: 8a89dc62f28c ("media: add imx319 camera sensor driver")
-Cc: stable@vger.kernel.org # for >= v6.12
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+If FI_ATOMIC_DIRTIED is not set, atomic file can encounter corruption
+due to a mismatch between old file size and new data.
+
+To resolve this issue, I changed to set FI_ATOMIC_DIRTIED when
+FI_DIRTY_INODE is set. This ensures that FI_DIRTY_INODE, which was
+previously cleared by the Writeback thread during the commit atomic, is
+set and i_size is updated.
+
+Cc: <stable@vger.kernel.org>
+Fixes: fccaa81de87e ("f2fs: prevent atomic file from being dirtied before commit")
+Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+Reviewed-by: Sunmin Jeong <s_min.jeong@samsung.com>
+Signed-off-by: Yeongjin Gil <youngjin.gil@samsung.com>
+Reviewed-by: Daeho Jeong <daehojeong@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/imx319.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ fs/f2fs/inode.c |    4 +---
+ fs/f2fs/super.c |    4 ++++
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/media/i2c/imx319.c
-+++ b/drivers/media/i2c/imx319.c
-@@ -2442,17 +2442,19 @@ static int imx319_probe(struct i2c_clien
- 	if (full_power)
- 		pm_runtime_set_active(&client->dev);
- 	pm_runtime_enable(&client->dev);
--	pm_runtime_idle(&client->dev);
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -34,10 +34,8 @@ void f2fs_mark_inode_dirty_sync(struct i
+ 	if (f2fs_inode_dirtied(inode, sync))
+ 		return;
  
- 	ret = v4l2_async_register_subdev_sensor(&imx319->sd);
- 	if (ret < 0)
- 		goto error_media_entity_pm;
+-	if (f2fs_is_atomic_file(inode)) {
+-		set_inode_flag(inode, FI_ATOMIC_DIRTIED);
++	if (f2fs_is_atomic_file(inode))
+ 		return;
+-	}
  
-+	pm_runtime_idle(&client->dev);
-+
- 	return 0;
- 
- error_media_entity_pm:
- 	pm_runtime_disable(&client->dev);
--	pm_runtime_set_suspended(&client->dev);
-+	if (full_power)
-+		pm_runtime_set_suspended(&client->dev);
- 	media_entity_cleanup(&imx319->sd.entity);
- 
- error_handler_free:
-@@ -2474,7 +2476,8 @@ static void imx319_remove(struct i2c_cli
- 	v4l2_ctrl_handler_free(sd->ctrl_handler);
- 
- 	pm_runtime_disable(&client->dev);
--	pm_runtime_set_suspended(&client->dev);
-+	if (!pm_runtime_status_suspended(&client->dev))
-+		pm_runtime_set_suspended(&client->dev);
- 
- 	mutex_destroy(&imx319->mutex);
+ 	mark_inode_dirty_sync(inode);
  }
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1527,6 +1527,10 @@ int f2fs_inode_dirtied(struct inode *ino
+ 		inc_page_count(sbi, F2FS_DIRTY_IMETA);
+ 	}
+ 	spin_unlock(&sbi->inode_lock[DIRTY_META]);
++
++	if (!ret && f2fs_is_atomic_file(inode))
++		set_inode_flag(inode, FI_ATOMIC_DIRTIED);
++
+ 	return ret;
+ }
+ 
 
 
 
