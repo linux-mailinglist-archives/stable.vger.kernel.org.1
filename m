@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-134230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C63FBA929FA
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:46:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA0D7A92809
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 234AD440B81
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:45:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EF7D16807F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3601A254B17;
-	Thu, 17 Apr 2025 18:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60C7256C99;
+	Thu, 17 Apr 2025 18:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s6wYyKD5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbX7FaRG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D991F2528FA;
-	Thu, 17 Apr 2025 18:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82630258CF9;
+	Thu, 17 Apr 2025 18:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915494; cv=none; b=fqd2CECQzEQ71I2OUYZbRUcSCSsrVqxEBjMy5Opf1zpP3s71vgX2YtIPCfoCp5jrMDaInZIolhH2pjGxrSyWbCv6rHXy06wGEiQ4Udv98TuNqDSFKSYWWo56DBHrUMqYxlJCNWt0Z19q+KT/hXiZAZ1KR55Trx8GScsNcFp9V8Y=
+	t=1744914384; cv=none; b=fP2zfQaFAfQK+CeMljLfpnqKRwGUxKpOz39KorPEcKoe4Xt4Y7I/1Jkgt7PhSZuR4FXA8h+qB42D/3ZY8xkr2IMHAsddcdqsTgkrUPs6oNs5fNz8Vp+9r4cSY786iZP6FVg8Fx+4lyfSV7Rw9HIsHXUkN/kxdxKeCH5K23YZ28o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915494; c=relaxed/simple;
-	bh=zM/eWPmGuoIgj1UChWkTn4pzaxZWR0WvaQ1DyOq1p2Y=;
+	s=arc-20240116; t=1744914384; c=relaxed/simple;
+	bh=/QQ8FHSTOkZezIjoko7AoKIRyNWqJ18DukrqVxwwq2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CjsQ6y1jMNPYl219uL8qiGpdBil8hMaR5aVtrxGAb6FbyC2u85TDqR/fg6XfgxlrnQ/oVoFFdKxJtFM5Gikb8ymCS1+pDSu3/hM/21WpSRX9O4mmhfvTUOc1LE701ERP3fHUHbkYKObGZaEuqgqam50d27gg2dW8jm8Sc6e+jHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s6wYyKD5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D53C4CEEC;
-	Thu, 17 Apr 2025 18:44:53 +0000 (UTC)
+	 MIME-Version; b=Sl2LYvmAg77Gs3wS1EFhr6gNqhWjHeD4vpbbV2qvugPkfiY/7/cBjmsQoh6STfcfD0kpVv/k14a0XlLBH4ZsNgrJ5P+Wy/Q48z5C7orGqpk24+AFDlkfn3KZwu3L17cp25mgyeOVp5E8zrrVYS0OXGFKszKpR6qP/d0oZdRv3OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NbX7FaRG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F065C4CEE7;
+	Thu, 17 Apr 2025 18:26:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915494;
-	bh=zM/eWPmGuoIgj1UChWkTn4pzaxZWR0WvaQ1DyOq1p2Y=;
+	s=korg; t=1744914384;
+	bh=/QQ8FHSTOkZezIjoko7AoKIRyNWqJ18DukrqVxwwq2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s6wYyKD5Mmt9yVJRdddGp2RaZsu9KT1H6Llrfr25k/+IK/2iHErPjm6jtYvsHX3f4
-	 /4DfGzoJRZ6bo/yx2JkybgBV9rVfYk6EikRlrJ8o972iiTcLX6x3zAzSZM2kdFwac8
-	 ChOv4sBsYsLdD/UvDteAWIsQGTFbwqEx9p9d77SI=
+	b=NbX7FaRG+0H3hRuLw7BEs4stGsA/zeL5qH+UTdtCAUXljfki00ixYNvraFFl47xgI
+	 Fs4uVHeT5PDKyQBFQTzJa5ErJOghxRykmEUx9SZO8yoqmMbX8cAVEoWcvAzweBftsU
+	 8CsunwYpssaJzlZ+5/EdeQ6abTLLIzI6rogZJ9bE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 145/393] drm/mediatek: mtk_dpi: Move the input_2p_en bit to platform data
-Date: Thu, 17 Apr 2025 19:49:14 +0200
-Message-ID: <20250417175113.415546314@linuxfoundation.org>
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.13 197/414] media: mediatek: vcodec: Fix a resource leak related to the scp device in FW initialization
+Date: Thu, 17 Apr 2025 19:49:15 +0200
+Message-ID: <20250417175119.370342033@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-[ Upstream commit c90876a695dd83e76680b88b40067275a5982811 ]
+commit 4936cd5817af35d23e4d283f48fa59a18ef481e4 upstream.
 
-In preparation for adding support for MT8195's HDMI reserved DPI
-instance, move the input_2p_en bit for DP_INTF to platform data.
+On Mediatek devices with a system companion processor (SCP) the mtk_scp
+structure has to be removed explicitly to avoid a resource leak.
+Free the structure in case the allocation of the firmware structure fails
+during the firmware initialization.
 
-While at it, remove the input_2pixel member from platform data as
-having this bit implies that the 2pixel feature must be enabled.
-
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20250217154836.108895-7-angelogioacchino.delregno@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 53dbe0850444 ("media: mtk-vcodec: potential null pointer deference in SCP")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dpi.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_scp.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c b/drivers/gpu/drm/mediatek/mtk_dpi.c
-index a08d206549543..21ec6c775521f 100644
---- a/drivers/gpu/drm/mediatek/mtk_dpi.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
-@@ -127,14 +127,14 @@ struct mtk_dpi_yc_limit {
-  * @is_ck_de_pol: Support CK/DE polarity.
-  * @swap_input_support: Support input swap function.
-  * @support_direct_pin: IP supports direct connection to dpi panels.
-- * @input_2pixel: Input pixel of dp_intf is 2 pixel per round, so enable this
-- *		  config to enable this feature.
-  * @dimension_mask: Mask used for HWIDTH, HPORCH, VSYNC_WIDTH and VSYNC_PORCH
-  *		    (no shift).
-  * @hvsize_mask: Mask of HSIZE and VSIZE mask (no shift).
-  * @channel_swap_shift: Shift value of channel swap.
-  * @yuv422_en_bit: Enable bit of yuv422.
-  * @csc_enable_bit: Enable bit of CSC.
-+ * @input_2p_en_bit: Enable bit for input two pixel per round feature.
-+ *		     If present, implies that the feature must be enabled.
-  * @pixels_per_iter: Quantity of transferred pixels per iteration.
-  * @edge_cfg_in_mmsys: If the edge configuration for DPI's output needs to be set in MMSYS.
-  */
-@@ -148,12 +148,12 @@ struct mtk_dpi_conf {
- 	bool is_ck_de_pol;
- 	bool swap_input_support;
- 	bool support_direct_pin;
--	bool input_2pixel;
- 	u32 dimension_mask;
- 	u32 hvsize_mask;
- 	u32 channel_swap_shift;
- 	u32 yuv422_en_bit;
- 	u32 csc_enable_bit;
-+	u32 input_2p_en_bit;
- 	u32 pixels_per_iter;
- 	bool edge_cfg_in_mmsys;
- };
-@@ -610,9 +610,9 @@ static int mtk_dpi_set_display_mode(struct mtk_dpi *dpi,
- 		mtk_dpi_dual_edge(dpi);
- 		mtk_dpi_config_disable_edge(dpi);
+--- a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_scp.c
++++ b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_scp.c
+@@ -79,8 +79,11 @@ struct mtk_vcodec_fw *mtk_vcodec_fw_scp_
  	}
--	if (dpi->conf->input_2pixel) {
--		mtk_dpi_mask(dpi, DPI_CON, DPINTF_INPUT_2P_EN,
--			     DPINTF_INPUT_2P_EN);
-+	if (dpi->conf->input_2p_en_bit) {
-+		mtk_dpi_mask(dpi, DPI_CON, dpi->conf->input_2p_en_bit,
-+			     dpi->conf->input_2p_en_bit);
- 	}
- 	mtk_dpi_sw_reset(dpi, false);
  
-@@ -992,12 +992,12 @@ static const struct mtk_dpi_conf mt8195_dpintf_conf = {
- 	.output_fmts = mt8195_output_fmts,
- 	.num_output_fmts = ARRAY_SIZE(mt8195_output_fmts),
- 	.pixels_per_iter = 4,
--	.input_2pixel = true,
- 	.dimension_mask = DPINTF_HPW_MASK,
- 	.hvsize_mask = DPINTF_HSIZE_MASK,
- 	.channel_swap_shift = DPINTF_CH_SWAP,
- 	.yuv422_en_bit = DPINTF_YUV422_EN,
- 	.csc_enable_bit = DPINTF_CSC_ENABLE,
-+	.input_2p_en_bit = DPINTF_INPUT_2P_EN,
- };
- 
- static int mtk_dpi_probe(struct platform_device *pdev)
--- 
-2.39.5
-
+ 	fw = devm_kzalloc(&plat_dev->dev, sizeof(*fw), GFP_KERNEL);
+-	if (!fw)
++	if (!fw) {
++		scp_put(scp);
+ 		return ERR_PTR(-ENOMEM);
++	}
++
+ 	fw->type = SCP;
+ 	fw->ops = &mtk_vcodec_rproc_msg;
+ 	fw->scp = scp;
 
 
 
