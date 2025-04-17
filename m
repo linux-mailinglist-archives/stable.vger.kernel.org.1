@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-133788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 712AEA9279C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:27:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B652A929D5
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:45:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEDF14A27E3
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:27:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77F178E3A07
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D6B2673AF;
-	Thu, 17 Apr 2025 18:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75AA257AEC;
+	Thu, 17 Apr 2025 18:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1XQEWKG4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUBHaXeT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15BDA25C708;
-	Thu, 17 Apr 2025 18:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84841254AED;
+	Thu, 17 Apr 2025 18:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914140; cv=none; b=jmtaOZNMtfuPZO2e0La/Q3Q/um8JZa+Op1rfTiNu4W6AmJ5m/OWYyu3kgUiZ83VBmv1L4SUG2wY/65K4F+LaROo39W9M27FpCJp3YJYituup8wiFNUNaOj0Ae70ID3w7JTlFOUqvoFwsFclR7OjdaJnJZT0kDZ/TqcrsVOb+uug=
+	t=1744915258; cv=none; b=UFnevxPzFLcWsOKhw02fUetav+QVhXmoiFwToLWWmwclJCigFxx03vMCzPrZuHkbp22a/Z/oo+wg4N/C1lNPlP2oMSPkf+XSJwmuqge3oepiaRR1FuHNcD56cCRtFCWx8taXbBx8c/natiGn3tncb00YqpdqB6uFAIYmCg3mMWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914140; c=relaxed/simple;
-	bh=o0tvf6p2m/JnU5hOccPyZonNaQEIGX5yBwA28u6dfIE=;
+	s=arc-20240116; t=1744915258; c=relaxed/simple;
+	bh=3rtnhPpvymL/9G61A9A4AswbOk5e06YtOB2jSB0noJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PmqmN130aVak+1qqhMfGpBQ4LUn68Lzys9lCNBSS8jQ2HEGMFZJPwzjy8/mt5PL6dNZ5zF46Y17JuS7yJm41bdPDV8iUHp/KZI47OoCUC2V34d+xfQgk2hkpM8H+WSc6d73ltpUP4nTo0PUIsnTWztbVildEnApY+chiCaYO+8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1XQEWKG4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B76C4CEE4;
-	Thu, 17 Apr 2025 18:22:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iJQo4nal5hNyecmeJINaiSJIxptZjKcwAwOXfeWLh5SCRtQyrPNEhT3GqVD+hYVEl8vykdsutT4dQ5+PG6TUkgQrQ4ZV0NxwkOmNRGg1zuMVKdvkkPNrEeIdD8JBih1BQmP9er86YdHgqImgNdEPBXpIcska1qThy03o8TH+5oA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUBHaXeT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3219C4CEE7;
+	Thu, 17 Apr 2025 18:40:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914140;
-	bh=o0tvf6p2m/JnU5hOccPyZonNaQEIGX5yBwA28u6dfIE=;
+	s=korg; t=1744915258;
+	bh=3rtnhPpvymL/9G61A9A4AswbOk5e06YtOB2jSB0noJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1XQEWKG4lCdb8gBrsN0MnN2zin3JFGzuYydJkwAKPyxe9iHRHknSvBXMmc2avtH68
-	 bAecpywnRhRBtzeOBDH/rlUvD+0hSTmkRjK1tgEEesxLGoCtP5UZ9hxXaG92h9PZJ6
-	 rPbZJlhNn6rHIgJZ1caEkTdClwH10tEdhawtfnGI=
+	b=XUBHaXeTGOtiz3sSRby8Slyzn7jlDAxm8wW6JovmYbafne24zCL+GD2CEDYCCJhAJ
+	 UP2iimA8EwyT26JnfkpnS+iMAEuZzJGi7/GzC5oE38+mcai8aPb1efGQqLyhu9RBln
+	 HG4OxkzcUGTV5ACFGMDqL1HhmaFEJ2tE7Vdx5tZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dorian Cruveiller <doriancruveiller@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Nolan Nicholson <nolananicholson@gmail.com>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 120/414] Bluetooth: btusb: Add new VID/PID for WCN785x
-Date: Thu, 17 Apr 2025 19:47:58 +0200
-Message-ID: <20250417175116.263046382@linuxfoundation.org>
+Subject: [PATCH 6.12 070/393] HID: pidff: Fix null pointer dereference in pidff_find_fields
+Date: Thu, 17 Apr 2025 19:47:59 +0200
+Message-ID: <20250417175110.408870269@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,74 +65,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dorian Cruveiller <doriancruveiller@gmail.com>
+From: Tomasz Pakuła <forest10pl@gmail.com>
 
-[ Upstream commit c7629ccfa175e16bb44a60c469214e1a6051f63d ]
+[ Upstream commit 22a05462c3d0eee15154faf8d13c49e6295270a5 ]
 
-Add VID 0489 & PID e10d for Qualcomm WCN785x USB Bluetooth chip.
+This function triggered a null pointer dereference if used to search for
+a report that isn't implemented on the device. This happened both for
+optional and required reports alike.
 
-The information in /sys/kernel/debug/usb/devices about the Bluetooth
-device is listed as the below.
+The same logic was applied to pidff_find_special_field and although
+pidff_init_fields should return an error earlier if one of the required
+reports is missing, future modifications could change this logic and
+resurface this possible null pointer dereference again.
 
-T:  Bus=01 Lev=01 Prnt=01 Port=03 Cnt=03 Dev#=  4 Spd=12   MxCh= 0
-D:  Ver= 1.10 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e10d Rev= 0.01
-C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=100mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-I:  If#= 1 Alt= 7 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  65 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  65 Ivl=1ms
+LKML bug report:
+https://lore.kernel.org/all/CAL-gK7f5=R0nrrQdPtaZZr1fd-cdAMbDMuZ_NLA8vM0SX+nGSw@mail.gmail.com
 
-Signed-off-by: Dorian Cruveiller <doriancruveiller@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: Nolan Nicholson <nolananicholson@gmail.com>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hid/usbhid/hid-pidff.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 75dbe07e07e21..cf15e18521607 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -375,6 +375,8 @@ static const struct usb_device_id quirks_table[] = {
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe0f3), .driver_info = BTUSB_QCA_WCN6855 |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe10d), .driver_info = BTUSB_QCA_WCN6855 |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x13d3, 0x3623), .driver_info = BTUSB_QCA_WCN6855 |
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x2c7c, 0x0130), .driver_info = BTUSB_QCA_WCN6855 |
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 4c94d8cbac43a..25dbed076f530 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -793,6 +793,11 @@ static void pidff_set_autocenter(struct input_dev *dev, u16 magnitude)
+ static int pidff_find_fields(struct pidff_usage *usage, const u8 *table,
+ 			     struct hid_report *report, int count, int strict)
+ {
++	if (!report) {
++		pr_debug("pidff_find_fields, null report\n");
++		return -1;
++	}
++
+ 	int i, j, k, found;
+ 	int return_value = 0;
+ 
+@@ -917,6 +922,11 @@ static int pidff_reports_ok(struct pidff_device *pidff)
+ static struct hid_field *pidff_find_special_field(struct hid_report *report,
+ 						  int usage, int enforce_min)
+ {
++	if (!report) {
++		pr_debug("pidff_find_special_field, null report\n");
++		return NULL;
++	}
++
+ 	int i;
+ 
+ 	for (i = 0; i < report->maxfield; i++) {
 -- 
 2.39.5
 
