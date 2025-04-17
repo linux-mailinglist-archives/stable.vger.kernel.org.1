@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-133810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C366CA927E5
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:29:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD903A929FC
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:46:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CE6B3ACF2A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71E9B3A6D1B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0715125F7A5;
-	Thu, 17 Apr 2025 18:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67DCA256C6B;
+	Thu, 17 Apr 2025 18:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PqwG8hTi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkWMJyea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B475F25F7A3;
-	Thu, 17 Apr 2025 18:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8AB25335A;
+	Thu, 17 Apr 2025 18:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914207; cv=none; b=mXzeqtwC2pzNlHFGbsvOQcsNj+T74e7THPumaUkgrxpf9AJ8Mzl2OnOfKc6BmjgMRBOdNrDCkOoBXv3UF0rZHvMUEF2TSr1gi39PibJAg0984HXgSVY+ghj5ltSdsiqi6jUcuum+iCMq99I2l08lljg+qlf/g1RDHmIR4GtIiyQ=
+	t=1744915340; cv=none; b=RuHavoO3UckYQ16Rp8qWyrQAUUDPHTrrX4SNjIcA8fjKAL0iJnLPrl5qv/ZhCA9pNs23mAMycmKdxTt7+hbjJ15egdyL/g65h3w8bD9ji25njZKr+tZk5Ceq/iU0QDi0sIDHQu8cFqHk+Bso5P/lo2AXuissT2yg8G1V3+NfJVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914207; c=relaxed/simple;
-	bh=ZPxKG1fxW77J0f4FJk3s6j/I9I0YXyAkmxKY9d2+X10=;
+	s=arc-20240116; t=1744915340; c=relaxed/simple;
+	bh=Pky979WpaWzgxXOe8o9ouWbFVkPai4HjmI40lUDIOY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kUdQVmX5TLnm1ESs3230+3YVh9syvaWtp6nKbMmS3EIbxthx9GaNu/+HCpTOeILAU7Sve+jMzzavT+SSh149S7IjALtSyQR0A5Uel8ntVmfzNOBnmWOSb2rDGGGy4qCl3BhuLffM1Pz6TvleQCEv/VVjxUd58y1AOH7BnRp+ANs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PqwG8hTi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CEFFC4CEE4;
-	Thu, 17 Apr 2025 18:23:27 +0000 (UTC)
+	 MIME-Version; b=cb+01RAvCvGSw7vt772ykOLV21lxqQ34GzxqWHjc1SFz7z9yCdftRLC/0o52d5fwUgxpBrVR91OCIEp2T6+zYEOXdeM7BC4CMl70BDynKH3XJjysvvq5EIAV4LiKQ7j4V8zhwMfUEHiN3xJ8pybvr0/btve4mkj1ezxUI73Ohws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkWMJyea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8488DC4CEE4;
+	Thu, 17 Apr 2025 18:42:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914207;
-	bh=ZPxKG1fxW77J0f4FJk3s6j/I9I0YXyAkmxKY9d2+X10=;
+	s=korg; t=1744915340;
+	bh=Pky979WpaWzgxXOe8o9ouWbFVkPai4HjmI40lUDIOY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PqwG8hTiwlNyb37Ht240hsN7L0rxQeB1ZE/hYMBAZInz1bRkxoHGdOMO91vdCKxCI
-	 VUH71RiaKjOjtXYfIbnJvDoclZyqJ3Wh0vLopL9whKxwx96AFPQ7OIOhnRwGipYXo1
-	 NKYZK4WiiszrWk5RRTFGfggJGTtqIEI7tsopt7Ls=
+	b=xkWMJyea7mHLAB7K0Q5xLAIKFQkKbaKC4zfPbCpUBM4iFl1y8POtTovjaAH4df2Bh
+	 pq2wHg0oZFxJdzsy6AgnZN6cLqujgB+onXnrviRHluwzcyMRWxQqtatsxzXwuwnSNR
+	 vcrrNVFDtJ06B4eKGdpuLtCaylMBEj4ttz6qfpys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Wyatt <fewtarius@steamfork.org>,
-	John Edwards <uejji@uejji.net>,
-	=?UTF-8?q?Jo=C3=A3o=20Pedro=20Kurtz?= <joexkurtz@gmail.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Mina Almasry <almasrymina@google.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	David Wei <dw@davidwei.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 140/414] drm: panel-orientation-quirks: Add quirk for OneXPlayer Mini (Intel)
+Subject: [PATCH 6.12 089/393] net: page_pool: dont cast mp param to devmem
 Date: Thu, 17 Apr 2025 19:48:18 +0200
-Message-ID: <20250417175117.062365964@linuxfoundation.org>
+Message-ID: <20250417175111.174706611@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Wyatt <fewtarius@steamfork.org>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit b24dcc183583fc360ae0f0899e286a68f46abbd0 ]
+[ Upstream commit 8d522566ae9cb3f0609ddb2a6ce3f4f39988043c ]
 
-The Intel model of the OneXPlayer Mini uses a 1200x1920 portrait LCD panel.
-The DMI strings are the same as the OneXPlayer, which already has a DMI
-quirk, but the panel is different.
+page_pool_check_memory_provider() is a generic path and shouldn't assume
+anything about the actual type of the memory provider argument. It's
+fine while devmem is the only provider, but cast away the devmem
+specific binding types to avoid confusion.
 
-Add a DMI match to correctly rotate this panel.
-
-Signed-off-by: Andrew Wyatt <fewtarius@steamfork.org>
-Co-developed-by: John Edwards <uejji@uejji.net>
-Signed-off-by: John Edwards <uejji@uejji.net>
-Tested-by: João Pedro Kurtz <joexkurtz@gmail.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250213222455.93533-6-uejji@uejji.net
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: David Wei <dw@davidwei.uk>
+Link: https://patch.msgid.link/20250204215622.695511-2-dw@davidwei.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ net/core/page_pool_user.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index 384a8dcf454fb..c554ad8f246b6 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -129,6 +129,12 @@ static const struct drm_dmi_panel_orientation_data lcd1080x1920_rightside_up = {
- 	.orientation = DRM_MODE_PANEL_ORIENTATION_RIGHT_UP,
- };
+diff --git a/net/core/page_pool_user.c b/net/core/page_pool_user.c
+index 48335766c1bfd..8d31c71bea1a3 100644
+--- a/net/core/page_pool_user.c
++++ b/net/core/page_pool_user.c
+@@ -353,7 +353,7 @@ void page_pool_unlist(struct page_pool *pool)
+ int page_pool_check_memory_provider(struct net_device *dev,
+ 				    struct netdev_rx_queue *rxq)
+ {
+-	struct net_devmem_dmabuf_binding *binding = rxq->mp_params.mp_priv;
++	void *binding = rxq->mp_params.mp_priv;
+ 	struct page_pool *pool;
+ 	struct hlist_node *n;
  
-+static const struct drm_dmi_panel_orientation_data lcd1200x1920_leftside_up = {
-+	.width = 1200,
-+	.height = 1920,
-+	.orientation = DRM_MODE_PANEL_ORIENTATION_LEFT_UP,
-+};
-+
- static const struct drm_dmi_panel_orientation_data lcd1200x1920_rightside_up = {
- 	.width = 1200,
- 	.height = 1920,
-@@ -473,6 +479,12 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "ONE XPLAYER"),
- 		},
- 		.driver_data = (void *)&lcd1600x2560_leftside_up,
-+	}, {	/* OneXPlayer Mini (Intel) */
-+		.matches = {
-+		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ONE-NETBOOK TECHNOLOGY CO., LTD."),
-+		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "ONE XPLAYER"),
-+		},
-+		.driver_data = (void *)&lcd1200x1920_leftside_up,
- 	}, {	/* OrangePi Neo */
- 		.matches = {
- 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "OrangePi"),
 -- 
 2.39.5
 
