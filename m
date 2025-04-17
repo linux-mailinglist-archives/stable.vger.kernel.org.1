@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-134190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B6BCA9299F
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:43:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B71DDA925EE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:09:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 829F31B6371D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:43:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7B901B62747
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0BC2571A0;
-	Thu, 17 Apr 2025 18:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90DB8256C65;
+	Thu, 17 Apr 2025 18:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zLWeWskE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNeV2I+r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E5F22333D;
-	Thu, 17 Apr 2025 18:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D90725335A;
+	Thu, 17 Apr 2025 18:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915369; cv=none; b=YXg+hYRG/cs9mNiLsO7X1+yK67Ohp/LLquDcA5Td3qZ6BAE/dyW8z0HQsFoAEHmOkp0tQjGbknCsARb1dFFDP0dPgP1Y7Mw2nwOKp8FlDdl8RhdBUfyP0xysJrccD/hTX6leA5XTmJkKG18XGZPrInUXyBzGgSLH2qGknFJdtR8=
+	t=1744913222; cv=none; b=B1L12xdwc+CUTyJ8nGysiHGSMVlSzeHYpiA8RBcPyNZjJ4Of1Z4ZyHOp2r2h3oIaJRX4dFqg2ha52PUqmW6DabAcVj/ynfxMvSomgPj8+NAxUjNjfUG42wQAvfc4GmYvC9LmoUEiR1t4htBKS0w8QaErex9fHD5k64+4fh1alQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915369; c=relaxed/simple;
-	bh=atDA88g4S9sAXzP80GIXWL66QS13euATUyaLnUqcBqA=;
+	s=arc-20240116; t=1744913222; c=relaxed/simple;
+	bh=8/jd1y8JhiXhh5c5yx10s4CMpOG1tv6R60J08maU4DY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I4scFrLw8+fyq6/1jEO+CpZk8l85l1MNvK4ydp09xKV5hBb9kQRy4dqvmscdM5ic0Vw+jHO7IN0cHoqPphpwZftzpdxUiJtkY+IwtOwQoPqrna9rLtPnXLH99TY1H7RGm7MYXPuSijAITTsufbo4Qi9O41UU8FkzRCMTXqSwnsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zLWeWskE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E605AC4CEEA;
-	Thu, 17 Apr 2025 18:42:48 +0000 (UTC)
+	 MIME-Version; b=dRLIV2T/wHMO6N0XjQrMGcZkAeX7L65rKpqE4X/LOcln61uJdRfziUY8AoeAR3DmU0isQZT+poS9+oyzct28rsGV+TwL/pNJsuh2Q3Jqnld6KPgkWEs5kQ5F/3lLBoC/ECkFTIljIh4iDs3aG7mVocYZiUQ2CRX2NPW6x3vKmE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNeV2I+r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7347C4CEE4;
+	Thu, 17 Apr 2025 18:07:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915369;
-	bh=atDA88g4S9sAXzP80GIXWL66QS13euATUyaLnUqcBqA=;
+	s=korg; t=1744913222;
+	bh=8/jd1y8JhiXhh5c5yx10s4CMpOG1tv6R60J08maU4DY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zLWeWskE29fzHIremWJbUtsJf+z6BLgdcJnPxUSoVF2UzLmO8SOTkDGyH5stzv2o+
-	 A3AzTnOWIYaGQHalxtg8ORT/VT/Xc0MIu+HgIYr+dYrWyXipJst8/v3mrHke1rPVfu
-	 tDG/7KxMBHIjNJAR8tWXxNfl1GMB1ihJFyPVJC7E=
+	b=DNeV2I+r50DwTJZxXKv3iTHLIhSgQ+U0d4/7mGgVKLI1HzKzEfxEhizfYpOjfwrLr
+	 4Zibu5hpMdiSh67EEBct1nyO1E+BA/VP7Fr6hH4VK2hW2lKth0D8rI0Z3m3OeKUOEC
+	 8P0I16N/U3h9ateVUZSJOkRF/dL4w/Le4q/WhvXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6653f10281a1badc749e@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 106/393] f2fs: fix to avoid out-of-bounds access in f2fs_truncate_inode_blocks()
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.14 227/449] media: venus: hfi: add check to handle incorrect queue size
 Date: Thu, 17 Apr 2025 19:48:35 +0200
-Message-ID: <20250417175111.855873874@linuxfoundation.org>
+Message-ID: <20250417175127.131535264@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
 
-[ Upstream commit e6494977bd4a83862118a05f57a8df40256951c0 ]
+commit 69baf245b23e20efda0079238b27fc63ecf13de1 upstream.
 
-syzbot reports an UBSAN issue as below:
+qsize represents size of shared queued between driver and video
+firmware. Firmware can modify this value to an invalid large value. In
+such situation, empty_space will be bigger than the space actually
+available. Since new_wr_idx is not checked, so the following code will
+result in an OOB write.
+...
+qsize = qhdr->q_size
 
-------------[ cut here ]------------
-UBSAN: array-index-out-of-bounds in fs/f2fs/node.h:381:10
-index 18446744073709550692 is out of range for type '__le32[5]' (aka 'unsigned int[5]')
-CPU: 0 UID: 0 PID: 5318 Comm: syz.0.0 Not tainted 6.14.0-rc3-syzkaller-00060-g6537cfb395f3 #0
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- ubsan_epilogue lib/ubsan.c:231 [inline]
- __ubsan_handle_out_of_bounds+0x121/0x150 lib/ubsan.c:429
- get_nid fs/f2fs/node.h:381 [inline]
- f2fs_truncate_inode_blocks+0xa5e/0xf60 fs/f2fs/node.c:1181
- f2fs_do_truncate_blocks+0x782/0x1030 fs/f2fs/file.c:808
- f2fs_truncate_blocks+0x10d/0x300 fs/f2fs/file.c:836
- f2fs_truncate+0x417/0x720 fs/f2fs/file.c:886
- f2fs_file_write_iter+0x1bdb/0x2550 fs/f2fs/file.c:5093
- aio_write+0x56b/0x7c0 fs/aio.c:1633
- io_submit_one+0x8a7/0x18a0 fs/aio.c:2052
- __do_sys_io_submit fs/aio.c:2111 [inline]
- __se_sys_io_submit+0x171/0x2e0 fs/aio.c:2081
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f238798cde9
+if (wr_idx >= rd_idx)
+ empty_space = qsize - (wr_idx - rd_idx)
+....
+if (new_wr_idx < qsize) {
+ memcpy(wr_ptr, packet, dwords << 2) --> OOB write
 
-index 18446744073709550692 (decimal, unsigned long long)
-= 0xfffffffffffffc64 (hexadecimal, unsigned long long)
-= -924 (decimal, long long)
+Add check to ensure qsize is within the allocated size while
+reading and writing packets into the queue.
 
-In f2fs_truncate_inode_blocks(), UBSAN detects that get_nid() tries to
-access .i_nid[-924], it means both offset[0] and level should zero.
-
-The possible case should be in f2fs_do_truncate_blocks(), we try to
-truncate inode size to zero, however, dn.ofs_in_node is zero and
-dn.node_page is not an inode page, so it fails to truncate inode page,
-and then pass zeroed free_from to f2fs_truncate_inode_blocks(), result
-in this issue.
-
-	if (dn.ofs_in_node || IS_INODE(dn.node_page)) {
-		f2fs_truncate_data_blocks_range(&dn, count);
-		free_from += count;
-	}
-
-I guess the reason why dn.node_page is not an inode page could be: there
-are multiple nat entries share the same node block address, once the node
-block address was reused, f2fs_get_node_page() may load a non-inode block.
-
-Let's add a sanity check for such condition to avoid out-of-bounds access
-issue.
-
-Reported-by: syzbot+6653f10281a1badc749e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/66fdcdf3.050a0220.40bef.0025.GAE@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/node.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/venus/hfi_venus.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
-index 4d7b9fd6ef31a..9fc07737d8661 100644
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -1134,7 +1134,14 @@ int f2fs_truncate_inode_blocks(struct inode *inode, pgoff_t from)
- 	trace_f2fs_truncate_inode_blocks_enter(inode, from);
+--- a/drivers/media/platform/qcom/venus/hfi_venus.c
++++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+@@ -187,6 +187,9 @@ static int venus_write_queue(struct venu
+ 	/* ensure rd/wr indices's are read from memory */
+ 	rmb();
  
- 	level = get_node_path(inode, from, offset, noffset);
--	if (level < 0) {
-+	if (level <= 0) {
-+		if (!level) {
-+			level = -EFSCORRUPTED;
-+			f2fs_err(sbi, "%s: inode ino=%lx has corrupted node block, from:%lu addrs:%u",
-+					__func__, inode->i_ino,
-+					from, ADDRS_PER_INODE(inode));
-+			set_sbi_flag(sbi, SBI_NEED_FSCK);
-+		}
- 		trace_f2fs_truncate_inode_blocks_exit(inode, level);
- 		return level;
- 	}
--- 
-2.39.5
-
++	if (qsize > IFACEQ_QUEUE_SIZE / 4)
++		return -EINVAL;
++
+ 	if (wr_idx >= rd_idx)
+ 		empty_space = qsize - (wr_idx - rd_idx);
+ 	else
+@@ -255,6 +258,9 @@ static int venus_read_queue(struct venus
+ 	wr_idx = qhdr->write_idx;
+ 	qsize = qhdr->q_size;
+ 
++	if (qsize > IFACEQ_QUEUE_SIZE / 4)
++		return -EINVAL;
++
+ 	/* make sure data is valid before using it */
+ 	rmb();
+ 
 
 
 
