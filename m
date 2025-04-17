@@ -1,56 +1,78 @@
-Return-Path: <stable+bounces-134361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFF2CA92AFE
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:56:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D7BEA92911
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:40:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 052643AC5A9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:53:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 071DF3A66E1
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E9F524EF6F;
-	Thu, 17 Apr 2025 18:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508E7263C73;
+	Thu, 17 Apr 2025 18:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0//qJWbY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KvQcW1FV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7CE2571A1;
-	Thu, 17 Apr 2025 18:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B89C2638A6;
+	Thu, 17 Apr 2025 18:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915896; cv=none; b=rLikF6qopV5Xcv5WQZ5EkKE9qHm2zKGCVqQuBOKugSZeUkOWhyMksjRi3KwBVxTUZnckJ6Jhw0D1wzYiJNBaPwG/MAjYTIVRvEdMHv5mJ55tIhKb2qFvwPE+ea1Xc1swAow26x1ma9wrGhU87izSwmDIX5uvjf4p6816ZQ45oeg=
+	t=1744914775; cv=none; b=OWsFpyTKU1LOu1xTWLYgaWqISsE6v6CYbVQpGQa4j32WoWlTppNSqZhU/c34vvDobHL87BA59fE8I7AwPFDfCrRemGA56GXbZJK4RAz7BE8ne7KT5EiZs4fWug7aOJAUj6lPdX9mx05ugKQ02hLZTCyV0bVIpwJhQgIV2GqxZxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915896; c=relaxed/simple;
-	bh=m9KpxUVHMJk4EfnKACnAlRNTU5QmwGjFBHggFymaPHI=;
+	s=arc-20240116; t=1744914775; c=relaxed/simple;
+	bh=ajPFpkFAuhzwMTDbRnq1cYt5mCF7wSa5sD7pbhO4rbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ifo3Q2Fkhj/LAInDqEnFYwefcpf9GZ3W0I9dsul3GQlrnMNd42S6o+pFNRgGclRQIWBvEDyat2/9kxsHu2HZ8ssbOt1n+c0N1lOwKe5O/6FHXTOjFXRfF58vv48EJg0h9SQtw5ugOEIBaYwmjfV37o7Wh2suL5CQyoQOIDEeMko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0//qJWbY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9DA9C4CEE4;
-	Thu, 17 Apr 2025 18:51:35 +0000 (UTC)
+	 MIME-Version; b=X/koR8eAxEoMUFDfdFi8tG5MlOAWML5KBBPrmlIgmYLn0aTTFLZmYFoDJKt0RgA0GIkZdschEHmKIf+szeYQf08NPBq+Mwcw/IFP0j7Ank6Ci+F358qyrzXDBMt25QztS1ZBVQJsUnsZCz8IXVAZ42h7hYgzzNtt1hKwjfRpRXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KvQcW1FV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0628C4CEE4;
+	Thu, 17 Apr 2025 18:32:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915896;
-	bh=m9KpxUVHMJk4EfnKACnAlRNTU5QmwGjFBHggFymaPHI=;
+	s=korg; t=1744914773;
+	bh=ajPFpkFAuhzwMTDbRnq1cYt5mCF7wSa5sD7pbhO4rbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0//qJWbYR6E2pBDjup2Sm2qmWrflCsqm1wWq60mHmtSuIAuGAkgA1ZTsQNqAFHfkR
-	 kOVa75NfWCqYj3fy0Cx/ZA9FgSeV6HbZXVd8JyBdYWZ0fkAh5kS/G8acYJ33RMZv3t
-	 2JlI/H+WUpoVi5ZCnvw87z9d+suR6ToJgspIgCms=
+	b=KvQcW1FVl5xrGZl5RwfFhFoRRikfd5+gTACyvxu5VNMgumdH6/OHspDF76NJM+kWH
+	 iGTdPMvrHzK4anicfnTtRMqQaUeE7bhh5jXF6AN3v0JmJKVKqQvxrleiwPDeSR/XkU
+	 8sEq109qmrvioeQUuOfQd++BLvAPirmK8Uj+yNTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Sebastian Reichel <sre@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.12 275/393] leds: rgb: leds-qcom-lpg: Fix calculation of best period Hi-Res PWMs
+	David Hildenbrand <david@redhat.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Alex Shi <alexs@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dave Airlie <airlied@gmail.com>,
+	Jann Horn <jannh@google.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Jerome Glisse <jglisse@redhat.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Karol Herbst <kherbst@redhat.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Lyude <lyude@redhat.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Peter Xu <peterx@redhat.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	SeongJae Park <sj@kernel.org>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Yanteng Si <si.yanteng@linux.dev>,
+	Barry Song <v-songbaohua@oppo.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.13 326/414] mm/rmap: reject hugetlb folios in folio_make_device_exclusive()
 Date: Thu, 17 Apr 2025 19:51:24 +0200
-Message-ID: <20250417175118.666323521@linuxfoundation.org>
+Message-ID: <20250417175124.544995866@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +84,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: David Hildenbrand <david@redhat.com>
 
-commit 2528eec7da0ec58fcae6d12cfa79a622c933d86b upstream.
+commit bc3fe6805cf09a25a086573a17d40e525208c5d8 upstream.
 
-When determining the actual best period by looping through all
-possible PWM configs, the resolution currently used is based on
-bit shift value which is off-by-one above the possible maximum
-PWM value allowed.
+Even though FOLL_SPLIT_PMD on hugetlb now always fails with -EOPNOTSUPP,
+let's add a safety net in case FOLL_SPLIT_PMD usage would ever be
+reworked.
 
-So subtract one from the resolution before determining the best
-period so that the maximum duty cycle requested by the PWM user
-won't result in a value above the maximum allowed by the selected
-resolution.
+In particular, before commit 9cb28da54643 ("mm/gup: handle hugetlb in the
+generic follow_page_mask code"), GUP(FOLL_SPLIT_PMD) would just have
+returned a page.  In particular, hugetlb folios that are not PMD-sized
+would never have been prone to FOLL_SPLIT_PMD.
 
-Cc: stable@vger.kernel.org    # 6.4
-Fixes: b00d2ed37617 ("leds: rgb: leds-qcom-lpg: Add support for high resolution PWM")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Sebastian Reichel <sre@kernel.org>
-Link: https://lore.kernel.org/r/20250305-leds-qcom-lpg-fix-max-pwm-on-hi-res-v4-3-bfe124a53a9f@linaro.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+hugetlb folios can be anonymous, and page_make_device_exclusive_one() is
+not really prepared for handling them at all.  So let's spell that out.
+
+Link: https://lkml.kernel.org/r/20250210193801.781278-3-david@redhat.com
+Fixes: b756a3b5e7ea ("mm: device exclusive memory access")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Tested-by: Alistair Popple <apopple@nvidia.com>
+Cc: Alex Shi <alexs@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Dave Airlie <airlied@gmail.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Jerome Glisse <jglisse@redhat.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Karol Herbst <kherbst@redhat.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Lyude <lyude@redhat.com>
+Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Simona Vetter <simona.vetter@ffwll.ch>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Yanteng Si <si.yanteng@linux.dev>
+Cc: Barry Song <v-songbaohua@oppo.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/rgb/leds-qcom-lpg.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ mm/rmap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/leds/rgb/leds-qcom-lpg.c
-+++ b/drivers/leds/rgb/leds-qcom-lpg.c
-@@ -461,7 +461,7 @@ static int lpg_calc_freq(struct lpg_chan
- 		max_res = LPG_RESOLUTION_9BIT;
- 	}
- 
--	min_period = div64_u64((u64)NSEC_PER_SEC * (1 << pwm_resolution_arr[0]),
-+	min_period = div64_u64((u64)NSEC_PER_SEC * ((1 << pwm_resolution_arr[0]) - 1),
- 			       clk_rate_arr[clk_len - 1]);
- 	if (period <= min_period)
- 		return -EINVAL;
-@@ -482,7 +482,7 @@ static int lpg_calc_freq(struct lpg_chan
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -2499,7 +2499,7 @@ static bool folio_make_device_exclusive(
+ 	 * Restrict to anonymous folios for now to avoid potential writeback
+ 	 * issues.
  	 */
+-	if (!folio_test_anon(folio))
++	if (!folio_test_anon(folio) || folio_test_hugetlb(folio))
+ 		return false;
  
- 	for (i = 0; i < pwm_resolution_count; i++) {
--		resolution = 1 << pwm_resolution_arr[i];
-+		resolution = (1 << pwm_resolution_arr[i]) - 1;
- 		for (clk_sel = 1; clk_sel < clk_len; clk_sel++) {
- 			u64 numerator = period * clk_rate_arr[clk_sel];
- 
-@@ -1291,7 +1291,7 @@ static int lpg_pwm_get_state(struct pwm_
- 		if (ret)
- 			return ret;
- 
--		state->period = DIV_ROUND_UP_ULL((u64)NSEC_PER_SEC * (1 << resolution) *
-+		state->period = DIV_ROUND_UP_ULL((u64)NSEC_PER_SEC * ((1 << resolution) - 1) *
- 						 pre_div * (1 << m), refclk);
- 		state->duty_cycle = DIV_ROUND_UP_ULL((u64)NSEC_PER_SEC * pwm_value * pre_div * (1 << m), refclk);
- 	} else {
+ 	rmap_walk(folio, &rwc);
 
 
 
