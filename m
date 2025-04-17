@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-134229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79839A929D2
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:44:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAD33A9281D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:31:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 197081B63EC7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:45:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4724A3AB3FD
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD3A253954;
-	Thu, 17 Apr 2025 18:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F4F2620CE;
+	Thu, 17 Apr 2025 18:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vcjrbrsa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6rkrib+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1831D07BA;
-	Thu, 17 Apr 2025 18:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EB02620C9;
+	Thu, 17 Apr 2025 18:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915491; cv=none; b=lVNQ4Ejnm7H+8NUY6l0k8O68MayNca0SRI9NKZIeuHByKbwkbFxyKV9+bIVzNMNrLahavy9RWVM6qEvZsss5MvxwLoq6OnlQ7+HCE9IoT9vPkdvwgPu233tqy8JpOerdLAmIhqrTy1bK5wjZLnxKrldfqKO/a702klcikG51GRo=
+	t=1744914381; cv=none; b=rW3sZ1Fs6dpxrRT6Fi2Zmc0n2bR1WznsBXLJ6AZ/a3ifN7H9keHg2jUgyVvWr2Fl1KfbgETgd0iBNvtoz3gTblnVtPz8VjeiCu4LRvlfWExv1LsDUArA8y8GO9VptLQDlE5GlnuRdXlC9FpCp3UiRT8VrJ+IEg4vnmIdfvcolRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915491; c=relaxed/simple;
-	bh=R4HztuqWS2E70tfHESD/fBT511NEWFg8LSqwD/Xmqhs=;
+	s=arc-20240116; t=1744914381; c=relaxed/simple;
+	bh=EJOOdHBhz4hjLRwTje9Ru1ApcXS3rOYu1YWowPuxfgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BvTGe4HYo6uKCMHK5MeQDwNhdzwA8NyGyjMSLXPIrKyuMJKo0YNvKweH+XFSOhAkWZ88qxm58EjVUjVj5rRzeoYsMX9aOoEtOtgTyJ66b7RcmW8wqZhiFtVjFeQ7C7ZvzFocANDI0SmRs7kmKI3rQuWLLomzdh/yMUHr7dv+X3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vcjrbrsa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDDF9C4CEE4;
-	Thu, 17 Apr 2025 18:44:50 +0000 (UTC)
+	 MIME-Version; b=pOI061DUite0dg8342TnNBaMHdhcy98B/hS93LXgjjBdfIi5VpHkCNlal01uS61fBJqdKmHMY62SfhEbOqOC9JnImoh/9m27hi5OlskEnDaEZUAk4w7OQ5SpDFIaQzprQa9qckvMEY5JbbTOWOOj1dM7Wibe53eSsFId8mpPWcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6rkrib+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3498DC4CEE7;
+	Thu, 17 Apr 2025 18:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915491;
-	bh=R4HztuqWS2E70tfHESD/fBT511NEWFg8LSqwD/Xmqhs=;
+	s=korg; t=1744914381;
+	bh=EJOOdHBhz4hjLRwTje9Ru1ApcXS3rOYu1YWowPuxfgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VcjrbrsalgkShIXeoRrm5/iQ//KPdkamlfz3rPmRhlhbe8TrVTKJGU+9VCsPct+f4
-	 fRmc645HbsPxRNFwPp6g1kXtlg5xG4hAdmpa+AavSwkd6UHDcGjwSRC2WWkc+3Y7eO
-	 ROi71i5CoZQvvZ9njuhBQJIhTQUA594t/Fk6MhpE=
+	b=y6rkrib+Jt1/29GDDb0dXU+EWTOO9mud8AoEd2536F5sUAHRt5kG7ejYgd0h5/SHL
+	 DZ30Y/JYktHLendvjfMiIYupyh8oTOsz/cSKcyjFt1qLyWu+DeUz+okIrzv1sx40ad
+	 5fze2GlQ5T/oJ/R/aNSpS2b+b7SYMBTpSzZMCUE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Gustavo Sousa <gustavo.sousa@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 144/393] drm/xe/xelp: Move Wa_16011163337 from tunings to workarounds
-Date: Thu, 17 Apr 2025 19:49:13 +0200
-Message-ID: <20250417175113.376967388@linuxfoundation.org>
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.13 196/414] dt-bindings: media: st,stmipid02: correct lane-polarities maxItems
+Date: Thu, 17 Apr 2025 19:49:14 +0200
+Message-ID: <20250417175119.326024666@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Alain Volmat <alain.volmat@foss.st.com>
 
-[ Upstream commit d9b5d83c5a4d720af6ddbefe2825c78f0325a3fd ]
+commit 3a544a39e0a4c492e3026dfbed018321d2bd6caa upstream.
 
-Workaround database specifies 16011163337 as a workaround so lets move it
-there.
+The MIPID02 can use up to 2 data lanes which leads to having a maximum
+item number of 3 for the lane-polarities since this also contains the
+clock lane.
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: Gustavo Sousa <gustavo.sousa@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250227101304.46660-3-tvrtko.ursulin@igalia.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Fixes: c2741cbe7f8a ("dt-bindings: media: st,stmipid02: Convert the text bindings to YAML")
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_tuning.c | 8 --------
- drivers/gpu/drm/xe/xe_wa.c     | 7 +++++++
- 2 files changed, 7 insertions(+), 8 deletions(-)
+ Documentation/devicetree/bindings/media/i2c/st,st-mipid02.yaml |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_tuning.c b/drivers/gpu/drm/xe/xe_tuning.c
-index 0d5e04158917b..1fb12da21c9e4 100644
---- a/drivers/gpu/drm/xe/xe_tuning.c
-+++ b/drivers/gpu/drm/xe/xe_tuning.c
-@@ -97,14 +97,6 @@ static const struct xe_rtp_entry_sr engine_tunings[] = {
- };
+--- a/Documentation/devicetree/bindings/media/i2c/st,st-mipid02.yaml
++++ b/Documentation/devicetree/bindings/media/i2c/st,st-mipid02.yaml
+@@ -71,7 +71,7 @@ properties:
+                 description:
+                   Any lane can be inverted or not.
+                 minItems: 1
+-                maxItems: 2
++                maxItems: 3
  
- static const struct xe_rtp_entry_sr lrc_tunings[] = {
--	{ XE_RTP_NAME("Tuning: ganged timer, also known as 16011163337"),
--	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(1200, 1210), ENGINE_CLASS(RENDER)),
--	  /* read verification is ignored due to 1608008084. */
--	  XE_RTP_ACTIONS(FIELD_SET_NO_READ_MASK(FF_MODE2,
--						FF_MODE2_GS_TIMER_MASK,
--						FF_MODE2_GS_TIMER_224))
--	},
--
- 	/* DG2 */
- 
- 	{ XE_RTP_NAME("Tuning: L3 cache"),
-diff --git a/drivers/gpu/drm/xe/xe_wa.c b/drivers/gpu/drm/xe/xe_wa.c
-index 37e592b2bf062..0a1905f8d380a 100644
---- a/drivers/gpu/drm/xe/xe_wa.c
-+++ b/drivers/gpu/drm/xe/xe_wa.c
-@@ -606,6 +606,13 @@ static const struct xe_rtp_entry_sr engine_was[] = {
- };
- 
- static const struct xe_rtp_entry_sr lrc_was[] = {
-+	{ XE_RTP_NAME("16011163337"),
-+	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(1200, 1210), ENGINE_CLASS(RENDER)),
-+	  /* read verification is ignored due to 1608008084. */
-+	  XE_RTP_ACTIONS(FIELD_SET_NO_READ_MASK(FF_MODE2,
-+						FF_MODE2_GS_TIMER_MASK,
-+						FF_MODE2_GS_TIMER_224))
-+	},
- 	{ XE_RTP_NAME("1409342910, 14010698770, 14010443199, 1408979724, 1409178076, 1409207793, 1409217633, 1409252684, 1409347922, 1409142259"),
- 	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(1200, 1210)),
- 	  XE_RTP_ACTIONS(SET(COMMON_SLICE_CHICKEN3,
--- 
-2.39.5
-
+             required:
+               - data-lanes
 
 
 
