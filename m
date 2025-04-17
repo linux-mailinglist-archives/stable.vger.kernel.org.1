@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-133635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 159E1A926DF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:17:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFA42A9291C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:40:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2691F7AA101
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:13:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FAC84A4554
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C611A3178;
-	Thu, 17 Apr 2025 18:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB24C264F8B;
+	Thu, 17 Apr 2025 18:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4vn3OMk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oSVU2VuG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B921E832C;
-	Thu, 17 Apr 2025 18:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A163E264FB2;
+	Thu, 17 Apr 2025 18:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913676; cv=none; b=uXo9c6U/ex7+c/CBSwR9A4GzMe/atpSGjuS2MvyqH4iT/mmbjQ+WkDyEopmDRA6tb+eDqr7tJOC+QLuY250OQgoiK8HkxTEtowsto1zhMLMrrKmBx7BuT8Ldc5hAWJA1JvK0Ojb4rR3Yn9M/T9vXkJmZQzNyXjMhvOJSwYKmL8c=
+	t=1744914928; cv=none; b=t5F+mnFTS4WZicsh3ItOtRVC9aGCnAWCzNnZfSPRdFu1gtJKxKfSAN9gNg7+QZIB/JW81WHXEh+cjem9lHGJSXwX9KtfkNgLq3Ivmc1HXqWRBGhwi7u1407Wo3uo44wRwsm3X5mNXTvJFzDNbD1eE96vq0xis0FdnF3l5qDBQUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913676; c=relaxed/simple;
-	bh=HVB8lFmKZz740Prgw296Ot9yRD09hJIoHuS5128JJrU=;
+	s=arc-20240116; t=1744914928; c=relaxed/simple;
+	bh=0ERnUUZ6ylkGsWIn8VxpB92BYvSq2GottDZ33+uDjf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fM+MNo0NCgwh6sAry2vs4pPNA7Nw2zoCPkiDHhEMF2YDr89dYuAfsDomfTsDqSl80oQDPuQIodAldRK1kwz8NlhP1tme6QQKuIm3YX7y3M+zp5Nqpxq/PPWhjdM2+j4o1hOCKQIHnAewnll9apyjoUL44fVaJ88cOHuQQF6wjRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4vn3OMk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2073BC4CEE4;
-	Thu, 17 Apr 2025 18:14:35 +0000 (UTC)
+	 MIME-Version; b=kY3X6Xy2o3BIRL2eD+SLifhYzhGfK0aGcbCqd0m3dVueNPmIQkdPcHwb8bLUqDz6HpFtxJepcUGkqICfxuV2wntYBewDeTM/5MrvtFYNJTDphEE69kqG31c+olpXUfqX0IhsLFRRTCR+nIr+ao4uswq9oMFM/Iav+V1BSGbj2Ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oSVU2VuG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACAA5C4CEE4;
+	Thu, 17 Apr 2025 18:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913676;
-	bh=HVB8lFmKZz740Prgw296Ot9yRD09hJIoHuS5128JJrU=;
+	s=korg; t=1744914928;
+	bh=0ERnUUZ6ylkGsWIn8VxpB92BYvSq2GottDZ33+uDjf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f4vn3OMkSXMO0/96Ve0E4Yb+G9X7BN6IlKIhrgsJPX6/hF7nJ8qTy2EmhpYkLY3EY
-	 RGeBlVdAwSSYqzGz4qEkg+OtYqjEH2vHzPmoyrT8g0m/MF7TXi2nNlLTJnC8KxRd2U
-	 JnWXnP8B8Zu6tueSyIfqwSShyyuoWQllQ6eMI2fA=
+	b=oSVU2VuGqAdgnBdInghIwc7Xu/+fWaQPD2/yMK7kNYtmjuQBHjxBym7bslWNNe3ax
+	 MfpfHl9SAw9Gk6uCuNwi1aU01Nm23U4eS1zuNLXaXhhs6mXIJI+yuEVMUuzsiNRv2P
+	 XmSholpBVGtu4IvUFPd2LPubmNHirJj+fOqL8Nzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.14 416/449] net: mana: Switch to page pool for jumbo frames
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.13 346/414] clk: qcom: gdsc: Release pm subdomains in reverse add order
 Date: Thu, 17 Apr 2025 19:51:44 +0200
-Message-ID: <20250417175135.033389321@linuxfoundation.org>
+Message-ID: <20250417175125.343254256@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,127 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haiyang Zhang <haiyangz@microsoft.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-commit fa37a8849634db2dd3545116873da8cf4b1e67c6 upstream.
+commit 0e6dfde439df0bb977cddd3cf7fff150a084a9bf upstream.
 
-Frag allocators, such as netdev_alloc_frag(), were not designed to
-work for fragsz > PAGE_SIZE.
+gdsc_unregister() should release subdomains in the reverse order to the
+order in which those subdomains were added.
 
-So, switch to page pool for jumbo frames instead of using page frag
-allocators. This driver is using page pool for smaller MTUs already.
+I've made this patch a standalone patch because it facilitates a subsequent
+fix to stable.
 
+Fixes: 1b771839de05 ("clk: qcom: gdsc: enable optional power domain support")
 Cc: stable@vger.kernel.org
-Fixes: 80f6215b450e ("net: mana: Add support for jumbo frame")
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Long Li <longli@microsoft.com>
-Reviewed-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
-Link: https://patch.msgid.link/1742920357-27263-1-git-send-email-haiyangz@microsoft.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Link: https://lore.kernel.org/r/20250117-b4-linux-next-24-11-18-clock-multiple-power-domains-v10-1-13f2bb656dad@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c |   46 +++++---------------------
- 1 file changed, 9 insertions(+), 37 deletions(-)
+ drivers/clk/qcom/gdsc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -652,30 +652,16 @@ int mana_pre_alloc_rxbufs(struct mana_po
- 	mpc->rxbpre_total = 0;
+--- a/drivers/clk/qcom/gdsc.c
++++ b/drivers/clk/qcom/gdsc.c
+@@ -571,7 +571,7 @@ void gdsc_unregister(struct gdsc_desc *d
+ 	size_t num = desc->num;
  
- 	for (i = 0; i < num_rxb; i++) {
--		if (mpc->rxbpre_alloc_size > PAGE_SIZE) {
--			va = netdev_alloc_frag(mpc->rxbpre_alloc_size);
--			if (!va)
--				goto error;
--
--			page = virt_to_head_page(va);
--			/* Check if the frag falls back to single page */
--			if (compound_order(page) <
--			    get_order(mpc->rxbpre_alloc_size)) {
--				put_page(page);
--				goto error;
--			}
--		} else {
--			page = dev_alloc_page();
--			if (!page)
--				goto error;
-+		page = dev_alloc_pages(get_order(mpc->rxbpre_alloc_size));
-+		if (!page)
-+			goto error;
- 
--			va = page_to_virt(page);
--		}
-+		va = page_to_virt(page);
- 
- 		da = dma_map_single(dev, va + mpc->rxbpre_headroom,
- 				    mpc->rxbpre_datasize, DMA_FROM_DEVICE);
- 		if (dma_mapping_error(dev, da)) {
--			put_page(virt_to_head_page(va));
-+			put_page(page);
- 			goto error;
- 		}
- 
-@@ -1660,7 +1646,7 @@ drop:
- }
- 
- static void *mana_get_rxfrag(struct mana_rxq *rxq, struct device *dev,
--			     dma_addr_t *da, bool *from_pool, bool is_napi)
-+			     dma_addr_t *da, bool *from_pool)
- {
- 	struct page *page;
- 	void *va;
-@@ -1671,21 +1657,6 @@ static void *mana_get_rxfrag(struct mana
- 	if (rxq->xdp_save_va) {
- 		va = rxq->xdp_save_va;
- 		rxq->xdp_save_va = NULL;
--	} else if (rxq->alloc_size > PAGE_SIZE) {
--		if (is_napi)
--			va = napi_alloc_frag(rxq->alloc_size);
--		else
--			va = netdev_alloc_frag(rxq->alloc_size);
--
--		if (!va)
--			return NULL;
--
--		page = virt_to_head_page(va);
--		/* Check if the frag falls back to single page */
--		if (compound_order(page) < get_order(rxq->alloc_size)) {
--			put_page(page);
--			return NULL;
--		}
- 	} else {
- 		page = page_pool_dev_alloc_pages(rxq->page_pool);
- 		if (!page)
-@@ -1718,7 +1689,7 @@ static void mana_refill_rx_oob(struct de
- 	dma_addr_t da;
- 	void *va;
- 
--	va = mana_get_rxfrag(rxq, dev, &da, &from_pool, true);
-+	va = mana_get_rxfrag(rxq, dev, &da, &from_pool);
- 	if (!va)
- 		return;
- 
-@@ -2158,7 +2129,7 @@ static int mana_fill_rx_oob(struct mana_
- 	if (mpc->rxbufs_pre)
- 		va = mana_get_rxbuf_pre(rxq, &da);
- 	else
--		va = mana_get_rxfrag(rxq, dev, &da, &from_pool, false);
-+		va = mana_get_rxfrag(rxq, dev, &da, &from_pool);
- 
- 	if (!va)
- 		return -ENOMEM;
-@@ -2244,6 +2215,7 @@ static int mana_create_page_pool(struct
- 	pprm.nid = gc->numa_node;
- 	pprm.napi = &rxq->rx_cq.napi;
- 	pprm.netdev = rxq->ndev;
-+	pprm.order = get_order(rxq->alloc_size);
- 
- 	rxq->page_pool = page_pool_create(&pprm);
- 
+ 	/* Remove subdomains */
+-	for (i = 0; i < num; i++) {
++	for (i = num - 1; i >= 0; i--) {
+ 		if (!scs[i])
+ 			continue;
+ 		if (scs[i]->parent)
 
 
 
