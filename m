@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-134432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62D78A92AF5
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A147EA92B0B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:56:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61D127B299F
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01B544A82D0
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:55:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D531B3934;
-	Thu, 17 Apr 2025 18:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEBAA2566DE;
+	Thu, 17 Apr 2025 18:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U7mAAE8l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+Lx0ZxI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCF11B4153;
-	Thu, 17 Apr 2025 18:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3A82566DF;
+	Thu, 17 Apr 2025 18:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916108; cv=none; b=s8NNWR4hBPsd4QYjACgWSjQH1b+MwL8Pe+o0nvvBg/beMixtoUU6uY5HVdy0uVuuW7MYB9iMF2fQwbrMP+QGt4P4ZmhFZk2CLfkzCY2AlXizZTIj3gI/YsnNATsGX1BNxLGSdsqHjJIkPdIxrNXMFm9g1b2oWQmuY/vB/V+08H4=
+	t=1744916117; cv=none; b=KYIJiQWQHNGvSt88NwQ9IkCs7HgDr+6mkNDLlEWpwjvLQUqwlM7+BkICWvpXfnDsnzJGlVDoaUCo9lcjpuNSKmnXxNWNzysh7++pq47Cjk2tw2sEFY62uPc7Oi7XBhEFAdLepWLCU1KMIsV9BD6Wc1165dDEIwyFOKz37fo7tRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916108; c=relaxed/simple;
-	bh=v7UDepiemSysFSv2zRmUNaCoVQKM0/0bRLQjFnTdqRs=;
+	s=arc-20240116; t=1744916117; c=relaxed/simple;
+	bh=qIfMJRhibASJhzL074JC9WkeMMRNsdacttTnf236XH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LjyuwIRCumubKhSbjyQ5zBPTXMwy2q/58frPONmhcMFVm9iuHybWGDjXjSTmMbV9VwpmBS4LB2ih+3p17ebnohBfy1rE98xp6w1n66A7PjsFxssxI08AGNTob06qNAViHgO2rwJpNFNIQFByFpvmjyM6QZiRaEwoxtSI+ogds9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U7mAAE8l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC30C4CEE4;
-	Thu, 17 Apr 2025 18:55:07 +0000 (UTC)
+	 MIME-Version; b=A3qUa/R5JLb173ROR/dGIHpLgo5YrTaVdtAiuti3J0PaSRqcTRqcjV0YWxVbv0lqX7T/s5/w0OSrzPfIflpNi7lnP92sU5Dlc3tQm+b7ITdudGQ9FdxngAPPyz/4ymKDXbptebE+ix0UXCVBu0D1CHGKmT8W7OJv10Vi0RSbRXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+Lx0ZxI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B256C4CEE4;
+	Thu, 17 Apr 2025 18:55:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916108;
-	bh=v7UDepiemSysFSv2zRmUNaCoVQKM0/0bRLQjFnTdqRs=;
+	s=korg; t=1744916117;
+	bh=qIfMJRhibASJhzL074JC9WkeMMRNsdacttTnf236XH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U7mAAE8lta5vpx7+qgF2+8QIei9ctJWo85+vxL6GqTI9Ln4RhKL41ArdULM+oWX0l
-	 KKrWn3gvZ7fcEY6Z8bIs4MathkqVSpGT2GoLP5JGICvfuUKUrTUM+IPfqNhboLzc6T
-	 ykqPoQ6MDT/uJViC37CaTpp3gGlN/9t5Tz7oN9uo=
+	b=U+Lx0ZxImWOb/7r0i6YCZWn6LFJEczBK1yCrftN9PfbMJVIzal9yeUp03qOAKow8o
+	 ogFuM7FDxO1neO4IVBJMxObVod3K5HG+nnhmDnQVUjJVD/vyxBPpPC1ZS+WKavmrVd
+	 3oKng+7Gh5CpGSs0DcxnGbtArq5pJ+IHnldMgMh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aman <aman1@microsoft.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Alexandra Diupina <adiupina@astralinux.ru>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 318/393] CIFS: Propagate min offload along with other parameters from primary to secondary channels.
-Date: Thu, 17 Apr 2025 19:52:07 +0200
-Message-ID: <20250417175120.399448734@linuxfoundation.org>
+Subject: [PATCH 6.12 319/393] cifs: avoid NULL pointer dereference in dbg call
+Date: Thu, 17 Apr 2025 19:52:08 +0200
+Message-ID: <20250417175120.444449136@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
 References: <20250417175107.546547190@linuxfoundation.org>
@@ -66,64 +65,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Aman <aman1@microsoft.com>
+From: Alexandra Diupina <adiupina@astralinux.ru>
 
-commit 1821e90be08e7d4a54cd167dd818d80d06e064e9 upstream.
+commit b4885bd5935bb26f0a414ad55679a372e53f9b9b upstream.
 
-In a multichannel setup, it was observed that a few fields were not being
-copied over to the secondary channels, which impacted performance in cases
-where these options were relevant but not properly synchronized. To address
-this, this patch introduces copying the following parameters from the
-primary channel to the secondary channels:
+cifs_server_dbg() implies server to be non-NULL so
+move call under condition to avoid NULL pointer dereference.
 
-- min_offload
-- compression.requested
-- dfs_conn
-- ignore_signature
-- leaf_fullpath
-- noblockcnt
-- retrans
-- sign
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-By copying these parameters, we ensure consistency across channels and
-prevent performance degradation due to missing or outdated settings.
-
+Fixes: e79b0332ae06 ("cifs: ignore cached share root handle closing errors")
 Cc: stable@vger.kernel.org
-Signed-off-by: Aman <aman1@microsoft.com>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/connect.c |    1 +
- fs/smb/client/sess.c    |    7 +++++++
- 2 files changed, 8 insertions(+)
+ fs/smb/client/smb2misc.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -1722,6 +1722,7 @@ cifs_get_tcp_session(struct smb3_fs_cont
- 	/* Grab netns reference for this server. */
- 	cifs_set_net_ns(tcp_ses, get_net(current->nsproxy->net_ns));
+--- a/fs/smb/client/smb2misc.c
++++ b/fs/smb/client/smb2misc.c
+@@ -816,11 +816,12 @@ smb2_handle_cancelled_close(struct cifs_
+ 		WARN_ONCE(tcon->tc_count < 0, "tcon refcount is negative");
+ 		spin_unlock(&cifs_tcp_ses_lock);
  
-+	tcp_ses->sign = ctx->sign;
- 	tcp_ses->conn_id = atomic_inc_return(&tcpSesNextId);
- 	tcp_ses->noblockcnt = ctx->rootfs;
- 	tcp_ses->noblocksnd = ctx->noblocksnd || ctx->rootfs;
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -550,6 +550,13 @@ cifs_ses_add_channel(struct cifs_ses *se
- 	ctx->sockopt_tcp_nodelay = ses->server->tcp_nodelay;
- 	ctx->echo_interval = ses->server->echo_interval / HZ;
- 	ctx->max_credits = ses->server->max_credits;
-+	ctx->min_offload = ses->server->min_offload;
-+	ctx->compress = ses->server->compression.requested;
-+	ctx->dfs_conn = ses->server->dfs_conn;
-+	ctx->ignore_signature = ses->server->ignore_signature;
-+	ctx->leaf_fullpath = ses->server->leaf_fullpath;
-+	ctx->rootfs = ses->server->noblockcnt;
-+	ctx->retrans = ses->server->retrans;
+-		if (tcon->ses)
++		if (tcon->ses) {
+ 			server = tcon->ses->server;
+-
+-		cifs_server_dbg(FYI, "tid=0x%x: tcon is closing, skipping async close retry of fid %llu %llu\n",
+-				tcon->tid, persistent_fid, volatile_fid);
++			cifs_server_dbg(FYI,
++					"tid=0x%x: tcon is closing, skipping async close retry of fid %llu %llu\n",
++					tcon->tid, persistent_fid, volatile_fid);
++		}
  
- 	/*
- 	 * This will be used for encoding/decoding user/domain/pw
+ 		return 0;
+ 	}
 
 
 
