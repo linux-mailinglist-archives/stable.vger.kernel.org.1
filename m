@@ -1,127 +1,201 @@
-Return-Path: <stable+bounces-133182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11588A91EF3
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 15:57:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27E5DA91EF7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 15:57:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EF8A465259
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 13:57:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 417934654F2
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 13:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97326250C02;
-	Thu, 17 Apr 2025 13:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1943F24EF82;
+	Thu, 17 Apr 2025 13:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lmVzUG5F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lvpTXMjK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2648250F8;
-	Thu, 17 Apr 2025 13:57:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC982250BE9
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 13:57:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744898229; cv=none; b=e7UuxQ2FDHa6pksTQtADwHG6S+KJtGAxkqcKo0ekt1ppfr7MbiharPjfqBhSKsRwTVL4HQm+tGGZ478ffi+inXN75m/28wV2HGGIHRblHhFhF5NM4KrxRIRrZiqPGj1ZwtCDvd/NIY/1Ea+TK5Cpi4DExxoYV1XAbvG1tONYte4=
+	t=1744898244; cv=none; b=QfLPTSPMGazhLJgrRqnK2cPGoYwlLAF8J+OdKRjDTJqngVISP4q9O/YvNklv+VkI2y6LLD7G5zcMzp5xu/2gRisDGmJqw0VDyuAhT5vyws1AK5gTeU62SNKPzFUUjF2H4//ax4qPZ4wOFgFSSSZWLFg+NN4Q9oWPNnm2OpW4B5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744898229; c=relaxed/simple;
-	bh=G7cQA1vbU7ME82rND+ta8qnI8kBAvliO793si5bKvhw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nMyZieCCK0nyuwiWdRIAqb7DDelmN8elvYaY1VyXqafVucVTYY332/UoYpyVDLg7cZ17Lbjpzkj4PO1h1sCOMhdXUkOYYlMdDva1IH25fdWYIRVc+Z74odyRY6EJVQgilGB+T0nOwBHxMzF8YdFAUPUCzkUf6OOT65RBLbP9FP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lmVzUG5F; arc=none smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-476b89782c3so8630331cf.1;
-        Thu, 17 Apr 2025 06:57:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744898227; x=1745503027; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=YwMHB2nUwzNcRVsw3OgexWqiEt8JRdlA5caQ8STPGxo=;
-        b=lmVzUG5FLO6vR+FXkBzI9j7O9C4z6avPpDQGsVryYp11dSpfcQNMIeKOgn+caYlaG/
-         IDF0+Nzvnm3usWeWhd0ET872DB+qrjtHv/fjcuUe7zjbPikrHXl04N7tundIDt40Aoja
-         KJ4Bg9uM0iD5zXInJuDoO6WC67PKQTI7JzSkYUN4joSF8x48aRR3VWc5VCeJcSOEBWmp
-         BBj9fNO7zqLKs6n7/+UqzGUN1sJxePsWlMF/WM45hD4ZZyxDDJfQjNkW5zJR9ToQ7pWC
-         VNC/EvgKzQrFK5fSJTv5BVGcl4bYrTcQassxKTplGCbT2DR15+lQRQES3MkqPZweea8Q
-         /hVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744898227; x=1745503027;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YwMHB2nUwzNcRVsw3OgexWqiEt8JRdlA5caQ8STPGxo=;
-        b=tGNRJJ328nQoalJxZegMyY8i6vWTWP1BlFeKBpnJKzsi3Zq0DooSdL0yGWWmEHFzwr
-         Hq4j0zNPxOzxpyT42NUDtXEsJ6/eppa19di0/xEYey82JOT3pxDON53aP01RStJ0wa6W
-         GOd1QuPW6r2B0nSIkLhOvSUTjYICZ+lTi0MIN1pHbgokv9GyCXVZYgkkUKqXpLl/h+ef
-         wjOQ4MfKByuwy6b4bnSiid1ohgIWRoGTNkgFTXte9MlZGejFcAG5VBlvrp6U4P75DxTZ
-         HedHCaIxi080a0MKbGFZZJ7hjfGVumFFcfHHwvtX+bFI1IvDcG/A9p/wU+JmsOFbv3z3
-         XmHA==
-X-Forwarded-Encrypted: i=1; AJvYcCU4AUBdOt8dvzZ7SC0OuF5SgT8vfI+ZW5yC/+p+7RwKcXeYQlqz3CnE0UNX/uX01LvMrP52Y6ym900=@vger.kernel.org, AJvYcCXZFoP37xNM8XeT1UrxeErWTT/V6zgOhQ9gBWth7hB6v7+f3GZ5OcWNhX0EzRfDnl/ESdTrH8ByLAVKAO18@vger.kernel.org, AJvYcCXbsaETCLxFLy7QZ3NOxkht0ETLqaW+AVb/9Ayj+HgVYBe+ERFpak4D43Son1qBu9Yhj3ITbJJM@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPfThJ8mi7p5al0FE5CUcvwTGO9tKCkbMO7uIsj/Hy8xcEJFUn
-	dZgnSy3T/L2XffCTn126hkyKuZPRc4t/Bh5DFkwekEqs9vo1qBax
-X-Gm-Gg: ASbGncujF3BK4mKqVju73MnWPpbWzHnWPZSFDDsy2nRKpHrWinGULkePnt5Q1Z3h0sh
-	GOHeXoHyhvjwhVekRBco7F5fpI6KFRnMIESm7yITXgguuPa/yELtiIeMAO+xVbc7LZitwK/yR2H
-	cpwLwP5NRu69oGZ3TB28+fuOaJI3vWeI462++aMykcQ97cHBErY9VBnGoPZN0ZcjD9UgN8fqrRQ
-	PI3zlhRXoZaEz7irrTdoq3RzZ6Yu6siSZMxhPRyLvvaVQUPuxzHIr7c39nIcB9YBW0mWQ9/0LLd
-	fic7ugztTS/fEFaOUa2Ddau26HUgIxUYo3EWviGAmqJZD9qwlWzMqrk=
-X-Google-Smtp-Source: AGHT+IFpHKVkjhlZ2LiXbe/zb9N60JY4GEaQaJZQLQFFebUwv++hYDlp9uFWUHivYUzVd+h22h7CHQ==
-X-Received: by 2002:a05:622a:134f:b0:471:cdae:ac44 with SMTP id d75a77b69052e-47ad816958emr97415331cf.47.1744898226511;
-        Thu, 17 Apr 2025 06:57:06 -0700 (PDT)
-Received: from theriatric.mshome.net ([73.123.232.110])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4796eb2b8dbsm123152491cf.41.2025.04.17.06.57.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Apr 2025 06:57:06 -0700 (PDT)
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-To: gregkh@linuxfoundation.org,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	Michael.Hennerich@analog.com
-Cc: gshahrouzi@gmail.com,
-	skhan@linuxfoundation.org,
-	linux-kernel-mentees@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH] iio: frequency: Use SLEEP bit instead of RESET to disable output
-Date: Thu, 17 Apr 2025 09:54:34 -0400
-Message-ID: <20250417135434.568007-1-gshahrouzi@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1744898244; c=relaxed/simple;
+	bh=GpyeLfCDsBUx2CzF47F1svZXMD9bYw9NRiGMrMS1HuU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ey/ZErWYeumYLPTDUXhobJUQFzC5yJ74zsuiPRDQfBPzjHoTCg3bZHoQCLAt3uDLhRubwtmWhOit4KpVh8QfWuDSkNsB7AiRXtInhfV99xbBIyXlh41Qz6NM3AR+O4yYYQyCPPMkjgaGkDMHehE59tBj6tdKAAPV6WDm3AbJoiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lvpTXMjK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C8A7C4CEE4;
+	Thu, 17 Apr 2025 13:57:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1744898244;
+	bh=GpyeLfCDsBUx2CzF47F1svZXMD9bYw9NRiGMrMS1HuU=;
+	h=Subject:To:Cc:From:Date:From;
+	b=lvpTXMjKYhehzLL17/33YuNg7fLEpBw95WtSd4oEzvrbzG+sFBMa+PyIp50Vl64Yi
+	 wWPW5DlbtJyYPKDDiybbOb+/voP2gDBYxMRNM9JrcRnOEFC99ujcmNqW4J0lDqPpTH
+	 3qANvvgTG0ZgcffvsHquAOtRYW12yQa3TvaQS57k=
+Subject: FAILED: patch "[PATCH] of/irq: Fix device node refcount leakage in API" failed to apply to 5.4-stable tree
+To: quic_zijuhu@quicinc.com,robh@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 17 Apr 2025 15:55:30 +0200
+Message-ID: <2025041730-scalding-sedate-cba4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-According to the AD9832 datasheet (Table 10, D12 description), setting
-the RESET bit forces the phase accumulator to zero, which corresponds to
-a full-scale DC output, rather than disabling the output signal.
 
-The correct way to disable the output and enter a low-power state is to
-set the AD9832_SLEEP bit (Table 10, D13 description), which powers down
-the internal DAC current sources and disables internal clocks.
+The patch below does not apply to the 5.4-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Fixes: ea707584bac1 ("Staging: IIO: DDS: AD9832 / AD9835 driver")
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git checkout FETCH_HEAD
+git cherry-pick -x 0cb58d6c7b558a69957fabe159bfb184196e1e8d
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041730-scalding-sedate-cba4@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 0cb58d6c7b558a69957fabe159bfb184196e1e8d Mon Sep 17 00:00:00 2001
+From: Zijun Hu <quic_zijuhu@quicinc.com>
+Date: Sun, 9 Feb 2025 20:58:55 +0800
+Subject: [PATCH] of/irq: Fix device node refcount leakage in API
+ of_irq_parse_one()
+
+of_irq_parse_one(@int_gen_dev, i, ...) will leak refcount of @i_th_phandle
+
+int_gen_dev {
+    ...
+    interrupts-extended = ..., <&i_th_phandle ...>, ...;
+    ...
+};
+
+Refcount of @i_th_phandle is increased by of_parse_phandle_with_args()
+but is not decreased by API of_irq_parse_one() before return, so causes
+refcount leakage.
+
+Rework the refcounting to use __free() cleanup and simplify the code to
+have a single call to of_irq_parse_raw().
+
+Also add comments about refcount of node @out_irq->np got by the API.
+
+Fixes: 79d9701559a9 ("of/irq: create interrupts-extended property")
 Cc: stable@vger.kernel.org
-Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
----
- drivers/staging/iio/frequency/ad9832.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-2-93e3a2659aa7@quicinc.com
+[robh: Use __free() to do puts]
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 
-diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
-index db42810c7664b..0872ff4ec4896 100644
---- a/drivers/staging/iio/frequency/ad9832.c
-+++ b/drivers/staging/iio/frequency/ad9832.c
-@@ -232,7 +232,7 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
- 			st->ctrl_src &= ~(AD9832_RESET | AD9832_SLEEP |
- 					AD9832_CLR);
- 		else
--			st->ctrl_src |= AD9832_RESET;
-+			st->ctrl_src |= AD9832_SLEEP;
+diff --git a/drivers/of/irq.c b/drivers/of/irq.c
+index 6c843d54ebb1..95456e918681 100644
+--- a/drivers/of/irq.c
++++ b/drivers/of/irq.c
+@@ -16,6 +16,7 @@
  
- 		st->data = cpu_to_be16((AD9832_CMD_SLEEPRESCLR << CMD_SHIFT) |
- 					st->ctrl_src);
--- 
-2.43.0
+ #define pr_fmt(fmt)	"OF: " fmt
+ 
++#include <linux/cleanup.h>
+ #include <linux/device.h>
+ #include <linux/errno.h>
+ #include <linux/list.h>
+@@ -339,10 +340,12 @@ EXPORT_SYMBOL_GPL(of_irq_parse_raw);
+  * This function resolves an interrupt for a node by walking the interrupt tree,
+  * finding which interrupt controller node it is attached to, and returning the
+  * interrupt specifier that can be used to retrieve a Linux IRQ number.
++ *
++ * Note: refcount of node @out_irq->np is increased by 1 on success.
+  */
+ int of_irq_parse_one(struct device_node *device, int index, struct of_phandle_args *out_irq)
+ {
+-	struct device_node *p;
++	struct device_node __free(device_node) *p = NULL;
+ 	const __be32 *addr;
+ 	u32 intsize;
+ 	int i, res, addr_len;
+@@ -367,41 +370,33 @@ int of_irq_parse_one(struct device_node *device, int index, struct of_phandle_ar
+ 	/* Try the new-style interrupts-extended first */
+ 	res = of_parse_phandle_with_args(device, "interrupts-extended",
+ 					"#interrupt-cells", index, out_irq);
+-	if (!res)
+-		return of_irq_parse_raw(addr_buf, out_irq);
++	if (!res) {
++		p = out_irq->np;
++	} else {
++		/* Look for the interrupt parent. */
++		p = of_irq_find_parent(device);
++		/* Get size of interrupt specifier */
++		if (!p || of_property_read_u32(p, "#interrupt-cells", &intsize))
++			return -EINVAL;
+ 
+-	/* Look for the interrupt parent. */
+-	p = of_irq_find_parent(device);
+-	if (p == NULL)
+-		return -EINVAL;
++		pr_debug(" parent=%pOF, intsize=%d\n", p, intsize);
+ 
+-	/* Get size of interrupt specifier */
+-	if (of_property_read_u32(p, "#interrupt-cells", &intsize)) {
+-		res = -EINVAL;
+-		goto out;
++		/* Copy intspec into irq structure */
++		out_irq->np = p;
++		out_irq->args_count = intsize;
++		for (i = 0; i < intsize; i++) {
++			res = of_property_read_u32_index(device, "interrupts",
++							(index * intsize) + i,
++							out_irq->args + i);
++			if (res)
++				return res;
++		}
++
++		pr_debug(" intspec=%d\n", *out_irq->args);
+ 	}
+ 
+-	pr_debug(" parent=%pOF, intsize=%d\n", p, intsize);
+-
+-	/* Copy intspec into irq structure */
+-	out_irq->np = p;
+-	out_irq->args_count = intsize;
+-	for (i = 0; i < intsize; i++) {
+-		res = of_property_read_u32_index(device, "interrupts",
+-						 (index * intsize) + i,
+-						 out_irq->args + i);
+-		if (res)
+-			goto out;
+-	}
+-
+-	pr_debug(" intspec=%d\n", *out_irq->args);
+-
+-
+ 	/* Check if there are any interrupt-map translations to process */
+-	res = of_irq_parse_raw(addr_buf, out_irq);
+- out:
+-	of_node_put(p);
+-	return res;
++	return of_irq_parse_raw(addr_buf, out_irq);
+ }
+ EXPORT_SYMBOL_GPL(of_irq_parse_one);
+ 
+
 
