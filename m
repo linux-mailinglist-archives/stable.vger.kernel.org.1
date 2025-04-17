@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-133846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CCE1A92806
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0285A929E7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:45:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5003B8E0531
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D85067B83CE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29B93256C6D;
-	Thu, 17 Apr 2025 18:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29474227EB1;
+	Thu, 17 Apr 2025 18:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OR8uB4PU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1UIuvvY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93A31DF756;
-	Thu, 17 Apr 2025 18:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F593770B;
+	Thu, 17 Apr 2025 18:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914323; cv=none; b=J/MY8tsH+ZuXtTCI6vO+Xw6wi7s+yQFPdNpLUeTwUbLe0Mx2oxl8pSfQt5lEsNSPRdMqQh31k2KSmhtLL6uUwmxfRTlxRPyu/I1bOseg3Px4gGFxCNwa77x9hqqwejIfO51iVUZ59gzo0OjKgByXBScp7Oi3oP5J6SGUj5Nt0BM=
+	t=1744915431; cv=none; b=OIRVYOJSNbFZPSTg3K1vYqLiP17oZpWaQ2jaDEWlHxNAKEE/d2odkad8cBQoHKr0PMHoOcsNQeIkcJKT1fA+D0LFy8erD5kkBQdyUrjZiITbCoFXp5jQksTXnioUTaRWnHgi1O3siLBy0SbaoDRwdzmhgF4x6PP3cqL09Yt+CH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914323; c=relaxed/simple;
-	bh=MjUvm+hFRUqcOs0gpgw+DMNw2/vSV+P/lCR9HPxshmU=;
+	s=arc-20240116; t=1744915431; c=relaxed/simple;
+	bh=nJoY3/g3947MV1rmmybTek3Tr66cB78ENjZi5yA10EI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YK43tcRx6+tl3IMoRYhHTmlUYdz7aemgJ03dyVj+ErphYU2fidUJvy6XQJFiraBd2WfkkyorMEroL6a0X/laVqmJTDVKhxI0Il4GpZ4KdKgBI8Vv/cTDM0HquaBLm9rvG6rmwr0cWuD4f6mALkb7IUSjYzuWHDxT3ILApoyVH7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OR8uB4PU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A60DC4CEE7;
-	Thu, 17 Apr 2025 18:25:23 +0000 (UTC)
+	 MIME-Version; b=WoxWV93OheBd7WmPdsWyh53Qg6j+iGDGfXAY7eG1PYiI3RHv9EeWVvULOGI6Djc0ovaVeYgfYBr+KDW5e5cgC2jaRBuOdcuAjzqFho5bbZ2By7TQpFHY+/yYZ2SBoRmGM8v1pwDQd2Brx8PipO4fSejl2x4tiKazol1gW/fkDEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1UIuvvY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56AA0C4CEEC;
+	Thu, 17 Apr 2025 18:43:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914323;
-	bh=MjUvm+hFRUqcOs0gpgw+DMNw2/vSV+P/lCR9HPxshmU=;
+	s=korg; t=1744915431;
+	bh=nJoY3/g3947MV1rmmybTek3Tr66cB78ENjZi5yA10EI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OR8uB4PU3srYzJYwoCOjb2unODsgO0f1CzkzgzYuNz8sx4GpN5XBbs0egRtWpBomt
-	 /ze9EZ2E4LHrsjp3CSfSNrcFfd5gOXBTrbWQ9D0O1FXn8I/A1odiqAqxz7W7XkFMb4
-	 NqPKrL/tHU8dR6qdgs/y61hoAalDH9ChdfbySSig=
+	b=z1UIuvvYLr5TThBF7A1n8UEpGDL3glitFtGlYfvCIgA/sdg/eQIuIuXXO9SP3zYd7
+	 pvH4OyY3v00uj4vACIdPfgRgmOJaROyZCQHz7qaFkxSvz/Vrt4HhGbJPrLwrResfbB
+	 HPEloWbgmXn8iWr7DvbzkOMkZHwGSjgVziS9C4KA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Yang <Philip.Yang@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 147/414] drm/amdkfd: Fix mode1 reset crash issue
+Subject: [PATCH 6.12 096/393] can: flexcan: Add quirk to handle separate interrupt lines for mailboxes
 Date: Thu, 17 Apr 2025 19:48:25 +0200
-Message-ID: <20250417175117.334361714@linuxfoundation.org>
+Message-ID: <20250417175111.454127582@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 
-[ Upstream commit f0b4440cdc1807bb6ec3dce0d6de81170803569b ]
+[ Upstream commit 8c652cf030a769fbfc73cfc280ed3f1656343c35 ]
 
-If HW scheduler hangs and mode1 reset is used to recover GPU, KFD signal
-user space to abort the processes. After process abort exit, user queues
-still use the GPU to access system memory before h/w is reset while KFD
-cleanup worker free system memory and free VRAM.
+Introduce 'FLEXCAN_QUIRK_SECONDARY_MB_IRQ' quirk to handle a FlexCAN
+hardware module integration particularity where two ranges of mailboxes
+are controlled by separate hardware interrupt lines.
+The same 'flexcan_irq' handler is used for both separate mailbox interrupt
+lines, with no other changes.
 
-There is use-after-free race bug that KFD allocate and reuse the freed
-system memory, and user queue write to the same system memory to corrupt
-the data structure and cause driver crash.
-
-To fix this race, KFD cleanup worker terminate user queues, then flush
-reset_domain wq to wait for any GPU ongoing reset complete, and then
-free outstanding BOs.
-
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://patch.msgid.link/20250113120704.522307-3-ciprianmarian.costea@oss.nxp.com
+[mkl: flexcan_open(): change order and free irq_secondary_mb first]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_process.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/net/can/flexcan/flexcan-core.c | 24 +++++++++++++++++++++++-
+ drivers/net/can/flexcan/flexcan.h      |  5 +++++
+ 2 files changed, 28 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-index edfe0b4788f44..211e268d10ab9 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-@@ -35,6 +35,7 @@
- #include <linux/pm_runtime.h>
- #include "amdgpu_amdkfd.h"
- #include "amdgpu.h"
-+#include "amdgpu_reset.h"
+diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
+index b080740bcb104..1a94586cbd11e 100644
+--- a/drivers/net/can/flexcan/flexcan-core.c
++++ b/drivers/net/can/flexcan/flexcan-core.c
+@@ -1762,14 +1762,25 @@ static int flexcan_open(struct net_device *dev)
+ 			goto out_free_irq_boff;
+ 	}
  
- struct mm_struct;
++	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ) {
++		err = request_irq(priv->irq_secondary_mb,
++				  flexcan_irq, IRQF_SHARED, dev->name, dev);
++		if (err)
++			goto out_free_irq_err;
++	}
++
+ 	flexcan_chip_interrupts_enable(dev);
  
-@@ -1140,6 +1141,17 @@ static void kfd_process_remove_sysfs(struct kfd_process *p)
- 	p->kobj = NULL;
- }
+ 	netif_start_queue(dev);
  
-+/*
-+ * If any GPU is ongoing reset, wait for reset complete.
+ 	return 0;
+ 
++ out_free_irq_err:
++	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_NR_IRQ_3)
++		free_irq(priv->irq_err, dev);
+  out_free_irq_boff:
+-	free_irq(priv->irq_boff, dev);
++	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_NR_IRQ_3)
++		free_irq(priv->irq_boff, dev);
+  out_free_irq:
+ 	free_irq(dev->irq, dev);
+  out_can_rx_offload_disable:
+@@ -1794,6 +1805,9 @@ static int flexcan_close(struct net_device *dev)
+ 	netif_stop_queue(dev);
+ 	flexcan_chip_interrupts_disable(dev);
+ 
++	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ)
++		free_irq(priv->irq_secondary_mb, dev);
++
+ 	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_NR_IRQ_3) {
+ 		free_irq(priv->irq_err, dev);
+ 		free_irq(priv->irq_boff, dev);
+@@ -2187,6 +2201,14 @@ static int flexcan_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
++	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ) {
++		priv->irq_secondary_mb = platform_get_irq_byname(pdev, "mb-1");
++		if (priv->irq_secondary_mb < 0) {
++			err = priv->irq_secondary_mb;
++			goto failed_platform_get_irq;
++		}
++	}
++
+ 	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SUPPORT_FD) {
+ 		priv->can.ctrlmode_supported |= CAN_CTRLMODE_FD |
+ 			CAN_CTRLMODE_FD_NON_ISO;
+diff --git a/drivers/net/can/flexcan/flexcan.h b/drivers/net/can/flexcan/flexcan.h
+index 4933d8c7439e6..2cf886618c962 100644
+--- a/drivers/net/can/flexcan/flexcan.h
++++ b/drivers/net/can/flexcan/flexcan.h
+@@ -70,6 +70,10 @@
+ #define FLEXCAN_QUIRK_SUPPORT_RX_FIFO BIT(16)
+ /* Setup stop mode with ATF SCMI protocol to support wakeup */
+ #define FLEXCAN_QUIRK_SETUP_STOP_MODE_SCMI BIT(17)
++/* Device has two separate interrupt lines for two mailbox ranges, which
++ * both need to have an interrupt handler registered.
 + */
-+static void kfd_process_wait_gpu_reset_complete(struct kfd_process *p)
-+{
-+	int i;
-+
-+	for (i = 0; i < p->n_pdds; i++)
-+		flush_workqueue(p->pdds[i]->dev->adev->reset_domain->wq);
-+}
-+
- /* No process locking is needed in this function, because the process
-  * is not findable any more. We must assume that no other thread is
-  * using it any more, otherwise we couldn't safely free the process
-@@ -1154,6 +1166,11 @@ static void kfd_process_wq_release(struct work_struct *work)
- 	kfd_process_dequeue_from_all_devices(p);
- 	pqm_uninit(&p->pqm);
++#define FLEXCAN_QUIRK_SECONDARY_MB_IRQ	BIT(18)
  
-+	/*
-+	 * If GPU in reset, user queues may still running, wait for reset complete.
-+	 */
-+	kfd_process_wait_gpu_reset_complete(p);
-+
- 	/* Signal the eviction fence after user mode queues are
- 	 * destroyed. This allows any BOs to be freed without
- 	 * triggering pointless evictions or waiting for fences.
+ struct flexcan_devtype_data {
+ 	u32 quirks;		/* quirks needed for different IP cores */
+@@ -107,6 +111,7 @@ struct flexcan_priv {
+ 
+ 	int irq_boff;
+ 	int irq_err;
++	int irq_secondary_mb;
+ 
+ 	/* IPC handle when setup stop mode by System Controller firmware(scfw) */
+ 	struct imx_sc_ipc *sc_ipc_handle;
 -- 
 2.39.5
 
