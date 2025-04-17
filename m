@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-134269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B66CAA92A5F
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:49:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B366AA925F8
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:09:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 316038E6069
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:46:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B55A5188EE40
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E05381E98ED;
-	Thu, 17 Apr 2025 18:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D663625742A;
+	Thu, 17 Apr 2025 18:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E/KnRkMS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lUzj/jKK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9EB4502F;
-	Thu, 17 Apr 2025 18:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9496419F40A;
+	Thu, 17 Apr 2025 18:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915613; cv=none; b=c5/XbgWdUDGgi8iyP2GjfLV+lETe0yIZj7EffHrzDZnPFjMR9aMMC83ZXMTFkBout6yCHKCA2eMUK9Byd/gCicF/kOw9Xr3eoFeqspKgVzDS6UstlWpUXdxSpYgXphAfyRmyOlsdBR0RlbizVBcTtDGR2PT1df72oI74r++n6nM=
+	t=1744913249; cv=none; b=rPJ46VAX0Ws+V2hGdB7NKThAzrj4ML6TEOEITn4XjyuYp8jrj7dFoJjtu0+QVxcWLsK/itnceT33fEZx4RIkozE5AQI60dMkJ9YPefqKxWAxZvJ/xnZJmPNRwlqYmKEUAwCoJ8nIyy+G3RBhIEfD7yudIAoxI/MGjuW/yAJij1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915613; c=relaxed/simple;
-	bh=dvdxbMuGwSf8w9qSWPQY1Tl4/XlpiLO6gtW1wPTQBxU=;
+	s=arc-20240116; t=1744913249; c=relaxed/simple;
+	bh=FaJ83Kkv0lu6grsMWkSNA+oHS/qQ84SCIxDXK7CojYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q7wiZQs4fCiaD9sSTMPhWWTD+zEf/G42nMQtUOIgBEU/AEnaOV+zj/CDEuNM0RLyLYZ+yfs8QOBMu9DGiuAx8HpunMF/r0BQVVekSWmWQ6UrceWay9KQvXjhRjPQ1o8WcnAUXYEH6DmyVz25DvEkArUDA2LEnoVP6dIs9IMl6EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E/KnRkMS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DDA5C4CEE4;
-	Thu, 17 Apr 2025 18:46:52 +0000 (UTC)
+	 MIME-Version; b=p5PqMdXgWR4GJS6KPfHCx8JyMVO0hCL+TF7BVzTkUS7aDoPUaLo83dntcHFEvSES0+Q131Y+Kw9MqiZ5gCroCK7LJILnJ3DQF+ArObkVkxyNfm1lgJK6czkFt2m2PG+SpUU1UmH0fns1hwUV7MDRxo5HxUeTgyAHGH4xkhocqbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lUzj/jKK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF40C4CEE7;
+	Thu, 17 Apr 2025 18:07:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915613;
-	bh=dvdxbMuGwSf8w9qSWPQY1Tl4/XlpiLO6gtW1wPTQBxU=;
+	s=korg; t=1744913249;
+	bh=FaJ83Kkv0lu6grsMWkSNA+oHS/qQ84SCIxDXK7CojYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E/KnRkMSWvwvdw9IJESc2HAd8Uy5/5e86WBGumjN3YnhozkXt1ORCdDRPVUoBWbsI
-	 5lvsadcumjq2VE49dnYwsE6LSAWcCWscZxYzJtirCKO+UH4nLU0+K5gpsGBzXU7IPh
-	 cHheJ/oSmIxpD9O+EX2OXphVTY8xiA04WZnkDtws=
+	b=lUzj/jKK8Vhjm+NJl02Tam+pIostFrSRwd/XOmGOXnDl0Rm6we8L4V4uHEhR9NmhW
+	 3DOwCG4AMt8Jmr+KpBipnH2NMZAL79v0h50fhHmQ1unTinB+g0kJmxNBkOUdK5oK6Y
+	 9W5A/Us7EGwZqMCI0rHnQo5idlvuE5owcV2HPsBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	warthog9@eaglescrag.net,
-	Ayush Jain <Ayush.jain3@amd.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 156/393] ktest: Fix Test Failures Due to Missing LOG_FILE Directories
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Caleb Jorden <cjorden@gmail.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.14 277/449] Revert "wifi: mt76: mt7925: Update mt7925_mcu_uni_[tx,rx]_ba for MLO"
 Date: Thu, 17 Apr 2025 19:49:25 +0200
-Message-ID: <20250417175113.859633174@linuxfoundation.org>
+Message-ID: <20250417175129.209503008@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ayush Jain <Ayush.jain3@amd.com>
+From: Sean Wang <sean.wang@mediatek.com>
 
-[ Upstream commit 5a1bed232781d356f842576daacc260f0d0c8d2e ]
+commit 766ea2cf5a398c7eed519b12c6c6cf1631143ea2 upstream.
 
-Handle missing parent directories for LOG_FILE path to prevent test
-failures. If the parent directories don't exist, create them to ensure
-the tests proceed successfully.
+For MLO, mac80211 will send the BA action for each link to
+the driver, so the driver does not need to handle it itself.
+Therefore, revert this patch.
 
-Cc: <warthog9@eaglescrag.net>
-Link: https://lore.kernel.org/20250307043854.2518539-1-Ayush.jain3@amd.com
-Signed-off-by: Ayush Jain <Ayush.jain3@amd.com>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: eb2a9a12c609 ("wifi: mt76: mt7925: Update mt7925_mcu_uni_[tx,rx]_ba for MLO")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Tested-by: Caleb Jorden <cjorden@gmail.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Link: https://patch.msgid.link/20250305000851.493671-1-sean.wang@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/ktest/ktest.pl | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c   |   10 ++--
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c    |   52 ++++-----------------
+ drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h |    2 
+ 3 files changed, 15 insertions(+), 49 deletions(-)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index c76ad0be54e2e..7e524601e01ad 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -4303,6 +4303,14 @@ if (defined($opt{"LOG_FILE"})) {
-     if ($opt{"CLEAR_LOG"}) {
- 	unlink $opt{"LOG_FILE"};
-     }
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -1289,22 +1289,22 @@ mt7925_ampdu_action(struct ieee80211_hw
+ 	case IEEE80211_AMPDU_RX_START:
+ 		mt76_rx_aggr_start(&dev->mt76, &msta->deflink.wcid, tid, ssn,
+ 				   params->buf_size);
+-		mt7925_mcu_uni_rx_ba(dev, vif, params, true);
++		mt7925_mcu_uni_rx_ba(dev, params, true);
+ 		break;
+ 	case IEEE80211_AMPDU_RX_STOP:
+ 		mt76_rx_aggr_stop(&dev->mt76, &msta->deflink.wcid, tid);
+-		mt7925_mcu_uni_rx_ba(dev, vif, params, false);
++		mt7925_mcu_uni_rx_ba(dev, params, false);
+ 		break;
+ 	case IEEE80211_AMPDU_TX_OPERATIONAL:
+ 		mtxq->aggr = true;
+ 		mtxq->send_bar = false;
+-		mt7925_mcu_uni_tx_ba(dev, vif, params, true);
++		mt7925_mcu_uni_tx_ba(dev, params, true);
+ 		break;
+ 	case IEEE80211_AMPDU_TX_STOP_FLUSH:
+ 	case IEEE80211_AMPDU_TX_STOP_FLUSH_CONT:
+ 		mtxq->aggr = false;
+ 		clear_bit(tid, &msta->deflink.wcid.ampdu_state);
+-		mt7925_mcu_uni_tx_ba(dev, vif, params, false);
++		mt7925_mcu_uni_tx_ba(dev, params, false);
+ 		break;
+ 	case IEEE80211_AMPDU_TX_START:
+ 		set_bit(tid, &msta->deflink.wcid.ampdu_state);
+@@ -1313,7 +1313,7 @@ mt7925_ampdu_action(struct ieee80211_hw
+ 	case IEEE80211_AMPDU_TX_STOP_CONT:
+ 		mtxq->aggr = false;
+ 		clear_bit(tid, &msta->deflink.wcid.ampdu_state);
+-		mt7925_mcu_uni_tx_ba(dev, vif, params, false);
++		mt7925_mcu_uni_tx_ba(dev, params, false);
+ 		ieee80211_stop_tx_ba_cb_irqsafe(vif, sta->addr, tid);
+ 		break;
+ 	}
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -576,10 +576,10 @@ void mt7925_mcu_rx_event(struct mt792x_d
+ 
+ static int
+ mt7925_mcu_sta_ba(struct mt76_dev *dev, struct mt76_vif_link *mvif,
+-		  struct mt76_wcid *wcid,
+ 		  struct ieee80211_ampdu_params *params,
+ 		  bool enable, bool tx)
+ {
++	struct mt76_wcid *wcid = (struct mt76_wcid *)params->sta->drv_priv;
+ 	struct sta_rec_ba_uni *ba;
+ 	struct sk_buff *skb;
+ 	struct tlv *tlv;
+@@ -607,60 +607,28 @@ mt7925_mcu_sta_ba(struct mt76_dev *dev,
+ 
+ /** starec & wtbl **/
+ int mt7925_mcu_uni_tx_ba(struct mt792x_dev *dev,
+-			 struct ieee80211_vif *vif,
+ 			 struct ieee80211_ampdu_params *params,
+ 			 bool enable)
+ {
+ 	struct mt792x_sta *msta = (struct mt792x_sta *)params->sta->drv_priv;
+-	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
+-	struct mt792x_link_sta *mlink;
+-	struct mt792x_bss_conf *mconf;
+-	unsigned long usable_links = ieee80211_vif_usable_links(vif);
+-	struct mt76_wcid *wcid;
+-	u8 link_id, ret;
+-
+-	for_each_set_bit(link_id, &usable_links, IEEE80211_MLD_MAX_NUM_LINKS) {
+-		mconf = mt792x_vif_to_link(mvif, link_id);
+-		mlink = mt792x_sta_to_link(msta, link_id);
+-		wcid = &mlink->wcid;
+-
+-		if (enable && !params->amsdu)
+-			mlink->wcid.amsdu = false;
+-
+-		ret = mt7925_mcu_sta_ba(&dev->mt76, &mconf->mt76, wcid, params,
+-					enable, true);
+-		if (ret < 0)
+-			break;
+-	}
++	struct mt792x_vif *mvif = msta->vif;
+ 
+-	return ret;
++	if (enable && !params->amsdu)
++		msta->deflink.wcid.amsdu = false;
 +
-+    if (! -e $opt{"LOG_FILE"} && $opt{"LOG_FILE"} =~ m,^(.*/),) {
-+        my $dir = $1;
-+        if (! -d $dir) {
-+            mkpath($dir) or die "Failed to create directories '$dir': $!";
-+            print "\nThe log directory $dir did not exist, so it was created.\n";
-+        }
-+    }
-     open(LOG, ">> $opt{LOG_FILE}") or die "Can't write to $opt{LOG_FILE}";
-     LOG->autoflush(1);
++	return mt7925_mcu_sta_ba(&dev->mt76, &mvif->bss_conf.mt76, params,
++				 enable, true);
  }
--- 
-2.39.5
-
+ 
+ int mt7925_mcu_uni_rx_ba(struct mt792x_dev *dev,
+-			 struct ieee80211_vif *vif,
+ 			 struct ieee80211_ampdu_params *params,
+ 			 bool enable)
+ {
+ 	struct mt792x_sta *msta = (struct mt792x_sta *)params->sta->drv_priv;
+-	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
+-	struct mt792x_link_sta *mlink;
+-	struct mt792x_bss_conf *mconf;
+-	unsigned long usable_links = ieee80211_vif_usable_links(vif);
+-	struct mt76_wcid *wcid;
+-	u8 link_id, ret;
+-
+-	for_each_set_bit(link_id, &usable_links, IEEE80211_MLD_MAX_NUM_LINKS) {
+-		mconf = mt792x_vif_to_link(mvif, link_id);
+-		mlink = mt792x_sta_to_link(msta, link_id);
+-		wcid = &mlink->wcid;
+-
+-		ret = mt7925_mcu_sta_ba(&dev->mt76, &mconf->mt76, wcid, params,
+-					enable, false);
+-		if (ret < 0)
+-			break;
+-	}
++	struct mt792x_vif *mvif = msta->vif;
+ 
+-	return ret;
++	return mt7925_mcu_sta_ba(&dev->mt76, &mvif->bss_conf.mt76, params,
++				 enable, false);
+ }
+ 
+ static int mt7925_load_clc(struct mt792x_dev *dev, const char *fw_name)
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
+@@ -263,11 +263,9 @@ int mt7925_mcu_set_beacon_filter(struct
+ 				 struct ieee80211_vif *vif,
+ 				 bool enable);
+ int mt7925_mcu_uni_tx_ba(struct mt792x_dev *dev,
+-			 struct ieee80211_vif *vif,
+ 			 struct ieee80211_ampdu_params *params,
+ 			 bool enable);
+ int mt7925_mcu_uni_rx_ba(struct mt792x_dev *dev,
+-			 struct ieee80211_vif *vif,
+ 			 struct ieee80211_ampdu_params *params,
+ 			 bool enable);
+ void mt7925_scan_work(struct work_struct *work);
 
 
 
