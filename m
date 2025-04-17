@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-134178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9FFCA92995
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:43:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1DCDA927C1
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:28:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 838321B63C6F
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:43:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2387916A174
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01294255241;
-	Thu, 17 Apr 2025 18:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE34725F785;
+	Thu, 17 Apr 2025 18:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRQ6NbxT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkAdf4AP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B051B2550C8;
-	Thu, 17 Apr 2025 18:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAADB257423;
+	Thu, 17 Apr 2025 18:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915330; cv=none; b=S+QqOYBPn/it/amv/5uq46ePmeex8VHBMIJtLqbIhrwmRiep+yZZIz5PBniHlz9FY/5VYPNrj/rBb2PalVMhBT6DlDvPDrxGHKHX5I7+DSa2vFVex1KgRayUgHUMeuBEkOuojz/DtUHbK8lk/3FLQgQQytHkd72DUvXtGj17SPY=
+	t=1744914220; cv=none; b=Y9F0EvByAL+Da4N15N2MlTfUIX8v9Vfrrc6fklJa7QXRFYb9Dg5UvgFGiO46aUbg5J4W7Wz+sWT8W4n0BXL2wpaNGpieoeF8jYyEqhV9SsulvKTRQEiEO0LaNMJnBmqYYGPgYmE0mDPfLLBlIPZck21jp6bEFtF1ifeGTVoe2vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915330; c=relaxed/simple;
-	bh=5Ip5jscUISKkn7UkAHoZ1oS8t7OFl2lQG0RJAyPWqvk=;
+	s=arc-20240116; t=1744914220; c=relaxed/simple;
+	bh=Asc4GVJeKgK2SoCqHkj7SWMmEDj3H/OKn0G6zcyZv2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L6F3vZY8G1h/MFPhy/Z5PPdjDvWzMOtGss31zIf+YyqDLfXR4+aZRZNijcjB1x3kbKVy0JL5e0ZivVO12BEXSUQ3TAntGktsX2v3v4no6E3a41XVnboi6YoK8g2+lGLedE2bKDCSk+2CiCS6M/eH/cY3OUoYrRc2cdJNxSyQtBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRQ6NbxT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFDB8C4CEE4;
-	Thu, 17 Apr 2025 18:42:09 +0000 (UTC)
+	 MIME-Version; b=tJwTWBA0KJwWtP7rMgb+1dSHElbSO0IzwFNH59YaEXZKxzWX/StYQhUAt1WMpAJpDrJ3S/aCthCMxtuK9ftApB+c3f1NR+TCh8oD3mMeHTj60wPyec+Ezz5ypcRNl4qAXsyd6yu9i7acqvhYg6iUrqDNQh7UvgAywL5ATJGbP7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkAdf4AP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A05C4CEE4;
+	Thu, 17 Apr 2025 18:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915330;
-	bh=5Ip5jscUISKkn7UkAHoZ1oS8t7OFl2lQG0RJAyPWqvk=;
+	s=korg; t=1744914220;
+	bh=Asc4GVJeKgK2SoCqHkj7SWMmEDj3H/OKn0G6zcyZv2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZRQ6NbxTZyWyM7uH7S9NZONlXVX1Jw2WBjxvkdldoZL9Plw9Vd5AUVwinFVzajteu
-	 86prOhc1y60L7zT4+bgZOi2JmM+fMC9z9vYzCNsNnl6X0Vc+GstnMNoG5JQ84VS2N2
-	 lFq/PNKLftK75KWgcQLYeQejOsj6Rx3E+y1iq6pk=
+	b=hkAdf4AP4of/80eMM7t/l0xERV+EhzyVmS7RUzl9PwoFB6uuf2n+NBXJMVPEJuqbv
+	 8xvxFRENPHkFq+M0ifxW0UQrOt9fMv7jGuqt/GMoW/D93CbEyW4gQZcImn7Di7jREZ
+	 oU1Tw+dKjfTlfXp7Y5giwp9slMuT0Bi1gvVntsDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Makarenko Oleg <oleg@makarenk.ooo>,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Yuli Wang <wangyuli@uniontech.com>,
+	Jie Fan <fanjie@uniontech.com>,
+	Erpeng Xu <xuerpeng@uniontech.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 063/393] HID: pidff: Add MISSING_DELAY quirk and its detection
-Date: Thu, 17 Apr 2025 19:47:52 +0200
-Message-ID: <20250417175110.129585387@linuxfoundation.org>
+Subject: [PATCH 6.13 115/414] ahci: Marvell 88SE9215 controllers prefer DMA for ATAPI
+Date: Thu, 17 Apr 2025 19:47:53 +0200
+Message-ID: <20250417175116.061482206@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,148 +63,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 2d5c7ce5bf4cc27db41632f357f682d0ee4518e7 ]
+[ Upstream commit 0507c777f5d8f9e34b137d28ee263599a7b81242 ]
 
-A lot of devices do not include this field, and it's seldom used in force
-feedback implementations. I tested about three dozen applications and
-none of them make use of the delay.
+We use CD/DVD drives under Marvell 88SE9215 SATA controller on many
+Loongson-based machines. We found its PIO doesn't work well, and on the
+opposite its DMA seems work very well.
 
-This fixes initialization of a lot of PID wheels like Cammus, VRS, FFBeast
+We don't know the detail of the 88SE9215 SATA controller, but we have
+tested different CD/DVD drives and they all have problems under 88SE9215
+(but they all work well under an Intel SATA controller). So, we consider
+this problem is bound to 88SE9215 SATA controller rather than bound to
+CD/DVD drives.
 
-This change has no effect on fully compliant devices
+As a solution, we define a new dedicated AHCI board id which is named
+board_ahci_yes_fbs_atapi_dma for 88SE9215, and for this id we set the
+AHCI_HFLAG_ATAPI_DMA_QUIRK and ATA_QUIRK_ATAPI_MOD16_DMA flags on the
+SATA controller in order to prefer ATAPI DMA.
 
-Co-developed-by: Makarenko Oleg <oleg@makarenk.ooo>
-Signed-off-by: Makarenko Oleg <oleg@makarenk.ooo>
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Reported-by: Yuli Wang <wangyuli@uniontech.com>
+Tested-by: Jie Fan <fanjie@uniontech.com>
+Tested-by: Erpeng Xu <xuerpeng@uniontech.com>
+Tested-by: Yuli Wang <wangyuli@uniontech.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://lore.kernel.org/r/20250318104314.2160526-1-chenhuacai@loongson.cn
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 33 ++++++++++++++++++++++++++++-----
- include/linux/hid.h            |  3 +++
- 2 files changed, 31 insertions(+), 5 deletions(-)
+ drivers/ata/ahci.c    | 11 ++++++++++-
+ drivers/ata/ahci.h    |  1 +
+ drivers/ata/libahci.c |  4 ++++
+ 3 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index a01c1b2ab2f4c..929f5967e7cb1 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -185,6 +185,8 @@ struct pidff_device {
- 	int operation_id[sizeof(pidff_effect_operation_status)];
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index f4cc57d7a6a65..6e81fa91e858b 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -63,6 +63,7 @@ enum board_ids {
+ 	board_ahci_pcs_quirk_no_devslp,
+ 	board_ahci_pcs_quirk_no_sntf,
+ 	board_ahci_yes_fbs,
++	board_ahci_yes_fbs_atapi_dma,
  
- 	int pid_id[PID_EFFECTS_MAX];
-+
-+	u32 quirks;
- };
+ 	/* board IDs for specific chipsets in alphabetical order */
+ 	board_ahci_al,
+@@ -188,6 +189,14 @@ static const struct ata_port_info ahci_port_info[] = {
+ 		.udma_mask	= ATA_UDMA6,
+ 		.port_ops	= &ahci_ops,
+ 	},
++	[board_ahci_yes_fbs_atapi_dma] = {
++		AHCI_HFLAGS	(AHCI_HFLAG_YES_FBS |
++				 AHCI_HFLAG_ATAPI_DMA_QUIRK),
++		.flags		= AHCI_FLAG_COMMON,
++		.pio_mask	= ATA_PIO4,
++		.udma_mask	= ATA_UDMA6,
++		.port_ops	= &ahci_ops,
++	},
+ 	/* by chipsets */
+ 	[board_ahci_al] = {
+ 		AHCI_HFLAGS	(AHCI_HFLAG_NO_PMP | AHCI_HFLAG_NO_MSI),
+@@ -590,7 +599,7 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x91a3),
+ 	  .driver_data = board_ahci_yes_fbs },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x9215),
+-	  .driver_data = board_ahci_yes_fbs },
++	  .driver_data = board_ahci_yes_fbs_atapi_dma },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x9230),
+ 	  .driver_data = board_ahci_yes_fbs },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x9235),
+diff --git a/drivers/ata/ahci.h b/drivers/ata/ahci.h
+index 8f40f75ba08cf..10a5fe02f0a45 100644
+--- a/drivers/ata/ahci.h
++++ b/drivers/ata/ahci.h
+@@ -246,6 +246,7 @@ enum {
+ 	AHCI_HFLAG_NO_SXS		= BIT(26), /* SXS not supported */
+ 	AHCI_HFLAG_43BIT_ONLY		= BIT(27), /* 43bit DMA addr limit */
+ 	AHCI_HFLAG_INTEL_PCS_QUIRK	= BIT(28), /* apply Intel PCS quirk */
++	AHCI_HFLAG_ATAPI_DMA_QUIRK	= BIT(29), /* force ATAPI to use DMA */
  
- /*
-@@ -329,7 +331,10 @@ static void pidff_set_effect_report(struct pidff_device *pidff,
- 	pidff->effect_direction->value[0] =
- 		pidff_rescale(effect->direction, 0xffff,
- 				pidff->effect_direction);
--	pidff->set_effect[PID_START_DELAY].value[0] = effect->replay.delay;
-+
-+	/* Omit setting delay field if it's missing */
-+	if (!(pidff->quirks & HID_PIDFF_QUIRK_MISSING_DELAY))
-+		pidff->set_effect[PID_START_DELAY].value[0] = effect->replay.delay;
+ 	/* ap->flags bits */
  
- 	hid_hw_request(pidff->hid, pidff->reports[PID_SET_EFFECT],
- 			HID_REQ_SET_REPORT);
-@@ -748,7 +753,10 @@ static void pidff_autocenter(struct pidff_device *pidff, u16 magnitude)
- 	pidff->set_effect[PID_TRIGGER_REPEAT_INT].value[0] = 0;
- 	pidff_set(&pidff->set_effect[PID_GAIN], magnitude);
- 	pidff->set_effect[PID_DIRECTION_ENABLE].value[0] = 1;
--	pidff->set_effect[PID_START_DELAY].value[0] = 0;
-+
-+	/* Omit setting delay field if it's missing */
-+	if (!(pidff->quirks & HID_PIDFF_QUIRK_MISSING_DELAY))
-+		pidff->set_effect[PID_START_DELAY].value[0] = 0;
- 
- 	hid_hw_request(pidff->hid, pidff->reports[PID_SET_EFFECT],
- 			HID_REQ_SET_REPORT);
-@@ -771,6 +779,7 @@ static int pidff_find_fields(struct pidff_usage *usage, const u8 *table,
- 			     struct hid_report *report, int count, int strict)
+diff --git a/drivers/ata/libahci.c b/drivers/ata/libahci.c
+index fdfa7b2662180..a28ffe1e59691 100644
+--- a/drivers/ata/libahci.c
++++ b/drivers/ata/libahci.c
+@@ -1321,6 +1321,10 @@ static void ahci_dev_config(struct ata_device *dev)
  {
- 	int i, j, k, found;
-+	int return_value = 0;
+ 	struct ahci_host_priv *hpriv = dev->link->ap->host->private_data;
  
- 	for (k = 0; k < count; k++) {
- 		found = 0;
-@@ -795,12 +804,17 @@ static int pidff_find_fields(struct pidff_usage *usage, const u8 *table,
- 			if (found)
- 				break;
- 		}
--		if (!found && strict) {
-+		if (!found && table[k] == pidff_set_effect[PID_START_DELAY]) {
-+			pr_debug("Delay field not found, but that's OK\n");
-+			pr_debug("Setting MISSING_DELAY quirk\n");
-+			return_value |= HID_PIDFF_QUIRK_MISSING_DELAY;
-+		}
-+		else if (!found && strict) {
- 			pr_debug("failed to locate %d\n", k);
- 			return -1;
- 		}
- 	}
--	return 0;
-+	return return_value;
- }
- 
- /*
-@@ -1075,11 +1089,19 @@ static int pidff_find_effects(struct pidff_device *pidff,
- static int pidff_init_fields(struct pidff_device *pidff, struct input_dev *dev)
- {
- 	int envelope_ok = 0;
-+	int status = 0;
- 
--	if (PIDFF_FIND_FIELDS(set_effect, PID_SET_EFFECT, 1)) {
-+	/* Save info about the device not having the DELAY ffb field. */
-+	status = PIDFF_FIND_FIELDS(set_effect, PID_SET_EFFECT, 1);
-+	if (status == -1) {
- 		hid_err(pidff->hid, "unknown set_effect report layout\n");
- 		return -ENODEV;
- 	}
-+	pidff->quirks |= status;
++	if ((dev->class == ATA_DEV_ATAPI) &&
++	    (hpriv->flags & AHCI_HFLAG_ATAPI_DMA_QUIRK))
++		dev->quirks |= ATA_QUIRK_ATAPI_MOD16_DMA;
 +
-+	if (status & HID_PIDFF_QUIRK_MISSING_DELAY)
-+		hid_dbg(pidff->hid, "Adding MISSING_DELAY quirk\n");
-+
- 
- 	PIDFF_FIND_FIELDS(block_load, PID_BLOCK_LOAD, 0);
- 	if (!pidff->block_load[PID_EFFECT_BLOCK_INDEX].value) {
-@@ -1323,6 +1345,7 @@ int hid_pidff_init(struct hid_device *hid)
- 	ff->playback = pidff_playback;
- 
- 	hid_info(dev, "Force feedback for USB HID PID devices by Anssi Hannula <anssi.hannula@gmail.com>\n");
-+	hid_dbg(dev, "Active quirks mask: 0x%x\n", pidff->quirks);
- 
- 	hid_device_io_stop(hid);
- 
-diff --git a/include/linux/hid.h b/include/linux/hid.h
-index dd33423012538..42e4111f43e76 100644
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -1227,6 +1227,9 @@ int hid_pidff_init(struct hid_device *hid);
- #define hid_pidff_init NULL
- #endif
- 
-+/* HID PIDFF quirks */
-+#define HID_PIDFF_QUIRK_MISSING_DELAY	BIT(0)
-+
- #define dbg_hid(fmt, ...) pr_debug("%s: " fmt, __FILE__, ##__VA_ARGS__)
- 
- #define hid_err(hid, fmt, ...)				\
+ 	if (hpriv->flags & AHCI_HFLAG_SECT255) {
+ 		dev->max_sectors = 255;
+ 		ata_dev_info(dev,
 -- 
 2.39.5
 
