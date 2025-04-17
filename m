@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-134164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D1FEA929DC
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:45:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D648A927AE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:28:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F59C8E3F3A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 822624A2992
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A56259C98;
-	Thu, 17 Apr 2025 18:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20F092566D7;
+	Thu, 17 Apr 2025 18:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x38w3teb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2nYFZzRu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A7022333D;
-	Thu, 17 Apr 2025 18:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0ACD2566DB;
+	Thu, 17 Apr 2025 18:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915288; cv=none; b=SfClf5f/CngFAPnzSKmBd/rLV8rTHZ9q9QKwEy5xYjDTwmuJm5XBpcopDFdKpES/cwICGUEye3knVoNuDS5VGDP3KEC7aae4wEoJ40LeU28bGEFp8ypd43WidyVYaBs9v/j4tjgU5NOiQObNbEbu8shTStfRC1M8N2BYcK9e26I=
+	t=1744914174; cv=none; b=RMyKL6WdP2jjARXoiCsivyx1urCCKMQrdVeJy7Vf4V9C5aS+eQL7Bl2pe/3jOCly4w7WRe/SH+DztG5nOUJwnD1DzLIJrKxhYfIG3XsoZcsEbROr1y8skh+gPK1ZHsAHGddJpZ9Qb/xciTScsXu1xzCSer9Iwg+y+41hIgNAYRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915288; c=relaxed/simple;
-	bh=+i6BJPVFPXAddF07UORwZWWqYImXR19lUUdyFqTk9ks=;
+	s=arc-20240116; t=1744914174; c=relaxed/simple;
+	bh=Y9Eqfo1Y01ySo1ybDaymseV6TWKvonu1HuWr/lx5Ue8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cl/XXOjS7DHyJNcMF+X//MdpIYsRqNOzW3lHUYVj9D4FPkCkt0zP8/KqaPpLbcgVgEahD4PsONPs30AGoAn+OU/kq2js5Ob+uFX8Ax1iHBy7gd/PnaCauzcP/KSp20X7rjPsTqekPmNGT63ZAPFJ814MuXL0iAcxhBrsiq/bV1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x38w3teb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7559BC4CEE4;
-	Thu, 17 Apr 2025 18:41:27 +0000 (UTC)
+	 MIME-Version; b=QOfpBYw0b9QHNKObBI9DtrccavmiUi/6fgEcO+ATYrKY+aC56QXFlPpoW0Zp1TXZGqLWJApqwW6IY5XJqKILeRIwXxlvvTZpazjcxhuWYt5Bdt6Nr/ZcXrAnPdYLmU7aGpSCKJ9ZqCoHZNxSEBQZ9JoJcLY7m1vHIwL/mWoL+oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2nYFZzRu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42570C4CEE4;
+	Thu, 17 Apr 2025 18:22:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915287;
-	bh=+i6BJPVFPXAddF07UORwZWWqYImXR19lUUdyFqTk9ks=;
+	s=korg; t=1744914174;
+	bh=Y9Eqfo1Y01ySo1ybDaymseV6TWKvonu1HuWr/lx5Ue8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x38w3tebz0uSh/EYdsGDwCnqZKCug6QZlVOAoD93QM8zRmSkTUJly1fYJjTebeTDE
-	 V3BTWdKYs1P8yhnDfAQIPPCVxglfj8B0sceZ4RZYh33jnYyINuQ51JV3esv7Pz/+xb
-	 0hepQeXCwsSzCfWR9it2OWLUImHVGq/IMl+bnXbg=
+	b=2nYFZzRu7M/CArM+wx41bKALd6fZlr9h3sp/9hX57fCUFliH01OUrV0kmU7h+y53N
+	 YziakcitDqTm+H0Q2H4mMafm9xzgiIHe4baRWSC3jfn/jarSDKYi8ZcQsWBMvUzxTd
+	 i+BfPEuhc/bM71dJVGLazIOw6sL1pRJEBKFLciKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	keenplify <keenplify@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Shekhar Chauhan <shekhar.chauhan@intel.com>,
+	Clint Taylor <Clinton.A.Taylor@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 079/393] ASoC: amd: Add DMI quirk for ACP6X mic support
+Subject: [PATCH 6.13 130/414] drm/xe/bmg: Add new PCI IDs
 Date: Thu, 17 Apr 2025 19:48:08 +0200
-Message-ID: <20250417175110.779449326@linuxfoundation.org>
+Message-ID: <20250417175116.660239195@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: keenplify <keenplify@gmail.com>
+From: Shekhar Chauhan <shekhar.chauhan@intel.com>
 
-[ Upstream commit 309b367eafc8e162603cd29189da6db770411fea ]
+[ Upstream commit fa8ffaae1b15236b8afb0fbbc04117ff7c900a83 ]
 
-Some AMD laptops with ACP6X do not expose the DMIC properly on Linux.
-Adding a DMI quirk enables mic functionality.
+Add 3 new PCI IDs for BMG.
 
-Similar to Bugzilla #218402, this issue affects multiple users.
+v2: Fix typo -> Replace '.' with ','
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219853
-Signed-off-by: keenplify <keenplify@gmail.com>
-Link: https://patch.msgid.link/20250315111617.12194-1-keenplify@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
+Reviewed-by: Clint Taylor <Clinton.A.Taylor@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250128162015.3288675-1-shekhar.chauhan@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ include/drm/intel/pciids.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index a7637056972aa..bd3808f98ec9e 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -584,6 +584,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_VERSION, "pang13"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "Micro-Star International Co., Ltd."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 15 C7UCX"),
-+		}
-+	},
- 	{}
- };
+diff --git a/include/drm/intel/pciids.h b/include/drm/intel/pciids.h
+index 32480b5563db3..3a89f6bb8ee55 100644
+--- a/include/drm/intel/pciids.h
++++ b/include/drm/intel/pciids.h
+@@ -817,7 +817,10 @@
+ 	MACRO__(0xE20B, ## __VA_ARGS__), \
+ 	MACRO__(0xE20C, ## __VA_ARGS__), \
+ 	MACRO__(0xE20D, ## __VA_ARGS__), \
+-	MACRO__(0xE212, ## __VA_ARGS__)
++	MACRO__(0xE210, ## __VA_ARGS__), \
++	MACRO__(0xE212, ## __VA_ARGS__), \
++	MACRO__(0xE215, ## __VA_ARGS__), \
++	MACRO__(0xE216, ## __VA_ARGS__)
  
+ /* PTL */
+ #define INTEL_PTL_IDS(MACRO__, ...) \
 -- 
 2.39.5
 
