@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5220A9265D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:12:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6578AA928B1
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:37:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D464E7B5EFE
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9784E7B66BB
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:32:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88A532571B5;
-	Thu, 17 Apr 2025 18:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C84269838;
+	Thu, 17 Apr 2025 18:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxjo/+0H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxKBz4Zd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FAC1A3178;
-	Thu, 17 Apr 2025 18:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38CF269817;
+	Thu, 17 Apr 2025 18:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913184; cv=none; b=l5PAPRJWYwdUMAtyfbBlqNtcJrT1qxuosGhBz1b+ZQgSSpDgT/WN0o3ad6m6/Fr7R7uj8j2OlpLyxqkgPqqeOrOMkKAFMoDQ084qSDwjg+HfCCUFFf03EEtgbQB79wgOfPEAiB3z2IqxPFrjmVYKNMXl2o60AXI4jxU97mqj2vw=
+	t=1744914435; cv=none; b=r6l01ZJuFmkMMfazunyxZGqD++S7JVNysOztgBciIImnr4chmFXKhHz8stctWOTwwo0BJfAfpbpYDcuB2E3gw0gfDDpYCAk590l5PN4hKZ+EoP+/rQU+pkOWmwaVqBY22/DiHWuLUXTudwUqwN7ZScYbSOe8IbqtKos49O0l9pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913184; c=relaxed/simple;
-	bh=iSkOFRn2kRomzzcnOB6AezqAJu/QTEWE6JpZVxIW+WY=;
+	s=arc-20240116; t=1744914435; c=relaxed/simple;
+	bh=g/cytp7c5r6l3mcnwZdOo8nQRyJeY/2pKbzxZxKqfV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OvCdWay3M6CSgyqmW6hEk48ZHKGnK8QIURy5t+0BMf4lI1bhJatJjwTIaRzmkz/PrIZF9vu3B9evvkCdIs5l7Na+vDrF+bnEkiQ2x/5gG5fgNRAvx5BlDohgLiz0W3g92Xrq68fYXxfU7tl7pH/f97G9MK0DhPg7oMiOwXgoeKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxjo/+0H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C88C4CEE4;
-	Thu, 17 Apr 2025 18:06:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OoCvsvqJLV1L54wWwcrKMr4qFSGran1k2D+qIii8zxb+5KF+OQem060pCeP7mejgtYS9eLjwZj69hElD8Pr2HyLyAqg4kjLwqtfDz/bw0XBreAklSaQUvV9s585/HywrlY64mq83CYHQuwEZTu/tX0nWr750p0w8hvqYD1fRZ28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxKBz4Zd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01F54C4CEEA;
+	Thu, 17 Apr 2025 18:27:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913184;
-	bh=iSkOFRn2kRomzzcnOB6AezqAJu/QTEWE6JpZVxIW+WY=;
+	s=korg; t=1744914434;
+	bh=g/cytp7c5r6l3mcnwZdOo8nQRyJeY/2pKbzxZxKqfV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lxjo/+0HD8LSyCMaN95OwAYqX/nlCXtuulI3ePT5Qhj1i7XwPELQvKBgAX2PaCegi
-	 iCG6ebIHMvx+iAW9q7iqfHSkV5tuca6JE0ZcSLy0lHI8ofzNcdXInFGwulZDlwSOE2
-	 77ci0leCMxZ6LS16kSgP60v8ZbC9VPZbR9a/GDdU=
+	b=yxKBz4ZdhmuIxd+7sEihbm0uxvGzgTyOyT0m/+ocBP78inEv9w1W6yOZ0FiZ3Bu4l
+	 HgYz9lBJ6Kfgs07N5LSv5/fA1bJm63T296ZG9THLYziqzZxC/RF0tzuBHQoZVZu7ab
+	 Hqh16dEjM1yldGpHroIRbokSjo/lW3s4coDgHu7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.14 254/449] media: i2c: ov7251: Set enable GPIO low in probe
-Date: Thu, 17 Apr 2025 19:49:02 +0200
-Message-ID: <20250417175128.219986514@linuxfoundation.org>
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 185/414] HID: pidff: Make sure to fetch pool before checking SIMULTANEOUS_MAX
+Date: Thu, 17 Apr 2025 19:49:03 +0200
+Message-ID: <20250417175118.889687513@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +60,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-commit a1963698d59cec83df640ded343af08b76c8e9c5 upstream.
+[ Upstream commit 1f650dcec32d22deb1d6db12300a2b98483099a9 ]
 
-Set the enable GPIO low when acquiring it.
+As noted by Anssi some 20 years ago, pool report is sometimes messed up.
+This worked fine on many devices but casued oops on VRS DirectForce PRO.
 
-Fixes: d30bb512da3d ("media: Add a driver for the ov7251 camera sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Here, we're making sure pool report is refetched before trying to access
+any of it's fields. While loop was replaced with a for loop + exit
+conditions were moved aroud to decrease the possibility of creating an
+infinite loop scenario.
+
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov7251.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/usbhid/hid-pidff.c | 29 +++++++++++++----------------
+ 1 file changed, 13 insertions(+), 16 deletions(-)
 
---- a/drivers/media/i2c/ov7251.c
-+++ b/drivers/media/i2c/ov7251.c
-@@ -1696,7 +1696,7 @@ static int ov7251_probe(struct i2c_clien
- 		return PTR_ERR(ov7251->analog_regulator);
- 	}
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index f23381b6e3447..503f643b59cad 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -604,28 +604,25 @@ static void pidff_reset(struct pidff_device *pidff)
+ }
  
--	ov7251->enable_gpio = devm_gpiod_get(dev, "enable", GPIOD_OUT_HIGH);
-+	ov7251->enable_gpio = devm_gpiod_get(dev, "enable", GPIOD_OUT_LOW);
- 	if (IS_ERR(ov7251->enable_gpio)) {
- 		dev_err(dev, "cannot get enable gpio\n");
- 		return PTR_ERR(ov7251->enable_gpio);
+ /*
+- * Refetch pool report
++ * Fetch pool report
+  */
+ static void pidff_fetch_pool(struct pidff_device *pidff)
+ {
+-	if (!pidff->pool[PID_SIMULTANEOUS_MAX].value)
+-		return;
++	int i;
++	struct hid_device *hid = pidff->hid;
+ 
+-	int i = 0;
+-	while (pidff->pool[PID_SIMULTANEOUS_MAX].value[0] < 2) {
+-		hid_dbg(pidff->hid, "pid_pool requested again\n");
+-		hid_hw_request(pidff->hid, pidff->reports[PID_POOL],
+-				HID_REQ_GET_REPORT);
+-		hid_hw_wait(pidff->hid);
++	/* Repeat if PID_SIMULTANEOUS_MAX < 2 to make sure it's correct */
++	for(i = 0; i < 20; i++) {
++		hid_hw_request(hid, pidff->reports[PID_POOL], HID_REQ_GET_REPORT);
++		hid_hw_wait(hid);
+ 
+-		/* break after 20 tries with SIMULTANEOUS_MAX < 2 */
+-		if (i++ > 20) {
+-			hid_warn(pidff->hid,
+-				 "device reports %d simultaneous effects\n",
+-				 pidff->pool[PID_SIMULTANEOUS_MAX].value[0]);
+-			break;
+-		}
++		if (!pidff->pool[PID_SIMULTANEOUS_MAX].value)
++			return;
++		if (pidff->pool[PID_SIMULTANEOUS_MAX].value[0] >= 2)
++			return;
+ 	}
++	hid_warn(hid, "device reports %d simultaneous effects\n",
++		 pidff->pool[PID_SIMULTANEOUS_MAX].value[0]);
+ }
+ 
+ /*
+-- 
+2.39.5
+
 
 
 
