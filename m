@@ -1,149 +1,142 @@
-Return-Path: <stable+bounces-133268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BF55A924E5
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 19:59:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A44FA9255D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:03:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15A73464C00
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 17:59:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4CF847B47E2
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C522566F2;
-	Thu, 17 Apr 2025 17:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D67D2586F6;
+	Thu, 17 Apr 2025 17:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="hRLFZPO0"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="o0tb1R2C"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC73E2566CE;
-	Thu, 17 Apr 2025 17:56:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5782566F2
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 17:59:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744912568; cv=none; b=Scj61ZyLsqKM26PLVSqEWxB9bgO1ZUtE1ohPKWEoIkXGdUeU+3RgB6kTjh8S0rQj5mtdSQ4Akqmqq1YBs/lzLO03f/z0plycYDvlbQEaPiqlxPtmqbNXXfjQCTms6KgbnijBnMR8DKKieNb1m6X6YMS03AIlvg2qCG0z1A9GRD8=
+	t=1744912749; cv=none; b=YQkV3zqo7XwXvzRi/Zb0vFvmKUE9oxoT0Z4fQw5kOT+uQ/kj2nsfq1JOU00aWu6YzI3QEHTvS/F9bhFrmpUxNO39f+KLV1BYJxcmpnLG/Xkf0KrQUWap1iAkMBcdUS+0AZj8ZF/0kpaxFUlDWGzUjy3x/eQ7kAkUPSWFwsqYTPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744912568; c=relaxed/simple;
-	bh=l6BnmTUjQxq88PIZctmVeHxUE5rsREhbGV6Zl/Vho+M=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=XHADKk0vAgtcja9HcJ8EWi1RCDX9S6ndqeaU4FViXKdF/mVHmZYCH3uEncI/lYaFYPXULi4Mi3F8sx6vZ3/Sg6kq3HLucgX7dPk8yyhn9mM9gIQn4MbNy5BIUDezC/ry6KUWekB64HMDO+qK9xds26edIAn9q+gtC13Rncs3dAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=hRLFZPO0; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+	s=arc-20240116; t=1744912749; c=relaxed/simple;
+	bh=XZ23HX1Idvs3DGEw2pKUbBL1nkwPjMa9AHUbWoDOP7s=;
+	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=BF7QVXAOuXn65hK2bGeXcrpUJLZptCDCjBOVR46c6CnhPLYbJHVZMrJjzSezx634/WhOXqrww0XC6B9Es0ApmyM7bBm79Or7tqZ7y/bbEUSHUYJY7kqdY57h87Be9K482MXmr7hAEDVWDmSWddd7ULLexNU8BsO4mU4U3ai8C0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=o0tb1R2C; arc=none smtp.client-ip=209.85.128.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-7042ac0f4d6so10495467b3.1
+        for <stable@vger.kernel.org>; Thu, 17 Apr 2025 10:59:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1744912747; x=1745517547; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:reply-to:from:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MbEaFqrqcUxdjS3XqjhcgfcBPZB6s63BuuIBYQhCU2Y=;
+        b=o0tb1R2Ct9BFzF8SrUDvRf8bauUgkQDbmGp72AsDgdM4s0XrGZ0X+O47nYMlyiWF1l
+         eS8MQBBzfS9W4mchFmesw11nELG5LQ2wINCeSrBOfgOGZcutwFVJ42GImaRPIMjfilTC
+         tQcOpcd2sb/PlguwnTN32iXrhMnPTSChfl2CfxJ/tj8ALU8GGkOrfbE7IrPJzhw+njWu
+         J91ITzJ7mDiVxyd1fLAaQ3va3ziBOAvrz5rdUcawuj4L2tLwETWCDudpbpkJXS6ay5ox
+         YDCCrAFbGOQ/wRtY5uB4Emy/FDkasviugheR70QTJTRpAHw8jmGBLe9XrZXcn3nHda4n
+         B6uA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744912747; x=1745517547;
+        h=cc:to:subject:message-id:date:reply-to:from:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MbEaFqrqcUxdjS3XqjhcgfcBPZB6s63BuuIBYQhCU2Y=;
+        b=dt35U2p9ojU27dKHzPkO/0lOmmgHAVRCcYoFfX8oMFf6kwGejBCeO7Wgizv7l064uU
+         bzKY88Hgwf5EnbKr6rYGIXTFj2qYJ1YN9OKPmg+RktDuDu5OnnxEwoyFTWD0sOZDp26E
+         cJL4Ut87YEcGFrn6pLoQ2flr5ADqWbr/ZceQua2R9b9QDeKOHtTL+eW7fV8EUQHfwkDe
+         VIcSqtWhEs8ZG14J2sXn/Y48VpYP5QqolJDaihbVnDK42E3ob8BiK4R1aMHjZCJqBVBh
+         5uLbka4tvbjVQTKaSbYDca0f7Xgpoqwl8C0U9o3V8Om5euZo+bc8xvQ9CtmJM9GkExCq
+         sh+g==
+X-Forwarded-Encrypted: i=1; AJvYcCXZjZkzqwQVePxn68US/81HOp65updLktZj/qNKaZZr3We+LmeJmFvcOftIj5Pk+GwFufn9XT0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPc7yiWwTTEA/DVSD7lrpakuYcxc6wW2QIwauW09AR/qfXZPNo
+	t+PYEbjUklmDPEc6bvyTq7NOuF4TWRP9fJPDdVX2ZJI6O1PrLNYnPlCwMVpLdoWf/qWbyqg4T8G
+	D1q15liaKTVh5wh6ig1vXiTOkxBsmROR0ELQD9tzqGWbRnnfwCyw=
+X-Gm-Gg: ASbGncumCOEXz70mK5OdoKpXUzpuA4PwxTmiVv0BYXEmF6Xt2glFAy8t0LLnsIGHFW5
+	2xRS8fpweiBEDHPtq6LkOP2DM+F4IpdIocad3zXPlBU/5MQt5w8zIKmV1siOHuVjoh+onsEOfyU
+	KMD98aqZxuVBXmOsRUndE1
+X-Google-Smtp-Source: AGHT+IFooir7yY+sNq5r+D9q8IZR/VrQnuFEnAriFyEGkraVTt9KcCHOVP46v9/DurlPs13oIlKAt/E2BYlhoH6Drpo=
+X-Received: by 2002:a05:690c:4989:b0:6fd:25dc:effe with SMTP id
+ 00721157ae682-706b3362a4amr93359417b3.25.1744912746856; Thu, 17 Apr 2025
+ 10:59:06 -0700 (PDT)
+Received: from 415818378487 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 17 Apr 2025 10:59:03 -0700
+Received: from 415818378487 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 17 Apr 2025 10:59:03 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1744912563;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WQzclTKLI3van/CH/5ZiT8li8vzwRaoxSxml69VlxEw=;
-	b=hRLFZPO07cDgA65qQ6Ex8y4itgzRLJrCdRGXla7hzcdJ2bZtAl2K252nfYlMRrLC1CBaZ/
-	HSzqVO6xkyyOCsDUpv0m4jK60IlPyKwjwzyqIKBHEPhZHnQ8947c4rjoXGk5ZE2WQ4nxe+
-	GbdZ3O1gHH9pUyJ6WPVnblqXQhtRzE72NXorS+eLaZsWkOSUTT0NF03aPj2JKAquOFdr2M
-	cCxI3paLbEDVmylA0EkDCu9ogUg8txWgEtYOg2P7fUCJbfWwW6fp2tpXCXe8FXC8Nfhytt
-	SfXmXK+o/jXqiyfUY0v2ovkSGr5JDtH0wEEYYLclPWT49Y0ymKCKoj5fYW/cXQ==
-Date: Thu, 17 Apr 2025 19:56:02 +0200
-From: Dragan Simic <dsimic@manjaro.org>
-To: Diederik de Haas <didi.debian@cknow.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>, =?UTF-8?Q?Krzysztof_Wilczy?=
- =?UTF-8?Q?=C5=84ski?= <kw@linux.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Heiko Stuebner <heiko@sntech.de>, Manivannan Sadhasivam
- <manivannan.sadhasivam@linaro.org>, Rob Herring <robh@kernel.org>, Shawn Lin
- <shawn.lin@rock-chips.com>, Niklas Cassel <cassel@kernel.org>,
- linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH] PCI: dw-rockchip: Fix function call sequence in
- rockchip_pcie_phy_deinit
-In-Reply-To: <D992W9V9ZH2J.2Z2OLK00N0FIU@cknow.org>
-References: <20250417142138.1377451-1-didi.debian@cknow.org>
- <3e000468679b4371a7942a3e07d99894@manjaro.org>
- <D992W9V9ZH2J.2Z2OLK00N0FIU@cknow.org>
-Message-ID: <ad4b2140f5a4bf20b199ab092f28def7@manjaro.org>
-X-Sender: dsimic@manjaro.org
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
+from: KernelCI bot <bot@kernelci.org>
+Reply-To: kernelci@lists.linux.dev
+Date: Thu, 17 Apr 2025 10:59:03 -0700
+X-Gm-Features: ATxdqUHxtmM2P4b2F40kTPyPJYBu-gM7BU2x3EQWneqGKxe6FOF0JxnhTwK1XOk
+Message-ID: <CACo-S-01E8LDbpO6deP+BLQqUuJjm-eCw_ndUWPsH4-QdKikYw@mail.gmail.com>
+Subject: [REGRESSION] stable-rc/linux-6.14.y: (build) call to undeclared
+ function 'devm_of_qcom_ice_get'; ISO C99 and la...
+To: kernelci-results@groups.io
+Cc: gus@collabora.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 2025-04-17 19:09, Diederik de Haas wrote:
-> On Thu Apr 17, 2025 at 6:20 PM CEST, Dragan Simic wrote:
->> On 2025-04-17 16:21, Diederik de Haas wrote:
->>> The documentation for the phy_power_off() function explicitly says
->>> 
->>>   Must be called before phy_exit().
->>> 
->>> So let's follow that instruction.
->>> 
->>> Fixes: 0e898eb8df4e ("PCI: rockchip-dwc: Add Rockchip RK356X host
->>> controller driver")
->>> Cc: stable@vger.kernel.org	# v5.15+
->>> Signed-off-by: Diederik de Haas <didi.debian@cknow.org>
->>> ---
->>>  drivers/pci/controller/dwc/pcie-dw-rockchip.c | 2 +-
->>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>> 
->>> diff --git a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
->>> b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
->>> index c624b7ebd118..4f92639650e3 100644
->>> --- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
->>> +++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
->>> @@ -410,8 +410,8 @@ static int rockchip_pcie_phy_init(struct
->>> rockchip_pcie *rockchip)
->>> 
->>>  static void rockchip_pcie_phy_deinit(struct rockchip_pcie *rockchip)
->>>  {
->>> -	phy_exit(rockchip->phy);
->>>  	phy_power_off(rockchip->phy);
->>> +	phy_exit(rockchip->phy);
->>>  }
->>> 
->>>  static const struct dw_pcie_ops dw_pcie_ops = {
->> 
->> Thanks for the patch, it's looking good to me.  The current state
->> of the rockchip_pcie_phy_deinit() function might actually not cause
->> issues because the rockchip_pcie_phy_deinit() function is used only
->> in the error-handling path in the rockchip_pcie_probe() function,
->> so having no runtime errors leads to no possible issues.
->> 
->> However, it doesn't mean it shouldn't be fixed, and it would actually
->> be good to dissolve the rockchip_pcie_phy_deinit() function into the
->> above-mentioned error-handling path.  It's a short, two-line function
->> local to the compile unit, used in a single place only, so dissolving
->> it is safe and would actually improve the readability of the code.
-> 
-> This patch came about while looking at [1] "PCI: dw-rockchip: Add 
-> system
-> PM support", which would be the 2nd consumer of the
-> rockchip_pcie_phy_deinit() function. That patch's commit message has 
-> the
-> following: "tries to reuse possible exist(ing) code"
-> 
-> Being a fan of the DRY principle, that sounds like an excellent idea 
-> :-)
-> 
-> So while you're right if there would only be 1 consumer, which is the
-> case *right now*, given that a 2nd consumer is in the works, I think
-> it's better to keep it as I've done it now.
-> Let me know if you disagree (including why).
-> 
-> [1] 
-> https://lore.kernel.org/linux-rockchip/1744352048-178994-1-git-send-email-shawn.lin@rock-chips.com/
+Hello,
 
-Ah yes, you're right, thanks for reminding me about that patch.  I saw
-it before, but I totally forgot about it for a moment.
+New build issue found on stable-rc/linux-6.14.y:
 
-I agree that keeping the rockchip_pcie_phy_deinit() function is the way
-to go.  Yes, it's a short function, but maybe we'll need to do something
-more in it at some point, which would then be propagated to all of its
-consumers, instead of having to change all of the "dissolved instances"
-individually.
+---
+ call to undeclared function 'devm_of_qcom_ice_get'; ISO C99 and later
+do not support implicit function declarations
+[-Wimplicit-function-declaration] in drivers/ufs/host/ufs-qcom.o
+(drivers/ufs/host/ufs-qcom.c) [logspec:kbuild,kbuild.compiler.error]
+---
+
+- dashboard: https://d.kernelci.org/i/maestro:1fa560e5791dde6834e1ec43155a855c01ac98e8
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+- commit HEAD:  4adfeedc792504a29825d04911880ae45e82d9f3
+
+
+Log excerpt:
+=====================================================
+drivers/ufs/host/ufs-qcom.c:128:8: error: call to undeclared function
+'devm_of_qcom_ice_get'; ISO C99 and later do not support implicit
+function declarations [-Wimplicit-function-declaration]
+  128 |         ice = devm_of_qcom_ice_get(dev);
+      |               ^
+drivers/ufs/host/ufs-qcom.c:128:8: note: did you mean 'of_qcom_ice_get'?
+./include/soc/qcom/ice.h:36:18: note: 'of_qcom_ice_get' declared here
+   36 | struct qcom_ice *of_qcom_ice_get(struct device *dev);
+      |                  ^
+drivers/ufs/host/ufs-qcom.c:128:6: error: incompatible integer to
+pointer conversion assigning to 'struct qcom_ice *' from 'int'
+[-Wint-conversion]
+  128 |         ice = devm_of_qcom_ice_get(dev);
+      |             ^ ~~~~~~~~~~~~~~~~~~~~~~~~~
+2 errors generated.
+
+=====================================================
+
+
+# Builds where the incident occurred:
+
+## defconfig+allmodconfig on (arm64):
+- compiler: clang-17
+- dashboard: https://d.kernelci.org/build/maestro:68011f4769241b2ece0f85eb
+
+
+#kernelci issue maestro:1fa560e5791dde6834e1ec43155a855c01ac98e8
+
+Reported-by: kernelci.org bot <bot@kernelci.org>
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
