@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-133455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED7C2A925C6
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:07:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD041A927D5
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:29:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77A26467BA1
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:07:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B79418938F7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D1B2586E7;
-	Thu, 17 Apr 2025 18:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 172C01D07BA;
+	Thu, 17 Apr 2025 18:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KE8vnG5p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="myHvAtm2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F011A2586C4;
-	Thu, 17 Apr 2025 18:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52D1257AEC;
+	Thu, 17 Apr 2025 18:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913129; cv=none; b=U15XMma02UeOhwQuTfffyj6AklM790AzTDdqqKhO1YB2OaGkdG/Kjp9P7W2iffi+GRkJqF3aDKXyiLfCU4tRZadJutoVCOdVapwOI0RMPbhq2V7GdtMVFqYKs8LigLXVr+viuBzOOSsipCwJBj5E1EezABPoJQXrg0O0Os+Zxxw=
+	t=1744914289; cv=none; b=h1e56GVMjZEvS0ARYUxRCDY4TudCIohnmh2s3jL409S6UccTSOfUvbSemym9lypThbPU+MEFbwq1BjbkXyNwKEOUFcSwB1pH0fC0SfKSUU14mr6gZg9Ebho9BGg/i+qiB3hk9i5gv53Yuo4Sipm3atuzZYbJcOkuKlwFioZgszo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913129; c=relaxed/simple;
-	bh=odagQIebgCBsXAHSN4y0Yt9lqxNbpdIWIf555ZwuItI=;
+	s=arc-20240116; t=1744914289; c=relaxed/simple;
+	bh=6FUdUV82cHI3/5ZRV8Y4C42GWjIMtBmm5d++gJul1so=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EKxx74w+46j7q+HFQE/PxgLORZu4DJtG8eJcpBHwv+3DEmHowa912HA643otLTrJxufEsvk1PN5aSMZ9QC+WslB7j9p/MCKQDtXQOBVA39K1w21qtOJzee6OaP8GmOkLH3M1kof8QV0s2TQJhZOR6tq3dUDUIUk3YLwkXZzRjfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KE8vnG5p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 808DAC4CEE4;
-	Thu, 17 Apr 2025 18:05:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Kd+dWzt0tUyrPIX04AaQglfgZ3rWbHWyp92iNOwQ1hU/3wR8rNxGd9uPpL6M687eOshVXtZ+e2MnvGq6d76THbQo4l7atc1wzKlrppcWFxBTQUV5KlpLPtzDqetPpD66sEFvqXWjUsyvd5FHC4bd0AX4Z9pkhHBINz5IRN3YzYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=myHvAtm2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F71C4CEEA;
+	Thu, 17 Apr 2025 18:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913128;
-	bh=odagQIebgCBsXAHSN4y0Yt9lqxNbpdIWIf555ZwuItI=;
+	s=korg; t=1744914289;
+	bh=6FUdUV82cHI3/5ZRV8Y4C42GWjIMtBmm5d++gJul1so=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KE8vnG5pXBbj/GOQInsApdyUmrFMwt1pQoZtbVLvYIDsBIcNVXU3T7C86Lx74eWPG
-	 +XqVr2Q8qN0BwSotjlV2Z8htrRUYHAcxTX1OT6febbUoMD2g60dlRfat2lRC5333ey
-	 A3xQKJrgmsSRxWUndUnuFPhvfPQYRKJEFA2Zrn68=
+	b=myHvAtm2vBr4et80PFkmxt636+MP2yYaHmpObk2fwxTpRf98qFQ/sQxlj8+nGoCGo
+	 /RgltJpwW2gsklw7GEPU/knxI5AoAIuHdPQvLJJ9RJK17mB4fn7dG24pmJ8GAdJ88F
+	 dOJinygI3on+ZToOnT09sqqNaoP4d0r7MoE+hAIA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Quentin Perret <qperret@google.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.14 237/449] KVM: arm64: Tear down vGIC on failed vCPU creation
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 167/414] pwm: rcar: Improve register calculation
 Date: Thu, 17 Apr 2025 19:48:45 +0200
-Message-ID: <20250417175127.536324006@linuxfoundation.org>
+Message-ID: <20250417175118.157214329@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-commit 250f25367b58d8c65a1b060a2dda037eea09a672 upstream.
+[ Upstream commit e7327c193014a4d8666e9c1cda09cf2c060518e8 ]
 
-If kvm_arch_vcpu_create() fails to share the vCPU page with the
-hypervisor, we propagate the error back to the ioctl but leave the
-vGIC vCPU data initialised. Note only does this leak the corresponding
-memory when the vCPU is destroyed but it can also lead to use-after-free
-if the redistributor device handling tries to walk into the vCPU.
+There were several issues in the function rcar_pwm_set_counter():
 
-Add the missing cleanup to kvm_arch_vcpu_create(), ensuring that the
-vGIC vCPU structures are destroyed on error.
+ - The u64 values period_ns and duty_ns were cast to int on function
+   call which might loose bits on 32 bit architectures.
+   Fix: Make parameters to rcar_pwm_set_counter() u64
+ - The algorithm divided by the result of a division which looses
+   precision.
+   Fix: Make use of mul_u64_u64_div_u64()
+ - The calculated values were just masked to fit the respective register
+   fields which again might loose bits.
+   Fix: Explicitly check for overlow
 
-Cc: <stable@vger.kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oliver.upton@linux.dev>
-Cc: Quentin Perret <qperret@google.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20250314133409.9123-1-will@kernel.org
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Implement the respective fixes.
+
+A side effect of fixing the 2nd issue is that there is no division by 0
+if clk_get_rate() returns 0.
+
+Fixes: ed6c1476bf7f ("pwm: Add support for R-Car PWM Timer")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/ab3dac794b2216cc1cc56d65c93dd164f8bd461b.1743501688.git.u.kleine-koenig@baylibre.com
+[ukleinek: Added an explicit #include <linux/bitfield.h> to please the
+0day build bot]
+Link: https://lore.kernel.org/oe-kbuild-all/202504031354.VJtxScP5-lkp@intel.com/
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/arm.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/pwm/pwm-rcar.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -466,7 +466,11 @@ int kvm_arch_vcpu_create(struct kvm_vcpu
- 	if (err)
- 		return err;
+diff --git a/drivers/pwm/pwm-rcar.c b/drivers/pwm/pwm-rcar.c
+index 2261789cc27da..578dbdd2d5a72 100644
+--- a/drivers/pwm/pwm-rcar.c
++++ b/drivers/pwm/pwm-rcar.c
+@@ -8,6 +8,7 @@
+  * - The hardware cannot generate a 0% duty cycle.
+  */
  
--	return kvm_share_hyp(vcpu, vcpu + 1);
-+	err = kvm_share_hyp(vcpu, vcpu + 1);
-+	if (err)
-+		kvm_vgic_vcpu_destroy(vcpu);
-+
-+	return err;
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
+ #include <linux/io.h>
+@@ -102,23 +103,24 @@ static void rcar_pwm_set_clock_control(struct rcar_pwm_chip *rp,
+ 	rcar_pwm_write(rp, value, RCAR_PWMCR);
  }
  
- void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcpu)
+-static int rcar_pwm_set_counter(struct rcar_pwm_chip *rp, int div, int duty_ns,
+-				int period_ns)
++static int rcar_pwm_set_counter(struct rcar_pwm_chip *rp, int div, u64 duty_ns,
++				u64 period_ns)
+ {
+-	unsigned long long one_cycle, tmp;	/* 0.01 nanoseconds */
++	unsigned long long tmp;
+ 	unsigned long clk_rate = clk_get_rate(rp->clk);
+ 	u32 cyc, ph;
+ 
+-	one_cycle = NSEC_PER_SEC * 100ULL << div;
+-	do_div(one_cycle, clk_rate);
++	/* div <= 24 == RCAR_PWM_MAX_DIVISION, so the shift doesn't overflow. */
++	tmp = mul_u64_u64_div_u64(period_ns, clk_rate, (u64)NSEC_PER_SEC << div);
++	if (tmp > FIELD_MAX(RCAR_PWMCNT_CYC0_MASK))
++		tmp = FIELD_MAX(RCAR_PWMCNT_CYC0_MASK);
+ 
+-	tmp = period_ns * 100ULL;
+-	do_div(tmp, one_cycle);
+-	cyc = (tmp << RCAR_PWMCNT_CYC0_SHIFT) & RCAR_PWMCNT_CYC0_MASK;
++	cyc = FIELD_PREP(RCAR_PWMCNT_CYC0_MASK, tmp);
+ 
+-	tmp = duty_ns * 100ULL;
+-	do_div(tmp, one_cycle);
+-	ph = tmp & RCAR_PWMCNT_PH0_MASK;
++	tmp = mul_u64_u64_div_u64(duty_ns, clk_rate, (u64)NSEC_PER_SEC << div);
++	if (tmp > FIELD_MAX(RCAR_PWMCNT_PH0_MASK))
++		tmp = FIELD_MAX(RCAR_PWMCNT_PH0_MASK);
++	ph = FIELD_PREP(RCAR_PWMCNT_PH0_MASK, tmp);
+ 
+ 	/* Avoid prohibited setting */
+ 	if (cyc == 0 || ph == 0)
+-- 
+2.39.5
+
 
 
 
