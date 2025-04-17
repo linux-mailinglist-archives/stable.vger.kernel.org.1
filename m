@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33658A926BF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:16:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7F81A92B23
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:57:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C72B21902568
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:16:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 121763AE147
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BBA38462;
-	Thu, 17 Apr 2025 18:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A6E3594D;
+	Thu, 17 Apr 2025 18:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+GmuMeB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I8jkZL0c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B213594D;
-	Thu, 17 Apr 2025 18:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021CE185920;
+	Thu, 17 Apr 2025 18:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913770; cv=none; b=kswGDTR72+rETHaQmJpeXZGnBjrKoFhy2LTIvERsrjKy4TDhbIC3mWnbvx3A2iomEoGkgB5y7ah1J72dpzTs1nooQjEGy7jclSdxwsOWAk6M1pMISIIMloYpJM+pjmfDA/0OKz4UwO4FSdUtOtKJV6RY74C+0haJDb29hjN9jkg=
+	t=1744916047; cv=none; b=ZsgtaBP4snkPYfACMGeqfbE+UNp79yaOve4akyNxRAxl3XZ1omEbQMHO1Fda+h320MIOyhGUxEO8zTXt6b0Zif1QeDuvbBG31iqhlmlO8tBpRUCbE68SNWFdSnuBtq2TvxCVxefq2GASJt4jn8B4mRJGImvLCWHb1QxXSukdVMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913770; c=relaxed/simple;
-	bh=y5ACSK0pnU8yOubcyjbo+9ICMg672+qNNPYxNEPjPbU=;
+	s=arc-20240116; t=1744916047; c=relaxed/simple;
+	bh=Q2r6NcTuz8M9UxuHJuKclAg0opC++HbkkG7C31cG+FI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AAOGIfLk7FWfWAQllYY+ddFDwNbxlSAGHsKjGoCfYVIvfDBDeyFHdaDepaQ/YqEsH9dytREKWycu2Z6R93zOGnYW1yadmJlXKylXsgHWwS5Ey0p08SJEHY/Zw8BeJ6vF+6X4MUgps2an5UjtbvnJIfi6m7ospK792uU9pZhH9s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+GmuMeB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D284C4CEE4;
-	Thu, 17 Apr 2025 18:16:09 +0000 (UTC)
+	 MIME-Version; b=obYWY1FpUOn4NrVuksLvtDct6vIyuowggnVPs+dg/azHhkKA3y/dgVAxZA0wSaxiYIuEllC1DceUOYzIjlqRzhz+hgX8csiMK1Fsivv7vcHU52UIm6xoWrCzNnZFxU1JO/wu91H+hqymgSgKMJ9FuiFXAgOo8+pQ63XXqvaDzBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I8jkZL0c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F9C4C4CEE4;
+	Thu, 17 Apr 2025 18:54:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913770;
-	bh=y5ACSK0pnU8yOubcyjbo+9ICMg672+qNNPYxNEPjPbU=;
+	s=korg; t=1744916046;
+	bh=Q2r6NcTuz8M9UxuHJuKclAg0opC++HbkkG7C31cG+FI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i+GmuMeBP4C5T3rtH4Me1nV6GxAD3p3jDASyAjhG4RqqMhYg9EaHC48JOxXx8PUOP
-	 KeEHCZfqMAU1Ytt/YETDTpKA4eQqo/tKkIhd0SKhT5dgi6PUKDaBazMkNNA6OzVOT0
-	 1fS7W3oMV52mhaR9YDMWnfNH2Wh/x0pdyXwcnpaM=
+	b=I8jkZL0catBagoNSWLJo6ncKtdnKAaUQ87/38zBaZAjSCN7QHVG9SvO+sAtUHXdSz
+	 0ksyLgKpWq5GKQLEzqDdfyqJxqxMcHJxqB+EGn0H215jSo+KblwwKUbvhQkeX/M3Hb
+	 aDRzXs+jSgytDY+yeqc90ArVD/ASzG0X3sfBDk1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Tian <kevin.tian@intel.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.14 447/449] iommufd: Fail replace if device has not been attached
+	Taniya Das <quic_tdas@quicinc.com>,
+	Imran Shaik <quic_imrashai@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 326/393] clk: qcom: gdsc: Set retain_ff before moving to HW CTRL
 Date: Thu, 17 Apr 2025 19:52:15 +0200
-Message-ID: <20250417175136.314165169@linuxfoundation.org>
+Message-ID: <20250417175120.723081522@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Liu <yi.l.liu@intel.com>
+From: Taniya Das <quic_tdas@quicinc.com>
 
-commit 55c85fa7579dc2e3f5399ef5bad67a44257c1a48 upstream.
+commit 25708f73ff171bb4171950c9f4be5aa8504b8459 upstream.
 
-The current implementation of iommufd_device_do_replace() implicitly
-assumes that the input device has already been attached. However, there
-is no explicit check to verify this assumption. If another device within
-the same group has been attached, the replace operation might succeed,
-but the input device itself may not have been attached yet.
+Enable the retain_ff_enable bit of GDSCR only if the GDSC is already ON.
+Once the GDSCR moves to HW control, SW no longer can determine the state
+of the GDSCR and setting the retain_ff bit could destroy all the register
+contents we intended to save.
+Therefore, move the retain_ff configuration before switching the GDSC to
+HW trigger mode.
 
-As a result, the input device might not be tracked in the
-igroup->device_list, and its reserved IOVA might not be added. Despite
-this, the caller might incorrectly assume that the device has been
-successfully replaced, which could lead to unexpected behavior or errors.
-
-To address this issue, add a check to ensure that the input device has
-been attached before proceeding with the replace operation. This check
-will help maintain the integrity of the device tracking system and prevent
-potential issues arising from incorrect assumptions about the device's
-attachment status.
-
-Fixes: e88d4ec154a8 ("iommufd: Add iommufd_device_replace()")
-Link: https://patch.msgid.link/r/20250306034842.5950-1-yi.l.liu@intel.com
 Cc: stable@vger.kernel.org
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 173722995cdb ("clk: qcom: gdsc: Add support to enable retention of GSDCR")
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Reviewed-by: Imran Shaik <quic_imrashai@quicinc.com>
+Tested-by: Imran Shaik <quic_imrashai@quicinc.com> # on QCS8300
+Link: https://lore.kernel.org/r/20250214-gdsc_fixes-v1-1-73e56d68a80f@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/iommufd/device.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/clk/qcom/gdsc.c |   21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
---- a/drivers/iommu/iommufd/device.c
-+++ b/drivers/iommu/iommufd/device.c
-@@ -354,6 +354,17 @@ iommufd_device_attach_reserved_iova(stru
+--- a/drivers/clk/qcom/gdsc.c
++++ b/drivers/clk/qcom/gdsc.c
+@@ -292,6 +292,9 @@ static int gdsc_enable(struct generic_pm
+ 	 */
+ 	udelay(1);
  
- /* The device attach/detach/replace helpers for attach_handle */
- 
-+/* Check if idev is attached to igroup->hwpt */
-+static bool iommufd_device_is_attached(struct iommufd_device *idev)
-+{
-+	struct iommufd_device *cur;
++	if (sc->flags & RETAIN_FF_ENABLE)
++		gdsc_retain_ff_on(sc);
 +
-+	list_for_each_entry(cur, &idev->igroup->device_list, group_item)
-+		if (cur == idev)
-+			return true;
-+	return false;
-+}
-+
- static int iommufd_hwpt_attach_device(struct iommufd_hw_pagetable *hwpt,
- 				      struct iommufd_device *idev)
- {
-@@ -592,6 +603,11 @@ iommufd_device_do_replace(struct iommufd
- 		rc = -EINVAL;
- 		goto err_unlock;
+ 	/* Turn on HW trigger mode if supported */
+ 	if (sc->flags & HW_CTRL) {
+ 		ret = gdsc_hwctrl(sc, true);
+@@ -308,9 +311,6 @@ static int gdsc_enable(struct generic_pm
+ 		udelay(1);
  	}
-+
-+	if (!iommufd_device_is_attached(idev)) {
-+		rc = -EINVAL;
-+		goto err_unlock;
-+	}
  
- 	if (hwpt == igroup->hwpt) {
- 		mutex_unlock(&idev->igroup->lock);
+-	if (sc->flags & RETAIN_FF_ENABLE)
+-		gdsc_retain_ff_on(sc);
+-
+ 	return 0;
+ }
+ 
+@@ -457,13 +457,6 @@ static int gdsc_init(struct gdsc *sc)
+ 				goto err_disable_supply;
+ 		}
+ 
+-		/* Turn on HW trigger mode if supported */
+-		if (sc->flags & HW_CTRL) {
+-			ret = gdsc_hwctrl(sc, true);
+-			if (ret < 0)
+-				goto err_disable_supply;
+-		}
+-
+ 		/*
+ 		 * Make sure the retain bit is set if the GDSC is already on,
+ 		 * otherwise we end up turning off the GDSC and destroying all
+@@ -471,6 +464,14 @@ static int gdsc_init(struct gdsc *sc)
+ 		 */
+ 		if (sc->flags & RETAIN_FF_ENABLE)
+ 			gdsc_retain_ff_on(sc);
++
++		/* Turn on HW trigger mode if supported */
++		if (sc->flags & HW_CTRL) {
++			ret = gdsc_hwctrl(sc, true);
++			if (ret < 0)
++				goto err_disable_supply;
++		}
++
+ 	} else if (sc->flags & ALWAYS_ON) {
+ 		/* If ALWAYS_ON GDSCs are not ON, turn them ON */
+ 		gdsc_enable(&sc->pd);
 
 
 
