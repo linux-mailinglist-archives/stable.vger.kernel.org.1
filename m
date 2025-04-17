@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-133942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60375A92986
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:43:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F02DAA9262E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:11:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03C577B85FE
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:35:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF7444A02FA
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:11:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD4C259C86;
-	Thu, 17 Apr 2025 18:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E08B0255E4C;
+	Thu, 17 Apr 2025 18:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tQ+rUdlL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OXlXk0kq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF6D258CE1;
-	Thu, 17 Apr 2025 18:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF67152532;
+	Thu, 17 Apr 2025 18:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914614; cv=none; b=gOato4D5SR97c3kHV4o7CJQzKXZomixBOrqrMZZMWOYDqnX2MNT/ck8yXkA6Kpqkb0anBBEI2W5IJNfIuIbubL7Zy+m48sFY+RpWG2krkPOnjIndn0tD3OFcNt+ZLdI8d8sv+mzBSvUhwdnIAXnuniqu36pjVipamAX9e0Dvagw=
+	t=1744913446; cv=none; b=g8LmFeDjscPtjLWXTP4ta5TZQg9F6OzBew1/XokCwHVZ3kGvKgIAgBb/YhyzGHS+F9X8Dpj+2Xe03YsjPIFSBMjXxfz23Ys7oqfESbyn4ijUpfqxubm1eK3kdkAZ6VyZPBU3pmUaAaX33R8LftGg1dSFNItbtp6IiD0nbi2syK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914614; c=relaxed/simple;
-	bh=DSRbpl9yKy1V7dtlV43MLCrWX5gmVcEHiRyY3/rAUZU=;
+	s=arc-20240116; t=1744913446; c=relaxed/simple;
+	bh=Wn1jW/V9xZFFvQkJR0mKgUJCv3Xzm3L6UvqIQN1qfck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ilo2Hctrme1yp1P/PCWR+eUDl8vmZdWNC049G4xv1v+4YxbH9iT6uOONGjOvBfNfOp5xWSz4ggBpm9VIYKuosqoBkA5fs/DsYlrjJaOsFo1ppNEHtf+2v/3nKJ82CcDJyYfFDoZL5gDS9huYOvUETIkk7Rwzd1rKt1CUW6d88VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tQ+rUdlL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A26C9C4CEE4;
-	Thu, 17 Apr 2025 18:30:13 +0000 (UTC)
+	 MIME-Version; b=YUqkaz6r/yJRBncr9olOB4sX9P0kvEUUSabiBvaDsBc6vN20NEPzNVzbgvHs4hbe3XfAQ1BWoZnv/8IDL1IWDVFrcDScV+IiV4eW9QyBjVYmPOV/X2S5Xyp7wmsaKCsEhXTYrXYajAgqxFFw2WZrH4XDuEZ/mCFAuz5pvzhOMic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OXlXk0kq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29250C4CEEA;
+	Thu, 17 Apr 2025 18:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914614;
-	bh=DSRbpl9yKy1V7dtlV43MLCrWX5gmVcEHiRyY3/rAUZU=;
+	s=korg; t=1744913446;
+	bh=Wn1jW/V9xZFFvQkJR0mKgUJCv3Xzm3L6UvqIQN1qfck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tQ+rUdlLKfcd1PCQcvx07XXyH+bcRe550udLce6aS3/aCA0dwborH0T+b4oe3oRVF
-	 LULffH0J1wLLS4cuRQ6eCi28jDqiqtIqxeffXoyE2AFvjHxtOg5yeIkevezGpZBqVc
-	 V2t5M3HngQu9G972G5sGHGDsxC6zCu2CuCac6iyY=
+	b=OXlXk0kq/m3IMyYduO8ucIMg30cDQwcx3A/1gByzHm7F83nPCvpFVS3l+IItdN3mU
+	 h66jFQHfhWihVFbrwgnobkd5gj29s2Ct+AcjVvkzux+sWBPbdr4CxX0LGWECKsdWtf
+	 GQVXynUxnK1deCUm9OvfSIkc6F1TbHMuS8L0vFtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.13 272/414] ASoC: qdsp6: q6asm-dai: fix q6asm_dai_compr_set_params error path
+	Herve Codina <herve.codina@bootlin.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.14 342/449] backlight: led_bl: Hold led_access lock when calling led_sysfs_disable()
 Date: Thu, 17 Apr 2025 19:50:30 +0200
-Message-ID: <20250417175122.369683378@linuxfoundation.org>
+Message-ID: <20250417175131.961861280@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Klimov <alexey.klimov@linaro.org>
+From: Herve Codina <herve.codina@bootlin.com>
 
-commit 7eccc86e90f04a0d758d16c08627a620ac59604d upstream.
+commit 276822a00db3c1061382b41e72cafc09d6a0ec30 upstream.
 
-In case of attempts to compress playback something, for instance,
-when audio routing is not set up correctly, the audio DSP is left in
-inconsistent state because we are not doing the correct things in
-the error path of q6asm_dai_compr_set_params().
+Lockdep detects the following issue on led-backlight removal:
+  [  142.315935] ------------[ cut here ]------------
+  [  142.315954] WARNING: CPU: 2 PID: 292 at drivers/leds/led-core.c:455 led_sysfs_enable+0x54/0x80
+  ...
+  [  142.500725] Call trace:
+  [  142.503176]  led_sysfs_enable+0x54/0x80 (P)
+  [  142.507370]  led_bl_remove+0x80/0xa8 [led_bl]
+  [  142.511742]  platform_remove+0x30/0x58
+  [  142.515501]  device_remove+0x54/0x90
+  ...
 
-So, when routing is not set up and compress playback is attempted
-the following errors are present (simplified log):
+Indeed, led_sysfs_enable() has to be called with the led_access
+lock held.
 
-q6routing routing: Routing not setup for MultiMedia-1 Session
-q6asm-dai dais: Stream reg failed ret:-22
-q6asm-dai dais: ASoC error (-22): at snd_soc_component_compr_set_params()
-on 17300000.remoteproc:glink-edge:apr:service@7:dais
+Hold the lock when calling led_sysfs_disable().
 
-After setting the correct routing the compress playback will always fail:
-
-q6asm-dai dais: cmd = 0x10db3 returned error = 0x9
-q6asm-dai dais: DSP returned error[9]
-q6asm-dai dais: q6asm_open_write failed
-q6asm-dai dais: ASoC error (-22): at snd_soc_component_compr_set_params()
-on 17300000.remoteproc:glink-edge:apr:service@7:dais
-
-0x9 here means "Operation is already processed". The CMD_OPEN here was
-sent the second time hence DSP responds that it was already done.
-
-Turns out the CMD_CLOSE should be sent after the q6asm_open_write()
-succeeded but something failed after that, for instance, routing
-setup.
-
-Fix this by slightly reworking the error path in
-q6asm_dai_compr_set_params().
-
-Tested on QRB5165 RB5 and SDM845 RB3 boards.
-
+Fixes: ae232e45acf9 ("backlight: add led-backlight driver")
 Cc: stable@vger.kernel.org
-Fixes: 5b39363e54cc ("ASoC: q6asm-dai: prepare set params to accept profile change")
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Cc: Vinod Koul <vkoul@kernel.org>
-Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://patch.msgid.link/20250327154650.337404-1-alexey.klimov@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Link: https://lore.kernel.org/r/20250122091914.309533-1-herve.codina@bootlin.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6asm-dai.c |   19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/video/backlight/led_bl.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/sound/soc/qcom/qdsp6/q6asm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
-@@ -892,9 +892,7 @@ static int q6asm_dai_compr_set_params(st
+--- a/drivers/video/backlight/led_bl.c
++++ b/drivers/video/backlight/led_bl.c
+@@ -229,8 +229,11 @@ static void led_bl_remove(struct platfor
+ 	backlight_device_unregister(bl);
  
- 		if (ret < 0) {
- 			dev_err(dev, "q6asm_open_write failed\n");
--			q6asm_audio_client_free(prtd->audio_client);
--			prtd->audio_client = NULL;
--			return ret;
-+			goto open_err;
- 		}
- 	}
- 
-@@ -903,7 +901,7 @@ static int q6asm_dai_compr_set_params(st
- 			      prtd->session_id, dir);
- 	if (ret) {
- 		dev_err(dev, "Stream reg failed ret:%d\n", ret);
--		return ret;
-+		goto q6_err;
- 	}
- 
- 	ret = __q6asm_dai_compr_set_codec_params(component, stream,
-@@ -911,7 +909,7 @@ static int q6asm_dai_compr_set_params(st
- 						 prtd->stream_id);
- 	if (ret) {
- 		dev_err(dev, "codec param setup failed ret:%d\n", ret);
--		return ret;
-+		goto q6_err;
- 	}
- 
- 	ret = q6asm_map_memory_regions(dir, prtd->audio_client, prtd->phys,
-@@ -920,12 +918,21 @@ static int q6asm_dai_compr_set_params(st
- 
- 	if (ret < 0) {
- 		dev_err(dev, "Buffer Mapping failed ret:%d\n", ret);
--		return -ENOMEM;
-+		ret = -ENOMEM;
-+		goto q6_err;
- 	}
- 
- 	prtd->state = Q6ASM_STREAM_RUNNING;
- 
- 	return 0;
-+
-+q6_err:
-+	q6asm_cmd(prtd->audio_client, prtd->stream_id, CMD_CLOSE);
-+
-+open_err:
-+	q6asm_audio_client_free(prtd->audio_client);
-+	prtd->audio_client = NULL;
-+	return ret;
+ 	led_bl_power_off(priv);
+-	for (i = 0; i < priv->nb_leds; i++)
++	for (i = 0; i < priv->nb_leds; i++) {
++		mutex_lock(&priv->leds[i]->led_access);
+ 		led_sysfs_enable(priv->leds[i]);
++		mutex_unlock(&priv->leds[i]->led_access);
++	}
  }
  
- static int q6asm_dai_compr_set_metadata(struct snd_soc_component *component,
+ static const struct of_device_id led_bl_of_match[] = {
 
 
 
