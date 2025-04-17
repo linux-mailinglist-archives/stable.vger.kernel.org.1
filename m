@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-133457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED9A6A925C7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:07:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CF8FA927FD
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BBDF8A2EB7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:07:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 270958A8208
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9633258CC2;
-	Thu, 17 Apr 2025 18:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8E07257AF1;
+	Thu, 17 Apr 2025 18:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eq599zMR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UDHQE4yS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6859B2586C4;
-	Thu, 17 Apr 2025 18:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A235B257450;
+	Thu, 17 Apr 2025 18:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913135; cv=none; b=Xglhg5uf3duvMCp6tkYGo35M87V7HF5Qxrr6zVrKfuXCJB6ymihBgl7Cq636HvjexB/TOskxzo8iUlIooGMmVOLv1UD6NaI8CUx1e8iNWG6o16Qt3B4xSiEOTO+r01aBDIilTyKntakoyhdoObFyYXs8mu5syqop29IIyzAGdUw=
+	t=1744914294; cv=none; b=kB5bUAX9Fo0McpLYZXuqPCVLf5iXAWiymuqXR//5ux3yi23xgb5SN6PrqujY1Yzw2QVGJomTcWZKUdG8BX0DtFHLuzUtqfx7CeJ46vQE44n/Iijal28lhM+9BiVjEuOXyRtxMUhM8ffFUaeoAwoUdh2thkehrGZKEpN3izOkZiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913135; c=relaxed/simple;
-	bh=xwni/UOErv4w8N1ndbk1Hq9ihr4O18L8Vq8t3LQpI/0=;
+	s=arc-20240116; t=1744914294; c=relaxed/simple;
+	bh=aIBFSbShfAtlwysT9Q5WIZ7vkUGA9uoSOw7dHnE2d6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J9gOvSgVu8Bgclubqh6jd8pvGoBm1EJ79V+ztsWjehGokfLREpQBheIarQuniTUy+X9+5E2tOsYSUxiboSFE7xCgPm/pJwbuyh/bw2++X7g5QwJ2wGmSHxkPZGuhD1chkVKc+LWtHbuPVMsKlHgLZyDCtASlxDqA3TCD+6EoSIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eq599zMR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD032C4CEE4;
-	Thu, 17 Apr 2025 18:05:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Y78DAb9I5qcM8Q4doofWDUBZ4dD60KnMC0HeCrl++jRp9qo/O2B49HeRySzaDoZSwa5yA5u2WH/Ft2iEYoljoyRUFEBniJTKkl99c9XdGZYSh1CZ46BKAfBRxQ1sF4wUtR/3R3gC7qkiLFagrBn3HS6j7wltRNhp5Mf/XQdNqDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UDHQE4yS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350E6C4CEE4;
+	Thu, 17 Apr 2025 18:24:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913135;
-	bh=xwni/UOErv4w8N1ndbk1Hq9ihr4O18L8Vq8t3LQpI/0=;
+	s=korg; t=1744914294;
+	bh=aIBFSbShfAtlwysT9Q5WIZ7vkUGA9uoSOw7dHnE2d6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eq599zMRB2MHtWJhbUBRjCAwKgBIOuP/LJM2IRUP2iU5G99TjFLPgm5l7sPGXcb0i
-	 oZbvOf0CCOKuvXNocxvVDQxMZcxCpPD9TPjStD0+UjcxIH6NnYbSGoSE93fDEfirLI
-	 6MAfw3XY50yC1dFmWvmBi4Ew64zY1Hqi3Cw5RHEg=
+	b=UDHQE4ySEX1ZryxhpB6jVzFxsF6O41qgYMf9KnjSFSpjUd+TeVOi/D+ipLwjtpqj0
+	 IlgOs7XJwA8VeKqXyWOq9OED8v9EylRXR9UWAkZ6MnMSW95rn1T4R9lNSVKpJcJqoW
+	 cmWyn4j+jlZhvykh1UYwM3mR37rulQAsW7VE6Tm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.14 239/449] spi: cadence-qspi: Fix probe on AM62A LP SK
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 169/414] pwm: stm32: Search an appropriate duty_cycle if period cannot be modified
 Date: Thu, 17 Apr 2025 19:48:47 +0200
-Message-ID: <20250417175127.618240435@linuxfoundation.org>
+Message-ID: <20250417175118.238020785@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,69 +60,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-commit b8665a1b49f5498edb7b21d730030c06b7348a3c upstream.
+[ Upstream commit fda6e0034e9da64e1cec31f4539b6c7abd9ed8be ]
 
-In 2020, there's been an unnoticed change which rightfully attempted to
-report probe deferrals upon DMA absence by checking the return value of
-dma_request_chan_by_mask(). By doing so, it also reported errors which
-were simply ignored otherwise, likely on purpose.
+If another channel is already enabled period must not be modified. If
+the requested period is smaller than this unchangable period the driver
+is still supposed to search a duty_cycle according to the usual rounding
+rules.
 
-This change actually turned a void return into an error code. Hence, not
-only the -EPROBE_DEFER error codes but all error codes got reported to
-the callers, now failing to probe in the absence of Rx DMA channel,
-despite the fact that DMA seems to not be supported natively by many
-implementations.
+So don't set the duty_cycle to 0 but continue to determine an
+appropriate value for ccr.
 
-Looking at the history, this change probably led to:
-ad2775dc3fc5 ("spi: cadence-quadspi: Disable the DAC for Intel LGM SoC")
-f724c296f2f2 ("spi: cadence-quadspi: fix Direct Access Mode disable for SoCFPGA")
-
-In my case, the AM62A LP SK core octo-SPI node from TI does not
-advertise any DMA channel, hinting that there is likely no support for
-it, but yet when the support for the am654 compatible was added, DMA
-seemed to be used, so just discarding its use with the
-CQSPI_DISABLE_DAC_MODE quirk for this compatible does not seem the
-correct approach.
-
-Let's get change the return condition back to:
-- return a probe deferral error if we get one
-- ignore the return value otherwise
-The "error" log level was however likely too high for something that is
-expected to fail, so let's lower it arbitrarily to the info level.
-
-Fixes: 935da5e5100f ("mtd: spi-nor: cadence-quadspi: Handle probe deferral while requesting DMA channel")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://patch.msgid.link/20250305200933.2512925-2-miquel.raynal@bootlin.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: deaba9cff809 ("pwm: stm32: Implementation of the waveform callbacks")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/f0c50df31daa3d6069bfa8d7fb3e71fae241b026.1743844730.git.u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence-quadspi.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/pwm/pwm-stm32.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1658,6 +1658,12 @@ static int cqspi_request_mmap_dma(struct
- 		int ret = PTR_ERR(cqspi->rx_chan);
+diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
+index a59de4de18b6e..ec2c05c9ee7a6 100644
+--- a/drivers/pwm/pwm-stm32.c
++++ b/drivers/pwm/pwm-stm32.c
+@@ -103,22 +103,16 @@ static int stm32_pwm_round_waveform_tohw(struct pwm_chip *chip,
+ 		if (ret)
+ 			goto out;
  
- 		cqspi->rx_chan = NULL;
-+		if (ret == -ENODEV) {
-+			/* DMA support is not mandatory */
-+			dev_info(&cqspi->pdev->dev, "No Rx DMA available\n");
-+			return 0;
-+		}
-+
- 		return dev_err_probe(&cqspi->pdev->dev, ret, "No Rx DMA available\n");
- 	}
- 	init_completion(&cqspi->rx_dma_complete);
+-		/*
+-		 * calculate the best value for ARR for the given PSC, refuse if
+-		 * the resulting period gets bigger than the requested one.
+-		 */
+ 		arr = mul_u64_u64_div_u64(wf->period_length_ns, rate,
+ 					  (u64)NSEC_PER_SEC * (wfhw->psc + 1));
+ 		if (arr <= wfhw->arr) {
+ 			/*
+-			 * requested period is small than the currently
++			 * requested period is smaller than the currently
+ 			 * configured and unchangable period, report back the smallest
+-			 * possible period, i.e. the current state; Initialize
+-			 * ccr to anything valid.
++			 * possible period, i.e. the current state and return 1
++			 * to indicate the wrong rounding direction.
+ 			 */
+-			wfhw->ccr = 0;
+ 			ret = 1;
+-			goto out;
+ 		}
+ 
+ 	} else {
+-- 
+2.39.5
+
 
 
 
