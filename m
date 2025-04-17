@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-134186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD561A92A04
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:46:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E96A927CA
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:28:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBF183AA657
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D69F19E65B7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE92256C8C;
-	Thu, 17 Apr 2025 18:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD1E5257434;
+	Thu, 17 Apr 2025 18:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rHV60mb2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jh0MYwon"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F211DF246;
-	Thu, 17 Apr 2025 18:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2DF257420;
+	Thu, 17 Apr 2025 18:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915356; cv=none; b=AoVtOwZT8qaQNdL9P3dnd6FY6u6aEFM7cd3+OFHQaVOo5D48nt3L9E5j8ld/i9e7u0hT8cyg7wU4CZx0d5zDAK+nGFzHPXF5jik5Jjsz9oh3P3TQSCce7DRceylDwddkMNtqAmqpYdqlVJ3RjNHxPxDJqEnnhp86lQBlXyh3Bsw=
+	t=1744914243; cv=none; b=baGxTG+NoE9H+f2BehEUm35McXbAmDRa9O9gvXe2jeLUwktAEEUPNv/3jLPNPe6S/8LUFAyppeCIpRkih/+8LeFnhP/BKQcmaZQJTCRMqGM5BYCGU7HCPeM8Qi9fF7iunr9hGYbiXy0DwjFvpFrWbZdT8T3puK05QBoKykpizV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915356; c=relaxed/simple;
-	bh=R1cgpxzagMEaAnzpOOdCYetQHM9N6sNBXyhRQ4QCnP8=;
+	s=arc-20240116; t=1744914243; c=relaxed/simple;
+	bh=jIzaHE6+acoLBiYGvVPe/LMu3D9aWcHWhi7c/rcli2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M4QB5h25mgIifN4BotUvTjmEpm47/2nuGQCOz4jzLZ8EMM+GNNdhQW8zNLw5Q8YBiAAv9yMEycW0PstG7Qk/og5TeYBDxQk2gRNDdY2pA7Hiu9tqwhWEK7Q0UcsUMd+kZyfZk06gpC64wDClcKPaMGQzXJmnBC48arKqZIz9FTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rHV60mb2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B394FC4CEE4;
-	Thu, 17 Apr 2025 18:42:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=t1eI+Pl8Uyk2+9TKv0bMbpLd2aMUdM8LiiEp/ER27lRE7lUCs6nPJv2FiW08hB0tSwlPK5mhHVFQC0etrBGCDTP0t5uIN27Z7CzroGFlADYY3sSpCF4N3Amzi6S72NG+F0nIoAjEmuAKDYkhj5KzCTgLokw43BBq5wFXrASYbzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jh0MYwon; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0AA4C4CEE4;
+	Thu, 17 Apr 2025 18:24:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915356;
-	bh=R1cgpxzagMEaAnzpOOdCYetQHM9N6sNBXyhRQ4QCnP8=;
+	s=korg; t=1744914243;
+	bh=jIzaHE6+acoLBiYGvVPe/LMu3D9aWcHWhi7c/rcli2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rHV60mb2Upyf76EVVQTLQFxVUn6X1kNYJK9MnpbQRlHObLo4Tjh8xxotUChfUJzoj
-	 STAnIC78NnzU4+r80VJ4xnAJMNrKvh6z1G9q5gheRJfFVO/Rn1uetWEZrDvlVzpLww
-	 2YHf0gxzpI4vJUy/SfosAuZEBzPbrnqei96G0HO8=
+	b=Jh0MYwonY0eoNpa9xSDFe+o4jlF7kHD1hSO3DaYkDJHMJTVSEUSDJddkyyivKfR3Z
+	 FIhvwKjbFX/boZIgpHoIFZE/lE8tAxDg0/p4ltnRJWk0J+ux2p6R3/F2x21N/h4Hyv
+	 sG+ote4BER35BPlcl7QJ22oXBt3ufwKctsS8f56o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+7c808908291a569281a9@syzkaller.appspotmail.com
-Subject: [PATCH 6.12 102/393] jfs: add sanity check for agwidth in dbMount
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 153/414] PCI: Add Rockchip Vendor ID
 Date: Thu, 17 Apr 2025 19:48:31 +0200
-Message-ID: <20250417175111.699062941@linuxfoundation.org>
+Message-ID: <20250417175117.590261491@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Shawn Lin <shawn.lin@rock-chips.com>
 
-[ Upstream commit ddf2846f22e8575d6b4b6a66f2100f168b8cd73d ]
+[ Upstream commit 20bbb083bbc9d3f8db390f2e35e168f1b23dae8a ]
 
-The width in dmapctl of the AG is zero, it trigger a divide error when
-calculating the control page level in dbAllocAG.
+Move PCI_VENDOR_ID_ROCKCHIP from pci_endpoint_test.c to pci_ids.h and
+reuse it in pcie-rockchip-host.c.
 
-To avoid this issue, add a check for agwidth in dbAllocAG.
-
-Reported-and-tested-by: syzbot+7c808908291a569281a9@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7c808908291a569281a9
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Link: https://lore.kernel.org/r/20250218092120.2322784-2-cassel@kernel.org
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/misc/pci_endpoint_test.c            | 1 -
+ drivers/pci/controller/pcie-rockchip-host.c | 2 +-
+ drivers/pci/controller/pcie-rockchip.h      | 1 -
+ include/linux/pci_ids.h                     | 2 ++
+ 4 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 9ac1fc2ed05bc..0e1019382cf51 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -204,6 +204,10 @@ int dbMount(struct inode *ipbmap)
- 	bmp->db_aglevel = le32_to_cpu(dbmp_le->dn_aglevel);
- 	bmp->db_agheight = le32_to_cpu(dbmp_le->dn_agheight);
- 	bmp->db_agwidth = le32_to_cpu(dbmp_le->dn_agwidth);
-+	if (!bmp->db_agwidth) {
-+		err = -EINVAL;
-+		goto err_release_metapage;
-+	}
- 	bmp->db_agstart = le32_to_cpu(dbmp_le->dn_agstart);
- 	bmp->db_agl2size = le32_to_cpu(dbmp_le->dn_agl2size);
- 	if (bmp->db_agl2size > L2MAXL2SIZE - L2MAXAG ||
+diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
+index 3aaaf47fa4ee2..b5c8422fd2f04 100644
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -85,7 +85,6 @@
+ #define PCI_DEVICE_ID_RENESAS_R8A774E1		0x0025
+ #define PCI_DEVICE_ID_RENESAS_R8A779F0		0x0031
+ 
+-#define PCI_VENDOR_ID_ROCKCHIP			0x1d87
+ #define PCI_DEVICE_ID_ROCKCHIP_RK3588		0x3588
+ 
+ static DEFINE_IDA(pci_endpoint_test_ida);
+diff --git a/drivers/pci/controller/pcie-rockchip-host.c b/drivers/pci/controller/pcie-rockchip-host.c
+index 5adac6adc046f..6a46be17aa91b 100644
+--- a/drivers/pci/controller/pcie-rockchip-host.c
++++ b/drivers/pci/controller/pcie-rockchip-host.c
+@@ -367,7 +367,7 @@ static int rockchip_pcie_host_init_port(struct rockchip_pcie *rockchip)
+ 		}
+ 	}
+ 
+-	rockchip_pcie_write(rockchip, ROCKCHIP_VENDOR_ID,
++	rockchip_pcie_write(rockchip, PCI_VENDOR_ID_ROCKCHIP,
+ 			    PCIE_CORE_CONFIG_VENDOR);
+ 	rockchip_pcie_write(rockchip,
+ 			    PCI_CLASS_BRIDGE_PCI_NORMAL << 8,
+diff --git a/drivers/pci/controller/pcie-rockchip.h b/drivers/pci/controller/pcie-rockchip.h
+index a51b087ce8786..f9eaac9c8ee5d 100644
+--- a/drivers/pci/controller/pcie-rockchip.h
++++ b/drivers/pci/controller/pcie-rockchip.h
+@@ -198,7 +198,6 @@
+ #define AXI_WRAPPER_NOR_MSG			0xc
+ 
+ #define PCIE_RC_SEND_PME_OFF			0x11960
+-#define ROCKCHIP_VENDOR_ID			0x1d87
+ #define PCIE_LINK_IS_L2(x) \
+ 	(((x) & PCIE_CLIENT_DEBUG_LTSSM_MASK) == PCIE_CLIENT_DEBUG_LTSSM_L2)
+ #define PCIE_LINK_TRAINING_DONE(x) \
+diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+index 1a2594a38199f..2a9ca3dbaa0e9 100644
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -2609,6 +2609,8 @@
+ 
+ #define PCI_VENDOR_ID_ZHAOXIN		0x1d17
+ 
++#define PCI_VENDOR_ID_ROCKCHIP		0x1d87
++
+ #define PCI_VENDOR_ID_HYGON		0x1d94
+ 
+ #define PCI_VENDOR_ID_META		0x1d9b
 -- 
 2.39.5
 
