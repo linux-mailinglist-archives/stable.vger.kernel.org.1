@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-133465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17D8AA92648
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:12:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C372A929A2
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:43:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2014D7B7A13
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2C5F1B63DFA
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED1A25B693;
-	Thu, 17 Apr 2025 18:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A751D07BA;
+	Thu, 17 Apr 2025 18:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zXcZQcBy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpa/zrNo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30CC8258CE6;
-	Thu, 17 Apr 2025 18:06:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8523770B;
+	Thu, 17 Apr 2025 18:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913161; cv=none; b=aaOWqgHcS+ykVQkBiCLuv9iSDhzOfhxCs1RUtFixgVjv6lhonPDOrzn4E7TyPJM8eChtKgZpfoHvTUlRwGKy0LHPGZHilvNKLauUBRU4EgRv9PtSy4kI3frFUmcuihZLkurMmHv3ao/LtOk8i99DAEx4/qQggbuxx8byUVIsYhY=
+	t=1744915382; cv=none; b=Z5IMGT8b03VHOTLt1ziZHFKoeX5XENfWwbFqC/TKiirO5S+BoPewHxOzBcXCzj8/+SKP9TU80blJI+XV2mOVVt69448yUYdMi1fhOS2OY8uDdZYMKiQWjVU2IMz2q3lp5XZLyY9Ss5pLsuutQlWjzOI3T1asWDGeQ45R6aWP3Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913161; c=relaxed/simple;
-	bh=bPBjzUwentujqWe+YCuvNOQBNqanWq1YIvrYX4wQlS8=;
+	s=arc-20240116; t=1744915382; c=relaxed/simple;
+	bh=85NLhwv/U7RZtapRhyJ3N/gvuxa8fnSZqa8T8cOTI6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YlSlJNyMyaYW/v2gZAABsN+YIfQ5tbtLyBUsaH5bhILBA/Frsm6XqXrrRNGmFYmnP7fChAvDhZEtvzGLikTckPnn8c1ID5nUI6B7k0WK3XmFhfaNjxSGELZMOCYbPTfFFAd2dGuMIIe5mylHvMifXf/56gE3XyNQLSexXUN/7l4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zXcZQcBy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 492E5C4CEE4;
-	Thu, 17 Apr 2025 18:06:00 +0000 (UTC)
+	 MIME-Version; b=JKMZofScxWsvwy+/Ss8pCFrQxdk5MFlnOEvq9sWD1O0LMeRpXYpdx22juvdLFiw8KVJ+4khxPTDnwQYiTzjJ0fBFbSR/GucQYdoK0jhGzXFfV1ALCkZUrfs0R45/Z3kMZjHeupOjLIdb1EeDLf3Dpb5qTyf4LXYgjJArs42bsQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpa/zrNo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B4A9C4CEF4;
+	Thu, 17 Apr 2025 18:43:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913160;
-	bh=bPBjzUwentujqWe+YCuvNOQBNqanWq1YIvrYX4wQlS8=;
+	s=korg; t=1744915382;
+	bh=85NLhwv/U7RZtapRhyJ3N/gvuxa8fnSZqa8T8cOTI6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zXcZQcByf9FwfBUqwLnJSgYaVRZmxQvWWihslZdZglMKbh3O1npg8ZSipzspe0vSJ
-	 jT+3pzXRUbB4h1TZl83X5SW8gh36hcyglU1Qxu1WCcTGQFMgYFqZa7pQ99V/B/SqxZ
-	 6N9uM69GOLDioacVcRMAVvYZ6xl4GXM8slCT/K74=
+	b=wpa/zrNobd3fOESHGt78wjRQ7y+9DQvp2DVlclva+ShsNcqAV0rZ2Qg1TdtJIDlQG
+	 8J1MmYDTMjiQG+LNQIzWcWZ/pAc7hl1nQLTV5XlySm/0eCdH6dW//IXd1TlKomuHb0
+	 mvdHHnwKGmRB1XL7CGBRXm6xp8wdKAPmQSzX2Y5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Can <yuancan@huawei.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.14 229/449] media: siano: Fix error handling in smsdvb_module_init()
-Date: Thu, 17 Apr 2025 19:48:37 +0200
-Message-ID: <20250417175127.216293264@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 109/393] ext4: protect ext4_release_dquot against freezing
+Date: Thu, 17 Apr 2025 19:48:38 +0200
+Message-ID: <20250417175111.974774357@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Can <yuancan@huawei.com>
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 
-commit 734ac57e47b3bdd140a1119e2c4e8e6f8ef8b33d upstream.
+[ Upstream commit 530fea29ef82e169cd7fe048c2b7baaeb85a0028 ]
 
-The smsdvb_module_init() returns without checking the retval from
-smscore_register_hotplug().
-If the smscore_register_hotplug() failed, the module failed to install,
-leaving the smsdvb_debugfs not unregistered.
+Protect ext4_release_dquot against freezing so that we
+don't try to start a transaction when FS is frozen, leading
+to warnings.
 
-Fixes: 3f6b87cff66b ("[media] siano: allow showing the complete statistics via debugfs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Acked-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Further, avoid taking the freeze protection if a transaction
+is already running so that we don't need end up in a deadlock
+as described in
+
+  46e294efc355 ext4: fix deadlock with fs freezing and EA inodes
+
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20241121123855.645335-3-ojaswin@linux.ibm.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/common/siano/smsdvb-main.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/ext4/super.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/drivers/media/common/siano/smsdvb-main.c
-+++ b/drivers/media/common/siano/smsdvb-main.c
-@@ -1243,6 +1243,8 @@ static int __init smsdvb_module_init(voi
- 	smsdvb_debugfs_register();
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index d3795c6c0a9d8..4291ab3c20be6 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -6906,12 +6906,25 @@ static int ext4_release_dquot(struct dquot *dquot)
+ {
+ 	int ret, err;
+ 	handle_t *handle;
++	bool freeze_protected = false;
++
++	/*
++	 * Trying to sb_start_intwrite() in a running transaction
++	 * can result in a deadlock. Further, running transactions
++	 * are already protected from freezing.
++	 */
++	if (!ext4_journal_current_handle()) {
++		sb_start_intwrite(dquot->dq_sb);
++		freeze_protected = true;
++	}
  
- 	rc = smscore_register_hotplug(smsdvb_hotplug);
-+	if (rc)
-+		smsdvb_debugfs_unregister();
+ 	handle = ext4_journal_start(dquot_to_inode(dquot), EXT4_HT_QUOTA,
+ 				    EXT4_QUOTA_DEL_BLOCKS(dquot->dq_sb));
+ 	if (IS_ERR(handle)) {
+ 		/* Release dquot anyway to avoid endless cycle in dqput() */
+ 		dquot_release(dquot);
++		if (freeze_protected)
++			sb_end_intwrite(dquot->dq_sb);
+ 		return PTR_ERR(handle);
+ 	}
+ 	ret = dquot_release(dquot);
+@@ -6922,6 +6935,10 @@ static int ext4_release_dquot(struct dquot *dquot)
+ 	err = ext4_journal_stop(handle);
+ 	if (!ret)
+ 		ret = err;
++
++	if (freeze_protected)
++		sb_end_intwrite(dquot->dq_sb);
++
+ 	return ret;
+ }
  
- 	pr_debug("\n");
- 
+-- 
+2.39.5
+
 
 
 
