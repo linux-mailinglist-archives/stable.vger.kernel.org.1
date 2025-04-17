@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFAB9A925FA
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:09:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBB74A92880
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:35:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 596E88A59BB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 975C9189C1F6
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF703256C6B;
-	Thu, 17 Apr 2025 18:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD1CD2571DC;
+	Thu, 17 Apr 2025 18:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YqExOJKZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pf2EHMb+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13D41DF756;
-	Thu, 17 Apr 2025 18:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6947C2566D7;
+	Thu, 17 Apr 2025 18:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913337; cv=none; b=QSAMp8zT1HLT3aRX+uex3bj4sM8ekruRNf9OOxKICa0DEqKy9pypSjeUkmLh8n3ULs9K90smSxXN9/nl+6it4cflYwsbA0F0122CxC8UR8gDtS8c8NepBmJXv+KFlEHtyTzZLcwDYIpH71FYOx+83L/NSxvE7RKxewJMUPKPYpQ=
+	t=1744914502; cv=none; b=hRURkDdfVCyJIrNed66QvuXN/3tl4HsUKBzgeOHx9qqmjFYsFrp3npc8+hsR1ocGrTrxsqoaxkgrYnvdLumgEsRoy7U8Px5/Nz1G6wioPaLhE9n+SGVZhUQz2kOqfJSTRNtBWRLUD/QlixJSqVDNZ0r70vNQpx1+RZz/HIvCG+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913337; c=relaxed/simple;
-	bh=UdAwudfvAm8WgSnK6LjgZd9+gt9p31oUIzjeQ/Ysqec=;
+	s=arc-20240116; t=1744914502; c=relaxed/simple;
+	bh=ZGoDx620c3EEeZ61L5NUM7mQmYaG+SswBH8CdrjEMUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qq7AP8gF++cMbtLChPJDec2Tkf4q760wE5nBTjEhMU0utKumi01AoBSJxNpLvpRbm2EynRCna0vYbEQhYSyxsuWsb+NzR+XMmpywRHW3q/E3bMU0cCcMK8mgRH31R8FJ+LnoPud7gqvCDO3a+G8kRTVpNVSQR0pMUemtTkgxKiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YqExOJKZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42B9C4CEE4;
-	Thu, 17 Apr 2025 18:08:56 +0000 (UTC)
+	 MIME-Version; b=nRVBdma7EmwdOzITuFA9uC3xVXDwA0AepmGYMfer3XzLu54Jurdx7vJDlMjtFmeyS2Rch9F4HIIpYQUK2Vz1DmUAe7H+7qGorjycsSlj6WeZTKkbRQ9llrmW0KMo3tqVQrfmIXxoqxa2D2VWHFnletDD7VktTblAzs/xj2ZRLis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pf2EHMb+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 001C0C4CEE4;
+	Thu, 17 Apr 2025 18:28:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913337;
-	bh=UdAwudfvAm8WgSnK6LjgZd9+gt9p31oUIzjeQ/Ysqec=;
+	s=korg; t=1744914502;
+	bh=ZGoDx620c3EEeZ61L5NUM7mQmYaG+SswBH8CdrjEMUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YqExOJKZ77+VIEkglGe2LRbkj1/fzI+1Gt4v2k41xYcyURKOQKkVpHpzmi4FdexyB
-	 2iGAP7baxGv9vA9LccPsXGpss3E8cQqGJT5DAD5ZvF84PO5o1/PA2ATd3BMHTNAK/J
-	 b0rJs1O6Fk4SsiG0L5KZguZBlFApgRrcI5LDCGoc=
+	b=Pf2EHMb+fwvKWMFbYsOUSPEW0gjTcaXmoIPraPP9STxuZ0pfw55vXnjHDiG9LoLy6
+	 sifJApfj78Il8EKoK99Cbo/vQc+K5E3DYnAsD6F8P/Cm7w27S1AyOJIfigEFYZJqPl
+	 cnro7MO7gKxIv8ydWIChCCCrO3BmOQtgm+4yxTFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artem Sadovnikov <a.sadovnikov@ispras.ru>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.14 306/449] ext4: fix off-by-one error in do_split
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.13 236/414] media: venus: hfi_parser: add check to avoid out of bound access
 Date: Thu, 17 Apr 2025 19:49:54 +0200
-Message-ID: <20250417175130.426597496@linuxfoundation.org>
+Message-ID: <20250417175120.919941360@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Sadovnikov <a.sadovnikov@ispras.ru>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
 
-commit 94824ac9a8aaf2fb3c54b4bdde842db80ffa555d upstream.
+commit 172bf5a9ef70a399bb227809db78442dc01d9e48 upstream.
 
-Syzkaller detected a use-after-free issue in ext4_insert_dentry that was
-caused by out-of-bounds access due to incorrect splitting in do_split.
-
-BUG: KASAN: use-after-free in ext4_insert_dentry+0x36a/0x6d0 fs/ext4/namei.c:2109
-Write of size 251 at addr ffff888074572f14 by task syz-executor335/5847
-
-CPU: 0 UID: 0 PID: 5847 Comm: syz-executor335 Not tainted 6.12.0-rc6-syzkaller-00318-ga9cda7c0ffed #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/30/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0x169/0x550 mm/kasan/report.c:488
- kasan_report+0x143/0x180 mm/kasan/report.c:601
- kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
- __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
- ext4_insert_dentry+0x36a/0x6d0 fs/ext4/namei.c:2109
- add_dirent_to_buf+0x3d9/0x750 fs/ext4/namei.c:2154
- make_indexed_dir+0xf98/0x1600 fs/ext4/namei.c:2351
- ext4_add_entry+0x222a/0x25d0 fs/ext4/namei.c:2455
- ext4_add_nondir+0x8d/0x290 fs/ext4/namei.c:2796
- ext4_symlink+0x920/0xb50 fs/ext4/namei.c:3431
- vfs_symlink+0x137/0x2e0 fs/namei.c:4615
- do_symlinkat+0x222/0x3a0 fs/namei.c:4641
- __do_sys_symlink fs/namei.c:4662 [inline]
- __se_sys_symlink fs/namei.c:4660 [inline]
- __x64_sys_symlink+0x7a/0x90 fs/namei.c:4660
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
-
-The following loop is located right above 'if' statement.
-
-for (i = count-1; i >= 0; i--) {
-	/* is more than half of this entry in 2nd half of the block? */
-	if (size + map[i].size/2 > blocksize/2)
-		break;
-	size += map[i].size;
-	move++;
-}
-
-'i' in this case could go down to -1, in which case sum of active entries
-wouldn't exceed half the block size, but previous behaviour would also do
-split in half if sum would exceed at the very last block, which in case of
-having too many long name files in a single block could lead to
-out-of-bounds access and following use-after-free.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+There is a possibility that init_codecs is invoked multiple times during
+manipulated payload from video firmware. In such case, if codecs_count
+can get incremented to value more than MAX_CODEC_NUM, there can be OOB
+access. Reset the count so that it always starts from beginning.
 
 Cc: stable@vger.kernel.org
-Fixes: 5872331b3d91 ("ext4: fix potential negative array index in do_split()")
-Signed-off-by: Artem Sadovnikov <a.sadovnikov@ispras.ru>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250404082804.2567-3-a.sadovnikov@ispras.ru
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/namei.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/qcom/venus/hfi_parser.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/ext4/namei.c
-+++ b/fs/ext4/namei.c
-@@ -1995,7 +1995,7 @@ static struct ext4_dir_entry_2 *do_split
- 	 * split it in half by count; each resulting block will have at least
- 	 * half the space free.
- 	 */
--	if (i > 0)
-+	if (i >= 0)
- 		split = count - move;
- 	else
- 		split = count/2;
+--- a/drivers/media/platform/qcom/venus/hfi_parser.c
++++ b/drivers/media/platform/qcom/venus/hfi_parser.c
+@@ -19,6 +19,8 @@ static void init_codecs(struct venus_cor
+ 	struct hfi_plat_caps *caps = core->caps, *cap;
+ 	unsigned long bit;
+ 
++	core->codecs_count = 0;
++
+ 	if (hweight_long(core->dec_codecs) + hweight_long(core->enc_codecs) > MAX_CODEC_NUM)
+ 		return;
+ 
 
 
 
