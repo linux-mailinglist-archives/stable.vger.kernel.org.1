@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-133866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA0D7A92809
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6CB0A925FC
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:09:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EF7D16807F
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F397465CF8
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60C7256C99;
-	Thu, 17 Apr 2025 18:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B08932566E9;
+	Thu, 17 Apr 2025 18:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbX7FaRG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dbfZI65u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82630258CF9;
-	Thu, 17 Apr 2025 18:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613B32566DA;
+	Thu, 17 Apr 2025 18:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914384; cv=none; b=fP2zfQaFAfQK+CeMljLfpnqKRwGUxKpOz39KorPEcKoe4Xt4Y7I/1Jkgt7PhSZuR4FXA8h+qB42D/3ZY8xkr2IMHAsddcdqsTgkrUPs6oNs5fNz8Vp+9r4cSY786iZP6FVg8Fx+4lyfSV7Rw9HIsHXUkN/kxdxKeCH5K23YZ28o=
+	t=1744913313; cv=none; b=BiYLAHqpr0JFJYBU3m3sEeGpzBl6YpzrCm3736ZqxWGaJ0gZCTjqGcMFgUeF62/o5BSz/VOTzTQ9HIvDGmwqUjiWNLirTPl+8aHVZBo7e14WMQm0cWAXOY+a27iKW5yjY9if2+depHzA4ovZSMFdqNKZ4CCxYJntqg9EyaJvA3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914384; c=relaxed/simple;
-	bh=/QQ8FHSTOkZezIjoko7AoKIRyNWqJ18DukrqVxwwq2g=;
+	s=arc-20240116; t=1744913313; c=relaxed/simple;
+	bh=slwk46eklvW6fNoeOluymadwCxm3SRwwBWLN+rWVdyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sl2LYvmAg77Gs3wS1EFhr6gNqhWjHeD4vpbbV2qvugPkfiY/7/cBjmsQoh6STfcfD0kpVv/k14a0XlLBH4ZsNgrJ5P+Wy/Q48z5C7orGqpk24+AFDlkfn3KZwu3L17cp25mgyeOVp5E8zrrVYS0OXGFKszKpR6qP/d0oZdRv3OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NbX7FaRG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F065C4CEE7;
-	Thu, 17 Apr 2025 18:26:23 +0000 (UTC)
+	 MIME-Version; b=MKw6whLEkHdYrAu45bkYnriXksJLncG0ei7vYtHQ0CLPO1sY84D7Ed09Td+0UE4OPHFYBlx2ZvIZ+CG6tqpXIMrdBeiIsv2RC/OlqOyD50VfhnYb5zjqsoGSrfpQqLnpJWdF3gBad1l7IbyXqiW8amRGpJnxpATSWxeWIWT+/Lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbfZI65u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2745C4CEE4;
+	Thu, 17 Apr 2025 18:08:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914384;
-	bh=/QQ8FHSTOkZezIjoko7AoKIRyNWqJ18DukrqVxwwq2g=;
+	s=korg; t=1744913313;
+	bh=slwk46eklvW6fNoeOluymadwCxm3SRwwBWLN+rWVdyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NbX7FaRG+0H3hRuLw7BEs4stGsA/zeL5qH+UTdtCAUXljfki00ixYNvraFFl47xgI
-	 Fs4uVHeT5PDKyQBFQTzJa5ErJOghxRykmEUx9SZO8yoqmMbX8cAVEoWcvAzweBftsU
-	 8CsunwYpssaJzlZ+5/EdeQ6abTLLIzI6rogZJ9bE=
+	b=dbfZI65u0IGt6uCpmWrA2uCRGbJir+dfr2je6ATuQAXtbjxZh6TsLDnZbrOFIO2nF
+	 T1F81kpP8Emne40sm1Gl1qO+kWFHSLiHpM57WeeXPW/0qgBaaKAFieGnEYHnqVlKPR
+	 k21hY58aigqhpO5MqQF3Q2k0pchWg4CBnpHh4BmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.13 197/414] media: mediatek: vcodec: Fix a resource leak related to the scp device in FW initialization
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.14 267/449] irqchip/renesas-rzv2h: Fix wrong variable usage in rzv2h_tint_set_type()
 Date: Thu, 17 Apr 2025 19:49:15 +0200
-Message-ID: <20250417175119.370342033@linuxfoundation.org>
+Message-ID: <20250417175128.773467052@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-commit 4936cd5817af35d23e4d283f48fa59a18ef481e4 upstream.
+commit 72310650788ad3d3afe3810735656dd291fea885 upstream.
 
-On Mediatek devices with a system companion processor (SCP) the mtk_scp
-structure has to be removed explicitly to avoid a resource leak.
-Free the structure in case the allocation of the firmware structure fails
-during the firmware initialization.
+The variable tssel_n is used for selecting TINT source and titsel_n for
+setting the interrupt type. The variable titsel_n is wrongly used for
+enabling the TINT interrupt in rzv2h_tint_set_type(). Fix this issue by
+using the correct variable tssel_n.
 
-Fixes: 53dbe0850444 ("media: mtk-vcodec: potential null pointer deference in SCP")
+While at it, move the tien variable assignment near to tssr.
+
+Fixes: 0d7605e75ac2 ("irqchip: Add RZ/V2H(P) Interrupt Control Unit (ICU) driver")
+Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Link: https://lore.kernel.org/all/20250224131253.134199-3-biju.das.jz@bp.renesas.com
+Closes: https://lore.kernel.org/CAMuHMdU3xJpz-jh=j7t4JreBat2of2ksP_OR3+nKAoZBr4pSxg@mail.gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_scp.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-renesas-rzv2h.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_scp.c
-+++ b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_scp.c
-@@ -79,8 +79,11 @@ struct mtk_vcodec_fw *mtk_vcodec_fw_scp_
- 	}
+--- a/drivers/irqchip/irq-renesas-rzv2h.c
++++ b/drivers/irqchip/irq-renesas-rzv2h.c
+@@ -301,10 +301,10 @@ static int rzv2h_tint_set_type(struct ir
  
- 	fw = devm_kzalloc(&plat_dev->dev, sizeof(*fw), GFP_KERNEL);
--	if (!fw)
-+	if (!fw) {
-+		scp_put(scp);
- 		return ERR_PTR(-ENOMEM);
-+	}
-+
- 	fw->type = SCP;
- 	fw->ops = &mtk_vcodec_rproc_msg;
- 	fw->scp = scp;
+ 	tssr_k = ICU_TSSR_K(tint_nr);
+ 	tssel_n = ICU_TSSR_TSSEL_N(tint_nr);
++	tien = ICU_TSSR_TIEN(tssel_n);
+ 
+ 	titsr_k = ICU_TITSR_K(tint_nr);
+ 	titsel_n = ICU_TITSR_TITSEL_N(tint_nr);
+-	tien = ICU_TSSR_TIEN(titsel_n);
+ 
+ 	guard(raw_spinlock)(&priv->lock);
+ 
 
 
 
