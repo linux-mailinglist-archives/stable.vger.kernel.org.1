@@ -1,57 +1,67 @@
-Return-Path: <stable+bounces-134018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3821A92903
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:39:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4168A92AD1
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE5951722AB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 655C9171B0B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCAED26461E;
-	Thu, 17 Apr 2025 18:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27CDF257434;
+	Thu, 17 Apr 2025 18:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LM5gzcRZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KskrFMSs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A694264615;
-	Thu, 17 Apr 2025 18:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8225256C93;
+	Thu, 17 Apr 2025 18:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914845; cv=none; b=RcqjOtE1MrVqIftvwbkLjSjn3gG24n385E4Zlbxen0r387ZafhmWlGhb6AUAaRxyA1zouGFvWjaBGoPR8dhHSWzxm7Njz4o22k18VDWH8PhFKtoV1Nvyn4s38D8ckrPqGz6e1Fp2dLzRT78s+J523oxe+W1LPFwJA2sUllGfR54=
+	t=1744915967; cv=none; b=gU3MDUsLeAxWD7Z7g+N9EUTg8uAULh2yoUg2z5uMeoxvjN2Fj3ydXDqec5lQbki+b60v6tMDW27d3kgSJVRVwI+DjAKEJy55zK1SJO18Q/6ABD8KF4XRKbKDKfKHLBQnK1LKCJtYcVGUnWTC5+d1DAhzQKm7Au9MCjG6nEPntDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914845; c=relaxed/simple;
-	bh=dBCmFsEtki+QfBfpRHd9dbN0I76qTKgZoE8tnmeoPhk=;
+	s=arc-20240116; t=1744915967; c=relaxed/simple;
+	bh=ARnqRe0DryUYzhiMRD9ZFbirZSOrnjDFxJl0XytC+jk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gdLwcUJV9S2jrUiEZklAFfT6Ban2Z23nsoQTK+w5Qi6qUc59M6zefkLhfTsttPgcdGUIHFB5YTlpCBAdkFuxyjEFoeQQKuDgssSBrimvdzXcQuGpzxQnSPvTw8Q4ELV9InFl48Evn/Z0s5IofkkU+PMdWK8HxbL6dWkBXQFjln4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LM5gzcRZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2477AC4CEE4;
-	Thu, 17 Apr 2025 18:34:04 +0000 (UTC)
+	 MIME-Version; b=ZQBLER3vdf2YKF+BRNOmAEKp2SqHuQlATYxCRi8OokL1f3YlZVY88JuxM6GIUkG0Nh0/kMFTA4oXv7IGNm/IDJjsGdEnyonYeSkO2A6NU18U/yQQy3uCmP/qDq1wZT1G5b1KpeczifR/foXnJpklCFAwrLvhNbvn2Grhk+AS4Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KskrFMSs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43663C4CEE4;
+	Thu, 17 Apr 2025 18:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914845;
-	bh=dBCmFsEtki+QfBfpRHd9dbN0I76qTKgZoE8tnmeoPhk=;
+	s=korg; t=1744915967;
+	bh=ARnqRe0DryUYzhiMRD9ZFbirZSOrnjDFxJl0XytC+jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LM5gzcRZDxemafn1yqOHAIH2pOZYOawqCRsZZQvxpVUdlOHCSUurGZ35fejQQd/4i
-	 5MjXfRdu+3DpykjfunnYTumjKnaUwGByDO5XjLu/WM+wxXI2S/43JavhlynZUdFLz9
-	 PoNvG2j/TqptRwK0RjOGBO7bwyZKyknhJlRX+9qY=
+	b=KskrFMSsC/4Y8Ewa4lSY2e0E54ca5rIRbBVhXjupUOVucFdnVkZvHcXBACC8l2Bfo
+	 ZpA9rJn4xNAbaF2qCzlJuSEoKnwrGQkPQb7QcBvwl2BUkQJfL/STvKAe2BtWDaDmX7
+	 IvW4InuddvhnSp0o4tnG0EQKzBBitw2/QCCB/JHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dionna Glaze <dionnaglaze@google.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.13 350/414] crypto: ccp - Fix uAPI definitions of PSP errors
-Date: Thu, 17 Apr 2025 19:51:48 +0200
-Message-ID: <20250417175125.510736737@linuxfoundation.org>
+	Ryan Roberts <ryan.roberts@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Juergen Gross <jgross@suse.com>,
+	Borislav Betkov <bp@alien8.de>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
+	Thomas Gleinxer <tglx@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 300/393] sparc/mm: disable preemption in lazy mmu mode
+Date: Thu, 17 Apr 2025 19:51:49 +0200
+Message-ID: <20250417175119.677741659@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +73,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dionna Glaze <dionnaglaze@google.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-commit b949f55644a6d1645c0a71f78afabf12aec7c33b upstream.
+commit a1d416bf9faf4f4871cb5a943614a07f80a7d70f upstream.
 
-Additions to the error enum after explicit 0x27 setting for
-SEV_RET_INVALID_KEY leads to incorrect value assignments.
+Since commit 38e0edb15bd0 ("mm/apply_to_range: call pte function with lazy
+updates") it's been possible for arch_[enter|leave]_lazy_mmu_mode() to be
+called without holding a page table lock (for the kernel mappings case),
+and therefore it is possible that preemption may occur while in the lazy
+mmu mode.  The Sparc lazy mmu implementation is not robust to preemption
+since it stores the lazy mode state in a per-cpu structure and does not
+attempt to manage that state on task switch.
 
-Use explicit values to match the manufacturer specifications more
-clearly.
+Powerpc had the same issue and fixed it by explicitly disabling preemption
+in arch_enter_lazy_mmu_mode() and re-enabling in
+arch_leave_lazy_mmu_mode().  See commit b9ef323ea168 ("powerpc/64s:
+Disable preemption in hash lazy mmu mode").
 
-Fixes: 3a45dc2b419e ("crypto: ccp: Define the SEV-SNP commands")
-CC: stable@vger.kernel.org
-Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Given Sparc's lazy mmu mode is based on powerpc's, let's fix it in the
+same way here.
+
+Link: https://lkml.kernel.org/r/20250303141542.3371656-4-ryan.roberts@arm.com
+Fixes: 38e0edb15bd0 ("mm/apply_to_range: call pte function with lazy updates")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Andreas Larsson <andreas@gaisler.com>
+Acked-by: Juergen Gross <jgross@suse.com>
+Cc: Borislav Betkov <bp@alien8.de>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Juegren Gross <jgross@suse.com>
+Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/psp-sev.h |   21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ arch/sparc/mm/tlb.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/include/uapi/linux/psp-sev.h
-+++ b/include/uapi/linux/psp-sev.h
-@@ -73,13 +73,20 @@ typedef enum {
- 	SEV_RET_INVALID_PARAM,
- 	SEV_RET_RESOURCE_LIMIT,
- 	SEV_RET_SECURE_DATA_INVALID,
--	SEV_RET_INVALID_KEY = 0x27,
--	SEV_RET_INVALID_PAGE_SIZE,
--	SEV_RET_INVALID_PAGE_STATE,
--	SEV_RET_INVALID_MDATA_ENTRY,
--	SEV_RET_INVALID_PAGE_OWNER,
--	SEV_RET_INVALID_PAGE_AEAD_OFLOW,
--	SEV_RET_RMP_INIT_REQUIRED,
-+	SEV_RET_INVALID_PAGE_SIZE          = 0x0019,
-+	SEV_RET_INVALID_PAGE_STATE         = 0x001A,
-+	SEV_RET_INVALID_MDATA_ENTRY        = 0x001B,
-+	SEV_RET_INVALID_PAGE_OWNER         = 0x001C,
-+	SEV_RET_AEAD_OFLOW                 = 0x001D,
-+	SEV_RET_EXIT_RING_BUFFER           = 0x001F,
-+	SEV_RET_RMP_INIT_REQUIRED          = 0x0020,
-+	SEV_RET_BAD_SVN                    = 0x0021,
-+	SEV_RET_BAD_VERSION                = 0x0022,
-+	SEV_RET_SHUTDOWN_REQUIRED          = 0x0023,
-+	SEV_RET_UPDATE_FAILED              = 0x0024,
-+	SEV_RET_RESTORE_REQUIRED           = 0x0025,
-+	SEV_RET_RMP_INITIALIZATION_FAILED  = 0x0026,
-+	SEV_RET_INVALID_KEY                = 0x0027,
- 	SEV_RET_MAX,
- } sev_ret_code;
+--- a/arch/sparc/mm/tlb.c
++++ b/arch/sparc/mm/tlb.c
+@@ -52,8 +52,10 @@ out:
  
+ void arch_enter_lazy_mmu_mode(void)
+ {
+-	struct tlb_batch *tb = this_cpu_ptr(&tlb_batch);
++	struct tlb_batch *tb;
+ 
++	preempt_disable();
++	tb = this_cpu_ptr(&tlb_batch);
+ 	tb->active = 1;
+ }
+ 
+@@ -64,6 +66,7 @@ void arch_leave_lazy_mmu_mode(void)
+ 	if (tb->tlb_nr)
+ 		flush_tlb_pending();
+ 	tb->active = 0;
++	preempt_enable();
+ }
+ 
+ static void tlb_batch_add_one(struct mm_struct *mm, unsigned long vaddr,
 
 
 
