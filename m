@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-133659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE69BA926B6
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:15:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D636BA928F0
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:39:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D191190139D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:16:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7740B1B61ED3
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D66311B3934;
-	Thu, 17 Apr 2025 18:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D52264616;
+	Thu, 17 Apr 2025 18:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fg37jD0y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x3Dfd3ih"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C138462;
-	Thu, 17 Apr 2025 18:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645E1264619;
+	Thu, 17 Apr 2025 18:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913748; cv=none; b=Osm3pSpBeFCW3zrd7KcakCHgyeVOWr/RGCZgwVJZ9VKjxGPI4XFNBcj9AWnKpwEvSWyBnGKUtuYM5r6eXrkrGJuFlcAlhvoVCYSE06VAmGPkjweErMzrPFX2sP+rGKfihQmM3rixnFZvwVIViiPZotj2Ypb/r1A8Uvxy9rFXkf4=
+	t=1744914854; cv=none; b=mG9cRkcsKTdDANVmW6r24aRrT/xnxBd9fcdQC2iXaiJ5MdqQ3nmOVwOSakeKZjsj6aJ0V0k3taleOJMfogBM8Hx5SIdBqH3osohg/1RNj7glRRQQzbcJkDJgsZgdgT9ffxfMG9vayyUXBbd+Nuv/1M/nNxfEGoX0jqUikzujSn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913748; c=relaxed/simple;
-	bh=jmhP5z0WEJPgG0yz+7cTzquxfic+tmmsKVPoUu5viik=;
+	s=arc-20240116; t=1744914854; c=relaxed/simple;
+	bh=Djm6KdNi3yKxJEv/VSxoZVH1dP1DdIsNDgPQqkrBqQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qIJuVi5CW0Qk6nw0Mb/37ZVyvQN7CcqtnrSBW49gx0Dycs8KbU9tvyqD+FLsfsbZ3tBUf48HfH95x4GWJhJXhNexlV0HNU+qXIyZ4L7uUCoSYzCnwn4Sn4tkQ6bgIA9GSZ+yMo7fVme9meoP0UXy7IDPMPw6X/PybipWtAb5lGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fg37jD0y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA76C4CEE4;
-	Thu, 17 Apr 2025 18:15:47 +0000 (UTC)
+	 MIME-Version; b=TEDTTObxny6tr82Z6NcbzFWXnknMXz/HmfgcvtDP+A5ORlPWePYK+fmbazpyMzemnkEZIADa5py/5WT8oaOZI/zbJ2SSKrSY2yBLWb7mxJHJ8YUoNU1g4uihni9J0+9gut78tQUsIiUuYb81pXNzYuq2UrGFmfnGYhHi9dxEEcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x3Dfd3ih; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD518C4CEE4;
+	Thu, 17 Apr 2025 18:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913748;
-	bh=jmhP5z0WEJPgG0yz+7cTzquxfic+tmmsKVPoUu5viik=;
+	s=korg; t=1744914854;
+	bh=Djm6KdNi3yKxJEv/VSxoZVH1dP1DdIsNDgPQqkrBqQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fg37jD0yuooS8Ftl23rHRvs+95L/gHNsv9WGls1kezepniddD32g7uMFZgWzrEQHa
-	 y+TzWwXUXNws/PIcaY97qJeqeus8sZRJR4Gql2bpIaCMJ3/+Dssrr+dgoaQ/vSllo7
-	 1ckl+tdyUqjPk6q8xAmYsOafIvYADBMImOQxojBo=
+	b=x3Dfd3ih4x7pf6ZzzhfDCLv7D4U/hJ5GWtXqXPqymhQk4I0wPi0xhSfwT3ilkCjys
+	 wYqfy6VHHLmLBD1N0chXRCfssSQ27/qD3mAMBo/p0a00nObrdp8az5XYq6qWFAWh0S
+	 GGGN2eYXvYDiThkQ7a6iHXYJPy//bWyzs/SdfRtk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanimir Varbanov <svarbanov@suse.de>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: [PATCH 6.14 423/449] PCI: brcmstb: Fix missing of_node_put() in brcm_pcie_probe()
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.13 353/414] dm-ebs: fix prefetch-vs-suspend race
 Date: Thu, 17 Apr 2025 19:51:51 +0200
-Message-ID: <20250417175135.317541971@linuxfoundation.org>
+Message-ID: <20250417175125.646663468@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +58,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanimir Varbanov <svarbanov@suse.de>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 2df181e1aea4628a8fd257f866026625d0519627 upstream.
+commit 9c565428788fb9b49066f94ab7b10efc686a0a4c upstream.
 
-A call to of_parse_phandle() is incrementing the refcount, and as such,
-the of_node_put() must be called when the reference is no longer needed.
+There's a possible race condition in dm-ebs - dm bufio prefetch may be in
+progress while the device is suspended. Fix this by calling
+dm_bufio_client_reset in the postsuspend hook.
 
-Thus, refactor the existing code and add a missing of_node_put() call
-following the check to ensure that "msi_np" matches "pcie->np" and after
-MSI initialization, but only if the MSI support is enabled system-wide.
-
-Cc: stable@vger.kernel.org # v5.10+
-Fixes: 40ca1bf580ef ("PCI: brcmstb: Add MSI support")
-Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20250122222955.1752778-1-svarbanov@suse.de
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-brcmstb.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/md/dm-ebs-target.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/pci/controller/pcie-brcmstb.c
-+++ b/drivers/pci/controller/pcie-brcmstb.c
-@@ -1786,7 +1786,7 @@ static struct pci_ops brcm7425_pcie_ops
+--- a/drivers/md/dm-ebs-target.c
++++ b/drivers/md/dm-ebs-target.c
+@@ -390,6 +390,12 @@ static int ebs_map(struct dm_target *ti,
+ 	return DM_MAPIO_REMAPPED;
+ }
  
- static int brcm_pcie_probe(struct platform_device *pdev)
++static void ebs_postsuspend(struct dm_target *ti)
++{
++	struct ebs_c *ec = ti->private;
++	dm_bufio_client_reset(ec->bufio);
++}
++
+ static void ebs_status(struct dm_target *ti, status_type_t type,
+ 		       unsigned int status_flags, char *result, unsigned int maxlen)
  {
--	struct device_node *np = pdev->dev.of_node, *msi_np;
-+	struct device_node *np = pdev->dev.of_node;
- 	struct pci_host_bridge *bridge;
- 	const struct pcie_cfg_data *data;
- 	struct brcm_pcie *pcie;
-@@ -1890,9 +1890,14 @@ static int brcm_pcie_probe(struct platfo
- 		goto fail;
- 	}
- 
--	msi_np = of_parse_phandle(pcie->np, "msi-parent", 0);
--	if (pci_msi_enabled() && msi_np == pcie->np) {
--		ret = brcm_pcie_enable_msi(pcie);
-+	if (pci_msi_enabled()) {
-+		struct device_node *msi_np = of_parse_phandle(pcie->np, "msi-parent", 0);
-+
-+		if (msi_np == pcie->np)
-+			ret = brcm_pcie_enable_msi(pcie);
-+
-+		of_node_put(msi_np);
-+
- 		if (ret) {
- 			dev_err(pcie->dev, "probe of internal MSI failed");
- 			goto fail;
+@@ -447,6 +453,7 @@ static struct target_type ebs_target = {
+ 	.ctr		 = ebs_ctr,
+ 	.dtr		 = ebs_dtr,
+ 	.map		 = ebs_map,
++	.postsuspend	 = ebs_postsuspend,
+ 	.status		 = ebs_status,
+ 	.io_hints	 = ebs_io_hints,
+ 	.prepare_ioctl	 = ebs_prepare_ioctl,
 
 
 
