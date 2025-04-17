@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-133472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD9A0A925D3
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:08:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E20EA92A2D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5BEC467E1C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1180F3BE45D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:43:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB4B2571B3;
-	Thu, 17 Apr 2025 18:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12DB5227EB1;
+	Thu, 17 Apr 2025 18:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qo/EZciH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jqdBxlOm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A23E1A3178;
-	Thu, 17 Apr 2025 18:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C3819ABC6;
+	Thu, 17 Apr 2025 18:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913181; cv=none; b=qdcijhrP1bW1S857HuN/He427Lyq07eBWuafXGEGjqb/dTwc4zt2yq2BQNwUXjjTdvp/uMFfErOAmZXnHSMR5GXrQG9cmp64UeU9Xn32/TzhzSCRyHfqlejs8GAtUvjbzfP/Subyyo1d8gFtREaPZkQPppVXHKNkQbWywvZ9GUM=
+	t=1744915449; cv=none; b=WfTBW6GAfHZvxt2iZMC4yhNo1keqriRN2v6IL5EEEkyHDoiOROOVQvbjh7Y07oZk6k4EJEvaoH8sUf6ZUKh2VUsxrUUH9nwkED6IVKcMF99sWUN1P7FhIfBY41YlVHYvgiXvJqsqCdpkzEFI7hSuiuA+cmNuCsLeADLIcoy0zMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913181; c=relaxed/simple;
-	bh=vda4h3Lhw7wGcGQTfIftCF0qWBeNTdXNqFxVeHzT2YY=;
+	s=arc-20240116; t=1744915449; c=relaxed/simple;
+	bh=FYpT/7sQ6aD+Kzl7tx34mZ0LnB9ETCaL4UgaHirsZ5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zh6yyo2v0v7rvi9N8MvMTfmH7thdO/ZX8m5rEEn8tfnwpN2quJljWEIFH5GlZVBXUc5jrXXoDgOsenhS6BKkxsgUuxur9tVl2/m1zXsKf1q5Cfv+L+8hwiauq92s74f0MYt5E6kQSEIF9Z+VCw5agYT6k5+lo3ZaMJh3NYtxuyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qo/EZciH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3917C4CEE4;
-	Thu, 17 Apr 2025 18:06:20 +0000 (UTC)
+	 MIME-Version; b=ADNNxiY4Yg7EQxzG5+OQbXxpEh7ps303slOly1+iQOl3mI1HOuugSn/8PsK3McSkDUYfSxegZbWh0q0VHm8oGWbAG2uqBuJtl3ievvKcDiLorCsHwws1GR/ZYITwtn3r3XpJqDNgTSX4FBubuEbm0fxxOfZGMJH70SaxAxWEDSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jqdBxlOm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04065C4CEE4;
+	Thu, 17 Apr 2025 18:44:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913181;
-	bh=vda4h3Lhw7wGcGQTfIftCF0qWBeNTdXNqFxVeHzT2YY=;
+	s=korg; t=1744915449;
+	bh=FYpT/7sQ6aD+Kzl7tx34mZ0LnB9ETCaL4UgaHirsZ5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qo/EZciHVTUgdhjrZXQpihWOkBEoiDd3s/8Qrz1t2+LH6PZEpWiG+SFmS74/nG7HY
-	 6K1Hxs8JsevO/zP9LROt2yiBotDsVnBkgJ/bSfavGiOJlp5nHompdY/qMT+vEvI4Ek
-	 kKXx3IdqxJBHqUsn4wrWaWvYigCoRrcfLnL8bLPE=
+	b=jqdBxlOm9/N/ebHGbU6ub4PJC5hrwJMJVoOKg/fATmNH/pncKN3LbTng2XflT9WcV
+	 NXPQSx7MbZYGGjExz1q+yS0cDY8WrF1/h2+E00Enmk4flT4+OeXHS2hfHtEJBIZEW7
+	 hAhQMAJXtX0aQ6Q0a8EMZfyUo5X/UgUPOune95fw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.14 253/449] media: i2c: ccs: Set the devices runtime PM status correctly in probe
+	Andrew Wyatt <fewtarius@steamfork.org>,
+	John Edwards <uejji@uejji.net>,
+	Paco Avelar <pacoavelar@hotmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 132/393] drm: panel-orientation-quirks: Add quirks for AYA NEO Flip DS and KB
 Date: Thu, 17 Apr 2025 19:49:01 +0200
-Message-ID: <20250417175128.179359262@linuxfoundation.org>
+Message-ID: <20250417175112.898401985@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Andrew Wyatt <fewtarius@steamfork.org>
 
-commit 80704d14f1bd3628f578510e0a88b66824990ef6 upstream.
+[ Upstream commit 529741c331da1fbf54f86c6ec3a4558b9b0b16dc ]
 
-Set the device's runtime PM status to suspended in probe error paths where
-it was previously set to active.
+The AYA NEO Flip DS and KB both use a 1080x1920 portrait LCD panel.  The
+Flip DS additionally uses a 640x960 portrait LCD panel as a second display.
 
-Fixes: 9447082ae666 ("[media] smiapp: Implement power-on and power-off sequences without runtime PM")
-Cc: stable@vger.kernel.org # for >= v5.15
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add DMI matches to correctly rotate these panels.
+
+Signed-off-by: Andrew Wyatt <fewtarius@steamfork.org>
+Co-developed-by: John Edwards <uejji@uejji.net>
+Signed-off-by: John Edwards <uejji@uejji.net>
+Tested-by: Paco Avelar <pacoavelar@hotmail.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250213222455.93533-3-uejji@uejji.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ccs/ccs-core.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/drm_panel_orientation_quirks.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
---- a/drivers/media/i2c/ccs/ccs-core.c
-+++ b/drivers/media/i2c/ccs/ccs-core.c
-@@ -3566,6 +3566,7 @@ static int ccs_probe(struct i2c_client *
- out_disable_runtime_pm:
- 	pm_runtime_put_noidle(&client->dev);
- 	pm_runtime_disable(&client->dev);
-+	pm_runtime_set_suspended(&client->dev);
+diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+index f9c975338fc9e..b5f6ae0459459 100644
+--- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
++++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+@@ -93,6 +93,12 @@ static const struct drm_dmi_panel_orientation_data onegx1_pro = {
+ 	.orientation = DRM_MODE_PANEL_ORIENTATION_RIGHT_UP,
+ };
  
- out_cleanup:
- 	ccs_cleanup(sensor);
++static const struct drm_dmi_panel_orientation_data lcd640x960_leftside_up = {
++	.width = 640,
++	.height = 960,
++	.orientation = DRM_MODE_PANEL_ORIENTATION_LEFT_UP,
++};
++
+ static const struct drm_dmi_panel_orientation_data lcd720x1280_rightside_up = {
+ 	.width = 720,
+ 	.height = 1280,
+@@ -202,6 +208,18 @@ static const struct dmi_system_id orientation_data[] = {
+ 		  DMI_MATCH(DMI_PRODUCT_NAME, "AIR"),
+ 		},
+ 		.driver_data = (void *)&lcd1080x1920_leftside_up,
++	}, {    /* AYA NEO Flip DS Bottom Screen */
++		.matches = {
++		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
++		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "FLIP DS"),
++		},
++		.driver_data = (void *)&lcd640x960_leftside_up,
++	}, {    /* AYA NEO Flip KB/DS Top Screen */
++		.matches = {
++		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
++		  DMI_MATCH(DMI_PRODUCT_NAME, "FLIP"),
++		},
++		.driver_data = (void *)&lcd1080x1920_leftside_up,
+ 	}, {	/* AYA NEO Founder */
+ 		.matches = {
+ 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYA NEO"),
+-- 
+2.39.5
+
 
 
 
