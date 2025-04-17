@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-134221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 627E5A92A31
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DF48A927F9
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 810E68A08C6
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:44:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 246D5466210
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8675D227EB1;
-	Thu, 17 Apr 2025 18:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6743A25FA1F;
+	Thu, 17 Apr 2025 18:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jd2dTiyP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j3wFeygJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C0C1D07BA;
-	Thu, 17 Apr 2025 18:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2381E256C84;
+	Thu, 17 Apr 2025 18:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915467; cv=none; b=rmTWZEelu3TKiR8B6MJSW4y5C7Qdw1GE6zjIbA7hwgEtKsU1pDqCr+TrPT63ZgJRwH4D4AU1eiiXIc8KZmqmHXoE2EhOTLsHOGQ/gER5a71M2rbBdhzvrUlxx9Pqagqy9WnODjtGzVNztTlOjr5JuRrd1YTlP1ZIKYMZ8NwOa30=
+	t=1744914356; cv=none; b=shXtgQH4MsBzKWKoFypEt+/eFqAnkjsaVcT2G/XGyrAAO8xD8ElCsHEdI+NdsWcByXtabJCU/vRUxmspS9qP+j5ZaFtwCJf8FMJ3b0kdDewffJ1ATseLytSid7lEHG6FUkY0Q3e41Ck40zXoHomnk2MiSvfJSGhVZSO8mybMadM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915467; c=relaxed/simple;
-	bh=YZFeUeo8uyNDUxZhj29D1jLUIwLfZAEhx1ugkNVRMfg=;
+	s=arc-20240116; t=1744914356; c=relaxed/simple;
+	bh=ZC/jZvJIcdFJRDdFPmA01X0PuOoXw2e1EQ04oqPIRXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sVUgxCLGYekUmIUgGD+zl5POEGwx9WHUadn1KofyUIREN4j29MHMnUzR563Eqe4xW85u7t8SBaj2IRxMGny5l1KqXM/Zprjv+8Dga8satdHYGIR9qn6c/IhTUbDSmZ5qxTkcUPm+1kyyIWOPwumUnZHGzmDOmsKF6+R8cPf7A3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jd2dTiyP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22590C4CEE4;
-	Thu, 17 Apr 2025 18:44:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oVuarkoXBnWrtv4QjNiI9A1oiveUND8QiArm5AQDqB8P2iVggso+c+m3KhMnlLsleCqMzJ/zA3+EnZxjNYnRr8YL6JZFB4mgPrjldNPnIYRPcZfiuD9A05cF4aTv1TMi/fjOGBhm4mGxgxrxzZNBDYgrPWOe+CFOTMcl67hHFsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j3wFeygJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3F5C4CEE7;
+	Thu, 17 Apr 2025 18:25:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915466;
-	bh=YZFeUeo8uyNDUxZhj29D1jLUIwLfZAEhx1ugkNVRMfg=;
+	s=korg; t=1744914355;
+	bh=ZC/jZvJIcdFJRDdFPmA01X0PuOoXw2e1EQ04oqPIRXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jd2dTiyPoVSOoaDimL1ToHUbmC9yqBjwoE34SWlv6yuUQINb/aRrQTm1dkSzIuG6+
-	 edIobqAE+i0dMBOIsHB9NatoxbTArFBzlB2052Oa5oIycgCuteP5OxtxlTB5NksciR
-	 0nolszsxJMnvOMzKpBh+7tjmnaEDGja7yLpFfHew=
+	b=j3wFeygJJWRMQ4OduIS1YXE28MVMAuzu9hkMTC0cKgg/pSwZOaIDCwpQjtYYwkI0O
+	 bYOfPagmWX/MzeDEWH8jNam+RP2qBBYATUeiChIFN5RLHQe3gk8weFGkI/+jlGgh2n
+	 +mFUqeMCy6MqJ5KqoTJQn65eBGXwUvU2y4fjlY+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Robert Foss <rfoss@kernel.org>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 137/393] drm/bridge: panel: forbid initializing a panel with unknown connector type
+Subject: [PATCH 6.13 188/414] HID: pidff: Support device error response from PID_BLOCK_LOAD
 Date: Thu, 17 Apr 2025 19:49:06 +0200
-Message-ID: <20250417175113.095468941@linuxfoundation.org>
+Message-ID: <20250417175119.006029533@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit b296955b3a740ecc8b3b08e34fd64f1ceabb8fb4 ]
+[ Upstream commit 9d4174dc4a234408d91fd83725e1899766cd1731 ]
 
-Having an DRM_MODE_CONNECTOR_Unknown connector type is considered bad, and
-drm_panel_bridge_add_typed() and derivatives are deprecated for this.
+If an error happens on the device, the driver will no longer fall
+into the trap of reading this status 60 times before it decides that
+this reply won't change to success/memory full.
 
-drm_panel_init() won't prevent initializing a panel with a
-DRM_MODE_CONNECTOR_Unknown connector type. Luckily there are no in-tree
-users doing it, so take this as an opportinuty to document a valid
-connector type must be passed.
+Greatly reduces communication overhead during device error situation.
 
-Returning an error if this rule is violated is not possible because
-drm_panel_init() is a void function. Add at least a warning to make any
-violations noticeable, especially to non-upstream drivers.
-
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250214-drm-assorted-cleanups-v7-5-88ca5827d7af@bootlin.com
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/hid/usbhid/hid-pidff.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_panel.c b/drivers/gpu/drm/drm_panel.c
-index 19ab0a794add3..fd8fa2e0ef6fa 100644
---- a/drivers/gpu/drm/drm_panel.c
-+++ b/drivers/gpu/drm/drm_panel.c
-@@ -49,7 +49,7 @@ static LIST_HEAD(panel_list);
-  * @dev: parent device of the panel
-  * @funcs: panel operations
-  * @connector_type: the connector type (DRM_MODE_CONNECTOR_*) corresponding to
-- *	the panel interface
-+ *	the panel interface (must NOT be DRM_MODE_CONNECTOR_Unknown)
-  *
-  * Initialize the panel structure for subsequent registration with
-  * drm_panel_add().
-@@ -57,6 +57,9 @@ static LIST_HEAD(panel_list);
- void drm_panel_init(struct drm_panel *panel, struct device *dev,
- 		    const struct drm_panel_funcs *funcs, int connector_type)
- {
-+	if (connector_type == DRM_MODE_CONNECTOR_Unknown)
-+		DRM_WARN("%s: %s: a valid connector type is required!\n", __func__, dev_name(dev));
-+
- 	INIT_LIST_HEAD(&panel->list);
- 	INIT_LIST_HEAD(&panel->followers);
- 	mutex_init(&panel->follower_lock);
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index e2508a4d754d3..d5734cbf745d1 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -138,7 +138,8 @@ static const u8 pidff_effect_types[] = {
+ 
+ #define PID_BLOCK_LOAD_SUCCESS	0
+ #define PID_BLOCK_LOAD_FULL	1
+-static const u8 pidff_block_load_status[] = { 0x8c, 0x8d };
++#define PID_BLOCK_LOAD_ERROR	2
++static const u8 pidff_block_load_status[] = { 0x8c, 0x8d, 0x8e};
+ 
+ #define PID_EFFECT_START	0
+ #define PID_EFFECT_STOP		1
+@@ -666,6 +667,11 @@ static int pidff_request_effect_upload(struct pidff_device *pidff, int efnum)
+ 				pidff->block_load[PID_RAM_POOL_AVAILABLE].value[0] : -1);
+ 			return -ENOSPC;
+ 		}
++		if (pidff->block_load_status->value[0] ==
++		    pidff->status_id[PID_BLOCK_LOAD_ERROR]) {
++			hid_dbg(pidff->hid, "device error during effect creation\n");
++			return -EREMOTEIO;
++		}
+ 	}
+ 	hid_err(pidff->hid, "pid_block_load failed 60 times\n");
+ 	return -EIO;
 -- 
 2.39.5
 
