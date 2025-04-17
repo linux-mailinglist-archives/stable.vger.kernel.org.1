@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-133743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D57D5A92723
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:20:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D08FA92994
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:43:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80DD41906E70
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:20:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EA254A5AC7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A4E255241;
-	Thu, 17 Apr 2025 18:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130422566DB;
+	Thu, 17 Apr 2025 18:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zepPaGcD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXyLMale"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2261A3178;
-	Thu, 17 Apr 2025 18:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42CB253B57;
+	Thu, 17 Apr 2025 18:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914006; cv=none; b=n2FQHPiHgfY94nVv3P/9doICXjKF18tGwSRd6TLLaQp9SwNXk+EuLciEFcWhyv1zdnwqq4QrQdE3urxzUE9DWkYDvSJ6OuVsfYoV1uaJp45dI003Xl7O+JIoucJAmozQQjNc7M39vCM8ayp5HkO+y05gHJt0lrZuVrJw35z4SzY=
+	t=1744915237; cv=none; b=QJEuyk0DutsQGQqOC9J8fiyEI2h6emxg8a1Znq8ZiNm562KtTKVCNQTEnuKvdhrmha/hznWovGI/zoWJRxVEr+3Rim2QMXj7qX6DjcA+Uqt4U8MKAxa/94DfdAWIxoM07z7HOPHLh/R6RrlUDReGJgmyKlhK+yj9nbLoKGkxQ7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914006; c=relaxed/simple;
-	bh=yHOGiKu1f3FIBQ2UwxsI9nJQUaHvqS9HehPFjthc+Gw=;
+	s=arc-20240116; t=1744915237; c=relaxed/simple;
+	bh=6gcVLLn75hDHoZEsqKvfhukLoCx0taUxTzcRI3fzmUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZdSo5wCe5eblSQZnO7+S8AwgWAgDJ0Ar1tA7Iy96VEBkQbMzFC8W+Z8Ac+E+d0KKsTdOYHtvP/XR5kIJJ2eH6vnJm2cQW+6KOnx/xULB9Cc7rzE05l3myErxlEncr9NU7qcHI3YzVoFJvN3oq5qVYSQlD7ImH3i3ViLDBtn/a9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zepPaGcD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622D9C4CEEA;
-	Thu, 17 Apr 2025 18:20:06 +0000 (UTC)
+	 MIME-Version; b=Qc3T6mn8aiKpA9mLkTh0A7E/ahVo0Axa8HKQp3E26cCZnnzmhUbVoXo0BG0kXMExJL0uQvt2yGiQy1Rj6v99ZGlqhrxAPpL+2jA2gV/kiWLjkWQZ7k/UY1okxMOD+Fk8RxebVkxt4xJem4eS9mD8mrFiZ0xqlZ9WllF6ePS4+Eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXyLMale; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B354C4CEE4;
+	Thu, 17 Apr 2025 18:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914006;
-	bh=yHOGiKu1f3FIBQ2UwxsI9nJQUaHvqS9HehPFjthc+Gw=;
+	s=korg; t=1744915237;
+	bh=6gcVLLn75hDHoZEsqKvfhukLoCx0taUxTzcRI3fzmUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zepPaGcDNVEeBi/7s86pmju5YFmyfjo88V8kVQTJQTjvw2AALqvogu5hkijPez88h
-	 sX+RYXbL4MT1pGdwKey+mj7Zh7AAHv718+t2rCb7+6AK6Gu6/V3KNhCPJBY18uviRs
-	 kJtSVBiIiklaC+SlwTLXdvTEzuJNqV3T30YqRilQ=
+	b=AXyLMale01vUYjFbpF6ADwZJtkWrH9WCr+T97e1bhFsrL4tYeVBdm6EGBwO4Ej2q7
+	 BY01IbetW6ss9/VUXw0ky6H4r7W1bvCnXJJTpyDk494ks0tTlGthwZponpiSuBtWSs
+	 Q1G79MaIYQSfWnC2oWOMzq3vVkJ7blbpE+pL172E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxim Mikityanskiy <maxtram95@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Philipp Stanner <phasta@mailbox.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 074/414] ALSA: hda: intel: Add Lenovo IdeaPad Z570 to probe denylist
+Subject: [PATCH 6.12 023/393] drm/tests: modeset: Fix drm_display_mode memory leak
 Date: Thu, 17 Apr 2025 19:47:12 +0200
-Message-ID: <20250417175114.420859831@linuxfoundation.org>
+Message-ID: <20250417175108.523048528@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxim Mikityanskiy <maxtram95@gmail.com>
+From: Maxime Ripard <mripard@kernel.org>
 
-[ Upstream commit becc794c5e46f4dfca59f2385f78d83fc9e84700 ]
+[ Upstream commit dacafdcc7789cfeb0f0552716db56f210238225d ]
 
-Lenovo IdeaPad Z570 with NVIDIA GeForce Ge 540M doesn't have sound on
-the discrete GPU. The HDA controller in DGPU is disabled by BIOS, but
-then reenabled by quirk_nvidia_hda(). The probe fails and ends up with
-the "GPU sound probed, but not operational" error.
+drm_mode_find_dmt() returns a drm_display_mode that needs to be
+destroyed later one. The drm_test_pick_cmdline_res_1920_1080_60() test
+never does however, which leads to a memory leak.
 
-Add this laptop to DMI-based denylist to prevent probe early. DMI is
-used, because the audio device has zero subsystem IDs, and this entry
-would be too much, blocking all 540M chips:
-    PCI_DEVICE_SUB(0x10de, 0x0bea, 0x0000, 0x0000)
-Also, this laptop comes in a variety of modifications with different
-NVIDIA GPUs, so the DMI check will cover them all.
+Let's make sure it's freed.
 
-Signed-off-by: Maxim Mikityanskiy <maxtram95@gmail.com>
-Link: https://patch.msgid.link/20250208214602.39607-3-maxtram95@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reported-by: Philipp Stanner <phasta@mailbox.org>
+Closes: https://lore.kernel.org/dri-devel/a7655158a6367ac46194d57f4b7433ef0772a73e.camel@mailbox.org/
+Fixes: 8fc0380f6ba7 ("drm/client: Add some tests for drm_connector_pick_cmdline_mode()")
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://lore.kernel.org/r/20250408-drm-kunit-drm-display-mode-memleak-v1-2-996305a2e75a@kernel.org
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_intel.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ drivers/gpu/drm/tests/drm_client_modeset_test.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
-index c547a86ba659c..230be67b70286 100644
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -37,6 +37,7 @@
- #include <linux/completion.h>
- #include <linux/acpi.h>
- #include <linux/pgtable.h>
-+#include <linux/dmi.h>
+diff --git a/drivers/gpu/drm/tests/drm_client_modeset_test.c b/drivers/gpu/drm/tests/drm_client_modeset_test.c
+index 7516f6cb36e4e..3e9518d7b8b7e 100644
+--- a/drivers/gpu/drm/tests/drm_client_modeset_test.c
++++ b/drivers/gpu/drm/tests/drm_client_modeset_test.c
+@@ -95,6 +95,9 @@ static void drm_test_pick_cmdline_res_1920_1080_60(struct kunit *test)
+ 	expected_mode = drm_mode_find_dmt(priv->drm, 1920, 1080, 60, false);
+ 	KUNIT_ASSERT_NOT_NULL(test, expected_mode);
  
- #ifdef CONFIG_X86
- /* for snoop control */
-@@ -2074,6 +2075,27 @@ static const struct pci_device_id driver_denylist[] = {
- 	{}
- };
- 
-+static struct pci_device_id driver_denylist_ideapad_z570[] = {
-+	{ PCI_DEVICE_SUB(0x10de, 0x0bea, 0x0000, 0x0000) }, /* NVIDIA GF108 HDA */
-+	{}
-+};
++	ret = drm_kunit_add_mode_destroy_action(test, expected_mode);
++	KUNIT_ASSERT_EQ(test, ret, 0);
 +
-+/* DMI-based denylist, to be used when:
-+ *  - PCI subsystem IDs are zero, impossible to distinguish from valid sound cards.
-+ *  - Different modifications of the same laptop use different GPU models.
-+ */
-+static const struct dmi_system_id driver_denylist_dmi[] = {
-+	{
-+		/* No HDA in NVIDIA DGPU. BIOS disables it, but quirk_nvidia_hda() reenables. */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_VERSION, "Ideapad Z570"),
-+		},
-+		.driver_data = &driver_denylist_ideapad_z570,
-+	},
-+	{}
-+};
-+
- static const struct hda_controller_ops pci_hda_ops = {
- 	.disable_msi_reset_irq = disable_msi_reset_irq,
- 	.position_check = azx_position_check,
-@@ -2084,6 +2106,7 @@ static DECLARE_BITMAP(probed_devs, SNDRV_CARDS);
- static int azx_probe(struct pci_dev *pci,
- 		     const struct pci_device_id *pci_id)
- {
-+	const struct dmi_system_id *dmi;
- 	struct snd_card *card;
- 	struct hda_intel *hda;
- 	struct azx *chip;
-@@ -2096,6 +2119,12 @@ static int azx_probe(struct pci_dev *pci,
- 		return -ENODEV;
- 	}
- 
-+	dmi = dmi_first_match(driver_denylist_dmi);
-+	if (dmi && pci_match_id(dmi->driver_data, pci)) {
-+		dev_info(&pci->dev, "Skipping the device on the DMI denylist\n");
-+		return -ENODEV;
-+	}
-+
- 	dev = find_first_zero_bit(probed_devs, SNDRV_CARDS);
- 	if (dev >= SNDRV_CARDS)
- 		return -ENODEV;
+ 	KUNIT_ASSERT_TRUE(test,
+ 			  drm_mode_parse_command_line_for_connector(cmdline,
+ 								    connector,
 -- 
 2.39.5
 
