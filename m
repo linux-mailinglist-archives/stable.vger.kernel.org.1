@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-134154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B652A929D5
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:45:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41563A927B0
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:28:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77F178E3A07
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20C1C8A836D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:27:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75AA257AEC;
-	Thu, 17 Apr 2025 18:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA012673B3;
+	Thu, 17 Apr 2025 18:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUBHaXeT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2RYffNxP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84841254AED;
-	Thu, 17 Apr 2025 18:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72E325C708;
+	Thu, 17 Apr 2025 18:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915258; cv=none; b=UFnevxPzFLcWsOKhw02fUetav+QVhXmoiFwToLWWmwclJCigFxx03vMCzPrZuHkbp22a/Z/oo+wg4N/C1lNPlP2oMSPkf+XSJwmuqge3oepiaRR1FuHNcD56cCRtFCWx8taXbBx8c/natiGn3tncb00YqpdqB6uFAIYmCg3mMWs=
+	t=1744914143; cv=none; b=tFHDVAoWjnDQrFWz/FZsZMgh3FRytdIjV+XgkGwJ6Qr8+0POdvj6yXUZ11uKKu415MosRgaLnI8UtG4fJuSY7dWonL/LJ7IsruttTZckNbsDTd2rKw5vx82eQtPeNSJp/TicDbk+ECEYwEFvdLAvBByaN6xOWyBqcDN/jhuMaVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915258; c=relaxed/simple;
-	bh=3rtnhPpvymL/9G61A9A4AswbOk5e06YtOB2jSB0noJ8=;
+	s=arc-20240116; t=1744914143; c=relaxed/simple;
+	bh=+BtQKPmIxJztQa7qDyRgflI66DeFeuOz/O2DF9+5PhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iJQo4nal5hNyecmeJINaiSJIxptZjKcwAwOXfeWLh5SCRtQyrPNEhT3GqVD+hYVEl8vykdsutT4dQ5+PG6TUkgQrQ4ZV0NxwkOmNRGg1zuMVKdvkkPNrEeIdD8JBih1BQmP9er86YdHgqImgNdEPBXpIcska1qThy03o8TH+5oA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUBHaXeT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3219C4CEE7;
-	Thu, 17 Apr 2025 18:40:57 +0000 (UTC)
+	 MIME-Version; b=BFQgRAQKwIZioU+YEpplTDk2N+15EZmj1Py4vk3MCAYys81vZ2k2ua07SONLKRMkSe2gQgRs7Bbzpq7s/e4YnLzqCVrSnDePaLKRtYoUycwTybOjOBr+82EBb4Vq7rE8sFjBSfqaaN1IIU/YMgSPoBbR/B3mOp4tKfdiI8YqyLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2RYffNxP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72CFFC4CEE4;
+	Thu, 17 Apr 2025 18:22:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915258;
-	bh=3rtnhPpvymL/9G61A9A4AswbOk5e06YtOB2jSB0noJ8=;
+	s=korg; t=1744914142;
+	bh=+BtQKPmIxJztQa7qDyRgflI66DeFeuOz/O2DF9+5PhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XUBHaXeTGOtiz3sSRby8Slyzn7jlDAxm8wW6JovmYbafne24zCL+GD2CEDYCCJhAJ
-	 UP2iimA8EwyT26JnfkpnS+iMAEuZzJGi7/GzC5oE38+mcai8aPb1efGQqLyhu9RBln
-	 HG4OxkzcUGTV5ACFGMDqL1HhmaFEJ2tE7Vdx5tZ0=
+	b=2RYffNxPo25qXuEwVhz3IBtFMHrO+X6pgtgyx4ZNI++nETVbXHj8Tv7vvBTVyNSWE
+	 qB4Xc+zzrAE09lq4NeZJyzIRlE4PVj6/R3Z7CS3EFR1aleN116C1hYj+wFpHsCy5Wv
+	 G0sZz3LwSSNMTYgX5//S5TeTvaBfLcYefxeDF1fM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nolan Nicholson <nolananicholson@gmail.com>,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Kiran K <kiran.k@intel.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 070/393] HID: pidff: Fix null pointer dereference in pidff_find_fields
+Subject: [PATCH 6.13 121/414] Bluetooth: btintel_pcie: Add device id of Whale Peak
 Date: Thu, 17 Apr 2025 19:47:59 +0200
-Message-ID: <20250417175110.408870269@linuxfoundation.org>
+Message-ID: <20250417175116.302948498@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <forest10pl@gmail.com>
+From: Kiran K <kiran.k@intel.com>
 
-[ Upstream commit 22a05462c3d0eee15154faf8d13c49e6295270a5 ]
+[ Upstream commit 6b8c05e52d66e4fe4ab1df4c6e15f339ecd9aa51 ]
 
-This function triggered a null pointer dereference if used to search for
-a report that isn't implemented on the device. This happened both for
-optional and required reports alike.
+Add device of Whale Peak.
 
-The same logic was applied to pidff_find_special_field and although
-pidff_init_fields should return an error earlier if one of the required
-reports is missing, future modifications could change this logic and
-resurface this possible null pointer dereference again.
+Output of sudo lspci -v  -s 00:14.7:
 
-LKML bug report:
-https://lore.kernel.org/all/CAL-gK7f5=R0nrrQdPtaZZr1fd-cdAMbDMuZ_NLA8vM0SX+nGSw@mail.gmail.com
+00:14.7 Bluetooth: Intel Corporation Device e476
+        Subsystem: Intel Corporation Device 0011
+        Flags: bus master, fast devsel, latency 0, IRQ 16, IOMMU group 11
+        Memory at 11011c30000 (64-bit, non-prefetchable) [size=16K]
+        Capabilities: [c8] Power Management version 3
+        Capabilities: [d0] MSI: Enable- Count=1/1 Maskable- 64bit+
+        Capabilities: [40] Express Root Complex Integrated Endpoint, MSI 00
+        Capabilities: [80] MSI-X: Enable+ Count=32 Masked-
+        Capabilities: [100] Latency Tolerance Reporting
+        Kernel driver in use: btintel_pcie
+        Kernel modules: btintel_pcie
 
-Reported-by: Nolan Nicholson <nolananicholson@gmail.com>
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Kiran K <kiran.k@intel.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/bluetooth/btintel_pcie.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index 4c94d8cbac43a..25dbed076f530 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -793,6 +793,11 @@ static void pidff_set_autocenter(struct input_dev *dev, u16 magnitude)
- static int pidff_find_fields(struct pidff_usage *usage, const u8 *table,
- 			     struct hid_report *report, int count, int strict)
- {
-+	if (!report) {
-+		pr_debug("pidff_find_fields, null report\n");
-+		return -1;
-+	}
-+
- 	int i, j, k, found;
- 	int return_value = 0;
- 
-@@ -917,6 +922,11 @@ static int pidff_reports_ok(struct pidff_device *pidff)
- static struct hid_field *pidff_find_special_field(struct hid_report *report,
- 						  int usage, int enforce_min)
- {
-+	if (!report) {
-+		pr_debug("pidff_find_special_field, null report\n");
-+		return NULL;
-+	}
-+
- 	int i;
- 
- 	for (i = 0; i < report->maxfield; i++) {
+diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
+index 091ffe3e14954..6130854b6658a 100644
+--- a/drivers/bluetooth/btintel_pcie.c
++++ b/drivers/bluetooth/btintel_pcie.c
+@@ -36,6 +36,7 @@
+ /* Intel Bluetooth PCIe device id table */
+ static const struct pci_device_id btintel_pcie_table[] = {
+ 	{ BTINTEL_PCI_DEVICE(0xA876, PCI_ANY_ID) },
++	{ BTINTEL_PCI_DEVICE(0xE476, PCI_ANY_ID) },
+ 	{ 0 }
+ };
+ MODULE_DEVICE_TABLE(pci, btintel_pcie_table);
 -- 
 2.39.5
 
