@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-133459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A634EA925C9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:07:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CCFAA929F8
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:46:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FCCB8A3440
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:07:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEFD37B7DE5
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:44:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4567258CC4;
-	Thu, 17 Apr 2025 18:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1EE5255241;
+	Thu, 17 Apr 2025 18:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wh+NyHiM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1DXUZE25"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9E22580C4;
-	Thu, 17 Apr 2025 18:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBCF433A5;
+	Thu, 17 Apr 2025 18:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913141; cv=none; b=nWnaRzvwhAwY8AJItFP5u75dgybGD9aZumNKxrbR9IAVEfS5XXjzif05LnDNA65Um5zVb2rxXMWUaaosGGyjPMxXdhMjIHaiTcF2MzHe8ASZAera/mJCAg9zb6HG+1NCrMqWGxWCo064GSPpjOxmMfL5sYVmWNT4WkbdfnE+x1s=
+	t=1744915543; cv=none; b=kLlPpt37Pp0GE2XVBDilytupieb7rHFucXWS9bHLec7mv0d42R8hK+8JvQNx6/tVJmXVsdCjR3PVNQP/tVcZFAo7s7ir9NsMjyN2o9lzT78m43Sb19pgOBd/JdctaiRL36vLFh16YvvzJXCMbEnk4KBHq4tQ9GDHvC7aCQA/L7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913141; c=relaxed/simple;
-	bh=35NX7QTC7QVshmajE/uAG10fze/qRVtMRKUmte2B5+Y=;
+	s=arc-20240116; t=1744915543; c=relaxed/simple;
+	bh=sFVCq1NtoLOvYEhfs7zwiJBFjya/dEz7jjmxY7riRH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sQa1Tqfid49eyV4iTXGtNxyy3BfqyN41bVP7l1yZOW5c63hxM9AXAgxXZcAi9XXMO6Xa73kRHpa6EhrtOqDHzD0UkaCzqJHc577kLk8Vxov8w+ymNbR6CFW7cePi2oOXFRLssR1L1AyX5SQ8oMT8G7GGfY50rfuKlj78UBAwv/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wh+NyHiM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC5AC4CEE4;
-	Thu, 17 Apr 2025 18:05:40 +0000 (UTC)
+	 MIME-Version; b=Wopf+Nzw25AId3TDazdD5DLT9srtSFT/pGhwXYI7KekTUi+G6wtUaQ0hog1pmWbb2uWuXfennGYcJ27vJD+r3sGgYv2KBfkniKj0UPGNe7kWR3zrEfF0DfYSmUDn2rm5HvQV78Vp9vcdlyik2vjmVwIbSf7+2wMPKwc/v+Td8PA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1DXUZE25; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35839C4CEE7;
+	Thu, 17 Apr 2025 18:45:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913141;
-	bh=35NX7QTC7QVshmajE/uAG10fze/qRVtMRKUmte2B5+Y=;
+	s=korg; t=1744915543;
+	bh=sFVCq1NtoLOvYEhfs7zwiJBFjya/dEz7jjmxY7riRH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wh+NyHiMHBz0+79xEJoBHNWGPmWB3QvvNcnyIhNagd5amlfoQLKnOFf1YcJLOpzw8
-	 Cz6L1Qy/u0VWOvS/aY/F/9SKtUvVgOA43DT0933IbLuZwqqoHvx9nw5zyY1uj8Yd48
-	 /1sndUl+sBPLRpJYrI2CE+c41Y/M9Csp1DAJXF8g=
+	b=1DXUZE255Ic5DFLAgxlfXaIrtAxAi5Bs6gnNph0XHILVmfShq1/MMy13HB/UuDk4K
+	 /7GoCyeMMRLyKBe5HKPRA2yclNw7LCSbMTCco+tzcPt+qQcUYGJ+O6noH/oUz3xgxL
+	 LvcWuw6B7P9OOHf0LoIxrCIDUQnL6cFF8QkLXEz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan McDowell <noodles@meta.com>,
-	=?UTF-8?q?Michal=20Such=C3=A1nek?= <msuchanek@suse.de>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.14 241/449] tpm, tpm_tis: Fix timeout handling when waiting for TPM status
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 120/393] Bluetooth: hci_uart: fix race during initialization
 Date: Thu, 17 Apr 2025 19:48:49 +0200
-Message-ID: <20250417175127.695789131@linuxfoundation.org>
+Message-ID: <20250417175112.427395262@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan McDowell <noodles@meta.com>
+From: Arseniy Krasnov <avkrasnov@salutedevices.com>
 
-commit 7146dffa875cd00e7a7f918e1fce79c7593ac1fa upstream.
+[ Upstream commit 366ceff495f902182d42b6f41525c2474caf3f9a ]
 
-The change to only use interrupts to handle supported status changes
-introduced an issue when it is necessary to poll for the status. Rather
-than checking for the status after sleeping the code now sleeps after
-the check. This means a correct, but slower, status change on the part
-of the TPM can be missed, resulting in a spurious timeout error,
-especially on a more loaded system. Switch back to sleeping *then*
-checking. An up front check of the status has been done at the start of
-the function, so this does not cause an additional delay when the status
-is already what we're looking for.
+'hci_register_dev()' calls power up function, which is executed by
+kworker - 'hci_power_on()'. This function does access to bluetooth chip
+using callbacks from 'hci_ldisc.c', for example 'hci_uart_send_frame()'.
+Now 'hci_uart_send_frame()' checks 'HCI_UART_PROTO_READY' bit set, and
+if not - it fails. Problem is that 'HCI_UART_PROTO_READY' is set after
+'hci_register_dev()', and there is tiny chance that 'hci_power_on()' will
+be executed before setting this bit. In that case HCI init logic fails.
 
-Cc: stable@vger.kernel.org # v6.4+
-Fixes: e87fcf0dc2b4 ("tpm, tpm_tis: Only handle supported interrupts")
-Signed-off-by: Jonathan McDowell <noodles@meta.com>
-Reviewed-by: Michal Suchánek <msuchanek@suse.de>
-Reviewed-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Patch moves setting of 'HCI_UART_PROTO_READY' before calling function
+'hci_uart_register_dev()'.
+
+Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm_tis_core.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/bluetooth/hci_ldisc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -114,11 +114,10 @@ again:
- 		return 0;
- 	/* process status changes without irq support */
- 	do {
-+		usleep_range(priv->timeout_min, priv->timeout_max);
- 		status = chip->ops->status(chip);
- 		if ((status & mask) == mask)
- 			return 0;
--		usleep_range(priv->timeout_min,
--			     priv->timeout_max);
- 	} while (time_before(jiffies, stop));
- 	return -ETIME;
+diff --git a/drivers/bluetooth/hci_ldisc.c b/drivers/bluetooth/hci_ldisc.c
+index 395d66e32a2ea..2651e2e33f2a1 100644
+--- a/drivers/bluetooth/hci_ldisc.c
++++ b/drivers/bluetooth/hci_ldisc.c
+@@ -707,12 +707,13 @@ static int hci_uart_set_proto(struct hci_uart *hu, int id)
+ 
+ 	hu->proto = p;
+ 
++	set_bit(HCI_UART_PROTO_READY, &hu->flags);
++
+ 	err = hci_uart_register_dev(hu);
+ 	if (err) {
+ 		return err;
+ 	}
+ 
+-	set_bit(HCI_UART_PROTO_READY, &hu->flags);
+ 	return 0;
  }
+ 
+-- 
+2.39.5
+
 
 
 
