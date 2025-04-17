@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-134347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF714A92A95
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:52:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB232A92662
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:12:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED5D54A6A08
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 163B84A0712
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:12:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B1B22586EC;
-	Thu, 17 Apr 2025 18:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5727A1CAA7D;
+	Thu, 17 Apr 2025 18:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mhhBd9Kj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CIZT/I+o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC5924BBFD;
-	Thu, 17 Apr 2025 18:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157B4223710;
+	Thu, 17 Apr 2025 18:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915855; cv=none; b=shz2ITNtzScfTS+tWta3lcjNnIiu4YguOvieJJRQuML/dDfBPuVnxpePzT2niEi/KywHGoMalCFoL7oxD/9iddfqTfI4f/NeejIvuXCGxEsz6kttFPCqPzUdXr1RvkA3CB3cTJuIyXdwxzoW6tCMZ5F2vkuTtnZKNigNotTPpFk=
+	t=1744913576; cv=none; b=flVBaMToIw7wu9EjZGVB5DTTW8U79ZJdgtj8CFpEBosgGVxVhzou6l5wFj7zDFtmeQvnI1lOyXckK+tYCHvii+8fQtsaBNHGOM8XH8bKtSPFUsx5/EAZJjIS5Es0sB1ImjOfzUbBEIiPQdxpjtS2Xd+HpxR13xv4o0m1qgEGQvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915855; c=relaxed/simple;
-	bh=xVGHOw/dh5VZt4TveYVpb0I+IvCGC71ocfn0f/n5WNU=;
+	s=arc-20240116; t=1744913576; c=relaxed/simple;
+	bh=T+wi5MuiKygieo/Y4XYIP7kJKq8ZmOM2nk8NBY7Dg0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VXWPJcx+JM3+EcjWuLq4hnHIvvQy9h6zOd+2CdUcNZSpPCRNRqv0CWVOOjJ/yuKXn9e0/VbAKpD/k/y8+J0iYcaH2qRErra8VAuk1CHNNRplp8asXgozwXyYqSbIiqcsgF9wNqnkhJssAd1vIAqsYm13g4yzKBecU+OMzmrNLco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mhhBd9Kj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E560C4CEE4;
-	Thu, 17 Apr 2025 18:50:54 +0000 (UTC)
+	 MIME-Version; b=jKks8KT7IegNmAjgsH3tYf+aXezsbNgRw2Lz1wJKMqim+GZGm6590XDPhf0oYEknM/v3UyEIIY7eH2O4GkVtmwvCaelA13PgDQlL4fYWa85zVuZp/n4W0qeVthZhsF2DUC0GBIWfD1rjnP47lSdlXwIy6syoOYR+jpK60ZdoKXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CIZT/I+o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7320BC4CEE4;
+	Thu, 17 Apr 2025 18:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915854;
-	bh=xVGHOw/dh5VZt4TveYVpb0I+IvCGC71ocfn0f/n5WNU=;
+	s=korg; t=1744913575;
+	bh=T+wi5MuiKygieo/Y4XYIP7kJKq8ZmOM2nk8NBY7Dg0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mhhBd9KjyW3E1xZfR7j9t7lWEyXRzk/j9PyCgql3O1KGIztoo5exMFJWYYyIGpGUR
-	 +zP16gzXE/6n6OmxtlGZRqXebEjQSDjCBSpCOMxSB3TBg7ONXfNlu9iVy7Yg+n6win
-	 yE+SeuCYFzg+1IcWo7dtZyUb6u0Aa5QSKN39hMYk=
+	b=CIZT/I+o5lNWBma6R9ly8MpFHbTD/9LyDOnbYcvC5UflRD7kkdd3lmU9j4zBqysjG
+	 1Ao81L6NbeN6VB8/NmvWU7miK9iHL5jJH3xhf2VGunygfGVgpbrOth1ebOIBExLK7b
+	 uymQ5Ht6Wbbtvu1HaPeqNVwAs83R/lUBNOBakQ5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cong Meng <cong.meng@oracle.com>,
-	Si-Wei Liu <si-wei.liu@oracle.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>
-Subject: [PATCH 6.12 262/393] vdpa/mlx5: Fix oversized null mkey longer than 32bit
-Date: Thu, 17 Apr 2025 19:51:11 +0200
-Message-ID: <20250417175118.142700505@linuxfoundation.org>
+	Dionna Glaze <dionnaglaze@google.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.14 384/449] crypto: ccp - Fix uAPI definitions of PSP errors
+Date: Thu, 17 Apr 2025 19:51:12 +0200
+Message-ID: <20250417175133.714440176@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Si-Wei Liu <si-wei.liu@oracle.com>
+From: Dionna Glaze <dionnaglaze@google.com>
 
-commit a6097e0a54a5c24f8d577ffecbc35289ae281c2e upstream.
+commit b949f55644a6d1645c0a71f78afabf12aec7c33b upstream.
 
-create_user_mr() has correct code to count the number of null keys
-used to fill in a hole for the memory map. However, fill_indir()
-does not follow the same to cap the range up to the 1GB limit
-correspondingly. Fill in more null keys for the gaps in between,
-so that null keys are correctly populated.
+Additions to the error enum after explicit 0x27 setting for
+SEV_RET_INVALID_KEY leads to incorrect value assignments.
 
-Fixes: 94abbccdf291 ("vdpa/mlx5: Add shared memory registration code")
-Cc: stable@vger.kernel.org
-Reported-by: Cong Meng <cong.meng@oracle.com>
-Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <20250220193732.521462-2-dtatulea@nvidia.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
+Use explicit values to match the manufacturer specifications more
+clearly.
+
+Fixes: 3a45dc2b419e ("crypto: ccp: Define the SEV-SNP commands")
+CC: stable@vger.kernel.org
+Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vdpa/mlx5/core/mr.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ include/uapi/linux/psp-sev.h |   21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
---- a/drivers/vdpa/mlx5/core/mr.c
-+++ b/drivers/vdpa/mlx5/core/mr.c
-@@ -190,9 +190,12 @@ again:
- 			klm->bcount = cpu_to_be32(klm_bcount(dmr->end - dmr->start));
- 			preve = dmr->end;
- 		} else {
-+			u64 bcount = min_t(u64, dmr->start - preve, MAX_KLM_SIZE);
-+
- 			klm->key = cpu_to_be32(mvdev->res.null_mkey);
--			klm->bcount = cpu_to_be32(klm_bcount(dmr->start - preve));
--			preve = dmr->start;
-+			klm->bcount = cpu_to_be32(klm_bcount(bcount));
-+			preve += bcount;
-+
- 			goto again;
- 		}
- 	}
+--- a/include/uapi/linux/psp-sev.h
++++ b/include/uapi/linux/psp-sev.h
+@@ -73,13 +73,20 @@ typedef enum {
+ 	SEV_RET_INVALID_PARAM,
+ 	SEV_RET_RESOURCE_LIMIT,
+ 	SEV_RET_SECURE_DATA_INVALID,
+-	SEV_RET_INVALID_KEY = 0x27,
+-	SEV_RET_INVALID_PAGE_SIZE,
+-	SEV_RET_INVALID_PAGE_STATE,
+-	SEV_RET_INVALID_MDATA_ENTRY,
+-	SEV_RET_INVALID_PAGE_OWNER,
+-	SEV_RET_INVALID_PAGE_AEAD_OFLOW,
+-	SEV_RET_RMP_INIT_REQUIRED,
++	SEV_RET_INVALID_PAGE_SIZE          = 0x0019,
++	SEV_RET_INVALID_PAGE_STATE         = 0x001A,
++	SEV_RET_INVALID_MDATA_ENTRY        = 0x001B,
++	SEV_RET_INVALID_PAGE_OWNER         = 0x001C,
++	SEV_RET_AEAD_OFLOW                 = 0x001D,
++	SEV_RET_EXIT_RING_BUFFER           = 0x001F,
++	SEV_RET_RMP_INIT_REQUIRED          = 0x0020,
++	SEV_RET_BAD_SVN                    = 0x0021,
++	SEV_RET_BAD_VERSION                = 0x0022,
++	SEV_RET_SHUTDOWN_REQUIRED          = 0x0023,
++	SEV_RET_UPDATE_FAILED              = 0x0024,
++	SEV_RET_RESTORE_REQUIRED           = 0x0025,
++	SEV_RET_RMP_INITIALIZATION_FAILED  = 0x0026,
++	SEV_RET_INVALID_KEY                = 0x0027,
+ 	SEV_RET_MAX,
+ } sev_ret_code;
+ 
 
 
 
