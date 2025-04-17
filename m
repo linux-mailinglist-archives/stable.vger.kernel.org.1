@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-134414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 041EEA92AF2
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF4E6A92970
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CDD81B65858
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:55:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E62C3AD45E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA4D0256C65;
-	Thu, 17 Apr 2025 18:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25BC425742A;
+	Thu, 17 Apr 2025 18:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ujpwQ9V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mg7IrGfx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDBF25178E;
-	Thu, 17 Apr 2025 18:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E5B2571CF;
+	Thu, 17 Apr 2025 18:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916056; cv=none; b=rvWX6QdZJ3dhcErqbGDS5fNYX1EVNBSXumwUB2pTFYF3525ccyTij4K83u6fELN/dPzFEaV56bShgnOgjPsuz+b+ccv1uc89sw8Twep0kNNDAvX0DX2XH97tNUlJeFBkPyboZJ57/enQ2uYLSrRYoCxB5mI+jByIkW8pMeInIkE=
+	t=1744915027; cv=none; b=XIuGsOeUX9d91oU4hRW7khjpIzxEFeNhRKC4PncSLVfkCqsXMf1TgKt+z9aRYLdiIdqREk9LSU0kraDZMRZNavQ0vdX2P2QCY6G+fpTtDafIAcSmLMaPxcM404bC46NwOr2PYcDU06Yc+2oesOBQWxakhk+ZwU0fBdlbV+QQRAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916056; c=relaxed/simple;
-	bh=9VOGXkIDsn46C8ckpzyfQ3GMTruhjFdKyQs1WcyIsXI=;
+	s=arc-20240116; t=1744915027; c=relaxed/simple;
+	bh=MlWqAttmu1E3L2Qptvb2tqezvy5EVLo5SOBdL/RyUck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TxBPA1hZXRlW8MBnHnR3qv599hicsmORyfuy4z+gW3RB3crCfmOf72fhcIllGJFqFMROPtSEqj+20HO7ydq9OhNXR3dPFSpD/AMXxXvQZxQYOY3mLB0MXzN5JKURFSjjrAT48MfEnwNrQnQeEEEcy0d7FIOYnQCgAJi5efCIb9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ujpwQ9V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AD70C4CEE4;
-	Thu, 17 Apr 2025 18:54:15 +0000 (UTC)
+	 MIME-Version; b=fNfnPz5GwZxtjl4uFQd9lb1JFFykkV7UHrsqwNiIOdmV5nm5gN+tZfrEv/UQXa6jNU2hhb5prMd7nzantZUUex1zfYz4PznjUQ5Rzm66voZiIxSQqpWp+Vy0rjdg5BBx09NNO6YlY1hroemOCQyyRPXeinzkhnfBYra6ten/QuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mg7IrGfx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 297B2C4CEEA;
+	Thu, 17 Apr 2025 18:37:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916056;
-	bh=9VOGXkIDsn46C8ckpzyfQ3GMTruhjFdKyQs1WcyIsXI=;
+	s=korg; t=1744915027;
+	bh=MlWqAttmu1E3L2Qptvb2tqezvy5EVLo5SOBdL/RyUck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ujpwQ9V9anF1cl0EwvNAfNgBRM8yx99o6NPVpaoFBCdhpXdUCQTy3TlAhUeJaKeq
-	 A5Sgz1+F8+zQRLO1KIGeUZ02TKgDLddWulx56rQ6//cTZpv7ViFGslO06LijgiPXNE
-	 gAU0MxpecZwJjfKpunJvJyzMZit7DHrJcLyHs3FY=
+	b=Mg7IrGfxHP1284rdyxMA1+uAmLJkQXhyP9o0cWa+vtPLUNTxmvBKLJ1ncxWOv1p+O
+	 +197I/kvXdgRJmXJ9zOA1HRdSferpQz3j9OmHlIYGCb52JeRSKWqm+wVfqrTN7Wz0P
+	 6VW7X4lKRGkoE3o5np6uVZhhI4e8r975avMTkyOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Aring <aahringo@redhat.com>,
-	David Teigland <teigland@redhat.com>
-Subject: [PATCH 6.12 329/393] dlm: fix error if inactive rsb is not hashed
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.13 380/414] of/irq: Fix device node refcount leakage in API of_irq_parse_raw()
 Date: Thu, 17 Apr 2025 19:52:18 +0200
-Message-ID: <20250417175120.841784208@linuxfoundation.org>
+Message-ID: <20250417175126.741396525@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 94e6e889a786dd16542fc8f2a45405fa13e3bbb5 upstream.
+commit ff93e7213d6cc8d9a7b0bc64f70ed26094e168f3 upstream.
 
-If an inactive rsb is not hashed anymore and this could occur because we
-releases and acquired locks we need to signal the followed code that the
-lookup failed. Since the lookup was successful, but it isn't part of the
-rsb hash anymore we need to signal it by setting error to -EBADR as
-dlm_search_rsb_tree() does it.
+if the node @out_irq->np got by of_irq_parse_raw() is a combo node which
+consists of both controller and nexus, namely, of_irq_parse_raw() returns
+due to condition (@ipar == @newpar), then the node's refcount was increased
+twice, hence causes refcount leakage.
 
+Fix by putting @out_irq->np refcount before returning due to the condition.
+Also add comments about refcount of node @out_irq->np got by the API.
+
+Fixes: 041284181226 ("of/irq: Allow matching of an interrupt-map local to an interrupt controller")
 Cc: stable@vger.kernel.org
-Fixes: 01fdeca1cc2d ("dlm: use rcu to avoid an extra rsb struct lookup")
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-4-93e3a2659aa7@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dlm/lock.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/of/irq.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -784,6 +784,7 @@ static int find_rsb_dir(struct dlm_ls *l
- 		}
- 	} else {
- 		write_unlock_bh(&ls->ls_rsbtbl_lock);
-+		error = -EBADR;
- 		goto do_new;
- 	}
+--- a/drivers/of/irq.c
++++ b/drivers/of/irq.c
+@@ -166,6 +166,8 @@ const __be32 *of_irq_parse_imap_parent(c
+  * the specifier for each map, and then returns the translated map.
+  *
+  * Return: 0 on success and a negative number on error
++ *
++ * Note: refcount of node @out_irq->np is increased by 1 on success.
+  */
+ int of_irq_parse_raw(const __be32 *addr, struct of_phandle_args *out_irq)
+ {
+@@ -311,6 +313,12 @@ int of_irq_parse_raw(const __be32 *addr,
+ 		addrsize = (imap - match_array) - intsize;
  
+ 		if (ipar == newpar) {
++			/*
++			 * We got @ipar's refcount, but the refcount was
++			 * gotten again by of_irq_parse_imap_parent() via its
++			 * alias @newpar.
++			 */
++			of_node_put(ipar);
+ 			pr_debug("%pOF interrupt-map entry to self\n", ipar);
+ 			return 0;
+ 		}
 
 
 
