@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-133895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A115DA92891
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D2B4A92A13
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:46:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 706863A6270
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:35:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51ACE188F139
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:46:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53B925D1F5;
-	Thu, 17 Apr 2025 18:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF27F2566D1;
+	Thu, 17 Apr 2025 18:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AS9tEGOZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSjp2qVK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5268B25B678;
-	Thu, 17 Apr 2025 18:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9814502F;
+	Thu, 17 Apr 2025 18:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914472; cv=none; b=K5JpXLMqjeOYYJQcyh644FUCOIYvgca5k5B3BreNbylChjzvHH0wD6OdSjRsY2cLdHHguKcksrfHiJZJta/Hsp6byHnnYOiqlLBhOa9+TkoFl4OQDxmmuT19Kafb+JvR8m9Mj1SDGxUgkLFw4rcWF2YOD0ddFCh3nyDmQbv87Ck=
+	t=1744915591; cv=none; b=E4lRq9BijUOkqyUjAgexf0Pgp49wzv8Yl56zyHRwtGZED9feSTOCYN60kFy6sqq7ETY3UzFVl1sfEzwrBSALTKAcHkZjB1dQEkQwpB+S/KcSUWijpu+Il44wiEBSoVycZoIlaIHzzoYyM2uNB0PMkxDzE4pEhUMOYwI6EydlCq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914472; c=relaxed/simple;
-	bh=JVYppP10407CABpVpTDmFXbgJJOsHDWVNSLk1Xdh/Hk=;
+	s=arc-20240116; t=1744915591; c=relaxed/simple;
+	bh=AUdmqSta+GwMLxFRuigPTQk8tXcKPEh1XpJwVrXL0sY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JAYgPdGYTdeGooKyi91MrZ5UI5tMeI+dX70Dbr9aE9lqbLZKgeevguIb27DgpZJb5LOw/cy0LMx3PN+ZaK0M0wQLgcTkoe4hUpU3pkZ4H82/OB93M2pDRWitxKC56VnrVbxKTYKBfxudICMB2WHWkBMezs+LLxg54i/lgM8q9A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AS9tEGOZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A88E1C4CEE4;
-	Thu, 17 Apr 2025 18:27:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uPk1jOY2VY0zqUo1X4Us+y05LNRuJ99P3NzKQsgnQL/VtKL+nSam2DRDvQNXpHFgYzUd30t78StKRBQZf61Q2In27sH7d3lB0eNSi7irl21JAOx8xnP+L8ud8gq1jl46w8Y2KwlvvfICp+5LYAYM9eAYV2OAB16y5gsEjWBAnKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSjp2qVK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D0AC4CEE4;
+	Thu, 17 Apr 2025 18:46:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914472;
-	bh=JVYppP10407CABpVpTDmFXbgJJOsHDWVNSLk1Xdh/Hk=;
+	s=korg; t=1744915591;
+	bh=AUdmqSta+GwMLxFRuigPTQk8tXcKPEh1XpJwVrXL0sY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AS9tEGOZsWq8r9VBqXmdeREqf0BYcYn27ivs9Mga+qEa27LrSZ/Gk7Gc/gc5rW9Eo
-	 2J/7JITh6IooiHkryOUBig3I3zmCjC5/q6FGpvkR45DX7L9q2QeuH33JyzyxVabznH
-	 Ym9lkSrNt30AyKyCssybzqquJ1e47zTsKW8ajvsw=
+	b=VSjp2qVKa7X1ldLDCWuugE3l7edciOlshH/JFrFIQrHduI96rDNgVRu0QwIDzxAT0
+	 QlCFc0ixteMLzPsFFuv9zACL8pSLXMUXzoC7muqAyxTVJk1H6VvmH40ZpU8YM9trK/
+	 G/OBF4G8JaCqHmDqydm63HOKUJ8/XLaWWsJG7svg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peyton Howe <peyton.howe@bellsouth.net>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.13 227/414] media: imx219: Adjust PLL settings based on the number of MIPI lanes
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 176/393] HID: pidff: Factor out pool report fetch and remove excess declaration
 Date: Thu, 17 Apr 2025 19:49:45 +0200
-Message-ID: <20250417175120.565693534@linuxfoundation.org>
+Message-ID: <20250417175114.680431083@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,202 +64,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-commit 591a07588c03437dbcc3addfff07675de95a461e upstream.
+[ Upstream commit 5d98079b2d0186e1f586301a9c00144a669416a8 ]
 
-Commit ceddfd4493b3 ("media: i2c: imx219: Support four-lane operation")
-added support for device tree to allow configuration of the sensor to
-use 4 lanes with a link frequency of 363MHz, and amended the advertised
-pixel rate to 280.8MPix/s.
+We only want to refetch the pool report during device init. Reset
+function is now called when uploading effects to an empty device so
+extract pool fetch to separate function and call it from init before
+autocenter check (autocenter check triggered reset during init).
 
-However it didn't change any of the PLL settings, so actually it would
-have been running overclocked in the MIPI block, and with the frame
-rate and exposure calculations being wrong as the pixel rate was
-unchanged.
+Remove a superfluous pointer declaration and assigment as well.
 
-The pixel rate and link frequency advertised were taken from the "Clock
-Setting Example" section of the datasheet. However those are based on an
-external clock of 12MHz, and are unachievable with a clock of 24MHz - it
-seems PREPLLCLK_VT_DIV and PREPLLCK_OP_DIV can ONLY be set via the
-automatic configuration documented in "9-1-2 EXCK_FREQ setting depend on
-INCK frequency", not by writing the registers.
-The closest we can get with a 24MHz clock is 281.6MPix/s and 364MHz.
-
-Dropping all support for the 363MHz link frequency would cause problems
-for existing users, so allow it, but log a warning that the requested
-value is being changed to the supported one.
-
-Fixes: ceddfd4493b3 ("media: i2c: imx219: Support four-lane operation")
-Cc: stable@vger.kernel.org
-Co-developed-by: Peyton Howe <peyton.howe@bellsouth.net>
-Signed-off-by: Peyton Howe <peyton.howe@bellsouth.net>
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/imx219.c |   93 +++++++++++++++++++++++++++++++++------------
- 1 file changed, 69 insertions(+), 24 deletions(-)
+ drivers/hid/usbhid/hid-pidff.c | 45 ++++++++++++++++++----------------
+ 1 file changed, 24 insertions(+), 21 deletions(-)
 
---- a/drivers/media/i2c/imx219.c
-+++ b/drivers/media/i2c/imx219.c
-@@ -133,10 +133,11 @@
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index b21e844f5f3a3..f23381b6e3447 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -591,12 +591,9 @@ static void pidff_modify_actuators_state(struct pidff_device *pidff, bool enable
  
- /* Pixel rate is fixed for all the modes */
- #define IMX219_PIXEL_RATE		182400000
--#define IMX219_PIXEL_RATE_4LANE		280800000
-+#define IMX219_PIXEL_RATE_4LANE		281600000
- 
- #define IMX219_DEFAULT_LINK_FREQ	456000000
--#define IMX219_DEFAULT_LINK_FREQ_4LANE	363000000
-+#define IMX219_DEFAULT_LINK_FREQ_4LANE_UNSUPPORTED	363000000
-+#define IMX219_DEFAULT_LINK_FREQ_4LANE	364000000
- 
- /* IMX219 native and active pixel array size. */
- #define IMX219_NATIVE_WIDTH		3296U
-@@ -168,15 +169,6 @@ static const struct cci_reg_sequence imx
- 	{ CCI_REG8(0x30eb), 0x05 },
- 	{ CCI_REG8(0x30eb), 0x09 },
- 
--	/* PLL Clock Table */
--	{ IMX219_REG_VTPXCK_DIV, 5 },
--	{ IMX219_REG_VTSYCK_DIV, 1 },
--	{ IMX219_REG_PREPLLCK_VT_DIV, 3 },	/* 0x03 = AUTO set */
--	{ IMX219_REG_PREPLLCK_OP_DIV, 3 },	/* 0x03 = AUTO set */
--	{ IMX219_REG_PLL_VT_MPY, 57 },
--	{ IMX219_REG_OPSYCK_DIV, 1 },
--	{ IMX219_REG_PLL_OP_MPY, 114 },
--
- 	/* Undocumented registers */
- 	{ CCI_REG8(0x455e), 0x00 },
- 	{ CCI_REG8(0x471e), 0x4b },
-@@ -201,12 +193,45 @@ static const struct cci_reg_sequence imx
- 	{ IMX219_REG_EXCK_FREQ, IMX219_EXCK_FREQ(IMX219_XCLK_FREQ / 1000000) },
- };
- 
-+static const struct cci_reg_sequence imx219_2lane_regs[] = {
-+	/* PLL Clock Table */
-+	{ IMX219_REG_VTPXCK_DIV, 5 },
-+	{ IMX219_REG_VTSYCK_DIV, 1 },
-+	{ IMX219_REG_PREPLLCK_VT_DIV, 3 },	/* 0x03 = AUTO set */
-+	{ IMX219_REG_PREPLLCK_OP_DIV, 3 },	/* 0x03 = AUTO set */
-+	{ IMX219_REG_PLL_VT_MPY, 57 },
-+	{ IMX219_REG_OPSYCK_DIV, 1 },
-+	{ IMX219_REG_PLL_OP_MPY, 114 },
-+
-+	/* 2-Lane CSI Mode */
-+	{ IMX219_REG_CSI_LANE_MODE, IMX219_CSI_2_LANE_MODE },
-+};
-+
-+static const struct cci_reg_sequence imx219_4lane_regs[] = {
-+	/* PLL Clock Table */
-+	{ IMX219_REG_VTPXCK_DIV, 5 },
-+	{ IMX219_REG_VTSYCK_DIV, 1 },
-+	{ IMX219_REG_PREPLLCK_VT_DIV, 3 },	/* 0x03 = AUTO set */
-+	{ IMX219_REG_PREPLLCK_OP_DIV, 3 },	/* 0x03 = AUTO set */
-+	{ IMX219_REG_PLL_VT_MPY, 88 },
-+	{ IMX219_REG_OPSYCK_DIV, 1 },
-+	{ IMX219_REG_PLL_OP_MPY, 91 },
-+
-+	/* 4-Lane CSI Mode */
-+	{ IMX219_REG_CSI_LANE_MODE, IMX219_CSI_4_LANE_MODE },
-+};
-+
- static const s64 imx219_link_freq_menu[] = {
- 	IMX219_DEFAULT_LINK_FREQ,
- };
- 
- static const s64 imx219_link_freq_4lane_menu[] = {
- 	IMX219_DEFAULT_LINK_FREQ_4LANE,
-+	/*
-+	 * This will never be advertised to userspace, but will be used for
-+	 * v4l2_link_freq_to_bitmap
-+	 */
-+	IMX219_DEFAULT_LINK_FREQ_4LANE_UNSUPPORTED,
- };
- 
- static const char * const imx219_test_pattern_menu[] = {
-@@ -662,9 +687,11 @@ static int imx219_set_framefmt(struct im
- 
- static int imx219_configure_lanes(struct imx219 *imx219)
+ /*
+  * Reset the device, stop all effects, enable actuators
+- * Refetch pool report
+  */
+ static void pidff_reset(struct pidff_device *pidff)
  {
--	return cci_write(imx219->regmap, IMX219_REG_CSI_LANE_MODE,
--			 imx219->lanes == 2 ? IMX219_CSI_2_LANE_MODE :
--			 IMX219_CSI_4_LANE_MODE, NULL);
-+	/* Write the appropriate PLL settings for the number of MIPI lanes */
-+	return cci_multi_reg_write(imx219->regmap,
-+				  imx219->lanes == 2 ? imx219_2lane_regs : imx219_4lane_regs,
-+				  imx219->lanes == 2 ? ARRAY_SIZE(imx219_2lane_regs) :
-+				  ARRAY_SIZE(imx219_4lane_regs), NULL);
- };
- 
- static int imx219_start_streaming(struct imx219 *imx219,
-@@ -1035,6 +1062,7 @@ static int imx219_check_hwcfg(struct dev
- 	struct v4l2_fwnode_endpoint ep_cfg = {
- 		.bus_type = V4L2_MBUS_CSI2_DPHY
- 	};
-+	unsigned long link_freq_bitmap;
- 	int ret = -EINVAL;
- 
- 	endpoint = fwnode_graph_get_next_endpoint(dev_fwnode(dev), NULL);
-@@ -1056,23 +1084,40 @@ static int imx219_check_hwcfg(struct dev
- 	imx219->lanes = ep_cfg.bus.mipi_csi2.num_data_lanes;
- 
- 	/* Check the link frequency set in device tree */
--	if (!ep_cfg.nr_of_link_frequencies) {
--		dev_err_probe(dev, -EINVAL,
--			      "link-frequency property not found in DT\n");
--		goto error_out;
-+	switch (imx219->lanes) {
-+	case 2:
-+		ret = v4l2_link_freq_to_bitmap(dev,
-+					       ep_cfg.link_frequencies,
-+					       ep_cfg.nr_of_link_frequencies,
-+					       imx219_link_freq_menu,
-+					       ARRAY_SIZE(imx219_link_freq_menu),
-+					       &link_freq_bitmap);
-+		break;
-+	case 4:
-+		ret = v4l2_link_freq_to_bitmap(dev,
-+					       ep_cfg.link_frequencies,
-+					       ep_cfg.nr_of_link_frequencies,
-+					       imx219_link_freq_4lane_menu,
-+					       ARRAY_SIZE(imx219_link_freq_4lane_menu),
-+					       &link_freq_bitmap);
-+
-+		if (!ret && (link_freq_bitmap & BIT(1))) {
-+			dev_warn(dev, "Link frequency of %d not supported, but has been incorrectly advertised previously\n",
-+				 IMX219_DEFAULT_LINK_FREQ_4LANE_UNSUPPORTED);
-+			dev_warn(dev, "Using link frequency of %d\n",
-+				 IMX219_DEFAULT_LINK_FREQ_4LANE);
-+			link_freq_bitmap |= BIT(0);
-+		}
-+		break;
- 	}
- 
--	if (ep_cfg.nr_of_link_frequencies != 1 ||
--	   (ep_cfg.link_frequencies[0] != ((imx219->lanes == 2) ?
--	    IMX219_DEFAULT_LINK_FREQ : IMX219_DEFAULT_LINK_FREQ_4LANE))) {
-+	if (ret || !(link_freq_bitmap & BIT(0))) {
-+		ret = -EINVAL;
- 		dev_err_probe(dev, -EINVAL,
- 			      "Link frequency not supported: %lld\n",
- 			      ep_cfg.link_frequencies[0]);
--		goto error_out;
- 	}
- 
--	ret = 0;
+-	int i = 0;
 -
- error_out:
- 	v4l2_fwnode_endpoint_free(&ep_cfg);
- 	fwnode_handle_put(endpoint);
+ 	/* We reset twice as sometimes hid_wait_io isn't waiting long enough */
+ 	pidff_send_device_control(pidff, PID_RESET);
+ 	pidff_send_device_control(pidff, PID_RESET);
+@@ -604,23 +601,29 @@ static void pidff_reset(struct pidff_device *pidff)
+ 
+ 	pidff_send_device_control(pidff, PID_STOP_ALL_EFFECTS);
+ 	pidff_modify_actuators_state(pidff, 1);
++}
+ 
+-	/* pool report is sometimes messed up, refetch it */
+-	hid_hw_request(pidff->hid, pidff->reports[PID_POOL], HID_REQ_GET_REPORT);
+-	hid_hw_wait(pidff->hid);
++/*
++ * Refetch pool report
++ */
++static void pidff_fetch_pool(struct pidff_device *pidff)
++{
++	if (!pidff->pool[PID_SIMULTANEOUS_MAX].value)
++		return;
+ 
+-	if (pidff->pool[PID_SIMULTANEOUS_MAX].value) {
+-		while (pidff->pool[PID_SIMULTANEOUS_MAX].value[0] < 2) {
+-			if (i++ > 20) {
+-				hid_warn(pidff->hid,
+-					 "device reports %d simultaneous effects\n",
+-					 pidff->pool[PID_SIMULTANEOUS_MAX].value[0]);
+-				break;
+-			}
+-			hid_dbg(pidff->hid, "pid_pool requested again\n");
+-			hid_hw_request(pidff->hid, pidff->reports[PID_POOL],
+-					  HID_REQ_GET_REPORT);
+-			hid_hw_wait(pidff->hid);
++	int i = 0;
++	while (pidff->pool[PID_SIMULTANEOUS_MAX].value[0] < 2) {
++		hid_dbg(pidff->hid, "pid_pool requested again\n");
++		hid_hw_request(pidff->hid, pidff->reports[PID_POOL],
++				HID_REQ_GET_REPORT);
++		hid_hw_wait(pidff->hid);
++
++		/* break after 20 tries with SIMULTANEOUS_MAX < 2 */
++		if (i++ > 20) {
++			hid_warn(pidff->hid,
++				 "device reports %d simultaneous effects\n",
++				 pidff->pool[PID_SIMULTANEOUS_MAX].value[0]);
++			break;
+ 		}
+ 	}
+ }
+@@ -916,9 +919,7 @@ static void pidff_autocenter(struct pidff_device *pidff, u16 magnitude)
+  */
+ static void pidff_set_autocenter(struct input_dev *dev, u16 magnitude)
+ {
+-	struct pidff_device *pidff = dev->ff->private;
+-
+-	pidff_autocenter(pidff, magnitude);
++	pidff_autocenter(dev->ff->private, magnitude);
+ }
+ 
+ /*
+@@ -1424,6 +1425,8 @@ int hid_pidff_init_with_quirks(struct hid_device *hid, u32 initial_quirks)
+ 	if (error)
+ 		goto fail;
+ 
++	/* pool report is sometimes messed up, refetch it */
++	pidff_fetch_pool(pidff);
+ 	pidff_set_gain_report(pidff, U16_MAX);
+ 	error = pidff_check_autocenter(pidff, dev);
+ 	if (error)
+-- 
+2.39.5
+
 
 
 
