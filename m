@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-133968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CAFDA928DB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:38:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67CCFA9264F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:12:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B62F53A4A48
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCE704A0584
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:12:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB06261586;
-	Thu, 17 Apr 2025 18:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 337AC25525A;
+	Thu, 17 Apr 2025 18:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jDa+Zg6B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WrwgON73"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C0F25A658;
-	Thu, 17 Apr 2025 18:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2031DF756;
+	Thu, 17 Apr 2025 18:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914691; cv=none; b=Bj/aAzkvVywh2KgwfDUOSSSsVNWO1ZpqcPa9aOcVqF89l+VafELKp3joO0oGe8DO1V6g0mS8XYicfRbaPTrlY9K9gkqMIe0ZLuPitjfccAzbza/maywfxe+HbZ5LwdyA8KpYIP6zcIPTctMxGodsxeMCngi1FIZaIllzByDNBO8=
+	t=1744913527; cv=none; b=fVCksHW5ZuwQhU+82rAl0qcNOkK8HgQ42433ykQKREXVD7ItMzHtw/nPvFzkIG7y+68DnrgTIJ+8jpI8IGMOQFtvm+iM74aNtzkTqYNXtZXxEzkKN79Vkh/Ow0ywUptVNBFHDbNE4/m4YMqCU6l5ppOMctkVBfdZ8HiwoRkHUk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914691; c=relaxed/simple;
-	bh=9oRTvEGH7+ne7zHq7BMSixrhOmJaAWFTrcFsMW66KG0=;
+	s=arc-20240116; t=1744913527; c=relaxed/simple;
+	bh=M/mfVAQJz3DqD/6B+Odmr+Y8lbLFhmWNyml9t4m3IUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iTmV7rFVeyPmcWHy4/mG3ivYfRQ4MkEbh6puPENLp2PKukr8Dxr+OxJPqmICaWC/D9FP5Kn84dv0v0ZOyP+/+MBd+3YL4NGqjxEMiGeVc/5/K4YG2mPe7qOnT+ly6DCiCgBHIBju+EcMyBUYm/Qc3aCTvbhAQyP+VPwwDFOK4W0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jDa+Zg6B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60895C4CEE4;
-	Thu, 17 Apr 2025 18:31:31 +0000 (UTC)
+	 MIME-Version; b=EE8AcwqB1L4VcF4YHH2hj6HEOzI1JJNz/ixjWPoWhv9ktXgDCj2aJJd2EGPGVkAcvFv+FR3cCIVPjrFoFPTTMrq0Z6Dq7q3L3axHSyRNLnokjPlxqUDsG4dtU+c1iztvsm38zeAKn9Th1KzX8h52CxjC8Jw6bNXnLc5lPsyX/fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WrwgON73; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F99C4CEE4;
+	Thu, 17 Apr 2025 18:12:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914691;
-	bh=9oRTvEGH7+ne7zHq7BMSixrhOmJaAWFTrcFsMW66KG0=;
+	s=korg; t=1744913526;
+	bh=M/mfVAQJz3DqD/6B+Odmr+Y8lbLFhmWNyml9t4m3IUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jDa+Zg6BcsJHyt33N+9uwG+w0oG66D7zbEapaARL5qPMvu+c9jkSzQ1BtoOBTGnCq
-	 dl7OYd8nvkdEoIA3WT00fugX02O7G7WXfJ6d+bCjkgDwUIQw3+y8dx7WiLantqSkkY
-	 zjGciF1Lkt3Airp82qTYTfQ/EaK5tG1+UlwydC9E=
+	b=WrwgON73CAS7clve21tZtzmLMRE+s64K6PVEuMlC2XytiBfe1sMSzbAJKYHJ+jIJJ
+	 0GbD8NOZDTkv8fTV2+JFw9tw4W9MoQ4/FGExmu0gbMOVGiSePtdOR+9YzXAL2H4g1R
+	 zj2oNMpAl8wfaLVO0oBnwx6EZqx6SUetz2hGijzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Gang Yan <yangang@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.13 299/414] mptcp: fix NULL pointer in can_accept_new_subflow
+	Alexei Starovoitov <ast@kernel.org>,
+	Sebastian Siewior <bigeasy@linutronix.de>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	stable@kernel.org
+Subject: [PATCH 6.14 369/449] uprobes: Avoid false-positive lockdep splat on CONFIG_PREEMPT_RT=y in the ri_timer() uprobe timer callback, use raw_write_seqcount_*()
 Date: Thu, 17 Apr 2025 19:50:57 +0200
-Message-ID: <20250417175123.459136560@linuxfoundation.org>
+Message-ID: <20250417175133.093780322@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +67,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gang Yan <yangang@kylinos.cn>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-commit 443041deb5ef6a1289a99ed95015ec7442f141dc upstream.
+commit 0cd575cab10e114e95921321f069a08d45bc412e upstream.
 
-When testing valkey benchmark tool with MPTCP, the kernel panics in
-'mptcp_can_accept_new_subflow' because subflow_req->msk is NULL.
+Avoid a false-positive lockdep warning in the CONFIG_PREEMPT_RT=y
+configuration when using write_seqcount_begin() in the uprobe timer
+callback by using raw_write_* APIs.
 
-Call trace:
+Uprobe's use of timer callback is guaranteed to not race with itself
+for a given uprobe_task, and as such seqcount's insistence on having
+preemption disabled on the writer side is irrelevant. So switch to
+raw_ variants of seqcount API instead of disabling preemption unnecessarily.
 
-  mptcp_can_accept_new_subflow (./net/mptcp/subflow.c:63 (discriminator 4)) (P)
-  subflow_syn_recv_sock (./net/mptcp/subflow.c:854)
-  tcp_check_req (./net/ipv4/tcp_minisocks.c:863)
-  tcp_v4_rcv (./net/ipv4/tcp_ipv4.c:2268)
-  ip_protocol_deliver_rcu (./net/ipv4/ip_input.c:207)
-  ip_local_deliver_finish (./net/ipv4/ip_input.c:234)
-  ip_local_deliver (./net/ipv4/ip_input.c:254)
-  ip_rcv_finish (./net/ipv4/ip_input.c:449)
-  ...
+Also, point out in the comments more explicitly why we use seqcount
+despite our reader side being rather simple and never retrying. We favor
+well-maintained kernel primitive in favor of open-coding our own memory
+barriers.
 
-According to the debug log, the same req received two SYN-ACK in a very
-short time, very likely because the client retransmits the syn ack due
-to multiple reasons.
-
-Even if the packets are transmitted with a relevant time interval, they
-can be processed by the server on different CPUs concurrently). The
-'subflow_req->msk' ownership is transferred to the subflow the first,
-and there will be a risk of a null pointer dereference here.
-
-This patch fixes this issue by moving the 'subflow_req->msk' under the
-`own_req == true` conditional.
-
-Note that the !msk check in subflow_hmac_valid() can be dropped, because
-the same check already exists under the own_req mpj branch where the
-code has been moved to.
-
-Fixes: 9466a1ccebbe ("mptcp: enable JOIN requests even if cookies are in use")
-Cc: stable@vger.kernel.org
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250328-net-mptcp-misc-fixes-6-15-v1-1-34161a482a7f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8622e45b5da1 ("uprobes: Reuse return_instances between multiple uretprobes within task")
+Reported-by: Alexei Starovoitov <ast@kernel.org>
+Suggested-by: Sebastian Siewior <bigeasy@linutronix.de>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20250404194848.2109539-1-andrii@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/subflow.c |   15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ kernel/events/uprobes.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -754,8 +754,6 @@ static bool subflow_hmac_valid(const str
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -1955,6 +1955,9 @@ static void free_ret_instance(struct upr
+ 	 * to-be-reused return instances for future uretprobes. If ri_timer()
+ 	 * happens to be running right now, though, we fallback to safety and
+ 	 * just perform RCU-delated freeing of ri.
++	 * Admittedly, this is a rather simple use of seqcount, but it nicely
++	 * abstracts away all the necessary memory barriers, so we use
++	 * a well-supported kernel primitive here.
+ 	 */
+ 	if (raw_seqcount_try_begin(&utask->ri_seqcount, seq)) {
+ 		/* immediate reuse of ri without RCU GP is OK */
+@@ -2015,12 +2018,20 @@ static void ri_timer(struct timer_list *
+ 	/* RCU protects return_instance from freeing. */
+ 	guard(rcu)();
  
- 	subflow_req = mptcp_subflow_rsk(req);
- 	msk = subflow_req->msk;
--	if (!msk)
--		return false;
+-	write_seqcount_begin(&utask->ri_seqcount);
++	/*
++	 * See free_ret_instance() for notes on seqcount use.
++	 * We also employ raw API variants to avoid lockdep false-positive
++	 * warning complaining about enabled preemption. The timer can only be
++	 * invoked once for a uprobe_task. Therefore there can only be one
++	 * writer. The reader does not require an even sequence count to make
++	 * progress, so it is OK to remain preemptible on PREEMPT_RT.
++	 */
++	raw_write_seqcount_begin(&utask->ri_seqcount);
  
- 	subflow_generate_hmac(READ_ONCE(msk->remote_key),
- 			      READ_ONCE(msk->local_key),
-@@ -853,12 +851,8 @@ static struct sock *subflow_syn_recv_soc
+ 	for_each_ret_instance_rcu(ri, utask->return_instances)
+ 		hprobe_expire(&ri->hprobe, false);
  
- 	} else if (subflow_req->mp_join) {
- 		mptcp_get_options(skb, &mp_opt);
--		if (!(mp_opt.suboptions & OPTION_MPTCP_MPJ_ACK) ||
--		    !subflow_hmac_valid(req, &mp_opt) ||
--		    !mptcp_can_accept_new_subflow(subflow_req->msk)) {
--			SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
-+		if (!(mp_opt.suboptions & OPTION_MPTCP_MPJ_ACK))
- 			fallback = true;
--		}
- 	}
+-	write_seqcount_end(&utask->ri_seqcount);
++	raw_write_seqcount_end(&utask->ri_seqcount);
+ }
  
- create_child:
-@@ -907,6 +901,13 @@ create_child:
- 				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
- 				goto dispose_child;
- 			}
-+
-+			if (!subflow_hmac_valid(req, &mp_opt) ||
-+			    !mptcp_can_accept_new_subflow(subflow_req->msk)) {
-+				SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
-+				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
-+				goto dispose_child;
-+			}
- 
- 			/* move the msk reference ownership to the subflow */
- 			subflow_req->msk = NULL;
+ static struct uprobe_task *alloc_utask(void)
 
 
 
