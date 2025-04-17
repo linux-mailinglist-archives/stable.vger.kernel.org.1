@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-133041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 724BBA91AB3
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5438A91AB4
 	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 13:24:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97FCF5A1E23
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 11:24:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B69519E5972
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 11:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145A623C8B0;
-	Thu, 17 Apr 2025 11:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3AA523C388;
+	Thu, 17 Apr 2025 11:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxK6I/B7"
-X-Original-To: Stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PFz1Z7Jl"
+X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8258185B67
-	for <Stable@vger.kernel.org>; Thu, 17 Apr 2025 11:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E1023C387
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 11:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744889058; cv=none; b=rbRKWkT0fWQjCVPv+XFhlt5hLkNjAZI+Va5cNjumByB3O1aR5dpnbzvhmQFLjakyZZERRWZX7TC0YCit/qHxjVDABmFH5PhcvRw+NfQg25kmnjKchVq1t6y00dmTtzM7a3yfmhsBT8PhIfkt8po2+euC6+xW5ZPciiHz0OC5oo4=
+	t=1744889062; cv=none; b=qNaPRH4zXSXUBe3+t8LUJSFL0+WGV8tat2+CtVw+nJ/LNcPnXt0XaA0h9C2dWoE6kgva0UqtNJLRfTiutRbzmwP4RXWKJ5KsJtQAGzDfR27gA/S1w3gBu+NvBwZ/yD3TTef3U62oK1GtsDkofJ9dNa64d1C6BWbDAs7ngb52GeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744889058; c=relaxed/simple;
-	bh=2cP1Kgd8kC7SvB/6yzfBLUb6fisOWYFCHcAkhh6Xwkc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VeYXwnt6frHmUyJul557bbtMATBjDjMDfARieVqjLYShY/Ot3UbV0a52UOXrdb1JveRsu0O2rfpu0MFTfQu/JAk3pazTEyUGDx4msjQJ6EfdiR8PIt71y3sm6c/++tyzws23d5LYznnoVkViTQKmUXq6f/mgvLFHU5vZ5VhD9EE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxK6I/B7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35135C4CEE4;
-	Thu, 17 Apr 2025 11:24:18 +0000 (UTC)
+	s=arc-20240116; t=1744889062; c=relaxed/simple;
+	bh=M022no+Cx3sODRE6ofTiB0jF7DtP/r10OlYMj4ObJo4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OH9+vT/hVvEqM0o4XYUY7A1kTFzkowyc5n8l6kZSIiKzEtGsrRbg92j53+0mOO3AbUJn6+WSoNrHgE//iTHQD3XVvwXQT9Zeteaq8PkF+obil8M62MqXD5pffHbS/icPneDMyzamoltsJzCdAMUxg1KTrzpNAE71d4O/aWd4aKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PFz1Z7Jl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91AC9C4CEEA;
+	Thu, 17 Apr 2025 11:24:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744889058;
-	bh=2cP1Kgd8kC7SvB/6yzfBLUb6fisOWYFCHcAkhh6Xwkc=;
+	s=korg; t=1744889062;
+	bh=M022no+Cx3sODRE6ofTiB0jF7DtP/r10OlYMj4ObJo4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=DxK6I/B7Cv3Kl02Uw8onqfrr8Cj7DYYjsqIEfXX10XJsCXCAyMpfUH97+tk1j/bEC
-	 PYZjBcOfkCw036PbVgJudg9hRvwzFwpc1usL7vLbzfg4YFoOgpf4d0eqxU1y89RlDF
-	 ZPL2z9x6nxa1We7iS6xWlGlUVn9UJZrRAX6dXciQ=
-Subject: FAILED: patch "[PATCH] iio: adc: ad7768-1: Fix conversion result sign" failed to apply to 5.4-stable tree
-To: sergiu.cuciurean@analog.com,Jonathan.Cameron@huawei.com,Jonathan.Santos@analog.com,Stable@vger.kernel.org,dlechner@baylibre.com,marcelo.schmitt@analog.com
+	b=PFz1Z7Jli8Jy0fYpLaM3cwjDPsW4/v/ct3+VXxhJaeku5TZaKMyJ6oCzHiFezkGl5
+	 m0lQPUVgJtUyFhToSHT4RbUqcgr2Y4PMZ06xaib1unJYAbQO+TbZgWRaK85tJtCQ0/
+	 UvQOTP1vEJb3mrDvIRxI4zYJny0T6M/rVlXJKyag=
+Subject: FAILED: patch "[PATCH] mptcp: fix NULL pointer in can_accept_new_subflow" failed to apply to 5.10-stable tree
+To: yangang@kylinos.cn,kuba@kernel.org,matttbe@kernel.org,pabeni@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 17 Apr 2025 13:06:00 +0200
-Message-ID: <2025041700-greyhound-yogurt-8e1f@gregkh>
+Date: Thu, 17 Apr 2025 13:08:37 +0200
+Message-ID: <2025041737-entrench-peroxide-5bc7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8236644f5ecb180e80ad92d691c22bc509b747bb
+git cherry-pick -x 443041deb5ef6a1289a99ed95015ec7442f141dc
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041700-greyhound-yogurt-8e1f@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041737-entrench-peroxide-5bc7@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,49 +77,91 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8236644f5ecb180e80ad92d691c22bc509b747bb Mon Sep 17 00:00:00 2001
-From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-Date: Thu, 6 Mar 2025 18:00:29 -0300
-Subject: [PATCH] iio: adc: ad7768-1: Fix conversion result sign
+From 443041deb5ef6a1289a99ed95015ec7442f141dc Mon Sep 17 00:00:00 2001
+From: Gang Yan <yangang@kylinos.cn>
+Date: Fri, 28 Mar 2025 15:27:16 +0100
+Subject: [PATCH] mptcp: fix NULL pointer in can_accept_new_subflow
 
-The ad7768-1 ADC output code is two's complement, meaning that the voltage
-conversion result is a signed value.. Since the value is a 24 bit one,
-stored in a 32 bit variable, the sign should be extended in order to get
-the correct representation.
+When testing valkey benchmark tool with MPTCP, the kernel panics in
+'mptcp_can_accept_new_subflow' because subflow_req->msk is NULL.
 
-Also the channel description has been updated to signed representation,
-to match the ADC specifications.
+Call trace:
 
-Fixes: a5f8c7da3dbe ("iio: adc: Add AD7768-1 ADC basic support")
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: <Stable@vger.kernel.org>
-Link: https://patch.msgid.link/505994d3b71c2aa38ba714d909a68e021f12124c.1741268122.git.Jonathan.Santos@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+  mptcp_can_accept_new_subflow (./net/mptcp/subflow.c:63 (discriminator 4)) (P)
+  subflow_syn_recv_sock (./net/mptcp/subflow.c:854)
+  tcp_check_req (./net/ipv4/tcp_minisocks.c:863)
+  tcp_v4_rcv (./net/ipv4/tcp_ipv4.c:2268)
+  ip_protocol_deliver_rcu (./net/ipv4/ip_input.c:207)
+  ip_local_deliver_finish (./net/ipv4/ip_input.c:234)
+  ip_local_deliver (./net/ipv4/ip_input.c:254)
+  ip_rcv_finish (./net/ipv4/ip_input.c:449)
+  ...
 
-diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-index ea829c51e80b..09e7cccfd51c 100644
---- a/drivers/iio/adc/ad7768-1.c
-+++ b/drivers/iio/adc/ad7768-1.c
-@@ -142,7 +142,7 @@ static const struct iio_chan_spec ad7768_channels[] = {
- 		.channel = 0,
- 		.scan_index = 0,
- 		.scan_type = {
--			.sign = 'u',
-+			.sign = 's',
- 			.realbits = 24,
- 			.storagebits = 32,
- 			.shift = 8,
-@@ -373,7 +373,7 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
- 		iio_device_release_direct(indio_dev);
- 		if (ret < 0)
- 			return ret;
--		*val = ret;
-+		*val = sign_extend32(ret, chan->scan_type.realbits - 1);
+According to the debug log, the same req received two SYN-ACK in a very
+short time, very likely because the client retransmits the syn ack due
+to multiple reasons.
+
+Even if the packets are transmitted with a relevant time interval, they
+can be processed by the server on different CPUs concurrently). The
+'subflow_req->msk' ownership is transferred to the subflow the first,
+and there will be a risk of a null pointer dereference here.
+
+This patch fixes this issue by moving the 'subflow_req->msk' under the
+`own_req == true` conditional.
+
+Note that the !msk check in subflow_hmac_valid() can be dropped, because
+the same check already exists under the own_req mpj branch where the
+code has been moved to.
+
+Fixes: 9466a1ccebbe ("mptcp: enable JOIN requests even if cookies are in use")
+Cc: stable@vger.kernel.org
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Gang Yan <yangang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250328-net-mptcp-misc-fixes-6-15-v1-1-34161a482a7f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index efe8d86496db..409bd415ef1d 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -754,8 +754,6 @@ static bool subflow_hmac_valid(const struct request_sock *req,
  
- 		return IIO_VAL_INT;
+ 	subflow_req = mptcp_subflow_rsk(req);
+ 	msk = subflow_req->msk;
+-	if (!msk)
+-		return false;
  
+ 	subflow_generate_hmac(READ_ONCE(msk->remote_key),
+ 			      READ_ONCE(msk->local_key),
+@@ -850,12 +848,8 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
+ 
+ 	} else if (subflow_req->mp_join) {
+ 		mptcp_get_options(skb, &mp_opt);
+-		if (!(mp_opt.suboptions & OPTION_MPTCP_MPJ_ACK) ||
+-		    !subflow_hmac_valid(req, &mp_opt) ||
+-		    !mptcp_can_accept_new_subflow(subflow_req->msk)) {
+-			SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
++		if (!(mp_opt.suboptions & OPTION_MPTCP_MPJ_ACK))
+ 			fallback = true;
+-		}
+ 	}
+ 
+ create_child:
+@@ -905,6 +899,13 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
+ 				goto dispose_child;
+ 			}
+ 
++			if (!subflow_hmac_valid(req, &mp_opt) ||
++			    !mptcp_can_accept_new_subflow(subflow_req->msk)) {
++				SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
++				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
++				goto dispose_child;
++			}
++
+ 			/* move the msk reference ownership to the subflow */
+ 			subflow_req->msk = NULL;
+ 			ctx->conn = (struct sock *)owner;
 
 
