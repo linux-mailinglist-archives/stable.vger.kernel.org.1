@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-133556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE765A92621
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:10:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66E45A92A45
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:48:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D9248A5C3F
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:10:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06DF21B62F64
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65D51DE3A8;
-	Thu, 17 Apr 2025 18:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7399253340;
+	Thu, 17 Apr 2025 18:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sKEE0eXo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0pafkDC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846DF18C034;
-	Thu, 17 Apr 2025 18:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65862185920;
+	Thu, 17 Apr 2025 18:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913433; cv=none; b=sbW52AxvuxRh7msscI2qzdsSiHGvfgLRFj+0lpdwUNJok7kMcmbTvuDKjBRvs1KdCzz3YpXqEvxB9rSDEL5ZMZXiO+rHFQnKJU2Fyuixtsx8uXm89Ur3VzW3wHcVMptsAm8UaLnsDL52d0bukoqZenMNruU9NN3DW/M4h+wVIXA=
+	t=1744915721; cv=none; b=dXPwPVpcx10I4RNMSmwS/s+uh+tfF9w364FftaZMB/xju2UHJET6nqIITNZOovFryqgkpDgN18VCNuYDa4WehwNTXJ95u6/bfKeBlyHO8lvcd8D4qqyfJXTgFoe13/FbbRSUKcpmroyS3Ojt5mH0Z+iBj38sJw8hDozcfguzubM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913433; c=relaxed/simple;
-	bh=pghpc3BLkKfOVzKB8bG8aM1sYSH69kiMmwJdpsoHZmc=;
+	s=arc-20240116; t=1744915721; c=relaxed/simple;
+	bh=kbk1qMiX2lwEGZW2V0HovsbGKxHuwR/0H4BwDPub/BE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WCoCQMkVxwIvT/JzkWq6QtQm2FNYVRtOWYi1TdL4rBjBmF5kfD5Fgb4ldmBP41sajr/9yBIMjayzEL5B7+fjDXAdjxji4WphOTVfaaWLAPoQxfmqvyzn6UyS3zNzOMpTnrAQiG7pNpCa9yz7U+VMk+OiqVWoWsWhttyUgmaADMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sKEE0eXo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA2CC4CEEA;
-	Thu, 17 Apr 2025 18:10:32 +0000 (UTC)
+	 MIME-Version; b=JLFykgtMzAPAv0AABRTWbqcpVq5Fdf/rpt+C+OLuTz0QqYmIkrx5mQ6C2eh9WzcBSjvwqm6zOOBjpemqY5dE9PWVjOZe3EZ1oWy3AmeeEj3Srg43cfiMh9HD0RJ8fYLwXxv/4jQyfWZYd4p2/evfhs7qCfFDHffueAxzt9dk6TE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0pafkDC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B04C4CEE4;
+	Thu, 17 Apr 2025 18:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913433;
-	bh=pghpc3BLkKfOVzKB8bG8aM1sYSH69kiMmwJdpsoHZmc=;
+	s=korg; t=1744915720;
+	bh=kbk1qMiX2lwEGZW2V0HovsbGKxHuwR/0H4BwDPub/BE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sKEE0eXojd3uWVQ7nXh5vTHYw0sruMN0dmhV53G0sV6CHnynKDTLVBHLTqtFRS5Dw
-	 Jxb8oB3hCjljNmcOuGJXRKF/9mcOAMZnPMVepbn7g8S132OfrgontVsGl4i+2YIQ1k
-	 TQ3fk3DcEXBesFh/w84CXi9zyKQdDH5v2fRc7Pqk=
+	b=K0pafkDC3g4a5yV+82M4eSXsrq3h1blF6vz3EecRIDdT+E65X4TVVhTEaBldnHscX
+	 A16E0g3DaVOprh51byicDJ/0wY1Tu6zKFMO8z+F4rFMaZB5TP7/Qa5ofwXJ1ISuvHe
+	 LVQPvDEkjgrGJdW8TQn26svBcXt7FFBHfwYrss4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Subject: [PATCH 6.14 338/449] arm64: dts: ti: k3-j784s4-j742s2-main-common: Fix serdes_ln_ctrl reg-masks
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 217/393] Revert "media: imx214: Fix the error handling in imx214_probe()"
 Date: Thu, 17 Apr 2025 19:50:26 +0200
-Message-ID: <20250417175131.796762382@linuxfoundation.org>
+Message-ID: <20250417175116.311858379@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit 38e7f9092efbbf2a4a67e4410b55b797f8d1e184 upstream.
+commit abd88757252c2a2cea7909f3922de1f0e9e04002 upstream.
 
-Commit under Fixes added the 'idle-states' property for SERDES4 lane muxes
-without defining the corresponding register offsets and masks for it in the
-'mux-reg-masks' property within the 'serdes_ln_ctrl' node.
+This reverts commit 9bc92332cc3f06fda3c6e2423995ca2da0a7ec9a.
 
-Fix this.
+Revert this "fix" as it's not really helpful but makes backporting a
+proper fix harder.
 
-Fixes: 7287d423f138 ("arm64: dts: ti: k3-j784s4-main: Add system controller and SERDES lane mux")
-Cc: stable@vger.kernel.org
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Link: https://lore.kernel.org/r/20250228053850.506028-1-s-vadapalli@ti.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Fixes: 9bc92332cc3f ("media: imx214: Fix the error handling in imx214_probe()")
+Cc: stable@vger.kernel.org # for >= v6.12
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/i2c/imx214.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
-@@ -84,7 +84,9 @@
- 					<0x10 0x3>, <0x14 0x3>, /* SERDES1 lane0/1 select */
- 					<0x18 0x3>, <0x1c 0x3>, /* SERDES1 lane2/3 select */
- 					<0x20 0x3>, <0x24 0x3>, /* SERDES2 lane0/1 select */
--					<0x28 0x3>, <0x2c 0x3>; /* SERDES2 lane2/3 select */
-+					<0x28 0x3>, <0x2c 0x3>, /* SERDES2 lane2/3 select */
-+					<0x40 0x3>, <0x44 0x3>, /* SERDES4 lane0/1 select */
-+					<0x48 0x3>, <0x4c 0x3>; /* SERDES4 lane2/3 select */
- 			idle-states = <J784S4_SERDES0_LANE0_PCIE1_LANE0>,
- 				      <J784S4_SERDES0_LANE1_PCIE1_LANE1>,
- 				      <J784S4_SERDES0_LANE2_IP3_UNUSED>,
+--- a/drivers/media/i2c/imx214.c
++++ b/drivers/media/i2c/imx214.c
+@@ -1114,7 +1114,6 @@ free_ctrl:
+ 	v4l2_ctrl_handler_free(&imx214->ctrls);
+ error_power_off:
+ 	pm_runtime_disable(imx214->dev);
+-	regulator_bulk_disable(IMX214_NUM_SUPPLIES, imx214->supplies);
+ 
+ 	return ret;
+ }
 
 
 
