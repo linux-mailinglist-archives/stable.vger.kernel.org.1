@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-133560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F02DAA9262E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:11:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE25A92AC7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:54:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF7444A02FA
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:11:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1ED298A5755
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E08B0255E4C;
-	Thu, 17 Apr 2025 18:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E32525743B;
+	Thu, 17 Apr 2025 18:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OXlXk0kq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6Tgukj3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF67152532;
-	Thu, 17 Apr 2025 18:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5022571DD;
+	Thu, 17 Apr 2025 18:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913446; cv=none; b=g8LmFeDjscPtjLWXTP4ta5TZQg9F6OzBew1/XokCwHVZ3kGvKgIAgBb/YhyzGHS+F9X8Dpj+2Xe03YsjPIFSBMjXxfz23Ys7oqfESbyn4ijUpfqxubm1eK3kdkAZ6VyZPBU3pmUaAaX33R8LftGg1dSFNItbtp6IiD0nbi2syK4=
+	t=1744915783; cv=none; b=WGqyKKWb7BDEEH6UnsKJiNiuq+i/u/v+b0QxhI+JpZSx2LI+lRUl29NtQWlPBS8ylX7zizBwlQOj1W8RTerm1MCcf7CZLuKmpPOCfw2rDZ0hi2mOLzH9dyGLDwSlbLJLcrkxC/5sElzhSwrX3DgKTD6bz+LyznQAhx0sQ8LxHYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913446; c=relaxed/simple;
-	bh=Wn1jW/V9xZFFvQkJR0mKgUJCv3Xzm3L6UvqIQN1qfck=;
+	s=arc-20240116; t=1744915783; c=relaxed/simple;
+	bh=r4p6OJOcYaraDNTW8T2n3vlqMWcxQvCAPHIVEXnsGg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YUqkaz6r/yJRBncr9olOB4sX9P0kvEUUSabiBvaDsBc6vN20NEPzNVzbgvHs4hbe3XfAQ1BWoZnv/8IDL1IWDVFrcDScV+IiV4eW9QyBjVYmPOV/X2S5Xyp7wmsaKCsEhXTYrXYajAgqxFFw2WZrH4XDuEZ/mCFAuz5pvzhOMic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OXlXk0kq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29250C4CEEA;
-	Thu, 17 Apr 2025 18:10:46 +0000 (UTC)
+	 MIME-Version; b=lrkUbv2GVzbMwxpYQMwlqWdtq0nT3eSlnzqRfXfB7EEzXiqqEnNksfdaPeP1cf4Fg+hoiAXcAJBTsCNWvc9IZyBw0lLN4FRw0PwNoHseERjr7uInI+1tBtSUWSOUbZEK9zIGmtBQZKbehaB4gs+oURMLhp3sFBBJIEwTcqyAeWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6Tgukj3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A43C4CEE4;
+	Thu, 17 Apr 2025 18:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913446;
-	bh=Wn1jW/V9xZFFvQkJR0mKgUJCv3Xzm3L6UvqIQN1qfck=;
+	s=korg; t=1744915782;
+	bh=r4p6OJOcYaraDNTW8T2n3vlqMWcxQvCAPHIVEXnsGg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OXlXk0kq/m3IMyYduO8ucIMg30cDQwcx3A/1gByzHm7F83nPCvpFVS3l+IItdN3mU
-	 h66jFQHfhWihVFbrwgnobkd5gj29s2Ct+AcjVvkzux+sWBPbdr4CxX0LGWECKsdWtf
-	 GQVXynUxnK1deCUm9OvfSIkc6F1TbHMuS8L0vFtM=
+	b=X6Tgukj35enRRtDjXbur0XHHBbMhE5y7Deaib+LIzNjnRg7YeyfzDpXfmTbSEEPXX
+	 L1Z0rpPbRWt4F033qPjO6E8E39UMR+6xTTEcBF2C19SJBNb73I9tyv3RmFrAUn6uhC
+	 d2c55rd3+eoMlfDdddgGbhIPA7kPdZKEJvGXDmMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.14 342/449] backlight: led_bl: Hold led_access lock when calling led_sysfs_disable()
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 221/393] media: i2c: ov7251: Introduce 1 ms delay between regulators and en GPIO
 Date: Thu, 17 Apr 2025 19:50:30 +0200
-Message-ID: <20250417175131.961861280@linuxfoundation.org>
+Message-ID: <20250417175116.475859124@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit 276822a00db3c1061382b41e72cafc09d6a0ec30 upstream.
+commit 3d391292cdd53984ec1b9a1f6182a62a62751e03 upstream.
 
-Lockdep detects the following issue on led-backlight removal:
-  [  142.315935] ------------[ cut here ]------------
-  [  142.315954] WARNING: CPU: 2 PID: 292 at drivers/leds/led-core.c:455 led_sysfs_enable+0x54/0x80
-  ...
-  [  142.500725] Call trace:
-  [  142.503176]  led_sysfs_enable+0x54/0x80 (P)
-  [  142.507370]  led_bl_remove+0x80/0xa8 [led_bl]
-  [  142.511742]  platform_remove+0x30/0x58
-  [  142.515501]  device_remove+0x54/0x90
-  ...
+Lift the xshutdown (enable) GPIO 1 ms after enabling the regulators, as
+required by the sensor's power-up sequence.
 
-Indeed, led_sysfs_enable() has to be called with the led_access
-lock held.
-
-Hold the lock when calling led_sysfs_disable().
-
-Fixes: ae232e45acf9 ("backlight: add led-backlight driver")
+Fixes: d30bb512da3d ("media: Add a driver for the ov7251 camera sensor")
 Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Link: https://lore.kernel.org/r/20250122091914.309533-1-herve.codina@bootlin.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/backlight/led_bl.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/media/i2c/ov7251.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/video/backlight/led_bl.c
-+++ b/drivers/video/backlight/led_bl.c
-@@ -229,8 +229,11 @@ static void led_bl_remove(struct platfor
- 	backlight_device_unregister(bl);
+--- a/drivers/media/i2c/ov7251.c
++++ b/drivers/media/i2c/ov7251.c
+@@ -922,6 +922,8 @@ static int ov7251_set_power_on(struct de
+ 		return ret;
+ 	}
  
- 	led_bl_power_off(priv);
--	for (i = 0; i < priv->nb_leds; i++)
-+	for (i = 0; i < priv->nb_leds; i++) {
-+		mutex_lock(&priv->leds[i]->led_access);
- 		led_sysfs_enable(priv->leds[i]);
-+		mutex_unlock(&priv->leds[i]->led_access);
-+	}
- }
++	usleep_range(1000, 1100);
++
+ 	gpiod_set_value_cansleep(ov7251->enable_gpio, 1);
  
- static const struct of_device_id led_bl_of_match[] = {
+ 	/* wait at least 65536 external clock cycles */
 
 
 
