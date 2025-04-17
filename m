@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-134322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50093A92A87
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:52:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF1B7A928B8
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:37:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63CF44A6690
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04DD01B611A9
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69642517AF;
-	Thu, 17 Apr 2025 18:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AFCF25FA07;
+	Thu, 17 Apr 2025 18:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tDO6gVpq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GWlE7fDM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31A42571C6;
-	Thu, 17 Apr 2025 18:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD01A1CAA99;
+	Thu, 17 Apr 2025 18:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915776; cv=none; b=gD+X3op9Rg1/xc+Wom+U75Tmg3DLwB2VKHbql3iFtrpHuUAkmqcezac1KT4gjAuKHokCghH6HvtLKQCptpphkD6/Q0bDtVvFtvny8CSOhzWkeXEfFinq7PjBI2BTarQLehFwtGsx0x8SfcDsJZJfDc55/5yInHKwxjolzztzu0w=
+	t=1744914655; cv=none; b=DicHWBixE538qTxssozNvu2arAwLtC94517tuPKx2eywChMbQW08fp+kUmR5U9QfnfgIS3+8riqAAnbdmW92ISgvwa+frsErJ8QkZevuL67AyOEK/OXZEpoYBBwHMkt5QLRj8WMJ/cBOpP5F6q4L4Ugof3VNFAcjZ1lW6Jg6Unk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915776; c=relaxed/simple;
-	bh=FR+vV/fr26ayipu7PZiPLyhLv6MZKdORZv4n7ljlAbw=;
+	s=arc-20240116; t=1744914655; c=relaxed/simple;
+	bh=SRVB5KvJx455FKkaguFPk9PtefkwcgQEek8bhlqkMqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r3lwaykZJPdKQqeY6UFgKeaCUTciZQJgtocjUFt64qhHmL6zQxCN+h14JWLJDWl3UNViSpC1fIFRe1OyVnpgThO2diKcIsA2+kmKmpPjrsy7DE+X8kelX1AhCAJ/6WWHXDs1CTAt8iAGNnNe2MaaHsTVwHVrpEd6SGfcAhzZEa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tDO6gVpq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3E0C4CEE4;
-	Thu, 17 Apr 2025 18:49:35 +0000 (UTC)
+	 MIME-Version; b=YqODS2bY127+SIuEL4VP6zssLn6mHtYIzMmeGyEpxO8EJ75cj/y9aZIpUyHiwDioPaG/M4UjhLGbyEtQTMutKLqr90VRLGTMCQvQbrFCQbFH83/S3R5Yd469Dhxp/kl1h7Yc2sAoM36Zmb+DJoCX0olcn227zcFTFHBLtJrRZAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWlE7fDM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D6DC4CEE4;
+	Thu, 17 Apr 2025 18:30:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915776;
-	bh=FR+vV/fr26ayipu7PZiPLyhLv6MZKdORZv4n7ljlAbw=;
+	s=korg; t=1744914655;
+	bh=SRVB5KvJx455FKkaguFPk9PtefkwcgQEek8bhlqkMqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tDO6gVpqnkiPyolTlJg5WiAfWG+ZK+ZIbIeOjXNgiU42jzj9a6LSrQmte1X67zWwG
-	 o7pGoZUZCoDrpkDBtcegHl3B9eWKYYfVjge4o8lhmvkcymKY2Oc4k9xoI0CdGqlSPg
-	 AXYxO2NiJXN8HRz7QRuDoWnpq5FgY7ZAtEugJQNY=
+	b=GWlE7fDMDv3hzxnYzOwYbRI9UbYw7gVm24LLDv6G2KxThdiQj+KOi7iVHsnKQZ1aJ
+	 fb1ojFTqkAglcTpleeo7MmhKFnVy0ysLW4V/w4CJEM3BX6OPignuKcsW74T6gqYKTM
+	 GYtUIspH6ECpcKi9yQ61DJbHzoM0uQ/Yiz40rCGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 237/393] net: dsa: mv88e6xxx: fix internal PHYs for 6320 family
+	stable@kernel.org,
+	Stanley Chu <yschu@nuvoton.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.13 288/414] i3c: master: svc: Use readsb helper for reading MDB
 Date: Thu, 17 Apr 2025 19:50:46 +0200
-Message-ID: <20250417175117.132363620@linuxfoundation.org>
+Message-ID: <20250417175123.011199274@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: Stanley Chu <yschu@nuvoton.com>
 
-commit 52fdc41c3278c981066a461d03d5477ebfcf270c upstream.
+commit c06acf7143bddaa3c0f7bedd8b99e48f6acb85c3 upstream.
 
-Fix internal PHYs definition for the 6320 family, which has only 2
-internal PHYs (on ports 3 and 4).
+The target can send the MDB byte followed by additional data bytes.
+The readl on MRDATAB reads one actual byte, but the readsl advances
+the destination pointer by 4 bytes. This causes the subsequent payload
+to be copied to wrong position in the destination buffer.
 
-Fixes: bc3931557d1d ("net: dsa: mv88e6xxx: Add number of internal PHYs")
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.6.x
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250317173250.28780-7-kabel@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@kernel.org
+Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
+Signed-off-by: Stanley Chu <yschu@nuvoton.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250318053606.3087121-3-yschu@nuvoton.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -6171,7 +6171,8 @@ static const struct mv88e6xxx_info mv88e
- 		.num_databases = 4096,
- 		.num_macs = 8192,
- 		.num_ports = 7,
--		.num_internal_phys = 5,
-+		.num_internal_phys = 2,
-+		.internal_phys_offset = 3,
- 		.num_gpio = 15,
- 		.max_vid = 4095,
- 		.max_sid = 63,
-@@ -6365,7 +6366,8 @@ static const struct mv88e6xxx_info mv88e
- 		.num_databases = 4096,
- 		.num_macs = 8192,
- 		.num_ports = 7,
--		.num_internal_phys = 5,
-+		.num_internal_phys = 2,
-+		.internal_phys_offset = 3,
- 		.num_gpio = 15,
- 		.max_vid = 4095,
- 		.max_sid = 63,
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -378,7 +378,7 @@ static int svc_i3c_master_handle_ibi(str
+ 	       slot->len < SVC_I3C_FIFO_SIZE) {
+ 		mdatactrl = readl(master->regs + SVC_I3C_MDATACTRL);
+ 		count = SVC_I3C_MDATACTRL_RXCOUNT(mdatactrl);
+-		readsl(master->regs + SVC_I3C_MRDATAB, buf, count);
++		readsb(master->regs + SVC_I3C_MRDATAB, buf, count);
+ 		slot->len += count;
+ 		buf += count;
+ 	}
 
 
 
