@@ -1,72 +1,55 @@
-Return-Path: <stable+bounces-134396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0553A92AE0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FADFA9293D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5F47446C98
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19DFF8A707F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7EF8257451;
-	Thu, 17 Apr 2025 18:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CB77264A7C;
+	Thu, 17 Apr 2025 18:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2cfF1aF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TwPtTIfH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4600257448;
-	Thu, 17 Apr 2025 18:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318C226463B;
+	Thu, 17 Apr 2025 18:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916001; cv=none; b=I+2Ij0vork7MZoLCCNRwQGO/QLdY0kVJfIeRPfCBryyS6ElPsgcb39Xvof1E0AH1827JYq3bCa04nriEgXXpIi4zEwg+g5EGLOZpOkOpt98uupr/+AVYBER7czAQX4g1fPSFf+V0gLEzTM0tsEs6oXliGnYet7Hz7R4LdbRntDE=
+	t=1744914882; cv=none; b=AqIeC90CD4a6tJT242zPsTAW8fqR5k9/GCWzdTCBnhqzhNsAtO8HFsKeoK9AL782hZf2A6ahaEA2KleyYeksWVfb353FGxw7lIbIzOemamwhMDh7h7dsFNh4IO5RAiTRkUBDslQOpCnSg2Idy+TDBP17Ufqd7PBOkFUYUo9OCH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916001; c=relaxed/simple;
-	bh=bbHRV3vb/c5es4r1GyW2u/TYeJ6+4MyMMlRIWn0pR8o=;
+	s=arc-20240116; t=1744914882; c=relaxed/simple;
+	bh=4QyU9zoDVpl3rZUf1LgaiMyJTIV5t3pQwO7zJY1XiPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IT+bsNJvH6dMFgkJZuT1P3tGoxWrVSSZp8fZFeeOC+vQx+HOkjaQSooYZmabv58qXH2mXUg+UDiio/yZHu5/4aLfJ2hsNWxBmscJkkYNAxXQBHdVe4ghX4r8cPJmiZqiWU01ixV1HC7qgU55jbHZZFHFezUpgaSpJouj4bhefGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2cfF1aF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9558C4CEE4;
-	Thu, 17 Apr 2025 18:53:20 +0000 (UTC)
+	 MIME-Version; b=FVynn+lUPLhmYWcodvTiLpkmIztxCI8KpxAyWeqBcuRStSXwuPBnpqo7F1SwTuOEvi1O9eljbTEnY65SDRs+UHtydUqitDpg1YtDma72gtXLomWM7iUq8ZKHpYmIssl2QpodoKyncU1J1/72S4dHK5+pPxyllpjM7ILnR4kPHgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TwPtTIfH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2691C4CEE4;
+	Thu, 17 Apr 2025 18:34:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916001;
-	bh=bbHRV3vb/c5es4r1GyW2u/TYeJ6+4MyMMlRIWn0pR8o=;
+	s=korg; t=1744914882;
+	bh=4QyU9zoDVpl3rZUf1LgaiMyJTIV5t3pQwO7zJY1XiPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x2cfF1aFWIk/gqIWXoCE+BdPfecSUzZNZs6NbhHUOO+GKhEhEcoo9B3FfmNg3+TQr
-	 s/8LsoEEZ0N8WmqQreeVOTCgHW2QMvLrjwFTj4Q8rcLo6p0K/SVhk7181DIvA6N8LT
-	 +tHwBtg//bFXaOz8lidKUgAEQnDV1PrX+WlOL5aE=
+	b=TwPtTIfHkMoMD5+I6CR3pBiV8B9JqmFNmb38EYNTaPNqNzSw1eVjqnk5T0Yk/fWEn
+	 mpnvAtRO6UbYYTVNWcz4vUo/45rsiQFGXYXGhEAYbrnoM56H7vNBgSW52vzd2L2StO
+	 iLZgbhdwhFZWjGXsES3WEw3Z6UmAOGym1wMALzVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Borislav Betkov <bp@alien8.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jane Chu <jane.chu@oracle.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ruidong Tian <tianruidong@linux.alibaba.com>,
-	Thomas Gleinxer <tglx@linutronix.de>,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 310/393] mm/hwpoison: do not send SIGBUS to processes with recovered clean pages
+	Guixin Liu <kanie@linux.alibaba.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.13 361/414] gpio: tegra186: fix resource handling in ACPI probe path
 Date: Thu, 17 Apr 2025 19:51:59 +0200
-Message-ID: <20250417175120.081534408@linuxfoundation.org>
+Message-ID: <20250417175125.981802721@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,142 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Xue <xueshuai@linux.alibaba.com>
+From: Guixin Liu <kanie@linux.alibaba.com>
 
-commit aaf99ac2ceb7c974f758a635723eeaf48596388e upstream.
+commit 8323f3a69de6f6e96bf22f32dd8e2920766050c2 upstream.
 
-When an uncorrected memory error is consumed there is a race between the
-CMCI from the memory controller reporting an uncorrected error with a UCNA
-signature, and the core reporting and SRAR signature machine check when
-the data is about to be consumed.
+When the Tegra186 GPIO controller is probed through ACPI matching,
+the driver emits two error messages during probing:
+  "tegra186-gpio NVDA0508:00: invalid resource (null)"
+  "tegra186-gpio NVDA0508:00: invalid resource (null)"
 
-- Background: why *UN*corrected errors tied to *C*MCI in Intel platform [1]
+Fix this by getting resource first and then do the ioremap.
 
-Prior to Icelake memory controllers reported patrol scrub events that
-detected a previously unseen uncorrected error in memory by signaling a
-broadcast machine check with an SRAO (Software Recoverable Action
-Optional) signature in the machine check bank.  This was overkill because
-it's not an urgent problem that no core is on the verge of consuming that
-bad data.  It's also found that multi SRAO UCE may cause nested MCE
-interrupts and finally become an IERR.
-
-Hence, Intel downgrades the machine check bank signature of patrol scrub
-from SRAO to UCNA (Uncorrected, No Action required), and signal changed to
-#CMCI.  Just to add to the confusion, Linux does take an action (in
-uc_decode_notifier()) to try to offline the page despite the UC*NA*
-signature name.
-
-- Background: why #CMCI and #MCE race when poison is consuming in Intel platform [1]
-
-Having decided that CMCI/UCNA is the best action for patrol scrub errors,
-the memory controller uses it for reads too.  But the memory controller is
-executing asynchronously from the core, and can't tell the difference
-between a "real" read and a speculative read.  So it will do CMCI/UCNA if
-an error is found in any read.
-
-Thus:
-
-1) Core is clever and thinks address A is needed soon, issues a speculative read.
-2) Core finds it is going to use address A soon after sending the read request
-3) The CMCI from the memory controller is in a race with MCE from the core
-   that will soon try to retire the load from address A.
-
-Quite often (because speculation has got better) the CMCI from the memory
-controller is delivered before the core is committed to the instruction
-reading address A, so the interrupt is taken, and Linux offlines the page
-(marking it as poison).
-
-- Why user process is killed for instr case
-
-Commit 046545a661af ("mm/hwpoison: fix error page recovered but reported
-"not recovered"") tries to fix noise message "Memory error not recovered"
-and skips duplicate SIGBUSs due to the race.  But it also introduced a bug
-that kill_accessing_process() return -EHWPOISON for instr case, as result,
-kill_me_maybe() send a SIGBUS to user process.
-
-If the CMCI wins that race, the page is marked poisoned when
-uc_decode_notifier() calls memory_failure().  For dirty pages,
-memory_failure() invokes try_to_unmap() with the TTU_HWPOISON flag,
-converting the PTE to a hwpoison entry.  As a result,
-kill_accessing_process():
-
-- call walk_page_range() and return 1 regardless of whether
-  try_to_unmap() succeeds or fails,
-- call kill_proc() to make sure a SIGBUS is sent
-- return -EHWPOISON to indicate that SIGBUS is already sent to the
-  process and kill_me_maybe() doesn't have to send it again.
-
-However, for clean pages, the TTU_HWPOISON flag is cleared, leaving the
-PTE unchanged and not converted to a hwpoison entry.  Conversely, for
-clean pages where PTE entries are not marked as hwpoison,
-kill_accessing_process() returns -EFAULT, causing kill_me_maybe() to send
-a SIGBUS.
-
-Console log looks like this:
-
-    Memory failure: 0x827ca68: corrupted page was clean: dropped without side effects
-    Memory failure: 0x827ca68: recovery action for clean LRU page: Recovered
-    Memory failure: 0x827ca68: already hardware poisoned
-    mce: Memory error not recovered
-
-To fix it, return 0 for "corrupted page was clean", preventing an
-unnecessary SIGBUS to user process.
-
-[1] https://lore.kernel.org/lkml/20250217063335.22257-1-xueshuai@linux.alibaba.com/T/#mba94f1305b3009dd340ce4114d3221fe810d1871
-Link: https://lkml.kernel.org/r/20250312112852.82415-3-xueshuai@linux.alibaba.com
-Fixes: 046545a661af ("mm/hwpoison: fix error page recovered but reported "not recovered"")
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Tested-by: Tony Luck <tony.luck@intel.com>
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Borislav Betkov <bp@alien8.de>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jane Chu <jane.chu@oracle.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ruidong Tian <tianruidong@linux.alibaba.com>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: Yazen Ghannam <yazen.ghannam@amd.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 2606e7c9f5fc ("gpio: tegra186: Add ACPI support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250327032349.78809-1-kanie@linux.alibaba.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory-failure.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/gpio/gpio-tegra186.c |   27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -879,12 +879,17 @@ static int kill_accessing_process(struct
- 	mmap_read_lock(p->mm);
- 	ret = walk_page_range(p->mm, 0, TASK_SIZE, &hwpoison_walk_ops,
- 			      (void *)&priv);
-+	/*
-+	 * ret = 1 when CMCI wins, regardless of whether try_to_unmap()
-+	 * succeeds or fails, then kill the process with SIGBUS.
-+	 * ret = 0 when poison page is a clean page and it's dropped, no
-+	 * SIGBUS is needed.
-+	 */
- 	if (ret == 1 && priv.tk.addr)
- 		kill_proc(&priv.tk, pfn, flags);
--	else
--		ret = 0;
- 	mmap_read_unlock(p->mm);
--	return ret > 0 ? -EHWPOISON : -EFAULT;
-+
-+	return ret > 0 ? -EHWPOISON : 0;
- }
+--- a/drivers/gpio/gpio-tegra186.c
++++ b/drivers/gpio/gpio-tegra186.c
+@@ -823,6 +823,7 @@ static int tegra186_gpio_probe(struct pl
+ 	struct gpio_irq_chip *irq;
+ 	struct tegra_gpio *gpio;
+ 	struct device_node *np;
++	struct resource *res;
+ 	char **names;
+ 	int err;
  
- /*
+@@ -842,19 +843,19 @@ static int tegra186_gpio_probe(struct pl
+ 	gpio->num_banks++;
+ 
+ 	/* get register apertures */
+-	gpio->secure = devm_platform_ioremap_resource_byname(pdev, "security");
+-	if (IS_ERR(gpio->secure)) {
+-		gpio->secure = devm_platform_ioremap_resource(pdev, 0);
+-		if (IS_ERR(gpio->secure))
+-			return PTR_ERR(gpio->secure);
+-	}
+-
+-	gpio->base = devm_platform_ioremap_resource_byname(pdev, "gpio");
+-	if (IS_ERR(gpio->base)) {
+-		gpio->base = devm_platform_ioremap_resource(pdev, 1);
+-		if (IS_ERR(gpio->base))
+-			return PTR_ERR(gpio->base);
+-	}
++	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "security");
++	if (!res)
++		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	gpio->secure = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(gpio->secure))
++		return PTR_ERR(gpio->secure);
++
++	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "gpio");
++	if (!res)
++		res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
++	gpio->base = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(gpio->base))
++		return PTR_ERR(gpio->base);
+ 
+ 	err = platform_irq_count(pdev);
+ 	if (err < 0)
 
 
 
