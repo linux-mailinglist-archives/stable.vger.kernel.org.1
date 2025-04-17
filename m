@@ -1,59 +1,95 @@
-Return-Path: <stable+bounces-132903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35BAEA914A4
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 09:01:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 107B6A914B7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 09:05:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5B26445BBA
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 07:01:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 042133BD75A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 07:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01FDC218AAF;
-	Thu, 17 Apr 2025 07:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0825D215197;
+	Thu, 17 Apr 2025 07:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="ZfCkEqU5"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="yVcccdm7";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="b1Km8ZF6";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="KeU2rwQZ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="b6WdqsfM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306341BC9F4
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 07:00:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045ED2063FD
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 07:05:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744873256; cv=none; b=EE/A38NQd8PdQmxzW+QLsDVNKr+WDT5fhCQ1id9ANntYw5WNEt6RsnZ2+FCNX4EffifwB4iGKdcQS6GmROIG259JwcbSpkQ9f6YoIsKIwzvzx6M26XSEWB5aSsxOtx1/YFGmksEFWkXbwy/zD7PCs6AGYdAsiZmpwZxwcWbQGaU=
+	t=1744873545; cv=none; b=nTB7xi5j77+DeugF4H9RBkjersBWw6JdC8iizD6Qrfd0/6Oj391KdiR40J+19LVP9Rju/8zCXyeAIXRsJHuKpSdvuXNRqw+pWv+V2n6fa5peuzDiUKqELaIwrjQcs6PUrDbDVb5i/fE5ikK+rLzDJ8jPL95JxmOb8i8II3oDuZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744873256; c=relaxed/simple;
-	bh=w5PRKU5sdEGDHRp4fP0Y606LJOfqnZ6orvNNl1CuqY8=;
+	s=arc-20240116; t=1744873545; c=relaxed/simple;
+	bh=HOEV45ThnY/Yb65WyKotvmiHDh3rW2o+Zy2dXl1lSu0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kj2NV2NAK2WSypVGEpHXx+++h2iRavbtXNjgZc07V5ymwSuEtzuFs3WuvPgYtafo6yI9NbaCZfXkoCBVd5LeBQGJZ4S4dT4Xgo/V9zfHS81SYVyUCG8zxVwXwgrBNCPxKs2CLPSbeQmP2l5T0L3A+kQSBvg/KCmj8MXnpQpdPZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=ZfCkEqU5; arc=none smtp.client-ip=195.133.245.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
-Received: from mail.nppct.ru (localhost [127.0.0.1])
-	by mail.nppct.ru (Postfix) with ESMTP id 638131C0E89
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 10:00:47 +0300 (MSK)
-Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
-	reason="pass (just generated, assumed good)" header.d=nppct.ru
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:to:subject:subject
-	:user-agent:mime-version:date:date:message-id; s=dkim; t=
-	1744873239; x=1745737240; bh=w5PRKU5sdEGDHRp4fP0Y606LJOfqnZ6orvN
-	Nl1CuqY8=; b=ZfCkEqU5CLR6zk1GoYwHVG/iZlY0AdlFJg282mLJe4nkN2qZX1J
-	Cb5rv4fUlmG1P2YEyKsMu8Dg5aPHoYiQE+ZY8WEobLCnQpD+MCp4f8QvbMU3FiGm
-	5EISN9Iwymnq85CIrv+UGGuibFc6vtqHf850X3qrRslHFkKZR3iNYKKE=
-X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
-Received: from mail.nppct.ru ([127.0.0.1])
-	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 3L0rDhbMnOx4 for <stable@vger.kernel.org>;
-	Thu, 17 Apr 2025 10:00:39 +0300 (MSK)
-Received: from [172.16.0.185] (unknown [176.59.174.214])
-	by mail.nppct.ru (Postfix) with ESMTPSA id 8B6BC1C08D8;
-	Thu, 17 Apr 2025 10:00:23 +0300 (MSK)
-Message-ID: <fa91aad9-f8f3-4b27-81b3-4c963e2e64aa@nppct.ru>
-Date: Thu, 17 Apr 2025 10:00:22 +0300
+	 In-Reply-To:Content-Type; b=eYu8fbDgsZ5Qg0fT91Y69d5EIauPkj2wZTD114ZJqDlYI2SPCowknmm1KPzaCmZ5NVsOQPETyuYYpyBA2/V0B001CHFvferTb4ASpL3g+PjVyepZiRdTPgBn/WIDQ34DSVcmN+lgqv7kzNwgaN6cT5P12oNsLt/1s2Ezlytfe00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=yVcccdm7; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=b1Km8ZF6; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=KeU2rwQZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=b6WdqsfM; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id EEB5D21197;
+	Thu, 17 Apr 2025 07:05:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1744873542; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=n3JWJiXcjx1Szn8ywCGniS5/EufUBWnfIG7HjjSGdjY=;
+	b=yVcccdm7STN/oIczS5hIoxdzpKyhEO1nX6hjDWZTxqCN36LV3Ey8YtJuninOeLuKhGDTr8
+	mLbcy/cRsb+Ef3AFop39neO9co82lM4Z2tGbzKD/KZVVGBZkIyHhDvBvVzD+z6CI2Cgrt5
+	yUaLCA7Jy/lj3B1ToGYaxqMAB+nb5wk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1744873542;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=n3JWJiXcjx1Szn8ywCGniS5/EufUBWnfIG7HjjSGdjY=;
+	b=b1Km8ZF6l3U/NMowMyWVwAeX9wT4NoR19jRkrPXIMbqgt7UvruJ7SbMBrHQSMDg+A0jPeC
+	gzZ693kW+e12znBA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1744873541; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=n3JWJiXcjx1Szn8ywCGniS5/EufUBWnfIG7HjjSGdjY=;
+	b=KeU2rwQZmVwexd6w+5r8yqGz7SLdzAsnEiVIpA+XMEwdauciWr+x9qLpiQ8aC1QXAQcwxV
+	jbGWSTy9U3st4fwiPX7eWn3AdWnnFPZlTXhHBbNcF9E1NyCSYbA2sztL9J+B4Qiavbkewc
+	FCHLEaUsDKwVGOWMT7DPX/vYNCVAYik=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1744873541;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=n3JWJiXcjx1Szn8ywCGniS5/EufUBWnfIG7HjjSGdjY=;
+	b=b6WdqsfMZP1HLZT+VzBeCG9MYcqugFI7U/Aw6d+BcOI3JQ+tSx44e/CfKdvPTYjKPl5Ohq
+	b+VWJsQ6AnedFJBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CA1D6137CF;
+	Thu, 17 Apr 2025 07:05:41 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id KYwBMEWoAGhlSAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Thu, 17 Apr 2025 07:05:41 +0000
+Message-ID: <6c2e9f12-a271-47cc-b2aa-880d61d07b22@suse.de>
+Date: Thu, 17 Apr 2025 09:05:41 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,40 +97,117 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] xen-netfront: handle NULL returned by
- xdp_convert_buff_to_frame()
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Juergen Gross <jgross@suse.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, xen-devel@lists.xenproject.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- lvc-project@linuxtesting.org, stable@vger.kernel.org
-References: <20250414183403.265943-1-sdl@nppct.ru>
- <20250416175835.687a5872@kernel.org>
+Subject: Re: [PATCH] drm/tiny: panel-mipi-dbi: Pass
+ drm_client_setup_with_fourcc()
+To: Fabio Estevam <festevam@gmail.com>, noralf@tronnes.org
+Cc: dri-devel@lists.freedesktop.org, Fabio Estevam <festevam@denx.de>,
+ stable@vger.kernel.org
+References: <20250416133048.2316297-1-festevam@gmail.com>
 Content-Language: en-US
-From: Alexey <sdl@nppct.ru>
-In-Reply-To: <20250416175835.687a5872@kernel.org>
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20250416133048.2316297-1-festevam@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,tronnes.org];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RCVD_TLS_ALL(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email,suse.de:mid,denx.de:email];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,denx.de:email,suse.de:email,suse.de:mid]
+X-Spam-Score: -4.30
+X-Spam-Flag: NO
 
 
-On 17.04.2025 03:58, Jakub Kicinski wrote:
-> On Mon, 14 Apr 2025 18:34:01 +0000 Alexey Nepomnyashih wrote:
->>   		get_page(pdata);
-> Please notice this get_page() here.
+
+Am 16.04.25 um 15:30 schrieb Fabio Estevam:
+> From: Fabio Estevam <festevam@denx.de>
 >
->>   		xdpf = xdp_convert_buff_to_frame(xdp);
->> +		if (unlikely(!xdpf)) {
->> +			trace_xdp_exception(queue->info->netdev, prog, act);
->> +			break;
->> +		}
-Do you mean that it would be better to move the get_page(pdata) call lower,
-after checking for NULL in xdpf, so that the reference count is only 
-increased
-after a successful conversion?
+> Since commit 559358282e5b ("drm/fb-helper: Don't use the preferred depth
+> for the BPP default") an RGB565 CFAF240320X display no longer works
+> correctly: the colors are wrong and the content appears twice on the
+> screen, side by side.
+>
+> The reason for the regression is that bits per pixel is now 32 instead
+> of 16 in the fb-helper driver.
+>
+> Fix this problem by passing drm_client_setup_with_fourcc() with the correct
+> format depending on the bits per pixel information.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 559358282e5b ("drm/fb-helper: Don't use the preferred depth for the BPP default")
+> Signed-off-by: Fabio Estevam <festevam@denx.de>
+
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+
+> ---
+>   drivers/gpu/drm/tiny/panel-mipi-dbi.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/tiny/panel-mipi-dbi.c b/drivers/gpu/drm/tiny/panel-mipi-dbi.c
+> index 0460ecaef4bd..23914a9f7fd3 100644
+> --- a/drivers/gpu/drm/tiny/panel-mipi-dbi.c
+> +++ b/drivers/gpu/drm/tiny/panel-mipi-dbi.c
+> @@ -390,7 +390,10 @@ static int panel_mipi_dbi_spi_probe(struct spi_device *spi)
+>   
+>   	spi_set_drvdata(spi, drm);
+>   
+> -	drm_client_setup(drm, NULL);
+> +	if (bpp == 16)
+> +		drm_client_setup_with_fourcc(drm, DRM_FORMAT_RGB565);
+> +	else
+> +		drm_client_setup_with_fourcc(drm, DRM_FORMAT_RGB888);
+>   
+>   	return 0;
+>   }
+
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
+
 
