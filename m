@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-133435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61847A925AE
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:06:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EC25A92802
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80B1B16BDBC
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E87C28E02CE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C07C18C034;
-	Thu, 17 Apr 2025 18:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05CA82580F2;
+	Thu, 17 Apr 2025 18:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JEZ+ZrOx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Ox2ob1G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294361E1DEF;
-	Thu, 17 Apr 2025 18:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B520E257AE7;
+	Thu, 17 Apr 2025 18:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913068; cv=none; b=OBTSXjQqO6KgjM57mATUXqQGQyaAaxnEKl6i/CNcghdSycewV+kQVK5HmqXzHpX9G90XhMaLI3xFryTCOUli8XsGlZUPjwD6/zPMazNPLQ0c4kR+N0hYu+frolf0VAmhJ4Uq/UD8rp4oM+no3XYKyrG/GauwFsEEog/MY4o+ke8=
+	t=1744914308; cv=none; b=NBos2zmmlbytxAnvRNh7zphcDzQnbodNhY5mvKDyu1an6iERElNzQZp9rrHLkkdaahBnXQsALet/Z//NXbE778p/3xtYvUc4ApI5TiC01kTApiYQHUN/TZ76C3n12KkSIlxCRbtWVOamGXINvmj0GDr+tJmWp8LffEB7Q+Qpdxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913068; c=relaxed/simple;
-	bh=hx4KyS4I5bEoWGIcDtQrcrk5keoS63izkGXNYoWlxAQ=;
+	s=arc-20240116; t=1744914308; c=relaxed/simple;
+	bh=/FVi5GF+t8iurFB3E9pJ5WiTJf8s34DYaajTJ4H71sk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Lp4qhle60V28XMC/4koir2d+tfiaFpXSL03uCNt5boJlBQOaVtPaA6WMdbtuYWa4I7NRUiuZ/nSV2DY4SZrMk2CjhgLYxhKGu0O4u9miRnu1tfBSaCINUEESqX+VZ8tda4JCy8XOZXPsUcLBqg/tFjORhQLh43cx/8X8bjS7Xh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JEZ+ZrOx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A190C4CEE4;
-	Thu, 17 Apr 2025 18:04:27 +0000 (UTC)
+	 MIME-Version; b=E+NU31XDP3p6KdNCAuuDqLlNHle/t55Kd8rIKm1UuvKnYA+u7MbniVHgThSXx4zmVJm9Jb8d3ejXm0Yr19pSJX5gf1JsBbmszieIv+4CT7z+cB/UsPqvafT2ietUL9QEtM+rg3OParXcDgumNwYg2++Wlr8uvs5KhH05+caidKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Ox2ob1G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49E51C4CEE4;
+	Thu, 17 Apr 2025 18:25:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913068;
-	bh=hx4KyS4I5bEoWGIcDtQrcrk5keoS63izkGXNYoWlxAQ=;
+	s=korg; t=1744914308;
+	bh=/FVi5GF+t8iurFB3E9pJ5WiTJf8s34DYaajTJ4H71sk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JEZ+ZrOx/sJTZjvdfpqlwISheaJphDApNqZye29oYYX6OuU+ROafB/EqqIRaWYf8t
-	 iejVTIWMYvc31Hfqm3X3rhMPVPSHcQvybuK66iIQm7TMx7LZuNSi3y94c9sRK863NG
-	 YFAbGh2IiZmmCofgL8b/6P4oRVhKt1umh/O167Mc=
+	b=0Ox2ob1GPFohK4pPBMT6UUpD6WgqjOEd/8fVh7WehAVLGPdNO1fgz7uQXsgVzJk82
+	 BGEumi3zNZmLfrAMwAx4Olu/InY6Xuw34MKPTeSES3174J4UOtAQN8K8XKWvz6J4mv
+	 6uUj2BW/q2xOFglkzO5Dnz43DhFabKaP/6hEWyww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Kosina <jkosina@suse.com>,
+	David Yat Sin <David.YatSin@amd.com>,
+	Jay Cornwall <jay.cornwall@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 216/449] HID: pidff: Fix set_device_control()
+Subject: [PATCH 6.13 146/414] drm/amdkfd: clamp queue size to minimum
 Date: Thu, 17 Apr 2025 19:48:24 +0200
-Message-ID: <20250417175126.668868395@linuxfoundation.org>
+Message-ID: <20250417175117.296497474@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,81 +62,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: David Yat Sin <David.YatSin@amd.com>
 
-[ Upstream commit e2fa0bdf08a70623f24ed52f2037a330999d9800 ]
+[ Upstream commit e90711946b53590371ecce32e8fcc381a99d6333 ]
 
-As the search for Device Control report is permissive, make sure the
-desired field was actually found, before trying to set it.
+If queue size is less than minimum, clamp it to minimum to prevent
+underflow when writing queue mqd.
 
-Fix bitmask clearing as it was erronously using index instead of
-index - 1 (HID arrays index is 1-based).
-
-Add last two missing Device Control usages to the defined array.
-PID_PAUSE and PID_CONTINUE.
-
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: David Yat Sin <David.YatSin@amd.com>
+Reviewed-by: Jay Cornwall <jay.cornwall@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 10 ++++++++++
+ include/uapi/linux/kfd_ioctl.h           |  2 ++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index 6eb7934c8f53b..8dfd2c554a276 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -118,7 +118,9 @@ static const u8 pidff_pool[] = { 0x80, 0x83, 0xa9 };
- #define PID_DISABLE_ACTUATORS	1
- #define PID_STOP_ALL_EFFECTS	2
- #define PID_RESET		3
--static const u8 pidff_device_control[] = { 0x97, 0x98, 0x99, 0x9a };
-+#define PID_PAUSE		4
-+#define PID_CONTINUE		5
-+static const u8 pidff_device_control[] = { 0x97, 0x98, 0x99, 0x9a, 0x9b, 0x9c };
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+index 065d878414591..33df35cab4679 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -212,6 +212,11 @@ static int set_queue_properties_from_user(struct queue_properties *q_properties,
+ 		return -EINVAL;
+ 	}
  
- #define PID_CONSTANT	0
- #define PID_RAMP	1
-@@ -551,21 +553,29 @@ static void pidff_set_gain_report(struct pidff_device *pidff, u16 gain)
- }
++	if (args->ring_size < KFD_MIN_QUEUE_RING_SIZE) {
++		args->ring_size = KFD_MIN_QUEUE_RING_SIZE;
++		pr_debug("Size lower. clamped to KFD_MIN_QUEUE_RING_SIZE");
++	}
++
+ 	if (!access_ok((const void __user *) args->read_pointer_address,
+ 			sizeof(uint32_t))) {
+ 		pr_err("Can't access read pointer\n");
+@@ -461,6 +466,11 @@ static int kfd_ioctl_update_queue(struct file *filp, struct kfd_process *p,
+ 		return -EINVAL;
+ 	}
  
- /*
-- * Clear device control report
-+ * Send device control report to the device
-  */
- static void pidff_set_device_control(struct pidff_device *pidff, int field)
- {
--	int i, tmp;
-+	int i, index;
- 	int field_index = pidff->control_id[field];
++	if (args->ring_size < KFD_MIN_QUEUE_RING_SIZE) {
++		args->ring_size = KFD_MIN_QUEUE_RING_SIZE;
++		pr_debug("Size lower. clamped to KFD_MIN_QUEUE_RING_SIZE");
++	}
++
+ 	properties.queue_address = args->ring_base_address;
+ 	properties.queue_size = args->ring_size;
+ 	properties.queue_percent = args->queue_percentage & 0xFF;
+diff --git a/include/uapi/linux/kfd_ioctl.h b/include/uapi/linux/kfd_ioctl.h
+index fa9f9846b88e4..b0160b09987c1 100644
+--- a/include/uapi/linux/kfd_ioctl.h
++++ b/include/uapi/linux/kfd_ioctl.h
+@@ -62,6 +62,8 @@ struct kfd_ioctl_get_version_args {
+ #define KFD_MAX_QUEUE_PERCENTAGE	100
+ #define KFD_MAX_QUEUE_PRIORITY		15
  
-+	if (field_index < 1)
-+		return;
++#define KFD_MIN_QUEUE_RING_SIZE		1024
 +
- 	/* Detect if the field is a bitmask variable or an array */
- 	if (pidff->device_control->flags & HID_MAIN_ITEM_VARIABLE) {
- 		hid_dbg(pidff->hid, "DEVICE_CONTROL is a bitmask\n");
-+
- 		/* Clear current bitmask */
- 		for(i = 0; i < sizeof(pidff_device_control); i++) {
--			tmp = pidff->control_id[i];
--			pidff->device_control->value[tmp] = 0;
-+			index = pidff->control_id[i];
-+			if (index < 1)
-+				continue;
-+
-+			pidff->device_control->value[index - 1] = 0;
- 		}
-+
- 		pidff->device_control->value[field_index - 1] = 1;
- 	} else {
- 		hid_dbg(pidff->hid, "DEVICE_CONTROL is an array\n");
+ struct kfd_ioctl_create_queue_args {
+ 	__u64 ring_base_address;	/* to KFD */
+ 	__u64 write_pointer_address;	/* from KFD */
 -- 
 2.39.5
 
