@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-133345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93146A92531
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:01:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B18DA92534
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:01:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66FB9188D1DB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:01:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13C61189CB1D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:01:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0377A25A2C8;
-	Thu, 17 Apr 2025 17:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749FD25A344;
+	Thu, 17 Apr 2025 18:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACZQ9vGv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrCSwP+Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B178625A2B4;
-	Thu, 17 Apr 2025 17:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E822566DE;
+	Thu, 17 Apr 2025 18:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744912794; cv=none; b=X0Nw6GsyGHVzcN+59Fw+Mz2dpvmn/CJ3m1TUDYKlWxLBbnHenq7a2dOCm+DwXPac+Qb5bWueVwjWuVvGG7o9g/Zt/stvmt1s8uGLBbOX1Hd3PvzRA2KN0NmmPOhtm6jPdB2HIcDjR95hB5mKEDxkmN28ZBO0Mn3hsU4sH//N+9I=
+	t=1744912801; cv=none; b=Hyc6Kr8HNUcgVKh+RsznOkcYhjLDMvKfKPBaW07tA2jL73HGNCSxw/qX4Ce7ePP/G6Bb5Motn+nvx+s9l5Y/SiPRV9d9WF7lvV83JzgMu6RJHxo0YN3wTihm0PLl3PVUJrwaVb5kOSR2W/jmAr2Y9O+k0rSx940Dn07mMwG7POw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744912794; c=relaxed/simple;
-	bh=GuNSn74MSA8tNvuwGig37M5faUyz4CWQeDZXlTMdMkQ=;
+	s=arc-20240116; t=1744912801; c=relaxed/simple;
+	bh=D75ssAIuSbfezU3ZmsCCIQjtImBWnbAuiqm1NrAuHCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ha18SuckYMX8/hUtFRxt9QWdfP8mU3kO+XFu8PzUqRFpc4T2b0Tu6pxYCtpcYNk5BTtclkZ3FQzO9ERl0iffiMo/niwUOltyD3krHN6diZqzYW79NJRwE/utckMhWktqLkVzRIs9oyV6VgqBjKrZRZj9fjUum5NIiG+moCM4NRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ACZQ9vGv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E2A6C4CEE4;
-	Thu, 17 Apr 2025 17:59:54 +0000 (UTC)
+	 MIME-Version; b=oIfMODkTSEp1wyK9ZrZjIR4ZtUOW/ENx1t5jZcZKjN88L12ekRBORBE19/8RisgxvDycbhg89U/KEV1goEoHN94ON0yabXVYt+jx3vAy3B20hnWBlaymy4jaY4qIv6La4dy8OCn4UNdnnMojlqPMkaESKZIDrvIda+6mFahiXqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OrCSwP+Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED09C4CEE4;
+	Thu, 17 Apr 2025 18:00:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744912794;
-	bh=GuNSn74MSA8tNvuwGig37M5faUyz4CWQeDZXlTMdMkQ=;
+	s=korg; t=1744912800;
+	bh=D75ssAIuSbfezU3ZmsCCIQjtImBWnbAuiqm1NrAuHCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ACZQ9vGvgV/HMz7hgHkrBs+fzunJTLpMkuLGvS4dHkX9OmtcmEDZwmsadx+8G20Pe
-	 /DNoiBgGbWTKQBkHjp4Bp7zUdk+fbKVqVKAL5BSLBqq3XETduC1WTZGmGkSZF4pykw
-	 vBxZLQGhWg1CCTKpEhi3l0h/hE5DagEt6zwxGNbs=
+	b=OrCSwP+Y0UeVanoI5ak3Vl1tm3yNVoyXN+HcflM3qF0e+30gGgN4PPR/OUyyQTl2u
+	 qm5r2VtomWIo854eODWU1PW/zaMOXqz6XWMQbTWZzOgtI7jfJRybpN9YTECLFgrmYW
+	 X4UFP/tvBHmxKmmNddXYRTqn8wa3WPoNxHMZWM8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 126/449] Revert "f2fs: rebuild nat_bits during umount"
-Date: Thu, 17 Apr 2025 19:46:54 +0200
-Message-ID: <20250417175123.036530866@linuxfoundation.org>
+Subject: [PATCH 6.14 127/449] wifi: mac80211: fix userspace_selectors corruption
+Date: Thu, 17 Apr 2025 19:46:55 +0200
+Message-ID: <20250417175123.077169627@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
 References: <20250417175117.964400335@linuxfoundation.org>
@@ -66,316 +67,93 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 19426c4988aa85298c1b4caf2889d37ec5c80fea ]
+[ Upstream commit 700014d3ad1fd6e55c8f9ffa817514d3fbb5286e ]
 
-This reverts commit 94c821fb286b545d37549ff30a0c341e066f0d6c.
+Spotted during code review, the selectors need to be large
+enough for a 128-bit bitmap, not a single unsigned long,
+otherwise we have stack corruption.
 
-It reports that there is potential corruption in node footer,
-the most suspious feature is nat_bits, let's revert recovery
-related code.
+We should also allow passing selectors from userspace, but
+that should be a separate change.
 
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250308225541.8f1bcf96a504.Ibeb8970c82a30c97279a4cc4e68faca5df1813a5@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/checkpoint.c |  21 +++------
- fs/f2fs/f2fs.h       |  32 +++++++++++++-
- fs/f2fs/node.c       | 101 ++++++++++---------------------------------
- 3 files changed, 59 insertions(+), 95 deletions(-)
+ net/mac80211/mlme.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/fs/f2fs/checkpoint.c b/fs/f2fs/checkpoint.c
-index bd890738b94d7..92be53a83744e 100644
---- a/fs/f2fs/checkpoint.c
-+++ b/fs/f2fs/checkpoint.c
-@@ -1346,21 +1346,13 @@ static void update_ckpt_flags(struct f2fs_sb_info *sbi, struct cp_control *cpc)
- 	struct f2fs_checkpoint *ckpt = F2FS_CKPT(sbi);
- 	unsigned long flags;
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 9411500a61350..99e9b03d7fe19 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -9648,8 +9648,6 @@ EXPORT_SYMBOL(ieee80211_disable_rssi_reports);
  
--	if (cpc->reason & CP_UMOUNT) {
--		if (le32_to_cpu(ckpt->cp_pack_total_block_count) +
--			NM_I(sbi)->nat_bits_blocks > BLKS_PER_SEG(sbi)) {
--			clear_ckpt_flags(sbi, CP_NAT_BITS_FLAG);
--			f2fs_notice(sbi, "Disable nat_bits due to no space");
--		} else if (!is_set_ckpt_flags(sbi, CP_NAT_BITS_FLAG) &&
--						f2fs_nat_bitmap_enabled(sbi)) {
--			f2fs_enable_nat_bits(sbi);
--			set_ckpt_flags(sbi, CP_NAT_BITS_FLAG);
--			f2fs_notice(sbi, "Rebuild and enable nat_bits");
--		}
--	}
--
- 	spin_lock_irqsave(&sbi->cp_lock, flags);
- 
-+	if ((cpc->reason & CP_UMOUNT) &&
-+			le32_to_cpu(ckpt->cp_pack_total_block_count) >
-+			sbi->blocks_per_seg - NM_I(sbi)->nat_bits_blocks)
-+		disable_nat_bits(sbi, false);
-+
- 	if (cpc->reason & CP_TRIMMED)
- 		__set_ckpt_flags(ckpt, CP_TRIMMED_FLAG);
- 	else
-@@ -1543,8 +1535,7 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
- 	start_blk = __start_cp_next_addr(sbi);
- 
- 	/* write nat bits */
--	if ((cpc->reason & CP_UMOUNT) &&
--			is_set_ckpt_flags(sbi, CP_NAT_BITS_FLAG)) {
-+	if (enabled_nat_bits(sbi, cpc)) {
- 		__u64 cp_ver = cur_cp_version(ckpt);
- 		block_t blk;
- 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 493dda2d4b663..02fc4e9d42120 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -2220,6 +2220,36 @@ static inline void f2fs_up_write(struct f2fs_rwsem *sem)
- #endif
- }
- 
-+static inline void disable_nat_bits(struct f2fs_sb_info *sbi, bool lock)
-+{
-+	unsigned long flags;
-+	unsigned char *nat_bits;
-+
-+	/*
-+	 * In order to re-enable nat_bits we need to call fsck.f2fs by
-+	 * set_sbi_flag(sbi, SBI_NEED_FSCK). But it may give huge cost,
-+	 * so let's rely on regular fsck or unclean shutdown.
-+	 */
-+
-+	if (lock)
-+		spin_lock_irqsave(&sbi->cp_lock, flags);
-+	__clear_ckpt_flags(F2FS_CKPT(sbi), CP_NAT_BITS_FLAG);
-+	nat_bits = NM_I(sbi)->nat_bits;
-+	NM_I(sbi)->nat_bits = NULL;
-+	if (lock)
-+		spin_unlock_irqrestore(&sbi->cp_lock, flags);
-+
-+	kvfree(nat_bits);
-+}
-+
-+static inline bool enabled_nat_bits(struct f2fs_sb_info *sbi,
-+					struct cp_control *cpc)
-+{
-+	bool set = is_set_ckpt_flags(sbi, CP_NAT_BITS_FLAG);
-+
-+	return (cpc) ? (cpc->reason & CP_UMOUNT) && set : set;
-+}
-+
- static inline void f2fs_lock_op(struct f2fs_sb_info *sbi)
+ static void ieee80211_ml_reconf_selectors(unsigned long *userspace_selectors)
  {
- 	f2fs_down_read(&sbi->cp_rwsem);
-@@ -3663,7 +3693,6 @@ int f2fs_truncate_inode_blocks(struct inode *inode, pgoff_t from);
- int f2fs_truncate_xattr_node(struct inode *inode);
- int f2fs_wait_on_node_pages_writeback(struct f2fs_sb_info *sbi,
- 					unsigned int seq_id);
--bool f2fs_nat_bitmap_enabled(struct f2fs_sb_info *sbi);
- int f2fs_remove_inode_page(struct inode *inode);
- struct page *f2fs_new_inode_page(struct inode *inode);
- struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs);
-@@ -3688,7 +3717,6 @@ int f2fs_recover_xattr_data(struct inode *inode, struct page *page);
- int f2fs_recover_inode_page(struct f2fs_sb_info *sbi, struct page *page);
- int f2fs_restore_node_summary(struct f2fs_sb_info *sbi,
- 			unsigned int segno, struct f2fs_summary_block *sum);
--void f2fs_enable_nat_bits(struct f2fs_sb_info *sbi);
- int f2fs_flush_nat_entries(struct f2fs_sb_info *sbi, struct cp_control *cpc);
- int f2fs_build_node_manager(struct f2fs_sb_info *sbi);
- void f2fs_destroy_node_manager(struct f2fs_sb_info *sbi);
-diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
-index c1274bcec68b4..9f6cca183c608 100644
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -2276,24 +2276,6 @@ static void __move_free_nid(struct f2fs_sb_info *sbi, struct free_nid *i,
- 	}
- }
- 
--bool f2fs_nat_bitmap_enabled(struct f2fs_sb_info *sbi)
--{
--	struct f2fs_nm_info *nm_i = NM_I(sbi);
--	unsigned int i;
--	bool ret = true;
+-	*userspace_selectors = 0;
 -
--	f2fs_down_read(&nm_i->nat_tree_lock);
--	for (i = 0; i < nm_i->nat_blocks; i++) {
--		if (!test_bit_le(i, nm_i->nat_block_bitmap)) {
--			ret = false;
--			break;
--		}
--	}
--	f2fs_up_read(&nm_i->nat_tree_lock);
--
--	return ret;
--}
--
- static void update_free_nid_bitmap(struct f2fs_sb_info *sbi, nid_t nid,
- 							bool set, bool build)
- {
-@@ -2972,23 +2954,7 @@ static void __adjust_nat_entry_set(struct nat_entry_set *nes,
- 	list_add_tail(&nes->set_list, head);
- }
- 
--static void __update_nat_bits(struct f2fs_nm_info *nm_i, unsigned int nat_ofs,
--							unsigned int valid)
--{
--	if (valid == 0) {
--		__set_bit_le(nat_ofs, nm_i->empty_nat_bits);
--		__clear_bit_le(nat_ofs, nm_i->full_nat_bits);
--		return;
--	}
--
--	__clear_bit_le(nat_ofs, nm_i->empty_nat_bits);
--	if (valid == NAT_ENTRY_PER_BLOCK)
--		__set_bit_le(nat_ofs, nm_i->full_nat_bits);
--	else
--		__clear_bit_le(nat_ofs, nm_i->full_nat_bits);
--}
--
--static void update_nat_bits(struct f2fs_sb_info *sbi, nid_t start_nid,
-+static void __update_nat_bits(struct f2fs_sb_info *sbi, nid_t start_nid,
- 						struct page *page)
- {
- 	struct f2fs_nm_info *nm_i = NM_I(sbi);
-@@ -2997,7 +2963,7 @@ static void update_nat_bits(struct f2fs_sb_info *sbi, nid_t start_nid,
- 	int valid = 0;
- 	int i = 0;
- 
--	if (!is_set_ckpt_flags(sbi, CP_NAT_BITS_FLAG))
-+	if (!enabled_nat_bits(sbi, NULL))
- 		return;
- 
- 	if (nat_index == 0) {
-@@ -3008,36 +2974,17 @@ static void update_nat_bits(struct f2fs_sb_info *sbi, nid_t start_nid,
- 		if (le32_to_cpu(nat_blk->entries[i].block_addr) != NULL_ADDR)
- 			valid++;
- 	}
--
--	__update_nat_bits(nm_i, nat_index, valid);
--}
--
--void f2fs_enable_nat_bits(struct f2fs_sb_info *sbi)
--{
--	struct f2fs_nm_info *nm_i = NM_I(sbi);
--	unsigned int nat_ofs;
--
--	f2fs_down_read(&nm_i->nat_tree_lock);
--
--	for (nat_ofs = 0; nat_ofs < nm_i->nat_blocks; nat_ofs++) {
--		unsigned int valid = 0, nid_ofs = 0;
--
--		/* handle nid zero due to it should never be used */
--		if (unlikely(nat_ofs == 0)) {
--			valid = 1;
--			nid_ofs = 1;
--		}
--
--		for (; nid_ofs < NAT_ENTRY_PER_BLOCK; nid_ofs++) {
--			if (!test_bit_le(nid_ofs,
--					nm_i->free_nid_bitmap[nat_ofs]))
--				valid++;
--		}
--
--		__update_nat_bits(nm_i, nat_ofs, valid);
-+	if (valid == 0) {
-+		__set_bit_le(nat_index, nm_i->empty_nat_bits);
-+		__clear_bit_le(nat_index, nm_i->full_nat_bits);
-+		return;
+ 	/* these selectors are mandatory for ML reconfiguration */
+ 	set_bit(BSS_MEMBERSHIP_SELECTOR_SAE_H2E, userspace_selectors);
+ 	set_bit(BSS_MEMBERSHIP_SELECTOR_HE_PHY, userspace_selectors);
+@@ -9669,7 +9667,7 @@ void ieee80211_process_ml_reconf_resp(struct ieee80211_sub_if_data *sdata,
+ 		                sdata->u.mgd.reconf.removed_links;
+ 	u16 link_mask, valid_links;
+ 	unsigned int link_id;
+-	unsigned long userspace_selectors;
++	unsigned long userspace_selectors[BITS_TO_LONGS(128)] = {};
+ 	size_t orig_len = len;
+ 	u8 i, group_key_data_len;
+ 	u8 *pos;
+@@ -9777,7 +9775,7 @@ void ieee80211_process_ml_reconf_resp(struct ieee80211_sub_if_data *sdata,
  	}
  
--	f2fs_up_read(&nm_i->nat_tree_lock);
-+	__clear_bit_le(nat_index, nm_i->empty_nat_bits);
-+	if (valid == NAT_ENTRY_PER_BLOCK)
-+		__set_bit_le(nat_index, nm_i->full_nat_bits);
-+	else
-+		__clear_bit_le(nat_index, nm_i->full_nat_bits);
- }
- 
- static int __flush_nat_entry_set(struct f2fs_sb_info *sbi,
-@@ -3056,7 +3003,7 @@ static int __flush_nat_entry_set(struct f2fs_sb_info *sbi,
- 	 * #1, flush nat entries to journal in current hot data summary block.
- 	 * #2, flush nat entries to nat page.
+ 	ieee80211_vif_set_links(sdata, valid_links, sdata->vif.dormant_links);
+-	ieee80211_ml_reconf_selectors(&userspace_selectors);
++	ieee80211_ml_reconf_selectors(userspace_selectors);
+ 	link_mask = 0;
+ 	for (link_id = 0; link_id < IEEE80211_MLD_MAX_NUM_LINKS; link_id++) {
+ 		struct cfg80211_bss *cbss = add_links_data->link[link_id].bss;
+@@ -9823,7 +9821,7 @@ void ieee80211_process_ml_reconf_resp(struct ieee80211_sub_if_data *sdata,
+ 		link->u.mgd.conn = add_links_data->link[link_id].conn;
+ 		if (ieee80211_prep_channel(sdata, link, link_id, cbss,
+ 					   true, &link->u.mgd.conn,
+-					   &userspace_selectors)) {
++					   userspace_selectors)) {
+ 			link_info(link, "mlo: reconf: prep_channel failed\n");
+ 			goto disconnect;
+ 		}
+@@ -10152,14 +10150,14 @@ int ieee80211_mgd_assoc_ml_reconf(struct ieee80211_sub_if_data *sdata,
  	 */
--	if ((cpc->reason & CP_UMOUNT) ||
-+	if (enabled_nat_bits(sbi, cpc) ||
- 		!__has_cursum_space(journal, set->entry_cnt, NAT_JOURNAL))
- 		to_journal = false;
+ 	if (added_links) {
+ 		bool uapsd_supported;
+-		unsigned long userspace_selectors;
++		unsigned long userspace_selectors[BITS_TO_LONGS(128)] = {};
  
-@@ -3103,7 +3050,7 @@ static int __flush_nat_entry_set(struct f2fs_sb_info *sbi,
- 	if (to_journal) {
- 		up_write(&curseg->journal_rwsem);
- 	} else {
--		update_nat_bits(sbi, start_nid, page);
-+		__update_nat_bits(sbi, start_nid, page);
- 		f2fs_put_page(page, 1);
- 	}
+ 		data = kzalloc(sizeof(*data), GFP_KERNEL);
+ 		if (!data)
+ 			return -ENOMEM;
  
-@@ -3134,7 +3081,7 @@ int f2fs_flush_nat_entries(struct f2fs_sb_info *sbi, struct cp_control *cpc)
- 	 * during unmount, let's flush nat_bits before checking
- 	 * nat_cnt[DIRTY_NAT].
- 	 */
--	if (cpc->reason & CP_UMOUNT) {
-+	if (enabled_nat_bits(sbi, cpc)) {
- 		f2fs_down_write(&nm_i->nat_tree_lock);
- 		remove_nats_in_journal(sbi);
- 		f2fs_up_write(&nm_i->nat_tree_lock);
-@@ -3150,7 +3097,7 @@ int f2fs_flush_nat_entries(struct f2fs_sb_info *sbi, struct cp_control *cpc)
- 	 * entries, remove all entries from journal and merge them
- 	 * into nat entry set.
- 	 */
--	if (cpc->reason & CP_UMOUNT ||
-+	if (enabled_nat_bits(sbi, cpc) ||
- 		!__has_cursum_space(journal,
- 			nm_i->nat_cnt[DIRTY_NAT], NAT_JOURNAL))
- 		remove_nats_in_journal(sbi);
-@@ -3187,18 +3134,15 @@ static int __get_nat_bitmaps(struct f2fs_sb_info *sbi)
- 	__u64 cp_ver = cur_cp_version(ckpt);
- 	block_t nat_bits_addr;
- 
-+	if (!enabled_nat_bits(sbi, NULL))
-+		return 0;
-+
- 	nm_i->nat_bits_blocks = F2FS_BLK_ALIGN((nat_bits_bytes << 1) + 8);
- 	nm_i->nat_bits = f2fs_kvzalloc(sbi,
- 			F2FS_BLK_TO_BYTES(nm_i->nat_bits_blocks), GFP_KERNEL);
- 	if (!nm_i->nat_bits)
- 		return -ENOMEM;
- 
--	nm_i->full_nat_bits = nm_i->nat_bits + 8;
--	nm_i->empty_nat_bits = nm_i->full_nat_bits + nat_bits_bytes;
--
--	if (!is_set_ckpt_flags(sbi, CP_NAT_BITS_FLAG))
--		return 0;
--
- 	nat_bits_addr = __start_cp_addr(sbi) + BLKS_PER_SEG(sbi) -
- 						nm_i->nat_bits_blocks;
- 	for (i = 0; i < nm_i->nat_bits_blocks; i++) {
-@@ -3215,12 +3159,13 @@ static int __get_nat_bitmaps(struct f2fs_sb_info *sbi)
- 
- 	cp_ver |= (cur_cp_crc(ckpt) << 32);
- 	if (cpu_to_le64(cp_ver) != *(__le64 *)nm_i->nat_bits) {
--		clear_ckpt_flags(sbi, CP_NAT_BITS_FLAG);
--		f2fs_notice(sbi, "Disable nat_bits due to incorrect cp_ver (%llu, %llu)",
--			cp_ver, le64_to_cpu(*(__le64 *)nm_i->nat_bits));
-+		disable_nat_bits(sbi, true);
- 		return 0;
- 	}
- 
-+	nm_i->full_nat_bits = nm_i->nat_bits + 8;
-+	nm_i->empty_nat_bits = nm_i->full_nat_bits + nat_bits_bytes;
-+
- 	f2fs_notice(sbi, "Found nat_bits in checkpoint");
- 	return 0;
- }
-@@ -3231,7 +3176,7 @@ static inline void load_free_nid_bitmap(struct f2fs_sb_info *sbi)
- 	unsigned int i = 0;
- 	nid_t nid, last_nid;
- 
--	if (!is_set_ckpt_flags(sbi, CP_NAT_BITS_FLAG))
-+	if (!enabled_nat_bits(sbi, NULL))
- 		return;
- 
- 	for (i = 0; i < nm_i->nat_blocks; i++) {
+ 		uapsd_supported = true;
+-		ieee80211_ml_reconf_selectors(&userspace_selectors);
++		ieee80211_ml_reconf_selectors(userspace_selectors);
+ 		for (link_id = 0; link_id < IEEE80211_MLD_MAX_NUM_LINKS;
+ 		     link_id++) {
+ 			struct ieee80211_supported_band *sband;
+@@ -10235,7 +10233,7 @@ int ieee80211_mgd_assoc_ml_reconf(struct ieee80211_sub_if_data *sdata,
+ 						     data->link[link_id].bss,
+ 						     true,
+ 						     &data->link[link_id].conn,
+-						     &userspace_selectors);
++						     userspace_selectors);
+ 			if (err)
+ 				goto err_free;
+ 		}
 -- 
 2.39.5
 
