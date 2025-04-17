@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-133871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB4FDA9280F
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42D2BA929DE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:45:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BD591703D0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF3891B6402D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFEB258CF5;
-	Thu, 17 Apr 2025 18:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557A82561D9;
+	Thu, 17 Apr 2025 18:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eR7nyvtw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZIgHZ1II"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4933D258CD6;
-	Thu, 17 Apr 2025 18:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1309D254878;
+	Thu, 17 Apr 2025 18:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914399; cv=none; b=bqmlEWvxqvTj1VIlSHupurIwn9fonCIsX4/gMjMzoIMbYvrUBLnehxpwLHtPuwqF6GTKbkZ+ACgkGx6tTLsXx/3kEEbEn0zG6w1UpxEPK8dMxxUCXv7iKtxP6VnFofXhmZc43LTyy7azDA0t6kKOPaw78u2m6LDo+xMsvqH+h94=
+	t=1744915518; cv=none; b=Cm6oPXFLTiPHF3Z688L42rrHfygnYsQm3Lb5b8Mb8V1kio0ZVi3fgnI9cUGeqNHqrUUPplFGTfpUjW6H1XhsuiedO7qO/tTCZxy035AmaYFwIBcYFt+e3OvGoA+LcprIYMbpJOYOQcP09KgMC7ZY3gXDNnPjHa4e/40HMbb6f2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914399; c=relaxed/simple;
-	bh=9VTRe5LXWdlsPSmtucjyjCpVSB05EV9cmlf2VloSqw4=;
+	s=arc-20240116; t=1744915518; c=relaxed/simple;
+	bh=PDFy2WYG0Fd9xTgVRK0tdXMzbi8WDzi1XaUcltXwnW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JTec8Nq6DL5CeJiwYjSc+Jl+IyJV5I6bHpbFIsDg8gyFhSjcdVNovIvunjhR5AqEc5ibIjm3tlDlTeQ8fb0Z7804Wwq1zwyrdaU8waRq6B8YfZlCz/Bcqw1xgksR45dl+isz5U9YNTcOsqSncq4xsgXDg/VsauPV48/rk3M7GpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eR7nyvtw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A31C4CEE4;
-	Thu, 17 Apr 2025 18:26:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Jdrc+uagm4HeFbZYh3QK+IqCX5aMNCXrG+IGZH1QIfKzdOxCqEFqex65RxwA+kk9WLbgKjV3PCQAiNCfGg5lfMfBr0gjKPzruPqooynAXTRgZlrq5jvATUZVCbu5Kc5HUIP3d1oYJMUGVdRuyHPAOMeUpDKJLbJkdQiGSApw9mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZIgHZ1II; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01186C4CEEA;
+	Thu, 17 Apr 2025 18:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914398;
-	bh=9VTRe5LXWdlsPSmtucjyjCpVSB05EV9cmlf2VloSqw4=;
+	s=korg; t=1744915517;
+	bh=PDFy2WYG0Fd9xTgVRK0tdXMzbi8WDzi1XaUcltXwnW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eR7nyvtwQZwkif+ud45DgPYlPqIscEmszMTL6sdbcCA1d4s8LfFfUdy3mxTVcG6xm
-	 rPzv/CFunqqrhCdWCAljEm0KXDUeuHU6wusdi6x1HqoCvoXS0m3lmAdpIuYyngs9uc
-	 F/s77Ihzs1o1loycNI6kQ7joc7FE4M2fEgGy4cpA=
+	b=ZIgHZ1II3yB8F2tgy7EGVXrTxf18Qgl5QcZ7UmL+9VokvulucuUdAYTzIjO2IIV8X
+	 eUbnEc0Lc+XCWFtSyG28vzQ28nWsSJAzKG5esxvTqukWk0vbM2Lu//q4Ee8HNyqJKv
+	 6OmLklE5QD/55feDsR2B7ngzV9/W5wzh07FEGXbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Martin=20T=C5=AFma?= <martin.tuma@digiteqautomotive.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.13 202/414] media: mgb4: Fix switched CMT frequency range "magic values" sets
+	Bingbu Cao <bingbu.cao@linux.intel.com>,
+	Philipp Stanner <phasta@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 151/393] PCI: Check BAR index for validity
 Date: Thu, 17 Apr 2025 19:49:20 +0200
-Message-ID: <20250417175119.566119898@linuxfoundation.org>
+Message-ID: <20250417175113.656195541@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +65,221 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Tůma <martin.tuma@digiteqautomotive.com>
+From: Philipp Stanner <phasta@kernel.org>
 
-commit 450acf0840232eaf6eb7a80da11cf492e57498e8 upstream.
+[ Upstream commit b1a7f99967fc0c052db8e65b449c7b32b1e9177f ]
 
-The reason why this passed unnoticed is that most infotainment systems
-use frequencies near enough the middle (50MHz) where both sets work.
+Many functions in PCI use accessor macros such as pci_resource_len(),
+which take a BAR index. That index, however, is never checked for
+validity, potentially resulting in undefined behavior by overflowing the
+array pci_dev.resource in the macro pci_resource_n().
 
-Fixes: 0ab13674a9bd ("media: pci: mgb4: Added Digiteq Automotive MGB4 driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Martin Tůma <martin.tuma@digiteqautomotive.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since many users of those macros directly assign the accessed value to
+an unsigned integer, the macros cannot be changed easily anymore to
+return -EINVAL for invalid indexes. Consequently, the problem has to be
+mitigated in higher layers.
+
+Add pci_bar_index_valid(). Use it where appropriate.
+
+Link: https://lore.kernel.org/r/20250312080634.13731-4-phasta@kernel.org
+Closes: https://lore.kernel.org/all/adb53b1f-29e1-3d14-0e61-351fd2d3ff0d@linux.intel.com/
+Reported-by: Bingbu Cao <bingbu.cao@linux.intel.com>
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+[kwilczynski: correct if-statement condition the pci_bar_index_is_valid()
+helper function uses, tidy up code comments]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+[bhelgaas: fix typo]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/mgb4/mgb4_cmt.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/devres.c | 16 ++++++++++++++--
+ drivers/pci/iomap.c  | 29 +++++++++++++++++++++--------
+ drivers/pci/pci.c    |  6 ++++++
+ drivers/pci/pci.h    | 16 ++++++++++++++++
+ 4 files changed, 57 insertions(+), 10 deletions(-)
 
---- a/drivers/media/pci/mgb4/mgb4_cmt.c
-+++ b/drivers/media/pci/mgb4/mgb4_cmt.c
-@@ -135,8 +135,8 @@ static const u16 cmt_vals_out[][15] = {
- };
+diff --git a/drivers/pci/devres.c b/drivers/pci/devres.c
+index 643f85849ef64..cd39479de7c72 100644
+--- a/drivers/pci/devres.c
++++ b/drivers/pci/devres.c
+@@ -577,7 +577,7 @@ static int pcim_add_mapping_to_legacy_table(struct pci_dev *pdev,
+ {
+ 	void __iomem **legacy_iomap_table;
  
- static const u16 cmt_vals_in[][13] = {
--	{0x1082, 0x0000, 0x5104, 0x0000, 0x11C7, 0x0000, 0x1041, 0x02BC, 0x7C01, 0xFFE9, 0x9900, 0x9908, 0x8100},
- 	{0x1104, 0x0000, 0x9208, 0x0000, 0x138E, 0x0000, 0x1041, 0x015E, 0x7C01, 0xFFE9, 0x0100, 0x0908, 0x1000},
-+	{0x1082, 0x0000, 0x5104, 0x0000, 0x11C7, 0x0000, 0x1041, 0x02BC, 0x7C01, 0xFFE9, 0x9900, 0x9908, 0x8100},
- };
+-	if (bar >= PCI_STD_NUM_BARS)
++	if (!pci_bar_index_is_valid(bar))
+ 		return -EINVAL;
  
- static const u32 cmt_addrs_out[][15] = {
+ 	legacy_iomap_table = (void __iomem **)pcim_iomap_table(pdev);
+@@ -622,7 +622,7 @@ static void pcim_remove_bar_from_legacy_table(struct pci_dev *pdev, int bar)
+ {
+ 	void __iomem **legacy_iomap_table;
+ 
+-	if (bar >= PCI_STD_NUM_BARS)
++	if (!pci_bar_index_is_valid(bar))
+ 		return;
+ 
+ 	legacy_iomap_table = (void __iomem **)pcim_iomap_table(pdev);
+@@ -655,6 +655,9 @@ void __iomem *pcim_iomap(struct pci_dev *pdev, int bar, unsigned long maxlen)
+ 	void __iomem *mapping;
+ 	struct pcim_addr_devres *res;
+ 
++	if (!pci_bar_index_is_valid(bar))
++		return NULL;
++
+ 	res = pcim_addr_devres_alloc(pdev);
+ 	if (!res)
+ 		return NULL;
+@@ -722,6 +725,9 @@ void __iomem *pcim_iomap_region(struct pci_dev *pdev, int bar,
+ 	int ret;
+ 	struct pcim_addr_devres *res;
+ 
++	if (!pci_bar_index_is_valid(bar))
++		return IOMEM_ERR_PTR(-EINVAL);
++
+ 	res = pcim_addr_devres_alloc(pdev);
+ 	if (!res)
+ 		return IOMEM_ERR_PTR(-ENOMEM);
+@@ -822,6 +828,9 @@ static int _pcim_request_region(struct pci_dev *pdev, int bar, const char *name,
+ 	int ret;
+ 	struct pcim_addr_devres *res;
+ 
++	if (!pci_bar_index_is_valid(bar))
++		return -EINVAL;
++
+ 	res = pcim_addr_devres_alloc(pdev);
+ 	if (!res)
+ 		return -ENOMEM;
+@@ -1043,6 +1052,9 @@ void __iomem *pcim_iomap_range(struct pci_dev *pdev, int bar,
+ 	void __iomem *mapping;
+ 	struct pcim_addr_devres *res;
+ 
++	if (!pci_bar_index_is_valid(bar))
++		return IOMEM_ERR_PTR(-EINVAL);
++
+ 	res = pcim_addr_devres_alloc(pdev);
+ 	if (!res)
+ 		return IOMEM_ERR_PTR(-ENOMEM);
+diff --git a/drivers/pci/iomap.c b/drivers/pci/iomap.c
+index 9fb7cacc15cde..fe706ed946dfd 100644
+--- a/drivers/pci/iomap.c
++++ b/drivers/pci/iomap.c
+@@ -9,6 +9,8 @@
+ 
+ #include <linux/export.h>
+ 
++#include "pci.h" /* for pci_bar_index_is_valid() */
++
+ /**
+  * pci_iomap_range - create a virtual mapping cookie for a PCI BAR
+  * @dev: PCI device that owns the BAR
+@@ -33,12 +35,19 @@ void __iomem *pci_iomap_range(struct pci_dev *dev,
+ 			      unsigned long offset,
+ 			      unsigned long maxlen)
+ {
+-	resource_size_t start = pci_resource_start(dev, bar);
+-	resource_size_t len = pci_resource_len(dev, bar);
+-	unsigned long flags = pci_resource_flags(dev, bar);
++	resource_size_t start, len;
++	unsigned long flags;
++
++	if (!pci_bar_index_is_valid(bar))
++		return NULL;
++
++	start = pci_resource_start(dev, bar);
++	len = pci_resource_len(dev, bar);
++	flags = pci_resource_flags(dev, bar);
+ 
+ 	if (len <= offset || !start)
+ 		return NULL;
++
+ 	len -= offset;
+ 	start += offset;
+ 	if (maxlen && len > maxlen)
+@@ -77,16 +86,20 @@ void __iomem *pci_iomap_wc_range(struct pci_dev *dev,
+ 				 unsigned long offset,
+ 				 unsigned long maxlen)
+ {
+-	resource_size_t start = pci_resource_start(dev, bar);
+-	resource_size_t len = pci_resource_len(dev, bar);
+-	unsigned long flags = pci_resource_flags(dev, bar);
++	resource_size_t start, len;
++	unsigned long flags;
+ 
+-
+-	if (flags & IORESOURCE_IO)
++	if (!pci_bar_index_is_valid(bar))
+ 		return NULL;
+ 
++	start = pci_resource_start(dev, bar);
++	len = pci_resource_len(dev, bar);
++	flags = pci_resource_flags(dev, bar);
++
+ 	if (len <= offset || !start)
+ 		return NULL;
++	if (flags & IORESOURCE_IO)
++		return NULL;
+ 
+ 	len -= offset;
+ 	start += offset;
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 169aa8fd74a11..be61fa93d3971 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -3922,6 +3922,9 @@ EXPORT_SYMBOL(pci_enable_atomic_ops_to_root);
+  */
+ void pci_release_region(struct pci_dev *pdev, int bar)
+ {
++	if (!pci_bar_index_is_valid(bar))
++		return;
++
+ 	/*
+ 	 * This is done for backwards compatibility, because the old PCI devres
+ 	 * API had a mode in which the function became managed if it had been
+@@ -3967,6 +3970,9 @@ EXPORT_SYMBOL(pci_release_region);
+ static int __pci_request_region(struct pci_dev *pdev, int bar,
+ 				const char *res_name, int exclusive)
+ {
++	if (!pci_bar_index_is_valid(bar))
++		return -EINVAL;
++
+ 	if (pci_is_managed(pdev)) {
+ 		if (exclusive == IORESOURCE_EXCLUSIVE)
+ 			return pcim_request_region_exclusive(pdev, bar, res_name);
+diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+index 1cdc2c9547a7e..65df6d2ac0032 100644
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -165,6 +165,22 @@ static inline void pci_wakeup_event(struct pci_dev *dev)
+ 	pm_wakeup_event(&dev->dev, 100);
+ }
+ 
++/**
++ * pci_bar_index_is_valid - Check whether a BAR index is within valid range
++ * @bar: BAR index
++ *
++ * Protects against overflowing &struct pci_dev.resource array.
++ *
++ * Return: true for valid index, false otherwise.
++ */
++static inline bool pci_bar_index_is_valid(int bar)
++{
++	if (bar >= 0 && bar < PCI_NUM_RESOURCES)
++		return true;
++
++	return false;
++}
++
+ static inline bool pci_has_subordinate(struct pci_dev *pci_dev)
+ {
+ 	return !!(pci_dev->subordinate);
+-- 
+2.39.5
+
 
 
 
