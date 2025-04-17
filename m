@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48942A927EE
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA0E0A92A55
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCE8A1895960
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:30:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C4733A98DC
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:46:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E498B2627E3;
-	Thu, 17 Apr 2025 18:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63CCC2571BA;
+	Thu, 17 Apr 2025 18:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cwDaHYeA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eyQcpftc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BE6253B5E;
-	Thu, 17 Apr 2025 18:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067D52571A0;
+	Thu, 17 Apr 2025 18:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914407; cv=none; b=eDufm8XhVnJUcGDFryy7dPB1zIifMXv12QZt0CKuts8DF4v0ItJhqFXwii9uqd9jLMu+l6k9CeDL+B0VX4A+9C1kiSdwPnJYPSZZ8YyCcwjewG/EzLpcglqXB+E6dSEMDJAfwmtt0KzNVnoL4PJ+I/PWKjECJQU9ywiIHe8tkO0=
+	t=1744915580; cv=none; b=fBHmvRbZDd9o1EfG+gpAOo/8WvMoVLsEycSrIz6SlNJ/XqzmGCpbF+53wr7VS6vQS+/gblff/KL2L48TjrsfD6yp/SPFmjSlrkygBa0A5BQw58bGDc877TCV5pxD8uQ8yD5UGB+X+2PL3w1HM5wzLa6nqz2eKuNvSBgkxVj93qA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914407; c=relaxed/simple;
-	bh=xDnt4i9FjaBf29C50K0NRD/hyqAPoN19pbrQWVC5XHk=;
+	s=arc-20240116; t=1744915580; c=relaxed/simple;
+	bh=8JaITGA134F6oUcSvVm9SW7TJnKWaD75GKE4SPucFks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tvy4XdiRbEEQiPG8BdDh7S0ZT2u/q340eSNC9efYoYZrImISfo6T0sMNbfb64WOCsgtdZnQM8Prtx+Zf0xUX197ET6IZpIB5QodiKP5b+MuIFJCIC74/9q+QOBzLeey2bxapJw66cGMavU3uZ2eEL6uDtecL0rgAkWJKO1VGrHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cwDaHYeA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 221A7C4CEE4;
-	Thu, 17 Apr 2025 18:26:46 +0000 (UTC)
+	 MIME-Version; b=c1/AwBU7onFImGk7URKB3zPOYDDTBYTK0Ud8u34bSVfcp/DuAdER5n1pn6VEcgKjvCyB8jqtSfLLkxX4DN44dMSh97uYtE5E98NYoHPHxl+AYaPyIWVfrs63leROYxYjrTSsEGrIFHcRcYLrMRg9ymIOeCXOn2u5+N6KjNUmRN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eyQcpftc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11F03C4CEE4;
+	Thu, 17 Apr 2025 18:46:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914407;
-	bh=xDnt4i9FjaBf29C50K0NRD/hyqAPoN19pbrQWVC5XHk=;
+	s=korg; t=1744915579;
+	bh=8JaITGA134F6oUcSvVm9SW7TJnKWaD75GKE4SPucFks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cwDaHYeAUjfwP/8SaTfa46t3PTJ8noBYN7kHu4et+bpJgT2tZiWzd7Ueoii4fwBOq
-	 XOs4zfC3D7lE8MLPdPY+V5XIkcmHcPz5uyMaGfmQ3RsBZpPwVh6cX+EwsABaJYFDHH
-	 L+S0Xk8Bv6YvZ0s+v4VBY6kcXfER3UxtIS2yepy8=
+	b=eyQcpftcRErZkRPf2fC8MK+pwXsXm4tYnxQbVaLiaKJGUbzzFkt3cjhhT2uvBvVyp
+	 8Fyoo3Kwn8UcoSEtoL1VZn14rlEDPWpSa9xmGgmUkZdvmSTyhDrArV103hNUO0zWQc
+	 miCee6hDDFRRQK0KqU3cYkX9pkEwq182UfZYPjFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.13 205/414] media: venus: hfi: add check to handle incorrect queue size
-Date: Thu, 17 Apr 2025 19:49:23 +0200
-Message-ID: <20250417175119.683083163@linuxfoundation.org>
+	Steven Rostedt <rostedt@goodmis.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 155/393] tracing: probe-events: Add comments about entry data storing code
+Date: Thu, 17 Apr 2025 19:49:24 +0200
+Message-ID: <20250417175113.819868788@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit 69baf245b23e20efda0079238b27fc63ecf13de1 upstream.
+[ Upstream commit bb9c6020f4c3a07a90dc36826cb5fbe83f09efd5 ]
 
-qsize represents size of shared queued between driver and video
-firmware. Firmware can modify this value to an invalid large value. In
-such situation, empty_space will be bigger than the space actually
-available. Since new_wr_idx is not checked, so the following code will
-result in an OOB write.
-...
-qsize = qhdr->q_size
+Add comments about entry data storing code to __store_entry_arg() and
+traceprobe_get_entry_data_size(). These are a bit complicated because of
+building the entry data storing code and scanning it.
 
-if (wr_idx >= rd_idx)
- empty_space = qsize - (wr_idx - rd_idx)
-....
-if (new_wr_idx < qsize) {
- memcpy(wr_ptr, packet, dwords << 2) --> OOB write
+This just add comments, no behavior change.
 
-Add check to ensure qsize is within the allocated size while
-reading and writing packets into the queue.
+Link: https://lore.kernel.org/all/174061715004.501424.333819546601401102.stgit@devnote2/
 
-Cc: stable@vger.kernel.org
-Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Steven Rostedt <rostedt@goodmis.org>
+Closes: https://lore.kernel.org/all/20250226102223.586d7119@gandalf.local.home/
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/hfi_venus.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/trace/trace_probe.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -187,6 +187,9 @@ static int venus_write_queue(struct venu
- 	/* ensure rd/wr indices's are read from memory */
- 	rmb();
+diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
+index 16a5e368e7b77..578919962e5df 100644
+--- a/kernel/trace/trace_probe.c
++++ b/kernel/trace/trace_probe.c
+@@ -770,6 +770,10 @@ static int check_prepare_btf_string_fetch(char *typename,
  
-+	if (qsize > IFACEQ_QUEUE_SIZE / 4)
-+		return -EINVAL;
-+
- 	if (wr_idx >= rd_idx)
- 		empty_space = qsize - (wr_idx - rd_idx);
- 	else
-@@ -255,6 +258,9 @@ static int venus_read_queue(struct venus
- 	wr_idx = qhdr->write_idx;
- 	qsize = qhdr->q_size;
+ #ifdef CONFIG_HAVE_FUNCTION_ARG_ACCESS_API
  
-+	if (qsize > IFACEQ_QUEUE_SIZE / 4)
-+		return -EINVAL;
-+
- 	/* make sure data is valid before using it */
- 	rmb();
++/*
++ * Add the entry code to store the 'argnum'th parameter and return the offset
++ * in the entry data buffer where the data will be stored.
++ */
+ static int __store_entry_arg(struct trace_probe *tp, int argnum)
+ {
+ 	struct probe_entry_arg *earg = tp->entry_arg;
+@@ -793,6 +797,20 @@ static int __store_entry_arg(struct trace_probe *tp, int argnum)
+ 		tp->entry_arg = earg;
+ 	}
  
++	/*
++	 * The entry code array is repeating the pair of
++	 * [FETCH_OP_ARG(argnum)][FETCH_OP_ST_EDATA(offset of entry data buffer)]
++	 * and the rest of entries are filled with [FETCH_OP_END].
++	 *
++	 * To reduce the redundant function parameter fetching, we scan the entry
++	 * code array to find the FETCH_OP_ARG which already fetches the 'argnum'
++	 * parameter. If it doesn't match, update 'offset' to find the last
++	 * offset.
++	 * If we find the FETCH_OP_END without matching FETCH_OP_ARG entry, we
++	 * will save the entry with FETCH_OP_ARG and FETCH_OP_ST_EDATA, and
++	 * return data offset so that caller can find the data offset in the entry
++	 * data buffer.
++	 */
+ 	offset = 0;
+ 	for (i = 0; i < earg->size - 1; i++) {
+ 		switch (earg->code[i].op) {
+@@ -826,6 +844,16 @@ int traceprobe_get_entry_data_size(struct trace_probe *tp)
+ 	if (!earg)
+ 		return 0;
+ 
++	/*
++	 * earg->code[] array has an operation sequence which is run in
++	 * the entry handler.
++	 * The sequence stopped by FETCH_OP_END and each data stored in
++	 * the entry data buffer by FETCH_OP_ST_EDATA. The FETCH_OP_ST_EDATA
++	 * stores the data at the data buffer + its offset, and all data are
++	 * "unsigned long" size. The offset must be increased when a data is
++	 * stored. Thus we need to find the last FETCH_OP_ST_EDATA in the
++	 * code array.
++	 */
+ 	for (i = 0; i < earg->size; i++) {
+ 		switch (earg->code[i].op) {
+ 		case FETCH_OP_END:
+-- 
+2.39.5
+
 
 
 
