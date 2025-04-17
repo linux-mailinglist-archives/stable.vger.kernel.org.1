@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-133984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCF13A928D0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:38:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C70FA928DD
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:38:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D53A81B61589
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5F231B61687
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C911262817;
-	Thu, 17 Apr 2025 18:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1262638A6;
+	Thu, 17 Apr 2025 18:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e2LU80YQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="agT02btu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BE72627FE;
-	Thu, 17 Apr 2025 18:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A572571A2;
+	Thu, 17 Apr 2025 18:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914740; cv=none; b=Le8zIOMI+G+c7zVnfl+0RgxRp1AUUXGSqtbX9Q8ykKrBQFyX6EVLlX7SGs2nBHs9IjWM/LTKkDChrJKqoXJEhov1yvfNiKS3rZR4AGN8vx6fEC1RHXtUKMzabb5M4qJs4DFbT6wsPTLREcBzmTlk8q5iSGVroK9vCnix9kZW4tQ=
+	t=1744914776; cv=none; b=hDMbfV93L7ezQctFVlvI8aU9EbiouuCfsDT0I3lA4E7uw/5nbq9ZRaICp8fqZjBPV8fd0B3JbzltbtI03KVDDrJvY4vbpF8Ekf8c8g7IkfrXA57eWvhBUHMGzQ92z0axXctqKeA6xpNgWE8y0K7yHTMs3rFxPU1NlV4x5Bx7OUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914740; c=relaxed/simple;
-	bh=d8ZnmajJTGv0RCytpxERed+T5qJzIJf0GwaEb+lim0o=;
+	s=arc-20240116; t=1744914776; c=relaxed/simple;
+	bh=MDbk0M7TciQ7isi3HWbeSwMSOhagaxF62jdP5skGhwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Spqt48r3ugeu3tUXWHGZ4/y79tnidL6mpsFO2nyQ5MHlp1dWLcPce8iyYyldFQe9FpCu8sdez1V+a6IopAENl8pMa/Qzg0bevdGXjLBhNdMctr7dEr99ppT9vtvLm2QlMaG/AY+RBKYdVyhYnt5sIop8esA4LyzFNi5+hGe1HbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e2LU80YQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54B6AC4CEE4;
-	Thu, 17 Apr 2025 18:32:20 +0000 (UTC)
+	 MIME-Version; b=ElC+M2+EjZ1GTNnW521INHz2Q1FhWcRWzsHcvbihzOKTIExJEJQX31qYzoksslv34SpkZcVaeT2VVZjG54dDDDBUz/MnwoDsz9eEoy7YLDyS2mMo8vXexprsU4guZPOWXO3MpBq/couKUWgrvjKoQSHjWR5OOMAzRueer88N9bM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=agT02btu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC047C4CEE4;
+	Thu, 17 Apr 2025 18:32:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914740;
-	bh=d8ZnmajJTGv0RCytpxERed+T5qJzIJf0GwaEb+lim0o=;
+	s=korg; t=1744914776;
+	bh=MDbk0M7TciQ7isi3HWbeSwMSOhagaxF62jdP5skGhwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e2LU80YQEHmW/NOYDzbyxTYe+nhwPA4wWJAy91tV9a3rNtbwXpJPUlRPW15OjRguW
-	 Nfktr54Z8Dc+aSI+asfAONGJql+rdNHTlnBUw+8iZm6YlKHj1azRHoyKnTKqIPQOXs
-	 hWnkWeF2IfxVFY9pvqD4xm8SNlG4zW5NkozeT37k=
+	b=agT02btuWl/Q2X1kUduUQdLxvX8ITgLnyddanQEJ2VJZVt93aeuRPXLPgPJYnlCEo
+	 vFfLozDmU4pbXnN5XXfmhs8vAIGeNEFtVs/sGSemur2N3hawL+RONz/uM1C1x+shgS
+	 bPuqhhLOvYGhDGhYiU+PFrOrJnF8fGYKfHzKMxpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>
-Subject: [PATCH 6.13 308/414] arm64: dts: mediatek: mt8188: Assign apll1 clock as parent to avoid hang
-Date: Thu, 17 Apr 2025 19:51:06 +0200
-Message-ID: <20250417175123.824263505@linuxfoundation.org>
+	YH Huang <yh.huang@mediatek.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 6.13 309/414] arm64: dts: mediatek: mt8173: Fix disp-pwm compatible string
+Date: Thu, 17 Apr 2025 19:51:07 +0200
+Message-ID: <20250417175123.863651924@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
 References: <20250417175111.386381660@linuxfoundation.org>
@@ -59,53 +60,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-commit a69d5795f12b06d07b6437cafdd08f929fff2706 upstream.
+commit 46ad36002088eff8fc5cae200aa42ae9f9310ddd upstream.
 
-Certain registers in the AFE IO space require the apll1 clock to be
-enabled in order to be read, otherwise the machine hangs (registers like
-0x280, 0x410 (AFE_GAIN1_CON0) and 0x830 (AFE_CONN0_5)). During AFE
-driver probe, when initializing the regmap for the AFE IO space those
-registers are read, resulting in a hang during boot.
+The MT8173 disp-pwm device should have only one compatible string, based
+on the following DT validation error:
 
-This has been observed on the Genio 700 EVK, Genio 510 EVK and
-MT8188-Geralt-Ciri Chromebook, all of which are based on the MT8188 SoC.
+    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pwm@1401e000: compatible: 'oneOf' conditional failed, one must be fixed:
+	    ['mediatek,mt8173-disp-pwm', 'mediatek,mt6595-disp-pwm'] is too long
+	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt6795-disp-pwm', 'mediatek,mt8167-disp-pwm']
+	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt8186-disp-pwm', 'mediatek,mt8188-disp-pwm', 'mediatek,mt8192-disp-pwm', 'mediatek,mt8195-disp-pwm', 'mediatek,mt8365-disp-pwm']
+	    'mediatek,mt8173-disp-pwm' was expected
+	    'mediatek,mt8183-disp-pwm' was expected
+	    from schema $id: http://devicetree.org/schemas/pwm/mediatek,pwm-disp.yaml#
+    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pwm@1401f000: compatible: 'oneOf' conditional failed, one must be fixed:
+	    ['mediatek,mt8173-disp-pwm', 'mediatek,mt6595-disp-pwm'] is too long
+	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt6795-disp-pwm', 'mediatek,mt8167-disp-pwm']
+	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt8186-disp-pwm', 'mediatek,mt8188-disp-pwm', 'mediatek,mt8192-disp-pwm', 'mediatek,mt8195-disp-pwm', 'mediatek,mt8365-disp-pwm']
+	    'mediatek,mt8173-disp-pwm' was expected
+	    'mediatek,mt8183-disp-pwm' was expected
+	    from schema $id: http://devicetree.org/schemas/pwm/mediatek,pwm-disp.yaml#
 
-Assign CLK_TOP_APLL1_D4 as the parent for CLK_TOP_A1SYS_HP, which is
-enabled during register read and write, to make sure the apll1 is
-enabled during register operations and prevent the MT8188 machines from
-hanging during boot.
+Drop the extra "mediatek,mt6595-disp-pwm" compatible string.
 
-Cc: stable@vger.kernel.org
-Fixes: bd568ce198b8 ("arm64: dts: mediatek: mt8188: Add audio support")
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Link: https://lore.kernel.org/r/20250207-mt8188-afe-fix-hang-disabled-apll1-clk-v2-1-a636d844c272@collabora.com
+Fixes: 61aee9342514 ("arm64: dts: mt8173: add MT8173 display PWM driver support node")
+Cc: YH Huang <yh.huang@mediatek.com>
+Cc: stable@vger.kernel.org # v4.5+
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20250108083424.2732375-2-wenst@chromium.org
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8188.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt8173.dtsi |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/boot/dts/mediatek/mt8188.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8188.dtsi
-@@ -1392,7 +1392,7 @@
- 			compatible = "mediatek,mt8188-afe";
- 			reg = <0 0x10b10000 0 0x10000>;
- 			assigned-clocks = <&topckgen CLK_TOP_A1SYS_HP>;
--			assigned-clock-parents =  <&clk26m>;
-+			assigned-clock-parents = <&topckgen CLK_TOP_APLL1_D4>;
- 			clocks = <&clk26m>,
- 				 <&apmixedsys CLK_APMIXED_APLL1>,
- 				 <&apmixedsys CLK_APMIXED_APLL2>,
+--- a/arch/arm64/boot/dts/mediatek/mt8173.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8173.dtsi
+@@ -1255,8 +1255,7 @@
+ 		};
+ 
+ 		pwm0: pwm@1401e000 {
+-			compatible = "mediatek,mt8173-disp-pwm",
+-				     "mediatek,mt6595-disp-pwm";
++			compatible = "mediatek,mt8173-disp-pwm";
+ 			reg = <0 0x1401e000 0 0x1000>;
+ 			#pwm-cells = <2>;
+ 			clocks = <&mmsys CLK_MM_DISP_PWM026M>,
+@@ -1266,8 +1265,7 @@
+ 		};
+ 
+ 		pwm1: pwm@1401f000 {
+-			compatible = "mediatek,mt8173-disp-pwm",
+-				     "mediatek,mt6595-disp-pwm";
++			compatible = "mediatek,mt8173-disp-pwm";
+ 			reg = <0 0x1401f000 0 0x1000>;
+ 			#pwm-cells = <2>;
+ 			clocks = <&mmsys CLK_MM_DISP_PWM126M>,
 
 
 
