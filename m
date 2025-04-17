@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-134149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0B88A929CD
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:44:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0B87A927C3
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:28:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C49D07A6F40
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:41:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A1D24A2B53
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B99A62566CF;
-	Thu, 17 Apr 2025 18:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CF08257430;
+	Thu, 17 Apr 2025 18:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VDOfzajf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CAj8bsBx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747DF25745A;
-	Thu, 17 Apr 2025 18:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7DB257423;
+	Thu, 17 Apr 2025 18:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915244; cv=none; b=oQqm1w8ROqUbOq+j+DdV468dCD3FnOcjfYYAJ5DUX8EdzZUdVHMQxaT/rlPhIVZewN+1YSHMBWSu8YEmjb8JPcikMxoFgOSP0lcaPeFHq3O8eT+gdnJtfQkcK1WpaKIU3Ll55jhtwwWCFwAyYRokWafrVBRPLsokFpD3vn1u3ak=
+	t=1744914227; cv=none; b=XFyl427Lz2i6FRZauH9znMzsz3HsQEd317ecKlNZt+6+7u+JalJfi3OYZ2dSF4EjzGWq1aFKYItYA2gNRw/o3t8htbAWOHJEq/JX6luvz8wMP1RdM2Lt9zacJ4/Y17qFaFJkP171sm/yLzCMBY0T/oxfuOuBKQy8FTEYaeoSK2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915244; c=relaxed/simple;
-	bh=PXl3xINe8xjlGwpBFwNkLz54yUrKUfpGKSCH8U5uoAU=;
+	s=arc-20240116; t=1744914227; c=relaxed/simple;
+	bh=O3uk3eHDT2OEypGfXNPe7XpH1gxzNVYVfLnbRQhEYPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HlgTeCxwoxGA3KfeDQEYUf9gatl54iBNUhpoxo71ZYszl6+iF4FE3tC168nJUaGVsjJP1AranDBQ7xqrpfSRbavJRPYjP0nrR/xMwhOd6P2oCThxsG9iZnLW4zKhvwc5E6Oeu9eiNx/pLEAsXCbmgzPxLeFV8XgJZcT9PKrkBzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VDOfzajf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7823EC4CEE7;
-	Thu, 17 Apr 2025 18:40:43 +0000 (UTC)
+	 MIME-Version; b=IfS2gKxjGLrkmDRhCvyVU3cp7GVhXnDnOuJbK4Rmi8fx7O954g+hJTRlLwmM61QqJ5YH/znkNFghft/QJ0A5UmE+FiLim2Py/HXtaHkk7b89PAufccyJ09eXnEsItlL2SkUpFKB2iuo/3COa8Dso5GWJQYr/09emMOAdeD5nUdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CAj8bsBx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD65C4CEE4;
+	Thu, 17 Apr 2025 18:23:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915244;
-	bh=PXl3xINe8xjlGwpBFwNkLz54yUrKUfpGKSCH8U5uoAU=;
+	s=korg; t=1744914226;
+	bh=O3uk3eHDT2OEypGfXNPe7XpH1gxzNVYVfLnbRQhEYPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VDOfzajfFbBAhyVjBmKjug+JNKU9vLKIsMhijNzJq7DwLFkwsDbtRLlDD06gUA6oT
-	 BxsV97/BEv6/az34SJXokm92kEzED/RVo5ng9Ch6EnN1Jjra3pkWwrR46ENAT5b5by
-	 daHPsbmwY4AJ0OFIVRElfJT6uE1Z7rqIakctcGpo=
+	b=CAj8bsBx+VEfSmiUq6wIVkjBf3P/Qaw8ibTQb782BlQ8bYEAv5y6HgQ8HXw6xKsAw
+	 1EVDUq3mOECkbNamS+Bc3cGTnmyTvC4K85cAVbyWQCJ/eZP8u2ftvG/2PVg7kAUi77
+	 Xm8USWThEiCRIERJ0jOxnovvJk3O8sx2MMnc6r2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Makarenko Oleg <oleg@makarenk.ooo>,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Icenowy Zheng <uwu@icenowy.me>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 065/393] HID: pidff: Add PERMISSIVE_CONTROL quirk
-Date: Thu, 17 Apr 2025 19:47:54 +0200
-Message-ID: <20250417175110.209391189@linuxfoundation.org>
+Subject: [PATCH 6.13 117/414] wifi: mt76: mt76x2u: add TP-Link TL-WDN6200 ID to device table
+Date: Thu, 17 Apr 2025 19:47:55 +0200
+Message-ID: <20250417175116.138648826@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,73 +60,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Icenowy Zheng <uwu@icenowy.me>
 
-[ Upstream commit a4119108d2530747e61c7cbf52e2affd089cb1f6 ]
+[ Upstream commit 06cccc2ebbe6c8a20f714f3a0ff3ff489d3004bb ]
 
-With this quirk, a PID device isn't required to have a strict
-logical_minimum of 1 for the the PID_DEVICE_CONTROL usage page.
+The TP-Link TL-WDN6200 "Driverless" version cards use a MT7612U chipset.
 
-Some devices come with weird values in their device descriptors and
-this quirk enables their initialization even if the logical minimum
-of the DEVICE_CONTROL page is not 1.
+Add the USB ID to mt76x2u driver.
 
-Fixes initialization of VRS Direct Force Pro
-
-Changes in v6:
-- Change quirk name to better reflect it's intention
-
-Co-developed-by: Makarenko Oleg <oleg@makarenk.ooo>
-Signed-off-by: Makarenko Oleg <oleg@makarenk.ooo>
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
+Link: https://patch.msgid.link/20250317102235.1421726-1-uwu@icenowy.me
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 3 ++-
- include/linux/hid.h            | 5 +++--
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index 503b22feacdbb..5a57ba0d7026a 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -969,7 +969,8 @@ static int pidff_find_special_fields(struct pidff_device *pidff)
- 					 0x57, 0);
- 	pidff->device_control =
- 		pidff_find_special_field(pidff->reports[PID_DEVICE_CONTROL],
--					 0x96, 1);
-+			0x96, !(pidff->quirks & HID_PIDFF_QUIRK_PERMISSIVE_CONTROL));
-+
- 	pidff->block_load_status =
- 		pidff_find_special_field(pidff->reports[PID_BLOCK_LOAD],
- 					 0x8b, 1);
-diff --git a/include/linux/hid.h b/include/linux/hid.h
-index 088c6688c3f98..cd3fedce48109 100644
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -1228,8 +1228,9 @@ int hid_pidff_init(struct hid_device *hid);
- #endif
- 
- /* HID PIDFF quirks */
--#define HID_PIDFF_QUIRK_MISSING_DELAY	BIT(0)
--#define HID_PIDFF_QUIRK_MISSING_PBO	BIT(1)
-+#define HID_PIDFF_QUIRK_MISSING_DELAY		BIT(0)
-+#define HID_PIDFF_QUIRK_MISSING_PBO		BIT(1)
-+#define HID_PIDFF_QUIRK_PERMISSIVE_CONTROL	BIT(2)
- 
- #define dbg_hid(fmt, ...) pr_debug("%s: " fmt, __FILE__, ##__VA_ARGS__)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+index e832ad53e2393..a4f4d12f904e7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+@@ -22,6 +22,7 @@ static const struct usb_device_id mt76x2u_device_table[] = {
+ 	{ USB_DEVICE(0x0846, 0x9053) },	/* Netgear A6210 */
+ 	{ USB_DEVICE(0x045e, 0x02e6) },	/* XBox One Wireless Adapter */
+ 	{ USB_DEVICE(0x045e, 0x02fe) },	/* XBox One Wireless Adapter */
++	{ USB_DEVICE(0x2357, 0x0137) },	/* TP-Link TL-WDN6200 */
+ 	{ },
+ };
  
 -- 
 2.39.5
