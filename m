@@ -1,72 +1,57 @@
-Return-Path: <stable+bounces-134001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AC19A928E0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:38:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35C05A92AAF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:53:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C0444A3CE4
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC1294A6B17
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:53:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0056263C92;
-	Thu, 17 Apr 2025 18:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992772571BE;
+	Thu, 17 Apr 2025 18:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nR5LrZEV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgWkljCJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5EA263C6C;
-	Thu, 17 Apr 2025 18:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F332571BC;
+	Thu, 17 Apr 2025 18:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914795; cv=none; b=ifZBlTLZealjL57FLnWzKRGzSw7G0xaK35FGguzgd2iBNbrQ2b/9j3zbmHzJLCv2sFAxmbDF3+s5FSW9/qexI8uWazCRSrBEf5CxWcTUprw/YWaKhCMjrHOWYpvkqKcYwHDhl1/KFLMa34I8m5STsQuMhaajmC7BKONVJMhuzjU=
+	t=1744915916; cv=none; b=lLxlh9EXugIVm16CZCml8J4MZ9ZiXeWvJwdCDlAMf8y8a5iPUS+X9fh3z7tyZtBjDWcCsBSAojwRVF8q73ZJ7jxmc6CeltGbzzL3bjLXzNtBdoPQyEUBQocXh/mtHJLT46tfFODyV4t/skPEJkDFFWPL6Gn+qamzfO8YZrmqJxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914795; c=relaxed/simple;
-	bh=YjYImiMEN0Nnpnrh+xMjGEpDCdy6ShSTTPuteyfzKak=;
+	s=arc-20240116; t=1744915916; c=relaxed/simple;
+	bh=k18rZBxia7UC/RFuwGNmWHRIa2Fdpqt2fdwn2tJpJvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AOh47MdHAR0H7YLQyvbiY2YSySXHPq3UtLwHxQv6lB0488Ij1pj7kDK+qUq43oWMDsSF61MTFU5Ro0I75qpqjC9rcUhN93F8YHPwE2rJQzIrzYLQRDL9lsbidVkq5DkHRe9EBl91hTtHmtMk7y4C50RHaDQ+mH0GDVUZTxHWazY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nR5LrZEV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B694C4CEE4;
-	Thu, 17 Apr 2025 18:33:13 +0000 (UTC)
+	 MIME-Version; b=gXXdxVWd6xAW1PJFdSCo+IcnZzJYyovWH9LpmCTdMrHQEav/e1d0VDGC0mdpL+eke7w6ZvRcPBijMf2tposJn9dB5DYOMtmVP9T4J6fSdPs68o8tHaZBLGWqVpes9jwIQ2yS0Gjm70Eo3I/HBUbqj8KXOQId85AfeQOTCL2yRRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XgWkljCJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A8FC4CEE4;
+	Thu, 17 Apr 2025 18:51:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914793;
-	bh=YjYImiMEN0Nnpnrh+xMjGEpDCdy6ShSTTPuteyfzKak=;
+	s=korg; t=1744915916;
+	bh=k18rZBxia7UC/RFuwGNmWHRIa2Fdpqt2fdwn2tJpJvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nR5LrZEVm2bMcoaCFiCpV6nln/bYO0dTI1vta5zn3lbQ7MymgD1Ycs165TS2vllEJ
-	 4PZynf/lpa6ZSnATci1e37spVJzW62froVBj/UlyylpanoS0RMClyT4yMDBepnQsta
-	 sXQ8vWCGCVEKhPspOYJRFzLt6SbO0jvxNsj/nO/4=
+	b=XgWkljCJ5RbwsfVDrnnemc+v4SlkiPjT+RyzWJeNoeOL3ZEz/w32c0cZyEzxukU8A
+	 UBbBMXid4fHqF9ewBjVdL64Elp6H5w/Q7hXeG+uJIIVqUJ6bXN38oeEUn0NWCYYhq8
+	 vShJohsUFJhDTW0y9gQa/ynTuz5/6gpnzos/TxF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Borislav Betkov <bp@alien8.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jane Chu <jane.chu@oracle.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ruidong Tian <tianruidong@linux.alibaba.com>,
-	Thomas Gleinxer <tglx@linutronix.de>,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.13 332/414] mm/hwpoison: do not send SIGBUS to processes with recovered clean pages
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 281/393] mptcp: only inc MPJoinAckHMacFailure for HMAC failures
 Date: Thu, 17 Apr 2025 19:51:30 +0200
-Message-ID: <20250417175124.783197420@linuxfoundation.org>
+Message-ID: <20250417175118.908594908@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,142 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Xue <xueshuai@linux.alibaba.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit aaf99ac2ceb7c974f758a635723eeaf48596388e upstream.
+commit 21c02e8272bc95ba0dd44943665c669029b42760 upstream.
 
-When an uncorrected memory error is consumed there is a race between the
-CMCI from the memory controller reporting an uncorrected error with a UCNA
-signature, and the core reporting and SRAR signature machine check when
-the data is about to be consumed.
+Recently, during a debugging session using local MPTCP connections, I
+noticed MPJoinAckHMacFailure was not zero on the server side. The
+counter was in fact incremented when the PM rejected new subflows,
+because the 'subflow' limit was reached.
 
-- Background: why *UN*corrected errors tied to *C*MCI in Intel platform [1]
+The fix is easy, simply dissociating the two cases: only the HMAC
+validation check should increase MPTCP_MIB_JOINACKMAC counter.
 
-Prior to Icelake memory controllers reported patrol scrub events that
-detected a previously unseen uncorrected error in memory by signaling a
-broadcast machine check with an SRAO (Software Recoverable Action
-Optional) signature in the machine check bank.  This was overkill because
-it's not an urgent problem that no core is on the verge of consuming that
-bad data.  It's also found that multi SRAO UCE may cause nested MCE
-interrupts and finally become an IERR.
-
-Hence, Intel downgrades the machine check bank signature of patrol scrub
-from SRAO to UCNA (Uncorrected, No Action required), and signal changed to
-#CMCI.  Just to add to the confusion, Linux does take an action (in
-uc_decode_notifier()) to try to offline the page despite the UC*NA*
-signature name.
-
-- Background: why #CMCI and #MCE race when poison is consuming in Intel platform [1]
-
-Having decided that CMCI/UCNA is the best action for patrol scrub errors,
-the memory controller uses it for reads too.  But the memory controller is
-executing asynchronously from the core, and can't tell the difference
-between a "real" read and a speculative read.  So it will do CMCI/UCNA if
-an error is found in any read.
-
-Thus:
-
-1) Core is clever and thinks address A is needed soon, issues a speculative read.
-2) Core finds it is going to use address A soon after sending the read request
-3) The CMCI from the memory controller is in a race with MCE from the core
-   that will soon try to retire the load from address A.
-
-Quite often (because speculation has got better) the CMCI from the memory
-controller is delivered before the core is committed to the instruction
-reading address A, so the interrupt is taken, and Linux offlines the page
-(marking it as poison).
-
-- Why user process is killed for instr case
-
-Commit 046545a661af ("mm/hwpoison: fix error page recovered but reported
-"not recovered"") tries to fix noise message "Memory error not recovered"
-and skips duplicate SIGBUSs due to the race.  But it also introduced a bug
-that kill_accessing_process() return -EHWPOISON for instr case, as result,
-kill_me_maybe() send a SIGBUS to user process.
-
-If the CMCI wins that race, the page is marked poisoned when
-uc_decode_notifier() calls memory_failure().  For dirty pages,
-memory_failure() invokes try_to_unmap() with the TTU_HWPOISON flag,
-converting the PTE to a hwpoison entry.  As a result,
-kill_accessing_process():
-
-- call walk_page_range() and return 1 regardless of whether
-  try_to_unmap() succeeds or fails,
-- call kill_proc() to make sure a SIGBUS is sent
-- return -EHWPOISON to indicate that SIGBUS is already sent to the
-  process and kill_me_maybe() doesn't have to send it again.
-
-However, for clean pages, the TTU_HWPOISON flag is cleared, leaving the
-PTE unchanged and not converted to a hwpoison entry.  Conversely, for
-clean pages where PTE entries are not marked as hwpoison,
-kill_accessing_process() returns -EFAULT, causing kill_me_maybe() to send
-a SIGBUS.
-
-Console log looks like this:
-
-    Memory failure: 0x827ca68: corrupted page was clean: dropped without side effects
-    Memory failure: 0x827ca68: recovery action for clean LRU page: Recovered
-    Memory failure: 0x827ca68: already hardware poisoned
-    mce: Memory error not recovered
-
-To fix it, return 0 for "corrupted page was clean", preventing an
-unnecessary SIGBUS to user process.
-
-[1] https://lore.kernel.org/lkml/20250217063335.22257-1-xueshuai@linux.alibaba.com/T/#mba94f1305b3009dd340ce4114d3221fe810d1871
-Link: https://lkml.kernel.org/r/20250312112852.82415-3-xueshuai@linux.alibaba.com
-Fixes: 046545a661af ("mm/hwpoison: fix error page recovered but reported "not recovered"")
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Tested-by: Tony Luck <tony.luck@intel.com>
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Borislav Betkov <bp@alien8.de>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jane Chu <jane.chu@oracle.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ruidong Tian <tianruidong@linux.alibaba.com>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: Yazen Ghannam <yazen.ghannam@amd.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 4cf8b7e48a09 ("subflow: introduce and use mptcp_can_accept_new_subflow()")
+Cc: stable@vger.kernel.org
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250407-net-mptcp-hmac-failure-mib-v1-1-3c9ecd0a3a50@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory-failure.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ net/mptcp/subflow.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -881,12 +881,17 @@ static int kill_accessing_process(struct
- 	mmap_read_lock(p->mm);
- 	ret = walk_page_range(p->mm, 0, TASK_SIZE, &hwpoison_walk_ops,
- 			      (void *)&priv);
-+	/*
-+	 * ret = 1 when CMCI wins, regardless of whether try_to_unmap()
-+	 * succeeds or fails, then kill the process with SIGBUS.
-+	 * ret = 0 when poison page is a clean page and it's dropped, no
-+	 * SIGBUS is needed.
-+	 */
- 	if (ret == 1 && priv.tk.addr)
- 		kill_proc(&priv.tk, pfn, flags);
--	else
--		ret = 0;
- 	mmap_read_unlock(p->mm);
--	return ret > 0 ? -EHWPOISON : -EFAULT;
-+
-+	return ret > 0 ? -EHWPOISON : 0;
- }
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -902,12 +902,16 @@ create_child:
+ 				goto dispose_child;
+ 			}
  
- /*
+-			if (!subflow_hmac_valid(req, &mp_opt) ||
+-			    !mptcp_can_accept_new_subflow(subflow_req->msk)) {
++			if (!subflow_hmac_valid(req, &mp_opt)) {
+ 				SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
+ 				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
+ 				goto dispose_child;
+ 			}
++
++			if (!mptcp_can_accept_new_subflow(owner)) {
++				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
++				goto dispose_child;
++			}
+ 
+ 			/* move the msk reference ownership to the subflow */
+ 			subflow_req->msk = NULL;
 
 
 
