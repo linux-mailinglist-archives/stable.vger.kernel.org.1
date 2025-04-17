@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-133865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAD33A9281D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:31:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1171A92606
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:09:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4724A3AB3FD
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6060189DF6B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F4F2620CE;
-	Thu, 17 Apr 2025 18:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC39C2566D2;
+	Thu, 17 Apr 2025 18:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6rkrib+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n/zbLkOE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EB02620C9;
-	Thu, 17 Apr 2025 18:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A28918C034;
+	Thu, 17 Apr 2025 18:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914381; cv=none; b=rW3sZ1Fs6dpxrRT6Fi2Zmc0n2bR1WznsBXLJ6AZ/a3ifN7H9keHg2jUgyVvWr2Fl1KfbgETgd0iBNvtoz3gTblnVtPz8VjeiCu4LRvlfWExv1LsDUArA8y8GO9VptLQDlE5GlnuRdXlC9FpCp3UiRT8VrJ+IEg4vnmIdfvcolRU=
+	t=1744913310; cv=none; b=NCHGHmmw78/l/d9fsRA5XmlVQI1KQHxHFs0bm3BZffwovNAdDs3BgboWJaxMFqrfNkIhzqcU4UvhDUC2Q9ZvjNTCsQ6p0UE4v+i3Iw66EzqHSSFLvxZvulOIQoyWQjUTmAdN0Yl46npkJhZB5vj0VDGVd1S57q8NsttRl1OT38Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914381; c=relaxed/simple;
-	bh=EJOOdHBhz4hjLRwTje9Ru1ApcXS3rOYu1YWowPuxfgE=;
+	s=arc-20240116; t=1744913310; c=relaxed/simple;
+	bh=BxyCtRKanjlTFRukLnfko1YJNJV3mOQyCMe/Vrc/i1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pOI061DUite0dg8342TnNBaMHdhcy98B/hS93LXgjjBdfIi5VpHkCNlal01uS61fBJqdKmHMY62SfhEbOqOC9JnImoh/9m27hi5OlskEnDaEZUAk4w7OQ5SpDFIaQzprQa9qckvMEY5JbbTOWOOj1dM7Wibe53eSsFId8mpPWcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6rkrib+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3498DC4CEE7;
-	Thu, 17 Apr 2025 18:26:21 +0000 (UTC)
+	 MIME-Version; b=C1+AG5XoMza5qYduL7eT2mfv8599jLduCr7FR/cQB4tlV0tHb2+sxEx03iGOHo3h59bOB4/UtEL+qi6Edjwi/jqXzkgsG9vP+2k+k0Kcj27U+WZOeTMuHvVQFq7rJBBu1upVmwyAvahHO/HAbgRjNhRLJGZrfN32IvR7VQlTUtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n/zbLkOE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF4EC4CEE4;
+	Thu, 17 Apr 2025 18:08:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914381;
-	bh=EJOOdHBhz4hjLRwTje9Ru1ApcXS3rOYu1YWowPuxfgE=;
+	s=korg; t=1744913310;
+	bh=BxyCtRKanjlTFRukLnfko1YJNJV3mOQyCMe/Vrc/i1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y6rkrib+Jt1/29GDDb0dXU+EWTOO9mud8AoEd2536F5sUAHRt5kG7ejYgd0h5/SHL
-	 DZ30Y/JYktHLendvjfMiIYupyh8oTOsz/cSKcyjFt1qLyWu+DeUz+okIrzv1sx40ad
-	 5fze2GlQ5T/oJ/R/aNSpS2b+b7SYMBTpSzZMCUE0=
+	b=n/zbLkOEVb5m5za5JR7NpqwVRBmf9quA8lFV0QDwnxIE1E8c06xHzzza5gOqPuVFN
+	 asvf2GKO68Ppjb+oymMLvYDZgFXzpF0GXKB4zqYqqbSGQKN6Mfjg2OwJpvNKipLPRZ
+	 L+0xPHKoZTWXBUY9gWM49kfHJzYhqQurxzxKQLx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
+	"Jackson.lee" <jackson.lee@chipsnmedia.com>,
+	Nas Chung <nas.chung@chipsnmedia.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.13 196/414] dt-bindings: media: st,stmipid02: correct lane-polarities maxItems
+Subject: [PATCH 6.14 266/449] media: chips-media: wave5: Fix timeout while testing 10bit hevc fluster
 Date: Thu, 17 Apr 2025 19:49:14 +0200
-Message-ID: <20250417175119.326024666@linuxfoundation.org>
+Message-ID: <20250417175128.731380081@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alain Volmat <alain.volmat@foss.st.com>
+From: Jackson.lee <jackson.lee@chipsnmedia.com>
 
-commit 3a544a39e0a4c492e3026dfbed018321d2bd6caa upstream.
+commit 035371c9e5098018b8512efc6a8812912469480c upstream.
 
-The MIPID02 can use up to 2 data lanes which leads to having a maximum
-item number of 3 for the lane-polarities since this also contains the
-clock lane.
+The Wave5 521C variant does not support 10 bit decoding. When 10 bit
+decoding support was added for the 515 variant, a section of the code
+was removed which returned an error. This removal causes a timeout for
+the 521 variant, which was discovered during HEVC 10-bit decoding tests.
 
-CC: stable@vger.kernel.org
-Fixes: c2741cbe7f8a ("dt-bindings: media: st,stmipid02: Convert the text bindings to YAML")
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Fixes: 143e7ab4d9a0 ("media: chips-media: wave5: support decoding HEVC Main10 profile")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jackson.lee <jackson.lee@chipsnmedia.com>
+Signed-off-by: Nas Chung <nas.chung@chipsnmedia.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/media/i2c/st,st-mipid02.yaml |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/Documentation/devicetree/bindings/media/i2c/st,st-mipid02.yaml
-+++ b/Documentation/devicetree/bindings/media/i2c/st,st-mipid02.yaml
-@@ -71,7 +71,7 @@ properties:
-                 description:
-                   Any lane can be inverted or not.
-                 minItems: 1
--                maxItems: 2
-+                maxItems: 3
- 
-             required:
-               - data-lanes
+--- a/drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c
++++ b/drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c
+@@ -1345,10 +1345,24 @@ static int wave5_vpu_dec_start_streaming
+ 		if (ret)
+ 			goto free_bitstream_vbuf;
+ 	} else if (q->type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE) {
++		struct dec_initial_info *initial_info =
++			&inst->codec_info->dec_info.initial_info;
++
+ 		if (inst->state == VPU_INST_STATE_STOP)
+ 			ret = switch_state(inst, VPU_INST_STATE_INIT_SEQ);
+ 		if (ret)
+ 			goto return_buffers;
++
++		if (inst->state == VPU_INST_STATE_INIT_SEQ &&
++		    inst->dev->product_code == WAVE521C_CODE) {
++			if (initial_info->luma_bitdepth != 8) {
++				dev_info(inst->dev->dev, "%s: no support for %d bit depth",
++					 __func__, initial_info->luma_bitdepth);
++				ret = -EINVAL;
++				goto return_buffers;
++			}
++		}
++
+ 	}
+ 	pm_runtime_mark_last_busy(inst->dev->dev);
+ 	pm_runtime_put_autosuspend(inst->dev->dev);
 
 
 
