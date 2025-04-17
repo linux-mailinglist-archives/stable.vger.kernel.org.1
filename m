@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-134452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 181BCA92B1E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:57:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AA6DA92B28
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:58:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C88214C02CF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:56:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DCE31888CAC
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:56:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966D7257437;
-	Thu, 17 Apr 2025 18:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77CD52566DF;
+	Thu, 17 Apr 2025 18:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bc89yfiO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iXO5dyBQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5516C254B1F;
-	Thu, 17 Apr 2025 18:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3456E250C15;
+	Thu, 17 Apr 2025 18:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916168; cv=none; b=aaZ9Agwj1b/N5QR0GJrXtCykmCrkrCiIXzVqA1jUTJPaJZ8AWq5PVrOaIKmv3Oj9cbkIRTlawS2OXNrsP5+LLQgpuIJ+xRHLOOUVzfu8g/bedDG0lZ+QdwFPbqfHCnr/ktsZ1WIYGBlfgLp5wR8egk0JHge3WoFLxLmf+RKfzHY=
+	t=1744916174; cv=none; b=KpbdYciA5fGtM8SP3rI85KbeKFrzbtQvkUlJJx6pgBtCyuPBMLkbG6HwYGSIjNB2cdqk1HSlK91IhkZhnCjM0uvfEyXOY2hYSgGpIMBeF+ZXXvpMkN5x6HTJ3eR5NFwPPD1e0ehe34VupYOhWu4xOBzNm/90nOW21Pdpdqzo3tQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916168; c=relaxed/simple;
-	bh=P6LcDrEvwwZvK7tDoJ3QxATENxUovHpoZLk6wdGxdEk=;
+	s=arc-20240116; t=1744916174; c=relaxed/simple;
+	bh=NWsMOZT17UhHO4WJ1HH4mj4kb4NPlmzyqPCoJMYvDIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JGswqaGJQ2ek5IOvtRswup7mmR9QlBAI55ZoiokonAs8G71nDsQQAUoURfBUjFgxnkiI4v0a2vs4IDlxs96FukmvGCMIaURe9+1Jz+yD+Z0R1BxUGzELQ0XwNEIhWeGqNlVuDwV0VWceqtR0f22PGuc8Iy0IvQ46Z1gKzqkBhtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bc89yfiO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD711C4CEEA;
-	Thu, 17 Apr 2025 18:56:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hideXdjPunBD26CdseG/PlyBTVKeMlKDIdwu5WJ3+lDVjjY2gMaKCC5Frwwd67+6iABqqPbkQygYrvlpUx1UbhcyMxOaJk7KhaKxnUZNxGzrJMiUqcdTNaZ9y+WHaXkg1MiwuTcSLGB4+58ExAZ5xzcg2yVmXbv6cE9ngMyXYWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iXO5dyBQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 934C9C4CEE7;
+	Thu, 17 Apr 2025 18:56:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916168;
-	bh=P6LcDrEvwwZvK7tDoJ3QxATENxUovHpoZLk6wdGxdEk=;
+	s=korg; t=1744916174;
+	bh=NWsMOZT17UhHO4WJ1HH4mj4kb4NPlmzyqPCoJMYvDIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bc89yfiOuMtH+jyFGPoAvH6sWcnTJT59pWuouUAbQoFOmcSqLKRjC8Z8OJXu/Ju2Y
-	 bVz+IsVzLmnAxlv4u/AyPZcwJlJRlk3QBybbxqrj2XvoqmjoAe2Cz9c8wRVgd7Yrwh
-	 MVNQkLSNHYL5tACOSn2r7m8FR5V9GgjPZ08WkiNE=
+	b=iXO5dyBQ2EpllOmZDfd07txp0VLd1qHBCsFqZa+aeLh/bhMEf9UhuhJNC333Rox6+
+	 4r6HIbfzu/aL511QT+CPO8blyCflKzBUlHJBB1eli1VnAJsmMamajxp1i+ij49d1fb
+	 42P8+sBIIp0V299a3yqANL1D54CuoWefVe9vhiDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.12 366/393] PCI: Fix reference leak in pci_register_host_bridge()
-Date: Thu, 17 Apr 2025 19:52:55 +0200
-Message-ID: <20250417175122.324751526@linuxfoundation.org>
+	Philipp Stanner <phasta@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 6.12 367/393] PCI: Fix wrong length of devres array
+Date: Thu, 17 Apr 2025 19:52:56 +0200
+Message-ID: <20250417175122.364214374@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
 References: <20250417175107.546547190@linuxfoundation.org>
@@ -59,69 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Philipp Stanner <phasta@kernel.org>
 
-commit 804443c1f27883926de94c849d91f5b7d7d696e9 upstream.
+commit f09d3937d400433080d17982bd1a540da53a156d upstream.
 
-If device_register() fails, call put_device() to give up the reference to
-avoid a memory leak, per the comment at device_register().
+The array for the iomapping cookie addresses has a length of
+PCI_STD_NUM_BARS. This constant, however, only describes standard BARs;
+while PCI can allow for additional, special BARs.
 
-Found by code review.
+The total number of PCI resources is described by constant
+PCI_NUM_RESOURCES, which is also used in, e.g., pci_select_bars().
 
-Link: https://lore.kernel.org/r/20250225021440.3130264-1-make24@iscas.ac.cn
-Fixes: 37d6a0a6f470 ("PCI: Add pci_register_host_bridge() interface")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-[bhelgaas: squash Dan Carpenter's double free fix from
-https://lore.kernel.org/r/db806a6c-a91b-4e5a-a84b-6b7e01bdac85@stanley.mountain]
+Thus, the devres array has so far been too small.
+
+Change the length of the devres array to PCI_NUM_RESOURCES.
+
+Link: https://lore.kernel.org/r/20250312080634.13731-3-phasta@kernel.org
+Fixes: bbaff68bf4a4 ("PCI: Add managed partial-BAR request and map infrastructure")
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Cc: stable@vger.kernel.org	# v6.11+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/probe.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/pci/devres.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -908,6 +908,7 @@ static int pci_register_host_bridge(stru
- 	resource_size_t offset, next_offset;
- 	LIST_HEAD(resources);
- 	struct resource *res, *next_res;
-+	bool bus_registered = false;
- 	char addr[64], *fmt;
- 	const char *name;
- 	int err;
-@@ -971,6 +972,7 @@ static int pci_register_host_bridge(stru
- 	name = dev_name(&bus->dev);
+--- a/drivers/pci/devres.c
++++ b/drivers/pci/devres.c
+@@ -40,7 +40,7 @@
+  * Legacy struct storing addresses to whole mapped BARs.
+  */
+ struct pcim_iomap_devres {
+-	void __iomem *table[PCI_STD_NUM_BARS];
++	void __iomem *table[PCI_NUM_RESOURCES];
+ };
  
- 	err = device_register(&bus->dev);
-+	bus_registered = true;
- 	if (err)
- 		goto unregister;
- 
-@@ -1057,12 +1059,15 @@ static int pci_register_host_bridge(stru
- unregister:
- 	put_device(&bridge->dev);
- 	device_del(&bridge->dev);
--
- free:
- #ifdef CONFIG_PCI_DOMAINS_GENERIC
- 	pci_bus_release_domain_nr(parent, bus->domain_nr);
- #endif
--	kfree(bus);
-+	if (bus_registered)
-+		put_device(&bus->dev);
-+	else
-+		kfree(bus);
-+
- 	return err;
- }
- 
+ /* Used to restore the old INTx state on driver detach. */
 
 
 
