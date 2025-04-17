@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-133655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15AB5A926AF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:15:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF147A92AED
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3508A4A0B0D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:15:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16F761B6544C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:55:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C6E1DEFD4;
-	Thu, 17 Apr 2025 18:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4BA2571C4;
+	Thu, 17 Apr 2025 18:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSoT+s70"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGiXjXmh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D3E8462;
-	Thu, 17 Apr 2025 18:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981261B3934;
+	Thu, 17 Apr 2025 18:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913736; cv=none; b=lJI76JKmOuVn8nFB8F14N4/Rkg+0oOZS0zC9vCk9nr3SeSZry0suY+dZ+qecwu5RoHycHpR6Q1+6p8NqSoh5ADfNTIJgf3+SkbSM1CA+9FlNTZlRwQCzKpv9+pcRquDpPOSIhTgErh+CpxcFWbnqbgjM7fqshlCm2rkLA0iS4Bs=
+	t=1744916041; cv=none; b=GNzJrJWAp256J5EjArLaFfqGeOUZiNnhjuoMjqk5OmWQoo8p2fwL6CGS7m0omv5S9KViiRKmIFtdTcYloYzJNgNQNWEpXxs1vuYvljpPnWoa7ubgprBDezHrVvxPyxX1m8g68xqIXxF2z5jPyFTWeAy7/fdu98FeU8kAtYn9XBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913736; c=relaxed/simple;
-	bh=tRlHhLV3G3YKdW8ocoDPxFvfYgKe89p1jyvnFVFEcGk=;
+	s=arc-20240116; t=1744916041; c=relaxed/simple;
+	bh=hfewDnHMuZ0/w0jPqnEd7qUS2nA1eLevEFzaFnUkJPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SYOPtr8S96bMEd1gnM9H8sv4+ww2gL9BukeL8xqKqRSH4fYKUz2a/hb+WuVxzx96BKeszJI5CWQdNBQ5xcyyJW9MQ7bdYB7psT12sLuvbLosC3l8IuGPOXPqZq+j1iAcbclE2nBUazov6RldPR4ccmD+N8utcPJak+b3vuoi1fQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSoT+s70; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0C8C4CEE4;
-	Thu, 17 Apr 2025 18:15:35 +0000 (UTC)
+	 MIME-Version; b=C6zGUg2x0G+JGXsm03Uj+++EA4d97Z4kh7SV+6oAoMxbFhIsVOguVwJT2ckI9xk6+1YFhXbhY8DVQrRhC0UsiEcKb7oConM/xcOr/IHe2vuzzbzr+Geau1YG73UBhbIs+xczzZUw/wWguQxKE1kwd+7apA7VirHGRmFBD3oxwDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGiXjXmh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 717B9C4CEE4;
+	Thu, 17 Apr 2025 18:54:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913736;
-	bh=tRlHhLV3G3YKdW8ocoDPxFvfYgKe89p1jyvnFVFEcGk=;
+	s=korg; t=1744916041;
+	bh=hfewDnHMuZ0/w0jPqnEd7qUS2nA1eLevEFzaFnUkJPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VSoT+s70Gx05J2Ab8wN3Wi5S6qa51omv6vzsk1HcKKPPsAyeh8J4foqPrmewxgq8U
-	 i33DI2F91DofV2wheQPLXje80vUji1LJxgvYdh56tX8UDlx9WkihWZluAe5k4fd98h
-	 Zp9x1a3apx5vmBaaCSZZkRxPDmQjGI841WTWFIOE=
+	b=NGiXjXmhgQDqhLm7uoLar5cOjp9UOOk9VbApsKCRdqujpd+MsPtLbxsR12fzJkoX4
+	 cj7cbx5yoJD1vP12O3J3ctCCxYEzZ0cV5EQls+Hyb8WRQbjBODPwW0yGQBvPqFLhgz
+	 6uwwvCb4CjCM44qGC2ZVa2UXT2eZ1zWyMNXUi6Eo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jake Hillion <jake@hillion.co.uk>,
-	Andrea Righi <arighi@nvidia.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.14 437/449] sched_ext: create_dsq: Return -EEXIST on duplicate request
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Tom Zanussi <zanussi@kernel.org>,
+	Douglas Raillard <douglas.raillard@arm.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 316/393] tracing: Do not add length to print format in synthetic events
 Date: Thu, 17 Apr 2025 19:52:05 +0200
-Message-ID: <20250417175135.903173358@linuxfoundation.org>
+Message-ID: <20250417175120.317134708@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jake Hillion <jake@hillion.co.uk>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit a8897ed8523d4c9d782e282b18005a3779c92714 upstream.
+commit e1a453a57bc76be678bd746f84e3d73f378a9511 upstream.
 
-create_dsq and therefore the scx_bpf_create_dsq kfunc currently silently
-ignore duplicate entries. As a sched_ext scheduler is creating each DSQ
-for a different purpose this is surprising behaviour.
+The following causes a vsnprintf fault:
 
-Replace rhashtable_insert_fast which ignores duplicates with
-rhashtable_lookup_insert_fast that reports duplicates (though doesn't
-return their value). The rest of the code is structured correctly and
-this now returns -EEXIST.
+  # echo 's:wake_lat char[] wakee; u64 delta;' >> /sys/kernel/tracing/dynamic_events
+  # echo 'hist:keys=pid:ts=common_timestamp.usecs if !(common_flags & 0x18)' > /sys/kernel/tracing/events/sched/sched_waking/trigger
+  # echo 'hist:keys=next_pid:delta=common_timestamp.usecs-$ts:onmatch(sched.sched_waking).trace(wake_lat,next_comm,$delta)' > /sys/kernel/tracing/events/sched/sched_switch/trigger
 
-Tested by adding an extra scx_bpf_create_dsq to scx_simple. Previously
-this was ignored, now init fails with a -17 code. Also ran scx_lavd
-which continued to work well.
+Because the synthetic event's "wakee" field is created as a dynamic string
+(even though the string copied is not). The print format to print the
+dynamic string changed from "%*s" to "%s" because another location
+(__set_synth_event_print_fmt()) exported this to user space, and user
+space did not need that. But it is still used in print_synth_event(), and
+the output looks like:
 
-Signed-off-by: Jake Hillion <jake@hillion.co.uk>
-Acked-by: Andrea Righi <arighi@nvidia.com>
-Fixes: f0e1a0643a59 ("sched_ext: Implement BPF extensible scheduler class")
-Cc: stable@vger.kernel.org # v6.12+
-Signed-off-by: Tejun Heo <tj@kernel.org>
+          <idle>-0       [001] d..5.   193.428167: wake_lat: wakee=(efault)sshd-sessiondelta=155
+    sshd-session-879     [001] d..5.   193.811080: wake_lat: wakee=(efault)kworker/u34:5delta=58
+          <idle>-0       [002] d..5.   193.811198: wake_lat: wakee=(efault)bashdelta=91
+            bash-880     [002] d..5.   193.811371: wake_lat: wakee=(efault)kworker/u35:2delta=21
+          <idle>-0       [001] d..5.   193.811516: wake_lat: wakee=(efault)sshd-sessiondelta=129
+    sshd-session-879     [001] d..5.   193.967576: wake_lat: wakee=(efault)kworker/u34:5delta=50
+
+The length isn't needed as the string is always nul terminated. Just print
+the string and not add the length (which was hard coded to the max string
+length anyway).
+
+Cc: stable@vger.kernel.org
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Tom Zanussi <zanussi@kernel.org>
+Cc: Douglas Raillard <douglas.raillard@arm.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Link: https://lore.kernel.org/20250407154139.69955768@gandalf.local.home
+Fixes: 4d38328eb442d ("tracing: Fix synth event printk format for str fields");
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/trace/trace_events_synth.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -4523,8 +4523,8 @@ static struct scx_dispatch_q *create_dsq
+--- a/kernel/trace/trace_events_synth.c
++++ b/kernel/trace/trace_events_synth.c
+@@ -377,7 +377,6 @@ static enum print_line_t print_synth_eve
+ 				union trace_synth_field *data = &entry->fields[n_u64];
  
- 	init_dsq(dsq, dsq_id);
- 
--	ret = rhashtable_insert_fast(&dsq_hash, &dsq->hash_node,
--				     dsq_hash_params);
-+	ret = rhashtable_lookup_insert_fast(&dsq_hash, &dsq->hash_node,
-+					    dsq_hash_params);
- 	if (ret) {
- 		kfree(dsq);
- 		return ERR_PTR(ret);
+ 				trace_seq_printf(s, print_fmt, se->fields[i]->name,
+-						 STR_VAR_LEN_MAX,
+ 						 (char *)entry + data->as_dynamic.offset,
+ 						 i == se->n_fields - 1 ? "" : " ");
+ 				n_u64++;
 
 
 
