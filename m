@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-133584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBB99A92647
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:12:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F349FA92ACF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:54:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C12338A5C44
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:11:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ACA48A7C2F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB80622E3E6;
-	Thu, 17 Apr 2025 18:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D3B257AE4;
+	Thu, 17 Apr 2025 18:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j8QWRrRP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wX43ES8+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683B6223710;
-	Thu, 17 Apr 2025 18:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E882566DE;
+	Thu, 17 Apr 2025 18:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913517; cv=none; b=FtFkpDj/icnh5KeGtFMoeyREk6oQhhNmsSB2pput2u4n6zvXYsS4u7GEzSBPK4/PJ6z/iV6w9Ys9MO0eb/dlWlk0a1G2KniPlyj9brN6acYCkEDlXd3BqB4J7ejpBmay/N37R8pyeqGYiEBwwqE9eoV9szKt25gudQq2wKM+FaE=
+	t=1744915807; cv=none; b=GYNo0rT/znsfTngAwQSt5PAhAmpIn5zy3ss06FoC0rcUANBWaPAdHQX5/jIOkIruvzvy7yA9BaBZ17C0e7O2bMsSK393K0YVlaXruQcuXxtVRW0g2OEk2+R3ETS2hF+S/sPGfMUQEg2PsbOVzdZ926q+OG1tBhYYMvmLAUXtcNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913517; c=relaxed/simple;
-	bh=eFYZ97EzyIDwA1UUOUW1Hr//JfE/6+xDSh4+0Hsbwe0=;
+	s=arc-20240116; t=1744915807; c=relaxed/simple;
+	bh=TsKmtBUI8Em/aDBBEIyTtjplMwwVtLu8X9AvKQd0hGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M/sqO5SkskUW2U3OWYuhT0vFFrspUhboWWb+33BnETTHjNYnLeWH/lk9VajG74niNOZs6ZqYKTYP/r3zrTFAdWTi+MqFbNcg0s0c29rSBs2YGy0ancfTejkvxVIoevinsv4V8lpQ1W6+5WpKU48uPJRAUq/OXXrfd217lrCxGxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j8QWRrRP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2880C4CEE4;
-	Thu, 17 Apr 2025 18:11:56 +0000 (UTC)
+	 MIME-Version; b=gmnOKmUJbEImF4DkDMUd/Mw/sfrDRPasS2lBwPDIQ52t4QtEKzUUd9N6ZXPTXf88aR4LdxW2rjUSVe45EhXaw7TKwK90K3iepOrB069b5vR91o+A4i2Mme3ocJAHybbdGOPfk5g3RkX4ZCGqByA39G3SukJ5VgtVds25wkhvROM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wX43ES8+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC0EC4CEE4;
+	Thu, 17 Apr 2025 18:50:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913517;
-	bh=eFYZ97EzyIDwA1UUOUW1Hr//JfE/6+xDSh4+0Hsbwe0=;
+	s=korg; t=1744915807;
+	bh=TsKmtBUI8Em/aDBBEIyTtjplMwwVtLu8X9AvKQd0hGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j8QWRrRPlew5HqYfUMDA6rovP5PkBjRYhNLObdQDW5tT+WDmMMr0tO27NjybNAYej
-	 sigCI4ldsaVBblHknp8wtieNnR8ndZO1gKi1pRI3GZ3N5vc9vQwywF12PGQOYeAeem
-	 u22mHXizz+jru6W/CQYBuTogSDcw7NnAyvK7cNvo=
+	b=wX43ES8+1S3sjLcRthvhrB2tS0l4iCcO5boZ+5Kg1hXWpMQ5qIWqbG/19uHsr2HtU
+	 Jbexf1oW9l1MOej2+s/QAU5chrXeFGMaOoUHq9ur8BD8HxKytdD9o9AlhXoaOc4HRu
+	 Xz03FvT4m+AI4FpKJZyTcaOK7bscKQ12bgx51reI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	David Hildenbrand <david@redhat.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Nanyong Sun <sunnanyong@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.14 366/449] mm/hwpoison: introduce folio_contain_hwpoisoned_page() helper
-Date: Thu, 17 Apr 2025 19:50:54 +0200
-Message-ID: <20250417175132.970733146@linuxfoundation.org>
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 246/393] io_uring/net: fix accept multishot handling
+Date: Thu, 17 Apr 2025 19:50:55 +0200
+Message-ID: <20250417175117.486705946@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,80 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjiang Tu <tujinjiang@huawei.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit 5f5ee52d4f58605330b09851273d6e56aaadd29e upstream.
+commit f6a89bf5278d6e15016a736db67043560d1b50d5 upstream.
 
-Patch series "mm/vmscan: don't try to reclaim hwpoison folio".
+REQ_F_APOLL_MULTISHOT doesn't guarantee it's executed from the multishot
+context, so a multishot accept may get executed inline, fail
+io_req_post_cqe(), and ask the core code to kill the request with
+-ECANCELED by returning IOU_STOP_MULTISHOT even when a socket has been
+accepted and installed.
 
-Fix a bug during memory reclaim if folio is hwpoisoned.
-
-
-This patch (of 2):
-
-Introduce helper folio_contain_hwpoisoned_page() to check if the entire
-folio is hwpoisoned or it contains hwpoisoned pages.
-
-Link: https://lkml.kernel.org/r/20250318083939.987651-1-tujinjiang@huawei.com
-Link: https://lkml.kernel.org/r/20250318083939.987651-2-tujinjiang@huawei.com
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Nanyong Sun <sunnanyong@huawei.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 390ed29b5e425 ("io_uring: add IORING_ACCEPT_MULTISHOT for accept")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/51c6deb01feaa78b08565ca8f24843c017f5bc80.1740331076.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/page-flags.h |    6 ++++++
- mm/memory_hotplug.c        |    3 +--
- mm/shmem.c                 |    3 +--
- 3 files changed, 8 insertions(+), 4 deletions(-)
+ io_uring/net.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -1104,6 +1104,12 @@ static inline bool is_page_hwpoison(cons
- 	return folio_test_hugetlb(folio) && PageHWPoison(&folio->page);
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -1616,6 +1616,8 @@ retry:
+ 	}
+ 
+ 	io_req_set_res(req, ret, cflags);
++	if (!(issue_flags & IO_URING_F_MULTISHOT))
++		return IOU_OK;
+ 	return IOU_STOP_MULTISHOT;
  }
  
-+static inline bool folio_contain_hwpoisoned_page(struct folio *folio)
-+{
-+	return folio_test_hwpoison(folio) ||
-+	    (folio_test_large(folio) && folio_test_has_hwpoisoned(folio));
-+}
-+
- bool is_free_buddy_page(const struct page *page);
- 
- PAGEFLAG(Isolated, isolated, PF_ANY);
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1828,8 +1828,7 @@ static void do_migrate_range(unsigned lo
- 		if (unlikely(page_folio(page) != folio))
- 			goto put_folio;
- 
--		if (folio_test_hwpoison(folio) ||
--		    (folio_test_large(folio) && folio_test_has_hwpoisoned(folio))) {
-+		if (folio_contain_hwpoisoned_page(folio)) {
- 			if (WARN_ON(folio_test_lru(folio)))
- 				folio_isolate_lru(folio);
- 			if (folio_mapped(folio)) {
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -3302,8 +3302,7 @@ shmem_write_begin(struct file *file, str
- 	if (ret)
- 		return ret;
- 
--	if (folio_test_hwpoison(folio) ||
--	    (folio_test_large(folio) && folio_test_has_hwpoisoned(folio))) {
-+	if (folio_contain_hwpoisoned_page(folio)) {
- 		folio_unlock(folio);
- 		folio_put(folio);
- 		return -EIO;
 
 
 
