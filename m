@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-134010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AEACA929AF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:43:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60DF9A926C0
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:16:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 462597B84D2
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE6547A7EF9
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC71A2641F0;
-	Thu, 17 Apr 2025 18:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 263C9253B7B;
+	Thu, 17 Apr 2025 18:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIXwacvT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I5MIqRvX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70FC2641EC;
-	Thu, 17 Apr 2025 18:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76821A3178;
+	Thu, 17 Apr 2025 18:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914821; cv=none; b=k1sFrFLRiZRefe7F8YtqBRphS1MFEm/8XPP2b9XtkYthqTPPH1BlCJNxRumsBr2PuFTPfhiTnazBbbqdfE0qj8af2Wb6jiXG28aPiAAd44TccU5uPVU97vMXWMbxQlofYqCvKypRjWjKvyP1xevpgh7HlUwjCRiFLRi1lzM3PKM=
+	t=1744913572; cv=none; b=EUOsYehkcEsGzEJvA4++N3m7JbCGO6o/AxXPsCINxWhRwLCJpKg19q3dppobzAklrExqdRjeY//MNQdbwLR+GRwvN6yi61qYCooVzKKl/ZaesRe1hu5sY+uF1tRENUn4x3j2dV99uNxPgiosrCIWJP4E4Z6tJdeRJ/CA/DEuUro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914821; c=relaxed/simple;
-	bh=Tdix3TNh8I1qdnZSSuqRSSW0KAJqRt9WqGhOiiuEaGA=;
+	s=arc-20240116; t=1744913572; c=relaxed/simple;
+	bh=vzOJoke5qhsZlrXqF2qZNHyW6gzvv7J1TpKoHHtvvjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m7DNJuPdkU0OVI6lAKqWM3j+EPrgXt/NA9Pn4IDN/P1WkAEGFWtwyTDKVvH8lLlvIRLylTZDNbtPm0hVQPFdHKLpLScOPGvW+kSAJ6sXo4GE92zIQeGQw5lUw2ualYKI20ZgShorxHbuNnVgxuijhIBr4WQpkRGcOOl4FXyRMjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIXwacvT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DAB8C4CEE4;
-	Thu, 17 Apr 2025 18:33:40 +0000 (UTC)
+	 MIME-Version; b=OP8+GnAvRQt+Q+iJTl352LkDXw9XN4XKFuSUszf3E4sh1sAQBVRmz0mspbyotlIUYkTxZ5692WY5pnhHIJn18rB9Tx/HqxbBk6+zlMX7A/ur4/jUof1gOfL86yix4UPf+yL9aU+MWBNRfezxlWIUMvmmDh79Q34zsVxZMZM8jJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I5MIqRvX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48CB1C4CEE4;
+	Thu, 17 Apr 2025 18:12:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914821;
-	bh=Tdix3TNh8I1qdnZSSuqRSSW0KAJqRt9WqGhOiiuEaGA=;
+	s=korg; t=1744913572;
+	bh=vzOJoke5qhsZlrXqF2qZNHyW6gzvv7J1TpKoHHtvvjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AIXwacvTP90SrVoOwEbUAAwiqck0YryqyDBoWXFQ6T8BnbvhAtjWF6DX5ZQh33W/t
-	 tZA37BGZZiX4nm++iQS3HVf3gPT5kWVLjqVwnp+aMwpbDeHMvMmbwjPmYCk6k7mQ6a
-	 DQ8X7IO/qOcBhEx14pN15DCGa1WNmwCKE7sTj22w=
+	b=I5MIqRvXCMl7hQo6CV/Tq3rbNdq1LABIbZs11QB36yw0zo5PuUVZ6ccIHhdDjzN+X
+	 gQHEZPPO2XaXTJjNr3kUMfeG6zDcHM1QoNJKDUHARtt+vXDBKTSUrkzonCJPATvBO+
+	 P9na6AD6O7Ita2khVRYZEU/83vpngHhNpzRSYPyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.13 313/414] btrfs: tests: fix chunk map leak after failure to add it to the tree
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.14 383/449] crypto: ccp - Fix check for the primary ASP device
 Date: Thu, 17 Apr 2025 19:51:11 +0200
-Message-ID: <20250417175124.021405901@linuxfoundation.org>
+Message-ID: <20250417175133.675465904@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Tom Lendacky <thomas.lendacky@amd.com>
 
-commit 009ca358486ded9b4822eddb924009b6848d7271 upstream.
+commit 07bb097b92b987db518e72525b515d77904e966e upstream.
 
-If we fail to add the chunk map to the fs mapping tree we exit
-test_rmap_block() without freeing the chunk map. Fix this by adding a
-call to btrfs_free_chunk_map() before exiting the test function if the
-call to btrfs_add_chunk_map() failed.
+Currently, the ASP primary device check does not have support for PCI
+domains, and, as a result, when the system is configured with PCI domains
+(PCI segments) the wrong device can be selected as primary. This results
+in commands submitted to the device timing out and failing. The device
+check also relies on specific device and function assignments that may
+not hold in the future.
 
-Fixes: 7dc66abb5a47 ("btrfs: use a dedicated data structure for chunk maps")
-CC: stable@vger.kernel.org # 6.12+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fix the primary ASP device check to include support for PCI domains and
+to perform proper checking of the Bus/Device/Function positions.
+
+Fixes: 2a6170dfe755 ("crypto: ccp: Add Platform Security Processor (PSP) device support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tests/extent-map-tests.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/crypto/ccp/sp-pci.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/fs/btrfs/tests/extent-map-tests.c
-+++ b/fs/btrfs/tests/extent-map-tests.c
-@@ -1045,6 +1045,7 @@ static int test_rmap_block(struct btrfs_
- 	ret = btrfs_add_chunk_map(fs_info, map);
- 	if (ret) {
- 		test_err("error adding chunk map to mapping tree");
-+		btrfs_free_chunk_map(map);
- 		goto out_free;
- 	}
+--- a/drivers/crypto/ccp/sp-pci.c
++++ b/drivers/crypto/ccp/sp-pci.c
+@@ -189,14 +189,17 @@ static bool sp_pci_is_master(struct sp_d
+ 	pdev_new = to_pci_dev(dev_new);
+ 	pdev_cur = to_pci_dev(dev_cur);
  
+-	if (pdev_new->bus->number < pdev_cur->bus->number)
+-		return true;
++	if (pci_domain_nr(pdev_new->bus) != pci_domain_nr(pdev_cur->bus))
++		return pci_domain_nr(pdev_new->bus) < pci_domain_nr(pdev_cur->bus);
+ 
+-	if (PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn))
+-		return true;
++	if (pdev_new->bus->number != pdev_cur->bus->number)
++		return pdev_new->bus->number < pdev_cur->bus->number;
+ 
+-	if (PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn))
+-		return true;
++	if (PCI_SLOT(pdev_new->devfn) != PCI_SLOT(pdev_cur->devfn))
++		return PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn);
++
++	if (PCI_FUNC(pdev_new->devfn) != PCI_FUNC(pdev_cur->devfn))
++		return PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn);
+ 
+ 	return false;
+ }
 
 
 
