@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C2FAA92689
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:14:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34B9BA92A20
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 646907B3DFE
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17DD516C3F9
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:46:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47B45223710;
-	Thu, 17 Apr 2025 18:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741881B3934;
+	Thu, 17 Apr 2025 18:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zua61fAI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IV+H2DWu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0762325335A;
-	Thu, 17 Apr 2025 18:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD864502F;
+	Thu, 17 Apr 2025 18:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913412; cv=none; b=Cuk8Wgw7+Sry5OcaweUqNIoove2JVgFU4X1xeNCilg4YBKzC6Y9Y3q3Koa3Pw+qMaIYiO8P1Fhrbo0Y91mt/qsEXFJrzoc2S/mbbddFCPQlu4jxJG8hvJ01xR3FFFJUItCdU4J9kgk8GoBJE5B2YOg8mPpuXJaLgYlEsUsKZLNk=
+	t=1744915604; cv=none; b=Feh44vECJp1NjBpTuVSXbXaoISqjjNBveds6wTqUl/ehgxo9vYUyyEPI1B+YUhoVkWWX4f5sfIOodACcffmhq4EhsQREvD9tS3pR+krKwM76vdbpQhvSbtzW28X9mesxPMLOSdqKIiAPFsulKzedUdY8JB4rMNLMvLwnR7WNo8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913412; c=relaxed/simple;
-	bh=4TQaUCWEFqelSHSj3jsjTXrK+cZBj5v4gj21LhnLHUw=;
+	s=arc-20240116; t=1744915604; c=relaxed/simple;
+	bh=0pCwO20UPCgt1FBzgRHOT8bzn+UGS4iESc2dVY+3vD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o9rSY7VQNk31JHlw6ztdgtO4QhRPcBty2s7wiQPuvq/AHz7DsEdxC2AJ92VEWmRGXIWcpckdlhWyJau76UuYQoBrgjaFdeu5ZLy09+6HUVpbeOUlddvCaq4g+jfiTCRjcxCFyl8vUkVUjTaHtGVUyYxVLb1LKpNTYjmjASGs7bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zua61fAI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86492C4CEE4;
-	Thu, 17 Apr 2025 18:10:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TxFZ0JwO8P2E3BfP9o4cDX9sX+uw8DLeRHIy6cGMC6pBxw8XC/ZHAVXazUIKiKcATwGD2KhwAIvpzIczBowNcVS/XGv08mY/7jQZtbM+kwHrjcYUlRjvznPjfZ2ET9X8/cYstxhS4pabzT/YpMVT0pgV3DL4Xlc+ZkuUyIVHCxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IV+H2DWu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5CE5C4CEE4;
+	Thu, 17 Apr 2025 18:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913411;
-	bh=4TQaUCWEFqelSHSj3jsjTXrK+cZBj5v4gj21LhnLHUw=;
+	s=korg; t=1744915604;
+	bh=0pCwO20UPCgt1FBzgRHOT8bzn+UGS4iESc2dVY+3vD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zua61fAIl4y3KwMjIeQixDR2mfJ2g4XcfIbTnubcgo4DTjzvwg3PFBmKhGbOIs8p2
-	 gL2ZlxMprDfdoOfVQgFzcWrk3OaCyZfksS328FYz8NMvmXVoxco5YLkQZxYDcsych0
-	 yQgGarazNzfntxItje1EeNifiabRIS95pbVfoz5I=
+	b=IV+H2DWumE42NN/Tn/7yZgzBKJto4MCxTeTuCSrTM7nuUJlfioYneeEKNok5D2IYf
+	 F2R2R25GSGkBZHsSJxZVzOwy9gmGNOfttTdbkAk508bFnUirmg7B7T0q1yvCR7JMC3
+	 BpWyXG9ZngIduh3cR8IizEELlf6g7+NAvBK4sMls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Subject: [PATCH 6.14 301/449] accel/ivpu: Fix warning in ivpu_ipc_send_receive_internal()
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 180/393] HID: pidff: Support device error response from PID_BLOCK_LOAD
 Date: Thu, 17 Apr 2025 19:49:49 +0200
-Message-ID: <20250417175130.208237380@linuxfoundation.org>
+Message-ID: <20250417175114.837159757@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-commit 6b4568b675b14cf890c0c21779773c3e08e80ce5 upstream.
+[ Upstream commit 9d4174dc4a234408d91fd83725e1899766cd1731 ]
 
-Warn if device is suspended only when runtime PM is enabled.
-Runtime PM is disabled during reset/recovery and it is not an error
-to use ivpu_ipc_send_receive_internal() in such cases.
+If an error happens on the device, the driver will no longer fall
+into the trap of reading this status 60 times before it decides that
+this reply won't change to success/memory full.
 
-Fixes: 5eaa49741119 ("accel/ivpu: Prevent recovery invocation during probe and resume")
-Cc: stable@vger.kernel.org # v6.13+
-Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Link: https://lore.kernel.org/r/20250325114219.3739951-1-maciej.falkowski@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Greatly reduces communication overhead during device error situation.
+
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_ipc.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hid/usbhid/hid-pidff.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/accel/ivpu/ivpu_ipc.c
-+++ b/drivers/accel/ivpu/ivpu_ipc.c
-@@ -302,7 +302,8 @@ ivpu_ipc_send_receive_internal(struct iv
- 	struct ivpu_ipc_consumer cons;
- 	int ret;
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index e2508a4d754d3..d5734cbf745d1 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -138,7 +138,8 @@ static const u8 pidff_effect_types[] = {
  
--	drm_WARN_ON(&vdev->drm, pm_runtime_status_suspended(vdev->drm.dev));
-+	drm_WARN_ON(&vdev->drm, pm_runtime_status_suspended(vdev->drm.dev) &&
-+		    pm_runtime_enabled(vdev->drm.dev));
+ #define PID_BLOCK_LOAD_SUCCESS	0
+ #define PID_BLOCK_LOAD_FULL	1
+-static const u8 pidff_block_load_status[] = { 0x8c, 0x8d };
++#define PID_BLOCK_LOAD_ERROR	2
++static const u8 pidff_block_load_status[] = { 0x8c, 0x8d, 0x8e};
  
- 	ivpu_ipc_consumer_add(vdev, &cons, channel, NULL);
- 
+ #define PID_EFFECT_START	0
+ #define PID_EFFECT_STOP		1
+@@ -666,6 +667,11 @@ static int pidff_request_effect_upload(struct pidff_device *pidff, int efnum)
+ 				pidff->block_load[PID_RAM_POOL_AVAILABLE].value[0] : -1);
+ 			return -ENOSPC;
+ 		}
++		if (pidff->block_load_status->value[0] ==
++		    pidff->status_id[PID_BLOCK_LOAD_ERROR]) {
++			hid_dbg(pidff->hid, "device error during effect creation\n");
++			return -EREMOTEIO;
++		}
+ 	}
+ 	hid_err(pidff->hid, "pid_block_load failed 60 times\n");
+ 	return -EIO;
+-- 
+2.39.5
+
 
 
 
