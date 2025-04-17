@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-134095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82BDEA9297E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39937A92718
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:19:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 189ED8E42E2
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0407466806
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:19:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB014257448;
-	Thu, 17 Apr 2025 18:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9BF25523E;
+	Thu, 17 Apr 2025 18:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aV8JGYQq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jL8Eu1FO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C891CAA99;
-	Thu, 17 Apr 2025 18:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F901DEFD4;
+	Thu, 17 Apr 2025 18:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915079; cv=none; b=CysrTJrDJwoaPoFf5lx9pGPYjjrjqt5jvbcorcguj/78ZFKMoog5iKO4DXtNeOPmJW0RAC81YVqCKfFIcBSk0PbXNAYByrM9D5ddeAZ4g1kI+UKG4Qt5ZPIVyQPOwin7pHVSp5VMaJtlgeXdi4zrbag2wBoCu3HjvsS06cEN8/Y=
+	t=1744913973; cv=none; b=Ih7Ob1TRkZv3ZNkyTcB2xsb+dL9F/ODYjHc8vcGn0JNqA6gERQhbcryyExJnJu5jO35b1umxeQf/NJKyt5c28YJlLTwsv4artrvfK7jt4Zm0zR7rPNYIjMz+4jfxrolOdtVm3/e5bpd3MdKPznTmT+Ao/tEMTQDM3ccXMg28550=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915079; c=relaxed/simple;
-	bh=oHglasHZppoNrMXhwRhp85TObudixNods4wSeyR802Q=;
+	s=arc-20240116; t=1744913973; c=relaxed/simple;
+	bh=AWL2xShENpjRqt0LvQZOZOQg5do4Tc23+CM8yHCMKbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VLPSf9s+9XBO2jEh2n6aFr62vxu3zkwq8Pdustu2c2zYdsJNO7/+Bqlb6ha3C3Fvy8pAmp2SFg8wB8vLCWhOmIzykcL6WKcANiTHcRXy3X6rR1LbTA6cq7Mc88iGIbTPxQbbi6H1UBnqfeChVkvmKDcWUtiC2xtICUb2xNtqIWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aV8JGYQq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4517C4CEE7;
-	Thu, 17 Apr 2025 18:37:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EWmbTMnyCEfJ8skSu9Vjeekp0P5hxYdldsbyYFdB/LKercABUZxskDDjtjrN3RbWmQI766dTB2ZyvMi/NsNLOmv7RTSK5Vw9JA8kPBtcDRSBEheaw4O4s4KyWjIhQ972qLhzFgVoAPmUdYCs+QYmEbS7UK+Grr5aqzQMpSVDXCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jL8Eu1FO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A22FC4CEE7;
+	Thu, 17 Apr 2025 18:19:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915079;
-	bh=oHglasHZppoNrMXhwRhp85TObudixNods4wSeyR802Q=;
+	s=korg; t=1744913973;
+	bh=AWL2xShENpjRqt0LvQZOZOQg5do4Tc23+CM8yHCMKbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aV8JGYQq6tRzQypJ5la74iuqzc72d1Czu2dcMSbTPqWrpFW7Uzh4IqS7ex1dPTC6w
-	 Uui6SzpKhgcQW6Qra9So5Rbs6zIZfh+/lIclQYL7YeHKZ+eSwoLLPPZLo0403jyc2G
-	 dgjgyRT+7oOPCnqCH3a4Ei2cWt6GmfCxjoaEWsvg=
+	b=jL8Eu1FOKAemWEOjbZpEbEsSuCELZYf0v0wWE1Yi3Q3VKQ5JJRnrn0ZssrxKTKBGh
+	 H+Wmgqek6rHv/WfMymNpo8y4Xu7RwY2OQL9VK3Q6eD7JF9cwZKKcGtBeY70cGENa7P
+	 LYpa9urt/bjyjsFKrucBtexHmJx0pwf2MyaWn7m8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Andi Shyti <andi.shyti@intel.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Badal Nilawar <badal.nilawar@intel.com>,
-	Sk Anirban <sk.anirban@intel.com>,
-	Karthik Poosa <karthik.poosa@intel.com>,
-	Anshuman Gupta <anshuman.gupta@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Makarenko Oleg <oleg@makarenk.ooo>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 012/393] drm/i915: Disable RPG during live selftest
-Date: Thu, 17 Apr 2025 19:47:01 +0200
-Message-ID: <20250417175108.072909977@linuxfoundation.org>
+Subject: [PATCH 6.13 064/414] HID: pidff: Add MISSING_PBO quirk and its detection
+Date: Thu, 17 Apr 2025 19:47:02 +0200
+Message-ID: <20250417175113.987872816@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,113 +65,149 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Badal Nilawar <badal.nilawar@intel.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit 9d3d9776bd3bd9c32d460dfe6c3363134de578bc ]
+[ Upstream commit fc7c154e9bb3c2b98875cfc565406f4787e3b7a4 ]
 
-The Forcewake timeout issue has been observed on Gen 12.0 and above.
-To address this, disable Render Power-Gating (RPG) during live self-tests
-for these generations. The temporary workaround 'drm/i915/mtl: do not
-enable render power-gating on MTL' disables RPG globally, which is
-unnecessary since the issues were only seen during self-tests.
+Some devices with only one axis are missing PARAMETER_BLOCK_OFFSET field
+for conditional effects. They can only have one axis, so we're limiting
+the max_axis when setting the report for those effects.
 
-v2: take runtime pm wakeref
+Automatic detection ensures compatibility even if such device won't be
+explicitly defined in the kernel.
 
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413
-Fixes: 25e7976db86b ("drm/i915/mtl: do not enable render power-gating on MTL")
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Andi Shyti <andi.shyti@intel.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
-Signed-off-by: Sk Anirban <sk.anirban@intel.com>
-Reviewed-by: Karthik Poosa <karthik.poosa@intel.com>
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250310152821.2931678-1-sk.anirban@intel.com
-(cherry picked from commit 0a4ae87706c6d15d14648e428c3a76351f823e48)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Fixes initialization of VRS DirectForce PRO and possibly other devices.
+
+Changes in v6:
+- Fixed NULL pointer dereference. When PBO is missing, make sure not
+  to set it anyway
+
+Co-developed-by: Makarenko Oleg <oleg@makarenk.ooo>
+Signed-off-by: Makarenko Oleg <oleg@makarenk.ooo>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/intel_rc6.c           | 19 ++++---------------
- .../gpu/drm/i915/selftests/i915_selftest.c    | 18 ++++++++++++++++++
- 2 files changed, 22 insertions(+), 15 deletions(-)
+ drivers/hid/usbhid/hid-pidff.c | 47 +++++++++++++++++++++-------------
+ include/linux/hid.h            |  1 +
+ 2 files changed, 30 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_rc6.c b/drivers/gpu/drm/i915/gt/intel_rc6.c
-index 9378d5901c493..9ca42589da4da 100644
---- a/drivers/gpu/drm/i915/gt/intel_rc6.c
-+++ b/drivers/gpu/drm/i915/gt/intel_rc6.c
-@@ -117,21 +117,10 @@ static void gen11_rc6_enable(struct intel_rc6 *rc6)
- 			GEN6_RC_CTL_RC6_ENABLE |
- 			GEN6_RC_CTL_EI_MODE(1);
- 
--	/*
--	 * BSpec 52698 - Render powergating must be off.
--	 * FIXME BSpec is outdated, disabling powergating for MTL is just
--	 * temporary wa and should be removed after fixing real cause
--	 * of forcewake timeouts.
--	 */
--	if (IS_GFX_GT_IP_RANGE(gt, IP_VER(12, 70), IP_VER(12, 74)))
--		pg_enable =
--			GEN9_MEDIA_PG_ENABLE |
--			GEN11_MEDIA_SAMPLER_PG_ENABLE;
--	else
--		pg_enable =
--			GEN9_RENDER_PG_ENABLE |
--			GEN9_MEDIA_PG_ENABLE |
--			GEN11_MEDIA_SAMPLER_PG_ENABLE;
-+	pg_enable =
-+		GEN9_RENDER_PG_ENABLE |
-+		GEN9_MEDIA_PG_ENABLE |
-+		GEN11_MEDIA_SAMPLER_PG_ENABLE;
- 
- 	if (GRAPHICS_VER(gt->i915) >= 12 && !IS_DG1(gt->i915)) {
- 		for (i = 0; i < I915_MAX_VCS; i++)
-diff --git a/drivers/gpu/drm/i915/selftests/i915_selftest.c b/drivers/gpu/drm/i915/selftests/i915_selftest.c
-index fee76c1d2f450..889281819c5b1 100644
---- a/drivers/gpu/drm/i915/selftests/i915_selftest.c
-+++ b/drivers/gpu/drm/i915/selftests/i915_selftest.c
-@@ -23,7 +23,9 @@
- 
- #include <linux/random.h>
- 
-+#include "gt/intel_gt.h"
- #include "gt/intel_gt_pm.h"
-+#include "gt/intel_gt_regs.h"
- #include "gt/uc/intel_gsc_fw.h"
- 
- #include "i915_driver.h"
-@@ -253,11 +255,27 @@ int i915_mock_selftests(void)
- int i915_live_selftests(struct pci_dev *pdev)
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 929f5967e7cb1..503b22feacdbb 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -391,13 +391,19 @@ static int pidff_needs_set_periodic(struct ff_effect *effect,
+ static void pidff_set_condition_report(struct pidff_device *pidff,
+ 				       struct ff_effect *effect)
  {
- 	struct drm_i915_private *i915 = pdev_to_i915(pdev);
-+	struct intel_uncore *uncore = &i915->uncore;
- 	int err;
-+	u32 pg_enable;
-+	intel_wakeref_t wakeref;
- 
- 	if (!i915_selftest.live)
- 		return 0;
- 
-+	/*
-+	 * FIXME Disable render powergating, this is temporary wa and should be removed
-+	 * after fixing real cause of forcewake timeouts.
-+	 */
-+	with_intel_runtime_pm(uncore->rpm, wakeref) {
-+		if (IS_GFX_GT_IP_RANGE(to_gt(i915), IP_VER(12, 00), IP_VER(12, 74))) {
-+			pg_enable = intel_uncore_read(uncore, GEN9_PG_ENABLE);
-+			if (pg_enable & GEN9_RENDER_PG_ENABLE)
-+				intel_uncore_write_fw(uncore, GEN9_PG_ENABLE,
-+						      pg_enable & ~GEN9_RENDER_PG_ENABLE);
-+		}
-+	}
+-	int i;
++	int i, max_axis;
 +
- 	__wait_gsc_proxy_completed(i915);
- 	__wait_gsc_huc_load_completed(i915);
++	/* Devices missing Parameter Block Offset can only have one axis */
++	max_axis = pidff->quirks & HID_PIDFF_QUIRK_MISSING_PBO ? 1 : 2;
+ 
+ 	pidff->set_condition[PID_EFFECT_BLOCK_INDEX].value[0] =
+ 		pidff->block_load[PID_EFFECT_BLOCK_INDEX].value[0];
+ 
+-	for (i = 0; i < 2; i++) {
+-		pidff->set_condition[PID_PARAM_BLOCK_OFFSET].value[0] = i;
++	for (i = 0; i < max_axis; i++) {
++		/* Omit Parameter Block Offset if missing */
++		if (!(pidff->quirks & HID_PIDFF_QUIRK_MISSING_PBO))
++			pidff->set_condition[PID_PARAM_BLOCK_OFFSET].value[0] = i;
++
+ 		pidff_set_signed(&pidff->set_condition[PID_CP_OFFSET],
+ 				 effect->u.condition[i].center);
+ 		pidff_set_signed(&pidff->set_condition[PID_POS_COEFFICIENT],
+@@ -809,6 +815,11 @@ static int pidff_find_fields(struct pidff_usage *usage, const u8 *table,
+ 			pr_debug("Setting MISSING_DELAY quirk\n");
+ 			return_value |= HID_PIDFF_QUIRK_MISSING_DELAY;
+ 		}
++		else if (!found && table[k] == pidff_set_condition[PID_PARAM_BLOCK_OFFSET]) {
++			pr_debug("PBO field not found, but that's OK\n");
++			pr_debug("Setting MISSING_PBO quirk\n");
++			return_value |= HID_PIDFF_QUIRK_MISSING_PBO;
++		}
+ 		else if (!found && strict) {
+ 			pr_debug("failed to locate %d\n", k);
+ 			return -1;
+@@ -1088,7 +1099,6 @@ static int pidff_find_effects(struct pidff_device *pidff,
+  */
+ static int pidff_init_fields(struct pidff_device *pidff, struct input_dev *dev)
+ {
+-	int envelope_ok = 0;
+ 	int status = 0;
+ 
+ 	/* Save info about the device not having the DELAY ffb field. */
+@@ -1119,13 +1129,10 @@ static int pidff_init_fields(struct pidff_device *pidff, struct input_dev *dev)
+ 		return -ENODEV;
+ 	}
+ 
+-	if (!PIDFF_FIND_FIELDS(set_envelope, PID_SET_ENVELOPE, 1))
+-		envelope_ok = 1;
+-
+ 	if (pidff_find_special_fields(pidff) || pidff_find_effects(pidff, dev))
+ 		return -ENODEV;
+ 
+-	if (!envelope_ok) {
++	if (PIDFF_FIND_FIELDS(set_envelope, PID_SET_ENVELOPE, 1)) {
+ 		if (test_and_clear_bit(FF_CONSTANT, dev->ffbit))
+ 			hid_warn(pidff->hid,
+ 				 "has constant effect but no envelope\n");
+@@ -1150,16 +1157,20 @@ static int pidff_init_fields(struct pidff_device *pidff, struct input_dev *dev)
+ 		clear_bit(FF_RAMP, dev->ffbit);
+ 	}
+ 
+-	if ((test_bit(FF_SPRING, dev->ffbit) ||
+-	     test_bit(FF_DAMPER, dev->ffbit) ||
+-	     test_bit(FF_FRICTION, dev->ffbit) ||
+-	     test_bit(FF_INERTIA, dev->ffbit)) &&
+-	    PIDFF_FIND_FIELDS(set_condition, PID_SET_CONDITION, 1)) {
+-		hid_warn(pidff->hid, "unknown condition effect layout\n");
+-		clear_bit(FF_SPRING, dev->ffbit);
+-		clear_bit(FF_DAMPER, dev->ffbit);
+-		clear_bit(FF_FRICTION, dev->ffbit);
+-		clear_bit(FF_INERTIA, dev->ffbit);
++	if (test_bit(FF_SPRING, dev->ffbit) ||
++	    test_bit(FF_DAMPER, dev->ffbit) ||
++	    test_bit(FF_FRICTION, dev->ffbit) ||
++	    test_bit(FF_INERTIA, dev->ffbit)) {
++		status = PIDFF_FIND_FIELDS(set_condition, PID_SET_CONDITION, 1);
++
++		if (status < 0) {
++			hid_warn(pidff->hid, "unknown condition effect layout\n");
++			clear_bit(FF_SPRING, dev->ffbit);
++			clear_bit(FF_DAMPER, dev->ffbit);
++			clear_bit(FF_FRICTION, dev->ffbit);
++			clear_bit(FF_INERTIA, dev->ffbit);
++		}
++		pidff->quirks |= status;
+ 	}
+ 
+ 	if (test_bit(FF_PERIODIC, dev->ffbit) &&
+diff --git a/include/linux/hid.h b/include/linux/hid.h
+index 9c3a728786c3e..ea7ba8e4bfe49 100644
+--- a/include/linux/hid.h
++++ b/include/linux/hid.h
+@@ -1230,6 +1230,7 @@ int hid_pidff_init(struct hid_device *hid);
+ 
+ /* HID PIDFF quirks */
+ #define HID_PIDFF_QUIRK_MISSING_DELAY	BIT(0)
++#define HID_PIDFF_QUIRK_MISSING_PBO	BIT(1)
+ 
+ #define dbg_hid(fmt, ...) pr_debug("%s: " fmt, __FILE__, ##__VA_ARGS__)
  
 -- 
 2.39.5
