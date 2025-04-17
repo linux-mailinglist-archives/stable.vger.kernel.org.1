@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-133420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B76EA925A1
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:06:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56C6FA9274D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:22:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA1443AB9B9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:05:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA96E8A74E6
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7CE4259C8B;
-	Thu, 17 Apr 2025 18:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E210825EF93;
+	Thu, 17 Apr 2025 18:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rezvw9L9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zuMRDoLk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929AC253F23;
-	Thu, 17 Apr 2025 18:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE612571C6;
+	Thu, 17 Apr 2025 18:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913022; cv=none; b=ZC7Er3Nfv0EBuDadU5hASYTFKGGtyToHVswm6dXNKa3hbV0QukBPmBVmT2CAxuErUiumJL+AxJs/on3Pi2RsSdvm3jQj8yRPc/p0xXBHdSUNntlMCe4fo9+qS1X+q0ZnhswFfWm2idC8jzTfHydQzD9HVerC+8TA2d+xF1IDvoQ=
+	t=1744914058; cv=none; b=K92mcHo5VEfg57snVXfFnwJphs7zh6vqGeCtNbBJiBoEtmKjaGZt8QxL+9+gYYfAHIUCXZIDglGDp91ZLDipFIG6HkhEAGG5/xywJuaDKc2zQBuI/jcYTzKsAzPhpuJbr1PySzz3ldWCDd0MD25TzjdByFHjwee9zjL7Q4AnhvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913022; c=relaxed/simple;
-	bh=LOl9ajlj6sMGqFLB6i/48htgPbKgGzowIwX0N/Zhz9k=;
+	s=arc-20240116; t=1744914058; c=relaxed/simple;
+	bh=7+QbUaODbF9wJhlLHMeYo7dXlrWTrwyXuVCUzEzmkLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JdfFgbo72cJRE2Y1rhyiANeRqTBiLjRd9V6pcw6nXi5eoURyxRAquwH/AxjodRSIyWolwuJOdpBrMMp2xH+0y7QYrMZ0ld7IQ7oRB98fKS5+chdb9yQ5Bs+IpltjaQedR5QAHWFal193xeOEsvLhd25Walrco7hS7XFHEDdOkgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rezvw9L9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E294C4CEE4;
-	Thu, 17 Apr 2025 18:03:41 +0000 (UTC)
+	 MIME-Version; b=iv6Qr0qoZpNWyCFpJ8SrhII1GVoA/pUHWwiKwoyt6KEPLTXx2oP57ds5Pf+sE8B7TEE/EMkusJKPHVSJkAVH9T/13r+jZ8YiBGe7YYZoc8+EM2HiGd2+Tqzx/EWLyDaDLxNQTicBlWvhZoPTECa2dXLG0y4IEHnNzmH0/lGroiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zuMRDoLk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC0CC4CEE7;
+	Thu, 17 Apr 2025 18:20:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913022;
-	bh=LOl9ajlj6sMGqFLB6i/48htgPbKgGzowIwX0N/Zhz9k=;
+	s=korg; t=1744914058;
+	bh=7+QbUaODbF9wJhlLHMeYo7dXlrWTrwyXuVCUzEzmkLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rezvw9L9YiU4KBQ3dQpUJYHO767oCVa1wSYQrZbPMWo7zwH/YXy7QAB7zJ1EhI2Fl
-	 9CVg556VAzG/xsblQxTCJ3UDZNHlUQOUtk+fRUirBKutzrh70JnaefDC2YTw5l/7Mz
-	 OCJz9H16U0pDJ9+ON4zGgBsiO+1j4hcTS+Abu9WY=
+	b=zuMRDoLkcHAbBCa+SEbI4sc8GGzTDT0zh9nD4CzPPvTADIr9doW3Cc5dfF0p+vm9D
+	 8R71bjk8DFlbZ+lZ7bjbw8aFOL+NTn4WDlqAJhxzxIV5BqVta0v6Yrd/QMKmZw9yDn
+	 jpTHZGl5M1vg+mszAbY0w0/depj7EB1N8BLbe3EQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Michael Strauss <michael.strauss@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 162/449] drm/amd/display: Update FIXED_VS Link Rate Toggle Workaround Usage
+Subject: [PATCH 6.13 092/414] wifi: mac80211: add strict mode disabling workarounds
 Date: Thu, 17 Apr 2025 19:47:30 +0200
-Message-ID: <20250417175124.507410505@linuxfoundation.org>
+Message-ID: <20250417175115.142579556@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,106 +63,254 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Strauss <michael.strauss@amd.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 7c6518c1c73199a230b5fc55ddfed3e5b9dc3290 ]
+[ Upstream commit 3ad4fce66e4f9d82abfc366707757e29cc14a9d2 ]
 
-[WHY]
-Previously the 128b/132b LTTPR support DPCD field was used to decide if
-FIXED_VS training sequence required a rate toggle before initiating LT.
+Add a strict mode where we disable certain workarounds and have
+additional checks such as, for now, that VHT capabilities from
+association response match those from beacon/probe response. We
+can extend the checks in the future.
 
-When running DP2.1 4.9.x.x compliance tests, emulated LTTPRs can report
-no-128b/132b support which is then forwarded by the FIXED_VS retimer.
-As a result this test exposes the rate toggle again, erroneously causing
-failures as certain compliance sinks don't expect this behaviour.
+Make it an opt-in setting by the driver so it can be set there
+in some driver-specific way, for example. Also allow setting
+this one hw flag through the hwflags debugfs, by writing a new
+strict=0 or strict=1 value.
 
-[HOW]
-Add new DPCD register defines/reads to read LTTPR IEEE OUI and device ID.
-
-Decide whether to perform the rate toggle based on the LTTPR's IEEE OUI
-which guarantees that we only perform the toggle on affected retimers.
-
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Signed-off-by: Michael Strauss <michael.strauss@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250205110958.5cecb0469479.I4a69617dc60ba0d6308416ffbc3102cfd08ba068@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dc_dp_types.h         |  8 ++++++++
- .../display/dc/link/protocols/link_dp_capability.c   | 12 ++++++++++--
- .../protocols/link_dp_training_fixed_vs_pe_retimer.c |  3 ++-
- 3 files changed, 20 insertions(+), 3 deletions(-)
+ include/net/mac80211.h |  6 ++++++
+ net/mac80211/debugfs.c | 44 +++++++++++++++++++++++++++++++++++++++--
+ net/mac80211/mlme.c    | 45 +++++++++++++++++++++++++++++-------------
+ 3 files changed, 79 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_dp_types.h b/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
-index 94ce8fe744810..cc005da75ce4c 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
-@@ -1119,6 +1119,8 @@ struct dc_lttpr_caps {
- 	union dp_main_link_channel_coding_lttpr_cap main_link_channel_coding;
- 	union dp_128b_132b_supported_lttpr_link_rates supported_128b_132b_rates;
- 	uint8_t aux_rd_interval[MAX_REPEATER_CNT - 1];
-+	uint8_t lttpr_ieee_oui[3];
-+	uint8_t lttpr_device_id[6];
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index ab8dce1f2c271..b33acea0f5258 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -2845,6 +2845,11 @@ struct ieee80211_txq {
+  *	implements MLO, so operation can continue on other links when one
+  *	link is switching.
+  *
++ * @IEEE80211_HW_STRICT: strictly enforce certain things mandated by the spec
++ *	but otherwise ignored/worked around for interoperability. This is a
++ *	HW flag so drivers can opt in according to their own control, e.g. in
++ *	testing.
++ *
+  * @NUM_IEEE80211_HW_FLAGS: number of hardware flags, used for sizing arrays
+  */
+ enum ieee80211_hw_flags {
+@@ -2905,6 +2910,7 @@ enum ieee80211_hw_flags {
+ 	IEEE80211_HW_DISALLOW_PUNCTURING,
+ 	IEEE80211_HW_DISALLOW_PUNCTURING_5GHZ,
+ 	IEEE80211_HW_HANDLES_QUIET_CSA,
++	IEEE80211_HW_STRICT,
+ 
+ 	/* keep last, obviously */
+ 	NUM_IEEE80211_HW_FLAGS
+diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
+index be2e486907f94..ac808702bc108 100644
+--- a/net/mac80211/debugfs.c
++++ b/net/mac80211/debugfs.c
+@@ -492,6 +492,7 @@ static const char *hw_flag_names[] = {
+ 	FLAG(DISALLOW_PUNCTURING),
+ 	FLAG(DISALLOW_PUNCTURING_5GHZ),
+ 	FLAG(HANDLES_QUIET_CSA),
++	FLAG(STRICT),
+ #undef FLAG
  };
  
- struct dc_dongle_dfp_cap_ext {
-@@ -1379,6 +1381,12 @@ struct dp_trace {
- #ifndef DP_BRANCH_VENDOR_SPECIFIC_START
- #define DP_BRANCH_VENDOR_SPECIFIC_START     0x50C
- #endif
-+#ifndef DP_LTTPR_IEEE_OUI
-+#define DP_LTTPR_IEEE_OUI 0xF003D
-+#endif
-+#ifndef DP_LTTPR_DEVICE_ID
-+#define DP_LTTPR_DEVICE_ID 0xF0040
-+#endif
- /** USB4 DPCD BW Allocation Registers Chapter 10.7 **/
- #ifndef DP_TUNNELING_CAPABILITIES
- #define DP_TUNNELING_CAPABILITIES			0xE000D /* 1.4a */
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-index 44c3023a77318..44f33e3bc1c59 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-@@ -1568,10 +1568,18 @@ enum dc_status dp_retrieve_lttpr_cap(struct dc_link *link)
- 	/* Attempt to train in LTTPR transparent mode if repeater count exceeds 8. */
- 	is_lttpr_present = dp_is_lttpr_present(link);
- 
--	if (is_lttpr_present)
-+	DC_LOG_DC("is_lttpr_present = %d\n", is_lttpr_present);
-+
-+	if (is_lttpr_present) {
- 		CONN_DATA_DETECT(link, lttpr_dpcd_data, sizeof(lttpr_dpcd_data), "LTTPR Caps: ");
- 
--	DC_LOG_DC("is_lttpr_present = %d\n", is_lttpr_present);
-+		core_link_read_dpcd(link, DP_LTTPR_IEEE_OUI, link->dpcd_caps.lttpr_caps.lttpr_ieee_oui, sizeof(link->dpcd_caps.lttpr_caps.lttpr_ieee_oui));
-+		CONN_DATA_DETECT(link, link->dpcd_caps.lttpr_caps.lttpr_ieee_oui, sizeof(link->dpcd_caps.lttpr_caps.lttpr_ieee_oui), "LTTPR IEEE OUI: ");
-+
-+		core_link_read_dpcd(link, DP_LTTPR_DEVICE_ID, link->dpcd_caps.lttpr_caps.lttpr_device_id, sizeof(link->dpcd_caps.lttpr_caps.lttpr_device_id));
-+		CONN_DATA_DETECT(link, link->dpcd_caps.lttpr_caps.lttpr_device_id, sizeof(link->dpcd_caps.lttpr_caps.lttpr_device_id), "LTTPR Device ID: ");
-+	}
-+
- 	return status;
+@@ -524,6 +525,46 @@ static ssize_t hwflags_read(struct file *file, char __user *user_buf,
+ 	return rv;
  }
  
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_fixed_vs_pe_retimer.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_fixed_vs_pe_retimer.c
-index ccf8096dde290..ce174ce5579c0 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_fixed_vs_pe_retimer.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_fixed_vs_pe_retimer.c
-@@ -270,7 +270,8 @@ enum link_training_result dp_perform_fixed_vs_pe_training_sequence(
++static ssize_t hwflags_write(struct file *file, const char __user *user_buf,
++			     size_t count, loff_t *ppos)
++{
++	struct ieee80211_local *local = file->private_data;
++	char buf[100];
++	int val;
++
++	if (count >= sizeof(buf))
++		return -EINVAL;
++
++	if (copy_from_user(buf, user_buf, count))
++		return -EFAULT;
++
++	if (count && buf[count - 1] == '\n')
++		buf[count - 1] = '\0';
++	else
++		buf[count] = '\0';
++
++	if (sscanf(buf, "strict=%d", &val) == 1) {
++		switch (val) {
++		case 0:
++			ieee80211_hw_set(&local->hw, STRICT);
++			return count;
++		case 1:
++			__clear_bit(IEEE80211_HW_STRICT, local->hw.flags);
++			return count;
++		default:
++			return -EINVAL;
++		}
++	}
++
++	return -EINVAL;
++}
++
++static const struct file_operations hwflags_ops = {
++	.open = simple_open,
++	.read = hwflags_read,
++	.write = hwflags_write,
++};
++
+ static ssize_t misc_read(struct file *file, char __user *user_buf,
+ 			 size_t count, loff_t *ppos)
+ {
+@@ -574,7 +615,6 @@ static ssize_t queues_read(struct file *file, char __user *user_buf,
+ 	return simple_read_from_buffer(user_buf, count, ppos, buf, res);
+ }
  
- 	rate = get_dpcd_link_rate(&lt_settings->link_settings);
+-DEBUGFS_READONLY_FILE_OPS(hwflags);
+ DEBUGFS_READONLY_FILE_OPS(queues);
+ DEBUGFS_READONLY_FILE_OPS(misc);
  
--	if (!link->dpcd_caps.lttpr_caps.main_link_channel_coding.bits.DP_128b_132b_SUPPORTED) {
-+	// Only perform toggle if FIXED_VS LTTPR reports no IEEE OUI
-+	if (memcmp("\x0,\x0,\x0", &link->dpcd_caps.lttpr_caps.lttpr_ieee_oui[0], 3) == 0) {
- 		/* Vendor specific: Toggle link rate */
- 		toggle_rate = (rate == 0x6) ? 0xA : 0x6;
+@@ -651,7 +691,7 @@ void debugfs_hw_add(struct ieee80211_local *local)
+ #ifdef CONFIG_PM
+ 	DEBUGFS_ADD_MODE(reset, 0200);
+ #endif
+-	DEBUGFS_ADD(hwflags);
++	DEBUGFS_ADD_MODE(hwflags, 0600);
+ 	DEBUGFS_ADD(user_power);
+ 	DEBUGFS_ADD(power);
+ 	DEBUGFS_ADD(hw_conf);
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 0e3db0c2920bc..4153cfededb62 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -168,6 +168,9 @@ ieee80211_determine_ap_chan(struct ieee80211_sub_if_data *sdata,
+ 	bool no_vht = false;
+ 	u32 ht_cfreq;
  
++	if (ieee80211_hw_check(&sdata->local->hw, STRICT))
++		ignore_ht_channel_mismatch = false;
++
+ 	*chandef = (struct cfg80211_chan_def) {
+ 		.chan = channel,
+ 		.width = NL80211_CHAN_WIDTH_20_NOHT,
+@@ -387,7 +390,7 @@ ieee80211_verify_peer_he_mcs_support(struct ieee80211_sub_if_data *sdata,
+ 	 * zeroes, which is nonsense, and completely inconsistent with itself
+ 	 * (it doesn't have 8 streams). Accept the settings in this case anyway.
+ 	 */
+-	if (!ap_min_req_set)
++	if (!ieee80211_hw_check(&sdata->local->hw, STRICT) && !ap_min_req_set)
+ 		return true;
+ 
+ 	/* make sure the AP is consistent with itself
+@@ -447,7 +450,7 @@ ieee80211_verify_sta_he_mcs_support(struct ieee80211_sub_if_data *sdata,
+ 	 * zeroes, which is nonsense, and completely inconsistent with itself
+ 	 * (it doesn't have 8 streams). Accept the settings in this case anyway.
+ 	 */
+-	if (!ap_min_req_set)
++	if (!ieee80211_hw_check(&sdata->local->hw, STRICT) && !ap_min_req_set)
+ 		return true;
+ 
+ 	/* Need to go over for 80MHz, 160MHz and for 80+80 */
+@@ -1214,13 +1217,15 @@ static bool ieee80211_add_vht_ie(struct ieee80211_sub_if_data *sdata,
+ 	 * Some APs apparently get confused if our capabilities are better
+ 	 * than theirs, so restrict what we advertise in the assoc request.
+ 	 */
+-	if (!(ap_vht_cap->vht_cap_info &
+-			cpu_to_le32(IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE)))
+-		cap &= ~(IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE |
+-			 IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE);
+-	else if (!(ap_vht_cap->vht_cap_info &
+-			cpu_to_le32(IEEE80211_VHT_CAP_MU_BEAMFORMER_CAPABLE)))
+-		cap &= ~IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE;
++	if (!ieee80211_hw_check(&local->hw, STRICT)) {
++		if (!(ap_vht_cap->vht_cap_info &
++				cpu_to_le32(IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE)))
++			cap &= ~(IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE |
++				 IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE);
++		else if (!(ap_vht_cap->vht_cap_info &
++				cpu_to_le32(IEEE80211_VHT_CAP_MU_BEAMFORMER_CAPABLE)))
++			cap &= ~IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE;
++	}
+ 
+ 	/*
+ 	 * If some other vif is using the MU-MIMO capability we cannot associate
+@@ -1262,14 +1267,16 @@ static bool ieee80211_add_vht_ie(struct ieee80211_sub_if_data *sdata,
+ 	return mu_mimo_owner;
+ }
+ 
+-static void ieee80211_assoc_add_rates(struct sk_buff *skb,
++static void ieee80211_assoc_add_rates(struct ieee80211_local *local,
++				      struct sk_buff *skb,
+ 				      enum nl80211_chan_width width,
+ 				      struct ieee80211_supported_band *sband,
+ 				      struct ieee80211_mgd_assoc_data *assoc_data)
+ {
+ 	u32 rates;
+ 
+-	if (assoc_data->supp_rates_len) {
++	if (assoc_data->supp_rates_len &&
++	    !ieee80211_hw_check(&local->hw, STRICT)) {
+ 		/*
+ 		 * Get all rates supported by the device and the AP as
+ 		 * some APs don't like getting a superset of their rates
+@@ -1483,7 +1490,7 @@ static size_t ieee80211_assoc_link_elems(struct ieee80211_sub_if_data *sdata,
+ 		*capab |= WLAN_CAPABILITY_SPECTRUM_MGMT;
+ 
+ 	if (sband->band != NL80211_BAND_S1GHZ)
+-		ieee80211_assoc_add_rates(skb, width, sband, assoc_data);
++		ieee80211_assoc_add_rates(local, skb, width, sband, assoc_data);
+ 
+ 	if (*capab & WLAN_CAPABILITY_SPECTRUM_MGMT ||
+ 	    *capab & WLAN_CAPABILITY_RADIO_MEASURE) {
+@@ -1927,7 +1934,8 @@ static int ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
+ 	 * for some reason check it and want it to be set, set the bit for all
+ 	 * pre-EHT connections as we used to do.
+ 	 */
+-	if (link->u.mgd.conn.mode < IEEE80211_CONN_MODE_EHT)
++	if (link->u.mgd.conn.mode < IEEE80211_CONN_MODE_EHT &&
++	    !ieee80211_hw_check(&local->hw, STRICT))
+ 		capab |= WLAN_CAPABILITY_ESS;
+ 
+ 	/* add the elements for the assoc (main) link */
+@@ -4802,7 +4810,7 @@ static bool ieee80211_assoc_config_link(struct ieee80211_link_data *link,
+ 	 * 2G/3G/4G wifi routers, reported models include the "Onda PN51T",
+ 	 * "Vodafone PocketWiFi 2", "ZTE MF60" and a similar T-Mobile device.
+ 	 */
+-	if (!is_6ghz &&
++	if (!ieee80211_hw_check(&local->hw, STRICT) && !is_6ghz &&
+ 	    ((assoc_data->wmm && !elems->wmm_param) ||
+ 	     (link->u.mgd.conn.mode >= IEEE80211_CONN_MODE_HT &&
+ 	      (!elems->ht_cap_elem || !elems->ht_operation)) ||
+@@ -4938,6 +4946,15 @@ static bool ieee80211_assoc_config_link(struct ieee80211_link_data *link,
+ 				bss_vht_cap = (const void *)elem->data;
+ 		}
+ 
++		if (ieee80211_hw_check(&local->hw, STRICT) &&
++		    (!bss_vht_cap || memcmp(bss_vht_cap, elems->vht_cap_elem,
++					    sizeof(*bss_vht_cap)))) {
++			rcu_read_unlock();
++			ret = false;
++			link_info(link, "VHT capabilities mismatch\n");
++			goto out;
++		}
++
+ 		ieee80211_vht_cap_ie_to_sta_vht_cap(sdata, sband,
+ 						    elems->vht_cap_elem,
+ 						    bss_vht_cap, link_sta);
 -- 
 2.39.5
 
