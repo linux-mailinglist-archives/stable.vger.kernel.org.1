@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-133448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3BB2A925CD
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:07:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3157A929DB
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:45:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F433188FEBD
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:07:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08E1E8E53D0
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26962257AE7;
-	Thu, 17 Apr 2025 18:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E862254B18;
+	Thu, 17 Apr 2025 18:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2WMjzsEH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7TATHnZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8ADF257AC6;
-	Thu, 17 Apr 2025 18:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479AB258CDC;
+	Thu, 17 Apr 2025 18:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913107; cv=none; b=RWloteD2uu9fwDbzbHqSMjYzDHOlsqTIETHd6BJ0fvhxTIUkV+5dqUSF8dNhr3rT48C53uRJNU+owjCDzxOhEOQx9tv39g3JacE/5YVZld1REzg2iqbXu5X9yfuz0C2r0S+7lUJQjHZJ0/VbvJZlMCjVVYt6IcLmCdFITA56UCY=
+	t=1744915285; cv=none; b=DoLcmaubblhD5yr+s2tTXC5IEghrazD2gx2sWkAnRjBxR3o/oBL9bNEO2buqpCRKGyiKHBcRTvVaSoz1V2ydX8lgSTyBDVAhNO/dMtMq/Ui3e+pLF9++pnU8UQ3Eg9pho0cIJQ6ij+K0o3aBS8RpamQ3G3PCCXRY6eGdOGcBHpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913107; c=relaxed/simple;
-	bh=EsCsPPYzEMcOUK9lYErQLs8rDTUzIE91iXWsuFeml7Q=;
+	s=arc-20240116; t=1744915285; c=relaxed/simple;
+	bh=NGTb6DHlVOayQj6uu+EQU9kpvcgE9AGuiUQwyFDmDm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KT1G9PdffCtduukqALIahGnOuacl277AUoPBSJHwTac2sEwLUzhEM93WoHj74iVJBW9Xy6fB5dvwoSJKtR4h0610FiTYKuRentXwkR5r2x3UWto079VNLhF3af7QYxYc5sO+TTmVX2r4yE5Kglvo94FVEjGbd/x61QhmLougBXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2WMjzsEH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47CC8C4CEE4;
-	Thu, 17 Apr 2025 18:05:07 +0000 (UTC)
+	 MIME-Version; b=qrXb7Tz9oFYKHzzQXzyslRari1+DUbYwxI3dK01M45lg0qIUL0FsK9BhXlaqMw2XqOp+L+I8J5+uV1M8rvCAE9PSBUvUrAbM8GV+8DK8SyjZ4lT6wSW1sdi0t3yGHvSsRfOOTbuONSdpA14J1Tgp2us2XB0/3xYWEPmZ1QQpoPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7TATHnZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69BE4C4CEE4;
+	Thu, 17 Apr 2025 18:41:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913107;
-	bh=EsCsPPYzEMcOUK9lYErQLs8rDTUzIE91iXWsuFeml7Q=;
+	s=korg; t=1744915284;
+	bh=NGTb6DHlVOayQj6uu+EQU9kpvcgE9AGuiUQwyFDmDm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2WMjzsEHZ4A8GdKnilo+XdrcGMiv/8FU2dmJRCegyTCtwBjCYS3DnpoPPFbIcl7MS
-	 0xOXg1Va4SZnE9rnPSsS0RP3mq1BuKehgUZPyslQWbirXrYkSCg66ys49/0xqfMwUv
-	 OcWgOQBln8eOa3bDdddkn+rCgnS6pS278Q3M1d1g=
+	b=d7TATHnZKVkOpgSLO+NIz15Krm20c1DstqannhYDA8q3zRcW9PdwBRNLnodGPw9sj
+	 /V70np3eD/EmE35mPkxT+ut0gH1uAwn2GbXbCfB4o0i+oBubStlUOUwMnn11JhIpfl
+	 4Uc7FK10dQEf2P2SJUCz7ouVraGuFrqPov3uActk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Ricard Wanderlof <ricard2013@butoba.net>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 199/449] HID: pidff: Simplify pidff_upload_effect function
+Subject: [PATCH 6.12 078/393] ALSA: usb-audio: Fix CME quirk for UF series keyboards
 Date: Thu, 17 Apr 2025 19:48:07 +0200
-Message-ID: <20250417175125.982877234@linuxfoundation.org>
+Message-ID: <20250417175110.740461975@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +60,127 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Ricard Wanderlof <ricard2013@butoba.net>
 
-[ Upstream commit e4bdc80ef14272ef56c38d8ca2f365fdf59cd0ba ]
+[ Upstream commit c2820405ba55a38932aa2177f026b70064296663 ]
 
-Merge a bit of code that reqeusts conditional effects upload.
-Makes it clear, that effect handling should be identical for
-SPRING, DAMPER, INERTIA and FRICTION.
+Fix quirk for CME master keyboards so it not only handles
+sysex but also song position pointer, MIDI timing clock, start
+and stop messages, and active sensing. All of these can be
+output by the CME UF series master keyboards.
 
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Tested with a CME UF6 in a desktop Linux environment as
+well as on the Zynthian Raspberry Pi based platform.
+
+Signed-off-by: Ricard Wanderlof <ricard2013@butoba.net>
+Link: https://patch.msgid.link/20250313-cme-fix-v1-1-d404889e4de8@butoba.net
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 54 ++++++++++------------------------
- 1 file changed, 16 insertions(+), 38 deletions(-)
+ sound/usb/midi.c | 80 ++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 74 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index 99b5d3deb40d0..42c951a1d65bf 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -770,48 +770,26 @@ static int pidff_upload_effect(struct input_dev *dev, struct ff_effect *effect,
- 		break;
+diff --git a/sound/usb/midi.c b/sound/usb/midi.c
+index 779d97d31f170..826ac870f2469 100644
+--- a/sound/usb/midi.c
++++ b/sound/usb/midi.c
+@@ -489,16 +489,84 @@ static void ch345_broken_sysex_input(struct snd_usb_midi_in_endpoint *ep,
  
- 	case FF_SPRING:
--		if (!old) {
--			error = pidff_request_effect_upload(pidff,
--					pidff->type_id[PID_SPRING]);
--			if (error)
--				return error;
--		}
--		if (!old || pidff_needs_set_effect(effect, old))
--			pidff_set_effect_report(pidff, effect);
--		if (!old || pidff_needs_set_condition(effect, old))
--			pidff_set_condition_report(pidff, effect);
--		break;
--
--	case FF_FRICTION:
--		if (!old) {
--			error = pidff_request_effect_upload(pidff,
--					pidff->type_id[PID_FRICTION]);
--			if (error)
--				return error;
--		}
--		if (!old || pidff_needs_set_effect(effect, old))
--			pidff_set_effect_report(pidff, effect);
--		if (!old || pidff_needs_set_condition(effect, old))
--			pidff_set_condition_report(pidff, effect);
--		break;
--
- 	case FF_DAMPER:
--		if (!old) {
--			error = pidff_request_effect_upload(pidff,
--					pidff->type_id[PID_DAMPER]);
--			if (error)
--				return error;
--		}
--		if (!old || pidff_needs_set_effect(effect, old))
--			pidff_set_effect_report(pidff, effect);
--		if (!old || pidff_needs_set_condition(effect, old))
--			pidff_set_condition_report(pidff, effect);
--		break;
--
- 	case FF_INERTIA:
-+	case FF_FRICTION:
- 		if (!old) {
-+			switch(effect->type) {
-+			case FF_SPRING:
-+				type_id = PID_SPRING;
-+				break;
-+			case FF_DAMPER:
-+				type_id = PID_DAMPER;
-+				break;
-+			case FF_INERTIA:
-+				type_id = PID_INERTIA;
-+				break;
-+			case FF_FRICTION:
-+				type_id = PID_FRICTION;
-+				break;
+ /*
+  * CME protocol: like the standard protocol, but SysEx commands are sent as a
+- * single USB packet preceded by a 0x0F byte.
++ * single USB packet preceded by a 0x0F byte, as are system realtime
++ * messages and MIDI Active Sensing.
++ * Also, multiple messages can be sent in the same packet.
+  */
+ static void snd_usbmidi_cme_input(struct snd_usb_midi_in_endpoint *ep,
+ 				  uint8_t *buffer, int buffer_length)
+ {
+-	if (buffer_length < 2 || (buffer[0] & 0x0f) != 0x0f)
+-		snd_usbmidi_standard_input(ep, buffer, buffer_length);
+-	else
+-		snd_usbmidi_input_data(ep, buffer[0] >> 4,
+-				       &buffer[1], buffer_length - 1);
++	int remaining = buffer_length;
++
++	/*
++	 * CME send sysex, song position pointer, system realtime
++	 * and active sensing using CIN 0x0f, which in the standard
++	 * is only intended for single byte unparsed data.
++	 * So we need to interpret these here before sending them on.
++	 * By default, we assume single byte data, which is true
++	 * for system realtime (midi clock, start, stop and continue)
++	 * and active sensing, and handle the other (known) cases
++	 * separately.
++	 * In contrast to the standard, CME does not split sysex
++	 * into multiple 4-byte packets, but lumps everything together
++	 * into one. In addition, CME can string multiple messages
++	 * together in the same packet; pressing the Record button
++	 * on an UF6 sends a sysex message directly followed
++	 * by a song position pointer in the same packet.
++	 * For it to have any reasonable meaning, a sysex message
++	 * needs to be at least 3 bytes in length (0xf0, id, 0xf7),
++	 * corresponding to a packet size of 4 bytes, and the ones sent
++	 * by CME devices are 6 or 7 bytes, making the packet fragments
++	 * 7 or 8 bytes long (six or seven bytes plus preceding CN+CIN byte).
++	 * For the other types, the packet size is always 4 bytes,
++	 * as per the standard, with the data size being 3 for SPP
++	 * and 1 for the others.
++	 * Thus all packet fragments are at least 4 bytes long, so we can
++	 * skip anything that is shorter; this also conveniantly skips
++	 * packets with size 0, which CME devices continuously send when
++	 * they have nothing better to do.
++	 * Another quirk is that sometimes multiple messages are sent
++	 * in the same packet. This has been observed for midi clock
++	 * and active sensing i.e. 0x0f 0xf8 0x00 0x00 0x0f 0xfe 0x00 0x00,
++	 * but also multiple note ons/offs, and control change together
++	 * with MIDI clock. Similarly, some sysex messages are followed by
++	 * the song position pointer in the same packet, and occasionally
++	 * additionally by a midi clock or active sensing.
++	 * We handle this by looping over all data and parsing it along the way.
++	 */
++	while (remaining >= 4) {
++		int source_length = 4; /* default */
++
++		if ((buffer[0] & 0x0f) == 0x0f) {
++			int data_length = 1; /* default */
++
++			if (buffer[1] == 0xf0) {
++				/* Sysex: Find EOX and send on whole message. */
++				/* To kick off the search, skip the first
++				 * two bytes (CN+CIN and SYSEX (0xf0).
++				 */
++				uint8_t *tmp_buf = buffer + 2;
++				int tmp_length = remaining - 2;
++
++				while (tmp_length > 1 && *tmp_buf != 0xf7) {
++					tmp_buf++;
++					tmp_length--;
++				}
++				data_length = tmp_buf - buffer;
++				source_length = data_length + 1;
++			} else if (buffer[1] == 0xf2) {
++				/* Three byte song position pointer */
++				data_length = 3;
 +			}
- 			error = pidff_request_effect_upload(pidff,
--					pidff->type_id[PID_INERTIA]);
-+					pidff->type_id[type_id]);
- 			if (error)
- 				return error;
- 		}
++			snd_usbmidi_input_data(ep, buffer[0] >> 4,
++					       &buffer[1], data_length);
++		} else {
++			/* normal channel events */
++			snd_usbmidi_standard_input(ep, buffer, source_length);
++		}
++		buffer += source_length;
++		remaining -= source_length;
++	}
+ }
+ 
+ /*
 -- 
 2.39.5
 
