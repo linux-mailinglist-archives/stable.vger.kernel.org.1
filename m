@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-133671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1078CA926CA
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:16:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0261A92AD9
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8B6218887B7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:16:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7509C162CAE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6376C1CAA81;
-	Thu, 17 Apr 2025 18:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD662566D1;
+	Thu, 17 Apr 2025 18:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c80nMYpx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0wa5JJ5b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD1A8462;
-	Thu, 17 Apr 2025 18:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636271B4153;
+	Thu, 17 Apr 2025 18:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913785; cv=none; b=AndW76gfwRENdxDcegSuL64URfJ+M7QFPYVEshEbIBvjfw6MLOIl+MORSwU8tT9YQ56+1rorIT2znd0yPfrgIAEYz5/WfQSAjz0HL8H4JDrmPTS+1Jw6sX6nKDRp+hAO8sdMeyjxZWbLgIKRK+pnqwpoULqVj8JlkRwOQXGBgwY=
+	t=1744915986; cv=none; b=WRCxFIVWFtGhmEkRv3CMQbxjZqMepwdHffjcEI7sNKM2/N1kePykA4Viwi+VwoZWDR0z1H/aHCZ+kFIAc4IQEjXHR2Vme392kze6XMqk+9FwRnDlzsG4gXv1TNgWtEmOh9gyDy4Icykb2NnxWwIoaDOPJULDnGmYNnoCN9YapDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913785; c=relaxed/simple;
-	bh=DMFmndIppD0uykZnV+JkFyWqagEzIWl/l7YL/JZKKRU=;
+	s=arc-20240116; t=1744915986; c=relaxed/simple;
+	bh=cVqa1CqS8089dEgr+GelBcvOlqoT6Q5kR6ZKP7DiFYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lzy7mJe0RxX36Z/oCt7uLCvBAtFquBE8/1zI43Bg/WEn+J26DQY69MAWzrQpFP+3NfueFmHFBoBJiJBzvNe0sxy+QzmCMorRXFe9bwgDRcx9MDpwfGDB7tGVmf8QjFeJpSpC8HKeYsFB/Y63k9Hwk40POc2TUpd0XoqQAlC9VUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c80nMYpx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DE6FC4CEE7;
-	Thu, 17 Apr 2025 18:16:24 +0000 (UTC)
+	 MIME-Version; b=jGVqoRC+zBhudNLlR5zRqpcQ+MStZuAIeIRtyRuoNjJf6yysfiZr5ru8cFgJ24yRa2vcvKHvnJ9xLVsvzAFxMdeTr60xON5tRBN5XciOXHYlwlLSHqEnTEmqcQ1Z1Az2rNIlxmLQ3N1Mx4t09h/Dx3sajHh7JT9GjS6geNmW+i8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0wa5JJ5b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA85CC4CEE4;
+	Thu, 17 Apr 2025 18:53:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913785;
-	bh=DMFmndIppD0uykZnV+JkFyWqagEzIWl/l7YL/JZKKRU=;
+	s=korg; t=1744915986;
+	bh=cVqa1CqS8089dEgr+GelBcvOlqoT6Q5kR6ZKP7DiFYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c80nMYpxh7jRAZcW5zCBIuWISCJu+stZskAiii3Gc2AYgBspKuq60epduNWncR9hb
-	 t1Cr39lHv4ZWZcycbPUoKf4oI0j7Ofg6GDiW3HfZC7tm2tue68ewlMeNTlNdel3fah
-	 gRDwY6xx83HUTh6P0j/9imzaYAAs3qIb7av057lA=
+	b=0wa5JJ5bDJtycOVyPpua83Mgo2li1K5GKhdoGtmu21BsQYfm8JciSZvh/VRWnm+17
+	 BnDo48N4O+9xPKdG9PrKHd9WVs/oQ4xGhcJd6SqGIoIj4yEl5VywsmUnOkkL7dLvpZ
+	 8YJfP16xqfvild3HWO/BBxjrhg82UZyfPMiNq2jo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kenneth Crudup <kenny@panix.com>,
-	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: [PATCH 6.14 426/449] PCI: pciehp: Avoid unnecessary device replacement check
+	Jane Chu <jane.chu@oracle.com>,
+	Hugh Dickins <hughd@google.com>,
+	"Kirill A. Shuemov" <kirill.shutemov@linux.intel.com>,
+	linmiaohe <linmiaohe@huawei.com>,
+	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
+	Peter Xu <peterx@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 305/393] mm: make page_mapped_in_vma() hugetlb walk aware
 Date: Thu, 17 Apr 2025 19:51:54 +0200
-Message-ID: <20250417175135.440650107@linuxfoundation.org>
+Message-ID: <20250417175119.878095843@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +66,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Jane Chu <jane.chu@oracle.com>
 
-commit e3260237aaadc9799107ccb940c6688195c4518d upstream.
+commit 442b1eca223b4860cc85ef970ae602d125aec5a4 upstream.
 
-Hot-removal of nested PCI hotplug ports suffers from a long-standing race
-condition which can lead to a deadlock:  A parent hotplug port acquires
-pci_lock_rescan_remove(), then waits for pciehp to unbind from a child
-hotplug port.  Meanwhile that child hotplug port tries to acquire
-pci_lock_rescan_remove() as well in order to remove its own children.
+When a process consumes a UE in a page, the memory failure handler
+attempts to collect information for a potential SIGBUS.  If the page is an
+anonymous page, page_mapped_in_vma(page, vma) is invoked in order to
 
-The deadlock only occurs if the parent acquires pci_lock_rescan_remove()
-first, not if the child happens to acquire it first.
+  1. retrieve the vaddr from the process' address space,
 
-Several workarounds to avoid the issue have been proposed and discarded
-over the years, e.g.:
+  2. verify that the vaddr is indeed mapped to the poisoned page,
+     where 'page' is the precise small page with UE.
 
-https://lore.kernel.org/r/4c882e25194ba8282b78fe963fec8faae7cf23eb.1529173804.git.lukas@wunner.de/
+It's been observed that when injecting poison to a non-head subpage of an
+anonymous hugetlb page, no SIGBUS shows up, while injecting to the head
+page produces a SIGBUS.  The cause is that, though hugetlb_walk() returns
+a valid pmd entry (on x86), but check_pte() detects mismatch between the
+head page per the pmd and the input subpage.  Thus the vaddr is considered
+not mapped to the subpage and the process is not collected for SIGBUS
+purpose.  This is the calling stack:
 
-A proper fix is being worked on, but needs more time as it is nontrivial
-and necessarily intrusive.
+      collect_procs_anon
+        page_mapped_in_vma
+          page_vma_mapped_walk
+            hugetlb_walk
+              huge_pte_lock
+                check_pte
 
-Recent commit 9d573d19547b ("PCI: pciehp: Detect device replacement during
-system sleep") provokes more frequent occurrence of the deadlock when
-removing more than one Thunderbolt device during system sleep.  The commit
-sought to detect device replacement, but also triggered on device removal.
-Differentiating reliably between replacement and removal is impossible
-because pci_get_dsn() returns 0 both if the device was removed, as well as
-if it was replaced with one lacking a Device Serial Number.
+check_pte() header says that it
+"check if [pvmw->pfn, @pvmw->pfn + @pvmw->nr_pages) is mapped at the @pvmw->pte"
+but practically works only if pvmw->pfn is the head page pfn at pvmw->pte.
+Hindsight acknowledging that some pvmw->pte could point to a hugepage of
+some sort such that it makes sense to make check_pte() work for hugepage.
 
-Avoid the more frequent occurrence of the deadlock by checking whether the
-hotplug port itself was hot-removed.  If so, there's no sense in checking
-whether its child device was replaced.
-
-This works because the ->resume_noirq() callback is invoked in top-down
-order for the entire hierarchy:  A parent hotplug port detecting device
-replacement (or removal) marks all children as removed using
-pci_dev_set_disconnected() and a child hotplug port can then reliably
-detect being removed.
-
-Link: https://lore.kernel.org/r/02f166e24c87d6cde4085865cce9adfdfd969688.1741674172.git.lukas@wunner.de
-Fixes: 9d573d19547b ("PCI: pciehp: Detect device replacement during system sleep")
-Reported-by: Kenneth Crudup <kenny@panix.com>
-Closes: https://lore.kernel.org/r/83d9302a-f743-43e4-9de2-2dd66d91ab5b@panix.com/
-Reported-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
-Closes: https://lore.kernel.org/r/20240926125909.2362244-1-acelan.kao@canonical.com/
-Tested-by: Kenneth Crudup <kenny@panix.com>
-Tested-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc: stable@vger.kernel.org # v6.11+
+Link: https://lkml.kernel.org/r/20250224211445.2663312-1-jane.chu@oracle.com
+Signed-off-by: Jane Chu <jane.chu@oracle.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Kirill A. Shuemov <kirill.shutemov@linux.intel.com>
+Cc: linmiaohe <linmiaohe@huawei.com>
+Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/hotplug/pciehp_core.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ mm/page_vma_mapped.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/drivers/pci/hotplug/pciehp_core.c
-+++ b/drivers/pci/hotplug/pciehp_core.c
-@@ -286,9 +286,12 @@ static int pciehp_suspend(struct pcie_de
- 
- static bool pciehp_device_replaced(struct controller *ctrl)
+--- a/mm/page_vma_mapped.c
++++ b/mm/page_vma_mapped.c
+@@ -77,6 +77,7 @@ static bool map_pte(struct page_vma_mapp
+  * mapped at the @pvmw->pte
+  * @pvmw: page_vma_mapped_walk struct, includes a pair pte and pfn range
+  * for checking
++ * @pte_nr: the number of small pages described by @pvmw->pte.
+  *
+  * page_vma_mapped_walk() found a place where pfn range is *potentially*
+  * mapped. check_pte() has to validate this.
+@@ -93,7 +94,7 @@ static bool map_pte(struct page_vma_mapp
+  * Otherwise, return false.
+  *
+  */
+-static bool check_pte(struct page_vma_mapped_walk *pvmw)
++static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
  {
--	struct pci_dev *pdev __free(pci_dev_put);
-+	struct pci_dev *pdev __free(pci_dev_put) = NULL;
- 	u32 reg;
+ 	unsigned long pfn;
+ 	pte_t ptent = ptep_get(pvmw->pte);
+@@ -126,7 +127,11 @@ static bool check_pte(struct page_vma_ma
+ 		pfn = pte_pfn(ptent);
+ 	}
  
-+	if (pci_dev_is_disconnected(ctrl->pcie->port))
+-	return (pfn - pvmw->pfn) < pvmw->nr_pages;
++	if ((pfn + pte_nr - 1) < pvmw->pfn)
 +		return false;
-+
- 	pdev = pci_get_slot(ctrl->pcie->port->subordinate, PCI_DEVFN(0, 0));
- 	if (!pdev)
++	if (pfn > (pvmw->pfn + pvmw->nr_pages - 1))
++		return false;
++	return true;
+ }
+ 
+ /* Returns true if the two ranges overlap.  Careful to not overflow. */
+@@ -201,7 +206,7 @@ bool page_vma_mapped_walk(struct page_vm
+ 			return false;
+ 
+ 		pvmw->ptl = huge_pte_lock(hstate, mm, pvmw->pte);
+-		if (!check_pte(pvmw))
++		if (!check_pte(pvmw, pages_per_huge_page(hstate)))
+ 			return not_found(pvmw);
  		return true;
+ 	}
+@@ -284,7 +289,7 @@ restart:
+ 			goto next_pte;
+ 		}
+ this_pte:
+-		if (check_pte(pvmw))
++		if (check_pte(pvmw, 1))
+ 			return true;
+ next_pte:
+ 		do {
 
 
 
