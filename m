@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-133510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B6FEA92602
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:09:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A4CDA92A03
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:46:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58A8F1B62597
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 566F41B64326
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF3B253F23;
-	Thu, 17 Apr 2025 18:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8201256C6B;
+	Thu, 17 Apr 2025 18:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f8hDYFWy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IjE2e9HQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D183C1E25E1;
-	Thu, 17 Apr 2025 18:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86367254878;
+	Thu, 17 Apr 2025 18:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913294; cv=none; b=bcZpaomikBfWopF5RD2ote2ZjuZibuUueAa/x2Kzt0mcv4qs54r7GH3AhHoHFUFeEpTeYrxbr35KluLbvX6XS32IpgMbDS6xzw+1Q/kG1OcublPwLBYT4llOQdfeZbct48DAg7Jzy9IulbDAF9jqSb/VKGIjIvb44mWNRM+02z8=
+	t=1744915567; cv=none; b=hWF3l8wFx1NFpv//uTTCJvLi1zXe8NHyOmnplHQg/ac/BQPgnQkCXzmnjLREREj76E6uBr8m2l4sd4IxXbLWHEu/C6VA99uxYMpl3eOIhYjuGUybpF6CJTjYqS1JOPqeGqyjy8Dy0OerSR8LNMdMyQfhLsLG4UUkqZpl/ymR08c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913294; c=relaxed/simple;
-	bh=ivKoTg2jSEt19kWylGaSGpZAdRmrvQsqM+OmCiQA/bk=;
+	s=arc-20240116; t=1744915567; c=relaxed/simple;
+	bh=4MLq3Ne56vigkSU7akCpaZcZ1UjAUTKj4Vg0S6f4H+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZIldqc5pO3wyiQhok5Z6YANfj7QEeIOqd6p/+jR0GwCQ9mEZbJ05ur7DtXbXFYPePivJsF08lhDxL4aeR3u7E/3xjYf9afrrxJmHpJbA+otprsKwqZGkjqTWHD+KUGwgLXr2jQ5/9OLWalj+iiwwJN/+ZDvsbTcpqX99Rs1amP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f8hDYFWy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55403C4CEE4;
-	Thu, 17 Apr 2025 18:08:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Qq2Myxyj0be9+MSQIXtkeXfVkxrtdHjePEvYDoKjCVsjrfx0rYo2yFrfZ/Cpc8zf44bmU9HKi5LF5NrZKhdazDhqP/wE7zIj2XjoM3B8OKdPVDfrnMVXRlWgH/pCdeCoybD/C1MWNg2AcuISnh89ZjyiOZB3f+WcDuAkrZGYVhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IjE2e9HQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13415C4CEE4;
+	Thu, 17 Apr 2025 18:46:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913294;
-	bh=ivKoTg2jSEt19kWylGaSGpZAdRmrvQsqM+OmCiQA/bk=;
+	s=korg; t=1744915567;
+	bh=4MLq3Ne56vigkSU7akCpaZcZ1UjAUTKj4Vg0S6f4H+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f8hDYFWyunmA0qaVvgA19E1g9z6WJ9JPtrm5XHJYp0Xf8S5DJGxxXiW/x5ugtgVF+
-	 b2WDBSB4iv21JjEV2mAqkpgzzrvm/JacL60DqSlBev6e3m9pEFI+QanS5LOTZjcPgH
-	 0645XV9CO+pmVeH4W9toetepYF7worO7xp8ed9/c=
+	b=IjE2e9HQI7xPlK8BWHpx+FAb0OaMJpQmQmgaxUNXZ6O1RXCY9HnFZhViLKKOWeOSC
+	 h+itWuilky7wo8+zg/LlCXCMttM3KOOVc/1yP4LyCA5C+U86rjM3LuF0Id4cDPE3OW
+	 S0K7ZJAR46YVedlnZVpa6zNUiqEWLAlWSmXcW2wU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.14 290/449] io_uring/net: fix accept multishot handling
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 169/393] HID: pidff: Simplify pidff_upload_effect function
 Date: Thu, 17 Apr 2025 19:49:38 +0200
-Message-ID: <20250417175129.755538565@linuxfoundation.org>
+Message-ID: <20250417175114.389876696@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +64,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-commit f6a89bf5278d6e15016a736db67043560d1b50d5 upstream.
+[ Upstream commit e4bdc80ef14272ef56c38d8ca2f365fdf59cd0ba ]
 
-REQ_F_APOLL_MULTISHOT doesn't guarantee it's executed from the multishot
-context, so a multishot accept may get executed inline, fail
-io_req_post_cqe(), and ask the core code to kill the request with
--ECANCELED by returning IOU_STOP_MULTISHOT even when a socket has been
-accepted and installed.
+Merge a bit of code that reqeusts conditional effects upload.
+Makes it clear, that effect handling should be identical for
+SPRING, DAMPER, INERTIA and FRICTION.
 
-Cc: stable@vger.kernel.org
-Fixes: 390ed29b5e425 ("io_uring: add IORING_ACCEPT_MULTISHOT for accept")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/51c6deb01feaa78b08565ca8f24843c017f5bc80.1740331076.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/net.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hid/usbhid/hid-pidff.c | 54 ++++++++++------------------------
+ 1 file changed, 16 insertions(+), 38 deletions(-)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -1650,6 +1650,8 @@ retry:
- 	}
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 99b5d3deb40d0..42c951a1d65bf 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -770,48 +770,26 @@ static int pidff_upload_effect(struct input_dev *dev, struct ff_effect *effect,
+ 		break;
  
- 	io_req_set_res(req, ret, cflags);
-+	if (!(issue_flags & IO_URING_F_MULTISHOT))
-+		return IOU_OK;
- 	return IOU_STOP_MULTISHOT;
- }
- 
+ 	case FF_SPRING:
+-		if (!old) {
+-			error = pidff_request_effect_upload(pidff,
+-					pidff->type_id[PID_SPRING]);
+-			if (error)
+-				return error;
+-		}
+-		if (!old || pidff_needs_set_effect(effect, old))
+-			pidff_set_effect_report(pidff, effect);
+-		if (!old || pidff_needs_set_condition(effect, old))
+-			pidff_set_condition_report(pidff, effect);
+-		break;
+-
+-	case FF_FRICTION:
+-		if (!old) {
+-			error = pidff_request_effect_upload(pidff,
+-					pidff->type_id[PID_FRICTION]);
+-			if (error)
+-				return error;
+-		}
+-		if (!old || pidff_needs_set_effect(effect, old))
+-			pidff_set_effect_report(pidff, effect);
+-		if (!old || pidff_needs_set_condition(effect, old))
+-			pidff_set_condition_report(pidff, effect);
+-		break;
+-
+ 	case FF_DAMPER:
+-		if (!old) {
+-			error = pidff_request_effect_upload(pidff,
+-					pidff->type_id[PID_DAMPER]);
+-			if (error)
+-				return error;
+-		}
+-		if (!old || pidff_needs_set_effect(effect, old))
+-			pidff_set_effect_report(pidff, effect);
+-		if (!old || pidff_needs_set_condition(effect, old))
+-			pidff_set_condition_report(pidff, effect);
+-		break;
+-
+ 	case FF_INERTIA:
++	case FF_FRICTION:
+ 		if (!old) {
++			switch(effect->type) {
++			case FF_SPRING:
++				type_id = PID_SPRING;
++				break;
++			case FF_DAMPER:
++				type_id = PID_DAMPER;
++				break;
++			case FF_INERTIA:
++				type_id = PID_INERTIA;
++				break;
++			case FF_FRICTION:
++				type_id = PID_FRICTION;
++				break;
++			}
+ 			error = pidff_request_effect_upload(pidff,
+-					pidff->type_id[PID_INERTIA]);
++					pidff->type_id[type_id]);
+ 			if (error)
+ 				return error;
+ 		}
+-- 
+2.39.5
+
 
 
 
