@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-134287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B174A92A6F
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:51:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 844A9A9260D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:10:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 178D23ADACF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:47:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED43F8A417A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932CD256C65;
-	Thu, 17 Apr 2025 18:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A31D25525F;
+	Thu, 17 Apr 2025 18:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7z1Jvjp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uHsQhmbr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4421DB148;
-	Thu, 17 Apr 2025 18:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E869022E3E6;
+	Thu, 17 Apr 2025 18:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915668; cv=none; b=AfYCa8XUxnz8HCxNfzw9CeV05VCv70MgUq/7K64XWohVwHZOIZ2mgSQ4OPd/WYHwjZwz3jpgiJDomQWkEGsnrZOE15o6TqzZGa5D9DImdIsR8ycwJbu4RgHenTsz8jQIZGtXxrV1sJY/WQGp/LOg01XEX71IuDc5HpFBatiMlLo=
+	t=1744913394; cv=none; b=uf6HdGkvKeN5HPsrTre2xpYC2W0/FgAvRsUVKrd6tH8YdtEHBGaONhuHnQLx274NGil8KH56gidvcM2lDDnR5dLxnXEwLlaxg2c7l8ZMEyfcEjmmTX289TPo+p3rHxh986vrPybPYB/yf6n3k/LPDfeg5bgMH3qzAOxEG4CyQ5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915668; c=relaxed/simple;
-	bh=8h+BFpkDHOIylD+kN0zeHX0uEJ6AUbhavQREOXszgYI=;
+	s=arc-20240116; t=1744913394; c=relaxed/simple;
+	bh=FTP3ZNlg+eULcRd4tlo1O5Y5MD3EKrEC/vyFI5ht1jM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FZjU+djCUy+6feUGiv9a23P0so9L9TRvrjuHSbIjPDbCIExKh1o35T6hxMQGG+ECGWUpr5AcKniMyEvBrgjzGUqoRUICkR1V0LbGyEkZKOb/UgRy6l/BjF3jlmj6O0VLadWqjrqCv40CYrtyPDp3b5vZ+FIo2irifL18LyBOP4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7z1Jvjp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B472FC4CEE4;
-	Thu, 17 Apr 2025 18:47:47 +0000 (UTC)
+	 MIME-Version; b=XWSudJUg1bfLvpBZOty/x+9cbC7Nn50WeM9MuZKtHuPG4vKZdsy7ZKmzRK/eeTJEWSxy+vIrMhZ8AE61FCx6WcDDtCWjfBKqibk6vkBFGogCwOmTa0Peo9s57hUGlHmIqWYlCOEfncKrwUz+/hmWUbLDm/4edj5FVgrYV/MGOxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uHsQhmbr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 720E0C4CEE4;
+	Thu, 17 Apr 2025 18:09:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915668;
-	bh=8h+BFpkDHOIylD+kN0zeHX0uEJ6AUbhavQREOXszgYI=;
+	s=korg; t=1744913393;
+	bh=FTP3ZNlg+eULcRd4tlo1O5Y5MD3EKrEC/vyFI5ht1jM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J7z1JvjpVfmVPCKsiz4bifim2Cj9ftlzAKCzQkCl8s2a74uS3/5BvbC3yNbKhcRgt
-	 PIDHlj7a8KEANK3PXGniySbKwZEpawLMnXOo3eioh3+uZsPkQkQ+4uiulz8Rh+qarY
-	 CVtktzrBIqe5kYGqgmQ9E0GlHYKdSM/3NB8U9GFU=
+	b=uHsQhmbreKho4dOD8TAinnOZq6QMs5fg/WFpNZjN7B8rnQ4/sB3f9J3sgHYqeqTze
+	 QjKUo/GTaZ6MMUqkvozVnh0P5iPuaE12RImWYPEEygCF4GjZ+sLxcUhXyG+i6L1rFa
+	 iwmsUJy0FfLsYq46X7sYyMeKBTjP7tMoUZHQf6b4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.12 202/393] arm64: cputype: Add MIDR_CORTEX_A76AE
+	Abel Vesa <abel.vesa@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sebastian Reichel <sre@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.14 323/449] leds: rgb: leds-qcom-lpg: Fix pwm resolution max for Hi-Res PWMs
 Date: Thu, 17 Apr 2025 19:50:11 +0200
-Message-ID: <20250417175115.710314520@linuxfoundation.org>
+Message-ID: <20250417175131.128534933@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-commit a9b5bd81b294d30a747edd125e9f6aef2def7c79 upstream.
+commit b7881eacc07fdf50be3f33c662997541bb59366d upstream.
 
->From the TRM, MIDR_CORTEX_A76AE has a partnum of 0xDOE and an
-implementor of 0x41 (ARM). Add the values.
+Ideally, the requested duty cycle should never translate to a PWM
+value higher than the selected resolution (PWM size), but currently the
+best matched period is never reported back to the PWM consumer, so the
+consumer will still be using the requested period which is higher than
+the best matched one. This will result in PWM consumer requesting
+duty cycle values higher than the allowed PWM value.
 
-Cc: stable@vger.kernel.org # dependency of the next fix in the series
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20250107120555.v4.4.I151f3b7ee323bcc3082179b8c60c3cd03308aa94@changeid
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+For example, a consumer might request a period of 5ms while the best
+(closest) period the PWM hardware will do is 4.26ms. For this best
+matched resolution, if the selected resolution is 8-bit wide, when
+the consumer asks for a duty cycle of 5ms, the PWM value will be 300,
+which is outside of what the resolution allows. This will happen with
+all possible resolutions when selected.
+
+Since for these Hi-Res PWMs, the current implementation is capping the PWM
+value at a 15-bit resolution, even when lower resolutions are selected,
+the value will be wrapped around by the HW internal logic to the selected
+resolution.
+
+Fix the issue by capping the PWM value to the maximum value allowed by
+the selected resolution.
+
+Cc: stable@vger.kernel.org    # 6.4
+Fixes: b00d2ed37617 ("leds: rgb: leds-qcom-lpg: Add support for high resolution PWM")
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Sebastian Reichel <sre@kernel.org>
+Link: https://lore.kernel.org/r/20250305-leds-qcom-lpg-fix-max-pwm-on-hi-res-v4-2-bfe124a53a9f@linaro.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/leds/rgb/leds-qcom-lpg.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -75,6 +75,7 @@
- #define ARM_CPU_PART_CORTEX_A76		0xD0B
- #define ARM_CPU_PART_NEOVERSE_N1	0xD0C
- #define ARM_CPU_PART_CORTEX_A77		0xD0D
-+#define ARM_CPU_PART_CORTEX_A76AE	0xD0E
- #define ARM_CPU_PART_NEOVERSE_V1	0xD40
- #define ARM_CPU_PART_CORTEX_A78		0xD41
- #define ARM_CPU_PART_CORTEX_A78AE	0xD42
-@@ -159,6 +160,7 @@
- #define MIDR_CORTEX_A76	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A76)
- #define MIDR_NEOVERSE_N1 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N1)
- #define MIDR_CORTEX_A77	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A77)
-+#define MIDR_CORTEX_A76AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A76AE)
- #define MIDR_NEOVERSE_V1	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V1)
- #define MIDR_CORTEX_A78	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78)
- #define MIDR_CORTEX_A78AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78AE)
+--- a/drivers/leds/rgb/leds-qcom-lpg.c
++++ b/drivers/leds/rgb/leds-qcom-lpg.c
+@@ -529,7 +529,7 @@ static void lpg_calc_duty(struct lpg_cha
+ 	unsigned int clk_rate;
+ 
+ 	if (chan->subtype == LPG_SUBTYPE_HI_RES_PWM) {
+-		max = LPG_RESOLUTION_15BIT - 1;
++		max = BIT(lpg_pwm_resolution_hi_res[chan->pwm_resolution_sel]) - 1;
+ 		clk_rate = lpg_clk_rates_hi_res[chan->clk_sel];
+ 	} else {
+ 		max = LPG_RESOLUTION_9BIT - 1;
 
 
 
