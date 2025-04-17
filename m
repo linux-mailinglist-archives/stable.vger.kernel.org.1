@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-133501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3B74A92673
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:13:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E748CA92A2A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E1ED7B832B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:07:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5329D16C982
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 293792571A2;
-	Thu, 17 Apr 2025 18:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6FF1E98ED;
+	Thu, 17 Apr 2025 18:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/6kcavl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0ct1hkZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9D8255E23;
-	Thu, 17 Apr 2025 18:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8934502F;
+	Thu, 17 Apr 2025 18:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913267; cv=none; b=oh1GDi+YagZuKy6TlXrBXNYeRlry1jyCcDS9ea8NC0TxcyVJfZAYuKg3moI19tBBmfUkBK/X5oOk0O6FSWqOH5OM0XdDSfyzFMHMjMdpdCVDZyOJ3kRFSPOnRff78BMwax9j2AmBiGWfMl92Ozwy3dIuqN3u1WwCiAoIlYeeGto=
+	t=1744915640; cv=none; b=MnrWDBddK6aFiLy8bPimF/ICmTztElr92frhWSqlu2rK3uZYk9vsLBy3TUrzBuWV5RtDRCsQ+mi4zSh+2A95hCAkfv2DMh8JYGXcL+1+LbRejHBOUMaQIEU5ziR2YVMa3snIwl/eFefiT1qH5LNlH0CC6oKCbUmcswLORI0FccY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913267; c=relaxed/simple;
-	bh=klH8CB0Or8NseXjC9P+LJQOr3+QaeiNyWwSKZ/8HIXg=;
+	s=arc-20240116; t=1744915640; c=relaxed/simple;
+	bh=K0/FNiQOntUaiNQKWh9BxBBv64HlggbfHBnQktECV5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U0/nbWVYsUpqP+TvHULsskiCkKyZt4aWUPKK+Wuiog5v41BAuGTkZoQkJVIsd7wh5glDDYFARMK19Yd61YHdsYD1EpgyBhMBWHEmIgP/WP6tzUwB43dHFrIxe48pyAEz7rQ6YJjCv2HQUJIZcBBA30WeIWviN2ZrkkJo4Obkfq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/6kcavl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5713DC4CEE4;
-	Thu, 17 Apr 2025 18:07:47 +0000 (UTC)
+	 MIME-Version; b=ABxQPB8cRcMUk9igdgVqsxUik9QbIRuOBiTcjpJdMNMObsTI5jojpUVFn0HsMEZhLJ8g/h76GXeUJimNF0eHZL3YnWO7bbxsK0m6pJE7ZZdU6OOEBTEIgR/3GIWOKC8LnmpiwLL++Z4nxK4AgaDFZJtTXWCEk49lo1HXoyZnTYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0ct1hkZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC93C4CEE7;
+	Thu, 17 Apr 2025 18:47:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913267;
-	bh=klH8CB0Or8NseXjC9P+LJQOr3+QaeiNyWwSKZ/8HIXg=;
+	s=korg; t=1744915640;
+	bh=K0/FNiQOntUaiNQKWh9BxBBv64HlggbfHBnQktECV5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l/6kcavld//WIQ9jLxZYIlA6Lc1vhrs5MnAFUKjOGRP8duunf8yghLE/fcD/K7VAW
-	 ZWY1XRGhgmY0jilZ4vbx54DwUpOeW/3yXCjgzkVOMJB7sY22/sxLQMCRCe6vOy4foS
-	 DyP9ohhr+qMOT3Kp52leey4Gs1PHxHJQiaxGh0zo=
+	b=U0ct1hkZAZZj6NE6lNpyr9+KWJoSnA7i2oqX/hmeKn00ZzY+c1DZC5C55cLvrSv6a
+	 85ih7kRfQ+mkxKD6lF9UtE78/okkeohCZvEAEtw19p3tBoYGOxhv+UcTcKnXezfv7k
+	 xCg0mKZrkIO7yeGXKuWF4ELob+Ln7jCAXVWNuY34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.14 282/449] wifi: mt76: mt7925: fix country count limitation for CLC
-Date: Thu, 17 Apr 2025 19:49:30 +0200
-Message-ID: <20250417175129.423250504@linuxfoundation.org>
+	Sheng Yong <shengyong1@xiaomi.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 162/393] erofs: set error to bio if file-backed IO fails
+Date: Thu, 17 Apr 2025 19:49:31 +0200
+Message-ID: <20250417175114.095747922@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+From: Sheng Yong <shengyong1@xiaomi.com>
 
-commit 6458d760a0c0afd2fda11e83ed3e1125a252432f upstream.
+[ Upstream commit 1595f15391b81815e4ef91c339991913d556c1b6 ]
 
-Due to the increase in the number of power tables for 6Ghz on CLC,
-the variable nr_country is no longer sufficient to represent the
-total quantity. Therefore, we have switched to calculating the
-length of clc buf to obtain the correct power table.
+If a file-backed IO fails before submitting the bio to the lower
+filesystem, an error is returned, but the bio->bi_status is not
+marked as an error. However, the error information should be passed
+to the end_io handler. Otherwise, the IO request will be treated as
+successful.
 
-Cc: stable@vger.kernel.org
-Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20250116062131.3860198-1-mingyen.hsieh@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 283213718f5d ("erofs: support compressed inodes for fileio")
+Signed-off-by: Sheng Yong <shengyong1@xiaomi.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250408122351.2104507-1-shengyong1@xiaomi.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/erofs/fileio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -3125,13 +3125,14 @@ __mt7925_mcu_set_clc(struct mt792x_dev *
- 		.env = env_cap,
- 	};
- 	int ret, valid_cnt = 0;
--	u8 i, *pos;
-+	u8 *pos, *last_pos;
- 
- 	if (!clc)
- 		return 0;
- 
- 	pos = clc->data + sizeof(*seg) * clc->nr_seg;
--	for (i = 0; i < clc->nr_country; i++) {
-+	last_pos = clc->data + le32_to_cpu(*(__le32 *)(clc->data + 4));
-+	while (pos < last_pos) {
- 		struct mt7925_clc_rule *rule = (struct mt7925_clc_rule *)pos;
- 
- 		pos += sizeof(*rule);
+diff --git a/fs/erofs/fileio.c b/fs/erofs/fileio.c
+index 33f8539dda4ae..17aed5f6c5490 100644
+--- a/fs/erofs/fileio.c
++++ b/fs/erofs/fileio.c
+@@ -32,6 +32,8 @@ static void erofs_fileio_ki_complete(struct kiocb *iocb, long ret)
+ 		ret = 0;
+ 	}
+ 	if (rq->bio.bi_end_io) {
++		if (ret < 0 && !rq->bio.bi_status)
++			rq->bio.bi_status = errno_to_blk_status(ret);
+ 		rq->bio.bi_end_io(&rq->bio);
+ 	} else {
+ 		bio_for_each_folio_all(fi, &rq->bio) {
+-- 
+2.39.5
+
 
 
 
