@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-134065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B53AA92930
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:40:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F399CA92B0F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:56:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A83E9466A81
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C3531B65C6C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:56:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F39D256C84;
-	Thu, 17 Apr 2025 18:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14D625525A;
+	Thu, 17 Apr 2025 18:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vqa1pJnH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KnvQzv6t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C90018C034;
-	Thu, 17 Apr 2025 18:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E76A8462;
+	Thu, 17 Apr 2025 18:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914987; cv=none; b=MKlRMRIad9jzWNVUGIh+Aqe8lbaQnQ/CYPQPL1PrHndrU01Oi4y3P2NR1XB9Gum2NG0JC0Jheac79O6SZT56rNuUuc+Pp92be/I1x4BRlLJtYwAGESYahaZtka2qlorzmfTmStPxgn0IcZ+aqG36z/t208vGHgc+zqy5kzA6sgs=
+	t=1744916111; cv=none; b=IunY2XDuuSJwmrKS0+bCKO/CObpRVnBiInGCVhLqGAtAO2dUNoKGl5uJnxcghIjtAhAkEOBjbiJcUfUpPftajW6WZ3Gn78AD6j9FNrEDp0ItJT/AvK6pdqfDTiWr49jobFbBH04XYxQR8PagmxT/YdYuP6ZNUuGoSShx9qlRvkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914987; c=relaxed/simple;
-	bh=gOZkvJpGp+vJ0PQAtOFQdYxwQfDAvPPF6u1lh2kdXag=;
+	s=arc-20240116; t=1744916111; c=relaxed/simple;
+	bh=c6BBCrDvalSgLYrJ2YxSIwmAlKPfanPiJ09ZhwK9r7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kkaapE7akqYgrze6mjNF0jRqRQ6hX6wurkl+iiSEDw7GLDs53gnkoguPAtS54kXLW7zlhbYBRSKxq+boc8DUJdTn7Axu0XCSx/nn4jgYiPNvT/CudQN1W5tVRhZsAKtM5ieYoPGlVhv6yOTdDOqjo3YegeMNjewdh5k7s46uVPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vqa1pJnH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3CB5C4CEE4;
-	Thu, 17 Apr 2025 18:36:26 +0000 (UTC)
+	 MIME-Version; b=IT+3Rx074SyD0eRA4qJNHPd80MS6T4muRcrl4NWVGyBUd+vW+sNU5N02YVvtDbyWWQAh7pFhT6kKAYZOhEnnXKF7WLKL0h4+Uhmfn6u2xSVSH8EW9cFYbOrQlntIiNLLK5E4cfGoHWv1gXuFbA0nnBY9hQjs4fGTJFB6zY4vmTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KnvQzv6t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F0FC4CEE4;
+	Thu, 17 Apr 2025 18:55:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914987;
-	bh=gOZkvJpGp+vJ0PQAtOFQdYxwQfDAvPPF6u1lh2kdXag=;
+	s=korg; t=1744916111;
+	bh=c6BBCrDvalSgLYrJ2YxSIwmAlKPfanPiJ09ZhwK9r7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vqa1pJnHeTOAYH9nSSly/1atQOTYKYj8NQUeWPzYs31q81UDPsUiiTc8Isz8TutyW
-	 mfxDD6eN91vzdDikrQV6eOxtk1xwyOLUC6m9jvhQUE03LqO/a1uSmCraHf27fruI8f
-	 hmv8gQveZyOvrPy3HTq1jwSTGnP0ALc5j2AIbXMc=
+	b=KnvQzv6tLqXumX0JG8fq6IkI6pEZBnJXCn6Tg2IsAY7uV5SR+qys1ptrm++8mgGeg
+	 //lgJ30TXeP6vBIapofEVc9PGPERXpnIXg2+hRM8P3/KUB5EtzB2QkDJ30PVP9Dun2
+	 sUvi2S2sfkX+Bf4+yR5cr5s8a+WRY0ZTeUJ/CWwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Jens Remus <jremus@linux.ibm.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 6.13 396/414] s390: Fix linker error when -no-pie option is unavailable
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.12 345/393] KVM: x86: Acquire SRCU in KVM_GET_MP_STATE to protect guest memory accesses
 Date: Thu, 17 Apr 2025 19:52:34 +0200
-Message-ID: <20250417175127.413854366@linuxfoundation.org>
+Message-ID: <20250417175121.478686054@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumanth Korikkar <sumanthk@linux.ibm.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 991a20173a1fbafd9fc0df0c7e17bb62d44a4deb upstream.
+commit ef01cac401f18647d62720cf773d7bb0541827da upstream.
 
-The kernel build may fail if the linker does not support -no-pie option,
-as it always included in LDFLAGS_vmlinux.
+Acquire a lock on kvm->srcu when userspace is getting MP state to handle a
+rather extreme edge case where "accepting" APIC events, i.e. processing
+pending INIT or SIPI, can trigger accesses to guest memory.  If the vCPU
+is in L2 with INIT *and* a TRIPLE_FAULT request pending, then getting MP
+state will trigger a nested VM-Exit by way of ->check_nested_events(), and
+emuating the nested VM-Exit can access guest memory.
 
-Error log:
-s390-linux-ld: unable to disambiguate: -no-pie (did you mean --no-pie ?)
+The splat was originally hit by syzkaller on a Google-internal kernel, and
+reproduced on an upstream kernel by hacking the triple_fault_event_test
+selftest to stuff a pending INIT, store an MSR on VM-Exit (to generate a
+memory access on VMX), and do vcpu_mp_state_get() to trigger the scenario.
 
-Although the GNU linker defaults to -no-pie, the ability to explicitly
-specify this option was introduced in binutils 2.36.
+  =============================
+  WARNING: suspicious RCU usage
+  6.14.0-rc3-b112d356288b-vmx/pi_lockdep_false_pos-lock #3 Not tainted
+  -----------------------------
+  include/linux/kvm_host.h:1058 suspicious rcu_dereference_check() usage!
 
-Hence, fix it by adding -no-pie to LDFLAGS_vmlinux only when it is
-available.
+  other info that might help us debug this:
+
+  rcu_scheduler_active = 2, debug_locks = 1
+  1 lock held by triple_fault_ev/1256:
+   #0: ffff88810df5a330 (&vcpu->mutex){+.+.}-{4:4}, at: kvm_vcpu_ioctl+0x8b/0x9a0 [kvm]
+
+  stack backtrace:
+  CPU: 11 UID: 1000 PID: 1256 Comm: triple_fault_ev Not tainted 6.14.0-rc3-b112d356288b-vmx #3
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x7f/0x90
+   lockdep_rcu_suspicious+0x144/0x190
+   kvm_vcpu_gfn_to_memslot+0x156/0x180 [kvm]
+   kvm_vcpu_read_guest+0x3e/0x90 [kvm]
+   read_and_check_msr_entry+0x2e/0x180 [kvm_intel]
+   __nested_vmx_vmexit+0x550/0xde0 [kvm_intel]
+   kvm_check_nested_events+0x1b/0x30 [kvm]
+   kvm_apic_accept_events+0x33/0x100 [kvm]
+   kvm_arch_vcpu_ioctl_get_mpstate+0x30/0x1d0 [kvm]
+   kvm_vcpu_ioctl+0x33e/0x9a0 [kvm]
+   __x64_sys_ioctl+0x8b/0xb0
+   do_syscall_64+0x6c/0x170
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+   </TASK>
 
 Cc: stable@vger.kernel.org
-Fixes: 00cda11d3b2e ("s390: Compile kernel with -fPIC and link with -no-pie")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202503220342.T3fElO9L-lkp@intel.com/
-Suggested-by: Jens Remus <jremus@linux.ibm.com>
-Reviewed-by: Jens Remus <jremus@linux.ibm.com>
-Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250401150504.829812-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/x86.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/s390/Makefile
-+++ b/arch/s390/Makefile
-@@ -15,7 +15,7 @@ KBUILD_CFLAGS_MODULE += -fPIC
- KBUILD_AFLAGS	+= -m64
- KBUILD_CFLAGS	+= -m64
- KBUILD_CFLAGS	+= -fPIC
--LDFLAGS_vmlinux	:= -no-pie --emit-relocs --discard-none
-+LDFLAGS_vmlinux	:= $(call ld-option,-no-pie) --emit-relocs --discard-none
- extra_tools	:= relocs
- aflags_dwarf	:= -Wa,-gdwarf-2
- KBUILD_AFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -D__ASSEMBLY__
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -11769,6 +11769,8 @@ int kvm_arch_vcpu_ioctl_get_mpstate(stru
+ 	if (kvm_mpx_supported())
+ 		kvm_load_guest_fpu(vcpu);
+ 
++	kvm_vcpu_srcu_read_lock(vcpu);
++
+ 	r = kvm_apic_accept_events(vcpu);
+ 	if (r < 0)
+ 		goto out;
+@@ -11782,6 +11784,8 @@ int kvm_arch_vcpu_ioctl_get_mpstate(stru
+ 		mp_state->mp_state = vcpu->arch.mp_state;
+ 
+ out:
++	kvm_vcpu_srcu_read_unlock(vcpu);
++
+ 	if (kvm_mpx_supported())
+ 		kvm_put_guest_fpu(vcpu);
+ 	vcpu_put(vcpu);
 
 
 
