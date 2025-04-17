@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-133775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B7A6A92775
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:25:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C55F9A929FB
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:46:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C88117CDE9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:25:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B2CA3A6501
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603D926460F;
-	Thu, 17 Apr 2025 18:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20B812561D7;
+	Thu, 17 Apr 2025 18:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NgjoWZR2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P7wHeuKw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10C4264606;
-	Thu, 17 Apr 2025 18:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D118D25335A;
+	Thu, 17 Apr 2025 18:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914102; cv=none; b=YLH8+cTjUWyoARjpMPZ4Flvaw/XTXaCOyAb3O/DpOx/vJSZEqhfvCRRfR2FZXZvTn4lmR97v7ty9yX3Rs6+uwr3Ut42vTgFz5xhHt0OmqzeCNJqJwetuymim/GwOgwEsSKcNm0AtkQp9jy0OGxQmg3KrFp1CSZnxqJqucSzN8e4=
+	t=1744915336; cv=none; b=NTdFgceN1t/po8aPs+ZMtchB0ex1jx+fFE+e1j5qWM2EEAVnyVJ9AyUEoyI3LYu+gn4O/i8ne6ytPDxkHx/BV4cj6MjM/iBLwBDeuw3T3HhDddZgtYXqc/t+PUbeto95xmtQCBYjC4BvACxdXBDlou1GlyFtlO5R6UN8TAfmigI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914102; c=relaxed/simple;
-	bh=pwX1S738zdu0LhvW54zYu9uVV+z/9hqMvUdh+0Lt0yU=;
+	s=arc-20240116; t=1744915336; c=relaxed/simple;
+	bh=wVs5Tug8IwHp5IA5G4x0/MTv5d9ujipzCjehYYYhTVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g3ve8grQ+9Zul7kCDWYtPWW8pSfL96/jhRWxqxelMh+cErV+Xhf3phYDItcuM90zzhqnvfRIxur59QzEzs6K9juDEO0XGH3sMXVBjbAgaFsKeAp2e4JX6Cu/cebnEA7NrGSiCU9drfSJxkmm8wqQQhyzwAK/9RICjjinFB6L66g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NgjoWZR2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE76C4CEE7;
-	Thu, 17 Apr 2025 18:21:41 +0000 (UTC)
+	 MIME-Version; b=sH4w/YqSYCt+EeNZBAGYIODx17rBOzGz/ECwzaOPXJJPhp5hcyIkOP+ENQko4va0+Rzx2BGdt7oiD+i4WO+ub7tkDbg4Fgsm8b6mZhhNgJuaGQ/pVjJ5gmp4iISQo5lbFhHI3m62yzsN+sWmJZPxeyGOioS7WOZASsKNFG1BMkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P7wHeuKw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E96C4CEE4;
+	Thu, 17 Apr 2025 18:42:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914101;
-	bh=pwX1S738zdu0LhvW54zYu9uVV+z/9hqMvUdh+0Lt0yU=;
+	s=korg; t=1744915336;
+	bh=wVs5Tug8IwHp5IA5G4x0/MTv5d9ujipzCjehYYYhTVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NgjoWZR2z39mMqP7JUCOvKK1dm8jfzv/48xneuYPyl4srqfjXJrh2UIQmbVhSvGil
-	 ia6rm5oC4tJVoWvOs2EGtrbn5ef5xx9dZn0YevHqt2MQewvDSq92oZJDEEDwwQoop4
-	 Bxs+T5+yxAmRpiZy2eNp6TIScyKfblJ6P5YHx88k=
+	b=P7wHeuKwTDtqK/Fbb/TZ7rFnb56JTiW+H9yC4C6/GrkYKHSH2DqPPqR2ry5G6zwat
+	 Os0g75aROtJLWoVIXuBbGcrTfIJfP2MR6pqTFtJOiEHEOtVVKLW1crFk4XzFp4cB4y
+	 O/vTsRZLIL1cPWfOj7A1w+nXRTRrKjRh9nNMvFGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manish Dharanenthiran <quic_mdharane@quicinc.com>,
-	Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Petr Mladek <pmladek@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 106/414] wifi: ath12k: Fix invalid data access in ath12k_dp_rx_h_undecap_nwifi
+Subject: [PATCH 6.12 055/393] Flush console log from kernel_power_off()
 Date: Thu, 17 Apr 2025 19:47:44 +0200
-Message-ID: <20250417175115.702248393@linuxfoundation.org>
+Message-ID: <20250417175109.800339695@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,138 +66,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manish Dharanenthiran <quic_mdharane@quicinc.com>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-[ Upstream commit 9a0dddfb30f120db3851627935851d262e4e7acb ]
+[ Upstream commit 6ea9a1781c70a8be1fcdc49134fc1bf4baba8bca ]
 
-In certain cases, hardware might provide packets with a
-length greater than the maximum native Wi-Fi header length.
-This can lead to accessing and modifying fields in the header
-within the ath12k_dp_rx_h_undecap_nwifi function for
-DP_RX_DECAP_TYPE_NATIVE_WIFI decap type and
-potentially resulting in invalid data access and memory corruption.
+Kernels built with CONFIG_PREEMPT_RT=y can lose significant console output
+and shutdown time, which hides shutdown-time RCU issues from rcutorture.
+Therefore, make pr_flush() public and invoke it after then last print
+in kernel_power_off().
 
-Add a sanity check before processing the SKB to prevent invalid
-data access in the undecap native Wi-Fi function for the
-DP_RX_DECAP_TYPE_NATIVE_WIFI decap type.
+[ paulmck: Apply John Ogness feedback. ]
+[ paulmck: Appy Sebastian Andrzej Siewior feedback. ]
+[ paulmck: Apply kernel test robot feedback. ]
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Manish Dharanenthiran <quic_mdharane@quicinc.com>
-Signed-off-by: Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250211090302.4105141-1-tamizh.raja@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: John Ogness <john.ogness@linutronix.de>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Link: https://lore.kernel.org/r/5f743488-dc2a-4f19-bdda-cf50b9314832@paulmck-laptop
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_rx.c | 42 +++++++++++++++++++++++--
- 1 file changed, 40 insertions(+), 2 deletions(-)
+ include/linux/printk.h | 6 ++++++
+ kernel/printk/printk.c | 4 +---
+ kernel/reboot.c        | 1 +
+ 3 files changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index 9ae579e505572..130644389f52e 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -2474,6 +2474,29 @@ static void ath12k_dp_rx_deliver_msdu(struct ath12k *ar, struct napi_struct *nap
- 	ieee80211_rx_napi(ath12k_ar_to_hw(ar), pubsta, msdu, napi);
+diff --git a/include/linux/printk.h b/include/linux/printk.h
+index eca9bb2ee637b..0cb647ecd77f5 100644
+--- a/include/linux/printk.h
++++ b/include/linux/printk.h
+@@ -204,6 +204,7 @@ void printk_legacy_allow_panic_sync(void);
+ extern bool nbcon_device_try_acquire(struct console *con);
+ extern void nbcon_device_release(struct console *con);
+ void nbcon_atomic_flush_unsafe(void);
++bool pr_flush(int timeout_ms, bool reset_on_progress);
+ #else
+ static inline __printf(1, 0)
+ int vprintk(const char *s, va_list args)
+@@ -304,6 +305,11 @@ static inline void nbcon_atomic_flush_unsafe(void)
+ {
  }
  
-+static bool ath12k_dp_rx_check_nwifi_hdr_len_valid(struct ath12k_base *ab,
-+						   struct hal_rx_desc *rx_desc,
-+						   struct sk_buff *msdu)
++static inline bool pr_flush(int timeout_ms, bool reset_on_progress)
 +{
-+	struct ieee80211_hdr *hdr;
-+	u8 decap_type;
-+	u32 hdr_len;
-+
-+	decap_type = ath12k_dp_rx_h_decap_type(ab, rx_desc);
-+	if (decap_type != DP_RX_DECAP_TYPE_NATIVE_WIFI)
-+		return true;
-+
-+	hdr = (struct ieee80211_hdr *)msdu->data;
-+	hdr_len = ieee80211_hdrlen(hdr->frame_control);
-+
-+	if ((likely(hdr_len <= DP_MAX_NWIFI_HDR_LEN)))
-+		return true;
-+
-+	ab->soc_stats.invalid_rbm++;
-+	WARN_ON_ONCE(1);
-+	return false;
++	return true;
 +}
 +
- static int ath12k_dp_rx_process_msdu(struct ath12k *ar,
- 				     struct sk_buff *msdu,
- 				     struct sk_buff_head *msdu_list,
-@@ -2532,6 +2555,11 @@ static int ath12k_dp_rx_process_msdu(struct ath12k *ar,
- 		}
- 	}
+ #endif
  
-+	if (unlikely(!ath12k_dp_rx_check_nwifi_hdr_len_valid(ab, rx_desc, msdu))) {
-+		ret = -EINVAL;
-+		goto free_out;
-+	}
-+
- 	ath12k_dp_rx_h_ppdu(ar, rx_desc, rx_status);
- 	ath12k_dp_rx_h_mpdu(ar, msdu, rx_desc, rx_status);
- 
-@@ -2884,6 +2912,9 @@ static int ath12k_dp_rx_h_verify_tkip_mic(struct ath12k *ar, struct ath12k_peer
- 		    RX_FLAG_IV_STRIPPED | RX_FLAG_DECRYPTED;
- 	skb_pull(msdu, hal_rx_desc_sz);
- 
-+	if (unlikely(!ath12k_dp_rx_check_nwifi_hdr_len_valid(ab, rx_desc, msdu)))
-+		return -EINVAL;
-+
- 	ath12k_dp_rx_h_ppdu(ar, rx_desc, rxs);
- 	ath12k_dp_rx_h_undecap(ar, msdu, rx_desc,
- 			       HAL_ENCRYPT_TYPE_TKIP_MIC, rxs, true);
-@@ -3604,6 +3635,9 @@ static int ath12k_dp_rx_h_null_q_desc(struct ath12k *ar, struct sk_buff *msdu,
- 		skb_put(msdu, hal_rx_desc_sz + l3pad_bytes + msdu_len);
- 		skb_pull(msdu, hal_rx_desc_sz + l3pad_bytes);
- 	}
-+	if (unlikely(!ath12k_dp_rx_check_nwifi_hdr_len_valid(ab, desc, msdu)))
-+		return -EINVAL;
-+
- 	ath12k_dp_rx_h_ppdu(ar, desc, status);
- 
- 	ath12k_dp_rx_h_mpdu(ar, msdu, desc, status);
-@@ -3648,7 +3682,7 @@ static bool ath12k_dp_rx_h_reo_err(struct ath12k *ar, struct sk_buff *msdu,
- 	return drop;
+ bool this_cpu_in_panic(void);
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index 3b75f6e8410b9..881a26e18c658 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -2436,7 +2436,6 @@ asmlinkage __visible int _printk(const char *fmt, ...)
  }
+ EXPORT_SYMBOL(_printk);
  
--static void ath12k_dp_rx_h_tkip_mic_err(struct ath12k *ar, struct sk_buff *msdu,
-+static bool ath12k_dp_rx_h_tkip_mic_err(struct ath12k *ar, struct sk_buff *msdu,
- 					struct ieee80211_rx_status *status)
+-static bool pr_flush(int timeout_ms, bool reset_on_progress);
+ static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progress);
+ 
+ #else /* CONFIG_PRINTK */
+@@ -2449,7 +2448,6 @@ static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progre
+ 
+ static u64 syslog_seq;
+ 
+-static bool pr_flush(int timeout_ms, bool reset_on_progress) { return true; }
+ static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progress) { return true; }
+ 
+ #endif /* CONFIG_PRINTK */
+@@ -4436,7 +4434,7 @@ static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progre
+  * Context: Process context. May sleep while acquiring console lock.
+  * Return: true if all usable printers are caught up.
+  */
+-static bool pr_flush(int timeout_ms, bool reset_on_progress)
++bool pr_flush(int timeout_ms, bool reset_on_progress)
  {
- 	struct ath12k_base *ab = ar->ab;
-@@ -3666,6 +3700,9 @@ static void ath12k_dp_rx_h_tkip_mic_err(struct ath12k *ar, struct sk_buff *msdu,
- 	skb_put(msdu, hal_rx_desc_sz + l3pad_bytes + msdu_len);
- 	skb_pull(msdu, hal_rx_desc_sz + l3pad_bytes);
- 
-+	if (unlikely(!ath12k_dp_rx_check_nwifi_hdr_len_valid(ab, desc, msdu)))
-+		return true;
-+
- 	ath12k_dp_rx_h_ppdu(ar, desc, status);
- 
- 	status->flag |= (RX_FLAG_MMIC_STRIPPED | RX_FLAG_MMIC_ERROR |
-@@ -3673,6 +3710,7 @@ static void ath12k_dp_rx_h_tkip_mic_err(struct ath12k *ar, struct sk_buff *msdu,
- 
- 	ath12k_dp_rx_h_undecap(ar, msdu, desc,
- 			       HAL_ENCRYPT_TYPE_TKIP_MIC, status, false);
-+	return false;
+ 	return __pr_flush(NULL, timeout_ms, reset_on_progress);
  }
- 
- static bool ath12k_dp_rx_h_rxdma_err(struct ath12k *ar,  struct sk_buff *msdu,
-@@ -3691,7 +3729,7 @@ static bool ath12k_dp_rx_h_rxdma_err(struct ath12k *ar,  struct sk_buff *msdu,
- 	case HAL_REO_ENTR_RING_RXDMA_ECODE_TKIP_MIC_ERR:
- 		err_bitmap = ath12k_dp_rx_h_mpdu_err(ab, rx_desc);
- 		if (err_bitmap & HAL_RX_MPDU_ERR_TKIP_MIC) {
--			ath12k_dp_rx_h_tkip_mic_err(ar, msdu, status);
-+			drop = ath12k_dp_rx_h_tkip_mic_err(ar, msdu, status);
- 			break;
- 		}
- 		fallthrough;
+diff --git a/kernel/reboot.c b/kernel/reboot.c
+index f05dbde2c93fe..d6ee090eda943 100644
+--- a/kernel/reboot.c
++++ b/kernel/reboot.c
+@@ -697,6 +697,7 @@ void kernel_power_off(void)
+ 	migrate_to_reboot_cpu();
+ 	syscore_shutdown();
+ 	pr_emerg("Power down\n");
++	pr_flush(1000, true);
+ 	kmsg_dump(KMSG_DUMP_SHUTDOWN);
+ 	machine_power_off();
+ }
 -- 
 2.39.5
 
