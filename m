@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-133588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49DD4A926B5
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:15:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90B39A92AD4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF0737B5DC7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:11:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFCB28E072D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EDCE1E25E1;
-	Thu, 17 Apr 2025 18:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7CE0257451;
+	Thu, 17 Apr 2025 18:50:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yT8RUlbk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKLWzt4G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF37A152532;
-	Thu, 17 Apr 2025 18:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CBC92566DE;
+	Thu, 17 Apr 2025 18:50:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913530; cv=none; b=SZQYM6aIyo3ah/74Xi21gbxDzlZQKXSQ/oCy/O43YkeQYRX7j1C/Hv+cXVKW75WWYe7bCfZxybo7c6mIHB4qc62l0tGWAEOA5uCC93u+n/ToLpzao9Ndlkvyo7XG7IdT3z4XnvzVAHs7dphWceLf3t02+LMwFrIzeNJBhz8l73E=
+	t=1744915819; cv=none; b=Ns59ayLtPScQq2JpRfOtgYhB/qB3ebzoaRt2BlSHZNsMMvnc1dqxXb2R3fvAxnHXYU/IgUZrM69889HkTlV4gfqMDcQ4YIYLjs3t4Od0QZd4blPYXTxXww+Q0W0NLZFADUVX9c9dLrBn3tgTZYpkjwuEXWcUPuPXYDMbZU5b1dY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913530; c=relaxed/simple;
-	bh=EyM2JGFhEBxr/UAXTzav0+W/1rHwVODkOooq4sey4lI=;
+	s=arc-20240116; t=1744915819; c=relaxed/simple;
+	bh=EaOFcMxJsmUI+M9OGxZW1osap84Vg8BACBQ32xBhaaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NucYiLHxqdQexj5XLnTw4waLBtbmGaFNmVJYUob9r8Y/bjnWku/z+/dtOfAdB3OLCbRVPF6FFuFd3lyHL6Nqb0TBAiHx1zs6K5J9nqlsDve/R4egOMbcPjYYZruQtVqcDIQyKEdCgif7rG5DllRvcva1/UkE/J4qbmPlI+oarAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yT8RUlbk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FDFFC4CEE4;
-	Thu, 17 Apr 2025 18:12:09 +0000 (UTC)
+	 MIME-Version; b=S39S53lZ9uZLX/IOooGhkWSDh7eeabtvdvU7s5aH0ZG7ucH37qf9OTy6gl1shftrsR+yu3MXNyXgLoBoJcEQK1/gY/3/L9AVlWGa0nU9LgGDRbqwkwoTlfZtreeChMutSQVDIgT6Zn/6qFX70vFuIrbRqG3fQkjrSh1c8HsKgk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKLWzt4G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF708C4CEE4;
+	Thu, 17 Apr 2025 18:50:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913529;
-	bh=EyM2JGFhEBxr/UAXTzav0+W/1rHwVODkOooq4sey4lI=;
+	s=korg; t=1744915819;
+	bh=EaOFcMxJsmUI+M9OGxZW1osap84Vg8BACBQ32xBhaaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yT8RUlbksW9awYKLm1mZsLsi7HrncGQdvbc5oHKrbOmmoSkKg8DPr4DW/JOa/UZV0
-	 0yFag2tf8Gqp/3mdRMxhQhFyt3S+vP++rEf1zj+/MUR9Fl8o8cU136fTElZ2khdNIa
-	 0NngjYbGn3DerevREIrAZifl9d+3bHe7nkMwxvgs=
+	b=dKLWzt4GYlnswLLJsYppr+UbhQCXoPNY/nf19X2td3VWa4zTP9KWTHKpYTAEVZ8kc
+	 Fxk158G3xi0x095lwhih6y7CxGvKv+www9aHg3XQ4JBN3csKkxJQ0rix0oDl1+Dzgf
+	 Ac83oYZIHVUkADQ+LKaHZwAOrzAWWputMYXVI5PE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Rostedt <rostedt@goodmis.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.14 370/449] tracing: fprobe: Fix to lock module while registering fprobe
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 249/393] ASoC: codecs: wcd937x: fix a potential memory leak in wcd937x_soc_codec_probe()
 Date: Thu, 17 Apr 2025 19:50:58 +0200
-Message-ID: <20250417175133.148899867@linuxfoundation.org>
+Message-ID: <20250417175117.606443633@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,147 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-commit d24fa977eec53399a9a49a2e1dc592430ea0a607 upstream.
+commit 3e330acf4efd63876d673c046cd073a1d4ed57a8 upstream.
 
-Since register_fprobe() does not get the module reference count while
-registering fgraph filter, if the target functions (symbols) are in
-modules, those modules can be unloaded when registering fprobe to
-fgraph.
+When snd_soc_dapm_new_controls() or snd_soc_dapm_add_routes() fails,
+wcd937x_soc_codec_probe() returns without releasing 'wcd937x->clsh_info',
+which is allocated by wcd_clsh_ctrl_alloc. Add wcd_clsh_ctrl_free()
+to prevent potential memory leak.
 
-To avoid this issue, get the reference counter of module for each
-symbol, and put it after register the fprobe.
-
-Link: https://lore.kernel.org/all/174330568792.459674.16874380163991113156.stgit@devnote2/
-
-Reported-by: Steven Rostedt <rostedt@goodmis.org>
-Closes: https://lore.kernel.org/all/20250325130628.3a9e234c@gandalf.local.home/
-Fixes: 4346ba160409 ("fprobe: Rewrite fprobe on function-graph tracer")
+Fixes: 313e978df7fc ("ASoC: codecs: wcd937x: add audio routing and Kconfig")
 Cc: stable@vger.kernel.org
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Link: https://patch.msgid.link/20250226085050.3584898-1-haoxiang_li2024@163.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/fprobe.c |   67 +++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 48 insertions(+), 19 deletions(-)
+ sound/soc/codecs/wcd937x.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/kernel/trace/fprobe.c
-+++ b/kernel/trace/fprobe.c
-@@ -544,6 +544,7 @@ struct filter_match_data {
- 	size_t index;
- 	size_t size;
- 	unsigned long *addrs;
-+	struct module **mods;
- };
+--- a/sound/soc/codecs/wcd937x.c
++++ b/sound/soc/codecs/wcd937x.c
+@@ -2564,6 +2564,7 @@ static int wcd937x_soc_codec_probe(struc
+ 						ARRAY_SIZE(wcd9375_dapm_widgets));
+ 		if (ret < 0) {
+ 			dev_err(component->dev, "Failed to add snd_ctls\n");
++			wcd_clsh_ctrl_free(wcd937x->clsh_info);
+ 			return ret;
+ 		}
  
- static int filter_match_callback(void *data, const char *name, unsigned long addr)
-@@ -557,30 +558,47 @@ static int filter_match_callback(void *d
- 	if (!ftrace_location(addr))
- 		return 0;
- 
--	if (match->addrs)
--		match->addrs[match->index] = addr;
-+	if (match->addrs) {
-+		struct module *mod = __module_text_address(addr);
-+
-+		if (mod && !try_module_get(mod))
-+			return 0;
- 
-+		match->mods[match->index] = mod;
-+		match->addrs[match->index] = addr;
-+	}
- 	match->index++;
- 	return match->index == match->size;
- }
- 
- /*
-  * Make IP list from the filter/no-filter glob patterns.
-- * Return the number of matched symbols, or -ENOENT.
-+ * Return the number of matched symbols, or errno.
-+ * If @addrs == NULL, this just counts the number of matched symbols. If @addrs
-+ * is passed with an array, we need to pass the an @mods array of the same size
-+ * to increment the module refcount for each symbol.
-+ * This means we also need to call `module_put` for each element of @mods after
-+ * using the @addrs.
-  */
--static int ip_list_from_filter(const char *filter, const char *notfilter,
--			       unsigned long *addrs, size_t size)
-+static int get_ips_from_filter(const char *filter, const char *notfilter,
-+			       unsigned long *addrs, struct module **mods,
-+			       size_t size)
- {
- 	struct filter_match_data match = { .filter = filter, .notfilter = notfilter,
--		.index = 0, .size = size, .addrs = addrs};
-+		.index = 0, .size = size, .addrs = addrs, .mods = mods};
- 	int ret;
- 
-+	if (addrs && !mods)
-+		return -EINVAL;
-+
- 	ret = kallsyms_on_each_symbol(filter_match_callback, &match);
- 	if (ret < 0)
- 		return ret;
--	ret = module_kallsyms_on_each_symbol(NULL, filter_match_callback, &match);
--	if (ret < 0)
--		return ret;
-+	if (IS_ENABLED(CONFIG_MODULES)) {
-+		ret = module_kallsyms_on_each_symbol(NULL, filter_match_callback, &match);
-+		if (ret < 0)
-+			return ret;
-+	}
- 
- 	return match.index ?: -ENOENT;
- }
-@@ -642,24 +660,35 @@ static int fprobe_init(struct fprobe *fp
-  */
- int register_fprobe(struct fprobe *fp, const char *filter, const char *notfilter)
- {
--	unsigned long *addrs;
--	int ret;
-+	unsigned long *addrs __free(kfree) = NULL;
-+	struct module **mods __free(kfree) = NULL;
-+	int ret, num;
- 
- 	if (!fp || !filter)
- 		return -EINVAL;
- 
--	ret = ip_list_from_filter(filter, notfilter, NULL, FPROBE_IPS_MAX);
--	if (ret < 0)
--		return ret;
-+	num = get_ips_from_filter(filter, notfilter, NULL, NULL, FPROBE_IPS_MAX);
-+	if (num < 0)
-+		return num;
- 
--	addrs = kcalloc(ret, sizeof(unsigned long), GFP_KERNEL);
-+	addrs = kcalloc(num, sizeof(*addrs), GFP_KERNEL);
- 	if (!addrs)
- 		return -ENOMEM;
--	ret = ip_list_from_filter(filter, notfilter, addrs, ret);
--	if (ret > 0)
--		ret = register_fprobe_ips(fp, addrs, ret);
- 
--	kfree(addrs);
-+	mods = kcalloc(num, sizeof(*mods), GFP_KERNEL);
-+	if (!mods)
-+		return -ENOMEM;
-+
-+	ret = get_ips_from_filter(filter, notfilter, addrs, mods, num);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = register_fprobe_ips(fp, addrs, ret);
-+
-+	for (int i = 0; i < num; i++) {
-+		if (mods[i])
-+			module_put(mods[i]);
-+	}
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(register_fprobe);
+@@ -2571,6 +2572,7 @@ static int wcd937x_soc_codec_probe(struc
+ 					      ARRAY_SIZE(wcd9375_audio_map));
+ 		if (ret < 0) {
+ 			dev_err(component->dev, "Failed to add routes\n");
++			wcd_clsh_ctrl_free(wcd937x->clsh_info);
+ 			return ret;
+ 		}
+ 	}
 
 
 
