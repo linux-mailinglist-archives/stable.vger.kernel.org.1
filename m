@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05504A925F2
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:09:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63F48A92812
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C660C1B627F8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8BB44A3614
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE37256C84;
-	Thu, 17 Apr 2025 18:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 496D72620E8;
+	Thu, 17 Apr 2025 18:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0k/HpgWm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WeYUI9lh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99941256C70;
-	Thu, 17 Apr 2025 18:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC14253B5E;
+	Thu, 17 Apr 2025 18:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913237; cv=none; b=IN+12LDdC6EK1CcY9tUkYH0p7PqO+RUO3u4RtnZH/A26JWTGlAwAMSijh9xIBYQSgdecUEhbK/LNW6VHFjJ8Zshfc7RawEXUjxpTEftzUIw46tHaG+vEODY1vYCxxFIazL8eoqbdSvBHHRPnXe+dbQxrVh+wSWlQ1cpxIhZow2E=
+	t=1744914405; cv=none; b=H1jEBIEGcR84/rlXZ7hNLRocgwFZY5n1mI5En3aHxBWp7y2wDKSSbgdJnR0AoH0zHId+FXP0HYXbl0mRMmmbw9EKx2sOHRahGgFL/2ZHeI5qPhz5A+vzdhyj5iZJe4emN8J/O1DPa3W1gLAyT9dlTjUYB+mG5JhJesLuePiK0Z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913237; c=relaxed/simple;
-	bh=YhQQwavTNd2/upAvs4wL7ZpYOQlZ5MqTmNVhLbTDra4=;
+	s=arc-20240116; t=1744914405; c=relaxed/simple;
+	bh=lyfkRhoyrzgcQGzrFtzZiYzhQ6DGaCeWAF+pzgHOBn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e7faybovDZtS8b6LLC8epNPO9GMEaA27AieBfVuZa0PN1xu0rh0SzfhLojcDT9047yAOWzcWukQMuTuxoMVA2AcTJw9qCDgl4YT9PV0ARnJIqciSGdzvE3fRfQgEPoeZ7CMAIX/+tDnYnlkDcwGKndLAWP55JUfkeuAIOZKi/xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0k/HpgWm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A136C4CEE4;
-	Thu, 17 Apr 2025 18:07:16 +0000 (UTC)
+	 MIME-Version; b=GiYzcIhME5NyCPNA4nk5KIMuzEisFXk0zFWNWa/IAfHx5s+7to2E54kxxYLXaWpS666I1unqI0zq2hF5Eku7fRcPK0jgzpofUmwPY7RYQF9u9V24nnhc2JJZQ9CKhu35l03Ab05QjVHL5SlmhAtbK7+YIrWJgJyFWHsXp7NEHKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WeYUI9lh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7015EC4CEE4;
+	Thu, 17 Apr 2025 18:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913237;
-	bh=YhQQwavTNd2/upAvs4wL7ZpYOQlZ5MqTmNVhLbTDra4=;
+	s=korg; t=1744914404;
+	bh=lyfkRhoyrzgcQGzrFtzZiYzhQ6DGaCeWAF+pzgHOBn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0k/HpgWmZ0mXK81XroU3Sm5lIesfXFslkncgdSghwgb8MImKQkFiVHMc3IdPhNFgP
-	 EART1itVwpaONk25F0BEKZ+nHZ5PA2RL3yw8LRKLBCaZpz1DkFdcqidiRni4AT/Rex
-	 aA/ZkCsDvUZIgAW3B6/3hCqzfmZv9bJwR0xxSOks=
+	b=WeYUI9lhXlZFP3F9l8pqQpxQJ+tIWtKvLNzKS8WDEJDnJMI5SAX+zjeDgR2YfU/LW
+	 Yuvofq6efU03ABPDD2DLjUVzm8gNNW5A+YvPnRO73nmqZMLyfRb1sjZ53ROn1aA4v/
+	 ITHmfTYxa6EQD1KZi8cNyH9UNRKStbR7Y1G0CWjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.14 273/449] net: dsa: mv88e6xxx: workaround RGMII transmit delay erratum for 6320 family
-Date: Thu, 17 Apr 2025 19:49:21 +0200
-Message-ID: <20250417175129.042729491@linuxfoundation.org>
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.13 204/414] media: venus: hfi: add a check to handle OOB in sfr region
+Date: Thu, 17 Apr 2025 19:49:22 +0200
+Message-ID: <20250417175119.643331207@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
 
-commit 1ebc8e1ef906db9c08e9abe9776d85ddec837725 upstream.
+commit f4b211714bcc70effa60c34d9fa613d182e3ef1e upstream.
 
-Implement the workaround for erratum
-  3.3 RGMII timing may be out of spec when transmit delay is enabled
-for the 6320 family, which says:
+sfr->buf_size is in shared memory and can be modified by malicious user.
+OOB write is possible when the size is made higher than actual sfr data
+buffer. Cap the size to allocated size for such cases.
 
-  When transmit delay is enabled via Port register 1 bit 14 = 1, duty
-  cycle may be out of spec. Under very rare conditions this may cause
-  the attached device receive CRC errors.
-
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Cc: <stable@vger.kernel.org> # 5.4.x
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250317173250.28780-8-kabel@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/media/platform/qcom/venus/hfi_venus.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -3674,6 +3674,21 @@ static int mv88e6xxx_stats_setup(struct
- 	return mv88e6xxx_g1_stats_clear(chip);
- }
- 
-+static int mv88e6320_setup_errata(struct mv88e6xxx_chip *chip)
-+{
-+	u16 dummy;
-+	int err;
-+
-+	/* Workaround for erratum
-+	 *   3.3 RGMII timing may be out of spec when transmit delay is enabled
-+	 */
-+	err = mv88e6xxx_port_hidden_write(chip, 0, 0xf, 0x7, 0xe000);
-+	if (err)
-+		return err;
-+
-+	return mv88e6xxx_port_hidden_read(chip, 0, 0xf, 0x7, &dummy);
-+}
-+
- /* Check if the errata has already been applied. */
- static bool mv88e6390_setup_errata_applied(struct mv88e6xxx_chip *chip)
+--- a/drivers/media/platform/qcom/venus/hfi_venus.c
++++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+@@ -1035,18 +1035,26 @@ static void venus_sfr_print(struct venus
  {
-@@ -5130,6 +5145,7 @@ static const struct mv88e6xxx_ops mv88e6
+ 	struct device *dev = hdev->core->dev;
+ 	struct hfi_sfr *sfr = hdev->sfr.kva;
++	u32 size;
+ 	void *p;
  
- static const struct mv88e6xxx_ops mv88e6320_ops = {
- 	/* MV88E6XXX_FAMILY_6320 */
-+	.setup_errata = mv88e6320_setup_errata,
- 	.ieee_pri_map = mv88e6085_g1_ieee_pri_map,
- 	.ip_pri_map = mv88e6085_g1_ip_pri_map,
- 	.irl_init_all = mv88e6352_g2_irl_init_all,
-@@ -5182,6 +5198,7 @@ static const struct mv88e6xxx_ops mv88e6
+ 	if (!sfr)
+ 		return;
  
- static const struct mv88e6xxx_ops mv88e6321_ops = {
- 	/* MV88E6XXX_FAMILY_6320 */
-+	.setup_errata = mv88e6320_setup_errata,
- 	.ieee_pri_map = mv88e6085_g1_ieee_pri_map,
- 	.ip_pri_map = mv88e6085_g1_ip_pri_map,
- 	.irl_init_all = mv88e6352_g2_irl_init_all,
+-	p = memchr(sfr->data, '\0', sfr->buf_size);
++	size = sfr->buf_size;
++	if (!size)
++		return;
++
++	if (size > ALIGNED_SFR_SIZE)
++		size = ALIGNED_SFR_SIZE;
++
++	p = memchr(sfr->data, '\0', size);
+ 	/*
+ 	 * SFR isn't guaranteed to be NULL terminated since SYS_ERROR indicates
+ 	 * that Venus is in the process of crashing.
+ 	 */
+ 	if (!p)
+-		sfr->data[sfr->buf_size - 1] = '\0';
++		sfr->data[size - 1] = '\0';
+ 
+ 	dev_err_ratelimited(dev, "SFR message from FW: %s\n", sfr->data);
+ }
 
 
 
