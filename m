@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-134434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60A55A92B0A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:56:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE2DA92966
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA4F44A82A4
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:55:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29F5B3A33B8
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487B92566D1;
-	Thu, 17 Apr 2025 18:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF32256C80;
+	Thu, 17 Apr 2025 18:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yg2GsDw9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nu1Wh9hn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BD71B4153;
-	Thu, 17 Apr 2025 18:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FBC18C034;
+	Thu, 17 Apr 2025 18:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916116; cv=none; b=T01bvEhLUJIG4iVmvI+hV/glAVcMdHTWKClgD/UVotNoAbs62G2pfiCZxicglYW8AUsq1VJUMh9jeDSxbkBKg3qLFxELYeReYji2W3d7ip4/EOD88FgV9ACDw75VWZ35SpW+PeP+cYZ5OJwFhSlqZ+gVJOe+pvjrEYn1+cqfacs=
+	t=1744914990; cv=none; b=KeOj/Atc6PSsjK5HZ3Swqg9W6i5uFk0p2yCOI8MHqTS32dK0oiXR63BxFzTABzwBtvDxyh8OzjjiNOkGsPHzZLIJ3QwiFbISKXwjyB4oCTrbct0VdoVY/R15BsT3Od4cCTkcbEFZ+w5TONWXUPgyLZNCIPBv5G4cGn7WcmkiuAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916116; c=relaxed/simple;
-	bh=gijVzA+SOKS3jgFJI5D8zeDWcRSlMIPdRdvgNA8sJRg=;
+	s=arc-20240116; t=1744914990; c=relaxed/simple;
+	bh=Gy9vpjrhmM17bvs1eiv1tdzXVcND9uGbrbEoZpLi7kA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QozGBwfc6AOhFCPKS4johiJDrUwgcYdHp4SMoQqZI5Yi9iwlNtUdOqOT8/JckGm51A30NA2+z+jzi1B/ULcuR6DWP3d2hjHEtZKohhFymAVSVy7llmYMr2DfdjMzxCxCeLI3oamjthvPEFcDHiT9COHMCuQeou2HCUSugxmDVV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yg2GsDw9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A181C4CEE4;
-	Thu, 17 Apr 2025 18:55:13 +0000 (UTC)
+	 MIME-Version; b=BQne29mkJOPq2y5YHFAxQWGVpXilrwEZoGiSZn/rAGsFCk20m0VESBy9EUl7jFa64dF8cjI9nxLwbh1v2hbusl4VIwH2yD1SVv6V7h2j7HtQEMBR0bRNzi8qtXfJFLwQgRkrWHBtdm2cChvLkaCCb2AjRo+UJJ86fQP8gB8k+9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nu1Wh9hn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A034DC4CEE4;
+	Thu, 17 Apr 2025 18:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916114;
-	bh=gijVzA+SOKS3jgFJI5D8zeDWcRSlMIPdRdvgNA8sJRg=;
+	s=korg; t=1744914990;
+	bh=Gy9vpjrhmM17bvs1eiv1tdzXVcND9uGbrbEoZpLi7kA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yg2GsDw9RGCQ2Kq3dzAJpJk0dzeiFLYegsP15hhcVJwFkvUydrY580mlOdKduCWBy
-	 PiW9PJMy/6yFkTBEvsvW+LLYhJNr89r4U3HROBwhACidl49jmLJZWBUnO0B1zcqLso
-	 f6uBUeBlhVGzEjZR1Oso823DTqHil1b6IRRFzXCY=
+	b=nu1Wh9hn/mcweXjDdeddOnTUyaBxRUIRfmK8KElff5u8dKtj1py34kw2evkIemj8s
+	 wst9t2I4kGO6fK7TUc3ZnuMesVdWFqUGbk3JE0cTmT3SubMK56UQZz8AzKzpMifKkI
+	 fkQ98pjM1JXh0hLIVdxD8XXjp6DmWsjihuq0O1ko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 346/393] scsi: ufs: qcom: fix dev reference leaked through of_qcom_ice_get
+	Jake Hillion <jake@hillion.co.uk>,
+	Andrea Righi <arighi@nvidia.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.13 397/414] sched_ext: create_dsq: Return -EEXIST on duplicate request
 Date: Thu, 17 Apr 2025 19:52:35 +0200
-Message-ID: <20250417175121.519027006@linuxfoundation.org>
+Message-ID: <20250417175127.452200803@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,42 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Jake Hillion <jake@hillion.co.uk>
 
-commit ded40f32b55f7f2f4ed9627dd3c37a1fe89ed8c6 upstream.
+commit a8897ed8523d4c9d782e282b18005a3779c92714 upstream.
 
-The driver leaks the device reference taken with
-of_find_device_by_node(). Fix the leak by using devm_of_qcom_ice_get().
+create_dsq and therefore the scx_bpf_create_dsq kfunc currently silently
+ignore duplicate entries. As a sched_ext scheduler is creating each DSQ
+for a different purpose this is surprising behaviour.
 
-Fixes: 56541c7c4468 ("scsi: ufs: ufs-qcom: Switch to the new ICE API")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Acked-by: Martin K. Petersen <martin.petersen@oracle.com> # SCSI
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20250117-qcom-ice-fix-dev-leak-v2-3-1ffa5b6884cb@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Replace rhashtable_insert_fast which ignores duplicates with
+rhashtable_lookup_insert_fast that reports duplicates (though doesn't
+return their value). The rest of the code is structured correctly and
+this now returns -EEXIST.
+
+Tested by adding an extra scx_bpf_create_dsq to scx_simple. Previously
+this was ignored, now init fails with a -17 code. Also ran scx_lavd
+which continued to work well.
+
+Signed-off-by: Jake Hillion <jake@hillion.co.uk>
+Acked-by: Andrea Righi <arighi@nvidia.com>
+Fixes: f0e1a0643a59 ("sched_ext: Implement BPF extensible scheduler class")
+Cc: stable@vger.kernel.org # v6.12+
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/host/ufs-qcom.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/ext.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/ufs/host/ufs-qcom.c
-+++ b/drivers/ufs/host/ufs-qcom.c
-@@ -118,7 +118,7 @@ static int ufs_qcom_ice_init(struct ufs_
- 	struct device *dev = hba->dev;
- 	struct qcom_ice *ice;
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -4501,8 +4501,8 @@ static struct scx_dispatch_q *create_dsq
  
--	ice = of_qcom_ice_get(dev);
-+	ice = devm_of_qcom_ice_get(dev);
- 	if (ice == ERR_PTR(-EOPNOTSUPP)) {
- 		dev_warn(dev, "Disabling inline encryption support\n");
- 		ice = NULL;
+ 	init_dsq(dsq, dsq_id);
+ 
+-	ret = rhashtable_insert_fast(&dsq_hash, &dsq->hash_node,
+-				     dsq_hash_params);
++	ret = rhashtable_lookup_insert_fast(&dsq_hash, &dsq->hash_node,
++					    dsq_hash_params);
+ 	if (ret) {
+ 		kfree(dsq);
+ 		return ERR_PTR(ret);
 
 
 
