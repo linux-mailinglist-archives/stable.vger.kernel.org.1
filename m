@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-134026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7AD0A928F2
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:39:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 668A1A92B21
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:57:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76E271B61F06
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC99F3B85F3
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78490264636;
-	Thu, 17 Apr 2025 18:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC29F2586E6;
+	Thu, 17 Apr 2025 18:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pG4fHKAJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9Yxk1Rs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3381826463B;
-	Thu, 17 Apr 2025 18:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F46256C7B;
+	Thu, 17 Apr 2025 18:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914870; cv=none; b=k/xzP5nfpEbw/SB82PAavvsk++z0UEvgq8n3kHarUhXEqaIASzPqJxsU/tI07ZquX3fPS7PafuYwBRCgaoWG9rPSvDUYa6L5hqXl7grLreJQOTieO4bvphHGvcTSzh2olu9HjDZTW86fP/NMTrjN32tUNXVA0NBcrlxOg7BBHy0=
+	t=1744916028; cv=none; b=ho3CrRZL3+8f8GG1htfG3gs477X9DV54EESepLWT1inC3XvCUyxJHlltzdCHLGbWhdSG03oKq/aOOs5miU0L2gpFZm5Z9+hlgQsYwwEc5U86mJkvJdVbq9suYCZ27RsoTRJSRDtsz97FrL8T19pQjWz/c1UlkU2nSff2qhHuEho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914870; c=relaxed/simple;
-	bh=wY6BN8SRTKBl1OvNt2711Bs1Sh53/Jbz9n8Fz4CPPBQ=;
+	s=arc-20240116; t=1744916028; c=relaxed/simple;
+	bh=9lilJutzC3SdijP+R3V1dl29tNIGCbP9yINndBN9fYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lj7K1kABN/fiTTK1RsqbsOZVdg4yXyXPTVe8p7MdhCutji/8kbRyFNASysPVkpmGKqFVAifKDRS8mcv62mwtf8EoxJhrIyqiG02Fkuzr63+RkBdWJFUNWl2Yv7inEabem/ChAuYnuB5mPcGVe5iqsadlLpECFe6dVS7Nj+cVmXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pG4fHKAJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F4AC4CEE4;
-	Thu, 17 Apr 2025 18:34:29 +0000 (UTC)
+	 MIME-Version; b=pcZMjUw/kSJOlDCYyT0Q7eZzMtfHJvk1hRRYv2DnqBi5HY9hBZXi7EAB9bPsO5N4fJJb48MvxLChVlb5HDeV71sWfWzZHhRmyW7WivtbstXMoNXB/4s+3BkJsyK8TisMSWgIKE1qKePGauAmpwy5QNz1NgmW/Hi3FJtcRvKDJKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9Yxk1Rs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB884C4CEE4;
+	Thu, 17 Apr 2025 18:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914870;
-	bh=wY6BN8SRTKBl1OvNt2711Bs1Sh53/Jbz9n8Fz4CPPBQ=;
+	s=korg; t=1744916028;
+	bh=9lilJutzC3SdijP+R3V1dl29tNIGCbP9yINndBN9fYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pG4fHKAJSkrzdIH4TJO9/Ou5+x7oLMLaESxZJvmB/7k1IFI+ZjmR062sC3dGDbXJG
-	 hGrHXHIJjBo+aPQj3S3tAznIZaBl5H88s2E79AGxzWSERAr396WGz3a+GV6AlbF3EK
-	 XweAZJImMBsBA5wYqE2iUuLdD88lFKLYRbbOI0cQ=
+	b=c9Yxk1RskQCr1S6WUvnJVss3JMa7hRihGmDO+H+E9Nu+hvCyxNm0a1QvfAabXX7Zp
+	 8JDXENqETbFliEsmuIot2vbWMwZgvGcqBcRL2G6DZgKzdD8Nmlef07cqZtpc9pUYpg
+	 F9nxraOkJM/EmFHt2e9Tsln0Lye/KpxI9sA1wPiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aman <aman1@microsoft.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.13 340/414] CIFS: Propagate min offload along with other parameters from primary to secondary channels.
-Date: Thu, 17 Apr 2025 19:51:38 +0200
-Message-ID: <20250417175125.106286783@linuxfoundation.org>
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 290/393] btrfs: fix non-empty delayed iputs list on unmount due to compressed write workers
+Date: Thu, 17 Apr 2025 19:51:39 +0200
+Message-ID: <20250417175119.277939034@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aman <aman1@microsoft.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 1821e90be08e7d4a54cd167dd818d80d06e064e9 upstream.
+commit 4c782247b89376a83fa132f7d45d6977edae0629 upstream.
 
-In a multichannel setup, it was observed that a few fields were not being
-copied over to the secondary channels, which impacted performance in cases
-where these options were relevant but not properly synchronized. To address
-this, this patch introduces copying the following parameters from the
-primary channel to the secondary channels:
+At close_ctree() after we have ran delayed iputs either through explicitly
+calling btrfs_run_delayed_iputs() or later during the call to
+btrfs_commit_super() or btrfs_error_commit_super(), we assert that the
+delayed iputs list is empty.
 
-- min_offload
-- compression.requested
-- dfs_conn
-- ignore_signature
-- leaf_fullpath
-- noblockcnt
-- retrans
-- sign
+When we have compressed writes this assertion may fail because delayed
+iputs may have been added to the list after we last ran delayed iputs.
+This happens like this:
 
-By copying these parameters, we ensure consistency across channels and
-prevent performance degradation due to missing or outdated settings.
+1) We have a compressed write bio executing;
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Aman <aman1@microsoft.com>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+2) We enter close_ctree() and flush the fs_info->endio_write_workers
+   queue which is the queue used for running ordered extent completion;
+
+3) The compressed write bio finishes and enters
+   btrfs_finish_compressed_write_work(), where it calls
+   btrfs_finish_ordered_extent() which in turn calls
+   btrfs_queue_ordered_fn(), which queues a work item in the
+   fs_info->endio_write_workers queue that we have flushed before;
+
+4) At close_ctree() we proceed, run all existing delayed iputs and
+   call btrfs_commit_super() (which also runs delayed iputs), but before
+   we run the following assertion below:
+
+      ASSERT(list_empty(&fs_info->delayed_iputs))
+
+   A delayed iput is added by the step below...
+
+5) The ordered extent completion job queued in step 3 runs and results in
+   creating a delayed iput when dropping the last reference of the ordered
+   extent (a call to btrfs_put_ordered_extent() made from
+   btrfs_finish_one_ordered());
+
+6) At this point the delayed iputs list is not empty, so the assertion at
+   close_ctree() fails.
+
+Fix this by flushing the fs_info->compressed_write_workers queue at
+close_ctree() before flushing the fs_info->endio_write_workers queue,
+respecting the queue dependency as the later is responsible for the
+execution of ordered extent completion.
+
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/connect.c |    1 +
- fs/smb/client/sess.c    |    7 +++++++
- 2 files changed, 8 insertions(+)
+ fs/btrfs/disk-io.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -1722,6 +1722,7 @@ cifs_get_tcp_session(struct smb3_fs_cont
- 	/* Grab netns reference for this server. */
- 	cifs_set_net_ns(tcp_ses, get_net(current->nsproxy->net_ns));
- 
-+	tcp_ses->sign = ctx->sign;
- 	tcp_ses->conn_id = atomic_inc_return(&tcpSesNextId);
- 	tcp_ses->noblockcnt = ctx->rootfs;
- 	tcp_ses->noblocksnd = ctx->noblocksnd || ctx->rootfs;
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -522,6 +522,13 @@ cifs_ses_add_channel(struct cifs_ses *se
- 	ctx->sockopt_tcp_nodelay = ses->server->tcp_nodelay;
- 	ctx->echo_interval = ses->server->echo_interval / HZ;
- 	ctx->max_credits = ses->server->max_credits;
-+	ctx->min_offload = ses->server->min_offload;
-+	ctx->compress = ses->server->compression.requested;
-+	ctx->dfs_conn = ses->server->dfs_conn;
-+	ctx->ignore_signature = ses->server->ignore_signature;
-+	ctx->leaf_fullpath = ses->server->leaf_fullpath;
-+	ctx->rootfs = ses->server->noblockcnt;
-+	ctx->retrans = ses->server->retrans;
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -4275,6 +4275,18 @@ void __cold close_ctree(struct btrfs_fs_
+ 	btrfs_flush_workqueue(fs_info->delalloc_workers);
  
  	/*
- 	 * This will be used for encoding/decoding user/domain/pw
++	 * When finishing a compressed write bio we schedule a work queue item
++	 * to finish an ordered extent - btrfs_finish_compressed_write_work()
++	 * calls btrfs_finish_ordered_extent() which in turns does a call to
++	 * btrfs_queue_ordered_fn(), and that queues the ordered extent
++	 * completion either in the endio_write_workers work queue or in the
++	 * fs_info->endio_freespace_worker work queue. We flush those queues
++	 * below, so before we flush them we must flush this queue for the
++	 * workers of compressed writes.
++	 */
++	flush_workqueue(fs_info->compressed_write_workers);
++
++	/*
+ 	 * After we parked the cleaner kthread, ordered extents may have
+ 	 * completed and created new delayed iputs. If one of the async reclaim
+ 	 * tasks is running and in the RUN_DELAYED_IPUTS flush state, then we
 
 
 
