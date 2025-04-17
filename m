@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-133816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0B87A927C3
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:28:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C6EFA929D3
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:44:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A1D24A2B53
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4714D8E3812
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CF08257430;
-	Thu, 17 Apr 2025 18:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40744254B1F;
+	Thu, 17 Apr 2025 18:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CAj8bsBx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pot/0DsD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7DB257423;
-	Thu, 17 Apr 2025 18:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9C0257448;
+	Thu, 17 Apr 2025 18:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914227; cv=none; b=XFyl427Lz2i6FRZauH9znMzsz3HsQEd317ecKlNZt+6+7u+JalJfi3OYZ2dSF4EjzGWq1aFKYItYA2gNRw/o3t8htbAWOHJEq/JX6luvz8wMP1RdM2Lt9zacJ4/Y17qFaFJkP171sm/yLzCMBY0T/oxfuOuBKQy8FTEYaeoSK2I=
+	t=1744915247; cv=none; b=T5O6xsP7DMjM5kHqNWx2mCoCmXT72nWdmO3wu9GQTHix5I0sBKZYl2Wedgd/NbCRfG+7crf5eGm2kTSzl7FytkqKfjvMhtlhEjFxkmqoQxaJYdn3WiZiZZg/yfzEx7Ls0B0SyfFkAJWUWux+lQLSNGrmH/a53zayv7rRIMYQ9lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914227; c=relaxed/simple;
-	bh=O3uk3eHDT2OEypGfXNPe7XpH1gxzNVYVfLnbRQhEYPg=;
+	s=arc-20240116; t=1744915247; c=relaxed/simple;
+	bh=4DsZ/fgz0BH4h0TCMC+u0nMsRKWUYdylmmxBEes0X28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IfS2gKxjGLrkmDRhCvyVU3cp7GVhXnDnOuJbK4Rmi8fx7O954g+hJTRlLwmM61QqJ5YH/znkNFghft/QJ0A5UmE+FiLim2Py/HXtaHkk7b89PAufccyJ09eXnEsItlL2SkUpFKB2iuo/3COa8Dso5GWJQYr/09emMOAdeD5nUdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CAj8bsBx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD65C4CEE4;
-	Thu, 17 Apr 2025 18:23:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hoio4fqjBJk7lmuSY7dcsL0mob5FpefVcN4gue9no5gvRvFqyMiiKDjzdRnN/fn38HIJkiXE+Ta5t0780d9DbAwgjphlTDaS4sO3VAK1LLIa9DTT9RrLrO8hN2YnoZX8+Lx2AHQm9sjlk1HKJgaW3VX55Z7/vXALxQQR3094c5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pot/0DsD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77040C4CEE4;
+	Thu, 17 Apr 2025 18:40:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914226;
-	bh=O3uk3eHDT2OEypGfXNPe7XpH1gxzNVYVfLnbRQhEYPg=;
+	s=korg; t=1744915246;
+	bh=4DsZ/fgz0BH4h0TCMC+u0nMsRKWUYdylmmxBEes0X28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CAj8bsBx+VEfSmiUq6wIVkjBf3P/Qaw8ibTQb782BlQ8bYEAv5y6HgQ8HXw6xKsAw
-	 1EVDUq3mOECkbNamS+Bc3cGTnmyTvC4K85cAVbyWQCJ/eZP8u2ftvG/2PVg7kAUi77
-	 Xm8USWThEiCRIERJ0jOxnovvJk3O8sx2MMnc6r2Q=
+	b=Pot/0DsDJymBk9reqYsgnZzWW251wB6tpqppjL8X9V2nl4escYhAItlAO6c4nsBqo
+	 QtNs7VhLdgYzCnBpSLp1+fuB31bezFrFHguHvHNlA4B3T80GOupT17BVI+gTnw80IQ
+	 NcE9yNTHS5U5Nhj8gys7cg1GrQf1mODAFoZsgMtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Icenowy Zheng <uwu@icenowy.me>,
-	Felix Fietkau <nbd@nbd.name>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 117/414] wifi: mt76: mt76x2u: add TP-Link TL-WDN6200 ID to device table
+Subject: [PATCH 6.12 066/393] HID: pidff: Add hid_pidff_init_with_quirks and export as GPL symbol
 Date: Thu, 17 Apr 2025 19:47:55 +0200
-Message-ID: <20250417175116.138648826@linuxfoundation.org>
+Message-ID: <20250417175110.249701262@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +64,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Icenowy Zheng <uwu@icenowy.me>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit 06cccc2ebbe6c8a20f714f3a0ff3ff489d3004bb ]
+[ Upstream commit 36de0164bbaff1484288e84ac5df5cff00580263 ]
 
-The TP-Link TL-WDN6200 "Driverless" version cards use a MT7612U chipset.
+This lays out a way to provide an initial set of quirks to enable before
+device initialization takes place. GPL symbol export needed for the
+possibility of building HID drivers which use this function as modules.
 
-Add the USB ID to mt76x2u driver.
+Adding a wrapper function to ensure compatibility with the old behavior
+of hid_pidff_init.
 
-Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
-Link: https://patch.msgid.link/20250317102235.1421726-1-uwu@icenowy.me
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76x2/usb.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/usbhid/hid-pidff.c | 15 ++++++++++++++-
+ include/linux/hid.h            |  2 ++
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-index e832ad53e2393..a4f4d12f904e7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-@@ -22,6 +22,7 @@ static const struct usb_device_id mt76x2u_device_table[] = {
- 	{ USB_DEVICE(0x0846, 0x9053) },	/* Netgear A6210 */
- 	{ USB_DEVICE(0x045e, 0x02e6) },	/* XBox One Wireless Adapter */
- 	{ USB_DEVICE(0x045e, 0x02fe) },	/* XBox One Wireless Adapter */
-+	{ USB_DEVICE(0x2357, 0x0137) },	/* TP-Link TL-WDN6200 */
- 	{ },
- };
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 5a57ba0d7026a..b8c2ba0a930c2 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -1268,8 +1268,9 @@ static int pidff_check_autocenter(struct pidff_device *pidff,
  
+ /*
+  * Check if the device is PID and initialize it
++ * Set initial quirks
+  */
+-int hid_pidff_init(struct hid_device *hid)
++int hid_pidff_init_with_quirks(struct hid_device *hid, __u32 initial_quirks)
+ {
+ 	struct pidff_device *pidff;
+ 	struct hid_input *hidinput = list_entry(hid->inputs.next,
+@@ -1291,6 +1292,7 @@ int hid_pidff_init(struct hid_device *hid)
+ 		return -ENOMEM;
+ 
+ 	pidff->hid = hid;
++	pidff->quirks = initial_quirks;
+ 
+ 	hid_device_io_start(hid);
+ 
+@@ -1369,3 +1371,14 @@ int hid_pidff_init(struct hid_device *hid)
+ 	kfree(pidff);
+ 	return error;
+ }
++EXPORT_SYMBOL_GPL(hid_pidff_init_with_quirks);
++
++/*
++ * Check if the device is PID and initialize it
++ * Wrapper made to keep the compatibility with old
++ * init function
++ */
++int hid_pidff_init(struct hid_device *hid)
++{
++	return hid_pidff_init_with_quirks(hid, 0);
++}
+diff --git a/include/linux/hid.h b/include/linux/hid.h
+index cd3fedce48109..818e07744c408 100644
+--- a/include/linux/hid.h
++++ b/include/linux/hid.h
+@@ -1223,8 +1223,10 @@ void hid_quirks_exit(__u16 bus);
+ 
+ #ifdef CONFIG_HID_PID
+ int hid_pidff_init(struct hid_device *hid);
++int hid_pidff_init_with_quirks(struct hid_device *hid, __u32 initial_quirks);
+ #else
+ #define hid_pidff_init NULL
++#define hid_pidff_init_with_quirks NULL
+ #endif
+ 
+ /* HID PIDFF quirks */
 -- 
 2.39.5
 
