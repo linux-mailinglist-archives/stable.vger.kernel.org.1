@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-134136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08F23A929C4
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:44:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F12EBA9276D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:25:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BAD28E4CE6
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:41:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E25E4A1533
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C794A2571DD;
-	Thu, 17 Apr 2025 18:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6155C257AF1;
+	Thu, 17 Apr 2025 18:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ek6iSG/V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zI4PNG2a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839BD1D07BA;
-	Thu, 17 Apr 2025 18:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3B7263C6A;
+	Thu, 17 Apr 2025 18:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915207; cv=none; b=YLo8u7UxvnU+vqQCZoGvoig/fG54tIgJ6MvPPiQ04/rMHUZm3ZKn1N1RXBl+ew+iqp16XL1D24/QqK0LVjmUDpPem3Pw6M75kXM7tYnrFBKvtRo9+r9A19kEnRUMMxoexTvEMtjOsmbexkp3J2mpTVOVB3Ur9TNEgLZYTnevHSI=
+	t=1744914093; cv=none; b=juJMxKyIK5Uof/xo0+KK8VRRHFLqTVFCYQwTv3+EGUb1L3U049Xn4l/j321khuwe8GFU2c7YwswkEIcSbUOXQlzHqob20OXhw3xVWplz5XJN0nIz383qsAEpUDtUOo5JMOnmlKVPKOhX60ZH5lGfOQXPPe14f0Lq3oVP+sXuzhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915207; c=relaxed/simple;
-	bh=9odaS8Oa+k7u7d9SEi0WKhYC7grzUViPd8pdVYO4we8=;
+	s=arc-20240116; t=1744914093; c=relaxed/simple;
+	bh=cO0IvsLQJIFnLC5vEhIVSES92VykaoqsV2eYmSjyVT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b1o+1Uyv/xYxjn494ONDxN3hNyPyez206rD0/Oz5dIzOW/6fVV5j+F4hvp/J+FuQqg88F8pCvjLmQ5mXaeG792E0x3vTvgacIUj1zg679VWwQjIzwF+gxUtLv5zZ6xw2TzrA2WCyhOc16fCOLKepMiXiPt3iwG/ZsXtsODmMgvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ek6iSG/V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB7FBC4CEE7;
-	Thu, 17 Apr 2025 18:40:06 +0000 (UTC)
+	 MIME-Version; b=Q9NHZ1y507hsoItNpzJS1Gj7tWD1mFnYZwysmdYfz5+irGtnPJFJwKf9/zgt0oOSFeQrSrPLdFslFJx/0Fhljny2bipuKWxYJnq3f6l5xC26leK8YTWTdRus64ITrj5ODt5PrwQLPMCwbNfwciifFUhUd2eLWSshpvhkHZYIo0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zI4PNG2a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7985DC4CEE7;
+	Thu, 17 Apr 2025 18:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915207;
-	bh=9odaS8Oa+k7u7d9SEi0WKhYC7grzUViPd8pdVYO4we8=;
+	s=korg; t=1744914092;
+	bh=cO0IvsLQJIFnLC5vEhIVSES92VykaoqsV2eYmSjyVT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ek6iSG/V4QUDoo0w+ojTA8BHJOMNiVNOFJY99Z1TIkQ+8hNfPyF3Ofqa5+L9yEvGH
-	 KNZwebP1PkQ5o2kONO2xfUYnb/6YGTAE9yBs3bTAjvZ4tbfPVQccy6GHXw07sLshXz
-	 60Cq0gqRdrZU/MkZ3KXtzCFC60pNAMQ5t6z1cFZI=
+	b=zI4PNG2aqjogQpd3P3QdLBzvwep+T9GfmFyK5zQt2DpPpYV1WX1sfZNZyDJF+7Itv
+	 5emppuAVY1iMpdtkkSCBLcOLBtri9FFPBg23pIYPrsWWV9f6PCWrGhFFpbkSdLxvBu
+	 qtOMmlp2YCDRZw40+U43LD4u1RDk2HgUqp+VVZa8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 052/393] perf: arm_pmu: Dont disable counter in armpmu_add()
+	Edward Adam Davis <eadavis@qq.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+7c808908291a569281a9@syzkaller.appspotmail.com
+Subject: [PATCH 6.13 103/414] jfs: add sanity check for agwidth in dbMount
 Date: Thu, 17 Apr 2025 19:47:41 +0200
-Message-ID: <20250417175109.680896886@linuxfoundation.org>
+Message-ID: <20250417175115.581346734@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit dcca27bc1eccb9abc2552aab950b18a9742fb8e7 ]
+[ Upstream commit ddf2846f22e8575d6b4b6a66f2100f168b8cd73d ]
 
-Currently armpmu_add() tries to handle a newly-allocated counter having
-a stale associated event, but this should not be possible, and if this
-were to happen the current mitigation is insufficient and potentially
-expensive. It would be better to warn if we encounter the impossible
-case.
+The width in dmapctl of the AG is zero, it trigger a divide error when
+calculating the control page level in dbAllocAG.
 
-Calls to pmu::add() and pmu::del() are serialized by the core perf code,
-and armpmu_del() clears the relevant slot in pmu_hw_events::events[]
-before clearing the bit in pmu_hw_events::used_mask such that the
-counter can be reallocated. Thus when armpmu_add() allocates a counter
-index from pmu_hw_events::used_mask, it should not be possible to observe
-a stale even in pmu_hw_events::events[] unless either
-pmu_hw_events::used_mask or pmu_hw_events::events[] have been corrupted.
+To avoid this issue, add a check for agwidth in dbAllocAG.
 
-If this were to happen, we'd end up with two events with the same
-event->hw.idx, which would clash with each other during reprogramming,
-deletion, etc, and produce bogus results. Add a WARN_ON_ONCE() for this
-case so that we can detect if this ever occurs in practice.
-
-That possiblity aside, there's no need to call arm_pmu::disable(event)
-for the new event. The PMU reset code initialises the counter in a
-disabled state, and armpmu_del() will disable the counter before it can
-be reused. Remove the redundant disable.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Tested-by: James Clark <james.clark@linaro.org>
-Link: https://lore.kernel.org/r/20250218-arm-brbe-v19-v20-2-4e9922fc2e8e@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
+Reported-and-tested-by: syzbot+7c808908291a569281a9@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7c808908291a569281a9
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm_pmu.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ fs/jfs/jfs_dmap.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/perf/arm_pmu.c b/drivers/perf/arm_pmu.c
-index 398cce3d76fc4..2f33e69a8caf2 100644
---- a/drivers/perf/arm_pmu.c
-+++ b/drivers/perf/arm_pmu.c
-@@ -342,12 +342,10 @@ armpmu_add(struct perf_event *event, int flags)
- 	if (idx < 0)
- 		return idx;
- 
--	/*
--	 * If there is an event in the counter we are going to use then make
--	 * sure it is disabled.
--	 */
-+	/* The newly-allocated counter should be empty */
-+	WARN_ON_ONCE(hw_events->events[idx]);
-+
- 	event->hw.idx = idx;
--	armpmu->disable(event);
- 	hw_events->events[idx] = event;
- 
- 	hwc->state = PERF_HES_STOPPED | PERF_HES_UPTODATE;
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 9ac1fc2ed05bc..0e1019382cf51 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -204,6 +204,10 @@ int dbMount(struct inode *ipbmap)
+ 	bmp->db_aglevel = le32_to_cpu(dbmp_le->dn_aglevel);
+ 	bmp->db_agheight = le32_to_cpu(dbmp_le->dn_agheight);
+ 	bmp->db_agwidth = le32_to_cpu(dbmp_le->dn_agwidth);
++	if (!bmp->db_agwidth) {
++		err = -EINVAL;
++		goto err_release_metapage;
++	}
+ 	bmp->db_agstart = le32_to_cpu(dbmp_le->dn_agstart);
+ 	bmp->db_agl2size = le32_to_cpu(dbmp_le->dn_agl2size);
+ 	if (bmp->db_agl2size > L2MAXL2SIZE - L2MAXAG ||
 -- 
 2.39.5
 
