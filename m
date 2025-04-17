@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-133479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65A60A9265A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:12:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0797BA92A32
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B2917B5FCB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:07:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A46F88A1399
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A7A1A3178;
-	Thu, 17 Apr 2025 18:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7847C253B57;
+	Thu, 17 Apr 2025 18:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O+aRL2md"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="USMvGUzT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FD01DB148;
-	Thu, 17 Apr 2025 18:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347872528FA;
+	Thu, 17 Apr 2025 18:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913201; cv=none; b=Fok30aP2zNvw8Hg0mtFU1+6IpyZQGx7AWtr6ILG+yHido0/AzTfKMQdrzRcnQDRacxdIBkvU5c4hzLrBCE6j2Eg0WgPOnJSrCeOljtPDXH0zhFYdCe5Qlh38S2RiHfZoKDGrQPkheVBw28yvqX6Ab6X3CUvIUOVRFJNIVmwQ3PA=
+	t=1744915470; cv=none; b=CdC2ZW6d1Py27WWqmooYmabBWYEm6V7Z6hsxuCWsA15OKCBQY9ZJcS6QtVoI8Cge7cHH3etPyETBM3mRxMtD5cRrrOY3GjYAcqfR+F1famWXJ6fnp7FZoUgW5MjCVqzGpvpBxwdDK8pP1VA7PBISMoJoXCSoW8dnVKc3vNw8IKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913201; c=relaxed/simple;
-	bh=ttXW5T6GEJibsWfrY8Kt4qccYVisZcFW3TRdwOe1pOQ=;
+	s=arc-20240116; t=1744915470; c=relaxed/simple;
+	bh=nl7LZmtqiBUmONXaY2OxTyjqYnNRPAZjJMq3XOWKJME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yl2xFcc9ikhW0srvc1s5jFifmpuQllg5KRR7j1pcBpQqwH7LlK1pfn0uJvJbxqhXHN4mHbtd6KX6dPQQoq39f6g4fFuEhXTVMRGpK8EWGWJE2voZ4jq47uxTxFP0eOQ3fXgnBfGaViflF2OXOtrumEd+Ot8OBr/Z7EhJZ+dTWF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O+aRL2md; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49932C4CEE4;
-	Thu, 17 Apr 2025 18:06:41 +0000 (UTC)
+	 MIME-Version; b=ePPLVghDOm62CNlEuCrk8MrXUlBYuPPNpvoNnvxMyWrDwuRhxyq3Hrem70Sm7vpmJdMQ/u+AYHCqVqGwCvCDF5UqAmt+B6+BmqmUtTg2WrFpIfxUOJ/WuXZj9vLghJN/45CmaZhRGaNBGgHg4rfRhF0jeSNr1X5tKw/edn57770=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USMvGUzT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 908E0C4CEEA;
+	Thu, 17 Apr 2025 18:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913201;
-	bh=ttXW5T6GEJibsWfrY8Kt4qccYVisZcFW3TRdwOe1pOQ=;
+	s=korg; t=1744915470;
+	bh=nl7LZmtqiBUmONXaY2OxTyjqYnNRPAZjJMq3XOWKJME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O+aRL2mdrF0KPZ7MkjMlPT2Bs98O4q0m3ydPSAhtFlit8yHF4vPcpCpUdkDPMv6We
-	 oUrlokAXZmuyzYlBGrJQuipw7I0Yxrg/tV8cbjHRAPZieKmIPNIu5gA+vwZJPB+u+T
-	 IoXhfiY5cSc/716sFQbGlvgrdOjDOh9zRdOSztOM=
+	b=USMvGUzTPjGzXK7PaaHFcx9hQ0Wvgp88JCrOJKk0Zfg8HTAx7DhKKNt9eG67aZVln
+	 676sPICEMsoeFAMXh7GHwG4gckijdnFGgm9a31gTQXdOa0C8XLIA8Wwjz03Whk+bAN
+	 QrFCA4yaOpLkz97LpnyZzkSiceOq9NiM4tJ62VoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.14 259/449] media: venus: hfi_parser: refactor hfi packet parsing logic
+	Ovidiu Bunea <ovidiu.bunea@amd.com>,
+	Mike Katsnelson <mike.katsnelson@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 138/393] drm/amd/display: stop DML2 from removing pipes based on planes
 Date: Thu, 17 Apr 2025 19:49:07 +0200
-Message-ID: <20250417175128.424532860@linuxfoundation.org>
+Message-ID: <20250417175113.138238369@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,275 +65,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
+From: Mike Katsnelson <mike.katsnelson@amd.com>
 
-commit 9edaaa8e3e15aab1ca413ab50556de1975bcb329 upstream.
+[ Upstream commit 8adeff83a3b07fa6d0958ed51e1b38ba7469e448 ]
 
-words_count denotes the number of words in total payload, while data
-points to payload of various property within it. When words_count
-reaches last word, data can access memory beyond the total payload. This
-can lead to OOB access. With this patch, the utility api for handling
-individual properties now returns the size of data consumed. Accordingly
-remaining bytes are calculated before parsing the payload, thereby
-eliminates the OOB access possibilities.
+[Why]
+Transitioning from low to high resolutions at high refresh rates caused grey corruption.
+During the transition state, there is a period where plane size is based on low resultion
+state and ODM slices are based on high resoultion state, causing the entire plane to be
+contained in one ODM slice. DML2 would turn off the pipe for the ODM slice with no plane,
+causing an underflow since the pixel rate for the higher resolution cannot be supported on
+one pipe. This change stops DML2 from turning off pipes that are mapped to an ODM slice
+with no plane. This is possible to do without negative consequences because pipes can now
+take the minimum viewport and draw with zero recout size, removing the need to have the
+pipe turned off.
 
-Cc: stable@vger.kernel.org
-Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[How]
+In map_pipes_from_plane(), remove "check" that skips ODM slices that are not covered by
+the plane. This prevents the pipes for those ODM slices from being freed.
+
+Reviewed-by: Ovidiu Bunea <ovidiu.bunea@amd.com>
+Signed-off-by: Mike Katsnelson <mike.katsnelson@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/hfi_parser.c |   98 ++++++++++++++++++-------
- 1 file changed, 72 insertions(+), 26 deletions(-)
+ .../display/dc/dml2/dml2_dc_resource_mgmt.c   | 26 -------------------
+ 1 file changed, 26 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_parser.c
-+++ b/drivers/media/platform/qcom/venus/hfi_parser.c
-@@ -64,7 +64,7 @@ fill_buf_mode(struct hfi_plat_caps *cap,
- 		cap->cap_bufs_mode_dynamic = true;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_dc_resource_mgmt.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_dc_resource_mgmt.c
+index 1ed21c1b86a5b..a966abd407881 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_dc_resource_mgmt.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_dc_resource_mgmt.c
+@@ -532,26 +532,6 @@ static void calculate_odm_slices(const struct dc_stream_state *stream, unsigned
+ 	odm_slice_end_x[odm_factor - 1] = stream->src.width - 1;
  }
  
--static void
-+static int
- parse_alloc_mode(struct venus_core *core, u32 codecs, u32 domain, void *data)
- {
- 	struct hfi_buffer_alloc_mode_supported *mode = data;
-@@ -72,7 +72,7 @@ parse_alloc_mode(struct venus_core *core
- 	u32 *type;
+-static bool is_plane_in_odm_slice(const struct dc_plane_state *plane, unsigned int slice_index, unsigned int *odm_slice_end_x, unsigned int num_slices)
+-{
+-	unsigned int slice_start_x, slice_end_x;
+-
+-	if (slice_index == 0)
+-		slice_start_x = 0;
+-	else
+-		slice_start_x = odm_slice_end_x[slice_index - 1] + 1;
+-
+-	slice_end_x = odm_slice_end_x[slice_index];
+-
+-	if (plane->clip_rect.x + plane->clip_rect.width < slice_start_x)
+-		return false;
+-
+-	if (plane->clip_rect.x > slice_end_x)
+-		return false;
+-
+-	return true;
+-}
+-
+ static void add_odm_slice_to_odm_tree(struct dml2_context *ctx,
+ 		struct dc_state *state,
+ 		struct dc_pipe_mapping_scratch *scratch,
+@@ -791,12 +771,6 @@ static void map_pipes_for_plane(struct dml2_context *ctx, struct dc_state *state
+ 	sort_pipes_for_splitting(&scratch->pipe_pool);
  
- 	if (num_entries > MAX_ALLOC_MODE_ENTRIES)
--		return;
-+		return -EINVAL;
- 
- 	type = mode->data;
- 
-@@ -84,6 +84,8 @@ parse_alloc_mode(struct venus_core *core
- 
- 		type++;
- 	}
-+
-+	return sizeof(*mode);
- }
- 
- static void fill_profile_level(struct hfi_plat_caps *cap, const void *data,
-@@ -98,7 +100,7 @@ static void fill_profile_level(struct hf
- 	cap->num_pl += num;
- }
- 
--static void
-+static int
- parse_profile_level(struct venus_core *core, u32 codecs, u32 domain, void *data)
- {
- 	struct hfi_profile_level_supported *pl = data;
-@@ -106,12 +108,14 @@ parse_profile_level(struct venus_core *c
- 	struct hfi_profile_level pl_arr[HFI_MAX_PROFILE_COUNT] = {};
- 
- 	if (pl->profile_count > HFI_MAX_PROFILE_COUNT)
--		return;
-+		return -EINVAL;
- 
- 	memcpy(pl_arr, proflevel, pl->profile_count * sizeof(*proflevel));
- 
- 	for_each_codec(core->caps, ARRAY_SIZE(core->caps), codecs, domain,
- 		       fill_profile_level, pl_arr, pl->profile_count);
-+
-+	return pl->profile_count * sizeof(*proflevel) + sizeof(u32);
- }
- 
- static void
-@@ -126,7 +130,7 @@ fill_caps(struct hfi_plat_caps *cap, con
- 	cap->num_caps += num;
- }
- 
--static void
-+static int
- parse_caps(struct venus_core *core, u32 codecs, u32 domain, void *data)
- {
- 	struct hfi_capabilities *caps = data;
-@@ -135,12 +139,14 @@ parse_caps(struct venus_core *core, u32
- 	struct hfi_capability caps_arr[MAX_CAP_ENTRIES] = {};
- 
- 	if (num_caps > MAX_CAP_ENTRIES)
--		return;
-+		return -EINVAL;
- 
- 	memcpy(caps_arr, cap, num_caps * sizeof(*cap));
- 
- 	for_each_codec(core->caps, ARRAY_SIZE(core->caps), codecs, domain,
- 		       fill_caps, caps_arr, num_caps);
-+
-+	return sizeof(*caps);
- }
- 
- static void fill_raw_fmts(struct hfi_plat_caps *cap, const void *fmts,
-@@ -155,7 +161,7 @@ static void fill_raw_fmts(struct hfi_pla
- 	cap->num_fmts += num_fmts;
- }
- 
--static void
-+static int
- parse_raw_formats(struct venus_core *core, u32 codecs, u32 domain, void *data)
- {
- 	struct hfi_uncompressed_format_supported *fmt = data;
-@@ -164,7 +170,8 @@ parse_raw_formats(struct venus_core *cor
- 	struct raw_formats rawfmts[MAX_FMT_ENTRIES] = {};
- 	u32 entries = fmt->format_entries;
- 	unsigned int i = 0;
--	u32 num_planes;
-+	u32 num_planes = 0;
-+	u32 size;
- 
- 	while (entries) {
- 		num_planes = pinfo->num_planes;
-@@ -174,7 +181,7 @@ parse_raw_formats(struct venus_core *cor
- 		i++;
- 
- 		if (i >= MAX_FMT_ENTRIES)
--			return;
-+			return -EINVAL;
- 
- 		if (pinfo->num_planes > MAX_PLANES)
- 			break;
-@@ -186,9 +193,13 @@ parse_raw_formats(struct venus_core *cor
- 
- 	for_each_codec(core->caps, ARRAY_SIZE(core->caps), codecs, domain,
- 		       fill_raw_fmts, rawfmts, i);
-+	size = fmt->format_entries * (sizeof(*constr) * num_planes + 2 * sizeof(u32))
-+		+ 2 * sizeof(u32);
-+
-+	return size;
- }
- 
--static void parse_codecs(struct venus_core *core, void *data)
-+static int parse_codecs(struct venus_core *core, void *data)
- {
- 	struct hfi_codec_supported *codecs = data;
- 
-@@ -200,21 +211,27 @@ static void parse_codecs(struct venus_co
- 		core->dec_codecs &= ~HFI_VIDEO_CODEC_SPARK;
- 		core->enc_codecs &= ~HFI_VIDEO_CODEC_HEVC;
- 	}
-+
-+	return sizeof(*codecs);
- }
- 
--static void parse_max_sessions(struct venus_core *core, const void *data)
-+static int parse_max_sessions(struct venus_core *core, const void *data)
- {
- 	const struct hfi_max_sessions_supported *sessions = data;
- 
- 	core->max_sessions_supported = sessions->max_sessions;
-+
-+	return sizeof(*sessions);
- }
- 
--static void parse_codecs_mask(u32 *codecs, u32 *domain, void *data)
-+static int parse_codecs_mask(u32 *codecs, u32 *domain, void *data)
- {
- 	struct hfi_codec_mask_supported *mask = data;
- 
- 	*codecs = mask->codecs;
- 	*domain = mask->video_domains;
-+
-+	return sizeof(*mask);
- }
- 
- static void parser_init(struct venus_inst *inst, u32 *codecs, u32 *domain)
-@@ -283,8 +300,9 @@ static int hfi_platform_parser(struct ve
- u32 hfi_parser(struct venus_core *core, struct venus_inst *inst, void *buf,
- 	       u32 size)
- {
--	unsigned int words_count = size >> 2;
--	u32 *word = buf, *data, codecs = 0, domain = 0;
-+	u32 *words = buf, *payload, codecs = 0, domain = 0;
-+	u32 *frame_size = buf + size;
-+	u32 rem_bytes = size;
- 	int ret;
- 
- 	ret = hfi_platform_parser(core, inst);
-@@ -301,38 +319,66 @@ u32 hfi_parser(struct venus_core *core,
- 		memset(core->caps, 0, sizeof(core->caps));
- 	}
- 
--	while (words_count) {
--		data = word + 1;
-+	while (words < frame_size) {
-+		payload = words + 1;
- 
--		switch (*word) {
-+		switch (*words) {
- 		case HFI_PROPERTY_PARAM_CODEC_SUPPORTED:
--			parse_codecs(core, data);
-+			if (rem_bytes <= sizeof(struct hfi_codec_supported))
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
-+			ret = parse_codecs(core, payload);
-+			if (ret < 0)
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
- 			init_codecs(core);
- 			break;
- 		case HFI_PROPERTY_PARAM_MAX_SESSIONS_SUPPORTED:
--			parse_max_sessions(core, data);
-+			if (rem_bytes <= sizeof(struct hfi_max_sessions_supported))
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
-+			ret = parse_max_sessions(core, payload);
- 			break;
- 		case HFI_PROPERTY_PARAM_CODEC_MASK_SUPPORTED:
--			parse_codecs_mask(&codecs, &domain, data);
-+			if (rem_bytes <= sizeof(struct hfi_codec_mask_supported))
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
-+			ret = parse_codecs_mask(&codecs, &domain, payload);
- 			break;
- 		case HFI_PROPERTY_PARAM_UNCOMPRESSED_FORMAT_SUPPORTED:
--			parse_raw_formats(core, codecs, domain, data);
-+			if (rem_bytes <= sizeof(struct hfi_uncompressed_format_supported))
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
-+			ret = parse_raw_formats(core, codecs, domain, payload);
- 			break;
- 		case HFI_PROPERTY_PARAM_CAPABILITY_SUPPORTED:
--			parse_caps(core, codecs, domain, data);
-+			if (rem_bytes <= sizeof(struct hfi_capabilities))
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
-+			ret = parse_caps(core, codecs, domain, payload);
- 			break;
- 		case HFI_PROPERTY_PARAM_PROFILE_LEVEL_SUPPORTED:
--			parse_profile_level(core, codecs, domain, data);
-+			if (rem_bytes <= sizeof(struct hfi_profile_level_supported))
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
-+			ret = parse_profile_level(core, codecs, domain, payload);
- 			break;
- 		case HFI_PROPERTY_PARAM_BUFFER_ALLOC_MODE_SUPPORTED:
--			parse_alloc_mode(core, codecs, domain, data);
-+			if (rem_bytes <= sizeof(struct hfi_buffer_alloc_mode_supported))
-+				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
-+			ret = parse_alloc_mode(core, codecs, domain, payload);
- 			break;
- 		default:
-+			ret = sizeof(u32);
- 			break;
- 		}
- 
--		word++;
--		words_count--;
-+		if (ret < 0)
-+			return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
-+
-+		words += ret / sizeof(u32);
-+		rem_bytes -= ret;
- 	}
- 
- 	if (!core->max_sessions_supported)
+ 	for (odm_slice_index = 0; odm_slice_index < scratch->odm_info.odm_factor; odm_slice_index++) {
+-		// We build the tree for one ODM slice at a time.
+-		// Each ODM slice shares a common OPP
+-		if (!is_plane_in_odm_slice(plane, odm_slice_index, scratch->odm_info.odm_slice_end_x, scratch->odm_info.odm_factor)) {
+-			continue;
+-		}
+-
+ 		// Now we have a list of all pipes to be used for this plane/stream, now setup the tree.
+ 		scratch->odm_info.next_higher_pipe_for_odm_slice[odm_slice_index] = add_plane_to_blend_tree(ctx, state,
+ 				plane,
+-- 
+2.39.5
+
 
 
 
