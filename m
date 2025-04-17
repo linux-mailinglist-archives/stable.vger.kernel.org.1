@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-133904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB5B5A9289B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF3A7A92A24
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E79378A5FFA
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:35:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E3FB173AFB
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:47:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE8B02571C6;
-	Thu, 17 Apr 2025 18:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CAE71B3934;
+	Thu, 17 Apr 2025 18:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d27lcVVQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J8IRdisV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4C22566FE;
-	Thu, 17 Apr 2025 18:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438F51DB148;
+	Thu, 17 Apr 2025 18:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914499; cv=none; b=D9IRj72KnB7RhpKNl5x8nZ4wsA1/RQrxA+fS1vsKV4W3fSNGq7gPNInfSGAXMryFj8TvIB7PVncWfB5ndI9mqu1vh76jP+8sGkfOC10ppKt4Zs0SMLcXNbIZlDTLXEcVMnXdbz2tF0Nk5ns53D7TZKi6f7dbTFswi88TP955lrg=
+	t=1744915619; cv=none; b=jpEbQ687SpyUe2u1qIl16zivIhBVQl+i/dFEvOMPT9WkrMHG7Ivx8rE3Yl+fkE7vcAoPg9c2iRmUmDHk9sZBY5YkAOrMUD2K3AbI2HOiAVCxv28+7OI9tNDX2Y0u+kLi94VXcnAYGHG5m1IR06QSD6tNjvJDo6j3YMB8y1dfYFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914499; c=relaxed/simple;
-	bh=O6v6rAS+cD8Y3SfTD9nN8nuSq03ViO6W4lPwHWSzmOs=;
+	s=arc-20240116; t=1744915619; c=relaxed/simple;
+	bh=lg4zXMjiOIROoZ8JRHYyUk/cMFQjqhm3np76Y36/Wc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=igxrvz/53j7mnSbg880pMa67GkzpcZmAENzFe/SeVMtV2oLuEICJiasmtIgpQk7qMOxRZzGAJBIitTj7LMvgu2y+k8uhJcu5pXSu9v4pbvrXfhrmVWGsGl6j/WtDANOYs8u2bJ8j++hQaWdL3LpDLdAi8iWLXVbOVcuOKvoAQ8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d27lcVVQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2851C4CEE4;
-	Thu, 17 Apr 2025 18:28:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FQy2gVvSXMFhrNiCkLbeuQGZDJHU/AtI7fTalQ3blqISsgmo0gKXs2TUCY5FaRZBzDntSxqtJwWtijSwKSM+5ufv5eEcwOzEiVY1cof32fP+Ty/Y4cghEuaEPbOoNPJfeKfI0gWyhai0Oo/b/eMNHdPZ5szC42vJFsUrM/kPV58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J8IRdisV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1CF4C4CEE7;
+	Thu, 17 Apr 2025 18:46:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914499;
-	bh=O6v6rAS+cD8Y3SfTD9nN8nuSq03ViO6W4lPwHWSzmOs=;
+	s=korg; t=1744915619;
+	bh=lg4zXMjiOIROoZ8JRHYyUk/cMFQjqhm3np76Y36/Wc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d27lcVVQj/pDRiofrOPYUuCnj7L03axUvFadZZhwFdGauTl0E9Qxuikrglh7i+LAV
-	 tw+9Ox06DHdPprzt9RafA7uw9EELzqparEtowj3yKKJxSrKLSdJCR2F/O5XhQOrwnj
-	 GpSFLTVznhUGetgurk2pO0oYmGw5WmPtBMoozGGY=
+	b=J8IRdisV15Q1k+FApofVbnFIaqJwCl9k7XmFVFmQtasb6uZahp3NFNpH0H5rsxlm5
+	 7kq19VF2UiwYf9KTpKt1L+d1ML+ShpMEZoDIVOLMhaZNOAp0KTEpyJ7z/QPg/G0pWX
+	 xUaLjAwbJR2Enp96WnRvj5pPFzWE07hPZtDL58pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.13 235/414] media: nuvoton: Fix reference handling of ece_pdev
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 184/393] HID: pidff: Compute INFINITE value instead of using hardcoded 0xffff
 Date: Thu, 17 Apr 2025 19:49:53 +0200
-Message-ID: <20250417175120.880801839@linuxfoundation.org>
+Message-ID: <20250417175114.994970462@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,55 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-commit 453d5cadab1bde8e6fdd5bd05f4200338cb21e72 upstream.
+[ Upstream commit 1a575044d516972a1d036d54c0180b9085e21dc6 ]
 
-When we obtain a reference to of a platform_device, we need to release
-it via put_device.
+As per USB PID standard:
+INFINITE - Referrers to the maximum value of a range. i.e. if in an 8
+bit unsigned field the value of 255 would indicate INFINITE.
 
-Found by cocci:
-./platform/nuvoton/npcm-video.c:1677:3-9: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
-./platform/nuvoton/npcm-video.c:1684:3-9: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
-./platform/nuvoton/npcm-video.c:1690:3-9: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
-./platform/nuvoton/npcm-video.c:1694:1-7: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
+Detecting 0xffff (U16_MAX) is still important as we MIGHT get this value
+as infinite from some native software as 0 was never actually defined
+in Linux' FF api as the infinite value. I'm working on it though.
 
-Instead of manually calling put_device, use the __free macros.
-
-Cc: stable@vger.kernel.org
-Fixes: 46c15a4ff1f4 ("media: nuvoton: Add driver for NPCM video capture and encoding engine")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/nuvoton/npcm-video.c |    3 ++-
+ drivers/hid/usbhid/hid-pidff.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/media/platform/nuvoton/npcm-video.c
-+++ b/drivers/media/platform/nuvoton/npcm-video.c
-@@ -1669,6 +1669,7 @@ static int npcm_video_ece_init(struct np
- 			dev_err(dev, "Failed to find ECE device\n");
- 			return -ENODEV;
- 		}
-+		struct device *ece_dev __free(put_device) = &ece_pdev->dev;
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 74b033a4ac1b8..a614438e43bd8 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -283,8 +283,9 @@ static void pidff_set_duration(struct pidff_usage *usage, u16 duration)
+ 	if (duration == FF_INFINITE)
+ 		duration = PID_INFINITE;
  
- 		regs = devm_platform_ioremap_resource(ece_pdev, 0);
- 		if (IS_ERR(regs)) {
-@@ -1683,7 +1684,7 @@ static int npcm_video_ece_init(struct np
- 			return PTR_ERR(video->ece.regmap);
- 		}
++	/* PID defines INFINITE as the max possible value for duration field */
+ 	if (duration == PID_INFINITE) {
+-		usage->value[0] = PID_INFINITE;
++		usage->value[0] = (1U << usage->field->report_size) - 1;
+ 		return;
+ 	}
  
--		video->ece.reset = devm_reset_control_get(&ece_pdev->dev, NULL);
-+		video->ece.reset = devm_reset_control_get(ece_dev, NULL);
- 		if (IS_ERR(video->ece.reset)) {
- 			dev_err(dev, "Failed to get ECE reset control in DTS\n");
- 			return PTR_ERR(video->ece.reset);
+-- 
+2.39.5
+
 
 
 
