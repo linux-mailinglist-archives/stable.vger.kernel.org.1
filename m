@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-133929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D370AA92892
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 767C7A92A7C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:51:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 738731B602C2
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24D128A1ABD
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09B2257AD1;
-	Thu, 17 Apr 2025 18:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85B924BBFD;
+	Thu, 17 Apr 2025 18:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CiXWC3bA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJFArCz7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA581D07BA;
-	Thu, 17 Apr 2025 18:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941B9185920;
+	Thu, 17 Apr 2025 18:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914574; cv=none; b=n/ARQnFhZISr+2bxUYZnLUJ+1Sld1bqPL3PRXY1eBt5OkCWI/aOKJsFPqfOWfeeF43mDjXe+kqCO+ArtOMTZ9X0s+4aLQfTJhqpYxLT/vJ8mKVk5W5hTtD4uAK2KxkZeJk3BJ5ZASK5fVx9b9lluN2TCseP9uRO18lIduPtThwI=
+	t=1744915733; cv=none; b=JioUPFggEN+JJC/lOl0S0v4Mb9jfyV+91hoHmj6MGIq9MC+ScKf1/fqRODdMZ3+q1bTOia0JfT78uHxB5645NnmNeiUo1+T5WrM13w1gpEY7tvSJ3mZCJyFX64PZ/Et3KGnhcnkvxHEc8QnCmjkl6p1h0H6/b+Rrz34+7qwuTkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914574; c=relaxed/simple;
-	bh=SvuRsE/RK6xIPO+XTkzHxh/sEr7lNENHj3bYzxow73Y=;
+	s=arc-20240116; t=1744915733; c=relaxed/simple;
+	bh=CO49+a9ZG4PcAVYYJX5o2KFmTl9olFM+zBxS/PSW/2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sZ1frCvZuxGx019nlTaMqx2di85ayqxOdqaJgQuK5MaMmIcs5l0iQLUqEBYMu5NO6hA+8G5Wb7cHTmAc4kduCU0Ij41Q3C81N4Dl0hG7sRjSaJ4y/N79heRmhLPoV20Z0Jky+G73cGfTJGModksbQoHcufx0RFGNCl0dgGa5690=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CiXWC3bA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C16C4CEE7;
-	Thu, 17 Apr 2025 18:29:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cp521kCQWuRh61o+AVgc1xB4PJhbBRsTxAPrTLKnJ9PMs46gpTwIQICAM0PGZT6pQspTV6u4ko5hwHrC5s6VGihgRUe+roitDfydIoBImLJcpQu90h6hTGhdXpGis3iHlwC3IxOfTIBcbK73724QKrVeTRLrHqKhmgAuuPIc2FM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJFArCz7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A23FC4CEE4;
+	Thu, 17 Apr 2025 18:48:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914574;
-	bh=SvuRsE/RK6xIPO+XTkzHxh/sEr7lNENHj3bYzxow73Y=;
+	s=korg; t=1744915733;
+	bh=CO49+a9ZG4PcAVYYJX5o2KFmTl9olFM+zBxS/PSW/2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CiXWC3bAFrsJXMjcM/yXkEWhLIfvkhib1spS1TAXnmnS/VlFpBof4DYNh7shpBz81
-	 pP8J9sLgNYWs3PZdkxvCKPqgRHRoRznAMfhKkL3rNzC0aA9Ziql/EkYze7WSz56BNU
-	 XWd/8LvuBYnnERjt5XWM7NRh226OBoJQfklkRxOQ=
+	b=tJFArCz7S5U5vr1RhI49Z8AEygHW/PfipYFhImDwn+okfxZNSAnc/ZaqrZkWMqLf/
+	 WF76C9qiYRD38X9L2FiNePcJBh9saI2Oe6OuwepJdvm4IPBBQFrDX5z6kl007Q9ktB
+	 LnN/+m8jqhjV6c+uSyDYnGVJ2TA4OBpH4jUVr3Eo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jackson.lee" <jackson.lee@chipsnmedia.com>,
-	Nas Chung <nas.chung@chipsnmedia.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	=?UTF-8?q?Martin=20T=C5=AFma?= <martin.tuma@digiteqautomotive.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.13 243/414] media: chips-media: wave5: Fix a hang after seeking
+Subject: [PATCH 6.12 192/393] media: mgb4: Fix CMT registers update logic
 Date: Thu, 17 Apr 2025 19:50:01 +0200
-Message-ID: <20250417175121.198224259@linuxfoundation.org>
+Message-ID: <20250417175115.309016614@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +59,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jackson.lee <jackson.lee@chipsnmedia.com>
+From: Martin Tůma <martin.tuma@digiteqautomotive.com>
 
-commit a2c75e964e51b096e9fe6adfa3eaed53594a668b upstream.
+commit dd05443189f9ae175dd806594b67bf55ddb6539e upstream.
 
-While seeking, the driver calls the flush command. Before the flush
-command is sent to the VPU, the driver should handle the display buffer
-flags and should get all decoded information from the VPU if the VCORE
-is running.
+The CMT "magic values" registers must be updated while the CMT reset
+registers are active.
 
-Fixes: 9707a6254a8a ("media: chips-media: wave5: Add the v4l2 layer")
+Fixes: 0ab13674a9bd ("media: pci: mgb4: Added Digiteq Automotive MGB4 driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jackson.lee <jackson.lee@chipsnmedia.com>
-Signed-off-by: Nas Chung <nas.chung@chipsnmedia.com>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Martin Tůma <martin.tuma@digiteqautomotive.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c |   17 ++++++++++++++-
- drivers/media/platform/chips-media/wave5/wave5-vpuapi.c  |   10 ++++++++
- 2 files changed, 26 insertions(+), 1 deletion(-)
+ drivers/media/pci/mgb4/mgb4_cmt.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c
-+++ b/drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c
-@@ -1369,6 +1369,16 @@ static int streamoff_output(struct vb2_q
- 	struct vb2_v4l2_buffer *buf;
- 	int ret;
- 	dma_addr_t new_rd_ptr;
-+	struct dec_output_info dec_info;
-+	unsigned int i;
+--- a/drivers/media/pci/mgb4/mgb4_cmt.c
++++ b/drivers/media/pci/mgb4/mgb4_cmt.c
+@@ -206,10 +206,11 @@ u32 mgb4_cmt_set_vout_freq(struct mgb4_v
+ 
+ 	mgb4_write_reg(video, regs->config, 0x1 | (config & ~0x3));
+ 
++	mgb4_mask_reg(video, regs->config, 0x100, 0x100);
 +
-+	for (i = 0; i < v4l2_m2m_num_dst_bufs_ready(m2m_ctx); i++) {
-+		ret = wave5_vpu_dec_set_disp_flag(inst, i);
-+		if (ret)
-+			dev_dbg(inst->dev->dev,
-+				"%s: Setting display flag of buf index: %u, fail: %d\n",
-+				__func__, i, ret);
-+	}
+ 	for (i = 0; i < ARRAY_SIZE(cmt_addrs_out[0]); i++)
+ 		mgb4_write_reg(&voutdev->mgbdev->cmt, addr[i], reg_set[i]);
  
- 	while ((buf = v4l2_m2m_src_buf_remove(m2m_ctx))) {
- 		dev_dbg(inst->dev->dev, "%s: (Multiplanar) buf type %4u | index %4u\n",
-@@ -1376,6 +1386,11 @@ static int streamoff_output(struct vb2_q
- 		v4l2_m2m_buf_done(buf, VB2_BUF_STATE_ERROR);
- 	}
+-	mgb4_mask_reg(video, regs->config, 0x100, 0x100);
+ 	mgb4_mask_reg(video, regs->config, 0x100, 0x0);
  
-+	while (wave5_vpu_dec_get_output_info(inst, &dec_info) == 0) {
-+		if (dec_info.index_frame_display >= 0)
-+			wave5_vpu_dec_set_disp_flag(inst, dec_info.index_frame_display);
-+	}
+ 	mgb4_write_reg(video, regs->config, config & ~0x1);
+@@ -236,10 +237,11 @@ void mgb4_cmt_set_vin_freq_range(struct
+ 
+ 	mgb4_write_reg(video, regs->config, 0x1 | (config & ~0x3));
+ 
++	mgb4_mask_reg(video, regs->config, 0x1000, 0x1000);
 +
- 	ret = wave5_vpu_flush_instance(inst);
- 	if (ret)
- 		return ret;
-@@ -1459,7 +1474,7 @@ static void wave5_vpu_dec_stop_streaming
- 			break;
+ 	for (i = 0; i < ARRAY_SIZE(cmt_addrs_in[0]); i++)
+ 		mgb4_write_reg(&vindev->mgbdev->cmt, addr[i], reg_set[i]);
  
- 		if (wave5_vpu_dec_get_output_info(inst, &dec_output_info))
--			dev_dbg(inst->dev->dev, "Getting decoding results from fw, fail\n");
-+			dev_dbg(inst->dev->dev, "there is no output info\n");
- 	}
+-	mgb4_mask_reg(video, regs->config, 0x1000, 0x1000);
+ 	mgb4_mask_reg(video, regs->config, 0x1000, 0x0);
  
- 	v4l2_m2m_update_stop_streaming_state(m2m_ctx, q);
---- a/drivers/media/platform/chips-media/wave5/wave5-vpuapi.c
-+++ b/drivers/media/platform/chips-media/wave5/wave5-vpuapi.c
-@@ -75,6 +75,16 @@ int wave5_vpu_flush_instance(struct vpu_
- 				 inst->type == VPU_INST_TYPE_DEC ? "DECODER" : "ENCODER", inst->id);
- 			mutex_unlock(&inst->dev->hw_lock);
- 			return -ETIMEDOUT;
-+		} else if (ret == -EBUSY) {
-+			struct dec_output_info dec_info;
-+
-+			mutex_unlock(&inst->dev->hw_lock);
-+			wave5_vpu_dec_get_output_info(inst, &dec_info);
-+			ret = mutex_lock_interruptible(&inst->dev->hw_lock);
-+			if (ret)
-+				return ret;
-+			if (dec_info.index_frame_display > 0)
-+				wave5_vpu_dec_set_disp_flag(inst, dec_info.index_frame_display);
- 		}
- 	} while (ret != 0);
- 	mutex_unlock(&inst->dev->hw_lock);
+ 	mgb4_write_reg(video, regs->config, config & ~0x1);
 
 
 
