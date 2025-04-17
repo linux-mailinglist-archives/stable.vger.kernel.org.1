@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-132917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9568A9155C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 09:34:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B885A9155B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 09:34:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F05319E0C82
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 07:34:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA764189C225
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 07:34:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA0F1A2642;
-	Thu, 17 Apr 2025 07:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0AE31F55E0;
+	Thu, 17 Apr 2025 07:34:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB721D517E
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 07:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B62B23AD
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 07:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.238
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744875269; cv=fail; b=Y0W8a6SazWEgYNTpRSwQlpT/OaI/AG9PxeNzIY/HCMe7ItvB/MpSc3lDQt+xQqIFgXbPMNc9KysB+r27SRI/SPrQ2OEMbTtqWFmUkIj0g1aI8qLW71yXLMV1MWgY6vym7l+VKXTcy6+VXoQgL0n6JPk3STqcfOGkhxEy1cJbf/Q=
+	t=1744875268; cv=fail; b=KoMfsNyLE6JtSsCEb4vIKd3GHgfM5NB7oxKtngxwh3O9CgSekL3lWYzvl+kuXv88fhtIudrM/B29EEML+lZqEwgKC1+ZzOUZjOLK2xm/TJh5PYvHRSgjaTcXYoensZai0BedinvpofCYtfinQUKhoYTMZf+wuTfzn1ZfChq9hDU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744875269; c=relaxed/simple;
-	bh=yYqYVrT/mviq44XoKWEX3IdlLoQIRIiAG11jjnAUmW8=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=AETGbnBjsNteAdtxQXecPW1r/8Cs6wf1CMzzqVzVoDf/2roF7P0CHjjvvRz99/lEj6U8Po6EFY8JRtg4+9kJ4CU7Ypy4djfrTb3aSWiIKajQLBHZCDVEu950nuqFZ34x5dNEJbIs9Auo6pG9bZtrODhwEshUDj3mcbMr1da0n4k=
+	s=arc-20240116; t=1744875268; c=relaxed/simple;
+	bh=iJhB/eDkPj0ZsQ0LLiQOKIgAOKREaagMczzwjdKzM/8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=OzkfuVxTeAu+uVSbPflzr4zxAPh0F7Cz6jgUqCMp5jtC55m+zMO2XiBeYxuuwSD49gFlW6+RX46aUSbsaZA7uuxQWZNBNDLyWT5DUcl+4Pe+N7QfYKFTztGv/nKNdFgopaQNsmX3RpQUIYiXjhgwW/U2ckHrTphwdIOwn38Zx6g=
 ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.166.238
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53H6A2nv001881;
-	Thu, 17 Apr 2025 00:34:13 -0700
-Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2171.outbound.protection.outlook.com [104.47.56.171])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45ykf3ntt4-1
+Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53H6oQmZ029260;
+	Thu, 17 Apr 2025 00:34:17 -0700
+Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2045.outbound.protection.outlook.com [104.47.58.45])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45yqpknnm8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 17 Apr 2025 00:34:13 -0700 (PDT)
+	Thu, 17 Apr 2025 00:34:16 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LeZcj3g0KZzuQGKgAdpcLqbZ+AzSYtXdL2YxkurJ8Kef6+jD2WBPhqC+PCsrZ5Bw+1PdhP7nJfN/LbzaRLJ2kGWVr57gCbfkzx96fG/0Cle2B11y3HIbHi4bqhIoWqb9HfMmhvtO8stvmrZxmVFiGMZVLcExQ99TS/JXco4Z3K0VpupBDdnH3sSpGU9XE3iaQ+PfrtZsMqkX+rzX3czi1ef/Ox2KQpnJhC+4A3B3fEwODW14J/4/NGnRiQ/vYT/V+sv41/zpHU9WSk7rXcHUIgIdeLReUH3wMCCv513WGH15YHrvsvQ9U6EltQhOq1BDPIWwDwh1FXRu8ubdBaItGA==
+ b=RF4+g7roBRDgpnWWdb27JvL0XDy81THO58Nm1G+fs/nP2qyxx+fmt1tnej5K7vwhyOj9lIdnwo1+g0DRXt5kDv38jqDG6jLpsOCt/h/MPGDSI/lc91+HM4Q4Vs57U0PYIWekcC6DHmG6xZf2iI6WnsYh2xqPpbSg1zD9wPtwG8Z2+I54Q9fL4k/RGnRyNQGOyiSudixoH/MDW5NYAnCyUH4yHeFAzqne+Apx8N9i60R7zyAAujedPkyongrtIb403Y0nRefKPrvkort582i9LrYxY7sEq517eY7DnxmOnKLtWz6UjX9ZGXwdlZdmGzlOr4S3j5NljGT80wqrG8SmZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6tDNxgFSIyp0iX0Aw214UA9OjI3yROFVp4WNuCnM9zg=;
- b=KINJPfVsC0sntsuixI9sXUhg9wVCfgaaIu5sZlFTt1rESW6uaradsAnxJGZUwQf/NPeAdNkXqaTjlTyfINUEXzZCL1TIS1/+SEj7Mf4NTHJcqqYpAl1lm8XRgXGjqOTBpRuj+kDIfrvJ4lh+0mzRL5ToxiY5W4KLjfCrwfEazTys5q4SjA1L6HaEX4H2f1K7ErR9lX4NZ8vbkETMLviKyMW+LvetkLJoAxC7Cj9U4Kuth66lKhUM3hbAwXW8dSgJNKtCd5nq/kp9xaR21ox3u2QavYBqhS5AFat6YIVXlXWDjA9wzbOPdxjquuwlM9xtVCxnTcy53fuE/MkSyVe/4w==
+ bh=gMuue4O9U8y9qXZKED5yJ0IBZzTx9ead8zCr98yLeZM=;
+ b=Fa7N9N/cmExaRUuFhN7CrRHN5lW+kRX3Q8pncvAIdRKkvWjEyaHhhtdW7wML6AcaVQtQDz0sDxbuaVteHlG1DUzy/e/Nap476MdMYnKKuLUCIknITI5xKjTUA0rXjVeGNvl4QhW/l/j+1ndC4OkvLBVjinu6kWjCx4aE25RME1PNIxBABjvnmeCQ+TjZVM9HX+7ekMEhH/MNZRi6aV6WO48/8A4qXRdbFzvYMqpDHk5a+atp4W0jyIdo13gy4MPrcFeCsDrDEnxEs/v79NAXs3S3g9gqc/tUqndg9yfUaRiAS1U6+xF8u9/mm878KT3C8oMKOmNH4kJUKJzmrcjbqw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=windriver.com; dmarc=pass action=none
  header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
@@ -49,19 +50,21 @@ Received: from CH3PR11MB8701.namprd11.prod.outlook.com (2603:10b6:610:1c8::10)
  by SJ0PR11MB4957.namprd11.prod.outlook.com (2603:10b6:a03:2df::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.34; Thu, 17 Apr
- 2025 07:34:11 +0000
+ 2025 07:34:14 +0000
 Received: from CH3PR11MB8701.namprd11.prod.outlook.com
  ([fe80::5727:1867:fb60:69d0]) by CH3PR11MB8701.namprd11.prod.outlook.com
  ([fe80::5727:1867:fb60:69d0%2]) with mapi id 15.20.8632.035; Thu, 17 Apr 2025
- 07:34:11 +0000
+ 07:34:14 +0000
 From: bin.lan.cn@windriver.com
 To: gregkh@linuxfoundation.org, stable@vger.kernel.org
 Cc: hch@lst.de, yukuai3@huawei.com, tj@kernel.org, bin.lan.cn@windriver.com,
         axboe@kernel.dk
-Subject: [PATCH 5.15/5.10 1/2] blk-cgroup: support to track if policy is online
-Date: Thu, 17 Apr 2025 15:33:51 +0800
-Message-Id: <20250417073352.2675645-1-bin.lan.cn@windriver.com>
+Subject: [PATCH 5.15/5.10 2/2] blk-iocost: do not WARN if iocg was already offlined
+Date: Thu, 17 Apr 2025 15:33:52 +0800
+Message-Id: <20250417073352.2675645-2-bin.lan.cn@windriver.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250417073352.2675645-1-bin.lan.cn@windriver.com>
+References: <20250417073352.2675645-1-bin.lan.cn@windriver.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: SI1PR02CA0036.apcprd02.prod.outlook.com
@@ -75,216 +78,153 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CH3PR11MB8701:EE_|SJ0PR11MB4957:EE_
-X-MS-Office365-Filtering-Correlation-Id: d43ab718-019b-4d0b-6084-08dd7d823e8b
+X-MS-Office365-Filtering-Correlation-Id: 437b55f9-ac9d-49c7-6b55-08dd7d824092
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|52116014|376014|1800799024|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?iTAgxw4RRfalb6ioyOLCUX76rX7EiaXQwF1ujDGoR7yOCkirOGutlB4h5KE4?=
- =?us-ascii?Q?4zfIE2mmla9xMB8uqlNNAFMgA+5F8gOxS02mfNSnZuJ7xtn9WZTKUSUNinM2?=
- =?us-ascii?Q?KgvyoXiInRUbUrZMlT1n6zKsPE24nr7R/vCGMbrgNsLs7O52ddghO2jaN1rK?=
- =?us-ascii?Q?kjUQUZAs2O7zt61jAuHbdXogki+JDScDrqFyEp1+Q1Q6iaAuH3aWtYOPb2x6?=
- =?us-ascii?Q?LzAyXhD/qJWHLhq49vMWAEOtnmoG2Xy+5rG41Itv74S7QykEX1xrkxCbo52w?=
- =?us-ascii?Q?6Z0C/sCyNuinmwC5VI975hD7qhrRfOC2y72n3GiE8Cv8MayFW6JorZbSEupL?=
- =?us-ascii?Q?HHfcRaa/B5QGXlvrEHZAi47Qan0iwCkWgLOQ1QCUNqFNPIO5CDtHvBvAYbfd?=
- =?us-ascii?Q?xWLIHOaFlQV+QBUQUeC89hNizgDTWIAIu71NaPnSw68Xvh1YQej+fg7W/fMk?=
- =?us-ascii?Q?KpSLUZv+uvNwpRE87HVoZDfTrUhrvn/jMKYIM6q5UIwWhea/YyvjnBcDW5XQ?=
- =?us-ascii?Q?L/UaozfwozlANBctzniw3nEvAeuMwqDAYoRCwpWlEbmL+BmOpNoYdBjj+sS1?=
- =?us-ascii?Q?uKD3O8CJwsZwWSszmtkD0ifgFxT6R75DSuQTG14WlwhUVXHTeEcexChnNbLo?=
- =?us-ascii?Q?WDAGeZftRTqrw4FCGtQm6PbsTxQjB7vZRpTuwNeW18KzxrCoe5ItgKD24zNv?=
- =?us-ascii?Q?VoIpHF8BVCczLIWplhk7G1k21CrtCW2Bq3qUYlB14nNzgGSt3s5DQafLbY9z?=
- =?us-ascii?Q?TSmY3mz356iuflROSIMkGx7Aos7kiGEr+oDg5et15osevJu+5lo0FrF7NdQ1?=
- =?us-ascii?Q?qH/LMOYJUxklU7KF5kZ5dEqecRd1XUy8DjKw3rqjFqlKKn14GTpsk4BSrct4?=
- =?us-ascii?Q?32/8T8v57kGx+bGV0wEdQIUzpThw3cV/T1jBrz4au5LCyJHHtNmaX7FqT6C1?=
- =?us-ascii?Q?tCbE0yK13ZrYpEqo94+j4E85EW/tzsWUbTApltb1YGcE0h4wbERJwcix61Q1?=
- =?us-ascii?Q?zH2LE2hV0fEc0eJvZGAinNAyDtDrUGw6TLs4msNOrHqsPZ2e1s6va4m77b3G?=
- =?us-ascii?Q?e7oI+K1J8XS8beneXFYD3sHe4sHcmvZwH3oOM1FX2ktISvKxxAFJlk6+fV4X?=
- =?us-ascii?Q?4rPh3Y+rFeoGEFzhEVVaebHsnz64FiMW3n8U6U0rZ6K70Vdyk+fQjGcPO4bp?=
- =?us-ascii?Q?HWkxYTgJUB34ytx6BGTzt+ShGXm8ZvdpM7KM7BcIVijRotqm9TCntFul72zs?=
- =?us-ascii?Q?J/BN1pfIXGmbMNbDHasyaHKqueF17tqph8SZblIFhr7wyF4uo0vkBVy01oXn?=
- =?us-ascii?Q?oklwxVa/3iFxIn7wA00g0eDLC8yNTb+3k21DkSE6h9HeGkkip3n07PM8IXvZ?=
- =?us-ascii?Q?maQaRZuGYznYWDpA4PTpKfQO8/n8ehCSrDU/JULUeE4lYJA/RUmlF8TVicv2?=
- =?us-ascii?Q?gf6dJ7KlaCg5KMaM568tjnfXYJwvPb2hMyrRbLOdGfdj9bWPcMGuNAdZfTUs?=
- =?us-ascii?Q?3rdBvuh2WaquGvc=3D?=
+	=?us-ascii?Q?W5qpDL/lWMvUaT9rg1zrtfuxR2TxCe/pCoiHW8X//Sz38BzoJJ5d/NovCOYJ?=
+ =?us-ascii?Q?48/cM8eU3QrbbavjUnZIxMI1ArR/a2wmYITCPSEw25CE1S3+wdRvlCh8GpE1?=
+ =?us-ascii?Q?Jd9OQtULWMjnwZDZ7LKkHwMcbuBaTAPu44A0Ta1RZM+E0AZIXmuuSByX640V?=
+ =?us-ascii?Q?5YduDZIKBArFCG1r77Ps7Bg7CscJ9QdoQ6VyqT3RhwJMmshqD/CP36vxnfOc?=
+ =?us-ascii?Q?UXQG37BWuBW1Zc1r4BtjE/YA4Aap7s068P24891v/ZJrfoKHtAfrvOj3M++1?=
+ =?us-ascii?Q?ooMV4bXvzcZRrv5jiSeV9QCMnoNXrlhnoTVyCiQ/OND3v0PcMJiHzkSAQra0?=
+ =?us-ascii?Q?5GKWMIeDxCPerADvN5BN+iT6yu9CVFBKeauJEzUp4cgLsEIj+ELwkEf/WtWm?=
+ =?us-ascii?Q?GILlpvzv3mCsQxIOwX2o5xPBi115GlyEa2y8xLMRtzXBq57oYqqA16Sh55bw?=
+ =?us-ascii?Q?RF19ZglTdrVpftr9SyjwPE6+37ACSIcpEjpXTam+357vIMLZy8cvJ7aBp6mM?=
+ =?us-ascii?Q?tuJs0kECsy7F4MqcwQrdasYw2lUKvr+Gwl0cnGP14lLn7v8XEeaXHrLLpto2?=
+ =?us-ascii?Q?YDCPFBfFh6r/tAP7Smnn7M6QKdWfifE9zm1pHsuTfvLuB8uurwJpDuRYRe59?=
+ =?us-ascii?Q?ZcDpVD62SkmC4XTsD1K0Pn49MRS5qkEueYZwp16o+2GGqGx+oLChVkTpdAD5?=
+ =?us-ascii?Q?+FEl08ii3HZll8aOFvkC9FIxNGlSGpRNApu20TthqgR2kTIQUpeVTUiAzMt5?=
+ =?us-ascii?Q?GtMJL2gLyamBKRnSCXKw+CFeY5TIw3Eza8e8k62Thja2qPtwGnPE264xqxDE?=
+ =?us-ascii?Q?zZQJGEx18USooikZ8NK7HKWYbX0xbIliPMsvA424q3Z92M4+Wuh6W8u+9TN/?=
+ =?us-ascii?Q?Z1j1QSxhSBen1rUfd+KkDJKyHGgXvljp5Lz/mWqs/mB3zkTuZkdHu30nHjEP?=
+ =?us-ascii?Q?yB9rCMXovie4Cm1XWyTI+m5lvTooAvEL5EJxn7bbh5m4vU3GNb7HjOclzwMl?=
+ =?us-ascii?Q?NIZ1usAs3GI2byMO/3B1fD5PJ88Y7OcGudBFZby9VYDIDNbJvkcUkZyved+7?=
+ =?us-ascii?Q?Noqeys8BNXW++xpLbZatCQxahVcSv1SFV9VfRVnf7YxG3H6Ii9ny+W0oAY/s?=
+ =?us-ascii?Q?B7S0M4zAVk8GxE77WaLtoJFO1B3EJzpG1RkqBt/TX2W1Ih6z2QtQUtm4AOLw?=
+ =?us-ascii?Q?qo6FVkkJZDc5j+DYSX6ycnHifXupBk3QMxn48vUd+3fCe1k+MKV/A2Q++TQR?=
+ =?us-ascii?Q?6IROZLyXl9w6tBVwmKMQ4qeRT+U3yMiRsEx0EfxYN5c8qFdacO7A9kdO0IP4?=
+ =?us-ascii?Q?U5Gq/no73WUd/dP+ppObUeGhWvU6rIOEpVqTmuqPN8qw/KVN+V3k4o2nA8hd?=
+ =?us-ascii?Q?dVtAZ92dhA7fMDOY8/9EcENEBAhCi1yJ7cPTBTe2Xec9LpWhMdbpuz9t1JTx?=
+ =?us-ascii?Q?fWaAs+uK+MRGtSHqifRKrvI1LzjsUZw1WqUyQ20EJpslMD98m57yfwyReA4a?=
+ =?us-ascii?Q?biH6DITX5qnXKL8=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8701.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?umAJhP02EmdSR1XeS4QPL7W14znPhxRZ7j5yptN017rBQRTeCvKvuYcKRyMj?=
- =?us-ascii?Q?PstlOsq8NTqkXqkTi/pMjnf3f9Q5P0Vy19rENadLntngWGnDslfBW+q/4PCW?=
- =?us-ascii?Q?ivXPnE5bGW89UICsmIdMfRCKXc9Sst15/Rfvgr7GwJbc8aGS38vcbd2iZPdW?=
- =?us-ascii?Q?lKjNUx71rN4jXfVAh/brfeZTGuaqCZWCJ6FJYK8gMeAzFMj6zlues6+5Jj5O?=
- =?us-ascii?Q?uu6eEpPJ2sqctjG5KZCdK3hBMdCT9vrBhD9dNd+TSpd7KgQIKUsBkFDfVsMJ?=
- =?us-ascii?Q?ADTDYRzcPnezXCdb9uyhHpXnPTeUJ9GU/BV0PenqA+JwGXRhtAtpVQtISeMl?=
- =?us-ascii?Q?n8hjzrl/U3P6Jp9mAkpgeDP5oC7Hokvkr5eowdu2a+ncZDCrDciKrvTxNdWq?=
- =?us-ascii?Q?z6ZSFAsj7BizlKziEAciagll5Pc4sXtFnAvQP80Wci3KnWScpqGgpzjzvxkB?=
- =?us-ascii?Q?4iJwF8nf+LUCiEbaoAQP1ojhO7RSVK3vgCpPPw4iEwq+HVFaHNQzHiZSfnpQ?=
- =?us-ascii?Q?2GWyBKOymYDZW6JzO9eE8dH93mwl4be80oVp49q0PQ+infzQDXZFnGZh4olT?=
- =?us-ascii?Q?0SasyR4HxOVETK5N4/tEUPWNo5TB2e6dV7RDFbH8xDIlhX9WtTTPJLoJQ+lo?=
- =?us-ascii?Q?hMPx7NiBUs2oSE3lgAM+5vV4lhz99E2GQCAM4t1vRxE2g6zoLvAxvU7x46ll?=
- =?us-ascii?Q?Ge/h9/m+rizoyfRrWmuT0c8oxEMRUVpMFTz5O2hE30TkSMqWc+TLz0hnpQwM?=
- =?us-ascii?Q?RjKg1ilij+KZ/0Xe8ZWr1Zmux4/09Amqt4Ihi17gRp2cJGocc0Fm9B300+Sb?=
- =?us-ascii?Q?pO+xRhhjHTQjlcfKX68/cdIKOIiBl8hU+c7lL1lxWjyqCQ9jRueCzVoT/5nN?=
- =?us-ascii?Q?PG1BGAchMj6SU1NE/s+QBhrJk4Pw6vAPM624yiNVXCMXxo2tOABQNuXBWqPQ?=
- =?us-ascii?Q?EZi3ecRAxl5htG1pkYw8taDVHa1OV748hEyjAcrvfOo5KVTGFZWNFJAaW2Ia?=
- =?us-ascii?Q?+6PPJOh96Q9gqsqat2yyrCR9KnqtMSLzNRaKONaUqQfPdvzUQsQ9cUfdycQH?=
- =?us-ascii?Q?I4FJ3Yz+iXruqwLPBrcukR0puLCGMgXGnSvOpQCdIr1AMFp6eWVbs2C9Dc8B?=
- =?us-ascii?Q?IOKc8gLotX98+izJGYRz0eT/qjm/whHc6FG5BZ7/SqTheS/Kdfe51p5uqwd0?=
- =?us-ascii?Q?BSCAyzdXrbKKgrz8zMB65wRApYuDQNwH7hW52TNmXWmgznkemSIWzpuQo4G2?=
- =?us-ascii?Q?TEFJ8IEv+BkJN1Z9CKiclHWRCmnJeioJUIhxJc9HyQ7SULQqvy8TRE9/FozB?=
- =?us-ascii?Q?QDBgdECWvRV8kwj1FxooDrDaHdc0J/pgkfwF6u7L6aK2vAz8PDroU8nIaxVb?=
- =?us-ascii?Q?XTcvafHjBjyTWJSkk1zq+cv2F4YcNaomtHhxlu/tEqHJBh/5V1MZzsPX3AY4?=
- =?us-ascii?Q?hh/ny6iUeF2aXbrcCwC9CyORApJWK+nDp3048Qiddh9bMUllqO0UQFRwi9vV?=
- =?us-ascii?Q?if4sUTe0qywY2zQak1H762kgai0A0qUoiu2wNerQUhIgsSaV7mTingLtxDYH?=
- =?us-ascii?Q?gFjUXgzu8DhB12exU1myRleUhUyZ7w0jLjNkIT739mC701225t/DhDBNL/US?=
- =?us-ascii?Q?IQ=3D=3D?=
+	=?us-ascii?Q?o2fyZDXddDxYnB70vl4CRa23IiCbZPkJaXqOz2xhbV4FLYlMei7rH5PBKJnk?=
+ =?us-ascii?Q?BWq0hHu6xFsLE4tvDUtC0vvPt0v2nypPPl/BUkuT3gjEFhbOQtrweikoUKLA?=
+ =?us-ascii?Q?n3UcimhB7rD57L79ny8jVC54t0KG0V6ihM8aXO6+hiaXhiMbKVBQZLGQ2bHQ?=
+ =?us-ascii?Q?SIVoZuTpS817uaV3XAYlDzsZ6UNqaugQeE+zJdJsPrR3WmKXjZQ5M5H5zdMw?=
+ =?us-ascii?Q?5p7mFxTFiCQD+EmmHP9zAexq6HnXs5Nkn2m5zIVwiT6VOKJBRc8Rgd8d/I6D?=
+ =?us-ascii?Q?iF4aDqkA5O4ne0WQPXseKenvtbJjpCMYqMvs4WcUdAtBOjfuX+iX6Kc1EEbX?=
+ =?us-ascii?Q?B6WGv2TW7xixw3MtH8s4Ahj5c1oV4sgdEiVeJ5X2U/cWqEUKKcVwiTW/xJ9+?=
+ =?us-ascii?Q?qXKzmm8noTmxuWxXSvKrs/6DxIm8rEG7VklYRkSuWt9cx+vs/k8R17+7pYxT?=
+ =?us-ascii?Q?J6rr5bdLGLKBCvCY6z6n24KOpzKZ/OqMBYAl75q1WLY3T6WTBUBT7D82qRT6?=
+ =?us-ascii?Q?ov/0xdanIZ8pVICPyqAlkil60o5O5zIJ5W4bhdH4PjwyOx4qtbvr1llvk9n/?=
+ =?us-ascii?Q?wiwvC1A3UPa2lj+oT0Urc5tNYwcAtDv3baWr1gPClL5yp2vMKun2IrE0muYf?=
+ =?us-ascii?Q?37SkVGl4yRYBSFI5m5Z/4+0x4w7QAwPcBoBITTJaMinZrwRhGKatsIaVZEOn?=
+ =?us-ascii?Q?UymqmPXJBqqxgRfcuLRB3YEfh4QYONmunLRO1jwopI0gHoPdEuQReliOfaUu?=
+ =?us-ascii?Q?8YIbA7VwYi7+XDaEWlTOJzKdkDDh5A+1nBa4l+F2GLpaAjsSaD0b/1BhmZ03?=
+ =?us-ascii?Q?q6Rxqbbnj6zzjxasXem3NQxO1lE/bNIbdZuyXLnGBkc2l1uIxT2jqLILXe36?=
+ =?us-ascii?Q?gkohE7/PQ097r6teSWEic9Lz7kYR89aPjqdseFG5jqWtJZ0nQ02csqOuWQWH?=
+ =?us-ascii?Q?C+Qcil0Xcy5edQxOwjn6eDaMFjhza6KsUM0Os+bJuYQUQPl++6WkFUsjUMEa?=
+ =?us-ascii?Q?YjdEodwvWgitNYU2eZ74RdYSkVFyQlmmTUU/Hh7kdYldbDB3P82KJhOV8ogn?=
+ =?us-ascii?Q?cHJemFWUi7DSxtlLSnQFGLcRoSK5rIZ7+b9sHHyz2MUGJgo56MJZ2e3OC6TE?=
+ =?us-ascii?Q?z+T5ffgHAo1WaMImfVgbNKkvVnGHPNzLq5uwUBlEn/kvDOTn5TZ7+7LjWgs4?=
+ =?us-ascii?Q?nxaXtY/9WYfjYXxMUBvG1V3UePSbxsDzOZKbojwrXGIzqDFm2bci+b7/8Tj5?=
+ =?us-ascii?Q?5Nh1wPV9uT+NB9M0YSsGrsKGVxRnVBQLt+LhwkMgFX1fP20h5j6oCZ3RVCpq?=
+ =?us-ascii?Q?Vkw46dPVPurqKCc48W2roGjThaGD5MReE5S9vPH77TcBlCTfHVa6uKNObDrJ?=
+ =?us-ascii?Q?BsEdeHSGlzavEBUNBMV93zYCyP9xO/6P2i6L/DI8SLud65nIwZifLFqjDINV?=
+ =?us-ascii?Q?cW8IY2z2fOGnFRvqhqfEq7fQYy5h4AXeqfDyCEFMI5puwvOZFwk31C+z4GWB?=
+ =?us-ascii?Q?hd49Jro3VdDp/Du86ACvgNmgvnqG+XpMY7tp71OC74LooWFZDIL3eDchacAk?=
+ =?us-ascii?Q?CbE/jTYbsyMg+TeF0hZCKT6nLn8HsMZuE82nx9hX2da4Y22HS3e4fI1tLBrD?=
+ =?us-ascii?Q?Aw=3D=3D?=
 X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d43ab718-019b-4d0b-6084-08dd7d823e8b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 437b55f9-ac9d-49c7-6b55-08dd7d824092
 X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8701.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2025 07:34:10.9215
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2025 07:34:14.1451
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hhOW7fN0bT3wfF6Sg1+tlbLhI0HXCD3y3xO7QBFLyIvMNp6G1Rfvnf9uAyy3TnvkhsrMmfYRQkPr4H3Q40EQ+L1AHh1nWb0eQwqWLz2J/ZQ=
+X-MS-Exchange-CrossTenant-UserPrincipalName: lvNITU5pi5ytL26Z3jrbfxgNNpmigkGvLrGg2FnD4MEllAnQZipta7xT8lo17kggQey41V36SohPDGUoh9bIbt79f3nuv49su3HLfKDoRM0=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4957
-X-Proofpoint-ORIG-GUID: 3rvAs9clcXE1BZBVEckspkLSjUrqbxvD
-X-Authority-Analysis: v=2.4 cv=Wd0Ma1hX c=1 sm=1 tr=0 ts=6800aef5 cx=c_pps a=vIBLTX18KUGM0ea88UIWow==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=XR8D0OoHHMoA:10
- a=VwQbUJbxAAAA:8 a=AiHppB-aAAAA:8 a=i0EeH86SAAAA:8 a=t7CeM3EgAAAA:8 a=lGBpaaW1g1IRYbpJNncA:9 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-GUID: 3rvAs9clcXE1BZBVEckspkLSjUrqbxvD
+X-Proofpoint-ORIG-GUID: Gqd1dWjqlkTYHQbP4N9ncPxBPW-B8JNu
+X-Proofpoint-GUID: Gqd1dWjqlkTYHQbP4N9ncPxBPW-B8JNu
+X-Authority-Analysis: v=2.4 cv=UZBRSLSN c=1 sm=1 tr=0 ts=6800aef8 cx=c_pps a=Syk5hotmcjzKYaivvMT4gg==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=XR8D0OoHHMoA:10
+ a=VwQbUJbxAAAA:8 a=AiHppB-aAAAA:8 a=i0EeH86SAAAA:8 a=t7CeM3EgAAAA:8 a=XQwRP9gPe-XL7FU9EZ0A:9 a=FdTzh2GWekK77mhwV6Dw:22
 X-Sensitive_Customer_Information: Yes
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-04-17_01,2025-04-15_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- lowpriorityscore=0 priorityscore=1501 spamscore=0 clxscore=1011
- impostorscore=0 suspectscore=0 malwarescore=0 adultscore=0 phishscore=0
- mlxlogscore=999 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2502280000
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1011
+ priorityscore=1501 mlxscore=0 impostorscore=0 phishscore=0 malwarescore=0
+ spamscore=0 adultscore=0 mlxlogscore=999 lowpriorityscore=0 bulkscore=0
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.21.0-2502280000
  definitions=main-2504170057
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit dfd6200a095440b663099d8d42f1efb0175a1ce3 ]
+[ Upstream commit 01bc4fda9ea0a6b52f12326486f07a4910666cf6 ]
 
-A new field 'online' is added to blkg_policy_data to fix following
-2 problem:
+In iocg_pay_debt(), warn is triggered if 'active_list' is empty, which
+is intended to confirm iocg is active when it has debt. However, warn
+can be triggered during a blkcg or disk removal, if iocg_waitq_timer_fn()
+is run at that time:
 
-1) In blkcg_activate_policy(), if pd_alloc_fn() with 'GFP_NOWAIT'
-   failed, 'queue_lock' will be dropped and pd_alloc_fn() will try again
-   without 'GFP_NOWAIT'. In the meantime, remove cgroup can race with
-   it, and pd_offline_fn() will be called without pd_init_fn() and
-   pd_online_fn(). This way null-ptr-deference can be triggered.
+  WARNING: CPU: 0 PID: 2344971 at block/blk-iocost.c:1402 iocg_pay_debt+0x14c/0x190
+  Call trace:
+  iocg_pay_debt+0x14c/0x190
+  iocg_kick_waitq+0x438/0x4c0
+  iocg_waitq_timer_fn+0xd8/0x130
+  __run_hrtimer+0x144/0x45c
+  __hrtimer_run_queues+0x16c/0x244
+  hrtimer_interrupt+0x2cc/0x7b0
 
-2) In order to synchronize pd_free_fn() from blkg_free_workfn() and
-   blkcg_deactivate_policy(), 'list_del_init(&blkg->q_node)' will be
-   delayed to blkg_free_workfn(), hence pd_offline_fn() can be called
-   first in blkg_destroy(), and then blkcg_deactivate_policy() will
-   call it again, we must prevent it.
+The warn in this situation is meaningless. Since this iocg is being
+removed, the state of the 'active_list' is irrelevant, and 'waitq_timer'
+is canceled after removing 'active_list' in ioc_pd_free(), which ensures
+iocg is freed after iocg_waitq_timer_fn() returns.
 
-The new field 'online' will be set after pd_online_fn() and will be
-cleared after pd_offline_fn(), in the meantime pd_offline_fn() will only
-be called if 'online' is set.
+Therefore, add the check if iocg was already offlined to avoid warn
+when removing a blkcg or disk.
 
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
 Acked-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230119110350.2287325-3-yukuai1@huaweicloud.com
+Link: https://lore.kernel.org/r/20240419093257.3004211-1-linan666@huaweicloud.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
 Signed-off-by: He Zhe <zhe.he@windriver.com>
 ---
 Build test passed.
 ---
- block/blk-cgroup.c         | 24 +++++++++++++++++-------
- include/linux/blk-cgroup.h |  1 +
- 2 files changed, 18 insertions(+), 7 deletions(-)
+ block/blk-iocost.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-index 6180c680136b..e372a3fc264e 100644
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -192,6 +192,7 @@ static struct blkcg_gq *blkg_alloc(struct blkcg *blkcg, struct request_queue *q,
- 		blkg->pd[i] = pd;
- 		pd->blkg = blkg;
- 		pd->plid = i;
-+		pd->online = false;
- 	}
+diff --git a/block/blk-iocost.c b/block/blk-iocost.c
+index ba23562abc80..08d397f063f3 100644
+--- a/block/blk-iocost.c
++++ b/block/blk-iocost.c
+@@ -1435,8 +1435,11 @@ static void iocg_pay_debt(struct ioc_gq *iocg, u64 abs_vpay,
+ 	lockdep_assert_held(&iocg->ioc->lock);
+ 	lockdep_assert_held(&iocg->waitq.lock);
  
- 	return blkg;
-@@ -289,8 +290,11 @@ static struct blkcg_gq *blkg_create(struct blkcg *blkcg,
- 		for (i = 0; i < BLKCG_MAX_POLS; i++) {
- 			struct blkcg_policy *pol = blkcg_policy[i];
+-	/* make sure that nobody messed with @iocg */
+-	WARN_ON_ONCE(list_empty(&iocg->active_list));
++	/*
++	 * make sure that nobody messed with @iocg. Check iocg->pd.online
++	 * to avoid warn when removing blkcg or disk.
++	 */
++	WARN_ON_ONCE(list_empty(&iocg->active_list) && iocg->pd.online);
+ 	WARN_ON_ONCE(iocg->inuse > 1);
  
--			if (blkg->pd[i] && pol->pd_online_fn)
--				pol->pd_online_fn(blkg->pd[i]);
-+			if (blkg->pd[i]) {
-+				if (pol->pd_online_fn)
-+					pol->pd_online_fn(blkg->pd[i]);
-+				blkg->pd[i]->online = true;
-+			}
- 		}
- 	}
- 	blkg->online = true;
-@@ -390,8 +394,11 @@ static void blkg_destroy(struct blkcg_gq *blkg)
- 	for (i = 0; i < BLKCG_MAX_POLS; i++) {
- 		struct blkcg_policy *pol = blkcg_policy[i];
- 
--		if (blkg->pd[i] && pol->pd_offline_fn)
--			pol->pd_offline_fn(blkg->pd[i]);
-+		if (blkg->pd[i] && blkg->pd[i]->online) {
-+			if (pol->pd_offline_fn)
-+				pol->pd_offline_fn(blkg->pd[i]);
-+			blkg->pd[i]->online = false;
-+		}
- 	}
- 
- 	blkg->online = false;
-@@ -1367,6 +1374,7 @@ int blkcg_activate_policy(struct request_queue *q,
- 		blkg->pd[pol->plid] = pd;
- 		pd->blkg = blkg;
- 		pd->plid = pol->plid;
-+		pd->online = false;
- 	}
- 
- 	/* all allocated, init in the same order */
-@@ -1374,9 +1382,11 @@ int blkcg_activate_policy(struct request_queue *q,
- 		list_for_each_entry_reverse(blkg, &q->blkg_list, q_node)
- 			pol->pd_init_fn(blkg->pd[pol->plid]);
- 
--	if (pol->pd_online_fn)
--		list_for_each_entry_reverse(blkg, &q->blkg_list, q_node)
-+	list_for_each_entry_reverse(blkg, &q->blkg_list, q_node) {
-+		if (pol->pd_online_fn)
- 			pol->pd_online_fn(blkg->pd[pol->plid]);
-+		blkg->pd[pol->plid]->online = true;
-+	}
- 
- 	__set_bit(pol->plid, q->blkcg_pols);
- 	ret = 0;
-@@ -1438,7 +1448,7 @@ void blkcg_deactivate_policy(struct request_queue *q,
- 
- 		spin_lock(&blkcg->lock);
- 		if (blkg->pd[pol->plid]) {
--			if (pol->pd_offline_fn)
-+			if (blkg->pd[pol->plid]->online && pol->pd_offline_fn)
- 				pol->pd_offline_fn(blkg->pd[pol->plid]);
- 			pol->pd_free_fn(blkg->pd[pol->plid]);
- 			blkg->pd[pol->plid] = NULL;
-diff --git a/include/linux/blk-cgroup.h b/include/linux/blk-cgroup.h
-index 27c363f6b281..c5eda86e4118 100644
---- a/include/linux/blk-cgroup.h
-+++ b/include/linux/blk-cgroup.h
-@@ -92,6 +92,7 @@ struct blkg_policy_data {
- 	/* the blkg and policy id this per-policy data belongs to */
- 	struct blkcg_gq			*blkg;
- 	int				plid;
-+	bool				online;
- };
- 
- /*
+ 	iocg->abs_vdebt -= min(abs_vpay, iocg->abs_vdebt);
 -- 
 2.34.1
 
