@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-133919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E5ACA92889
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B4B6A9261C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:10:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1F7F189F552
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CE0A1B615EF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:10:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B43E62528FA;
-	Thu, 17 Apr 2025 18:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6710F1DF756;
+	Thu, 17 Apr 2025 18:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yAL4Cb1n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lROa/bQP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72AEF18C034;
-	Thu, 17 Apr 2025 18:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E9F18C034;
+	Thu, 17 Apr 2025 18:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914544; cv=none; b=Cj4ff2tXYSPTvMHDHcRsO+DAlw/tB+vUvYc0GlCUgF7uQPxZu9Nt//Kjmf3z2BirW4yJTwhag+C1GI+Nrpcwjd89loA7UVCbf7sOK+eoe2k/S1niuwit0N8vlS8WYy47aJgzojorfLSa/JAtmX5LBA/KIziDWsBP52HWafg31tI=
+	t=1744913388; cv=none; b=ZnURym82MUBQErDEVhVI7l8JpKFdAWU+xoSeKYAwDPBzExj1AYGqaOgYLMr7qJ3F0Edd6gWDgNTw6B7MD7oxY+DYygbtI4eqaa+0kOIpycOEBi2jVAjVoaFVVBnxUswPAFfuhekydmNXndTAG2YSWMFFGBVdJudm0HJ1Cqe2rQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914544; c=relaxed/simple;
-	bh=u2sMMrf16IdE8Ua1wWl4dVriGe5h8veVWFK1OJDzp7Q=;
+	s=arc-20240116; t=1744913388; c=relaxed/simple;
+	bh=mPbOFYJX82+JQjI5woCTlwS9ixZlR++14FGBiBFUc/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=evcBqMVdU9QgDlZukt05JA2QqdBnpXKHSFQZhSJsh4TXh5BSDHEZJP9jMzksWyfIeQ0RfhFH244Rg3KiCSo+jDw+VkF0MU8x3Ajy0o35bZS7JLVutWJ/lC6TTsMFkfhVmlDojJry+4iRG8EJjjGpzxMy0fX1Nrw2pxv7sGCUu4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yAL4Cb1n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF2FC4CEE4;
-	Thu, 17 Apr 2025 18:29:03 +0000 (UTC)
+	 MIME-Version; b=Qa6HtOlbZRS/A3lAq1YRFEXhIQCKE8fLa0FBBBC0a2//LxouXN9TPotPj7bzEvXUMrlEHU1EQf0k13Bt9fqm2f8NVcl4LqlVUhNTzsyjc4W1gvkSYtpVhrJAPsxxj610bg+WaqkzLt0KsCWtU6sogQjG6VxfPWbR/xxpis5YDxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lROa/bQP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993E8C4CEE4;
+	Thu, 17 Apr 2025 18:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914544;
-	bh=u2sMMrf16IdE8Ua1wWl4dVriGe5h8veVWFK1OJDzp7Q=;
+	s=korg; t=1744913388;
+	bh=mPbOFYJX82+JQjI5woCTlwS9ixZlR++14FGBiBFUc/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yAL4Cb1n+jZ3EVZVZLyl4nIFXkLaLcuIh57Tz4frR7xnqtQfFRui6vvUZJXaT2LR9
-	 73BzNPMCB0WVEllzFFDJaYzvgZIR5sa4vtEyStCgdoLp6Av7WHyiAVpIORvZakwEBk
-	 oz1hUjbSzW/8k4nNK0huytUQCJ9oO+2v8IvcXRrc=
+	b=lROa/bQPbj/LH0qvAze10caZKQ8Za8nzrvAvAnEpt7pEHd+DiKXpRYPnGG7H1BqQO
+	 gbAyYLWaFKEQ/XAn795QJE8rx/5BNpM9Tp5vvOmnZwiLhXIcowVBXgNJKb+ZCZX5Vm
+	 +Q8EAf+r5SLgq5Blvuu7e45MXAt/2E+CUtISByCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.13 251/414] net: dsa: mv88e6xxx: workaround RGMII transmit delay erratum for 6320 family
-Date: Thu, 17 Apr 2025 19:50:09 +0200
-Message-ID: <20250417175121.515219292@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.14 322/449] kbuild: Add -fno-builtin-wcslen
+Date: Thu, 17 Apr 2025 19:50:10 +0200
+Message-ID: <20250417175131.084137416@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +59,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 1ebc8e1ef906db9c08e9abe9776d85ddec837725 upstream.
+commit 84ffc79bfbf70c779e60218563f2f3ad45288671 upstream.
 
-Implement the workaround for erratum
-  3.3 RGMII timing may be out of spec when transmit delay is enabled
-for the 6320 family, which says:
+A recent optimization change in LLVM [1] aims to transform certain loop
+idioms into calls to strlen() or wcslen(). This change transforms the
+first while loop in UniStrcat() into a call to wcslen(), breaking the
+build when UniStrcat() gets inlined into alloc_path_with_tree_prefix():
 
-  When transmit delay is enabled via Port register 1 bit 14 = 1, duty
-  cycle may be out of spec. Under very rare conditions this may cause
-  the attached device receive CRC errors.
+  ld.lld: error: undefined symbol: wcslen
+  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
+  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
+  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
+  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
 
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Cc: <stable@vger.kernel.org> # 5.4.x
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250317173250.28780-8-kabel@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Disable this optimization with '-fno-builtin-wcslen', which prevents the
+compiler from assuming that wcslen() is available in the kernel's C
+library.
+
+[ More to the point - it's not that we couldn't implement wcslen(), it's
+  that this isn't an optimization at all in the context of the kernel.
+
+  Replacing a simple inlined loop with a function call to the same loop
+  is just stupid and pointless if you don't have long strings and fancy
+  libraries with vectorization support etc.
+
+  For the regular 'strlen()' cases, we want the compiler to do this in
+  order to handle the trivial case of constant strings. And we do have
+  optimized versions of 'strlen()' on some architectures. But for
+  wcslen? Just no.    - Linus ]
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/llvm/llvm-project/commit/9694844d7e36fd5e01011ab56b64f27b867aa72d [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ Makefile |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -3690,6 +3690,21 @@ static int mv88e6xxx_stats_setup(struct
- 	return mv88e6xxx_g1_stats_clear(chip);
- }
+--- a/Makefile
++++ b/Makefile
+@@ -1065,6 +1065,9 @@ ifdef CONFIG_CC_IS_GCC
+ KBUILD_CFLAGS   += -fconserve-stack
+ endif
  
-+static int mv88e6320_setup_errata(struct mv88e6xxx_chip *chip)
-+{
-+	u16 dummy;
-+	int err;
++# Ensure compilers do not transform certain loops into calls to wcslen()
++KBUILD_CFLAGS += -fno-builtin-wcslen
 +
-+	/* Workaround for erratum
-+	 *   3.3 RGMII timing may be out of spec when transmit delay is enabled
-+	 */
-+	err = mv88e6xxx_port_hidden_write(chip, 0, 0xf, 0x7, 0xe000);
-+	if (err)
-+		return err;
-+
-+	return mv88e6xxx_port_hidden_read(chip, 0, 0xf, 0x7, &dummy);
-+}
-+
- /* Check if the errata has already been applied. */
- static bool mv88e6390_setup_errata_applied(struct mv88e6xxx_chip *chip)
- {
-@@ -5146,6 +5161,7 @@ static const struct mv88e6xxx_ops mv88e6
- 
- static const struct mv88e6xxx_ops mv88e6320_ops = {
- 	/* MV88E6XXX_FAMILY_6320 */
-+	.setup_errata = mv88e6320_setup_errata,
- 	.ieee_pri_map = mv88e6085_g1_ieee_pri_map,
- 	.ip_pri_map = mv88e6085_g1_ip_pri_map,
- 	.irl_init_all = mv88e6352_g2_irl_init_all,
-@@ -5195,6 +5211,7 @@ static const struct mv88e6xxx_ops mv88e6
- 
- static const struct mv88e6xxx_ops mv88e6321_ops = {
- 	/* MV88E6XXX_FAMILY_6320 */
-+	.setup_errata = mv88e6320_setup_errata,
- 	.ieee_pri_map = mv88e6085_g1_ieee_pri_map,
- 	.ip_pri_map = mv88e6085_g1_ip_pri_map,
- 	.irl_init_all = mv88e6352_g2_irl_init_all,
+ # change __FILE__ to the relative path to the source directory
+ ifdef building_out_of_srctree
+ KBUILD_CPPFLAGS += $(call cc-option,-fmacro-prefix-map=$(srcroot)/=)
 
 
 
