@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 746E5A92651
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:12:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CBC5A929D8
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:45:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE5E87B4E28
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 481DC1B64014
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:45:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383BF25A35A;
-	Thu, 17 Apr 2025 18:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07FD254878;
+	Thu, 17 Apr 2025 18:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="leXMdCqI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RwvrSo/f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE1E25A2AB;
-	Thu, 17 Apr 2025 18:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F26E2561D7;
+	Thu, 17 Apr 2025 18:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913151; cv=none; b=GTId8VRDUgT7c4Zwr6UZnjiJTJVBsYIxo2kpBKSTYaPJ1m8NVJvaPh+oFrJB0fExSNi/YxDtuIMHm0RM63OFtSDmJorQbnW5+AZlNgpaDoUEtmTntyAxJKlLoIr91W+3pKvtSrr/VrEE2rXFekl0waNa2rwRgutSw19FDMJdMUE=
+	t=1744915511; cv=none; b=GxkBySggcDtuJZNJoV5fICzYUKEk5ZnLqBqP+M+DEg9aWZcaSm1VbQI1HNjpUmjB6y8Q6fcJpFgWzwIkVVMtTDTsGjXTL3hYCaJBDcuKMARKzvKnoIhrM/5fqHNoAjo4UOoRpZpuc4FmRen0MwdByMO9gWL457Tjhtm+DJ0wDB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913151; c=relaxed/simple;
-	bh=Ut24wZ/XLySZXf5LuGwwEqpidcxp8T31pi1eM0NugA8=;
+	s=arc-20240116; t=1744915511; c=relaxed/simple;
+	bh=B70s7R1kyWKAB7hGOAeS3AI69hcyzDhHxwWxLJtd0ho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IvrGpBDHfGSF9gNKzICIJcsQW0GGKeiB1ruiylcyK/C+BBXTPJjfMrLO6N3uwVxz7lC092KeBZK6ld4/yzqeI9CSNxkGQeAt1e1/dg7JGyJdAFfPTTuj738z72RvhBgdjs76rfZL8RUvl+Sf9udIEG9o5a9soaozBgJIJnCZkco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=leXMdCqI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26070C4CEE7;
-	Thu, 17 Apr 2025 18:05:49 +0000 (UTC)
+	 MIME-Version; b=aMeoAQcg1qm1qJxbxGa+rb63X2DUssc4Iwu5NBtjUxv5OvxcGf9Absz3Y8+sFzGuqGFqqzz8DbLnqkraLT7uMmaoiGr54J0T+sYtiUyuIjwUl/EfyvuhtHVDYrPjDMUqIjpS15xbAwoBHVw6aR5pnH3rWSAxWapcWt+63C/IZoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RwvrSo/f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871EEC4CEEC;
+	Thu, 17 Apr 2025 18:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913150;
-	bh=Ut24wZ/XLySZXf5LuGwwEqpidcxp8T31pi1eM0NugA8=;
+	s=korg; t=1744915510;
+	bh=B70s7R1kyWKAB7hGOAeS3AI69hcyzDhHxwWxLJtd0ho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=leXMdCqIsUjYCtF+OC4u4VOQUfC9PZHE0X7MI/Iw5Lo5LaJGyqL9NGR974Id5Z5iI
-	 vCmkJKzy7DvEI5eMkUoUY75H9hNw9TqZpCzXe7BZUW/bxadm/sSOYYinST6/CvrBIQ
-	 hO95Thu9n9/4BLC9cJ788R7eFT6muNkNwcwGYtC4=
+	b=RwvrSo/fIyetNGviHdv8e1AnGtReVDu2B1goS5f1as3qdO22zfXIr1gUI/75T1Xko
+	 WGUnpOQonHn0W8s5LWzT/3Vnhr7Xhf4c/zZOrfixj/3I0j26r/Zslngd7ZobjYLL05
+	 viCFxZovsv/QIeaRyBVra5t4OFvDWgkNPPEd7jiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.14 244/449] media: streamzap: prevent processing IR data on URB failure
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 123/393] Bluetooth: qca: simplify WCN399x NVM loading
 Date: Thu, 17 Apr 2025 19:48:52 +0200
-Message-ID: <20250417175127.818456550@linuxfoundation.org>
+Message-ID: <20250417175112.544185448@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,121 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit 549f6d348167fb2f7800ed7c8d4bce9630c74498 upstream.
+[ Upstream commit 1cc41b5092e3aa511454ec882c525af311bee631 ]
 
-If streamzap_callback() receives an urb with any non-critical error
-status, i.e. any error code other than -ECONNRESET, -ENOENT or -ESHUTDOWN,
-it will try to process IR data, ignoring a possible transfer failure.
+The WCN399x code has two separate cases for loading the NVM data. In
+preparation to adding support for WCN3950, which also requires similar
+quirk, split the "variant" to be specified explicitly and merge two
+snprintfs into a single one.
 
-Make streamzap_callback() process IR data only when urb->status is 0.
-Move processing logic to a separate function to make code cleaner and
-more similar to the URB completion handlers in other RC drivers.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 19770693c354 ("V4L/DVB: staging/lirc: add lirc_streamzap driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/rc/streamzap.c |   68 ++++++++++++++++++++++++-------------------
- 1 file changed, 38 insertions(+), 30 deletions(-)
+ drivers/bluetooth/btqca.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
---- a/drivers/media/rc/streamzap.c
-+++ b/drivers/media/rc/streamzap.c
-@@ -138,39 +138,10 @@ static void sz_push_half_space(struct st
- 	sz_push_full_space(sz, value & SZ_SPACE_MASK);
- }
- 
--/*
-- * streamzap_callback - usb IRQ handler callback
-- *
-- * This procedure is invoked on reception of data from
-- * the usb remote.
-- */
--static void streamzap_callback(struct urb *urb)
-+static void sz_process_ir_data(struct streamzap_ir *sz, int len)
+diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
+index 04d02c746ec0f..dd2c0485b9848 100644
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -785,6 +785,7 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
+ 		   const char *firmware_name)
  {
--	struct streamzap_ir *sz;
- 	unsigned int i;
--	int len;
--
--	if (!urb)
--		return;
--
--	sz = urb->context;
--	len = urb->actual_length;
--
--	switch (urb->status) {
--	case -ECONNRESET:
--	case -ENOENT:
--	case -ESHUTDOWN:
--		/*
--		 * this urb is terminated, clean up.
--		 * sz might already be invalid at this point
--		 */
--		dev_err(sz->dev, "urb terminated, status: %d\n", urb->status);
--		return;
--	default:
--		break;
--	}
- 
--	dev_dbg(sz->dev, "%s: received urb, len %d\n", __func__, len);
- 	for (i = 0; i < len; i++) {
- 		dev_dbg(sz->dev, "sz->buf_in[%d]: %x\n",
- 			i, (unsigned char)sz->buf_in[i]);
-@@ -219,6 +190,43 @@ static void streamzap_callback(struct ur
- 	}
- 
- 	ir_raw_event_handle(sz->rdev);
-+}
+ 	struct qca_fw_config config = {};
++	const char *variant = "";
+ 	int err;
+ 	u8 rom_ver = 0;
+ 	u32 soc_ver;
+@@ -879,13 +880,11 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
+ 		case QCA_WCN3990:
+ 		case QCA_WCN3991:
+ 		case QCA_WCN3998:
+-			if (le32_to_cpu(ver.soc_id) == QCA_WCN3991_SOC_ID) {
+-				snprintf(config.fwname, sizeof(config.fwname),
+-					 "qca/crnv%02xu.bin", rom_ver);
+-			} else {
+-				snprintf(config.fwname, sizeof(config.fwname),
+-					 "qca/crnv%02x.bin", rom_ver);
+-			}
++			if (le32_to_cpu(ver.soc_id) == QCA_WCN3991_SOC_ID)
++				variant = "u";
 +
-+/*
-+ * streamzap_callback - usb IRQ handler callback
-+ *
-+ * This procedure is invoked on reception of data from
-+ * the usb remote.
-+ */
-+static void streamzap_callback(struct urb *urb)
-+{
-+	struct streamzap_ir *sz;
-+	int len;
-+
-+	if (!urb)
-+		return;
-+
-+	sz = urb->context;
-+	len = urb->actual_length;
-+
-+	switch (urb->status) {
-+	case 0:
-+		dev_dbg(sz->dev, "%s: received urb, len %d\n", __func__, len);
-+		sz_process_ir_data(sz, len);
-+		break;
-+	case -ECONNRESET:
-+	case -ENOENT:
-+	case -ESHUTDOWN:
-+		/*
-+		 * this urb is terminated, clean up.
-+		 * sz might already be invalid at this point
-+		 */
-+		dev_err(sz->dev, "urb terminated, status: %d\n", urb->status);
-+		return;
-+	default:
-+		break;
-+	}
-+
- 	usb_submit_urb(urb, GFP_ATOMIC);
- }
- 
++			snprintf(config.fwname, sizeof(config.fwname),
++				 "qca/crnv%02x%s.bin", rom_ver, variant);
+ 			break;
+ 		case QCA_WCN3988:
+ 			snprintf(config.fwname, sizeof(config.fwname),
+-- 
+2.39.5
+
 
 
 
