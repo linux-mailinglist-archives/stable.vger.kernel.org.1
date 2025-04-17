@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-134295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C43FEA92A75
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:51:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEAB7A92899
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06E953BAA9A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:47:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EA79460744
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2FD9253340;
-	Thu, 17 Apr 2025 18:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7675257AD5;
+	Thu, 17 Apr 2025 18:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyOfWCX/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uTnaMulZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A271DE885;
-	Thu, 17 Apr 2025 18:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B0D257AD1;
+	Thu, 17 Apr 2025 18:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915692; cv=none; b=o9OlTUexRZ/pnJduKZ/E5NawDxcgAGtgW2WISV/Z9KY2FTLYFmC/I2JNukRWle//O8qn5Sho2aMJgQzAmr7O3IPGAu/iH0RfTs3WVu5WbpQ6In7RCZIUWkxnWO/JEFy7wcS1UMb2VXkbWulNRszAJ5nYvqdoPyM/Fx2e5zZ7y8o=
+	t=1744914571; cv=none; b=NYI5PEnky4Zvgvzmm6alIadGwWccQPgoD0a+syzkr9F0rMzXhChyPEwxEp0BygeU5gFqWPiv3Tg0xgAmJ5CUaIAWGZ0vd9durt6ZY3w0xt5yQCDD6v6sxZnack/Yb22msiMVDM+ZblRO+uhGWgN10GEGrOL7PJt4h7lekowS9Cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915692; c=relaxed/simple;
-	bh=Nnl9iSOPl9AZdB5YDdF25k4Yn+NeBY7qEHWs4l9yTQ8=;
+	s=arc-20240116; t=1744914571; c=relaxed/simple;
+	bh=nHtdbpFmrzlldKDMmLez1YZ6cwnIsRv5+cTmHWl/ISI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b04lCpKb7XPZHXAvfQ1rMfrrbVfew8BVNnoJGJuw27OfT68aSnEhQV8dEoUHZILjK2jEyhjHykx6iGbSLfOGCS7AYYb1xtty5+CA3FuIEq6SBwTNONshHu7Aoshetb1KrhgeTneCdGUmp0I2scP0Y2Vpeer/YYCYCYcKwKIzzNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyOfWCX/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDEC3C4CEE4;
-	Thu, 17 Apr 2025 18:48:11 +0000 (UTC)
+	 MIME-Version; b=Gdm7pXqN1Dr7ZW4RCCtVmReW1+71lxhNRefToH8jarJQ19ImrR0OnQDUi7nVsX7d/Ve9wYFb3ytkMA7WQqRGdKQT7isftXjIk54EdZy1hn+LmFysPf5OCKC2hCtZbqmgzzjqvGl7Z1LiCyhvNKMit0ut2AZWlH0rPREifBW6EbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uTnaMulZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 374AEC4CEE4;
+	Thu, 17 Apr 2025 18:29:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915692;
-	bh=Nnl9iSOPl9AZdB5YDdF25k4Yn+NeBY7qEHWs4l9yTQ8=;
+	s=korg; t=1744914571;
+	bh=nHtdbpFmrzlldKDMmLez1YZ6cwnIsRv5+cTmHWl/ISI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dyOfWCX/QvYZbgdlFM3iTn/n+LckqWyVgTagAWrtzCzfZO59O3qtfr0f+ii6XLuG/
-	 iqP7FRHFQ2YsWfI3CFj4A1le7MNmt1Hpk3i1Q/htZ1USv4Qf6hXbGWNaUA49T77jD5
-	 gq0rskpIXV1661DXgSI4LO8PMsNOvK9F/qDlbVBA=
+	b=uTnaMulZ30ucz65QTloXt89Yus9U0QWr1mITTrRYQ5DiszNz/LukBnBbYg543mnj6
+	 7HJVnWca3ZEku+9YNkrmNVK9RN50x6R1DJh5AM/xBpLqEZRZlmgfkghUjYGJYisDzj
+	 rYPCnuo8CslFrs72Xw3+UzTFoNDyRxFnsAZ2/q4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan McDowell <noodles@meta.com>,
-	=?UTF-8?q?Michal=20Such=C3=A1nek?= <msuchanek@suse.de>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.12 209/393] tpm, tpm_tis: Fix timeout handling when waiting for TPM status
+	Sean Wang <sean.wang@mediatek.com>,
+	Caleb Jorden <cjorden@gmail.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.13 260/414] wifi: mt76: mt7925: fix the wrong simultaneous cap for MLO
 Date: Thu, 17 Apr 2025 19:50:18 +0200
-Message-ID: <20250417175115.985393680@linuxfoundation.org>
+Message-ID: <20250417175121.888034915@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan McDowell <noodles@meta.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-commit 7146dffa875cd00e7a7f918e1fce79c7593ac1fa upstream.
+commit 7dcea6fe33ee3d7cbb65baee0dd7adc76d1c9ddc upstream.
 
-The change to only use interrupts to handle supported status changes
-introduced an issue when it is necessary to poll for the status. Rather
-than checking for the status after sleeping the code now sleeps after
-the check. This means a correct, but slower, status change on the part
-of the TPM can be missed, resulting in a spurious timeout error,
-especially on a more loaded system. Switch back to sleeping *then*
-checking. An up front check of the status has been done at the start of
-the function, so this does not cause an additional delay when the status
-is already what we're looking for.
+The mt7925 chip is only support a single radio, so the maximum
+number of simultaneous should be 0.
 
-Cc: stable@vger.kernel.org # v6.4+
-Fixes: e87fcf0dc2b4 ("tpm, tpm_tis: Only handle supported interrupts")
-Signed-off-by: Jonathan McDowell <noodles@meta.com>
-Reviewed-by: Michal Suchánek <msuchanek@suse.de>
-Reviewed-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
+Cc: stable@vger.kernel.org
+Co-developed-by: Sean Wang <sean.wang@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Tested-by: Caleb Jorden <cjorden@gmail.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20250305000851.493671-3-sean.wang@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm_tis_core.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -114,11 +114,10 @@ again:
- 		return 0;
- 	/* process status changes without irq support */
- 	do {
-+		usleep_range(priv->timeout_min, priv->timeout_max);
- 		status = chip->ops->status(chip);
- 		if ((status & mask) == mask)
- 			return 0;
--		usleep_range(priv->timeout_min,
--			     priv->timeout_max);
- 	} while (time_before(jiffies, stop));
- 	return -ETIME;
- }
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -256,7 +256,7 @@ int mt7925_init_mlo_caps(struct mt792x_p
+ 
+ 	ext_capab[0].eml_capabilities = phy->eml_cap;
+ 	ext_capab[0].mld_capa_and_ops =
+-		u16_encode_bits(1, IEEE80211_MLD_CAP_OP_MAX_SIMUL_LINKS);
++		u16_encode_bits(0, IEEE80211_MLD_CAP_OP_MAX_SIMUL_LINKS);
+ 
+ 	wiphy->flags |= WIPHY_FLAG_SUPPORTS_MLO;
+ 	wiphy->iftype_ext_capab = ext_capab;
 
 
 
