@@ -1,156 +1,240 @@
-Return-Path: <stable+bounces-133002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19BB2A91986
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 12:39:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1443BA91991
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 12:43:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80AD019E4170
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 10:39:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1622E1716FD
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 10:43:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B0022F3BC;
-	Thu, 17 Apr 2025 10:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CE6322D7BF;
+	Thu, 17 Apr 2025 10:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MJws/Uds";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FxxbrGL/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LchJt/q9"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF65F229B32;
-	Thu, 17 Apr 2025 10:38:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BEAA2DFA36
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 10:43:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744886333; cv=none; b=kADp0QPkZBvW5NRkpUeHao6HIg6oalFKIlLWtwDidpAkt5tq2JAqgezfaKYdlIrFl8XPtcYK1dlBlmAb7OQZEYSXuQIOpTC23p4TcaJmsX31+UEYqTntEVK3M6zCTQXup3UWonv7s3XRQpyvfeCMWLIb9YK98SCGRGOC2q+zo24=
+	t=1744886628; cv=none; b=C2EimrxrQLTZuUhJSOwz5NzPaphgORN/cHuwzn/ba+suoxWnMsTDJVQ8O0h4gp7g4mpJn/xkBRO2Zrc/FRVZ+ZEDQ45kgaGfOBoY06zWfQMUgCt4fAnUtZOMhcVEeLrOuNUpHEqvR/SLl6Qq1xwAScAyqi7Uh6jRUtPka2DgSdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744886333; c=relaxed/simple;
-	bh=6GduKB4eSI9n0FJJ84G3bZkSKesGpPT0qWaOqfMeQrw=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=I5S12wssOQHyfmFoO4KfgqrXkMreHeuBX6P+Ze9LcJPvoJvpUuJol3WbGC2XpbPpbgjuSlohflfiCi01ZkBmjICpkXAiRHqr2dPF1Ju5m4ePomY+KUEbmzrgWHjGD1S0UarXM5kzn4RMCvNo9xjf0U6Du5H0lWy7XKOP1aiZATc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MJws/Uds; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FxxbrGL/; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 17 Apr 2025 10:38:49 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744886329;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LdTK0N8yov+FY/Dz2ajYDTW5yxVEjx34PNll+sZkjb8=;
-	b=MJws/UdsCjhL1ViPcyEzhkHbF0zekrQYJxWm+9O9iLtBYzuiYHgQhZEEPdexXaYAcy/Q2C
-	HtS7BnfryV4RRaomHaHvRSNaI6y/8ovIWr7w2AkMlmVbW6yRJkKIZhtLsRvEHRmBSJDms2
-	YBa1fkuofhLr+ZX+ZMCYsXT9UpOdK0hIq/MSah8qI0LH/xa2uRwY4h+ZQbKHkxOKEmcejy
-	QeJ3fkr8TSr6TnKJq7OccTWurMadJnvj4iPCSm7xR4uZYVgzXmvz8EvGE3NwFYTvAJrhLT
-	HwMaF46GvrwtZJxw5MyTXjNIGSK/gXG7R3w+X7t+lxla6ALBEwkgMxhY7qqrPQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744886329;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LdTK0N8yov+FY/Dz2ajYDTW5yxVEjx34PNll+sZkjb8=;
-	b=FxxbrGL/7yjEY9Val+XhtJRDMFnPoCU4g3k8JzCTDyW93aWq7UR8Hjj3KdUBKo69W5j4/d
-	z10HL+TV89YngeCA==
-From: "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/intel/uncore: Fix the scale of IIO free
- running counters on SNR
-Cc: Kan Liang <kan.liang@linux.intel.com>, Ingo Molnar <mingo@kernel.org>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250416142426.3933977-1-kan.liang@linux.intel.com>
-References: <20250416142426.3933977-1-kan.liang@linux.intel.com>
+	s=arc-20240116; t=1744886628; c=relaxed/simple;
+	bh=T48CQrQ8Dc9sNIrq4Yt2CojLmIsaCz7wE2djRHSzius=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Mx8kIh79V/5yr+chplOt1xj2ubhI6wQsyeDFYZcjlHrYiI1TrFYeQ1AoE3kcLo1GPuv+EOJm70IndVX8yPEY8LsV3QelOk0sQ4xMHpsprL46zIE6jqwyoJOCj+qBXkHWG6yRiDN65CGlBN0p3jmiyEnWgZVjB1/umYY1CMMG3WQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LchJt/q9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50739C4CEE4;
+	Thu, 17 Apr 2025 10:43:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1744886627;
+	bh=T48CQrQ8Dc9sNIrq4Yt2CojLmIsaCz7wE2djRHSzius=;
+	h=Subject:To:Cc:From:Date:From;
+	b=LchJt/q9nRUfY/R/oKuLXKsiGL8hmpIUx8cW17iPaDSqqi3ufTazedPKIQSnYbr8+
+	 nNz1H2RGnjE7euHKg2XksTAU4MJPOkmTmsE2I3/Ei/TJkl/2KuoFoE9D9qHjTe0ZH4
+	 jbRQD6BlMqc10hz2XMu4MnwPhuA+JW7K9WjWkOcc=
+Subject: FAILED: patch "[PATCH] Revert "wifi: mt76: mt7925: Update mt7925_mcu_uni_[tx,rx]_ba" failed to apply to 6.13-stable tree
+To: sean.wang@mediatek.com,cjorden@gmail.com,mingyen.hsieh@mediatek.com,nbd@nbd.name
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 17 Apr 2025 12:43:44 +0200
+Message-ID: <2025041744-scotch-tropics-a86f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174488632910.31282.4542746589511002502.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     73ff7904cab2289e9332013d2bcd40f3885e5a96
-Gitweb:        https://git.kernel.org/tip/73ff7904cab2289e9332013d2bcd40f3885e5a96
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Wed, 16 Apr 2025 07:24:24 -07:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 17 Apr 2025 12:19:17 +02:00
+The patch below does not apply to the 6.13-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-perf/x86/intel/uncore: Fix the scale of IIO free running counters on SNR
+To reproduce the conflict and resubmit, you may use the following commands:
 
-There was a mistake in the SNR uncore spec. The counter increments for
-every 32 bytes of data sent from the IO agent to the SOC, not 4 bytes
-which was documented in the spec.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.13.y
+git checkout FETCH_HEAD
+git cherry-pick -x 766ea2cf5a398c7eed519b12c6c6cf1631143ea2
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041744-scotch-tropics-a86f@gregkh' --subject-prefix 'PATCH 6.13.y' HEAD^..
 
-The event list has been updated:
+Possible dependencies:
 
-  "EventName": "UNC_IIO_BANDWIDTH_IN.PART0_FREERUN",
-  "BriefDescription": "Free running counter that increments for every 32
-		       bytes of data sent from the IO agent to the SOC",
 
-Update the scale of the IIO bandwidth in free running counters as well.
 
-Fixes: 210cc5f9db7a ("perf/x86/intel/uncore: Add uncore support for Snow Ridge server")
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 766ea2cf5a398c7eed519b12c6c6cf1631143ea2 Mon Sep 17 00:00:00 2001
+From: Sean Wang <sean.wang@mediatek.com>
+Date: Tue, 4 Mar 2025 16:08:46 -0800
+Subject: [PATCH] Revert "wifi: mt76: mt7925: Update mt7925_mcu_uni_[tx,rx]_ba
+ for MLO"
+
+For MLO, mac80211 will send the BA action for each link to
+the driver, so the driver does not need to handle it itself.
+Therefore, revert this patch.
+
+Fixes: eb2a9a12c609 ("wifi: mt76: mt7925: Update mt7925_mcu_uni_[tx,rx]_ba for MLO")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250416142426.3933977-1-kan.liang@linux.intel.com
----
- arch/x86/events/intel/uncore_snbep.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Tested-by: Caleb Jorden <cjorden@gmail.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Link: https://patch.msgid.link/20250305000851.493671-1-sean.wang@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 
-diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
-index 60973c2..35da2c4 100644
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -4891,28 +4891,28 @@ static struct uncore_event_desc snr_uncore_iio_freerunning_events[] = {
- 	INTEL_UNCORE_EVENT_DESC(ioclk,			"event=0xff,umask=0x10"),
- 	/* Free-Running IIO BANDWIDTH IN Counters */
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port0,		"event=0xff,umask=0x20"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port0.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port1,		"event=0xff,umask=0x21"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port1.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port2,		"event=0xff,umask=0x22"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port2.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port3,		"event=0xff,umask=0x23"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port3.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port4,		"event=0xff,umask=0x24"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port4.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port5,		"event=0xff,umask=0x25"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port5.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port6,		"event=0xff,umask=0x26"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port6.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port7,		"event=0xff,umask=0x27"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port7.unit,	"MiB"),
- 	{ /* end: all zeroes */ },
- };
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index ad47a4b153da..47a6040381a0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -1289,22 +1289,22 @@ mt7925_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	case IEEE80211_AMPDU_RX_START:
+ 		mt76_rx_aggr_start(&dev->mt76, &msta->deflink.wcid, tid, ssn,
+ 				   params->buf_size);
+-		mt7925_mcu_uni_rx_ba(dev, vif, params, true);
++		mt7925_mcu_uni_rx_ba(dev, params, true);
+ 		break;
+ 	case IEEE80211_AMPDU_RX_STOP:
+ 		mt76_rx_aggr_stop(&dev->mt76, &msta->deflink.wcid, tid);
+-		mt7925_mcu_uni_rx_ba(dev, vif, params, false);
++		mt7925_mcu_uni_rx_ba(dev, params, false);
+ 		break;
+ 	case IEEE80211_AMPDU_TX_OPERATIONAL:
+ 		mtxq->aggr = true;
+ 		mtxq->send_bar = false;
+-		mt7925_mcu_uni_tx_ba(dev, vif, params, true);
++		mt7925_mcu_uni_tx_ba(dev, params, true);
+ 		break;
+ 	case IEEE80211_AMPDU_TX_STOP_FLUSH:
+ 	case IEEE80211_AMPDU_TX_STOP_FLUSH_CONT:
+ 		mtxq->aggr = false;
+ 		clear_bit(tid, &msta->deflink.wcid.ampdu_state);
+-		mt7925_mcu_uni_tx_ba(dev, vif, params, false);
++		mt7925_mcu_uni_tx_ba(dev, params, false);
+ 		break;
+ 	case IEEE80211_AMPDU_TX_START:
+ 		set_bit(tid, &msta->deflink.wcid.ampdu_state);
+@@ -1313,7 +1313,7 @@ mt7925_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	case IEEE80211_AMPDU_TX_STOP_CONT:
+ 		mtxq->aggr = false;
+ 		clear_bit(tid, &msta->deflink.wcid.ampdu_state);
+-		mt7925_mcu_uni_tx_ba(dev, vif, params, false);
++		mt7925_mcu_uni_tx_ba(dev, params, false);
+ 		ieee80211_stop_tx_ba_cb_irqsafe(vif, sta->addr, tid);
+ 		break;
+ 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 7885d71b7a77..ebe7cc30aaf9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -572,10 +572,10 @@ void mt7925_mcu_rx_event(struct mt792x_dev *dev, struct sk_buff *skb)
+ 
+ static int
+ mt7925_mcu_sta_ba(struct mt76_dev *dev, struct mt76_vif_link *mvif,
+-		  struct mt76_wcid *wcid,
+ 		  struct ieee80211_ampdu_params *params,
+ 		  bool enable, bool tx)
+ {
++	struct mt76_wcid *wcid = (struct mt76_wcid *)params->sta->drv_priv;
+ 	struct sta_rec_ba_uni *ba;
+ 	struct sk_buff *skb;
+ 	struct tlv *tlv;
+@@ -603,60 +603,28 @@ mt7925_mcu_sta_ba(struct mt76_dev *dev, struct mt76_vif_link *mvif,
+ 
+ /** starec & wtbl **/
+ int mt7925_mcu_uni_tx_ba(struct mt792x_dev *dev,
+-			 struct ieee80211_vif *vif,
+ 			 struct ieee80211_ampdu_params *params,
+ 			 bool enable)
+ {
+ 	struct mt792x_sta *msta = (struct mt792x_sta *)params->sta->drv_priv;
+-	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
+-	struct mt792x_link_sta *mlink;
+-	struct mt792x_bss_conf *mconf;
+-	unsigned long usable_links = ieee80211_vif_usable_links(vif);
+-	struct mt76_wcid *wcid;
+-	u8 link_id, ret;
++	struct mt792x_vif *mvif = msta->vif;
+ 
+-	for_each_set_bit(link_id, &usable_links, IEEE80211_MLD_MAX_NUM_LINKS) {
+-		mconf = mt792x_vif_to_link(mvif, link_id);
+-		mlink = mt792x_sta_to_link(msta, link_id);
+-		wcid = &mlink->wcid;
++	if (enable && !params->amsdu)
++		msta->deflink.wcid.amsdu = false;
+ 
+-		if (enable && !params->amsdu)
+-			mlink->wcid.amsdu = false;
+-
+-		ret = mt7925_mcu_sta_ba(&dev->mt76, &mconf->mt76, wcid, params,
+-					enable, true);
+-		if (ret < 0)
+-			break;
+-	}
+-
+-	return ret;
++	return mt7925_mcu_sta_ba(&dev->mt76, &mvif->bss_conf.mt76, params,
++				 enable, true);
+ }
+ 
+ int mt7925_mcu_uni_rx_ba(struct mt792x_dev *dev,
+-			 struct ieee80211_vif *vif,
+ 			 struct ieee80211_ampdu_params *params,
+ 			 bool enable)
+ {
+ 	struct mt792x_sta *msta = (struct mt792x_sta *)params->sta->drv_priv;
+-	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
+-	struct mt792x_link_sta *mlink;
+-	struct mt792x_bss_conf *mconf;
+-	unsigned long usable_links = ieee80211_vif_usable_links(vif);
+-	struct mt76_wcid *wcid;
+-	u8 link_id, ret;
++	struct mt792x_vif *mvif = msta->vif;
+ 
+-	for_each_set_bit(link_id, &usable_links, IEEE80211_MLD_MAX_NUM_LINKS) {
+-		mconf = mt792x_vif_to_link(mvif, link_id);
+-		mlink = mt792x_sta_to_link(msta, link_id);
+-		wcid = &mlink->wcid;
+-
+-		ret = mt7925_mcu_sta_ba(&dev->mt76, &mconf->mt76, wcid, params,
+-					enable, false);
+-		if (ret < 0)
+-			break;
+-	}
+-
+-	return ret;
++	return mt7925_mcu_sta_ba(&dev->mt76, &mvif->bss_conf.mt76, params,
++				 enable, false);
+ }
+ 
+ static int mt7925_load_clc(struct mt792x_dev *dev, const char *fw_name)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
+index 8707b5d04743..fd5f9d4ea4a7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
+@@ -263,11 +263,9 @@ int mt7925_mcu_set_beacon_filter(struct mt792x_dev *dev,
+ 				 struct ieee80211_vif *vif,
+ 				 bool enable);
+ int mt7925_mcu_uni_tx_ba(struct mt792x_dev *dev,
+-			 struct ieee80211_vif *vif,
+ 			 struct ieee80211_ampdu_params *params,
+ 			 bool enable);
+ int mt7925_mcu_uni_rx_ba(struct mt792x_dev *dev,
+-			 struct ieee80211_vif *vif,
+ 			 struct ieee80211_ampdu_params *params,
+ 			 bool enable);
+ void mt7925_scan_work(struct work_struct *work);
+
 
