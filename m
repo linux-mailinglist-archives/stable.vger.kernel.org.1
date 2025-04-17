@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-134378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C97E6A92ABD
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:54:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7ED6A92945
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 905A31B64F47
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EE038E1D16
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5DB253340;
-	Thu, 17 Apr 2025 18:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6FE264FB0;
+	Thu, 17 Apr 2025 18:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aBGvVf9b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2Hnhqqt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B0E13594D;
-	Thu, 17 Apr 2025 18:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB01825B665;
+	Thu, 17 Apr 2025 18:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915946; cv=none; b=NNBZ7ay+9CSFMbrWOpKxBU5R8H9v/8IKGp0mLQcXzj/XnuPCqCVmVKdXObUvMqJFU25kKFQXxImH9/tfzDF1/Ga0MOc7nhZWl8kWpysg0O+uwgEyqdvk5sO8mNlequ9m1hdoZqDxpXdMu+uRnA6ziLB9oOIkIUVW9BhBSpiLa9g=
+	t=1744914923; cv=none; b=VGhkbYiRp25ZjMG0FKAof5XyD4h4FqRnx1Rlq+1VzRtkt4PJvlzlMvnEPGH/3JlpPKTXdmn6jX8zsEqmyRtmYphdl+PwOsTJw6mlENjGIkXXkmyXS6KGSXWhGo6uYHpcpQqjJjYkz+T1ghRB2r2wyHLU+CY2b8Hpj8A7boT3uqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915946; c=relaxed/simple;
-	bh=e5R4Q9EG7HOHhJjwmzAv3fMy4OtAjN5djD0AsHoyI5Q=;
+	s=arc-20240116; t=1744914923; c=relaxed/simple;
+	bh=QmW2HTWn9EbinXeNu1dKMkrjRYpHs5u1DheJU6p+wQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=shJ0SLD142Z06erKotQAwXtjwiC711xBGU/EjzbpzNwchtQ8fNOtZ5x5oK9gVKOuob4LmiaRucHwIirNHkMaHNTkZ1R9io/0VwMYIpypSSgKA6Id6s8OdHiv2XCkl4OS69KP7Hn3OrR97pAjIEQWvOPCseXxeH9hq5bWPnF+2mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aBGvVf9b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87314C4CEE4;
-	Thu, 17 Apr 2025 18:52:25 +0000 (UTC)
+	 MIME-Version; b=WSRa7ne4dvGUo0GRIyGSCeRnNJpOI0kng9SWDsYGRLcjlXLm4eRdEFW9YeQglJ1LBt2+aXsxYKGrv1c12SeprmVd2uPZyor5Y0nH0doIgwnrzA7O8oF2KQFHX4Uf29NzvALCPAOV5poO1KvLUNsJXHge7BMDaEfIPAYGNDgJ4o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2Hnhqqt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D9E7C4CEE4;
+	Thu, 17 Apr 2025 18:35:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915946;
-	bh=e5R4Q9EG7HOHhJjwmzAv3fMy4OtAjN5djD0AsHoyI5Q=;
+	s=korg; t=1744914922;
+	bh=QmW2HTWn9EbinXeNu1dKMkrjRYpHs5u1DheJU6p+wQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aBGvVf9b7/Vf0Y+/U8l+gJTnKAkmEAhXRNNzBYNb1NdfRj+IWoQQb3pGoyDqNoKzs
-	 NrpkBRkz0ORoFrPEjWFwjNITefurw7Ce3tf2WlatJGSbqJDUxZO46pkEjZ0TxsUrOe
-	 m5V4dGlE+eRITmttilvZGU+sZOVCU30b6uxAj98U=
+	b=f2HnhqqtUD4VdnpgV4HVgDL/fqBDVexqE/ngl0Wm/kgLOCxZ3viZszFoMZu0O1D41
+	 mtp1paYVG8U7nePIcAaxsM28ul1Jy7zXR62RB0iLVpOeZ9rZwu87OAqVZzeU85IsjE
+	 rgtJxeG+wDLe3Ytpwc871PuljdIn7X2wgZbIIy+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.12 293/393] btrfs: zoned: fix zone finishing with missing devices
+	Hien Huynh <hien.huynh.px@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 6.13 344/414] clk: renesas: r9a07g043: Fix HP clock source for RZ/Five
 Date: Thu, 17 Apr 2025 19:51:42 +0200
-Message-ID: <20250417175119.400084856@linuxfoundation.org>
+Message-ID: <20250417175125.265861877@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-commit 35fec1089ebb5617f85884d3fa6a699ce6337a75 upstream.
+commit 7f22a298d926664b51fcfe2f8ea5feb7f8b79952 upstream.
 
-If do_zone_finish() is called with a filesystem that has missing devices
-(e.g. a RAID file system mounted in degraded mode) it is accessing the
-btrfs_device::zone_info pointer, which will not be set if the device
-in question is missing.
+According to the Rev.1.20 hardware manual for the RZ/Five SoC, the clock
+source for HP is derived from PLL6 divided by 2.  Correct the
+implementation by configuring HP as a fixed clock source instead of a
+MUX.
 
-Check if the device is present (by checking if it has a valid block device
-pointer associated) and if not, skip zone finishing for it.
+The `CPG_PL6_ETH_SSEL' register, which is available on the RZ/G2UL SoC,
+is not present on the RZ/Five SoC, necessitating this change.
 
-Fixes: 4dcbb8ab31c1 ("btrfs: zoned: make zone finishing multi stripe capable")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 95d48d270305ad2c ("clk: renesas: r9a07g043: Add support for RZ/Five SoC")
+Cc: stable@vger.kernel.org
+Reported-by: Hien Huynh <hien.huynh.px@renesas.com>
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/20250127173159.34572-1-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/zoned.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/renesas/r9a07g043-cpg.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -2271,6 +2271,9 @@ static int do_zone_finish(struct btrfs_b
- 		struct btrfs_zoned_device_info *zinfo = device->zone_info;
- 		unsigned int nofs_flags;
+--- a/drivers/clk/renesas/r9a07g043-cpg.c
++++ b/drivers/clk/renesas/r9a07g043-cpg.c
+@@ -89,7 +89,9 @@ static const struct clk_div_table dtable
  
-+		if (!device->bdev)
-+			continue;
-+
- 		if (zinfo->max_active_zones == 0)
- 			continue;
+ /* Mux clock tables */
+ static const char * const sel_pll3_3[] = { ".pll3_533", ".pll3_400" };
++#ifdef CONFIG_ARM64
+ static const char * const sel_pll6_2[]	= { ".pll6_250", ".pll5_250" };
++#endif
+ static const char * const sel_sdhi[] = { ".clk_533", ".clk_400", ".clk_266" };
  
+ static const u32 mtable_sdhi[] = { 1, 2, 3 };
+@@ -137,7 +139,12 @@ static const struct cpg_core_clk r9a07g0
+ 	DEF_DIV("P2", R9A07G043_CLK_P2, CLK_PLL3_DIV2_4_2, DIVPL3A, dtable_1_32),
+ 	DEF_FIXED("M0", R9A07G043_CLK_M0, CLK_PLL3_DIV2_4, 1, 1),
+ 	DEF_FIXED("ZT", R9A07G043_CLK_ZT, CLK_PLL3_DIV2_4_2, 1, 1),
++#ifdef CONFIG_ARM64
+ 	DEF_MUX("HP", R9A07G043_CLK_HP, SEL_PLL6_2, sel_pll6_2),
++#endif
++#ifdef CONFIG_RISCV
++	DEF_FIXED("HP", R9A07G043_CLK_HP, CLK_PLL6_250, 1, 1),
++#endif
+ 	DEF_FIXED("SPI0", R9A07G043_CLK_SPI0, CLK_DIV_PLL3_C, 1, 2),
+ 	DEF_FIXED("SPI1", R9A07G043_CLK_SPI1, CLK_DIV_PLL3_C, 1, 4),
+ 	DEF_SD_MUX("SD0", R9A07G043_CLK_SD0, SEL_SDHI0, SEL_SDHI0_STS, sel_sdhi,
 
 
 
