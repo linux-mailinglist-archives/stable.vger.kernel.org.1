@@ -1,124 +1,107 @@
-Return-Path: <stable+bounces-132918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70D1CA91573
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 09:40:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8FC5A91579
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 09:41:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D97C23AE41B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 07:40:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FD90189C7FF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 07:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C466B21ADC2;
-	Thu, 17 Apr 2025 07:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66225219A76;
+	Thu, 17 Apr 2025 07:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="vrIIPKLj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bbaGGhP3"
 X-Original-To: stable@vger.kernel.org
-Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.241.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C78218821;
-	Thu, 17 Apr 2025 07:40:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.241.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D04821A431
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 07:41:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744875617; cv=none; b=seGlB/1dLpNgrFvlGU1f8ZqaRYoI9unLuMsnJhbzBt10VGEi1BXTwozfV2gWfvtOw2rkYgnjAwNUN/RHMGVV1EyrSnAOEgQu+wxwOtDlec50WMhVpavuGrNchDL7uontexnFG403XcWZhGf7tgDLO6bGaWWpAR3UpxYyXklNMnU=
+	t=1744875708; cv=none; b=mKXJBXjCpqEKOCsXFTZdG52WdgCncLyU4v6NLB576eg7LbzIAdyhyGgIl/FUv+ghqc5SU7dbqqNN/YQnHqvLNoBVPOX7GX4Oe2/sh74XZUxi6+ywnBkca4L6nYmES0+U5BTuciPNdNhpVh3Dfo/5tPC1WAIuRMBFBDpLhea1O/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744875617; c=relaxed/simple;
-	bh=TimnS22xJLJdJcglTRD/eXrTiFGGEKRUHgCJ2bG/N+M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Egj7R4jJYYJBt+SOe+qQbhVBwOXDE5QhUIAroMC1Y9xxnS4azDdeZwr3dt3rosFATbCyjSkgMgbqt55pjrV9qf8LIVz8UxyLNAZhy9rX3DdnvqY3cXrnBvLt6g1n8bGfCS2OuMviuSDGHttsbT9PsChMYQR07YrSRlTVWnOOpVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=vrIIPKLj; arc=none smtp.client-ip=159.100.241.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
-Received: from relay3.mymailcheap.com (relay3.mymailcheap.com [217.182.119.155])
-	by relay5.mymailcheap.com (Postfix) with ESMTPS id E9B1C2005F;
-	Thu, 17 Apr 2025 07:40:07 +0000 (UTC)
-Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
-	by relay3.mymailcheap.com (Postfix) with ESMTPS id 2DB5C3E8FC;
-	Thu, 17 Apr 2025 07:40:00 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf1.mymailcheap.com (Postfix) with ESMTPSA id C84C240049;
-	Thu, 17 Apr 2025 07:39:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1744875599; bh=TimnS22xJLJdJcglTRD/eXrTiFGGEKRUHgCJ2bG/N+M=;
-	h=From:To:Cc:Subject:Date:From;
-	b=vrIIPKLjQwUTp5FjNtjshS/dxm0P3QeklwByfcIzL3+4efoydX3ttVrGCmSgtc9jZ
-	 Hecn/kwMb3+yq1NzVj53m1Q1siQ+ARPxj/nthSCIIx9q929SRW6vq+2ql7OlxQaosB
-	 J4E1yENfYWW4e3rh25UF5zoQC17zWzTNNkSktyz0=
-Received: from JellyZhongke.localdomain (unknown [203.175.14.48])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 133564260D;
-	Thu, 17 Apr 2025 07:39:55 +0000 (UTC)
-From: Mingcong Bai <jeffbai@aosc.io>
-To: "Rafael J . Wysocki" <rafael@kernel.org>
-Cc: Kexy Biscuit <kexybiscuit@aosc.io>,
-	Runhua He <hua@aosc.io>,
-	Mingcong Bai <jeffbai@aosc.io>,
-	stable@vger.kernel.org,
-	Len Brown <lenb@kernel.org>,
-	Li Chen <me@linux.beauty>,
-	linux-acpi@vger.kernel.org (open list:ACPI),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] ACPI: resource: fix a typo for MECHREVO in irq1_edge_low_force_override
-Date: Thu, 17 Apr 2025 15:39:46 +0800
-Message-ID: <20250417073947.47419-1-jeffbai@aosc.io>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1744875708; c=relaxed/simple;
+	bh=Q6A0u6FeDvRD2mlvxjJPAK+Arehk54je3JcKYA7FBHI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b5nlOtV0u/jfM05n/nFEUHyWfr+JIHhpxlRnyxgOmPUKg9/4g08BkgEOMpxQp62PlRpuHK6dzn8tMgTgrIrJXRMHwt/7cpmSV/T1g0mTB8xcCJIZN+aN9IiG/FCfsb7hedM82TZOtvH8dmbd+qvl7pk/9q/Fkis34FOKcZfRYr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bbaGGhP3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A24C4CEEE;
+	Thu, 17 Apr 2025 07:41:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1744875707;
+	bh=Q6A0u6FeDvRD2mlvxjJPAK+Arehk54je3JcKYA7FBHI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bbaGGhP3KZpY2I/aofAnbsP5E/+zhRPJPEWKjRcnahe3xfZHqDOZgPZjWpkUUJ6CL
+	 obf0YwsA1NdkieNEiqVfLCqIP2LEltn0hxnJ9TU1s1l5NNFH5VFgzsFL9Hr7krWYVz
+	 1XcVu8bhN6a8cR/UTg1JiDlYNBeltlrepxCsYwQM=
+Date: Thu, 17 Apr 2025 09:41:44 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Cliff Liu <donghua.liu@windriver.com>
+Cc: huangchenghai2@huawei.com, herbert@gondor.apana.org.au,
+	davem@davemloft.net, stable@vger.kernel.org,
+	"He, Zhe" <Zhe.He@eng.windriver.com>,
+	"Bi, Peng (CN)" <peng.bi.cn@windriver.com>
+Subject: Re: Question about back-porting '8be091338971 crypto:
+ hisilicon/debugfs - Fix debugfs uninit process issue'
+Message-ID: <2025041739-armoire-dimmer-4670@gregkh>
+References: <767571bc-1a59-4f7c-a9c7-fb23b79303a9@windriver.com>
+ <4725f8e8-7f46-48f6-9869-8bf16eca6f1a@windriver.com>
+ <2025041727-crushable-unbend-6e6c@gregkh>
+ <205d560b-be0e-4ee4-8293-e66023e481c0@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C84C240049
-X-Rspamd-Server: nf1.mymailcheap.com
-X-Spamd-Result: default: False [1.40 / 10.00];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_ONE(0.00)[1];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	SPFBL_URIBL_EMAIL_FAIL(0.00)[jeffbai.aosc.io:server fail,stable.vger.kernel.org:server fail];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[]
-X-Rspamd-Action: no action
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <205d560b-be0e-4ee4-8293-e66023e481c0@windriver.com>
 
-The vendor name for MECHREVO was incorrectly spelled in commit
-b53f09ecd602 ("ACPI: resource: Do IRQ override on MECHREV GM7XG0M").
+On Thu, Apr 17, 2025 at 03:32:07PM +0800, Cliff Liu wrote:
+> Hi Greg KH,
+> 
+> On 2025/4/17 15:13, Greg KH wrote:
+> > CAUTION: This email comes from a non Wind River email account!
+> > Do not click links or open attachments unless you recognize the sender and know the content is safe.
+> > 
+> > On Thu, Apr 17, 2025 at 02:51:05PM +0800, Cliff Liu wrote:
+> > > Hi,
+> > > 
+> > > I think this patch is not applicable for 5.15 and 5.10.
+> > Then why are you trying to apply it there?  Do you have the bug that is
+> > being reported here on those kernel versions?  If not, why is this an
+> > issue?  If so, find the files that are affected in those releases and
+> > apply the change there.
+> 
+> It is reported by NVD that it is CVE-2024-42147 vulnerable and this patch
+> fix it in v6.10.
+> 
+> So I want to back-port the patch to 5.15 and 5.10. I didn't make it clear.
+> So sorry for that.
+> 
+> I just want to get more help or information to confirm if it is applicable
+> to 5.15 and 5.10.
 
-Correct this typo in this trivial patch.
+Do the research to see if this is even applicable to those older kernels
+first.  Many times the ranges are wrong, or missing, because the
+commit that fixed the issue did not have that information.
 
-Cc: stable@vger.kernel.org
-Fixes: b53f09ecd602 ("ACPI: resource: Do IRQ override on MECHREV GM7XG0M")
-Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
----
- drivers/acpi/resource.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+CVE fix ranges are a "best effort" so they will be wrong at times.  It's
+up to you to do the work to validate the range if you care about that
+specific commit.  If it is wrong, submit a patch to the vulns.git repo
+to update the range information, like many people have been doing over
+the past year, to fix these ranges where they were wrong.
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 14c7bac4100b..7d59c6c9185f 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -534,7 +534,7 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
-  */
- static const struct dmi_system_id irq1_edge_low_force_override[] = {
- 	{
--		/* MECHREV Jiaolong17KS Series GM7XG0M */
-+		/* MECHREVO Jiaolong17KS Series GM7XG0M */
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "GM7XG0M"),
- 		},
--- 
-2.49.0
+Also, don't use NVD, use the raw CVE records.  NVD has a "value add"
+that everyone has realized does not really mean anything.  We have no
+control over what they do, please use the real CVE record instead.
 
+thanks,
+
+greg k-h
 
