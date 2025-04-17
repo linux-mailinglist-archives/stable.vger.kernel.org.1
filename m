@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-133752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D318A92737
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:21:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF357A92938
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBEE54A1A75
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:21:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56FB81B62F14
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:41:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 045F1257450;
-	Thu, 17 Apr 2025 18:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D73B25DCF8;
+	Thu, 17 Apr 2025 18:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zQZqAeYF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Mju/cSO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B433225743F;
-	Thu, 17 Apr 2025 18:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE62C25D8FB;
+	Thu, 17 Apr 2025 18:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914034; cv=none; b=GbFmIKRhG7d53LxehEFi8tdlYgHco1b0Ts8JFyO3j1BkBsMktvweSfqBZcwMXMzIetJzClPnOvb8U7GoJAAlmjVwhVoFggTtx7cQ4QJyku3q8uuic6q+F4Vbr/xOYbH/GeSnTuRleb7T3zBeU9dXcmcnrUXAHpEQhg9CVhYjO8E=
+	t=1744915118; cv=none; b=GtSwXLjtXKzvWWi9UPQXEaHXvl/wWo/9VbPX6hfr/EB8D/s2ysyW1v7UuevyUFEF+mQli0zJpg/+KPeY3lH3/aOmVTLKSaUsOG8iBiCTWpcmL+TNWt3tec+Yw0k7Yt/us1FjFJu39GE/aq+NzZW+OtMkNIs3zx2q+SlXRv4ZoYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914034; c=relaxed/simple;
-	bh=KGcgsY9Rm/zrRi3q9zF5YgJQVdZjGibLWJNW4Y8NoSY=;
+	s=arc-20240116; t=1744915118; c=relaxed/simple;
+	bh=WpyW3KmE+f7uPhbMDLuCIWw/6Ll1VlX0QzJhXHcjdKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NKi/kpXFeV29K0ggQp6GSlnxnF3O8YtYePJHMkpX4fTX+0ofPih1rcdDnUyKdkX2soPzasb5ay2h/p55T4I9phIVPbA0vdprsCb9w79wH3cG9FsHadvjaKDCHnzEJnngxomoTuno1B3WLaKfp4T50VTMznm1vy18A8hopppqhtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zQZqAeYF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8BB6C4CEE7;
-	Thu, 17 Apr 2025 18:20:33 +0000 (UTC)
+	 MIME-Version; b=eDUmL3JbY0XFaX4sgpjcEF0TgUVagqjxInEQrPq8GD0rBhi2P2B7mQeGNmL73ajUpYk7ZJK6dY9M1OPAmsi2aC1IhimAn7IVnRzFdS0JpY+K5cBIytX09H6YtRIVrsZAlhmSYQieUrvT3Bx6RBZ5BK056te2rrZhsq9SzFDUOBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Mju/cSO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E204C4CEE4;
+	Thu, 17 Apr 2025 18:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914034;
-	bh=KGcgsY9Rm/zrRi3q9zF5YgJQVdZjGibLWJNW4Y8NoSY=;
+	s=korg; t=1744915118;
+	bh=WpyW3KmE+f7uPhbMDLuCIWw/6Ll1VlX0QzJhXHcjdKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zQZqAeYF6EfZCY0avFs7U1XG5jCM7aGmjbZcmSMyxDgphnvAswswimupFhWbu2p1h
-	 lqX2ccNv49MSYwUTKOpoAkI7EXoqKfd8lCbRqnZC7z7xzMv1RAIcoXcmFmrh8XzhPf
-	 UWJIEUcv5RIqUdLbFh+A5mF5IlQQwlmv1pbV5rJ4=
+	b=2Mju/cSOy/BfVwybpImg2TRB2fqJeCJw0VITqNL6lmZiNHzAju67c7cSRjtPkDtB2
+	 +hpwgxzv4uA/zDLGBz14Uww60ztywzA+nsCN2B9wSLWDlKQ8dZ7PAZIZ+MPuc/0/7d
+	 c+eyPy0xsl6tX1I31rwaWVXfYY3XmPVzCyvIr8Mc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	John Ogness <john.ogness@linutronix.de>,
-	Petr Mladek <pmladek@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 054/414] Flush console log from kernel_power_off()
-Date: Thu, 17 Apr 2025 19:46:52 +0200
-Message-ID: <20250417175113.584547534@linuxfoundation.org>
+Subject: [PATCH 6.12 004/393] cgroup/cpuset: Revert "Allow suppression of sched domain rebuild in update_cpumasks_hier()"
+Date: Thu, 17 Apr 2025 19:46:53 +0200
+Message-ID: <20250417175107.744681648@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,102 +62,163 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 6ea9a1781c70a8be1fcdc49134fc1bf4baba8bca ]
+[ Upstream commit bcd7012afd7bcd45fcd7a0e2f48e57b273702317 ]
 
-Kernels built with CONFIG_PREEMPT_RT=y can lose significant console output
-and shutdown time, which hides shutdown-time RCU issues from rcutorture.
-Therefore, make pr_flush() public and invoke it after then last print
-in kernel_power_off().
+Revert commit 3ae0b773211e ("cgroup/cpuset: Allow suppression of sched
+domain rebuild in update_cpumasks_hier()") to allow for an alternative
+way to suppress unnecessary rebuild_sched_domains_locked() calls in
+update_cpumasks_hier() and elsewhere in a following commit.
 
-[ paulmck: Apply John Ogness feedback. ]
-[ paulmck: Appy Sebastian Andrzej Siewior feedback. ]
-[ paulmck: Apply kernel test robot feedback. ]
-
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Reviewed-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Link: https://lore.kernel.org/r/5f743488-dc2a-4f19-bdda-cf50b9314832@paulmck-laptop
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Stable-dep-of: a22b3d54de94 ("cgroup/cpuset: Fix race between newly created partition and dying one")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/printk.h | 6 ++++++
- kernel/printk/printk.c | 4 +---
- kernel/reboot.c        | 1 +
- 3 files changed, 8 insertions(+), 3 deletions(-)
+ kernel/cgroup/cpuset.c | 39 ++++++++++++++-------------------------
+ 1 file changed, 14 insertions(+), 25 deletions(-)
 
-diff --git a/include/linux/printk.h b/include/linux/printk.h
-index 4217a9f412b26..5b462029d03c1 100644
---- a/include/linux/printk.h
-+++ b/include/linux/printk.h
-@@ -207,6 +207,7 @@ void printk_legacy_allow_panic_sync(void);
- extern bool nbcon_device_try_acquire(struct console *con);
- extern void nbcon_device_release(struct console *con);
- void nbcon_atomic_flush_unsafe(void);
-+bool pr_flush(int timeout_ms, bool reset_on_progress);
- #else
- static inline __printf(1, 0)
- int vprintk(const char *s, va_list args)
-@@ -315,6 +316,11 @@ static inline void nbcon_atomic_flush_unsafe(void)
- {
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 70fac05123c6d..0012c34bb8601 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -1940,12 +1940,6 @@ static void compute_partition_effective_cpumask(struct cpuset *cs,
+ 	rcu_read_unlock();
  }
  
-+static inline bool pr_flush(int timeout_ms, bool reset_on_progress)
-+{
-+	return true;
-+}
-+
- #endif
- 
- bool this_cpu_in_panic(void);
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 07668433644b8..057db78876cd9 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -2461,7 +2461,6 @@ asmlinkage __visible int _printk(const char *fmt, ...)
- }
- EXPORT_SYMBOL(_printk);
- 
--static bool pr_flush(int timeout_ms, bool reset_on_progress);
- static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progress);
- 
- #else /* CONFIG_PRINTK */
-@@ -2474,7 +2473,6 @@ static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progre
- 
- static u64 syslog_seq;
- 
--static bool pr_flush(int timeout_ms, bool reset_on_progress) { return true; }
- static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progress) { return true; }
- 
- #endif /* CONFIG_PRINTK */
-@@ -4466,7 +4464,7 @@ static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progre
-  * Context: Process context. May sleep while acquiring console lock.
-  * Return: true if all usable printers are caught up.
+-/*
+- * update_cpumasks_hier() flags
+- */
+-#define HIER_CHECKALL		0x01	/* Check all cpusets with no skipping */
+-#define HIER_NO_SD_REBUILD	0x02	/* Don't rebuild sched domains */
+-
+ /*
+  * update_cpumasks_hier - Update effective cpumasks and tasks in the subtree
+  * @cs:  the cpuset to consider
+@@ -1960,7 +1954,7 @@ static void compute_partition_effective_cpumask(struct cpuset *cs,
+  * Called with cpuset_mutex held
   */
--static bool pr_flush(int timeout_ms, bool reset_on_progress)
-+bool pr_flush(int timeout_ms, bool reset_on_progress)
+ static void update_cpumasks_hier(struct cpuset *cs, struct tmpmasks *tmp,
+-				 int flags)
++				 bool force)
  {
- 	return __pr_flush(NULL, timeout_ms, reset_on_progress);
+ 	struct cpuset *cp;
+ 	struct cgroup_subsys_state *pos_css;
+@@ -2025,10 +2019,10 @@ static void update_cpumasks_hier(struct cpuset *cs, struct tmpmasks *tmp,
+ 		 * Skip the whole subtree if
+ 		 * 1) the cpumask remains the same,
+ 		 * 2) has no partition root state,
+-		 * 3) HIER_CHECKALL flag not set, and
++		 * 3) force flag not set, and
+ 		 * 4) for v2 load balance state same as its parent.
+ 		 */
+-		if (!cp->partition_root_state && !(flags & HIER_CHECKALL) &&
++		if (!cp->partition_root_state && !force &&
+ 		    cpumask_equal(tmp->new_cpus, cp->effective_cpus) &&
+ 		    (!cgroup_subsys_on_dfl(cpuset_cgrp_subsys) ||
+ 		    (is_sched_load_balance(parent) == is_sched_load_balance(cp)))) {
+@@ -2130,8 +2124,7 @@ static void update_cpumasks_hier(struct cpuset *cs, struct tmpmasks *tmp,
+ 	}
+ 	rcu_read_unlock();
+ 
+-	if (need_rebuild_sched_domains && !(flags & HIER_NO_SD_REBUILD) &&
+-	    !force_sd_rebuild)
++	if (need_rebuild_sched_domains && !force_sd_rebuild)
+ 		rebuild_sched_domains_locked();
  }
-diff --git a/kernel/reboot.c b/kernel/reboot.c
-index a701000bab347..3ba15b2c40662 100644
---- a/kernel/reboot.c
-+++ b/kernel/reboot.c
-@@ -704,6 +704,7 @@ void kernel_power_off(void)
- 	migrate_to_reboot_cpu();
- 	syscore_shutdown();
- 	pr_emerg("Power down\n");
-+	pr_flush(1000, true);
- 	kmsg_dump(KMSG_DUMP_SHUTDOWN);
- 	machine_power_off();
- }
+ 
+@@ -2159,9 +2152,7 @@ static void update_sibling_cpumasks(struct cpuset *parent, struct cpuset *cs,
+ 	 * directly.
+ 	 *
+ 	 * The update_cpumasks_hier() function may sleep. So we have to
+-	 * release the RCU read lock before calling it. HIER_NO_SD_REBUILD
+-	 * flag is used to suppress rebuild of sched domains as the callers
+-	 * will take care of that.
++	 * release the RCU read lock before calling it.
+ 	 */
+ 	rcu_read_lock();
+ 	cpuset_for_each_child(sibling, pos_css, parent) {
+@@ -2177,7 +2168,7 @@ static void update_sibling_cpumasks(struct cpuset *parent, struct cpuset *cs,
+ 			continue;
+ 
+ 		rcu_read_unlock();
+-		update_cpumasks_hier(sibling, tmp, HIER_NO_SD_REBUILD);
++		update_cpumasks_hier(sibling, tmp, false);
+ 		rcu_read_lock();
+ 		css_put(&sibling->css);
+ 	}
+@@ -2197,7 +2188,7 @@ static int update_cpumask(struct cpuset *cs, struct cpuset *trialcs,
+ 	struct tmpmasks tmp;
+ 	struct cpuset *parent = parent_cs(cs);
+ 	bool invalidate = false;
+-	int hier_flags = 0;
++	bool force = false;
+ 	int old_prs = cs->partition_root_state;
+ 
+ 	/* top_cpuset.cpus_allowed tracks cpu_online_mask; it's read-only */
+@@ -2258,8 +2249,7 @@ static int update_cpumask(struct cpuset *cs, struct cpuset *trialcs,
+ 	 * Check all the descendants in update_cpumasks_hier() if
+ 	 * effective_xcpus is to be changed.
+ 	 */
+-	if (!cpumask_equal(cs->effective_xcpus, trialcs->effective_xcpus))
+-		hier_flags = HIER_CHECKALL;
++	force = !cpumask_equal(cs->effective_xcpus, trialcs->effective_xcpus);
+ 
+ 	retval = validate_change(cs, trialcs);
+ 
+@@ -2327,7 +2317,7 @@ static int update_cpumask(struct cpuset *cs, struct cpuset *trialcs,
+ 	spin_unlock_irq(&callback_lock);
+ 
+ 	/* effective_cpus/effective_xcpus will be updated here */
+-	update_cpumasks_hier(cs, &tmp, hier_flags);
++	update_cpumasks_hier(cs, &tmp, force);
+ 
+ 	/* Update CS_SCHED_LOAD_BALANCE and/or sched_domains, if necessary */
+ 	if (cs->partition_root_state)
+@@ -2352,7 +2342,7 @@ static int update_exclusive_cpumask(struct cpuset *cs, struct cpuset *trialcs,
+ 	struct tmpmasks tmp;
+ 	struct cpuset *parent = parent_cs(cs);
+ 	bool invalidate = false;
+-	int hier_flags = 0;
++	bool force = false;
+ 	int old_prs = cs->partition_root_state;
+ 
+ 	if (!*buf) {
+@@ -2375,8 +2365,7 @@ static int update_exclusive_cpumask(struct cpuset *cs, struct cpuset *trialcs,
+ 	 * Check all the descendants in update_cpumasks_hier() if
+ 	 * effective_xcpus is to be changed.
+ 	 */
+-	if (!cpumask_equal(cs->effective_xcpus, trialcs->effective_xcpus))
+-		hier_flags = HIER_CHECKALL;
++	force = !cpumask_equal(cs->effective_xcpus, trialcs->effective_xcpus);
+ 
+ 	retval = validate_change(cs, trialcs);
+ 	if (retval)
+@@ -2429,8 +2418,8 @@ static int update_exclusive_cpumask(struct cpuset *cs, struct cpuset *trialcs,
+ 	 * of the subtree when it is a valid partition root or effective_xcpus
+ 	 * is updated.
+ 	 */
+-	if (is_partition_valid(cs) || hier_flags)
+-		update_cpumasks_hier(cs, &tmp, hier_flags);
++	if (is_partition_valid(cs) || force)
++		update_cpumasks_hier(cs, &tmp, force);
+ 
+ 	/* Update CS_SCHED_LOAD_BALANCE and/or sched_domains, if necessary */
+ 	if (cs->partition_root_state)
+@@ -2871,7 +2860,7 @@ static int update_prstate(struct cpuset *cs, int new_prs)
+ 	update_unbound_workqueue_cpumask(new_xcpus_state);
+ 
+ 	/* Force update if switching back to member */
+-	update_cpumasks_hier(cs, &tmpmask, !new_prs ? HIER_CHECKALL : 0);
++	update_cpumasks_hier(cs, &tmpmask, !new_prs);
+ 
+ 	/* Update sched domains and load balance flag */
+ 	update_partition_sd_lb(cs, old_prs);
 -- 
 2.39.5
 
