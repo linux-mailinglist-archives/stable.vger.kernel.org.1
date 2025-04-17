@@ -1,312 +1,257 @@
-Return-Path: <stable+bounces-134504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71C15A92D4A
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 00:35:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C05A92D50
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 00:37:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E013C1B647E9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 22:35:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18CEF1B64CA6
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 22:37:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C3B21506C;
-	Thu, 17 Apr 2025 22:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 394EB2144B9;
+	Thu, 17 Apr 2025 22:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="OLbwUMMF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RpFGL8ny"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC52212B1E;
-	Thu, 17 Apr 2025 22:35:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A80D20FAA4
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 22:37:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744929330; cv=none; b=XRkLsB/lpe3lkDzXSmjbrFrcVOI6jdJInKDv1HkJavVm0lCoyBiJv04wc0kZCQMygbbbiTB8dBSxws1NTxQta/1i2VDDT2nvy7FPW8KyQfc5WMlr67cIcHMPZi1agVXkJlB4KcF5Z6RigQpIeCJHHmnkgQU8OohuIdpLu0HduzM=
+	t=1744929446; cv=none; b=cEG/VO0kRILBW+G1Q0qKJ6YXwSPZ7JK1r6lzwnjl0F4NU8fzLUG3alQoUj5E96nosfBNAWQslxEYYvz4ds5UIMXD+Of6Sjfq6XhIpZcPfCA/1GY+VgVghyparK1iFnWDPno7FmIkxoPHdfslgxceKXBEFKSLnxfPWcriSRCkylw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744929330; c=relaxed/simple;
-	bh=D+JI3z498En6TCkzHYN6BXDGwlMKg5AVX0lVGqgZ2IU=;
-	h=Date:To:From:Subject:Message-Id; b=rnc6H0MRiXh6168K7mrZE/mTqRrtUsOKDBtFfkFIb58xEZdpvbqAEcqxaC1F6zuaYD+4xG2FCdyR4IkHC0R+amWlbxVz6/cFpYDc+DqsQ3In9qfFOiWhpsjozGaqsIUhgFJhXHVFwGaNH15+vb6O6mK96oXTtG4KfEwREGStJVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=OLbwUMMF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483B0C4CEE4;
-	Thu, 17 Apr 2025 22:35:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1744929329;
-	bh=D+JI3z498En6TCkzHYN6BXDGwlMKg5AVX0lVGqgZ2IU=;
-	h=Date:To:From:Subject:From;
-	b=OLbwUMMFK/wW5g0u8zD6fRE275Mkx8oJFiZS3LwyzzAj+G39H9Rmjg4Nl6YbylLtC
-	 mH8xhIRVDZNLT57oHeVuUP0wSeML6HsxJMIMsGsybQTTvssb3vqZTD9EnkufTaBX8C
-	 7XKqqGD28xh2RtivNwXYrhWiagLXhSbH63EaVKxI=
-Date: Thu, 17 Apr 2025 15:35:28 -0700
-To: mm-commits@vger.kernel.org,yunjeong.mun@sk.com,ying.huang@linux.alibaba.com,stable@vger.kernel.org,osalvador@suse.de,joshua.hahnjy@gmail.com,Jonathan.Cameron@huawei.com,honggyu.kim@sk.com,gourry@gourry.net,david@redhat.com,dan.j.williams@intel.com,rakie.kim@sk.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-mempolicy-fix-memory-leaks-in-weighted-interleave-sysfs.patch added to mm-new branch
-Message-Id: <20250417223529.483B0C4CEE4@smtp.kernel.org>
+	s=arc-20240116; t=1744929446; c=relaxed/simple;
+	bh=PE8DCkYx4IciE7Fb/ea6BC6RoBlI38pO9SMaJE44u5w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u/czDk+Z3GZvD8yhwZUwC2Gr6H5xmFMRzgn3PTC9Y4YSfXlBiXwxA2YVbzW9qXd17rwXBPoc/Jy+tIPTjbMmRN6uDyN0kJo68Zxn5/rt4EuKo1c6Jbb9JU5KG4/tEExm27UOJdq8oGp5IL+cUQqVLW4La6KF9Q0PHZ1r/EYBtgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RpFGL8ny; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744929444; x=1776465444;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=PE8DCkYx4IciE7Fb/ea6BC6RoBlI38pO9SMaJE44u5w=;
+  b=RpFGL8nyh4Byz5lGxIQ817a8ekizwW7tJco6foHtRiltz9kjrjshCJi5
+   fMdEzgHrgULmpEWLW1N6CeGWyvCAu0WUZrAFoel7BDITu1vqWIR7ZVJu6
+   YJDMqjdO/OM78WWU47maNzv+v39g3veDukG9sZF12kL/ZJNbC9uXwWTgR
+   LRauyi2a9nkuRqQgVbS7E2xujSgJkqTP4fwsYDFv340Ci9ezxq6BIpMns
+   h3mDXpHoLqVZtW2odBeLwSv0OXt+4XoKb1K3PqwJ95u1r2TAhTOvloT4y
+   /pkPq6XlLI4aT4Ct7Nlq4O8m6v7L1jh7oimQcSctpLW4DFyK/aGRZuoem
+   g==;
+X-CSE-ConnectionGUID: 1DZh8ucLSriV4phy8jJY1g==
+X-CSE-MsgGUID: 9aOOcxesTbGuGi7A2+jL4Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11406"; a="57538550"
+X-IronPort-AV: E=Sophos;i="6.15,220,1739865600"; 
+   d="scan'208";a="57538550"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 15:37:24 -0700
+X-CSE-ConnectionGUID: hn0vUghFSqKbIWFq32Tldw==
+X-CSE-MsgGUID: jrS/LNJEREysYPkz4Xu9Qg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,220,1739865600"; 
+   d="scan'208";a="130958395"
+Received: from valcore-skull-1.fm.intel.com ([10.1.39.17])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 15:37:23 -0700
+From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+	John Harrison <John.C.Harrison@Intel.com>,
+	Alan Previn <alan.previn.teres.alexis@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/xe/gsc: do not flush the GSC worker from the reset path
+Date: Thu, 17 Apr 2025 15:37:13 -0700
+Message-ID: <20250417223713.1377506-1-daniele.ceraolospurio@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+The workqueue used for the reset worker is marked as WQ_MEM_RECLAIM,
+while the GSC one isn't (and can't be as we need to do memory
+allocations in the gsc worker). Therefore, we can't flush the latter
+from the former.
 
-The patch titled
-     Subject: mm/mempolicy: fix memory leaks in weighted interleave sysfs
-has been added to the -mm mm-new branch.  Its filename is
-     mm-mempolicy-fix-memory-leaks-in-weighted-interleave-sysfs.patch
+The reason why we had such a flush was to avoid interrupting either
+the GSC FW load or in progress GSC proxy operations. GSC proxy
+operations fall into 2 categories:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-mempolicy-fix-memory-leaks-in-weighted-interleave-sysfs.patch
+1) GSC proxy init: this only happen once immediately after GSC FW laod
+   and does not support being interrupted. The only way to recover from
+   an interruption of the proxy init is to do an FLR and re-load the GSC.
 
-This patch will later appear in the mm-new branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+2) GSC proxy request: this can happen in response to a request that
+   the driver sends to the GSC. If this is interrupted, the GSC FW will
+   timeout and the driver request will be failed, but overall the GSC
+   will keep working fine.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Flushing the work allowed us to avoid interruption in both cases (unless
+the hang came from the GSC engine itself, in which case we're toast
+anyway). However, a failure on a proxy request is tolerable if we're in
+a scenario where we're triggering a GT reset (i.e., something is already
+gone pretty wrong), so what we really need to avoid is interrupting
+the init flow, which we can do by polling on the register that reports
+when the proxy init is complete (as that ensure us that all the load and
+init operations have been completed).
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+Note that during suspend we still want to do a flush of the worker to
+make sure it completes any operations involving the HW before the power
+is cut.
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Rakie Kim <rakie.kim@sk.com>
-Subject: mm/mempolicy: fix memory leaks in weighted interleave sysfs
-Date: Thu, 17 Apr 2025 16:28:35 +0900
-
-Patch series "Enhance sysfs handling for memory hotplug in weighted
-interleave", v9.
-
-The following patch series enhances the weighted interleave policy in the
-memory management subsystem by improving sysfs handling, fixing memory
-leaks, and introducing dynamic sysfs updates for memory hotplug support.
-
-
-This patch (of 3):
-
-Memory leaks occurred when removing sysfs attributes for weighted
-interleave.  Improper kobject deallocation led to unreleased memory when
-initialization failed or when nodes were removed.
-
-This patch resolves the issue by replacing unnecessary `kfree()` calls
-with proper `kobject_del()` and `kobject_put()` sequences, ensuring
-correct teardown and preventing memory leaks.
-
-By explicitly calling `kobject_del()` before `kobject_put()`, the release
-function is now invoked safely, and internal sysfs state is correctly
-cleaned up.  This guarantees that the memory associated with the kobject
-is fully released and avoids resource leaks, thereby improving system
-stability.
-
-Additionally, sysfs_remove_file() is no longer called from the release
-function to avoid accessing invalid sysfs state after kobject_del().  All
-attribute removals are now done before kobject_del(), preventing WARN_ON()
-in kernfs and ensuring safe and consistent cleanup of sysfs entries.
-
-Link: https://lkml.kernel.org/r/20250417072839.711-1-rakie.kim@sk.com
-Link: https://lkml.kernel.org/r/20250417072839.711-2-rakie.kim@sk.com
-Fixes: dce41f5ae253 ("mm/mempolicy: implement the sysfs-based weighted_interleave interface")
-Signed-off-by: Rakie Kim <rakie.kim@sk.com>
-Reviewed-by: Gregory Price <gourry@gourry.net>
-Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Honggyu Kim <honggyu.kim@sk.com>
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Yunjeong Mun <yunjeong.mun@sk.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: dd0e89e5edc2 ("drm/xe/gsc: GSC FW load")
+Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: John Harrison <John.C.Harrison@Intel.com>
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
 ---
+ drivers/gpu/drm/xe/xe_gsc.c       | 22 ++++++++++++++++++++++
+ drivers/gpu/drm/xe/xe_gsc.h       |  1 +
+ drivers/gpu/drm/xe/xe_gsc_proxy.c | 11 +++++++++++
+ drivers/gpu/drm/xe/xe_gsc_proxy.h |  1 +
+ drivers/gpu/drm/xe/xe_gt.c        |  2 +-
+ drivers/gpu/drm/xe/xe_uc.c        |  8 +++++++-
+ drivers/gpu/drm/xe/xe_uc.h        |  1 +
+ 7 files changed, 44 insertions(+), 2 deletions(-)
 
- mm/mempolicy.c |  121 ++++++++++++++++++++++-------------------------
- 1 file changed, 59 insertions(+), 62 deletions(-)
-
---- a/mm/mempolicy.c~mm-mempolicy-fix-memory-leaks-in-weighted-interleave-sysfs
-+++ a/mm/mempolicy.c
-@@ -3471,8 +3471,8 @@ static ssize_t node_store(struct kobject
- 
- static struct iw_node_attr **node_attrs;
- 
--static void sysfs_wi_node_release(struct iw_node_attr *node_attr,
--				  struct kobject *parent)
-+static void sysfs_wi_node_delete(struct iw_node_attr *node_attr,
-+				 struct kobject *parent)
- {
- 	if (!node_attr)
- 		return;
-@@ -3481,18 +3481,42 @@ static void sysfs_wi_node_release(struct
- 	kfree(node_attr);
+diff --git a/drivers/gpu/drm/xe/xe_gsc.c b/drivers/gpu/drm/xe/xe_gsc.c
+index fd41113f8572..64799358e51f 100644
+--- a/drivers/gpu/drm/xe/xe_gsc.c
++++ b/drivers/gpu/drm/xe/xe_gsc.c
+@@ -555,6 +555,28 @@ void xe_gsc_wait_for_worker_completion(struct xe_gsc *gsc)
+ 		flush_work(&gsc->work);
  }
  
--static void sysfs_wi_release(struct kobject *wi_kobj)
-+static void sysfs_wi_node_delete_all(struct kobject *wi_kobj)
- {
--	int i;
-+	int nid;
- 
--	for (i = 0; i < nr_node_ids; i++)
--		sysfs_wi_node_release(node_attrs[i], wi_kobj);
--	kobject_put(wi_kobj);
-+	for (nid = 0; nid < nr_node_ids; nid++)
-+		sysfs_wi_node_delete(node_attrs[nid], wi_kobj);
-+}
-+
-+static void iw_table_free(void)
++void xe_gsc_stop_prepare(struct xe_gsc *gsc)
 +{
-+	u8 *old;
++	struct xe_gt *gt = gsc_to_gt(gsc);
++	int ret;
 +
-+	mutex_lock(&iw_table_lock);
-+	old = rcu_dereference_protected(iw_table,
-+					lockdep_is_held(&iw_table_lock));
-+	rcu_assign_pointer(iw_table, NULL);
-+	mutex_unlock(&iw_table_lock);
++	if (!xe_uc_fw_is_loadable(&gsc->fw) || xe_uc_fw_is_in_error_state(&gsc->fw))
++		return;
 +
-+	synchronize_rcu();
-+	kfree(old);
++	xe_force_wake_assert_held(gt_to_fw(gt), XE_FW_GSC);
++
++	/*
++	 * If the GSC FW load or the proxy init are interrupted, the only way
++	 * to recover it is to do an FLR and reload the GSC from scratch.
++	 * Therefore, let's wait for the init to complete before stopping
++	 * operations. The proxy init is the last step, so we can just wait on
++	 * that
++	 */
++	ret = xe_gsc_wait_for_proxy_done(gsc);
++	if (ret)
++		xe_gt_err(gt, "failed to wait for GSC init completion before uc stop\n");
 +}
 +
-+static void wi_cleanup(struct kobject *wi_kobj) {
-+	sysfs_wi_node_delete_all(wi_kobj);
-+	iw_table_free();
-+	kfree(node_attrs);
-+}
-+
-+static void wi_kobj_release(struct kobject *wi_kobj)
+ /*
+  * wa_14015076503: if the GSC FW is loaded, we need to alert it before doing a
+  * GSC engine reset by writing a notification bit in the GS1 register and then
+diff --git a/drivers/gpu/drm/xe/xe_gsc.h b/drivers/gpu/drm/xe/xe_gsc.h
+index d99f66c38075..b8b8e0810ad9 100644
+--- a/drivers/gpu/drm/xe/xe_gsc.h
++++ b/drivers/gpu/drm/xe/xe_gsc.h
+@@ -16,6 +16,7 @@ struct xe_hw_engine;
+ int xe_gsc_init(struct xe_gsc *gsc);
+ int xe_gsc_init_post_hwconfig(struct xe_gsc *gsc);
+ void xe_gsc_wait_for_worker_completion(struct xe_gsc *gsc);
++void xe_gsc_stop_prepare(struct xe_gsc *gsc);
+ void xe_gsc_load_start(struct xe_gsc *gsc);
+ void xe_gsc_hwe_irq_handler(struct xe_hw_engine *hwe, u16 intr_vec);
+ 
+diff --git a/drivers/gpu/drm/xe/xe_gsc_proxy.c b/drivers/gpu/drm/xe/xe_gsc_proxy.c
+index 8cf70b228ff3..7ec81cb00b85 100644
+--- a/drivers/gpu/drm/xe/xe_gsc_proxy.c
++++ b/drivers/gpu/drm/xe/xe_gsc_proxy.c
+@@ -71,6 +71,17 @@ bool xe_gsc_proxy_init_done(struct xe_gsc *gsc)
+ 	       HECI1_FWSTS1_PROXY_STATE_NORMAL;
+ }
+ 
++int xe_gsc_wait_for_proxy_done(struct xe_gsc *gsc)
 +{
-+	kfree(wi_kobj);
- }
- 
- static const struct kobj_type wi_ktype = {
- 	.sysfs_ops = &kobj_sysfs_ops,
--	.release = sysfs_wi_release,
-+	.release = wi_kobj_release,
- };
- 
- static int add_weight_node(int nid, struct kobject *wi_kobj)
-@@ -3533,85 +3557,58 @@ static int add_weighted_interleave_group
- 	struct kobject *wi_kobj;
- 	int nid, err;
- 
-+	node_attrs = kcalloc(nr_node_ids, sizeof(struct iw_node_attr *),
-+			     GFP_KERNEL);
-+	if (!node_attrs)
-+		return -ENOMEM;
++	struct xe_gt *gt = gsc_to_gt(gsc);
 +
- 	wi_kobj = kzalloc(sizeof(struct kobject), GFP_KERNEL);
--	if (!wi_kobj)
-+	if (!wi_kobj) {
-+		kfree(node_attrs);
- 		return -ENOMEM;
-+	}
- 
- 	err = kobject_init_and_add(wi_kobj, &wi_ktype, root_kobj,
- 				   "weighted_interleave");
--	if (err) {
--		kfree(wi_kobj);
--		return err;
--	}
-+	if (err)
-+		goto err_put_kobj;
- 
- 	for_each_node_state(nid, N_POSSIBLE) {
- 		err = add_weight_node(nid, wi_kobj);
- 		if (err) {
- 			pr_err("failed to add sysfs [node%d]\n", nid);
--			break;
-+			goto err_cleanup_kobj;
- 		}
- 	}
--	if (err)
--		kobject_put(wi_kobj);
--	return 0;
--}
- 
--static void mempolicy_kobj_release(struct kobject *kobj)
--{
--	u8 *old;
-+	return 0;
- 
--	mutex_lock(&iw_table_lock);
--	old = rcu_dereference_protected(iw_table,
--					lockdep_is_held(&iw_table_lock));
--	rcu_assign_pointer(iw_table, NULL);
--	mutex_unlock(&iw_table_lock);
--	synchronize_rcu();
--	kfree(old);
--	kfree(node_attrs);
--	kfree(kobj);
-+err_cleanup_kobj:
-+	wi_cleanup(wi_kobj);
-+	kobject_del(wi_kobj);
-+err_put_kobj:
-+	kobject_put(wi_kobj);
-+	return err;
- }
- 
--static const struct kobj_type mempolicy_ktype = {
--	.release = mempolicy_kobj_release
--};
--
- static int __init mempolicy_sysfs_init(void)
++	/* Proxy init can take up to 500ms, so wait double that for safety */
++	return xe_mmio_wait32(&gt->mmio, HECI_FWSTS1(MTL_GSC_HECI1_BASE),
++			      HECI1_FWSTS1_CURRENT_STATE,
++			      HECI1_FWSTS1_PROXY_STATE_NORMAL,
++			      USEC_PER_SEC, NULL, false);
++}
++
+ static void __gsc_proxy_irq_rmw(struct xe_gsc *gsc, u32 clr, u32 set)
  {
- 	int err;
- 	static struct kobject *mempolicy_kobj;
+ 	struct xe_gt *gt = gsc_to_gt(gsc);
+diff --git a/drivers/gpu/drm/xe/xe_gsc_proxy.h b/drivers/gpu/drm/xe/xe_gsc_proxy.h
+index fdef56995cd4..da8c60362a1c 100644
+--- a/drivers/gpu/drm/xe/xe_gsc_proxy.h
++++ b/drivers/gpu/drm/xe/xe_gsc_proxy.h
+@@ -12,6 +12,7 @@ struct xe_gsc;
  
--	mempolicy_kobj = kzalloc(sizeof(*mempolicy_kobj), GFP_KERNEL);
--	if (!mempolicy_kobj) {
--		err = -ENOMEM;
--		goto err_out;
--	}
--
--	node_attrs = kcalloc(nr_node_ids, sizeof(struct iw_node_attr *),
--			     GFP_KERNEL);
--	if (!node_attrs) {
--		err = -ENOMEM;
--		goto mempol_out;
--	}
-+	mempolicy_kobj = kobject_create_and_add("mempolicy", mm_kobj);
-+	if (!mempolicy_kobj)
-+		return -ENOMEM;
+ int xe_gsc_proxy_init(struct xe_gsc *gsc);
+ bool xe_gsc_proxy_init_done(struct xe_gsc *gsc);
++int xe_gsc_wait_for_proxy_done(struct xe_gsc *gsc);
+ int xe_gsc_proxy_start(struct xe_gsc *gsc);
  
--	err = kobject_init_and_add(mempolicy_kobj, &mempolicy_ktype, mm_kobj,
--				   "mempolicy");
-+	err = add_weighted_interleave_group(mempolicy_kobj);
- 	if (err)
--		goto node_out;
-+		goto err_kobj;
+ int xe_gsc_proxy_request_handler(struct xe_gsc *gsc);
+diff --git a/drivers/gpu/drm/xe/xe_gt.c b/drivers/gpu/drm/xe/xe_gt.c
+index 8068b4bc0a09..0e5d243c9451 100644
+--- a/drivers/gpu/drm/xe/xe_gt.c
++++ b/drivers/gpu/drm/xe/xe_gt.c
+@@ -899,7 +899,7 @@ void xe_gt_suspend_prepare(struct xe_gt *gt)
  
--	err = add_weighted_interleave_group(mempolicy_kobj);
--	if (err) {
--		pr_err("mempolicy sysfs structure failed to initialize\n");
--		kobject_put(mempolicy_kobj);
--		return err;
--	}
-+	return 0;
+ 	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL);
  
--	return err;
--node_out:
--	kfree(node_attrs);
--mempol_out:
--	kfree(mempolicy_kobj);
--err_out:
--	pr_err("failed to add mempolicy kobject to the system\n");
-+err_kobj:
-+	kobject_del(mempolicy_kobj);
-+	kobject_put(mempolicy_kobj);
- 	return err;
+-	xe_uc_stop_prepare(&gt->uc);
++	xe_uc_suspend_prepare(&gt->uc);
+ 
+ 	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+ }
+diff --git a/drivers/gpu/drm/xe/xe_uc.c b/drivers/gpu/drm/xe/xe_uc.c
+index c14bd2282044..3a8751a8b92d 100644
+--- a/drivers/gpu/drm/xe/xe_uc.c
++++ b/drivers/gpu/drm/xe/xe_uc.c
+@@ -244,7 +244,7 @@ void xe_uc_gucrc_disable(struct xe_uc *uc)
+ 
+ void xe_uc_stop_prepare(struct xe_uc *uc)
+ {
+-	xe_gsc_wait_for_worker_completion(&uc->gsc);
++	xe_gsc_stop_prepare(&uc->gsc);
+ 	xe_guc_stop_prepare(&uc->guc);
  }
  
-_
-
-Patches currently in -mm which might be from rakie.kim@sk.com are
-
-mm-mempolicy-fix-memory-leaks-in-weighted-interleave-sysfs.patch
-mm-mempolicy-prepare-weighted-interleave-sysfs-for-memory-hotplug.patch
-mm-mempolicy-support-memory-hotplug-in-weighted-interleave.patch
+@@ -278,6 +278,12 @@ static void uc_reset_wait(struct xe_uc *uc)
+ 		goto again;
+ }
+ 
++void xe_uc_suspend_prepare(struct xe_uc *uc)
++{
++	xe_gsc_wait_for_worker_completion(&uc->gsc);
++	xe_guc_stop_prepare(&uc->guc);
++}
++
+ int xe_uc_suspend(struct xe_uc *uc)
+ {
+ 	/* GuC submission not enabled, nothing to do */
+diff --git a/drivers/gpu/drm/xe/xe_uc.h b/drivers/gpu/drm/xe/xe_uc.h
+index 3813c1ede450..c23e6f5e2514 100644
+--- a/drivers/gpu/drm/xe/xe_uc.h
++++ b/drivers/gpu/drm/xe/xe_uc.h
+@@ -18,6 +18,7 @@ int xe_uc_reset_prepare(struct xe_uc *uc);
+ void xe_uc_stop_prepare(struct xe_uc *uc);
+ void xe_uc_stop(struct xe_uc *uc);
+ int xe_uc_start(struct xe_uc *uc);
++void xe_uc_suspend_prepare(struct xe_uc *uc);
+ int xe_uc_suspend(struct xe_uc *uc);
+ int xe_uc_sanitize_reset(struct xe_uc *uc);
+ void xe_uc_declare_wedged(struct xe_uc *uc);
+-- 
+2.43.0
 
 
