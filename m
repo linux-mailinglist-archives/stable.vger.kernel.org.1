@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-134066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDE2DA92966
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CE0BA92B2E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:58:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29F5B3A33B8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76DDC7B3F28
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:57:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF32256C80;
-	Thu, 17 Apr 2025 18:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69DBA257435;
+	Thu, 17 Apr 2025 18:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nu1Wh9hn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u7OTlV12"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FBC18C034;
-	Thu, 17 Apr 2025 18:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248741B3934;
+	Thu, 17 Apr 2025 18:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914990; cv=none; b=KeOj/Atc6PSsjK5HZ3Swqg9W6i5uFk0p2yCOI8MHqTS32dK0oiXR63BxFzTABzwBtvDxyh8OzjjiNOkGsPHzZLIJ3QwiFbISKXwjyB4oCTrbct0VdoVY/R15BsT3Od4cCTkcbEFZ+w5TONWXUPgyLZNCIPBv5G4cGn7WcmkiuAU=
+	t=1744916228; cv=none; b=IL/4fMM555y0kN1ZWAkz4QANRcOO4IUH2JjVSXhZknKqpr0tUS0rkgiE8UN7LrigEVNZUt7IJbwzC775RHvgFK582G6MLd6tdMkKP2mtw1USaDlpEK1zNx03B/VxqEzLv92gVMpII9TwI2RMWfh/Vyq0lMyX74LNqHfl1AfpQeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914990; c=relaxed/simple;
-	bh=Gy9vpjrhmM17bvs1eiv1tdzXVcND9uGbrbEoZpLi7kA=;
+	s=arc-20240116; t=1744916228; c=relaxed/simple;
+	bh=cMReqLwKzv9xryihrxOEal1CTSsw5DbGU35rhDoPcxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BQne29mkJOPq2y5YHFAxQWGVpXilrwEZoGiSZn/rAGsFCk20m0VESBy9EUl7jFa64dF8cjI9nxLwbh1v2hbusl4VIwH2yD1SVv6V7h2j7HtQEMBR0bRNzi8qtXfJFLwQgRkrWHBtdm2cChvLkaCCb2AjRo+UJJ86fQP8gB8k+9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nu1Wh9hn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A034DC4CEE4;
-	Thu, 17 Apr 2025 18:36:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Eo3Ersm65v1vVZHzDyWa5b3cscA/kEcfD97vIwG1g96Xdjih3MwGRGOgu6EM3lzZub2XFoJXImurojM+cMYMXdvBgLweDmckY+2X437SBe8/P1Iko7Luhz9g9E3svCojI8vbiMrr0pSTqcaP11hHF5ySJ73KkoVLRpUCHovL2Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u7OTlV12; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A5DC4CEE4;
+	Thu, 17 Apr 2025 18:57:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914990;
-	bh=Gy9vpjrhmM17bvs1eiv1tdzXVcND9uGbrbEoZpLi7kA=;
+	s=korg; t=1744916228;
+	bh=cMReqLwKzv9xryihrxOEal1CTSsw5DbGU35rhDoPcxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nu1Wh9hn/mcweXjDdeddOnTUyaBxRUIRfmK8KElff5u8dKtj1py34kw2evkIemj8s
-	 wst9t2I4kGO6fK7TUc3ZnuMesVdWFqUGbk3JE0cTmT3SubMK56UQZz8AzKzpMifKkI
-	 fkQ98pjM1JXh0hLIVdxD8XXjp6DmWsjihuq0O1ko=
+	b=u7OTlV12AEukwYwkfMwbwRrHXsAuIJU3DeLP0L/2Xjv5yfGIhM7I9nHUU3RLJjK6e
+	 bVlRyjyTw5iNJFmBmEBte1fDsxWS0OPOjdDravfnLPQkI4J7+Qm2OcAbkAUJ50nKTh
+	 HK/A4GGqmmoLDExe9aHTw5PpywZi43BUFqKY4cqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jake Hillion <jake@hillion.co.uk>,
-	Andrea Righi <arighi@nvidia.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.13 397/414] sched_ext: create_dsq: Return -EEXIST on duplicate request
-Date: Thu, 17 Apr 2025 19:52:35 +0200
-Message-ID: <20250417175127.452200803@linuxfoundation.org>
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+Subject: [PATCH 6.12 347/393] landlock: Move code to ease future backports
+Date: Thu, 17 Apr 2025 19:52:36 +0200
+Message-ID: <20250417175121.559034641@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +59,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jake Hillion <jake@hillion.co.uk>
+From: Mickaël Salaün <mic@digikod.net>
 
-commit a8897ed8523d4c9d782e282b18005a3779c92714 upstream.
+commit 624f177d8f62032b4f3343c289120269645cec37 upstream.
 
-create_dsq and therefore the scx_bpf_create_dsq kfunc currently silently
-ignore duplicate entries. As a sched_ext scheduler is creating each DSQ
-for a different purpose this is surprising behaviour.
+To ease backports in setup.c, let's group changes from
+__lsm_ro_after_init to __ro_after_init with commit f22f9aaf6c3d
+("selinux: remove the runtime disable functionality"), and the
+landlock_lsmid addition with commit f3b8788cde61 ("LSM: Identify modules
+by more than name").
 
-Replace rhashtable_insert_fast which ignores duplicates with
-rhashtable_lookup_insert_fast that reports duplicates (though doesn't
-return their value). The rest of the code is structured correctly and
-this now returns -EEXIST.
+That will help to backport the following errata.
 
-Tested by adding an extra scx_bpf_create_dsq to scx_simple. Previously
-this was ignored, now init fails with a -17 code. Also ran scx_lavd
-which continued to work well.
-
-Signed-off-by: Jake Hillion <jake@hillion.co.uk>
-Acked-by: Andrea Righi <arighi@nvidia.com>
-Fixes: f0e1a0643a59 ("sched_ext: Implement BPF extensible scheduler class")
-Cc: stable@vger.kernel.org # v6.12+
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Cc: Günther Noack <gnoack@google.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250318161443.279194-2-mic@digikod.net
+Fixes: f3b8788cde61 ("LSM: Identify modules by more than name")
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ security/landlock/setup.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -4501,8 +4501,8 @@ static struct scx_dispatch_q *create_dsq
+--- a/security/landlock/setup.c
++++ b/security/landlock/setup.c
+@@ -19,6 +19,11 @@
  
- 	init_dsq(dsq, dsq_id);
+ bool landlock_initialized __ro_after_init = false;
  
--	ret = rhashtable_insert_fast(&dsq_hash, &dsq->hash_node,
--				     dsq_hash_params);
-+	ret = rhashtable_lookup_insert_fast(&dsq_hash, &dsq->hash_node,
-+					    dsq_hash_params);
- 	if (ret) {
- 		kfree(dsq);
- 		return ERR_PTR(ret);
++const struct lsm_id landlock_lsmid = {
++	.name = LANDLOCK_NAME,
++	.id = LSM_ID_LANDLOCK,
++};
++
+ struct lsm_blob_sizes landlock_blob_sizes __ro_after_init = {
+ 	.lbs_cred = sizeof(struct landlock_cred_security),
+ 	.lbs_file = sizeof(struct landlock_file_security),
+@@ -26,11 +31,6 @@ struct lsm_blob_sizes landlock_blob_size
+ 	.lbs_superblock = sizeof(struct landlock_superblock_security),
+ };
+ 
+-const struct lsm_id landlock_lsmid = {
+-	.name = LANDLOCK_NAME,
+-	.id = LSM_ID_LANDLOCK,
+-};
+-
+ static int __init landlock_init(void)
+ {
+ 	landlock_add_cred_hooks();
 
 
 
