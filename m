@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-133653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 839C4A926AD
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:15:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16E28A92ADE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94BC3175CA2
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:15:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 091C71B651B8
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2351DEFD4;
-	Thu, 17 Apr 2025 18:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E340724EF6F;
+	Thu, 17 Apr 2025 18:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GXArkriU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RLK7Hb77"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0D03594D;
-	Thu, 17 Apr 2025 18:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15A31D5CCD;
+	Thu, 17 Apr 2025 18:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913730; cv=none; b=jjeHZ5+XcW/fwfs0A9EOqy1IpJXo3dAXxy6APABTKe614dFcQWF9kZT8hzPR9/8TzlTzMclGQD5J1/Y8WcNQ/idS7uGD9r+uvCGvjkYueAJMqByHBVCpWsBwb+sgZvVCaYe2voyroCiG9LOmcnNKDBdSTOOzTbH+YgoPRly4T48=
+	t=1744916016; cv=none; b=nt1Ig8u2gBE5BD6HRfNoCRyiWyHLi119Iov9qse0CKifp0ZfUPOZZuxTuQQEeMa1Si9hb8YmDUX+Ux+WWRxhsWxBMtoYBOgzZMA354lioziINhN1+SLccp9DMLdAHDfsEf/G9i9YETU2wHaRAoGc11ougwEHh1r41ZvS7r1xQO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913730; c=relaxed/simple;
-	bh=HFZ5uZja38U9tDQDJUoGA8ZiTC2rNzqVYNY976rIjmg=;
+	s=arc-20240116; t=1744916016; c=relaxed/simple;
+	bh=ewkuh8hb8YNunKp74LsFOVRzAYTNIyr8muFwBjqK0ZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bWcB1zZggk+U+H+J7o7OTnVIqbYQf489Jt4iMKazXYxUWOIBKwzIvlWj/6lEFJ9ZwanFPXbabLf/3bfAXVtsqVFEsdkCgSHAN9g2y1h6mdwV3wnSqN4Dfr+VZvhDTcj0wtDBmT8eACMn0fiymBhEH7UgvSjMWOflnF+zF+v+CfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GXArkriU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A095FC4CEE4;
-	Thu, 17 Apr 2025 18:15:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iWywIfB/Tz75Zm3BAWqik88gbJvCw/8T1LEixZRxprl0w3NFp04qJGbH4e+KAUSyr+TuZYNaRy+dGYkI69JzXRwJow9LSkMhlC4IV511Qqdcfj1UlWiGQzp2COi7VzS4ws7H59510tNHkoNWpFxeIufV8CAbYmgNEXWohpYcJ88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RLK7Hb77; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3340C4CEE4;
+	Thu, 17 Apr 2025 18:53:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913730;
-	bh=HFZ5uZja38U9tDQDJUoGA8ZiTC2rNzqVYNY976rIjmg=;
+	s=korg; t=1744916016;
+	bh=ewkuh8hb8YNunKp74LsFOVRzAYTNIyr8muFwBjqK0ZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GXArkriUtPDJI07KrAhtljl/MVZLb/3/aqCR0k2yY0dQBS22WeuVf7MTmZOiLKwOg
-	 stotaPA9e7WouCu1WbW7n5z00b5pFRNCsxUsuDBIIbMB6kEgG3d6JSlsR6Ktaf7UIU
-	 yRlYXGFAJPaH2NPWWqz+9qA3V3gtDR27zauTAnXo=
+	b=RLK7Hb77eFwPtBYo9akeBacJbBzbD00TKoqPeGtz8Vq7/NNb/IVFNiFi5GKVI+x65
+	 Bas61DXtpTkKgJwF1faL9wwrj3genRDvYgmtfSPgHvKdpqVZf+4jdyt3QfTlNrp+Zy
+	 vRJ9N2df5R5qCFuyK0OJUnY9j3PMXeR4aGGfW8Fo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chandra Merla <cmerla@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Thomas Huth <thuth@redhat.com>,
-	Cornelia Huck <cohuck@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.14 435/449] s390/virtio_ccw: Dont allocate/assign airqs for non-existing queues
+	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.12 314/393] x86/xen: fix balloon target initialization for PVH dom0
 Date: Thu, 17 Apr 2025 19:52:03 +0200
-Message-ID: <20250417175135.810963608@linuxfoundation.org>
+Message-ID: <20250417175120.237833803@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,147 +59,167 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Roger Pau Monne <roger.pau@citrix.com>
 
-commit 2ccd42b959aaf490333dbd3b9b102eaf295c036a upstream.
+commit 87af633689ce16ddb166c80f32b120e50b1295de upstream.
 
-If we finds a vq without a name in our input array in
-virtio_ccw_find_vqs(), we treat it as "non-existing" and set the vq pointer
-to NULL; we will not call virtio_ccw_setup_vq() to allocate/setup a vq.
+PVH dom0 re-uses logic from PV dom0, in which RAM ranges not assigned to
+dom0 are re-used as scratch memory to map foreign and grant pages.  Such
+logic relies on reporting those unpopulated ranges as RAM to Linux, and
+mark them as reserved.  This way Linux creates the underlying page
+structures required for metadata management.
 
-Consequently, we create only a queue if it actually exists (name != NULL)
-and assign an incremental queue index to each such existing queue.
+Such approach works fine on PV because the initial balloon target is
+calculated using specific Xen data, that doesn't take into account the
+memory type changes described above.  However on HVM and PVH the initial
+balloon target is calculated using get_num_physpages(), and that function
+does take into account the unpopulated RAM regions used as scratch space
+for remote domain mappings.
 
-However, in virtio_ccw_register_adapter_ind()->get_airq_indicator() we
-will not ignore these "non-existing queues", but instead assign an airq
-indicator to them.
+This leads to PVH dom0 having an incorrect initial balloon target, which
+causes malfunction (excessive memory freeing) of the balloon driver if the
+dom0 memory target is later adjusted from the toolstack.
 
-Besides never releasing them in virtio_ccw_drop_indicators() (because
-there is no virtqueue), the bigger issue seems to be that there will be a
-disagreement between the device and the Linux guest about the airq
-indicator to be used for notifying a queue, because the indicator bit
-for adapter I/O interrupt is derived from the queue index.
+Fix this by using xen_released_pages to account for any pages that are part
+of the memory map, but are already unpopulated when the balloon driver is
+initialized.  This accounts for any regions used for scratch remote
+mappings.  Note on x86 xen_released_pages definition is moved to
+enlighten.c so it's uniformly available for all Xen-enabled builds.
 
-The virtio spec states under "Setting Up Two-Stage Queue Indicators":
+Take the opportunity to unify PV with PVH/HVM guests regarding the usage of
+get_num_physpages(), as that avoids having to add different logic for PV vs
+PVH in both balloon_add_regions() and arch_xen_unpopulated_init().
 
-	... indicator contains the guest address of an area wherein the
-	indicators for the devices are contained, starting at bit_nr, one
-	bit per virtqueue of the device.
+Much like a6aa4eb994ee, the code in this changeset should have been part of
+38620fc4e893.
 
-And further in "Notification via Adapter I/O Interrupts":
-
-	For notifying the driver of virtqueue buffers, the device sets the
-	bit in the guest-provided indicator area at the corresponding
-	offset.
-
-For example, QEMU uses in virtio_ccw_notify() the queue index (passed as
-"vector") to select the relevant indicator bit. If a queue does not exist,
-it does not have a corresponding indicator bit assigned, because it
-effectively doesn't have a queue index.
-
-Using a virtio-balloon-ccw device under QEMU with free-page-hinting
-disabled ("free-page-hint=off") but free-page-reporting enabled
-("free-page-reporting=on") will result in free page reporting
-not working as expected: in the virtio_balloon driver, we'll be stuck
-forever in virtballoon_free_page_report()->wait_event(), because the
-waitqueue will not be woken up as the notification from the device is
-lost: it would use the wrong indicator bit.
-
-Free page reporting stops working and we get splats (when configured to
-detect hung wqs) like:
-
- INFO: task kworker/1:3:463 blocked for more than 61 seconds.
-       Not tainted 6.14.0 #4
- "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
- task:kworker/1:3 [...]
- Workqueue: events page_reporting_process
- Call Trace:
-  [<000002f404e6dfb2>] __schedule+0x402/0x1640
-  [<000002f404e6f22e>] schedule+0x3e/0xe0
-  [<000002f3846a88fa>] virtballoon_free_page_report+0xaa/0x110 [virtio_balloon]
-  [<000002f40435c8a4>] page_reporting_process+0x2e4/0x740
-  [<000002f403fd3ee2>] process_one_work+0x1c2/0x400
-  [<000002f403fd4b96>] worker_thread+0x296/0x420
-  [<000002f403fe10b4>] kthread+0x124/0x290
-  [<000002f403f4e0dc>] __ret_from_fork+0x3c/0x60
-  [<000002f404e77272>] ret_from_fork+0xa/0x38
-
-There was recently a discussion [1] whether the "holes" should be
-treated differently again, effectively assigning also non-existing
-queues a queue index: that should also fix the issue, but requires other
-workarounds to not break existing setups.
-
-Let's fix it without affecting existing setups for now by properly ignoring
-the non-existing queues, so the indicator bits will match the queue
-indexes.
-
-[1] https://lore.kernel.org/all/cover.1720611677.git.mst@redhat.com/
-
-Fixes: a229989d975e ("virtio: don't allocate vqs when names[i] = NULL")
-Reported-by: Chandra Merla <cmerla@redhat.com>
+Fixes: a6aa4eb994ee ('xen/x86: add extra pages to unpopulated-alloc if available')
+Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Tested-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Cornelia Huck <cohuck@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250402203621.940090-1-david@redhat.com
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250407082838.65495-1-roger.pau@citrix.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/virtio/virtio_ccw.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ arch/x86/xen/enlighten.c |   10 ++++++++++
+ arch/x86/xen/setup.c     |    3 ---
+ drivers/xen/balloon.c    |   34 ++++++++++++++++++++++++----------
+ 3 files changed, 34 insertions(+), 13 deletions(-)
 
---- a/drivers/s390/virtio/virtio_ccw.c
-+++ b/drivers/s390/virtio/virtio_ccw.c
-@@ -302,11 +302,17 @@ static struct airq_info *new_airq_info(i
- static unsigned long *get_airq_indicator(struct virtqueue *vqs[], int nvqs,
- 					 u64 *first, void **airq_info)
- {
--	int i, j;
-+	int i, j, queue_idx, highest_queue_idx = -1;
- 	struct airq_info *info;
- 	unsigned long *indicator_addr = NULL;
- 	unsigned long bit, flags;
+--- a/arch/x86/xen/enlighten.c
++++ b/arch/x86/xen/enlighten.c
+@@ -70,6 +70,9 @@ EXPORT_SYMBOL(xen_start_flags);
+  */
+ struct shared_info *HYPERVISOR_shared_info = &xen_dummy_shared_info;
  
-+	/* Array entries without an actual queue pointer must be ignored. */
-+	for (i = 0; i < nvqs; i++) {
-+		if (vqs[i])
-+			highest_queue_idx++;
++/* Number of pages released from the initial allocation. */
++unsigned long xen_released_pages;
++
+ static __ref void xen_get_vendor(void)
+ {
+ 	init_cpu_devs();
+@@ -465,6 +468,13 @@ int __init arch_xen_unpopulated_init(str
+ 			xen_free_unpopulated_pages(1, &pg);
+ 		}
+ 
++		/*
++		 * Account for the region being in the physmap but unpopulated.
++		 * The value in xen_released_pages is used by the balloon
++		 * driver to know how much of the physmap is unpopulated and
++		 * set an accurate initial memory target.
++		 */
++		xen_released_pages += xen_extra_mem[i].n_pfns;
+ 		/* Zero so region is not also added to the balloon driver. */
+ 		xen_extra_mem[i].n_pfns = 0;
+ 	}
+--- a/arch/x86/xen/setup.c
++++ b/arch/x86/xen/setup.c
+@@ -37,9 +37,6 @@
+ 
+ #define GB(x) ((uint64_t)(x) * 1024 * 1024 * 1024)
+ 
+-/* Number of pages released from the initial allocation. */
+-unsigned long xen_released_pages;
+-
+ /* Memory map would allow PCI passthrough. */
+ bool xen_pv_pci_possible;
+ 
+--- a/drivers/xen/balloon.c
++++ b/drivers/xen/balloon.c
+@@ -675,7 +675,7 @@ void xen_free_ballooned_pages(unsigned i
+ }
+ EXPORT_SYMBOL(xen_free_ballooned_pages);
+ 
+-static void __init balloon_add_regions(void)
++static int __init balloon_add_regions(void)
+ {
+ 	unsigned long start_pfn, pages;
+ 	unsigned long pfn, extra_pfn_end;
+@@ -698,26 +698,38 @@ static void __init balloon_add_regions(v
+ 		for (pfn = start_pfn; pfn < extra_pfn_end; pfn++)
+ 			balloon_append(pfn_to_page(pfn));
+ 
+-		balloon_stats.total_pages += extra_pfn_end - start_pfn;
++		/*
++		 * Extra regions are accounted for in the physmap, but need
++		 * decreasing from current_pages to balloon down the initial
++		 * allocation, because they are already accounted for in
++		 * total_pages.
++		 */
++		if (extra_pfn_end - start_pfn >= balloon_stats.current_pages) {
++			WARN(1, "Extra pages underflow current target");
++			return -ERANGE;
++		}
++		balloon_stats.current_pages -= extra_pfn_end - start_pfn;
+ 	}
++
++	return 0;
+ }
+ 
+ static int __init balloon_init(void)
+ {
+ 	struct task_struct *task;
++	int rc;
+ 
+ 	if (!xen_domain())
+ 		return -ENODEV;
+ 
+ 	pr_info("Initialising balloon driver\n");
+ 
+-#ifdef CONFIG_XEN_PV
+-	balloon_stats.current_pages = xen_pv_domain()
+-		? min(xen_start_info->nr_pages - xen_released_pages, max_pfn)
+-		: get_num_physpages();
+-#else
+-	balloon_stats.current_pages = get_num_physpages();
+-#endif
++	if (xen_released_pages >= get_num_physpages()) {
++		WARN(1, "Released pages underflow current target");
++		return -ERANGE;
 +	}
 +
- 	for (i = 0; i < MAX_AIRQ_AREAS && !indicator_addr; i++) {
- 		mutex_lock(&airq_areas_lock);
- 		if (!airq_areas[i])
-@@ -316,7 +322,7 @@ static unsigned long *get_airq_indicator
- 		if (!info)
- 			return NULL;
- 		write_lock_irqsave(&info->lock, flags);
--		bit = airq_iv_alloc(info->aiv, nvqs);
-+		bit = airq_iv_alloc(info->aiv, highest_queue_idx + 1);
- 		if (bit == -1UL) {
- 			/* Not enough vacancies. */
- 			write_unlock_irqrestore(&info->lock, flags);
-@@ -325,8 +331,10 @@ static unsigned long *get_airq_indicator
- 		*first = bit;
- 		*airq_info = info;
- 		indicator_addr = info->aiv->vector;
--		for (j = 0; j < nvqs; j++) {
--			airq_iv_set_ptr(info->aiv, bit + j,
-+		for (j = 0, queue_idx = 0; j < nvqs; j++) {
-+			if (!vqs[j])
-+				continue;
-+			airq_iv_set_ptr(info->aiv, bit + queue_idx++,
- 					(unsigned long)vqs[j]);
- 		}
- 		write_unlock_irqrestore(&info->lock, flags);
++	balloon_stats.current_pages = get_num_physpages() - xen_released_pages;
+ 	balloon_stats.target_pages  = balloon_stats.current_pages;
+ 	balloon_stats.balloon_low   = 0;
+ 	balloon_stats.balloon_high  = 0;
+@@ -734,7 +746,9 @@ static int __init balloon_init(void)
+ 	register_sysctl_init("xen/balloon", balloon_table);
+ #endif
+ 
+-	balloon_add_regions();
++	rc = balloon_add_regions();
++	if (rc)
++		return rc;
+ 
+ 	task = kthread_run(balloon_thread, NULL, "xen-balloon");
+ 	if (IS_ERR(task)) {
 
 
 
