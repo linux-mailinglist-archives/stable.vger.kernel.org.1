@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-134038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BCA4A92941
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CC25A92AF6
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D081E8E144A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 321C51B63BEA
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:55:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE463264F89;
-	Thu, 17 Apr 2025 18:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6761E14B092;
+	Thu, 17 Apr 2025 18:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2froOKK4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHn/GCnN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D66264A78;
-	Thu, 17 Apr 2025 18:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259591DF246;
+	Thu, 17 Apr 2025 18:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914906; cv=none; b=PcAmwkegschrs674MiVE4ndNm0jvETva1vn4yomijR8IO8MGN1gSK5WLfrPqANhW56qoDdoNi36EtUrySrwNWPiOBhO5WHzTlNSt/3cX7qBIqADEXvvfzpu99KjotqZSnV9qlYvGrKQVzkSSL2WHuJZKdz91zraAnetQNKLbRmU=
+	t=1744916075; cv=none; b=i/CDGJF68Xjoev5EIJjdDocLC0aUkuBSAqGRKLxR5j8qQOBp2oSQKM4CmlEdp44a8Oalo80EetUvrpfNZ57ZTn0/NlkSNLg4TT2KoZmr5TLQ8C7yVlhttdSqme4Np5S4+M1Bz3pJJoqJY6qmBpHJ8sZMjXStHZEh/x5dX5I1U94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914906; c=relaxed/simple;
-	bh=b3gSJlQkxyZ6na+Lzp3LBv5ZopIuw0135ioIiH9JGjA=;
+	s=arc-20240116; t=1744916075; c=relaxed/simple;
+	bh=6412YSp7ASNX0H49DauwDEqiGv/XhKRn3APJXvhP5iM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jDJTF/9pSxvffhYR15UC9a1YitzolwoY2XtyH0VzzWQqGD38euPtiL5rVOdjXaLv9JpUQApm2ev3htPOvPDago2Xo7Al1cuv15uzmaLKLY5t+xU/+sWtNPDIaSYbq2Llk3CnUB/MwovwciGJU9MjxHwG5BLgoY4cUq2JUE4dyos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2froOKK4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC34C4CEE4;
-	Thu, 17 Apr 2025 18:35:05 +0000 (UTC)
+	 MIME-Version; b=q6e1aa4FXIznRqj10tiTdgZR6YMP69dOmlJ6Qkrzr0aMSdyRono424yFLKVfeGaGvMKYbpspdkDMxewc5cq+D6v5K2P/UBWkJPszVIcBrCr37qg1moeZaLZlmz2Xmkqal/KE576l4dGy5O0I8xyGBg0OwwkWHIAto3KQ7FjqEFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHn/GCnN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A669EC4CEE4;
+	Thu, 17 Apr 2025 18:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914906;
-	bh=b3gSJlQkxyZ6na+Lzp3LBv5ZopIuw0135ioIiH9JGjA=;
+	s=korg; t=1744916075;
+	bh=6412YSp7ASNX0H49DauwDEqiGv/XhKRn3APJXvhP5iM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2froOKK4U0BUN3x2MGBYz+cWq9jasyDY53Fz/EXnEOYu4fWzTxKbhCBfu0849wLCs
-	 ukhA7vO2wyCso20eDMn/EUo26a//cdVO4R05BMG1UNUisGQWP+OW6/GJhO6s0/eCQb
-	 vEPtSphxerfo5kt0DnLmiC2d+NMdoZ3Y9vyfCl2k=
+	b=bHn/GCnNC0opTGeAUroITWrg/iaAQLgH01ahb3bjyc6zQ0JXJplFYGcaM2y5IKGeD
+	 Kh2+hsE3Xq5fUnm6OOUIhN1CJX16VNvlrUpmtuEY6B3llNwlhA76z7ctigeIcr45pu
+	 GRP0idzUDRBhJ7REihKPAiHCDEKjuyOplByo0DDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.13 368/414] scsi: ufs: qcom: fix dev reference leaked through of_qcom_ice_get
+	Trevor Woerner <twoerner@gmail.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 6.12 317/393] thermal/drivers/rockchip: Add missing rk3328 mapping entry
 Date: Thu, 17 Apr 2025 19:52:06 +0200
-Message-ID: <20250417175126.266686796@linuxfoundation.org>
+Message-ID: <20250417175120.358324586@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,42 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Trevor Woerner <twoerner@gmail.com>
 
-commit ded40f32b55f7f2f4ed9627dd3c37a1fe89ed8c6 upstream.
+commit ee022e5cae052e0c67ca7c5fec0f2e7bc897c70e upstream.
 
-The driver leaks the device reference taken with
-of_find_device_by_node(). Fix the leak by using devm_of_qcom_ice_get().
+The mapping table for the rk3328 is missing the entry for -25C which is
+found in the TRM section 9.5.2 "Temperature-to-code mapping".
 
-Fixes: 56541c7c4468 ("scsi: ufs: ufs-qcom: Switch to the new ICE API")
+NOTE: the kernel uses the tsadc_q_sel=1'b1 mode which is defined as:
+      4096-<code in table>. Whereas the table in the TRM gives the code
+      "3774" for -25C, the kernel uses 4096-3774=322.
+
+[Dragan Simic] : "After going through the RK3308 and RK3328 TRMs, as
+  well as through the downstream kernel code, it seems we may have
+  some troubles at our hands.  Let me explain, please.
+
+  To sum it up, part 1 of the RK3308 TRM v1.1 says on page 538 that
+  the equation for the output when tsadc_q_sel equals 1 is (4096 -
+  tsadc_q), while part 1 of the RK3328 TRM v1.2 says that the output
+  equation is (1024 - tsadc_q) in that case.
+
+  The downstream kernel code, however, treats the RK3308 and RK3328
+  tables and their values as being the same.  It even mentions 1024 as
+  the "offset" value in a comment block for the rk_tsadcv3_control()
+  function, just like the upstream code does, which is obviously wrong
+  "offset" value when correlated with the table on page 544 of part 1
+  of the RK3308 TRM v1.1.
+
+  With all this in mind, it's obvious that more work is needed to make
+  it clear where's the actual mistake (it could be that the TRM is
+  wrong), which I'll volunteer for as part of the SoC binning project.
+  In the meantime, this patch looks fine as-is to me, by offering
+  what's a clear improvement to the current state of the upstream
+  code"
+
+Link: https://opensource.rock-chips.com/images/9/97/Rockchip_RK3328TRM_V1.1-Part1-20170321.pdf
 Cc: stable@vger.kernel.org
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Acked-by: Martin K. Petersen <martin.petersen@oracle.com> # SCSI
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20250117-qcom-ice-fix-dev-leak-v2-3-1ffa5b6884cb@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: eda519d5f73e ("thermal: rockchip: Support the RK3328 SOC in thermal driver")
+Signed-off-by: Trevor Woerner <twoerner@gmail.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Link: https://lore.kernel.org/r/20250207175048.35959-1-twoerner@gmail.com
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/host/ufs-qcom.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/thermal/rockchip_thermal.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/ufs/host/ufs-qcom.c
-+++ b/drivers/ufs/host/ufs-qcom.c
-@@ -118,7 +118,7 @@ static int ufs_qcom_ice_init(struct ufs_
- 	struct device *dev = hba->dev;
- 	struct qcom_ice *ice;
- 
--	ice = of_qcom_ice_get(dev);
-+	ice = devm_of_qcom_ice_get(dev);
- 	if (ice == ERR_PTR(-EOPNOTSUPP)) {
- 		dev_warn(dev, "Disabling inline encryption support\n");
- 		ice = NULL;
+--- a/drivers/thermal/rockchip_thermal.c
++++ b/drivers/thermal/rockchip_thermal.c
+@@ -386,6 +386,7 @@ static const struct tsadc_table rk3328_c
+ 	{296, -40000},
+ 	{304, -35000},
+ 	{313, -30000},
++	{322, -25000},
+ 	{331, -20000},
+ 	{340, -15000},
+ 	{349, -10000},
 
 
 
