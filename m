@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-134413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6165A92AF0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3065CA926C3
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:16:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC19819E1A30
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:55:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFED01902924
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:16:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F6CD255246;
-	Thu, 17 Apr 2025 18:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E971DEFD4;
+	Thu, 17 Apr 2025 18:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ecMo4/jF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+kNq3bo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE6225178E;
-	Thu, 17 Apr 2025 18:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1C08462;
+	Thu, 17 Apr 2025 18:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916053; cv=none; b=V4DJ/Nk6IuU/bRY3QnfdyXchsQAImjJ8xUUvJWMq5R6KdTGestjCzL+rs34hbLlygQmDXJSexRhcCX/w1VJNDJTEhympDEEInWDeX2XI2cr50bmvy3476Je3qiDIchNK2eh9Kt446QDYDYvIAxQ753rvY12YY5Ohe5IsQtmgnXk=
+	t=1744913776; cv=none; b=gscrKkV86NRuB3sPVCXjX1Mck6822OaOLnLaS6TSpGuP+/bN3+H1i0G4TAjAyBbG7qyCS3kf1eMxFzYb7eZU2c6a5941vbtRCRXJ36oZCC08i5fn0iscCONOlYk6xgNpTYTDxtUM1Od8Up9NFzTTI4oV0/ZSFX9y5GwF+WG4iVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916053; c=relaxed/simple;
-	bh=QLsZ9WmVYSfahmBHEw4bvo93+JEa/HR/Pan+jd+VIqo=;
+	s=arc-20240116; t=1744913776; c=relaxed/simple;
+	bh=kk3nTNH7V1R8yoL1OQI3zzOG5XoQLthQqj9lirPNtY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M3ecOIzX4V5JylVjWrbZzfrc5zlEi5McNDdRHarcFiMeFWTuWHAZzqPe1WUcVPkJV3XEycDufRCU1iBM2nPv0KWkAwt21SI+skIh1xy6Qb/aYb0MVUac12CgrIJ1MmytCSvRGxH0MY0VxqAwFu6RLltJDg3EmVjnfaUZfJHZsFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ecMo4/jF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702E1C4CEE4;
-	Thu, 17 Apr 2025 18:54:12 +0000 (UTC)
+	 MIME-Version; b=Z+iHWupSkgr7KSsUN6GsJsL3wzwD7MF9LSPcagaFyPgf8FZo5+QO+zXZDjsYEd/lqBBqJwQD7iQlXbNLQ4E/oEY4FxfMnUfLlPWgXvM6X1yw8hhRRmnAyL0/jGYGd50L+077GE0wDiV/PWo1+3k4UzJY//zdxEMgRRXFz9XfpBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+kNq3bo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E82C4CEE4;
+	Thu, 17 Apr 2025 18:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916052;
-	bh=QLsZ9WmVYSfahmBHEw4bvo93+JEa/HR/Pan+jd+VIqo=;
+	s=korg; t=1744913775;
+	bh=kk3nTNH7V1R8yoL1OQI3zzOG5XoQLthQqj9lirPNtY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ecMo4/jF67dYADffdsXwv8GOqYY1/IJtDMKugEBAG5HKWB55ESYl0jntmACd+zQXA
-	 hscR+sNN0WZ0+qV7QOcZGTF41db3KKpVzUgtU97IAM6g98b8vpEwR0tj8UUf5oJ0Tr
-	 8H3sqUrMWFPRrccZrWDSzR/Hl/x6/apCYWztbPCI=
+	b=T+kNq3boxRh+hXRuT+VOqnTy6ylgXEq1wXXKtDyN8wqLHAh2C8FbDcKg0qifVfeLM
+	 dAQnp/DgK0Vaa50TxWQE9p9r9ZXtv+OfvfmHaqYAQSiVO0VJFNUj/s4lIBGdZcFxhk
+	 Y8MO1mZOg66Jca2nsU7/FA8bR07m3kpSvatnOEjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dionna Glaze <dionnaglaze@google.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.12 328/393] crypto: ccp - Fix uAPI definitions of PSP errors
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	syzbot+683f8cb11b94b1824c77@syzkaller.appspotmail.com,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.14 449/449] Bluetooth: hci_uart: Fix another race during initialization
 Date: Thu, 17 Apr 2025 19:52:17 +0200
-Message-ID: <20250417175120.803122773@linuxfoundation.org>
+Message-ID: <20250417175136.394331379@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +62,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dionna Glaze <dionnaglaze@google.com>
+From: Arseniy Krasnov <avkrasnov@salutedevices.com>
 
-commit b949f55644a6d1645c0a71f78afabf12aec7c33b upstream.
+commit 5df5dafc171b90d0b8d51547a82657cd5a1986c7 upstream.
 
-Additions to the error enum after explicit 0x27 setting for
-SEV_RET_INVALID_KEY leads to incorrect value assignments.
+Do not set 'HCI_UART_PROTO_READY' before call 'hci_uart_register_dev()'.
+Possible race is when someone calls 'hci_tty_uart_close()' after this bit
+is set, but 'hci_uart_register_dev()' wasn't done. This leads to access
+to uninitialized fields. To fix it let's set this bit after device was
+registered (as before patch c411c62cc133) and to fix previous problem let's
+add one more bit in addition to 'HCI_UART_PROTO_READY' which allows to
+perform power up without original bit set (pls see commit c411c62cc133).
 
-Use explicit values to match the manufacturer specifications more
-clearly.
+Crash backtrace from syzbot report:
 
-Fixes: 3a45dc2b419e ("crypto: ccp: Define the SEV-SNP commands")
-CC: stable@vger.kernel.org
-Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+RIP: 0010:skb_queue_empty_lockless include/linux/skbuff.h:1887 [inline]
+RIP: 0010:skb_queue_purge_reason+0x6d/0x140 net/core/skbuff.c:3936
+
+Call Trace:
+ <TASK>
+ skb_queue_purge include/linux/skbuff.h:3364 [inline]
+ mrvl_close+0x2f/0x90 drivers/bluetooth/hci_mrvl.c:100
+ hci_uart_tty_close+0xb6/0x120 drivers/bluetooth/hci_ldisc.c:557
+ tty_ldisc_close drivers/tty/tty_ldisc.c:455 [inline]
+ tty_ldisc_kill+0x66/0xc0 drivers/tty/tty_ldisc.c:613
+ tty_ldisc_release+0xc9/0x120 drivers/tty/tty_ldisc.c:781
+ tty_release_struct+0x10/0x80 drivers/tty/tty_io.c:1690
+ tty_release+0x4ef/0x640 drivers/tty/tty_io.c:1861
+ __fput+0x86/0x2a0 fs/file_table.c:450
+ task_work_run+0x82/0xb0 kernel/task_work.c:239
+ resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:114 [inline]
+ exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
+ syscall_exit_to_user_mode+0xa3/0x1b0 kernel/entry/common.c:218
+ do_syscall_64+0x9a/0x190 arch/x86/entry/common.c:89
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Reported-by: syzbot+683f8cb11b94b1824c77@syzkaller.appspotmail.com
+Tested-by: syzbot+683f8cb11b94b1824c77@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-bluetooth/d159c57f-8490-4c26-79da-6ad3612c4a14@salutedevices.com/
+Fixes: 366ceff495f9 ("Bluetooth: hci_uart: fix race during initialization")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/psp-sev.h |   21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/bluetooth/hci_ldisc.c |   20 ++++++++++++++------
+ drivers/bluetooth/hci_uart.h  |    1 +
+ 2 files changed, 15 insertions(+), 6 deletions(-)
 
---- a/include/uapi/linux/psp-sev.h
-+++ b/include/uapi/linux/psp-sev.h
-@@ -73,13 +73,20 @@ typedef enum {
- 	SEV_RET_INVALID_PARAM,
- 	SEV_RET_RESOURCE_LIMIT,
- 	SEV_RET_SECURE_DATA_INVALID,
--	SEV_RET_INVALID_KEY = 0x27,
--	SEV_RET_INVALID_PAGE_SIZE,
--	SEV_RET_INVALID_PAGE_STATE,
--	SEV_RET_INVALID_MDATA_ENTRY,
--	SEV_RET_INVALID_PAGE_OWNER,
--	SEV_RET_INVALID_PAGE_AEAD_OFLOW,
--	SEV_RET_RMP_INIT_REQUIRED,
-+	SEV_RET_INVALID_PAGE_SIZE          = 0x0019,
-+	SEV_RET_INVALID_PAGE_STATE         = 0x001A,
-+	SEV_RET_INVALID_MDATA_ENTRY        = 0x001B,
-+	SEV_RET_INVALID_PAGE_OWNER         = 0x001C,
-+	SEV_RET_AEAD_OFLOW                 = 0x001D,
-+	SEV_RET_EXIT_RING_BUFFER           = 0x001F,
-+	SEV_RET_RMP_INIT_REQUIRED          = 0x0020,
-+	SEV_RET_BAD_SVN                    = 0x0021,
-+	SEV_RET_BAD_VERSION                = 0x0022,
-+	SEV_RET_SHUTDOWN_REQUIRED          = 0x0023,
-+	SEV_RET_UPDATE_FAILED              = 0x0024,
-+	SEV_RET_RESTORE_REQUIRED           = 0x0025,
-+	SEV_RET_RMP_INITIALIZATION_FAILED  = 0x0026,
-+	SEV_RET_INVALID_KEY                = 0x0027,
- 	SEV_RET_MAX,
- } sev_ret_code;
+--- a/drivers/bluetooth/hci_ldisc.c
++++ b/drivers/bluetooth/hci_ldisc.c
+@@ -102,7 +102,8 @@ static inline struct sk_buff *hci_uart_d
+ 	if (!skb) {
+ 		percpu_down_read(&hu->proto_lock);
  
+-		if (test_bit(HCI_UART_PROTO_READY, &hu->flags))
++		if (test_bit(HCI_UART_PROTO_READY, &hu->flags) ||
++		    test_bit(HCI_UART_PROTO_INIT, &hu->flags))
+ 			skb = hu->proto->dequeue(hu);
+ 
+ 		percpu_up_read(&hu->proto_lock);
+@@ -124,7 +125,8 @@ int hci_uart_tx_wakeup(struct hci_uart *
+ 	if (!percpu_down_read_trylock(&hu->proto_lock))
+ 		return 0;
+ 
+-	if (!test_bit(HCI_UART_PROTO_READY, &hu->flags))
++	if (!test_bit(HCI_UART_PROTO_READY, &hu->flags) &&
++	    !test_bit(HCI_UART_PROTO_INIT, &hu->flags))
+ 		goto no_schedule;
+ 
+ 	set_bit(HCI_UART_TX_WAKEUP, &hu->tx_state);
+@@ -278,7 +280,8 @@ static int hci_uart_send_frame(struct hc
+ 
+ 	percpu_down_read(&hu->proto_lock);
+ 
+-	if (!test_bit(HCI_UART_PROTO_READY, &hu->flags)) {
++	if (!test_bit(HCI_UART_PROTO_READY, &hu->flags) &&
++	    !test_bit(HCI_UART_PROTO_INIT, &hu->flags)) {
+ 		percpu_up_read(&hu->proto_lock);
+ 		return -EUNATCH;
+ 	}
+@@ -585,7 +588,8 @@ static void hci_uart_tty_wakeup(struct t
+ 	if (tty != hu->tty)
+ 		return;
+ 
+-	if (test_bit(HCI_UART_PROTO_READY, &hu->flags))
++	if (test_bit(HCI_UART_PROTO_READY, &hu->flags) ||
++	    test_bit(HCI_UART_PROTO_INIT, &hu->flags))
+ 		hci_uart_tx_wakeup(hu);
+ }
+ 
+@@ -611,7 +615,8 @@ static void hci_uart_tty_receive(struct
+ 
+ 	percpu_down_read(&hu->proto_lock);
+ 
+-	if (!test_bit(HCI_UART_PROTO_READY, &hu->flags)) {
++	if (!test_bit(HCI_UART_PROTO_READY, &hu->flags) &&
++	    !test_bit(HCI_UART_PROTO_INIT, &hu->flags)) {
+ 		percpu_up_read(&hu->proto_lock);
+ 		return;
+ 	}
+@@ -707,13 +712,16 @@ static int hci_uart_set_proto(struct hci
+ 
+ 	hu->proto = p;
+ 
+-	set_bit(HCI_UART_PROTO_READY, &hu->flags);
++	set_bit(HCI_UART_PROTO_INIT, &hu->flags);
+ 
+ 	err = hci_uart_register_dev(hu);
+ 	if (err) {
+ 		return err;
+ 	}
+ 
++	set_bit(HCI_UART_PROTO_READY, &hu->flags);
++	clear_bit(HCI_UART_PROTO_INIT, &hu->flags);
++
+ 	return 0;
+ }
+ 
+--- a/drivers/bluetooth/hci_uart.h
++++ b/drivers/bluetooth/hci_uart.h
+@@ -90,6 +90,7 @@ struct hci_uart {
+ #define HCI_UART_REGISTERED		1
+ #define HCI_UART_PROTO_READY		2
+ #define HCI_UART_NO_SUSPEND_NOTIFIER	3
++#define HCI_UART_PROTO_INIT		4
+ 
+ /* TX states  */
+ #define HCI_UART_SENDING	1
 
 
 
