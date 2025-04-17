@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-133310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2B9DA92546
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:02:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C8DA92516
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:00:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB95B7B4373
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 17:59:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A073466CC0
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:00:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81AF825744F;
-	Thu, 17 Apr 2025 17:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D4A257AC2;
+	Thu, 17 Apr 2025 17:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lmpxN7qN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wcxFIMpB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA62255E23;
-	Thu, 17 Apr 2025 17:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4412571D5;
+	Thu, 17 Apr 2025 17:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744912696; cv=none; b=F9Yqchm0orLuNqVY2GqhNXBc9GcGJg7a9+nwfzX6S9ZkXGNF0yLcT7+AGfDieiy05VWs/DWaON5b1KAxy8iapw3Bhde9xch/fuOJD+xbyld5xPTfWADpI0haliOCb5LNbcquytf5QM1aD5C6VboL2DR+WmPqhGuatQRvPOpO0oA=
+	t=1744912702; cv=none; b=ihGAMB1pRvNEmJapjwx/StInosc7ah0lYr/LL/Yg/U8VcrinRVEdRLBncYB9ZOE8SBs+78T9bkalNw/jo6tks3liaELOuhpHyWOsjMfHBZ94mUiwuv4eAy0pbgN6VMIiexFGMrJeE9aD+3YF8gmRetMhf+8MqnD4gjfMJyAMkZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744912696; c=relaxed/simple;
-	bh=J6NYHaLUyiJyocWslr/dzdiZ1uIxpDB98QjDgRipBqI=;
+	s=arc-20240116; t=1744912702; c=relaxed/simple;
+	bh=p1tD+KPrSIEURihILIy/QRqNyL/dGT3cyhrPolSzS3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SjTPQTiiX4ovEs4RtUnSLblVmPdkE7ITyrS98u+EO3MKFS/yQE50kR5CvvHeXMRz1yiLL2nG8G4fF2FTGhLpOLPzcMD5Nnucm0ZjZ0IMVdjdEl1M0mBVu/GV4jYUKBjbA/ZkWhFK2r/1zhxsUxNXz+19/eQbGs6CUqemwhtrGNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lmpxN7qN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CCD7C4CEE4;
-	Thu, 17 Apr 2025 17:58:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=B9fsjCg23J5MW06XeNaMreMZoCTe3+zpUUpBtbslynR5suBKeW8lhapxeaBXAFbqjjNonG4KWxXJC/s0sS2EcXvkrOwdn5jIUOAmL/GSROvWzeD3dKw4jEjA7Z5oXpL4Tzpn8CQT4o7N6WZzSOfWpWsD3Jb/EJM+qTExvG6OKU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wcxFIMpB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B78C4CEE4;
+	Thu, 17 Apr 2025 17:58:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744912696;
-	bh=J6NYHaLUyiJyocWslr/dzdiZ1uIxpDB98QjDgRipBqI=;
+	s=korg; t=1744912702;
+	bh=p1tD+KPrSIEURihILIy/QRqNyL/dGT3cyhrPolSzS3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lmpxN7qN3xMddLnm7yif26RPx/zRl22QpgTG579tPCD4uVif0MgyFxQEboity+MeG
-	 sLFtDV6dOq+VNmAswPrgbLxDA+/cz2xLrlgF4UANvWRzWYyxkOZHjGxndFZhEo3E7x
-	 HgFb1Uqp0sE620tKKIb0MARb72WdYWA5P/U6PW5s=
+	b=wcxFIMpBaO2DQ8mQUtCrp966sWFBYVko6rEUhP00V2w+qqSEGQrgAyzjyZx4nJSFt
+	 Y/gJJnUMUteCX0r+LGci3VAiHKKF1/u8p8CPzadHdDBdMz2Uqi/c9/vTfxltVj6Qx0
+	 5wr6HYpHqWtoxP6fJEU2en3KqjX0vDEiAmDlSsZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 094/449] platform/x86: x86-android-tablets: Add select POWER_SUPPLY to Kconfig
-Date: Thu, 17 Apr 2025 19:46:22 +0200
-Message-ID: <20250417175121.748366719@linuxfoundation.org>
+Subject: [PATCH 6.14 095/449] wifi: ath9k: use unsigned long for activity check timestamp
+Date: Thu, 17 Apr 2025 19:46:23 +0200
+Message-ID: <20250417175121.787181022@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
 References: <20250417175117.964400335@linuxfoundation.org>
@@ -68,45 +68,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 2c30357e755b087217c7643fda2b8aea6d6deda4 ]
+[ Upstream commit 8fe64b0fedcb7348080529c46c71ae23f60c9d3e ]
 
-Commit c78dd25138d1 ("platform/x86: x86-android-tablets: Add Vexia EDU
-ATLA 10 EC battery driver"), adds power_supply class registering to
-the x86-android-tablets code.
+Since 'rx_active_check_time' of 'struct ath_softc' is in jiffies,
+prefer 'unsigned long' over 'u32' to avoid possible truncation in
+'ath_hw_rx_inactive_check()'. Found with clang's -Wshorten-64-to-32,
+compile tested only.
 
-Add "select POWER_SUPPLY" to the Kconfig entry to avoid these errors:
-
-ERROR: modpost: "power_supply_get_drvdata" [drivers/platform/x86/x86-android-tablets/vexia_atla10_ec.ko] undefined!
-ERROR: modpost: "power_supply_changed" [drivers/platform/x86/x86-android-tablets/vexia_atla10_ec.ko] undefined!
-ERROR: modpost: "devm_power_supply_register" [drivers/platform/x86/x86-android-tablets/vexia_atla10_ec.ko] undefined!
-
-When POWER_SUPPLY support is not enabled.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202503231159.ga9eWMVO-lkp@intel.com/
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20250324125052.374369-1-hdegoede@redhat.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Link: https://patch.msgid.link/20250115171750.259917-2-dmantipov@yandex.ru
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/x86-android-tablets/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ath/ath9k/ath9k.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/x86-android-tablets/Kconfig b/drivers/platform/x86/x86-android-tablets/Kconfig
-index a67bddc430075..193da15ee01ca 100644
---- a/drivers/platform/x86/x86-android-tablets/Kconfig
-+++ b/drivers/platform/x86/x86-android-tablets/Kconfig
-@@ -10,6 +10,7 @@ config X86_ANDROID_TABLETS
- 	depends on ACPI && EFI && PCI
- 	select NEW_LEDS
- 	select LEDS_CLASS
-+	select POWER_SUPPLY
- 	help
- 	  X86 tablets which ship with Android as (part of) the factory image
- 	  typically have various problems with their DSDTs. The factory kernels
+diff --git a/drivers/net/wireless/ath/ath9k/ath9k.h b/drivers/net/wireless/ath/ath9k/ath9k.h
+index a728cc0387df8..cbcf37008556f 100644
+--- a/drivers/net/wireless/ath/ath9k/ath9k.h
++++ b/drivers/net/wireless/ath/ath9k/ath9k.h
+@@ -1018,7 +1018,7 @@ struct ath_softc {
+ 
+ 	u8 gtt_cnt;
+ 	u32 intrstatus;
+-	u32 rx_active_check_time;
++	unsigned long rx_active_check_time;
+ 	u32 rx_active_count;
+ 	u16 ps_flags; /* PS_* */
+ 	bool ps_enabled;
 -- 
 2.39.5
 
