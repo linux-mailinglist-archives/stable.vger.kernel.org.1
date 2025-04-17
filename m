@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-133597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC022A9265C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:12:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCF13A928D0
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:38:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB6F74A05DB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:12:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D53A81B61589
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49B8E25525A;
-	Thu, 17 Apr 2025 18:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C911262817;
+	Thu, 17 Apr 2025 18:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNJg96dW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e2LU80YQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072501A3178;
-	Thu, 17 Apr 2025 18:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BE72627FE;
+	Thu, 17 Apr 2025 18:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913558; cv=none; b=Mr28GODUMT+4HQ18gYgz01v8clt05bSWv4AVfFD4KnYwkapdqwIlzkSl3emBJqH67wXzYwkqEb/7DyRhFpgQ1pLDojg0c7E/wKGoAcpulgux55tx+VYLOPtlAX8wqOnss90YwIKCVRs4ckvbvlCfHBxVn4svLsD8MUizD6AcpFA=
+	t=1744914740; cv=none; b=Le8zIOMI+G+c7zVnfl+0RgxRp1AUUXGSqtbX9Q8ykKrBQFyX6EVLlX7SGs2nBHs9IjWM/LTKkDChrJKqoXJEhov1yvfNiKS3rZR4AGN8vx6fEC1RHXtUKMzabb5M4qJs4DFbT6wsPTLREcBzmTlk8q5iSGVroK9vCnix9kZW4tQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913558; c=relaxed/simple;
-	bh=5aAGZspbBUk5W6dQD4bGdq8juBT3kkhyMOSKxC0m89I=;
+	s=arc-20240116; t=1744914740; c=relaxed/simple;
+	bh=d8ZnmajJTGv0RCytpxERed+T5qJzIJf0GwaEb+lim0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S1GDTXIAkF0O0eytjVl8SsOyo8o+xYUVswH31KXApqRB8EnUlp0bOBu4YIEBf2okQUCHcz0gblACm0MnB3go6Tjf5UsdYNC2O/Aek8BDqhJXtRQWrXHer3g0l7KaB2L2oV3GpqYXp+wqpxNIQF630QxttJqihyT4zTQQyxLEywM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNJg96dW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B66C4CEE4;
-	Thu, 17 Apr 2025 18:12:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Spqt48r3ugeu3tUXWHGZ4/y79tnidL6mpsFO2nyQ5MHlp1dWLcPce8iyYyldFQe9FpCu8sdez1V+a6IopAENl8pMa/Qzg0bevdGXjLBhNdMctr7dEr99ppT9vtvLm2QlMaG/AY+RBKYdVyhYnt5sIop8esA4LyzFNi5+hGe1HbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e2LU80YQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54B6AC4CEE4;
+	Thu, 17 Apr 2025 18:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913557;
-	bh=5aAGZspbBUk5W6dQD4bGdq8juBT3kkhyMOSKxC0m89I=;
+	s=korg; t=1744914740;
+	bh=d8ZnmajJTGv0RCytpxERed+T5qJzIJf0GwaEb+lim0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pNJg96dWClGT6ixVwiod6DXDKf3HQfpIP158I7ZR7+ietZhjjeGOqINo1VJ4JTKkv
-	 pNlx7f9/EmBmiWVvPSSzwULitsLLTR1Rh90pzJ9pAzrsa4MuZj0QIANjstRpdrrn+a
-	 sJ7f0U/nyB+nnbUhrQ2boaj5YKi2Wh9g90pubUsg=
+	b=e2LU80YQEHmW/NOYDzbyxTYe+nhwPA4wWJAy91tV9a3rNtbwXpJPUlRPW15OjRguW
+	 Nfktr54Z8Dc+aSI+asfAONGJql+rdNHTlnBUw+8iZm6YlKHj1azRHoyKnTKqIPQOXs
+	 hWnkWeF2IfxVFY9pvqD4xm8SNlG4zW5NkozeT37k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hien Huynh <hien.huynh.px@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 6.14 378/449] clk: renesas: r9a07g043: Fix HP clock source for RZ/Five
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>
+Subject: [PATCH 6.13 308/414] arm64: dts: mediatek: mt8188: Assign apll1 clock as parent to avoid hang
 Date: Thu, 17 Apr 2025 19:51:06 +0200
-Message-ID: <20250417175133.469701685@linuxfoundation.org>
+Message-ID: <20250417175123.824263505@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +59,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-commit 7f22a298d926664b51fcfe2f8ea5feb7f8b79952 upstream.
+commit a69d5795f12b06d07b6437cafdd08f929fff2706 upstream.
 
-According to the Rev.1.20 hardware manual for the RZ/Five SoC, the clock
-source for HP is derived from PLL6 divided by 2.  Correct the
-implementation by configuring HP as a fixed clock source instead of a
-MUX.
+Certain registers in the AFE IO space require the apll1 clock to be
+enabled in order to be read, otherwise the machine hangs (registers like
+0x280, 0x410 (AFE_GAIN1_CON0) and 0x830 (AFE_CONN0_5)). During AFE
+driver probe, when initializing the regmap for the AFE IO space those
+registers are read, resulting in a hang during boot.
 
-The `CPG_PL6_ETH_SSEL' register, which is available on the RZ/G2UL SoC,
-is not present on the RZ/Five SoC, necessitating this change.
+This has been observed on the Genio 700 EVK, Genio 510 EVK and
+MT8188-Geralt-Ciri Chromebook, all of which are based on the MT8188 SoC.
 
-Fixes: 95d48d270305ad2c ("clk: renesas: r9a07g043: Add support for RZ/Five SoC")
+Assign CLK_TOP_APLL1_D4 as the parent for CLK_TOP_A1SYS_HP, which is
+enabled during register read and write, to make sure the apll1 is
+enabled during register operations and prevent the MT8188 machines from
+hanging during boot.
+
 Cc: stable@vger.kernel.org
-Reported-by: Hien Huynh <hien.huynh.px@renesas.com>
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20250127173159.34572-1-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: bd568ce198b8 ("arm64: dts: mediatek: mt8188: Add audio support")
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Link: https://lore.kernel.org/r/20250207-mt8188-afe-fix-hang-disabled-apll1-clk-v2-1-a636d844c272@collabora.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/renesas/r9a07g043-cpg.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm64/boot/dts/mediatek/mt8188.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/clk/renesas/r9a07g043-cpg.c
-+++ b/drivers/clk/renesas/r9a07g043-cpg.c
-@@ -89,7 +89,9 @@ static const struct clk_div_table dtable
- 
- /* Mux clock tables */
- static const char * const sel_pll3_3[] = { ".pll3_533", ".pll3_400" };
-+#ifdef CONFIG_ARM64
- static const char * const sel_pll6_2[]	= { ".pll6_250", ".pll5_250" };
-+#endif
- static const char * const sel_sdhi[] = { ".clk_533", ".clk_400", ".clk_266" };
- 
- static const u32 mtable_sdhi[] = { 1, 2, 3 };
-@@ -137,7 +139,12 @@ static const struct cpg_core_clk r9a07g0
- 	DEF_DIV("P2", R9A07G043_CLK_P2, CLK_PLL3_DIV2_4_2, DIVPL3A, dtable_1_32),
- 	DEF_FIXED("M0", R9A07G043_CLK_M0, CLK_PLL3_DIV2_4, 1, 1),
- 	DEF_FIXED("ZT", R9A07G043_CLK_ZT, CLK_PLL3_DIV2_4_2, 1, 1),
-+#ifdef CONFIG_ARM64
- 	DEF_MUX("HP", R9A07G043_CLK_HP, SEL_PLL6_2, sel_pll6_2),
-+#endif
-+#ifdef CONFIG_RISCV
-+	DEF_FIXED("HP", R9A07G043_CLK_HP, CLK_PLL6_250, 1, 1),
-+#endif
- 	DEF_FIXED("SPI0", R9A07G043_CLK_SPI0, CLK_DIV_PLL3_C, 1, 2),
- 	DEF_FIXED("SPI1", R9A07G043_CLK_SPI1, CLK_DIV_PLL3_C, 1, 4),
- 	DEF_SD_MUX("SD0", R9A07G043_CLK_SD0, SEL_SDHI0, SEL_SDHI0_STS, sel_sdhi,
+--- a/arch/arm64/boot/dts/mediatek/mt8188.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8188.dtsi
+@@ -1392,7 +1392,7 @@
+ 			compatible = "mediatek,mt8188-afe";
+ 			reg = <0 0x10b10000 0 0x10000>;
+ 			assigned-clocks = <&topckgen CLK_TOP_A1SYS_HP>;
+-			assigned-clock-parents =  <&clk26m>;
++			assigned-clock-parents = <&topckgen CLK_TOP_APLL1_D4>;
+ 			clocks = <&clk26m>,
+ 				 <&apmixedsys CLK_APMIXED_APLL1>,
+ 				 <&apmixedsys CLK_APMIXED_APLL2>,
 
 
 
