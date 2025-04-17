@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-134410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AAAAA92AEF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEA57A92955
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DFCE1B653E1
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:55:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10B917B982C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59BDF1B3934;
-	Thu, 17 Apr 2025 18:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9A7253B5E;
+	Thu, 17 Apr 2025 18:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ujDKE1KN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hGkz9nUf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A38185920;
-	Thu, 17 Apr 2025 18:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CF2256C67;
+	Thu, 17 Apr 2025 18:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916044; cv=none; b=iAnc5/AKlhz2GzR+DqM8+sLLSN94lR8dkPeKNwISSYWzwjXJZqXtUmaxgDkyewdAQm2y25yvKQD4npAO7JkuMaBbp3uUxZJAbFhDaJAHTLnGg3dLcaCTKtcRR+yuwrh9+tFyqES5tiZm3OJHRAoxRtAhSOEmFCcMNW1vAYpB9bM=
+	t=1744915014; cv=none; b=JuwQOm5sdXtfoiVpunF0MrhEg0v+0Od4ZVd/Wbce1ajE0mFewr3ZmXgFayxijpBWRAID2uKXnbxJ7C2lA6gPlL16NV6n3gis0Xozoiu26GtgMUzG/lzPhgAcsiC28Q9mDVIrX7zLAWmdUXREWHc08Lr42O80S9rSXBhTD207QFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916044; c=relaxed/simple;
-	bh=etyzGifn838ZcbJGlbkPzPbq9Kk3ZaGVsKxUJ/SY77g=;
+	s=arc-20240116; t=1744915014; c=relaxed/simple;
+	bh=daTNpgVYZOZ9JwrliLfRIVPj0HdLytLq2vwSUNfNisQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iFuzCaumez5JBLXtCTXtPzzzevDIO22dxi6XoW5FQhlBECTo8fYOR2RsJhhZELCgwfARWjXZHIqqdJOkprgOAQ5eIAhNeorxbU46xp4/waLyxwJNop4HZSMFu+U7hVBK6LE+21DINhxnta2R8N9Ug/FDKolS0VpL/IYjYLMc3rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ujDKE1KN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F588C4CEE4;
-	Thu, 17 Apr 2025 18:54:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Xk734IRNNJxfl99aeALujPoWF3oOO9BNxnUJtPle8NwhWGdPVMuW1szgotf3RWGDYGbtQFvRQ7eBINQ84+2wNj7xmIwz9w9iH0KKq0GY2gt806EnAhg0QPi4KuiBAvZkN0K10yVf+iB7J+QcEy34FgSMwGfNW2t012Ji3hLkTys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hGkz9nUf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F28C4CEE4;
+	Thu, 17 Apr 2025 18:36:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916044;
-	bh=etyzGifn838ZcbJGlbkPzPbq9Kk3ZaGVsKxUJ/SY77g=;
+	s=korg; t=1744915013;
+	bh=daTNpgVYZOZ9JwrliLfRIVPj0HdLytLq2vwSUNfNisQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ujDKE1KN+BlcRZ++JFqgqGc1fYt3qDuKR1A0vp1c8Uqnwip1650U9dcgPnb+Kg1p5
-	 RTIGXcgbZItLKFf5YJsH12880KbTIlNFORdL/JxKLagYgi2sNjdx3P96L/+bDwQQn4
-	 DYwoA3lftRaPKkbNOUpK4FAvuAnMwNybq05eI8/w=
+	b=hGkz9nUfZL0CkIQ3hGxjfEugLNc0I/PxmfmQyX/kp5xd9girkzpHLbLXEX68ZQsvj
+	 juKipbthgiQ3mKMes2ibwtajLaXhwW/4G/eEc5e8k/TRCKG/Ed3f8ifAqZ4/rs9tPf
+	 QIDvRq7I8sUFPLcVWqUOTkKgO1B0atLmTx6aYIDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 325/393] clk: qcom: gdsc: Capture pm_genpd_add_subdomain result code
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 6.13 376/414] misc: pci_endpoint_test: Fix displaying irq_type after request_irq error
 Date: Thu, 17 Apr 2025 19:52:14 +0200
-Message-ID: <20250417175120.685056144@linuxfoundation.org>
+Message-ID: <20250417175126.583332811@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,99 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-commit 65a733464553ea192797b889d1533a1a37216f32 upstream.
+commit 919d14603dab6a9cf03ebbeb2cfa556df48737c8 upstream.
 
-Adding a new clause to this if/else I noticed the existing usage of
-pm_genpd_add_subdomain() wasn't capturing and returning the result code.
+There are two variables that indicate the interrupt type to be used
+in the next test execution, global "irq_type" and "test->irq_type".
 
-pm_genpd_add_subdomain() returns an int and can fail. Capture that result
-code and throw it up the call stack if something goes wrong.
+The former is referenced from pci_endpoint_test_get_irq() to preserve
+the current type for ioctl(PCITEST_GET_IRQTYPE).
 
-Fixes: 1b771839de05 ("clk: qcom: gdsc: enable optional power domain support")
+In the pci_endpoint_test_request_irq(), since this global variable
+is referenced when an error occurs, the unintended error message is
+displayed.
+
+For example, after running "pcitest -i 2", the following message
+shows "MSI 3" even if the current IRQ type becomes "MSI-X":
+
+  pci-endpoint-test 0000:01:00.0: Failed to request IRQ 30 for MSI 3
+  SET IRQ TYPE TO MSI-X:          NOT OKAY
+
+Fix this issue by using "test->irq_type" instead of global "irq_type".
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Link: https://lore.kernel.org/r/20250117-b4-linux-next-24-11-18-clock-multiple-power-domains-v10-2-13f2bb656dad@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: b2ba9225e031 ("misc: pci_endpoint_test: Avoid using module parameter to determine irqtype")
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Link: https://lore.kernel.org/r/20250225110252.28866-4-hayashi.kunihiko@socionext.com
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gdsc.c |   40 +++++++++++++++++++++++++++-------------
- 1 file changed, 27 insertions(+), 13 deletions(-)
+ drivers/misc/pci_endpoint_test.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/clk/qcom/gdsc.c
-+++ b/drivers/clk/qcom/gdsc.c
-@@ -506,6 +506,23 @@ err_disable_supply:
- 	return ret;
- }
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -234,7 +234,7 @@ static bool pci_endpoint_test_request_ir
+ 	return true;
  
-+static void gdsc_pm_subdomain_remove(struct gdsc_desc *desc, size_t num)
-+{
-+	struct device *dev = desc->dev;
-+	struct gdsc **scs = desc->scs;
-+	int i;
-+
-+	/* Remove subdomains */
-+	for (i = num - 1; i >= 0; i--) {
-+		if (!scs[i])
-+			continue;
-+		if (scs[i]->parent)
-+			pm_genpd_remove_subdomain(scs[i]->parent, &scs[i]->pd);
-+		else if (!IS_ERR_OR_NULL(dev->pm_domain))
-+			pm_genpd_remove_subdomain(pd_to_genpd(dev->pm_domain), &scs[i]->pd);
-+	}
-+}
-+
- int gdsc_register(struct gdsc_desc *desc,
- 		  struct reset_controller_dev *rcdev, struct regmap *regmap)
- {
-@@ -555,30 +572,27 @@ int gdsc_register(struct gdsc_desc *desc
- 		if (!scs[i])
- 			continue;
- 		if (scs[i]->parent)
--			pm_genpd_add_subdomain(scs[i]->parent, &scs[i]->pd);
-+			ret = pm_genpd_add_subdomain(scs[i]->parent, &scs[i]->pd);
- 		else if (!IS_ERR_OR_NULL(dev->pm_domain))
--			pm_genpd_add_subdomain(pd_to_genpd(dev->pm_domain), &scs[i]->pd);
-+			ret = pm_genpd_add_subdomain(pd_to_genpd(dev->pm_domain), &scs[i]->pd);
-+		if (ret)
-+			goto err_pm_subdomain_remove;
- 	}
- 
- 	return of_genpd_add_provider_onecell(dev->of_node, data);
-+
-+err_pm_subdomain_remove:
-+	gdsc_pm_subdomain_remove(desc, i);
-+
-+	return ret;
- }
- 
- void gdsc_unregister(struct gdsc_desc *desc)
- {
--	int i;
- 	struct device *dev = desc->dev;
--	struct gdsc **scs = desc->scs;
- 	size_t num = desc->num;
- 
--	/* Remove subdomains */
--	for (i = num - 1; i >= 0; i--) {
--		if (!scs[i])
--			continue;
--		if (scs[i]->parent)
--			pm_genpd_remove_subdomain(scs[i]->parent, &scs[i]->pd);
--		else if (!IS_ERR_OR_NULL(dev->pm_domain))
--			pm_genpd_remove_subdomain(pd_to_genpd(dev->pm_domain), &scs[i]->pd);
--	}
-+	gdsc_pm_subdomain_remove(desc, num);
- 	of_genpd_del_provider(dev->of_node);
- }
- 
+ fail:
+-	switch (irq_type) {
++	switch (test->irq_type) {
+ 	case IRQ_TYPE_INTX:
+ 		dev_err(dev, "Failed to request IRQ %d for Legacy\n",
+ 			pci_irq_vector(pdev, i));
 
 
 
