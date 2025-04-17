@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-134426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87470A92B06
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:56:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A6C9A92961
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11C3D1B65B97
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:55:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB3238E2E26
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D8C19ABC6;
-	Thu, 17 Apr 2025 18:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BD02566E9;
+	Thu, 17 Apr 2025 18:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYWEHHUu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGIS7M+g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3590E1E834D;
-	Thu, 17 Apr 2025 18:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02ED92522AC;
+	Thu, 17 Apr 2025 18:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916090; cv=none; b=Ms8S94qh9OmbC3CTfJE8SiIc0h034wpIXwdVYwW2NrVJvGxXPpA+TQKK6uEzp4XKAzRl4YeHs6csk7hyPS1vHn45FYQzlW0wtcYl4q8MJ8ep3zSItZ8K2lJt+bt+xsV6/zMIYfSF4bg5gEZ/P1Sr0y6cvYFGo1YuGIgRkMYoJsA=
+	t=1744914973; cv=none; b=i+ZBjNLjNEaNNOisEGdoZYrHwFpSHhoc/oFfBe3/OTiiXOU6SwMK93uVdVgiOZ//ddPTJjnNwOmEH+1ogfWMeYQOXlocfdnMESFz8T/gIB0eFkcEtaNjuLT2gCpZwxRydDsZBvax8BaSQ5JpVAmr1SI4nkLZTkJarF9YtvQsyzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916090; c=relaxed/simple;
-	bh=iq4lTLS6W839CKa8S0sIo4LpOC0C6g0cw+y/5dBMMMY=;
+	s=arc-20240116; t=1744914973; c=relaxed/simple;
+	bh=dBTJKcDQBCXj8CzeMm+fyhj0C8jVfbaVxCjTx1N0y6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OTReRBk4GRou65jjQBnqtcmpUCIhonUn1IrF2Pfm0xApsF+V1MR2KpPq/O6K/iE5iGsc3MNEv6dI0JFcBHvrzmdw33eMCYxMcVuZpEURF28Ng00ZJrnklxfOLAcoEuyz8pBq623YfagHI7wdov8gymc4BtZWYuLSqvhkYGIV7dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYWEHHUu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB03C4CEE4;
-	Thu, 17 Apr 2025 18:54:49 +0000 (UTC)
+	 MIME-Version; b=KDr6YCE2l3qce2nyN6GsYIbWlPXSQqcvsXGswcBa3stKjOZxI3PLcCBzyFDBikm2iHey8/jvmG+8mg7MnS8hr4dpQRkwp/W0gwjxfEFhkicD/24xsaP5kuLdSxQSBEUvxx3LafK02wJvmx+yPz2EDrQW3vsSc57aVCdJI9rwPCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGIS7M+g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51294C4CEE4;
+	Thu, 17 Apr 2025 18:36:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916090;
-	bh=iq4lTLS6W839CKa8S0sIo4LpOC0C6g0cw+y/5dBMMMY=;
+	s=korg; t=1744914972;
+	bh=dBTJKcDQBCXj8CzeMm+fyhj0C8jVfbaVxCjTx1N0y6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uYWEHHUuzvGCoun2D1dzg6psWMYY+FXjYYlO+Fz19cbGpegXsA2Ctl/c/DEcjlfFu
-	 RrJCFJ4e+Bcj+W2yIcmf/oLTL0I6IH9fsvxQdVO4jBx1wwqu/Y9K8wI0NrO4qpfHIt
-	 pQxKR0lyUI53bq0DyiV0eqgydgUQF0/JRqU6753Q=
+	b=FGIS7M+gV2ynO5v+vOO6SwsgXwz9wm4CoWJK8X5s3poXUfOqCzgPb0JbBAdjP7H/l
+	 4EQvTYqGbAfIJ6YFk24uIs1GM9JWA3SFVA/6xWaUD6ARdZNddWo2vrA3KPzYWgQT8e
+	 gYkgfCy9rsLSluLWsQ47lHzG3Qt9ZaUAkzAWwV/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guixin Liu <kanie@linux.alibaba.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.12 339/393] gpio: tegra186: fix resource handling in ACPI probe path
-Date: Thu, 17 Apr 2025 19:52:28 +0200
-Message-ID: <20250417175121.231434590@linuxfoundation.org>
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.13 391/414] pinctrl: qcom: Clear latched interrupt status when changing IRQ type
+Date: Thu, 17 Apr 2025 19:52:29 +0200
+Message-ID: <20250417175127.213046655@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guixin Liu <kanie@linux.alibaba.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-commit 8323f3a69de6f6e96bf22f32dd8e2920766050c2 upstream.
+commit e225128c3f8be879e7d4eb71a25949e188b420ae upstream.
 
-When the Tegra186 GPIO controller is probed through ACPI matching,
-the driver emits two error messages during probing:
-  "tegra186-gpio NVDA0508:00: invalid resource (null)"
-  "tegra186-gpio NVDA0508:00: invalid resource (null)"
+When submitting the TLMM test driver, Bjorn reported that some of the test
+cases are failing for GPIOs that not are backed by PDC (i.e. "non-wakeup"
+GPIOs that are handled directly in pinctrl-msm). Basically, lingering
+latched interrupt state is still being delivered at IRQ request time, e.g.:
 
-Fix this by getting resource first and then do the ioremap.
+  ok 1 tlmm_test_silent_rising
+  tlmm_test_silent_falling: ASSERTION FAILED at drivers/pinctrl/qcom/tlmm-test.c:178
+  Expected atomic_read(&priv->intr_count) == 0, but
+      atomic_read(&priv->intr_count) == 1 (0x1)
+  not ok 2 tlmm_test_silent_falling
+  tlmm_test_silent_low: ASSERTION FAILED at drivers/pinctrl/qcom/tlmm-test.c:178
+  Expected atomic_read(&priv->intr_count) == 0, but
+      atomic_read(&priv->intr_count) == 1 (0x1)
+  not ok 3 tlmm_test_silent_low
+  ok 4 tlmm_test_silent_high
 
-Fixes: 2606e7c9f5fc ("gpio: tegra186: Add ACPI support")
+Whether to report interrupts that came in while the IRQ was unclaimed
+doesn't seem to be well-defined in the Linux IRQ API. However, looking
+closer at these specific cases, we're actually reporting events that do not
+match the interrupt type requested by the driver:
+
+ 1. After "ok 1 tlmm_test_silent_rising", the GPIO is in low state and
+    configured for IRQF_TRIGGER_RISING.
+
+ 2. (a) In preparation for "tlmm_test_silent_falling", the GPIO is switched
+        to high state. The rising interrupt gets latched.
+    (b) The GPIO is re-configured for IRQF_TRIGGER_FALLING, but the latched
+        interrupt isn't cleared.
+    (c) The IRQ handler is called for the latched interrupt, but there
+        wasn't any falling edge.
+
+ 3. (a) For "tlmm_test_silent_low", the GPIO remains in high state.
+    (b) The GPIO is re-configured for IRQF_TRIGGER_LOW. This seems to
+        result in a phantom interrupt that gets latched.
+    (c) The IRQ handler is called for the latched interrupt, but the GPIO
+        isn't in low state.
+
+ 4. (a) For "tlmm_test_silent_high", the GPIO is switched to low state.
+    (b) This doesn't result in a latched interrupt, because RAW_STATUS_EN
+        was cleared when masking the level-triggered interrupt.
+
+Fix this by clearing the interrupt state whenever making any changes to the
+interrupt configuration. This includes previously disabled interrupts, but
+also any changes to interrupt polarity or detection type.
+
+With this change, all 16 test cases are now passing for the non-wakeup
+GPIOs in the TLMM.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250327032349.78809-1-kanie@linux.alibaba.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fixes: cf9d052aa600 ("pinctrl: qcom: Don't clear pending interrupts when enabling")
+Reported-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Closes: https://lore.kernel.org/r/20250227-tlmm-test-v1-1-d18877b4a5db@oss.qualcomm.com/
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Tested-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/20250312-pinctrl-msm-type-latch-v1-1-ce87c561d3d7@linaro.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-tegra186.c |   27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ drivers/pinctrl/qcom/pinctrl-msm.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/gpio/gpio-tegra186.c
-+++ b/drivers/gpio/gpio-tegra186.c
-@@ -823,6 +823,7 @@ static int tegra186_gpio_probe(struct pl
- 	struct gpio_irq_chip *irq;
- 	struct tegra_gpio *gpio;
- 	struct device_node *np;
-+	struct resource *res;
- 	char **names;
- 	int err;
+--- a/drivers/pinctrl/qcom/pinctrl-msm.c
++++ b/drivers/pinctrl/qcom/pinctrl-msm.c
+@@ -1044,8 +1044,7 @@ static int msm_gpio_irq_set_type(struct
+ 	const struct msm_pingroup *g;
+ 	u32 intr_target_mask = GENMASK(2, 0);
+ 	unsigned long flags;
+-	bool was_enabled;
+-	u32 val;
++	u32 val, oldval;
  
-@@ -842,19 +843,19 @@ static int tegra186_gpio_probe(struct pl
- 	gpio->num_banks++;
+ 	if (msm_gpio_needs_dual_edge_parent_workaround(d, type)) {
+ 		set_bit(d->hwirq, pctrl->dual_edge_irqs);
+@@ -1107,8 +1106,7 @@ static int msm_gpio_irq_set_type(struct
+ 	 * internal circuitry of TLMM, toggling the RAW_STATUS
+ 	 * could cause the INTR_STATUS to be set for EDGE interrupts.
+ 	 */
+-	val = msm_readl_intr_cfg(pctrl, g);
+-	was_enabled = val & BIT(g->intr_raw_status_bit);
++	val = oldval = msm_readl_intr_cfg(pctrl, g);
+ 	val |= BIT(g->intr_raw_status_bit);
+ 	if (g->intr_detection_width == 2) {
+ 		val &= ~(3 << g->intr_detection_bit);
+@@ -1161,9 +1159,11 @@ static int msm_gpio_irq_set_type(struct
+ 	/*
+ 	 * The first time we set RAW_STATUS_EN it could trigger an interrupt.
+ 	 * Clear the interrupt.  This is safe because we have
+-	 * IRQCHIP_SET_TYPE_MASKED.
++	 * IRQCHIP_SET_TYPE_MASKED. When changing the interrupt type, we could
++	 * also still have a non-matching interrupt latched, so clear whenever
++	 * making changes to the interrupt configuration.
+ 	 */
+-	if (!was_enabled)
++	if (val != oldval)
+ 		msm_ack_intr_status(pctrl, g);
  
- 	/* get register apertures */
--	gpio->secure = devm_platform_ioremap_resource_byname(pdev, "security");
--	if (IS_ERR(gpio->secure)) {
--		gpio->secure = devm_platform_ioremap_resource(pdev, 0);
--		if (IS_ERR(gpio->secure))
--			return PTR_ERR(gpio->secure);
--	}
--
--	gpio->base = devm_platform_ioremap_resource_byname(pdev, "gpio");
--	if (IS_ERR(gpio->base)) {
--		gpio->base = devm_platform_ioremap_resource(pdev, 1);
--		if (IS_ERR(gpio->base))
--			return PTR_ERR(gpio->base);
--	}
-+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "security");
-+	if (!res)
-+		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	gpio->secure = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(gpio->secure))
-+		return PTR_ERR(gpio->secure);
-+
-+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "gpio");
-+	if (!res)
-+		res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-+	gpio->base = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(gpio->base))
-+		return PTR_ERR(gpio->base);
- 
- 	err = platform_irq_count(pdev);
- 	if (err < 0)
+ 	if (test_bit(d->hwirq, pctrl->dual_edge_irqs))
 
 
 
