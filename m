@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-134058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03CCBA9292B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:40:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87470A92B06
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:56:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE0704A4A8D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11C3D1B65B97
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:55:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053CD256C77;
-	Thu, 17 Apr 2025 18:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D8C19ABC6;
+	Thu, 17 Apr 2025 18:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="py6Mp1Ud"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYWEHHUu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72B2256C63;
-	Thu, 17 Apr 2025 18:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3590E1E834D;
+	Thu, 17 Apr 2025 18:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914966; cv=none; b=kvO1huEDiomA7aXrUrOQnlkV/DcrTf0zQRsgFNE1rcPlWPaHurCGoamR5SoU9Z/40n3nbyPoW1KmXgxL84K1hkHjF3iu6rdVTOkGhLKPDQykOlyMD3RJOHqfl9ZqysE/cmsaI97DN1FJLRbGA6EQRA5BiRGAugDCVNn4Fp5sEc8=
+	t=1744916090; cv=none; b=Ms8S94qh9OmbC3CTfJE8SiIc0h034wpIXwdVYwW2NrVJvGxXPpA+TQKK6uEzp4XKAzRl4YeHs6csk7hyPS1vHn45FYQzlW0wtcYl4q8MJ8ep3zSItZ8K2lJt+bt+xsV6/zMIYfSF4bg5gEZ/P1Sr0y6cvYFGo1YuGIgRkMYoJsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914966; c=relaxed/simple;
-	bh=/3Ch5BgHX/VD/tAMhsRGzqrxgzgfnaSU5iHIkyvlz5I=;
+	s=arc-20240116; t=1744916090; c=relaxed/simple;
+	bh=iq4lTLS6W839CKa8S0sIo4LpOC0C6g0cw+y/5dBMMMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S+aUoigetmWMOEcd4Nm7qHVDH7d7iRRPROuQqPHRkCocj1UKmDNiE1AFBXAdBVZ1vd2snU50AUtaGffnLpQYCOeKiYTrguYtiPeq4KhWIM7YexPKAJsTMl4f4eHKnge0Qkut146yp68dNfDKAtiWMw7DZFetwi/CiUejwl5fxNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=py6Mp1Ud; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C4CC4CEE4;
-	Thu, 17 Apr 2025 18:36:05 +0000 (UTC)
+	 MIME-Version; b=OTReRBk4GRou65jjQBnqtcmpUCIhonUn1IrF2Pfm0xApsF+V1MR2KpPq/O6K/iE5iGsc3MNEv6dI0JFcBHvrzmdw33eMCYxMcVuZpEURF28Ng00ZJrnklxfOLAcoEuyz8pBq623YfagHI7wdov8gymc4BtZWYuLSqvhkYGIV7dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYWEHHUu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB03C4CEE4;
+	Thu, 17 Apr 2025 18:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914966;
-	bh=/3Ch5BgHX/VD/tAMhsRGzqrxgzgfnaSU5iHIkyvlz5I=;
+	s=korg; t=1744916090;
+	bh=iq4lTLS6W839CKa8S0sIo4LpOC0C6g0cw+y/5dBMMMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=py6Mp1UdeS3BT8h2fTbaTGD5RN+0pqRkKjtG9CLC6zeyXAVTCYPDZTFqcj+7ENP7L
-	 wN8LS0gVHmpxCLvOrE2+q5Q3pq9Qkzi4QkUw4DSSZ7HoXgVSgiA64ijpxfnYFYFpgd
-	 pJF6CaZTZAfikgDYl+iUCsL0274qZ9ZijhxmmDJA=
+	b=uYWEHHUuzvGCoun2D1dzg6psWMYY+FXjYYlO+Fz19cbGpegXsA2Ctl/c/DEcjlfFu
+	 RrJCFJ4e+Bcj+W2yIcmf/oLTL0I6IH9fsvxQdVO4jBx1wwqu/Y9K8wI0NrO4qpfHIt
+	 pQxKR0lyUI53bq0DyiV0eqgydgUQF0/JRqU6753Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.13 390/414] phy: freescale: imx8m-pcie: assert phy reset and perst in power off
+	Guixin Liu <kanie@linux.alibaba.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.12 339/393] gpio: tegra186: fix resource handling in ACPI probe path
 Date: Thu, 17 Apr 2025 19:52:28 +0200
-Message-ID: <20250417175127.173584676@linuxfoundation.org>
+Message-ID: <20250417175121.231434590@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+From: Guixin Liu <kanie@linux.alibaba.com>
 
-commit aecb63e88c5e5fb9afb782a1577264c76f179af9 upstream.
+commit 8323f3a69de6f6e96bf22f32dd8e2920766050c2 upstream.
 
-Ensure the PHY reset and perst is asserted during power-off to
-guarantee it is in a reset state upon repeated power-on calls. This
-resolves an issue where the PHY may not properly initialize during
-subsequent power-on cycles. Power-on will deassert the reset at the
-appropriate time after tuning the PHY parameters.
+When the Tegra186 GPIO controller is probed through ACPI matching,
+the driver emits two error messages during probing:
+  "tegra186-gpio NVDA0508:00: invalid resource (null)"
+  "tegra186-gpio NVDA0508:00: invalid resource (null)"
 
-During suspend/resume cycles, we observed that the PHY PLL failed to
-lock during resume when the CPU temperature increased from 65C to 75C.
-The observed errors were:
-  phy phy-32f00000.pcie-phy.3: phy poweron failed --> -110
-  imx6q-pcie 33800000.pcie: waiting for PHY ready timeout!
-  imx6q-pcie 33800000.pcie: PM: dpm_run_callback(): genpd_resume_noirq+0x0/0x80 returns -110
-  imx6q-pcie 33800000.pcie: PM: failed to resume noirq: error -110
+Fix this by getting resource first and then do the ioremap.
 
-This resulted in a complete CPU freeze, which is resolved by ensuring
-the PHY is in reset during power-on, thus preventing PHY PLL failures.
-
+Fixes: 2606e7c9f5fc ("gpio: tegra186: Add ACPI support")
 Cc: stable@vger.kernel.org
-Fixes: 1aa97b002258 ("phy: freescale: pcie: Initialize the imx8 pcie standalone phy driver")
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250305144355.20364-3-eichest@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250327032349.78809-1-kanie@linux.alibaba.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/freescale/phy-fsl-imx8m-pcie.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/gpio/gpio-tegra186.c |   27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
---- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-@@ -162,6 +162,16 @@ static int imx8_pcie_phy_power_on(struct
- 	return ret;
- }
+--- a/drivers/gpio/gpio-tegra186.c
++++ b/drivers/gpio/gpio-tegra186.c
+@@ -823,6 +823,7 @@ static int tegra186_gpio_probe(struct pl
+ 	struct gpio_irq_chip *irq;
+ 	struct tegra_gpio *gpio;
+ 	struct device_node *np;
++	struct resource *res;
+ 	char **names;
+ 	int err;
  
-+static int imx8_pcie_phy_power_off(struct phy *phy)
-+{
-+	struct imx8_pcie_phy *imx8_phy = phy_get_drvdata(phy);
-+
-+	reset_control_assert(imx8_phy->reset);
-+	reset_control_assert(imx8_phy->perst);
-+
-+	return 0;
-+}
-+
- static int imx8_pcie_phy_init(struct phy *phy)
- {
- 	struct imx8_pcie_phy *imx8_phy = phy_get_drvdata(phy);
-@@ -182,6 +192,7 @@ static const struct phy_ops imx8_pcie_ph
- 	.init		= imx8_pcie_phy_init,
- 	.exit		= imx8_pcie_phy_exit,
- 	.power_on	= imx8_pcie_phy_power_on,
-+	.power_off	= imx8_pcie_phy_power_off,
- 	.owner		= THIS_MODULE,
- };
+@@ -842,19 +843,19 @@ static int tegra186_gpio_probe(struct pl
+ 	gpio->num_banks++;
  
+ 	/* get register apertures */
+-	gpio->secure = devm_platform_ioremap_resource_byname(pdev, "security");
+-	if (IS_ERR(gpio->secure)) {
+-		gpio->secure = devm_platform_ioremap_resource(pdev, 0);
+-		if (IS_ERR(gpio->secure))
+-			return PTR_ERR(gpio->secure);
+-	}
+-
+-	gpio->base = devm_platform_ioremap_resource_byname(pdev, "gpio");
+-	if (IS_ERR(gpio->base)) {
+-		gpio->base = devm_platform_ioremap_resource(pdev, 1);
+-		if (IS_ERR(gpio->base))
+-			return PTR_ERR(gpio->base);
+-	}
++	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "security");
++	if (!res)
++		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	gpio->secure = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(gpio->secure))
++		return PTR_ERR(gpio->secure);
++
++	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "gpio");
++	if (!res)
++		res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
++	gpio->base = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(gpio->base))
++		return PTR_ERR(gpio->base);
+ 
+ 	err = platform_irq_count(pdev);
+ 	if (err < 0)
 
 
 
