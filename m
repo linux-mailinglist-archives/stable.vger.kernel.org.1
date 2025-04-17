@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-134189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A821A929C9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:44:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6278AA927CE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:28:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 909F74A59CE
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:43:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2ECBD4A2ADD
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F70E256C9E;
-	Thu, 17 Apr 2025 18:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E9DA256C6C;
+	Thu, 17 Apr 2025 18:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2CFHpPSG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PzhSpO7O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF67254AF0;
-	Thu, 17 Apr 2025 18:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDA325744F;
+	Thu, 17 Apr 2025 18:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915366; cv=none; b=shc5KkNmByL89gkNdKlgTy21yWNWQBqWCowxlTrs4KG60RbMr4Vds4oicYG4HnzjIxfxSUONRUktWUK5QdoOH1h470/R8SyYIvd9ey0duOv1SAOU6GR4pvXzNRPY/jDQDrE0wV/F/m3Nkc0G8fJoCceZOoIUAwJj6ScMgZk5/LA=
+	t=1744914256; cv=none; b=HuerW9iKojJUxzuzdJk1uQ7dDVLqnlNE3JWj4M2HYYcLb1RvWAaaEpF5VyDq4vOgatRd1rmMMkEXmqt08KP/Yj/COuzzxFmFhxmUV5BmqVSkHTdYsIwvA4jaM9fyhzJUIuQcBQxI6XpOLfpEKi3CJ2wn+C/ux/NcEWWCqoZWBq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915366; c=relaxed/simple;
-	bh=r75FxmsxKnkMBsvFtn5knWhlhoaZvGFNnjQejc/ufiY=;
+	s=arc-20240116; t=1744914256; c=relaxed/simple;
+	bh=9+87UxtW2Ih3wIr3BS5bKTJuCjmDAp5FuSdpN8oFQyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QkwoBpkjXGGq9izepNM0qFk39q9xkH8qPWc7R0bLOSv/HA7kXpR7M3XTkNQJ0RqYndqLV+2Lhv2u90o5dkkSZMMgPRRfYREHk11x4C/mtlNCcdN6cBBLgCOk//dyuLgmB4tt138q9p+Pgiu+XyOhWbJfSr4E+GmPbYcgYyiemqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2CFHpPSG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 863BAC4CEE4;
-	Thu, 17 Apr 2025 18:42:45 +0000 (UTC)
+	 MIME-Version; b=cTaNhl/tpFP68k3GFbzspkRvAAn6Pf6FBnoGMFJ/NzgK0QcDzYWdDjMkDXDwxynUb12UBZIerpfbz6HBVwZ9VHkR3dMjBXkG2k21HQ3Ia5etcw18AqFfCcMKNulZ4ySjipabfECV4zu9CTPrj3DuMwuF17C4HPLdYZ/nGczTwVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PzhSpO7O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4071C4CEE4;
+	Thu, 17 Apr 2025 18:24:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915365;
-	bh=r75FxmsxKnkMBsvFtn5knWhlhoaZvGFNnjQejc/ufiY=;
+	s=korg; t=1744914255;
+	bh=9+87UxtW2Ih3wIr3BS5bKTJuCjmDAp5FuSdpN8oFQyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2CFHpPSGd/FO83aDfOYCMTLY+Nmu+WdPn2mahqe+9AYlOd5wBVx3unUO9/X8Z5xmX
-	 m8juZjhpIQN9eHqj85Zn0H4+dAeHec7RJEhi0Qw4ahWHG+H47liLn+wCiAM+HgioVv
-	 bRl8Ryto0Lpq2LsXFr+KBJ00mDp0MO2L2iL/GNeA=
+	b=PzhSpO7OjhHL190PqL+VasVfOg1e8V+AFncVAi9WABE+ZD34BHtD65poXnUI6PICz
+	 btFY5V9Mf4aXw8rbc2Y8JQoc3dO/9KcNXgMBcHY8h50Wu4Yj6dMD0tfm136MC58HsJ
+	 X5Qc4db4hESg6dhcI4ObkrU9ULaCAkxGgJjvmwNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manish Dharanenthiran <quic_mdharane@quicinc.com>,
-	Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Emily Deng <Emily.Deng@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 105/393] wifi: ath12k: Fix invalid data access in ath12k_dp_rx_h_undecap_nwifi
-Date: Thu, 17 Apr 2025 19:48:34 +0200
-Message-ID: <20250417175111.816729002@linuxfoundation.org>
+Subject: [PATCH 6.13 157/414] drm/amdgpu: Fix the race condition for draining retry fault
+Date: Thu, 17 Apr 2025 19:48:35 +0200
+Message-ID: <20250417175117.754646563@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,138 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manish Dharanenthiran <quic_mdharane@quicinc.com>
+From: Emily Deng <Emily.Deng@amd.com>
 
-[ Upstream commit 9a0dddfb30f120db3851627935851d262e4e7acb ]
+[ Upstream commit f844732e3ad9c4b78df7436232949b8d2096d1a6 ]
 
-In certain cases, hardware might provide packets with a
-length greater than the maximum native Wi-Fi header length.
-This can lead to accessing and modifying fields in the header
-within the ath12k_dp_rx_h_undecap_nwifi function for
-DP_RX_DECAP_TYPE_NATIVE_WIFI decap type and
-potentially resulting in invalid data access and memory corruption.
+Issue:
+In the scenario where svm_range_restore_pages is called, but
+svm->checkpoint_ts has not been set and the retry fault has not been
+drained, svm_range_unmap_from_cpu is triggered and calls svm_range_free.
+Meanwhile, svm_range_restore_pages continues execution and reaches
+svm_range_from_addr. This results in a "failed to find prange..." error,
+ causing the page recovery to fail.
 
-Add a sanity check before processing the SKB to prevent invalid
-data access in the undecap native Wi-Fi function for the
-DP_RX_DECAP_TYPE_NATIVE_WIFI decap type.
+How to fix:
+Move the timestamp check code under the protection of svm->lock.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+v2:
+Make sure all right locks are released before go out.
 
-Signed-off-by: Manish Dharanenthiran <quic_mdharane@quicinc.com>
-Signed-off-by: Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250211090302.4105141-1-tamizh.raja@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+v3:
+Directly goto out_unlock_svms, and return -EAGAIN.
+
+v4:
+Refine code.
+
+Signed-off-by: Emily Deng <Emily.Deng@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_rx.c | 42 +++++++++++++++++++++++--
- 1 file changed, 40 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 31 +++++++++++++++-------------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index 91e3393f7b5f4..4cbba96121a11 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -2470,6 +2470,29 @@ static void ath12k_dp_rx_deliver_msdu(struct ath12k *ar, struct napi_struct *nap
- 	ieee80211_rx_napi(ath12k_ar_to_hw(ar), pubsta, msdu, napi);
- }
- 
-+static bool ath12k_dp_rx_check_nwifi_hdr_len_valid(struct ath12k_base *ab,
-+						   struct hal_rx_desc *rx_desc,
-+						   struct sk_buff *msdu)
-+{
-+	struct ieee80211_hdr *hdr;
-+	u8 decap_type;
-+	u32 hdr_len;
-+
-+	decap_type = ath12k_dp_rx_h_decap_type(ab, rx_desc);
-+	if (decap_type != DP_RX_DECAP_TYPE_NATIVE_WIFI)
-+		return true;
-+
-+	hdr = (struct ieee80211_hdr *)msdu->data;
-+	hdr_len = ieee80211_hdrlen(hdr->frame_control);
-+
-+	if ((likely(hdr_len <= DP_MAX_NWIFI_HDR_LEN)))
-+		return true;
-+
-+	ab->soc_stats.invalid_rbm++;
-+	WARN_ON_ONCE(1);
-+	return false;
-+}
-+
- static int ath12k_dp_rx_process_msdu(struct ath12k *ar,
- 				     struct sk_buff *msdu,
- 				     struct sk_buff_head *msdu_list,
-@@ -2528,6 +2551,11 @@ static int ath12k_dp_rx_process_msdu(struct ath12k *ar,
- 		}
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+index 1b04d54f9a69c..4eeea51c9a0eb 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -2992,19 +2992,6 @@ svm_range_restore_pages(struct amdgpu_device *adev, unsigned int pasid,
+ 		goto out;
  	}
  
-+	if (unlikely(!ath12k_dp_rx_check_nwifi_hdr_len_valid(ab, rx_desc, msdu))) {
-+		ret = -EINVAL;
-+		goto free_out;
+-	/* check if this page fault time stamp is before svms->checkpoint_ts */
+-	if (svms->checkpoint_ts[gpuidx] != 0) {
+-		if (amdgpu_ih_ts_after(ts,  svms->checkpoint_ts[gpuidx])) {
+-			pr_debug("draining retry fault, drop fault 0x%llx\n", addr);
+-			r = 0;
+-			goto out;
+-		} else
+-			/* ts is after svms->checkpoint_ts now, reset svms->checkpoint_ts
+-			 * to zero to avoid following ts wrap around give wrong comparing
+-			 */
+-			svms->checkpoint_ts[gpuidx] = 0;
+-	}
+-
+ 	if (!p->xnack_enabled) {
+ 		pr_debug("XNACK not enabled for pasid 0x%x\n", pasid);
+ 		r = -EFAULT;
+@@ -3024,6 +3011,21 @@ svm_range_restore_pages(struct amdgpu_device *adev, unsigned int pasid,
+ 	mmap_read_lock(mm);
+ retry_write_locked:
+ 	mutex_lock(&svms->lock);
++
++	/* check if this page fault time stamp is before svms->checkpoint_ts */
++	if (svms->checkpoint_ts[gpuidx] != 0) {
++		if (amdgpu_ih_ts_after(ts,  svms->checkpoint_ts[gpuidx])) {
++			pr_debug("draining retry fault, drop fault 0x%llx\n", addr);
++			r = -EAGAIN;
++			goto out_unlock_svms;
++		} else {
++			/* ts is after svms->checkpoint_ts now, reset svms->checkpoint_ts
++			 * to zero to avoid following ts wrap around give wrong comparing
++			 */
++			svms->checkpoint_ts[gpuidx] = 0;
++		}
 +	}
 +
- 	ath12k_dp_rx_h_ppdu(ar, rx_desc, rx_status);
- 	ath12k_dp_rx_h_mpdu(ar, msdu, rx_desc, rx_status);
+ 	prange = svm_range_from_addr(svms, addr, NULL);
+ 	if (!prange) {
+ 		pr_debug("failed to find prange svms 0x%p address [0x%llx]\n",
+@@ -3149,7 +3151,8 @@ svm_range_restore_pages(struct amdgpu_device *adev, unsigned int pasid,
+ 	mutex_unlock(&svms->lock);
+ 	mmap_read_unlock(mm);
  
-@@ -2880,6 +2908,9 @@ static int ath12k_dp_rx_h_verify_tkip_mic(struct ath12k *ar, struct ath12k_peer
- 		    RX_FLAG_IV_STRIPPED | RX_FLAG_DECRYPTED;
- 	skb_pull(msdu, hal_rx_desc_sz);
+-	svm_range_count_fault(node, p, gpuidx);
++	if (r != -EAGAIN)
++		svm_range_count_fault(node, p, gpuidx);
  
-+	if (unlikely(!ath12k_dp_rx_check_nwifi_hdr_len_valid(ab, rx_desc, msdu)))
-+		return -EINVAL;
-+
- 	ath12k_dp_rx_h_ppdu(ar, rx_desc, rxs);
- 	ath12k_dp_rx_h_undecap(ar, msdu, rx_desc,
- 			       HAL_ENCRYPT_TYPE_TKIP_MIC, rxs, true);
-@@ -3600,6 +3631,9 @@ static int ath12k_dp_rx_h_null_q_desc(struct ath12k *ar, struct sk_buff *msdu,
- 		skb_put(msdu, hal_rx_desc_sz + l3pad_bytes + msdu_len);
- 		skb_pull(msdu, hal_rx_desc_sz + l3pad_bytes);
- 	}
-+	if (unlikely(!ath12k_dp_rx_check_nwifi_hdr_len_valid(ab, desc, msdu)))
-+		return -EINVAL;
-+
- 	ath12k_dp_rx_h_ppdu(ar, desc, status);
- 
- 	ath12k_dp_rx_h_mpdu(ar, msdu, desc, status);
-@@ -3644,7 +3678,7 @@ static bool ath12k_dp_rx_h_reo_err(struct ath12k *ar, struct sk_buff *msdu,
- 	return drop;
- }
- 
--static void ath12k_dp_rx_h_tkip_mic_err(struct ath12k *ar, struct sk_buff *msdu,
-+static bool ath12k_dp_rx_h_tkip_mic_err(struct ath12k *ar, struct sk_buff *msdu,
- 					struct ieee80211_rx_status *status)
- {
- 	struct ath12k_base *ab = ar->ab;
-@@ -3662,6 +3696,9 @@ static void ath12k_dp_rx_h_tkip_mic_err(struct ath12k *ar, struct sk_buff *msdu,
- 	skb_put(msdu, hal_rx_desc_sz + l3pad_bytes + msdu_len);
- 	skb_pull(msdu, hal_rx_desc_sz + l3pad_bytes);
- 
-+	if (unlikely(!ath12k_dp_rx_check_nwifi_hdr_len_valid(ab, desc, msdu)))
-+		return true;
-+
- 	ath12k_dp_rx_h_ppdu(ar, desc, status);
- 
- 	status->flag |= (RX_FLAG_MMIC_STRIPPED | RX_FLAG_MMIC_ERROR |
-@@ -3669,6 +3706,7 @@ static void ath12k_dp_rx_h_tkip_mic_err(struct ath12k *ar, struct sk_buff *msdu,
- 
- 	ath12k_dp_rx_h_undecap(ar, msdu, desc,
- 			       HAL_ENCRYPT_TYPE_TKIP_MIC, status, false);
-+	return false;
- }
- 
- static bool ath12k_dp_rx_h_rxdma_err(struct ath12k *ar,  struct sk_buff *msdu,
-@@ -3687,7 +3725,7 @@ static bool ath12k_dp_rx_h_rxdma_err(struct ath12k *ar,  struct sk_buff *msdu,
- 	case HAL_REO_ENTR_RING_RXDMA_ECODE_TKIP_MIC_ERR:
- 		err_bitmap = ath12k_dp_rx_h_mpdu_err(ab, rx_desc);
- 		if (err_bitmap & HAL_RX_MPDU_ERR_TKIP_MIC) {
--			ath12k_dp_rx_h_tkip_mic_err(ar, msdu, status);
-+			drop = ath12k_dp_rx_h_tkip_mic_err(ar, msdu, status);
- 			break;
- 		}
- 		fallthrough;
+ 	mmput(mm);
+ out:
 -- 
 2.39.5
 
