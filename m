@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C9DDA927E4
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:29:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77ADBA929CB
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:44:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA72318969DB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 140441B63DB6
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:44:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1EBD261588;
-	Thu, 17 Apr 2025 18:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE7E253954;
+	Thu, 17 Apr 2025 18:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZC31cRdk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HoJsARms"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F80F261571;
-	Thu, 17 Apr 2025 18:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1138462;
+	Thu, 17 Apr 2025 18:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914361; cv=none; b=jELhQlSLbsq2zJoIVUMSXFlHw9U0EJYoj0a9j8larIpbVRrL1ZIr/A03lD8DwK73IjJSFzgC8IAfEV7x+lQfFaTNzWHZU/CSnE0+2xgH3k/UEjqdzqdu0Xv71r9lYFk4rp+2/ImKUCjAzQGPu3Aj5s3fr+P/i9GHHQNpA5pRWVc=
+	t=1744915473; cv=none; b=jEZWP2bKOqK2yTk4c8HlbFQEMu+9Jhg5uAYP8uRnDetqRTT5FGMlpe2u+oUqGXTM6v86ZgZ6z4LYxgoHWN5QOAut7rpB418BsO+8FlPeFNtQxn3aeeJdhw1er225nqoBq1GX0XJu4ts/NMheT/YQw0/OJTLacFIEORcMf2nHLlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914361; c=relaxed/simple;
-	bh=PuydFdE/D+rzPU4ZVD56rj4TsJLACIwSk7o9nXtl9Rw=;
+	s=arc-20240116; t=1744915473; c=relaxed/simple;
+	bh=KdyJtsDs8id/FHlLD6b/1QVZnZeBnddPAZPc8epvwr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iIjj10Yv06j2kpYh8PfMdzcJJjcWg/6r7pVuEOzvPMIK49OVXJ/GD0BJ9OIXGMHpeYEjPpuIu99eWgUvVoF415TT2GRGkbpLCSWFg9QeqS66A98w+kFgft6/Ea4cTRizN/FPg4+HQhYrCrg99x8ap+zEMWd1Muuw4Jn2chQAEOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZC31cRdk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1FCFC4CEE7;
-	Thu, 17 Apr 2025 18:26:00 +0000 (UTC)
+	 MIME-Version; b=i8g3qFObNsxfE4h39J/3YdtqAj4oMeft4+6986BjSm2YqBQaKkf8g4dps3Pz/fcqn64hXdrh5llnm3QuoTJ5RPYUfZvO3iSzMrVMyp1FZ/pOIKoMIu8z4duwhTQBrMJdODXrkXYFXJkNrYwUoNbdjBElKIUjt2GCkMH7jy088YE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HoJsARms; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D48FFC4CEE4;
+	Thu, 17 Apr 2025 18:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914361;
-	bh=PuydFdE/D+rzPU4ZVD56rj4TsJLACIwSk7o9nXtl9Rw=;
+	s=korg; t=1744915473;
+	bh=KdyJtsDs8id/FHlLD6b/1QVZnZeBnddPAZPc8epvwr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZC31cRdkf2flMfpqig2Wg1aygr+tEQLNtJIWq+5F1H0GvBRM6fWNoAckNW8zWaFem
-	 nxexRwVeQxBr6ll2W5t7WA8HtWPR011vnundDpAXMwYraYXP8hSGJ9KMZUH9CFQGtG
-	 YCm922m9MjOjxBkdBIoeED8tWnGksAfjZNccumQw=
+	b=HoJsARmszOb/X7vIF4UeI7IMN4/WU0fOsvJ9SFVyOhvm9+biDgTal4buKqDsRn8Za
+	 u/vlvpBKZEu+/XDI25aasuYc2634SHaX48S5UHF6Vafa8yKXCimcqrZP3Y+aSqRtvv
+	 nrpQ/CbWgccG6Y8Cqne2NMBO9SDb090c22kPu7cc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 190/414] HID: pidff: Rename two functions to align them with naming convention
+Subject: [PATCH 6.12 139/393] drivers: base: devres: Allow to release group on device release
 Date: Thu, 17 Apr 2025 19:49:08 +0200
-Message-ID: <20250417175119.084018538@linuxfoundation.org>
+Message-ID: <20250417175113.179297536@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +60,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 
-[ Upstream commit bbeface1051142bcb0473fdcc89102ea5b31607d ]
+[ Upstream commit 8e1ddfada4530939a8cb64ee9251aef780474274 ]
 
-Driver uses "set" everywhere to indicate setting report values and
-requesting HID_REQ_SET_REPORT
+When releasing a device, if the release action causes a group to be
+released, a warning is emitted because it can't find the group. This
+happens because devres_release_all() moves the entire list to a todo
+list and also move the group markers. Considering r* normal resource
+nodes and g1 a group resource node:
 
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+		    g1 -----------.
+		    v		  v
+	r1 -> r2 -> g1[0] -> r3-> g[1] -> r4
+
+After devres_release_all(), dev->devres_head becomes empty and the todo
+list it iterates on becomes:
+
+			       g1
+			       v
+	r1 -> r2 -> r3-> r4 -> g1[0]
+
+When a call to component_del() is made and takes down the aggregate
+device, a warning like this happen:
+
+	RIP: 0010:devres_release_group+0x362/0x530
+	...
+	Call Trace:
+	 <TASK>
+	 component_unbind+0x156/0x380
+	 component_unbind_all+0x1d0/0x270
+	 mei_component_master_unbind+0x28/0x80 [mei_hdcp]
+	 take_down_aggregate_device+0xc1/0x160
+	 component_del+0x1c6/0x3e0
+	 intel_hdcp_component_fini+0xf1/0x170 [xe]
+	 xe_display_fini+0x1e/0x40 [xe]
+
+Because the devres group corresponding to the hdcp component cannot be
+found. Just ignore this corner case: if the dev->devres_head is empty
+and the caller is trying to remove a group, it's likely in the process
+of device cleanup so just ignore it instead of warning.
+
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250222001051.3012936-2-lucas.demarchi@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/base/devres.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index 6f6c47bd57eaa..ffecc712be003 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -552,7 +552,7 @@ static void pidff_set_gain_report(struct pidff_device *pidff, u16 gain)
- /*
-  * Clear device control report
-  */
--static void pidff_send_device_control(struct pidff_device *pidff, int field)
-+static void pidff_set_device_control(struct pidff_device *pidff, int field)
- {
- 	int i, tmp;
- 	int field_index = pidff->control_id[field];
-@@ -578,10 +578,10 @@ static void pidff_send_device_control(struct pidff_device *pidff, int field)
- /*
-  * Modify actuators state
-  */
--static void pidff_modify_actuators_state(struct pidff_device *pidff, bool enable)
-+static void pidff_set_actuators(struct pidff_device *pidff, bool enable)
- {
- 	hid_dbg(pidff->hid, "%s actuators\n", enable ? "Enable" : "Disable");
--	pidff_send_device_control(pidff,
-+	pidff_set_device_control(pidff,
- 		enable ? PID_ENABLE_ACTUATORS : PID_DISABLE_ACTUATORS);
- }
+diff --git a/drivers/base/devres.c b/drivers/base/devres.c
+index 2152eec0c1352..68224f2f83fff 100644
+--- a/drivers/base/devres.c
++++ b/drivers/base/devres.c
+@@ -687,6 +687,13 @@ int devres_release_group(struct device *dev, void *id)
+ 		spin_unlock_irqrestore(&dev->devres_lock, flags);
  
-@@ -591,12 +591,12 @@ static void pidff_modify_actuators_state(struct pidff_device *pidff, bool enable
- static void pidff_reset(struct pidff_device *pidff)
- {
- 	/* We reset twice as sometimes hid_wait_io isn't waiting long enough */
--	pidff_send_device_control(pidff, PID_RESET);
--	pidff_send_device_control(pidff, PID_RESET);
-+	pidff_set_device_control(pidff, PID_RESET);
-+	pidff_set_device_control(pidff, PID_RESET);
- 	pidff->effect_count = 0;
- 
--	pidff_send_device_control(pidff, PID_STOP_ALL_EFFECTS);
--	pidff_modify_actuators_state(pidff, 1);
-+	pidff_set_device_control(pidff, PID_STOP_ALL_EFFECTS);
-+	pidff_set_actuators(pidff, 1);
- }
- 
- /*
+ 		release_nodes(dev, &todo);
++	} else if (list_empty(&dev->devres_head)) {
++		/*
++		 * dev is probably dying via devres_release_all(): groups
++		 * have already been removed and are on the process of
++		 * being released - don't touch and don't warn.
++		 */
++		spin_unlock_irqrestore(&dev->devres_lock, flags);
+ 	} else {
+ 		WARN_ON(1);
+ 		spin_unlock_irqrestore(&dev->devres_lock, flags);
 -- 
 2.39.5
 
