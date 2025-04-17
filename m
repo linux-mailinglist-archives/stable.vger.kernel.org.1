@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-134115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63616A92968
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4AD5A92726
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:20:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B15C4A446F
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:41:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9A634A1935
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:20:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBFC625F78D;
-	Thu, 17 Apr 2025 18:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 459B82550C2;
+	Thu, 17 Apr 2025 18:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3RTUWda"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vU0XzhxZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B8C25F785;
-	Thu, 17 Apr 2025 18:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0449F1A3178;
+	Thu, 17 Apr 2025 18:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915141; cv=none; b=VQXywmOjYRzovljOwEkfqPggqHOI80QkSydUAn0itAF/1JCKKVuTZgzroofcCQbNuDDV+67CSPjskVj5mZVpnz+blYZQL3DOW8deymuzdbTmsjZPmVoLieJj/n5VNudP3IMfraFC8EjNUfw7cWtFG/CW5xggUKTtE+JpWBQNOkA=
+	t=1744914016; cv=none; b=MZZ9DqnZpmjdLbgga/HxPDKBJjumXVQt4XI4kUSsKDSyakKFHF2P3TvC+MHgijbnYRjTGWRmCQCr2JG7AXCcnmqnZol9EaAR6/+1WteLvvc0pIURDiSNCPKQ0uFFHDBbAUDDN6JkWemAYwTqzHbyDHfH/nvLKjD84fvm9RZ0QWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915141; c=relaxed/simple;
-	bh=6UHw0PuPEAPreJLm6QLmNiZqFRJ2P9HLbJOGWh7qp/0=;
+	s=arc-20240116; t=1744914016; c=relaxed/simple;
+	bh=RWVfGPqwDgwYkQU4z0SoDl92h3LM8bj0rxLjXMUN0yc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qF0bC3OWTGlwG+bTObcsm6H951FGd/T3peqQap7n/deiUltOdZKWUiqlOT+PF0MvCxa9mWN0Who6zz4BDkjAEoGVeHMQ+FG4hSOOGL0v0eEYfau0347kx2SCEpSd+0GGuCBp951ZxDnC1hZ5lnW/IueYLAs/Hh6OdRVaYfyl/pQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3RTUWda; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D770CC4CEE4;
-	Thu, 17 Apr 2025 18:39:00 +0000 (UTC)
+	 MIME-Version; b=QHaQkTBLmTA8ImQPneXFHnjGWYqDMdVeizy9vC7NYL0a0UsJce8mLl95OyBLYoDT26PF3JrbbBRUEMPOCKCXAMdSvdtc3+Bx9snZqdIKTNU8vbQQQ3IEepIThg/Zcg3bcwyHFr7ZutJyxT6mqckPwn/PVxH/d8yVK2HhAKF5RLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vU0XzhxZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 887C0C4CEE4;
+	Thu, 17 Apr 2025 18:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915141;
-	bh=6UHw0PuPEAPreJLm6QLmNiZqFRJ2P9HLbJOGWh7qp/0=;
+	s=korg; t=1744914015;
+	bh=RWVfGPqwDgwYkQU4z0SoDl92h3LM8bj0rxLjXMUN0yc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G3RTUWdav0Qjnl1m5TovozZvUpwj2wbeSNRtlYqYCnD7N8qY0GiTerAJ5NRIIiyQw
-	 FoekJW+C0gs2VEp9VzXVsRyeyhyhDuDlLgViKAd8BOwz+FS/I95vuUqGehYcy39QqN
-	 uXUC/dVob8umPHqWx369ZwuTturt5UL2QBblStRg=
+	b=vU0XzhxZV4IMddJFbK4xdYeYrRcSkXRczvb508MLyd35lgdTGrH4c7f8VVqgZr8S1
+	 bfB3AnmIOCD0HAcX3r2+JE0lnaF6xwfJjR1CD1MKM59FZFgZOg/vCzQDJrEx5pzbzd
+	 FRKFxhoaS1orZBymkZtpLCygLxPyNA58wCgwthTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Maxime Ripard <mripard@kernel.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 024/393] drm/tests: helpers: Create kunit helper to destroy a drm_display_mode
-Date: Thu, 17 Apr 2025 19:47:13 +0200
-Message-ID: <20250417175108.563109293@linuxfoundation.org>
+Subject: [PATCH 6.13 076/414] media: uvcvideo: Add quirk for Actions UVC05
+Date: Thu, 17 Apr 2025 19:47:14 +0200
+Message-ID: <20250417175114.502430292@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Ripard <mripard@kernel.org>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 13c1d5f3a7fa7b55a26e73bb9e95342374a489b2 ]
+[ Upstream commit 8c54e58f94ed3ff28643aefd2c0c2c98313ee770 ]
 
-A number of test suites call functions that expect the returned
-drm_display_mode to be destroyed eventually.
+Actions UVC05 is a HDMI to USB dongle that implements the UVC protocol.
 
-However, none of the tests called drm_mode_destroy, which results in a
-memory leak.
+When the device suspends, its firmware seems to enter a weird mode when it
+does not produce more frames.
 
-Since drm_mode_destroy takes two pointers as argument, we can't use a
-kunit wrapper. Let's just create a helper every test suite can use.
+Add the device to the quirk list to disable autosuspend.
 
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://lore.kernel.org/r/20250408-drm-kunit-drm-display-mode-memleak-v1-1-996305a2e75a@kernel.org
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Stable-dep-of: 70f29ca3117a ("drm/tests: cmdline: Fix drm_display_mode memory leak")
+Bus 001 Device 007: ID 1de1:f105 Actions Microelectronics Co. Display
+ capture-UVC05
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.00
+  bDeviceClass          239 Miscellaneous Device
+  bDeviceSubClass         2 [unknown]
+  bDeviceProtocol         1 Interface Association
+  bMaxPacketSize0        64
+  idVendor           0x1de1 Actions Microelectronics Co.
+  idProduct          0xf105 Display capture-UVC05
+  bcdDevice            4.09
+  iManufacturer           1 Actions Micro
+  iProduct                2 Display capture-UVC05
+  iSerial                 3 -1005308387
+  bNumConfigurations      1
+
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20241210-uvc-hdmi-suspend-v1-1-01f5dec023ea@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tests/drm_kunit_helpers.c | 22 ++++++++++++++++++++++
- include/drm/drm_kunit_helpers.h           |  3 +++
- 2 files changed, 25 insertions(+)
+ drivers/media/usb/uvc/uvc_driver.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/gpu/drm/tests/drm_kunit_helpers.c b/drivers/gpu/drm/tests/drm_kunit_helpers.c
-index 3c0b7824c0be3..922c4b6ed1dc9 100644
---- a/drivers/gpu/drm/tests/drm_kunit_helpers.c
-+++ b/drivers/gpu/drm/tests/drm_kunit_helpers.c
-@@ -319,6 +319,28 @@ static void kunit_action_drm_mode_destroy(void *ptr)
- 	drm_mode_destroy(NULL, mode);
- }
- 
-+/**
-+ * drm_kunit_add_mode_destroy_action() - Add a drm_destroy_mode kunit action
-+ * @test: The test context object
-+ * @mode: The drm_display_mode to destroy eventually
-+ *
-+ * Registers a kunit action that will destroy the drm_display_mode at
-+ * the end of the test.
-+ *
-+ * If an error occurs, the drm_display_mode will be destroyed.
-+ *
-+ * Returns:
-+ * 0 on success, an error code otherwise.
-+ */
-+int drm_kunit_add_mode_destroy_action(struct kunit *test,
-+				      struct drm_display_mode *mode)
-+{
-+	return kunit_add_action_or_reset(test,
-+					 kunit_action_drm_mode_destroy,
-+					 mode);
-+}
-+EXPORT_SYMBOL_GPL(drm_kunit_add_mode_destroy_action);
-+
- /**
-  * drm_kunit_display_mode_from_cea_vic() - return a mode for CEA VIC for a KUnit test
-  * @test: The test context object
-diff --git a/include/drm/drm_kunit_helpers.h b/include/drm/drm_kunit_helpers.h
-index afdd46ef04f70..c835f113055dc 100644
---- a/include/drm/drm_kunit_helpers.h
-+++ b/include/drm/drm_kunit_helpers.h
-@@ -120,6 +120,9 @@ drm_kunit_helper_create_crtc(struct kunit *test,
- 			     const struct drm_crtc_funcs *funcs,
- 			     const struct drm_crtc_helper_funcs *helper_funcs);
- 
-+int drm_kunit_add_mode_destroy_action(struct kunit *test,
-+				      struct drm_display_mode *mode);
-+
- struct drm_display_mode *
- drm_kunit_display_mode_from_cea_vic(struct kunit *test, struct drm_device *dev,
- 				    u8 video_code);
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index 011a14506ea0b..396a04542c045 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -3030,6 +3030,15 @@ static const struct usb_device_id uvc_ids[] = {
+ 	  .bInterfaceProtocol	= 0,
+ 	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_PROBE_MINMAX
+ 					| UVC_QUIRK_IGNORE_SELECTOR_UNIT) },
++	/* Actions Microelectronics Co. Display capture-UVC05 */
++	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
++				| USB_DEVICE_ID_MATCH_INT_INFO,
++	  .idVendor		= 0x1de1,
++	  .idProduct		= 0xf105,
++	  .bInterfaceClass	= USB_CLASS_VIDEO,
++	  .bInterfaceSubClass	= 1,
++	  .bInterfaceProtocol	= 0,
++	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_DISABLE_AUTOSUSPEND) },
+ 	/* NXP Semiconductors IR VIDEO */
+ 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
+ 				| USB_DEVICE_ID_MATCH_INT_INFO,
 -- 
 2.39.5
 
