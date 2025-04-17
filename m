@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-133922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA8CA928AA
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64AA1A9264B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:12:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A3B33A7D55
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:35:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 154714A0686
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:12:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D967D25744F;
-	Thu, 17 Apr 2025 18:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7B21A3178;
+	Thu, 17 Apr 2025 18:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tQfidMdv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hjPQskeP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975461D07BA;
-	Thu, 17 Apr 2025 18:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CACB22E3E6;
+	Thu, 17 Apr 2025 18:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914553; cv=none; b=RSAh/cyWA+mtp+YNM6eWF+H3ssfTNyyxCMwVlslF8x0QQSjB3+ZSkeWTK06OLtQUQbW9ema17/xhlifatmLWovJmN5MsCQZULmjxFBq9GNiM4GhEvoV3kBaCVxSr9F+4SWYvnupZe38DuzVB7vONSRpMxaARfkpzu+YGwraJm04=
+	t=1744913511; cv=none; b=W07y6isY/g7uTSheCpnIKRHBVToMlaLVZ5+9dxdGNoN94Crk52uhSY4YwC+6RKIn1APTwe5BI1cA0MKHMhlT2O4UwLah3SVm62NfKPb3l3tWJgbbDLGK4FyHO21xgSnAZRlaDyWnrnbNK3QAMdGRxK8D0hv7WDQI+2+95g8d1rI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914553; c=relaxed/simple;
-	bh=mBPfHKW2h2kvUAJja9iteFStmOAh4WORV8SqQ1gSPfw=;
+	s=arc-20240116; t=1744913511; c=relaxed/simple;
+	bh=n/Pj6BqKqC9H26N+N3NM69au0AaGZULHQQCG0ixqbAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/YjeOxhZEKuY1HeLrwcUibepcvFrVlJAlHxqMSQgxB3d9puOfHPdGi4vKHJ5N3L4GLxn0rdP7F6qJVh/JNypZN4G5Eos4GJT4pbXHujz7spwEOYl8cFftSMIBAbUi2fAk3pyzAp7/njILcvJbX9mHG6By9RlIqkEWY6ebr3s9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tQfidMdv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05A8CC4CEE4;
-	Thu, 17 Apr 2025 18:29:12 +0000 (UTC)
+	 MIME-Version; b=u8ksgoPSJyw3Ey6W2IZNnYDSHdAJu774EcXj+f8+DXRx8idG8kG6bzpZQfFuRrN0bnXiZdlQ/1k5hMse8CQXDk0FC2ongqmJNXJIgWORtaSKrK4DqY/zN+x0SioN2+w7se1g7jI2/xBxLLpbgIo8ACrSNQcO6V1q1O8SucwpxOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hjPQskeP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53FD0C4CEE4;
+	Thu, 17 Apr 2025 18:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914553;
-	bh=mBPfHKW2h2kvUAJja9iteFStmOAh4WORV8SqQ1gSPfw=;
+	s=korg; t=1744913510;
+	bh=n/Pj6BqKqC9H26N+N3NM69au0AaGZULHQQCG0ixqbAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tQfidMdv5JG1Hp/9jC1tkT1sw7eFBPGp1WobARbwh4MY9TRWkL1rsQZvLhW36Khbb
-	 VqXm0y1CQtoQmUXowNtxR3pyPqWm0lRBGac8+Ccl2TKSyPUbAMNjZ/qelq5Hpbc8Xz
-	 rPvpNeId6h5RGb2glBlnmva+Dnbt8BzBh+JbzkT8=
+	b=hjPQskePuUxoG5BR632tCNTSaLr8z1nOkPvAfaX9E3DiWePJs5qJMiRY3ylIFr232
+	 rXbC6waaaC5lyYaeSAVWChN0eGoZOrYWAwxJKhUkCYau0wLVjwxdY9EKqmqU3Svo3f
+	 v5LNe46oeCMFjPQ9+0y01ryWgFwVK26elxnSe6Co=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 6.13 254/414] clocksource/drivers/stm32-lptimer: Use wakeup capable instead of init wakeup
-Date: Thu, 17 Apr 2025 19:50:12 +0200
-Message-ID: <20250417175121.638846574@linuxfoundation.org>
+	Lee Jones <lee@kernel.org>,
+	Chenyuan Yang <chenyuan0y@gmail.com>
+Subject: [PATCH 6.14 325/449] mfd: ene-kb3930: Fix a potential NULL pointer dereference
+Date: Thu, 17 Apr 2025 19:50:13 +0200
+Message-ID: <20250417175131.210408350@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Torgue <alexandre.torgue@foss.st.com>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-commit 96bf4b89a6ab22426ad83ef76e66c72a5a8daca0 upstream.
+commit 4cdf1d2a816a93fa02f7b6b5492dc7f55af2a199 upstream.
 
-"wakeup-source" property describes a device which has wakeup capability
-but should not force this device as a wakeup source.
+The off_gpios could be NULL. Add missing check in the kb3930_probe().
+This is similar to the issue fixed in commit b1ba8bcb2d1f
+("backlight: hx8357: Fix potential NULL pointer dereference").
 
-Fixes: 48b41c5e2de6 ("clocksource: Add Low Power STM32 timers driver")
+This was detected by our static analysis tool.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Rule: add
-Link: https://lore.kernel.org/stable/20250306083407.2374894-1-fabrice.gasnier%40foss.st.com
-Link: https://lore.kernel.org/r/20250306102501.2980153-1-fabrice.gasnier@foss.st.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Fixes: ede6b2d1dfc0 ("mfd: ene-kb3930: Add driver for ENE KB3930 Embedded Controller")
+Suggested-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Link: https://lore.kernel.org/r/20250224233736.1919739-1-chenyuan0y@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clocksource/timer-stm32-lp.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/mfd/ene-kb3930.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/clocksource/timer-stm32-lp.c
-+++ b/drivers/clocksource/timer-stm32-lp.c
-@@ -168,9 +168,7 @@ static int stm32_clkevent_lp_probe(struc
- 	}
- 
- 	if (of_property_read_bool(pdev->dev.parent->of_node, "wakeup-source")) {
--		ret = device_init_wakeup(&pdev->dev, true);
--		if (ret)
--			goto out_clk_disable;
-+		device_set_wakeup_capable(&pdev->dev, true);
- 
- 		ret = dev_pm_set_wake_irq(&pdev->dev, irq);
- 		if (ret)
+--- a/drivers/mfd/ene-kb3930.c
++++ b/drivers/mfd/ene-kb3930.c
+@@ -162,7 +162,7 @@ static int kb3930_probe(struct i2c_clien
+ 			devm_gpiod_get_array_optional(dev, "off", GPIOD_IN);
+ 		if (IS_ERR(ddata->off_gpios))
+ 			return PTR_ERR(ddata->off_gpios);
+-		if (ddata->off_gpios->ndescs < 2) {
++		if (ddata->off_gpios && ddata->off_gpios->ndescs < 2) {
+ 			dev_err(dev, "invalid off-gpios property\n");
+ 			return -EINVAL;
+ 		}
 
 
 
