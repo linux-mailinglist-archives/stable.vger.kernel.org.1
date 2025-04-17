@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-134429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E2FDA92AF1
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F248CA92963
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 023C87B2825
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC5118E2F6C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93F8324169C;
-	Thu, 17 Apr 2025 18:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 079631A3178;
+	Thu, 17 Apr 2025 18:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BDGpcctC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PICiw/bX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF723594D;
-	Thu, 17 Apr 2025 18:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B868118C034;
+	Thu, 17 Apr 2025 18:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916099; cv=none; b=bAgyAWf7A+nmJLNmgt583/8T6BX8lRhTLOFbauu7kds50EBUHYEudyzCPPgz1nl0oQbXisU2n2mi4r3qkZPjHB0wFi2xgRLd4bH8IgP94B/KLnrtI/Uw0Oj0vhub/gczEKKZbZfJptYCnqp64hWKRLprIU12fbnYPz9r4WQywcA=
+	t=1744914978; cv=none; b=algeIW77P4s0mZYC0ymsqyrqlSpYmgui+JM4dSCke58Ewr9Jd/gzoQygkS+ut8apstlMnQimRALVkGbHolDs1zcX/N1kLY4vBKA01lIhdLGDyoyVqphmsqRzkA1AfZ1iDcT6pc6IyubmIE8250ZVM9vMtZ8ASLdnJT0Mik7WU6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916099; c=relaxed/simple;
-	bh=p9SZJLBu/G1uHNLVsMtaNvIFkSp3wdza3jcvjCdUVfk=;
+	s=arc-20240116; t=1744914978; c=relaxed/simple;
+	bh=SoaDQ/QHc1SSgt2tdr1C411B+Z3vJP4UPE6EpLfm92Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hYvv703KVrdP7veF1jEGvOh7iY+JgWImPyq+JnZAuu+j9ZEV9dya1gnKBi451RxXQwDRHClLZ+j4JmswXDwGxCD6l7Y5RnImTrN4sjpXobv93f1G3zQQx2ZD1sBQdtuR5ueT9wlNF2bGjr7uEr7pHQ1OYQKNqBRYwOo8YJzH3MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BDGpcctC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF61FC4CEE7;
-	Thu, 17 Apr 2025 18:54:58 +0000 (UTC)
+	 MIME-Version; b=p8PkPmEguO9eqkSFZx7vlDVSVIpkTtC81XuaDrGonZWxzYWu9wWzAyW4Z6LxcEEYRsMOyEDX927xInCbIclkkVDMXPKIyKTTraCje3EXRsBZ5JDNuGGKYGBdinbC3Vr5ci9Pjx5Z6BUYPYaPxouq5dBU3zD0EP7wjuq7uwPnkgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PICiw/bX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F20C4CEE4;
+	Thu, 17 Apr 2025 18:36:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916099;
-	bh=p9SZJLBu/G1uHNLVsMtaNvIFkSp3wdza3jcvjCdUVfk=;
+	s=korg; t=1744914978;
+	bh=SoaDQ/QHc1SSgt2tdr1C411B+Z3vJP4UPE6EpLfm92Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BDGpcctCnI6wxzvR8GElQ4vqCLRJlTUS5CmXUVzekBy2SL89nhof3Z7rFd4CnUCWp
-	 Npt5BEzE5bm0FxWbRoLPFk7pcQZ1xv5teZKSVknAzpBTaxG2d2tluObzs63ipozAzC
-	 uepJoicfIvql7GOvVgdZFemyKIac0fwOlqHLjveQ=
+	b=PICiw/bXIPAQPBuLlgsNrTn9Z8hqyICoWmm9K0JGkWvnJEkB5mEmfPVQGZmDfeFo/
+	 zyvSD8XOJ3ZliPpv3zcQNsuNtiliudEFMpFUsHvHDmapH0JJsQExJSHFjeIoZGa0vV
+	 Pnq4st8Be2+2eb/jKcRm9WxBCikRy2tcYQGa0v+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.12 342/393] KVM: Allow building irqbypass.ko as as module when kvm.ko is a module
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.13 393/414] ring-buffer: Use flush_kernel_vmap_range() over flush_dcache_folio()
 Date: Thu, 17 Apr 2025 19:52:31 +0200
-Message-ID: <20250417175121.356480502@linuxfoundation.org>
+Message-ID: <20250417175127.296212845@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,102 +69,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 459a35111b0a890172a78d51c01b204e13a34a18 upstream.
+commit e4d4b8670c44cdd22212cab3c576e2d317efa67c upstream.
 
-Convert HAVE_KVM_IRQ_BYPASS into a tristate so that selecting
-IRQ_BYPASS_MANAGER follows KVM={m,y}, i.e. doesn't force irqbypass.ko to
-be built-in.
+Some architectures do not have data cache coherency between user and
+kernel space. For these architectures, the cache needs to be flushed on
+both the kernel and user addresses so that user space can see the updates
+the kernel has made.
 
-Note, PPC allows building KVM as a module, but selects HAVE_KVM_IRQ_BYPASS
-from a boolean Kconfig, i.e. KVM PPC unnecessarily forces irqbpass.ko to
-be built-in.  But that flaw is a longstanding PPC specific issue.
+Instead of using flush_dcache_folio() and playing with virt_to_folio()
+within the call to that function, use flush_kernel_vmap_range() which
+takes the virtual address and does the work for those architectures that
+need it.
 
-Fixes: 61df71ee992d ("kvm: move "select IRQ_BYPASS_MANAGER" to common code")
+This also fixes a bug where the flush of the reader page only flushed one
+page. If the sub-buffer order is 1 or more, where the sub-buffer size
+would be greater than a page, it would miss the rest of the sub-buffer
+content, as the "reader page" is not just a page, but the size of a
+sub-buffer.
+
+Link: https://lore.kernel.org/all/CAG48ez3w0my4Rwttbc5tEbNsme6tc0mrSN95thjXUFaJ3aQ6SA@mail.gmail.com/
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20250315024623.2363994-1-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Vincent Donnefort <vdonnefort@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Mike Rapoport <rppt@kernel.org>
+Link: https://lore.kernel.org/20250402144953.920792197@goodmis.org
+Fixes: 117c39200d9d7 ("ring-buffer: Introducing ring-buffer mapping functions");
+Suggested-by: Jann Horn <jannh@google.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/kvm_host.h |    2 +-
- virt/kvm/Kconfig         |    2 +-
- virt/kvm/eventfd.c       |   10 +++++-----
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ kernel/trace/ring_buffer.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2330,7 +2330,7 @@ static inline bool kvm_is_visible_memslo
- struct kvm_vcpu *kvm_get_running_vcpu(void);
- struct kvm_vcpu * __percpu *kvm_get_running_vcpus(void);
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -5994,7 +5994,7 @@ static void rb_update_meta_page(struct r
+ 	meta->read = cpu_buffer->read;
  
--#ifdef CONFIG_HAVE_KVM_IRQ_BYPASS
-+#if IS_ENABLED(CONFIG_HAVE_KVM_IRQ_BYPASS)
- bool kvm_arch_has_irq_bypass(void);
- int kvm_arch_irq_bypass_add_producer(struct irq_bypass_consumer *,
- 			   struct irq_bypass_producer *);
---- a/virt/kvm/Kconfig
-+++ b/virt/kvm/Kconfig
-@@ -75,7 +75,7 @@ config KVM_COMPAT
-        depends on KVM && COMPAT && !(S390 || ARM64 || RISCV)
- 
- config HAVE_KVM_IRQ_BYPASS
--       bool
-+       tristate
-        select IRQ_BYPASS_MANAGER
- 
- config HAVE_KVM_VCPU_ASYNC_IOCTL
---- a/virt/kvm/eventfd.c
-+++ b/virt/kvm/eventfd.c
-@@ -149,7 +149,7 @@ irqfd_shutdown(struct work_struct *work)
- 	/*
- 	 * It is now safe to release the object's resources
- 	 */
--#ifdef CONFIG_HAVE_KVM_IRQ_BYPASS
-+#if IS_ENABLED(CONFIG_HAVE_KVM_IRQ_BYPASS)
- 	irq_bypass_unregister_consumer(&irqfd->consumer);
- #endif
- 	eventfd_ctx_put(irqfd->eventfd);
-@@ -274,7 +274,7 @@ static void irqfd_update(struct kvm *kvm
- 	write_seqcount_end(&irqfd->irq_entry_sc);
+ 	/* Some archs do not have data cache coherency between kernel and user-space */
+-	flush_dcache_folio(virt_to_folio(cpu_buffer->meta_page));
++	flush_kernel_vmap_range(cpu_buffer->meta_page, PAGE_SIZE);
  }
  
--#ifdef CONFIG_HAVE_KVM_IRQ_BYPASS
-+#if IS_ENABLED(CONFIG_HAVE_KVM_IRQ_BYPASS)
- void __attribute__((weak)) kvm_arch_irq_bypass_stop(
- 				struct irq_bypass_consumer *cons)
- {
-@@ -425,7 +425,7 @@ kvm_irqfd_assign(struct kvm *kvm, struct
- 	if (events & EPOLLIN)
- 		schedule_work(&irqfd->inject);
+ static void
+@@ -7309,7 +7309,8 @@ consume:
  
--#ifdef CONFIG_HAVE_KVM_IRQ_BYPASS
-+#if IS_ENABLED(CONFIG_HAVE_KVM_IRQ_BYPASS)
- 	if (kvm_arch_has_irq_bypass()) {
- 		irqfd->consumer.token = (void *)irqfd->eventfd;
- 		irqfd->consumer.add_producer = kvm_arch_irq_bypass_add_producer;
-@@ -618,14 +618,14 @@ void kvm_irq_routing_update(struct kvm *
- 	spin_lock_irq(&kvm->irqfds.lock);
+ out:
+ 	/* Some archs do not have data cache coherency between kernel and user-space */
+-	flush_dcache_folio(virt_to_folio(cpu_buffer->reader_page->page));
++	flush_kernel_vmap_range(cpu_buffer->reader_page->page,
++				buffer->subbuf_size + BUF_PAGE_HDR_SIZE);
  
- 	list_for_each_entry(irqfd, &kvm->irqfds.items, list) {
--#ifdef CONFIG_HAVE_KVM_IRQ_BYPASS
-+#if IS_ENABLED(CONFIG_HAVE_KVM_IRQ_BYPASS)
- 		/* Under irqfds.lock, so can read irq_entry safely */
- 		struct kvm_kernel_irq_routing_entry old = irqfd->irq_entry;
- #endif
+ 	rb_update_meta_page(cpu_buffer);
  
- 		irqfd_update(kvm, irqfd);
- 
--#ifdef CONFIG_HAVE_KVM_IRQ_BYPASS
-+#if IS_ENABLED(CONFIG_HAVE_KVM_IRQ_BYPASS)
- 		if (irqfd->producer &&
- 		    kvm_arch_irqfd_route_changed(&old, &irqfd->irq_entry)) {
- 			int ret = kvm_arch_update_irqfd_routing(
 
 
 
