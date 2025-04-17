@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-134431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 369E0A92B0C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:56:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3CC9A9292F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:40:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 325351B65816
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:55:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DDE8464F95
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970271DE885;
-	Thu, 17 Apr 2025 18:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B10256C62;
+	Thu, 17 Apr 2025 18:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZPlL8m5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ss7Cz/q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554B71B4153;
-	Thu, 17 Apr 2025 18:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881B025335A;
+	Thu, 17 Apr 2025 18:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916105; cv=none; b=j2n5dOYd1PUp6YZv1M++b03mnSuFrT2xaKWmz5u17W5fWif5sztvHQAnQyBsWALvx6FfZmljdB6WSEfNqmPagLg937DIyOjJ9Jo9hmPPWwKSIUn+PkvH3KW34LZFd43Mi6oyKbkyiPfIjk4P0grH/CkjlJNxgjV5OJwME+azTew=
+	t=1744914984; cv=none; b=jA3/ICgMYbAS8V0/w81XbLT3gx372ltaMRoJ2Z+7kRkuMblVS4NjHX+VppQ+dWKc5H45NxYRT9e0Pt24K/kUljqIWmuuu8s+ZXuIsGYDIFxfyFGV0QjZ1w8FwmwjuFLCCp72bb2XijV5zrIB61M1cfGgRLzj8a0QnL/tjMfiLPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916105; c=relaxed/simple;
-	bh=RpnTUqq+Xe6cs78fR7krYws5UQ7Zg54rFpVTJfptdYs=;
+	s=arc-20240116; t=1744914984; c=relaxed/simple;
+	bh=4kXbmBSMwLIlopyVovuPKvkl6amXY+1yQiv8TvmexiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d9oYdbK0xPwoAAUgRtISTulWrqMmY0OY0jj/9QpQ3GgoYsjtnvxtaiHoshz3OzyhCOE0FBs/Zd8PsS1itA90wB7/3aOQxXchD9PTTbgtugUsfcN7Zj+otQS2E6/SrRbg5DogICbYrOpEAdu6tWjvtPqNZfGDyvZRbtj9BahsqqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZPlL8m5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE6C8C4CEE4;
-	Thu, 17 Apr 2025 18:55:04 +0000 (UTC)
+	 MIME-Version; b=hrzrnM5hFMAQ0Kooq//fUfAAJL/bI/iksMsLAmO4cXuWVQsYH6xrkdM9E+mbIoH1XKW8+c0kKAcAqtUGnPeaiqK73YjV4HUSubzC4OSYGE1iGnNLx1HC62/GTuVAkpS9eCyzl1b+w9qmllvqOp77KQaXr0fwI4Jnh5ItEqE9yME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ss7Cz/q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1791CC4CEE4;
+	Thu, 17 Apr 2025 18:36:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916105;
-	bh=RpnTUqq+Xe6cs78fR7krYws5UQ7Zg54rFpVTJfptdYs=;
+	s=korg; t=1744914984;
+	bh=4kXbmBSMwLIlopyVovuPKvkl6amXY+1yQiv8TvmexiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nZPlL8m55OJF8Q/jlohzXBzOXaJPhHG50Nmgzy5EYy3dbGN/Ff11q+9TjG8Y6l7hi
-	 Hqd+8JQRqa+Pw4fbOB+bV62BeSDEJnn+bug3LOTGdLXQ/SiNx2ziGBrmn3N3RbgV/k
-	 DVlmR77kiavQcnRqQ/s2Bq5xWQbDTA7pKPVx4k20=
+	b=2ss7Cz/qTYHudgf6+S/ahIKLprIOQ+88ZuJHWLzIgz2XqL7CPjaTGPvR7G3MYEslz
+	 KOx5WqinBH+9o8i6CkWnS7l37omsdkYNGT7igJ4dJ6iIk1MSQ8XyMRwwTBa7j4nC5E
+	 KNyMq9o9pDnJ8lfome0/pC6+03i12XT/21ZLSN14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Jim Mattson <jmattson@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.12 344/393] KVM: x86: Explicitly zero-initialize on-stack CPUID unions
+	Chandra Merla <cmerla@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Thomas Huth <thuth@redhat.com>,
+	Cornelia Huck <cohuck@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 6.13 395/414] s390/virtio_ccw: Dont allocate/assign airqs for non-existing queues
 Date: Thu, 17 Apr 2025 19:52:33 +0200
-Message-ID: <20250417175121.436940749@linuxfoundation.org>
+Message-ID: <20250417175127.373159596@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +66,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: David Hildenbrand <david@redhat.com>
 
-commit bc52ae0a708cb6fa3926d11c88e3c55e1171b4a1 upstream.
+commit 2ccd42b959aaf490333dbd3b9b102eaf295c036a upstream.
 
-Explicitly zero/empty-initialize the unions used for PMU related CPUID
-entries, instead of manually zeroing all fields (hopefully), or in the
-case of 0x80000022, relying on the compiler to clobber the uninitialized
-bitfields.
+If we finds a vq without a name in our input array in
+virtio_ccw_find_vqs(), we treat it as "non-existing" and set the vq pointer
+to NULL; we will not call virtio_ccw_setup_vq() to allocate/setup a vq.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Jim Mattson <jmattson@google.com>
-Message-ID: <20250315024102.2361628-1-seanjc@google.com>
+Consequently, we create only a queue if it actually exists (name != NULL)
+and assign an incremental queue index to each such existing queue.
+
+However, in virtio_ccw_register_adapter_ind()->get_airq_indicator() we
+will not ignore these "non-existing queues", but instead assign an airq
+indicator to them.
+
+Besides never releasing them in virtio_ccw_drop_indicators() (because
+there is no virtqueue), the bigger issue seems to be that there will be a
+disagreement between the device and the Linux guest about the airq
+indicator to be used for notifying a queue, because the indicator bit
+for adapter I/O interrupt is derived from the queue index.
+
+The virtio spec states under "Setting Up Two-Stage Queue Indicators":
+
+	... indicator contains the guest address of an area wherein the
+	indicators for the devices are contained, starting at bit_nr, one
+	bit per virtqueue of the device.
+
+And further in "Notification via Adapter I/O Interrupts":
+
+	For notifying the driver of virtqueue buffers, the device sets the
+	bit in the guest-provided indicator area at the corresponding
+	offset.
+
+For example, QEMU uses in virtio_ccw_notify() the queue index (passed as
+"vector") to select the relevant indicator bit. If a queue does not exist,
+it does not have a corresponding indicator bit assigned, because it
+effectively doesn't have a queue index.
+
+Using a virtio-balloon-ccw device under QEMU with free-page-hinting
+disabled ("free-page-hint=off") but free-page-reporting enabled
+("free-page-reporting=on") will result in free page reporting
+not working as expected: in the virtio_balloon driver, we'll be stuck
+forever in virtballoon_free_page_report()->wait_event(), because the
+waitqueue will not be woken up as the notification from the device is
+lost: it would use the wrong indicator bit.
+
+Free page reporting stops working and we get splats (when configured to
+detect hung wqs) like:
+
+ INFO: task kworker/1:3:463 blocked for more than 61 seconds.
+       Not tainted 6.14.0 #4
+ "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+ task:kworker/1:3 [...]
+ Workqueue: events page_reporting_process
+ Call Trace:
+  [<000002f404e6dfb2>] __schedule+0x402/0x1640
+  [<000002f404e6f22e>] schedule+0x3e/0xe0
+  [<000002f3846a88fa>] virtballoon_free_page_report+0xaa/0x110 [virtio_balloon]
+  [<000002f40435c8a4>] page_reporting_process+0x2e4/0x740
+  [<000002f403fd3ee2>] process_one_work+0x1c2/0x400
+  [<000002f403fd4b96>] worker_thread+0x296/0x420
+  [<000002f403fe10b4>] kthread+0x124/0x290
+  [<000002f403f4e0dc>] __ret_from_fork+0x3c/0x60
+  [<000002f404e77272>] ret_from_fork+0xa/0x38
+
+There was recently a discussion [1] whether the "holes" should be
+treated differently again, effectively assigning also non-existing
+queues a queue index: that should also fix the issue, but requires other
+workarounds to not break existing setups.
+
+Let's fix it without affecting existing setups for now by properly ignoring
+the non-existing queues, so the indicator bits will match the queue
+indexes.
+
+[1] https://lore.kernel.org/all/cover.1720611677.git.mst@redhat.com/
+
+Fixes: a229989d975e ("virtio: don't allocate vqs when names[i] = NULL")
+Reported-by: Chandra Merla <cmerla@redhat.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Cornelia Huck <cohuck@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250402203621.940090-1-david@redhat.com
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/cpuid.c |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/s390/virtio/virtio_ccw.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -1047,8 +1047,8 @@ static inline int __do_cpuid_func(struct
+--- a/drivers/s390/virtio/virtio_ccw.c
++++ b/drivers/s390/virtio/virtio_ccw.c
+@@ -302,11 +302,17 @@ static struct airq_info *new_airq_info(i
+ static unsigned long *get_airq_indicator(struct virtqueue *vqs[], int nvqs,
+ 					 u64 *first, void **airq_info)
+ {
+-	int i, j;
++	int i, j, queue_idx, highest_queue_idx = -1;
+ 	struct airq_info *info;
+ 	unsigned long *indicator_addr = NULL;
+ 	unsigned long bit, flags;
+ 
++	/* Array entries without an actual queue pointer must be ignored. */
++	for (i = 0; i < nvqs; i++) {
++		if (vqs[i])
++			highest_queue_idx++;
++	}
++
+ 	for (i = 0; i < MAX_AIRQ_AREAS && !indicator_addr; i++) {
+ 		mutex_lock(&airq_areas_lock);
+ 		if (!airq_areas[i])
+@@ -316,7 +322,7 @@ static unsigned long *get_airq_indicator
+ 		if (!info)
+ 			return NULL;
+ 		write_lock_irqsave(&info->lock, flags);
+-		bit = airq_iv_alloc(info->aiv, nvqs);
++		bit = airq_iv_alloc(info->aiv, highest_queue_idx + 1);
+ 		if (bit == -1UL) {
+ 			/* Not enough vacancies. */
+ 			write_unlock_irqrestore(&info->lock, flags);
+@@ -325,8 +331,10 @@ static unsigned long *get_airq_indicator
+ 		*first = bit;
+ 		*airq_info = info;
+ 		indicator_addr = info->aiv->vector;
+-		for (j = 0; j < nvqs; j++) {
+-			airq_iv_set_ptr(info->aiv, bit + j,
++		for (j = 0, queue_idx = 0; j < nvqs; j++) {
++			if (!vqs[j])
++				continue;
++			airq_iv_set_ptr(info->aiv, bit + queue_idx++,
+ 					(unsigned long)vqs[j]);
  		}
- 		break;
- 	case 0xa: { /* Architectural Performance Monitoring */
--		union cpuid10_eax eax;
--		union cpuid10_edx edx;
-+		union cpuid10_eax eax = { };
-+		union cpuid10_edx edx = { };
- 
- 		if (!enable_pmu || !static_cpu_has(X86_FEATURE_ARCH_PERFMON)) {
- 			entry->eax = entry->ebx = entry->ecx = entry->edx = 0;
-@@ -1064,8 +1064,6 @@ static inline int __do_cpuid_func(struct
- 
- 		if (kvm_pmu_cap.version)
- 			edx.split.anythread_deprecated = 1;
--		edx.split.reserved1 = 0;
--		edx.split.reserved2 = 0;
- 
- 		entry->eax = eax.full;
- 		entry->ebx = kvm_pmu_cap.events_mask;
-@@ -1383,7 +1381,7 @@ static inline int __do_cpuid_func(struct
- 		break;
- 	/* AMD Extended Performance Monitoring and Debug */
- 	case 0x80000022: {
--		union cpuid_0x80000022_ebx ebx;
-+		union cpuid_0x80000022_ebx ebx = { };
- 
- 		entry->ecx = entry->edx = 0;
- 		if (!enable_pmu || !kvm_cpu_cap_has(X86_FEATURE_PERFMON_V2)) {
+ 		write_unlock_irqrestore(&info->lock, flags);
 
 
 
