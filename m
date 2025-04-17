@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-134369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F151A92B02
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:56:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 227DDA928E5
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:38:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 970CD3A5766
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:53:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E4AC1B61BAD
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A230025EFB6;
-	Thu, 17 Apr 2025 18:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E40D263F22;
+	Thu, 17 Apr 2025 18:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofmS71Jr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jhcU8FUH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F02E257449;
-	Thu, 17 Apr 2025 18:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE292638A1;
+	Thu, 17 Apr 2025 18:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915919; cv=none; b=cYcBMsqSeiYIxKHBZmSdqruSFzuEWBFDOp8Vd3cIIKz7FXY48RCR4VE9LykCDIYhO25XWjebSrTwaxzlCvg/4sPkkdDEjd0eAE25+xm+ROJI6L7fq48sAbx9SgWAKnMKGR0RdTWiEK3NAhD2y6NnN3BQHIlrcS8FNUbGXIHwOJM=
+	t=1744914797; cv=none; b=uPCF1F3FIFS57wh+t7MiWaXwcCToGpvMTmdznCZw3l7mL3XqOro+ggT2fCSXHKu5k1zL4dZRVCLpHOESnv1+EgQrxJhaKn2keohTxVt2CsMW7z3hd7W/wcGQx9YxjVBAq4MqIWQGnW/pkLfCeh6N7ghaNiGkZCjfT7y2nU8KDkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915919; c=relaxed/simple;
-	bh=0d2ApT0JIAqwISTV5jJ+RgrZRbkAojXaTS2ImQitPMw=;
+	s=arc-20240116; t=1744914797; c=relaxed/simple;
+	bh=51FfL0q6TVRbBU9VcGEMoeR8/mbivhAoueQVE8Guhr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uot2SbNA9nx3eWAstqEZXrTVHVMlN7vInfNqOHMMUQ8m+jHj871phIHuqJfay1DqQt/9HXS0QFZx7LvMNRsFkdhOsVd6IYCAYZK5LXIHg69hH5nJyG+VUBCy0HVRAMWwWLY5nH+wFsAKay14KT3s/2NLBe7DT9bRyhize2w+yrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofmS71Jr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA20AC4CEE4;
-	Thu, 17 Apr 2025 18:51:58 +0000 (UTC)
+	 MIME-Version; b=uoppBIsRsduJqv4roeFRIyXA2qz2iS+vaC3irH+NJTeCQo8bpBkEK6PlFx+qqiRRw6BvJOb+CfuaqMq+Ov2eh+aqPz+6zRbYYFHdaJP4U9EWtyuMLmCeywwZOZxTMh5R8YTI7pBI9BMsucNtULmWsAz9yOH/RQ5Z0AtdtSOGHAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jhcU8FUH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63989C4CEE4;
+	Thu, 17 Apr 2025 18:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915919;
-	bh=0d2ApT0JIAqwISTV5jJ+RgrZRbkAojXaTS2ImQitPMw=;
+	s=korg; t=1744914796;
+	bh=51FfL0q6TVRbBU9VcGEMoeR8/mbivhAoueQVE8Guhr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ofmS71JryIrsBTOLYxX64vq9aKcZH8H3SfePw65CdtwFaKGVMm8QO699ETGXicDpu
-	 sQVWLmb0LV4p3JZqgSdqSteSCC4WN+hh45k/8zLaI2iwhBLlClZFBfWHEcV1NYge8h
-	 zvAfRM9YjQRvC23c8saEmUKiLcuW538eLisgjGA4=
+	b=jhcU8FUHUVPtnVwYNc12S3iH/44BD0AepA8ybyR9DTn8+1DWUw8h6gks5uKGRwwjI
+	 XlJk5Ju11r3XpiBVcflOGXyreEaChD7zjzAz6gRHGpvzDSdpSLhZPDhGAv+0QcMgRt
+	 BkpMHAitQ4ejRhaHemxsEXlWKidkazfqNzcExcCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.12 282/393] mtd: inftlcore: Add error check for inftl_read_oob()
+	Marc Herbert <Marc.Herbert@linux.intel.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.13 333/414] mm/hugetlb: move hugetlb_sysctl_init() to the __init section
 Date: Thu, 17 Apr 2025 19:51:31 +0200
-Message-ID: <20250417175118.948640223@linuxfoundation.org>
+Message-ID: <20250417175124.826801322@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Marc Herbert <Marc.Herbert@linux.intel.com>
 
-commit d027951dc85cb2e15924c980dc22a6754d100c7c upstream.
+commit 1ca77ff1837249701053a7fcbdedabc41f4ae67c upstream.
 
-In INFTL_findwriteunit(), the return value of inftl_read_oob()
-need to be checked. A proper implementation can be
-found in INFTL_deleteblock(). The status will be set as
-SECTOR_IGNORE to break from the while-loop correctly
-if the inftl_read_oob() fails.
+hugetlb_sysctl_init() is only invoked once by an __init function and is
+merely a wrapper around another __init function so there is not reason to
+keep it.
 
-Fixes: 8593fbc68b0d ("[MTD] Rework the out of band handling completely")
-Cc: stable@vger.kernel.org # v2.6+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes the following warning when toning down some GCC inline options:
+
+ WARNING: modpost: vmlinux: section mismatch in reference:
+   hugetlb_sysctl_init+0x1b (section: .text) ->
+     __register_sysctl_init (section: .init.text)
+
+Link: https://lkml.kernel.org/r/20250319060041.2737320-1-marc.herbert@linux.intel.com
+Signed-off-by: Marc Herbert <Marc.Herbert@linux.intel.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/inftlcore.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ mm/hugetlb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mtd/inftlcore.c
-+++ b/drivers/mtd/inftlcore.c
-@@ -482,10 +482,11 @@ static inline u16 INFTL_findwriteunit(st
- 		silly = MAX_LOOPS;
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -4870,7 +4870,7 @@ static struct ctl_table hugetlb_table[]
+ 	},
+ };
  
- 		while (thisEUN <= inftl->lastEUN) {
--			inftl_read_oob(mtd, (thisEUN * inftl->EraseSize) +
--				       blockofs, 8, &retlen, (char *)&bci);
--
--			status = bci.Status | bci.Status1;
-+			if (inftl_read_oob(mtd, (thisEUN * inftl->EraseSize) +
-+				       blockofs, 8, &retlen, (char *)&bci) < 0)
-+				status = SECTOR_IGNORE;
-+			else
-+				status = bci.Status | bci.Status1;
- 			pr_debug("INFTL: status of block %d in EUN %d is %x\n",
- 					block , writeEUN, status);
- 
+-static void hugetlb_sysctl_init(void)
++static void __init hugetlb_sysctl_init(void)
+ {
+ 	register_sysctl_init("vm", hugetlb_table);
+ }
 
 
 
