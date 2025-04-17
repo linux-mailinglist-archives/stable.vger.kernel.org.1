@@ -1,160 +1,123 @@
-Return-Path: <stable+bounces-133094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21611A91CC8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 14:48:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18CC1A91CB3
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 14:46:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 647C8462636
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 12:48:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD60E19E6047
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 12:46:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F78C35979;
-	Thu, 17 Apr 2025 12:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B08917C91;
+	Thu, 17 Apr 2025 12:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qtmlabs.xyz header.i=@qtmlabs.xyz header.b="YneX+Xyo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EvmB1vFd"
 X-Original-To: stable@vger.kernel.org
-Received: from s1.g1.infrastructure.qtmlabs.xyz (s1.g1.infrastructure.qtmlabs.xyz [107.172.1.117])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C3228E37
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 12:47:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=107.172.1.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44BE360;
+	Thu, 17 Apr 2025 12:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744894072; cv=none; b=Kk954lpJRPzOFHyBTU04YzrnnBnxYAF79bMA0wUVzSSPST1VMAGiwGI0et5rzgdGd064cK9EymWJ3vqqagF6APxVrFafkUT8+fDhU+UGndIMzR3ffm5uxbNh7GsAwW6SpVVJd+MxJ0Wuc4KE3Bs62uNEWpI/EhuGccEB1LRa+gY=
+	t=1744893942; cv=none; b=t30a9qZkoZ0KgmPpvY8Do7dlA3USXWx0NvFzUiqSPdaW68BVBHbMiejioRMezWWHT+Axqxr5b3mo358YW5O/KQeCKUhNmGokDNN7DP9usHFHCDj7bx3TegFmU0p6cegdgweijwRncGqbwv6xRt0gZgE+de0b4sgGKwuGfgjHq04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744894072; c=relaxed/simple;
-	bh=G3aYCHsVKXOLz+3F+oP2LS8nGv7aYIzvFMc98SSh7Vo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KAYQ9fmEWh+PH0zgNzwCFvX7MmCnTTUJkCg33+wyGVDU6W9RJF1OR9W3PYRemPqohvtbLA48hPxlY3xpWaoeFQz8r27mU64xtweHXzfmqbK1e8PRygJnhR6lpxw0f5LfOD3qWmVLQkQbcEE3lvG2K8VNor1JRRn943kjYGQQFfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=qtmlabs.xyz; spf=pass smtp.mailfrom=qtmlabs.xyz; dkim=pass (2048-bit key) header.d=qtmlabs.xyz header.i=@qtmlabs.xyz header.b=YneX+Xyo; arc=none smtp.client-ip=107.172.1.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=qtmlabs.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qtmlabs.xyz
-From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qtmlabs.xyz; s=dkim;
-	t=1744893573;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AKh7N2tREEfzTjXXLXVo0jZBbGiN4XcFHuazM+6ouUc=;
-	b=YneX+XyoOSq8kYn0SBY6nsqne0hRiw7qywZpFKI75VlLyxk+iM6b5nK8lD23nUGyfpdPGk
-	e/hrj6v+JVExAk/efF1Je52/2iLlYiOkY7snZTERjbqInS5Wtoh8bCcJaMTsF4rwf1bQin
-	n/0LNfPmA9G2z0xscEfhqOCL+VcEC7s6zgtSS5sjYS/61r/M7q6Qvn4JvqS6iNe/GtO45M
-	6qAl3eyxPudTI30HXvG+WWyfiYCGlzIcCMi8ZpIvf4o9gR7SeaYKKdfosrs1NFjVrSTeRv
-	GpnEW6UmC7KssE6THgrwIqv8m9VQ/DP6uehjpoyYph0WSwe8TmQXFqOFQmwhdA==
-Authentication-Results: s1.g1.infrastructure.qtmlabs.xyz;
-	auth=pass smtp.mailfrom=myrrhperiwinkle@qtmlabs.xyz
-To: stable@vger.kernel.org
-Cc: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
-	Roberto Ricci <io@r-ricci.it>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Kees Cook <keescook@chromium.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Len Brown <len.brown@intel.com>
-Subject: [PATCH 5.4.y 5.10.y 5.15.y 6.1.y 6.6.y 6.12.y 6.13.y 6.14.y]  x86/e820: Fix handling of subpage regions when calculating nosave ranges in e820__register_nosave_regions()
-Date: Thu, 17 Apr 2025 19:38:49 +0700
-Message-ID: <20250417123848.81215-2-myrrhperiwinkle@qtmlabs.xyz>
-In-Reply-To: <2025041757-drum-wispy-ef78@gregkh>
-References: <2025041757-drum-wispy-ef78@gregkh>
+	s=arc-20240116; t=1744893942; c=relaxed/simple;
+	bh=OcPS0tdl/ORq4rRYL/cBnmzghj9VkktI2NJsvmra4pk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=km0iVl9OEcEPaR3fkivtqoI7PBiY3WyovBlZcGJZqAloBuksGEE3C9MnjikX4hVHyLRQnLyeOl5yb8E2dmapoFqy7DsJ/H0SYDcxeo0zD0797W5qZltos5v+5/3ckkpcnmf5uTFsF9AALL4JqL/kCwvfZc5iNUNiqcwu/OATGEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EvmB1vFd; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744893940; x=1776429940;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=OcPS0tdl/ORq4rRYL/cBnmzghj9VkktI2NJsvmra4pk=;
+  b=EvmB1vFdOR5Bw3exPDSb06EYjB4sGq55kp9q5sFhswXFnQmSrSBbINc+
+   M2bywgebQX12w0NvHAplrb6f325iiSeD40nQfZ1GTSJGufOe/ZjS1Y5uU
+   EO8qilGQ/EiUpoYWQrSfNwG+Dxg8gCErjg8tkmTDN1TukCvKnxbbsu8gD
+   IGJvqy5OAPS7Kj57JLOuzspkLIRSJIrOUKDsAH7mnZ5OE5jqmdjk/Eyu2
+   KhHvNJ+LOzn+QsNPNrKlWBnk9WvSx71dMWTqXW+Ze+UtnaWfVsu++/Bra
+   FX/sK9ZrEw3g8Ya9XjrwWZdytPbBJ4Ru9o2SxrQ5n3Vy+qAg9xMWHOThU
+   Q==;
+X-CSE-ConnectionGUID: h/BJK5DGRUW8BKb7AbtxtQ==
+X-CSE-MsgGUID: wRqtxZJKQC+S4+QuIQnTAg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="71864410"
+X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; 
+   d="scan'208";a="71864410"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 05:45:39 -0700
+X-CSE-ConnectionGUID: sSgpzIs5R0m78QMsFzT+yw==
+X-CSE-MsgGUID: 65NL5KUFSN+PIAUPUKq1WQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; 
+   d="scan'208";a="134887822"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.144])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 05:45:36 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Yi Lai <yi1.lai@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	linux-pci@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH 1/1] selftests/pcie_bwctrl: Fix test progs list
+Date: Thu, 17 Apr 2025 15:45:29 +0300
+Message-Id: <20250417124529.11391-1-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Level: *
-X-Spamd-Bar: +
 
-While debugging kexec/hibernation hangs and crashes, it turned out that
-the current implementation of e820__register_nosave_regions() suffers from
-multiple serious issues:
+The commit df6f8c4d72ae ("selftests/pcie_bwctrl: Add
+'set_pcie_speed.sh' to TEST_PROGS") added set_pcie_speed.sh into
+TEST_PROGS but that script is a helper that is only being called by
+set_pcie_cooling_state.sh, not a test case itself. When
+set_pcie_speed.sh is in TEST_PROGS, selftest harness will execute also
+it leading to bwctrl selftest errors:
 
- - The end of last region is tracked by PFN, causing it to find holes
-   that aren't there if two consecutive subpage regions are present
+  # selftests: pcie_bwctrl: set_pcie_speed.sh
+  # cat: /cur_state: No such file or directory
+  not ok 2 selftests: pcie_bwctrl: set_pcie_speed.sh # exit=1
 
- - The nosave PFN ranges derived from holes are rounded out (instead of
-   rounded in) which makes it inconsistent with how explicitly reserved
-   regions are handled
+Place set_pcie_speed.sh into TEST_FILES instead to have it included
+into installed test files but not execute it from the test harness.
 
-Fix this by:
-
- - Treating reserved regions as if they were holes, to ensure consistent
-   handling (rounding out nosave PFN ranges is more correct as the
-   kernel does not use partial pages)
-
- - Tracking the end of the last RAM region by address instead of pages
-   to detect holes more precisely
-
-These bugs appear to have been introduced about ~18 years ago with the very
-first version of e820_mark_nosave_regions(), and its flawed assumptions were
-carried forward uninterrupted through various waves of rewrites and renames.
-
-[ mingo: Added Git archeology details, for kicks and giggles. ]
-
-Fixes: e8eff5ac294e ("[PATCH] Make swsusp avoid memory holes and reserved memory regions on x86_64")
-Reported-by: Roberto Ricci <io@r-ricci.it>
-Tested-by: Roberto Ricci <io@r-ricci.it>
-Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: David Woodhouse <dwmw@amazon.co.uk>
-Cc: Len Brown <len.brown@intel.com>
+Fixes: df6f8c4d72ae ("selftests/pcie_bwctrl: Add 'set_pcie_speed.sh' to TEST_PROGS")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250406-fix-e820-nosave-v3-1-f3787bc1ee1d@qtmlabs.xyz
-Closes: https://lore.kernel.org/all/Z4WFjBVHpndct7br@desktop0a/
-(cherry picked from commit f2f29da9f0d4367f6ff35e0d9d021257bb53e273)
-Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 ---
- arch/x86/kernel/e820.c | 17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
-index 7da2bcd2b8eb..f826c0a60a29 100644
---- a/arch/x86/kernel/e820.c
-+++ b/arch/x86/kernel/e820.c
-@@ -738,22 +738,21 @@ void __init e820__memory_setup_extended(u64 phys_addr, u32 data_len)
- void __init e820__register_nosave_regions(unsigned long limit_pfn)
- {
- 	int i;
--	unsigned long pfn = 0;
-+	u64 last_addr = 0;
- 
- 	for (i = 0; i < e820_table->nr_entries; i++) {
- 		struct e820_entry *entry = &e820_table->entries[i];
- 
--		if (pfn < PFN_UP(entry->addr))
--			register_nosave_region(pfn, PFN_UP(entry->addr));
--
--		pfn = PFN_DOWN(entry->addr + entry->size);
--
- 		if (entry->type != E820_TYPE_RAM && entry->type != E820_TYPE_RESERVED_KERN)
--			register_nosave_region(PFN_UP(entry->addr), pfn);
-+			continue;
- 
--		if (pfn >= limit_pfn)
--			break;
-+		if (last_addr < entry->addr)
-+			register_nosave_region(PFN_DOWN(last_addr), PFN_UP(entry->addr));
-+
-+		last_addr = entry->addr + entry->size;
- 	}
-+
-+	register_nosave_region(PFN_DOWN(last_addr), limit_pfn);
- }
- 
- #ifdef CONFIG_ACPI
+I'm sorry I didn't realize this while the fix was submitted, I'm not that
+familiar with all the kselftest harness variables and the justification
+given for the fix sounded valid enough to raise any alarm bells in my
+mind that something would be off with the approach the fix patch used.
+
+ tools/testing/selftests/pcie_bwctrl/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/tools/testing/selftests/pcie_bwctrl/Makefile b/tools/testing/selftests/pcie_bwctrl/Makefile
+index 48ec048f47af..277f92f9d753 100644
+--- a/tools/testing/selftests/pcie_bwctrl/Makefile
++++ b/tools/testing/selftests/pcie_bwctrl/Makefile
+@@ -1,2 +1,3 @@
+-TEST_PROGS = set_pcie_cooling_state.sh set_pcie_speed.sh
++TEST_PROGS = set_pcie_cooling_state.sh
++TEST_FILES = set_pcie_speed.sh
+ include ../lib.mk
+
+base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
 -- 
-2.49.0
+2.39.5
 
 
