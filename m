@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-134104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 629B8A92958
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 303E9A92720
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:20:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 549154A4B98
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C48861906E7C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:20:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5704F25A326;
-	Thu, 17 Apr 2025 18:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B38B2550C8;
+	Thu, 17 Apr 2025 18:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vp5uoZgJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X3Yq0DbN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B38259CB9;
-	Thu, 17 Apr 2025 18:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F2F1A3178;
+	Thu, 17 Apr 2025 18:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915107; cv=none; b=g3w3rgKhrpylfEcu5J8RiEfpsclH6d3utAa2/ONAb0RKvjuz2FgqFVRlP+geuo5FG/cJSmFo+OLU7634Z6/EbJwMcng04mTTBXC9AKY4pjjHEdxihrNgZKj2KSIbSMfvx4GV5RQNvdS/grsbuG6+YS6b5rtis6uRFSlK6MJEuTA=
+	t=1744913998; cv=none; b=LJE3cxXT4v89u4cSjjdixTikn+MsHMwrv39AHI/YIEWKGJvST7zb/m69kITAJFoSNUdvm16dDU8KN6FTL+ya1GAUbfaw4jdUU73/e0jwciVOuoYSXMVH4cjpNGqWgDsf5iNwDF40Q5kcm6hEzgH2t3m0INOmI3PeuZP8vj6Csl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915107; c=relaxed/simple;
-	bh=Arwn/tUN66c0Muq4SomMwkDzVKB0pYHBogm03ISNbgY=;
+	s=arc-20240116; t=1744913998; c=relaxed/simple;
+	bh=6Z4oulzru7oqRi7y6Et5aG0X6GTRzocNUlArun4924c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oiei4lOY7tnrBSVQdLhDjbpL45eDqIk3uq5piIAbP1ezdgMPkYZecoTcCQZc7eppHRF6xQO7HF0n/vNnc5DB1U6jvnrB7dSTUpZcqowzyelB0sp3d3BxX1UpNxvMKhJBApgUL2DlNv3sPQfSoRP0yc/m+QiBCSo6LlOA58Wcfvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vp5uoZgJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B7EC4CEE4;
-	Thu, 17 Apr 2025 18:38:25 +0000 (UTC)
+	 MIME-Version; b=CvVuBlGd9bysIZD/ABrOyUlZWOxckV1GQP9UbyZGaNmrg/KRSWj5RLca+qtOqeZweudK6acUTzbvJwgc90fXP4aP1EQIS+yFz25HGQ+qEZMuhEULBwNZqHsCuM/PINGRPWwzI4nDUkKCf6bb8xVZ32dFENU2XnUPgZGXWXxhqwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X3Yq0DbN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E225C4CEE4;
+	Thu, 17 Apr 2025 18:19:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915106;
-	bh=Arwn/tUN66c0Muq4SomMwkDzVKB0pYHBogm03ISNbgY=;
+	s=korg; t=1744913998;
+	bh=6Z4oulzru7oqRi7y6Et5aG0X6GTRzocNUlArun4924c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vp5uoZgJwjCy/75t/PxQnod4tPiSpl7eQkaA/T1nKTLOU0TM6cDrOdHzjO1NjN5My
-	 /2/XafPHX1REjdqHfLeWBD3VwUcdFs8ZfnCQTpXtciJ7cM4qqgoiIek+33S61mjZPu
-	 d9EB6dzFs/ciwK4yDtGSXU7C6rfr8JnXv5DTPwsc=
+	b=X3Yq0DbNT8dV684ZesyspHChq7c2SGjO6zxLZLs0/VKmcOvb2qpFYApvpz5bcCqVt
+	 aX7U8B/6niFm/QemQGIHKpiU2mMSnX5hIAjwmQ+Kwdnsp6XDmLB3y6bcZshVWxRi5G
+	 C5S6Blc9TnsGt3WYdUrVNOiGlksK2LBWLcVbvWGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 020/393] octeontx2-pf: qos: fix VF root node parent queue index
+Subject: [PATCH 6.13 071/414] ASoC: amd: ps: use macro for ACP6.3 pci revision id
 Date: Thu, 17 Apr 2025 19:47:09 +0200
-Message-ID: <20250417175108.406033262@linuxfoundation.org>
+Message-ID: <20250417175114.297675606@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-[ Upstream commit b7db94734e785e380b0db0f9295e07024f4d42a0 ]
+[ Upstream commit 4b36a47e2d989b98953dbfb1e97da0f0169f5086 ]
 
-The current code configures the Physical Function (PF) root node at TL1
-and the Virtual Function (VF) root node at TL2.
+Use macro for ACP6.3 PCI revision id instead of hard coded value.
 
-This ensure at any given point of time PF traffic gets more priority.
-
-                    PF root node
-                      TL1
-                     /  \
-                    TL2  TL2 VF root node
-                    /     \
-                   TL3    TL3
-                   /       \
-                  TL4      TL4
-                  /         \
-                 SMQ        SMQ
-
-Due to a bug in the current code, the TL2 parent queue index on the
-VF interface is not being configured, leading to 'SMQ Flush' errors
-
-Fixes: 5e6808b4c68d ("octeontx2-pf: Add support for HTB offload")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250407070341.2765426-1-hkelam@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://patch.msgid.link/20250207062819.1527184-3-Vijendar.Mukunda@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/qos.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ sound/soc/amd/ps/acp63.h  | 1 +
+ sound/soc/amd/ps/pci-ps.c | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-index 0f844c14485a0..35acc07bd9648 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-@@ -165,6 +165,11 @@ static void __otx2_qos_txschq_cfg(struct otx2_nic *pfvf,
+diff --git a/sound/soc/amd/ps/acp63.h b/sound/soc/amd/ps/acp63.h
+index e54eabaa4d3e1..28d3959a416b3 100644
+--- a/sound/soc/amd/ps/acp63.h
++++ b/sound/soc/amd/ps/acp63.h
+@@ -11,6 +11,7 @@
+ #define ACP_DEVICE_ID 0x15E2
+ #define ACP63_REG_START		0x1240000
+ #define ACP63_REG_END		0x125C000
++#define ACP63_PCI_REV		0x63
  
- 		otx2_config_sched_shaping(pfvf, node, cfg, &num_regs);
- 	} else if (level == NIX_TXSCH_LVL_TL2) {
-+		/* configure parent txschq */
-+		cfg->reg[num_regs] = NIX_AF_TL2X_PARENT(node->schq);
-+		cfg->regval[num_regs] = (u64)hw->tx_link << 16;
-+		num_regs++;
-+
- 		/* configure link cfg */
- 		if (level == pfvf->qos.link_cfg_lvl) {
- 			cfg->reg[num_regs] = NIX_AF_TL3_TL2X_LINKX_CFG(node->schq, hw->tx_link);
+ #define ACP_SOFT_RESET_SOFTRESET_AUDDONE_MASK	0x00010001
+ #define ACP_PGFSM_CNTL_POWER_ON_MASK	1
+diff --git a/sound/soc/amd/ps/pci-ps.c b/sound/soc/amd/ps/pci-ps.c
+index 4575326d06352..b0b4a47cf7c25 100644
+--- a/sound/soc/amd/ps/pci-ps.c
++++ b/sound/soc/amd/ps/pci-ps.c
+@@ -559,7 +559,7 @@ static int snd_acp63_probe(struct pci_dev *pci,
+ 
+ 	/* Pink Sardine device check */
+ 	switch (pci->revision) {
+-	case 0x63:
++	case ACP63_PCI_REV:
+ 		break;
+ 	default:
+ 		dev_dbg(&pci->dev, "acp63 pci device not found\n");
 -- 
 2.39.5
 
