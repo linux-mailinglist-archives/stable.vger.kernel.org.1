@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DF48A927F9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49631A925E6
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:08:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 246D5466210
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D10BD1B62998
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6743A25FA1F;
-	Thu, 17 Apr 2025 18:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302EB253F23;
+	Thu, 17 Apr 2025 18:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j3wFeygJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AC4vH2og"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2381E256C84;
-	Thu, 17 Apr 2025 18:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A001A3178;
+	Thu, 17 Apr 2025 18:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914356; cv=none; b=shXtgQH4MsBzKWKoFypEt+/eFqAnkjsaVcT2G/XGyrAAO8xD8ElCsHEdI+NdsWcByXtabJCU/vRUxmspS9qP+j5ZaFtwCJf8FMJ3b0kdDewffJ1ATseLytSid7lEHG6FUkY0Q3e41Ck40zXoHomnk2MiSvfJSGhVZSO8mybMadM=
+	t=1744913199; cv=none; b=SFz4HMKa3/LFUhDcp9AoLGOO9aQwzzVnCflRVcTr0BZc9q+PcmlGy6rtdT/9qeAVvV2ZfJIrKYo/GUmXvBqNc4cDeXYBmZOtY0b7V+EaCnKu3GfSb4JicM68K32BWMERBMElk5EhsR/0ERMeWD+7f0EeUHNph3etvARtiVScMyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914356; c=relaxed/simple;
-	bh=ZC/jZvJIcdFJRDdFPmA01X0PuOoXw2e1EQ04oqPIRXI=;
+	s=arc-20240116; t=1744913199; c=relaxed/simple;
+	bh=VWOgztvISG8H+4+anfHN/f4j2VCD3B/Fpc7cvKwjkV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oVuarkoXBnWrtv4QjNiI9A1oiveUND8QiArm5AQDqB8P2iVggso+c+m3KhMnlLsleCqMzJ/zA3+EnZxjNYnRr8YL6JZFB4mgPrjldNPnIYRPcZfiuD9A05cF4aTv1TMi/fjOGBhm4mGxgxrxzZNBDYgrPWOe+CFOTMcl67hHFsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j3wFeygJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3F5C4CEE7;
-	Thu, 17 Apr 2025 18:25:54 +0000 (UTC)
+	 MIME-Version; b=P7YI0rgnSb+HtXpiP/8hCJ8fBEsWZRtG4rGG0WLWvlu/RrTWb4EFBKw1pq9GQG2wSw3utrYipXyHReN2dkLWWqjUH5/6sWhLThgqjoA62bzHBWOurjKle2RUvdakKoyoeZv6siZL+3E9Uu5JqZdVFBs9cjNxhRtcVCNW18h08jM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AC4vH2og; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C8EC4CEE4;
+	Thu, 17 Apr 2025 18:06:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914355;
-	bh=ZC/jZvJIcdFJRDdFPmA01X0PuOoXw2e1EQ04oqPIRXI=;
+	s=korg; t=1744913198;
+	bh=VWOgztvISG8H+4+anfHN/f4j2VCD3B/Fpc7cvKwjkV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j3wFeygJJWRMQ4OduIS1YXE28MVMAuzu9hkMTC0cKgg/pSwZOaIDCwpQjtYYwkI0O
-	 bYOfPagmWX/MzeDEWH8jNam+RP2qBBYATUeiChIFN5RLHQe3gk8weFGkI/+jlGgh2n
-	 +mFUqeMCy6MqJ5KqoTJQn65eBGXwUvU2y4fjlY+4=
+	b=AC4vH2ogL9r7b3Sm0QzvtixRXvPvXoeh+k7EEKMmHU+6iWJw++3IciYWOJutErQJm
+	 58RhROAz5YkVOS6zKKY1ajEQgn7DZHRZIny56LkNesc2oOuv7uxGYI7V03Vaog29FD
+	 eoD70ELnS9AjPdzh5T5TxdabxsZZ/8xzqVYzDSVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 188/414] HID: pidff: Support device error response from PID_BLOCK_LOAD
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.14 258/449] media: venus: hfi_parser: add check to avoid out of bound access
 Date: Thu, 17 Apr 2025 19:49:06 +0200
-Message-ID: <20250417175119.006029533@linuxfoundation.org>
+Message-ID: <20250417175128.385609188@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
 
-[ Upstream commit 9d4174dc4a234408d91fd83725e1899766cd1731 ]
+commit 172bf5a9ef70a399bb227809db78442dc01d9e48 upstream.
 
-If an error happens on the device, the driver will no longer fall
-into the trap of reading this status 60 times before it decides that
-this reply won't change to success/memory full.
+There is a possibility that init_codecs is invoked multiple times during
+manipulated payload from video firmware. In such case, if codecs_count
+can get incremented to value more than MAX_CODEC_NUM, there can be OOB
+access. Reset the count so that it always starts from beginning.
 
-Greatly reduces communication overhead during device error situation.
-
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/venus/hfi_parser.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index e2508a4d754d3..d5734cbf745d1 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -138,7 +138,8 @@ static const u8 pidff_effect_types[] = {
+--- a/drivers/media/platform/qcom/venus/hfi_parser.c
++++ b/drivers/media/platform/qcom/venus/hfi_parser.c
+@@ -19,6 +19,8 @@ static void init_codecs(struct venus_cor
+ 	struct hfi_plat_caps *caps = core->caps, *cap;
+ 	unsigned long bit;
  
- #define PID_BLOCK_LOAD_SUCCESS	0
- #define PID_BLOCK_LOAD_FULL	1
--static const u8 pidff_block_load_status[] = { 0x8c, 0x8d };
-+#define PID_BLOCK_LOAD_ERROR	2
-+static const u8 pidff_block_load_status[] = { 0x8c, 0x8d, 0x8e};
++	core->codecs_count = 0;
++
+ 	if (hweight_long(core->dec_codecs) + hweight_long(core->enc_codecs) > MAX_CODEC_NUM)
+ 		return;
  
- #define PID_EFFECT_START	0
- #define PID_EFFECT_STOP		1
-@@ -666,6 +667,11 @@ static int pidff_request_effect_upload(struct pidff_device *pidff, int efnum)
- 				pidff->block_load[PID_RAM_POOL_AVAILABLE].value[0] : -1);
- 			return -ENOSPC;
- 		}
-+		if (pidff->block_load_status->value[0] ==
-+		    pidff->status_id[PID_BLOCK_LOAD_ERROR]) {
-+			hid_dbg(pidff->hid, "device error during effect creation\n");
-+			return -EREMOTEIO;
-+		}
- 	}
- 	hid_err(pidff->hid, "pid_block_load failed 60 times\n");
- 	return -EIO;
--- 
-2.39.5
-
 
 
 
