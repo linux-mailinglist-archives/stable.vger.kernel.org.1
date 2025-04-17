@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-134256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DBCFA92A07
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:46:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA9D1A92879
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:35:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E1A81880862
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:46:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89CC4188CD58
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC264256C7B;
-	Thu, 17 Apr 2025 18:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF4C266B77;
+	Thu, 17 Apr 2025 18:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9fUfsh5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kGjBpk3B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0B1254878;
-	Thu, 17 Apr 2025 18:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B57258CDC;
+	Thu, 17 Apr 2025 18:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915573; cv=none; b=cxzMgqHoJjSDO+n1PEXhQOUH2FioYS7Y5HNlcSoSbv+d1fk3C9abvnHMuNNsBwJB+BAmK0OIRVdhv+hT3rwyhL2ZN2ulEK+TVbQ1JfYjAxkG7x35TWLmkufPq0WmqcClIJjriAN28dyMLjBq7fu5rS4jPlVHCM7YU39egS7df2U=
+	t=1744914456; cv=none; b=mggRJ2Y19ePhM3sX/llN359/4g3e+9yECL2e1imcCNlzkn7m54OXksp88ZeWFKH+EYSvhgjKQDDUlP2KOZh7rW/T9T/75+iaPHry9U6IBUureijVNBzY5UjOc7k+3A0a1+pMfFScSabODGTZ6wQkf1iW2lbxmfA1co7ayMjKZug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915573; c=relaxed/simple;
-	bh=8us4XTVM/14EBul+jT1Rf0D6usLgyODWBtr0nZyXWI8=;
+	s=arc-20240116; t=1744914456; c=relaxed/simple;
+	bh=mzAQ4U9nO42eXIH+2XZMBaSb/zIxOtvtexxvEmLusYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HpMENkkZt7kAd0A+SnIRLSNWioyMhkTHhzM0iiQp7IJEcwErBSVtNGrOM45YyNbudGzo9ERH3+iVN/UPMbcS4hHVL/+QpJ0Folai3v61WnLO2kejnJJLT31wMI+fzH6eiGHjU3Y8fHQSf5WhR1SkBInJNTC6YDxiJIKwuXQ/8f8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9fUfsh5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 126A6C4CEE4;
-	Thu, 17 Apr 2025 18:46:12 +0000 (UTC)
+	 MIME-Version; b=UkzJXG5jEX/mA1K8LjBdlhOHnSmtON8Oe9yhPR+BXvojeU2tzRyiqrE4aRou0GReMM9YAXTm+S4Htiza51ISmLGf/LWytOSHAxYhtqf87fTRhdVgdEf9qxzQLv+/G/8TTNDnHjksnhF7nao39yEqR118RQ3yxXTZbUsKNrZLjtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kGjBpk3B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF989C4CEE4;
+	Thu, 17 Apr 2025 18:27:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915573;
-	bh=8us4XTVM/14EBul+jT1Rf0D6usLgyODWBtr0nZyXWI8=;
+	s=korg; t=1744914456;
+	bh=mzAQ4U9nO42eXIH+2XZMBaSb/zIxOtvtexxvEmLusYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e9fUfsh5OleiSSO9G7PejPAlx6DbfWdUPs5jkt8hcliRZjiyGhFhnfAXrBEkVJ3Bo
-	 YktwIdXnUlm6d04XjJzwdu+j62YoRzoMSqf8sYfTyG44qR1Fm++0CUg1DblkSkMu1P
-	 QS73r0UKEym4Rcpe9XPPVu/XkCY59Ru/TDRvnYRE=
+	b=kGjBpk3BWSLuScKFcqWNkUNshyJoAqoKXz2JlNLQFoyZkpLig9Ul6dPTIpdEkOXKb
+	 30lJFp7t5d2nafzS7dySwkCumbZS1vfIq0rHvpSaJG+GlIPjRxLkqycjc2y1JXI6jd
+	 6TiEneHiTbNEhXMzVsMy2R4J5Q9BuyfBYB1al0rI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Makarenko Oleg <oleg@makarenk.ooo>,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 171/393] HID: pidff: Rescale time values to match field units
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.13 222/414] media: streamzap: prevent processing IR data on URB failure
 Date: Thu, 17 Apr 2025 19:49:40 +0200
-Message-ID: <20250417175114.477418937@linuxfoundation.org>
+Message-ID: <20250417175120.366601831@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,172 +60,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit 8713107221a8ce4021ec5fa12bb50ecc8165cf08 ]
+commit 549f6d348167fb2f7800ed7c8d4bce9630c74498 upstream.
 
-PID devices can use different exponents for time fields, while Linux
-Force Feedback API only supports miliseconds.
+If streamzap_callback() receives an urb with any non-critical error
+status, i.e. any error code other than -ECONNRESET, -ENOENT or -ESHUTDOWN,
+it will try to process IR data, ignoring a possible transfer failure.
 
-Read the exponent of a given time field and scale its value accordingly.
+Make streamzap_callback() process IR data only when urb->status is 0.
+Move processing logic to a separate function to make code cleaner and
+more similar to the URB completion handlers in other RC drivers.
 
-Changes in v7:
-- Rescale all time fields, not only period
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-changes in v9:
-- Properly assign fade_lenght, not attack_length to PID_FADE_TIME
-
-Co-developed-by: Makarenko Oleg <oleg@makarenk.ooo>
-Signed-off-by: Makarenko Oleg <oleg@makarenk.ooo>
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 19770693c354 ("V4L/DVB: staging/lirc: add lirc_streamzap driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 69 ++++++++++++++++++++++++++--------
- 1 file changed, 54 insertions(+), 15 deletions(-)
+ drivers/media/rc/streamzap.c |   68 ++++++++++++++++++++++++-------------------
+ 1 file changed, 38 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index bd913d57e4d75..180b2cf66e4c7 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -22,6 +22,9 @@
- #define	PID_EFFECTS_MAX		64
- #define	PID_INFINITE		0xffff
- 
-+/* Linux Force Feedback API uses miliseconds as time unit */
-+#define FF_TIME_EXPONENT	-3
-+
- /* Report usage table used to put reports into an array */
- 
- #define PID_SET_EFFECT		0
-@@ -231,6 +234,24 @@ static int pidff_rescale_signed(int i, struct hid_field *field)
- 	    field->logical_minimum / -0x8000;
+--- a/drivers/media/rc/streamzap.c
++++ b/drivers/media/rc/streamzap.c
+@@ -138,39 +138,10 @@ static void sz_push_half_space(struct st
+ 	sz_push_full_space(sz, value & SZ_SPACE_MASK);
  }
  
-+/*
-+ * Scale time value from Linux default (ms) to field units
-+ */
-+static u32 pidff_rescale_time(u16 time, struct hid_field *field)
-+{
-+	u32 scaled_time = time;
-+	int exponent = field->unit_exponent;
-+	pr_debug("time field exponent: %d\n", exponent);
-+
-+	for (;exponent < FF_TIME_EXPONENT; exponent++)
-+		scaled_time *= 10;
-+	for (;exponent > FF_TIME_EXPONENT; exponent--)
-+		scaled_time /= 10;
-+
-+	pr_debug("time calculated from %d to %d\n", time, scaled_time);
-+	return scaled_time;
-+}
-+
- static void pidff_set(struct pidff_usage *usage, u16 value)
+-/*
+- * streamzap_callback - usb IRQ handler callback
+- *
+- * This procedure is invoked on reception of data from
+- * the usb remote.
+- */
+-static void streamzap_callback(struct urb *urb)
++static void sz_process_ir_data(struct streamzap_ir *sz, int len)
  {
- 	usage->value[0] = pidff_rescale(value, 0xffff, usage->field);
-@@ -252,6 +273,27 @@ static void pidff_set_signed(struct pidff_usage *usage, s16 value)
- 	pr_debug("calculated from %d to %d\n", value, usage->value[0]);
- }
+-	struct streamzap_ir *sz;
+ 	unsigned int i;
+-	int len;
+-
+-	if (!urb)
+-		return;
+-
+-	sz = urb->context;
+-	len = urb->actual_length;
+-
+-	switch (urb->status) {
+-	case -ECONNRESET:
+-	case -ENOENT:
+-	case -ESHUTDOWN:
+-		/*
+-		 * this urb is terminated, clean up.
+-		 * sz might already be invalid at this point
+-		 */
+-		dev_err(sz->dev, "urb terminated, status: %d\n", urb->status);
+-		return;
+-	default:
+-		break;
+-	}
  
-+static void pidff_set_time(struct pidff_usage *usage, u16 time)
-+{
-+	u32 modified_time = pidff_rescale_time(time, usage->field);
-+	usage->value[0] = pidff_clamp(modified_time, usage->field);
+-	dev_dbg(sz->dev, "%s: received urb, len %d\n", __func__, len);
+ 	for (i = 0; i < len; i++) {
+ 		dev_dbg(sz->dev, "sz->buf_in[%d]: %x\n",
+ 			i, (unsigned char)sz->buf_in[i]);
+@@ -219,6 +190,43 @@ static void streamzap_callback(struct ur
+ 	}
+ 
+ 	ir_raw_event_handle(sz->rdev);
 +}
 +
-+static void pidff_set_duration(struct pidff_usage *usage, u16 duration)
++/*
++ * streamzap_callback - usb IRQ handler callback
++ *
++ * This procedure is invoked on reception of data from
++ * the usb remote.
++ */
++static void streamzap_callback(struct urb *urb)
 +{
-+	/* Convert infinite length from Linux API (0)
-+	   to PID standard (NULL) if needed */
-+	if (duration == 0)
-+		duration = PID_INFINITE;
++	struct streamzap_ir *sz;
++	int len;
 +
-+	if (duration == PID_INFINITE) {
-+		usage->value[0] = PID_INFINITE;
++	if (!urb)
 +		return;
++
++	sz = urb->context;
++	len = urb->actual_length;
++
++	switch (urb->status) {
++	case 0:
++		dev_dbg(sz->dev, "%s: received urb, len %d\n", __func__, len);
++		sz_process_ir_data(sz, len);
++		break;
++	case -ECONNRESET:
++	case -ENOENT:
++	case -ESHUTDOWN:
++		/*
++		 * this urb is terminated, clean up.
++		 * sz might already be invalid at this point
++		 */
++		dev_err(sz->dev, "urb terminated, status: %d\n", urb->status);
++		return;
++	default:
++		break;
 +	}
 +
-+	pidff_set_time(usage, duration);
-+}
-+
- /*
-  * Send envelope report to the device
-  */
-@@ -270,8 +312,10 @@ static void pidff_set_envelope_report(struct pidff_device *pidff,
- 			  0x7fff ? 0x7fff : envelope->fade_level, 0x7fff,
- 			  pidff->set_envelope[PID_FADE_LEVEL].field);
- 
--	pidff->set_envelope[PID_ATTACK_TIME].value[0] = envelope->attack_length;
--	pidff->set_envelope[PID_FADE_TIME].value[0] = envelope->fade_length;
-+	pidff_set_time(&pidff->set_envelope[PID_ATTACK_TIME],
-+			envelope->attack_length);
-+	pidff_set_time(&pidff->set_envelope[PID_FADE_TIME],
-+			envelope->fade_length);
- 
- 	hid_dbg(pidff->hid, "attack %u => %d\n",
- 		envelope->attack_level,
-@@ -340,14 +384,12 @@ static void pidff_set_effect_report(struct pidff_device *pidff,
- 	pidff->set_effect_type->value[0] =
- 		pidff->create_new_effect_type->value[0];
- 
--	/* Convert infinite length from Linux API (0)
--	   to PID standard (NULL) if needed */
--	pidff->set_effect[PID_DURATION].value[0] =
--		effect->replay.length == 0 ? PID_INFINITE : effect->replay.length;
-+	pidff_set_duration(&pidff->set_effect[PID_DURATION],
-+		effect->replay.length);
- 
- 	pidff->set_effect[PID_TRIGGER_BUTTON].value[0] = effect->trigger.button;
--	pidff->set_effect[PID_TRIGGER_REPEAT_INT].value[0] =
--		effect->trigger.interval;
-+	pidff_set_time(&pidff->set_effect[PID_TRIGGER_REPEAT_INT],
-+			effect->trigger.interval);
- 	pidff->set_effect[PID_GAIN].value[0] =
- 		pidff->set_effect[PID_GAIN].field->logical_maximum;
- 	pidff->set_effect[PID_DIRECTION_ENABLE].value[0] = 1;
-@@ -360,7 +402,8 @@ static void pidff_set_effect_report(struct pidff_device *pidff,
- 
- 	/* Omit setting delay field if it's missing */
- 	if (!(pidff->quirks & HID_PIDFF_QUIRK_MISSING_DELAY))
--		pidff->set_effect[PID_START_DELAY].value[0] = effect->replay.delay;
-+		pidff_set_time(&pidff->set_effect[PID_START_DELAY],
-+				effect->replay.delay);
- 
- 	hid_hw_request(pidff->hid, pidff->reports[PID_SET_EFFECT],
- 			HID_REQ_SET_REPORT);
-@@ -392,15 +435,11 @@ static void pidff_set_periodic_report(struct pidff_device *pidff,
- 	pidff_set_signed(&pidff->set_periodic[PID_OFFSET],
- 			 effect->u.periodic.offset);
- 	pidff_set(&pidff->set_periodic[PID_PHASE], effect->u.periodic.phase);
--
--	/* Clamp period to ensure the device can play the effect */
--	pidff->set_periodic[PID_PERIOD].value[0] =
--		pidff_clamp(effect->u.periodic.period,
--			pidff->set_periodic[PID_PERIOD].field);
-+	pidff_set_time(&pidff->set_periodic[PID_PERIOD],
-+			effect->u.periodic.period);
- 
- 	hid_hw_request(pidff->hid, pidff->reports[PID_SET_PERIODIC],
- 			HID_REQ_SET_REPORT);
--
+ 	usb_submit_urb(urb, GFP_ATOMIC);
  }
  
- /*
--- 
-2.39.5
-
 
 
 
