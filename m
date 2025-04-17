@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-133645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D37AA926A3
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:15:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E088FA92AFF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:56:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C47B189BAFB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:15:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EC713A9972
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7D92566D2;
-	Thu, 17 Apr 2025 18:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3CB91DF246;
+	Thu, 17 Apr 2025 18:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yR1HXZ8N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ICwq+XCJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B9F254B1D;
-	Thu, 17 Apr 2025 18:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F411D5CCD;
+	Thu, 17 Apr 2025 18:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913706; cv=none; b=pmpVsbMqDVxGOhqNF1VZPVcvP3iu0lD4adx5asow+hJSxY8J7QvmOz/RENklGD6//2BI5RGQEhbhsEeqqrFHo5ueKTS+u2OqlKwWT8lL0xY8eJxJMUOtk6aBqE8XkfqOwcLKXR9YkT/kZgbekJmMnt2MnZzEWoPbaw5P/v9Uymg=
+	t=1744915899; cv=none; b=MxKdk0pRz+N7HdFgkhAb6Xash5VVLkdHpQz+rwvf5Zav4CZuifhUl4sGeFKvtEFv6Z416Y2tImtLZnU6jowSkUxgYAC5BOFqHMDZzqpWImO7pjlyyg8Qvd+HYOXf2QqkvBSqEnnsWbKV2hjQaiLqpN3ncyJaRhyaHMIM/uZ4BAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913706; c=relaxed/simple;
-	bh=6QFvfNdDeRN6SbWNx/CBUe9L/hCGm7pV4OLW7OuyFm0=;
+	s=arc-20240116; t=1744915899; c=relaxed/simple;
+	bh=IqTVkdzl/A1f68/WVvJkAaC9jAZIMtSTnZlAye6CTfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oDRPuw5bFK4kIhLzspJQGHxf3s7fRcqmUeeM4fpBdJdG0+yvxCLTD0oUVcOtRKOgHpMwRG6JsENbCzvHPe90ok+U6M5kTT+xxXfNVGMnuYsQTIV9wx62HMZhwPGbZhGS9Jt5JcHXLUHQEEBS69EfK8Bns67WDjHzwZ+6HQA8uxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yR1HXZ8N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4061C4CEE4;
-	Thu, 17 Apr 2025 18:15:05 +0000 (UTC)
+	 MIME-Version; b=DtlonjpWCb6fFx9DwEaAiC5trsVeOrQQs1A5TNso6CEBrz1wpYl+gRNE7ut/30pVwz2RjKfayDjMrtshcV0JS5FKVMyEzpjNj13lNa5ZyJM0O/sp1EpK4ol8zFksXQWE5FnoEdpRx26DlbBEw5by9DCDCs+7HPmy4qXKJnqVXu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ICwq+XCJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96171C4CEE7;
+	Thu, 17 Apr 2025 18:51:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913706;
-	bh=6QFvfNdDeRN6SbWNx/CBUe9L/hCGm7pV4OLW7OuyFm0=;
+	s=korg; t=1744915899;
+	bh=IqTVkdzl/A1f68/WVvJkAaC9jAZIMtSTnZlAye6CTfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yR1HXZ8NLckhOpJb+n+zXCSYIH8EbpvTtJxmfD752wEWQTOW2S6ZMSnIoUScuVYLv
-	 8YmzYDA9J7ebcrtIlj+8ByPIhGFTtPDUg9oBU7AIFheM0A0kouDtavENeHpxyeQ2Gc
-	 7ht9A1t5GoxRbNWcPcXuwL9SDgciVPEleI37iGzw=
+	b=ICwq+XCJLoXkBEGxVA2Ex13ICgVL6uYHbBnyikjybTMoZAZgVhg5Uzps+gt5hYnTE
+	 pt1qVb2Gm8tqUMCN6x/71Ltt+jstR1fMve1mahFUVwRnr1Xbrl8SyCLNvEhcLs5pzl
+	 7Vf+xqunr6tAmJvthacb3hYnZqn0WY6jztQNKztE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.14 397/449] gpio: mpc8xxx: Fix wakeup source leaks on device unbind
+	Lee Jones <lee@kernel.org>,
+	Chenyuan Yang <chenyuan0y@gmail.com>
+Subject: [PATCH 6.12 276/393] mfd: ene-kb3930: Fix a potential NULL pointer dereference
 Date: Thu, 17 Apr 2025 19:51:25 +0200
-Message-ID: <20250417175134.244878007@linuxfoundation.org>
+Message-ID: <20250417175118.713066412@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-commit da47605e43af9996eb46c8a060f259a8c34cc3c5 upstream.
+commit 4cdf1d2a816a93fa02f7b6b5492dc7f55af2a199 upstream.
 
-Device can be unbound, so driver must also release memory for the wakeup
-source.
+The off_gpios could be NULL. Add missing check in the kb3930_probe().
+This is similar to the issue fixed in commit b1ba8bcb2d1f
+("backlight: hx8357: Fix potential NULL pointer dereference").
+
+This was detected by our static analysis tool.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250406202245.53854-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fixes: ede6b2d1dfc0 ("mfd: ene-kb3930: Add driver for ENE KB3930 Embedded Controller")
+Suggested-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Link: https://lore.kernel.org/r/20250224233736.1919739-1-chenyuan0y@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-mpc8xxx.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mfd/ene-kb3930.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpio/gpio-mpc8xxx.c
-+++ b/drivers/gpio/gpio-mpc8xxx.c
-@@ -410,7 +410,9 @@ static int mpc8xxx_probe(struct platform
- 		goto err;
- 	}
- 
--	device_init_wakeup(dev, true);
-+	ret = devm_device_init_wakeup(dev);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to init wakeup\n");
- 
- 	return 0;
- err:
+--- a/drivers/mfd/ene-kb3930.c
++++ b/drivers/mfd/ene-kb3930.c
+@@ -162,7 +162,7 @@ static int kb3930_probe(struct i2c_clien
+ 			devm_gpiod_get_array_optional(dev, "off", GPIOD_IN);
+ 		if (IS_ERR(ddata->off_gpios))
+ 			return PTR_ERR(ddata->off_gpios);
+-		if (ddata->off_gpios->ndescs < 2) {
++		if (ddata->off_gpios && ddata->off_gpios->ndescs < 2) {
+ 			dev_err(dev, "invalid off-gpios property\n");
+ 			return -EINVAL;
+ 		}
 
 
 
