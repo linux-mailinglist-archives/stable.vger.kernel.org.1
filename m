@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-133513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 286A4A92604
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:09:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 075F7A929F6
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:45:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F8141B62607
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4ACBF168ED5
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D58F2255E2B;
-	Thu, 17 Apr 2025 18:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9802528FA;
+	Thu, 17 Apr 2025 18:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MtSxTw/D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vw5XBQES"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9399518C034;
-	Thu, 17 Apr 2025 18:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499B78462;
+	Thu, 17 Apr 2025 18:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913304; cv=none; b=gMmH8hdxgmRn2slAYVYWdACYoe+9WXJK4/2lV1a1qxm1i7e9HUC4A9/dlpFXRbC6T2guJGh0r/401C+uAyMX/DHmfta0H4hzGiiEpbHvNYSBseLQrAdHqayuJEesJq6TCnaXNjd2URcbJCq+aB5Vv9UfG+eJlu/K1M6eO+S2+P8=
+	t=1744915488; cv=none; b=CoJ5u5OuEBkKztPpRAzmZ7Xd5q8AGGDZjuHh8uxvAJvmxZ+Oexr9RSDAT3FvsdQ8K85rYMSP8pTGt0PxDxmS7ANN6VWmXccTmMzA8CSZmT3Zkr2S5hOlJ0VUUbAdnGVTD3GvbUFQ+mU4m+OUG0TcZ9Eg8BaabgDaYNnnW8QhOV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913304; c=relaxed/simple;
-	bh=KNOaL+LT/s5yrmf9dq0zMiWl7mvGJKI383C1LGeibgo=;
+	s=arc-20240116; t=1744915488; c=relaxed/simple;
+	bh=N4+hZZd4TugklM3QatZpTSrnhhyYOXK/BFs+QkPFuXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gF0kOlBmjYOzxnJeQGCFfn3Hcgngzi7FIQMfQJsz/aWZl8RZ9S0p3nasURtaqPvhvzAJ7GaMOcyii52sngurJjzX20Wts5C5R21xUjEVlkkvOMKtvm0qRlbXjNAz9Uckntm4MW8d8Usa1VQu4ZeWISJSj9MaT1ClX0eZtIGludM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MtSxTw/D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1125AC4CEE4;
-	Thu, 17 Apr 2025 18:08:23 +0000 (UTC)
+	 MIME-Version; b=A5Ogq2JufZ+SZ573HY+7S3p6X1MD3CPPaWpJgmh3vkmOoI4VtDLoU3ee+xtjbi4zAVicPo841X1O74errqdcq3Fjol51N2cJ04FNVlFPFGuYc3MG9G+beooQqOgYtrlYB+QPTYbiQoiI4/GdpU9evLbR0mDvDrmiI8d6IbDuH+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vw5XBQES; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5192C4CEE7;
+	Thu, 17 Apr 2025 18:44:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913304;
-	bh=KNOaL+LT/s5yrmf9dq0zMiWl7mvGJKI383C1LGeibgo=;
+	s=korg; t=1744915488;
+	bh=N4+hZZd4TugklM3QatZpTSrnhhyYOXK/BFs+QkPFuXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MtSxTw/DGPWBeSuuEjwfM2qX+FDPdnxD3265ZgzFfo75tdZG5CBIqDoWnFWT5x3sn
-	 Au4fVk5cDISBQjuppFilhgnQvmMGn+pSDCBnRZt0oPzows9+SVSA0XdEuJH+o5fVMZ
-	 vB/+bxo7ue4jw3jP3DNpZlz+nxUWldN0rlv3AevU=
+	b=Vw5XBQESil3x/EtzFHPQ5ujZ8s2t+zaCvlW3B37hngqpTVwEBqaHfyXjOSZpQQ+F/
+	 NXczUujumdSgQNssucLU8okIANsStS1OHeF5MZ0DgQVg1xT/yLjep8HiQHzbegrLFT
+	 1Y6/5v18MMrIDjuB0IT58QxyKWJMIviZaeML+WcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jackson.lee" <jackson.lee@chipsnmedia.com>,
-	Nas Chung <nas.chung@chipsnmedia.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.14 264/449] media: chips-media: wave5: Avoid race condition in the interrupt handler
+	Philip Yang <Philip.Yang@amd.com>,
+	Kent Russell <kent.russell@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 143/393] drm/amdkfd: debugfs hang_hws skip GPU with MES
 Date: Thu, 17 Apr 2025 19:49:12 +0200
-Message-ID: <20250417175128.646306824@linuxfoundation.org>
+Message-ID: <20250417175113.337135082@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jackson.lee <jackson.lee@chipsnmedia.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-commit ac35f768986610480a1c01323d9cf9f5eaf3ee9b upstream.
+[ Upstream commit fe9d0061c413f8fb8c529b18b592b04170850ded ]
 
-In case of multiple active instances, new interrupts can occur as soon
-as the current interrupt is cleared. If the driver reads the
-instance_info after clearing the interrupt, then there is no guarantee,
-that the instance_info is still valid for the current interrupt.
+debugfs hang_hws is used by GPU reset test with HWS, for MES this crash
+the kernel with NULL pointer access because dqm->packet_mgr is not setup
+for MES path.
 
-Read the instance_info register for each interrupt before clearing the
-interrupt.
+Skip GPU with MES for now, MES hang_hws debugfs interface will be
+supported later.
 
-Fixes: ed7276ed2fd0 ("media: chips-media: wave5: Add hrtimer based polling support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jackson.lee <jackson.lee@chipsnmedia.com>
-Signed-off-by: Nas Chung <nas.chung@chipsnmedia.com>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Kent Russell <kent.russell@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/chips-media/wave5/wave5-vpu.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_device.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/media/platform/chips-media/wave5/wave5-vpu.c
-+++ b/drivers/media/platform/chips-media/wave5/wave5-vpu.c
-@@ -55,12 +55,12 @@ static void wave5_vpu_handle_irq(void *d
- 	struct vpu_device *dev = dev_id;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device.c b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+index d350c7ce35b3d..9186ef0bd2a32 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+@@ -1493,6 +1493,11 @@ int kfd_debugfs_hang_hws(struct kfd_node *dev)
+ 		return -EINVAL;
+ 	}
  
- 	irq_reason = wave5_vdi_read_register(dev, W5_VPU_VINT_REASON);
-+	seq_done = wave5_vdi_read_register(dev, W5_RET_SEQ_DONE_INSTANCE_INFO);
-+	cmd_done = wave5_vdi_read_register(dev, W5_RET_QUEUE_CMD_DONE_INST);
- 	wave5_vdi_write_register(dev, W5_VPU_VINT_REASON_CLR, irq_reason);
- 	wave5_vdi_write_register(dev, W5_VPU_VINT_CLEAR, 0x1);
++	if (dev->kfd->shared_resources.enable_mes) {
++		dev_err(dev->adev->dev, "Inducing MES hang is not supported\n");
++		return -EINVAL;
++	}
++
+ 	return dqm_debugfs_hang_hws(dev->dqm);
+ }
  
- 	list_for_each_entry(inst, &dev->instances, list) {
--		seq_done = wave5_vdi_read_register(dev, W5_RET_SEQ_DONE_INSTANCE_INFO);
--		cmd_done = wave5_vdi_read_register(dev, W5_RET_QUEUE_CMD_DONE_INST);
- 
- 		if (irq_reason & BIT(INT_WAVE5_INIT_SEQ) ||
- 		    irq_reason & BIT(INT_WAVE5_ENC_SET_PARAM)) {
+-- 
+2.39.5
+
 
 
 
