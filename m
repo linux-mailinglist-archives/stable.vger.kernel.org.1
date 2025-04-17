@@ -1,67 +1,57 @@
-Return-Path: <stable+bounces-133573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C1F1A92641
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:11:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A7CBA92A81
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:52:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B63DE8A5E7D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:11:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37E2D4A6492
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122701DB148;
-	Thu, 17 Apr 2025 18:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09D22571D5;
+	Thu, 17 Apr 2025 18:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uz9444cZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q21frDZ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C484918C034;
-	Thu, 17 Apr 2025 18:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F18E256C7A;
+	Thu, 17 Apr 2025 18:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913484; cv=none; b=kzhRWwWH1yfsRjhE+lIelCO42ickweU/AQE9bJdDex1gFaKSuVNz6dPHxgpqEy1XtNVjFVLrijsBLwEj7kALYN8Pdx6TStcjmOIHUKdagH1E+vV1rAJo34HTpKf3yeTsv8pLnLCL3YDHXyIAkn0zm+4JOVenUptxdsfiaqZdVyw=
+	t=1744915764; cv=none; b=gKXAQZZxw7fiuwRaXsyfs0vZb+UDDeaW8MahJ92mJe1R/gyB0iNfBqLS1UAAhF078N8E191GTlz/TQNRdwtbaAoqBPTsXvsn+tGoVMgX6m4BgQ4zst7mi2FDCPHbU0xJMByWBTqlgjY+9MvcfiPTUmiWv195KMNGFCWgy4WlWAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913484; c=relaxed/simple;
-	bh=Nc32qLcjBONiRLqf7kVsTfeztvMgwpcIlHaQ9LOPOZM=;
+	s=arc-20240116; t=1744915764; c=relaxed/simple;
+	bh=8+JtJeHnTJ35rV8rRNbIroEEMUg6Jav/l5rJ+60/BWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ylhe0CRbULCJfHGsANYCOaiU3X5f0yDsbI46cLs7LydWC5ir3aeBPuX5FXiEyKYtiruEgLq4yWFFS1o/9eo+e4Dca+2Th9EMU3wfy8N4n3gFU7LTn3YIwOVFqoG1MBpRJUR0wByWJwnwxeodTIvcUtM5U9dA9a+0c2CP1q1RJbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uz9444cZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4222C4CEE4;
-	Thu, 17 Apr 2025 18:11:23 +0000 (UTC)
+	 MIME-Version; b=QZd4SDWx9YxOZTfkaz5WjnpH3VOpAUwzU2hWXfhlEsdfOzZEQM4I9H/fhipNUaDdR1LgsJmbk7mg7QNT6vxCrdvtntKucb7Wmm+xSDWaPg3MMQNBlJY5wk4NAPPNWqYNgI2/NYDYPVqp/AGdAf5Ut7cInnWKQGX90fPETQFDOz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q21frDZ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C201AC4CEEA;
+	Thu, 17 Apr 2025 18:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913484;
-	bh=Nc32qLcjBONiRLqf7kVsTfeztvMgwpcIlHaQ9LOPOZM=;
+	s=korg; t=1744915764;
+	bh=8+JtJeHnTJ35rV8rRNbIroEEMUg6Jav/l5rJ+60/BWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uz9444cZ/fAarRdnZi5BsyJSn6G/4XtrLZV3LEddCkE5MnZ2X17Jr2yKC9Vesa8Ik
-	 hZISzVb0QYl7jpjLW4sQb1Pp7Vjki5TKsgx/ZalG2M7wsi3z4m8mlf6Wp52Xy/0T/E
-	 YnUCRRoU+TX8mQZjJpFCHIflfIV7hYVYA6FXINfc=
+	b=Q21frDZ5tGOr4WQZNtyUCuaCx25PL5+6Mb+Y41rz6VnJ+tsLhJi2NHsVgRwArtgBc
+	 BcRdQuc1eYkkg4xVJbJz4dyzWVVGwNzISyDLYhbK6Stj/RrHsZHv5NuHFqn5rfuf8M
+	 JOGIKQ4d/VHFmxtiYbp3UrhpspZMrV8x+5ISLVOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Juergen Gross <jgross@suse.com>,
-	Borislav Betkov <bp@alien8.de>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
-	Thomas Gleinxer <tglx@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.14 354/449] sparc/mm: avoid calling arch_enter/leave_lazy_mmu() in set_ptes
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 233/393] mptcp: sockopt: fix getting IPV6_V6ONLY
 Date: Thu, 17 Apr 2025 19:50:42 +0200
-Message-ID: <20250417175132.472710210@linuxfoundation.org>
+Message-ID: <20250417175116.968824122@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,75 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit eb61ad14c459b54f71f76331ca35d12fa3eb8f98 upstream.
+commit 8c39633759885b6ff85f6d96cf445560e74df5e8 upstream.
 
-With commit 1a10a44dfc1d ("sparc64: implement the new page table range
-API") set_ptes was added to the sparc architecture.  The implementation
-included calling arch_enter/leave_lazy_mmu() calls.
+When adding a socket option support in MPTCP, both the get and set parts
+are supposed to be implemented.
 
-The patch removes the usage of arch_enter/leave_lazy_mmu() since this
-implies nesting of lazy mmu regions which is not supported.  Without this
-fix, lazy mmu mode is effectively disabled because we exit the mode after
-the first set_ptes:
+IPV6_V6ONLY support for the setsockopt part has been added a while ago,
+but it looks like the get part got forgotten. It should have been
+present as a way to verify a setting has been set as expected, and not
+to act differently from TCP or any other socket types.
 
-remap_pte_range()
-  -> arch_enter_lazy_mmu()
-  -> set_ptes()
-      -> arch_enter_lazy_mmu()
-      -> arch_leave_lazy_mmu()
-  -> arch_leave_lazy_mmu()
+Not supporting this getsockopt(IPV6_V6ONLY) blocks some apps which want
+to check the default value, before doing extra actions. On Linux, the
+default value is 0, but this can be changed with the net.ipv6.bindv6only
+sysctl knob. On Windows, it is set to 1 by default. So supporting the
+get part, like for all other socket options, is important.
 
-Powerpc suffered the same problem and fixed it in a corresponding way with
-commit 47b8def9358c ("powerpc/mm: Avoid calling
-arch_enter/leave_lazy_mmu() in set_ptes").
+Everything was in place to expose it, just the last step was missing.
+Only new code is added to cover this specific getsockopt(), that seems
+safe.
 
-Link: https://lkml.kernel.org/r/20250303141542.3371656-5-ryan.roberts@arm.com
-Fixes: 1a10a44dfc1d ("sparc64: implement the new page table range API")
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Andreas Larsson <andreas@gaisler.com>
-Acked-by: Juergen Gross <jgross@suse.com>
-Cc: Borislav Betkov <bp@alien8.de>
-Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Juegren Gross <jgross@suse.com>
-Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: c9b95a135987 ("mptcp: support IPV6_V6ONLY setsockopt")
+Cc: stable@vger.kernel.org
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/550
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-2-122dbb249db3@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sparc/include/asm/pgtable_64.h |    2 --
- 1 file changed, 2 deletions(-)
+ net/mptcp/sockopt.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/arch/sparc/include/asm/pgtable_64.h
-+++ b/arch/sparc/include/asm/pgtable_64.h
-@@ -936,7 +936,6 @@ static inline void __set_pte_at(struct m
- static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
- 		pte_t *ptep, pte_t pte, unsigned int nr)
- {
--	arch_enter_lazy_mmu_mode();
- 	for (;;) {
- 		__set_pte_at(mm, addr, ptep, pte, 0);
- 		if (--nr == 0)
-@@ -945,7 +944,6 @@ static inline void set_ptes(struct mm_st
- 		pte_val(pte) += PAGE_SIZE;
- 		addr += PAGE_SIZE;
- 	}
--	arch_leave_lazy_mmu_mode();
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -1430,6 +1430,20 @@ static int mptcp_getsockopt_v4(struct mp
+ 	return -EOPNOTSUPP;
  }
- #define set_ptes set_ptes
  
++static int mptcp_getsockopt_v6(struct mptcp_sock *msk, int optname,
++			       char __user *optval, int __user *optlen)
++{
++	struct sock *sk = (void *)msk;
++
++	switch (optname) {
++	case IPV6_V6ONLY:
++		return mptcp_put_int_option(msk, optval, optlen,
++					    sk->sk_ipv6only);
++	}
++
++	return -EOPNOTSUPP;
++}
++
+ static int mptcp_getsockopt_sol_mptcp(struct mptcp_sock *msk, int optname,
+ 				      char __user *optval, int __user *optlen)
+ {
+@@ -1469,6 +1483,8 @@ int mptcp_getsockopt(struct sock *sk, in
+ 
+ 	if (level == SOL_IP)
+ 		return mptcp_getsockopt_v4(msk, optname, optval, option);
++	if (level == SOL_IPV6)
++		return mptcp_getsockopt_v6(msk, optname, optval, option);
+ 	if (level == SOL_TCP)
+ 		return mptcp_getsockopt_sol_tcp(msk, optname, optval, option);
+ 	if (level == SOL_MPTCP)
 
 
 
