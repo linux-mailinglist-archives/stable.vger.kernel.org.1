@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-133449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02726A9263C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:11:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D1FEA929DC
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:45:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE09A7B74FB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F59C8E3F3A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7588B257AF3;
-	Thu, 17 Apr 2025 18:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A56259C98;
+	Thu, 17 Apr 2025 18:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMdYyUkd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x38w3teb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31509257AC6;
-	Thu, 17 Apr 2025 18:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A7022333D;
+	Thu, 17 Apr 2025 18:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913111; cv=none; b=JEdwcazr7OIGNYZ9bm6dEfZUrNxJE/EZ1Frog9iaS+wLj7cJxVpRHS9qdj+eXEDq4dsxv5GI9OZ4IW2Z6oJpcXs+tLWH0itFz3sCrpH1NWsFvqhmUctZuaVTIQ+lA4CFEz5PT7j8YXZhXENDZfAMk7MJ+m9uqVJgDEYY8yg4zig=
+	t=1744915288; cv=none; b=SfClf5f/CngFAPnzSKmBd/rLV8rTHZ9q9QKwEy5xYjDTwmuJm5XBpcopDFdKpES/cwICGUEye3knVoNuDS5VGDP3KEC7aae4wEoJ40LeU28bGEFp8ypd43WidyVYaBs9v/j4tjgU5NOiQObNbEbu8shTStfRC1M8N2BYcK9e26I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913111; c=relaxed/simple;
-	bh=QZ5/BU9z1VFHsQTZbj/7SfPifCNIkaxu7nboxC17XB8=;
+	s=arc-20240116; t=1744915288; c=relaxed/simple;
+	bh=+i6BJPVFPXAddF07UORwZWWqYImXR19lUUdyFqTk9ks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=chYW3RYQMHM/quEAvELtJ8VZMKX4C/Etz5Dz8iOaXA/qi4rZs+NpdGQIKFbg0APfOEoLxjsqHNhU8sVa1EAKCTOTRRdkZGUfNvNbg3NjyMjf4Nk951hrorMHLx/e8ROR2xpztnR+1z1DfF1GsMXJ8BTBj9xE4HnT2oV0PzlQs/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMdYyUkd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45DBEC4CEE4;
-	Thu, 17 Apr 2025 18:05:10 +0000 (UTC)
+	 MIME-Version; b=cl/XXOjS7DHyJNcMF+X//MdpIYsRqNOzW3lHUYVj9D4FPkCkt0zP8/KqaPpLbcgVgEahD4PsONPs30AGoAn+OU/kq2js5Ob+uFX8Ax1iHBy7gd/PnaCauzcP/KSp20X7rjPsTqekPmNGT63ZAPFJ814MuXL0iAcxhBrsiq/bV1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x38w3teb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7559BC4CEE4;
+	Thu, 17 Apr 2025 18:41:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913110;
-	bh=QZ5/BU9z1VFHsQTZbj/7SfPifCNIkaxu7nboxC17XB8=;
+	s=korg; t=1744915287;
+	bh=+i6BJPVFPXAddF07UORwZWWqYImXR19lUUdyFqTk9ks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qMdYyUkdunrAwu4/49Uo6gzjTl+EXkAye0ubHqfPdwqvWL0UAEUg3bknl7S8s1ZBC
-	 n16cHBn3QQbmrrIj3FE/94rhdtjA/iaUHRQeY90ThkdhTpGnwNyB+jJfE/TjtVgApJ
-	 K+VF8SXlKGYiuQkBbOQlaIimeMo18x2le21idmdM=
+	b=x38w3tebz0uSh/EYdsGDwCnqZKCug6QZlVOAoD93QM8zRmSkTUJly1fYJjTebeTDE
+	 V3BTWdKYs1P8yhnDfAQIPPCVxglfj8B0sceZ4RZYh33jnYyINuQ51JV3esv7Pz/+xb
+	 0hepQeXCwsSzCfWR9it2OWLUImHVGq/IMl+bnXbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	keenplify <keenplify@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 200/449] HID: pidff: Define values used in pidff_find_special_fields
+Subject: [PATCH 6.12 079/393] ASoC: amd: Add DMI quirk for ACP6X mic support
 Date: Thu, 17 Apr 2025 19:48:08 +0200
-Message-ID: <20250417175126.022565691@linuxfoundation.org>
+Message-ID: <20250417175110.779449326@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: keenplify <keenplify@gmail.com>
 
-[ Upstream commit 1c12f136891cf4d2d4e6aa202d671a9d2171a716 ]
+[ Upstream commit 309b367eafc8e162603cd29189da6db770411fea ]
 
-Makes it clear where did these values came from
+Some AMD laptops with ACP6X do not expose the DMIC properly on Linux.
+Adding a DMI quirk enables mic functionality.
 
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Similar to Bugzilla #218402, this issue affects multiple users.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219853
+Signed-off-by: keenplify <keenplify@gmail.com>
+Link: https://patch.msgid.link/20250315111617.12194-1-keenplify@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index 42c951a1d65bf..bd913d57e4d75 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -48,6 +48,14 @@ static const u8 pidff_reports[] = {
- /* device_control is really 0x95, but 0x96 specified as it is the usage of
- the only field in that report */
- 
-+/* PID special fields */
-+
-+#define PID_EFFECT_TYPE			0x25
-+#define PID_DIRECTION			0x57
-+#define PID_EFFECT_OPERATION_ARRAY	0x78
-+#define PID_BLOCK_LOAD_STATUS		0x8b
-+#define PID_DEVICE_CONTROL_ARRAY	0x96
-+
- /* Value usage tables used to put fields and values into arrays */
- 
- #define PID_EFFECT_BLOCK_INDEX	0
-@@ -1056,23 +1064,24 @@ static int pidff_find_special_fields(struct pidff_device *pidff)
- 
- 	pidff->create_new_effect_type =
- 		pidff_find_special_field(pidff->reports[PID_CREATE_NEW_EFFECT],
--					 0x25, 1);
-+					 PID_EFFECT_TYPE, 1);
- 	pidff->set_effect_type =
- 		pidff_find_special_field(pidff->reports[PID_SET_EFFECT],
--					 0x25, 1);
-+					 PID_EFFECT_TYPE, 1);
- 	pidff->effect_direction =
- 		pidff_find_special_field(pidff->reports[PID_SET_EFFECT],
--					 0x57, 0);
-+					 PID_DIRECTION, 0);
- 	pidff->device_control =
- 		pidff_find_special_field(pidff->reports[PID_DEVICE_CONTROL],
--			0x96, !(pidff->quirks & HID_PIDFF_QUIRK_PERMISSIVE_CONTROL));
-+			PID_DEVICE_CONTROL_ARRAY,
-+			!(pidff->quirks & HID_PIDFF_QUIRK_PERMISSIVE_CONTROL));
- 
- 	pidff->block_load_status =
- 		pidff_find_special_field(pidff->reports[PID_BLOCK_LOAD],
--					 0x8b, 1);
-+					 PID_BLOCK_LOAD_STATUS, 1);
- 	pidff->effect_operation_status =
- 		pidff_find_special_field(pidff->reports[PID_EFFECT_OPERATION],
--					 0x78, 1);
-+					 PID_EFFECT_OPERATION_ARRAY, 1);
- 
- 	hid_dbg(pidff->hid, "search done\n");
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index a7637056972aa..bd3808f98ec9e 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -584,6 +584,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_VERSION, "pang13"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "Micro-Star International Co., Ltd."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 15 C7UCX"),
++		}
++	},
+ 	{}
+ };
  
 -- 
 2.39.5
