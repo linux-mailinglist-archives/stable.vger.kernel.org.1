@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-134069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF939A92914
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:40:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34C3CA92B1F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:57:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69BB21B628F2
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3B614C0315
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 522581DF733;
-	Thu, 17 Apr 2025 18:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AD292571D7;
+	Thu, 17 Apr 2025 18:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LB/tZn4Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IEO5Z9x0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF4A8462;
-	Thu, 17 Apr 2025 18:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30BE42550C8;
+	Thu, 17 Apr 2025 18:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914999; cv=none; b=tGvL9JczhPP4wH2QDBDUkkDzXcMUpnmCTaKxV2w7tGtiE56yEhddLcyl+xWmjW+1g/VMEEioHUWgkIpwD6zSF0Z855F4fAGBWRs/b6/bYiPLPnoK0gVQvNJzoFI9kg1+uuxF3XDcVeGeeDnkTDeI26aEhO2UVlS0NOAe+iua+2s=
+	t=1744916171; cv=none; b=Trr+Q+wBSBgb2lFIbDJAIOCPMt0F+q9YACLKf7ffY3/BOyQoEUz94NYDFAFSHp4jwitQm6paa/4uhyfH9Lz/cyvlPFnUpqAbhcq/mUoA0FTlLjBj7mB9Snl2z/1KGidrRZs/bns4mk3AAqH07GH2TkkH+JfDioyYN8cuO1MqpVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914999; c=relaxed/simple;
-	bh=QWwYg10vtWwmP7+MescVksk0RxQGo2IdVp96FK8bE/0=;
+	s=arc-20240116; t=1744916171; c=relaxed/simple;
+	bh=0tdx/rTuMziHk6GeX6nbHBDaVTXdYJJiRYj5AtM5K+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kYKhKJueZkcGAcybqzmeppTXrgvmqL/bnfNYySqUrJfgc0wjBxYiI88I6qtQfBWKPmTAxoHoxOpQqwWiTRcXUDiWho1imwKoZx2SbcCZxNFbdJBbpYgtFgHgzy4/PPiXNM7qHUYzZQEmQ7kLva1HRfTkUB1nWXfJAflAKx/HIjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LB/tZn4Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A688C4CEE4;
-	Thu, 17 Apr 2025 18:36:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=T2bmdhvduP22bixvHa9j+4tGXlqVv26l+rFIrk/0+cV/FdsLpYDPIvnDTNpvAm+CyA5m1ugPATe2mMQ0pL52ghm4oThMOHuFVxQ51OTQxGOGb6kCRzUstZoY+0ECFSxEW5dX038vNOZN3jg729w4omBQuTU+UbGswVsJoM1FPZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IEO5Z9x0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7CF6C4CEEA;
+	Thu, 17 Apr 2025 18:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914998;
-	bh=QWwYg10vtWwmP7+MescVksk0RxQGo2IdVp96FK8bE/0=;
+	s=korg; t=1744916171;
+	bh=0tdx/rTuMziHk6GeX6nbHBDaVTXdYJJiRYj5AtM5K+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LB/tZn4ZpKlovMmwjJdnk72gbednE2Tcupsj55qvHheSzciA6VOWnh2Y28kNHdaPa
-	 AJMSeBS3clcokCnEl9BI0TD+JQ+o4YTVat4GZSrMjeCAi2f0Nw1A7zcf01MapLGXmo
-	 uf+AEsa+35KiJLBymQAPJs62IBzjWj5rSMxq2bNc=
+	b=IEO5Z9x0gqV+ZvnLij04U7t8+2u6jdLrIU0jSMoIf7aJycsBLgYXm6YJWn+JnLJLI
+	 GfcMn5ONvVgbD8jmhDVgjnvSNt6Dbm4te2rauUlqYtoEcT4UMtTr9t3mq78VOK55Gb
+	 w1XN2OcdXZHUIdJ0ehVZysKGMYCfE5jaTRpka6Js=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Hao <haokexin@gmail.com>,
-	Han Xu <han.xu@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.13 400/414] spi: fsl-qspi: use devm function instead of driver remove
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+Subject: [PATCH 6.12 349/393] landlock: Add erratum for TCP fix
 Date: Thu, 17 Apr 2025 19:52:38 +0200
-Message-ID: <20250417175127.569946604@linuxfoundation.org>
+Message-ID: <20250417175121.636829117@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,98 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Han Xu <han.xu@nxp.com>
+From: Mickaël Salaün <mic@digikod.net>
 
-commit 40369bfe717e96e26650eeecfa5a6363563df6e4 upstream.
+commit 48fce74fe209ba9e9b416d7100ccee546edc9fc6 upstream.
 
-Driver use devm APIs to manage clk/irq/resources and register the spi
-controller, but the legacy remove function will be called first during
-device detach and trigger kernel panic. Drop the remove function and use
-devm_add_action_or_reset() for driver cleanup to ensure the release
-sequence.
+Add erratum for the TCP socket identification fixed with commit
+854277e2cc8c ("landlock: Fix non-TCP sockets restriction").
 
-Trigger kernel panic on i.MX8MQ by
-echo 30bb0000.spi >/sys/bus/platform/drivers/fsl-quadspi/unbind
-
+Fixes: 854277e2cc8c ("landlock: Fix non-TCP sockets restriction")
+Cc: Günther Noack <gnoack@google.com>
+Cc: Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>
 Cc: stable@vger.kernel.org
-Fixes: 8fcb830a00f0 ("spi: spi-fsl-qspi: use devm_spi_register_controller")
-Reported-by: Kevin Hao <haokexin@gmail.com>
-Signed-off-by: Han Xu <han.xu@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250326224152.2147099-1-han.xu@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20250318161443.279194-4-mic@digikod.net
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-qspi.c |   31 +++++++++++++++++--------------
- 1 file changed, 17 insertions(+), 14 deletions(-)
+ security/landlock/errata/abi-4.h | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+ create mode 100644 security/landlock/errata/abi-4.h
 
---- a/drivers/spi/spi-fsl-qspi.c
-+++ b/drivers/spi/spi-fsl-qspi.c
-@@ -839,6 +839,19 @@ static const struct spi_controller_mem_o
- 	.get_name = fsl_qspi_get_name,
- };
- 
-+static void fsl_qspi_cleanup(void *data)
-+{
-+	struct fsl_qspi *q = data;
+diff --git a/security/landlock/errata/abi-4.h b/security/landlock/errata/abi-4.h
+new file mode 100644
+index 000000000000..c052ee54f89f
+--- /dev/null
++++ b/security/landlock/errata/abi-4.h
+@@ -0,0 +1,15 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
 +
-+	/* disable the hardware */
-+	qspi_writel(q, QUADSPI_MCR_MDIS_MASK, q->iobase + QUADSPI_MCR);
-+	qspi_writel(q, 0x0, q->iobase + QUADSPI_RSER);
-+
-+	fsl_qspi_clk_disable_unprep(q);
-+
-+	mutex_destroy(&q->lock);
-+}
-+
- static int fsl_qspi_probe(struct platform_device *pdev)
- {
- 	struct spi_controller *ctlr;
-@@ -928,6 +941,10 @@ static int fsl_qspi_probe(struct platfor
- 
- 	ctlr->dev.of_node = np;
- 
-+	ret = devm_add_action_or_reset(dev, fsl_qspi_cleanup, q);
-+	if (ret)
-+		goto err_destroy_mutex;
-+
- 	ret = devm_spi_register_controller(dev, ctlr);
- 	if (ret)
- 		goto err_destroy_mutex;
-@@ -947,19 +964,6 @@ err_put_ctrl:
- 	return ret;
- }
- 
--static void fsl_qspi_remove(struct platform_device *pdev)
--{
--	struct fsl_qspi *q = platform_get_drvdata(pdev);
--
--	/* disable the hardware */
--	qspi_writel(q, QUADSPI_MCR_MDIS_MASK, q->iobase + QUADSPI_MCR);
--	qspi_writel(q, 0x0, q->iobase + QUADSPI_RSER);
--
--	fsl_qspi_clk_disable_unprep(q);
--
--	mutex_destroy(&q->lock);
--}
--
- static int fsl_qspi_suspend(struct device *dev)
- {
- 	return 0;
-@@ -997,7 +1001,6 @@ static struct platform_driver fsl_qspi_d
- 		.pm =   &fsl_qspi_pm_ops,
- 	},
- 	.probe          = fsl_qspi_probe,
--	.remove		= fsl_qspi_remove,
- };
- module_platform_driver(fsl_qspi_driver);
- 
++/**
++ * DOC: erratum_1
++ *
++ * Erratum 1: TCP socket identification
++ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ *
++ * This fix addresses an issue where IPv4 and IPv6 stream sockets (e.g., SMC,
++ * MPTCP, or SCTP) were incorrectly restricted by TCP access rights during
++ * :manpage:`bind(2)` and :manpage:`connect(2)` operations. This change ensures
++ * that only TCP sockets are subject to TCP access rights, allowing other
++ * protocols to operate without unnecessary restrictions.
++ */
++LANDLOCK_ERRATUM(1)
+-- 
+2.49.0
+
 
 
 
