@@ -1,95 +1,81 @@
-Return-Path: <stable+bounces-132904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 107B6A914B7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 09:05:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF74AA914C2
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 09:10:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 042133BD75A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 07:05:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30D4B3A471A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 07:10:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0825D215197;
-	Thu, 17 Apr 2025 07:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F765217F32;
+	Thu, 17 Apr 2025 07:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="yVcccdm7";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="b1Km8ZF6";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="KeU2rwQZ";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="b6WdqsfM"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XAWCdDVX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045ED2063FD
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 07:05:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6797A1DE2DB
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 07:10:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744873545; cv=none; b=nTB7xi5j77+DeugF4H9RBkjersBWw6JdC8iizD6Qrfd0/6Oj391KdiR40J+19LVP9Rju/8zCXyeAIXRsJHuKpSdvuXNRqw+pWv+V2n6fa5peuzDiUKqELaIwrjQcs6PUrDbDVb5i/fE5ikK+rLzDJ8jPL95JxmOb8i8II3oDuZ8=
+	t=1744873815; cv=none; b=T4Atu3SO0ekxUJw286eKjZ1UIG+APmcqYmq21LX+5MLbU8uH9ct8hAGHiSX7NrfzRUDCxYXmagHoOwNsGf9eR20OC6sqCMuM/Jr+wN3CrESMB58w4kUGhmXjppZeuW+uPqhJp07fuV4h5+gOrvh1pe81EwayGpnjRZKhjJUjfiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744873545; c=relaxed/simple;
-	bh=HOEV45ThnY/Yb65WyKotvmiHDh3rW2o+Zy2dXl1lSu0=;
+	s=arc-20240116; t=1744873815; c=relaxed/simple;
+	bh=BGdRhUgbz6IHnB/5nKa0J0kWtQyqH6AfunEBxs/BTZY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eYu8fbDgsZ5Qg0fT91Y69d5EIauPkj2wZTD114ZJqDlYI2SPCowknmm1KPzaCmZ5NVsOQPETyuYYpyBA2/V0B001CHFvferTb4ASpL3g+PjVyepZiRdTPgBn/WIDQ34DSVcmN+lgqv7kzNwgaN6cT5P12oNsLt/1s2Ezlytfe00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=yVcccdm7; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=b1Km8ZF6; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=KeU2rwQZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=b6WdqsfM; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id EEB5D21197;
-	Thu, 17 Apr 2025 07:05:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1744873542; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=n3JWJiXcjx1Szn8ywCGniS5/EufUBWnfIG7HjjSGdjY=;
-	b=yVcccdm7STN/oIczS5hIoxdzpKyhEO1nX6hjDWZTxqCN36LV3Ey8YtJuninOeLuKhGDTr8
-	mLbcy/cRsb+Ef3AFop39neO9co82lM4Z2tGbzKD/KZVVGBZkIyHhDvBvVzD+z6CI2Cgrt5
-	yUaLCA7Jy/lj3B1ToGYaxqMAB+nb5wk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1744873542;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=n3JWJiXcjx1Szn8ywCGniS5/EufUBWnfIG7HjjSGdjY=;
-	b=b1Km8ZF6l3U/NMowMyWVwAeX9wT4NoR19jRkrPXIMbqgt7UvruJ7SbMBrHQSMDg+A0jPeC
-	gzZ693kW+e12znBA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1744873541; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=n3JWJiXcjx1Szn8ywCGniS5/EufUBWnfIG7HjjSGdjY=;
-	b=KeU2rwQZmVwexd6w+5r8yqGz7SLdzAsnEiVIpA+XMEwdauciWr+x9qLpiQ8aC1QXAQcwxV
-	jbGWSTy9U3st4fwiPX7eWn3AdWnnFPZlTXhHBbNcF9E1NyCSYbA2sztL9J+B4Qiavbkewc
-	FCHLEaUsDKwVGOWMT7DPX/vYNCVAYik=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1744873541;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=n3JWJiXcjx1Szn8ywCGniS5/EufUBWnfIG7HjjSGdjY=;
-	b=b6WdqsfMZP1HLZT+VzBeCG9MYcqugFI7U/Aw6d+BcOI3JQ+tSx44e/CfKdvPTYjKPl5Ohq
-	b+VWJsQ6AnedFJBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CA1D6137CF;
-	Thu, 17 Apr 2025 07:05:41 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id KYwBMEWoAGhlSAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Thu, 17 Apr 2025 07:05:41 +0000
-Message-ID: <6c2e9f12-a271-47cc-b2aa-880d61d07b22@suse.de>
-Date: Thu, 17 Apr 2025 09:05:41 +0200
+	 In-Reply-To:Content-Type; b=k1Xs01ipPHvR6zia7VQ57voyfXQOYOPBtZDmsjQHd4Lq8U9iqL7325Uv4K6AqWUEw3P2QrZqSUkmDYLmTgQusMFqJ7nTssGtWj8DwG55AEbE9p7OBR2H/pwrFyP5BVmx7AonRlV93IfvUUz3S3TlxRiDqswEeF8leDtXildkQ+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XAWCdDVX; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3913290f754so78250f8f.1
+        for <stable@vger.kernel.org>; Thu, 17 Apr 2025 00:10:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1744873812; x=1745478612; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=Lul/GSjYvkQhSC1y0UnqH61paijsP+u/iqsJV8tyjv0=;
+        b=XAWCdDVXgpKatlPIid94vVmURDztfJ9ogiKlj+MtrQXOzNaU6poGhIGZToBy8e2RBm
+         0Q6NWcmFC/aNAb+R3t7JalUxneRJDFj8JqwQ40G48Y+/GNXYp78tN3xUK26wz4O+b97C
+         mizCyKi8gkBaxEEHOwaH4HCXaIAt+KBR/VfzTlTulrJuEWCU7aaRbzDnqQf/gXWiDHgs
+         URhC57fIzEz0XctCBwQmdRcfzOhJ/qDN0pw5kJQ7YNxT4u41Oe0P4Q+UhWeYToAqqCFZ
+         iZkB+XGOb4Imujk7eXKsnY2Estwd20VPYOfR3NVDAQFa3gQf8LCLrgSimQ+YBUpNwN1V
+         TjRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744873812; x=1745478612;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Lul/GSjYvkQhSC1y0UnqH61paijsP+u/iqsJV8tyjv0=;
+        b=JNfPkugq0sW/zdEC04rE8NDJFClpW6NR+jz6SOSHPZbtVuC6yu9XRMQRs9IyexUE42
+         DUH85zGh2RsfB/ZeWiDym583P512PAeqP+Aha0lTa1+6ngHn3YZliMc80usyUHgviAGI
+         ESnEPCxYn05+OqPHDqWMoReFTuiEyBNugLAB9WCIR7NCWXdYYsyZwl+KhFz0yMjSx6VK
+         3Db24N0ebUpGv9HvHgF3y5EqigMa9EfXYylWXU0QrlTzYtSkTgnU7o96FGHa0tdWF2Yk
+         5E5LoxcFjWgUYXzSNzFCnqY8WLDqRDaVRPEx+goYF+vkZ+5XajDLmu5fctOFTZMNG4V9
+         Ut/w==
+X-Forwarded-Encrypted: i=1; AJvYcCUJZ+1KOsRybMS+/tEMghja5XVdkEwiqfbYSO4nXJYIAEUCCLrC2JkW0WSZUUsR5R1dudNzCr8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0EDJAGXiOlrBV3SJ8Qebss2P92IBtVGYf/p8r/DgRhPRX1+ze
+	AG7153309QHeat9XGOvtS7dk+7rGubAsyDD+/PuJtaJmiPb9qxpStIku4Fox9+0=
+X-Gm-Gg: ASbGncu2lgZD/GyLSGiEKXwPp1jNF4vH9fx0FyOfYxRpR8GOrvgxHqnj6Hg0FxpaTds
+	H0pQEoNs+vNoOs9qD7B+C4j3kdDWqV9V9KL8TMD1jce14ZMaPldhRRFMcG/jre+ijmRIupjVCW9
+	7n9Jbn7E3Jjp6Q4MgvzyCSRAl7ezWp9sQPuBrRckK0GBU3QteVf6AS/OuQ8Kxm/G+AvWVXMp4yQ
+	nZQ3p/cT6QKCet1gdy76+Z8BR62FjLXztH//J93VGhc+fmgVUWCA1nuIexiJ93k8DNmPTrh8xM2
+	jEmyYZWEkKtB9Qf+Ay+c0ZB+zxL4XVMu5t0+Z0vzmrJFcbTFH4Ltvut21KkM/ue/bmYaGvQ2/kr
+	e66KgW0QW3jkSKtOG
+X-Google-Smtp-Source: AGHT+IFP74Dcw2ePTB8XNvlZG/LBO0dpD3C8vJ/rqjSdpc2m1Zh0504XVQwpY7FgGs0ERlglDXTGMA==
+X-Received: by 2002:a05:6000:1886:b0:391:277e:c400 with SMTP id ffacd0b85a97d-39ee8fde03bmr689110f8f.13.1744873811586;
+        Thu, 17 Apr 2025 00:10:11 -0700 (PDT)
+Received: from [192.168.0.101] (46.150.74.144.lvv.nat.volia.net. [46.150.74.144])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4405b50b8ccsm42434875e9.28.2025.04.17.00.10.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Apr 2025 00:10:11 -0700 (PDT)
+Message-ID: <a0739b6b-b043-47f1-8044-f6ed68d39f2c@linaro.org>
+Date: Thu, 17 Apr 2025 09:10:09 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,117 +83,115 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/tiny: panel-mipi-dbi: Pass
- drm_client_setup_with_fourcc()
-To: Fabio Estevam <festevam@gmail.com>, noralf@tronnes.org
-Cc: dri-devel@lists.freedesktop.org, Fabio Estevam <festevam@denx.de>,
- stable@vger.kernel.org
-References: <20250416133048.2316297-1-festevam@gmail.com>
+Subject: Re: [PATCH v2] cpufreq: fix compile-test defaults
+To: Johan Hovold <johan+linaro@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>
+Cc: "Rob Herring (Arm)" <robh@kernel.org>, linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250417065535.21358-1-johan+linaro@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20250416133048.2316297-1-festevam@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20250417065535.21358-1-johan+linaro@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,tronnes.org];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCVD_TLS_ALL(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email,suse.de:mid,denx.de:email];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,denx.de:email,suse.de:email,suse.de:mid]
-X-Spam-Score: -4.30
-X-Spam-Flag: NO
+
+On 17/04/2025 08:55, Johan Hovold wrote:
+> Commit 3f66425a4fc8 ("cpufreq: Enable COMPILE_TEST on Arm drivers")
+> enabled compile testing of most Arm CPUFreq drivers but left the
+> existing default values unchanged so that many drivers are enabled by
+> default whenever COMPILE_TEST is selected.
+> 
+> This specifically results in the S3C64XX CPUFreq driver being enabled
+> and initialised during boot of non-S3C64XX platforms with the following
+> error logged:
+> 
+> 	cpufreq: Unable to obtain ARMCLK: -2
+
+But isn't this fixed by my commit (d4f610a9bafd)? How is it possible to
+reproduce above error when you are NOT test compiling?
+
+> 
+> Commit d4f610a9bafd ("cpufreq: Do not enable by default during compile
+> testing") recently fixed most of the default values, but two entries
+> were missed
+
+That's not really a bug to be fixed. No things got worse by missing two
+entries, so how this part could be called something needing fixing?
+
+>  and two could use a more specific default condition.
+
+Two entries for more specific default - before they were ALWAYS default,
+so again I narrowed it from wide default. Nothing to fix here. You can
+narrow it further but claiming that my commit made something worse looks
+like a stretch - and that's a meaning of fixing someone's commit.
+
+> 
+> Fix the default values for drivers that can be compile tested and that
+> should be enabled by default when not compile testing.
+> 
+> Fixes: 3f66425a4fc8 ("cpufreq: Enable COMPILE_TEST on Arm drivers")
 
 
+> Fixes: d4f610a9bafd ("cpufreq: Do not enable by default during compile testing")
 
-Am 16.04.25 um 15:30 schrieb Fabio Estevam:
-> From: Fabio Estevam <festevam@denx.de>
->
-> Since commit 559358282e5b ("drm/fb-helper: Don't use the preferred depth
-> for the BPP default") an RGB565 CFAF240320X display no longer works
-> correctly: the colors are wrong and the content appears twice on the
-> screen, side by side.
->
-> The reason for the regression is that bits per pixel is now 32 instead
-> of 16 in the fb-helper driver.
->
-> Fix this problem by passing drm_client_setup_with_fourcc() with the correct
-> format depending on the bits per pixel information.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 559358282e5b ("drm/fb-helper: Don't use the preferred depth for the BPP default")
-> Signed-off-by: Fabio Estevam <festevam@denx.de>
+That's not correct tag - it introduced no new issues, did not make
+things worse, so nothing to fix there, if I understand correctly.
 
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-
+> Cc: stable@vger.kernel.org	# 6.12
+> Cc: Rob Herring (Arm) <robh@kernel.org>
+> Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 > ---
->   drivers/gpu/drm/tiny/panel-mipi-dbi.c | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/tiny/panel-mipi-dbi.c b/drivers/gpu/drm/tiny/panel-mipi-dbi.c
-> index 0460ecaef4bd..23914a9f7fd3 100644
-> --- a/drivers/gpu/drm/tiny/panel-mipi-dbi.c
-> +++ b/drivers/gpu/drm/tiny/panel-mipi-dbi.c
-> @@ -390,7 +390,10 @@ static int panel_mipi_dbi_spi_probe(struct spi_device *spi)
->   
->   	spi_set_drvdata(spi, drm);
->   
-> -	drm_client_setup(drm, NULL);
-> +	if (bpp == 16)
-> +		drm_client_setup_with_fourcc(drm, DRM_FORMAT_RGB565);
-> +	else
-> +		drm_client_setup_with_fourcc(drm, DRM_FORMAT_RGB888);
->   
->   	return 0;
->   }
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
-
+> 
+> Changes in v2:
+>  - rebase on commit d4f610a9bafd ("cpufreq: Do not enable by default
+>    during compile testing")
+> 
+Best regards,
+Krzysztof
 
