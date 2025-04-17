@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E607EA92913
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:40:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C90FAA929A6
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:43:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8684F1B628F0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 189A44A4304
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E8432676FC;
-	Thu, 17 Apr 2025 18:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67AB32580D0;
+	Thu, 17 Apr 2025 18:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oPfYMZtD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dufuq5GQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA4325C71F;
-	Thu, 17 Apr 2025 18:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251A2257426;
+	Thu, 17 Apr 2025 18:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914146; cv=none; b=sulPsuFzD5hgxHEZ8+adLJIIrNhrhb5Oa5O/FEV1X7XFgIdAwIvMQdarKA4TX2XkbO7zwTFtjyp3w6s9VOpSuO4emq7lfxemmwNkzW3eyNhatQyyX/0fp4ms360ENLdlDQHcq6qUE4cYJKFb/O7km1gGkYdoKHCMrnM0Av/nieM=
+	t=1744915261; cv=none; b=qCVkQ3CGrUA0md9oZj8sOWpbUWtRcg/HDP6P+zlcJ6OdwLadOUQo3966wG6DDjw0ecVn/VeyEDPl71VMiXKk9oXvigC123e034dn/cRDQih0QZ0KyZoh87HoHFgzTKmn8B+4KLE24kw4MqDn7dVe67CcuJOG7o6zekZg+nSS0cA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914146; c=relaxed/simple;
-	bh=xs+qBa+7QJJQtmU6aaeZ2Xhir14kQR0+jBYez+O41EI=;
+	s=arc-20240116; t=1744915261; c=relaxed/simple;
+	bh=eqYfotZkv3LovPYAfuFZrTHKerRYrni5mYkAiciouwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aL4kw++521M+BbyCnlxforyIu01k6Lc2DG/BiNxC9nJJe/yedXLU4XW9W973SxvI9jTmb03KlmPQG95+jDqT414v1Hvv6PfY541OvMpJx8nHkkXuYregxwo0LzXpFbD9nSyysTjWnfaDL8tLiJyR/Od9EJKYr/os6stvYYcAU1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oPfYMZtD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F69C4CEE4;
-	Thu, 17 Apr 2025 18:22:25 +0000 (UTC)
+	 MIME-Version; b=YK6vy+iUF2cCwFD2iaxNEmWERux4sDGV4GnNY0JTRe1Jw5hP4sGGfzXkoOf79XfBaXV2KPj4SMx+bOy5KqoHLtq00U9qq1G/cSCmlrFnXqiV7hfojX29/E/d5py/BK8kwCyzbHOEr8T7eignQpDBCF9zjS2TjgnzEKNRLO+04cI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dufuq5GQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADCD9C4CEE4;
+	Thu, 17 Apr 2025 18:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914145;
-	bh=xs+qBa+7QJJQtmU6aaeZ2Xhir14kQR0+jBYez+O41EI=;
+	s=korg; t=1744915261;
+	bh=eqYfotZkv3LovPYAfuFZrTHKerRYrni5mYkAiciouwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oPfYMZtDYts34JzF1WpkBbjmO3+PvBnsDuhQjllPs+PlHb9fSUTQV78hOEZeu1lMi
-	 SJ2fbJYjdjlKm4WkH2bRTa3IUeIWs9yEI/EZaqBz+zTX6GxjAA+6B3MK7hGWNPjAI1
-	 7NmkSKI5FOPmsASQpMxn1umQMc7dwfqG1UI5cQw0=
+	b=dufuq5GQmh8W3/WH5lMggkbvcOXWTIB8VblaT7nKW9D06qyPY9YuuJ573qQhoQqNP
+	 usaGumqz7kDdadERxHq14GIricVLMCHusVD1os8kA1611KnfC1yll6QeKO6kLRlYqe
+	 v2lZsdjBgriGdw15b7ZZBBTrn2fRnVsXzREuNuoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 122/414] Bluetooth: btusb: Add 13 USB device IDs for Qualcomm WCN785x
+Subject: [PATCH 6.12 071/393] ASoC: amd: ps: use macro for ACP6.3 pci revision id
 Date: Thu, 17 Apr 2025 19:48:00 +0200
-Message-ID: <20250417175116.342043340@linuxfoundation.org>
+Message-ID: <20250417175110.451405277@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-[ Upstream commit 2dd1c1eee3e496fcc16971be4db5bb792a36025c ]
+[ Upstream commit 4b36a47e2d989b98953dbfb1e97da0f0169f5086 ]
 
-Add 13 USB device IDs for Qualcomm WCN785x, and these IDs are
-extracted from Windows driver inf file for various types of
-WoS (Windows on Snapdragon) laptop.
+Use macro for ACP6.3 PCI revision id instead of hard coded value.
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://patch.msgid.link/20250207062819.1527184-3-Vijendar.Mukunda@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ sound/soc/amd/ps/acp63.h  | 1 +
+ sound/soc/amd/ps/pci-ps.c | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index cf15e18521607..11005d7d9cc0f 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -375,12 +375,38 @@ static const struct usb_device_id quirks_table[] = {
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe0f3), .driver_info = BTUSB_QCA_WCN6855 |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe100), .driver_info = BTUSB_QCA_WCN6855 |
-+						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe103), .driver_info = BTUSB_QCA_WCN6855 |
-+						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe10a), .driver_info = BTUSB_QCA_WCN6855 |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe10d), .driver_info = BTUSB_QCA_WCN6855 |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe11b), .driver_info = BTUSB_QCA_WCN6855 |
-+						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe11c), .driver_info = BTUSB_QCA_WCN6855 |
-+						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe11f), .driver_info = BTUSB_QCA_WCN6855 |
-+						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe141), .driver_info = BTUSB_QCA_WCN6855 |
-+						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe14a), .driver_info = BTUSB_QCA_WCN6855 |
-+						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe14b), .driver_info = BTUSB_QCA_WCN6855 |
-+						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe14d), .driver_info = BTUSB_QCA_WCN6855 |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x13d3, 0x3623), .driver_info = BTUSB_QCA_WCN6855 |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x13d3, 0x3624), .driver_info = BTUSB_QCA_WCN6855 |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x2c7c, 0x0130), .driver_info = BTUSB_QCA_WCN6855 |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x2c7c, 0x0131), .driver_info = BTUSB_QCA_WCN6855 |
-+						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x2c7c, 0x0132), .driver_info = BTUSB_QCA_WCN6855 |
-+						     BTUSB_WIDEBAND_SPEECH },
+diff --git a/sound/soc/amd/ps/acp63.h b/sound/soc/amd/ps/acp63.h
+index 39208305dd6c3..f9759c9342cf3 100644
+--- a/sound/soc/amd/ps/acp63.h
++++ b/sound/soc/amd/ps/acp63.h
+@@ -11,6 +11,7 @@
+ #define ACP_DEVICE_ID 0x15E2
+ #define ACP63_REG_START		0x1240000
+ #define ACP63_REG_END		0x125C000
++#define ACP63_PCI_REV		0x63
  
- 	/* Broadcom BCM2035 */
- 	{ USB_DEVICE(0x0a5c, 0x2009), .driver_info = BTUSB_BCM92035 },
+ #define ACP_SOFT_RESET_SOFTRESET_AUDDONE_MASK	0x00010001
+ #define ACP_PGFSM_CNTL_POWER_ON_MASK	1
+diff --git a/sound/soc/amd/ps/pci-ps.c b/sound/soc/amd/ps/pci-ps.c
+index 5c4a0be7a7889..aec3150ecf581 100644
+--- a/sound/soc/amd/ps/pci-ps.c
++++ b/sound/soc/amd/ps/pci-ps.c
+@@ -559,7 +559,7 @@ static int snd_acp63_probe(struct pci_dev *pci,
+ 
+ 	/* Pink Sardine device check */
+ 	switch (pci->revision) {
+-	case 0x63:
++	case ACP63_PCI_REV:
+ 		break;
+ 	default:
+ 		dev_dbg(&pci->dev, "acp63 pci device not found\n");
 -- 
 2.39.5
 
