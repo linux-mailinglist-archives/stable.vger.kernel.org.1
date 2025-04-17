@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-134281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB062A92A29
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE4EA928B6
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:37:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BA491B623BB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:47:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 089F28E0B46
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55A31EB1BF;
-	Thu, 17 Apr 2025 18:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E510725D1E3;
+	Thu, 17 Apr 2025 18:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HsOyzaQh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vc489aUy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744FE4502F;
-	Thu, 17 Apr 2025 18:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F48725A326;
+	Thu, 17 Apr 2025 18:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915649; cv=none; b=dYWvxV+3VUjMtgHtTX/TyxQZzNNrLz2s+qt3pvXU7mDJ9WAqLiQIjE+GokDi7WhMtUP3BIaIMG/mPtudAUtf+SRPfeCYOzvR/Gp4bdSAIk5o+EQvu6qgFCpHX2KXBeVNqe5LNsp5baNgJhUaHyXxyz+ZDCZxfBYThtlMyKWMD7Q=
+	t=1744914628; cv=none; b=Y7lwdLUqmcIvP/wobFhEquP5sOr605U/88icZJgRDlYhLz3z2CYMu+0JlHYVQN82RK69cD16obt/xlEojgafbtJK6eYdhyJ0qoU+rika7E8Q5VAN7iOQfhp8+90CnxcQhpEGiBbdo3b4mfl+Gi3gyFSyNeZkhkwbDdTMzWMyZKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915649; c=relaxed/simple;
-	bh=+wVPD4Uvn8zlGrDGfK6tmOz2ualGtL57fSUD7zUT080=;
+	s=arc-20240116; t=1744914628; c=relaxed/simple;
+	bh=RgTl+rkAjyKczyYFx1vhk2dzZSZwYRBKee40HnejrS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fbmdh2l61eKtA/EOL3835iqHrgPgkz4ER9E2ErVPHNIE+CEV0wfW2u9VP9wdVMiN8UzTD1WHAEr6Cc1mFnz2Ys93wWl19KIX25xRsyi/POvl8Ziq3oDiKeN6okUNd9uoCVD8xF3EZHeISYH7VI5v0oFUSwDIZVdSBm+stOcj+Uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HsOyzaQh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C22C4CEE4;
-	Thu, 17 Apr 2025 18:47:28 +0000 (UTC)
+	 MIME-Version; b=Ga5OxFM12yGIUtJK858ZzSdsPGB1mfgG6YEgFVLrmn52JUhl0pc7Gjg+OSlWq2Ai5KwTCEXT6DhCCbkx9UzS4cVCfNtPff+GakziRzejOmxRlB6sFJxgHJ3ZXwufqO4n1Aq13Z8bqMOmRev5k15bsqt0BKQBPJvP8nrHDJ0CRA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vc489aUy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23A71C4CEE4;
+	Thu, 17 Apr 2025 18:30:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915649;
-	bh=+wVPD4Uvn8zlGrDGfK6tmOz2ualGtL57fSUD7zUT080=;
+	s=korg; t=1744914628;
+	bh=RgTl+rkAjyKczyYFx1vhk2dzZSZwYRBKee40HnejrS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HsOyzaQhB4qq0Kdnffl8IbyFymYklpBXS+3sXleJZm2MkJnfI4IvZVI1D/OZWW7Fp
-	 9isNVOHe6rDsZxvj71Z5O4Q+CB/Boog27HFrAItfUapoWPR+9EXxQPrKoJPY6jGOUq
-	 lspuzei8CYIbJOw1KH827sj+Z12TitGoDL1ycWTk=
+	b=Vc489aUypCzFMKlt8U4MgApyfXhkDCnECsJyZ+hIAxbPTMOVHhSg4dsXE2yym0MQZ
+	 fZrmEmb8SKiw4I2L/uGB/S2sL7I9kIljeHzNP/u5S1pxLMhukXOGhcxZmL0/lJ+BSp
+	 0UwcWRUOO+gRcvC2moWp+DO2NtoHuPFtlgtwEXeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 196/393] media: venus: hfi: add a check to handle OOB in sfr region
-Date: Thu, 17 Apr 2025 19:50:05 +0200
-Message-ID: <20250417175115.471619449@linuxfoundation.org>
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.13 248/414] mptcp: sockopt: fix getting freebind & transparent
+Date: Thu, 17 Apr 2025 19:50:06 +0200
+Message-ID: <20250417175121.396514407@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit f4b211714bcc70effa60c34d9fa613d182e3ef1e upstream.
+commit e2f4ac7bab2205d3c4dd9464e6ffd82502177c51 upstream.
 
-sfr->buf_size is in shared memory and can be modified by malicious user.
-OOB write is possible when the size is made higher than actual sfr data
-buffer. Cap the size to allocated size for such cases.
+When adding a socket option support in MPTCP, both the get and set parts
+are supposed to be implemented.
 
+IP(V6)_FREEBIND and IP(V6)_TRANSPARENT support for the setsockopt part
+has been added a while ago, but it looks like the get part got
+forgotten. It should have been present as a way to verify a setting has
+been set as expected, and not to act differently from TCP or any other
+socket types.
+
+Everything was in place to expose it, just the last step was missing.
+Only new code is added to cover these specific getsockopt(), that seems
+safe.
+
+Fixes: c9406a23c116 ("mptcp: sockopt: add SOL_IP freebind & transparent options")
 Cc: stable@vger.kernel.org
-Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-3-122dbb249db3@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/hfi_venus.c |   12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ net/mptcp/sockopt.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -1035,18 +1035,26 @@ static void venus_sfr_print(struct venus
- {
- 	struct device *dev = hdev->core->dev;
- 	struct hfi_sfr *sfr = hdev->sfr.kva;
-+	u32 size;
- 	void *p;
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -1419,6 +1419,12 @@ static int mptcp_getsockopt_v4(struct mp
+ 	switch (optname) {
+ 	case IP_TOS:
+ 		return mptcp_put_int_option(msk, optval, optlen, READ_ONCE(inet_sk(sk)->tos));
++	case IP_FREEBIND:
++		return mptcp_put_int_option(msk, optval, optlen,
++				inet_test_bit(FREEBIND, sk));
++	case IP_TRANSPARENT:
++		return mptcp_put_int_option(msk, optval, optlen,
++				inet_test_bit(TRANSPARENT, sk));
+ 	case IP_BIND_ADDRESS_NO_PORT:
+ 		return mptcp_put_int_option(msk, optval, optlen,
+ 				inet_test_bit(BIND_ADDRESS_NO_PORT, sk));
+@@ -1439,6 +1445,12 @@ static int mptcp_getsockopt_v6(struct mp
+ 	case IPV6_V6ONLY:
+ 		return mptcp_put_int_option(msk, optval, optlen,
+ 					    sk->sk_ipv6only);
++	case IPV6_TRANSPARENT:
++		return mptcp_put_int_option(msk, optval, optlen,
++					    inet_test_bit(TRANSPARENT, sk));
++	case IPV6_FREEBIND:
++		return mptcp_put_int_option(msk, optval, optlen,
++					    inet_test_bit(FREEBIND, sk));
+ 	}
  
- 	if (!sfr)
- 		return;
- 
--	p = memchr(sfr->data, '\0', sfr->buf_size);
-+	size = sfr->buf_size;
-+	if (!size)
-+		return;
-+
-+	if (size > ALIGNED_SFR_SIZE)
-+		size = ALIGNED_SFR_SIZE;
-+
-+	p = memchr(sfr->data, '\0', size);
- 	/*
- 	 * SFR isn't guaranteed to be NULL terminated since SYS_ERROR indicates
- 	 * that Venus is in the process of crashing.
- 	 */
- 	if (!p)
--		sfr->data[sfr->buf_size - 1] = '\0';
-+		sfr->data[size - 1] = '\0';
- 
- 	dev_err_ratelimited(dev, "SFR message from FW: %s\n", sfr->data);
- }
+ 	return -EOPNOTSUPP;
 
 
 
