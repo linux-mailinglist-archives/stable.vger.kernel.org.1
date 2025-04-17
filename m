@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-133854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06FF2A9280C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2885A925D5
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:08:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0ED3F3A95C2
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0ABB2467E36
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F7DB258CC5;
-	Thu, 17 Apr 2025 18:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C4162561B3;
+	Thu, 17 Apr 2025 18:06:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHE6YaWx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xy1q12hb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9C5257AE7;
-	Thu, 17 Apr 2025 18:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39609255248;
+	Thu, 17 Apr 2025 18:06:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914349; cv=none; b=f6SpR9+rLxaj84KDOV9tywL6XJ7pfWD114Nr6niAClV4yCm8xE8hxyWVoT8dlgAE6pd+4UxWo1jzPK6mHm98IfT753vFK2Fi4TT6CJTPYG22i/yeYENM7Uwi0kNh1GEkwOLqL0vsFc34R7iJP1sams9fU08PHipGlZWnt1RViRw=
+	t=1744913190; cv=none; b=JKY+IxNySFd5xqrSfRhTRcelIQcxtnNZ7MR4hFJJcNCJg5O7sO+yrVMdnpreBW2C8HyUzJfMS1/jY2S7F4r4J+FKGTTjOdm3YBrhyciBVolXKRPTSoVivf6R6Q/C2/gA74X+TDvp0NgqC546BvtRQWyaAYanpfkP5kc91Kx7RoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914349; c=relaxed/simple;
-	bh=/luoMvqlRUIX5D3Pu7Msl3izke7E+DxfiGpnpPJgT70=;
+	s=arc-20240116; t=1744913190; c=relaxed/simple;
+	bh=pGrop4howCUs0bkexn81BIl2IweJC4Frqn9kl2w7iWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rArIc9PO+MQNLCn/U1x1a8WygdUo8DhEm3dysZmWhceApjhEXZeYBGc0CZu8K+zu89yjCCa7huoqW4S3pLNCwo+cnLXi1IpR5XgN7g5WuMgAatcpLWCvyBs6jo79nP+PZxPg55Z5fGdWcOGB2MQDpSyzUKVvYxPDqYUHXbtIs1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHE6YaWx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB29C4CEE4;
-	Thu, 17 Apr 2025 18:25:48 +0000 (UTC)
+	 MIME-Version; b=XusqiTYxJRWHOdDQtw+n9YaekpL9V40IafQq182XJr0aFLjLpizNdRgQ2e648DLHAfYyvCwq/1qofZoKL6pErNJfuPSLE2cW2pc4fhIInviB5Lux3tHHdSEPcMm/nXi0epRJ0KQd9DGhimyUC9QMG+2AuwdRaXtPjUuvIsaxgNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xy1q12hb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98606C4CEE4;
+	Thu, 17 Apr 2025 18:06:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914348;
-	bh=/luoMvqlRUIX5D3Pu7Msl3izke7E+DxfiGpnpPJgT70=;
+	s=korg; t=1744913190;
+	bh=pGrop4howCUs0bkexn81BIl2IweJC4Frqn9kl2w7iWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JHE6YaWx0m9pp+LbjwRjzHaTiY3wcG07o/XtUAq3elxzLksShtROmkb0UuWdU1gRS
-	 9e6fw44Lr8+kzQ/irEuVYHGkhukxastvrtdRVQZ90eghfE70mS1idn4HcirpQEzXic
-	 8T0ae0NblibvGHO479kZ0EWJIhjtZo3kUFGtBZZw=
+	b=xy1q12hbL3bjQ0GrpvIBbzA5Lqo+Gg1/LKdZ/urSxjKGxRYr+RU+b3bHXvoZU4uNu
+	 DjH3HxEHZhxUtYQciV1vPF/jIGyqE1lxzSbuqe4Em59vWYzlYfMA+5zgaslcQgzgwU
+	 lkLCULTDNSNXxQ4odVhwturvToGg6Caqb3yRFUMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 186/414] HID: hid-universal-pidff: Add Asetek wheelbases support
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.14 256/449] media: nuvoton: Fix reference handling of ece_node
 Date: Thu, 17 Apr 2025 19:49:04 +0200
-Message-ID: <20250417175118.928327577@linuxfoundation.org>
+Message-ID: <20250417175128.299230890@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,97 +59,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit c385f61108d403633e8cfbdae15b35ccf7cee686 ]
+commit 8ba4ef40ad6ca62368292a69855324213181abfb upstream.
 
-Adds Asetek vendor id and product ids for:
-- Invicta
-- Forte
-- La Prima
-- Tony Kanaan
+Make sure all the code paths call of_node_put().
 
-v2:
-- Misc spelling fix in driver loaded info
+Instead of manually calling of_node_put, use the __free macros/helpers.
 
-v3:
-- Chanage Oleg's name order
-
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 46c15a4ff1f4 ("media: nuvoton: Add driver for NPCM video capture and encoding engine")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-ids.h             |  6 ++++++
- drivers/hid/hid-universal-pidff.c | 10 +++++++---
- 2 files changed, 13 insertions(+), 3 deletions(-)
+ drivers/media/platform/nuvoton/npcm-video.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index e1e002df64de2..db88831633466 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -190,6 +190,12 @@
- #define USB_DEVICE_ID_APPLE_TOUCHBAR_BACKLIGHT 0x8102
- #define USB_DEVICE_ID_APPLE_TOUCHBAR_DISPLAY 0x8302
+--- a/drivers/media/platform/nuvoton/npcm-video.c
++++ b/drivers/media/platform/nuvoton/npcm-video.c
+@@ -1648,8 +1648,8 @@ rel_ctrl_handler:
  
-+#define USB_VENDOR_ID_ASETEK			0x2433
-+#define USB_DEVICE_ID_ASETEK_INVICTA		0xf300
-+#define USB_DEVICE_ID_ASETEK_FORTE		0xf301
-+#define USB_DEVICE_ID_ASETEK_LA_PRIMA		0xf303
-+#define USB_DEVICE_ID_ASETEK_TONY_KANAAN	0xf306
-+
- #define USB_VENDOR_ID_ASUS		0x0486
- #define USB_DEVICE_ID_ASUS_T91MT	0x0185
- #define USB_DEVICE_ID_ASUSTEK_MULTITOUCH_YFO	0x0186
-diff --git a/drivers/hid/hid-universal-pidff.c b/drivers/hid/hid-universal-pidff.c
-index 1b713b741d192..5b89ec7b5c26c 100644
---- a/drivers/hid/hid-universal-pidff.c
-+++ b/drivers/hid/hid-universal-pidff.c
-@@ -4,7 +4,7 @@
-  * hid-pidff wrapper for PID-enabled devices
-  * Handles device reports, quirks and extends usable button range
-  *
-- * Copyright (c) 2024, 2025 Makarenko Oleg
-+ * Copyright (c) 2024, 2025 Oleg Makarenko
-  * Copyright (c) 2024, 2025 Tomasz Pakuła
-  */
+ static int npcm_video_ece_init(struct npcm_video *video)
+ {
++	struct device_node *ece_node __free(device_node) = NULL;
+ 	struct device *dev = video->dev;
+-	struct device_node *ece_node;
+ 	struct platform_device *ece_pdev;
+ 	void __iomem *regs;
  
-@@ -104,7 +104,7 @@ static int universal_pidff_probe(struct hid_device *hdev,
- 		goto err;
- 	}
+@@ -1669,7 +1669,6 @@ static int npcm_video_ece_init(struct np
+ 			dev_err(dev, "Failed to find ECE device\n");
+ 			return -ENODEV;
+ 		}
+-		of_node_put(ece_node);
  
--	hid_info(hdev, "Universal pidff driver loaded sucesfully!");
-+	hid_info(hdev, "Universal pidff driver loaded sucessfully!");
- 
- 	return 0;
- err:
-@@ -179,6 +179,10 @@ static const struct hid_device_id universal_pidff_devices[] = {
- 		.driver_data = HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_LITE_STAR, USB_DEVICE_LITE_STAR_GT987_FF),
- 		.driver_data = HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ASETEK, USB_DEVICE_ID_ASETEK_INVICTA) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ASETEK, USB_DEVICE_ID_ASETEK_FORTE) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ASETEK, USB_DEVICE_ID_ASETEK_LA_PRIMA) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ASETEK, USB_DEVICE_ID_ASETEK_TONY_KANAAN) },
- 	{ }
- };
- MODULE_DEVICE_TABLE(hid, universal_pidff_devices);
-@@ -194,5 +198,5 @@ module_hid_driver(universal_pidff);
- 
- MODULE_DESCRIPTION("Universal driver for USB PID Force Feedback devices");
- MODULE_LICENSE("GPL");
--MODULE_AUTHOR("Makarenko Oleg <oleg@makarenk.ooo>");
-+MODULE_AUTHOR("Oleg Makarenko <oleg@makarenk.ooo>");
- MODULE_AUTHOR("Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>");
--- 
-2.39.5
-
+ 		regs = devm_platform_ioremap_resource(ece_pdev, 0);
+ 		if (IS_ERR(regs)) {
 
 
 
