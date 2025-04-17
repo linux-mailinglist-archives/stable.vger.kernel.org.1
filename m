@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-134106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1318A92993
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:43:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9666A92722
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:20:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98F418E47A7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8DCF4A180B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:20:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB0D425525C;
-	Thu, 17 Apr 2025 18:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F7E2550C8;
+	Thu, 17 Apr 2025 18:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zYiK7Ovt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8l+g48v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7ED725D8FB;
-	Thu, 17 Apr 2025 18:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E651A3178;
+	Thu, 17 Apr 2025 18:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915112; cv=none; b=OBZsf9L5c0sWVng8wKmByB+5jRk7q6tlt+9MVjMAKgtz+drgzsOblQYXw+jvn1zxIhKN/rZE3+hocD+8vXLeRx3bIdWYMgt/pPGd9RkIJ21lpWOwBnoM+kb0fm6Rewjlb/DDjeXBUkD59kZ4UM3FaBFzWnjfRQ4BaWE4Ne/kVYo=
+	t=1744914004; cv=none; b=NK8DFRdtKP7nn8s3SEEYSCPUSyLRZ8083U8CSQwkDzgi7/BtJJWv3BWgnOu6XfItt4efOWaf22NTW/Ml4eLLFComp6WwtsO26aXlPhFNsYwNZWseNhPfLgmcuZgatbuhJ1Sx0PpHYFWN70lv9fxVQb/nwi332tCEFDcJCOgx2ZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915112; c=relaxed/simple;
-	bh=Ec5yHSw6SvqRJCVlPr4XuCY33kn7Lbeqkw5ISU/Pfnc=;
+	s=arc-20240116; t=1744914004; c=relaxed/simple;
+	bh=E9JfXx2la424YJoadUWI90EVJfsrexkDy2K2/990JMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OSfTM2kLO0wVvalD2TXbBeRXdzGoMJfFUiCYTCTNwjL1ZCBAQCGngG7Ngv7RnxDqmVv+2/JIcUQFy9oLsl+oyLLefxFpasd2qgBYf846MxBWWOzshLXXDET2s7Q/WFj2Ib6caOOWhmpdBtLdmJPqvPLb4nV0eN7G/IWfs1SFHUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zYiK7Ovt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 339B8C4CEE4;
-	Thu, 17 Apr 2025 18:38:32 +0000 (UTC)
+	 MIME-Version; b=OQTxuw627wvYKyOnzAKZfn0FQe7rvcni4iokw787paTMtZD0lVg74bNUgEm3Ub0+lTfE7uNrPrtq8T2AgKQVKhc4DJGAPCiTgtmTtyCOU4gqbbumvwkKYWjqTv+kgUhqiirquXBIo7QA6Y4JlJi/dBymR/eKWAZNEePcpC3tm7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8l+g48v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 797C1C4CEE7;
+	Thu, 17 Apr 2025 18:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915112;
-	bh=Ec5yHSw6SvqRJCVlPr4XuCY33kn7Lbeqkw5ISU/Pfnc=;
+	s=korg; t=1744914003;
+	bh=E9JfXx2la424YJoadUWI90EVJfsrexkDy2K2/990JMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zYiK7OvtPMQJ1TO85OCWIbBKpECIe6sQ/ClgKYQwbR5+EHe2w8fL0QQPg9qxEH6Zx
-	 JWIPlC3QlppjTrNJXuI0EgBmMFnkCfLF3F8+XG4X6BvDeMGO0LbVREJeW9V8EKKcgR
-	 qp2j6uGkSPsH78WqW1yRoX+BkgJyBjJAgPl9v8s8=
+	b=z8l+g48vw9nQBaWtk46naSxeVBFSMY1IgBhUgLr6sO+6LP2hXgS3bv1YsQ9g2eMzo
+	 pjTz741VaxHrgY+HNHIaPJd5HSycLd/joYJbD3rybmCuLCFnXitHIYXhaKeZyvAN61
+	 i6rZIplX4dXY6VutkEHz5hQTPbeud51EhhAWWcyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Simon Horman <horms@kernel.org>,
-	Michal Kubecek <mkubecek@suse.cz>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Maxim Mikityanskiy <maxtram95@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 022/393] net: ethtool: Dont call .cleanup_data when prepare_data fails
+Subject: [PATCH 6.13 073/414] ALSA: hda: intel: Fix Optimus when GPU has no sound
 Date: Thu, 17 Apr 2025 19:47:11 +0200
-Message-ID: <20250417175108.483940387@linuxfoundation.org>
+Message-ID: <20250417175114.375586820@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+From: Maxim Mikityanskiy <maxtram95@gmail.com>
 
-[ Upstream commit 4f038a6a02d20859a3479293cbf172b0f14cbdd6 ]
+[ Upstream commit 2b360ba9a4936486380bc30d1eabceb40a714d98 ]
 
-There's a consistent pattern where the .cleanup_data() callback is
-called when .prepare_data() fails, when it should really be called to
-clean after a successful .prepare_data() as per the documentation.
+quirk_nvidia_hda() forcefully enables HDA controller on all NVIDIA GPUs,
+because some buggy BIOSes leave it disabled. However, some dual-GPU
+laptops do not have a functional HDA controller in DGPU, and BIOS
+disables it on purpose. After quirk_nvidia_hda() reenables this dummy
+HDA controller, attempting to probe it fails at azx_first_init(), which
+is too late to cancel the probe, as it happens in azx_probe_continue().
 
-Rewrite the error-handling paths to make sure we don't cleanup
-un-prepared data.
+The sna_hda_intel driver calls azx_free() and stops the chip, however,
+it stays probed, and from the runtime PM point of view, the device
+remains active (it was set as active by the PCI subsystem on probe). It
+prevents vga_switcheroo from turning off the DGPU, because
+pci_create_device_link() syncs power management for video and audio
+devices.
 
-Fixes: c781ff12a2f3 ("ethtool: Allow network drivers to dump arbitrary EEPROM data")
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Michal Kubecek <mkubecek@suse.cz>
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20250407130511.75621-1-maxime.chevallier@bootlin.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Affected devices should be added to driver_denylist to prevent them from
+probing early. This patch helps identify such devices by printing a
+warning, and also forces the device to the suspended state to allow
+vga_switcheroo turn off DGPU.
+
+Signed-off-by: Maxim Mikityanskiy <maxtram95@gmail.com>
+Link: https://patch.msgid.link/20250208214602.39607-2-maxtram95@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/netlink.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ sound/pci/hda/hda_intel.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
-index e233dfc8ca4be..a52be67139d0a 100644
---- a/net/ethtool/netlink.c
-+++ b/net/ethtool/netlink.c
-@@ -490,7 +490,7 @@ static int ethnl_default_doit(struct sk_buff *skb, struct genl_info *info)
- 	ret = ops->prepare_data(req_info, reply_data, info);
- 	rtnl_unlock();
- 	if (ret < 0)
--		goto err_cleanup;
-+		goto err_dev;
- 	ret = ops->reply_size(req_info, reply_data);
- 	if (ret < 0)
- 		goto err_cleanup;
-@@ -548,7 +548,7 @@ static int ethnl_default_dump_one(struct sk_buff *skb, struct net_device *dev,
- 	ret = ctx->ops->prepare_data(ctx->req_info, ctx->reply_data, info);
- 	rtnl_unlock();
- 	if (ret < 0)
--		goto out;
-+		goto out_cancel;
- 	ret = ethnl_fill_reply_header(skb, dev, ctx->ops->hdr_attr);
- 	if (ret < 0)
- 		goto out;
-@@ -557,6 +557,7 @@ static int ethnl_default_dump_one(struct sk_buff *skb, struct net_device *dev,
- out:
- 	if (ctx->ops->cleanup_data)
- 		ctx->ops->cleanup_data(ctx->reply_data);
-+out_cancel:
- 	ctx->reply_data->dev = NULL;
- 	if (ret < 0)
- 		genlmsg_cancel(skb, ehdr);
-@@ -760,7 +761,7 @@ static void ethnl_default_notify(struct net_device *dev, unsigned int cmd,
- 	ethnl_init_reply_data(reply_data, ops, dev);
- 	ret = ops->prepare_data(req_info, reply_data, &info);
- 	if (ret < 0)
--		goto err_cleanup;
-+		goto err_rep;
- 	ret = ops->reply_size(req_info, reply_data);
- 	if (ret < 0)
- 		goto err_cleanup;
-@@ -795,6 +796,7 @@ static void ethnl_default_notify(struct net_device *dev, unsigned int cmd,
- err_cleanup:
- 	if (ops->cleanup_data)
- 		ops->cleanup_data(reply_data);
-+err_rep:
- 	kfree(reply_data);
- 	kfree(req_info);
- 	return;
+diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
+index c050539d6057b..c547a86ba659c 100644
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -1352,8 +1352,21 @@ static void azx_free(struct azx *chip)
+ 	if (use_vga_switcheroo(hda)) {
+ 		if (chip->disabled && hda->probe_continued)
+ 			snd_hda_unlock_devices(&chip->bus);
+-		if (hda->vga_switcheroo_registered)
++		if (hda->vga_switcheroo_registered) {
+ 			vga_switcheroo_unregister_client(chip->pci);
++
++			/* Some GPUs don't have sound, and azx_first_init fails,
++			 * leaving the device probed but non-functional. As long
++			 * as it's probed, the PCI subsystem keeps its runtime
++			 * PM status as active. Force it to suspended (as we
++			 * actually stop the chip) to allow GPU to suspend via
++			 * vga_switcheroo, and print a warning.
++			 */
++			dev_warn(&pci->dev, "GPU sound probed, but not operational: please add a quirk to driver_denylist\n");
++			pm_runtime_disable(&pci->dev);
++			pm_runtime_set_suspended(&pci->dev);
++			pm_runtime_enable(&pci->dev);
++		}
+ 	}
+ 
+ 	if (bus->chip_init) {
 -- 
 2.39.5
 
