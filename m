@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-134107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98AD3A92936
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D318A92737
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:21:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 384EF1B62DE7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:41:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBEE54A1A75
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:21:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7DDB25DB1D;
-	Thu, 17 Apr 2025 18:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 045F1257450;
+	Thu, 17 Apr 2025 18:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vyEcxo06"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zQZqAeYF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57A325D8FB;
-	Thu, 17 Apr 2025 18:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B433225743F;
+	Thu, 17 Apr 2025 18:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915115; cv=none; b=reafpM/o4HyKuYzdv5aICpWLvHvsCQM12TlvdfiHFCFCWFINhRJldXEL17vMhcusaXP4rTisnHANmw/SvbQufvGOseoVMzQJIlq64AEN7dmGU/IgeoLIEhv6YBNx8r6f8KpHdfMNIPRbO18nIoFWqLNd3+a1tCn/BBXuAwXyoJU=
+	t=1744914034; cv=none; b=GbFmIKRhG7d53LxehEFi8tdlYgHco1b0Ts8JFyO3j1BkBsMktvweSfqBZcwMXMzIetJzClPnOvb8U7GoJAAlmjVwhVoFggTtx7cQ4QJyku3q8uuic6q+F4Vbr/xOYbH/GeSnTuRleb7T3zBeU9dXcmcnrUXAHpEQhg9CVhYjO8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915115; c=relaxed/simple;
-	bh=FfloW+ZQxnQj1LjDHLT+Av+X1j1Ux7t9+B5f6ioaXho=;
+	s=arc-20240116; t=1744914034; c=relaxed/simple;
+	bh=KGcgsY9Rm/zrRi3q9zF5YgJQVdZjGibLWJNW4Y8NoSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LKWggrNw+lJB8IIbML+M4ZXioctUbxcQ1dpKJecLV7hJbm3gbfvV6aWulIBvqwLtki8pBkfOHD953ipIflIJIFfMZxtIQ9w7fOQrEm7fW6WSizWSCjOckknibWk2JLrjaDqxpB+0aDksr+NdwWm1I3k82+Q52Oic8sLFFLb60LE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vyEcxo06; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE30C4CEE4;
-	Thu, 17 Apr 2025 18:38:34 +0000 (UTC)
+	 MIME-Version; b=NKi/kpXFeV29K0ggQp6GSlnxnF3O8YtYePJHMkpX4fTX+0ofPih1rcdDnUyKdkX2soPzasb5ay2h/p55T4I9phIVPbA0vdprsCb9w79wH3cG9FsHadvjaKDCHnzEJnngxomoTuno1B3WLaKfp4T50VTMznm1vy18A8hopppqhtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zQZqAeYF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8BB6C4CEE7;
+	Thu, 17 Apr 2025 18:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915115;
-	bh=FfloW+ZQxnQj1LjDHLT+Av+X1j1Ux7t9+B5f6ioaXho=;
+	s=korg; t=1744914034;
+	bh=KGcgsY9Rm/zrRi3q9zF5YgJQVdZjGibLWJNW4Y8NoSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vyEcxo067+zDUMG1AckQ8aNMUz/VIEEnnLtwz7HDjddlQ7E1MAHQTSxpo+t8ec5bo
-	 ZV2cciaboj0dyVwvO9uCtl2dpviLKbt4SMntL6RJht4Gmb5jvy3HeIREW7MSOKHrhf
-	 bpPgLlyeYA/PGfGfIFfp+bGtVI3ftPmuEtQ4AYyI=
+	b=zQZqAeYF6EfZCY0avFs7U1XG5jCM7aGmjbZcmSMyxDgphnvAswswimupFhWbu2p1h
+	 lqX2ccNv49MSYwUTKOpoAkI7EXoqKfd8lCbRqnZC7z7xzMv1RAIcoXcmFmrh8XzhPf
+	 UWJIEUcv5RIqUdLbFh+A5mF5IlQQwlmv1pbV5rJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Petr Mladek <pmladek@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 003/393] cgroup/cpuset: Fix error handling in remote_partition_disable()
+Subject: [PATCH 6.13 054/414] Flush console log from kernel_power_off()
 Date: Thu, 17 Apr 2025 19:46:52 +0200
-Message-ID: <20250417175107.697906578@linuxfoundation.org>
+Message-ID: <20250417175113.584547534@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +66,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-[ Upstream commit 8bf450f3aec3d1bbd725d179502c64b8992588e4 ]
+[ Upstream commit 6ea9a1781c70a8be1fcdc49134fc1bf4baba8bca ]
 
-When remote_partition_disable() is called to disable a remote partition,
-it always sets the partition to an invalid partition state. It should
-only do so if an error code (prs_err) has been set. Correct that and
-add proper error code in places where remote_partition_disable() is
-called due to error.
+Kernels built with CONFIG_PREEMPT_RT=y can lose significant console output
+and shutdown time, which hides shutdown-time RCU issues from rcutorture.
+Therefore, make pr_flush() public and invoke it after then last print
+in kernel_power_off().
 
-Fixes: 181c8e091aae ("cgroup/cpuset: Introduce remote partition")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+[ paulmck: Apply John Ogness feedback. ]
+[ paulmck: Appy Sebastian Andrzej Siewior feedback. ]
+[ paulmck: Apply kernel test robot feedback. ]
+
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: John Ogness <john.ogness@linutronix.de>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Link: https://lore.kernel.org/r/5f743488-dc2a-4f19-bdda-cf50b9314832@paulmck-laptop
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cpuset.c | 29 ++++++++++++++++++++---------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+ include/linux/printk.h | 6 ++++++
+ kernel/printk/printk.c | 4 +---
+ kernel/reboot.c        | 1 +
+ 3 files changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index f7ad5651c93db..70fac05123c6d 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -1383,6 +1383,7 @@ static int remote_partition_enable(struct cpuset *cs, int new_prs,
- 	list_add(&cs->remote_sibling, &remote_children);
- 	spin_unlock_irq(&callback_lock);
- 	update_unbound_workqueue_cpumask(isolcpus_updated);
-+	cs->prs_err = 0;
+diff --git a/include/linux/printk.h b/include/linux/printk.h
+index 4217a9f412b26..5b462029d03c1 100644
+--- a/include/linux/printk.h
++++ b/include/linux/printk.h
+@@ -207,6 +207,7 @@ void printk_legacy_allow_panic_sync(void);
+ extern bool nbcon_device_try_acquire(struct console *con);
+ extern void nbcon_device_release(struct console *con);
+ void nbcon_atomic_flush_unsafe(void);
++bool pr_flush(int timeout_ms, bool reset_on_progress);
+ #else
+ static inline __printf(1, 0)
+ int vprintk(const char *s, va_list args)
+@@ -315,6 +316,11 @@ static inline void nbcon_atomic_flush_unsafe(void)
+ {
+ }
  
- 	/*
- 	 * Proprogate changes in top_cpuset's effective_cpus down the hierarchy.
-@@ -1413,9 +1414,11 @@ static void remote_partition_disable(struct cpuset *cs, struct tmpmasks *tmp)
- 	list_del_init(&cs->remote_sibling);
- 	isolcpus_updated = partition_xcpus_del(cs->partition_root_state,
- 					       NULL, tmp->new_cpus);
--	cs->partition_root_state = -cs->partition_root_state;
--	if (!cs->prs_err)
--		cs->prs_err = PERR_INVCPUS;
-+	if (cs->prs_err)
-+		cs->partition_root_state = -cs->partition_root_state;
-+	else
-+		cs->partition_root_state = PRS_MEMBER;
++static inline bool pr_flush(int timeout_ms, bool reset_on_progress)
++{
++	return true;
++}
 +
- 	reset_partition_data(cs);
- 	spin_unlock_irq(&callback_lock);
- 	update_unbound_workqueue_cpumask(isolcpus_updated);
-@@ -1448,8 +1451,10 @@ static void remote_cpus_update(struct cpuset *cs, struct cpumask *newmask,
+ #endif
  
- 	WARN_ON_ONCE(!cpumask_subset(cs->effective_xcpus, subpartitions_cpus));
+ bool this_cpu_in_panic(void);
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index 07668433644b8..057db78876cd9 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -2461,7 +2461,6 @@ asmlinkage __visible int _printk(const char *fmt, ...)
+ }
+ EXPORT_SYMBOL(_printk);
  
--	if (cpumask_empty(newmask))
-+	if (cpumask_empty(newmask)) {
-+		cs->prs_err = PERR_CPUSEMPTY;
- 		goto invalidate;
-+	}
+-static bool pr_flush(int timeout_ms, bool reset_on_progress);
+ static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progress);
  
- 	adding   = cpumask_andnot(tmp->addmask, newmask, cs->effective_xcpus);
- 	deleting = cpumask_andnot(tmp->delmask, cs->effective_xcpus, newmask);
-@@ -1459,10 +1464,15 @@ static void remote_cpus_update(struct cpuset *cs, struct cpumask *newmask,
- 	 * not allocated to other partitions and there are effective_cpus
- 	 * left in the top cpuset.
- 	 */
--	if (adding && (!capable(CAP_SYS_ADMIN) ||
--		       cpumask_intersects(tmp->addmask, subpartitions_cpus) ||
--		       cpumask_subset(top_cpuset.effective_cpus, tmp->addmask)))
--		goto invalidate;
-+	if (adding) {
-+		if (!capable(CAP_SYS_ADMIN))
-+			cs->prs_err = PERR_ACCESS;
-+		else if (cpumask_intersects(tmp->addmask, subpartitions_cpus) ||
-+			 cpumask_subset(top_cpuset.effective_cpus, tmp->addmask))
-+			cs->prs_err = PERR_NOCPUS;
-+		if (cs->prs_err)
-+			goto invalidate;
-+	}
+ #else /* CONFIG_PRINTK */
+@@ -2474,7 +2473,6 @@ static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progre
  
- 	spin_lock_irq(&callback_lock);
- 	if (adding)
-@@ -1578,7 +1588,7 @@ static bool prstate_housekeeping_conflict(int prstate, struct cpumask *new_cpus)
-  * The partcmd_update command is used by update_cpumasks_hier() with newmask
-  * NULL and update_cpumask() with newmask set. The partcmd_invalidate is used
-  * by update_cpumask() with NULL newmask. In both cases, the callers won't
-- * check for error and so partition_root_state and prs_error will be updated
-+ * check for error and so partition_root_state and prs_err will be updated
-  * directly.
+ static u64 syslog_seq;
+ 
+-static bool pr_flush(int timeout_ms, bool reset_on_progress) { return true; }
+ static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progress) { return true; }
+ 
+ #endif /* CONFIG_PRINTK */
+@@ -4466,7 +4464,7 @@ static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progre
+  * Context: Process context. May sleep while acquiring console lock.
+  * Return: true if all usable printers are caught up.
   */
- static int update_parent_effective_cpumask(struct cpuset *cs, int cmd,
-@@ -3726,6 +3736,7 @@ static void cpuset_hotplug_update_tasks(struct cpuset *cs, struct tmpmasks *tmp)
- 
- 	if (remote && cpumask_empty(&new_cpus) &&
- 	    partition_is_populated(cs, NULL)) {
-+		cs->prs_err = PERR_HOTPLUG;
- 		remote_partition_disable(cs, tmp);
- 		compute_effective_cpumask(&new_cpus, cs, parent);
- 		remote = false;
+-static bool pr_flush(int timeout_ms, bool reset_on_progress)
++bool pr_flush(int timeout_ms, bool reset_on_progress)
+ {
+ 	return __pr_flush(NULL, timeout_ms, reset_on_progress);
+ }
+diff --git a/kernel/reboot.c b/kernel/reboot.c
+index a701000bab347..3ba15b2c40662 100644
+--- a/kernel/reboot.c
++++ b/kernel/reboot.c
+@@ -704,6 +704,7 @@ void kernel_power_off(void)
+ 	migrate_to_reboot_cpu();
+ 	syscore_shutdown();
+ 	pr_emerg("Power down\n");
++	pr_flush(1000, true);
+ 	kmsg_dump(KMSG_DUMP_SHUTDOWN);
+ 	machine_power_off();
+ }
 -- 
 2.39.5
 
