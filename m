@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-134342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4D27A92AE4
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A901A92632
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:11:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B21133A17A2
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 365F08A5DD9
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06CD91B4153;
-	Thu, 17 Apr 2025 18:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 300D02566D7;
+	Thu, 17 Apr 2025 18:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UzXHymW6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qPddoqyF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B1B2586EC;
-	Thu, 17 Apr 2025 18:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0801DF756;
+	Thu, 17 Apr 2025 18:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915837; cv=none; b=tTaeDr6zjgl2P10z4/s8g1vK79Y6nwAOBifL3r4XD9+D0kmSYPntQyPYoVDqrwJSKKMLSgaThIyVxqNHJrpuk6lTqky2RgkUv3XhvdZjOnarF9MI9CdFScjH/nfgGvIVLXf4ansfAzpBwqGGm+QRi/LNDZaOgdzcy4qNGbtwZoQ=
+	t=1744913467; cv=none; b=bCoyckpi/dZ54/568PTIpj9HXUjJoBaZnaItNQWpM06Q0AtljW4pg+5znZqpXav9IhWCjgdG9S5Z4284MNu3mBtMobZjrmaAxkFN1lWIKpEEZxcLlIaxlyqLQLWXO3vGK/FBLw3nDMkiqYxEbs+oW/3bYaffG+L/WHgvzNpd7og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915837; c=relaxed/simple;
-	bh=R8zSC7fPvg9NWYhQEcqCjtkDHmSCjotqSI7x9EGcLTY=;
+	s=arc-20240116; t=1744913467; c=relaxed/simple;
+	bh=c7FDUvNByCyaVEUL2++yxo8qppy3Hv6idbVTWhL0+MQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SZ8tXdm0+ywjlDNri48QtMTFw5y4N3ItqoW/k5VkPtKCYwdtJsNiOfi61OoiKydGdrG4u13xd/UafDBDoWYkh/4Zuawr0q7XP2k1qKtWJ0QpY/L5T0xd6NNs1ymDWPS7ZUpNxXwjhvJhUL7h/j31R1J0gi86CbVj3j687L3r/m4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UzXHymW6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20DE4C4CEE4;
-	Thu, 17 Apr 2025 18:50:36 +0000 (UTC)
+	 MIME-Version; b=nGdJ8TzJJFYuNwysoubhXvlJI+X9EoqiUmWaO/TYNVYtcM3KRcQrvEfh9wc34CUiwXwyNglv169il67lWBTEjwzSlRzDtolHoS397WkM/KQeHNK5Kjjlcwahcr5gg6NntakkK6cl7quHI0W7jvCyCFlNom00cByO0UdTeR3+nac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qPddoqyF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A625C4CEE4;
+	Thu, 17 Apr 2025 18:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915837;
-	bh=R8zSC7fPvg9NWYhQEcqCjtkDHmSCjotqSI7x9EGcLTY=;
+	s=korg; t=1744913466;
+	bh=c7FDUvNByCyaVEUL2++yxo8qppy3Hv6idbVTWhL0+MQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UzXHymW6KZnfjnEYkfbR9vpTCuudPhEyJe0iQqLdTK7Q8wefhuFdh5jyYcbQaLy6+
-	 Q+p78yWxD4tusIFrBdf9P4enoQIq3dkXvri0hx4Zkel1jAuNwRiZ+nOSer22oOLb7S
-	 +Dil/2HSLK6z7ziiEihTrPUfrIZ8N6ISTBTw6lW8=
+	b=qPddoqyFw6jQelhlJgxQVpkHrOBzl7SIFF456GJTzCRzo3I640uO7SlJjWmW4ONnJ
+	 wcBBw4C05a/0op3rOuTIJBIf+14NUFjnXxJDJGtajEmjie/N4A4tNCZr3xxgXtopcS
+	 jlkkQNtq/lXmMuYH8YvxMJvnAEVY9rCmXIYrXqeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 227/393] media: i2c: imx219: Rectify runtime PM handling in probe and remove
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 6.14 348/449] iommu/tegra241-cmdqv: Fix warnings due to dmam_free_coherent()
 Date: Thu, 17 Apr 2025 19:50:36 +0200
-Message-ID: <20250417175116.718256671@linuxfoundation.org>
+Message-ID: <20250417175132.229517829@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +62,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-commit 42eceae9793566d0df53d509be3e416465c347f5 upstream.
+commit 767e22001dfce64cc03b7def1562338591ab6031 upstream.
 
-Set the device's runtime PM status and enable runtime PM before
-registering the async sub-device. This is needed to avoid the case where
-the device is runtime PM resumed while runtime PM has not been enabled
-yet.
+Two WARNINGs are observed when SMMU driver rolls back upon failure:
+ arm-smmu-v3.9.auto: Failed to register iommu
+ arm-smmu-v3.9.auto: probe with driver arm-smmu-v3 failed with error -22
+ ------------[ cut here ]------------
+ WARNING: CPU: 5 PID: 1 at kernel/dma/mapping.c:74 dmam_free_coherent+0xc0/0xd8
+ Call trace:
+  dmam_free_coherent+0xc0/0xd8 (P)
+  tegra241_vintf_free_lvcmdq+0x74/0x188
+  tegra241_cmdqv_remove_vintf+0x60/0x148
+  tegra241_cmdqv_remove+0x48/0xc8
+  arm_smmu_impl_remove+0x28/0x60
+  devm_action_release+0x1c/0x40
+ ------------[ cut here ]------------
+ 128 pages are still in use!
+ WARNING: CPU: 16 PID: 1 at mm/page_alloc.c:6902 free_contig_range+0x18c/0x1c8
+ Call trace:
+  free_contig_range+0x18c/0x1c8 (P)
+  cma_release+0x154/0x2f0
+  dma_free_contiguous+0x38/0xa0
+  dma_direct_free+0x10c/0x248
+  dma_free_attrs+0x100/0x290
+  dmam_free_coherent+0x78/0xd8
+  tegra241_vintf_free_lvcmdq+0x74/0x160
+  tegra241_cmdqv_remove+0x98/0x198
+  arm_smmu_impl_remove+0x28/0x60
+  devm_action_release+0x1c/0x40
 
-Also set the device's runtime PM status to suspended in remove only if it
-wasn't so already.
+This is because the LVCMDQ queue memory are managed by devres, while that
+dmam_free_coherent() is called in the context of devm_action_release().
 
-Fixes: 1283b3b8f82b ("media: i2c: Add driver for Sony IMX219 sensor")
-Cc: stable@vger.kernel.org # for >= v6.6
-Reviewed-by: Bingbu Cao <bingbu.cao@intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Jason pointed out that "arm_smmu_impl_probe() has mis-ordered the devres
+callbacks if ops->device_remove() is going to be manually freeing things
+that probe allocated":
+https://lore.kernel.org/linux-iommu/20250407174408.GB1722458@nvidia.com/
+
+In fact, tegra241_cmdqv_init_structures() only allocates memory resources
+which means any failure that it generates would be similar to -ENOMEM, so
+there is no point in having that "falling back to standard SMMU" routine,
+as the standard SMMU would likely fail to allocate memory too.
+
+Remove the unwind part in tegra241_cmdqv_init_structures(), and return a
+proper error code to ask SMMU driver to call tegra241_cmdqv_remove() via
+impl_ops->device_remove(). Then, drop tegra241_vintf_free_lvcmdq() since
+devres will take care of that.
+
+Fixes: 483e0bd8883a ("iommu/tegra241-cmdqv: Do not allocate vcmdq until dma_set_mask_and_coherent")
+Cc: stable@vger.kernel.org
+Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20250407201908.172225-1-nicolinc@nvidia.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/imx219.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c |   32 +++----------------------
+ 1 file changed, 5 insertions(+), 27 deletions(-)
 
---- a/drivers/media/i2c/imx219.c
-+++ b/drivers/media/i2c/imx219.c
-@@ -1231,6 +1231,9 @@ static int imx219_probe(struct i2c_clien
- 		goto error_media_entity;
- 	}
+--- a/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
++++ b/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
+@@ -487,17 +487,6 @@ static int tegra241_cmdqv_hw_reset(struc
  
-+	pm_runtime_set_active(dev);
-+	pm_runtime_enable(dev);
+ /* VCMDQ Resource Helpers */
+ 
+-static void tegra241_vcmdq_free_smmu_cmdq(struct tegra241_vcmdq *vcmdq)
+-{
+-	struct arm_smmu_queue *q = &vcmdq->cmdq.q;
+-	size_t nents = 1 << q->llq.max_n_shift;
+-	size_t qsz = nents << CMDQ_ENT_SZ_SHIFT;
+-
+-	if (!q->base)
+-		return;
+-	dmam_free_coherent(vcmdq->cmdqv->smmu.dev, qsz, q->base, q->base_dma);
+-}
+-
+ static int tegra241_vcmdq_alloc_smmu_cmdq(struct tegra241_vcmdq *vcmdq)
+ {
+ 	struct arm_smmu_device *smmu = &vcmdq->cmdqv->smmu;
+@@ -560,7 +549,8 @@ static void tegra241_vintf_free_lvcmdq(s
+ 	struct tegra241_vcmdq *vcmdq = vintf->lvcmdqs[lidx];
+ 	char header[64];
+ 
+-	tegra241_vcmdq_free_smmu_cmdq(vcmdq);
++	/* Note that the lvcmdq queue memory space is managed by devres */
 +
- 	ret = v4l2_async_register_subdev_sensor(&imx219->sd);
- 	if (ret < 0) {
- 		dev_err_probe(dev, ret,
-@@ -1238,15 +1241,14 @@ static int imx219_probe(struct i2c_clien
- 		goto error_subdev_cleanup;
+ 	tegra241_vintf_deinit_lvcmdq(vintf, lidx);
+ 
+ 	dev_dbg(vintf->cmdqv->dev,
+@@ -768,13 +758,13 @@ static int tegra241_cmdqv_init_structure
+ 
+ 	vintf = kzalloc(sizeof(*vintf), GFP_KERNEL);
+ 	if (!vintf)
+-		goto out_fallback;
++		return -ENOMEM;
+ 
+ 	/* Init VINTF0 for in-kernel use */
+ 	ret = tegra241_cmdqv_init_vintf(cmdqv, 0, vintf);
+ 	if (ret) {
+ 		dev_err(cmdqv->dev, "failed to init vintf0: %d\n", ret);
+-		goto free_vintf;
++		return ret;
  	}
  
--	/* Enable runtime PM and turn off the device */
--	pm_runtime_set_active(dev);
--	pm_runtime_enable(dev);
- 	pm_runtime_idle(dev);
+ 	/* Preallocate logical VCMDQs to VINTF0 */
+@@ -783,24 +773,12 @@ static int tegra241_cmdqv_init_structure
  
+ 		vcmdq = tegra241_vintf_alloc_lvcmdq(vintf, lidx);
+ 		if (IS_ERR(vcmdq))
+-			goto free_lvcmdq;
++			return PTR_ERR(vcmdq);
+ 	}
+ 
+ 	/* Now, we are ready to run all the impl ops */
+ 	smmu->impl_ops = &tegra241_cmdqv_impl_ops;
  	return 0;
- 
- error_subdev_cleanup:
- 	v4l2_subdev_cleanup(&imx219->sd);
-+	pm_runtime_disable(dev);
-+	pm_runtime_set_suspended(dev);
- 
- error_media_entity:
- 	media_entity_cleanup(&imx219->sd.entity);
-@@ -1271,9 +1273,10 @@ static void imx219_remove(struct i2c_cli
- 	imx219_free_controls(imx219);
- 
- 	pm_runtime_disable(&client->dev);
--	if (!pm_runtime_status_suspended(&client->dev))
-+	if (!pm_runtime_status_suspended(&client->dev)) {
- 		imx219_power_off(&client->dev);
--	pm_runtime_set_suspended(&client->dev);
-+		pm_runtime_set_suspended(&client->dev);
-+	}
+-
+-free_lvcmdq:
+-	for (lidx--; lidx >= 0; lidx--)
+-		tegra241_vintf_free_lvcmdq(vintf, lidx);
+-	tegra241_cmdqv_deinit_vintf(cmdqv, vintf->idx);
+-free_vintf:
+-	kfree(vintf);
+-out_fallback:
+-	dev_info(smmu->impl_dev, "Falling back to standard SMMU CMDQ\n");
+-	smmu->options &= ~ARM_SMMU_OPT_TEGRA241_CMDQV;
+-	tegra241_cmdqv_remove(smmu);
+-	return 0;
  }
  
- static const struct of_device_id imx219_dt_ids[] = {
+ #ifdef CONFIG_IOMMU_DEBUGFS
 
 
 
