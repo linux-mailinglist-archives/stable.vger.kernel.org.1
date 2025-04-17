@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-133739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44DB4A9271F
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:19:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 629B8A92958
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9F051906E79
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:20:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 549154A4B98
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 724C9255241;
-	Thu, 17 Apr 2025 18:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5704F25A326;
+	Thu, 17 Apr 2025 18:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gpnxD62c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vp5uoZgJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC7C1A3178;
-	Thu, 17 Apr 2025 18:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B38259CB9;
+	Thu, 17 Apr 2025 18:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913995; cv=none; b=qlQgxfxNQQyxQCgKLFkIqJ9/uB8dVUtX0NGXh/u367QjE+MMSjkeDmUPGYEUpDq1QWoEZWdrayP8VR5iczxhJRonF1tQmQ+cbzW4EDsHaJo7e75Uq/PhheZ2Q3uZIDLIWzXLgtP3UA4BRpnP05cKLjHYhvg1Duldqz6EsJYNqy0=
+	t=1744915107; cv=none; b=g3w3rgKhrpylfEcu5J8RiEfpsclH6d3utAa2/ONAb0RKvjuz2FgqFVRlP+geuo5FG/cJSmFo+OLU7634Z6/EbJwMcng04mTTBXC9AKY4pjjHEdxihrNgZKj2KSIbSMfvx4GV5RQNvdS/grsbuG6+YS6b5rtis6uRFSlK6MJEuTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913995; c=relaxed/simple;
-	bh=/KCim2kQpmyjdtUc/1c3mSqVidQeWdvHE1lBPWS0Vu4=;
+	s=arc-20240116; t=1744915107; c=relaxed/simple;
+	bh=Arwn/tUN66c0Muq4SomMwkDzVKB0pYHBogm03ISNbgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D3y3QarsdU4leUkqPmFLqDtHStaXVY7FBgAJHN5jEQcUOud3jZAMBuZzH0KJwWMLGBlSRMOQehdGdYHqo9Z3ROURHpSuof3fupmfsZ/hpsLkJ55BKPxyH9riSrsgwZ53/gflU8iXhj6+JLPVmBWQZrHcC5kbNR4/ZJZQ0HOvPHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gpnxD62c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6ADC4CEE4;
-	Thu, 17 Apr 2025 18:19:54 +0000 (UTC)
+	 MIME-Version; b=Oiei4lOY7tnrBSVQdLhDjbpL45eDqIk3uq5piIAbP1ezdgMPkYZecoTcCQZc7eppHRF6xQO7HF0n/vNnc5DB1U6jvnrB7dSTUpZcqowzyelB0sp3d3BxX1UpNxvMKhJBApgUL2DlNv3sPQfSoRP0yc/m+QiBCSo6LlOA58Wcfvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vp5uoZgJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B7EC4CEE4;
+	Thu, 17 Apr 2025 18:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913995;
-	bh=/KCim2kQpmyjdtUc/1c3mSqVidQeWdvHE1lBPWS0Vu4=;
+	s=korg; t=1744915106;
+	bh=Arwn/tUN66c0Muq4SomMwkDzVKB0pYHBogm03ISNbgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gpnxD62cGl0wwRlsmNKpt7fAatDXD+OV+QgvJJRiLctjz3sFcr0onqMe/pWjDX7ZF
-	 wfvuKHAKvWOn4fIFig5c8idRhLK1Fd/ofm8c2tTJXj/lkmZiLaqzFmCdyqaSEhZxmj
-	 3HpsoctFV3FQMop1XHPkv7ibprPYyWF1jZb1XaZI=
+	b=vp5uoZgJwjCy/75t/PxQnod4tPiSpl7eQkaA/T1nKTLOU0TM6cDrOdHzjO1NjN5My
+	 /2/XafPHX1REjdqHfLeWBD3VwUcdFs8ZfnCQTpXtciJ7cM4qqgoiIek+33S61mjZPu
+	 d9EB6dzFs/ciwK4yDtGSXU7C6rfr8JnXv5DTPwsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nolan Nicholson <nolananicholson@gmail.com>,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 070/414] HID: pidff: Fix null pointer dereference in pidff_find_fields
-Date: Thu, 17 Apr 2025 19:47:08 +0200
-Message-ID: <20250417175114.248111884@linuxfoundation.org>
+Subject: [PATCH 6.12 020/393] octeontx2-pf: qos: fix VF root node parent queue index
+Date: Thu, 17 Apr 2025 19:47:09 +0200
+Message-ID: <20250417175108.406033262@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +61,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <forest10pl@gmail.com>
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-[ Upstream commit 22a05462c3d0eee15154faf8d13c49e6295270a5 ]
+[ Upstream commit b7db94734e785e380b0db0f9295e07024f4d42a0 ]
 
-This function triggered a null pointer dereference if used to search for
-a report that isn't implemented on the device. This happened both for
-optional and required reports alike.
+The current code configures the Physical Function (PF) root node at TL1
+and the Virtual Function (VF) root node at TL2.
 
-The same logic was applied to pidff_find_special_field and although
-pidff_init_fields should return an error earlier if one of the required
-reports is missing, future modifications could change this logic and
-resurface this possible null pointer dereference again.
+This ensure at any given point of time PF traffic gets more priority.
 
-LKML bug report:
-https://lore.kernel.org/all/CAL-gK7f5=R0nrrQdPtaZZr1fd-cdAMbDMuZ_NLA8vM0SX+nGSw@mail.gmail.com
+                    PF root node
+                      TL1
+                     /  \
+                    TL2  TL2 VF root node
+                    /     \
+                   TL3    TL3
+                   /       \
+                  TL4      TL4
+                  /         \
+                 SMQ        SMQ
 
-Reported-by: Nolan Nicholson <nolananicholson@gmail.com>
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Due to a bug in the current code, the TL2 parent queue index on the
+VF interface is not being configured, leading to 'SMQ Flush' errors
+
+Fixes: 5e6808b4c68d ("octeontx2-pf: Add support for HTB offload")
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250407070341.2765426-1-hkelam@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/ethernet/marvell/octeontx2/nic/qos.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index 4c94d8cbac43a..25dbed076f530 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -793,6 +793,11 @@ static void pidff_set_autocenter(struct input_dev *dev, u16 magnitude)
- static int pidff_find_fields(struct pidff_usage *usage, const u8 *table,
- 			     struct hid_report *report, int count, int strict)
- {
-+	if (!report) {
-+		pr_debug("pidff_find_fields, null report\n");
-+		return -1;
-+	}
-+
- 	int i, j, k, found;
- 	int return_value = 0;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
+index 0f844c14485a0..35acc07bd9648 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
+@@ -165,6 +165,11 @@ static void __otx2_qos_txschq_cfg(struct otx2_nic *pfvf,
  
-@@ -917,6 +922,11 @@ static int pidff_reports_ok(struct pidff_device *pidff)
- static struct hid_field *pidff_find_special_field(struct hid_report *report,
- 						  int usage, int enforce_min)
- {
-+	if (!report) {
-+		pr_debug("pidff_find_special_field, null report\n");
-+		return NULL;
-+	}
+ 		otx2_config_sched_shaping(pfvf, node, cfg, &num_regs);
+ 	} else if (level == NIX_TXSCH_LVL_TL2) {
++		/* configure parent txschq */
++		cfg->reg[num_regs] = NIX_AF_TL2X_PARENT(node->schq);
++		cfg->regval[num_regs] = (u64)hw->tx_link << 16;
++		num_regs++;
 +
- 	int i;
- 
- 	for (i = 0; i < report->maxfield; i++) {
+ 		/* configure link cfg */
+ 		if (level == pfvf->qos.link_cfg_lvl) {
+ 			cfg->reg[num_regs] = NIX_AF_TL3_TL2X_LINKX_CFG(node->schq, hw->tx_link);
 -- 
 2.39.5
 
