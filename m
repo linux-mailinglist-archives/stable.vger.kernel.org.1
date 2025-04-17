@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-134138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D289A9298A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:43:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A32AA925BE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:07:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 413584A4BE5
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D46E37B49BF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A648462;
-	Thu, 17 Apr 2025 18:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EAC2571BF;
+	Thu, 17 Apr 2025 18:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eJoX+Frj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pBNpvucs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24FD1DF733;
-	Thu, 17 Apr 2025 18:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110A92571B3;
+	Thu, 17 Apr 2025 18:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915213; cv=none; b=fzG2+ZoO9YBZIj3cc8fcd7+CuEoNOgbhUvEr3my/fSS1yjtnMJepxmPfMUL/LG3/6IdY8lUny9vu+DWHe+2QtW+cI0TURx3XrFZEoKGLPa6juOomqfFzLtYtzzYsa0GqxrpmvPNqym+8ISHfXJ0wuBkP+dDlF0Dt89nMSIqhe5Y=
+	t=1744912937; cv=none; b=G+9JRyDLTWtOqFMqIiGEZfJ0aDyE+0aXWE5TTQgs4TBQYPew+9fpaazJR3MLpQtbaQkuRj6coi5bThv0cViX3vzO4Qe22jeDDWI+eegDddR2kJpqlMKB+IEfGuU186fxygOfR1m8sg0sguQ6bi2voCtaTe2b0Lfe/eb4l7udOZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915213; c=relaxed/simple;
-	bh=AbDtE8omXKrlF3mBTu6vY2y7j7ZFYnAvSFSkIAJNHag=;
+	s=arc-20240116; t=1744912937; c=relaxed/simple;
+	bh=FLwmWYQ8XRFKt6bQZFH50ugZ61R9p3txAJSbUNg9Pi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I7t9HBgV67m5QhDev3pe1hqyIXJzs7Os/0RQysuBwL7Fq0KNetM4zVoq6Zc9NxXUIxYocmkxgZz9/tJYIFd2QoQmwNh/9w6gaA53Gbv9ReChYHF84wut5zfceEGhJvheyh+POA6/b9m8LpYT5NIdtwnt8158tpVCr/YlqydjSZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eJoX+Frj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B63CC4CEE4;
-	Thu, 17 Apr 2025 18:40:12 +0000 (UTC)
+	 MIME-Version; b=S6CX9pL82slAjXUy6M/hbYP9anYLrUNp7n4mpJ9cbrQAgTy90Ed2uA5SkI/UOtFOylonWGZ5NZ2WSk36a9wzjN9XXXeE2oMLDlmHlJ+V8D5H1MFsPxslGyvc6wPUt189gNbTUD9fxsoN60zrg+gaa+6b7NV+hKU/pLUyyt82U6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pBNpvucs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9030AC4CEE4;
+	Thu, 17 Apr 2025 18:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915213;
-	bh=AbDtE8omXKrlF3mBTu6vY2y7j7ZFYnAvSFSkIAJNHag=;
+	s=korg; t=1744912936;
+	bh=FLwmWYQ8XRFKt6bQZFH50ugZ61R9p3txAJSbUNg9Pi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eJoX+FrjhvGQAztxEWWEfnhnSfTn0o+n6mggFr17L7JuihhGc/2qfCv5a669yqNOx
-	 ptVaxY9Q20Ep02KbOpVfmChdptlN+UTMJOqGAUrwiKG6sV9T8XbEi6EegxIBQxceDK
-	 zTAd4Hp5A/1yQ9R54ITkGTzuF78M6jBH2N2KBTfs=
+	b=pBNpvucsvDrT4wxScKQ2DAdZF+4eCCJX3IkgTOi1k7/uH4l5mlKQm0VO1CgPMEeCJ
+	 clXnqdofP9pmf6y6pYOVZBC/EoGrRRhTiLIOEsXVVZSVAfs4iHFczZikakeTt7p/WZ
+	 nzxOB2mRmul2qJse7s9cKTeoCHK84l6EBAOCUlFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunhui Cui <cuiyunhui@bytedance.com>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Will Deacon <will@kernel.org>,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 053/393] perf/dwc_pcie: fix some unreleased resources
+Subject: [PATCH 6.14 174/449] drm/amdgpu: handle amdgpu_cgs_create_device() errors in amd_powerplay_create()
 Date: Thu, 17 Apr 2025 19:47:42 +0200
-Message-ID: <20250417175109.719623150@linuxfoundation.org>
+Message-ID: <20250417175124.986638435@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunhui Cui <cuiyunhui@bytedance.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit 6eb1e8ef586ac4a3dcdc20248f9cb45e4ceb141f ]
+[ Upstream commit 1435e895d4fc967d64e9f5bf81e992ac32f5ac76 ]
 
-Release leaked resources, such as plat_dev and dev_info.
+Add error handling to propagate amdgpu_cgs_create_device() failures
+to the caller. When amdgpu_cgs_create_device() fails, release hwmgr
+and return -ENOMEM to prevent null pointer dereference.
 
-Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-Reviewed-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250220121716.50324-2-cuiyunhui@bytedance.com
-Signed-off-by: Will Deacon <will@kernel.org>
+[v1]->[v2]: Change error code from -EINVAL to -ENOMEM. Free hwmgr.
+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/dwc_pcie_pmu.c | 33 ++++++++++++++++++++++-----------
- 1 file changed, 22 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/perf/dwc_pcie_pmu.c b/drivers/perf/dwc_pcie_pmu.c
-index 4ca50f9b6dfed..7dbda36884c8d 100644
---- a/drivers/perf/dwc_pcie_pmu.c
-+++ b/drivers/perf/dwc_pcie_pmu.c
-@@ -567,8 +567,10 @@ static int dwc_pcie_register_dev(struct pci_dev *pdev)
- 		return PTR_ERR(plat_dev);
- 
- 	dev_info = kzalloc(sizeof(*dev_info), GFP_KERNEL);
--	if (!dev_info)
-+	if (!dev_info) {
-+		platform_device_unregister(plat_dev);
- 		return -ENOMEM;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
+index 686345f75f264..6cd327fecebbc 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
+@@ -51,6 +51,11 @@ static int amd_powerplay_create(struct amdgpu_device *adev)
+ 	hwmgr->adev = adev;
+ 	hwmgr->not_vf = !amdgpu_sriov_vf(adev);
+ 	hwmgr->device = amdgpu_cgs_create_device(adev);
++	if (!hwmgr->device) {
++		kfree(hwmgr);
++		return -ENOMEM;
 +	}
- 
- 	/* Cache platform device to handle pci device hotplug */
- 	dev_info->plat_dev = plat_dev;
-@@ -724,6 +726,15 @@ static struct platform_driver dwc_pcie_pmu_driver = {
- 	.driver = {.name = "dwc_pcie_pmu",},
- };
- 
-+static void dwc_pcie_cleanup_devices(void)
-+{
-+	struct dwc_pcie_dev_info *dev_info, *tmp;
 +
-+	list_for_each_entry_safe(dev_info, tmp, &dwc_pcie_dev_info_head, dev_node) {
-+		dwc_pcie_unregister_dev(dev_info);
-+	}
-+}
-+
- static int __init dwc_pcie_pmu_init(void)
- {
- 	struct pci_dev *pdev = NULL;
-@@ -736,7 +747,7 @@ static int __init dwc_pcie_pmu_init(void)
- 		ret = dwc_pcie_register_dev(pdev);
- 		if (ret) {
- 			pci_dev_put(pdev);
--			return ret;
-+			goto err_cleanup;
- 		}
- 	}
- 
-@@ -745,35 +756,35 @@ static int __init dwc_pcie_pmu_init(void)
- 				      dwc_pcie_pmu_online_cpu,
- 				      dwc_pcie_pmu_offline_cpu);
- 	if (ret < 0)
--		return ret;
-+		goto err_cleanup;
- 
- 	dwc_pcie_pmu_hp_state = ret;
- 
- 	ret = platform_driver_register(&dwc_pcie_pmu_driver);
- 	if (ret)
--		goto platform_driver_register_err;
-+		goto err_remove_cpuhp;
- 
- 	ret = bus_register_notifier(&pci_bus_type, &dwc_pcie_pmu_nb);
- 	if (ret)
--		goto platform_driver_register_err;
-+		goto err_unregister_driver;
- 	notify = true;
- 
- 	return 0;
- 
--platform_driver_register_err:
-+err_unregister_driver:
-+	platform_driver_unregister(&dwc_pcie_pmu_driver);
-+err_remove_cpuhp:
- 	cpuhp_remove_multi_state(dwc_pcie_pmu_hp_state);
--
-+err_cleanup:
-+	dwc_pcie_cleanup_devices();
- 	return ret;
- }
- 
- static void __exit dwc_pcie_pmu_exit(void)
- {
--	struct dwc_pcie_dev_info *dev_info, *tmp;
--
- 	if (notify)
- 		bus_unregister_notifier(&pci_bus_type, &dwc_pcie_pmu_nb);
--	list_for_each_entry_safe(dev_info, tmp, &dwc_pcie_dev_info_head, dev_node)
--		dwc_pcie_unregister_dev(dev_info);
-+	dwc_pcie_cleanup_devices();
- 	platform_driver_unregister(&dwc_pcie_pmu_driver);
- 	cpuhp_remove_multi_state(dwc_pcie_pmu_hp_state);
- }
+ 	mutex_init(&hwmgr->msg_lock);
+ 	hwmgr->chip_family = adev->family;
+ 	hwmgr->chip_id = adev->asic_type;
 -- 
 2.39.5
 
