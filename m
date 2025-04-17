@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-133425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87210A925B1
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:06:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEC8FA927B2
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:28:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00C151B61F9A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A139189ABFF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42BF52571B5;
-	Thu, 17 Apr 2025 18:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F8E25E837;
+	Thu, 17 Apr 2025 18:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VsSLPiw7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cPbdKc1m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011BB2561B3;
-	Thu, 17 Apr 2025 18:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DB3256C9C;
+	Thu, 17 Apr 2025 18:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913038; cv=none; b=Um0J7to/XjxBkCyx8nER5+1quEi6H7OlKlE2DrlZesNQGuKyNZOtqjiYzpCylQHEUWuJ5wwrCVPSK7lytszhzWKOSA7TculvGZuvsHKz0hVvXPd2WYhbOGExT8+dmDsyoKapCX0r/dMWGVjQvHNlntXonYAWx3759v94mZe3zYc=
+	t=1744914195; cv=none; b=co/1zDQv8+XaewOqrKzdud+KoEYTrKh99m2aYml03vaht6kA5m87hZSzCYT9IO1sX1plHtSYZGiMH4Dd5YwmlzOIw0G40pULbVKOMeoneP0PHrivEfTIYAF+qirBEjkSwfCzhXJlQszon4XQWvwUVmnlbvxJM/YUlI2tCGD3ExY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913038; c=relaxed/simple;
-	bh=L3nNZjOqOJlrOi/teYAfnP0WF/xUFglqlYo7uYz8m2w=;
+	s=arc-20240116; t=1744914195; c=relaxed/simple;
+	bh=GtWRa79q/gt3FUJr8tUQHWVEeDQWqbmwulO+nAyowwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VLPKrkIEA+JQcIxijR5nUq7dmHOmxlRqW8quBCI6VYKt64lW3ulZF7nxh+tZ+whWMUz8ZN6GH1j0vmy+hSWw6RAuyDEvmkIvP50u/nwvb080wKAbxK4Wwd4vcxCALZzYL2PLxplQWW5W3TAKy5QMWnSwZJ5dbTrUEKmu23yGYzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VsSLPiw7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76D6CC4CEE4;
-	Thu, 17 Apr 2025 18:03:57 +0000 (UTC)
+	 MIME-Version; b=lZ9T6D/TFogF+2R8Zl1gW1sB9B2fpw2pt6AUg5tIeMbXwS6Ctuq13hE+Q5Nr19iq+lh+QotFXm0J8/Z+aHI9dHX1JSZJ3ZEr+tgFjfJb/xUKlFoTWADPWULG0PJUIxJRcni7qMbTG2Ul89LGn7mQoyiQSDlKxb26oPs960vFMDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPbdKc1m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60F8C4CEE4;
+	Thu, 17 Apr 2025 18:23:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913037;
-	bh=L3nNZjOqOJlrOi/teYAfnP0WF/xUFglqlYo7uYz8m2w=;
+	s=korg; t=1744914195;
+	bh=GtWRa79q/gt3FUJr8tUQHWVEeDQWqbmwulO+nAyowwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VsSLPiw7rmU1nmZKRXMP/qpH3KfZa7DiqwxASROVAoCygrhh0x9FKcrZf5KBVIKhY
-	 Hv+kIwnYpYowctkEl6WeCm50ZKuGYV49tM230+d4ENMGHICcsBCO06YXUfQ7Zd9RBa
-	 tBUKN4G25WGWKnpbh3u25/pYLgt7cuuyByKYT4uo=
+	b=cPbdKc1mNagqbdA2dwSu7KLbcTulKGtBeaaivORXEzpXimyjL4cHvU9gKVIudWZoO
+	 J3OH7FeAviwVGdy+fywXZ8E4Aev2wriofIJmaKshz111U/qsdosoA3PydYp6/UHhIF
+	 ni8zE3TeTBygDB9JdHCzfGTPFT4gQHFxpRYjfXv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Andrew Wyatt <fewtarius@steamfork.org>,
+	John Edwards <uejji@uejji.net>,
+	Paco Avelar <pacoavelar@hotmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 207/449] HID: pidff: Make sure to fetch pool before checking SIMULTANEOUS_MAX
+Subject: [PATCH 6.13 137/414] drm: panel-orientation-quirks: Add quirks for AYA NEO Flip DS and KB
 Date: Thu, 17 Apr 2025 19:48:15 +0200
-Message-ID: <20250417175126.299241151@linuxfoundation.org>
+Message-ID: <20250417175116.944294925@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,78 +63,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Andrew Wyatt <fewtarius@steamfork.org>
 
-[ Upstream commit 1f650dcec32d22deb1d6db12300a2b98483099a9 ]
+[ Upstream commit 529741c331da1fbf54f86c6ec3a4558b9b0b16dc ]
 
-As noted by Anssi some 20 years ago, pool report is sometimes messed up.
-This worked fine on many devices but casued oops on VRS DirectForce PRO.
+The AYA NEO Flip DS and KB both use a 1080x1920 portrait LCD panel.  The
+Flip DS additionally uses a 640x960 portrait LCD panel as a second display.
 
-Here, we're making sure pool report is refetched before trying to access
-any of it's fields. While loop was replaced with a for loop + exit
-conditions were moved aroud to decrease the possibility of creating an
-infinite loop scenario.
+Add DMI matches to correctly rotate these panels.
 
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Andrew Wyatt <fewtarius@steamfork.org>
+Co-developed-by: John Edwards <uejji@uejji.net>
+Signed-off-by: John Edwards <uejji@uejji.net>
+Tested-by: Paco Avelar <pacoavelar@hotmail.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250213222455.93533-3-uejji@uejji.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 29 +++++++++++++----------------
- 1 file changed, 13 insertions(+), 16 deletions(-)
+ drivers/gpu/drm/drm_panel_orientation_quirks.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index f23381b6e3447..503f643b59cad 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -604,28 +604,25 @@ static void pidff_reset(struct pidff_device *pidff)
- }
+diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+index f9c975338fc9e..b5f6ae0459459 100644
+--- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
++++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+@@ -93,6 +93,12 @@ static const struct drm_dmi_panel_orientation_data onegx1_pro = {
+ 	.orientation = DRM_MODE_PANEL_ORIENTATION_RIGHT_UP,
+ };
  
- /*
-- * Refetch pool report
-+ * Fetch pool report
-  */
- static void pidff_fetch_pool(struct pidff_device *pidff)
- {
--	if (!pidff->pool[PID_SIMULTANEOUS_MAX].value)
--		return;
-+	int i;
-+	struct hid_device *hid = pidff->hid;
- 
--	int i = 0;
--	while (pidff->pool[PID_SIMULTANEOUS_MAX].value[0] < 2) {
--		hid_dbg(pidff->hid, "pid_pool requested again\n");
--		hid_hw_request(pidff->hid, pidff->reports[PID_POOL],
--				HID_REQ_GET_REPORT);
--		hid_hw_wait(pidff->hid);
-+	/* Repeat if PID_SIMULTANEOUS_MAX < 2 to make sure it's correct */
-+	for(i = 0; i < 20; i++) {
-+		hid_hw_request(hid, pidff->reports[PID_POOL], HID_REQ_GET_REPORT);
-+		hid_hw_wait(hid);
- 
--		/* break after 20 tries with SIMULTANEOUS_MAX < 2 */
--		if (i++ > 20) {
--			hid_warn(pidff->hid,
--				 "device reports %d simultaneous effects\n",
--				 pidff->pool[PID_SIMULTANEOUS_MAX].value[0]);
--			break;
--		}
-+		if (!pidff->pool[PID_SIMULTANEOUS_MAX].value)
-+			return;
-+		if (pidff->pool[PID_SIMULTANEOUS_MAX].value[0] >= 2)
-+			return;
- 	}
-+	hid_warn(hid, "device reports %d simultaneous effects\n",
-+		 pidff->pool[PID_SIMULTANEOUS_MAX].value[0]);
- }
- 
- /*
++static const struct drm_dmi_panel_orientation_data lcd640x960_leftside_up = {
++	.width = 640,
++	.height = 960,
++	.orientation = DRM_MODE_PANEL_ORIENTATION_LEFT_UP,
++};
++
+ static const struct drm_dmi_panel_orientation_data lcd720x1280_rightside_up = {
+ 	.width = 720,
+ 	.height = 1280,
+@@ -202,6 +208,18 @@ static const struct dmi_system_id orientation_data[] = {
+ 		  DMI_MATCH(DMI_PRODUCT_NAME, "AIR"),
+ 		},
+ 		.driver_data = (void *)&lcd1080x1920_leftside_up,
++	}, {    /* AYA NEO Flip DS Bottom Screen */
++		.matches = {
++		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
++		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "FLIP DS"),
++		},
++		.driver_data = (void *)&lcd640x960_leftside_up,
++	}, {    /* AYA NEO Flip KB/DS Top Screen */
++		.matches = {
++		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
++		  DMI_MATCH(DMI_PRODUCT_NAME, "FLIP"),
++		},
++		.driver_data = (void *)&lcd1080x1920_leftside_up,
+ 	}, {	/* AYA NEO Founder */
+ 		.matches = {
+ 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYA NEO"),
 -- 
 2.39.5
 
