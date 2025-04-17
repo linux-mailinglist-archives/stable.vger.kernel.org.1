@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-134311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4075BA92A7D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:51:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86A34A92603
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:09:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A8698A2109
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:48:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 151063BE71B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FDE41B4153;
-	Thu, 17 Apr 2025 18:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2941C1DF756;
+	Thu, 17 Apr 2025 18:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpYv/aq0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLmaRsDZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD76185920;
-	Thu, 17 Apr 2025 18:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97931DE3A8;
+	Thu, 17 Apr 2025 18:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915743; cv=none; b=dOc4bZgqe0RXIgN2pKLGIQfU8x1aWrJDqcQojCbSauAhZiCUraaXpF+cjL33vkf6rWWMD0oQIpt6U0JczAlYLSfsqFWYeRZEV14girh2dE9nJt8k7qAHTcGiy+PI1jcponnTEK5eUWvc3XcUJd8VUJ3P2wublOKNipYHu3HtXn4=
+	t=1744913372; cv=none; b=BZi1Xt5fvGkQccM+0baRDEcSHjod//ZJRN1FVEIKeohGLLIqJYUmk2/qO8fIezLHGMvOtrZRcJXqx0jTV64n46zFVMwSXQrDrA4CTHNTzh7Qg2Zkd8RhGl2lWUXCJxusPUsUlLVCQTyEN4KQpPTwL08bkP0uHjyU+17ZG/ubp58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915743; c=relaxed/simple;
-	bh=KBU3VgxIGHfK5R7YmFft1G1brrsZIjsWZ5p9qNEyBbU=;
+	s=arc-20240116; t=1744913372; c=relaxed/simple;
+	bh=Fz21OXs7qgx2Efx6FoGLasL+wCjNGTSlS2lsRFOY7+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ijuC9Gxsx96FoDlJXY1jiynLzuuaOhSKDo+XvWujVbtY4QYt4WNiVBlG6+m9ddg2XeA5EXLMJwtipHGT16cA2o+TPILGe6CiM2TPh1W5TRnIsPL/AIlgImxAyRvbraD8XcxW0mBbK/qppl5XewDpUUn85AfLAhp7xsWJXecFcGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpYv/aq0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95342C4CEE4;
-	Thu, 17 Apr 2025 18:49:02 +0000 (UTC)
+	 MIME-Version; b=Vo4xykY1YOu7SpxnE3DQdWK5fXkaozIpI7avn9LpEBSqw2Uw7MAOwIrYYOZk3YJb0bI69giXSq5iWwSca5xfe1dPsP32bW+rCe8vGsBzBHLgLvgD6q9HBnlHIynGqIANnZmIvslRp2xIB+njuElFl19tZnC8a0eP3h4ghB0AczQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLmaRsDZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DB1DC4CEE4;
+	Thu, 17 Apr 2025 18:09:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915742;
-	bh=KBU3VgxIGHfK5R7YmFft1G1brrsZIjsWZ5p9qNEyBbU=;
+	s=korg; t=1744913372;
+	bh=Fz21OXs7qgx2Efx6FoGLasL+wCjNGTSlS2lsRFOY7+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wpYv/aq0kHZbCOe+Vl65C70QX+f/nlxHWTl1T/qLJ+e7d2s7b8tOrZw34yoEJjXNX
-	 ahQiAILqlw8DdteTJ+XWcPSFuV8pN9Y+hgmV2qTbXkv/hPaFIAE/eEUghvZvdyDmco
-	 tPeFihvkIPJkp4KyeLDuFwHvi7J5X8xuEFvdJLCI=
+	b=jLmaRsDZe22p0u1oJn8w9Qw0MJ+0WiTpjQR+Zh/8zA1qQiARaRmCC6C7xd8Z4tfdV
+	 RXLw7n3kemy4p4NdnumZRRQjSFfyBEn+R1u1/aSmH8Nx5ZQQoEVdeDif9sNYfl9HXc
+	 bXC09XaEYCSRtN6xkmW0cK5uhTBe+LJKGppbrnjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hidenori Kobayashi <hidenorik@chromium.org>,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 195/393] media: intel/ipu6: set the dev_parent of video device to pdev
-Date: Thu, 17 Apr 2025 19:50:04 +0200
-Message-ID: <20250417175115.431606004@linuxfoundation.org>
+	Joe Damato <jdamato@fastly.com>,
+	Gerhard Engleder <gerhard@engleder-embedded.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.14 317/449] igc: Fix XSK queue NAPI ID mapping
+Date: Thu, 17 Apr 2025 19:50:05 +0200
+Message-ID: <20250417175130.874073676@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bingbu Cao <bingbu.cao@intel.com>
+From: Joe Damato <jdamato@fastly.com>
 
-commit 6f0ab5d3671f7cbb326c8cab6fb69cb7ab9901cc upstream.
+commit dddeeaa16ce9d163ccf3b681715512d338afa541 upstream.
 
-The bus_info in v4l2_capability of IPU6 isys v4l2_dev is missing.
-The driver didn't set the dev_parent of v4l2_dev, its parent is set
-to its parent auxdev which is neither platform nor PCI device, thus
-media_set_bus_info() will not set the bus_info of v4l2_capability, then
-`v4l2-ctl --all` cannot show the bus_info.
+In commit b65969856d4f ("igc: Link queues to NAPI instances"), the XSK
+queues were incorrectly unmapped from their NAPI instances. After
+discussion on the mailing list and the introduction of a test to codify
+the expected behavior, we can see that the unmapping causes the
+check_xsk test to fail:
 
-This patch fixes it by setting the dev_parent of video_device and v4l2
-framework can detect the device type and set the bus_info instead.
+NETIF=enp86s0 ./tools/testing/selftests/drivers/net/queues.py
 
-Fixes: 3c1dfb5a69cf ("media: intel/ipu6: input system video nodes and buffer queues")
+[...]
+  # Check|     ksft_eq(q.get('xsk', None), {},
+  # Check failed None != {} xsk attr on queue we configured
+  not ok 4 queues.check_xsk
+
+After this commit, the test passes:
+
+  ok 4 queues.check_xsk
+
+Note that the test itself is only in net-next, so I tested this change
+by applying it to my local net-next tree, booting, and running the test.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Hidenori Kobayashi <hidenorik@chromium.org>
-Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: b65969856d4f ("igc: Link queues to NAPI instances")
+Signed-off-by: Joe Damato <jdamato@fastly.com>
+Reviewed-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/intel/ipu6/ipu6-isys-video.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/igc/igc.h      |    2 --
+ drivers/net/ethernet/intel/igc/igc_main.c |    4 ++--
+ drivers/net/ethernet/intel/igc/igc_xdp.c  |    2 --
+ 3 files changed, 2 insertions(+), 6 deletions(-)
 
---- a/drivers/media/pci/intel/ipu6/ipu6-isys-video.c
-+++ b/drivers/media/pci/intel/ipu6/ipu6-isys-video.c
-@@ -1296,6 +1296,7 @@ int ipu6_isys_video_init(struct ipu6_isy
- 	av->vdev.release = video_device_release_empty;
- 	av->vdev.fops = &isys_fops;
- 	av->vdev.v4l2_dev = &av->isys->v4l2_dev;
-+	av->vdev.dev_parent = &av->isys->adev->isp->pdev->dev;
- 	if (!av->vdev.ioctl_ops)
- 		av->vdev.ioctl_ops = &ipu6_v4l2_ioctl_ops;
- 	av->vdev.queue = &av->aq.vbq;
+--- a/drivers/net/ethernet/intel/igc/igc.h
++++ b/drivers/net/ethernet/intel/igc/igc.h
+@@ -337,8 +337,6 @@ struct igc_adapter {
+ 	struct igc_led_classdev *leds;
+ };
+ 
+-void igc_set_queue_napi(struct igc_adapter *adapter, int q_idx,
+-			struct napi_struct *napi);
+ void igc_up(struct igc_adapter *adapter);
+ void igc_down(struct igc_adapter *adapter);
+ int igc_open(struct net_device *netdev);
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -5021,8 +5021,8 @@ static int igc_sw_init(struct igc_adapte
+ 	return 0;
+ }
+ 
+-void igc_set_queue_napi(struct igc_adapter *adapter, int vector,
+-			struct napi_struct *napi)
++static void igc_set_queue_napi(struct igc_adapter *adapter, int vector,
++			       struct napi_struct *napi)
+ {
+ 	struct igc_q_vector *q_vector = adapter->q_vector[vector];
+ 
+--- a/drivers/net/ethernet/intel/igc/igc_xdp.c
++++ b/drivers/net/ethernet/intel/igc/igc_xdp.c
+@@ -86,7 +86,6 @@ static int igc_xdp_enable_pool(struct ig
+ 		napi_disable(napi);
+ 	}
+ 
+-	igc_set_queue_napi(adapter, queue_id, NULL);
+ 	set_bit(IGC_RING_FLAG_AF_XDP_ZC, &rx_ring->flags);
+ 	set_bit(IGC_RING_FLAG_AF_XDP_ZC, &tx_ring->flags);
+ 
+@@ -136,7 +135,6 @@ static int igc_xdp_disable_pool(struct i
+ 	xsk_pool_dma_unmap(pool, IGC_RX_DMA_ATTR);
+ 	clear_bit(IGC_RING_FLAG_AF_XDP_ZC, &rx_ring->flags);
+ 	clear_bit(IGC_RING_FLAG_AF_XDP_ZC, &tx_ring->flags);
+-	igc_set_queue_napi(adapter, queue_id, napi);
+ 
+ 	if (needs_reset) {
+ 		napi_enable(napi);
 
 
 
