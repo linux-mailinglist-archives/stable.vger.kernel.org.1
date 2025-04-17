@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-134063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 654FFA92964
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F4F9A92B08
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:56:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4D248E300D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E7394A78BB
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:55:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC59256C6D;
-	Thu, 17 Apr 2025 18:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A719014B092;
+	Thu, 17 Apr 2025 18:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qr8vUut+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VW5slLBL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5D918C034;
-	Thu, 17 Apr 2025 18:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647F61B3934;
+	Thu, 17 Apr 2025 18:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914981; cv=none; b=jxl0Uuu4i3kPc7LEN607cIhWwp9jAIPQk/t/MS5WnYJ3AZJuRg9ghNklZpTlz2iJoqkhFqLKDqUa5VnH1VagV+ekpt0luwMhsGbC93EezfwzXJqnv7V9hymiF4x3mmF1LQn4jomkd70j/9H/Gc7vYZEaur1uWkroLr7g/9HwPHQ=
+	t=1744916102; cv=none; b=XWqtHoYw+ROGM5aaTa19udoZFq1m8weF+2EsAZeb2v5x7ctorDKVDya/vfJOjrBPfTUZK/xiwJTSiQuNqOVxoFIDPbT0C2p3/QvVcesHYUDiIcA8qQSk4TeCs4YoNqZUbLjYB/S9lz8aCtLCPG5GCnsWBbDMdIrqsYRzcZA1xu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914981; c=relaxed/simple;
-	bh=4zr/xpriS/jZR97H/DPEEb2HT0aaV71Fc/c41YoO7ts=;
+	s=arc-20240116; t=1744916102; c=relaxed/simple;
+	bh=B0ksyNnILsJsR9k568QpaOgnACgTkFFCQf6Y/UoTmao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jAPtrBnhxXk0tm1GoWjd5/yxXGtZxLiXbi4vOE1q2Mw8oU2lIOXt7/TApYMPJd4wK77PzSu/a+8ov4sFKK+Fa+OiklA3/jXIblc/E+m499CuMy3++iWDIwYJbzUULEwE7p31np/c/x3be8caK6f9ZAbn0i7OYTu/A4zlHYSPC/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qr8vUut+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B0A7C4CEE4;
-	Thu, 17 Apr 2025 18:36:20 +0000 (UTC)
+	 MIME-Version; b=gO+qw/CS2vi+WOmfCcDJoctM9TQZUkKsb/nppGyZ7VPCbv5tlEMfmiCFIWkLpVwGp4v0Fn8WyGG1yeYUP+COWML4i2IzbbJGBb3V7BcvLo5bH8KRyjeQC6ynTEXfyi+6jH+B51YrkCQ/RQVdfUcbyRxsCnBYnsRBE+vmoRoT51Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VW5slLBL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED6EC4CEE4;
+	Thu, 17 Apr 2025 18:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914981;
-	bh=4zr/xpriS/jZR97H/DPEEb2HT0aaV71Fc/c41YoO7ts=;
+	s=korg; t=1744916102;
+	bh=B0ksyNnILsJsR9k568QpaOgnACgTkFFCQf6Y/UoTmao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qr8vUut+/VfU/lLZqYr51DkQAqkYaBpao3y43iqdOfbQ/LD5Wkmp3yCv0cpVxTjrW
-	 OFwc8OarKMYwAn1Wh2/DbEOnO/bOUu4GLc/hlYq9qErlQnnbBsfvNUDVFvfGdFkK1t
-	 KYk0avGb92t4M5QOfKo1cirwvM7HTUi/WquvAaZA=
+	b=VW5slLBLlRyXXYCUbQ0NUdRMeChd9vMJKKfjtXZHJnkfDKw3ywzJrVjxvhzLIfQeu
+	 zFLmI63atvHrbOiQkkUKQcsHKOH2dCAzNee51RmedX9Q1aBiqokqJaVHaaZHVSaaoI
+	 /PXcXbG0hLpXAXlMYU0zlaQCk4ODt6YuEegVbKr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 6.13 394/414] s390/pci: Fix zpci_bus_is_isolated_vf() for non-VFs
+	Vaibhav Jain <vaibhav@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Amit Machhiwal <amachhiw@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 6.12 343/393] KVM: PPC: Enable CAP_SPAPR_TCE_VFIO on pSeries KVM guests
 Date: Thu, 17 Apr 2025 19:52:32 +0200
-Message-ID: <20250417175127.334966739@linuxfoundation.org>
+Message-ID: <20250417175121.395486884@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
 
-commit 8691abd3afaadd816a298503ec1a759df1305d2e upstream.
+commit b4392813bbc3b05fc01a33c64d8b8c6c62c32cfa upstream.
 
-For non-VFs, zpci_bus_is_isolated_vf() should return false because they
-aren't VFs. While zpci_iov_find_parent_pf() specifically checks if
-a function is a VF, it then simply returns that there is no parent. The
-simplistic check for a parent then leads to these functions being
-confused with isolated VFs and isolating them on their own domain even
-if sibling PFs should share the domain.
+Currently on book3s-hv, the capability KVM_CAP_SPAPR_TCE_VFIO is only
+available for KVM Guests running on PowerNV and not for the KVM guests
+running on pSeries hypervisors. This prevents a pSeries L2 guest from
+leveraging the in-kernel acceleration for H_PUT_TCE_INDIRECT and
+H_STUFF_TCE hcalls that results in slow startup times for large memory
+guests.
 
-Fix this by explicitly checking if a function is not a VF. Note also
-that at this point the case where RIDs are ignored is already handled
-and in this case all PCI functions get isolated by being detected in
-zpci_bus_is_multifunction_root().
+Support for VFIO on pSeries was restored in commit f431a8cde7f1
+("powerpc/iommu: Reimplement the iommu_table_group_ops for pSeries"),
+making it possible to re-enable this capability on pSeries hosts.
 
+This change enables KVM_CAP_SPAPR_TCE_VFIO for nested PAPR guests on
+pSeries, while maintaining the existing behavior on PowerNV. Booting an
+L2 guest with 128GB of memory shows an average 11% improvement in
+startup time.
+
+Fixes: f431a8cde7f1 ("powerpc/iommu: Reimplement the iommu_table_group_ops for pSeries")
 Cc: stable@vger.kernel.org
-Fixes: 2844ddbd540f ("s390/pci: Fix handling of isolated VFs")
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250220070002.1478849-1-amachhiw@linux.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/pci/pci_bus.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/kvm/powerpc.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/arch/s390/pci/pci_bus.c
-+++ b/arch/s390/pci/pci_bus.c
-@@ -335,6 +335,9 @@ static bool zpci_bus_is_isolated_vf(stru
- {
- 	struct pci_dev *pdev;
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -550,12 +550,9 @@ int kvm_vm_ioctl_check_extension(struct
  
-+	if (!zdev->vfn)
-+		return false;
-+
- 	pdev = zpci_iov_find_parent_pf(zbus, zdev);
- 	if (!pdev)
- 		return true;
+ #ifdef CONFIG_PPC_BOOK3S_64
+ 	case KVM_CAP_SPAPR_TCE:
++		fallthrough;
+ 	case KVM_CAP_SPAPR_TCE_64:
+-		r = 1;
+-		break;
+ 	case KVM_CAP_SPAPR_TCE_VFIO:
+-		r = !!cpu_has_feature(CPU_FTR_HVMODE);
+-		break;
+ 	case KVM_CAP_PPC_RTAS:
+ 	case KVM_CAP_PPC_FIXUP_HCALL:
+ 	case KVM_CAP_PPC_ENABLE_HCALL:
 
 
 
