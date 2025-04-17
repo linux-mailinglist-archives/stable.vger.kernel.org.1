@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-134463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8DB4A92B3D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:59:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B799A92B44
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:59:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 431AC19E2BA8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:57:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E1C91B66808
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D578125A626;
-	Thu, 17 Apr 2025 18:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D1BB25E804;
+	Thu, 17 Apr 2025 18:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Su8KzdFz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EplMnYqc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908AF25A2A2;
-	Thu, 17 Apr 2025 18:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB75256C9B;
+	Thu, 17 Apr 2025 18:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916202; cv=none; b=lr1wKnLSghDb2DpgfTDciGJDEKWVe/XpwHdMZDIWNyk1YfOgwT/IK3uFlPVCuegcNzjuF1Qq2H7psnBE7D3SIOViGkw5+qy9J/G775+fSgTzqJjAVbnr3yKmgn22KGKD2Aslo3v6GsA95ZD1uwhDA27QqKFV0I97DeYA+btnvaQ=
+	t=1744916207; cv=none; b=AxHoUcqh8woYI4fWboFdJNWy4YJtJqX1LkJUh+Rqu32Kf0bv5egv232sMWaFJhznLgYUZAf39JY/08JEJNRc8uaRCKyvpDmTb7Pz3T4IjJeYq6ltLLInA39vBQlcxSux+s3uDUD3YHMfxb7N9tP/U9EOojgfzcKl+P3gxZH/COg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916202; c=relaxed/simple;
-	bh=qRBfTVmwvrfwxkQKHfAXAV9GDLEzjJyvoY1/JnKEfes=;
+	s=arc-20240116; t=1744916207; c=relaxed/simple;
+	bh=AwnjlmJ7zULTLVeoPHJg+00t28iEblvQBIGmrMkys+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kSX3d/bsE9vDGGTXNSOpH2YKSl1CEH+gliBiaGYE3z8K3G8hljAPl1CGB/AVDCxYCEi5cb49fAv7aoIoOwbL6eavgMg3u+nbAPVOS+gmkDmK/PZJEaB4gFux/zMvXv3C844ASqbYgD+/e5+Y5Gc/N9Hfs45IlcXkiSNGTLrS4Iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Su8KzdFz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B3E5C4CEEC;
-	Thu, 17 Apr 2025 18:56:40 +0000 (UTC)
+	 MIME-Version; b=fmtKObhtTFiEehEmE//5LY2036K+S6/EUvUeUKgJI7bTTzYr0PlxezMdo1lNUJvPzOZj7qcNlid8GauhbFwoRrTYGg5FzchMQ8jwCLdesnMzu6CTjQ8EgILe3Fy8O4xIYtgm4O+z62sPrYjryOBI0nWUWfTrjpC1ZgNKJuooSC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EplMnYqc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF2E6C4CEE7;
+	Thu, 17 Apr 2025 18:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916201;
-	bh=qRBfTVmwvrfwxkQKHfAXAV9GDLEzjJyvoY1/JnKEfes=;
+	s=korg; t=1744916207;
+	bh=AwnjlmJ7zULTLVeoPHJg+00t28iEblvQBIGmrMkys+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Su8KzdFzjGZo1uyLvIFFwoH6GgZqPmZJL88FZGjTNnechcB0aJFxj+lRoZ6066TnH
-	 IqCblbXdll6UN+v4axbv+5HMHSW7cyF36Ih2CXwQNPbLyuA7LJh0UVyYmUEqkZmX3x
-	 j9+vPZ3pREel3bArQdMAs4oxTb/HGzs06svXPLhg=
+	b=EplMnYqcf7zsJ9CNMvu7D8/QlMmXBscIJpF1Y9XRb1SecgRIY823nDkjmQXG942Vw
+	 NOXdPI9aPfq3A06+eyLYjrAK7iaJHtFSdzjm/3oA0DPNEG7t16SvmRipo4EkLSvyVG
+	 ogwfoV4zTdv8kjRYfx7IlItonKIRDi0+nrkB0V+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Geliang Tang <geliang@kernel.org>,
 	Cong Liu <liucong2@kylinos.cn>,
-	Geliang Tang <tanggeliang@kylinos.cn>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 376/393] selftests: mptcp: close fd_in before returning in main_loop
-Date: Thu, 17 Apr 2025 19:53:05 +0200
-Message-ID: <20250417175122.726334158@linuxfoundation.org>
+Subject: [PATCH 6.12 377/393] selftests: mptcp: fix incorrect fd checks in main_loop
+Date: Thu, 17 Apr 2025 19:53:06 +0200
+Message-ID: <20250417175122.766417184@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
 References: <20250417175107.546547190@linuxfoundation.org>
@@ -67,50 +67,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Cong Liu <liucong2@kylinos.cn>
 
-commit c183165f87a486d5879f782c05a23c179c3794ab upstream.
+commit 7335d4ac812917c16e04958775826d12d481c92d upstream.
 
-The file descriptor 'fd_in' is opened when cfg_input is configured, but
-not closed in main_loop(), this patch fixes it.
+Fix a bug where the code was checking the wrong file descriptors
+when opening the input files. The code was checking 'fd' instead
+of 'fd_in', which could lead to incorrect error handling.
 
 Fixes: 05be5e273c84 ("selftests: mptcp: add disconnect tests")
 Cc: stable@vger.kernel.org
-Co-developed-by: Cong Liu <liucong2@kylinos.cn>
+Fixes: ca7ae8916043 ("selftests: mptcp: mptfo Initiator/Listener")
+Co-developed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Geliang Tang <geliang@kernel.org>
 Signed-off-by: Cong Liu <liucong2@kylinos.cn>
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
 Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250328-net-mptcp-misc-fixes-6-15-v1-3-34161a482a7f@kernel.org
+Link: https://patch.msgid.link/20250328-net-mptcp-misc-fixes-6-15-v1-2-34161a482a7f@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_connect.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_connect.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 --- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
 +++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-@@ -1299,7 +1299,7 @@ again:
+@@ -1270,7 +1270,7 @@ int main_loop(void)
  
- 	ret = copyfd_io(fd_in, fd, 1, 0, &winfo);
- 	if (ret)
--		return ret;
-+		goto out;
- 
- 	if (cfg_truncate > 0) {
- 		shutdown(fd, SHUT_WR);
-@@ -1320,7 +1320,10 @@ again:
- 		close(fd);
+ 	if (cfg_input && cfg_sockopt_types.mptfo) {
+ 		fd_in = open(cfg_input, O_RDONLY);
+-		if (fd < 0)
++		if (fd_in < 0)
+ 			xerror("can't open %s:%d", cfg_input, errno);
  	}
  
--	return 0;
-+out:
-+	if (cfg_input)
-+		close(fd_in);
-+	return ret;
- }
+@@ -1293,7 +1293,7 @@ again:
  
- int parse_proto(const char *proto)
+ 	if (cfg_input && !cfg_sockopt_types.mptfo) {
+ 		fd_in = open(cfg_input, O_RDONLY);
+-		if (fd < 0)
++		if (fd_in < 0)
+ 			xerror("can't open %s:%d", cfg_input, errno);
+ 	}
+ 
 
 
 
