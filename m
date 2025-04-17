@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-133591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7703AA92654
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:12:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D729EA928E6
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:38:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E6234A06F9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:12:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53B263A05D2
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD70255249;
-	Thu, 17 Apr 2025 18:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C6625742E;
+	Thu, 17 Apr 2025 18:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4ijzCEK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="giTyTogZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE2E1E25E1;
-	Thu, 17 Apr 2025 18:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EFB252915;
+	Thu, 17 Apr 2025 18:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913540; cv=none; b=decYPOMtQRZbf6/wmZPrnY5BLGgACgsqu78f0lvO1d5wk/uioMnQyvI3X3vDroTepErgrYJd2/feLiwmIKxhBbxZSA9A6JE7jSnJ74D0LadJyFQ+56GYTrQCRovRCGNXNeY28MHEQA5IJeHWSedj1jBvrFlKOMGFEY394oOdUjk=
+	t=1744914704; cv=none; b=nkwlVIl90IyQj3VOMr+aspnXDUX5C4SYEgesOuPyabNwV77a3ew2w17reCQGYhtTGNyDQU1DTcrs6+JMmkgQiLrkzzudp8ZgYCHvxVvktu01dpv/zAVjYFqOJJPfu0HHgr2mpQEOIolIO8L1xQsyO8MReMSJxmQh7AIBRfX9WO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913540; c=relaxed/simple;
-	bh=8XvUgDVDu2WgW/yLRxjytCsabjKOlQggTwz0/Wwc3UA=;
+	s=arc-20240116; t=1744914704; c=relaxed/simple;
+	bh=EGaZ3yax8QsKE7fZY0seowdpLGXV5V1A8gXjWGj7juA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JoE7805+6o4bS6eZtvRqJpZ2oqmnzsZWklIhN4iiPLsJcjhyQ6H8na2wDaxfqr5HnMsMhgdqQ/5dWiX4mvXTQMcGlO+qf3zU6XcRugJ0DOGaw5uvOg9juNkA89RPkOTRoVwVzPGF6tKq6c3aRJqVDMFE/d+wjALwYZKpjAK2p54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4ijzCEK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58673C4CEE4;
-	Thu, 17 Apr 2025 18:12:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=av+uYp9Vv1E1VmzPIISa80vZW5gYpU4AGXttbolFB6y1HfIQDCVaIutIeBL8u5DjLVl5fL+cAkVmXDH7jHn659Vl8Kso8NsuIwGqqoVgFToxfkvMOcLrXeGgqomLg2YB4x0gLZ5eU2j7GjKI3112DRTOCBCURVQk1s7e8EAGkoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=giTyTogZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA76C4CEE7;
+	Thu, 17 Apr 2025 18:31:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913539;
-	bh=8XvUgDVDu2WgW/yLRxjytCsabjKOlQggTwz0/Wwc3UA=;
+	s=korg; t=1744914703;
+	bh=EGaZ3yax8QsKE7fZY0seowdpLGXV5V1A8gXjWGj7juA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W4ijzCEK42X9SNjZ7oQ3aWWrrd8k82heeZ4VIMz45kqlR2LUjYT6Xo1TSRD+DsvoH
-	 aq4QYNUEi4lPQn8HGrgMh27C84Z+GXDx1qtmUUolFc7dWvewpHqO6cvz/6XRZiKkbM
-	 plZArvE5irl1tG2h4q00kDnEjeBGj7mjD46ykhpg=
+	b=giTyTogZYX6OE9eJrNn0arfBgleRJPac+Irw1mls2hbRC2ZwtUoBdReHMcJrwhvIa
+	 +jDWUJYpWnbucqz8o8ZVIY/SgC+y0CWX28BVnbAxJYAnJfoVUZk6DbiOudPnmWD5j5
+	 i7QcFVWaMDysYwMf5higUVGReWl6kxMd5klJVfEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trevor Woerner <twoerner@gmail.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 6.14 373/449] thermal/drivers/rockchip: Add missing rk3328 mapping entry
+	Kristina Martsenko <kristina.martsenko@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Keir Fraser <keirf@google.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.13 303/414] arm64: mops: Do not dereference src reg for a set operation
 Date: Thu, 17 Apr 2025 19:51:01 +0200
-Message-ID: <20250417175133.270457624@linuxfoundation.org>
+Message-ID: <20250417175123.618816824@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,68 +63,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trevor Woerner <twoerner@gmail.com>
+From: Keir Fraser <keirf@google.com>
 
-commit ee022e5cae052e0c67ca7c5fec0f2e7bc897c70e upstream.
+commit a13bfa4fe0d6949cea14718df2d1fe84c38cd113 upstream.
 
-The mapping table for the rk3328 is missing the entry for -25C which is
-found in the TRM section 9.5.2 "Temperature-to-code mapping".
+The source register is not used for SET* and reading it can result in
+a UBSAN out-of-bounds array access error, specifically when the MOPS
+exception is taken from a SET* sequence with XZR (reg 31) as the
+source. Architecturally this is the only case where a src/dst/size
+field in the ESR can be reported as 31.
 
-NOTE: the kernel uses the tsadc_q_sel=1'b1 mode which is defined as:
-      4096-<code in table>. Whereas the table in the TRM gives the code
-      "3774" for -25C, the kernel uses 4096-3774=322.
+Prior to 2de451a329cf662b the code in do_el0_mops() was benign as the
+use of pt_regs_read_reg() prevented the out-of-bounds access.
 
-[Dragan Simic] : "After going through the RK3308 and RK3328 TRMs, as
-  well as through the downstream kernel code, it seems we may have
-  some troubles at our hands.  Let me explain, please.
-
-  To sum it up, part 1 of the RK3308 TRM v1.1 says on page 538 that
-  the equation for the output when tsadc_q_sel equals 1 is (4096 -
-  tsadc_q), while part 1 of the RK3328 TRM v1.2 says that the output
-  equation is (1024 - tsadc_q) in that case.
-
-  The downstream kernel code, however, treats the RK3308 and RK3328
-  tables and their values as being the same.  It even mentions 1024 as
-  the "offset" value in a comment block for the rk_tsadcv3_control()
-  function, just like the upstream code does, which is obviously wrong
-  "offset" value when correlated with the table on page 544 of part 1
-  of the RK3308 TRM v1.1.
-
-  With all this in mind, it's obvious that more work is needed to make
-  it clear where's the actual mistake (it could be that the TRM is
-  wrong), which I'll volunteer for as part of the SoC binning project.
-  In the meantime, this patch looks fine as-is to me, by offering
-  what's a clear improvement to the current state of the upstream
-  code"
-
-Link: https://opensource.rock-chips.com/images/9/97/Rockchip_RK3328TRM_V1.1-Part1-20170321.pdf
+Fixes: 2de451a329cf ("KVM: arm64: Add handler for MOPS exceptions")
+Cc: <stable@vger.kernel.org> # 6.12.x
+Cc: Kristina Martsenko <kristina.martsenko@arm.com>
+Cc: Will Deacon <will@kernel.org>
 Cc: stable@vger.kernel.org
-Fixes: eda519d5f73e ("thermal: rockchip: Support the RK3328 SOC in thermal driver")
-Signed-off-by: Trevor Woerner <twoerner@gmail.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://lore.kernel.org/r/20250207175048.35959-1-twoerner@gmail.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Keir Fraser <keirf@google.com>
+Reviewed-by: Kristina Martšenko <kristina.martsenko@arm.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20250326110448.3792396-1-keirf@google.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/rockchip_thermal.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/include/asm/traps.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/thermal/rockchip_thermal.c
-+++ b/drivers/thermal/rockchip_thermal.c
-@@ -386,6 +386,7 @@ static const struct tsadc_table rk3328_c
- 	{296, -40000},
- 	{304, -35000},
- 	{313, -30000},
-+	{322, -25000},
- 	{331, -20000},
- 	{340, -15000},
- 	{349, -10000},
+--- a/arch/arm64/include/asm/traps.h
++++ b/arch/arm64/include/asm/traps.h
+@@ -109,10 +109,9 @@ static inline void arm64_mops_reset_regs
+ 	int dstreg = ESR_ELx_MOPS_ISS_DESTREG(esr);
+ 	int srcreg = ESR_ELx_MOPS_ISS_SRCREG(esr);
+ 	int sizereg = ESR_ELx_MOPS_ISS_SIZEREG(esr);
+-	unsigned long dst, src, size;
++	unsigned long dst, size;
+ 
+ 	dst = regs->regs[dstreg];
+-	src = regs->regs[srcreg];
+ 	size = regs->regs[sizereg];
+ 
+ 	/*
+@@ -129,6 +128,7 @@ static inline void arm64_mops_reset_regs
+ 		}
+ 	} else {
+ 		/* CPY* instruction */
++		unsigned long src = regs->regs[srcreg];
+ 		if (!(option_a ^ wrong_option)) {
+ 			/* Format is from Option B */
+ 			if (regs->pstate & PSR_N_BIT) {
 
 
 
