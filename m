@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4738FA925CE
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:07:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B400A929F5
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:45:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB7863A207D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:07:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 632517B67E7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8541125B663;
-	Thu, 17 Apr 2025 18:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83352566D2;
+	Thu, 17 Apr 2025 18:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LohNqXAk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1SZTDHmA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D002571AC;
-	Thu, 17 Apr 2025 18:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9554B2517AF;
+	Thu, 17 Apr 2025 18:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913157; cv=none; b=X1pN3vZFxDdt20FOd5VzzXN49u5RJEV6ZjvCOBv97LrbxhWK7RHLQ9fYRLceDE8KiluCom40xfHqza3TsXPWOiYC/fmpIRT3Du5lN7nD69U4OUdu/7ZLK2dNeXBF5pyI6ytgVjGRpyatwChXVpoMlQEre3gVF4vNg4yfdzHFslI=
+	t=1744915526; cv=none; b=s/vVw0LyPWqxqU4qpoVmBiG5cGrxaSjUb8m5N3T4rkVvh5xHBab8f/rVxFJBbQdAf0BIQoY/kfznmc3kLbBbng/Kl83WGbz0RGwRHpOf9u1T10pVl1U+NHlLkKQsOGPjFuGjtDb8rY3J+K1x7M23kVWUMTDvVbdHIHFthT9JTD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913157; c=relaxed/simple;
-	bh=z8zam4u99w5AyE5FMA9JsQ38B/pjfWNXkAlsRjEntWk=;
+	s=arc-20240116; t=1744915526; c=relaxed/simple;
+	bh=vOlOj1QapH5DSORBxKbIiZc1IXl0PKcBcdNwnmU7rqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NgFFY0sqSizsSXIR5GzBPK2w8OMhM9knHrkrJQDEq9qxGjnd7M2smmyZKj/o3GQN56Xt5c4hlHR9vVQVtnGqW9tykpqwAmxhY748g0KnRm3v2zIAqGziWkkZHlg03p52/V3D1wB/IelPdSstxZqOv2YZCNc1PTgqEKWXHm7tcl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LohNqXAk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C64DCC4CEE4;
-	Thu, 17 Apr 2025 18:05:56 +0000 (UTC)
+	 MIME-Version; b=V2lpT5pddh0QqZd3KDVyrXknmxS9ln1ManlS+7kxPCAxyR3xIAk7inhIsbutelRUVgB1NNIxfWXbeydLk431QRg6IZ5TD7vsvWgBvZGhQk+fZ5c6d+CtVj4dTCt+uIM0oE2vraUfCuAQAyvAAmrpdEro4XsL/SYa8AQGjO5xhm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1SZTDHmA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12900C4CEE4;
+	Thu, 17 Apr 2025 18:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913157;
-	bh=z8zam4u99w5AyE5FMA9JsQ38B/pjfWNXkAlsRjEntWk=;
+	s=korg; t=1744915526;
+	bh=vOlOj1QapH5DSORBxKbIiZc1IXl0PKcBcdNwnmU7rqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LohNqXAkKvkcmNWNYLkay4v0hhSKcaPTYyamyaB3jFz2iD+QmLiIO3+e6IA9GZj77
-	 Gl9Pf/uYPByXjV9WLYhoZSyUN3PDFy/6Tcq8IDXyTfKVZBZLVTbVF/fpYXOZkKnksJ
-	 pVNV3xqlJJfXLC+rfg2QXS/361vvsMgupeR1c9SM=
+	b=1SZTDHmAjp/6RQ04u96bL10h54aYt7kBqdR4JvGy/EyUPUzIXTh0lvadwvV6wXhF/
+	 On4hJnbWDxaJKLsmwQhbv1mJie9Ayv/shUD96ahNu9GO0nZLtUBqalppQAoraNjf+p
+	 pCuzVEE+3ShKqj6WCO6dbhfy1PdzgP012XS3WuV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.14 246/449] media: visl: Fix ERANGE error when setting enum controls
+	Pedro Nishiyama <nishiyama.pedro@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 125/393] Bluetooth: Add quirk for broken READ_PAGE_SCAN_TYPE
 Date: Thu, 17 Apr 2025 19:48:54 +0200
-Message-ID: <20250417175127.896580124@linuxfoundation.org>
+Message-ID: <20250417175112.621028320@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+From: Pedro Nishiyama <nishiyama.pedro@gmail.com>
 
-commit d98e9213a768a3cc3a99f5e1abe09ad3baff2104 upstream.
+[ Upstream commit 127881334eaad639e0a19a399ee8c91d6c9dc982 ]
 
-The visl driver supports both frame and slice mode, with and without a
-start-code. But, the range and default for these enum controls was not
-set, which currently limits the decoder to enums with a value of 0. Fix
-this by setting the decoder mode and start code controls for both the
-H.264 and HEVC codecs.
+Some fake controllers cannot be initialized because they return a smaller
+report than expected for READ_PAGE_SCAN_TYPE.
 
-Fixes: 0c078e310b6d ("media: visl: add virtual stateless decoder driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pedro Nishiyama <nishiyama.pedro@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/visl/visl-core.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ include/net/bluetooth/hci.h | 8 ++++++++
+ net/bluetooth/hci_sync.c    | 3 ++-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/media/test-drivers/visl/visl-core.c
-+++ b/drivers/media/test-drivers/visl/visl-core.c
-@@ -161,9 +161,15 @@ static const struct visl_ctrl_desc visl_
- 	},
- 	{
- 		.cfg.id = V4L2_CID_STATELESS_H264_DECODE_MODE,
-+		.cfg.min = V4L2_STATELESS_H264_DECODE_MODE_SLICE_BASED,
-+		.cfg.max = V4L2_STATELESS_H264_DECODE_MODE_FRAME_BASED,
-+		.cfg.def = V4L2_STATELESS_H264_DECODE_MODE_SLICE_BASED,
- 	},
- 	{
- 		.cfg.id = V4L2_CID_STATELESS_H264_START_CODE,
-+		.cfg.min = V4L2_STATELESS_H264_START_CODE_NONE,
-+		.cfg.max = V4L2_STATELESS_H264_START_CODE_ANNEX_B,
-+		.cfg.def = V4L2_STATELESS_H264_START_CODE_NONE,
- 	},
- 	{
- 		.cfg.id = V4L2_CID_STATELESS_H264_SLICE_PARAMS,
-@@ -198,9 +204,15 @@ static const struct visl_ctrl_desc visl_
- 	},
- 	{
- 		.cfg.id = V4L2_CID_STATELESS_HEVC_DECODE_MODE,
-+		.cfg.min = V4L2_STATELESS_HEVC_DECODE_MODE_SLICE_BASED,
-+		.cfg.max = V4L2_STATELESS_HEVC_DECODE_MODE_FRAME_BASED,
-+		.cfg.def = V4L2_STATELESS_HEVC_DECODE_MODE_SLICE_BASED,
- 	},
- 	{
- 		.cfg.id = V4L2_CID_STATELESS_HEVC_START_CODE,
-+		.cfg.min = V4L2_STATELESS_HEVC_START_CODE_NONE,
-+		.cfg.max = V4L2_STATELESS_HEVC_START_CODE_ANNEX_B,
-+		.cfg.def = V4L2_STATELESS_HEVC_START_CODE_NONE,
- 	},
- 	{
- 		.cfg.id = V4L2_CID_STATELESS_HEVC_ENTRY_POINT_OFFSETS,
+diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
+index fa6f92915968f..71d2432876406 100644
+--- a/include/net/bluetooth/hci.h
++++ b/include/net/bluetooth/hci.h
+@@ -361,6 +361,14 @@ enum {
+ 	 * This quirk must be set before hci_register_dev is called.
+ 	 */
+ 	HCI_QUIRK_BROKEN_READ_VOICE_SETTING,
++
++	/* When this quirk is set, the HCI_OP_READ_PAGE_SCAN_TYPE command is
++	 * skipped. This is required for a subset of the CSR controller clones
++	 * which erroneously claim to support it.
++	 *
++	 * This quirk must be set before hci_register_dev is called.
++	 */
++	HCI_QUIRK_BROKEN_READ_PAGE_SCAN_TYPE,
+ };
+ 
+ /* HCI device flags */
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index bb455e96a715a..cb4d47ae129e8 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -4156,7 +4156,8 @@ static int hci_read_page_scan_type_sync(struct hci_dev *hdev)
+ 	 * support the Read Page Scan Type command. Check support for
+ 	 * this command in the bit mask of supported commands.
+ 	 */
+-	if (!(hdev->commands[13] & 0x01))
++	if (!(hdev->commands[13] & 0x01) ||
++	    test_bit(HCI_QUIRK_BROKEN_READ_PAGE_SCAN_TYPE, &hdev->quirks))
+ 		return 0;
+ 
+ 	return __hci_cmd_sync_status(hdev, HCI_OP_READ_PAGE_SCAN_TYPE,
+-- 
+2.39.5
+
 
 
 
