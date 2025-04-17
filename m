@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-133690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B39C7A926E3
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:17:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 695F7A926EE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:18:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A72448A6964
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:17:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BC584A14F2
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:18:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EFE21DB148;
-	Thu, 17 Apr 2025 18:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1DBF1A3178;
+	Thu, 17 Apr 2025 18:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gr9DXUnd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNnOuHq/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3E1256C6B;
-	Thu, 17 Apr 2025 18:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7FB1DE3A8;
+	Thu, 17 Apr 2025 18:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913846; cv=none; b=hz0TTCKfK9fSLPYwMiiNzqlZCJsJD2qPI75ltBV/CvshbwdMt/FcQtJqJ94G1IDiu+62bUDuaQ7ZInJyVPiFusow+0Af5dZ6Icjhrhqxa5LjCXYhwUfnjL21btdTskEZ9B3l8VCo/vhDKlmP0PhEzGuALCDv/LL/k+KWsqJpbDQ=
+	t=1744913879; cv=none; b=qhkasYfo6TDJkwSCeMU1DeE9HdMLFYNst3Slbv8Uj/Qumw+vV5Vobz64wbb1F/R2giVIwS7oKGC99LvzgYF1mhw3KKk6mctD8Yc1ragUPVLuoZkSEEQX8/LoyVwp03eV9zW3rW82nxDewY1JhB/hQYoRj3Yhcpw9/yKL5eRP0og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913846; c=relaxed/simple;
-	bh=pDd9tI3Sjjzc3ndZp5j6rlGImX1O5HsjQWOtiTcq76E=;
+	s=arc-20240116; t=1744913879; c=relaxed/simple;
+	bh=H5igFX3l0Dgk3wwrOmZ2uZ0RFPDDyRPV6T3vLKXlhsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FMRSoEuw+P/xdg+nx8i1McuVi3z7+NS+/M1VYfZEoXqKgScw2lfMZycqPVAjhBX/l8QKoiuA5g4eIAlWgav/q1fpja/vuBiU0+0GXEwavH+gJehtR+qvgBGE8Dl333uThWkdC4t79ltFUWasxj3GS+IcUM7oyZGIwH751YzW2Eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gr9DXUnd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5193CC4CEEA;
-	Thu, 17 Apr 2025 18:17:26 +0000 (UTC)
+	 MIME-Version; b=NGeBguQfu/S4xRBiQj/44UdzEI6YYq6S94M/4L7HRu0Br3VMSdqZga7RIftI9/SOnC5+kzt3W/HTTegyv7LqsANzjHX96tApDjMFS3gnvoIsPsB5QBwy/otLkZdeIsmyWBuY1qMPPHepBGg6fmmxn1x6Eg8QvKgdlqaXZNZ9npA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NNnOuHq/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30066C4CEE4;
+	Thu, 17 Apr 2025 18:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913846;
-	bh=pDd9tI3Sjjzc3ndZp5j6rlGImX1O5HsjQWOtiTcq76E=;
+	s=korg; t=1744913879;
+	bh=H5igFX3l0Dgk3wwrOmZ2uZ0RFPDDyRPV6T3vLKXlhsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gr9DXUnduJJGa2uaa6KsCnlqhckWkiV43k68AbALxCxODXc8MrfIYzDJ5ovp4WWlj
-	 Lib39TMX8AqYdgNaT2Xqlv4dx/BZTfu+gp8hx7FH+mhTEUP9Xm5Rm8Sl2tnhTo7Y9W
-	 YgEHvIKu6ZSDgVU2NlBAyZqhRr23RDh2kMH9Ztl0=
+	b=NNnOuHq/7V/P5Hd933mbIK5tNPIwzwFg6pTnC/R7W3fkuPK5psAGyUC9oWBF8/rB3
+	 B12qOaedCoMpI46kWh8WVngsvbxcqZBw0t1e2X1iVzsv+k+yCBeghs/Ifv1lxJtEAl
+	 gjWwvshf6gDfeqZE/BNVVVUNlbEQ7FCk1KPspbas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 014/414] tipc: fix memory leak in tipc_link_xmit
-Date: Thu, 17 Apr 2025 19:46:12 +0200
-Message-ID: <20250417175111.979491165@linuxfoundation.org>
+Subject: [PATCH 6.13 015/414] codel: remove sch->q.qlen check before qdisc_tree_reduce_backlog()
+Date: Thu, 17 Apr 2025 19:46:13 +0200
+Message-ID: <20250417175112.018057070@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
 References: <20250417175111.386381660@linuxfoundation.org>
@@ -66,38 +69,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tung Nguyen <tung.quang.nguyen@est.tech>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 69ae94725f4fc9e75219d2d69022029c5b24bc9a ]
+[ Upstream commit 342debc12183b51773b3345ba267e9263bdfaaef ]
 
-In case the backlog transmit queue for system-importance messages is overloaded,
-tipc_link_xmit() returns -ENOBUFS but the skb list is not purged. This leads to
-memory leak and failure when a skb is allocated.
+After making all ->qlen_notify() callbacks idempotent, now it is safe to
+remove the check of qlen!=0 from both fq_codel_dequeue() and
+codel_qdisc_dequeue().
 
-This commit fixes this issue by purging the skb list before tipc_link_xmit()
-returns.
-
-Fixes: 365ad353c256 ("tipc: reduce risk of user starvation during link congestion")
-Signed-off-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Link: https://patch.msgid.link/20250403092431.514063-1-tung.quang.nguyen@est.tech
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Fixes: 4b549a2ef4be ("fq_codel: Fair Queue Codel AQM")
+Fixes: 76e3cc126bb2 ("codel: Controlled Delay AQM")
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250403211636.166257-1-xiyou.wangcong@gmail.com
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/link.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/sched/sch_codel.c    | 5 +----
+ net/sched/sch_fq_codel.c | 6 ++----
+ 2 files changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/net/tipc/link.c b/net/tipc/link.c
-index 5c2088a469cea..5689e1f485479 100644
---- a/net/tipc/link.c
-+++ b/net/tipc/link.c
-@@ -1046,6 +1046,7 @@ int tipc_link_xmit(struct tipc_link *l, struct sk_buff_head *list,
- 	if (unlikely(l->backlog[imp].len >= l->backlog[imp].limit)) {
- 		if (imp == TIPC_SYSTEM_IMPORTANCE) {
- 			pr_warn("%s<%s>, link overflow", link_rst_msg, l->name);
-+			__skb_queue_purge(list);
- 			return -ENOBUFS;
- 		}
- 		rc = link_schedule_user(l, hdr);
+diff --git a/net/sched/sch_codel.c b/net/sched/sch_codel.c
+index 3e8d4fe4d91e3..e1f6e7618debd 100644
+--- a/net/sched/sch_codel.c
++++ b/net/sched/sch_codel.c
+@@ -65,10 +65,7 @@ static struct sk_buff *codel_qdisc_dequeue(struct Qdisc *sch)
+ 			    &q->stats, qdisc_pkt_len, codel_get_enqueue_time,
+ 			    drop_func, dequeue_func);
+ 
+-	/* We cant call qdisc_tree_reduce_backlog() if our qlen is 0,
+-	 * or HTB crashes. Defer it for next round.
+-	 */
+-	if (q->stats.drop_count && sch->q.qlen) {
++	if (q->stats.drop_count) {
+ 		qdisc_tree_reduce_backlog(sch, q->stats.drop_count, q->stats.drop_len);
+ 		q->stats.drop_count = 0;
+ 		q->stats.drop_len = 0;
+diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
+index 4f908c11ba952..778f6e5966be8 100644
+--- a/net/sched/sch_fq_codel.c
++++ b/net/sched/sch_fq_codel.c
+@@ -314,10 +314,8 @@ static struct sk_buff *fq_codel_dequeue(struct Qdisc *sch)
+ 	}
+ 	qdisc_bstats_update(sch, skb);
+ 	flow->deficit -= qdisc_pkt_len(skb);
+-	/* We cant call qdisc_tree_reduce_backlog() if our qlen is 0,
+-	 * or HTB crashes. Defer it for next round.
+-	 */
+-	if (q->cstats.drop_count && sch->q.qlen) {
++
++	if (q->cstats.drop_count) {
+ 		qdisc_tree_reduce_backlog(sch, q->cstats.drop_count,
+ 					  q->cstats.drop_len);
+ 		q->cstats.drop_count = 0;
 -- 
 2.39.5
 
