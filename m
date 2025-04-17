@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-134182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40679A929C1
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:44:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86BBDA925B4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:06:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C8444438BD
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:43:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A598C467A10
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FEEB2566D7;
-	Thu, 17 Apr 2025 18:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23568257427;
+	Thu, 17 Apr 2025 18:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="agySoqfL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dg+JKk7r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC4525335A;
-	Thu, 17 Apr 2025 18:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFF41DE3A8;
+	Thu, 17 Apr 2025 18:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915343; cv=none; b=Clgx2/zLivKGSU+7FVfecBOxS/1VlP9zxVA9oAqK3mQULtm/03igIkdVicF6wqUnEpyUBmoxaeOVNTSaoDmg2OVegbF1dov/v22SazTgEuEpEBT+RF/4HKr3ZwknKPZRdLP/9J9jfrzhng7BRQyumJNKm5M5drhDZ3sRr4AQ8m0=
+	t=1744913077; cv=none; b=GkSt76Z6W85RoJlQk5kz/PHPfRPBIla+m07boXDfeRyzLGGGCaRHJZ91klga6e4SvjdFTzKycJMk28VNzaEKShYpNYVLgEEIGqPZP+12SSYbFPLhdyY9axJh9dgoHDquGPL1/5nxroyQ5hhHHCuu5wKesq2IOLRL9pC1yOmhwH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915343; c=relaxed/simple;
-	bh=xYcalyJT/Go9yDWNTYr8IexMPjjXbfMOyL20ooKezqA=;
+	s=arc-20240116; t=1744913077; c=relaxed/simple;
+	bh=vrSo6axG+StzuQxNRIccw2NbiDcIonr1WJuT1P76uNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=twvxRSnyBr53PFAlkbzEZsVbdAhIgqpL/twMjKvxvrisiFXD+VEZJCDyOi7jaLSycWrbZlbTGQTTy2whw/tMBjx6t/isJS/c/2chHxeB6V4mt+rd3nZvb7rsnKL69YTq30W7TQPNoGUeSh96noUPFMglDlDxq94ufvedSI0cJvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=agySoqfL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC70C4CEE4;
-	Thu, 17 Apr 2025 18:42:22 +0000 (UTC)
+	 MIME-Version; b=D9XvO3NeBYsC/cW0Z3Bkj648anrs3LgM4iXPmaoilp7LQkjsevJVaFuk4z/3cg/GYDvrGT8GDwnXaQ55HX2Jr1YPFh2/qstl/DE+UjaWU9PeDTtAj5c5P+t1oIwtoWAYgBh/E3xZrbKWHkn7BO8Lq8JrPVrzG54GxH9mau7kPCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dg+JKk7r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC276C4CEE7;
+	Thu, 17 Apr 2025 18:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915343;
-	bh=xYcalyJT/Go9yDWNTYr8IexMPjjXbfMOyL20ooKezqA=;
+	s=korg; t=1744913077;
+	bh=vrSo6axG+StzuQxNRIccw2NbiDcIonr1WJuT1P76uNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=agySoqfLDKO+HvnHZrrTdEMlPpxC3dw/U6XIp1bglu3PVf3KpKnv9CAMFvkzn7o5s
-	 P+Jv/WSjEZyQ5mhAvXB3mk1HSbxFAMwDvs0+mObfzWnyKZjscwg3ZdiM1EmOZXmc6c
-	 d0yJKdRI+ycHv/W9DcWbkNaxLfrK3l5jsD8Oo68M=
+	b=dg+JKk7r7qFoUz3frQp9NwQAas3tUyenRYHTIRbgUugtcc17vQ6fszQsftgF5XCWY
+	 DM8lXxL5UnHtenlAepfcyJAvkR1i5Riw1S63PGq3/T7/omHsssI96d+WGJHLCbzNcf
+	 o5OBu5SYVaL/iPZE/m5CjxgOfTJjpXomxtDAQL9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhongqiu Han <quic_zhonhan@quicinc.com>,
-	syzbot+df6cdcb35904203d2b6d@syzkaller.appspotmail.com,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 098/393] jfs: Fix uninit-value access of imap allocated in the diMount() function
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.14 219/449] media: mediatek: vcodec: Fix a resource leak related to the scp device in FW initialization
 Date: Thu, 17 Apr 2025 19:48:27 +0200
-Message-ID: <20250417175111.534951488@linuxfoundation.org>
+Message-ID: <20250417175126.785873661@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhongqiu Han <quic_zhonhan@quicinc.com>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-[ Upstream commit 9629d7d66c621671d9a47afe27ca9336bfc8a9ea ]
+commit 4936cd5817af35d23e4d283f48fa59a18ef481e4 upstream.
 
-syzbot reports that hex_dump_to_buffer is using uninit-value:
+On Mediatek devices with a system companion processor (SCP) the mtk_scp
+structure has to be removed explicitly to avoid a resource leak.
+Free the structure in case the allocation of the firmware structure fails
+during the firmware initialization.
 
-=====================================================
-BUG: KMSAN: uninit-value in hex_dump_to_buffer+0x888/0x1100 lib/hexdump.c:171
-hex_dump_to_buffer+0x888/0x1100 lib/hexdump.c:171
-print_hex_dump+0x13d/0x3e0 lib/hexdump.c:276
-diFree+0x5ba/0x4350 fs/jfs/jfs_imap.c:876
-jfs_evict_inode+0x510/0x550 fs/jfs/inode.c:156
-evict+0x723/0xd10 fs/inode.c:796
-iput_final fs/inode.c:1946 [inline]
-iput+0x97b/0xdb0 fs/inode.c:1972
-txUpdateMap+0xf3e/0x1150 fs/jfs/jfs_txnmgr.c:2367
-txLazyCommit fs/jfs/jfs_txnmgr.c:2664 [inline]
-jfs_lazycommit+0x627/0x11d0 fs/jfs/jfs_txnmgr.c:2733
-kthread+0x6b9/0xef0 kernel/kthread.c:464
-ret_from_fork+0x6d/0x90 arch/x86/kernel/process.c:148
-ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-
-Uninit was created at:
-slab_post_alloc_hook mm/slub.c:4121 [inline]
-slab_alloc_node mm/slub.c:4164 [inline]
-__kmalloc_cache_noprof+0x8e3/0xdf0 mm/slub.c:4320
-kmalloc_noprof include/linux/slab.h:901 [inline]
-diMount+0x61/0x7f0 fs/jfs/jfs_imap.c:105
-jfs_mount+0xa8e/0x11d0 fs/jfs/jfs_mount.c:176
-jfs_fill_super+0xa47/0x17c0 fs/jfs/super.c:523
-get_tree_bdev_flags+0x6ec/0x910 fs/super.c:1636
-get_tree_bdev+0x37/0x50 fs/super.c:1659
-jfs_get_tree+0x34/0x40 fs/jfs/super.c:635
-vfs_get_tree+0xb1/0x5a0 fs/super.c:1814
-do_new_mount+0x71f/0x15e0 fs/namespace.c:3560
-path_mount+0x742/0x1f10 fs/namespace.c:3887
-do_mount fs/namespace.c:3900 [inline]
-__do_sys_mount fs/namespace.c:4111 [inline]
-__se_sys_mount+0x71f/0x800 fs/namespace.c:4088
-__x64_sys_mount+0xe4/0x150 fs/namespace.c:4088
-x64_sys_call+0x39bf/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:166
-do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
-entry_SYSCALL_64_after_hwframe+0x77/0x7f
-=====================================================
-
-The reason is that imap is not properly initialized after memory
-allocation. It will cause the snprintf() function to write uninitialized
-data into linebuf within hex_dump_to_buffer().
-
-Fix this by using kzalloc instead of kmalloc to clear its content at the
-beginning in diMount().
-
-Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
-Reported-by: syzbot+df6cdcb35904203d2b6d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/lkml/67b5d07e.050a0220.14d86d.00e6.GAE@google.com/
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 53dbe0850444 ("media: mtk-vcodec: potential null pointer deference in SCP")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_imap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_scp.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
-index a360b24ed320c..cf16655cd26ba 100644
---- a/fs/jfs/jfs_imap.c
-+++ b/fs/jfs/jfs_imap.c
-@@ -102,7 +102,7 @@ int diMount(struct inode *ipimap)
- 	 * allocate/initialize the in-memory inode map control structure
- 	 */
- 	/* allocate the in-memory inode map control structure. */
--	imap = kmalloc(sizeof(struct inomap), GFP_KERNEL);
-+	imap = kzalloc(sizeof(struct inomap), GFP_KERNEL);
- 	if (imap == NULL)
- 		return -ENOMEM;
+--- a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_scp.c
++++ b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_scp.c
+@@ -79,8 +79,11 @@ struct mtk_vcodec_fw *mtk_vcodec_fw_scp_
+ 	}
  
--- 
-2.39.5
-
+ 	fw = devm_kzalloc(&plat_dev->dev, sizeof(*fw), GFP_KERNEL);
+-	if (!fw)
++	if (!fw) {
++		scp_put(scp);
+ 		return ERR_PTR(-ENOMEM);
++	}
++
+ 	fw->type = SCP;
+ 	fw->ops = &mtk_vcodec_rproc_msg;
+ 	fw->scp = scp;
 
 
 
