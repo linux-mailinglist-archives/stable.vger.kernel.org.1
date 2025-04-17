@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-134210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0285A929E7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:45:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C06C0A925AF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:06:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D85067B83CE
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29E9F3AE294
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29474227EB1;
-	Thu, 17 Apr 2025 18:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 298982561A2;
+	Thu, 17 Apr 2025 18:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1UIuvvY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iyE01OOe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F593770B;
-	Thu, 17 Apr 2025 18:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FA71E1DEF;
+	Thu, 17 Apr 2025 18:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915431; cv=none; b=OIRVYOJSNbFZPSTg3K1vYqLiP17oZpWaQ2jaDEWlHxNAKEE/d2odkad8cBQoHKr0PMHoOcsNQeIkcJKT1fA+D0LFy8erD5kkBQdyUrjZiITbCoFXp5jQksTXnioUTaRWnHgi1O3siLBy0SbaoDRwdzmhgF4x6PP3cqL09Yt+CH4=
+	t=1744913071; cv=none; b=Fa6xfwz1liRMWno4756iu9EsD3aHk68NSZy9LrRQytaQFR5MH2oDT+dosYiRheww2px8k3vKkWixZwoBBv21kPx4FKntM09CkpN8BrFq9yyfoHHB6lfx4uLZHYQxXOBzD+031R/bE/puhYO3kDHVCN8iyd7dED1zz/92FjMHPnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915431; c=relaxed/simple;
-	bh=nJoY3/g3947MV1rmmybTek3Tr66cB78ENjZi5yA10EI=;
+	s=arc-20240116; t=1744913071; c=relaxed/simple;
+	bh=p53TzXtcMlu7BaPX8X0M2POZi6m4MdIV1Em9DKBKCxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WoxWV93OheBd7WmPdsWyh53Qg6j+iGDGfXAY7eG1PYiI3RHv9EeWVvULOGI6Djc0ovaVeYgfYBr+KDW5e5cgC2jaRBuOdcuAjzqFho5bbZ2By7TQpFHY+/yYZ2SBoRmGM8v1pwDQd2Brx8PipO4fSejl2x4tiKazol1gW/fkDEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1UIuvvY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56AA0C4CEEC;
-	Thu, 17 Apr 2025 18:43:51 +0000 (UTC)
+	 MIME-Version; b=VETMI131NAaXzWdIh4Iav9NXfAdez5qTBXYv4W5FVkxXiqyZ2IyD7NMj6DVcg7u4GuaaL4HtIT7u8Ej568ezAIyqvZN+PTwrj/haNDUHp15+ta9oS7fxU1ADyK9L+emWYVvRVFYZXWAXVLlBKDuXBkeBKnat3mpoVDW6FEokmP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iyE01OOe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32CC1C4CEE4;
+	Thu, 17 Apr 2025 18:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915431;
-	bh=nJoY3/g3947MV1rmmybTek3Tr66cB78ENjZi5yA10EI=;
+	s=korg; t=1744913071;
+	bh=p53TzXtcMlu7BaPX8X0M2POZi6m4MdIV1Em9DKBKCxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z1UIuvvYLr5TThBF7A1n8UEpGDL3glitFtGlYfvCIgA/sdg/eQIuIuXXO9SP3zYd7
-	 pvH4OyY3v00uj4vACIdPfgRgmOJaROyZCQHz7qaFkxSvz/Vrt4HhGbJPrLwrResfbB
-	 HPEloWbgmXn8iWr7DvbzkOMkZHwGSjgVziS9C4KA=
+	b=iyE01OOeRYAvSqeyu4lEvc0Kfl2tQlpnk8KQ4pZcizl+4SPiIDzo1wUY2O/5bwSN9
+	 lVoQzw3VN+Rz7kAhnGw20+q1kTLGW41x/Sf2JNfKI5hW32COVCOeqVMJLpPZS5qhsb
+	 f1pIcUmspc+9jpasKsazdhMbYyRBqxKvJOtGP+/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 096/393] can: flexcan: Add quirk to handle separate interrupt lines for mailboxes
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 6.14 217/449] auxdisplay: hd44780: Fix an API misuse in hd44780.c
 Date: Thu, 17 Apr 2025 19:48:25 +0200
-Message-ID: <20250417175111.454127582@linuxfoundation.org>
+Message-ID: <20250417175126.706998383@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit 8c652cf030a769fbfc73cfc280ed3f1656343c35 ]
+commit 9b98a7d2e5f4e2beeff88f6571da0cdc5883c7fb upstream.
 
-Introduce 'FLEXCAN_QUIRK_SECONDARY_MB_IRQ' quirk to handle a FlexCAN
-hardware module integration particularity where two ranges of mailboxes
-are controlled by separate hardware interrupt lines.
-The same 'flexcan_irq' handler is used for both separate mailbox interrupt
-lines, with no other changes.
+Variable allocated by charlcd_alloc() should be released
+by charlcd_free(). The following patch changed kfree() to
+charlcd_free() to fix an API misuse.
 
-Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250113120704.522307-3-ciprianmarian.costea@oss.nxp.com
-[mkl: flexcan_open(): change order and free irq_secondary_mb first]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 718e05ed92ec ("auxdisplay: Introduce hd44780_common.[ch]")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/flexcan/flexcan-core.c | 24 +++++++++++++++++++++++-
- drivers/net/can/flexcan/flexcan.h      |  5 +++++
- 2 files changed, 28 insertions(+), 1 deletion(-)
+ drivers/auxdisplay/hd44780.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
-index b080740bcb104..1a94586cbd11e 100644
---- a/drivers/net/can/flexcan/flexcan-core.c
-+++ b/drivers/net/can/flexcan/flexcan-core.c
-@@ -1762,14 +1762,25 @@ static int flexcan_open(struct net_device *dev)
- 			goto out_free_irq_boff;
- 	}
+--- a/drivers/auxdisplay/hd44780.c
++++ b/drivers/auxdisplay/hd44780.c
+@@ -313,7 +313,7 @@ static int hd44780_probe(struct platform
+ fail3:
+ 	kfree(hd);
+ fail2:
+-	kfree(lcd);
++	charlcd_free(lcd);
+ fail1:
+ 	kfree(hdc);
+ 	return ret;
+@@ -328,7 +328,7 @@ static void hd44780_remove(struct platfo
+ 	kfree(hdc->hd44780);
+ 	kfree(lcd->drvdata);
  
-+	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ) {
-+		err = request_irq(priv->irq_secondary_mb,
-+				  flexcan_irq, IRQF_SHARED, dev->name, dev);
-+		if (err)
-+			goto out_free_irq_err;
-+	}
-+
- 	flexcan_chip_interrupts_enable(dev);
+-	kfree(lcd);
++	charlcd_free(lcd);
+ }
  
- 	netif_start_queue(dev);
- 
- 	return 0;
- 
-+ out_free_irq_err:
-+	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_NR_IRQ_3)
-+		free_irq(priv->irq_err, dev);
-  out_free_irq_boff:
--	free_irq(priv->irq_boff, dev);
-+	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_NR_IRQ_3)
-+		free_irq(priv->irq_boff, dev);
-  out_free_irq:
- 	free_irq(dev->irq, dev);
-  out_can_rx_offload_disable:
-@@ -1794,6 +1805,9 @@ static int flexcan_close(struct net_device *dev)
- 	netif_stop_queue(dev);
- 	flexcan_chip_interrupts_disable(dev);
- 
-+	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ)
-+		free_irq(priv->irq_secondary_mb, dev);
-+
- 	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_NR_IRQ_3) {
- 		free_irq(priv->irq_err, dev);
- 		free_irq(priv->irq_boff, dev);
-@@ -2187,6 +2201,14 @@ static int flexcan_probe(struct platform_device *pdev)
- 		}
- 	}
- 
-+	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ) {
-+		priv->irq_secondary_mb = platform_get_irq_byname(pdev, "mb-1");
-+		if (priv->irq_secondary_mb < 0) {
-+			err = priv->irq_secondary_mb;
-+			goto failed_platform_get_irq;
-+		}
-+	}
-+
- 	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SUPPORT_FD) {
- 		priv->can.ctrlmode_supported |= CAN_CTRLMODE_FD |
- 			CAN_CTRLMODE_FD_NON_ISO;
-diff --git a/drivers/net/can/flexcan/flexcan.h b/drivers/net/can/flexcan/flexcan.h
-index 4933d8c7439e6..2cf886618c962 100644
---- a/drivers/net/can/flexcan/flexcan.h
-+++ b/drivers/net/can/flexcan/flexcan.h
-@@ -70,6 +70,10 @@
- #define FLEXCAN_QUIRK_SUPPORT_RX_FIFO BIT(16)
- /* Setup stop mode with ATF SCMI protocol to support wakeup */
- #define FLEXCAN_QUIRK_SETUP_STOP_MODE_SCMI BIT(17)
-+/* Device has two separate interrupt lines for two mailbox ranges, which
-+ * both need to have an interrupt handler registered.
-+ */
-+#define FLEXCAN_QUIRK_SECONDARY_MB_IRQ	BIT(18)
- 
- struct flexcan_devtype_data {
- 	u32 quirks;		/* quirks needed for different IP cores */
-@@ -107,6 +111,7 @@ struct flexcan_priv {
- 
- 	int irq_boff;
- 	int irq_err;
-+	int irq_secondary_mb;
- 
- 	/* IPC handle when setup stop mode by System Controller firmware(scfw) */
- 	struct imx_sc_ipc *sc_ipc_handle;
--- 
-2.39.5
-
+ static const struct of_device_id hd44780_of_match[] = {
 
 
 
