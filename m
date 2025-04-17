@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-134306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E06FA92A47
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:48:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 608B5A928A9
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DE3916A63E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:48:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46A27163062
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9308825525D;
-	Thu, 17 Apr 2025 18:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A63D25DCE5;
+	Thu, 17 Apr 2025 18:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdCKYu30"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMrS1tf1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E228185920;
-	Thu, 17 Apr 2025 18:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5ACF253333;
+	Thu, 17 Apr 2025 18:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915727; cv=none; b=MDj9fA1/LVBWL0WNIgEWjf40wwFeKVwBmnK5eZpJHkTLXX4eCpViL6Oay63Bm2pK0XhCSkXDHwIsMZrJ3B+a3bbcCicnW5Gtnz/+yWeoN4mRhldDnc4BlX0mdEOOTtFlm33csCmQWg9lvMvoJ2rQGKT5RwDbpmpTmBVQSXmvRpQ=
+	t=1744914637; cv=none; b=vEE/MHUGugABEIE/3AeCubk0cMj4nB7Hpm7e8OKlvas3PfpXszaYpzbpjqOB/J/0yljHycuOYtmkLU4H9OhqWeA5lrHGQcAv+3cXZuBB4f0TTMfh7Z7a8idENdNwJvNEpjTQFHt4C5fsbX5WwDT2PxE0Lt5tChq2DqJ6Psdd22I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915727; c=relaxed/simple;
-	bh=Ixelf/7irSgnWBI4ay/YPXJdQgYq1IdZMpAcarMm09Q=;
+	s=arc-20240116; t=1744914637; c=relaxed/simple;
+	bh=jro/e9qEAn8B8vnP658cJ3DaqIRVtT+RaRwRWT1/UAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ricO4tFFXDfQ8WOH//wNVPjZfPRyT+GKhFrUy+aXvfrxcEWDsEyrkoOwbB7xJbKFeGfP1oJKg3KjUdvufDUM1KMSdcyFzbhflkslp7Y1Bv2E8lUuUEbJyxgBBwJNCfkF5cr+g372k9W7+szGQIMdErn5VxoH5/A9HPUS4NKr6ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RdCKYu30; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEB0DC4CEE4;
-	Thu, 17 Apr 2025 18:48:46 +0000 (UTC)
+	 MIME-Version; b=aE/poIeD9qzVnO6s2c1ocK+8QqLfP0P7iKtZdP30qDzqtSPPhjCfF8EB+W6owjckSktKpnaOnXPEuDSfi9JeOU+Oz398L0T87HSDOoRjdLXk2R5qKXpFeOAi3csww/J4eHSSduA8tqbTQt40CBIXZP4ndpXPFabXDIFzNp3bwT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMrS1tf1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C23E6C4CEE4;
+	Thu, 17 Apr 2025 18:30:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915727;
-	bh=Ixelf/7irSgnWBI4ay/YPXJdQgYq1IdZMpAcarMm09Q=;
+	s=korg; t=1744914637;
+	bh=jro/e9qEAn8B8vnP658cJ3DaqIRVtT+RaRwRWT1/UAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RdCKYu30MPDwBe4E+PyKRyiWKGRes3ajWhyiVYriKHvnszI5jbzVYfy97pAtI7dIt
-	 EiQidn4Qavz7z0uD1Hdt7ptJ/i4LcJFkocFiClh3w/BKYcdLZOu6wju1ogG2cfe2l2
-	 dE4PxJ0V9Sa768dHz5PuWYg9pGvC5wwf+exCd134=
+	b=uMrS1tf19q9hHE7xKXegr1uV1Ui3fW3/llAi8HlGMJL3rkd7T1Y6S8jMCaawDO4LD
+	 6O907mo+SOxugsrVMqSiD8qcQoBXoQJajWGNRosIv/AQsD+iFbQuSuLPJ7cL7CaV2A
+	 OXP6lbGPIOaOgmZxfhbCOCpckdkUxYEVAAKdp5Q8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Alexandre Courbot <acourbot@google.com>,
+	"Jackson.lee" <jackson.lee@chipsnmedia.com>,
+	Nas Chung <nas.chung@chipsnmedia.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 190/393] media: mtk-vcodec: venc: avoid -Wenum-compare-conditional warning
+Subject: [PATCH 6.13 241/414] media: chips-media: wave5: Fix gray color on screen
 Date: Thu, 17 Apr 2025 19:49:59 +0200
-Message-ID: <20250417175115.228040270@linuxfoundation.org>
+Message-ID: <20250417175121.118451967@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jackson.lee <jackson.lee@chipsnmedia.com>
 
-commit 07df4f23ef3ffe6fee697cd2e03623ad27108843 upstream.
+commit 6bae4d5053da634eecb611118e7cd91a677a4bbf upstream.
 
-This is one of three clang warnings about incompatible enum types
-in a conditional expression:
+When a decoder instance is created, the W5_CMD_ERR_CONCEAL register
+should be initialized to 0. Otherwise, gray color is occasionally
+displayed on the screen while decoding.
 
-drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c:597:29: error: conditional expression between different enumeration types ('enum scp_ipi_id' and 'enum ipi_id') [-Werror,-Wenum-compare-conditional]
-  597 |         inst->vpu_inst.id = is_ext ? SCP_IPI_VENC_H264 : IPI_VENC_H264;
-      |                                    ^ ~~~~~~~~~~~~~~~~~   ~~~~~~~~~~~~~
-
-The code is correct, so just rework it to avoid the warning.
-
-Fixes: 0dc4b3286125 ("media: mtk-vcodec: venc: support SCP firmware")
+Fixes: 45d1a2b93277 ("media: chips-media: wave5: Add vpuapi layer")
 Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Alexandre Courbot <acourbot@google.com>
+Signed-off-by: Jackson.lee <jackson.lee@chipsnmedia.com>
+Signed-off-by: Nas Chung <nas.chung@chipsnmedia.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/media/platform/chips-media/wave5/wave5-hw.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c
-@@ -594,7 +594,11 @@ static int h264_enc_init(struct mtk_vcod
- 
- 	inst->ctx = ctx;
- 	inst->vpu_inst.ctx = ctx;
--	inst->vpu_inst.id = is_ext ? SCP_IPI_VENC_H264 : IPI_VENC_H264;
-+	if (is_ext)
-+		inst->vpu_inst.id = SCP_IPI_VENC_H264;
-+	else
-+		inst->vpu_inst.id = IPI_VENC_H264;
-+
- 	inst->hw_base = mtk_vcodec_get_reg_addr(inst->ctx->dev->reg_base, VENC_SYS);
- 
- 	ret = vpu_enc_init(&inst->vpu_inst);
+--- a/drivers/media/platform/chips-media/wave5/wave5-hw.c
++++ b/drivers/media/platform/chips-media/wave5/wave5-hw.c
+@@ -585,7 +585,7 @@ int wave5_vpu_build_up_dec_param(struct
+ 		vpu_write_reg(inst->dev, W5_CMD_NUM_CQ_DEPTH_M1,
+ 			      WAVE521_COMMAND_QUEUE_DEPTH - 1);
+ 	}
+-
++	vpu_write_reg(inst->dev, W5_CMD_ERR_CONCEAL, 0);
+ 	ret = send_firmware_command(inst, W5_CREATE_INSTANCE, true, NULL, NULL);
+ 	if (ret) {
+ 		wave5_vdi_free_dma_memory(vpu_dev, &p_dec_info->vb_work);
 
 
 
