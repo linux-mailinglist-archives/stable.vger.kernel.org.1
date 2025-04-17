@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-134365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F9BA92AA8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:53:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A183A92677
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:13:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3942F7A8BD0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A270A1664BE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:13:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 037672571B3;
-	Thu, 17 Apr 2025 18:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE95D22E3E6;
+	Thu, 17 Apr 2025 18:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tu3URU7j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkUZhyzz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E1D2522AC;
-	Thu, 17 Apr 2025 18:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8101A3178;
+	Thu, 17 Apr 2025 18:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915907; cv=none; b=myNnBhUiu6VWqRQb1UIjU4lEYlPHNK/1Zs1m17GgezqdAfguuCcJZ1FMtqezZxtvbR9CC1jaUS36JbBgwMR9+KH2afKanRvAf+hqAKwlbK11IpdUtwlGv47piQJUonxGA2Xn9tCKeJZA34vl0jSCRYHmNvTWyTPr98sfvulcFdc=
+	t=1744913624; cv=none; b=H3ayl6MF1Y/nvRRrJ3BTsrOzRJXywXBvBE5KuqJB6D3reBKqvQFEhHB5A4IrYP4Ohe/xm5kEYC+16sipY3eMC0wUqfU65BCoutuyRdrV45HIFI6E0lOzmmmmi87t6LljfgkhwGu8ZWXB3Kr2/970nP1+dvngWsMCQhh4uxBeF64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915907; c=relaxed/simple;
-	bh=WNcNh00TcaOwLgocDAErm3fGelFCQ5PypGFua0WgVoA=;
+	s=arc-20240116; t=1744913624; c=relaxed/simple;
+	bh=/DjXizOf7yFSzgp4ulQNuGHxHJ7KYfbYjmammiGfrPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TArxHLm1H3Vun49X0ld27WBratJZTq+epS/pd2liF8zlUjzHjp++euX5Gc3eQSnE53U+xl88jSFJ4TImdKGSYbNwtXRjGAwIAsjPt+Rh+VLT7GrF4zyLMQKhT2dx53Yqqa/R/9pXZuGG0GlgEfGtL0lZKVx07CuXw/fBHPATk0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tu3URU7j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB78C4CEE4;
-	Thu, 17 Apr 2025 18:51:47 +0000 (UTC)
+	 MIME-Version; b=dttYWqC9mBdith4xRg4LUSaAoQk9H2PScduit8zyIiVGnbvptp9H4AuPYVvVXdEbDR9fxe9/gDRLLlThPzLyTnhz1bdbLLRKkpL022VHdbmzrfwAhPfiwyMV97QHPyp6y2YybemYAdm6+3K3ujQCg1CToIjRH46XkKniZWAHtek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tkUZhyzz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBFF6C4CEE4;
+	Thu, 17 Apr 2025 18:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915907;
-	bh=WNcNh00TcaOwLgocDAErm3fGelFCQ5PypGFua0WgVoA=;
+	s=korg; t=1744913624;
+	bh=/DjXizOf7yFSzgp4ulQNuGHxHJ7KYfbYjmammiGfrPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tu3URU7jYxsPBjFCCE15/BXrM8JZjRijfZOX4iG4PzTtTnXMNSGpCY9ViY5RvYVaK
-	 2prvMT9qbfdL/CTkfvsHrnrOkMwGnAgPAYchx+D60zMfw8q+/reW2MdJxpKPJSIKSc
-	 WSngM2RTLxSepgE5Na1JQaBbp6QRmmxX8d4fdOpw=
+	b=tkUZhyzz4G3BjU8ZO5jOJ6flnnDxp6ZhmCNL5an7OBjcAhKPbvaqMRzsLkryQLAvb
+	 fRtuLyYGjz50C5YxQ6TTZVhysSTmFNhTWqxJS3cY3jbCjqUpAHruUHo+LoHyGSyPQH
+	 DruWUwDhmN+2AbSaq9knpz9KPtgl+cW0gLwz8UJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	T Pratham <t-pratham@ti.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Jens Axboe <axboe@kernel.dk>,
-	Kamlesh Gurudasani <kamlesh@ti.com>,
-	Praneeth Bajjuri <praneeth@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 279/393] lib: scatterlist: fix sg_split_phys to preserve original scatterlist offsets
+	Joshua Washington <joshwash@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.14 400/449] gve: handle overflow when reporting TX consumed descriptors
 Date: Thu, 17 Apr 2025 19:51:28 +0200
-Message-ID: <20250417175118.830146687@linuxfoundation.org>
+Message-ID: <20250417175134.368670618@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,61 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: T Pratham <t-pratham@ti.com>
+From: Joshua Washington <joshwash@google.com>
 
-commit 8b46fdaea819a679da176b879e7b0674a1161a5e upstream.
+commit 15970e1b23f5c25db88c613fddf9131de086f28e upstream.
 
-The split_sg_phys function was incorrectly setting the offsets of all
-scatterlist entries (except the first) to 0.  Only the first scatterlist
-entry's offset and length needs to be modified to account for the skip.
-Setting the rest entries' offsets to 0 could lead to incorrect data
-access.
+When the tx tail is less than the head (in cases of wraparound), the TX
+consumed descriptor statistic in DQ will be reported as
+UINT32_MAX - head + tail, which is incorrect. Mask the difference of
+head and tail according to the ring size when reporting the statistic.
 
-I am using this function in a crypto driver that I'm currently developing
-(not yet sent to mailing list).  During testing, it was observed that the
-output scatterlists (except the first one) contained incorrect garbage
-data.
-
-I narrowed this issue down to the call of sg_split().  Upon debugging
-inside this function, I found that this resetting of offset is the cause
-of the problem, causing the subsequent scatterlists to point to incorrect
-memory locations in a page.  By removing this code, I am obtaining
-expected data in all the split output scatterlists.  Thus, this was indeed
-causing observable runtime effects!
-
-This patch removes the offending code, ensuring that the page offsets in
-the input scatterlist are preserved in the output scatterlist.
-
-Link: https://lkml.kernel.org/r/20250319111437.1969903-1-t-pratham@ti.com
-Fixes: f8bcbe62acd0 ("lib: scatterlist: add sg splitting function")
-Signed-off-by: T Pratham <t-pratham@ti.com>
-Cc: Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Kamlesh Gurudasani <kamlesh@ti.com>
-Cc: Praneeth Bajjuri <praneeth@ti.com>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 2c9198356d56 ("gve: Add consumed counts to ethtool stats")
+Signed-off-by: Joshua Washington <joshwash@google.com>
+Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250402001037.2717315-1-hramamurthy@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/sg_split.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/ethernet/google/gve/gve_ethtool.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/lib/sg_split.c
-+++ b/lib/sg_split.c
-@@ -88,8 +88,6 @@ static void sg_split_phys(struct sg_spli
- 			if (!j) {
- 				out_sg->offset += split->skip_sg0;
- 				out_sg->length -= split->skip_sg0;
--			} else {
--				out_sg->offset = 0;
+--- a/drivers/net/ethernet/google/gve/gve_ethtool.c
++++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
+@@ -392,7 +392,9 @@ gve_get_ethtool_stats(struct net_device
+ 				 */
+ 				data[i++] = 0;
+ 				data[i++] = 0;
+-				data[i++] = tx->dqo_tx.tail - tx->dqo_tx.head;
++				data[i++] =
++					(tx->dqo_tx.tail - tx->dqo_tx.head) &
++					tx->mask;
  			}
- 			sg_dma_address(out_sg) = 0;
- 			sg_dma_len(out_sg) = 0;
+ 			do {
+ 				start =
 
 
 
