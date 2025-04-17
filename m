@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-133440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D2BDA925B9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:07:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 575FAA927DE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:29:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9AF93B6D54
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DF1E190507E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB107257437;
-	Thu, 17 Apr 2025 18:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B0025FA0A;
+	Thu, 17 Apr 2025 18:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2OEhhoEO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dPAc7WRJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F901DE3A8;
-	Thu, 17 Apr 2025 18:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A33D1A3178;
+	Thu, 17 Apr 2025 18:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913083; cv=none; b=IjN1lncgaL6y8giQDXD3oGM1hPPvxhgeNYBB4BRdZVTjiYzFVzhuJ3uBMxH5CuMCsz/2pkwSA7hyZb9re+UtbfpG3XWXdxLub0F5mJTdAvbpZviH4xO3CFQIyK3vvwTw8WnI4W0LRjOw2ReMOFBamgxjb1TL1J/bXeZe55Kv6Gg=
+	t=1744914336; cv=none; b=NyBTrILUC+Z0RluqM88Lgd7g0cyWJ348WPhsCKC3P0jwJjeumcztsOW0Fj7s/F3ibBHs6WEw9kKk7YXxgtXYopvuAbW4Aq1C0p7d+SfCxPhKlIwZn3Tbt6GVDjCReRGFimarUNFc3K9l2DgtG5c3eRSHxvhjWLfifFlcv17AJVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913083; c=relaxed/simple;
-	bh=XprOxeYV2bDuscKUHTWmV2wADXd2cfEE2Ey1mNlLv2s=;
+	s=arc-20240116; t=1744914336; c=relaxed/simple;
+	bh=8NWmOMRj87E9nIM3l75t3vQ/h2cd7epWjPw5YMqqKF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V2d+gwXhgJ3cWBV6o+XNSu1P+fv80oIhE0I/lk4D/S5a5Zqnz2Wi8yPg8GLrDjG92+Gb5KvKJW3pgUOAUY2l2XpZtt9vp289/7HPD/CijE3HHTKLXtU8lVXKiMfLJlgRqB4zgKScHHOzVaKXjgQiJnR8o1f9NlTT3c2rRRKuSns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2OEhhoEO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0FA1C4CEE4;
-	Thu, 17 Apr 2025 18:04:42 +0000 (UTC)
+	 MIME-Version; b=a4JDUAKTH0qUmoAz9hgAVuOeaw7NyOUngTJ8VdJp3ci8dAkvOvKL0/hTlAiD9Y7Rr2QmuaHAJnw0UYQzpG3oea0SjCMKQm+AOlqMM7c2m05jbGTNLMUCP23uDzjf80hqzHHG+9wAq2tzMveXNQ0/wDRVoKiY3XxmocKYXpLEaWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dPAc7WRJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 042DAC4CEE7;
+	Thu, 17 Apr 2025 18:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913083;
-	bh=XprOxeYV2bDuscKUHTWmV2wADXd2cfEE2Ey1mNlLv2s=;
+	s=korg; t=1744914336;
+	bh=8NWmOMRj87E9nIM3l75t3vQ/h2cd7epWjPw5YMqqKF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2OEhhoEOKwkKfPf5m6voGx12E8eX3VZZVQEyvh+b3XEdFPqhomtlCGNwlJf4JorPs
-	 TeO0cnnIMlz7xRv/yYPPLNeoXjgU5eIcxxmITTid3DUmvww//4Z1BrMNfdUR9aO3sp
-	 K5bq9PFNOTf5NJe5hx0+nI0ri61VmoGdtavNGgfA=
+	b=dPAc7WRJLlrgoEVEwtpGr0hbtZvQOHzbdrwiu6D+w0aOrDzH8G2Cfms6/16z4h6m/
+	 iiZob/RTmXU72eRUppZEL6ZxLKvoGmmTpD2AKoS8t6Vux31YG6ma4cNFrh/hgIawcI
+	 ctUgcTq3CZhMR0qSeP2QHGtwxID0FBSuSYMYL1LQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.14 221/449] media: uapi: rkisp1-config: Fix typo in extensible params example
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 151/414] drm/mediatek: mtk_dpi: Move the input_2p_en bit to platform data
 Date: Thu, 17 Apr 2025 19:48:29 +0200
-Message-ID: <20250417175126.863567377@linuxfoundation.org>
+Message-ID: <20250417175117.493840188@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +61,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-commit 7b0ee2de7c76e5518e2235a927fd211bc785d320 upstream.
+[ Upstream commit c90876a695dd83e76680b88b40067275a5982811 ]
 
-The define used for the version in the example diagram does not match what
-is defined in enum rksip1_ext_param_buffer_version, nor the description
-above it. Correct the typo to make it clear which define to use.
+In preparation for adding support for MT8195's HDMI reserved DPI
+instance, move the input_2p_en bit for DP_INTF to platform data.
 
-Fixes: e9d05e9d5db1 ("media: uapi: rkisp1-config: Add extensible params format")
-Cc: stable@vger.kernel.org
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+While at it, remove the input_2pixel member from platform data as
+having this bit implies that the 2pixel feature must be enabled.
+
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250217154836.108895-7-angelogioacchino.delregno@collabora.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/rkisp1-config.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/mediatek/mtk_dpi.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/include/uapi/linux/rkisp1-config.h
-+++ b/include/uapi/linux/rkisp1-config.h
-@@ -1528,7 +1528,7 @@ enum rksip1_ext_param_buffer_version {
-  * The expected memory layout of the parameters buffer is::
-  *
-  *	+-------------------- struct rkisp1_ext_params_cfg -------------------+
-- *	| version = RKISP_EXT_PARAMS_BUFFER_V1;                               |
-+ *	| version = RKISP1_EXT_PARAM_BUFFER_V1;                               |
-  *	| data_size = sizeof(struct rkisp1_ext_params_bls_config)             |
-  *	|           + sizeof(struct rkisp1_ext_params_dpcc_config);           |
-  *	| +------------------------- data  ---------------------------------+ |
+diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c b/drivers/gpu/drm/mediatek/mtk_dpi.c
+index 1864eb02dbf50..c3fc85764c973 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dpi.c
++++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
+@@ -127,14 +127,14 @@ struct mtk_dpi_yc_limit {
+  * @is_ck_de_pol: Support CK/DE polarity.
+  * @swap_input_support: Support input swap function.
+  * @support_direct_pin: IP supports direct connection to dpi panels.
+- * @input_2pixel: Input pixel of dp_intf is 2 pixel per round, so enable this
+- *		  config to enable this feature.
+  * @dimension_mask: Mask used for HWIDTH, HPORCH, VSYNC_WIDTH and VSYNC_PORCH
+  *		    (no shift).
+  * @hvsize_mask: Mask of HSIZE and VSIZE mask (no shift).
+  * @channel_swap_shift: Shift value of channel swap.
+  * @yuv422_en_bit: Enable bit of yuv422.
+  * @csc_enable_bit: Enable bit of CSC.
++ * @input_2p_en_bit: Enable bit for input two pixel per round feature.
++ *		     If present, implies that the feature must be enabled.
+  * @pixels_per_iter: Quantity of transferred pixels per iteration.
+  * @edge_cfg_in_mmsys: If the edge configuration for DPI's output needs to be set in MMSYS.
+  */
+@@ -148,12 +148,12 @@ struct mtk_dpi_conf {
+ 	bool is_ck_de_pol;
+ 	bool swap_input_support;
+ 	bool support_direct_pin;
+-	bool input_2pixel;
+ 	u32 dimension_mask;
+ 	u32 hvsize_mask;
+ 	u32 channel_swap_shift;
+ 	u32 yuv422_en_bit;
+ 	u32 csc_enable_bit;
++	u32 input_2p_en_bit;
+ 	u32 pixels_per_iter;
+ 	bool edge_cfg_in_mmsys;
+ };
+@@ -610,9 +610,9 @@ static int mtk_dpi_set_display_mode(struct mtk_dpi *dpi,
+ 		mtk_dpi_dual_edge(dpi);
+ 		mtk_dpi_config_disable_edge(dpi);
+ 	}
+-	if (dpi->conf->input_2pixel) {
+-		mtk_dpi_mask(dpi, DPI_CON, DPINTF_INPUT_2P_EN,
+-			     DPINTF_INPUT_2P_EN);
++	if (dpi->conf->input_2p_en_bit) {
++		mtk_dpi_mask(dpi, DPI_CON, dpi->conf->input_2p_en_bit,
++			     dpi->conf->input_2p_en_bit);
+ 	}
+ 	mtk_dpi_sw_reset(dpi, false);
+ 
+@@ -1006,12 +1006,12 @@ static const struct mtk_dpi_conf mt8195_dpintf_conf = {
+ 	.output_fmts = mt8195_output_fmts,
+ 	.num_output_fmts = ARRAY_SIZE(mt8195_output_fmts),
+ 	.pixels_per_iter = 4,
+-	.input_2pixel = true,
+ 	.dimension_mask = DPINTF_HPW_MASK,
+ 	.hvsize_mask = DPINTF_HSIZE_MASK,
+ 	.channel_swap_shift = DPINTF_CH_SWAP,
+ 	.yuv422_en_bit = DPINTF_YUV422_EN,
+ 	.csc_enable_bit = DPINTF_CSC_ENABLE,
++	.input_2p_en_bit = DPINTF_INPUT_2P_EN,
+ };
+ 
+ static int mtk_dpi_probe(struct platform_device *pdev)
+-- 
+2.39.5
+
 
 
 
