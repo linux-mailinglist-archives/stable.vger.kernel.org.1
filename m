@@ -1,57 +1,72 @@
-Return-Path: <stable+bounces-133649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98CC1A926A9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:15:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0553A92AE0
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FB44190036B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:15:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5F47446C98
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F2624BBFD;
-	Thu, 17 Apr 2025 18:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7EF8257451;
+	Thu, 17 Apr 2025 18:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dg3dQjSS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2cfF1aF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D461E98ED;
-	Thu, 17 Apr 2025 18:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4600257448;
+	Thu, 17 Apr 2025 18:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913719; cv=none; b=FLTqFZit1msbowODRDdfNGljuv5BmeE3Rk6sE+g4m7Avaq2+tEn2ZrvppxMS10GuQkOkJlqWGZJIca6IPhMnskmizkmVoipjQIOkPxOT+DtZbyaKy/t5TcwIL/kZP5bgkXVlog6fShLjYV+JltYbvtHbzSRgESDtWbHAmTd0vWE=
+	t=1744916001; cv=none; b=I+2Ij0vork7MZoLCCNRwQGO/QLdY0kVJfIeRPfCBryyS6ElPsgcb39Xvof1E0AH1827JYq3bCa04nriEgXXpIi4zEwg+g5EGLOZpOkOpt98uupr/+AVYBER7czAQX4g1fPSFf+V0gLEzTM0tsEs6oXliGnYet7Hz7R4LdbRntDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913719; c=relaxed/simple;
-	bh=6Xn7VJH+ySvbBeqD1D7Y8faDTHduKG/AS2P5nRP7G+Q=;
+	s=arc-20240116; t=1744916001; c=relaxed/simple;
+	bh=bbHRV3vb/c5es4r1GyW2u/TYeJ6+4MyMMlRIWn0pR8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bz4JGDfHpFPSdBUgsawV3JMJDEBznpW8c+Em2UxgEHub6gArUZfNJlSTr1CxjvnSdE7V5Jbtx1j7kVtPNZ5BK3YUvU1sHlwH3X/sk/8US9v41T2Bt3OFZJ2aSQLgeKZN5MIMr3aPyDZ1+yQ/wR+Qc+FDbKaeiWJ1zMJW11JoSVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dg3dQjSS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E97ECC4CEE4;
-	Thu, 17 Apr 2025 18:15:17 +0000 (UTC)
+	 MIME-Version; b=IT+bsNJvH6dMFgkJZuT1P3tGoxWrVSSZp8fZFeeOC+vQx+HOkjaQSooYZmabv58qXH2mXUg+UDiio/yZHu5/4aLfJ2hsNWxBmscJkkYNAxXQBHdVe4ghX4r8cPJmiZqiWU01ixV1HC7qgU55jbHZZFHFezUpgaSpJouj4bhefGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2cfF1aF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9558C4CEE4;
+	Thu, 17 Apr 2025 18:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913718;
-	bh=6Xn7VJH+ySvbBeqD1D7Y8faDTHduKG/AS2P5nRP7G+Q=;
+	s=korg; t=1744916001;
+	bh=bbHRV3vb/c5es4r1GyW2u/TYeJ6+4MyMMlRIWn0pR8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dg3dQjSSznvxEQwE6K2i220i3RXFObnlFjdQqjXpjHxKP59y1Ttc7kwimZzJoGu2q
-	 dM5EQsUDSy3DUxwZPBPy0RJHhou99W82KoPWialBgdjlloSJgdTYvtlWGIAt7GhSlO
-	 Wt5l76Ik5Z5a4J/mz0SINjqkWZbdhinV6NvrH3bY=
+	b=x2cfF1aFWIk/gqIWXoCE+BdPfecSUzZNZs6NbhHUOO+GKhEhEcoo9B3FfmNg3+TQr
+	 s/8LsoEEZ0N8WmqQreeVOTCgHW2QMvLrjwFTj4Q8rcLo6p0K/SVhk7181DIvA6N8LT
+	 +tHwBtg//bFXaOz8lidKUgAEQnDV1PrX+WlOL5aE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.14 431/449] pinctrl: qcom: Clear latched interrupt status when changing IRQ type
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Borislav Betkov <bp@alien8.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ruidong Tian <tianruidong@linux.alibaba.com>,
+	Thomas Gleinxer <tglx@linutronix.de>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 310/393] mm/hwpoison: do not send SIGBUS to processes with recovered clean pages
 Date: Thu, 17 Apr 2025 19:51:59 +0200
-Message-ID: <20250417175135.647012032@linuxfoundation.org>
+Message-ID: <20250417175120.081534408@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +78,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-commit e225128c3f8be879e7d4eb71a25949e188b420ae upstream.
+commit aaf99ac2ceb7c974f758a635723eeaf48596388e upstream.
 
-When submitting the TLMM test driver, Bjorn reported that some of the test
-cases are failing for GPIOs that not are backed by PDC (i.e. "non-wakeup"
-GPIOs that are handled directly in pinctrl-msm). Basically, lingering
-latched interrupt state is still being delivered at IRQ request time, e.g.:
+When an uncorrected memory error is consumed there is a race between the
+CMCI from the memory controller reporting an uncorrected error with a UCNA
+signature, and the core reporting and SRAR signature machine check when
+the data is about to be consumed.
 
-  ok 1 tlmm_test_silent_rising
-  tlmm_test_silent_falling: ASSERTION FAILED at drivers/pinctrl/qcom/tlmm-test.c:178
-  Expected atomic_read(&priv->intr_count) == 0, but
-      atomic_read(&priv->intr_count) == 1 (0x1)
-  not ok 2 tlmm_test_silent_falling
-  tlmm_test_silent_low: ASSERTION FAILED at drivers/pinctrl/qcom/tlmm-test.c:178
-  Expected atomic_read(&priv->intr_count) == 0, but
-      atomic_read(&priv->intr_count) == 1 (0x1)
-  not ok 3 tlmm_test_silent_low
-  ok 4 tlmm_test_silent_high
+- Background: why *UN*corrected errors tied to *C*MCI in Intel platform [1]
 
-Whether to report interrupts that came in while the IRQ was unclaimed
-doesn't seem to be well-defined in the Linux IRQ API. However, looking
-closer at these specific cases, we're actually reporting events that do not
-match the interrupt type requested by the driver:
+Prior to Icelake memory controllers reported patrol scrub events that
+detected a previously unseen uncorrected error in memory by signaling a
+broadcast machine check with an SRAO (Software Recoverable Action
+Optional) signature in the machine check bank.  This was overkill because
+it's not an urgent problem that no core is on the verge of consuming that
+bad data.  It's also found that multi SRAO UCE may cause nested MCE
+interrupts and finally become an IERR.
 
- 1. After "ok 1 tlmm_test_silent_rising", the GPIO is in low state and
-    configured for IRQF_TRIGGER_RISING.
+Hence, Intel downgrades the machine check bank signature of patrol scrub
+from SRAO to UCNA (Uncorrected, No Action required), and signal changed to
+#CMCI.  Just to add to the confusion, Linux does take an action (in
+uc_decode_notifier()) to try to offline the page despite the UC*NA*
+signature name.
 
- 2. (a) In preparation for "tlmm_test_silent_falling", the GPIO is switched
-        to high state. The rising interrupt gets latched.
-    (b) The GPIO is re-configured for IRQF_TRIGGER_FALLING, but the latched
-        interrupt isn't cleared.
-    (c) The IRQ handler is called for the latched interrupt, but there
-        wasn't any falling edge.
+- Background: why #CMCI and #MCE race when poison is consuming in Intel platform [1]
 
- 3. (a) For "tlmm_test_silent_low", the GPIO remains in high state.
-    (b) The GPIO is re-configured for IRQF_TRIGGER_LOW. This seems to
-        result in a phantom interrupt that gets latched.
-    (c) The IRQ handler is called for the latched interrupt, but the GPIO
-        isn't in low state.
+Having decided that CMCI/UCNA is the best action for patrol scrub errors,
+the memory controller uses it for reads too.  But the memory controller is
+executing asynchronously from the core, and can't tell the difference
+between a "real" read and a speculative read.  So it will do CMCI/UCNA if
+an error is found in any read.
 
- 4. (a) For "tlmm_test_silent_high", the GPIO is switched to low state.
-    (b) This doesn't result in a latched interrupt, because RAW_STATUS_EN
-        was cleared when masking the level-triggered interrupt.
+Thus:
 
-Fix this by clearing the interrupt state whenever making any changes to the
-interrupt configuration. This includes previously disabled interrupts, but
-also any changes to interrupt polarity or detection type.
+1) Core is clever and thinks address A is needed soon, issues a speculative read.
+2) Core finds it is going to use address A soon after sending the read request
+3) The CMCI from the memory controller is in a race with MCE from the core
+   that will soon try to retire the load from address A.
 
-With this change, all 16 test cases are now passing for the non-wakeup
-GPIOs in the TLMM.
+Quite often (because speculation has got better) the CMCI from the memory
+controller is delivered before the core is committed to the instruction
+reading address A, so the interrupt is taken, and Linux offlines the page
+(marking it as poison).
 
-Cc: stable@vger.kernel.org
-Fixes: cf9d052aa600 ("pinctrl: qcom: Don't clear pending interrupts when enabling")
-Reported-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Closes: https://lore.kernel.org/r/20250227-tlmm-test-v1-1-d18877b4a5db@oss.qualcomm.com/
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Tested-by: Bjorn Andersson <andersson@kernel.org>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/20250312-pinctrl-msm-type-latch-v1-1-ce87c561d3d7@linaro.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+- Why user process is killed for instr case
+
+Commit 046545a661af ("mm/hwpoison: fix error page recovered but reported
+"not recovered"") tries to fix noise message "Memory error not recovered"
+and skips duplicate SIGBUSs due to the race.  But it also introduced a bug
+that kill_accessing_process() return -EHWPOISON for instr case, as result,
+kill_me_maybe() send a SIGBUS to user process.
+
+If the CMCI wins that race, the page is marked poisoned when
+uc_decode_notifier() calls memory_failure().  For dirty pages,
+memory_failure() invokes try_to_unmap() with the TTU_HWPOISON flag,
+converting the PTE to a hwpoison entry.  As a result,
+kill_accessing_process():
+
+- call walk_page_range() and return 1 regardless of whether
+  try_to_unmap() succeeds or fails,
+- call kill_proc() to make sure a SIGBUS is sent
+- return -EHWPOISON to indicate that SIGBUS is already sent to the
+  process and kill_me_maybe() doesn't have to send it again.
+
+However, for clean pages, the TTU_HWPOISON flag is cleared, leaving the
+PTE unchanged and not converted to a hwpoison entry.  Conversely, for
+clean pages where PTE entries are not marked as hwpoison,
+kill_accessing_process() returns -EFAULT, causing kill_me_maybe() to send
+a SIGBUS.
+
+Console log looks like this:
+
+    Memory failure: 0x827ca68: corrupted page was clean: dropped without side effects
+    Memory failure: 0x827ca68: recovery action for clean LRU page: Recovered
+    Memory failure: 0x827ca68: already hardware poisoned
+    mce: Memory error not recovered
+
+To fix it, return 0 for "corrupted page was clean", preventing an
+unnecessary SIGBUS to user process.
+
+[1] https://lore.kernel.org/lkml/20250217063335.22257-1-xueshuai@linux.alibaba.com/T/#mba94f1305b3009dd340ce4114d3221fe810d1871
+Link: https://lkml.kernel.org/r/20250312112852.82415-3-xueshuai@linux.alibaba.com
+Fixes: 046545a661af ("mm/hwpoison: fix error page recovered but reported "not recovered"")
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Tested-by: Tony Luck <tony.luck@intel.com>
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Borislav Betkov <bp@alien8.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jane Chu <jane.chu@oracle.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ruidong Tian <tianruidong@linux.alibaba.com>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: Yazen Ghannam <yazen.ghannam@amd.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/qcom/pinctrl-msm.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ mm/memory-failure.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/drivers/pinctrl/qcom/pinctrl-msm.c
-+++ b/drivers/pinctrl/qcom/pinctrl-msm.c
-@@ -1045,8 +1045,7 @@ static int msm_gpio_irq_set_type(struct
- 	const struct msm_pingroup *g;
- 	u32 intr_target_mask = GENMASK(2, 0);
- 	unsigned long flags;
--	bool was_enabled;
--	u32 val;
-+	u32 val, oldval;
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -879,12 +879,17 @@ static int kill_accessing_process(struct
+ 	mmap_read_lock(p->mm);
+ 	ret = walk_page_range(p->mm, 0, TASK_SIZE, &hwpoison_walk_ops,
+ 			      (void *)&priv);
++	/*
++	 * ret = 1 when CMCI wins, regardless of whether try_to_unmap()
++	 * succeeds or fails, then kill the process with SIGBUS.
++	 * ret = 0 when poison page is a clean page and it's dropped, no
++	 * SIGBUS is needed.
++	 */
+ 	if (ret == 1 && priv.tk.addr)
+ 		kill_proc(&priv.tk, pfn, flags);
+-	else
+-		ret = 0;
+ 	mmap_read_unlock(p->mm);
+-	return ret > 0 ? -EHWPOISON : -EFAULT;
++
++	return ret > 0 ? -EHWPOISON : 0;
+ }
  
- 	if (msm_gpio_needs_dual_edge_parent_workaround(d, type)) {
- 		set_bit(d->hwirq, pctrl->dual_edge_irqs);
-@@ -1108,8 +1107,7 @@ static int msm_gpio_irq_set_type(struct
- 	 * internal circuitry of TLMM, toggling the RAW_STATUS
- 	 * could cause the INTR_STATUS to be set for EDGE interrupts.
- 	 */
--	val = msm_readl_intr_cfg(pctrl, g);
--	was_enabled = val & BIT(g->intr_raw_status_bit);
-+	val = oldval = msm_readl_intr_cfg(pctrl, g);
- 	val |= BIT(g->intr_raw_status_bit);
- 	if (g->intr_detection_width == 2) {
- 		val &= ~(3 << g->intr_detection_bit);
-@@ -1162,9 +1160,11 @@ static int msm_gpio_irq_set_type(struct
- 	/*
- 	 * The first time we set RAW_STATUS_EN it could trigger an interrupt.
- 	 * Clear the interrupt.  This is safe because we have
--	 * IRQCHIP_SET_TYPE_MASKED.
-+	 * IRQCHIP_SET_TYPE_MASKED. When changing the interrupt type, we could
-+	 * also still have a non-matching interrupt latched, so clear whenever
-+	 * making changes to the interrupt configuration.
- 	 */
--	if (!was_enabled)
-+	if (val != oldval)
- 		msm_ack_intr_status(pctrl, g);
- 
- 	if (test_bit(d->hwirq, pctrl->dual_edge_irqs))
+ /*
 
 
 
