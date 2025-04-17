@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-133281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FF58A9250C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:00:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13091A9251E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:01:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB4037B1509
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 17:58:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3412466DE8
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:01:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1617E25F997;
-	Thu, 17 Apr 2025 17:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D41892566D7;
+	Thu, 17 Apr 2025 17:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4mQ2dU3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6exSCSD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41EE256C95;
-	Thu, 17 Apr 2025 17:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913DC256C60;
+	Thu, 17 Apr 2025 17:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744912606; cv=none; b=kvfYeKNghO5GrYb/+vl7M7TIKf2xW/ZQb0EAZ6tfQ3DFXMrD+SBwHM2R0euOa5NPQOsOALYHSKWwor9UpGP0WO7GjaAWOdgSHfqQmA5RHXvnuavdaMW0kVudHZNvudjRQDaA5tZp0hIVGD5sMdNzx0xXnC/miEgacZgKEPF1/2E=
+	t=1744912726; cv=none; b=VM72/xAjN1WbzWncDxmxLKcBnkONT8SmB5sqUaG/nDR9Jw/8zzcmb/MlGZsvKw9D71Lb5f15iLCga99STTMdtDurskO5KSROchZKOqk5eqWK/SFVM6XdmXU9STyRuJsuWLZx5PW0VAynn4En5NJvHzEWJzGnnxFvGrWOrnQa6Qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744912606; c=relaxed/simple;
-	bh=ZskP6xEIHXBDEXLT+0M/MqjBmMdD1RtqIBB08afjWMw=;
+	s=arc-20240116; t=1744912726; c=relaxed/simple;
+	bh=MTINK+QHN/HB5dXBzq6aPmXTJYOI88hQv6RhxkXuDWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Leay3v5sD+5V2ytH8WgiMhh1bqi+pomjcUsJwfTAVtte56vGVQTRXs+MISFC6ech4W8Pmo9Ow3u8aLDVJJaZjyeuAyY0x0VSRKmZqDwl7mOMfNwt+aw/RdEb0voKc2geAZiOOL+DDZMwIjN173apZY2rzcWv3l/CAmOZwo+5r+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4mQ2dU3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E549BC4CEE4;
-	Thu, 17 Apr 2025 17:56:45 +0000 (UTC)
+	 MIME-Version; b=TLYNlmxN1RE9ZuKBEWbGqLq92xntttimZTyn6tp7yY/14MOwgS3Io5lEdDjZxQymKa6l4tAmf7F9gdiRopgYPRcXnxr0VXaGKSqBqe27/1d1Ffly65R14jUh/usCGmpY/DAVAZJ5KmRDwMEu1CdQDu5/L8rBKNO3bPIquR3YtZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6exSCSD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15B44C4CEE7;
+	Thu, 17 Apr 2025 17:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744912606;
-	bh=ZskP6xEIHXBDEXLT+0M/MqjBmMdD1RtqIBB08afjWMw=;
+	s=korg; t=1744912726;
+	bh=MTINK+QHN/HB5dXBzq6aPmXTJYOI88hQv6RhxkXuDWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S4mQ2dU3wgdFWOQwzKwynCUcnz2jSHz3aMSsv1o9JX4WIj3/hurrIBp3Bj7GW6XlS
-	 6m0UpRnkJoCOjb2002lKVkz5CS3wqlN2tFMDPLVpgwXjdNsso5tijeEeIN+wT6KlkX
-	 lNd/So5YPfvj22VNC1/9fnNbc2iIKFrFd/t4gX48=
+	b=Q6exSCSDhZFzbhSjIEClFR3Pf0XAiaDpqCIQmXwsuDlpBbZ/Gsmtelk+hQCpTkoPL
+	 Eng0r7jJqUcKhT7UdkHoujzBniNqpVR0KlPGxo+l4i48vhmWnO5/eq/ZoqDgWLGmHs
+	 Te4EDK/npH+UVsrR2Ery381TJclpXWGuGjC7nLy4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Trilok Soni <quic_tsoni@quicinc.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	xen-devel@lists.xenproject.org,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 064/449] arm64: cputype: Add QCOM_CPU_PART_KRYO_3XX_GOLD
-Date: Thu, 17 Apr 2025 19:45:52 +0200
-Message-ID: <20250417175120.565265496@linuxfoundation.org>
+Subject: [PATCH 6.14 065/449] xen/mcelog: Add __nonstring annotations for unterminated strings
+Date: Thu, 17 Apr 2025 19:45:53 +0200
+Message-ID: <20250417175120.603518294@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
 References: <20250417175117.964400335@linuxfoundation.org>
@@ -68,42 +69,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 401c3333bb2396aa52e4121887a6f6a6e2f040bc ]
+[ Upstream commit 1c3dfc7c6b0f551fdca3f7c1f1e4c73be8adb17d ]
 
-Add a definition for the Qualcomm Kryo 300-series Gold cores.
+When a character array without a terminating NUL character has a static
+initializer, GCC 15's -Wunterminated-string-initialization will only
+warn if the array lacks the "nonstring" attribute[1]. Mark the arrays
+with __nonstring to and correctly identify the char array as "not a C
+string" and thereby eliminate the warning.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Acked-by: Trilok Soni <quic_tsoni@quicinc.com>
-Link: https://lore.kernel.org/r/20241219131107.v3.1.I18e0288742871393228249a768e5d56ea65d93dc@changeid
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=117178 [1]
+Cc: Juergen Gross <jgross@suse.com>
+Cc: Stefano Stabellini <sstabellini@kernel.org>
+Cc: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Cc: xen-devel@lists.xenproject.org
+Signed-off-by: Kees Cook <kees@kernel.org>
+Acked-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250310222234.work.473-kees@kernel.org>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/cputype.h | 2 ++
- 1 file changed, 2 insertions(+)
+ include/xen/interface/xen-mca.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index 6f3f4142e214f..c2da1661a44e6 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -119,6 +119,7 @@
- #define QCOM_CPU_PART_KRYO		0x200
- #define QCOM_CPU_PART_KRYO_2XX_GOLD	0x800
- #define QCOM_CPU_PART_KRYO_2XX_SILVER	0x801
-+#define QCOM_CPU_PART_KRYO_3XX_GOLD	0x802
- #define QCOM_CPU_PART_KRYO_3XX_SILVER	0x803
- #define QCOM_CPU_PART_KRYO_4XX_GOLD	0x804
- #define QCOM_CPU_PART_KRYO_4XX_SILVER	0x805
-@@ -196,6 +197,7 @@
- #define MIDR_QCOM_KRYO MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO)
- #define MIDR_QCOM_KRYO_2XX_GOLD MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_2XX_GOLD)
- #define MIDR_QCOM_KRYO_2XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_2XX_SILVER)
-+#define MIDR_QCOM_KRYO_3XX_GOLD MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_3XX_GOLD)
- #define MIDR_QCOM_KRYO_3XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_3XX_SILVER)
- #define MIDR_QCOM_KRYO_4XX_GOLD MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_4XX_GOLD)
- #define MIDR_QCOM_KRYO_4XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_4XX_SILVER)
+diff --git a/include/xen/interface/xen-mca.h b/include/xen/interface/xen-mca.h
+index 464aa6b3a5f92..1c9afbe8cc260 100644
+--- a/include/xen/interface/xen-mca.h
++++ b/include/xen/interface/xen-mca.h
+@@ -372,7 +372,7 @@ struct xen_mce {
+ #define XEN_MCE_LOG_LEN 32
+ 
+ struct xen_mce_log {
+-	char signature[12]; /* "MACHINECHECK" */
++	char signature[12] __nonstring; /* "MACHINECHECK" */
+ 	unsigned len;	    /* = XEN_MCE_LOG_LEN */
+ 	unsigned next;
+ 	unsigned flags;
 -- 
 2.39.5
 
