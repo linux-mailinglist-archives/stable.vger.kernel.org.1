@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-134405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 668A1A92B21
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:57:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F246A928F9
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:39:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC99F3B85F3
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3E2A1B62318
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC29F2586E6;
-	Thu, 17 Apr 2025 18:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B77E5264F83;
+	Thu, 17 Apr 2025 18:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9Yxk1Rs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aGB1q2tC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F46256C7B;
-	Thu, 17 Apr 2025 18:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC3A257AD8;
+	Thu, 17 Apr 2025 18:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916028; cv=none; b=ho3CrRZL3+8f8GG1htfG3gs477X9DV54EESepLWT1inC3XvCUyxJHlltzdCHLGbWhdSG03oKq/aOOs5miU0L2gpFZm5Z9+hlgQsYwwEc5U86mJkvJdVbq9suYCZ27RsoTRJSRDtsz97FrL8T19pQjWz/c1UlkU2nSff2qhHuEho=
+	t=1744914903; cv=none; b=awNmVCBWoP34OIJTEGeniiLBtbNXUl8lrtqueJ1Dq6rIe785onYewU7pluZAz/LgpaVw5vj+a7i0nB45zLMXapydylSUWhqO0WDlEd1cpH8eKQ6yyU/y7VGgn+MhPLHwvapyHdNBh/M7OoxbdRAgZsg/aQ3MtUiSnDfOFl4UrQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916028; c=relaxed/simple;
-	bh=9lilJutzC3SdijP+R3V1dl29tNIGCbP9yINndBN9fYI=;
+	s=arc-20240116; t=1744914903; c=relaxed/simple;
+	bh=bLuyetuUtXeOzDXRylFpS3I27XoAopijWzqAtsT8NWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pcZMjUw/kSJOlDCYyT0Q7eZzMtfHJvk1hRRYv2DnqBi5HY9hBZXi7EAB9bPsO5N4fJJb48MvxLChVlb5HDeV71sWfWzZHhRmyW7WivtbstXMoNXB/4s+3BkJsyK8TisMSWgIKE1qKePGauAmpwy5QNz1NgmW/Hi3FJtcRvKDJKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9Yxk1Rs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB884C4CEE4;
-	Thu, 17 Apr 2025 18:53:47 +0000 (UTC)
+	 MIME-Version; b=ngoAOnidmlpUrVa9J3F3/2fGcICsEi2MvtMdmKLeRIff9Ywc7ducj1pEDs6jW9JzNvbrjadKAMIMQzVpgRYTSK3VSMLWmDqXfFv3dzYZPJwI9tTQjcXxwfS7Wlu0y0YnRtaLEyDAzPK+Kq50y0Uc2kdvJVmeQJZzMMHyqqT25oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aGB1q2tC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC900C4CEE4;
+	Thu, 17 Apr 2025 18:35:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916028;
-	bh=9lilJutzC3SdijP+R3V1dl29tNIGCbP9yINndBN9fYI=;
+	s=korg; t=1744914903;
+	bh=bLuyetuUtXeOzDXRylFpS3I27XoAopijWzqAtsT8NWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c9Yxk1RskQCr1S6WUvnJVss3JMa7hRihGmDO+H+E9Nu+hvCyxNm0a1QvfAabXX7Zp
-	 8JDXENqETbFliEsmuIot2vbWMwZgvGcqBcRL2G6DZgKzdD8Nmlef07cqZtpc9pUYpg
-	 F9nxraOkJM/EmFHt2e9Tsln0Lye/KpxI9sA1wPiY=
+	b=aGB1q2tCyR5ffdsJ0u3TVs/ULEAVx0tVB8IRRKmsOiOljKWd9E0sF8rEbqjByIMXM
+	 M2MeFpOtrhkuxL4ClEjeFK8G3qZMZ/hIMv7BByfF8eDWEtPWwYxIurxEiY096IkVas
+	 jNzsQlPSYh/CIu5VMr0CwHB747i9x5Qct/vakrG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.12 290/393] btrfs: fix non-empty delayed iputs list on unmount due to compressed write workers
+	Alexandra Diupina <adiupina@astralinux.ru>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.13 341/414] cifs: avoid NULL pointer dereference in dbg call
 Date: Thu, 17 Apr 2025 19:51:39 +0200
-Message-ID: <20250417175119.277939034@linuxfoundation.org>
+Message-ID: <20250417175125.145684802@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Alexandra Diupina <adiupina@astralinux.ru>
 
-commit 4c782247b89376a83fa132f7d45d6977edae0629 upstream.
+commit b4885bd5935bb26f0a414ad55679a372e53f9b9b upstream.
 
-At close_ctree() after we have ran delayed iputs either through explicitly
-calling btrfs_run_delayed_iputs() or later during the call to
-btrfs_commit_super() or btrfs_error_commit_super(), we assert that the
-delayed iputs list is empty.
+cifs_server_dbg() implies server to be non-NULL so
+move call under condition to avoid NULL pointer dereference.
 
-When we have compressed writes this assertion may fail because delayed
-iputs may have been added to the list after we last ran delayed iputs.
-This happens like this:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-1) We have a compressed write bio executing;
-
-2) We enter close_ctree() and flush the fs_info->endio_write_workers
-   queue which is the queue used for running ordered extent completion;
-
-3) The compressed write bio finishes and enters
-   btrfs_finish_compressed_write_work(), where it calls
-   btrfs_finish_ordered_extent() which in turn calls
-   btrfs_queue_ordered_fn(), which queues a work item in the
-   fs_info->endio_write_workers queue that we have flushed before;
-
-4) At close_ctree() we proceed, run all existing delayed iputs and
-   call btrfs_commit_super() (which also runs delayed iputs), but before
-   we run the following assertion below:
-
-      ASSERT(list_empty(&fs_info->delayed_iputs))
-
-   A delayed iput is added by the step below...
-
-5) The ordered extent completion job queued in step 3 runs and results in
-   creating a delayed iput when dropping the last reference of the ordered
-   extent (a call to btrfs_put_ordered_extent() made from
-   btrfs_finish_one_ordered());
-
-6) At this point the delayed iputs list is not empty, so the assertion at
-   close_ctree() fails.
-
-Fix this by flushing the fs_info->compressed_write_workers queue at
-close_ctree() before flushing the fs_info->endio_write_workers queue,
-respecting the queue dependency as the later is responsible for the
-execution of ordered extent completion.
-
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: e79b0332ae06 ("cifs: ignore cached share root handle closing errors")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/disk-io.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ fs/smb/client/smb2misc.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -4275,6 +4275,18 @@ void __cold close_ctree(struct btrfs_fs_
- 	btrfs_flush_workqueue(fs_info->delalloc_workers);
+--- a/fs/smb/client/smb2misc.c
++++ b/fs/smb/client/smb2misc.c
+@@ -816,11 +816,12 @@ smb2_handle_cancelled_close(struct cifs_
+ 		WARN_ONCE(tcon->tc_count < 0, "tcon refcount is negative");
+ 		spin_unlock(&cifs_tcp_ses_lock);
  
- 	/*
-+	 * When finishing a compressed write bio we schedule a work queue item
-+	 * to finish an ordered extent - btrfs_finish_compressed_write_work()
-+	 * calls btrfs_finish_ordered_extent() which in turns does a call to
-+	 * btrfs_queue_ordered_fn(), and that queues the ordered extent
-+	 * completion either in the endio_write_workers work queue or in the
-+	 * fs_info->endio_freespace_worker work queue. We flush those queues
-+	 * below, so before we flush them we must flush this queue for the
-+	 * workers of compressed writes.
-+	 */
-+	flush_workqueue(fs_info->compressed_write_workers);
-+
-+	/*
- 	 * After we parked the cleaner kthread, ordered extents may have
- 	 * completed and created new delayed iputs. If one of the async reclaim
- 	 * tasks is running and in the RUN_DELAYED_IPUTS flush state, then we
+-		if (tcon->ses)
++		if (tcon->ses) {
+ 			server = tcon->ses->server;
+-
+-		cifs_server_dbg(FYI, "tid=0x%x: tcon is closing, skipping async close retry of fid %llu %llu\n",
+-				tcon->tid, persistent_fid, volatile_fid);
++			cifs_server_dbg(FYI,
++					"tid=0x%x: tcon is closing, skipping async close retry of fid %llu %llu\n",
++					tcon->tid, persistent_fid, volatile_fid);
++		}
+ 
+ 		return 0;
+ 	}
 
 
 
