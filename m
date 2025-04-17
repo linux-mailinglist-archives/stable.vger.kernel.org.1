@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-134035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5726CA928F6
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:39:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FD37A926AE
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:15:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA6631B62240
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD34D8A623A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35565264A9F;
-	Thu, 17 Apr 2025 18:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C10A01E834D;
+	Thu, 17 Apr 2025 18:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IjHCzy/O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UDd+rpUU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54FA264A78;
-	Thu, 17 Apr 2025 18:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2428462;
+	Thu, 17 Apr 2025 18:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914897; cv=none; b=gf4asnTOrvm8aQaFFelk4ZJ+ZTqiG0xs2Jrcg6WWkaCCfmUjQUqSZF3AZOu+kLqiIqKMGfCp48CBr8c60sLtNCIpoHnogicOlfHeQDRbyPjhODCmRX6jOtD7Sww6K3c0Bq6R3PQdtYKR2LCweex+lEVVm5tJggo7StMpkXubaSA=
+	t=1744913733; cv=none; b=bkif8Lq0GgaPAT0yhjNEVNym6irWXxF1euQIJJ8QhEsDx4YjpCR99s569tEnnZQTFC11KgAZjc1dEc79Y+YxQACGvwBC5WPwJV2PxapRJ+24e07Sr7iIEtXlxq5zXzIIgX1hfK+cwswZCEU23nIW+KT6jocWJ/iMAH5iWoUxjtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914897; c=relaxed/simple;
-	bh=3t96zPAsSHQWmDbdZWpAn+NwnALAO1t9esz+XmmulYA=;
+	s=arc-20240116; t=1744913733; c=relaxed/simple;
+	bh=nnPIXHB+2jfAwLfGZRlVEtNN+Rf+BHv64lIZSUgxL3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I+nUlEGJOpFpYNpqgFjoqATxPnKfEnFxOXYe2VQASXFMOtEQOg1mdJ1jvxnXMUEgbydCLc9uqUBKnAOq2DMhJVzJAIOIYjUg6+JLFqrPFKM4VGL7SWZwUc+5nVsyVy8yvOK88TTBQVH+DpTjm/QsneP9qJeWfpSP6/g5YYqE2pI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IjHCzy/O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E3EAC4CEE4;
-	Thu, 17 Apr 2025 18:34:56 +0000 (UTC)
+	 MIME-Version; b=XCYGKWB2/9zzU+BX94SG3AuI8u+ykf8PZVwitiRv3BpnfM0avqFLio2gRxK1xsFaYRy94Wz3IAtjGXdJpUg3qrQWcfjJ7LFJsQxncRi0IzSwcy/smeAFWe6XipekxFDMv0yQUlDXZa1iFvONBa57Uyr8G/vYhU68IMZOOPA2wRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UDd+rpUU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 113ECC4CEE4;
+	Thu, 17 Apr 2025 18:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914896;
-	bh=3t96zPAsSHQWmDbdZWpAn+NwnALAO1t9esz+XmmulYA=;
+	s=korg; t=1744913733;
+	bh=nnPIXHB+2jfAwLfGZRlVEtNN+Rf+BHv64lIZSUgxL3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IjHCzy/O3ShhLG0pCLV71U1FfLeLM6WikGwy5kPoDRQqqehzBrojBDBWuyKzMWHcK
-	 vW3zJCsmJ3+k32ye2zcTgbQe0lCQlGM2kBbSO53TGFIgFbDPUO/yFh+bWuF5NGSJpS
-	 Bkq+zpWO/PQia1linlaW3/bkHtdo4B93LiEGp0Hg=
+	b=UDd+rpUUg5MLaoDMyeZ6I/KRxAhTuV5mBlrO60kEk28W9A0+pt9Cst5pkJ7yX4KwC
+	 lxWk5v+92NQiMKDztCZWd2e8CvmGbdy06Q5Px5sE2m/+8U0ugug5+oKOnEX8rg5jJQ
+	 VUAlTv2nlLTVXhpFIzlVTBN2OqwjwaijVPeBCOFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Jim Mattson <jmattson@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.13 366/414] KVM: x86: Explicitly zero-initialize on-stack CPUID unions
+	kernel test robot <lkp@intel.com>,
+	Jens Remus <jremus@linux.ibm.com>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.14 436/449] s390: Fix linker error when -no-pie option is unavailable
 Date: Thu, 17 Apr 2025 19:52:04 +0200
-Message-ID: <20250417175126.187138923@linuxfoundation.org>
+Message-ID: <20250417175135.862214649@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Sumanth Korikkar <sumanthk@linux.ibm.com>
 
-commit bc52ae0a708cb6fa3926d11c88e3c55e1171b4a1 upstream.
+commit 991a20173a1fbafd9fc0df0c7e17bb62d44a4deb upstream.
 
-Explicitly zero/empty-initialize the unions used for PMU related CPUID
-entries, instead of manually zeroing all fields (hopefully), or in the
-case of 0x80000022, relying on the compiler to clobber the uninitialized
-bitfields.
+The kernel build may fail if the linker does not support -no-pie option,
+as it always included in LDFLAGS_vmlinux.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Jim Mattson <jmattson@google.com>
-Message-ID: <20250315024102.2361628-1-seanjc@google.com>
+Error log:
+s390-linux-ld: unable to disambiguate: -no-pie (did you mean --no-pie ?)
+
+Although the GNU linker defaults to -no-pie, the ability to explicitly
+specify this option was introduced in binutils 2.36.
+
+Hence, fix it by adding -no-pie to LDFLAGS_vmlinux only when it is
+available.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Fixes: 00cda11d3b2e ("s390: Compile kernel with -fPIC and link with -no-pie")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202503220342.T3fElO9L-lkp@intel.com/
+Suggested-by: Jens Remus <jremus@linux.ibm.com>
+Reviewed-by: Jens Remus <jremus@linux.ibm.com>
+Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/cpuid.c |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ arch/s390/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -1053,8 +1053,8 @@ static inline int __do_cpuid_func(struct
- 		}
- 		break;
- 	case 0xa: { /* Architectural Performance Monitoring */
--		union cpuid10_eax eax;
--		union cpuid10_edx edx;
-+		union cpuid10_eax eax = { };
-+		union cpuid10_edx edx = { };
- 
- 		if (!enable_pmu || !static_cpu_has(X86_FEATURE_ARCH_PERFMON)) {
- 			entry->eax = entry->ebx = entry->ecx = entry->edx = 0;
-@@ -1070,8 +1070,6 @@ static inline int __do_cpuid_func(struct
- 
- 		if (kvm_pmu_cap.version)
- 			edx.split.anythread_deprecated = 1;
--		edx.split.reserved1 = 0;
--		edx.split.reserved2 = 0;
- 
- 		entry->eax = eax.full;
- 		entry->ebx = kvm_pmu_cap.events_mask;
-@@ -1389,7 +1387,7 @@ static inline int __do_cpuid_func(struct
- 		break;
- 	/* AMD Extended Performance Monitoring and Debug */
- 	case 0x80000022: {
--		union cpuid_0x80000022_ebx ebx;
-+		union cpuid_0x80000022_ebx ebx = { };
- 
- 		entry->ecx = entry->edx = 0;
- 		if (!enable_pmu || !kvm_cpu_cap_has(X86_FEATURE_PERFMON_V2)) {
+--- a/arch/s390/Makefile
++++ b/arch/s390/Makefile
+@@ -15,7 +15,7 @@ KBUILD_CFLAGS_MODULE += -fPIC
+ KBUILD_AFLAGS	+= -m64
+ KBUILD_CFLAGS	+= -m64
+ KBUILD_CFLAGS	+= -fPIC
+-LDFLAGS_vmlinux	:= -no-pie --emit-relocs --discard-none
++LDFLAGS_vmlinux	:= $(call ld-option,-no-pie) --emit-relocs --discard-none
+ extra_tools	:= relocs
+ aflags_dwarf	:= -Wa,-gdwarf-2
+ KBUILD_AFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -D__ASSEMBLY__
 
 
 
