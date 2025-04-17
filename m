@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C70FA928DD
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:38:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73AAFA9266D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:13:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5F231B61687
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABBB6188B11A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:12:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1262638A6;
-	Thu, 17 Apr 2025 18:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F8621EB1BF;
+	Thu, 17 Apr 2025 18:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="agT02btu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1NKgazY9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A572571A2;
-	Thu, 17 Apr 2025 18:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E715152532;
+	Thu, 17 Apr 2025 18:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914776; cv=none; b=hDMbfV93L7ezQctFVlvI8aU9EbiouuCfsDT0I3lA4E7uw/5nbq9ZRaICp8fqZjBPV8fd0B3JbzltbtI03KVDDrJvY4vbpF8Ekf8c8g7IkfrXA57eWvhBUHMGzQ92z0axXctqKeA6xpNgWE8y0K7yHTMs3rFxPU1NlV4x5Bx7OUY=
+	t=1744913561; cv=none; b=NLBNeVhsYxpvWwahpB0dRuLD22JB2jwFnom3quUZNDkdMWZVeLDDh6PIBuS23cNsL+3jhVmY1RF1a4qQu3pkw8tHL8NvOmE3hOGTRGL/xGdVXpxSg9vZ6b78Ougnu+qspzlcrf50vXvxsBDSvWYcgEXooDovkcPcWNne6g+PP3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914776; c=relaxed/simple;
-	bh=MDbk0M7TciQ7isi3HWbeSwMSOhagaxF62jdP5skGhwU=;
+	s=arc-20240116; t=1744913561; c=relaxed/simple;
+	bh=wCyjreo4ELL43dILoL7FnQdMwcn8xQ4H8iGHhG4sASk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ElC+M2+EjZ1GTNnW521INHz2Q1FhWcRWzsHcvbihzOKTIExJEJQX31qYzoksslv34SpkZcVaeT2VVZjG54dDDDBUz/MnwoDsz9eEoy7YLDyS2mMo8vXexprsU4guZPOWXO3MpBq/couKUWgrvjKoQSHjWR5OOMAzRueer88N9bM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=agT02btu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC047C4CEE4;
-	Thu, 17 Apr 2025 18:32:55 +0000 (UTC)
+	 MIME-Version; b=UzA9y3KWpXyHB16ZOfRJ0Nz7nirF7dDt+HgTnQnMITQW5ejHQ9o9Sx1+YUDdxytLzJIjRkNcviNjOIFe0GFcAH6njqfoqpARWGVyrTpxoyZowrwj91rduvy2mOtMDLuetS+Gxox7Si41uPZMAOZvtS6UogxbdJhsmrQgdnFo3EE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1NKgazY9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F3E8C4CEE4;
+	Thu, 17 Apr 2025 18:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914776;
-	bh=MDbk0M7TciQ7isi3HWbeSwMSOhagaxF62jdP5skGhwU=;
+	s=korg; t=1744913560;
+	bh=wCyjreo4ELL43dILoL7FnQdMwcn8xQ4H8iGHhG4sASk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=agT02btuWl/Q2X1kUduUQdLxvX8ITgLnyddanQEJ2VJZVt93aeuRPXLPgPJYnlCEo
-	 vFfLozDmU4pbXnN5XXfmhs8vAIGeNEFtVs/sGSemur2N3hawL+RONz/uM1C1x+shgS
-	 bPuqhhLOvYGhDGhYiU+PFrOrJnF8fGYKfHzKMxpM=
+	b=1NKgazY9/jVwrHWr16O4TpQyRoy+BaCAqwNaAA7g3iUYxlvIyUd6cKGuUuVdGIgfA
+	 mbnmRm7lkrgWjP6Klu959/K/xKm2Vl0ea6KgfR9AIu5syxhK1NJhqXu26gWSKZuSVL
+	 Q76QnHKM1pebFTGe/3My1r8VLS0FnFzq3TZ5DqOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	YH Huang <yh.huang@mediatek.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.13 309/414] arm64: dts: mediatek: mt8173: Fix disp-pwm compatible string
+	Ajit Pandey <quic_ajipan@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.14 379/449] clk: qcom: clk-branch: Fix invert halt status bit check for votable clocks
 Date: Thu, 17 Apr 2025 19:51:07 +0200
-Message-ID: <20250417175123.863651924@linuxfoundation.org>
+Message-ID: <20250417175133.511707477@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Ajit Pandey <quic_ajipan@quicinc.com>
 
-commit 46ad36002088eff8fc5cae200aa42ae9f9310ddd upstream.
+commit 5eac348182d2b5ed1066459abedb7bc6b5466f81 upstream.
 
-The MT8173 disp-pwm device should have only one compatible string, based
-on the following DT validation error:
+BRANCH_HALT_ENABLE and BRANCH_HALT_ENABLE_VOTED flags are used to check
+halt status of branch clocks, which have an inverted logic for the halt
+bit in CBCR register. However, the current logic in the _check_halt()
+method only compares the BRANCH_HALT_ENABLE flags, ignoring the votable
+branch clocks.
 
-    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pwm@1401e000: compatible: 'oneOf' conditional failed, one must be fixed:
-	    ['mediatek,mt8173-disp-pwm', 'mediatek,mt6595-disp-pwm'] is too long
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt6795-disp-pwm', 'mediatek,mt8167-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt8186-disp-pwm', 'mediatek,mt8188-disp-pwm', 'mediatek,mt8192-disp-pwm', 'mediatek,mt8195-disp-pwm', 'mediatek,mt8365-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' was expected
-	    'mediatek,mt8183-disp-pwm' was expected
-	    from schema $id: http://devicetree.org/schemas/pwm/mediatek,pwm-disp.yaml#
-    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pwm@1401f000: compatible: 'oneOf' conditional failed, one must be fixed:
-	    ['mediatek,mt8173-disp-pwm', 'mediatek,mt6595-disp-pwm'] is too long
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt6795-disp-pwm', 'mediatek,mt8167-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt8186-disp-pwm', 'mediatek,mt8188-disp-pwm', 'mediatek,mt8192-disp-pwm', 'mediatek,mt8195-disp-pwm', 'mediatek,mt8365-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' was expected
-	    'mediatek,mt8183-disp-pwm' was expected
-	    from schema $id: http://devicetree.org/schemas/pwm/mediatek,pwm-disp.yaml#
+Update the logic to correctly handle the invert logic for votable clocks
+using the BRANCH_HALT_ENABLE_VOTED flags.
 
-Drop the extra "mediatek,mt6595-disp-pwm" compatible string.
-
-Fixes: 61aee9342514 ("arm64: dts: mt8173: add MT8173 display PWM driver support node")
-Cc: YH Huang <yh.huang@mediatek.com>
-Cc: stable@vger.kernel.org # v4.5+
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250108083424.2732375-2-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 9092d1083a62 ("clk: qcom: branch: Extend the invert logic for branch2 clocks")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ajit Pandey <quic_ajipan@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20250128-push_fix-v1-1-fafec6747881@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8173.dtsi |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/clk/qcom/clk-branch.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/mediatek/mt8173.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8173.dtsi
-@@ -1255,8 +1255,7 @@
- 		};
+--- a/drivers/clk/qcom/clk-branch.c
++++ b/drivers/clk/qcom/clk-branch.c
+@@ -28,7 +28,7 @@ static bool clk_branch_in_hwcg_mode(cons
  
- 		pwm0: pwm@1401e000 {
--			compatible = "mediatek,mt8173-disp-pwm",
--				     "mediatek,mt6595-disp-pwm";
-+			compatible = "mediatek,mt8173-disp-pwm";
- 			reg = <0 0x1401e000 0 0x1000>;
- 			#pwm-cells = <2>;
- 			clocks = <&mmsys CLK_MM_DISP_PWM026M>,
-@@ -1266,8 +1265,7 @@
- 		};
+ static bool clk_branch_check_halt(const struct clk_branch *br, bool enabling)
+ {
+-	bool invert = (br->halt_check == BRANCH_HALT_ENABLE);
++	bool invert = (br->halt_check & BRANCH_HALT_ENABLE);
+ 	u32 val;
  
- 		pwm1: pwm@1401f000 {
--			compatible = "mediatek,mt8173-disp-pwm",
--				     "mediatek,mt6595-disp-pwm";
-+			compatible = "mediatek,mt8173-disp-pwm";
- 			reg = <0 0x1401f000 0 0x1000>;
- 			#pwm-cells = <2>;
- 			clocks = <&mmsys CLK_MM_DISP_PWM126M>,
+ 	regmap_read(br->clkr.regmap, br->halt_reg, &val);
+@@ -44,7 +44,7 @@ static bool clk_branch2_check_halt(const
+ {
+ 	u32 val;
+ 	u32 mask;
+-	bool invert = (br->halt_check == BRANCH_HALT_ENABLE);
++	bool invert = (br->halt_check & BRANCH_HALT_ENABLE);
+ 
+ 	mask = CBCR_NOC_FSM_STATUS;
+ 	mask |= CBCR_CLK_OFF;
 
 
 
