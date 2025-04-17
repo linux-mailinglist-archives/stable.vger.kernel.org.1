@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-133924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FBF8A9288D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3F24A92A3B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:48:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F9CF1B60074
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCA7E168063
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:48:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B293E256C7A;
-	Thu, 17 Apr 2025 18:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7D62566D1;
+	Thu, 17 Apr 2025 18:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cFIu4mjO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CfepLSJE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB6125335A;
-	Thu, 17 Apr 2025 18:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB48A19ABC6;
+	Thu, 17 Apr 2025 18:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914559; cv=none; b=QKxRKWjYzG1uet/0J01aUkLuM8Qt6z4DFxNtL7MZLKTUDkeJaPKSwh2L6PQ4SZqRgkKtnFkjUFfFqfWo3Xrna1LquZVPAk3BBL5DsS2xTmDZS08gCJrJDzPaCQUm/byO8O3fhV0pla8eaBT9ojT17EU3uLAVNY/E/aEgSZiIdMM=
+	t=1744915678; cv=none; b=eSlrUFMwyEkwl7AoeR62FFWZbvtu9NZGA3BXuCLND0U6wKHv3gkF5lW+Ku79swzbsEGtOaIummgxqJsjLlPQAA1VQrft9dLSUT1YQL198kQLsa40oulnVbp6N0/bpr22UgH49AR7pDBYPV2D5MCjyFMomQu4wXSRSGBbsXZYDFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914559; c=relaxed/simple;
-	bh=soL3h96i5u+QAo/N0CR588b7zfjB5qaBNCJ6jMFzxKg=;
+	s=arc-20240116; t=1744915678; c=relaxed/simple;
+	bh=1YBklS83ND5CBW5Cg2bYm24zhGu3gY87XHMLy12J+FE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JitxMDlaIWp/LlkpQoHMRFbGALvO8pi6+Rlf0VdtxI/OwXp+0ie0Uyh5S5uAyYXhQIVXMTk6rW/PaAXC1S4maUzBkM1arHOC/hfj3dQAoLb7lNkaAYtzNrBA0zgmiBWlurpXrsIRmtAnnVfyMO/YTtNGtrjYv0UHUnN1AMdTiJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cFIu4mjO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3EB2C4CEE4;
-	Thu, 17 Apr 2025 18:29:18 +0000 (UTC)
+	 MIME-Version; b=X1hKQWMitQ+0VtBD6Z4libN+5j5K8235nL/CRcffCtK7MAaGeUCu+D/QZJdX9LWKmc6fgNLSTfx/H7o1g/y27R08j+zIP7piZgoSFp6IS3arVSvPz1DzTMiJx5gLHPEHTjJ1RzGBq710lY0qPvBMbIH8AEol/0K0Xcau/x0XNh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfepLSJE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0206C4CEE4;
+	Thu, 17 Apr 2025 18:47:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914559;
-	bh=soL3h96i5u+QAo/N0CR588b7zfjB5qaBNCJ6jMFzxKg=;
+	s=korg; t=1744915677;
+	bh=1YBklS83ND5CBW5Cg2bYm24zhGu3gY87XHMLy12J+FE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cFIu4mjOYW+gwKZCsjtNn6lpsCY9hKVX7sG74cleUncvwfOHfEJsRzhd4uAbfhjum
-	 wXl6SdOW5dgvceKJNjJjxI9JeC0k/WDxusCbCSET3zTAKJOYpdGBCMGmVfdxC++PXD
-	 WLT61DXfO/S3i9w1W3VkltA/DTwIh3VIwu8Xt0yM=
+	b=CfepLSJEN4QxVXKBAqK8Z0QMN9jW7DmjsBi4IQS29k8MGCyBjiABS/7OVu0yRfZ7e
+	 KWk1TnoPrAM2iKl7pV2PG988OI07XCxRn8Ei+eJewBFYQE9OO89rZHAgB27DHIamhT
+	 x86p0uZNOqHmZl8MubqaXYVTo8cd7ovFNnKAHTNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.13 256/414] wifi: mac80211: fix integer overflow in hwmp_route_info_get()
+	Scott Bauer <sbauer@quicinc.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Trilok Soni <quic_tsoni@quicinc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.12 205/393] arm64: errata: Add KRYO 2XX/3XX/4XX silver cores to Spectre BHB safe list
 Date: Thu, 17 Apr 2025 19:50:14 +0200
-Message-ID: <20250417175121.716502650@linuxfoundation.org>
+Message-ID: <20250417175115.830508575@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit d00c0c4105e5ab8a6a13ed23d701cceb285761fa upstream.
+commit 0c9fc6e652cd5aed48c5f700c32b7642bea7f453 upstream.
 
-Since the new_metric and last_hop_metric variables can reach
-the MAX_METRIC(0xffffffff) value, an integer overflow may occur
-when multiplying them by 10/9. It can lead to incorrect behavior.
+Qualcomm has confirmed that, much like Cortex A53 and A55, KRYO
+2XX/3XX/4XX silver cores are unaffected by Spectre BHB. Add them to
+the safe list.
 
-Found by InfoTeCS on behalf of Linux Verification Center
-(linuxtesting.org) with SVACE.
-
-Fixes: a8d418d9ac25 ("mac80211: mesh: only switch path when new metric is at least 10% better")
+Fixes: 558c303c9734 ("arm64: Mitigate spectre style branch history side channels")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
-Link: https://patch.msgid.link/20250212082124.4078236-1-Ilia.Gavrilov@infotecs.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Cc: Scott Bauer <sbauer@quicinc.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Acked-by: Trilok Soni <quic_tsoni@quicinc.com>
+Link: https://lore.kernel.org/r/20250107120555.v4.3.Iab8dbfb5c9b1e143e7a29f410bce5f9525a0ba32@changeid
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/mesh_hwmp.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ arch/arm64/kernel/proton-pack.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/mac80211/mesh_hwmp.c
-+++ b/net/mac80211/mesh_hwmp.c
-@@ -367,6 +367,12 @@ u32 airtime_link_metric_get(struct ieee8
- 	return (u32)result;
- }
- 
-+/* Check that the first metric is at least 10% better than the second one */
-+static bool is_metric_better(u32 x, u32 y)
-+{
-+	return (x < y) && (x < (y - x / 10));
-+}
-+
- /**
-  * hwmp_route_info_get - Update routing info to originator and transmitter
-  *
-@@ -458,8 +464,8 @@ static u32 hwmp_route_info_get(struct ie
- 				    (mpath->sn == orig_sn &&
- 				     (rcu_access_pointer(mpath->next_hop) !=
- 						      sta ?
--					      mult_frac(new_metric, 10, 9) :
--					      new_metric) >= mpath->metric)) {
-+					      !is_metric_better(new_metric, mpath->metric) :
-+					      new_metric >= mpath->metric))) {
- 					process = false;
- 					fresh_info = false;
- 				}
-@@ -533,8 +539,8 @@ static u32 hwmp_route_info_get(struct ie
- 			if ((mpath->flags & MESH_PATH_FIXED) ||
- 			    ((mpath->flags & MESH_PATH_ACTIVE) &&
- 			     ((rcu_access_pointer(mpath->next_hop) != sta ?
--				       mult_frac(last_hop_metric, 10, 9) :
--				       last_hop_metric) > mpath->metric)))
-+				      !is_metric_better(last_hop_metric, mpath->metric) :
-+				       last_hop_metric > mpath->metric))))
- 				fresh_info = false;
- 		} else {
- 			mpath = mesh_path_add(sdata, ta);
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -854,6 +854,9 @@ static bool is_spectre_bhb_safe(int scop
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A510),
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A520),
+ 		MIDR_ALL_VERSIONS(MIDR_BRAHMA_B53),
++		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_2XX_SILVER),
++		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_3XX_SILVER),
++		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_SILVER),
+ 		{},
+ 	};
+ 	static bool all_safe = true;
 
 
 
