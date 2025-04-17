@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-134313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F660A92A4D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:49:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB8A0A928A5
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B97917A7E6D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:48:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B74521772A7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1796B256C7C;
-	Thu, 17 Apr 2025 18:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662C91DEFEC;
+	Thu, 17 Apr 2025 18:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SAWky6NE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bLBHLQIQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1AC12566DE;
-	Thu, 17 Apr 2025 18:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241B22F43;
+	Thu, 17 Apr 2025 18:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915749; cv=none; b=mBZ166jk46ZzfTXTkWXrX3ojJgClGiQ+j/yvb49BSE0rh/q0lY4IJmEsRmVbogp9AxEtmJwqjtLra16iVlweos3C3XL76zPc2l/+UMByk6q5WrETDvcgWLHeFQuij6gomjgcyxpq48h3iEaVFJ749OBOtquCuQ35exTzeOJV928=
+	t=1744914611; cv=none; b=l529DT/YM+eFL1CgvAAX6Lt3bEXbkypUVkvHnBBeM59JIJiCHxKl2uf5b2pNpRx8/JdMn9BxvZdcQlIdkbj8Lk+7hdNJuiQaS7fLpqqt5xXsrNXJZeSEE/B+E1yylZdaxH9r8vCN9a/yTQafJaox9On4ooLWYFqJHsw7gLS+Tfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915749; c=relaxed/simple;
-	bh=NV94YR6GPIQlQJ5X5czT11k8NXhZ9Sf7JfU7F5BvqwU=;
+	s=arc-20240116; t=1744914611; c=relaxed/simple;
+	bh=JGnlKlQKDwbuzXZdIIBTjrnP3IBECfJv7HwIFefgIAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=USDz5R6FSLcf5TFI60c7la/sN/25HzXiMRKy+8w5C9LGrQi3LZ5wPkeARGeP6i2pgIerdEOGPjl9Zu5Qyqzxx6cVpmBSItSWF91KX4J6jVlUWsi9fLjhcvuZgiakPlGJY9nXhabkzRXQ5wFbkUHGVniUGgCEyIpOHtnjlCLWoc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SAWky6NE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C8BC4CEE4;
-	Thu, 17 Apr 2025 18:49:08 +0000 (UTC)
+	 MIME-Version; b=MBnhAcJnqX5GxBruMmrm2z2nG708oGlOxsfav0KmLxd/VoT/NOPfKZCJhIUjHTtv2i//hA6fZ+9O8Socb0ji6YcJ7c4HlMtvozN1zuKr1NhFXfsCBS612VR5HGrt3eYEi3a9k5mZ8Fk2x+jo+rH7pWvCNOX3bZnVNuDkV+DImL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bLBHLQIQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD353C4CEE4;
+	Thu, 17 Apr 2025 18:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915749;
-	bh=NV94YR6GPIQlQJ5X5czT11k8NXhZ9Sf7JfU7F5BvqwU=;
+	s=korg; t=1744914611;
+	bh=JGnlKlQKDwbuzXZdIIBTjrnP3IBECfJv7HwIFefgIAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SAWky6NE498nOm7f+Ux1dWzNXwCG0ASfB1l7gmPsKqDyhI+Zbc+l/rrrz70Bm2bTp
-	 iOR5Ne0KllXV8tSMybejxlgidGat+/fB9BniBbXqXdWvL+yhqVVALTPuXO7yXlwrNd
-	 aLfwLftcE5KXdidgYP5+urlhmBL7+PGaQ/M0Gok8=
+	b=bLBHLQIQm+ujfr5U4AuJJqcpDBotca0eybW71qRzmAYQnFrTqoHfYEan+TIeFU3z8
+	 1zFRIwvYYKXB4JP61Y8F108/esM6aybSRw02uxW2rleK5kxDUDj4lAT8/8FZbjXW0L
+	 kRAcLMZFtj8qHynRbgoqd0D8dn9a8wNAoj7Qe28o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 220/393] media: i2c: ov7251: Set enable GPIO low in probe
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.13 271/414] ASoC: qdsp6: q6apm-dai: fix capture pipeline overruns.
 Date: Thu, 17 Apr 2025 19:50:29 +0200
-Message-ID: <20250417175116.437116940@linuxfoundation.org>
+Message-ID: <20250417175122.325232843@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-commit a1963698d59cec83df640ded343af08b76c8e9c5 upstream.
+commit 5d01ed9b9939b4c726be74db291a982bc984c584 upstream.
 
-Set the enable GPIO low when acquiring it.
+Period sizes less than 6k for capture path triggers overruns in the
+dsp capture pipeline.
 
-Fixes: d30bb512da3d ("media: Add a driver for the ov7251 camera sensor")
+Change the period size and number of periods to value which DSP is happy with.
+
+Fixes: 9b4fe0f1cd79 ("ASoC: qdsp6: audioreach: add q6apm-dai support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://patch.msgid.link/20250314174800.10142-6-srinivas.kandagatla@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ov7251.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/qcom/qdsp6/q6apm-dai.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/i2c/ov7251.c
-+++ b/drivers/media/i2c/ov7251.c
-@@ -1696,7 +1696,7 @@ static int ov7251_probe(struct i2c_clien
- 		return PTR_ERR(ov7251->analog_regulator);
- 	}
- 
--	ov7251->enable_gpio = devm_gpiod_get(dev, "enable", GPIOD_OUT_HIGH);
-+	ov7251->enable_gpio = devm_gpiod_get(dev, "enable", GPIOD_OUT_LOW);
- 	if (IS_ERR(ov7251->enable_gpio)) {
- 		dev_err(dev, "cannot get enable gpio\n");
- 		return PTR_ERR(ov7251->enable_gpio);
+--- a/sound/soc/qcom/qdsp6/q6apm-dai.c
++++ b/sound/soc/qcom/qdsp6/q6apm-dai.c
+@@ -24,8 +24,8 @@
+ #define PLAYBACK_MIN_PERIOD_SIZE	128
+ #define CAPTURE_MIN_NUM_PERIODS		2
+ #define CAPTURE_MAX_NUM_PERIODS		8
+-#define CAPTURE_MAX_PERIOD_SIZE		4096
+-#define CAPTURE_MIN_PERIOD_SIZE		320
++#define CAPTURE_MAX_PERIOD_SIZE		65536
++#define CAPTURE_MIN_PERIOD_SIZE		6144
+ #define BUFFER_BYTES_MAX (PLAYBACK_MAX_NUM_PERIODS * PLAYBACK_MAX_PERIOD_SIZE)
+ #define BUFFER_BYTES_MIN (PLAYBACK_MIN_NUM_PERIODS * PLAYBACK_MIN_PERIOD_SIZE)
+ #define COMPR_PLAYBACK_MAX_FRAGMENT_SIZE (128 * 1024)
 
 
 
