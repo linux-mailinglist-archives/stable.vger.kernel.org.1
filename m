@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-134394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89E4BA92B16
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:57:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7305BA9290B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:39:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 966D43B5054
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:53:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98BA444634F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFDDB257432;
-	Thu, 17 Apr 2025 18:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80927264A75;
+	Thu, 17 Apr 2025 18:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYVstaR3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mktMTV7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE3024BBFD;
-	Thu, 17 Apr 2025 18:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3749B25A654;
+	Thu, 17 Apr 2025 18:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915998; cv=none; b=FmKORuRprbRUe8Cj+kYoUacjvMhAkzdJb9I6XPflUefiWp3LT8iyjj7roPqNfFmgnL1+4gV2njeBFj28pA+yVtR+5ZoUa8aIlxbKdmBc13XDwK0IUnjvtXZ25rdF64PjrS2MuFKA2J4xPzh1WV5m2knV3lI3BzBLzOKIojvZWJk=
+	t=1744914879; cv=none; b=hgTEWZvUJoF+SkYIKovr8Z3R/3YBCYwAUpBYK1saCYL6tQHP+knOKxbgc+uw/OyKIei99GsyhQGoYtalS0wMRedWLsJmhhv9cEA48e4ustSfc8QzP77D0DH0koBvOlfMpwSELMS8zcDROsATy1Bhpci2pNWfiSU0YHC8U+b4iu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915998; c=relaxed/simple;
-	bh=dIvgEyjblBNGSuqTUS4egqqRDhI6Sni9i0Ea94PmfoA=;
+	s=arc-20240116; t=1744914879; c=relaxed/simple;
+	bh=ynz50sbnLtVD60g0VYWpDusoKzQ0mQPaAL2XkYVMsDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d+A66bPXCBTbv9gJdb2x1tL4be/v8QNuGy+IIjT7XvfUo3II+MHe70jj3QBQPJJ4Zs8cNg5KUYiK8lq1grWhruSAj6nbEwFNjkPv8/9oo17bY3XTAEGav6R8/BPfasmLE1VNQS7qo6zEXamYgy6kwnSB5VacbGSdxRG6ZfjLeMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qYVstaR3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02080C4CEE7;
-	Thu, 17 Apr 2025 18:53:17 +0000 (UTC)
+	 MIME-Version; b=HuJ1cqUD4hjv5tbAr2mtMId6UdCBm8Svv4gK4Azisyph6GG0mZ2QKk05U1WzGhW2iBV+WOfm2g1/Z912eQT2KgmixqmfsWVPItbOG1EK2enqJlTp5RX4ZmYIN/OVdoINUVTTF7MeZ3iYnq4zbh6TOcIC28Z4BCf4T17vFDmHVu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mktMTV7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4664C4CEE4;
+	Thu, 17 Apr 2025 18:34:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915998;
-	bh=dIvgEyjblBNGSuqTUS4egqqRDhI6Sni9i0Ea94PmfoA=;
+	s=korg; t=1744914879;
+	bh=ynz50sbnLtVD60g0VYWpDusoKzQ0mQPaAL2XkYVMsDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qYVstaR3cFFzmOgfxL+MRCykdbtCpnQ2YBWDAw6Z3s1vAhh2/uh0EG1l9yuXYrieM
-	 KCapwW92uHtvgloQyLYUBMNjONx57Tlgm7M5FmlpPVR4VLDiAZY6nZ8dVIFvlQI40t
-	 Ajr4mmfS3hDed7xX0WGeqiJtE/PdbUfFBoo+Hkow=
+	b=2mktMTV7Mfqzmkcz1/VvFFrGIZ/49Y8agrc5vBYPfpWBmXaPfFDgA/PnIK5SeGdvD
+	 YT4+lcrg7mLoO6B1wYC0i2BOMTEzFsTWU4/5kp8I9gao6JGxejYvvLtZdcJbThworL
+	 b1kDiAh/nPgKRwdxMF8CYXEsfIN1MSshdNM5GzJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Xu <peterx@redhat.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	Dimitris Siakavaras <jimsiak@cslab.ece.ntua.gr>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 309/393] mm/userfaultfd: fix release hang over concurrent GUP
+	Andy Chiu <andybnac@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.13 360/414] ftrace: Properly merge notrace hashes
 Date: Thu, 17 Apr 2025 19:51:58 +0200
-Message-ID: <20250417175120.042694024@linuxfoundation.org>
+Message-ID: <20250417175125.942830329@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,125 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Xu <peterx@redhat.com>
+From: Andy Chiu <andybnac@gmail.com>
 
-commit fe4cdc2c4e248f48de23bc778870fd71e772a274 upstream.
+commit 04a80a34c22f4db245f553d8696d1318d1c00ece upstream.
 
-This patch should fix a possible userfaultfd release() hang during
-concurrent GUP.
+The global notrace hash should be jointly decided by the intersection of
+each subops's notrace hash, but not the filter hash.
 
-This problem was initially reported by Dimitris Siakavaras in July 2023
-[1] in a firecracker use case.  Firecracker has a separate process
-handling page faults remotely, and when the process releases the
-userfaultfd it can race with a concurrent GUP from KVM trying to fault in
-a guest page during the secondary MMU page fault process.
-
-A similar problem was reported recently again by Jinjiang Tu in March 2025
-[2], even though the race happened this time with a mlockall() operation,
-which does GUP in a similar fashion.
-
-In 2017, commit 656710a60e36 ("userfaultfd: non-cooperative: closing the
-uffd without triggering SIGBUS") was trying to fix this issue.  AFAIU,
-that fixes well the fault paths but may not work yet for GUP.  In GUP, the
-issue is NOPAGE will be almost treated the same as "page fault resolved"
-in faultin_page(), then the GUP will follow page again, seeing page
-missing, and it'll keep going into a live lock situation as reported.
-
-This change makes core mm return RETRY instead of NOPAGE for both the GUP
-and fault paths, proactively releasing the mmap read lock.  This should
-guarantee the other release thread make progress on taking the write lock
-and avoid the live lock even for GUP.
-
-When at it, rearrange the comments to make sure it's uptodate.
-
-[1] https://lore.kernel.org/r/79375b71-db2e-3e66-346b-254c90d915e2@cslab.ece.ntua.gr
-[2] https://lore.kernel.org/r/20250307072133.3522652-1-tujinjiang@huawei.com
-
-Link: https://lkml.kernel.org/r/20250312145131.1143062-1-peterx@redhat.com
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: Dimitris Siakavaras <jimsiak@cslab.ece.ntua.gr>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250408160258.48563-1-andybnac@gmail.com
+Fixes: 5fccc7552ccb ("ftrace: Add subops logic to allow one ops to manage many")
+Signed-off-by: Andy Chiu <andybnac@gmail.com>
+[ fixed removing of freeing of filter_hash ]
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/userfaultfd.c |   51 +++++++++++++++++++++++++--------------------------
- 1 file changed, 25 insertions(+), 26 deletions(-)
+ kernel/trace/ftrace.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/userfaultfd.c
-+++ b/fs/userfaultfd.c
-@@ -396,32 +396,6 @@ vm_fault_t handle_userfault(struct vm_fa
- 		goto out;
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -3542,16 +3542,16 @@ int ftrace_startup_subops(struct ftrace_
+ 	    ftrace_hash_empty(subops->func_hash->notrace_hash)) {
+ 		notrace_hash = EMPTY_HASH;
+ 	} else {
+-		size_bits = max(ops->func_hash->filter_hash->size_bits,
+-				subops->func_hash->filter_hash->size_bits);
++		size_bits = max(ops->func_hash->notrace_hash->size_bits,
++				subops->func_hash->notrace_hash->size_bits);
+ 		notrace_hash = alloc_ftrace_hash(size_bits);
+ 		if (!notrace_hash) {
+ 			free_ftrace_hash(filter_hash);
+ 			return -ENOMEM;
+ 		}
  
- 	/*
--	 * If it's already released don't get it. This avoids to loop
--	 * in __get_user_pages if userfaultfd_release waits on the
--	 * caller of handle_userfault to release the mmap_lock.
--	 */
--	if (unlikely(READ_ONCE(ctx->released))) {
--		/*
--		 * Don't return VM_FAULT_SIGBUS in this case, so a non
--		 * cooperative manager can close the uffd after the
--		 * last UFFDIO_COPY, without risking to trigger an
--		 * involuntary SIGBUS if the process was starting the
--		 * userfaultfd while the userfaultfd was still armed
--		 * (but after the last UFFDIO_COPY). If the uffd
--		 * wasn't already closed when the userfault reached
--		 * this point, that would normally be solved by
--		 * userfaultfd_must_wait returning 'false'.
--		 *
--		 * If we were to return VM_FAULT_SIGBUS here, the non
--		 * cooperative manager would be instead forced to
--		 * always call UFFDIO_UNREGISTER before it can safely
--		 * close the uffd.
--		 */
--		ret = VM_FAULT_NOPAGE;
--		goto out;
--	}
--
--	/*
- 	 * Check that we can return VM_FAULT_RETRY.
- 	 *
- 	 * NOTE: it should become possible to return VM_FAULT_RETRY
-@@ -457,6 +431,31 @@ vm_fault_t handle_userfault(struct vm_fa
- 	if (vmf->flags & FAULT_FLAG_RETRY_NOWAIT)
- 		goto out;
- 
-+	if (unlikely(READ_ONCE(ctx->released))) {
-+		/*
-+		 * If a concurrent release is detected, do not return
-+		 * VM_FAULT_SIGBUS or VM_FAULT_NOPAGE, but instead always
-+		 * return VM_FAULT_RETRY with lock released proactively.
-+		 *
-+		 * If we were to return VM_FAULT_SIGBUS here, the non
-+		 * cooperative manager would be instead forced to
-+		 * always call UFFDIO_UNREGISTER before it can safely
-+		 * close the uffd, to avoid involuntary SIGBUS triggered.
-+		 *
-+		 * If we were to return VM_FAULT_NOPAGE, it would work for
-+		 * the fault path, in which the lock will be released
-+		 * later.  However for GUP, faultin_page() does nothing
-+		 * special on NOPAGE, so GUP would spin retrying without
-+		 * releasing the mmap read lock, causing possible livelock.
-+		 *
-+		 * Here only VM_FAULT_RETRY would make sure the mmap lock
-+		 * be released immediately, so that the thread concurrently
-+		 * releasing the userfault would always make progress.
-+		 */
-+		release_fault_lock(vmf);
-+		goto out;
-+	}
-+
- 	/* take the reference before dropping the mmap_lock */
- 	userfaultfd_ctx_get(ctx);
- 
+-		ret = intersect_hash(&notrace_hash, ops->func_hash->filter_hash,
+-				     subops->func_hash->filter_hash);
++		ret = intersect_hash(&notrace_hash, ops->func_hash->notrace_hash,
++				     subops->func_hash->notrace_hash);
+ 		if (ret < 0) {
+ 			free_ftrace_hash(filter_hash);
+ 			free_ftrace_hash(notrace_hash);
 
 
 
