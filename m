@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-133970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19DC4A928C3
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:37:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A3C4A92AD5
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A95C1B60F35
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF6F83B2A72
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 558F4256C70;
-	Thu, 17 Apr 2025 18:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B43132580F2;
+	Thu, 17 Apr 2025 18:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JOecQBOX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xUZGOcCW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1350B253B57;
-	Thu, 17 Apr 2025 18:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724222566DE;
+	Thu, 17 Apr 2025 18:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914698; cv=none; b=atlXlRh9zYdIzo/MkU8ZXqrXY36XJXaIrs1jGL0T7pWcla4/YMF6K07TI/udqvL4q+12bwh1BgNQXpqVJ8/4L6AVJM1qk+61Ww10V2G1iEySb4JEp2cstW764iM2iXqMlK5eGtKUThikDl1Hg9w4oKBYiwmE67Rl3be8hzpmy0s=
+	t=1744915822; cv=none; b=KBEZlOCjppJ0b8/ekHYeG7z7ro/XCMJq9DubDuLKdolrOfiI+pKhrvduj5VjA0ZrcxrB+GqGuBC44KeXeInrlddLRu5tvWeCzxKpA1fb44+9h1PSm+sPUOJLhzaGWqdHtgSMPYEK9QaCnpEHU2oWYYu5BtwIa6TRzGwEhMVsMHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914698; c=relaxed/simple;
-	bh=3UfAuVej/DS2aw4tOBVbrRnLTW7/ba4FYs3SeGlif54=;
+	s=arc-20240116; t=1744915822; c=relaxed/simple;
+	bh=cYRVmBayOERkik5ayiOvSWgX8wgDwfE6yD9o1VmEVfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fbKpfdxiPx9wj7i20N+CerRZDKhdPL84XLvoKlll0cOVrX/7kp3WFPVXyzpwkr3/YkmuXUzHVKmmJDo2ogej3B5PV9wFlMSyn727P7XnQtkfhGL3WBx2xG48wRBiiiOlp+QRImJmBeNLhvhv/L0x8irLoD6ns4hwO42V0uNdcV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JOecQBOX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A40C4CEE4;
-	Thu, 17 Apr 2025 18:31:37 +0000 (UTC)
+	 MIME-Version; b=eNlcYDBUR09cD9QBZ2p75iHFi4qByssRMjhI435Dd4CN/J7civJEHyBcAXgyLFue1gK8kP5/cQTv5aHpAKBrnYDvBl3IlCcq3VTP+gUQbP62lFwMoXhnH0v6XpSdYVAO6Ebqw7us58aKfN+9zwQfhk1wK+rTFsvkSk5YzahtR+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xUZGOcCW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A07C4CEE4;
+	Thu, 17 Apr 2025 18:50:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914698;
-	bh=3UfAuVej/DS2aw4tOBVbrRnLTW7/ba4FYs3SeGlif54=;
+	s=korg; t=1744915822;
+	bh=cYRVmBayOERkik5ayiOvSWgX8wgDwfE6yD9o1VmEVfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JOecQBOX/Kk8UEY6NYpVbb9mHn5/1DNid6nwRfQYvY+GZZ6XtADHFuKwhbQze6ySl
-	 8CC0J2vDAj7Y9PBRnXjma/o0RMAkdgBQYDFMLsavVADB7JaE+ZyCcGZbrdP23ecIcy
-	 Dto1LP34SDQvPxyrwevhgvEX310b8oLcozGxsJrI=
+	b=xUZGOcCWODD/CjJMNqgn/phzex5SCtuAmPNm3StC3WV7/6xiDoqnQepFGkoq8eib+
+	 oPHondezifJxjlPu+NYEwtxcelRJYEN/zqpCbRSJ3HI5lpXipa2Jg/MZoEnDkLz+FK
+	 QbnCYPk6fUcxsx1LtFzpD97Of+WiDRHETCrn+1T8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.13 301/414] mtd: inftlcore: Add error check for inftl_read_oob()
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 250/393] ASoC: q6apm: add q6apm_get_hw_pointer helper
 Date: Thu, 17 Apr 2025 19:50:59 +0200
-Message-ID: <20250417175123.535959713@linuxfoundation.org>
+Message-ID: <20250417175117.645177237@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-commit d027951dc85cb2e15924c980dc22a6754d100c7c upstream.
+commit 0badb5432fd525a00db5630c459b635e9d47f445 upstream.
 
-In INFTL_findwriteunit(), the return value of inftl_read_oob()
-need to be checked. A proper implementation can be
-found in INFTL_deleteblock(). The status will be set as
-SECTOR_IGNORE to break from the while-loop correctly
-if the inftl_read_oob() fails.
+Implement an helper function in q6apm to be able to read the current
+hardware pointer for both read and write buffers.
 
-Fixes: 8593fbc68b0d ("[MTD] Rework the out of band handling completely")
-Cc: stable@vger.kernel.org # v2.6+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+This should help q6apm-dai to get the hardware pointer consistently
+without it doing manual calculation, which could go wrong in some race
+conditions.
+
+Fixes: 9b4fe0f1cd79 ("ASoC: qdsp6: audioreach: add q6apm-dai support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://patch.msgid.link/20250314174800.10142-3-srinivas.kandagatla@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/inftlcore.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ sound/soc/qcom/qdsp6/q6apm.c |   18 +++++++++++++++++-
+ sound/soc/qcom/qdsp6/q6apm.h |    3 +++
+ 2 files changed, 20 insertions(+), 1 deletion(-)
 
---- a/drivers/mtd/inftlcore.c
-+++ b/drivers/mtd/inftlcore.c
-@@ -482,10 +482,11 @@ static inline u16 INFTL_findwriteunit(st
- 		silly = MAX_LOOPS;
+--- a/sound/soc/qcom/qdsp6/q6apm.c
++++ b/sound/soc/qcom/qdsp6/q6apm.c
+@@ -494,6 +494,19 @@ int q6apm_read(struct q6apm_graph *graph
+ }
+ EXPORT_SYMBOL_GPL(q6apm_read);
  
- 		while (thisEUN <= inftl->lastEUN) {
--			inftl_read_oob(mtd, (thisEUN * inftl->EraseSize) +
--				       blockofs, 8, &retlen, (char *)&bci);
++int q6apm_get_hw_pointer(struct q6apm_graph *graph, int dir)
++{
++	struct audioreach_graph_data *data;
++
++	if (dir == SNDRV_PCM_STREAM_PLAYBACK)
++		data = &graph->rx_data;
++	else
++		data = &graph->tx_data;
++
++	return (int)atomic_read(&data->hw_ptr);
++}
++EXPORT_SYMBOL_GPL(q6apm_get_hw_pointer);
++
+ static int graph_callback(struct gpr_resp_pkt *data, void *priv, int op)
+ {
+ 	struct data_cmd_rsp_rd_sh_mem_ep_data_buffer_done_v2 *rd_done;
+@@ -520,7 +533,8 @@ static int graph_callback(struct gpr_res
+ 		done = data->payload;
+ 		phys = graph->rx_data.buf[token].phys;
+ 		mutex_unlock(&graph->lock);
 -
--			status = bci.Status | bci.Status1;
-+			if (inftl_read_oob(mtd, (thisEUN * inftl->EraseSize) +
-+				       blockofs, 8, &retlen, (char *)&bci) < 0)
-+				status = SECTOR_IGNORE;
-+			else
-+				status = bci.Status | bci.Status1;
- 			pr_debug("INFTL: status of block %d in EUN %d is %x\n",
- 					block , writeEUN, status);
++		/* token numbering starts at 0 */
++		atomic_set(&graph->rx_data.hw_ptr, token + 1);
+ 		if (lower_32_bits(phys) == done->buf_addr_lsw &&
+ 		    upper_32_bits(phys) == done->buf_addr_msw) {
+ 			graph->result.opcode = hdr->opcode;
+@@ -553,6 +567,8 @@ static int graph_callback(struct gpr_res
+ 		rd_done = data->payload;
+ 		phys = graph->tx_data.buf[hdr->token].phys;
+ 		mutex_unlock(&graph->lock);
++		/* token numbering starts at 0 */
++		atomic_set(&graph->tx_data.hw_ptr, hdr->token + 1);
  
+ 		if (upper_32_bits(phys) == rd_done->buf_addr_msw &&
+ 		    lower_32_bits(phys) == rd_done->buf_addr_lsw) {
+--- a/sound/soc/qcom/qdsp6/q6apm.h
++++ b/sound/soc/qcom/qdsp6/q6apm.h
+@@ -2,6 +2,7 @@
+ #ifndef __Q6APM_H__
+ #define __Q6APM_H__
+ #include <linux/types.h>
++#include <linux/atomic.h>
+ #include <linux/slab.h>
+ #include <linux/wait.h>
+ #include <linux/kernel.h>
+@@ -77,6 +78,7 @@ struct audioreach_graph_data {
+ 	uint32_t num_periods;
+ 	uint32_t dsp_buf;
+ 	uint32_t mem_map_handle;
++	atomic_t hw_ptr;
+ };
+ 
+ struct audioreach_graph {
+@@ -150,4 +152,5 @@ int q6apm_enable_compress_module(struct
+ int q6apm_remove_initial_silence(struct device *dev, struct q6apm_graph *graph, uint32_t samples);
+ int q6apm_remove_trailing_silence(struct device *dev, struct q6apm_graph *graph, uint32_t samples);
+ int q6apm_set_real_module_id(struct device *dev, struct q6apm_graph *graph, uint32_t codec_id);
++int q6apm_get_hw_pointer(struct q6apm_graph *graph, int dir);
+ #endif /* __APM_GRAPH_ */
 
 
 
