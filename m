@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-134239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C333EA92A40
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:48:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD67DA92649
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:12:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CBE03A1911
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:45:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 679D77B79BD
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB5FB2561D9;
-	Thu, 17 Apr 2025 18:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E67525B68D;
+	Thu, 17 Apr 2025 18:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOhrthlL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cNT0mSXx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C752517AF;
-	Thu, 17 Apr 2025 18:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79C61EB1BF;
+	Thu, 17 Apr 2025 18:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915523; cv=none; b=ZoKa9z25DFbobO/UkitGSSZ7AUJyorNfftkie8h/4lAh0Ollj19G7zgExtzkwpXAxgt1XRAXAgIKzKGHlPD3vG6BQpfv4CW7BwhVmCTVhK/hnlGcILamokhBMctpkuVfjueVbdXNvxOUdg38DPCzvlAnOk1M/Wjl+DGI4Z4rlQM=
+	t=1744913153; cv=none; b=K4cjTbMPIlUu5BLeVbdLt0NrEqPsTEXK8B3IdFPMvUK2dpJnZn3r6SD/EACU2zyqVzYaGHES2mJrZlJWV3vTGX+Yh8ywZcdbhseuONWJhhjKc4h9E7lNJ/po7QM8MTNIIyMeXauGVlugGB6GM6g/nDdS/wKvWS65tmcDXlBRnhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915523; c=relaxed/simple;
-	bh=twOievoshWQSjU+hKcY2FP5G/Pk0XLYkgj995BtraWc=;
+	s=arc-20240116; t=1744913153; c=relaxed/simple;
+	bh=QKwF1Pk2Dlf4fLE5T0oHC+1U/UcvKq4wvBScUArOE9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cMMkU1YbUT++6pETBAfqe01aDGt7SgtOzOGXW0oQ5gDnPwpJLQ91bjB1DJHvwTvX61w4u7OpxrC5Cq7CPcvmixyScJI0hEa2qx99n4oSD0v7hlL1py/ysV2O+D2xfpXJCUvIWQ0tTtbFGdgGSes5J3AbtbPmBccPmT2uibv93hY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOhrthlL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ACDAC4CEE4;
-	Thu, 17 Apr 2025 18:45:22 +0000 (UTC)
+	 MIME-Version; b=czuioE1TEqsg4wP9hS1d6srfcQh6/9qldlQx9CmFhU6oLJWDkYxpl14JfUSegmoJY+fL++Q1XcXwGcusqAP4C/H5Kdeyngz/AxVIyyBUsMwGUssWO4LfOcHlYSXSpZF7d3to9H6w21KLgjGkf4IjfflV8UMm9ZogrnxUwmO6nJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cNT0mSXx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103F0C4CEE4;
+	Thu, 17 Apr 2025 18:05:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915523;
-	bh=twOievoshWQSjU+hKcY2FP5G/Pk0XLYkgj995BtraWc=;
+	s=korg; t=1744913153;
+	bh=QKwF1Pk2Dlf4fLE5T0oHC+1U/UcvKq4wvBScUArOE9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HOhrthlLktJ7+navASfiaHE7TYR9zjWJX4GLtlYS1jXxzv1IRuvQds+KgV4lsFqbj
-	 GLUmfPQ1PXVH+WyuFrAvNgUAiqmSmJ3QQRJD6r4t/QntrIyX/gtusm5ok69sneOMxs
-	 33PZyrixkQ66HcU9qZKw5dn2JEwxCuQ9CpwNXZe4=
+	b=cNT0mSXxT5uziKo7FDalZi/mqB0mpWxMakzrrAJLigLy3i5lYJNtLLrsHS0KLT1y9
+	 +UZF/KCH3bNKKLk0ApiHBmZQi5GYUlzU+NvJSTK6SK/Ph3mb3AZDeuWyrlIXONRMT+
+	 MKDbDDOJp2l7nGzpbc/fISL0YCqyklnZj5saGRug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pedro Nishiyama <nishiyama.pedro@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 124/393] Bluetooth: Add quirk for broken READ_VOICE_SETTING
+	Hans de Goede <hdegoede@redhat.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.14 245/449] media: hi556: Fix memory leak (on error) in hi556_check_hwcfg()
 Date: Thu, 17 Apr 2025 19:48:53 +0200
-Message-ID: <20250417175112.582370136@linuxfoundation.org>
+Message-ID: <20250417175127.858103447@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Nishiyama <nishiyama.pedro@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit ff26b2dd6568392f60fa67a4e58279938025c3af ]
+commit ed554da65abd0c561e40d35272d1a61d030fe977 upstream.
 
-Some fake controllers cannot be initialized because they return a smaller
-report than expected for READ_VOICE_SETTING.
+Commit 7d968b5badfc ("media: hi556: Return -EPROBE_DEFER if no endpoint is
+found") moved the v4l2_fwnode_endpoint_alloc_parse() call in
+hi556_check_hwcfg() up, but it did not make the error-exit paths between
+the old and new call-site use "goto check_hwcfg_error;" to free the bus_cfg
+on errors.
 
-Signed-off-by: Pedro Nishiyama <nishiyama.pedro@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add the missing "goto check_hwcfg_error;" statements to fix a memleak on
+early error-exits from hi556_check_hwcfg().
+
+Fixes: 7d968b5badfc ("media: hi556: Return -EPROBE_DEFER if no endpoint is found")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/bluetooth/hci.h      | 8 ++++++++
- include/net/bluetooth/hci_core.h | 4 ++++
- net/bluetooth/hci_sync.c         | 3 +++
- 3 files changed, 15 insertions(+)
+ drivers/media/i2c/hi556.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-index dd10e02bfc746..fa6f92915968f 100644
---- a/include/net/bluetooth/hci.h
-+++ b/include/net/bluetooth/hci.h
-@@ -353,6 +353,14 @@ enum {
- 	 * during the hdev->setup vendor callback.
- 	 */
- 	HCI_QUIRK_FIXUP_LE_EXT_ADV_REPORT_PHY,
-+
-+	/* When this quirk is set, the HCI_OP_READ_VOICE_SETTING command is
-+	 * skipped. This is required for a subset of the CSR controller clones
-+	 * which erroneously claim to support it.
-+	 *
-+	 * This quirk must be set before hci_register_dev is called.
-+	 */
-+	HCI_QUIRK_BROKEN_READ_VOICE_SETTING,
- };
+--- a/drivers/media/i2c/hi556.c
++++ b/drivers/media/i2c/hi556.c
+@@ -1230,12 +1230,13 @@ static int hi556_check_hwcfg(struct devi
+ 	ret = fwnode_property_read_u32(fwnode, "clock-frequency", &mclk);
+ 	if (ret) {
+ 		dev_err(dev, "can't get clock frequency");
+-		return ret;
++		goto check_hwcfg_error;
+ 	}
  
- /* HCI device flags */
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index c95f7e6ba2551..4245910ffc4a2 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -1921,6 +1921,10 @@ void hci_conn_del_sysfs(struct hci_conn *conn);
- 	((dev)->commands[20] & 0x10 && \
- 	 !test_bit(HCI_QUIRK_BROKEN_READ_ENC_KEY_SIZE, &hdev->quirks))
+ 	if (mclk != HI556_MCLK) {
+ 		dev_err(dev, "external clock %d is not supported", mclk);
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto check_hwcfg_error;
+ 	}
  
-+#define read_voice_setting_capable(dev) \
-+	((dev)->commands[9] & 0x04 && \
-+	 !test_bit(HCI_QUIRK_BROKEN_READ_VOICE_SETTING, &(dev)->quirks))
-+
- /* Use enhanced synchronous connection if command is supported and its quirk
-  * has not been set.
-  */
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 7b2b04d6b8563..bb455e96a715a 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -3720,6 +3720,9 @@ static int hci_read_local_name_sync(struct hci_dev *hdev)
- /* Read Voice Setting */
- static int hci_read_voice_setting_sync(struct hci_dev *hdev)
- {
-+	if (!read_voice_setting_capable(hdev))
-+		return 0;
-+
- 	return __hci_cmd_sync_status(hdev, HCI_OP_READ_VOICE_SETTING,
- 				     0, NULL, HCI_CMD_TIMEOUT);
- }
--- 
-2.39.5
-
+ 	if (bus_cfg.bus.mipi_csi2.num_data_lanes != 2) {
 
 
 
