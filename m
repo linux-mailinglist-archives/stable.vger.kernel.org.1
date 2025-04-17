@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-133918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EDDAA92888
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FAA9A92A7B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:51:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CB0019E1832
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDF4E8A19BF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8189D2571DE;
-	Thu, 17 Apr 2025 18:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4CF82561D9;
+	Thu, 17 Apr 2025 18:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asfQ4PZZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rO9vok3t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9A02522AC;
-	Thu, 17 Apr 2025 18:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9110D185920;
+	Thu, 17 Apr 2025 18:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914541; cv=none; b=Jj6FSd3gvTYmTRFRoB7Q4LkF7W9C5QKHI7urEzIukQBlJ7OH3L2fTiZf2Wa+2CmGNrplCGmNy3vVayLfLJ6iXFL64h57mLgEfxjd4yLhKCQTl9bXab5rkdeSVIXC8LRd7Ao4nMKXpdry7jS0KnBhucYvWTtuEfxuoUIxIuGHXFU=
+	t=1744915730; cv=none; b=nSBSkW9qKs3Zry/v8WR5rQ9cEf8p80ga6ES2U0MV5FPnxm9ikQ6Av3dNMkol5rUDzOghIW9rvq6qCVgvln6IOIvNpKMmf7gtQAlmoJtQcd/CEqdW1yrNLR1CL0PiaTEKDuXimVS4cY57DrF7xTF64PyVZ5GdscJY9irav1hv7MU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914541; c=relaxed/simple;
-	bh=oIE+TXZLokVQAnnhNeHk/juBtQQhV+AutG3oogbINWQ=;
+	s=arc-20240116; t=1744915730; c=relaxed/simple;
+	bh=WFE1kXPsJ4RPeLgytRt6DMo5KWTXoxboWdM0PD3EiRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BRKx1nOdG9vcETxZiX/Dmu8fmD8h2MHU5yzQUzm4jucGz132eBtbHD6pU0zCHCUtHenWgjod5PftCjXdzfEtPJJBm6eRDK22GTz1wZF6nIYLxPacEc1mN0JG9B+FzbHtcq2BMObc1CwJ/C3DcuUncEk2Js0AKn2r/9f01+CbkMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=asfQ4PZZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD797C4CEE4;
-	Thu, 17 Apr 2025 18:29:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IuieMLrWSGIqv51MVUckQQJh6QmvM+mT1e3QKsT0BLSy12XOD2rv84KRodHVouwFBNGCv+DxKEEK7VtylO3BdwWEi8ZGT1NdP39YR2NbXzyaUrtv7FLbzd4pFD6SScX3t8nlGXWf3UHQICSYZzH7dkJ0ugy11hufaO9YHzlX7lY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rO9vok3t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C62C4CEE7;
+	Thu, 17 Apr 2025 18:48:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914541;
-	bh=oIE+TXZLokVQAnnhNeHk/juBtQQhV+AutG3oogbINWQ=;
+	s=korg; t=1744915730;
+	bh=WFE1kXPsJ4RPeLgytRt6DMo5KWTXoxboWdM0PD3EiRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=asfQ4PZZblCw37WtpX7Eo4ZD4kRSnZKL94gybYpDS9YLWPf+k/umwuXrowRgMPVtw
-	 59zf3Z56D50c1Fg/VSq72Z10ekGm1TT+th03y2JOQ1k3BaDOt4fGpUx2rlEe7T2BHx
-	 Xl7N3dVeQUZ+v+FgWSz5HpL1ZZT1A12nfV8xwV/g=
+	b=rO9vok3tl0WjECehO7u+KigCz2luUPw96dCb9bpS9l68q43uAQnYGNcJU2c0COYk6
+	 C5s0nXXRMtIk/UCwXvXYcJB9JIXfRJO+VATS2VeKfL76aH95c7uzJ1G6L9MGeMuCA5
+	 qjrbGbsVXswgzzaHGWQq+WwdgTxIZRymJavBqqeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jackson.lee" <jackson.lee@chipsnmedia.com>,
-	Nas Chung <nas.chung@chipsnmedia.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.13 242/414] media: chips-media: wave5: Avoid race condition in the interrupt handler
+Subject: [PATCH 6.12 191/393] media: uapi: rkisp1-config: Fix typo in extensible params example
 Date: Thu, 17 Apr 2025 19:50:00 +0200
-Message-ID: <20250417175121.159904952@linuxfoundation.org>
+Message-ID: <20250417175115.268900189@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jackson.lee <jackson.lee@chipsnmedia.com>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-commit ac35f768986610480a1c01323d9cf9f5eaf3ee9b upstream.
+commit 7b0ee2de7c76e5518e2235a927fd211bc785d320 upstream.
 
-In case of multiple active instances, new interrupts can occur as soon
-as the current interrupt is cleared. If the driver reads the
-instance_info after clearing the interrupt, then there is no guarantee,
-that the instance_info is still valid for the current interrupt.
+The define used for the version in the example diagram does not match what
+is defined in enum rksip1_ext_param_buffer_version, nor the description
+above it. Correct the typo to make it clear which define to use.
 
-Read the instance_info register for each interrupt before clearing the
-interrupt.
-
-Fixes: ed7276ed2fd0 ("media: chips-media: wave5: Add hrtimer based polling support")
+Fixes: e9d05e9d5db1 ("media: uapi: rkisp1-config: Add extensible params format")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jackson.lee <jackson.lee@chipsnmedia.com>
-Signed-off-by: Nas Chung <nas.chung@chipsnmedia.com>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/chips-media/wave5/wave5-vpu.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/uapi/linux/rkisp1-config.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/chips-media/wave5/wave5-vpu.c
-+++ b/drivers/media/platform/chips-media/wave5/wave5-vpu.c
-@@ -55,12 +55,12 @@ static void wave5_vpu_handle_irq(void *d
- 	struct vpu_device *dev = dev_id;
- 
- 	irq_reason = wave5_vdi_read_register(dev, W5_VPU_VINT_REASON);
-+	seq_done = wave5_vdi_read_register(dev, W5_RET_SEQ_DONE_INSTANCE_INFO);
-+	cmd_done = wave5_vdi_read_register(dev, W5_RET_QUEUE_CMD_DONE_INST);
- 	wave5_vdi_write_register(dev, W5_VPU_VINT_REASON_CLR, irq_reason);
- 	wave5_vdi_write_register(dev, W5_VPU_VINT_CLEAR, 0x1);
- 
- 	list_for_each_entry(inst, &dev->instances, list) {
--		seq_done = wave5_vdi_read_register(dev, W5_RET_SEQ_DONE_INSTANCE_INFO);
--		cmd_done = wave5_vdi_read_register(dev, W5_RET_QUEUE_CMD_DONE_INST);
- 
- 		if (irq_reason & BIT(INT_WAVE5_INIT_SEQ) ||
- 		    irq_reason & BIT(INT_WAVE5_ENC_SET_PARAM)) {
+diff --git a/include/uapi/linux/rkisp1-config.h b/include/uapi/linux/rkisp1-config.h
+index 430daceafac7..2d995f3c1ca3 100644
+--- a/include/uapi/linux/rkisp1-config.h
++++ b/include/uapi/linux/rkisp1-config.h
+@@ -1528,7 +1528,7 @@ enum rksip1_ext_param_buffer_version {
+  * The expected memory layout of the parameters buffer is::
+  *
+  *	+-------------------- struct rkisp1_ext_params_cfg -------------------+
+- *	| version = RKISP_EXT_PARAMS_BUFFER_V1;                               |
++ *	| version = RKISP1_EXT_PARAM_BUFFER_V1;                               |
+  *	| data_size = sizeof(struct rkisp1_ext_params_bls_config)             |
+  *	|           + sizeof(struct rkisp1_ext_params_dpcc_config);           |
+  *	| +------------------------- data  ---------------------------------+ |
+-- 
+2.49.0
+
 
 
 
