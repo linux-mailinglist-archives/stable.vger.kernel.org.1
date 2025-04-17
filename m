@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-134380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35122A92ABF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:54:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 159E1A926DF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:17:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A7751B64B23
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2691F7AA101
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:13:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97F919ABC6;
-	Thu, 17 Apr 2025 18:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C611A3178;
+	Thu, 17 Apr 2025 18:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wMdpGSgF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4vn3OMk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A303594D;
-	Thu, 17 Apr 2025 18:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B921E832C;
+	Thu, 17 Apr 2025 18:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915952; cv=none; b=GBf7iOARSmjWgdIN4zkfPe/W7FET/0/VyPEvgt/IyRP0aFolMU7NnuLhiOwswC+XyOeAhRGr/mVHMQAIdykEWOYpFPEHocR0LiIFrZGxUcOJvVNVNwWYeOT6cuwsMeRbGY3OjGSKALF0kuZHXD3erTnB7yqRnHm0/HkOS8sH7HM=
+	t=1744913676; cv=none; b=uXo9c6U/ex7+c/CBSwR9A4GzMe/atpSGjuS2MvyqH4iT/mmbjQ+WkDyEopmDRA6tb+eDqr7tJOC+QLuY250OQgoiK8HkxTEtowsto1zhMLMrrKmBx7BuT8Ldc5hAWJA1JvK0Ojb4rR3Yn9M/T9vXkJmZQzNyXjMhvOJSwYKmL8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915952; c=relaxed/simple;
-	bh=cd1y3MPmlWO5V/NrMB1sewZP0ddiVrz7bFpxF5FkYYk=;
+	s=arc-20240116; t=1744913676; c=relaxed/simple;
+	bh=HVB8lFmKZz740Prgw296Ot9yRD09hJIoHuS5128JJrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sRn7AEnLCpvFDMkzfUexf6PVlpG0KPOIzJ6AuxtB3PwhxbCjXfRnII2irdOoFf59AvgiOdb0Bvf3ZVoht2K+wL0n11LRuoaDLPZN5GIHlSc9HrC6Xfl26o6jC2zn9nddDg/99zu5xV0GMev/Yg2rJPmD+vB0DKpLSaXaKbjYNj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wMdpGSgF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3BBEC4CEE4;
-	Thu, 17 Apr 2025 18:52:31 +0000 (UTC)
+	 MIME-Version; b=fM+MNo0NCgwh6sAry2vs4pPNA7Nw2zoCPkiDHhEMF2YDr89dYuAfsDomfTsDqSl80oQDPuQIodAldRK1kwz8NlhP1tme6QQKuIm3YX7y3M+zp5Nqpxq/PPWhjdM2+j4o1hOCKQIHnAewnll9apyjoUL44fVaJ88cOHuQQF6wjRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4vn3OMk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2073BC4CEE4;
+	Thu, 17 Apr 2025 18:14:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915952;
-	bh=cd1y3MPmlWO5V/NrMB1sewZP0ddiVrz7bFpxF5FkYYk=;
+	s=korg; t=1744913676;
+	bh=HVB8lFmKZz740Prgw296Ot9yRD09hJIoHuS5128JJrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wMdpGSgFm+DdRGBHXSTS84JbkP91I50AaSQXH/NQ+9FmRcLJcL4wU8ter3WDIUblk
-	 CXKj9cwpsjOyABj8kMhNLYOm5i35wbbtlusPg7oSvcjprCkqTkd/m8FI7e6eeBCJNO
-	 FN1f1pB5Rabq+c7NBM9E7FVnwwiT67PeRjdguQyU=
+	b=f4vn3OMkSXMO0/96Ve0E4Yb+G9X7BN6IlKIhrgsJPX6/hF7nJ8qTy2EmhpYkLY3EY
+	 RGeBlVdAwSSYqzGz4qEkg+OtYqjEH2vHzPmoyrT8g0m/MF7TXi2nNlLTJnC8KxRd2U
+	 JnWXnP8B8Zu6tueSyIfqwSShyyuoWQllQ6eMI2fA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 6.12 295/393] iommu/tegra241-cmdqv: Fix warnings due to dmam_free_coherent()
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Shradha Gupta <shradhagupta@linux.microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.14 416/449] net: mana: Switch to page pool for jumbo frames
 Date: Thu, 17 Apr 2025 19:51:44 +0200
-Message-ID: <20250417175119.478616856@linuxfoundation.org>
+Message-ID: <20250417175135.033389321@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,148 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-commit 767e22001dfce64cc03b7def1562338591ab6031 upstream.
+commit fa37a8849634db2dd3545116873da8cf4b1e67c6 upstream.
 
-Two WARNINGs are observed when SMMU driver rolls back upon failure:
- arm-smmu-v3.9.auto: Failed to register iommu
- arm-smmu-v3.9.auto: probe with driver arm-smmu-v3 failed with error -22
- ------------[ cut here ]------------
- WARNING: CPU: 5 PID: 1 at kernel/dma/mapping.c:74 dmam_free_coherent+0xc0/0xd8
- Call trace:
-  dmam_free_coherent+0xc0/0xd8 (P)
-  tegra241_vintf_free_lvcmdq+0x74/0x188
-  tegra241_cmdqv_remove_vintf+0x60/0x148
-  tegra241_cmdqv_remove+0x48/0xc8
-  arm_smmu_impl_remove+0x28/0x60
-  devm_action_release+0x1c/0x40
- ------------[ cut here ]------------
- 128 pages are still in use!
- WARNING: CPU: 16 PID: 1 at mm/page_alloc.c:6902 free_contig_range+0x18c/0x1c8
- Call trace:
-  free_contig_range+0x18c/0x1c8 (P)
-  cma_release+0x154/0x2f0
-  dma_free_contiguous+0x38/0xa0
-  dma_direct_free+0x10c/0x248
-  dma_free_attrs+0x100/0x290
-  dmam_free_coherent+0x78/0xd8
-  tegra241_vintf_free_lvcmdq+0x74/0x160
-  tegra241_cmdqv_remove+0x98/0x198
-  arm_smmu_impl_remove+0x28/0x60
-  devm_action_release+0x1c/0x40
+Frag allocators, such as netdev_alloc_frag(), were not designed to
+work for fragsz > PAGE_SIZE.
 
-This is because the LVCMDQ queue memory are managed by devres, while that
-dmam_free_coherent() is called in the context of devm_action_release().
+So, switch to page pool for jumbo frames instead of using page frag
+allocators. This driver is using page pool for smaller MTUs already.
 
-Jason pointed out that "arm_smmu_impl_probe() has mis-ordered the devres
-callbacks if ops->device_remove() is going to be manually freeing things
-that probe allocated":
-https://lore.kernel.org/linux-iommu/20250407174408.GB1722458@nvidia.com/
-
-In fact, tegra241_cmdqv_init_structures() only allocates memory resources
-which means any failure that it generates would be similar to -ENOMEM, so
-there is no point in having that "falling back to standard SMMU" routine,
-as the standard SMMU would likely fail to allocate memory too.
-
-Remove the unwind part in tegra241_cmdqv_init_structures(), and return a
-proper error code to ask SMMU driver to call tegra241_cmdqv_remove() via
-impl_ops->device_remove(). Then, drop tegra241_vintf_free_lvcmdq() since
-devres will take care of that.
-
-Fixes: 483e0bd8883a ("iommu/tegra241-cmdqv: Do not allocate vcmdq until dma_set_mask_and_coherent")
 Cc: stable@vger.kernel.org
-Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/20250407201908.172225-1-nicolinc@nvidia.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: 80f6215b450e ("net: mana: Add support for jumbo frame")
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Long Li <longli@microsoft.com>
+Reviewed-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+Link: https://patch.msgid.link/1742920357-27263-1-git-send-email-haiyangz@microsoft.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../iommu/arm/arm-smmu-v3/tegra241-cmdqv.c    | 32 +++----------------
- 1 file changed, 5 insertions(+), 27 deletions(-)
+ drivers/net/ethernet/microsoft/mana/mana_en.c |   46 +++++---------------------
+ 1 file changed, 9 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c b/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
-index d525ab43a4ae..dd7d030d2e89 100644
---- a/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
-@@ -487,17 +487,6 @@ static int tegra241_cmdqv_hw_reset(struct arm_smmu_device *smmu)
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -652,30 +652,16 @@ int mana_pre_alloc_rxbufs(struct mana_po
+ 	mpc->rxbpre_total = 0;
  
- /* VCMDQ Resource Helpers */
- 
--static void tegra241_vcmdq_free_smmu_cmdq(struct tegra241_vcmdq *vcmdq)
--{
--	struct arm_smmu_queue *q = &vcmdq->cmdq.q;
--	size_t nents = 1 << q->llq.max_n_shift;
--	size_t qsz = nents << CMDQ_ENT_SZ_SHIFT;
+ 	for (i = 0; i < num_rxb; i++) {
+-		if (mpc->rxbpre_alloc_size > PAGE_SIZE) {
+-			va = netdev_alloc_frag(mpc->rxbpre_alloc_size);
+-			if (!va)
+-				goto error;
 -
--	if (!q->base)
--		return;
--	dmam_free_coherent(vcmdq->cmdqv->smmu.dev, qsz, q->base, q->base_dma);
--}
--
- static int tegra241_vcmdq_alloc_smmu_cmdq(struct tegra241_vcmdq *vcmdq)
- {
- 	struct arm_smmu_device *smmu = &vcmdq->cmdqv->smmu;
-@@ -560,7 +549,8 @@ static void tegra241_vintf_free_lvcmdq(struct tegra241_vintf *vintf, u16 lidx)
- 	struct tegra241_vcmdq *vcmdq = vintf->lvcmdqs[lidx];
- 	char header[64];
+-			page = virt_to_head_page(va);
+-			/* Check if the frag falls back to single page */
+-			if (compound_order(page) <
+-			    get_order(mpc->rxbpre_alloc_size)) {
+-				put_page(page);
+-				goto error;
+-			}
+-		} else {
+-			page = dev_alloc_page();
+-			if (!page)
+-				goto error;
++		page = dev_alloc_pages(get_order(mpc->rxbpre_alloc_size));
++		if (!page)
++			goto error;
  
--	tegra241_vcmdq_free_smmu_cmdq(vcmdq);
-+	/* Note that the lvcmdq queue memory space is managed by devres */
-+
- 	tegra241_vintf_deinit_lvcmdq(vintf, lidx);
+-			va = page_to_virt(page);
+-		}
++		va = page_to_virt(page);
  
- 	dev_dbg(vintf->cmdqv->dev,
-@@ -768,13 +758,13 @@ static int tegra241_cmdqv_init_structures(struct arm_smmu_device *smmu)
+ 		da = dma_map_single(dev, va + mpc->rxbpre_headroom,
+ 				    mpc->rxbpre_datasize, DMA_FROM_DEVICE);
+ 		if (dma_mapping_error(dev, da)) {
+-			put_page(virt_to_head_page(va));
++			put_page(page);
+ 			goto error;
+ 		}
  
- 	vintf = kzalloc(sizeof(*vintf), GFP_KERNEL);
- 	if (!vintf)
--		goto out_fallback;
-+		return -ENOMEM;
- 
- 	/* Init VINTF0 for in-kernel use */
- 	ret = tegra241_cmdqv_init_vintf(cmdqv, 0, vintf);
- 	if (ret) {
- 		dev_err(cmdqv->dev, "failed to init vintf0: %d\n", ret);
--		goto free_vintf;
-+		return ret;
- 	}
- 
- 	/* Preallocate logical VCMDQs to VINTF0 */
-@@ -783,24 +773,12 @@ static int tegra241_cmdqv_init_structures(struct arm_smmu_device *smmu)
- 
- 		vcmdq = tegra241_vintf_alloc_lvcmdq(vintf, lidx);
- 		if (IS_ERR(vcmdq))
--			goto free_lvcmdq;
-+			return PTR_ERR(vcmdq);
- 	}
- 
- 	/* Now, we are ready to run all the impl ops */
- 	smmu->impl_ops = &tegra241_cmdqv_impl_ops;
- 	return 0;
--
--free_lvcmdq:
--	for (lidx--; lidx >= 0; lidx--)
--		tegra241_vintf_free_lvcmdq(vintf, lidx);
--	tegra241_cmdqv_deinit_vintf(cmdqv, vintf->idx);
--free_vintf:
--	kfree(vintf);
--out_fallback:
--	dev_info(smmu->impl_dev, "Falling back to standard SMMU CMDQ\n");
--	smmu->options &= ~ARM_SMMU_OPT_TEGRA241_CMDQV;
--	tegra241_cmdqv_remove(smmu);
--	return 0;
+@@ -1660,7 +1646,7 @@ drop:
  }
  
- #ifdef CONFIG_IOMMU_DEBUGFS
--- 
-2.49.0
-
+ static void *mana_get_rxfrag(struct mana_rxq *rxq, struct device *dev,
+-			     dma_addr_t *da, bool *from_pool, bool is_napi)
++			     dma_addr_t *da, bool *from_pool)
+ {
+ 	struct page *page;
+ 	void *va;
+@@ -1671,21 +1657,6 @@ static void *mana_get_rxfrag(struct mana
+ 	if (rxq->xdp_save_va) {
+ 		va = rxq->xdp_save_va;
+ 		rxq->xdp_save_va = NULL;
+-	} else if (rxq->alloc_size > PAGE_SIZE) {
+-		if (is_napi)
+-			va = napi_alloc_frag(rxq->alloc_size);
+-		else
+-			va = netdev_alloc_frag(rxq->alloc_size);
+-
+-		if (!va)
+-			return NULL;
+-
+-		page = virt_to_head_page(va);
+-		/* Check if the frag falls back to single page */
+-		if (compound_order(page) < get_order(rxq->alloc_size)) {
+-			put_page(page);
+-			return NULL;
+-		}
+ 	} else {
+ 		page = page_pool_dev_alloc_pages(rxq->page_pool);
+ 		if (!page)
+@@ -1718,7 +1689,7 @@ static void mana_refill_rx_oob(struct de
+ 	dma_addr_t da;
+ 	void *va;
+ 
+-	va = mana_get_rxfrag(rxq, dev, &da, &from_pool, true);
++	va = mana_get_rxfrag(rxq, dev, &da, &from_pool);
+ 	if (!va)
+ 		return;
+ 
+@@ -2158,7 +2129,7 @@ static int mana_fill_rx_oob(struct mana_
+ 	if (mpc->rxbufs_pre)
+ 		va = mana_get_rxbuf_pre(rxq, &da);
+ 	else
+-		va = mana_get_rxfrag(rxq, dev, &da, &from_pool, false);
++		va = mana_get_rxfrag(rxq, dev, &da, &from_pool);
+ 
+ 	if (!va)
+ 		return -ENOMEM;
+@@ -2244,6 +2215,7 @@ static int mana_create_page_pool(struct
+ 	pprm.nid = gc->numa_node;
+ 	pprm.napi = &rxq->rx_cq.napi;
+ 	pprm.netdev = rxq->ndev;
++	pprm.order = get_order(rxq->alloc_size);
+ 
+ 	rxq->page_pool = page_pool_create(&pprm);
+ 
 
 
 
