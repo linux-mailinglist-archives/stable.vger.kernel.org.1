@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-132990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8811BA91970
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 12:33:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82D5BA91971
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 12:33:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 179A97AC5A1
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 10:31:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D5BF7A7C37
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 10:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E724822DFA9;
-	Thu, 17 Apr 2025 10:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CBE2225A37;
+	Thu, 17 Apr 2025 10:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwvB9mf9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CuoGIFZB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A72E122DF81
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 10:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03EB13D89D
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 10:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744885961; cv=none; b=rCvInBG8+b3pq4AeSvnNxuf2xMCHbZ99ueXia6RvGiDwQZen5NVZsSmkJhOLBNXB+44fRNhhSd4aEzs+4kPsSZwCEBvDU+e9e8sQhYmwWheLAtj8bLnkgda9lgN9N/jbWtlQqEYu1+ZPEZsX1EAX7+sAJlq8TlZuH8jkfCY7sIk=
+	t=1744885969; cv=none; b=X/qPVJBUi+QwsoOjn9UNHrZ2d640pbf9ug5Z9ZI2m6YAmNxyJ/DKP3SgaEGVnBjQZaYte8PjINYfU3InQMLuFho8Q3R8xyc6XCjoeDhoaYGdcNlPxYQn1ZhkYJBBbnu/w0bI3AgW3ki3e/MNQ2hpkT4iXOzsW9wE9SlJyaRLeGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744885961; c=relaxed/simple;
-	bh=RoIeIzQ+FxfFUUbuoe9rU/SaWeGhcFsNbA1WShtL0KE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Y82M99qJ6ZFx5zCMOX18KtcVZpQvriP65P71+qpjFLTdBqAzpGz1Xmu6XkAOu/1OTRsIEa8Ip8hOtba5mRgAVF3iI8qJtkkF1r91QE9d8OE5pyDtR4OAxQJp1cjlBQsSp0NceYGzEgLHnmO8Cfio/JTXp31Izn+qLayT/mZcygc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwvB9mf9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15D12C4CEE4;
-	Thu, 17 Apr 2025 10:32:40 +0000 (UTC)
+	s=arc-20240116; t=1744885969; c=relaxed/simple;
+	bh=7BK1CpxI1HQsJLlniQv5J5EMGQTqtZZRJpy+WG/Onk8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CZcHKUMoKyE+8TKqp6ojFzo4ecRE66u6HdoSW/bQUqYasA5V6tTIkXUYZHoIiA5yHrQavVPM8byVc5VcF11WpynH+Fff5DAqKQwPNt3zS5gIYnekfkb8WcUyV/vgnK3rcGXFe5ZBGOols1cdUf89NGyqLnpI6HWrjnoEFZb11pI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CuoGIFZB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC36BC4CEE4;
+	Thu, 17 Apr 2025 10:32:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744885961;
-	bh=RoIeIzQ+FxfFUUbuoe9rU/SaWeGhcFsNbA1WShtL0KE=;
+	s=korg; t=1744885969;
+	bh=7BK1CpxI1HQsJLlniQv5J5EMGQTqtZZRJpy+WG/Onk8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=QwvB9mf9tt37J9i9Ml3c2CaIOwicavAXFhpyIUMv4RZz1vun6O09vLz2f9CRs//ob
-	 EfK7bKKED5na2mBTFhtNVDf4vL0vVk9iOW8uvK9QgbuvgwLKWtz2y9qeXcGi1KAbFK
-	 LcicVUCRpUPQ2W9Y/PuZLJ2/bp7kh/Yxy33pIoUg=
-Subject: FAILED: patch "[PATCH] block: make sure ->nr_integrity_segments is cloned in" failed to apply to 5.4-stable tree
-To: ming.lei@redhat.com,axboe@kernel.dk,hch@infradead.org,hch@lst.de
+	b=CuoGIFZBi44wik1TrLbSxhtPFAJjhBO4mPfHM8Ozv8Q9/9FV/EaHiqxv68Upo7kr/
+	 IpPTqStPakjl/NU+AJSVGD7hYYKd1zJ57BP0sZ2d7ExbJBaZM+6kt3h0PYWN9CTIvO
+	 OcSQi6llTSYcBoCBcCTVijjGgfIGrMJ+nsnKpmug=
+Subject: FAILED: patch "[PATCH] mtd: Add check for devm_kcalloc()" failed to apply to 5.10-stable tree
+To: jiashengjiangcool@gmail.com,miquel.raynal@bootlin.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 17 Apr 2025 12:32:18 +0200
-Message-ID: <2025041718-sycamore-obituary-4684@gregkh>
+Date: Thu, 17 Apr 2025 12:32:46 +0200
+Message-ID: <2025041746-tummy-size-5785@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x fc0e982b8a3a169b1c654d9a1aa45bf292943ef2
+git cherry-pick -x 2aee30bb10d7bad0a60255059c9ce1b84cf0130e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041718-sycamore-obituary-4684@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041746-tummy-size-5785@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,36 +77,31 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From fc0e982b8a3a169b1c654d9a1aa45bf292943ef2 Mon Sep 17 00:00:00 2001
-From: Ming Lei <ming.lei@redhat.com>
-Date: Mon, 10 Mar 2025 19:54:53 +0800
-Subject: [PATCH] block: make sure ->nr_integrity_segments is cloned in
- blk_rq_prep_clone
+From 2aee30bb10d7bad0a60255059c9ce1b84cf0130e Mon Sep 17 00:00:00 2001
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Date: Wed, 5 Feb 2025 02:31:41 +0000
+Subject: [PATCH] mtd: Add check for devm_kcalloc()
 
-Make sure ->nr_integrity_segments is cloned in blk_rq_prep_clone(),
-otherwise requests cloned by device-mapper multipath will not have the
-proper nr_integrity_segments values set, then BUG() is hit from
-sg_alloc_table_chained().
+Add a check for devm_kcalloc() to ensure successful allocation.
 
-Fixes: b0fd271d5fba ("block: add request clone interface (v2)")
-Cc: stable@vger.kernel.org
-Cc: Christoph Hellwig <hch@infradead.org>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250310115453.2271109-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 78c08247b9d3 ("mtd: Support kmsg dumper based on pstore/blk")
+Cc: stable@vger.kernel.org # v5.10+
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index b9550a127c8e..f1030d589a1b 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -3314,6 +3314,7 @@ int blk_rq_prep_clone(struct request *rq, struct request *rq_src,
- 		rq->special_vec = rq_src->special_vec;
- 	}
- 	rq->nr_phys_segments = rq_src->nr_phys_segments;
-+	rq->nr_integrity_segments = rq_src->nr_integrity_segments;
+diff --git a/drivers/mtd/mtdpstore.c b/drivers/mtd/mtdpstore.c
+index 2d004d41cf75..9cf3872e37ae 100644
+--- a/drivers/mtd/mtdpstore.c
++++ b/drivers/mtd/mtdpstore.c
+@@ -423,6 +423,9 @@ static void mtdpstore_notify_add(struct mtd_info *mtd)
+ 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, mtd->erasesize));
+ 	cxt->badmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
  
- 	if (rq->bio && blk_crypto_rq_bio_prep(rq, rq->bio, gfp_mask) < 0)
- 		goto free_and_out;
++	if (!cxt->rmmap || !cxt->usedmap || !cxt->badmap)
++		return;
++
+ 	/* just support dmesg right now */
+ 	cxt->dev.flags = PSTORE_FLAGS_DMESG;
+ 	cxt->dev.zone.read = mtdpstore_read;
 
 
