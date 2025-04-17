@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-133173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4871DA91EA0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 15:49:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69058A91EB5
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 15:52:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A24E48A0DE8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 13:49:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 245F87B1030
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 13:51:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86BC623F420;
-	Thu, 17 Apr 2025 13:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3460524EA93;
+	Thu, 17 Apr 2025 13:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jhS/HCdg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MlnTnZhK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4544623F427
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 13:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9CD01F949
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 13:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744897760; cv=none; b=mThZS/6eNHukLBAPMdFhdGDByk/vm5DnAyGUSH7YxAqbUWJzJ9xiS8OBojWWa2u8Ak2Ewa+jSoAAQsSUaVOm1m0l+/w66mAKrNntmoUX4tpJFwcLOVo3jm2DRYdDz/akf/o39HWnClDK5IRis69ITq4MEaBwGfuRXF70s7OyI78=
+	t=1744897939; cv=none; b=CuACTsQ10VEpW2F2HRmaP5Lma8GZn6HUxq3gOBpckKozenF1lIg9W0sJjWNMOEz+OWurhXel4voa4A/PLsKLVOpW1BHnSY2H/xtCO0lDDsVSresRIbK3tI9349uuvG1Nj24dIzcC2tvzDtusMxLXiRjHsAWpfw7YbZWQC8+hJZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744897760; c=relaxed/simple;
-	bh=3Q67AKARRWpqVST08opouAlGVYEeZpCR4BChCJGoq/I=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=h/A3W5uo78HEL8ztkUfa1+MjccZy7B9vJeKnhvR6yKeQvonq2bidEN06hc0o+X/Od7jA8CavAZBot++8nELkYOzwwpRz2ELChdCWFXMnBMN1WwWW6xu4gXmHJvQAyRG4m1sM58/ZK67NsgFGFXftvgBUzdoFy8qMYtzjPPJW+sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jhS/HCdg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5420C4CEE4;
-	Thu, 17 Apr 2025 13:49:19 +0000 (UTC)
+	s=arc-20240116; t=1744897939; c=relaxed/simple;
+	bh=zNmFM6+WxpoOmnJxE2Q61obSgBeOfbNMqHKo5FecaZQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jW1fCZKgZ36wz4k+vWIrairFYgrlbjxb/FLKF6p6PXgHF0RhbLAL5UlZgZ0BWjB2FpcxEwY7cI8wTI2NhX44NMOF5LMLy9pYW5+kPH62xPt8YzxaKd1gYa22XSxCD+nnZ0LHRQMGUoUAKxMp3EG5HVl9nJ3ww78r5F+56nu94iA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MlnTnZhK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A515C4CEE4;
+	Thu, 17 Apr 2025 13:52:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744897760;
-	bh=3Q67AKARRWpqVST08opouAlGVYEeZpCR4BChCJGoq/I=;
+	s=korg; t=1744897938;
+	bh=zNmFM6+WxpoOmnJxE2Q61obSgBeOfbNMqHKo5FecaZQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=jhS/HCdgikiTjKDv9oeAJAHY6NC9uf0wUUjUeAbEJwbpR8ZT/3LpegeCC8ArjovYH
-	 wIJdWmm1fvLdNMbTNOSqnnw+OMcRKa5O898IEu9jMaZw10NeQGgsjl6q06bFmRz4gU
-	 9/kSRtXDmDJh1RGiqU9aVJBvBHE+O9agl6Zl3Z+U=
-Subject: FAILED: patch "[PATCH] thermal/drivers/mediatek/lvts: Disable low offset IRQ for" failed to apply to 6.13-stable tree
-To: nfraprado@collabora.com,angelogioacchino.delregno@collabora.com,daniel.lezcano@linaro.org
+	b=MlnTnZhKfGTooML5m5Bx2T+lmNRYBpyEwj68Oqy8vGbtm1WJeqndYW+fhMG4j6CSf
+	 ieg9Y7DaIZNwXtacOuY2PE7WXN5kt+h2tjBbRBkMfZrGKQcqBCmO8jCqcpXlQISogd
+	 bKUIPGG2tOtPXsLY8yvUrabLDgbu6O11MPGTelzE=
+Subject: FAILED: patch "[PATCH] misc: pci_endpoint_test: Fix 'irq_type' to convey the correct" failed to apply to 6.13-stable tree
+To: hayashi.kunihiko@socionext.com,cassel@kernel.org,kwilczynski@kernel.org,manivannan.sadhasivam@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 17 Apr 2025 15:49:09 +0200
-Message-ID: <2025041709-smuggling-subway-557b@gregkh>
+Date: Thu, 17 Apr 2025 15:50:51 +0200
+Message-ID: <2025041751-humble-landmine-788b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.13.y
 git checkout FETCH_HEAD
-git cherry-pick -x fa17ff8e325a657c84be1083f06e54ee7eea82e4
+git cherry-pick -x baaef0a274cfb75f9b50eab3ef93205e604f662c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041709-smuggling-subway-557b@gregkh' --subject-prefix 'PATCH 6.13.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041751-humble-landmine-788b@gregkh' --subject-prefix 'PATCH 6.13.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,105 +77,64 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From fa17ff8e325a657c84be1083f06e54ee7eea82e4 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?N=C3=ADcolas=20F=2E=20R=2E=20A=2E=20Prado?=
- <nfraprado@collabora.com>
-Date: Mon, 13 Jan 2025 10:27:14 -0300
-Subject: [PATCH] thermal/drivers/mediatek/lvts: Disable low offset IRQ for
- minimum threshold
+From baaef0a274cfb75f9b50eab3ef93205e604f662c Mon Sep 17 00:00:00 2001
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Date: Tue, 25 Feb 2025 20:02:50 +0900
+Subject: [PATCH] misc: pci_endpoint_test: Fix 'irq_type' to convey the correct
+ type
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-In order to get working interrupts, a low offset value needs to be
-configured. The minimum value for it is 20 Celsius, which is what is
-configured when there's no lower thermal trip (ie the thermal core
-passes -INT_MAX as low trip temperature). However, when the temperature
-gets that low and fluctuates around that value it causes an interrupt
-storm.
+There are two variables that indicate the interrupt type to be used
+in the next test execution, "irq_type" as global and "test->irq_type".
 
-Prevent that interrupt storm by not enabling the low offset interrupt if
-the low threshold is the minimum one.
+The global is referenced from pci_endpoint_test_get_irq() to preserve
+the current type for ioctl(PCITEST_GET_IRQTYPE).
 
+The type set in this function isn't reflected in the global "irq_type",
+so ioctl(PCITEST_GET_IRQTYPE) returns the previous type.
+
+As a result, the wrong type is displayed in old version of "pcitest"
+as follows:
+
+  - Result of running "pcitest -i 0"
+
+      SET IRQ TYPE TO LEGACY:         OKAY
+
+  - Result of running "pcitest -I"
+
+      GET IRQ TYPE:           MSI
+
+Whereas running the new version of "pcitest" in kselftest results in an
+error as follows:
+
+  #  RUN           pci_ep_basic.LEGACY_IRQ_TEST ...
+  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Expected 0 (0) == ret (1)
+  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Can't get Legacy IRQ type
+
+Fix this issue by propagating the current type to the global "irq_type".
+
+Fixes: b2ba9225e031 ("misc: pci_endpoint_test: Avoid using module parameter to determine irqtype")
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Cc: stable@vger.kernel.org
-Fixes: 77354eaef821 ("thermal/drivers/mediatek/lvts_thermal: Don't leave threshold zeroed")
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Link: https://lore.kernel.org/r/20250113-mt8192-lvts-filtered-suspend-fix-v2-3-07a25200c7c6@collabora.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20250225110252.28866-5-hayashi.kunihiko@socionext.com
 
-diff --git a/drivers/thermal/mediatek/lvts_thermal.c b/drivers/thermal/mediatek/lvts_thermal.c
-index 0aaa44b734ca..04bfbfe93a71 100644
---- a/drivers/thermal/mediatek/lvts_thermal.c
-+++ b/drivers/thermal/mediatek/lvts_thermal.c
-@@ -67,10 +67,14 @@
- #define LVTS_CALSCALE_CONF			0x300
- #define LVTS_MONINT_CONF			0x0300318C
- 
--#define LVTS_MONINT_OFFSET_SENSOR0		0xC
--#define LVTS_MONINT_OFFSET_SENSOR1		0x180
--#define LVTS_MONINT_OFFSET_SENSOR2		0x3000
--#define LVTS_MONINT_OFFSET_SENSOR3		0x3000000
-+#define LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR0		BIT(3)
-+#define LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR1		BIT(8)
-+#define LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR2		BIT(13)
-+#define LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR3		BIT(25)
-+#define LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR0		BIT(2)
-+#define LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR1		BIT(7)
-+#define LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR2		BIT(12)
-+#define LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR3		BIT(24)
- 
- #define LVTS_INT_SENSOR0			0x0009001F
- #define LVTS_INT_SENSOR1			0x001203E0
-@@ -326,11 +330,17 @@ static int lvts_get_temp(struct thermal_zone_device *tz, int *temp)
- 
- static void lvts_update_irq_mask(struct lvts_ctrl *lvts_ctrl)
- {
--	static const u32 masks[] = {
--		LVTS_MONINT_OFFSET_SENSOR0,
--		LVTS_MONINT_OFFSET_SENSOR1,
--		LVTS_MONINT_OFFSET_SENSOR2,
--		LVTS_MONINT_OFFSET_SENSOR3,
-+	static const u32 high_offset_inten_masks[] = {
-+		LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR0,
-+		LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR1,
-+		LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR2,
-+		LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR3,
-+	};
-+	static const u32 low_offset_inten_masks[] = {
-+		LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR0,
-+		LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR1,
-+		LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR2,
-+		LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR3,
- 	};
- 	u32 value = 0;
- 	int i;
-@@ -339,10 +349,22 @@ static void lvts_update_irq_mask(struct lvts_ctrl *lvts_ctrl)
- 
- 	for (i = 0; i < ARRAY_SIZE(masks); i++) {
- 		if (lvts_ctrl->sensors[i].high_thresh == lvts_ctrl->high_thresh
--		    && lvts_ctrl->sensors[i].low_thresh == lvts_ctrl->low_thresh)
--			value |= masks[i];
--		else
--			value &= ~masks[i];
-+		    && lvts_ctrl->sensors[i].low_thresh == lvts_ctrl->low_thresh) {
-+			/*
-+			 * The minimum threshold needs to be configured in the
-+			 * OFFSETL register to get working interrupts, but we
-+			 * don't actually want to generate interrupts when
-+			 * crossing it.
-+			 */
-+			if (lvts_ctrl->low_thresh == -INT_MAX) {
-+				value &= ~low_offset_inten_masks[i];
-+				value |= high_offset_inten_masks[i];
-+			} else {
-+				value |= low_offset_inten_masks[i] | high_offset_inten_masks[i];
-+			}
-+		} else {
-+			value &= ~(low_offset_inten_masks[i] | high_offset_inten_masks[i]);
-+		}
+diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
+index acf3d8dab131..896392c428de 100644
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -833,6 +833,7 @@ static int pci_endpoint_test_set_irq(struct pci_endpoint_test *test,
+ 		return ret;
  	}
  
- 	writel(value, LVTS_MONINT(lvts_ctrl->base));
++	irq_type = test->irq_type;
+ 	return 0;
+ }
+ 
 
 
