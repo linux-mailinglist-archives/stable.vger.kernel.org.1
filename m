@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-134379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CFC5A92AC3
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:54:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A622A9269A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:14:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0325A16A6F0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:53:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 711AF8A67E9
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:14:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8B6257425;
-	Thu, 17 Apr 2025 18:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5852561B3;
+	Thu, 17 Apr 2025 18:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MLgM0CHx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rIeKJYe7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6412571B2;
-	Thu, 17 Apr 2025 18:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E5D22E3E6;
+	Thu, 17 Apr 2025 18:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915949; cv=none; b=T5agpczRoWlkyAjU5KseaS8xjtrdgvaHxjrMogKgqAZLMiuXdX4efUqjPERcGEeuKyuL4cr5J2sTfitN/p9IlSmdJKKyEZusoTHCYIRc/vcHbrQbyvj9nlsY8bjL7a3ov0KVt3MkFfK/KeOQm5Jv/ufbfzDte08ur6uANDY+LGM=
+	t=1744913673; cv=none; b=c1Y2/dYYKLMQx9esvqZMEaB0rhlvK8fK/hwF3jTtF0GyAmoqUnDZ45kBOXX+ZMQSd1xoQA1Fa4y7PlwIaFk38zJSH+voF9CxrD3nZujB8ro+RVAC16ECiDespfrCvP8koU6WIFxE3xuR3Sb6e5Kwo5PxLkHrklUqDiEHinpcViQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915949; c=relaxed/simple;
-	bh=35GAu+8UNIuR8cg9hvG6I2/LK7loL2+7gph8QwVU39w=;
+	s=arc-20240116; t=1744913673; c=relaxed/simple;
+	bh=/ELY6GlMKjmJeoFJw9cl3lsC8ixyExFRCllVoZ7WfgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mVRH0cYro882lZadJauaG8f5bWMpn6+7wGDAvlXdyTDbGhNCZUo8+tpcXZFhJ/NA0CTFoxSujTjydiC3ofzR7McapJQ/rUD2uckvgASrxmg40LA+Jbe/RRZA14/k5BBS42iq37ABDzQfUBG59ILE40Y7u+ZOWOBciWVy7VZeArA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MLgM0CHx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFAABC4CEE4;
-	Thu, 17 Apr 2025 18:52:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NIlon7ZobQo1rq64otBjgdXIURkeUYup90VVqXpgnR3JynYK779MwS/AOmfqeCM9zu7Cu5VMQOYXhH4FgdfALMQ3hMirt2njJsQLzOfYIzrpN9X+XMcsho6AQInqgATiDYUxLxH0KnbCLjwwMkqhb9YgDUXnknUk4twEHKBkVBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rIeKJYe7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F6E6C4CEE4;
+	Thu, 17 Apr 2025 18:14:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915949;
-	bh=35GAu+8UNIuR8cg9hvG6I2/LK7loL2+7gph8QwVU39w=;
+	s=korg; t=1744913673;
+	bh=/ELY6GlMKjmJeoFJw9cl3lsC8ixyExFRCllVoZ7WfgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MLgM0CHxg4QMjsVDqKfi4Hfw5kkzvV2sv3xEarXuBQzoCtjFYzwYTlequG1BfV0SQ
-	 6wYDT9Q2IGwWzyMA3GqowEXYHB0FO1oeyO1tgSglzsf9NnUuAle3HfeTyQtUPHGcEi
-	 4071h7oQC32nn+RlGl8v1jTIYZUc8QaOmIl8UPew=
+	b=rIeKJYe7eczIyz3Xl1PRWHdjGZWpTilVUtT7sLpQJ5xDnz1xwDXn5IdMW6KQ4u7zQ
+	 yu9Z7uAkINMBz4suI+OP4ROFD1P7cdv8qeb1lUOilTZVKwXeoCyeLttbBJLwlzM7fi
+	 iN30597l3V2Ft4oNLS5vkCP9rtUjTsp9QWVQm6V0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.12 294/393] iommufd: Fix uninitialized rc in iommufd_access_rw()
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 6.14 415/449] misc: pci_endpoint_test: Fix irq_type to convey the correct type
 Date: Thu, 17 Apr 2025 19:51:43 +0200
-Message-ID: <20250417175119.440261520@linuxfoundation.org>
+Message-ID: <20250417175134.991515999@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +61,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-commit a05df03a88bc1088be8e9d958f208d6484691e43 upstream.
+commit baaef0a274cfb75f9b50eab3ef93205e604f662c upstream.
 
-Reported by smatch:
-drivers/iommu/iommufd/device.c:1392 iommufd_access_rw() error: uninitialized symbol 'rc'.
+There are two variables that indicate the interrupt type to be used
+in the next test execution, "irq_type" as global and "test->irq_type".
 
-Fixes: 8d40205f6093 ("iommufd: Add kAPI toward external drivers for kernel access")
-Link: https://patch.msgid.link/r/20250227200729.85030-1-nicolinc@nvidia.com
+The global is referenced from pci_endpoint_test_get_irq() to preserve
+the current type for ioctl(PCITEST_GET_IRQTYPE).
+
+The type set in this function isn't reflected in the global "irq_type",
+so ioctl(PCITEST_GET_IRQTYPE) returns the previous type.
+
+As a result, the wrong type is displayed in old version of "pcitest"
+as follows:
+
+  - Result of running "pcitest -i 0"
+
+      SET IRQ TYPE TO LEGACY:         OKAY
+
+  - Result of running "pcitest -I"
+
+      GET IRQ TYPE:           MSI
+
+Whereas running the new version of "pcitest" in kselftest results in an
+error as follows:
+
+  #  RUN           pci_ep_basic.LEGACY_IRQ_TEST ...
+  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Expected 0 (0) == ret (1)
+  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Can't get Legacy IRQ type
+
+Fix this issue by propagating the current type to the global "irq_type".
+
+Fixes: b2ba9225e031 ("misc: pci_endpoint_test: Avoid using module parameter to determine irqtype")
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202502271339.a2nWr9UA-lkp@intel.com/
-[nicolinc: can't find an original report but only in "old smatch warnings"]
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20250225110252.28866-5-hayashi.kunihiko@socionext.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/iommufd/device.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/pci_endpoint_test.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iommu/iommufd/device.c
-+++ b/drivers/iommu/iommufd/device.c
-@@ -1127,7 +1127,7 @@ int iommufd_access_rw(struct iommufd_acc
- 	struct io_pagetable *iopt;
- 	struct iopt_area *area;
- 	unsigned long last_iova;
--	int rc;
-+	int rc = -EINVAL;
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -830,6 +830,7 @@ static int pci_endpoint_test_set_irq(str
+ 		return ret;
+ 	}
  
- 	if (!length)
- 		return -EINVAL;
++	irq_type = test->irq_type;
+ 	return 0;
+ }
+ 
 
 
 
