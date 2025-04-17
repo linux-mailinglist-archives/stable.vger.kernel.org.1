@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-133658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6789AA926B4
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:15:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12E2DA926B8
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:15:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 864744A0CAE
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:15:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70AC58A648A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 025591EB1BF;
-	Thu, 17 Apr 2025 18:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7395D1DEFD4;
+	Thu, 17 Apr 2025 18:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K5gD108S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W++B/2e7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40533594D;
-	Thu, 17 Apr 2025 18:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304368462;
+	Thu, 17 Apr 2025 18:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913745; cv=none; b=G8sKq2puTkWyj3wQIU5wKnImXW1s8WTHfO0x+aPCtwN9WBLjC+F2VEQqqR+3PBCGALZZdG1CDSefVtUOCgA8hkVVdzFxe/ZhU61BfRuaeeXW7lz9Pf60zucfH4t9Ypas+5bi/O/pgX0KyoDykZcA4ZWVarOrn+liptMIy+29bU4=
+	t=1744913752; cv=none; b=GeF5OTOvBONZ9C9hpWRNwbf+OdFLwyeDmxoJ3bdsK9IfUVk6+xEi26w/lnv2f0U/Eam+EzTrJ2ubLdsQgKYiwVXaNGCHz7iJc3ScEiQLF7yqkE+981rsdRy5id+nH3R1Z3x7ueUHk4gX4x6yC6wlIYp/tNGYanjgFsyuwspIOEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913745; c=relaxed/simple;
-	bh=Vdw+RCT+ebQsO+V/jkrYizz0f080nbnPC3PrWKjG1ps=;
+	s=arc-20240116; t=1744913752; c=relaxed/simple;
+	bh=XIv0ATNcvxAR5vX2mGsZ6uAKG/WLHZSNbbkupRsy+cY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TJ8CVwcnIAtiD+L7fO6HbEImysuUvXGSsamK/qUz+Vo5lAe70mR0xD8zEUlvdmsIDNeEMneg6CZVnZv7FPglnCEgONexAFQJSLRGel+0wsg+y6TBsvbfg7Y9j905TaocIAplbjz1C9T8WmNAQxVBmvp7b4yLQqCbdfH4BZ38dr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K5gD108S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42EB5C4CEEA;
-	Thu, 17 Apr 2025 18:15:45 +0000 (UTC)
+	 MIME-Version; b=i3tYl0vvnMlv0Mml7c/CrHrFV7L0MIeBxuyQzOPMUlFW/uPnRxoaJaza+SQqhLUIXav1m8NjcfesVUrAYZQLFRJdaScTkBzDYZoUP+ocM+QQ0qP1RvI9OjU6YoqNxTKwIeWcIkx4D3TSJBuVproky9O4DK7z1zP3GUyeVLdWTXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W++B/2e7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F65C4CEE4;
+	Thu, 17 Apr 2025 18:15:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913745;
-	bh=Vdw+RCT+ebQsO+V/jkrYizz0f080nbnPC3PrWKjG1ps=;
+	s=korg; t=1744913752;
+	bh=XIv0ATNcvxAR5vX2mGsZ6uAKG/WLHZSNbbkupRsy+cY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K5gD108SitRKDV8Pyi57TGCdUBrBlMh05c5FBt769Dt4h6VWc98HBpkaG/tweQi0y
-	 XebAQTOtzEn9eB36Orl19irTYvcpwy64Va+0ZxyxOyPYreU8uoCSEWleq7R5NGBBYf
-	 0Oi6YEBuG+HYZklXLT2Qx0HC+MlhHwhScfb/9bog=
+	b=W++B/2e7LcfvKRGi5Nft0FiMxlaHmR93g7Mv/1i8w/AgaIUaNrg5yn5qtAkuaEonu
+	 Vp7o+CiYaoATli9KPAsog3VpbHjgkFDonvjgN2FJc/hddnZLJPH6uali7gtClxPFIG
+	 RRO+hE12bKlFNtaRgAU5rMw6TwXf3uGTkC2rG09s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Kevin Hao <haokexin@gmail.com>,
-	Han Xu <han.xu@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.14 440/449] spi: fsl-qspi: use devm function instead of driver remove
-Date: Thu, 17 Apr 2025 19:52:08 +0200
-Message-ID: <20250417175136.026276464@linuxfoundation.org>
+Subject: [PATCH 6.14 441/449] spi: fsl-qspi: Fix double cleanup in probe error path
+Date: Thu, 17 Apr 2025 19:52:09 +0200
+Message-ID: <20250417175136.067007134@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
 References: <20250417175117.964400335@linuxfoundation.org>
@@ -67,91 +65,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Han Xu <han.xu@nxp.com>
+From: Kevin Hao <haokexin@gmail.com>
 
-commit 40369bfe717e96e26650eeecfa5a6363563df6e4 upstream.
+commit 5d07ab2a7fa1305e429d9221716582f290b58078 upstream.
 
-Driver use devm APIs to manage clk/irq/resources and register the spi
-controller, but the legacy remove function will be called first during
-device detach and trigger kernel panic. Drop the remove function and use
-devm_add_action_or_reset() for driver cleanup to ensure the release
-sequence.
+Commit 40369bfe717e ("spi: fsl-qspi: use devm function instead of driver
+remove") introduced managed cleanup via fsl_qspi_cleanup(), but
+incorrectly retain manual cleanup in two scenarios:
 
-Trigger kernel panic on i.MX8MQ by
-echo 30bb0000.spi >/sys/bus/platform/drivers/fsl-quadspi/unbind
+- On devm_add_action_or_reset() failure, the function automatically call
+  fsl_qspi_cleanup(). However, the current code still jumps to
+  err_destroy_mutex, repeating cleanup.
+
+- After the fsl_qspi_cleanup() action is added successfully, there is no
+  need to manually perform the cleanup in the subsequent error path.
+  However, the current code still jumps to err_destroy_mutex on spi
+  controller failure, repeating cleanup.
+
+Skip redundant manual cleanup calls to fix these issues.
 
 Cc: stable@vger.kernel.org
-Fixes: 8fcb830a00f0 ("spi: spi-fsl-qspi: use devm_spi_register_controller")
-Reported-by: Kevin Hao <haokexin@gmail.com>
-Signed-off-by: Han Xu <han.xu@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250326224152.2147099-1-han.xu@nxp.com
+Fixes: 40369bfe717e ("spi: fsl-qspi: use devm function instead of driver remove")
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
+Link: https://patch.msgid.link/20250410-spi-v1-1-56e867cc19cf@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-qspi.c |   31 +++++++++++++++++--------------
- 1 file changed, 17 insertions(+), 14 deletions(-)
+ drivers/spi/spi-fsl-qspi.c |    7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
 --- a/drivers/spi/spi-fsl-qspi.c
 +++ b/drivers/spi/spi-fsl-qspi.c
-@@ -844,6 +844,19 @@ static const struct spi_controller_mem_c
- 	.per_op_freq = true,
- };
+@@ -949,17 +949,14 @@ static int fsl_qspi_probe(struct platfor
  
-+static void fsl_qspi_cleanup(void *data)
-+{
-+	struct fsl_qspi *q = data;
-+
-+	/* disable the hardware */
-+	qspi_writel(q, QUADSPI_MCR_MDIS_MASK, q->iobase + QUADSPI_MCR);
-+	qspi_writel(q, 0x0, q->iobase + QUADSPI_RSER);
-+
-+	fsl_qspi_clk_disable_unprep(q);
-+
-+	mutex_destroy(&q->lock);
-+}
-+
- static int fsl_qspi_probe(struct platform_device *pdev)
- {
- 	struct spi_controller *ctlr;
-@@ -934,6 +947,10 @@ static int fsl_qspi_probe(struct platfor
+ 	ret = devm_add_action_or_reset(dev, fsl_qspi_cleanup, q);
+ 	if (ret)
+-		goto err_destroy_mutex;
++		goto err_put_ctrl;
  
- 	ctlr->dev.of_node = np;
- 
-+	ret = devm_add_action_or_reset(dev, fsl_qspi_cleanup, q);
-+	if (ret)
-+		goto err_destroy_mutex;
-+
  	ret = devm_spi_register_controller(dev, ctlr);
  	if (ret)
- 		goto err_destroy_mutex;
-@@ -953,19 +970,6 @@ err_put_ctrl:
- 	return ret;
- }
+-		goto err_destroy_mutex;
++		goto err_put_ctrl;
  
--static void fsl_qspi_remove(struct platform_device *pdev)
--{
--	struct fsl_qspi *q = platform_get_drvdata(pdev);
--
--	/* disable the hardware */
--	qspi_writel(q, QUADSPI_MCR_MDIS_MASK, q->iobase + QUADSPI_MCR);
--	qspi_writel(q, 0x0, q->iobase + QUADSPI_RSER);
--
--	fsl_qspi_clk_disable_unprep(q);
--
--	mutex_destroy(&q->lock);
--}
--
- static int fsl_qspi_suspend(struct device *dev)
- {
  	return 0;
-@@ -1003,7 +1007,6 @@ static struct platform_driver fsl_qspi_d
- 		.pm =   &fsl_qspi_pm_ops,
- 	},
- 	.probe          = fsl_qspi_probe,
--	.remove		= fsl_qspi_remove,
- };
- module_platform_driver(fsl_qspi_driver);
+ 
+-err_destroy_mutex:
+-	mutex_destroy(&q->lock);
+-
+ err_disable_clk:
+ 	fsl_qspi_clk_disable_unprep(q);
  
 
 
