@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-134402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 016FEA92ADF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:55:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4234BA9294C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:41:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 347931B64E59
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:54:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F1EE8E1FA1
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F062A2550C8;
-	Thu, 17 Apr 2025 18:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E92C425C6F5;
+	Thu, 17 Apr 2025 18:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VROWYKkb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JmzE+wkW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC94414B092;
-	Thu, 17 Apr 2025 18:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DA5264FBB;
+	Thu, 17 Apr 2025 18:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916019; cv=none; b=BwfE+3fRC/ZNF+A8Y2EAYssZumFy0s6hDowrhKK5JHAPUgouJpgqJGAbTIdOYCi2SYYRIBN1jx0FUdZigsEeUTN2PRcQw7dc/mz0RXRJcreNdIUgxDDtPx3+5qZQMEErcL46ITQlyZfAxX1dsgUCjoAxmwXwL25AVIeZQ6IsoO8=
+	t=1744914933; cv=none; b=G0/jgMBaM0IEMrolfNSZymYlc1UhqLgVG4jhvrGBZsWXOsRj2LlAwkeAnP/sIRT6ANAMZUMvOrqrQOEDZtYx4OPrAwmoiH5hGdaqYe3s9SpECURavxOW7QPrrByFCqLlHt4cu5ofriH8Pd8nxyaSa0jwsLyc2KZtcvdh4i92ak8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916019; c=relaxed/simple;
-	bh=dC9tqqNvmV8/svh9RhU3oMjT3rsiKQcts8dBMjK55X4=;
+	s=arc-20240116; t=1744914933; c=relaxed/simple;
+	bh=I+3bJyMt4JtSHdFQasl6FQ5o4+zBP/rDMsko/7krViI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SGXcg30RW4m6NNxsrcofa3Dk5Zt4XBOuaz72b8BMx5cTZIvdFQ4hPR15jvGLR6rbepdabW9KWWLGhS1OoVi/oNzRkO0QhLWY1nh+s2XCNQdCT6ZfLo4MQ7Z5DmkdNBzsZKcSE9c7L7ywPxrHWp1uAQKbLv6zush9Zw5WFR0tes8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VROWYKkb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC4A9C4CEEC;
-	Thu, 17 Apr 2025 18:53:38 +0000 (UTC)
+	 MIME-Version; b=E7qytmf0WG7dP9+S0IKk7ooNoFgEf1dwSTKdOxUXetOpg6jRimx98k4X6XuA3tSDWM2lbgTaXSgZxdNanko7c5kMe5Gj5P1VjeS3OVquAe9ouZRBDigVWoE01nSrbA/wDMR/y/D+uPiYsMoy+gNBBpzyxpqiP0rnBvCyHKIpT8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JmzE+wkW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340A7C4CEE4;
+	Thu, 17 Apr 2025 18:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916019;
-	bh=dC9tqqNvmV8/svh9RhU3oMjT3rsiKQcts8dBMjK55X4=;
+	s=korg; t=1744914933;
+	bh=I+3bJyMt4JtSHdFQasl6FQ5o4+zBP/rDMsko/7krViI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VROWYKkbeFEqirvM67Cgw9tgPfx/hBZpyzFO4y3bQEv7VBnuOcD9WhBTulW8cNzrI
-	 zeSkRgtWhyd0qaK9NRcNSlAQACMvZMWtDxNzCPurXR5jfjewDjPVfgKj0fd510C4FU
-	 he78OQOR+DW3bfktA8B8MbHsPUU8KUdXJmh8I+H8=
+	b=JmzE+wkWHISBXSF3IudiLk/aii7sEpJLRSebO8sWuJomjmWRCv/CPVYRsOh9ekVfW
+	 ZxrGg1GsABMjmLf9vQxbpMu/uxViXoW0wnWB1ubYeGxtrydlspo3xhJnJ5lpE8E/SP
+	 u+/EBjQlCUYPcdTIoid8GitH3TEdVXqBS0Odh8uk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	YH Huang <yh.huang@mediatek.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.12 287/393] arm64: dts: mediatek: mt8173: Fix disp-pwm compatible string
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Tom Zanussi <zanussi@kernel.org>,
+	Douglas Raillard <douglas.raillard@arm.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.13 338/414] tracing: Do not add length to print format in synthetic events
 Date: Thu, 17 Apr 2025 19:51:36 +0200
-Message-ID: <20250417175119.159436038@linuxfoundation.org>
+Message-ID: <20250417175125.026138673@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 46ad36002088eff8fc5cae200aa42ae9f9310ddd upstream.
+commit e1a453a57bc76be678bd746f84e3d73f378a9511 upstream.
 
-The MT8173 disp-pwm device should have only one compatible string, based
-on the following DT validation error:
+The following causes a vsnprintf fault:
 
-    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pwm@1401e000: compatible: 'oneOf' conditional failed, one must be fixed:
-	    ['mediatek,mt8173-disp-pwm', 'mediatek,mt6595-disp-pwm'] is too long
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt6795-disp-pwm', 'mediatek,mt8167-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt8186-disp-pwm', 'mediatek,mt8188-disp-pwm', 'mediatek,mt8192-disp-pwm', 'mediatek,mt8195-disp-pwm', 'mediatek,mt8365-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' was expected
-	    'mediatek,mt8183-disp-pwm' was expected
-	    from schema $id: http://devicetree.org/schemas/pwm/mediatek,pwm-disp.yaml#
-    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pwm@1401f000: compatible: 'oneOf' conditional failed, one must be fixed:
-	    ['mediatek,mt8173-disp-pwm', 'mediatek,mt6595-disp-pwm'] is too long
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt6795-disp-pwm', 'mediatek,mt8167-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt8186-disp-pwm', 'mediatek,mt8188-disp-pwm', 'mediatek,mt8192-disp-pwm', 'mediatek,mt8195-disp-pwm', 'mediatek,mt8365-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' was expected
-	    'mediatek,mt8183-disp-pwm' was expected
-	    from schema $id: http://devicetree.org/schemas/pwm/mediatek,pwm-disp.yaml#
+  # echo 's:wake_lat char[] wakee; u64 delta;' >> /sys/kernel/tracing/dynamic_events
+  # echo 'hist:keys=pid:ts=common_timestamp.usecs if !(common_flags & 0x18)' > /sys/kernel/tracing/events/sched/sched_waking/trigger
+  # echo 'hist:keys=next_pid:delta=common_timestamp.usecs-$ts:onmatch(sched.sched_waking).trace(wake_lat,next_comm,$delta)' > /sys/kernel/tracing/events/sched/sched_switch/trigger
 
-Drop the extra "mediatek,mt6595-disp-pwm" compatible string.
+Because the synthetic event's "wakee" field is created as a dynamic string
+(even though the string copied is not). The print format to print the
+dynamic string changed from "%*s" to "%s" because another location
+(__set_synth_event_print_fmt()) exported this to user space, and user
+space did not need that. But it is still used in print_synth_event(), and
+the output looks like:
 
-Fixes: 61aee9342514 ("arm64: dts: mt8173: add MT8173 display PWM driver support node")
-Cc: YH Huang <yh.huang@mediatek.com>
-Cc: stable@vger.kernel.org # v4.5+
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250108083424.2732375-2-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+          <idle>-0       [001] d..5.   193.428167: wake_lat: wakee=(efault)sshd-sessiondelta=155
+    sshd-session-879     [001] d..5.   193.811080: wake_lat: wakee=(efault)kworker/u34:5delta=58
+          <idle>-0       [002] d..5.   193.811198: wake_lat: wakee=(efault)bashdelta=91
+            bash-880     [002] d..5.   193.811371: wake_lat: wakee=(efault)kworker/u35:2delta=21
+          <idle>-0       [001] d..5.   193.811516: wake_lat: wakee=(efault)sshd-sessiondelta=129
+    sshd-session-879     [001] d..5.   193.967576: wake_lat: wakee=(efault)kworker/u34:5delta=50
+
+The length isn't needed as the string is always nul terminated. Just print
+the string and not add the length (which was hard coded to the max string
+length anyway).
+
+Cc: stable@vger.kernel.org
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Tom Zanussi <zanussi@kernel.org>
+Cc: Douglas Raillard <douglas.raillard@arm.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Link: https://lore.kernel.org/20250407154139.69955768@gandalf.local.home
+Fixes: 4d38328eb442d ("tracing: Fix synth event printk format for str fields");
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8173.dtsi |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ kernel/trace/trace_events_synth.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/arch/arm64/boot/dts/mediatek/mt8173.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8173.dtsi
-@@ -1255,8 +1255,7 @@
- 		};
+--- a/kernel/trace/trace_events_synth.c
++++ b/kernel/trace/trace_events_synth.c
+@@ -377,7 +377,6 @@ static enum print_line_t print_synth_eve
+ 				union trace_synth_field *data = &entry->fields[n_u64];
  
- 		pwm0: pwm@1401e000 {
--			compatible = "mediatek,mt8173-disp-pwm",
--				     "mediatek,mt6595-disp-pwm";
-+			compatible = "mediatek,mt8173-disp-pwm";
- 			reg = <0 0x1401e000 0 0x1000>;
- 			#pwm-cells = <2>;
- 			clocks = <&mmsys CLK_MM_DISP_PWM026M>,
-@@ -1266,8 +1265,7 @@
- 		};
- 
- 		pwm1: pwm@1401f000 {
--			compatible = "mediatek,mt8173-disp-pwm",
--				     "mediatek,mt6595-disp-pwm";
-+			compatible = "mediatek,mt8173-disp-pwm";
- 			reg = <0 0x1401f000 0 0x1000>;
- 			#pwm-cells = <2>;
- 			clocks = <&mmsys CLK_MM_DISP_PWM126M>,
+ 				trace_seq_printf(s, print_fmt, se->fields[i]->name,
+-						 STR_VAR_LEN_MAX,
+ 						 (char *)entry + data->as_dynamic.offset,
+ 						 i == se->n_fields - 1 ? "" : " ");
+ 				n_u64++;
 
 
 
