@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-133975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A22A928F7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:39:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C609A92B01
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:56:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 260583A3B69
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 380DA3AE630
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9978C2620C2;
-	Thu, 17 Apr 2025 18:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB22025EFAE;
+	Thu, 17 Apr 2025 18:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p2JZjkXy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yzxldklP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C14256C93;
-	Thu, 17 Apr 2025 18:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D3B25EFA3;
+	Thu, 17 Apr 2025 18:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914712; cv=none; b=OeaxMV9ZUAl5Q+j0MjEwEbUqFyZzco1PDA/cdm82vT8Vrc1fiU+mzMo6aaG3rTpvIGb8BcH5t5eyAvOb/GzTPTg4x9MzBBSizU9ofxaEZx2PTeS+qHeFF5cquG8g4o7bZbHHk8NhdXh0nDIkcf2xk+v6o+J1Wzdz9utbV/RqlxE=
+	t=1744915913; cv=none; b=AlTkkHYTJvgSVYykauBJ/NZy7SX/+0l7E0EGyWD+h0j/jz0R69LZCc4jtq+W0kR/AHjRfFQDBVih0hKYwFLvYqWmHOkPHKCK7aNFJqt481Dnycf5egmeNXKlerv23QFk6J/s/uf8Nvm8N73uzTP03hbxeXaiSLHJf8Lad7J6EHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914712; c=relaxed/simple;
-	bh=u/uMPi6y+7kcfrp4REnV1AFmzF1DLiDChOPBFNmfmSs=;
+	s=arc-20240116; t=1744915913; c=relaxed/simple;
+	bh=oAZaxdpNcC7V/ZDenK4gRozi+V6Gr6KHqFqTh/VED1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ol/1DH7Ih0IBX3DjWTrh8WqP+6PgpJ1+eK0EvWxDy8YivuT+WanFEj3E0jHEsMhD/NuzBegTsmiZvrJ7G7nmUtuFzSS7+ULYoL3sUxgeoEbKZ+1jLly3tdqUL78LceqZNNDhSBqS3HWh1JRRX0SLmUUh/FmOZhXCf5+ieiNlwD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p2JZjkXy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6440AC4CEE4;
-	Thu, 17 Apr 2025 18:31:51 +0000 (UTC)
+	 MIME-Version; b=tHqezxXermJDXw98CCtZNgrMjhJuAbsk0iY09xtQ7OT8kY06xva3j5VgtQn5Z2KU9UwB7NWJu6w5mRre25MZ55MLV/suxcMrGFRCYZIjwXT7m4euYQcv4K2jQrT4tCtJin55cgTu3wESrbNKSTqlOOpk/TBmbguiGc2K7svqAo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yzxldklP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA72C4CEE4;
+	Thu, 17 Apr 2025 18:51:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914711;
-	bh=u/uMPi6y+7kcfrp4REnV1AFmzF1DLiDChOPBFNmfmSs=;
+	s=korg; t=1744915913;
+	bh=oAZaxdpNcC7V/ZDenK4gRozi+V6Gr6KHqFqTh/VED1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p2JZjkXyYPT+V3mF+x6x9uDwGXrkT2oaBR9/Ifxr52uJ5kSxCPf2lPmWmQMv3ZwM9
-	 xzB58/YnAohavhtf4uTJeUlTP/C/GQ3YGzKp1nvSzhNZBPfsxHgOl3pCqe1Gq3y0Yd
-	 tqy+WVnFczcMc97+eKf/A+JTG0junDiYe9GaurnA=
+	b=yzxldklP2JSk2W5iQ/ixqMp8bILWzURKL9UguaSBiKcZLLHJHZ2rnYYCC2/4QEZig
+	 TWIDSAUpZbLs1cK8nMyqHE6Ty2q1hIDOk9TSV1Tyr0LlDdNajpbx05f/2kGvlcX8v0
+	 PDms+72a6cKf0j3Kkp88774QaQCaLNb9qO+3IwYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhenhua Huang <quic_zhenhuah@quicinc.com>,
-	David Hildenbrand <david@redhat.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.13 305/414] arm64: mm: Correct the update of max_pfn
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 254/393] ASoC: qdsp6: q6apm-dai: fix capture pipeline overruns.
 Date: Thu, 17 Apr 2025 19:51:03 +0200
-Message-ID: <20250417175123.698570587@linuxfoundation.org>
+Message-ID: <20250417175117.803626429@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-commit 89f43e1ce6f60d4f44399059595ac47f7a90a393 upstream.
+commit 5d01ed9b9939b4c726be74db291a982bc984c584 upstream.
 
-Hotplugged memory can be smaller than the original memory. For example,
-on my target:
+Period sizes less than 6k for capture path triggers overruns in the
+dsp capture pipeline.
 
-root@genericarmv8:~# cat /sys/kernel/debug/memblock/memory
-   0: 0x0000000064005000..0x0000000064023fff    0 NOMAP
-   1: 0x0000000064400000..0x00000000647fffff    0 NOMAP
-   2: 0x0000000068000000..0x000000006fffffff    0 DRV_MNG
-   3: 0x0000000088800000..0x0000000094ffefff    0 NONE
-   4: 0x0000000094fff000..0x0000000094ffffff    0 NOMAP
-max_pfn will affect read_page_owner. Therefore, it should first compare and
-then select the larger value for max_pfn.
+Change the period size and number of periods to value which DSP is happy with.
 
-Fixes: 8fac67ca236b ("arm64: mm: update max_pfn after memory hotplug")
-Cc: <stable@vger.kernel.org> # 6.1.x
-Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20250321070019.1271859-1-quic_zhenhuah@quicinc.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: 9b4fe0f1cd79 ("ASoC: qdsp6: audioreach: add q6apm-dai support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://patch.msgid.link/20250314174800.10142-6-srinivas.kandagatla@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/mm/mmu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/qcom/qdsp6/q6apm-dai.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -1360,7 +1360,8 @@ int arch_add_memory(int nid, u64 start,
- 		__remove_pgd_mapping(swapper_pg_dir,
- 				     __phys_to_virt(start), size);
- 	else {
--		max_pfn = PFN_UP(start + size);
-+		/* Address of hotplugged memory can be smaller */
-+		max_pfn = max(max_pfn, PFN_UP(start + size));
- 		max_low_pfn = max_pfn;
- 	}
- 
+--- a/sound/soc/qcom/qdsp6/q6apm-dai.c
++++ b/sound/soc/qcom/qdsp6/q6apm-dai.c
+@@ -24,8 +24,8 @@
+ #define PLAYBACK_MIN_PERIOD_SIZE	128
+ #define CAPTURE_MIN_NUM_PERIODS		2
+ #define CAPTURE_MAX_NUM_PERIODS		8
+-#define CAPTURE_MAX_PERIOD_SIZE		4096
+-#define CAPTURE_MIN_PERIOD_SIZE		320
++#define CAPTURE_MAX_PERIOD_SIZE		65536
++#define CAPTURE_MIN_PERIOD_SIZE		6144
+ #define BUFFER_BYTES_MAX (PLAYBACK_MAX_NUM_PERIODS * PLAYBACK_MAX_PERIOD_SIZE)
+ #define BUFFER_BYTES_MIN (PLAYBACK_MIN_NUM_PERIODS * PLAYBACK_MIN_PERIOD_SIZE)
+ #define COMPR_PLAYBACK_MAX_FRAGMENT_SIZE (128 * 1024)
 
 
 
