@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-134307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FAA9A92A7B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:51:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F697A9267A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:13:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDF4E8A19BF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:48:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBEB87B5676
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4CF82561D9;
-	Thu, 17 Apr 2025 18:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33801DE3A8;
+	Thu, 17 Apr 2025 18:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rO9vok3t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sgN6yoVw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9110D185920;
-	Thu, 17 Apr 2025 18:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600CF1A3178;
+	Thu, 17 Apr 2025 18:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915730; cv=none; b=nSBSkW9qKs3Zry/v8WR5rQ9cEf8p80ga6ES2U0MV5FPnxm9ikQ6Av3dNMkol5rUDzOghIW9rvq6qCVgvln6IOIvNpKMmf7gtQAlmoJtQcd/CEqdW1yrNLR1CL0PiaTEKDuXimVS4cY57DrF7xTF64PyVZ5GdscJY9irav1hv7MU=
+	t=1744913355; cv=none; b=egdldNpek/DcjkwzQq6x5I7GXI/hjl77tVbVMhn2reL5geMl4LNa3IUhJyds+2iS811RA7bD+xDGnxShfaQlFkKxeAAArveTjpxjrQO1W7x1OZoIaYKHTBGUD/Hwb+nM01GI4iFGJLJ326fL8qpnH7CpcNXFjjJ19zUrCW597Mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915730; c=relaxed/simple;
-	bh=WFE1kXPsJ4RPeLgytRt6DMo5KWTXoxboWdM0PD3EiRM=;
+	s=arc-20240116; t=1744913355; c=relaxed/simple;
+	bh=+NlI1i5qYkHFsiD2rC5ds823KnUBPYhARA/F9qhvhpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IuieMLrWSGIqv51MVUckQQJh6QmvM+mT1e3QKsT0BLSy12XOD2rv84KRodHVouwFBNGCv+DxKEEK7VtylO3BdwWEi8ZGT1NdP39YR2NbXzyaUrtv7FLbzd4pFD6SScX3t8nlGXWf3UHQICSYZzH7dkJ0ugy11hufaO9YHzlX7lY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rO9vok3t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C62C4CEE7;
-	Thu, 17 Apr 2025 18:48:49 +0000 (UTC)
+	 MIME-Version; b=bypm3dfdhNMRnlk/Wz+LckqgDQMurrB/hkHGvA7J9DkFBohgv13Ud1Mkgnt7ovzm9oqtrJR150giaOsXmsCztX1ogsQzXCvLv1WDPCGXTswoC41KQGVQyCkO0d280kxvxIJ7LltWT/2qkt4QJV1o76YLsegahd1ME0Ox1mbJy3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sgN6yoVw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB94C4CEE4;
+	Thu, 17 Apr 2025 18:09:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915730;
-	bh=WFE1kXPsJ4RPeLgytRt6DMo5KWTXoxboWdM0PD3EiRM=;
+	s=korg; t=1744913355;
+	bh=+NlI1i5qYkHFsiD2rC5ds823KnUBPYhARA/F9qhvhpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rO9vok3tl0WjECehO7u+KigCz2luUPw96dCb9bpS9l68q43uAQnYGNcJU2c0COYk6
-	 C5s0nXXRMtIk/UCwXvXYcJB9JIXfRJO+VATS2VeKfL76aH95c7uzJ1G6L9MGeMuCA5
-	 qjrbGbsVXswgzzaHGWQq+WwdgTxIZRymJavBqqeU=
+	b=sgN6yoVwdQhuVmFzc5yzU4H87OKH3s0uaNqvVYbAmGj6PKRkA9VuVfgP5Q57NHAAF
+	 Zr3HckvrDzosyLNRhna/9TMhQ1nfRHB3T8Shag9IpNCXEgtwuMHYWjmlKSFQys1Vy7
+	 ArmY7TrkrC0wGDJ9C+SvJcljl2Hwpkpuh2eaG1E0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 191/393] media: uapi: rkisp1-config: Fix typo in extensible params example
+	Chuck Lever <chuck.lever@oracle.com>,
+	Olga Kornievskaia <okorniev@redhat.com>
+Subject: [PATCH 6.14 312/449] svcrdma: do not unregister device for listeners
 Date: Thu, 17 Apr 2025 19:50:00 +0200
-Message-ID: <20250417175115.268900189@linuxfoundation.org>
+Message-ID: <20250417175130.669264701@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +59,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-commit 7b0ee2de7c76e5518e2235a927fd211bc785d320 upstream.
+commit 750037aa0a9f28d84df3dcf319a28423d69092fd upstream.
 
-The define used for the version in the example diagram does not match what
-is defined in enum rksip1_ext_param_buffer_version, nor the description
-above it. Correct the typo to make it clear which define to use.
+On an rdma-capable machine, a start/stop/start and then on a stop of
+a knfsd server would lead kref underflow warning because svc_rdma_free
+would indiscriminately unregister the rdma device but a listening
+transport never calls the rdma_rn_register() thus leading to kref
+going down to 0 on the 1st stop of the server and on the 2nd stop
+it leads to a problem.
 
-Fixes: e9d05e9d5db1 ("media: uapi: rkisp1-config: Add extensible params format")
+Suggested-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: c4de97f7c454 ("svcrdma: Handle device removal outside of the CM event handler")
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/rkisp1-config.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sunrpc/xprtrdma/svc_rdma_transport.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/rkisp1-config.h b/include/uapi/linux/rkisp1-config.h
-index 430daceafac7..2d995f3c1ca3 100644
---- a/include/uapi/linux/rkisp1-config.h
-+++ b/include/uapi/linux/rkisp1-config.h
-@@ -1528,7 +1528,7 @@ enum rksip1_ext_param_buffer_version {
-  * The expected memory layout of the parameters buffer is::
-  *
-  *	+-------------------- struct rkisp1_ext_params_cfg -------------------+
-- *	| version = RKISP_EXT_PARAMS_BUFFER_V1;                               |
-+ *	| version = RKISP1_EXT_PARAM_BUFFER_V1;                               |
-  *	| data_size = sizeof(struct rkisp1_ext_params_bls_config)             |
-  *	|           + sizeof(struct rkisp1_ext_params_dpcc_config);           |
-  *	| +------------------------- data  ---------------------------------+ |
--- 
-2.49.0
-
+--- a/net/sunrpc/xprtrdma/svc_rdma_transport.c
++++ b/net/sunrpc/xprtrdma/svc_rdma_transport.c
+@@ -621,7 +621,8 @@ static void __svc_rdma_free(struct work_
+ 	/* Destroy the CM ID */
+ 	rdma_destroy_id(rdma->sc_cm_id);
+ 
+-	rpcrdma_rn_unregister(device, &rdma->sc_rn);
++	if (!test_bit(XPT_LISTENER, &rdma->sc_xprt.xpt_flags))
++		rpcrdma_rn_unregister(device, &rdma->sc_rn);
+ 	kfree(rdma);
+ }
+ 
 
 
 
