@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-134279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8541DA92A26
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5912FA92A08
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:46:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25362189A6BE
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:47:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7D21169308
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:45:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2FAF1EB1BF;
-	Thu, 17 Apr 2025 18:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331AB2566CF;
+	Thu, 17 Apr 2025 18:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LqIh65Nx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M7sED8tF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5564502F;
-	Thu, 17 Apr 2025 18:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4269254878;
+	Thu, 17 Apr 2025 18:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915643; cv=none; b=OCYl3VP0ImsIXYsyy90z+DzvvDuS+jFdR5o3q844Srn+SPPpeMPVNhIIUoSMX3ryZMnX5hO3Imkae0YW+LeyiXzI+euh1XNbymPGt+RmFlGMl9WOpsC5ztasGjS9pG3UsSz1vTkMv9SAHnJtN2dUiaOKaZvnTpYJ4u7Hh9YHjYs=
+	t=1744915547; cv=none; b=aUtMxD4Tet2Xs4kHFimWZRc4jsdJJyg8vt18sMdDPyccDN8grLkVzxnbNbHt/mLtVZabCd+j692e+Kvqpom/0rMQGtuu2xnaT8feGO/tqFAZ39BuWLx3/kgXKw8tCjrEMy9qo5psjiNfH0y6mXN3fi6hEgTSEwAkesPP48XX86g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915643; c=relaxed/simple;
-	bh=Pw5Ea5rXVtB3/Lpjx35RcCjFx/rCFKaeIFU+/lbNfFw=;
+	s=arc-20240116; t=1744915547; c=relaxed/simple;
+	bh=ueLWeyCsz/tEa1yTDo3D+/zlkz+OyQ+rtR2uDBhCS9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rc1i/i4rGDMiTnwEKmGawoqASFOno2yUQG/h4hjVf8JrazN4p49HWBz3WICAvXLgXM+H87qAozsiVue18kBER+GcrOVIGo4mQLen6j/ziUGjjmXwMD2Tic70kfT3qTgcJhC/Y1noGPsyZUNL+wXzrBVX/SEDe0kDTIuAYGKzxfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LqIh65Nx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1619C4CEE4;
-	Thu, 17 Apr 2025 18:47:22 +0000 (UTC)
+	 MIME-Version; b=tKB5kEXzY6HFCV1kQc2yYkWHd1fqpph4aHGESS+32MuFUCt+BI2mwWsDLGpXDfWEgb2pFG1up0FeaOlPyelUoE0Ns/Zde+bBtxPoe/lpPlwRY/LXJn57pUF0kbkfOZZp7oR5jeDWLFDNRKSQJ4SCT3LotiAPrOCXKx/nHKuyL4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7sED8tF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1545CC4CEE4;
+	Thu, 17 Apr 2025 18:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915643;
-	bh=Pw5Ea5rXVtB3/Lpjx35RcCjFx/rCFKaeIFU+/lbNfFw=;
+	s=korg; t=1744915546;
+	bh=ueLWeyCsz/tEa1yTDo3D+/zlkz+OyQ+rtR2uDBhCS9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LqIh65Nxy3pK02wLgpYm2zOVnmQLFOx6hkc/jSsc+RrM+my9MAphvXU2V6Pa2mNDX
-	 Tmc481MnhiUhJyC0FP9/FIke4Ipx33Zb3PEOO+3C6A7nUNZRst6TWoKjkgs0GeSSYM
-	 Gm0Aa5x0iXga8v9ZbwowUNjQ6prLsWwbW8ZwPtI4=
+	b=M7sED8tFV/DVEcRT6QoRVb4qZaxYSYQJNbpsLjVSw5NcFBfIr8kJ/SAy36MIh3uPS
+	 z7MkRjyrIZKaQh7aNoAAKffaZYuI/M0XuQW7eE9Mrq9I/9Z83Bk+UQzHCV5i82GQiW
+	 jDkQWkmsDJFC5Ur8K64Cs9efBM8cG2fZtW/gWoHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Leonid Arapov <arapovl839@gmail.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 153/393] drm/amdgpu: grab an additional reference on the gang fence v2
-Date: Thu, 17 Apr 2025 19:49:22 +0200
-Message-ID: <20250417175113.741617806@linuxfoundation.org>
+Subject: [PATCH 6.12 154/393] fbdev: omapfb: Add plane value check
+Date: Thu, 17 Apr 2025 19:49:23 +0200
+Message-ID: <20250417175113.781044605@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
 References: <20250417175107.546547190@linuxfoundation.org>
@@ -61,62 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Leonid Arapov <arapovl839@gmail.com>
 
-[ Upstream commit 0d9a95099dcb05b5f4719c830d15bf4fdcad0dc2 ]
+[ Upstream commit 3e411827f31db7f938a30a3c7a7599839401ec30 ]
 
-We keep the gang submission fence around in adev, make sure that it
-stays alive.
+Function dispc_ovl_setup is not intended to work with the value OMAP_DSS_WB
+of the enum parameter plane.
 
-v2: fix memory leak on retry
+The value of this parameter is initialized in dss_init_overlays and in the
+current state of the code it cannot take this value so it's not a real
+problem.
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Acked-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+For the purposes of defensive coding it wouldn't be superfluous to check
+the parameter value, because some functions down the call stack process
+this value correctly and some not.
+
+For example, in dispc_ovl_setup_global_alpha it may lead to buffer
+overflow.
+
+Add check for this value.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE static
+analysis tool.
+
+Signed-off-by: Leonid Arapov <arapovl839@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/omap2/omapfb/dss/dispc.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 96845541b2d25..31d4df9688981 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -6575,18 +6575,26 @@ struct dma_fence *amdgpu_device_switch_gang(struct amdgpu_device *adev,
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+index 5832485ab998c..c29b6236952b3 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+@@ -2749,9 +2749,13 @@ int dispc_ovl_setup(enum omap_plane plane, const struct omap_overlay_info *oi,
+ 		bool mem_to_mem)
  {
- 	struct dma_fence *old = NULL;
+ 	int r;
+-	enum omap_overlay_caps caps = dss_feat_get_overlay_caps(plane);
++	enum omap_overlay_caps caps;
+ 	enum omap_channel channel;
  
-+	dma_fence_get(gang);
- 	do {
- 		dma_fence_put(old);
- 		old = amdgpu_device_get_gang(adev);
- 		if (old == gang)
- 			break;
++	if (plane == OMAP_DSS_WB)
++		return -EINVAL;
++
++	caps = dss_feat_get_overlay_caps(plane);
+ 	channel = dispc_ovl_get_channel_out(plane);
  
--		if (!dma_fence_is_signaled(old))
-+		if (!dma_fence_is_signaled(old)) {
-+			dma_fence_put(gang);
- 			return old;
-+		}
- 
- 	} while (cmpxchg((struct dma_fence __force **)&adev->gang_submit,
- 			 old, gang) != old);
- 
-+	/*
-+	 * Drop it once for the exchanged reference in adev and once for the
-+	 * thread local reference acquired in amdgpu_device_get_gang().
-+	 */
-+	dma_fence_put(old);
- 	dma_fence_put(old);
- 	return NULL;
- }
+ 	DSSDBG("dispc_ovl_setup %d, pa %pad, pa_uv %pad, sw %d, %d,%d, %dx%d ->"
 -- 
 2.39.5
 
