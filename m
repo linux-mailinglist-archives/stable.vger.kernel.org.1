@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-133430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E97A925B8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:06:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5249BA927BF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:28:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4AA918824E3
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D42514A283A
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C5C255248;
-	Thu, 17 Apr 2025 18:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5E425F7BC;
+	Thu, 17 Apr 2025 18:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGgb+NVC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zXThWHFK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B17255E4C;
-	Thu, 17 Apr 2025 18:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE692566DA;
+	Thu, 17 Apr 2025 18:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913052; cv=none; b=YGThugMAvkSwD1h/SU22ROB751zrmFNTXR9Kcbs4XnHQLQdcAVKcKSs3/RRBWBGG5jg/qcxtPVvNgWAs95mARqYh72MeKAlNumUzrD2tOmAX5qgNFfu2psTx+OjGCQ/WJerAXJTgzGi/6d91639bjtUPl/2VmkAvTafOUFJ6ULM=
+	t=1744914214; cv=none; b=uTXsHtdCmf73qclhHxh2eq0WTL+o1zmnOMaUFUzzogFWF83SsHZVOYnmUFZLM1ZANKDACrJjEDCqd+LtYqgFZf/WSXdXDuOxbgQfREI8OX8mYewIGtrBKKihGRSXdYtofwkb8UByQn0TpcdPASXw0RD7S9glF9vuj6BE1N7hjo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913052; c=relaxed/simple;
-	bh=7Y6R9bSlDbjAy33+EBEiPSpajgZrGV58WjvhE1JZVsk=;
+	s=arc-20240116; t=1744914214; c=relaxed/simple;
+	bh=RckKuUcDjlN3/1y1VZdazwbHGox9GB0Icde4gopr4Ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tP+Owjy+Hxm7Ts5FKe/8MrlvMcOG9ymXyEi251BqrpGyn/r2UocNIO1m+d1yMOFKL1FIbTWfOu2Q9D6E6N+m24jFEDHxtAAmrVDsMOKjFGg/K1Meb7KjA94qJbkpv5QLrWcfZnjvIZXP+5R5p9N2iC41vsd1augTBgEI2J9DWtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGgb+NVC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42848C4CEE4;
-	Thu, 17 Apr 2025 18:04:12 +0000 (UTC)
+	 MIME-Version; b=XUFJ6LEyStzhav+wKVUCdg8lpzdlGYe8KH9DFxYMSZVMXyOAFpkIBOJLRNt+0frDIs2ERvBiczcSWoXF4kVQ9G3P6upoTNUXdIta/nwKNPoLCTMAYrlacW21fyOmY6BVfubU9oYijotfj287+dmv7PX6M/JvNX4+P6k9ndYuHvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zXThWHFK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B3CC4CEE7;
+	Thu, 17 Apr 2025 18:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913052;
-	bh=7Y6R9bSlDbjAy33+EBEiPSpajgZrGV58WjvhE1JZVsk=;
+	s=korg; t=1744914214;
+	bh=RckKuUcDjlN3/1y1VZdazwbHGox9GB0Icde4gopr4Ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BGgb+NVCUfLOsYvrijTkBBdknFhEH2W2soDMiq2pJsCdbNKvzoprJs3pYFpTDLY4P
-	 +/VFrMxo75gKOg8yZgGNhwdAUuI60po7lz4/7ESP9QhKtcLEEXX8fjFiDQSwKpiP47
-	 SW0IjhLGI/Ld4H77neU8UXIB6M+oX6yluReZL+Ks=
+	b=zXThWHFKL2jnIlueDPjIS4KY1O38IlNDWL0HWUOh/w+lws7fN8KRgMzCY26O2Bs9e
+	 9TZvt+pGDNXyiK2UJ7TYBagdgPzQHX3Hwg3PEjK8KRYfOa/5JQymoyfwSHXw8We1tn
+	 7N7XuPAzC72vfIuqCQUICOLTmx+/ecSy6RzsRElM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 212/449] HID: pidff: Rename two functions to align them with naming convention
+Subject: [PATCH 6.13 142/414] drm/bridge: panel: forbid initializing a panel with unknown connector type
 Date: Thu, 17 Apr 2025 19:48:20 +0200
-Message-ID: <20250417175126.511540756@linuxfoundation.org>
+Message-ID: <20250417175117.141605389@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-[ Upstream commit bbeface1051142bcb0473fdcc89102ea5b31607d ]
+[ Upstream commit b296955b3a740ecc8b3b08e34fd64f1ceabb8fb4 ]
 
-Driver uses "set" everywhere to indicate setting report values and
-requesting HID_REQ_SET_REPORT
+Having an DRM_MODE_CONNECTOR_Unknown connector type is considered bad, and
+drm_panel_bridge_add_typed() and derivatives are deprecated for this.
 
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+drm_panel_init() won't prevent initializing a panel with a
+DRM_MODE_CONNECTOR_Unknown connector type. Luckily there are no in-tree
+users doing it, so take this as an opportinuty to document a valid
+connector type must be passed.
+
+Returning an error if this rule is violated is not possible because
+drm_panel_init() is a void function. Add at least a warning to make any
+violations noticeable, especially to non-upstream drivers.
+
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250214-drm-assorted-cleanups-v7-5-88ca5827d7af@bootlin.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/drm_panel.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index 6f6c47bd57eaa..ffecc712be003 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -552,7 +552,7 @@ static void pidff_set_gain_report(struct pidff_device *pidff, u16 gain)
- /*
-  * Clear device control report
-  */
--static void pidff_send_device_control(struct pidff_device *pidff, int field)
-+static void pidff_set_device_control(struct pidff_device *pidff, int field)
+diff --git a/drivers/gpu/drm/drm_panel.c b/drivers/gpu/drm/drm_panel.c
+index 19ab0a794add3..fd8fa2e0ef6fa 100644
+--- a/drivers/gpu/drm/drm_panel.c
++++ b/drivers/gpu/drm/drm_panel.c
+@@ -49,7 +49,7 @@ static LIST_HEAD(panel_list);
+  * @dev: parent device of the panel
+  * @funcs: panel operations
+  * @connector_type: the connector type (DRM_MODE_CONNECTOR_*) corresponding to
+- *	the panel interface
++ *	the panel interface (must NOT be DRM_MODE_CONNECTOR_Unknown)
+  *
+  * Initialize the panel structure for subsequent registration with
+  * drm_panel_add().
+@@ -57,6 +57,9 @@ static LIST_HEAD(panel_list);
+ void drm_panel_init(struct drm_panel *panel, struct device *dev,
+ 		    const struct drm_panel_funcs *funcs, int connector_type)
  {
- 	int i, tmp;
- 	int field_index = pidff->control_id[field];
-@@ -578,10 +578,10 @@ static void pidff_send_device_control(struct pidff_device *pidff, int field)
- /*
-  * Modify actuators state
-  */
--static void pidff_modify_actuators_state(struct pidff_device *pidff, bool enable)
-+static void pidff_set_actuators(struct pidff_device *pidff, bool enable)
- {
- 	hid_dbg(pidff->hid, "%s actuators\n", enable ? "Enable" : "Disable");
--	pidff_send_device_control(pidff,
-+	pidff_set_device_control(pidff,
- 		enable ? PID_ENABLE_ACTUATORS : PID_DISABLE_ACTUATORS);
- }
- 
-@@ -591,12 +591,12 @@ static void pidff_modify_actuators_state(struct pidff_device *pidff, bool enable
- static void pidff_reset(struct pidff_device *pidff)
- {
- 	/* We reset twice as sometimes hid_wait_io isn't waiting long enough */
--	pidff_send_device_control(pidff, PID_RESET);
--	pidff_send_device_control(pidff, PID_RESET);
-+	pidff_set_device_control(pidff, PID_RESET);
-+	pidff_set_device_control(pidff, PID_RESET);
- 	pidff->effect_count = 0;
- 
--	pidff_send_device_control(pidff, PID_STOP_ALL_EFFECTS);
--	pidff_modify_actuators_state(pidff, 1);
-+	pidff_set_device_control(pidff, PID_STOP_ALL_EFFECTS);
-+	pidff_set_actuators(pidff, 1);
- }
- 
- /*
++	if (connector_type == DRM_MODE_CONNECTOR_Unknown)
++		DRM_WARN("%s: %s: a valid connector type is required!\n", __func__, dev_name(dev));
++
+ 	INIT_LIST_HEAD(&panel->list);
+ 	INIT_LIST_HEAD(&panel->followers);
+ 	mutex_init(&panel->follower_lock);
 -- 
 2.39.5
 
