@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-134124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E375A92977
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D60E6A92751
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:23:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FD35176372
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:41:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30AC53A7F8E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:22:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5055C1B3934;
-	Thu, 17 Apr 2025 18:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B637B2571C4;
+	Thu, 17 Apr 2025 18:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJJoEzPQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSSsSimu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076582571A0;
-	Thu, 17 Apr 2025 18:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580CB25F789;
+	Thu, 17 Apr 2025 18:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915170; cv=none; b=DH0Pc8cW7cK776FNIUUbkG1h03Mr2wFRUWeGYrZ/e2ZHEyHHIZZUO318mL20O4S051H63jGd+QzvVV9sU0FA2a2W8qE6ygiNYuwJxMJQlt3IP23rtk3Zti7gfcfMfgFcp9MT4TNMbPuFe8/ZTeFVB3ZSPmSq+ZWXvjHuB0lr26Q=
+	t=1744914061; cv=none; b=N6M3P4Dm/a87ie+Yk8I72uAj2a//BPf8QYmrEOduPu1LeuDbf0lFXA2Z4l7uANbm3wsnOpQt/5PW4XhPkfmjnALs0C39JZc08RYCwD98Ks/eVaKwPWMQBSLwPbtMjo5saaviFfVX7U91JRoih4S8EIDv3eafxss2Bs+CsDdT8cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915170; c=relaxed/simple;
-	bh=NvYCh16aMkbL0ughi7TajFypcQQDwD+I7ApM2nhXYes=;
+	s=arc-20240116; t=1744914061; c=relaxed/simple;
+	bh=z65Q5eH0n1RNOXeWmJ+YDUBiSJXG3cs9+KS0RkaKumg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PC58ZxoEjmIlxkoobptXZ9+/uJtY09V6Cp7v3fSOp+U3BTMv4/j8IThs0co0IacESE6pVFZSZ+5pdZqG+u4e9pCZUPSvQdRUEa0MQseBADpDADmfnTB59E7cYNuyKdXrgk0u87q6L1bmranuOivIw4tT4tfE+6wte9H/eTAiBQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJJoEzPQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B3C4C4CEE4;
-	Thu, 17 Apr 2025 18:39:29 +0000 (UTC)
+	 MIME-Version; b=H5TlTLNND3JKlUZ8VU/XMMOCVjUZClgGjvn+DOy+Uy90n1O5+YQjiNscb8UnZvLD3ECeq2Vb3V53TCFd5SEl9h46N3weRYl/eWCvLcUgS+ApX80W7ugi6E5z71gHIhi11yxN4oNuHatd2/ZYojxW/Ciskpzf2bMd0yGNOqO0HM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSSsSimu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F91C4CEE7;
+	Thu, 17 Apr 2025 18:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915169;
-	bh=NvYCh16aMkbL0ughi7TajFypcQQDwD+I7ApM2nhXYes=;
+	s=korg; t=1744914061;
+	bh=z65Q5eH0n1RNOXeWmJ+YDUBiSJXG3cs9+KS0RkaKumg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hJJoEzPQGLY8TzL9S5xiWogFyHEZurGxd+CYjsV9qOde6U2WCcEAZTnvzuUwYlajt
-	 PdLq4vZ4llXazM59zIoEYnkVI7hFoUj2deJmh6tRqDcP/VLaWeZhZWTmWrx2UmuwWT
-	 SVu5QlERfBR5UJH8oiPHqpaNnSAeWrQhnDFVp608=
+	b=ZSSsSimuS/fI4eO2s7K8AdKAR1wFNWeDQTaEq7/rXIH1HVCKQJNehVXzcq97whqOX
+	 KKw9QD0ScBRKzGjSW2qsUZky/eDcOwAE9CEy13CJsPzPFxVAhuav5+DiXCc5uzd5QI
+	 Y8Q+VsIoErCt9kLCvkcCWJ+QmY0tYF48rAb7pKMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yong Wu <yong.wu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
-	Joerg Roedel <jroedel@suse.de>,
-	Sasha Levin <sashal@kernel.org>,
-	Chen-Yu Tsai <wenst@chromium.org>
-Subject: [PATCH 6.12 041/393] iommu/mediatek: Fix NULL pointer deference in mtk_iommu_device_group
-Date: Thu, 17 Apr 2025 19:47:30 +0200
-Message-ID: <20250417175109.246762028@linuxfoundation.org>
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 093/414] wifi: mac80211: ensure sdata->work is canceled before initialized.
+Date: Thu, 17 Apr 2025 19:47:31 +0200
+Message-ID: <20250417175115.183121437@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,89 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit 38e8844005e6068f336a3ad45451a562a0040ca1 ]
+[ Upstream commit 6c93fd502023dd919b5987ccbe990735410edd49 ]
 
-Currently, mtk_iommu calls during probe iommu_device_register before
-the hw_list from driver data is initialized. Since iommu probing issue
-fix, it leads to NULL pointer dereference in mtk_iommu_device_group when
-hw_list is accessed with list_first_entry (not null safe).
+This wiphy work is canceled when the iface is stopped,
+and shouldn't be queued for a non-running iface.
+If it happens to be queued for a non-running iface (due to a bug)
+it can cause a corruption of wiphy_work_list when ieee80211_setup_sdata
+is called. Make sure to cancel it in this case and warn on.
 
-So, change the call order to ensure iommu_device_register is called
-after the driver data are initialized.
-
-Fixes: 9e3a2a643653 ("iommu/mediatek: Adapt sharing and non-sharing pgtable case")
-Fixes: bcb81ac6ae3c ("iommu: Get DT/ACPI parsing into the proper probe path")
-Reviewed-by: Yong Wu <yong.wu@mediatek.com>
-Tested-by: Chen-Yu Tsai <wenst@chromium.org> # MT8183 Juniper, MT8186 Tentacruel
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Link: https://lore.kernel.org/r/20250403-fix-mtk-iommu-error-v2-1-fe8b18f8b0a8@collabora.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://patch.msgid.link/20250205110958.99204c767c10.I84ce27a239059f6009cee197b252549a11426046@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/mtk_iommu.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ net/mac80211/iface.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
-index 6a2707fe7a78c..32deab732209e 100644
---- a/drivers/iommu/mtk_iommu.c
-+++ b/drivers/iommu/mtk_iommu.c
-@@ -1371,15 +1371,6 @@ static int mtk_iommu_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, data);
- 	mutex_init(&data->mutex);
- 
--	ret = iommu_device_sysfs_add(&data->iommu, dev, NULL,
--				     "mtk-iommu.%pa", &ioaddr);
--	if (ret)
--		goto out_link_remove;
--
--	ret = iommu_device_register(&data->iommu, &mtk_iommu_ops, dev);
--	if (ret)
--		goto out_sysfs_remove;
--
- 	if (MTK_IOMMU_HAS_FLAG(data->plat_data, SHARE_PGTABLE)) {
- 		list_add_tail(&data->list, data->plat_data->hw_list);
- 		data->hw_list = data->plat_data->hw_list;
-@@ -1389,19 +1380,28 @@ static int mtk_iommu_probe(struct platform_device *pdev)
- 		data->hw_list = &data->hw_list_head;
- 	}
- 
-+	ret = iommu_device_sysfs_add(&data->iommu, dev, NULL,
-+				     "mtk-iommu.%pa", &ioaddr);
-+	if (ret)
-+		goto out_list_del;
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 04b3626387309..208d42172f473 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -8,7 +8,7 @@
+  * Copyright 2008, Johannes Berg <johannes@sipsolutions.net>
+  * Copyright 2013-2014  Intel Mobile Communications GmbH
+  * Copyright (c) 2016        Intel Deutschland GmbH
+- * Copyright (C) 2018-2024 Intel Corporation
++ * Copyright (C) 2018-2025 Intel Corporation
+  */
+ #include <linux/slab.h>
+ #include <linux/kernel.h>
+@@ -813,6 +813,9 @@ static void ieee80211_set_multicast_list(struct net_device *dev)
+  */
+ static void ieee80211_teardown_sdata(struct ieee80211_sub_if_data *sdata)
+ {
++	if (WARN_ON(!list_empty(&sdata->work.entry)))
++		wiphy_work_cancel(sdata->local->hw.wiphy, &sdata->work);
 +
-+	ret = iommu_device_register(&data->iommu, &mtk_iommu_ops, dev);
-+	if (ret)
-+		goto out_sysfs_remove;
-+
- 	if (MTK_IOMMU_IS_TYPE(data->plat_data, MTK_IOMMU_TYPE_MM)) {
- 		ret = component_master_add_with_match(dev, &mtk_iommu_com_ops, match);
- 		if (ret)
--			goto out_list_del;
-+			goto out_device_unregister;
- 	}
- 	return ret;
+ 	/* free extra data */
+ 	ieee80211_free_keys(sdata, false);
  
--out_list_del:
--	list_del(&data->list);
-+out_device_unregister:
- 	iommu_device_unregister(&data->iommu);
- out_sysfs_remove:
- 	iommu_device_sysfs_remove(&data->iommu);
--out_link_remove:
-+out_list_del:
-+	list_del(&data->list);
- 	if (MTK_IOMMU_IS_TYPE(data->plat_data, MTK_IOMMU_TYPE_MM))
- 		device_link_remove(data->smicomm_dev, dev);
- out_runtime_disable:
 -- 
 2.39.5
 
