@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11C0AA925CA
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:07:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BC1CA929F7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:46:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F5CF8A3B35
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:07:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3C2E7B8963
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E4B2561DA;
-	Thu, 17 Apr 2025 18:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76BDC22333D;
+	Thu, 17 Apr 2025 18:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZTaJUNdA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FEy35GOs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E94D1DEFC5;
-	Thu, 17 Apr 2025 18:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C3A1D07BA;
+	Thu, 17 Apr 2025 18:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913144; cv=none; b=lhdJGD5oGXP3BA8sXlFf9FCeE+XJvYhPWxWUOLc3Yidme/5a1wtyIt1mCXH80sUYB6Eg8Kich3hM6gyWsQfwu9GF9O+Yuaw4RXdz31WvbyO/RBrINzuS2YlniBAuazihk02tk4v7p+rU7yirp9/kZPh1q9GWkpGMN+kv2zTikCo=
+	t=1744915441; cv=none; b=FDXhT4Y59b0zfmJsEnEny5US4mhmm0hJjmJh2k7fyupdvAa1jErJxE/lLnQVoStajLTYfh9F5G6W4CVfyI2Hj0X3eAiNPfpHKdyclZfc+g1ftzGIgO0BfEVWsgd5/WgteCzXWfrotfrvU+nDMwZRS5r+9l6sEboBFfDYLVo/CwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913144; c=relaxed/simple;
-	bh=6mwbK38xGyhg0to12xSJou4htn4bLzT7V9TkejpFn1U=;
+	s=arc-20240116; t=1744915441; c=relaxed/simple;
+	bh=X9aUzrEsGu7f5maA7+blwu9lsHwboaozx4N7LRybgos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZNj4dAQfBcb05f4KKOEmPSBXqDOiDC18rrnAIocwj3DhwZ9NWIQnkp/w9xzkKbgzUxcJQONm4f/JswDdc6vdZuIKwFAAU98xXen+0BuzvHp1TllWPn9prPKq9ElZKpY9oLoN43Ov8+kD5bWHNnpxAWrCYs5GjVRZGe/1VKyU8go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZTaJUNdA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C6AC4CEE4;
-	Thu, 17 Apr 2025 18:05:43 +0000 (UTC)
+	 MIME-Version; b=d+FbvYusxDFMynIKOvtNey7ccC3VspIks0RPNdjA4PkjKvJlqv8zdx7KMyHI19xVDEKR+L0N0oKWv/gYvd47k0mQE9rmb4HwSPWDAjNy13RJR1NbWtQdVmGePnO5fM6P3bj2knXKJf4D4c66YiHArcC8QT+rr7aqbAgpPXcpTms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FEy35GOs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D92C4CEEA;
+	Thu, 17 Apr 2025 18:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913144;
-	bh=6mwbK38xGyhg0to12xSJou4htn4bLzT7V9TkejpFn1U=;
+	s=korg; t=1744915440;
+	bh=X9aUzrEsGu7f5maA7+blwu9lsHwboaozx4N7LRybgos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZTaJUNdAaJFd793yRH8JWV0J+ee7+cvnXSsgmAkZdUeGauDaIkNNnVu6gcWAnaXlh
-	 0qv9Jg0sXJLgwfCeyDmMCtNBlzaxvLSDwrmDmTP/yd2M3st9KjO7A0waTS+i0iMK5w
-	 T4vJyBjI+u2aXPnl32RjBnd0JzwqlO0hDJw3qd2g=
+	b=FEy35GOslF4dehYI5nV+jhrXFeL6hDCTD4X6ANrM8W+ayIJdPw7/84h+qjNYN9P8h
+	 VM80fbPlNlJF7fUX92dx5AwSSqX/hrYNc+7Nt6ZcMWV1vn55YNjJYPaJa1hjuxKRIZ
+	 IRwLJESR2nL3/VnIaKM6ffbYdi8ieoaRKyROCvG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Subject: [PATCH 6.14 242/449] accel/ivpu: Fix PM related deadlocks in MS IOCTLs
+	Jiande Lu <jiande.lu@mediatek.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 121/393] Bluetooth: btusb: Add 2 HWIDs for MT7922
 Date: Thu, 17 Apr 2025 19:48:50 +0200
-Message-ID: <20250417175127.738229991@linuxfoundation.org>
+Message-ID: <20250417175112.465867597@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,117 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+From: Jiande Lu <jiande.lu@mediatek.com>
 
-commit d893da85e06edf54737bb80648bb58ba8fd56d9f upstream.
+[ Upstream commit a88643b7e48506777e175e80c902c727ddd90851 ]
 
-Prevent runtime resume/suspend while MS IOCTLs are in progress.
-Failed suspend will call ivpu_ms_cleanup() that would try to acquire
-file_priv->ms_lock, which is already held by the IOCTLs.
+Add below HWIDs for MediaTek MT7922 USB Bluetooth chip.
+VID 0x0489, PID 0xe152
+VID 0x0489, PID 0xe153
 
-Fixes: cdfad4db7756 ("accel/ivpu: Add NPU profiling support")
-Cc: stable@vger.kernel.org # v6.11+
-Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Link: https://lore.kernel.org/r/20250325114306.3740022-3-maciej.falkowski@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Patch has been tested successfully and controller is recognized
+device pair successfully.
+
+MT7922 module bring up message as below.
+Bluetooth: Core ver 2.22
+Bluetooth: HCI device and connection manager initialized
+Bluetooth: HCI socket layer initialized
+Bluetooth: L2CAP socket layer initialized
+Bluetooth: SCO socket layer initialized
+Bluetooth: hci0: HW/SW Version: 0x008a008a, Build Time: 20241106163512
+Bluetooth: hci0: Device setup in 2284925 usecs
+Bluetooth: hci0: HCI Enhanced Setup Synchronous Connection command is advertised, but not supported.
+Bluetooth: hci0: AOSP extensions version v1.00
+Bluetooth: BNEP (Ethernet Emulation) ver 1.3
+Bluetooth: BNEP filters: protocol multicast
+Bluetooth: BNEP socket layer initialized
+Bluetooth: MGMT ver 1.22
+Bluetooth: RFCOMM TTY layer initialized
+Bluetooth: RFCOMM socket layer initialized
+Bluetooth: RFCOMM ver 1.11
+
+Signed-off-by: Jiande Lu <jiande.lu@mediatek.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_debugfs.c |    4 ++--
- drivers/accel/ivpu/ivpu_ms.c      |   18 ++++++++++++++++++
- 2 files changed, 20 insertions(+), 2 deletions(-)
+ drivers/bluetooth/btusb.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/accel/ivpu/ivpu_debugfs.c
-+++ b/drivers/accel/ivpu/ivpu_debugfs.c
-@@ -331,7 +331,7 @@ ivpu_force_recovery_fn(struct file *file
- 		return -EINVAL;
- 
- 	ret = ivpu_rpm_get(vdev);
--	if (ret)
-+	if (ret < 0)
- 		return ret;
- 
- 	ivpu_pm_trigger_recovery(vdev, "debugfs");
-@@ -382,7 +382,7 @@ static int dct_active_set(void *data, u6
- 		return -EINVAL;
- 
- 	ret = ivpu_rpm_get(vdev);
--	if (ret)
-+	if (ret < 0)
- 		return ret;
- 
- 	if (active_percent)
---- a/drivers/accel/ivpu/ivpu_ms.c
-+++ b/drivers/accel/ivpu/ivpu_ms.c
-@@ -44,6 +44,10 @@ int ivpu_ms_start_ioctl(struct drm_devic
- 	    args->sampling_period_ns < MS_MIN_SAMPLE_PERIOD_NS)
- 		return -EINVAL;
- 
-+	ret = ivpu_rpm_get(vdev);
-+	if (ret < 0)
-+		return ret;
-+
- 	mutex_lock(&file_priv->ms_lock);
- 
- 	if (get_instance_by_mask(file_priv, args->metric_group_mask)) {
-@@ -96,6 +100,8 @@ err_free_ms:
- 	kfree(ms);
- unlock:
- 	mutex_unlock(&file_priv->ms_lock);
-+
-+	ivpu_rpm_put(vdev);
- 	return ret;
- }
- 
-@@ -160,6 +166,10 @@ int ivpu_ms_get_data_ioctl(struct drm_de
- 	if (!args->metric_group_mask)
- 		return -EINVAL;
- 
-+	ret = ivpu_rpm_get(vdev);
-+	if (ret < 0)
-+		return ret;
-+
- 	mutex_lock(&file_priv->ms_lock);
- 
- 	ms = get_instance_by_mask(file_priv, args->metric_group_mask);
-@@ -187,6 +197,7 @@ int ivpu_ms_get_data_ioctl(struct drm_de
- unlock:
- 	mutex_unlock(&file_priv->ms_lock);
- 
-+	ivpu_rpm_put(vdev);
- 	return ret;
- }
- 
-@@ -204,11 +215,17 @@ int ivpu_ms_stop_ioctl(struct drm_device
- {
- 	struct ivpu_file_priv *file_priv = file->driver_priv;
- 	struct drm_ivpu_metric_streamer_stop *args = data;
-+	struct ivpu_device *vdev = file_priv->vdev;
- 	struct ivpu_ms_instance *ms;
-+	int ret;
- 
- 	if (!args->metric_group_mask)
- 		return -EINVAL;
- 
-+	ret = ivpu_rpm_get(vdev);
-+	if (ret < 0)
-+		return ret;
-+
- 	mutex_lock(&file_priv->ms_lock);
- 
- 	ms = get_instance_by_mask(file_priv, args->metric_group_mask);
-@@ -217,6 +234,7 @@ int ivpu_ms_stop_ioctl(struct drm_device
- 
- 	mutex_unlock(&file_priv->ms_lock);
- 
-+	ivpu_rpm_put(vdev);
- 	return ms ? 0 : -EINVAL;
- }
- 
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 3a0b9dc98707f..151054a718522 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -626,6 +626,10 @@ static const struct usb_device_id quirks_table[] = {
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0489, 0xe102), .driver_info = BTUSB_MEDIATEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x0489, 0xe152), .driver_info = BTUSB_MEDIATEK |
++						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x0489, 0xe153), .driver_info = BTUSB_MEDIATEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x04ca, 0x3804), .driver_info = BTUSB_MEDIATEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x04ca, 0x38e4), .driver_info = BTUSB_MEDIATEK |
+-- 
+2.39.5
+
 
 
 
