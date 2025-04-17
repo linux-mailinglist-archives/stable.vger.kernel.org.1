@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-133896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01277A92894
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A339CA925EB
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:08:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF5108A1974
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:35:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6B138A58D3
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820E025B678;
-	Thu, 17 Apr 2025 18:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA857257434;
+	Thu, 17 Apr 2025 18:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZ8rY7bR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bc3b236d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9182571BA;
-	Thu, 17 Apr 2025 18:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8ABE2566FF;
+	Thu, 17 Apr 2025 18:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914475; cv=none; b=hFYfbDoXs2AsrFNIlNWgL3TAizgM4FsNw0b8aun4oaOguiuTw7N/GSCpV5MNcxn0Jh6+BpBeBe0cldwVxB5VXnE24soLeZxrULTyRA2XHsMDR1/1Tr23ph32xo3GJf23ENPKN2cNLM52U3nmqs5mRnlX/a6SNxszky4/9XSpdJo=
+	t=1744913261; cv=none; b=djhLZMQy6eHz0sSxVNw6tmeJ+09I3aNWCOvjlnF4h3/Npby2kkyE3lnb8U6ao8S8SBnfRz2+3DsulJiq2nsahPFdiRJKU6TELY5iZkCiZlhocof5+ezmYPpADp9kkU+4z5wdguJMgiAWRlMr+5V8VZOizzGe/oX2R5tJ5UzkSu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914475; c=relaxed/simple;
-	bh=QIReCUEVHXFzR3QZ2JIviRSm93SJoLQA661ox/ZltzQ=;
+	s=arc-20240116; t=1744913261; c=relaxed/simple;
+	bh=3LuBvToVrtX+4nRQ38huJpLc9U6q7paOTCnrxvR13Ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mNpQbUCpCEqsOFdkNs/Q9HKIxwHcRK9IHWVjdiY3QGcZOoNN1ZDj1mJiUPP+m/lXoyCOOFiXrOi6pRts8pHSvZuJrjb0Ayu5d/CVBZsk+MJ0RgptZOZQrYwkMbuSQ0K9LiHRIfofQInBWM8SJaU/Mc+ILvp6OsPTA98M9YiGNeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZ8rY7bR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E74C4CEEA;
-	Thu, 17 Apr 2025 18:27:54 +0000 (UTC)
+	 MIME-Version; b=EuCGWi0zjjoTPOHjqb9MEgBffd2/aWW5zpoZgTeMxstxMqMMDUOqqjKtIo+wTzrbwWkHFUbUHq/XPhbdf9JT3LFDDH7cPItSXwQ+sqsOfw/sEYbB0abWICnVMpe3GEnVXzWaGErxIyghh4ITV3/TuDAWDXBDIchL0HDv8ztE3pE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bc3b236d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1871DC4CEE4;
+	Thu, 17 Apr 2025 18:07:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914475;
-	bh=QIReCUEVHXFzR3QZ2JIviRSm93SJoLQA661ox/ZltzQ=;
+	s=korg; t=1744913261;
+	bh=3LuBvToVrtX+4nRQ38huJpLc9U6q7paOTCnrxvR13Ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JZ8rY7bRUTM0tmX5XTr3QueLH2vh7LvSWT9wgnCtAuNC7I9a9t5t3qkPM8NgZ68oI
-	 6jB2q0rf/ZDznH29cfiAUm8W/sOuKtI2nS3z1haTABdnvM6v1kkfaydHN+MgmREsVR
-	 zE0jzRDuVEMnamO2GnjPW/BRA//Hj2/XmE15Pd6k=
+	b=bc3b236dvpoGEM3leQi55rMOHDDTLBDDkD9k6cVNwOSgps4hS85856ezvXh3FiA42
+	 f9t7q9y6sCgyNL+5Nz+1TZL9M1zE29ftfHKzgbSdmQ81G+2iM0uQEqJbGDMGtjq4BJ
+	 VMsaD8hlzgiN80NDGlT73tlLql5v3nJpjdWknUQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akihiko Odaki <akihiko.odaki@daynix.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: [PATCH 6.13 210/414] KVM: arm64: PMU: Set raw values from user to PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}
+	Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.14 280/449] wifi: mac80211: fix integer overflow in hwmp_route_info_get()
 Date: Thu, 17 Apr 2025 19:49:28 +0200
-Message-ID: <20250417175119.886663147@linuxfoundation.org>
+Message-ID: <20250417175129.335257996@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
 
-commit f2aeb7bbd5745fbcf7f0769e29a184e24924b9a9 upstream.
+commit d00c0c4105e5ab8a6a13ed23d701cceb285761fa upstream.
 
-Commit a45f41d754e0 ("KVM: arm64: Add {get,set}_user for
-PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}") changed KVM_SET_ONE_REG to update
-the mentioned registers in a way matching with the behavior of guest
-register writes. This is a breaking change of a UAPI though the new
-semantics looks cleaner and VMMs are not prepared for this.
+Since the new_metric and last_hop_metric variables can reach
+the MAX_METRIC(0xffffffff) value, an integer overflow may occur
+when multiplying them by 10/9. It can lead to incorrect behavior.
 
-Firecracker, QEMU, and crosvm perform migration by listing registers
-with KVM_GET_REG_LIST, getting their values with KVM_GET_ONE_REG and
-setting them with KVM_SET_ONE_REG. This algorithm assumes
-KVM_SET_ONE_REG restores the values retrieved with KVM_GET_ONE_REG
-without any alteration. However, bit operations added by the earlier
-commit do not preserve the values retried with KVM_GET_ONE_REG and
-potentially break migration.
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with SVACE.
 
-Remove the bit operations that alter the values retrieved with
-KVM_GET_ONE_REG.
-
+Fixes: a8d418d9ac25 ("mac80211: mesh: only switch path when new metric is at least 10% better")
 Cc: stable@vger.kernel.org
-Fixes: a45f41d754e0 ("KVM: arm64: Add {get,set}_user for PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20250315-pmc-v5-1-ecee87dab216@daynix.com
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+Link: https://patch.msgid.link/20250212082124.4078236-1-Ilia.Gavrilov@infotecs.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/sys_regs.c |   21 ++-------------------
- 1 file changed, 2 insertions(+), 19 deletions(-)
+ net/mac80211/mesh_hwmp.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -1166,26 +1166,9 @@ static bool access_pmu_evtyper(struct kv
- 
- static int set_pmreg(struct kvm_vcpu *vcpu, const struct sys_reg_desc *r, u64 val)
- {
--	bool set;
--
--	val &= kvm_pmu_accessible_counter_mask(vcpu);
--
--	switch (r->reg) {
--	case PMOVSSET_EL0:
--		/* CRm[1] being set indicates a SET register, and CLR otherwise */
--		set = r->CRm & 2;
--		break;
--	default:
--		/* Op2[0] being set indicates a SET register, and CLR otherwise */
--		set = r->Op2 & 1;
--		break;
--	}
--
--	if (set)
--		__vcpu_sys_reg(vcpu, r->reg) |= val;
--	else
--		__vcpu_sys_reg(vcpu, r->reg) &= ~val;
-+	u64 mask = kvm_pmu_accessible_counter_mask(vcpu);
- 
-+	__vcpu_sys_reg(vcpu, r->reg) = val & mask;
- 	return 0;
+--- a/net/mac80211/mesh_hwmp.c
++++ b/net/mac80211/mesh_hwmp.c
+@@ -367,6 +367,12 @@ u32 airtime_link_metric_get(struct ieee8
+ 	return (u32)result;
  }
  
++/* Check that the first metric is at least 10% better than the second one */
++static bool is_metric_better(u32 x, u32 y)
++{
++	return (x < y) && (x < (y - x / 10));
++}
++
+ /**
+  * hwmp_route_info_get - Update routing info to originator and transmitter
+  *
+@@ -458,8 +464,8 @@ static u32 hwmp_route_info_get(struct ie
+ 				    (mpath->sn == orig_sn &&
+ 				     (rcu_access_pointer(mpath->next_hop) !=
+ 						      sta ?
+-					      mult_frac(new_metric, 10, 9) :
+-					      new_metric) >= mpath->metric)) {
++					      !is_metric_better(new_metric, mpath->metric) :
++					      new_metric >= mpath->metric))) {
+ 					process = false;
+ 					fresh_info = false;
+ 				}
+@@ -533,8 +539,8 @@ static u32 hwmp_route_info_get(struct ie
+ 			if ((mpath->flags & MESH_PATH_FIXED) ||
+ 			    ((mpath->flags & MESH_PATH_ACTIVE) &&
+ 			     ((rcu_access_pointer(mpath->next_hop) != sta ?
+-				       mult_frac(last_hop_metric, 10, 9) :
+-				       last_hop_metric) > mpath->metric)))
++				      !is_metric_better(last_hop_metric, mpath->metric) :
++				       last_hop_metric > mpath->metric))))
+ 				fresh_info = false;
+ 		} else {
+ 			mpath = mesh_path_add(sdata, ta);
 
 
 
