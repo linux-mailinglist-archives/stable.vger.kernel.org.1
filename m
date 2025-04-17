@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-134273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBDD6A92A1E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 250D7A92893
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:36:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2934E189A6BE
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:47:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76F2C177B0D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669E74502F;
-	Thu, 17 Apr 2025 18:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D85257441;
+	Thu, 17 Apr 2025 18:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RVpzsOrv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3OCPKSL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2505E1B3934;
-	Thu, 17 Apr 2025 18:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374192522AC;
+	Thu, 17 Apr 2025 18:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915625; cv=none; b=BerXjQtkHrhXGEQx9XGZkOaJJ2bSws4WQAb5t3QzhlMiTIJ0ZRXRk4kpDMseTHl2PbNuMF7QCSm/pG9EDxtoOGEPjPWs99U/jgDIBkTHD9htfx/31PDu9je+rrvpi9Ytu4ymyRuBnhN83r4eLINwnfinhSsjLTqpEjk42lbFWBY=
+	t=1744914538; cv=none; b=nhyzZOTfkwuMm/akQi1nejaxtrMKQ54nkbS5au6H8bruvNS/F/bid90jDyKYna6VZBIgM9EIXTwsvOKS2sXS+LDx5zmfl2uWHEh4NFjtpffQCzf1NB5WdgnsX/OR1o6I/fBxlszjKRYR5AF6fHxdXPAFTV8/AR2zOUSxt3OGGbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915625; c=relaxed/simple;
-	bh=8arfV+fLpfhR8PBcu7PGRE6IEWAFejoQljbUAOF+84A=;
+	s=arc-20240116; t=1744914538; c=relaxed/simple;
+	bh=K42SmGnKfqrBVgkAGuK/z4me2Ats2mxO+8UwaLKHum8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VypvLGOBo6krtuHDYVXAO9WfNuAvAAnaPp8K17ksXRZdZ06fHSYp6LDC3kkvdERBUY/+uPHxLtTO79YKEvLz/x2ZAdZykewHBksaBHc0U18g14K7KffYFEYnSO9CYvk7CijuLRTOI9lfMy8TqxazhRRHq5O15Sigg3H/PU9S93Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RVpzsOrv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F27CC4CEE4;
-	Thu, 17 Apr 2025 18:47:04 +0000 (UTC)
+	 MIME-Version; b=SmEbhNnUkxga0EWge97XWEFi5SbdfNPhwkBXqTiapLiefnbc5UJzfqxBN82ivZxDizwXi2mcKDSt24qGy9jVKiZ2atUCANbPXr2wxJtfhqP3JXGizK+f6oy6dKrz6L+Toy41FULpPkKVc99lh0Z29wYs4YBeDgRtsRPavM5gKR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3OCPKSL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B443DC4CEE4;
+	Thu, 17 Apr 2025 18:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915625;
-	bh=8arfV+fLpfhR8PBcu7PGRE6IEWAFejoQljbUAOF+84A=;
+	s=korg; t=1744914538;
+	bh=K42SmGnKfqrBVgkAGuK/z4me2Ats2mxO+8UwaLKHum8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RVpzsOrvLr9CiL4CleBt3b8g3kFThe4g42Zhebn238p5nbEC9MsAJzJzOOXoAxFTR
-	 SMWyXeFTs4uRsfRKfA5Kht619iUDoP7fnoPQV3qaprz1zrfVMla0x2JxejoJalj4iG
-	 hGZ01rvc+J1Cs7mnxwS/Lch06SsaY6EgzKjFr/Os=
+	b=l3OCPKSLw9ex5aEnMAvZ/pJvOtTPiT4DKf1ida05erhADii2FmMIfeVhihHWBbDvn
+	 VnzTCa2apus4dS5p7AbxavkARjHzh7kN/PnGCMqgeGaBcQ8hOvDt4mq1XVPzNh2H+u
+	 v/8sKLZlUSKqRtCEArmWw4ESxs+p0kZcDh/vTFZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan McDowell <noodles@meta.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 157/393] tpm, tpm_tis: Workaround failed command reception on Infineon devices
+	John Keeping <jkeeping@inmusicbrands.com>,
+	Michael Tretter <m.tretter@pengutronix.de>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.13 208/414] media: rockchip: rga: fix rga offset lookup
 Date: Thu, 17 Apr 2025 19:49:26 +0200
-Message-ID: <20250417175113.898307048@linuxfoundation.org>
+Message-ID: <20250417175119.808382415@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,120 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan McDowell <noodles@meta.com>
+From: John Keeping <jkeeping@inmusicbrands.com>
 
-[ Upstream commit de9e33df7762abbfc2a1568291f2c3a3154c6a9d ]
+commit 11de3582675cc0b7136e12f3971f1da3e5a05382 upstream.
 
-Some Infineon devices have a issue where the status register will get
-stuck with a quick REQUEST_USE / COMMAND_READY sequence. This is not
-simply a matter of requiring a longer timeout; the work around is to
-retry the command submission. Add appropriate logic to do this in the
-send path.
+The arguments to rga_lookup_draw_pos() are passed in the wrong order,
+rotate mode should be before mirror mode.
 
-This is fixed in later firmware revisions, but those are not always
-available, and cannot generally be easily updated from outside a
-firmware environment.
-
-Testing has been performed with a simple repeated loop of doing a
-TPM2_CC_GET_CAPABILITY for TPM_CAP_PROP_MANUFACTURER using the Go code
-at:
-
-  https://the.earth.li/~noodles/tpm-stuff/timeout-reproducer-simple.go
-
-It can take several hours to reproduce, and several million operations.
-
-Signed-off-by: Jonathan McDowell <noodles@meta.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 558c248f930e6 ("media: rockchip: rga: split src and dst buffer setup")
+Cc: stable@vger.kernel.org
+Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
+Reviewed-by: Michael Tretter <m.tretter@pengutronix.de>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm_tis_core.c | 17 ++++++++++++++---
- drivers/char/tpm/tpm_tis_core.h |  1 +
- include/linux/tpm.h             |  1 +
- 3 files changed, 16 insertions(+), 3 deletions(-)
+ drivers/media/platform/rockchip/rga/rga-hw.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
-index fdef214b9f6bf..4cc2ab2d16cc5 100644
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -464,7 +464,10 @@ static int tpm_tis_send_data(struct tpm_chip *chip, const u8 *buf, size_t len)
+--- a/drivers/media/platform/rockchip/rga/rga-hw.c
++++ b/drivers/media/platform/rockchip/rga/rga-hw.c
+@@ -376,7 +376,7 @@ static void rga_cmd_set_dst_info(struct
+ 	 * Configure the dest framebuffer base address with pixel offset.
+ 	 */
+ 	offsets = rga_get_addr_offset(&ctx->out, offset, dst_x, dst_y, dst_w, dst_h);
+-	dst_offset = rga_lookup_draw_pos(&offsets, mir_mode, rot_mode);
++	dst_offset = rga_lookup_draw_pos(&offsets, rot_mode, mir_mode);
  
- 		if (wait_for_tpm_stat(chip, TPM_STS_VALID, chip->timeout_c,
- 					&priv->int_queue, false) < 0) {
--			rc = -ETIME;
-+			if (test_bit(TPM_TIS_STATUS_VALID_RETRY, &priv->flags))
-+				rc = -EAGAIN;
-+			else
-+				rc = -ETIME;
- 			goto out_err;
- 		}
- 		status = tpm_tis_status(chip);
-@@ -481,7 +484,10 @@ static int tpm_tis_send_data(struct tpm_chip *chip, const u8 *buf, size_t len)
- 
- 	if (wait_for_tpm_stat(chip, TPM_STS_VALID, chip->timeout_c,
- 				&priv->int_queue, false) < 0) {
--		rc = -ETIME;
-+		if (test_bit(TPM_TIS_STATUS_VALID_RETRY, &priv->flags))
-+			rc = -EAGAIN;
-+		else
-+			rc = -ETIME;
- 		goto out_err;
- 	}
- 	status = tpm_tis_status(chip);
-@@ -546,9 +552,11 @@ static int tpm_tis_send_main(struct tpm_chip *chip, const u8 *buf, size_t len)
- 		if (rc >= 0)
- 			/* Data transfer done successfully */
- 			break;
--		else if (rc != -EIO)
-+		else if (rc != -EAGAIN && rc != -EIO)
- 			/* Data transfer failed, not recoverable */
- 			return rc;
-+
-+		usleep_range(priv->timeout_min, priv->timeout_max);
- 	}
- 
- 	/* go and do it */
-@@ -1144,6 +1152,9 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
- 		priv->timeout_max = TIS_TIMEOUT_MAX_ATML;
- 	}
- 
-+	if (priv->manufacturer_id == TPM_VID_IFX)
-+		set_bit(TPM_TIS_STATUS_VALID_RETRY, &priv->flags);
-+
- 	if (is_bsw()) {
- 		priv->ilb_base_addr = ioremap(INTEL_LEGACY_BLK_BASE_ADDR,
- 					ILB_REMAP_SIZE);
-diff --git a/drivers/char/tpm/tpm_tis_core.h b/drivers/char/tpm/tpm_tis_core.h
-index 690ad8e9b7319..970d02c337c7f 100644
---- a/drivers/char/tpm/tpm_tis_core.h
-+++ b/drivers/char/tpm/tpm_tis_core.h
-@@ -89,6 +89,7 @@ enum tpm_tis_flags {
- 	TPM_TIS_INVALID_STATUS		= 1,
- 	TPM_TIS_DEFAULT_CANCELLATION	= 2,
- 	TPM_TIS_IRQ_TESTED		= 3,
-+	TPM_TIS_STATUS_VALID_RETRY	= 4,
- };
- 
- struct tpm_tis_data {
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index 20a40ade80308..6c3125300c009 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -335,6 +335,7 @@ enum tpm2_cc_attrs {
- #define TPM_VID_WINBOND  0x1050
- #define TPM_VID_STM      0x104A
- #define TPM_VID_ATML     0x1114
-+#define TPM_VID_IFX      0x15D1
- 
- enum tpm_chip_flags {
- 	TPM_CHIP_FLAG_BOOTSTRAPPED		= BIT(0),
--- 
-2.39.5
-
+ 	dest[(RGA_DST_Y_RGB_BASE_ADDR - RGA_MODE_BASE_REG) >> 2] =
+ 		dst_offset->y_off;
 
 
 
