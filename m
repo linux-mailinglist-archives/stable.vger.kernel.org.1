@@ -1,78 +1,56 @@
-Return-Path: <stable+bounces-133994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D7BEA92911
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:40:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C18C5A926A4
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:15:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 071DF3A66E1
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE3763AFBDF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508E7263C73;
-	Thu, 17 Apr 2025 18:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B3832566DE;
+	Thu, 17 Apr 2025 18:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KvQcW1FV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i4lGhlCW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B89C2638A6;
-	Thu, 17 Apr 2025 18:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F152561D5;
+	Thu, 17 Apr 2025 18:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914775; cv=none; b=OWsFpyTKU1LOu1xTWLYgaWqISsE6v6CYbVQpGQa4j32WoWlTppNSqZhU/c34vvDobHL87BA59fE8I7AwPFDfCrRemGA56GXbZJK4RAz7BE8ne7KT5EiZs4fWug7aOJAUj6lPdX9mx05ugKQ02hLZTCyV0bVIpwJhQgIV2GqxZxw=
+	t=1744913703; cv=none; b=KbaSYkjd95R6y8kUVl2UG/tQEKuIPEQjucs1DNS9lhw311xV9i+/pPGbux4g1TdLdz5RohhDjOCgINbDbqNibZcHXvH475fA+kcSOoBtW6ixcAFoiMaYghb+0BF6ghAWU0wRIAp289hGT59oU3sU30/gvX6Nd0P1kRdkIfgEUD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914775; c=relaxed/simple;
-	bh=ajPFpkFAuhzwMTDbRnq1cYt5mCF7wSa5sD7pbhO4rbU=;
+	s=arc-20240116; t=1744913703; c=relaxed/simple;
+	bh=+Yv6VnNLaAe1yIQG6k9EJCilisKZoXQcsAwYHBr6jlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X/koR8eAxEoMUFDfdFi8tG5MlOAWML5KBBPrmlIgmYLn0aTTFLZmYFoDJKt0RgA0GIkZdschEHmKIf+szeYQf08NPBq+Mwcw/IFP0j7Ank6Ci+F358qyrzXDBMt25QztS1ZBVQJsUnsZCz8IXVAZ42h7hYgzzNtt1hKwjfRpRXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KvQcW1FV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0628C4CEE4;
-	Thu, 17 Apr 2025 18:32:52 +0000 (UTC)
+	 MIME-Version; b=hCeFGhB4JWz698ZjiiicyJziri0mDs0SE7szLkf1AmH/u3OTw5BBIN5nfnUN0M0Bdxp2lCfgEpPLKuzJ9fhAbdB0/66JLsB5f61+NUXJdlTmy4L0ziYa8UcC25oRiZe7UOvuDQjwbNQnTKDLOrAm289+zfA5wE8q53w5NFkllAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i4lGhlCW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D28B4C4CEE4;
+	Thu, 17 Apr 2025 18:15:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914773;
-	bh=ajPFpkFAuhzwMTDbRnq1cYt5mCF7wSa5sD7pbhO4rbU=;
+	s=korg; t=1744913703;
+	bh=+Yv6VnNLaAe1yIQG6k9EJCilisKZoXQcsAwYHBr6jlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KvQcW1FVl5xrGZl5RwfFhFoRRikfd5+gTACyvxu5VNMgumdH6/OHspDF76NJM+kWH
-	 iGTdPMvrHzK4anicfnTtRMqQaUeE7bhh5jXF6AN3v0JmJKVKqQvxrleiwPDeSR/XkU
-	 8sEq109qmrvioeQUuOfQd++BLvAPirmK8Uj+yNTE=
+	b=i4lGhlCWabl0Kk0KvVkUwXzrJNEYsStf0x/GXwzEUL3dJnvNB/n2baUTgHYLwjKX1
+	 fzdwIOrZdGbnLZtiv/6tb0jpGy5YnPq+ZiUg4xAdkfC5AxiYYA1Sbplc/Mq7kUQLMV
+	 K9U2Zenc+wapyS6cz9RgD99mwqBkbC00r55gjMtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Alex Shi <alexs@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dave Airlie <airlied@gmail.com>,
-	Jann Horn <jannh@google.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Jerome Glisse <jglisse@redhat.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Karol Herbst <kherbst@redhat.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Lyude <lyude@redhat.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Peter Xu <peterx@redhat.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	SeongJae Park <sj@kernel.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Yanteng Si <si.yanteng@linux.dev>,
-	Barry Song <v-songbaohua@oppo.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.13 326/414] mm/rmap: reject hugetlb folios in folio_make_device_exclusive()
+	Joanne Koong <joannelkoong@gmail.com>,
+	Bernd Schubert <bschubert@ddn.com>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 6.14 396/449] fuse: {io-uring} Fix a possible req cancellation race
 Date: Thu, 17 Apr 2025 19:51:24 +0200
-Message-ID: <20250417175124.544995866@linuxfoundation.org>
+Message-ID: <20250417175134.204808332@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -84,71 +62,230 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Bernd Schubert <bschubert@ddn.com>
 
-commit bc3fe6805cf09a25a086573a17d40e525208c5d8 upstream.
+commit 09098e62e4be8f0755e58d6078aaf27cbd9a3a8d upstream.
 
-Even though FOLL_SPLIT_PMD on hugetlb now always fails with -EOPNOTSUPP,
-let's add a safety net in case FOLL_SPLIT_PMD usage would ever be
-reworked.
+task-A (application) might be in request_wait_answer and
+try to remove the request when it has FR_PENDING set.
 
-In particular, before commit 9cb28da54643 ("mm/gup: handle hugetlb in the
-generic follow_page_mask code"), GUP(FOLL_SPLIT_PMD) would just have
-returned a page.  In particular, hugetlb folios that are not PMD-sized
-would never have been prone to FOLL_SPLIT_PMD.
+task-B (a fuse-server io-uring task) might handle this
+request with FUSE_IO_URING_CMD_COMMIT_AND_FETCH, when
+fetching the next request and accessed the req from
+the pending list in fuse_uring_ent_assign_req().
+That code path was not protected by fiq->lock and so
+might race with task-A.
 
-hugetlb folios can be anonymous, and page_make_device_exclusive_one() is
-not really prepared for handling them at all.  So let's spell that out.
+For scaling reasons we better don't use fiq->lock, but
+add a handler to remove canceled requests from the queue.
 
-Link: https://lkml.kernel.org/r/20250210193801.781278-3-david@redhat.com
-Fixes: b756a3b5e7ea ("mm: device exclusive memory access")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Tested-by: Alistair Popple <apopple@nvidia.com>
-Cc: Alex Shi <alexs@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Dave Airlie <airlied@gmail.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Jerome Glisse <jglisse@redhat.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Karol Herbst <kherbst@redhat.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Lyude <lyude@redhat.com>
-Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Simona Vetter <simona.vetter@ffwll.ch>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Yanteng Si <si.yanteng@linux.dev>
-Cc: Barry Song <v-songbaohua@oppo.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+This also removes usage of fiq->lock from
+fuse_uring_add_req_to_ring_ent() altogether, as it was
+there just to protect against this race and incomplete.
+
+Also added is a comment why FR_PENDING is not cleared.
+
+Fixes: c090c8abae4b ("fuse: Add io-uring sqe commit and fetch support")
+Cc: <stable@vger.kernel.org> # v6.14
+Reported-by: Joanne Koong <joannelkoong@gmail.com>
+Closes: https://lore.kernel.org/all/CAJnrk1ZgHNb78dz-yfNTpxmW7wtT88A=m-zF0ZoLXKLUHRjNTw@mail.gmail.com/
+Signed-off-by: Bernd Schubert <bschubert@ddn.com>
+Reviewed-by: Joanne Koong <joannelkoong@gmail.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/rmap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/fuse/dev.c         | 34 +++++++++++++++++++++++++---------
+ fs/fuse/dev_uring.c   | 15 +++++++++++----
+ fs/fuse/dev_uring_i.h |  6 ++++++
+ fs/fuse/fuse_dev_i.h  |  1 +
+ fs/fuse/fuse_i.h      |  3 +++
+ 5 files changed, 46 insertions(+), 13 deletions(-)
 
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -2499,7 +2499,7 @@ static bool folio_make_device_exclusive(
- 	 * Restrict to anonymous folios for now to avoid potential writeback
- 	 * issues.
- 	 */
--	if (!folio_test_anon(folio))
-+	if (!folio_test_anon(folio) || folio_test_hugetlb(folio))
- 		return false;
+diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
+index 2c3a4d09e500..2645cd8accfd 100644
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -407,6 +407,24 @@ static int queue_interrupt(struct fuse_req *req)
+ 	return 0;
+ }
  
- 	rmap_walk(folio, &rwc);
++bool fuse_remove_pending_req(struct fuse_req *req, spinlock_t *lock)
++{
++	spin_lock(lock);
++	if (test_bit(FR_PENDING, &req->flags)) {
++		/*
++		 * FR_PENDING does not get cleared as the request will end
++		 * up in destruction anyway.
++		 */
++		list_del(&req->list);
++		spin_unlock(lock);
++		__fuse_put_request(req);
++		req->out.h.error = -EINTR;
++		return true;
++	}
++	spin_unlock(lock);
++	return false;
++}
++
+ static void request_wait_answer(struct fuse_req *req)
+ {
+ 	struct fuse_conn *fc = req->fm->fc;
+@@ -428,22 +446,20 @@ static void request_wait_answer(struct fuse_req *req)
+ 	}
+ 
+ 	if (!test_bit(FR_FORCE, &req->flags)) {
++		bool removed;
++
+ 		/* Only fatal signals may interrupt this */
+ 		err = wait_event_killable(req->waitq,
+ 					test_bit(FR_FINISHED, &req->flags));
+ 		if (!err)
+ 			return;
+ 
+-		spin_lock(&fiq->lock);
+-		/* Request is not yet in userspace, bail out */
+-		if (test_bit(FR_PENDING, &req->flags)) {
+-			list_del(&req->list);
+-			spin_unlock(&fiq->lock);
+-			__fuse_put_request(req);
+-			req->out.h.error = -EINTR;
++		if (test_bit(FR_URING, &req->flags))
++			removed = fuse_uring_remove_pending_req(req);
++		else
++			removed = fuse_remove_pending_req(req, &fiq->lock);
++		if (removed)
+ 			return;
+-		}
+-		spin_unlock(&fiq->lock);
+ 	}
+ 
+ 	/*
+diff --git a/fs/fuse/dev_uring.c b/fs/fuse/dev_uring.c
+index ebd2931b4f2a..add7273c8dc4 100644
+--- a/fs/fuse/dev_uring.c
++++ b/fs/fuse/dev_uring.c
+@@ -726,8 +726,6 @@ static void fuse_uring_add_req_to_ring_ent(struct fuse_ring_ent *ent,
+ 					   struct fuse_req *req)
+ {
+ 	struct fuse_ring_queue *queue = ent->queue;
+-	struct fuse_conn *fc = req->fm->fc;
+-	struct fuse_iqueue *fiq = &fc->iq;
+ 
+ 	lockdep_assert_held(&queue->lock);
+ 
+@@ -737,9 +735,7 @@ static void fuse_uring_add_req_to_ring_ent(struct fuse_ring_ent *ent,
+ 			ent->state);
+ 	}
+ 
+-	spin_lock(&fiq->lock);
+ 	clear_bit(FR_PENDING, &req->flags);
+-	spin_unlock(&fiq->lock);
+ 	ent->fuse_req = req;
+ 	ent->state = FRRS_FUSE_REQ;
+ 	list_move(&ent->list, &queue->ent_w_req_queue);
+@@ -1238,6 +1234,8 @@ void fuse_uring_queue_fuse_req(struct fuse_iqueue *fiq, struct fuse_req *req)
+ 	if (unlikely(queue->stopped))
+ 		goto err_unlock;
+ 
++	set_bit(FR_URING, &req->flags);
++	req->ring_queue = queue;
+ 	ent = list_first_entry_or_null(&queue->ent_avail_queue,
+ 				       struct fuse_ring_ent, list);
+ 	if (ent)
+@@ -1276,6 +1274,8 @@ bool fuse_uring_queue_bq_req(struct fuse_req *req)
+ 		return false;
+ 	}
+ 
++	set_bit(FR_URING, &req->flags);
++	req->ring_queue = queue;
+ 	list_add_tail(&req->list, &queue->fuse_req_bg_queue);
+ 
+ 	ent = list_first_entry_or_null(&queue->ent_avail_queue,
+@@ -1306,6 +1306,13 @@ bool fuse_uring_queue_bq_req(struct fuse_req *req)
+ 	return true;
+ }
+ 
++bool fuse_uring_remove_pending_req(struct fuse_req *req)
++{
++	struct fuse_ring_queue *queue = req->ring_queue;
++
++	return fuse_remove_pending_req(req, &queue->lock);
++}
++
+ static const struct fuse_iqueue_ops fuse_io_uring_ops = {
+ 	/* should be send over io-uring as enhancement */
+ 	.send_forget = fuse_dev_queue_forget,
+diff --git a/fs/fuse/dev_uring_i.h b/fs/fuse/dev_uring_i.h
+index 2102b3d0c1ae..e5b39a92b7ca 100644
+--- a/fs/fuse/dev_uring_i.h
++++ b/fs/fuse/dev_uring_i.h
+@@ -142,6 +142,7 @@ void fuse_uring_abort_end_requests(struct fuse_ring *ring);
+ int fuse_uring_cmd(struct io_uring_cmd *cmd, unsigned int issue_flags);
+ void fuse_uring_queue_fuse_req(struct fuse_iqueue *fiq, struct fuse_req *req);
+ bool fuse_uring_queue_bq_req(struct fuse_req *req);
++bool fuse_uring_remove_pending_req(struct fuse_req *req);
+ 
+ static inline void fuse_uring_abort(struct fuse_conn *fc)
+ {
+@@ -200,6 +201,11 @@ static inline bool fuse_uring_ready(struct fuse_conn *fc)
+ 	return false;
+ }
+ 
++static inline bool fuse_uring_remove_pending_req(struct fuse_req *req)
++{
++	return false;
++}
++
+ #endif /* CONFIG_FUSE_IO_URING */
+ 
+ #endif /* _FS_FUSE_DEV_URING_I_H */
+diff --git a/fs/fuse/fuse_dev_i.h b/fs/fuse/fuse_dev_i.h
+index 3b2bfe1248d3..2481da3388c5 100644
+--- a/fs/fuse/fuse_dev_i.h
++++ b/fs/fuse/fuse_dev_i.h
+@@ -61,6 +61,7 @@ int fuse_copy_out_args(struct fuse_copy_state *cs, struct fuse_args *args,
+ void fuse_dev_queue_forget(struct fuse_iqueue *fiq,
+ 			   struct fuse_forget_link *forget);
+ void fuse_dev_queue_interrupt(struct fuse_iqueue *fiq, struct fuse_req *req);
++bool fuse_remove_pending_req(struct fuse_req *req, spinlock_t *lock);
+ 
+ #endif
+ 
+diff --git a/fs/fuse/fuse_i.h b/fs/fuse/fuse_i.h
+index fee96fe7887b..2086dac7243b 100644
+--- a/fs/fuse/fuse_i.h
++++ b/fs/fuse/fuse_i.h
+@@ -378,6 +378,7 @@ struct fuse_io_priv {
+  * FR_FINISHED:		request is finished
+  * FR_PRIVATE:		request is on private list
+  * FR_ASYNC:		request is asynchronous
++ * FR_URING:		request is handled through fuse-io-uring
+  */
+ enum fuse_req_flag {
+ 	FR_ISREPLY,
+@@ -392,6 +393,7 @@ enum fuse_req_flag {
+ 	FR_FINISHED,
+ 	FR_PRIVATE,
+ 	FR_ASYNC,
++	FR_URING,
+ };
+ 
+ /**
+@@ -441,6 +443,7 @@ struct fuse_req {
+ 
+ #ifdef CONFIG_FUSE_IO_URING
+ 	void *ring_entry;
++	void *ring_queue;
+ #endif
+ };
+ 
+-- 
+2.49.0
+
 
 
 
