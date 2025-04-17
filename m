@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-133868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55DE8A9281F
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:31:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5780A92A3E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:48:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 366DE3ADF94
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC3428E07BC
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35A8258CEB;
-	Thu, 17 Apr 2025 18:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D3EB24EF6F;
+	Thu, 17 Apr 2025 18:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opthEdpR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bhYAuUb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B9F252915;
-	Thu, 17 Apr 2025 18:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB4F2566FB;
+	Thu, 17 Apr 2025 18:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914390; cv=none; b=HO6LMiFkkhzH/2ydlmmBUFYpBRUxUW/Eg6NPx1Ax4WevbwmPt2JI+gFmMwUxBhr4UpU06JvOVKRTplDEFFUoLBziEYhwI+Q4Z5h721QlQ3WOXmiR6NftHWOUGdLbbiUcZErO44VfzggXrezQnsZ0yA0E5CwLuHSeJvML4uSS5Sc=
+	t=1744915505; cv=none; b=Wo8ELAve7mRXQuxaSyRGnp847GDxohBzwTDrJvtjaNuEOss4E/kVp+M+vFHUm2Q0AHvoqiudNzlX4pEQPls709a9BLy6MQaw9ZeKxfemoyvjJff1i1ANbf3xf9/Tfp/ocRkMHhCaRZj7T8qN2bWOR2/BPT+Xmj8Zk56DV9BoWBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914390; c=relaxed/simple;
-	bh=x79pE/8h2SV5YXZkp/YfCe3fHdJqTHnnjAVj5th5xgo=;
+	s=arc-20240116; t=1744915505; c=relaxed/simple;
+	bh=EWbU5w1KODgLSbIlxXU9NxI5MLrsaHgH9uz/w5AwE/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PxBP/6PRYFnfLpsBgvKkexxv3lN219wHISWZr8289hSM+BJl4az65YfB48aqtQjVH2bjkl0s0FLrJOi84JL1ZRqZK9yeG6w+dsHVBNAc1RPajDcxnVLCuzKmQzFqGRryCZQgUZz9ifqfITkNU5oS00+/hdd4NTI8t3U++y+lLRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opthEdpR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF78C4CEE4;
-	Thu, 17 Apr 2025 18:26:29 +0000 (UTC)
+	 MIME-Version; b=hmURBdREe7YaZEGlj9PaKHvYqPMAGCvsv621qW2onAin+eZX/XqF6khkitK5hdjgsvPgKndmrylFg0vC66iStHWZ68kdX0534dtGvIaAuDEWKxaKl3ACh1rq6QFWFAnWb9UJyFTDd/8h0b4f0bHga42ag9HoNfnM8G8C/qjdyYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bhYAuUb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B10EC4CEE4;
+	Thu, 17 Apr 2025 18:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914390;
-	bh=x79pE/8h2SV5YXZkp/YfCe3fHdJqTHnnjAVj5th5xgo=;
+	s=korg; t=1744915504;
+	bh=EWbU5w1KODgLSbIlxXU9NxI5MLrsaHgH9uz/w5AwE/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=opthEdpRxG5BmG1raTOlpOKJ+E0zoZHXkxsZ1OqWlMQGzXSxdcSHoWRCt1962C8+E
-	 suzeZ6g9450b5HBte22hL67pcNQkPikKBiyCsbUWPGJ5StwX30eqySFnRDCk9/7M07
-	 Lu65GAxrKmBAl51LtRsmi/iqm3eNFjLTGnegINEQ=
+	b=0bhYAuUbIORY5gE+kle/PihVicN1rJaG0s9RAjYj4+sCitbNNJataKM8FOqY2UmtV
+	 I0b3q2CG0PAcubgzbB+32byW/4H8rf8J8rUDqob2DU/bUgDKpFWkkXOpxEFLX9gi15
+	 xqeS1n81pTTH8Afm4wreDKdJhYzooxUezNB2zqo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.13 199/414] media: uapi: rkisp1-config: Fix typo in extensible params example
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 148/393] drm/amdgpu: handle amdgpu_cgs_create_device() errors in amd_powerplay_create()
 Date: Thu, 17 Apr 2025 19:49:17 +0200
-Message-ID: <20250417175119.447370763@linuxfoundation.org>
+Message-ID: <20250417175113.534048869@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit 7b0ee2de7c76e5518e2235a927fd211bc785d320 upstream.
+[ Upstream commit 1435e895d4fc967d64e9f5bf81e992ac32f5ac76 ]
 
-The define used for the version in the example diagram does not match what
-is defined in enum rksip1_ext_param_buffer_version, nor the description
-above it. Correct the typo to make it clear which define to use.
+Add error handling to propagate amdgpu_cgs_create_device() failures
+to the caller. When amdgpu_cgs_create_device() fails, release hwmgr
+and return -ENOMEM to prevent null pointer dereference.
 
-Fixes: e9d05e9d5db1 ("media: uapi: rkisp1-config: Add extensible params format")
-Cc: stable@vger.kernel.org
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[v1]->[v2]: Change error code from -EINVAL to -ENOMEM. Free hwmgr.
+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/rkisp1-config.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/include/uapi/linux/rkisp1-config.h
-+++ b/include/uapi/linux/rkisp1-config.h
-@@ -1528,7 +1528,7 @@ enum rksip1_ext_param_buffer_version {
-  * The expected memory layout of the parameters buffer is::
-  *
-  *	+-------------------- struct rkisp1_ext_params_cfg -------------------+
-- *	| version = RKISP_EXT_PARAMS_BUFFER_V1;                               |
-+ *	| version = RKISP1_EXT_PARAM_BUFFER_V1;                               |
-  *	| data_size = sizeof(struct rkisp1_ext_params_bls_config)             |
-  *	|           + sizeof(struct rkisp1_ext_params_dpcc_config);           |
-  *	| +------------------------- data  ---------------------------------+ |
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
+index a71c6117d7e54..0115d26b5af92 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
+@@ -51,6 +51,11 @@ static int amd_powerplay_create(struct amdgpu_device *adev)
+ 	hwmgr->adev = adev;
+ 	hwmgr->not_vf = !amdgpu_sriov_vf(adev);
+ 	hwmgr->device = amdgpu_cgs_create_device(adev);
++	if (!hwmgr->device) {
++		kfree(hwmgr);
++		return -ENOMEM;
++	}
++
+ 	mutex_init(&hwmgr->msg_lock);
+ 	hwmgr->chip_family = adev->family;
+ 	hwmgr->chip_id = adev->asic_type;
+-- 
+2.39.5
+
 
 
 
