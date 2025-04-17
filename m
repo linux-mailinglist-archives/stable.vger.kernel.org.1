@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-134096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA775A92980
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A916BA92719
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:19:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41ED18E4361
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA797466806
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A302580C0;
-	Thu, 17 Apr 2025 18:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BEF12550C8;
+	Thu, 17 Apr 2025 18:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AOT0Ile0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SsYuLqkV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91953257451;
-	Thu, 17 Apr 2025 18:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB5C1A3178;
+	Thu, 17 Apr 2025 18:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915082; cv=none; b=iZGCZNpb/B0vEjh2n3QpOYyGd14ejtw+OjGeLng7OYk0swkkKKja3fEff0batPfyd02V0xvK1sLNymO0ImG1mWVEwnaKYI9+2wE2zfhlnlJW9X+J4wNu4e48ReOguCAzKs3usGL36nHvtrqfT69AMWJvDibKl49ceCJ+hqQq1Zc=
+	t=1744913977; cv=none; b=W5c3t1HxAcs1ehm1VlOTmkprTZVRkPyjCSciXwRlJkzEO78GiWeVOJ1VX+Imka8FPDT0imHdRtMxrmjhLnK/7k60FE1w3vYtJpByjBpe2Uh1hIvmoVqPhpVBDxqRLA6Q1B9HDDhDCnFbPDmLlEi1992glU1DatWVwXt1dz5XIYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915082; c=relaxed/simple;
-	bh=qW9Ii6qJumcqxMwazZY6MYKaYQNjr7LtexvCsUKwiYQ=;
+	s=arc-20240116; t=1744913977; c=relaxed/simple;
+	bh=PlOElnruYEOD3i4wCJXI5hgiFB5ATazn3IBk3MbuCvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JunCQOYcl8aS2qQ/UstJJ6h43vNFTb3QfkOKQD/0IwxgbJn5o/Vko8q2WglY7+HT92CBUjNmS4BlrmLesK0xg6KNHQCVzaYAiVqu4cT415hHf78mrsSJbKQg0MJV8f/bQQO3Lr8Dw1vQB35J6jB+XVSdtziU0L1ilRS/0RlRpEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AOT0Ile0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD27C4CEE4;
-	Thu, 17 Apr 2025 18:38:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jcakVz2cyNsRhjjiF0CySF+RAK4QHpS9Vtzj4+cQFnYF0RHUWxHvR7AjVwOhEdJPWlM8Q6iBruOXs6xVTNSFWEtS3v/8hXzpQo+kTX9DXtEYekco/eXOnJ2ySkG/aYgzU2FW6Gh4w+ir6a8INaZUZo0GDKBikE1S8nOl9yP73Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SsYuLqkV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75959C4CEE4;
+	Thu, 17 Apr 2025 18:19:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915082;
-	bh=qW9Ii6qJumcqxMwazZY6MYKaYQNjr7LtexvCsUKwiYQ=;
+	s=korg; t=1744913976;
+	bh=PlOElnruYEOD3i4wCJXI5hgiFB5ATazn3IBk3MbuCvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AOT0Ile0qJVn5PXLtz/iai3uWPb6rlcXPnxLqtpWFfb5J0hO07NZYf9uBplCru/eE
-	 A1prwHIX6WZPY8BfytfmZ+dQO3SV0UcyuzODro8YNcUJmlWWLHav0gXVdgBUnt6T2Z
-	 fwArt2dmo2LQ5h7gL7TjGTcD8XmgamzQ5/ICt9RA=
+	b=SsYuLqkVFl8cNkr4lrNuWpG+6ZYuidZFU8/gqVDlM+tehzmR58plv8g4CSkVo0+TT
+	 VDUKvZdxL0+smg5I1lee8LNJI3znKEz+WP7ERDkQSO2UGelCto5zRn6jAXW5e8z/GX
+	 9aOaFh3CDXhid2dl2nw3dtp6pKNIcztxyqMPcOp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Petr=20Van=C4=9Bk?= <arkamar@atlas.cz>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Makarenko Oleg <oleg@makarenk.ooo>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 013/393] x86/acpi: Dont limit CPUs to 1 for Xen PV guests due to disabled ACPI
-Date: Thu, 17 Apr 2025 19:47:02 +0200
-Message-ID: <20250417175108.110989855@linuxfoundation.org>
+Subject: [PATCH 6.13 065/414] HID: pidff: Add PERMISSIVE_CONTROL quirk
+Date: Thu, 17 Apr 2025 19:47:03 +0200
+Message-ID: <20250417175114.028953604@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +68,71 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Vaněk <arkamar@atlas.cz>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit 8b37357a78d7fa13d88ea822b35b40137da1c85e ]
+[ Upstream commit a4119108d2530747e61c7cbf52e2affd089cb1f6 ]
 
-Xen disables ACPI for PV guests in DomU, which causes acpi_mps_check() to
-return 1 when CONFIG_X86_MPPARSE is not set. As a result, the local APIC is
-disabled and the guest is later limited to a single vCPU, despite being
-configured with more.
+With this quirk, a PID device isn't required to have a strict
+logical_minimum of 1 for the the PID_DEVICE_CONTROL usage page.
 
-This regression was introduced in version 6.9 in commit 7c0edad3643f
-("x86/cpu/topology: Rework possible CPU management"), which added an
-early check that limits CPUs to 1 if apic_is_disabled.
+Some devices come with weird values in their device descriptors and
+this quirk enables their initialization even if the logical minimum
+of the DEVICE_CONTROL page is not 1.
 
-Update the acpi_mps_check() logic to return 0 early when running as a Xen
-PV guest in DomU, preventing APIC from being disabled in this specific case
-and restoring correct multi-vCPU behaviour.
+Fixes initialization of VRS Direct Force Pro
 
-Fixes: 7c0edad3643f ("x86/cpu/topology: Rework possible CPU management")
-Signed-off-by: Petr Vaněk <arkamar@atlas.cz>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250407132445.6732-2-arkamar@atlas.cz
+Changes in v6:
+- Change quirk name to better reflect it's intention
+
+Co-developed-by: Makarenko Oleg <oleg@makarenk.ooo>
+Signed-off-by: Makarenko Oleg <oleg@makarenk.ooo>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/acpi/boot.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/hid/usbhid/hid-pidff.c | 3 ++-
+ include/linux/hid.h            | 5 +++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-index c70b86f1f2954..63adda8a143f9 100644
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -23,6 +23,8 @@
- #include <linux/serial_core.h>
- #include <linux/pgtable.h>
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 503b22feacdbb..5a57ba0d7026a 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -969,7 +969,8 @@ static int pidff_find_special_fields(struct pidff_device *pidff)
+ 					 0x57, 0);
+ 	pidff->device_control =
+ 		pidff_find_special_field(pidff->reports[PID_DEVICE_CONTROL],
+-					 0x96, 1);
++			0x96, !(pidff->quirks & HID_PIDFF_QUIRK_PERMISSIVE_CONTROL));
++
+ 	pidff->block_load_status =
+ 		pidff_find_special_field(pidff->reports[PID_BLOCK_LOAD],
+ 					 0x8b, 1);
+diff --git a/include/linux/hid.h b/include/linux/hid.h
+index ea7ba8e4bfe49..89a4dee377292 100644
+--- a/include/linux/hid.h
++++ b/include/linux/hid.h
+@@ -1229,8 +1229,9 @@ int hid_pidff_init(struct hid_device *hid);
+ #endif
  
-+#include <xen/xen.h>
-+
- #include <asm/e820/api.h>
- #include <asm/irqdomain.h>
- #include <asm/pci_x86.h>
-@@ -1730,6 +1732,15 @@ int __init acpi_mps_check(void)
- {
- #if defined(CONFIG_X86_LOCAL_APIC) && !defined(CONFIG_X86_MPPARSE)
- /* mptable code is not built-in*/
-+
-+	/*
-+	 * Xen disables ACPI in PV DomU guests but it still emulates APIC and
-+	 * supports SMP. Returning early here ensures that APIC is not disabled
-+	 * unnecessarily and the guest is not limited to a single vCPU.
-+	 */
-+	if (xen_pv_domain() && !xen_initial_domain())
-+		return 0;
-+
- 	if (acpi_disabled || acpi_noirq) {
- 		pr_warn("MPS support code is not built-in, using acpi=off or acpi=noirq or pci=noacpi may have problem\n");
- 		return 1;
+ /* HID PIDFF quirks */
+-#define HID_PIDFF_QUIRK_MISSING_DELAY	BIT(0)
+-#define HID_PIDFF_QUIRK_MISSING_PBO	BIT(1)
++#define HID_PIDFF_QUIRK_MISSING_DELAY		BIT(0)
++#define HID_PIDFF_QUIRK_MISSING_PBO		BIT(1)
++#define HID_PIDFF_QUIRK_PERMISSIVE_CONTROL	BIT(2)
+ 
+ #define dbg_hid(fmt, ...) pr_debug("%s: " fmt, __FILE__, ##__VA_ARGS__)
+ 
 -- 
 2.39.5
 
